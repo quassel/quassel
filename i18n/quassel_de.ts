@@ -329,7 +329,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="123"/>
         <source>The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog.</source>
-        <translation>Die einfachste Methode: Einen feste Anzahl Zeilen werden für jeden Chat angefordert.</translation>
+        <translation>Die einfachste Methode: Eine feste Anzahl Zeilen wird für jeden Chat angefordert.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="157"/>
@@ -427,7 +427,7 @@ Diese Aktion kann nicht rückgängig gemacht werden!</translation>
     <message>
         <location filename="../src/uisupport/bufferviewfilter.cpp" line="52"/>
         <source>Show / Hide Chats</source>
-        <translation>Zeige/Verstecke Chats</translation>
+        <translation>Chats zeigen/verstecken</translation>
     </message>
 </context>
 <context>
@@ -607,7 +607,7 @@ Keine separaten Statusfenster werden in diesem Modus angezeigt.</translation>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="503"/>
         <source>Not active &lt;br /&gt; Double-click to join</source>
-        <translation>Nicht aktiv &lt;br /&gt; Doppelklick zum Beitreten</translation>
+        <translation>Nicht aktiv &lt;br /&gt; Doppelklick zum Betreten</translation>
     </message>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="506"/>
@@ -642,7 +642,7 @@ Der erweiterte Modus ermöglicht es, Suchbegriffe an den IRC-Server weiterzureic
     <message>
         <location filename="../src/qtui/ui/channellistdlg.ui" line="61"/>
         <source>Show Channels</source>
-        <translation>Zeige Kanäle</translation>
+        <translation>Kanäle zeigen</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/channellistdlg.ui" line="97"/>
@@ -732,7 +732,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="147"/>
         <source>Show highlights in chatmonitor even if the originating buffer is ignored</source>
-        <translation>Zeige Highlights im Verlaufsfenster auch wenn das entsprechende Fenster ignoriert wird</translation>
+        <translation>Highlights im Verlaufsfenster auch wenn das entsprechende Fenster ignoriert zeigen</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="150"/>
@@ -742,7 +742,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="157"/>
         <source>Show own messages</source>
-        <translation>Zeige eigene Nachrichten</translation>
+        <translation>Eigene Nachrichten anzeigen</translation>
     </message>
 </context>
 <context>
@@ -755,12 +755,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/chatmonitorview.cpp" line="59"/>
         <source>Show Network Name</source>
-        <translation>Zeige Netzwerkname</translation>
+        <translation>Netzwerkname anzeigen</translation>
     </message>
     <message>
         <location filename="../src/qtui/chatmonitorview.cpp" line="64"/>
         <source>Show Buffer Name</source>
-        <translation>Zeige Fenstername</translation>
+        <translation>Chatname anzeigen</translation>
     </message>
     <message>
         <location filename="../src/qtui/chatmonitorview.cpp" line="71"/>
@@ -798,17 +798,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/chatviewsearchbar.ui" line="62"/>
         <source>search nick</source>
-        <translation>Suche Spitzname</translation>
+        <translation>Spitznamen suchen</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/chatviewsearchbar.ui" line="69"/>
         <source>search message</source>
-        <translation>Suche Text</translation>
+        <translation>Text suchen</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/chatviewsearchbar.ui" line="82"/>
         <source>ignore joins, parts, etc.</source>
-        <translation>Ignoriere joins, parts, etc.</translation>
+        <translation>Joins, Parts, etc. ignorieren</translation>
     </message>
 </context>
 <context>
@@ -861,7 +861,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="92"/>
         <source>Allow colored text (mIRC color codes)</source>
-        <translation>Farbigen Text erlauben (mIRC-Farbkode)</translation>
+        <translation>Farbigen Text erlauben (mIRC-Farbcode)</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="101"/>
@@ -871,12 +871,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="108"/>
         <source>Show a website preview window when hovering the mouse over a web address</source>
-        <translation>Zeige eine Webseitenvorschau beim Hovern mit der Maus über eine Webadresse</translation>
+        <translation>Webseitenvorschau beim Hovern mit der Maus über eine Webadresse zeigen</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="111"/>
         <source>Show previews of webpages on URL hover</source>
-        <translation>Zeige Vorschauen von Webseiten beim Hovern über URLs</translation>
+        <translation>Vorschau von Webseiten beim Hovern über URLs zeigen</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="120"/>
@@ -1184,8 +1184,13 @@ p, li { white-space: pre-wrap; }
         <translation>Kein Host zum Verbinden festgelegt.</translation>
     </message>
     <message>
-        <location filename="../src/client/clientsyncer.cpp" line="382"/>
-        <location filename="../src/client/clientsyncer.cpp" line="407"/>
+        <location filename="../src/client/clientsyncer.cpp" line="360"/>
+        <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
+        <translation>&lt;b&gt;Quassel-Core Version %1&lt;/b&gt;&lt;br&gt;Erstellungsdatum: %2&lt;br&gt;Betriebsdauer: %3T%4S%5M (seit %6)</translation>
+    </message>
+    <message>
+        <location filename="../src/client/clientsyncer.cpp" line="404"/>
+        <location filename="../src/client/clientsyncer.cpp" line="429"/>
         <source>Cert Digest changed! was: %1</source>
         <translation>Zertifikat geändert! Vorher: %1</translation>
     </message>
@@ -1215,7 +1220,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="37"/>
         <source>Ping interval:</source>
-        <translation>Ping-Interval:</translation>
+        <translation>Ping-Intervall:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="44"/>
@@ -1247,7 +1252,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="148"/>
         <source>Update interval:</source>
-        <translation>Aktualisierungsintervall:</translation>
+        <translation>Aktualisierungs-Intervall:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="177"/>
@@ -1276,189 +1281,209 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ContextMenuActionProvider</name>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="35"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="38"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="36"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="39"/>
         <source>Disconnect</source>
         <translation>Verbindung trennen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="38"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="41"/>
         <source>Join</source>
-        <translation>Beitreten</translation>
+        <translation>Betreten</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="39"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="42"/>
         <source>Part</source>
         <translation>Verlassen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="40"/>
-        <source>Delete Chat(s)...</source>
-        <translation>Chat(s) löschen ...</translation>
-    </message>
-    <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="41"/>
-        <source>Go to Chat</source>
-        <translation>Zeige Chat</translation>
-    </message>
-    <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="43"/>
-        <source>Joins</source>
-        <translation>Joins</translation>
+        <source>Delete Chat(s)...</source>
+        <translation>Chat(s) löschen...</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="44"/>
-        <source>Parts</source>
-        <translation>Parts</translation>
-    </message>
-    <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="45"/>
-        <source>Quits</source>
-        <translation>Quits</translation>
+        <source>Go to Chat</source>
+        <translation>Chat zeigen</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="46"/>
+        <source>Joins</source>
+        <translation type="unfinished">Join-Meldungen</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="47"/>
+        <source>Parts</source>
+        <translation type="unfinished">Part-Meldungen</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="48"/>
+        <source>Quits</source>
+        <translation type="unfinished">Quit-Meldungen</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="49"/>
         <source>Nick Changes</source>
         <translation>Spitznamenänderungen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="47"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="50"/>
         <source>Mode Changes</source>
         <translation>Modiänderungen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="48"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="51"/>
         <source>Day Changes</source>
         <translation>Tageswechsel</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="49"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="52"/>
         <source>Topic Changes</source>
-        <translation>Thema-Wechsel</translation>
+        <translation>Themenwechsel</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="50"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="53"/>
         <source>Set as Default...</source>
         <translation>Als Standard setzen...</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="51"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="54"/>
         <source>Use Defaults...</source>
         <translation>Standardwerte benutzen...</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="53"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="56"/>
         <source>Join Channel...</source>
-        <translation>Kanal beitreteten...</translation>
+        <translation>Kanal betreteten...</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="55"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="58"/>
         <source>Start Query</source>
         <translation>Dialog starten</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="56"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="59"/>
         <source>Show Query</source>
         <translation>Dialog anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="57"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="60"/>
         <source>Whois</source>
         <translation>Whois</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="59"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="62"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="60"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="63"/>
         <source>Time</source>
         <translation>Zeit</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="61"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="64"/>
         <source>Ping</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="62"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="65"/>
         <source>Finger</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="64"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="66"/>
+        <source>Custom...</source>
+        <translation>Eigene...</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="78"/>
         <source>Give Operator Status</source>
         <translation>Operator-Status geben</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="65"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="79"/>
         <source>Take Operator Status</source>
         <translation>Operator-Status nehmen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="66"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="80"/>
         <source>Give Voice</source>
         <translation>Voice geben</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="67"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="81"/>
         <source>Take Voice</source>
         <translation>Voice nehmen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="68"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="82"/>
         <source>Kick From Channel</source>
         <translation>Aus Kanal werfen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="69"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="83"/>
         <source>Ban From Channel</source>
         <translation>Vom Kanal bannen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="70"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="84"/>
         <source>Kick &amp;&amp; Ban</source>
         <translation>Rauswerfen und bannen</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="72"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="86"/>
         <source>Hide Chat(s) Temporarily</source>
-        <translation>Verstecke Chats (temporär)</translation>
+        <translation>Chats temporär verstecken</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="73"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="87"/>
         <source>Hide Chat(s) Permanently</source>
-        <translation>Verstecke Chats (permanent)</translation>
-    </message>
-    <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="74"/>
-        <source>Show Channel List</source>
-        <translation>Zeige Kanalliste</translation>
-    </message>
-    <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="75"/>
-        <source>Show Ignore List</source>
-        <translation>Zeige Ignorieren-Liste</translation>
+        <translation>Chats permanent verstecken</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="88"/>
+        <source>Show Channel List</source>
+        <translation>Kanalliste zeigen</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="89"/>
+        <source>Show Ignore List</source>
+        <translation>Ignorieren-Liste zeigen</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="102"/>
         <source>Hide Events</source>
         <translation>Meldungen ausblenden</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="96"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="110"/>
         <source>CTCP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="108"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="122"/>
         <source>Actions</source>
         <translation>Aktionen</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="126"/>
+        <source>Ignore</source>
+        <translation>Ignorieren</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="131"/>
+        <source>Add Ignore Rule</source>
+        <translation>Ignorier-Regel hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="132"/>
+        <source>Existing Rules</source>
+        <translation>Bestehende Regeln</translation>
     </message>
 </context>
 <context>
@@ -1499,22 +1524,22 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;b&gt;Ihr Quassel-Client ist zu alt!&lt;/b&gt;&lt;br&gt;Dieser Core benötigt mindestens Client-/Core-Protokollversion %1.&lt;br&gt;Bitte ziehen Sie in Erwägung, Ihren Client zu aktualisieren.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="520"/>
+        <location filename="../src/core/core.cpp" line="525"/>
         <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
         <translation>&lt;b&gt;Quassel-Core Version %1&lt;/b&gt;&lt;br&gt;Erstellungsdatum: %2&lt;br&gt;Betriebsdauer: %3T%4S%5M (seit %6)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="589"/>
+        <location filename="../src/core/core.cpp" line="594"/>
         <source>&lt;b&gt;Client not initialized!&lt;/b&gt;&lt;br&gt;You need to send an init message before trying to login.</source>
         <translation>&lt;b&gt;Client nicht initialisiert!&lt;/b&gt;&lt;br&gt;Sie müssen vor dem Anmeldungsversuch eine init-Meldung senden.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="609"/>
+        <location filename="../src/core/core.cpp" line="614"/>
         <source>&lt;b&gt;Invalid username or password!&lt;/b&gt;&lt;br&gt;The username/password combination you supplied could not be found in the database.</source>
         <translation>&lt;b&gt;Ungültiger Benutzername oder Passwort!&lt;/b&gt;&lt;br&gt;Die angegebene Benutzername/Passwort-Kombination konnte in der Datenbank nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="626"/>
+        <location filename="../src/core/core.cpp" line="631"/>
         <source>Non-authed client disconnected.</source>
         <translation>Nicht-authentifizierter Client getrennt.</translation>
     </message>
@@ -1525,8 +1550,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="508"/>
-        <location filename="../src/core/core.cpp" line="591"/>
-        <location filename="../src/core/core.cpp" line="615"/>
+        <location filename="../src/core/core.cpp" line="596"/>
+        <location filename="../src/core/core.cpp" line="620"/>
         <source>Client</source>
         <translation></translation>
     </message>
@@ -1536,27 +1561,27 @@ p, li { white-space: pre-wrap; }
         <translation>zu alt, lehne ab.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="571"/>
+        <location filename="../src/core/core.cpp" line="576"/>
         <source>Starting TLS for Client:</source>
         <translation>Starte TLS für Client:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="591"/>
+        <location filename="../src/core/core.cpp" line="596"/>
         <source>did not send an init message before trying to login, rejecting.</source>
         <translation>hat vor dem Anmeldungsversuch keine init-Meldung gesendet, lehne ab.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="615"/>
+        <location filename="../src/core/core.cpp" line="620"/>
         <source>initialized and authenticated successfully as &quot;%1&quot; (UserId: %2).</source>
         <translation>initialisiert und erfolgreich als &quot;%1&quot; (BenutzerId: %2) authentifziert.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="680"/>
+        <location filename="../src/core/core.cpp" line="685"/>
         <source>Could not initialize session for client:</source>
         <translation>Konnte Sitzung für Client nicht erfolgreich initialisieren:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="632"/>
+        <location filename="../src/core/core.cpp" line="637"/>
         <source>Non-authed client disconnected. (socket allready destroyed)</source>
         <translation>Unauthentifizierter Client getrennt. (Socket bereits zerstört)</translation>
     </message>
@@ -1607,10 +1632,10 @@ lauffähig ist.</translation>
     <message>
         <location filename="../src/core/core.cpp" line="436"/>
         <source>Could not open any network interfaces to listen on!</source>
-        <translation>Konnte keine Netzwerk-Interfaces öffnen</translation>
+        <translation>Konnte keine Netzwerkoberfläche öffnen!</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="702"/>
+        <location filename="../src/core/core.cpp" line="707"/>
         <source>Could not find a session for client:</source>
         <translation>Konnte Sitzung für den Client nicht finden:</translation>
     </message>
@@ -1714,7 +1739,7 @@ lauffähig ist.</translation>
     <message>
         <location filename="../src/qtui/coreconfigwizard.cpp" line="82"/>
         <source>Your core has been successfully configured. Logging you in...</source>
-        <translation>Ihr Core wurde erfolgreich konfiguriert. Melde an ...</translation>
+        <translation>Ihr Core wurde erfolgreich konfiguriert. Melde an...</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconfigwizard.cpp" line="93"/>
@@ -1899,33 +1924,33 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CoreConnectDlg</name>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="19"/>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="53"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="20"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="46"/>
         <source>Connect to Quassel Core</source>
         <translation>Mit Quassel-Core verbinden</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="294"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="271"/>
         <source>User:</source>
         <translation>Benutzer:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="308"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="285"/>
         <source>Password:</source>
         <translation>Passwort:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="322"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="299"/>
         <source>Remember</source>
         <translation>Merken</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="128"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="121"/>
         <source>Always use this account</source>
         <translation>Diesen Account immer benutzen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="90"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="83"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
@@ -1957,7 +1982,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="310"/>
         <source>Looking up %1...</source>
-        <translation>Schlage %1 nach...</translation>
+        <translation>Suche %1...</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="311"/>
@@ -1982,77 +2007,87 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="392"/>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="450"/>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="286"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="263"/>
         <source>Login</source>
         <translation>Anmeldung</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="68"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="61"/>
         <source>Edit...</source>
         <translation>Ändern...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="79"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="72"/>
         <source>Add...</source>
         <translation>Hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="165"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="150"/>
         <source>Initializing your connection</source>
         <translation>Initialisiere Ihre Verbindung</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="183"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="168"/>
         <source>Connected to apollo.mindpool.net.</source>
         <translation>Verbunden zu apollo.mindpool.net.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="456"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="333"/>
+        <source>View SSL Certificate</source>
+        <translation>SSL-Zertifikat anzeigen</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="370"/>
+        <source>Add to known hosts</source>
+        <translation>zu den bekannten Hosts hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="425"/>
         <source>Configure your Quassel Core</source>
         <translation>Ihren Quassel-Core konfigurieren</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="462"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="431"/>
         <source>The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core.</source>
         <translation>Der Quassel-Core, mit dem Sie eine Verbindung herstellen möchten, ist noch unkonfiguriert. Sie können jetzt den Konfigurationshelfer starten, der Ihnen bei der Konfiguration Ihres Cores behilflich ist.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="490"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="459"/>
         <source>Launch Wizard</source>
         <translation>Helfer starten</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="553"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="505"/>
         <source>Initializing your session...</source>
         <translation>Initialisiere Ihre Sitzung...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="561"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="513"/>
         <source>&lt;b&gt;Please be patient while your client synchronizes with the Quassel Core!&lt;/b&gt;</source>
         <translation>&lt;b&gt;Bitte haben Sie etwas Geduld, während sich Ihr Client mit dem Quassel-Core synchronisiert!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="576"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="528"/>
         <source>Session state:</source>
         <translation>Sitzungsstatus:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="593"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="545"/>
         <source>Network states:</source>
         <translation>Netzwerkstatus:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="606"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="558"/>
         <source>0/0</source>
         <translation>0/0</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="114"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="107"/>
         <source>Use internal core</source>
         <translation>Internen Core benutzen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="215"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="200"/>
         <source>THIS IS A PLACEHOLDER
 TO
 RESERVE
@@ -2065,17 +2100,7 @@ SOME SPACE</source>
         <translation>&lt;div&gt;Fehler beim Verbinden zu &quot;%1&quot;:&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="356"/>
-        <source>view SSL Certificate</source>
-        <translation>SSL-Zertifikat anzeigen</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="393"/>
-        <source>add to known hosts</source>
-        <translation>zu den bekannten Hosts hinzufügen</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="413"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="390"/>
         <source>Continue connection</source>
         <translation>Verbinden fortsetzen</translation>
     </message>
@@ -2463,7 +2488,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="45"/>
         <source>Show system tray icon</source>
-        <translation>Zeige Systemleistensymbol</translation>
+        <translation>Systemleistensymbol zeigen</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="20"/>
@@ -2552,12 +2577,12 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="37"/>
         <source>RegEx</source>
-        <translation>RegEx</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="42"/>
         <source>CS</source>
-        <translation>CS</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="47"/>
@@ -2765,12 +2790,12 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.cpp" line="322"/>
         <source>RSA</source>
-        <translation>RSA</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.cpp" line="325"/>
         <source>DSA</source>
-        <translation>DSA</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.cpp" line="330"/>
@@ -3008,277 +3033,191 @@ Fortfahren bedeutet die unverschlüsselte Übertragung Ihres SSL-Schlüssels und
 <context>
     <name>IgnoreListEditDlg</name>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="15"/>
-        <source>Configure ignore rule</source>
-        <translation>Ignorier-Regel konfigurieren</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="27"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Strictness:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Dynamic:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Messages are filtered &quot;on the fly&quot;.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Whenever you disable/delete the ignore rule,&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;the messages are shown again.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Permanent:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Messages are filtered before they get stored in the database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Striktheit&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Dynamisch:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Meldungen werden reversibel herausgefiltert.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Immer wenn eine Regel ausgeschalten/gelöscht wird,&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;werden die Meldungen wieder angezeigt.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Permanent:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Meldungen werden irreversibel herausgefiltert bevor sie in der Datenbank gespeichert werden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="42"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="35"/>
         <source>Strictness</source>
         <translation>Striktheit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="48"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="41"/>
         <source>Dynamic</source>
         <translation>dynamisch</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="55"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="48"/>
         <source>Permanent</source>
         <translation>permanent</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="65"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Rule Type:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;By Sender:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The rule is matched against the sender string &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&quot;nick!ident@host.name&quot;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;By Message:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The rule is matched against the actual message content&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Regeltyp:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Nach Absender:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Die Regel filtert abhängig vom Absenderstring&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&quot;nick!ident@host.name&quot;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Nach Meldungsinhalt:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Die Regel filtert abhängig vom Meldungsinhalt&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="80"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="66"/>
         <source>Rule Type</source>
         <translation>Regeltyp</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="86"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="72"/>
         <source>Sender</source>
         <translation>Absender</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="93"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="79"/>
         <source>Message</source>
         <translation>Meldung</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="105"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ignore rule:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Depending on the type of the rule, the text is matched against either:&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; text-decoration: underline;&quot;&gt;the message content:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Example:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;*foobar*&quot; matches any text containing the word &quot;foobar&quot;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; text-decoration: underline;&quot;&gt;the sender string &lt;/span&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline;&quot;&gt;nick!ident@host.name&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic; text-decoration: underline;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Examples:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;*@foobar.com&quot; matches any sender from host &quot;foobar.com&quot;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;stupid!.+&quot; (RegEx) matches any sender with nickname &quot;stupid&quot; from any host&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ignorier-Regel:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Abhängig vom Regeltyp wird folgendes gefiltert:&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; text-decoration: underline;&quot;&gt;Der Meldungsinhalt&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Beispiel:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;*foobar*&quot; filtert alle Meldungen, die &quot;foobar&quot; enthalten, heraus&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; text-decoration: underline;&quot;&gt;Der Absenderstring &lt;/span&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline;&quot;&gt;nick!ident@host.name&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic; text-decoration: underline;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Beispiel:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;*@foobar.com&quot; filtert alle Absender mit dem Host foobar.com heraus&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;stupid!.+&quot; (RegEx) filtert alles vom Absender mit dem Spitznamen &quot;stupid&quot; unabhängig vom Host heraus&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="126"/>
-        <source>Ignore rule</source>
-        <translation>Ignorier-Regel</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="137"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Use RegularExpressions:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If enabled, rules follow regular expression syntax.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Otherwise rules allow wildcard matching with &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; *: represents &quot;any amount of any character&quot;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; ?: represents &quot;one or none character&quot;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Regulärer Ausdrucke (RegEx):&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Falls aktiviert, wird nach dem Syntax regulärer Ausdrücke gefiltert&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ansonsten erlauben Regeln folgende Platzhalter: &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; *: entspricht einer beliebigen Anzahl an Zeichen&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; ?: entspricht einem oder keinem Zeichen&quot;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="151"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="124"/>
         <source>Use Regular Expressions</source>
         <translation>Regulärer Ausdruck</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="158"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Enable / Disable:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Only enabled rules are filtered.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;For dynamic rules, disabling actually shows the filtered messages again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;An-/Ausschalten:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nur angeschaltene Regel werden gefiltert.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;Bei dynamischen Regeln werden nach dem Ausschalten die gefilterten Meldungen wieder angezeigt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="15"/>
+        <source>Configure Ignore Rule</source>
+        <translation>Ignorier-Regel konfigurieren</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="168"/>
-        <source>Enabled</source>
-        <translation>Einschalten</translation>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="27"/>
+        <source>&lt;p&gt;&lt;b&gt;Strictness:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Dynamic:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Messages are filtered &quot;on the fly&quot;.
+Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Permanent:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Messages are filtered before they get stored in the database.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Striktheit:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Dynamic:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Meldungen werden reversibel herausgefiltert.
+Immer wenn eine Regel ausgeschalten/gelöscht wird, werden die Meldungen wieder angezeigt.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Permanent:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Meldungen werden irreversibel herausgefiltert bevor sie in der Datenbank gespeichert werden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="180"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Scope:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Global:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The rule is active for any channel on any network&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Network:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The list below is interpreted as a list of networks for which the rule should match&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Channel:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The list below is interpreted as a list of channels for which the rule should match&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bereich:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Global:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Die Regel gilt für jeden Chat in jedem Netzwerk&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Netzwerk:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Die Liste enthält Netzwerke, in denen die Regel filtert&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Chat:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Die Liste enthält Chats, in denen die Regel filtert&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="58"/>
+        <source>&lt;p&gt;&lt;b&gt;Rule Type:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;By Sender:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The rule is matched against the sender string
+&lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;By Message:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The rule is matched against the actual message content&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Regeltyp:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Nach Absender:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Die Regel filtert abhängig vom Absenderstring.
+&lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Nach Meldungsinhalt:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Die Regel filtert abhängig vom Meldungsinhalt.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="196"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="91"/>
+        <source>&lt;p&gt;&lt;b&gt;Ignore rule:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Depending on the type of the rule, the text is matched against either:&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- the message content:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Example:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;*foobar*&lt;/i&gt; matches any text containing the word &lt;i&gt;foobar&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- the sender string&lt;/u&gt;  &lt;i&gt;(nick!ident@host.name)&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Examples:&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;*@foobar.com&lt;/i&gt; matches any sender from host &lt;i&gt;foobar.com&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;stupid!.+&lt;/i&gt; (RegEx) matches any sender with nickname &lt;i&gt;stupid&lt;/i&gt; from any host&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Ignorier-Regel:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Abhängig vom Regeltyp wird folgendes gefiltert:&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- Der Meldungsinhalt&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Beispiel:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;*foobar*&lt;/i&gt; filtert alle Meldungen, die &lt;i&gt;foobar&lt;/i&gt; enthalten, heraus.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- Der Absenderstring&lt;/u&gt;  &lt;i&gt;(nick!ident@host.name)&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Beispiel:&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;*@foobar.com&lt;/i&gt; filtert alle Absender mit dem Host &lt;i&gt;foobar.com&lt;/i&gt; heraus.
+&lt;br /&gt;
+- &lt;i&gt;stupid!.+&lt;/i&gt; (RegEx) filtert alles vom Absender mit dem Spitznamen &lt;i&gt;stupid&lt;/i&gt; unabhängig vom Host heraus.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="105"/>
+        <source>Ignore Rule</source>
+        <translation>Ignorier-Regel</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="116"/>
+        <source>&lt;p&gt;&lt;b&gt;Use RegularExpressions:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;If enabled, rules follow regular expression syntax.&lt;/p&gt;
+&lt;p&gt;Otherwise rules allow wildcard matching with the following special characters:&lt;/p&gt;
+&lt;p&gt; *: representing &quot;any amount of any character&quot;
+&lt;br /&gt;
+?: representing &quot;exactly one character&quot;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Reguläre Ausdrucke (RegEx):&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Falls aktiviert, wird nach dem Syntax regulärer Ausdrücke gefiltert.&lt;/p&gt;
+&lt;p&gt;Ansonsten erlauben Regeln folgende Platzhalter:&lt;/p&gt;
+&lt;p&gt; *: entspricht einer beliebigen Anzahl an Zeichen.
+&lt;br /&gt;
+ ?: entspricht einem oder keinem Zeichen.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="136"/>
+        <source>&lt;p&gt;&lt;b&gt;Scope:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Global:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The rule is active for any channel on any network&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Network:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The list below is interpreted as a list of networks for which the rule should match&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Channel:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The list below is interpreted as a list of channels for which the rule should match&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Bereich:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Global:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Die Regel gilt für jeden Chat in jedem Netzwerk.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Netzwerk:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Die Liste enthält Netzwerke, in denen die Regel filtert.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Kanal:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Die Liste enthält Chats, in denen die Regel filtert.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="145"/>
         <source>Scope</source>
         <translation>Gültigkeitsbereich</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="204"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="153"/>
         <source>Global</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="211"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="160"/>
         <source>Network</source>
         <translation>Netzwerk</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="218"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="167"/>
         <source>Channel</source>
-        <translation>Chat</translation>
+        <translation>Kanal</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="227"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Scope rule:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;A scope rule is a semicolon separated list of either&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;network or channel names.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Example:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&quot;#quassel*; #foobar&quot;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;would match on #foobar and on any channel starting with &quot;#quassel&quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bereichregel:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Eine Bereichregel enthält eine mit Strichkomma getrennte Liste von:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Netzwerk- oder Chat-Namen.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Beispiel:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&quot;#quassel*; #foobar&quot;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;würde &quot;#foobar&quot; und alle Chats die mit &quot;#quassel&quot; beginnen filtern&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="176"/>
+        <source>&lt;p&gt;&lt;b&gt;Scope rule:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;A scope rule is a semicolon separated list of either &lt;i&gt;network&lt;/i&gt; or &lt;i&gt;channel&lt;/i&gt; names.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Example:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;#quassel*; #foobar&lt;/i&gt;
+&lt;br /&gt;
+would match on #foobar and on any channel starting with &lt;i&gt;#quassel&lt;/i&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Bereichregel:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Eine Bereichregel enthält eine mit Strichkomma getrennte Liste von:&lt;i&gt;Netzwerk&lt;/i&gt; oder &lt;i&gt;Kanal-&lt;/i&gt; Namen.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Beispiel:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;#quassel*; #foobar&lt;/i&gt;
+&lt;br /&gt;
+filtert &lt;i&gt;#foobar&lt;/i&gt; und alle Kanäle die mit &lt;i&gt;#quassel&lt;/i&gt; beginnen.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="207"/>
+        <source>&lt;p&gt;&lt;b&gt;Enable / Disable:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Only enabled rules are filtered.
+&lt;br /&gt;
+For dynamic rules, disabling actually shows the filtered messages again.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;An-/Ausschalten:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Nur angeschaltene Regel werden gefiltert.
+&lt;br /&gt;
+Bei dynamischen Regeln werden nach dem Ausschalten die gefilterten Meldungen wieder angezeigt.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="213"/>
+        <source>Rule is enabled</source>
+        <translation>Regel ist angeschalten</translation>
     </message>
 </context>
 <context>
@@ -3286,13 +3225,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="69"/>
         <source>&lt;b&gt;Enable / Disable:&lt;/b&gt;&lt;br /&gt;Only enabled rules are filtered.&lt;br /&gt;For dynamic rules, disabling actually shows the filtered messages again</source>
-        <translation>&lt;b&gt;An- / Ausschalten:&lt;/b&gt;&lt;br /&gt;Nur angeschaltene Regelen werden herausgefiltert.&lt;br /&gt;Bei dynamischen Regeln werden nach dem Ausschalten die gefilterten Nachrichten wieder angezeigt</translation>
+        <translation>&lt;b&gt;An- / Ausschalten:&lt;/b&gt;&lt;br /&gt;Nur angeschaltene Regelen werden herausgefiltert.&lt;br /&gt;Bei dynamischen Regeln werden nach dem Ausschalten die gefilterten Nachrichten wieder angezeigt.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="73"/>
         <source>&lt;b&gt;Ignore rule:&lt;/b&gt;&lt;br /&gt;Depending on the type of the rule, the text is matched against either:&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;the message content:&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Example:&lt;i&gt;&lt;br /&gt;    &quot;*foobar*&quot; matches any text containing the word &quot;foobar&quot;&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;the sender string &lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Example:&lt;/i&gt;&lt;br /&gt;    &quot;*@foobar.com&quot; matches any sender from host foobar.com&lt;br /&gt;    &quot;stupid!.+&quot; (RegEx) matches any sender with nickname &quot;stupid&quot; from any host&lt;br /&gt;</source>
-        <translatorcomment>string? hostname? ich lass es mal so</translatorcomment>
-        <translation>&lt;b&gt;Ignorier-Regel:&lt;/b&gt;&lt;br /&gt;Abhängig vom Regeltyp wird folgendes gefiltert:&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;Der Meldungsinhalt&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Beispiel:&lt;i&gt;&lt;br /&gt;    &quot;*foobar*&quot; filtert alle Meldungen, die &quot;foobar&quot; enthalten, heraus&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;Der Absenderstring &lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Beispiel&lt;/i&gt;&lt;br /&gt;    &quot;*@foobar.com&quot; filtert alle Absender mit dem Host foobar.com heraus&lt;br /&gt;    &quot;stupid!.+&quot; (RegEx) filtert alles vom Absender mit dem Spitznamen &quot;stupid&quot; unabhängig vom Host heraus&lt;br /&gt;</translation>
+        <translation>&lt;b&gt;Ignorier-Regel:&lt;/b&gt;&lt;br /&gt;Abhängig vom Regeltyp wird folgendes gefiltert:&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;Der Meldungsinhalt&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Beispiel:&lt;i&gt;&lt;br /&gt;    &quot;*foobar*&quot; filtert alle Meldungen, die &quot;foobar&quot; enthalten, heraus.&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;Der Absenderstring &lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Beispiel&lt;/i&gt;&lt;br /&gt;- &lt;i&gt;*@foobar.com&lt;/i&gt;&quot; filtert alle Absender mit dem Host &lt;i&gt;foobar.com&lt;/i&gt; heraus&lt;br /&gt;- &lt;i&gt;stupid!.+&lt;/i&gt; (RegEx) filtert alles vom Absender mit dem Spitznamen &lt;i&gt;stupid&lt;/i&gt; unabhängig vom Host heraus.&lt;br /&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="89"/>
@@ -3305,17 +3243,17 @@ p, li { white-space: pre-wrap; }
         <translation>Nach Meldung</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="191"/>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="193"/>
         <source>Enabled</source>
         <translation>Einschalten</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="192"/>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="194"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="193"/>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="195"/>
         <source>Ignore Rule</source>
         <translation>Ignorier-Regel</translation>
     </message>
@@ -3329,16 +3267,16 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="34"/>
-        <source>Ignorelist</source>
-        <translation>Ignorierliste</translation>
+        <source>Ignore List</source>
+        <translation>Ignorieren-Liste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="112"/>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="128"/>
         <source>Rule already exists</source>
         <translation>Regel exisitert bereits</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="113"/>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="129"/>
         <source>There is already a rule
 &quot;%1&quot;
 Please choose another rule.</source>
@@ -3522,158 +3460,158 @@ Bitte wähle eine andere Regel.</translation>
 <context>
     <name>IrcServerHandler</name>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="520"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="538"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
         <translation>%1 hat das Thema für %2 geändert zu: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="919"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="937"/>
         <source>No topic is set for %1.</source>
         <translation>Für %1 ist kein Thema gesetzt.</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="934"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="952"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
         <translation>Thema für %1 ist &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="945"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="963"/>
         <source>Topic set by %1 on %2</source>
         <translation>Thema gesetzt von %1 am %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="570"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="577"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="584"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="591"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="588"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="595"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="602"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="609"/>
         <source>%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="626"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="644"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
         <translation>[Whois] %1 ist abwesend: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="632"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="637"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="650"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="655"/>
         <source>%1 is away: &quot;%2&quot;</source>
         <translation>%1 ist abwesend: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="681"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="695"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="729"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="745"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="806"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="838"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="699"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="713"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="747"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="763"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="824"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="856"/>
         <source>[Whois] %1</source>
         <translation>[Whois] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="710"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="712"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="728"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="730"/>
         <source>[Whois] %1 is %2 (%3)</source>
         <translation>[Whois] %1 ist %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="727"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="745"/>
         <source>%1 is online via %2 (%3)</source>
         <translation>%1 ist angemeldet über %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="731"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="1009"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="749"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1027"/>
         <source>[Whowas] %1</source>
         <translation>[Whowas] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="757"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="775"/>
         <source>[Whowas] %1 was %2 (%3)</source>
         <translation>[Whowas] %1 war %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="771"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="789"/>
         <source>[Who] End of /WHO list for %1</source>
         <translation>[Who] Ende der /WHO Liste für %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="791"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="809"/>
         <source>[Whois] %1 is logged in since %2</source>
         <translation>[Whois] %1 ist seit %2 angemeldet</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="793"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="811"/>
         <source>[Whois] %1 is idling for %2 (%3)</source>
         <translation>[Whois] %1 ist seit %2 (%3) inaktiv</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="796"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="814"/>
         <source>[Whois] idle message: %1</source>
         <translation>[Whois] Inaktivmeldung: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="828"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="846"/>
         <source>[Whois] %1 is a user on channels: %2</source>
         <translation>[Whois] %1 ist Benutzer in den Kanälen: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="830"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="848"/>
         <source>[Whois] %1 has voice on channels: %2</source>
         <translation>[Whois] %1 hat Voice in den Kanälen: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="832"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="850"/>
         <source>[Whois] %1 is an operator on channels: %2</source>
         <translation>[Whois] %1 ist Operator in den Kanälen: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="860"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="878"/>
         <source>Channel %1 has %2 users. Topic is: %3</source>
         <translation>Kanal %1 hat %2 Benutzer. Thema ist: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="869"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
         <source>End of channel list</source>
         <translation>Ende der Kanalliste</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
         <source>Homepage for %1 is %2</source>
         <translation>Webseite für %1 ist %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="923"/>
         <source>Channel %1 created on %2</source>
         <translation>Chat %1 wurde am %2 erzeugt</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="968"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="986"/>
         <source>[Who] %1</source>
         <translation>[Who] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1027"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1045"/>
         <source>Nick %1 contains illegal characters</source>
         <translation>Spitzname %1 enthält ungültige Zeichen</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1038"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1056"/>
         <source>Nick already in use: %1</source>
         <translation>Spitzname bereits in Benutzung: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1095"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1145"/>
         <source>No free and valid nicks in nicklist found. use: /nick &lt;othernick&gt; to continue</source>
         <translation>Keine freien und gültigen Spitznamen in Spitznamensliste gefunden. Benutze: /nick &lt;andererSpitzname&gt; zum Fortfahren</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="545"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="563"/>
         <source>Received RPL_ISUPPORT (005) without parameters!</source>
         <translation>RPL_ISUPPORT (005) ohne Parameter erhalten!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="553"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="571"/>
         <source>Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!</source>
         <translation>nicht RFC-konformes RPL_ISUPPORT erhalten: Dies kann unerwartete Auswirkungen haben!</translation>
     </message>
@@ -3746,7 +3684,7 @@ Bitte wähle eine andere Regel.</translation>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="22"/>
         <source>Custom font:</source>
-        <translation>Benutzerdefinierte Schriftart</translation>
+        <translation>Benutzerdefinierte Schriftart:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="25"/>
@@ -3903,232 +3841,224 @@ Bitte wähle eine andere Regel.</translation>
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="777"/>
+        <location filename="../src/qtui/mainwin.cpp" line="780"/>
         <source>Not connected to core.</source>
         <translation>Nicht mit Core verbunden.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="391"/>
+        <location filename="../src/qtui/mainwin.cpp" line="394"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="312"/>
+        <location filename="../src/qtui/mainwin.cpp" line="315"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="707"/>
+        <location filename="../src/qtui/mainwin.cpp" line="710"/>
         <source>Connected to core.</source>
         <translation>Mit Quassel-Core verbunden.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="530"/>
+        <location filename="../src/qtui/mainwin.cpp" line="533"/>
         <source>Nicks</source>
         <translation>Spitznamen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="550"/>
+        <location filename="../src/qtui/mainwin.cpp" line="553"/>
         <source>Chat Monitor</source>
         <translation>Chatmonitor</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="565"/>
+        <location filename="../src/qtui/mainwin.cpp" line="568"/>
         <source>Inputline</source>
         <translation>Eingabezeile</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="585"/>
+        <location filename="../src/qtui/mainwin.cpp" line="588"/>
         <source>Topic</source>
         <translation>Thema</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="340"/>
+        <location filename="../src/qtui/mainwin.cpp" line="343"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="353"/>
+        <location filename="../src/qtui/mainwin.cpp" line="356"/>
         <source>&amp;Networks</source>
         <translation>&amp;Netzwerke</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="376"/>
+        <location filename="../src/qtui/mainwin.cpp" line="379"/>
         <source>&amp;Settings</source>
         <translation>Ein&amp;stellungen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="383"/>
+        <location filename="../src/qtui/mainwin.cpp" line="386"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="281"/>
+        <location filename="../src/qtui/mainwin.cpp" line="284"/>
         <source>&amp;Connect to Core...</source>
         <translation>Zum Core &amp;verbinden...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="283"/>
+        <location filename="../src/qtui/mainwin.cpp" line="286"/>
         <source>&amp;Disconnect from Core</source>
         <translation>Vom Core &amp;trennen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="285"/>
+        <location filename="../src/qtui/mainwin.cpp" line="288"/>
         <source>Core &amp;Info...</source>
         <translation>Core-&amp;Info...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="289"/>
+        <location filename="../src/qtui/mainwin.cpp" line="292"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="290"/>
+        <location filename="../src/qtui/mainwin.cpp" line="293"/>
         <source>Ctrl+Q</source>
         <translation>Strg+Q</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="300"/>
+        <location filename="../src/qtui/mainwin.cpp" line="303"/>
         <source>Show &amp;Search Bar</source>
         <translation>&amp;Suchleiste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="307"/>
+        <location filename="../src/qtui/mainwin.cpp" line="310"/>
         <source>Show Status &amp;Bar</source>
         <translation>St&amp;atusleiste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="311"/>
+        <location filename="../src/qtui/mainwin.cpp" line="314"/>
         <source>&amp;Configure Quassel...</source>
         <translation>Quassel &amp;konfigurieren...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="319"/>
+        <location filename="../src/qtui/mainwin.cpp" line="322"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Debug &amp;NetworkModel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="359"/>
+        <location filename="../src/qtui/mainwin.cpp" line="362"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="539"/>
+        <location filename="../src/qtui/mainwin.cpp" line="542"/>
         <source>Show Nick List</source>
         <translation>Spitznamenliste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="561"/>
+        <location filename="../src/qtui/mainwin.cpp" line="564"/>
         <source>Show Chat Monitor</source>
         <translation>Chatmonitor anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="574"/>
+        <location filename="../src/qtui/mainwin.cpp" line="577"/>
         <source>Show Input Line</source>
         <translation>Eingabezeile anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="597"/>
+        <location filename="../src/qtui/mainwin.cpp" line="600"/>
         <source>Show Topic Line</source>
         <translation>Thema anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="327"/>
+        <location filename="../src/qtui/mainwin.cpp" line="330"/>
         <source>Debug &amp;Log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="323"/>
+        <location filename="../src/qtui/mainwin.cpp" line="326"/>
         <source>Debug &amp;MessageModel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="293"/>
+        <location filename="../src/qtui/mainwin.cpp" line="296"/>
         <source>&amp;Configure Chat Lists...</source>
         <translation>Chat-Listen &amp;konfigurieren...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="315"/>
+        <location filename="../src/qtui/mainwin.cpp" line="318"/>
         <source>&amp;About Quassel</source>
         <translation>&amp;Über Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="317"/>
+        <location filename="../src/qtui/mainwin.cpp" line="320"/>
         <source>About &amp;Qt</source>
         <translation>Ü&amp;ber Qt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="287"/>
+        <location filename="../src/qtui/mainwin.cpp" line="290"/>
         <source>Configure &amp;Networks...</source>
         <translation>&amp;Netzwerke konfigurieren...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="296"/>
+        <location filename="../src/qtui/mainwin.cpp" line="299"/>
         <source>&amp;Lock Layout</source>
         <translation>Ansicht &amp;fixieren</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="302"/>
+        <location filename="../src/qtui/mainwin.cpp" line="305"/>
         <source>Show Away Log</source>
         <translation>Abwesenheitslog anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="304"/>
+        <location filename="../src/qtui/mainwin.cpp" line="307"/>
         <source>Show &amp;Menubar</source>
-        <translation>&amp;Werkzeugleiste anzeigen</translation>
+        <translation>&amp;Menüleiste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="305"/>
+        <location filename="../src/qtui/mainwin.cpp" line="308"/>
         <source>Ctrl+M</source>
         <translation>Strg+M</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="321"/>
+        <location filename="../src/qtui/mainwin.cpp" line="324"/>
         <source>Debug &amp;BufferViewOverlay</source>
         <translation>Fehler beseitigen (&amp;BufferViewOverlay)</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="325"/>
+        <location filename="../src/qtui/mainwin.cpp" line="328"/>
         <source>Debug &amp;HotList</source>
         <translation>Fehler beseitigen (&amp;HotList)</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="329"/>
+        <location filename="../src/qtui/mainwin.cpp" line="332"/>
         <source>Reload Stylesheet</source>
         <translation>Layoutdatei neu laden</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="333"/>
+        <location filename="../src/qtui/mainwin.cpp" line="336"/>
         <source>Jump to hot chat</source>
         <translation>Zum neusten Chat springen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="360"/>
+        <location filename="../src/qtui/mainwin.cpp" line="363"/>
         <source>&amp;Chat Lists</source>
         <translation>&amp;Chat-Listen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="362"/>
+        <location filename="../src/qtui/mainwin.cpp" line="365"/>
         <source>&amp;Toolbars</source>
         <translation>&amp;Werkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="668"/>
+        <location filename="../src/qtui/mainwin.cpp" line="671"/>
         <source>Main Toolbar</source>
-        <translation>Haupt-Werkzeugleiste</translation>
+        <translation>Hauptwerkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="741"/>
+        <location filename="../src/qtui/mainwin.cpp" line="744"/>
         <source>Core Lag: %1</source>
         <translation>Latenz: %1</translation>
-    </message>
-</context>
-<context>
-    <name>Message</name>
-    <message>
-        <location filename="../src/common/message.h" line="71"/>
-        <source>Day changed to %1</source>
-        <translation>Ein neuer Tag beginnt: %1</translation>
     </message>
 </context>
 <context>
@@ -4273,7 +4203,7 @@ Bitte wähle eine andere Regel.</translation>
 <context>
     <name>NetworkModelController</name>
     <message numerus="yes">
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="152"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="154"/>
         <source>Do you want to delete the following buffer(s) permanently?</source>
         <translation>
             <numerusform>Wollen Sie diesen Chat wirklich permanent löschen?</numerusform>
@@ -4281,17 +4211,17 @@ Bitte wähle eine andere Regel.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="157"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="159"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; This will delete all related data, including all backlog data, from the core&apos;s database and cannot be undone.</source>
         <translation>&lt;b&gt;Achtung:&lt;/b&gt; Diese Aktion wird alle betroffenen Daten, einschließlich des Verlaufes, vom Core entfernen. Kann nich rückgängig gemacht werden.</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="159"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="161"/>
         <source>&lt;br&gt;Active channel buffers cannot be deleted, please part the channel first.</source>
         <translation>&lt;br&gt;Aktive Chats können nicht gelöscht werden. Bitte den Kanal erst verlassen.</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="161"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="163"/>
         <source>Remove buffers permanently?</source>
         <translation>Verläufe permanent löschen?</translation>
     </message>
@@ -4299,17 +4229,17 @@ Bitte wähle eine andere Regel.</translation>
 <context>
     <name>NetworkModelController::JoinDlg</name>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="423"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="472"/>
         <source>Join Channel</source>
-        <translation>Kanal beitreten</translation>
+        <translation>Kanal betreten</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="426"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="475"/>
         <source>Network:</source>
         <translation>Netzwerk:</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="428"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="477"/>
         <source>Channel:</source>
         <translation>Kanal:</translation>
     </message>
@@ -4438,7 +4368,7 @@ Bitte wähle eine andere Regel.</translation>
         <source>Specify a list of IRC commands to be executed upon connect.
 Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!</source>
         <translation>Geben Sie eine Liste von IRC-Befehlen an, die beim Verbinden ausgeführt werden.
-Berücksichtigen Sie, dass Quassel IRC Kanälen automatisch erneut beitritt. /join wird hier daher selten benötigt!</translation>
+Berücksichtigen Sie, dass Quassel IRC Kanälen automatisch erneut betritt. /join wird hier daher selten benötigt!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="491"/>
@@ -4543,7 +4473,7 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="464"/>
         <source>Rejoin all channels on reconnect</source>
-        <translation>Allen Kanälen beim Wiederverbinden erneut beitreten</translation>
+        <translation>Allen Kanälen beim Wiederverbinden erneut betreten</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="403"/>
@@ -5169,12 +5099,12 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     <message>
         <location filename="../src/qtui/ui/simplenetworkeditor.ui" line="226"/>
         <source>Join Channels Automatically</source>
-        <translation>Chats automatisch beitreten</translation>
+        <translation>Chats automatisch betreten</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/simplenetworkeditor.ui" line="250"/>
         <source>A list of IRC channels you will join automatically after connecting to the network</source>
-        <translation>Eine Liste von IRC-Kanälen, die Sie automatischen nach dem Verbinden beitreten</translation>
+        <translation>Eine Liste von IRC-Kanälen, die Sie automatischen nach dem Verbinden betreten</translation>
     </message>
 </context>
 <context>
@@ -5274,17 +5204,17 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
 <context>
     <name>SystrayNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="127"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="122"/>
         <source>System Tray Icon</source>
         <translation>Systemleistensymbol</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="128"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="123"/>
         <source>Animate</source>
         <translation>Animieren</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="130"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="125"/>
         <source>Show bubble</source>
         <translation>Sprechblasen anzeigen</translation>
     </message>
@@ -5347,12 +5277,12 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="35"/>
         <source>Join</source>
-        <translation>Beitreten</translation>
+        <translation>Betreten</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="35"/>
         <source>Join a channel</source>
-        <translation>Kanal beitreten</translation>
+        <translation>Kanal betreten</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="37"/>
@@ -5478,7 +5408,7 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     <message>
         <location filename="../src/qtui/settingspages/topicwidgetsettingspage.cpp" line="23"/>
         <source>Topic Widget</source>
-        <translation type="unfinished">Themenanzeige</translation>
+        <translation>Themenanzeige</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="14"/>
@@ -5503,7 +5433,7 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     <message>
         <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="50"/>
         <source>Resize dynamically to fit contents</source>
-        <translation type="unfinished">Automatisch dem Inhalt anpassen</translation>
+        <translation>Automatisch dem Inhalt anpassen</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="56"/>
@@ -5562,12 +5492,12 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <location filename="../src/uisupport/uistyle.cpp" line="571"/>
         <source>You are now known as %DN%1%DN</source>
         <extracomment>Nick Message</extracomment>
-        <translation>Sie sind jetzt bekannt unter dem Namen %DN%1%DN</translation>
+        <translation>Sie heißen jetzt %DN%1%DN</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="572"/>
         <source>%DN%1%DN is now known as %DN%2%DN</source>
-        <translation>%DN%1%DN ist jetzt bekannt unter dem Namen %DN%2%DN</translation>
+        <translation>%DN%1%DN heißt jetzt %DN%2%DN</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="576"/>
@@ -5608,7 +5538,7 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <location filename="../src/uisupport/uistyle.cpp" line="613"/>
         <source>{Day changed to %1}</source>
         <extracomment>Day Change Message</extracomment>
-        <translation>{Ein neuer Tag beginnt %1}</translation>
+        <translation>{Tageswechsel: %1}</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="625"/>
@@ -5705,7 +5635,7 @@ Topic Message</extracomment>
         <source>%n Admin(s)</source>
         <translation>
             <numerusform>%n Admin(s)</numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n Admin(s)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -5721,7 +5651,7 @@ Topic Message</extracomment>
         <source>%n Half-Op(s)</source>
         <translation>
             <numerusform>%n Half-Op(s)</numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n Half-Op(s)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -5729,7 +5659,7 @@ Topic Message</extracomment>
         <source>%n Voiced</source>
         <translation>
             <numerusform>%n Voiced</numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n Voiced</numerusform>
         </translation>
     </message>
     <message numerus="yes">
