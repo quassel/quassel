@@ -18,7 +18,7 @@
    <iconset resource="../../../icons/oxygen.qrc">
     <normaloff>:/icons/oxygen/16x16/actions/configure.png</normaloff>:/icons/oxygen/16x16/actions/configure.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
@@ -34,7 +34,7 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
        <property name="title">
         <string>Strictness</string>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QRadioButton" name="dynamicStrictnessButton">
           <property name="text">
@@ -65,7 +65,7 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
        <property name="title">
         <string>Rule Type</string>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <widget class="QRadioButton" name="senderTypeButton">
           <property name="text">
@@ -121,7 +121,7 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
 ?: representing &quot;exactly one character&quot;&lt;/p&gt;</string>
           </property>
           <property name="text">
-           <string>Use Regular Expressions</string>
+           <string>Regular expression</string>
           </property>
          </widget>
         </item>
@@ -144,9 +144,9 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
      <property name="title">
       <string>Scope</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QRadioButton" name="globalScopeButton">
           <property name="text">
@@ -154,13 +154,13 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
           </property>
          </widget>
         </item>
-        <item>
+       <item>
          <widget class="QRadioButton" name="networkScopeButton">
           <property name="text">
            <string>Network</string>
           </property>
          </widget>
-        </item>
+       </item>
         <item>
          <widget class="QRadioButton" name="channelScopeButton">
           <property name="text">

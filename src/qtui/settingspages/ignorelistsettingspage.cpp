@@ -207,6 +207,8 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
   ui.setupUi(this);
   setAttribute(Qt::WA_DeleteOnClose, false);
   setModal(true);
+  // FIXME patch out the bugger completely if it's good without it
+  ui.isActiveCheckBox->hide();
 
   // setup buttongroups
   // this could be moved to .ui file with qt4.5
