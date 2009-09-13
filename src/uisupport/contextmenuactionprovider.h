@@ -71,6 +71,7 @@ private:
   Action *_nickCtcpMenuAction;
   Action *_nickModeMenuAction;
   Action *_nickIgnoreMenuAction;
+  QList<QAction *> _ignoreDescriptions;
 };
 
 #endif

@@ -108,7 +108,11 @@ void IgnoreListSettingsPage::deleteSelectedIgnoreRule() {
 
 void IgnoreListSettingsPage::newIgnoreRule(QString rule) {
   IgnoreListManager::IgnoreListItem newItem = IgnoreListManager::IgnoreListItem();
+  newItem.strictness = IgnoreListManager::SoftStrictness;
+  newItem.scope = IgnoreListManager::GlobalScope;
+  newItem.isRegEx = false;
   newItem.isActive = true;
+
   bool enableOkButton = false;
   if(!rule.isEmpty()) {
     // we're called from contextmenu
@@ -118,7 +122,6 @@ void IgnoreListSettingsPage::newIgnoreRule(QString rule) {
 
   IgnoreListEditDlg *dlg = new IgnoreListEditDlg(newItem, this, enableOkButton);
   dlg->enableOkButton(enableOkButton);
-
   while(dlg->exec() == QDialog::Accepted) {
     if(!_ignoreListModel.newIgnoreRule(dlg->ignoreListItem())) {
       if(QMessageBox::warning(this,
@@ -260,6 +263,7 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
   connect(ui.isActiveCheckBox, SIGNAL(stateChanged(int)), this, SLOT(widgetHasChanged()));
 
   connect(ui.buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(aboutToAccept()));
+  widgetHasChanged();
 }
 
 void IgnoreListEditDlg::widgetHasChanged() {

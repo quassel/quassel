@@ -125,6 +125,13 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   QMenu *ignoreMenu = new QMenu();
   _nickIgnoreMenuAction = new Action(tr("Ignore"), 0);
   _nickIgnoreMenuAction->setMenu(ignoreMenu);
+
+  // These are disabled actions used as descriptions
+  // They don't need any of the Action fancyness so we use plain QActions
+  _ignoreDescriptions << new QAction(tr("Add Ignore Rule"), this);
+  _ignoreDescriptions << new QAction(tr("Existing Rules"), this);
+  foreach(QAction *act, _ignoreDescriptions)
+    act->setEnabled(false);
 }
 
 ContextMenuActionProvider::~ContextMenuActionProvider() {
@@ -136,6 +143,8 @@ ContextMenuActionProvider::~ContextMenuActionProvider() {
   _nickModeMenuAction->deleteLater();
   _nickIgnoreMenuAction->menu()->deleteLater();
   _nickIgnoreMenuAction->deleteLater();
+  qDeleteAll(_ignoreDescriptions);
+  _ignoreDescriptions.clear();
 }
 
 void ContextMenuActionProvider::addActions(QMenu *menu, BufferId bufId, QObject *receiver, const char *method) {
@@ -398,35 +407,50 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
   // if we don't have the data, we skip actions where we would need it
   bool haveWhoData = !ident.isEmpty() && !host.isEmpty();
 
-
-  ignoreMenu->addAction(tr("Add Ignore Rule"))->setEnabled(false);
+  // add "Add Ignore Rule" description
+  ignoreMenu->addAction(_ignoreDescriptions.at(0));
 
   if(haveWhoData) {
-    action(NickIgnoreUser)->setText(QString("*!%1@%2").arg(ident, host));
-    action(NickIgnoreHost)->setText(QString("*!*@%1").arg(host));
-    action(NickIgnoreDomain)->setText(domain.at(0) == '.' ? QString("*!%1@*%2").arg(ident, domain)
-                                      : QString("*!%1@%2").arg(ident, domain));
+    QString text;
+    text = QString("*!%1@%2").arg(ident, host);
+    action(NickIgnoreUser)->setText(text);
+    action(NickIgnoreUser)->setProperty("ignoreRule", text);
 
-    if(!ignoreMap.contains(action(NickIgnoreUser)->text()))
+    text = QString("*!*@%1").arg(host);
+    action(NickIgnoreHost)->setText(text);
+    action(NickIgnoreHost)->setProperty("ignoreRule", text);
+
+    text = domain.at(0) == '.' ? QString("*!%1@*%2").arg(ident, domain)
+                               : QString("*!%1@%2").arg(ident, domain);
+
+    action(NickIgnoreDomain)->setText(text);
+    action(NickIgnoreDomain)->setProperty("ignoreRule", text);
+
+    if(!ignoreMap.contains(action(NickIgnoreUser)->property("ignoreRule").toString()))
       ignoreMenu->addAction(action(NickIgnoreUser));
-    if(!ignoreMap.contains(action(NickIgnoreHost)->text()))
+    if(!ignoreMap.contains(action(NickIgnoreHost)->property("ignoreRule").toString()))
       ignoreMenu->addAction(action(NickIgnoreHost));
-    if(!ignoreMap.contains(action(NickIgnoreDomain)->text()))
+    if(!ignoreMap.contains(action(NickIgnoreDomain)->property("ignoreRule").toString()))
       ignoreMenu->addAction(action(NickIgnoreDomain));
   }
+
+  action(NickIgnoreCustom)->setProperty("ignoreRule", hostmask);
   ignoreMenu->addAction(action(NickIgnoreCustom));
+
   ignoreMenu->addSeparator();
 
   if(haveWhoData) {
     QMap<QString, bool>::const_iterator ruleIter = ignoreMap.begin();
     int counter = 0;
     if(!ignoreMap.isEmpty())
-      ignoreMenu->addAction(tr("Existing Rules"))->setEnabled(false);
+      // add "Existing Rules" description
+      ignoreMenu->addAction(_ignoreDescriptions.at(1));
     while(ruleIter != ignoreMap.constEnd()) {
       if(counter < 5) {
         ActionType type = static_cast<ActionType>(NickIgnoreToggleEnabled0 + counter*0x100000);
         Action *act = action(type);
         act->setText(ruleIter.key());
+        act->setProperty("ignoreRule", ruleIter.key());
         act->setChecked(ruleIter.value());
         ignoreMenu->addAction(act);
       }
