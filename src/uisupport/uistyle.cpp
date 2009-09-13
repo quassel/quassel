@@ -616,7 +616,7 @@ void UiStyle::StyledMessage::style() const {
       //: Topic Message
       t = tr("%1").arg(txt); break;
     case Message::NetsplitJoin: {
-      QStringList users = txt.split(":");
+      QStringList users = txt.split("#:#");
       QStringList servers = users.takeLast().split(" ");
 
       for(int i = 0; i < users.count() && i < maxNetsplitNicks; i++)
@@ -630,7 +630,7 @@ void UiStyle::StyledMessage::style() const {
       }
       break;
     case Message::NetsplitQuit: {
-      QStringList users = txt.split(":");
+      QStringList users = txt.split("#:#");
       QStringList servers = users.takeLast().split(" ");
 
       for(int i = 0; i < users.count() && i < maxNetsplitNicks; i++)

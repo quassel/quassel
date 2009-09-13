@@ -39,6 +39,8 @@ IrcServerHandler::IrcServerHandler(CoreNetwork *parent)
 }
 
 IrcServerHandler::~IrcServerHandler() {
+  if(!_netsplits.empty())
+    qDeleteAll(_netsplits);
 }
 
 /*! Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
@@ -263,8 +265,20 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
         // user channel modes (op, voice, etc...)
         if(paramOffset < params.count()) {
           IrcUser *ircUser = network()->ircUser(params[paramOffset]);
-          if(add)
-            channel->addUserMode(ircUser, QString(modes[c]));
+          if(add) {
+            bool handledByNetsplit = false;
+            if(!_netsplits.empty()) {
+              foreach(Netsplit* n, _netsplits) {
+                handledByNetsplit = n->userAlreadyJoined(ircUser->hostmask(), channel->name());
+                if(handledByNetsplit) {
+                  n->addMode(ircUser->hostmask(), channel->name(), QString(modes[c]));
+                  break;
+                }
+              }
+            }
+            if(!handledByNetsplit)
+              channel->addUserMode(ircUser, QString(modes[c]));
+          }
           else
             channel->removeUserMode(ircUser, QString(modes[c]));
         } else {
@@ -481,8 +495,12 @@ void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray>
     if(!_netsplits.contains(msg)) {
       n = new Netsplit();
       connect(n, SIGNAL(finished()), this, SLOT(handleNetsplitFinished()));
-      connect(n, SIGNAL(netsplitJoin(QString,QStringList,QString)), this, SLOT(handleNetsplitJoin(QString,QStringList,QString)));
-      connect(n, SIGNAL(netsplitQuit(QString,QStringList,QString)), this, SLOT(handleNetsplitQuit(QString,QStringList,QString)));
+      connect(n, SIGNAL(netsplitJoin(const QString&, const QStringList&, const QStringList&, const QString&)),
+              this, SLOT(handleNetsplitJoin(const QString&, const QStringList&, const QStringList&, const QString&)));
+      connect(n, SIGNAL(netsplitQuit(const QString&, const QStringList&, const QString&)),
+              this, SLOT(handleNetsplitQuit(const QString&, const QStringList&, const QString&)));
+      connect(n, SIGNAL(earlyJoin(const QString&, const QStringList&, const QStringList&)),
+              this, SLOT(handleEarlyNetsplitJoin(const QString&, const QStringList&, const QStringList&)));
       _netsplits.insert(msg, n);
     }
     else {
@@ -1047,21 +1065,32 @@ void IrcServerHandler::handle433(const QString &prefix, const QList<QByteArray> 
 
 /* Handle signals from Netsplit objects  */
 
-void IrcServerHandler::handleNetsplitJoin(const QString &channel, const QStringList &users, const QString& quitMessage)
+void IrcServerHandler::handleNetsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes, const QString& quitMessage)
 {
-  QString msg = users.join(":").append(':').append(quitMessage);
-  emit displayMsg(Message::NetsplitJoin, BufferInfo::ChannelBuffer, channel, msg);
+  IrcChannel *ircChannel = network()->ircChannel(channel);
+  if(!ircChannel) {
+    return;
+  }
+  QList<IrcUser *> ircUsers;
+  QStringList newModes = modes;
 
   foreach(QString user, users) {
-    IrcUser *iu = network()->ircUser(nickFromMask(user));
+    IrcUser *iu = network()->updateNickFromMask(user);
     if(iu)
-      iu->joinChannel(channel);
+      ircUsers.append(iu);
+    else {
+      newModes.removeAt(users.indexOf(user));
+    }
   }
+
+  QString msg = users.join("#:#").append("#:#").append(quitMessage);
+  emit displayMsg(Message::NetsplitJoin, BufferInfo::ChannelBuffer, channel, msg);
+  ircChannel->joinIrcUsers(ircUsers, newModes);
 }
 
 void IrcServerHandler::handleNetsplitQuit(const QString &channel, const QStringList &users, const QString& quitMessage)
 {
-  QString msg = users.join(":").append(':').append(quitMessage);
+  QString msg = users.join("#:#").append("#:#").append(quitMessage);
   emit displayMsg(Message::NetsplitQuit, BufferInfo::ChannelBuffer, channel, msg);
   foreach(QString user, users) {
     IrcUser *iu = network()->ircUser(nickFromMask(user));
@@ -1070,6 +1099,27 @@ void IrcServerHandler::handleNetsplitQuit(const QString &channel, const QStringL
   }
 }
 
+void IrcServerHandler::handleEarlyNetsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes) {
+  IrcChannel *ircChannel = network()->ircChannel(channel);
+  if(!ircChannel) {
+    qDebug() << "handleEarlyNetsplitJoin(): channel " << channel << " invalid";
+    return;
+  }
+  QList<IrcUser *> ircUsers;
+  QStringList newModes = modes;
+
+  foreach(QString user, users) {
+    IrcUser *iu = network()->updateNickFromMask(user);
+    if(iu) {
+      ircUsers.append(iu);
+      emit displayMsg(Message::Join, BufferInfo::ChannelBuffer, channel, channel, user);
+    }
+    else {
+      newModes.removeAt(users.indexOf(user));
+    }
+  }
+  ircChannel->joinIrcUsers(ircUsers, newModes);
+}
 void IrcServerHandler::handleNetsplitFinished()
 {
   Netsplit* n = qobject_cast<Netsplit*>(sender());
