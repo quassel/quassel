@@ -86,9 +86,19 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AliasesModel</name>
     <message>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="55"/>
+        <source>&lt;b&gt;The shortcut for the alias&lt;/b&gt;&lt;br /&gt;It can be used as a regular slash command.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Example:&lt;/b&gt; &quot;foo&quot; can be used per /foo</source>
+        <translation>&lt;b&gt;Zkratka pro alternativu&lt;/b&gt;&lt;br /&gt;Lze ji použít jako běžný lomítkový příkaz.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Příklad:&lt;/b&gt; &quot;foo&quot; lze zavolat pomocí /foo</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="59"/>
+        <source>&lt;b&gt;The string the shortcut will be expanded to&lt;/b&gt;&lt;br /&gt;&lt;b&gt;special variables:&lt;/b&gt;&lt;br /&gt; - &lt;b&gt;$i&lt;/b&gt; represents the i&apos;th parameter.&lt;br /&gt; - &lt;b&gt;$i..j&lt;/b&gt; represents the i&apos;th to j&apos;th parameter separated by spaces.&lt;br /&gt; - &lt;b&gt;$i..&lt;/b&gt; represents all parameters from i on separated by spaces.&lt;br /&gt; - &lt;b&gt;$i:hostname&lt;/b&gt; represents the hostname of the user identified by the i&apos;th parameter or a * if unknown.&lt;br /&gt; - &lt;b&gt;$0&lt;/b&gt; the whole string.&lt;br /&gt; - &lt;b&gt;$nick&lt;/b&gt; your current nickname&lt;br /&gt; - &lt;b&gt;$channel&lt;/b&gt; the name of the selected channel&lt;br /&gt;&lt;br /&gt;Multiple commands can be separated with semicolons&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Example:&lt;/b&gt; &quot;Test $1; Test $2; Test All $0&quot; will be expanded to three separate messages &quot;Test 1&quot;, &quot;Test 2&quot; and &quot;Test All 1 2 3&quot; when called like /test 1 2 3</source>
+        <translation>&lt;b&gt;Text na jaký bude převedena zkratka&lt;/b&gt;&lt;br /&gt;&lt;b&gt;Speciální hodnoty:&lt;/b&gt;&lt;br /&gt; - &lt;b&gt;$i&lt;/b&gt; reprezentuje i-tý parametr.&lt;br /&gt; - &lt;b&gt;$i..j&lt;/b&gt; reprezentuje i-tý až j-tý parametr oddělený mezerami.&lt;br /&gt; - &lt;b&gt;$i..&lt;/b&gt; reprezentuje všechny parametry od i-tého, oddělené mezerami.&lt;br /&gt; - &lt;b&gt;$i:hostname&lt;/b&gt; reprezentuje název počítače uživatele identifikovaného i-tým parametrem nebo * pokud je neznámý.&lt;br /&gt; - &lt;b&gt;$0&lt;/b&gt; celý text.&lt;br /&gt; - &lt;b&gt;$nick&lt;/b&gt; vaše současná přezdívka&lt;br /&gt; - &lt;b&gt;$channel&lt;/b&gt; název vybraného kanálu&lt;br /&gt;&lt;br /&gt;Oddělení více příkazů je umožněno pomocí středníku&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Příklad:&lt;/b&gt; &quot;Test $1; Test $2; Test All $0&quot; bude interpretováno jako &quot;Test 1&quot;, &quot;Test 2&quot; and &quot;Test All 1 2 3&quot; when called like /test 1 2 3</translation>
+    </message>
+    <message>
         <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="170"/>
         <source>Alias</source>
-        <translation>Zkratka</translation>
+        <translation>Alternativa</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="171"/>
@@ -101,7 +111,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/aliasessettingspage.cpp" line="29"/>
         <source>Aliases</source>
-        <translation>Zkratky</translation>
+        <translation>Alternativy</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/aliasessettingspage.cpp" line="29"/>
@@ -1173,8 +1183,13 @@ p, li { white-space: pre-wrap; }
         <translation>Přihlašuji...</translation>
     </message>
     <message>
-        <location filename="../src/client/clientsyncer.cpp" line="382"/>
-        <location filename="../src/client/clientsyncer.cpp" line="407"/>
+        <location filename="../src/client/clientsyncer.cpp" line="360"/>
+        <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
+        <translation>&lt;b&gt;Verze jádra %1&lt;/b&gt;&lt;br&gt;Sestavení: %2&lt;br&gt;Doba běhu %3d%4h%5m (od %6)</translation>
+    </message>
+    <message>
+        <location filename="../src/client/clientsyncer.cpp" line="404"/>
+        <location filename="../src/client/clientsyncer.cpp" line="429"/>
         <source>Cert Digest changed! was: %1</source>
         <translation>Kontrolní součet certifikatu se zmenil! byl: %1</translation>
     </message>
@@ -1543,8 +1558,8 @@ moho fungovat.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="508"/>
-        <location filename="../src/core/core.cpp" line="591"/>
-        <location filename="../src/core/core.cpp" line="615"/>
+        <location filename="../src/core/core.cpp" line="596"/>
+        <location filename="../src/core/core.cpp" line="620"/>
         <source>Client</source>
         <translation>Klient</translation>
     </message>
@@ -1554,52 +1569,52 @@ moho fungovat.</translation>
         <translation>příliš staré, odmítám.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="520"/>
+        <location filename="../src/core/core.cpp" line="525"/>
         <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
         <translation>&lt;b&gt;Verze jádra %1&lt;/b&gt;&lt;br&gt;Sestavení: %2&lt;br&gt;Doba běhu %3d%4h%5m (od %6)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="571"/>
+        <location filename="../src/core/core.cpp" line="576"/>
         <source>Starting TLS for Client:</source>
         <translation>Zahajuji TLS pro klienta:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="589"/>
+        <location filename="../src/core/core.cpp" line="594"/>
         <source>&lt;b&gt;Client not initialized!&lt;/b&gt;&lt;br&gt;You need to send an init message before trying to login.</source>
         <translation>&lt;b&gt;Klient není inicializován!&lt;/b&gt;&lt;br&gt;Musíte poslat inicializační zprávu před pokusem o přihlášení.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="591"/>
+        <location filename="../src/core/core.cpp" line="596"/>
         <source>did not send an init message before trying to login, rejecting.</source>
         <translation>neodeslána inicializační zpráva před pokusem o přihlášení, odmítám.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="609"/>
+        <location filename="../src/core/core.cpp" line="614"/>
         <source>&lt;b&gt;Invalid username or password!&lt;/b&gt;&lt;br&gt;The username/password combination you supplied could not be found in the database.</source>
         <translation>&lt;b&gt;Neplatné uživatelské jméno či heslo!&lt;/b&gt;&lt;br&gt;Kombinace uživatelského jména a hesla kterou jste zadali nebyla nalezena v databázi.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="615"/>
+        <location filename="../src/core/core.cpp" line="620"/>
         <source>initialized and authenticated successfully as &quot;%1&quot; (UserId: %2).</source>
         <translation>inicializováno a autentifikován jako &quot;%1&quot; (UživId: %2).</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="626"/>
+        <location filename="../src/core/core.cpp" line="631"/>
         <source>Non-authed client disconnected.</source>
         <translation>Neautorizovaný klient odpojen.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="632"/>
+        <location filename="../src/core/core.cpp" line="637"/>
         <source>Non-authed client disconnected. (socket allready destroyed)</source>
         <translation>Neautorizovaný klient odpojen. (socket je již zničen)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="680"/>
+        <location filename="../src/core/core.cpp" line="685"/>
         <source>Could not initialize session for client:</source>
         <translation>Nezdařilo se zahájit sezení pro klienta:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="702"/>
+        <location filename="../src/core/core.cpp" line="707"/>
         <source>Could not find a session for client:</source>
         <translation>Nepodařilo se nalézt sezení pro klienta:</translation>
     </message>
@@ -1946,53 +1961,53 @@ Pokud některou z těchto činností potřebujete provést vyzkoušejte skript m
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="392"/>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="450"/>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="286"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="263"/>
         <source>Login</source>
         <translation>Přihlášení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="19"/>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="53"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="20"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="46"/>
         <source>Connect to Quassel Core</source>
         <translation>Připojit ke Quassel jádru</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="68"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="61"/>
         <source>Edit...</source>
         <translation>Upravit...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="79"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="72"/>
         <source>Add...</source>
         <translation>Přidat...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="90"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="83"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="114"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="107"/>
         <source>Use internal core</source>
         <translation>Použít interní jádro</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="128"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="121"/>
         <source>Always use this account</source>
         <translation>Vždy používat tento účet</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="165"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="150"/>
         <source>Initializing your connection</source>
         <translation>Inicializuji Vaše spojení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="183"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="168"/>
         <source>Connected to apollo.mindpool.net.</source>
         <translation>Připojeno k apollo.mindpool.net.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="215"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="200"/>
         <source>THIS IS A PLACEHOLDER
 TO
 RESERVE
@@ -2000,72 +2015,72 @@ SOME SPACE</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="294"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="271"/>
         <source>User:</source>
         <translation>Uživatel:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="308"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="285"/>
         <source>Password:</source>
         <translation>Heslo:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="322"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="299"/>
         <source>Remember</source>
         <translation>Pamatovat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="356"/>
-        <source>view SSL Certificate</source>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="333"/>
+        <source>View SSL Certificate</source>
         <translation>Zobrazit SSL Certifikát</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="393"/>
-        <source>add to known hosts</source>
-        <translation>Přidat mezi důvěryhodné</translation>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="370"/>
+        <source>Add to known hosts</source>
+        <translation>Přidat mezi známé počítače</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="413"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="390"/>
         <source>Continue connection</source>
         <translation>Pokračovate ve spojení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="456"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="425"/>
         <source>Configure your Quassel Core</source>
         <translation>Nastavit Quassel jádro</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="462"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="431"/>
         <source>The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core.</source>
         <translation>Jádro ke kterému jste připojeni ještě není nastaveno. Měli byste spustit konfiguračního průvodce který vám pomůže jej nastavit.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="490"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="459"/>
         <source>Launch Wizard</source>
         <translation>Spustit průvodce</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="553"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="505"/>
         <source>Initializing your session...</source>
         <translation>Aktivuji vaše sezení...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="561"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="513"/>
         <source>&lt;b&gt;Please be patient while your client synchronizes with the Quassel Core!&lt;/b&gt;</source>
         <translation>&lt;b&gt;Prosím počkejte dokud se klient nesynchronizuje s jádrem!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="576"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="528"/>
         <source>Session state:</source>
         <translation>Stav sezení:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="593"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="545"/>
         <source>Network states:</source>
         <translation>Stavy sítě:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="606"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="558"/>
         <source>0/0</source>
         <translation></translation>
     </message>
@@ -2459,7 +2474,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="29"/>
         <source>Hide to tray on close button</source>
-        <translation>Zkrýt do systémové části panelu při zavření</translation>
+        <translation>Skrýt do systémové části panelu při zavření</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="39"/>
@@ -3811,232 +3826,224 @@ Prosím vyberte jiné pravidlo.
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="281"/>
+        <location filename="../src/qtui/mainwin.cpp" line="283"/>
         <source>&amp;Connect to Core...</source>
         <translation>Přip&amp;ojit k jádru...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="283"/>
+        <location filename="../src/qtui/mainwin.cpp" line="285"/>
         <source>&amp;Disconnect from Core</source>
         <translation>O&amp;dpojit od jádra</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="285"/>
+        <location filename="../src/qtui/mainwin.cpp" line="287"/>
         <source>Core &amp;Info...</source>
         <translation>&amp;Informace jádra...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="289"/>
+        <location filename="../src/qtui/mainwin.cpp" line="291"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="290"/>
+        <location filename="../src/qtui/mainwin.cpp" line="292"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="293"/>
+        <location filename="../src/qtui/mainwin.cpp" line="295"/>
         <source>&amp;Configure Chat Lists...</source>
         <translation>&amp;Nastavit seznam pokeců...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="300"/>
+        <location filename="../src/qtui/mainwin.cpp" line="302"/>
         <source>Show &amp;Search Bar</source>
         <translation>Zobrazit vy&amp;hledávání</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="287"/>
+        <location filename="../src/qtui/mainwin.cpp" line="289"/>
         <source>Configure &amp;Networks...</source>
         <translation>Nastavit &amp;sítě...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="296"/>
+        <location filename="../src/qtui/mainwin.cpp" line="298"/>
         <source>&amp;Lock Layout</source>
         <translation>U&amp;zamknout rozvržení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="302"/>
+        <location filename="../src/qtui/mainwin.cpp" line="304"/>
         <source>Show Away Log</source>
         <translation>Zobrazit Log pro Pryč</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="304"/>
+        <location filename="../src/qtui/mainwin.cpp" line="306"/>
         <source>Show &amp;Menubar</source>
         <translation>Zobrazit Hlavní &amp;nabídku</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="305"/>
+        <location filename="../src/qtui/mainwin.cpp" line="307"/>
         <source>Ctrl+M</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="307"/>
+        <location filename="../src/qtui/mainwin.cpp" line="309"/>
         <source>Show Status &amp;Bar</source>
         <translation>Zo&amp;brazit stavový řádek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="311"/>
+        <location filename="../src/qtui/mainwin.cpp" line="313"/>
         <source>&amp;Configure Quassel...</source>
         <translation>&amp;Nastavit Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="312"/>
+        <location filename="../src/qtui/mainwin.cpp" line="314"/>
         <source>F7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="315"/>
+        <location filename="../src/qtui/mainwin.cpp" line="317"/>
         <source>&amp;About Quassel</source>
         <translation>O progr&amp;amu Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="317"/>
+        <location filename="../src/qtui/mainwin.cpp" line="319"/>
         <source>About &amp;Qt</source>
         <translation>O &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="319"/>
+        <location filename="../src/qtui/mainwin.cpp" line="321"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Ladění Sít&amp;ovéhoModelu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="321"/>
+        <location filename="../src/qtui/mainwin.cpp" line="323"/>
         <source>Debug &amp;BufferViewOverlay</source>
         <translation>Ladění vrstvy P&amp;ohledu na záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="323"/>
+        <location filename="../src/qtui/mainwin.cpp" line="325"/>
         <source>Debug &amp;MessageModel</source>
         <translation>Ladění &amp;ModeluZpráv</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="325"/>
+        <location filename="../src/qtui/mainwin.cpp" line="327"/>
         <source>Debug &amp;HotList</source>
         <translation>Ladění &amp;Seznamů rozhovorů</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="327"/>
+        <location filename="../src/qtui/mainwin.cpp" line="329"/>
         <source>Debug &amp;Log</source>
         <translation>Ladící &amp;Log</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="329"/>
+        <location filename="../src/qtui/mainwin.cpp" line="331"/>
         <source>Reload Stylesheet</source>
         <translation>Přenačíst styl</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="333"/>
+        <location filename="../src/qtui/mainwin.cpp" line="335"/>
         <source>Jump to hot chat</source>
         <translation>Přejít na další aktivní záložku</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="340"/>
+        <location filename="../src/qtui/mainwin.cpp" line="342"/>
         <source>&amp;File</source>
         <translation>S&amp;oubor</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="353"/>
+        <location filename="../src/qtui/mainwin.cpp" line="355"/>
         <source>&amp;Networks</source>
         <translation>&amp;Sítě</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="359"/>
+        <location filename="../src/qtui/mainwin.cpp" line="361"/>
         <source>&amp;View</source>
         <translation>&amp;Záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="360"/>
+        <location filename="../src/qtui/mainwin.cpp" line="362"/>
         <source>&amp;Chat Lists</source>
         <translation>&amp;Seznam pokeců</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="362"/>
+        <location filename="../src/qtui/mainwin.cpp" line="364"/>
         <source>&amp;Toolbars</source>
         <translation>Liš&amp;ty</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="376"/>
+        <location filename="../src/qtui/mainwin.cpp" line="378"/>
         <source>&amp;Settings</source>
         <translation>Na&amp;stavení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="383"/>
+        <location filename="../src/qtui/mainwin.cpp" line="385"/>
         <source>&amp;Help</source>
         <translation>&amp;Nápověda</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="391"/>
+        <location filename="../src/qtui/mainwin.cpp" line="393"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="530"/>
+        <location filename="../src/qtui/mainwin.cpp" line="532"/>
         <source>Nicks</source>
         <translation>Přezdívky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="539"/>
+        <location filename="../src/qtui/mainwin.cpp" line="541"/>
         <source>Show Nick List</source>
         <translation>Zobrazit seznam přezdívek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="550"/>
+        <location filename="../src/qtui/mainwin.cpp" line="552"/>
         <source>Chat Monitor</source>
         <translation>Monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="561"/>
+        <location filename="../src/qtui/mainwin.cpp" line="563"/>
         <source>Show Chat Monitor</source>
         <translation>Zobrazí monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="565"/>
+        <location filename="../src/qtui/mainwin.cpp" line="567"/>
         <source>Inputline</source>
         <translation>Vstupní řádka</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="574"/>
+        <location filename="../src/qtui/mainwin.cpp" line="576"/>
         <source>Show Input Line</source>
         <translation>Zobrasit řádku se vstupem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="585"/>
+        <location filename="../src/qtui/mainwin.cpp" line="587"/>
         <source>Topic</source>
         <translation>Téma</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="597"/>
+        <location filename="../src/qtui/mainwin.cpp" line="599"/>
         <source>Show Topic Line</source>
         <translation>Zobrazit řádek s tématem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="668"/>
+        <location filename="../src/qtui/mainwin.cpp" line="670"/>
         <source>Main Toolbar</source>
         <translation>Hlavní nástrojová lišta</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="707"/>
+        <location filename="../src/qtui/mainwin.cpp" line="709"/>
         <source>Connected to core.</source>
         <translation>Připojen k jádru.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="741"/>
+        <location filename="../src/qtui/mainwin.cpp" line="743"/>
         <source>Core Lag: %1</source>
         <translation>Zpoždění jádra: %1</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="777"/>
+        <location filename="../src/qtui/mainwin.cpp" line="779"/>
         <source>Not connected to core.</source>
         <translation>Nepřipojen k jádru.</translation>
-    </message>
-</context>
-<context>
-    <name>Message</name>
-    <message>
-        <location filename="../src/common/message.h" line="71"/>
-        <source>Day changed to %1</source>
-        <translation>A dnes máme: %1</translation>
     </message>
 </context>
 <context>
@@ -4193,7 +4200,7 @@ Prosím vyberte jiné pravidlo.
     <message>
         <location filename="../src/uisupport/networkmodelcontroller.cpp" line="157"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; This will delete all related data, including all backlog data, from the core&apos;s database and cannot be undone.</source>
-        <translation>&lt;b&gt;Poznámka:&lt;/b&gt; Tento krop smaže všechna relevantí data, včetně historie, z databáze jádra a nelze jej zvrátit.</translation>
+        <translation>&lt;b&gt;Poznámka:&lt;/b&gt; Tento krok smaže všechna relevantí data, včetně historie, z databáze jádra a nelze jej zvrátit.</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelcontroller.cpp" line="159"/>
@@ -4621,7 +4628,7 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="266"/>
         <source>Invalid senderhash specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná specifikace hash odesílatele: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="270"/>
@@ -4671,7 +4678,7 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="420"/>
         <source>Unknown ChatLine property: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neznámá vlastnost ChatLine: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="442"/>
@@ -5184,17 +5191,17 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
 <context>
     <name>SystrayNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="127"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="122"/>
         <source>System Tray Icon</source>
         <translation>Ikonka v systémovém panelu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="128"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="123"/>
         <source>Animate</source>
         <translation>Animovat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="130"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="125"/>
         <source>Show bubble</source>
         <translation>Zobrazovat bublinu</translation>
     </message>
