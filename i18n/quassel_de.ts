@@ -3063,11 +3063,6 @@ Fortfahren bedeutet die unverschlüsselte Übertragung Ihres SSL-Schlüssels und
         <translation>Meldung</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="124"/>
-        <source>Use Regular Expressions</source>
-        <translation>Regulärer Ausdruck</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="15"/>
         <source>Configure Ignore Rule</source>
         <translation>Ignorier-Regel konfigurieren</translation>
@@ -3148,6 +3143,11 @@ Immer wenn eine Regel ausgeschalten/gelöscht wird, werden die Meldungen wieder 
 &lt;p&gt; *: entspricht einer beliebigen Anzahl an Zeichen.
 &lt;br /&gt;
  ?: entspricht einem oder keinem Zeichen.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="124"/>
+        <source>Regular expression</source>
+        <translation>Regulärer Ausdruck</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="136"/>
