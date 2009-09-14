@@ -400,7 +400,7 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
   QString ident = userFromMask(hostmask);
   QString host = hostFromMask(hostmask);
   QString domain = host;
-  QRegExp domainRx = QRegExp("(\\.[^.]+\\.\\w+)$");
+  QRegExp domainRx = QRegExp("(\\.[^.]+\\.\\w+\\D)$");
   if(domainRx.indexIn(host) != -1)
     domain = domainRx.cap(1);
   // we can't rely on who-data
@@ -430,7 +430,10 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
       ignoreMenu->addAction(action(NickIgnoreUser));
     if(!ignoreMap.contains(action(NickIgnoreHost)->property("ignoreRule").toString()))
       ignoreMenu->addAction(action(NickIgnoreHost));
-    if(!ignoreMap.contains(action(NickIgnoreDomain)->property("ignoreRule").toString()))
+    // we only add that NickIgnoreDomain if it isn't the same as NickIgnoreUser
+    // as happens with @foobar.com hostmasks and ips
+    if(!ignoreMap.contains(action(NickIgnoreDomain)->property("ignoreRule").toString())
+      && action(NickIgnoreUser)->property("ignoreRule").toString() != action(NickIgnoreDomain)->property("ignoreRule").toString())
       ignoreMenu->addAction(action(NickIgnoreDomain));
   }
 
