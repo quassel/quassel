@@ -438,6 +438,7 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
 }
 
 void ContentsChatItem::doLayout(QTextLayout *layout) const {
+  // QString t = data(Qt::DisplayRole).toString(); bool d = t.contains("protien");
   ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
   if(!wrapList.count()) return; // empty chatitem
 
@@ -450,7 +451,23 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
       break;
 
     int col = finder.nextWrapColumn(width());
-    line.setNumColumns(col >= 0 ? col - line.textStart() : layout->text().length());
+    if(col < 0)
+      col = layout->text().length();
+    int num = col - line.textStart();
+
+    line.setNumColumns(num);
+
+    // Sometimes, setNumColumns will create a line that's too long (cf. Qt bug 238249)
+    // We verify this and try setting the width again, making it shorter each time until the lengths match.
+    // Dead fugly, but seems to work…
+    for(int i = line.textLength()-1; line.textLength() > num; i--) {
+      line.setNumColumns(i);
+    }
+    if(num != line.textLength()) {
+      qWarning() << "WARNING: Layout engine couldn't workaround Qt bug 238249, please report!";
+      // qDebug() << num << line.textLength() << t.mid(line.textStart(), line.textLength()) << t.mid(line.textStart() + line.textLength());
+    }
+
     line.setPosition(QPointF(0, h));
     h += fontMetrics()->lineSpacing();
   }

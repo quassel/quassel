@@ -189,7 +189,7 @@ protected:
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
   virtual inline void initLayout(QTextLayout *layout) const {
-    initLayoutHelper(layout, QTextOption::WrapAnywhere);
+    initLayoutHelper(layout, QTextOption::WrapAtWordBoundaryOrAnywhere);
     doLayout(layout);
   }
   virtual void doLayout(QTextLayout *layout) const;
