@@ -37,6 +37,7 @@
 #ifdef Q_OS_WIN32
 #  include <windows.h>
 #else
+#  include <unistd.h>
 #  include <termios.h>
 #endif /* Q_OS_WIN32 */
 
