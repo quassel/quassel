@@ -156,21 +156,17 @@ QVariant ChatLineModelItem::backgroundBrush(UiStyle::FormatType subelement, bool
 }
 
 void ChatLineModelItem::computeWrapList() const {
-  int length = _styledMsg.plainContents().length();
+  QString text = _styledMsg.plainContents();
+  int length = text.length();
   if(!length)
     return;
 
-  enum Mode { SearchStart, SearchEnd };
-
   QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
-  QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _styledMsg.plainContents().unicode(), length,
+  QTextBoundaryFinder finder(QTextBoundaryFinder::Line, _styledMsg.plainContents().unicode(), length,
                               TextBoundaryFinderBuffer, TextBoundaryFinderBufferSize);
 
   int idx;
   int oldidx = 0;
-  bool wordStart = false;
-  bool wordEnd = false;
-  Mode mode = SearchEnd;
   ChatLineModel::Word word;
   word.start = 0;
   qreal wordstartx = 0;
@@ -186,29 +182,17 @@ void ChatLineModelItem::computeWrapList() const {
   line.setNumColumns(length);
   layout.endLayout();
 
-  do {
-    idx = finder.toNextBoundary();
-    if(idx < 0) {
-      idx = length;
-      wordStart = false;
-      wordEnd = false;
-      mode = SearchStart;
-    } else {
-      wordStart = finder.boundaryReasons().testFlag(QTextBoundaryFinder::StartWord);
-      wordEnd = finder.boundaryReasons().testFlag(QTextBoundaryFinder::EndWord);
+  while((idx = finder.toNextBoundary()) >= 0 && idx < length) {
+    idx++;  // the boundary is *before* the actual character
+
+    word.start = oldidx;
+    int wordend = idx;
+    for(; wordend > word.start; wordend--) {
+      if(!text.at(wordend-1).isSpace())
+        break;
     }
 
-    //if(flg) qDebug() << idx << mode << wordStart << wordEnd << contents->plainText.left(idx) << contents->plainText.mid(idx);
-
-    if(mode == SearchEnd || (!wordStart && wordEnd)) {
-      oldidx = idx;
-      if(wordStart || !wordEnd)
-        continue;
-      mode = SearchStart;
-      continue;
-    }
-
-    qreal wordendx = line.cursorToX(oldidx);
+    qreal wordendx = line.cursorToX(wordend);
     qreal trailingendx = line.cursorToX(idx);
     word.endX = wordendx;
     word.width = wordendx - wordstartx;
@@ -216,13 +200,8 @@ void ChatLineModelItem::computeWrapList() const {
     wordstartx = trailingendx;
     wplist.append(word);
 
-    if(wordStart) {
-      word.start = idx;
-      mode = SearchEnd;
-    }
-    // the part " || (finder.position() == contents->plainText.length())" shouldn't be necessary
-    // but in rare and indeterministic cases Qt states that the end of the text is not a boundary o_O
-  } while(finder.isAtBoundary() || (finder.position() == length));
+    oldidx = idx;
+  }
 
   // A QVector needs less space than a QList
   _wrapList.resize(wplist.count());
