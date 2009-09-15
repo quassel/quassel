@@ -7,6 +7,7 @@
 # -DWITH_DBUS=OFF        : Disable D-Bus support (dbus notifications)
 # -DWITH_WEBKIT=OFF      : Disable WebKit support (link previews)
 # -DWITH_PHONON=OFF      : Disable Phonon support (audio notifications)
+# -DWITH_LIBINDICATE=OFF : Disable libindicate support (Ayatana notifications)
 # -DWITH_KDE=ON          : Enable KDE4 support
 # -DWITH_OXYGEN=(ON|OFF) : Whether to install Oxygen icons (default: yes, unless KDE > 4.3.0 is present and enabled)
 #
@@ -40,6 +41,7 @@ option(WITH_OPENSSL  "Enable OpenSSL support if present on the system"	ON)
 option(WITH_DBUS     "Enable D-Bus support if present on the system"	ON)
 option(WITH_WEBKIT   "Enable WebKit support (for link previews)"	ON)
 option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
+option(WITH_LIBINDICATE "Enable Ayatana notification support"           ON)
 option(WITH_KDE      "Enable KDE4 integration"				OFF)
 
 # We use icon paths from KDE 4.3.x, which are partially invalid on older and possibly
@@ -232,13 +234,15 @@ if(NOT HAVE_KDE)
 endif(NOT HAVE_KDE)
 
 # Setup libindicate-qt support
-find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
-  pkg_check_modules(INDICATEQT indicate-qt)
-  if(INDICATEQT_FOUND)
-    add_definitions(-DHAVE_INDICATEQT)
-  endif(INDICATEQT_FOUND)
-endif(PKG_CONFIG_FOUND)
+if(WITH_LIBINDICATE)
+  find_package(PkgConfig QUIET)
+  if(PKG_CONFIG_FOUND)
+    pkg_check_modules(INDICATEQT indicate-qt)
+    if(INDICATEQT_FOUND)
+      add_definitions(-DHAVE_INDICATEQT)
+    endif(INDICATEQT_FOUND)
+  endif(PKG_CONFIG_FOUND)
+endif(WITH_LIBINDICATE)
 
 # Now set up install locations; those are set by KDE if integration is enabled
 if(NOT HAVE_KDE)

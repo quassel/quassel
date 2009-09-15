@@ -60,6 +60,9 @@ Quassel recognizes the following options:
 -DWITH_PHONON=OFF
     Disable support for audio notifications via Phonon.
 
+-DWITH_LIBINDICATE=OFF
+    Disable support for Ayatana notifications (libindicate-qt)
+
 -DLINGUAS="<languages">
     Allow to choose which languages should be compiled into the binary.
     <languages> is a space- or comma-separated list of language codes.
