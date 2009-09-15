@@ -92,14 +92,14 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
 
   setHandleXLimits();
 
+  if(model->rowCount() > 0)
+    rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
+
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
           this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
           this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
   connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
-
-  if(model->rowCount() > 0)
-    rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
 
 #ifdef HAVE_WEBKIT
   webPreview.timer.setSingleShot(true);
