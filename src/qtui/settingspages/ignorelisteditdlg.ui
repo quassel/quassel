@@ -113,7 +113,7 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
         <item>
          <widget class="QCheckBox" name="isRegExCheckBox">
           <property name="toolTip">
-           <string>&lt;p&gt;&lt;b&gt;Use RegularExpressions:&lt;/b&gt;&lt;/p&gt;
+           <string>&lt;p&gt;&lt;b&gt;Use regular expressions:&lt;/b&gt;&lt;/p&gt;
 &lt;p&gt;If enabled, rules follow regular expression syntax.&lt;/p&gt;
 &lt;p&gt;Otherwise rules allow wildcard matching with the following special characters:&lt;/p&gt;
 &lt;p&gt; *: representing &quot;any amount of any character&quot;
