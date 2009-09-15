@@ -182,8 +182,12 @@ void ChatLineModelItem::computeWrapList() const {
   line.setNumColumns(length);
   layout.endLayout();
 
-  while((idx = finder.toNextBoundary()) >= 0 && idx < length) {
-    idx++;  // the boundary is *before* the actual character
+  while((idx = finder.toNextBoundary()) >= 0 && idx <= length) {
+    if(idx < length)
+      idx++;  // the boundary is *before* the actual character
+
+    if(idx == oldidx)
+      continue;
 
     word.start = oldidx;
     int wordend = idx;
