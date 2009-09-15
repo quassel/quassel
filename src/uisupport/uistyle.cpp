@@ -552,6 +552,7 @@ void UiStyle::StyledMessage::style() const {
   QString txt = UiStyle::mircToInternal(contents());
   QString bufferName = bufferInfo().bufferName();
   bufferName.replace('%', "%%"); // well, you _can_ have a % in a buffername apparently... -_-
+  host.replace('%', "%%");       // hostnames too...
   const int maxNetsplitNicks = 15;
 
   QString t;
