@@ -292,7 +292,7 @@ if(INDICATEQT_FOUND)
   if(WANT_MONO)
     set(DESKTOP_FILE ${XDG_APPS_INSTALL_DIR}/quassel.desktop)
   endif(WANT_MONO)
-  add_definitions(-DDESKTOP_FILE=\"${DESKTOP_FILE}\")
+  add_definitions(-DDESKTOP_FILE="\\"${DESKTOP_FILE}\\"")
 endif(INDICATEQT_FOUND)
 
 # We need to create a version.gen
