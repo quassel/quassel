@@ -29,6 +29,9 @@
 #include "networkmodel.h"
 #include "qtui.h"
 
+#define STR(x) #x
+#define XSTR(x) STR(x)
+
 class Indicator : public QIndicate::Indicator {
 public:
   uint lastNotificationId;
@@ -44,7 +47,7 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
 
   _server = QIndicate::Server::defaultInstance();
   _server->setType("messaging");
-  _server->setDesktopFile(DESKTOP_FILE);
+  _server->setDesktopFile(XSTR(DESKTOP_FILE));
   connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(forceActivated()));
 
   if (_enabled) {
