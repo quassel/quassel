@@ -7,7 +7,6 @@ include(${QT_USE_FILE})
 
 if(INDICATEQT_FOUND)
   include_directories(${INDICATEQT_INCLUDE_DIRS})
-  link_directories(${INDICATEQT_LIBRARY_DIRS})
 endif(INDICATEQT_FOUND)
 
 set(SOURCES

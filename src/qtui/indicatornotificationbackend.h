@@ -30,6 +30,7 @@
 
 namespace QIndicate {
 class Server;
+class Indicator;
 }
 
 class Indicator;
@@ -49,7 +50,7 @@ public:
 
 private slots:
   void enabledChanged(const QVariant &);
-  void indicatorDisplayed();
+  void indicatorDisplayed(QIndicate::Indicator *);
 
 private:
   class ConfigWidget;

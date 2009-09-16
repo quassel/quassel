@@ -21,7 +21,7 @@
 #include "indicatornotificationbackend.h"
 
 #include <qindicateserver.h>
-#include <qindicateindicatormessage.h>
+#include <qindicateindicator.h>
 
 #include "client.h"
 #include "clientsettings.h"
@@ -29,7 +29,7 @@
 #include "networkmodel.h"
 #include "qtui.h"
 
-class Indicator : public QIndicate::IndicatorMessage {
+class Indicator : public QIndicate::Indicator {
 public:
   uint lastNotificationId;
 };
@@ -43,7 +43,7 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
   notificationSettings.notify("Indicator/Enabled", this, SLOT(enabledChanged(const QVariant &)));
 
   _server = QIndicate::Server::defaultInstance();
-  _server->setType("message.im");
+  _server->setType("messaging");
   _server->setDesktopFile(DESKTOP_FILE);
   connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(forceActivated()));
 
@@ -68,31 +68,32 @@ void IndicatorNotificationBackend::notify(const Notification &notification) {
   if(!indicator) {
     indicator = new Indicator;
     _indicatorHash.insert(bufferId, indicator);
-    connect(indicator, SIGNAL(display()),
-      SLOT(indicatorDisplayed()));
+    connect(indicator, SIGNAL(display(QIndicate::Indicator*)),
+      SLOT(indicatorDisplayed(QIndicate::Indicator*)));
   }
   indicator->lastNotificationId = notification.notificationId;
 
   BufferInfo::Type type = Client::networkModel()->bufferType(bufferId);
-  QString sender;
+  QString name;
   if (type == BufferInfo::QueryBuffer) {
-    sender = notification.sender;
+    name = notification.sender;
   } else {
-    sender = QString("%1 (%2)")
+    name = QString("%1 (%2)")
       .arg(Client::networkModel()->bufferName(bufferId))
       .arg(notification.sender);
   }
-  indicator->setProperty("sender", sender);
+  indicator->setNameProperty(name);
 
-  indicator->setProperty("time", QTime::currentTime());
+  indicator->setTimeProperty(QDateTime::currentDateTime());
 
   QModelIndex index = Client::networkModel()->bufferIndex(bufferId);
   QVariant icon = QtUi::style()->bufferViewItemData(index, Qt::DecorationRole);
   if (icon.canConvert<QPixmap>()) {
     QImage image = icon.value<QPixmap>().toImage();
-    indicator->setProperty("icon", image);
+    indicator->setIconProperty(image);
   }
 
+  indicator->setDrawAttentionProperty(true);
   indicator->show();
 }
 
@@ -128,8 +129,8 @@ void IndicatorNotificationBackend::enabledChanged(const QVariant &v) {
   }
 }
 
-void IndicatorNotificationBackend::indicatorDisplayed() {
-  Indicator *indicator = static_cast<Indicator*>(sender());
+void IndicatorNotificationBackend::indicatorDisplayed(QIndicate::Indicator *_indicator) {
+  Indicator *indicator = static_cast<Indicator *>(_indicator);
   emit activated(indicator->lastNotificationId);
 }
 

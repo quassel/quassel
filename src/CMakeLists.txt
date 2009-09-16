@@ -34,6 +34,10 @@ qt4_add_resources(CLIENT_DEPS ${CLIENT_RCS})
 qt4_add_resources(CORE_DEPS ${CORE_RCS})
 qt4_add_resources(COMMON_DEPS ${COMMON_RCS})
 
+if(INDICATEQT_FOUND)
+  link_directories(${INDICATEQT_LIBRARY_DIRS})
+endif(INDICATEQT_FOUND)
+
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
