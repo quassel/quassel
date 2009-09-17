@@ -37,7 +37,6 @@ InputWidget::InputWidget(QWidget *parent)
     _networkId(0)
 {
   ui.setupUi(this);
-  connect(ui.inputEdit, SIGNAL(textEntered(QString)), this, SLOT(sendText(QString)));
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
 
   layout()->setAlignment(ui.ownNick, Qt::AlignBottom);
@@ -323,7 +322,7 @@ void InputWidget::changeNick(const QString &newNick) const {
   Client::userInput(BufferInfo::fakeStatusBuffer(net->networkId()), QString("/NICK %1").arg(newNick));
 }
 
-void InputWidget::sendText(const QString &text) const {
+void InputWidget::on_inputEdit_textEntered(const QString &text) const {
   Client::userInput(currentBufferInfo(), text);
 }
 
