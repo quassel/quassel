@@ -310,6 +310,8 @@ void MultiLineEdit::on_returnPressed(const QString & text) {
     }
     reset();
     tempHistory.clear();
+  } else {
+    emit noTextEntered();
   }
 }
 

@@ -34,6 +34,7 @@ TopicWidget::TopicWidget(QWidget *parent)
   ui.topicLineEdit->installEventFilter(this);
 
   connect(ui.topicLabel, SIGNAL(clickableActivated(Clickable)), SLOT(clickableActivated(Clickable)));
+  connect(ui.topicLineEdit, SIGNAL(noTextEntered()), SLOT(on_topicLineEdit_textEntered()));
 
   UiSettings s("TopicWidget");
   s.notify("DynamicResize", this, SLOT(updateResizeMode()));

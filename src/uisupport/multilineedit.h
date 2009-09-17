@@ -78,6 +78,7 @@ public slots:
 
 signals:
   void textEntered(const QString &text);
+  void noTextEntered();
 
 protected:
   virtual void keyPressEvent(QKeyEvent * event);
