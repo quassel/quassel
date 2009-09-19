@@ -68,6 +68,7 @@ private slots:
   void lastLineChanged(QGraphicsItem *chatLine, qreal offset);
   void mouseMoveWhileSelecting(const QPointF &scenePos);
   void scrollTimerTimeout();
+  void invalidateFilter();
 
 private:
   void init(MessageFilter *filter);
@@ -78,6 +79,7 @@ private:
   qreal _currentScaleFactor;
   QTimer _scrollTimer;
   int _scrollOffset;
+  bool _invalidateFilter;
 };
 
 

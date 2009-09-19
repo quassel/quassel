@@ -36,7 +36,8 @@ ChatView::ChatView(BufferId bufferId, QWidget *parent)
   : QGraphicsView(parent),
     AbstractChatView(),
     _bufferContainer(0),
-    _currentScaleFactor(1)
+    _currentScaleFactor(1),
+    _invalidateFilter(false)
 {
   QList<BufferId> filterList;
   filterList.append(bufferId);
@@ -48,7 +49,8 @@ ChatView::ChatView(MessageFilter *filter, QWidget *parent)
   : QGraphicsView(parent),
     AbstractChatView(),
     _bufferContainer(0),
-    _currentScaleFactor(1)
+    _currentScaleFactor(1),
+    _invalidateFilter(false)
 {
   init(filter);
 }
@@ -77,7 +79,7 @@ void ChatView::init(MessageFilter *filter) {
 
   // only connect if client is synched with a core
   if(Client::isSynced())
-    connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), filter, SLOT(invalidateFilter()));
+    connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), this, SLOT(invalidateFilter()));
 }
 
 bool ChatView::event(QEvent *event) {
@@ -102,6 +104,11 @@ bool ChatView::event(QEvent *event) {
       scene()->requestBacklog();
       return true;
     }
+  }
+
+  if(event->type() == QEvent::Show) {
+    if(_invalidateFilter)
+      invalidateFilter();
   }
 
   return QGraphicsView::event(event);
@@ -212,4 +219,17 @@ void ChatView::zoomOriginal() {
     scale(1/_currentScaleFactor, 1/_currentScaleFactor);
     _currentScaleFactor = 1;
     scene()->setWidth(viewport()->width() - 2);
+}
+
+void ChatView::invalidateFilter() {
+  // if this is the currently selected chatview
+  // invalidate immediately
+  if(isVisible()) {
+    _scene->filter()->invalidateFilter();
+    _invalidateFilter = false;
+  }
+  // otherwise invalidate whenever the view is shown
+  else {
+    _invalidateFilter = true;
+  }
 }
