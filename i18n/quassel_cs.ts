@@ -259,24 +259,24 @@ p, li { white-space: pre-wrap; }
         <translation>Výchozí množství historie:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="157"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="163"/>
         <source>FixedBacklogAmount</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="354"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="372"/>
         <source>GlobalUnreadBacklogLimit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="386"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="404"/>
         <source>GlobalUnreadBacklogAdditional</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="216"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="226"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="342"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="222"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="232"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="354"/>
         <source>Maximum amount of messages to be fetched per buffer.</source>
         <translation>Maximální množství zpráv, které se stáhnou za záložku.</translation>
     </message>
@@ -306,7 +306,7 @@ p, li { white-space: pre-wrap; }
         <translation>Nejjednodušší požadavek. Stáhne přesný počet řádků pro každou záložku z historie.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="199"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="205"/>
         <source>This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.
 
 You can also choose to fetch additional older chatlines to provide a better context.</source>
@@ -315,37 +315,43 @@ You can also choose to fetch additional older chatlines to provide a better cont
 Také můžete vybrat množství dodatečně stahovaných zastaralých zpráv pro lepší srozumitelnost.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="219"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="335"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="225"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="347"/>
         <source>Limit:</source>
         <translation>Omezení:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="238"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="235"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="357"/>
+        <source>Unlimited</source>
+        <translation>Neomezeně</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="250"/>
         <source>PerBufferUnreadBacklogLimit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="248"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="258"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="364"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="374"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="260"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="270"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="382"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="392"/>
         <source>Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here.</source>
         <translation>Množství zpráv které se stháhnou dodatečne k nepřečteným zprávám. Omezení zde neplatí.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="251"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="367"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="263"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="385"/>
         <source>Additional Messages:</source>
         <translation>Dodatečné zprávy:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="270"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="282"/>
         <source>PerBufferUnreadBacklogAdditional</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="312"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="324"/>
         <source>This requester fetches all messages newer than the oldest unread message for all chats.
 
 Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).
@@ -360,7 +366,7 @@ Je užitečný k omezení celkového získávání historie a je pravděpodobně
 Můžete také vybrat dodatečné zprávy pro získání lepšího přehledu.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="332"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="344"/>
         <source>Maximum amount of messages to be fetched over all buffers.</source>
         <translation>Maximální množství zpráv stažené pro všechny záložky.</translation>
     </message>
