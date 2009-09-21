@@ -61,8 +61,8 @@ void TabCompleter::buildCompletionList() {
   if(!_currentNetwork)
     return;
 
-  QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(' ',-1,-1);
-  QRegExp regex(QString("^[^a-zA-Z]*").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
+  QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegExp("[^\\w\\d-_\\[\\]{}|`^.\\\\]"),-1,-1);
+  QRegExp regex(QString("^[-_\\[\\]{}|`^.\\\\]*").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
 
   switch(static_cast<BufferInfo::Type>(currentIndex.data(NetworkModel::BufferTypeRole).toInt())) {
   case BufferInfo::ChannelBuffer:
