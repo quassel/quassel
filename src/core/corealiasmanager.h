@@ -31,9 +31,10 @@ class CoreAliasManager : public AliasManager {
 
 public:
   explicit CoreAliasManager(CoreSession *parent);
-  ~CoreAliasManager();
 
   inline virtual const QMetaObject *syncMetaObject() const { return &AliasManager::staticMetaObject; }
+
+  void save() const;
 
 protected:
   const Network *network(NetworkId) const;

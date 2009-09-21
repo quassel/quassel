@@ -70,7 +70,6 @@ public:
 //   void attachNetworkConnection(NetworkConnection *conn);
 
   //! Return necessary data for restoring the session after restarting the core
-  void saveSessionState() const;
   void restoreSessionState();
 
 public slots:
@@ -148,6 +147,8 @@ private slots:
   void clientsDisconnected();
 
   void updateIdentityBySender();
+
+  void saveSessionState() const;
 
 protected:
   virtual void customEvent(QEvent *event);

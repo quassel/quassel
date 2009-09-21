@@ -40,7 +40,7 @@ CoreIgnoreListManager::CoreIgnoreListManager(CoreSession *parent)
     //loadDefaults();
 }
 
-CoreIgnoreListManager::~CoreIgnoreListManager() {
+void CoreIgnoreListManager::save() const {
   CoreSession *session = qobject_cast<CoreSession *>(parent());
   if(!session) {
     qWarning() << "CoreIgnoreListManager: unable to save IgnoreList. Parent is not a Coresession!";

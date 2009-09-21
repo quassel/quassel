@@ -84,8 +84,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   loadSettings();
   initScriptEngine();
 
-  connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), _bufferSyncer, SLOT(storeDirtyIds()));
-  connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), _bufferViewManager, SLOT(saveBufferViews()));
+  // periodically save our session state
+  connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));
 
   p->synchronize(_bufferSyncer);
   p->synchronize(&aliasManager());
@@ -154,6 +154,8 @@ void CoreSession::saveSessionState() const {
   _bufferSyncer->storeDirtyIds();
   _bufferViewManager->saveBufferViews();
   _networkConfig->save();
+  _aliasManager.save();
+  _ignoreListManager.save();
 }
 
 void CoreSession::restoreSessionState() {

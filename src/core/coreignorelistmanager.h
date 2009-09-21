@@ -31,9 +31,9 @@ class CoreIgnoreListManager : public IgnoreListManager {
 
 public:
   explicit CoreIgnoreListManager(CoreSession *parent);
-  ~CoreIgnoreListManager();
 
   inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
+  void save() const;
 
 public slots:
   virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { toggleIgnoreRule(ignoreRule); }
