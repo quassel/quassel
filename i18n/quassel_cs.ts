@@ -3118,7 +3118,18 @@ Pokud je pravidlo zakázáno, zprávy se znovu objeví.&lt;/p&gt;
 - &lt;i&gt;*@foobar.com&lt;/i&gt; matches any sender from host &lt;i&gt;foobar.com&lt;/i&gt;
 &lt;br /&gt;
 - &lt;i&gt;stupid!.+&lt;/i&gt; (RegEx) matches any sender with nickname &lt;i&gt;stupid&lt;/i&gt; from any host&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;&lt;b&gt;Pravidlo ignorance:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Podle typu pravidla je text kontrolován proti:&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- obashu zprávy:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Příklad:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;*foobar*&lt;/i&gt; platí pro libovolný text obsahující &lt;i&gt;foobar&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- textu odesílatele&lt;/u&gt;  &lt;i&gt;(přezdívka!ident@název.počítače)&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Příklad:&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;*@foobar.com&lt;/i&gt; bude platit pro každý počítač z domény &lt;i&gt;foobar.com&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;hlupec!.+&lt;/i&gt; (RegEx) platí pro každého uživatele s přezdívkou &lt;i&gt;hlupec&lt;/i&gt;, který se může připojovat z libovolného počítače&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="105"/>
@@ -3318,12 +3329,12 @@ Prosím vyberte jiné pravidlo.
 <context>
     <name>InputWidget</name>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="90"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="89"/>
         <source>Focus Input Line</source>
         <translation>Přepnout na vstupní řádku</translation>
     </message>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="91"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="90"/>
         <source>Ctrl+L</source>
         <translation></translation>
     </message>
@@ -4096,7 +4107,7 @@ Prosím vyberte jiné pravidlo.
 <context>
     <name>MultiLineEdit</name>
     <message numerus="yes">
-        <location filename="../src/uisupport/multilineedit.cpp" line="328"/>
+        <location filename="../src/uisupport/multilineedit.cpp" line="330"/>
         <source>Do you really want to paste %n lines?</source>
         <translation>
             <numerusform>Opravdu chcete vložit %n řádku?</numerusform>
@@ -4105,7 +4116,7 @@ Prosím vyberte jiné pravidlo.
         </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/multilineedit.cpp" line="337"/>
+        <location filename="../src/uisupport/multilineedit.cpp" line="339"/>
         <source>Paste Protection</source>
         <translation>Ochrana proti náhodnému vložení</translation>
     </message>
@@ -4624,12 +4635,12 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="140"/>
         <source>Invalid palette role assignment: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatné přiřazení role palety: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="156"/>
         <source>Unknown palette role name: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neznámý název role palety: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="192"/>
@@ -4679,7 +4690,7 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="329"/>
         <source>Invalid proplist %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný seznam vlastností: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="348"/>
@@ -4714,21 +4725,21 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="449"/>
         <source>Unknown palette color role: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neznámá role barevné palety: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="456"/>
         <location filename="../src/uisupport/qssparser.cpp" line="478"/>
         <location filename="../src/uisupport/qssparser.cpp" line="499"/>
         <source>Invalid gradient declaration: %1</source>
-        <translation>Neplatná deklarace stoupaní: %1</translation>
+        <translation>Neplatná deklarace gradientu: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="465"/>
         <location filename="../src/uisupport/qssparser.cpp" line="486"/>
         <location filename="../src/uisupport/qssparser.cpp" line="509"/>
         <source>Invalid gradient stops list: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný seznam zastavení gradientu: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="605"/>
