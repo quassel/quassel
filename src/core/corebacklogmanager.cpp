@@ -43,8 +43,8 @@ QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, 
     msgIter++;
   }
 
-  if(additional) {
-    MsgId oldestMessage;
+  if(additional && limit != 0) {
+    MsgId oldestMessage = first;
     if(!msgList.isEmpty()) {
       if(msgList.first().msgId() < msgList.last().msgId())
         oldestMessage = msgList.first().msgId();
