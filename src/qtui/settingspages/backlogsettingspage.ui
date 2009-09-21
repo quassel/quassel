@@ -113,7 +113,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -144,8 +144,14 @@
          </item>
          <item>
           <widget class="QSpinBox" name="fixedBacklogAmount">
+           <property name="specialValueText">
+            <string/>
+           </property>
+           <property name="minimum">
+            <number>0</number>
+           </property>
            <property name="maximum">
-            <number>1000</number>
+            <number>99999</number>
            </property>
            <property name="singleStep">
             <number>10</number>
@@ -225,20 +231,26 @@ You can also choose to fetch additional older chatlines to provide a better cont
            <property name="toolTip">
             <string>Maximum amount of messages to be fetched per buffer.</string>
            </property>
+           <property name="specialValueText">
+            <string>Unlimited</string>
+           </property>
+           <property name="minimum">
+            <number>-1</number>
+           </property>
            <property name="maximum">
-            <number>1000</number>
+            <number>99999</number>
            </property>
            <property name="singleStep">
             <number>10</number>
            </property>
            <property name="value">
-            <number>200</number>
+            <number>1000</number>
            </property>
            <property name="settingsKey" stdset="0">
             <string>PerBufferUnreadBacklogLimit</string>
            </property>
            <property name="defaultValue" stdset="0">
-            <number>200</number>
+            <number>1000</number>
            </property>
           </widget>
          </item>
@@ -340,6 +352,12 @@ You can also chose to fetch additional older chatlines to provide a better conte
           <widget class="QSpinBox" name="globalUnreadLimit">
            <property name="toolTip">
             <string>Maximum amount of messages to be fetched per buffer.</string>
+           </property>
+           <property name="specialValueText">
+            <string>Unlimited</string>
+           </property>
+           <property name="minimum">
+            <number>-1</number>
            </property>
            <property name="maximum">
             <number>100000</number>
