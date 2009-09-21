@@ -1313,17 +1313,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="46"/>
         <source>Joins</source>
-        <translation type="unfinished">Join-Meldungen</translation>
+        <translation>Join-Meldungen</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="47"/>
         <source>Parts</source>
-        <translation type="unfinished">Part-Meldungen</translation>
+        <translation>Part-Meldungen</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="48"/>
         <source>Quits</source>
-        <translation type="unfinished">Quit-Meldungen</translation>
+        <translation>Quit-Meldungen</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="49"/>
