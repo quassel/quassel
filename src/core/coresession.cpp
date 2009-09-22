@@ -251,7 +251,8 @@ void CoreSession::processMessages() {
     BufferInfo bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
     Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
 
-    networkName = _networks.value(bufferInfo.networkId())->networkName();
+    CoreNetwork *currentNetwork = network(bufferInfo.networkId());
+    networkName = currentNetwork ? currentNetwork->networkName() : QString("");
     // if message is ignored with "HardStrictness" we discard it here
     if(_ignoreListManager.match(msg, networkName) != IgnoreListManager::HardStrictness) {
       Core::storeMessage(msg);
@@ -271,7 +272,8 @@ void CoreSession::processMessages() {
       }
 
       Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
-      networkName = _networks.value(bufferInfo.networkId())->networkName();
+      CoreNetwork *currentNetwork = network(bufferInfo.networkId());
+      networkName = currentNetwork ? currentNetwork->networkName() : QString("");
       // if message is ignored with "HardStrictness" we discard it here
       if(_ignoreListManager.match(msg, networkName) == IgnoreListManager::HardStrictness)
         continue;
