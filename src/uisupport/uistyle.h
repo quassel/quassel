@@ -170,7 +170,8 @@ protected:
   QVariant itemData(int role, const QTextCharFormat &format) const;
 
 private slots:
-  void showItemViewIconsChanged();
+  void allowMircColorsChanged(const QVariant &);
+  void showItemViewIconsChanged(const QVariant &);
 
 private:
   QVector<QBrush> _uiStylePalette;
@@ -193,6 +194,7 @@ private:
   int _voiceIconLimit;
   bool _showNickViewIcons;
   bool _showBufferViewIcons;
+  bool _allowMircColors;
 };
 
 class UiStyle::StyledMessage : public Message {

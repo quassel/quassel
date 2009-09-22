@@ -70,7 +70,10 @@ UiStyle::UiStyle(QObject *parent)
   // BufferView / NickView settings
   UiStyleSettings s;
   _showBufferViewIcons = _showNickViewIcons = s.value("ShowItemViewIcons", true).toBool();
-  s.notify("ShowItemViewIcons", this, SLOT(showItemViewIconsChanged()));
+  s.notify("ShowItemViewIcons", this, SLOT(showItemViewIconsChanged(QVariant)));
+
+  _allowMircColors = s.value("AllowMircColors", true).toBool();
+  s.notify("AllowMircColors", this, SLOT(allowMircColorsChanged(QVariant)));
 
   loadStyleSheet();
 }
@@ -143,11 +146,15 @@ void UiStyle::setTimestampFormatString(const QString &format) {
   }
 }
 
+void UiStyle::allowMircColorsChanged(const QVariant &v) {
+  _allowMircColors = v.toBool();
+  emit changed();
+}
+
 /******** ItemView Styling *******/
 
-void UiStyle::showItemViewIconsChanged() {
-  UiStyleSettings s;
-  _showBufferViewIcons = _showNickViewIcons = s.value("ShowItemViewIcons").toBool();
+void UiStyle::showItemViewIconsChanged(const QVariant &v) {
+  _showBufferViewIcons = _showNickViewIcons = v.toBool();
 }
 
 QVariant UiStyle::bufferViewItemData(const QModelIndex &index, int role) const {
@@ -340,12 +347,14 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
 
   // Now we handle color codes
   // We assume that those can't be combined with subelement and message types.
-  if(ftype & 0x00400000)
-    mergeSubElementFormat(fmt, ftype & 0x0f400000, label); // foreground
-  if(ftype & 0x00800000)
-    mergeSubElementFormat(fmt, ftype & 0xf0800000, label); // background
-  if((ftype & 0x00c00000) == 0x00c00000)
-    mergeSubElementFormat(fmt, ftype & 0xffc00000, label); // combination
+  if(_allowMircColors) {
+    if(ftype & 0x00400000)
+      mergeSubElementFormat(fmt, ftype & 0x0f400000, label); // foreground
+    if(ftype & 0x00800000)
+      mergeSubElementFormat(fmt, ftype & 0xf0800000, label); // background
+    if((ftype & 0x00c00000) == 0x00c00000)
+      mergeSubElementFormat(fmt, ftype & 0xffc00000, label); // combination
+  }
 
   // URL
   if(ftype & Url)

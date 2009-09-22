@@ -98,7 +98,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>AllowMircColors</string>
+      <string>/UiStyle/AllowMircColors</string>
      </property>
     </widget>
    </item>
