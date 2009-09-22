@@ -31,7 +31,7 @@ TaskbarNotificationBackend::TaskbarNotificationBackend(QObject *parent)
 {
   NotificationSettings notificationSettings;
   _enabled = notificationSettings.value("Taskbar/Enabled", true).toBool();
-  _timeout = notificationSettings.value("Taskbar/Timeout", 0).toBool();
+  _timeout = notificationSettings.value("Taskbar/Timeout", 0).toInt();
 
   notificationSettings.notify("Taskbar/Enabled", this, SLOT(enabledChanged(const QVariant &)));
   notificationSettings.notify("Taskbar/Timeout", this, SLOT(timeoutChanged(const QVariant &)));
