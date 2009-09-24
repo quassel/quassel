@@ -32,6 +32,7 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
   ui.hideButton->setIcon(BarIcon("dialog-close"));
   ui.searchUpButton->setIcon(SmallIcon("go-up"));
   ui.searchDownButton->setIcon(SmallIcon("go-down"));
+  _searchDelayTimer.setSingleShot(true);
 
   layout()->setContentsMargins(0, 0, 0, 0);
 
@@ -47,6 +48,8 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
   hideSearchBar->setShortcut(Qt::Key_Escape);
 
   connect(ui.hideButton, SIGNAL(clicked()), toggleSearchBar, SLOT(toggle()));
+  connect(ui.searchEditLine, SIGNAL(textChanged(const QString &)), this, SLOT(delaySearch()));
+  connect(&_searchDelayTimer, SIGNAL(timeout()), this, SLOT(search()));
 }
 
 void ChatViewSearchBar::setVisible(bool visible) {
@@ -58,3 +61,10 @@ void ChatViewSearchBar::setVisible(bool visible) {
   if(visible) ui.searchEditLine->setFocus();
 }
 
+void ChatViewSearchBar::delaySearch() {
+  _searchDelayTimer.start(300);
+}
+
+void ChatViewSearchBar::search() {
+  emit searchChanged(ui.searchEditLine->text());
+}

@@ -24,6 +24,7 @@
 #include "ui_chatviewsearchbar.h"
 
 #include <QWidget>
+#include <QTimer>
 
 class QAction;
 
@@ -44,8 +45,16 @@ public:
 public slots:
   void setVisible(bool);
 
+signals:
+  void searchChanged(const QString &);
+
+private slots:
+  void delaySearch();
+  void search();
+
 private:
   Ui::ChatViewSearchBar ui;
+  QTimer _searchDelayTimer;
 };
 
 #endif //CHATVIEWSEARCHBAR_H

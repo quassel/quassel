@@ -50,7 +50,7 @@ BufferWidget::BufferWidget(QWidget *parent)
   _chatViewSearchController->setSearchMsgs(ui.searchBar->searchMsgsBox()->isChecked());
   _chatViewSearchController->setSearchOnlyRegularMsgs(ui.searchBar->searchOnlyRegularMsgsBox()->isChecked());
 
-  connect(ui.searchBar->searchEditLine(), SIGNAL(textChanged(const QString &)),
+  connect(ui.searchBar, SIGNAL(searchChanged(const QString &)),
 	  _chatViewSearchController, SLOT(setSearchString(const QString &)));
   connect(ui.searchBar->caseSensitiveBox(), SIGNAL(toggled(bool)),
 	  _chatViewSearchController, SLOT(setCaseSensitive(bool)));
