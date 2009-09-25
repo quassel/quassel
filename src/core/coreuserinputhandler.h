@@ -18,21 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef USERINPUTHANDLER_H
-#define USERINPUTHANDLER_H
+#ifndef COREUSERINPUTHANDLER_H
+#define COREUSERINPUTHANDLER_H
 
 #include "basichandler.h"
 
 class Server;
 
-class UserInputHandler : public BasicHandler {
+class CoreUserInputHandler : public BasicHandler {
   Q_OBJECT
 
 public:
-  UserInputHandler(CoreNetwork *parent = 0);
+  CoreUserInputHandler(CoreNetwork *parent = 0);
 
   void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
-  
+
 public slots:
   void handleAway(const BufferInfo &bufferInfo, const QString &text);
   void handleBan(const BufferInfo &bufferInfo, const QString &text);
@@ -86,6 +86,5 @@ private:
 
   QHash<int, Command> _delayedCommands;
 };
-
 
 #endif

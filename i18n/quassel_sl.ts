@@ -5325,7 +5325,7 @@ Pustite na ISO-8859-1, razen če ste prepričani, kaj počnete!</translation>
     </message>
 </context>
 <context>
-    <name>UserInputHandler</name>
+    <name>CoreUserInputHandler</name>
     <message>
         <location filename="../src/core/userinputhandler.cpp" line="69"/>
         <source>away</source>

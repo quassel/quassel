@@ -25,6 +25,7 @@ set(SOURCES
     corenetworkconfig.cpp
     coresession.cpp
     coresettings.cpp
+    coreuserinputhandler.cpp
     coreusersettings.cpp
     ctcphandler.cpp
     ircserverhandler.cpp
@@ -32,8 +33,7 @@ set(SOURCES
     postgresqlstorage.cpp
     sessionthread.cpp
     sqlitestorage.cpp
-    storage.cpp
-    userinputhandler.cpp)
+    storage.cpp)
 
 set(MOC_HDRS
     abstractsqlstorage.h
@@ -53,14 +53,14 @@ set(MOC_HDRS
     corenetwork.h
     corenetworkconfig.h
     coresession.h
+    coreuserinputhandler.h
     ctcphandler.h
     ircserverhandler.h
     netsplit.h
     postgresqlstorage.h
     sqlitestorage.h
     storage.h
-    sessionthread.h
-    userinputhandler.h)
+    sessionthread.h)
 
 set(HEADERS
     coresettings.h

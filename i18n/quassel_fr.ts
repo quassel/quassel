@@ -8054,7 +8054,7 @@ Click to edit!</source>
     </message>
 </context>
 <context>
-    <name>UserInputHandler</name>
+    <name>CoreUserInputHandler</name>
     <message>
         <location filename="../src/core/userinputhandler.cpp" line="132"/>
         <source>sending CTCP-%1 request</source>

@@ -26,7 +26,7 @@
 #include "corenetworkconfig.h"
 
 #include "ircserverhandler.h"
-#include "userinputhandler.h"
+#include "coreuserinputhandler.h"
 #include "ctcphandler.h"
 
 INIT_SYNCABLE_OBJECT(CoreNetwork)
@@ -34,7 +34,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   : Network(networkid, session),
     _coreSession(session),
     _ircServerHandler(new IrcServerHandler(this)),
-    _userInputHandler(new UserInputHandler(this)),
+    _userInputHandler(new CoreUserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
     _autoReconnectCount(0),
     _quitRequested(false),

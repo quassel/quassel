@@ -4887,7 +4887,7 @@ This setting defines the encoding for messages that are not Utf8.</source>
     </message>
 </context>
 <context>
-    <name>UserInputHandler</name>
+    <name>CoreUserInputHandler</name>
     <message>
         <location filename="../src/core/userinputhandler.cpp" line="134"/>
         <source>sending CTCP-%1 request</source>

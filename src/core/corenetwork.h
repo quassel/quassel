@@ -37,7 +37,7 @@
 
 class CoreIdentity;
 class IrcServerHandler;
-class UserInputHandler;
+class CoreUserInputHandler;
 class CtcpHandler;
 
 class CoreNetwork : public Network {
@@ -54,7 +54,7 @@ public:
   inline CoreNetworkConfig *networkConfig() const { return coreSession()->networkConfig(); }
 
   inline IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
-  inline UserInputHandler *userInputHandler() const { return _userInputHandler; }
+  inline CoreUserInputHandler *userInputHandler() const { return _userInputHandler; }
   inline CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
 
   //! Decode a string using the server (network) decoding.
@@ -169,7 +169,7 @@ private:
 #endif
 
   IrcServerHandler *_ircServerHandler;
-  UserInputHandler *_userInputHandler;
+  CoreUserInputHandler *_userInputHandler;
   CtcpHandler *_ctcpHandler;
 
   QHash<QString, QString> _channelKeys;  // stores persistent channels and their passwords, if any

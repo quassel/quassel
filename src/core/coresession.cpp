@@ -22,7 +22,7 @@
 
 #include "core.h"
 #include "coresession.h"
-#include "userinputhandler.h"
+#include "coreuserinputhandler.h"
 #include "signalproxy.h"
 #include "corebuffersyncer.h"
 #include "corebacklogmanager.h"

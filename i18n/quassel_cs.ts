@@ -5702,7 +5702,7 @@ Topic Message</extracomment>
     </message>
 </context>
 <context>
-    <name>UserInputHandler</name>
+    <name>CoreUserInputHandler</name>
     <message>
         <location filename="../src/core/userinputhandler.cpp" line="63"/>
         <source>away</source>

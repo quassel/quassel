@@ -4711,7 +4711,7 @@ A meno che tu non sappia *realmente* cosa stai facendo, lascia questo valore imp
     </message>
 </context>
 <context>
-    <name>UserInputHandler</name>
+    <name>CoreUserInputHandler</name>
     <message>
         <location filename="../src/core/userinputhandler.cpp" line="63"/>
         <source>away</source>
