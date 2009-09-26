@@ -231,8 +231,11 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
 # endif
 #endif
 
-    if(_mode == SingleLine)
+    if(_mode == SingleLine) {
+      event->accept();
+      on_returnPressed();
       return;
+    }
 #ifdef HAVE_KDE
     KTextEdit::keyPressEvent(event);
 #else
