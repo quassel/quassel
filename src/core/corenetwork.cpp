@@ -369,6 +369,7 @@ void CoreNetwork::socketDisconnected() {
   setConnected(false);
   emit disconnected(networkId());
   if(_quitRequested) {
+    _quitRequested = false;
     setConnectionState(Network::Disconnected);
     Core::setNetworkConnected(userId(), networkId(), false);
   } else if(_autoReconnectCount != 0) {
