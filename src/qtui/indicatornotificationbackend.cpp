@@ -46,7 +46,7 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
   notificationSettings.notify("Indicator/Enabled", this, SLOT(enabledChanged(const QVariant &)));
 
   _server = QIndicate::Server::defaultInstance();
-  _server->setType("messaging");
+  _server->setType("message.irc");
   _server->setDesktopFile(XSTR(DESKTOP_FILE));
   connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(forceActivated()));
 
