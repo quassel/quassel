@@ -33,7 +33,6 @@ public:
   explicit CoreIgnoreListManager(CoreSession *parent);
 
   inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
-  void save() const;
 
 public slots:
   virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { toggleIgnoreRule(ignoreRule); }
@@ -42,6 +41,9 @@ public slots:
                                                int scope, const QString &scopeRule, bool isActive) {
     addIgnoreListItem(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
   }
+
+private slots:
+  void save() const;
 
 //private:
 //  void loadDefaults();

@@ -38,6 +38,9 @@ CoreAliasManager::CoreAliasManager(CoreSession *parent)
   initSetAliases(Core::getUserSetting(session->user(), "Aliases").toMap());
   if(isEmpty())
     loadDefaults();
+
+  // we store our settings whenever they change
+  connect(this, SIGNAL(updatedRemotely()), SLOT(save()));
 }
 
 void CoreAliasManager::save() const {

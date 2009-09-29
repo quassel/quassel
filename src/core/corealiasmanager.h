@@ -34,10 +34,11 @@ public:
 
   inline virtual const QMetaObject *syncMetaObject() const { return &AliasManager::staticMetaObject; }
 
-  void save() const;
-
 protected:
   const Network *network(NetworkId) const;
+
+private slots:
+  void save() const;
 
 private:
   void loadDefaults();

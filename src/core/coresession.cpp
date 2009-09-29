@@ -154,8 +154,6 @@ void CoreSession::saveSessionState() const {
   _bufferSyncer->storeDirtyIds();
   _bufferViewManager->saveBufferViews();
   _networkConfig->save();
-  _aliasManager.save();
-  _ignoreListManager.save();
 }
 
 void CoreSession::restoreSessionState() {

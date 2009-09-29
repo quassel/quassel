@@ -36,6 +36,10 @@ CoreIgnoreListManager::CoreIgnoreListManager(CoreSession *parent)
   }
 
   initSetIgnoreList(Core::getUserSetting(session->user(), "IgnoreList").toMap());
+
+  // we store our settings whenever they change
+  connect(this, SIGNAL(updatedRemotely()), SLOT(save()));
+
   //if(isEmpty())
     //loadDefaults();
 }
