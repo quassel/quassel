@@ -3736,7 +3736,7 @@ This setting defines the encoding for messages that are not Utf8.</source>
 <context>
     <name>CoreUserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="131"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="131"/>
         <source>sending CTCP-%1 request</source>
         <translation>sender CTCP-%1 forespørgsel</translation>
     </message>

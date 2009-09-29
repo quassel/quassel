@@ -4640,7 +4640,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>CoreUserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="130"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="130"/>
         <source>sending CTCP-%1 request</source>
         <translation>CTCP-%1 isteği gönderiliyor</translation>
     </message>

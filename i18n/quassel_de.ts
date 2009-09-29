@@ -5707,12 +5707,12 @@ Topic Message</extracomment>
 <context>
     <name>CoreUserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="132"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="132"/>
         <source>sending CTCP-%1 request</source>
         <translation>Sende CTCP-%1-Anfrage</translation>
     </message>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="63"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="63"/>
         <source>away</source>
         <translation></translation>
     </message>

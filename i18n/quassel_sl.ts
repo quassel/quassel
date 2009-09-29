@@ -5327,12 +5327,12 @@ Pustite na ISO-8859-1, razen če ste prepričani, kaj počnete!</translation>
 <context>
     <name>CoreUserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="69"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="69"/>
         <source>away</source>
         <translation>odsoten</translation>
     </message>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="138"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="138"/>
         <source>sending CTCP-%1 request</source>
         <translation>pošiljanje zahtevka CTCP-%1</translation>
     </message>

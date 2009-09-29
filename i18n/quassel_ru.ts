@@ -5869,12 +5869,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>CoreUserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="138"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="138"/>
         <source>sending CTCP-%1 request</source>
         <translation>отправляю запрос CTCP-%1</translation>
     </message>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="69"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="69"/>
         <source>away</source>
         <translation>отсутствует</translation>
     </message>

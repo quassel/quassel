@@ -6601,12 +6601,12 @@ Click to edit!</source>
 <context>
     <name>CoreUserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="69"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="69"/>
         <source>away</source>
         <translation>borte</translation>
     </message>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="138"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="138"/>
         <source>sending CTCP-%1 request</source>
         <translation>Sender CTCP-%1 forespørsel</translation>
     </message>

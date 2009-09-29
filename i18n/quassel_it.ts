@@ -4713,12 +4713,12 @@ A meno che tu non sappia *realmente* cosa stai facendo, lascia questo valore imp
 <context>
     <name>CoreUserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="63"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="63"/>
         <source>away</source>
         <translation type="unfinished">assente</translation>
     </message>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="132"/>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="132"/>
         <source>sending CTCP-%1 request</source>
         <translation type="unfinished">invio richiesta CTCP-%1</translation>
     </message>
