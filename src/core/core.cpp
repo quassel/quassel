@@ -41,8 +41,11 @@
 #  include <termios.h>
 #endif /* Q_OS_WIN32 */
 
-#include <sys/types.h>
-#include <sys/stat.h>
+// umask
+#ifndef Q_OS_WIN32
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#endif /* Q_OS_WIN32 */
 
 // ==============================
 //  Custom Events
@@ -77,7 +80,9 @@ void Core::destroy() {
 Core::Core()
   : _storage(0)
 {
+#ifndef Q_OS_WIN32
   umask(S_IRWXG | S_IRWXO);
+#endif /* Q_OS_WIN32 */
   _startTime = QDateTime::currentDateTime().toUTC();  // for uptime :)
 
   Quassel::loadTranslation(QLocale::system());
