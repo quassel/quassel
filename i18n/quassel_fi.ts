@@ -92,6 +92,16 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AliasesModel</name>
     <message>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="55"/>
+        <source>&lt;b&gt;The shortcut for the alias&lt;/b&gt;&lt;br /&gt;It can be used as a regular slash command.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Example:&lt;/b&gt; &quot;foo&quot; can be used per /foo</source>
+        <translation>&lt;b&gt;Aliaksen lyhytkomento&lt;/b&gt;&lt;br /&gt;Sitä voidaan käyttää kuten normaalia /komentoa.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Esimerkki:&lt;/b&gt; lyhytkomentoa &quot;foo&quot; voidaan käyttää kirjoittamalla /foo</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="59"/>
+        <source>&lt;b&gt;The string the shortcut will be expanded to&lt;/b&gt;&lt;br /&gt;&lt;b&gt;special variables:&lt;/b&gt;&lt;br /&gt; - &lt;b&gt;$i&lt;/b&gt; represents the i&apos;th parameter.&lt;br /&gt; - &lt;b&gt;$i..j&lt;/b&gt; represents the i&apos;th to j&apos;th parameter separated by spaces.&lt;br /&gt; - &lt;b&gt;$i..&lt;/b&gt; represents all parameters from i on separated by spaces.&lt;br /&gt; - &lt;b&gt;$i:hostname&lt;/b&gt; represents the hostname of the user identified by the i&apos;th parameter or a * if unknown.&lt;br /&gt; - &lt;b&gt;$0&lt;/b&gt; the whole string.&lt;br /&gt; - &lt;b&gt;$nick&lt;/b&gt; your current nickname&lt;br /&gt; - &lt;b&gt;$channel&lt;/b&gt; the name of the selected channel&lt;br /&gt;&lt;br /&gt;Multiple commands can be separated with semicolons&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Example:&lt;/b&gt; &quot;Test $1; Test $2; Test All $0&quot; will be expanded to three separate messages &quot;Test 1&quot;, &quot;Test 2&quot; and &quot;Test All 1 2 3&quot; when called like /test 1 2 3</source>
+        <translation>&lt;b&gt;Merkkijono joksi lyhytkomenno laajennetaan&lt;/b&gt;&lt;br /&gt;&lt;b&gt;erikoismuuttujat:&lt;/b&gt;&lt;br /&gt; - &lt;b&gt;$i&lt;/b&gt; merkkaa i:dettä parametria.&lt;br /&gt; - &lt;b&gt;$i..j&lt;/b&gt; merkkaa parametreja i:dennestä j:denteen välilyönneillä erotettuna.&lt;br /&gt; - &lt;b&gt;$i..&lt;/b&gt; merkkaa kaikkia parametreja i:dennestä eteenpäin välilyönneillä erotettuna.&lt;br /&gt; - &lt;b&gt;$i:hostname&lt;/b&gt; merkkaa i:n tunnistaman käyttäjän verkko-osoitetta, tai * jos se on tuntematon.&lt;br /&gt; - &lt;b&gt;$0&lt;/b&gt; koko merkkijono.&lt;br /&gt; - &lt;b&gt;$nick&lt;/b&gt; nykyinen nimimerkkisi&lt;br /&gt; - &lt;b&gt;$channel&lt;/b&gt; valitun kanavan nimi&lt;br /&gt;&lt;br /&gt;Monta komentoa voidaan erottaa toisistaan puolipisteillä.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Esimerkki:&lt;/b&gt; &quot;Testi $1; Testi $2; Testi Kaikki $0&quot; laajennetaan kolmeksi erilliseksi viestiksi &quot;Testi 1&quot;, &quot;Testi 2&quot; ja &quot;Testi Kaikki 1 2 3&quot; kun sitä kutsutaan komennolla /testi 1 2 3</translation>
+    </message>
+    <message>
         <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="170"/>
         <source>Alias</source>
         <translation>Alias</translation>
@@ -194,11 +204,6 @@ p, li { white-space: pre-wrap; }
         <translation>Polku:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="98"/>
-        <source>/UiStyle/CustomStyleSheetPath</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="108"/>
         <source>...</source>
         <translation>...</translation>
@@ -250,11 +255,6 @@ p, li { white-space: pre-wrap; }
         <translation>Dynaamisen takalokin määrä:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="41"/>
-        <source>DynamicBacklogAmount</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="75"/>
         <source>Backlog request method:</source>
         <translation>Takalokin pyyntötapa:</translation>
@@ -290,12 +290,13 @@ p, li { white-space: pre-wrap; }
         <translation>Aloitusviestimäärä:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="157"/>
-        <source>FixedBacklogAmount</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="235"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="357"/>
+        <source>Unlimited</source>
+        <translation>Rajoittamaton</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="199"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="205"/>
         <source>This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.
 
 You can also choose to fetch additional older chatlines to provide a better context.</source>
@@ -304,44 +305,34 @@ You can also choose to fetch additional older chatlines to provide a better cont
 Voit myös määrittää noudettavaksi vanhempia viestirivejä asiayhteyden selventämiseksi.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="216"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="226"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="342"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="222"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="232"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="354"/>
         <source>Maximum amount of messages to be fetched per buffer.</source>
         <translation>Maksimi määrä noudettuja viestejä per puskuri.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="219"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="335"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="225"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="347"/>
         <source>Limit:</source>
         <translation>Raja:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="238"/>
-        <source>PerBufferUnreadBacklogLimit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="248"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="258"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="364"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="374"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="260"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="270"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="382"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="392"/>
         <source>Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here.</source>
         <translation>Kuinka monta viestiä noudetaan lukemattomien lisäksi. Raja ei päde tässä tapauksessa.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="251"/>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="367"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="263"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="385"/>
         <source>Additional Messages:</source>
         <translation>Ylimääräiset viestit:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="270"/>
-        <source>PerBufferUnreadBacklogAdditional</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="312"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="324"/>
         <source>This requester fetches all messages newer than the oldest unread message for all chats.
 
 Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).
@@ -356,19 +347,9 @@ Se on hyödyllinen noudettujen rivien määrän vähentämiseksi ja on luutavast
 Voit myös määrittää noudettavaksi vanhempia viestirivejä asiayhteyden selventämiseksi.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="332"/>
+        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="344"/>
         <source>Maximum amount of messages to be fetched over all buffers.</source>
         <translation>Maksimi määrä noudettuja viestejä kaikissa puskureissa yhteensä.</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="354"/>
-        <source>GlobalUnreadBacklogLimit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="386"/>
-        <source>GlobalUnreadBacklogAdditional</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -840,34 +821,14 @@ p, li { white-space: pre-wrap; }
         <translation>[hh:mm:ss]</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="35"/>
-        <source>TimestampFormat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="59"/>
         <source>Custom chat window font:</source>
         <translation>Mukautettu keskusteluikkunan fontti:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="65"/>
-        <source>/QtUiStyle/Fonts/UseCustomChatViewFont</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="78"/>
-        <source>/QtUiStyle/Fonts/ChatView</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="92"/>
         <source>Allow colored text (mIRC color codes)</source>
         <translation>Salli värillinen teksti (mIRC:n värikoodit)</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="101"/>
-        <source>AllowMircColors</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="108"/>
@@ -880,19 +841,9 @@ p, li { white-space: pre-wrap; }
         <translation>Näytä verkkosivusta esikatselu kun hiirtä pidetään linkin päällä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="120"/>
-        <source>ShowWebPreview</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="127"/>
         <source>Custom Colors</source>
         <translation>Mukautetut värit</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="136"/>
-        <source>/QtUiStyle/Colors/UseChatViewColors</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="145"/>
@@ -931,19 +882,9 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="155"/>
-        <source>/QtUiStyle/Colors/ActionMsg</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="169"/>
         <source>Timestamp:</source>
         <translation>Aikaleima:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="179"/>
-        <source>/QtUiStyle/Colors/Timestamp</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="193"/>
@@ -951,29 +892,14 @@ p, li { white-space: pre-wrap; }
         <translation>Viesti kanavalle:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="203"/>
-        <source>/QtUiStyle/Colors/ChannelMsg</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="230"/>
         <source>Highlight foreground:</source>
         <translation>Korostuksen teksti:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="240"/>
-        <source>/QtUiStyle/Colors/Highlight</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="254"/>
         <source>Command message:</source>
         <translation>Komentoviesti:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="264"/>
-        <source>/QtUiStyle/Colors/CommandMsg</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="278"/>
@@ -986,19 +912,9 @@ p, li { white-space: pre-wrap; }
         <translation>Palvelinviesti:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="295"/>
-        <source>/QtUiStyle/Colors/ServerMsg</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="309"/>
         <source>Marker line:</source>
         <translation>Merkkiviiva:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="319"/>
-        <source>/QtUiStyle/Colors/MarkerLine</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="333"/>
@@ -1006,24 +922,9 @@ p, li { white-space: pre-wrap; }
         <translation>Virhe:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="343"/>
-        <source>/QtUiStyle/Colors/ErrorMsg</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="357"/>
         <source>Background:</source>
         <translation>Tausta:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="367"/>
-        <source>/QtUiStyle/Colors/ChatViewBackground</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="384"/>
-        <source>/QtUiStyle/Colors/HighlightBackground</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="401"/>
@@ -1031,99 +932,9 @@ p, li { white-space: pre-wrap; }
         <translation>Käytä lähettäjävärejä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="410"/>
-        <source>/QtUiStyle/Colors/UseSenderColors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="424"/>
-        <source>/QtUiStyle/Colors/Sender00</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="441"/>
-        <source>/QtUiStyle/Colors/Sender02</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="458"/>
-        <source>/QtUiStyle/Colors/Sender04</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="475"/>
-        <source>/QtUiStyle/Colors/Sender05</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="492"/>
-        <source>/QtUiStyle/Colors/Sender06</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="509"/>
-        <source>/QtUiStyle/Colors/Sender07</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="526"/>
-        <source>/QtUiStyle/Colors/Sender08</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="543"/>
-        <source>/QtUiStyle/Colors/Sender09</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="560"/>
-        <source>/QtUiStyle/Colors/Sender10</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="577"/>
-        <source>/QtUiStyle/Colors/Sender11</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="594"/>
-        <source>/QtUiStyle/Colors/Sender12</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="611"/>
-        <source>/QtUiStyle/Colors/Sender13</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="628"/>
-        <source>/QtUiStyle/Colors/Sender14</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="645"/>
-        <source>/QtUiStyle/Colors/Sender15</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="662"/>
-        <source>/QtUiStyle/Colors/Sender01</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="679"/>
-        <source>/QtUiStyle/Colors/Sender03</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="697"/>
         <source>Own messages:</source>
         <translation>Omat viestit:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="707"/>
-        <source>/QtUiStyle/Colors/SenderSelf</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1185,8 +996,13 @@ p, li { white-space: pre-wrap; }
         <translation>Kirjaudutaan sisään...</translation>
     </message>
     <message>
-        <location filename="../src/client/clientsyncer.cpp" line="382"/>
-        <location filename="../src/client/clientsyncer.cpp" line="407"/>
+        <location filename="../src/client/clientsyncer.cpp" line="360"/>
+        <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
+        <translation>&lt;b&gt;Quassel-ytimen versio:&lt;/b&gt; %1&lt;br&gt;Käännetty: %2&lt;br&gt;Päällä %3d%4h%5m (alkaen %6)</translation>
+    </message>
+    <message>
+        <location filename="../src/client/clientsyncer.cpp" line="404"/>
+        <location filename="../src/client/clientsyncer.cpp" line="429"/>
         <source>Cert Digest changed! was: %1</source>
         <translation>Varmennetiiviste vaihtunut! oli: %1</translation>
     </message>
@@ -1270,7 +1086,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ContentsChatItem</name>
     <message>
-        <location filename="../src/qtui/chatitem.cpp" line="575"/>
+        <location filename="../src/qtui/chatitem.cpp" line="592"/>
         <source>Copy Link Address</source>
         <translation>Kopioi linkin osoite</translation>
     </message>
@@ -1278,200 +1094,220 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ContextMenuActionProvider</name>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="35"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="38"/>
         <source>Connect</source>
         <translation>Yhdistä</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="36"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="39"/>
         <source>Disconnect</source>
         <translation>Katkaise yhteys</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="38"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="41"/>
         <source>Join</source>
         <translation>Liity</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="39"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="42"/>
         <source>Part</source>
         <translation>Poistu</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="40"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="43"/>
         <source>Delete Chat(s)...</source>
         <translation>Poista keskustelu(t)...</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="41"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="44"/>
         <source>Go to Chat</source>
         <translation>Mene keskusteluun</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="43"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="46"/>
         <source>Joins</source>
         <translation>Liittymiset</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="44"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="47"/>
         <source>Parts</source>
         <translation>Poistumiset</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="45"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="48"/>
         <source>Quits</source>
         <translation>Lopetukset</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="46"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="49"/>
         <source>Nick Changes</source>
         <translation>Nimimerkin vaihdot</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="47"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="50"/>
         <source>Mode Changes</source>
         <translation>Tilan vaihdot</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="48"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="51"/>
         <source>Day Changes</source>
         <translation>Päivän vaihdot</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="49"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="52"/>
         <source>Topic Changes</source>
         <translation>Aiheen vaihdot</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="50"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="53"/>
         <source>Set as Default...</source>
         <translation>Aseta oletukseksi...</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="51"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="54"/>
         <source>Use Defaults...</source>
         <translation>Käytä oletuksia...</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="53"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="56"/>
         <source>Join Channel...</source>
         <translation>Liity kanavalle...</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="55"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="58"/>
         <source>Start Query</source>
         <translation>Aloita yksityiskeskustelu</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="56"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="59"/>
         <source>Show Query</source>
         <translation>Näytä yksityiskeskustelu</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="57"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="60"/>
         <source>Whois</source>
         <translation>Käyttäjän tiedot (Whois)</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="59"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="62"/>
         <source>Version</source>
         <translation>Versio (Version)</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="60"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="63"/>
         <source>Time</source>
         <translation>Aika (Time)</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="61"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="64"/>
         <source>Ping</source>
         <translation>Ping</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="62"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="65"/>
         <source>Finger</source>
         <translation>Sormenjälki (Finger)</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="64"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="66"/>
+        <source>Custom...</source>
+        <translation>Mukautettu...</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="78"/>
         <source>Give Operator Status</source>
         <translation>Anna operaattorioikeudet</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="65"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="79"/>
         <source>Take Operator Status</source>
         <translation>Poista operaattorioikeudet</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="66"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="80"/>
         <source>Give Voice</source>
         <translation>Anna puheoikeus</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="67"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="81"/>
         <source>Take Voice</source>
         <translation>Poista puheoikeus</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="68"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="82"/>
         <source>Kick From Channel</source>
         <translation>Potki kanavalta</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="69"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="83"/>
         <source>Ban From Channel</source>
         <translation>Anna porttikielto</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="70"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="84"/>
         <source>Kick &amp;&amp; Ban</source>
         <translation>Potki &amp;&amp; Anna porttikielto</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="72"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="86"/>
         <source>Hide Chat(s) Temporarily</source>
         <translation>Piilota keskustelu(t) väliaikaisesti</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="73"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="87"/>
         <source>Hide Chat(s) Permanently</source>
         <translation>Piilota keskustelu(t) pysyvästi</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="74"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="88"/>
         <source>Show Channel List</source>
         <translation>Näytä kanavalista</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="75"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="89"/>
         <source>Show Ignore List</source>
         <translation>Näytä ohituslista</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="88"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="102"/>
         <source>Hide Events</source>
         <translation>Piilota tapahtumat</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="96"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="110"/>
         <source>CTCP</source>
         <translation>CTCP</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="108"/>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="122"/>
         <source>Actions</source>
         <translation>Toiminnot</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="126"/>
+        <source>Ignore</source>
+        <translation>Suodata</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="131"/>
+        <source>Add Ignore Rule</source>
+        <translation>Lisää suodatussääntö</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="132"/>
+        <source>Existing Rules</source>
+        <translation>Olemassaolevat säännöt</translation>
     </message>
 </context>
 <context>
     <name>Core</name>
     <message>
-        <location filename="../src/core/core.cpp" line="172"/>
+        <location filename="../src/core/core.cpp" line="182"/>
         <source>Could not initialize any storage backend! Exiting...</source>
         <translation>Yhtään tietokantamoottoria ei saatu käyntiin! Lopetetaan...</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="173"/>
+        <location filename="../src/core/core.cpp" line="183"/>
         <source>Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your
 Qt library with the sqlite or postgres plugin enabled in order for quasselcore
 to work.</source>
@@ -1480,139 +1316,139 @@ Qt-kirjastosi joko sqlite tai postgres -lisäosan kanssa jotta quasselcore
 voi toimia.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="222"/>
+        <location filename="../src/core/core.cpp" line="232"/>
         <source>Calling restoreState() even though active sessions exist!</source>
         <translation>Kutsutaan restoreState() vaikka aktiivisia istuntoja on olemassa!</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="263"/>
+        <location filename="../src/core/core.cpp" line="273"/>
         <source>Admin user or password not set.</source>
         <translation>Ylläpitäjän käyttäjänimeä tai salasanaa ei ole määritelty.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="267"/>
+        <location filename="../src/core/core.cpp" line="277"/>
         <source>Could not setup storage!</source>
         <translation>Varastoa ei voitu alustaa!</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="271"/>
+        <location filename="../src/core/core.cpp" line="281"/>
         <source>Creating admin user...</source>
         <translation>Luodaan ylläpitokäyttäjää...</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="384"/>
+        <location filename="../src/core/core.cpp" line="394"/>
         <source>Invalid listen address %1</source>
         <translation>Virheellinen kuunteluosoite %1</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="392"/>
+        <location filename="../src/core/core.cpp" line="402"/>
         <source>Listening for GUI clients on IPv4 %1 port %2 using protocol version %3</source>
         <translation>Odotetaan asiakkaita IPv4 %1 portissa %2 käyttäen protokollan versiota %3</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="400"/>
+        <location filename="../src/core/core.cpp" line="410"/>
         <source>Could not open IPv4 interface %1:%2: %3</source>
         <translation>Ei voitu avata IPv4-rajapintaa %1:%2: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="408"/>
+        <location filename="../src/core/core.cpp" line="418"/>
         <source>Listening for GUI clients on IPv6 %1 port %2 using protocol version %3</source>
         <translation>Odotetaan asiakkaita IPv6 %1 portissa %2 käyttäen protokollan versiota %3</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="419"/>
+        <location filename="../src/core/core.cpp" line="429"/>
         <source>Could not open IPv6 interface %1:%2: %3</source>
         <translation>Ei voitu avata IPv6-rajapintaa %1:%2: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="427"/>
+        <location filename="../src/core/core.cpp" line="437"/>
         <source>Invalid listen address %1, unknown network protocol</source>
         <translation>Virheellinen osoite %1, tuntematon yhteyskäytäntö</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="436"/>
+        <location filename="../src/core/core.cpp" line="446"/>
         <source>Could not open any network interfaces to listen on!</source>
         <translation>Ei voitu avata yhtään verkkorajapintaa kuuntelua varten!</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="470"/>
+        <location filename="../src/core/core.cpp" line="480"/>
         <source>Client connected from</source>
         <translation>Asiakas yhdistetty</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="473"/>
+        <location filename="../src/core/core.cpp" line="483"/>
         <source>Closing server for basic setup.</source>
         <translation>Suljetaan palvelin perusasetusten tekoa varten.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="492"/>
+        <location filename="../src/core/core.cpp" line="502"/>
         <source>Antique client trying to connect... refusing.</source>
         <translation>Antiikkinen asiakas yrittää yhdistää... hylätään.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="504"/>
+        <location filename="../src/core/core.cpp" line="514"/>
         <source>&lt;b&gt;Your Quassel Client is too old!&lt;/b&gt;&lt;br&gt;This core needs at least client/core protocol version %1.&lt;br&gt;Please consider upgrading your client.</source>
         <translation>&lt;b&gt;Quassel-asiakkaasi on liian vanha!&lt;/b&gt;&lt;br&gt;Tämä ydin vaatii vähintään asiakas/ydin -prtokollan version %1.&lt;br&gt;Harkitse asiakkaasi päivittämistä.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="508"/>
-        <location filename="../src/core/core.cpp" line="591"/>
-        <location filename="../src/core/core.cpp" line="615"/>
+        <location filename="../src/core/core.cpp" line="518"/>
+        <location filename="../src/core/core.cpp" line="606"/>
+        <location filename="../src/core/core.cpp" line="630"/>
         <source>Client</source>
         <translation>Asiakas</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="508"/>
+        <location filename="../src/core/core.cpp" line="518"/>
         <source>too old, rejecting.</source>
         <translation>liian vanha, hylätään.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="520"/>
+        <location filename="../src/core/core.cpp" line="535"/>
         <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
         <translation>&lt;b&gt;Quassel-ydin versio:&lt;/b&gt; %1&lt;br&gt;Käännetty: %2&lt;br&gt;Päällä %3d%4h%5m (alkaen %6)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="571"/>
+        <location filename="../src/core/core.cpp" line="586"/>
         <source>Starting TLS for Client:</source>
         <translation>Käynnistetään TLS asiakkaalle:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="589"/>
+        <location filename="../src/core/core.cpp" line="604"/>
         <source>&lt;b&gt;Client not initialized!&lt;/b&gt;&lt;br&gt;You need to send an init message before trying to login.</source>
         <translation>&lt;b&gt;Asiakasta ei alustettu!&lt;/b&gt;&lt;br&gt;Sinun pitää lähettää alustusviesti ennen sisäänkirjautumisen yrittämistä.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="591"/>
+        <location filename="../src/core/core.cpp" line="606"/>
         <source>did not send an init message before trying to login, rejecting.</source>
         <translation>ei lähettänyt alustusviestiä ennen sisäänkirjautumisen yrittämistä, hylätään.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="609"/>
+        <location filename="../src/core/core.cpp" line="624"/>
         <source>&lt;b&gt;Invalid username or password!&lt;/b&gt;&lt;br&gt;The username/password combination you supplied could not be found in the database.</source>
         <translation>&lt;b&gt;Virheellinen käyttäjätunnus tai salasana!&lt;/b&gt;&lt;br&gt;Antamaasi käyttäjätunnus/salasana -yhdistelmää ei löytynyt tietokannasta.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="615"/>
+        <location filename="../src/core/core.cpp" line="630"/>
         <source>initialized and authenticated successfully as &quot;%1&quot; (UserId: %2).</source>
         <translation>alustettu ja todennettu onnistuneesti tunnuksella &quot;%1&quot; (UserId: %2).</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="626"/>
+        <location filename="../src/core/core.cpp" line="641"/>
         <source>Non-authed client disconnected.</source>
         <translation>Yhteys todentamattomaan asiakkaaseen katkaistu.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="632"/>
+        <location filename="../src/core/core.cpp" line="647"/>
         <source>Non-authed client disconnected. (socket allready destroyed)</source>
         <translation>Yhteys todentamattomaan asiakkaaseen katkaistu. (socket jo tuhottu)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="680"/>
+        <location filename="../src/core/core.cpp" line="695"/>
         <source>Could not initialize session for client:</source>
         <translation>Istuntoa ei voitu alustaa asiakkaalle:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="702"/>
+        <location filename="../src/core/core.cpp" line="717"/>
         <source>Could not find a session for client:</source>
         <translation>Istuntoa ei voitu löytää asiakkaalle:</translation>
     </message>
@@ -1958,53 +1794,53 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="392"/>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="450"/>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="286"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="263"/>
         <source>Login</source>
         <translation>Kirjaudu sisään</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="19"/>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="53"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="20"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="46"/>
         <source>Connect to Quassel Core</source>
         <translation>Yhdistä Quassel-ytimeen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="68"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="61"/>
         <source>Edit...</source>
         <translation>Muokkaa...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="79"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="72"/>
         <source>Add...</source>
         <translation>Lisää...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="90"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="83"/>
         <source>Delete</source>
         <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="114"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="107"/>
         <source>Use internal core</source>
         <translation>Käytä sisäistä ydintä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="128"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="121"/>
         <source>Always use this account</source>
         <translation>Käytä aina tätä tiliä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="165"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="150"/>
         <source>Initializing your connection</source>
         <translation>Yhteyttäsi alustetaan</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="183"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="168"/>
         <source>Connected to apollo.mindpool.net.</source>
         <translation>Yhdistetty kohteeseen apollo.mindpool.net.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="215"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="200"/>
         <source>THIS IS A PLACEHOLDER
 TO
 RESERVE
@@ -2015,72 +1851,80 @@ VARATAAN
 TILAA</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="294"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="271"/>
         <source>User:</source>
         <translation>Käyttäjä:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="308"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="285"/>
         <source>Password:</source>
         <translation>Salasana:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="322"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="299"/>
         <source>Remember</source>
         <translation>Muista</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="356"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="333"/>
+        <source>View SSL Certificate</source>
+        <translation>Näytä SSL-varmenne</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="370"/>
+        <source>Add to known hosts</source>
+        <translation>Lisää tunnettuihin isäntiin</translation>
+    </message>
+    <message>
         <source>view SSL Certificate</source>
-        <translation>näytä SSL-varmenne</translation>
+        <translation type="obsolete">näytä SSL-varmenne</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="393"/>
         <source>add to known hosts</source>
-        <translation>lisää tunnettuihin palvelimiin</translation>
+        <translation type="obsolete">lisää tunnettuihin palvelimiin</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="413"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="390"/>
         <source>Continue connection</source>
         <translation>Jatka yhdistämistä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="456"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="425"/>
         <source>Configure your Quassel Core</source>
         <translation>Tee Quassel-ytimesi asetukset</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="462"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="431"/>
         <source>The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core.</source>
         <translation>Asetuksia ei ole vielä tehty Quassel-ytimellä johon olet yhdistetty. Voit nyt käynnistää ohjatun asetusten tekemisen joka auttaa ytimesi käyttöönotossa.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="490"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="459"/>
         <source>Launch Wizard</source>
         <translation>Käynnistä ohjattu toiminto</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="553"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="505"/>
         <source>Initializing your session...</source>
         <translation>Istuntoasi alustetaan...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="561"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="513"/>
         <source>&lt;b&gt;Please be patient while your client synchronizes with the Quassel Core!&lt;/b&gt;</source>
         <translation>&lt;b&gt;Asiakastasi synkronoidaan Quassel-ytimen kanssa. Odota hetki...&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="576"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="528"/>
         <source>Session state:</source>
         <translation>Istunnon tila:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="593"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="545"/>
         <source>Network states:</source>
         <translation>Verkkojen tilat:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="606"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="558"/>
         <source>0/0</source>
         <translation>0/0</translation>
     </message>
@@ -2188,24 +2032,37 @@ TILAA</translation>
 <context>
     <name>CoreSession</name>
     <message>
-        <location filename="../src/core/coresession.cpp" line="192"/>
+        <location filename="../src/core/coresession.cpp" line="194"/>
         <source>Client</source>
         <translation>Asiakas</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="192"/>
+        <location filename="../src/core/coresession.cpp" line="194"/>
         <source>disconnected (UserId: %1).</source>
         <translation>yhteys katkaistu (UserId: %1).</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="384"/>
+        <location filename="../src/core/coresession.cpp" line="388"/>
         <source>CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!</source>
         <translation>CoreSession::createNetwork(): Sai virheellisen networkId:n ytimeltä yrittäessään luoda verkkoa %1!</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="415"/>
+        <location filename="../src/core/coresession.cpp" line="419"/>
         <source>CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!</source>
         <translation>CoreSession::createNetwork(): Yritetään luoda verkkoa joka on jo olemassa, päivitetään sen sijaan!</translation>
+    </message>
+</context>
+<context>
+    <name>CoreUserInputHandler</name>
+    <message>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="63"/>
+        <source>away</source>
+        <translation>poissa</translation>
+    </message>
+    <message>
+        <location filename="../src/core/coreuserinputhandler.cpp" line="132"/>
+        <source>sending CTCP-%1 request</source>
+        <translation>lähetetään CTCP-%1 -pyyntö</translation>
     </message>
 </context>
 <context>
@@ -3013,12 +2870,10 @@ Jatkamisesta seuraa SSL-avaimesi ja SSL-varmenteesi siirtäminen salaamattomana!
 <context>
     <name>IgnoreListEditDlg</name>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="15"/>
         <source>Configure ignore rule</source>
-        <translation>Määritä suodatussääntö</translation>
+        <translation type="obsolete">Määritä suodatussääntö</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="27"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3032,7 +2887,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Permanent:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Messages are filtered before they get stored in the database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -3047,22 +2902,21 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Viestit suodatetaan ennen kuin ne tallennetaan tietokantaan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="42"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="35"/>
         <source>Strictness</source>
         <translation>Taso</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="48"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="41"/>
         <source>Dynamic</source>
         <translation>Dynaaminen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="55"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="48"/>
         <source>Permanent</source>
         <translation>Pysyvä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="65"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3076,7 +2930,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;By Message:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The rule is matched against the actual message content&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -3091,22 +2945,21 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="80"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="66"/>
         <source>Rule Type</source>
         <translation>Sääntötyyppi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="86"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="72"/>
         <source>Sender</source>
         <translation>Lähettäjä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="93"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="79"/>
         <source>Message</source>
         <translation>Viesti</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="105"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3126,7 +2979,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;*@foobar.com&quot; matches any sender from host &quot;foobar.com&quot;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;stupid!.+&quot; (RegEx) matches any sender with nickname &quot;stupid&quot; from any host&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -3147,12 +3000,10 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;idiootti!.+&quot; (RegEx) pätee jokaiseen lähettäjään jonka nimimerkki on &quot;idiootti&quot;, mistä tahansa verkko-osoitteesta&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="126"/>
         <source>Ignore rule</source>
-        <translation>Suodatussääntö</translation>
+        <translation type="obsolete">Suodatussääntö</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="137"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3165,7 +3016,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; *: represents &quot;any amount of any character&quot;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; ?: represents &quot;one or none character&quot;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -3179,12 +3030,10 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="151"/>
         <source>Use Regular Expressions</source>
-        <translation>Käytä säännöllisiä ilmauksia (RegEx)</translation>
+        <translation type="obsolete">Käytä säännöllisiä ilmauksia (RegEx)</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="158"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3193,7 +3042,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Only enabled rules are filtered.&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;For dynamic rules, disabling actually shows the filtered messages again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -3203,12 +3052,10 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;Dynaamisen säännön käytöstä poistaminen näyttää suodatetut viestit jälleen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="168"/>
         <source>Enabled</source>
-        <translation>Käytössä</translation>
+        <translation type="obsolete">Käytössä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="180"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3223,7 +3070,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Channel:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The list below is interpreted as a list of channels for which the rule should match&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -3239,27 +3086,163 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Alla oleva lista tulkitaan listaksi kanavia joissa sääntö pätee&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="196"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="15"/>
+        <source>Configure Ignore Rule</source>
+        <translation>Määritä suodatussääntö</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="27"/>
+        <source>&lt;p&gt;&lt;b&gt;Strictness:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Dynamic:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Messages are filtered &quot;on the fly&quot;.
+Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Permanent:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Messages are filtered before they get stored in the database.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Taso:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Dynaaminen:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Viestit suodatetaan &quot;lennossa&quot;.
+Kun otat säännön pois käytöstä viestit näytetään jälleen.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Pysyvä:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Viestit suodatetaan jo ennen niiden tallentamista tietokantaan.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="58"/>
+        <source>&lt;p&gt;&lt;b&gt;Rule Type:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;By Sender:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The rule is matched against the sender string
+&lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;By Message:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The rule is matched against the actual message content&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Sääntötyyppi:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Lähettäjän mukaan:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Sääntöä testataan seuraavan kaltaista lähettäjämerkkijonoa vastaan:
+&lt;i&gt;nimimerkki!ident@verkko.osoite&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Viestin mukaan:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Sääntöä testataan viestin varsinaista sisältöä vastaan.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="91"/>
+        <source>&lt;p&gt;&lt;b&gt;Ignore rule:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Depending on the type of the rule, the text is matched against either:&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- the message content:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Example:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;*foobar*&lt;/i&gt; matches any text containing the word &lt;i&gt;foobar&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- the sender string&lt;/u&gt;  &lt;i&gt;(nick!ident@host.name)&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Examples:&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;*@foobar.com&lt;/i&gt; matches any sender from host &lt;i&gt;foobar.com&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;stupid!.+&lt;/i&gt; (RegEx) matches any sender with nickname &lt;i&gt;stupid&lt;/i&gt; from any host&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Sudatussääntö:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Säännön tyypistä riippuen sitä verrataan joko:&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- viestin sisältöön:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Esimerkki:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;*foobar*&lt;/i&gt; pätee kaikkiien viesteihin jotka sisältävät sanan &lt;i&gt;foobar&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;- lähettäjämerkkijonoon&lt;/u&gt;  &lt;i&gt;(nimimerkki!ident@verkko.osoite)&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Esimerkejä:&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;*@foobar.com&lt;/i&gt; pätee kaikkiin lähettäjiin osoitteesta &lt;i&gt;foobar.com&lt;/i&gt;
+&lt;br /&gt;
+- &lt;i&gt;evo!.+&lt;/i&gt; (RegEx) pätee kaikkiin lähettäjiin, joiden nimimerkki on &lt;i&gt;evo&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="105"/>
+        <source>Ignore Rule</source>
+        <translation>Suodatussääntö</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="116"/>
+        <source>&lt;p&gt;&lt;b&gt;Use regular expressions:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;If enabled, rules follow regular expression syntax.&lt;/p&gt;
+&lt;p&gt;Otherwise rules allow wildcard matching with the following special characters:&lt;/p&gt;
+&lt;p&gt; *: representing &quot;any amount of any character&quot;
+&lt;br /&gt;
+?: representing &quot;exactly one character&quot;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Käytä säännöllisiä ilmauksia (RegEx):&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Säännöt tulkitaan säännöllisiksi ilmaisuiksi jos tämä on valittuna.&lt;/p&gt;
+&lt;p&gt;Muussa tapauksessa säännöissä voidaan käyttää seuraavia jokerimerkkejä:&lt;/p&gt;
+&lt;p&gt; * tarkoittaa &quot;kuinka monta kappaletta tahansa mitä merkkiä tahansa&quot;
+&lt;br /&gt;
+? tarkoittaa &quot;tarkalleen yksi merkki&quot;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="124"/>
+        <source>Regular expression</source>
+        <translation>Säännöllinen ilmaus (RegEx)</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="136"/>
+        <source>&lt;p&gt;&lt;b&gt;Scope:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Global:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The rule is active for any channel on any network&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Network:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The list below is interpreted as a list of networks for which the rule should match&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Channel:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;The list below is interpreted as a list of channels for which the rule should match&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Laajuus:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Globaali:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Sääntö on käytössä kaikilla kanavilla kaikissa verkoissa&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Verkko:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Lista tulkitaan listaksi verkkoja joissa sääntö on käytössä&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Kanava:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Lista tulkitaan listaksi kanavia joissa sääntö on käytössä&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="145"/>
         <source>Scope</source>
         <translation>Laajuus</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="204"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="153"/>
         <source>Global</source>
         <translation>Globaali</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="211"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="160"/>
         <source>Network</source>
         <translation>Verkko</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="218"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="167"/>
         <source>Channel</source>
         <translation>Kanava</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="227"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="176"/>
+        <source>&lt;p&gt;&lt;b&gt;Scope rule:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;A scope rule is a semicolon separated list of either &lt;i&gt;network&lt;/i&gt; or &lt;i&gt;channel&lt;/i&gt; names.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Example:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;#quassel*; #foobar&lt;/i&gt;
+&lt;br /&gt;
+would match on #foobar and on any channel starting with &lt;i&gt;#quassel&lt;/i&gt;&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Laajuussääntö:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Laajuussääntö on puolipisteillä erotettu lista joko &lt;i&gt;verkkojen&lt;/i&gt; tai &lt;i&gt;kanavien&lt;/i&gt; nimiä.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Esimerkki:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;#quassel*; #foobar&lt;/i&gt;
+&lt;br /&gt;
+tarkoittaisi kanavaa #foobar, sekä kaikkia kanavia joiden nimi alkaa &lt;i&gt;#quassel&lt;/i&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="207"/>
+        <source>&lt;p&gt;&lt;b&gt;Enable / Disable:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Only enabled rules are filtered.
+&lt;br /&gt;
+For dynamic rules, disabling actually shows the filtered messages again.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;&lt;b&gt;Käytä / Älä käytä:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Vain käytössä olevat säännöt suodattavat.
+&lt;br /&gt;
+Dynaamisen säännön käytöstä poistaminen itseasiassa näyttää suodatetut viestit uudelleen&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="213"/>
+        <source>Rule is enabled</source>
+        <translation>Käytössä</translation>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3272,7 +3255,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Example:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&quot;#quassel*; #foobar&quot;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;would match on #foobar and on any channel starting with &quot;#quassel&quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -3309,17 +3292,17 @@ p, li { white-space: pre-wrap; }
         <translation>Viestin mukaan</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="191"/>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="193"/>
         <source>Enabled</source>
         <translation>Käytössä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="192"/>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="194"/>
         <source>Type</source>
         <translation>Tyyppi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="193"/>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="195"/>
         <source>Ignore Rule</source>
         <translation>Suodatussääntö</translation>
     </message>
@@ -3332,17 +3315,21 @@ p, li { white-space: pre-wrap; }
         <translation>Sekalaiset</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="34"/>
         <source>Ignorelist</source>
+        <translation type="obsolete">Suodatuslista</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="34"/>
+        <source>Ignore List</source>
         <translation>Suodatuslista</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="112"/>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="128"/>
         <source>Rule already exists</source>
         <translation>Sääntö on jo olemassa</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="113"/>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="129"/>
         <source>There is already a rule
 &quot;%1&quot;
 Please choose another rule.</source>
@@ -3372,14 +3359,27 @@ Valitse toinen sääntö.</translation>
     </message>
 </context>
 <context>
+    <name>IndicatorNotificationConfigWidget</name>
+    <message>
+        <location filename="../src/qtui/ui/indicatornotificationconfigwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Lomake</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/indicatornotificationconfigwidget.ui" line="20"/>
+        <source>Show messages in indicator</source>
+        <translation>Näytä viestit ilmaisimessa</translation>
+    </message>
+</context>
+<context>
     <name>InputWidget</name>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="88"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="89"/>
         <source>Focus Input Line</source>
         <translation>Kohdista syöterivi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="89"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="90"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
@@ -3412,24 +3412,9 @@ Valitse toinen sääntö.</translation>
         <translation>Mukautettu fontti:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="25"/>
-        <source>/UiStyle/Fonts/UseCustomInputWidgetFont</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="38"/>
-        <source>/UiStyle/Fonts/InputWidget</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="50"/>
         <source>Enable spell check</source>
         <translation>Tarkista oikeinkirjoitus</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="53"/>
-        <source>EnableSpellCheck</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="63"/>
@@ -3437,29 +3422,14 @@ Valitse toinen sääntö.</translation>
         <translation>Näytä nimimerkinvalitsin</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="69"/>
-        <source>ShowNickSelector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="79"/>
         <source>Multi-Line Editing</source>
         <translation>Usean rivin muokkaus</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="85"/>
-        <source>EnableMultiLine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="96"/>
         <source>Show at most</source>
         <translation>Näytä enintään</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="112"/>
-        <source>MaxNumLines</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="122"/>
@@ -3472,11 +3442,6 @@ Valitse toinen sääntö.</translation>
         <translation>Näytä vierityspalkit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="150"/>
-        <source>EnableScrollBars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="163"/>
         <source>Tab Completion</source>
         <translation>Sarkaintäydennys</translation>
@@ -3485,11 +3450,6 @@ Valitse toinen sääntö.</translation>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="171"/>
         <source>Completion suffix:</source>
         <translation>Täydennyksen loppuliite:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="184"/>
-        <source>/TabCompletion/CompletionSuffix</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="187"/>
@@ -3526,158 +3486,158 @@ Valitse toinen sääntö.</translation>
 <context>
     <name>IrcServerHandler</name>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="520"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="538"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
         <translation>%1 vaihto kanavan %2 aiheeksi: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="545"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="563"/>
         <source>Received RPL_ISUPPORT (005) without parameters!</source>
         <translation>Vastaanotettiin RPL_ISUPPORT (005) ilman parametreja!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="553"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="571"/>
         <source>Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!</source>
         <translation>Vastaanotettiin RFC:n vastainen RPL_ISUPPORT: tämä voi johtaa odottamattomaan käytökseen!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="570"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="577"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="584"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="591"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="588"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="595"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="602"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="609"/>
         <source>%1</source>
-        <translation type="unfinished">%1</translation>
+        <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="626"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="644"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
         <translation>[Whois] %1 on poissa: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="632"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="637"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="650"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="655"/>
         <source>%1 is away: &quot;%2&quot;</source>
         <translation>%1 on poissa: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="681"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="695"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="729"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="745"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="806"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="838"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="699"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="713"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="747"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="763"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="824"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="856"/>
         <source>[Whois] %1</source>
         <translation>[Whois] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="710"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="712"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="728"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="730"/>
         <source>[Whois] %1 is %2 (%3)</source>
         <translation>[Whois] %1 on %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="727"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="745"/>
         <source>%1 is online via %2 (%3)</source>
         <translation>%1 yhdistettynä %2 kautta (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="731"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="1009"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="749"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1027"/>
         <source>[Whowas] %1</source>
         <translation>[Whowas] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="757"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="775"/>
         <source>[Whowas] %1 was %2 (%3)</source>
         <translation>[Whowas] %1 oli %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="771"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="789"/>
         <source>[Who] End of /WHO list for %1</source>
         <translation>[Who] /WHO -listauksen loppu kohteelle %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="791"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="809"/>
         <source>[Whois] %1 is logged in since %2</source>
         <translation>[Whois] %1 on ollut kirjautuneena sisään alkaen %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="793"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="811"/>
         <source>[Whois] %1 is idling for %2 (%3)</source>
         <translation>[Whois] %1 on ollut jouten %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="796"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="814"/>
         <source>[Whois] idle message: %1</source>
         <translation>[Whois] joutenoloviesti: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="828"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="846"/>
         <source>[Whois] %1 is a user on channels: %2</source>
         <translation>[Whois] %1 on käyttäjä kanavilla: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="830"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="848"/>
         <source>[Whois] %1 has voice on channels: %2</source>
         <translation>[Whois] %1 on puheoikeutettu kanavilla: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="832"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="850"/>
         <source>[Whois] %1 is an operator on channels: %2</source>
         <translation>[Whois] %1 on operaattori kanavilla: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="860"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="878"/>
         <source>Channel %1 has %2 users. Topic is: %3</source>
         <translation>Kanavalla %1 on %2 käyttäjää. Aihe on: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="869"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
         <source>End of channel list</source>
         <translation>Kanavalistauksen loppu</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
         <source>Homepage for %1 is %2</source>
         <translation>Kotisivu kanavalle %1 on %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="923"/>
         <source>Channel %1 created on %2</source>
         <translation>Kanava %1 on luotu %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="919"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="937"/>
         <source>No topic is set for %1.</source>
         <translation>Kanavalle %1 ei ole asetettu aihetta.</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="934"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="952"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
         <translation>Aihe kanavalle %1 on &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="945"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="963"/>
         <source>Topic set by %1 on %2</source>
         <translation>Aiheen no asettanut %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="968"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="986"/>
         <source>[Who] %1</source>
         <translation>[Who] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1027"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1045"/>
         <source>Nick %1 contains illegal characters</source>
         <translation>Nimimerkki %1 sisältää epäkelpoja merkkejä</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1038"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1056"/>
         <source>Nick already in use: %1</source>
         <translation>Nimimerkki jo käytössä: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1095"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1145"/>
         <source>No free and valid nicks in nicklist found. use: /nick &lt;othernick&gt; to continue</source>
         <translation>Vapaita ja kelpoja nimimerkkejä ei löytynyt. käytä /nick &lt;nimimerkki&gt; jatkaaksesi</translation>
     </message>
@@ -3753,24 +3713,9 @@ Valitse toinen sääntö.</translation>
         <translation>Mukautettu fontti:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="25"/>
-        <source>/UiStyle/Fonts/UseCustomItemViewFont</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="38"/>
-        <source>/UiStyle/Fonts/ItemView</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="50"/>
         <source>Show icons</source>
         <translation>Näytä kuvakkeet</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="56"/>
-        <source>/UiStyle/ShowItemViewIcons</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="66"/>
@@ -3783,29 +3728,14 @@ Valitse toinen sääntö.</translation>
         <translation>Näytä aihe työkaluohjeessa</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="75"/>
-        <source>DisplayTopicInTooltip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="85"/>
         <source>Mouse wheel changes selected chat</source>
         <translation>Hiiren rulla vaihtaa valittua keskustelua</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="91"/>
-        <source>MouseWheelChangesBuffer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="101"/>
         <source>Use Custom Colors</source>
         <translation>Käytä mukautettuja värejä</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="107"/>
-        <source>/UiStyle/Colors/UseBufferViewColors</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="118"/>
@@ -3824,19 +3754,9 @@ Valitse toinen sääntö.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="128"/>
-        <source>/UiStyle/Colors/DefaultBuffer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="142"/>
         <source>Inactive:</source>
         <translation>Epäaktiivinen:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="152"/>
-        <source>/UiStyle/Colors/InactiveBuffer</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="166"/>
@@ -3844,29 +3764,14 @@ Valitse toinen sääntö.</translation>
         <translation>Lukemattomia viestejä:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="176"/>
-        <source>/UiStyle/Colors/UnreadBuffer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="190"/>
         <source>Highlight:</source>
         <translation>Korostus:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="200"/>
-        <source>/UiStyle/Colors/HighlightedBuffer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="214"/>
         <source>Other activity:</source>
         <translation>Muu toiminta:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="224"/>
-        <source>/UiStyle/Colors/ActiveBuffer</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="272"/>
@@ -3879,250 +3784,235 @@ Valitse toinen sääntö.</translation>
         <translation>Mukautetut nimimerkkilistan värit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="292"/>
-        <source>/UiStyle/Colors/UseNickViewColors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="301"/>
         <source>Online:</source>
         <translation>Paikalla:</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="311"/>
-        <source>/UiStyle/Colors/OnlineNick</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="338"/>
         <source>Away:</source>
         <translation>Poissa:</translation>
     </message>
-    <message>
-        <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="348"/>
-        <source>/UiStyle/Colors/AwayNick</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="280"/>
+        <location filename="../src/qtui/mainwin.cpp" line="292"/>
         <source>&amp;Connect to Core...</source>
         <translation>&amp;Yhdistä ytimeen...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="282"/>
+        <location filename="../src/qtui/mainwin.cpp" line="294"/>
         <source>&amp;Disconnect from Core</source>
         <translation>&amp;Katkaise yhteys ytimeen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="284"/>
+        <location filename="../src/qtui/mainwin.cpp" line="296"/>
         <source>Core &amp;Info...</source>
         <translation>Ytimen &amp;tiedot...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="286"/>
+        <location filename="../src/qtui/mainwin.cpp" line="298"/>
         <source>Configure &amp;Networks...</source>
         <translation>Määritä &amp;verkot...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="288"/>
+        <location filename="../src/qtui/mainwin.cpp" line="300"/>
         <source>&amp;Quit</source>
         <translation>&amp;Lopeta</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="289"/>
+        <location filename="../src/qtui/mainwin.cpp" line="301"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="292"/>
+        <location filename="../src/qtui/mainwin.cpp" line="304"/>
         <source>&amp;Configure Chat Lists...</source>
         <translation>&amp;Keskustelulistausten asetukset...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="295"/>
+        <location filename="../src/qtui/mainwin.cpp" line="307"/>
         <source>&amp;Lock Layout</source>
         <translation>&amp;Lukitse asettelu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="299"/>
+        <location filename="../src/qtui/mainwin.cpp" line="311"/>
         <source>Show &amp;Search Bar</source>
         <translation>Näytä &amp;hakupalkki</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="301"/>
+        <location filename="../src/qtui/mainwin.cpp" line="313"/>
         <source>Show Away Log</source>
         <translation>Näytä poissa-loki</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="303"/>
+        <location filename="../src/qtui/mainwin.cpp" line="315"/>
         <source>Show &amp;Menubar</source>
         <translation>Näytä &amp;valikkopalkki</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="304"/>
+        <location filename="../src/qtui/mainwin.cpp" line="316"/>
         <source>Ctrl+M</source>
         <translation>Ctrl+M</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="306"/>
+        <location filename="../src/qtui/mainwin.cpp" line="318"/>
         <source>Show Status &amp;Bar</source>
         <translation>Näytä &amp;tilarivi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="310"/>
+        <location filename="../src/qtui/mainwin.cpp" line="322"/>
         <source>&amp;Configure Quassel...</source>
         <translation>&amp;Quasselin asetukset...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="311"/>
+        <location filename="../src/qtui/mainwin.cpp" line="323"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="314"/>
+        <location filename="../src/qtui/mainwin.cpp" line="326"/>
         <source>&amp;About Quassel</source>
         <translation>&amp;Tietoja Quasselista</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="316"/>
+        <location filename="../src/qtui/mainwin.cpp" line="328"/>
         <source>About &amp;Qt</source>
         <translation>Tietoja &amp;Qt:stä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="318"/>
+        <location filename="../src/qtui/mainwin.cpp" line="330"/>
         <source>Debug &amp;NetworkModel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="320"/>
+        <location filename="../src/qtui/mainwin.cpp" line="332"/>
         <source>Debug &amp;BufferViewOverlay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="322"/>
+        <location filename="../src/qtui/mainwin.cpp" line="334"/>
         <source>Debug &amp;MessageModel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="324"/>
+        <location filename="../src/qtui/mainwin.cpp" line="336"/>
         <source>Debug &amp;HotList</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="326"/>
+        <location filename="../src/qtui/mainwin.cpp" line="338"/>
         <source>Debug &amp;Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="328"/>
+        <location filename="../src/qtui/mainwin.cpp" line="340"/>
         <source>Reload Stylesheet</source>
         <translation>Lataa tyylisivu uudelleen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="332"/>
+        <location filename="../src/qtui/mainwin.cpp" line="344"/>
         <source>Jump to hot chat</source>
         <translation>Hyppää aktiiviseen keskusteluun</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="339"/>
+        <location filename="../src/qtui/mainwin.cpp" line="351"/>
         <source>&amp;File</source>
         <translation>&amp;Tiedosto</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="352"/>
+        <location filename="../src/qtui/mainwin.cpp" line="364"/>
         <source>&amp;Networks</source>
         <translation>&amp;Verkot</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="358"/>
+        <location filename="../src/qtui/mainwin.cpp" line="370"/>
         <source>&amp;View</source>
         <translation>&amp;Näytä</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="359"/>
+        <location filename="../src/qtui/mainwin.cpp" line="371"/>
         <source>&amp;Chat Lists</source>
         <translation>&amp;Keskustelulistat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="361"/>
+        <location filename="../src/qtui/mainwin.cpp" line="373"/>
         <source>&amp;Toolbars</source>
         <translation>&amp;Työkalurivit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="375"/>
+        <location filename="../src/qtui/mainwin.cpp" line="387"/>
         <source>&amp;Settings</source>
         <translation>&amp;Asetukset</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="382"/>
+        <location filename="../src/qtui/mainwin.cpp" line="394"/>
         <source>&amp;Help</source>
         <translation>&amp;Ohje</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="390"/>
+        <location filename="../src/qtui/mainwin.cpp" line="402"/>
         <source>Debug</source>
         <translation>Kehittäjille</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="529"/>
+        <location filename="../src/qtui/mainwin.cpp" line="541"/>
         <source>Nicks</source>
         <translation>Nimimerkit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="538"/>
+        <location filename="../src/qtui/mainwin.cpp" line="550"/>
         <source>Show Nick List</source>
         <translation>Näytä nimimerkkilista</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="549"/>
+        <location filename="../src/qtui/mainwin.cpp" line="561"/>
         <source>Chat Monitor</source>
         <translation>Keskusteluvahti</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="560"/>
+        <location filename="../src/qtui/mainwin.cpp" line="572"/>
         <source>Show Chat Monitor</source>
         <translation>Näytä keskusteluvahti</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="564"/>
+        <location filename="../src/qtui/mainwin.cpp" line="576"/>
         <source>Inputline</source>
         <translation>Syöterivi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="573"/>
+        <location filename="../src/qtui/mainwin.cpp" line="585"/>
         <source>Show Input Line</source>
         <translation>Näytä syöterivi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="584"/>
+        <location filename="../src/qtui/mainwin.cpp" line="596"/>
         <source>Topic</source>
         <translation>Aihe</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="596"/>
+        <location filename="../src/qtui/mainwin.cpp" line="608"/>
         <source>Show Topic Line</source>
         <translation>Näytä otsikkorivi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="667"/>
+        <location filename="../src/qtui/mainwin.cpp" line="679"/>
         <source>Main Toolbar</source>
         <translation>Päätyökalurivi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="706"/>
+        <location filename="../src/qtui/mainwin.cpp" line="718"/>
         <source>Connected to core.</source>
         <translation>Yhdistetty ytimeen.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="740"/>
+        <location filename="../src/qtui/mainwin.cpp" line="752"/>
         <source>Core Lag: %1</source>
         <translation>Ydinviive: %1</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="776"/>
+        <location filename="../src/qtui/mainwin.cpp" line="788"/>
         <source>Not connected to core.</source>
         <translation>Ei yhteyttä ytimeen.</translation>
     </message>
@@ -4130,9 +4020,8 @@ Valitse toinen sääntö.</translation>
 <context>
     <name>Message</name>
     <message>
-        <location filename="../src/common/message.h" line="71"/>
         <source>Day changed to %1</source>
-        <translation>Päivä vaihtui %1</translation>
+        <translation type="obsolete">Päivä vaihtui %1</translation>
     </message>
 </context>
 <context>
@@ -4159,7 +4048,7 @@ Valitse toinen sääntö.</translation>
 <context>
     <name>MultiLineEdit</name>
     <message numerus="yes">
-        <location filename="../src/uisupport/multilineedit.cpp" line="328"/>
+        <location filename="../src/uisupport/multilineedit.cpp" line="333"/>
         <source>Do you really want to paste %n lines?</source>
         <translation>
             <numerusform>Haluatko varmasti liittää %n rivin?</numerusform>
@@ -4167,7 +4056,7 @@ Valitse toinen sääntö.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/multilineedit.cpp" line="337"/>
+        <location filename="../src/uisupport/multilineedit.cpp" line="342"/>
         <source>Paste Protection</source>
         <translation>Liittämissuoja</translation>
     </message>
@@ -4277,7 +4166,7 @@ Valitse toinen sääntö.</translation>
 <context>
     <name>NetworkModelController</name>
     <message numerus="yes">
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="152"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="154"/>
         <source>Do you want to delete the following buffer(s) permanently?</source>
         <translation>
             <numerusform>Haluatko poistaa seuraavan puskurin pysyvästi?</numerusform>
@@ -4285,17 +4174,17 @@ Valitse toinen sääntö.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="157"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="159"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; This will delete all related data, including all backlog data, from the core&apos;s database and cannot be undone.</source>
         <translation>&lt;b&gt;Huom:&lt;/b&gt; Tämä poistaa kaiken aiheeseen liittyvän datan, mukaanlukien takalokit, ytimen tietokannasta, eikä tätä toimintoa voi kumota.</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="159"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="161"/>
         <source>&lt;br&gt;Active channel buffers cannot be deleted, please part the channel first.</source>
         <translation>&lt;br&gt;Aktiivista kanavapuskuria ei voi poistaa, poistu kanavalta ensin.</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="161"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="163"/>
         <source>Remove buffers permanently?</source>
         <translation>Poistetaanko puskurit pysyvästi?</translation>
     </message>
@@ -4303,17 +4192,17 @@ Valitse toinen sääntö.</translation>
 <context>
     <name>NetworkModelController::JoinDlg</name>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="423"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="472"/>
         <source>Join Channel</source>
         <translation>Liity kanavalle</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="426"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="475"/>
         <source>Network:</source>
         <translation>Verkko:</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="428"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="477"/>
         <source>Channel:</source>
         <translation>Kanava:</translation>
     </message>
@@ -4642,7 +4531,7 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/core/postgresqlstorage.cpp" line="61"/>
         <source>PostgreSQL Turbo Bomber HD!</source>
-        <translation type="unfinished"></translation>
+        <translation>PostgreSQL überturbo HD!</translation>
     </message>
 </context>
 <context>
@@ -4972,7 +4861,7 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="235"/>
         <source>localhost</source>
-        <translation type="unfinished">localhost</translation>
+        <translation>localhost</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="266"/>
@@ -5278,17 +5167,17 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
 <context>
     <name>SystrayNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="127"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="122"/>
         <source>System Tray Icon</source>
         <translation>Ilmoitusalueen kuvake</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="128"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="123"/>
         <source>Animate</source>
         <translation>Animoi</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="130"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="125"/>
         <source>Show bubble</source>
         <translation>Näytä kupla</translation>
     </message>
@@ -5474,15 +5363,48 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     </message>
 </context>
 <context>
+    <name>TopicWidgetSettingsPage</name>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.cpp" line="23"/>
+        <source>Interface</source>
+        <translation>Käyttöliittymä</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.cpp" line="23"/>
+        <source>Topic Widget</source>
+        <translation>Aihe-elementti</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="14"/>
+        <source>Form</source>
+        <translation>Lomake</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="22"/>
+        <source>Custom font:</source>
+        <translation>Mukautettu fontti:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="50"/>
+        <source>Resize dynamically to fit contents</source>
+        <translation>Muuta kokoa dynaamisesti sisällön mukaan</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="84"/>
+        <source>On hover only</source>
+        <translation>Vain kun osoitin on elementin päällä</translation>
+    </message>
+</context>
+<context>
     <name>UiStyle::StyledMessage</name>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="561"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="564"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="604"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="607"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="610"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="617"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="718"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="572"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="575"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="615"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="618"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="621"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="628"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="729"/>
         <source>%1</source>
         <extracomment>Plain Message
 ----------
@@ -5498,146 +5420,146 @@ Topic Message</extracomment>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="567"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="578"/>
         <source>%DN%1%DN %2</source>
         <extracomment>Action Message</extracomment>
         <translation>%DN%1%DN %2</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="571"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="582"/>
         <source>You are now known as %DN%1%DN</source>
         <extracomment>Nick Message</extracomment>
         <translation>Nimimerkkisi on nyt %DN%1%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="572"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="583"/>
         <source>%DN%1%DN is now known as %DN%2%DN</source>
         <translation>%DN%1%DN on nyt nimimerkiltään %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="576"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="587"/>
         <source>User mode: %DM%1%DM</source>
         <extracomment>Mode Message</extracomment>
         <translation>Käyttäjätila: %DM%1%DM</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="577"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="588"/>
         <source>Mode %DM%1%DM by %DN%2%DN</source>
         <translation>Tila %DM%1%DM by %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="581"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="592"/>
         <source>%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
         <extracomment>Join Message</extracomment>
         <translation>%DN%1%DN %DH(%2@%3)%DH liittyi kanavalle %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="584"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="595"/>
         <source>%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
         <extracomment>Part Message</extracomment>
         <translation>%DN%1%DN %DH(%2@%3)%DH poistui kanavalta %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="589"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="600"/>
         <source>%DN%1%DN %DH(%2@%3)%DH has quit</source>
         <extracomment>Quit Message</extracomment>
         <translation>%DN%1%DN %DH(%2@%3)%DH lopetti</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="596"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="607"/>
         <source>%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
         <extracomment>Kick Message</extracomment>
         <translation>%DN%1%DN potki käyttäjän %DN%2%DN pois kanavalta %DC%3%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="613"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="624"/>
         <source>{Day changed to %1}</source>
         <extracomment>Day Change Message</extracomment>
         <translation>{Päivä vaihtui %1}</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="625"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="636"/>
         <source>Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: </source>
         <translation>Netsplit %DH%1%DH ja %DH%2%DH välillä loppui. Liittyneet käyttäjät: </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="629"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="644"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="640"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="655"/>
         <source>%DN%1%DN (%2 more)</source>
         <translation>%DN%1%DN (%2 lisää)</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="639"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="650"/>
         <source>Netsplit between %DH%1%DH and %DH%2%DH. Users quit: </source>
         <translation>Netsplit %DH%1%DH ja %DH%2%DH välillä. Lopettaneet käyttäjät: </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="648"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="686"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="659"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="697"/>
         <source>[%1]</source>
         <translation>[%1]</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="684"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="695"/>
         <source>&lt;%1&gt;</source>
         <translation>&lt;%1&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="688"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="699"/>
         <source>-*-</source>
         <translation>-*-</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="690"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="701"/>
         <source>&lt;-&gt;</source>
         <translation>&lt;-&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="692"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="703"/>
         <source>***</source>
         <translation>***</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="694"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="705"/>
         <source>--&gt;</source>
         <translation>--&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="696"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="698"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="707"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="709"/>
         <source>&lt;--</source>
         <translation>&lt;--</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="700"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="711"/>
         <source>&lt;-*</source>
         <translation>&lt;-*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="702"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="713"/>
         <source>&lt;-x</source>
         <translation>&lt;-x</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="704"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="706"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="708"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="712"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="715"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="717"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="719"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="723"/>
         <source>*</source>
         <translation>*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="710"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="721"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="714"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="725"/>
         <source>=&gt;</source>
         <translation>=&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="716"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="727"/>
         <source>&lt;=</source>
         <translation>&lt;=</translation>
     </message>
@@ -5691,19 +5613,6 @@ Topic Message</extracomment>
             <numerusform>%n käyttäjä</numerusform>
             <numerusform>%n käyttäjää</numerusform>
         </translation>
-    </message>
-</context>
-<context>
-    <name>CoreUserInputHandler</name>
-    <message>
-        <location filename="../src/core/coreuserinputhandler.cpp" line="63"/>
-        <source>away</source>
-        <translation>poissa</translation>
-    </message>
-    <message>
-        <location filename="../src/core/coreuserinputhandler.cpp" line="132"/>
-        <source>sending CTCP-%1 request</source>
-        <translation>lähetetään CTCP-%1 -pyyntö</translation>
     </message>
 </context>
 </TS>
