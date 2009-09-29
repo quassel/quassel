@@ -3441,7 +3441,7 @@ Bitte wähle eine andere Regel.</translation>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="150"/>
         <source>EnableScrollBars</source>
-        <translation>Scrollbalken aktivieren</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="163"/>
