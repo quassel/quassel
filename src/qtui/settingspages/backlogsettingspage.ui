@@ -38,7 +38,7 @@
         <number>200</number>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>DynamicBacklogAmount</string>
+        <string notr="true">DynamicBacklogAmount</string>
        </property>
        <property name="defaultValue" stdset="0">
         <number>200</number>
@@ -113,7 +113,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -160,7 +160,7 @@
             <number>500</number>
            </property>
            <property name="settingsKey" stdset="0">
-            <string>FixedBacklogAmount</string>
+            <string notr="true">FixedBacklogAmount</string>
            </property>
            <property name="defaultValue" stdset="0">
             <number>500</number>
@@ -247,7 +247,7 @@ You can also choose to fetch additional older chatlines to provide a better cont
             <number>1000</number>
            </property>
            <property name="settingsKey" stdset="0">
-            <string>PerBufferUnreadBacklogLimit</string>
+            <string notr="true">PerBufferUnreadBacklogLimit</string>
            </property>
            <property name="defaultValue" stdset="0">
             <number>1000</number>
@@ -279,7 +279,7 @@ You can also choose to fetch additional older chatlines to provide a better cont
             <number>50</number>
            </property>
            <property name="settingsKey" stdset="0">
-            <string>PerBufferUnreadBacklogAdditional</string>
+            <string notr="true">PerBufferUnreadBacklogAdditional</string>
            </property>
            <property name="defaultValue" stdset="0">
             <number>50</number>
@@ -369,7 +369,7 @@ You can also chose to fetch additional older chatlines to provide a better conte
             <number>200</number>
            </property>
            <property name="settingsKey" stdset="0">
-            <string>GlobalUnreadBacklogLimit</string>
+            <string notr="true">GlobalUnreadBacklogLimit</string>
            </property>
            <property name="defaultValue" stdset="0">
             <number>200</number>
@@ -401,7 +401,7 @@ You can also chose to fetch additional older chatlines to provide a better conte
             <number>50</number>
            </property>
            <property name="settingsKey" stdset="0">
-            <string>GlobalUnreadBacklogAdditional</string>
+            <string notr="true">GlobalUnreadBacklogAdditional</string>
            </property>
            <property name="defaultValue" stdset="0">
             <number>50</number>

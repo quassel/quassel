@@ -95,7 +95,7 @@
            <bool>false</bool>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/UiStyle/CustomStyleSheetPath</string>
+           <string notr="true">/UiStyle/CustomStyleSheetPath</string>
           </property>
           <property name="defaultValue" stdset="0">
            <string/>

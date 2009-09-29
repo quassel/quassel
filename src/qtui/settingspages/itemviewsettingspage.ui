@@ -22,7 +22,7 @@
         <string>Custom font:</string>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>/UiStyle/Fonts/UseCustomItemViewFont</string>
+        <string notr="true">/UiStyle/Fonts/UseCustomItemViewFont</string>
        </property>
        <property name="defaultValue" stdset="0">
         <bool>false</bool>
@@ -35,7 +35,7 @@
         <bool>false</bool>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>/UiStyle/Fonts/ItemView</string>
+        <string notr="true">/UiStyle/Fonts/ItemView</string>
        </property>
        <property name="defaultValue" stdset="0">
         <font/>
@@ -53,7 +53,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>/UiStyle/ShowItemViewIcons</string>
+      <string notr="true">/UiStyle/ShowItemViewIcons</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>true</bool>
@@ -72,7 +72,7 @@
          <string>Display topic in tooltip</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>DisplayTopicInTooltip</string>
+         <string notr="true">DisplayTopicInTooltip</string>
         </property>
         <property name="defaultValue" stdset="0">
          <bool>false</bool>
@@ -88,7 +88,7 @@
          <bool>false</bool>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>MouseWheelChangesBuffer</string>
+         <string notr="true">MouseWheelChangesBuffer</string>
         </property>
         <property name="defaultValue" stdset="0">
          <bool>false</bool>
@@ -104,7 +104,7 @@
          <bool>true</bool>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/UiStyle/Colors/UseBufferViewColors</string>
+         <string notr="true">/UiStyle/Colors/UseBufferViewColors</string>
         </property>
         <property name="defaultValue" stdset="0">
          <bool>false</bool>
@@ -125,7 +125,7 @@
               <string>...</string>
              </property>
              <property name="settingsKey" stdset="0">
-              <string>/UiStyle/Colors/DefaultBuffer</string>
+              <string notr="true">/UiStyle/Colors/DefaultBuffer</string>
              </property>
              <property name="defaultValue" stdset="0">
               <color>
@@ -149,7 +149,7 @@
               <string>...</string>
              </property>
              <property name="settingsKey" stdset="0">
-              <string>/UiStyle/Colors/InactiveBuffer</string>
+              <string notr="true">/UiStyle/Colors/InactiveBuffer</string>
              </property>
              <property name="defaultValue" stdset="0">
               <color>
@@ -173,7 +173,7 @@
               <string>...</string>
              </property>
              <property name="settingsKey" stdset="0">
-              <string>/UiStyle/Colors/UnreadBuffer</string>
+              <string notr="true">/UiStyle/Colors/UnreadBuffer</string>
              </property>
              <property name="defaultValue" stdset="0">
               <color>
@@ -197,7 +197,7 @@
               <string>...</string>
              </property>
              <property name="settingsKey" stdset="0">
-              <string>/UiStyle/Colors/HighlightedBuffer</string>
+              <string notr="true">/UiStyle/Colors/HighlightedBuffer</string>
              </property>
              <property name="defaultValue" stdset="0">
               <color>
@@ -221,7 +221,7 @@
               <string>...</string>
              </property>
              <property name="settingsKey" stdset="0">
-              <string>/UiStyle/Colors/ActiveBuffer</string>
+              <string notr="true">/UiStyle/Colors/ActiveBuffer</string>
              </property>
              <property name="defaultValue" stdset="0">
               <color>
@@ -289,7 +289,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>/UiStyle/Colors/UseNickViewColors</string>
+      <string notr="true">/UiStyle/Colors/UseNickViewColors</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>false</bool>
@@ -308,7 +308,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/UiStyle/Colors/OnlineNick</string>
+         <string notr="true">/UiStyle/Colors/OnlineNick</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -345,7 +345,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/UiStyle/Colors/AwayNick</string>
+         <string notr="true">/UiStyle/Colors/AwayNick</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -389,15 +389,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>ColorButton</class>
+   <extends>QToolButton</extends>
+   <header>colorbutton.h</header>
+  </customwidget>
+  <customwidget>
    <class>FontSelector</class>
    <extends>QWidget</extends>
    <header>fontselector.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ColorButton</class>
-   <extends>QToolButton</extends>
-   <header>colorbutton.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -32,7 +32,7 @@
         <string>[hh:mm:ss]</string>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>TimestampFormat</string>
+        <string notr="true">TimestampFormat</string>
        </property>
       </widget>
      </item>
@@ -62,7 +62,7 @@
         <bool>false</bool>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>/QtUiStyle/Fonts/UseCustomChatViewFont</string>
+        <string notr="true">/QtUiStyle/Fonts/UseCustomChatViewFont</string>
        </property>
        <property name="defaultValue" stdset="0">
         <bool>false</bool>
@@ -75,7 +75,7 @@
         <bool>false</bool>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>/QtUiStyle/Fonts/ChatView</string>
+        <string notr="true">/QtUiStyle/Fonts/ChatView</string>
        </property>
        <property name="defaultValue" stdset="0">
         <font>
@@ -98,7 +98,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>/UiStyle/AllowMircColors</string>
+      <string notr="true">/UiStyle/AllowMircColors</string>
      </property>
     </widget>
    </item>
@@ -117,7 +117,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>ShowWebPreview</string>
+      <string notr="true">ShowWebPreview</string>
      </property>
     </widget>
    </item>
@@ -133,7 +133,7 @@
       <bool>false</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>/QtUiStyle/Colors/UseChatViewColors</string>
+      <string notr="true">/QtUiStyle/Colors/UseChatViewColors</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>false</bool>
@@ -152,7 +152,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/ActionMsg</string>
+         <string notr="true">/QtUiStyle/Colors/ActionMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -176,7 +176,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/Timestamp</string>
+         <string notr="true">/QtUiStyle/Colors/Timestamp</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -200,7 +200,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/ChannelMsg</string>
+         <string notr="true">/QtUiStyle/Colors/ChannelMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -237,7 +237,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/Highlight</string>
+         <string notr="true">/QtUiStyle/Colors/Highlight</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -261,7 +261,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/CommandMsg</string>
+         <string notr="true">/QtUiStyle/Colors/CommandMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -292,7 +292,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/ServerMsg</string>
+         <string notr="true">/QtUiStyle/Colors/ServerMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -316,7 +316,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/MarkerLine</string>
+         <string notr="true">/QtUiStyle/Colors/MarkerLine</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -340,7 +340,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/ErrorMsg</string>
+         <string notr="true">/QtUiStyle/Colors/ErrorMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -364,7 +364,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/ChatViewBackground</string>
+         <string notr="true">/QtUiStyle/Colors/ChatViewBackground</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -381,7 +381,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>/QtUiStyle/Colors/HighlightBackground</string>
+         <string notr="true">/QtUiStyle/Colors/HighlightBackground</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -407,7 +407,7 @@
       <bool>false</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>/QtUiStyle/Colors/UseSenderColors</string>
+      <string notr="true">/QtUiStyle/Colors/UseSenderColors</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>false</bool>
@@ -421,7 +421,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender00</string>
+           <string notr="true">/QtUiStyle/Colors/Sender00</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -438,7 +438,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender02</string>
+           <string notr="true">/QtUiStyle/Colors/Sender02</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -455,7 +455,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender04</string>
+           <string notr="true">/QtUiStyle/Colors/Sender04</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -472,7 +472,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender05</string>
+           <string notr="true">/QtUiStyle/Colors/Sender05</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -489,7 +489,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender06</string>
+           <string notr="true">/QtUiStyle/Colors/Sender06</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -506,7 +506,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender07</string>
+           <string notr="true">/QtUiStyle/Colors/Sender07</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -523,7 +523,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender08</string>
+           <string notr="true">/QtUiStyle/Colors/Sender08</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -540,7 +540,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender09</string>
+           <string notr="true">/QtUiStyle/Colors/Sender09</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -557,7 +557,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender10</string>
+           <string notr="true">/QtUiStyle/Colors/Sender10</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -574,7 +574,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender11</string>
+           <string notr="true">/QtUiStyle/Colors/Sender11</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -591,7 +591,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender12</string>
+           <string notr="true">/QtUiStyle/Colors/Sender12</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -608,7 +608,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender13</string>
+           <string notr="true">/QtUiStyle/Colors/Sender13</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -625,7 +625,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender14</string>
+           <string notr="true">/QtUiStyle/Colors/Sender14</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -642,7 +642,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender15</string>
+           <string notr="true">/QtUiStyle/Colors/Sender15</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -659,7 +659,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender01</string>
+           <string notr="true">/QtUiStyle/Colors/Sender01</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -676,7 +676,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/Sender03</string>
+           <string notr="true">/QtUiStyle/Colors/Sender03</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -704,7 +704,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>/QtUiStyle/Colors/SenderSelf</string>
+           <string notr="true">/QtUiStyle/Colors/SenderSelf</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>

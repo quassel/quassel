@@ -22,7 +22,7 @@
         <string>Custom font:</string>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>/UiStyle/Fonts/UseCustomTopicWidgetFont</string>
+        <string notr="true">/UiStyle/Fonts/UseCustomTopicWidgetFont</string>
        </property>
        <property name="defaultValue" stdset="0">
         <bool>false</bool>
@@ -35,7 +35,7 @@
         <bool>false</bool>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>/UiStyle/Fonts/TopicWidget</string>
+        <string notr="true">/UiStyle/Fonts/TopicWidget</string>
        </property>
        <property name="defaultValue" stdset="0">
         <font/>
@@ -53,7 +53,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>DynamicResize</string>
+      <string notr="true">DynamicResize</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>true</bool>
@@ -87,7 +87,7 @@
         <bool>true</bool>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>ResizeOnHover</string>
+        <string notr="true">ResizeOnHover</string>
        </property>
        <property name="defaultValue" stdset="0">
         <bool>true</bool>

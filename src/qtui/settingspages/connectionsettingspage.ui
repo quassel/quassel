@@ -23,7 +23,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string/>
+      <string notr="true"/>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>true</bool>
@@ -53,7 +53,7 @@
            <UInt>30</UInt>
           </property>
           <property name="settingsKey" stdset="0">
-           <string/>
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -93,7 +93,7 @@
            <UInt>6</UInt>
           </property>
           <property name="settingsKey" stdset="0">
-           <string/>
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -134,7 +134,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string/>
+      <string notr="true"/>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>true</bool>
@@ -164,7 +164,7 @@
            <number>90</number>
           </property>
           <property name="settingsKey" stdset="0">
-           <string/>
+           <string notr="true"/>
           </property>
           <property name="defaultValue" stdset="0">
            <UInt>90</UInt>
@@ -193,7 +193,7 @@
            <number>200</number>
           </property>
           <property name="settingsKey" stdset="0">
-           <string/>
+           <string notr="true"/>
           </property>
           <property name="defaultValue" stdset="0">
            <UInt>200</UInt>
@@ -219,7 +219,7 @@
            <number>5</number>
           </property>
           <property name="settingsKey" stdset="0">
-           <string/>
+           <string notr="true"/>
           </property>
           <property name="defaultValue" stdset="0">
            <UInt>5</UInt>
