@@ -265,22 +265,26 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
         // user channel modes (op, voice, etc...)
         if(paramOffset < params.count()) {
           IrcUser *ircUser = network()->ircUser(params[paramOffset]);
-          if(add) {
-            bool handledByNetsplit = false;
-            if(!_netsplits.empty()) {
-              foreach(Netsplit* n, _netsplits) {
-                handledByNetsplit = n->userAlreadyJoined(ircUser->hostmask(), channel->name());
-                if(handledByNetsplit) {
-                  n->addMode(ircUser->hostmask(), channel->name(), QString(modes[c]));
-                  break;
+          if(!ircUser) {
+            qWarning() << Q_FUNC_INFO << "Unknown IrcUser:" << params[paramOffset];
+          } else {
+            if(add) {
+              bool handledByNetsplit = false;
+              if(!_netsplits.empty()) {
+                foreach(Netsplit* n, _netsplits) {
+                  handledByNetsplit = n->userAlreadyJoined(ircUser->hostmask(), channel->name());
+                  if(handledByNetsplit) {
+                    n->addMode(ircUser->hostmask(), channel->name(), QString(modes[c]));
+                    break;
+                  }
                 }
               }
+              if(!handledByNetsplit)
+                channel->addUserMode(ircUser, QString(modes[c]));
             }
-            if(!handledByNetsplit)
-              channel->addUserMode(ircUser, QString(modes[c]));
+            else
+              channel->removeUserMode(ircUser, QString(modes[c]));
           }
-          else
-            channel->removeUserMode(ircUser, QString(modes[c]));
         } else {
           qWarning() << "Received MODE with too few parameters:" << serverDecode(params);
         }
