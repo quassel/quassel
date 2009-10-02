@@ -41,7 +41,7 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
   : AbstractNotificationBackend(parent)
 {
   NotificationSettings notificationSettings;
-  _enabled = notificationSettings.value("Indicator/Enabled", true).toBool();
+  _enabled = notificationSettings.value("Indicator/Enabled", false).toBool();
 
   notificationSettings.notify("Indicator/Enabled", this, SLOT(enabledChanged(const QVariant &)));
 
