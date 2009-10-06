@@ -50,6 +50,7 @@ bool Quassel::_initialized = false;
 bool Quassel::DEBUG = false;
 QString Quassel::_coreDumpFileName;
 Quassel *Quassel::_instance = 0;
+bool Quassel::_handleCrashes = true;
 
 Quassel::Quassel() {
   Q_ASSERT(!_instance);
@@ -58,27 +59,6 @@ Quassel::Quassel() {
   // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
   signal(SIGTERM, handleSignal);
   signal(SIGINT, handleSignal);
-
-  // we have crashhandler for win32 and unix (based on execinfo).
-  // on mac os we use it's integrated backtrace generator
-#if defined(Q_OS_WIN32) || (defined(HAVE_EXECINFO) && !defined(Q_OS_MAC))
-
-# ifndef Q_OS_WIN32
-  // we only handle crashes ourselves if coredumps are disabled
-  struct rlimit *limit = (rlimit *) malloc(sizeof(struct rlimit));
-  int rc = getrlimit(RLIMIT_CORE, limit);
-
-  if(rc == -1 || !((long)limit->rlim_cur > 0 || limit->rlim_cur == RLIM_INFINITY)) {
-# endif
-    signal(SIGABRT, handleSignal);
-    signal(SIGSEGV, handleSignal);
-#   ifndef Q_OS_WIN32
-    signal(SIGBUS, handleSignal);
-  }
-  free(limit);
-#   endif
-
-#endif
 }
 
 Quassel::~Quassel() {
@@ -88,6 +68,26 @@ Quassel::~Quassel() {
 bool Quassel::init() {
   if(_initialized)
     return true;  // allow multiple invocations because of MonolithicApplication
+
+  if (_handleCrashes) {
+    // we have crashhandler for win32 and unix (based on execinfo).
+#if defined(Q_OS_WIN32) || defined(HAVE_EXECINFO)
+# ifndef Q_OS_WIN32
+    // we only handle crashes ourselves if coredumps are disabled
+    struct rlimit *limit = (rlimit *) malloc(sizeof(struct rlimit));
+    int rc = getrlimit(RLIMIT_CORE, limit);
+  
+    if(rc == -1 || !((long)limit->rlim_cur > 0 || limit->rlim_cur == RLIM_INFINITY)) {
+# endif /* Q_OS_WIN32 */
+      signal(SIGABRT, handleSignal);
+      signal(SIGSEGV, handleSignal);
+# ifndef Q_OS_WIN32
+      signal(SIGBUS, handleSignal);
+    }
+    free(limit);
+# endif /* Q_OS_WIN32 */
+#endif /* Q_OS_WIN32 || HAVE_EXECINFO */
+  }
 
   _initialized = true;
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));

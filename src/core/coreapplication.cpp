@@ -63,6 +63,10 @@ bool CoreApplicationInternal::init() {
 CoreApplication::CoreApplication(int &argc, char **argv)
   : QCoreApplication(argc, argv), Quassel()
 {
+#ifdef Q_OS_MAC
+  disableCrashhandler();
+#endif /* Q_OS_MAC */
+
   setRunMode(Quassel::CoreOnly);
   _internal = new CoreApplicationInternal();
 }

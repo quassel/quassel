@@ -111,6 +111,7 @@ protected:
   inline void setRunMode(RunMode mode);
   inline void setDataDirPaths(const QStringList &paths);
   QStringList findDataDirPaths() const;
+  inline void disableCrashhandler();
 
 private:
   void registerMetaTypes();
@@ -123,6 +124,7 @@ private:
   static AbstractCliParser *_cliParser;
   static RunMode _runMode;
   static bool _initialized;
+  static bool _handleCrashes;
 
   static QString _coreDumpFileName;
   static QString _configDirPath;
@@ -134,6 +136,7 @@ const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }
 Quassel::RunMode Quassel::runMode() { return _runMode; }
 void Quassel::setRunMode(Quassel::RunMode mode) { _runMode = mode; }
 void Quassel::setDataDirPaths(const QStringList &paths) { _dataDirPaths = paths; }
+void Quassel::disableCrashhandler() { _handleCrashes = false; }
 
 void Quassel::setCliParser(AbstractCliParser *parser) { _cliParser = parser; }
 AbstractCliParser *Quassel::cliParser() { return _cliParser; }

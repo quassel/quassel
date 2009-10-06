@@ -56,6 +56,9 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 
 #endif /* HAVE_KDE */
 
+#if defined(HAVE_KDE) || defined(Q_OS_MAC)
+  disableCrashhandler();
+#endif /* HAVE_KDE || Q_OS_MAC */
   setRunMode(Quassel::ClientOnly);
 
   qInstallMsgHandler(Client::logMessage);
