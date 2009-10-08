@@ -32,7 +32,7 @@ public:
 
 INIT_SYNCABLE_OBJECT(CoreBufferSyncer)
 CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
-  : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), parent),
+  : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), Core::bufferMarkerLineMsgIds(parent->user()), parent),
     _coreSession(parent),
     _purgeBuffers(false)
 {
@@ -40,18 +40,31 @@ CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
 
 void CoreBufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) {
   if(setLastSeenMsg(buffer, msgId))
-    dirtyBuffers << buffer;
+    dirtyLastSeenBuffers << buffer;
+}
+
+void CoreBufferSyncer::requestSetMarkerLine(BufferId buffer, const MsgId &msgId) {
+  if(setMarkerLine(buffer, msgId))
+    dirtyMarkerLineBuffers << buffer;
 }
 
 void CoreBufferSyncer::storeDirtyIds() {
   UserId userId = _coreSession->user();
   MsgId msgId;
-  foreach(BufferId bufferId, dirtyBuffers) {
+  foreach(BufferId bufferId, dirtyLastSeenBuffers) {
     msgId = lastSeenMsg(bufferId);
     if(msgId.isValid())
       Core::setBufferLastSeenMsg(userId, bufferId, msgId);
   }
-  dirtyBuffers.clear();
+
+  foreach(BufferId bufferId, dirtyMarkerLineBuffers) {
+    msgId = markerLine(bufferId);
+    if(msgId.isValid())
+      Core::setBufferMarkerLineMsg(userId, bufferId, msgId);
+  }
+
+  dirtyLastSeenBuffers.clear();
+  dirtyMarkerLineBuffers.clear();
 }
 
 void CoreBufferSyncer::removeBuffer(BufferId bufferId) {
@@ -140,7 +153,7 @@ void CoreBufferSyncer::purgeBufferIds() {
     actualBuffers << bufferInfo.bufferId();
   }
 
-  QList<BufferId> storedIds = bufferIds();
+  QSet<BufferId> storedIds = lastSeenBufferIds().toSet() + markerLineBufferIds().toSet();
   foreach(BufferId bufferId, storedIds) {
     if(!actualBuffers.contains(bufferId)) {
       BufferSyncer::removeBuffer(bufferId);

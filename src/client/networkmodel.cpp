@@ -68,6 +68,7 @@ QVariant NetworkItem::data(int column, int role) const {
   }
 }
 
+// FIXME shouldn't we check the bufferItemCache here?
 BufferItem *NetworkItem::findBufferItem(BufferId bufferId) {
   BufferItem *bufferItem = 0;
 
@@ -231,8 +232,13 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level) {
 
 void BufferItem::clearActivityLevel() {
   _activity = BufferInfo::NoActivity;
-  _lastSeenMarkerMsgId = _lastSeenMsgId;
   _firstUnreadMsgId = MsgId();
+
+  // FIXME remove with core proto v11
+  if(!Client::coreFeatures() & Quassel::SynchronizedMarkerLine) {
+    _markerLineMsgId = _lastSeenMsgId;
+  }
+
   emit dataChanged();
 }
 
@@ -286,6 +292,8 @@ QVariant BufferItem::data(int column, int role) const {
     return (int)activityLevel();
   case NetworkModel::BufferFirstUnreadMsgIdRole:
     return qVariantFromValue(firstUnreadMsgId());
+  case NetworkModel::MarkerLineMsgIdRole:
+    return qVariantFromValue(markerLineMsgId());
   default:
     return PropertyMapItem::data(column, role);
   }
@@ -307,12 +315,21 @@ void BufferItem::setBufferName(const QString &name) {
   emit dataChanged(0);
 }
 
-void BufferItem::setLastSeenMsgId(const MsgId &msgId) {
+void BufferItem::setLastSeenMsgId(MsgId msgId) {
   _lastSeenMsgId = msgId;
-  if(!isCurrentBuffer()) {
-    _lastSeenMarkerMsgId = msgId;
+
+  // FIXME remove with core protocol v11
+  if(!Client::coreFeatures() & Quassel::SynchronizedMarkerLine) {
+    if(!isCurrentBuffer())
+      _markerLineMsgId = msgId;
   }
+
   setActivityLevel(BufferInfo::NoActivity);
+}
+
+void BufferItem::setMarkerLineMsgId(MsgId msgId) {
+  _markerLineMsgId = msgId;
+  emit dataChanged();
 }
 
 bool BufferItem::isCurrentBuffer() const {
@@ -979,13 +996,14 @@ MsgId NetworkModel::lastSeenMsgId(BufferId bufferId) const {
   return _bufferItemCache[bufferId]->lastSeenMsgId();
 }
 
-MsgId NetworkModel::lastSeenMarkerMsgId(BufferId bufferId) const {
+MsgId NetworkModel::markerLineMsgId(BufferId bufferId) const {
   if(!_bufferItemCache.contains(bufferId))
     return MsgId();
 
-  return _bufferItemCache[bufferId]->lastSeenMarkerMsgId();
+  return _bufferItemCache[bufferId]->markerLineMsgId();
 }
 
+// FIXME we always seem to use this (expensive) non-const version
 MsgId NetworkModel::lastSeenMsgId(const BufferId &bufferId) {
   BufferItem *bufferItem = findBufferItem(bufferId);
   if(!bufferItem) {
@@ -1004,6 +1022,16 @@ void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId
     return;
   }
   bufferItem->setLastSeenMsgId(msgId);
+}
+
+void NetworkModel::setMarkerLineMsgId(const BufferId &bufferId, const MsgId &msgId) {
+  BufferItem *bufferItem = findBufferItem(bufferId);
+  if(!bufferItem) {
+    qDebug() << "NetworkModel::setMarkerLineMsgId(): buffer is unknown:" << bufferId;
+    Client::purgeKnownBufferIds();
+    return;
+  }
+  bufferItem->setMarkerLineMsgId(msgId);
 }
 
 void NetworkModel::updateBufferActivity(Message &msg) {

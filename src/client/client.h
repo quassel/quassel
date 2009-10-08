@@ -127,6 +127,7 @@ public:
   static void userInput(const BufferInfo &bufferInfo, const QString &message);
 
   static void setBufferLastSeenMsg(BufferId id, const MsgId &msgId); // this is synced to core and other clients
+  static void setBufferMarkerLine(BufferId id, const MsgId &msgId); // this is synced to core and other clients
   static void removeBuffer(BufferId id);
   static void renameBuffer(BufferId bufferId, const QString &newName);
   static void mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2);

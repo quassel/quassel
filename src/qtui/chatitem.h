@@ -38,8 +38,8 @@ protected:
   ChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent);
 
 public:
-  inline const QAbstractItemModel *model() const;
-  inline int row() const;
+  const QAbstractItemModel *model() const;
+  int row() const;
   virtual ChatLineModel::ColumnType column() const = 0;
   inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
 
@@ -267,10 +267,5 @@ private:
 };
 
 /*************************************************************************************************/
-
-// Avoid circular include deps
-#include "chatline.h"
-const QAbstractItemModel *ChatItem::model() const { return static_cast<ChatLine *>(parentItem())->model(); }
-int ChatItem::row() const { return static_cast<ChatLine *>(parentItem())->row(); }
 
 #endif

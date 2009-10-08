@@ -31,6 +31,7 @@
 #include "buffermodel.h"
 #include "bufferview.h"
 #include "chatitem.h"
+#include "chatline.h"
 #include "chatlinemodel.h"
 #include "contextmenuactionprovider.h"
 #include "iconloader.h"
@@ -47,6 +48,14 @@ ChatItem::ChatItem(const qreal &width, const qreal &height, const QPointF &pos, 
   setAcceptHoverEvents(true);
   setZValue(20);
   setPos(pos);
+}
+
+const QAbstractItemModel *ChatItem::model() const {
+  return static_cast<ChatLine *>(parentItem())->model();
+}
+
+int ChatItem::row() const {
+  return static_cast<ChatLine *>(parentItem())->row();
 }
 
 QVariant ChatItem::data(int role) const {

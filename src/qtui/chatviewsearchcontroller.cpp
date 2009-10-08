@@ -24,6 +24,7 @@
 #include <QPainter>
 
 #include "chatitem.h"
+#include "chatline.h"
 #include "chatlinemodel.h"
 #include "chatscene.h"
 #include "messagemodel.h"

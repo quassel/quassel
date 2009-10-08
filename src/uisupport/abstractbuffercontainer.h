@@ -52,6 +52,8 @@ protected:
    */
   virtual void removeChatView(BufferId) = 0;
 
+  virtual inline bool autoSetMarkerLine() const { return true; }
+
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
   virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);

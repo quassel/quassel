@@ -105,9 +105,11 @@ public:
 
   virtual inline bool isActive() const { return qobject_cast<NetworkItem *>(parent())->isActive(); }
 
-  inline const MsgId &lastSeenMsgId() const { return _lastSeenMsgId; }
-  inline const MsgId &lastSeenMarkerMsgId() const { return _lastSeenMarkerMsgId; }
-  void setLastSeenMsgId(const MsgId &msgId);
+  inline MsgId lastSeenMsgId() const { return _lastSeenMsgId; }
+  inline MsgId markerLineMsgId() const { return _markerLineMsgId; }
+  void setLastSeenMsgId(MsgId msgId);
+  void setMarkerLineMsgId(MsgId msgId);
+
   inline BufferInfo::ActivityLevel activityLevel() const { return _activity; }
   void setActivityLevel(BufferInfo::ActivityLevel level);
   void clearActivityLevel();
@@ -125,7 +127,7 @@ private:
   BufferInfo _bufferInfo;
   BufferInfo::ActivityLevel _activity;
   MsgId _lastSeenMsgId;
-  MsgId _lastSeenMarkerMsgId;
+  MsgId _markerLineMsgId;
   MsgId _firstUnreadMsgId;
 };
 
@@ -275,6 +277,7 @@ public:
     IrcUserRole,
     IrcChannelRole,
     BufferFirstUnreadMsgIdRole,
+    MarkerLineMsgIdRole,
   };
 
   enum ItemType {
@@ -317,7 +320,7 @@ public:
   BufferInfo::Type bufferType(BufferId bufferId) const;
   BufferInfo bufferInfo(BufferId bufferId) const;
   MsgId lastSeenMsgId(BufferId bufferId) const;
-  MsgId lastSeenMarkerMsgId(BufferId bufferId) const;
+  MsgId markerLineMsgId(BufferId bufferId) const;
   NetworkId networkId(BufferId bufferId) const;
   QString networkName(BufferId bufferId) const;
 
@@ -330,6 +333,7 @@ public slots:
   void removeBuffer(BufferId bufferId);
   MsgId lastSeenMsgId(const BufferId &bufferId);
   void setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId);
+  void setMarkerLineMsgId(const BufferId &bufferId, const MsgId &msgId);
   void setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel activity);
   void clearBufferActivity(const BufferId &bufferId);
   void updateBufferActivity(Message &msg);

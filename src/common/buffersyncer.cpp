@@ -26,16 +26,15 @@ BufferSyncer::BufferSyncer(QObject *parent)
 {
 }
 
-BufferSyncer::BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, QObject *parent)
+BufferSyncer::BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, QObject *parent)
   : SyncableObject(parent),
-    _lastSeenMsg(lastSeenMsg)
+    _lastSeenMsg(lastSeenMsg),
+    _markerLines(markerLines)
 {
 }
 
 MsgId BufferSyncer::lastSeenMsg(BufferId buffer) const {
-  if(_lastSeenMsg.contains(buffer))
-    return _lastSeenMsg[buffer];
-  return MsgId();
+  return _lastSeenMsg.value(buffer, MsgId());
 }
 
 bool BufferSyncer::setLastSeenMsg(BufferId buffer, const MsgId &msgId) {
@@ -52,13 +51,27 @@ bool BufferSyncer::setLastSeenMsg(BufferId buffer, const MsgId &msgId) {
   return false;
 }
 
+MsgId BufferSyncer::markerLine(BufferId buffer) const {
+  return _markerLines.value(buffer, MsgId());
+}
+
+bool BufferSyncer::setMarkerLine(BufferId buffer, const MsgId &msgId) {
+  if(!msgId.isValid())
+    return false;
+
+  _markerLines[buffer] = msgId;
+  SYNC(ARG(buffer), ARG(msgId))
+  emit markerLineSet(buffer, msgId);
+  return true;
+}
+
 QVariantList BufferSyncer::initLastSeenMsg() const {
   QVariantList list;
   QHash<BufferId, MsgId>::const_iterator iter = _lastSeenMsg.constBegin();
   while(iter != _lastSeenMsg.constEnd()) {
     list << QVariant::fromValue<BufferId>(iter.key())
-	 << QVariant::fromValue<MsgId>(iter.value());
-    iter++;
+         << QVariant::fromValue<MsgId>(iter.value());
+    ++iter;
   }
   return list;
 }
@@ -67,13 +80,34 @@ void BufferSyncer::initSetLastSeenMsg(const QVariantList &list) {
   _lastSeenMsg.clear();
   Q_ASSERT(list.count() % 2 == 0);
   for(int i = 0; i < list.count(); i += 2) {
-    setLastSeenMsg(list[i].value<BufferId>(), list[i+1].value<MsgId>());
+    setLastSeenMsg(list.at(i).value<BufferId>(), list.at(i+1).value<MsgId>());
+  }
+}
+
+QVariantList BufferSyncer::initMarkerLines() const {
+  QVariantList list;
+  QHash<BufferId, MsgId>::const_iterator iter = _markerLines.constBegin();
+  while(iter != _markerLines.constEnd()) {
+    list << QVariant::fromValue<BufferId>(iter.key())
+         << QVariant::fromValue<MsgId>(iter.value());
+    ++iter;
+  }
+  return list;
+}
+
+void BufferSyncer::initSetMarkerLines(const QVariantList &list) {
+  _markerLines.clear();
+  Q_ASSERT(list.count() % 2 == 0);
+  for(int i = 0; i < list.count(); i += 2) {
+    setMarkerLine(list.at(i).value<BufferId>(), list.at(i+1).value<MsgId>());
   }
 }
 
 void BufferSyncer::removeBuffer(BufferId buffer) {
   if(_lastSeenMsg.contains(buffer))
     _lastSeenMsg.remove(buffer);
+  if(_markerLines.contains(buffer))
+    _markerLines.remove(buffer);
   SYNC(ARG(buffer))
   emit bufferRemoved(buffer);
 }
@@ -81,6 +115,8 @@ void BufferSyncer::removeBuffer(BufferId buffer) {
 void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2) {
   if(_lastSeenMsg.contains(buffer2))
     _lastSeenMsg.remove(buffer2);
+  if(_markerLines.contains(buffer2))
+    _markerLines.remove(buffer2);
   SYNC(ARG(buffer1), ARG(buffer2))
   emit buffersPermanentlyMerged(buffer1, buffer2);
 }

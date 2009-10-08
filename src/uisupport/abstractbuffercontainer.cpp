@@ -79,7 +79,10 @@ void AbstractBufferContainer::currentChanged(const QModelIndex &current, const Q
 void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
   BufferId prevBufferId = currentBuffer();
   if(prevBufferId.isValid() && _chatViews.contains(prevBufferId)) {
-    Client::setBufferLastSeenMsg(prevBufferId, _chatViews[prevBufferId]->lastMsgId());
+    MsgId msgId = _chatViews.value(prevBufferId)->lastMsgId();
+    Client::setBufferLastSeenMsg(prevBufferId, msgId);
+    if(autoSetMarkerLine())
+      Client::setBufferMarkerLine(prevBufferId, msgId);
   }
 
   if(!bufferId.isValid()) {
@@ -94,10 +97,7 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
   _currentBuffer = bufferId;
   showChatView(bufferId);
   Client::networkModel()->clearBufferActivity(bufferId);
+  Client::setBufferLastSeenMsg(bufferId, _chatViews[bufferId]->lastMsgId());
   Client::backlogManager()->checkForBacklog(bufferId);
   setFocus();
-
-  if(bufferId.isValid() && _chatViews.contains(bufferId)) {
-    Client::setBufferLastSeenMsg(bufferId, _chatViews[bufferId]->lastMsgId());
-  }
 }

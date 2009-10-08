@@ -34,6 +34,7 @@ public:
 
 public slots:
   virtual void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId);
+  virtual void requestSetMarkerLine(BufferId buffer, const MsgId &msgId);
 
   virtual inline void requestRemoveBuffer(BufferId buffer) { removeBuffer(buffer); }
   virtual void removeBuffer(BufferId bufferId);
@@ -55,7 +56,8 @@ private:
   CoreSession *_coreSession;
   bool _purgeBuffers;
 
-  QSet<BufferId> dirtyBuffers;
+  QSet<BufferId> dirtyLastSeenBuffers;
+  QSet<BufferId> dirtyMarkerLineBuffers;
 
   void purgeBufferIds();
 };

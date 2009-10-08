@@ -30,17 +30,22 @@ class BufferSyncer : public SyncableObject {
 
 public:
   explicit BufferSyncer(QObject *parent);
-  explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, QObject *parent);
+  explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, QObject *parent);
 
   inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
   MsgId lastSeenMsg(BufferId buffer) const;
+  MsgId markerLine(BufferId buffer) const;
 
 public slots:
   QVariantList initLastSeenMsg() const;
   void initSetLastSeenMsg(const QVariantList &);
 
+  QVariantList initMarkerLines() const;
+  void initSetMarkerLines(const QVariantList &);
+
   virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
+  virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
 
   virtual inline void requestRemoveBuffer(BufferId buffer) { REQUEST(ARG(buffer)) }
   virtual void removeBuffer(BufferId buffer);
@@ -55,16 +60,23 @@ public slots:
 
 signals:
   void lastSeenMsgSet(BufferId buffer, const MsgId &msgId);
+  void markerLineSet(BufferId buffer, const MsgId &msgId);
   void bufferRemoved(BufferId buffer);
   void bufferRenamed(BufferId buffer, QString newName);
   void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
 
 protected slots:
   bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);
-  QList<BufferId> bufferIds() const { return _lastSeenMsg.keys(); }
+  bool setMarkerLine(BufferId buffer, const MsgId &msgId);
+
+protected:
+  inline QList<BufferId> lastSeenBufferIds() const { return _lastSeenMsg.keys(); }
+  inline QList<BufferId> markerLineBufferIds() const { return _markerLines.keys(); }
+  inline QHash<BufferId, MsgId> markerLines() const { return _markerLines; }
 
 private:
   QHash<BufferId, MsgId> _lastSeenMsg;
+  QHash<BufferId, MsgId> _markerLines;
 };
 
 #endif

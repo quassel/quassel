@@ -316,6 +316,7 @@ void Client::setSyncedToCore() {
   Q_ASSERT(!_bufferSyncer);
   _bufferSyncer = new BufferSyncer(this);
   connect(bufferSyncer(), SIGNAL(lastSeenMsgSet(BufferId, MsgId)), _networkModel, SLOT(setLastSeenMsgId(BufferId, MsgId)));
+  connect(bufferSyncer(), SIGNAL(markerLineSet(BufferId,MsgId)), _networkModel, SLOT(setMarkerLineMsgId(BufferId,MsgId)));
   connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
   connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), this, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
@@ -468,9 +469,13 @@ void Client::recvMessage(const Message &msg) {
 }
 
 void Client::setBufferLastSeenMsg(BufferId id, const MsgId &msgId) {
-  if(!bufferSyncer())
-    return;
-  bufferSyncer()->requestSetLastSeenMsg(id, msgId);
+  if(bufferSyncer())
+    bufferSyncer()->requestSetLastSeenMsg(id, msgId);
+}
+
+void Client::setBufferMarkerLine(BufferId id, const MsgId &msgId) {
+  if(bufferSyncer())
+    bufferSyncer()->requestSetMarkerLine(id, msgId);
 }
 
 void Client::removeBuffer(BufferId id) {
