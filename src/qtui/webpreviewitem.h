@@ -27,7 +27,7 @@
 
 class WebPreviewItem : public QGraphicsItem {
 public:
-  WebPreviewItem(const QString &url);
+  WebPreviewItem(const QUrl &url);
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   virtual inline QRectF boundingRect() const { return _boundingRect; }
 

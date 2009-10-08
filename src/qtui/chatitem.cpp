@@ -636,9 +636,10 @@ void ContentsChatItem::showWebPreview(const Clickable &click) {
   QPointF topLeft = scenePos() + QPointF(x, y);
   QRectF urlRect = QRectF(topLeft.x(), topLeft.y(), width, height);
 
-  QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
-  if(!url.contains("://"))
-    url = "http://" + url;
+  QString urlstr = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
+  if(!urlstr.contains("://"))
+    urlstr= "http://" + urlstr;
+  QUrl url = QUrl::fromEncoded(urlstr.toUtf8(), QUrl::TolerantMode);
   chatScene()->loadWebPreview(this, url, urlRect);
 #endif
 }

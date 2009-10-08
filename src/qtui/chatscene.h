@@ -122,7 +122,7 @@ public:
   void requestBacklog();
 
 #ifdef HAVE_WEBKIT
-  void loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect);
+  void loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect);
   void clearWebPreview(ChatItem *parentItem = 0);
 #endif
 
@@ -203,7 +203,7 @@ private:
     };
     ChatItem *parentItem;
     QGraphicsItem *previewItem;
-    QString url;
+    QUrl url;
     QRectF urlRect;
     PreviewState previewState;
     QTimer timer;

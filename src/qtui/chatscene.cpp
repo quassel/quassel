@@ -882,7 +882,7 @@ bool ChatScene::event(QEvent *e) {
 //  Webkit Only stuff
 // ========================================
 #ifdef HAVE_WEBKIT
-void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect) {
+void ChatScene::loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect) {
   if(!_showWebPreview)
     return;
 
@@ -967,7 +967,7 @@ void ChatScene::webPreviewNextStep() {
       webPreview.previewItem = 0;
     }
     webPreview.parentItem = 0;
-    webPreview.url = QString();
+    webPreview.url = QUrl();
     webPreview.urlRect = QRectF();
     webPreview.previewState = WebPreview::NoPreview;
   }
