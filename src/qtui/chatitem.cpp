@@ -460,7 +460,7 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
     // Sometimes, setNumColumns will create a line that's too long (cf. Qt bug 238249)
     // We verify this and try setting the width again, making it shorter each time until the lengths match.
     // Dead fugly, but seems to work…
-    for(int i = line.textLength()-1; line.textLength() > num; i--) {
+    for(int i = line.textLength()-1; i >= 0 && line.textLength() > num; i--) {
       line.setNumColumns(i);
     }
     if(num != line.textLength()) {
