@@ -246,6 +246,14 @@ void Quassel::logFatalMessage(const char *msg) {
 #endif
 }
 
+Quassel::Features Quassel::features() {
+  Features feats = 0;
+  for(int i = 1; i <= NumFeatures; i<<=1)
+    feats |= (Feature) i;
+
+  return feats;
+}
+
 const QString &Quassel::coreDumpFileName() {
   if(_coreDumpFileName.isEmpty()) {
     QDir configDir(configDirPath());

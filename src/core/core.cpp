@@ -538,6 +538,8 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
                                                      .arg(Quassel::buildInfo().buildDate)
       .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime().toString(Qt::TextDate));
 
+    reply["CoreFeatures"] = (int)Quassel::features();
+
 #ifdef HAVE_SSL
     SslServer *sslServer = qobject_cast<SslServer *>(&_server);
     QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);

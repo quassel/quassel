@@ -58,6 +58,25 @@ public:
     QString organizationDomain;
   };
 
+  //! A list of features that are optional in core and/or client, but need runtime checking
+  /** Some features require an uptodate counterpart, but don't justify a protocol break.
+   *  This is what we use this enum for. Add such features to it and check at runtime on the other
+   *  side for their existence.
+   *
+   *  This list should be cleaned up after every protocol break, as we can assume them to be present then.
+   */
+  enum Feature {
+    SynchronizedMarkerLine = 0x0001,
+
+    NumFeatures = 0x0001
+  };
+  Q_DECLARE_FLAGS(Features, Feature);
+
+  //! The features the current version of Quassel supports (\sa Feature)
+  /** \return An ORed list of all enum values in Feature
+   */
+  static Features features();
+
   virtual ~Quassel();
 
   static void setupBuildInfo(const QString &generated);
@@ -131,6 +150,8 @@ private:
   static QStringList _dataDirPaths;
   static QString _translationDirPath;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(Quassel::Features);
 
 const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }
 Quassel::RunMode Quassel::runMode() { return _runMode; }

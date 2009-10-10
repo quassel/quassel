@@ -52,6 +52,7 @@
 #include <stdlib.h>
 
 QPointer<Client> Client::instanceptr = 0;
+Quassel::Features Client::_coreFeatures = 0;
 
 /*** Initialization/destruction ***/
 
@@ -157,6 +158,10 @@ void Client::init() {
 
 AbstractUi *Client::mainUi() {
   return instance()->_mainUi;
+}
+
+void Client::setCoreFeatures(Quassel::Features features) {
+  _coreFeatures = features;
 }
 
 bool Client::isConnected() {
@@ -377,6 +382,8 @@ void Client::disconnectFromCore() {
 
 void Client::setDisconnectedFromCore() {
   _connected = false;
+  _coreFeatures = 0;
+
   emit disconnected();
   emit coreConnectionStateChanged(false);
 
