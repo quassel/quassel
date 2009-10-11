@@ -6,17 +6,16 @@ if(WANT_MONO OR WANT_QTCLIENT)
 
   # Figure out if we want to install KDE's icons
   # Starting with KDE 4.3, they shouldn't be needed anymore
+  set(INSTALL_OXY true)
   string(TOUPPER ${WITH_OXYGEN} OXY_UPPER)
   if(NOT OXY_UPPER)
     set(INSTALL_OXY false)
   elseif(OXY_UPPER MATCHES "AUTO")
-    if(HAVE_KDE AND KDE_VERSION VERSION_GREATER 4.2.99)
-      set(INSTALL_OXY false)
-    else(HAVE_KDE AND KDE_VERSION VERSION_GREATER 4.2.99)
-      set(INSTALL_OXY true)
-    endif(HAVE_KDE AND KDE_VERSION VERSION_GREATER 4.2.99)
-  else(NOT OXY_UPPER)
-    set(INSTALL_OXY true)
+    if(HAVE_KDE)
+      if(KDE_VERSION VERSION_GREATER 4.2.99)
+        set(INSTALL_OXY false)
+      endif(KDE_VERSION VERSION_GREATER 4.2.99)
+    endif(HAVE_KDE)
   endif(NOT OXY_UPPER)
 
   if(INSTALL_OXY)
