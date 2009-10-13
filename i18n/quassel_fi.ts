@@ -196,7 +196,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="71"/>
         <source>/UiStyle/UseCustomStyleSheet</source>
-        <translation type="unfinished"></translation>
+        <translation>/UiStyle/UseCustomStyleSheet</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="82"/>
@@ -532,7 +532,7 @@ Tässä tilassa erillistä tilapuskuria ei näytetä.</translation>
     <message>
         <location filename="../src/qtui/ui/bufferviewwidget.ui" line="26"/>
         <source>BufferView</source>
-        <translation type="unfinished"></translation>
+        <translation>BufferView</translation>
     </message>
 </context>
 <context>
@@ -2032,22 +2032,22 @@ TILAA</translation>
 <context>
     <name>CoreSession</name>
     <message>
-        <location filename="../src/core/coresession.cpp" line="194"/>
+        <location filename="../src/core/coresession.cpp" line="192"/>
         <source>Client</source>
         <translation>Asiakas</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="194"/>
+        <location filename="../src/core/coresession.cpp" line="192"/>
         <source>disconnected (UserId: %1).</source>
         <translation>yhteys katkaistu (UserId: %1).</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="388"/>
+        <location filename="../src/core/coresession.cpp" line="386"/>
         <source>CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!</source>
         <translation>CoreSession::createNetwork(): Sai virheellisen networkId:n ytimeltä yrittäessään luoda verkkoa %1!</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="419"/>
+        <location filename="../src/core/coresession.cpp" line="417"/>
         <source>CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!</source>
         <translation>CoreSession::createNetwork(): Yritetään luoda verkkoa joka on jo olemassa, päivitetään sen sijaan!</translation>
     </message>
@@ -2121,7 +2121,7 @@ TILAA</translation>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="50"/>
         <source>BufferViews:</source>
-        <translation type="unfinished"></translation>
+        <translation>BufferView:t:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="51"/>
@@ -2176,17 +2176,17 @@ TILAA</translation>
     <message>
         <location filename="../src/qtui/ui/debugbufferviewoverlay.ui" line="13"/>
         <source>Debug BufferView Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation>Debuggaa BufferView</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/debugbufferviewoverlay.ui" line="26"/>
         <source>Overlay View</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä kaikki</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/debugbufferviewoverlay.ui" line="39"/>
         <source>Overlay Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Ominaisuudet</translation>
     </message>
 </context>
 <context>
@@ -2851,7 +2851,7 @@ Jatkamisesta seuraa SSL-avaimesi ja SSL-varmenteesi siirtäminen salaamattomana!
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="689"/>
         <source>CommonName:</source>
-        <translation type="unfinished"></translation>
+        <translation>CommonName:</translation>
     </message>
 </context>
 <context>
@@ -3486,158 +3486,158 @@ Valitse toinen sääntö.</translation>
 <context>
     <name>IrcServerHandler</name>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="538"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="542"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
         <translation>%1 vaihto kanavan %2 aiheeksi: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="563"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="567"/>
         <source>Received RPL_ISUPPORT (005) without parameters!</source>
         <translation>Vastaanotettiin RPL_ISUPPORT (005) ilman parametreja!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="571"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="575"/>
         <source>Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!</source>
         <translation>Vastaanotettiin RFC:n vastainen RPL_ISUPPORT: tämä voi johtaa odottamattomaan käytökseen!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="588"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="595"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="602"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="609"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="592"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="599"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="606"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="613"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="644"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="648"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
         <translation>[Whois] %1 on poissa: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="650"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="655"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="654"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="659"/>
         <source>%1 is away: &quot;%2&quot;</source>
         <translation>%1 on poissa: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="699"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="713"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="747"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="763"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="824"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="856"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="703"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="717"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="751"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="767"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="828"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="860"/>
         <source>[Whois] %1</source>
         <translation>[Whois] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="728"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="730"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="732"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="734"/>
         <source>[Whois] %1 is %2 (%3)</source>
         <translation>[Whois] %1 on %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="745"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="749"/>
         <source>%1 is online via %2 (%3)</source>
         <translation>%1 yhdistettynä %2 kautta (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="749"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="1027"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="753"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1031"/>
         <source>[Whowas] %1</source>
         <translation>[Whowas] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="775"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="779"/>
         <source>[Whowas] %1 was %2 (%3)</source>
         <translation>[Whowas] %1 oli %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="789"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="793"/>
         <source>[Who] End of /WHO list for %1</source>
         <translation>[Who] /WHO -listauksen loppu kohteelle %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="809"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="813"/>
         <source>[Whois] %1 is logged in since %2</source>
         <translation>[Whois] %1 on ollut kirjautuneena sisään alkaen %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="811"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="815"/>
         <source>[Whois] %1 is idling for %2 (%3)</source>
         <translation>[Whois] %1 on ollut jouten %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="814"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="818"/>
         <source>[Whois] idle message: %1</source>
         <translation>[Whois] joutenoloviesti: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="846"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="850"/>
         <source>[Whois] %1 is a user on channels: %2</source>
         <translation>[Whois] %1 on käyttäjä kanavilla: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="848"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="852"/>
         <source>[Whois] %1 has voice on channels: %2</source>
         <translation>[Whois] %1 on puheoikeutettu kanavilla: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="850"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="854"/>
         <source>[Whois] %1 is an operator on channels: %2</source>
         <translation>[Whois] %1 on operaattori kanavilla: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="878"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="882"/>
         <source>Channel %1 has %2 users. Topic is: %3</source>
         <translation>Kanavalla %1 on %2 käyttäjää. Aihe on: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="891"/>
         <source>End of channel list</source>
         <translation>Kanavalistauksen loppu</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="909"/>
         <source>Homepage for %1 is %2</source>
         <translation>Kotisivu kanavalle %1 on %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="923"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="927"/>
         <source>Channel %1 created on %2</source>
         <translation>Kanava %1 on luotu %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="937"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="941"/>
         <source>No topic is set for %1.</source>
         <translation>Kanavalle %1 ei ole asetettu aihetta.</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="952"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="956"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
         <translation>Aihe kanavalle %1 on &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="963"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="967"/>
         <source>Topic set by %1 on %2</source>
         <translation>Aiheen no asettanut %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="986"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="990"/>
         <source>[Who] %1</source>
         <translation>[Who] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1045"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1049"/>
         <source>Nick %1 contains illegal characters</source>
         <translation>Nimimerkki %1 sisältää epäkelpoja merkkejä</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1056"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1060"/>
         <source>Nick already in use: %1</source>
         <translation>Nimimerkki jo käytössä: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1145"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1149"/>
         <source>No free and valid nicks in nicklist found. use: /nick &lt;othernick&gt; to continue</source>
         <translation>Vapaita ja kelpoja nimimerkkejä ei löytynyt. käytä /nick &lt;nimimerkki&gt; jatkaaksesi</translation>
     </message>
@@ -3884,27 +3884,27 @@ Valitse toinen sääntö.</translation>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="330"/>
         <source>Debug &amp;NetworkModel</source>
-        <translation type="unfinished"></translation>
+        <translation>Debuggaa &amp;NetworkModel</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="332"/>
         <source>Debug &amp;BufferViewOverlay</source>
-        <translation type="unfinished"></translation>
+        <translation>Debuggaa &amp;BufferViewOverlay</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="334"/>
         <source>Debug &amp;MessageModel</source>
-        <translation type="unfinished"></translation>
+        <translation>Debuggaa &amp;MessageModel</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="336"/>
         <source>Debug &amp;HotList</source>
-        <translation type="unfinished"></translation>
+        <translation>Debuggaa &amp;HotList</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="338"/>
         <source>Debug &amp;Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Debuggaa &amp;Log</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="340"/>
@@ -4569,27 +4569,27 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
         <location filename="../src/uisupport/qssparser.cpp" line="166"/>
         <location filename="../src/uisupport/qssparser.cpp" line="314"/>
         <source>Invalid block declaration: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen osan määrittely: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="140"/>
         <source>Invalid palette role assignment: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen palettiroolin määrittely: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="156"/>
         <source>Unknown palette role name: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuntematon palettiroolin nimi: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="192"/>
         <source>Invalid subelement name in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuntematon alaelementin nimi määrittelyssä %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="234"/>
         <source>Invalid message type in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen viestin tyyppi määritelmässä %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="243"/>
@@ -4599,22 +4599,22 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="255"/>
         <source>Invalid message label: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen viestileima: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="266"/>
         <source>Invalid senderhash specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen lähettäjätiivistemääritelmä: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="270"/>
         <source>Senderhash can be at most &quot;0x0f&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähettäjätiiviste voi olla enintään &quot;0x0f&quot;!</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="285"/>
         <source>Invalid format name: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen muotoilun nimi: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="292"/>
@@ -4624,27 +4624,27 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="300"/>
         <source>Unhandled condition: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Käsittelemätön ehto: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="329"/>
         <source>Invalid proplist %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen ominaisuuslista %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="348"/>
         <source>Invalid chatlist item type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen keskustelulistaosan tyyppi %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="364"/>
         <source>Invalid chatlist state %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen keskustelulistan tila %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="390"/>
         <source>Invalid property declaration: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen ominaisuuden määritelmä: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="414"/>
@@ -4654,31 +4654,31 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="420"/>
         <source>Unknown ChatLine property: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuntematon ChatLine:n ominaisuus: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="442"/>
         <source>Invalid palette color role specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen palettivärin roolimääritelmä: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="449"/>
         <source>Unknown palette color role: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuntematon palettivärin rooli: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="456"/>
         <location filename="../src/uisupport/qssparser.cpp" line="478"/>
         <location filename="../src/uisupport/qssparser.cpp" line="499"/>
         <source>Invalid gradient declaration: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen liukuvärin määritelmä: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="465"/>
         <location filename="../src/uisupport/qssparser.cpp" line="486"/>
         <location filename="../src/uisupport/qssparser.cpp" line="509"/>
         <source>Invalid gradient stops list: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen liukuvärin pykälälista: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="605"/>
@@ -4688,17 +4688,17 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="644"/>
         <source>Invalid font style specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen fonttityylin määritelmä: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="657"/>
         <source>Invalid font weight specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen fontin raskauden määritelmä: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="667"/>
         <source>Invalid font size specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen fontin koon määritelmä: %1</translation>
     </message>
 </context>
 <context>
@@ -5088,25 +5088,25 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="572"/>
         <source>Issuer Info</source>
-        <translation>Myöntäjän tiedot</translation>
+        <translation>Julkaisija</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="574"/>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="583"/>
         <source>Organization:</source>
-        <translation>Yritys:</translation>
+        <translation>Organisaatio (O):</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="575"/>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="584"/>
         <source>Locality Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Paikkanimi:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="576"/>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="585"/>
         <source>Organizational Unit Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Organisaation yksikkö (OU):</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="577"/>
@@ -5123,7 +5123,7 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="581"/>
         <source>Subject Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Asetettu taholle</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="590"/>
@@ -5133,12 +5133,12 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="592"/>
         <source>Valid From:</source>
-        <translation>Voimassa alkaen:</translation>
+        <translation>Julkaisupäivä:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="593"/>
         <source>Valid To:</source>
-        <translation>Voimassa asti:</translation>
+        <translation>Vanhenemispäivä:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="596"/>
@@ -5187,8 +5187,7 @@ Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!</translation>
     <message>
         <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="67"/>
         <source>Activate dock entry, timeout:</source>
-        <translatorcomment>What is the Mac dock called in Finnish?</translatorcomment>
-        <translation type="unfinished">Merkitse tehtäväpalkissa ajaksi:</translation>
+        <translation>Merkitse dockissa ajaksi:</translation>
     </message>
     <message>
         <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="69"/>
