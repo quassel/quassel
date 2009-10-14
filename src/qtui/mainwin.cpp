@@ -27,6 +27,7 @@
 #  include <KShortcutsDialog>
 #  include <KStatusBar>
 #  include <KToolBar>
+#  include <KWindowSystem>
 #endif
 
 #ifdef Q_WS_X11
@@ -964,6 +965,11 @@ void MainWin::toggleMinimizedToTray() {
 }
 
 void MainWin::forceActivated() {
+#ifdef HAVE_KDE
+  show();
+  KWindowSystem::forceActiveWindow(winId());
+#else
+
 #ifdef Q_WS_X11
   // Bypass focus stealing prevention
   QX11Info::setAppUserTime(QX11Info::appTime());
@@ -979,6 +985,7 @@ void MainWin::forceActivated() {
   show();
   raise();
   activateWindow();
+#endif /* HAVE_KDE */
 }
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
