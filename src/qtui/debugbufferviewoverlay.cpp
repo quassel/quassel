@@ -54,7 +54,7 @@ DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget *parent)
   layout->addRow(tr("Removed buffers:"), _removedBufferIds = new QTextEdit(this));
   layout->addRow(tr("Temp. removed buffers:"), _tempRemovedBufferIds = new QTextEdit(this));
 
-  layout->addRow(tr("Add Bufers Automatically:"), _addBuffersAutomatically = new QLabel(this));
+  layout->addRow(tr("Add Buffers Automatically:"), _addBuffersAutomatically = new QLabel(this));
   layout->addRow(tr("Hide inactive buffers:"), _hideInactiveBuffers = new QLabel(this));
   layout->addRow(tr("Allowed buffer types:"), _allowedBufferTypes = new QLabel(this));
   layout->addRow(tr("Minimum activity:"), _minimumActivity = new QLabel(this));
