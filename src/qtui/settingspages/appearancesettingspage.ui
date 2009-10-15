@@ -68,7 +68,7 @@
       <bool>false</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>/UiStyle/UseCustomStyleSheet</string>
+      <string notr="true">/UiStyle/UseCustomStyleSheet</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>false</bool>
