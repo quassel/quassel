@@ -56,10 +56,10 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
       <widget class="QGroupBox" name="typeGroupBox">
        <property name="toolTip">
         <string>&lt;p&gt;&lt;b&gt;Rule Type:&lt;/b&gt;&lt;/p&gt;
-&lt;p&gt;&lt;u&gt;By Sender:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Sender:&lt;/u&gt;&lt;/p&gt;
 &lt;p&gt;The rule is matched against the sender string
 &lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/p&gt;
-&lt;p&gt;&lt;u&gt;By Message:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Message:&lt;/u&gt;&lt;/p&gt;
 &lt;p&gt;The rule is matched against the actual message content&lt;/p&gt;</string>
        </property>
        <property name="title">
