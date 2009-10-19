@@ -48,7 +48,7 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
   _server = QIndicate::Server::defaultInstance();
   _server->setType("message.irc");
   _server->setDesktopFile(XSTR(DESKTOP_FILE));
-  connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(toggleMinimizedToTray()));
+  connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(forceActivated()));
 
   if (_enabled) {
     _server->show();
