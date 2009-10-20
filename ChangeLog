@@ -6,15 +6,66 @@ contains end-user visible, mostly major new features. It does not contain (most)
 bugfixes, nor is it guaranteed to be complete or up-to-date at all. Also, it does
 start at 0.3.0 only, since this was the first version widely available.
 
-Please have a look at <http://bugs.quassel-irc.org/changelog_page.php> for a
+Please have a look at <http://bugs.quassel-irc.org/projects/quassel-irc/roadmap> for a
 list of closed bug/feature reports (which still does not cover bugs we have
 fixed but which were never reported, of course), and for a full list of
 changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.5.0 (2009-10-14)
+==========================
+
+* Tons of bugfixes
+* Many translation updates
+* Use DrKonqi/Apport to provide backtraces in case of a crash
+* Support for Ayatana's Message Indicator (libindicate; *buntu specific feature for now)
+* Fix wordwrap issues
+* Improved notification behavior (highlighted channels can now be cycled)
+* Improved icon packaging (don't install them if KDE is available and current enough)
+* Menubar can now be hidden (Ctrl+M to toggle)
+* Ignore list support
+* Vast performance improvements in the handling of synced objects
+  - Core startup/shutdown now almost instant
+  - Joining/leaving large channels much more efficient
+* Netsplit detection
+* New topic widget dynamically resizes to show all of the topic
+* Usability tweaks
+  - Reworked configuration dialogs
+  - Renamed "Buffer" to "Chat" throughout in all user-visible strings
+* Introduce stylesheet-based (QSS) styling for ChatView and the whole application
+* Allow configuration of ping timeouts and auto-WHO
+* Make toolbars configurable in KDE
+* Alt+A shortcut for jumping to cycle through active buffers
+* Properly remember the mainwindow state on shutdown/restart
+* Multiline input support
+* Improved systray notifications
+* Lazy backlog fetching for hidden buffers
+* Improved flood control
+* Spell check support (requires KDE integration)
+* /exec support for executing external scripts/programs
+* CLI interface for managing core users with quasselcore rather than a script
+* Improved ping timeout detection
+* PostgreSQL database backend support
+* Smart nickname completion (most recently active)
+
+Version 0.4.3 (2009-08-26)
+==========================
+
+Bugfixes and translation updates
+
+Version 0.4.2 (2009-05-20)
+==========================
+
+Bugfixes and translation updates
+
+Version 0.4.1 (2009-03-18)
+==========================
+
+Bugfixes and translation updates
+
 Version 0.4.0 (2009-02-17)
-================================
+==========================
 
 * Buffer view font can now be changed
 * Colored nicknames
@@ -52,7 +103,7 @@ Version 0.4.0 (2009-02-17)
   - Drag'n'Drop
 
 Version 0.3.1 (2008-11-20)
-================================
+==========================
 
 * Nick changes and day change messages can now be hidden
 * Web previews and status icons can be disabled
