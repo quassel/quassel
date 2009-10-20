@@ -51,12 +51,16 @@ SystemTray::SystemTray(QObject *parent)
   connect(&_animationTimer, SIGNAL(timeout()), SLOT(nextPhase()));
 
   ActionCollection *coll = QtUi::actionCollection("General");
-  _trayMenu = new QMenu();
+  _trayMenu = _trayIcon->contextMenu();
+  if (!_trayMenu)
+    _trayMenu = new QMenu();
   _trayMenu->addAction(coll->action("ConnectCore"));
   _trayMenu->addAction(coll->action("DisconnectCore"));
   _trayMenu->addAction(coll->action("CoreInfo"));
+#ifndef HAVE_KDE
   _trayMenu->addSeparator();
   _trayMenu->addAction(coll->action("Quit"));
+#endif /* HAVE_KDE */
 
   _trayIcon->setContextMenu(_trayMenu);
 
