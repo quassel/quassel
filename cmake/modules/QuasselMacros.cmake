@@ -17,15 +17,15 @@ macro(setup_qt4_variables)
   set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_LIBRARIES})
 endmacro(setup_qt4_variables)
 
-# This generates a .qm from a .ts file
+# This generates a .qm from a .po file
 macro(generate_qm outvar basename)
-  set(input ${CMAKE_SOURCE_DIR}/i18n/${basename}.ts)
+  set(input ${CMAKE_SOURCE_DIR}/i18n/${basename}.po)
   set(output ${CMAKE_BINARY_DIR}/i18n/${basename}.qm)
   add_custom_command(OUTPUT ${output}
-          COMMAND ${QT_LRELEASE_EXECUTABLE}
-          ARGS ${input}
-               -qm ${output}
-               -silent -compress
-          DEPENDS ${basename}.ts)
+          COMMAND ${QT_LCONVERT_EXECUTABLE}
+          ARGS -i ${input}
+               -of qm
+               -o ${output}
+          DEPENDS ${basename}.po)
   set(${outvar} ${output})
 endmacro(generate_qm outvar basename)

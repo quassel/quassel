@@ -1,28 +1,25 @@
 In order to create or update a translatable file, run the following command
 in the directory i18n/:
 
-lupdate ../src -ts quassel_xx.ts
+./update.sh xx
 
 where xx is the two-letter language code according to ISO 639 (which,
 if needed, may be suffixed by a country code according to ISO 3166).
 Quassel will automatically load these translation files based on the
-system locale. Examples for valid file names:
+system locale. Examples for valid codes: de, en_US
 
-quassel_de.ts
-quassel_en_US.ts
+You can open translation files with poedit for example and add/edit translated strings.
 
-You can open these XML files with the Qt Linguist and add/edit translated strings.
+The *.po files can and should be kept in sync with the source code by running
+update.sh regularly (existing translations won't be removed).
 
-The *.ts files can and should be kept in sync with the source code by running
-lupdate regularly (existing translations won't be removed).
-
-Qt itself does not use the *.ts files, but a compact binary format (*.qm). 
+Qt itself does not use the *.po files, but a compact binary format (*.qm). 
 These files will automatically be generated at build time. By default, all
 languages will be built. To select languages, add -DLINGUAS="<languages>"
 to your cmake call, where <languages> is a space-separated list of language
 codes as explained above.
 
-NOTE: You'll need lrelease installed with your Qt in order to generate
+NOTE: You'll need lconvert installed with your Qt in order to generate
       translation files. Some distributions don't package that tool;
       in that case you won't get translations.
 

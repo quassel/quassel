@@ -242,7 +242,7 @@
 #  QT_DBUSCPP2XML_EXECUTABLE  Where to find the qdbuscpp2xml tool.
 #  QT_DBUSXML2CPP_EXECUTABLE  Where to find the qdbusxml2cpp tool.
 #  QT_LUPDATE_EXECUTABLE      Where to find the lupdate tool.
-#  QT_LRELEASE_EXECUTABLE     Where to find the lrelease tool.
+#  QT_LCONVERT_EXECUTABLE     Where to find the lconvert tool.
 #  
 #  QT_DOC_DIR                 Path to "doc" of Qt4
 #  QT_MKSPECS_DIR             Path to "mkspecs" of Qt4
@@ -1095,8 +1095,8 @@ IF (QT4_QMAKE_FOUND)
     NO_DEFAULT_PATH
     )
 
-  FIND_PROGRAM(QT_LRELEASE_EXECUTABLE
-    NAMES lrelease-qt4 lrelease
+  FIND_PROGRAM(QT_LCONVERT_EXECUTABLE
+    NAMES lconvert
     PATHS ${QT_BINARY_DIR}
     NO_DEFAULT_PATH
     )
@@ -1113,7 +1113,7 @@ IF (QT4_QMAKE_FOUND)
 
   MARK_AS_ADVANCED( QT_UIC_EXECUTABLE QT_UIC3_EXECUTABLE QT_MOC_EXECUTABLE
     QT_RCC_EXECUTABLE QT_DBUSXML2CPP_EXECUTABLE QT_DBUSCPP2XML_EXECUTABLE
-    QT_LUPDATE_EXECUTABLE QT_LRELEASE_EXECUTABLE)
+    QT_LUPDATE_EXECUTABLE QT_LCONVERT_EXECUTABLE)
 
   ######################################
   #

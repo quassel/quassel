@@ -1,15 +1,15 @@
 # Generate and add translations
 # The LINGUAS variable can be used to limit that set
 
-if(QT_LRELEASE_EXECUTABLE)
-  # We always include quassel.ts
+if(QT_LCONVERT_EXECUTABLE)
+  # We always include quassel.po
   generate_qm(QM quassel)
   set(qm_files ${QM})
 
   # Find more languages
-  file(GLOB avail_tsfiles quassel_*.ts qt_*.ts)
-  foreach(TS_FILE ${avail_tsfiles})
-    get_filename_component(basename ${TS_FILE} NAME_WE)
+  file(GLOB avail_pofiles quassel_*.po qt_*.po)
+  foreach(PO_FILE ${avail_pofiles})
+    get_filename_component(basename ${PO_FILE} NAME_WE)
     string(REGEX REPLACE "q[^_]+_([a-zA-Z]+)(_.+)?$" "\\1" lang ${basename})
     # test if we want this
     set(flg 1)
@@ -21,14 +21,14 @@ if(QT_LRELEASE_EXECUTABLE)
       list(APPEND qm_files ${QM})
       list(APPEND gen_linguas ${lang})
     endif(flg)
-  endforeach(TS_FILE ${avail_tsfiles})
+  endforeach(PO_FILE ${avail_pofiles})
   if(gen_linguas)
     list(REMOVE_DUPLICATES gen_linguas)
   endif(gen_linguas)
   message(STATUS "Including languages: ${gen_linguas}")
-else(QT_LRELEASE_EXECUTABLE)
-  message(STATUS "WARNING: lrelease not found, you won't have translations!")
-endif(QT_LRELEASE_EXECUTABLE)
+else(QT_LCONVERT_EXECUTABLE)
+  message(STATUS "WARNING: lconvert not found, you won't have translations!")
+endif(QT_LCONVERT_EXECUTABLE)
 
 # For a static build, we need to include Qt translations if available
 if(STATIC AND QT_TRANSLATIONS_DIR)
