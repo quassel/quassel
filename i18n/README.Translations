@@ -13,6 +13,8 @@ You can open translation files with poedit for example and add/edit translated s
 The *.po files can and should be kept in sync with the source code by running
 update.sh regularly (existing translations won't be removed).
 
+NOTE: Remember to remove X-Virgin-Header line if you want to preserve your header.
+
 Qt itself does not use the *.po files, but a compact binary format (*.qm). 
 These files will automatically be generated at build time. By default, all
 languages will be built. To select languages, add -DLINGUAS="<languages>"
