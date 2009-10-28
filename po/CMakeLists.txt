@@ -6,6 +6,9 @@ if(QT_LCONVERT_EXECUTABLE)
   generate_qm(QM quassel)
   set(qm_files ${QM})
 
+  # get environment variable for translations
+  set(LINGUAS "$ENV{LINGUAS}")
+  string(REGEX REPLACE "[ \t]+" \; output "${LINGUAS}")
   # Find more languages
   file(GLOB avail_pofiles quassel_*.po qt_*.po)
   foreach(PO_FILE ${avail_pofiles})

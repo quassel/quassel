@@ -65,7 +65,6 @@ endif(STATIC OR WIN32)
 option(EMBED_DATA    "Embed all data files in the binary (rather than installing them separately)"   ${EMBED_DEFAULT})
 
 set(QT "" CACHE STRING "Path to a Qt installation to use instead of the system Qt (e.g. for static builds)")
-set(LINGUAS "" CACHE STRING "Comma-separated list of locales specifying languages that should be compiled")
 
 # Some settings imply others
 if(STATIC)
@@ -323,5 +322,5 @@ set(CLIENT_DEPS )
 add_subdirectory(data)
 add_subdirectory(icons)
 add_subdirectory(pics)
-add_subdirectory(i18n)
+add_subdirectory(po)
 add_subdirectory(src)
