@@ -19,8 +19,8 @@ endmacro(setup_qt4_variables)
 
 # This generates a .qm from a .po file
 macro(generate_qm outvar basename)
-  set(input ${CMAKE_SOURCE_DIR}/i18n/${basename}.po)
-  set(output ${CMAKE_BINARY_DIR}/i18n/${basename}.qm)
+  set(input ${CMAKE_SOURCE_DIR}/po/${basename}.po)
+  set(output ${CMAKE_BINARY_DIR}/po/${basename}.qm)
   add_custom_command(OUTPUT ${output}
           COMMAND ${QT_LCONVERT_EXECUTABLE}
           ARGS -i ${input}
