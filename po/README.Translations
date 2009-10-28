@@ -17,9 +17,12 @@ NOTE: Remember to remove X-Virgin-Header line if you want to preserve your heade
 
 Qt itself does not use the *.po files, but a compact binary format (*.qm). 
 These files will automatically be generated at build time. By default, all
-languages will be built. To select languages, add -DLINGUAS="<languages>"
-to your cmake call, where <languages> is a space-separated list of language
-codes as explained above.
+languages will be built. To select languages, use environment variable LINGUAS
+to specify superset of languages you want to build in. As you can see in
+example there we will build only Czech German and French translations.
+EXAMPLE:
+$ export LINGUAS="cs de fr"
+$ cmake /path/to/source
 
 NOTE: You'll need lconvert installed with your Qt in order to generate
       translation files. Some distributions don't package that tool;
