@@ -41,7 +41,7 @@ endif(INDICATEQT_FOUND)
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
-  add_dependencies(quasselcore i18n genversion_run)
+  add_dependencies(quasselcore po genversion_run)
   set_target_properties(quasselcore PROPERTIES
                                     COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE"
                                     OUTPUT_NAME ../quasselcore)
@@ -53,7 +53,7 @@ endif(WANT_CORE)
 if(WANT_QTCLIENT)
   setup_qt4_variables(${LINK_DBUS} GUI NETWORK ${LINK_WEBKIT})
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
-  add_dependencies(quasselclient i18n genversion_run)
+  add_dependencies(quasselclient po genversion_run)
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI"
                                       OUTPUT_NAME ../quasselclient)
@@ -66,7 +66,7 @@ if(WANT_MONO)
   setup_qt4_variables(${LINK_DBUS} GUI NETWORK SCRIPT SQL ${LINK_WEBKIT})
   qt4_wrap_cpp(MOC qtui/monoapplication.h)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${MOC} ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
-  add_dependencies(quassel i18n genversion_run)
+  add_dependencies(quassel po genversion_run)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO"
                                 OUTPUT_NAME ../quassel)

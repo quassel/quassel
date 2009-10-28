@@ -65,4 +65,4 @@ else(EMBED_DATA)
   install(FILES ${qm_files} DESTINATION ${DATA_INSTALL_DIR}/quassel/translations)
 endif(EMBED_DATA)
 
-add_custom_target(i18n DEPENDS ${qm_files})
+add_custom_target(po DEPENDS ${qm_files})
