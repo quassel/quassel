@@ -28,3 +28,5 @@ NOTE: You'll need lconvert installed with your Qt in order to generate
       translation files. Some distributions don't package that tool;
       in that case you won't get translations.
 
+Regenerating .pot file:
+lupdate ../src -ts quassel.ts && lconvert -i quassel.ts -o quassel.po && rm quassel.ts && mv quassel.po quassel.pot

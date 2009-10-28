@@ -2,10 +2,6 @@
 # The LINGUAS variable can be used to limit that set
 
 if(QT_LCONVERT_EXECUTABLE)
-  # We always include quassel.po
-  generate_qm(QM quassel)
-  set(qm_files ${QM})
-
   # get environment variable for translations
   set(LINGUAS "$ENV{LINGUAS}")
   string(REGEX REPLACE "[ \t]+" \; output "${LINGUAS}")
