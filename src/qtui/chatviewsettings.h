@@ -28,7 +28,7 @@ class ChatView;
 
 class ChatViewSettings : public QtUiSettings {
 public:
-  Q_ENUMS(OperationMode);
+  Q_ENUMS(OperationMode)
   public:
     enum OperationMode {
       InvalidMode = 0,

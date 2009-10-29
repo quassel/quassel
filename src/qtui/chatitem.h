@@ -165,7 +165,7 @@ struct ContentsChatItemPrivate;
 
 //! A ChatItem for the contents column
 class ContentsChatItem : public ChatItem {
-  Q_DECLARE_TR_FUNCTIONS(ContentsChatItem);
+  Q_DECLARE_TR_FUNCTIONS(ContentsChatItem)
 
 public:
   ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent);
