@@ -1,0 +1,73 @@
+// This file is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; version 2 of the License.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, see <http://www.gnu.org/licenses/>.
+
+// Copyright (C) Jussi Schultink 2009
+
+// Custom ChatView Colors
+Palette { marker-line: #ff0000; }
+ChatView { background: #131313; }
+
+ChatLine[label="highlight"] {
+  foreground: #debc85;
+  background: #00583a;
+}
+
+ChatLine::timestamp { foreground: #707c70; }
+
+ChatLine#plain { foreground: #debc85; }
+ChatLine#notice { foreground: #916409; }
+ChatLine#action { foreground: #007a80; font-weight: bold; font-style: italic; }
+ChatLine#nick { foreground: #633b5a; }
+ChatLine#mode { foreground: #346E9E; font-weight: bold; }
+ChatLine#join { foreground: #005538; }
+ChatLine#part { foreground: #633b5a; }
+ChatLine#quit { foreground: #683A38; }
+ChatLine#kick { foreground: #633b5a; }
+ChatLine#kill { foreground: #633b5a; }
+ChatLine#server { foreground: #916409; }
+ChatLine#info { foreground: #916409; }
+ChatLine#error { foreground: #916409; }
+ChatLine#daychange { foreground: #916409; }
+ChatLine#topic { foreground: #633b5a; }
+
+
+// Sender Colors
+ChatLine::sender#plain[sender="self"] { foreground: #009966; }
+
+ChatLine::sender#plain[sender="00"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="01"] { foreground: #8e55e9; }
+ChatLine::sender#plain[sender="02"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="03"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="04"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="05"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="06"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="07"] { foreground: #3176b3; }
+ChatLine::sender#plain[sender="08"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="09"] { foreground: #8e55e9; }
+ChatLine::sender#plain[sender="0a"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="0b"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="0c"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="0d"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="0e"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="0f"] { foreground: #3176b3; }
+
+// BufferView Colors
+ChatListItem { foreground: #debc85; }
+ChatListItem[state="inactive"] { foreground: #a0a0a4; }
+ChatListItem[state="channel-event"] { foreground: #008000; }
+ChatListItem[state="unread-message"] { foreground: #ff7b00; }
+ChatListItem[state="highlighted"] { foreground: #ff00bf; }
+
+// NickView Colors
+NickListItem[type="category"] { foreground: #debc85; }
+NickListItem[type="user"] { foreground: #debc85; }
+NickListItem[type="user", state="away"] { foreground: #a0a0a4; }
