@@ -48,6 +48,7 @@ AbstractSqlMigrationWriter *PostgreSqlStorage::createMigrationWriter() {
 }
 
 bool PostgreSqlStorage::isAvailable() const {
+  qDebug() << QSqlDatabase::drivers();
   if(!QSqlDatabase::isDriverAvailable("QPSQL")) return false;
   return true;
 }
@@ -1142,6 +1143,44 @@ QHash<BufferId, MsgId> PostgreSqlStorage::bufferLastSeenMsgIds(UserId user) {
   return lastSeenHash;
 }
 
+void PostgreSqlStorage::setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_buffer_markerlinemsgid"));
+
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":bufferid", bufferId.toInt());
+  query.bindValue(":lastseenmsgid", msgId.toInt());
+  safeExec(query);
+  watchQuery(query);
+}
+
+QHash<BufferId, MsgId> PostgreSqlStorage::bufferMarkerLineMsgIds(UserId user) {
+  QHash<BufferId, MsgId> markerLineHash;
+
+  QSqlDatabase db = logDb();
+  if(!beginReadOnlyTransaction(db)) {
+    qWarning() << "PostgreSqlStorage::bufferMarkerLineMsgIds(): cannot start read only transaction!";
+    qWarning() << " -" << qPrintable(db.lastError().text());
+    return markerLineHash;
+  }
+
+  QSqlQuery query(db);
+  query.prepare(queryString("select_buffer_markerlinemsgids"));
+  query.bindValue(":userid", user.toInt());
+  safeExec(query);
+  if(!watchQuery(query)) {
+    db.rollback();
+    return markerLineHash;
+  }
+
+  while(query.next()) {
+    markerLineHash[query.value(0).toInt()] = query.value(1).toInt();
+  }
+
+  db.commit();
+  return markerLineHash;
+}
+
 bool PostgreSqlStorage::logMessage(Message &msg) {
   QSqlDatabase db = logDb();
   if(!db.transaction()) {
@@ -1626,8 +1665,9 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer) {
   bindValue(5, buffer.buffercname);
   bindValue(6, (int)buffer.buffertype);
   bindValue(7, buffer.lastseenmsgid);
-  bindValue(8, buffer.key);
-  bindValue(9, buffer.joined);
+  bindValue(8, buffer.markerlinemsgid);
+  bindValue(9, buffer.key);
+  bindValue(10, buffer.joined);
   return exec();
 }
 

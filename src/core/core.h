@@ -378,6 +378,28 @@ public:
     return instance()->_storage->bufferLastSeenMsgIds(user);
   }
 
+  //! Update the MarkerLineMsgId for a Buffer
+  /** This Method is used to make the marker line position of a Buffer persistent
+   *  \note This method is threadsafe.
+   *
+   * \param user      The Owner of that Buffer
+   * \param bufferId  The buffer id
+   * \param MsgId     The Message id where the marker line should be placed
+   */
+  static inline void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
+    return instance()->_storage->setBufferMarkerLineMsg(user, bufferId, msgId);
+  }
+
+  //! Get a Hash of all marker line message ids
+  /** This Method is called when the Quassel Core is started to restore the MarkerLineMsgIds
+   *  \note This method is threadsafe.
+   *
+   * \param user      The Owner of the buffers
+   */
+  static inline QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user) {
+    return instance()->_storage->bufferMarkerLineMsgIds(user);
+  }
+
   const QDateTime &startTime() const { return _startTime; }
 
   static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }

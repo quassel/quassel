@@ -7,6 +7,7 @@ create TABLE buffer (
 	buffercname varchar(128) NOT NULL, -- CANONICAL BUFFER NAME (lowercase version)
 	buffertype integer NOT NULL DEFAULT 0,
 	lastseenmsgid integer NOT NULL DEFAULT 0,
+	markerlinemsgid integer NOT NULL DEFAULT 0,
 	key varchar(128),
 	joined boolean NOT NULL DEFAULT FALSE, -- BOOL
 	UNIQUE(userid, networkid, buffercname)

@@ -198,6 +198,7 @@ public:
     QString buffercname;
     int buffertype;
     int lastseenmsgid;
+    int markerlinemsgid;
     QString key;
     bool joined;
   };

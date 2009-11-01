@@ -93,6 +93,8 @@ public slots:
   virtual bool mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2);
   virtual void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
   virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
+  virtual void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
+  virtual QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user);
 
   /* Message handling */
   virtual bool logMessage(Message &msg);

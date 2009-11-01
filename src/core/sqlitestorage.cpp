@@ -1297,6 +1297,52 @@ QHash<BufferId, MsgId> SqliteStorage::bufferLastSeenMsgIds(UserId user) {
   return lastSeenHash;
 }
 
+void SqliteStorage::setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
+  QSqlDatabase db = logDb();
+  db.transaction();
+
+  {
+    QSqlQuery query(db);
+    query.prepare(queryString("update_buffer_markerlinemsgid"));
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":markerlinemsgid", msgId.toInt());
+
+    lockForWrite();
+    safeExec(query);
+    watchQuery(query);
+  }
+  db.commit();
+  unlock();
+}
+
+QHash<BufferId, MsgId> SqliteStorage::bufferMarkerLineMsgIds(UserId user) {
+  QHash<BufferId, MsgId> markerLineHash;
+
+  QSqlDatabase db = logDb();
+  db.transaction();
+
+  bool error = false;
+  {
+    QSqlQuery query(db);
+    query.prepare(queryString("select_buffer_markerlinemsgids"));
+    query.bindValue(":userid", user.toInt());
+
+    lockForRead();
+    safeExec(query);
+    error = !watchQuery(query);
+    if(!error) {
+      while(query.next()) {
+        markerLineHash[query.value(0).toInt()] = query.value(1).toInt();
+      }
+    }
+  }
+
+  db.commit();
+  unlock();
+  return markerLineHash;
+}
+
 bool SqliteStorage::logMessage(Message &msg) {
   QSqlDatabase db = logDb();
   db.transaction();
@@ -1698,6 +1744,7 @@ bool SqliteMigrationReader::readMo(BufferMO &buffer) {
   buffer.buffercname = value(5).toString();
   buffer.buffertype = value(6).toInt();
   buffer.lastseenmsgid = value(7).toInt();
+  buffer.markerlinemsgid = value(8).toInt();
   buffer.key = value(8).toString();
   buffer.joined = value(9).toInt() == 1 ? true : false;
   return true;

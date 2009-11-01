@@ -349,6 +349,24 @@ public slots:
    */
   virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user) = 0;
 
+  //! Update the MarkerLineMsgId for a Buffer
+  /** This Method is used to make the marker line position of a Buffer persistent
+   *  \note This method is threadsafe.
+   *
+   * \param user      The Owner of that Buffer
+   * \param bufferId  The buffer id
+   * \param MsgId     The Message id where the marker line should be placed
+   */
+  virtual void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) = 0;
+
+  //! Get a Hash of all marker line message ids
+  /** This Method is called when the Quassel Core is started to restore the MarkerLineMsgIds
+   *  \note This method is threadsafe.
+   *
+   * \param user      The Owner of the buffers
+   */
+  virtual QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user) = 0;
+
 
   /* Message handling */
 
