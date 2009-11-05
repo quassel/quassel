@@ -844,7 +844,6 @@ void ChatScene::updateSceneRect(qreal width) {
     ChatLine *firstLine = _lines.at(_firstLineRow);
     ChatLine *lastLine = _lines.last();
     updateSceneRect(QRectF(0, firstLine->pos().y(), width, lastLine->pos().y() + lastLine->height() - firstLine->pos().y()));
-    qDebug() << idString() << "top:" << sceneRect().y() << "height:" << sceneRect().height();
   } else {
     // empty scene rect
     updateSceneRect(QRectF(0, 0, width, 0));
