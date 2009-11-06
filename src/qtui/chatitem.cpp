@@ -426,7 +426,8 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
   WrapColumnFinder finder(this);
   while(finder.nextWrapColumn(w) > 0)
     lines++;
-  qreal h = lines * fontMetrics()->lineSpacing();
+  qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height());  // cope with negative leading()
+  qreal h = lines * spacing;
   delete _data;
   _data = 0;
 
@@ -443,6 +444,7 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
   if(!wrapList.count()) return; // empty chatitem
 
   qreal h = 0;
+  qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height());  // cope with negative leading()
   WrapColumnFinder finder(this);
   layout->beginLayout();
   forever {
@@ -469,7 +471,7 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
     }
 
     line.setPosition(QPointF(0, h));
-    h += fontMetrics()->lineSpacing();
+    h += spacing;
   }
   layout->endLayout();
 }
