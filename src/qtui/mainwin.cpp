@@ -105,6 +105,7 @@
 #include "settingspages/chatmonitorsettingspage.h"
 #include "settingspages/chatviewsettingspage.h"
 #include "settingspages/connectionsettingspage.h"
+#include "settingspages/coreaccountsettingspage.h"
 #include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
@@ -311,9 +312,9 @@ void MainWin::setupActions() {
   connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockLayout_toggled(bool)));
 
   coll->addAction("ToggleSearchBar", new Action(SmallIcon("edit-find"), tr("Show &Search Bar"), coll,
-						0, 0, QKeySequence::Find))->setCheckable(true);
+                                                0, 0, QKeySequence::Find))->setCheckable(true);
   coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
-					    this, SLOT(showAwayLog())));
+                                            this, SLOT(showAwayLog())));
   coll->addAction("ToggleMenuBar", new Action(SmallIcon("show-menu"), tr("Show &Menubar"), coll,
                                                 0, 0, tr("Ctrl+M")))->setCheckable(true);
 
@@ -892,6 +893,10 @@ void MainWin::showSettingsDlg() {
   dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
   dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
   dlg->registerSettingsPage(new IgnoreListSettingsPage(dlg));
+
+  if(Quassel::runMode() != Quassel::Monolithic) {
+    dlg->registerSettingsPage(new CoreAccountSettingsPage(dlg));
+  }
 
   dlg->show();
 }
