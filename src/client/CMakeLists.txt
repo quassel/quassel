@@ -24,6 +24,8 @@ set(SOURCES
     clientsettings.cpp
     clientsyncer.cpp
     clientuserinputhandler.cpp
+    coreaccount.cpp
+    coreaccountmodel.cpp
     execwrapper.cpp
     irclistmodel.cpp
     messagefilter.cpp
@@ -48,6 +50,7 @@ set(MOC_HDRS
     clientirclisthelper.h
     clientuserinputhandler.h
     clientsyncer.h
+    coreaccountmodel.h
     execwrapper.h
     irclistmodel.h
     messagefilter.h
@@ -60,7 +63,9 @@ set(HEADERS
     backlogsettings.h
     backlogrequester.h
     buffersettings.h
-    clientsettings.h)
+    clientsettings.h
+    coreaccount.h
+   )
 
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 

@@ -76,7 +76,7 @@ bool Quassel::init() {
     // we only handle crashes ourselves if coredumps are disabled
     struct rlimit *limit = (rlimit *) malloc(sizeof(struct rlimit));
     int rc = getrlimit(RLIMIT_CORE, limit);
-  
+
     if(rc == -1 || !((long)limit->rlim_cur > 0 || limit->rlim_cur == RLIM_INFINITY)) {
 # endif /* Q_OS_WIN32 */
       signal(SIGABRT, handleSignal);

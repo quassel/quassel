@@ -52,9 +52,10 @@ void CoreAccountSettings::notify(const QString &key, QObject *receiver, const ch
 
 QList<AccountId> CoreAccountSettings::knownAccounts() {
   QList<AccountId> ids;
-  foreach(QString key, localChildGroups()) {
+  foreach(const QString &key, localChildGroups()) {
     AccountId acc = key.toInt();
-    if(acc.isValid()) ids << acc;
+    if(acc.isValid())
+      ids << acc;
   }
   return ids;
 }
@@ -76,20 +77,55 @@ void CoreAccountSettings::setAutoConnectAccount(AccountId account) {
 }
 
 void CoreAccountSettings::storeAccountData(AccountId id, const QVariantMap &data) {
-  setLocalValue(QString("%1/Connection").arg(id.toInt()), data);
+  QString base = QString::number(id.toInt());
+  foreach(const QString &key, data.keys()) {
+    setLocalValue(base + "/" + key, data.value(key));
+  }
+
+  // FIXME Migration from 0.5 -> 0.6
+  removeLocalKey(QString("%1/Connection").arg(base));
 }
 
 QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id) {
-  return localValue(QString("%1/Connection").arg(id.toInt()), QVariant()).toMap();
+  QVariantMap map;
+  QString base = QString::number(id.toInt());
+  foreach(const QString &key, localChildKeys(base)) {
+    map[key] = localValue(base + "/" + key);
+  }
+
+  // FIXME Migration from 0.5 -> 0.6
+  if(!map.contains("Uuid") && map.contains("Connection")) {
+    QVariantMap oldmap = map.value("Connection").toMap();
+    map["AccountName"] = oldmap.value("AccountName");
+    map["HostName"] = oldmap.value("Host");
+    map["Port"] = oldmap.value("Port");
+    map["User"] = oldmap.value("User");
+    map["Password"] = oldmap.value("Password");
+    map["StorePassword"] = oldmap.value("RememberPasswd");
+    map["UseSSL"] = oldmap.value("useSsl");
+    map["UseProxy"] = oldmap.value("useProxy");
+    map["ProxyHostName"] = oldmap.value("proxyHost");
+    map["ProxyPort"] = oldmap.value("proxyPort");
+    map["ProxyUser"] = oldmap.value("proxyUser");
+    map["ProxyPassword"] = oldmap.value("proxyPassword");
+    map["ProxyType"] = oldmap.value("proxyType");
+
+    map["AccountId"] = id.toInt();
+    map["Uuid"] = QUuid::createUuid().toString();
+  }
+
+  return map;
 }
 
 void CoreAccountSettings::setAccountValue(const QString &key, const QVariant &value) {
-  if(!Client::currentCoreAccount().isValid()) return;
+  if(!Client::currentCoreAccount().isValid())
+    return;
   setLocalValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), value);
 }
 
 QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &def) {
-  if(!Client::currentCoreAccount().isValid()) return QVariant();
+  if(!Client::currentCoreAccount().isValid())
+    return QVariant();
   return localValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), def);
 }
 
@@ -98,18 +134,18 @@ void CoreAccountSettings::setJumpKeyMap(const QHash<int, BufferId> &keyMap) {
   QHash<int, BufferId>::const_iterator mapIter = keyMap.constBegin();
   while(mapIter != keyMap.constEnd()) {
     variants[QString::number(mapIter.key())] = qVariantFromValue(mapIter.value());
-    mapIter++;
+    ++mapIter;
   }
-  setLocalValue("JumpKeyMap", variants);
+  setAccountValue("JumpKeyMap", variants);
 }
 
 QHash<int, BufferId> CoreAccountSettings::jumpKeyMap() {
   QHash<int, BufferId> keyMap;
-  QVariantMap variants = localValue("JumpKeyMap", QVariant()).toMap();
+  QVariantMap variants = accountValue("JumpKeyMap", QVariant()).toMap();
   QVariantMap::const_iterator mapIter = variants.constBegin();
   while(mapIter != variants.constEnd()) {
     keyMap[mapIter.key().toInt()] = mapIter.value().value<BufferId>();
-    mapIter++;
+    ++mapIter;
   }
   return keyMap;
 }

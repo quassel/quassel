@@ -35,6 +35,7 @@
 #include "clientidentity.h"
 #include "clientignorelistmanager.h"
 #include "clientuserinputhandler.h"
+#include "coreaccountmodel.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
@@ -95,6 +96,7 @@ Client::Client(QObject *parent)
     _ignoreListManager(0),
     _messageModel(0),
     _messageProcessor(0),
+    _coreAccountModel(new CoreAccountModel(this)),
     _connectedToCore(false),
     _syncedToCore(false),
     _internalCore(false),
@@ -118,6 +120,7 @@ void Client::init() {
   _messageModel = mainUi()->createMessageModel(this);
   _messageProcessor = mainUi()->createMessageProcessor(this);
   _inputHandler = new ClientUserInputHandler(this);
+  _coreAccountModel->load();
 
   SignalProxy *p = signalProxy();
 
@@ -160,7 +163,7 @@ AccountId Client::currentCoreAccount() {
   return _currentCoreAccount;
 }
 
-void Client::setCurrentCoreAccount(AccountId id) {
+void Client::setCurrentCoreAccount(const AccountId &id) {
   _currentCoreAccount = id;
 }
 

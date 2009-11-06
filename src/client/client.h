@@ -21,8 +21,6 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
-#include <QAbstractSocket>
-#include <QTcpSocket>
 #include <QList>
 #include <QPointer>
 
@@ -50,6 +48,7 @@ class ClientIgnoreListManager;
 class ClientIrcListHelper;
 class ClientSyncer;
 class ClientUserInputHandler;
+class CoreAccountModel;
 class IrcUser;
 class IrcChannel;
 class NetworkConfig;
@@ -115,6 +114,7 @@ public:
   static inline NetworkConfig *networkConfig() { return instance()->_networkConfig; }
   static inline ClientIgnoreListManager *ignoreListManager() { return instance()->_ignoreListManager; }
 
+  static inline CoreAccountModel *coreAccountModel() { return instance()->_coreAccountModel; }
   static AccountId currentCoreAccount();
 
   static bool isConnected();
@@ -203,7 +203,7 @@ private:
   void init();
 
   static void addNetwork(Network *);
-  static void setCurrentCoreAccount(AccountId);
+  static void setCurrentCoreAccount(const AccountId &);
   static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
   static QPointer<Client> instanceptr;
@@ -224,6 +224,8 @@ private:
 
   MessageModel *_messageModel;
   AbstractMessageProcessor *_messageProcessor;
+
+  CoreAccountModel *_coreAccountModel;
 
   ClientMode clientMode;
 
