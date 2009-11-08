@@ -170,7 +170,6 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   qreal width = _sceneRect.width();
   bool atBottom = (start == _lines.count());
   bool atTop = !atBottom && (start == 0);
-  bool moveTop = false;
 
   if(start < _lines.count()) {
     y = _lines.value(start)->y();
