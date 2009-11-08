@@ -1037,6 +1037,7 @@ BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId &networkId, Bu
       createQuery.bindValue(":buffertype", (int)type);
       createQuery.bindValue(":buffername", buffer);
       createQuery.bindValue(":buffercname", buffer.toLower());
+      createQuery.bindValue(":joined", type & BufferInfo::ChannelBuffer ? 1 : 0);
 
       unlock();
       lockForWrite();

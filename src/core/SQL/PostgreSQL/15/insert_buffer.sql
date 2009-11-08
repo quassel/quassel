@@ -1,3 +1,3 @@
-INSERT INTO buffer (userid, networkid, buffername, buffercname, buffertype)
-VALUES (:userid, :networkid, :buffername, :buffercname, :buffertype)
+INSERT INTO buffer (userid, networkid, buffername, buffercname, buffertype, joined)
+VALUES (:userid, :networkid, :buffername, :buffercname, :buffertype, :joined)
 RETURNING bufferid
