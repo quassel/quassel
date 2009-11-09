@@ -144,6 +144,9 @@ void NickView::customEvent(QEvent *event) {
   if(event->type() != QEvent::User)
     return;
 
+  if(!model())
+    return;
+
   QModelIndex topLevelIdx;
   for(int i = 0; i < model()->rowCount(rootIndex()); i++) {
     topLevelIdx = model()->index(i, 0, rootIndex());
