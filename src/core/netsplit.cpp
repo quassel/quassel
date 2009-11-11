@@ -167,7 +167,10 @@ void Netsplit::quitTimeout()
         _quitsWithMessageSent[channelIter.key()].append(user);
       }
     }
-    emit netsplitQuit(channelIter.key(), usersToSend, _quitMsg);
+    // not yet sure how that could happen, but never send empty netsplit-quits
+    // anyway.
+    if(!usersToSend.isEmpty())
+      emit netsplitQuit(channelIter.key(), usersToSend, _quitMsg);
   }
   _sentQuit = true;
 }
