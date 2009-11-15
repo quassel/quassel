@@ -907,7 +907,7 @@ BufferInfo PostgreSqlStorage::bufferInfo(UserId user, const NetworkId &networkId
   createQuery.bindValue(":buffertype", (int)type);
   createQuery.bindValue(":buffername", buffer);
   createQuery.bindValue(":buffercname", buffer.toLower());
-  createQuery.bindValue(":joined", type & BufferInfo::ChannelBuffer ? 1 : 0);
+  createQuery.bindValue(":joined", type & BufferInfo::ChannelBuffer ? true : false);
 
   safeExec(createQuery);
 
