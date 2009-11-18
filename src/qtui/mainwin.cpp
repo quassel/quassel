@@ -747,7 +747,15 @@ void MainWin::setConnectedState() {
 void MainWin::loadLayout() {
   QtUiSettings s;
   int accountId = Client::currentCoreAccount().toInt();
-  restoreState(s.value(QString("MainWinState-%1").arg(accountId)).toByteArray(), accountId);
+  QByteArray state = s.value(QString("MainWinState-%1").arg(accountId)).toByteArray();
+  if(state.isEmpty()) {
+    // Make sure that the default bufferview is shown
+    if(_bufferViews.count())
+      _bufferViews.at(0)->show();
+    return;
+  }
+
+  restoreState(state, accountId);
   _layoutLoaded = true;
 }
 
