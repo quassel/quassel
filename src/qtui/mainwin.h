@@ -196,6 +196,8 @@ class MainWin
 
     QWidget *_awayLog;
 
+    bool _layoutLoaded;
+
     QSize _normalSize; //!< Size of the non-maximized window
     QPoint _normalPos; //!< Position of the non-maximized window
 

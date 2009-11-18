@@ -126,7 +126,8 @@ MainWin::MainWin(QWidget *parent)
     sslLabel(new QLabel()),
     msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
     _titleSetter(this),
-    _awayLog(0)
+    _awayLog(0),
+    _layoutLoaded(false)
 {
 #ifdef Q_WS_WIN
   dwTickCount = 0;
@@ -443,12 +444,11 @@ void MainWin::addBufferView(ClientBufferViewConfig *config) {
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(Client::bufferModel(), config);
   view->installEventFilter(_inputWidget); // for key presses
-  view->show();
 
   Client::bufferModel()->synchronizeView(view);
 
   dock->setWidget(view);
-  dock->show();
+  dock->setVisible(_layoutLoaded); // don't show before state has been restored
 
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   _bufferViewsMenu->addAction(dock->toggleViewAction());
@@ -468,6 +468,7 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
     dock = qobject_cast<BufferViewDock *>(action->parent());
     if(dock && actionData.toInt() == bufferViewConfigId) {
       removeAction(action);
+      _bufferViews.removeAll(dock);
       dock->deleteLater();
     }
   }
@@ -741,6 +742,7 @@ void MainWin::loadLayout() {
   QtUiSettings s;
   int accountId = Client::currentCoreAccount().toInt();
   restoreState(s.value(QString("MainWinState-%1").arg(accountId)).toByteArray(), accountId);
+  _layoutLoaded = true;
 }
 
 void MainWin::saveLayout() {
@@ -761,6 +763,8 @@ void MainWin::updateLagIndicator(int lag) {
 void MainWin::disconnectedFromCore() {
   // save core specific layout and remove bufferviews;
   saveLayout();
+  _layoutLoaded = false;
+
   QVariant actionData;
   BufferViewDock *dock;
   foreach(QAction *action, _bufferViewsMenu->actions()) {
@@ -771,9 +775,11 @@ void MainWin::disconnectedFromCore() {
     dock = qobject_cast<BufferViewDock *>(action->parent());
     if(dock && actionData.toInt() != -1) {
       removeAction(action);
+      _bufferViews.removeAll(dock);
       dock->deleteLater();
     }
   }
+
   QtUiSettings s;
   restoreState(s.value("MainWinState").toByteArray());
   setDisconnectedState();
