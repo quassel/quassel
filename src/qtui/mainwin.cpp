@@ -469,6 +469,7 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
     if(dock && actionData.toInt() == bufferViewConfigId) {
       removeAction(action);
       _bufferViews.removeAll(dock);
+      Client::bufferViewOverlay()->removeView(dock->bufferViewId());
       dock->deleteLater();
     }
   }
@@ -479,6 +480,11 @@ void MainWin::bufferViewToggled(bool enabled) {
   Q_ASSERT(action);
   BufferViewDock *dock = qobject_cast<BufferViewDock *>(action->parent());
   Q_ASSERT(dock);
+
+  // Make sure we don't toggle backlog fetch for a view we've already removed
+  if(!_bufferViews.contains(dock))
+    return;
+
   if(enabled) {
     Client::bufferViewOverlay()->addView(dock->bufferViewId());
     BufferViewConfig *config = dock->config();
@@ -776,6 +782,7 @@ void MainWin::disconnectedFromCore() {
     if(dock && actionData.toInt() != -1) {
       removeAction(action);
       _bufferViews.removeAll(dock);
+      Client::bufferViewOverlay()->removeView(dock->bufferViewId());
       dock->deleteLater();
     }
   }
