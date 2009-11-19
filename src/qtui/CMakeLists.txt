@@ -28,7 +28,6 @@ set(SOURCES
     chatviewsettings.cpp
     columnhandleitem.cpp
     coreconfigwizard.cpp
-    coreconnectdlg.cpp
     coreinfodlg.cpp
     debugbufferviewoverlay.cpp
     debugconsole.cpp
@@ -73,7 +72,6 @@ set(MOC_HDRS
     chatviewsearchcontroller.h
     columnhandleitem.h
     coreconfigwizard.h
-    coreconnectdlg.h
     coreinfodlg.h
     debugbufferviewoverlay.h
     debugconsole.h
@@ -113,12 +111,10 @@ set(FORMS
     bufferwidget.ui
     channellistdlg.ui
     chatviewsearchbar.ui
-    coreaccounteditdlg.ui
     coreconfigwizardintropage.ui
     coreconfigwizardadminuserpage.ui
     coreconfigwizardstorageselectionpage.ui
     coreconfigwizardsyncpage.ui
-    coreconnectdlg.ui
     coreinfodlg.ui
     debugbufferviewoverlay.ui
     debugconsole.ui

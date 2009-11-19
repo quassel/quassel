@@ -57,7 +57,6 @@
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
 #include "coreinfodlg.h"
-#include "coreconnectdlg.h"
 #include "contextmenuactionprovider.h"
 #include "debugbufferviewoverlay.h"
 #include "debuglogwidget.h"
@@ -212,7 +211,7 @@ void MainWin::init() {
   QtUi::actionCollection("General")->action("LockLayout")->setChecked(s.value("LockLayout", false).toBool());
 
   if(Quassel::runMode() != Quassel::Monolithic) {
-    showCoreConnectionDlg(true); // autoconnect if appropriate
+    //showCoreConnectionDlg(true); // autoconnect if appropriate
   } else {
     startInternalCore();
   }
@@ -824,10 +823,6 @@ void MainWin::startInternalCore() {
   Client::registerClientSyncer(syncer);
   connect(syncer, SIGNAL(syncFinished()), syncer, SLOT(deleteLater()), Qt::QueuedConnection);
   syncer->useInternalCore();
-}
-
-void MainWin::showCoreConnectionDlg(bool autoConnect) {
-  CoreConnectDlg(autoConnect, this).exec();
 }
 
 void MainWin::showChannelList(NetworkId netId) {

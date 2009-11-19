@@ -118,7 +118,6 @@ class MainWin
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
     void startInternalCore();
-    void showCoreConnectionDlg(bool autoConnect = false);
     void showCoreInfoDlg();
     void showAwayLog();
     void showSettingsDlg();
