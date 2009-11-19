@@ -26,6 +26,7 @@ set(SOURCES
     clientuserinputhandler.cpp
     coreaccount.cpp
     coreaccountmodel.cpp
+    coreconnection.cpp
     execwrapper.cpp
     irclistmodel.cpp
     messagefilter.cpp
@@ -51,6 +52,7 @@ set(MOC_HDRS
     clientuserinputhandler.h
     clientsyncer.h
     coreaccountmodel.h
+    coreconnection.h
     execwrapper.h
     irclistmodel.h
     messagefilter.h
