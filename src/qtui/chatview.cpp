@@ -78,7 +78,7 @@ void ChatView::init(MessageFilter *filter) {
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
 
   // only connect if client is synched with a core
-  if(Client::isSynced())
+  if(Client::isConnected())
     connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), this, SLOT(invalidateFilter()));
 }
 
@@ -91,8 +91,8 @@ bool ChatView::event(QEvent *event) {
     case Qt::Key_PageUp:
     case Qt::Key_PageDown:
       if(!verticalScrollBar()->isVisible()) {
-	scene()->requestBacklog();
-	return true;
+        scene()->requestBacklog();
+        return true;
       }
     default:
       break;

@@ -120,7 +120,6 @@ public:
   static inline CoreAccount currentCoreAccount() { return coreConnection()->currentAccount(); }
 
   static bool isConnected();
-  static bool isSynced();
   static bool internalCore();
 
   static void userInput(const BufferInfo &bufferInfo, const QString &message);
@@ -229,6 +228,8 @@ private:
 
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
+
+  bool _connected;
 
   QString _debugLogBuffer;
   QTextStream _debugLog;

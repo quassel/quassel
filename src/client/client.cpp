@@ -98,6 +98,7 @@ Client::Client(QObject *parent)
     _messageProcessor(0),
     _coreAccountModel(new CoreAccountModel(this)),
     _coreConnection(new CoreConnection(_coreAccountModel, this)),
+    _connected(false),
     _debugLog(&_debugLogBuffer)
 {
   _signalProxy->synchronize(_ircListHelper);
@@ -159,11 +160,7 @@ AbstractUi *Client::mainUi() {
 }
 
 bool Client::isConnected() {
-  return coreConnection()->state() >= CoreConnection::Connected;
-}
-
-bool Client::isSynced() {
-  return coreConnection()->state() == CoreConnection::Synchronized;
+  return instance()->_connected;
 }
 
 bool Client::internalCore() {
@@ -345,6 +342,7 @@ void Client::setSyncedToCore() {
   // trigger backlog request once all active bufferviews are initialized
   connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
 
+  _connected = true;
   emit connected();
   emit coreConnectionStateChanged(true);
 }
@@ -378,6 +376,7 @@ void Client::disconnectFromCore() {
 }
 
 void Client::setDisconnectedFromCore() {
+  _connected = false;
   emit disconnected();
   emit coreConnectionStateChanged(false);
 
