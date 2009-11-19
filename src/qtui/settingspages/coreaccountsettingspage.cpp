@@ -67,7 +67,7 @@ QVariant CoreAccountSettingsPage::loadAutoWidgetValue(const QString &widgetName)
   if(widgetName == "autoConnectAccount") {
     CoreAccountSettings s;
     AccountId id = s.autoConnectAccount();
-    if(id <= 0)
+    if(!id.isValid())
       return QVariant();
     ui.autoConnectAccount->setCurrentIndex(model()->accountIndex(id).row());
     return id.toInt();

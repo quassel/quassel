@@ -76,6 +76,22 @@ void CoreAccountSettings::setAutoConnectAccount(AccountId account) {
   setLocalValue("AutoConnectAccount", account.toInt());
 }
 
+bool CoreAccountSettings::autoConnectOnStartup() {
+  return localValue("AutoConnectOnStartup", false).toBool();
+}
+
+void CoreAccountSettings::setAutoConnectOnStartup(bool b) {
+  setLocalValue("AutoConnectOnStartup", b);
+}
+
+bool CoreAccountSettings::autoConnectToFixedAccount() {
+  return localValue("AutoConnectToFixedAccount", false).toBool();
+}
+
+void CoreAccountSettings::setAutoConnectToFixedAccount(bool b) {
+  setLocalValue("AutoConnectToFixedAccount", b);
+}
+
 void CoreAccountSettings::storeAccountData(AccountId id, const QVariantMap &data) {
   QString base = QString::number(id.toInt());
   foreach(const QString &key, data.keys()) {

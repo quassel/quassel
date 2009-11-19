@@ -59,6 +59,10 @@ public:
   void setLastAccount(AccountId);
   AccountId autoConnectAccount();
   void setAutoConnectAccount(AccountId);
+  bool autoConnectOnStartup();
+  void setAutoConnectOnStartup(bool);
+  bool autoConnectToFixedAccount();
+  void setAutoConnectToFixedAccount(bool);
 
   void storeAccountData(AccountId id, const QVariantMap &data);
   QVariantMap retrieveAccountData(AccountId);
