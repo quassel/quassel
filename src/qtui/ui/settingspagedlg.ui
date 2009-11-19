@@ -1,64 +1,65 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>SettingsPageDlg</class>
- <widget class="QDialog" name="SettingsPageDlg" >
-  <property name="geometry" >
+ <widget class="QDialog" name="SettingsPageDlg">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
+    <width>547</width>
     <height>546</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Configure Quassel</string>
   </property>
-  <property name="windowIcon" >
+  <property name="windowIcon">
    <iconset>
     <normaloff>:/16x16/actions/configure</normaloff>:/16x16/actions/configure</iconset>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout">
    <item>
-    <widget class="QLabel" name="pageTitle" >
-     <property name="font" >
+    <widget class="QLabel" name="pageTitle">
+     <property name="font">
       <font>
        <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
-     <property name="text" >
+     <property name="text">
       <string>Settings</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line" >
-     <property name="orientation" >
+    <widget class="Line" name="line">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QScrollArea" name="settingsFrame" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+    <widget class="QScrollArea" name="settingsFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="frameShape" >
-      <enum>QFrame::StyledPanel</enum>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
-     <property name="frameShadow" >
-      <enum>QFrame::Sunken</enum>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="standardButtons" >
+     <property name="standardButtons">
       <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Reset|QDialogButtonBox::RestoreDefaults</set>
      </property>
     </widget>
