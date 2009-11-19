@@ -932,6 +932,8 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
 void SignalProxy::sendHeartBeat() {
   QVariantList heartBeatParams;
   heartBeatParams << QTime::currentTime();
+  QList<IODevicePeer *> toClose;
+
   PeerHash::iterator peer = _peers.begin();
   while(peer != _peers.end()) {
     if((*peer)->type() == AbstractPeer::IODevicePeer) {
@@ -940,15 +942,18 @@ void SignalProxy::sendHeartBeat() {
       if(ioPeer->sentHeartBeats > 0) {
 	updateLag(ioPeer, ioPeer->sentHeartBeats * _heartBeatTimer.interval());
       }
-      if(ioPeer->sentHeartBeats > 1) {
-	qWarning() << "SignalProxy: Disconnecting peer:" << ioPeer->address()
-		   << "(didn't receive a heartbeat for over" << ioPeer->sentHeartBeats * _heartBeatTimer.interval() / 1000 << "seconds)";
-	ioPeer->close();
-      } else {
+      if(ioPeer->sentHeartBeats > 1)
+        toClose.append(ioPeer);
+      else
 	ioPeer->sentHeartBeats++;
-      }
     }
-    peer++;
+    ++peer;
+  }
+
+  foreach(IODevicePeer *ioPeer, toClose) {
+    qWarning() << "SignalProxy: Disconnecting peer:" << ioPeer->address()
+               << "(didn't receive a heartbeat for over" << ioPeer->sentHeartBeats * _heartBeatTimer.interval() / 1000 << "seconds)";
+    ioPeer->close();
   }
 }
 
