@@ -28,6 +28,7 @@ set(SOURCES
     chatviewsettings.cpp
     columnhandleitem.cpp
     coreconfigwizard.cpp
+    coreconnectionstatuswidget.cpp
     coreinfodlg.cpp
     debugbufferviewoverlay.cpp
     debugconsole.cpp
@@ -72,6 +73,7 @@ set(MOC_HDRS
     chatviewsearchcontroller.h
     columnhandleitem.h
     coreconfigwizard.h
+    coreconnectionstatuswidget.h
     coreinfodlg.h
     debugbufferviewoverlay.h
     debugconsole.h

@@ -42,6 +42,7 @@ class BufferHotListFilter;
 class BufferView;
 class BufferViewConfig;
 class ClientBufferViewConfig;
+class CoreConnectionStatusWidget;
 class BufferViewDock;
 class BufferWidget;
 class InputWidget;
@@ -160,7 +161,8 @@ class MainWin
 
     QLabel *coreLagLabel;
     QLabel *sslLabel;
-    MsgProcessorStatusWidget *msgProcessorStatusWidget;
+    MsgProcessorStatusWidget *_msgProcessorStatusWidget;
+    CoreConnectionStatusWidget *_coreConnectionStatusWidget;
 
     TitleSetter _titleSetter;
 

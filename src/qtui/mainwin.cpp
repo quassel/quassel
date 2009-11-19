@@ -56,6 +56,7 @@
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
 #include "coreconnection.h"
+#include "coreconnectionstatuswidget.h"
 #include "coreinfodlg.h"
 #include "contextmenuactionprovider.h"
 #include "debugbufferviewoverlay.h"
@@ -124,7 +125,8 @@ MainWin::MainWin(QWidget *parent)
 #endif
     coreLagLabel(new QLabel()),
     sslLabel(new QLabel()),
-    msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
+    _msgProcessorStatusWidget(new MsgProcessorStatusWidget(this)),
+    _coreConnectionStatusWidget(new CoreConnectionStatusWidget(Client::coreConnection(), this)),
     _titleSetter(this),
     _awayLog(0),
     _layoutLoaded(false)
@@ -624,7 +626,11 @@ void MainWin::setupTitleSetter() {
 
 void MainWin::setupStatusBar() {
   // MessageProcessor progress
-  statusBar()->addPermanentWidget(msgProcessorStatusWidget);
+  statusBar()->addPermanentWidget(_msgProcessorStatusWidget);
+
+  // Connection state
+  _coreConnectionStatusWidget->update();
+  statusBar()->addPermanentWidget(_coreConnectionStatusWidget);
 
   // Core Lag:
   updateLagIndicator();
@@ -715,11 +721,11 @@ void MainWin::setConnectedState() {
       action->setVisible(!Client::internalCore());
   }
 
-  disconnect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), msgProcessorStatusWidget, SLOT(setProgress(int, int)));
+  disconnect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), _msgProcessorStatusWidget, SLOT(setProgress(int, int)));
   disconnect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
   disconnect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
   if(!Client::internalCore()) {
-    connect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), msgProcessorStatusWidget, SLOT(setProgress(int, int)));
+    connect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), _msgProcessorStatusWidget, SLOT(setProgress(int, int)));
     connect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
     connect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
   }
