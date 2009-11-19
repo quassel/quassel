@@ -47,7 +47,7 @@ CoreAccountSettings::CoreAccountSettings(const QString &subgroup)
 }
 
 void CoreAccountSettings::notify(const QString &key, QObject *receiver, const char *slot) {
-  ClientSettings::notify(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), receiver, slot);
+  ClientSettings::notify(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), receiver, slot);
 }
 
 QList<AccountId> CoreAccountSettings::knownAccounts() {
@@ -120,13 +120,13 @@ QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id) {
 void CoreAccountSettings::setAccountValue(const QString &key, const QVariant &value) {
   if(!Client::currentCoreAccount().isValid())
     return;
-  setLocalValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), value);
+  setLocalValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), value);
 }
 
 QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &def) {
   if(!Client::currentCoreAccount().isValid())
     return QVariant();
-  return localValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), def);
+  return localValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), def);
 }
 
 void CoreAccountSettings::setJumpKeyMap(const QHash<int, BufferId> &keyMap) {

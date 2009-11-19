@@ -51,11 +51,11 @@
 #include "chatmonitorview.h"
 #include "chatview.h"
 #include "client.h"
-#include "clientsyncer.h"
 #include "clientbacklogmanager.h"
 #include "clientbufferviewconfig.h"
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
+#include "coreconnection.h"
 #include "coreinfodlg.h"
 #include "contextmenuactionprovider.h"
 #include "debugbufferviewoverlay.h"
@@ -215,6 +215,7 @@ void MainWin::init() {
   } else {
     startInternalCore();
   }
+  Client::coreConnection()->start();
 }
 
 MainWin::~MainWin() {
@@ -646,6 +647,8 @@ void MainWin::setupStatusBar() {
 
   connect(showStatusbar, SIGNAL(toggled(bool)), statusBar(), SLOT(setVisible(bool)));
   connect(showStatusbar, SIGNAL(toggled(bool)), this, SLOT(saveStatusBarStatus(bool)));
+
+  connect(Client::coreConnection(), SIGNAL(connectionMsg(QString)), statusBar(), SLOT(showMessage(QString)));
 }
 
 void MainWin::setupHotList() {
@@ -746,7 +749,7 @@ void MainWin::setConnectedState() {
 
 void MainWin::loadLayout() {
   QtUiSettings s;
-  int accountId = Client::currentCoreAccount().toInt();
+  int accountId = Client::currentCoreAccount().accountId().toInt();
   QByteArray state = s.value(QString("MainWinState-%1").arg(accountId)).toByteArray();
   if(state.isEmpty()) {
     // Make sure that the default bufferview is shown
@@ -761,7 +764,7 @@ void MainWin::loadLayout() {
 
 void MainWin::saveLayout() {
   QtUiSettings s;
-  int accountId = Client::currentCoreAccount().toInt();
+  int accountId = Client::currentCoreAccount().accountId().toInt();
   if(accountId > 0) s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
 }
 

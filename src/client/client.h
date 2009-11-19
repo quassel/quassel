@@ -25,6 +25,7 @@
 #include <QPointer>
 
 #include "bufferinfo.h"
+#include "coreconnection.h"
 #include "types.h"
 
 class Message;
@@ -46,9 +47,9 @@ class ClientBacklogManager;
 class ClientBufferViewManager;
 class ClientIgnoreListManager;
 class ClientIrcListHelper;
-class ClientSyncer;
 class ClientUserInputHandler;
 class CoreAccountModel;
+class CoreConnection;
 class IrcUser;
 class IrcChannel;
 class NetworkConfig;
@@ -115,11 +116,12 @@ public:
   static inline ClientIgnoreListManager *ignoreListManager() { return instance()->_ignoreListManager; }
 
   static inline CoreAccountModel *coreAccountModel() { return instance()->_coreAccountModel; }
-  static AccountId currentCoreAccount();
+  static inline CoreConnection *coreConnection() { return instance()->_coreConnection; }
+  static inline CoreAccount currentCoreAccount() { return coreConnection()->currentAccount(); }
 
   static bool isConnected();
   static bool isSynced();
-  static inline bool internalCore() { return instance()->_internalCore; }
+  static bool internalCore();
 
   static void userInput(const BufferInfo &bufferInfo, const QString &message);
 
@@ -131,8 +133,6 @@ public:
 
   static void logMessage(QtMsgType type, const char *msg);
   static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
-
-  static inline void registerClientSyncer(ClientSyncer *syncer) { emit instance()->newClientSyncer(syncer); }
 
 signals:
   void requestNetworkStates();
@@ -167,8 +167,6 @@ signals:
   void requestCreateNetwork(const NetworkInfo &info, const QStringList &persistentChannels = QStringList());
   void requestRemoveNetwork(NetworkId);
 
-  void newClientSyncer(ClientSyncer *);
-
   void logUpdated(const QString &msg);
 
 public slots:
@@ -179,7 +177,9 @@ public slots:
   void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
 
 private slots:
-  void disconnectedFromCore();
+  void setSyncedToCore();
+  void setDisconnectedFromCore();
+  void connectionStateChanged(CoreConnection::ConnectionState);
 
   void recvMessage(const Message &message);
   void recvStatusMsg(QString network, QString message);
@@ -190,8 +190,6 @@ private slots:
   void coreNetworkCreated(NetworkId);
   void coreNetworkRemoved(NetworkId);
 
-  void setConnectedToCore(AccountId id, QIODevice *socket = 0);
-  void setSyncedToCore();
   void requestInitialBacklog();
   void createDefaultBufferView();
 
@@ -203,7 +201,6 @@ private:
   void init();
 
   static void addNetwork(Network *);
-  static void setCurrentCoreAccount(const AccountId &);
   static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
   static QPointer<Client> instanceptr;
@@ -226,23 +223,19 @@ private:
   AbstractMessageProcessor *_messageProcessor;
 
   CoreAccountModel *_coreAccountModel;
+  CoreConnection *_coreConnection;
 
   ClientMode clientMode;
 
-  bool _connectedToCore, _syncedToCore;
-  bool _internalCore;
-
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
-
-  static AccountId _currentCoreAccount;
 
   QString _debugLogBuffer;
   QTextStream _debugLog;
 
   QList<QPair<BufferInfo, QString> > _userInputBuffer;
 
-  friend class ClientSyncer;
+  friend class CoreConnection;
 };
 
 #endif

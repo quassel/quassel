@@ -138,7 +138,7 @@ void QtUiApplication::commitData(QSessionManager &manager) {
 
 void QtUiApplication::saveState(QSessionManager & manager) {
   //qDebug() << QString("saving session state to id %1").arg(manager.sessionId());
-  AccountId activeCore = Client::currentCoreAccount(); // FIXME store this!
+  AccountId activeCore = Client::currentCoreAccount().accountId(); // FIXME store this!
   SessionSettings s(manager.sessionId());
   s.setSessionAge(0);
   QtUi::mainWindow()->saveStateToSettings(s);
