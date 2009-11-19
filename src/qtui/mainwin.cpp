@@ -815,17 +815,14 @@ void MainWin::setDisconnectedState() {
   sslLabel->hide();
   updateLagIndicator();
   coreLagLabel->hide();
-  if(msgProcessorStatusWidget)
-    msgProcessorStatusWidget->setProgress(0, 0);
+  if(_msgProcessorStatusWidget)
+    _msgProcessorStatusWidget->setProgress(0, 0);
   updateIcon();
   systemTray()->setState(SystemTray::Inactive);
 }
 
 void MainWin::startInternalCore() {
-  ClientSyncer *syncer = new ClientSyncer();
-  Client::registerClientSyncer(syncer);
-  connect(syncer, SIGNAL(syncFinished()), syncer, SLOT(deleteLater()), Qt::QueuedConnection);
-  syncer->useInternalCore();
+
 }
 
 void MainWin::showChannelList(NetworkId netId) {

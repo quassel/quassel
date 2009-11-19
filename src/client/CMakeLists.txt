@@ -22,7 +22,6 @@ set(SOURCES
     clientignorelistmanager.cpp
     clientirclisthelper.cpp
     clientsettings.cpp
-    clientsyncer.cpp
     clientuserinputhandler.cpp
     coreaccount.cpp
     coreaccountmodel.cpp
@@ -50,7 +49,6 @@ set(MOC_HDRS
     clientignorelistmanager.h
     clientirclisthelper.h
     clientuserinputhandler.h
-    clientsyncer.h
     coreaccountmodel.h
     coreconnection.h
     execwrapper.h

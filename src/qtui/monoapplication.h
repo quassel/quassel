@@ -23,7 +23,6 @@
 
 #include "qtuiapplication.h"
 
-class ClientSyncer;
 class CoreApplicationInternal;
 
 class MonolithicApplication : public QtUiApplication {
@@ -35,8 +34,7 @@ public:
   bool init();
 
 private slots:
-  void newClientSyncer(ClientSyncer *syncer);
-  void startInternalCore(ClientSyncer *syncer);
+  void startInternalCore();
 
 private:
   CoreApplicationInternal *_internal;
