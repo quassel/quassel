@@ -25,6 +25,7 @@
 #endif
 
 #include "client.h"
+#include "clientsettings.h"
 #include "coreaccountmodel.h"
 #include "identity.h"
 #include "network.h"
@@ -43,10 +44,6 @@ CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
 {
   qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
 
-}
-
-void CoreConnection::start() {
-  connectToCore(1);
 }
 
 void CoreConnection::init() {
@@ -237,17 +234,36 @@ void CoreConnection::disconnectFromCore() {
 }
 
 void CoreConnection::reconnectToCore() {
-
+  if(currentAccount().isValid())
+    connectToCore(currentAccount().accountId());
 }
 
-void CoreConnection::connectToCore(AccountId accId) {
-  resetConnection();
-  _account = accountModel()->account(accId);
+bool CoreConnection::connectToCore(AccountId accId) {
+  CoreAccountSettings s;
 
-  if(!_account.accountId().isValid()) {
-    emit connectionError(tr("Invalid core account, cannot connect!"));
-    return;
+  if(!accId.isValid()) {
+    // check our settings and figure out what to do
+    if(!s.autoConnectOnStartup())
+      return false;
+    if(s.autoConnectToFixedAccount())
+      accId = s.autoConnectAccount();
+    else
+      accId = s.lastAccount();
+    if(!accId.isValid())
+      return false;
   }
+  _account = accountModel()->account(accId);
+  if(!_account.accountId().isValid()) {
+    return false;
+  }
+
+  s.setLastAccount(accId);
+  connectToCurrentAccount();
+  return true;
+}
+
+void CoreConnection::connectToCurrentAccount() {
+  resetConnection();
 
   Q_ASSERT(!_socket);
 #ifdef HAVE_SSL

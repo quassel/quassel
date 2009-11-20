@@ -52,7 +52,6 @@ public:
   CoreConnection(CoreAccountModel *model, QObject *parent = 0);
 
   void init();
-  void start();
 
   inline ConnectionState state() const;
   inline bool isConnected() const;
@@ -64,7 +63,7 @@ public:
   inline QString progressText() const;
 
 public slots:
-  void connectToCore(AccountId);
+  bool connectToCore(AccountId = 0);
   void reconnectToCore();
   void disconnectFromCore();
 
@@ -91,6 +90,8 @@ signals:
   void handleIgnoreWarnings(bool permanently);
 
 private slots:
+  void connectToCurrentAccount();
+
   void socketStateChanged(QAbstractSocket::SocketState);
   void coreSocketError(QAbstractSocket::SocketError);
   void coreHasData();
