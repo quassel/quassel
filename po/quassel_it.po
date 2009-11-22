@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2009-11-17 15:15+0100\n"
+"PO-Revision-Date: 2009-11-18 17:52+0100\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr ""
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
 msgid "Quassel IRC is mainly developed by:"
-msgstr "Quassel IRC è principalmente sviluppato da:"
+msgstr "Quassel IRC è sviluppato principalmente da:"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:77
@@ -177,17 +177,15 @@ msgstr "Aggiornamento fallito..."
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:55
-#, fuzzy
 msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
 msgstr ""
-"<b>La scorciatoia per l'alias</b><br />Può essere utilizzata come come comando "
-"slash regolare.<br /><br /><b>Esempio:</b> \"foo\" può essere utilizzato per /foo"
+"<b>La scorciatoia per l'alias</b><br />Può essere utilizzata con la barra "
+"comando.<br /><br /><b>Esempio:</b> \"foo\" può essere utilizzato per /foo"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
-#, fuzzy
 msgid ""
 "<b>The string the shortcut will be expanded to</b><br /><b>special "
 "variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
@@ -201,6 +199,17 @@ msgid ""
 "be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
 "1 2 3\" when called like /test 1 2 3"
 msgstr ""
+"<b>La stringa della scorciatoia verrà sviluppata in</b><br /><b>variabili "
+"speciali:</b><br /> - <b>$i</b> rappresenta il parametro i-esimo.<br /> - "
+"<b>$i..j</b> rappresenta i parametri da i-esimo a j-esimo separati da spazi.<br "
+"/> - <b>$i..</b> rappresenta tutti i parametri da quello i-esimo in poi separati da "
+"spazi.<br /> - <b>$i:hostname</b> rappresenta il nome host dell'utente identificato "
+"dal parametro i-esimo o da * se sconosciuto.<br /> - <b>$0</b> l'intera stringa.<br "
+"/> - <b>$nick</b> il nick corrente<br /> - <b>$channel</b> il nome del canale "
+"selezionato<br /><br />Comandi multipli possono essere separati da punto e virgola "
+"<br /><br /><b>Esempio:</b> \"Test $1; Test $2; Test Tutto $0\" verranno "
+"sviluppati in tre messaggi separati \"Test 1\", \"Test 2\" and \"Test Tutto "
+"1 2 3\" quando vengono chiamati come /test 1 2 3"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
@@ -210,7 +219,7 @@ msgstr "Alias"
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:171
 msgid "Expansion"
-msgstr "Comando"
+msgstr "Espansione"
 
 #. ts-context AliasesSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
@@ -304,8 +313,7 @@ msgstr "..."
 
 #. ts-context AppearanceSettingsPage
 #~ msgid "Set font for the main chat window and the chat monitor"
-#~ msgstr ""
-#~ "Imposta il font per la finestra principale di chat ed il chat monitor"
+#~ msgstr "Imposta il font per la finestra principale di chat ed il monitor di chat"
 
 #. ts-context AppearanceSettingsPage
 #~ msgid "Chat window:"
@@ -1130,14 +1138,14 @@ msgstr "Font per la finestra di chat personalizzato"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
 msgid "Allow colored text (mIRC color codes)"
-msgstr "Consenti testo colorato (codici colori mIrc)"
+msgstr "Consenti testo colorato (codici colori mIRC)"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:108
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr ""
-"Visualizza l'anteprima di un sito web quando muovi il cursore sopra un "
+"Visualizza l'anteprima di un sito web quando il cursore si trova su un "
 "indirizzo web"
 
 #. ts-context ChatViewSettingsPage
@@ -3728,7 +3736,7 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 "<p><b>Regola di ambito:</b></p>\n"
-"<p>Una regola di ambito � una lista separata da punto e virgola di <i>reti</i> "
+"<p>Una regola di ambito è una lista separata da punto e virgola di <i>reti</i> "
 "oppure nomi <i>canali</i>.</p>\n"
 "<p><i>Esempio:</i>\n"
 "<br />\n"
@@ -3778,6 +3786,14 @@ msgid ""
 "\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
 "host<br />"
 msgstr ""
+"<b>Regola di ignore:</b><br />A seconda del tipo di regola, il testo viene "
+"confrontato con:<br /><br />- <u>il contenuto del messaggio:</u><br "
+"/><i>Esempio:<i><br />    \"*foobar*\" coincide a qualsiasi testo contenente "
+" la parola\"foobar\"<br /><br />- <u>la stringa del mittente "
+"<i>nick!ident@host.name<i></u><br /><i>Esempio:</i><br />     "
+"\"*@foobar.com\" coincide ado ogni mittente dall'host foobar.com<br />    "
+"\"stupido!.+\" (RegEx) coincide con ogni mittente il cui nick è \"stupido\" "
+"da ogni host<br />"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
@@ -3821,12 +3837,14 @@ msgstr "La regola esiste già"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:129
-#, fuzzy
 msgid ""
 "There is already a rule\n"
 "\"%1\"\n"
 "Please choose another rule."
 msgstr ""
+"Esista già una regola\n"
+"\"%1\"\n"
+"Per favore scegliere un'altra regola."
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:14
@@ -3890,9 +3908,8 @@ msgstr "Interfaccia"
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Input Widget"
-msgstr ""
+msgstr "Widget per Input"
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:14
@@ -4181,9 +4198,8 @@ msgstr "Altra attività"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:14
-#, fuzzy
 msgid "Form"
-msgstr ""
+msgstr "Modulo"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
@@ -4259,7 +4275,7 @@ msgstr "1"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgid "Custom Nick List Colors"
-msgstr "Colori Lista Nick Personalizzata"
+msgstr "Colori Lista Nick Personalizzati"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:301
@@ -4343,7 +4359,7 @@ msgstr "&Informazioni su Quassel"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:329
 msgid "About &Qt"
-msgstr "Informazioni sulle &Qt"
+msgstr "Informazioni su &Qt"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:331
@@ -4507,7 +4523,7 @@ msgstr "Recupero %1 messaggi dal backlog per il buffer %2:%3"
 #. ts-context MsgProcessorStatusWidget
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
 msgid "Form"
-msgstr ""
+msgstr "Modulo"
 
 #. ts-context MsgProcessorStatusWidget
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
@@ -4722,7 +4738,7 @@ msgstr ""
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:13
 msgid "Form"
-msgstr ""
+msgstr "Modulo"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:47
@@ -4992,7 +5008,7 @@ msgstr "Seleziona File Audio"
 #. ts-context PhononNotificationConfigWidget
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:13
 msgid "Form"
-msgstr ""
+msgstr "Modulo"
 
 #. ts-context PhononNotificationConfigWidget
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:19
@@ -5051,69 +5067,58 @@ msgstr "Dichiarazione blocco non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:140
-#, fuzzy
 msgid "Invalid palette role assignment: %1"
-msgstr ""
+msgstr "Assegnazione della regola della tavolozza non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:156
-#, fuzzy
 msgid "Unknown palette role name: %1"
-msgstr ""
+msgstr "Nome regola della tavolozza sconosciuto: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:192
-#, fuzzy
 msgid "Invalid subelement name in %1"
-msgstr ""
+msgstr "Nome del subelemento non valido in %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:234
-#, fuzzy
 msgid "Invalid message type in %1"
-msgstr ""
+msgstr "Tipo di messaggio non valido in %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:243
-#, fuzzy
 msgid "Invalid condition %1"
-msgstr ""
+msgstr "Condizione %1 non valida"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:255
-#, fuzzy
 msgid "Invalid message label: %1"
-msgstr ""
+msgstr "Etichetta messaggio non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:266
-#, fuzzy
 msgid "Invalid senderhash specification: %1"
-msgstr ""
+msgstr "Specifica hash del mittente non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:270
-#, fuzzy
 msgid "Senderhash can be at most \"0x0f\"!"
-msgstr ""
+msgstr "L'hash del mittente può essere al massimo \"0x0f\"!"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:285
-#, fuzzy
 msgid "Invalid format name: %1"
-msgstr ""
+msgstr "Nome formato non valido: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:292
-#, fuzzy
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
-msgstr ""
+msgstr "Specifica colore IRC illegale (deve essere compresa tra 00 e 0f): %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:300
-#, fuzzy
 msgid "Unhandled condition: %1"
-msgstr ""
+msgstr "Condizione non gestita: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:329
@@ -5123,9 +5128,8 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:348
-#, fuzzy
 msgid "Invalid chatlist item type %1"
-msgstr ""
+msgstr "Tipo elemento della lista chat non valido: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:364
@@ -5135,40 +5139,34 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:390
-#, fuzzy
 msgid "Invalid property declaration: %1"
-msgstr ""
+msgstr "Dichiarazione proprietà non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:414
-#, fuzzy
 msgid "Invalid font property: %1"
-msgstr ""
+msgstr "Proprietà font non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:420
-#, fuzzy
 msgid "Unknown ChatLine property: %1"
-msgstr ""
+msgstr "Proprietà ChatLine sconosciuta: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:442
-#, fuzzy
 msgid "Invalid palette color role specification: %1"
-msgstr ""
+msgstr "Specifica regola della tavolozza colore non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:449
-#, fuzzy
 msgid "Unknown palette color role: %1"
-msgstr ""
+msgstr "Regola tavolozza colore non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:456 ../src/uisupport/qssparser.cpp:478
 #: ../src/uisupport/qssparser.cpp:499
-#, fuzzy
 msgid "Invalid gradient declaration: %1"
-msgstr ""
+msgstr "Dichiarazione gradiente non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:465 ../src/uisupport/qssparser.cpp:486
@@ -5179,27 +5177,23 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:605
-#, fuzzy
 msgid "Invalid font specification: %1"
-msgstr ""
+msgstr "Specifica font non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:644
-#, fuzzy
 msgid "Invalid font style specification: %1"
-msgstr ""
+msgstr "Specifica stile font non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:657
-#, fuzzy
 msgid "Invalid font weight specification: %1"
-msgstr ""
+msgstr "Specifica peso font non valida: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:667
-#, fuzzy
 msgid "Invalid font size specification: %1"
-msgstr ""
+msgstr "Specifica dimensione font non valida: %1"
 
 #. ts-context Quassel::secondsToString()
 #: ../src/common/util.cpp:129
@@ -5265,7 +5259,7 @@ msgstr "Interrompi"
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:13
 msgid "Dialog"
-msgstr ""
+msgstr "Dialogo"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:37
@@ -5300,9 +5294,8 @@ msgstr "Avanzato"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:155
-#, fuzzy
 msgid "SSL Version:"
-msgstr ""
+msgstr "Versione SSL:"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:162
@@ -5315,21 +5308,18 @@ msgstr ""
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:166
-#, fuzzy
 msgid "SSLv3 (default)"
-msgstr ""
+msgstr "SSLv3 (predefinito)"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:171
-#, fuzzy
 msgid "SSLv2"
-msgstr ""
+msgstr "SSLv2"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:176
-#, fuzzy
 msgid "TLSv1"
-msgstr ""
+msgstr "TLSv1"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:186
@@ -5343,25 +5333,21 @@ msgstr "Tipo Proxy:"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:211
-#, fuzzy
 msgid "Socks 5"
 msgstr "Socks 5"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:216
-#, fuzzy
 msgid "HTTP"
 msgstr "HTTP"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:228
-#, fuzzy
 msgid "Proxy Host:"
 msgstr "Host Proxy:"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:235
-#, fuzzy
 msgid "localhost"
 msgstr "localhost"
 
@@ -5415,7 +5401,7 @@ msgstr ""
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:180
 msgid "Restore Defaults"
-msgstr "Predefinito"
+msgstr "Ripristina Predefiniti"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:180
@@ -5588,87 +5574,73 @@ msgstr ""
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:568
-#, fuzzy
 msgid "SSL Certificate used by %1"
-msgstr ""
+msgstr "Certificato SSL utilizzato da %1"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:572
-#, fuzzy
 msgid "Issuer Info"
-msgstr ""
+msgstr "Informazioni Emittente"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:574 ../src/qtui/coreconnectdlg.cpp:583
-#, fuzzy
 msgid "Organization:"
-msgstr ""
+msgstr "Organizzazione"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:575 ../src/qtui/coreconnectdlg.cpp:584
-#, fuzzy
 msgid "Locality Name:"
-msgstr ""
+msgstr "Nome Località"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:576 ../src/qtui/coreconnectdlg.cpp:585
-#, fuzzy
 msgid "Organizational Unit Name:"
-msgstr ""
+msgstr "Nome Unità Organizzativa"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:577 ../src/qtui/coreconnectdlg.cpp:586
-#, fuzzy
 msgid "Country Name:"
-msgstr ""
+msgstr "Nome Paese:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:578 ../src/qtui/coreconnectdlg.cpp:587
-#, fuzzy
 msgid "State or Province Name:"
-msgstr ""
+msgstr "Nome Stato o Provincia"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:581
-#, fuzzy
 msgid "Subject Info"
-msgstr ""
+msgstr "Informazioni Oggetto"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:590
-#, fuzzy
 msgid "Additional Info"
-msgstr ""
+msgstr "Informazioni Aggiuntive"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:592
-#, fuzzy
 msgid "Valid From:"
-msgstr ""
+msgstr "Valido Da:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:593
-#, fuzzy
 msgid "Valid To:"
-msgstr ""
+msgstr "Valido Fino A:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:596
-#, fuzzy
 msgid "Hostname %1:"
-msgstr ""
+msgstr "Nome Host: %1"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:600
-#, fuzzy
 msgid "E-Mail Address %1:"
-msgstr ""
+msgstr "Indirizzo E-Mail: %1"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:602
-#, fuzzy
 msgid "Digest:"
-msgstr ""
+msgstr "Digest:"
 
 #. ts-context StatusBufferItem
 #: ../src/client/networkmodel.h:142
@@ -5793,9 +5765,8 @@ msgstr "Revoca Stato di Operatore dall'utente"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:42
-#, fuzzy
 msgid "Voice"
-msgstr ""
+msgstr "Voice"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:42
@@ -5858,21 +5829,18 @@ msgstr "Disconnetti da tutto"
 
 #. ts-context TopicWidget
 #: ../src/qtui/ui/topicwidget.ui:32
-#, fuzzy
 msgid "Form"
-msgstr ""
+msgstr "Modulo"
 
 #. ts-context TopicWidget
 #: ../src/qtui/ui/topicwidget.ui:79
-#, fuzzy
 msgid "..."
 msgstr "..."
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Interface"
-msgstr ""
+msgstr "Interfaccia"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
@@ -5882,27 +5850,23 @@ msgstr ""
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
-#, fuzzy
 msgid "Form"
-msgstr ""
+msgstr "Modulo"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
-#, fuzzy
 msgid "Custom font:"
-msgstr ""
+msgstr "Font personalizzato:"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
-#, fuzzy
 msgid "Resize dynamically to fit contents"
-msgstr ""
+msgstr "Ridimensiona dinamicamente per adattarsi al contenuto"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:84
-#, fuzzy
 msgid "On hover only"
-msgstr ""
+msgstr "Solo al passaggio"
 
 #. ts-context UiStyle::StyledMessage
 #~ msgid "%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
@@ -5930,67 +5894,57 @@ msgstr ""
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:695
-#, fuzzy
 msgid "<%1>"
-msgstr ""
+msgstr "<%1>"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:659 ../src/uisupport/uistyle.cpp:697
-#, fuzzy
 msgid "[%1]"
-msgstr ""
+msgstr "[%1]"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:713
-#, fuzzy
 msgid "<-x"
-msgstr ""
+msgstr "<-x"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
 #: ../src/uisupport/uistyle.cpp:719 ../src/uisupport/uistyle.cpp:723
-#, fuzzy
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:705
-#, fuzzy
 msgid "-->"
-msgstr ""
+msgstr "-->"
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:578
-#, fuzzy
 msgid "%DN%1%DN %2"
-msgstr ""
+msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:582
-#, fuzzy
 msgid "You are now known as %DN%1%DN"
-msgstr ""
+msgstr "Sei ora conosciuto come %DN%1%DN"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:583
-#, fuzzy
 msgid "%DN%1%DN is now known as %DN%2%DN"
-msgstr ""
+msgstr "%DN%1%DN è ora conosciuto come %DN%2%DN"
 
 #. Mode Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:587
-#, fuzzy
 msgid "User mode: %DM%1%DM"
-msgstr ""
+msgstr "Modalità utente: %DM%1%DM"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:588
-#, fuzzy
 msgid "Mode %DM%1%DM by %DN%2%DN"
-msgstr ""
+msgstr "Modalità %DM%1%DM da %DN%2%DN"
 
 #. Join Message
 #. ts-context UiStyle::StyledMessage
@@ -6016,16 +5970,14 @@ msgstr ""
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:607
-#, fuzzy
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr ""
+msgstr "%DN%1%DN ha cacciato %DN%2%DN da %DC%3%DC"
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:624
-#, fuzzy
 msgid "{Day changed to %1}"
-msgstr ""
+msgstr "{Oggi è %1}"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:636
@@ -6035,9 +5987,8 @@ msgstr ""
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:640 ../src/uisupport/uistyle.cpp:655
-#, fuzzy
 msgid "%DN%1%DN (%2 more)"
-msgstr ""
+msgstr "%DN%1%DN (ancora %2)"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:650
@@ -6047,51 +5998,43 @@ msgstr ""
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:707 ../src/uisupport/uistyle.cpp:709
-#, fuzzy
 msgid "<--"
-msgstr ""
+msgstr "<--"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:711
-#, fuzzy
 msgid "<-*"
-msgstr ""
+msgstr "<-*"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:721
-#, fuzzy
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:725
-#, fuzzy
 msgid "=>"
-msgstr ""
+msgstr "=>"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:727
-#, fuzzy
 msgid "<="
-msgstr ""
+msgstr "<="
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:701
-#, fuzzy
 msgid "<->"
-msgstr ""
+msgstr "<->"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:703
-#, fuzzy
 msgid "***"
-msgstr ""
+msgstr "***"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:699
-#, fuzzy
 msgid "-*-"
-msgstr ""
+msgstr "-*-"
 
 #. Plain Message
 #. ----------
@@ -6109,7 +6052,6 @@ msgstr ""
 #: ../src/uisupport/uistyle.cpp:615 ../src/uisupport/uistyle.cpp:618
 #: ../src/uisupport/uistyle.cpp:621 ../src/uisupport/uistyle.cpp:628
 #: ../src/uisupport/uistyle.cpp:729
-#, fuzzy
 msgid "%1"
 msgstr "%1"
 
@@ -6136,23 +6078,20 @@ msgstr[1] "%n Operatori"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:678
-#, fuzzy
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n Half-Op"
+msgstr[1] "%n Half-Op"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:679
-#, fuzzy
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n Voice"
+msgstr[1] "%n Voice"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:680
-#, fuzzy
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
 msgstr[0] "%n Utente"
