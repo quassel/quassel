@@ -28,7 +28,8 @@
 CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
 : SettingsPage(tr("Misc"), tr("Core Accounts"), parent),
 _lastAccountId(0),
-_lastAutoConnectId(0)
+_lastAutoConnectId(0),
+_standalone(false)
 {
   ui.setupUi(this);
   initAutoWidgets();
@@ -45,6 +46,10 @@ _lastAutoConnectId(0)
 
   connect(ui.accountView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(setWidgetStates()));
   setWidgetStates();
+}
+
+void CoreAccountSettingsPage::setStandAlone(bool standalone) {
+  _standalone = standalone;
 }
 
 void CoreAccountSettingsPage::load() {
@@ -112,6 +117,19 @@ void CoreAccountSettingsPage::rowsInserted(const QModelIndex &index, int start, 
   _lastAccountId = _lastAutoConnectId = 0;
 }
 
+AccountId CoreAccountSettingsPage::selectedAccount() const {
+  QModelIndex index = ui.accountView->currentIndex();
+  if(!index.isValid())
+    return 0;
+  return index.data(CoreAccountModel::AccountIdRole).value<AccountId>();
+}
+
+void CoreAccountSettingsPage::setSelectedAccount(AccountId accId) {
+  QModelIndex index = model()->accountIndex(accId);
+  if(index.isValid())
+    ui.accountView->setCurrentIndex(index);
+}
+
 void CoreAccountSettingsPage::on_addAccountButton_clicked() {
   CoreAccountEditDlg dlg(CoreAccount(), this);
   if(dlg.exec() == QDialog::Accepted) {
@@ -126,7 +144,14 @@ void CoreAccountSettingsPage::on_editAccountButton_clicked() {
   if(!idx.isValid())
     return;
 
-  CoreAccountEditDlg dlg(_model->account(idx), this);
+  editAccount(idx);
+}
+
+void CoreAccountSettingsPage::editAccount(const QModelIndex &index) {
+  if(!index.isValid())
+    return;
+
+  CoreAccountEditDlg dlg(_model->account(index), this);
   if(dlg.exec() == QDialog::Accepted) {
     AccountId id = _model->createOrUpdateAccount(dlg.account());
     ui.accountView->setCurrentIndex(model()->accountIndex(id));
@@ -142,6 +167,16 @@ void CoreAccountSettingsPage::on_deleteAccountButton_clicked() {
     model()->removeAccount(id);
     widgetHasChanged();
   }
+}
+
+void CoreAccountSettingsPage::on_accountView_doubleClicked(const QModelIndex &index) {
+  if(!index.isValid())
+    return;
+
+  if(isStandAlone())
+    emit connectToCore(index.data(CoreAccountModel::AccountIdRole).value<AccountId>());
+  else
+    editAccount(index);
 }
 
 void CoreAccountSettingsPage::setWidgetStates() {

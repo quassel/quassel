@@ -55,6 +55,7 @@
 #include "clientbufferviewconfig.h"
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
+#include "coreconnectdlg.h"
 #include "coreconnection.h"
 #include "coreconnectionstatuswidget.h"
 #include "coreinfodlg.h"
@@ -212,12 +213,11 @@ void MainWin::init() {
   // restore locked state of docks
   QtUi::actionCollection("General")->action("LockLayout")->setChecked(s.value("LockLayout", false).toBool());
 
-  if(Quassel::runMode() != Quassel::Monolithic) {
-    //showCoreConnectionDlg(true); // autoconnect if appropriate
-  } else {
-    startInternalCore();
+  CoreConnection *conn = Client::coreConnection();
+  if(!conn->connectToCore()) {
+    // No autoconnect selected (or no accounts)
+    showCoreConnectionDlg();
   }
-  Client::coreConnection()->start();
 }
 
 MainWin::~MainWin() {
@@ -829,6 +829,15 @@ void MainWin::setDisconnectedState() {
 
 void MainWin::startInternalCore() {
 
+}
+
+void MainWin::showCoreConnectionDlg() {
+  CoreConnectDlg dlg(this);
+  if(dlg.exec() == QDialog::Accepted) {
+    AccountId accId = dlg.selectedAccount();
+    if(accId.isValid())
+      Client::coreConnection()->connectToCore(accId);
+  }
 }
 
 void MainWin::showChannelList(NetworkId netId) {

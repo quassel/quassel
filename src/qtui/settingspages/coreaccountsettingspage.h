@@ -36,16 +36,26 @@ class CoreAccountSettingsPage : public SettingsPage {
   public:
     CoreAccountSettingsPage(QWidget *parent = 0);
 
-    virtual inline bool hasDefaults() const { return false; }
+    inline bool hasDefaults() const { return false; }
+    inline bool isStandAlone() const { return _standalone; }
+
+    AccountId selectedAccount() const;
 
   public slots:
     void save();
     void load();
 
+    void setSelectedAccount(AccountId accId);
+    void setStandAlone(bool);
+
+signals:
+    void connectToCore(AccountId accId);
+
   private slots:
     void on_addAccountButton_clicked();
     void on_editAccountButton_clicked();
     void on_deleteAccountButton_clicked();
+    void on_accountView_doubleClicked(const QModelIndex &index);
 
     void setWidgetStates();
 
@@ -59,9 +69,12 @@ class CoreAccountSettingsPage : public SettingsPage {
     inline CoreAccountModel *model() const { return _model; }
 
     AccountId _lastAccountId, _lastAutoConnectId;
+    bool _standalone;
 
     virtual QVariant loadAutoWidgetValue(const QString &widgetName);
     virtual void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
+
+    void editAccount(const QModelIndex &);
 
     void widgetHasChanged();
     bool testHasChanged();
