@@ -35,6 +35,8 @@ CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connectio
   connect(coreConnection(), SIGNAL(progressValueChanged(int)), ui.progressBar, SLOT(setValue(int)));
   connect(coreConnection(), SIGNAL(progressRangeChanged(int, int)), ui.progressBar, SLOT(setRange(int, int)));
   connect(coreConnection(), SIGNAL(progressRangeChanged(int, int)), this, SLOT(progressRangeChanged(int, int)));
+
+  connect(coreConnection(), SIGNAL(connectionError(QString)), ui.messageLabel, SLOT(setText(QString)));
 }
 
 void CoreConnectionStatusWidget::update() {
