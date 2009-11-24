@@ -72,6 +72,16 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})  # for vers
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES version.gen)
 
 add_library(mod_common STATIC ${SOURCES} ${MOC})
+
 if(APPLE)
   target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
 endif(APPLE)
+
+if(CMAKE_HOST_UNIX)
+    find_library(libdl dl)
+    if (libdl-NOTFOUND)
+        message(FATAL_ERROR "Cannot find required library: libdl")
+    endif (libdl-NOTFOUND)
+
+    target_link_libraries(mod_common ${libdl})
+endif(CMAKE_HOST_UNIX)
