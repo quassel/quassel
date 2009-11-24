@@ -21,6 +21,8 @@
 #ifndef COREACCOUNTSETTINGSPAGE_H_
 #define COREACCOUNTSETTINGSPAGE_H_
 
+#include <QSortFilterProxyModel>
+
 #include "settingspage.h"
 
 #include "coreaccount.h"
@@ -29,6 +31,7 @@
 #include "ui_coreaccountsettingspage.h"
 
 class CoreAccountModel;
+class FilteredCoreAccountModel;
 
 class CoreAccountSettingsPage : public SettingsPage {
   Q_OBJECT
@@ -67,6 +70,8 @@ signals:
 
     CoreAccountModel *_model;
     inline CoreAccountModel *model() const { return _model; }
+    FilteredCoreAccountModel *_filteredModel;
+    inline FilteredCoreAccountModel *filteredModel() const { return _filteredModel; }
 
     AccountId _lastAccountId, _lastAutoConnectId;
     bool _standalone;
@@ -103,6 +108,24 @@ private slots:
 private:
   Ui::CoreAccountEditDlg ui;
   CoreAccount _account;
+};
+
+// ========================================
+//  FilteredCoreAccountModel
+// ========================================
+
+//! This filters out the internal account from the non-monolithic client's UI
+class FilteredCoreAccountModel : public QSortFilterProxyModel {
+  Q_OBJECT
+
+public:
+  FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent = 0);
+
+protected:
+  virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+
+private:
+  AccountId _internalAccount;
 };
 
 #endif

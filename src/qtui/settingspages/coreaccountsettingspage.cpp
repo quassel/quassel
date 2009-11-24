@@ -38,11 +38,13 @@ _standalone(false)
   ui.deleteAccountButton->setIcon(SmallIcon("edit-delete"));
 
   _model = new CoreAccountModel(Client::coreAccountModel(), this);
-  ui.accountView->setModel(_model);
-  ui.autoConnectAccount->setModel(_model);
+  _filteredModel = new FilteredCoreAccountModel(_model, this);
 
-  connect(model(), SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
-  connect(model(), SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
+  ui.accountView->setModel(filteredModel());
+  ui.autoConnectAccount->setModel(filteredModel());
+
+  connect(filteredModel(), SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+  connect(filteredModel(), SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
 
   connect(ui.accountView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(setWidgetStates()));
   setWidgetStates();
@@ -53,7 +55,7 @@ void CoreAccountSettingsPage::setStandAlone(bool standalone) {
 }
 
 void CoreAccountSettingsPage::load() {
-  _model->update(Client::coreAccountModel());
+  model()->update(Client::coreAccountModel());
   SettingsPage::load();
 
   CoreAccountSettings s;
@@ -62,22 +64,22 @@ void CoreAccountSettingsPage::load() {
     // make sure we don't have selected the internal account as autoconnect account
 
     if(s.autoConnectOnStartup() && s.autoConnectToFixedAccount()) {
-      CoreAccount acc = _model->account(s.autoConnectAccount());
+      CoreAccount acc = model()->account(s.autoConnectAccount());
       if(acc.isInternal())
         ui.autoConnectOnStartup->setChecked(false);
     }
   }
-  ui.accountView->setCurrentIndex(model()->index(0, 0));
-  ui.accountView->selectionModel()->select(model()->index(0, 0), QItemSelectionModel::Select);
+  ui.accountView->setCurrentIndex(filteredModel()->index(0, 0));
+  ui.accountView->selectionModel()->select(filteredModel()->index(0, 0), QItemSelectionModel::Select);
 
-  QModelIndex idx = model()->accountIndex(s.autoConnectAccount());
+  QModelIndex idx = filteredModel()->mapFromSource(model()->accountIndex(s.autoConnectAccount()));
   ui.autoConnectAccount->setCurrentIndex(idx.isValid() ? idx.row() : 0);
   setWidgetStates();
 }
 
 void CoreAccountSettingsPage::save() {
   SettingsPage::save();
-  Client::coreAccountModel()->update(_model);
+  Client::coreAccountModel()->update(model());
   Client::coreAccountModel()->save();
   CoreAccountSettings s;
 }
@@ -96,7 +98,7 @@ QVariant CoreAccountSettingsPage::loadAutoWidgetValue(const QString &widgetName)
 void CoreAccountSettingsPage::saveAutoWidgetValue(const QString &widgetName, const QVariant &v) {
   CoreAccountSettings s;
   if(widgetName == "autoConnectAccount") {
-    AccountId id = _model->index(ui.autoConnectAccount->currentIndex(), 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
+    AccountId id = filteredModel()->index(ui.autoConnectAccount->currentIndex(), 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
     s.setAutoConnectAccount(id);
     return;
   }
@@ -104,13 +106,14 @@ void CoreAccountSettingsPage::saveAutoWidgetValue(const QString &widgetName, con
 }
 
 // TODO: Qt 4.6 - replace by proper rowsMoved() semantics
+// NOTE: This is the filtered model
 void CoreAccountSettingsPage::rowsAboutToBeRemoved(const QModelIndex &index, int start, int end) {
   _lastAutoConnectId = _lastAccountId = 0;
   if(index.isValid() || start != end)
     return;
 
   // the current index is removed, so remember it in case it's reinserted immediately afterwards
-  AccountId id = model()->index(start, 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
+  AccountId id = filteredModel()->index(start, 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
   if(start == ui.accountView->currentIndex().row())
     _lastAccountId = id;
   if(start == ui.autoConnectAccount->currentIndex())
@@ -122,9 +125,9 @@ void CoreAccountSettingsPage::rowsInserted(const QModelIndex &index, int start, 
     return;
 
   // check if the inserted index was just removed and select it in that case
-  AccountId id = model()->index(start, 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
+  AccountId id = filteredModel()->index(start, 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
   if(id == _lastAccountId)
-    ui.accountView->setCurrentIndex(model()->index(start, 0));
+    ui.accountView->setCurrentIndex(filteredModel()->index(start, 0));
   if(id == _lastAutoConnectId)
     ui.autoConnectAccount->setCurrentIndex(start);
   _lastAccountId = _lastAutoConnectId = 0;
@@ -138,7 +141,7 @@ AccountId CoreAccountSettingsPage::selectedAccount() const {
 }
 
 void CoreAccountSettingsPage::setSelectedAccount(AccountId accId) {
-  QModelIndex index = model()->accountIndex(accId);
+  QModelIndex index = filteredModel()->mapFromSource(model()->accountIndex(accId));
   if(index.isValid())
     ui.accountView->setCurrentIndex(index);
 }
@@ -146,8 +149,8 @@ void CoreAccountSettingsPage::setSelectedAccount(AccountId accId) {
 void CoreAccountSettingsPage::on_addAccountButton_clicked() {
   CoreAccountEditDlg dlg(CoreAccount(), this);
   if(dlg.exec() == QDialog::Accepted) {
-    AccountId id =_model->createOrUpdateAccount(dlg.account());
-    ui.accountView->setCurrentIndex(model()->accountIndex(id));
+    AccountId id =model()->createOrUpdateAccount(dlg.account());
+    ui.accountView->setCurrentIndex(filteredModel()->mapFromSource(model()->accountIndex(id)));
     widgetHasChanged();
   }
 }
@@ -164,10 +167,10 @@ void CoreAccountSettingsPage::editAccount(const QModelIndex &index) {
   if(!index.isValid())
     return;
 
-  CoreAccountEditDlg dlg(_model->account(index), this);
+  CoreAccountEditDlg dlg(model()->account(filteredModel()->mapToSource(index)), this);
   if(dlg.exec() == QDialog::Accepted) {
-    AccountId id = _model->createOrUpdateAccount(dlg.account());
-    ui.accountView->setCurrentIndex(model()->accountIndex(id));
+    AccountId id = model()->createOrUpdateAccount(dlg.account());
+    ui.accountView->setCurrentIndex(filteredModel()->mapFromSource(model()->accountIndex(id)));
     widgetHasChanged();
   }
 }
@@ -175,6 +178,7 @@ void CoreAccountSettingsPage::editAccount(const QModelIndex &index) {
 void CoreAccountSettingsPage::on_deleteAccountButton_clicked() {
   if(!ui.accountView->selectionModel()->selectedIndexes().count())
     return;
+
   AccountId id = ui.accountView->selectionModel()->selectedIndexes().at(0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
   if(id.isValid()) {
     model()->removeAccount(id);
@@ -277,4 +281,23 @@ void CoreAccountEditDlg::on_accountName_textChanged(const QString &text) {
 void CoreAccountEditDlg::on_user_textChanged(const QString &text) {
   Q_UNUSED(text)
   setWidgetStates();
+}
+
+/*****************************************************************************************
+ * FilteredCoreAccountModel
+ *****************************************************************************************/
+
+FilteredCoreAccountModel::FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent) : QSortFilterProxyModel(parent) {
+  _internalAccount = model->internalAccount();
+  setSourceModel(model);
+}
+
+bool FilteredCoreAccountModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
+  if(Quassel::runMode() == Quassel::Monolithic)
+    return true;
+
+  if(!_internalAccount.isValid())
+    return true;
+
+  return _internalAccount != sourceModel()->index(source_row, 0, source_parent).data(CoreAccountModel::AccountIdRole).value<AccountId>();
 }
