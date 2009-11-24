@@ -85,7 +85,7 @@ signals:
   void startCoreSetup(const QVariantList &);
 
   // This signal MUST be handled synchronously!
-  void userAuthenticationRequired(CoreAccount *, const QString &errorMessage = QString());
+  void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
 
   void handleIgnoreWarnings(bool permanently);
 
@@ -114,7 +114,7 @@ private slots:
   void connectionReady();
   //void doCoreSetup(const QVariant &setupData);
 
-  void loginToCore();
+  void loginToCore(const QString &previousError = QString());
   void loginSuccess();
   void loginFailed(const QString &errorMessage);
 

@@ -158,6 +158,7 @@ void MainWin::init() {
            SLOT(messagesInserted(const QModelIndex &, int, int)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
+  connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount *, bool *, QString)), SLOT(userAuthenticationRequired(CoreAccount *, bool *, QString)));
 
   // Setup Dock Areas
   setDockNestingEnabled(true);
@@ -838,6 +839,12 @@ void MainWin::showCoreConnectionDlg() {
     if(accId.isValid())
       Client::coreConnection()->connectToCore(accId);
   }
+}
+
+void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage) {
+  Q_UNUSED(errorMessage)
+  CoreConnectAuthDlg dlg(account, this);
+  *valid = (dlg.exec() == QDialog::Accepted);
 }
 
 void MainWin::showChannelList(NetworkId netId) {

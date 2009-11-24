@@ -42,6 +42,7 @@ class BufferHotListFilter;
 class BufferView;
 class BufferViewConfig;
 class ClientBufferViewConfig;
+class CoreAccount;
 class CoreConnectionStatusWidget;
 class BufferViewDock;
 class BufferWidget;
@@ -119,6 +120,7 @@ class MainWin
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
     void startInternalCore();
+    void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
     void showCoreConnectionDlg();
     void showCoreInfoDlg();
     void showAwayLog();

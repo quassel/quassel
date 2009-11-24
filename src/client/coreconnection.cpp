@@ -38,6 +38,7 @@ CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
   : QObject(parent),
   _model(model),
   _blockSize(0),
+  _state(Disconnected),
   _progressMinimum(0),
   _progressMaximum(-1),
   _progressValue(-1)
@@ -98,6 +99,7 @@ void CoreConnection::resetConnection() {
 
   _netsToSync.clear();
   _numNetsToSync = 0;
+  _state = Disconnected;
 
   setProgressMaximum(-1); // disable
   emit connectionMsg(tr("Disconnected from core."));
@@ -227,10 +229,8 @@ void CoreConnection::coreHasData() {
 }
 
 void CoreConnection::disconnectFromCore() {
-  if(isConnected()) {
-    Client::signalProxy()->removeAllPeers();
-    resetConnection();
-  }
+  Client::signalProxy()->removeAllPeers();
+  resetConnection();
 }
 
 void CoreConnection::reconnectToCore() {
@@ -366,12 +366,14 @@ void CoreConnection::connectionReady() {
   resetWarningsHandler();
 }
 
-void CoreConnection::loginToCore() {
+void CoreConnection::loginToCore(const QString &prevError) {
   emit connectionMsg(tr("Logging in..."));
-  if(currentAccount().user().isEmpty() || currentAccount().password().isEmpty()) {
-    emit userAuthenticationRequired(&_account);  // *must* be a synchronous call
-    if(currentAccount().user().isEmpty() || currentAccount().password().isEmpty()) {
+  if(currentAccount().user().isEmpty() || currentAccount().password().isEmpty() || !prevError.isEmpty()) {
+    bool valid = false;
+    emit userAuthenticationRequired(&_account, &valid, prevError);  // *must* be a synchronous call
+    if(!valid || currentAccount().user().isEmpty() || currentAccount().password().isEmpty()) {
       disconnectFromCore();
+      emit connectionError(tr("Login canceled"));
       return;
     }
   }
@@ -384,16 +386,16 @@ void CoreConnection::loginToCore() {
 }
 
 void CoreConnection::loginFailed(const QString &error) {
-  emit userAuthenticationRequired(&_account, error);  // *must* be a synchronous call
-  if(currentAccount().user().isEmpty() || currentAccount().password().isEmpty()) {
-    disconnectFromCore();
-    return;
-  }
-  loginToCore();
+  loginToCore(error);
 }
 
 void CoreConnection::loginSuccess() {
   updateProgress(0, 0);
+
+  // save current account data
+  _model->createOrUpdateAccount(currentAccount());
+  _model->save();
+
   setProgressText(tr("Receiving session state"));
   setState(Synchronizing);
   emit connectionMsg(tr("Synchronizing to %1...").arg(currentAccount().accountName()));

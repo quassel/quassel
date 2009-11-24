@@ -60,3 +60,33 @@ void CoreConnectDlg::accept() {
   _settingsPage->save();
   QDialog::accept();
 }
+
+/******** CoreConnectAuthDlg ****************************************************************/
+
+CoreConnectAuthDlg::CoreConnectAuthDlg(CoreAccount *account, QWidget *parent)
+  : QDialog(parent),
+  _account(account)
+{
+  ui.setupUi(this);
+
+  connect(ui.user, SIGNAL(textChanged(QString)), SLOT(setButtonStates()));
+  connect(ui.password, SIGNAL(textChanged(QString)), SLOT(setButtonStates()));
+
+  ui.label->setText(tr("Please enter your credentials for %1:").arg(account->accountName()));
+  ui.user->setText(account->user());
+  ui.password->setText(account->password());
+  ui.rememberPasswd->setChecked(account->storePassword());
+}
+
+void CoreConnectAuthDlg::accept() {
+  _account->setUser(ui.user->text());
+  _account->setPassword(ui.password->text());
+  _account->setStorePassword(ui.rememberPasswd->isChecked());
+
+  QDialog::accept();
+}
+
+void CoreConnectAuthDlg::setButtonStates() {
+  bool valid = !(ui.user->text().isEmpty() || ui.password->text().isEmpty());
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(valid);
+}

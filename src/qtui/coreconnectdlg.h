@@ -25,6 +25,8 @@
 
 #include "coreaccount.h"
 
+#include "ui_coreconnectauthdlg.h"
+
 class CoreAccountSettingsPage;
 
 class CoreConnectDlg : public QDialog {
@@ -38,6 +40,22 @@ public:
 
 private:
   CoreAccountSettingsPage *_settingsPage;
+};
+
+class CoreConnectAuthDlg : public QDialog {
+  Q_OBJECT
+
+public:
+  CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = 0);
+
+  void accept();
+
+private slots:
+  void setButtonStates();
+
+private:
+  Ui::CoreConnectAuthDlg ui;
+  CoreAccount *_account;
 };
 
 #endif
