@@ -64,6 +64,8 @@ public:
   bool autoConnectToFixedAccount();
   void setAutoConnectToFixedAccount(bool);
 
+  void clearAccounts();
+
   void storeAccountData(AccountId id, const QVariantMap &data);
   QVariantMap retrieveAccountData(AccountId);
   void removeAccount(AccountId);

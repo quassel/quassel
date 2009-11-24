@@ -36,6 +36,7 @@
 
 class CoreAccountModel;
 class Network;
+class SignalProxy;
 
 class CoreConnection : public QObject {
   Q_OBJECT
@@ -83,6 +84,8 @@ signals:
   void progressTextChanged(const QString &);
 
   void startCoreSetup(const QVariantList &);
+  void startInternalCore();
+  void connectToInternalCore(SignalProxy *proxy);
 
   // This signal MUST be handled synchronously!
   void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
@@ -105,7 +108,7 @@ private slots:
   void checkSyncState();
 
   void syncToCore(const QVariantMap &sessionState);
-  //void internalSessionStateReceived(const QVariant &packedState);
+  void internalSessionStateReceived(const QVariant &packedState);
   void sessionStateReceived(const QVariantMap &state);
 
   void setWarningsHandler(const char *slot);

@@ -54,10 +54,24 @@ void CoreAccountSettingsPage::setStandAlone(bool standalone) {
 
 void CoreAccountSettingsPage::load() {
   _model->update(Client::coreAccountModel());
-
   SettingsPage::load();
+
+  CoreAccountSettings s;
+
+  if(Quassel::runMode() != Quassel::Monolithic) {
+    // make sure we don't have selected the internal account as autoconnect account
+
+    if(s.autoConnectOnStartup() && s.autoConnectToFixedAccount()) {
+      CoreAccount acc = _model->account(s.autoConnectAccount());
+      if(acc.isInternal())
+        ui.autoConnectOnStartup->setChecked(false);
+    }
+  }
   ui.accountView->setCurrentIndex(model()->index(0, 0));
   ui.accountView->selectionModel()->select(model()->index(0, 0), QItemSelectionModel::Select);
+
+  QModelIndex idx = model()->accountIndex(s.autoConnectAccount());
+  ui.autoConnectAccount->setCurrentIndex(idx.isValid() ? idx.row() : 0);
   setWidgetStates();
 }
 
@@ -74,7 +88,6 @@ QVariant CoreAccountSettingsPage::loadAutoWidgetValue(const QString &widgetName)
     AccountId id = s.autoConnectAccount();
     if(!id.isValid())
       return QVariant();
-    ui.autoConnectAccount->setCurrentIndex(model()->accountIndex(id).row());
     return id.toInt();
   }
   return SettingsPage::loadAutoWidgetValue(widgetName);
@@ -180,10 +193,11 @@ void CoreAccountSettingsPage::on_accountView_doubleClicked(const QModelIndex &in
 }
 
 void CoreAccountSettingsPage::setWidgetStates() {
-  bool selected = ui.accountView->selectionModel()->selectedIndexes().count();
+  AccountId accId = selectedAccount();
+  bool editable = accId.isValid() && accId != model()->internalAccount();
 
-  ui.editAccountButton->setEnabled(selected);
-  ui.deleteAccountButton->setEnabled(selected);
+  ui.editAccountButton->setEnabled(editable);
+  ui.deleteAccountButton->setEnabled(editable);
 }
 
 void CoreAccountSettingsPage::widgetHasChanged() {

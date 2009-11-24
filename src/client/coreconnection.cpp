@@ -99,9 +99,9 @@ void CoreConnection::resetConnection() {
 
   _netsToSync.clear();
   _numNetsToSync = 0;
-  _state = Disconnected;
 
   setProgressMaximum(-1); // disable
+  setState(Disconnected);
   emit connectionMsg(tr("Disconnected from core."));
 }
 
@@ -159,6 +159,8 @@ void CoreConnection::setState(ConnectionState state) {
   if(state != _state) {
     _state = state;
     emit stateChanged(state);
+    if(state == Disconnected)
+      emit disconnected();
   }
 }
 
@@ -178,7 +180,6 @@ void CoreConnection::coreSocketError(QAbstractSocket::SocketError) {
 }
 
 void CoreConnection::coreSocketDisconnected() {
-  setState(Disconnected);
   emit disconnected();
   resetConnection();
   // FIXME handle disconnects gracefully
@@ -244,20 +245,30 @@ bool CoreConnection::connectToCore(AccountId accId) {
 
   CoreAccountSettings s;
 
-  if(!accId.isValid()) {
-    // check our settings and figure out what to do
-    if(!s.autoConnectOnStartup())
+  // FIXME: Don't force connection to internal core in mono client
+  if(Quassel::runMode() == Quassel::Monolithic) {
+    _account = accountModel()->account(accountModel()->internalAccount());
+    Q_ASSERT(_account.isValid());
+  } else {
+    if(!accId.isValid()) {
+      // check our settings and figure out what to do
+      if(!s.autoConnectOnStartup())
+        return false;
+      if(s.autoConnectToFixedAccount())
+        accId = s.autoConnectAccount();
+      else
+        accId = s.lastAccount();
+      if(!accId.isValid())
+        return false;
+    }
+    _account = accountModel()->account(accId);
+    if(!_account.accountId().isValid()) {
       return false;
-    if(s.autoConnectToFixedAccount())
-      accId = s.autoConnectAccount();
-    else
-      accId = s.lastAccount();
-    if(!accId.isValid())
-      return false;
-  }
-  _account = accountModel()->account(accId);
-  if(!_account.accountId().isValid()) {
-    return false;
+    }
+    if(Quassel::runMode() != Quassel::Monolithic) {
+      if(_account.isInternal())
+        return false;
+    }
   }
 
   s.setLastAccount(accId);
@@ -267,6 +278,16 @@ bool CoreConnection::connectToCore(AccountId accId) {
 
 void CoreConnection::connectToCurrentAccount() {
   resetConnection();
+
+  if(currentAccount().isInternal()) {
+    if(Quassel::runMode() != Quassel::Monolithic) {
+      qWarning() << "Cannot connect to internal core in client-only mode!";
+      return;
+    }
+    emit startInternalCore();
+    emit connectToInternalCore(Client::instance()->signalProxy());
+    return;
+  }
 
   Q_ASSERT(!_socket);
 #ifdef HAVE_SSL
@@ -408,8 +429,14 @@ void CoreConnection::sessionStateReceived(const QVariantMap &state) {
   disconnect(_socket, SIGNAL(readyRead()), this, 0);
   disconnect(_socket, SIGNAL(connected()), this, 0);
 
-  //Client::instance()->setConnectedToCore(currentAccount().accountId(), _socket);
   syncToCore(state);
+}
+
+void CoreConnection::internalSessionStateReceived(const QVariant &packedState) {
+  updateProgress(100, 100);
+
+  setState(Synchronizing);
+  syncToCore(packedState.toMap());
 }
 
 void CoreConnection::syncToCore(const QVariantMap &sessionState) {

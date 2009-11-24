@@ -58,17 +58,16 @@ void CoreAccountModel::load() {
     // Make sure we have an internal account in monolithic mode
     CoreAccount intAcc;
     intAcc.setInternal(true);
-    insertAccount(intAcc);
+    intAcc.setAccountName(tr("Internal Core"));
+    _internalAccount = createOrUpdateAccount(intAcc);
   }
 }
 
 void CoreAccountModel::save() {
   CoreAccountSettings s;
+  s.clearAccounts();
   foreach(const CoreAccount &acc, accounts()) {
-    if(acc.isInternal())
-      continue;  // FIXME don't save internal for now - but make sure to handle this correctly once mono can do remotes!
-                 //       we'll have to ensure that autoConnectAccount works with internal as well then
-    QVariantMap map = acc.toVariantMap(true);  // TODO Hook into kwallet/password saving stuff
+    QVariantMap map = acc.toVariantMap(false);  // TODO Hook into kwallet/password saving stuff
     s.storeAccountData(acc.accountId(), map);
   }
 }
@@ -167,8 +166,6 @@ AccountId CoreAccountModel::createOrUpdateAccount(const CoreAccount &newAcc) {
 
 void CoreAccountModel::insertAccount(const CoreAccount &acc) {
   if(acc.isInternal()) {
-    if(Quassel::runMode() == Quassel::Monolithic)
-      return;
     if(internalAccount().isValid()) {
       qWarning() << "Trying to insert a second internal account in CoreAccountModel, ignoring";
       return;

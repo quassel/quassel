@@ -170,6 +170,10 @@ void CoreAccountSettings::removeAccount(AccountId id) {
   removeLocalKey(QString("%1").arg(id.toInt()));
 }
 
+void CoreAccountSettings::clearAccounts() {
+  foreach(const QString &key, localChildGroups())
+    removeLocalKey(key);
+}
 
 /***********************************************************************************************/
 // NotificationSettings:
