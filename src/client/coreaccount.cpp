@@ -25,7 +25,7 @@ CoreAccount::CoreAccount(AccountId accountId) {
   _internal = false;
   _port = 4242;
   _storePassword = false;
-  _useSsl = false;
+  _useSsl = true;
   _useProxy = false;
   _proxyType = QNetworkProxy::Socks5Proxy;
   _proxyPort = 8080;

@@ -42,6 +42,7 @@ void CoreAccountModel::update(const CoreAccountModel *other) {
   beginInsertRows(QModelIndex(), 0, other->_accounts.count() -1);
   _internalAccount = other->internalAccount();
   _accounts = other->_accounts;
+  _removedAccounts = other->_removedAccounts;
   endInsertRows();
 }
 
@@ -65,7 +66,10 @@ void CoreAccountModel::load() {
 
 void CoreAccountModel::save() {
   CoreAccountSettings s;
-  s.clearAccounts();
+  foreach(AccountId id, _removedAccounts) {
+    s.removeAccount(id);
+  }
+  _removedAccounts.clear();
   foreach(const CoreAccount &acc, accounts()) {
     QVariantMap map = acc.toVariantMap(false);  // TODO Hook into kwallet/password saving stuff
     s.storeAccountData(acc.accountId(), map);
@@ -141,7 +145,7 @@ AccountId CoreAccountModel::createOrUpdateAccount(const CoreAccount &newAcc) {
     AccountId newId = 0;
     const QList<AccountId> &ids = accountIds();
     for(int i = 1; ; i++) {
-      if(!ids.contains(i)) {
+      if(!_removedAccounts.contains(i) && !ids.contains(i)) {
         newId = i;
         break;
       }
@@ -200,6 +204,7 @@ CoreAccount CoreAccountModel::takeAccount(AccountId accId) {
 
 void CoreAccountModel::removeAccount(AccountId accId) {
   takeAccount(accId);
+  _removedAccounts.insert(accId);
 }
 
 QModelIndex CoreAccountModel::accountIndex(AccountId accId) const {

@@ -70,8 +70,8 @@ private:
   int listIndex(AccountId);
 
   QList<CoreAccount> _accounts;
+  QSet<AccountId> _removedAccounts;
   AccountId _internalAccount;
-
 };
 
 // Inlines
