@@ -26,15 +26,23 @@
 #include "uisettings.h"
 
 class QtUiSettings : public UiSettings {
-public: 
+public:
   QtUiSettings(const QString &subGroup);
   QtUiSettings();
-}; 
+};
 
 class QtUiStyleSettings : public UiSettings {
 public:
   QtUiStyleSettings(const QString &subGroup);
   QtUiStyleSettings();
+};
+
+class WarningsSettings : public UiSettings {
+public:
+  WarningsSettings();
+
+  bool showWarning(const QString &key);
+  void setShowWarning(const QString &key, bool show);
 };
 
 #endif

@@ -40,3 +40,17 @@ QtUiStyleSettings::QtUiStyleSettings()
   : UiSettings("QtUiStyle")
 {
 }
+
+/***********************************************************************/
+
+WarningsSettings::WarningsSettings() : UiSettings("Warnings") {
+
+}
+
+bool WarningsSettings::showWarning(const QString &key) {
+  return localValue(key, true).toBool();
+}
+
+void WarningsSettings::setShowWarning(const QString &key, bool show) {
+  setLocalValue(key, show);
+}
