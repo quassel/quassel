@@ -160,6 +160,7 @@ void MainWin::init() {
            SLOT(messagesInserted(const QModelIndex &, int, int)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
+  connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
   connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount *, bool *, QString)), SLOT(userAuthenticationRequired(CoreAccount *, bool *, QString)));
   connect(Client::coreConnection(), SIGNAL(handleNoSslInClient(bool*)), SLOT(handleNoSslInClient(bool *)));
   connect(Client::coreConnection(), SIGNAL(handleNoSslInCore(bool*)), SLOT(handleNoSslInCore(bool *)));
@@ -804,10 +805,6 @@ void MainWin::setDisconnectedState() {
   systemTray()->setState(SystemTray::Inactive);
 }
 
-void MainWin::startInternalCore() {
-
-}
-
 void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage) {
   Q_UNUSED(errorMessage)
   CoreConnectAuthDlg dlg(account, this);
@@ -871,6 +868,10 @@ void MainWin::handleSslErrors(const QSslSocket *socket, bool *accepted, bool *pe
 }
 
 #endif /* HAVE_SSL */
+
+void MainWin::handleCoreConnectionError(const QString &error) {
+  QMessageBox::critical(this, tr("Core Connection Error"), error, QMessageBox::Ok);
+}
 
 void MainWin::showCoreConnectionDlg() {
   CoreConnectDlg dlg(this);

@@ -120,7 +120,7 @@ void CoreConnection::socketStateChanged(QAbstractSocket::SocketState socketState
 
   switch(socketState) {
   case QAbstractSocket::UnconnectedState:
-    text = tr("Disconnected.");
+    text = tr("Disconnected");
     break;
   case QAbstractSocket::HostLookupState:
     text = tr("Looking up %1...").arg(currentAccount().hostName());
@@ -129,7 +129,7 @@ void CoreConnection::socketStateChanged(QAbstractSocket::SocketState socketState
     text = tr("Connecting to %1...").arg(currentAccount().hostName());
     break;
   case QAbstractSocket::ConnectedState:
-    text = tr("Connected to %1.").arg(currentAccount().hostName());
+    text = tr("Connected to %1").arg(currentAccount().hostName());
     break;
   case QAbstractSocket::ClosingState:
     text = tr("Disconnecting from %1...").arg(currentAccount().hostName());
@@ -189,14 +189,14 @@ void CoreConnection::coreHasData() {
     QVariantMap msg = item.toMap();
     if(!msg.contains("MsgType")) {
       // This core is way too old and does not even speak our init protocol...
-      emit connectionError(tr("The Quassel Core you try to connect to is too old! Please consider upgrading."));
+      emit connectionErrorPopup(tr("The Quassel Core you try to connect to is too old! Please consider upgrading."));
       disconnectFromCore();
       return;
     }
     if(msg["MsgType"] == "ClientInitAck") {
       clientInitAck(msg);
     } else if(msg["MsgType"] == "ClientInitReject") {
-      emit connectionError(msg["Error"].toString());
+      emit connectionErrorPopup(msg["Error"].toString());
       disconnectFromCore();
       return;
     } else if(msg["MsgType"] == "CoreSetupAck") {
@@ -217,8 +217,7 @@ void CoreConnection::coreHasData() {
       sessionStateReceived(msg["SessionState"].toMap());
       break; // this is definitively the last message we process here!
     } else {
-      emit connectionError(tr("Invalid data received from core, disconnecting."));
-      disconnectFromCore();
+      disconnectFromCore(tr("Invalid data received from core"));
       return;
     }
   }
@@ -227,7 +226,12 @@ void CoreConnection::coreHasData() {
   }
 }
 
-void CoreConnection::disconnectFromCore() {
+void CoreConnection::disconnectFromCore(const QString &errorString) {
+  if(errorString.isEmpty())
+    emit connectionError(tr("Disconnected"));
+  else
+    emit connectionError(errorString);
+
   Client::signalProxy()->removeAllPeers();
   resetConnection();
 }
@@ -351,7 +355,7 @@ void CoreConnection::clientInitAck(const QVariantMap &msg) {
   // Core has accepted our version info and sent its own. Let's see if we accept it as well...
   uint ver = msg["ProtocolVersion"].toUInt();
   if(ver < Quassel::buildInfo().clientNeedsProtocol) {
-    emit connectionError(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
+    emit connectionErrorPopup(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
         "Need at least core/client protocol v%1 to connect.").arg(Quassel::buildInfo().clientNeedsProtocol));
     disconnectFromCore();
     return;
@@ -382,8 +386,7 @@ void CoreConnection::clientInitAck(const QVariantMap &msg) {
         bool accepted = false;
         emit handleNoSslInCore(&accepted);
         if(!accepted) {
-          emit connectionError(tr("Unencrypted connection canceled"));
-          disconnectFromCore();
+          disconnectFromCore(tr("Unencrypted connection canceled"));
           return;
         }
         s.setAccountValue("ShowNoCoreSslWarning", false);
@@ -428,8 +431,7 @@ void CoreConnection::sslErrors() {
     emit handleSslErrors(socket, &accepted, &permanently);
 
     if(!accepted) {
-      emit connectionError(tr("Unencrypted connection canceled"));
-      disconnectFromCore();
+      disconnectFromCore(tr("Unencrypted connection canceled"));
       return;
     }
 
@@ -463,8 +465,7 @@ void CoreConnection::loginToCore(const QString &prevError) {
     bool valid = false;
     emit userAuthenticationRequired(&_account, &valid, prevError);  // *must* be a synchronous call
     if(!valid || currentAccount().user().isEmpty() || currentAccount().password().isEmpty()) {
-      disconnectFromCore();
-      emit connectionError(tr("Login canceled"));
+      disconnectFromCore(tr("Login canceled"));
       return;
     }
   }

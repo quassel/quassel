@@ -72,7 +72,7 @@ public:
 public slots:
   bool connectToCore(AccountId = 0);
   void reconnectToCore();
-  void disconnectFromCore();
+  void disconnectFromCore(const QString &errorString = QString());
 
 signals:
   void stateChanged(CoreConnection::ConnectionState);
@@ -80,6 +80,7 @@ signals:
   void synchronized();
 
   void connectionError(const QString &errorMsg);
+  void connectionErrorPopup(const QString &errorMsg);
   void connectionWarnings(const QStringList &warnings);
   void connectionMsg(const QString &msg);
   void disconnected();
