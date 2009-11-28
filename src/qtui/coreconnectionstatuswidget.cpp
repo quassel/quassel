@@ -21,14 +21,16 @@
 #include "coreconnectionstatuswidget.h"
 
 #include "client.h"
-#include "coreconnection.h"
 #include "iconloader.h"
+#include "signalproxy.h"
 
 CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent)
   : QWidget(parent),
   _coreConnection(connection)
 {
   ui.setupUi(this);
+  ui.lagLabel->hide();
+  ui.sslLabel->hide();
   update();
 
   connect(coreConnection(), SIGNAL(progressTextChanged(QString)), ui.messageLabel, SLOT(setText(QString)));
@@ -36,7 +38,9 @@ CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connectio
   connect(coreConnection(), SIGNAL(progressRangeChanged(int, int)), ui.progressBar, SLOT(setRange(int, int)));
   connect(coreConnection(), SIGNAL(progressRangeChanged(int, int)), this, SLOT(progressRangeChanged(int, int)));
 
+  connect(coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), SLOT(connectionStateChanged(CoreConnection::ConnectionState)));
   connect(coreConnection(), SIGNAL(connectionError(QString)), ui.messageLabel, SLOT(setText(QString)));
+  connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), SLOT(updateLag(int)));
 }
 
 void CoreConnectionStatusWidget::update() {
@@ -50,7 +54,31 @@ void CoreConnectionStatusWidget::update() {
     ui.progressBar->hide();
 
   ui.messageLabel->setText(conn->progressText());
+}
 
+void CoreConnectionStatusWidget::updateLag(int msecs) {
+  if(msecs >= 0) {
+    ui.lagLabel->setText(tr("(Lag: %1 ms)").arg(msecs));
+    if(!ui.lagLabel->isVisible())
+      ui.lagLabel->show();
+  } else {
+    if(ui.lagLabel->isVisible())
+      ui.lagLabel->hide();
+  }
+}
+
+void CoreConnectionStatusWidget::connectionStateChanged(CoreConnection::ConnectionState state) {
+  if(state >= CoreConnection::Connected) {
+    if(coreConnection()->isEncrypted()) {
+      ui.sslLabel->setPixmap(SmallIcon("security-high"));
+      ui.sslLabel->setToolTip(tr("The connection to your core is encrypted with SSL."));
+    } else {
+      ui.sslLabel->setPixmap(SmallIcon("security-low"));
+      ui.sslLabel->setToolTip(tr("The connection to your core is not encrypted."));
+    }
+    ui.sslLabel->show();
+  } else
+    ui.sslLabel->hide();
 }
 
 void CoreConnectionStatusWidget::progressRangeChanged(int min, int max) {

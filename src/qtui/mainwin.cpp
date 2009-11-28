@@ -128,8 +128,6 @@ MainWin::MainWin(QWidget *parent)
 #else
   : QMainWindow(parent),
 #endif
-    coreLagLabel(new QLabel()),
-    sslLabel(new QLabel()),
     _msgProcessorStatusWidget(new MsgProcessorStatusWidget(this)),
     _coreConnectionStatusWidget(new CoreConnectionStatusWidget(Client::coreConnection(), this)),
     _titleSetter(this),
@@ -642,17 +640,6 @@ void MainWin::setupStatusBar() {
   _coreConnectionStatusWidget->update();
   statusBar()->addPermanentWidget(_coreConnectionStatusWidget);
 
-  // Core Lag:
-  updateLagIndicator();
-  statusBar()->addPermanentWidget(coreLagLabel);
-  coreLagLabel->hide();
-  connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), this, SLOT(updateLagIndicator(int)));
-
-  // SSL indicator
-  sslLabel->setPixmap(QPixmap());
-  statusBar()->addPermanentWidget(sslLabel);
-  sslLabel->hide();
-
   QAction *showStatusbar = QtUi::actionCollection("General")->action("ToggleStatusBar");
 
   QtUiSettings uiSettings;
@@ -746,14 +733,7 @@ void MainWin::setConnectedState() {
   else
     statusBar()->clearMessage();
 
-  if(Client::signalProxy()->isSecure()) {
-    sslLabel->setPixmap(SmallIcon("security-high"));
-  } else {
-    sslLabel->setPixmap(SmallIcon("security-low"));
-  }
-
-  sslLabel->setVisible(!Client::internalCore());
-  coreLagLabel->setVisible(!Client::internalCore());
+  _coreConnectionStatusWidget->setVisible(!Client::internalCore());
   updateIcon();
   systemTray()->setState(SystemTray::Active);
 
@@ -782,15 +762,6 @@ void MainWin::saveLayout() {
   QtUiSettings s;
   int accountId = Client::currentCoreAccount().accountId().toInt();
   if(accountId > 0) s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
-}
-
-void MainWin::updateLagIndicator(int lag) {
-  QString text = tr("Core Lag: %1");
-  if(lag == -1)
-    text = text.arg('-');
-  else
-    text = text.arg("%1 msec").arg(lag);
-  coreLagLabel->setText(text);
 }
 
 void MainWin::disconnectedFromCore() {
@@ -827,10 +798,6 @@ void MainWin::setDisconnectedState() {
   coll->action("CoreInfo")->setEnabled(false);
   //_viewMenu->setEnabled(false);
   statusBar()->showMessage(tr("Not connected to core."));
-  sslLabel->setPixmap(QPixmap());
-  sslLabel->hide();
-  updateLagIndicator();
-  coreLagLabel->hide();
   if(_msgProcessorStatusWidget)
     _msgProcessorStatusWidget->setProgress(0, 0);
   updateIcon();

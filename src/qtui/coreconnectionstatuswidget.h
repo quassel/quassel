@@ -25,7 +25,7 @@
 
 #include "ui_coreconnectionstatuswidget.h"
 
-class CoreConnection;
+#include "coreconnection.h"
 
 class CoreConnectionStatusWidget : public QWidget {
   Q_OBJECT
@@ -37,7 +37,10 @@ public:
 
 public slots:
   void update();
+  void updateLag(int msecs);
+
 private slots:
+  void connectionStateChanged(CoreConnection::ConnectionState);
   void progressRangeChanged(int min, int max);
 
 private:

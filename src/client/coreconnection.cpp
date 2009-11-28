@@ -155,9 +155,6 @@ void CoreConnection::setState(QAbstractSocket::SocketState socketState) {
   case QAbstractSocket::ConnectingState:
     state = Connecting;
     break;
-  case QAbstractSocket::ConnectedState:
-    state = Connected;
-    break;
   default:
     state = Disconnected;
   }
@@ -220,7 +217,7 @@ void CoreConnection::coreHasData() {
       sessionStateReceived(msg["SessionState"].toMap());
       break; // this is definitively the last message we process here!
     } else {
-      emit connectionError(tr("<b>Invalid data received from core!</b><br>Disconnecting."));
+      emit connectionError(tr("Invalid data received from core, disconnecting."));
       disconnectFromCore();
       return;
     }
@@ -448,6 +445,9 @@ void CoreConnection::sslErrors() {
 #endif /* HAVE_SSL */
 
 void CoreConnection::connectionReady() {
+  setState(Connected);
+  emit connectionMsg(tr("Connected to %1").arg(currentAccount().accountName()));
+
   if(!_coreMsgBuffer["Configured"].toBool()) {
     // start wizard
     emit startCoreSetup(_coreMsgBuffer["StorageBackends"].toList());
@@ -559,7 +559,7 @@ void CoreConnection::networkInitDone() {
 void CoreConnection::checkSyncState() {
   if(_netsToSync.isEmpty()) {
     setState(Synchronized);
-    setProgressText(QString());
+    setProgressText(tr("Synchronized to %1").arg(currentAccount().accountName()));
     setProgressMaximum(-1);
     emit synchronized();
   }

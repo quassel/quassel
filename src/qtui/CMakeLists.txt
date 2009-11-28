@@ -120,6 +120,7 @@ set(FORMS
     coreconfigwizardstorageselectionpage.ui
     coreconfigwizardsyncpage.ui
     coreconnectauthdlg.ui
+    coreconnectionstatuswidget.ui
     coreinfodlg.ui
     debugbufferviewoverlay.ui
     debugconsole.ui

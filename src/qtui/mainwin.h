@@ -107,7 +107,6 @@ class MainWin
   protected slots:
     void connectedToCore();
     void setConnectedState();
-    void updateLagIndicator(int lag = -1);
     void disconnectedFromCore();
     void setDisconnectedState();
 
@@ -168,8 +167,6 @@ class MainWin
     KHelpMenu *_kHelpMenu;
 #endif
 
-    QLabel *coreLagLabel;
-    QLabel *sslLabel;
     MsgProcessorStatusWidget *_msgProcessorStatusWidget;
     CoreConnectionStatusWidget *_coreConnectionStatusWidget;
 
