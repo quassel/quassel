@@ -151,6 +151,12 @@ else(HAVE_KDE)
   endif(HAVE_PHONON)
 endif(HAVE_KDE)
 
+if(HAVE_SSL)
+  set(SOURCES ${SOURCES} sslinfodlg.cpp)
+  set(MOC_HDRS ${MOC_HDRS} sslinfodlg.h)
+  set(FORMS ${FORMS} sslinfodlg.ui)
+endif(HAVE_SSL)
+
 if(INDICATEQT_FOUND)
   set(SOURCES ${SOURCES} indicatornotificationbackend.cpp)
   set(MOC_HDRS ${MOC_HDRS} indicatornotificationbackend.h)

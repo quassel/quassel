@@ -108,14 +108,14 @@ uint editingDistance(const QString &s1, const QString &s2) {
       uint insertChar = matrix[i][j-1] + 1;
 
       if(deleteChar < insertChar)
-	min = deleteChar;
+        min = deleteChar;
       else
-	min = insertChar;
+        min = insertChar;
 
       if(s1[i-1] == s2[j-1]) {
-	uint inheritChar = matrix[i-1][j-1];
-	if(inheritChar < min)
-	  min = inheritChar;
+        uint inheritChar = matrix[i-1][j-1];
+        if(inheritChar < min)
+          min = inheritChar;
       }
 
       matrix[i][j] = min;
@@ -144,7 +144,7 @@ QString secondsToString(int timeInSeconds) {
 }
 
 QByteArray prettyDigest(const QByteArray &digest) {
-  QByteArray hexDigest = digest.toHex();
+  QByteArray hexDigest = digest.toHex().toUpper();
   QByteArray prettyDigest;
   prettyDigest.fill(':', hexDigest.count() + (hexDigest.count() / 2) - 1);
 
