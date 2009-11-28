@@ -119,8 +119,6 @@ class MainWin
     void messagesInserted(const QModelIndex &parent, int start, int end);
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
-    void startInternalCore();
-    void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
     void showCoreConnectionDlg();
     void showCoreInfoDlg();
     void showAwayLog();
@@ -130,6 +128,14 @@ class MainWin
 #ifdef HAVE_KDE
     void showShortcutsDlg();
 #endif
+    void startInternalCore();
+    void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
+    void handleNoSslInClient(bool *accepted);
+    void handleNoSslInCore(bool *accepted);
+#ifdef HAVE_SSL
+    void handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently);
+#endif
+
     void on_actionConfigureNetworks_triggered();
     void on_actionConfigureViews_triggered();
     void on_actionLockLayout_toggled(bool lock);

@@ -103,6 +103,16 @@ void CoreConnection::resetConnection() {
   setProgressMaximum(-1); // disable
   setState(Disconnected);
   emit connectionMsg(tr("Disconnected from core."));
+  emit encrypted(false);
+}
+
+bool CoreConnection::isEncrypted() const {
+#ifndef HAVE_SSL
+  return false;
+#else
+  QSslSocket *sock = qobject_cast<QSslSocket *>(_socket);
+  return isConnected() && sock && sock->isEncrypted();
+#endif
 }
 
 void CoreConnection::socketStateChanged(QAbstractSocket::SocketState socketState) {
@@ -162,15 +172,6 @@ void CoreConnection::setState(ConnectionState state) {
     if(state == Disconnected)
       emit disconnected();
   }
-}
-
-void CoreConnection::setWarningsHandler(const char *slot) {
-  resetWarningsHandler();
-  connect(this, SIGNAL(handleIgnoreWarnings(bool)), this, slot);
-}
-
-void CoreConnection::resetWarningsHandler() {
-  disconnect(this, SIGNAL(handleIgnoreWarnings(bool)), this, 0);
 }
 
 void CoreConnection::coreSocketError(QAbstractSocket::SocketError) {
@@ -289,13 +290,24 @@ void CoreConnection::connectToCurrentAccount() {
     return;
   }
 
+  CoreAccountSettings s;
+
   Q_ASSERT(!_socket);
 #ifdef HAVE_SSL
   QSslSocket *sock = new QSslSocket(Client::instance());
+  // make sure the warning is shown if we happen to connect without SSL support later
+  s.setAccountValue("ShowNoClientSslWarning", true);
 #else
   if(_account.useSsl()) {
-    emit connectionError(tr("<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."));
-    return;
+    if(s.accountValue("ShowNoClientSslWarning", true).toBool()) {
+      bool accepted = false;
+      emit handleNoSslInClient(&accepted);
+      if(!accepted) {
+        emit connectionError(tr("Unencrypted connection canceled"));
+        return;
+      }
+      s.setAccountValue("ShowNoClientSslWarning", false);
+    }
   }
   QTcpSocket *sock = new QTcpSocket(Client::instance());
 #endif
@@ -355,26 +367,85 @@ void CoreConnection::clientInitAck(const QVariantMap &msg) {
 #endif
 
   _coreMsgBuffer = msg;
+
 #ifdef HAVE_SSL
+  CoreAccountSettings s;
   if(currentAccount().useSsl()) {
     if(msg["SupportSsl"].toBool()) {
+      // Make sure the warning is shown next time we don't have SSL in the core
+      s.setAccountValue("ShowNoCoreSslWarning", true);
+
       QSslSocket *sslSocket = qobject_cast<QSslSocket *>(_socket);
       Q_ASSERT(sslSocket);
-      connect(sslSocket, SIGNAL(encrypted()), this, SLOT(sslSocketEncrypted()));
-      connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
-
+      connect(sslSocket, SIGNAL(encrypted()), SLOT(sslSocketEncrypted()));
+      connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), SLOT(sslErrors()));
       sslSocket->startClientEncryption();
     } else {
-      emit connectionError(tr("<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."));
-      disconnectFromCore();
+      if(s.accountValue("ShowNoCoreSslWarning", true).toBool()) {
+        bool accepted = false;
+        emit handleNoSslInCore(&accepted);
+        if(!accepted) {
+          emit connectionError(tr("Unencrypted connection canceled"));
+          disconnectFromCore();
+          return;
+        }
+        s.setAccountValue("ShowNoCoreSslWarning", false);
+        s.setAccountValue("SslCert", QString());
+      }
+      connectionReady();
     }
     return;
   }
 #endif
   // if we use SSL we wait for the next step until every SSL warning has been cleared
   connectionReady();
-
 }
+
+#ifdef HAVE_SSL
+
+void CoreConnection::sslSocketEncrypted() {
+  QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+  Q_ASSERT(socket);
+
+  if(!socket->sslErrors().count()) {
+    // Cert is valid, so we don't want to store it as known
+    // That way, a warning will appear in case it becomes invalid at some point
+    CoreAccountSettings s;
+    s.setAccountValue("SSLCert", QString());
+  }
+
+  emit encrypted(true);
+  connectionReady();
+}
+
+void CoreConnection::sslErrors() {
+  QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+  Q_ASSERT(socket);
+
+  CoreAccountSettings s;
+  QByteArray knownDigest = s.accountValue("SslCert").toByteArray();
+
+  if(knownDigest != socket->peerCertificate().digest()) {
+    bool accepted = false;
+    bool permanently = false;
+    emit handleSslErrors(socket, &accepted, &permanently);
+
+    if(!accepted) {
+      emit connectionError(tr("Unencrypted connection canceled"));
+      disconnectFromCore();
+      return;
+    }
+
+    if(permanently)
+      s.setAccountValue("SslCert", socket->peerCertificate().digest());
+    else
+      s.setAccountValue("SslCert", QString());
+  }
+
+  socket->ignoreSslErrors();
+}
+
+#endif /* HAVE_SSL */
 
 void CoreConnection::connectionReady() {
   if(!_coreMsgBuffer["Configured"].toBool()) {
@@ -384,7 +455,6 @@ void CoreConnection::connectionReady() {
     loginToCore();
   }
   _coreMsgBuffer.clear();
-  resetWarningsHandler();
 }
 
 void CoreConnection::loginToCore(const QString &prevError) {

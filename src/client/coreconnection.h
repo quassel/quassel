@@ -58,20 +58,25 @@ public:
   inline bool isConnected() const;
   inline CoreAccount currentAccount() const;
 
+  bool isEncrypted() const;
+
   inline int progressMinimum() const;
   inline int progressMaximum() const;
   inline int progressValue() const;
   inline QString progressText() const;
+
+#ifdef HAVE_SSL
+  inline const QSslSocket *sslSocket() const;
+#endif
 
 public slots:
   bool connectToCore(AccountId = 0);
   void reconnectToCore();
   void disconnectFromCore();
 
-//  void useInternalCore();
-
 signals:
   void stateChanged(CoreConnection::ConnectionState);
+  void encrypted(bool isEncrypted = true);
   void synchronized();
 
   void connectionError(const QString &errorMsg);
@@ -87,10 +92,13 @@ signals:
   void startInternalCore();
   void connectToInternalCore(SignalProxy *proxy);
 
-  // This signal MUST be handled synchronously!
+  // These signals MUST be handled synchronously!
   void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
-
-  void handleIgnoreWarnings(bool permanently);
+  void handleNoSslInClient(bool *accepted);
+  void handleNoSslInCore(bool *accepted);
+#ifdef HAVE_SSL
+  void handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently);
+#endif
 
 private slots:
   void connectToCurrentAccount();
@@ -111,8 +119,6 @@ private slots:
   void internalSessionStateReceived(const QVariant &packedState);
   void sessionStateReceived(const QVariantMap &state);
 
-  void setWarningsHandler(const char *slot);
-  void resetWarningsHandler();
   void resetConnection();
   void connectionReady();
   //void doCoreSetup(const QVariant &setupData);
@@ -129,6 +135,11 @@ private slots:
 
   void setState(QAbstractSocket::SocketState socketState);
   void setState(ConnectionState state);
+
+#ifdef HAVE_SSL
+  void sslSocketEncrypted();
+  void sslErrors();
+#endif
 
 private:
   CoreAccountModel *_model;
@@ -161,5 +172,9 @@ CoreConnection::ConnectionState CoreConnection::state() const { return _state; }
 bool CoreConnection::isConnected() const { return state() >= Connected; }
 CoreAccount CoreConnection::currentAccount() const { return _account; }
 CoreAccountModel *CoreConnection::accountModel() const { return _model; }
+
+#ifdef HAVE_SSL
+const QSslSocket *CoreConnection::sslSocket() const { return qobject_cast<QSslSocket *>(_socket); }
+#endif
 
 #endif

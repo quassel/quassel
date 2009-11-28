@@ -95,6 +95,10 @@
 #  include "knotificationbackend.h"
 #endif /* HAVE_KDE */
 
+#ifdef HAVE_SSL
+#  include "sslinfodlg.h"
+#endif
+
 #ifdef HAVE_INDICATEQT
   #include "indicatornotificationbackend.h"
 #endif
@@ -159,6 +163,11 @@ void MainWin::init() {
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
   connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount *, bool *, QString)), SLOT(userAuthenticationRequired(CoreAccount *, bool *, QString)));
+  connect(Client::coreConnection(), SIGNAL(handleNoSslInClient(bool*)), SLOT(handleNoSslInClient(bool *)));
+  connect(Client::coreConnection(), SIGNAL(handleNoSslInCore(bool*)), SLOT(handleNoSslInCore(bool *)));
+#ifdef HAVE_SSL
+  connect(Client::coreConnection(), SIGNAL(handleSslErrors(const QSslSocket *, bool *, bool *)), SLOT(handleSslErrors(const QSslSocket *, bool *, bool *)));
+#endif
 
   // Setup Dock Areas
   setDockNestingEnabled(true);
@@ -832,6 +841,70 @@ void MainWin::startInternalCore() {
 
 }
 
+void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage) {
+  Q_UNUSED(errorMessage)
+  CoreConnectAuthDlg dlg(account, this);
+  *valid = (dlg.exec() == QDialog::Accepted);
+}
+
+void MainWin::handleNoSslInClient(bool *accepted) {
+  QMessageBox box(QMessageBox::Warning, tr("Unencrypted Connection"), tr("<b>Your client does not support SSL encryption</b>"),
+                  QMessageBox::Ignore|QMessageBox::Cancel, this);
+  box.setInformativeText(tr("Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."));
+  box.setDefaultButton(QMessageBox::Ignore);
+  *accepted = box.exec() == QMessageBox::Ignore;
+}
+
+void MainWin::handleNoSslInCore(bool *accepted) {
+  QMessageBox box(QMessageBox::Warning, tr("Unencrypted Connection"), tr("<b>Your core does not support SSL encryption</b>"),
+                  QMessageBox::Ignore|QMessageBox::Cancel, this);
+  box.setInformativeText(tr("Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."));
+  box.setDefaultButton(QMessageBox::Ignore);
+  *accepted = box.exec() == QMessageBox::Ignore;
+
+}
+
+#ifdef HAVE_SSL
+
+void MainWin::handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently) {
+  QString errorString = "<ul>";
+  foreach(const QSslError error, socket->sslErrors())
+    errorString += QString("<li>%1</li>").arg(error.errorString());
+  errorString += "</ul>";
+
+  QMessageBox box(QMessageBox::Warning,
+                  tr("Untrusted Security Certificate"),
+                  tr("<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>").arg(socket->peerName()),
+                  QMessageBox::Cancel, this);
+  box.setInformativeText(errorString);
+  box.addButton(tr("Continue"), QMessageBox::AcceptRole);
+  box.setDefaultButton(box.addButton(tr("Show Certificate"), QMessageBox::HelpRole));
+
+  QMessageBox::ButtonRole role;
+  do {
+    box.exec();
+    role = box.buttonRole(box.clickedButton());
+    if(role == QMessageBox::HelpRole) {
+      SslInfoDlg dlg(socket, this);
+      dlg.exec();
+    }
+  } while(role == QMessageBox::HelpRole);
+
+  *accepted = role == QMessageBox::AcceptRole;
+  if(*accepted) {
+    QMessageBox box2(QMessageBox::Warning,
+                     tr("Untrusted Security Certificate"),
+                     tr("Would you like to accept this certificate forever without being prompted?"),
+                     0, this);
+    box2.setDefaultButton(box2.addButton(tr("Current Session Only"), QMessageBox::NoRole));
+    box2.addButton(tr("Forever"), QMessageBox::YesRole);
+    box2.exec();
+    *permanently =  box2.buttonRole(box2.clickedButton()) == QMessageBox::YesRole;
+  }
+}
+
+#endif /* HAVE_SSL */
+
 void MainWin::showCoreConnectionDlg() {
   CoreConnectDlg dlg(this);
   if(dlg.exec() == QDialog::Accepted) {
@@ -839,12 +912,6 @@ void MainWin::showCoreConnectionDlg() {
     if(accId.isValid())
       Client::coreConnection()->connectToCore(accId);
   }
-}
-
-void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage) {
-  Q_UNUSED(errorMessage)
-  CoreConnectAuthDlg dlg(account, this);
-  *valid = (dlg.exec() == QDialog::Accepted);
 }
 
 void MainWin::showChannelList(NetworkId netId) {
