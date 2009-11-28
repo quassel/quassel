@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CoreConfigWizardAdminUserPage</class>
- <widget class="QWidget" name="CoreConfigWizardAdminUserPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="CoreConfigWizardAdminUserPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,53 +10,53 @@
     <height>273</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout">
    <item>
-    <layout class="QGridLayout" >
-     <item row="0" column="0" >
-      <widget class="QLabel" name="label_2" >
-       <property name="text" >
+    <layout class="QGridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
         <string>Username:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1" >
-      <widget class="QLineEdit" name="user" />
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="user"/>
      </item>
-     <item row="1" column="0" >
-      <widget class="QLabel" name="label_3" >
-       <property name="text" >
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
         <string>Password:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1" >
-      <widget class="QLineEdit" name="password" >
-       <property name="echoMode" >
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="password">
+       <property name="echoMode">
         <enum>QLineEdit::Password</enum>
        </property>
       </widget>
      </item>
-     <item row="2" column="0" >
-      <widget class="QLabel" name="label_4" >
-       <property name="text" >
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
         <string>Repeat password:</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1" >
-      <widget class="QLineEdit" name="password2" >
-       <property name="echoMode" >
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="password2">
+       <property name="echoMode">
         <enum>QLineEdit::Password</enum>
        </property>
       </widget>
      </item>
-     <item row="3" column="1" >
-      <widget class="QCheckBox" name="rememberPasswd" >
-       <property name="text" >
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="rememberPasswd">
+       <property name="text">
         <string>Remember password</string>
        </property>
       </widget>
@@ -63,29 +64,25 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label" >
-     <property name="text" >
-      <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;">&lt;span style=" font-size:10pt; font-weight:600;">Note: &lt;/span>&lt;span style=" font-size:10pt;">Adding more users and changing your username/password is not possible via Quassel's interface yet.&lt;/span>&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:10pt;">If you need to do these things have a look at the manageusers.py script which is located in the /scripts directory.&lt;/p>&lt;/body>&lt;/html></string>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>&lt;b&gt;Note:&lt;/b&gt; Adding more users and changing your username/password is not possible via Quassel's client interface yet.
+If you need to do these things, please run &quot;&lt;tt&gt;&lt;nobr&gt;quasselcore --help&lt;/nobr&gt;&lt;/tt&gt;&quot;.</string>
      </property>
-     <property name="alignment" >
+     <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
-     <property name="wordWrap" >
+     <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item>
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>405</width>
        <height>51</height>

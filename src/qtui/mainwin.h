@@ -119,6 +119,7 @@ class MainWin
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
     void showCoreConnectionDlg();
+    void showCoreConfigWizard(const QVariantList &);
     void showCoreInfoDlg();
     void showAwayLog();
     void showSettingsDlg();

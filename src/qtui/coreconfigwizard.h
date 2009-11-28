@@ -30,6 +30,8 @@
 #include "ui_coreconfigwizardstorageselectionpage.h"
 #include "ui_coreconfigwizardsyncpage.h"
 
+class CoreConnection;
+
 namespace CoreConfigWizardPages {
   class SyncPage;
   class SyncRelayPage;
@@ -49,12 +51,14 @@ class CoreConfigWizard : public QWizard {
       ConclusionPage
     };
 
-    CoreConfigWizard(const QList<QVariant> &backends, QWidget *parent = 0);
+    CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent = 0);
     QHash<QString, QVariant> backends() const;
+
+    inline CoreConnection *coreConnection() const { return _connection; }
 
   signals:
     void setupCore(const QVariant &setupData);
-    void loginToCore(const QVariantMap &loginData);
+    void loginToCore(const QString &user, const QString &password, bool rememberPassword);
 
   public slots:
     void loginSuccess();
@@ -70,6 +74,8 @@ class CoreConfigWizard : public QWizard {
     QHash<QString, QVariant> _backends;
     CoreConfigWizardPages::SyncPage *syncPage;
     CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
+
+    CoreConnection *_connection;
 };
 
 namespace CoreConfigWizardPages {

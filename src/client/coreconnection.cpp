@@ -200,9 +200,9 @@ void CoreConnection::coreHasData() {
       disconnectFromCore();
       return;
     } else if(msg["MsgType"] == "CoreSetupAck") {
-      //emit coreSetupSuccess();
+      emit coreSetupSuccess();
     } else if(msg["MsgType"] == "CoreSetupReject") {
-      //emit coreSetupFailed(msg["Error"].toString());
+      emit coreSetupFailed(msg["Error"].toString());
     } else if(msg["MsgType"] == "ClientLoginReject") {
       loginFailed(msg["Error"].toString());
     } else if(msg["MsgType"] == "ClientLoginAck") {
@@ -459,6 +459,13 @@ void CoreConnection::connectionReady() {
   _coreMsgBuffer.clear();
 }
 
+void CoreConnection::loginToCore(const QString &user, const QString &password, bool remember) {
+  _account.setUser(user);
+  _account.setPassword(password);
+  _account.setStorePassword(remember);
+  loginToCore();
+}
+
 void CoreConnection::loginToCore(const QString &prevError) {
   emit connectionMsg(tr("Logging in..."));
   if(currentAccount().user().isEmpty() || currentAccount().password().isEmpty() || !prevError.isEmpty()) {
@@ -564,4 +571,11 @@ void CoreConnection::checkSyncState() {
     setProgressMaximum(-1);
     emit synchronized();
   }
+}
+
+void CoreConnection::doCoreSetup(const QVariant &setupData) {
+  QVariantMap setup;
+  setup["MsgType"] = "CoreSetupData";
+  setup["SetupData"] = setupData;
+  SignalProxy::writeDataToDevice(_socket, setup);
 }

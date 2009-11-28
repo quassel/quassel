@@ -55,6 +55,7 @@
 #include "clientbufferviewconfig.h"
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
+#include "coreconfigwizard.h"
 #include "coreconnectdlg.h"
 #include "coreconnection.h"
 #include "coreconnectionstatuswidget.h"
@@ -160,6 +161,8 @@ void MainWin::init() {
            SLOT(messagesInserted(const QModelIndex &, int, int)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
+
+  connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList)), SLOT(showCoreConfigWizard(QVariantList)));
   connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
   connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount *, bool *, QString)), SLOT(userAuthenticationRequired(CoreAccount *, bool *, QString)));
   connect(Client::coreConnection(), SIGNAL(handleNoSslInClient(bool*)), SLOT(handleNoSslInClient(bool *)));
@@ -880,6 +883,12 @@ void MainWin::showCoreConnectionDlg() {
     if(accId.isValid())
       Client::coreConnection()->connectToCore(accId);
   }
+}
+
+void MainWin::showCoreConfigWizard(const QVariantList &backends) {
+  CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, this);
+
+  wizard->show();
 }
 
 void MainWin::showChannelList(NetworkId netId) {

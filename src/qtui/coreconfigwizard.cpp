@@ -24,15 +24,24 @@
 #include <QSpinBox>
 
 #include "coreconfigwizard.h"
+#include "coreconnection.h"
 #include "iconloader.h"
 
-CoreConfigWizard::CoreConfigWizard(const QList<QVariant> &backends, QWidget *parent) : QWizard(parent) {
-  foreach(QVariant v, backends) _backends[v.toMap()["DisplayName"].toString()] = v;
+CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent)
+  : QWizard(parent),
+  _connection(connection)
+{
+  setModal(true);
+  setAttribute(Qt::WA_DeleteOnClose);
+
+  foreach(const QVariant &v, backends)
+    _backends[v.toMap()["DisplayName"].toString()] = v;
+
   setPage(IntroPage, new CoreConfigWizardPages::IntroPage(this));
   setPage(AdminUserPage, new CoreConfigWizardPages::AdminUserPage(this));
   setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(_backends, this));
   syncPage = new CoreConfigWizardPages::SyncPage(this);
-  connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &)), this, SLOT(prepareCoreSetup(const QString &, const QVariantMap &)));
+  connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &)), SLOT(prepareCoreSetup(const QString &, const QVariantMap &)));
   setPage(SyncPage, syncPage);
   syncRelayPage = new CoreConfigWizardPages::SyncRelayPage(this);
   connect(syncRelayPage, SIGNAL(startOver()), this, SLOT(startOver()));
@@ -59,6 +68,12 @@ CoreConfigWizard::CoreConfigWizard(const QList<QVariant> &backends, QWidget *par
 
   setWindowTitle(tr("Core Configuration Wizard"));
   setPixmap(QWizard::LogoPixmap, DesktopIcon("quassel"));
+
+  connect(connection, SIGNAL(coreSetupSuccess()), SLOT(coreSetupSuccess()));
+  connect(connection, SIGNAL(coreSetupFailed(QString)), SLOT(coreSetupFailed(QString)));
+  //connect(connection, SIGNAL(loginSuccess()), SLOT(loginSuccess()));
+  connect(connection, SIGNAL(synchronized()), SLOT(syncFinished()));
+  connect(this, SIGNAL(rejected()), connection, SLOT(disconnectFromCore()));
 }
 
 QHash<QString, QVariant> CoreConfigWizard::backends() const {
@@ -75,18 +90,14 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
   foo["AdminPasswd"] = field("adminUser.password").toString();
   foo["Backend"] = backend;
   foo["ConnectionProperties"] = properties;
-  emit setupCore(foo);
+  coreConnection()->doCoreSetup(foo);
 }
 
 void CoreConfigWizard::coreSetupSuccess() {
   syncPage->setStatus(tr("Your core has been successfully configured. Logging you in..."));
   syncPage->setError(false);
   syncRelayPage->setMode(CoreConfigWizardPages::SyncRelayPage::Error);
-  QVariantMap loginData;
-  loginData["User"] = field("adminUser.user");
-  loginData["Password"] = field("adminUser.password");
-  loginData["RememberPasswd"] = field("adminUser.rememberPasswd");
-  emit loginToCore(loginData);
+  coreConnection()->loginToCore(field("adminUser.user").toString(), field("adminUser.password").toString(), field("adminUser.rememberPasswd").toBool());
 }
 
 void CoreConfigWizard::coreSetupFailed(const QString &error) {
@@ -112,8 +123,7 @@ void CoreConfigWizard::loginSuccess() {
 }
 
 void CoreConfigWizard::syncFinished() {
-  // TODO: display identities and networks settings if appropriate!
-  // accept();
+  accept();
 }
 
 namespace CoreConfigWizardPages {
@@ -201,22 +211,22 @@ QVariantMap StorageSelectionPage::connectionProperties() const {
       QWidget *widget = _connectionBox->findChild<QWidget *>(key);
       QVariant def;
       if(defaults.contains(key)) {
-	def = defaults[key];
+        def = defaults[key];
       }
       switch(def.type()) {
       case QVariant::Int:
-	{
-	  QSpinBox *spinbox = qobject_cast<QSpinBox *>(widget);
-	  Q_ASSERT(spinbox);
-	  def = QVariant(spinbox->value());
-	}
-	break;
+        {
+          QSpinBox *spinbox = qobject_cast<QSpinBox *>(widget);
+          Q_ASSERT(spinbox);
+          def = QVariant(spinbox->value());
+        }
+        break;
       default:
-	{
-	  QLineEdit *lineEdit = qobject_cast<QLineEdit *>(widget);
-	  Q_ASSERT(lineEdit);
-	  def = QVariant(lineEdit->text());
-	}
+        {
+          QLineEdit *lineEdit = qobject_cast<QLineEdit *>(widget);
+          Q_ASSERT(lineEdit);
+          def = QVariant(lineEdit->text());
+        }
       }
       properties[key] = def;
     }
@@ -271,25 +281,25 @@ void StorageSelectionPage::on_backendList_currentIndexChanged() {
       QWidget *widget = 0;
       QVariant def;
       if(defaults.contains(key)) {
-	def = defaults[key];
+        def = defaults[key];
       }
       switch(def.type()) {
       case QVariant::Int:
-	{
-	  QSpinBox *spinbox = new QSpinBox(propertyBox);
-	  spinbox->setMaximum(64000);
-	  spinbox->setValue(def.toInt());
-	  widget = spinbox;
-	}
-	break;
+        {
+          QSpinBox *spinbox = new QSpinBox(propertyBox);
+          spinbox->setMaximum(64000);
+          spinbox->setValue(def.toInt());
+          widget = spinbox;
+        }
+        break;
       default:
-	{
-	  QLineEdit *lineEdit = new QLineEdit(def.toString(), propertyBox);
-	  if(key.toLower().contains("password")) {
-	    lineEdit->setEchoMode(QLineEdit::Password);
-	  }
-	  widget = lineEdit;
-	}
+        {
+          QLineEdit *lineEdit = new QLineEdit(def.toString(), propertyBox);
+          if(key.toLower().contains("password")) {
+            lineEdit->setEchoMode(QLineEdit::Password);
+          }
+          widget = lineEdit;
+        }
       }
       widget->setObjectName(key);
       formlayout->addRow(key + ":", widget);

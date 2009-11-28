@@ -90,6 +90,9 @@ signals:
   void progressTextChanged(const QString &);
 
   void startCoreSetup(const QVariantList &);
+  void coreSetupSuccess();
+  void coreSetupFailed(const QString &error);
+
   void startInternalCore();
   void connectToInternalCore(SignalProxy *proxy);
 
@@ -122,11 +125,13 @@ private slots:
 
   void resetConnection();
   void connectionReady();
-  //void doCoreSetup(const QVariant &setupData);
 
+  void loginToCore(const QString &user, const QString &password, bool remember); // for config wizard
   void loginToCore(const QString &previousError = QString());
   void loginSuccess();
   void loginFailed(const QString &errorMessage);
+
+  void doCoreSetup(const QVariant &setupData);
 
   void updateProgress(int value, int maximum);
   void setProgressText(const QString &text);
@@ -159,6 +164,8 @@ private:
   QString _coreInfoString(const QVariantMap &);
 
   inline CoreAccountModel *accountModel() const;
+
+  friend class CoreConfigWizard;
 };
 
 Q_DECLARE_METATYPE(CoreConnection::ConnectionState)
