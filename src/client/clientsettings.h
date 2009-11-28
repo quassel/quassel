@@ -107,25 +107,6 @@ public:
   bool nicksCaseSensitive();
 };
 
-
-// ========================================
-//  KnownHostsSettings
-// ========================================
-class KnownHostsSettings : public ClientSettings {
-public:
-  KnownHostsSettings();
-
-  QByteArray knownDigest(const QHostAddress &address);
-  void saveKnownHost(const QHostAddress &address, const QByteArray &certDigest);
-  bool isKnownHost(const QHostAddress &address, const QByteArray &certDigest);
-
-#ifdef HAVE_SSL
-  QByteArray knownDigest(const QSslSocket *socket);
-  void saveKnownHost(const QSslSocket *socket);
-  bool isKnownHost(const QSslSocket *socket);
-#endif
-};
-
 // ========================================
 // TabCompletionSettings
 // ========================================
