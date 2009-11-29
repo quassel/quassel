@@ -85,7 +85,7 @@ QString AboutDlg::contributors() const {
            "<dt><b>Kevin \"KRF\" Funk</b></dt><dd>German translation</dd>"
            "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd>Ideas, hacking, motivation</dd>"
            "<dt><b>Sebastian \"seezer\" Goth</b></dt><dd>Various improvements and features</dd>"
-           "<dt><b>Michael Groh</b></dt><dd>German translation</dd>"
+           "<dt><b>Michael \"brot\" Groh</b></dt><dd>German translation</dd>"
            "<dt><b>H. İbrahim \"igungor\" Güngör</b></dt><dd>Turkish translation</dd>"
            "<dt><b>Edward \"Aides\" Toroshchin</b></dt><dd>Russian translation</dd>"
            "<dt><b>Fabiano \"elbryan\" Francesconi</b></dt><dd>Italian translation</dd>"

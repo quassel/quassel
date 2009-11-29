@@ -8,6 +8,7 @@ msgid ""
 msgstr ""
 "X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: de\n"
+"X-Source-Language: C\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -1973,8 +1974,9 @@ msgstr "Empfange Status der Netzwerke"
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:571
+#, fuzzy
 msgid "Synchronized to %1"
-msgstr "Synchronisiet mit %1"
+msgstr "Synchronisiert mit %1"
 
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:14
