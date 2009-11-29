@@ -47,6 +47,7 @@ _standalone(false)
   connect(filteredModel(), SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
 
   connect(ui.accountView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(setWidgetStates()));
+  connect(ui.autoConnectAccount, SIGNAL(currentIndexChanged(int)), SLOT(widgetHasChanged()));
   setWidgetStates();
 }
 
@@ -74,6 +75,7 @@ void CoreAccountSettingsPage::load() {
 
   QModelIndex idx = filteredModel()->mapFromSource(model()->accountIndex(s.autoConnectAccount()));
   ui.autoConnectAccount->setCurrentIndex(idx.isValid() ? idx.row() : 0);
+  ui.autoConnectAccount->setProperty("storedValue", ui.autoConnectAccount->currentIndex());
   setWidgetStates();
 }
 
@@ -82,27 +84,9 @@ void CoreAccountSettingsPage::save() {
   Client::coreAccountModel()->update(model());
   Client::coreAccountModel()->save();
   CoreAccountSettings s;
-}
-
-QVariant CoreAccountSettingsPage::loadAutoWidgetValue(const QString &widgetName) {
-  if(widgetName == "autoConnectAccount") {
-    CoreAccountSettings s;
-    AccountId id = s.autoConnectAccount();
-    if(!id.isValid())
-      return QVariant();
-    return id.toInt();
-  }
-  return SettingsPage::loadAutoWidgetValue(widgetName);
-}
-
-void CoreAccountSettingsPage::saveAutoWidgetValue(const QString &widgetName, const QVariant &v) {
-  CoreAccountSettings s;
-  if(widgetName == "autoConnectAccount") {
-    AccountId id = filteredModel()->index(ui.autoConnectAccount->currentIndex(), 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
-    s.setAutoConnectAccount(id);
-    return;
-  }
-  SettingsPage::saveAutoWidgetValue(widgetName, v);
+  AccountId id = filteredModel()->index(ui.autoConnectAccount->currentIndex(), 0).data(CoreAccountModel::AccountIdRole).value<AccountId>();
+  s.setAutoConnectAccount(id);
+  ui.autoConnectAccount->setProperty("storedValue", ui.autoConnectAccount->currentIndex());
 }
 
 // TODO: Qt 4.6 - replace by proper rowsMoved() semantics
@@ -210,6 +194,8 @@ void CoreAccountSettingsPage::widgetHasChanged() {
 }
 
 bool CoreAccountSettingsPage::testHasChanged() {
+  if(ui.autoConnectAccount->currentIndex() != ui.autoConnectAccount->property("storedValue").toInt())
+    return true;
   if(!(*model() == *Client::coreAccountModel()))
     return true;
 

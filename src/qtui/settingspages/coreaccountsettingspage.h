@@ -61,6 +61,7 @@ signals:
     void on_accountView_doubleClicked(const QModelIndex &index);
 
     void setWidgetStates();
+    void widgetHasChanged();
 
     void rowsAboutToBeRemoved(const QModelIndex &index, int start, int end);
     void rowsInserted(const QModelIndex &index, int start, int end);
@@ -76,12 +77,8 @@ signals:
     AccountId _lastAccountId, _lastAutoConnectId;
     bool _standalone;
 
-    virtual QVariant loadAutoWidgetValue(const QString &widgetName);
-    virtual void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
-
     void editAccount(const QModelIndex &);
 
-    void widgetHasChanged();
     bool testHasChanged();
 
     inline QString settingsKey() const { return QString("CoreAccounts"); }

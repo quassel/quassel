@@ -160,12 +160,6 @@
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="settingsKey" stdset="0">
-             <string notr="true"/>
-            </property>
-            <property name="defaultValue" stdset="0">
-             <number>0</number>
-            </property>
            </widget>
           </item>
           <item>
