@@ -8,7 +8,6 @@ msgid ""
 msgstr ""
 "X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: de\n"
-"X-Source-Language: C\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -1069,64 +1068,6 @@ msgstr "Alle Chats"
 msgid "Processed %1 messages in %2 seconds."
 msgstr "%1 Nachrichten in %2 Sekunden verarbeitet."
 
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "The Quassel Core you try to connect to is too old! Please consider "
-#~ "upgrading."
-#~ msgstr ""
-#~ "Der Quassel-Core, zu dem Sie verbinden möchten, ist veraltet! Bitte "
-#~ "ziehen Sie eine Aktualisierung in Betracht."
-
-#. ts-context ClientSyncer
-#~ msgid "<b>Invalid data received from core!</b><br>Disconnecting."
-#~ msgstr "<b>Ungültige Daten vom Core erhalten!</b><br>Verbindungsabbruch."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>This client is built without SSL Support!</b><br />Disable the usage "
-#~ "of SSL in the account settings."
-#~ msgstr ""
-#~ "<b>Dieser Client wurde ohne SSL-Unterstützung gebaut!</b><br />Schalten "
-#~ "Sie die SSL-Benutzung in den Kontoeinstellungen ab."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need "
-#~ "at least core/client protocol v%1 to connect."
-#~ msgstr ""
-#~ "<b>Der Quassel-Core, zu dem Sie verbinden möchten, ist "
-#~ "veraltet!</b><br>Benötige mindestens Core/Client-Protokoll v%1 zum "
-#~ "Verbinden."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>The Quassel Core you are trying to connect to does not support "
-#~ "SSL!</b><br />If you want to connect anyways, disable the usage of SSL in "
-#~ "the account settings."
-#~ msgstr ""
-#~ "<b>Der Quassel-Core, zu dem Sie verbinden möchten, unterstützt kein "
-#~ "SSL!</b><br />Wenn Sie dennoch eine Verbindung herstellen wollen, "
-#~ "schalten Sie die SSL-Benutzung in den Kontoeinstellungen ab."
-
-#. ts-context ClientSyncer
-#~ msgid "Logging in..."
-#~ msgstr "Anmelden..."
-
-#. ts-context ClientSyncer
-#~ msgid "No Host to connect to specified."
-#~ msgstr "Kein Host zum Verbinden festgelegt."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-#~ msgstr ""
-#~ "<b>Quassel-Core Version %1</b><br>Erstellungsdatum: %2<br>Betriebsdauer: "
-#~ "%3T%4S%5M (seit %6)"
-
-#. ts-context ClientSyncer
-#~ msgid "Cert Digest changed! was: %1"
-#~ msgstr "Zertifikat geändert! Vorher: %1"
-
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgid "Misc"
@@ -1616,14 +1557,6 @@ msgid "Account Name:"
 msgstr "Kontoname:"
 
 #. ts-context CoreAccountEditDlg
-#~ msgid "Use secure connection (SSL)"
-#~ msgstr "Gesicherte Verbindung (SSL) benutzen"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Use a proxy:"
-#~ msgstr "Einen Proxy benutzen:"
-
-#. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:93
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:226
 msgid "User:"
@@ -1661,26 +1594,10 @@ msgid "HTTP"
 msgstr ""
 
 #. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Host:"
-#~ msgstr "Proxy-Rechner:"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Port:"
-#~ msgstr "Proxy-Port:"
-
-#. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:47
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:180
 msgid "localhost"
 msgstr "localhost"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Username:"
-#~ msgstr "Proxy-Benutzername:"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Password:"
-#~ msgstr "Proxy-Passwort:"
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:33
@@ -1810,47 +1727,6 @@ msgstr ""
 "Benutzernamens/Passwortes ist noch nicht in die Benutzeroberfläche "
 "integriert. Um dies zu tun \"<tt><nobr>quasselcore --help</nobr></tt>\" "
 "ausführen."
-
-#. ts-context CoreConfigWizardAdminUserPage
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" "
-#~ "font-size:10pt; font-weight:600;\">Note: </span><span style=\" "
-#~ "font-size:10pt;\">Adding more users and changing your username/password "
-#~ "is not possible via Quassel's interface yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:10pt;\">If you need to do these "
-#~ "things have a look at the manageusers.py script which is located in the "
-#~ "/scripts directory.</p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" "
-#~ "font-size:10pt; font-weight:600;\">Notiz: </span><span style=\" "
-#~ "font-size:10pt;\">Das hinzufügen von Benutzern und das Ändern des "
-#~ "Benutzernamens/Passworts ist nochnicht von der Quassel-Oberfläche "
-#~ "möglich</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:10pt;\">Diese Aufgaben übernimmt "
-#~ "zurzeit das \"manageusers.py\" Script das sich im /scripts Verzeichnis "
-#~ "befindet.</p></body></html>"
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:13
@@ -2000,157 +1876,6 @@ msgstr "Passwort merken"
 #: ../src/qtui/coreconnectdlg.cpp:75
 msgid "Please enter your credentials for %1:"
 msgstr "Bitte die Kontodaten für %1 eingeben:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connect to Quassel Core"
-#~ msgstr "Mit Quassel-Core verbinden"
-
-#. ts-context CoreConnectDlg
-#~ msgid "User:"
-#~ msgstr "Benutzer:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Password:"
-#~ msgstr "Passwort:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Remember"
-#~ msgstr "Merken"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Always use this account"
-#~ msgstr "Diesen Account immer benutzen"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Delete"
-#~ msgstr "Löschen"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Remove Account Settings"
-#~ msgstr "Kontoeinstellungen entfernen"
-
-#. ts-context CoreConnectDlg
-#~ msgid ""
-#~ "Do you really want to remove your local settings for this Quassel Core "
-#~ "account?<br>Note: This will <em>not</em> remove or change any data on the "
-#~ "Core itself!"
-#~ msgstr ""
-#~ "Möchten Sie wirklich Ihre lokalen Einstellungen für dieses Konto "
-#~ "löschen?<br>Anmerkung: Dies wird die Daten im Core selbst <em>nicht</em> "
-#~ "entfernen oder ändern!"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connect to %1"
-#~ msgstr "Mit %1 verbinden"
-
-#. ts-context CoreConnectDlg
-#~ msgid "<div style=color:red;>Connection to %1 failed!</div>"
-#~ msgstr "<div style=color:red;>Verbindung zu %1 fehlgeschlagen!</div>"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Not connected to %1."
-#~ msgstr "Nicht mit %1 verbunden."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Looking up %1..."
-#~ msgstr "Suche %1..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connecting to %1..."
-#~ msgstr "Verbinde mit %1..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connected to %1"
-#~ msgstr "Verbunden mit %1"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Unknown connection state to %1"
-#~ msgstr "Unbekannter Verbindungsstatus zu %1"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Logging in..."
-#~ msgstr "Anmelden..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Login"
-#~ msgstr "Anmeldung"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Edit..."
-#~ msgstr "Ändern..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Add..."
-#~ msgstr "Hinzufügen..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Initializing your connection"
-#~ msgstr "Initialisiere Ihre Verbindung"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connected to apollo.mindpool.net."
-#~ msgstr "Verbunden zu apollo.mindpool.net."
-
-#. ts-context CoreConnectDlg
-#~ msgid "View SSL Certificate"
-#~ msgstr "SSL-Zertifikat anzeigen"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Add to known hosts"
-#~ msgstr "zu den bekannten Hosts hinzufügen"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Configure your Quassel Core"
-#~ msgstr "Ihren Quassel-Core konfigurieren"
-
-#. ts-context CoreConnectDlg
-#~ msgid ""
-#~ "The Quassel Core you are connected to is not configured yet. You may now "
-#~ "launch a configuration wizard that helps you setting up your Core."
-#~ msgstr ""
-#~ "Der Quassel-Core, mit dem Sie eine Verbindung herstellen möchten, ist "
-#~ "noch unkonfiguriert. Sie können jetzt den Konfigurationshelfer starten, "
-#~ "der Ihnen bei der Konfiguration Ihres Cores behilflich ist."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Launch Wizard"
-#~ msgstr "Helfer starten"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Initializing your session..."
-#~ msgstr "Initialisiere Ihre Sitzung..."
-
-#. ts-context CoreConnectDlg
-#~ msgid ""
-#~ "<b>Please be patient while your client synchronizes with the Quassel "
-#~ "Core!</b>"
-#~ msgstr ""
-#~ "<b>Bitte haben Sie etwas Geduld, während sich Ihr Client mit dem "
-#~ "Quassel-Core synchronisiert!</b>"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Session state:"
-#~ msgstr "Sitzungsstatus:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Network states:"
-#~ msgstr "Netzwerkstatus:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "0/0"
-#~ msgstr "0/0"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Use internal core"
-#~ msgstr "Internen Core benutzen"
-
-#. ts-context CoreConnectDlg
-#~ msgid "<div>Errors occurred while connecting to \"%1\":</div>"
-#~ msgstr "<div>Fehler beim Verbinden zu \"%1\":</div>"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Continue connection"
-#~ msgstr "Verbinden fortsetzen"
 
 #. ts-context CoreConnectDlg
 #: ../src/qtui/coreconnectdlg.cpp:40
@@ -2486,10 +2211,6 @@ msgstr "Temporär entfernte Chats:"
 #: ../src/qtui/debugbufferviewoverlay.cpp:57
 msgid "Add Buffers Automatically:"
 msgstr "Chats automatisch hinzufügen:"
-
-#. ts-context DebugBufferViewOverlay
-#~ msgid "Add Bufers Automatically:"
-#~ msgstr "Chats automatisch hinzufügen:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:58
@@ -3261,22 +2982,6 @@ msgstr ""
 "gespeichert werden.</p>"
 
 #. ts-context IgnoreListEditDlg
-#~ msgid ""
-#~ "<p><b>Rule Type:</b></p>\n"
-#~ "<p><u>By Sender:</u></p>\n"
-#~ "<p>The rule is matched against the sender string\n"
-#~ "<i>nick!ident@host.name<i></p>\n"
-#~ "<p><u>By Message:</u></p>\n"
-#~ "<p>The rule is matched against the actual message content</p>"
-#~ msgstr ""
-#~ "<p><b>Regeltyp:</b></p>\n"
-#~ "<p><u>Nach Absender:</u></p>\n"
-#~ "<p>Die Regel filtert abhängig vom Absenderstring.\n"
-#~ "<i>nick!ident@host.name<i></p>\n"
-#~ "<p><u>Nach Meldungsinhalt:</u></p>\n"
-#~ "<p>Die Regel filtert abhängig vom Meldungsinhalt.</p>"
-
-#. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:91
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
@@ -3314,24 +3019,6 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:105
 msgid "Ignore Rule"
 msgstr "Ignorier-Regel"
-
-#. ts-context IgnoreListEditDlg
-#~ msgid ""
-#~ "<p><b>Use RegularExpressions:</b></p>\n"
-#~ "<p>If enabled, rules follow regular expression syntax.</p>\n"
-#~ "<p>Otherwise rules allow wildcard matching with the following special "
-#~ "characters:</p>\n"
-#~ "<p> *: representing \"any amount of any character\"\n"
-#~ "<br />\n"
-#~ "?: representing \"exactly one character\"</p>"
-#~ msgstr ""
-#~ "<p><b>Reguläre Ausdrucke (RegEx):</b></p>\n"
-#~ "<p>Falls aktiviert, wird nach dem Syntax regulärer Ausdrücke "
-#~ "gefiltert.</p>\n"
-#~ "<p>Ansonsten erlauben Regeln folgende Platzhalter:</p>\n"
-#~ "<p> *: entspricht einer beliebigen Anzahl an Zeichen.\n"
-#~ "<br />\n"
-#~ " ?: entspricht einem oder keinem Zeichen.</p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:116
@@ -4234,10 +3921,6 @@ msgstr "&Werkzeugleiste"
 #: ../src/qtui/mainwin.cpp:697
 msgid "Main Toolbar"
 msgstr "Hauptwerkzeugleiste"
-
-#. ts-context MainWin
-#~ msgid "Core Lag: %1"
-#~ msgstr "Latenz: %1"
 
 #. ts-context MessageModel
 #: ../src/client/messagemodel.cpp:373
