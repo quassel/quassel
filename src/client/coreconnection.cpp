@@ -153,6 +153,7 @@ void CoreConnection::setState(QAbstractSocket::SocketState socketState) {
     break;
   case QAbstractSocket::HostLookupState:
   case QAbstractSocket::ConnectingState:
+  case QAbstractSocket::ConnectedState:  // we'll set it to Connected in connectionReady()
     state = Connecting;
     break;
   default:
