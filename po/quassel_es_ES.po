@@ -1,0 +1,5940 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Rafael Belmonte <EagleScreen@gmail.com>, 2009.
+msgid ""
+msgstr ""
+"Last-Translator: Rafael Belmonte <EagleScreen@gmail.com>\n"
+"PO-Revision-Date: 2009-11-29 23:56+0100\n"
+"Project-Id-Version: \n"
+"Language-Team: es <>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. ts-context AboutDlg
+#: ../src/qtui/aboutdlg.cpp:32
+msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
+msgstr ""
+"<b>Versión:</b> %1<br><b>Versión de protocolo:</b> %2<br><b>Compilación:</b> "
+"%3"
+
+#. ts-context AboutDlg
+#: ../src/qtui/aboutdlg.cpp:46
+msgid ""
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the "
+"Quassel Project<br><a "
+"href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a "
+"href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is "
+"dual-licensed under <a "
+"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a "
+"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons "
+"are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> "
+"and used under the <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+"report bugs."
+msgstr ""
+"<b>Un moderno cliente de IRC, distribuido</b><br><br>&copy;2005-2009 por el "
+"Proyecto Quassel<br><a "
+"href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a "
+"href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC está "
+"sujeto a doble licencia bajo <a "
+"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> y <a "
+"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>La mayoría de "
+"los iconos "
+"son &copy; por el <a href=\"http://www.oxygen-icons.org\">Equipo de Oxigen<"
+"/a> "
+"y usados bajo la <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Por favor, "
+"utilice "
+"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> para "
+"reportar fallos."
+
+#. ts-context AboutDlg
+#: ../src/qtui/aboutdlg.cpp:62
+msgid "Quassel IRC is mainly developed by:"
+msgstr "Quassel IRC está principalmente desarrollado por:"
+
+#. ts-context AboutDlg
+#: ../src/qtui/aboutdlg.cpp:77
+msgid ""
+"We would like to thank the following contributors (in alphabetical order) "
+"and everybody we forgot to mention here:"
+msgstr ""
+"Nos gustaría dar las gracias a los siguientes contribuidores (en orden "
+"alfabético) y a todas las personas que olvidamos mencionar aquí:"
+
+#. ts-context AboutDlg
+#: ../src/qtui/aboutdlg.cpp:116
+msgid ""
+"Special thanks goes to:<br><dl><dt><img "
+"src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for "
+"the original Quassel icon - The All-Seeing Eye</dt><dt><img "
+"src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"creating all the artwork you see throughout Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software formerly known as "
+"Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
+"sponsoring development of Quassel Mobile with N810s</dd>"
+msgstr ""
+"Agradecimientos especiales para:<br><dl><dt><img "
+"src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>por "
+"el icono original de Quassel - El ojo que todo lo ve</dt><dt><img "
+"src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">El Equipo de Oxygen</a></b></dt><dd>por "
+"crear el trabajo artístico que ve a lo largo de Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software, formalmente conocido como "
+"Trolltech</a></b></dt><dd>por crear Qt y Qtopia, y por apoyar "
+"el desarrollo de QuasselTopia con Greenphones y más</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>por mantener Qt vivo, y por "
+"apoyar el desarrollo de Quassel Mobile con N810s</dd>"
+
+#. ts-context AboutDlg
+#: ../src/qtui/ui/aboutdlg.ui:17
+msgid "About Quassel"
+msgstr "Sobre Quassel"
+
+#. ts-context AboutDlg
+#: ../src/qtui/ui/aboutdlg.ui:59
+msgid ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
+
+#. ts-context AboutDlg
+#: ../src/qtui/ui/aboutdlg.ui:75
+msgid ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, "
+"Build &gt;= 474 (2008-02-08)</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Versión 0.2.0-pre, "
+"Compilación &gt;= 474 (2008-02-08)</p></body></html>"
+
+#. ts-context AboutDlg
+#: ../src/qtui/ui/aboutdlg.ui:115
+msgid "&About"
+msgstr "&Sobre"
+
+#. ts-context AboutDlg
+#: ../src/qtui/ui/aboutdlg.ui:135
+msgid "A&uthors"
+msgstr "A&utores"
+
+#. ts-context AboutDlg
+#: ../src/qtui/ui/aboutdlg.ui:155
+msgid "&Contributors"
+msgstr "&Contribuidores"
+
+#. ts-context AboutDlg
+#: ../src/qtui/ui/aboutdlg.ui:175
+msgid "&Thanks To"
+msgstr "Agradecimien&tos a"
+
+#. ts-context AbstractSqlStorage
+#: ../src/core/abstractsqlstorage.cpp:112
+msgid ""
+"Installed Schema (version %1) is not up to date. Upgrading to version %2..."
+msgstr ""
+"El esquema instalado (versión %1) no está actualizado. Actualizando a la "
+"versión %2..."
+
+#. ts-context AbstractSqlStorage
+#: ../src/core/abstractsqlstorage.cpp:114
+msgid "Upgrade failed..."
+msgstr "Actualización fallida..."
+
+#. ts-context AliasesModel
+#: ../src/qtui/settingspages/aliasesmodel.cpp:55
+msgid ""
+"<b>The shortcut for the alias</b><br />It can be used as a regular slash "
+"command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
+msgstr ""
+"<b>El atajo para el alias</b><br />Puede ser usado como un comando "
+"habitual de slash.<br /><br /><b>ejemplo:</b> \"foo\" puede ser usado por "
+"/foo"
+
+#. ts-context AliasesModel
+#: ../src/qtui/settingspages/aliasesmodel.cpp:59
+#, fuzzy
+msgid ""
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
+"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
+"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
+"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
+"the selected channel<br /><br />Multiple commands can be separated with "
+"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
+"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
+"1 2 3\" when called like /test 1 2 3"
+msgstr ""
+"<b>El string del atajo será expandido a</b><br /><b>variables "
+"especiales:</b><br /> - <b>$i</b> representa el i-gésimo parámetro.<br /> - "
+"<b>$i..j</b> representa el i-gésimo a j-ésimo parámetro separado por "
+"espacios.<br "
+"/> - <b>$i..</b> representa todos los parámetros desde i en los separados "
+"por espacios.<br "
+"/> - <b>$i:hostname</b> representa el nombre de servidor del usuario "
+"identificado por "
+"el i-gésimo parámetro o un * si es desconocido.<br /> - <b>$0</b> el string "
+"completo.<br "
+"/> - <b>$nick</b> su apodo actual<br /> - <b>$channel</b> el nombre del "
+"canal seleccionado<br /><br />Varios comandos pueden ser separados por "
+"punto y coma<br /><br /><b>Ejemplo:</b> \"Test $1; Test $2; Test All $0\" "
+"será "
+"expandido a tres mensajes separados \"Test 1\", \"Test 2\" y \"Test All "
+"1 2 3\" cuando sea llamado como /test 1 2 3"
+
+#. ts-context AliasesModel
+#: ../src/qtui/settingspages/aliasesmodel.cpp:170
+msgid "Alias"
+msgstr "Atajo"
+
+#. ts-context AliasesModel
+#: ../src/qtui/settingspages/aliasesmodel.cpp:171
+msgid "Expansion"
+msgstr "Expansión"
+
+#. ts-context AliasesSettingsPage
+#: ../src/qtui/settingspages/aliasessettingspage.cpp:29
+#, fuzzy
+msgid "Misc"
+msgstr "Miscelánea"
+
+#. ts-context AliasesSettingsPage
+#: ../src/qtui/settingspages/aliasessettingspage.cpp:29
+msgid "Aliases"
+msgstr "Atajos"
+
+#. ts-context AliasesSettingsPage
+#: ../src/qtui/settingspages/aliasessettingspage.ui:13
+#, fuzzy
+msgid "Form"
+msgstr "Forma"
+
+#. ts-context AliasesSettingsPage
+#: ../src/qtui/settingspages/aliasessettingspage.ui:27
+msgid "New"
+msgstr "Nuevo"
+
+#. ts-context AliasesSettingsPage
+#: ../src/qtui/settingspages/aliasessettingspage.ui:41
+msgid "Delete"
+msgstr "Eliminar"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:34
+msgid "Interface"
+msgstr "Interfaz"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:53
+#: ../src/qtui/settingspages/appearancesettingspage.ui:46
+msgid "<System Default>"
+msgstr "<Predeterminado del sistema>"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:151
+msgid "Please choose a stylesheet file"
+msgstr "Por favor, elija un archivo de estilo de hoja"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:14
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:20
+msgid "Client Style"
+msgstr "Estilo de Cliente"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:26
+msgid "Set application style"
+msgstr "Establezca el estilo de aplicación"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:36
+msgid "Language"
+msgstr "Lenguaje"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:42
+msgid "Set the application language. Requires restart!"
+msgstr ""
+"Establezca el lenguaje de la aplicación. ¡Requiere reiniciar la aplicación!"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:51
+#, fuzzy
+msgid "<Original>"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:62
+msgid "Use Custom Stylesheet"
+msgstr "Usar un estilo de hoja personalizado"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:82
+msgid "Path:"
+msgstr "Dirección:"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:108
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context AwayLogView
+#: ../src/qtui/awaylogview.cpp:33
+msgid "Away Log"
+msgstr "Registro de Ausencia"
+
+#. ts-context AwayLogView
+#: ../src/qtui/awaylogview.cpp:44
+msgid "Show Network Name"
+msgstr "Mostrar el nombre de la red"
+
+#. ts-context AwayLogView
+#: ../src/qtui/awaylogview.cpp:49
+msgid "Show Buffer Name"
+msgstr "Mostrar el nombre del área de conversación"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.cpp:27
+#, fuzzy
+msgid "Misc"
+msgstr "Miscelánea"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.cpp:27
+msgid "Backlog"
+msgstr "Mensajes atrasados"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:14
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:22
+msgid ""
+"Number of messages to be requested from the core when using scrolling up in "
+"the buffer view."
+msgstr ""
+"Número de mensajes a ser solicitados al núcleo cuando se usa el "
+"desplazamiento hacia arriba en el área de mensajes."
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:25
+msgid "Dynamic backlog amount:"
+msgstr "Tamaño para el registro dinámico de mensajes atrasados:"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:75
+msgid "Backlog request method:"
+msgstr "Método de solicitud para el registro de mensajes atrasados:"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:83
+msgid "Fixed amount per chat"
+msgstr "Cantidad fija por conversación:"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:88
+msgid "Unread messages per chat"
+msgstr "Mensajes sin leer por conversación"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:93
+msgid "Globally unread messages"
+msgstr "Mensajes sin leer en ámbito global"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:123
+msgid ""
+"The simplest requester. It fetches a fixed amount of lines for each chat "
+"window from the backlog."
+msgstr ""
+"La solicitud más simple. Obtiene una cantidad fija de lineas para cada "
+"ventana de conversación desde los mensajes atrasados."
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:138
+msgid ""
+"amount of messages per buffer that are requested after the core connection "
+"has been established."
+msgstr ""
+"cantidad de mensajes por área de conversación que son solicitados después de "
+"que la conexión con el núcleo haya sido establecida."
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:141
+msgid "Initial backlog amount:"
+msgstr "Cantidad inicial de los mensajes atrasados:"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:205
+msgid ""
+"This requester fetches unread messages for each chat window individually. "
+"The amount of lines can be limited per chat.\n"
+"\n"
+"You can also choose to fetch additional older chatlines to provide a better "
+"context."
+msgstr ""
+"Este método de solicitud obtiene mensajes sin leer para cada ventana de "
+"conversación de manera individual. "
+"Cantidad de líneas que pueden ser limitarse por conversación.\n"
+"\n"
+"Usted también puede escoger obtener antiguas líneas de conversación "
+"adicionales para proporcionar un mejor contexto."
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:222
+#: ../src/qtui/settingspages/backlogsettingspage.ui:232
+#: ../src/qtui/settingspages/backlogsettingspage.ui:354
+msgid "Maximum amount of messages to be fetched per buffer."
+msgstr "Cantidad máxima de mensajes a ser obtenidos por área de conversación."
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:225
+#: ../src/qtui/settingspages/backlogsettingspage.ui:347
+msgid "Limit:"
+msgstr "Límite:"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:235
+#: ../src/qtui/settingspages/backlogsettingspage.ui:357
+msgid "Unlimited"
+msgstr "Ilimitado"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:260
+#: ../src/qtui/settingspages/backlogsettingspage.ui:270
+#: ../src/qtui/settingspages/backlogsettingspage.ui:382
+#: ../src/qtui/settingspages/backlogsettingspage.ui:392
+msgid ""
+"Amount of messages to be fetched in addition to the unread messages. The "
+"Limit does not apply here."
+msgstr ""
+"Cantidad de mensajes a ser obtenidos en adición a los mensajes sin leer. "
+"El límite no se aplica aquí."
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:263
+#: ../src/qtui/settingspages/backlogsettingspage.ui:385
+msgid "Additional Messages:"
+msgstr "Mensajes adicionales:"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:324
+msgid ""
+"This requester fetches all messages newer than the oldest unread message for "
+"all chats.\n"
+"\n"
+"Note: This requester is not recommended if you use hidden chat windows or "
+"have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the "
+"fastest.\n"
+"\n"
+"You can also chose to fetch additional older chatlines to provide a better "
+"context."
+msgstr ""
+"Este método de solicitud obtiene todos los mensajes más nuevos que el "
+"mensaje "
+"sin leer más antiguo para todas las conversaciones.\n"
+"\n"
+"Nota: Éste método de solicitud no es recomendable si usa ventanas de "
+"conversación ocultas "
+"o tiene conversaciones inactivas (Ej: no hay dudas o canales pasados).\n"
+"Es útil para limitar la cantidad total de los mensajes atrasados y "
+"probablemente es el más rápido.\n"
+"\n"
+"Usted también puede escoger obtener antiguas líneas de conversación "
+"adicionales para proporcionar un mejor contexto."
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.ui:344
+msgid "Maximum amount of messages to be fetched over all buffers."
+msgstr ""
+"Máxima cantidad de mensajes a ser obtenidos sobre todas las áreas de "
+"conversación."
+
+#. ts-context BufferItem
+#: ../src/client/networkmodel.cpp:324
+#, fuzzy
+msgid "<p> %1 - %2 </p>"
+msgstr ""
+
+#. ts-context BufferView
+#: ../src/uisupport/bufferview.cpp:248
+msgid "Merge buffers permanently?"
+msgstr "¿Combinar las conversaciones de manera permanente?"
+
+#. ts-context BufferView
+#: ../src/uisupport/bufferview.cpp:249
+msgid ""
+"Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
+" This cannot be reversed!"
+msgstr ""
+"¿Quiere combinar la conversación \"%1\" permanentemente con la conversación "
+"\"%2\"?\n"
+"¡Esta operación es irreversible!"
+
+#. ts-context BufferViewEditDlg
+#: ../src/qtui/settingspages/buffervieweditdlg.ui:14
+msgid "Dialog"
+msgstr "Diálogo"
+
+#. ts-context BufferViewEditDlg
+#: ../src/qtui/settingspages/buffervieweditdlg.ui:22
+msgid "Please enter a name for the chat list:"
+msgstr "Por favor, introduzca un nombre para la lista de conversaciones:"
+
+#. ts-context BufferViewEditDlg
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
+msgid "Add Chat List"
+msgstr "Añadir lista de conversaciones"
+
+#. ts-context BufferViewFilter
+#: ../src/uisupport/bufferviewfilter.cpp:52
+msgid "Show / Hide Chats"
+msgstr "Mostrar / Ocultar conversaciones"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
+#, fuzzy
+msgid "Misc"
+msgstr "Miscelánea"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
+msgid "Custom Chat Lists"
+msgstr "Listas de conversaciones personalizadas"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:117
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:100
+msgid "All"
+msgstr "Todo"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:342
+msgid "Delete Chat List?"
+msgstr "¿Eliminar lista de conversaciones?"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:343
+msgid "Do you really want to delete the chat list \"%1\"?"
+msgstr "¿Está seguro de que quiere eliminar la lista de conversaciones \"%1\"?"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:14
+#, fuzzy
+msgid "Form"
+msgstr "Forma"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:31
+#, fuzzy
+msgid "Re&name..."
+msgstr ""
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:48
+#, fuzzy
+msgid "&Add..."
+msgstr ""
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:71
+#, fuzzy
+msgid "De&lete"
+msgstr ""
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:84
+msgid "Chat List Settings"
+msgstr "Preferencias de la lista de conversaciones"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:92
+msgid "Network:"
+msgstr "Red:"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:110
+msgid ""
+"This option is not available when all Networks are visible.\n"
+"In this mode no separate status buffer is displayed."
+msgstr ""
+"Esta opción no está disponible cuando todas las redes están visibles.\n"
+"En éste modo, el estado de la conversación no es mostrado por separado."
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
+msgid "Show status window"
+msgstr "Mostrar ventana de estado"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:121
+msgid "Show channels"
+msgstr "Mostrar canales"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:128
+#, fuzzy
+msgid "Show queries"
+msgstr "Mostrar cuestiones"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:135
+msgid "Hide inactive chats"
+msgstr "Esconder conversaciones inactivas"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:142
+msgid "Add new chats automatically"
+msgstr "Añadir nuevas conversaciones automáticamente."
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
+msgid "Sort alphabetically"
+msgstr "Ordenar alfabéticamente"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
+msgid "Minimum Activity:"
+msgstr "Actividad mínima:"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:164
+msgid "No Activity"
+msgstr "Sin actividad"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:169
+msgid "Other Activity"
+msgstr "Otra actividad"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:174
+msgid "New Message"
+msgstr "Nuevo mensaje"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
+msgid "Highlight"
+msgstr "Resaltar"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:205
+msgid "Preview:"
+msgstr "Previsualizar:"
+
+#. ts-context BufferViewWidget
+#: ../src/qtui/ui/bufferviewwidget.ui:26
+msgid "BufferView"
+msgstr "Vista del área de conversación"
+
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:74
+msgid "Zoom In"
+msgstr "Acercar zum"
+
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:80
+msgid "Zoom Out"
+msgstr "Alejar zum"
+
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:85
+msgid "Actual Size"
+msgstr "Tamaño actual"
+
+#. ts-context ChannelBufferItem
+#: ../src/client/networkmodel.cpp:481
+msgid "<b>Channel %1</b>"
+msgstr "<b>Canal %1</b>"
+
+#. ts-context ChannelBufferItem
+#: ../src/client/networkmodel.cpp:484
+msgid "<b>Users:</b> %1"
+msgstr "<b>Usuarios:</b> %1"
+
+#. ts-context ChannelBufferItem
+#: ../src/client/networkmodel.cpp:488
+msgid "<b>Mode:</b> %1"
+msgstr "<b>Modo:</b> %1"
+
+#. ts-context ChannelBufferItem
+#: ../src/client/networkmodel.cpp:499
+msgid "<b>Topic:</b> %1"
+msgstr "<b>Tópico:</b> %1"
+
+#. ts-context ChannelBufferItem
+#: ../src/client/networkmodel.cpp:503
+msgid "Not active <br /> Double-click to join"
+msgstr "No activo <br /> Doble click para unirse"
+
+#. ts-context ChannelBufferItem
+#: ../src/client/networkmodel.cpp:506
+#, fuzzy
+msgid "<p> %1 </p>"
+msgstr ""
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:13
+msgid "Channel List"
+msgstr "Lista de canales"
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:37
+msgid "Search Pattern:"
+msgstr "Patrón de búsqueda:"
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:47
+msgid ""
+"Toggle between simple and advanced mode.\n"
+"Advanced mode allows to pass search strings to the IRC Server."
+msgstr ""
+"Conmutar entre el modo simple y el modo avanzado.\n"
+"El modo avanzado permite pasar cadenas de texto de búsqueda al servidor IRC."
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:61
+msgid "Show Channels"
+msgstr "Mostrar canales"
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:85
+msgid "Filter:"
+msgstr "Filtro:"
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:97
+msgid "Errors Occured:"
+msgstr "Han ocurrido errores:"
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:131
+#, fuzzy
+msgid ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
+"Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+"font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+msgstr ""
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
+msgid "Interface"
+msgstr "Interfaz"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
+msgid "Chat Monitor"
+msgstr "Monitor de conversación"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
+#, fuzzy
+msgid "Opt In"
+msgstr "Opt entrada"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:59
+#, fuzzy
+msgid "Opt Out"
+msgstr "Opt salida"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:236
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
+msgid "Show:"
+msgstr "Mostrar:"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:239
+msgid "Ignore:"
+msgstr "Ignorar:"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:14
+#, fuzzy
+msgid "Form"
+msgstr "Forma"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
+msgid "Operation Mode:"
+msgstr "Modo de operación:"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
+msgid ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"font-weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+"font-weight:600;\"><span style=\" font-weight:400; text-decoration: "
+"underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers "
+"on the right side are shown in chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will "
+"be ignored in chatmonitor</p></body></html>"
+msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"font-weight:600;\">Modos de operación:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+"font-weight:600;\"><span style=\" font-weight:400; text-decoration: "
+"underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Solamente las "
+"conversaciones del lado "
+"derecho son mostradas en el monitor de conversación</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"text-decoration: underline;\">Opt-Out:</span> Conversaciones en el lado "
+"derecho "
+"serán ignoradas en el monitor de conversación</p></body></html>"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
+msgid "Available:"
+msgstr "Disponible:"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:88
+msgid "Move selected buffers to the left"
+msgstr "Mover las conversaciones seleccionadas a la izquierda"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:102
+msgid "Move selected buffers to the right"
+msgstr "Mover las conversaciones seleccionadas a la derecha"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:147
+msgid ""
+"Show highlights in chatmonitor even if the originating buffer is ignored"
+msgstr ""
+"Mostrar resaltados en el monitor de conversación incluso si la conversación "
+"original es ignorada"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
+msgid "Always show highlighted messages"
+msgstr "Siempre mostrar los mensajes resaltados"
+
+#. ts-context ChatMonitorSettingsPage
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:157
+msgid "Show own messages"
+msgstr "Mostrar mensajes propios"
+
+#. ts-context ChatMonitorView
+#: ../src/qtui/chatmonitorview.cpp:52
+msgid "Show Own Messages"
+msgstr "Mostrar mensajes propios"
+
+#. ts-context ChatMonitorView
+#: ../src/qtui/chatmonitorview.cpp:59
+msgid "Show Network Name"
+msgstr "Mostrar el nombre de la red"
+
+#. ts-context ChatMonitorView
+#: ../src/qtui/chatmonitorview.cpp:64
+msgid "Show Buffer Name"
+msgstr "Mostrar el nombre de la conversación"
+
+#. ts-context ChatMonitorView
+#: ../src/qtui/chatmonitorview.cpp:71
+msgid "Configure..."
+msgstr "Configurar..."
+
+#. ts-context ChatScene
+#: ../src/qtui/chatscene.cpp:604
+msgid "Copy Selection"
+msgstr "Copiar seleccionado"
+
+#. ts-context ChatViewSearchBar
+#: ../src/qtui/ui/chatviewsearchbar.ui:13
+#, fuzzy
+msgid "Form"
+msgstr "Forma"
+
+#. ts-context ChatViewSearchBar
+#: ../src/qtui/ui/chatviewsearchbar.ui:19
+#: ../src/qtui/ui/chatviewsearchbar.ui:33 ../src/qtui/ui/chatviewsearchbar.ui:44
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context ChatViewSearchBar
+#: ../src/qtui/ui/chatviewsearchbar.ui:55
+#, fuzzy
+msgid "case sensitive"
+msgstr "distinguir entre mayúsculas y minúsculas"
+
+#. ts-context ChatViewSearchBar
+#: ../src/qtui/ui/chatviewsearchbar.ui:62
+msgid "search nick"
+msgstr "Buscar apodo"
+
+#. ts-context ChatViewSearchBar
+#: ../src/qtui/ui/chatviewsearchbar.ui:69
+msgid "search message"
+msgstr "buscar mensaje"
+
+#. ts-context ChatViewSearchBar
+#: ../src/qtui/ui/chatviewsearchbar.ui:82
+msgid "ignore joins, parts, etc."
+msgstr "ignorar entradas, salidas, etc."
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+msgid "Interface"
+msgstr "Interfaz"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+msgid "Chat View"
+msgstr "Vista de conversación"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:14
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:22
+#, fuzzy
+msgid "Timestamp format:"
+msgstr "Formato de la fecha"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:32
+#, fuzzy
+msgid "[hh:mm:ss]"
+msgstr ""
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:59
+msgid "Custom chat window font:"
+msgstr "Personalizar la tipografía de la ventana de conversación"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:92
+msgid "Allow colored text (mIRC color codes)"
+msgstr "Permitir texto en color (código de color mIRC)"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:108
+msgid ""
+"Show a website preview window when hovering the mouse over a web address"
+msgstr ""
+"Previsualizar página web en una ventana al pasar el ratón sobre una "
+"dirección web"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
+msgid "Show previews of webpages on URL hover"
+msgstr "Previsualizar páginas web encima de una URL"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:127
+msgid "Custom Colors"
+msgstr "Colores personalizados"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:145
+msgid "Action:"
+msgstr "Acción:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:152
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:176
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:200
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:237
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:261
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:292
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:316
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:340
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:364
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:381
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:421
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:438
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:455
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:472
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:489
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:506
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:523
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:540
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:557
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:574
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:591
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:608
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:625
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:642
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:659
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:676
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:704
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:169
+#, fuzzy
+msgid "Timestamp:"
+msgstr "Fecha:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:193
+msgid "Channel message:"
+msgstr "Mensaje del canal:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:230
+msgid "Highlight foreground:"
+msgstr "Resaltar el primer plano:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:254
+msgid "Command message:"
+msgstr "Mensaje de comando:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:278
+msgid "Highlight background:"
+msgstr "Resaltar el segundo plano:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:285
+msgid "Server message:"
+msgstr "Mensaje del servidor:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:309
+msgid "Marker line:"
+msgstr "Línea marcadora:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:333
+msgid "Error message:"
+msgstr "Mensaje de error:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:357
+msgid "Background:"
+msgstr "Segundo plano:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:401
+#, fuzzy
+msgid "Use Sender Coloring"
+msgstr ""
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:697
+msgid "Own messages:"
+msgstr "Mensajes propios:"
+
+#. ts-context Client
+#: ../src/client/client.cpp:270
+msgid "Identity already exists in client!"
+msgstr "¡Esta identidad ya existe en el cliente!"
+
+#. ts-context Client
+#: ../src/client/client.cpp:369
+msgid "All Chats"
+msgstr "Todas las conversaciones"
+
+#. ts-context ClientBacklogManager
+#: ../src/client/clientbacklogmanager.cpp:153
+msgid "Processed %1 messages in %2 seconds."
+msgstr "%1 mensajes procesados en %2 segundos."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:52
+msgid ""
+"The Quassel Core you try to connect to is too old! Please consider upgrading."
+msgstr ""
+"¡El núcleo de Quassel al cual está tratando de conectar es demasiado viejo! "
+"Por favor considere el actualizarlo."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:77
+msgid "<b>Invalid data received from core!</b><br>Disconnecting."
+msgstr "<b>¡Información no válida recibida del núcleo!</b><br>Desconectándose."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:102
+#, fuzzy
+msgid "No Host to connect to specified."
+msgstr "No hay servidor para conectar al especificado."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:111
+msgid ""
+"<b>This client is built without SSL Support!</b><br />Disable the usage of "
+"SSL in the account settings."
+msgstr ""
+"<b>¡Éste cliente fue compilado sin soporte para SSL!</b><br />Desactive el "
+"uso de "
+"SSL en las preferencias de su cuenta."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:195
+msgid ""
+"<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
+"least core/client protocol v%1 to connect."
+msgstr ""
+"<b>¡El núcleo de Quassel al que está tratando de conectarse es demasiado "
+"viejo!</b><br>Al menos "
+"se necesita un protocolo cliente/núcleo v%1 para conectarse."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:219
+msgid ""
+"<b>The Quassel Core you are trying to connect to does not support "
+"SSL!</b><br />If you want to connect anyways, disable the usage of SSL in "
+"the account settings."
+msgstr ""
+"<b>¡El núcleo de Quassel al que está tratando de conectarse no soporta "
+"SSL!</b><br />Si de todas formas quiere conectarse, desactive el uso de SSL "
+"en las preferencias de su cuenta."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:248
+msgid "Logging in..."
+msgstr "Iniciando sesión..."
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:360
+msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgstr ""
+"<b>Versión del núcleo de Quassel %1</b><br>Compilación: %2<br>Activo "
+"%3d%4h%5m (desde %6)"
+
+#. ts-context ClientSyncer
+#: ../src/client/clientsyncer.cpp:404 ../src/client/clientsyncer.cpp:429
+#, fuzzy
+msgid "Cert Digest changed! was: %1"
+msgstr "¡Cert Digest cambió! fue: %1"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.cpp:27
+msgid "Misc"
+msgstr "Miscelánea"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.cpp:27
+msgid "Connection"
+msgstr "Conexión"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:14
+msgid "Configure the IRC Connection"
+msgstr "Configurar la conexión IRC"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:20
+#, fuzzy
+msgid "Enable Ping Timeout Detection"
+msgstr "Activar la detección de Ping Timeout"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:37
+#, fuzzy
+msgid "Ping interval:"
+msgstr "Intervalo del Ping:"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:44
+#: ../src/qtui/settingspages/connectionsettingspage.ui:155
+#: ../src/qtui/settingspages/connectionsettingspage.ui:213
+msgid " seconds"
+msgstr "segundos"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:80
+#, fuzzy
+msgid "Disconnect after"
+msgstr "Desconectar después"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:103
+#, fuzzy
+msgid "missed pings"
+msgstr "pings perdidos"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:128
+msgid ""
+"This enables periodic polling of user information using /WHO. This is mostly "
+"interesting for tracking users' away status."
+msgstr ""
+"Esto activa un sondeo periódico de información de usuario utilizando /WHO. "
+"Esto es interesante para rastrear el estado de ausencia de los usuarios."
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:131
+msgid "Enable Automatic User Information Lookup (/WHO)"
+msgstr "Activa el rastreo de información de usuarios automático (/WHO)"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:148
+msgid "Update interval:"
+msgstr "Intervalo de actualización:"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:177
+msgid "Ignore channels with more than:"
+msgstr "Ignorar los canales con más de:"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:184
+msgid " users"
+msgstr "usuarios"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.ui:206
+msgid "Minimum delay between requests:"
+msgstr "Tiempo mínimo entre peticiones:"
+
+#. ts-context ContentsChatItem
+#: ../src/qtui/chatitem.cpp:592
+msgid "Copy Link Address"
+msgstr "Copiar la ruta del enlace"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:38
+msgid "Connect"
+msgstr "Conectar"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:39
+msgid "Disconnect"
+msgstr "Desconectar"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:41
+msgid "Join"
+msgstr "Unirse"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:42
+msgid "Part"
+msgstr "Retirarse"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:43
+msgid "Delete Chat(s)..."
+msgstr "Borrar conversación(es)..."
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:44
+msgid "Go to Chat"
+msgstr "Ir a la conversación"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:46
+#, fuzzy
+msgid "Joins"
+msgstr "Unidos"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:47
+msgid "Parts"
+msgstr "Retiradas"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:48
+msgid "Quits"
+msgstr "Salidas"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:49
+msgid "Nick Changes"
+msgstr "Cambios de apodos"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:50
+msgid "Mode Changes"
+msgstr "Cambios de modo"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:51
+msgid "Day Changes"
+msgstr "Cambios de día"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:52
+msgid "Topic Changes"
+msgstr "Cambios de tópico"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:53
+msgid "Set as Default..."
+msgstr "Establecer como predeterminado..."
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:54
+msgid "Use Defaults..."
+msgstr "Usar valores por defecto..."
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:56
+msgid "Join Channel..."
+msgstr "Unirse al canal..."
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:58
+#, fuzzy
+msgid "Start Query"
+msgstr "Iniciar pregunta"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:59
+#, fuzzy
+msgid "Show Query"
+msgstr "Mostrar pregunta"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:60
+#, fuzzy
+msgid "Whois"
+msgstr ""
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:62
+msgid "Version"
+msgstr "Versión"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:63
+msgid "Time"
+msgstr "Tiempo"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:64
+#, fuzzy
+msgid "Ping"
+msgstr ""
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:65
+msgid "Finger"
+msgstr "Dedo"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:66
+msgid "Custom..."
+msgstr "Personalizar..."
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:78
+msgid "Give Operator Status"
+msgstr "Dar el estado del operador"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:79
+msgid "Take Operator Status"
+msgstr "Obtener el estado del operador"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:80
+msgid "Give Voice"
+msgstr "Dar voz"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:81
+msgid "Take Voice"
+msgstr "Obtener voz"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:82
+msgid "Kick From Channel"
+msgstr "Expulsar del canal"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:83
+msgid "Ban From Channel"
+msgstr "Prohibir entrada en el canal"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:84
+msgid "Kick && Ban"
+msgstr "Expulsar && Prohibir entrada"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:86
+msgid "Hide Chat(s) Temporarily"
+msgstr "Ocultar conversaciones temporalmente"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:87
+msgid "Hide Chat(s) Permanently"
+msgstr "Ocultar conversaciones permanentemente"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:88
+msgid "Show Channel List"
+msgstr "Mostrar lista de canales"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:89
+msgid "Show Ignore List"
+msgstr "Mostrar lista de ignorados"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:102
+msgid "Hide Events"
+msgstr "Ocultar eventos"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:110
+#, fuzzy
+msgid "CTCP"
+msgstr ""
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:122
+msgid "Actions"
+msgstr "Acciones"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:126
+msgid "Ignore"
+msgstr "Ignorar"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:131
+msgid "Add Ignore Rule"
+msgstr "Añadir regla para ignorar"
+
+#. ts-context ContextMenuActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:132
+msgid "Existing Rules"
+msgstr "Reglas existentes"
+
+#. ts-context Core
+#: ../src/core/core.cpp:182
+msgid "Could not initialize any storage backend! Exiting..."
+msgstr "¡Ningún motor de almacenamiento pudo ser iniciado! Saliendo..."
+
+#. ts-context Core
+#: ../src/core/core.cpp:183
+msgid ""
+"Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
+"Qt library with the sqlite or postgres plugin enabled in order for "
+"quasselcore\n"
+"to work."
+msgstr ""
+"Actualmente, Quassel soporta SQLite3 y PostgreSQL. Necesita compilar su\n"
+"biblioteca Qt con el complemento o bien para sqlite o bien para postgres "
+"activado para que quasselcore funcione."
+
+#. ts-context Core
+#: ../src/core/core.cpp:232
+msgid "Calling restoreState() even though active sessions exist!"
+msgstr "¡Llamando a restoreState() habiendo sesiones activas!"
+
+#. ts-context Core
+#: ../src/core/core.cpp:273
+msgid "Admin user or password not set."
+msgstr "El usuario o contraseña de Administrador no ha sido establecido."
+
+#. ts-context Core
+#: ../src/core/core.cpp:277
+#, fuzzy
+msgid "Could not setup storage!"
+msgstr "¡No se pudo establecer el almacenamiento!"
+
+#. ts-context Core
+#: ../src/core/core.cpp:281
+msgid "Creating admin user..."
+msgstr "Creando usuario de administrador..."
+
+#. ts-context Core
+#: ../src/core/core.cpp:394
+msgid "Invalid listen address %1"
+msgstr "La dirección esperada no es válida %1"
+
+#. ts-context Core
+#: ../src/core/core.cpp:402
+msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgstr ""
+"Esperando algún cliente GUI en IPv4 %1 puerto %2 usando versión de protocolo "
+"%3"
+
+#. ts-context Core
+#: ../src/core/core.cpp:410
+msgid "Could not open IPv4 interface %1:%2: %3"
+msgstr "No pudo ser abierta la interfaz IPv4: %1:%2: %3"
+
+#. ts-context Core
+#: ../src/core/core.cpp:418
+msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgstr ""
+"Esperando algún cliente GUI en IPv6 %1 puerto %2 usando la versión de "
+"protocolo %3"
+
+#. ts-context Core
+#: ../src/core/core.cpp:429
+msgid "Could not open IPv6 interface %1:%2: %3"
+msgstr "No pudo ser abierta la interfaz IPv6: %1:%2: %3"
+
+#. ts-context Core
+#: ../src/core/core.cpp:437
+msgid "Invalid listen address %1, unknown network protocol"
+msgstr "La dirección esperada no es válida %1, protocolo de red desconocido"
+
+#. ts-context Core
+#: ../src/core/core.cpp:446
+msgid "Could not open any network interfaces to listen on!"
+msgstr "¡No se pudo abrir ninguna interfaz de red para ponerse a la escucha!"
+
+#. ts-context Core
+#: ../src/core/core.cpp:480
+msgid "Client connected from"
+msgstr "Cliente conectado desde"
+
+#. ts-context Core
+#: ../src/core/core.cpp:483
+#, fuzzy
+msgid "Closing server for basic setup."
+msgstr "Cerrando el servidor para configuración básica."
+
+#. ts-context Core
+#: ../src/core/core.cpp:502
+msgid "Antique client trying to connect... refusing."
+msgstr ""
+"El cliente con el que intenta conectar es una antigüedad... rechazando."
+
+#. ts-context Core
+#: ../src/core/core.cpp:514
+msgid ""
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1.<br>Please consider upgrading your client."
+msgstr ""
+"<b>¡Su cliente de Quassel es demasiado viejo!</b><br>Este núcleo al menos "
+"necesita "
+"un protocolo cliente/núcleo versión %1.<br>Por favor, considere actualizar "
+"su cliente."
+
+#. ts-context Core
+#: ../src/core/core.cpp:518 ../src/core/core.cpp:606 ../src/core/core.cpp:630
+msgid "Client"
+msgstr "Cliente"
+
+#. ts-context Core
+#: ../src/core/core.cpp:518
+msgid "too old, rejecting."
+msgstr "demasiado viejo, rechazando."
+
+#. ts-context Core
+#: ../src/core/core.cpp:535
+msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgstr ""
+"<b>Versión del núcleo de Quassel %1</b><br>Compilación: %2<br>Activo "
+"%3d%4h%5m (desde %6)"
+
+#. ts-context Core
+#: ../src/core/core.cpp:586
+msgid "Starting TLS for Client:"
+msgstr "Iniciando TLS para el cliente:"
+
+#. ts-context Core
+#: ../src/core/core.cpp:604
+msgid ""
+"<b>Client not initialized!</b><br>You need to send an init message before "
+"trying to login."
+msgstr ""
+"<b>¡Cliente no inicializado!</b><br>Usted necesita enviar un mensaje "
+"de inicialización (init) antes de tratar de iniciar sesión."
+
+#. ts-context Core
+#: ../src/core/core.cpp:606
+msgid "did not send an init message before trying to login, rejecting."
+msgstr ""
+"el mensaje de inicialización (init) no fue enviado antes de intentar "
+"el inicio de sesión, rechazando."
+
+#. ts-context Core
+#: ../src/core/core.cpp:624
+msgid ""
+"<b>Invalid username or password!</b><br>The username/password combination "
+"you supplied could not be found in the database."
+msgstr ""
+"<b>¡Nombre de usuario o contraseña no válido!</b><br>La combinación de "
+"nombre "
+"de usuario y contraseña que usted ha proporcionado no está en la base de "
+"datos."
+
+#. ts-context Core
+#: ../src/core/core.cpp:630
+msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
+msgstr ""
+"inicializado e identificado satisfactoriamente como \"%1\" (Id de usuario: "
+"%2)."
+
+#. ts-context Core
+#: ../src/core/core.cpp:641
+msgid "Non-authed client disconnected."
+msgstr "Cliente no autenticado desconectado."
+
+#. ts-context Core
+#: ../src/core/core.cpp:647
+msgid "Non-authed client disconnected. (socket allready destroyed)"
+msgstr "Cliente no autenticado desconectado. (encaje ya destruido)"
+
+#. ts-context Core
+#: ../src/core/core.cpp:695
+msgid "Could not initialize session for client:"
+msgstr "La sesión no pudo ser inicializada para el cliente:"
+
+#. ts-context Core
+#: ../src/core/core.cpp:717
+msgid "Could not find a session for client:"
+msgstr "No pudo encontrarse una sesión para el cliente:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/coreconnectdlg.cpp:522
+#, fuzzy
+msgid "Add Core Account"
+msgstr "Añadir cuenta de núcleo"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:13
+msgid "Edit Core Account"
+msgstr "Editar cuanta de núcleo"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:21
+msgid "Account Details"
+msgstr "Detalles de la cuenta"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:29
+msgid "Account Name:"
+msgstr "Nombre de la cuenta:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:36
+#, fuzzy
+msgid "Local Core"
+msgstr "Núcleo local"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:47
+#, fuzzy
+msgid "Hostname:"
+msgstr "Nombre de servidor:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:54
+msgid "Port:"
+msgstr "Puerto:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:61
+#, fuzzy
+#: ../src/qtui/ui/coreaccounteditdlg.ui:144
+msgid "localhost"
+msgstr "servidor local"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:81
+msgid "Use secure connection (SSL)"
+msgstr "Usar conexión segura (SSL)"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:97
+msgid "Use a proxy:"
+msgstr "Utilizar proxy:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:109
+msgid "Proxy Type:"
+msgstr "Tipo de proxy:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:117
+msgid "Socks 5"
+msgstr ""
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:122
+#, fuzzy
+msgid "HTTP"
+msgstr ""
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:130
+msgid "Proxy Host:"
+msgstr "Servidor proxy:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:137
+msgid "Proxy Port:"
+msgstr "Puerto del proxy:"
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:170
+#, fuzzy
+msgid "Proxy Username:"
+msgstr ""
+
+#. ts-context CoreAccountEditDlg
+#: ../src/qtui/ui/coreaccounteditdlg.ui:180
+msgid "Proxy Password:"
+msgstr "Contraseña del proxy:"
+
+#. ts-context CoreConfigWizard
+#: ../src/qtui/coreconfigwizard.cpp:60
+msgid "Core Configuration Wizard"
+msgstr "Asistente de configuración del núcleo"
+
+#. ts-context CoreConfigWizard
+#: ../src/qtui/coreconfigwizard.cpp:82
+msgid "Your core has been successfully configured. Logging you in..."
+msgstr ""
+"Su núcleo ha sido configurado satisfactoriamente. Iniciando su sesión..."
+
+#. ts-context CoreConfigWizard
+#: ../src/qtui/coreconfigwizard.cpp:93
+msgid ""
+"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
+msgstr ""
+"Configuración del núcleo fallida:<br><b>%1</b><br>Pulse <em>Siguiente</em> "
+"Para volver a empezar."
+
+#. ts-context CoreConfigWizard
+#: ../src/qtui/coreconfigwizard.cpp:108
+msgid ""
+"Your are now logged into your freshly configured Quassel Core!<br>Please "
+"remember to configure your identities and networks now."
+msgstr ""
+"¡Usted ha entrado ahora en su recientemente configurado núcleo de Quassel!<"
+"br>Por favor "
+"recuerde configurar sus identidades y redes a continuación."
+
+#. ts-context CoreConfigWizardAdminUserPage
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:13
+#, fuzzy
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context CoreConfigWizardAdminUserPage
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:21
+msgid "Username:"
+msgstr "Nombre de usuario:"
+
+#. ts-context CoreConfigWizardAdminUserPage
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:31
+msgid "Password:"
+msgstr "Contraseña:"
+
+#. ts-context CoreConfigWizardAdminUserPage
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:45
+msgid "Repeat password:"
+msgstr "Repita la contraseña:"
+
+#. ts-context CoreConfigWizardAdminUserPage
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:59
+msgid "Remember password"
+msgstr "Recordar la contraseña"
+
+#. ts-context CoreConfigWizardAdminUserPage
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:68
+msgid ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
+"Grande'; font-size:13pt;\"><span style=\" font-size:10pt; "
+"font-weight:600;\">Note: </span><span style=\" font-size:10pt;\">Adding more "
+"users and changing your username/password is not possible via Quassel's "
+"interface yet.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
+"Grande'; font-size:10pt;\">If you need to do these things have a look at the "
+"manageusers.py script which is located in the /scripts "
+"directory.</p></body></html>"
+msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
+"Grande'; font-size:13pt;\"><span style=\" font-size:10pt; "
+"font-weight:600;\">Nota: </span><span style=\" font-size:10pt;\">Añadir más "
+"usuarios y cambiar su usuario/contraseña no es posible mediante "
+"la interfaz de Quassel todavía.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
+"Grande'; font-size:10pt;\">Si usted necesita hacer esto, eche un vistazo al"
+"script manageusers.py situado en el directorio /scripts.</p></body></html>"
+
+#. ts-context CoreConfigWizardIntroPage
+#: ../src/qtui/ui/coreconfigwizardintropage.ui:13
+#, fuzzy
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context CoreConfigWizardIntroPage
+#: ../src/qtui/ui/coreconfigwizardintropage.ui:19
+msgid "This wizard will guide you through the setup of your Quassel Core."
+msgstr "Este asistente le guiará para configurar su núcleo de Quassel."
+
+#. ts-context CoreConfigWizardPages::AdminUserPage
+#: ../src/qtui/coreconfigwizard.cpp:140
+msgid "Create Admin User"
+msgstr "Crear usuario administrador"
+
+#. ts-context CoreConfigWizardPages::AdminUserPage
+#: ../src/qtui/coreconfigwizard.cpp:141
+msgid ""
+"First, we will create a user on the core. This first user will have "
+"administrator privileges."
+msgstr ""
+"Primero, crearemos un usuario del núcleo. Éste primer usuario "
+"tendrá privilegios de administración."
+
+#. ts-context CoreConfigWizardPages::IntroPage
+#: ../src/qtui/coreconfigwizard.cpp:125
+msgid "Introduction"
+msgstr "Introducción"
+
+#. ts-context CoreConfigWizardPages::StorageSelectionPage
+#: ../src/qtui/coreconfigwizard.cpp:172
+msgid "Select Storage Backend"
+msgstr "Seleccione un motor de almacenamiento"
+
+#. ts-context CoreConfigWizardPages::StorageSelectionPage
+#: ../src/qtui/coreconfigwizard.cpp:173
+msgid ""
+"Please select a database backend for the Quassel Core storage to store the "
+"backlog and other data in."
+msgstr ""
+"Por favor, seleccione un motor de base de datos para el núcleo de Quassel "
+"almacene el registro y otros datos."
+
+#. ts-context CoreConfigWizardPages::StorageSelectionPage
+#: ../src/qtui/coreconfigwizard.cpp:267
+msgid "Connection Properties"
+msgstr "Propiedades de conexión"
+
+#. ts-context CoreConfigWizardPages::SyncPage
+#: ../src/qtui/coreconfigwizard.cpp:307
+msgid "Storing Your Settings"
+msgstr "Almacenando sus preferencias"
+
+#. ts-context CoreConfigWizardPages::SyncPage
+#: ../src/qtui/coreconfigwizard.cpp:308
+msgid ""
+"Your settings are now stored in the core, and you will be logged in "
+"automatically."
+msgstr ""
+"Sus preferencias están ahora almacenadas en el núcleo, y su sesión "
+"será iniciada automáticamente."
+
+#. ts-context CoreConfigWizardStorageSelectionPage
+#: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context CoreConfigWizardStorageSelectionPage
+#: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
+msgid "Storage Backend:"
+msgstr "Motor de almacenamiento:"
+
+#. ts-context CoreConfigWizardStorageSelectionPage
+#: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:56
+msgid "Description"
+msgstr "Descripción"
+
+#. ts-context CoreConfigWizardStorageSelectionPage
+#: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:62
+#, fuzzy
+msgid "Foobar"
+msgstr ""
+
+#. ts-context CoreConfigWizardSyncPage
+#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:13
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context CoreConfigWizardSyncPage
+#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:19
+msgid "Your Choices"
+msgstr "Sus elecciones"
+
+#. ts-context CoreConfigWizardSyncPage
+#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:35
+msgid "Admin User:"
+msgstr "Usuario administrador"
+
+#. ts-context CoreConfigWizardSyncPage
+#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:42
+#, fuzzy
+msgid "foo"
+msgstr ""
+
+#. ts-context CoreConfigWizardSyncPage
+#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
+msgid "Storage Backend:"
+msgstr "Motor de almacenamiento:"
+
+#. ts-context CoreConfigWizardSyncPage
+#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:62
+#, fuzzy
+msgid "bar"
+msgstr "barra"
+
+#. ts-context CoreConfigWizardSyncPage
+#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:102
+msgid "Please wait while your settings are being transmitted to the core..."
+msgstr ""
+"Por favor, aguarde mientras sus preferencias son transmitidas al núcleo..."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:190
+msgid "Remove Account Settings"
+msgstr "Borrar las preferencias de la cuenta"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:191
+msgid ""
+"Do you really want to remove your local settings for this Quassel Core "
+"account?<br>Note: This will <em>not</em> remove or change any data on the "
+"Core itself!"
+msgstr ""
+"¿Está seguro de que quiere borrar sus preferencias locales para esta cuenta "
+"del núcleo de Quassel?<br>Nota: Esto <em>no</em> borrará o cambiará nada "
+"en el núcleo mismo."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:242
+msgid "Connect to %1"
+msgstr "Conectar a %1"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:259
+msgid "<div style=color:red;>Connection to %1 failed!</div>"
+msgstr "<div style=color:red;>Conexión a %1 fallida!</div>"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:272
+msgid "<div>Errors occurred while connecting to \"%1\":</div>"
+msgstr "<div>Ocurrieron errores al conectar a \"%1\":</div>"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:309
+msgid "Not connected to %1."
+msgstr "No conectado a %1."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:310
+msgid "Looking up %1..."
+msgstr "Buscando %1..."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:311
+msgid "Connecting to %1..."
+msgstr "Conectando a %1"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:312
+msgid "Connected to %1"
+msgstr "Conectado a %1"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:313
+msgid "Unknown connection state to %1"
+msgstr "Estado de conexión desconocido para %1"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:365
+msgid "Logging in..."
+msgstr "Entrando..."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/coreconnectdlg.cpp:392 ../src/qtui/coreconnectdlg.cpp:450
+#: ../src/qtui/ui/coreconnectdlg.ui:263
+msgid "Login"
+msgstr "Entrar"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:20 ../src/qtui/ui/coreconnectdlg.ui:46
+msgid "Connect to Quassel Core"
+msgstr "Conectarse al núcleo de Quassel"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:61
+msgid "Edit..."
+msgstr "Editar..."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:72
+msgid "Add..."
+msgstr "Añadir..."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:83
+msgid "Delete"
+msgstr "Eliminar"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:107
+msgid "Use internal core"
+msgstr "Usar núcleo interno"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:121
+msgid "Always use this account"
+msgstr "Usar siempre esta cuenta"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:150
+msgid "Initializing your connection"
+msgstr "Inicializando su conexión"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:168
+msgid "Connected to apollo.mindpool.net."
+msgstr "Conectado a apollo.mindpool.net."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:200
+#, fuzzy
+msgid ""
+"THIS IS A PLACEHOLDER\n"
+"TO\n"
+"RESERVE\n"
+"SOME SPACE"
+msgstr ""
+"ESTO ES UN MARCADOR\n"
+"PARA\n"
+"RESERVAR\n"
+"ALGO DE ESPACIO\n"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:271
+msgid "User:"
+msgstr "Usuario:"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:285
+msgid "Password:"
+msgstr "Contraseña:"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:299
+msgid "Remember"
+msgstr "Recordar"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:333
+msgid "View SSL Certificate"
+msgstr "Ver certificado SSL"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:370
+msgid "Add to known hosts"
+msgstr "Añadir a los servidores conocidos"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:390
+msgid "Continue connection"
+msgstr "Continuar conexión"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:425
+msgid "Configure your Quassel Core"
+msgstr "Configurar su núcleo de Quassel"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:431
+msgid ""
+"The Quassel Core you are connected to is not configured yet. You may now "
+"launch a configuration wizard that helps you setting up your Core."
+msgstr ""
+"El núcleo de Quassel al cual está conectado no está configurado todavía. "
+"Podría abrir ahora un asistente de configuración que le ayudará a configurar "
+"su núcleo."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:459
+msgid "Launch Wizard"
+msgstr "Abrir el asistente"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:505
+msgid "Initializing your session..."
+msgstr "Inicializando su sesión..."
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:513
+msgid ""
+"<b>Please be patient while your client synchronizes with the Quassel "
+"Core!</b>"
+msgstr ""
+"<b>¡Por favor, sea paciente mientras su cliente se sincroniza con el núcleo "
+"de Quassel!</b>"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:528
+msgid "Session state:"
+msgstr "Estado de la sesión:"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:545
+msgid "Network states:"
+msgstr "Estado de las redes:"
+
+#. ts-context CoreConnectDlg
+#: ../src/qtui/ui/coreconnectdlg.ui:558
+#, fuzzy
+msgid "0/0"
+msgstr ""
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/coreinfodlg.cpp:53
+msgid "%n Day(s)"
+msgid_plural "%n Day(s)"
+msgstr[0] "%n Día(s)"
+msgstr[1] "%n Días(s)"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/coreinfodlg.cpp:54
+msgid " %1:%2:%3 (since %4)"
+msgstr " %1:%2:%3 (desde %4)"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:13
+msgid "Core Information"
+msgstr "Información del núcleo"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:21
+msgid "Version:"
+msgstr "Versión:"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:28
+#, fuzzy
+msgid "<core version>"
+msgstr "<versión del núcleo>"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:35
+msgid "Uptime:"
+msgstr "Tiempo de funcionamiento:"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:42
+msgid "Connected Clients:"
+msgstr "Clientes conectados:"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:49
+#, fuzzy
+msgid "<connected clients>"
+msgstr "<clientes conectados>"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:56
+msgid "<core uptime>"
+msgstr "<tiempo de funcionamiento del núcleo>"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:63
+msgid "Build date:"
+msgstr "Fecha de compilación:"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:70
+msgid "<build date>"
+msgstr "<fecha de compilación>"
+
+#. ts-context CoreInfoDlg
+#: ../src/qtui/ui/coreinfodlg.ui:81
+msgid "Close"
+msgstr "Cerrar"
+
+#. ts-context CoreNetwork
+#: ../src/core/corenetwork.cpp:153
+msgid "Connection failed. Cycling to next Server"
+msgstr "Conexión fallida. Rotando al siguiente servidor"
+
+#. ts-context CoreNetwork
+#: ../src/core/corenetwork.cpp:161 ../src/core/corenetwork.cpp:162
+msgid "Connecting to %1:%2..."
+msgstr "Conectando a %1:%2..."
+
+#. ts-context CoreNetwork
+#: ../src/core/corenetwork.cpp:211
+msgid "Disconnecting. (%1)"
+msgstr "Desconectando. (%1)"
+
+#. ts-context CoreNetwork
+#: ../src/core/corenetwork.cpp:211
+msgid "Core Shutdown"
+msgstr "Apagar núcleo"
+
+#. ts-context CoreNetwork
+#: ../src/core/corenetwork.cpp:307
+msgid "Could not connect to %1 (%2)"
+msgstr "No se pudo conectar a %1 (%2)"
+
+#. ts-context CoreNetwork
+#: ../src/core/corenetwork.cpp:309
+msgid "Connection failure: %1"
+msgstr "Fallo de conexión: %1"
+
+#. ts-context CoreSession
+#: ../src/core/coresession.cpp:192
+msgid "Client"
+msgstr "Cliente"
+
+#. ts-context CoreSession
+#: ../src/core/coresession.cpp:192
+msgid "disconnected (UserId: %1)."
+msgstr "Desconectado (Id de usuario: %1)."
+
+#. ts-context CoreSession
+#: ../src/core/coresession.cpp:386
+msgid ""
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
+"create network %1!"
+msgstr ""
+"CoreSession::createNetwork(): ¡Obtuvo un Id de red no válido del núcleo "
+"cuando "
+"trató de crear la red %1!"
+
+#. ts-context CoreSession
+#: ../src/core/coresession.cpp:417
+msgid ""
+"CoreSession::createNetwork(): Trying to create a network that already "
+"exists, updating instead!"
+msgstr ""
+"CoreSession::createNetwork(): ¡Intentando crear una red que ya existe, "
+"actualizándola en lugar de crearla."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:63
+msgid "away"
+msgstr "ausente"
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:132
+msgid "sending CTCP-%1 request"
+msgstr "enviando solicitud CTCP-%1"
+
+#. ts-context CreateIdentityDlg
+#: ../src/qtui/settingspages/createidentitydlg.ui:16
+msgid "Create New Identity"
+msgstr "Crear una nueva identidad"
+
+#. ts-context CreateIdentityDlg
+#: ../src/qtui/settingspages/createidentitydlg.ui:24
+msgid "Identity name:"
+msgstr "Nombre de la identidad:"
+
+#. ts-context CreateIdentityDlg
+#: ../src/qtui/settingspages/createidentitydlg.ui:36
+msgid "Create blank identity"
+msgstr "Crear una identidad en blanco"
+
+#. ts-context CreateIdentityDlg
+#: ../src/qtui/settingspages/createidentitydlg.ui:48
+msgid "Duplicate:"
+msgstr "Duplicar:"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:190
+msgid "Received CTCP PING request from %1"
+msgstr "Recibida petición de PING CTCP desde %1"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:195
+msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
+msgstr ""
+"Recibida respuesta de PING CTCP desde %1 con alrededor de %2 segundos de "
+"tiempo de viaje"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:205
+msgid "Received CTCP VERSION request by %1"
+msgstr "Recibida petición de CTCP VERSION por %1"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:208
+msgid "Received CTCP VERSION answer from %1: %2"
+msgstr "Recibida respuesta CTCP VERSION desde %1: %2"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:216
+msgid "Received unknown CTCP %1 by %2"
+msgstr "Recibido CTCP desconocido %1 por %2"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:50
+#, fuzzy
+msgid "BufferViews:"
+msgstr "Vistas de área de conversación:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:51
+msgid "All Networks:"
+msgstr "Todas las redes:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:52
+msgid "Networks:"
+msgstr "Redes:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:53
+msgid "Buffers:"
+msgstr "Conversaciones:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:54
+msgid "Removed buffers:"
+msgstr "Conversaciones borradas:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:55
+msgid "Temp. removed buffers:"
+msgstr "Conversaciones borradas temporalmente:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:57
+msgid "Add Buffers Automatically:"
+msgstr "Añadir conversaciones automáticamente:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:58
+msgid "Hide inactive buffers:"
+msgstr "Ocultar conversaciones inactivas:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:59
+msgid "Allowed buffer types:"
+msgstr "Tipos de conversaciones permitidas:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:60
+msgid "Minimum activity:"
+msgstr "Actividad mínima:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/debugbufferviewoverlay.cpp:62
+msgid "Is initialized:"
+msgstr "Está inicializado:"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/ui/debugbufferviewoverlay.ui:13
+#, fuzzy
+msgid "Debug BufferView Overlay"
+msgstr "Depurar el Revestimiento de la Vista de Conversación "
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/ui/debugbufferviewoverlay.ui:26
+#, fuzzy
+msgid "Overlay View"
+msgstr "Vista del Revestimiento"
+
+#. ts-context DebugBufferViewOverlay
+#: ../src/qtui/ui/debugbufferviewoverlay.ui:39
+#, fuzzy
+msgid "Overlay Properties"
+msgstr "Propiedades del Revestimiento"
+
+#. ts-context DebugConsole
+#: ../src/qtui/ui/debugconsole.ui:13
+msgid "Debug Console"
+msgstr "Consola de depuración"
+
+#. ts-context DebugConsole
+#: ../src/qtui/ui/debugconsole.ui:52
+#, fuzzy
+msgid "local"
+msgstr ""
+
+#. ts-context DebugConsole
+#: ../src/qtui/ui/debugconsole.ui:62
+msgid "core"
+msgstr "núcleo"
+
+#. ts-context DebugConsole
+#: ../src/qtui/ui/debugconsole.ui:90
+msgid "Evaluate!"
+msgstr "¡Evaluar!"
+
+#. ts-context DebugLogWidget
+#: ../src/qtui/ui/debuglogwidget.ui:13
+msgid "Debug Log"
+msgstr "Registro de depuración"
+
+#. ts-context DebugLogWidget
+#: ../src/qtui/ui/debuglogwidget.ui:43
+msgid "Close"
+msgstr "Cerrar"
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:13
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:19
+msgid "Desktop Notification (via D-Bus)"
+msgstr "Notificación de escritorio (vía D-Bus)"
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:33
+msgid "Timeout:"
+msgstr "Tiempo de espera:"
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:46
+#, fuzzy
+msgid " s"
+msgstr ""
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:76
+#, fuzzy
+msgid "Position hint:"
+msgstr "Indicador de posición:"
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:86
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:102
+#, fuzzy
+msgid " px"
+msgstr ""
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:89
+#, fuzzy
+msgid "X: "
+msgstr ""
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:105
+#, fuzzy
+msgid "Y: "
+msgstr ""
+
+#. ts-context DesktopNotificationConfigWidget
+#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:130
+msgid "Queue unread notifications"
+msgstr "Encolar notificaciones sin leer"
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:45
+msgid "Invalid command string for /exec: %1"
+msgstr "Cadena de comando no válida para /exec: %1"
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:53
+msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
+msgstr "Nombre \"%1\" no válido: ../ ó ..\\ no están permitidos!"
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:64
+msgid "Could not find script \"%1\""
+msgstr "No se pudo encontrar el script \"%1\""
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:82
+msgid "Script \"%1\" crashed with exit code %2."
+msgstr "La ejecución del script \"%1\" se rompió con el código de salida %2."
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:98
+msgid "Script \"%1\" could not start."
+msgstr "El script \"%1\" no pudo empezar."
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:100
+msgid "Script \"%1\" caused error %2."
+msgstr "El script \"%1\" provocó el error %2"
+
+#. ts-context FontSelector
+#: ../src/uisupport/fontselector.cpp:31
+msgid "Choose..."
+msgstr "Escoja..."
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.cpp:28
+#, fuzzy
+msgid "Misc"
+msgstr "Miscelánea"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:14
+#, fuzzy
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:20
+msgid "Show System Tray Icon"
+msgstr "Mostrar icono en la bandeja del sistema"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:29
+msgid "Hide to tray on close button"
+msgstr "Minimizar a la bandeja de entrada en el botón de cerrar"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:39
+msgid "Tray Icon"
+msgstr "Icono en bandeja del sistema"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:45
+msgid "Show system tray icon"
+msgstr "Mostrar icono en bandeja del sistema"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:58
+msgid "Message Redirection"
+msgstr "Redirección de mensaje"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:64
+msgid "User Notices:"
+msgstr "Noticias de usuario:"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:107
+msgid "Server Notices:"
+msgstr "Noticias de servidor:"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:121
+msgid "Default Target"
+msgstr "Objetivo por defecto"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:128
+msgid "Status Window"
+msgstr "Ventana de estado"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:135
+msgid "Current Chat"
+msgstr "Charla actual"
+
+#. ts-context GeneralSettingsPage
+#: ../src/qtui/settingspages/generalsettingspage.ui:142
+msgid "Errors:"
+msgstr "Errores:"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:30
+msgid "Interface"
+msgstr "Interfaz"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:30
+#: ../src/qtui/settingspages/highlightsettingspage.ui:32
+msgid "Highlight"
+msgstr "Resaltar"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:159
+msgid "this shouldn't be empty"
+msgstr "esto no debería estar vacío"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.h:45
+msgid "highlight rule"
+msgstr "resaltar regla"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:13
+#, fuzzy
+msgid "Form"
+msgstr "Formulario"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:19
+msgid "Custom Highlights"
+msgstr "Personalizar resaltados"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:37
+#, fuzzy
+msgid "RegEx"
+msgstr ""
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:42
+#, fuzzy
+msgid "CS"
+msgstr ""
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:47
+msgid "Enable"
+msgstr "Activar"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:55
+msgid "Add"
+msgstr "Añadir"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:62
+msgid "Remove"
+msgstr "Borrar"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:85
+msgid "Highlight Nicks"
+msgstr "Resaltar apodos"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:91
+msgid "All nicks from identity"
+msgstr "Todos los apodos de la identidad"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:98
+msgid "Current nick"
+msgstr "Apodo actual"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:108
+msgid "None"
+msgstr "Ninguno"
+
+#. ts-context HighlightSettingsPage
+#: ../src/qtui/settingspages/highlightsettingspage.ui:115
+#, fuzzy
+msgid "Case sensitive"
+msgstr "Distinguir mayúsculas"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:31
+msgid "Misc"
+msgstr "Miscelánea"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:31
+msgid "Identities"
+msgstr "Identidades"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:178
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
+msgstr ""
+"<b>Los siguientes problemas han de ser corregidos antes de que sus cambios "
+"puedan ser aplicados:</b><ul>"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:179
+msgid "<li>All identities need an identity name set</li>"
+msgstr ""
+"<li>Todas las identidades necesitan un nombre de identidad establecido</li>"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:180
+msgid "<li>Every identity needs at least one nickname defined</li>"
+msgstr "<li>Cada identidad necesita tener al menos un apodo definido</li>"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:181
+msgid "<li>You need to specify a real name for every identity</li>"
+msgstr ""
+"<li>Usted necesita especificar al menos un nombre real para cada identidad<"
+"/li>"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:182
+#, fuzzy
+msgid "<li>You need to specify an ident for every identity</li>"
+msgstr ""
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:183
+#, fuzzy
+msgid "</ul>"
+msgstr ""
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:184
+msgid "One or more identities are invalid"
+msgstr "Una o más identidades son inválidas"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:310
+msgid "Delete Identity?"
+msgstr "¿Eliminar identidad?"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:311
+msgid "Do you really want to delete identity \"%1\"?"
+msgstr "¿Está seguro de que quiere eliminar la identidad \"%1\"?"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:322
+#: ../src/qtui/settingspages/identitiessettingspage.ui:31
+msgid "Rename Identity"
+msgstr "Renombrar identidad"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:323
+msgid "Please enter a new name for the identity \"%1\"!"
+msgstr "¡Por favor, introduzca un nuevo nombre para la identidad \"%1\"!"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.ui:34
+#: ../src/qtui/settingspages/identitiessettingspage.ui:77
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.ui:51
+msgid "Add Identity"
+msgstr "Añadir identidad"
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.ui:54
+msgid "Add..."
+msgstr "Añadir..."
+
+#. ts-context IdentitiesSettingsPage
+#: ../src/qtui/settingspages/identitiessettingspage.ui:74
+msgid "Remove Identity"
+msgstr "Eliminar identidad"
+
+#. ts-context Identity
+#: ../src/common/identity.cpp:122
+msgid "Quassel IRC User"
+msgstr "Usuario de Quassel IRC"
+
+#. ts-context Identity
+#: ../src/common/identity.cpp:150
+msgid "<empty>"
+msgstr "<vacío>"
+
+#. ts-context Identity
+#: ../src/common/identity.cpp:156
+msgid "Gone fishing."
+msgstr "He ido a pescar."
+
+#. ts-context Identity
+#: ../src/common/identity.cpp:160
+msgid "Not here. No, really. not here!"
+msgstr "No estoy. No, de verdad, no estoy!"
+
+#. ts-context Identity
+#: ../src/common/identity.cpp:163
+msgid "All Quassel clients vanished from the face of the earth..."
+msgstr ""
+"Todos los clientes de Quassel han desaparecido de la faz de La Tierra..."
+
+#. ts-context Identity
+#: ../src/common/identity.cpp:166
+msgid "Kindergarten is elsewhere!"
+msgstr "¡El jardín de infancia es en otra parte!"
+
+#. ts-context Identity
+#: ../src/common/identity.cpp:167 ../src/common/identity.cpp:168
+msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
+msgstr "http://quassel-irc.org - Chatee cómodamente donde sea."
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:219
+#: ../src/qtui/settingspages/identityeditwidget.ui:398
+msgid "Advanced"
+msgstr "Avanzado"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:290
+msgid "Load a Key"
+msgstr "Cargar una tecla"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:317
+#: ../src/qtui/settingspages/identityeditwidget.cpp:328
+#: ../src/qtui/settingspages/identityeditwidget.ui:604
+msgid "No Key loaded"
+msgstr "No hay tecla cargada"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:318
+#: ../src/qtui/settingspages/identityeditwidget.cpp:365
+#: ../src/qtui/settingspages/identityeditwidget.ui:624
+#: ../src/qtui/settingspages/identityeditwidget.ui:722
+msgid "Load"
+msgstr "Cargar"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:322
+#, fuzzy
+msgid "RSA"
+msgstr ""
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:325
+#, fuzzy
+msgid "DSA"
+msgstr ""
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:330
+#: ../src/qtui/settingspages/identityeditwidget.cpp:369
+msgid "Clear"
+msgstr "Limpiar"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:340
+msgid "Load a Certificate"
+msgstr "Cargar un certificado"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.cpp:363
+#: ../src/qtui/settingspages/identityeditwidget.cpp:364
+#: ../src/qtui/settingspages/identityeditwidget.ui:662
+#: ../src/qtui/settingspages/identityeditwidget.ui:696
+msgid "No Certificate loaded"
+msgstr "Ningún certificado cargado"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:29
+#, fuzzy
+msgid "General"
+msgstr ""
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:37
+msgid "Real Name:"
+msgstr "Nombre real:"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:44
+msgid "The \"Real Name\" is shown in /whois."
+msgstr "El \"nombre real\" es mostrado en /whois."
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:53
+msgid "Nicknames"
+msgstr "Apodos"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:89
+msgid "Add Nickname"
+msgstr "Añadir apodo"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:92
+msgid "&Add..."
+msgstr "&Añadir..."
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:115
+msgid "Remove Nickname"
+msgstr "Borrar apodo"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:118
+msgid "Remove"
+msgstr "Borrar"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:135
+msgid "Rename Identity"
+msgstr "Renombrar identidad"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:138
+msgid "Re&name..."
+msgstr "Re&nombrar..."
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:164
+msgid "Move upwards in list"
+msgstr "Mover hacia arriba en la lista"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:167
+#: ../src/qtui/settingspages/identityeditwidget.ui:181
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:178
+msgid "Move downwards in list"
+msgstr "Mover hacia abajo en la lista"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:226
+msgid "A&way"
+msgstr "A&usente"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:232
+msgid "Default Away Settings"
+msgstr "Preferencias de ausente por defecto"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:243
+msgid "Nick to be used when being away"
+msgstr "Apodo para ser usado cuando se está ausente"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:253
+msgid "Default away reason"
+msgstr "Razón de ausencia por defecto"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:260
+msgid "Away Nick:"
+msgstr "Apodo de ausente:"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:267
+#: ../src/qtui/settingspages/identityeditwidget.ui:296
+#: ../src/qtui/settingspages/identityeditwidget.ui:365
+msgid "Away Reason:"
+msgstr "Razón de ausencia:"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:279
+msgid "Set away when all clients have detached from the core"
+msgstr ""
+"Establecer ausencia cuando todos los clientes se hayan separado del núcleo"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:282
+msgid "Away On Detach"
+msgstr "Ausencia en separación"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:314
+msgid "Not implemented yet"
+msgstr "Aun no implementado"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:317
+msgid "Away On Idle"
+msgstr "Ausente cuando esté inactivo"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:331
+msgid "Set away after"
+msgstr "Establecer ausente después de"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:341
+msgid "minutes of being idle"
+msgstr "minutos para estar inactivo"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:406
+#, fuzzy
+msgid "Ident:"
+msgstr ""
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:413
+#, fuzzy
+msgid ""
+"The \"ident\" is part of your hostmask and, together with your host, "
+"uniquely identifies you within the IRC network."
+msgstr ""
+"\"Ident\" forma parte de su hostmask y, junto a su servidor, "
+"le identifica de manera única en la red de IRC."
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:422
+msgid "Messages"
+msgstr "Mensajes"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:430
+msgid "Part Reason:"
+msgstr "Razón de la separación:"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:443
+msgid "Quit Reason:"
+msgstr "Razón de la salida:"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:453
+msgid "Kick Reason:"
+msgstr "Razón de expulsión:"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:487
+msgid ""
+"You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
+msgstr ""
+"Usted necesita un cliente capaz de manejar SSL para editar su llave y su "
+"certificado internos SSL"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:516
+msgid ""
+"Warning: you are not connected with a secured connection to the Quassel "
+"Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
+"Certificate!"
+msgstr ""
+"¡Cuidado: usted no está conectado mediante conexión segura al núcleo de "
+"Quassel!\n"
+"¡Si procede, provocará una transmisión sin encriptar de su llave SSL y su "
+"certificado SSL!"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:545
+msgid "Continue"
+msgstr "Continuar"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:583
+msgid "Use SSL Key"
+msgstr "Usar llave SSL"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:597
+msgid "Key Type:"
+msgstr "Tipo de llave:"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:636
+msgid "Use SSL Certificate"
+msgstr "Usar certificado SSL"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:655
+msgid "Organisation:"
+msgstr "Organización"
+
+#. ts-context IdentityEditWidget
+#: ../src/qtui/settingspages/identityeditwidget.ui:689
+msgid "CommonName:"
+msgstr "Nombre común:"
+
+#. ts-context IdentityPage
+#: ../src/qtui/ircconnectionwizard.cpp:107
+msgid "Setup Identity"
+msgstr "Configurar identidad"
+
+#. ts-context IdentityPage
+#: ../src/qtui/ircconnectionwizard.cpp:112
+msgid "Default Identity"
+msgstr "Identidad por defecto"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:15
+msgid "Configure Ignore Rule"
+msgstr "Configurar regla para ignorar"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:27
+msgid ""
+"<p><b>Strictness:</b></p>\n"
+"<p><u>Dynamic:</u></p>\n"
+"<p>Messages are filtered \"on the fly\".\n"
+"Whenever you disable/delete the ignore rule, the messages are shown "
+"again.</p>\n"
+"<p><u>Permanent:</u></p>\n"
+"<p>Messages are filtered before they get stored in the database.</p>"
+msgstr ""
+"<p><b>Precisión:</b></p>\n"
+"<p><u>Dinámica:</u></p>\n"
+"<p>Los mensajes son filtrados \"on the fly\" (al vuelo).\n"
+"Cuando usted elimina o desactiva la regla para ignorar, los mensajes son "
+"mostrados de nuevo.</p>\n"
+"<p><u>Permanente:</u></p>\n"
+"<p>Los mensajes son filtrados antes de que queden almacenados en la base de "
+"datos</p>"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:35
+msgid "Strictness"
+msgstr "Precisión"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:41
+msgid "Dynamic"
+msgstr "Dinámica"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:48
+msgid "Permanent"
+msgstr "Permanente"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:58
+msgid ""
+"<p><b>Rule Type:</b></p>\n"
+"<p><u>Sender:</u></p>\n"
+"<p>The rule is matched against the sender string\n"
+"<i>nick!ident@host.name<i></p>\n"
+"<p><u>Message:</u></p>\n"
+"<p>The rule is matched against the actual message content</p>"
+msgstr ""
+"<p><b>Tipo de regla:</b></p>\n"
+"<p><u>Mensajero:</u></p>\n"
+"<p>La regla se ajusta al nombre del mensajero\n"
+"<i>apodo!ident@host.name<i></p>\n"
+"<p><u>Mensaje:</u></p>\n"
+"<p>La regla se ajusta al contenido del mensaje actual</p>"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:66
+msgid "Rule Type"
+msgstr "Tipo de regla"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:72
+msgid "Sender"
+msgstr "Mensajero"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:79
+msgid "Message"
+msgstr "Mensaje"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:91
+msgid ""
+"<p><b>Ignore rule:</b></p>\n"
+"<p>Depending on the type of the rule, the text is matched against "
+"either:</p>\n"
+"<p><u>- the message content:</u></p>\n"
+"<p><i>Example:</i>\n"
+"<br />\n"
+"<i>*foobar*</i> matches any text containing the word <i>foobar</i></p>\n"
+"<p><u>- the sender string</u>  <i>(nick!ident@host.name)</i></p>\n"
+"<p><i>Examples:</i>\n"
+"<br />\n"
+"- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
+"<br />\n"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
+"from any host</p>"
+msgstr ""
+"<p><b>Regla para ignorar:</b></p>\n"
+"<p>Dependiendo del tipo de regla, el texto se ajusta a:</p>\n"
+"<p><u>- el contenido del mensaje:</u></p>\n"
+"<p><i>Ejemplo:</i>\n"
+"<br />\n"
+"<i>*foobar*</i> se ajusta a cualquier texto que contenga la palabra <i>"
+"foobar</i></p>\n"
+"<p><u>- el nombre del mensajero</u>  <i>(apodo!ident@host.name)</i></p>\n"
+"<p><i>Ejemplos:</i>\n"
+"<br />\n"
+"- <i>*@foobar.com</i> se ajusta a cualquier mensajero del servidor <i>foobar."
+"com</i>\n"
+"<br />\n"
+"- <i>estúpido!.+</i> (RegEx) se ajusta a cualquier mensajero con el apodo <i>"
+"estúpido</i> "
+"de cualquier servidor</p>"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:105
+msgid "Ignore Rule"
+msgstr "Regla para ignorar"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:116
+msgid ""
+"<p><b>Use regular expressions:</b></p>\n"
+"<p>If enabled, rules follow regular expression syntax.</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special "
+"characters:</p>\n"
+"<p> *: representing \"any amount of any character\"\n"
+"<br />\n"
+"?: representing \"exactly one character\"</p>"
+msgstr ""
+"<p><b>Usar expresiones regulares:</b></p>\n"
+"<p>Si está activado, las reglas siguen la sintaxis de expresiones regulares<"
+"/p>\n"
+"<p>De lo contrario, las reglas permitirán coincidencias con comodines"
+"siguiendo los caracteres especiales:</p>\n"
+"<p> *: representa \"cualquier equivalencia con cualquier carácter\"\n"
+"<br />\n"
+"?: representa \"exactamente un carácter\"</p>"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:124
+msgid "Regular expression"
+msgstr "Expresión regular"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:136
+#, fuzzy
+msgid ""
+"<p><b>Scope:</b></p>\n"
+"<p><u>Global:</u></p>\n"
+"<p>The rule is active for any channel on any network</p>\n"
+"<p><u>Network:</u></p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule "
+"should match</p>\n"
+"<p><u>Channel:</u></p>\n"
+"<p>The list below is interpreted as a list of channels for which the rule "
+"should match</p>"
+msgstr ""
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:145
+#, fuzzy
+msgid "Scope"
+msgstr ""
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:153
+#, fuzzy
+msgid "Global"
+msgstr ""
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:160
+#, fuzzy
+msgid "Network"
+msgstr ""
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
+#, fuzzy
+msgid "Channel"
+msgstr ""
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:176
+#, fuzzy
+msgid ""
+"<p><b>Scope rule:</b></p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
+"<i>channel</i> names.</p>\n"
+"<p><i>Example:</i>\n"
+"<br />\n"
+"<i>#quassel*; #foobar</i>\n"
+"<br />\n"
+"would match on #foobar and on any channel starting with <i>#quassel</i></p>"
+msgstr ""
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:207
+#, fuzzy
+msgid ""
+"<p><b>Enable / Disable:</b></p>\n"
+"<p>Only enabled rules are filtered.\n"
+"<br />\n"
+"For dynamic rules, disabling actually shows the filtered messages again.</p>"
+msgstr ""
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:213
+#, fuzzy
+msgid "Rule is enabled"
+msgstr ""
+
+#. ts-context IgnoreListModel
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:69
+#, fuzzy
+msgid ""
+"<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
+"dynamic rules, disabling actually shows the filtered messages again"
+msgstr ""
+
+#. ts-context IgnoreListModel
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:73
+#, fuzzy
+msgid ""
+"<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
+"matched against either:<br /><br />- <u>the message content:</u><br "
+"/><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string "
+"<i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    "
+"\"*@foobar.com\" matches any sender from host foobar.com<br />    "
+"\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
+"host<br />"
+msgstr ""
+
+#. ts-context IgnoreListModel
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:89
+#, fuzzy
+msgid "By Sender"
+msgstr ""
+
+#. ts-context IgnoreListModel
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:91
+#, fuzzy
+msgid "By Message"
+msgstr ""
+
+#. ts-context IgnoreListModel
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:193
+#, fuzzy
+msgid "Enabled"
+msgstr ""
+
+#. ts-context IgnoreListModel
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:194
+#, fuzzy
+msgid "Type"
+msgstr ""
+
+#. ts-context IgnoreListModel
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:195
+#, fuzzy
+msgid "Ignore Rule"
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
+#, fuzzy
+msgid "Misc"
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
+#, fuzzy
+msgid "Ignore List"
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:128
+#, fuzzy
+msgid "Rule already exists"
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:129
+#, fuzzy
+msgid ""
+"There is already a rule\n"
+"\"%1\"\n"
+"Please choose another rule."
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.ui:14
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.ui:28
+#, fuzzy
+msgid "New"
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.ui:42
+#, fuzzy
+msgid "Delete"
+msgstr ""
+
+#. ts-context IgnoreListSettingsPage
+#: ../src/qtui/settingspages/ignorelistsettingspage.ui:56
+#, fuzzy
+msgid "&Edit"
+msgstr ""
+
+#. ts-context IndicatorNotificationConfigWidget
+#: ../src/qtui/ui/indicatornotificationconfigwidget.ui:14
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context IndicatorNotificationConfigWidget
+#: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
+#, fuzzy
+msgid "Show messages in indicator"
+msgstr ""
+
+#. ts-context InputWidget
+#: ../src/qtui/inputwidget.cpp:89
+#, fuzzy
+msgid "Focus Input Line"
+msgstr ""
+
+#. ts-context InputWidget
+#: ../src/qtui/inputwidget.cpp:90
+#, fuzzy
+msgid "Ctrl+L"
+msgstr ""
+
+#. ts-context InputWidget
+#: ../src/qtui/ui/inputwidget.ui:20
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
+#, fuzzy
+msgid "Interface"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
+#, fuzzy
+msgid "Input Widget"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:14
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
+#, fuzzy
+msgid "Custom font:"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:50
+#, fuzzy
+msgid "Enable spell check"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:63
+#, fuzzy
+msgid "Show nick selector"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:79
+#, fuzzy
+msgid "Multi-Line Editing"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:96
+#, fuzzy
+msgid "Show at most"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:122
+#, fuzzy
+msgid "lines"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
+#, fuzzy
+msgid "Enable scrollbars"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:163
+#, fuzzy
+msgid "Tab Completion"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:171
+#, fuzzy
+msgid "Completion suffix:"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:187
+#, fuzzy
+msgid ": "
+msgstr ""
+
+#. ts-context IrcConnectionWizard
+#: ../src/qtui/ircconnectionwizard.cpp:51
+#, fuzzy
+msgid "Save && Connect"
+msgstr ""
+
+#. ts-context IrcListModel
+#: ../src/client/irclistmodel.cpp:59
+#, fuzzy
+msgid "Channel"
+msgstr ""
+
+#. ts-context IrcListModel
+#: ../src/client/irclistmodel.cpp:60
+#, fuzzy
+msgid "Users"
+msgstr ""
+
+#. ts-context IrcListModel
+#: ../src/client/irclistmodel.cpp:61
+#, fuzzy
+msgid "Topic"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:542
+#, fuzzy
+msgid "%1 has changed topic for %2 to: \"%3\""
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:567
+#, fuzzy
+msgid "Received RPL_ISUPPORT (005) without parameters!"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:575
+#, fuzzy
+msgid ""
+"Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
+"behavior!"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:592 ../src/core/ircserverhandler.cpp:599
+#: ../src/core/ircserverhandler.cpp:606 ../src/core/ircserverhandler.cpp:613
+#, fuzzy
+msgid "%1"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:648
+#, fuzzy
+msgid "[Whois] %1 is away: \"%2\""
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:654 ../src/core/ircserverhandler.cpp:659
+#, fuzzy
+msgid "%1 is away: \"%2\""
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:703 ../src/core/ircserverhandler.cpp:717
+#: ../src/core/ircserverhandler.cpp:751 ../src/core/ircserverhandler.cpp:767
+#: ../src/core/ircserverhandler.cpp:828 ../src/core/ircserverhandler.cpp:860
+#, fuzzy
+msgid "[Whois] %1"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:732 ../src/core/ircserverhandler.cpp:734
+#, fuzzy
+msgid "[Whois] %1 is %2 (%3)"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:749
+#, fuzzy
+msgid "%1 is online via %2 (%3)"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:753 ../src/core/ircserverhandler.cpp:1031
+#, fuzzy
+msgid "[Whowas] %1"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:779
+#, fuzzy
+msgid "[Whowas] %1 was %2 (%3)"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:793
+#, fuzzy
+msgid "[Who] End of /WHO list for %1"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:813
+#, fuzzy
+msgid "[Whois] %1 is logged in since %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:815
+#, fuzzy
+msgid "[Whois] %1 is idling for %2 (%3)"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:818
+#, fuzzy
+msgid "[Whois] idle message: %1"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:850
+#, fuzzy
+msgid "[Whois] %1 is a user on channels: %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:852
+#, fuzzy
+msgid "[Whois] %1 has voice on channels: %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:854
+#, fuzzy
+msgid "[Whois] %1 is an operator on channels: %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:882
+#, fuzzy
+msgid "Channel %1 has %2 users. Topic is: %3"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:891
+#, fuzzy
+msgid "End of channel list"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:909
+#, fuzzy
+msgid "Homepage for %1 is %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:927
+#, fuzzy
+msgid "Channel %1 created on %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:941
+#, fuzzy
+msgid "No topic is set for %1."
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:956
+#, fuzzy
+msgid "Topic for %1 is \"%2\""
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:967
+#, fuzzy
+msgid "Topic set by %1 on %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:990
+#, fuzzy
+msgid "[Who] %1"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:1049
+#, fuzzy
+msgid "Nick %1 contains illegal characters"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:1060
+#, fuzzy
+msgid "Nick already in use: %1"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:1149
+#, fuzzy
+msgid ""
+"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
+msgstr ""
+
+#. ts-context IrcUserItem
+#: ../src/client/networkmodel.cpp:799
+#, fuzzy
+msgid "idling since %1"
+msgstr ""
+
+#. ts-context IrcUserItem
+#: ../src/client/networkmodel.cpp:802
+#, fuzzy
+msgid "login time: %1"
+msgstr ""
+
+#. ts-context IrcUserItem
+#: ../src/client/networkmodel.cpp:805
+#, fuzzy
+msgid "server: %1"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
+#, fuzzy
+msgid "Interface"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
+#, fuzzy
+msgid "Chat & Nick Lists"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
+#, fuzzy
+msgid "Network"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
+#, fuzzy
+msgid "Inactive"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
+#, fuzzy
+msgid "Normal"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:38
+#, fuzzy
+msgid "Unread messages"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
+#, fuzzy
+msgid "Highlight"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
+#, fuzzy
+msgid "Other activity"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:14
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:22
+#, fuzzy
+msgid "Custom font:"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:50
+#, fuzzy
+msgid "Show icons"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:66
+#, fuzzy
+msgid "Chat List"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:72
+#, fuzzy
+msgid "Display topic in tooltip"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:85
+#, fuzzy
+msgid "Mouse wheel changes selected chat"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:101
+#, fuzzy
+msgid "Use Custom Colors"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:118
+#, fuzzy
+msgid "Standard:"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:125
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:149
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:173
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:197
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:221
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:308
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:345
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:142
+#, fuzzy
+msgid "Inactive:"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:166
+#, fuzzy
+msgid "Unread messages:"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:190
+#, fuzzy
+msgid "Highlight:"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:214
+#, fuzzy
+msgid "Other activity:"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:272
+#, fuzzy
+msgid "1"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:286
+#, fuzzy
+msgid "Custom Nick List Colors"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:301
+#, fuzzy
+msgid "Online:"
+msgstr ""
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:338
+#, fuzzy
+msgid "Away:"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:293
+#, fuzzy
+msgid "&Connect to Core..."
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:295
+#, fuzzy
+msgid "&Disconnect from Core"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:297
+#, fuzzy
+msgid "Core &Info..."
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:299
+#, fuzzy
+msgid "Configure &Networks..."
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:301
+#, fuzzy
+msgid "&Quit"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:302
+#, fuzzy
+msgid "Ctrl+Q"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:305
+#, fuzzy
+msgid "&Configure Chat Lists..."
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:308
+#, fuzzy
+msgid "&Lock Layout"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:312
+#, fuzzy
+msgid "Show &Search Bar"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:314
+#, fuzzy
+msgid "Show Away Log"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:316
+#, fuzzy
+msgid "Show &Menubar"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:317
+#, fuzzy
+msgid "Ctrl+M"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:319
+#, fuzzy
+msgid "Show Status &Bar"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:323
+#, fuzzy
+msgid "&Configure Quassel..."
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:324
+#, fuzzy
+msgid "F7"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:327
+#, fuzzy
+msgid "&About Quassel"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:329
+#, fuzzy
+msgid "About &Qt"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:331
+#, fuzzy
+msgid "Debug &NetworkModel"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:333
+#, fuzzy
+msgid "Debug &BufferViewOverlay"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:335
+#, fuzzy
+msgid "Debug &MessageModel"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:337
+#, fuzzy
+msgid "Debug &HotList"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:339
+#, fuzzy
+msgid "Debug &Log"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:341
+#, fuzzy
+msgid "Reload Stylesheet"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:345
+#, fuzzy
+msgid "Jump to hot chat"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:352
+#, fuzzy
+msgid "&File"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:365
+#, fuzzy
+msgid "&Networks"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:371
+#, fuzzy
+msgid "&View"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:372
+#, fuzzy
+msgid "&Chat Lists"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:374
+#, fuzzy
+msgid "&Toolbars"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:388
+#, fuzzy
+msgid "&Settings"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:395
+#, fuzzy
+msgid "&Help"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:403
+#, fuzzy
+msgid "Debug"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:542
+#, fuzzy
+msgid "Nicks"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:551
+#, fuzzy
+msgid "Show Nick List"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:562
+#, fuzzy
+msgid "Chat Monitor"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:573
+#, fuzzy
+msgid "Show Chat Monitor"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:577
+#, fuzzy
+msgid "Inputline"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:586
+#, fuzzy
+msgid "Show Input Line"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:597
+#, fuzzy
+msgid "Topic"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:609
+#, fuzzy
+msgid "Show Topic Line"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:680
+#, fuzzy
+msgid "Main Toolbar"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:719
+#, fuzzy
+msgid "Connected to core."
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:753
+#, fuzzy
+msgid "Core Lag: %1"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:789
+#, fuzzy
+msgid "Not connected to core."
+msgstr ""
+
+#. ts-context MessageModel
+#: ../src/client/messagemodel.cpp:373
+#, fuzzy
+msgid "Requesting %1 messages from backlog for buffer %2:%3"
+msgstr ""
+
+#. ts-context MsgProcessorStatusWidget
+#: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context MsgProcessorStatusWidget
+#: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
+#, fuzzy
+msgid "Receiving Backlog"
+msgstr ""
+
+#. ts-context MultiLineEdit
+#: ../src/uisupport/multilineedit.cpp:333
+#, fuzzy
+msgid "Do you really want to paste %n lines?"
+msgid_plural "Do you really want to paste %n lines?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context MultiLineEdit
+#: ../src/uisupport/multilineedit.cpp:342
+#, fuzzy
+msgid "Paste Protection"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:13
+#, fuzzy
+msgid "Add Network"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:21
+#, fuzzy
+msgid "Use preset:"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:56
+#, fuzzy
+msgid "Manually specify network settings"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:66
+#, fuzzy
+msgid "Manual Settings"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:74
+#, fuzzy
+msgid "Network name:"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:84
+#, fuzzy
+msgid "Server address:"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:94
+#, fuzzy
+msgid "Port:"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:114
+#, fuzzy
+msgid "Server password:"
+msgstr ""
+
+#. ts-context NetworkAddDlg
+#: ../src/qtui/settingspages/networkadddlg.ui:130
+#, fuzzy
+msgid "Use secure connection"
+msgstr ""
+
+#. ts-context NetworkEditDlg
+#: ../src/qtui/settingspages/networkeditdlg.ui:13
+#, fuzzy
+msgid "Dialog"
+msgstr ""
+
+#. ts-context NetworkEditDlg
+#: ../src/qtui/settingspages/networkeditdlg.ui:21
+#, fuzzy
+msgid "Please enter a network name:"
+msgstr ""
+
+#. ts-context NetworkEditDlg
+#: ../src/qtui/settingspages/networkssettingspage.cpp:690
+#, fuzzy
+msgid "Add Network"
+msgstr ""
+
+#. ts-context NetworkItem
+#: ../src/client/networkmodel.cpp:194
+#, fuzzy
+msgid "Server: %1"
+msgstr ""
+
+#. ts-context NetworkItem
+#: ../src/client/networkmodel.cpp:195
+#, fuzzy
+msgid "Users: %1"
+msgstr ""
+
+#. ts-context NetworkItem
+#: ../src/client/networkmodel.cpp:198
+#, fuzzy
+msgid "Lag: %1 msecs"
+msgstr ""
+
+#. ts-context NetworkModel
+#: ../src/client/networkmodel.cpp:830
+#, fuzzy
+msgid "Chat"
+msgstr ""
+
+#. ts-context NetworkModel
+#: ../src/client/networkmodel.cpp:830
+#, fuzzy
+msgid "Topic"
+msgstr ""
+
+#. ts-context NetworkModel
+#: ../src/client/networkmodel.cpp:830
+#, fuzzy
+msgid "Nick Count"
+msgstr ""
+
+#. ts-context NetworkModelController
+#: ../src/uisupport/networkmodelcontroller.cpp:154
+#, fuzzy
+msgid "Do you want to delete the following buffer(s) permanently?"
+msgid_plural "Do you want to delete the following buffer(s) permanently?"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context NetworkModelController
+#: ../src/uisupport/networkmodelcontroller.cpp:159
+#, fuzzy
+msgid ""
+"<b>Note:</b> This will delete all related data, including all backlog data, "
+"from the core's database and cannot be undone."
+msgstr ""
+
+#. ts-context NetworkModelController
+#: ../src/uisupport/networkmodelcontroller.cpp:161
+#, fuzzy
+msgid ""
+"<br>Active channel buffers cannot be deleted, please part the channel first."
+msgstr ""
+
+#. ts-context NetworkModelController
+#: ../src/uisupport/networkmodelcontroller.cpp:163
+#, fuzzy
+msgid "Remove buffers permanently?"
+msgstr ""
+
+#. ts-context NetworkModelController::JoinDlg
+#: ../src/uisupport/networkmodelcontroller.cpp:472
+#, fuzzy
+msgid "Join Channel"
+msgstr ""
+
+#. ts-context NetworkModelController::JoinDlg
+#: ../src/uisupport/networkmodelcontroller.cpp:475
+#, fuzzy
+msgid "Network:"
+msgstr ""
+
+#. ts-context NetworkModelController::JoinDlg
+#: ../src/uisupport/networkmodelcontroller.cpp:477
+#, fuzzy
+msgid "Channel:"
+msgstr ""
+
+#. ts-context NetworkPage
+#: ../src/qtui/ircconnectionwizard.cpp:148
+#, fuzzy
+msgid "Setup Network Connection"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:37
+#, fuzzy
+msgid "Misc"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:37
+#, fuzzy
+msgid "Networks"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:160
+#, fuzzy
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:161
+#, fuzzy
+msgid "<li>All networks need at least one server defined</li>"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:162
+#, fuzzy
+msgid "</ul>"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:163
+#, fuzzy
+msgid "Invalid Network Settings"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:527
+#, fuzzy
+msgid "Delete Network?"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.cpp:528
+#, fuzzy
+msgid ""
+"Do you really want to delete the network \"%1\" and all related settings, "
+"including the backlog?"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:13
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:47
+#, fuzzy
+msgid "Re&name..."
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:64
+#: ../src/qtui/settingspages/networkssettingspage.ui:234
+#, fuzzy
+msgid "&Add..."
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:87
+#: ../src/qtui/settingspages/networkssettingspage.ui:251
+#, fuzzy
+msgid "De&lete"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:123
+#, fuzzy
+msgid "Network Details"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:131
+#, fuzzy
+msgid "Identity:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:148
+#: ../src/qtui/settingspages/networkssettingspage.ui:280
+#: ../src/qtui/settingspages/networkssettingspage.ui:294
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:189
+#, fuzzy
+msgid "Servers"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:192
+#, fuzzy
+msgid "Manage servers for this network"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:216
+#, fuzzy
+msgid "&Edit..."
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:277
+#, fuzzy
+msgid "Move upwards in list"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:291
+#, fuzzy
+msgid "Move downwards in list"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:336
+#, fuzzy
+msgid "Commands"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:339
+#, fuzzy
+msgid ""
+"Configure automatic identification or misc. commands to be executed after "
+"connecting to a server"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:345
+#, fuzzy
+msgid "Commands to execute on connect:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:361
+#, fuzzy
+msgid ""
+"Specify a list of IRC commands to be executed upon connect.\n"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely "
+"be needed here!"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:373
+#, fuzzy
+msgid "Connection"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:382
+#, fuzzy
+msgid "Control automatic reconnect to the network"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:385
+#, fuzzy
+msgid "Automatic Reconnect"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:396
+#, fuzzy
+msgid "Interval:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:403
+#, fuzzy
+msgid " s"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:419
+#, fuzzy
+msgid "Retries:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:439
+#, fuzzy
+msgid "Unlimited"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:464
+#, fuzzy
+msgid "Rejoin all channels on reconnect"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:491
+#: ../src/qtui/settingspages/networkssettingspage.ui:500
+#, fuzzy
+msgid "Auto Identify"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:515
+#, fuzzy
+msgid "NickServ"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:532
+#, fuzzy
+msgid "Service:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:542
+#, fuzzy
+msgid "Password:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:566
+#, fuzzy
+msgid "Encodings"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:569
+#, fuzzy
+msgid ""
+"Configure advanced settings such as message encodings and automatic reconnect"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:578
+#, fuzzy
+msgid "Control encodings for in- and outgoing messages"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:581
+#, fuzzy
+msgid "Use Custom Encodings"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:592
+#: ../src/qtui/settingspages/networkssettingspage.ui:612
+#, fuzzy
+msgid ""
+"Specify which encoding your messages will be sent in.\n"
+"UTF-8 should be a sane choice for most networks."
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:596
+#, fuzzy
+msgid "Send messages in:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:623
+#: ../src/qtui/settingspages/networkssettingspage.ui:643
+#, fuzzy
+msgid ""
+"Incoming messages encoded in Utf8 will always be treated as such.\n"
+"This setting defines the encoding for messages that are not Utf8."
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:627
+#, fuzzy
+msgid "Receive fallback:"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:654
+#: ../src/qtui/settingspages/networkssettingspage.ui:668
+#, fuzzy
+msgid ""
+"This specifies how control messages, nicks and servernames are encoded.\n"
+"Unless you *really* know what you do, leave this as ISO-8859-1!"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:658
+#, fuzzy
+msgid "Server encoding:"
+msgstr ""
+
+#. ts-context NickEditDlg
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:420
+#, fuzzy
+msgid "Add Nickname"
+msgstr ""
+
+#. ts-context NickEditDlg
+#: ../src/qtui/settingspages/nickeditdlg.ui:13
+#, fuzzy
+msgid "Edit Nickname"
+msgstr ""
+
+#. ts-context NickEditDlg
+#: ../src/qtui/settingspages/nickeditdlg.ui:19
+#, fuzzy
+msgid "Please enter a valid nickname:"
+msgstr ""
+
+#. ts-context NickEditDlg
+#: ../src/qtui/settingspages/nickeditdlg.ui:32
+#, fuzzy
+msgid ""
+"A valid nickname may contain letters from the English alphabet, digits, and "
+"the special characters {, }, [, ], \\, |, `, ^, _ and -."
+msgstr ""
+
+#. ts-context NotificationsSettingsPage
+#: ../src/qtui/settingspages/notificationssettingspage.cpp:28
+#, fuzzy
+msgid "Interface"
+msgstr ""
+
+#. ts-context NotificationsSettingsPage
+#: ../src/qtui/settingspages/notificationssettingspage.cpp:28
+#, fuzzy
+msgid "Notifications"
+msgstr ""
+
+#. ts-context PhononNotificationBackend::ConfigWidget
+#: ../src/qtui/phononnotificationbackend.cpp:142
+#, fuzzy
+msgid "Select Audio File"
+msgstr ""
+
+#. ts-context PhononNotificationConfigWidget
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:13
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context PhononNotificationConfigWidget
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:19
+#, fuzzy
+msgid "Audio Notification (via Phonon)"
+msgstr ""
+
+#. ts-context PhononNotificationConfigWidget
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:28
+#, fuzzy
+msgid "Play File:"
+msgstr ""
+
+#. ts-context PostgreSqlStorage
+#: ../src/core/postgresqlstorage.cpp:61
+#, fuzzy
+msgid "PostgreSQL Turbo Bomber HD!"
+msgstr ""
+
+#. ts-context QObject
+#: ../src/client/backlogrequester.cpp:82
+#, fuzzy
+msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
+msgstr ""
+
+#. ts-context QObject
+#: ../src/client/backlogrequester.cpp:106
+#, fuzzy
+msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
+msgstr ""
+
+#. ts-context QObject
+#: ../src/client/backlogrequester.cpp:123
+#, fuzzy
+msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
+msgstr ""
+
+#. ts-context QObject
+#: ../src/qtui/ircconnectionwizard.cpp:56
+#, fuzzy
+msgid "Welcome to Quassel IRC"
+msgstr ""
+
+#. ts-context QObject
+#: ../src/qtui/ircconnectionwizard.cpp:58
+#, fuzzy
+msgid ""
+"This wizard will help you to set up your default identity and your IRC "
+"network connection.<br>This only covers basic settings. You can cancel this "
+"wizard any time and use the settings dialog for more detailed changes."
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
+#: ../src/uisupport/qssparser.cpp:314
+#, fuzzy
+msgid "Invalid block declaration: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:140
+#, fuzzy
+msgid "Invalid palette role assignment: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:156
+#, fuzzy
+msgid "Unknown palette role name: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:192
+#, fuzzy
+msgid "Invalid subelement name in %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:234
+#, fuzzy
+msgid "Invalid message type in %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:243
+#, fuzzy
+msgid "Invalid condition %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:255
+#, fuzzy
+msgid "Invalid message label: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:266
+#, fuzzy
+msgid "Invalid senderhash specification: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:270
+#, fuzzy
+msgid "Senderhash can be at most \"0x0f\"!"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:285
+#, fuzzy
+msgid "Invalid format name: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:292
+#, fuzzy
+msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:300
+#, fuzzy
+msgid "Unhandled condition: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:329
+#, fuzzy
+msgid "Invalid proplist %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:348
+#, fuzzy
+msgid "Invalid chatlist item type %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:364
+#, fuzzy
+msgid "Invalid chatlist state %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:390
+#, fuzzy
+msgid "Invalid property declaration: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:414
+#, fuzzy
+msgid "Invalid font property: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:420
+#, fuzzy
+msgid "Unknown ChatLine property: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:442
+#, fuzzy
+msgid "Invalid palette color role specification: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:449
+#, fuzzy
+msgid "Unknown palette color role: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:456 ../src/uisupport/qssparser.cpp:478
+#: ../src/uisupport/qssparser.cpp:499
+#, fuzzy
+msgid "Invalid gradient declaration: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:465 ../src/uisupport/qssparser.cpp:486
+#: ../src/uisupport/qssparser.cpp:509
+#, fuzzy
+msgid "Invalid gradient stops list: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:605
+#, fuzzy
+msgid "Invalid font specification: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:644
+#, fuzzy
+msgid "Invalid font style specification: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:657
+#, fuzzy
+msgid "Invalid font weight specification: %1"
+msgstr ""
+
+#. ts-context QssParser
+#: ../src/uisupport/qssparser.cpp:667
+#, fuzzy
+msgid "Invalid font size specification: %1"
+msgstr ""
+
+#. ts-context Quassel::secondsToString()
+#: ../src/common/util.cpp:129
+#, fuzzy
+msgid "year"
+msgstr ""
+
+#. ts-context Quassel::secondsToString()
+#: ../src/common/util.cpp:130
+#, fuzzy
+msgid "day"
+msgstr ""
+
+#. ts-context Quassel::secondsToString()
+#: ../src/common/util.cpp:131
+#, fuzzy
+msgid "h"
+msgstr ""
+
+#. ts-context Quassel::secondsToString()
+#: ../src/common/util.cpp:132
+#, fuzzy
+msgid "min"
+msgstr ""
+
+#. ts-context Quassel::secondsToString()
+#: ../src/common/util.cpp:133
+#, fuzzy
+msgid "sec"
+msgstr ""
+
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:407
+#, fuzzy
+msgid "<b>Query with %1</b>"
+msgstr ""
+
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:425
+#, fuzzy
+msgid "idling since %1"
+msgstr ""
+
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:428
+#, fuzzy
+msgid "login time: %1"
+msgstr ""
+
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:431
+#, fuzzy
+msgid "server: %1"
+msgstr ""
+
+#. ts-context SaveIdentitiesDlg
+#: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
+#, fuzzy
+msgid "Sync With Core"
+msgstr ""
+
+#. ts-context SaveIdentitiesDlg
+#: ../src/qtui/settingspages/saveidentitiesdlg.ui:21
+#, fuzzy
+msgid "Syncing data with core, please wait..."
+msgstr ""
+
+#. ts-context SaveIdentitiesDlg
+#: ../src/qtui/settingspages/saveidentitiesdlg.ui:81
+#, fuzzy
+msgid "Abort"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:13
+#, fuzzy
+msgid "Dialog"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:37
+#, fuzzy
+msgid "Server Info"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:45
+#, fuzzy
+msgid "Server address:"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:52
+#: ../src/qtui/settingspages/servereditdlg.ui:242
+#, fuzzy
+msgid "Port:"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:79
+#, fuzzy
+msgid "Password:"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:101
+#, fuzzy
+msgid "Use SSL"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:134
+#, fuzzy
+msgid "Advanced"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:155
+#, fuzzy
+msgid "SSL Version:"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:162
+#, fuzzy
+msgid ""
+"Do not change unless you're going to connect to a server not supporting "
+"SSLv3!"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:166
+#, fuzzy
+msgid "SSLv3 (default)"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:171
+#, fuzzy
+msgid "SSLv2"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:176
+#, fuzzy
+msgid "TLSv1"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:186
+#, fuzzy
+msgid "Use a Proxy"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:203
+#, fuzzy
+msgid "Proxy Type:"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:211
+#, fuzzy
+msgid "Socks 5"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:216
+#, fuzzy
+msgid "HTTP"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:228
+#, fuzzy
+msgid "Proxy Host:"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:235
+#, fuzzy
+msgid "localhost"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:266
+#, fuzzy
+msgid "Proxy Username:"
+msgstr ""
+
+#. ts-context ServerEditDlg
+#: ../src/qtui/settingspages/servereditdlg.ui:276
+#, fuzzy
+msgid "Proxy Password:"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:77 ../src/qtui/ui/settingsdlg.ui:34
+#: ../src/qtui/ui/settingsdlg.ui:49
+#, fuzzy
+msgid "Settings"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:87
+#, fuzzy
+msgid "Save changes"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:88
+#, fuzzy
+msgid ""
+"There are unsaved changes on the current configuration page. Would you like "
+"to apply your changes now?"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:100 ../src/qtui/settingsdlg.cpp:104
+#, fuzzy
+msgid "Configure %1"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:171
+#, fuzzy
+msgid "Reload Settings"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:171
+#, fuzzy
+msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:180
+#, fuzzy
+msgid "Restore Defaults"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/settingsdlg.cpp:180
+#, fuzzy
+msgid "Do you like to restore the default values for this page?"
+msgstr ""
+
+#. ts-context SettingsDlg
+#: ../src/qtui/ui/settingsdlg.ui:13
+#, fuzzy
+msgid "Configure Quassel"
+msgstr ""
+
+#. ts-context SettingsPageDlg
+#: ../src/qtui/settingspagedlg.cpp:36
+#, fuzzy
+msgid "Configure %1"
+msgstr ""
+
+#. ts-context SettingsPageDlg
+#: ../src/qtui/settingspagedlg.cpp:104
+#, fuzzy
+msgid "Reload Settings"
+msgstr ""
+
+#. ts-context SettingsPageDlg
+#: ../src/qtui/settingspagedlg.cpp:104
+#, fuzzy
+msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgstr ""
+
+#. ts-context SettingsPageDlg
+#: ../src/qtui/settingspagedlg.cpp:113
+#, fuzzy
+msgid "Restore Defaults"
+msgstr ""
+
+#. ts-context SettingsPageDlg
+#: ../src/qtui/settingspagedlg.cpp:113
+#, fuzzy
+msgid "Do you like to restore the default values for this page?"
+msgstr ""
+
+#. ts-context SettingsPageDlg
+#: ../src/qtui/ui/settingspagedlg.ui:13
+#, fuzzy
+msgid "Configure Quassel"
+msgstr ""
+
+#. ts-context SettingsPageDlg
+#: ../src/qtui/ui/settingspagedlg.ui:29
+#, fuzzy
+msgid "Settings"
+msgstr ""
+
+#. ts-context SignalProxy
+#: ../src/common/signalproxy.cpp:865
+#, fuzzy
+msgid "Peer tried to send package larger than max package size!"
+msgstr ""
+
+#. ts-context SignalProxy
+#: ../src/common/signalproxy.cpp:870
+#, fuzzy
+msgid "Peer tried to send 0 byte package!"
+msgstr ""
+
+#. ts-context SignalProxy
+#: ../src/common/signalproxy.cpp:887
+#, fuzzy
+msgid "Peer sent corrupted compressed data!"
+msgstr ""
+
+#. ts-context SignalProxy
+#: ../src/common/signalproxy.cpp:902
+#, fuzzy
+msgid "Peer sent corrupt data: unable to load QVariant!"
+msgstr ""
+
+#. ts-context SignalProxy
+#: ../src/common/signalproxy.cpp:1030
+#, fuzzy
+msgid "Disconnecting"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:28
+#, fuzzy
+msgid "Network name:"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:35
+#, fuzzy
+msgid "The name of the IRC network you are configuring"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:63
+#, fuzzy
+msgid "Servers"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:81
+#, fuzzy
+msgid "A list of IRC servers belonging to this network"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:96
+#, fuzzy
+msgid "Edit this server entry"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:99
+#, fuzzy
+msgid "&Edit..."
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:116
+#, fuzzy
+msgid "Add another IRC server"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:119
+#, fuzzy
+msgid "&Add..."
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:136
+#, fuzzy
+msgid "Remove this server entry from the list"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:139
+#, fuzzy
+msgid "De&lete"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:165
+#, fuzzy
+msgid "Move upwards in list"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:168
+#: ../src/qtui/ui/simplenetworkeditor.ui:182
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:179
+#, fuzzy
+msgid "Move downwards in list"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:226
+#, fuzzy
+msgid "Join Channels Automatically"
+msgstr ""
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:250
+#, fuzzy
+msgid ""
+"A list of IRC channels you will join automatically after connecting to the "
+"network"
+msgstr ""
+
+#. ts-context SqliteStorage
+#: ../src/core/sqlitestorage.cpp:49
+#, fuzzy
+msgid ""
+"SQLite is a file-based database engine that does not require any setup. It "
+"is suitable for small and medium-sized databases that do not require access "
+"via network. Use SQLite if your Quassel Core should store its data on the "
+"same machine it is running on, and if you only expect a few users to use "
+"your core."
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:568
+#, fuzzy
+msgid "SSL Certificate used by %1"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:572
+#, fuzzy
+msgid "Issuer Info"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:574 ../src/qtui/coreconnectdlg.cpp:583
+#, fuzzy
+msgid "Organization:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:575 ../src/qtui/coreconnectdlg.cpp:584
+#, fuzzy
+msgid "Locality Name:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:576 ../src/qtui/coreconnectdlg.cpp:585
+#, fuzzy
+msgid "Organizational Unit Name:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:577 ../src/qtui/coreconnectdlg.cpp:586
+#, fuzzy
+msgid "Country Name:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:578 ../src/qtui/coreconnectdlg.cpp:587
+#, fuzzy
+msgid "State or Province Name:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:581
+#, fuzzy
+msgid "Subject Info"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:590
+#, fuzzy
+msgid "Additional Info"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:592
+#, fuzzy
+msgid "Valid From:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:593
+#, fuzzy
+msgid "Valid To:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:596
+#, fuzzy
+msgid "Hostname %1:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:600
+#, fuzzy
+msgid "E-Mail Address %1:"
+msgstr ""
+
+#. ts-context SslCertDisplayDialog
+#: ../src/qtui/coreconnectdlg.cpp:602
+#, fuzzy
+msgid "Digest:"
+msgstr ""
+
+#. ts-context StatusBufferItem
+#: ../src/client/networkmodel.h:142
+#, fuzzy
+msgid "Status Buffer"
+msgstr ""
+
+#. ts-context SystrayNotificationBackend::ConfigWidget
+#: ../src/qtui/systraynotificationbackend.cpp:122
+#, fuzzy
+msgid "System Tray Icon"
+msgstr ""
+
+#. ts-context SystrayNotificationBackend::ConfigWidget
+#: ../src/qtui/systraynotificationbackend.cpp:123
+#, fuzzy
+msgid "Animate"
+msgstr ""
+
+#. ts-context SystrayNotificationBackend::ConfigWidget
+#: ../src/qtui/systraynotificationbackend.cpp:125
+#, fuzzy
+msgid "Show bubble"
+msgstr ""
+
+#. ts-context TaskbarNotificationBackend::ConfigWidget
+#: ../src/qtui/taskbarnotificationbackend.cpp:67
+#, fuzzy
+msgid "Activate dock entry, timeout:"
+msgstr ""
+
+#. ts-context TaskbarNotificationBackend::ConfigWidget
+#: ../src/qtui/taskbarnotificationbackend.cpp:69
+#, fuzzy
+msgid "Mark taskbar entry, timeout:"
+msgstr ""
+
+#. ts-context TaskbarNotificationBackend::ConfigWidget
+#: ../src/qtui/taskbarnotificationbackend.cpp:74
+#, fuzzy
+msgid "Unlimited"
+msgstr ""
+
+#. ts-context TaskbarNotificationBackend::ConfigWidget
+#: ../src/qtui/taskbarnotificationbackend.cpp:75
+#, fuzzy
+msgid " s"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:31
+#, fuzzy
+msgid "Connect"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:31
+#, fuzzy
+msgid "Connect to IRC"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:32
+#, fuzzy
+msgid "Disconnect"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:32
+#, fuzzy
+msgid "Disconnect from IRC"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:34
+#, fuzzy
+msgid "Part"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:34
+#, fuzzy
+msgid "Leave currently selected channel"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:35
+#, fuzzy
+msgid "Join"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:35
+#, fuzzy
+msgid "Join a channel"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:37
+#, fuzzy
+msgid "Query"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:37
+#, fuzzy
+msgid "Start a private conversation"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:38
+#, fuzzy
+msgid "Whois"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:38
+#, fuzzy
+msgid "Request user information"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:40
+#, fuzzy
+msgid "Op"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:40
+#, fuzzy
+msgid "Give operator privileges to user"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:41
+#, fuzzy
+msgid "Deop"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:41
+#, fuzzy
+msgid "Take operator privileges from user"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:42
+#, fuzzy
+msgid "Voice"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:42
+#, fuzzy
+msgid "Give voice to user"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:43
+#, fuzzy
+msgid "Devoice"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:43
+#, fuzzy
+msgid "Take voice from user"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:44
+#, fuzzy
+msgid "Kick"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:44
+#, fuzzy
+msgid "Remove user from channel"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:45
+#, fuzzy
+msgid "Ban"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:45
+#, fuzzy
+msgid "Ban user from channel"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:46
+#, fuzzy
+msgid "Kick/Ban"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:46
+#, fuzzy
+msgid "Remove and ban user from channel"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:51
+#, fuzzy
+msgid "Connect to all"
+msgstr ""
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:58
+#, fuzzy
+msgid "Disconnect from all"
+msgstr ""
+
+#. ts-context TopicWidget
+#: ../src/qtui/ui/topicwidget.ui:32
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context TopicWidget
+#: ../src/qtui/ui/topicwidget.ui:79
+#, fuzzy
+msgid "..."
+msgstr ""
+
+#. ts-context TopicWidgetSettingsPage
+#: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
+#, fuzzy
+msgid "Interface"
+msgstr ""
+
+#. ts-context TopicWidgetSettingsPage
+#: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
+#, fuzzy
+msgid "Topic Widget"
+msgstr ""
+
+#. ts-context TopicWidgetSettingsPage
+#: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
+#, fuzzy
+msgid "Form"
+msgstr ""
+
+#. ts-context TopicWidgetSettingsPage
+#: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
+#, fuzzy
+msgid "Custom font:"
+msgstr ""
+
+#. ts-context TopicWidgetSettingsPage
+#: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
+#, fuzzy
+msgid "Resize dynamically to fit contents"
+msgstr ""
+
+#. ts-context TopicWidgetSettingsPage
+#: ../src/qtui/settingspages/topicwidgetsettingspage.ui:84
+#, fuzzy
+msgid "On hover only"
+msgstr ""
+
+#. Plain Message
+#. ----------
+#. Notice Message
+#. ----------
+#. Server Message
+#. ----------
+#. Info Message
+#. ----------
+#. Error Message
+#. ----------
+#. Topic Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:572 ../src/uisupport/uistyle.cpp:575
+#: ../src/uisupport/uistyle.cpp:615 ../src/uisupport/uistyle.cpp:618
+#: ../src/uisupport/uistyle.cpp:621 ../src/uisupport/uistyle.cpp:628
+#: ../src/uisupport/uistyle.cpp:729
+#, fuzzy
+msgid "%1"
+msgstr ""
+
+#. Action Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:578
+#, fuzzy
+msgid "%DN%1%DN %2"
+msgstr ""
+
+#. Nick Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:582
+#, fuzzy
+msgid "You are now known as %DN%1%DN"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:583
+#, fuzzy
+msgid "%DN%1%DN is now known as %DN%2%DN"
+msgstr ""
+
+#. Mode Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:587
+#, fuzzy
+msgid "User mode: %DM%1%DM"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:588
+#, fuzzy
+msgid "Mode %DM%1%DM by %DN%2%DN"
+msgstr ""
+
+#. Join Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:592
+#, fuzzy
+msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
+msgstr ""
+
+#. Part Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:595
+#, fuzzy
+msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
+msgstr ""
+
+#. Quit Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:600
+#, fuzzy
+msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
+msgstr ""
+
+#. Kick Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:607
+#, fuzzy
+msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
+msgstr ""
+
+#. Day Change Message
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:624
+#, fuzzy
+msgid "{Day changed to %1}"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:636
+#, fuzzy
+msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:640 ../src/uisupport/uistyle.cpp:655
+#, fuzzy
+msgid "%DN%1%DN (%2 more)"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:650
+#, fuzzy
+msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:659 ../src/uisupport/uistyle.cpp:697
+#, fuzzy
+msgid "[%1]"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:695
+#, fuzzy
+msgid "<%1>"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:699
+#, fuzzy
+msgid "-*-"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:701
+#, fuzzy
+msgid "<->"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:703
+#, fuzzy
+msgid "***"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:705
+#, fuzzy
+msgid "-->"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:707 ../src/uisupport/uistyle.cpp:709
+#, fuzzy
+msgid "<--"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:711
+#, fuzzy
+msgid "<-*"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:713
+#, fuzzy
+msgid "<-x"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
+#: ../src/uisupport/uistyle.cpp:719 ../src/uisupport/uistyle.cpp:723
+#, fuzzy
+msgid "*"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:721
+#, fuzzy
+msgid "-"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:725
+#, fuzzy
+msgid "=>"
+msgstr ""
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:727
+#, fuzzy
+msgid "<="
+msgstr ""
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:675
+#, fuzzy
+msgid "%n Owner(s)"
+msgid_plural "%n Owner(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:676
+#, fuzzy
+msgid "%n Admin(s)"
+msgid_plural "%n Admin(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:677
+#, fuzzy
+msgid "%n Operator(s)"
+msgid_plural "%n Operator(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:678
+#, fuzzy
+msgid "%n Half-Op(s)"
+msgid_plural "%n Half-Op(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:679
+#, fuzzy
+msgid "%n Voiced"
+msgid_plural "%n Voiced"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:680
+#, fuzzy
+msgid "%n User(s)"
+msgid_plural "%n User(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+
