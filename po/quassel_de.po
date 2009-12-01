@@ -8,7 +8,6 @@ msgid ""
 msgstr ""
 "X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: de\n"
-"X-Source-Language: C\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -246,10 +245,6 @@ msgstr "Neu"
 msgid "Delete"
 msgstr "Löschen"
 
-#. ts-context AliasesSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
-
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:14
 msgid "Form"
@@ -272,61 +267,51 @@ msgstr ""
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:75
-#, fuzzy
 msgid "Use custom stylesheet"
 msgstr "Eine benutzerdefinierte Layoutdatei verwenden"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:150
-#, fuzzy
 msgid "Show system tray icon"
 msgstr "Systemleistensymbol zeigen"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
-#, fuzzy
 msgid "Hide to tray on close button"
 msgstr "Zur Systemleiste minimieren bei \"Schließen\""
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:199
-#, fuzzy
 msgid "Message Redirection"
 msgstr "Nachrichtenumlenkung"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:205
-#, fuzzy
 msgid "User Notices:"
 msgstr "Benutzernotizen:"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:248
-#, fuzzy
 msgid "Server Notices:"
 msgstr "Servernotizen:"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:262
-#, fuzzy
 msgid "Default Target"
 msgstr "Standardziel"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:269
-#, fuzzy
 msgid "Status Window"
 msgstr "Statusfenster"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:276
-#, fuzzy
 msgid "Current Chat"
 msgstr "Aktueller Chat"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:283
-#, fuzzy
 msgid "Errors:"
 msgstr "Fehler:"
 
@@ -347,26 +332,14 @@ msgid "Please choose a stylesheet file"
 msgstr "Bitte wählen Sie eine Layoutdatei"
 
 #. ts-context AppearanceSettingsPage
-#~ msgid "Client Style"
-#~ msgstr "Client-Stil"
-
-#. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:29
 msgid "Set application style"
 msgstr "Anwendungsstil ändern"
 
 #. ts-context AppearanceSettingsPage
-#~ msgid "Language"
-#~ msgstr "Sprache"
-
-#. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:43
 msgid "Set the application language. Requires restart!"
 msgstr "Sprache für die Anwendung ändern. Erfordert Neustart!"
-
-#. ts-context AppearanceSettingsPage
-#~ msgid "Use Custom Stylesheet"
-#~ msgstr "Eine benutzerdefinierte Layoutdatei verwenden"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:109
@@ -392,10 +365,6 @@ msgstr "Netzwerknamen zeigen"
 #: ../src/qtui/awaylogview.cpp:49
 msgid "Show Buffer Name"
 msgstr "Fensternamen zeigen"
-
-#. ts-context BacklogSettingsPage
-#~ msgid "Backlog"
-#~ msgstr "Verlauf"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
@@ -464,10 +433,6 @@ msgstr "Anzahl der Nachrichten, die beim Zurückscrollen angefordert werden."
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
 msgid "Dynamic backlog amount:"
 msgstr "Dynamische Verlaufsgröße:"
-
-#. ts-context BacklogSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:75
@@ -545,15 +510,13 @@ msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
-#, fuzzy
 msgid "Interface"
 msgstr "Oberfläche"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
-#, fuzzy
 msgid "Backlog Fetching"
-msgstr "Empfange Verlauf"
+msgstr "Verlaufsempfänger"
 
 #. ts-context BufferItem
 #: ../src/client/networkmodel.cpp:324
@@ -620,10 +583,6 @@ msgid "Network:"
 msgstr "Netzwerk:"
 
 #. ts-context BufferViewSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
-
-#. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgid "Custom Chat Lists"
 msgstr "Spezielle Chat-Listen"
@@ -636,7 +595,6 @@ msgstr "Alle"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
-#, fuzzy
 msgid "Interface"
 msgstr "Oberfläche"
 
@@ -1156,14 +1114,6 @@ msgid "Processed %1 messages in %2 seconds."
 msgstr "%1 Nachrichten in %2 Sekunden verarbeitet."
 
 #. ts-context ConnectionSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
-
-#. ts-context ConnectionSettingsPage
-#~ msgid "Connection"
-#~ msgstr "Verbindung"
-
-#. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
 msgid "Configure the IRC Connection"
 msgstr "Einstellungen der IRC-Verbindung"
@@ -1232,7 +1182,6 @@ msgstr "Kleinster Abstand zwischen zwei Abfragen:"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
-#, fuzzy
 msgid "IRC"
 msgstr "IRC"
 
@@ -1747,14 +1696,9 @@ msgid "Always connect to"
 msgstr "Immer verbinden mit"
 
 #. ts-context CoreAccountSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
-
-#. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
-#, fuzzy
 msgid "Remote Cores"
-msgstr ""
+msgstr "Remote Cores"
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:69
@@ -2453,58 +2397,6 @@ msgstr "Script \"%1\" verursachte den Fehler %2."
 msgid "Choose..."
 msgstr "Wähle..."
 
-#. ts-context GeneralSettingsPage
-#~ msgid "Form"
-#~ msgstr "Formular"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Show system tray icon"
-#~ msgstr "Systemleistensymbol zeigen"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Show System Tray Icon"
-#~ msgstr "Zeige Systemleistensymbol"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Hide to tray on close button"
-#~ msgstr "Zur Systemleiste minimieren bei \"Schließen\""
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Tray Icon"
-#~ msgstr "Systemleistensymbol"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Message Redirection"
-#~ msgstr "Nachrichtenumlenkung"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "User Notices:"
-#~ msgstr "Benutzernotizen:"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Server Notices:"
-#~ msgstr "Servernotizen:"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Default Target"
-#~ msgstr "Standardziel"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Status Window"
-#~ msgstr "Status-Fenster"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Current Chat"
-#~ msgstr "Aktueller Chat"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Errors:"
-#~ msgstr "Fehler:"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
-
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:32
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
@@ -2604,7 +2496,6 @@ msgstr "Identitäten"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
-#, fuzzy
 msgid "IRC"
 msgstr "IRC"
 
@@ -2678,10 +2569,6 @@ msgstr "Identität hinzufügen"
 #: ../src/qtui/settingspages/identitiessettingspage.ui:74
 msgid "Remove Identity"
 msgstr "Identität entfernen"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:150
@@ -3268,17 +3155,12 @@ msgid "Ignore Rule"
 msgstr "Ignorier-Regel"
 
 #. ts-context IgnoreListSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
-
-#. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgid "Ignore List"
 msgstr "Ignorieren-Liste"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
-#, fuzzy
 msgid "IRC"
 msgstr "IRC"
 
@@ -4187,7 +4069,6 @@ msgstr "Netzwerke"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
-#, fuzzy
 msgid "IRC"
 msgstr "IRC"
 
@@ -4440,10 +4321,6 @@ msgstr "Allen Kanälen beim Wiederverbinden erneut betreten"
 #: ../src/qtui/settingspages/networkssettingspage.ui:403
 msgid " s"
 msgstr " s"
-
-#. ts-context NetworksSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Verschiedenes"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:336
