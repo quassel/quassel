@@ -882,7 +882,7 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRec
     // prepare to load a different URL
     if(webPreview.previewItem) {
       if(webPreview.previewItem->scene())
-	removeItem(webPreview.previewItem);
+        removeItem(webPreview.previewItem);
       delete webPreview.previewItem;
       webPreview.previewItem = 0;
     }
@@ -930,10 +930,10 @@ void ChatScene::webPreviewNextStep() {
       qreal previewY = webPreview.urlRect.bottom();
       qreal previewX = webPreview.urlRect.x();
       if(previewY + webPreview.previewItem->boundingRect().height() > sceneRect().bottom())
-	previewY = webPreview.urlRect.y() - webPreview.previewItem->boundingRect().height();
+        previewY = webPreview.urlRect.y() - webPreview.previewItem->boundingRect().height();
 
       if(previewX + webPreview.previewItem->boundingRect().width() > sceneRect().width())
-	previewX = sceneRect().right() - webPreview.previewItem->boundingRect().width();
+        previewX = sceneRect().right() - webPreview.previewItem->boundingRect().width();
 
       webPreview.previewItem->setPos(previewX, previewY);
     }
@@ -968,7 +968,7 @@ void ChatScene::clearWebPreview(ChatItem *parentItem) {
   case WebPreview::ShowPreview:
     if(parentItem == 0 || webPreview.parentItem == parentItem) {
       if(webPreview.previewItem && webPreview.previewItem->scene())
-	removeItem(webPreview.previewItem);
+        removeItem(webPreview.previewItem);
     }
     // fall through into to set hidden state
   case WebPreview::DelayPreview:

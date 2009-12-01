@@ -57,6 +57,7 @@ ChatView::ChatView(MessageFilter *filter, QWidget *parent)
 
 void ChatView::init(MessageFilter *filter) {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   setAlignment(Qt::AlignBottom);
   setInteractive(true);
   //setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
@@ -69,8 +70,8 @@ void ChatView::init(MessageFilter *filter) {
   _scrollTimer.setSingleShot(true);
   connect(&_scrollTimer, SIGNAL(timeout()), SLOT(scrollTimerTimeout()));
 
-  _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 4, this); // see below: resizeEvent()
-  connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
+  _scene = new ChatScene(filter, filter->idString(), viewport()->width(), this);
+  connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(adjustSceneRect()));
   connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *, qreal)), this, SLOT(lastLineChanged(QGraphicsItem *, qreal)));
   connect(_scene, SIGNAL(mouseMoveWhileSelecting(const QPointF &)), this, SLOT(mouseMoveWhileSelecting(const QPointF &)));
   setScene(_scene);
@@ -119,13 +120,47 @@ void ChatView::resizeEvent(QResizeEvent *event) {
 
   // we can reduce viewport updates if we scroll to the bottom allready at the beginning
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
-
-  // FIXME: without the hardcoded -4 Qt reserves space for a horizontal scrollbar even though it's disabled permanently.
-  // this does only occur on QtX11 (at least not on Qt for Mac OS). Seems like a Qt Bug.
-  scene()->updateForViewport(viewport()->width() - 4, viewport()->height());
+  scene()->updateForViewport(viewport()->width(), viewport()->height());
+  adjustSceneRect();
 
   _lastScrollbarPos = verticalScrollBar()->maximum();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+}
+
+// Workaround for QTBUG-6322
+// The viewport rect gets some margins where it shouldn't, resulting in scrollbars to appear
+void ChatView::adjustSceneRect() {
+  static qreal voffset = 0;
+  static bool offsetStable = false;
+
+  QRectF rect = scene()->sceneRect();
+  if(rect.height() <= viewport()->height()) {
+    setSceneRect(rect);
+    return;
+  }
+  if(offsetStable && rect.height() > viewport()->height())
+    setSceneRect(rect.adjusted(0, 0, 0, voffset));
+  else {
+    setSceneRect(rect);
+
+    QScrollBar *vbar = verticalScrollBar();
+    qreal sceneHeight = rect.height();
+    qreal viewHeight = vbar->maximum() + viewport()->height() - vbar->minimum();
+    if(sceneHeight != viewHeight) {
+      voffset = sceneHeight - viewHeight;
+      // qDebug() << "Adjusting ChatView offset to" << voffset << "(QTBUG-6322)";
+      if(sceneHeight + voffset <= viewport()->height()) {
+        setSceneRect(rect.adjusted(0, -voffset, 0, 0));
+        offsetStable = false;
+        return;
+      } else
+        setSceneRect(rect.adjusted(0, 0, 0, voffset));
+    }
+    if(vbar->maximum() + viewport()->height() - vbar->minimum() != sceneHeight)
+      qWarning() << "Workaround for QTBUG-6322 failed!1!!" << vbar->maximum() + viewport()->height() - vbar->minimum() << sceneHeight;
+    else
+      offsetStable = true;
+  }
 }
 
 void ChatView::mouseMoveWhileSelecting(const QPointF &scenePos) {
