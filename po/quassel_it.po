@@ -1,12 +1,7 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2009-11-18 17:52+0100\n"
+"PO-Revision-Date: 2009-12-01 20:37+0100\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -1582,7 +1577,6 @@ msgstr "Varie"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
-#, fuzzy
 msgid "Connection"
 msgstr "Connessione"
 
@@ -2307,7 +2301,7 @@ msgstr "Descrizione"
 #. ts-context CoreConfigWizardStorageSelectionPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:62
 msgid "Foobar"
-msgstr ""
+msgstr "Foobar"
 
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:13
@@ -2327,7 +2321,7 @@ msgstr "Utente amministratore:"
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:42
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
@@ -3775,7 +3769,6 @@ msgstr ""
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
-#, fuzzy
 msgid ""
 "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
 "matched against either:<br /><br />- <u>the message content:</u><br "
@@ -4539,7 +4532,6 @@ msgstr[1] "Vuoi realmente incollare %n righe?"
 
 #. ts-context MultiLineEdit
 #: ../src/uisupport/multilineedit.cpp:342
-#, fuzzy
 msgid "Paste Protection"
 msgstr "Paste Protection"
 
@@ -5122,9 +5114,8 @@ msgstr "Condizione non gestita: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:329
-#, fuzzy
 msgid "Invalid proplist %1"
-msgstr ""
+msgstr "Proplist %1 non valida"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:348
@@ -5133,9 +5124,8 @@ msgstr "Tipo elemento della lista chat non valido: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:364
-#, fuzzy
 msgid "Invalid chatlist state %1"
-msgstr ""
+msgstr "Stato lista chat %1 non valido"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:390
@@ -5171,7 +5161,6 @@ msgstr "Dichiarazione gradiente non valida: %1"
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:465 ../src/uisupport/qssparser.cpp:486
 #: ../src/uisupport/qssparser.cpp:509
-#, fuzzy
 msgid "Invalid gradient stops list: %1"
 msgstr ""
 
@@ -5232,9 +5221,8 @@ msgstr "inattivo da %1"
 
 #. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:428
-#, fuzzy
 msgid "login time: %1"
-msgstr ""
+msgstr "durata login: %1"
 
 #. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:431
@@ -5734,7 +5722,6 @@ msgstr "Comincia una conversazione privata"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:38
-#, fuzzy
 msgid "Whois"
 msgstr "Whois"
 
@@ -5844,9 +5831,8 @@ msgstr "Interfaccia"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Topic Widget"
-msgstr ""
+msgstr "Widget per Topic"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
@@ -5949,23 +5935,20 @@ msgstr "Modalità %DM%1%DM da %DN%2%DN"
 #. Join Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:592
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH è entrato in %DC%4%DC"
 
 #. Part Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:595
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH è uscito da %DC%4%DC"
 
 #. Quit Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:600
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH è uscito"
 
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
@@ -5981,9 +5964,8 @@ msgstr "{Oggi è %1}"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:636
-#, fuzzy
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
-msgstr ""
+msgstr "Netsplit tra %DH%1%DH e %DH%2%DH terminato. Utenti entrati: "
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:640 ../src/uisupport/uistyle.cpp:655
@@ -5992,9 +5974,8 @@ msgstr "%DN%1%DN (ancora %2)"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:650
-#, fuzzy
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
-msgstr ""
+msgstr "Netsplit tra %DH%1%DH e %DH%2%DH. Utenti usciti: "
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:707 ../src/uisupport/uistyle.cpp:709
