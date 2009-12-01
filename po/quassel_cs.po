@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Last-Translator: Tomáš Chvátal <scarabeus@gentoo.org>\n"
-"PO-Revision-Date: 2009-11-29 12:25+0100\n"
+"PO-Revision-Date: 2009-12-01 22:23+0100\n"
 "Project-Id-Version: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -224,8 +224,8 @@ msgstr "Alternativy"
 
 #. ts-context AliasesSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
-msgid "Misc"
-msgstr "Různé"
+msgid "IRC"
+msgstr "IRC"
 
 #. ts-context AliasesSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:13
@@ -243,18 +243,18 @@ msgid "Delete"
 msgstr "Smazat"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:34
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 msgid "Interface"
 msgstr "Rozhraní"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:46
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:53
+#: ../src/qtui/settingspages/appearancesettingspage.ui:47
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:71
 msgid "<System Default>"
 msgstr "<Systémové výchozí>"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:151
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:214
 msgid "Please choose a stylesheet file"
 msgstr "Prosím vyberte soubor stylu"
 
@@ -264,42 +264,87 @@ msgid "Form"
 msgstr "Form"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:20
-msgid "Client Style"
-msgstr "Styl klienta"
-
-#. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:26
+#: ../src/qtui/settingspages/appearancesettingspage.ui:29
 msgid "Set application style"
 msgstr "Zvolte styl aplikace"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:36
-msgid "Language"
-msgstr "Jazyk"
-
-#. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:42
+#: ../src/qtui/settingspages/appearancesettingspage.ui:43
 msgid "Set the application language. Requires restart!"
 msgstr "Zvolte jazyk aplikace. Vyžaduje restart!"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:62
-msgid "Use Custom Stylesheet"
-msgstr "Použít upravený soubor stylu"
+#: ../src/qtui/settingspages/appearancesettingspage.ui:22
+msgid "Client style:"
+msgstr "Styl klienta:"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:82
+#: ../src/qtui/settingspages/appearancesettingspage.ui:36
+msgid "Language:"
+msgstr "Jazyk:"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:75
+msgid "Use custom stylesheet"
+msgstr "Používat vlastní soubor stylu"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:109
 msgid "Path:"
 msgstr "Cesta:"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:108
+#: ../src/qtui/settingspages/appearancesettingspage.ui:141
 msgid "..."
 msgstr "..."
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:51
+#: ../src/qtui/settingspages/appearancesettingspage.ui:150
+msgid "Show system tray icon"
+msgstr "Zobrazovat ikonu v systémové části panelu"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:184
+msgid "Hide to tray on close button"
+msgstr "Při zavření skrýt do systémové části panelu"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:199
+msgid "Message Redirection"
+msgstr "Přesměrování zpráv"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:205
+msgid "User Notices:"
+msgstr "Uživatelská oznámení:"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:248
+msgid "Server Notices:"
+msgstr "Oznámení serveru:"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:262
+msgid "Default Target"
+msgstr "Výchozí cíl"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:269
+msgid "Status Window"
+msgstr "Okno stavu"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:276
+msgid "Current Chat"
+msgstr "Aktuální rozhovor"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:283
+msgid "Errors:"
+msgstr "Chyby:"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:52
 msgid "<Original>"
 msgstr "<Původní>"
 
@@ -317,16 +362,6 @@ msgstr "Zobrazit název sítě"
 #: ../src/qtui/awaylogview.cpp:49
 msgid "Show Buffer Name"
 msgstr "Zobrazit název záložky"
-
-#. ts-context BacklogSettingsPage
-#: ../src/qtui/settingspages/backlogsettingspage.cpp:27
-msgid "Backlog"
-msgstr "Historie"
-
-#. ts-context BacklogSettingsPage
-#: ../src/qtui/settingspages/backlogsettingspage.cpp:27
-msgid "Misc"
-msgstr "Různé"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
@@ -470,6 +505,16 @@ msgstr ""
 msgid "Dynamic backlog amount:"
 msgstr "Dynamická velikost získávané historie:"
 
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.cpp:27
+msgid "Interface"
+msgstr "Rozhraní"
+
+#. ts-context BacklogSettingsPage
+#: ../src/qtui/settingspages/backlogsettingspage.cpp:27
+msgid "Backlog Fetching"
+msgstr "Stahování historie"
+
 #. ts-context BufferItem
 #: ../src/client/networkmodel.cpp:324
 msgid "<p> %1 - %2 </p>"
@@ -511,11 +556,6 @@ msgstr "Zobrazit / Skrýt rozhovory"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
-msgid "Misc"
-msgstr "Různé"
-
-#. ts-context BufferViewSettingsPage
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgid "Custom Chat Lists"
 msgstr "Vlastní seznamy rozhovorů"
 
@@ -524,6 +564,11 @@ msgstr "Vlastní seznamy rozhovorů"
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:117
 msgid "All"
 msgstr "Vše"
+
+#. ts-context BufferViewSettingsPage
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
+msgid "Interface"
+msgstr "Rozhraní"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:342
@@ -1077,16 +1122,6 @@ msgid "Processed %1 messages in %2 seconds."
 msgstr "Zpracováno %1 zpráv v %2 vteřin."
 
 #. ts-context ConnectionSettingsPage
-#: ../src/qtui/settingspages/connectionsettingspage.cpp:27
-msgid "Misc"
-msgstr "Různé"
-
-#. ts-context ConnectionSettingsPage
-#: ../src/qtui/settingspages/connectionsettingspage.cpp:27
-msgid "Connection"
-msgstr "Spojení"
-
-#. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
 msgid "Configure the IRC Connection"
 msgstr "Nastavení spojení k IRC serveru"
@@ -1152,6 +1187,11 @@ msgstr "uživatelé"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:206
 msgid "Minimum delay between requests:"
 msgstr "Minimální přestávka mezi požadavky:"
+
+#. ts-context ConnectionSettingsPage
+#: ../src/qtui/settingspages/connectionsettingspage.cpp:27
+msgid "IRC"
+msgstr "IRC"
 
 #. ts-context ContentsChatItem
 #: ../src/qtui/chatitem.cpp:594
@@ -1628,7 +1668,6 @@ msgstr "Připojit k jádru Quassel"
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:30
-#: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 msgid "Core Accounts"
 msgstr "Účty jádra"
 
@@ -1664,8 +1703,8 @@ msgstr "Vždy připojit k"
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
-msgid "Misc"
-msgstr "Různé"
+msgid "Remote Cores"
+msgstr "Vzdálená jádra"
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:69
@@ -1728,11 +1767,9 @@ msgid ""
 "--help</nobr></tt>\"."
 msgstr ""
 "<b>Poznámka:</b> Přidávání více uživatelů a změny uživatelského jména a "
-"hesla prozatím nejsou proveditelné "
-"skrze grafické rozhraní Quassel klienta.\n"
-"Pokud dané operace potřebujete provést, prosíme spusťte \"<tt><nobr>"
-"quasselcore "
-"--help</nobr></tt>\"."
+"hesla prozatím nejsou proveditelné skrze grafické rozhraní Quassel klienta.\n"
+"Pokud dané operace potřebujete provést, prosíme spusťte "
+"\"<tt><nobr>quasselcore --help</nobr></tt>\"."
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:13
@@ -2358,71 +2395,6 @@ msgstr "Skript \"%1\" způsobil chybu %2."
 msgid "Choose..."
 msgstr "Vybrat..."
 
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:14
-msgid "Form"
-msgstr "Form"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:20
-msgid "Show System Tray Icon"
-msgstr "Zobrazit ikonku v systémové části panelu"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:29
-msgid "Hide to tray on close button"
-msgstr "Skrýt do systémové části panelu při zavření"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:39
-msgid "Tray Icon"
-msgstr "Ikonka v systémovém panelu"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:45
-msgid "Show system tray icon"
-msgstr "Zobrazovat ikonku v systémovém panelu"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:58
-msgid "Message Redirection"
-msgstr "Přesměrovaní zpráv"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:64
-msgid "User Notices:"
-msgstr "Uživatelské zprávy:"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:107
-msgid "Server Notices:"
-msgstr "Zprávy serveru:"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:121
-msgid "Default Target"
-msgstr "Výchozí cíl"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:128
-msgid "Status Window"
-msgstr "Okno statusu"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:135
-msgid "Current Chat"
-msgstr "Aktivní pokec"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:142
-msgid "Errors:"
-msgstr "Chyby:"
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.cpp:28
-msgid "Misc"
-msgstr "Různé"
-
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:32
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
@@ -2511,8 +2483,8 @@ msgstr "Identity"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
-msgid "Misc"
-msgstr "Různé"
+msgid "IRC"
+msgstr "IRC"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
@@ -3173,13 +3145,13 @@ msgstr "Pravidlo ignorance"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
-msgid "Misc"
-msgstr "Různé"
+msgid "Ignore List"
+msgstr "Seznam Ignorovaných"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
-msgid "Ignore List"
-msgstr "Seznam Ignorovaných"
+msgid "IRC"
+msgstr "IRC"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:128
@@ -3630,227 +3602,227 @@ msgid "Away:"
 msgstr "Pryč:"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:309
+#: ../src/qtui/mainwin.cpp:308
 msgid "&Connect to Core..."
 msgstr "Přip&ojit k jádru..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:311
+#: ../src/qtui/mainwin.cpp:310
 msgid "&Disconnect from Core"
 msgstr "O&dpojit od jádra"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:313
+#: ../src/qtui/mainwin.cpp:312
 msgid "Core &Info..."
 msgstr "&Informace jádra..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:317
+#: ../src/qtui/mainwin.cpp:316
 msgid "&Quit"
 msgstr "&Ukončit"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:318
+#: ../src/qtui/mainwin.cpp:317
 msgid "Ctrl+Q"
 msgstr "Ctrl+Q"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:321
+#: ../src/qtui/mainwin.cpp:320
 msgid "&Configure Chat Lists..."
 msgstr "&Nastavit seznam pokeců..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:328
+#: ../src/qtui/mainwin.cpp:327
 msgid "Show &Search Bar"
 msgstr "Zobrazit vy&hledávání"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:315
+#: ../src/qtui/mainwin.cpp:314
 msgid "Configure &Networks..."
 msgstr "Nastavit &sítě..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:324
+#: ../src/qtui/mainwin.cpp:323
 msgid "&Lock Layout"
 msgstr "U&zamknout rozvržení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:330
+#: ../src/qtui/mainwin.cpp:329
 msgid "Show Away Log"
 msgstr "Zobrazit Log pro Pryč"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:332
+#: ../src/qtui/mainwin.cpp:331
 msgid "Show &Menubar"
 msgstr "Zobrazit Hlavní &nabídku"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:333
+#: ../src/qtui/mainwin.cpp:332
 msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:335
+#: ../src/qtui/mainwin.cpp:334
 msgid "Show Status &Bar"
 msgstr "Zo&brazit stavový řádek"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:339
+#: ../src/qtui/mainwin.cpp:338
 msgid "&Configure Quassel..."
 msgstr "&Nastavit Quassel..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:340
+#: ../src/qtui/mainwin.cpp:339
 msgid "F7"
 msgstr "F7"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:343
+#: ../src/qtui/mainwin.cpp:342
 msgid "&About Quassel"
 msgstr "O progr&amu Quassel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:345
+#: ../src/qtui/mainwin.cpp:344
 msgid "About &Qt"
 msgstr "O &Qt"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:347
+#: ../src/qtui/mainwin.cpp:346
 msgid "Debug &NetworkModel"
 msgstr "Ladění Sít&ového-Modelu"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:349
+#: ../src/qtui/mainwin.cpp:348
 msgid "Debug &BufferViewOverlay"
 msgstr "Ladění vrstvy P&ohledu na záložky"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:351
+#: ../src/qtui/mainwin.cpp:350
 msgid "Debug &MessageModel"
 msgstr "Ladění &Modelu-Zpráv"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:353
+#: ../src/qtui/mainwin.cpp:352
 msgid "Debug &HotList"
 msgstr "Ladění &Seznamů rozhovorů"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:354
 msgid "Debug &Log"
 msgstr "Ladící &Log"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:356
 msgid "Reload Stylesheet"
 msgstr "Pře-načíst styl"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:360
 msgid "Jump to hot chat"
 msgstr "Přejít na další aktivní záložku"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:367
 msgid "&File"
 msgstr "S&oubor"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:380
 msgid "&Networks"
 msgstr "&Sítě"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:387
+#: ../src/qtui/mainwin.cpp:386
 msgid "&View"
 msgstr "&Záložky"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:388
+#: ../src/qtui/mainwin.cpp:387
 msgid "&Chat Lists"
 msgstr "&Seznam pokeců"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:389
 msgid "&Toolbars"
 msgstr "Liš&ty"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:404
+#: ../src/qtui/mainwin.cpp:403
 msgid "&Settings"
 msgstr "Na&stavení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:411
+#: ../src/qtui/mainwin.cpp:410
 msgid "&Help"
 msgstr "&Nápověda"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:419
+#: ../src/qtui/mainwin.cpp:418
 msgid "Debug"
 msgstr "Debug"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:564
+#: ../src/qtui/mainwin.cpp:563
 msgid "Nicks"
 msgstr "Přezdívky"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:573
+#: ../src/qtui/mainwin.cpp:572
 msgid "Show Nick List"
 msgstr "Zobrazit seznam přezdívek"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:584
+#: ../src/qtui/mainwin.cpp:583
 msgid "Chat Monitor"
 msgstr "Monitor pokecu"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:595
+#: ../src/qtui/mainwin.cpp:594
 msgid "Show Chat Monitor"
 msgstr "Zobrazí monitor pokecu"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:599
+#: ../src/qtui/mainwin.cpp:598
 msgid "Inputline"
 msgstr "Vstupní řádka"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:608
+#: ../src/qtui/mainwin.cpp:607
 msgid "Show Input Line"
 msgstr "Zobrazit řádku se vstupem"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:619
+#: ../src/qtui/mainwin.cpp:618
 msgid "Topic"
 msgstr "Téma"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:631
+#: ../src/qtui/mainwin.cpp:630
 msgid "Show Topic Line"
 msgstr "Zobrazit řádek s tématem"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:697
+#: ../src/qtui/mainwin.cpp:696
 msgid "Main Toolbar"
 msgstr "Hlavní nástrojová lišta"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:736
+#: ../src/qtui/mainwin.cpp:735
 msgid "Connected to core."
 msgstr "Připojen k jádru."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:818 ../src/qtui/mainwin.cpp:826
+#: ../src/qtui/mainwin.cpp:817 ../src/qtui/mainwin.cpp:825
 msgid "Unencrypted Connection"
 msgstr "Nešifrované spojení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:818
+#: ../src/qtui/mainwin.cpp:817
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>Váš klient nepodporuje šifrování skrze SSL</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:820 ../src/qtui/mainwin.cpp:828
+#: ../src/qtui/mainwin.cpp:819 ../src/qtui/mainwin.cpp:827
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
@@ -3859,17 +3831,17 @@ msgstr ""
 "šifrování."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:826
+#: ../src/qtui/mainwin.cpp:825
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Vaše jádro nepodporuje šifrování skrze SSL</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:843 ../src/qtui/mainwin.cpp:863
+#: ../src/qtui/mainwin.cpp:842 ../src/qtui/mainwin.cpp:862
 msgid "Untrusted Security Certificate"
 msgstr "Nedůvěryhodný bezpečnostní certifikát"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:844
+#: ../src/qtui/mainwin.cpp:843
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
@@ -3878,17 +3850,17 @@ msgstr ""
 "důvodů:</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:847
+#: ../src/qtui/mainwin.cpp:846
 msgid "Continue"
 msgstr "Pokračovat"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:848
+#: ../src/qtui/mainwin.cpp:847
 msgid "Show Certificate"
 msgstr "Zobrazit certifikát"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:864
+#: ../src/qtui/mainwin.cpp:863
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr ""
@@ -3896,22 +3868,22 @@ msgstr ""
 "schvalování?"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:866
+#: ../src/qtui/mainwin.cpp:865
 msgid "Current Session Only"
 msgstr "Pouze současné sezení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:867
+#: ../src/qtui/mainwin.cpp:866
 msgid "Forever"
 msgstr "Navždy"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:876
+#: ../src/qtui/mainwin.cpp:875
 msgid "Core Connection Error"
 msgstr "Chyba spojení s jádrem"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:804
+#: ../src/qtui/mainwin.cpp:803
 msgid "Not connected to core."
 msgstr "Nepřipojen k jádru."
 
@@ -4089,8 +4061,8 @@ msgstr "Sítě"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
-msgid "Misc"
-msgstr "Různé"
+msgid "IRC"
+msgstr "IRC"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:160
@@ -4741,17 +4713,17 @@ msgstr "Proxy - Heslo:"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/ui/settingsdlg.ui:34 ../src/qtui/ui/settingsdlg.ui:49
-#: ../src/qtui/settingsdlg.cpp:77
+#: ../src/qtui/settingsdlg.cpp:99
 msgid "Settings"
 msgstr "Nastavení"
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:87
+#: ../src/qtui/settingsdlg.cpp:109
 msgid "Save changes"
 msgstr "Uložit změny"
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:88
+#: ../src/qtui/settingsdlg.cpp:110
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
@@ -4759,29 +4731,29 @@ msgstr ""
 "Na této konfigurační stránce jsou neuložené změny. Přejete si je uložit?"
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:100 ../src/qtui/settingsdlg.cpp:104
+#: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 msgid "Configure %1"
 msgstr "Nastavit %1"
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:171
+#: ../src/qtui/settingsdlg.cpp:193
 msgid "Reload Settings"
 msgstr "Znovu načíst nastavení"
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:171
+#: ../src/qtui/settingsdlg.cpp:193
 msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 "Opravdu chcete znovu načíst nastavení (Odstraní všechny změny od posledního "
 "uložení)?"
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:180
+#: ../src/qtui/settingsdlg.cpp:202
 msgid "Restore Defaults"
 msgstr "Obnovit výchozí"
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:180
+#: ../src/qtui/settingsdlg.cpp:202
 msgid "Do you like to restore the default values for this page?"
 msgstr "Opravdu chcete obnovit výchozí nastavení pro tuto stránku?"
 
@@ -5479,322 +5451,3 @@ msgstr[0] "%n Uživatel"
 msgstr[1] "%n Uživatelé"
 msgstr[2] "%n  Uživatelů"
 
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "The Quassel Core you try to connect to is too old! Please consider "
-#~ "upgrading."
-#~ msgstr ""
-#~ "Jádro ke kterému se připojujete je příliš staré! Prosím zvažte jeho "
-#~ "aktualizaci."
-
-#. ts-context ClientSyncer
-#~ msgid "<b>Invalid data received from core!</b><br>Disconnecting."
-#~ msgstr "<b>Od jádra přišla špatná data!</b><br>Odpojuji se."
-
-#. ts-context ClientSyncer
-#~ msgid "No Host to connect to specified."
-#~ msgstr "Nebyl specifikován počítač ke kterému se mám připojit."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>This client is built without SSL Support!</b><br />Disable the usage "
-#~ "of SSL in the account settings."
-#~ msgstr ""
-#~ "<b>Tento klient je sestaven bez podpory SSL!</b><br />Vypněte používání "
-#~ "SSL v nastavení účtu."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need "
-#~ "at least core/client protocol v%1 to connect."
-#~ msgstr ""
-#~ "<b>Jádro ke kterému se připojujete je příliš staré!</b><br>Pro připojení "
-#~ "je potřeba alespoň protokol jádra/klienta v%1."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>The Quassel Core you are trying to connect to does not support "
-#~ "SSL!</b><br />If you want to connect anyways, disable the usage of SSL in "
-#~ "the account settings."
-#~ msgstr ""
-#~ "<b>Jádro ke kterému se připojujete nepodporuje SSL!</b><br />Pokud se "
-#~ "chcete stejně připojit, vypněte používání SSL v nastavení účtu."
-
-#. ts-context ClientSyncer
-#~ msgid "Logging in..."
-#~ msgstr "Přihlašuji..."
-
-#. ts-context ClientSyncer
-#~ msgid ""
-#~ "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-#~ msgstr ""
-#~ "<b>Verze jádra %1</b><br>Sestavení: %2<br>Doba běhu %3d%4h%5m (od %6)"
-
-#. ts-context ClientSyncer
-#~ msgid "Cert Digest changed! was: %1"
-#~ msgstr "Kontrolní součet certifikátu se změnil! byl: %1"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Use secure connection (SSL)"
-#~ msgstr "Použít zabezpečené spojení (SSL)"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Use a proxy:"
-#~ msgstr "Použít proxy:"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Host:"
-#~ msgstr "Počítač:"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Port:"
-#~ msgstr "Port:"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Username:"
-#~ msgstr "Uživatelské jméno:"
-
-#. ts-context CoreAccountEditDlg
-#~ msgid "Proxy Password:"
-#~ msgstr "Heslo:"
-
-#. ts-context CoreConfigWizardAdminUserPage
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" "
-#~ "font-size:10pt; font-weight:600;\">Note: </span><span style=\" "
-#~ "font-size:10pt;\">Adding more users and changing your username/password "
-#~ "is not possible via Quassel's interface yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:10pt;\">If you need to do these "
-#~ "things have a look at the manageusers.py script which is located in the "
-#~ "/scripts directory.</p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" "
-#~ "font-size:10pt; font-weight:600;\">Poznámka: </span><span style=\" "
-#~ "font-size:10pt;\">Přidávání více uživatelů a změna uživatelského jména a "
-#~ "hesla není v současné době uskutečnitelná skrze grafické rozhraní "
-#~ "Quassel.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-family:'Lucida Grande'; font-size:10pt;\">\n"
-#~ "Pokud některou z těchto činností potřebujete provést vyzkoušejte skript "
-#~ "manageusers.py z adresáře /scripts.</p></body></html>"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Remove Account Settings"
-#~ msgstr "Odstranit nastavení účtu"
-
-#. ts-context CoreConnectDlg
-#~ msgid ""
-#~ "Do you really want to remove your local settings for this Quassel Core "
-#~ "account?<br>Note: This will <em>not</em> remove or change any data on the "
-#~ "Core itself!"
-#~ msgstr ""
-#~ "Opravdu chcete smazat vaše lokální nastavení pro účet jádra?<br>Poznámka: "
-#~ "Tato akce <em>neodebere</em> ani <em>nezmění</em> přímo data uložena v "
-#~ "jádru!"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connect to %1"
-#~ msgstr "Spojit s %1"
-
-#. ts-context CoreConnectDlg
-#~ msgid "<div style=color:red;>Connection to %1 failed!</div>"
-#~ msgstr "<div style=color:red;>Připojení k %1 selhalo!</div>"
-
-#. ts-context CoreConnectDlg
-#~ msgid "<div>Errors occurred while connecting to \"%1\":</div>"
-#~ msgstr "<div>Při spojení s \"%1\" nastaly chyby:</div>"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Not connected to %1."
-#~ msgstr "Nepřipojeno k %1."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Looking up %1..."
-#~ msgstr "Vyhledávám %1..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connecting to %1..."
-#~ msgstr "Připojuji se %1..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connected to %1"
-#~ msgstr "Připojeno k %1"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Unknown connection state to %1"
-#~ msgstr "Neznámý stav spojení k %1"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Logging in..."
-#~ msgstr "Přihlašuji..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Login"
-#~ msgstr "Přihlášení"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connect to Quassel Core"
-#~ msgstr "Připojit ke Quassel jádru"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Edit..."
-#~ msgstr "Upravit..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Add..."
-#~ msgstr "Přidat..."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Delete"
-#~ msgstr "Smazat"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Use internal core"
-#~ msgstr "Použít interní jádro"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Always use this account"
-#~ msgstr "Vždy používat tento účet"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Initializing your connection"
-#~ msgstr "Inicializuji Vaše spojení"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Connected to apollo.mindpool.net."
-#~ msgstr "Připojeno k apollo.mindpool.net."
-
-#. ts-context CoreConnectDlg
-#~ msgid "User:"
-#~ msgstr "Uživatel:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Password:"
-#~ msgstr "Heslo:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Remember"
-#~ msgstr "Pamatovat"
-
-#. ts-context CoreConnectDlg
-#~ msgid "View SSL Certificate"
-#~ msgstr "Zobrazit SSL Certifikát"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Add to known hosts"
-#~ msgstr "Přidat mezi známé počítače"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Continue connection"
-#~ msgstr "Pokračovat ve spojení"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Configure your Quassel Core"
-#~ msgstr "Nastavit Quassel jádro"
-
-#. ts-context CoreConnectDlg
-#~ msgid ""
-#~ "The Quassel Core you are connected to is not configured yet. You may now "
-#~ "launch a configuration wizard that helps you setting up your Core."
-#~ msgstr ""
-#~ "Jádro ke kterému jste připojeni ještě není nastaveno. Měli byste spustit "
-#~ "konfiguračního průvodce který vám pomůže jej nastavit."
-
-#. ts-context CoreConnectDlg
-#~ msgid "Launch Wizard"
-#~ msgstr "Spustit průvodce"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Initializing your session..."
-#~ msgstr "Aktivuji vaše sezení..."
-
-#. ts-context CoreConnectDlg
-#~ msgid ""
-#~ "<b>Please be patient while your client synchronizes with the Quassel "
-#~ "Core!</b>"
-#~ msgstr "<b>Prosím vyčkejte dokud se klient nesynchronizuje s jádrem!</b>"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Session state:"
-#~ msgstr "Stav sezení:"
-
-#. ts-context CoreConnectDlg
-#~ msgid "Network states:"
-#~ msgstr "Stavy sítě:"
-
-#. ts-context MainWin
-#~ msgid "Core Lag: %1"
-#~ msgstr "Zpoždění jádra: %1"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "SSL Certificate used by %1"
-#~ msgstr "SSL Certifikát užívaný %1"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Issuer Info"
-#~ msgstr "Informace o vydavateli"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Organization:"
-#~ msgstr "Organizace:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Locality Name:"
-#~ msgstr "Jméno lokality:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Organizational Unit Name:"
-#~ msgstr "Jméno organizační jednotky:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Country Name:"
-#~ msgstr "Název státu:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "State or Province Name:"
-#~ msgstr "Název státu či provincie:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Subject Info"
-#~ msgstr "Informace o objektu"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Additional Info"
-#~ msgstr "Další informace"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Valid From:"
-#~ msgstr "Validní od:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Valid To:"
-#~ msgstr "Validní do:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "E-Mail Address %1:"
-#~ msgstr "E-Mailová adresa %1:"
-
-#. ts-context SslCertDisplayDialog
-#~ msgid "Digest:"
-#~ msgstr "Souhrn:"

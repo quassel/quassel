@@ -195,7 +195,7 @@ msgstr ""
 #. ts-context AliasesSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
 #, fuzzy
-msgid "Misc"
+msgid "IRC"
 msgstr ""
 
 #. ts-context AliasesSettingsPage
@@ -211,13 +211,13 @@ msgid "Form"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:20
+#: ../src/qtui/settingspages/appearancesettingspage.ui:22
 #, fuzzy
-msgid "Client Style"
+msgid "Client style:"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:26
+#: ../src/qtui/settingspages/appearancesettingspage.ui:29
 #, fuzzy
 msgid "Set application style"
 msgstr ""
@@ -225,54 +225,108 @@ msgstr ""
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:36
 #, fuzzy
-msgid "Language"
+msgid "Language:"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:42
+#: ../src/qtui/settingspages/appearancesettingspage.ui:43
 #, fuzzy
 msgid "Set the application language. Requires restart!"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:46
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:53
+#: ../src/qtui/settingspages/appearancesettingspage.ui:47
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:71
 #, fuzzy
 msgid "<System Default>"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:51
+#: ../src/qtui/settingspages/appearancesettingspage.ui:52
 #, fuzzy
 msgid "<Original>"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:62
+#: ../src/qtui/settingspages/appearancesettingspage.ui:75
 #, fuzzy
-msgid "Use Custom Stylesheet"
+msgid "Use custom stylesheet"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:82
+#: ../src/qtui/settingspages/appearancesettingspage.ui:109
 #, fuzzy
 msgid "Path:"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:108
+#: ../src/qtui/settingspages/appearancesettingspage.ui:141
 #, fuzzy
 msgid "..."
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:34
+#: ../src/qtui/settingspages/appearancesettingspage.ui:150
+#, fuzzy
+msgid "Show system tray icon"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:184
+#, fuzzy
+msgid "Hide to tray on close button"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:199
+#, fuzzy
+msgid "Message Redirection"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:205
+#, fuzzy
+msgid "User Notices:"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:248
+#, fuzzy
+msgid "Server Notices:"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:262
+#, fuzzy
+msgid "Default Target"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:269
+#, fuzzy
+msgid "Status Window"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:276
+#, fuzzy
+msgid "Current Chat"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:283
+#, fuzzy
+msgid "Errors:"
+msgstr ""
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 #, fuzzy
 msgid "Interface"
 msgstr ""
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:151
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:214
 #, fuzzy
 msgid "Please choose a stylesheet file"
 msgstr ""
@@ -437,13 +491,13 @@ msgstr ""
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 #, fuzzy
-msgid "Misc"
+msgid "Interface"
 msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 #, fuzzy
-msgid "Backlog"
+msgid "Backlog Fetching"
 msgstr ""
 
 #. ts-context BufferItem
@@ -616,7 +670,7 @@ msgstr ""
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 #, fuzzy
-msgid "Misc"
+msgid "Interface"
 msgstr ""
 
 #. ts-context BufferViewSettingsPage
@@ -1194,13 +1248,7 @@ msgstr ""
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 #, fuzzy
-msgid "Misc"
-msgstr ""
-
-#. ts-context ConnectionSettingsPage
-#: ../src/qtui/settingspages/connectionsettingspage.cpp:27
-#, fuzzy
-msgid "Connection"
+msgid "IRC"
 msgstr ""
 
 #. ts-context ContentsChatItem
@@ -1755,7 +1803,6 @@ msgstr ""
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:30
-#: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #, fuzzy
 msgid "Core Accounts"
 msgstr ""
@@ -1799,7 +1846,7 @@ msgstr ""
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #, fuzzy
-msgid "Misc"
+msgid "Remote Cores"
 msgstr ""
 
 #. ts-context CoreConfigWizard
@@ -2599,84 +2646,6 @@ msgstr ""
 msgid "Choose..."
 msgstr ""
 
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:14
-#, fuzzy
-msgid "Form"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:20
-#, fuzzy
-msgid "Show System Tray Icon"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:29
-#, fuzzy
-msgid "Hide to tray on close button"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:39
-#, fuzzy
-msgid "Tray Icon"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:45
-#, fuzzy
-msgid "Show system tray icon"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:58
-#, fuzzy
-msgid "Message Redirection"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:64
-#, fuzzy
-msgid "User Notices:"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:107
-#, fuzzy
-msgid "Server Notices:"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:121
-#, fuzzy
-msgid "Default Target"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:128
-#, fuzzy
-msgid "Status Window"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:135
-#, fuzzy
-msgid "Current Chat"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:142
-#, fuzzy
-msgid "Errors:"
-msgstr ""
-
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.cpp:28
-#, fuzzy
-msgid "Misc"
-msgstr ""
-
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:13
 #, fuzzy
@@ -2809,7 +2778,7 @@ msgstr ""
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 #, fuzzy
-msgid "Misc"
+msgid "IRC"
 msgstr ""
 
 #. ts-context IdentitiesSettingsPage
@@ -3502,7 +3471,7 @@ msgstr ""
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 #, fuzzy
-msgid "Misc"
+msgid "IRC"
 msgstr ""
 
 #. ts-context IgnoreListSettingsPage
@@ -4013,277 +3982,277 @@ msgid "Other activity"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:309
+#: ../src/qtui/mainwin.cpp:308
 #, fuzzy
 msgid "&Connect to Core..."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:311
+#: ../src/qtui/mainwin.cpp:310
 #, fuzzy
 msgid "&Disconnect from Core"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:313
+#: ../src/qtui/mainwin.cpp:312
 #, fuzzy
 msgid "Core &Info..."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:315
+#: ../src/qtui/mainwin.cpp:314
 #, fuzzy
 msgid "Configure &Networks..."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:317
+#: ../src/qtui/mainwin.cpp:316
 #, fuzzy
 msgid "&Quit"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:318
+#: ../src/qtui/mainwin.cpp:317
 #, fuzzy
 msgid "Ctrl+Q"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:321
+#: ../src/qtui/mainwin.cpp:320
 #, fuzzy
 msgid "&Configure Chat Lists..."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:324
+#: ../src/qtui/mainwin.cpp:323
 #, fuzzy
 msgid "&Lock Layout"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:328
+#: ../src/qtui/mainwin.cpp:327
 #, fuzzy
 msgid "Show &Search Bar"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:330
+#: ../src/qtui/mainwin.cpp:329
 #, fuzzy
 msgid "Show Away Log"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:332
+#: ../src/qtui/mainwin.cpp:331
 #, fuzzy
 msgid "Show &Menubar"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:333
+#: ../src/qtui/mainwin.cpp:332
 #, fuzzy
 msgid "Ctrl+M"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:335
+#: ../src/qtui/mainwin.cpp:334
 #, fuzzy
 msgid "Show Status &Bar"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:339
+#: ../src/qtui/mainwin.cpp:338
 #, fuzzy
 msgid "&Configure Quassel..."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:340
+#: ../src/qtui/mainwin.cpp:339
 #, fuzzy
 msgid "F7"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:343
+#: ../src/qtui/mainwin.cpp:342
 #, fuzzy
 msgid "&About Quassel"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:345
+#: ../src/qtui/mainwin.cpp:344
 #, fuzzy
 msgid "About &Qt"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:347
+#: ../src/qtui/mainwin.cpp:346
 #, fuzzy
 msgid "Debug &NetworkModel"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:349
+#: ../src/qtui/mainwin.cpp:348
 #, fuzzy
 msgid "Debug &BufferViewOverlay"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:351
+#: ../src/qtui/mainwin.cpp:350
 #, fuzzy
 msgid "Debug &MessageModel"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:353
+#: ../src/qtui/mainwin.cpp:352
 #, fuzzy
 msgid "Debug &HotList"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:354
 #, fuzzy
 msgid "Debug &Log"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:356
 #, fuzzy
 msgid "Reload Stylesheet"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:360
 #, fuzzy
 msgid "Jump to hot chat"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:367
 #, fuzzy
 msgid "&File"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:380
 #, fuzzy
 msgid "&Networks"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:387
+#: ../src/qtui/mainwin.cpp:386
 #, fuzzy
 msgid "&View"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:388
+#: ../src/qtui/mainwin.cpp:387
 #, fuzzy
 msgid "&Chat Lists"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:389
 #, fuzzy
 msgid "&Toolbars"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:404
+#: ../src/qtui/mainwin.cpp:403
 #, fuzzy
 msgid "&Settings"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:411
+#: ../src/qtui/mainwin.cpp:410
 #, fuzzy
 msgid "&Help"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:419
+#: ../src/qtui/mainwin.cpp:418
 #, fuzzy
 msgid "Debug"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:564
+#: ../src/qtui/mainwin.cpp:563
 #, fuzzy
 msgid "Nicks"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:573
+#: ../src/qtui/mainwin.cpp:572
 #, fuzzy
 msgid "Show Nick List"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:584
+#: ../src/qtui/mainwin.cpp:583
 #, fuzzy
 msgid "Chat Monitor"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:595
+#: ../src/qtui/mainwin.cpp:594
 #, fuzzy
 msgid "Show Chat Monitor"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:599
+#: ../src/qtui/mainwin.cpp:598
 #, fuzzy
 msgid "Inputline"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:608
+#: ../src/qtui/mainwin.cpp:607
 #, fuzzy
 msgid "Show Input Line"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:619
+#: ../src/qtui/mainwin.cpp:618
 #, fuzzy
 msgid "Topic"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:631
+#: ../src/qtui/mainwin.cpp:630
 #, fuzzy
 msgid "Show Topic Line"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:697
+#: ../src/qtui/mainwin.cpp:696
 #, fuzzy
 msgid "Main Toolbar"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:736
+#: ../src/qtui/mainwin.cpp:735
 #, fuzzy
 msgid "Connected to core."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:804
+#: ../src/qtui/mainwin.cpp:803
 #, fuzzy
 msgid "Not connected to core."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:818 ../src/qtui/mainwin.cpp:826
+#: ../src/qtui/mainwin.cpp:817 ../src/qtui/mainwin.cpp:825
 #, fuzzy
 msgid "Unencrypted Connection"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:818
+#: ../src/qtui/mainwin.cpp:817
 #, fuzzy
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:820 ../src/qtui/mainwin.cpp:828
+#: ../src/qtui/mainwin.cpp:819 ../src/qtui/mainwin.cpp:827
 #, fuzzy
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
@@ -4291,19 +4260,19 @@ msgid ""
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:826
+#: ../src/qtui/mainwin.cpp:825
 #, fuzzy
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:843 ../src/qtui/mainwin.cpp:863
+#: ../src/qtui/mainwin.cpp:842 ../src/qtui/mainwin.cpp:862
 #, fuzzy
 msgid "Untrusted Security Certificate"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:844
+#: ../src/qtui/mainwin.cpp:843
 #, fuzzy
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
@@ -4311,38 +4280,38 @@ msgid ""
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:847
+#: ../src/qtui/mainwin.cpp:846
 #, fuzzy
 msgid "Continue"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:848
+#: ../src/qtui/mainwin.cpp:847
 #, fuzzy
 msgid "Show Certificate"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:864
+#: ../src/qtui/mainwin.cpp:863
 #, fuzzy
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:866
+#: ../src/qtui/mainwin.cpp:865
 #, fuzzy
 msgid "Current Session Only"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:867
+#: ../src/qtui/mainwin.cpp:866
 #, fuzzy
 msgid "Forever"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:876
+#: ../src/qtui/mainwin.cpp:875
 #, fuzzy
 msgid "Core Connection Error"
 msgstr ""
@@ -4789,7 +4758,7 @@ msgstr ""
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
 #, fuzzy
-msgid "Misc"
+msgid "IRC"
 msgstr ""
 
 #. ts-context NetworksSettingsPage
@@ -5301,19 +5270,19 @@ msgstr ""
 
 #. ts-context SettingsDlg
 #: ../src/qtui/ui/settingsdlg.ui:34 ../src/qtui/ui/settingsdlg.ui:49
-#: ../src/qtui/settingsdlg.cpp:77
+#: ../src/qtui/settingsdlg.cpp:99
 #, fuzzy
 msgid "Settings"
 msgstr ""
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:87
+#: ../src/qtui/settingsdlg.cpp:109
 #, fuzzy
 msgid "Save changes"
 msgstr ""
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:88
+#: ../src/qtui/settingsdlg.cpp:110
 #, fuzzy
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
@@ -5321,31 +5290,31 @@ msgid ""
 msgstr ""
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:100 ../src/qtui/settingsdlg.cpp:104
+#: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #, fuzzy
 msgid "Configure %1"
 msgstr ""
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:171
+#: ../src/qtui/settingsdlg.cpp:193
 #, fuzzy
 msgid "Reload Settings"
 msgstr ""
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:171
+#: ../src/qtui/settingsdlg.cpp:193
 #, fuzzy
 msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:180
+#: ../src/qtui/settingsdlg.cpp:202
 #, fuzzy
 msgid "Restore Defaults"
 msgstr ""
 
 #. ts-context SettingsDlg
-#: ../src/qtui/settingsdlg.cpp:180
+#: ../src/qtui/settingsdlg.cpp:202
 #, fuzzy
 msgid "Do you like to restore the default values for this page?"
 msgstr ""
