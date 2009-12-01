@@ -31,7 +31,7 @@
 #include "iconloader.h"
 
 IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Misc"), tr("Ignore List"), parent)
+  : SettingsPage(tr("IRC"), tr("Ignore List"), parent)
 {
   ui.setupUi(this);
   _delegate = new IgnoreListDelegate(ui.ignoreListView);

@@ -67,6 +67,12 @@ public:
   //! The title of this settings page.
   inline virtual QString title() const { return _title; }
 
+  //! Whether the settingspage needs a core connection to be selectable
+  /** This is a hint for the settingspage dialog. Do not rely on the settingspage not being
+   *  visible if disconnected, and care about disabling it yourself.
+   */
+  inline virtual bool needsCoreConnection() const { return false; }
+
   //! The key this settings page stores its values under
   /** This needs to be overriden to enable automatic loading/saving/hasChanged checking of widgets.
    *  The child widgets' values will be stored in client settings under this key. Every widget that

@@ -33,8 +33,8 @@
 
 #include "settingspages/identitiessettingspage.h"
 
-NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) 
-: SettingsPage(tr("Misc"), tr("Networks"), parent) {
+NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
+: SettingsPage(tr("IRC"), tr("Networks"), parent) {
   ui.setupUi(this);
 
   // set up icons
@@ -316,7 +316,7 @@ void NetworksSettingsPage::clientIdentityRemoved(IdentityId id) {
   foreach(NetworkInfo info, networkInfos.values()) {
     if(info.identity == id) {
       if(info.networkId == currentId)
-	ui.identityList->setCurrentIndex(0);
+        ui.identityList->setCurrentIndex(0);
       info.identity = defaultId;
       networkInfos[info.networkId] = info;
       if(info.networkId > 0) Client::updateNetwork(info);

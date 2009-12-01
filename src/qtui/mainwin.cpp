@@ -112,7 +112,6 @@
 #include "settingspages/chatviewsettingspage.h"
 #include "settingspages/connectionsettingspage.h"
 #include "settingspages/coreaccountsettingspage.h"
-#include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
 #include "settingspages/ignorelistsettingspage.h"
@@ -938,23 +937,23 @@ void MainWin::showSettingsDlg() {
   //Category: Interface
   dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
   dlg->registerSettingsPage(new ChatViewSettingsPage(dlg));
+  dlg->registerSettingsPage(new ChatMonitorSettingsPage(dlg));
   dlg->registerSettingsPage(new ItemViewSettingsPage(dlg));
+  dlg->registerSettingsPage(new BufferViewSettingsPage(dlg));
   dlg->registerSettingsPage(new InputWidgetSettingsPage(dlg));
   dlg->registerSettingsPage(new TopicWidgetSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
   dlg->registerSettingsPage(new BacklogSettingsPage(dlg));
-  dlg->registerSettingsPage(new BufferViewSettingsPage(dlg));
-  dlg->registerSettingsPage(new ChatMonitorSettingsPage(dlg));
 
-  //Category: Misc
-  dlg->registerSettingsPage(new GeneralSettingsPage(dlg));
+  //Category: IRC
   dlg->registerSettingsPage(new ConnectionSettingsPage(dlg));
   dlg->registerSettingsPage(new IdentitiesSettingsPage(dlg));
   dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
   dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
   dlg->registerSettingsPage(new IgnoreListSettingsPage(dlg));
 
+  // Category: Remote Cores
   if(Quassel::runMode() != Quassel::Monolithic) {
     dlg->registerSettingsPage(new CoreAccountSettingsPage(dlg));
   }

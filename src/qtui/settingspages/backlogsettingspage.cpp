@@ -24,7 +24,7 @@
 #include "backlogsettings.h"
 
 BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Misc"), tr("Backlog"), parent)
+  : SettingsPage(tr("Interface"), tr("Backlog Fetching"), parent)
 {
   ui.setupUi(this);
   initAutoWidgets();

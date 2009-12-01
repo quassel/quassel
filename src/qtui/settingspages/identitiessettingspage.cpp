@@ -28,7 +28,7 @@
 #include "signalproxy.h"
 
 IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Misc"), tr("Identities"), parent),
+  : SettingsPage(tr("IRC"), tr("Identities"), parent),
     _editSsl(false)
 {
   ui.setupUi(this);
@@ -159,7 +159,7 @@ bool IdentitiesSettingsPage::testHasChanged() {
       ui.identityEditor->saveToIdentity(&temp);
       temp.setIdentityName(identities[currentId]->identityName());
       if(temp != *Client::identity(currentId) || temp.isDirty())
-	changedIdentities.append(currentId);
+        changedIdentities.append(currentId);
     }
     return changedIdentities.count();
   }

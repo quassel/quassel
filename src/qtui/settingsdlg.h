@@ -40,6 +40,7 @@ public slots:
   void selectPage(SettingsPage *sp); // const QString &category, const QString &title);
 
 private slots:
+  void coreConnectionStateChanged();
   void itemSelected();
   void buttonClicked(QAbstractButton *);
   bool applyChanges();
@@ -47,10 +48,11 @@ private slots:
   void reload();
   void loadDefaults();
   void setButtonStates();
-  
+  void setItemState(QTreeWidgetItem *);
+
 private:
   Ui::SettingsDlg ui;
-  
+
   SettingsPage *_currentPage;
   QHash<SettingsPage *, bool> pageIsLoaded;
 

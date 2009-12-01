@@ -26,7 +26,7 @@
 #include "iconloader.h"
 
 CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
-: SettingsPage(tr("Misc"), tr("Core Accounts"), parent),
+: SettingsPage(tr("Remote Cores"), QString(), parent),
 _lastAccountId(0),
 _lastAutoConnectId(0),
 _standalone(false)

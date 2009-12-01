@@ -33,6 +33,7 @@ public:
   AliasesSettingsPage(QWidget *parent = 0);
 
   virtual inline bool hasDefaults() const { return true; }
+  virtual inline bool needsCoreConnection() const { return true; }
 
 public slots:
   void save();

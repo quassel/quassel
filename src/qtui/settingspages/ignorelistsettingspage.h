@@ -75,6 +75,7 @@ public:
   IgnoreListSettingsPage(QWidget *parent = 0);
   ~IgnoreListSettingsPage();
   virtual inline bool hasDefaults() const { return false; }
+  virtual inline bool needsCoreConnection() const { return true; }
   void editIgnoreRule(const QString &ignoreRule);
 
 public slots:

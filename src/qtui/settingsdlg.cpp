@@ -20,6 +20,7 @@
 
 #include "settingsdlg.h"
 
+#include "client.h"
 #include "iconloader.h"
 
 SettingsDlg::SettingsDlg(QWidget *parent)
@@ -38,7 +39,26 @@ SettingsDlg::SettingsDlg(QWidget *parent)
   connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelected()));
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 
+  connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), SLOT(coreConnectionStateChanged()));
+
   setButtonStates();
+}
+
+void SettingsDlg::coreConnectionStateChanged() {
+  for(int i = 0; i < ui.settingsTree->topLevelItemCount(); i++) {
+    QTreeWidgetItem *catItem = ui.settingsTree->topLevelItem(i);
+    for(int j = 0; j < catItem->childCount(); j++) {
+      QTreeWidgetItem *item = catItem->child(j);
+      setItemState(item);
+    }
+    setItemState(catItem);
+  }
+}
+
+void SettingsDlg::setItemState(QTreeWidgetItem *item) {
+  SettingsPage *sp = qobject_cast<SettingsPage *>(item->data(0, SettingsPageRole).value<QObject *>());
+  Q_ASSERT(sp);
+  item->setDisabled(!Client::isConnected() && sp->needsCoreConnection());
 }
 
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
@@ -68,6 +88,8 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   pageIsLoaded[sp] = false;
   if(!ui.settingsTree->selectedItems().count())
     ui.settingsTree->setCurrentItem(item);
+
+  setItemState(item);
 }
 
 void SettingsDlg::selectPage(SettingsPage *sp) {

@@ -1,7 +1,7 @@
 # Putting $FOO in SETTINGSPAGES automatically includes
 # $FOOsettingspage.cpp, $FOOsettingspage.h and $FOOsettingspage.ui
 
-set(SETTINGSPAGES aliases appearance backlog bufferview chatview connection chatmonitor coreaccount general 
+set(SETTINGSPAGES aliases appearance backlog bufferview chatview connection chatmonitor coreaccount
                   highlight identities ignorelist inputwidget itemview networks topicwidget)
 
 # Specify additional files (e.g. for subdialogs) here!

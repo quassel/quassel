@@ -33,7 +33,7 @@
 #include "util.h"
 
 BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Misc"), tr("Custom Chat Lists"), parent),
+  : SettingsPage(tr("Interface"), tr("Custom Chat Lists"), parent),
     _ignoreWidgetChanges(false),
     _useBufferViewHint(false),
     _bufferViewHint(0)
@@ -52,7 +52,7 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   coreConnectionStateChanged(Client::isConnected());  // need a core connection!
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
   connect(ui.bufferViewList->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-	  this, SLOT(bufferViewSelectionChanged(const QItemSelection &, const QItemSelection &)));
+          this, SLOT(bufferViewSelectionChanged(const QItemSelection &, const QItemSelection &)));
 
   connect(ui.onlyStatusBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.onlyChannelBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
@@ -353,16 +353,16 @@ void BufferViewSettingsPage::on_deleteBufferView_clicked() {
     } else if(config) {
       QList<BufferViewConfig *>::iterator iter = _newBufferViews.begin();
       while(iter != _newBufferViews.end()) {
-	if(*iter == config) {
-	  iter = _newBufferViews.erase(iter);
-	  break;
-	} else {
-	  iter++;
-	}
+        if(*iter == config) {
+          iter = _newBufferViews.erase(iter);
+          break;
+        } else {
+          iter++;
+        }
       }
       delete config;
       if(_deleteBufferViews.isEmpty() && _changedBufferViews.isEmpty() && _newBufferViews.isEmpty())
-	setChangedState(false);
+        setChangedState(false);
     }
   }
 }

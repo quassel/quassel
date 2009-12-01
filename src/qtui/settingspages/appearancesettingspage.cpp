@@ -20,6 +20,7 @@
 
 #include "appearancesettingspage.h"
 
+#include "buffersettings.h"
 #include "qtui.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
@@ -34,6 +35,11 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   : SettingsPage(tr("Interface"), QString(), parent)
 {
   ui.setupUi(this);
+
+#ifdef Q_WS_MAC
+  ui.minimizeOnClose->hide();
+#endif
+
   initAutoWidgets();
   initStyleComboBox();
   initLanguageComboBox();
@@ -46,6 +52,18 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   }
 
   connect(ui.chooseStyleSheet, SIGNAL(clicked()), SLOT(chooseStyleSheet()));
+
+  connect(ui.userNoticesInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.userNoticesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.userNoticesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+  connect(ui.serverNoticesInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.serverNoticesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.serverNoticesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+  connect(ui.errorMsgsInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.errorMsgsInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.errorMsgsInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 }
 
 void AppearanceSettingsPage::initStyleComboBox() {
@@ -99,6 +117,23 @@ void AppearanceSettingsPage::load() {
   ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
   Quassel::loadTranslation(selectedLocale());
 
+  // bufferSettings:
+  BufferSettings bufferSettings;
+  int redirectTarget = bufferSettings.userNoticesTarget();
+  SettingsPage::load(ui.userNoticesInDefaultBuffer, redirectTarget & BufferSettings::DefaultBuffer);
+  SettingsPage::load(ui.userNoticesInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
+  SettingsPage::load(ui.userNoticesInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
+
+  redirectTarget = bufferSettings.serverNoticesTarget();
+  SettingsPage::load(ui.serverNoticesInDefaultBuffer, redirectTarget & BufferSettings::DefaultBuffer);
+  SettingsPage::load(ui.serverNoticesInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
+  SettingsPage::load(ui.serverNoticesInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
+
+  redirectTarget = bufferSettings.errorMsgsTarget();
+  SettingsPage::load(ui.errorMsgsInDefaultBuffer, redirectTarget & BufferSettings::DefaultBuffer);
+  SettingsPage::load(ui.errorMsgsInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
+  SettingsPage::load(ui.errorMsgsInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
+
   SettingsPage::load();
   setChangedState(false);
 }
@@ -121,6 +156,34 @@ void AppearanceSettingsPage::save() {
   bool needsStyleReload =
         ui.useCustomStyleSheet->isChecked() != ui.useCustomStyleSheet->property("storedValue").toBool()
     || (ui.useCustomStyleSheet->isChecked() && ui.customStyleSheetPath->text() != ui.customStyleSheetPath->property("storedValue").toString());
+
+  BufferSettings bufferSettings;
+  int redirectTarget = 0;
+  if(ui.userNoticesInDefaultBuffer->isChecked())
+    redirectTarget |= BufferSettings::DefaultBuffer;
+  if(ui.userNoticesInStatusBuffer->isChecked())
+    redirectTarget |= BufferSettings::StatusBuffer;
+  if(ui.userNoticesInCurrentBuffer->isChecked())
+    redirectTarget |= BufferSettings::CurrentBuffer;
+  bufferSettings.setUserNoticesTarget(redirectTarget);
+
+  redirectTarget = 0;
+  if(ui.serverNoticesInDefaultBuffer->isChecked())
+    redirectTarget |= BufferSettings::DefaultBuffer;
+  if(ui.serverNoticesInStatusBuffer->isChecked())
+    redirectTarget |= BufferSettings::StatusBuffer;
+  if(ui.serverNoticesInCurrentBuffer->isChecked())
+    redirectTarget |= BufferSettings::CurrentBuffer;
+  bufferSettings.setServerNoticesTarget(redirectTarget);
+
+  redirectTarget = 0;
+  if(ui.errorMsgsInDefaultBuffer->isChecked())
+    redirectTarget |= BufferSettings::DefaultBuffer;
+  if(ui.errorMsgsInStatusBuffer->isChecked())
+    redirectTarget |= BufferSettings::StatusBuffer;
+  if(ui.errorMsgsInCurrentBuffer->isChecked())
+    redirectTarget |= BufferSettings::CurrentBuffer;
+  bufferSettings.setErrorMsgsTarget(redirectTarget);
 
   SettingsPage::save();
   setChangedState(false);
@@ -161,6 +224,18 @@ bool AppearanceSettingsPage::testHasChanged() {
   if(ui.styleComboBox->currentIndex() != ui.styleComboBox->property("storedValue").toInt()) return true;
 
   if(selectedLocale() != QLocale()) return true; // QLocale() returns the default locale (manipulated via loadTranslation())
+
+  if(SettingsPage::hasChanged(ui.userNoticesInStatusBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.userNoticesInDefaultBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.userNoticesInCurrentBuffer)) return true;
+
+  if(SettingsPage::hasChanged(ui.serverNoticesInStatusBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.serverNoticesInDefaultBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.serverNoticesInCurrentBuffer)) return true;
+
+  if(SettingsPage::hasChanged(ui.errorMsgsInStatusBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.errorMsgsInDefaultBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.errorMsgsInCurrentBuffer)) return true;
 
   return false;
 }

@@ -38,6 +38,8 @@ class IdentitiesSettingsPage : public SettingsPage {
 public:
   IdentitiesSettingsPage(QWidget *parent = 0);
 
+  virtual inline bool needsCoreConnection() const { return true; }
+
   bool aboutToSave();
 
 public slots:

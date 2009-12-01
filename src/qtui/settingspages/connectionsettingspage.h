@@ -33,6 +33,7 @@ class ConnectionSettingsPage : public SettingsPage {
     ConnectionSettingsPage(QWidget *parent = 0);
 
     bool hasDefaults() const;
+    bool needsCoreConnection() const { return true; }
 
   public slots:
 
