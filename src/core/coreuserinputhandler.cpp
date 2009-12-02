@@ -176,12 +176,40 @@ void CoreUserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QStrin
     if(!network()->isChannelName(chans[i]))
       chans[i].prepend('#');
   }
-  params[0] = chans.join(",");
-  if(params.count() > 1) keys = params[1].split(",");
-  emit putCmd("JOIN", serverEncode(params)); // FIXME handle messages longer than 512 bytes!
+
+  if(params.count() > 1)
+    keys = params[1].split(",");
+
+  static const char *cmd = "JOIN";
+  i = 0;
+  QStringList joinChans, joinKeys;
+  int slicesize = chans.count();
+  QList<QByteArray> encodedParams;
+
+  while(i < chans.count()) {
+    joinChans.append(chans.at(i));
+    if(i < keys.count())
+      joinKeys.append(keys.at(i));
+
+    if(++i == chans.count() || joinChans.count() >= slicesize) {
+      params[0] = joinChans.join(",");
+      params[1] = joinKeys.join(",");
+      encodedParams = serverEncode(params);
+      if(lastParamOverrun(cmd, encodedParams) == 0) {
+        emit putCmd(cmd, encodedParams);
+      } else if(slicesize > 1) {
+        i -= slicesize;
+        slicesize /= 2;
+      }
+      joinChans.clear();
+      joinKeys.clear();
+    }
+  }
+
   i = 0;
   for(; i < keys.count(); i++) {
-    if(i >= chans.count()) break;
+    if(i >= chans.count())
+      break;
     network()->addChannelKey(chans[i], keys[i]);
   }
   for(; i < chans.count(); i++) {
@@ -413,7 +441,7 @@ void CoreUserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray
 
 // returns 0 if the message will not be chopped by the irc server or number of chopped bytes if message is too long
 int CoreUserInputHandler::lastParamOverrun(const QString &cmd, const QList<QByteArray> &params) {
-  // the server will pass our message trunkated to 512 bytes including CRLF with the following format:
+  // the server will pass our message truncated to 512 bytes including CRLF with the following format:
   // ":prefix COMMAND param0 param1 :lastparam"
   // where prefix = "nickname!user@host"
   // that means that the last message can be as long as:
