@@ -84,6 +84,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>user</tabstop>
+  <tabstop>password</tabstop>
+  <tabstop>rememberPasswd</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

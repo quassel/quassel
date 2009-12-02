@@ -256,6 +256,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>networkNameEdit</tabstop>
+  <tabstop>serverList</tabstop>
+  <tabstop>editServer</tabstop>
+  <tabstop>addServer</tabstop>
+  <tabstop>deleteServer</tabstop>
+  <tabstop>upServer</tabstop>
+  <tabstop>downServer</tabstop>
+  <tabstop>channelList</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

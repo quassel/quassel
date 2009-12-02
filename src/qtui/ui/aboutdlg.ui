@@ -204,6 +204,14 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>aboutTextBrowser</tabstop>
+  <tabstop>authorTextBrowser</tabstop>
+  <tabstop>contributorTextBrowser</tabstop>
+  <tabstop>thanksToTextBrowser</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

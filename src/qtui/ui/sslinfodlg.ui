@@ -478,6 +478,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>certificateChain</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
