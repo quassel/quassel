@@ -1,10 +1,11 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CreateIdentityDlg</class>
- <widget class="QDialog" name="CreateIdentityDlg" >
-  <property name="windowModality" >
+ <widget class="QDialog" name="CreateIdentityDlg">
+  <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
-  <property name="geometry" >
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -12,50 +13,50 @@
     <height>135</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Create New Identity</string>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout">
    <item>
-    <layout class="QHBoxLayout" >
+    <layout class="QHBoxLayout">
      <item>
-      <widget class="QLabel" name="label" >
-       <property name="text" >
+      <widget class="QLabel" name="label">
+       <property name="text">
         <string>Identity name:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="identityName" />
+      <widget class="QLineEdit" name="identityName"/>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QRadioButton" name="createBlankIdentity" >
-     <property name="text" >
+    <widget class="QRadioButton" name="createBlankIdentity">
+     <property name="text">
       <string>Create blank identity</string>
      </property>
-     <property name="checked" >
+     <property name="checked">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
+    <layout class="QHBoxLayout">
      <item>
-      <widget class="QRadioButton" name="duplicateIdentity" >
-       <property name="text" >
+      <widget class="QRadioButton" name="duplicateIdentity">
+       <property name="text">
         <string>Duplicate:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="identityList" >
-       <property name="enabled" >
+      <widget class="QComboBox" name="identityList">
+       <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -66,10 +67,10 @@
    </item>
    <item>
     <spacer>
-     <property name="orientation" >
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>
@@ -78,17 +79,24 @@
     </spacer>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>identityName</tabstop>
+  <tabstop>createBlankIdentity</tabstop>
+  <tabstop>duplicateIdentity</tabstop>
+  <tabstop>identityList</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -97,11 +105,11 @@
    <receiver>CreateIdentityDlg</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>222</x>
      <y>127</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>157</x>
      <y>134</y>
     </hint>
@@ -113,11 +121,11 @@
    <receiver>CreateIdentityDlg</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>290</x>
      <y>127</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>286</x>
      <y>134</y>
     </hint>
@@ -129,11 +137,11 @@
    <receiver>identityList</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>55</x>
      <y>80</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>166</x>
      <y>84</y>
     </hint>

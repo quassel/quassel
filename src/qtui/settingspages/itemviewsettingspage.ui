@@ -411,10 +411,10 @@
   <tabstop>unreadBufferColor</tabstop>
   <tabstop>highlightedBufferColor</tabstop>
   <tabstop>activeBufferColor</tabstop>
+  <tabstop>bufferViewPreview</tabstop>
   <tabstop>useNickViewColors</tabstop>
   <tabstop>onlineNickColor</tabstop>
   <tabstop>awayNickColor</tabstop>
-  <tabstop>bufferViewPreview</tabstop>
  </tabstops>
  <resources/>
  <connections>

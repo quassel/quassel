@@ -343,6 +343,24 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>styleComboBox</tabstop>
+  <tabstop>languageComboBox</tabstop>
+  <tabstop>useCustomStyleSheet</tabstop>
+  <tabstop>customStyleSheetPath</tabstop>
+  <tabstop>chooseStyleSheet</tabstop>
+  <tabstop>useSystemTrayIcon</tabstop>
+  <tabstop>minimizeOnClose</tabstop>
+  <tabstop>userNoticesInDefaultBuffer</tabstop>
+  <tabstop>userNoticesInStatusBuffer</tabstop>
+  <tabstop>userNoticesInCurrentBuffer</tabstop>
+  <tabstop>serverNoticesInDefaultBuffer</tabstop>
+  <tabstop>serverNoticesInStatusBuffer</tabstop>
+  <tabstop>serverNoticesInCurrentBuffer</tabstop>
+  <tabstop>errorMsgsInDefaultBuffer</tabstop>
+  <tabstop>errorMsgsInStatusBuffer</tabstop>
+  <tabstop>errorMsgsInCurrentBuffer</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

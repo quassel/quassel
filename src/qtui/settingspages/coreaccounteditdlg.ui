@@ -298,6 +298,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>accountName</tabstop>
+  <tabstop>hostName</tabstop>
+  <tabstop>port</tabstop>
+  <tabstop>user</tabstop>
+  <tabstop>password</tabstop>
+  <tabstop>rememberPassword</tabstop>
+  <tabstop>useProxy</tabstop>
+  <tabstop>proxyType</tabstop>
+  <tabstop>proxyHostName</tabstop>
+  <tabstop>proxyPort</tabstop>
+  <tabstop>proxyUser</tabstop>
+  <tabstop>proxyPassword</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

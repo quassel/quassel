@@ -119,6 +119,11 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>customFont</tabstop>
+  <tabstop>dynamicResize</tabstop>
+  <tabstop>resizeOnHover</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

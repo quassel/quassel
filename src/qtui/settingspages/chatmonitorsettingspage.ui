@@ -167,6 +167,15 @@ p, li { white-space: pre-wrap; }
    <header>bufferview.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>operationMode</tabstop>
+  <tabstop>availableBuffers</tabstop>
+  <tabstop>deactivateBuffer</tabstop>
+  <tabstop>activateBuffer</tabstop>
+  <tabstop>activeBuffers</tabstop>
+  <tabstop>showHighlights</tabstop>
+  <tabstop>showOwnMessages</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

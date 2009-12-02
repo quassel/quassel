@@ -224,6 +224,21 @@ In this mode no separate status buffer is displayed.</string>
    <header>settingspages/previewbufferview.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>bufferViewList</tabstop>
+  <tabstop>renameBufferView</tabstop>
+  <tabstop>addBufferView</tabstop>
+  <tabstop>deleteBufferView</tabstop>
+  <tabstop>networkSelector</tabstop>
+  <tabstop>onlyStatusBuffers</tabstop>
+  <tabstop>onlyChannelBuffers</tabstop>
+  <tabstop>onlyQueryBuffers</tabstop>
+  <tabstop>hideInactiveBuffers</tabstop>
+  <tabstop>addNewBuffersAutomatically</tabstop>
+  <tabstop>sortAlphabetically</tabstop>
+  <tabstop>minimumActivitySelector</tabstop>
+  <tabstop>bufferViewPreview</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

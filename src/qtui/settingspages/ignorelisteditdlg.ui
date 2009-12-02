@@ -15,7 +15,7 @@
    <string>Configure Ignore Rule</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../icons/oxygen.qrc">
+   <iconset>
     <normaloff>:/icons/oxygen/16x16/actions/configure.png</normaloff>:/icons/oxygen/16x16/actions/configure.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -154,13 +154,13 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
           </property>
          </widget>
         </item>
-       <item>
+        <item>
          <widget class="QRadioButton" name="networkScopeButton">
           <property name="text">
            <string>Network</string>
           </property>
          </widget>
-       </item>
+        </item>
         <item>
          <widget class="QRadioButton" name="channelScopeButton">
           <property name="text">
@@ -228,6 +228,20 @@ For dynamic rules, disabling actually shows the filtered messages again.&lt;/p&g
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>dynamicStrictnessButton</tabstop>
+  <tabstop>permanentStrictnessButton</tabstop>
+  <tabstop>senderTypeButton</tabstop>
+  <tabstop>messageTypeButton</tabstop>
+  <tabstop>ignoreRuleLineEdit</tabstop>
+  <tabstop>isRegExCheckBox</tabstop>
+  <tabstop>scopeRuleTextEdit</tabstop>
+  <tabstop>globalScopeButton</tabstop>
+  <tabstop>networkScopeButton</tabstop>
+  <tabstop>channelScopeButton</tabstop>
+  <tabstop>isActiveCheckBox</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../../../icons/oxygen.qrc"/>
  </resources>

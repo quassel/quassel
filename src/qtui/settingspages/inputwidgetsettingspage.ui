@@ -236,6 +236,7 @@
   <tabstop>customFont</tabstop>
   <tabstop>enableSpellCheck</tabstop>
   <tabstop>showNickSelector</tabstop>
+  <tabstop>groupBox</tabstop>
   <tabstop>maxNumLines</tabstop>
   <tabstop>enableScrollBars</tabstop>
   <tabstop>completionSuffix</tabstop>

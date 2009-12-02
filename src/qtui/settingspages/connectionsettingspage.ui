@@ -259,6 +259,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pingTimeoutEnabled</tabstop>
+  <tabstop>pingInterval</tabstop>
+  <tabstop>maxPingCount</tabstop>
+  <tabstop>autoWhoEnabled</tabstop>
+  <tabstop>autoWhoInterval</tabstop>
+  <tabstop>autoWhoNickLimit</tabstop>
+  <tabstop>autoWhoDelay</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

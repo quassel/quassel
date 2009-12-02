@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>NetworkAddDlg</class>
- <widget class="QDialog" name="NetworkAddDlg" >
-  <property name="geometry" >
+ <widget class="QDialog" name="NetworkAddDlg">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,26 +10,26 @@
     <height>275</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Add Network</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" >
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" >
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QRadioButton" name="usePreset" >
-       <property name="text" >
+      <widget class="QRadioButton" name="usePreset">
+       <property name="text">
         <string>Use preset:</string>
        </property>
-       <property name="checked" >
+       <property name="checked">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="presetList" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+      <widget class="QComboBox" name="presetList">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -36,11 +37,11 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer" >
-       <property name="orientation" >
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -51,73 +52,73 @@
     </layout>
    </item>
    <item>
-    <widget class="QRadioButton" name="useManual" >
-     <property name="text" >
+    <widget class="QRadioButton" name="useManual">
+     <property name="text">
       <string>Manually specify network settings</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="enabled" >
+    <widget class="QGroupBox" name="groupBox">
+     <property name="enabled">
       <bool>false</bool>
      </property>
-     <property name="title" >
+     <property name="title">
       <string>Manual Settings</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout" >
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QGridLayout" name="gridLayout" >
-        <item row="0" column="0" >
-         <widget class="QLabel" name="label_3" >
-          <property name="text" >
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
            <string>Network name:</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1" colspan="3" >
-         <widget class="QLineEdit" name="networkName" />
+        <item row="0" column="1" colspan="3">
+         <widget class="QLineEdit" name="networkName"/>
         </item>
-        <item row="1" column="0" >
-         <widget class="QLabel" name="label" >
-          <property name="text" >
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
            <string>Server address:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1" >
-         <widget class="QLineEdit" name="serverAddress" />
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="serverAddress"/>
         </item>
-        <item row="1" column="2" >
-         <widget class="QLabel" name="label_2" >
-          <property name="text" >
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
            <string>Port:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="3" >
-         <widget class="QSpinBox" name="port" >
-          <property name="minimum" >
+        <item row="1" column="3">
+         <widget class="QSpinBox" name="port">
+          <property name="minimum">
            <number>0</number>
           </property>
-          <property name="maximum" >
+          <property name="maximum">
            <number>65535</number>
           </property>
-          <property name="value" >
+          <property name="value">
            <number>6667</number>
           </property>
          </widget>
         </item>
-        <item row="2" column="0" >
-         <widget class="QLabel" name="label_4" >
-          <property name="text" >
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
            <string>Server password:</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1" colspan="3" >
-         <widget class="QLineEdit" name="serverPassword" >
-          <property name="echoMode" >
+        <item row="2" column="1" colspan="3">
+         <widget class="QLineEdit" name="serverPassword">
+          <property name="echoMode">
            <enum>QLineEdit::Password</enum>
           </property>
          </widget>
@@ -125,8 +126,8 @@
        </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="useSSL" >
-        <property name="text" >
+       <widget class="QCheckBox" name="useSSL">
+        <property name="text">
          <string>Use secure connection</string>
         </property>
        </widget>
@@ -135,11 +136,11 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>31</height>
@@ -148,17 +149,28 @@
     </spacer>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="standardButtons" >
+     <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>usePreset</tabstop>
+  <tabstop>presetList</tabstop>
+  <tabstop>useManual</tabstop>
+  <tabstop>networkName</tabstop>
+  <tabstop>serverAddress</tabstop>
+  <tabstop>port</tabstop>
+  <tabstop>serverPassword</tabstop>
+  <tabstop>useSSL</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -167,11 +179,11 @@
    <receiver>NetworkAddDlg</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>248</x>
      <y>254</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>157</x>
      <y>274</y>
     </hint>
@@ -183,11 +195,11 @@
    <receiver>NetworkAddDlg</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>316</x>
      <y>260</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
     </hint>
@@ -199,11 +211,11 @@
    <receiver>presetList</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>53</x>
      <y>18</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>132</x>
      <y>17</y>
     </hint>
@@ -215,11 +227,11 @@
    <receiver>groupBox</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>46</x>
      <y>47</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>59</x>
      <y>84</y>
     </hint>
@@ -231,11 +243,11 @@
    <receiver>networkName</receiver>
    <slot>setFocus()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>26</x>
      <y>45</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>153</x>
      <y>113</y>
     </hint>
