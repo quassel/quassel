@@ -84,7 +84,6 @@ void AppearanceSettingsPage::load() {
     ui.styleComboBox->setCurrentIndex(0);
   } else {
     ui.styleComboBox->setCurrentIndex(ui.styleComboBox->findText(style, Qt::MatchExactly));
-    QApplication::setStyle(style);
   }
   ui.styleComboBox->setProperty("storedValue", ui.styleComboBox->currentIndex());
 
@@ -110,6 +109,7 @@ void AppearanceSettingsPage::save() {
     uiSettings.setValue("Style", QString(""));
   } else {
     uiSettings.setValue("Style", ui.styleComboBox->currentText());
+    QApplication::setStyle(ui.styleComboBox->currentText());
   }
 
   if(ui.languageComboBox->currentIndex() == 0) {
