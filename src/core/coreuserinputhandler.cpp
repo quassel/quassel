@@ -169,16 +169,23 @@ void CoreUserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QStrin
   QString sane_msg = msg;
   sane_msg.replace(QRegExp(", +"), ",");
   QStringList params = sane_msg.trimmed().split(" ");
+
   QStringList chans = params[0].split(",", QString::SkipEmptyParts);
   QStringList keys;
+  if(params.count() > 1)
+    keys = params[1].split(",");
+
   int i;
   for(i = 0; i < chans.count(); i++) {
     if(!network()->isChannelName(chans[i]))
       chans[i].prepend('#');
-  }
 
-  if(params.count() > 1)
-    keys = params[1].split(",");
+    if(i < keys.count()) {
+      network()->addChannelKey(chans[i], keys[i]);
+    } else {
+      network()->removeChannelKey(chans[i]);
+    }
+  }
 
   static const char *cmd = "JOIN";
   i = 0;
@@ -186,34 +193,30 @@ void CoreUserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QStrin
   int slicesize = chans.count();
   QList<QByteArray> encodedParams;
 
+  // go through all to-be-joined channels and (re)build the join list
   while(i < chans.count()) {
     joinChans.append(chans.at(i));
     if(i < keys.count())
       joinKeys.append(keys.at(i));
 
+    // if the channel list we built so far either contains all requested channels or exceeds
+    // the desired amount of channels in this slice, try to send what we have so far
     if(++i == chans.count() || joinChans.count() >= slicesize) {
-      params[0] = joinChans.join(",");
-      params[1] = joinKeys.join(",");
+      params.clear();
+      params.append(joinChans.join(","));
+      params.append(joinKeys.join(","));
       encodedParams = serverEncode(params);
+      // check if it fits in one command
       if(lastParamOverrun(cmd, encodedParams) == 0) {
         emit putCmd(cmd, encodedParams);
       } else if(slicesize > 1) {
+        // back to start of slice, try again with half the amount of channels
         i -= slicesize;
         slicesize /= 2;
       }
       joinChans.clear();
       joinKeys.clear();
     }
-  }
-
-  i = 0;
-  for(; i < keys.count(); i++) {
-    if(i >= chans.count())
-      break;
-    network()->addChannelKey(chans[i], keys[i]);
-  }
-  for(; i < chans.count(); i++) {
-    network()->removeChannelKey(chans[i]);
   }
 }
 
