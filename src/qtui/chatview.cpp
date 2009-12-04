@@ -57,7 +57,8 @@ ChatView::ChatView(MessageFilter *filter, QWidget *parent)
 
 void ChatView::init(MessageFilter *filter) {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setAlignment(Qt::AlignBottom);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+  setAlignment(Qt::AlignLeft|Qt::AlignBottom);
   setInteractive(true);
   //setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
   // setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
@@ -69,8 +70,8 @@ void ChatView::init(MessageFilter *filter) {
   _scrollTimer.setSingleShot(true);
   connect(&_scrollTimer, SIGNAL(timeout()), SLOT(scrollTimerTimeout()));
 
-  _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 4, this); // see below: resizeEvent()
-  connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
+  _scene = new ChatScene(filter, filter->idString(), viewport()->width(), this);
+  connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(adjustSceneRect()));
   connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *, qreal)), this, SLOT(lastLineChanged(QGraphicsItem *, qreal)));
   connect(_scene, SIGNAL(mouseMoveWhileSelecting(const QPointF &)), this, SLOT(mouseMoveWhileSelecting(const QPointF &)));
   setScene(_scene);
@@ -119,13 +120,22 @@ void ChatView::resizeEvent(QResizeEvent *event) {
 
   // we can reduce viewport updates if we scroll to the bottom allready at the beginning
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
-
-  // FIXME: without the hardcoded -4 Qt reserves space for a horizontal scrollbar even though it's disabled permanently.
-  // this does only occur on QtX11 (at least not on Qt for Mac OS). Seems like a Qt Bug.
-  scene()->updateForViewport(viewport()->width() - 4, viewport()->height());
+  scene()->updateForViewport(viewport()->width(), viewport()->height());
+  adjustSceneRect();
 
   _lastScrollbarPos = verticalScrollBar()->maximum();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+}
+
+void ChatView::adjustSceneRect() {
+  // Workaround for QTBUG-6322
+  // If the viewport's sceneRect() is (almost) as wide as as the viewport itself,
+  // Qt wants to reserve space for scrollbars even if they're turned off, resulting in
+  // an ugly white space at the bottom of the ChatView.
+  // Since the view's scene's width actually doesn't matter at all, we just adjust it
+  // by some hopefully large enough value to avoid this problem.
+
+  setSceneRect(scene()->sceneRect().adjusted(0, 0, -25 ,0));
 }
 
 void ChatView::mouseMoveWhileSelecting(const QPointF &scenePos) {
