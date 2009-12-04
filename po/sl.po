@@ -13,8 +13,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
 "MIME-Version: 1.0\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
-"n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:32
@@ -26,31 +26,26 @@ msgstr ""
 #: ../src/qtui/aboutdlg.cpp:46
 msgid ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the "
-"Quassel Project<br><a "
-"href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a "
-"href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
-"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is "
-"dual-licensed under <a "
-"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a "
-"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons "
-"are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> "
-"and used under the <a "
-"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
-"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
-"report bugs."
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc."
+"org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+"and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</"
+"a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html"
+"\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org"
+"\">http://bugs.quassel-irc.org</a> to report bugs."
 msgstr ""
 "<b>Moderen, porazdeljen odjemalec za IRC</b><br><br>&copy;2005-2009 projekt "
-"Quassel<br><a href=\"http://quassel-irc.org\">quassel-irc.org</a><br><a "
-"href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a "
-"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je izdan "
-"pod pogoji licenc <a "
-"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> in <a "
-"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Večina ikon "
-"je &copy; s strani <a href=\"http://www.oxygen-icons.org\">ekipe Oxygen</a> "
-"in uporabljenih pod pogoji <a "
-"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Za poročanje "
-"o napakah obiščite stran <a "
-"href=\"http://bugs.quassel-irc.org\">bugs.quassel-irc.org</a>."
+"Quassel<br><a href=\"http://quassel-irc.org\">quassel-irc.org</a><br><a href="
+"\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www."
+"freenode.net\">Freenode</a><br><br>Quassel IRC je izdan pod pogoji licenc <a "
+"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> in <a href="
+"\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Večina ikon je "
+"&copy; s strani <a href=\"http://www.oxygen-icons.org\">ekipe Oxygen</a> in "
+"uporabljenih pod pogoji <a href=\"http://www.gnu.org/licenses/lgpl.html"
+"\">LGPL</a>.<br><br>Za poročanje o napakah obiščite stran <a href=\"http://"
+"bugs.quassel-irc.org\">bugs.quassel-irc.org</a>."
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -69,33 +64,29 @@ msgstr ""
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:128
 msgid ""
-"Special thanks goes to:<br><dl><dt><img "
-"src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for "
-"the original Quassel icon - The All-Seeing Eye</dt><dt><img "
-"src=\":/pics/oxygen.png\">&nbsp;<b><a "
-"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
-"creating all the artwork you see throughout Quassel</dd><dt><img "
-"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
-"href=\"http://www.trolltech.com\">Qt Software formerly known as "
-"Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
-"development of QuasselTopia with Greenphones and more</dd><dt><a "
-"href=\"http://www.nokia.com\"><img "
-"src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
-"sponsoring development of Quassel Mobile with N810s</dd>"
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;"
+"<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-"
+"Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://"
+"www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the "
+"artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png"
+"\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known "
+"as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a href="
+"\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for "
+"keeping Qt alive, and for sponsoring development of Quassel Mobile with "
+"N810s</dd>"
 msgstr ""
-"Posebno zahvalo si zaslužijo:<br><dl><dt><img "
-"src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>za "
-"originalno ikono za Quassel - Vse-vidno oko</dt><dt><img "
-"src=\":/pics/oxygen.png\">&nbsp;<b><a "
-"href=\"http://www.oxygen-icons.org\">Ekipa Oxygen</a></b></dt><dd>za "
-"izdelavo vse grafike, ki jo vidite v Quassel</dd><dt><img "
-"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
-"href=\"http://www.trolltech.com\">Qt Software, nekdaj znani kot "
-"Trolltech</a></b></dt><dd>za izdelavo Qt in Qtopia ter sponzoriranje razvoja "
-"QuasselTopia z Greenphone in ostalim</dd><dt><img "
-"src=\":/pics/nokia.png\">&nbsp;<b><a "
-"href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>za nadaljnji razvoj Qt "
-"in za sponzoriranje razvoja Quassel Mobile z večimi N810</dd>"
+"Posebno zahvalo si zaslužijo:<br><dl><dt><img src=\":/pics/quassel-eye.png"
+"\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>za originalno ikono za Quassel - "
+"Vse-vidno oko</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href="
+"\"http://www.oxygen-icons.org\">Ekipa Oxygen</a></b></dt><dd>za izdelavo vse "
+"grafike, ki jo vidite v Quassel</dd><dt><img src=\":/pics/qt-logo-32.png"
+"\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software, nekdaj znani "
+"kot Trolltech</a></b></dt><dd>za izdelavo Qt in Qtopia ter sponzoriranje "
+"razvoja QuasselTopia z Greenphone in ostalim</dd><dt><img src=\":/pics/nokia."
+"png\">&nbsp;<b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>za "
+"nadaljnji razvoj Qt in za sponzoriranje razvoja Quassel Mobile z večimi "
+"N810</dd>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -105,44 +96,44 @@ msgstr "O Quassel"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
+"html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
+"html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
 "font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, "
-"Build &gt;= 474 (2008-02-08)</p></body></html>"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
 "font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Različica "
-"0.2.0-pre, gradnja &gt;= 474 (2008-02-08)</p></body></html>"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Različica 0.2.0-pre, "
+"gradnja &gt;= 474 (2008-02-08)</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:115
@@ -188,29 +179,29 @@ msgstr ""
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
 msgid ""
-"<b>The string the shortcut will be expanded to</b><br /><b>special "
-"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
-"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
-"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
-"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
-"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
-"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
-"the selected channel<br /><br />Multiple commands can be separated with "
+"<b>The string the shortcut will be expanded to</b><br /><b>special variables:"
+"</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> "
+"represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</"
+"b> represents all parameters from i on separated by spaces.<br /> - <b>$i:"
+"hostname</b> represents the hostname of the user identified by the i'th "
+"parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>"
+"$nick</b> your current nickname<br /> - <b>$channel</b> the name of the "
+"selected channel<br /><br />Multiple commands can be separated with "
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
 "be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
 "1 2 3\" when called like /test 1 2 3"
 msgstr ""
 "<b>Niz v katerega se bo razširila bližnjica</b><br /><b>posebne "
 "spremenljivke:</b><br /> - <b>$i</b> predstavlja i-ti parameter.<br /> - <b>"
-"$i..j</b> predstavlja s presledkom ločene parametre od i-tega do j-tega.<br "
-"/> - <b>$i..</b> predstavlja vse s presledkom ločene parametre od i-tega "
+"$i..j</b> predstavlja s presledkom ločene parametre od i-tega do j-tega.<br /"
+"> - <b>$i..</b> predstavlja vse s presledkom ločene parametre od i-tega "
 "dalje.<br /> - <b>$i:hostname</b> predstavlja ime gostitelja uporabnika, ki "
 "je določen z i-tim parametrom, oz. z *, če je neznan.<br /> - <b>$0</b> "
-"celoten niz<br /> - <b>$nick</b> vaš trenutni vzdevek<br /> - <b>$channel</b>"
-" ime izbranega kanala<br /><br />Več ukazov lahko ločite s podpičji<br /><br "
-"/><b>Primer:</b> »Test $1; Test $2; Test Vse $0« bo razširjeno v tri ločena "
-"sporočila »Test 1«, »Test 2« in »Test Vse "
-"1 2 3«, če uporabite /test 1 2 3"
+"celoten niz<br /> - <b>$nick</b> vaš trenutni vzdevek<br /> - <b>$channel</"
+"b> ime izbranega kanala<br /><br />Več ukazov lahko ločite s podpičji<br /"
+"><br /><b>Primer:</b> »Test $1; Test $2; Test Vse $0« bo razširjeno v tri "
+"ločena sporočila »Test 1«, »Test 2« in »Test Vse 1 2 3«, če uporabite /test 1 2 "
+"3"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
@@ -262,11 +253,6 @@ msgstr "<sistemsko privzeto>"
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:151
 msgid "Please choose a stylesheet file"
 msgstr "Izberite datoteko s slogovno predlogo"
-
-#. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:20
@@ -327,16 +313,6 @@ msgstr "Prikaži ime prikaza"
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 msgid "Backlog"
 msgstr "Stara sporočila"
-
-#. ts-context BacklogSettingsPage
-#: ../src/qtui/settingspages/backlogsettingspage.cpp:27
-msgid "Misc"
-msgstr "Razno"
-
-#. ts-context BacklogSettingsPage
-#: ../src/qtui/settingspages/backlogsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:75
@@ -518,11 +494,6 @@ msgstr "Prikaži/skrij klepete"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
-msgid "Misc"
-msgstr "Razno"
-
-#. ts-context BufferViewSettingsPage
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgid "Custom Chat Lists"
 msgstr "Seznami klepetov po meri"
 
@@ -541,11 +512,6 @@ msgstr "Izbrišem seznam klepetov?"
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:343
 msgid "Do you really want to delete the chat list \"%1\"?"
 msgstr "Ali res želite izbrisati seznam klepetov »%1«?"
-
-#. ts-context BufferViewSettingsPage
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:31
@@ -728,43 +694,38 @@ msgstr "Prišlo je do napake:"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:131
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-"Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</p>\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+"font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-"font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-"Grande'; font-size:13pt;\">SUPER ZLOBNA KATASTROFALNA NAPAKA!!11</p>\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+"font-size:13pt;\">SUPER ZLOBNA KATASTROFALNA NAPAKA!!11</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-"font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgid "Chat Monitor"
 msgstr "Nadzorovalnik klepeta"
-
-#. ts-context ChatMonitorSettingsPage
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-msgid "Interface"
-msgstr "Vmesnik"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
@@ -788,11 +749,6 @@ msgid "Ignore:"
 msgstr "Prezri:"
 
 #. ts-context ChatMonitorSettingsPage
-#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
 msgid "Operation Mode:"
 msgstr "Način delovanja:"
@@ -800,46 +756,45 @@ msgstr "Način delovanja:"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
-"font-weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-"font-weight:600;\"><span style=\" font-weight:400; text-decoration: "
-"underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers "
-"on the right side are shown in chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
-"text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will "
-"be ignored in chatmonitor</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
+"style=\" font-weight:400;\">Only buffers on the right side are shown in "
+"chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
+"ignored in chatmonitor</p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
-"font-weight:600;\">Način delovanja:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-"font-weight:600;\"><span style=\" font-weight:400; text-decoration: "
-"underline;\">Vključi:</span> <span style=\" font-weight:400;\">V "
-"nadzorovalniku klepeta so prikazani samo prikazi, ki so na desni "
-"strani</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
-"text-decoration: underline;\">Izvzemi:</span> Prikazi, ki so na desni "
-"strani, niso prikazani v nadzorovalniku klepeta</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Način delovanja:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Vključi:</span> "
+"<span style=\" font-weight:400;\">V nadzorovalniku klepeta so prikazani samo "
+"prikazi, ki so na desni strani</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Izvzemi:</span> Prikazi, ki so na desni strani, "
+"niso prikazani v nadzorovalniku klepeta</p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
@@ -861,8 +816,7 @@ msgstr "Premakni izbrane prikaze na desno"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
 msgstr ""
-"V nadzorovalniku klepeta prikaži poudarke, četudi je izvorni prikaz "
-"prezrt"
+"V nadzorovalniku klepeta prikaži poudarke, četudi je izvorni prikaz prezrt"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
@@ -880,16 +834,6 @@ msgid "Show Own Messages"
 msgstr "Prikaži lastna sporočila"
 
 #. ts-context ChatMonitorView
-#: ../src/qtui/chatmonitorview.cpp:59
-msgid "Show Network Name"
-msgstr "Prikaži ime omrežja"
-
-#. ts-context ChatMonitorView
-#: ../src/qtui/chatmonitorview.cpp:64
-msgid "Show Buffer Name"
-msgstr "Prikaži ime prikaza"
-
-#. ts-context ChatMonitorView
 #: ../src/qtui/chatmonitorview.cpp:71
 msgid "Configure..."
 msgstr "Nastavi ..."
@@ -898,17 +842,6 @@ msgstr "Nastavi ..."
 #: ../src/qtui/chatscene.cpp:589
 msgid "Copy Selection"
 msgstr "Skopiraj izbor"
-
-#. ts-context ChatViewSearchBar
-#: ../src/qtui/ui/chatviewsearchbar.ui:13
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context ChatViewSearchBar
-#: ../src/qtui/ui/chatviewsearchbar.ui:19
-#: ../src/qtui/ui/chatviewsearchbar.ui:33 ../src/qtui/ui/chatviewsearchbar.ui:44
-msgid "..."
-msgstr "..."
 
 #. ts-context ChatViewSearchBar
 #: ../src/qtui/ui/chatviewsearchbar.ui:55
@@ -932,18 +865,8 @@ msgstr "prezri pridružitve, zapustitve ..."
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
-msgid "Interface"
-msgstr "Vmesnik"
-
-#. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
 msgid "Chat View"
 msgstr "Prikaz klepeta"
-
-#. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:22
@@ -986,37 +909,6 @@ msgstr "Barve po meri"
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:145
 msgid "Action:"
 msgstr "Dejanje:"
-
-#. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:152
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:176
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:200
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:237
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:261
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:292
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:316
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:340
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:364
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:381
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:421
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:438
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:455
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:472
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:489
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:506
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:523
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:540
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:557
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:574
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:591
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:608
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:625
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:642
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:659
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:676
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:704
-msgid "..."
-msgstr "..."
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:169
@@ -1128,9 +1020,9 @@ msgstr ""
 #. ts-context ClientSyncer
 #: ../src/client/clientsyncer.cpp:219
 msgid ""
-"<b>The Quassel Core you are trying to connect to does not support "
-"SSL!</b><br />If you want to connect anyways, disable the usage of SSL in "
-"the account settings."
+"<b>The Quassel Core you are trying to connect to does not support SSL!</"
+"b><br />If you want to connect anyways, disable the usage of SSL in the "
+"account settings."
 msgstr ""
 "<b>Jedro Quassel, s katerim se želite povezati, ne podpira SSL.</b><br />Če "
 "se vseeno želite povezati, v nastavitvah računa onemogočite uporabo SSL."
@@ -1151,11 +1043,6 @@ msgstr ""
 #: ../src/client/clientsyncer.cpp:404 ../src/client/clientsyncer.cpp:429
 msgid "Cert Digest changed! was: %1"
 msgstr "Povzetek potrdila se je spremenil. Bil je: %1"
-
-#. ts-context ConnectionSettingsPage
-#: ../src/qtui/settingspages/connectionsettingspage.cpp:27
-msgid "Misc"
-msgstr "Razno"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
@@ -1531,8 +1418,8 @@ msgstr "Zastarel odjemalec se poskupa povezati... Zavračam ga."
 #. ts-context Core
 #: ../src/core/core.cpp:514
 msgid ""
-"<b>Your Quassel Client is too old!</b><br>This core needs at least "
-"client/core protocol version %1.<br>Please consider upgrading your client."
+"<b>Your Quassel Client is too old!</b><br>This core needs at least client/"
+"core protocol version %1.<br>Please consider upgrading your client."
 msgstr ""
 "<b>Vaš odjemalec Quassel je prestar.</b><br>To jedro potrebuje vsaj protokol "
 "različice %1.<br>Razmislite o nadgradnji odjemalca."
@@ -1546,12 +1433,6 @@ msgstr "Odjemalec"
 #: ../src/core/core.cpp:518
 msgid "too old, rejecting."
 msgstr "je prestar, zavračam ga."
-
-#. ts-context Core
-#: ../src/core/core.cpp:535
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr ""
-"<b>Jedro Quassel različice %1</b><br>Zgrajeno: %2<br>Teče %3d %4u %5m (od %6)"
 
 #. ts-context Core
 #: ../src/core/core.cpp:586
@@ -1721,11 +1602,6 @@ msgstr ""
 "nastaviti svojih identitet in omrežij."
 
 #. ts-context CoreConfigWizardAdminUserPage
-#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:13
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:21
 msgid "Username:"
 msgstr "Uporabniško ime:"
@@ -1748,47 +1624,41 @@ msgstr "Pomni geslo"
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:68
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-"Grande'; font-size:13pt;\"><span style=\" font-size:10pt; "
-"font-weight:600;\">Note: </span><span style=\" font-size:10pt;\">Adding more "
-"users and changing your username/password is not possible via Quassel's "
-"interface yet.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-"Grande'; font-size:10pt;\">If you need to do these things have a look at the "
-"manageusers.py script which is located in the /scripts "
-"directory.</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+"font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Note: </"
+"span><span style=\" font-size:10pt;\">Adding more users and changing your "
+"username/password is not possible via Quassel's interface yet.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+"font-size:10pt;\">If you need to do these things have a look at the "
+"manageusers.py script which is located in the /scripts directory.</p></"
+"body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-"font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-"Grande'; font-size:13pt;\"><span style=\" font-size:10pt; "
-"font-weight:600;\">Pomnite: </span><span style=\" "
-"font-size:10pt;\">Dodajanje novih uporabnikov ter spreminjanje "
-"uporabnika/gesla iz uporabniškega vmesnika Quassel še ni možno.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-"Grande'; font-size:10pt;\">Če to morate storiti, si oglejte skript "
-"manageusers.py, ki se nahaja v mapi /scripts.</p></body></html>"
-
-#. ts-context CoreConfigWizardIntroPage
-#: ../src/qtui/ui/coreconfigwizardintropage.ui:13
-msgid "Form"
-msgstr "Obrazec"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+"font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Pomnite: "
+"</span><span style=\" font-size:10pt;\">Dodajanje novih uporabnikov ter "
+"spreminjanje uporabnika/gesla iz uporabniškega vmesnika Quassel še ni možno."
+"</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+"font-size:10pt;\">Če to morate storiti, si oglejte skript manageusers.py, ki "
+"se nahaja v mapi /scripts.</p></body></html>"
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
@@ -1847,11 +1717,6 @@ msgstr ""
 "Vaše nastavitve so sedaj shranjene pri jedru, samodejno boste prijavljeni."
 
 #. ts-context CoreConfigWizardStorageSelectionPage
-#: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context CoreConfigWizardStorageSelectionPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 msgid "Storage Backend:"
 msgstr "Hrbtenica za shranjevanje:"
@@ -1867,11 +1732,6 @@ msgid "Foobar"
 msgstr "Foobar"
 
 #. ts-context CoreConfigWizardSyncPage
-#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:13
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:19
 msgid "Your Choices"
 msgstr "Vaše izbire"
@@ -1885,11 +1745,6 @@ msgstr "Skrbniški uporabnik:"
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:42
 msgid "foo"
 msgstr "foo"
-
-#. ts-context CoreConfigWizardSyncPage
-#: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
-msgid "Storage Backend:"
-msgstr "Hrbtenica za shranjevanje:"
 
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:62
@@ -1958,11 +1813,6 @@ msgid "Unknown connection state to %1"
 msgstr "Stanje povezave s %1 ni znano"
 
 #. ts-context CoreConnectDlg
-#: ../src/qtui/coreconnectdlg.cpp:365
-msgid "Logging in..."
-msgstr "Prijavljanje ..."
-
-#. ts-context CoreConnectDlg
 #: ../src/qtui/coreconnectdlg.cpp:392 ../src/qtui/coreconnectdlg.cpp:450
 #: ../src/qtui/ui/coreconnectdlg.ui:263
 msgid "Login"
@@ -1982,11 +1832,6 @@ msgstr "Urejanje ..."
 #: ../src/qtui/ui/coreconnectdlg.ui:72
 msgid "Add..."
 msgstr "Dodaj ..."
-
-#. ts-context CoreConnectDlg
-#: ../src/qtui/ui/coreconnectdlg.ui:83
-msgid "Delete"
-msgstr "Zbriši"
 
 #. ts-context CoreConnectDlg
 #: ../src/qtui/ui/coreconnectdlg.ui:107
@@ -2025,11 +1870,6 @@ msgstr ""
 #: ../src/qtui/ui/coreconnectdlg.ui:271
 msgid "User:"
 msgstr "Uporabnik:"
-
-#. ts-context CoreConnectDlg
-#: ../src/qtui/ui/coreconnectdlg.ui:285
-msgid "Password:"
-msgstr "Geslo:"
 
 #. ts-context CoreConnectDlg
 #: ../src/qtui/ui/coreconnectdlg.ui:299
@@ -2078,8 +1918,8 @@ msgstr "Inicializacija seje ..."
 #. ts-context CoreConnectDlg
 #: ../src/qtui/ui/coreconnectdlg.ui:513
 msgid ""
-"<b>Please be patient while your client synchronizes with the Quassel "
-"Core!</b>"
+"<b>Please be patient while your client synchronizes with the Quassel Core!</"
+"b>"
 msgstr ""
 "<b>Prosimo potrpite, medtem ko se odjemalec usklajuje z jedrom Quassel.</b>"
 
@@ -2191,11 +2031,6 @@ msgstr "Ni se moč povezati z %1 (%2)"
 #: ../src/core/corenetwork.cpp:309
 msgid "Connection failure: %1"
 msgstr "Neuspeh pri povezovanju: %1"
-
-#. ts-context CoreSession
-#: ../src/core/coresession.cpp:192
-msgid "Client"
-msgstr "Odjemalec"
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:192
@@ -2337,13 +2172,11 @@ msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:26
-#, fuzzy
 msgid "Overlay View"
 msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:39
-#, fuzzy
 msgid "Overlay Properties"
 msgstr ""
 
@@ -2371,16 +2204,6 @@ msgstr "Ovrednoti!"
 #: ../src/qtui/ui/debuglogwidget.ui:13
 msgid "Debug Log"
 msgstr "Razhroščevalni dnevnik"
-
-#. ts-context DebugLogWidget
-#: ../src/qtui/ui/debuglogwidget.ui:43
-msgid "Close"
-msgstr "Zapri"
-
-#. ts-context DesktopNotificationConfigWidget
-#: ../src/qtui/ui/desktopnotificationconfigwidget.ui:13
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context DesktopNotificationConfigWidget
 #: ../src/qtui/ui/desktopnotificationconfigwidget.ui:19
@@ -2459,11 +2282,6 @@ msgid "Choose..."
 msgstr "Izbor ..."
 
 #. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context GeneralSettingsPage
 #: ../src/qtui/settingspages/generalsettingspage.ui:20
 msgid "Show System Tray Icon"
 msgstr "Prikaži ikono v sistemski vrstici"
@@ -2518,22 +2336,6 @@ msgstr "Trenutni klepet"
 msgid "Errors:"
 msgstr "Napake:"
 
-#. ts-context GeneralSettingsPage
-#: ../src/qtui/settingspages/generalsettingspage.cpp:28
-msgid "Misc"
-msgstr "Razno"
-
-#. ts-context HighlightSettingsPage
-#: ../src/qtui/settingspages/highlightsettingspage.cpp:30
-#: ../src/qtui/settingspages/highlightsettingspage.ui:32
-msgid "Highlight"
-msgstr "Poudarek"
-
-#. ts-context HighlightSettingsPage
-#: ../src/qtui/settingspages/highlightsettingspage.cpp:30
-msgid "Interface"
-msgstr "Vmesnik"
-
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:159
 msgid "this shouldn't be empty"
@@ -2543,11 +2345,6 @@ msgstr "to ne sme biti prazno"
 #: ../src/qtui/settingspages/highlightsettingspage.h:45
 msgid "highlight rule"
 msgstr "pravilo poudarjanja"
-
-#. ts-context HighlightSettingsPage
-#: ../src/qtui/settingspages/highlightsettingspage.ui:13
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:19
@@ -2610,18 +2407,13 @@ msgid "Identities"
 msgstr "Identitete"
 
 #. ts-context IdentitiesSettingsPage
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:31
-msgid "Misc"
-msgstr "Razno"
-
-#. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
-"<b>Preden se uveljavijo spremembe, je potrebno odpraviti sledeče "
-"težave:</b><ul>"
+"<b>Preden se uveljavijo spremembe, je potrebno odpraviti sledeče težave:</"
+"b><ul>"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
@@ -2675,20 +2467,9 @@ msgid "Please enter a new name for the identity \"%1\"!"
 msgstr "Vnesite novo ime identitete »%1«!"
 
 #. ts-context IdentitiesSettingsPage
-#: ../src/qtui/settingspages/identitiessettingspage.ui:34
-#: ../src/qtui/settingspages/identitiessettingspage.ui:77
-msgid "..."
-msgstr "..."
-
-#. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.ui:51
 msgid "Add Identity"
 msgstr "Dodaj identiteto"
-
-#. ts-context IdentitiesSettingsPage
-#: ../src/qtui/settingspages/identitiessettingspage.ui:54
-msgid "Add..."
-msgstr "Dodaj ..."
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.ui:74
@@ -2811,40 +2592,14 @@ msgid "Add Nickname"
 msgstr "Dodaj vzdevek"
 
 #. ts-context IdentityEditWidget
-#: ../src/qtui/settingspages/identityeditwidget.ui:92
-msgid "&Add..."
-msgstr "&Dodaj ..."
-
-#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:115
 msgid "Remove Nickname"
 msgstr "Odstrani vzdevek"
 
 #. ts-context IdentityEditWidget
-#: ../src/qtui/settingspages/identityeditwidget.ui:118
-msgid "Remove"
-msgstr "Odstrani"
-
-#. ts-context IdentityEditWidget
-#: ../src/qtui/settingspages/identityeditwidget.ui:135
-msgid "Rename Identity"
-msgstr "Preimenuj identiteto"
-
-#. ts-context IdentityEditWidget
-#: ../src/qtui/settingspages/identityeditwidget.ui:138
-msgid "Re&name..."
-msgstr "Pre&imenuj ..."
-
-#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:164
 msgid "Move upwards in list"
 msgstr "Premakni gor v seznamu"
-
-#. ts-context IdentityEditWidget
-#: ../src/qtui/settingspages/identityeditwidget.ui:167
-#: ../src/qtui/settingspages/identityeditwidget.ui:181
-msgid "..."
-msgstr "..."
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:178
@@ -3017,8 +2772,8 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown "
-"again.</p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown again.</"
+"p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
@@ -3080,8 +2835,8 @@ msgstr "Sporočilo"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:91
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against "
-"either:</p>\n"
+"<p>Depending on the type of the rule, the text is matched against either:</"
+"p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3099,17 +2854,16 @@ msgstr ""
 "<p><u>- vsebino sporočila:</u></p>\n"
 "<p><i>Primer:</i>\n"
 "<br />\n"
-"<i>*foobar*</i> se ujema s katerimkoli besedilom, ki vsebuje besedo <i>"
-"foobar</i></p>\n"
+"<i>*foobar*</i> se ujema s katerimkoli besedilom, ki vsebuje besedo "
+"<i>foobar</i></p>\n"
 "<p><u>- niz pošiljatelja</u>  <i>(vzdevek!ident@ime.gostitelja)</i></p>\n"
 "<p><i>Primera:</i>\n"
 "<br />\n"
-"- <i>*@foobar.si</i> se ujema s katerimkoli pošiljateljem z gostitelja <i>"
-"foobar.si</i>\n"
+"- <i>*@foobar.si</i> se ujema s katerimkoli pošiljateljem z gostitelja "
+"<i>foobar.si</i>\n"
 "<br />\n"
 "- <i>baraba!.+</i> (regularni izraz) se ujema s katerimkoli pošiljateljem z "
-"vzdevkom <i>baraba</i> "
-"s kateregakoli gostitelja</p>"
+"vzdevkom <i>baraba</i> s kateregakoli gostitelja</p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:105
@@ -3129,8 +2883,8 @@ msgid ""
 msgstr ""
 "<p><b>Uporabi regularne izraze:</b></p>\n"
 "<p>Če je omogočeno, se za pravila uporabi skladnja za regularne izraze.</p>\n"
-"<p>V nasprotnem pravila omogočajo uporabo naslednjih nadomestnih znakov:</p>"
-"\n"
+"<p>V nasprotnem pravila omogočajo uporabo naslednjih nadomestnih znakov:</"
+"p>\n"
 "<p> *: predstavlja kakršnokoli število katerihkoli znakov\n"
 "<br />\n"
 "?: predstavlja natančno en znak</p>"
@@ -3200,8 +2954,8 @@ msgstr ""
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
 "<br />\n"
-"pravilo bo delovalo na #foobar in na kateremkoli kanalu, ki s začne z <i>"
-"#quassel</i></p>"
+"pravilo bo delovalo na #foobar in na kateremkoli kanalu, ki s začne z "
+"<i>#quassel</i></p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:207
@@ -3227,28 +2981,27 @@ msgid ""
 "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
 "dynamic rules, disabling actually shows the filtered messages again"
 msgstr ""
-"<b>Omogoči/onemogoči:</b><br />Filtrirajo samo omogočena pravila.<br />"
-"Onemogočenje dinamičnega pravila spet prikaže filtrirana sporočila."
+"<b>Omogoči/onemogoči:</b><br />Filtrirajo samo omogočena pravila.<br /"
+">Onemogočenje dinamičnega pravila spet prikaže filtrirana sporočila."
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
 msgid ""
 "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
-"matched against either:<br /><br />- <u>the message content:</u><br "
-"/><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
-"\"foobar\"<br /><br />- <u>the sender string "
-"<i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    "
-"\"*@foobar.com\" matches any sender from host foobar.com<br />    "
-"\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
-"host<br />"
+"matched against either:<br /><br />- <u>the message content:</u><br /"
+"><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></"
+"u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from "
+"host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with "
+"nickname \"stupid\" from any host<br />"
 msgstr ""
-"<b>Pravilo preziranja:</b><br />Glede na vrsto pravila se besedilo nanaša "
-"na:<br /><br />- <u>vsebino sporočila:</u><br /><i>Primer:<i><br />"
-"»*foobar*« se ujema s katerimkoli besedilom, ki vsebuje besedo »foobar«<br />"
-"<br />- <u>niz pošiljatelja <i>vzdevek!ident@ime.gostitelja</i></u><br /><i>"
-"Primera:</i><br />»*@foobar.si« se ujema s katerimkoli pošiljateljem z "
-"gostitelja foobar.si<br />»baraba!.+« (regularni izraz) se ujema s "
-"katerimkoli pošiljateljem z vzdevkom baraba s kateregakoli gostitelja<br />"
+"<b>Pravilo preziranja:</b><br />Glede na vrsto pravila se besedilo nanaša na:"
+"<br /><br />- <u>vsebino sporočila:</u><br /><i>Primer:<i><br />»*foobar*« se "
+"ujema s katerimkoli besedilom, ki vsebuje besedo »foobar«<br /><br />- <u>niz "
+"pošiljatelja <i>vzdevek!ident@ime.gostitelja</i></u><br /><i>Primera:</"
+"i><br />»*@foobar.si« se ujema s katerimkoli pošiljateljem z gostitelja "
+"foobar.si<br />»baraba!.+« (regularni izraz) se ujema s katerimkoli "
+"pošiljateljem z vzdevkom baraba s kateregakoli gostitelja<br />"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
@@ -3270,16 +3023,6 @@ msgstr "Omogočeno"
 msgid "Type"
 msgstr "Vrsta"
 
-#. ts-context IgnoreListModel
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:195
-msgid "Ignore Rule"
-msgstr "Pravilo preziranja"
-
-#. ts-context IgnoreListSettingsPage
-#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
-msgid "Misc"
-msgstr "Razno"
-
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgid "Ignore List"
@@ -3297,34 +3040,13 @@ msgid ""
 "\"%1\"\n"
 "Please choose another rule."
 msgstr ""
-"Pravilo že obstaja: "
-"»%1«\n"
+"Pravilo že obstaja: »%1«\n"
 "Izberite drugo pravilo."
-
-#. ts-context IgnoreListSettingsPage
-#: ../src/qtui/settingspages/ignorelistsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context IgnoreListSettingsPage
-#: ../src/qtui/settingspages/ignorelistsettingspage.ui:28
-msgid "New"
-msgstr "Novo"
-
-#. ts-context IgnoreListSettingsPage
-#: ../src/qtui/settingspages/ignorelistsettingspage.ui:42
-msgid "Delete"
-msgstr "Izbriši"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:56
 msgid "&Edit"
 msgstr "&Urejanje"
-
-#. ts-context IndicatorNotificationConfigWidget
-#: ../src/qtui/ui/indicatornotificationconfigwidget.ui:14
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context IndicatorNotificationConfigWidget
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
@@ -3341,25 +3063,10 @@ msgstr "Fokusiraj vnosno vrstico"
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#. ts-context InputWidget
-#: ../src/qtui/ui/inputwidget.ui:20
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
-msgid "Interface"
-msgstr "Vmesnik"
-
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgid "Input Widget"
 msgstr "Vnosna vrstica"
-
-#. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
@@ -3415,11 +3122,6 @@ msgstr ": "
 #: ../src/qtui/ircconnectionwizard.cpp:51
 msgid "Save && Connect"
 msgstr "Shrani in se poveži"
-
-#. ts-context IrcListModel
-#: ../src/client/irclistmodel.cpp:59
-msgid "Channel"
-msgstr "Kanal"
 
 #. ts-context IrcListModel
 #: ../src/client/irclistmodel.cpp:60
@@ -3603,18 +3305,8 @@ msgstr "strežnik: %1"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
-msgid "Interface"
-msgstr "Vmesnik"
-
-#. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 msgid "Chat & Nick Lists"
 msgstr "Seznama klepetov in vzdevkov"
-
-#. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
-msgid "Network"
-msgstr "Omrežje"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
@@ -3632,24 +3324,9 @@ msgid "Unread messages"
 msgstr "Neprebrano"
 
 #. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
-msgid "Highlight"
-msgstr "Poudarek"
-
-#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
 msgid "Other activity"
 msgstr "Druga aktivnost"
-
-#. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:22
-msgid "Custom font:"
-msgstr "Pisava po meri:"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:50
@@ -3680,17 +3357,6 @@ msgstr "Uporabi barve po meri"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:118
 msgid "Standard:"
 msgstr "Običajno:"
-
-#. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:125
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:149
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:173
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:197
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:221
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:308
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:345
-msgid "..."
-msgstr "..."
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:142
@@ -3849,13 +3515,11 @@ msgstr "Ctrl+M"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:334
-#, fuzzy
 msgid "Debug &BufferViewOverlay"
 msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:338
-#, fuzzy
 msgid "Debug &HotList"
 msgstr ""
 
@@ -3905,11 +3569,6 @@ msgid "Show Nick List"
 msgstr "Prikaži seznam vzdevkov"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:569
-msgid "Chat Monitor"
-msgstr "Nadzorovalnik klepeta"
-
-#. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:580
 msgid "Show Chat Monitor"
 msgstr "Prikaži nadzorovalnik klepeta"
@@ -3923,11 +3582,6 @@ msgstr "Vnosna vrstica"
 #: ../src/qtui/mainwin.cpp:593
 msgid "Show Input Line"
 msgstr "Prikaži vnosno vrstico"
-
-#. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:604
-msgid "Topic"
-msgstr "Tema"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:616
@@ -3958,11 +3612,6 @@ msgstr "Brez povezave z jedrom."
 #: ../src/client/messagemodel.cpp:373
 msgid "Requesting %1 messages from backlog for buffer %2:%3"
 msgstr "Zahtevam %1 starih sporočil za prikaz %2:%3"
-
-#. ts-context MsgProcessorStatusWidget
-#: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context MsgProcessorStatusWidget
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
@@ -4014,11 +3663,6 @@ msgid "Server address:"
 msgstr "Naslov strežnika:"
 
 #. ts-context NetworkAddDlg
-#: ../src/qtui/settingspages/networkadddlg.ui:94
-msgid "Port:"
-msgstr "Vrata:"
-
-#. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:114
 msgid "Server password:"
 msgstr "Geslo strežnika:"
@@ -4029,19 +3673,9 @@ msgid "Use secure connection"
 msgstr "Uporabi varno povezavo"
 
 #. ts-context NetworkEditDlg
-#: ../src/qtui/settingspages/networkeditdlg.ui:13
-msgid "Dialog"
-msgstr "Pogovorno okno"
-
-#. ts-context NetworkEditDlg
 #: ../src/qtui/settingspages/networkeditdlg.ui:21
 msgid "Please enter a network name:"
 msgstr "Vnesite ime omrežja:"
-
-#. ts-context NetworkEditDlg
-#: ../src/qtui/settingspages/networkssettingspage.cpp:690
-msgid "Add Network"
-msgstr "Dodaj omrežje"
 
 #. ts-context NetworkItem
 #: ../src/client/networkmodel.cpp:194
@@ -4062,11 +3696,6 @@ msgstr "Zakasnitev: %1 ms"
 #: ../src/client/networkmodel.cpp:830
 msgid "Chat"
 msgstr "Klepet"
-
-#. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:830
-msgid "Topic"
-msgstr "Tema"
 
 #. ts-context NetworkModel
 #: ../src/client/networkmodel.cpp:830
@@ -4109,11 +3738,6 @@ msgid "Join Channel"
 msgstr "Pridruži se kanalu"
 
 #. ts-context NetworkModelController::JoinDlg
-#: ../src/uisupport/networkmodelcontroller.cpp:475
-msgid "Network:"
-msgstr "Omrežje:"
-
-#. ts-context NetworkModelController::JoinDlg
 #: ../src/uisupport/networkmodelcontroller.cpp:477
 msgid "Channel:"
 msgstr "Kanal:"
@@ -4129,28 +3753,9 @@ msgid "Networks"
 msgstr "Omrežja"
 
 #. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.cpp:37
-msgid "Misc"
-msgstr "Razno"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.cpp:160
-msgid ""
-"<b>The following problems need to be corrected before your changes can be "
-"applied:</b><ul>"
-msgstr ""
-"<b>Preden se uveljavijo spremembe, je potrebno odpraviti sledeče "
-"težave:</b><ul>"
-
-#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:161
 msgid "<li>All networks need at least one server defined</li>"
 msgstr "<li>Vsako omrežje mora imeti določen vsaj en strežnik</li>"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.cpp:162
-msgid "</ul>"
-msgstr "</ul>"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:163
@@ -4172,28 +3777,6 @@ msgstr ""
 "vključno z zgodovino sporočil?"
 
 #. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:13
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:47
-msgid "Re&name..."
-msgstr "Pre&imenuj ..."
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:64
-#: ../src/qtui/settingspages/networkssettingspage.ui:234
-msgid "&Add..."
-msgstr "&Dodaj ..."
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:87
-#: ../src/qtui/settingspages/networkssettingspage.ui:251
-msgid "De&lete"
-msgstr "&Zbriši"
-
-#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:123
 msgid "Network Details"
 msgstr "Podrobnosti omrežja"
@@ -4202,13 +3785,6 @@ msgstr "Podrobnosti omrežja"
 #: ../src/qtui/settingspages/networkssettingspage.ui:131
 msgid "Identity:"
 msgstr "Identiteta:"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:148
-#: ../src/qtui/settingspages/networkssettingspage.ui:280
-#: ../src/qtui/settingspages/networkssettingspage.ui:294
-msgid "..."
-msgstr "..."
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:189
@@ -4224,16 +3800,6 @@ msgstr "Upravljanje s strežniki za to omrežje"
 #: ../src/qtui/settingspages/networkssettingspage.ui:216
 msgid "&Edit..."
 msgstr "&Urejanje ..."
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:277
-msgid "Move upwards in list"
-msgstr "Premakni gor v seznamu"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:291
-msgid "Move downwards in list"
-msgstr "Premakni dol v seznamu"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:336
@@ -4266,11 +3832,6 @@ msgstr ""
 "verjetno ne bo potreben!"
 
 #. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:373
-msgid "Connection"
-msgstr "Povezava"
-
-#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:382
 msgid "Control automatic reconnect to the network"
 msgstr "Nadzorujte samodejno vnovično povezovanje v omrežje"
@@ -4286,19 +3847,9 @@ msgid "Interval:"
 msgstr "Interval:"
 
 #. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:403
-msgid " s"
-msgstr " s"
-
-#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:419
 msgid "Retries:"
 msgstr "Poskusov:"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:439
-msgid "Unlimited"
-msgstr "Neomejeno"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:464
@@ -4320,11 +3871,6 @@ msgstr "NickServ"
 #: ../src/qtui/settingspages/networkssettingspage.ui:532
 msgid "Service:"
 msgstr "Storitev:"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:542
-msgid "Password:"
-msgstr "Geslo:"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:566
@@ -4396,11 +3942,6 @@ msgid "Server encoding:"
 msgstr "Nabor znakov za strežnike:"
 
 #. ts-context NickEditDlg
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:420
-msgid "Add Nickname"
-msgstr "Dodaj vzdevek"
-
-#. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
 msgid "Edit Nickname"
 msgstr "Urejanje vzdevka"
@@ -4424,20 +3965,10 @@ msgstr ""
 msgid "Notifications"
 msgstr "Obvestila"
 
-#. ts-context NotificationsSettingsPage
-#: ../src/qtui/settingspages/notificationssettingspage.cpp:28
-msgid "Interface"
-msgstr "Vmesnik"
-
 #. ts-context PhononNotificationBackend::ConfigWidget
 #: ../src/qtui/phononnotificationbackend.cpp:142
 msgid "Select Audio File"
 msgstr "Izberite zvočno datoteko"
-
-#. ts-context PhononNotificationConfigWidget
-#: ../src/qtui/ui/phononnotificationconfigwidget.ui:13
-msgid "Form"
-msgstr "Obrazec"
 
 #. ts-context PhononNotificationConfigWidget
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:19
@@ -4523,13 +4054,11 @@ msgstr "Neveljavna oznaka sporočila: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:266
-#, fuzzy
 msgid "Invalid senderhash specification: %1"
 msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:270
-#, fuzzy
 msgid "Senderhash can be at most \"0x0f\"!"
 msgstr ""
 
@@ -4650,21 +4179,6 @@ msgstr "sek"
 msgid "<b>Query with %1</b>"
 msgstr "<b>Poizvedba z %1</b>"
 
-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:425
-msgid "idling since %1"
-msgstr "nedejaven od %1"
-
-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:428
-msgid "login time: %1"
-msgstr "čas prijave: %1"
-
-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:431
-msgid "server: %1"
-msgstr "strežnik: %1"
-
 #. ts-context SaveIdentitiesDlg
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgid "Sync With Core"
@@ -4681,40 +4195,14 @@ msgid "Abort"
 msgstr "Prekini"
 
 #. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:13
-msgid "Dialog"
-msgstr "Pogovorno okno"
-
-#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:37
 msgid "Server Info"
 msgstr "Podatki o strežniku"
 
 #. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:45
-msgid "Server address:"
-msgstr "Naslov strežnika:"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:52
-#: ../src/qtui/settingspages/servereditdlg.ui:242
-msgid "Port:"
-msgstr "Vrata:"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:79
-msgid "Password:"
-msgstr "Geslo:"
-
-#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:101
 msgid "Use SSL"
 msgstr "Uporabi SSL"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:134
-msgid "Advanced"
-msgstr "Napredno"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:155
@@ -4749,41 +4237,6 @@ msgstr "TLSv1"
 #: ../src/qtui/settingspages/servereditdlg.ui:186
 msgid "Use a Proxy"
 msgstr "Uporabi posrednika"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:203
-msgid "Proxy Type:"
-msgstr "Vrsta posrednika:"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:211
-msgid "Socks 5"
-msgstr "Socks 5"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:216
-msgid "HTTP"
-msgstr "HTTP"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:228
-msgid "Proxy Host:"
-msgstr "Gostitelj posrednika:"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:235
-msgid "localhost"
-msgstr "localhost"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:266
-msgid "Proxy Username:"
-msgstr "Uporabniško ime posrednika:"
-
-#. ts-context ServerEditDlg
-#: ../src/qtui/settingspages/servereditdlg.ui:276
-msgid "Proxy Password:"
-msgstr "Geslo posrednika:"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:77 ../src/qtui/ui/settingsdlg.ui:34
@@ -4835,41 +4288,6 @@ msgstr "Ali želite obnoviti privzete vrednosti za to stran?"
 msgid "Configure Quassel"
 msgstr "Nastavi Quassel"
 
-#. ts-context SettingsPageDlg
-#: ../src/qtui/settingspagedlg.cpp:36
-msgid "Configure %1"
-msgstr "Nastavi %1"
-
-#. ts-context SettingsPageDlg
-#: ../src/qtui/settingspagedlg.cpp:104
-msgid "Reload Settings"
-msgstr "Znova naloži nastavitve"
-
-#. ts-context SettingsPageDlg
-#: ../src/qtui/settingspagedlg.cpp:104
-msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Ali želite znova naložiti nastavitve, pri čemer se spremembe izgubijo?"
-
-#. ts-context SettingsPageDlg
-#: ../src/qtui/settingspagedlg.cpp:113
-msgid "Restore Defaults"
-msgstr "Obnovi privzete vrednosti"
-
-#. ts-context SettingsPageDlg
-#: ../src/qtui/settingspagedlg.cpp:113
-msgid "Do you like to restore the default values for this page?"
-msgstr "Ali želite obnoviti privzete vrednosti za to stran?"
-
-#. ts-context SettingsPageDlg
-#: ../src/qtui/ui/settingspagedlg.ui:14
-msgid "Configure Quassel"
-msgstr "Nastavi Quassel"
-
-#. ts-context SettingsPageDlg
-#: ../src/qtui/ui/settingspagedlg.ui:30
-msgid "Settings"
-msgstr "Nastavitve"
-
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:865
 msgid "Peer tried to send package larger than max package size!"
@@ -4896,19 +4314,9 @@ msgid "Disconnecting"
 msgstr "Prekinjam povezavo"
 
 #. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:28
-msgid "Network name:"
-msgstr "Ime omrežja:"
-
-#. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:35
 msgid "The name of the IRC network you are configuring"
 msgstr "Ime omrežja IRC, ki ga nastavljate"
-
-#. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:63
-msgid "Servers"
-msgstr "Strežniki"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:81
@@ -4921,45 +4329,14 @@ msgid "Edit this server entry"
 msgstr "Urejanje izbranega strežnika"
 
 #. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:99
-msgid "&Edit..."
-msgstr "&Urejanje ..."
-
-#. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:116
 msgid "Add another IRC server"
 msgstr "Doda nov strežnik za IRC"
 
 #. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:119
-msgid "&Add..."
-msgstr "&Dodaj ..."
-
-#. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:136
 msgid "Remove this server entry from the list"
 msgstr "Odstrani izbrani strežnik s seznama"
-
-#. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:139
-msgid "De&lete"
-msgstr "&Zbriši"
-
-#. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:165
-msgid "Move upwards in list"
-msgstr "Premakni gor v seznamu"
-
-#. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:168
-#: ../src/qtui/ui/simplenetworkeditor.ui:182
-msgid "..."
-msgstr "..."
-
-#. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:179
-msgid "Move downwards in list"
-msgstr "Premakni dol v seznamu"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:226
@@ -5090,30 +4467,10 @@ msgstr "Aktiviraj ikono v docku:"
 msgid "Mark taskbar entry, timeout:"
 msgstr "Označi gumb v opravilni vrstici:"
 
-#. ts-context TaskbarNotificationBackend::ConfigWidget
-#: ../src/qtui/taskbarnotificationbackend.cpp:74
-msgid "Unlimited"
-msgstr "Neomejeno"
-
-#. ts-context TaskbarNotificationBackend::ConfigWidget
-#: ../src/qtui/taskbarnotificationbackend.cpp:75
-msgid " s"
-msgstr " s"
-
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:31
-msgid "Connect"
-msgstr "Poveži se"
-
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgid "Connect to IRC"
 msgstr "Poveži se na IRC"
-
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:32
-msgid "Disconnect"
-msgstr "Prekini povezavo"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:32
@@ -5122,18 +4479,8 @@ msgstr "Prekini povezavo z IRC-em"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:34
-msgid "Part"
-msgstr "Zapusti"
-
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:34
 msgid "Leave currently selected channel"
 msgstr "Zapusti trnutno izbrani kanal"
-
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:35
-msgid "Join"
-msgstr "Pridruži se"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:35
@@ -5149,11 +4496,6 @@ msgstr "Poizvedba"
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgid "Start a private conversation"
 msgstr "Zaćni zaseben pogovor"
-
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:38
-msgid "Whois"
-msgstr "Kdoje"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:38
@@ -5240,35 +4582,10 @@ msgstr "Poveži se na vse"
 msgid "Disconnect from all"
 msgstr "Prekini povezavo z vsemi"
 
-#. ts-context TopicWidget
-#: ../src/qtui/ui/topicwidget.ui:32
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context TopicWidget
-#: ../src/qtui/ui/topicwidget.ui:79
-msgid "..."
-msgstr "..."
-
-#. ts-context TopicWidgetSettingsPage
-#: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-msgid "Interface"
-msgstr "Vmesnik"
-
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgid "Topic Widget"
 msgstr "Vrstica s temo"
-
-#. ts-context TopicWidgetSettingsPage
-#: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
-msgid "Form"
-msgstr "Obrazec"
-
-#. ts-context TopicWidgetSettingsPage
-#: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
-msgid "Custom font:"
-msgstr "Pisava po meri:"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
@@ -5419,25 +4736,6 @@ msgstr "***"
 msgid "-*-"
 msgstr "-*-"
 
-#. Plain Message
-#. ----------
-#. Notice Message
-#. ----------
-#. Server Message
-#. ----------
-#. Info Message
-#. ----------
-#. Error Message
-#. ----------
-#. Topic Message
-#. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:572 ../src/uisupport/uistyle.cpp:575
-#: ../src/uisupport/uistyle.cpp:615 ../src/uisupport/uistyle.cpp:618
-#: ../src/uisupport/uistyle.cpp:621 ../src/uisupport/uistyle.cpp:628
-#: ../src/uisupport/uistyle.cpp:729
-msgid "%1"
-msgstr "%1"
-
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:675
 msgid "%n Owner(s)"
@@ -5498,26 +4796,24 @@ msgstr[3] "%n uporabnikov"
 #. ts-context AboutDlg
 #~ msgid ""
 #~ "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for "
-#~ "great artwork and the Quassel logo/icon</dt><dt><b><a "
-#~ "href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
-#~ "creating most of the other shiny icons you see throughout "
-#~ "Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software "
-#~ "formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, "
-#~ "and for sponsoring development of QuasselTopia with Greenphones and "
-#~ "more</dd><dt><b><a "
-#~ "href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>for keeping Qt alive, "
-#~ "and for sponsoring development of Quassel Mobile with N810s</dd>"
+#~ "great artwork and the Quassel logo/icon</dt><dt><b><a href=\"http://www."
+#~ "oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating most of "
+#~ "the other shiny icons you see throughout Quassel</dd><dt><b><a href="
+#~ "\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></"
+#~ "b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of "
+#~ "QuasselTopia with Greenphones and more</dd><dt><b><a href=\"http://www."
+#~ "nokia.com\">Nokia</a></b></dt><dd>for keeping Qt alive, and for "
+#~ "sponsoring development of Quassel Mobile with N810s</dd>"
 #~ msgstr ""
-#~ "Posebno zahvalo si zaslužijo:<br><dl><dt><b>John \"nox\" "
-#~ "Hand</b></dt><dd>za odlično grafiko in logo/ikono za "
-#~ "Quassel</dt><dt><b><a href=\"http://www.oxygen-icons.org\">ekipa "
-#~ "Oxygen</a></b></dt><dd>za izdelavo večine ostalih čudovitih ikon, ki jih "
-#~ "vidite v Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt "
-#~ "Software, nekdaj znani kot Trolltech</a></b></dt><dd>za izdelavo Qt in "
-#~ "Qtopia ter sponzoriranje razvoja QuasselTopia z Greenphone in "
-#~ "ostalim</dd><dt><b><a "
-#~ "href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>za nadaljnji razvoj "
-#~ "Qt in za sponzoriranje razvoja Quassel Mobile z večimi N810</dd>"
+#~ "Posebno zahvalo si zaslužijo:<br><dl><dt><b>John \"nox\" Hand</b></"
+#~ "dt><dd>za odlično grafiko in logo/ikono za Quassel</dt><dt><b><a href="
+#~ "\"http://www.oxygen-icons.org\">ekipa Oxygen</a></b></dt><dd>za izdelavo "
+#~ "večine ostalih čudovitih ikon, ki jih vidite v Quassel</dd><dt><b><a href="
+#~ "\"http://www.trolltech.com\">Qt Software, nekdaj znani kot Trolltech</a></"
+#~ "b></dt><dd>za izdelavo Qt in Qtopia ter sponzoriranje razvoja "
+#~ "QuasselTopia z Greenphone in ostalim</dd><dt><b><a href=\"http://www."
+#~ "nokia.com\">Nokia</a></b></dt><dd>za nadaljnji razvoj Qt in za "
+#~ "sponzoriranje razvoja Quassel Mobile z večimi N810</dd>"
 
 #. ts-context AliasesSettingsPage
 #~ msgid "Behaviour"
@@ -5526,10 +4822,6 @@ msgstr[3] "%n uporabnikov"
 #. ts-context AppearanceSettingsPage
 #~ msgid "Appearance"
 #~ msgstr "Videz"
-
-#. ts-context AppearanceSettingsPage
-#~ msgid "General"
-#~ msgstr "Splošno"
 
 #. ts-context AppearanceSettingsPage
 #~ msgid "Fonts"
@@ -5548,10 +4840,6 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Pisava"
 
 #. ts-context AppearanceSettingsPage
-#~ msgid "Choose..."
-#~ msgstr "Izbor ..."
-
-#. ts-context AppearanceSettingsPage
 #~ msgid "Set font for channel and nick lists"
 #~ msgstr "Nastavite pisavo za seznama kanalov in vzdevkov"
 
@@ -5566,21 +4854,6 @@ msgstr[3] "%n uporabnikov"
 #. ts-context AppearanceSettingsPage
 #~ msgid "Input line:"
 #~ msgstr "Vnosna vrstica:"
-
-#. ts-context AppearanceSettingsPage
-#~ msgid "Misc"
-#~ msgstr "Razno"
-
-#. ts-context AppearanceSettingsPage
-#~ msgid ""
-#~ "Show a website preview window when hovering the mouse over a web address"
-#~ msgstr ""
-#~ "Prikaži namig z ogledom spletne strani, ko miška lebdi nad spletno "
-#~ "povezavo"
-
-#. ts-context AppearanceSettingsPage
-#~ msgid "Show previews of webpages on URL hover"
-#~ msgstr "Ob lebdenju nad povezavo prikaži ogled strani"
 
 #. ts-context AppearanceSettingsPage
 #~ msgid "Show status icons in channel and nick lists"
@@ -5613,10 +4886,6 @@ msgstr[3] "%n uporabnikov"
 #. ts-context AppearanceSettingsPage
 #~ msgid "Use Icons to represent away state of Users"
 #~ msgstr "Za prikaz stanja uporabnikov uporabi ikone"
-
-#. ts-context BacklogSettingsPage
-#~ msgid "Behaviour"
-#~ msgstr "Obnašanje"
 
 #. ts-context BacklogSettingsPage
 #~ msgid "Backlog Request Method:"
@@ -5735,16 +5004,8 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Prikaži/skrij prikaze"
 
 #. ts-context BufferViewSettingsPage
-#~ msgid "General"
-#~ msgstr "Splošno"
-
-#. ts-context BufferViewSettingsPage
 #~ msgid "Buffer Views"
 #~ msgstr "Prikazi"
-
-#. ts-context BufferViewSettingsPage
-#~ msgid "Appearance"
-#~ msgstr "Videz"
 
 #. ts-context BufferViewSettingsPage
 #~ msgid "Delete Buffer View?"
@@ -5784,45 +5045,37 @@ msgstr[3] "%n uporabnikov"
 
 #. ts-context BufferWidget
 #~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
 #~ "p, li { white-space: pre-wrap; }\n"
 #~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; "
 #~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img "
-#~ "src=\":/pics/quassel-large.png\" /><span style=\" font-size:89pt; "
-#~ "color:#00008b;\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-size:49pt;\"><span style=\" font-size:22pt;\">Chat comfortably. "
-#~ "Anywhere.</span></p></body></html>"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/"
+#~ "quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;"
+#~ "\">uassel IRC</span></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span "
+#~ "style=\" font-size:22pt;\">Chat comfortably. Anywhere.</span></p></body></"
+#~ "html>"
 #~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+#~ "REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+#~ "css\">\n"
 #~ "p, li { white-space: pre-wrap; }\n"
 #~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; "
 #~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img "
-#~ "src=\":/pics/quassel-large.png\" /><span style=\" font-size:89pt; "
-#~ "color:#00008b;\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
-#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; "
-#~ "font-size:49pt;\"><span style=\" font-size:22pt;\">Klepetajte udobno. "
-#~ "Kjerkoli.</span></p></body></html>"
-
-#. ts-context ChatMonitorSettingsPage
-#~ msgid "General"
-#~ msgstr "Splošno"
-
-#. ts-context ChatMonitorSettingsPage
-#~ msgid "Appearance"
-#~ msgstr "Videz"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/"
+#~ "quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;"
+#~ "\">uassel IRC</span></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span "
+#~ "style=\" font-size:22pt;\">Klepetajte udobno. Kjerkoli.</span></p></"
+#~ "body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #~ msgid "Available Buffers:"
@@ -5832,14 +5085,6 @@ msgstr[3] "%n uporabnikov"
 #~ msgid "All Buffers"
 #~ msgstr "Vsi prikazi"
 
-#. ts-context Client
-#~ msgid "Default Identity"
-#~ msgstr "Privzeta identiteta"
-
-#. ts-context ColorSettingsPage
-#~ msgid "Appearance"
-#~ msgstr "Videz"
-
 #. ts-context ColorSettingsPage
 #~ msgid "Color settings"
 #~ msgstr "Nastavitve barv"
@@ -5847,10 +5092,6 @@ msgstr[3] "%n uporabnikov"
 #. ts-context ColorSettingsPage
 #~ msgid "Buffers"
 #~ msgstr "Prikazi"
-
-#. ts-context ColorSettingsPage
-#~ msgid "Network"
-#~ msgstr "Omrežje"
 
 #. ts-context ColorSettingsPage
 #~ msgid "#incative"
@@ -5873,10 +5114,6 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "#druga aktivnost"
 
 #. ts-context ColorSettingsPage
-#~ msgid "Form"
-#~ msgstr "Obrazec"
-
-#. ts-context ColorSettingsPage
 #~ msgid "Bufferview"
 #~ msgstr "Prikaz"
 
@@ -5897,24 +5134,12 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Uporabi OZ"
 
 #. ts-context ColorSettingsPage
-#~ msgid "Highlight:"
-#~ msgstr "Poudarek:"
-
-#. ts-context ColorSettingsPage
 #~ msgid "New Message:"
 #~ msgstr "Novo sporočilo:"
 
 #. ts-context ColorSettingsPage
 #~ msgid "Other Activity:"
 #~ msgstr "Druga aktivnost:"
-
-#. ts-context ColorSettingsPage
-#~ msgid "Preview:"
-#~ msgstr "Ogled:"
-
-#. ts-context ColorSettingsPage
-#~ msgid "1"
-#~ msgstr "1"
 
 #. ts-context ColorSettingsPage
 #~ msgid "Chatview"
@@ -5931,10 +5156,6 @@ msgstr[3] "%n uporabnikov"
 #. ts-context ColorSettingsPage
 #~ msgid "Default:"
 #~ msgstr "Privzeto:"
-
-#. ts-context ColorSettingsPage
-#~ msgid "Inactive:"
-#~ msgstr "Neaktivno:"
 
 #. ts-context ColorSettingsPage
 #~ msgid "Background"
@@ -5993,14 +5214,6 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Sporočilo preimenovanja:"
 
 #. ts-context ColorSettingsPage
-#~ msgid "Message"
-#~ msgstr "Sporočilo"
-
-#. ts-context ColorSettingsPage
-#~ msgid "Timestamp:"
-#~ msgstr "Časovna oznaka:"
-
-#. ts-context ColorSettingsPage
 #~ msgid "Sender:"
 #~ msgstr "Pošiljatelj:"
 
@@ -6027,10 +5240,6 @@ msgstr[3] "%n uporabnikov"
 #. ts-context ColorSettingsPage
 #~ msgid "New Message Marker:"
 #~ msgstr "Označevalnik novih sporočil:"
-
-#. ts-context ColorSettingsPage
-#~ msgid "Enable"
-#~ msgstr "Omogoči"
 
 #. ts-context ColorSettingsPage
 #~ msgid "Sender auto coloring:"
@@ -6116,14 +5325,6 @@ msgstr[3] "%n uporabnikov"
 #~ msgid "Nick status:"
 #~ msgstr "Stanje vzdevka:"
 
-#. ts-context ColorSettingsPage
-#~ msgid "Online:"
-#~ msgstr "Na zvazi:"
-
-#. ts-context ColorSettingsPage
-#~ msgid "Away:"
-#~ msgstr "Odsoten:"
-
 #. ts-context ContextMenuActionProvider
 #~ msgid "Delete Buffer(s)..."
 #~ msgstr "Zbriši prikaz(e) ..."
@@ -6162,28 +5363,8 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Prekinjam povezavo."
 
 #. ts-context FontsSettingsPage
-#~ msgid "Appearance"
-#~ msgstr "Videz"
-
-#. ts-context FontsSettingsPage
-#~ msgid "Fonts"
-#~ msgstr "Pisave"
-
-#. ts-context FontsSettingsPage
-#~ msgid "Form"
-#~ msgstr "Obrazec"
-
-#. ts-context FontsSettingsPage
 #~ msgid "Custom Application Fonts"
 #~ msgstr "Pisave po meri"
-
-#. ts-context FontsSettingsPage
-#~ msgid "Font"
-#~ msgstr "Pisava"
-
-#. ts-context FontsSettingsPage
-#~ msgid "Choose..."
-#~ msgstr "Izbor ..."
 
 #. ts-context FontsSettingsPage
 #~ msgid "Topic:"
@@ -6214,24 +5395,12 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Vzdevki:"
 
 #. ts-context FontsSettingsPage
-#~ msgid "Timestamp:"
-#~ msgstr "Časovna oznaka:"
-
-#. ts-context FontsSettingsPage
 #~ msgid ""
 #~ "Some of these settings require a restart of the Quassel Client in order "
 #~ "to take effect. We intend to fix this."
 #~ msgstr ""
 #~ "Nekatere nastavitve stopijo v veljavo šele po vnovičnem zagonu odjemalca "
 #~ "Quassel. To nameravamo popraviti."
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Behaviour"
-#~ msgstr "Obnašanje"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "General"
-#~ msgstr "Splošno"
 
 #. ts-context GeneralSettingsPage
 #~ msgid "Minimize to tray on minimize button"
@@ -6242,20 +5411,12 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Pomanjšaj v sistemsko vrstico (gumb zapri)"
 
 #. ts-context GeneralSettingsPage
-#~ msgid "Status Buffer"
-#~ msgstr "Prikaz stanja"
-
-#. ts-context GeneralSettingsPage
 #~ msgid "Current Buffer"
 #~ msgstr "Trenutni prikaz"
 
 #. ts-context GeneralSettingsPage
 #~ msgid "Buffer View"
 #~ msgstr "Prikaz"
-
-#. ts-context GeneralSettingsPage
-#~ msgid "Display topic in tooltip"
-#~ msgstr "Prikaži temo v namigu"
 
 #. ts-context GeneralSettingsPage
 #~ msgid "Mouse wheel changes displayed buffers"
@@ -6271,226 +5432,13 @@ msgstr[3] "%n uporabnikov"
 #~ msgid "Input Line"
 #~ msgstr "Vnosna vrstica"
 
-#. ts-context GeneralSettingsPage
-#~ msgid "Completion suffix:"
-#~ msgstr "Pripona dokončevanja:"
-
-#. ts-context HighlightSettingsPage
-#~ msgid "Behaviour"
-#~ msgstr "Obnašanje"
-
-#. ts-context HighlightSettingsPage
-#~ msgid "Appearance"
-#~ msgstr "Videz"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "General"
-#~ msgstr "Splošno"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Load a Key"
-#~ msgstr "Naloži ključ"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "No Key loaded"
-#~ msgstr "Naložen ni noben ključ"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Load"
-#~ msgstr "Naloži"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "RSA"
-#~ msgstr "RSA"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "DSA"
-#~ msgstr "DSA"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Clear"
-#~ msgstr "Počisti"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Load a Certificate"
-#~ msgstr "Naloži potrdilo"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "No Certificate loaded"
-#~ msgstr "Naloženo ni nobeno potrdilo"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Real Name:"
-#~ msgstr "Pravo ime:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "The \"Real Name\" is shown in /whois."
-#~ msgstr "Pravo ime je prikazano v izpisu /whois."
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Nicknames"
-#~ msgstr "Vzdevki"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Add Nickname"
-#~ msgstr "Dodaj vzdevek"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "&Add..."
-#~ msgstr "&Dodaj ..."
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Remove Nickname"
-#~ msgstr "Odstrani vzdevek"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Remove"
-#~ msgstr "Odstrani"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Re&name..."
-#~ msgstr "Pre&imenuj ..."
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Move upwards in list"
-#~ msgstr "Premakni gor v seznamu"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Move downwards in list"
-#~ msgstr "Premakni dol v seznamu"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "A&way"
-#~ msgstr "&Odsoten"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Default Away Settings"
-#~ msgstr "Privzete nastavitve za odsotnost"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Nick to be used when being away"
-#~ msgstr "Vzdevek, ki bo prikazan, ko ste odsotni"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Default away reason"
-#~ msgstr "Privzeti razlog za odsotnost"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Away Reason:"
-#~ msgstr "Razlog odsotnosti:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Away Nick:"
-#~ msgstr "Vzdevek odsotnosti:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Set away when all clients have detached from the core"
-#~ msgstr "Nastavi odsotnost, ko vsi odjemalci prekinejo povezavo z jedrom"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Away On Detach"
-#~ msgstr "Odsotnost ob prekinitvi"
-
 #. ts-context IdentitiesSettingsPage
 #~ msgid "Override default away reason for auto-away on detach"
 #~ msgstr "Za samo-odsotnost ob prekinitvi povozi privzeti razlog odsotnosti"
 
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Not implemented yet"
-#~ msgstr "Še ni izvedeno"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Away On Idle"
-#~ msgstr "Odsotnost ob neaktivnosti"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Set away after"
-#~ msgstr "Odsoten po"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "minutes of being idle"
-#~ msgstr "minutah neaktivnosti"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Advanced"
-#~ msgstr "Napredno"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Ident:"
-#~ msgstr "Ident:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid ""
-#~ "The \"ident\" is part of your hostmask and, together with your host, "
-#~ "uniquely identifies you within the IRC network."
-#~ msgstr ""
-#~ "»ident« je del maske gostitelja in vas, skupaj z gostiteljem, edinstveno "
-#~ "identificira na omrežju IRC."
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Messages"
-#~ msgstr "Sporočila"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Part Reason:"
-#~ msgstr "Razlog zapustitve:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Quit Reason:"
-#~ msgstr "Razlog končanja:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Kick Reason:"
-#~ msgstr "Razlog za brco:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid ""
-#~ "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-#~ msgstr ""
-#~ "Za urejanje ključa in potrdila SSL za jedro potrebujete odjemalca s "
-#~ "podporo za SSL"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid ""
-#~ "Warning: you are not connected with a secured connection to the Quassel "
-#~ "Core!\n"
-#~ "Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
-#~ "Certificate!"
-#~ msgstr ""
-#~ "Opozorilo: Povezava z jedrom Quassel ni varna. Če nadaljujete, se bosta\n"
-#~ "ključ SSL in potrdilo SSL prenesla brez šifriranja!"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Continue"
-#~ msgstr "Nadaljuj"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Use SSL Key"
-#~ msgstr "Uporabi ključ SSL"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Key Type:"
-#~ msgstr "Vrsta ključa:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Use SSL Certificate"
-#~ msgstr "Uporabi potrdilo SSL"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "Organisation:"
-#~ msgstr "Organizacija:"
-
-#. ts-context IdentitiesSettingsPage
-#~ msgid "CommonName:"
-#~ msgstr "Skupno ime:"
-
 #. ts-context InputLine
 #~ msgid "Do you really want to paste %1 lines?"
 #~ msgstr "Ali res želite prilepiti %1 vrstic?"
-
-#. ts-context InputLine
-#~ msgid "Paste Protection"
-#~ msgstr "Varovanje pri lepljenju"
 
 #. ts-context IrcServerHandler
 #~ msgid ""
@@ -6530,10 +5478,6 @@ msgstr[3] "%n uporabnikov"
 #~ msgid "&Buffer Views"
 #~ msgstr "P&rikazi"
 
-#. ts-context Message
-#~ msgid "Day changed to %1"
-#~ msgstr "Dan se je spremenil na %1"
-
 #. ts-context MsgProcessorStatusWidget
 #~ msgid "Processing Messages"
 #~ msgstr "Obdelovanje sporočil"
@@ -6543,195 +5487,8 @@ msgstr[3] "%n uporabnikov"
 #~ msgstr "Prikaz"
 
 #. ts-context NetworkModelActionProvider
-#~ msgid "Connect"
-#~ msgstr "Poveži se"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Disconnect"
-#~ msgstr "Prekini povezavo"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Join"
-#~ msgstr "Pridruži se"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Part"
-#~ msgstr "Zapusti"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Delete Buffer(s)..."
-#~ msgstr "Zbriši prikaz(e) ..."
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Show Buffer"
-#~ msgstr "Prikaži prikaz"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Joins"
-#~ msgstr "Pridružitve"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Parts"
-#~ msgstr "Zapustitve"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Quits"
-#~ msgstr "Končanja"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Nick Changes"
-#~ msgstr "Spremembe vzdevkov"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Mode Changes"
-#~ msgstr "Spremembe načina"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Day Changes"
-#~ msgstr "Spremembe dneva"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Set as Default..."
-#~ msgstr "Nastavi kot privzeto ..."
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Use Defaults..."
-#~ msgstr "Uporabi privzeto ..."
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Join Channel..."
-#~ msgstr "Pridruži se kanalu ..."
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Start Query"
-#~ msgstr "Zaženi poizvedbo"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Show Query"
-#~ msgstr "Prikaži poizvedbo"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Whois"
-#~ msgstr "Whois"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Version"
-#~ msgstr "Različica"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Time"
-#~ msgstr "Čas"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Ping"
-#~ msgstr "Ping"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Finger"
-#~ msgstr "Finger"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Give Operator Status"
-#~ msgstr "Daj status operaterja"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Take Operator Status"
-#~ msgstr "Odvzemi status operaterja"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Give Voice"
-#~ msgstr "Daj besedo"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Take Voice"
-#~ msgstr "Odvzemi besedo"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Kick From Channel"
-#~ msgstr "Brcni s kanala"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Ban From Channel"
-#~ msgstr "Izloči s kanala"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Kick && Ban"
-#~ msgstr "Brcni in izloči"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Hide Buffer(s) Temporarily"
-#~ msgstr "Začasno skrij prikaz(e)"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Hide Buffer(s) Permanently"
-#~ msgstr "Trajno skrij prikaz(e)"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Show Channel List"
-#~ msgstr "Prikaži seznam kanalov"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Show Ignore List"
-#~ msgstr "Prikaži seznam spregledanih"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Hide Events"
-#~ msgstr "Skrij dogodke"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "CTCP"
-#~ msgstr "CTCP"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Actions"
-#~ msgstr "Dejanja"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Do you want to delete the following buffer(s) permanently?"
-#~ msgid_plural "Do you want to delete the following buffer(s) permanently?"
-#~ msgstr[0] "Ali želite trajno zbrisati sledeči prikaz?"
-#~ msgstr[1] "Ali želite trajno zbrisati sledeča prikaza?"
-#~ msgstr[2] "Ali želite trajno zbrisati sledeče prikaze?"
-#~ msgstr[3] "Ali želite trajno zbrisati sledeče prikaze?"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid ""
-#~ "<b>Note:</b> This will delete all related data, including all backlog "
-#~ "data, from the core's database and cannot be undone."
-#~ msgstr ""
-#~ "<b>Pomnite:</b> S tem iz podatkovne zbirke jedra zbrišete vse povezane "
-#~ "podatke, vključno z zgodovino sporočil. Tega kasneje ni moč razveljaviti."
-
-#. ts-context NetworkModelActionProvider
-#~ msgid ""
-#~ "<br>Active channel buffers cannot be deleted, please part the channel "
-#~ "first."
-#~ msgstr ""
-#~ "<br>Aktivnih prikazov kanalov ni moč zbrisati. Najprej zapustite kanale."
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Remove buffers permanently?"
-#~ msgstr "Ali trajno zbrišem prikaze?"
-
-#. ts-context NetworkModelActionProvider
-#~ msgid "Join Channel"
-#~ msgstr "Pridruži se kanalu"
-
-#. ts-context NetworkModelActionProvider
 #~ msgid "Input channel name:"
 #~ msgstr "Vnesite ime kanala:"
-
-#. ts-context NetworksSettingsPage
-#~ msgid "General"
-#~ msgstr "Splošno"
-
-#. ts-context NotificationsSettingsPage
-#~ msgid "Behaviour"
-#~ msgstr "Obnašanje"
-
-#. ts-context NotificationsSettingsPage
-#~ msgid "Appearance"
-#~ msgstr "Videz"
 
 #. ts-context TopicLabel
 #~ msgid "Drag to scroll the topic!"
