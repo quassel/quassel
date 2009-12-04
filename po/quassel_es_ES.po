@@ -4,10 +4,10 @@
 # Rafael Belmonte <EagleScreen@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Last-Translator: Rafael Belmonte\n"
-"PO-Revision-Date: 2009-11-30 21:49+0100\n"
+"Last-Translator: \n"
+"PO-Revision-Date: 2009-12-04 13:22+0100\n"
 "Project-Id-Version: \n"
-"Language-Team: Español <kde-i18n-doc@kde.org>\n"
+"Language-Team: es <kde-i18n-doc@kde.org>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
@@ -4976,7 +4976,7 @@ msgstr ""
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:100 ../src/qtui/settingsdlg.cpp:104
 msgid "Configure %1"
-msgstr "Congurar %1"
+msgstr "Configurar %1"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:171
@@ -5152,7 +5152,6 @@ msgstr ""
 
 #. ts-context SqliteStorage
 #: ../src/core/sqlitestorage.cpp:49
-#, fuzzy
 msgid ""
 "SQLite is a file-based database engine that does not require any setup. It "
 "is suitable for small and medium-sized databases that do not require access "
@@ -5160,354 +5159,315 @@ msgid ""
 "same machine it is running on, and if you only expect a few users to use "
 "your core."
 msgstr ""
+"SQLite es un motor de base de datos basado en ficheros que no requiere "
+"configuración alguna. "
+"Es adecuado para bases de datos pequeñas o medianas que no requieran acceso "
+"mediante la red. "
+"Use SQLite si su Quassel, debe de almacenar la información en la misma "
+"máquina en la que "
+"Quassel se esté ejecutando, y si cabe esperar que sólo unos pocos usuarios "
+"usen su núcleo."
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:568
-#, fuzzy
 msgid "SSL Certificate used by %1"
-msgstr ""
+msgstr "Certificado SSL usado por %1"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:572
-#, fuzzy
 msgid "Issuer Info"
-msgstr ""
+msgstr "Información del emisor"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:574 ../src/qtui/coreconnectdlg.cpp:583
-#, fuzzy
 msgid "Organization:"
-msgstr ""
+msgstr "Organización:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:575 ../src/qtui/coreconnectdlg.cpp:584
-#, fuzzy
 msgid "Locality Name:"
-msgstr ""
+msgstr "Nombre de localidad:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:576 ../src/qtui/coreconnectdlg.cpp:585
-#, fuzzy
 msgid "Organizational Unit Name:"
-msgstr ""
+msgstr "Nombre de la organización:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:577 ../src/qtui/coreconnectdlg.cpp:586
-#, fuzzy
 msgid "Country Name:"
-msgstr ""
+msgstr "Nombre del país:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:578 ../src/qtui/coreconnectdlg.cpp:587
-#, fuzzy
 msgid "State or Province Name:"
-msgstr ""
+msgstr "Nombre del estado o provincia:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:581
-#, fuzzy
 msgid "Subject Info"
-msgstr ""
+msgstr "Información del sujeto"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:590
-#, fuzzy
 msgid "Additional Info"
-msgstr ""
+msgstr "Información adicional"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:592
-#, fuzzy
 msgid "Valid From:"
-msgstr ""
+msgstr "Válido desde:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:593
-#, fuzzy
 msgid "Valid To:"
-msgstr ""
+msgstr "Válido hasta:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:596
 #, fuzzy
 msgid "Hostname %1:"
-msgstr ""
+msgstr "Hostname %1:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:600
-#, fuzzy
 msgid "E-Mail Address %1:"
-msgstr ""
+msgstr "Dirección E-Mail %1:"
 
 #. ts-context SslCertDisplayDialog
 #: ../src/qtui/coreconnectdlg.cpp:602
 #, fuzzy
 msgid "Digest:"
-msgstr ""
+msgstr "Resumen:"
 
 #. ts-context StatusBufferItem
 #: ../src/client/networkmodel.h:142
 #, fuzzy
 msgid "Status Buffer"
-msgstr ""
+msgstr "Área de estado"
 
 #. ts-context SystrayNotificationBackend::ConfigWidget
 #: ../src/qtui/systraynotificationbackend.cpp:122
-#, fuzzy
 msgid "System Tray Icon"
-msgstr ""
+msgstr "Icono de bandeja del sistema"
 
 #. ts-context SystrayNotificationBackend::ConfigWidget
 #: ../src/qtui/systraynotificationbackend.cpp:123
-#, fuzzy
 msgid "Animate"
-msgstr ""
+msgstr "Animar"
 
 #. ts-context SystrayNotificationBackend::ConfigWidget
 #: ../src/qtui/systraynotificationbackend.cpp:125
-#, fuzzy
 msgid "Show bubble"
-msgstr ""
+msgstr "Mostrar mensaje emergente"
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:67
 #, fuzzy
 msgid "Activate dock entry, timeout:"
-msgstr ""
+msgstr "Activar entrada de anclaje, tiempo de espera:"
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:69
-#, fuzzy
 msgid "Mark taskbar entry, timeout:"
-msgstr ""
+msgstr "Marcar entrada en barra de tareas, tiempo de espera:"
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:74
-#, fuzzy
 msgid "Unlimited"
-msgstr ""
+msgstr "Ilimitado"
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:75
 #, fuzzy
 msgid " s"
-msgstr ""
+msgstr " s"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:31
-#, fuzzy
 msgid "Connect"
-msgstr ""
+msgstr "Conectar"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:31
-#, fuzzy
 msgid "Connect to IRC"
-msgstr ""
+msgstr "Conectarse al IRC"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:32
-#, fuzzy
 msgid "Disconnect"
-msgstr ""
+msgstr "Desconectar"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:32
-#, fuzzy
 msgid "Disconnect from IRC"
-msgstr ""
+msgstr "Desconectarse del IRC"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:34
-#, fuzzy
 msgid "Part"
-msgstr ""
+msgstr "Abandonar"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:34
-#, fuzzy
 msgid "Leave currently selected channel"
-msgstr ""
+msgstr "Dejar el canal seleccionado actualmente"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:35
-#, fuzzy
 msgid "Join"
-msgstr ""
+msgstr "Unirse"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:35
-#, fuzzy
 msgid "Join a channel"
-msgstr ""
+msgstr "Unirse a un canal"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 #, fuzzy
 msgid "Query"
-msgstr ""
+msgstr "Cuestión"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
-#, fuzzy
 msgid "Start a private conversation"
-msgstr ""
+msgstr "Comenzar una conversación privada"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 #, fuzzy
 msgid "Whois"
-msgstr ""
+msgstr "Whois"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:38
-#, fuzzy
 msgid "Request user information"
-msgstr ""
+msgstr "Solicitar información de usuario"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 #, fuzzy
 msgid "Op"
-msgstr ""
+msgstr "Op"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:40
-#, fuzzy
 msgid "Give operator privileges to user"
-msgstr ""
+msgstr "Dar al usuario privilegios de operador"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 #, fuzzy
 msgid "Deop"
-msgstr ""
+msgstr "Retirar operador"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:41
-#, fuzzy
 msgid "Take operator privileges from user"
-msgstr ""
+msgstr "Obtener privilegios de operador del usuario"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:42
-#, fuzzy
 msgid "Voice"
-msgstr ""
+msgstr "Voz"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:42
-#, fuzzy
 msgid "Give voice to user"
-msgstr ""
+msgstr "Proporcionar voz al usuario"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 #, fuzzy
 msgid "Devoice"
-msgstr ""
+msgstr "Retirar voz"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:43
-#, fuzzy
 msgid "Take voice from user"
-msgstr ""
+msgstr "Obtener voz del usuario"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:44
-#, fuzzy
 msgid "Kick"
-msgstr ""
+msgstr "Expulsar"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:44
-#, fuzzy
 msgid "Remove user from channel"
-msgstr ""
+msgstr "Borrar usuario del canal"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:45
-#, fuzzy
 msgid "Ban"
-msgstr ""
+msgstr "Banear"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:45
-#, fuzzy
 msgid "Ban user from channel"
-msgstr ""
+msgstr "Banear usuario del canal"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:46
-#, fuzzy
 msgid "Kick/Ban"
-msgstr ""
+msgstr "Expulsar/Banear"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:46
-#, fuzzy
 msgid "Remove and ban user from channel"
-msgstr ""
+msgstr "Borrar y banear al usuario del canal"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:51
-#, fuzzy
 msgid "Connect to all"
-msgstr ""
+msgstr "Conectar a todo"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:58
-#, fuzzy
 msgid "Disconnect from all"
-msgstr ""
+msgstr "Desconectarse de todo"
 
 #. ts-context TopicWidget
 #: ../src/qtui/ui/topicwidget.ui:32
-#, fuzzy
 msgid "Form"
-msgstr ""
+msgstr "Formulario"
 
 #. ts-context TopicWidget
 #: ../src/qtui/ui/topicwidget.ui:79
 #, fuzzy
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Interface"
-msgstr ""
+msgstr "Interfaz"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Topic Widget"
-msgstr ""
+msgstr "Componente del tema"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
-#, fuzzy
 msgid "Form"
-msgstr ""
+msgstr "formulario"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
-#, fuzzy
 msgid "Custom font:"
-msgstr ""
+msgstr "Tipografía personalizada"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
-#, fuzzy
 msgid "Resize dynamically to fit contents"
-msgstr ""
+msgstr "Redimensionar dinámicamente para ajustarse al contenido"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:84
-#, fuzzy
 msgid "On hover only"
-msgstr ""
+msgstr "Sólo al pasar por encima"
 
 #. Plain Message
 #. ----------
@@ -5525,95 +5485,83 @@ msgstr ""
 #: ../src/uisupport/uistyle.cpp:615 ../src/uisupport/uistyle.cpp:618
 #: ../src/uisupport/uistyle.cpp:621 ../src/uisupport/uistyle.cpp:628
 #: ../src/uisupport/uistyle.cpp:729
-#, fuzzy
 msgid "%1"
-msgstr ""
+msgstr "%1"
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:578
 #, fuzzy
 msgid "%DN%1%DN %2"
-msgstr ""
+msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:582
-#, fuzzy
 msgid "You are now known as %DN%1%DN"
-msgstr ""
+msgstr "Ahora es usted conocido como %DN%1%DN"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:583
-#, fuzzy
 msgid "%DN%1%DN is now known as %DN%2%DN"
-msgstr ""
+msgstr "%DN%1%DN es ahora conocido como %DN%2%DN"
 
 #. Mode Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:587
-#, fuzzy
 msgid "User mode: %DM%1%DM"
-msgstr ""
+msgstr "Modo de usuario: %DM%1%DM"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:588
-#, fuzzy
 msgid "Mode %DM%1%DM by %DN%2%DN"
-msgstr ""
+msgstr "Modo %DM%1%DM por %DN%2%DN"
 
 #. Join Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:592
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH se ha unido a %DC%4%DC"
 
 #. Part Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:595
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH ha dejado %DC%4%DC"
 
 #. Quit Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:600
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH ha salido"
 
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:607
-#, fuzzy
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr ""
+msgstr "%DN%1%DN ha sido expulsado %DN%2%DN de %DC%3%DC"
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:624
-#, fuzzy
 msgid "{Day changed to %1}"
-msgstr ""
+msgstr "{Día cambiado a %1}"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:636
 #, fuzzy
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
-msgstr ""
+msgstr "División entre %DH%1%DH y %DH%2%DH finalizada. Usuarios unidos:"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:640 ../src/uisupport/uistyle.cpp:655
-#, fuzzy
 msgid "%DN%1%DN (%2 more)"
-msgstr ""
+msgstr "%DN%1%DN (%2 más)"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:650
-#, fuzzy
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
-msgstr ""
+msgstr "División entre %DH%1%DH y %DH%2%DH. Los usuarios salieron:"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:659 ../src/uisupport/uistyle.cpp:697
@@ -5696,50 +5644,44 @@ msgstr ""
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:675
-#, fuzzy
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n dueño(s)"
+msgstr[1] "%n dueño(s)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:676
-#, fuzzy
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n Administrador(es)"
+msgstr[1] "%n Administrador(es)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:677
-#, fuzzy
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n operador(es)"
+msgstr[1] "%n operador(es)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:678
-#, fuzzy
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n semiOp(es)"
+msgstr[1] "%n semiOp(es)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:679
-#, fuzzy
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n con voz"
+msgstr[1] "%n con voz"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:680
-#, fuzzy
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n usuario(s)"
+msgstr[1] "%n usuario(s)"
 
 
