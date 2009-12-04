@@ -80,10 +80,6 @@ private:
   QTimer _scrollTimer;
   int _scrollOffset;
   bool _invalidateFilter;
-
-  // workaround for QTBUG-6322
-  qreal _verticalOffset;
-  bool _verticalOffsetStable;
 };
 
 
