@@ -60,7 +60,12 @@ QHash<QString, SettingsChangeNotifier *> Settings::settingsChangeNotifier;
 
 void Settings::notify(const QString &key, QObject *receiver, const char *slot) {
   QObject::connect(notifier(normalizedKey(group, key)), SIGNAL(valueChanged(const QVariant &)),
-		   receiver, slot);
+                   receiver, slot);
+}
+
+void Settings::initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue) {
+  notify(key, receiver, slot);
+  emit notifier(normalizedKey(group, key))->valueChanged(localValue(key, defaultValue));
 }
 
 uint Settings::version() {

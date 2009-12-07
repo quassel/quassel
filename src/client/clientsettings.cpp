@@ -176,6 +176,48 @@ void CoreAccountSettings::clearAccounts() {
 }
 
 /***********************************************************************************************/
+// CoreConnectionSettings:
+
+CoreConnectionSettings::CoreConnectionSettings() : ClientSettings("CoreConnection") {}
+
+void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode) {
+  setLocalValue("NetworkDetectionMode", mode);
+}
+
+CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode() {
+#ifdef HAVE_KDE
+  NetworkDetectionMode def = UseSolid;
+#else
+  NetworkDetectionMode def = UsePingTimeout;
+#endif
+  return (NetworkDetectionMode)localValue("NetworkDetectionMode", def).toInt();
+}
+
+void CoreConnectionSettings::setAutoReconnect(bool autoReconnect) {
+  setLocalValue("AutoReconnect", autoReconnect);
+}
+
+bool CoreConnectionSettings::autoReconnect() {
+  return localValue("AutoReconnect", true).toBool();
+}
+
+void CoreConnectionSettings::setPingTimeoutInterval(int interval) {
+  setLocalValue("PingTimeoutInterval", interval);
+}
+
+int CoreConnectionSettings::pingTimeoutInterval() {
+  return localValue("PingTimeoutInterval", 60).toInt();
+}
+
+void CoreConnectionSettings::setReconnectInterval(int interval) {
+  setLocalValue("ReconnectInterval", interval);
+}
+
+int CoreConnectionSettings::reconnectInterval() {
+  return localValue("ReconnectInterval", 60).toInt();
+}
+
+/***********************************************************************************************/
 // NotificationSettings:
 
 NotificationSettings::NotificationSettings() : ClientSettings("Notification") {

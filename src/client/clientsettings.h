@@ -108,6 +108,33 @@ public:
 };
 
 // ========================================
+// CoreConnectionSettings
+// ========================================
+
+class CoreConnectionSettings : public ClientSettings {
+public:
+  enum NetworkDetectionMode {
+    UseSolid,
+    UsePingTimeout,
+    NoActiveDetection
+  };
+
+  CoreConnectionSettings();
+
+  void setNetworkDetectionMode(NetworkDetectionMode mode);
+  NetworkDetectionMode networkDetectionMode();
+
+  void setAutoReconnect(bool autoReconnect);
+  bool autoReconnect();
+
+  void setPingTimeoutInterval(int interval);
+  int pingTimeoutInterval();
+
+  void setReconnectInterval(int interval);
+  int reconnectInterval();
+};
+
+// ========================================
 // TabCompletionSettings
 // ========================================
 

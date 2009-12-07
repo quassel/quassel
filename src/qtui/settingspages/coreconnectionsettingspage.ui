@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CoreConnectionSettingsPage</class>
+ <widget class="QWidget" name="CoreConnectionSettingsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>446</width>
+    <height>465</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Network Status Detection</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="useSolid">
+        <property name="toolTip">
+         <string>Rely on KDE's hardware layer to detect if we're online. Recommended for most KDE users</string>
+        </property>
+        <property name="text">
+         <string>Use KDE's network status detection (via Solid)</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QRadioButton" name="usePingTimeout">
+          <property name="toolTip">
+           <string>Actively ping the remote core and disconnect if we didn't get a reply after a certain time</string>
+          </property>
+          <property name="text">
+           <string>Ping timeout after</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="pingTimeout">
+          <property name="toolTip">
+           <string>Actively ping the remote core and disconnect if we didn't get a reply after a certain time</string>
+          </property>
+          <property name="suffix">
+           <string> seconds</string>
+          </property>
+          <property name="minimum">
+           <number>30</number>
+          </property>
+          <property name="maximum">
+           <number>3600</number>
+          </property>
+          <property name="singleStep">
+           <number>30</number>
+          </property>
+          <property name="value">
+           <number>60</number>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string notr="true">PingTimeoutInterval</string>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <UInt>60</UInt>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="useNoTimeout">
+        <property name="toolTip">
+         <string>Only disconnect if the network socket gets closed by the operating system. This may take a long time after actually losing connectivity</string>
+        </property>
+        <property name="text">
+         <string>Never time out actively</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="autoReconnect">
+     <property name="text">
+      <string>Automatically reconnect on network failures</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">AutoReconnect</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="reconnectLabel">
+       <property name="text">
+        <string>Retry every</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="reconnectInterval">
+       <property name="toolTip">
+        <string>Actively ping the remote core and disconnect if we didn't get a reply after a certain time</string>
+       </property>
+       <property name="suffix">
+        <string> seconds</string>
+       </property>
+       <property name="minimum">
+        <number>30</number>
+       </property>
+       <property name="maximum">
+        <number>3600</number>
+       </property>
+       <property name="singleStep">
+        <number>30</number>
+       </property>
+       <property name="value">
+        <number>60</number>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string notr="true">ReconnectInterval</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <UInt>60</UInt>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>usePingTimeout</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pingTimeout</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>81</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autoReconnect</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>reconnectLabel</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>75</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>72</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autoReconnect</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>reconnectInterval</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>142</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>134</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

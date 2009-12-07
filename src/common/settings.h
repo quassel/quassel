@@ -44,7 +44,12 @@ public:
   enum Mode { Default, Custom };
 
 public:
+  //! Call the given slot on change of the given key
   virtual void notify(const QString &key, QObject *receiver, const char *slot);
+
+  //! Sets up notification and calls the given slot to set the initial value
+  void initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue = QVariant());
+
   virtual uint version();
 
 protected:

@@ -112,6 +112,7 @@
 #include "settingspages/chatviewsettingspage.h"
 #include "settingspages/connectionsettingspage.h"
 #include "settingspages/coreaccountsettingspage.h"
+#include "settingspages/coreconnectionsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
 #include "settingspages/ignorelistsettingspage.h"
@@ -956,6 +957,7 @@ void MainWin::showSettingsDlg() {
   // Category: Remote Cores
   if(Quassel::runMode() != Quassel::Monolithic) {
     dlg->registerSettingsPage(new CoreAccountSettingsPage(dlg));
+    dlg->registerSettingsPage(new CoreConnectionSettingsPage(dlg));
   }
 
   dlg->show();
