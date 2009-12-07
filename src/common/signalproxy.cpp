@@ -120,7 +120,7 @@ void SignalProxy::SignalRelay::detachSignal(QObject *sender, int signalId) {
     if(slotIter->sender == sender && (signalId == -1 || slotIter->signalId == signalId)) {
       slotIter = _slots.erase(slotIter);
       if(signalId != -1)
-	break;
+        break;
     } else {
       slotIter++;
     }
@@ -146,12 +146,12 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
 
       const QList<int> &argTypes = eMeta->argTypes(signal.signalId);
       for(int i = 0; i < argTypes.size(); i++) {
-	if(argTypes[i] == 0) {
-	  qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(_id).signature());
-	  qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
-	  return _id;
-	}
-	params << QVariant(argTypes[i], _a[i+1]);
+        if(argTypes[i] == 0) {
+          qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(_id).signature());
+          qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
+          return _id;
+        }
+        params << QVariant(argTypes[i], _a[i+1]);
       }
 
       proxy()->dispatchSignal(SignalProxy::RpcCall, params);
@@ -167,7 +167,7 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
 void SignalProxy::IODevicePeer::dispatchSignal(const RequestType &requestType, const QVariantList &params) {
   QVariantList packedFunc;
   packedFunc << (qint16)requestType
-	     << params;
+             << params;
   dispatchPackedFunc(QVariant(packedFunc));
 }
 
@@ -252,8 +252,8 @@ void SignalProxy::setProxyMode(ProxyMode mode) {
     if((*peer)->type() != AbstractPeer::IODevicePeer) {
       IODevicePeer *ioPeer = static_cast<IODevicePeer *>(*peer);
       if(ioPeer->isOpen()) {
-	qWarning() << "SignalProxy: Cannot change proxy mode while connected";
-	return;
+        qWarning() << "SignalProxy: Cannot change proxy mode while connected";
+        return;
       }
     }
     if((*peer)->type() != AbstractPeer::SignalProxyPeer) {
@@ -273,7 +273,8 @@ void SignalProxy::setProxyMode(ProxyMode mode) {
 void SignalProxy::init() {
   _signalRelay = new SignalRelay(this);
   connect(&_heartBeatTimer, SIGNAL(timeout()), this, SLOT(sendHeartBeat()));
-  _heartBeatTimer.start(30 * 1000);
+  setHeartBeatInterval(30);
+  setMaxHeartBeatCount(2);
   _secure = false;
   updateSecureState();
 }
@@ -322,6 +323,23 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
 
   updateSecureState();
   return true;
+}
+
+void SignalProxy::setHeartBeatInterval(int secs) {
+  if(secs != _heartBeatInterval) {
+    _heartBeatInterval = secs;
+    _heartBeatTimer.setInterval(secs * 1000);
+  }
+}
+
+void SignalProxy::setMaxHeartBeatCount(int max) {
+  if(max < 0)
+    _heartBeatTimer.stop();
+  else {
+    _maxHeartBeatCount = max;
+    if(!_heartBeatTimer.isActive())
+      _heartBeatTimer.start();
+  }
 }
 
 bool SignalProxy::addPeer(SignalProxy* proxy) {
@@ -537,11 +555,11 @@ void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantL
     switch((*peer)->type()) {
     case AbstractPeer::IODevicePeer:
       {
-	IODevicePeer *ioPeer = static_cast<IODevicePeer *>(*peer);
-	if(ioPeer->isOpen())
-	  ioPeer->dispatchPackedFunc(packedFunc);
-	else
-	  QCoreApplication::postEvent(this, new RemovePeerEvent(peer.key()));
+        IODevicePeer *ioPeer = static_cast<IODevicePeer *>(*peer);
+        if(ioPeer->isOpen())
+          ioPeer->dispatchPackedFunc(packedFunc);
+        else
+          QCoreApplication::postEvent(this, new RemovePeerEvent(peer.key()));
       }
       break;
     case AbstractPeer::SignalProxyPeer:
@@ -634,7 +652,7 @@ void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
 
   if(!_syncSlave.contains(className) || !_syncSlave[className].contains(objectName)) {
     qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(slot)).arg(objectName)
-	       << params;
+               << params;
     return;
   }
 
@@ -642,7 +660,7 @@ void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
   ExtendedMetaObject *eMeta = extendedMetaObject(receiver);
   if(!eMeta->slotMap().contains(slot)) {
     qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(slot)).arg(objectName)
-	       << params;
+               << params;
     return;
   }
 
@@ -663,8 +681,8 @@ void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
     int receiverId = eMeta->receiveMap()[slotId];
     QVariantList returnParams;
     returnParams << className
-		 << objectName
-		 << eMeta->methodName(receiverId);
+                 << objectName
+                 << eMeta->methodName(receiverId);
     //QByteArray(receiver->metaObject()->method(receiverId).signature());
     if(eMeta->argTypes(receiverId).count() > 1)
       returnParams << params;
@@ -679,7 +697,7 @@ void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
 void SignalProxy::handleInitRequest(AbstractPeer *sender, const QVariantList &params) {
   if(params.count() != 2) {
     qWarning() << "SignalProxy::handleInitRequest() received initRequest with invalid param Count:"
-	       << params;
+               << params;
     return;
   }
 
@@ -688,13 +706,13 @@ void SignalProxy::handleInitRequest(AbstractPeer *sender, const QVariantList &pa
 
   if(!_syncSlave.contains(className)) {
     qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
-	       << className;
+               << className;
     return;
   }
 
   if(!_syncSlave[className].contains(objectName)) {
     qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Object:"
-	       << className << objectName;
+               << className << objectName;
     return;
   }
 
@@ -702,8 +720,8 @@ void SignalProxy::handleInitRequest(AbstractPeer *sender, const QVariantList &pa
 
   QVariantList params_;
   params_ << className
-	  << objectName
-	  << initData(obj);
+          << objectName
+          << initData(obj);
 
   sender->dispatchSignal(InitData, params_);
 }
@@ -712,7 +730,7 @@ void SignalProxy::handleInitData(AbstractPeer *sender, const QVariantList &param
   Q_UNUSED(sender)
   if(params.count() != 3) {
     qWarning() << "SignalProxy::handleInitData() received initData with invalid param Count:"
-	       << params;
+               << params;
     return;
   }
 
@@ -722,13 +740,13 @@ void SignalProxy::handleInitData(AbstractPeer *sender, const QVariantList &param
 
   if(!_syncSlave.contains(className)) {
     qWarning() << "SignalProxy::handleInitData() received initData for unregistered Class:"
-	       << className;
+               << className;
     return;
   }
 
   if(!_syncSlave[className].contains(objectName)) {
     qWarning() << "SignalProxy::handleInitData() received initData for unregistered Object:"
-	       << className << objectName;
+               << className << objectName;
     return;
   }
 
@@ -768,8 +786,8 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
   }
 
   void *_a[] = {0,              // return type...
-		0, 0, 0, 0 , 0, // and 10 args - that's the max size qt can handle with signals and slots
-		0, 0, 0, 0 , 0};
+                0, 0, 0, 0 , 0, // and 10 args - that's the max size qt can handle with signals and slots
+                0, 0, 0, 0 , 0};
 
   // check for argument compatibility and build params array
   for(int i = 0; i < numArgs; i++) {
@@ -884,8 +902,8 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
     if(nbytes <= 4) {
       const char *data = rawItem.constData();
       if(nbytes < 4 || (data[0]!=0 || data[1]!=0 || data[2]!=0 || data[3]!=0)) {
-	disconnectDevice(dev, tr("Peer sent corrupted compressed data!"));
-	return false;
+        disconnectDevice(dev, tr("Peer sent corrupted compressed data!"));
+        return false;
       }
     }
 
@@ -912,7 +930,7 @@ void SignalProxy::requestInit(SyncableObject *obj) {
 
   QVariantList params;
   params << obj->syncMetaObject()->className()
-	 << obj->objectName();
+         << obj->objectName();
   dispatchSignal(InitRequest, params);
 }
 
@@ -940,12 +958,12 @@ void SignalProxy::sendHeartBeat() {
       IODevicePeer *ioPeer = static_cast<IODevicePeer *>(*peer);
       ioPeer->dispatchSignal(SignalProxy::HeartBeat, heartBeatParams);
       if(ioPeer->sentHeartBeats > 0) {
-	updateLag(ioPeer, ioPeer->sentHeartBeats * _heartBeatTimer.interval());
+        updateLag(ioPeer, ioPeer->sentHeartBeats * _heartBeatTimer.interval());
       }
-      if(ioPeer->sentHeartBeats > 1)
+      if(ioPeer->sentHeartBeats >= maxHeartBeatCount())
         toClose.append(ioPeer);
       else
-	ioPeer->sentHeartBeats++;
+        ioPeer->sentHeartBeats++;
     }
     ++peer;
   }
@@ -1144,19 +1162,19 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
     for(int i = 0; i < methodCount; i++) {
       requestSlot = _meta->method(i);
       if(requestSlot.methodType() != QMetaMethod::Slot)
-	continue;
+        continue;
 
       returnTypeName = requestSlot.typeName();
       if(QMetaType::Void == (QMetaType::Type)returnType(i))
-	continue;
+        continue;
 
       signature = QByteArray(requestSlot.signature());
       if(!signature.startsWith("request"))
-	continue;
+        continue;
 
       paramsPos = signature.indexOf('(');
       if(paramsPos == -1)
-	continue;
+        continue;
 
       methodName = signature.left(paramsPos);
       params = signature.mid(paramsPos);
@@ -1168,12 +1186,12 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
       receiverId = _meta->indexOfSlot(signature);
 
       if(receiverId == -1) {
-	signature = QMetaObject::normalizedSignature(methodName + "(" + returnTypeName + ")");
-	receiverId = _meta->indexOfSlot(signature);
+        signature = QMetaObject::normalizedSignature(methodName + "(" + returnTypeName + ")");
+        receiverId = _meta->indexOfSlot(signature);
       }
 
       if(receiverId != -1) {
-	receiveMap[i] = receiverId;
+        receiveMap[i] = receiverId;
       }
     }
     _receiveMap = receiveMap;

@@ -76,6 +76,11 @@ public:
   void setProxyMode(ProxyMode mode);
   inline ProxyMode proxyMode() const { return _proxyMode; }
 
+  void setHeartBeatInterval(int secs);
+  inline int heartBeatInterval() const { return _heartBeatInterval; }
+  void setMaxHeartBeatCount(int max);
+  inline int maxHeartBeatCount() const { return _maxHeartBeatCount; }
+
   bool addPeer(QIODevice *iodev);
   bool addPeer(SignalProxy *proxy);
   void removePeer(QObject *peer);
@@ -195,6 +200,8 @@ private:
 
   ProxyMode _proxyMode;
   QTimer _heartBeatTimer;
+  int _heartBeatInterval;
+  int _maxHeartBeatCount;
 
   bool _secure; // determines if all connections are in a secured state (using ssl or internal connections)
 
@@ -238,7 +245,7 @@ public:
   inline int methodId(const QByteArray &methodName) { return _methodIds.contains(methodName) ? _methodIds[methodName] : -1; }
 
   inline int updatedRemotelyId() { return _updatedRemotelyId; }
-  
+
   inline const QHash<QByteArray, int> &slotMap() { return _methodIds; }
   const QHash<int, int> &receiveMap();
 
