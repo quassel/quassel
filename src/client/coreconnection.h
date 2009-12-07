@@ -24,11 +24,16 @@
 // TODO: support system application proxy (new in Qt 4.6)
 
 #include "QPointer"
+#include "QTimer"
 
 #ifdef HAVE_SSL
 #  include <QSslSocket>
 #else
 #  include <QTcpSocket>
+#endif
+
+#ifdef HAVE_KDE
+#  include <Solid/Networking>
 #endif
 
 #include "coreaccount.h"
@@ -54,11 +59,12 @@ public:
 
   void init();
 
-  inline ConnectionState state() const;
   inline bool isConnected() const;
+  inline ConnectionState state() const;
   inline CoreAccount currentAccount() const;
 
   bool isEncrypted() const;
+  bool isLocalConnection() const;
 
   inline int progressMinimum() const;
   inline int progressMaximum() const;
@@ -72,7 +78,7 @@ public:
 public slots:
   bool connectToCore(AccountId = 0);
   void reconnectToCore();
-  void disconnectFromCore(const QString &errorString = QString());
+  void disconnectFromCore();
 
 signals:
   void stateChanged(CoreConnection::ConnectionState);
@@ -106,6 +112,7 @@ signals:
 
 private slots:
   void connectToCurrentAccount();
+  void disconnectFromCore(const QString &errorString, bool wantReconnect = true);
 
   void socketStateChanged(QAbstractSocket::SocketState);
   void coreSocketError(QAbstractSocket::SocketError);
@@ -123,7 +130,7 @@ private slots:
   void internalSessionStateReceived(const QVariant &packedState);
   void sessionStateReceived(const QVariantMap &state);
 
-  void resetConnection();
+  void resetConnection(bool wantReconnect = false);
   void connectionReady();
 
   void loginToCore(const QString &user, const QString &password, bool remember); // for config wizard
@@ -147,14 +154,26 @@ private slots:
   void sslErrors();
 #endif
 
+  void networkDetectionModeChanged(const QVariant &mode);
+  void pingTimeoutIntervalChanged(const QVariant &interval);
+  void reconnectIntervalChanged(const QVariant &interval);
+  void reconnectTimeout();
+
+#ifdef HAVE_KDE
+  void solidNetworkStatusChanged(Solid::Networking::Status status);
+#endif
+
 private:
   CoreAccountModel *_model;
   CoreAccount _account;
   QVariantMap _coreMsgBuffer;
 
-  QPointer<QIODevice> _socket;
+  QPointer<QAbstractSocket> _socket;
   quint32 _blockSize;
   ConnectionState _state;
+
+  QTimer _reconnectTimer;
+  bool _wantReconnect;
 
   QSet<Network *> _netsToSync;
   int _numNetsToSync;
