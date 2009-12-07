@@ -62,6 +62,9 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _ignoreListManager(this)
 {
   SignalProxy *p = signalProxy();
+  p->setHeartBeatInterval(30);
+  p->setMaxHeartBeatCount(60); // 30 mins until we throw a dead socket out
+
   connect(p, SIGNAL(peerRemoved(QIODevice *)), this, SLOT(removeClient(QIODevice *)));
 
   connect(p, SIGNAL(connected()), this, SLOT(clientsConnected()));
@@ -130,11 +133,11 @@ void CoreSession::loadSettings() {
     QList<NetworkInfo>::iterator networkIter = networkInfos.begin();
     while(networkIter != networkInfos.end()) {
       if(networkIter->identity == id) {
-	networkIter->identity = newId;
-	Core::updateNetwork(user(), *networkIter);
-	networkIter = networkInfos.erase(networkIter);
+        networkIter->identity = newId;
+        Core::updateNetwork(user(), *networkIter);
+        networkIter = networkInfos.erase(networkIter);
       } else {
-	networkIter++;
+        networkIter++;
       }
     }
     s.removeIdentity(id);
@@ -263,10 +266,10 @@ void CoreSession::processMessages() {
     for(int i = 0; i < _messageQueue.count(); i++) {
       const RawMessage &rawMsg = _messageQueue.at(i);
       if(bufferInfoCache.contains(rawMsg.networkId) && bufferInfoCache[rawMsg.networkId].contains(rawMsg.target)) {
-	bufferInfo = bufferInfoCache[rawMsg.networkId][rawMsg.target];
+        bufferInfo = bufferInfoCache[rawMsg.networkId][rawMsg.target];
       } else {
-	bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
-	bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
+        bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
+        bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
       }
 
       Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
@@ -497,7 +500,7 @@ void CoreSession::clientsDisconnected() {
 
     if(identity->detachAwayEnabled() && !me->isAway()) {
       if(!identity->detachAwayReason().isEmpty())
-	awayReason = identity->detachAwayReason();
+        awayReason = identity->detachAwayReason();
       net->setAutoAwayActive(true);
       net->userInputHandler()->handleAway(BufferInfo(), awayReason);
     }
