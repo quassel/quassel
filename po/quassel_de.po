@@ -4,7 +4,7 @@
 # Martin Mayer <m4yer@minad.de>, Michael Groh <brot@minad.de>, 2009.
 msgid ""
 msgstr ""
-"Last-Translator: Michael Groh <brot@minad.de>\n"
+"Last-Translator: Martin Mayer <m4yer@minad.de>\n"
 "PO-Revision-Date: 2009-12-08 08:03+0100\n"
 "Project-Id-Version: \n"
 "Language-Team: German <devel@quassel-irc.org>\n"
@@ -754,7 +754,6 @@ msgstr "Filter:"
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
-#, fuzzy
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
 "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -1935,7 +1934,6 @@ msgstr "Vom Core getrennt."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:194
-#, fuzzy
 msgid "Network is down"
 msgstr "Keine Netzwerkverbindung"
 
@@ -2030,37 +2028,32 @@ msgstr "Synchronisiert mit %1"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:14
-#, fuzzy
 msgid "Form"
 msgstr "Formular"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:20
-#, fuzzy
 msgid "Network Status Detection"
 msgstr "Erkennen der Netzwerkverbindung"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
-#, fuzzy
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most "
 "KDE users"
 msgstr ""
-"Die KDE Hardwareschnittstelle verwenden um den Status der Netzwerkverbindung "
-"festzustellen. Empfohlen für die meisten KDE nutzer"
+"Die KDE Hardwareschnittstelle (Solid) verwenden um den Status der "
+"Netzwerkverbindung festzustellen. Empfohlen für die meisten KDE-Nnutzer"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:29
-#, fuzzy
 msgid "Use KDE's network status detection (via Solid)"
-msgstr "Nutze KDE zur Erkennung der Netzwerkverbindung (via Solid)"
+msgstr "KDE zur Erkennung der Netzwerkverbindung verwenden (via Solid)"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:41
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:57
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:154
-#, fuzzy
 msgid ""
 "Actively ping the remote core and disconnect if we didn't get a reply after "
 "a certain time"
@@ -2070,48 +2063,41 @@ msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:44
-#, fuzzy
 msgid "Ping timeout after"
 msgstr "Ping-Zeitüberschreitung nach"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:60
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:157
-#, fuzzy
 msgid " seconds"
 msgstr " Sekunden"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:100
-#, fuzzy
 msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
 msgstr ""
-"Die Verbindung nur Trennen wenn der Netzwerk-Socket vom Betriebssystem "
+"Die Verbindung nur trennen, wenn der Netzwerk-Socket vom Betriebssystem "
 "geschlossen wird. Das kann erst lange nach dem Verbindungsverlust passieren"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:103
-#, fuzzy
 msgid "Never time out actively"
 msgstr "Keine Zeitübschreitungen erkennen"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:113
-#, fuzzy
 msgid "Automatically reconnect on network failures"
 msgstr "Automatisches Wiederverbinden bei Netzwerkfehlern"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:147
-#, fuzzy
 msgid "Retry every"
 msgstr "Wiederverbinden nach"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
-#, fuzzy
 msgid "Remote Cores"
 msgstr "Remote Cores"
 
@@ -5441,7 +5427,7 @@ msgstr "%DN%1%DN %DH(%2@%3)%DH hat das Netzwerk verlassen"
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:607
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr "%DN%1%DN hat %DN%2%DN aus dem Chat %DC%3%DC entfernt"
+msgstr "%DN%1%DN hat %DN%2%DN aus dem Chat %DC%3%DC geworfen"
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
