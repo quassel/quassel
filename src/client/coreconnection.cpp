@@ -102,35 +102,6 @@ void CoreConnection::updateProgress(int value, int max) {
   setProgressValue(value);
 }
 
-void CoreConnection::resetConnection(bool wantReconnect) {
-  _wantReconnect = wantReconnect;
-
-  if(_socket) {
-    disconnect(_socket, 0, this, 0);
-    _socket->deleteLater();
-    _socket = 0;
-  }
-  _blockSize = 0;
-
-  _coreMsgBuffer.clear();
-
-  _netsToSync.clear();
-  _numNetsToSync = 0;
-
-  setProgressMaximum(-1); // disable
-  setState(Disconnected);
-
-  emit connectionMsg(tr("Disconnected from core."));
-  emit encrypted(false);
-
-  // initiate if a reconnect if appropriate
-  CoreConnectionSettings s;
-  if(wantReconnect && s.autoReconnect()) {
-    _reconnectTimer.start();
-    //reconnectToCore();
-  }
-}
-
 void CoreConnection::reconnectTimeout() {
   if(!_socket) {
     CoreConnectionSettings s;
@@ -283,7 +254,6 @@ void CoreConnection::coreSocketError(QAbstractSocket::SocketError) {
 }
 
 void CoreConnection::coreSocketDisconnected() {
-  emit disconnected();
   qDebug() << Q_FUNC_INFO;
   resetConnection(true);
   // FIXME handle disconnects gracefully
@@ -347,6 +317,34 @@ void CoreConnection::disconnectFromCore(const QString &errorString, bool wantRec
 
   Client::signalProxy()->removeAllPeers();
   resetConnection(wantReconnect);
+}
+
+void CoreConnection::resetConnection(bool wantReconnect) {
+  _wantReconnect = wantReconnect;
+
+  if(_socket) {
+    disconnect(_socket, 0, this, 0);
+    _socket->deleteLater();
+    _socket = 0;
+  }
+  _blockSize = 0;
+
+  _coreMsgBuffer.clear();
+
+  _netsToSync.clear();
+  _numNetsToSync = 0;
+
+  setProgressMaximum(-1); // disable
+  setState(Disconnected);
+
+  emit connectionMsg(tr("Disconnected from core."));
+  emit encrypted(false);
+
+  // initiate if a reconnect if appropriate
+  CoreConnectionSettings s;
+  if(wantReconnect && s.autoReconnect()) {
+    _reconnectTimer.start();
+  }
 }
 
 void CoreConnection::reconnectToCore() {
@@ -670,8 +668,9 @@ void CoreConnection::syncToCore(const QVariantMap &sessionState) {
   checkSyncState();
 }
 
+// this is also called for destroyed networks!
 void CoreConnection::networkInitDone() {
-  Network *net = qobject_cast<Network *>(sender());
+  QObject *net = sender();
   Q_ASSERT(net);
   disconnect(net, 0, this, 0);
   _netsToSync.remove(net);
@@ -680,7 +679,7 @@ void CoreConnection::networkInitDone() {
 }
 
 void CoreConnection::checkSyncState() {
-  if(_netsToSync.isEmpty()) {
+  if(_netsToSync.isEmpty() && state() >= Synchronizing) {
     setState(Synchronized);
     setProgressText(tr("Synchronized to %1").arg(currentAccount().accountName()));
     setProgressMaximum(-1);

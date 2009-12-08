@@ -275,6 +275,7 @@ void SignalProxy::init() {
   connect(&_heartBeatTimer, SIGNAL(timeout()), this, SLOT(sendHeartBeat()));
   setHeartBeatInterval(30);
   setMaxHeartBeatCount(2);
+  _heartBeatTimer.start();
   _secure = false;
   updateSecureState();
 }
@@ -333,13 +334,7 @@ void SignalProxy::setHeartBeatInterval(int secs) {
 }
 
 void SignalProxy::setMaxHeartBeatCount(int max) {
-  if(max < 0)
-    _heartBeatTimer.stop();
-  else {
-    _maxHeartBeatCount = max;
-    if(!_heartBeatTimer.isActive())
-      _heartBeatTimer.start();
-  }
+  _maxHeartBeatCount = max;
 }
 
 bool SignalProxy::addPeer(SignalProxy* proxy) {
@@ -960,7 +955,7 @@ void SignalProxy::sendHeartBeat() {
       if(ioPeer->sentHeartBeats > 0) {
         updateLag(ioPeer, ioPeer->sentHeartBeats * _heartBeatTimer.interval());
       }
-      if(ioPeer->sentHeartBeats >= maxHeartBeatCount())
+      if(maxHeartBeatCount() >= 0 && ioPeer->sentHeartBeats >= maxHeartBeatCount())
         toClose.append(ioPeer);
       else
         ioPeer->sentHeartBeats++;

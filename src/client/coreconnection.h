@@ -175,7 +175,7 @@ private:
   QTimer _reconnectTimer;
   bool _wantReconnect;
 
-  QSet<Network *> _netsToSync;
+  QSet<QObject *> _netsToSync;
   int _numNetsToSync;
   int _progressMinimum, _progressMaximum, _progressValue;
   QString _progressText;
