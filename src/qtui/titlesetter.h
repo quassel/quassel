@@ -38,7 +38,7 @@ class TitleSetter : public AbstractItemView {
 
   private:
     MainWin *_mainWin;
-    void changeWindowTitle(QString title);
+    void changeWindowTitle(const QModelIndex &index);
 };
 
 
