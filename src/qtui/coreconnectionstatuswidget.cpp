@@ -40,7 +40,7 @@ CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connectio
 
   connect(coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), SLOT(connectionStateChanged(CoreConnection::ConnectionState)));
   connect(coreConnection(), SIGNAL(connectionError(QString)), ui.messageLabel, SLOT(setText(QString)));
-  connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), SLOT(updateLag(int)));
+  connect(coreConnection(), SIGNAL(lagUpdated(int)), SLOT(updateLag(int)));
 }
 
 void CoreConnectionStatusWidget::update() {
@@ -58,7 +58,8 @@ void CoreConnectionStatusWidget::update() {
 
 void CoreConnectionStatusWidget::updateLag(int msecs) {
   if(msecs >= 0) {
-    ui.lagLabel->setText(tr("(Lag: %1 ms)").arg(msecs));
+    QString unit = msecs >= 100 ? tr("s", "seconds") : tr("ms", "milliseconds");
+    ui.lagLabel->setText(tr("(Lag: %1 %2)").arg(msecs >= 100 ? msecs / 1000. : msecs, 0, 'f', (int)(msecs >= 100)).arg(unit));
     if(!ui.lagLabel->isVisible())
       ui.lagLabel->show();
   } else {

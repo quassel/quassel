@@ -84,6 +84,7 @@ signals:
   void stateChanged(CoreConnection::ConnectionState);
   void encrypted(bool isEncrypted = true);
   void synchronized();
+  void lagUpdated(int msecs);
 
   void connectionError(const QString &errorMsg);
   void connectionErrorPopup(const QString &errorMsg);

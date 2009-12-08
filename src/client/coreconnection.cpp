@@ -45,6 +45,12 @@ CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
   _progressValue(-1)
 {
   qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
+}
+
+void CoreConnection::init() {
+  Client::signalProxy()->setHeartBeatInterval(30);
+  connect(Client::signalProxy(), SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
+  connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), SIGNAL(lagUpdated(int)));
 
   _reconnectTimer.setSingleShot(true);
   connect(&_reconnectTimer, SIGNAL(timeout()), SLOT(reconnectTimeout()));
@@ -53,11 +59,6 @@ CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
   connect(Solid::Networking::notifier(), SIGNAL(statusChanged(Solid::Networking::Status)),
           SLOT(solidNetworkStatusChanged(Solid::Networking::Status)));
 #endif
-}
-
-void CoreConnection::init() {
-  Client::signalProxy()->setHeartBeatInterval(30);
-  connect(Client::signalProxy(), SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
 
   CoreConnectionSettings s;
   s.initAndNotify("PingTimeoutInterval", this, SLOT(pingTimeoutIntervalChanged(QVariant)), 60);
@@ -336,6 +337,7 @@ void CoreConnection::resetConnection(bool wantReconnect) {
 
   setProgressMaximum(-1); // disable
   setState(Disconnected);
+  emit lagUpdated(-1);
 
   emit connectionMsg(tr("Disconnected from core."));
   emit encrypted(false);
