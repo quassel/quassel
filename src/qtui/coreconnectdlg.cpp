@@ -76,6 +76,11 @@ CoreConnectAuthDlg::CoreConnectAuthDlg(CoreAccount *account, QWidget *parent)
   ui.user->setText(account->user());
   ui.password->setText(account->password());
   ui.rememberPasswd->setChecked(account->storePassword());
+
+  if(ui.user->text().isEmpty())
+    ui.user->setFocus();
+  else
+    ui.password->setFocus();
 }
 
 void CoreConnectAuthDlg::accept() {
