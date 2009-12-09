@@ -12,7 +12,7 @@ PO=$BASE.po
 TS=$BASE.ts
 
 $CONV -i $PO -o $TS   &&
-  lupdate ../src -ts $TS &&
+  lupdate -no-obsolete ../src -ts $TS &&
   $CONV -i $TS -o $PO
 
 # remove cruft
