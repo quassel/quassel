@@ -104,6 +104,8 @@ QVariantMap CoreAccount::toVariantMap(bool forcePassword) const {
   v["User"] = user();
   if(_storePassword || forcePassword)
     v["Password"] = password();
+  else
+    v["Password"] = QString();
   v["StorePassword"] = storePassword();
   v["HostName"] = hostName();
   v["Port"] = port();
