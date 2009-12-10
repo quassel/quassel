@@ -107,6 +107,12 @@ private slots:
 
   void handleEarlyNetsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes);
 
+  //! Destroy any existing netsplits
+  /** This slot deletes all netsplit objects
+    * Used to get rid of existing netsplits on network reconnect
+    */
+  void destroyNetsplits();
+
 private:
   void tryNextNick(const QString &errnick, bool erroneus = false);
   bool checkParamCount(const QString &methodName, const QList<QByteArray> &params, int minParams);
