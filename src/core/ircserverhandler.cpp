@@ -36,11 +36,11 @@ IrcServerHandler::IrcServerHandler(CoreNetwork *parent)
   : BasicHandler(parent),
     _whois(false)
 {
+  connect(parent, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetsplits()));
 }
 
 IrcServerHandler::~IrcServerHandler() {
-  if(!_netsplits.empty())
-    qDeleteAll(_netsplits);
+  destroyNetsplits();
 }
 
 /*! Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
@@ -1164,6 +1164,11 @@ bool IrcServerHandler::checkParamCount(const QString &methodName, const QList<QB
   }
 }
 
+void IrcServerHandler::destroyNetsplits() {
+  qDebug() << "destroyNetsplits()";
+  qDeleteAll(_netsplits);
+  _netsplits.clear();
+}
 
 /***********************************************************************************/
 
