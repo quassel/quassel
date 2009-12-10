@@ -75,7 +75,7 @@
       <string>Use custom stylesheet</string>
      </property>
      <property name="settingsKey" stdset="0">
-      <string notr="true">UseCustomStyleSheet</string>
+      <string notr="true">/UiStyle/UseCustomStyleSheet</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>false</bool>
