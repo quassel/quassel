@@ -106,11 +106,19 @@ endif(NOT CMAKE_BUILD_TYPE)
 if(CMAKE_COMPILER_IS_GNUCXX)
   # Let's just hope that all gccs support these options and skip the tests...
   # -fno-strict-aliasing is needed apparently for Qt < 4.6
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBUGINFO "-O2")
-  set(CMAKE_CXX_FLAGS_DEBUG "-g -fno-reorder-blocks -fno-schedule-insns -fno-inline")
-  set(CMAKE_CXX_FLAGS_DEBUGFULL "-g3")
+  set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -ansi -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing")
+  set(CMAKE_CXX_FLAGS_RELEASE          "-O2 ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBUGINFO "-g -O2 ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUG            "-g -ggdb -fno-reorder-blocks -fno-schedule-insns -fno-inline ${CMAKE_CXX_FLAGS}")
+  set(CMAKE_CXX_FLAGS_DEBUGFULL        "-g3 ${CMAKE_CXX_FLAGS_DEBUG}")
 endif(CMAKE_COMPILER_IS_GNUCXX)
+
+string(TOUPPER ${CMAKE_BUILD_TYPE} upper_build_type)
+if(upper_build_type STREQUAL "RELEASE" OR upper_build_type STREQUAL "RELWITHDEBUGINFO")
+  add_definitions(-DNDEBUG -DQT_NO_DEBUG)
+else(upper_build_type STREQUAL "RELEASE" OR upper_build_type STREQUAL "RELWITHDEBUGINFO")
+  set(DEBUG 1)
+endif(upper_build_type STREQUAL "RELEASE" OR upper_build_type STREQUAL "RELWITHDEBUGINFO")
 
 if(WANT_MONO OR WANT_QTCLIENT)
   set(QT_MIN_VERSION "4.5.0")
