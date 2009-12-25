@@ -133,17 +133,17 @@ void NetworkItem::attachNetwork(Network *network) {
   _network = network;
 
   connect(network, SIGNAL(networkNameSet(QString)),
-	  this, SLOT(setNetworkName(QString)));
+          this, SLOT(setNetworkName(QString)));
   connect(network, SIGNAL(currentServerSet(QString)),
-	  this, SLOT(setCurrentServer(QString)));
+          this, SLOT(setCurrentServer(QString)));
   connect(network, SIGNAL(ircChannelAdded(IrcChannel *)),
-	  this, SLOT(attachIrcChannel(IrcChannel *)));
+          this, SLOT(attachIrcChannel(IrcChannel *)));
   connect(network, SIGNAL(ircUserAdded(IrcUser *)),
-	  this, SLOT(attachIrcUser(IrcUser *)));
+          this, SLOT(attachIrcUser(IrcUser *)));
   connect(network, SIGNAL(connectedSet(bool)),
-	  this, SIGNAL(networkDataChanged()));
+          this, SIGNAL(networkDataChanged()));
   connect(network, SIGNAL(destroyed()),
-	  this, SIGNAL(networkDataChanged()));
+          this, SIGNAL(networkDataChanged()));
 
   emit networkDataChanged();
 }
@@ -252,7 +252,7 @@ void BufferItem::updateActivityLevel(const Message &msg) {
     stateChanged = true;
     _firstUnreadMsgId = msg.msgId();
   }
-     
+
   BufferInfo::ActivityLevel oldLevel = activityLevel();
 
   _activity |= BufferInfo::OtherActivity;
@@ -379,10 +379,10 @@ bool QueryBufferItem::setData(int column, const QVariant &value, int role) {
     {
       QString newName = value.toString();
       if(!newName.isEmpty()) {
-	Client::renameBuffer(bufferId(), newName);
-	return true;
+        Client::renameBuffer(bufferId(), newName);
+        return true;
       } else {
-	return false;
+        return false;
       }
     }
     break;
@@ -494,7 +494,7 @@ QString ChannelBufferItem::toolTip(int column) const {
       QString _topic = topic();
       if(_topic != "") {
         _topic = stripFormatCodes(_topic);
-	_topic = Qt::escape(_topic);
+        _topic = Qt::escape(_topic);
         toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
         toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
       }
@@ -512,19 +512,19 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel) {
   _ircChannel = ircChannel;
 
   connect(ircChannel, SIGNAL(topicSet(QString)),
-	  this, SLOT(setTopic(QString)));
+          this, SLOT(setTopic(QString)));
   connect(ircChannel, SIGNAL(ircUsersJoined(QList<IrcUser *>)),
-	  this, SLOT(join(QList<IrcUser *>)));
+          this, SLOT(join(QList<IrcUser *>)));
   connect(ircChannel, SIGNAL(ircUserParted(IrcUser *)),
-	  this, SLOT(part(IrcUser *)));
+          this, SLOT(part(IrcUser *)));
   connect(ircChannel, SIGNAL(parted()),
-	  this, SLOT(ircChannelParted()));
+          this, SLOT(ircChannelParted()));
   connect(ircChannel, SIGNAL(ircUserModesSet(IrcUser *, QString)),
-	  this, SLOT(userModeChanged(IrcUser *)));
+          this, SLOT(userModeChanged(IrcUser *)));
   connect(ircChannel, SIGNAL(ircUserModeAdded(IrcUser *, QString)),
-	  this, SLOT(userModeChanged(IrcUser *)));
+          this, SLOT(userModeChanged(IrcUser *)));
   connect(ircChannel, SIGNAL(ircUserModeRemoved(IrcUser *, QString)),
-	  this, SLOT(userModeChanged(IrcUser *)));
+          this, SLOT(userModeChanged(IrcUser *)));
 
   if(!ircChannel->ircUsers().isEmpty())
     join(ircChannel->ircUsers());
@@ -612,7 +612,7 @@ void ChannelBufferItem::removeUserFromCategory(IrcUser *ircUser) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
     if(categoryItem->removeUser(ircUser)) {
       if(categoryItem->childCount() == 0)
-	removeChild(i);
+        removeChild(i);
       break;
     }
   }
@@ -814,9 +814,9 @@ NetworkModel::NetworkModel(QObject *parent)
   : TreeModel(NetworkModel::defaultHeader(), parent)
 {
   connect(this, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-	  this, SLOT(checkForNewBuffers(const QModelIndex &, int, int)));
+          this, SLOT(checkForNewBuffers(const QModelIndex &, int, int)));
   connect(this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-	  this, SLOT(checkForRemovedBuffers(const QModelIndex &, int, int)));
+          this, SLOT(checkForRemovedBuffers(const QModelIndex &, int, int)));
 
   BufferSettings defaultSettings;
   defaultSettings.notify("UserNoticesTarget", this, SLOT(messageRedirectionSettingsChanged()));
@@ -1013,10 +1013,10 @@ void NetworkModel::updateBufferActivity(Message &msg) {
     if(bufferType(msg.bufferId()) != BufferInfo::ChannelBuffer) {
       msg.setFlags(msg.flags() | Message::Redirected);
       if(msg.flags() & Message::ServerMsg) {
-	// server notice
-	redirectionTarget = _serverNoticesTarget;
+        // server notice
+        redirectionTarget = _serverNoticesTarget;
       } else {
-	redirectionTarget = _userNoticesTarget;
+        redirectionTarget = _userNoticesTarget;
       }
     }
     break;
@@ -1045,7 +1045,7 @@ void NetworkModel::updateBufferActivity(Message &msg) {
     if(redirectionTarget & BufferSettings::StatusBuffer) {
       const NetworkItem *netItem = findNetworkItem(msg.bufferInfo().networkId());
       if(netItem) {
-	updateBufferActivity(netItem->statusBufferItem(), msg);
+        updateBufferActivity(netItem->statusBufferItem(), msg);
       }
     }
   } else {
