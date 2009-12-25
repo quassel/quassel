@@ -301,15 +301,15 @@ TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
 
   if(Quassel::isOptionSet("debugmodel")) {
     connect(this, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-	    this, SLOT(debug_rowsAboutToBeInserted(const QModelIndex &, int, int)));
+            this, SLOT(debug_rowsAboutToBeInserted(const QModelIndex &, int, int)));
     connect(this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-	    this, SLOT(debug_rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+            this, SLOT(debug_rowsAboutToBeRemoved(const QModelIndex &, int, int)));
     connect(this, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-	    this, SLOT(debug_rowsInserted(const QModelIndex &, int, int)));
+            this, SLOT(debug_rowsInserted(const QModelIndex &, int, int)));
     connect(this, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-	    this, SLOT(debug_rowsRemoved(const QModelIndex &, int, int)));
+            this, SLOT(debug_rowsRemoved(const QModelIndex &, int, int)));
     connect(this, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-	    this, SLOT(debug_dataChanged(const QModelIndex &, const QModelIndex &)));
+            this, SLOT(debug_dataChanged(const QModelIndex &, const QModelIndex &)));
   }
 }
 
@@ -318,7 +318,7 @@ TreeModel::~TreeModel() {
 }
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) const {
-  if(!hasIndex(row, column, parent))
+  if(row < 0 || row >= rowCount(parent) || column < 0 || column >= columnCount(parent))
     return QModelIndex();
 
   AbstractTreeItem *parentItem;
@@ -350,7 +350,8 @@ QModelIndex TreeModel::indexByItem(AbstractTreeItem *item) const {
 
 QModelIndex TreeModel::parent(const QModelIndex &index) const {
   if(!index.isValid()) {
-    qWarning() << "TreeModel::parent(): has been asked for the rootItems Parent!";
+    // ModelTest does this
+    // qWarning() << "TreeModel::parent(): has been asked for the rootItems Parent!";
     return QModelIndex();
   }
 
@@ -442,17 +443,17 @@ void TreeModel::itemDataChanged(int column) {
 
 void TreeModel::connectItem(AbstractTreeItem *item) {
   connect(item, SIGNAL(dataChanged(int)),
-	  this, SLOT(itemDataChanged(int)));
+          this, SLOT(itemDataChanged(int)));
 
   connect(item, SIGNAL(beginAppendChilds(int, int)),
-	  this, SLOT(beginAppendChilds(int, int)));
+          this, SLOT(beginAppendChilds(int, int)));
   connect(item, SIGNAL(endAppendChilds()),
-	  this, SLOT(endAppendChilds()));
+          this, SLOT(endAppendChilds()));
 
   connect(item, SIGNAL(beginRemoveChilds(int, int)),
-	  this, SLOT(beginRemoveChilds(int, int)));
+          this, SLOT(beginRemoveChilds(int, int)));
   connect(item, SIGNAL(endRemoveChilds()),
-	  this, SLOT(endRemoveChilds()));
+          this, SLOT(endRemoveChilds()));
 }
 
 void TreeModel::beginAppendChilds(int firstRow, int lastRow) {
