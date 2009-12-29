@@ -19,14 +19,10 @@
     <file alias="oxygen/32x32/apps/quassel.png">oxygen_kde/32x32/apps/quassel.png</file>
     <file alias="oxygen/64x64/apps/quassel.png">oxygen_kde/64x64/apps/quassel.png</file>
     <file alias="oxygen/22x22/apps/quassel.png">oxygen_kde/22x22/apps/quassel.png</file>
-    <file alias="oxygen/22x22/status/dialog-error.png">oxygen_kde/22x22/status/dialog-error.png</file>
-    <file alias="oxygen/22x22/status/dialog-warning.png">oxygen_kde/22x22/status/dialog-warning.png</file>
     <file alias="oxygen/22x22/actions/edit-rename.png">oxygen_kde/22x22/actions/edit-rename.png</file>
     <file alias="oxygen/22x22/actions/list-remove-user.png">oxygen_kde/22x22/actions/list-remove-user.png</file>
-    <file alias="oxygen/22x22/actions/network-disconnect.png">oxygen_kde/22x22/actions/network-disconnect.png</file>
     <file alias="oxygen/22x22/actions/edit-clear-locationbar-rtl.png">oxygen_kde/22x22/actions/edit-clear-locationbar-rtl.png</file>
     <file alias="oxygen/22x22/actions/list-add-user.png">oxygen_kde/22x22/actions/list-add-user.png</file>
-    <file alias="oxygen/22x22/actions/network-connect.png">oxygen_kde/22x22/actions/network-connect.png</file>
     <file alias="oxygen/22x22/actions/dialog-close.png">oxygen_kde/22x22/actions/dialog-close.png</file>
     <file alias="oxygen/16x16/apps/quassel.png">oxygen_kde/16x16/apps/quassel.png</file>
     <file alias="oxygen/16x16/status/security-low.png">oxygen_kde/16x16/status/security-low.png</file>
@@ -41,7 +37,6 @@
     <file alias="oxygen/16x16/actions/irc-unvoice.png">oxygen_kde/16x16/actions/irc-unvoice.png</file>
     <file alias="oxygen/16x16/actions/configure.png">oxygen_kde/16x16/actions/configure.png</file>
     <file alias="oxygen/16x16/actions/irc-remove-operator.png">oxygen_kde/16x16/actions/irc-remove-operator.png</file>
-    <file alias="oxygen/16x16/actions/document-properties.png">oxygen_kde/16x16/actions/document-properties.png</file>
     <file alias="oxygen/16x16/actions/network-disconnect.png">oxygen_kde/16x16/actions/network-disconnect.png</file>
     <file alias="oxygen/16x16/actions/edit-find.png">oxygen_kde/16x16/actions/edit-find.png</file>
     <file alias="oxygen/16x16/actions/go-previous.png">oxygen_kde/16x16/actions/go-previous.png</file>
@@ -61,12 +56,12 @@
     <file alias="oxygen/16x16/actions/go-next.png">oxygen_kde/16x16/actions/go-next.png</file>
     <file alias="oxygen/16x16/actions/irc-join-channel.png">oxygen_kde/16x16/actions/irc-join-channel.png</file>
     <file alias="oxygen/16x16/actions/irc-operator.png">oxygen_kde/16x16/actions/irc-operator.png</file>
+    <file alias="oxygen/16x16/actions/document-edit.png">oxygen_kde/16x16/actions/document-edit.png</file>
     <file alias="oxygen/16x16/actions/network-connect.png">oxygen_kde/16x16/actions/network-connect.png</file>
     <file alias="oxygen/16x16/actions/media-playback-start.png">oxygen_kde/16x16/actions/media-playback-start.png</file>
     <file alias="oxygen/16x16/actions/im-ban-kick-user.png">oxygen_kde/16x16/actions/im-ban-kick-user.png</file>
     <file alias="oxygen/16x16/actions/dialog-cancel.png">oxygen_kde/16x16/actions/dialog-cancel.png</file>
     <file alias="oxygen/16x16/actions/im-user.png">oxygen_kde/16x16/actions/im-user.png</file>
-    <file alias="oxygen/16x16/actions/list-remove.png">oxygen_kde/16x16/actions/list-remove.png</file>
     <file alias="oxygen/16x16/actions/irc-close-channel.png">oxygen_kde/16x16/actions/irc-close-channel.png</file>
     <file alias="oxygen/16x16/actions/zoom-original.png">oxygen_kde/16x16/actions/zoom-original.png</file>
     <file alias="oxygen/16x16/actions/edit-copy.png">oxygen_kde/16x16/actions/edit-copy.png</file>
