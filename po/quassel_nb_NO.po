@@ -4,11 +4,10 @@
 # Terje Andersen <terander@guard.zapto.org>, 2009.
 msgid ""
 msgstr ""
-"X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: nb_NO\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2009-12-28 02:01+0100\n"
+"PO-Revision-Date: 2009-12-29 22:24+0100\n"
 "Last-Translator: Terje Andersen <terander@guard.zapto.org>\n"
 "Language-Team: Norsk (bokmål) <>\n"
 "MIME-Version: 1.0\n"
@@ -808,7 +807,7 @@ msgstr "Grensesnitt"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
 msgid "Chat View"
-msgstr "Snakkevisning"
+msgstr "Samtalevisning"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:14
@@ -828,7 +827,7 @@ msgstr "[tt:mm:ss]"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:59
 msgid "Custom chat window font:"
-msgstr "Egendefinert skrift for snakkevinduet:"
+msgstr "Egendefinert skrift for samtalevinduet:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
@@ -3393,7 +3392,7 @@ msgstr "&Nettverk"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:387
 msgid "&Chat Lists"
-msgstr "%Snakkelister"
+msgstr "%Samtalelister"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:403
@@ -3463,7 +3462,7 @@ msgstr "Konfi&gurere Quassel..."
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:320
 msgid "&Configure Chat Lists..."
-msgstr "&Konfigurer Snakkelistene..."
+msgstr "&Konfigurer Samtalelistene..."
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:323
@@ -4191,12 +4190,12 @@ msgstr "Ugyldig propliste %1"
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:348
 msgid "Invalid chatlist item type %1"
-msgstr "Ugyldig snakkeliste enhetstype %1"
+msgstr "Ugyldig samtaleliste enhetstype %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:364
 msgid "Invalid chatlist state %1"
-msgstr "Ugyldig snakkeliste tilstand %1"
+msgstr "Ugyldig samtaleliste tilstand %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:390
@@ -4211,7 +4210,7 @@ msgstr "Ugyldig skrift egenskap: %1"
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:420
 msgid "Unknown ChatLine property: %1"
-msgstr "Ukjent Snakkelinje egenskap: %1"
+msgstr "Ukjent Samtalelinje egenskap: %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:442
