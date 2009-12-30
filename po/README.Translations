@@ -1,5 +1,5 @@
 In order to create or update a translatable file, run the following command
-in the directory i18n/:
+in the directory po/:
 
 ./update.sh xx
 
