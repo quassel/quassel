@@ -47,7 +47,10 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
 
   _server = QIndicate::Server::defaultInstance();
   _server->setType("message.irc");
-  _server->setDesktopFile(XSTR(DESKTOP_FILE));
+  QString desktopFile = QString("%1/%2.desktop")
+    .arg(XSTR(XDG_APPS_INSTALL_DIR))
+    .arg(QCoreApplication::applicationFilePath().section('/', -1));
+  _server->setDesktopFile(desktopFile);
   connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(forceActivated()));
 
   if (_enabled) {
