@@ -7,13 +7,15 @@ if [ ! $# -eq 1 ]; then
 fi
 
 CONV=lconvert
+POT=quassel.pot
 BASE=quassel_$1
 PO=$BASE.po
 TS=$BASE.ts
 
-$CONV -i $PO -o $TS   &&
+( [ -f $PO ] || ( [ -f $POT ] && cp $POT $PO ) ) &&
+  $CONV -i $PO -o $TS &&
   lupdate -no-obsolete ../src -ts $TS &&
-  $CONV -i $TS -o $PO
+  $CONV -i $TS -o $PO &&
+  rm $TS
 
-# remove cruft
-rm ${TS}
+[ $? -ne 0 ] && echo "Something went wrong"
