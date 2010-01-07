@@ -6,11 +6,14 @@ if(QT_LCONVERT_EXECUTABLE)
   set(LINGUAS "$ENV{LINGUAS}")
   string(REGEX REPLACE "[ \t]+" \; output "${LINGUAS}")
   # Find more languages
-  file(GLOB avail_pofiles *.po qt_*.po)
+  # We support xx.po and xx_YY.po, and additionally translations for qt using qt_xx.po or qt_xx_YY.po
+  file(GLOB avail_pofiles *.po)
   foreach(PO_FILE ${avail_pofiles})
     get_filename_component(basename ${PO_FILE} NAME_WE)
-    string(REGEX REPLACE "q[^_]+_([a-zA-Z]+)(_.+)?$" "\\1" lang ${basename})
-    # test if we want this
+    # CMake can't use MATCH to get the second catch...
+    string(REGEX REPLACE "(qt_)?([a-zA-Z]+)(_.+)?$" "\\2" lang ${basename})
+
+    # test if we want this language
     set(flg 1)
     if(LINGUAS)
       string(REGEX MATCH "${lang}" flg ${LINGUAS})
