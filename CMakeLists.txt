@@ -21,7 +21,8 @@
 
 project(QuasselIRC)
 
-cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
+# cmake 2.6.2 is required for KDE >=4.2 and should be widespread enough now
+cmake_minimum_required(VERSION 2.6.2 FATAL_ERROR)
 
 if(COMMAND cmake_policy)
    cmake_policy(SET CMP0003 NEW)

@@ -32,7 +32,7 @@ FIND_PATH(OPENSSL_INCLUDE_DIR openssl/ssl.h )
 
 FIND_LIBRARY_WITH_DEBUG(OPENSSL_LIBRARIES
                 WIN32_DEBUG_POSTFIX d
-                NAMES ssl ssleay ssleay32 ssleay32MD)
+                NAMES ssl ssleay ssleay32 libssleay32 ssleay32MD)
 
 IF(WIN32)
    OPENSSL_ADD_LIB_EAY_LIBS()
