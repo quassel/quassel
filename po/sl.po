@@ -4,7 +4,6 @@
 # Jure Repinc <jlp@holodeck1.com>, 2009.
 msgid ""
 msgstr ""
-"X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: sl\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "PO-Revision-Date: 2009-11-22 19:25+0100\n"

@@ -6,8 +6,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 
 #. ts-context @default
 #~ msgid "Day changed to %1"

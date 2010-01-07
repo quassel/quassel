@@ -6,7 +6,7 @@ if(QT_LCONVERT_EXECUTABLE)
   set(LINGUAS "$ENV{LINGUAS}")
   string(REGEX REPLACE "[ \t]+" \; output "${LINGUAS}")
   # Find more languages
-  file(GLOB avail_pofiles quassel_*.po qt_*.po)
+  file(GLOB avail_pofiles *.po qt_*.po)
   foreach(PO_FILE ${avail_pofiles})
     get_filename_component(basename ${PO_FILE} NAME_WE)
     string(REGEX REPLACE "q[^_]+_([a-zA-Z]+)(_.+)?$" "\\1" lang ${basename})

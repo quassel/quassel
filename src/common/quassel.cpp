@@ -420,5 +420,5 @@ void Quassel::loadTranslation(const QLocale &locale) {
   bool success = qtTranslator->load(QString("qt_%1").arg(locale.name()), translationDirPath());
   if(!success)
     qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-  quasselTranslator->load(QString("quassel_%1").arg(locale.name()), translationDirPath());
+  quasselTranslator->load(QString("%1").arg(locale.name()), translationDirPath());
 }

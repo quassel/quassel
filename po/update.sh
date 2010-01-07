@@ -8,7 +8,7 @@ fi
 
 CONV=lconvert
 POT=quassel.pot
-BASE=quassel_$1
+BASE=$1
 PO=$BASE.po
 TS=$BASE.ts
 
