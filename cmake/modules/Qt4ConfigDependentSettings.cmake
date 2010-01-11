@@ -217,11 +217,6 @@ IF(NOT Q_WS_WIN)
   ENDIF(_QT_NEED_OPENSSL)
 ENDIF(NOT Q_WS_WIN)
 
-# Added by Sput. Still need to figure out why win is ignored upstream for this...
-IF(NOT QT_QCONFIG MATCHES "openssl")
-  SET(QT_DEFINITIONS ${QT_DEFINITIONS} -DQT_NO_OPENSSL)
-ENDIF(NOT QT_QCONFIG MATCHES "openssl")
-
 ## dbus
 IF(QT_QCONFIG MATCHES "dbus")
 
