@@ -290,9 +290,10 @@ endif(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
 if(WIN32)
   link_libraries(imm32 winmm dbghelp Secur32)  # missing by default :/
 
-  if(HAVE_SSL)
+  if(HAVE_SSL AND STATIC)
+     find_package(OpenSSL REQUIRED)
      link_libraries(${OPENSSL_LIBRARIES} libeay32MD)
-  endif(HAVE_SSL)
+  endif(HAVE_SSL AND STATIC)
 endif(WIN32)
 
 if(INDICATEQT_FOUND)
