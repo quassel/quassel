@@ -44,12 +44,12 @@
        </property>
        <item>
         <property name="text">
-         <string>&lt;System Default&gt;</string>
+         <string>&lt;Untranslated&gt;</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>&lt;Original&gt;</string>
+         <string>&lt;System Default&gt;</string>
         </property>
        </item>
       </widget>

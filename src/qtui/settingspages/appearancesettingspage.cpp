@@ -77,10 +77,13 @@ void AppearanceSettingsPage::initStyleComboBox() {
 void AppearanceSettingsPage::initLanguageComboBox() {
   QDir i18nDir(Quassel::translationDirPath(), "*.qm");
 
+  QRegExp rx("(qt_)?([a-zA-Z_]+)\\.qm");
   foreach(QString translationFile, i18nDir.entryList()) {
-    QString localeName(translationFile.mid(8));
-    localeName.chop(3);
-    QLocale locale(localeName);
+    if(!rx.exactMatch(translationFile))
+      continue;
+    if(!rx.cap(1).isEmpty())
+      continue;
+    QLocale locale(rx.cap(2));
     _locales << locale;
     ui.languageComboBox->addItem(QLocale::languageToString(locale.language()));
   }
@@ -88,6 +91,7 @@ void AppearanceSettingsPage::initLanguageComboBox() {
 
 void AppearanceSettingsPage::defaults() {
   ui.styleComboBox->setCurrentIndex(0);
+  ui.languageComboBox->setCurrentIndex(1);
 
   SettingsPage::defaults();
   widgetHasChanged();
@@ -108,9 +112,9 @@ void AppearanceSettingsPage::load() {
   // Language
   QLocale locale = uiSettings.value("Locale", QLocale::system()).value<QLocale>();
   if(locale == QLocale::system())
-    ui.languageComboBox->setCurrentIndex(0);
-  else if(locale.language() == QLocale::C)
     ui.languageComboBox->setCurrentIndex(1);
+  else if(locale.language() == QLocale::C)  // we use C for "untranslated"
+    ui.languageComboBox->setCurrentIndex(0);
   else
     ui.languageComboBox->setCurrentIndex(ui.languageComboBox->findText(QLocale::languageToString(locale.language()), Qt::MatchExactly));
   ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
@@ -146,12 +150,15 @@ void AppearanceSettingsPage::save() {
     uiSettings.setValue("Style", ui.styleComboBox->currentText());
     QApplication::setStyle(ui.styleComboBox->currentText());
   }
+  ui.styleComboBox->setProperty("storedValue", ui.styleComboBox->currentIndex());
 
-  if(ui.languageComboBox->currentIndex() == 0) {
+  if(ui.languageComboBox->currentIndex() == 1) {
     uiSettings.remove("Locale"); // force the default (QLocale::system())
+    qDebug() << "removing";
   } else {
     uiSettings.setValue("Locale", selectedLocale());
   }
+  ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
 
   bool needsStyleReload =
         ui.useCustomStyleSheet->isChecked() != ui.useCustomStyleSheet->property("storedValue").toBool()
@@ -194,9 +201,9 @@ void AppearanceSettingsPage::save() {
 QLocale AppearanceSettingsPage::selectedLocale() const {
   QLocale locale;
   int index = ui.languageComboBox->currentIndex();
-  if(index == 0)
+  if(index == 1)
     locale = QLocale::system();
-  else if(index == 1)
+  else if(index == 0)
     locale = QLocale::c();
   else if(index > 1)
     locale = _locales[index - 2];
@@ -222,8 +229,7 @@ void AppearanceSettingsPage::widgetHasChanged() {
 
 bool AppearanceSettingsPage::testHasChanged() {
   if(ui.styleComboBox->currentIndex() != ui.styleComboBox->property("storedValue").toInt()) return true;
-
-  if(selectedLocale() != QLocale()) return true; // QLocale() returns the default locale (manipulated via loadTranslation())
+  if(ui.languageComboBox->currentIndex() != ui.languageComboBox->property("storedValue").toInt()) return true;
 
   if(SettingsPage::hasChanged(ui.userNoticesInStatusBuffer)) return true;
   if(SettingsPage::hasChanged(ui.userNoticesInDefaultBuffer)) return true;

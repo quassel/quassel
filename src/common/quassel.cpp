@@ -401,21 +401,24 @@ void Quassel::loadTranslation(const QLocale &locale) {
   QTranslator *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
   QTranslator *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
 
-  if(!qtTranslator) {
-    qtTranslator = new QTranslator(qApp);
-    qtTranslator->setObjectName("QtTr");
-    qApp->installTranslator(qtTranslator);
-  }
-  if(!quasselTranslator) {
-    quasselTranslator = new QTranslator(qApp);
-    quasselTranslator->setObjectName("QuasselTr");
-    qApp->installTranslator(quasselTranslator);
-  }
+  if(qtTranslator)
+    qApp->removeTranslator(qtTranslator);
+  if(quasselTranslator)
+    qApp->removeTranslator(quasselTranslator);
 
-  QLocale::setDefault(locale);
-
+  // We use QLocale::C to indicate that we don't want a translation
   if(locale.language() == QLocale::C)
     return;
+
+  qtTranslator = new QTranslator(qApp);
+  qtTranslator->setObjectName("QtTr");
+  qApp->installTranslator(qtTranslator);
+
+  quasselTranslator = new QTranslator(qApp);
+  quasselTranslator->setObjectName("QuasselTr");
+  qApp->installTranslator(quasselTranslator);
+
+  QLocale::setDefault(locale);
 
   bool success = qtTranslator->load(QString("qt_%1").arg(locale.name()), translationDirPath());
   if(!success)
