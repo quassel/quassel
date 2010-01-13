@@ -154,7 +154,6 @@ void AppearanceSettingsPage::save() {
 
   if(ui.languageComboBox->currentIndex() == 1) {
     uiSettings.remove("Locale"); // force the default (QLocale::system())
-    qDebug() << "removing";
   } else {
     uiSettings.setValue("Locale", selectedLocale());
   }
