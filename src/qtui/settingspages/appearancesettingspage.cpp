@@ -39,6 +39,9 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
 #ifdef Q_WS_MAC
   ui.minimizeOnClose->hide();
 #endif
+#ifdef QT_NO_SYSTEMTRAYICON
+  ui.useSystemTrayIcon->hide();
+#endif
 
   initAutoWidgets();
   initStyleComboBox();

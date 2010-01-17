@@ -31,8 +31,6 @@
 #  include <windows.h>
 #endif
 
-#include <QSystemTrayIcon>
-
 #include "qtui.h"
 #include "titlesetter.h"
 #include "uisettings.h"
@@ -75,9 +73,11 @@ class MainWin
     void addBufferView(ClientBufferViewConfig *config);
     BufferView *allBuffersView() const;
 
-    BufferWidget *bufferWidget() const { return _bufferWidget; }
+    inline BufferWidget *bufferWidget() const { return _bufferWidget; }
 
-    inline SystemTray *systemTray() const;
+#ifndef QT_NO_SYSTEMTRAYICON
+    inline SystemTray *systemTray() const { return _systemTray; }
+#endif
 
     bool event(QEvent *event);
 
@@ -90,7 +90,9 @@ class MainWin
   public slots:
     void showStatusBarMessage(const QString &message);
 
+#ifndef QT_NO_SYSTEMTRAYICON
     void toggleMinimizedToTray();
+#endif
 
     //! Bring window to front and focus it
     void forceActivated();
@@ -189,9 +191,10 @@ class MainWin
     void updateIcon();
     void enableMenus();
 
+#ifndef QT_NO_SYSTEMTRAYICON
     void hideToTray();
-
     SystemTray *_systemTray;
+#endif
 
     QList<BufferViewDock *> _bufferViews;
     BufferWidget *_bufferWidget;
@@ -217,9 +220,5 @@ class MainWin
 
     friend class QtUi;
 };
-
-SystemTray *MainWin::systemTray() const {
-  return _systemTray;
-}
 
 #endif

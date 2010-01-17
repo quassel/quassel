@@ -21,6 +21,8 @@
 #ifndef SYSTEMTRAY_H_
 #define SYSTEMTRAY_H_
 
+#ifndef QT_NO_SYSTEMTRAYICON
+
 #ifdef HAVE_KDE
 #  include <KSystemTrayIcon>
 #else
@@ -94,5 +96,7 @@ private:
 bool SystemTray::isSystemTrayAvailable() const { return QSystemTrayIcon::isSystemTrayAvailable(); }
 bool SystemTray::isAlerted() const { return _alert; }
 void SystemTray::setInhibitActivation() { _inhibitActivation = true; }
+
+#endif /* QT_NO_SYSTEMTRAYICON */
 
 #endif

@@ -194,7 +194,9 @@ void MainWin::init() {
 
 #ifndef HAVE_KDE
   QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
+#  ifndef QT_NO_SYSTEMTRAYICON
   QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
+#  endif
 #  ifdef HAVE_PHONON
   QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
@@ -277,9 +279,13 @@ void MainWin::restoreStateFromSettings(UiSettings &s) {
   move(_normalPos);
 #endif
 
-  if(s.value("MainWinHidden").toBool())
+#ifndef QT_NO_SYSTEMTRAYICON
+  if(s.value("MainWinHidden").toBool()) {
     hideToTray();
-  else if(s.value("MainWinMinimized").toBool())
+    return;
+  }
+#endif
+  if(s.value("MainWinMinimized").toBool())
     showMinimized();
   else if(maximized)
     showMaximized();
@@ -675,7 +681,9 @@ void MainWin::saveStatusBarStatus(bool enabled) {
 }
 
 void MainWin::setupSystray() {
+#ifndef QT_NO_SYSTEMTRAYICON
   _systemTray = new SystemTray(this);
+#endif
 }
 
 void MainWin::setupToolBars() {
@@ -739,7 +747,9 @@ void MainWin::setConnectedState() {
 
   _coreConnectionStatusWidget->setVisible(!Client::internalCore());
   updateIcon();
+#ifndef QT_NO_SYSTEMTRAYICON
   systemTray()->setState(SystemTray::Active);
+#endif
 
   if(Client::networkIds().isEmpty()) {
     IrcConnectionWizard *wizard = new IrcConnectionWizard(this, Qt::Sheet);
@@ -805,7 +815,9 @@ void MainWin::setDisconnectedState() {
   if(_msgProcessorStatusWidget)
     _msgProcessorStatusWidget->setProgress(0, 0);
   updateIcon();
+#ifndef QT_NO_SYSTEMTRAYICON
   systemTray()->setState(SystemTray::Inactive);
+#endif
 }
 
 void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage) {
@@ -999,6 +1011,7 @@ void MainWin::resizeEvent(QResizeEvent *event) {
 }
 
 void MainWin::closeEvent(QCloseEvent *event) {
+#ifndef QT_NO_SYSTEMTRAYICON
   QtUiSettings s;
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   Q_ASSERT(app);
@@ -1009,6 +1022,10 @@ void MainWin::closeEvent(QCloseEvent *event) {
     event->accept();
     quit();
   }
+#else
+  event->accept();
+  quit();
+#endif
 }
 
 void MainWin::changeEvent(QEvent *event) {
@@ -1019,6 +1036,8 @@ void MainWin::changeEvent(QEvent *event) {
 
   QMainWindow::changeEvent(event);
 }
+
+#ifndef QT_NO_SYSTEMTRAYICON
 
 void MainWin::hideToTray() {
   if(!systemTray()->isSystemTrayAvailable()) {
@@ -1051,6 +1070,8 @@ void MainWin::toggleMinimizedToTray() {
 
 #endif
 }
+
+#endif /* QT_NO_SYSTEMTRAYICON */
 
 void MainWin::forceActivated() {
 #ifdef HAVE_KDE

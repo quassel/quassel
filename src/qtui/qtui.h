@@ -49,6 +49,8 @@ public:
   inline static QtUiStyle *style();
   inline static MainWin *mainWindow();
 
+  static bool haveSystemTray();
+
   /* Notifications */
 
   static void registerNotificationBackend(AbstractNotificationBackend *);

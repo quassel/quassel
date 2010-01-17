@@ -21,6 +21,8 @@
 #ifndef SYSTRAYNOTIFICATIONBACKEND_H_
 #define SYSTRAYNOTIFICATIONBACKEND_H_
 
+#ifndef QT_NO_SYSTEMTRAYICON
+
 #include <QSystemTrayIcon>
 
 #include "abstractnotificationbackend.h"
@@ -73,5 +75,7 @@ private:
   QCheckBox *_showBubbleBox, *_animateBox;
   bool _showBubble, _animate;
 };
+
+#endif /* QT_NO_SYSTEMTRAYICON */
 
 #endif

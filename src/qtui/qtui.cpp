@@ -28,6 +28,7 @@
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
+#include "systemtray.h"
 #include "toolbaractionprovider.h"
 #include "types.h"
 #include "util.h"
@@ -86,6 +87,14 @@ void QtUi::connectedToCore() {
 
 void QtUi::disconnectedFromCore() {
   _mainWin->disconnectedFromCore();
+}
+
+bool QtUi::haveSystemTray() {
+#ifdef QT_NO_SYSTEMTRAYICON
+  return false;
+#else
+  return mainWindow()->systemTray()->isSystemTrayAvailable();
+#endif
 }
 
 void QtUi::registerNotificationBackend(AbstractNotificationBackend *backend) {

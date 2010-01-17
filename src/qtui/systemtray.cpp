@@ -18,6 +18,8 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#ifndef QT_NO_SYSTEMTRAYICON
+
 #include <QMenu>
 
 #include "systemtray.h"
@@ -193,3 +195,5 @@ void SystemTray::on_activated(QSystemTrayIcon::ActivationReason reason) {
 
   }
 }
+
+#endif /* QT_NO_SYSTEMTRAYICON */

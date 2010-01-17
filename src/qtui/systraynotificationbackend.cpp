@@ -18,6 +18,8 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#ifndef QT_NO_SYSTEMTRAYICON
+
 #include "systraynotificationbackend.h"
 
 #include <QtGui>
@@ -163,3 +165,5 @@ void SystrayNotificationBackend::ConfigWidget::save() {
   s.setValue("Systray/ShowBubble", _showBubbleBox->isChecked());
   load();
 }
+
+#endif /* QT_NO_SYSTEMTRAYICON */
