@@ -23,7 +23,14 @@
 #include <QDrag>
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
+#include <QMenuBar>
 #include <QPersistentModelIndex>
+
+#ifdef HAVE_KDE
+#  include <KMenuBar>
+#else
+#  include <QMenuBar>
+#endif
 
 #ifdef HAVE_WEBKIT
 #  include <QWebView>
@@ -597,6 +604,9 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   else
     // no item -> default scene actions
     GraphicalUi::contextMenuActionProvider()->addActions(&menu, filter(), BufferId());
+
+  if (QtUi::mainWindow()->menuBar()->isHidden())
+    menu.addAction(QtUi::actionCollection("General")->action("ToggleMenuBar"));
 
   menu.exec(event->screenPos());
 
