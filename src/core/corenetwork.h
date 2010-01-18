@@ -39,6 +39,7 @@ class CoreIdentity;
 class IrcServerHandler;
 class CoreUserInputHandler;
 class CtcpHandler;
+class CoreIgnoreListManager;
 
 class CoreNetwork : public Network {
   SYNCABLE_OBJECT
@@ -56,6 +57,7 @@ public:
   inline IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
   inline CoreUserInputHandler *userInputHandler() const { return _userInputHandler; }
   inline CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
+  inline CoreIgnoreListManager *ignoreListManager() { return coreSession()->ignoreListManager(); }
 
   //! Decode a string using the server (network) decoding.
   inline QString serverDecode(const QByteArray &string) const { return decodeServerString(string); }

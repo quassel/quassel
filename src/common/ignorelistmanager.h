@@ -37,7 +37,8 @@ public:
 
   enum IgnoreType {
     SenderIgnore,
-    MessageIgnore
+    MessageIgnore,
+    CtcpIgnore
   };
 
   enum StrictnessType {
@@ -93,6 +94,7 @@ public:
     */
   StrictnessType match(const Message &msg, const QString &network = QString());
 
+  bool ctcpMatch(const QString sender, const QString &network, const QString &type = QString());
 
 //  virtual void addIgnoreListItem(const IgnoreListItem &item);
 

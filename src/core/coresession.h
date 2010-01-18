@@ -67,6 +67,7 @@ public:
 
   inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
 
+  inline CoreIgnoreListManager *ignoreListManager() { return &_ignoreListManager; }
 //   void attachNetworkConnection(NetworkConnection *conn);
 
   //! Return necessary data for restoring the session after restarting the core

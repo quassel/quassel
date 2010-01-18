@@ -26,6 +26,8 @@
 
 #include "basichandler.h"
 
+class CoreListIgnoreListManager;
+
 class CtcpHandler : public BasicHandler {
   Q_OBJECT
 
@@ -56,6 +58,7 @@ private:
   QByteArray XDELIM;
   QHash<QByteArray, QByteArray> ctcpMDequoteHash;
   QHash<QByteArray, QByteArray> ctcpXDelimDequoteHash;
+  CoreIgnoreListManager *_ignoreListManager;
 };
 
 

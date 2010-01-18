@@ -214,6 +214,7 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
   // this could be moved to .ui file with qt4.5
   _typeButtonGroup.addButton(ui.senderTypeButton, 0);
   _typeButtonGroup.addButton(ui.messageTypeButton, 1);
+  _typeButtonGroup.addButton(ui.ctcpTypeButton, 2);
   _strictnessButtonGroup.addButton(ui.dynamicStrictnessButton, 0);
   _strictnessButtonGroup.addButton(ui.permanentStrictnessButton, 1);
   _scopeButtonGroup.addButton(ui.globalScopeButton, 0);
@@ -226,6 +227,8 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
 
   if(item.type == IgnoreListManager::MessageIgnore)
     ui.messageTypeButton->setChecked(true);
+  else if(item.type == IgnoreListManager::CtcpIgnore)
+    ui.ctcpTypeButton->setChecked(true);
   else
     ui.senderTypeButton->setChecked(true);
 
@@ -271,6 +274,8 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
 void IgnoreListEditDlg::widgetHasChanged() {
   if(ui.messageTypeButton->isChecked())
     _clonedIgnoreListItem.type = IgnoreListManager::MessageIgnore;
+  else if(ui.ctcpTypeButton->isChecked())
+    _clonedIgnoreListItem.type = IgnoreListManager::CtcpIgnore;
   else
     _clonedIgnoreListItem.type = IgnoreListManager::SenderIgnore;
 

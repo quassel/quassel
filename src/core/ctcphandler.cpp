@@ -23,10 +23,12 @@
 #include "network.h"
 #include "quassel.h"
 #include "util.h"
+#include "coreignorelistmanager.h"
 
 CtcpHandler::CtcpHandler(CoreNetwork *parent)
   : BasicHandler(parent),
-    XDELIM("\001")
+    XDELIM("\001"),
+    _ignoreListManager(parent->ignoreListManager())
 {
 
   QByteArray MQUOTE = QByteArray("\020");
@@ -186,8 +188,10 @@ void CtcpHandler::handleAction(CtcpType ctcptype, const QString &prefix, const Q
 void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    reply(nickFromMask(prefix), "PING", param);
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING request from %1").arg(prefix));
+    if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "PING")) {
+      reply(nickFromMask(prefix), "PING", param);
+      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING request from %1").arg(prefix));
+    }
   } else {
     // display ping answer
     uint now = QDateTime::currentDateTime().toTime_t();
@@ -199,10 +203,12 @@ void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QSt
 void CtcpHandler::handleVersion(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
-        .arg(Quassel::buildInfo().plainVersionString)
-        .arg(Quassel::buildInfo().buildDate));
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
+    if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "VERSION")) {
+      reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
+          .arg(Quassel::buildInfo().plainVersionString)
+          .arg(Quassel::buildInfo().buildDate));
+      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
+    }
   } else {
     // display Version answer
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION answer from %1: %2").arg(prefix).arg(param));
@@ -213,7 +219,9 @@ void CtcpHandler::defaultHandler(const QString &cmd, CtcpType ctcptype, const QS
   Q_UNUSED(ctcptype);
   Q_UNUSED(target);
   Q_UNUSED(param);
-  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix));
+  if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName())) {
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix));
+  }
 }
 
 
