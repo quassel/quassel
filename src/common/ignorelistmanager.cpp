@@ -122,7 +122,7 @@ IgnoreListManager::StrictnessType IgnoreListManager::match(const Message &msg, c
     return UnmatchedStrictness;
 
   foreach(IgnoreListItem item, _ignoreList) {
-    if(!item.isActive)
+    if(!item.isActive || item.type == CtcpIgnore)
       continue;
     if(item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network)) ||
        (item.scope == ChannelScope && scopeMatch(item.scopeRule, msg.bufferInfo().bufferName()))) {
