@@ -80,6 +80,13 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QRadioButton" name="ctcpTypeButton">
+          <property name="text">
+           <string>CTCP</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>

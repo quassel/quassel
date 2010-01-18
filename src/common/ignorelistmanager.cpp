@@ -178,3 +178,28 @@ void IgnoreListManager::toggleIgnoreRule(const QString &ignoreRule) {
   _ignoreList[idx].isActive = !_ignoreList[idx].isActive;
   SYNC(ARG(ignoreRule))
 }
+
+bool IgnoreListManager::ctcpMatch(const QString sender, const QString &network, const QString &type) {
+  foreach(IgnoreListItem item, _ignoreList) {
+    if(!item.isActive)
+      continue;
+    if(item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network))) {
+      QString sender_;
+      QStringList types = item.ignoreRule.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+
+      sender_ = types.takeAt(0);
+
+      QRegExp ruleRx = QRegExp(sender_);
+      ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
+      if(!item.isRegEx)
+        ruleRx.setPatternSyntax(QRegExp::Wildcard);
+      if((!item.isRegEx && ruleRx.exactMatch(sender)) ||
+          (item.isRegEx && ruleRx.indexIn(sender) != -1)) {
+
+        if(types.isEmpty() || types.contains(type, Qt::CaseInsensitive))
+          return true;
+      }
+    }
+  }
+  return false;
+}
