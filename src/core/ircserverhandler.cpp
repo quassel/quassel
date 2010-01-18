@@ -1165,7 +1165,6 @@ bool IrcServerHandler::checkParamCount(const QString &methodName, const QList<QB
 }
 
 void IrcServerHandler::destroyNetsplits() {
-  qDebug() << "destroyNetsplits()";
   qDeleteAll(_netsplits);
   _netsplits.clear();
 }
