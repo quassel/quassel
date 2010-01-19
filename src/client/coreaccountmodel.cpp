@@ -39,11 +39,13 @@ CoreAccountModel::CoreAccountModel(const CoreAccountModel *other, QObject *paren
 
 void CoreAccountModel::update(const CoreAccountModel *other) {
   clear();
-  beginInsertRows(QModelIndex(), 0, other->_accounts.count() -1);
+  if (other->_accounts.count() > 0) {
+    beginInsertRows(QModelIndex(), 0, other->_accounts.count() -1);
+    _accounts = other->_accounts;
+    endInsertRows();
+  }
   _internalAccount = other->internalAccount();
-  _accounts = other->_accounts;
   _removedAccounts = other->_removedAccounts;
-  endInsertRows();
 }
 
 void CoreAccountModel::load() {
