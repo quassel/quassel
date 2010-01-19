@@ -1151,7 +1151,7 @@ void PostgreSqlStorage::setBufferMarkerLineMsg(UserId user, const BufferId &buff
 
   query.bindValue(":userid", user.toInt());
   query.bindValue(":bufferid", bufferId.toInt());
-  query.bindValue(":lastseenmsgid", msgId.toInt());
+  query.bindValue(":markerlinemsgid", msgId.toInt());
   safeExec(query);
   watchQuery(query);
 }
