@@ -307,10 +307,12 @@ void MessageModel::customEvent(QEvent *event) {
 }
 
 void MessageModel::clear() {
-  beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-  removeAllMessages();
-  endRemoveRows();
   _messagesWaiting.clear();
+  if (rowCount() > 0) {
+    beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+    removeAllMessages();
+    endRemoveRows();
+  }
 }
 
 // returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
