@@ -1,7 +1,7 @@
 Most of these modules have been copied from KDE's repository.
 
-FindQt4 has been adjusted to find lconvert. Also, I've fixed OpenSSL
-detection (actually setting -DQT_NO_OPENSSL if it's not present).
+FindQt4 has been adjusted to find lconvert, plus we don't require X11
+headers to be present.
 
 Files starting with Quassel* are solely created by us.
 
