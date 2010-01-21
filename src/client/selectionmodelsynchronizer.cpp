@@ -55,7 +55,7 @@ bool SelectionModelSynchronizer::checkBaseModel(QItemSelectionModel *selectionMo
 
 void SelectionModelSynchronizer::synchronizeSelectionModel(QItemSelectionModel *selectionModel) {
   if(!checkBaseModel(selectionModel)) {
-    qWarning() << "cannot Syncronize SelectionModel" << selectionModel << "which has a different baseModel()";
+    qWarning() << "cannot Synchronize SelectionModel" << selectionModel << "which has a different baseModel()";
     return;
   }
 

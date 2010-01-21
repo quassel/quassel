@@ -40,7 +40,7 @@ NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
 }
 
 bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
-  // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's childs are accepted
+  // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's children are accepted
   if(!source_parent.isValid())
     return true;
 

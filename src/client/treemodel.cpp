@@ -459,7 +459,7 @@ void TreeModel::connectItem(AbstractTreeItem *item) {
 void TreeModel::beginAppendChilds(int firstRow, int lastRow) {
   AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
   if(!parentItem) {
-    qWarning() << "TreeModel::beginAppendChilds(): cannot append Childs to unknown parent";
+    qWarning() << "TreeModel::beginAppendChilds(): cannot append Children to unknown parent";
     return;
   }
 
@@ -474,7 +474,7 @@ void TreeModel::beginAppendChilds(int firstRow, int lastRow) {
 void TreeModel::endAppendChilds() {
   AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
   if(!parentItem) {
-    qWarning() << "TreeModel::endAppendChilds(): cannot append Childs to unknown parent";
+    qWarning() << "TreeModel::endAppendChilds(): cannot append Children to unknown parent";
     return;
   }
   Q_ASSERT(_aboutToRemoveOrInsert);
@@ -493,7 +493,7 @@ void TreeModel::endAppendChilds() {
 void TreeModel::beginRemoveChilds(int firstRow, int lastRow) {
   AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
   if(!parentItem) {
-    qWarning() << "TreeModel::beginRemoveChilds(): cannot append Childs to unknown parent";
+    qWarning() << "TreeModel::beginRemoveChilds(): cannot append Children to unknown parent";
     return;
   }
 
@@ -515,7 +515,7 @@ void TreeModel::beginRemoveChilds(int firstRow, int lastRow) {
 void TreeModel::endRemoveChilds() {
   AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
   if(!parentItem) {
-    qWarning() << "TreeModel::endRemoveChilds(): cannot remove Childs from unknown parent";
+    qWarning() << "TreeModel::endRemoveChilds(): cannot remove Children from unknown parent";
     return;
   }
 

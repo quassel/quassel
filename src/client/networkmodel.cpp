@@ -108,7 +108,7 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo) {
 
   newChild(bufferItem);
 
-  // postprocess... this is necessary because Qt doesn't seem to like adding childs which already have childs on their own
+  // postprocess... this is necessary because Qt doesn't seem to like adding children which already have children on their own
   switch(bufferInfo.type()) {
   case BufferInfo::ChannelBuffer:
     {

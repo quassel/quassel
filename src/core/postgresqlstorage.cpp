@@ -338,7 +338,7 @@ IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity &identity
   }
 
   if(!db.commit()) {
-    qWarning() << "PostgreSqlStorage::createIdentity(): commiting data failed!";
+    qWarning() << "PostgreSqlStorage::createIdentity(): committing data failed!";
     qWarning() << " -" << qPrintable(db.lastError().text());
     return IdentityId();
   }
@@ -421,7 +421,7 @@ bool PostgreSqlStorage::updateIdentity(UserId user, const CoreIdentity &identity
   }
 
   if(!db.commit()) {
-    qWarning() << "PostgreSqlStorage::updateIdentity(): commiting data failed!";
+    qWarning() << "PostgreSqlStorage::updateIdentity(): committing data failed!";
     qWarning() << " -" << qPrintable(db.lastError().text());
     return false;
   }
@@ -550,7 +550,7 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo &info)
   }
 
   if(!db.commit()) {
-    qWarning() << "PostgreSqlStorage::createNetwork(): commiting data failed!";
+    qWarning() << "PostgreSqlStorage::createNetwork(): committing data failed!";
     qWarning() << " -" << qPrintable(db.lastError().text());
     return NetworkId();
   }
@@ -640,7 +640,7 @@ bool PostgreSqlStorage::updateNetwork(UserId user, const NetworkInfo &info) {
   }
 
   if(!db.commit()) {
-    qWarning() << "PostgreSqlStorage::updateNetwork(): commiting data failed!";
+    qWarning() << "PostgreSqlStorage::updateNetwork(): committing data failed!";
     qWarning() << " -" << qPrintable(db.lastError().text());
     return false;
   }
