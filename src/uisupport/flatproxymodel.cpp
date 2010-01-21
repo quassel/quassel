@@ -506,7 +506,7 @@ void FlatProxyModel::on_rowsAboutToBeRemoved(const QModelIndex &parent, int star
   // sanity check - if that check fails our indexes would be messed up
   for(int row = start; row <= end; row++) {
     if(sourceItem->child(row)->childCount() > 0) {
-      qWarning() << "on_rowsAboutToBeRemoved(): sourceModel() removed rows which have childs on their own!" << sourceModel()->index(row, 0, parent);
+      qWarning() << "on_rowsAboutToBeRemoved(): sourceModel() removed rows which have children on their own!" << sourceModel()->index(row, 0, parent);
       Q_ASSERT(false);
     }
   }
@@ -524,7 +524,7 @@ void FlatProxyModel::on_rowsInserted(const QModelIndex &parent, int start, int e
   for(int row = start; row <= end; row++) {
     QModelIndex child = sourceModel()->index(row, 0, parent);
     if(sourceModel()->rowCount(child) > 0) {
-      qWarning() << "on_rowsInserted(): sourceModel() inserted rows which already have childs on their own!" << child;
+      qWarning() << "on_rowsInserted(): sourceModel() inserted rows which already have children on their own!" << child;
       Q_ASSERT(false);
     }
   }
