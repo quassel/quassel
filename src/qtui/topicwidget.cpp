@@ -47,6 +47,7 @@ TopicWidget::TopicWidget(QWidget *parent)
   if(fs.value("UseCustomTopicWidgetFont", false).toBool())
     setCustomFont(fs.value("TopicWidget", QFont()));
 
+  _mouseEntered = false;
 }
 
 void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -133,6 +134,7 @@ void TopicWidget::on_topicEditButton_clicked() {
 void TopicWidget::switchEditable() {
   ui.stackedWidget->setCurrentIndex(1);
   ui.topicLineEdit->setFocus();
+  ui.topicLineEdit->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
   updateGeometry();
 }
 
@@ -144,12 +146,21 @@ void TopicWidget::switchPlain() {
 
 // filter for the input widget to switch back to normal mode
 bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
-  if(event->type() == QEvent::FocusOut) {
+  
+  if(event->type() == QEvent::FocusOut && !_mouseEntered) {
     switchPlain();
     return true;
   }
-
-  if(event->type() != QEvent::KeyPress)
+  
+  if(event->type() == QEvent::Enter) {
+    _mouseEntered = true;
+  }
+  
+  if(event->type() == QEvent::Leave) {
+    _mouseEntered = false;
+  }
+  
+  if(event->type() != QEvent::KeyRelease)
     return QObject::eventFilter(obj, event);
 
   QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
