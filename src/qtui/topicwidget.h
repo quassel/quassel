@@ -54,6 +54,7 @@ private:
   Ui::TopicWidget ui;
 
   QString _topic;
+  bool _mouseEntered;
 };
 
 
