@@ -424,7 +424,7 @@ QString QueryBufferItem::toolTip(int column) const {
   toolTip.append(tr("<b>Query with %1</b>").arg(bufferName()));
 
   if(_ircUser) {
-    if(_ircUser->userModes() != "") toolTip[0].append(QString(" (%1)").arg(_ircUser->userModes()));
+    if(_ircUser->userModes() != "") toolTip[0].append(QString(" (+%1)").arg(_ircUser->userModes()));
     if(_ircUser->isAway()) {
       toolTip[0].append(QString(" (away%1)").arg(!_ircUser->awayMessage().isEmpty() ? (QString(" ") + _ircUser->awayMessage()) : QString()));
     }

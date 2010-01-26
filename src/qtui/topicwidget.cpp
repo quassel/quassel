@@ -48,18 +48,19 @@ TopicWidget::TopicWidget(QWidget *parent)
     setCustomFont(fs.value("TopicWidget", QFont()));
 
   _mouseEntered = false;
+  _readonly = false;
 }
 
 void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
   Q_UNUSED(previous);
-  setTopic(current.sibling(current.row(), 1).data().toString());
+  setTopic(current);
 }
 
 void TopicWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
   QItemSelectionRange changedArea(topLeft, bottomRight);
   QModelIndex currentTopicIndex = selectionModel()->currentIndex().sibling(selectionModel()->currentIndex().row(), 1);
   if(changedArea.contains(currentTopicIndex))
-    setTopic(currentTopicIndex.data().toString());
+    setTopic(selectionModel()->currentIndex());
 };
 
 void TopicWidget::setUseCustomFont(const QVariant &v) {
@@ -87,14 +88,54 @@ void TopicWidget::setCustomFont(const QFont &f) {
   ui.topicLabel->setCustomFont(font);
 }
 
-void TopicWidget::setTopic(const QString &newtopic) {
-  if(_topic == newtopic)
+void TopicWidget::setTopic(const QModelIndex &index) {
+  BufferId id = index.sibling(index.row(), 0).data(NetworkModel::BufferIdRole).value<BufferId>();
+  if(!id.isValid())
     return;
+
+  const Network *network = Client::network(Client::networkModel()->networkId(id));
+
+  QString newtopic;
+  if(Client::networkModel()->bufferType(id) == BufferInfo::StatusBuffer) {
+    newtopic = QString("%1 (%2) | %3 | %4")
+    .arg(Qt::escape(network->networkName()))
+    .arg(Qt::escape(network->currentServer()))
+    .arg(tr("Users: %1").arg(network->ircUsers().count()))
+    .arg(tr("Lag: %1 msecs").arg(network->latency()));
+    _readonly = true;
+  } else if(Client::networkModel()->bufferType(id) == BufferInfo::QueryBuffer) {
+    newtopic = QString("%1").arg(index.sibling(index.row(), 0).data().toString());
+    const IrcUser *user = network->ircUser(QString(index.sibling(index.row(), 0).data().toString()));
+    if (user) {
+      if(!user->userModes().isEmpty())
+        newtopic.append(QString(" (+%1)").arg(user->userModes()));
+      if(!user->realName().isEmpty())
+        newtopic.append(QString(" | %1").arg(user->realName()));
+      newtopic.append(QString(" | %1").arg(user->hostmask().remove(0, user->hostmask().indexOf("!")+1)));
+    }
+    _readonly = true;
+  } else if(Client::networkModel()->bufferType(id) == BufferInfo::ChannelBuffer) {
+    newtopic = index.sibling(index.row(), 1).data().toString();
+    _readonly = false;
+  }
+  else {
+    newtopic = "";
+    _readonly = true;
+  }
+
+  ui.topicEditButton->setVisible(!_readonly);
 
   _topic = newtopic;
   ui.topicLabel->setText(newtopic);
   ui.topicLineEdit->setText(newtopic);
   switchPlain();
+}
+
+void TopicWidget::setReadOnly(const bool &readonly) {
+  if(_readonly == readonly)
+    return;
+
+  _readonly = readonly;
 }
 
 void TopicWidget::updateResizeMode() {
@@ -146,20 +187,20 @@ void TopicWidget::switchPlain() {
 
 // filter for the input widget to switch back to normal mode
 bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
-  
+
   if(event->type() == QEvent::FocusOut && !_mouseEntered) {
     switchPlain();
     return true;
   }
-  
+
   if(event->type() == QEvent::Enter) {
     _mouseEntered = true;
   }
-  
+
   if(event->type() == QEvent::Leave) {
     _mouseEntered = false;
   }
-  
+
   if(event->type() != QEvent::KeyRelease)
     return QObject::eventFilter(obj, event);
 

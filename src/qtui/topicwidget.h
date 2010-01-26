@@ -31,10 +31,12 @@ class TopicWidget : public AbstractItemView {
 public:
   TopicWidget(QWidget *parent = 0);
 
-  void setTopic(const QString &newtopic);
+  void setTopic(const QModelIndex& index);
   void setCustomFont(const QFont &);
+  void setReadOnly(const bool &readonly);
 
   virtual bool eventFilter(QObject *obj, QEvent *event);
+  inline bool isReadOnly() const { return _readonly; }
 
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
@@ -55,6 +57,8 @@ private:
 
   QString _topic;
   bool _mouseEntered;
+  bool _readonly;
+
 };
 
 
