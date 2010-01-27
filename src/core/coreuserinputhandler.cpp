@@ -128,8 +128,8 @@ void CoreUserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QStrin
   if(ctcpTag.isEmpty())
     return;
 
-  QString message = "";
-  QString verboseMessage = tr("sending CTCP-%1 request").arg(ctcpTag);
+  QString message = msg.section(' ', 2);
+  QString verboseMessage = tr("sending CTCP-%1 request to %2").arg(ctcpTag).arg(nick);
 
   if(ctcpTag == "PING") {
     uint now = QDateTime::currentDateTime().toTime_t();
