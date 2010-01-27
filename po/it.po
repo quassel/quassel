@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-10 13:33+0200\n"
-"PO-Revision-Date: 2010-01-13 12:30+0100\n"
+"POT-Creation-Date: 2010-01-18 16:13+0200\n"
+"PO-Revision-Date: 2010-01-27 19:49+0100\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -16,176 +16,84 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: AboutDlg#1
-msgid "About Quassel"
-msgstr "Informazioni su Quassel"
-
-#: AboutDlg#2
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
-"html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
-"html>"
-
-#: AboutDlg#3
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
-"&gt;= 474 (2008-02-08)</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Versione 0.2.0-pre, Build "
-"&gt;= 474 (2008-02-08)</p></body></html>"
-
-#: AboutDlg#4
-msgid "&About"
-msgstr "&Informazioni su"
-
-#: AboutDlg#5
-msgid "A&uthors"
-msgstr "A&utori"
-
-#: AboutDlg#6
-msgid "&Contributors"
-msgstr "&Contributori"
-
-#: AboutDlg#7
-msgid "&Thanks To"
-msgstr "&Grazie a"
-
-#: AboutDlg#8
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 msgstr "<b>Versione:</b> %1<br><b>Versione protocollo:</b> %2<br><b>Compilato:</b> %3"
 
-#: AboutDlg#9
-msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the "
-"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc."
-"org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
-"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
-"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
-"and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
-"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</"
-"a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html"
-"\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org"
-"\">http://bugs.quassel-irc.org</a> to report bugs."
-msgstr ""
-"<b>Un Client IRC moderno. distribuito</b><br><br>&copy;2005-2009 Progetto "
-"Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</"
-"a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href="
-"\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC è distribuito "
-"con doppia licenza: <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt"
-"\">GPLv2</a> e <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>."
-"<br>Molte delle icone son &copy; by the <a href=\"http://www.oxygen-icons.org"
-"\">Team Oxygen</a> ed utilizzate con licenza <a href=\"http://www.gnu.org/"
-"licenses/lgpl.html\">LGPL</a>.<br><br>Per favore utilizzare <a href=\"http://"
-"bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> per segnalare i bug."
+#: AboutDlg#2
+msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
+msgstr "<b>Un Client IRC moderno. distribuito</b><br><br>&copy;2005-2009 Progetto Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC è distribuito con doppia licenza: <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> e <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Molte delle icone son &copy; by the <a href=\"http://www.oxygen-icons.org\">Team Oxygen</a> ed utilizzate con licenza <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Per favore utilizzare <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> per segnalare i bug."
 
-#: AboutDlg#10
+#: AboutDlg#3
 msgid "Quassel IRC is mainly developed by:"
 msgstr "Quassel IRC è sviluppato principalmente da:"
 
-#: AboutDlg#11
+#: AboutDlg#4
+msgid "We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:"
+msgstr "Vorremmo ringraziare le persone che hanno contribuito (qui elencate, in ordine alfabetico) e chiunque avessimo dimenticato di menzionare:"
+
+#: AboutDlg#5
+msgid "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
+msgstr "Un ringraziamento speciale va a:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>per l'icona Quassel originale - L'Occhio Che Tutto Vede</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Il Team Oxygen</a></b></dt><dd>per aver creato tutte le illustrazioni per Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formalmente conosciuta come Trolltech</a></b></dt><dd>per aver creato Qt e Qtopia, e per aver sponsorizzato lo sviluppo di QuasselTopia sui Greenphones e molto altro</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>per aver mantenuto Qt in vita, e per sponsorizzare lo sviluppo di Quassel Mobile sui dispositivi N810</dd>"
+
+#: AboutDlg#6
+msgid "About Quassel"
+msgstr "Informazioni su Quassel"
+
+#: AboutDlg#7
 msgid ""
-"We would like to thank the following contributors (in alphabetical order) "
-"and everybody we forgot to mention here:"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 msgstr ""
-"Vorremmo ringraziare le persone che hanno contribuito (qui elencate, in "
-"ordine alfabetico) e chiunque avessimo dimenticato di menzionare:"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+
+#: AboutDlg#8
+msgid ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Versione 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+
+#: AboutDlg#9
+msgid "&About"
+msgstr "&Informazioni su"
+
+#: AboutDlg#10
+msgid "A&uthors"
+msgstr "A&utori"
+
+#: AboutDlg#11
+msgid "&Contributors"
+msgstr "&Contributori"
 
 #: AboutDlg#12
-msgid ""
-"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;"
-"<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-"
-"Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://"
-"www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the "
-"artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png"
-"\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known "
-"as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
-"development of QuasselTopia with Greenphones and more</dd><dt><a href="
-"\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for "
-"keeping Qt alive, and for sponsoring development of Quassel Mobile with "
-"N810s</dd>"
-msgstr ""
-"Un ringraziamento speciale va a:<br><dl><dt><img src=\":/pics/quassel-eye.png"
-"\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>per l'icona Quassel originale - "
-"L'Occhio Che Tutto Vede</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
-"href=\"http://www.oxygen-icons.org\">Il Team Oxygen</a></b></dt><dd>per aver "
-"creato tutte le illustrazioni per Quassel</dd><dt><img src=\":/pics/qt-logo-"
-"32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software "
-"formalmente conosciuta come Trolltech</a></b></dt><dd>per aver creato Qt e "
-"Qtopia, e per aver sponsorizzato lo sviluppo di QuasselTopia sui Greenphones "
-"e molto altro</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/"
-"nokia.png\"></a></b></dt><dd>per aver mantenuto Qt in vita, e per "
-"sponsorizzare lo sviluppo di Quassel Mobile sui dispositivi N810</dd>"
+msgid "&Thanks To"
+msgstr "&Grazie a"
 
 #: AbstractSqlStorage#1
-msgid ""
-"Installed Schema (version %1) is not up to date. Upgrading to version %2..."
-msgstr ""
-"Lo Schema installato (versione %1) non è aggiornato. Aggiornamento alla "
-"versione %2..."
+msgid "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
+msgstr "Lo Schema installato (versione %1) non è aggiornato. Aggiornamento alla versione %2..."
 
 #: AbstractSqlStorage#2
 msgid "Upgrade failed..."
 msgstr "Aggiornamento fallito..."
 
 #: AliasesModel#1
-msgid ""
-"<b>The shortcut for the alias</b><br />It can be used as a regular slash "
-"command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
-msgstr ""
-"<b>La scorciatoia per l'alias</b><br />Può essere utilizzata con la barra "
-"comando.<br /><br /><b>Esempio:</b> \"foo\" può essere utilizzato per /foo"
+msgid "<b>The shortcut for the alias</b><br />It can be used as a regular slash command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
+msgstr "<b>La scorciatoia per l'alias</b><br />Può essere utilizzata con la barra comando.<br /><br /><b>Esempio:</b> \"foo\" può essere utilizzato per /foo"
 
 #: AliasesModel#2
-msgid ""
-"<b>The string the shortcut will be expanded to</b><br /><b>special variables:"
-"</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> "
-"represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</"
-"b> represents all parameters from i on separated by spaces.<br /> - <b>$i:"
-"hostname</b> represents the hostname of the user identified by the i'th "
-"parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>"
-"$nick</b> your current nickname<br /> - <b>$channel</b> the name of the "
-"selected channel<br /><br />Multiple commands can be separated with "
-"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
-"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
-"1 2 3\" when called like /test 1 2 3"
-msgstr ""
-"<b>La stringa della scorciatoia verrà sviluppata in</b><br /><b>variabili "
-"speciali:</b><br /> - <b>$i</b> rappresenta il parametro i-esimo.<br /> - <b>"
-"$i..j</b> rappresenta i parametri da i-esimo a j-esimo separati da spazi."
-"<br /> - <b>$i..</b> rappresenta tutti i parametri da quello i-esimo in poi "
-"separati da spazi.<br /> - <b>$i:hostname</b> rappresenta il nome host "
-"dell'utente identificato dal parametro i-esimo o da * se sconosciuto.<br /> "
-"- <b>$0</b> l'intera stringa.<br /> - <b>$nick</b> il nick corrente<br /> - "
-"<b>$channel</b> il nome del canale selezionato<br /><br />Comandi multipli "
-"possono essere separati da punto e virgola <br /><br /><b>Esempio:</b> "
-"\"Test $1; Test $2; Test Tutto $0\" verranno sviluppati in tre messaggi "
-"separati \"Test 1\", \"Test 2\" and \"Test Tutto 1 2 3\" quando vengono "
-"chiamati come /test 1 2 3"
+msgid "<b>The string the shortcut will be expanded to</b><br /><b>special variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</b> represents all parameters from i on separated by spaces.<br /> - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of the selected channel<br /><br />Multiple commands can be separated with semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
+msgstr "<b>La stringa della scorciatoia verrà sviluppata in</b><br /><b>variabili speciali:</b><br /> - <b>$i</b> rappresenta il parametro i-esimo.<br /> - <b>$i..j</b> rappresenta i parametri da i-esimo a j-esimo separati da spazi.<br /> - <b>$i..</b> rappresenta tutti i parametri da quello i-esimo in poi separati da spazi.<br /> - <b>$i:hostname</b> rappresenta il nome host dell'utente identificato dal parametro i-esimo o da * se sconosciuto.<br /> - <b>$0</b> l'intera stringa.<br /> - <b>$nick</b> il nick corrente<br /> - <b>$channel</b> il nome del canale selezionato<br /><br />Comandi multipli possono essere separati da punto e virgola <br /><br /><b>Esempio:</b> \"Test $1; Test $2; Test Tutto $0\" verranno sviluppati in tre messaggi separati \"Test 1\", \"Test 2\" and \"Test Tutto 1 2 3\" quando vengono chiamati come /test 1 2 3"
 
 #: AliasesModel#3
 msgid "Alias"
@@ -197,114 +105,114 @@ msgstr "Espansione"
 
 #: AliasesSettingsPage#1
 msgctxt "AliasesSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: AliasesSettingsPage#2
-msgctxt "AliasesSettingsPage#2"
-msgid "New"
-msgstr "Nuovo"
-
-#: AliasesSettingsPage#3
-msgctxt "AliasesSettingsPage#3"
-msgid "Delete"
-msgstr "Elimina"
-
-#: AliasesSettingsPage#4
-msgctxt "AliasesSettingsPage#4"
 msgid "IRC"
 msgstr "IRC"
 
-#: AliasesSettingsPage#5
+#: AliasesSettingsPage#2
 msgid "Aliases"
 msgstr "Alias"
 
-#: AppearanceSettingsPage#1
-msgctxt "AppearanceSettingsPage#1"
+#: AliasesSettingsPage#3
+msgctxt "AliasesSettingsPage#3"
 msgid "Form"
 msgstr "Modulo"
 
-#: AppearanceSettingsPage#2
-msgid "Client style:"
-msgstr "Stile del client:"
+#: AliasesSettingsPage#4
+msgctxt "AliasesSettingsPage#4"
+msgid "New"
+msgstr "Nuovo"
 
-#: AppearanceSettingsPage#3
-msgid "Set application style"
-msgstr "Imposta stile applicazione"
+#: AliasesSettingsPage#5
+msgctxt "AliasesSettingsPage#5"
+msgid "Delete"
+msgstr "Elimina"
 
-#: AppearanceSettingsPage#4
-msgid "Language:"
-msgstr "Lingua:"
-
-#: AppearanceSettingsPage#5
-msgid "Set the application language. Requires restart!"
-msgstr "Imposta la lingua dell'applicazione. Quassel dev'essere riavviato!"
-
-#: AppearanceSettingsPage#6
-msgid "<System Default>"
-msgstr "<Predefinita di Sistema>"
-
-#: AppearanceSettingsPage#7
-msgid "<Original>"
-msgstr "<Originale>"
-
-#: AppearanceSettingsPage#8
-msgid "Use custom stylesheet"
-msgstr "Usa fogli di stile personalizzati"
-
-#: AppearanceSettingsPage#9
-msgid "Path:"
-msgstr "Percorso:"
-
-#: AppearanceSettingsPage#10
-msgctxt "AppearanceSettingsPage#10"
-msgid "..."
-msgstr "..."
-
-#: AppearanceSettingsPage#11
-msgid "Show system tray icon"
-msgstr "Mostra icona nella traybar del sistema"
-
-#: AppearanceSettingsPage#12
-msgid "Hide to tray on close button"
-msgstr "Nasconde nella tray quando viene chiusa"
-
-#: AppearanceSettingsPage#13
-msgid "Message Redirection"
-msgstr "Redirezione messaggio"
-
-#: AppearanceSettingsPage#14
-msgid "User Notices:"
-msgstr "Notifiche utente:"
-
-#: AppearanceSettingsPage#15
-msgid "Server Notices:"
-msgstr "Notifiche server:"
-
-#: AppearanceSettingsPage#16
-msgid "Default Target"
-msgstr "Destinazione predefinita"
-
-#: AppearanceSettingsPage#17
-msgid "Status Window"
-msgstr "Finestra di stato"
-
-#: AppearanceSettingsPage#18
-msgid "Current Chat"
-msgstr "Chat corrente"
-
-#: AppearanceSettingsPage#19
-msgid "Errors:"
-msgstr "Errori:"
-
-#: AppearanceSettingsPage#20
-msgctxt "AppearanceSettingsPage#20"
+#: AppearanceSettingsPage#1
+msgctxt "AppearanceSettingsPage#1"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: AppearanceSettingsPage#21
+#: AppearanceSettingsPage#2
+msgid "<System Default>"
+msgstr "<Predefinita di Sistema>"
+
+#: AppearanceSettingsPage#3
 msgid "Please choose a stylesheet file"
 msgstr "Per favore scegliere un file di foglio di stile"
+
+#: AppearanceSettingsPage#4
+msgctxt "AppearanceSettingsPage#4"
+msgid "Form"
+msgstr "Modulo"
+
+#: AppearanceSettingsPage#5
+msgid "Client style:"
+msgstr "Stile del client:"
+
+#: AppearanceSettingsPage#6
+msgid "Set application style"
+msgstr "Imposta stile applicazione"
+
+#: AppearanceSettingsPage#7
+msgid "Language:"
+msgstr "Lingua:"
+
+#: AppearanceSettingsPage#8
+msgid "Set the application language. Requires restart!"
+msgstr "Imposta la lingua dell'applicazione. Richiede il riavvio!"
+
+#: AppearanceSettingsPage#9
+msgid "<Untranslated>"
+msgstr "<Non tradotto>"
+
+#: AppearanceSettingsPage#10
+msgid "Use custom stylesheet"
+msgstr "Usa foglio di stile personalizzato"
+
+#: AppearanceSettingsPage#11
+msgid "Path:"
+msgstr "Percorso:"
+
+#: AppearanceSettingsPage#12
+msgctxt "AppearanceSettingsPage#12"
+msgid "..."
+msgstr "..."
+
+#: AppearanceSettingsPage#13
+msgid "Show system tray icon"
+msgstr "Mostra icona nella tray di sistema"
+
+#: AppearanceSettingsPage#14
+msgid "Hide to tray on close button"
+msgstr "Nasconde nella tray quando viene chiusa"
+
+#: AppearanceSettingsPage#15
+msgid "Message Redirection"
+msgstr "Redirezione messaggio"
+
+#: AppearanceSettingsPage#16
+msgid "User Notices:"
+msgstr "Notifiche utente:"
+
+#: AppearanceSettingsPage#17
+msgid "Server Notices:"
+msgstr "Notifiche server:"
+
+#: AppearanceSettingsPage#18
+msgid "Default Target"
+msgstr "Destinazione predefinita"
+
+#: AppearanceSettingsPage#19
+msgid "Status Window"
+msgstr "Finestra di stato"
+
+#: AppearanceSettingsPage#20
+msgid "Current Chat"
+msgstr "Chat corrente"
+
+#: AppearanceSettingsPage#21
+msgid "Errors:"
+msgstr "Errori:"
 
 #: AwayLogView#1
 msgid "Away Log"
@@ -322,131 +230,103 @@ msgstr "Mostra nome buffer"
 
 #: BacklogSettingsPage#1
 msgctxt "BacklogSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: BacklogSettingsPage#2
-msgid ""
-"Number of messages to be requested from the core when using scrolling up in "
-"the buffer view."
-msgstr ""
-"Numero di messaggi da recuperare dal core durante lo scroll (in su) del "
-"buffer."
-
-#: BacklogSettingsPage#3
-msgid "Dynamic backlog amount:"
-msgstr "Numero messaggi da recuperare dal backlog:"
-
-#: BacklogSettingsPage#4
-msgid "Backlog request method:"
-msgstr "Metodo di richiesta del log precedente:"
-
-#: BacklogSettingsPage#5
-msgid "Fixed amount per chat"
-msgstr "Quantità fissa per chat"
-
-#: BacklogSettingsPage#6
-msgid "Unread messages per chat"
-msgstr "Messaggi non letti per chat"
-
-#: BacklogSettingsPage#7
-msgid "Globally unread messages"
-msgstr "Messaggi non letti globalmente"
-
-#: BacklogSettingsPage#8
-msgid ""
-"The simplest requester. It fetches a fixed amount of lines for each chat "
-"window from the backlog."
-msgstr ""
-"La richiesta più semplice. Preleva un numero fisso di righe per ogni "
-"finestra di chat dal log precedente."
-
-#: BacklogSettingsPage#9
-msgid ""
-"amount of messages per buffer that are requested after the core connection "
-"has been established."
-msgstr ""
-"quantità di messaggi per buffer che vengono richiesti dopo che la "
-"connessione al core è stata stabilita."
-
-#: BacklogSettingsPage#10
-msgid "Initial backlog amount:"
-msgstr "Quantità iniziale di messaggi recuperati dal backlog:"
-
-#: BacklogSettingsPage#11
-msgid ""
-"This requester fetches unread messages for each chat window individually. "
-"The amount of lines can be limited per chat.\n"
-"\n"
-"You can also choose to fetch additional older chatlines to provide a better "
-"context."
-msgstr ""
-"Questa richiesta preleva i messaggi non letti per ogni finestra di chat "
-"individualmente. Il numero di righe può essere limitato per chat.\n"
-"\n"
-"È anche possibile scegliere di prelevare righe di chat addizionali più "
-"vecchie per fornire un contesto migliore."
-
-#: BacklogSettingsPage#12
-msgid "Maximum amount of messages to be fetched per buffer."
-msgstr "Numero massimo di messaggi-per-buffer da recuperare."
-
-#: BacklogSettingsPage#13
-msgid "Limit:"
-msgstr "Limite:"
-
-#: BacklogSettingsPage#14
-msgctxt "BacklogSettingsPage#14"
-msgid "Unlimited"
-msgstr "Illimitato"
-
-#: BacklogSettingsPage#15
-msgid ""
-"Amount of messages to be fetched in addition to the unread messages. The "
-"Limit does not apply here."
-msgstr ""
-"Numero di messaggi da recuperare oltre a quelli non letti. Il parametro "
-"\"Limite\" non viene considerato qui."
-
-#: BacklogSettingsPage#16
-msgid "Additional Messages:"
-msgstr "Messaggi addizionali:"
-
-#: BacklogSettingsPage#17
-msgid ""
-"This requester fetches all messages newer than the oldest unread message for "
-"all chats.\n"
-"\n"
-"Note: This requester is not recommended if you use hidden chat windows or "
-"have inactive chats (i.e.: no stale queries or channels).\n"
-"It is useful to limit the total amount of the backlog and is probably the "
-"fastest.\n"
-"\n"
-"You can also chose to fetch additional older chatlines to provide a better "
-"context."
-msgstr ""
-"Questa richiesta preleva tutti i messaggi più nuovi rispetto al messaggio "
-"più vecchio non letto per tutte le chat.\n"
-"\n"
-"Nota: Questo tipo di richiesta non è raccomandato se si utilizzano finestre "
-"nascoste di chat o si hanno chat inattive (es: richieste o canali fermi).\n"
-"È utile per limitare il numero totale di log precedenti ed è probabilmente "
-"il più veloce.\n"
-"È anche possibile scegliere di prelevare righe di chat addizionali più "
-"vecchie per fornire un contesto migliore."
-
-#: BacklogSettingsPage#18
-msgid "Maximum amount of messages to be fetched over all buffers."
-msgstr "Numero massimo di messaggi da recuperare da tutti i buffer."
-
-#: BacklogSettingsPage#19
-msgctxt "BacklogSettingsPage#19"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: BacklogSettingsPage#20
+#: BacklogSettingsPage#2
 msgid "Backlog Fetching"
 msgstr "Prelevamento dei backlog"
+
+#: BacklogSettingsPage#3
+msgctxt "BacklogSettingsPage#3"
+msgid "Form"
+msgstr "Modulo"
+
+#: BacklogSettingsPage#4
+msgid "Number of messages to be requested from the core when using scrolling up in the buffer view."
+msgstr "Numero di messaggi da recuperare dal core durante lo scroll (in su) del buffer."
+
+#: BacklogSettingsPage#5
+msgid "Dynamic backlog amount:"
+msgstr "Numero messaggi da recuperare dal backlog:"
+
+#: BacklogSettingsPage#6
+msgid "Backlog request method:"
+msgstr "Metodo di richiesta del log precedente:"
+
+#: BacklogSettingsPage#7
+msgid "Fixed amount per chat"
+msgstr "Quantità fissa per chat"
+
+#: BacklogSettingsPage#8
+msgid "Unread messages per chat"
+msgstr "Messaggi non letti per chat"
+
+#: BacklogSettingsPage#9
+msgid "Globally unread messages"
+msgstr "Messaggi non letti globalmente"
+
+#: BacklogSettingsPage#10
+msgid "The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog."
+msgstr "La richiesta più semplice. Preleva un numero fisso di righe per ogni finestra di chat dal log precedente."
+
+#: BacklogSettingsPage#11
+msgid "amount of messages per buffer that are requested after the core connection has been established."
+msgstr "quantità di messaggi per buffer che vengono richiesti dopo che la connessione al core è stata stabilita."
+
+#: BacklogSettingsPage#12
+msgid "Initial backlog amount:"
+msgstr "Quantità iniziale di messaggi recuperati dal backlog:"
+
+#: BacklogSettingsPage#13
+msgid ""
+"This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
+"\n"
+"You can also choose to fetch additional older chatlines to provide a better context."
+msgstr ""
+"Questa richiesta preleva i messaggi non letti per ogni finestra di chat individualmente. Il numero di righe può essere limitato per chat.\n"
+"\n"
+"È anche possibile scegliere di prelevare righe di chat addizionali più vecchie per fornire un contesto migliore."
+
+#: BacklogSettingsPage#14
+msgid "Maximum amount of messages to be fetched per buffer."
+msgstr "Numero massimo di messaggi-per-buffer da recuperare."
+
+#: BacklogSettingsPage#15
+msgid "Limit:"
+msgstr "Limite:"
+
+#: BacklogSettingsPage#16
+msgctxt "BacklogSettingsPage#16"
+msgid "Unlimited"
+msgstr "Illimitato"
+
+#: BacklogSettingsPage#17
+msgid "Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here."
+msgstr "Numero di messaggi da recuperare oltre a quelli non letti. Il parametro \"Limite\" non viene considerato qui."
+
+#: BacklogSettingsPage#18
+msgid "Additional Messages:"
+msgstr "Messaggi addizionali:"
+
+#: BacklogSettingsPage#19
+msgid ""
+"This requester fetches all messages newer than the oldest unread message for all chats.\n"
+"\n"
+"Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the fastest.\n"
+"\n"
+"You can also chose to fetch additional older chatlines to provide a better context."
+msgstr ""
+"Questa richiesta preleva tutti i messaggi più nuovi rispetto al messaggio più vecchio non letto per tutte le chat.\n"
+"\n"
+"Nota: Questo tipo di richiesta non è raccomandato se si utilizzano finestre nascoste di chat o si hanno chat inattive (es: richieste o canali fermi).\n"
+"È utile per limitare il numero totale di log precedenti ed è probabilmente il più veloce.\n"
+"È anche possibile scegliere di prelevare righe di chat addizionali più vecchie per fornire un contesto migliore."
+
+#: BacklogSettingsPage#20
+msgid "Maximum amount of messages to be fetched over all buffers."
+msgstr "Numero massimo di messaggi da recuperare da tutti i buffer."
 
 #: BufferItem#1
 msgid "<p> %1 - %2 </p>"
@@ -483,38 +363,55 @@ msgstr "Mostra / Nascondi Chat"
 
 #: BufferViewSettingsPage#1
 msgctxt "BufferViewSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
+msgid "Interface"
+msgstr "Interfaccia"
 
 #: BufferViewSettingsPage#2
-msgctxt "BufferViewSettingsPage#2"
-msgid "Re&name..."
-msgstr "Ri&nomina..."
+msgid "Custom Chat Lists"
+msgstr "Liste chat personalizzate"
 
 #: BufferViewSettingsPage#3
-msgctxt "BufferViewSettingsPage#3"
-msgid "&Add..."
-msgstr "&Aggiungi..."
-
-#: BufferViewSettingsPage#4
-msgctxt "BufferViewSettingsPage#4"
-msgid "De&lete"
-msgstr "E&limina"
-
-#: BufferViewSettingsPage#5
-msgid "Chat List Settings"
-msgstr "Impostazioni Lista Chat"
-
-#: BufferViewSettingsPage#6
-msgctxt "BufferViewSettingsPage#6"
-msgid "Network:"
-msgstr "Rete:"
-
-#: BufferViewSettingsPage#7
 msgid "All"
 msgstr "Tutte"
 
+#: BufferViewSettingsPage#4
+msgid "Delete Chat List?"
+msgstr "Eliminare lista chat?"
+
+#: BufferViewSettingsPage#5
+msgid "Do you really want to delete the chat list \"%1\"?"
+msgstr "Vuoi davvero eliminare la lista chat \"%1\"?"
+
+#: BufferViewSettingsPage#6
+msgctxt "BufferViewSettingsPage#6"
+msgid "Form"
+msgstr "Modulo"
+
+#: BufferViewSettingsPage#7
+msgctxt "BufferViewSettingsPage#7"
+msgid "Re&name..."
+msgstr "Ri&nomina..."
+
 #: BufferViewSettingsPage#8
+msgctxt "BufferViewSettingsPage#8"
+msgid "&Add..."
+msgstr "&Aggiungi..."
+
+#: BufferViewSettingsPage#9
+msgctxt "BufferViewSettingsPage#9"
+msgid "De&lete"
+msgstr "E&limina"
+
+#: BufferViewSettingsPage#10
+msgid "Chat List Settings"
+msgstr "Impostazioni Lista Chat"
+
+#: BufferViewSettingsPage#11
+msgctxt "BufferViewSettingsPage#11"
+msgid "Network:"
+msgstr "Rete:"
+
+#: BufferViewSettingsPage#12
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
@@ -522,71 +419,54 @@ msgstr ""
 "Questa opzione non è disponibile quando 'Reti' è impostato su 'Tutte'.\n"
 "In questa modalità nessun buffer di stato verrà mostrato."
 
-#: BufferViewSettingsPage#9
+#: BufferViewSettingsPage#13
 msgid "Show status window"
 msgstr "Mostra finestra di status"
 
-#: BufferViewSettingsPage#10
+#: BufferViewSettingsPage#14
 msgid "Show channels"
 msgstr "Mostra canali"
 
-#: BufferViewSettingsPage#11
+#: BufferViewSettingsPage#15
 msgid "Show queries"
 msgstr "Mostra richieste"
 
-#: BufferViewSettingsPage#12
+#: BufferViewSettingsPage#16
 msgid "Hide inactive chats"
 msgstr "Nascondi chat inattive"
 
-#: BufferViewSettingsPage#13
+#: BufferViewSettingsPage#17
 msgid "Add new chats automatically"
 msgstr "Aggiungi automaticamente nuove chat"
 
-#: BufferViewSettingsPage#14
+#: BufferViewSettingsPage#18
 msgid "Sort alphabetically"
 msgstr "Ordina alfabeticamente"
 
-#: BufferViewSettingsPage#15
+#: BufferViewSettingsPage#19
 msgid "Minimum Activity:"
 msgstr "Attività minima:"
 
-#: BufferViewSettingsPage#16
+#: BufferViewSettingsPage#20
 msgid "No Activity"
 msgstr "Nessuna attività"
 
-#: BufferViewSettingsPage#17
+#: BufferViewSettingsPage#21
 msgid "Other Activity"
 msgstr "Altra attività"
 
-#: BufferViewSettingsPage#18
+#: BufferViewSettingsPage#22
 msgid "New Message"
 msgstr "Nuovo messaggio"
 
-#: BufferViewSettingsPage#19
-msgctxt "BufferViewSettingsPage#19"
+#: BufferViewSettingsPage#23
+msgctxt "BufferViewSettingsPage#23"
 msgid "Highlight"
 msgstr "Evento"
 
-#: BufferViewSettingsPage#20
+#: BufferViewSettingsPage#24
 msgid "Preview:"
 msgstr "Anteprima:"
-
-#: BufferViewSettingsPage#21
-msgctxt "BufferViewSettingsPage#21"
-msgid "Interface"
-msgstr "Interfaccia"
-
-#: BufferViewSettingsPage#22
-msgid "Custom Chat Lists"
-msgstr "Liste chat personalizzate"
-
-#: BufferViewSettingsPage#23
-msgid "Delete Chat List?"
-msgstr "Eliminare lista chat?"
-
-#: BufferViewSettingsPage#24
-msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr "Vuoi davvero eliminare la lista chat \"%1\"?"
 
 #: BufferViewWidget#1
 msgid "BufferView"
@@ -658,135 +538,89 @@ msgstr "Errori riscontrati:"
 
 #: ChannelListDlg#7
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</"
-"span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
-"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Lucida Grande'; font-size:13pt;\">SUPER ERRORE DEMONIACO CATASTROFICO"
-"!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
-"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER ERRORE DEMONIACO CATASTROFICO!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #: ChatMonitorSettingsPage#1
 msgctxt "ChatMonitorSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: ChatMonitorSettingsPage#2
-msgid "Operation Mode:"
-msgstr "Modalità di operazione:"
-
-#: ChatMonitorSettingsPage#3
-msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
-"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
-"style=\" font-weight:400;\">Only buffers on the right side are shown in "
-"chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
-"decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
-"ignored in chatmonitor</p></body></html>"
-msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /"
-"><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></"
-"head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
-"weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-"
-"bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-"
-"indent:0px;\"><span style=\" font-weight:600;\">Modalità:</span></p><p style="
-"\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-"
-"block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-"
-"weight:400; text-decoration: underline;\">Permetti:</span> <span style=\" "
-"font-weight:400;\">Solo i buffer sulla destra verranno mostrati nel monitor "
-"di chat</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-"
-"left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span "
-"style=\" text-decoration: underline;\">Escludi:</span> I buffer sulla destra "
-"verranno ignorati nel monitor di chat</p></body></html>"
-
-#: ChatMonitorSettingsPage#4
-msgid "Available:"
-msgstr "Disponibile:"
-
-#: ChatMonitorSettingsPage#5
-msgid "Move selected buffers to the left"
-msgstr "Muove il buffer selezionato a sinistra"
-
-#: ChatMonitorSettingsPage#6
-msgid "Move selected buffers to the right"
-msgstr "Muove il buffer selezionato a destra"
-
-#: ChatMonitorSettingsPage#7
-msgid "Show:"
-msgstr "Mostra:"
-
-#: ChatMonitorSettingsPage#8
-msgid ""
-"Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr ""
-"Mostra eventi nel monitor di chat anche se il buffer da cui provengono "
-"viene ignorato"
-
-#: ChatMonitorSettingsPage#9
-msgid "Always show highlighted messages"
-msgstr "Mostra sempre gli eventi"
-
-#: ChatMonitorSettingsPage#10
-msgid "Show own messages"
-msgstr "Mostra i propri messaggi"
-
-#: ChatMonitorSettingsPage#11
-msgctxt "ChatMonitorSettingsPage#11"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: ChatMonitorSettingsPage#12
-msgctxt "ChatMonitorSettingsPage#12"
+#: ChatMonitorSettingsPage#2
+msgctxt "ChatMonitorSettingsPage#2"
 msgid "Chat Monitor"
 msgstr "Monitor di chat"
 
-#: ChatMonitorSettingsPage#13
+#: ChatMonitorSettingsPage#3
 msgid "Opt In"
 msgstr "Permetti"
 
-#: ChatMonitorSettingsPage#14
+#: ChatMonitorSettingsPage#4
 msgid "Opt Out"
 msgstr "Escludi"
 
-#: ChatMonitorSettingsPage#15
+#: ChatMonitorSettingsPage#5
+msgid "Show:"
+msgstr "Mostra:"
+
+#: ChatMonitorSettingsPage#6
 msgid "Ignore:"
 msgstr "Ignora:"
+
+#: ChatMonitorSettingsPage#7
+msgctxt "ChatMonitorSettingsPage#7"
+msgid "Form"
+msgstr "Modulo"
+
+#: ChatMonitorSettingsPage#8
+msgid "Operation Mode:"
+msgstr "Modalità di operazione:"
+
+#: ChatMonitorSettingsPage#9
+msgid ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
+msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Modalità:</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Permetti:</span> <span style=\" font-weight:400;\">Solo i buffer sulla destra verranno mostrati nel monitor di chat</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Escludi:</span> I buffer sulla destra verranno ignorati nel monitor di chat</p></body></html>"
+
+#: ChatMonitorSettingsPage#10
+msgid "Available:"
+msgstr "Disponibile:"
+
+#: ChatMonitorSettingsPage#11
+msgid "Move selected buffers to the left"
+msgstr "Muove il buffer selezionato a sinistra"
+
+#: ChatMonitorSettingsPage#12
+msgid "Move selected buffers to the right"
+msgstr "Muove il buffer selezionato a destra"
+
+#: ChatMonitorSettingsPage#13
+msgid "Show highlights in chatmonitor even if the originating buffer is ignored"
+msgstr "Mostra eventi nel monitor di chat anche se il buffer da cui provengono viene ignorato"
+
+#: ChatMonitorSettingsPage#14
+msgid "Always show highlighted messages"
+msgstr "Mostra sempre gli eventi"
+
+#: ChatMonitorSettingsPage#15
+msgid "Show own messages"
+msgstr "Mostra i propri messaggi"
 
 #: ChatMonitorView#1
 msgid "Show Own Messages"
@@ -838,101 +672,98 @@ msgstr "Ignora messaggi di entrata, uscita, ecc..."
 
 #: ChatViewSettingsPage#1
 msgctxt "ChatViewSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: ChatViewSettingsPage#2
-msgid "Timestamp format:"
-msgstr "Formato dell'ora:"
-
-#: ChatViewSettingsPage#3
-msgid "[hh:mm:ss]"
-msgstr "[hh:mm:ss]"
-
-#: ChatViewSettingsPage#4
-msgid "Custom chat window font:"
-msgstr "Font per la finestra di chat personalizzato"
-
-#: ChatViewSettingsPage#5
-msgid "Allow colored text (mIRC color codes)"
-msgstr "Consenti testo colorato (codici colori mIRC)"
-
-#: ChatViewSettingsPage#6
-msgid ""
-"Show a website preview window when hovering the mouse over a web address"
-msgstr ""
-"Visualizza l'anteprima di un sito web quando muovi il cursore sopra un "
-"indirizzo web"
-
-#: ChatViewSettingsPage#7
-msgid "Show previews of webpages on URL hover"
-msgstr "Visualizza anteprima pagine web (al passaggio del mouse)"
-
-#: ChatViewSettingsPage#8
-msgid "Custom Colors"
-msgstr "Colori Personalizzati"
-
-#: ChatViewSettingsPage#9
-msgid "Action:"
-msgstr "Azione:"
-
-#: ChatViewSettingsPage#10
-msgctxt "ChatViewSettingsPage#10"
-msgid "..."
-msgstr "..."
-
-#: ChatViewSettingsPage#11
-msgid "Timestamp:"
-msgstr "Timestamp:"
-
-#: ChatViewSettingsPage#12
-msgid "Channel message:"
-msgstr "Messaggio canale:"
-
-#: ChatViewSettingsPage#13
-msgid "Highlight foreground:"
-msgstr "Colore di primo piano per l'evento:"
-
-#: ChatViewSettingsPage#14
-msgid "Command message:"
-msgstr "Messaggio comando:"
-
-#: ChatViewSettingsPage#15
-msgid "Highlight background:"
-msgstr "Colore di sfondo per l'evento:"
-
-#: ChatViewSettingsPage#16
-msgid "Server message:"
-msgstr "Messaggio server:"
-
-#: ChatViewSettingsPage#17
-msgid "Marker line:"
-msgstr "Linea evidenziatrice:"
-
-#: ChatViewSettingsPage#18
-msgid "Error message:"
-msgstr "Messaggio di errore:"
-
-#: ChatViewSettingsPage#19
-msgid "Background:"
-msgstr "Sfondo:"
-
-#: ChatViewSettingsPage#20
-msgid "Use Sender Coloring"
-msgstr "Usa colorazione del mittente"
-
-#: ChatViewSettingsPage#21
-msgid "Own messages:"
-msgstr "Propri messaggi:"
-
-#: ChatViewSettingsPage#22
-msgctxt "ChatViewSettingsPage#22"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: ChatViewSettingsPage#23
+#: ChatViewSettingsPage#2
 msgid "Chat View"
 msgstr "Vista chat"
+
+#: ChatViewSettingsPage#3
+msgctxt "ChatViewSettingsPage#3"
+msgid "Form"
+msgstr "Modulo"
+
+#: ChatViewSettingsPage#4
+msgid "Timestamp format:"
+msgstr "Formato dell'ora:"
+
+#: ChatViewSettingsPage#5
+msgid "[hh:mm:ss]"
+msgstr "[hh:mm:ss]"
+
+#: ChatViewSettingsPage#6
+msgid "Custom chat window font:"
+msgstr "Font per la finestra di chat personalizzato"
+
+#: ChatViewSettingsPage#7
+msgid "Allow colored text (mIRC color codes)"
+msgstr "Consenti testo colorato (codici colori mIRC)"
+
+#: ChatViewSettingsPage#8
+msgid "Show a website preview window when hovering the mouse over a web address"
+msgstr "Visualizza l'anteprima di un sito web quando muovi il cursore sopra un indirizzo web"
+
+#: ChatViewSettingsPage#9
+msgid "Show previews of webpages on URL hover"
+msgstr "Visualizza anteprima pagine web (al passaggio del mouse)"
+
+#: ChatViewSettingsPage#10
+msgid "Custom Colors"
+msgstr "Colori Personalizzati"
+
+#: ChatViewSettingsPage#11
+msgid "Action:"
+msgstr "Azione:"
+
+#: ChatViewSettingsPage#12
+msgctxt "ChatViewSettingsPage#12"
+msgid "..."
+msgstr "..."
+
+#: ChatViewSettingsPage#13
+msgid "Timestamp:"
+msgstr "Timestamp:"
+
+#: ChatViewSettingsPage#14
+msgid "Channel message:"
+msgstr "Messaggio canale:"
+
+#: ChatViewSettingsPage#15
+msgid "Highlight foreground:"
+msgstr "Colore di primo piano per l'evento:"
+
+#: ChatViewSettingsPage#16
+msgid "Command message:"
+msgstr "Messaggio comando:"
+
+#: ChatViewSettingsPage#17
+msgid "Highlight background:"
+msgstr "Colore di sfondo per l'evento:"
+
+#: ChatViewSettingsPage#18
+msgid "Server message:"
+msgstr "Messaggio server:"
+
+#: ChatViewSettingsPage#19
+msgid "Marker line:"
+msgstr "Linea evidenziatrice:"
+
+#: ChatViewSettingsPage#20
+msgid "Error message:"
+msgstr "Messaggio di errore:"
+
+#: ChatViewSettingsPage#21
+msgid "Background:"
+msgstr "Sfondo:"
+
+#: ChatViewSettingsPage#22
+msgid "Use Sender Coloring"
+msgstr "Usa colorazione del mittente"
+
+#: ChatViewSettingsPage#23
+msgid "Own messages:"
+msgstr "Propri messaggi:"
 
 #: Client#1
 msgid "Identity already exists in client!"
@@ -947,62 +778,58 @@ msgid "Processed %1 messages in %2 seconds."
 msgstr "Elaborati %1 messaggi in %2 secondi."
 
 #: ConnectionSettingsPage#1
+msgctxt "ConnectionSettingsPage#1"
+msgid "IRC"
+msgstr "IRC"
+
+#: ConnectionSettingsPage#2
 msgid "Configure the IRC Connection"
 msgstr "Configura la Connessione IRC"
 
-#: ConnectionSettingsPage#2
+#: ConnectionSettingsPage#3
 msgid "Enable Ping Timeout Detection"
 msgstr "Abilita Rilevamento Timeout Ping"
 
-#: ConnectionSettingsPage#3
+#: ConnectionSettingsPage#4
 msgid "Ping interval:"
 msgstr "Intervallo ping:"
 
-#: ConnectionSettingsPage#4
-msgctxt "ConnectionSettingsPage#4"
+#: ConnectionSettingsPage#5
+msgctxt "ConnectionSettingsPage#5"
 msgid " seconds"
 msgstr " secondi"
 
-#: ConnectionSettingsPage#5
+#: ConnectionSettingsPage#6
 msgid "Disconnect after"
 msgstr "Disconnetti dopo"
 
-#: ConnectionSettingsPage#6
+#: ConnectionSettingsPage#7
 msgid "missed pings"
 msgstr "ping mancati"
 
-#: ConnectionSettingsPage#7
-msgid ""
-"This enables periodic polling of user information using /WHO. This is mostly "
-"interesting for tracking users' away status."
-msgstr ""
-"Abilita il rilevamento periodico delle informazioni sull'utente utilizzando /"
-"WHO. È interessante per tracciare lo stato di assenza di un utente."
-
 #: ConnectionSettingsPage#8
+msgid "This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users' away status."
+msgstr "Abilita il rilevamento periodico delle informazioni sull'utente utilizzando /WHO. È interessante per tracciare lo stato di assenza di un utente."
+
+#: ConnectionSettingsPage#9
 msgid "Enable Automatic User Information Lookup (/WHO)"
 msgstr "Abilita l'Osservazione Automatica delle Informazioni Utente (/WHO)"
 
-#: ConnectionSettingsPage#9
+#: ConnectionSettingsPage#10
 msgid "Update interval:"
 msgstr "Intervallo di Aggiornamento:"
 
-#: ConnectionSettingsPage#10
+#: ConnectionSettingsPage#11
 msgid "Ignore channels with more than:"
 msgstr "Ignora canali con più di:"
 
-#: ConnectionSettingsPage#11
+#: ConnectionSettingsPage#12
 msgid " users"
 msgstr " utenti"
 
-#: ConnectionSettingsPage#12
+#: ConnectionSettingsPage#13
 msgid "Minimum delay between requests:"
 msgstr "Ritardo minimo tra le richieste:"
-
-#: ConnectionSettingsPage#13
-msgctxt "ConnectionSettingsPage#13"
-msgid "IRC"
-msgstr "IRC"
 
 #: ContentsChatItem#1
 msgid "Copy Link Address"
@@ -1184,12 +1011,10 @@ msgstr "Impossibile inizializzare alcuno storage di backend! Termino..."
 #: Core#2
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
-"Qt library with the sqlite or postgres plugin enabled in order for "
-"quasselcore\n"
+"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 "to work."
 msgstr ""
-"Allo stato attuale Quassel supporta solo SQLite3 e PostgreSQL. Devi "
-"compilare\n"
+"Allo stato attuale Quassel supporta solo SQLite3 e PostgreSQL. Devi compilare\n"
 "le librerie Qt con il plugin sqlite (o postgres) affinché quasselcore possa\n"
 "funzionare correttamente."
 
@@ -1250,13 +1075,8 @@ msgid "Antique client trying to connect... refusing."
 msgstr "Un client vecchio sta tentando di connettersi... rifiutato."
 
 #: Core#17
-msgid ""
-"<b>Your Quassel Client is too old!</b><br>This core needs at least client/"
-"core protocol version %1.<br>Please consider upgrading your client."
-msgstr ""
-"<b>Il tuo Quassel Client è troppo vecchio!</b><br>E' necessario almeno un "
-"core/client che utilizzi il protocollo v%1 per connettersi ad esso.<br>Sei "
-"pregato di aggiornare il tuo client."
+msgid "<b>Your Quassel Client is too old!</b><br>This core needs at least client/core protocol version %1.<br>Please consider upgrading your client."
+msgstr "<b>Il tuo Quassel Client è troppo vecchio!</b><br>E' necessario almeno un core/client che utilizzi il protocollo v%1 per connettersi ad esso.<br>Sei pregato di aggiornare il tuo client."
 
 #: Core#18
 msgctxt "Core#18"
@@ -1276,24 +1096,16 @@ msgid "Starting TLS for Client:"
 msgstr "Avvio TLS per il Client:"
 
 #: Core#22
-msgid ""
-"<b>Client not initialized!</b><br>You need to send an init message before "
-"trying to login."
-msgstr ""
-"<b>Client non inizializzato!</b><br>Devi inviare un messaggio di init prima "
-"di provare a loggarti."
+msgid "<b>Client not initialized!</b><br>You need to send an init message before trying to login."
+msgstr "<b>Client non inizializzato!</b><br>Devi inviare un messaggio di init prima di provare a loggarti."
 
 #: Core#23
 msgid "did not send an init message before trying to login, rejecting."
 msgstr "non è stato inviato alcun messaggio di init prima del login, rifiuto."
 
 #: Core#24
-msgid ""
-"<b>Invalid username or password!</b><br>The username/password combination "
-"you supplied could not be found in the database."
-msgstr ""
-"<b>Username o password non validi!</b><br>Le credenziali impostate non sono "
-"state trovate nel database."
+msgid "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database."
+msgstr "<b>Username o password non validi!</b><br>Le credenziali impostate non sono state trovate nel database."
 
 #: Core#25
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
@@ -1393,43 +1205,43 @@ msgid "Internal Core"
 msgstr "Core interno"
 
 #: CoreAccountSettingsPage#1
+msgctxt "CoreAccountSettingsPage#1"
+msgid "Remote Cores"
+msgstr "Rimuovi core"
+
+#: CoreAccountSettingsPage#2
 msgid "Connect to Quassel Core"
 msgstr "Connessione al core Quassel"
 
-#: CoreAccountSettingsPage#2
+#: CoreAccountSettingsPage#3
 msgid "Core Accounts"
 msgstr "Account core"
 
-#: CoreAccountSettingsPage#3
+#: CoreAccountSettingsPage#4
 msgid "Edit..."
 msgstr "Modifica..."
 
-#: CoreAccountSettingsPage#4
-msgctxt "CoreAccountSettingsPage#4"
+#: CoreAccountSettingsPage#5
+msgctxt "CoreAccountSettingsPage#5"
 msgid "Add..."
 msgstr "Aggiungi..."
 
-#: CoreAccountSettingsPage#5
-msgctxt "CoreAccountSettingsPage#5"
+#: CoreAccountSettingsPage#6
+msgctxt "CoreAccountSettingsPage#6"
 msgid "Delete"
 msgstr "Elimina"
 
-#: CoreAccountSettingsPage#6
+#: CoreAccountSettingsPage#7
 msgid "Automatically connect on startup"
 msgstr "Connetti automaticamente all'avvio"
 
-#: CoreAccountSettingsPage#7
+#: CoreAccountSettingsPage#8
 msgid "Connect to last account used"
 msgstr "Connetti all'ultimo account utilizzato"
 
-#: CoreAccountSettingsPage#8
+#: CoreAccountSettingsPage#9
 msgid "Always connect to"
 msgstr "Connetti sempre a"
-
-#: CoreAccountSettingsPage#9
-msgctxt "CoreAccountSettingsPage#9"
-msgid "Remote Cores"
-msgstr "Rimuovi core"
 
 #: CoreConfigWizard#1
 msgid "Core Configuration Wizard"
@@ -1440,19 +1252,12 @@ msgid "Your core has been successfully configured. Logging you in..."
 msgstr "Il tuo core è stato configurato con successo. Connessione in corso..."
 
 #: CoreConfigWizard#3
-msgid ""
-"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
-msgstr ""
-"Configurazione core fallita:<br><b>%1</b><br>Premi <em>Avanti</em> per "
-"ricominciare."
+msgid "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
+msgstr "Configurazione core fallita:<br><b>%1</b><br>Premi <em>Avanti</em> per ricominciare."
 
 #: CoreConfigWizard#4
-msgid ""
-"Your are now logged into your freshly configured Quassel Core!<br>Please "
-"remember to configure your identities and networks now."
-msgstr ""
-"Sei ora connesso al tuo fresco e nuovo Quassel Core!<br>Ricordati, ora, di "
-"configurare le tue reti ed identità."
+msgid "Your are now logged into your freshly configured Quassel Core!<br>Please remember to configure your identities and networks now."
+msgstr "Sei ora connesso al tuo fresco e nuovo Quassel Core!<br>Ricordati, ora, di configurare le tue reti ed identità."
 
 #: CoreConfigWizardAdminUserPage#1
 msgctxt "CoreConfigWizardAdminUserPage#1"
@@ -1480,13 +1285,10 @@ msgstr "Ricorda password"
 
 #: CoreConfigWizardAdminUserPage#6
 msgid ""
-"<b>Note:</b> Adding more users and changing your username/password is not "
-"possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</"
-"nobr></tt>\"."
+"<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
+"If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
 msgstr ""
-"<b>Nota:</b> L'aggiunta di altri utenti ed il cambio del proprio utente/password "
-"non è ancora possibile tramite l'interfaccia client di Quassel.\n"
+"<b>Nota:</b> L'aggiunta di altri utenti ed il cambio del proprio utente/password non è ancora possibile tramite l'interfaccia client di Quassel.\n"
 "Se necessario, eseguire \"<tt><nobr>quasselcore --help</nobr></tt>\"."
 
 #: CoreConfigWizardIntroPage#1
@@ -1503,12 +1305,8 @@ msgid "Create Admin User"
 msgstr "Crea Utente Amministratore"
 
 #: CoreConfigWizardPages::AdminUserPage#2
-msgid ""
-"First, we will create a user on the core. This first user will have "
-"administrator privileges."
-msgstr ""
-"Per cominciare creeremo un utente sul core. Questo primo utente avrà "
-"privilegi di amministratore."
+msgid "First, we will create a user on the core. This first user will have administrator privileges."
+msgstr "Per cominciare creeremo un utente sul core. Questo primo utente avrà privilegi di amministratore."
 
 #: CoreConfigWizardPages::IntroPage#1
 msgid "Introduction"
@@ -1519,12 +1317,8 @@ msgid "Select Storage Backend"
 msgstr "Seleziona uno Storage di Backend"
 
 #: CoreConfigWizardPages::StorageSelectionPage#2
-msgid ""
-"Please select a database backend for the Quassel Core storage to store the "
-"backlog and other data in."
-msgstr ""
-"Seleziona un database di backend dove Quassel Core immagazzinerà lo storico "
-"dei messaggi ed altri dati."
+msgid "Please select a database backend for the Quassel Core storage to store the backlog and other data in."
+msgstr "Seleziona un database di backend dove Quassel Core immagazzinerà lo storico dei messaggi ed altri dati."
 
 #: CoreConfigWizardPages::StorageSelectionPage#3
 msgid "Connection Properties"
@@ -1535,12 +1329,8 @@ msgid "Storing Your Settings"
 msgstr "Salvando le impostazioni"
 
 #: CoreConfigWizardPages::SyncPage#2
-msgid ""
-"Your settings are now stored in the core, and you will be logged in "
-"automatically."
-msgstr ""
-"Le impostazioni sono state salvate nel core e verrai automaticamente "
-"connesso ad esso."
+msgid "Your settings are now stored in the core, and you will be logged in automatically."
+msgstr "Le impostazioni sono state salvate nel core e verrai automaticamente connesso ad esso."
 
 #: CoreConfigWizardStorageSelectionPage#1
 msgctxt "CoreConfigWizardStorageSelectionPage#1"
@@ -1591,31 +1381,31 @@ msgid "Please wait while your settings are being transmitted to the core..."
 msgstr "Attendere prego mentre le impostazione vengono inviate al core..."
 
 #: CoreConnectAuthDlg#1
+msgid "Please enter your credentials for %1:"
+msgstr "Per favore inserire le proprie credenziali per %1:"
+
+#: CoreConnectAuthDlg#2
 msgid "Authentication Required"
 msgstr "Autenticazione richiesta"
 
-#: CoreConnectAuthDlg#2
+#: CoreConnectAuthDlg#3
 msgid "Please enter your account data:"
 msgstr "Per favore inserire i dati del proprio account:"
 
-#: CoreConnectAuthDlg#3
-msgctxt "CoreConnectAuthDlg#3"
+#: CoreConnectAuthDlg#4
+msgctxt "CoreConnectAuthDlg#4"
 msgid "Password:"
 msgstr "Password:"
 
-#: CoreConnectAuthDlg#4
-msgctxt "CoreConnectAuthDlg#4"
+#: CoreConnectAuthDlg#5
+msgctxt "CoreConnectAuthDlg#5"
 msgid "Username:"
 msgstr "Utente:"
 
-#: CoreConnectAuthDlg#5
-msgctxt "CoreConnectAuthDlg#5"
+#: CoreConnectAuthDlg#6
+msgctxt "CoreConnectAuthDlg#6"
 msgid "Remember password"
 msgstr "Ricorda password"
-
-#: CoreConnectAuthDlg#6
-msgid "Please enter your credentials for %1:"
-msgstr "Per favore inserire le proprie credenziali per %1:"
 
 #: CoreConnectDlg#1
 msgid "Connect to Core"
@@ -1646,11 +1436,8 @@ msgid "Disconnecting from %1..."
 msgstr "Disconnessione da %1..."
 
 #: CoreConnection#7
-msgid ""
-"The Quassel Core you try to connect to is too old! Please consider upgrading."
-msgstr ""
-"Il Quassel Core a cui stai tentando di connetterti è troppo vecchio! Sei "
-"pregato di aggiornarlo quanto prima."
+msgid "The Quassel Core you try to connect to is too old! Please consider upgrading."
+msgstr "Il Quassel Core a cui stai tentando di connetterti è troppo vecchio! Sei pregato di aggiornarlo quanto prima."
 
 #: CoreConnection#8
 msgid "Invalid data received from core"
@@ -1669,13 +1456,8 @@ msgid "Synchronizing to core..."
 msgstr "Sincronizzazione al Core..."
 
 #: CoreConnection#12
-msgid ""
-"<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
-"least core/client protocol v%1 to connect."
-msgstr ""
-"<b>Il Quassel Core a cui stai tentando di connetterti è troppo vecchio!</"
-"b><br>E' necessario almeno un core/client che utilizzi il protocollo v%1 per "
-"connettersi ad esso."
+msgid "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at least core/client protocol v%1 to connect."
+msgstr "<b>Il Quassel Core a cui stai tentando di connetterti è troppo vecchio!</b><br>E' necessario almeno un core/client che utilizzi il protocollo v%1 per connettersi ad esso."
 
 #: CoreConnection#13
 msgid "Logging in..."
@@ -1703,152 +1485,139 @@ msgstr "Sincronizzato con %1"
 
 #: CoreConnectionSettingsPage#1
 msgctxt "CoreConnectionSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
+msgid "Remote Cores"
+msgstr "Rimuovi core"
 
 #: CoreConnectionSettingsPage#2
-msgid "Network Status Detection"
-msgstr "Rilevamento dello stato della rete:"
-
-#: CoreConnectionSettingsPage#3
-msgid ""
-"Rely on KDE's hardware layer to detect if we're online. Recommended for most "
-"KDE users"
-msgstr ""
-"Dipenda dal layer hardware di KDE per rilevare se siamo online. Raccomandato "
-"per molti utenti KDE"
-
-#: CoreConnectionSettingsPage#4
-msgid "Use KDE's network status detection (via Solid)"
-msgstr "Usa il rilevamento dello stato della rete di KDE (via Solid)"
-
-#: CoreConnectionSettingsPage#5
-msgid ""
-"Actively ping the remote core and disconnect if we didn't get a reply after "
-"a certain time"
-msgstr ""
-"Effettua ping verso il core remoto e si disconnette se non riceviamo una "
-"risposta entro un certo tempo"
-
-#: CoreConnectionSettingsPage#6
-msgid "Ping timeout after"
-msgstr "Timeout del ping dopo"
-
-#: CoreConnectionSettingsPage#7
-msgctxt "CoreConnectionSettingsPage#7"
-msgid " seconds"
-msgstr " secondi"
-
-#: CoreConnectionSettingsPage#8
-msgid ""
-"Only disconnect if the network socket gets closed by the operating system. "
-"This may take a long time after actually losing connectivity"
-msgstr ""
-"Disconnette solo se il socket di rete viene chiuso dal sistema operativo."
-"Potrebbe essere necessario molto tempo dopo aver effettivamente perso "
-"la connettività"
-
-#: CoreConnectionSettingsPage#9
-msgid "Never time out actively"
-msgstr "Nessun time out attivo"
-
-#: CoreConnectionSettingsPage#10
-msgid "Automatically reconnect on network failures"
-msgstr "Riconnette automaticamente in caso di errore della rete"
-
-#: CoreConnectionSettingsPage#11
-msgid "Retry every"
-msgstr "Riprova ogni"
-
-#: CoreConnectionSettingsPage#12
-msgctxt "CoreConnectionSettingsPage#12"
-msgid "Remote Cores"
-msgstr "Core remoti"
-
-#: CoreConnectionSettingsPage#13
-msgctxt "CoreConnectionSettingsPage#13"
+msgctxt "CoreConnectionSettingsPage#2"
 msgid "Connection"
 msgstr "Connessione"
 
-#: CoreConnectionStatusWidget#1
-msgctxt "CoreConnectionStatusWidget#1"
+#: CoreConnectionSettingsPage#3
+msgctxt "CoreConnectionSettingsPage#3"
 msgid "Form"
 msgstr "Modulo"
 
-#: CoreConnectionStatusWidget#2
-msgctxt "CoreConnectionStatusWidget#2"
-msgid "Message"
-msgstr "Messaggio"
+#: CoreConnectionSettingsPage#4
+msgid "Network Status Detection"
+msgstr "Rilevamento dello stato della rete:"
 
-#: CoreConnectionStatusWidget#3
+#: CoreConnectionSettingsPage#5
+msgid "Rely on KDE's hardware layer to detect if we're online. Recommended for most KDE users"
+msgstr "Dipenda dal layer hardware di KDE per rilevare se siamo online. Raccomandato per molti utenti KDE"
+
+#: CoreConnectionSettingsPage#6
+msgid "Use KDE's network status detection (via Solid)"
+msgstr "Usa il rilevamento dello stato della rete di KDE (via Solid)"
+
+#: CoreConnectionSettingsPage#7
+msgid "Actively ping the remote core and disconnect if we didn't get a reply after a certain time"
+msgstr "Effettua ping verso il core remoto e si disconnette se non riceviamo una risposta entro un certo tempo"
+
+#: CoreConnectionSettingsPage#8
+msgid "Ping timeout after"
+msgstr "Timeout del ping dopo"
+
+#: CoreConnectionSettingsPage#9
+msgctxt "CoreConnectionSettingsPage#9"
+msgid " seconds"
+msgstr " secondi"
+
+#: CoreConnectionSettingsPage#10
+msgid "Only disconnect if the network socket gets closed by the operating system. This may take a long time after actually losing connectivity"
+msgstr "Disconnette solo se il socket di rete viene chiuso dal sistema operativo.Potrebbe essere necessario molto tempo dopo aver effettivamente perso la connettività"
+
+#: CoreConnectionSettingsPage#11
+msgid "Never time out actively"
+msgstr "Nessun time out attivo"
+
+#: CoreConnectionSettingsPage#12
+msgid "Automatically reconnect on network failures"
+msgstr "Riconnette automaticamente in caso di errore della rete"
+
+#: CoreConnectionSettingsPage#13
+msgid "Retry every"
+msgstr "Riprova ogni"
+
+#: CoreConnectionStatusWidget#1
 msgid "s"
 msgstr "s"
 
 # milliseconds
-#: CoreConnectionStatusWidget#4
+#: CoreConnectionStatusWidget#2
 msgid "ms"
 msgstr "ms"
 
-#: CoreConnectionStatusWidget#5
+#: CoreConnectionStatusWidget#3
 msgid "(Lag: %1 %2)"
 msgstr "(Ritardo: %1 %2)"
 
-#: CoreConnectionStatusWidget#6
+#: CoreConnectionStatusWidget#4
 msgid "The connection to your core is encrypted with SSL."
 msgstr "La connessione al core è criptata con SSL"
 
-#: CoreConnectionStatusWidget#7
+#: CoreConnectionStatusWidget#5
 msgid "The connection to your core is not encrypted."
 msgstr "La connessione al core non è criptata"
 
+#: CoreConnectionStatusWidget#6
+msgctxt "CoreConnectionStatusWidget#6"
+msgid "Form"
+msgstr "Modulo"
+
+#: CoreConnectionStatusWidget#7
+msgctxt "CoreConnectionStatusWidget#7"
+msgid "Message"
+msgstr "Messaggio"
+
 #: CoreInfoDlg#1
-msgid "Core Information"
-msgstr "Informazioni Core"
-
-#: CoreInfoDlg#2
-msgid "Version:"
-msgstr "Versione:"
-
-#: CoreInfoDlg#3
-msgid "<core version>"
-msgstr "<versione core>"
-
-#: CoreInfoDlg#4
-msgid "Uptime:"
-msgstr "Uptime:"
-
-#: CoreInfoDlg#5
-msgid "Connected Clients:"
-msgstr "Client connessi:"
-
-#: CoreInfoDlg#6
-msgid "<connected clients>"
-msgstr "<client connessi>"
-
-#: CoreInfoDlg#7
-msgid "<core uptime>"
-msgstr "<uptime del core>"
-
-#: CoreInfoDlg#8
-msgid "Build date:"
-msgstr "Data compilazione:"
-
-#: CoreInfoDlg#9
-msgid "<build date>"
-msgstr "<data di compilazione>"
-
-#: CoreInfoDlg#10
-msgctxt "CoreInfoDlg#10"
-msgid "Close"
-msgstr "Chiudi"
-
-#: CoreInfoDlg#11
 msgid "%n Day(s)"
 msgstr "%n Giorno(i)"
 
-#: CoreInfoDlg#12
+#: CoreInfoDlg#2
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (da %4)"
+
+#: CoreInfoDlg#3
+msgid "Core Information"
+msgstr "Informazioni Core"
+
+#: CoreInfoDlg#4
+msgid "Version:"
+msgstr "Versione:"
+
+#: CoreInfoDlg#5
+msgid "<core version>"
+msgstr "<versione core>"
+
+#: CoreInfoDlg#6
+msgid "Uptime:"
+msgstr "Uptime:"
+
+#: CoreInfoDlg#7
+msgid "Connected Clients:"
+msgstr "Client connessi:"
+
+#: CoreInfoDlg#8
+msgid "<connected clients>"
+msgstr "<client connessi>"
+
+#: CoreInfoDlg#9
+msgid "<core uptime>"
+msgstr "<uptime del core>"
+
+#: CoreInfoDlg#10
+msgid "Build date:"
+msgstr "Data compilazione:"
+
+#: CoreInfoDlg#11
+msgid "<build date>"
+msgstr "<data di compilazione>"
+
+#: CoreInfoDlg#12
+msgctxt "CoreInfoDlg#12"
+msgid "Close"
+msgstr "Chiudi"
 
 #: CoreNetwork#1
 msgid "Connection failed. Cycling to next Server"
@@ -1884,20 +1653,12 @@ msgid "disconnected (UserId: %1)."
 msgstr "disconnesso (UserID: %1)."
 
 #: CoreSession#3
-msgid ""
-"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
-"create network %1!"
-msgstr ""
-"CoreSession::createNetwork(): Ricevuto networkId non valido dal Core al "
-"momento della creazione della rete %1!"
+msgid "CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!"
+msgstr "CoreSession::createNetwork(): Ricevuto networkId non valido dal Core al momento della creazione della rete %1!"
 
 #: CoreSession#4
-msgid ""
-"CoreSession::createNetwork(): Trying to create a network that already "
-"exists, updating instead!"
-msgstr ""
-"CoreSession::createNetwork(): Tentativo di creare una rete già esistente, "
-"aggiornamento in corso!"
+msgid "CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"
+msgstr "CoreSession::createNetwork(): Tentativo di creare una rete già esistente, aggiornamento in corso!"
 
 #: CoreUserInputHandler#1
 msgid "away"
@@ -1944,60 +1705,60 @@ msgid "Received unknown CTCP %1 by %2"
 msgstr "Ricevuto CTCP sconosciuto %1 da %2"
 
 #: DebugBufferViewOverlay#1
-msgid "Debug BufferView Overlay"
-msgstr "Debug Overlay VistaBuffer"
-
-#: DebugBufferViewOverlay#2
-msgid "Overlay View"
-msgstr "Vista Overlay"
-
-#: DebugBufferViewOverlay#3
-msgid "Overlay Properties"
-msgstr "Proprietà Overlay"
-
-#: DebugBufferViewOverlay#4
 msgid "BufferViews:"
 msgstr "VisteBuffer:"
 
-#: DebugBufferViewOverlay#5
+#: DebugBufferViewOverlay#2
 msgid "All Networks:"
 msgstr "Tutti i Network:"
 
-#: DebugBufferViewOverlay#6
+#: DebugBufferViewOverlay#3
 msgid "Networks:"
 msgstr "Network:"
 
-#: DebugBufferViewOverlay#7
+#: DebugBufferViewOverlay#4
 msgid "Buffers:"
 msgstr "Buffer:"
 
-#: DebugBufferViewOverlay#8
+#: DebugBufferViewOverlay#5
 msgid "Removed buffers:"
 msgstr "Buffer rimossi:"
 
-#: DebugBufferViewOverlay#9
+#: DebugBufferViewOverlay#6
 msgid "Temp. removed buffers:"
 msgstr "Buffer rimossi temporaneamente:"
 
-#: DebugBufferViewOverlay#10
+#: DebugBufferViewOverlay#7
 msgid "Add Buffers Automatically:"
 msgstr "Aggiungi Buffer Automaticamente:"
 
-#: DebugBufferViewOverlay#11
+#: DebugBufferViewOverlay#8
 msgid "Hide inactive buffers:"
 msgstr "Nascondi buffer inattivi:"
 
-#: DebugBufferViewOverlay#12
+#: DebugBufferViewOverlay#9
 msgid "Allowed buffer types:"
 msgstr "Tipi di buffer consentiti:"
 
-#: DebugBufferViewOverlay#13
+#: DebugBufferViewOverlay#10
 msgid "Minimum activity:"
 msgstr "Attività minima:"
 
-#: DebugBufferViewOverlay#14
+#: DebugBufferViewOverlay#11
 msgid "Is initialized:"
 msgstr "È inizializzato:"
+
+#: DebugBufferViewOverlay#12
+msgid "Debug BufferView Overlay"
+msgstr "Debug Overlay VistaBuffer"
+
+#: DebugBufferViewOverlay#13
+msgid "Overlay View"
+msgstr "Vista Overlay"
+
+#: DebugBufferViewOverlay#14
+msgid "Overlay Properties"
+msgstr "Proprietà Overlay"
 
 #: DebugConsole#1
 msgid "Debug Console"
@@ -2092,149 +1853,145 @@ msgstr "Seleziona..."
 
 #: HighlightSettingsPage#1
 msgctxt "HighlightSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: HighlightSettingsPage#2
-msgid "Custom Highlights"
-msgstr "Evidenziazioni personalizzate"
-
-#: HighlightSettingsPage#3
-msgctxt "HighlightSettingsPage#3"
-msgid "Highlight"
-msgstr "Evento"
-
-#: HighlightSettingsPage#4
-msgid "RegEx"
-msgstr "RegEx"
-
-#: HighlightSettingsPage#5
-msgid "CS"
-msgstr "CS"
-
-#: HighlightSettingsPage#6
-msgid "Enable"
-msgstr "Abilita"
-
-#: HighlightSettingsPage#7
-msgid "Add"
-msgstr "Aggiungi"
-
-#: HighlightSettingsPage#8
-msgctxt "HighlightSettingsPage#8"
-msgid "Remove"
-msgstr "Rimuovi"
-
-#: HighlightSettingsPage#9
-msgid "Highlight Nicks"
-msgstr "Evidenziazione Nickname"
-
-#: HighlightSettingsPage#10
-msgid "All nicks from identity"
-msgstr "Tutti i nick dell'identità"
-
-#: HighlightSettingsPage#11
-msgid "Current nick"
-msgstr "Nick corrente"
-
-#: HighlightSettingsPage#12
-msgid "None"
-msgstr "Nessuno"
-
-#: HighlightSettingsPage#13
-msgid "Case sensitive"
-msgstr "Case Sensitive (Maiuscole/minuscole)"
-
-#: HighlightSettingsPage#14
-msgctxt "HighlightSettingsPage#14"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: HighlightSettingsPage#15
+#: HighlightSettingsPage#2
+msgctxt "HighlightSettingsPage#2"
+msgid "Highlight"
+msgstr "Evento"
+
+#: HighlightSettingsPage#3
 msgid "this shouldn't be empty"
 msgstr "non dovrebbe essere vuoto"
 
-#: HighlightSettingsPage#16
+#: HighlightSettingsPage#4
 msgid "highlight rule"
 msgstr "regola evidenziazione"
 
+#: HighlightSettingsPage#5
+msgctxt "HighlightSettingsPage#5"
+msgid "Form"
+msgstr "Modulo"
+
+#: HighlightSettingsPage#6
+msgid "Custom Highlights"
+msgstr "Evidenziazioni personalizzate"
+
+#: HighlightSettingsPage#7
+msgid "RegEx"
+msgstr "RegEx"
+
+#: HighlightSettingsPage#8
+msgid "CS"
+msgstr "CS"
+
+#: HighlightSettingsPage#9
+msgid "Enable"
+msgstr "Abilita"
+
+#: HighlightSettingsPage#10
+msgid "Add"
+msgstr "Aggiungi"
+
+#: HighlightSettingsPage#11
+msgctxt "HighlightSettingsPage#11"
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: HighlightSettingsPage#12
+msgid "Highlight Nicks"
+msgstr "Evidenziazione Nickname"
+
+#: HighlightSettingsPage#13
+msgid "All nicks from identity"
+msgstr "Tutti i nick dell'identità"
+
+#: HighlightSettingsPage#14
+msgid "Current nick"
+msgstr "Nick corrente"
+
+#: HighlightSettingsPage#15
+msgid "None"
+msgstr "Nessuno"
+
+#: HighlightSettingsPage#16
+msgid "Case sensitive"
+msgstr "Case Sensitive (Maiuscole/minuscole)"
+
 #: IdentitiesSettingsPage#1
 msgctxt "IdentitiesSettingsPage#1"
-msgid "Rename Identity"
-msgstr "Rinomina identità"
-
-#: IdentitiesSettingsPage#2
-msgctxt "IdentitiesSettingsPage#2"
-msgid "..."
-msgstr "..."
-
-#: IdentitiesSettingsPage#3
-msgid "Add Identity"
-msgstr "Aggiungi identità"
-
-#: IdentitiesSettingsPage#4
-msgctxt "IdentitiesSettingsPage#4"
-msgid "Add..."
-msgstr "Aggiungi..."
-
-#: IdentitiesSettingsPage#5
-msgid "Remove Identity"
-msgstr "Rimuovi identità"
-
-#: IdentitiesSettingsPage#6
-msgctxt "IdentitiesSettingsPage#6"
 msgid "IRC"
 msgstr "IRC"
 
-#: IdentitiesSettingsPage#7
+#: IdentitiesSettingsPage#2
 msgid "Identities"
 msgstr "Identità"
 
-#: IdentitiesSettingsPage#8
-msgctxt "IdentitiesSettingsPage#8"
-msgid ""
-"<b>The following problems need to be corrected before your changes can be "
-"applied:</b><ul>"
-msgstr ""
-"<b>I problemi seguenti devo essere corretti prima che i cambiamenti possano "
-"essere salvati:</b><ul>"
+#: IdentitiesSettingsPage#3
+msgctxt "IdentitiesSettingsPage#3"
+msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
+msgstr "<b>I problemi seguenti devono essere corretti prima che i cambiamenti possano essere salvati:</b><ul>"
 
-#: IdentitiesSettingsPage#9
+#: IdentitiesSettingsPage#4
 msgid "<li>All identities need an identity name set</li>"
 msgstr "<li>Tutte le identità necessitano di un nome identità definito</li>"
 
-#: IdentitiesSettingsPage#10
+#: IdentitiesSettingsPage#5
 msgid "<li>Every identity needs at least one nickname defined</li>"
 msgstr "<li>Ogni identità necessita di almeno un nickname definito</li>"
 
-#: IdentitiesSettingsPage#11
+#: IdentitiesSettingsPage#6
 msgid "<li>You need to specify a real name for every identity</li>"
 msgstr "<li>Devi specificare un nome reale per ogni identità</li>"
 
-#: IdentitiesSettingsPage#12
+#: IdentitiesSettingsPage#7
 msgid "<li>You need to specify an ident for every identity</li>"
 msgstr "<li>Devi specificare un ident per ogni identità</li>"
 
-#: IdentitiesSettingsPage#13
-msgctxt "IdentitiesSettingsPage#13"
+#: IdentitiesSettingsPage#8
+msgctxt "IdentitiesSettingsPage#8"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: IdentitiesSettingsPage#14
+#: IdentitiesSettingsPage#9
 msgid "One or more identities are invalid"
 msgstr "Una o più identità non sono valide"
 
-#: IdentitiesSettingsPage#15
+#: IdentitiesSettingsPage#10
 msgid "Delete Identity?"
 msgstr "Eliminare l'identità?"
 
-#: IdentitiesSettingsPage#16
+#: IdentitiesSettingsPage#11
 msgid "Do you really want to delete identity \"%1\"?"
 msgstr "Si desidera realmente eliminare l'identità \"%1\"?"
 
-#: IdentitiesSettingsPage#17
+#: IdentitiesSettingsPage#12
+msgctxt "IdentitiesSettingsPage#12"
+msgid "Rename Identity"
+msgstr "Rinomina identità"
+
+#: IdentitiesSettingsPage#13
 msgid "Please enter a new name for the identity \"%1\"!"
 msgstr "Inserisci un nuovo nome per l'identità \"%1\"!"
+
+#: IdentitiesSettingsPage#14
+msgctxt "IdentitiesSettingsPage#14"
+msgid "..."
+msgstr "..."
+
+#: IdentitiesSettingsPage#15
+msgid "Add Identity"
+msgstr "Aggiungi identità"
+
+#: IdentitiesSettingsPage#16
+msgctxt "IdentitiesSettingsPage#16"
+msgid "Add..."
+msgstr "Aggiungi..."
+
+#: IdentitiesSettingsPage#17
+msgid "Remove Identity"
+msgstr "Rimuovi identità"
 
 #: Identity#1
 msgid "Quassel IRC User"
@@ -2254,8 +2011,7 @@ msgstr "Non qui. No, veramente, non qui!"
 
 #: Identity#5
 msgid "All Quassel clients vanished from the face of the earth..."
-msgstr ""
-"Tutti i client Quassel sono magicamente spariti dalla faccia della Terra..."
+msgstr "Tutti i client Quassel sono magicamente spariti dalla faccia della Terra..."
 
 #: Identity#6
 msgid "Kindergarten is elsewhere!"
@@ -2266,221 +2022,210 @@ msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr "http://quassel-irc.org - Chat comfortably. Anywhere."
 
 #: IdentityEditWidget#1
-msgid "General"
-msgstr "Generale"
-
-#: IdentityEditWidget#2
-msgid "Real Name:"
-msgstr "Nome Reale:"
-
-#: IdentityEditWidget#3
-msgid "The \"Real Name\" is shown in /whois."
-msgstr "Il \"Nome Reale\" viene mostrato nel /whois."
-
-#: IdentityEditWidget#4
-msgid "Nicknames"
-msgstr "Nick"
-
-#: IdentityEditWidget#5
-msgctxt "IdentityEditWidget#5"
-msgid "Add Nickname"
-msgstr "Aggiungi nick"
-
-#: IdentityEditWidget#6
-msgctxt "IdentityEditWidget#6"
-msgid "&Add..."
-msgstr "&Aggiungi..."
-
-#: IdentityEditWidget#7
-msgid "Remove Nickname"
-msgstr "Rimuovi Nickname"
-
-#: IdentityEditWidget#8
-msgctxt "IdentityEditWidget#8"
-msgid "Remove"
-msgstr "Rimuovi"
-
-#: IdentityEditWidget#9
-msgctxt "IdentityEditWidget#9"
-msgid "Rename Identity"
-msgstr "Rinomina identità"
-
-#: IdentityEditWidget#10
-msgctxt "IdentityEditWidget#10"
-msgid "Re&name..."
-msgstr "Ri&nomina..."
-
-#: IdentityEditWidget#11
-msgctxt "IdentityEditWidget#11"
-msgid "Move upwards in list"
-msgstr "Sposta in alto nella lista"
-
-#: IdentityEditWidget#12
-msgctxt "IdentityEditWidget#12"
-msgid "..."
-msgstr "..."
-
-#: IdentityEditWidget#13
-msgctxt "IdentityEditWidget#13"
-msgid "Move downwards in list"
-msgstr "Sposta in basso nella lista"
-
-#: IdentityEditWidget#14
-msgid "A&way"
-msgstr "Ass&enza"
-
-#: IdentityEditWidget#15
-msgid "Default Away Settings"
-msgstr "Impostazioni predefinite assenza"
-
-#: IdentityEditWidget#16
-msgid "Nick to be used when being away"
-msgstr "Nick da utilizzare quando assente"
-
-#: IdentityEditWidget#17
-msgid "Default away reason"
-msgstr "Motivo predefinito assenza"
-
-#: IdentityEditWidget#18
-msgid "Away Nick:"
-msgstr "Nick d'assenza:"
-
-#: IdentityEditWidget#19
-msgid "Away Reason:"
-msgstr "Motivo d'assenza:"
-
-#: IdentityEditWidget#20
-msgid "Set away when all clients have detached from the core"
-msgstr "Imposta assenza quando tutti i client vengono disconnessi dal core"
-
-#: IdentityEditWidget#21
-msgid "Away On Detach"
-msgstr "Assenza su disconnessione"
-
-#: IdentityEditWidget#22
-msgid "Not implemented yet"
-msgstr "Non ancora implementato"
-
-#: IdentityEditWidget#23
-msgid "Away On Idle"
-msgstr "Assenza su inattività"
-
-#: IdentityEditWidget#24
-msgid "Set away after"
-msgstr "Imposta assenza dopo"
-
-#: IdentityEditWidget#25
-msgid "minutes of being idle"
-msgstr "minuti di inattività"
-
-#: IdentityEditWidget#26
-msgctxt "IdentityEditWidget#26"
+msgctxt "IdentityEditWidget#1"
 msgid "Advanced"
 msgstr "Avanzato"
 
-#: IdentityEditWidget#27
-msgid "Ident:"
-msgstr "Ident:"
-
-#: IdentityEditWidget#28
-msgid ""
-"The \"ident\" is part of your hostmask and, together with your host, "
-"uniquely identifies you within the IRC network."
-msgstr ""
-"Lo \"ident\" è una parte della tua hostmask e, assieme al tuo host, ti "
-"identifica univocamente all'interno di una rete IRC."
-
-#: IdentityEditWidget#29
-msgid "Messages"
-msgstr "Messaggi"
-
-#: IdentityEditWidget#30
-msgid "Part Reason:"
-msgstr "Motivo di Uscita (dal canale/Part):"
-
-#: IdentityEditWidget#31
-msgid "Quit Reason:"
-msgstr "Motivo di Uscita (globale/Quit):"
-
-#: IdentityEditWidget#32
-msgid "Kick Reason:"
-msgstr "Motivo espulsione (kick): "
-
-#: IdentityEditWidget#33
-msgid ""
-"You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr ""
-"Necessiti di un Client che supporti SSL per modificare Chiave e Certificato "
-"SSL del Core"
-
-#: IdentityEditWidget#34
-msgid ""
-"Warning: you are not connected with a secured connection to the Quassel "
-"Core!\n"
-"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
-"Certificate!"
-msgstr ""
-"Attenzione: Non sei connesso tramite una connessione sicura al Quassel "
-"Core!\n"
-"Ciò comporterà il trasferimento _non cifrato_ della tua Chiave e Certificato "
-"SSL!"
-
-#: IdentityEditWidget#35
-msgctxt "IdentityEditWidget#35"
-msgid "Continue"
-msgstr "Continua"
-
-#: IdentityEditWidget#36
-msgid "Use SSL Key"
-msgstr "Utilizza chiave SSL"
-
-#: IdentityEditWidget#37
-msgid "Key Type:"
-msgstr "Tipo chiave:"
-
-#: IdentityEditWidget#38
-msgid "No Key loaded"
-msgstr "Nessuna chiave caricata"
-
-#: IdentityEditWidget#39
-msgid "Load"
-msgstr "Carica"
-
-#: IdentityEditWidget#40
-msgid "Use SSL Certificate"
-msgstr "Utilizza Certificato SSL"
-
-#: IdentityEditWidget#41
-msgid "Organisation:"
-msgstr "Organizzazione:"
-
-#: IdentityEditWidget#42
-msgid "No Certificate loaded"
-msgstr "Nessun certificato caricato"
-
-#: IdentityEditWidget#43
-msgid "CommonName:"
-msgstr "NomeComune:"
-
-#: IdentityEditWidget#44
+#: IdentityEditWidget#2
 msgid "Load a Key"
 msgstr "Carica una chiave"
 
-#: IdentityEditWidget#45
+#: IdentityEditWidget#3
+msgid "No Key loaded"
+msgstr "Nessuna chiave caricata"
+
+#: IdentityEditWidget#4
+msgid "Load"
+msgstr "Carica"
+
+#: IdentityEditWidget#5
 msgid "RSA"
 msgstr "RSA"
 
-#: IdentityEditWidget#46
+#: IdentityEditWidget#6
 msgid "DSA"
 msgstr "DSA"
 
-#: IdentityEditWidget#47
+#: IdentityEditWidget#7
 msgid "Clear"
 msgstr "Svuota"
 
-#: IdentityEditWidget#48
+#: IdentityEditWidget#8
 msgid "Load a Certificate"
 msgstr "Carica un certificato"
+
+#: IdentityEditWidget#9
+msgid "No Certificate loaded"
+msgstr "Nessun certificato caricato"
+
+#: IdentityEditWidget#10
+msgid "General"
+msgstr "Generale"
+
+#: IdentityEditWidget#11
+msgid "Real Name:"
+msgstr "Nome Reale:"
+
+#: IdentityEditWidget#12
+msgid "The \"Real Name\" is shown in /whois."
+msgstr "Il \"Nome Reale\" viene mostrato nel /whois."
+
+#: IdentityEditWidget#13
+msgid "Nicknames"
+msgstr "Nick"
+
+#: IdentityEditWidget#14
+msgctxt "IdentityEditWidget#14"
+msgid "Add Nickname"
+msgstr "Aggiungi nick"
+
+#: IdentityEditWidget#15
+msgctxt "IdentityEditWidget#15"
+msgid "&Add..."
+msgstr "&Aggiungi..."
+
+#: IdentityEditWidget#16
+msgid "Remove Nickname"
+msgstr "Rimuovi Nickname"
+
+#: IdentityEditWidget#17
+msgctxt "IdentityEditWidget#17"
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: IdentityEditWidget#18
+msgctxt "IdentityEditWidget#18"
+msgid "Rename Identity"
+msgstr "Rinomina identità"
+
+#: IdentityEditWidget#19
+msgctxt "IdentityEditWidget#19"
+msgid "Re&name..."
+msgstr "Ri&nomina..."
+
+#: IdentityEditWidget#20
+msgctxt "IdentityEditWidget#20"
+msgid "Move upwards in list"
+msgstr "Sposta in alto nella lista"
+
+#: IdentityEditWidget#21
+msgctxt "IdentityEditWidget#21"
+msgid "..."
+msgstr "..."
+
+#: IdentityEditWidget#22
+msgctxt "IdentityEditWidget#22"
+msgid "Move downwards in list"
+msgstr "Sposta in basso nella lista"
+
+#: IdentityEditWidget#23
+msgid "A&way"
+msgstr "Ass&enza"
+
+#: IdentityEditWidget#24
+msgid "Default Away Settings"
+msgstr "Impostazioni predefinite assenza"
+
+#: IdentityEditWidget#25
+msgid "Nick to be used when being away"
+msgstr "Nick da utilizzare quando assente"
+
+#: IdentityEditWidget#26
+msgid "Default away reason"
+msgstr "Motivo predefinito assenza"
+
+#: IdentityEditWidget#27
+msgid "Away Nick:"
+msgstr "Nick d'assenza:"
+
+#: IdentityEditWidget#28
+msgid "Away Reason:"
+msgstr "Motivo d'assenza:"
+
+#: IdentityEditWidget#29
+msgid "Set away when all clients have detached from the core"
+msgstr "Imposta assenza quando tutti i client vengono disconnessi dal core"
+
+#: IdentityEditWidget#30
+msgid "Away On Detach"
+msgstr "Assenza su disconnessione"
+
+#: IdentityEditWidget#31
+msgid "Not implemented yet"
+msgstr "Non ancora implementato"
+
+#: IdentityEditWidget#32
+msgid "Away On Idle"
+msgstr "Assenza su inattività"
+
+#: IdentityEditWidget#33
+msgid "Set away after"
+msgstr "Imposta assenza dopo"
+
+#: IdentityEditWidget#34
+msgid "minutes of being idle"
+msgstr "minuti di inattività"
+
+#: IdentityEditWidget#35
+msgid "Ident:"
+msgstr "Ident:"
+
+#: IdentityEditWidget#36
+msgid "The \"ident\" is part of your hostmask and, together with your host, uniquely identifies you within the IRC network."
+msgstr "Lo \"ident\" è una parte della tua hostmask e, assieme al tuo host, ti identifica univocamente all'interno di una rete IRC."
+
+#: IdentityEditWidget#37
+msgid "Messages"
+msgstr "Messaggi"
+
+#: IdentityEditWidget#38
+msgid "Part Reason:"
+msgstr "Motivo di Uscita (dal canale/Part):"
+
+#: IdentityEditWidget#39
+msgid "Quit Reason:"
+msgstr "Motivo di Uscita (globale/Quit):"
+
+#: IdentityEditWidget#40
+msgid "Kick Reason:"
+msgstr "Motivo espulsione (kick): "
+
+#: IdentityEditWidget#41
+msgid "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
+msgstr "Necessiti di un Client che supporti SSL per modificare Chiave e Certificato SSL del Core"
+
+#: IdentityEditWidget#42
+msgid ""
+"Warning: you are not connected with a secured connection to the Quassel Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
+msgstr ""
+"Attenzione: Non sei connesso tramite una connessione sicura al Quassel Core!\n"
+"Ciò comporterà il trasferimento _non cifrato_ della tua Chiave e Certificato SSL!"
+
+#: IdentityEditWidget#43
+msgctxt "IdentityEditWidget#43"
+msgid "Continue"
+msgstr "Continua"
+
+#: IdentityEditWidget#44
+msgid "Use SSL Key"
+msgstr "Utilizza chiave SSL"
+
+#: IdentityEditWidget#45
+msgid "Key Type:"
+msgstr "Tipo chiave:"
+
+#: IdentityEditWidget#46
+msgid "Use SSL Certificate"
+msgstr "Utilizza Certificato SSL"
+
+#: IdentityEditWidget#47
+msgid "Organisation:"
+msgstr "Organizzazione:"
+
+#: IdentityEditWidget#48
+msgid "CommonName:"
+msgstr "NomeComune:"
 
 #: IdentityPage#1
 msgid "Setup Identity"
@@ -2499,16 +2244,14 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</"
-"p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
 "<p><b>Severità:</b></p>\n"
 "<p><u>Dinamica:</u></p>\n"
 "<p>I messaggi sono filtrati \"al volo\".\n"
-"Nel momento in cui vengono disabilitate/ignorate le regole di ignore, i "
-"messaggi vengono ancora visualizzati.</p>\n"
+"Nel momento in cui vengono disabilitate/ignorate le regole di ignore, i messaggi vengono ancora visualizzati.</p>\n"
 "<p><u>Permanente:</u></p>\n"
 "<p>I messaggi vengono filtrati prima di essere salvati nel database.</p>"
 
@@ -2556,8 +2299,7 @@ msgstr "Messaggio"
 #: IgnoreListEditDlg#10
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</"
-"p>\n"
+"<p>Depending on the type of the rule, the text is matched against either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -2567,25 +2309,20 @@ msgid ""
 "<br />\n"
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
-"from any host</p>"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
 msgstr ""
 "<p><b>Regola ignore:</b></p>\n"
-"<p>A seconda del tipo di regola, il testo viene confrontato in due modi:</"
-"p>\n"
+"<p>A seconda del tipo di regola, il testo viene confrontato in due modi:</p>\n"
 "<p><u>- il contenuto del messaggio:</u></p>\n"
 "<p><i>Esempio:</i>\n"
 "<br />\n"
-"<i>*foobar*</i> coincide con il testo contenente la parola <i>foobar</i></"
-"p>\n"
+"<i>*foobar*</i> coincide con il testo contenente la parola <i>foobar</i></p>\n"
 "<p><u>- la stringa del mittente</u>  <i>(nick!ident@nome.host)</i></p>\n"
 "<p><i>Esempi:</i>\n"
 "<br />\n"
-"- <i>*@foobar.com</i> coincide con tutti i mittenti dall'host <i>foobar.com</"
-"i>\n"
+"- <i>*@foobar.com</i> coincide con tutti i mittenti dall'host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) coincide con qualunque mittente il cui nick è "
-"<i>stupid</i> da qualsiasi host</p>"
+"- <i>stupid!.+</i> (RegEx) coincide con qualunque mittente il cui nick è <i>stupid</i> da qualsiasi host</p>"
 
 #: IgnoreListEditDlg#11
 msgctxt "IgnoreListEditDlg#11"
@@ -2596,17 +2333,14 @@ msgstr "Regola di ignore"
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
-"<p>Otherwise rules allow wildcard matching with the following special "
-"characters:</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special characters:</p>\n"
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
 msgstr ""
 "<p><b>Utilizza espressioni regolari:</b></p>\n"
-"<p>Se abilitate, le regole seguono la sintassi delle espressioni regolari.</"
-"p>\n"
-"<p>Altrimenti le regole consentono le espressioni regolari che coincidono "
-"con i seguenti caratteri speciali:</p>\n"
+"<p>Se abilitate, le regole seguono la sintassi delle espressioni regolari.</p>\n"
+"<p>Altrimenti le regole consentono le espressioni regolari che coincidono con i seguenti caratteri speciali:</p>\n"
 "<p> *: rappresenta \"qualsiasi quantità di qualsiasi carattere\"\n"
 "<br />\n"
 "?: rappresenta \"esattamente un carattere\"</p>"
@@ -2621,21 +2355,17 @@ msgid ""
 "<p><u>Global:</u></p>\n"
 "<p>The rule is active for any channel on any network</p>\n"
 "<p><u>Network:</u></p>\n"
-"<p>The list below is interpreted as a list of networks for which the rule "
-"should match</p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
 "<p><u>Channel:</u></p>\n"
-"<p>The list below is interpreted as a list of channels for which the rule "
-"should match</p>"
+"<p>The list below is interpreted as a list of channels for which the rule should match</p>"
 msgstr ""
 "<p><b>Ambito:</b></p>\n"
 "<p><u>Globale:</u></p>\n"
 "<p>La regola è attiva per qualsiasi canale su qualsiasi rete</p>\n"
 "<p><u>Rete:</u></p>\n"
-"<p>La lista seguente è interpretata come lista di reti per le quali dovrebbe "
-"corrispondere la regola</p>\n"
+"<p>La lista seguente è interpretata come lista di reti per le quali dovrebbe corrispondere la regola</p>\n"
 "<p><u>Canale:</u></p>\n"
-"<p>La lista seguente è interpretata come lista di canali per i quali "
-"dovrebbe corrispondere la regola</p>"
+"<p>La lista seguente è interpretata come lista di canali per i quali dovrebbe corrispondere la regola</p>"
 
 #: IgnoreListEditDlg#15
 msgid "Scope"
@@ -2658,8 +2388,7 @@ msgstr "Canale"
 #: IgnoreListEditDlg#19
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
-"<i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -2667,14 +2396,12 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 "<p><b>Regola di ambito:</b></p>\n"
-"<p>Una regola di ambito è una lista separata da punto e virgola di <i>reti</"
-"i> oppure nomi <i>canali</i>.</p>\n"
+"<p>Una regola di ambito è una lista separata da punto e virgola di <i>reti</i> oppure nomi <i>canali</i>.</p>\n"
 "<p><i>Esempio:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
 "<br />\n"
-"corrisponde a #foobar ed a qualsiasi canale che inizia con <i>#quassel</i></"
-"p>"
+"corrisponde a #foobar ed a qualsiasi canale che inizia con <i>#quassel</i></p>"
 
 #: IgnoreListEditDlg#20
 msgid ""
@@ -2686,48 +2413,27 @@ msgstr ""
 "<p><b>Abilita / Disabilita:</b></p>\n"
 "<p>Vengono filtrate solo le regole abilitate.\n"
 "<br />\n"
-"Se vengono disabilitate le regole dinamiche, i messagg filtrati sono "
-"nuovamente visibili.</p>"
+"Se vengono disabilitate le regole dinamiche, i messagg filtrati sono nuovamente visibili.</p>"
 
 #: IgnoreListEditDlg#21
 msgid "Rule is enabled"
 msgstr "Regola abilitata"
 
 #: IgnoreListModel#1
-msgid ""
-"<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
-"dynamic rules, disabling actually shows the filtered messages again"
-msgstr ""
-"<b>Abilita / Disabilita:</b><br />Vengono filtrate solo le regole abilitate."
-"<br />Se vengono disabilitate le regole dinamiche, i messagg filtrati sono "
-"nuovamente visibili."
+msgid "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For dynamic rules, disabling actually shows the filtered messages again"
+msgstr "<b>Abilita / Disabilita:</b><br />Vengono filtrate solo le regole abilitate.<br />Se vengono disabilitate le regole dinamiche, i messagg filtrati sono nuovamente visibili."
 
 #: IgnoreListModel#2
-msgid ""
-"<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
-"matched against either:<br /><br />- <u>the message content:</u><br /"
-"><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
-"\"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></"
-"u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from "
-"host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with "
-"nickname \"stupid\" from any host<br />"
-msgstr ""
-"<b>Regola di ignore:</b><br />A seconda del tipo di regola, il testo viene "
-"confrontato con:<br /><br />- <u>il contenuto del messaggio:</u><br /"
-"><i>Esempio:<i><br />    \"*foobar*\" coincide a qualsiasi testo contenente  "
-"la parola\"foobar\"<br /><br />- <u>la stringa del mittente <i>nick!"
-"ident@host.name<i></u><br /><i>Esempio:</i><br />     \"*@foobar.com\" "
-"coincide ado ogni mittente dall'host foobar.com<br />    \"stupido!.+"
-"\" (RegEx) coincide con ogni mittente il cui nick è \"stupido\" da ogni "
-"host<br />"
+msgid "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is matched against either:<br /><br />- <u>the message content:</u><br /><i>Example:<i><br />    \"*foobar*\" matches any text containing the word \"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any host<br />"
+msgstr "<b>Regola di ignore:</b><br />A seconda del tipo di regola, il testo viene confrontato con:<br /><br />- <u>il contenuto del messaggio:</u><br /><i>Esempio:<i><br />    \"*foobar*\" coincide a qualsiasi testo contenente  la parola\"foobar\"<br /><br />- <u>la stringa del mittente <i>nick!ident@host.name<i></u><br /><i>Esempio:</i><br />     \"*@foobar.com\" coincide ado ogni mittente dall'host foobar.com<br />    \"stupido!.+\" (RegEx) coincide con ogni mittente il cui nick è \"stupido\" da ogni host<br />"
 
 #: IgnoreListModel#3
 msgid "By Sender"
-msgstr "Per Mittente"
+msgstr "Per mittente"
 
 #: IgnoreListModel#4
 msgid "By Message"
-msgstr "Per Messaggio"
+msgstr "Per messaggio"
 
 #: IgnoreListModel#5
 msgid "Enabled"
@@ -2744,37 +2450,18 @@ msgstr "Regola ignore"
 
 #: IgnoreListSettingsPage#1
 msgctxt "IgnoreListSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: IgnoreListSettingsPage#2
-msgctxt "IgnoreListSettingsPage#2"
-msgid "New"
-msgstr "Nuovo"
-
-#: IgnoreListSettingsPage#3
-msgctxt "IgnoreListSettingsPage#3"
-msgid "Delete"
-msgstr "Elimina"
-
-#: IgnoreListSettingsPage#4
-msgid "&Edit"
-msgstr "&Modifica"
-
-#: IgnoreListSettingsPage#5
-msgctxt "IgnoreListSettingsPage#5"
 msgid "IRC"
 msgstr "IRC"
 
-#: IgnoreListSettingsPage#6
+#: IgnoreListSettingsPage#2
 msgid "Ignore List"
 msgstr "Lista Ignore"
 
-#: IgnoreListSettingsPage#7
+#: IgnoreListSettingsPage#3
 msgid "Rule already exists"
 msgstr "La regola esiste già"
 
-#: IgnoreListSettingsPage#8
+#: IgnoreListSettingsPage#4
 msgid ""
 "There is already a rule\n"
 "\"%1\"\n"
@@ -2783,6 +2470,25 @@ msgstr ""
 "Esista già una regola\n"
 "\"%1\"\n"
 "Per favore scegliere un'altra regola."
+
+#: IgnoreListSettingsPage#5
+msgctxt "IgnoreListSettingsPage#5"
+msgid "Form"
+msgstr "Modulo"
+
+#: IgnoreListSettingsPage#6
+msgctxt "IgnoreListSettingsPage#6"
+msgid "New"
+msgstr "Nuovo"
+
+#: IgnoreListSettingsPage#7
+msgctxt "IgnoreListSettingsPage#7"
+msgid "Delete"
+msgstr "Elimina"
+
+#: IgnoreListSettingsPage#8
+msgid "&Edit"
+msgstr "&Modifica"
 
 #: IndicatorNotificationConfigWidget#1
 msgctxt "IndicatorNotificationConfigWidget#1"
@@ -2794,72 +2500,72 @@ msgid "Show messages in indicator"
 msgstr "Mostra messaggio nell'indicatore"
 
 #: InputWidget#1
-msgctxt "InputWidget#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: InputWidget#2
 msgid "Focus Input Line"
 msgstr "Seleziona Campo Inserimento Testo"
 
-#: InputWidget#3
+#: InputWidget#2
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: InputWidgetSettingsPage#1
-msgctxt "InputWidgetSettingsPage#1"
+#: InputWidget#3
+msgctxt "InputWidget#3"
 msgid "Form"
 msgstr "Modulo"
 
-#: InputWidgetSettingsPage#2
-msgctxt "InputWidgetSettingsPage#2"
-msgid "Custom font:"
-msgstr "Font personalizzato:"
-
-#: InputWidgetSettingsPage#3
-msgid "Enable spell check"
-msgstr "Abilita controllo ortografico"
-
-#: InputWidgetSettingsPage#4
-msgid "Show nick selector"
-msgstr "Mostra selettore nick"
-
-#: InputWidgetSettingsPage#5
-msgid "Multi-Line Editing"
-msgstr "Modifica Multi-Riga"
-
-#: InputWidgetSettingsPage#6
-msgid "Show at most"
-msgstr "Mostra al più"
-
-#: InputWidgetSettingsPage#7
-msgid "lines"
-msgstr "righe"
-
-#: InputWidgetSettingsPage#8
-msgid "Enable scrollbars"
-msgstr "Abilita barre di scorrimento"
-
-#: InputWidgetSettingsPage#9
-msgid "Tab Completion"
-msgstr "Completamento Tab"
-
-#: InputWidgetSettingsPage#10
-msgid "Completion suffix:"
-msgstr "Suffisso autocompletamento:"
-
-#: InputWidgetSettingsPage#11
-msgid ": "
-msgstr ": "
-
-#: InputWidgetSettingsPage#12
-msgctxt "InputWidgetSettingsPage#12"
+#: InputWidgetSettingsPage#1
+msgctxt "InputWidgetSettingsPage#1"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: InputWidgetSettingsPage#13
+#: InputWidgetSettingsPage#2
 msgid "Input Widget"
 msgstr "Widget per Input"
+
+#: InputWidgetSettingsPage#3
+msgctxt "InputWidgetSettingsPage#3"
+msgid "Form"
+msgstr "Modulo"
+
+#: InputWidgetSettingsPage#4
+msgctxt "InputWidgetSettingsPage#4"
+msgid "Custom font:"
+msgstr "Font personalizzato:"
+
+#: InputWidgetSettingsPage#5
+msgid "Enable spell check"
+msgstr "Abilita controllo ortografico"
+
+#: InputWidgetSettingsPage#6
+msgid "Show nick selector"
+msgstr "Mostra selettore nick"
+
+#: InputWidgetSettingsPage#7
+msgid "Multi-Line Editing"
+msgstr "Modifica Multi-Riga"
+
+#: InputWidgetSettingsPage#8
+msgid "Show at most"
+msgstr "Mostra al più"
+
+#: InputWidgetSettingsPage#9
+msgid "lines"
+msgstr "righe"
+
+#: InputWidgetSettingsPage#10
+msgid "Enable scrollbars"
+msgstr "Abilita barre di scorrimento"
+
+#: InputWidgetSettingsPage#11
+msgid "Tab Completion"
+msgstr "Completamento Tab"
+
+#: InputWidgetSettingsPage#12
+msgid "Completion suffix:"
+msgstr "Suffisso autocompletamento:"
+
+#: InputWidgetSettingsPage#13
+msgid ": "
+msgstr ": "
 
 #: IrcConnectionWizard#1
 msgid "Save && Connect"
@@ -2888,12 +2594,8 @@ msgid "Received RPL_ISUPPORT (005) without parameters!"
 msgstr "Ricevuto RPL_ISUPPORT (005) senza parametri!"
 
 #: IrcServerHandler#3
-msgid ""
-"Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
-"behavior!"
-msgstr ""
-"Ricevuto un messaggio non RFC-compliamnt RPL_ISUPPORT: potrebbe portare ad "
-"un comportamento inatteso!"
+msgid "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"
+msgstr "Ricevuto un messaggio non RFC-compliamnt RPL_ISUPPORT: potrebbe portare ad un comportamento inatteso!"
 
 #: IrcServerHandler#4
 msgctxt "IrcServerHandler#4"
@@ -2997,11 +2699,8 @@ msgid "Nick already in use: %1"
 msgstr "Nick già utilizzato: %1"
 
 #: IrcServerHandler#29
-msgid ""
-"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
-msgstr ""
-"Nessun nick libero e valido trovato nella lista nickname. Utilizza: /nick "
-"<altronickname> per continuare"
+msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
+msgstr "Nessun nick libero e valido trovato nella lista nickname. Utilizza: /nick <altronickname> per continuare"
 
 #: IrcUserItem#1
 msgctxt "IrcUserItem#1"
@@ -3020,109 +2719,109 @@ msgstr "server: %1"
 
 #: ItemViewSettingsPage#1
 msgctxt "ItemViewSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: ItemViewSettingsPage#2
-msgctxt "ItemViewSettingsPage#2"
-msgid "Custom font:"
-msgstr "Font personalizzato:"
-
-#: ItemViewSettingsPage#3
-msgid "Show icons"
-msgstr "Mostra icone"
-
-#: ItemViewSettingsPage#4
-msgid "Chat List"
-msgstr "Lista Chat"
-
-#: ItemViewSettingsPage#5
-msgid "Display topic in tooltip"
-msgstr "Mostra topic nel tooltip"
-
-#: ItemViewSettingsPage#6
-msgid "Mouse wheel changes selected chat"
-msgstr "La rotellina del mouse cambia la chat selezionata"
-
-#: ItemViewSettingsPage#7
-msgid "Use Custom Colors"
-msgstr "Utilizza Colori Personalizzati"
-
-#: ItemViewSettingsPage#8
-msgid "Standard:"
-msgstr "Standard:"
-
-#: ItemViewSettingsPage#9
-msgctxt "ItemViewSettingsPage#9"
-msgid "..."
-msgstr "..."
-
-#: ItemViewSettingsPage#10
-msgid "Inactive:"
-msgstr "Inattivo:"
-
-#: ItemViewSettingsPage#11
-msgid "Unread messages:"
-msgstr "Messaggi non letti:"
-
-#: ItemViewSettingsPage#12
-msgid "Highlight:"
-msgstr "Evidenziato:"
-
-#: ItemViewSettingsPage#13
-msgid "Other activity:"
-msgstr "Altra attività:"
-
-#: ItemViewSettingsPage#14
-msgid "1"
-msgstr "1"
-
-#: ItemViewSettingsPage#15
-msgid "Custom Nick List Colors"
-msgstr "Colori Lista Nick Personalizzati"
-
-#: ItemViewSettingsPage#16
-msgid "Online:"
-msgstr "Online:"
-
-#: ItemViewSettingsPage#17
-msgid "Away:"
-msgstr "Assente:"
-
-#: ItemViewSettingsPage#18
-msgctxt "ItemViewSettingsPage#18"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: ItemViewSettingsPage#19
+#: ItemViewSettingsPage#2
 msgid "Chat & Nick Lists"
 msgstr "Liste Chat & Nick"
 
-#: ItemViewSettingsPage#20
-msgctxt "ItemViewSettingsPage#20"
+#: ItemViewSettingsPage#3
+msgctxt "ItemViewSettingsPage#3"
 msgid "Network"
 msgstr "Rete"
 
-#: ItemViewSettingsPage#21
+#: ItemViewSettingsPage#4
 msgid "Inactive"
 msgstr "Inattivo"
 
-#: ItemViewSettingsPage#22
+#: ItemViewSettingsPage#5
 msgid "Normal"
 msgstr "Normale"
 
-#: ItemViewSettingsPage#23
+#: ItemViewSettingsPage#6
 msgid "Unread messages"
 msgstr "Messaggi non letti"
 
-#: ItemViewSettingsPage#24
-msgctxt "ItemViewSettingsPage#24"
+#: ItemViewSettingsPage#7
+msgctxt "ItemViewSettingsPage#7"
 msgid "Highlight"
 msgstr "Evento"
 
-#: ItemViewSettingsPage#25
+#: ItemViewSettingsPage#8
 msgid "Other activity"
 msgstr "Altra attività"
+
+#: ItemViewSettingsPage#9
+msgctxt "ItemViewSettingsPage#9"
+msgid "Form"
+msgstr "Modulo"
+
+#: ItemViewSettingsPage#10
+msgctxt "ItemViewSettingsPage#10"
+msgid "Custom font:"
+msgstr "Font personalizzato:"
+
+#: ItemViewSettingsPage#11
+msgid "Show icons"
+msgstr "Mostra icone"
+
+#: ItemViewSettingsPage#12
+msgid "Chat List"
+msgstr "Lista Chat"
+
+#: ItemViewSettingsPage#13
+msgid "Display topic in tooltip"
+msgstr "Mostra topic nel tooltip"
+
+#: ItemViewSettingsPage#14
+msgid "Mouse wheel changes selected chat"
+msgstr "La rotellina del mouse cambia la chat selezionata"
+
+#: ItemViewSettingsPage#15
+msgid "Use Custom Colors"
+msgstr "Utilizza Colori Personalizzati"
+
+#: ItemViewSettingsPage#16
+msgid "Standard:"
+msgstr "Standard:"
+
+#: ItemViewSettingsPage#17
+msgctxt "ItemViewSettingsPage#17"
+msgid "..."
+msgstr "..."
+
+#: ItemViewSettingsPage#18
+msgid "Inactive:"
+msgstr "Inattivo:"
+
+#: ItemViewSettingsPage#19
+msgid "Unread messages:"
+msgstr "Messaggi non letti:"
+
+#: ItemViewSettingsPage#20
+msgid "Highlight:"
+msgstr "Evidenziato:"
+
+#: ItemViewSettingsPage#21
+msgid "Other activity:"
+msgstr "Altra attività:"
+
+#: ItemViewSettingsPage#22
+msgid "1"
+msgstr "1"
+
+#: ItemViewSettingsPage#23
+msgid "Custom Nick List Colors"
+msgstr "Colori Lista Nick Personalizzati"
+
+#: ItemViewSettingsPage#24
+msgid "Online:"
+msgstr "Online:"
+
+#: ItemViewSettingsPage#25
+msgid "Away:"
+msgstr "Assente:"
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -3307,12 +3006,8 @@ msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>Il client non supporta SSL</b>"
 
 #: MainWin#46
-msgid ""
-"Sensitive data, like passwords, will be transmitted unencrypted to your "
-"Quassel core."
-msgstr ""
-"I dati sensibili, come le password, verranno trasmesse in chiaro al "
-"core Quassel."
+msgid "Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."
+msgstr "I dati sensibili, come le password, verranno trasmesse in chiaro al core Quassel."
 
 #: MainWin#47
 msgid "<b>Your core does not support SSL encryption</b>"
@@ -3323,12 +3018,8 @@ msgid "Untrusted Security Certificate"
 msgstr "Certificato di sicurezza non fidato"
 
 #: MainWin#49
-msgid ""
-"<b>The SSL certificate provided by the core at %1 is untrusted for the "
-"following reasons:</b>"
-msgstr ""
-"<b>Il certificato SSL fornito dal cora a %1 non è fidato per i seguenti "
-"motivi:</b>"
+msgid "<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>"
+msgstr "<b>Il certificato SSL fornito dal cora a %1 non è fidato per i seguenti motivi:</b>"
 
 #: MainWin#50
 msgctxt "MainWin#50"
@@ -3340,10 +3031,8 @@ msgid "Show Certificate"
 msgstr "Mostra certificato"
 
 #: MainWin#52
-msgid ""
-"Would you like to accept this certificate forever without being prompted?"
-msgstr ""
-"Si desidera accettare questo certificato per sempre senza chiederlo nuovamente?"
+msgid "Would you like to accept this certificate forever without being prompted?"
+msgstr "Si desidera accettare questo certificato per sempre senza chiederlo nuovamente?"
 
 #: MainWin#53
 msgid "Current Session Only"
@@ -3462,20 +3151,12 @@ msgid "Do you want to delete the following buffer(s) permanently?"
 msgstr "Vuoi eliminare definitivamente il seguente buffer?"
 
 #: NetworkModelController#2
-msgid ""
-"<b>Note:</b> This will delete all related data, including all backlog data, "
-"from the core's database and cannot be undone."
-msgstr ""
-"<b>Attenzione:</b> Questa operazione comporterà l'eliminazione totale di "
-"tutti i dati connessi al buffer, inclusi i dati di backlog, dal database del "
-"core. Questa operazione non può essere annullata."
+msgid "<b>Note:</b> This will delete all related data, including all backlog data, from the core's database and cannot be undone."
+msgstr "<b>Attenzione:</b> Questa operazione comporterà l'eliminazione totale di tutti i dati connessi al buffer, inclusi i dati di backlog, dal database del core. Questa operazione non può essere annullata."
 
 #: NetworkModelController#3
-msgid ""
-"<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr ""
-"<br>I buffer di canale attivi non possono essere eliminati. Sei pregato di "
-"uscire prima dal canale."
+msgid "<br>Active channel buffers cannot be deleted, please part the channel first."
+msgstr "<br>I buffer di canale attivi non possono essere eliminati. Sei pregato di uscire prima dal canale."
 
 #: NetworkModelController#4
 msgid "Remove buffers permanently?"
@@ -3500,261 +3181,236 @@ msgstr "Impostazione Connessione Rete"
 
 #: NetworksSettingsPage#1
 msgctxt "NetworksSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
+msgid "IRC"
+msgstr "IRC"
 
 #: NetworksSettingsPage#2
-msgctxt "NetworksSettingsPage#2"
-msgid "Re&name..."
-msgstr "Ri&nomina..."
+msgid "Networks"
+msgstr "Reti"
 
 #: NetworksSettingsPage#3
 msgctxt "NetworksSettingsPage#3"
-msgid "&Add..."
-msgstr "&Aggiungi..."
+msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
+msgstr "<b>I problemi seguenti devono essere corretti prima che i cambiamenti possano essere salvati:</b><ul>"
 
 #: NetworksSettingsPage#4
-msgctxt "NetworksSettingsPage#4"
-msgid "De&lete"
-msgstr "E&limina"
+msgid "<li>All networks need at least one server defined</li>"
+msgstr "<li>Tutte le reti necessitano di almeno un server definito</li>"
 
 #: NetworksSettingsPage#5
-msgid "Network Details"
-msgstr "Dettagli Rete"
+msgctxt "NetworksSettingsPage#5"
+msgid "</ul>"
+msgstr "</ul>"
 
 #: NetworksSettingsPage#6
-msgid "Identity:"
-msgstr "Identità:"
+msgid "Invalid Network Settings"
+msgstr "Impostazioni Rete non valide"
 
 #: NetworksSettingsPage#7
-msgctxt "NetworksSettingsPage#7"
-msgid "..."
-msgstr "..."
+msgid "Delete Network?"
+msgstr "Eliminare la Rete?"
 
 #: NetworksSettingsPage#8
-msgctxt "NetworksSettingsPage#8"
-msgid "Servers"
-msgstr "Server"
+msgid "Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
+msgstr "Vuoi realmente eliminare la rete \"%1\" e tutte le impostazioni correlate, includendo i backlog?"
 
 #: NetworksSettingsPage#9
-msgid "Manage servers for this network"
-msgstr "Gestisci server per questa rete"
+msgctxt "NetworksSettingsPage#9"
+msgid "Form"
+msgstr "Modulo"
 
 #: NetworksSettingsPage#10
 msgctxt "NetworksSettingsPage#10"
-msgid "&Edit..."
-msgstr "&Modifica..."
+msgid "Re&name..."
+msgstr "Ri&nomina..."
 
 #: NetworksSettingsPage#11
 msgctxt "NetworksSettingsPage#11"
-msgid "Move upwards in list"
-msgstr "Sposta in alto nella lista"
+msgid "&Add..."
+msgstr "&Aggiungi..."
 
 #: NetworksSettingsPage#12
 msgctxt "NetworksSettingsPage#12"
+msgid "De&lete"
+msgstr "E&limina"
+
+#: NetworksSettingsPage#13
+msgid "Network Details"
+msgstr "Dettagli Rete"
+
+#: NetworksSettingsPage#14
+msgid "Identity:"
+msgstr "Identità:"
+
+#: NetworksSettingsPage#15
+msgctxt "NetworksSettingsPage#15"
+msgid "..."
+msgstr "..."
+
+#: NetworksSettingsPage#16
+msgctxt "NetworksSettingsPage#16"
+msgid "Servers"
+msgstr "Server"
+
+#: NetworksSettingsPage#17
+msgid "Manage servers for this network"
+msgstr "Gestisci server per questa rete"
+
+#: NetworksSettingsPage#18
+msgctxt "NetworksSettingsPage#18"
+msgid "&Edit..."
+msgstr "&Modifica..."
+
+#: NetworksSettingsPage#19
+msgctxt "NetworksSettingsPage#19"
+msgid "Move upwards in list"
+msgstr "Sposta in alto nella lista"
+
+#: NetworksSettingsPage#20
+msgctxt "NetworksSettingsPage#20"
 msgid "Move downwards in list"
 msgstr "Sposta in basso nella lista"
 
-#: NetworksSettingsPage#13
+#: NetworksSettingsPage#21
 msgid "Commands"
 msgstr "Comandi"
 
-#: NetworksSettingsPage#14
-msgid ""
-"Configure automatic identification or misc. commands to be executed after "
-"connecting to a server"
-msgstr ""
-"Configura automaticamente l'identificazione o i vari comandi da essere "
-"eseguiti dopo che la connessione al server è stata stabilita"
+#: NetworksSettingsPage#22
+msgid "Configure automatic identification or misc. commands to be executed after connecting to a server"
+msgstr "Configura automaticamente l'identificazione o i vari comandi da essere eseguiti dopo che la connessione al server è stata stabilita"
 
-#: NetworksSettingsPage#15
+#: NetworksSettingsPage#23
 msgid "Commands to execute on connect:"
 msgstr "Comandi da eseguire alla connessione:"
 
-#: NetworksSettingsPage#16
+#: NetworksSettingsPage#24
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
-"Note that Quassel IRC automatically rejoins channels, so /join will rarely "
-"be needed here!"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
 msgstr ""
 "Specifica una lista di comandi IRC da essere eseguiti una volta connessi.\n"
-"Nota che Quassel IRC automaticamente si riconnette ai canali e, quindi, "
-"avrai raramente bisogno del comando /join qui!"
+"Nota che Quassel IRC automaticamente si riconnette ai canali e, quindi, avrai raramente bisogno del comando /join qui!"
 
-#: NetworksSettingsPage#17
-msgctxt "NetworksSettingsPage#17"
+#: NetworksSettingsPage#25
+msgctxt "NetworksSettingsPage#25"
 msgid "Connection"
 msgstr "Connessione"
 
-#: NetworksSettingsPage#18
+#: NetworksSettingsPage#26
 msgid "Control automatic reconnect to the network"
 msgstr "Gestisce la riconnessione automatica alla rete"
 
-#: NetworksSettingsPage#19
+#: NetworksSettingsPage#27
 msgid "Automatic Reconnect"
 msgstr "Riconnessione automatica"
 
-#: NetworksSettingsPage#20
+#: NetworksSettingsPage#28
 msgid "Interval:"
 msgstr "Intervallo:"
 
-#: NetworksSettingsPage#21
-msgctxt "NetworksSettingsPage#21"
+#: NetworksSettingsPage#29
+msgctxt "NetworksSettingsPage#29"
 msgid " s"
 msgstr " s"
 
-#: NetworksSettingsPage#22
+#: NetworksSettingsPage#30
 msgid "Retries:"
 msgstr "Tentativi:"
 
-#: NetworksSettingsPage#23
-msgctxt "NetworksSettingsPage#23"
+#: NetworksSettingsPage#31
+msgctxt "NetworksSettingsPage#31"
 msgid "Unlimited"
 msgstr "Illimitato"
 
-#: NetworksSettingsPage#24
+#: NetworksSettingsPage#32
 msgid "Rejoin all channels on reconnect"
 msgstr "Riconnettiti a tutti i canali alla riconnessione"
 
-#: NetworksSettingsPage#25
+#: NetworksSettingsPage#33
 msgid "Auto Identify"
 msgstr "Auto Identificazione"
 
-#: NetworksSettingsPage#26
+#: NetworksSettingsPage#34
 msgid "NickServ"
 msgstr "NickServ"
 
-#: NetworksSettingsPage#27
+#: NetworksSettingsPage#35
 msgid "Service:"
 msgstr "Servizio:"
 
-#: NetworksSettingsPage#28
-msgctxt "NetworksSettingsPage#28"
+#: NetworksSettingsPage#36
+msgctxt "NetworksSettingsPage#36"
 msgid "Password:"
 msgstr "Password:"
 
-#: NetworksSettingsPage#29
+#: NetworksSettingsPage#37
 msgid "Encodings"
 msgstr "Codifiche"
 
-#: NetworksSettingsPage#30
-msgid ""
-"Configure advanced settings such as message encodings and automatic reconnect"
-msgstr ""
-"Configura le impostazioni avanzate come la codifica dei messaggi e la "
-"riconnessione automatica"
+#: NetworksSettingsPage#38
+msgid "Configure advanced settings such as message encodings and automatic reconnect"
+msgstr "Configura le impostazioni avanzate come la codifica dei messaggi e la riconnessione automatica"
 
-#: NetworksSettingsPage#31
+#: NetworksSettingsPage#39
 msgid "Control encodings for in- and outgoing messages"
 msgstr "Gestisce le codifiche di tutti i messaggi ricevuti e trasmessi"
 
-#: NetworksSettingsPage#32
+#: NetworksSettingsPage#40
 msgid "Use Custom Encodings"
 msgstr "Utilizza codifica personalizzata"
 
-#: NetworksSettingsPage#33
+#: NetworksSettingsPage#41
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
 msgstr ""
 "Specifica in quale codifica i tuoi messaggi verranno inviati.\n"
-"UTF-8 dovrebbe essere l'impostazione migliore per la maggior parte delle "
-"reti."
+"UTF-8 dovrebbe essere l'impostazione migliore per la maggior parte delle reti."
 
-#: NetworksSettingsPage#34
+#: NetworksSettingsPage#42
 msgid "Send messages in:"
 msgstr "Invia messaggi utilizzando:"
 
-#: NetworksSettingsPage#35
+#: NetworksSettingsPage#43
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
 msgstr ""
-"I messaggi ricevuti e codificati in UTF-8 verranno sempre trattati come "
-"tali.\n"
+"I messaggi ricevuti e codificati in UTF-8 verranno sempre trattati come tali.\n"
 "Quest'impostazione definisce solamente la codifica per i messaggi non UTF-8."
 
-#: NetworksSettingsPage#36
+#: NetworksSettingsPage#44
 msgid "Receive fallback:"
 msgstr "Codifica di fallback (ricezione):"
 
-#: NetworksSettingsPage#37
+#: NetworksSettingsPage#45
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
-"Quest'impostazione definisce come saranno codificati i messaggi, i nickname "
-"ed i servername.\n"
-"A meno che tu non sappia *realmente* cosa stai facendo, lascia questo valore "
-"impostato a ISO-8859-1!"
+"Quest'impostazione definisce come saranno codificati i messaggi, i nickname ed i servername.\n"
+"A meno che tu non sappia *realmente* cosa stai facendo, lascia questo valore impostato a ISO-8859-1!"
 
-#: NetworksSettingsPage#38
+#: NetworksSettingsPage#46
 msgid "Server encoding:"
 msgstr "Codifica Server:"
 
-#: NetworksSettingsPage#39
-msgctxt "NetworksSettingsPage#39"
-msgid "IRC"
-msgstr "IRC"
-
-#: NetworksSettingsPage#40
-msgid "Networks"
-msgstr "Reti"
-
-#: NetworksSettingsPage#41
-msgctxt "NetworksSettingsPage#41"
-msgid ""
-"<b>The following problems need to be corrected before your changes can be "
-"applied:</b><ul>"
-msgstr ""
-"<b>I problemi seguenti devo essere corretti prima che i cambiamenti possano "
-"essere salvati:</b><ul>"
-
-#: NetworksSettingsPage#42
-msgid "<li>All networks need at least one server defined</li>"
-msgstr "<li>Tutte le reti necessitano di almeno un server definito</li>"
-
-#: NetworksSettingsPage#43
-msgctxt "NetworksSettingsPage#43"
-msgid "</ul>"
-msgstr "</ul>"
-
-#: NetworksSettingsPage#44
-msgid "Invalid Network Settings"
-msgstr "Impostazioni Rete non valide"
-
-#: NetworksSettingsPage#45
-msgid "Delete Network?"
-msgstr "Eliminare la Rete?"
-
-#: NetworksSettingsPage#46
-msgid ""
-"Do you really want to delete the network \"%1\" and all related settings, "
-"including the backlog?"
-msgstr ""
-"Vuoi realmente eliminare la rete \"%1\" e tutte le impostazioni correlate, "
-"includendo i backlog?"
-
 #: NickEditDlg#1
+msgctxt "NickEditDlg#1"
+msgid "Add Nickname"
+msgstr "Aggiungi nick"
+
+#: NickEditDlg#2
 msgid "Edit Nickname"
 msgstr "Modifica Nickname"
 
-#: NickEditDlg#2
+#: NickEditDlg#3
 msgid "Please enter a valid nickname:"
 msgstr "Inserisci un nickname valido:"
 
-#: NickEditDlg#3
-msgid ""
-"A valid nickname may contain letters from the English alphabet, digits, and "
-"the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr ""
-"Un nickname valido può contenere lettere dall'alfabeto inglese, numeri, e "
-"altri caratteri speciali {, }, [, ], \\, |, `, ^, _ e -."
-
 #: NickEditDlg#4
-msgctxt "NickEditDlg#4"
-msgid "Add Nickname"
-msgstr "Aggiungi nick"
+msgid "A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \\, |, `, ^, _ and -."
+msgstr "Un nickname valido può contenere lettere dall'alfabeto inglese, numeri, e altri caratteri speciali {, }, [, ], \\, |, `, ^, _ e -."
 
 #: NotificationsSettingsPage#1
 msgctxt "NotificationsSettingsPage#1"
@@ -3792,9 +3448,7 @@ msgstr "Prelevo un totale di %1 messaggi dal backlog per i buffer %2"
 
 #: QObject#2
 msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr ""
-"Prelevo fino a %1 da tutti i messaggi non letti dal backlog (più ulteriori %"
-"2)"
+msgstr "Prelevo fino a %1 da tutti i messaggi non letti dal backlog (più ulteriori %2)"
 
 #: QObject#3
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
@@ -3805,15 +3459,8 @@ msgid "Welcome to Quassel IRC"
 msgstr "Benvenuto/a in Quassel IRC"
 
 #: QObject#5
-msgid ""
-"This wizard will help you to set up your default identity and your IRC "
-"network connection.<br>This only covers basic settings. You can cancel this "
-"wizard any time and use the settings dialog for more detailed changes."
-msgstr ""
-"Questa procedura guidata ti aiuterà ad impostare la tua identità predefinita "
-"e la tua connessione alla rete IRC.<br>Questa copre solo le impostazioni "
-"base. Puoi annullare la presente procedura in qualunque momento ed "
-"utilizzare la finestra di dialogo per maggiori dettagli."
+msgid "This wizard will help you to set up your default identity and your IRC network connection.<br>This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."
+msgstr "Questa procedura guidata ti aiuterà ad impostare la tua identità predefinita e la tua connessione alla rete IRC.<br>Questa copre solo le impostazioni base. Puoi annullare la presente procedura in qualunque momento ed utilizzare la finestra di dialogo per maggiori dettagli."
 
 #: QssParser#1
 msgid "Invalid block declaration: %1"
@@ -4008,12 +3655,8 @@ msgid "SSL Version:"
 msgstr "Versione SSL:"
 
 #: ServerEditDlg#9
-msgid ""
-"Do not change unless you're going to connect to a server not supporting "
-"SSLv3!"
-msgstr ""
-"Non modificare a meno che tu non abbia intenzione di connetterti ad un "
-"server che non supporta SSLv3!"
+msgid "Do not change unless you're going to connect to a server not supporting SSLv3!"
+msgstr "Non modificare a meno che tu non abbia intenzione di connetterti ad un server che non supporta SSLv3!"
 
 #: ServerEditDlg#10
 msgid "SSLv3 (default)"
@@ -4066,85 +3709,81 @@ msgstr "Password proxy:"
 
 #: SettingsDlg#1
 msgctxt "SettingsDlg#1"
-msgid "Configure Quassel"
-msgstr "Configura Quassel"
-
-#: SettingsDlg#2
-msgctxt "SettingsDlg#2"
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: SettingsDlg#3
+#: SettingsDlg#2
 msgid "Save changes"
 msgstr "Salva impostazioni"
 
+#: SettingsDlg#3
+msgid "There are unsaved changes on the current configuration page. Would you like to apply your changes now?"
+msgstr "Ci sono delle modifiche non salvate nella pagina corrente. Si desidera salvare le impostazioni ora?"
+
 #: SettingsDlg#4
-msgid ""
-"There are unsaved changes on the current configuration page. Would you like "
-"to apply your changes now?"
-msgstr ""
-"Ci sono delle modifiche non salvate nella pagina corrente. "
-"Si desidera salvare le impostazioni ora?"
+msgctxt "SettingsDlg#4"
+msgid "Configure %1"
+msgstr "Configura %1"
 
 #: SettingsDlg#5
 msgctxt "SettingsDlg#5"
-msgid "Configure %1"
-msgstr "Configura %1"
+msgid "Reload Settings"
+msgstr "Ricarica impostazioni"
 
 #: SettingsDlg#6
 msgctxt "SettingsDlg#6"
-msgid "Reload Settings"
-msgstr "Ricarica impostazioni"
+msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgstr "Si desidera ricaricare le impostazioni, annullando i cambiamenti su questa pagina?"
 
 #: SettingsDlg#7
 msgctxt "SettingsDlg#7"
-msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Si desidera ricaricare le impostazioni, annullando i cambiamenti su questa pagina?"
+msgid "Restore Defaults"
+msgstr "Ripristina predefiniti"
 
 #: SettingsDlg#8
 msgctxt "SettingsDlg#8"
-msgid "Restore Defaults"
-msgstr "Ripristina predefiniti"
+msgid "Do you like to restore the default values for this page?"
+msgstr "Si desidera tornare ai valori predefiniti per questa pagina?"
 
 #: SettingsDlg#9
 msgctxt "SettingsDlg#9"
-msgid "Do you like to restore the default values for this page?"
-msgstr "Si desidera tornare ai valori predefiniti per questa pagina?"
-
-#: SettingsPageDlg#1
-msgctxt "SettingsPageDlg#1"
 msgid "Configure Quassel"
 msgstr "Configura Quassel"
 
-#: SettingsPageDlg#2
-msgctxt "SettingsPageDlg#2"
-msgid "Settings"
-msgstr "Impostazioni"
-
-#: SettingsPageDlg#3
-msgctxt "SettingsPageDlg#3"
+#: SettingsPageDlg#1
+msgctxt "SettingsPageDlg#1"
 msgid "Configure %1"
 msgstr "Configura %1"
 
-#: SettingsPageDlg#4
-msgctxt "SettingsPageDlg#4"
+#: SettingsPageDlg#2
+msgctxt "SettingsPageDlg#2"
 msgid "Reload Settings"
 msgstr "Ricarica impostazioni"
 
-#: SettingsPageDlg#5
-msgctxt "SettingsPageDlg#5"
+#: SettingsPageDlg#3
+msgctxt "SettingsPageDlg#3"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr "Si desidera ricaricare le impostazioni, annullando i cambiamenti su questa pagina?"
 
-#: SettingsPageDlg#6
-msgctxt "SettingsPageDlg#6"
+#: SettingsPageDlg#4
+msgctxt "SettingsPageDlg#4"
 msgid "Restore Defaults"
 msgstr "Ripristina predefiniti"
 
-#: SettingsPageDlg#7
-msgctxt "SettingsPageDlg#7"
+#: SettingsPageDlg#5
+msgctxt "SettingsPageDlg#5"
 msgid "Do you like to restore the default values for this page?"
 msgstr "Si desidera tornare ai valori predefiniti per questa pagina?"
+
+#: SettingsPageDlg#6
+msgctxt "SettingsPageDlg#6"
+msgid "Configure Quassel"
+msgstr "Configura Quassel"
+
+#: SettingsPageDlg#7
+msgctxt "SettingsPageDlg#7"
+msgid "Settings"
+msgstr "Impostazioni"
 
 #: SignalProxy#1
 msgid "Peer tried to send package larger than max package size!"
@@ -4231,110 +3870,96 @@ msgid "Join Channels Automatically"
 msgstr "Connetti Automaticamente ai canali"
 
 #: SimpleNetworkEditor#15
-msgid ""
-"A list of IRC channels you will join automatically after connecting to the "
-"network"
-msgstr ""
-"Una lista di canali IRC ai quali verrai connesso automaticamente dopo la "
-"connessione alla rete"
+msgid "A list of IRC channels you will join automatically after connecting to the network"
+msgstr "Una lista di canali IRC ai quali verrai connesso automaticamente dopo la connessione alla rete"
 
 #: SqliteStorage#1
-msgid ""
-"SQLite is a file-based database engine that does not require any setup. It "
-"is suitable for small and medium-sized databases that do not require access "
-"via network. Use SQLite if your Quassel Core should store its data on the "
-"same machine it is running on, and if you only expect a few users to use "
-"your core."
-msgstr ""
-"SQLite è un database basato su file che non richiede nessuna impostazione. "
-"Si adatta egregiamente per database di piccole/medie dimensioni che non "
-"richiedono accesso tramite rete. Utilizza SQLite se il tuo Quassel Core "
-"raccoglierà i dati sulla stessa macchina sulla quale gira, e solo se ti "
-"aspetti un basso numero di utenti ad utilizzare tale core."
+msgid "SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine it is running on, and if you only expect a few users to use your core."
+msgstr "SQLite è un database basato su file che non richiede nessuna impostazione. Si adatta egregiamente per database di piccole/medie dimensioni che non richiedono accesso tramite rete. Utilizza SQLite se il tuo Quassel Core raccoglierà i dati sulla stessa macchina sulla quale gira, e solo se ti aspetti un basso numero di utenti ad utilizzare tale core."
 
 #: SslInfoDlg#1
-msgid "Security Information"
-msgstr "Informazioni di sicurezza"
-
-#: SslInfoDlg#2
-msgid "<b>Hostname:</b>"
-msgstr "<b>Nome host:</b>"
-
-#: SslInfoDlg#3
-msgid "<b>IP address:</b>"
-msgstr "<b>Indirizzo IP:</b> %1"
-
-#: SslInfoDlg#4
-msgid "<b>Encryption:</b>"
-msgstr "<b>Codifica:</b>"
-
-#: SslInfoDlg#5
-msgid "<b>Protocol:</b>"
-msgstr "<b>Protocollo:</b> %1"
-
-#: SslInfoDlg#6
-msgid "<b>Certificate chain:</b>"
-msgstr "<b>Catena del certificato:</b>"
-
-#: SslInfoDlg#7
-msgid "Subject"
-msgstr "Oggetto"
-
-#: SslInfoDlg#8
-msgid "<b>Common name:</b>"
-msgstr "<b>Nome comune:</b>"
-
-#: SslInfoDlg#9
-msgid "<b>Organization:</b>"
-msgstr "<b>Organizzazione:</b>"
-
-#: SslInfoDlg#10
-msgid "<b>Organizational unit:</b>"
-msgstr "<b>Unità organizzativa:</b>"
-
-#: SslInfoDlg#11
-msgid "<b>Country:</b>"
-msgstr "<b>Paese:</b> %1"
-
-#: SslInfoDlg#12
-msgid "<b>State or province:</b>"
-msgstr "<b>Stato o provincia</b>"
-
-#: SslInfoDlg#13
-msgid "<b>Locality:</b>"
-msgstr "<b>Località:</b> %1"
-
-#: SslInfoDlg#14
-msgid "Issuer"
-msgstr "Emittente"
-
-#: SslInfoDlg#15
-msgid "<b>Validity period:</b>"
-msgstr "<b>Periodo di validità:</b>"
-
-#: SslInfoDlg#16
-msgid "<b>MD5 digest:</b>"
-msgstr "<b>Digest MD5:</b>"
-
-#: SslInfoDlg#17
-msgid "<b>SHA1 digest:</b>"
-msgstr "<b>Digest SHA1:</b>"
-
-#: SslInfoDlg#18
-msgid "<b>Trusted:</b>"
-msgstr "<b>Fidato:</b> %1"
-
-#: SslInfoDlg#19
 msgid "Yes"
 msgstr "Sì"
 
-#: SslInfoDlg#20
+#: SslInfoDlg#2
 msgid "No, for the following reasons:<ul>"
 msgstr "No, per i seguenti motivi:<ul>"
 
-#: SslInfoDlg#21
+#: SslInfoDlg#3
 msgid "%1 to %2"
 msgstr "%1 a %2"
+
+#: SslInfoDlg#4
+msgid "Security Information"
+msgstr "Informazioni di sicurezza"
+
+#: SslInfoDlg#5
+msgid "<b>Hostname:</b>"
+msgstr "<b>Nome host:</b>"
+
+#: SslInfoDlg#6
+msgid "<b>IP address:</b>"
+msgstr "<b>Indirizzo IP:</b> %1"
+
+#: SslInfoDlg#7
+msgid "<b>Encryption:</b>"
+msgstr "<b>Codifica:</b>"
+
+#: SslInfoDlg#8
+msgid "<b>Protocol:</b>"
+msgstr "<b>Protocollo:</b> %1"
+
+#: SslInfoDlg#9
+msgid "<b>Certificate chain:</b>"
+msgstr "<b>Catena del certificato:</b>"
+
+#: SslInfoDlg#10
+msgid "Subject"
+msgstr "Oggetto"
+
+#: SslInfoDlg#11
+msgid "<b>Common name:</b>"
+msgstr "<b>Nome comune:</b>"
+
+#: SslInfoDlg#12
+msgid "<b>Organization:</b>"
+msgstr "<b>Organizzazione:</b>"
+
+#: SslInfoDlg#13
+msgid "<b>Organizational unit:</b>"
+msgstr "<b>Unità organizzativa:</b>"
+
+#: SslInfoDlg#14
+msgid "<b>Country:</b>"
+msgstr "<b>Paese:</b> %1"
+
+#: SslInfoDlg#15
+msgid "<b>State or province:</b>"
+msgstr "<b>Stato o provincia</b>"
+
+#: SslInfoDlg#16
+msgid "<b>Locality:</b>"
+msgstr "<b>Località:</b> %1"
+
+#: SslInfoDlg#17
+msgid "Issuer"
+msgstr "Emittente"
+
+#: SslInfoDlg#18
+msgid "<b>Validity period:</b>"
+msgstr "<b>Periodo di validità:</b>"
+
+#: SslInfoDlg#19
+msgid "<b>MD5 digest:</b>"
+msgstr "<b>Digest MD5:</b>"
+
+#: SslInfoDlg#20
+msgid "<b>SHA1 digest:</b>"
+msgstr "<b>Digest SHA1:</b>"
+
+#: SslInfoDlg#21
+msgid "<b>Trusted:</b>"
+msgstr "<b>Fidato:</b> %1"
 
 #: StatusBufferItem#1
 msgid "Status Buffer"
@@ -4499,30 +4124,30 @@ msgstr "..."
 
 #: TopicWidgetSettingsPage#1
 msgctxt "TopicWidgetSettingsPage#1"
-msgid "Form"
-msgstr "Modulo"
-
-#: TopicWidgetSettingsPage#2
-msgctxt "TopicWidgetSettingsPage#2"
-msgid "Custom font:"
-msgstr "Font personalizzato:"
-
-#: TopicWidgetSettingsPage#3
-msgid "Resize dynamically to fit contents"
-msgstr "Ridimensiona dinamicamente per adattarsi al contenuto"
-
-#: TopicWidgetSettingsPage#4
-msgid "On hover only"
-msgstr "Solo al passaggio"
-
-#: TopicWidgetSettingsPage#5
-msgctxt "TopicWidgetSettingsPage#5"
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: TopicWidgetSettingsPage#6
+#: TopicWidgetSettingsPage#2
 msgid "Topic Widget"
 msgstr "Widget per Topic"
+
+#: TopicWidgetSettingsPage#3
+msgctxt "TopicWidgetSettingsPage#3"
+msgid "Form"
+msgstr "Modulo"
+
+#: TopicWidgetSettingsPage#4
+msgctxt "TopicWidgetSettingsPage#4"
+msgid "Custom font:"
+msgstr "Font personalizzato:"
+
+#: TopicWidgetSettingsPage#5
+msgid "Resize dynamically to fit contents"
+msgstr "Ridimensiona dinamicamente per adattarsi al contenuto"
+
+#: TopicWidgetSettingsPage#6
+msgid "On hover only"
+msgstr "Solo al passaggio"
 
 #: UiStyle::StyledMessage#1
 msgctxt "UiStyle::StyledMessage#1"
@@ -4657,27 +4282,292 @@ msgstr "%n Voce"
 msgid "%n User(s)"
 msgstr "%n Utente(i)"
 
+#~ msgctxt "AppearanceSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgid "<Original>"
+#~ msgstr "<Originale>"
+
+#~ msgctxt "BacklogSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "BacklogSettingsPage#19"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
+#~ msgctxt "BufferViewSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "BufferViewSettingsPage#21"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
+#~ msgctxt "ChatMonitorSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "ChatMonitorSettingsPage#11"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
+#~ msgctxt "ChatViewSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "ChatViewSettingsPage#10"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "ChatViewSettingsPage#22"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
+#~ msgctxt "ConnectionSettingsPage#13"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "CoreAccountSettingsPage#5"
+#~ msgid "Delete"
+#~ msgstr "Elimina"
+
+#~ msgctxt "CoreConnectAuthDlg#3"
+#~ msgid "Password:"
+#~ msgstr "Password:"
+
+#~ msgctxt "CoreConnectAuthDlg#4"
+#~ msgid "Username:"
+#~ msgstr "Utente:"
+
+#~ msgctxt "CoreConnectAuthDlg#5"
+#~ msgid "Remember password"
+#~ msgstr "Ricorda password"
+
+#~ msgctxt "CoreConnectionSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "CoreConnectionSettingsPage#7"
+#~ msgid " seconds"
+#~ msgstr " secondi"
+
+#~ msgctxt "CoreConnectionSettingsPage#12"
+#~ msgid "Remote Cores"
+#~ msgstr "Core remoti"
+
+#~ msgctxt "CoreConnectionStatusWidget#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "HighlightSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "HighlightSettingsPage#3"
+#~ msgid "Highlight"
+#~ msgstr "Evento"
+
+#~ msgctxt "HighlightSettingsPage#14"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
+#~ msgctxt "IdentitiesSettingsPage#2"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "IdentitiesSettingsPage#4"
+#~ msgid "Add..."
+#~ msgstr "Aggiungi..."
+
+#~ msgctxt "IdentitiesSettingsPage#6"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "IdentityEditWidget#6"
+#~ msgid "&Add..."
+#~ msgstr "&Aggiungi..."
+
+#~ msgctxt "IdentityEditWidget#8"
+#~ msgid "Remove"
+#~ msgstr "Rimuovi"
+
+#~ msgctxt "IdentityEditWidget#9"
+#~ msgid "Rename Identity"
+#~ msgstr "Rinomina identità"
+
+#~ msgctxt "IdentityEditWidget#10"
+#~ msgid "Re&name..."
+#~ msgstr "Ri&nomina..."
+
+#~ msgctxt "IdentityEditWidget#12"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "IgnoreListSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "IgnoreListSettingsPage#2"
+#~ msgid "New"
+#~ msgstr "Nuovo"
+
+#~ msgctxt "IgnoreListSettingsPage#3"
+#~ msgid "Delete"
+#~ msgstr "Elimina"
+
+#~ msgctxt "IgnoreListSettingsPage#5"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "InputWidget#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "InputWidgetSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "InputWidgetSettingsPage#12"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
+#~ msgctxt "ItemViewSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "ItemViewSettingsPage#2"
+#~ msgid "Custom font:"
+#~ msgstr "Font personalizzato:"
+
+#~ msgctxt "ItemViewSettingsPage#9"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "ItemViewSettingsPage#18"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
+#~ msgctxt "ItemViewSettingsPage#20"
+#~ msgid "Network"
+#~ msgstr "Rete"
+
+#~ msgctxt "ItemViewSettingsPage#24"
+#~ msgid "Highlight"
+#~ msgstr "Evento"
+
+#~ msgctxt "NetworksSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "NetworksSettingsPage#2"
+#~ msgid "Re&name..."
+#~ msgstr "Ri&nomina..."
+
+#~ msgctxt "NetworksSettingsPage#3"
+#~ msgid "&Add..."
+#~ msgstr "&Aggiungi..."
+
+#~ msgctxt "NetworksSettingsPage#4"
+#~ msgid "De&lete"
+#~ msgstr "E&limina"
+
+#~ msgctxt "NetworksSettingsPage#7"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "NetworksSettingsPage#11"
+#~ msgid "Move upwards in list"
+#~ msgstr "Sposta in alto nella lista"
+
+#~ msgctxt "NetworksSettingsPage#12"
+#~ msgid "Move downwards in list"
+#~ msgstr "Sposta in basso nella lista"
+
+#~ msgctxt "NetworksSettingsPage#17"
+#~ msgid "Connection"
+#~ msgstr "Connessione"
+
+#~ msgctxt "NetworksSettingsPage#21"
+#~ msgid " s"
+#~ msgstr " s"
+
+#~ msgctxt "NetworksSettingsPage#23"
+#~ msgid "Unlimited"
+#~ msgstr "Illimitato"
+
+#~ msgctxt "NetworksSettingsPage#28"
+#~ msgid "Password:"
+#~ msgstr "Password:"
+
+#~ msgctxt "NetworksSettingsPage#39"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "NetworksSettingsPage#41"
+#~ msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
+#~ msgstr "<b>I problemi seguenti devo essere corretti prima che i cambiamenti possano essere salvati:</b><ul>"
+
+#~ msgctxt "NetworksSettingsPage#43"
+#~ msgid "</ul>"
+#~ msgstr "</ul>"
+
+#~ msgctxt "NickEditDlg#4"
+#~ msgid "Add Nickname"
+#~ msgstr "Aggiungi nick"
+
+#~ msgctxt "SettingsPageDlg#1"
+#~ msgid "Configure Quassel"
+#~ msgstr "Configura Quassel"
+
+#~ msgctxt "SettingsPageDlg#2"
+#~ msgid "Settings"
+#~ msgstr "Impostazioni"
+
+#~ msgctxt "SettingsPageDlg#3"
+#~ msgid "Configure %1"
+#~ msgstr "Configura %1"
+
+#~ msgctxt "SettingsPageDlg#4"
+#~ msgid "Reload Settings"
+#~ msgstr "Ricarica impostazioni"
+
+#~ msgctxt "SettingsPageDlg#5"
+#~ msgid "Do you like to reload the settings, undoing your changes on this page?"
+#~ msgstr "Si desidera ricaricare le impostazioni, annullando i cambiamenti su questa pagina?"
+
+#~ msgctxt "SettingsPageDlg#6"
+#~ msgid "Restore Defaults"
+#~ msgstr "Ripristina predefiniti"
+
+#~ msgctxt "SettingsPageDlg#7"
+#~ msgid "Do you like to restore the default values for this page?"
+#~ msgstr "Si desidera tornare ai valori predefiniti per questa pagina?"
+
+#~ msgctxt "TopicWidgetSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Modulo"
+
+#~ msgctxt "TopicWidgetSettingsPage#2"
+#~ msgid "Custom font:"
+#~ msgstr "Font personalizzato:"
+
+#~ msgctxt "TopicWidgetSettingsPage#5"
+#~ msgid "Interface"
+#~ msgstr "Interfaccia"
+
 #~ msgid "Misc"
 #~ msgstr "Varie"
 
 #~ msgid "No Host to connect to specified."
 #~ msgstr "Non è stato specificato nessun Host al quale connettersi."
 
-#~ msgid ""
-#~ "<b>This client is built without SSL Support!</b><br />Disable the usage "
-#~ "of SSL in the account settings."
-#~ msgstr ""
-#~ "<b>Questo client è stato compilato senza il supporto SSL</b><br /"
-#~ ">Disabilito l'utilizzo di SSL nelle impostazioni dell'account."
+#~ msgid "<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."
+#~ msgstr "<b>Questo client è stato compilato senza il supporto SSL</b><br />Disabilito l'utilizzo di SSL nelle impostazioni dell'account."
 
-#~ msgid ""
-#~ "<b>The Quassel Core you are trying to connect to does not support SSL!</"
-#~ "b><br />If you want to connect anyways, disable the usage of SSL in the "
-#~ "account settings."
-#~ msgstr ""
-#~ "<b>Il Quassel Core a cui stai tentando di connetterti non supporta SSL!</"
-#~ "b><br />Se vuoi comunque connetterti ad esso, disabilita l'utilizzo di "
-#~ "SSL nelle impostazioni dell'account."
+#~ msgid "<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."
+#~ msgstr "<b>Il Quassel Core a cui stai tentando di connetterti non supporta SSL!</b><br />Se vuoi comunque connetterti ad esso, disabilita l'utilizzo di SSL nelle impostazioni dell'account."
 
 #~ msgid "Cert Digest changed! was: %1"
 #~ msgstr "Il certificato Digest è cambiato! Era: %1"
@@ -4692,52 +4582,19 @@ msgstr "%n Utente(i)"
 #~ msgstr "Porta Proxy:"
 
 #~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#~ "REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#~ "css\">\n"
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 #~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-#~ "Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;"
-#~ "\">Note: </span><span style=\" font-size:10pt;\">Adding more users and "
-#~ "changing your username/password is not possible via Quassel's interface "
-#~ "yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-#~ "Grande'; font-size:10pt;\">If you need to do these things have a look at "
-#~ "the manageusers.py script which is located in the /scripts directory.</"
-#~ "p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#~ "REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1"
-#~ "\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></"
-#~ "head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
-#~ "weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-"
-#~ "bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-"
-#~ "indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" "
-#~ "font-size:10pt; font-weight:600;\">Nota: </span><span style=\" font-"
-#~ "size:10pt;\">Non è possibile aggiungere più utenti e cambiare username/"
-#~ "password tramite l'interfaccia grafica, per il momento.</span></p><p "
-#~ "style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-#~ "Grande'; font-size:10pt;\">Se hai la necessità di fare queste cose dai "
-#~ "un'occhiata allo script 'manageusers.py' che si trova nella directory /"
-#~ "scripts.</p></body></html>"
+#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Note: </span><span style=\" font-size:10pt;\">Adding more users and changing your username/password is not possible via Quassel's interface yet.</span></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:10pt;\">If you need to do these things have a look at the manageusers.py script which is located in the /scripts directory.</p></body></html>"
+#~ msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Nota: </span><span style=\" font-size:10pt;\">Non è possibile aggiungere più utenti e cambiare username/password tramite l'interfaccia grafica, per il momento.</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:10pt;\">Se hai la necessità di fare queste cose dai un'occhiata allo script 'manageusers.py' che si trova nella directory /scripts.</p></body></html>"
 
 #~ msgid "Remove Account Settings"
 #~ msgstr "Rimuove Impostazioni Account"
 
-#~ msgid ""
-#~ "Do you really want to remove your local settings for this Quassel Core "
-#~ "account?<br>Note: This will <em>not</em> remove or change any data on the "
-#~ "Core itself!"
-#~ msgstr ""
-#~ "Vuoi realmente rimuovere le tue impostazioni locali per questo account?"
-#~ "<br>Nota: Questa operazione <em>non</em> rimuoverà o cambierà alcuna "
-#~ "informazione sul Core!"
+#~ msgid "Do you really want to remove your local settings for this Quassel Core account?<br>Note: This will <em>not</em> remove or change any data on the Core itself!"
+#~ msgstr "Vuoi realmente rimuovere le tue impostazioni locali per questo account?<br>Nota: Questa operazione <em>non</em> rimuoverà o cambierà alcuna informazione sul Core!"
 
 #~ msgid "Connect to %1"
 #~ msgstr "Connetti a %1"
@@ -4746,9 +4603,7 @@ msgstr "%n Utente(i)"
 #~ msgstr "<div style=color:red;>Connessione a %1 fallita!</div>"
 
 #~ msgid "<div>Errors occurred while connecting to \"%1\":</div>"
-#~ msgstr ""
-#~ "<div>Alcuni errori si sono verificati durante la connessione a \"%1\":</"
-#~ "div>"
+#~ msgstr "<div>Alcuni errori si sono verificati durante la connessione a \"%1\":</div>"
 
 #~ msgid "Not connected to %1."
 #~ msgstr "Non connesso a %1."
@@ -4791,13 +4646,8 @@ msgstr "%n Utente(i)"
 #~ msgid "Configure your Quassel Core"
 #~ msgstr "Configura Quassel Core"
 
-#~ msgid ""
-#~ "The Quassel Core you are connected to is not configured yet. You may now "
-#~ "launch a configuration wizard that helps you setting up your Core."
-#~ msgstr ""
-#~ "Il Quassel Core al quale ti stai connettendo non è ancora stato "
-#~ "configurato. Puoi eseguire la configurazione guidata affinché ti aiuti a "
-#~ "configurare il Core."
+#~ msgid "The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core."
+#~ msgstr "Il Quassel Core al quale ti stai connettendo non è ancora stato configurato. Puoi eseguire la configurazione guidata affinché ti aiuti a configurare il Core."
 
 #~ msgid "Launch Wizard"
 #~ msgstr "Avvia Configurazione Guidata"
@@ -4805,11 +4655,8 @@ msgstr "%n Utente(i)"
 #~ msgid "Initializing your session..."
 #~ msgstr "Inizializzo la sessione..."
 
-#~ msgid ""
-#~ "<b>Please be patient while your client synchronizes with the Quassel Core!"
-#~ "</b>"
-#~ msgstr ""
-#~ "<b>Attendere prego mentre il client si sincronizza col Quassel Core!</b>"
+#~ msgid "<b>Please be patient while your client synchronizes with the Quassel Core!</b>"
+#~ msgstr "<b>Attendere prego mentre il client si sincronizza col Quassel Core!</b>"
 
 #~ msgid "0/0"
 #~ msgstr "0/0"
@@ -4854,8 +4701,7 @@ msgstr "%n Utente(i)"
 #~ msgstr "Interfaccia"
 
 #~ msgid "Set font for the main chat window and the chat monitor"
-#~ msgstr ""
-#~ "Imposta il font per la finestra principale di chat ed il monitor di chat"
+#~ msgstr "Imposta il font per la finestra principale di chat ed il monitor di chat"
 
 #~ msgid "Chat window:"
 #~ msgstr "Finestra di chat:"
@@ -4890,48 +4736,32 @@ msgstr "%n Utente(i)"
 #~ msgid "Global Unread Messages"
 #~ msgstr "Messaggi non letti (globale)"
 
-#~ msgid ""
-#~ "The simplest Requester. It fetches a fixed amount of lines for each "
-#~ "buffer from the Backlog."
-#~ msgstr ""
-#~ "La modalità più semplice. Recupera un ammontare fisso di linee per ogni "
-#~ "buffer dal Backlog."
+#~ msgid "The simplest Requester. It fetches a fixed amount of lines for each buffer from the Backlog."
+#~ msgstr "La modalità più semplice. Recupera un ammontare fisso di linee per ogni buffer dal Backlog."
 
 #~ msgid ""
-#~ "This requester fetches unread messages for each buffer individually. The "
-#~ "amount of lines can be limited per buffer.\n"
+#~ "This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.\n"
 #~ "\n"
-#~ "You can also choose to fetch additional older chatlines to provide a "
-#~ "better context."
+#~ "You can also choose to fetch additional older chatlines to provide a better context."
 #~ msgstr ""
-#~ "Questa modalità recupera i messaggi non letti da ogni buffer. L'ammontare "
-#~ "di linee può essere limitata per ciascun buffer.\n"
+#~ "Questa modalità recupera i messaggi non letti da ogni buffer. L'ammontare di linee può essere limitata per ciascun buffer.\n"
 #~ "\n"
-#~ "Puoi, inoltre, scegliere di recuperare ulteriori messaggi dallo storico "
-#~ "in modo da ottenere un miglior contesto."
+#~ "Puoi, inoltre, scegliere di recuperare ulteriori messaggi dallo storico in modo da ottenere un miglior contesto."
 
 #~ msgid ""
-#~ "This requester fetches all messages newer than the oldest unread message "
-#~ "for all buffers.\n"
+#~ "This requester fetches all messages newer than the oldest unread message for all buffers.\n"
 #~ "\n"
-#~ "Note: this requester is not recommended if you use hidden buffer or have "
-#~ "inactive buffers (i.e.: no stale queries or channels).\n"
-#~ "It is useful to limit the total amount of the backlog and is probably the "
-#~ "fastest.\n"
+#~ "Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).\n"
+#~ "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
 #~ "\n"
-#~ "You can also chose to fetch additional older chatlines to provide a "
-#~ "better context similar."
+#~ "You can also chose to fetch additional older chatlines to provide a better context similar."
 #~ msgstr ""
-#~ "Questa modalità recupera tutti i messaggi più recenti dell'ultimo "
-#~ "messaggio non letto da tutti i buffer.\n"
+#~ "Questa modalità recupera tutti i messaggi più recenti dell'ultimo messaggio non letto da tutti i buffer.\n"
 #~ "\n"
-#~ "Nota: Questa modalità non è consigliata se utilizzi buffer nascosti o hai "
-#~ "buffer inattivi (per esempio vecchie query o canali).\n"
-#~ "E' utile limitare l'ammontare totale del backlog e probabilmente è la "
-#~ "modalità più rapida.\n"
+#~ "Nota: Questa modalità non è consigliata se utilizzi buffer nascosti o hai buffer inattivi (per esempio vecchie query o canali).\n"
+#~ "E' utile limitare l'ammontare totale del backlog e probabilmente è la modalità più rapida.\n"
 #~ "\n"
-#~ "Puoi, inoltre, scegliere di recuperare ulteriori messaggi dallo storico "
-#~ "in modo da ottenere un miglior contesto."
+#~ "Puoi, inoltre, scegliere di recuperare ulteriori messaggi dallo storico in modo da ottenere un miglior contesto."
 
 #~ msgid "Please enter a name for the buffer view:"
 #~ msgstr "Inserisci il nome del buffer:"
@@ -5170,13 +5000,8 @@ msgstr "%n Utente(i)"
 #~ msgid "Nicks:"
 #~ msgstr "Nickname:"
 
-#~ msgid ""
-#~ "Some of these settings require a restart of the Quassel Client in order "
-#~ "to take effect. We intend to fix this."
-#~ msgstr ""
-#~ "Alcune di queste opzioni richiedono che il Quassel Client venga riavviato "
-#~ "affinché le modifiche abbiano effetto. Stiamo lavorando per sistemare "
-#~ "questo problemino."
+#~ msgid "Some of these settings require a restart of the Quassel Client in order to take effect. We intend to fix this."
+#~ msgstr "Alcune di queste opzioni richiedono che il Quassel Client venga riavviato affinché le modifiche abbiano effetto. Stiamo lavorando per sistemare questo problemino."
 
 #~ msgid "Minimize to tray on minimize button"
 #~ msgstr "Minimizza nella tray quando Quassel viene ridotto ad icona"
@@ -5193,11 +5018,8 @@ msgstr "%n Utente(i)"
 #~ msgid "Mouse wheel changes displayed buffers"
 #~ msgstr "La rotella del mouse cambia i buffer visualizzati"
 
-#~ msgid ""
-#~ "The suffix appended to a nick on completion via TAB. Default is \": \""
-#~ msgstr ""
-#~ "Il suffisso da appendere al nick utilizzando l'auto completamento tramite "
-#~ "il tasto TAB. Di default è \": \""
+#~ msgid "The suffix appended to a nick on completion via TAB. Default is \": \""
+#~ msgstr "Il suffisso da appendere al nick utilizzando l'auto completamento tramite il tasto TAB. Di default è \": \""
 
 #~ msgid "Input Line"
 #~ msgstr "Campo inserimento messaggi"
