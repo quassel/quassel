@@ -183,6 +183,7 @@ void TopicWidget::switchPlain() {
   ui.stackedWidget->setCurrentIndex(0);
   ui.topicLineEdit->setText(_topic);
   updateGeometry();
+  emit switchedPlain();
 }
 
 // filter for the input widget to switch back to normal mode

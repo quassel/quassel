@@ -620,17 +620,19 @@ void MainWin::setupInputWidget() {
   _bufferWidget->setFocusProxy(_inputWidget);
 
   _inputWidget->inputLine()->installEventFilter(_bufferWidget);
+
+  connect(_topicWidget, SIGNAL(switchedPlain()), _bufferWidget, SLOT(setFocus()));
 }
 
 void MainWin::setupTopicWidget() {
   VerticalDock *dock = new VerticalDock(tr("Topic"), this);
   dock->setObjectName("TopicDock");
-  TopicWidget *topicwidget = new TopicWidget(dock);
+  _topicWidget = new TopicWidget(dock);
 
-  dock->setWidget(topicwidget);
+  dock->setWidget(_topicWidget);
 
-  topicwidget->setModel(Client::bufferModel());
-  topicwidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
+  _topicWidget->setModel(Client::bufferModel());
+  _topicWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
 
