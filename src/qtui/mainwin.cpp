@@ -183,9 +183,9 @@ void MainWin::init() {
   setupBufferWidget();
   setupMenus();
   setupTopicWidget();
-  setupChatMonitor();
   setupNickWidget();
   setupInputWidget();
+  setupChatMonitor();
   setupStatusBar();
   setupToolBars();
   setupSystray();
@@ -591,9 +591,10 @@ void MainWin::setupChatMonitor() {
   dock->setObjectName("ChatMonitorDock");
 
   ChatMonitorFilter *filter = new ChatMonitorFilter(Client::messageModel(), this);
-  ChatMonitorView *chatView = new ChatMonitorView(filter, this);
-  chatView->show();
-  dock->setWidget(chatView);
+  _chatMonitorView = new ChatMonitorView(filter, this);
+  _chatMonitorView->setFocusProxy(_inputWidget);
+  _chatMonitorView->show();
+  dock->setWidget(_chatMonitorView);
   dock->hide();
 
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);

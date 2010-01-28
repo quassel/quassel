@@ -58,7 +58,10 @@ void ChatViewSearchBar::setVisible(bool visible) {
   // a resize event which can lead to strange side effects.
   ui.searchEditLine->clear();
   QWidget::setVisible(visible);
-  if(visible) ui.searchEditLine->setFocus();
+  if(visible)
+    ui.searchEditLine->setFocus();
+  else
+    emit hidden();
 }
 
 void ChatViewSearchBar::delaySearch() {

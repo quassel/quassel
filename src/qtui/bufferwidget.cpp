@@ -51,22 +51,24 @@ BufferWidget::BufferWidget(QWidget *parent)
   _chatViewSearchController->setSearchOnlyRegularMsgs(ui.searchBar->searchOnlyRegularMsgsBox()->isChecked());
 
   connect(ui.searchBar, SIGNAL(searchChanged(const QString &)),
-	  _chatViewSearchController, SLOT(setSearchString(const QString &)));
+    _chatViewSearchController, SLOT(setSearchString(const QString &)));
   connect(ui.searchBar->caseSensitiveBox(), SIGNAL(toggled(bool)),
-	  _chatViewSearchController, SLOT(setCaseSensitive(bool)));
+    _chatViewSearchController, SLOT(setCaseSensitive(bool)));
   connect(ui.searchBar->searchSendersBox(), SIGNAL(toggled(bool)),
-	  _chatViewSearchController, SLOT(setSearchSenders(bool)));
+    _chatViewSearchController, SLOT(setSearchSenders(bool)));
   connect(ui.searchBar->searchMsgsBox(), SIGNAL(toggled(bool)),
-	  _chatViewSearchController, SLOT(setSearchMsgs(bool)));
+    _chatViewSearchController, SLOT(setSearchMsgs(bool)));
   connect(ui.searchBar->searchOnlyRegularMsgsBox(), SIGNAL(toggled(bool)),
-	  _chatViewSearchController, SLOT(setSearchOnlyRegularMsgs(bool)));
+    _chatViewSearchController, SLOT(setSearchOnlyRegularMsgs(bool)));
   connect(ui.searchBar->searchUpButton(), SIGNAL(clicked()),
-	  _chatViewSearchController, SLOT(highlightPrev()));
+    _chatViewSearchController, SLOT(highlightPrev()));
   connect(ui.searchBar->searchDownButton(), SIGNAL(clicked()),
-	  _chatViewSearchController, SLOT(highlightNext()));
+    _chatViewSearchController, SLOT(highlightNext()));
+
+  connect(ui.searchBar, SIGNAL(hidden()), this, SLOT(setFocus()));
 
   connect(_chatViewSearchController, SIGNAL(newCurrentHighlight(QGraphicsItem *)),
-	  this, SLOT(scrollToHighlight(QGraphicsItem *)));
+    this, SLOT(scrollToHighlight(QGraphicsItem *)));
 
   ActionCollection *coll = QtUi::actionCollection();
 
