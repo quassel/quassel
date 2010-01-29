@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -138,8 +138,10 @@ ColumnHandleItem *ChatScene::secondColumnHandle() const {
 }
 
 ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const {
-  QGraphicsItem *item = itemAt(scenePos);
-  return dynamic_cast<ChatItem *>(item);
+  ChatLine *line = qgraphicsitem_cast<ChatLine*>(itemAt(scenePos));
+  if(line)
+    return line->itemAt(line->mapFromScene(scenePos));
+  return 0;
 }
 
 bool ChatScene::containsBuffer(const BufferId &id) const {
@@ -759,10 +761,10 @@ QString ChatScene::selection() const {
     QString result;
     for(int l = start; l <= end; l++) {
       if(_selectionMinCol == ChatLineModel::TimestampColumn)
-        result += _lines[l]->item(ChatLineModel::TimestampColumn).data(MessageModel::DisplayRole).toString() + " ";
+        result += _lines[l]->item(ChatLineModel::TimestampColumn)->data(MessageModel::DisplayRole).toString() + " ";
       if(_selectionMinCol <= ChatLineModel::SenderColumn)
-        result += _lines[l]->item(ChatLineModel::SenderColumn).data(MessageModel::DisplayRole).toString() + " ";
-      result += _lines[l]->item(ChatLineModel::ContentsColumn).data(MessageModel::DisplayRole).toString() + "\n";
+        result += _lines[l]->item(ChatLineModel::SenderColumn)->data(MessageModel::DisplayRole).toString() + " ";
+      result += _lines[l]->item(ChatLineModel::ContentsColumn)->data(MessageModel::DisplayRole).toString() + "\n";
     }
     return result;
   } else if(selectingItem())
@@ -816,12 +818,15 @@ ChatLineModel::ColumnType ChatScene::columnByScenePos(qreal x) const {
 }
 
 int ChatScene::rowByScenePos(qreal y) const {
-  // This is somewhat hacky... we look at the contents item that is at the given y position, since
-  // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
-  // ChatItems cover their ChatLine, so we won't get to the latter directly.
-  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(_secondColHandle->sceneRight() + 1, y)));
-  if(!contentItem) return -1;
-  return contentItem->row();
+  QList<QGraphicsItem*> itemList = items(QPointF(0, y));
+
+  // ChatLine should be at the bottom of the list
+  for(int i = itemList.count()-1; i >= 0; i--) {
+    ChatLine *line = qgraphicsitem_cast<ChatLine *>(itemList.at(i));
+    if(line)
+      return line->row();
+  }
+  return -1;
 }
 
 void ChatScene::updateSceneRect(qreal width) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -134,40 +134,40 @@ void ChatViewSearchController::updateHighlights(bool reuse) {
 
     if(!_highlightItems.isEmpty()) {
       if(!oldHighlightPos.isNull()) {
-	int start = 0; int end = _highlightItems.count() - 1;
-	QPointF startPos;
-	QPointF endPos;
-	while(1) {
-	  startPos = _highlightItems[start]->scenePos();
-	  endPos = _highlightItems[end]->scenePos();
-	  if(startPos == oldHighlightPos) {
-	    _currentHighlight = start;
-	    break;
-	  }
-	  if(endPos == oldHighlightPos) {
-	    _currentHighlight = end;
-	    break;
-	  }
-	  if(end - start == 1) {
-	    _currentHighlight = start;
-	    break;
-	  }
-	  int pivot = (end + start) / 2;
-	  QPointF pivotPos = _highlightItems[pivot]->scenePos();
-	  if(startPos.y() == endPos.y()) {
-	    if(oldHighlightPos.x() <= pivotPos.x())
-	      end = pivot;
-	    else
-	      start = pivot;
-	  } else {
-	    if(oldHighlightPos.y() <= pivotPos.y())
-	      end = pivot;
-	    else
-	      start = pivot;
-	  }
-	}
+        int start = 0; int end = _highlightItems.count() - 1;
+        QPointF startPos;
+        QPointF endPos;
+        while(1) {
+          startPos = _highlightItems[start]->scenePos();
+          endPos = _highlightItems[end]->scenePos();
+          if(startPos == oldHighlightPos) {
+            _currentHighlight = start;
+            break;
+          }
+          if(endPos == oldHighlightPos) {
+            _currentHighlight = end;
+            break;
+          }
+          if(end - start == 1) {
+            _currentHighlight = start;
+            break;
+          }
+          int pivot = (end + start) / 2;
+          QPointF pivotPos = _highlightItems[pivot]->scenePos();
+          if(startPos.y() == endPos.y()) {
+            if(oldHighlightPos.x() <= pivotPos.x())
+              end = pivot;
+            else
+              start = pivot;
+          } else {
+            if(oldHighlightPos.y() <= pivotPos.y())
+              end = pivot;
+            else
+              start = pivot;
+          }
+        }
       } else {
-	_currentHighlight = _highlightItems.count() - 1;
+        _currentHighlight = _highlightItems.count() - 1;
       }
       _highlightItems[_currentHighlight]->setHighlighted(true);
       emit newCurrentHighlight(_highlightItems[_currentHighlight]);
@@ -190,7 +190,7 @@ void ChatViewSearchController::checkMessagesForHighlight(int start, int end) {
     if(_searchOnlyRegularMsgs) {
       index = model->index(row, 0);
       if(!checkType((Message::Type)index.data(MessageModel::TypeRole).toInt()))
-	continue;
+        continue;
     }
     highlightLine(_scene->chatLine(row));
   }
@@ -199,10 +199,10 @@ void ChatViewSearchController::checkMessagesForHighlight(int start, int end) {
 void ChatViewSearchController::updateHighlights(ChatLine *line) {
   QList<ChatItem *> checkItems;
   if(_searchSenders)
-    checkItems << &(line->item(MessageModel::SenderColumn));
+    checkItems << line->item(MessageModel::SenderColumn);
 
   if(_searchMsgs)
-    checkItems << &(line->item(MessageModel::ContentsColumn));
+    checkItems << line->item(MessageModel::ContentsColumn);
 
   QHash<quint64, QHash<quint64, QRectF> > wordRects;
   foreach(ChatItem *item, checkItems) {
@@ -220,7 +220,7 @@ void ChatViewSearchController::updateHighlights(ChatLine *line) {
       deleteAll = true;
   }
 
-  
+
   foreach(QGraphicsItem *child, line->childItems()) {
     SearchHighlightItem *highlightItem = qgraphicsitem_cast<SearchHighlightItem *>(child);
     if(!highlightItem)
@@ -232,9 +232,9 @@ void ChatViewSearchController::updateHighlights(ChatLine *line) {
     } else {
       int pos = _highlightItems.indexOf(highlightItem);
       if(pos == _currentHighlight) {
-	highlightPrev();
+        highlightPrev();
       } else if (pos < _currentHighlight) {
-	_currentHighlight--;
+        _currentHighlight--;
       }
 
       _highlightItems.removeAt(pos);
@@ -246,10 +246,10 @@ void ChatViewSearchController::updateHighlights(ChatLine *line) {
 void ChatViewSearchController::highlightLine(ChatLine *line) {
   QList<ChatItem *> checkItems;
   if(_searchSenders)
-    checkItems << &(line->item(MessageModel::SenderColumn));
+    checkItems << line->item(MessageModel::SenderColumn);
 
   if(_searchMsgs)
-    checkItems << &(line->item(MessageModel::ContentsColumn));
+    checkItems << line->item(MessageModel::ContentsColumn);
 
   foreach(ChatItem *item, checkItems) {
     foreach(QRectF wordRect, item->findWords(searchString(), caseSensitive())) {
@@ -284,13 +284,13 @@ void ChatViewSearchController::repositionHighlights(ChatLine *line) {
 
   QList<QPointF> wordPos;
   if(_searchSenders) {
-    foreach(QRectF wordRect, line->senderItem().findWords(searchString(), caseSensitive())) {
-      wordPos << QPointF(wordRect.x() + line->senderItem().x(), wordRect.y());
+    foreach(QRectF wordRect, line->senderItem()->findWords(searchString(), caseSensitive())) {
+      wordPos << QPointF(wordRect.x() + line->senderItem()->x(), wordRect.y());
     }
   }
   if(_searchMsgs) {
-    foreach(QRectF wordRect, line->contentsItem().findWords(searchString(), caseSensitive())) {
-      wordPos << QPointF(wordRect.x() + line->contentsItem().x(), wordRect.y());
+    foreach(QRectF wordRect, line->contentsItem()->findWords(searchString(), caseSensitive())) {
+      wordPos << QPointF(wordRect.x() + line->contentsItem()->x(), wordRect.y());
     }
   }
 
@@ -361,7 +361,7 @@ SearchHighlightItem::SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent)
   : QObject(),
     QGraphicsItem(parent),
     _highlighted(false),
-    _alpha(100),
+    _alpha(70),
     _timeLine(150)
 {
   setPos(wordRect.x(), wordRect.y());
@@ -385,7 +385,7 @@ void SearchHighlightItem::setHighlighted(bool highlighted) {
 }
 
 void SearchHighlightItem::updateHighlight(qreal value) {
-  _alpha = 100 + (int)(155 * value);
+  _alpha = 70 + (int)(80 * value);
   update();
 }
 
@@ -393,7 +393,7 @@ void SearchHighlightItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
   Q_UNUSED(option);
   Q_UNUSED(widget);
 
-  painter->setPen(QPen(QColor(0, 0, 0, _alpha), 1.5));
+  painter->setPen(QPen(QColor(0, 0, 0), 1.5));
   painter->setBrush(QColor(254, 237, 45, _alpha));
   painter->setRenderHints(QPainter::Antialiasing);
   qreal radius = boundingRect().height() * 0.30;

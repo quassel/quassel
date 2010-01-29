@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +22,6 @@
 #define CHATITEM_H_
 
 #include <QAction>
-#include <QGraphicsItem>
 #include <QObject>
 
 #include "chatlinemodel.h"
@@ -33,19 +32,36 @@
 
 #include <QTextLayout>
 
-class ChatItem : public QGraphicsItem {
+class ChatLine;
+
+/* All external positions are relative to the parent ChatLine */
+/* Yes, that's also true for the boundingRect() and related things */
+
+class ChatItem {
 protected:
-  ChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent);
+  // boundingRect is relative to the parent ChatLine
+  ChatItem(const QRectF &boundingRect, ChatLine *parent);
+  virtual ~ChatItem() {}
 
 public:
-  const QAbstractItemModel *model() const;
-  int row() const;
+  inline const QAbstractItemModel *model() const;
+  inline ChatLine *chatLine() const;
+  inline ChatScene *chatScene() const;
+  inline int row() const;
   virtual ChatLineModel::ColumnType column() const = 0;
-  inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
 
-  inline QRectF boundingRect() const { return _boundingRect; }
-  inline qreal width() const { return _boundingRect.width(); }
-  inline qreal height() const { return _boundingRect.height(); }
+  // The boundingRect() is relative to the parent ChatLine
+  inline QRectF boundingRect() const;
+  inline qreal width() const;
+  inline qreal height() const;
+  inline QPointF pos() const;
+  inline qreal x() const;
+  inline qreal y() const;
+
+  inline QPointF mapToLine(const QPointF &) const;
+  inline QPointF mapFromLine(const QPointF &) const;
+  inline QPointF mapToScene(const QPointF &) const;
+  inline QPointF mapFromScene(const QPointF &) const;
 
   void initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
   virtual inline void initLayout(QTextLayout *layout) const {
@@ -56,8 +72,7 @@ public:
   virtual UiStyle::FormatList formatList() const;
 
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-  enum { Type = ChatScene::ChatItemType };
-  virtual inline int type() const { return Type; }
+  virtual inline int type() const { return ChatScene::ChatItemType; }
 
   QVariant data(int role) const;
 
@@ -84,6 +99,9 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *) {};
+  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *) {};
+  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *) {};
 
   void paintBackground(QPainter *);
   QVector<QTextLayout::FormatRange> selectionFormats() const;
@@ -100,28 +118,20 @@ protected:
 
   qint16 posToCursor(const QPointF &pos) const;
 
-  // WARNING: setGeometry and setHeight should not be used without either:
-  //  a) calling prepareGeometryChange() immediately before setColumns()
-  //  b) calling Chatline::setPos() immediately afterwards
-  inline void setGeometry(qreal width, qreal height) {
-    _boundingRect.setWidth(width);
-    _boundingRect.setHeight(height);
-  }
-  inline void setHeight(const qreal &height) {
-    _boundingRect.setHeight(height);
-  }
-  inline void setWidth(const qreal &width) {
-    _boundingRect.setWidth(width);
-  }
+  inline void setGeometry(qreal width, qreal height) { _boundingRect.setSize(QSizeF(width, height)); }
+  inline void setHeight(const qreal &height) { _boundingRect.setHeight(height); }
+  inline void setWidth(const qreal &width) { _boundingRect.setWidth(width); }
+  inline void setPos(const QPointF &pos) { _boundingRect.moveTopLeft(pos); }
 
 private:
-  // internal selection stuff
-  void setSelection(int start, int length);
-
+  ChatLine *_parent;
   QRectF _boundingRect;
 
   SelectionMode _selectionMode;
   qint16 _selectionStart, _selectionEnd;
+
+  // internal selection stuff
+  void setSelection(int start, int length);
 
   friend class ChatLine;
 };
@@ -133,9 +143,8 @@ private:
 //! A ChatItem for the timestamp column
 class TimestampChatItem : public ChatItem {
 public:
-  TimestampChatItem(const qreal &width, const qreal &height, QGraphicsItem *parent) : ChatItem(width, height, QPointF(0, 0), parent) {}
-  enum { Type = ChatScene::TimestampChatItemType };
-  virtual inline int type() const { return Type; }
+  TimestampChatItem(const QRectF &boundingRect, ChatLine *parent) : ChatItem(boundingRect, parent) {}
+  virtual inline int type() const { return ChatScene::TimestampChatItemType; }
   virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::TimestampColumn; }
 };
 
@@ -145,13 +154,12 @@ public:
 //! A ChatItem for the sender column
 class SenderChatItem : public ChatItem {
 public:
-  SenderChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent) : ChatItem(width, height, pos, parent) {}
+  SenderChatItem(const QRectF &boundingRect, ChatLine *parent) : ChatItem(boundingRect, parent) {}
   virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::SenderColumn; }
 
 protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-  enum { Type = ChatScene::SenderChatItemType };
-  virtual inline int type() const { return Type; }
+  virtual inline int type() const { return ChatScene::SenderChatItemType; }
   virtual inline void initLayout(QTextLayout *layout) const {
     initLayoutHelper(layout, QTextOption::ManualWrap, Qt::AlignRight);
     doLayout(layout);
@@ -168,11 +176,10 @@ class ContentsChatItem : public ChatItem {
   Q_DECLARE_TR_FUNCTIONS(ContentsChatItem)
 
 public:
-  ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent);
+  ContentsChatItem(const QPointF &pos, const qreal &width, ChatLine *parent);
   ~ContentsChatItem();
 
-  enum { Type = ChatScene::ContentsChatItemType };
-  virtual inline int type() const { return Type; }
+  virtual inline int type() const { return ChatScene::ContentsChatItemType; }
 
   inline ChatLineModel::ColumnType column() const { return ChatLineModel::ContentsColumn; }
   QFontMetricsF *fontMetrics() const;
@@ -267,5 +274,27 @@ private:
 };
 
 /*************************************************************************************************/
+
+#include "chatline.h"  /* avoid circular includes */
+
+// Inlines
+
+ChatLine *ChatItem::chatLine() const { return _parent; }
+ChatScene *ChatItem::chatScene() const { return chatLine()->chatScene(); }
+const QAbstractItemModel *ChatItem::model() const { return chatLine()->model(); }
+int ChatItem::row() const { return chatLine()->row(); }
+
+QRectF ChatItem::boundingRect() const { return _boundingRect; }
+qreal ChatItem::width() const { return _boundingRect.width(); }
+qreal ChatItem::height() const { return _boundingRect.height(); }
+QPointF ChatItem::pos() const { return _boundingRect.topLeft(); }
+qreal ChatItem::x() const { return pos().x(); }
+qreal ChatItem::y() const { return pos().y(); }
+
+QPointF ChatItem::mapToLine(const QPointF &p) const { return p + pos(); }
+QPointF ChatItem::mapFromLine(const QPointF &p) const { return p - pos(); }
+// relative to the ChatLine
+QPointF ChatItem::mapToScene(const QPointF &p) const { return chatLine()->mapToScene(p /* + pos() */); }
+QPointF ChatItem::mapFromScene(const QPointF &p) const { return chatLine()->mapFromScene(p) /* - pos() */; }
 
 #endif

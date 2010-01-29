@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -39,23 +39,13 @@
 #include "qtui.h"
 #include "qtuistyle.h"
 
-ChatItem::ChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent)
-  : QGraphicsItem(parent),
-    _boundingRect(0, 0, width, height),
-    _selectionMode(NoSelection),
-    _selectionStart(-1)
+ChatItem::ChatItem(const QRectF &boundingRect, ChatLine *parent)
+: _parent(parent),
+  _boundingRect(boundingRect),
+  _selectionMode(NoSelection),
+  _selectionStart(-1)
 {
-  setAcceptHoverEvents(true);
-  setZValue(20);
-  setPos(pos);
-}
 
-const QAbstractItemModel *ChatItem::model() const {
-  return static_cast<ChatLine *>(parentItem())->model();
-}
-
-int ChatItem::row() const {
-  return static_cast<ChatLine *>(parentItem())->row();
 }
 
 QVariant ChatItem::data(int role) const {
@@ -67,7 +57,8 @@ QVariant ChatItem::data(int role) const {
   return model()->data(index, role);
 }
 
-qint16 ChatItem::posToCursor(const QPointF &pos) const {
+qint16 ChatItem::posToCursor(const QPointF &posInLine) const {
+  QPointF pos = mapFromLine(posInLine);
   if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
   if(pos.y() < 0) return 0;
 
@@ -112,8 +103,6 @@ void ChatItem::doLayout(QTextLayout *layout) const {
 }
 
 void ChatItem::paintBackground(QPainter *painter) {
-  painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
-
   QVariant bgBrush;
   if(_selectionMode == FullSelection)
     bgBrush = data(ChatLineModel::SelectedBackgroundRole);
@@ -131,7 +120,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
   QTextLayout layout;
   initLayout(&layout);
-  layout.draw(painter, QPointF(0,0), additionalFormats(), boundingRect());
+  layout.draw(painter, pos(), additionalFormats(), boundingRect());
 
   //  layout()->draw(painter, QPointF(0,0), formats, boundingRect());
 
@@ -238,27 +227,27 @@ void ChatItem::setSelection(SelectionMode mode, qint16 start, qint16 end) {
   _selectionMode = mode;
   _selectionStart = start;
   _selectionEnd = end;
-  update();
+  chatLine()->update();
 }
 
 void ChatItem::setFullSelection() {
   if(_selectionMode != FullSelection) {
     _selectionMode = FullSelection;
-    update();
+    chatLine()->update();
   }
 }
 
 void ChatItem::clearSelection() {
   if(_selectionMode != NoSelection) {
     _selectionMode = NoSelection;
-    update();
+    chatLine()->update();
   }
 }
 
 void ChatItem::continueSelecting(const QPointF &pos) {
   _selectionMode = PartialSelection;
   _selectionEnd = posToCursor(pos);
-  update();
+  chatLine()->update();
 }
 
 bool ChatItem::isPosOverSelection(const QPointF &pos) const {
@@ -305,18 +294,18 @@ void ChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
     chatScene()->setSelectingItem(this);
     _selectionStart = _selectionEnd = posToCursor(pos);
     _selectionMode = NoSelection; // will be set to PartialSelection by mouseMoveEvent
-    update();
+    chatLine()->update();
   }
 }
 
 void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() == Qt::LeftButton) {
-    if(contains(event->pos())) {
+    if(boundingRect().contains(event->pos())) {
       qint16 end = posToCursor(event->pos());
       if(end != _selectionEnd) {
         _selectionEnd = end;
         _selectionMode = (_selectionStart != _selectionEnd ? PartialSelection : NoSelection);
-        update();
+        chatLine()->update();
       }
     } else {
       setFullSelection();
@@ -390,11 +379,11 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
       gradient.setColorAt(0, Qt::white);
       gradient.setColorAt(1, Qt::black);
     }
-    maskPainter.fillRect(boundingRect(), gradient);
+    maskPainter.fillRect(0, 0, pixmap.width(), pixmap.height(), gradient);
     pixmap.setAlphaChannel(mask);
-    painter->drawPixmap(0, 0, pixmap);
+    painter->drawPixmap(pos(), pixmap);
   } else {
-    layout.draw(painter, QPointF(0,0), additionalFormats(), boundingRect());
+    layout.draw(painter, pos(), additionalFormats(), boundingRect());
   }
 }
 
@@ -404,10 +393,11 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
 ContentsChatItem::ActionProxy ContentsChatItem::_actionProxy;
 
-ContentsChatItem::ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent)
-  : ChatItem(0, 0, pos, parent),
+ContentsChatItem::ContentsChatItem(const QPointF &pos, const qreal &width, ChatLine *parent)
+  : ChatItem(QRectF(pos, QSizeF(width, 0)), parent),
     _data(0)
 {
+  setPos(pos);
   setGeometryByWidth(width);
 }
 
@@ -440,10 +430,9 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
   delete _data;
   _data = 0;
 
-  if(w != width() || h != height()) {
-    prepareGeometryChange();
+  if(w != width() || h != height())
     setGeometry(w, h);
-  }
+
   return h;
 }
 
@@ -517,11 +506,11 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
 void ContentsChatItem::endHoverMode() {
   if(privateData()) {
     if(privateData()->currentClickable.isValid()) {
-      setCursor(Qt::ArrowCursor);
+      chatLine()->setCursor(Qt::ArrowCursor);
       privateData()->currentClickable = Clickable();
     }
     clearWebPreview();
-    update();
+    chatLine()->update();
   }
 }
 
@@ -551,7 +540,7 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
       setSelectionStart(start);
       setSelectionEnd(end);
     }
-    update();
+    chatLine()->update();
   } else if(clickMode == ChatScene::TripleClick) {
     setSelection(PartialSelection, 0, data(ChatLineModel::DisplayRole).toString().length());
   }
@@ -584,9 +573,9 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
         onClickable = true;
     }
     if(onClickable) {
-      setCursor(Qt::PointingHandCursor);
+      chatLine()->setCursor(Qt::PointingHandCursor);
       privateData()->currentClickable = click;
-      update();
+      chatLine()->update();
       return;
     }
   }
@@ -644,7 +633,7 @@ void ContentsChatItem::showWebPreview(const Clickable &click) {
   qreal height = line.height();
   qreal y = height * line.lineNumber();
 
-  QPointF topLeft = scenePos() + QPointF(x, y);
+  QPointF topLeft = mapToScene(pos()) + QPointF(x, y);
   QRectF urlRect = QRectF(topLeft.x(), topLeft.y(), width, height);
 
   QString urlstr = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
