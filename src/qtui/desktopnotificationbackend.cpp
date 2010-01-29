@@ -27,17 +27,22 @@
 #include "networkmodel.h"
 
 DesktopNotificationBackend::DesktopNotificationBackend(QObject *parent)
-  : AbstractNotificationBackend(parent)
+  : AbstractNotificationBackend(parent),
+  _lastDbusId(0)
 {
   _dbusInterface = new org::freedesktop::Notifications(
     "org.freedesktop.Notifications",
     "/org/freedesktop/Notifications",
     QDBusConnection::sessionBus(), this);
 
+  if(!_dbusInterface->isValid()) {
+    qWarning() << "DBus notification service not available!";
+    return;
+  }
+
   QStringList desktopCapabilities = _dbusInterface->GetCapabilities();
   _daemonSupportsMarkup = desktopCapabilities.contains("body-markup");
 
-  _lastDbusId = 0;
   connect(_dbusInterface, SIGNAL(NotificationClosed(uint, uint)), SLOT(desktopNotificationClosed(uint, uint)));
   connect(_dbusInterface, SIGNAL(ActionInvoked(uint, const QString &)), SLOT(desktopNotificationInvoked(uint, const QString&)));
 
@@ -88,7 +93,7 @@ void DesktopNotificationBackend::useTimeoutChanged(const QVariant &v) {
 }
 
 void DesktopNotificationBackend::notify(const Notification &n) {
-  if(_enabled && (n.type == Highlight || n.type == PrivMsg)) {
+  if(_enabled && _dbusInterface->isValid() && (n.type == Highlight || n.type == PrivMsg)) {
     QStringList actions;
     QMap<QString, QVariant> hints;
 
@@ -99,7 +104,7 @@ void DesktopNotificationBackend::notify(const Notification &n) {
 
     uint oldId = _queueNotifications ? 0 : _lastDbusId;
 
-    // actions << "click" << "Click Me!";
+    actions << "activate" << "View";
 
     QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
     QString message = QString("<%1> %2").arg(n.sender, n.message);
@@ -147,7 +152,14 @@ void DesktopNotificationBackend::desktopNotificationClosed(uint id, uint reason)
 
 
 void DesktopNotificationBackend::desktopNotificationInvoked(uint id, const QString & action) {
-  Q_UNUSED(id); Q_UNUSED(action);
+  Q_UNUSED(action);
+  foreach(uint ourid, _idMap.keys()) {
+    if(_idMap.value(ourid) != id)
+      continue;
+    emit activated(ourid);
+    return;
+  }
+
   emit activated();
 }
 
