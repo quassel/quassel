@@ -392,15 +392,8 @@ void SenderChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickM
     BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
     QString nick = data(MessageModel::EditRole).toString();
     // check if the nick is a valid ircUser
-    if(!nick.isEmpty() && Client::network(curBufInfo.networkId())->ircUser(nick)) {
-      BufferId targetBufId = Client::networkModel()->bufferId(curBufInfo.networkId(), nick);
-      if(targetBufId.isValid()) { // querybuffer exists
-        Client::bufferModel()->switchToBuffer(targetBufId);
-      }
-      else { // we create it
-        Client::userInput(curBufInfo, QString("/QUERY %1").arg(nick));
-      }
-    }
+    if(!nick.isEmpty() && Client::network(curBufInfo.networkId())->ircUser(nick))
+      Client::bufferModel()->switchToOrStartQuery(curBufInfo.networkId(), nick);
   }
   else
     ChatItem::handleClick(pos, clickMode);

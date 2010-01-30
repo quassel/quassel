@@ -124,11 +124,7 @@ void NickView::startQuery(const QModelIndex &index) {
   if(!ircUser || !networkId.isValid())
     return;
 
-  BufferId bufId = Client::networkModel()->bufferId(networkId, ircUser->nick());
-  if(bufId.isValid())
-    Client::bufferModel()->switchToBuffer(bufId);
-  else
-    Client::userInput(index.data(NetworkModel::BufferInfoRole).value<BufferInfo>(), QString("/QUERY %1").arg(ircUser->nick()));
+  Client::bufferModel()->switchToOrStartQuery(networkId, ircUser->nick());
 }
 
 void NickView::customEvent(QEvent *event) {

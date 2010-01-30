@@ -405,10 +405,8 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action) 
         Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
         break;
       case NickSwitchTo:
-        Client::bufferModel()->switchToBuffer(findQueryBuffer(networkId, nick));
-        break;
       case NickQuery:
-        Client::userInput(bufferInfo, QString("/QUERY %1").arg(nick));
+        Client::bufferModel()->switchToOrStartQuery(networkId, nick);
         break;
       case NickIgnoreUser:
       {
