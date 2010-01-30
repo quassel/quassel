@@ -36,6 +36,7 @@ BufferModel::BufferModel(NetworkModel *parent)
 	    this, SLOT(debug_currentChanged(const QModelIndex &, const QModelIndex &)));
   }
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(newNetwork(NetworkId)));
+  connect(this, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(newBuffers(const QModelIndex &, int, int)));
 }
 
 bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const {
@@ -102,18 +103,42 @@ void BufferModel::switchToBufferIndex(const QModelIndex &bufferIdx) {
   qWarning() << "BufferModel::switchToBufferIndex(const QModelIndex &):" << bufferIdx << "does not belong to BufferModel or NetworkModel";
 }
 
-void BufferModel::switchToOrJoinBuffer(NetworkId networkId, const QString &name) {
+void BufferModel::switchToOrJoinBuffer(NetworkId networkId, const QString &name, bool isQuery) {
   BufferId bufId = Client::networkModel()->bufferId(networkId, name);
   if(bufId.isValid()) {
     QModelIndex targetIdx = Client::networkModel()->bufferIndex(bufId);
     switchToBuffer(bufId);
-    if(!targetIdx.data(NetworkModel::ItemActiveRole).toBool())
-      Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(name));
-  } else
-    Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(name));
+    if(!targetIdx.data(NetworkModel::ItemActiveRole).toBool()) {
+      qDebug() << "switchToOrJoinBuffer failed to switch even though bufId:" << bufId << "is valid.";
+      Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString(isQuery ? "/QUERY %1" : "/JOIN %1").arg(name));
+    }
+  } else {
+    _bufferToSwitchTo = qMakePair(networkId, name);
+    Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString(isQuery ? "/QUERY %1" : "/JOIN %1").arg(name));
+  }
 }
 
 void BufferModel::debug_currentChanged(QModelIndex current, QModelIndex previous) {
   Q_UNUSED(previous);
   qDebug() << "Switched current Buffer: " << current << current.data().toString() << "Buffer:" << current.data(NetworkModel::BufferIdRole).value<BufferId>();
+}
+
+void BufferModel::newBuffers(const QModelIndex &parent, int start, int end) {
+  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+    return;
+
+  for(int row = start; row <= end; row++) {
+    QModelIndex child = parent.child(row, 0);
+    newBuffer(child.data(NetworkModel::BufferIdRole).value<BufferId>());
+  }
+}
+
+void BufferModel::newBuffer(BufferId bufferId) {
+  BufferInfo bufferInfo = Client::networkModel()->bufferInfo(bufferId);
+  if(_bufferToSwitchTo.first == bufferInfo.networkId()
+      && _bufferToSwitchTo.second == bufferInfo.bufferName()) {
+    _bufferToSwitchTo.first = 0;
+    _bufferToSwitchTo.second.clear();
+    switchToBuffer(bufferId);
+  }
 }

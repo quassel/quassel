@@ -23,6 +23,7 @@
 
 #include <QSortFilterProxyModel>
 #include <QItemSelectionModel>
+#include <QPair>
 
 #include "network.h"
 #include "networkmodel.h"
@@ -52,15 +53,22 @@ public slots:
   void setCurrentIndex(const QModelIndex &newCurrent);
   void switchToBuffer(const BufferId &bufferId);
   void switchToBufferIndex(const QModelIndex &bufferIdx);
-  void switchToOrJoinBuffer(NetworkId network, const QString &bufferName);
+  void switchToOrJoinBuffer(NetworkId network, const QString &bufferName, bool isQuery = false);
+  void switchToOrStartQuery(NetworkId network, const QString &nick) {
+    switchToOrJoinBuffer(network, nick, true);
+  }
 
 private slots:
   void debug_currentChanged(QModelIndex current, QModelIndex previous);
   void newNetwork(NetworkId id);
   void networkConnectionChanged(Network::ConnectionState state);
+  void newBuffers(const QModelIndex &parent, int start, int end);
 
 private:
+  void newBuffer(BufferId bufferId);
+
   SelectionModelSynchronizer _selectionModelSynchronizer;
+  QPair<NetworkId, QString> _bufferToSwitchTo;
 };
 
 #endif // BUFFERMODEL_H
