@@ -156,6 +156,7 @@ class SenderChatItem : public ChatItem {
 public:
   SenderChatItem(const QRectF &boundingRect, ChatLine *parent) : ChatItem(boundingRect, parent) {}
   virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::SenderColumn; }
+  virtual void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode);
 
 protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
