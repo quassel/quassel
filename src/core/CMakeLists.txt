@@ -8,11 +8,11 @@ include(${QT_USE_FILE})
 
 set(SOURCES
     abstractsqlstorage.cpp
-    basichandler.cpp
     core.cpp
     corealiasmanager.cpp
     coreapplication.cpp
     corebacklogmanager.cpp
+    corebasichandler.cpp
     corebuffersyncer.cpp
     corebufferviewconfig.cpp
     corebufferviewmanager.cpp
@@ -37,11 +37,11 @@ set(SOURCES
 
 set(MOC_HDRS
     abstractsqlstorage.h
-    basichandler.h
     core.h
     corealiasmanager.h
     coreapplication.h
     corebacklogmanager.h
+    corebasichandler.h
     corebuffersyncer.h
     corebufferviewconfig.h
     corebufferviewmanager.h

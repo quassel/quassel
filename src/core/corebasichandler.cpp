@@ -17,107 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "basichandler.h"
-
-#include <QMetaMethod>
+#include "corebasichandler.h"
 
 #include "util.h"
 #include "logger.h"
 
-BasicHandler::BasicHandler(CoreNetwork *parent)
-  : QObject(parent),
-    defaultHandler(-1),
-    _network(parent),
-    initDone(false)
+CoreBasicHandler::CoreBasicHandler(CoreNetwork *parent)
+  : BasicHandler(parent),
+    _network(parent)
 {
   connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
          network(), SLOT(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
 
   connect(this, SIGNAL(putCmd(QString, const QList<QByteArray> &, const QByteArray &)),
-	  network(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &)));
+    network(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &)));
 
   connect(this, SIGNAL(putRawLine(const QByteArray &)),
           network(), SLOT(putRawLine(const QByteArray &)));
 }
 
-QStringList BasicHandler::providesHandlers() {
-  return handlerHash().keys();
-}
-
-const QHash<QString, int> &BasicHandler::handlerHash() {
-  if(!initDone) {
-    for(int i = metaObject()->methodOffset(); i < metaObject()->methodCount(); i++) {
-      QString methodSignature(metaObject()->method(i).signature());
-      if(methodSignature.startsWith("defaultHandler")) {
-	defaultHandler = i;
-	continue;
-      }
-      
-      if(!methodSignature.startsWith("handle"))
-	continue;
-      
-      methodSignature = methodSignature.section('(',0,0);  // chop the attribute list
-      methodSignature = methodSignature.mid(6); // strip "handle"
-      _handlerHash[methodSignature] = i;
-    }
-    initDone = true;
-  }
-  return _handlerHash;
-}
-
-void BasicHandler::handle(const QString &member, QGenericArgument val0,
- 			  QGenericArgument val1, QGenericArgument val2,
- 			  QGenericArgument val3, QGenericArgument val4,
- 			  QGenericArgument val5, QGenericArgument val6,
- 			  QGenericArgument val7, QGenericArgument val8) {
-  // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
-  // and now we even have a fast lookup! Thanks thiago!
-
-  QString handler = member.toLower();
-  handler[0] = handler[0].toUpper();
-
-  if(!handlerHash().contains(handler)) {
-    if(defaultHandler == -1) {
-      qWarning() << QString("No such Handler: %1::handle%2").arg(metaObject()->className(), handler);
-      return;
-    } else {
-      void *param[] = {0, Q_ARG(QString, member).data(), val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
-		       val5.data(), val6.data(), val7.data(), val8.data(), val8.data()};
-      qt_metacall(QMetaObject::InvokeMetaMethod, defaultHandler, param);
-      return;
-    }
-  }
-
-  void *param[] = {0, val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
-		   val5.data(), val6.data(), val7.data(), val8.data(), val8.data(), 0};
-  qt_metacall(QMetaObject::InvokeMetaMethod, handlerHash()[handler], param);
-}
-
-QString BasicHandler::serverDecode(const QByteArray &string) {
+QString CoreBasicHandler::serverDecode(const QByteArray &string) {
   return network()->serverDecode(string);
 }
 
-QStringList BasicHandler::serverDecode(const QList<QByteArray> &stringlist) {
+QStringList CoreBasicHandler::serverDecode(const QList<QByteArray> &stringlist) {
   QStringList list;
   foreach(QByteArray s, stringlist) list << network()->serverDecode(s);
   return list;
 }
 
-QString BasicHandler::channelDecode(const QString &bufferName, const QByteArray &string) {
+QString CoreBasicHandler::channelDecode(const QString &bufferName, const QByteArray &string) {
   return network()->channelDecode(bufferName, string);
 }
 
-QStringList BasicHandler::channelDecode(const QString &bufferName, const QList<QByteArray> &stringlist) {
+QStringList CoreBasicHandler::channelDecode(const QString &bufferName, const QList<QByteArray> &stringlist) {
   QStringList list;
   foreach(QByteArray s, stringlist) list << network()->channelDecode(bufferName, s);
   return list;
 }
 
-QString BasicHandler::userDecode(const QString &userNick, const QByteArray &string) {
+QString CoreBasicHandler::userDecode(const QString &userNick, const QByteArray &string) {
   return network()->userDecode(userNick, string);
 }
 
-QStringList BasicHandler::userDecode(const QString &userNick, const QList<QByteArray> &stringlist) {
+QStringList CoreBasicHandler::userDecode(const QString &userNick, const QList<QByteArray> &stringlist) {
   QStringList list;
   foreach(QByteArray s, stringlist) list << network()->userDecode(userNick, s);
   return list;
@@ -125,31 +68,31 @@ QStringList BasicHandler::userDecode(const QString &userNick, const QList<QByteA
 
 /*** ***/
 
-QByteArray BasicHandler::serverEncode(const QString &string) {
+QByteArray CoreBasicHandler::serverEncode(const QString &string) {
   return network()->serverEncode(string);
 }
 
-QList<QByteArray> BasicHandler::serverEncode(const QStringList &stringlist) {
+QList<QByteArray> CoreBasicHandler::serverEncode(const QStringList &stringlist) {
   QList<QByteArray> list;
   foreach(QString s, stringlist) list << network()->serverEncode(s);
   return list;
 }
 
-QByteArray BasicHandler::channelEncode(const QString &bufferName, const QString &string) {
+QByteArray CoreBasicHandler::channelEncode(const QString &bufferName, const QString &string) {
   return network()->channelEncode(bufferName, string);
 }
 
-QList<QByteArray> BasicHandler::channelEncode(const QString &bufferName, const QStringList &stringlist) {
+QList<QByteArray> CoreBasicHandler::channelEncode(const QString &bufferName, const QStringList &stringlist) {
   QList<QByteArray> list;
   foreach(QString s, stringlist) list << network()->channelEncode(bufferName, s);
   return list;
 }
 
-QByteArray BasicHandler::userEncode(const QString &userNick, const QString &string) {
+QByteArray CoreBasicHandler::userEncode(const QString &userNick, const QString &string) {
   return network()->userEncode(userNick, string);
 }
 
-QList<QByteArray> BasicHandler::userEncode(const QString &userNick, const QStringList &stringlist) {
+QList<QByteArray> CoreBasicHandler::userEncode(const QString &userNick, const QStringList &stringlist) {
   QList<QByteArray> list;
   foreach(QString s, stringlist) list << network()->userEncode(userNick, s);
   return list;
@@ -158,7 +101,7 @@ QList<QByteArray> BasicHandler::userEncode(const QString &userNick, const QStrin
 // ====================
 //  protected:
 // ====================
-BufferInfo::Type BasicHandler::typeByTarget(const QString &target) const {
+BufferInfo::Type CoreBasicHandler::typeByTarget(const QString &target) const {
   if(target.isEmpty())
     return BufferInfo::StatusBuffer;
 
@@ -168,13 +111,13 @@ BufferInfo::Type BasicHandler::typeByTarget(const QString &target) const {
   return BufferInfo::QueryBuffer;
 }
 
-void BasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix) {
+void CoreBasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix) {
   QList<QByteArray> list;
   list << param;
   emit putCmd(cmd, list, prefix);
 }
 
-void BasicHandler::displayMsg(Message::Type msgType, QString target, const QString &text, const QString &sender, Message::Flags flags) {
+void CoreBasicHandler::displayMsg(Message::Type msgType, QString target, const QString &text, const QString &sender, Message::Flags flags) {
   if(!target.isEmpty() && network()->prefixes().contains(target[0]))
     target = target.mid(1);
 

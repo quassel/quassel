@@ -7,6 +7,7 @@ include(${QT_USE_FILE})
 set(SOURCES
     aliasmanager.cpp
     backlogmanager.cpp
+    basichandler.cpp
     bufferinfo.cpp
     buffersyncer.cpp
     bufferviewconfig.cpp
@@ -37,6 +38,7 @@ endif(CMAKE_HOST_UNIX)
 set(MOC_HDRS
     aliasmanager.h
     backlogmanager.h
+    basichandler.h
     buffersyncer.h
     bufferviewconfig.h
     bufferviewmanager.h

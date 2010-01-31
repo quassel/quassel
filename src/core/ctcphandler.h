@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-10 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,11 +24,11 @@
 #include <QHash>
 #include <QStringList>
 
-#include "basichandler.h"
+#include "corebasichandler.h"
 
 class CoreListIgnoreListManager;
 
-class CtcpHandler : public BasicHandler {
+class CtcpHandler : public CoreBasicHandler {
   Q_OBJECT
 
 public:

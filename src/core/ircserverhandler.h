@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-10 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,10 +21,10 @@
 #ifndef IRCSERVERHANDLER_H
 #define IRCSERVERHANDLER_H
 
-#include "basichandler.h"
+#include "corebasichandler.h"
 #include "netsplit.h"
 
-class IrcServerHandler : public BasicHandler {
+class IrcServerHandler : public CoreBasicHandler {
   Q_OBJECT
 
 public:

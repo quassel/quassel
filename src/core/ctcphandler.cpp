@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-10 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@
 #include "coreignorelistmanager.h"
 
 CtcpHandler::CtcpHandler(CoreNetwork *parent)
-  : BasicHandler(parent),
+  : CoreBasicHandler(parent),
     XDELIM("\001"),
     _ignoreListManager(parent->ignoreListManager())
 {
