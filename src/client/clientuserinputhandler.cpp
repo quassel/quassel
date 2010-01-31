@@ -20,6 +20,7 @@
 
 #include <QDateTime>
 
+#include "buffermodel.h"
 #include "client.h"
 #include "clientaliasmanager.h"
 #include "clientuserinputhandler.h"
@@ -59,10 +60,21 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const
 
   for(int i = 0; i < clist.count(); i++) {
     QString cmd = clist.at(i).second.section(' ', 0, 0).remove(0, 1).toUpper();
+    QString args = clist.at(i).second.section(' ', 1);
     if(cmd == "EXEC")
-      handleExec(clist.at(i).first, clist.at(i).second.section(' ', 1));
-    else
+      handleExec(clist.at(i).first, args);
+    else {
+      if(cmd == "JOIN" || cmd == "QUERY") {
+        BufferId newBufId = Client::networkModel()->bufferId(bufferInfo.networkId(), args.section(' ', 0, 0));
+        if(!newBufId.isValid()) {
+          Client::bufferModel()->switchToBufferAfterCreation(bufferInfo.networkId(), args.section(' ', 0, 0));
+        }
+        else {
+          Client::bufferModel()->switchToBuffer(newBufId);
+        }
+      }
       emit sendInput(clist.at(i).first, clist.at(i).second);
+    }
   }
 }
 

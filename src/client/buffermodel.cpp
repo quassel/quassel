@@ -142,3 +142,7 @@ void BufferModel::newBuffer(BufferId bufferId) {
     switchToBuffer(bufferId);
   }
 }
+
+void BufferModel::switchToBufferAfterCreation(NetworkId network, const QString &name) {
+  _bufferToSwitchTo = qMakePair(network, name);
+}

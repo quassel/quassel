@@ -57,6 +57,7 @@ public slots:
   void switchToOrStartQuery(NetworkId network, const QString &nick) {
     switchToOrJoinBuffer(network, nick, true);
   }
+  void switchToBufferAfterCreation(NetworkId network, const QString &name);
 
 private slots:
   void debug_currentChanged(QModelIndex current, QModelIndex previous);
