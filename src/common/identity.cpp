@@ -76,6 +76,18 @@ Identity::Identity(const Identity &other, QObject *parent)
   init();
 }
 
+#ifdef Q_WS_WIN
+#ifdef UNICODE
+QString tcharToQString(TCHAR *tchar){
+  return QString::fromUtf16( reinterpret_cast<ushort*>(tchar));
+}
+#else
+QString tcharToQString(TCHAR *tchar){
+  return QString::fromLocal8Bit(tchar);
+}
+#endif
+
+#endif
 void Identity::init() {
   setObjectName(QString::number(id().toInt()));
   setAllowClientUpdates(true);
@@ -102,7 +114,7 @@ QString Identity::defaultNick() {
   DWORD  bufCharCount = 128;
   //if(GetUserNameEx(/* NameSamCompatible */ 1, infoBuf, &bufCharCount))
   if(GetUserNameEx(NameSamCompatible, infoBuf, &bufCharCount)) {
-    QString nickName(infoBuf);
+    QString nickName(tcharToQString(infoBuf));
     int lastBs = nickName.lastIndexOf('\\');
     if(lastBs != -1) {
       nickName = nickName.mid(lastBs + 1);
@@ -138,7 +150,7 @@ QString Identity::defaultRealName() {
   TCHAR  infoBuf[128];
   DWORD  bufCharCount = 128;
   if(GetUserName(infoBuf, &bufCharCount))
-    return QString(infoBuf);
+    return tcharToQString(infoBuf);
   else
     return generalDefault;
 #else

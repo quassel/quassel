@@ -218,6 +218,12 @@ else(WITH_KDE)
   message(STATUS "Not enabling KDE4 integration")
 endif(WITH_KDE)
 
+# needed to compile with mingw without kde
+if(MINGW AND NOT HAVE_KDE)
+    add_definitions(-D_WIN32_WINNT=0x0500)
+     message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
+endif(MINGW AND NOT HAVE_KDE)
+
 # Setup Phonon support - we only need this if we don't have or want KDE4
 if(NOT HAVE_KDE)
   if(WITH_PHONON)

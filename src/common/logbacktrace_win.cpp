@@ -49,7 +49,7 @@ struct EnumModulesContext {
   EnumModulesContext(HANDLE hProcess, QTextStream &stream) : hProcess(hProcess), stream(stream) {}
 };
 
-BOOL CALLBACK EnumModulesCB(PCTSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
+BOOL CALLBACK EnumModulesCB(LPCSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
   IMAGEHLP_MODULE64 mod;
   EnumModulesContext *context = (EnumModulesContext *)UserContext;
   mod.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
@@ -70,14 +70,12 @@ BOOL CALLBACK EnumModulesCB(PCTSTR ModuleName, DWORD64 BaseOfDll, PVOID UserCont
   return TRUE;
 }
 
-// we don't use the ModuleName anyways so we can easily "convert" this
-inline BOOL CALLBACK EnumModulesCB(PSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
-  return EnumModulesCB(PCTSTR(0), BaseOfDll, UserContext);
-}
 
-#ifdef _M_IX86
+
+#if defined( _M_IX86 ) && defined(Q_CC_MSVC)
   // Disable global optimization and ignore /GS waning caused by
   // inline assembly.
+  // not needed with mingw cause we can tell mingw which registers we use
   #pragma optimize("g", off)
   #pragma warning(push)
   #pragma warning(disable : 4748)
@@ -90,13 +88,26 @@ void Quassel::logBacktrace(const QString &filename) {
 #ifdef _M_IX86
     ZeroMemory(&Context, sizeof(CONTEXT));
     Context.ContextFlags = CONTEXT_CONTROL;
-    __asm {
+
+// TODO: port asssembler to mingw32
+#ifdef __MINGW32__
+//      asm("Label:\n\t"
+//        "movl %%ebp,%0;\n\t"
+//        "movl %%esp,%1;\n\t"
+//        "movl $Label,%%eax;\n\t"
+//        "movl %%eax,;\n\t"
+//        :"=r"(Content.Epb),"=r"(Context.Esp),"=r"(Context.Eip)
+//        ://no input
+//        :"ebp","esp","eax");
+#else
+    _asm {
     Label:
       mov [Context.Ebp], ebp;
       mov [Context.Esp], esp;
       mov eax, [Label];
       mov [Context.Eip], eax;
     }
+#endif
 #else
     RtlCaptureContext(&Context);
 #endif
@@ -202,7 +213,7 @@ void Quassel::logBacktrace(const QString &filename) {
 
   logFile.close();
 }
-#ifdef _M_IX86
+#if defined(_M_IX86) && defined(Q_CC_MSVC)
   #pragma warning(pop)
   #pragma optimize("g", on)
 #endif
