@@ -33,6 +33,7 @@
 
 const Network *TabCompleter::_currentNetwork;
 BufferId TabCompleter::_currentBufferId;
+QString TabCompleter::_currentBufferName;
 
 TabCompleter::TabCompleter(MultiLineEdit *_lineEdit)
   : QObject(_lineEdit),
@@ -55,36 +56,47 @@ void TabCompleter::buildCompletionList() {
     return;
 
   NetworkId networkId = currentIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  QString bufferName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
+  _currentBufferName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
 
   _currentNetwork = Client::network(networkId);
   if(!_currentNetwork)
     return;
 
-  QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegExp("[^\\w\\d-_\\[\\]{}|`^.\\\\]"),-1,-1);
+  QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegExp("[^#\\w\\d-_\\[\\]{}|`^.\\\\]"),-1,-1);
   QRegExp regex(QString("^[-_\\[\\]{}|`^.\\\\]*").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
 
-  switch(static_cast<BufferInfo::Type>(currentIndex.data(NetworkModel::BufferTypeRole).toInt())) {
-  case BufferInfo::ChannelBuffer:
-    { // scope is needed for local var declaration
-      IrcChannel *channel = _currentNetwork->ircChannel(bufferName);
-      if(!channel)
-        return;
-      foreach(IrcUser *ircUser, channel->ircUsers()) {
-        if(regex.indexIn(ircUser->nick()) > -1)
-          _completionMap[ircUser->nick().toLower()] = ircUser->nick();
-      }
+  // channel completion - add all channels of the current network to the map
+  if(tabAbbrev.startsWith('#')) {
+    _completionType = ChannelTab;
+    foreach(IrcChannel *ircChannel, _currentNetwork->ircChannels()) {
+      if(regex.indexIn(ircChannel->name()) > -1)
+        _completionMap[CompletionKey(ircChannel->name(), ChannelTab)] = ircChannel->name();
     }
-    break;
-  case BufferInfo::QueryBuffer:
-    if(regex.indexIn(bufferName) > -1)
-      _completionMap[bufferName.toLower()] = bufferName;
-  case BufferInfo::StatusBuffer:
-    if(!_currentNetwork->myNick().isEmpty() && regex.indexIn(_currentNetwork->myNick()) > -1)
-      _completionMap[_currentNetwork->myNick().toLower()] = _currentNetwork->myNick();
-    break;
-  default:
-    return;
+  } else {
+    // user completion
+    _completionType = UserTab;
+    switch(static_cast<BufferInfo::Type>(currentIndex.data(NetworkModel::BufferTypeRole).toInt())) {
+    case BufferInfo::ChannelBuffer:
+      { // scope is needed for local var declaration
+        IrcChannel *channel = _currentNetwork->ircChannel(_currentBufferName);
+        if(!channel)
+          return;
+        foreach(IrcUser *ircUser, channel->ircUsers()) {
+          if(regex.indexIn(ircUser->nick()) > -1)
+            _completionMap[CompletionKey(ircUser->nick().toLower(), UserTab)] = ircUser->nick();
+        }
+      }
+      break;
+    case BufferInfo::QueryBuffer:
+      if(regex.indexIn(_currentBufferName) > -1)
+        _completionMap[CompletionKey(_currentBufferName.toLower(), UserTab)] = _currentBufferName;
+    case BufferInfo::StatusBuffer:
+      if(!_currentNetwork->myNick().isEmpty() && regex.indexIn(_currentNetwork->myNick()) > -1)
+        _completionMap[CompletionKey(_currentNetwork->myNick().toLower(), UserTab)] = _currentNetwork->myNick();
+      break;
+    default:
+      return;
+    }
   }
 
   _nextCompletion = _completionMap.begin();
@@ -114,7 +126,7 @@ void TabCompleter::complete() {
     _nextCompletion++;
 
     // we're completing the first word of the line
-    if(_lineEdit->cursorPosition() == _lastCompletionLength) {
+    if(_completionType == UserTab && _lineEdit->cursorPosition() == _lastCompletionLength) {
       _lineEdit->insert(_nickSuffix);
       _lastCompletionLength += _nickSuffix.length();
     }
@@ -149,28 +161,43 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event) {
 
 // this determines the sort order
 bool TabCompleter::CompletionKey::operator<(const CompletionKey &other) const {
-  IrcUser *thisUser = _currentNetwork->ircUser(this->nick);
-  if(thisUser && _currentNetwork->isMe(thisUser))
-    return false;
+  switch(this->type) {
+    case UserTab:
+      {
+        IrcUser *thisUser = _currentNetwork->ircUser(this->contents);
+        if(thisUser && _currentNetwork->isMe(thisUser))
+          return false;
 
-  IrcUser *thatUser = _currentNetwork->ircUser(other.nick);
-  if(thatUser && _currentNetwork->isMe(thatUser))
-    return true;
+        IrcUser *thatUser = _currentNetwork->ircUser(other.contents);
+        if(thatUser && _currentNetwork->isMe(thatUser))
+          return true;
 
-  if(!thisUser || !thatUser)
-    return QString::localeAwareCompare(this->nick, other.nick) < 0;
+        if(!thisUser || !thatUser)
+          return QString::localeAwareCompare(this->contents, other.contents) < 0;
 
-  QDateTime thisSpokenTo = thisUser->lastSpokenTo(_currentBufferId);
-  QDateTime thatSpokenTo = thatUser->lastSpokenTo(_currentBufferId);
+        QDateTime thisSpokenTo = thisUser->lastSpokenTo(_currentBufferId);
+        QDateTime thatSpokenTo = thatUser->lastSpokenTo(_currentBufferId);
 
-  if(thisSpokenTo.isValid() || thatSpokenTo.isValid())
-    return thisSpokenTo > thatSpokenTo;
+        if(thisSpokenTo.isValid() || thatSpokenTo.isValid())
+          return thisSpokenTo > thatSpokenTo;
 
-  QDateTime thisTime = thisUser->lastChannelActivity(_currentBufferId);
-  QDateTime thatTime = thatUser->lastChannelActivity(_currentBufferId);
+        QDateTime thisTime = thisUser->lastChannelActivity(_currentBufferId);
+        QDateTime thatTime = thatUser->lastChannelActivity(_currentBufferId);
 
-  if(thisTime.isValid() || thatTime.isValid())
-    return thisTime > thatTime;
+        if(thisTime.isValid() || thatTime.isValid())
+          return thisTime > thatTime;
+      }
+      break;
+    case ChannelTab:
+      if(QString::compare(_currentBufferName, this->contents, Qt::CaseInsensitive) == 0)
+          return true;
 
-  return QString::localeAwareCompare(this->nick, other.nick) < 0;
+      if(QString::compare(_currentBufferName, other.contents, Qt::CaseInsensitive) == 0)
+          return false;
+      break;
+    default:
+      break;
+  }
+
+  return QString::localeAwareCompare(this->contents, other.contents) < 0;
 }

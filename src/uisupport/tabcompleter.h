@@ -43,10 +43,16 @@ public:
   virtual bool eventFilter(QObject *obj, QEvent *event);
 
 private:
+  enum Type {
+    UserTab = 0x01,
+    ChannelTab = 0x02
+  };
+
   struct CompletionKey {
-    inline CompletionKey(const QString &n) { nick = n; }
+    inline CompletionKey(const QString &n, const Type t) { contents = n; type = t; }
     bool operator<(const CompletionKey &other) const;
-    QString nick;
+    Type type;
+    QString contents;
   };
 
   QPointer<MultiLineEdit> _lineEdit;
@@ -55,10 +61,12 @@ private:
 
   static const Network *_currentNetwork;
   static BufferId _currentBufferId;
+  static QString _currentBufferName;
 
   QMap<CompletionKey, QString> _completionMap;
   // QStringList completionTemplates;
 
+  Type _completionType;
   QMap<CompletionKey, QString>::Iterator _nextCompletion;
   int _lastCompletionLength;
 
