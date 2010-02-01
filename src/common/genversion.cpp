@@ -100,14 +100,23 @@ int main(int argc, char **argv) {
     verfile.close();
   }
 
-  // ok, create our version.gen now
+  // generate the contents for version.gen
+  QByteArray contents = QString("QString buildinfo = \"%1,%2,%3,%4,%5,%6,%7,%8\";\n")
+                                .arg(basever, descrver, dirty, committish, commitdate, protover, clientneeds, coreneeds)
+                                .toAscii();
+
   QFile gen(target);
-  if(!gen.open(QIODevice::WriteOnly | QIODevice::Text)) {
+  if(!gen.open(QIODevice::ReadWrite | QIODevice::Text)) {
     qFatal("%s", qPrintable(QString("Could not write %1!").arg(target)));
     return EXIT_FAILURE;
   }
-  gen.write(QString("QString buildinfo = \"%1,%2,%3,%4,%5,%6,%7,%8\";\n")
-           .arg(basever, descrver, dirty, committish, commitdate, protover, clientneeds, coreneeds).toAscii());
+  QByteArray oldContents = gen.readAll();
+  if(oldContents != contents) { // only touch the file if something changed
+    gen.seek(0);
+    gen.write(contents);
+    gen.waitForBytesWritten(10000);
+  }
   gen.close();
+
   return EXIT_SUCCESS;
 }
