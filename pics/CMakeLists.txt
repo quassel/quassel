@@ -1,7 +1,11 @@
 # pics/ contains non-themed icons and other graphical resources
 
 if(WIN32)
-  set(COMMON_DEPS ${COMMON_DEPS} ../pics/win32.rc PARENT_SCOPE)
+    if(MINGW)
+	set(COMMON_DEPS ${COMMON_DEPS} ../pics/win32.o PARENT_SCOPE)
+    else(MINGW)
+	set(COMMON_DEPS ${COMMON_DEPS} ../pics/win32.rc PARENT_SCOPE)
+    endif(MINGW)
 endif(WIN32)
 
 if(WANT_MONO OR WANT_QTCLIENT)
