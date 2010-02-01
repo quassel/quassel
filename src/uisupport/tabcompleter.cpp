@@ -34,6 +34,7 @@
 const Network *TabCompleter::_currentNetwork;
 BufferId TabCompleter::_currentBufferId;
 QString TabCompleter::_currentBufferName;
+TabCompleter::Type TabCompleter::_completionType;
 
 TabCompleter::TabCompleter(MultiLineEdit *_lineEdit)
   : QObject(_lineEdit),
@@ -70,7 +71,7 @@ void TabCompleter::buildCompletionList() {
     _completionType = ChannelTab;
     foreach(IrcChannel *ircChannel, _currentNetwork->ircChannels()) {
       if(regex.indexIn(ircChannel->name()) > -1)
-        _completionMap[CompletionKey(ircChannel->name(), ChannelTab)] = ircChannel->name();
+        _completionMap[ircChannel->name()] = ircChannel->name();
     }
   } else {
     // user completion
@@ -83,16 +84,16 @@ void TabCompleter::buildCompletionList() {
           return;
         foreach(IrcUser *ircUser, channel->ircUsers()) {
           if(regex.indexIn(ircUser->nick()) > -1)
-            _completionMap[CompletionKey(ircUser->nick().toLower(), UserTab)] = ircUser->nick();
+            _completionMap[ircUser->nick().toLower()] = ircUser->nick();
         }
       }
       break;
     case BufferInfo::QueryBuffer:
       if(regex.indexIn(_currentBufferName) > -1)
-        _completionMap[CompletionKey(_currentBufferName.toLower(), UserTab)] = _currentBufferName;
+        _completionMap[_currentBufferName.toLower()] = _currentBufferName;
     case BufferInfo::StatusBuffer:
       if(!_currentNetwork->myNick().isEmpty() && regex.indexIn(_currentNetwork->myNick()) > -1)
-        _completionMap[CompletionKey(_currentNetwork->myNick().toLower(), UserTab)] = _currentNetwork->myNick();
+        _completionMap[_currentNetwork->myNick().toLower()] = _currentNetwork->myNick();
       break;
     default:
       return;
@@ -161,7 +162,7 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event) {
 
 // this determines the sort order
 bool TabCompleter::CompletionKey::operator<(const CompletionKey &other) const {
-  switch(this->type) {
+  switch(_completionType) {
     case UserTab:
       {
         IrcUser *thisUser = _currentNetwork->ircUser(this->contents);
