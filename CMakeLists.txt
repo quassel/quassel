@@ -221,7 +221,9 @@ endif(WITH_KDE)
 # needed to compile with mingw without kde
 if(MINGW AND NOT HAVE_KDE)
     add_definitions(-D_WIN32_WINNT=0x0500)
-     message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
+    message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
+# workaround for bug in mingw gcc 4.0
+    add_definitions(-U__STRICT_ANSI__)
 endif(MINGW AND NOT HAVE_KDE)
 
 # Setup Phonon support - we only need this if we don't have or want KDE4
