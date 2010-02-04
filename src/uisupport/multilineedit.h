@@ -54,6 +54,7 @@ public:
 
   // Compatibility methods with the rest of the classes which still expect this to be a QLineEdit
   inline QString text() { return toPlainText(); }
+  inline QString html() { return toHtml(); }
   inline int cursorPosition() { return textCursor().position(); }
   inline void insert(const QString &newText) { insertPlainText(newText); }
   inline void backspace() { keyPressEvent(new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier)); }
@@ -94,6 +95,9 @@ private slots:
   void historyMoveForward();
   void historyMoveBack();
 
+  QString convertHtmlToMircCodes(const QString &text);
+  QString convertMircCodesToHtml(const QString &text);
+
 private:
   QStringList history;
   QHash<int, QString> tempHistory;
@@ -107,6 +111,8 @@ private:
 
   QSize _sizeHint;
   qreal _lastDocumentHeight;
+
+  QHash<QString, QString> mircColorMap;
 
   void reset();
   void showHistoryEntry();

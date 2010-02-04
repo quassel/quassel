@@ -28,6 +28,7 @@
 #include "bufferinfo.h"
 #include "identity.h"
 #include "network.h"
+#include <action.h>
 
 class MultiLineEdit;
 
@@ -70,11 +71,27 @@ private slots:
 
   BufferInfo currentBufferInfo() const;
 
+  void currentCharFormatChanged(const QTextCharFormat &format);
+  void textBold();
+  void textUnderline();
+  void textItalic();
+
 private:
   Ui::InputWidget ui;
 
   NetworkId _networkId;
   IdentityId _identityId;
+
+  Action *actionTextBold,
+  *actionTextUnderline,
+  *actionTextItalic,
+  *actionTextFgColor,
+  *actionTextBgColor;
+
+  void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
+  void fontChanged(const QFont &f);
+  void colorChanged(const QColor &fg, const QColor &bg);
+
 };
 
 

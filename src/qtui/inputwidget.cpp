@@ -88,6 +88,35 @@ InputWidget::InputWidget(QWidget *parent)
   connect(activateInputline, SIGNAL(triggered()), SLOT(setFocus()));
   activateInputline->setText(tr("Focus Input Line"));
   activateInputline->setShortcut(tr("Ctrl+L"));
+
+  actionTextBold = coll->add<Action>("TextBold");
+  QFont bold;
+  bold.setBold(true);
+  actionTextBold->setFont(bold);
+  actionTextBold->setText(tr("Bold"));
+  actionTextBold->setShortcut(tr("Ctrl+B"));
+  actionTextBold->setCheckable(true);
+  connect(actionTextBold, SIGNAL(triggered()), SLOT(textBold()));
+
+  actionTextUnderline = coll->add<Action>("TextUnderline");
+  QFont underline;
+  underline.setUnderline(true);
+  actionTextUnderline->setFont(underline);
+  actionTextUnderline->setText(tr("Underline"));
+  actionTextUnderline->setShortcut(tr("Ctrl+U"));
+  actionTextUnderline->setCheckable(true);
+  connect(actionTextUnderline, SIGNAL(triggered()), SLOT(textUnderline()));
+
+  actionTextItalic = coll->add<Action>("TextItalic");
+  QFont italic;
+  italic.setItalic(true);
+  actionTextItalic->setFont(italic);
+  actionTextItalic->setText(tr("Italic"));
+  actionTextItalic->setShortcut(tr("Ctrl+I"));
+  actionTextItalic->setCheckable(true);
+  connect(actionTextItalic, SIGNAL(triggered()), SLOT(textItalic()));
+
+  connect(inputLine(), SIGNAL(currentCharFormatChanged(QTextCharFormat)), this, SLOT(currentCharFormatChanged(QTextCharFormat)));
 }
 
 InputWidget::~InputWidget() {
@@ -324,8 +353,64 @@ void InputWidget::changeNick(const QString &newNick) const {
 
 void InputWidget::on_inputEdit_textEntered(const QString &text) const {
   Client::userInput(currentBufferInfo(), text);
+  actionTextBold->setChecked(false);
+  actionTextUnderline->setChecked(false);
+  actionTextItalic->setChecked(false);
+  inputLine()->setFontWeight(QFont::Normal);
+  inputLine()->setFontUnderline(false);
+  inputLine()->setFontItalic(false);
 }
 
+void InputWidget::mergeFormatOnWordOrSelection(const QTextCharFormat &format) {
+  QTextCursor cursor = inputLine()->textCursor();
+  if (!cursor.hasSelection())
+    cursor.select(QTextCursor::WordUnderCursor);
+  cursor.mergeCharFormat(format);
+  inputLine()->mergeCurrentCharFormat(format);
+}
+
+void InputWidget::currentCharFormatChanged(const QTextCharFormat &format) {
+  fontChanged(format.font());
+  colorChanged(format.foreground().color(), format.background().color());
+}
+
+void InputWidget::textBold()
+{
+  if (inputLine()->hasFocus()) {
+    QTextCharFormat fmt;
+    fmt.setFontWeight(actionTextBold->isChecked() ? QFont::Bold : QFont::Normal);
+    mergeFormatOnWordOrSelection(fmt);
+  }
+}
+
+void InputWidget::textUnderline()
+{
+  if (inputLine()->hasFocus()) {
+    QTextCharFormat fmt;
+    fmt.setFontUnderline(actionTextUnderline->isChecked());
+    mergeFormatOnWordOrSelection(fmt);
+  }
+}
+
+void InputWidget::textItalic()
+{
+  if (inputLine()->hasFocus()) {
+    QTextCharFormat fmt;
+    fmt.setFontItalic(actionTextItalic->isChecked());
+    mergeFormatOnWordOrSelection(fmt);
+  }
+}
+
+void InputWidget::fontChanged(const QFont &f)
+{
+  actionTextBold->setChecked(f.bold());
+  actionTextItalic->setChecked(f.italic());
+  actionTextUnderline->setChecked(f.underline());
+}
+
+void InputWidget::colorChanged(const QColor &fg, const QColor &bg) {
+  //TODO update colorpicker
+}
 
 // MOUSE WHEEL FILTER
 MouseWheelFilter::MouseWheelFilter(QObject *parent)
