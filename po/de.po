@@ -1288,7 +1288,7 @@ msgstr "Standardwerte benutzen..."
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:56
 msgid "Join Channel..."
-msgstr "Kanal betreteten..."
+msgstr "Kanal betreten..."
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:58
