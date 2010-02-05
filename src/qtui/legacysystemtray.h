@@ -18,53 +18,63 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KNOTIFICATIONBACKEND_H_
-#define KNOTIFICATIONBACKEND_H_
+#ifndef LEGACYSYSTEMTRAY_H_
+#define LEGACYSYSTEMTRAY_H_
 
-#include "abstractnotificationbackend.h"
-#include "settingspage.h"
+#ifndef QT_NO_SYSTEMTRAYICON
+
+#ifdef HAVE_KDE
+#  include <KSystemTrayIcon>
+#else
+#  include <QSystemTrayIcon>
+#endif
+
+#include <QTimer>
+
 #include "systemtray.h"
 
-class KNotification;
-class KNotifyConfigWidget;
-
-class KNotificationBackend : public AbstractNotificationBackend {
+class LegacySystemTray : public SystemTray {
   Q_OBJECT
 
 public:
-  KNotificationBackend(QObject *parent = 0);
+  LegacySystemTray(QObject *parent = 0);
+  virtual ~LegacySystemTray() {}
+  virtual void init();
 
-  void notify(const Notification &);
-  void close(uint notificationId);
-  virtual SettingsPage *createConfigWidget() const;
+  virtual inline bool isSystemTrayAvailable() const;
+  virtual Icon stateIcon() const; // overriden to care about blinkState
 
-private slots:
-  void notificationActivated();
-  void notificationActivated(SystemTray::ActivationReason);
-  void notificationActivated(uint notificationId);
+public slots:
+  virtual void setState(State state);
+  virtual void setVisible(bool visible = true);
+  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
 
-private:
-  class ConfigWidget;
-
-  void removeNotificationById(uint id);
-
-  QList<QPair<uint, QPointer<KNotification> > > _notifications;
-};
-
-class KNotificationBackend::ConfigWidget : public SettingsPage {
-  Q_OBJECT
-
-public:
-  ConfigWidget(QWidget *parent = 0);
-
-  void save();
-  void load();
+protected:
+  virtual void setMode(Mode mode);
 
 private slots:
-  void widgetChanged(bool);
+  void on_blinkTimeout();
+  void on_activated(QSystemTrayIcon::ActivationReason);
 
 private:
-  KNotifyConfigWidget *_widget;
-};
+  void syncLegacyIcon();
 
+  QTimer _blinkTimer;
+  bool _blinkState;
+  bool _isVisible;
+
+#ifdef HAVE_KDE
+  KSystemTrayIcon *_trayIcon;
+#else
+  QSystemTrayIcon *_trayIcon;
 #endif
+
+};
+
+// inlines
+
+bool LegacySystemTray::isSystemTrayAvailable() const { return QSystemTrayIcon::isSystemTrayAvailable(); }
+
+#endif /* QT_NO_SYSTEMTRAYICON */
+
+#endif /* LEGACYSYSTEMTRAY_H_ */

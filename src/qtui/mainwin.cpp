@@ -70,6 +70,7 @@
 #include "irclistmodel.h"
 #include "ircconnectionwizard.h"
 #include "jumpkeyhandler.h"
+#include "legacysystemtray.h"
 #include "msgprocessorstatuswidget.h"
 #include "nicklistwidget.h"
 #include "qtuiapplication.h"
@@ -78,7 +79,6 @@
 #include "qtuistyle.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
-#include "systemtray.h"
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
 #include "verticaldock.h"
@@ -279,13 +279,9 @@ void MainWin::restoreStateFromSettings(UiSettings &s) {
   move(_normalPos);
 #endif
 
-#ifndef QT_NO_SYSTEMTRAYICON
-  if(s.value("MainWinHidden").toBool()) {
+  if(s.value("MainWinHidden").toBool())
     hideToTray();
-    return;
-  }
-#endif
-  if(s.value("MainWinMinimized").toBool())
+  else if(s.value("MainWinMinimized").toBool())
     showMinimized();
   else if(maximized)
     showMaximized();
@@ -685,8 +681,11 @@ void MainWin::saveStatusBarStatus(bool enabled) {
 
 void MainWin::setupSystray() {
 #ifndef QT_NO_SYSTEMTRAYICON
-  _systemTray = new SystemTray(this);
+  _systemTray = new LegacySystemTray(this);
+#else
+  _systemTray = new SystemTray(this); // dummy
 #endif
+  _systemTray->init();
 }
 
 void MainWin::setupToolBars() {
@@ -818,9 +817,7 @@ void MainWin::setDisconnectedState() {
   if(_msgProcessorStatusWidget)
     _msgProcessorStatusWidget->setProgress(0, 0);
   updateIcon();
-#ifndef QT_NO_SYSTEMTRAYICON
-  systemTray()->setState(SystemTray::Inactive);
-#endif
+  systemTray()->setState(SystemTray::Passive);
 }
 
 void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage) {
@@ -1040,15 +1037,13 @@ void MainWin::changeEvent(QEvent *event) {
   QMainWindow::changeEvent(event);
 }
 
-#ifndef QT_NO_SYSTEMTRAYICON
-
 void MainWin::hideToTray() {
   if(!systemTray()->isSystemTrayAvailable()) {
     qWarning() << Q_FUNC_INFO << "was called with no SystemTray available!";
     return;
   }
   hide();
-  systemTray()->setIconVisible();
+  systemTray()->setVisible();
 }
 
 void MainWin::toggleMinimizedToTray() {
@@ -1073,8 +1068,6 @@ void MainWin::toggleMinimizedToTray() {
 
 #endif
 }
-
-#endif /* QT_NO_SYSTEMTRAYICON */
 
 void MainWin::forceActivated() {
 #ifdef HAVE_KDE

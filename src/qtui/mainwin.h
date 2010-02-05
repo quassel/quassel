@@ -76,10 +76,7 @@ class MainWin
     BufferView *allBuffersView() const;
 
     inline BufferWidget *bufferWidget() const { return _bufferWidget; }
-
-#ifndef QT_NO_SYSTEMTRAYICON
     inline SystemTray *systemTray() const { return _systemTray; }
-#endif
 
     bool event(QEvent *event);
 
@@ -91,10 +88,7 @@ class MainWin
 
   public slots:
     void showStatusBarMessage(const QString &message);
-
-#ifndef QT_NO_SYSTEMTRAYICON
     void toggleMinimizedToTray();
-#endif
 
     //! Bring window to front and focus it
     void forceActivated();
@@ -174,6 +168,7 @@ class MainWin
 
     MsgProcessorStatusWidget *_msgProcessorStatusWidget;
     CoreConnectionStatusWidget *_coreConnectionStatusWidget;
+    SystemTray *_systemTray;
 
     TitleSetter _titleSetter;
 
@@ -193,10 +188,7 @@ class MainWin
     void updateIcon();
     void enableMenus();
 
-#ifndef QT_NO_SYSTEMTRAYICON
     void hideToTray();
-    SystemTray *_systemTray;
-#endif
 
     QList<BufferViewDock *> _bufferViews;
     BufferWidget *_bufferWidget;

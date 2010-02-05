@@ -1,24 +1,22 @@
 /***************************************************************************
-*   Copyright (C) 2005-09 by the Quassel Project                          *
-*   devel@quassel-irc.org                                                 *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) version 3.                                           *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
-
-#ifndef QT_NO_SYSTEMTRAYICON
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include "systraynotificationbackend.h"
 
@@ -43,8 +41,8 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   notificationSettings.notify("Systray/Animate", this, SLOT(animateChanged(const QVariant &)));
 
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked()), SLOT(notificationActivated()));
-  connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                                            SLOT(notificationActivated(QSystemTrayIcon::ActivationReason)));
+  connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
+                                            SLOT(notificationActivated(SystemTray::ActivationReason)));
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {
@@ -88,7 +86,7 @@ void SystrayNotificationBackend::showBubble() {
 void SystrayNotificationBackend::closeBubble() {
   // there really seems to be no sane way to close the bubble... :(
 #ifdef Q_WS_X11
-  QtUi::mainWindow()->systemTray()->showMessage("", "", QSystemTrayIcon::NoIcon, 1);
+  QtUi::mainWindow()->systemTray()->showMessage("", "", SystemTray::NoIcon, 1);
 #endif
 }
 
@@ -100,8 +98,8 @@ void SystrayNotificationBackend::notificationActivated() {
   }
 }
 
-void SystrayNotificationBackend::notificationActivated(QSystemTrayIcon::ActivationReason reason) {
-  if(reason == QSystemTrayIcon::Trigger) {
+void SystrayNotificationBackend::notificationActivated(SystemTray::ActivationReason reason) {
+  if(reason == SystemTray::Trigger) {
     notificationActivated();
   }
 }
@@ -165,5 +163,3 @@ void SystrayNotificationBackend::ConfigWidget::save() {
   s.setValue("Systray/ShowBubble", _showBubbleBox->isChecked());
   load();
 }
-
-#endif /* QT_NO_SYSTEMTRAYICON */

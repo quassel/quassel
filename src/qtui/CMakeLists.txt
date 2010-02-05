@@ -38,6 +38,7 @@ set(SOURCES
     inputwidget.cpp
     ircconnectionwizard.cpp
     jumpkeyhandler.cpp
+    legacysystemtray.cpp
     mainpage.cpp
     mainwin.cpp
     msgprocessorstatuswidget.cpp
@@ -84,6 +85,7 @@ set(MOC_HDRS
     inputwidget.h
     ircconnectionwizard.h
     jumpkeyhandler.h
+    legacysystemtray.h
     mainpage.h
     mainwin.h
     msgprocessorstatuswidget.h
