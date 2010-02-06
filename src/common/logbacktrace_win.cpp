@@ -89,16 +89,16 @@ void Quassel::logBacktrace(const QString &filename) {
     ZeroMemory(&Context, sizeof(CONTEXT));
     Context.ContextFlags = CONTEXT_CONTROL;
 
-// TODO: port asssembler to mingw32
+
 #ifdef __MINGW32__
-//      asm("Label:\n\t"
-//        "movl %%ebp,%0;\n\t"
-//        "movl %%esp,%1;\n\t"
-//        "movl $Label,%%eax;\n\t"
-//        "movl %%eax,;\n\t"
-//        :"=r"(Content.Epb),"=r"(Context.Esp),"=r"(Context.Eip)
-//        ://no input
-//        :"ebp","esp","eax");
+      asm("Label:\n\t"
+        "movl %%ebp,%0;\n\t"
+        "movl %%esp,%1;\n\t"
+        "movl $Label,%%eax;\n\t"
+        "movl %%eax,%2;\n\t"
+        :"=r"(Context.Ebp),"=r"(Context.Esp),"=r"(Context.Eip)
+        ://no input
+        :"eax");
 #else
     _asm {
     Label:
