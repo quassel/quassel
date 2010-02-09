@@ -24,11 +24,11 @@
     <file alias="oxygen/22x22/actions/edit-clear-locationbar-rtl.png">oxygen_kde/22x22/actions/edit-clear-locationbar-rtl.png</file>
     <file alias="oxygen/22x22/actions/list-add-user.png">oxygen_kde/22x22/actions/list-add-user.png</file>
     <file alias="oxygen/22x22/actions/dialog-close.png">oxygen_kde/22x22/actions/dialog-close.png</file>
-    <file alias="oxygen/22x22/actions/format-fill-color.png">oxygen_kde/22x22/actions/format-fill-color.png</file>
-    <file alias="oxygen/22x22/actions/format-text-bold.png">oxygen_kde/22x22/actions/format-text-bold.png</file>
-    <file alias="oxygen/22x22/actions/format-text-color.png">oxygen_kde/22x22/actions/format-text-color.png</file>
-    <file alias="oxygen/22x22/actions/format-text-italic.png">oxygen_kde/22x22/actions/format-text-italic.png</file>
-    <file alias="oxygen/22x22/actions/format-text-underline.png">oxygen_kde/22x22/actions/format-text-underline.png</file>
+    <file alias="oxygen/16x16/actions/format-fill-color.png">oxygen_kde/16x16/actions/format-fill-color.png</file>
+    <file alias="oxygen/16x16/actions/format-text-bold.png">oxygen_kde/16x16/actions/format-text-bold.png</file>
+    <file alias="oxygen/16x16/actions/format-text-color.png">oxygen_kde/16x16/actions/format-text-color.png</file>
+    <file alias="oxygen/16x16/actions/format-text-italic.png">oxygen_kde/16x16/actions/format-text-italic.png</file>
+    <file alias="oxygen/16x16/actions/format-text-underline.png">oxygen_kde/16x16/actions/format-text-underline.png</file>
     <file alias="oxygen/16x16/apps/quassel.png">oxygen_kde/16x16/apps/quassel.png</file>
     <file alias="oxygen/16x16/status/security-low.png">oxygen_kde/16x16/status/security-low.png</file>
     <file alias="oxygen/16x16/status/user-away.png">oxygen_kde/16x16/status/user-away.png</file>
