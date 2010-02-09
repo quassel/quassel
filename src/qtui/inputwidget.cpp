@@ -396,6 +396,7 @@ QTextCharFormat InputWidget::getFormatOfWordOrSelection() {
 
 void InputWidget::currentCharFormatChanged(const QTextCharFormat &format) {
   fontChanged(format.font());
+
   if (format.foreground().isOpaque())
     colorChanged(format.foreground().color());
   else
@@ -406,19 +407,19 @@ void InputWidget::currentCharFormatChanged(const QTextCharFormat &format) {
     colorHighlightChanged(Qt::transparent);
 }
 
-void InputWidget::on_boldButton_toggled(bool checked) {
+void InputWidget::on_boldButton_clicked(bool checked) {
   QTextCharFormat fmt;
   fmt.setFontWeight(checked ? QFont::Bold : QFont::Normal);
   mergeFormatOnWordOrSelection(fmt);
 }
 
-void InputWidget::on_underlineButton_toggled(bool checked) {
+void InputWidget::on_underlineButton_clicked(bool checked) {
   QTextCharFormat fmt;
   fmt.setFontUnderline(checked);
   mergeFormatOnWordOrSelection(fmt);
 }
 
-void InputWidget::on_italicButton_toggled(bool checked) {
+void InputWidget::on_italicButton_clicked(bool checked) {
   QTextCharFormat fmt;
   fmt.setFontItalic(checked);
   mergeFormatOnWordOrSelection(fmt);

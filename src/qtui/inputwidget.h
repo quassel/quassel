@@ -73,9 +73,9 @@ private slots:
 
   void currentCharFormatChanged(const QTextCharFormat &format);
   void on_showStyleButton_toggled(bool checked);
-  void on_boldButton_toggled(bool checked);
-  void on_italicButton_toggled(bool checked);
-  void on_underlineButton_toggled(bool checked);
+  void on_boldButton_clicked(bool checked);
+  void on_italicButton_clicked(bool checked);
+  void on_underlineButton_clicked(bool checked);
   void colorChoosen(QAction * action);
   void colorHighlightChoosen(QAction * action);
 
