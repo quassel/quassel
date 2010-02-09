@@ -394,6 +394,7 @@ QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
     line.replace("&amp;","&");
     line.replace("&lt;","<");
     line.replace("&gt;",">");
+    line.replace("&quot;","\"");
 
     result << line;
     posLines += regexLines.matchedLength();
@@ -465,6 +466,7 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString &text) {
       words[i].replace("&","&amp;");
       words[i].replace("<", "&lt;");
       words[i].replace(">", "&gt;");
+      words[i].replace("\"", "&quot;");
       if (style.isEmpty()) {
         words[i] = "<span>" + words[i] + "</span>";
       }
