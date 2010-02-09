@@ -60,22 +60,22 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
 
   connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
 
-  mircColorMap["00"] = "#ffffff";
-  mircColorMap["01"] = "#000000";
-  mircColorMap["02"] = "#000080";
-  mircColorMap["03"] = "#008000";
-  mircColorMap["04"] = "#ff0000";
-  mircColorMap["05"] = "#800000";
-  mircColorMap["06"] = "#800080";
-  mircColorMap["07"] = "#ffa500";
-  mircColorMap["08"] = "#ffff00";
-  mircColorMap["09"] = "#00ff00";
-  mircColorMap["10"] = "#008080";
-  mircColorMap["11"] = "#00ffff";
-  mircColorMap["12"] = "#4169e1";
-  mircColorMap["13"] = "#ff00ff";
-  mircColorMap["14"] = "#808080";
-  mircColorMap["15"] = "#c0c0c0";
+  _mircColorMap["00"] = "#ffffff";
+  _mircColorMap["01"] = "#000000";
+  _mircColorMap["02"] = "#000080";
+  _mircColorMap["03"] = "#008000";
+  _mircColorMap["04"] = "#ff0000";
+  _mircColorMap["05"] = "#800000";
+  _mircColorMap["06"] = "#800080";
+  _mircColorMap["07"] = "#ffa500";
+  _mircColorMap["08"] = "#ffff00";
+  _mircColorMap["09"] = "#00ff00";
+  _mircColorMap["10"] = "#008080";
+  _mircColorMap["11"] = "#00ffff";
+  _mircColorMap["12"] = "#4169e1";
+  _mircColorMap["13"] = "#ff00ff";
+  _mircColorMap["14"] = "#808080";
+  _mircColorMap["15"] = "#c0c0c0";
 
 }
 
@@ -359,10 +359,10 @@ QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
           QString color = regexColors.cap(2);
 
           if (colorType == "color")
-            mircFgColor = mircColorMap.key(color);
+            mircFgColor = _mircColorMap.key(color);
 
           if (colorType == "background-color")
-            mircBgColor = mircColorMap.key(color);
+            mircBgColor = _mircColorMap.key(color);
 
           posColors += regexColors.matchedLength();
         }
@@ -372,7 +372,7 @@ QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
         // we need a fg color to be able to use a bg color
         if (mircFgColor.isEmpty()) {
           //FIXME try to use the current forecolor
-          mircFgColor = mircColorMap.key(textColor().name());
+          mircFgColor = _mircColorMap.key(textColor().name());
           if (mircFgColor.isEmpty())
             mircFgColor = "01"; //use black if the current foreground color can't be converted
         }
@@ -450,12 +450,12 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString &text) {
           bg = words[i].mid(pos+4,2);
 
         style.append(" color:");
-        style.append(mircColorMap[fg]);
+        style.append(_mircColorMap[fg]);
         style.append(";");
 
         if (!bg.isEmpty()) {
           style.append(" background-color:");
-          style.append(mircColorMap[bg]);
+          style.append(_mircColorMap[bg]);
           style.append(";");
           len = 6;
         }

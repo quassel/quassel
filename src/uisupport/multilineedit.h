@@ -66,6 +66,10 @@ public:
   virtual QSize sizeHint() const;
   virtual QSize minimumSizeHint() const;
 
+  inline QString mircColorFromRGB(QString rgbColor) const { return _mircColorMap.key(rgbColor); }
+  inline QString rgbColorFromMirc(QString mircColor) const { return _mircColorMap[mircColor]; }
+  inline QMap<QString, QString>  mircColorMap() const { return _mircColorMap; }
+
 public slots:
   void setMode(Mode mode);
   void setMinHeight(int numLines);
@@ -112,7 +116,7 @@ private:
   QSize _sizeHint;
   qreal _lastDocumentHeight;
 
-  QHash<QString, QString> mircColorMap;
+  QMap<QString, QString> _mircColorMap;
 
   void reset();
   void showHistoryEntry();

@@ -72,26 +72,27 @@ private slots:
   BufferInfo currentBufferInfo() const;
 
   void currentCharFormatChanged(const QTextCharFormat &format);
-  void textBold();
-  void textUnderline();
-  void textItalic();
+  void on_showStyleButton_toggled(bool checked);
+  void on_boldButton_toggled(bool checked);
+  void on_italicButton_toggled(bool checked);
+  void on_underlineButton_toggled(bool checked);
+  void colorChoosen(QAction * action);
+  void colorHighlightChoosen(QAction * action);
 
 private:
   Ui::InputWidget ui;
 
   NetworkId _networkId;
   IdentityId _identityId;
-
-  Action *actionTextBold,
-  *actionTextUnderline,
-  *actionTextItalic,
-  *actionTextFgColor,
-  *actionTextBgColor;
+  QMenu *_colorMenu, *_colorFillMenu;
 
   void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
   void fontChanged(const QFont &f);
-  void colorChanged(const QColor &fg, const QColor &bg);
-
+  void colorChanged(const QColor &fg);
+  void colorHighlightChanged(const QColor &bg);
+  QIcon createColorToolButtonIcon(const QIcon &icon, QColor color);
+  QTextCharFormat getFormatOfWordOrSelection();
+  void setFormatOnWordOrSelection(const QTextCharFormat &format);
 };
 
 
