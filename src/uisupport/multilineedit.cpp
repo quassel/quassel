@@ -318,7 +318,12 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
 }
 
 QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
-  QRegExp regexLines = QRegExp("(?:<p.*>(.*)</p>\\n?)+", Qt::CaseInsensitive);
+  qWarning() << text;
+
+  QRegExp regexHtmlContent = QRegExp("<p.*>(.*)</p>", Qt::CaseInsensitive);
+  regexHtmlContent.setMinimal(true);
+
+  QRegExp regexLines = QRegExp("(.*)(?:<br />)?", Qt::CaseInsensitive);
   regexLines.setMinimal(true);
 
   QRegExp regexStyles = QRegExp("(?:((<span.*>)(.*)</span>))", Qt::CaseInsensitive);
@@ -328,79 +333,83 @@ QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
   regexStyles.setMinimal(true);
 
   QStringList result;
-  int posLines = 0;
-  QString line, line2, styleText, style, content;
+  QString htmlContent, line, line2, styleText, style, content;
 
-  while ((posLines = regexLines.indexIn(text, posLines)) != -1) {
-    line = line2 = regexLines.cap(1);
-    int posStyles = 0;
-    while ((posStyles = regexStyles.indexIn(line2, posStyles)) != -1) {
-      styleText = regexStyles.cap(1);
-      style = regexStyles.cap(2);
-      content = regexStyles.cap(3);
+  if (regexHtmlContent.indexIn((text)) > -1) {
+    htmlContent = regexHtmlContent.cap(1);
+    qWarning() << htmlContent;
+    QStringList lines = htmlContent.split("<br />");
+    for (int i=0; i < lines.count(); i++) {
+      line = line2 = lines[i];
+      int posStyles = 0;
+      while ((posStyles = regexStyles.indexIn(line2, posStyles)) != -1) {
+        styleText = regexStyles.cap(1);
+        style = regexStyles.cap(2);
+        content = regexStyles.cap(3);
 
-      if (style.contains("font-weight:600;")) {
-        content.prepend('\x02');
-        content.append('\x02');
-      }
-      if (style.contains("font-style:italic;")) {
-        content.prepend('\x1d');
-        content.append('\x1d');
-      }
-      if (style.contains("text-decoration: underline;")) {
-        content.prepend('\x1f');
-        content.append('\x1f');
-      }
-      if (style.contains("color:#")) { // we have either foreground or background color or both
-        int posColors = 0;
-        QString mircFgColor, mircBgColor;
-        while ((posColors = regexColors.indexIn(style, posColors)) != -1) {
-          QString colorType = regexColors.cap(1);
-          QString color = regexColors.cap(2);
-
-          if (colorType == "color")
-            mircFgColor = _mircColorMap.key(color);
-
-          if (colorType == "background-color")
-            mircBgColor = _mircColorMap.key(color);
-
-          posColors += regexColors.matchedLength();
+        if (style.contains("font-weight:600;")) {
+          content.prepend('\x02');
+          content.append('\x02');
         }
-        if (!mircBgColor.isEmpty())
-          content.prepend("," + mircBgColor);
+        if (style.contains("font-style:italic;")) {
+          content.prepend('\x1d');
+          content.append('\x1d');
+        }
+        if (style.contains("text-decoration: underline;")) {
+          content.prepend('\x1f');
+          content.append('\x1f');
+        }
+        if (style.contains("color:#")) { // we have either foreground or background color or both
+          int posColors = 0;
+          QString mircFgColor, mircBgColor;
+          while ((posColors = regexColors.indexIn(style, posColors)) != -1) {
+            QString colorType = regexColors.cap(1);
+            QString color = regexColors.cap(2);
 
-        // we need a fg color to be able to use a bg color
-        if (mircFgColor.isEmpty()) {
-          //FIXME try to use the current forecolor
-          mircFgColor = _mircColorMap.key(textColor().name());
-          if (mircFgColor.isEmpty())
-            mircFgColor = "01"; //use black if the current foreground color can't be converted
+            if (colorType == "color")
+              mircFgColor = _mircColorMap.key(color);
+
+            if (colorType == "background-color")
+              mircBgColor = _mircColorMap.key(color);
+
+            posColors += regexColors.matchedLength();
+          }
+          if (!mircBgColor.isEmpty())
+            content.prepend("," + mircBgColor);
+
+          // we need a fg color to be able to use a bg color
+          if (mircFgColor.isEmpty()) {
+            //FIXME try to use the current forecolor
+            mircFgColor = _mircColorMap.key(textColor().name());
+            if (mircFgColor.isEmpty())
+              mircFgColor = "01"; //use black if the current foreground color can't be converted
+          }
+
+          content.prepend(mircFgColor);
+          content.prepend('\x03');
+          content.append('\x03');
         }
 
-        content.prepend(mircFgColor);
-        content.prepend('\x03');
-        content.append('\x03');
+        line.replace(styleText, content);
+        posStyles += regexStyles.matchedLength();
       }
 
-      line.replace(styleText, content);
-      posStyles += regexStyles.matchedLength();
-    }
+      // get rid of all remaining html tags
+      QRegExp regexTags = QRegExp("<.*>",Qt::CaseInsensitive);
+      regexTags.setMinimal(true);
+      line.replace(regexTags, "");
 
-    // get rid of all remaining html tags
-    QRegExp regexTags = QRegExp("<.*>",Qt::CaseInsensitive);
-    regexTags.setMinimal(true);
-    line.replace(regexTags, "");
+      line.replace("&amp;","&");
+      line.replace("&lt;","<");
+      line.replace("&gt;",">");
+      line.replace("&quot;","\"");
 
-    line.replace("&amp;","&");
-    line.replace("&lt;","<");
-    line.replace("&gt;",">");
-    line.replace("&quot;","\"");
-
-    result << line;
-    posLines += regexLines.matchedLength();
+       qWarning() << line;
+       qWarning() << line2;
+       result << line;
+     }
   }
-
-  return result.join("\n").replace("<br />", "\n");
+  return result.join("\n");
 }
 
 QString MultiLineEdit::convertMircCodesToHtml(const QString &text) {
