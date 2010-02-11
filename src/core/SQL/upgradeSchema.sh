@@ -23,4 +23,4 @@ fi
 
 mkdir $NEW_VERSION
 git add $NEW_VERSION
-find $CURRENT_VERSION -depth 1 \! -name "upgrade_*" \! -name ".*" -exec git mv {} $NEW_VERSION \;
+find $CURRENT_VERSION -maxdepth 1 -type f \! -name "upgrade_*" \! -name ".*" -exec git mv {} $NEW_VERSION \;
