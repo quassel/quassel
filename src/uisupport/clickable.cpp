@@ -51,7 +51,7 @@ void Clickable::activate(NetworkId networkId, const QString &text) const {
 ClickableList ClickableList::fromString(const QString &str) {
   // For matching URLs
   static QString scheme("(?:(?:mailto:|(?:[+.-]?\\w)+://)|www(?=\\.\\S+\\.))");
-  static QString authority("(?:(?:[,.;@:]?[-\\w]+)+|\\[[0-9a-f:.]+\\])(?::\\d+)?");
+  static QString authority("(?:(?:[,.;@:]?[-\\w]+)+\\.?|\\[[0-9a-f:.]+\\])(?::\\d+)?");
   static QString urlChars("(?:[,.;:]*[\\w~@/?&=+$()!%#*{}\\[\\]\\|'^-])");
   static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");
 
