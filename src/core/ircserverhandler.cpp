@@ -84,6 +84,12 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
 
   QString foo = serverDecode(params.takeFirst());
 
+  // with SASL, the command is 'AUTHENTICATE +' and we should check for this here.
+  if(foo == QString("AUTHENTICATE +")) {
+    handleAuthenticate();
+    return;
+  }
+
   // a colon as the first chars indicates the existence of a prefix
   if(foo[0] == ':') {
     foo.remove(0, 1);
@@ -160,6 +166,11 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
       case 321: case 366: case 376:
         break;
 
+      case 903: case 904: case 905: case 906: case 907:
+      {
+        network()->putRawLine("CAP END");
+        emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "", "CAP: " + params.join(""));
+      }
       // Everything else will be marked in red, so we can add them somewhere.
       default:
         if(_whois) {
@@ -540,6 +551,31 @@ void IrcServerHandler::handleTopic(const QString &prefix, const QList<QByteArray
   channel->setTopic(topic);
 
   emit displayMsg(Message::Topic, BufferInfo::ChannelBuffer, channel->name(), tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel->name()).arg(topic));
+}
+
+void IrcServerHandler::handleCap(const QString &prefix, const QList<QByteArray> &params) {
+    // for SASL, there will only be a single param of 'sasl', however you can check here for
+    // additional CAP messages (ls, multi-prefix, et cetera).
+
+    Q_UNUSED(prefix);
+
+    if(params.size() == 3) {
+        QString param = serverDecode(params[2]);
+        if(param == QString("sasl")) {  // SASL Ready
+            network()->putRawLine(serverEncode("AUTHENTICATE PLAIN"));  // Only working with PLAIN atm, blowfish later
+        }
+    }
+}
+
+void IrcServerHandler::handleAuthenticate() {
+    QString construct = network()->saslAccount();
+    construct.append(QChar(QChar::Null));
+    construct.append(network()->saslAccount());
+    construct.append(QChar(QChar::Null));
+    construct.append(network()->saslPassword());
+    QByteArray saslData = QByteArray(construct.toAscii().toBase64());
+    saslData.prepend(QString("AUTHENTICATE ").toAscii());
+    network()->putRawLine(saslData);
 }
 
 /* RPL_WELCOME */

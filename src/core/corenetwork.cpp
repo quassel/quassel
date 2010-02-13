@@ -333,6 +333,9 @@ void CoreNetwork::socketInitialized() {
   _tokenBucket = _burstSize; // init with a full bucket
   _tokenBucketTimer.start(_messageDelay);
 
+  if(networkInfo().useSasl) {
+    putRawLine(serverEncode(QString("CAP REQ :sasl")));
+  }
   if(!server.password.isEmpty()) {
     putRawLine(serverEncode(QString("PASS %1").arg(server.password)));
   }

@@ -64,6 +64,9 @@ class Network : public SyncableObject {
   Q_PROPERTY(bool useAutoIdentify READ useAutoIdentify WRITE setUseAutoIdentify STORED false)
   Q_PROPERTY(QString autoIdentifyService READ autoIdentifyService WRITE setAutoIdentifyService STORED false)
   Q_PROPERTY(QString autoIdentifyPassword READ autoIdentifyPassword WRITE setAutoIdentifyPassword STORED false)
+  Q_PROPERTY(bool useSasl READ useSasl WRITE setUseSasl STORED false)
+  Q_PROPERTY(QString saslAccount READ saslAccount WRITE setSaslAccount STORED false)
+  Q_PROPERTY(QString saslPassword READ saslPassword WRITE setSaslPassword STORED false)
   Q_PROPERTY(bool useAutoReconnect READ useAutoReconnect WRITE setUseAutoReconnect STORED false)
   Q_PROPERTY(quint32 autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval STORED false)
   Q_PROPERTY(quint16 autoReconnectRetries READ autoReconnectRetries WRITE setAutoReconnectRetries STORED false)
@@ -153,6 +156,9 @@ public:
   inline bool useAutoIdentify() const { return _useAutoIdentify; }
   inline const QString &autoIdentifyService() const { return _autoIdentifyService; }
   inline const QString &autoIdentifyPassword() const { return _autoIdentifyPassword; }
+  inline bool useSasl() const { return _useSasl; }
+  inline const QString &saslAccount() const { return _saslAccount; }
+  inline const QString &saslPassword() const { return _saslPassword; }
   inline bool useAutoReconnect() const { return _useAutoReconnect; }
   inline quint32 autoReconnectInterval() const { return _autoReconnectInterval; }
   inline quint16 autoReconnectRetries() const { return _autoReconnectRetries; }
@@ -223,6 +229,9 @@ public slots:
   void setUseAutoIdentify(bool);
   void setAutoIdentifyService(const QString &);
   void setAutoIdentifyPassword(const QString &);
+  void setUseSasl(bool);
+  void setSaslAccount(const QString &);
+  void setSaslPassword(const QString &);
   virtual void setUseAutoReconnect(bool);
   virtual void setAutoReconnectInterval(quint32);
   virtual void setAutoReconnectRetries(quint16);
@@ -339,6 +348,10 @@ private:
   QString _autoIdentifyService;
   QString _autoIdentifyPassword;
 
+  bool _useSasl;
+  QString _saslAccount;
+  QString _saslPassword;
+
   bool _useAutoReconnect;
   quint32 _autoReconnectInterval;
   quint16 _autoReconnectRetries;
@@ -385,6 +398,10 @@ struct NetworkInfo {
   bool useAutoIdentify;
   QString autoIdentifyService;
   QString autoIdentifyPassword;
+
+  bool useSasl;
+  QString saslAccount;
+  QString saslPassword;
 
   bool useAutoReconnect;
   quint32 autoReconnectInterval;

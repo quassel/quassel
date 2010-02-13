@@ -47,6 +47,7 @@ Network::Network(const NetworkId &networkid, QObject *parent)
     _prefixModes(QString()),
     _useRandomServer(false),
     _useAutoIdentify(false),
+    _useSasl(false),
     _useAutoReconnect(false),
     _autoReconnectInterval(60),
     _autoReconnectRetries(10),
@@ -87,6 +88,9 @@ NetworkInfo Network::networkInfo() const {
   info.useAutoIdentify = useAutoIdentify();
   info.autoIdentifyService = autoIdentifyService();
   info.autoIdentifyPassword = autoIdentifyPassword();
+  info.useSasl = useSasl();
+  info.saslAccount = saslAccount();
+  info.saslPassword = saslPassword();
   info.useAutoReconnect = useAutoReconnect();
   info.autoReconnectInterval = autoReconnectInterval();
   info.autoReconnectRetries = autoReconnectRetries();
@@ -108,6 +112,9 @@ void Network::setNetworkInfo(const NetworkInfo &info) {
   if(info.useAutoIdentify != useAutoIdentify()) setUseAutoIdentify(info.useAutoIdentify);
   if(info.autoIdentifyService != autoIdentifyService()) setAutoIdentifyService(info.autoIdentifyService);
   if(info.autoIdentifyPassword != autoIdentifyPassword()) setAutoIdentifyPassword(info.autoIdentifyPassword);
+  if(info.useSasl != useSasl()) setUseSasl(info.useSasl);
+  if(info.saslAccount != saslAccount()) setSaslAccount(info.saslAccount);
+  if(info.saslPassword != saslPassword()) setSaslPassword(info.saslPassword);
   if(info.useAutoReconnect != useAutoReconnect()) setUseAutoReconnect(info.useAutoReconnect);
   if(info.autoReconnectInterval != autoReconnectInterval()) setAutoReconnectInterval(info.autoReconnectInterval);
   if(info.autoReconnectRetries != autoReconnectRetries()) setAutoReconnectRetries(info.autoReconnectRetries);
@@ -566,6 +573,24 @@ void Network::setAutoIdentifyPassword(const QString &password) {
   emit configChanged();
 }
 
+void Network::setUseSasl(bool use) {
+    _useSasl = use;
+    SYNC(ARG(use))
+    emit configChanged();
+}
+
+void Network::setSaslAccount(const QString &account) {
+    _saslAccount = account;
+    SYNC(ARG(account))
+    emit configChanged();
+}
+
+void Network::setSaslPassword(const QString &password) {
+    _saslPassword = password;
+    SYNC(ARG(password))
+    emit configChanged();
+}
+
 void Network::setUseAutoReconnect(bool use) {
   _useAutoReconnect = use;
   SYNC(ARG(use))
@@ -758,6 +783,7 @@ NetworkInfo::NetworkInfo()
   useRandomServer(false),
   useAutoIdentify(false),
   autoIdentifyService("NickServ"),
+  useSasl(false),
   useAutoReconnect(true),
   autoReconnectInterval(60),
   autoReconnectRetries(20),
@@ -780,6 +806,9 @@ bool NetworkInfo::operator==(const NetworkInfo &other) const {
   if(useAutoIdentify != other.useAutoIdentify) return false;
   if(autoIdentifyService != other.autoIdentifyService) return false;
   if(autoIdentifyPassword != other.autoIdentifyPassword) return false;
+  if(useSasl != other.useSasl) return false;
+  if(saslAccount != other.saslAccount) return false;
+  if(saslPassword != other.saslPassword) return false;
   if(useAutoReconnect != other.useAutoReconnect) return false;
   if(autoReconnectInterval != other.autoReconnectInterval) return false;
   if(autoReconnectRetries != other.autoReconnectRetries) return false;
@@ -806,6 +835,9 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info) {
   i["UseAutoIdentify"] = info.useAutoIdentify;
   i["AutoIdentifyService"] = info.autoIdentifyService;
   i["AutoIdentifyPassword"] = info.autoIdentifyPassword;
+  i["UseSasl"] = info.useSasl;
+  i["SaslAccount"] = info.saslAccount;
+  i["SaslPassword"] = info.saslPassword;
   i["UseAutoReconnect"] = info.useAutoReconnect;
   i["AutoReconnectInterval"] = info.autoReconnectInterval;
   i["AutoReconnectRetries"] = info.autoReconnectRetries;
@@ -830,6 +862,9 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
   info.useAutoIdentify = i["UseAutoIdentify"].toBool();
   info.autoIdentifyService = i["AutoIdentifyService"].toString();
   info.autoIdentifyPassword = i["AutoIdentifyPassword"].toString();
+  info.useSasl = i["UseSasl"].toBool();
+  info.saslAccount = i["SaslAccount"].toString();
+  info.saslPassword = i["SaslPassword"].toString();
   info.useAutoReconnect = i["UseAutoReconnect"].toBool();
   info.autoReconnectInterval = i["AutoReconnectInterval"].toUInt();
   info.autoReconnectRetries = i["AutoReconnectRetries"].toInt();
@@ -843,7 +878,8 @@ QDebug operator<<(QDebug dbg, const NetworkInfo &i) {
 		<< " codecForServer = " << i.codecForServer << " codecForEncoding = " << i.codecForEncoding << " codecForDecoding = " << i.codecForDecoding
 		<< " serverList = " << i.serverList << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform
 		<< " useAutoIdentify = " << i.useAutoIdentify << " autoIdentifyService = " << i.autoIdentifyService << " autoIdentifyPassword = " << i.autoIdentifyPassword
-		<< " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
+                << " useSasl = " << i.useSasl << " saslAccount = " << i.saslAccount << " saslPassword = " << i.saslPassword
+                << " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
 		<< " autoReconnectRetries = " << i.autoReconnectRetries << " unlimitedReconnectRetries = " << i.unlimitedReconnectRetries
 		<< " rejoinChannels = " << i.rejoinChannels << ")";
   return dbg.space();

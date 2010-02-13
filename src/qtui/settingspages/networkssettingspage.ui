@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>515</width>
-    <height>453</height>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -548,6 +548,64 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
            </widget>
           </item>
           <item>
+           <widget class="QGroupBox" name="sasl">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="title">
+             <string>Use SASL Authentication</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="saslAccount">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="saslPassword">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="echoMode">
+                <enum>QLineEdit::Password</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Password:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Account:</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -718,7 +776,6 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
   <tabstop>reconnectRetries</tabstop>
   <tabstop>unlimitedRetries</tabstop>
   <tabstop>rejoinOnReconnect</tabstop>
-  <tabstop>autoIdentify</tabstop>
   <tabstop>autoIdentifyService</tabstop>
   <tabstop>autoIdentifyPassword</tabstop>
   <tabstop>useCustomEncodings</tabstop>
@@ -735,12 +792,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>173</x>
-     <y>296</y>
+     <x>317</x>
+     <y>331</y>
     </hint>
     <hint type="destinationlabel">
-     <x>118</x>
-     <y>294</y>
+     <x>209</x>
+     <y>334</y>
     </hint>
    </hints>
   </connection>

@@ -591,6 +591,9 @@ void SqliteStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info) {
   query.bindValue(":useautoidentify", info.useAutoIdentify ? 1 : 0);
   query.bindValue(":autoidentifyservice", info.autoIdentifyService);
   query.bindValue(":autoidentifypassword", info.autoIdentifyPassword);
+  query.bindValue(":usesasl", info.useSasl ? 1 : 0);
+  query.bindValue(":saslaccount", info.saslAccount);
+  query.bindValue(":saslpassword", info.saslPassword);
   query.bindValue(":useautoreconnect", info.useAutoReconnect ? 1 : 0);
   query.bindValue(":autoreconnectinterval", info.autoReconnectInterval);
   query.bindValue(":autoreconnectretries", info.autoReconnectRetries);
@@ -780,6 +783,9 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user) {
         net.autoReconnectRetries = networksQuery.value(13).toInt();
         net.unlimitedReconnectRetries = networksQuery.value(14).toInt() == 1 ? true : false;
         net.rejoinChannels = networksQuery.value(15).toInt() == 1 ? true : false;
+        net.useSasl = networksQuery.value(16).toInt() == 1 ? true : false;
+        net.saslAccount = networksQuery.value(17).toString();
+        net.saslPassword = networksQuery.value(18).toString();
 
         serversQuery.bindValue(":networkid", net.networkId.toInt());
         safeExec(serversQuery);

@@ -568,6 +568,9 @@ void PostgreSqlStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &inf
   query.bindValue(":useautoidentify", info.useAutoIdentify);
   query.bindValue(":autoidentifyservice", info.autoIdentifyService);
   query.bindValue(":autoidentifypassword", info.autoIdentifyPassword);
+  query.bindValue(":usesasl", info.useSasl);
+  query.bindValue(":saslaccount", info.saslAccount);
+  query.bindValue(":saslpassword", info.saslPassword);
   query.bindValue(":useautoreconnect", info.useAutoReconnect);
   query.bindValue(":autoreconnectinterval", info.autoReconnectInterval);
   query.bindValue(":autoreconnectretries", info.autoReconnectRetries);
@@ -707,6 +710,9 @@ QList<NetworkInfo> PostgreSqlStorage::networks(UserId user) {
     net.autoReconnectRetries = networksQuery.value(13).toInt();
     net.unlimitedReconnectRetries = networksQuery.value(14).toBool();
     net.rejoinChannels = networksQuery.value(15).toBool();
+    net.useSasl = networksQuery.value(16).toBool();
+    net.saslAccount = networksQuery.value(17).toString();
+    net.saslPassword = networksQuery.value(18).toString();
 
     serversQuery.bindValue(":networkid", net.networkId.toInt());
     safeExec(serversQuery);

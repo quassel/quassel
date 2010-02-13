@@ -78,6 +78,9 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
   connect(ui.autoIdentify, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.autoIdentifyService, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
   connect(ui.autoIdentifyPassword, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
+  connect(ui.sasl, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.saslAccount, SIGNAL(textEdited(QString)), this, SLOT(widgetHasChanged()));
+  connect(ui.saslPassword, SIGNAL(textEdited(QString)), this, SLOT(widgetHasChanged()));
   connect(ui.useCustomEncodings, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.sendEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.recvEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
@@ -429,6 +432,9 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     ui.autoIdentify->setChecked(info.useAutoIdentify);
     ui.autoIdentifyService->setText(info.autoIdentifyService);
     ui.autoIdentifyPassword->setText(info.autoIdentifyPassword);
+    ui.sasl->setChecked(info.useSasl);
+    ui.saslAccount->setText(info.saslAccount);
+    ui.saslPassword->setText(info.saslPassword);
     if(info.codecForEncoding.isEmpty()) {
       ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(Network::defaultCodecForEncoding()));
       ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(Network::defaultCodecForDecoding()));
@@ -452,6 +458,8 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     ui.performEdit->clear();
     ui.autoIdentifyService->clear();
     ui.autoIdentifyPassword->clear();
+    ui.saslAccount->clear();
+    ui.saslPassword->clear();
     setWidgetStates();
   }
   _ignoreWidgetChanges = false;
@@ -465,6 +473,9 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info) {
   info.useAutoIdentify = ui.autoIdentify->isChecked();
   info.autoIdentifyService = ui.autoIdentifyService->text();
   info.autoIdentifyPassword = ui.autoIdentifyPassword->text();
+  info.useSasl = ui.sasl->isChecked();
+  info.saslAccount = ui.saslAccount->text();
+  info.saslPassword = ui.saslPassword->text();
   if(!ui.useCustomEncodings->isChecked()) {
     info.codecForEncoding.clear();
     info.codecForDecoding.clear();
