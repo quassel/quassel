@@ -181,7 +181,6 @@ void IrcUser::setHost(const QString &host) {
 
 void IrcUser::setNick(const QString &nick) {
   if(!nick.isEmpty() && nick != _nick) {
-    qDebug() << "setNick" << this << _nick << nick;
     _nick = nick;
     updateObjectName();
     SYNC(ARG(nick))

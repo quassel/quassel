@@ -1103,6 +1103,24 @@ void IrcServerHandler::handle433(const QString &prefix, const QList<QByteArray> 
   tryNextNick(errnick);
 }
 
+/* ERR_UNAVAILRESOURCE */
+void IrcServerHandler::handle437(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  if(!checkParamCount("IrcServerHandler::handle437()", params, 1))
+    return;
+
+  QString errnick = serverDecode(params[0]);
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Nick/channel is temporarily unavailable: %1").arg(errnick));
+
+  // if there is a problem while connecting to the server -> we handle it
+  // but only if our connection has not been finished yet...
+  if(!network()->currentServer().isEmpty())
+    return;
+
+  if(!network()->isChannelName(errnick))
+    tryNextNick(errnick);
+}
+
 /* Handle signals from Netsplit objects  */
 
 void IrcServerHandler::handleNetsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes, const QString& quitMessage)

@@ -80,6 +80,7 @@ public slots:
   void handle369(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOWAS
   void handle432(const QString &prefix, const QList<QByteArray> &params);   // ERR_ERRONEUSNICKNAME
   void handle433(const QString &prefix, const QList<QByteArray> &params);   // ERR_NICKNAMEINUSE
+  void handle437(const QString &prefix, const QList<QByteArray> &params);   // ERR_UNAVAILRESOURCE
 
   void defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &params);
 
