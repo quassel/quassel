@@ -37,6 +37,10 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
 : SettingsPage(tr("IRC"), tr("Networks"), parent) {
   ui.setupUi(this);
 
+  // hide SASL options for older cores
+  if(!(Client::coreFeatures() & Quassel::SaslAuthentication))
+    ui.sasl->hide();
+
   // set up icons
   ui.renameNetwork->setIcon(SmallIcon("edit-rename"));
   ui.addNetwork->setIcon(SmallIcon("list-add"));

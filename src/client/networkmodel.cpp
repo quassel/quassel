@@ -235,7 +235,7 @@ void BufferItem::clearActivityLevel() {
   _firstUnreadMsgId = MsgId();
 
   // FIXME remove with core proto v11
-  if(!Client::coreFeatures() & Quassel::SynchronizedMarkerLine) {
+  if(!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
     _markerLineMsgId = _lastSeenMsgId;
   }
 
@@ -319,7 +319,7 @@ void BufferItem::setLastSeenMsgId(MsgId msgId) {
   _lastSeenMsgId = msgId;
 
   // FIXME remove with core protocol v11
-  if(!Client::coreFeatures() & Quassel::SynchronizedMarkerLine) {
+  if(!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
     if(!isCurrentBuffer())
       _markerLineMsgId = msgId;
   }

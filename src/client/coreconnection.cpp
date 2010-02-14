@@ -474,6 +474,8 @@ void CoreConnection::clientInitAck(const QVariantMap &msg) {
     return;
   }
 
+  Client::setCoreFeatures((Quassel::Features)msg["CoreFeatures"].toUInt());
+
 #ifndef QT_NO_COMPRESS
   if(msg["SupportsCompression"].toBool()) {
     _socket->setProperty("UseCompression", true);
