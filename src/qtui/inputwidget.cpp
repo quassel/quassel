@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -85,9 +85,9 @@ InputWidget::InputWidget(QWidget *parent)
   _colorFillMenu->addAction(pix, tr("Clear Color"))->setData("");
 
   ui.textcolorButton->setMenu(_colorMenu);
-  connect(_colorMenu, SIGNAL(triggered(QAction*)), this, SLOT(colorChoosen(QAction*)));
+  connect(_colorMenu, SIGNAL(triggered(QAction*)), this, SLOT(colorChosen(QAction*)));
   ui.highlightcolorButton->setMenu(_colorFillMenu);
-  connect(_colorFillMenu, SIGNAL(triggered(QAction*)), this, SLOT(colorHighlightChoosen(QAction*)));
+  connect(_colorFillMenu, SIGNAL(triggered(QAction*)), this, SLOT(colorHighlightChosen(QAction*)));
 
   new TabCompleter(ui.inputEdit);
 
@@ -432,7 +432,7 @@ void InputWidget::fontChanged(const QFont &f)
   ui.underlineButton->setChecked(f.underline());
 }
 
-void InputWidget::colorChoosen(QAction * action) {
+void InputWidget::colorChosen(QAction *action) {
   QTextCharFormat fmt;
   QColor color;
   if (qVariantValue<QString>(action->data()) == "") {
@@ -450,7 +450,7 @@ void InputWidget::colorChoosen(QAction * action) {
   ui.textcolorButton->setIcon(createColorToolButtonIcon(SmallIcon("format-text-color"), color));
 }
 
-void InputWidget::colorHighlightChoosen(QAction * action) {
+void InputWidget::colorHighlightChosen(QAction *action) {
   QTextCharFormat fmt;
   QColor color;
   if (qVariantValue<QString>(action->data()) == "") {
@@ -496,7 +496,7 @@ void InputWidget::on_showStyleButton_toggled(bool checked) {
   }
 }
 
-QIcon InputWidget::createColorToolButtonIcon(const QIcon &icon, QColor color) {
+QIcon InputWidget::createColorToolButtonIcon(const QIcon &icon, const QColor &color) {
   QPixmap pixmap(16, 16);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);

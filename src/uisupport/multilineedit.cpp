@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -318,8 +318,6 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
 }
 
 QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
-  qWarning() << text;
-
   QRegExp regexHtmlContent = QRegExp("<p.*>(.*)</p>", Qt::CaseInsensitive);
   regexHtmlContent.setMinimal(true);
 
@@ -337,7 +335,6 @@ QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
 
   if (regexHtmlContent.indexIn((text)) > -1) {
     htmlContent = regexHtmlContent.cap(1);
-    qWarning() << htmlContent;
     QStringList lines = htmlContent.split("<br />");
     for (int i=0; i < lines.count(); i++) {
       line = line2 = lines[i];
@@ -404,10 +401,8 @@ QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
       line.replace("&gt;",">");
       line.replace("&quot;","\"");
 
-       qWarning() << line;
-       qWarning() << line2;
-       result << line;
-     }
+      result << line;
+    }
   }
   return result.join("\n");
 }

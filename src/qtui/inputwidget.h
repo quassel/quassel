@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -76,8 +76,8 @@ private slots:
   void on_boldButton_clicked(bool checked);
   void on_italicButton_clicked(bool checked);
   void on_underlineButton_clicked(bool checked);
-  void colorChoosen(QAction * action);
-  void colorHighlightChoosen(QAction * action);
+  void colorChosen(QAction *action);
+  void colorHighlightChosen(QAction *action);
 
 private:
   Ui::InputWidget ui;
@@ -90,7 +90,7 @@ private:
   void fontChanged(const QFont &f);
   void colorChanged(const QColor &fg);
   void colorHighlightChanged(const QColor &bg);
-  QIcon createColorToolButtonIcon(const QIcon &icon, QColor color);
+  QIcon createColorToolButtonIcon(const QIcon &icon, const QColor &color);
   QTextCharFormat getFormatOfWordOrSelection();
   void setFormatOnWordOrSelection(const QTextCharFormat &format);
 };
