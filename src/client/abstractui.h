@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +22,8 @@
 #define QUASSELUI_H
 
 #include <QObject>
-#include "message.h"
+#include <QVariantMap>
+//#include "message.h"
 
 class MessageFilter;
 class MessageModel;
@@ -35,26 +36,20 @@ class QMenu;
 class AbstractUi : public QObject {
   Q_OBJECT
 
-  public:
-    AbstractUi(QObject *parent = 0);
-    virtual ~AbstractUi() {};
-    virtual void init() = 0;  // called after the client is initialized
-    virtual MessageModel *createMessageModel(QObject *parent) = 0;
-    virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
+public:
+  AbstractUi(QObject *parent = 0) : QObject(parent) {}
+  virtual ~AbstractUi() {}
+  virtual void init() = 0;  // called after the client is initialized
+  virtual MessageModel *createMessageModel(QObject *parent) = 0;
+  virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
 
-    inline static bool isVisible() { return _visible; }
-    inline static void setVisible(bool visible) { _visible = visible; }
+protected slots:
+  virtual void connectedToCore() {}
+  virtual void disconnectedFromCore() {}
 
-  protected slots:
-    virtual void connectedToCore() {}
-    virtual void disconnectedFromCore() {}
-
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-
-  private:
-    static bool _visible;
+signals:
+  void connectToCore(const QVariantMap &connInfo);
+  void disconnectFromCore();
 };
 
 #endif

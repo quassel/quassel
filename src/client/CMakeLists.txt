@@ -8,7 +8,6 @@ include(${QT_USE_FILE})
 
 set(SOURCES
     abstractmessageprocessor.cpp
-    abstractui.cpp
     backlogrequester.cpp
     buffermodel.cpp
     buffersettings.cpp
