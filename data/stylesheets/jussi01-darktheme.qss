@@ -66,8 +66,40 @@ ChatListItem[state="inactive"] { foreground: #a0a0a4; }
 ChatListItem[state="channel-event"] { foreground: #008000; }
 ChatListItem[state="unread-message"] { foreground: #ff7b00; }
 ChatListItem[state="highlighted"] { foreground: #ff00bf; }
+BufferView { background: #131313; }
 
 // NickView Colors
 NickListItem[type="category"] { foreground: #debc85; }
 NickListItem[type="user"] { foreground: #debc85; }
 NickListItem[type="user", state="away"] { foreground: #a0a0a4; }
+NickView { background: #131313; }
+
+MultiLineEdit { background: #131313; color: #debc85; }
+StyledLabel#topicLabel { background: #131313; }
+ChatLine#topic { foreground: #debc85; }
+
+// Miscellaneous Colors
+QTreeView::item:selected { color: #00004b; }
+ChatMonitorSettingsPage BufferView::item { color: #debc85; }QTreeView#settingsTree { background: #131313; }
+QTreeView::item#settingsTree { color: #debc85; }
+QLineEdit:enabled { background: #131313; color: #debc85; }
+QSpinBox:enabled { background: #131313; color: #debc85; }
+QTableWidget { background-color: #131313; color: #debc85; }
+QListWidget { background-color: #131313; color: #debc85; }
+
+QTableView {
+  alternate-background-color: #42403B;
+  background-color: #42403B;
+  color: #debc85; }
+
+Palette {
+  link: #539FA3; link-visited: #845B90;
+
+  window: #2b2b2b; window-text: #debc85; text: #00004b;
+
+  light: #B7B4AC; midlight: #debc85;  button: #292929;
+  mid: #202553; dark: #000533; button-text: #B6B3AB; }
+
+StyledLabel#topicLabel { background: #282828; }
+MultiLineEdit { background: #131313; color: #debc85; }
+
