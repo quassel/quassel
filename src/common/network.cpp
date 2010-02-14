@@ -574,21 +574,21 @@ void Network::setAutoIdentifyPassword(const QString &password) {
 }
 
 void Network::setUseSasl(bool use) {
-    _useSasl = use;
-    SYNC(ARG(use))
-    emit configChanged();
+  _useSasl = use;
+  SYNC(ARG(use))
+  emit configChanged();
 }
 
 void Network::setSaslAccount(const QString &account) {
-    _saslAccount = account;
-    SYNC(ARG(account))
-    emit configChanged();
+  _saslAccount = account;
+  SYNC(ARG(account))
+  emit configChanged();
 }
 
 void Network::setSaslPassword(const QString &password) {
-    _saslPassword = password;
-    SYNC(ARG(password))
-    emit configChanged();
+  _saslPassword = password;
+  SYNC(ARG(password))
+  emit configChanged();
 }
 
 void Network::setUseAutoReconnect(bool use) {

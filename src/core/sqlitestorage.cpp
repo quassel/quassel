@@ -1736,6 +1736,9 @@ bool SqliteMigrationReader::readMo(NetworkMO &network) {
   network.awaymessage = value(19).toString();
   network.attachperform = value(20).toString();
   network.detachperform = value(21).toString();
+  network.usesasl = value(22).toInt() == 1 ? true : false;
+  network.saslaccount = value(23).toString();
+  network.saslpassword = value(24).toString();
   return true;
 }
 

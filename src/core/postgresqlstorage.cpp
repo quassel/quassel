@@ -1660,6 +1660,9 @@ bool PostgreSqlMigrationWriter::writeMo(const NetworkMO &network) {
   bindValue(19, network.awaymessage);
   bindValue(20, network.attachperform);
   bindValue(21, network.detachperform);
+  bindValue(22, network.usesasl);
+  bindValue(23, network.saslaccount);
+  bindValue(24, network.saslpassword);
   return exec();
 }
 

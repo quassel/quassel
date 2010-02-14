@@ -187,6 +187,9 @@ public:
     QString awaymessage;
     QString attachperform;
     QString detachperform;
+    bool usesasl;
+    QString saslaccount;
+    QString saslpassword;
   };
 
   struct BufferMO {
