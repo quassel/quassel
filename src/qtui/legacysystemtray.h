@@ -37,10 +37,11 @@ class LegacySystemTray : public SystemTray {
   Q_OBJECT
 
 public:
-  LegacySystemTray(QObject *parent = 0);
+  explicit LegacySystemTray(QWidget *parent);
   virtual ~LegacySystemTray() {}
   virtual void init();
 
+  virtual bool isVisible() const;
   virtual inline bool isSystemTrayAvailable() const;
   virtual Icon stateIcon() const; // overriden to care about blinkState
 
@@ -48,6 +49,8 @@ public slots:
   virtual void setState(State state);
   virtual void setVisible(bool visible = true);
   virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
+
+protected slots:
 
 protected:
   virtual void setMode(Mode mode);

@@ -167,5 +167,5 @@ void QtUi::notificationActivated(uint notificationId) {
   }
   closeNotification(notificationId);
 
-  mainWindow()->forceActivated();
+  activateMainWidget();
 }

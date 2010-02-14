@@ -135,10 +135,6 @@ MainWin::MainWin(QWidget *parent)
     _awayLog(0),
     _layoutLoaded(false)
 {
-#ifdef Q_WS_WIN
-  dwTickCount = 0;
-#endif
-
   QtUiSettings uiSettings;
   QString style = uiSettings.value("Style", QString()).toString();
   if(!style.isEmpty()) {
@@ -279,8 +275,8 @@ void MainWin::restoreStateFromSettings(UiSettings &s) {
   move(_normalPos);
 #endif
 
-  if(s.value("MainWinHidden").toBool())
-    hideToTray();
+  if(s.value("MainWinHidden").toBool() && systemTray()->isSystemTrayAvailable())
+    systemTray()->hideMainWidget();
   else if(s.value("MainWinMinimized").toBool())
     showMinimized();
   else if(maximized)
@@ -749,9 +745,7 @@ void MainWin::setConnectedState() {
 
   _coreConnectionStatusWidget->setVisible(!Client::internalCore());
   updateIcon();
-#ifndef QT_NO_SYSTEMTRAYICON
   systemTray()->setState(SystemTray::Active);
-#endif
 
   if(Client::networkIds().isEmpty()) {
     IrcConnectionWizard *wizard = new IrcConnectionWizard(this, Qt::Sheet);
@@ -1011,86 +1005,17 @@ void MainWin::resizeEvent(QResizeEvent *event) {
 }
 
 void MainWin::closeEvent(QCloseEvent *event) {
-#ifndef QT_NO_SYSTEMTRAYICON
   QtUiSettings s;
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   Q_ASSERT(app);
-  if(!app->isAboutToQuit() && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
-    hideToTray();
+  if(!app->isAboutToQuit()
+    && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool() && systemTray()->isSystemTrayAvailable()) {
+    systemTray()->hideMainWidget();
     event->ignore();
   } else {
     event->accept();
     quit();
   }
-#else
-  event->accept();
-  quit();
-#endif
-}
-
-void MainWin::changeEvent(QEvent *event) {
-#ifdef Q_WS_WIN
-  if(event->type() == QEvent::ActivationChange)
-    dwTickCount = GetTickCount();  // needed for toggleMinimizedToTray()
-#endif
-
-  QMainWindow::changeEvent(event);
-}
-
-void MainWin::hideToTray() {
-  if(!systemTray()->isSystemTrayAvailable()) {
-    qWarning() << Q_FUNC_INFO << "was called with no SystemTray available!";
-    return;
-  }
-  hide();
-  systemTray()->setVisible();
-}
-
-void MainWin::toggleMinimizedToTray() {
-#ifdef Q_WS_WIN
-  // the problem is that we lose focus when the systray icon is activated
-  // and we don't know the former active window
-  // therefore we watch for activation event and use our stopwatch :)
-  // courtesy: KSystemTrayIcon
-  if(GetTickCount() - dwTickCount >= 300)
-    // we weren't active in the last 300ms -> activate
-    forceActivated();
-  else
-    hideToTray();
-
-#else
-
-  if(!isVisible() || isMinimized())
-    // restore
-    forceActivated();
-  else
-    hideToTray();
-
-#endif
-}
-
-void MainWin::forceActivated() {
-#ifdef HAVE_KDE
-  show();
-  KWindowSystem::forceActiveWindow(winId());
-#else
-
-#ifdef Q_WS_X11
-  // Bypass focus stealing prevention
-  QX11Info::setAppUserTime(QX11Info::appTime());
-#endif
-
-  if(windowState() & Qt::WindowMinimized) {
-    // restore
-    setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
-  }
-
-  // this does not actually work on all platforms... and causes more evil than good
-  // move(frameGeometry().topLeft()); // avoid placement policies
-  show();
-  raise();
-  activateWindow();
-#endif /* HAVE_KDE */
 }
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {

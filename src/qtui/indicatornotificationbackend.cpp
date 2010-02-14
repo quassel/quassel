@@ -51,7 +51,7 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
     .arg(XSTR(XDG_APPS_INSTALL_DIR))
     .arg(QCoreApplication::applicationFilePath().section('/', -1));
   _server->setDesktopFile(desktopFile);
-  connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(forceActivated()));
+  connect(_server, SIGNAL(serverDisplay()), SLOT(activateMainWidget()));
 
   if (_enabled) {
     _server->show();
@@ -60,6 +60,10 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
 
 IndicatorNotificationBackend::~IndicatorNotificationBackend() {
   qDeleteAll(_indicatorHash);
+}
+
+void IndicatorNotificationBackend::activateMainWidget() {
+  GraphicalUi::activateMainWidget();
 }
 
 void IndicatorNotificationBackend::notify(const Notification &notification) {

@@ -23,11 +23,20 @@
 #include "actioncollection.h"
 #include "contextmenuactionprovider.h"
 
+#ifdef Q_WS_X11
+#  include <QX11Info>
+#endif
+#ifdef HAVE_KDE
+#  include <KWindowInfo>
+#  include <KWindowSystem>
+#endif
+
 QWidget *GraphicalUi::_mainWidget = 0;
 QHash<QString, ActionCollection *> GraphicalUi::_actionCollections;
 ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = 0;
 ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
 UiStyle *GraphicalUi::_uiStyle = 0;
+bool GraphicalUi::_onAllDesktops = false;
 
 GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent)
 {
@@ -58,4 +67,56 @@ void GraphicalUi::setToolBarActionProvider(ToolBarActionProvider *provider) {
 
 void GraphicalUi::setUiStyle(UiStyle *style) {
   _uiStyle = style;
+}
+
+void GraphicalUi::activateMainWidget() {
+#ifdef HAVE_KDE
+#  ifdef Q_WS_X11
+    KWindowInfo info = KWindowSystem::windowInfo(mainWidget()->winId(), NET::WMDesktop | NET::WMFrameExtents);
+    if(_onAllDesktops) {
+      KWindowSystem::setOnAllDesktops(mainWidget()->winId(), true);
+    } else {
+      KWindowSystem::setCurrentDesktop(info.desktop());
+    }
+
+    mainWidget()->move(info.frameGeometry().topLeft()); // avoid placement policies
+    mainWidget()->show();
+    mainWidget()->raise();
+    KWindowSystem::raiseWindow(mainWidget()->winId());
+    KWindowSystem::activateWindow(mainWidget()->winId());
+#  else
+    mainWidget()->show();
+    KWindowSystem::raiseWindow(mainWidget()->winId());
+    KWindowSystem::forceActiveWindow(mainWidget()->winId());
+#  endif
+
+#else /* HAVE_KDE */
+
+#ifdef Q_WS_X11
+  // Bypass focus stealing prevention
+  QX11Info::setAppUserTime(QX11Info::appTime());
+#endif
+
+  if(mainWidget()->windowState() & Qt::WindowMinimized) {
+    // restore
+    mainWidget()->setWindowState((mainWidget()->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+  }
+
+  // this does not actually work on all platforms... and causes more evil than good
+  // mainWidget()->move(mainWidget()->frameGeometry().topLeft()); // avoid placement policies
+  mainWidget()->show();
+  mainWidget()->raise();
+  mainWidget()->activateWindow();
+
+#endif /* HAVE_KDE */
+}
+
+void GraphicalUi::hideMainWidget() {
+
+#if defined(HAVE_KDE) && defined(Q_WS_X11)
+  KWindowInfo info = KWindowSystem::windowInfo(mainWidget()->winId(), NET::WMDesktop | NET::WMFrameExtents);
+  _onAllDesktops = info.onAllDesktops();
+#endif
+
+  mainWidget()->hide();
 }

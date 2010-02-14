@@ -49,6 +49,7 @@ public:
   virtual SettingsPage *createConfigWidget() const;
 
 private slots:
+  void activateMainWidget();
   void enabledChanged(const QVariant &);
   void indicatorDisplayed(QIndicate::Indicator *);
 

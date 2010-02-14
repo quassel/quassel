@@ -27,10 +27,6 @@
 #  include <QMainWindow>
 #endif
 
-#ifdef Q_WS_WIN
-#  include <windows.h>
-#endif
-
 #include "qtui.h"
 #include "titlesetter.h"
 #include "uisettings.h"
@@ -88,17 +84,12 @@ class MainWin
 
   public slots:
     void showStatusBarMessage(const QString &message);
-    void toggleMinimizedToTray();
-
-    //! Bring window to front and focus it
-    void forceActivated();
 
     //! Quit application
     void quit();
 
   protected:
     void closeEvent(QCloseEvent *event);
-    void changeEvent(QEvent *event);
     void moveEvent(QMoveEvent *event);
     void resizeEvent(QResizeEvent *event);
 
@@ -188,8 +179,6 @@ class MainWin
     void updateIcon();
     void enableMenus();
 
-    void hideToTray();
-
     QList<BufferViewDock *> _bufferViews;
     BufferWidget *_bufferWidget;
     NickListWidget *_nickListWidget;
@@ -207,10 +196,6 @@ class MainWin
 
     QSize _normalSize; //!< Size of the non-maximized window
     QPoint _normalPos; //!< Position of the non-maximized window
-
-#ifdef Q_WS_WIN
-    DWORD dwTickCount;
-#endif
 
     BufferHotListFilter *_bufferHotList;
 

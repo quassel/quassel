@@ -45,6 +45,13 @@ public:
   inline static ContextMenuActionProvider *contextMenuActionProvider();
   inline static ToolBarActionProvider *toolBarActionProvider();
   inline static UiStyle *uiStyle();
+  inline static QWidget *mainWidget();
+
+  //! Force the main widget to the front and focus it (may not work in all window systems)
+  static void activateMainWidget();
+
+  //! Hide main widget (storing the current desktop if possible)
+  static void hideMainWidget();
 
 protected:
   //! This is the widget we associate global actions with, typically the main window
@@ -60,6 +67,7 @@ private:
   static ContextMenuActionProvider *_contextMenuActionProvider;
   static ToolBarActionProvider *_toolBarActionProvider;
   static UiStyle *_uiStyle;
+  static bool _onAllDesktops;
 };
 
 ContextMenuActionProvider *GraphicalUi::contextMenuActionProvider() {
@@ -72,6 +80,10 @@ ToolBarActionProvider *GraphicalUi::toolBarActionProvider() {
 
 UiStyle *GraphicalUi::uiStyle() {
   return _uiStyle;
+}
+
+QWidget *GraphicalUi::mainWidget() {
+  return _mainWidget;
 }
 
 #endif

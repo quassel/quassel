@@ -40,9 +40,9 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   notificationSettings.notify("Systray/ShowBubble", this, SLOT(showBubbleChanged(const QVariant &)));
   notificationSettings.notify("Systray/Animate", this, SLOT(animateChanged(const QVariant &)));
 
-  connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked()), SLOT(notificationActivated()));
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
                                             SLOT(notificationActivated(SystemTray::ActivationReason)));
+  connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked()), SLOT(notificationActivated()));
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {
@@ -91,7 +91,7 @@ void SystrayNotificationBackend::closeBubble() {
 }
 
 void SystrayNotificationBackend::notificationActivated() {
-  if(QtUi::mainWindow()->systemTray()->isAlerted()) {
+  if(QtUi::mainWindow()->systemTray()->isAlerted() && !QtUi::mainWindow()->systemTray()->isActivationInhibited()) {
     QtUi::mainWindow()->systemTray()->setInhibitActivation();
     uint id = _notifications.count()? _notifications.last().notificationId : 0;
     emit activated(id);

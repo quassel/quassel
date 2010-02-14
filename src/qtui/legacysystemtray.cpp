@@ -23,15 +23,15 @@
 #include "legacysystemtray.h"
 #include "qtui.h"
 
-LegacySystemTray::LegacySystemTray(QObject *parent)
+LegacySystemTray::LegacySystemTray(QWidget *parent)
   : SystemTray(parent),
   _blinkState(false),
   _isVisible(true)
 {
 #ifndef HAVE_KDE
-  _trayIcon = new QSystemTrayIcon(QtUi::mainWindow());
+  _trayIcon = new QSystemTrayIcon(associatedWidget());
 #else
-  _trayIcon = new KSystemTrayIcon(QtUi::mainWindow());
+  _trayIcon = new KSystemTrayIcon(associatedWidget());
   // We don't want to trigger a minimize if a highlight is pending, so we brutally remove the internal connection for that
   disconnect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                  _trayIcon, SLOT(activateOrHide(QSystemTrayIcon::ActivationReason)));
@@ -54,6 +54,8 @@ LegacySystemTray::LegacySystemTray(QObject *parent)
 void LegacySystemTray::init() {
   if(mode() == Invalid) // derived class hasn't set a mode itself
     setMode(Legacy);
+
+  SystemTray::init();
 }
 
 void LegacySystemTray::syncLegacyIcon() {
@@ -69,6 +71,13 @@ void LegacySystemTray::setVisible(bool visible) {
     else
       _trayIcon->hide();
   }
+}
+
+bool LegacySystemTray::isVisible() const {
+  if(mode() == Legacy) {
+    return _trayIcon->isVisible();
+  }
+  return false;
 }
 
 void LegacySystemTray::setMode(Mode mode_) {
@@ -113,18 +122,7 @@ void LegacySystemTray::on_blinkTimeout() {
 }
 
 void LegacySystemTray::on_activated(QSystemTrayIcon::ActivationReason reason) {
-  emit activated((ActivationReason)reason);
-
-  if(reason == QSystemTrayIcon::Trigger && !isActivationInhibited()) {
-
-#  ifdef HAVE_KDE
-     // the slot is private, but meh, who cares :)
-     QMetaObject::invokeMethod(_trayIcon, "activateOrHide", Q_ARG(QSystemTrayIcon::ActivationReason, QSystemTrayIcon::Trigger));
-#  else
-     QtUi::mainWindow()->toggleMinimizedToTray();
-#  endif
-
-  }
+  activate((SystemTray::ActivationReason)reason);
 }
 
 void LegacySystemTray::showMessage(const QString &title, const QString &message, SystemTray::MessageIcon icon, int millisecondsTimeoutHint) {
