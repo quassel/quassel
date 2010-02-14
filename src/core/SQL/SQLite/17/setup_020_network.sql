@@ -11,6 +11,9 @@ CREATE TABLE network (
        useautoidentify INTEGER NOT NULL DEFAULT 0, -- BOOL
        autoidentifyservice TEXT,
        autoidentifypassword TEXT,
+       usesasl INTEGER NOT NULL DEFAULT 0, -- BOOL
+       saslaccount TEXT,
+       saslpassword TEXT,
        useautoreconnect INTEGER NOT NULL DEFAULT 0, -- BOOL
        autoreconnectinterval INTEGER NOT NULL DEFAULT 0,
        autoreconnectretries INTEGER NOT NULL DEFAULT 0,

@@ -13,5 +13,8 @@ useautoreconnect = :useautoreconnect,
 autoreconnectinterval = :autoreconnectinterval,
 autoreconnectretries = :autoreconnectretries,
 unlimitedconnectretries = :unlimitedconnectretries,
-rejoinchannels = :rejoinchannels
+rejoinchannels = :rejoinchannels,
+usesasl = :usesasl,
+saslaccount = :saslaccount,
+saslpassword = :saslpassword
 WHERE networkid = :networkid AND userid = :userid
