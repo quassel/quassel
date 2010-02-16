@@ -662,7 +662,7 @@ void QssParser::parseFontWeight(const QString& value, QTextCharFormat* format) {
 }
 
 void QssParser::parseFontSize(const QString& value, QTextCharFormat* format) {
-  QRegExp rx("\\(d+)(pt|px)");
+  QRegExp rx("(\\d+)(pt|px)");
   if(!rx.exactMatch(value)) {
     qWarning() << Q_FUNC_INFO << tr("Invalid font size specification: %1").arg(value);
     return;
