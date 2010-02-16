@@ -31,7 +31,8 @@
 #include "systemtray.h"
 
 SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
-  : AbstractNotificationBackend(parent)
+  : AbstractNotificationBackend(parent),
+  _blockActivation(false)
 {
   NotificationSettings notificationSettings;
   _showBubble = notificationSettings.value("Systray/ShowBubble", true).toBool();
@@ -40,9 +41,11 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   notificationSettings.notify("Systray/ShowBubble", this, SLOT(showBubbleChanged(const QVariant &)));
   notificationSettings.notify("Systray/Animate", this, SLOT(animateChanged(const QVariant &)));
 
+  connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked()), SLOT(notificationActivated()));
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
                                             SLOT(notificationActivated(SystemTray::ActivationReason)));
-  connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked()), SLOT(notificationActivated()));
+
+  QApplication::instance()->installEventFilter(this);
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {
@@ -91,10 +94,13 @@ void SystrayNotificationBackend::closeBubble() {
 }
 
 void SystrayNotificationBackend::notificationActivated() {
-  if(QtUi::mainWindow()->systemTray()->isAlerted() && !QtUi::mainWindow()->systemTray()->isActivationInhibited()) {
-    QtUi::mainWindow()->systemTray()->setInhibitActivation();
-    uint id = _notifications.count()? _notifications.last().notificationId : 0;
-    emit activated(id);
+  if(!_blockActivation) {
+    if(QtUi::mainWindow()->systemTray()->isAlerted()) {
+      _blockActivation = true; // prevent double activation because both tray icon and bubble might send a signal
+      uint id = _notifications.count()? _notifications.last().notificationId : 0;
+      emit activated(id);
+    } else
+      GraphicalUi::toggleMainWidget();
   }
 }
 
@@ -102,6 +108,14 @@ void SystrayNotificationBackend::notificationActivated(SystemTray::ActivationRea
   if(reason == SystemTray::Trigger) {
     notificationActivated();
   }
+}
+
+// moving the mouse or releasing the button means that we're not dealing with a double activation
+bool SystrayNotificationBackend::eventFilter(QObject *obj, QEvent *event) {
+  if(event->type() == QEvent::MouseMove || event->type() == QEvent::MouseButtonRelease) {
+    _blockActivation = false;
+  }
+  return AbstractNotificationBackend::eventFilter(obj, event);
 }
 
 void SystrayNotificationBackend::showBubbleChanged(const QVariant &v) {

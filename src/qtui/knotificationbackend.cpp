@@ -93,15 +93,16 @@ void KNotificationBackend::notificationActivated() {
 }
 
 void KNotificationBackend::notificationActivated(SystemTray::ActivationReason reason) {
-  if(reason == SystemTray::Trigger && _notifications.count()) {
-    notificationActivated(_notifications.first().first); // oldest one
+  if(reason == SystemTray::Trigger) {
+    if( _notifications.count())
+      notificationActivated(_notifications.first().first); // oldest one
+    else
+      GraphicalUi::toggleMainWidget();
   }
 }
 
 void KNotificationBackend::notificationActivated(uint notificationId) {
-  QtUi::mainWindow()->systemTray()->setInhibitActivation();
   emit activated(notificationId);
-
 }
 
 SettingsPage *KNotificationBackend::createConfigWidget() const {

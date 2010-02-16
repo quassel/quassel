@@ -35,7 +35,6 @@ SystemTray::SystemTray(QWidget *parent)
 : QObject(parent),
   _mode(Invalid),
   _state(Passive),
-  _inhibitActivation(false),
   _passiveIcon(DesktopIcon("quassel_inactive")),
   _activeIcon(DesktopIcon("quassel")),
   _needsAttentionIcon(DesktopIcon("quassel_message")),
@@ -43,8 +42,6 @@ SystemTray::SystemTray(QWidget *parent)
   _associatedWidget(parent)
 {
   Q_ASSERT(parent);
-
-  qApp->installEventFilter(this);
 }
 
 SystemTray::~SystemTray() {
@@ -130,17 +127,5 @@ void SystemTray::showMessage(const QString &title, const QString &message, Messa
 }
 
 void SystemTray::activate(SystemTray::ActivationReason reason) {
-
   emit activated(reason);
-
-  if(reason == Trigger && !isActivationInhibited()) {
-    GraphicalUi::toggleMainWidget();
-  }
-}
-
-bool SystemTray::eventFilter(QObject *obj, QEvent *event) {
-  if(event->type() == QEvent::MouseMove || event->type() == QEvent::MouseButtonRelease) {
-    _inhibitActivation = false;
-  }
-  return QObject::eventFilter(obj, event);
 }

@@ -37,6 +37,9 @@ public:
   void close(uint notificationId);
   virtual SettingsPage *createConfigWidget() const;
 
+protected:
+  virtual bool eventFilter(QObject *obj, QEvent *event);
+
 private slots:
   void showBubble();
   void closeBubble();
@@ -52,6 +55,7 @@ private:
   bool _showBubble;
   bool _animate;
   QList<Notification> _notifications;
+  bool _blockActivation;
 };
 
 class SystrayNotificationBackend::ConfigWidget : public SettingsPage {

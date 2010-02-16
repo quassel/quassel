@@ -68,9 +68,7 @@ public:
   virtual inline bool isSystemTrayAvailable() const;
 
   void setAlert(bool alerted);
-  virtual inline void setInhibitActivation();
   virtual inline bool isVisible() const { return false; }
-  inline bool isActivationInhibited() const;
 
   QWidget *associatedWidget() const;
 
@@ -100,15 +98,11 @@ protected:
   inline QMenu *trayMenu() const;
   void setTrayMenu(QMenu *);
 
-  virtual bool eventFilter(QObject *obj, QEvent *event);
-
 private slots:
 
 private:
   Mode _mode;
   State _state;
-
-  bool _inhibitActivation;
 
   QString _toolTipTitle, _toolTipSubTitle;
   Icon _passiveIcon, _activeIcon, _needsAttentionIcon;
@@ -121,8 +115,6 @@ private:
 
 bool SystemTray::isSystemTrayAvailable() const { return false; }
 bool SystemTray::isAlerted() const { return state() == NeedsAttention; }
-void SystemTray::setInhibitActivation() { _inhibitActivation = true; }
-bool SystemTray::isActivationInhibited() const { return _inhibitActivation; }
 SystemTray::Mode SystemTray::mode() const { return _mode; }
 SystemTray::State SystemTray::state() const { return _state; }
 QMenu *SystemTray::trayMenu() const { return _trayMenu; }
