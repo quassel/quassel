@@ -57,12 +57,6 @@ void GraphicalUi::init() {
 #endif
 }
 
-GraphicalUi::~GraphicalUi() {
-#ifdef Q_WS_WIN
-  mainWidget()->removeEventFilter(this);
-#endif
-}
-
 ActionCollection *GraphicalUi::actionCollection(const QString &category) {
   if(_actionCollections.contains(category))
     return _actionCollections.value(category);

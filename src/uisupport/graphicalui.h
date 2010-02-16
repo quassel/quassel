@@ -37,7 +37,6 @@ class GraphicalUi : public AbstractUi {
 
 public:
   GraphicalUi(QObject *parent = 0);
-  virtual ~GraphicalUi();
   virtual void init();
 
   //! Access global ActionCollections.
