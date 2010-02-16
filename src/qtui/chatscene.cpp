@@ -501,6 +501,7 @@ void ChatScene::secondHandlePositionChanged(qreal xpos) {
 void ChatScene::setHandleXLimits() {
   _firstColHandle->setXLimits(0, _secondColHandle->sceneLeft());
   _secondColHandle->setXLimits(_firstColHandle->sceneRight(), width() - minContentsWidth);
+  update();
 }
 
 void ChatScene::setSelectingItem(ChatItem *item) {

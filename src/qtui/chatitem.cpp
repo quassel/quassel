@@ -116,6 +116,8 @@ void ChatItem::paintBackground(QPainter *painter) {
 //       This is a deliberate trade-off. (-> selectFmt creation, data() call)
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
+  painter->save();
+  painter->setClipRect(boundingRect());
   paintBackground(painter);
 
   QTextLayout layout;
@@ -150,6 +152,8 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 //   }
   // 3) draw bounding rect
 //   painter->drawRect(_boundingRect.adjusted(0, 0, -1, -1));
+
+  painter->restore();
 }
 
 void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, int start, int end, quint32 overlayFmt) const {
@@ -344,6 +348,8 @@ void ChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
 
 void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
+  painter->save();
+  painter->setClipRect(boundingRect());
   paintBackground(painter);
 
   QTextLayout layout;
@@ -385,6 +391,7 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
   } else {
     layout.draw(painter, pos(), additionalFormats(), boundingRect());
   }
+  painter->restore();
 }
 
 void SenderChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
