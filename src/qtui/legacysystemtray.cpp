@@ -43,9 +43,6 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
   connect(_trayIcon, SIGNAL(messageClicked()),
                      SIGNAL(messageClicked()));
 
-  setTrayMenu(_trayIcon->contextMenu());
-  _trayIcon->setContextMenu(trayMenu());
-
   _blinkTimer.setInterval(500);
   _blinkTimer.setSingleShot(false);
   connect(&_blinkTimer, SIGNAL(timeout()), SLOT(on_blinkTimeout()));
@@ -56,6 +53,8 @@ void LegacySystemTray::init() {
     setMode(Legacy);
 
   SystemTray::init();
+
+  _trayIcon->setContextMenu(trayMenu());
 }
 
 void LegacySystemTray::syncLegacyIcon() {

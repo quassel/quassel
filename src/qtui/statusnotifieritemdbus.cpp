@@ -254,7 +254,9 @@ void StatusNotifierItemDBus::ContextMenu(int x, int y)
 
     //TODO: nicer placement, possible?
     if (!m_statusNotifierItem->trayMenu()->isVisible()) {
+#ifdef HAVE_KDE
         m_statusNotifierItem->trayMenu()->setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
+#endif
         m_statusNotifierItem->trayMenu()->popup(QPoint(x,y));
 #ifdef HAVE_KDE
         KWindowSystem::setState(m_statusNotifierItem->trayMenu()->winId(), NET::SkipTaskbar|NET::SkipPager|NET::KeepAbove);

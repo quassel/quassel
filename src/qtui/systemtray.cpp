@@ -17,16 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <QApplication>
 #include <QMenu>
 
 #include "systemtray.h"
 
+#include "action.h"
 #include "actioncollection.h"
 #include "client.h"
 #include "iconloader.h"
 #include "qtui.h"
 
 #ifdef HAVE_KDE
+#  include <KMenu>
 #  include <KWindowInfo>
 #  include <KWindowSystem>
 #endif
@@ -52,31 +55,53 @@ QWidget *SystemTray::associatedWidget() const {
   return _associatedWidget;
 }
 
-void SystemTray::setTrayMenu(QMenu *menu) {
-  if(menu)
-    _trayMenu = menu;
-  else
-    _trayMenu = new QMenu();
-
+void SystemTray::init() {
   ActionCollection *coll = QtUi::actionCollection("General");
+  _minimizeRestoreAction = new Action(tr("&Minimize"), this, this, SLOT(minimizeRestore()));
+
+#ifdef HAVE_KDE
+  KMenu *kmenu;
+  _trayMenu = kmenu = new KMenu();
+  kmenu->addTitle(qApp->windowIcon(), "Quassel IRC");
+#else
+  _trayMenu = new QMenu(associatedWidget());
+#endif
+
+  _trayMenu->setTitle("Quassel IRC");
+
+#ifndef HAVE_KDE
+  _trayMenu->setAttribute(Qt::WA_Hover);
+#endif
 
   _trayMenu->addAction(coll->action("ConnectCore"));
   _trayMenu->addAction(coll->action("DisconnectCore"));
   _trayMenu->addAction(coll->action("CoreInfo"));
-#ifndef HAVE_KDE
   _trayMenu->addSeparator();
+  _trayMenu->addAction(_minimizeRestoreAction);
   _trayMenu->addAction(coll->action("Quit"));
-#endif /* HAVE_KDE */
+
+  connect(_trayMenu, SIGNAL(aboutToShow()), SLOT(trayMenuAboutToShow()));
+}
+
+void SystemTray::trayMenuAboutToShow() {
+  if(GraphicalUi::isMainWidgetVisible())
+    _minimizeRestoreAction->setText(tr("&Minimize"));
+  else
+    _minimizeRestoreAction->setText(tr("&Restore"));
 }
 
 void SystemTray::setMode(Mode mode_) {
   if(mode_ != _mode) {
     _mode = mode_;
-    if(_mode == Legacy) {
-      _trayMenu->setWindowFlags(Qt::Popup);
-    } else {
-      _trayMenu->setWindowFlags(Qt::Window);
+#ifdef HAVE_KDE
+    if(_trayMenu) {
+      if(_mode == Legacy) {
+        _trayMenu->setWindowFlags(Qt::Popup);
+      } else {
+        _trayMenu->setWindowFlags(Qt::Window);
+      }
     }
+#endif
   }
 }
 
@@ -128,4 +153,8 @@ void SystemTray::showMessage(const QString &title, const QString &message, Messa
 
 void SystemTray::activate(SystemTray::ActivationReason reason) {
   emit activated(reason);
+}
+
+void SystemTray::minimizeRestore() {
+  GraphicalUi::toggleMainWidget();
 }

@@ -45,13 +45,6 @@ StatusNotifierItem::~StatusNotifierItem() {
 }
 
 void StatusNotifierItem::init() {
-// workaround until we handle the tray menu more sanely
-#ifdef QT_NO_SYSTEMTRAYICON
-  setTrayMenu(new QMenu(associatedWidget()));
-#endif
-
-  trayMenu()->installEventFilter(this);
-
   qDBusRegisterMetaType<DBusImageStruct>();
   qDBusRegisterMetaType<DBusImageVector>();
   qDBusRegisterMetaType<DBusToolTipStruct>();
@@ -64,6 +57,7 @@ void StatusNotifierItem::init() {
   setMode(StatusNotifier);
 
   StatusNotifierItemParent::init();
+  trayMenu()->installEventFilter(this);
 }
 
 void StatusNotifierItem::registerToDaemon() {
@@ -165,11 +159,17 @@ void StatusNotifierItem::activated(const QPoint &pos) {
 bool StatusNotifierItem::eventFilter(QObject *watched, QEvent *event) {
   if(mode() == StatusNotifier) {
     //FIXME: ugly ugly workaround to weird QMenu's focus problems
+#ifdef HAVE_KDE
     if(watched == trayMenu() &&
        (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton))) {
       // put at the back of event queue to let the action activate anyways
       QTimer::singleShot(0, trayMenu(), SLOT(hide()));
     }
+#else
+    if(watched == trayMenu() && event->type() == QEvent::HoverLeave) {
+      trayMenu()->hide();
+    }
+#endif
   }
   return StatusNotifierItemParent::eventFilter(watched, event);
 }

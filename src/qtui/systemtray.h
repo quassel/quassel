@@ -23,6 +23,7 @@
 
 #include "icon.h"
 
+class Action;
 class QMenu;
 
 class SystemTray : public QObject {
@@ -61,7 +62,7 @@ public:
 
   explicit SystemTray(QWidget *parent);
   virtual ~SystemTray();
-  virtual void init() {}
+  virtual void init();
 
   inline State state() const;
   inline bool isAlerted() const;
@@ -96,9 +97,10 @@ protected:
   inline QString toolTipTitle() const;
   inline QString toolTipSubTitle() const;
   inline QMenu *trayMenu() const;
-  void setTrayMenu(QMenu *);
 
 private slots:
+  void minimizeRestore();
+  void trayMenuAboutToShow();
 
 private:
   Mode _mode;
@@ -109,6 +111,7 @@ private:
 
   QMenu *_trayMenu;
   QWidget *_associatedWidget;
+  Action *_minimizeRestoreAction;
 };
 
 // inlines

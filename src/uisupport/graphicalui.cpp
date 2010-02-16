@@ -101,9 +101,13 @@ bool GraphicalUi::checkMainWidgetVisibility(bool perform) {
   // therefore we watch for activation event and use our stopwatch :)
   if(GetTickCount() - _dwTickCount < 300) {
     // we were active in the last 300ms -> hide it
-    minimizeRestore(false);
+    if(perform)
+      minimizeRestore(false);
+    return false;
   } else {
-    minimizeRestore(true);
+    if(perform)
+      minimizeRestore(true);
+    return true;
   }
 
 #elif defined(HAVE_KDE) && defined(Q_WS_X11)
@@ -180,6 +184,10 @@ bool GraphicalUi::checkMainWidgetVisibility(bool perform) {
 #endif
 
   return true;
+}
+
+bool GraphicalUi::isMainWidgetVisible() {
+  return !instance()->checkMainWidgetVisibility(false);
 }
 
 void GraphicalUi::minimizeRestore(bool show) {

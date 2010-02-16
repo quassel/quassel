@@ -61,6 +61,9 @@ public:
   //! Toggle main widget
   static void toggleMainWidget();
 
+  //! Check if the main widget if (fully, in KDE) visible
+  static bool isMainWidgetVisible();
+
 protected:
   //! This is the widget we associate global actions with, typically the main window
   void setMainWidget(QWidget *);
@@ -70,7 +73,7 @@ protected:
    *  it should be activated or hidden. Without KDE, we need to resort to checking the current state
    *  as Qt knows it, ignoring windows covering it.
    *  @param  performToggle If true, toggle the window's state in addition to checking visibility
-   *  @return True, if the window is currently visible
+   *  @return True, if the window is currently *not* visible (needs activation)
    */
   bool checkMainWidgetVisibility(bool performToggle);
 
