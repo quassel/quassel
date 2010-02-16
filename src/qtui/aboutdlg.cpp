@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -44,7 +44,7 @@ AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
 QString AboutDlg::about() const {
   QString res;
   res = tr("<b>A modern, distributed IRC Client</b><br><br>"
-           "&copy;2005-2009 by the Quassel Project<br>"
+           "&copy;2005-2010 by the Quassel Project<br>"
            "<a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br>"
            "<a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>"
            "Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and "
@@ -82,29 +82,34 @@ QString AboutDlg::contributors() const {
            "<dt><b>Tomáš \"scarabeus\" Chvátal</b></dt><dd>Czech translation</dd>"
            "<dt><b>Joshua \"tvakah\" Corbin</b></dt><dd>Various fixes</dd>"
            "<dt><b>Matthias \"pennywise\" Coy</b></dt><dd>German translation</dd>"
+           "<dt><b>Chris \"stitch\" Fuenty</b></dt><dd>SASL support</dd>"
            "<dt><b>Kevin \"KRF\" Funk</b></dt><dd>German translation</dd>"
+           "<dt><b>Fabiano \"elbryan\" Francesconi</b></dt><dd>Italian translation</dd>"
+           "<dt><b>Aurélien \"agateau\" Gâteau</b></dt><dd>Message Indicator support</dd>"
            "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd>Ideas, hacking, motivation</dd>"
            "<dt><b>Sebastian \"seezer\" Goth</b></dt><dd>Various improvements and features</dd>"
            "<dt><b>Michael \"brot\" Groh</b></dt><dd>German translation</dd>"
            "<dt><b>H. İbrahim \"igungor\" Güngör</b></dt><dd>Turkish translation</dd>"
-           "<dt><b>Edward \"Aides\" Toroshchin</b></dt><dd>Russian translation</dd>"
-           "<dt><b>Fabiano \"elbryan\" Francesconi</b></dt><dd>Italian translation</dd>"
            "<dt><b>John \"nox\" Hand</b></dt><dd>Former All-Seeing Eye logo</dd>"
            "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project founder, various improvements</dd>"
-           "<dt><b>Aurélien \"agateau\" Gâteau</b></dt><dd>Message Indicator support</dd>"
+           "<dt><b>Thomas \"Datafreak\" Hogh</b></dt><dd>Windows builder</dd>"
            "<dt><b>Scott \"ScottK\" Kitterman<b></dt><dd>Kubuntu nightly packager, (packaging/build system) bughunter</dd>"
            "<dt><b>Paul \"Haudrauf\" Klumpp</b></dt><dd>Initial design and mainwindow layout</dd>"
            "<dt><b>Maia Kozheva</b></dt><dd>Russian translation</dd>"
+           "<dt><b>Hendrik \"nevcairiel\" Leppkes</b></dt><dd>Various features</dd>"
            "<dt><b>Martin \"m4yer\" Mayer</b></dt><dd>German translation</dd>"
            "<dt><b>Gábor \"ELITE_x\" Németh</b></dt><dd>Hungarian translation</dd>"
            "<dt><b>Marco \"Quizzlo\" Paolone</b></dt><dd>Italian translation</dd>"
            "<dt><b>Drew \"LinuxDolt\" Patridge</b></dt><dd>BluesTheme stylesheet</dd>"
            "<dt><b>Celeste \"seele\" Paul</b></dt><dd>Usability Queen</dd>"
+           "<dt><b>David Planella</b></dt><dd>Translation fixes</dd>"
            "<dt><b>Regis \"ZRegis\" Perrin</b></dt><dd>French translation</dd>"
            "<dt><b>Diego \"Flameeyes\" Petten&ograve;</b></dt><dd>Gentoo maintainer, build system improvements</dd>"
            "<dt><b>Daniel \"billie\" Pielmeier</b></dt><dd>Gentoo maintainer</dd>"
            "<dt><b>Nuno \"pinheiro\" Pinheiro</b></dt><dd>Tons of Oxygen icons including our application icon</dd>"
            "<dt><b>Jure \"JLP\" Repinc</b></dt><dd>Slovenian translation</dd>"
+           "<dt><b>Patrick \"TheOneRing\" von Reth</b></dt><dd>MinGW support</dd>"
+           "<dt><b>Dirk \"MarcLandis\" Rettschlag</b></dt><dd>Various features</dd>"
            "<dt><b>Henning \"honk\" Rohlfs</b></dt><dd>Various fixes</dd>"
            "<dt><b>Dennis \"DevUrandom\" Schridde</b></dt><dd>D-Bus notifications</dd>"
            "<dt><b>Jussi \"jussi01\" Schultink</b></dt><dd>Tireless tester, {ku|U}buntu tester and lobbyist, liters of delicious Finnish alcohol</dd>"
@@ -112,6 +117,7 @@ QString AboutDlg::contributors() const {
            "<dt><b>Harald \"apachelogger\" Sitter</b></dt><dd>{ku|U}buntu packager, motivator, promoter</dd>"
            "<dt><b>Daniel \"son\" Steinmetz</b></dt><dd>Early beta tester and bughunter (on Vista&trade;!)</dd>"
            "<dt><b>Jesper Thomschütz</b></dt><dd>Various fixes</dd>"
+           "<dt><b>Edward \"Aides\" Toroshchin</b></dt><dd>Russian translation</dd>"
            "<dt><b>Adam \"adamt\" Tulinius</b></dt><dd>Early beta tester and bughunter, Danish translation</dd>"
            "<dt><b>Frederik M.J. Vestre</b></dt><dd>Norwegian translation</dd>"
            "<dt><b>Atte Virtanen</b></dt><dd>Finnish translation</dd>"
