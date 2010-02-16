@@ -48,9 +48,13 @@ GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent) {
 
 #ifdef Q_WS_WIN
   _dwTickCount = 0;
+#endif
+}
+
+void GraphicalUi::init() {
+#ifdef Q_WS_WIN
   mainWidget()->installEventFilter(this);
 #endif
-
 }
 
 GraphicalUi::~GraphicalUi() {

@@ -73,6 +73,8 @@ void QtUi::init() {
   _mainWin->init();
   QtUiSettings uiSettings;
   uiSettings.initAndNotify("UseSystemTrayIcon", this, SLOT(useSystemTrayChanged(QVariant)), true);
+
+  GraphicalUi::init(); // needs to be called after the mainWin is initialized
 }
 
 MessageModel *QtUi::createMessageModel(QObject *parent) {
