@@ -302,7 +302,7 @@ if(WIN32)
   endif(MSVC)
   if(HAVE_SSL AND STATIC)
      find_package(OpenSSL REQUIRED)
-     link_libraries(${OPENSSL_LIBRARIES})
+     link_libraries(${OPENSSL_LIBRARIES} ${OPENSSL_EAY_LIBRARIES})
   endif(HAVE_SSL AND STATIC)
 endif(WIN32)
 
