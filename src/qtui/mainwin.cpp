@@ -79,6 +79,7 @@
 #include "qtuistyle.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
+#include "statusnotifieritem.h"
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
 #include "verticaldock.h"
@@ -676,7 +677,9 @@ void MainWin::saveStatusBarStatus(bool enabled) {
 }
 
 void MainWin::setupSystray() {
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifdef HAVE_DBUS
+  _systemTray = new StatusNotifierItem(this);
+#elif !defined QT_NO_SYSTEMTRAYICON
   _systemTray = new LegacySystemTray(this);
 #else
   _systemTray = new SystemTray(this); // dummy
