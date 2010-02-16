@@ -23,10 +23,6 @@
 
 #include "icon.h"
 
-#ifdef Q_WS_WIN
-#  include <windows.h>
-#endif
-
 class QMenu;
 
 class SystemTray : public QObject {
@@ -72,8 +68,8 @@ public:
   virtual inline bool isSystemTrayAvailable() const;
 
   void setAlert(bool alerted);
-  inline void setInhibitActivation();
-  inline virtual bool isVisible() const { return false; }
+  virtual inline void setInhibitActivation();
+  virtual inline bool isVisible() const { return false; }
   inline bool isActivationInhibited() const;
 
   QWidget *associatedWidget() const;
@@ -83,8 +79,6 @@ public slots:
   virtual void setVisible(bool visible = true);
   virtual void setToolTip(const QString &title, const QString &subtitle);
   virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
-  void toggleMainWidget();
-  void hideMainWidget();
 
 signals:
   void activated(SystemTray::ActivationReason);
@@ -94,8 +88,6 @@ signals:
 
 protected slots:
   virtual void activate(SystemTray::ActivationReason = Trigger);
-
-  void minimizeRestore(bool restore);
 
 protected:
   virtual void setMode(Mode mode);
@@ -113,8 +105,6 @@ protected:
 private slots:
 
 private:
-  bool checkVisibility(bool performToggle = true);
-
   Mode _mode;
   State _state;
 
@@ -125,11 +115,6 @@ private:
 
   QMenu *_trayMenu;
   QWidget *_associatedWidget;
-
-#ifdef Q_WS_WIN
-    DWORD _dwTickCount;
-#endif
-
 };
 
 // inlines

@@ -275,8 +275,8 @@ void MainWin::restoreStateFromSettings(UiSettings &s) {
   move(_normalPos);
 #endif
 
-  if(s.value("MainWinHidden").toBool() && systemTray()->isSystemTrayAvailable())
-    systemTray()->hideMainWidget();
+  if(s.value("MainWinHidden").toBool() && QtUi::haveSystemTray())
+    QtUi::hideMainWidget();
   else if(s.value("MainWinMinimized").toBool())
     showMinimized();
   else if(maximized)
@@ -1008,9 +1008,8 @@ void MainWin::closeEvent(QCloseEvent *event) {
   QtUiSettings s;
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   Q_ASSERT(app);
-  if(!app->isAboutToQuit()
-    && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool() && systemTray()->isSystemTrayAvailable()) {
-    systemTray()->hideMainWidget();
+  if(!app->isAboutToQuit() && QtUi::haveSystemTray() && s.value("MinimizeOnClose").toBool()) {
+    QtUi::hideMainWidget();
     event->ignore();
   } else {
     event->accept();

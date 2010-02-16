@@ -70,11 +70,20 @@ protected slots:
   void disconnectedFromCore();
   void notificationActivated(uint notificationId);
 
+protected:
+  virtual void minimizeRestore(bool show);
+  virtual bool isHidingMainWidgetAllowed() const;
+
+private slots:
+  void useSystemTrayChanged(const QVariant &);
+
 private:
   static QPointer<QtUi> _instance;
   static QPointer<MainWin> _mainWin;
   static QList<AbstractNotificationBackend *> _notificationBackends;
   static QList<AbstractNotificationBackend::Notification> _notifications;
+
+  bool _useSystemTray;
 };
 
 QtUi *QtUi::instance() { return _instance ? _instance.data() : new QtUi(); }

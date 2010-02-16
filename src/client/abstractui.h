@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef QUASSELUI_H
-#define QUASSELUI_H
+#ifndef ABSTRACTUI_H
+#define ABSTRACTUI_H
 
 #include <QObject>
 #include <QVariantMap>

@@ -71,6 +71,8 @@ QtUi::~QtUi() {
 
 void QtUi::init() {
   _mainWin->init();
+  QtUiSettings uiSettings;
+  uiSettings.initAndNotify("UseSystemTrayIcon", this, SLOT(useSystemTrayChanged(QVariant)), true);
 }
 
 MessageModel *QtUi::createMessageModel(QObject *parent) {
@@ -89,12 +91,36 @@ void QtUi::disconnectedFromCore() {
   _mainWin->disconnectedFromCore();
 }
 
+void QtUi::useSystemTrayChanged(const QVariant &v) {
+  _useSystemTray = v.toBool();
+  SystemTray *tray = mainWindow()->systemTray();
+  if(_useSystemTray) {
+    if(tray->isSystemTrayAvailable())
+      tray->setVisible(true);
+  } else {
+    if(tray->isSystemTrayAvailable() && mainWindow()->isVisible())
+      tray->setVisible(false);
+  }
+}
+
 bool QtUi::haveSystemTray() {
-#ifdef QT_NO_SYSTEMTRAYICON
-  return false;
-#else
-  return mainWindow()->systemTray()->isSystemTrayAvailable();
-#endif
+  return mainWindow()->systemTray()->isSystemTrayAvailable() && instance()->_useSystemTray;
+}
+
+bool QtUi::isHidingMainWidgetAllowed() const {
+  return haveSystemTray();
+}
+
+void QtUi::minimizeRestore(bool show) {
+  SystemTray *tray = mainWindow()->systemTray();
+  if(show) {
+    if(tray && !_useSystemTray)
+      tray->setVisible(false);
+  } else {
+    if(tray && _useSystemTray)
+      tray->setVisible(true);
+  }
+  GraphicalUi::minimizeRestore(show);
 }
 
 void QtUi::registerNotificationBackend(AbstractNotificationBackend *backend) {

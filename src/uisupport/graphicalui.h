@@ -28,11 +28,16 @@ class ContextMenuActionProvider;
 class ToolBarActionProvider;
 class UiStyle;
 
+#ifdef Q_WS_WIN
+#  include <windows.h>
+#endif
+
 class GraphicalUi : public AbstractUi {
   Q_OBJECT
 
 public:
   GraphicalUi(QObject *parent = 0);
+  virtual ~GraphicalUi();
 
   //! Access global ActionCollections.
   /** These ActionCollections are associated with the main window, i.e. they contain global
@@ -53,37 +58,61 @@ public:
   //! Hide main widget (storing the current desktop if possible)
   static void hideMainWidget();
 
+  //! Toggle main widget
+  static void toggleMainWidget();
+
 protected:
   //! This is the widget we associate global actions with, typically the main window
   void setMainWidget(QWidget *);
+
+  //! Check if the mainWidget is visible and optionally toggle its visibility
+  /** With KDE integration, we check if the mainWidget is (partially) obscured in order to determine if
+   *  it should be activated or hidden. Without KDE, we need to resort to checking the current state
+   *  as Qt knows it, ignoring windows covering it.
+   *  @param  performToggle If true, toggle the window's state in addition to checking visibility
+   *  @return True, if the window is currently visible
+   */
+  bool checkMainWidgetVisibility(bool performToggle);
+
+  //! Minimize to or restore main widget
+  virtual void minimizeRestore(bool show);
+
+  //! Whether it is allowed to hide the mainWidget
+  /** The default implementation returns false, meaning that we won't hide the mainWidget even
+   *  if requested. This is to prevent hiding in case we don't have a tray icon to restore from.
+   */
+  virtual inline bool isHidingMainWidgetAllowed() const;
 
   void setContextMenuActionProvider(ContextMenuActionProvider *);
   void setToolBarActionProvider(ToolBarActionProvider *);
   void setUiStyle(UiStyle *);
 
+  virtual bool eventFilter(QObject *obj, QEvent *event);
+
 private:
+  static inline GraphicalUi *instance();
+
+  static GraphicalUi *_instance;
   static QWidget *_mainWidget;
   static QHash<QString, ActionCollection *> _actionCollections;
   static ContextMenuActionProvider *_contextMenuActionProvider;
   static ToolBarActionProvider *_toolBarActionProvider;
   static UiStyle *_uiStyle;
   static bool _onAllDesktops;
+
+#ifdef Q_WS_WIN
+  DWORD _dwTickCount;
+#endif
+
 };
 
-ContextMenuActionProvider *GraphicalUi::contextMenuActionProvider() {
-  return _contextMenuActionProvider;
-}
+// inlines
 
-ToolBarActionProvider *GraphicalUi::toolBarActionProvider() {
-  return _toolBarActionProvider;
-}
-
-UiStyle *GraphicalUi::uiStyle() {
-  return _uiStyle;
-}
-
-QWidget *GraphicalUi::mainWidget() {
-  return _mainWidget;
-}
+GraphicalUi *GraphicalUi::instance() { return _instance; }
+ContextMenuActionProvider *GraphicalUi::contextMenuActionProvider() { return _contextMenuActionProvider; }
+ToolBarActionProvider *GraphicalUi::toolBarActionProvider() { return _toolBarActionProvider; }
+UiStyle *GraphicalUi::uiStyle() { return _uiStyle; }
+QWidget *GraphicalUi::mainWidget() { return _mainWidget; }
+bool GraphicalUi::isHidingMainWidgetAllowed() const { return false; }
 
 #endif
