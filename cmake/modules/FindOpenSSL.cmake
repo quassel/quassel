@@ -17,7 +17,7 @@ INCLUDE(FindLibraryWithDebug)
 MACRO(OPENSSL_ADD_LIB_EAY_LIBS)
    FIND_LIBRARY_WITH_DEBUG(OPENSSL_EAY_LIBRARIES
                    WIN32_DEBUG_POSTFIX d
-                   NAMES eay libeay libeay32 libeay32MD)
+                   NAMES eay libeay libeay32 libeay32MT)
 ENDMACRO(OPENSSL_ADD_LIB_EAY_LIBS)
 
 IF(OPENSSL_LIBRARIES)
@@ -32,7 +32,7 @@ FIND_PATH(OPENSSL_INCLUDE_DIR openssl/ssl.h )
 
 FIND_LIBRARY_WITH_DEBUG(OPENSSL_LIBRARIES
                 WIN32_DEBUG_POSTFIX d
-                NAMES ssl ssleay ssleay32 libssleay32 ssleay32MD)
+                NAMES ssl ssleay ssleay32 libssleay32 ssleay32MT)
 
 IF(WIN32)
    OPENSSL_ADD_LIB_EAY_LIBS()
