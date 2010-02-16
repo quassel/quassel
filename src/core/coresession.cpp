@@ -293,6 +293,8 @@ void CoreSession::processMessages() {
 QVariant CoreSession::sessionState() {
   QVariantMap v;
 
+  v["CoreFeatures"] = (int)Quassel::features();
+
   QVariantList bufs;
   foreach(BufferInfo id, buffers()) bufs << qVariantFromValue(id);
   v["BufferInfos"] = bufs;

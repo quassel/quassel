@@ -635,6 +635,9 @@ void CoreConnection::internalSessionStateReceived(const QVariant &packedState) {
 }
 
 void CoreConnection::syncToCore(const QVariantMap &sessionState) {
+  if(sessionState.contains("CoreFeatures"))
+    Client::setCoreFeatures((Quassel::Features)sessionState["CoreFeatures"].toUInt());
+
   setProgressText(tr("Receiving network states"));
   updateProgress(0, 100);
 
