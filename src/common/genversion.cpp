@@ -44,19 +44,31 @@ int main(int argc, char **argv) {
     // try to execute git-describe to get a version string
     QProcess git;
     git.setWorkingDirectory(gitroot);
+    #ifdef Q_OS_WIN
+    git.start("cmd.exe", QStringList() << "/C" << "git" << "describe" << "--long");
+    #else
     git.start("git", QStringList() << "describe" << "--long");
+    #endif
     if(git.waitForFinished(10000)) {
       QString descr = git.readAllStandardOutput().trimmed();
       if(!descr.isEmpty() && !descr.contains("fatal")) {
         // seems we have a valid git describe string
         descrver = descr;
         // check if the workdir is dirty
+        #ifdef Q_OS_WIN
+        git.start("cmd.exe", QStringList() << "/C" << "git" << "diff-index" << "--name-only" << "HEAD");
+        #else
         git.start("git", QStringList() << "diff-index" << "--name-only" << "HEAD");
+        #endif
         if(git.waitForFinished(10000)) {
           if(!git.readAllStandardOutput().isEmpty()) dirty = "*";
         }
         // get a full committish
+        #ifdef Q_OS_WIN
+        git.start("cmd.exe", QStringList() << "/C" << "git" << "rev-parse" << "HEAD");
+        #else
         git.start("git", QStringList() << "rev-parse" << "HEAD");
+        #endif
         if(git.waitForFinished(10000)) {
           committish = git.readAllStandardOutput().trimmed();
         }
