@@ -380,18 +380,14 @@ void InputWidget::on_inputEdit_textEntered(const QString &text) const {
   inputLine()->setCurrentCharFormat(fmt);
 }
 
-void InputWidget::mergeFormatOnWordOrSelection(const QTextCharFormat &format) {
+void InputWidget::mergeFormatOnSelection(const QTextCharFormat &format) {
   QTextCursor cursor = inputLine()->textCursor();
-  if (!cursor.hasSelection())
-    cursor.select(QTextCursor::WordUnderCursor);
   cursor.mergeCharFormat(format);
   inputLine()->mergeCurrentCharFormat(format);
 }
 
-void InputWidget::setFormatOnWordOrSelection(const QTextCharFormat &format) {
+void InputWidget::setFormatOnSelection(const QTextCharFormat &format) {
   QTextCursor cursor = inputLine()->textCursor();
-  if (!cursor.hasSelection())
-    cursor.select(QTextCursor::WordUnderCursor);
   cursor.setCharFormat(format);
   inputLine()->setCurrentCharFormat(format);
 }
@@ -403,33 +399,24 @@ QTextCharFormat InputWidget::getFormatOfWordOrSelection() {
 
 void InputWidget::currentCharFormatChanged(const QTextCharFormat &format) {
   fontChanged(format.font());
-
-  if (format.foreground().isOpaque())
-    colorChanged(format.foreground().color());
-  else
-    colorChanged(Qt::transparent);
-  if (format.background().isOpaque())
-    colorHighlightChanged(format.background().color());
-  else
-    colorHighlightChanged(Qt::transparent);
 }
 
 void InputWidget::on_boldButton_clicked(bool checked) {
   QTextCharFormat fmt;
   fmt.setFontWeight(checked ? QFont::Bold : QFont::Normal);
-  mergeFormatOnWordOrSelection(fmt);
+  mergeFormatOnSelection(fmt);
 }
 
 void InputWidget::on_underlineButton_clicked(bool checked) {
   QTextCharFormat fmt;
   fmt.setFontUnderline(checked);
-  mergeFormatOnWordOrSelection(fmt);
+  mergeFormatOnSelection(fmt);
 }
 
 void InputWidget::on_italicButton_clicked(bool checked) {
   QTextCharFormat fmt;
   fmt.setFontItalic(checked);
-  mergeFormatOnWordOrSelection(fmt);
+  mergeFormatOnSelection(fmt);
 }
 
 void InputWidget::fontChanged(const QFont &f)
@@ -446,12 +433,12 @@ void InputWidget::colorChosen(QAction *action) {
     color = Qt::transparent;
     fmt = getFormatOfWordOrSelection();
     fmt.clearForeground();
-    setFormatOnWordOrSelection(fmt);
+    setFormatOnSelection(fmt);
   }
   else {
     color = QColor(inputLine()->rgbColorFromMirc(qVariantValue<QString>(action->data())));
     fmt.setForeground(color);
-    mergeFormatOnWordOrSelection(fmt);
+    mergeFormatOnSelection(fmt);
   }
   ui.textcolorButton->setDefaultAction(action);
   ui.textcolorButton->setIcon(createColorToolButtonIcon(SmallIcon("format-text-color"), color));
@@ -464,33 +451,15 @@ void InputWidget::colorHighlightChosen(QAction *action) {
     color = Qt::transparent;
     fmt = getFormatOfWordOrSelection();
     fmt.clearBackground();
-    setFormatOnWordOrSelection(fmt);
+    setFormatOnSelection(fmt);
   }
   else {
     color = QColor(inputLine()->rgbColorFromMirc(qVariantValue<QString>(action->data())));
     fmt.setBackground(color);
-    mergeFormatOnWordOrSelection(fmt);
+    mergeFormatOnSelection(fmt);
   }
   ui.highlightcolorButton->setDefaultAction(action);
   ui.highlightcolorButton->setIcon(createColorToolButtonIcon(SmallIcon("format-fill-color"), color));
-}
-
-void InputWidget::colorChanged(const QColor &fg) {
-  if (fg == Qt::transparent)
-    ui.textcolorButton->setDefaultAction(_colorMenu->actions().last());
-  else
-    ui.textcolorButton->setDefaultAction(_colorMenu->actions().value(inputLine()->mircColorFromRGB(fg.name()).toInt()));
-
-  ui.textcolorButton->setIcon(createColorToolButtonIcon(SmallIcon("format-text-color"), fg));
-}
-
-void InputWidget::colorHighlightChanged(const QColor &bg) {
-  if (bg == Qt::transparent)
-    ui.highlightcolorButton->setDefaultAction(_colorFillMenu->actions().last());
-  else
-    ui.highlightcolorButton->setDefaultAction(_colorFillMenu->actions().value(inputLine()->mircColorFromRGB(bg.name()).toInt()));
-
-  ui.highlightcolorButton->setIcon(createColorToolButtonIcon(SmallIcon("format-fill-color"), bg));
 }
 
 void InputWidget::on_showStyleButton_toggled(bool checked) {

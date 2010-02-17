@@ -86,13 +86,11 @@ private:
   IdentityId _identityId;
   QMenu *_colorMenu, *_colorFillMenu;
 
-  void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
+  void mergeFormatOnSelection(const QTextCharFormat &format);
   void fontChanged(const QFont &f);
-  void colorChanged(const QColor &fg);
-  void colorHighlightChanged(const QColor &bg);
   QIcon createColorToolButtonIcon(const QIcon &icon, const QColor &color);
   QTextCharFormat getFormatOfWordOrSelection();
-  void setFormatOnWordOrSelection(const QTextCharFormat &format);
+  void setFormatOnSelection(const QTextCharFormat &format);
 };
 
 
