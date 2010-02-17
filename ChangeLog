@@ -13,6 +13,52 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.6.0 (not yet released)
+================================
+
+* SASL authentication support (e.g. supported by Freenode)
+* Allow inputting formatted (colored/bold/...) text in the inputline
+* Support the StatusNotifierItem DBus spec
+  - Replace old-style tray icon where supported (currently KDE >= 4.4)
+* Systemtray refactoring
+  - Replace animation by blinking icon
+  - Properly handle notifications and mainwindow toggle
+* Improved URL detection
+* Sender column is now clickable (double click opens query)
+* Improved notification handling
+* ChatView performance improvements
+* Many buildsystem fixes
+  - Improved handling of icons
+  - Updated cmake macros
+  - Support building with MinGW
+  - Support KDE on non-X11 platforms
+  - Better handling of SSL libraries
+* Solid network state detection support (with KDE)
+* Settingspage refactoring
+* Improved handling of SSL certificates
+* Completely reworked the client/core connection
+  - New settingspage for managing core accounts
+  - Streamlined login/sync process
+  - Configurable timeout
+  - Automatic reconnect to core
+* Send unknown commands to server
+* New stylesheets
+* Use gettext for translations
+* Updated translations
+
+Version 0.5.2 (2010-01-18)
+==========================
+
+* CTCP ignore
+* Buildsystem fixes
+
+Version 0.5.1 (2009-11-21)
+==========================
+
+* Many Bugfixes
+* Updated translations
+* Fix issues with Qt >= 4.6
+
 Version 0.5.0 (2009-10-14)
 ==========================
 
