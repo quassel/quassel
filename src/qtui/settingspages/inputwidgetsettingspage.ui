@@ -74,6 +74,22 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="showStyleButtons">
+     <property name="text">
+      <string>Show style buttons</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">ShowStyleButtons</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Multi-Line Editing</string>

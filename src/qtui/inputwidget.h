@@ -56,10 +56,10 @@ private slots:
   void setUseCustomFont(const QVariant &);
   void setEnableSpellCheck(const QVariant &);
   void setShowNickSelector(const QVariant &);
+  void setShowStyleButtons(const QVariant &);
   void setMaxLines(const QVariant &);
   void setMultiLineEnabled(const QVariant &);
   void setScrollBarsEnabled(const QVariant &);
-
   void on_inputEdit_textEntered(const QString &text) const;
   void changeNick(const QString &newNick) const;
 

@@ -107,6 +107,9 @@ InputWidget::InputWidget(QWidget *parent)
   s.notify("ShowNickSelector", this, SLOT(setShowNickSelector(QVariant)));
   setShowNickSelector(s.value("ShowNickSelector", true));
 
+  s.notify("ShowStyleButtons", this, SLOT(setShowStyleButtons(QVariant)));
+  setShowStyleButtons(s.value("ShowStyleButtons", true));
+
   s.notify("MaxNumLines", this, SLOT(setMaxLines(QVariant)));
   setMaxLines(s.value("MaxNumLines", 5));
 
@@ -150,6 +153,10 @@ void InputWidget::setEnableSpellCheck(const QVariant &v) {
 
 void InputWidget::setShowNickSelector(const QVariant &v) {
   ui.ownNick->setVisible(v.toBool());
+}
+
+void InputWidget::setShowStyleButtons(const QVariant &v) {
+  ui.showStyleButton->setVisible(v.toBool());
 }
 
 void InputWidget::setMaxLines(const QVariant &v) {
