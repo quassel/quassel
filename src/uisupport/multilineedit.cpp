@@ -482,7 +482,7 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString &text) {
         words[i] = "<span style=\"" + style + "\">" + words[i] + "</span>";
       }
   }
-  return words.join("");
+  return words.join("").replace("\n","<br />");
 }
 
 void MultiLineEdit::on_returnPressed() {
