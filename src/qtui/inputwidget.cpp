@@ -365,7 +365,7 @@ void InputWidget::changeNick(const QString &newNick) const {
   Client::userInput(BufferInfo::fakeStatusBuffer(net->networkId()), QString("/NICK %1").arg(newNick));
 }
 
-void InputWidget::on_inputEdit_textEntered(const QString &text) const {
+void InputWidget::on_inputEdit_textEntered(const QString &text) {
   Client::userInput(currentBufferInfo(), text);
   ui.boldButton->setChecked(false);
   ui.underlineButton->setChecked(false);
@@ -378,6 +378,11 @@ void InputWidget::on_inputEdit_textEntered(const QString &text) const {
   fmt.clearForeground();
   fmt.clearBackground();
   inputLine()->setCurrentCharFormat(fmt);
+
+#ifdef HAVE_KDE
+  // Set highlighter back to active in case it was deactivated by too many errors.
+  ui.inputEdit->highlighter()->setActive(true);
+#endif
 }
 
 void InputWidget::mergeFormatOnSelection(const QTextCharFormat &format) {
