@@ -50,6 +50,7 @@ public:
 public slots:
   void handleAction(CtcpType, const QString &prefix, const QString &target, const QString &param);
   void handlePing(CtcpType, const QString &prefix, const QString &target, const QString &param);
+  void handleTime(CtcpType, const QString &prefix, const QString &target, const QString &param);
   void handleVersion(CtcpType, const QString &prefix, const QString &target, const QString &param);
 
   void defaultHandler(const QString &cmd, CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param);

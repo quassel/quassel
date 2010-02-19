@@ -188,30 +188,46 @@ void CtcpHandler::handleAction(CtcpType ctcptype, const QString &prefix, const Q
 void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "PING")) {
-      reply(nickFromMask(prefix), "PING", param);
-      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING request from %1").arg(prefix));
-    }
+    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "PING"))
+      return;
+    reply(nickFromMask(prefix), "PING", param);
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING request from %1").arg(prefix));
   } else {
     // display ping answer
     uint now = QDateTime::currentDateTime().toTime_t();
     uint then = QDateTime().fromTime_t(param.toInt()).toTime_t();
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING answer from %1 with %2 seconds round trip time").arg(prefix).arg(now-then));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING answer from %1 with %2 seconds round trip time")
+                    .arg(nickFromMask(prefix)).arg(now-then));
   }
 }
 
 void CtcpHandler::handleVersion(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "VERSION")) {
-      reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
+    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "VERSION"))
+      return;
+    reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
           .arg(Quassel::buildInfo().plainVersionString)
           .arg(Quassel::buildInfo().buildDate));
-      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
-    }
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {
     // display Version answer
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION answer from %1: %2").arg(prefix).arg(param));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION answer from %1: %2")
+                    .arg(nickFromMask(prefix)).arg(param));
+  }
+}
+
+void CtcpHandler::handleTime(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+  Q_UNUSED(target)
+  if(ctcptype == CtcpQuery) {
+    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "TIME"))
+      return;
+    reply(nickFromMask(prefix), "TIME", QDateTime::currentDateTime().toString());
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP TIME request by %1").arg(prefix));
+  }
+  else {
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP TIME answer from %1: %2")
+                    .arg(nickFromMask(prefix)).arg(param));
   }
 }
 
@@ -225,5 +241,4 @@ void CtcpHandler::defaultHandler(const QString &cmd, CtcpType ctcptype, const QS
     emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", str);
   }
 }
-
 
