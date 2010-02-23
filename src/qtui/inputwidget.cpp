@@ -381,7 +381,8 @@ void InputWidget::on_inputEdit_textEntered(const QString &text) {
 
 #ifdef HAVE_KDE
   // Set highlighter back to active in case it was deactivated by too many errors.
-  ui.inputEdit->highlighter()->setActive(true);
+  if(ui.inputEdit->highlighter())
+    ui.inputEdit->highlighter()->setActive(true);
 #endif
 }
 
