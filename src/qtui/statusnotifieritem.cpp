@@ -50,6 +50,7 @@ void StatusNotifierItem::init() {
   qDBusRegisterMetaType<DBusToolTipStruct>();
 
   _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
+  connect(this, SIGNAL(toolTipChanged(QString,QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
 
   connect(QDBusConnection::sessionBus().interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)),
                                                      SLOT(serviceChange(QString,QString,QString)));

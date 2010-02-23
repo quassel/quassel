@@ -47,6 +47,7 @@ private:
   class ConfigWidget;
 
   void removeNotificationById(uint id);
+  void updateToolTip();
 
   QList<QPair<uint, QPointer<KNotification> > > _notifications;
 };

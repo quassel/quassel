@@ -36,6 +36,8 @@ KNotificationBackend::KNotificationBackend(QObject *parent)
 {
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
                                             SLOT(notificationActivated(SystemTray::ActivationReason)));
+
+  updateToolTip();
 }
 
 void KNotificationBackend::notify(const Notification &n) {
@@ -62,6 +64,7 @@ void KNotificationBackend::notify(const Notification &n) {
 
   _notifications.append(qMakePair(n.notificationId, QPointer<KNotification>(notification)));
 
+  updateToolTip();
   QtUi::mainWindow()->systemTray()->setAlert(true);
 }
 
@@ -75,6 +78,7 @@ void KNotificationBackend::removeNotificationById(uint notificationId) {
     } else
       ++i;
   }
+  updateToolTip();
 }
 
 void KNotificationBackend::close(uint notificationId) {
@@ -103,6 +107,11 @@ void KNotificationBackend::notificationActivated(SystemTray::ActivationReason re
 
 void KNotificationBackend::notificationActivated(uint notificationId) {
   emit activated(notificationId);
+}
+
+void KNotificationBackend::updateToolTip() {
+  QtUi::mainWindow()->systemTray()->setToolTip("Quassel IRC",
+                                               _notifications.count()? tr("%n pending highlights", "", _notifications.count()) : QString());
 }
 
 SettingsPage *KNotificationBackend::createConfigWidget() const {

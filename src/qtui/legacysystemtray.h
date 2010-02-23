@@ -59,9 +59,9 @@ private slots:
   void on_blinkTimeout();
   void on_activated(QSystemTrayIcon::ActivationReason);
 
-private:
   void syncLegacyIcon();
 
+private:
   QTimer _blinkTimer;
   bool _blinkState;
   bool _isVisible;

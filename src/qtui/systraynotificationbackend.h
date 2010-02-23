@@ -48,6 +48,7 @@ private slots:
 
   void animateChanged(const QVariant &);
   void showBubbleChanged(const QVariant &);
+  void updateToolTip();
 
 private:
   class ConfigWidget;

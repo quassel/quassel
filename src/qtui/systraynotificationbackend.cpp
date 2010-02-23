@@ -46,6 +46,8 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
                                             SLOT(notificationActivated(SystemTray::ActivationReason)));
 
   QApplication::instance()->installEventFilter(this);
+
+  updateToolTip();
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {
@@ -58,6 +60,8 @@ void SystrayNotificationBackend::notify(const Notification &notification) {
 
   if(_animate)
     QtUi::mainWindow()->systemTray()->setAlert(true);
+
+  updateToolTip();
 }
 
 void SystrayNotificationBackend::close(uint notificationId) {
@@ -73,6 +77,8 @@ void SystrayNotificationBackend::close(uint notificationId) {
 
   if(!_notifications.count())
     QtUi::mainWindow()->systemTray()->setAlert(false);
+
+  updateToolTip();
 }
 
 void SystrayNotificationBackend::showBubble() {
@@ -124,6 +130,11 @@ void SystrayNotificationBackend::showBubbleChanged(const QVariant &v) {
 
 void SystrayNotificationBackend::animateChanged(const QVariant &v) {
   _animate = v.toBool();
+}
+
+void SystrayNotificationBackend::updateToolTip() {
+  QtUi::mainWindow()->systemTray()->setToolTip("Quassel IRC",
+                                               _notifications.count()? tr("%n pending highlights", "", _notifications.count()) : QString());
 }
 
 SettingsPage *SystrayNotificationBackend::createConfigWidget() const {

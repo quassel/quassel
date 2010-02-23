@@ -46,6 +46,8 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
   _blinkTimer.setInterval(500);
   _blinkTimer.setSingleShot(false);
   connect(&_blinkTimer, SIGNAL(timeout()), SLOT(on_blinkTimeout()));
+
+  connect(this, SIGNAL(toolTipChanged(QString,QString)), SLOT(syncLegacyIcon()));
 }
 
 void LegacySystemTray::init() {
@@ -59,7 +61,11 @@ void LegacySystemTray::init() {
 
 void LegacySystemTray::syncLegacyIcon() {
   _trayIcon->setIcon(stateIcon());
-  _trayIcon->setToolTip(toolTipTitle());
+
+  QString tooltip = QString("<b>%1</b>").arg(toolTipTitle());
+  if(!toolTipSubTitle().isEmpty())
+    tooltip += QString("<br>%1").arg(toolTipSubTitle());
+  _trayIcon->setToolTip(tooltip);
 }
 
 void LegacySystemTray::setVisible(bool visible) {
