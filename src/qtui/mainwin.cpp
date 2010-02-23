@@ -761,8 +761,9 @@ void MainWin::loadLayout() {
 
 void MainWin::saveLayout() {
   QtUiSettings s;
-  int accountId = Client::currentCoreAccount().toInt();
-  if(accountId > 0) s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
+  int accountId = _bufferViews.count()? Client::currentCoreAccount().toInt() : 0; // only save if we still have a layout!
+  if(accountId > 0)
+    s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
 }
 
 void MainWin::updateLagIndicator(int lag) {
