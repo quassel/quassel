@@ -49,7 +49,8 @@ ChatLine::ChatLine(int row, QAbstractItemModel *model,
     _width(width),
     _height(_contentsItem.height()),
     _selection(0),
-    _mouseGrabberItem(0)
+    _mouseGrabberItem(0),
+    _hoverItem(0)
 {
   Q_ASSERT(model);
   QModelIndex index = model->index(row, ChatLineModel::ContentsColumn);
@@ -247,14 +248,17 @@ void ChatLine::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 
 void ChatLine::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
   ChatItem *item = mouseEventTargetItem(event->pos());
-  if(item)
+  if(item) {
+    Q_ASSERT(!_hoverItem);
+    _hoverItem = item;
     item->hoverEnterEvent(event);
+  }
 }
 
 void ChatLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-  ChatItem *item = mouseEventTargetItem(event->pos());
-  if(item)
-    item->hoverLeaveEvent(event);
+  Q_ASSERT(_hoverItem);
+  _hoverItem->hoverLeaveEvent(event);
+  _hoverItem = 0;
 }
 
 void ChatLine::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {

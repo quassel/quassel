@@ -101,6 +101,7 @@ private:
   quint8 _selection;  // save space, so we put both the col and the flags into one byte
 
   ChatItem *_mouseGrabberItem;
+  ChatItem *_hoverItem;
 };
 
 #endif
