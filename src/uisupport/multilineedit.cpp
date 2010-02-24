@@ -189,7 +189,7 @@ void MultiLineEdit::setPasteProtectionEnabled(bool enable, QWidget *) {
 }
 
 void MultiLineEdit::historyMoveBack() {
-  addToHistory(convertHtmlToMircCodes(html()), true);
+  addToHistory(convertRichtextToMircCodes(), true);
 
   if(idx > 0) {
     idx--;
@@ -198,7 +198,7 @@ void MultiLineEdit::historyMoveBack() {
 }
 
 void MultiLineEdit::historyMoveForward() {
-  addToHistory(convertHtmlToMircCodes(html()), true);
+  addToHistory(convertRichtextToMircCodes(), true);
 
   if(idx < history.count()) {
     idx++;
@@ -207,7 +207,7 @@ void MultiLineEdit::historyMoveForward() {
     else
       reset();              // equals clear() in this case
   } else {
-    addToHistory(convertHtmlToMircCodes(html()));
+    addToHistory(convertRichtextToMircCodes());
     reset();
   }
 }
@@ -317,98 +317,124 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
 #endif
 }
 
-QString MultiLineEdit::convertHtmlToMircCodes(const QString &text) {
-  QRegExp regexHtmlContent = QRegExp("<p.*>(.*)</p>", Qt::CaseInsensitive);
+QString MultiLineEdit::convertRichtextToMircCodes() {
+  bool underline, bold, italic, color;
+  QString mircText, mircFgColor, mircBgColor;
+  QTextCursor cursor = textCursor();
+  QTextCursor peekcursor = textCursor();
+  cursor.movePosition(QTextCursor::Start);
 
-  QRegExp regexLines = QRegExp("(?:<p.*>(.*)</p>\\n?)", Qt::CaseInsensitive);
-  regexLines.setMinimal(true);
+  underline = bold = italic = color = false;
 
-  QRegExp regexStyles = QRegExp("(?:((<span.*>)(.*)</span>))", Qt::CaseInsensitive);
-  regexStyles.setMinimal(true);
+  while (cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor)) {
 
-  QRegExp regexColors = QRegExp("((?:background-)?color):(#[0-9a-f]{6})", Qt::CaseInsensitive);
-  regexStyles.setMinimal(true);
+    if (cursor.selectedText() == QString(QChar(QChar::LineSeparator))) {
+      if (color) {
+        color = false;
+        mircText.append('\x03');
+      }
+      if (underline) {
+        underline = false;
+        mircText.append('\x1f');
+      }
+      if (italic) {
+        italic = false;
+        mircText.append('\x1d');
+      }
+      if (bold) {
+        bold = false;
+        mircText.append('\x02');
+      }
+      mircText.append('\n');
+    }
+    else {
+      if (!bold && cursor.charFormat().font().bold()) {
+        bold = true;
+        mircText.append('\x02');
+      }
+      if (!italic && cursor.charFormat().fontItalic()) {
+        italic = true;
+        mircText.append('\x1d');
+      }
+      if (!underline && cursor.charFormat().fontUnderline()) {
+        underline = true;
+        mircText.append('\x1f');
+      }
+      if (!color && (cursor.charFormat().foreground().isOpaque() || cursor.charFormat().background().isOpaque())) {
+        color = true;
+        mircText.append('\x03');
+        mircFgColor = _mircColorMap.key(cursor.charFormat().foreground().color().name());
+        mircBgColor = _mircColorMap.key(cursor.charFormat().background().color().name());
 
-  QStringList result;
-  int posLines = 0;
-  QString htmlContent, pLine, line, line2, styleText, style, content;
-
-  if (regexHtmlContent.indexIn((text)) > -1) {
-    htmlContent = regexHtmlContent.cap();
-    while ((posLines = regexLines.indexIn(htmlContent, posLines)) != -1) {
-      pLine = regexLines.cap(1);
-      QStringList lines = pLine.split("<br />");
-      for (int i=0; i < lines.count(); i++) {
-        line = line2 = lines[i];
-        int posStyles = 0;
-        while ((posStyles = regexStyles.indexIn(line2, posStyles)) != -1) {
-          styleText = regexStyles.cap(1);
-          style = regexStyles.cap(2);
-          content = regexStyles.cap(3);
-
-          if (style.contains("font-weight:600;")) {
-            content.prepend('\x02');
-            content.append('\x02');
-          }
-          if (style.contains("font-style:italic;")) {
-            content.prepend('\x1d');
-            content.append('\x1d');
-          }
-          if (style.contains("text-decoration: underline;")) {
-            content.prepend('\x1f');
-            content.append('\x1f');
-          }
-          if (style.contains("color:#")) { // we have either foreground or background color or both
-            int posColors = 0;
-            QString mircFgColor, mircBgColor;
-            while ((posColors = regexColors.indexIn(style, posColors)) != -1) {
-              QString colorType = regexColors.cap(1);
-              QString color = regexColors.cap(2);
-
-              if (colorType == "color")
-                mircFgColor = _mircColorMap.key(color);
-
-              if (colorType == "background-color")
-                mircBgColor = _mircColorMap.key(color);
-
-              posColors += regexColors.matchedLength();
-            }
-            if (!mircBgColor.isEmpty())
-              content.prepend("," + mircBgColor);
-
-            // we need a fg color to be able to use a bg color
-            if (mircFgColor.isEmpty()) {
-              //FIXME try to use the current forecolor
-              mircFgColor = _mircColorMap.key(textColor().name());
-              if (mircFgColor.isEmpty())
-                mircFgColor = "01"; //use black if the current foreground color can't be converted
-            }
-
-            content.prepend(mircFgColor);
-            content.prepend('\x03');
-            content.append('\x03');
-          }
-
-          line.replace(styleText, content);
-          posStyles += regexStyles.matchedLength();
+        if (mircFgColor.isEmpty()) {
+            mircFgColor = "01"; //use black if the current foreground color can't be converted
         }
 
-        // get rid of all remaining html tags
-        QRegExp regexTags = QRegExp("<.*>",Qt::CaseInsensitive);
-        regexTags.setMinimal(true);
-        line.replace(regexTags, "");
-
-        line.replace("&amp;","&");
-        line.replace("&lt;","<");
-        line.replace("&gt;",">");
-        line.replace("&quot;","\"");
-
-        result << line;
+        mircText.append(mircFgColor);
+        if (cursor.charFormat().background().isOpaque())
+          mircText.append("," + mircBgColor);
       }
-      posLines += regexLines.matchedLength();
+
+      mircText.append(cursor.selectedText());
+
+      peekcursor.setPosition(cursor.position());
+      peekcursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+
+      if (mircCodesChanged(cursor, peekcursor)) {
+        if (color) {
+          color = false;
+          mircText.append('\x03');
+        }
+        if (underline) {
+          underline = false;
+          mircText.append('\x1f');
+        }
+        if (italic) {
+          italic = false;
+          mircText.append('\x1d');
+        }
+        if (bold) {
+          bold = false;
+          mircText.append('\x02');
+        }
+      }
     }
+
+    cursor.clearSelection();
   }
-  return result.join("\n");
+  if (color) {
+    color = false;
+    mircText.append('\x03');
+  }
+  if (underline) {
+    underline = false;
+    mircText.append('\x1f');
+  }
+  if (italic) {
+    italic = false;
+    mircText.append('\x1d');
+  }
+  if (bold) {
+    bold = false;
+    mircText.append('\x02');
+  }
+
+  return mircText;
+}
+
+bool MultiLineEdit::mircCodesChanged(QTextCursor &cursor, QTextCursor &peekcursor) {
+  bool changed = false;
+  if (cursor.charFormat().font().bold() != peekcursor.charFormat().font().bold())
+    changed = true;
+  if (cursor.charFormat().fontItalic() != peekcursor.charFormat().fontItalic())
+    changed = true;
+  if (cursor.charFormat().fontUnderline() != peekcursor.charFormat().fontUnderline())
+    changed = true;
+  if (cursor.charFormat().foreground().color() != peekcursor.charFormat().foreground().color())
+    changed = true;
+  if (cursor.charFormat().background().color() != peekcursor.charFormat().background().color())
+    changed = true;
+  return changed;
 }
 
 QString MultiLineEdit::convertMircCodesToHtml(const QString &text) {
@@ -486,7 +512,7 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString &text) {
 }
 
 void MultiLineEdit::on_returnPressed() {
-  on_returnPressed(convertHtmlToMircCodes(html()));
+  on_returnPressed(convertRichtextToMircCodes());
 }
 
 void MultiLineEdit::on_returnPressed(const QString & text) {
@@ -569,7 +595,6 @@ void MultiLineEdit::reset() {
 void MultiLineEdit::showHistoryEntry() {
   // if the user changed the history, display the changed line
   setHtml(convertMircCodesToHtml(tempHistory.contains(idx) ? tempHistory[idx] : history[idx]));
-  //setPlainText(tempHistory.contains(idx) ? tempHistory[idx] : history[idx]);
   QTextCursor cursor = textCursor();
   QTextBlockFormat format = cursor.blockFormat();
   format.setLeftMargin(leftMargin); // we want a little space between the frame and the contents

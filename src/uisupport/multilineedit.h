@@ -99,8 +99,9 @@ private slots:
   void historyMoveForward();
   void historyMoveBack();
 
-  QString convertHtmlToMircCodes(const QString &text);
+  QString convertRichtextToMircCodes();
   QString convertMircCodesToHtml(const QString &text);
+  bool mircCodesChanged(QTextCursor &cursor, QTextCursor &peekcursor);
 
 private:
   QStringList history;
