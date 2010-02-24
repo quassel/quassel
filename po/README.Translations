@@ -1,5 +1,5 @@
-In order to create or update a translatable file, run the following command
-in the directory po/:
+In order to create or update a translatable file, run the following
+command in the directory po/:
 
 ./update.sh xx
 
@@ -8,25 +8,39 @@ if needed, may be suffixed by a country code according to ISO 3166).
 Quassel will automatically load these translation files based on the
 system locale. Examples for valid codes: de, en_US
 
-You can open translation files with poedit for example and add/edit translated strings.
+You can open translation files with poedit for example and add/edit
+translated strings.
 
-The *.po files can and should be kept in sync with the source code by running
-update.sh regularly (existing translations won't be removed).
+The *.po files can and should be kept in sync with the source code by
+running update.sh regularly (existing translations won't be removed).
 
-NOTE: Remember to remove X-Virgin-Header line if you want to preserve your header.
+NOTE: Remember to remove X-Virgin-Header line if you want to preserve
+your header.
 
-Qt itself does not use the *.po files, but a compact binary format (*.qm). 
-These files will automatically be generated at build time. By default, all
-languages will be built. To select languages, use environment variable LINGUAS
-to specify superset of languages you want to build in. As you can see in
-example there we will build only Czech German and French translations.
+Qt itself does not use the *.po files, but a compact binary format
+(*.qm). These files will automatically be generated at build time. By
+default, all languages will be built. To select languages, use
+environment variable LINGUAS to specify superset of languages you want
+to build in. As you can see in example there we will build only Czech
+German and French translations.
+
 EXAMPLE:
 $ export LINGUAS="cs de fr"
 $ cmake /path/to/source
 
-NOTE: You'll need lconvert installed with your Qt in order to generate
-      translation files. Some distributions don't package that tool;
-      in that case you won't get translations.
+NOTE: You'll need lupdate, lconvert, lrelease installed with your Qt in
+      order to generate translation files. Some distributions don't
+      package that tool; in that case you won't get translations.
 
-Regenerating .pot file (requires ``Translate Toolkit´´):
-lupdate ../src -ts quassel.ts && ts2po -P --duplicates=msgctxt -i quassel.ts -o quassel.pot && rm quassel.ts
+
+Regenerating the .pot file can be done at least two ways. ``Translate
+Toolkit'' seems to provide better results, so the first one is
+preferred.
+
+With TT:
+lupdate ../src -ts quassel.ts && ts2po -P --duplicates=msgctxt -i \
+  quassel.ts -o quassel.pot && rm quassel.ts
+
+With only Qt tools:
+lupdate ../src -ts quassel.ts && lconvert -i quassel.ts -o quassel.po \
+  && msguniq -o quassel.pot quassel.po && rm quassel.ts quassel.po

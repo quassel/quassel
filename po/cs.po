@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-10 13:33+0200\n"
+"POT-Creation-Date: 2010-02-25 00:37+0200\n"
 "PO-Revision-Date: 2010-01-10 13:47+0100\n"
 "Last-Translator: Tomáš Chvátal <scarabeus@gentoo.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -58,7 +58,8 @@ msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 msgstr "<b>Verze:</b> %1<br><b>Verze protokolu:</b> %2<br><b>Složení:</b> %3"
 
 #: AboutDlg#9
-msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
+#, fuzzy
+msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
 msgstr "<b>A Moderní, distribuovaný IRC Client</b><br><br>Vytvořený &copy;2005-2008 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je duálně-licencován pod <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> a <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Většina ikon náleží &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a>u pod licencí <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Prosíme použijte <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> pro hlášení chyb."
 
 #: AboutDlg#10
@@ -143,12 +144,12 @@ msgid "Set the application language. Requires restart!"
 msgstr "Zvolte jazyk aplikace. Vyžaduje restart!"
 
 #: AppearanceSettingsPage#6
-msgid "<System Default>"
-msgstr "<Systémové výchozí>"
+msgid "<Untranslated>"
+msgstr ""
 
 #: AppearanceSettingsPage#7
-msgid "<Original>"
-msgstr "<Původní>"
+msgid "<System Default>"
+msgstr "<Systémové výchozí>"
 
 #: AppearanceSettingsPage#8
 msgid "Use custom stylesheet"
@@ -985,6 +986,8 @@ msgid "Hide Events"
 msgstr "Skrýt události"
 
 #: ContextMenuActionProvider#37
+#, fuzzy
+msgctxt "ContextMenuActionProvider#37"
 msgid "CTCP"
 msgstr "CTCP"
 
@@ -1664,7 +1667,8 @@ msgid "away"
 msgstr "pryč"
 
 #: CoreUserInputHandler#2
-msgid "sending CTCP-%1 request"
+#, fuzzy
+msgid "sending CTCP-%1 request to %2"
 msgstr "posílám požadavek CTCP-%1"
 
 #: CreateIdentityDlg#1
@@ -1700,8 +1704,22 @@ msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "Obdržena CTCP VERSION odpověď od %1: %2"
 
 #: CtcpHandler#5
+#, fuzzy
+msgid "Received CTCP TIME request by %1"
+msgstr "Obdržen CTCP VERSION požadavek od %1"
+
+#: CtcpHandler#6
+#, fuzzy
+msgid "Received CTCP TIME answer from %1: %2"
+msgstr "Obdržena CTCP VERSION odpověď od %1: %2"
+
+#: CtcpHandler#7
 msgid "Received unknown CTCP %1 by %2"
 msgstr "Obdrženo neznáme CTCP %1 od %2"
+
+#: CtcpHandler#8
+msgid " with arguments: %1"
+msgstr ""
 
 #: DebugBufferViewOverlay#1
 msgid "Debug BufferView Overlay"
@@ -2296,6 +2314,12 @@ msgid "Message"
 msgstr "Zpráva"
 
 #: IgnoreListEditDlg#10
+#, fuzzy
+msgctxt "IgnoreListEditDlg#10"
+msgid "CTCP"
+msgstr "CTCP"
+
+#: IgnoreListEditDlg#11
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
 "<p>Depending on the type of the rule, the text is matched against either:</p>\n"
@@ -2323,12 +2347,13 @@ msgstr ""
 "<br />\n"
 "- <i>hlupec!.+</i> (RegEx) platí pro každého uživatele s přezdívkou <i>hlupec</i>, který se může připojovat z libovolného počítače</p>"
 
-#: IgnoreListEditDlg#11
-msgctxt "IgnoreListEditDlg#11"
+#: IgnoreListEditDlg#12
+#, fuzzy
+msgctxt "IgnoreListEditDlg#12"
 msgid "Ignore Rule"
 msgstr "Pravidlo ignorance"
 
-#: IgnoreListEditDlg#12
+#: IgnoreListEditDlg#13
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
@@ -2344,11 +2369,11 @@ msgstr ""
 "<br />\n"
 "?: reprezentuje \"právě jeden znak\"</p>"
 
-#: IgnoreListEditDlg#13
+#: IgnoreListEditDlg#14
 msgid "Regular expression"
 msgstr "Regulární výrazy"
 
-#: IgnoreListEditDlg#14
+#: IgnoreListEditDlg#15
 msgid ""
 "<p><b>Scope:</b></p>\n"
 "<p><u>Global:</u></p>\n"
@@ -2366,25 +2391,27 @@ msgstr ""
 "<p><u>Kanál:</u></p>\n"
 "<p>Seznam je interpretován jako seznam kanálů, kde je pravidlo platné</p>"
 
-#: IgnoreListEditDlg#15
+#: IgnoreListEditDlg#16
 msgid "Scope"
 msgstr "Rozsah"
 
-#: IgnoreListEditDlg#16
+#: IgnoreListEditDlg#17
 msgid "Global"
 msgstr "Globální"
 
-#: IgnoreListEditDlg#17
-msgctxt "IgnoreListEditDlg#17"
+#: IgnoreListEditDlg#18
+#, fuzzy
+msgctxt "IgnoreListEditDlg#18"
 msgid "Network"
 msgstr "Síť"
 
-#: IgnoreListEditDlg#18
-msgctxt "IgnoreListEditDlg#18"
+#: IgnoreListEditDlg#19
+#, fuzzy
+msgctxt "IgnoreListEditDlg#19"
 msgid "Channel"
 msgstr "Kanál"
 
-#: IgnoreListEditDlg#19
+#: IgnoreListEditDlg#20
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
 "<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
@@ -2402,7 +2429,7 @@ msgstr ""
 "<br />\n"
 "bude platit na #foobar a na každý kanál začínající <i>#quassel</i></p>"
 
-#: IgnoreListEditDlg#20
+#: IgnoreListEditDlg#21
 msgid ""
 "<p><b>Enable / Disable:</b></p>\n"
 "<p>Only enabled rules are filtered.\n"
@@ -2414,7 +2441,7 @@ msgstr ""
 "<br />\n"
 "Pro dynamická pravidla vypnutí opětovně zobrazí dříve filtrované zprávy.</p>"
 
-#: IgnoreListEditDlg#21
+#: IgnoreListEditDlg#22
 msgid "Rule is enabled"
 msgstr "Povolit pravidlo"
 
@@ -2504,10 +2531,79 @@ msgid "Form"
 msgstr "Form"
 
 #: InputWidget#2
+msgid "White"
+msgstr ""
+
+#: InputWidget#3
+msgid "Black"
+msgstr ""
+
+#: InputWidget#4
+msgid "Dark blue"
+msgstr ""
+
+#: InputWidget#5
+msgid "Dark green"
+msgstr ""
+
+#: InputWidget#6
+msgid "Red"
+msgstr ""
+
+#: InputWidget#7
+msgid "Dark red"
+msgstr ""
+
+#: InputWidget#8
+msgid "Dark magenta"
+msgstr ""
+
+#: InputWidget#9
+msgid "Orange"
+msgstr ""
+
+#: InputWidget#10
+msgid "Yellow"
+msgstr ""
+
+#: InputWidget#11
+msgid "Green"
+msgstr ""
+
+#: InputWidget#12
+msgid "Dark cyan"
+msgstr ""
+
+#: InputWidget#13
+msgid "Cyan"
+msgstr ""
+
+#: InputWidget#14
+msgid "Blue"
+msgstr ""
+
+#: InputWidget#15
+msgid "Magenta"
+msgstr ""
+
+#: InputWidget#16
+msgid "Dark gray"
+msgstr ""
+
+#: InputWidget#17
+msgid "Light gray"
+msgstr ""
+
+#: InputWidget#18
+#, fuzzy
+msgid "Clear Color"
+msgstr "Vyčistit"
+
+#: InputWidget#19
 msgid "Focus Input Line"
 msgstr "Přepnout na vstupní řádku"
 
-#: InputWidget#3
+#: InputWidget#20
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
@@ -2530,39 +2626,45 @@ msgid "Show nick selector"
 msgstr "Zobrazit výběr přezdívek"
 
 #: InputWidgetSettingsPage#5
+#, fuzzy
+msgid "Show style buttons"
+msgstr "Zobrazovat ikonu v systémové části panelu"
+
+#: InputWidgetSettingsPage#6
 msgid "Multi-Line Editing"
 msgstr "Víceřádková editace"
 
-#: InputWidgetSettingsPage#6
+#: InputWidgetSettingsPage#7
 msgid "Show at most"
 msgstr "Ukázat nejvíce"
 
-#: InputWidgetSettingsPage#7
+#: InputWidgetSettingsPage#8
 msgid "lines"
 msgstr "řádků"
 
-#: InputWidgetSettingsPage#8
+#: InputWidgetSettingsPage#9
 msgid "Enable scrollbars"
 msgstr "Povolit rolovací proužek"
 
-#: InputWidgetSettingsPage#9
+#: InputWidgetSettingsPage#10
 msgid "Tab Completion"
 msgstr "Doplňování tabulátorem"
 
-#: InputWidgetSettingsPage#10
+#: InputWidgetSettingsPage#11
 msgid "Completion suffix:"
 msgstr "Zakončení doplňování:"
 
-#: InputWidgetSettingsPage#11
+#: InputWidgetSettingsPage#12
 msgid ": "
 msgstr ": "
 
-#: InputWidgetSettingsPage#12
-msgctxt "InputWidgetSettingsPage#12"
+#: InputWidgetSettingsPage#13
+#, fuzzy
+msgctxt "InputWidgetSettingsPage#13"
 msgid "Interface"
 msgstr "Rozhraní"
 
-#: InputWidgetSettingsPage#13
+#: InputWidgetSettingsPage#14
 msgid "Input Widget"
 msgstr "Vstupní řádka"
 
@@ -2698,6 +2800,10 @@ msgid "Nick already in use: %1"
 msgstr "Přezdívka se již používá: %1"
 
 #: IrcServerHandler#29
+msgid "Nick/channel is temporarily unavailable: %1"
+msgstr ""
+
+#: IrcServerHandler#30
 msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr "Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro pokračování použijte: /nick <jiná_přezdívka>"
 
@@ -2822,6 +2928,15 @@ msgstr "Zvýraznění"
 #: ItemViewSettingsPage#25
 msgid "Other activity"
 msgstr "Jiné činnosti"
+
+#: KNotificationBackend#1
+#, fuzzy
+msgctxt "KNotificationBackend#1"
+msgid "%n pending highlights"
+msgstr ""
+"\n"
+"            \n"
+"        "
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -3126,10 +3241,14 @@ msgid "Server: %1"
 msgstr "Server: %1"
 
 #: NetworkItem#2
+#, fuzzy
+msgctxt "NetworkItem#2"
 msgid "Users: %1"
 msgstr "Uživatelé: %1"
 
 #: NetworkItem#3
+#, fuzzy
+msgctxt "NetworkItem#3"
 msgid "Lag: %1 msecs"
 msgstr "Zpoždění: %1 msecs"
 
@@ -3309,22 +3428,32 @@ msgid "Password:"
 msgstr "Heslo:"
 
 #: NetworksSettingsPage#29
+#, fuzzy
+msgid "Use SASL Authentication"
+msgstr "Použít SSL Certifikát"
+
+#: NetworksSettingsPage#30
+#, fuzzy
+msgid "Account:"
+msgstr "Název účtu:"
+
+#: NetworksSettingsPage#31
 msgid "Encodings"
 msgstr "Kódování"
 
-#: NetworksSettingsPage#30
+#: NetworksSettingsPage#32
 msgid "Configure advanced settings such as message encodings and automatic reconnect"
 msgstr "Nastavení pokročilých možností, jako kódování a automatické opakování připojení"
 
-#: NetworksSettingsPage#31
+#: NetworksSettingsPage#33
 msgid "Control encodings for in- and outgoing messages"
 msgstr "Nastavení kódování pro příchozí a odchozí zprávy"
 
-#: NetworksSettingsPage#32
+#: NetworksSettingsPage#34
 msgid "Use Custom Encodings"
 msgstr "Používat různá kódování"
 
-#: NetworksSettingsPage#33
+#: NetworksSettingsPage#35
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
@@ -3332,11 +3461,11 @@ msgstr ""
 "Specifikuje v jakém kódování budete odesílat zprávy.\n"
 "UTF-8 je dosti inteligentní volba pro většinu sítí."
 
-#: NetworksSettingsPage#34
+#: NetworksSettingsPage#36
 msgid "Send messages in:"
 msgstr "Odesílat zprávy v:"
 
-#: NetworksSettingsPage#35
+#: NetworksSettingsPage#37
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
@@ -3344,11 +3473,11 @@ msgstr ""
 "Příchozí zprávy kódované v UTF8 budou vždy rozpoznány.\n"
 "Toto nastavení definuje kódování pro zprávy které nejsou v UTF8."
 
-#: NetworksSettingsPage#36
+#: NetworksSettingsPage#38
 msgid "Receive fallback:"
 msgstr "Záložní kódování:"
 
-#: NetworksSettingsPage#37
+#: NetworksSettingsPage#39
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
@@ -3356,42 +3485,45 @@ msgstr ""
 "Tato volba specifikuje v jakém kódování jsou přezdívky, kontrolní zprávy a názvy serverů.\n"
 "Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!"
 
-#: NetworksSettingsPage#38
+#: NetworksSettingsPage#40
 msgid "Server encoding:"
 msgstr "Kódování serveru:"
 
-#: NetworksSettingsPage#39
-msgctxt "NetworksSettingsPage#39"
+#: NetworksSettingsPage#41
+#, fuzzy
+msgctxt "NetworksSettingsPage#41"
 msgid "IRC"
 msgstr "IRC"
 
-#: NetworksSettingsPage#40
+#: NetworksSettingsPage#42
 msgid "Networks"
 msgstr "Sítě"
 
-#: NetworksSettingsPage#41
-msgctxt "NetworksSettingsPage#41"
+#: NetworksSettingsPage#43
+#, fuzzy
+msgctxt "NetworksSettingsPage#43"
 msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
 msgstr "<b>Následující problémy je třeba odstranit pro uložení změn:</b><ul>"
 
-#: NetworksSettingsPage#42
+#: NetworksSettingsPage#44
 msgid "<li>All networks need at least one server defined</li>"
 msgstr "<li>Každá síť potřebuje definovaný alespoň jeden server</li>"
 
-#: NetworksSettingsPage#43
-msgctxt "NetworksSettingsPage#43"
+#: NetworksSettingsPage#45
+#, fuzzy
+msgctxt "NetworksSettingsPage#45"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: NetworksSettingsPage#44
+#: NetworksSettingsPage#46
 msgid "Invalid Network Settings"
 msgstr "Špatné nastavení sítě"
 
-#: NetworksSettingsPage#45
+#: NetworksSettingsPage#47
 msgid "Delete Network?"
 msgstr "Smazat síť?"
 
-#: NetworksSettingsPage#46
+#: NetworksSettingsPage#48
 msgid "Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
 msgstr "Opravdu chcete smazat síť \"%1\" a veškeré její nastavení, včetně historie?"
 
@@ -3965,6 +4097,24 @@ msgstr "%1 k %2"
 msgid "Status Buffer"
 msgstr "Záložka stavu"
 
+#: SystemTray#1
+msgid "&Minimize"
+msgstr ""
+
+#: SystemTray#2
+#, fuzzy
+msgid "&Restore"
+msgstr "Opakování:"
+
+#: SystrayNotificationBackend#1
+#, fuzzy
+msgctxt "SystrayNotificationBackend#1"
+msgid "%n pending highlights"
+msgstr ""
+"\n"
+"            \n"
+"        "
+
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"
 msgstr "Ikonka v systémovém panelu"
@@ -4121,6 +4271,18 @@ msgstr "Form"
 msgctxt "TopicWidget#2"
 msgid "..."
 msgstr "..."
+
+#: TopicWidget#3
+#, fuzzy
+msgctxt "TopicWidget#3"
+msgid "Users: %1"
+msgstr "Uživatelé: %1"
+
+#: TopicWidget#4
+#, fuzzy
+msgctxt "TopicWidget#4"
+msgid "Lag: %1 msecs"
+msgstr "Zpoždění: %1 msecs"
 
 #: TopicWidgetSettingsPage#1
 msgctxt "TopicWidgetSettingsPage#1"
@@ -4282,4 +4444,21 @@ msgstr "%n Mluvka"
 msgid "%n User(s)"
 msgstr "%n Uživatel"
 
+#~ msgid "<Original>"
+#~ msgstr "<Původní>"
 
+#~ msgctxt "InputWidgetSettingsPage#12"
+#~ msgid "Interface"
+#~ msgstr "Rozhraní"
+
+#~ msgctxt "NetworksSettingsPage#39"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "NetworksSettingsPage#41"
+#~ msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
+#~ msgstr "<b>Následující problémy je třeba odstranit pro uložení změn:</b><ul>"
+
+#~ msgctxt "NetworksSettingsPage#43"
+#~ msgid "</ul>"
+#~ msgstr "</ul>"

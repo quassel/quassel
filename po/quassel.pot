@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-10 13:33+0200\n"
+"POT-Creation-Date: 2010-02-25 00:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 
 #: AboutDlg#9
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
 "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -182,11 +182,11 @@ msgid "Set the application language. Requires restart!"
 msgstr ""
 
 #: AppearanceSettingsPage#6
-msgid "<System Default>"
+msgid "<Untranslated>"
 msgstr ""
 
 #: AppearanceSettingsPage#7
-msgid "<Original>"
+msgid "<System Default>"
 msgstr ""
 
 #: AppearanceSettingsPage#8
@@ -1034,6 +1034,7 @@ msgid "Hide Events"
 msgstr ""
 
 #: ContextMenuActionProvider#37
+msgctxt "ContextMenuActionProvider#37"
 msgid "CTCP"
 msgstr ""
 
@@ -1747,7 +1748,7 @@ msgid "away"
 msgstr ""
 
 #: CoreUserInputHandler#2
-msgid "sending CTCP-%1 request"
+msgid "sending CTCP-%1 request to %2"
 msgstr ""
 
 #: CreateIdentityDlg#1
@@ -1783,7 +1784,19 @@ msgid "Received CTCP VERSION answer from %1: %2"
 msgstr ""
 
 #: CtcpHandler#5
+msgid "Received CTCP TIME request by %1"
+msgstr ""
+
+#: CtcpHandler#6
+msgid "Received CTCP TIME answer from %1: %2"
+msgstr ""
+
+#: CtcpHandler#7
 msgid "Received unknown CTCP %1 by %2"
+msgstr ""
+
+#: CtcpHandler#8
+msgid " with arguments: %1"
 msgstr ""
 
 #: DebugBufferViewOverlay#1
@@ -2373,6 +2386,11 @@ msgid "Message"
 msgstr ""
 
 #: IgnoreListEditDlg#10
+msgctxt "IgnoreListEditDlg#10"
+msgid "CTCP"
+msgstr ""
+
+#: IgnoreListEditDlg#11
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
 "<p>Depending on the type of the rule, the text is matched against "
@@ -2390,12 +2408,12 @@ msgid ""
 "from any host</p>"
 msgstr ""
 
-#: IgnoreListEditDlg#11
-msgctxt "IgnoreListEditDlg#11"
+#: IgnoreListEditDlg#12
+msgctxt "IgnoreListEditDlg#12"
 msgid "Ignore Rule"
 msgstr ""
 
-#: IgnoreListEditDlg#12
+#: IgnoreListEditDlg#13
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
@@ -2406,11 +2424,11 @@ msgid ""
 "?: representing \"exactly one character\"</p>"
 msgstr ""
 
-#: IgnoreListEditDlg#13
+#: IgnoreListEditDlg#14
 msgid "Regular expression"
 msgstr ""
 
-#: IgnoreListEditDlg#14
+#: IgnoreListEditDlg#15
 msgid ""
 "<p><b>Scope:</b></p>\n"
 "<p><u>Global:</u></p>\n"
@@ -2423,25 +2441,25 @@ msgid ""
 "should match</p>"
 msgstr ""
 
-#: IgnoreListEditDlg#15
+#: IgnoreListEditDlg#16
 msgid "Scope"
 msgstr ""
 
-#: IgnoreListEditDlg#16
-msgid "Global"
-msgstr ""
-
 #: IgnoreListEditDlg#17
-msgctxt "IgnoreListEditDlg#17"
-msgid "Network"
+msgid "Global"
 msgstr ""
 
 #: IgnoreListEditDlg#18
 msgctxt "IgnoreListEditDlg#18"
-msgid "Channel"
+msgid "Network"
 msgstr ""
 
 #: IgnoreListEditDlg#19
+msgctxt "IgnoreListEditDlg#19"
+msgid "Channel"
+msgstr ""
+
+#: IgnoreListEditDlg#20
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
 "<p>A scope rule is a semicolon separated list of either <i>network</i> or "
@@ -2453,7 +2471,7 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 
-#: IgnoreListEditDlg#20
+#: IgnoreListEditDlg#21
 msgid ""
 "<p><b>Enable / Disable:</b></p>\n"
 "<p>Only enabled rules are filtered.\n"
@@ -2461,7 +2479,7 @@ msgid ""
 "For dynamic rules, disabling actually shows the filtered messages again.</p>"
 msgstr ""
 
-#: IgnoreListEditDlg#21
+#: IgnoreListEditDlg#22
 msgid "Rule is enabled"
 msgstr ""
 
@@ -2557,10 +2575,78 @@ msgid "Form"
 msgstr ""
 
 #: InputWidget#2
-msgid "Focus Input Line"
+msgid "White"
 msgstr ""
 
 #: InputWidget#3
+msgid "Black"
+msgstr ""
+
+#: InputWidget#4
+msgid "Dark blue"
+msgstr ""
+
+#: InputWidget#5
+msgid "Dark green"
+msgstr ""
+
+#: InputWidget#6
+msgid "Red"
+msgstr ""
+
+#: InputWidget#7
+msgid "Dark red"
+msgstr ""
+
+#: InputWidget#8
+msgid "Dark magenta"
+msgstr ""
+
+#: InputWidget#9
+msgid "Orange"
+msgstr ""
+
+#: InputWidget#10
+msgid "Yellow"
+msgstr ""
+
+#: InputWidget#11
+msgid "Green"
+msgstr ""
+
+#: InputWidget#12
+msgid "Dark cyan"
+msgstr ""
+
+#: InputWidget#13
+msgid "Cyan"
+msgstr ""
+
+#: InputWidget#14
+msgid "Blue"
+msgstr ""
+
+#: InputWidget#15
+msgid "Magenta"
+msgstr ""
+
+#: InputWidget#16
+msgid "Dark gray"
+msgstr ""
+
+#: InputWidget#17
+msgid "Light gray"
+msgstr ""
+
+#: InputWidget#18
+msgid "Clear Color"
+msgstr ""
+
+#: InputWidget#19
+msgid "Focus Input Line"
+msgstr ""
+
+#: InputWidget#20
 msgid "Ctrl+L"
 msgstr ""
 
@@ -2583,39 +2669,43 @@ msgid "Show nick selector"
 msgstr ""
 
 #: InputWidgetSettingsPage#5
-msgid "Multi-Line Editing"
+msgid "Show style buttons"
 msgstr ""
 
 #: InputWidgetSettingsPage#6
-msgid "Show at most"
+msgid "Multi-Line Editing"
 msgstr ""
 
 #: InputWidgetSettingsPage#7
-msgid "lines"
+msgid "Show at most"
 msgstr ""
 
 #: InputWidgetSettingsPage#8
-msgid "Enable scrollbars"
+msgid "lines"
 msgstr ""
 
 #: InputWidgetSettingsPage#9
-msgid "Tab Completion"
+msgid "Enable scrollbars"
 msgstr ""
 
 #: InputWidgetSettingsPage#10
-msgid "Completion suffix:"
+msgid "Tab Completion"
 msgstr ""
 
 #: InputWidgetSettingsPage#11
-msgid ": "
+msgid "Completion suffix:"
 msgstr ""
 
 #: InputWidgetSettingsPage#12
-msgctxt "InputWidgetSettingsPage#12"
-msgid "Interface"
+msgid ": "
 msgstr ""
 
 #: InputWidgetSettingsPage#13
+msgctxt "InputWidgetSettingsPage#13"
+msgid "Interface"
+msgstr ""
+
+#: InputWidgetSettingsPage#14
 msgid "Input Widget"
 msgstr ""
 
@@ -2753,6 +2843,10 @@ msgid "Nick already in use: %1"
 msgstr ""
 
 #: IrcServerHandler#29
+msgid "Nick/channel is temporarily unavailable: %1"
+msgstr ""
+
+#: IrcServerHandler#30
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
@@ -2878,6 +2972,15 @@ msgstr ""
 #: ItemViewSettingsPage#25
 msgid "Other activity"
 msgstr ""
+
+#: KNotificationBackend#1
+#, fuzzy
+msgctxt "KNotificationBackend#1"
+msgid "%n pending highlights"
+msgstr ""
+"\n"
+"            \n"
+"        "
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -3191,10 +3294,12 @@ msgid "Server: %1"
 msgstr ""
 
 #: NetworkItem#2
+msgctxt "NetworkItem#2"
 msgid "Users: %1"
 msgstr ""
 
 #: NetworkItem#3
+msgctxt "NetworkItem#3"
 msgid "Lag: %1 msecs"
 msgstr ""
 
@@ -3382,87 +3487,95 @@ msgid "Password:"
 msgstr ""
 
 #: NetworksSettingsPage#29
-msgid "Encodings"
+msgid "Use SASL Authentication"
 msgstr ""
 
 #: NetworksSettingsPage#30
+msgid "Account:"
+msgstr ""
+
+#: NetworksSettingsPage#31
+msgid "Encodings"
+msgstr ""
+
+#: NetworksSettingsPage#32
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
 msgstr ""
 
-#: NetworksSettingsPage#31
+#: NetworksSettingsPage#33
 msgid "Control encodings for in- and outgoing messages"
 msgstr ""
 
-#: NetworksSettingsPage#32
+#: NetworksSettingsPage#34
 msgid "Use Custom Encodings"
 msgstr ""
 
-#: NetworksSettingsPage#33
+#: NetworksSettingsPage#35
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
 msgstr ""
 
-#: NetworksSettingsPage#34
+#: NetworksSettingsPage#36
 msgid "Send messages in:"
 msgstr ""
 
-#: NetworksSettingsPage#35
+#: NetworksSettingsPage#37
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
 msgstr ""
 
-#: NetworksSettingsPage#36
+#: NetworksSettingsPage#38
 msgid "Receive fallback:"
 msgstr ""
 
-#: NetworksSettingsPage#37
+#: NetworksSettingsPage#39
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
 
-#: NetworksSettingsPage#38
-msgid "Server encoding:"
-msgstr ""
-
-#: NetworksSettingsPage#39
-msgctxt "NetworksSettingsPage#39"
-msgid "IRC"
-msgstr ""
-
 #: NetworksSettingsPage#40
-msgid "Networks"
+msgid "Server encoding:"
 msgstr ""
 
 #: NetworksSettingsPage#41
 msgctxt "NetworksSettingsPage#41"
+msgid "IRC"
+msgstr ""
+
+#: NetworksSettingsPage#42
+msgid "Networks"
+msgstr ""
+
+#: NetworksSettingsPage#43
+msgctxt "NetworksSettingsPage#43"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
 
-#: NetworksSettingsPage#42
+#: NetworksSettingsPage#44
 msgid "<li>All networks need at least one server defined</li>"
 msgstr ""
 
-#: NetworksSettingsPage#43
-msgctxt "NetworksSettingsPage#43"
+#: NetworksSettingsPage#45
+msgctxt "NetworksSettingsPage#45"
 msgid "</ul>"
 msgstr ""
 
-#: NetworksSettingsPage#44
+#: NetworksSettingsPage#46
 msgid "Invalid Network Settings"
 msgstr ""
 
-#: NetworksSettingsPage#45
+#: NetworksSettingsPage#47
 msgid "Delete Network?"
 msgstr ""
 
-#: NetworksSettingsPage#46
+#: NetworksSettingsPage#48
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
@@ -4054,6 +4167,23 @@ msgstr ""
 msgid "Status Buffer"
 msgstr ""
 
+#: SystemTray#1
+msgid "&Minimize"
+msgstr ""
+
+#: SystemTray#2
+msgid "&Restore"
+msgstr ""
+
+#: SystrayNotificationBackend#1
+#, fuzzy
+msgctxt "SystrayNotificationBackend#1"
+msgid "%n pending highlights"
+msgstr ""
+"\n"
+"            \n"
+"        "
+
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"
 msgstr ""
@@ -4209,6 +4339,16 @@ msgstr ""
 #: TopicWidget#2
 msgctxt "TopicWidget#2"
 msgid "..."
+msgstr ""
+
+#: TopicWidget#3
+msgctxt "TopicWidget#3"
+msgid "Users: %1"
+msgstr ""
+
+#: TopicWidget#4
+msgctxt "TopicWidget#4"
+msgid "Lag: %1 msecs"
 msgstr ""
 
 #: TopicWidgetSettingsPage#1

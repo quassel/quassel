@@ -6,5 +6,5 @@ if [ ! $# -eq 1 ]; then
   exit 1
 fi
 
-msgmerge --no-wrap --width 1 -U $1 quassel.pot
+msgmerge --no-wrap --width 1 -U $1.po quassel.pot
 [ $? -ne 0 ] && echo "Something went wrong"
