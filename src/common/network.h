@@ -29,6 +29,7 @@
 #include <QVariantMap>
 #include <QPointer>
 #include <QMutex>
+#include <QByteArray>
 
 #include "types.h"
 #include "util.h"
@@ -214,6 +215,10 @@ public:
   static QStringList presetDefaultChannels(const QString &networkName);
   static NetworkInfo networkInfoFromPreset(const QString &networkName);
 
+  // Blowfish stuff
+  QByteArray bufferKey(const QString &recipient) const;
+  void setBufferKey(const QString &recipient, const QByteArray &key);
+
 public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
@@ -340,6 +345,9 @@ private:
   QHash<QString, IrcChannel *> _ircChannels; // stores all known channels
   QHash<QString, QString> _supports;  // stores results from RPL_ISUPPORT
 
+  // Blowfish key map
+  QHash<QString, QByteArray> _keyHash;
+  
   ServerList _serverList;
   bool _useRandomServer;
   QStringList _perform;

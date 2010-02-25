@@ -475,6 +475,13 @@ NetworkInfo Network::networkInfoFromPreset(const QString &networkName) {
   return info;
 }
 
+QByteArray Network::bufferKey(const QString &recipient) const {
+  return _keyHash[recipient.toLower()];
+}
+
+void Network::setBufferKey(const QString &recipient, const QByteArray &key) {
+  _keyHash[recipient.toLower()] = key;
+}
 
 // ====================
 //  Public Slots:
