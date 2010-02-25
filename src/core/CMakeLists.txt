@@ -6,6 +6,10 @@ set(QT_USE_QTSQL 1)
 set(QT_USE_QTSCRIPT 1)
 include(${QT_USE_FILE})
 
+if (QCA2_FOUND)
+  include_directories(${QCA2_INCLUDE_DIR})
+endif (QCA2_FOUND)
+
 set(SOURCES
     abstractsqlstorage.cpp
     core.cpp

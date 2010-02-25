@@ -4,6 +4,10 @@ set(QT_DONT_USE_QTGUI 0)
 set(QT_USE_QTNETWORK 1)
 include(${QT_USE_FILE})
 
+if (QCA2_FOUND)
+  include_directories(${QCA2_INCLUDE_DIR})
+endif (QCA2_FOUND)
+
 set(SOURCES
     abstractbuffercontainer.cpp
     abstractitemview.cpp

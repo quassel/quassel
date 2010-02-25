@@ -63,6 +63,9 @@ Quassel recognizes the following options:
 -DWITH_LIBINDICATE=OFF
     Disable support for Ayatana notifications (libindicate-qt)
 
+-DWITH_CRYPT=OFF
+    Disable crypt support
+
 -DLINGUAS="<languages">
     Allow to choose which languages should be compiled into the binary.
     <languages> is a space- or comma-separated list of language codes.

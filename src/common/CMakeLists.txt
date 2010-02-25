@@ -1,4 +1,7 @@
 # Builds the common module
+if (QCA2_FOUND)
+    include_directories(${QCA2_INCLUDE_DIR})
+endif (QCA2_FOUND)
 
 set(QT_DONT_USE_QTGUI 1)
 set(QT_USE_QTNETWORK 1)
@@ -78,6 +81,10 @@ add_library(mod_common STATIC ${SOURCES} ${MOC})
 if(APPLE)
   target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
 endif(APPLE)
+
+if (QCA2_FOUND)
+  target_link_libraries(mod_common ${QCA2_LIBRARIES})
+endif (QCA2_FOUND)
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
   find_library(libdl dl)
