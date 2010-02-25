@@ -41,7 +41,8 @@ macro(generate_qm outvar basename)
   set(output ${CMAKE_BINARY_DIR}/po/${basename}.qm)
   add_custom_command(OUTPUT ${output}
           COMMAND ${QT_LRELEASE_EXECUTABLE}
-          ARGS ${input}
+          ARGS -silent
+               ${input}
           DEPENDS ${basename}.ts)
   set(${outvar} ${output})
 endmacro(generate_qm outvar basename)
