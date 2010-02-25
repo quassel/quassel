@@ -38,6 +38,10 @@ if(HAVE_INDICATEQT)
   link_directories(${INDICATEQT_LIBRARY_DIRS})
 endif(HAVE_INDICATEQT)
 
+if (QCA2_FOUND)
+  include_directories(${QCA2_INCLUDE_DIR})
+endif (QCA2_FOUND)
+
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})

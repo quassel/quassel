@@ -31,6 +31,11 @@ set(SOURCES
     syncableobject.cpp
     util.cpp)
 
+if (QCA2_FOUND)
+    set(SOURCES ${SOURCES}
+        cipher.cpp)
+endif (QCA2_FOUND)
+
 if(CMAKE_HOST_WIN32)
     set(SOURCES ${SOURCES} logbacktrace_win.cpp)
 endif(CMAKE_HOST_WIN32)
@@ -65,6 +70,11 @@ set(HEADERS ${MOC_HDRS}
     message.h
     types.h
     util.h)
+
+if (QCA2_FOUND)
+    set(HEADERS ${HEADERS}
+        cipher.h)
+endif (QCA2_FOUND)
 
 if(APPLE)
   set(SOURCES ${SOURCES} mac_utils.cpp)
