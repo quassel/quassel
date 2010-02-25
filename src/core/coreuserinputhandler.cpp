@@ -28,6 +28,10 @@
 #include <QDebug>
 #include <QRegExp>
 
+#ifdef HAVE_QCA2
+#include "cipher.h"
+#endif
+
 CoreUserInputHandler::CoreUserInputHandler(CoreNetwork *parent)
   : CoreBasicHandler(parent)
 {
@@ -155,6 +159,60 @@ void CoreUserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QStrin
 
   network()->ctcpHandler()->query(nick, ctcpTag, message);
   emit displayMsg(Message::Action, BufferInfo::StatusBuffer, "", verboseMessage, network()->myNick());
+}
+
+void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QString &msg) {
+  #ifdef HAVE_QCA2
+  if (!bufferInfo.isValid())
+    return;
+  
+  QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+  
+  if(parms.isEmpty() && !bufferInfo.bufferName().isEmpty())
+    parms.prepend(bufferInfo.bufferName());
+
+  if(parms.isEmpty()) {
+    QString message = tr("[usage] /delkey <nick|channel> deletes the encryption key for nick or channel or just /delkey when in a channel or query.");
+    
+    if(bufferInfo.bufferName().isEmpty())
+      emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "", message);
+    else
+      emit displayMsg(Message::Info, bufferInfo.bufferName(), message);
+    return;
+  }
+
+  if(network()->bufferKey(parms[0]).isEmpty()) {
+    QString message = tr("No key has been set for %1.").arg(parms[0]);
+
+    if(bufferInfo.bufferName().isEmpty())
+      emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "", message);
+    else
+      emit displayMsg(Message::Info, bufferInfo.bufferName(), message);
+    return;
+  }
+
+  network()->setBufferKey(parms[0], "");
+
+  if(network()->isChannelName(parms[0]) && network()->channels().contains(parms[0])) {
+    network()->ircChannel(parms[0])->setEncrypted(false);
+  }
+  else if(network()->nicks().contains(parms[0])) {
+    network()->ircUser(parms[0])->setEncrypted(false);
+  }
+
+  QString message = tr("The key for %1 has been deleted.").arg(parms[0]);
+  
+  if(bufferInfo.bufferName().isEmpty())
+    emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "", message);
+  else
+    emit displayMsg(Message::Info, bufferInfo.bufferName(), message);
+    
+  #else
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Error: Setting an encryption key requires Quassel to have been built "
+								   "with support for the Qt Cryptographic Architecture (QCA) library. "
+								   "Contact your distributor about a Quassel package with QCA "
+								   "support, or rebuild Quassel with QCA present."));
+  #endif
 }
 
 void CoreUserInputHandler::handleDeop(const BufferInfo &bufferInfo, const QString &msg) {
@@ -389,6 +447,44 @@ void CoreUserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString
     return;  // server buffer
   putPrivmsg(serverEncode(bufferInfo.bufferName()), channelEncode(bufferInfo.bufferName(), msg));
   emit displayMsg(Message::Plain, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
+}
+
+void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QString &msg) {
+  #ifdef HAVE_QCA2
+  if(!bufferInfo.isValid())
+    return;
+  
+  QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+ 
+  if(parms.count() == 1 && !bufferInfo.bufferName().isEmpty())
+    parms.prepend(bufferInfo.bufferName());
+  else if(parms.count() != 2) {
+    QString message =tr("[usage] /setkey <nick|channel> <key> sets the encryption key for nick or channel. /setkey <key> when in a channel or query buffer sets the key for it.");
+    
+    if(bufferInfo.bufferName().isEmpty())
+      emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "", message);
+    else
+      emit displayMsg(Message::Info, bufferInfo.bufferName(), message);
+    return;
+  }
+  network()->setBufferKey(parms[0], parms[1].toLocal8Bit());
+
+  if(network()->isChannelName(parms[0]) && network()->channels().contains(parms[0]))
+    network()->ircChannel(parms[0])->setEncrypted(true);
+  else if(network()->nicks().contains(parms[0]))
+    network()->ircUser(parms[0])->setEncrypted(true);
+  
+  QString message = tr("The key for %1 has been set.").arg(parms[0]);
+  if (bufferInfo.bufferName().isEmpty())
+    emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "", message);
+  else
+    emit displayMsg(Message::Info, bufferInfo.bufferName(), message);
+  #else
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Error: Setting an encryption key requires Quassel to have been built "
+								   "with support for the Qt Cryptographic Architecture (QCA) library. "
+								   "Contact your distributor about a Quassel package with QCA "
+								   "support, or rebuild Quassel with QCA present."));
+  #endif
 }
 
 void CoreUserInputHandler::handleTopic(const BufferInfo &bufferInfo, const QString &msg) {

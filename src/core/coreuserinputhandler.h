@@ -38,6 +38,7 @@ public slots:
   void handleBan(const BufferInfo &bufferInfo, const QString &text);
   void handleUnban(const BufferInfo &bufferInfo, const QString &text);
   void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
+  void handleDelkey(const BufferInfo &bufferInfo, const QString &text);
   void handleDeop(const BufferInfo &bufferInfo, const QString &text);
   void handleDevoice(const BufferInfo &bufferInfo, const QString &text);
   void handleInvite(const BufferInfo &bufferInfo, const QString &text);
@@ -58,6 +59,7 @@ public slots:
   void handleQuit(const BufferInfo &bufferInfo, const QString &text);
   void handleQuote(const BufferInfo &bufferInfo, const QString &text);
   void handleSay(const BufferInfo &bufferInfo, const QString &text);
+  void handleSetkey(const BufferInfo &bufferInfo, const QString &text);
   void handleTopic(const BufferInfo &bufferInfo, const QString &text);
   void handleVoice(const BufferInfo &bufferInfo, const QString &text);
   void handleWait(const BufferInfo &bufferInfo, const QString &text);
