@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Quassel\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
-"PO-Revision-Date: 2010-01-27 19:49+0100\n"
+"PO-Revision-Date: 2010-02-25 19:08+0100\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -64,9 +64,8 @@ msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 msgstr "<b>Versione:</b> %1<br><b>Versione protocollo:</b> %2<br><b>Compilato:</b> %3"
 
 #: AboutDlg#9
-#, fuzzy
 msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-msgstr "<b>Un Client IRC moderno. distribuito</b><br><br>&copy;2005-2009 Progetto Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC è distribuito con doppia licenza: <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> e <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Molte delle icone son &copy; by the <a href=\"http://www.oxygen-icons.org\">Team Oxygen</a> ed utilizzate con licenza <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Per favore utilizzare <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> per segnalare i bug."
+msgstr "<b>Un Client IRC moderno. distribuito</b><br><br>&copy;2005-2010 Progetto Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC è distribuito con doppia licenza: <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> e <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Molte delle icone son &copy; by the <a href=\"http://www.oxygen-icons.org\">Team Oxygen</a> ed utilizzate con licenza <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Per favore utilizzare <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> per segnalare i bug."
 
 #: AboutDlg#10
 msgid "Quassel IRC is mainly developed by:"
@@ -105,25 +104,21 @@ msgid "Expansion"
 msgstr "Espansione"
 
 #: AliasesSettingsPage#1
-#, fuzzy
 msgctxt "AliasesSettingsPage#1"
 msgid "Form"
 msgstr "Modulo"
 
 #: AliasesSettingsPage#2
-#, fuzzy
 msgctxt "AliasesSettingsPage#2"
 msgid "New"
 msgstr "Nuovo"
 
 #: AliasesSettingsPage#3
-#, fuzzy
 msgctxt "AliasesSettingsPage#3"
 msgid "Delete"
 msgstr "Elimina"
 
 #: AliasesSettingsPage#4
-#, fuzzy
 msgctxt "AliasesSettingsPage#4"
 msgid "IRC"
 msgstr "IRC"
@@ -170,7 +165,6 @@ msgid "Path:"
 msgstr "Percorso:"
 
 #: AppearanceSettingsPage#10
-#, fuzzy
 msgctxt "AppearanceSettingsPage#10"
 msgid "..."
 msgstr "..."
@@ -212,7 +206,6 @@ msgid "Errors:"
 msgstr "Errori:"
 
 #: AppearanceSettingsPage#20
-#, fuzzy
 msgctxt "AppearanceSettingsPage#20"
 msgid "Interface"
 msgstr "Interfaccia"
@@ -295,7 +288,6 @@ msgid "Limit:"
 msgstr "Limite:"
 
 #: BacklogSettingsPage#14
-#, fuzzy
 msgctxt "BacklogSettingsPage#14"
 msgid "Unlimited"
 msgstr "Illimitato"
@@ -375,19 +367,16 @@ msgid "Form"
 msgstr "Modulo"
 
 #: BufferViewSettingsPage#2
-#, fuzzy
 msgctxt "BufferViewSettingsPage#2"
 msgid "Re&name..."
 msgstr "Ri&nomina..."
 
 #: BufferViewSettingsPage#3
-#, fuzzy
 msgctxt "BufferViewSettingsPage#3"
 msgid "&Add..."
 msgstr "&Aggiungi..."
 
 #: BufferViewSettingsPage#4
-#, fuzzy
 msgctxt "BufferViewSettingsPage#4"
 msgid "De&lete"
 msgstr "E&limina"
@@ -397,7 +386,6 @@ msgid "Chat List Settings"
 msgstr "Impostazioni Lista Chat"
 
 #: BufferViewSettingsPage#6
-#, fuzzy
 msgctxt "BufferViewSettingsPage#6"
 msgid "Network:"
 msgstr "Rete:"
@@ -455,7 +443,6 @@ msgid "New Message"
 msgstr "Nuovo messaggio"
 
 #: BufferViewSettingsPage#19
-#, fuzzy
 msgctxt "BufferViewSettingsPage#19"
 msgid "Highlight"
 msgstr "Evento"
@@ -619,7 +606,6 @@ msgid "Interface"
 msgstr "Interfaccia"
 
 #: ChatMonitorSettingsPage#12
-#, fuzzy
 msgctxt "ChatMonitorSettingsPage#12"
 msgid "Chat Monitor"
 msgstr "Monitor di chat"
@@ -804,7 +790,6 @@ msgid "Ping interval:"
 msgstr "Intervallo ping:"
 
 #: ConnectionSettingsPage#4
-#, fuzzy
 msgctxt "ConnectionSettingsPage#4"
 msgid " seconds"
 msgstr " secondi"
@@ -1000,7 +985,6 @@ msgid "Hide Events"
 msgstr "Nascondi eventi"
 
 #: ContextMenuActionProvider#37
-#, fuzzy
 msgctxt "ContextMenuActionProvider#37"
 msgid "CTCP"
 msgstr "CTCP"
@@ -1234,7 +1218,6 @@ msgid "Edit..."
 msgstr "Modifica..."
 
 #: CoreAccountSettingsPage#4
-#, fuzzy
 msgctxt "CoreAccountSettingsPage#4"
 msgid "Add..."
 msgstr "Aggiungi..."
@@ -1257,7 +1240,6 @@ msgid "Always connect to"
 msgstr "Connetti sempre a"
 
 #: CoreAccountSettingsPage#9
-#, fuzzy
 msgctxt "CoreAccountSettingsPage#9"
 msgid "Remote Cores"
 msgstr "Rimuovi core"
@@ -1554,7 +1536,6 @@ msgid "Remote Cores"
 msgstr "Core remoti"
 
 #: CoreConnectionSettingsPage#13
-#, fuzzy
 msgctxt "CoreConnectionSettingsPage#13"
 msgid "Connection"
 msgstr "Connessione"
@@ -1565,7 +1546,6 @@ msgid "Form"
 msgstr "Modulo"
 
 #: CoreConnectionStatusWidget#2
-#, fuzzy
 msgctxt "CoreConnectionStatusWidget#2"
 msgid "Message"
 msgstr "Messaggio"
@@ -1628,7 +1608,6 @@ msgid "<build date>"
 msgstr "<data di compilazione>"
 
 #: CoreInfoDlg#10
-#, fuzzy
 msgctxt "CoreInfoDlg#10"
 msgid "Close"
 msgstr "Chiudi"
@@ -1687,9 +1666,8 @@ msgid "away"
 msgstr "assente"
 
 #: CoreUserInputHandler#2
-#, fuzzy
 msgid "sending CTCP-%1 request to %2"
-msgstr "invio richiesta CTCP-%1"
+msgstr "invio richiesta CTCP-%1 a %2"
 
 #: CreateIdentityDlg#1
 msgid "Create New Identity"
@@ -1724,14 +1702,12 @@ msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "Ricevuta risposta CTCP VERSION da %1: %2"
 
 #: CtcpHandler#5
-#, fuzzy
 msgid "Received CTCP TIME request by %1"
-msgstr "Ricevuta richiesta CTCP VERSION da %1"
+msgstr "Ricevuta richiesta CTCP TIME da %1"
 
 #: CtcpHandler#6
-#, fuzzy
 msgid "Received CTCP TIME answer from %1: %2"
-msgstr "Ricevuta risposta CTCP VERSION da %1: %2"
+msgstr "Ricevuta risposta CTCP TIME da %1: %2"
 
 #: CtcpHandler#7
 msgid "Received unknown CTCP %1 by %2"
@@ -1739,7 +1715,7 @@ msgstr "Ricevuto CTCP sconosciuto %1 da %2"
 
 #: CtcpHandler#8
 msgid " with arguments: %1"
-msgstr ""
+msgstr " con argomenti: %1"
 
 #: DebugBufferViewOverlay#1
 msgid "Debug BufferView Overlay"
@@ -1919,7 +1895,6 @@ msgid "Add"
 msgstr "Aggiungi"
 
 #: HighlightSettingsPage#8
-#, fuzzy
 msgctxt "HighlightSettingsPage#8"
 msgid "Remove"
 msgstr "Rimuovi"
@@ -1958,7 +1933,6 @@ msgid "highlight rule"
 msgstr "regola evidenziazione"
 
 #: IdentitiesSettingsPage#1
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#1"
 msgid "Rename Identity"
 msgstr "Rinomina identità"
@@ -1991,10 +1965,9 @@ msgid "Identities"
 msgstr "Identità"
 
 #: IdentitiesSettingsPage#8
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#8"
 msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
-msgstr "<b>I problemi seguenti devono essere corretti prima che i cambiamenti possano essere salvati:</b><ul>"
+msgstr "<b>Devono essere corretti i seguenti problemi prima di poter applicare le modifiche:</b><ul>"
 
 #: IdentitiesSettingsPage#9
 msgid "<li>All identities need an identity name set</li>"
@@ -2013,7 +1986,6 @@ msgid "<li>You need to specify an ident for every identity</li>"
 msgstr "<li>Devi specificare un ident per ogni identità</li>"
 
 #: IdentitiesSettingsPage#13
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#13"
 msgid "</ul>"
 msgstr "</ul>"
@@ -2079,7 +2051,6 @@ msgid "Nicknames"
 msgstr "Nick"
 
 #: IdentityEditWidget#5
-#, fuzzy
 msgctxt "IdentityEditWidget#5"
 msgid "Add Nickname"
 msgstr "Aggiungi nick"
@@ -2109,7 +2080,6 @@ msgid "Re&name..."
 msgstr "Ri&nomina..."
 
 #: IdentityEditWidget#11
-#, fuzzy
 msgctxt "IdentityEditWidget#11"
 msgid "Move upwards in list"
 msgstr "Sposta in alto nella lista"
@@ -2120,7 +2090,6 @@ msgid "..."
 msgstr "..."
 
 #: IdentityEditWidget#13
-#, fuzzy
 msgctxt "IdentityEditWidget#13"
 msgid "Move downwards in list"
 msgstr "Sposta in basso nella lista"
@@ -2174,7 +2143,6 @@ msgid "minutes of being idle"
 msgstr "minuti di inattività"
 
 #: IdentityEditWidget#26
-#, fuzzy
 msgctxt "IdentityEditWidget#26"
 msgid "Advanced"
 msgstr "Avanzato"
@@ -2216,7 +2184,6 @@ msgstr ""
 "Ciò comporterà il trasferimento _non cifrato_ della tua Chiave e Certificato SSL!"
 
 #: IdentityEditWidget#35
-#, fuzzy
 msgctxt "IdentityEditWidget#35"
 msgid "Continue"
 msgstr "Continua"
@@ -2343,7 +2310,6 @@ msgid "Message"
 msgstr "Messaggio"
 
 #: IgnoreListEditDlg#10
-#, fuzzy
 msgctxt "IgnoreListEditDlg#10"
 msgid "CTCP"
 msgstr "CTCP"
@@ -2377,7 +2343,6 @@ msgstr ""
 "- <i>stupid!.+</i> (RegEx) coincide con qualunque mittente il cui nick è <i>stupid</i> da qualsiasi host</p>"
 
 #: IgnoreListEditDlg#12
-#, fuzzy
 msgctxt "IgnoreListEditDlg#12"
 msgid "Ignore Rule"
 msgstr "Regola di ignore"
@@ -2429,13 +2394,11 @@ msgid "Global"
 msgstr "Globale"
 
 #: IgnoreListEditDlg#18
-#, fuzzy
 msgctxt "IgnoreListEditDlg#18"
 msgid "Network"
 msgstr "Rete"
 
 #: IgnoreListEditDlg#19
-#, fuzzy
 msgctxt "IgnoreListEditDlg#19"
 msgid "Channel"
 msgstr "Canale"
@@ -2561,73 +2524,71 @@ msgstr "Modulo"
 
 #: InputWidget#2
 msgid "White"
-msgstr ""
+msgstr "Bianco"
 
 #: InputWidget#3
 msgid "Black"
-msgstr ""
+msgstr "Nero"
 
 #: InputWidget#4
 msgid "Dark blue"
-msgstr ""
+msgstr "Blu scuro"
 
 #: InputWidget#5
 msgid "Dark green"
-msgstr ""
+msgstr "Verde scuro"
 
 #: InputWidget#6
 msgid "Red"
-msgstr ""
+msgstr "Rosso"
 
 #: InputWidget#7
 msgid "Dark red"
-msgstr ""
+msgstr "Rosso scuro"
 
 #: InputWidget#8
 msgid "Dark magenta"
-msgstr ""
+msgstr "Magenta scuro"
 
 #: InputWidget#9
 msgid "Orange"
-msgstr ""
+msgstr "Arancione"
 
 #: InputWidget#10
 msgid "Yellow"
-msgstr ""
+msgstr "Giallo"
 
 #: InputWidget#11
 msgid "Green"
-msgstr ""
+msgstr "Verde"
 
 #: InputWidget#12
 msgid "Dark cyan"
-msgstr ""
+msgstr "Azzurro scuro"
 
 #: InputWidget#13
 msgid "Cyan"
-msgstr ""
+msgstr "Azzurro"
 
 #: InputWidget#14
-#, fuzzy
 msgid "Blue"
-msgstr "Buffer"
+msgstr "Blu"
 
 #: InputWidget#15
 msgid "Magenta"
-msgstr ""
+msgstr "Magenta"
 
 #: InputWidget#16
 msgid "Dark gray"
-msgstr ""
+msgstr "Grigio scuro"
 
 #: InputWidget#17
 msgid "Light gray"
-msgstr ""
+msgstr "Grigio chiaro"
 
 #: InputWidget#18
-#, fuzzy
 msgid "Clear Color"
-msgstr "Svuota"
+msgstr "Elimina colore"
 
 #: InputWidget#19
 msgid "Focus Input Line"
@@ -2643,7 +2604,6 @@ msgid "Form"
 msgstr "Modulo"
 
 #: InputWidgetSettingsPage#2
-#, fuzzy
 msgctxt "InputWidgetSettingsPage#2"
 msgid "Custom font:"
 msgstr "Font personalizzato:"
@@ -2657,9 +2617,8 @@ msgid "Show nick selector"
 msgstr "Mostra selettore nick"
 
 #: InputWidgetSettingsPage#5
-#, fuzzy
 msgid "Show style buttons"
-msgstr "Mostra icona nella tray di sistema"
+msgstr "Mostra pulsanti di stile"
 
 #: InputWidgetSettingsPage#6
 msgid "Multi-Line Editing"
@@ -2690,7 +2649,6 @@ msgid ": "
 msgstr ": "
 
 #: InputWidgetSettingsPage#13
-#, fuzzy
 msgctxt "InputWidgetSettingsPage#13"
 msgid "Interface"
 msgstr "Interfaccia"
@@ -2832,7 +2790,7 @@ msgstr "Nick già utilizzato: %1"
 
 #: IrcServerHandler#29
 msgid "Nick/channel is temporarily unavailable: %1"
-msgstr ""
+msgstr "Nick/canale temporaneamente non disponibile: %1"
 
 #: IrcServerHandler#30
 msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
@@ -2960,13 +2918,9 @@ msgid "Other activity"
 msgstr "Altra attività"
 
 #: KNotificationBackend#1
-#, fuzzy
 msgctxt "KNotificationBackend#1"
 msgid "%n pending highlights"
-msgstr ""
-"\n"
-"            \n"
-"        "
+msgstr "%n eventi in attesa"
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -3271,16 +3225,14 @@ msgid "Server: %1"
 msgstr "Server: %1"
 
 #: NetworkItem#2
-#, fuzzy
 msgctxt "NetworkItem#2"
 msgid "Users: %1"
 msgstr "Utenti: %1"
 
 #: NetworkItem#3
-#, fuzzy
 msgctxt "NetworkItem#3"
 msgid "Lag: %1 msecs"
-msgstr "Latenza: %1 msecs"
+msgstr "Ritardo: %1 msecs"
 
 #: NetworkModel#1
 msgid "Chat"
@@ -3362,7 +3314,6 @@ msgid "..."
 msgstr "..."
 
 #: NetworksSettingsPage#8
-#, fuzzy
 msgctxt "NetworksSettingsPage#8"
 msgid "Servers"
 msgstr "Server"
@@ -3372,7 +3323,6 @@ msgid "Manage servers for this network"
 msgstr "Gestisci server per questa rete"
 
 #: NetworksSettingsPage#10
-#, fuzzy
 msgctxt "NetworksSettingsPage#10"
 msgid "&Edit..."
 msgstr "&Modifica..."
@@ -3460,14 +3410,12 @@ msgid "Password:"
 msgstr "Password:"
 
 #: NetworksSettingsPage#29
-#, fuzzy
 msgid "Use SASL Authentication"
-msgstr "Utilizza Certificato SSL"
+msgstr "Utilizza autenticazione SASL"
 
 #: NetworksSettingsPage#30
-#, fuzzy
 msgid "Account:"
-msgstr "Nome account:"
+msgstr "Account:"
 
 #: NetworksSettingsPage#31
 msgid "Encodings"
@@ -3522,7 +3470,6 @@ msgid "Server encoding:"
 msgstr "Codifica Server:"
 
 #: NetworksSettingsPage#41
-#, fuzzy
 msgctxt "NetworksSettingsPage#41"
 msgid "IRC"
 msgstr "IRC"
@@ -3532,17 +3479,15 @@ msgid "Networks"
 msgstr "Reti"
 
 #: NetworksSettingsPage#43
-#, fuzzy
 msgctxt "NetworksSettingsPage#43"
 msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
-msgstr "<b>I problemi seguenti devono essere corretti prima che i cambiamenti possano essere salvati:</b><ul>"
+msgstr "<b>Devono essere corretti i seguenti problemi prima di poter applicare le modifiche:</b><ul>"
 
 #: NetworksSettingsPage#44
 msgid "<li>All networks need at least one server defined</li>"
 msgstr "<li>Tutte le reti necessitano di almeno un server definito</li>"
 
 #: NetworksSettingsPage#45
-#, fuzzy
 msgctxt "NetworksSettingsPage#45"
 msgid "</ul>"
 msgstr "</ul>"
@@ -3872,13 +3817,11 @@ msgid "Proxy Password:"
 msgstr "Password proxy:"
 
 #: SettingsDlg#1
-#, fuzzy
 msgctxt "SettingsDlg#1"
 msgid "Configure Quassel"
 msgstr "Configura Quassel"
 
 #: SettingsDlg#2
-#, fuzzy
 msgctxt "SettingsDlg#2"
 msgid "Settings"
 msgstr "Impostazioni"
@@ -3892,31 +3835,26 @@ msgid "There are unsaved changes on the current configuration page. Would you li
 msgstr "Ci sono delle modifiche non salvate nella pagina corrente. Si desidera salvare le impostazioni ora?"
 
 #: SettingsDlg#5
-#, fuzzy
 msgctxt "SettingsDlg#5"
 msgid "Configure %1"
 msgstr "Configura %1"
 
 #: SettingsDlg#6
-#, fuzzy
 msgctxt "SettingsDlg#6"
 msgid "Reload Settings"
 msgstr "Ricarica impostazioni"
 
 #: SettingsDlg#7
-#, fuzzy
 msgctxt "SettingsDlg#7"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr "Si desidera ricaricare le impostazioni, annullando i cambiamenti su questa pagina?"
 
 #: SettingsDlg#8
-#, fuzzy
 msgctxt "SettingsDlg#8"
 msgid "Restore Defaults"
 msgstr "Ripristina predefiniti"
 
 #: SettingsDlg#9
-#, fuzzy
 msgctxt "SettingsDlg#9"
 msgid "Do you like to restore the default values for this page?"
 msgstr "Si desidera tornare ai valori predefiniti per questa pagina?"
@@ -4138,21 +4076,16 @@ msgstr "Buffer di stato"
 
 #: SystemTray#1
 msgid "&Minimize"
-msgstr ""
+msgstr "&Minimizza"
 
 #: SystemTray#2
-#, fuzzy
 msgid "&Restore"
-msgstr "Tentativi:"
+msgstr "&Ripristina"
 
 #: SystrayNotificationBackend#1
-#, fuzzy
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
-msgstr ""
-"\n"
-"            \n"
-"        "
+msgstr "%n eventi in sospeso"
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"
@@ -4312,16 +4245,14 @@ msgid "..."
 msgstr "..."
 
 #: TopicWidget#3
-#, fuzzy
 msgctxt "TopicWidget#3"
 msgid "Users: %1"
 msgstr "Utenti: %1"
 
 #: TopicWidget#4
-#, fuzzy
 msgctxt "TopicWidget#4"
 msgid "Lag: %1 msecs"
-msgstr "Latenza: %1 msecs"
+msgstr "Ritardo: %1 msec"
 
 #: TopicWidgetSettingsPage#1
 msgctxt "TopicWidgetSettingsPage#1"
