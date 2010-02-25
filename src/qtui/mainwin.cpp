@@ -136,6 +136,8 @@ MainWin::MainWin(QWidget *parent)
     _awayLog(0),
     _layoutLoaded(false)
 {
+  setAttribute(Qt::WA_DeleteOnClose, false);  // we delete the mainwin manually
+
   QtUiSettings uiSettings;
   QString style = uiSettings.value("Style", QString()).toString();
   if(!style.isEmpty()) {

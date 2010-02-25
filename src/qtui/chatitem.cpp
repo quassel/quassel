@@ -48,6 +48,39 @@ ChatItem::ChatItem(const QRectF &boundingRect, ChatLine *parent)
 
 }
 
+ChatLine *ChatItem::chatLine() const {
+  return _parent;
+}
+
+ChatScene *ChatItem::chatScene() const {
+  return chatLine()->chatScene();
+}
+
+const QAbstractItemModel *ChatItem::model() const {
+  return chatLine()->model();
+}
+
+int ChatItem::row() const {
+  return chatLine()->row();
+}
+
+QPointF ChatItem::mapToLine(const QPointF &p) const {
+  return p + pos();
+}
+
+QPointF ChatItem::mapFromLine(const QPointF &p) const {
+  return p - pos();
+}
+
+// relative to the ChatLine
+QPointF ChatItem::mapToScene(const QPointF &p) const {
+  return chatLine()->mapToScene(p /* + pos() */);
+}
+
+QPointF ChatItem::mapFromScene(const QPointF &p) const {
+  return chatLine()->mapFromScene(p) /* - pos() */;
+}
+
 QVariant ChatItem::data(int role) const {
   QModelIndex index = model()->index(row(), column());
   if(!index.isValid()) {

@@ -44,10 +44,10 @@ protected:
   virtual ~ChatItem() {}
 
 public:
-  inline const QAbstractItemModel *model() const;
-  inline ChatLine *chatLine() const;
-  inline ChatScene *chatScene() const;
-  inline int row() const;
+  const QAbstractItemModel *model() const;
+  ChatLine *chatLine() const;
+  ChatScene *chatScene() const;
+  int row() const;
   virtual ChatLineModel::ColumnType column() const = 0;
 
   // The boundingRect() is relative to the parent ChatLine
@@ -58,10 +58,10 @@ public:
   inline qreal x() const;
   inline qreal y() const;
 
-  inline QPointF mapToLine(const QPointF &) const;
-  inline QPointF mapFromLine(const QPointF &) const;
-  inline QPointF mapToScene(const QPointF &) const;
-  inline QPointF mapFromScene(const QPointF &) const;
+  QPointF mapToLine(const QPointF &) const;
+  QPointF mapFromLine(const QPointF &) const;
+  QPointF mapToScene(const QPointF &) const;
+  QPointF mapFromScene(const QPointF &) const;
 
   void initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
   virtual inline void initLayout(QTextLayout *layout) const {
@@ -276,14 +276,7 @@ private:
 
 /*************************************************************************************************/
 
-#include "chatline.h"  /* avoid circular includes */
-
 // Inlines
-
-ChatLine *ChatItem::chatLine() const { return _parent; }
-ChatScene *ChatItem::chatScene() const { return chatLine()->chatScene(); }
-const QAbstractItemModel *ChatItem::model() const { return chatLine()->model(); }
-int ChatItem::row() const { return chatLine()->row(); }
 
 QRectF ChatItem::boundingRect() const { return _boundingRect; }
 qreal ChatItem::width() const { return _boundingRect.width(); }
@@ -291,11 +284,5 @@ qreal ChatItem::height() const { return _boundingRect.height(); }
 QPointF ChatItem::pos() const { return _boundingRect.topLeft(); }
 qreal ChatItem::x() const { return pos().x(); }
 qreal ChatItem::y() const { return pos().y(); }
-
-QPointF ChatItem::mapToLine(const QPointF &p) const { return p + pos(); }
-QPointF ChatItem::mapFromLine(const QPointF &p) const { return p - pos(); }
-// relative to the ChatLine
-QPointF ChatItem::mapToScene(const QPointF &p) const { return chatLine()->mapToScene(p /* + pos() */); }
-QPointF ChatItem::mapFromScene(const QPointF &p) const { return chatLine()->mapFromScene(p) /* - pos() */; }
 
 #endif

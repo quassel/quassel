@@ -46,6 +46,7 @@
 #include "columnhandleitem.h"
 #include "contextmenuactionprovider.h"
 #include "iconloader.h"
+#include "mainwin.h"
 #include "messagefilter.h"
 #include "qtui.h"
 #include "qtuistyle.h"

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +24,6 @@
 #include "graphicalui.h"
 
 #include "abstractnotificationbackend.h"
-#include "mainwin.h"
 #include "qtuistyle.h"
 
 class MainWin;
@@ -78,15 +77,15 @@ private slots:
   void useSystemTrayChanged(const QVariant &);
 
 private:
-  static QPointer<QtUi> _instance;
-  static QPointer<MainWin> _mainWin;
+  static QtUi *_instance;
+  static MainWin *_mainWin;
   static QList<AbstractNotificationBackend *> _notificationBackends;
   static QList<AbstractNotificationBackend::Notification> _notifications;
 
   bool _useSystemTray;
 };
 
-QtUi *QtUi::instance() { return _instance ? _instance.data() : new QtUi(); }
+QtUi *QtUi::instance() { return _instance ? _instance : new QtUi(); }
 QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle*>(uiStyle()); }
 MainWin *QtUi::mainWindow() { return _mainWin; }
 

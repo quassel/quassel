@@ -19,9 +19,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "mainwin.h"
+#include "qtui.h"
 #include "statusnotifieritemdbus.h"
 #include "statusnotifieritem.h"
-#include "qtui.h"
 
 #include <QDBusConnection>
 #include <QPixmap>

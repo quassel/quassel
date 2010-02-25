@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,8 +37,8 @@
 #  include <QX11Info>
 #endif
 
-QPointer<QtUi> QtUi::_instance = 0;
-QPointer<MainWin> QtUi::_mainWin = 0;
+QtUi *QtUi::_instance = 0;
+MainWin *QtUi::_mainWin = 0;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
 QList<AbstractNotificationBackend::Notification> QtUi::_notifications;
 
@@ -67,6 +67,8 @@ QtUi::QtUi() : GraphicalUi() {
 QtUi::~QtUi() {
   unregisterAllNotificationBackends();
   delete _mainWin;
+  _mainWin = 0;
+  _instance = 0;
 }
 
 void QtUi::init() {
