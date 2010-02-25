@@ -21,6 +21,7 @@
 #ifndef QT_NO_SYSTEMTRAYICON
 
 #include "legacysystemtray.h"
+#include "mainwin.h"
 #include "qtui.h"
 
 LegacySystemTray::LegacySystemTray(QWidget *parent)
