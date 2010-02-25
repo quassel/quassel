@@ -41,6 +41,10 @@ IrcChannel::IrcChannel(const QString &channelname, Network *network)
     _codecForDecoding(0)
 {
   setObjectName(QString::number(network->networkId().toInt()) + "/" +  channelname);
+  
+  #ifdef HAVE_QCA2
+  _cipher = 0;
+  #endif
 }
 
 IrcChannel::~IrcChannel() {
@@ -540,4 +544,37 @@ QString IrcChannel::channelModeString() const {
     return modeString;
   else
     return QString("+%1 %2").arg(modeString).arg(params.join(" "));
+}
+
+#ifdef HAVE_QCA2
+Cipher* IrcChannel::cipher() {
+  if(!_cipher)
+    _cipher = new Cipher();
+  return _cipher;
+}
+#endif
+
+void IrcChannel::setEncrypted(bool e) {
+  if(e) {
+    #ifdef HAVE_QCA2
+    if(topic().isEmpty()) 
+      return;
+  
+    QByteArray key = network->bufferKey(name());
+    if (key.isEmpty())
+      return;
+
+    if(!cipher()->setKey(key))
+      return;
+    
+      //only send encrypted text to decrypter
+    int index = topic().indexOf(":",topic().indexOf(":")+1);
+
+    QString backup = topic().mid(0,index+1);
+    QString decrypted = cipher()->decryptTopic(topic().mid(index+1).toAscii());;
+    decrypted.prepend(backup);
+
+    setTopic(decodeString(decrypted.toAscii()));
+    #endif
+  }
 }
