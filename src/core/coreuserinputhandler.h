@@ -77,9 +77,13 @@ protected:
 
 private:
   void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
-  void putPrivmsg(const QByteArray &target, const QByteArray &message);
+  void putPrivmsg(const QByteArray &target, const QByteArray &message, bool encrypted);
   int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
 
+  #ifdef HAVE_QCA2
+  QByteArray encrypt(const QByteArray &target, QByteArray &message);
+  #endif
+  
   struct Command {
     BufferInfo bufferInfo;
     QString command;

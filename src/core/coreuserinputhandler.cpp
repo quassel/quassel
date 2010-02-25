@@ -355,7 +355,7 @@ void CoreUserInputHandler::handleMsg(const BufferInfo &bufferInfo, const QString
     return;
 
   QByteArray target = serverEncode(msg.section(' ', 0, 0));
-  putPrivmsg(target, userEncode(target, msg.section(' ', 1)));
+  putPrivmsg(target, userEncode(target, msg.section(' ', 1)), false);
 }
 
 void CoreUserInputHandler::handleNick(const BufferInfo &bufferInfo, const QString &msg) {
@@ -445,7 +445,7 @@ void CoreUserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QStri
 void CoreUserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty())
     return;  // server buffer
-  putPrivmsg(serverEncode(bufferInfo.bufferName()), channelEncode(bufferInfo.bufferName(), msg));
+  putPrivmsg(serverEncode(bufferInfo.bufferName()), channelEncode(bufferInfo.bufferName(), msg), false);
   emit displayMsg(Message::Plain, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
 }
 
@@ -491,8 +491,16 @@ void CoreUserInputHandler::handleTopic(const BufferInfo &bufferInfo, const QStri
   if(bufferInfo.bufferName().isEmpty()) return;
   QList<QByteArray> params;
   params << serverEncode(bufferInfo.bufferName());
-  if(!msg.isEmpty())
+  if(!msg.isEmpty()) {
+    #ifdef HAVE_QCA2
+    const QByteArray bufferName =  bufferInfo.bufferName().toAscii();
+    QByteArray message = channelEncode(bufferInfo.bufferName(), msg);
+    params << encrypt(bufferName, message);
+    #else
     params << channelEncode(bufferInfo.bufferName(), msg);
+    #endif
+  }
+  
   emit putCmd("TOPIC", params);
 }
 
@@ -543,24 +551,34 @@ void CoreUserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferI
   emit putCmd(serverEncode(cmd.toUpper()), serverEncode(msg.split(" ")));
 }
 
-void CoreUserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray &message) {
+void CoreUserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray &message, bool encrypted) {
+
+  QByteArray temp = message;
+  
+  #ifdef HAVE_QCA2
+  if(!encrypted) {
+    temp = encrypt(target, temp);
+    encrypted = true;
+  }
+  #endif
+
   static const char *cmd = "PRIVMSG";
-  int overrun = lastParamOverrun(cmd, QList<QByteArray>() << target << message);
+  int overrun = lastParamOverrun(cmd, QList<QByteArray>() << target << temp);
   if(overrun) {
     static const char *splitter = " .,-";
-    int maxSplitPos = message.count() - overrun;
+    int maxSplitPos = temp.count() - overrun;
     int splitPos = -1;
     for(const char *splitChar = splitter; *splitChar != 0; splitChar++) {
-      splitPos = qMax(splitPos, message.lastIndexOf(*splitChar, maxSplitPos));
+      splitPos = qMax(splitPos, temp.lastIndexOf(*splitChar, maxSplitPos));
     }
     if(splitPos <= 0) {
       splitPos = maxSplitPos;
     }
-    putCmd(cmd, QList<QByteArray>() << target << message.left(splitPos));
-    putPrivmsg(target, message.mid(splitPos));
+    putCmd(cmd, QList<QByteArray>() << target << temp.left(splitPos));
+    putPrivmsg(target, temp.mid(splitPos), encrypted);
     return;
   } else {
-    putCmd(cmd, QList<QByteArray>() << target << message);
+    putCmd(cmd, QList<QByteArray>() << target << temp);
   }
 }
 
@@ -592,6 +610,30 @@ int CoreUserInputHandler::lastParamOverrun(const QString &cmd, const QList<QByte
     return 0;
   }
 }
+
+#ifdef HAVE_QCA2
+QByteArray CoreUserInputHandler::encrypt(const QByteArray &target, QByteArray &message) {
+  if(target.isEmpty())
+    return message;
+
+  if(message.isEmpty())
+    return message;
+
+  QByteArray key = network()->bufferKey(target);
+  if(key.isEmpty())
+    return message;
+  
+  IrcChannel *channel = network()->ircChannel(target);
+  IrcUser *user = network()->ircUser(target);
+
+  if(channel && channel->cipher()->setKey(key))
+    channel->cipher()->encrypt(message);
+  else if(user && user->cipher()->setKey(key))
+    user->cipher()->encrypt(message);
+
+  return message;
+}
+#endif
 
 void CoreUserInputHandler::timerEvent(QTimerEvent *event) {
   if(!_delayedCommands.contains(event->timerId())) {
