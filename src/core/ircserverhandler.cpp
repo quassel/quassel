@@ -32,6 +32,10 @@
 
 #include <QDebug>
 
+#ifdef HAVE_QCA2
+#include "cipher.h"
+#endif
+
 IrcServerHandler::IrcServerHandler(CoreNetwork *parent)
   : CoreBasicHandler(parent),
     _whois(false)
@@ -494,6 +498,9 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
       ? *targetIter
       : senderNick;
 
+    #ifdef HAVE_QCA2
+    msg = decrypt(target, msg);
+    #endif
     // it's possible to pack multiple privmsgs into one param using ctcp
     // - > we let the ctcpHandler do the work
     network()->ctcpHandler()->parse(Message::Plain, prefix, target, msg);
@@ -549,9 +556,13 @@ void IrcServerHandler::handleTopic(const QString &prefix, const QList<QByteArray
     return;
 
   QString topic;
-  if(params.count() > 1)
-    topic = channelDecode(channel->name(), params[1]);
-
+  if(params.count() > 1) {
+    topic = params[1];
+    #ifdef HAVE_QCA2
+    topic = decryptTopic(channel->name(), topic);
+    #endif
+  }
+  
   channel->setTopic(topic);
 
   emit displayMsg(Message::Topic, BufferInfo::ChannelBuffer, channel->name(), tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel->name()).arg(topic));
@@ -989,6 +1000,11 @@ void IrcServerHandler::handle332(const QString &prefix, const QList<QByteArray> 
 
   QString channel = serverDecode(params[0]);
   QString topic = channelDecode(channel, params[1]);
+  
+  #ifdef HAVE_QCA2
+  topic = decryptTopic(channel, topic);
+  #endif
+  
   IrcChannel *chan = network()->ircChannel(channel);
   if(chan)
     chan->setTopic(topic);
@@ -1229,6 +1245,72 @@ void IrcServerHandler::destroyNetsplits() {
   qDeleteAll(_netsplits);
   _netsplits.clear();
 }
+
+#ifdef HAVE_QCA2
+QByteArray IrcServerHandler::decrypt(const QString &bufferName, QByteArray &message) {
+  if(bufferName.isEmpty())
+    return message;
+
+  if(message.isEmpty())
+    return message;
+
+  const QByteArray key = network()->bufferKey(bufferName);
+  if(key.isEmpty())
+    return message;
+
+  IrcChannel *channel = network()->ircChannel(bufferName);
+  IrcUser *user = network()->ircUser(bufferName);
+
+  //only send encrypted text to decrypter
+  int index = message.indexOf(":",message.indexOf(":")+1);
+
+  /*  if(this->identifyMsgEnabled()) // Workaround braindead Freenode prefixing messages with +
+    ++index;*/
+  
+  QByteArray backup = message.mid(0,index+1);
+
+  if (channel && channel->cipher()->setKey(key))
+    message = channel->cipher()->decrypt(message.mid(index+1));
+  else if (user && user->cipher()->setKey(key))
+    message = user->cipher()->decrypt(message.mid(index+1));
+
+  message.prepend(backup);
+
+  message = channelDecode(bufferName, message).toAscii();
+  
+  return message;
+}
+
+QString IrcServerHandler::decryptTopic(const QString &bufferName, QString &topic) {
+  if(bufferName.isEmpty())
+    return topic;
+
+  if(topic.isEmpty())
+    return topic;
+
+  const QByteArray key = network()->bufferKey(bufferName);
+  if(key.isEmpty())
+    return topic;
+
+  IrcChannel *channel = network()->ircChannel(bufferName);
+  IrcUser *user = network()->ircUser(bufferName);
+
+  //only send encrypted text to decrypter
+  int index = topic.indexOf(":",topic.indexOf(":")+1);
+
+  QString backup = topic.mid(0,index+1);
+
+  if (channel && channel->cipher()->setKey(key))
+    topic = channel->cipher()->decryptTopic(topic.mid(index+1).toAscii());
+  else if (user && user->cipher()->setKey(key))
+    topic = user->cipher()->decryptTopic(topic.mid(index+1).toAscii());
+
+  topic.prepend(backup);
+  topic = channelDecode(bufferName, topic.toAscii());
+
+  return topic;
+}
+#endif
 
 /***********************************************************************************/
 
