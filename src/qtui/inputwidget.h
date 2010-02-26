@@ -99,6 +99,7 @@ private:
     QHash<int, QString> tempHistory;
     qint32 idx;
     QString inputLine;
+    inline HistoryState() : idx(0) {};
   };
 
   QMap<BufferId, HistoryState> historyMap;
