@@ -57,6 +57,7 @@ private slots:
   void setEnableSpellCheck(const QVariant &);
   void setShowNickSelector(const QVariant &);
   void setShowStyleButtons(const QVariant &);
+  void setEnablePerChatHistory(const QVariant &);
   void setMaxLines(const QVariant &);
   void setMultiLineEnabled(const QVariant &);
   void setScrollBarsEnabled(const QVariant &);
@@ -91,6 +92,16 @@ private:
   QIcon createColorToolButtonIcon(const QIcon &icon, const QColor &color);
   QTextCharFormat getFormatOfWordOrSelection();
   void setFormatOnSelection(const QTextCharFormat &format);
+
+  bool _perChatHistory;
+  struct HistoryState {
+    QStringList history;
+    QHash<int, QString> tempHistory;
+    qint32 idx;
+    QString inputLine;
+  };
+
+  QMap<BufferId, HistoryState> historyMap;
 };
 
 

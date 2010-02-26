@@ -37,7 +37,7 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
 #else
     QTextEdit(parent),
 #endif
-    idx(0),
+    _idx(0),
     _mode(SingleLine),
     _singleLine(true),
     _minHeight(1),
@@ -191,8 +191,8 @@ void MultiLineEdit::setPasteProtectionEnabled(bool enable, QWidget *) {
 void MultiLineEdit::historyMoveBack() {
   addToHistory(convertRichtextToMircCodes(), true);
 
-  if(idx > 0) {
-    idx--;
+  if(_idx > 0) {
+    _idx--;
     showHistoryEntry();
   }
 }
@@ -200,9 +200,9 @@ void MultiLineEdit::historyMoveBack() {
 void MultiLineEdit::historyMoveForward() {
   addToHistory(convertRichtextToMircCodes(), true);
 
-  if(idx < history.count()) {
-    idx++;
-    if(idx < history.count() || tempHistory.contains(idx)) // tempHistory might have an entry for idx == history.count() + 1
+  if(_idx < _history.count()) {
+    _idx++;
+    if(_idx < _history.count() || _tempHistory.contains(_idx)) // tempHistory might have an entry for idx == history.count() + 1
       showHistoryEntry();
     else
       reset();              // equals clear() in this case
@@ -216,20 +216,20 @@ bool MultiLineEdit::addToHistory(const QString &text, bool temporary) {
   if(text.isEmpty())
     return false;
 
-  Q_ASSERT(0 <= idx && idx <= history.count());
+  Q_ASSERT(0 <= _idx && _idx <= _history.count());
 
   if(temporary) {
     // if an entry of the history is changed, we remember it and show it again at this
     // position until a line was actually sent
     // sent lines get appended to the history
-    if(history.isEmpty() || text != history[idx - (int)(idx == history.count())]) {
-      tempHistory[idx] = text;
+    if(_history.isEmpty() || text != _history[_idx - (int)(_idx == _history.count())]) {
+      _tempHistory[_idx] = text;
       return true;
     }
   } else {
-    if(history.isEmpty() || text != history.last()) {
-      history << text;
-      tempHistory.clear();
+    if(_history.isEmpty() || text != _history.last()) {
+      _history << text;
+      _tempHistory.clear();
       return true;
     }
   }
@@ -524,7 +524,7 @@ void MultiLineEdit::on_returnPressed(const QString & text) {
       emit textEntered(line);
     }
     reset();
-    tempHistory.clear();
+    _tempHistory.clear();
   } else {
     emit noTextEntered();
   }
@@ -584,7 +584,7 @@ void MultiLineEdit::on_documentHeightChanged(qreal) {
 
 void MultiLineEdit::reset() {
   // every time the MultiLineEdit is cleared we also reset history index
-  idx = history.count();
+  _idx = _history.count();
   clear();
   QTextBlockFormat format = textCursor().blockFormat();
   format.setLeftMargin(leftMargin); // we want a little space between the frame and the contents
@@ -594,7 +594,7 @@ void MultiLineEdit::reset() {
 
 void MultiLineEdit::showHistoryEntry() {
   // if the user changed the history, display the changed line
-  setHtml(convertMircCodesToHtml(tempHistory.contains(idx) ? tempHistory[idx] : history[idx]));
+  setHtml(convertMircCodesToHtml(_tempHistory.contains(_idx) ? _tempHistory[_idx] : _history[_idx]));
   QTextCursor cursor = textCursor();
   QTextBlockFormat format = cursor.blockFormat();
   format.setLeftMargin(leftMargin); // we want a little space between the frame and the contents

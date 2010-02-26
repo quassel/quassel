@@ -58,6 +58,22 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="enablePerBufferHistory">
+     <property name="text">
+      <string>Enable per chat history</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>EnablePerChatHistory</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="showNickSelector">
      <property name="text">
       <string>Show nick selector</string>
