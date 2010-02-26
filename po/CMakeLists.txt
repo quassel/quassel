@@ -33,8 +33,8 @@ else(QT_LCONVERT_EXECUTABLE)
   message(STATUS "WARNING: lconvert not found, you won't have translations!")
 endif(QT_LCONVERT_EXECUTABLE)
 
-# For a static build, we need to include Qt translations if available
-if(STATIC AND QT_TRANSLATIONS_DIR)
+# For a static or win32 build, we need to include Qt translations if available
+if((STATIC OR WIN32) AND QT_TRANSLATIONS_DIR)
   foreach(LANG ${gen_linguas})
     file(GLOB lang_files ${QT_TRANSLATIONS_DIR}/qt_${LANG}*.qm)
     foreach(absfile ${lang_files})
@@ -44,7 +44,7 @@ if(STATIC AND QT_TRANSLATIONS_DIR)
       list(APPEND qm_files ${CMAKE_CURRENT_BINARY_DIR}/${filename})
     endforeach(absfile ${lang_files})
   endforeach(LANG ${gen_linguas})
-endif(STATIC AND QT_TRANSLATIONS_DIR)
+endif((STATIC OR WIN32) AND QT_TRANSLATIONS_DIR)
 
 # Write resource file
 set(resfile ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc)
