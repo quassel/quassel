@@ -1,4 +1,7 @@
-if((UNIX AND NOT APPLE) OR HAVE_KDE)
+# cmake-2.6.2 can't handle nested conditions
+# if((UNIX AND NOT APPLE) OR HAVE_KDE)
+if(HAVE_KDE OR UNIX)
+ if(HAVE_KDE OR NOT APPLE)
   if(WANT_QTCLIENT)
     install(FILES quasselclient.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
   endif(WANT_QTCLIENT)
@@ -12,7 +15,10 @@ if((UNIX AND NOT APPLE) OR HAVE_KDE)
       install(FILES quassel.notifyrc DESTINATION ${DATA_INSTALL_DIR}/quassel)
     endif(HAVE_KDE)
   endif(WANT_MONO OR WANT_QTCLIENT)
-endif((UNIX AND NOT APPLE) OR HAVE_KDE)
+
+# endif((UNIX AND NOT APPLE) OR HAVE_KDE)
+ endif(HAVE_KDE OR NOT APPLE)
+endif(HAVE_KDE OR UNIX)
 
 if(WANT_MONO OR WANT_QTCLIENT)
   if(EMBED_DATA)
