@@ -77,7 +77,7 @@ void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
     return;
   }
 
-  ChatItem *chatItem = dynamic_cast<ChatItem *>(itemAt(event->pos()));
+  ChatItem *chatItem = scene()->chatItemAt(mapToScene(event->pos()));
   if(!chatItem) {
     event->ignore();
     return;
