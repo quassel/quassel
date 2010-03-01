@@ -71,6 +71,9 @@ public:
 
   void clear();
 
+signals:
+  void finishedBacklogFetch(BufferId bufferId);
+
 public slots:
   void requestBacklog(BufferId bufferId);
   void messagesReceived(BufferId bufferId, int count);

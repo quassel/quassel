@@ -387,8 +387,10 @@ void MessageModel::messagesReceived(BufferId bufferId, int count) {
     return;
 
   _messagesWaiting[bufferId] -= count;
-  if(_messagesWaiting[bufferId] <= 0)
+  if(_messagesWaiting[bufferId] <= 0) {
     _messagesWaiting.remove(bufferId);
+    emit finishedBacklogFetch(bufferId);
+  }
 }
 
 void MessageModel::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2) {

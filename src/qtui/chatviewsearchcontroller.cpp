@@ -61,6 +61,7 @@ void ChatViewSearchController::setSearchString(const QString &searchString) {
 
   if(_scene) {
     disconnect(_scene, 0, this, 0);
+    disconnect(Client::messageModel(), 0, this, 0);
     qDeleteAll(_highlightItems);
     _highlightItems.clear();
   }
@@ -71,6 +72,7 @@ void ChatViewSearchController::setSearchString(const QString &searchString) {
 
   connect(_scene, SIGNAL(destroyed()), this, SLOT(sceneDestroyed()));
   connect(_scene, SIGNAL(layoutChanged()), this, SLOT(repositionHighlights()));
+  connect(Client::messageModel(), SIGNAL(finishedBacklogFetch(BufferId)), this, SLOT(updateHighlights()));
   updateHighlights();
  }
 
