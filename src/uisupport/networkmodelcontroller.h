@@ -177,6 +177,7 @@ public:
   JoinDlg(const QModelIndex &index, QWidget *parent = 0);
 
   QString channelName() const;
+  QString channelPassword() const;
   NetworkId networkId() const;
 
 private slots:
@@ -185,6 +186,7 @@ private slots:
 private:
   QComboBox *networks;
   QLineEdit *channel;
+  QLineEdit *password;
   QDialogButtonBox *buttonBox;
 };
 

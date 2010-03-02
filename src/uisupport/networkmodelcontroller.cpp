@@ -329,15 +329,20 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
   switch(type) {
     case JoinChannel: {
       QString channelName = contextItem();
+      QString channelPassword;
       if(channelName.isEmpty()) {
         JoinDlg dlg(indexList().first());
         if(dlg.exec() == QDialog::Accepted) {
           channelName = dlg.channelName();
           networkId = dlg.networkId();
+	  channelPassword = dlg.channelPassword();
         }
       }
       if(!channelName.isEmpty()) {
-        Client::instance()->userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(channelName));
+	if(!channelPassword.isEmpty())
+	  Client::instance()->userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1 %2").arg(channelName).arg(channelPassword));
+	else
+	  Client::instance()->userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(channelName));
       }
       break;
     }
@@ -474,12 +479,15 @@ NetworkModelController::JoinDlg::JoinDlg(const QModelIndex &index, QWidget *pare
   layout->addWidget(networks = new QComboBox, 0, 1);
   layout->addWidget(new QLabel(tr("Channel:")), 1, 0);
   layout->addWidget(channel = new QLineEdit, 1, 1);
-  layout->addWidget(buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel), 2, 0, 1, 2);
+  layout->addWidget(new QLabel(tr("Password:")), 2, 0);
+  layout->addWidget(password = new QLineEdit, 2, 1);
+  layout->addWidget(buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel), 3, 0, 1, 2);
   setLayout(layout);
 
   channel->setFocus();
   buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
   networks->setInsertPolicy(QComboBox::InsertAlphabetically);
+  password->setEchoMode(QLineEdit::Password);
 
   connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
   connect(buttonBox, SIGNAL(rejected()), SLOT(reject()));
@@ -509,6 +517,10 @@ NetworkId NetworkModelController::JoinDlg::networkId() const {
 
 QString NetworkModelController::JoinDlg::channelName() const {
   return channel->text();
+}
+
+QString NetworkModelController::JoinDlg::channelPassword() const {
+  return password->text();
 }
 
 void NetworkModelController::JoinDlg::on_channel_textChanged(const QString &text) {
