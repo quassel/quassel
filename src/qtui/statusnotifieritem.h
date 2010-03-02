@@ -26,6 +26,7 @@
 
 #ifdef HAVE_DBUS
 
+#include "notificationsclient.h"
 #include "systemtray.h"
 #include "statusnotifierwatcher.h"
 
@@ -47,6 +48,8 @@ public:
 
 public slots:
   virtual void setState(State state);
+  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
+  virtual void closeMessage(uint notificationId);
 
 protected:
   virtual void init();
@@ -63,6 +66,9 @@ private slots:
   void activated(const QPoint &pos);
   void serviceChange(const QString& name, const QString& oldOwner, const QString& newOwner);
 
+  void notificationClosed(uint id, uint reason);
+  void notificationInvoked(uint id, const QString &action);
+
 private:
   void registerToDaemon();
 
@@ -70,7 +76,10 @@ private:
   StatusNotifierItemDBus *_statusNotifierItemDBus;
 
   org::kde::StatusNotifierWatcher *_statusNotifierWatcher;
-  //org::freedesktop::Notifications *_notificationsClient;
+  org::freedesktop::Notifications *_notificationsClient;
+  bool _notificationsClientSupportsMarkup;
+  quint32 _lastNotificationsDBusId;
+  QHash<uint, uint> _notificationsIdMap; ///< Maps our own notification ID to the D-Bus one
 
   friend class StatusNotifierItemDBus;
 };

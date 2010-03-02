@@ -48,7 +48,8 @@ public:
 public slots:
   virtual void setState(State state);
   virtual void setVisible(bool visible = true);
-  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
+  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
+  virtual void closeMessage(uint notificationId);
 
 protected slots:
 
@@ -58,6 +59,7 @@ protected:
 private slots:
   void on_blinkTimeout();
   void on_activated(QSystemTrayIcon::ActivationReason);
+  void on_messageClicked();
 
   void syncLegacyIcon();
 
@@ -65,6 +67,7 @@ private:
   QTimer _blinkTimer;
   bool _blinkState;
   bool _isVisible;
+  uint _lastMessageId;
 
 #ifdef HAVE_KDE
   KSystemTrayIcon *_trayIcon;

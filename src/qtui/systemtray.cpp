@@ -144,11 +144,12 @@ void SystemTray::setToolTip(const QString &title, const QString &subtitle) {
   emit toolTipChanged(title, subtitle);
 }
 
-void SystemTray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint) {
+void SystemTray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint, uint id) {
   Q_UNUSED(title)
   Q_UNUSED(message)
   Q_UNUSED(icon)
   Q_UNUSED(millisecondsTimeoutHint)
+  Q_UNUSED(id)
 }
 
 void SystemTray::activate(SystemTray::ActivationReason reason) {

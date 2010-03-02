@@ -41,9 +41,7 @@ protected:
   virtual bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
-  void showBubble();
-  void closeBubble();
-  void notificationActivated();
+  void notificationActivated(uint notificationId);
   void notificationActivated(SystemTray::ActivationReason);
 
   void animateChanged(const QVariant &);

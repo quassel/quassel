@@ -77,13 +77,15 @@ public slots:
   virtual void setState(State);
   virtual void setVisible(bool visible = true);
   virtual void setToolTip(const QString &title, const QString &subtitle);
-  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
+  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
+  virtual void closeMessage(uint notificationId) { Q_UNUSED(notificationId) }
 
 signals:
   void activated(SystemTray::ActivationReason);
   void iconChanged(const Icon &);
   void toolTipChanged(const QString &title, const QString &subtitle);
-  void messageClicked();
+  void messageClicked(uint notificationId);
+  void messageClosed(uint notificationId);
 
 protected slots:
   virtual void activate(SystemTray::ActivationReason = Trigger);
@@ -97,6 +99,7 @@ protected:
   inline QString toolTipTitle() const;
   inline QString toolTipSubTitle() const;
   inline QMenu *trayMenu() const;
+
 
 private slots:
   void minimizeRestore();

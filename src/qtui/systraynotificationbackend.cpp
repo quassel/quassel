@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "systraynotificationbackend.h"
+#include <QApplication>
+#include <QCheckBox>
+#include <QGroupBox>
+#include <QVBoxLayout>
 
-#include <QtGui>
+#include "systraynotificationbackend.h"
 
 #include "client.h"
 #include "clientsettings.h"
@@ -41,7 +44,7 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   notificationSettings.notify("Systray/ShowBubble", this, SLOT(showBubbleChanged(const QVariant &)));
   notificationSettings.notify("Systray/Animate", this, SLOT(animateChanged(const QVariant &)));
 
-  connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked()), SLOT(notificationActivated()));
+  connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked(uint)), SLOT(notificationActivated(uint)));
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
                                             SLOT(notificationActivated(SystemTray::ActivationReason)));
 
@@ -50,13 +53,16 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   updateToolTip();
 }
 
-void SystrayNotificationBackend::notify(const Notification &notification) {
-  if(notification.type != Highlight && notification.type != PrivMsg)
+void SystrayNotificationBackend::notify(const Notification &n) {
+  if(n.type != Highlight && n.type != PrivMsg)
     return;
 
-  _notifications.append(notification);
-  if(_showBubble)
-    showBubble();
+  _notifications.append(n);
+  if(_showBubble) {
+    QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
+    QString message = QString("<%1> %2").arg(n.sender, n.message);
+    QtUi::mainWindow()->systemTray()->showMessage(title, message, SystemTray::Information, 10000, n.notificationId);
+  }
 
   if(_animate)
     QtUi::mainWindow()->systemTray()->setAlert(true);
@@ -73,7 +79,7 @@ void SystrayNotificationBackend::close(uint notificationId) {
       ++i;
   }
 
-  closeBubble();
+  QtUi::mainWindow()->systemTray()->closeMessage(notificationId);
 
   if(!_notifications.count())
     QtUi::mainWindow()->systemTray()->setAlert(false);
@@ -81,30 +87,13 @@ void SystrayNotificationBackend::close(uint notificationId) {
   updateToolTip();
 }
 
-void SystrayNotificationBackend::showBubble() {
-  // fancy stuff later: show messages in order
-  // for now, we just show the last message
-  if(_notifications.isEmpty())
-    return;
-  Notification n = _notifications.last();
-  QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
-  QString message = QString("<%1> %2").arg(n.sender, n.message);
-  QtUi::mainWindow()->systemTray()->showMessage(title, message);
-}
-
-void SystrayNotificationBackend::closeBubble() {
-  // there really seems to be no sane way to close the bubble... :(
-#ifdef Q_WS_X11
-  QtUi::mainWindow()->systemTray()->showMessage("", "", SystemTray::NoIcon, 1);
-#endif
-}
-
-void SystrayNotificationBackend::notificationActivated() {
+void SystrayNotificationBackend::notificationActivated(uint notificationId) {
   if(!_blockActivation) {
     if(QtUi::mainWindow()->systemTray()->isAlerted()) {
       _blockActivation = true; // prevent double activation because both tray icon and bubble might send a signal
-      uint id = _notifications.count()? _notifications.last().notificationId : 0;
-      emit activated(id);
+      if(!notificationId)
+        notificationId = _notifications.count()? _notifications.last().notificationId : 0;
+      emit activated(notificationId);
     } else
       GraphicalUi::toggleMainWidget();
   }
@@ -112,7 +101,7 @@ void SystrayNotificationBackend::notificationActivated() {
 
 void SystrayNotificationBackend::notificationActivated(SystemTray::ActivationReason reason) {
   if(reason == SystemTray::Trigger) {
-    notificationActivated();
+    notificationActivated(0);
   }
 }
 

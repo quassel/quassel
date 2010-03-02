@@ -26,22 +26,26 @@
 #include "statusnotifieritem.h"
 #include "statusnotifieritemdbus.h"
 
+#include <QApplication>
 #include <QMenu>
 #include <QMouseEvent>
+#include <QTextDocument>
 
 const int StatusNotifierItem::_protocolVersion = 0;
 
 StatusNotifierItem::StatusNotifierItem(QWidget *parent)
   : StatusNotifierItemParent(parent),
   _statusNotifierItemDBus(0),
-  _statusNotifierWatcher(0)
+  _statusNotifierWatcher(0),
+  _notificationsClient(0),
+  _notificationsClientSupportsMarkup(true),
+  _lastNotificationsDBusId(0)
 {
 
 }
 
 StatusNotifierItem::~StatusNotifierItem() {
   delete _statusNotifierWatcher;
-
 }
 
 void StatusNotifierItem::init() {
@@ -56,6 +60,17 @@ void StatusNotifierItem::init() {
                                                      SLOT(serviceChange(QString,QString,QString)));
 
   setMode(StatusNotifier);
+
+  _notificationsClient = new org::freedesktop::Notifications("org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+                                                             QDBusConnection::sessionBus(), this);
+
+  connect(_notificationsClient, SIGNAL(NotificationClosed(uint,uint)), SLOT(notificationClosed(uint,uint)));
+  connect(_notificationsClient, SIGNAL(ActionInvoked(uint,QString)), SLOT(notificationInvoked(uint,QString)));
+
+  if(_notificationsClient->isValid()) {
+    QStringList desktopCapabilities = _notificationsClient->GetCapabilities();
+    _notificationsClientSupportsMarkup = desktopCapabilities.contains("body-markup");
+  }
 
   StatusNotifierItemParent::init();
   trayMenu()->installEventFilter(this);
@@ -73,7 +88,7 @@ void StatusNotifierItem::registerToDaemon() {
     _statusNotifierWatcher->RegisterStatusNotifierItem(_statusNotifierItemDBus->service());
 
   } else {
-    qDebug() << "StatusNotifierWatcher not reachable!";
+    //qDebug() << "StatusNotifierWatcher not reachable!";
     setMode(Legacy);
   }
 }
@@ -173,6 +188,46 @@ bool StatusNotifierItem::eventFilter(QObject *watched, QEvent *event) {
 #endif
   }
   return StatusNotifierItemParent::eventFilter(watched, event);
+}
+
+void StatusNotifierItem::showMessage(const QString &title, const QString &message_, SystemTray::MessageIcon icon, int timeout, uint notificationId) {
+  QString message = message_;
+  if(_notificationsClient->isValid()) {
+    if(_notificationsClientSupportsMarkup)
+      message = Qt::escape(message);
+
+    QStringList actions = QStringList() << "activate" << "View";
+
+    // we always queue notifications right now
+    QDBusReply<uint> reply = _notificationsClient->Notify(title, 0, "quassel", title, message, actions, QVariantMap(), timeout);
+    if(reply.isValid()) {
+      uint dbusid = reply.value();
+      _notificationsIdMap.insert(dbusid, notificationId);
+      _lastNotificationsDBusId = dbusid;
+    }
+  } else
+    StatusNotifierItemParent::showMessage(title, message, icon, timeout, notificationId);
+}
+
+void StatusNotifierItem::closeMessage(uint notificationId) {
+  foreach(uint dbusid, _notificationsIdMap.keys()) {
+    if(_notificationsIdMap.value(dbusid) == notificationId) {
+      _notificationsIdMap.remove(dbusid);
+      _notificationsClient->CloseNotification(dbusid);
+    }
+  }
+  _lastNotificationsDBusId = 0;
+}
+
+void StatusNotifierItem::notificationClosed(uint dbusid, uint reason) {
+  Q_UNUSED(reason)
+  _lastNotificationsDBusId = 0;
+  emit messageClosed(_notificationsIdMap.take(dbusid));
+}
+
+void StatusNotifierItem::notificationInvoked(uint dbusid, const QString &action) {
+  Q_UNUSED(action)
+  emit messageClicked(_notificationsIdMap.value(dbusid, 0));
 }
 
 #endif

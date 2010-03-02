@@ -85,9 +85,6 @@
 #include "verticaldock.h"
 
 #ifndef HAVE_KDE
-#  ifdef HAVE_DBUS
-#    include "desktopnotificationbackend.h"
-#  endif
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
 #  endif
@@ -198,9 +195,6 @@ void MainWin::init() {
 #  endif
 #  ifdef HAVE_PHONON
   QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
-#  endif
-#  ifdef HAVE_DBUS
-  QtUi::registerNotificationBackend(new DesktopNotificationBackend(this));
 #  endif
 
 #else /* HAVE_KDE */
