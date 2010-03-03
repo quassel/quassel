@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -66,10 +66,26 @@ void AbstractBufferContainer::removeBuffer(BufferId bufferId) {
   _chatViews.take(bufferId);
 }
 
+void AbstractBufferContainer::rowsInserted(const QModelIndex &parent, int start, int end) {
+  Q_UNUSED(end)
+
+  if(currentBuffer().isValid())
+    return;
+
+  // we want to make sure the very first valid buffer is selected
+  QModelIndex index = model()->index(start, 0, parent);
+  if(index.isValid()) {
+    BufferId id = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    if(id.isValid())
+      setCurrentBuffer(id);
+  }
+}
+
 void AbstractBufferContainer::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous)
+
   BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
-  BufferId oldBufferId = previous.data(NetworkModel::BufferIdRole).value<BufferId>();
-  if(newBufferId != oldBufferId) {
+  if(newBufferId.isValid() && currentBuffer() != newBufferId) {
     setCurrentBuffer(newBufferId);
     emit currentChanged(newBufferId);
     emit currentChanged(current);

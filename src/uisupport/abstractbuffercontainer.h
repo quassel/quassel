@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -57,6 +57,7 @@ protected:
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
   virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+  virtual void rowsInserted(const QModelIndex &parent, int start, int end);
 
   //! Show the given chat view
   /** This method is called when the given chat view should be displayed. Use this e.g. for
