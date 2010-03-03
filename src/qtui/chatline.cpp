@@ -248,17 +248,17 @@ void ChatLine::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 
 void ChatLine::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
   ChatItem *item = mouseEventTargetItem(event->pos());
-  if(item) {
-    Q_ASSERT(!_hoverItem);
+  if(item && !_hoverItem) {
     _hoverItem = item;
     item->hoverEnterEvent(event);
   }
 }
 
 void ChatLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-  Q_ASSERT(_hoverItem);
-  _hoverItem->hoverLeaveEvent(event);
-  _hoverItem = 0;
+  if(_hoverItem) {
+    _hoverItem->hoverLeaveEvent(event);
+    _hoverItem = 0;
+  }
 }
 
 void ChatLine::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
