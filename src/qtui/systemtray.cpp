@@ -81,6 +81,9 @@ void SystemTray::init() {
   _trayMenu->addAction(coll->action("Quit"));
 
   connect(_trayMenu, SIGNAL(aboutToShow()), SLOT(trayMenuAboutToShow()));
+
+  NotificationSettings notificationSettings;
+  notificationSettings.initAndNotify("Systray/Animate", this, SLOT(enableAnimationChanged(QVariant)), true);
 }
 
 void SystemTray::trayMenuAboutToShow() {
@@ -158,4 +161,9 @@ void SystemTray::activate(SystemTray::ActivationReason reason) {
 
 void SystemTray::minimizeRestore() {
   GraphicalUi::toggleMainWidget();
+}
+
+void SystemTray::enableAnimationChanged(const QVariant &v) {
+  _animationEnabled = v.toBool();
+  emit animationEnabledChanged(v.toBool());
 }

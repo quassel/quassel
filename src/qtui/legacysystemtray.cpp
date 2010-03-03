@@ -106,7 +106,7 @@ void LegacySystemTray::setState(State state_) {
   State oldstate = state();
   SystemTray::setState(state_);
   if(oldstate != state()) {
-    if(state() == NeedsAttention && mode() == Legacy)
+    if(state() == NeedsAttention && mode() == Legacy && animationEnabled())
       _blinkTimer.start();
     else {
       _blinkTimer.stop();

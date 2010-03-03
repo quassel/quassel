@@ -189,13 +189,14 @@ void MainWin::init() {
   setupHotList();
 
 #ifndef HAVE_KDE
-  QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
-#  ifndef QT_NO_SYSTEMTRAYICON
-  QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
-#  endif
 #  ifdef HAVE_PHONON
   QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
+#  ifndef QT_NO_SYSTEMTRAYICON
+  QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
+#  endif
+
+  QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
 
 #else /* HAVE_KDE */
   QtUi::registerNotificationBackend(new KNotificationBackend(this));

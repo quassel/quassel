@@ -55,6 +55,7 @@ void StatusNotifierItem::init() {
 
   _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
   connect(this, SIGNAL(toolTipChanged(QString,QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
+  connect(this, SIGNAL(animationEnabledChanged(bool)), _statusNotifierItemDBus, SIGNAL(NewAttentionIcon()));
 
   connect(QDBusConnection::sessionBus().interface(), SIGNAL(serviceOwnerChanged(QString,QString,QString)),
                                                      SLOT(serviceChange(QString,QString,QString)));
@@ -160,7 +161,10 @@ QString StatusNotifierItem::iconName() const {
 }
 
 QString StatusNotifierItem::attentionIconName() const {
-  return QString("quassel_message");
+  if(animationEnabled())
+    return QString("quassel_message");
+  else
+    return QString("quassel");
 }
 
 QString StatusNotifierItem::toolTipIconName() const {

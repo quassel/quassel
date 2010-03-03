@@ -38,11 +38,8 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   _blockActivation(false)
 {
   NotificationSettings notificationSettings;
-  _showBubble = notificationSettings.value("Systray/ShowBubble", true).toBool();
-  _animate = notificationSettings.value("Systray/Animate", true).toBool();
-
-  notificationSettings.notify("Systray/ShowBubble", this, SLOT(showBubbleChanged(const QVariant &)));
-  notificationSettings.notify("Systray/Animate", this, SLOT(animateChanged(const QVariant &)));
+  notificationSettings.initAndNotify("Systray/ShowBubble", this, SLOT(showBubbleChanged(QVariant)), true);
+  notificationSettings.initAndNotify("Systray/Animate", this, SLOT(animateChanged(QVariant)), true);
 
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked(uint)), SLOT(notificationActivated(uint)));
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
