@@ -125,6 +125,7 @@ QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id) {
     map["ProxyUser"] = oldmap.value("proxyUser");
     map["ProxyPassword"] = oldmap.value("proxyPassword");
     map["ProxyType"] = oldmap.value("proxyType");
+    map["Internal"] = oldmap.value("InternalAccount");
 
     map["AccountId"] = id.toInt();
     map["Uuid"] = QUuid::createUuid().toString();
