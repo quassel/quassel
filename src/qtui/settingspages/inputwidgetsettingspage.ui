@@ -63,13 +63,13 @@
       <string>Enable per chat history</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>EnablePerChatHistory</string>
+      <string notr="true">EnablePerChatHistory</string>
      </property>
      <property name="defaultValue" stdset="0">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>

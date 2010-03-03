@@ -33,6 +33,8 @@
 #include "tabcompleter.h"
 #include <QPainter>
 
+const int leftMargin = 3;
+
 InputWidget::InputWidget(QWidget *parent)
   : AbstractItemView(parent),
     _networkId(0)
@@ -111,7 +113,7 @@ InputWidget::InputWidget(QWidget *parent)
   setShowStyleButtons(s.value("ShowStyleButtons", true));
 
   s.notify("EnablePerChatHistory", this, SLOT(setEnablePerChatHistory(QVariant)));
-  setEnablePerChatHistory(s.value("EnablePerChatHistory", true));
+  setEnablePerChatHistory(s.value("EnablePerChatHistory", false));
 
   s.notify("MaxNumLines", this, SLOT(setMaxLines(QVariant)));
   setMaxLines(s.value("MaxNumLines", 5));
@@ -226,6 +228,11 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
     inputLine()->setIdx(historyMap[currentBufferId].idx);
     inputLine()->setHtml(historyMap[currentBufferId].inputLine);
     inputLine()->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
+
+    // FIXME this really should be in MultiLineEdit (and the const int on top removed)
+    QTextBlockFormat format = inputLine()->textCursor().blockFormat();
+    format.setLeftMargin(leftMargin); // we want a little space between the frame and the contents
+    inputLine()->textCursor().setBlockFormat(format);
   }
 
   NetworkId networkId = current.data(NetworkModel::NetworkIdRole).value<NetworkId>();

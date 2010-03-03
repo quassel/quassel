@@ -53,12 +53,12 @@ public:
   void setCustomFont(const QFont &); // should be used instead setFont(), so we can set our size correctly
 
   // Compatibility methods with the rest of the classes which still expect this to be a QLineEdit
-  inline QString text() { return toPlainText(); }
-  inline QString html() { return toHtml(); }
-  inline int cursorPosition() { return textCursor().position(); }
+  inline QString text() const { return toPlainText(); }
+  inline QString html() const { return toHtml(); }
+  inline int cursorPosition() const { return textCursor().position(); }
   inline void insert(const QString &newText) { insertPlainText(newText); }
   inline void backspace() { keyPressEvent(new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier)); }
-  inline bool hasSelectedText() { return textCursor().hasSelection(); }
+  inline bool hasSelectedText() const { return textCursor().hasSelection(); }
 
   inline bool isSingleLine() const { return _singleLine; }
   inline bool pasteProtectionEnabled() const { return _pasteProtectionEnabled; }
@@ -70,9 +70,9 @@ public:
   inline QString rgbColorFromMirc(QString mircColor) const { return _mircColorMap[mircColor]; }
   inline QMap<QString, QString>  mircColorMap() const { return _mircColorMap; }
 
-  inline QStringList history() { return _history; }
-  inline QHash<int, QString> tempHistory() { return _tempHistory; }
-  inline qint32 idx() { return _idx; }
+  inline QStringList history() const { return _history; }
+  inline QHash<int, QString> tempHistory() const { return _tempHistory; }
+  inline qint32 idx() const { return _idx; }
 
 public slots:
   void setMode(Mode mode);
