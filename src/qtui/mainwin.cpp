@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -767,9 +767,9 @@ void MainWin::loadLayout() {
   int accountId = Client::currentCoreAccount().accountId().toInt();
   QByteArray state = s.value(QString("MainWinState-%1").arg(accountId)).toByteArray();
   if(state.isEmpty()) {
-    // Make sure that the default bufferview is shown
-    if(_bufferViews.count())
-      _bufferViews.at(0)->show();
+    foreach(BufferViewDock *view, _bufferViews)
+      view->show();
+    _layoutLoaded = true;
     return;
   }
 
