@@ -3,62 +3,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-25 00:37+0200\n"
+"POT-Creation-Date: 2010-03-03 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.5.1\n"
+"X-Generator: Translate Toolkit 1.5.3\n"
 
 #: AboutDlg#1
-msgid "About Quassel"
-msgstr ""
-
-#: AboutDlg#2
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
-msgstr ""
-
-#: AboutDlg#3
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
-"&gt;= 474 (2008-02-08)</p></body></html>"
-msgstr ""
-
-#: AboutDlg#4
-msgid "&About"
-msgstr ""
-
-#: AboutDlg#5
-msgid "A&uthors"
-msgstr ""
-
-#: AboutDlg#6
-msgid "&Contributors"
-msgstr ""
-
-#: AboutDlg#7
-msgid "&Thanks To"
-msgstr ""
-
-#: AboutDlg#8
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 msgstr ""
 
-#: AboutDlg#9
+#: AboutDlg#2
 msgid ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
@@ -73,17 +31,17 @@ msgid ""
 "bugs."
 msgstr ""
 
-#: AboutDlg#10
+#: AboutDlg#3
 msgid "Quassel IRC is mainly developed by:"
 msgstr ""
 
-#: AboutDlg#11
+#: AboutDlg#4
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
 msgstr ""
 
-#: AboutDlg#12
+#: AboutDlg#5
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
 "eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon "
@@ -96,6 +54,48 @@ msgid ""
 "more</dd><dt><a href=\"http://www.nokia.com\"><img "
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
+msgstr ""
+
+#: AboutDlg#6
+msgid "About Quassel"
+msgstr ""
+
+#: AboutDlg#7
+msgid ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
+msgstr ""
+
+#: AboutDlg#8
+msgid ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
+msgstr ""
+
+#: AboutDlg#9
+msgid "&About"
+msgstr ""
+
+#: AboutDlg#10
+msgid "A&uthors"
+msgstr ""
+
+#: AboutDlg#11
+msgid "&Contributors"
+msgstr ""
+
+#: AboutDlg#12
+msgid "&Thanks To"
 msgstr ""
 
 #: AbstractSqlStorage#1
@@ -138,113 +138,117 @@ msgstr ""
 
 #: AliasesSettingsPage#1
 msgctxt "AliasesSettingsPage#1"
-msgid "Form"
+msgid "IRC"
 msgstr ""
 
 #: AliasesSettingsPage#2
-msgctxt "AliasesSettingsPage#2"
-msgid "New"
+msgid "Aliases"
 msgstr ""
 
 #: AliasesSettingsPage#3
 msgctxt "AliasesSettingsPage#3"
-msgid "Delete"
+msgid "Form"
 msgstr ""
 
 #: AliasesSettingsPage#4
 msgctxt "AliasesSettingsPage#4"
-msgid "IRC"
+msgid "New"
 msgstr ""
 
 #: AliasesSettingsPage#5
-msgid "Aliases"
+msgctxt "AliasesSettingsPage#5"
+msgid "Delete"
 msgstr ""
 
 #: AppearanceSettingsPage#1
 msgctxt "AppearanceSettingsPage#1"
-msgid "Form"
-msgstr ""
-
-#: AppearanceSettingsPage#2
-msgid "Client style:"
-msgstr ""
-
-#: AppearanceSettingsPage#3
-msgid "Set application style"
-msgstr ""
-
-#: AppearanceSettingsPage#4
-msgid "Language:"
-msgstr ""
-
-#: AppearanceSettingsPage#5
-msgid "Set the application language. Requires restart!"
-msgstr ""
-
-#: AppearanceSettingsPage#6
-msgid "<Untranslated>"
-msgstr ""
-
-#: AppearanceSettingsPage#7
-msgid "<System Default>"
-msgstr ""
-
-#: AppearanceSettingsPage#8
-msgid "Use custom stylesheet"
-msgstr ""
-
-#: AppearanceSettingsPage#9
-msgid "Path:"
-msgstr ""
-
-#: AppearanceSettingsPage#10
-msgctxt "AppearanceSettingsPage#10"
-msgid "..."
-msgstr ""
-
-#: AppearanceSettingsPage#11
-msgid "Show system tray icon"
-msgstr ""
-
-#: AppearanceSettingsPage#12
-msgid "Hide to tray on close button"
-msgstr ""
-
-#: AppearanceSettingsPage#13
-msgid "Message Redirection"
-msgstr ""
-
-#: AppearanceSettingsPage#14
-msgid "User Notices:"
-msgstr ""
-
-#: AppearanceSettingsPage#15
-msgid "Server Notices:"
-msgstr ""
-
-#: AppearanceSettingsPage#16
-msgid "Default Target"
-msgstr ""
-
-#: AppearanceSettingsPage#17
-msgid "Status Window"
-msgstr ""
-
-#: AppearanceSettingsPage#18
-msgid "Current Chat"
-msgstr ""
-
-#: AppearanceSettingsPage#19
-msgid "Errors:"
-msgstr ""
-
-#: AppearanceSettingsPage#20
-msgctxt "AppearanceSettingsPage#20"
 msgid "Interface"
 msgstr ""
 
-#: AppearanceSettingsPage#21
+#: AppearanceSettingsPage#2
+msgid "<System Default>"
+msgstr ""
+
+#: AppearanceSettingsPage#3
 msgid "Please choose a stylesheet file"
+msgstr ""
+
+#: AppearanceSettingsPage#4
+msgctxt "AppearanceSettingsPage#4"
+msgid "Form"
+msgstr ""
+
+#: AppearanceSettingsPage#5
+msgid "Client style:"
+msgstr ""
+
+#: AppearanceSettingsPage#6
+msgid "Set application style"
+msgstr ""
+
+#: AppearanceSettingsPage#7
+msgid "Language:"
+msgstr ""
+
+#: AppearanceSettingsPage#8
+msgid "Set the application language. Requires restart!"
+msgstr ""
+
+#: AppearanceSettingsPage#9
+msgid "<Untranslated>"
+msgstr ""
+
+#: AppearanceSettingsPage#10
+msgid "Use custom stylesheet"
+msgstr ""
+
+#: AppearanceSettingsPage#11
+msgid "Path:"
+msgstr ""
+
+#: AppearanceSettingsPage#12
+msgctxt "AppearanceSettingsPage#12"
+msgid "..."
+msgstr ""
+
+#: AppearanceSettingsPage#13
+msgid "Show system tray icon"
+msgstr ""
+
+#: AppearanceSettingsPage#14
+msgid "Hide to tray on close button"
+msgstr ""
+
+#: AppearanceSettingsPage#15
+msgid "Enable animations"
+msgstr ""
+
+#: AppearanceSettingsPage#16
+msgid "Message Redirection"
+msgstr ""
+
+#: AppearanceSettingsPage#17
+msgid "User Notices:"
+msgstr ""
+
+#: AppearanceSettingsPage#18
+msgid "Server Notices:"
+msgstr ""
+
+#: AppearanceSettingsPage#19
+msgid "Default Target"
+msgstr ""
+
+#: AppearanceSettingsPage#20
+msgid "Status Window"
+msgstr ""
+
+#: AppearanceSettingsPage#21
+msgid "Current Chat"
+msgstr ""
+
+#: AppearanceSettingsPage#22
+msgid "Errors:"
 msgstr ""
 
 #: AwayLogView#1
@@ -263,52 +267,61 @@ msgstr ""
 
 #: BacklogSettingsPage#1
 msgctxt "BacklogSettingsPage#1"
-msgid "Form"
+msgid "Interface"
 msgstr ""
 
 #: BacklogSettingsPage#2
+msgid "Backlog Fetching"
+msgstr ""
+
+#: BacklogSettingsPage#3
+msgctxt "BacklogSettingsPage#3"
+msgid "Form"
+msgstr ""
+
+#: BacklogSettingsPage#4
 msgid ""
 "Number of messages to be requested from the core when using scrolling up in "
 "the buffer view."
 msgstr ""
 
-#: BacklogSettingsPage#3
+#: BacklogSettingsPage#5
 msgid "Dynamic backlog amount:"
 msgstr ""
 
-#: BacklogSettingsPage#4
+#: BacklogSettingsPage#6
 msgid "Backlog request method:"
 msgstr ""
 
-#: BacklogSettingsPage#5
+#: BacklogSettingsPage#7
 msgid "Fixed amount per chat"
 msgstr ""
 
-#: BacklogSettingsPage#6
+#: BacklogSettingsPage#8
 msgid "Unread messages per chat"
 msgstr ""
 
-#: BacklogSettingsPage#7
+#: BacklogSettingsPage#9
 msgid "Globally unread messages"
 msgstr ""
 
-#: BacklogSettingsPage#8
+#: BacklogSettingsPage#10
 msgid ""
 "The simplest requester. It fetches a fixed amount of lines for each chat "
 "window from the backlog."
 msgstr ""
 
-#: BacklogSettingsPage#9
+#: BacklogSettingsPage#11
 msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
 msgstr ""
 
-#: BacklogSettingsPage#10
+#: BacklogSettingsPage#12
 msgid "Initial backlog amount:"
 msgstr ""
 
-#: BacklogSettingsPage#11
+#: BacklogSettingsPage#13
 msgid ""
 "This requester fetches unread messages for each chat window individually. "
 "The amount of lines can be limited per chat.\n"
@@ -317,30 +330,30 @@ msgid ""
 "context."
 msgstr ""
 
-#: BacklogSettingsPage#12
+#: BacklogSettingsPage#14
 msgid "Maximum amount of messages to be fetched per buffer."
 msgstr ""
 
-#: BacklogSettingsPage#13
+#: BacklogSettingsPage#15
 msgid "Limit:"
 msgstr ""
 
-#: BacklogSettingsPage#14
-msgctxt "BacklogSettingsPage#14"
+#: BacklogSettingsPage#16
+msgctxt "BacklogSettingsPage#16"
 msgid "Unlimited"
 msgstr ""
 
-#: BacklogSettingsPage#15
+#: BacklogSettingsPage#17
 msgid ""
 "Amount of messages to be fetched in addition to the unread messages. The "
 "Limit does not apply here."
 msgstr ""
 
-#: BacklogSettingsPage#16
+#: BacklogSettingsPage#18
 msgid "Additional Messages:"
 msgstr ""
 
-#: BacklogSettingsPage#17
+#: BacklogSettingsPage#19
 msgid ""
 "This requester fetches all messages newer than the oldest unread message for "
 "all chats.\n"
@@ -354,17 +367,8 @@ msgid ""
 "context."
 msgstr ""
 
-#: BacklogSettingsPage#18
-msgid "Maximum amount of messages to be fetched over all buffers."
-msgstr ""
-
-#: BacklogSettingsPage#19
-msgctxt "BacklogSettingsPage#19"
-msgid "Interface"
-msgstr ""
-
 #: BacklogSettingsPage#20
-msgid "Backlog Fetching"
+msgid "Maximum amount of messages to be fetched over all buffers."
 msgstr ""
 
 #: BufferItem#1
@@ -400,107 +404,107 @@ msgstr ""
 
 #: BufferViewSettingsPage#1
 msgctxt "BufferViewSettingsPage#1"
-msgid "Form"
+msgid "Interface"
 msgstr ""
 
 #: BufferViewSettingsPage#2
-msgctxt "BufferViewSettingsPage#2"
-msgid "Re&name..."
+msgid "Custom Chat Lists"
 msgstr ""
 
 #: BufferViewSettingsPage#3
-msgctxt "BufferViewSettingsPage#3"
-msgid "&Add..."
+msgid "All"
 msgstr ""
 
 #: BufferViewSettingsPage#4
-msgctxt "BufferViewSettingsPage#4"
-msgid "De&lete"
+msgid "Delete Chat List?"
 msgstr ""
 
 #: BufferViewSettingsPage#5
-msgid "Chat List Settings"
+msgid "Do you really want to delete the chat list \"%1\"?"
 msgstr ""
 
 #: BufferViewSettingsPage#6
 msgctxt "BufferViewSettingsPage#6"
-msgid "Network:"
+msgid "Form"
 msgstr ""
 
 #: BufferViewSettingsPage#7
-msgid "All"
+msgctxt "BufferViewSettingsPage#7"
+msgid "Re&name..."
 msgstr ""
 
 #: BufferViewSettingsPage#8
+msgctxt "BufferViewSettingsPage#8"
+msgid "&Add..."
+msgstr ""
+
+#: BufferViewSettingsPage#9
+msgctxt "BufferViewSettingsPage#9"
+msgid "De&lete"
+msgstr ""
+
+#: BufferViewSettingsPage#10
+msgid "Chat List Settings"
+msgstr ""
+
+#: BufferViewSettingsPage#11
+msgctxt "BufferViewSettingsPage#11"
+msgid "Network:"
+msgstr ""
+
+#: BufferViewSettingsPage#12
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
 msgstr ""
 
-#: BufferViewSettingsPage#9
+#: BufferViewSettingsPage#13
 msgid "Show status window"
 msgstr ""
 
-#: BufferViewSettingsPage#10
+#: BufferViewSettingsPage#14
 msgid "Show channels"
 msgstr ""
 
-#: BufferViewSettingsPage#11
+#: BufferViewSettingsPage#15
 msgid "Show queries"
 msgstr ""
 
-#: BufferViewSettingsPage#12
+#: BufferViewSettingsPage#16
 msgid "Hide inactive chats"
 msgstr ""
 
-#: BufferViewSettingsPage#13
+#: BufferViewSettingsPage#17
 msgid "Add new chats automatically"
 msgstr ""
 
-#: BufferViewSettingsPage#14
+#: BufferViewSettingsPage#18
 msgid "Sort alphabetically"
 msgstr ""
 
-#: BufferViewSettingsPage#15
+#: BufferViewSettingsPage#19
 msgid "Minimum Activity:"
 msgstr ""
 
-#: BufferViewSettingsPage#16
+#: BufferViewSettingsPage#20
 msgid "No Activity"
 msgstr ""
 
-#: BufferViewSettingsPage#17
+#: BufferViewSettingsPage#21
 msgid "Other Activity"
 msgstr ""
 
-#: BufferViewSettingsPage#18
+#: BufferViewSettingsPage#22
 msgid "New Message"
 msgstr ""
 
-#: BufferViewSettingsPage#19
-msgctxt "BufferViewSettingsPage#19"
+#: BufferViewSettingsPage#23
+msgctxt "BufferViewSettingsPage#23"
 msgid "Highlight"
 msgstr ""
 
-#: BufferViewSettingsPage#20
-msgid "Preview:"
-msgstr ""
-
-#: BufferViewSettingsPage#21
-msgctxt "BufferViewSettingsPage#21"
-msgid "Interface"
-msgstr ""
-
-#: BufferViewSettingsPage#22
-msgid "Custom Chat Lists"
-msgstr ""
-
-#: BufferViewSettingsPage#23
-msgid "Delete Chat List?"
-msgstr ""
-
 #: BufferViewSettingsPage#24
-msgid "Do you really want to delete the chat list \"%1\"?"
+msgid "Preview:"
 msgstr ""
 
 #: BufferViewWidget#1
@@ -588,14 +592,40 @@ msgstr ""
 
 #: ChatMonitorSettingsPage#1
 msgctxt "ChatMonitorSettingsPage#1"
-msgid "Form"
+msgid "Interface"
 msgstr ""
 
 #: ChatMonitorSettingsPage#2
-msgid "Operation Mode:"
+msgctxt "ChatMonitorSettingsPage#2"
+msgid "Chat Monitor"
 msgstr ""
 
 #: ChatMonitorSettingsPage#3
+msgid "Opt In"
+msgstr ""
+
+#: ChatMonitorSettingsPage#4
+msgid "Opt Out"
+msgstr ""
+
+#: ChatMonitorSettingsPage#5
+msgid "Show:"
+msgstr ""
+
+#: ChatMonitorSettingsPage#6
+msgid "Ignore:"
+msgstr ""
+
+#: ChatMonitorSettingsPage#7
+msgctxt "ChatMonitorSettingsPage#7"
+msgid "Form"
+msgstr ""
+
+#: ChatMonitorSettingsPage#8
+msgid "Operation Mode:"
+msgstr ""
+
+#: ChatMonitorSettingsPage#9
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-"
 "html40/strict.dtd\">\n"
@@ -617,55 +647,29 @@ msgid ""
 "ignored in chatmonitor</p></body></html>"
 msgstr ""
 
-#: ChatMonitorSettingsPage#4
+#: ChatMonitorSettingsPage#10
 msgid "Available:"
 msgstr ""
 
-#: ChatMonitorSettingsPage#5
+#: ChatMonitorSettingsPage#11
 msgid "Move selected buffers to the left"
 msgstr ""
 
-#: ChatMonitorSettingsPage#6
+#: ChatMonitorSettingsPage#12
 msgid "Move selected buffers to the right"
 msgstr ""
 
-#: ChatMonitorSettingsPage#7
-msgid "Show:"
-msgstr ""
-
-#: ChatMonitorSettingsPage#8
+#: ChatMonitorSettingsPage#13
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
 msgstr ""
 
-#: ChatMonitorSettingsPage#9
+#: ChatMonitorSettingsPage#14
 msgid "Always show highlighted messages"
 msgstr ""
 
-#: ChatMonitorSettingsPage#10
-msgid "Show own messages"
-msgstr ""
-
-#: ChatMonitorSettingsPage#11
-msgctxt "ChatMonitorSettingsPage#11"
-msgid "Interface"
-msgstr ""
-
-#: ChatMonitorSettingsPage#12
-msgctxt "ChatMonitorSettingsPage#12"
-msgid "Chat Monitor"
-msgstr ""
-
-#: ChatMonitorSettingsPage#13
-msgid "Opt In"
-msgstr ""
-
-#: ChatMonitorSettingsPage#14
-msgid "Opt Out"
-msgstr ""
-
 #: ChatMonitorSettingsPage#15
-msgid "Ignore:"
+msgid "Show own messages"
 msgstr ""
 
 #: ChatMonitorView#1
@@ -718,98 +722,98 @@ msgstr ""
 
 #: ChatViewSettingsPage#1
 msgctxt "ChatViewSettingsPage#1"
-msgid "Form"
+msgid "Interface"
 msgstr ""
 
 #: ChatViewSettingsPage#2
-msgid "Timestamp format:"
+msgid "Chat View"
 msgstr ""
 
 #: ChatViewSettingsPage#3
-msgid "[hh:mm:ss]"
+msgctxt "ChatViewSettingsPage#3"
+msgid "Form"
 msgstr ""
 
 #: ChatViewSettingsPage#4
-msgid "Custom chat window font:"
+msgid "Timestamp format:"
 msgstr ""
 
 #: ChatViewSettingsPage#5
-msgid "Allow colored text (mIRC color codes)"
+msgid "[hh:mm:ss]"
 msgstr ""
 
 #: ChatViewSettingsPage#6
+msgid "Custom chat window font:"
+msgstr ""
+
+#: ChatViewSettingsPage#7
+msgid "Allow colored text (mIRC color codes)"
+msgstr ""
+
+#: ChatViewSettingsPage#8
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr ""
 
-#: ChatViewSettingsPage#7
+#: ChatViewSettingsPage#9
 msgid "Show previews of webpages on URL hover"
 msgstr ""
 
-#: ChatViewSettingsPage#8
+#: ChatViewSettingsPage#10
 msgid "Custom Colors"
 msgstr ""
 
-#: ChatViewSettingsPage#9
+#: ChatViewSettingsPage#11
 msgid "Action:"
 msgstr ""
 
-#: ChatViewSettingsPage#10
-msgctxt "ChatViewSettingsPage#10"
+#: ChatViewSettingsPage#12
+msgctxt "ChatViewSettingsPage#12"
 msgid "..."
 msgstr ""
 
-#: ChatViewSettingsPage#11
+#: ChatViewSettingsPage#13
 msgid "Timestamp:"
 msgstr ""
 
-#: ChatViewSettingsPage#12
+#: ChatViewSettingsPage#14
 msgid "Channel message:"
 msgstr ""
 
-#: ChatViewSettingsPage#13
+#: ChatViewSettingsPage#15
 msgid "Highlight foreground:"
 msgstr ""
 
-#: ChatViewSettingsPage#14
+#: ChatViewSettingsPage#16
 msgid "Command message:"
 msgstr ""
 
-#: ChatViewSettingsPage#15
+#: ChatViewSettingsPage#17
 msgid "Highlight background:"
 msgstr ""
 
-#: ChatViewSettingsPage#16
+#: ChatViewSettingsPage#18
 msgid "Server message:"
 msgstr ""
 
-#: ChatViewSettingsPage#17
+#: ChatViewSettingsPage#19
 msgid "Marker line:"
 msgstr ""
 
-#: ChatViewSettingsPage#18
+#: ChatViewSettingsPage#20
 msgid "Error message:"
 msgstr ""
 
-#: ChatViewSettingsPage#19
+#: ChatViewSettingsPage#21
 msgid "Background:"
 msgstr ""
 
-#: ChatViewSettingsPage#20
+#: ChatViewSettingsPage#22
 msgid "Use Sender Coloring"
 msgstr ""
 
-#: ChatViewSettingsPage#21
-msgid "Own messages:"
-msgstr ""
-
-#: ChatViewSettingsPage#22
-msgctxt "ChatViewSettingsPage#22"
-msgid "Interface"
-msgstr ""
-
 #: ChatViewSettingsPage#23
-msgid "Chat View"
+msgid "Own messages:"
 msgstr ""
 
 #: Client#1
@@ -825,59 +829,59 @@ msgid "Processed %1 messages in %2 seconds."
 msgstr ""
 
 #: ConnectionSettingsPage#1
-msgid "Configure the IRC Connection"
+msgctxt "ConnectionSettingsPage#1"
+msgid "IRC"
 msgstr ""
 
 #: ConnectionSettingsPage#2
-msgid "Enable Ping Timeout Detection"
+msgid "Configure the IRC Connection"
 msgstr ""
 
 #: ConnectionSettingsPage#3
-msgid "Ping interval:"
+msgid "Enable Ping Timeout Detection"
 msgstr ""
 
 #: ConnectionSettingsPage#4
-msgctxt "ConnectionSettingsPage#4"
-msgid " seconds"
+msgid "Ping interval:"
 msgstr ""
 
 #: ConnectionSettingsPage#5
-msgid "Disconnect after"
+msgctxt "ConnectionSettingsPage#5"
+msgid " seconds"
 msgstr ""
 
 #: ConnectionSettingsPage#6
-msgid "missed pings"
+msgid "Disconnect after"
 msgstr ""
 
 #: ConnectionSettingsPage#7
+msgid "missed pings"
+msgstr ""
+
+#: ConnectionSettingsPage#8
 msgid ""
 "This enables periodic polling of user information using /WHO. This is mostly "
 "interesting for tracking users' away status."
 msgstr ""
 
-#: ConnectionSettingsPage#8
+#: ConnectionSettingsPage#9
 msgid "Enable Automatic User Information Lookup (/WHO)"
 msgstr ""
 
-#: ConnectionSettingsPage#9
+#: ConnectionSettingsPage#10
 msgid "Update interval:"
 msgstr ""
 
-#: ConnectionSettingsPage#10
+#: ConnectionSettingsPage#11
 msgid "Ignore channels with more than:"
 msgstr ""
 
-#: ConnectionSettingsPage#11
+#: ConnectionSettingsPage#12
 msgid " users"
 msgstr ""
 
-#: ConnectionSettingsPage#12
-msgid "Minimum delay between requests:"
-msgstr ""
-
 #: ConnectionSettingsPage#13
-msgctxt "ConnectionSettingsPage#13"
-msgid "IRC"
+msgid "Minimum delay between requests:"
 msgstr ""
 
 #: ContentsChatItem#1
@@ -1259,42 +1263,42 @@ msgid "Internal Core"
 msgstr ""
 
 #: CoreAccountSettingsPage#1
-msgid "Connect to Quassel Core"
+msgctxt "CoreAccountSettingsPage#1"
+msgid "Remote Cores"
 msgstr ""
 
 #: CoreAccountSettingsPage#2
-msgid "Core Accounts"
+msgid "Connect to Quassel Core"
 msgstr ""
 
 #: CoreAccountSettingsPage#3
-msgid "Edit..."
+msgid "Core Accounts"
 msgstr ""
 
 #: CoreAccountSettingsPage#4
-msgctxt "CoreAccountSettingsPage#4"
-msgid "Add..."
+msgid "Edit..."
 msgstr ""
 
 #: CoreAccountSettingsPage#5
 msgctxt "CoreAccountSettingsPage#5"
-msgid "Delete"
+msgid "Add..."
 msgstr ""
 
 #: CoreAccountSettingsPage#6
-msgid "Automatically connect on startup"
+msgctxt "CoreAccountSettingsPage#6"
+msgid "Delete"
 msgstr ""
 
 #: CoreAccountSettingsPage#7
-msgid "Connect to last account used"
+msgid "Automatically connect on startup"
 msgstr ""
 
 #: CoreAccountSettingsPage#8
-msgid "Always connect to"
+msgid "Connect to last account used"
 msgstr ""
 
 #: CoreAccountSettingsPage#9
-msgctxt "CoreAccountSettingsPage#9"
-msgid "Remote Cores"
+msgid "Always connect to"
 msgstr ""
 
 #: CoreConfigWizard#1
@@ -1445,30 +1449,30 @@ msgid "Please wait while your settings are being transmitted to the core..."
 msgstr ""
 
 #: CoreConnectAuthDlg#1
-msgid "Authentication Required"
+msgid "Please enter your credentials for %1:"
 msgstr ""
 
 #: CoreConnectAuthDlg#2
-msgid "Please enter your account data:"
+msgid "Authentication Required"
 msgstr ""
 
 #: CoreConnectAuthDlg#3
-msgctxt "CoreConnectAuthDlg#3"
-msgid "Password:"
+msgid "Please enter your account data:"
 msgstr ""
 
 #: CoreConnectAuthDlg#4
 msgctxt "CoreConnectAuthDlg#4"
-msgid "Username:"
+msgid "Password:"
 msgstr ""
 
 #: CoreConnectAuthDlg#5
 msgctxt "CoreConnectAuthDlg#5"
-msgid "Remember password"
+msgid "Username:"
 msgstr ""
 
 #: CoreConnectAuthDlg#6
-msgid "Please enter your credentials for %1:"
+msgctxt "CoreConnectAuthDlg#6"
+msgid "Remember password"
 msgstr ""
 
 #: CoreConnectDlg#1
@@ -1553,140 +1557,99 @@ msgstr ""
 
 #: CoreConnectionSettingsPage#1
 msgctxt "CoreConnectionSettingsPage#1"
-msgid "Form"
+msgid "Remote Cores"
 msgstr ""
 
 #: CoreConnectionSettingsPage#2
-msgid "Network Status Detection"
+msgctxt "CoreConnectionSettingsPage#2"
+msgid "Connection"
 msgstr ""
 
 #: CoreConnectionSettingsPage#3
+msgctxt "CoreConnectionSettingsPage#3"
+msgid "Form"
+msgstr ""
+
+#: CoreConnectionSettingsPage#4
+msgid "Network Status Detection"
+msgstr ""
+
+#: CoreConnectionSettingsPage#5
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most "
 "KDE users"
 msgstr ""
 
-#: CoreConnectionSettingsPage#4
+#: CoreConnectionSettingsPage#6
 msgid "Use KDE's network status detection (via Solid)"
 msgstr ""
 
-#: CoreConnectionSettingsPage#5
+#: CoreConnectionSettingsPage#7
 msgid ""
 "Actively ping the remote core and disconnect if we didn't get a reply after "
 "a certain time"
 msgstr ""
 
-#: CoreConnectionSettingsPage#6
+#: CoreConnectionSettingsPage#8
 msgid "Ping timeout after"
 msgstr ""
 
-#: CoreConnectionSettingsPage#7
-msgctxt "CoreConnectionSettingsPage#7"
+#: CoreConnectionSettingsPage#9
+msgctxt "CoreConnectionSettingsPage#9"
 msgid " seconds"
 msgstr ""
 
-#: CoreConnectionSettingsPage#8
+#: CoreConnectionSettingsPage#10
 msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
 msgstr ""
 
-#: CoreConnectionSettingsPage#9
+#: CoreConnectionSettingsPage#11
 msgid "Never time out actively"
 msgstr ""
 
-#: CoreConnectionSettingsPage#10
+#: CoreConnectionSettingsPage#12
 msgid "Automatically reconnect on network failures"
 msgstr ""
 
-#: CoreConnectionSettingsPage#11
+#: CoreConnectionSettingsPage#13
 msgid "Retry every"
 msgstr ""
 
-#: CoreConnectionSettingsPage#12
-msgctxt "CoreConnectionSettingsPage#12"
-msgid "Remote Cores"
-msgstr ""
-
-#: CoreConnectionSettingsPage#13
-msgctxt "CoreConnectionSettingsPage#13"
-msgid "Connection"
-msgstr ""
-
-#: CoreConnectionStatusWidget#1
-msgctxt "CoreConnectionStatusWidget#1"
-msgid "Form"
-msgstr ""
-
-#: CoreConnectionStatusWidget#2
-msgctxt "CoreConnectionStatusWidget#2"
-msgid "Message"
-msgstr ""
-
 # seconds
-#: CoreConnectionStatusWidget#3
+#: CoreConnectionStatusWidget#1
 msgid "s"
 msgstr ""
 
 # milliseconds
-#: CoreConnectionStatusWidget#4
+#: CoreConnectionStatusWidget#2
 msgid "ms"
 msgstr ""
 
-#: CoreConnectionStatusWidget#5
+#: CoreConnectionStatusWidget#3
 msgid "(Lag: %1 %2)"
 msgstr ""
 
-#: CoreConnectionStatusWidget#6
+#: CoreConnectionStatusWidget#4
 msgid "The connection to your core is encrypted with SSL."
 msgstr ""
 
-#: CoreConnectionStatusWidget#7
+#: CoreConnectionStatusWidget#5
 msgid "The connection to your core is not encrypted."
 msgstr ""
 
+#: CoreConnectionStatusWidget#6
+msgctxt "CoreConnectionStatusWidget#6"
+msgid "Form"
+msgstr ""
+
+#: CoreConnectionStatusWidget#7
+msgctxt "CoreConnectionStatusWidget#7"
+msgid "Message"
+msgstr ""
+
 #: CoreInfoDlg#1
-msgid "Core Information"
-msgstr ""
-
-#: CoreInfoDlg#2
-msgid "Version:"
-msgstr ""
-
-#: CoreInfoDlg#3
-msgid "<core version>"
-msgstr ""
-
-#: CoreInfoDlg#4
-msgid "Uptime:"
-msgstr ""
-
-#: CoreInfoDlg#5
-msgid "Connected Clients:"
-msgstr ""
-
-#: CoreInfoDlg#6
-msgid "<connected clients>"
-msgstr ""
-
-#: CoreInfoDlg#7
-msgid "<core uptime>"
-msgstr ""
-
-#: CoreInfoDlg#8
-msgid "Build date:"
-msgstr ""
-
-#: CoreInfoDlg#9
-msgid "<build date>"
-msgstr ""
-
-#: CoreInfoDlg#10
-msgctxt "CoreInfoDlg#10"
-msgid "Close"
-msgstr ""
-
-#: CoreInfoDlg#11
 #, fuzzy
 msgid "%n Day(s)"
 msgstr ""
@@ -1694,8 +1657,49 @@ msgstr ""
 "            \n"
 "        "
 
-#: CoreInfoDlg#12
+#: CoreInfoDlg#2
 msgid " %1:%2:%3 (since %4)"
+msgstr ""
+
+#: CoreInfoDlg#3
+msgid "Core Information"
+msgstr ""
+
+#: CoreInfoDlg#4
+msgid "Version:"
+msgstr ""
+
+#: CoreInfoDlg#5
+msgid "<core version>"
+msgstr ""
+
+#: CoreInfoDlg#6
+msgid "Uptime:"
+msgstr ""
+
+#: CoreInfoDlg#7
+msgid "Connected Clients:"
+msgstr ""
+
+#: CoreInfoDlg#8
+msgid "<connected clients>"
+msgstr ""
+
+#: CoreInfoDlg#9
+msgid "<core uptime>"
+msgstr ""
+
+#: CoreInfoDlg#10
+msgid "Build date:"
+msgstr ""
+
+#: CoreInfoDlg#11
+msgid "<build date>"
+msgstr ""
+
+#: CoreInfoDlg#12
+msgctxt "CoreInfoDlg#12"
+msgid "Close"
 msgstr ""
 
 #: CoreNetwork#1
@@ -1800,59 +1804,59 @@ msgid " with arguments: %1"
 msgstr ""
 
 #: DebugBufferViewOverlay#1
-msgid "Debug BufferView Overlay"
-msgstr ""
-
-#: DebugBufferViewOverlay#2
-msgid "Overlay View"
-msgstr ""
-
-#: DebugBufferViewOverlay#3
-msgid "Overlay Properties"
-msgstr ""
-
-#: DebugBufferViewOverlay#4
 msgid "BufferViews:"
 msgstr ""
 
-#: DebugBufferViewOverlay#5
+#: DebugBufferViewOverlay#2
 msgid "All Networks:"
 msgstr ""
 
-#: DebugBufferViewOverlay#6
+#: DebugBufferViewOverlay#3
 msgid "Networks:"
 msgstr ""
 
-#: DebugBufferViewOverlay#7
+#: DebugBufferViewOverlay#4
 msgid "Buffers:"
 msgstr ""
 
-#: DebugBufferViewOverlay#8
+#: DebugBufferViewOverlay#5
 msgid "Removed buffers:"
 msgstr ""
 
-#: DebugBufferViewOverlay#9
+#: DebugBufferViewOverlay#6
 msgid "Temp. removed buffers:"
 msgstr ""
 
-#: DebugBufferViewOverlay#10
+#: DebugBufferViewOverlay#7
 msgid "Add Buffers Automatically:"
 msgstr ""
 
-#: DebugBufferViewOverlay#11
+#: DebugBufferViewOverlay#8
 msgid "Hide inactive buffers:"
 msgstr ""
 
-#: DebugBufferViewOverlay#12
+#: DebugBufferViewOverlay#9
 msgid "Allowed buffer types:"
 msgstr ""
 
-#: DebugBufferViewOverlay#13
+#: DebugBufferViewOverlay#10
 msgid "Minimum activity:"
 msgstr ""
 
-#: DebugBufferViewOverlay#14
+#: DebugBufferViewOverlay#11
 msgid "Is initialized:"
+msgstr ""
+
+#: DebugBufferViewOverlay#12
+msgid "Debug BufferView Overlay"
+msgstr ""
+
+#: DebugBufferViewOverlay#13
+msgid "Overlay View"
+msgstr ""
+
+#: DebugBufferViewOverlay#14
+msgid "Overlay Properties"
 msgstr ""
 
 #: DebugConsole#1
@@ -1878,44 +1882,6 @@ msgstr ""
 #: DebugLogWidget#2
 msgctxt "DebugLogWidget#2"
 msgid "Close"
-msgstr ""
-
-#: DesktopNotificationConfigWidget#1
-msgctxt "DesktopNotificationConfigWidget#1"
-msgid "Form"
-msgstr ""
-
-#: DesktopNotificationConfigWidget#2
-msgid "Desktop Notification (via D-Bus)"
-msgstr ""
-
-#: DesktopNotificationConfigWidget#3
-msgid "Timeout:"
-msgstr ""
-
-#: DesktopNotificationConfigWidget#4
-msgctxt "DesktopNotificationConfigWidget#4"
-msgid " s"
-msgstr ""
-
-#: DesktopNotificationConfigWidget#5
-msgid "Position hint:"
-msgstr ""
-
-#: DesktopNotificationConfigWidget#6
-msgid " px"
-msgstr ""
-
-#: DesktopNotificationConfigWidget#7
-msgid "X: "
-msgstr ""
-
-#: DesktopNotificationConfigWidget#8
-msgid "Y: "
-msgstr ""
-
-#: DesktopNotificationConfigWidget#9
-msgid "Queue unread notifications"
 msgstr ""
 
 #: ExecWrapper#1
@@ -1948,146 +1914,146 @@ msgstr ""
 
 #: HighlightSettingsPage#1
 msgctxt "HighlightSettingsPage#1"
-msgid "Form"
-msgstr ""
-
-#: HighlightSettingsPage#2
-msgid "Custom Highlights"
-msgstr ""
-
-#: HighlightSettingsPage#3
-msgctxt "HighlightSettingsPage#3"
-msgid "Highlight"
-msgstr ""
-
-#: HighlightSettingsPage#4
-msgid "RegEx"
-msgstr ""
-
-#: HighlightSettingsPage#5
-msgid "CS"
-msgstr ""
-
-#: HighlightSettingsPage#6
-msgid "Enable"
-msgstr ""
-
-#: HighlightSettingsPage#7
-msgid "Add"
-msgstr ""
-
-#: HighlightSettingsPage#8
-msgctxt "HighlightSettingsPage#8"
-msgid "Remove"
-msgstr ""
-
-#: HighlightSettingsPage#9
-msgid "Highlight Nicks"
-msgstr ""
-
-#: HighlightSettingsPage#10
-msgid "All nicks from identity"
-msgstr ""
-
-#: HighlightSettingsPage#11
-msgid "Current nick"
-msgstr ""
-
-#: HighlightSettingsPage#12
-msgid "None"
-msgstr ""
-
-#: HighlightSettingsPage#13
-msgid "Case sensitive"
-msgstr ""
-
-#: HighlightSettingsPage#14
-msgctxt "HighlightSettingsPage#14"
 msgid "Interface"
 msgstr ""
 
-#: HighlightSettingsPage#15
+#: HighlightSettingsPage#2
+msgctxt "HighlightSettingsPage#2"
+msgid "Highlight"
+msgstr ""
+
+#: HighlightSettingsPage#3
 msgid "this shouldn't be empty"
 msgstr ""
 
-#: HighlightSettingsPage#16
+#: HighlightSettingsPage#4
 msgid "highlight rule"
+msgstr ""
+
+#: HighlightSettingsPage#5
+msgctxt "HighlightSettingsPage#5"
+msgid "Form"
+msgstr ""
+
+#: HighlightSettingsPage#6
+msgid "Custom Highlights"
+msgstr ""
+
+#: HighlightSettingsPage#7
+msgid "RegEx"
+msgstr ""
+
+#: HighlightSettingsPage#8
+msgid "CS"
+msgstr ""
+
+#: HighlightSettingsPage#9
+msgid "Enable"
+msgstr ""
+
+#: HighlightSettingsPage#10
+msgid "Add"
+msgstr ""
+
+#: HighlightSettingsPage#11
+msgctxt "HighlightSettingsPage#11"
+msgid "Remove"
+msgstr ""
+
+#: HighlightSettingsPage#12
+msgid "Highlight Nicks"
+msgstr ""
+
+#: HighlightSettingsPage#13
+msgid "All nicks from identity"
+msgstr ""
+
+#: HighlightSettingsPage#14
+msgid "Current nick"
+msgstr ""
+
+#: HighlightSettingsPage#15
+msgid "None"
+msgstr ""
+
+#: HighlightSettingsPage#16
+msgid "Case sensitive"
 msgstr ""
 
 #: IdentitiesSettingsPage#1
 msgctxt "IdentitiesSettingsPage#1"
-msgid "Rename Identity"
-msgstr ""
-
-#: IdentitiesSettingsPage#2
-msgctxt "IdentitiesSettingsPage#2"
-msgid "..."
-msgstr ""
-
-#: IdentitiesSettingsPage#3
-msgid "Add Identity"
-msgstr ""
-
-#: IdentitiesSettingsPage#4
-msgctxt "IdentitiesSettingsPage#4"
-msgid "Add..."
-msgstr ""
-
-#: IdentitiesSettingsPage#5
-msgid "Remove Identity"
-msgstr ""
-
-#: IdentitiesSettingsPage#6
-msgctxt "IdentitiesSettingsPage#6"
 msgid "IRC"
 msgstr ""
 
-#: IdentitiesSettingsPage#7
+#: IdentitiesSettingsPage#2
 msgid "Identities"
 msgstr ""
 
-#: IdentitiesSettingsPage#8
-msgctxt "IdentitiesSettingsPage#8"
+#: IdentitiesSettingsPage#3
+msgctxt "IdentitiesSettingsPage#3"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
 
-#: IdentitiesSettingsPage#9
+#: IdentitiesSettingsPage#4
 msgid "<li>All identities need an identity name set</li>"
 msgstr ""
 
-#: IdentitiesSettingsPage#10
+#: IdentitiesSettingsPage#5
 msgid "<li>Every identity needs at least one nickname defined</li>"
 msgstr ""
 
-#: IdentitiesSettingsPage#11
+#: IdentitiesSettingsPage#6
 msgid "<li>You need to specify a real name for every identity</li>"
 msgstr ""
 
-#: IdentitiesSettingsPage#12
+#: IdentitiesSettingsPage#7
 msgid "<li>You need to specify an ident for every identity</li>"
 msgstr ""
 
-#: IdentitiesSettingsPage#13
-msgctxt "IdentitiesSettingsPage#13"
+#: IdentitiesSettingsPage#8
+msgctxt "IdentitiesSettingsPage#8"
 msgid "</ul>"
 msgstr ""
 
-#: IdentitiesSettingsPage#14
+#: IdentitiesSettingsPage#9
 msgid "One or more identities are invalid"
 msgstr ""
 
-#: IdentitiesSettingsPage#15
+#: IdentitiesSettingsPage#10
 msgid "Delete Identity?"
 msgstr ""
 
-#: IdentitiesSettingsPage#16
+#: IdentitiesSettingsPage#11
 msgid "Do you really want to delete identity \"%1\"?"
 msgstr ""
 
-#: IdentitiesSettingsPage#17
+#: IdentitiesSettingsPage#12
+msgctxt "IdentitiesSettingsPage#12"
+msgid "Rename Identity"
+msgstr ""
+
+#: IdentitiesSettingsPage#13
 msgid "Please enter a new name for the identity \"%1\"!"
+msgstr ""
+
+#: IdentitiesSettingsPage#14
+msgctxt "IdentitiesSettingsPage#14"
+msgid "..."
+msgstr ""
+
+#: IdentitiesSettingsPage#15
+msgid "Add Identity"
+msgstr ""
+
+#: IdentitiesSettingsPage#16
+msgctxt "IdentitiesSettingsPage#16"
+msgid "Add..."
+msgstr ""
+
+#: IdentitiesSettingsPage#17
+msgid "Remove Identity"
 msgstr ""
 
 #: Identity#1
@@ -2119,150 +2085,182 @@ msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr ""
 
 #: IdentityEditWidget#1
-msgid "General"
-msgstr ""
-
-#: IdentityEditWidget#2
-msgid "Real Name:"
-msgstr ""
-
-#: IdentityEditWidget#3
-msgid "The \"Real Name\" is shown in /whois."
-msgstr ""
-
-#: IdentityEditWidget#4
-msgid "Nicknames"
-msgstr ""
-
-#: IdentityEditWidget#5
-msgctxt "IdentityEditWidget#5"
-msgid "Add Nickname"
-msgstr ""
-
-#: IdentityEditWidget#6
-msgctxt "IdentityEditWidget#6"
-msgid "&Add..."
-msgstr ""
-
-#: IdentityEditWidget#7
-msgid "Remove Nickname"
-msgstr ""
-
-#: IdentityEditWidget#8
-msgctxt "IdentityEditWidget#8"
-msgid "Remove"
-msgstr ""
-
-#: IdentityEditWidget#9
-msgctxt "IdentityEditWidget#9"
-msgid "Rename Identity"
-msgstr ""
-
-#: IdentityEditWidget#10
-msgctxt "IdentityEditWidget#10"
-msgid "Re&name..."
-msgstr ""
-
-#: IdentityEditWidget#11
-msgctxt "IdentityEditWidget#11"
-msgid "Move upwards in list"
-msgstr ""
-
-#: IdentityEditWidget#12
-msgctxt "IdentityEditWidget#12"
-msgid "..."
-msgstr ""
-
-#: IdentityEditWidget#13
-msgctxt "IdentityEditWidget#13"
-msgid "Move downwards in list"
-msgstr ""
-
-#: IdentityEditWidget#14
-msgid "A&way"
-msgstr ""
-
-#: IdentityEditWidget#15
-msgid "Default Away Settings"
-msgstr ""
-
-#: IdentityEditWidget#16
-msgid "Nick to be used when being away"
-msgstr ""
-
-#: IdentityEditWidget#17
-msgid "Default away reason"
-msgstr ""
-
-#: IdentityEditWidget#18
-msgid "Away Nick:"
-msgstr ""
-
-#: IdentityEditWidget#19
-msgid "Away Reason:"
-msgstr ""
-
-#: IdentityEditWidget#20
-msgid "Set away when all clients have detached from the core"
-msgstr ""
-
-#: IdentityEditWidget#21
-msgid "Away On Detach"
-msgstr ""
-
-#: IdentityEditWidget#22
-msgid "Not implemented yet"
-msgstr ""
-
-#: IdentityEditWidget#23
-msgid "Away On Idle"
-msgstr ""
-
-#: IdentityEditWidget#24
-msgid "Set away after"
-msgstr ""
-
-#: IdentityEditWidget#25
-msgid "minutes of being idle"
-msgstr ""
-
-#: IdentityEditWidget#26
-msgctxt "IdentityEditWidget#26"
+msgctxt "IdentityEditWidget#1"
 msgid "Advanced"
 msgstr ""
 
+#: IdentityEditWidget#2
+msgid "Load a Key"
+msgstr ""
+
+#: IdentityEditWidget#3
+msgid "No Key loaded"
+msgstr ""
+
+#: IdentityEditWidget#4
+msgid "Load"
+msgstr ""
+
+#: IdentityEditWidget#5
+msgid "RSA"
+msgstr ""
+
+#: IdentityEditWidget#6
+msgid "DSA"
+msgstr ""
+
+#: IdentityEditWidget#7
+msgid "Clear"
+msgstr ""
+
+#: IdentityEditWidget#8
+msgid "Load a Certificate"
+msgstr ""
+
+#: IdentityEditWidget#9
+msgid "No Certificate loaded"
+msgstr ""
+
+#: IdentityEditWidget#10
+msgid "General"
+msgstr ""
+
+#: IdentityEditWidget#11
+msgid "Real Name:"
+msgstr ""
+
+#: IdentityEditWidget#12
+msgid "The \"Real Name\" is shown in /whois."
+msgstr ""
+
+#: IdentityEditWidget#13
+msgid "Nicknames"
+msgstr ""
+
+#: IdentityEditWidget#14
+msgctxt "IdentityEditWidget#14"
+msgid "Add Nickname"
+msgstr ""
+
+#: IdentityEditWidget#15
+msgctxt "IdentityEditWidget#15"
+msgid "&Add..."
+msgstr ""
+
+#: IdentityEditWidget#16
+msgid "Remove Nickname"
+msgstr ""
+
+#: IdentityEditWidget#17
+msgctxt "IdentityEditWidget#17"
+msgid "Remove"
+msgstr ""
+
+#: IdentityEditWidget#18
+msgctxt "IdentityEditWidget#18"
+msgid "Rename Identity"
+msgstr ""
+
+#: IdentityEditWidget#19
+msgctxt "IdentityEditWidget#19"
+msgid "Re&name..."
+msgstr ""
+
+#: IdentityEditWidget#20
+msgctxt "IdentityEditWidget#20"
+msgid "Move upwards in list"
+msgstr ""
+
+#: IdentityEditWidget#21
+msgctxt "IdentityEditWidget#21"
+msgid "..."
+msgstr ""
+
+#: IdentityEditWidget#22
+msgctxt "IdentityEditWidget#22"
+msgid "Move downwards in list"
+msgstr ""
+
+#: IdentityEditWidget#23
+msgid "A&way"
+msgstr ""
+
+#: IdentityEditWidget#24
+msgid "Default Away Settings"
+msgstr ""
+
+#: IdentityEditWidget#25
+msgid "Nick to be used when being away"
+msgstr ""
+
+#: IdentityEditWidget#26
+msgid "Default away reason"
+msgstr ""
+
 #: IdentityEditWidget#27
-msgid "Ident:"
+msgid "Away Nick:"
 msgstr ""
 
 #: IdentityEditWidget#28
+msgid "Away Reason:"
+msgstr ""
+
+#: IdentityEditWidget#29
+msgid "Set away when all clients have detached from the core"
+msgstr ""
+
+#: IdentityEditWidget#30
+msgid "Away On Detach"
+msgstr ""
+
+#: IdentityEditWidget#31
+msgid "Not implemented yet"
+msgstr ""
+
+#: IdentityEditWidget#32
+msgid "Away On Idle"
+msgstr ""
+
+#: IdentityEditWidget#33
+msgid "Set away after"
+msgstr ""
+
+#: IdentityEditWidget#34
+msgid "minutes of being idle"
+msgstr ""
+
+#: IdentityEditWidget#35
+msgid "Ident:"
+msgstr ""
+
+#: IdentityEditWidget#36
 msgid ""
 "The \"ident\" is part of your hostmask and, together with your host, uniquely "
 "identifies you within the IRC network."
 msgstr ""
 
-#: IdentityEditWidget#29
+#: IdentityEditWidget#37
 msgid "Messages"
 msgstr ""
 
-#: IdentityEditWidget#30
+#: IdentityEditWidget#38
 msgid "Part Reason:"
 msgstr ""
 
-#: IdentityEditWidget#31
+#: IdentityEditWidget#39
 msgid "Quit Reason:"
 msgstr ""
 
-#: IdentityEditWidget#32
+#: IdentityEditWidget#40
 msgid "Kick Reason:"
 msgstr ""
 
-#: IdentityEditWidget#33
+#: IdentityEditWidget#41
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
 msgstr ""
 
-#: IdentityEditWidget#34
+#: IdentityEditWidget#42
 msgid ""
 "Warning: you are not connected with a secured connection to the Quassel "
 "Core!\n"
@@ -2270,61 +2268,29 @@ msgid ""
 "Certificate!"
 msgstr ""
 
-#: IdentityEditWidget#35
-msgctxt "IdentityEditWidget#35"
+#: IdentityEditWidget#43
+msgctxt "IdentityEditWidget#43"
 msgid "Continue"
 msgstr ""
 
-#: IdentityEditWidget#36
+#: IdentityEditWidget#44
 msgid "Use SSL Key"
 msgstr ""
 
-#: IdentityEditWidget#37
+#: IdentityEditWidget#45
 msgid "Key Type:"
 msgstr ""
 
-#: IdentityEditWidget#38
-msgid "No Key loaded"
-msgstr ""
-
-#: IdentityEditWidget#39
-msgid "Load"
-msgstr ""
-
-#: IdentityEditWidget#40
+#: IdentityEditWidget#46
 msgid "Use SSL Certificate"
 msgstr ""
 
-#: IdentityEditWidget#41
+#: IdentityEditWidget#47
 msgid "Organisation:"
 msgstr ""
 
-#: IdentityEditWidget#42
-msgid "No Certificate loaded"
-msgstr ""
-
-#: IdentityEditWidget#43
-msgid "CommonName:"
-msgstr ""
-
-#: IdentityEditWidget#44
-msgid "Load a Key"
-msgstr ""
-
-#: IdentityEditWidget#45
-msgid "RSA"
-msgstr ""
-
-#: IdentityEditWidget#46
-msgid "DSA"
-msgstr ""
-
-#: IdentityEditWidget#47
-msgid "Clear"
-msgstr ""
-
 #: IdentityEditWidget#48
-msgid "Load a Certificate"
+msgid "CommonName:"
 msgstr ""
 
 #: IdentityPage#1
@@ -2523,41 +2489,41 @@ msgstr ""
 
 #: IgnoreListSettingsPage#1
 msgctxt "IgnoreListSettingsPage#1"
-msgid "Form"
-msgstr ""
-
-#: IgnoreListSettingsPage#2
-msgctxt "IgnoreListSettingsPage#2"
-msgid "New"
-msgstr ""
-
-#: IgnoreListSettingsPage#3
-msgctxt "IgnoreListSettingsPage#3"
-msgid "Delete"
-msgstr ""
-
-#: IgnoreListSettingsPage#4
-msgid "&Edit"
-msgstr ""
-
-#: IgnoreListSettingsPage#5
-msgctxt "IgnoreListSettingsPage#5"
 msgid "IRC"
 msgstr ""
 
-#: IgnoreListSettingsPage#6
+#: IgnoreListSettingsPage#2
 msgid "Ignore List"
 msgstr ""
 
-#: IgnoreListSettingsPage#7
+#: IgnoreListSettingsPage#3
 msgid "Rule already exists"
 msgstr ""
 
-#: IgnoreListSettingsPage#8
+#: IgnoreListSettingsPage#4
 msgid ""
 "There is already a rule\n"
 "\"%1\"\n"
 "Please choose another rule."
+msgstr ""
+
+#: IgnoreListSettingsPage#5
+msgctxt "IgnoreListSettingsPage#5"
+msgid "Form"
+msgstr ""
+
+#: IgnoreListSettingsPage#6
+msgctxt "IgnoreListSettingsPage#6"
+msgid "New"
+msgstr ""
+
+#: IgnoreListSettingsPage#7
+msgctxt "IgnoreListSettingsPage#7"
+msgid "Delete"
+msgstr ""
+
+#: IgnoreListSettingsPage#8
+msgid "&Edit"
 msgstr ""
 
 #: IndicatorNotificationConfigWidget#1
@@ -2566,147 +2532,157 @@ msgid "Form"
 msgstr ""
 
 #: IndicatorNotificationConfigWidget#2
-msgid "Show messages in indicator"
+msgid ""
+"This enables support for the Ayatana Project's application indicator "
+"(libindicate)."
+msgstr ""
+
+#: IndicatorNotificationConfigWidget#3
+msgid "Show messages in application indicator"
 msgstr ""
 
 #: InputWidget#1
-msgctxt "InputWidget#1"
-msgid "Form"
-msgstr ""
-
-#: InputWidget#2
 msgid "White"
 msgstr ""
 
-#: InputWidget#3
+#: InputWidget#2
 msgid "Black"
 msgstr ""
 
-#: InputWidget#4
+#: InputWidget#3
 msgid "Dark blue"
 msgstr ""
 
-#: InputWidget#5
+#: InputWidget#4
 msgid "Dark green"
 msgstr ""
 
-#: InputWidget#6
+#: InputWidget#5
 msgid "Red"
 msgstr ""
 
-#: InputWidget#7
+#: InputWidget#6
 msgid "Dark red"
 msgstr ""
 
-#: InputWidget#8
+#: InputWidget#7
 msgid "Dark magenta"
 msgstr ""
 
-#: InputWidget#9
+#: InputWidget#8
 msgid "Orange"
 msgstr ""
 
-#: InputWidget#10
+#: InputWidget#9
 msgid "Yellow"
 msgstr ""
 
-#: InputWidget#11
+#: InputWidget#10
 msgid "Green"
 msgstr ""
 
-#: InputWidget#12
+#: InputWidget#11
 msgid "Dark cyan"
 msgstr ""
 
-#: InputWidget#13
+#: InputWidget#12
 msgid "Cyan"
 msgstr ""
 
-#: InputWidget#14
+#: InputWidget#13
 msgid "Blue"
 msgstr ""
 
-#: InputWidget#15
+#: InputWidget#14
 msgid "Magenta"
 msgstr ""
 
-#: InputWidget#16
+#: InputWidget#15
 msgid "Dark gray"
 msgstr ""
 
-#: InputWidget#17
+#: InputWidget#16
 msgid "Light gray"
 msgstr ""
 
-#: InputWidget#18
+#: InputWidget#17
 msgid "Clear Color"
 msgstr ""
 
-#: InputWidget#19
+#: InputWidget#18
 msgid "Focus Input Line"
 msgstr ""
 
-#: InputWidget#20
+#: InputWidget#19
 msgid "Ctrl+L"
+msgstr ""
+
+#: InputWidget#20
+msgctxt "InputWidget#20"
+msgid "Form"
 msgstr ""
 
 #: InputWidgetSettingsPage#1
 msgctxt "InputWidgetSettingsPage#1"
-msgid "Form"
-msgstr ""
-
-#: InputWidgetSettingsPage#2
-msgctxt "InputWidgetSettingsPage#2"
-msgid "Custom font:"
-msgstr ""
-
-#: InputWidgetSettingsPage#3
-msgid "Enable spell check"
-msgstr ""
-
-#: InputWidgetSettingsPage#4
-msgid "Show nick selector"
-msgstr ""
-
-#: InputWidgetSettingsPage#5
-msgid "Show style buttons"
-msgstr ""
-
-#: InputWidgetSettingsPage#6
-msgid "Multi-Line Editing"
-msgstr ""
-
-#: InputWidgetSettingsPage#7
-msgid "Show at most"
-msgstr ""
-
-#: InputWidgetSettingsPage#8
-msgid "lines"
-msgstr ""
-
-#: InputWidgetSettingsPage#9
-msgid "Enable scrollbars"
-msgstr ""
-
-#: InputWidgetSettingsPage#10
-msgid "Tab Completion"
-msgstr ""
-
-#: InputWidgetSettingsPage#11
-msgid "Completion suffix:"
-msgstr ""
-
-#: InputWidgetSettingsPage#12
-msgid ": "
-msgstr ""
-
-#: InputWidgetSettingsPage#13
-msgctxt "InputWidgetSettingsPage#13"
 msgid "Interface"
 msgstr ""
 
-#: InputWidgetSettingsPage#14
+#: InputWidgetSettingsPage#2
 msgid "Input Widget"
+msgstr ""
+
+#: InputWidgetSettingsPage#3
+msgctxt "InputWidgetSettingsPage#3"
+msgid "Form"
+msgstr ""
+
+#: InputWidgetSettingsPage#4
+msgctxt "InputWidgetSettingsPage#4"
+msgid "Custom font:"
+msgstr ""
+
+#: InputWidgetSettingsPage#5
+msgid "Enable spell check"
+msgstr ""
+
+#: InputWidgetSettingsPage#6
+msgid "Enable per chat history"
+msgstr ""
+
+#: InputWidgetSettingsPage#7
+msgid "Show nick selector"
+msgstr ""
+
+#: InputWidgetSettingsPage#8
+msgid "Show style buttons"
+msgstr ""
+
+#: InputWidgetSettingsPage#9
+msgid "Multi-Line Editing"
+msgstr ""
+
+#: InputWidgetSettingsPage#10
+msgid "Show at most"
+msgstr ""
+
+#: InputWidgetSettingsPage#11
+msgid "lines"
+msgstr ""
+
+#: InputWidgetSettingsPage#12
+msgid "Enable scrollbars"
+msgstr ""
+
+#: InputWidgetSettingsPage#13
+msgid "Tab Completion"
+msgstr ""
+
+#: InputWidgetSettingsPage#14
+msgid "Completion suffix:"
+msgstr ""
+
+#: InputWidgetSettingsPage#15
+msgid ": "
 msgstr ""
 
 #: IrcConnectionWizard#1
@@ -2869,108 +2845,108 @@ msgstr ""
 
 #: ItemViewSettingsPage#1
 msgctxt "ItemViewSettingsPage#1"
-msgid "Form"
+msgid "Interface"
 msgstr ""
 
 #: ItemViewSettingsPage#2
-msgctxt "ItemViewSettingsPage#2"
-msgid "Custom font:"
+msgid "Chat & Nick Lists"
 msgstr ""
 
 #: ItemViewSettingsPage#3
-msgid "Show icons"
+msgctxt "ItemViewSettingsPage#3"
+msgid "Network"
 msgstr ""
 
 #: ItemViewSettingsPage#4
-msgid "Chat List"
+msgid "Inactive"
 msgstr ""
 
 #: ItemViewSettingsPage#5
-msgid "Display topic in tooltip"
+msgid "Normal"
 msgstr ""
 
 #: ItemViewSettingsPage#6
-msgid "Mouse wheel changes selected chat"
+msgid "Unread messages"
 msgstr ""
 
 #: ItemViewSettingsPage#7
-msgid "Use Custom Colors"
+msgctxt "ItemViewSettingsPage#7"
+msgid "Highlight"
 msgstr ""
 
 #: ItemViewSettingsPage#8
-msgid "Standard:"
+msgid "Other activity"
 msgstr ""
 
 #: ItemViewSettingsPage#9
 msgctxt "ItemViewSettingsPage#9"
-msgid "..."
+msgid "Form"
 msgstr ""
 
 #: ItemViewSettingsPage#10
-msgid "Inactive:"
+msgctxt "ItemViewSettingsPage#10"
+msgid "Custom font:"
 msgstr ""
 
 #: ItemViewSettingsPage#11
-msgid "Unread messages:"
+msgid "Show icons"
 msgstr ""
 
 #: ItemViewSettingsPage#12
-msgid "Highlight:"
+msgid "Chat List"
 msgstr ""
 
 #: ItemViewSettingsPage#13
-msgid "Other activity:"
+msgid "Display topic in tooltip"
 msgstr ""
 
 #: ItemViewSettingsPage#14
-msgid "1"
+msgid "Mouse wheel changes selected chat"
 msgstr ""
 
 #: ItemViewSettingsPage#15
-msgid "Custom Nick List Colors"
+msgid "Use Custom Colors"
 msgstr ""
 
 #: ItemViewSettingsPage#16
-msgid "Online:"
+msgid "Standard:"
 msgstr ""
 
 #: ItemViewSettingsPage#17
-msgid "Away:"
+msgctxt "ItemViewSettingsPage#17"
+msgid "..."
 msgstr ""
 
 #: ItemViewSettingsPage#18
-msgctxt "ItemViewSettingsPage#18"
-msgid "Interface"
+msgid "Inactive:"
 msgstr ""
 
 #: ItemViewSettingsPage#19
-msgid "Chat & Nick Lists"
+msgid "Unread messages:"
 msgstr ""
 
 #: ItemViewSettingsPage#20
-msgctxt "ItemViewSettingsPage#20"
-msgid "Network"
+msgid "Highlight:"
 msgstr ""
 
 #: ItemViewSettingsPage#21
-msgid "Inactive"
+msgid "Other activity:"
 msgstr ""
 
 #: ItemViewSettingsPage#22
-msgid "Normal"
+msgid "1"
 msgstr ""
 
 #: ItemViewSettingsPage#23
-msgid "Unread messages"
+msgid "Custom Nick List Colors"
 msgstr ""
 
 #: ItemViewSettingsPage#24
-msgctxt "ItemViewSettingsPage#24"
-msgid "Highlight"
+msgid "Online:"
 msgstr ""
 
 #: ItemViewSettingsPage#25
-msgid "Other activity"
+msgid "Away:"
 msgstr ""
 
 #: KNotificationBackend#1
@@ -3325,17 +3301,21 @@ msgstr ""
 "        "
 
 #: NetworkModelController#2
+msgid "...and <b>%1</b> more<br><br>"
+msgstr ""
+
+#: NetworkModelController#3
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
 msgstr ""
 
-#: NetworkModelController#3
+#: NetworkModelController#4
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
 msgstr ""
 
-#: NetworkModelController#4
+#: NetworkModelController#5
 msgid "Remove buffers permanently?"
 msgstr ""
 
@@ -3352,252 +3332,260 @@ msgstr ""
 msgid "Channel:"
 msgstr ""
 
+#: NetworkModelController::JoinDlg#4
+msgctxt "NetworkModelController::JoinDlg#4"
+msgid "Password:"
+msgstr ""
+
 #: NetworkPage#1
 msgid "Setup Network Connection"
 msgstr ""
 
 #: NetworksSettingsPage#1
 msgctxt "NetworksSettingsPage#1"
-msgid "Form"
+msgid "IRC"
 msgstr ""
 
 #: NetworksSettingsPage#2
-msgctxt "NetworksSettingsPage#2"
-msgid "Re&name..."
+msgid "Networks"
 msgstr ""
 
 #: NetworksSettingsPage#3
 msgctxt "NetworksSettingsPage#3"
-msgid "&Add..."
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
 msgstr ""
 
 #: NetworksSettingsPage#4
-msgctxt "NetworksSettingsPage#4"
-msgid "De&lete"
+msgid "<li>All networks need at least one server defined</li>"
 msgstr ""
 
 #: NetworksSettingsPage#5
-msgid "Network Details"
+msgctxt "NetworksSettingsPage#5"
+msgid "</ul>"
 msgstr ""
 
 #: NetworksSettingsPage#6
-msgid "Identity:"
+msgid "Invalid Network Settings"
 msgstr ""
 
 #: NetworksSettingsPage#7
-msgctxt "NetworksSettingsPage#7"
-msgid "..."
+msgid "Delete Network?"
 msgstr ""
 
 #: NetworksSettingsPage#8
-msgctxt "NetworksSettingsPage#8"
-msgid "Servers"
+msgid ""
+"Do you really want to delete the network \"%1\" and all related settings, "
+"including the backlog?"
 msgstr ""
 
 #: NetworksSettingsPage#9
-msgid "Manage servers for this network"
+msgctxt "NetworksSettingsPage#9"
+msgid "Form"
 msgstr ""
 
 #: NetworksSettingsPage#10
 msgctxt "NetworksSettingsPage#10"
-msgid "&Edit..."
+msgid "Re&name..."
 msgstr ""
 
 #: NetworksSettingsPage#11
 msgctxt "NetworksSettingsPage#11"
-msgid "Move upwards in list"
+msgid "&Add..."
 msgstr ""
 
 #: NetworksSettingsPage#12
 msgctxt "NetworksSettingsPage#12"
-msgid "Move downwards in list"
+msgid "De&lete"
 msgstr ""
 
 #: NetworksSettingsPage#13
-msgid "Commands"
+msgid "Network Details"
 msgstr ""
 
 #: NetworksSettingsPage#14
+msgid "Identity:"
+msgstr ""
+
+#: NetworksSettingsPage#15
+msgctxt "NetworksSettingsPage#15"
+msgid "..."
+msgstr ""
+
+#: NetworksSettingsPage#16
+msgctxt "NetworksSettingsPage#16"
+msgid "Servers"
+msgstr ""
+
+#: NetworksSettingsPage#17
+msgid "Manage servers for this network"
+msgstr ""
+
+#: NetworksSettingsPage#18
+msgctxt "NetworksSettingsPage#18"
+msgid "&Edit..."
+msgstr ""
+
+#: NetworksSettingsPage#19
+msgctxt "NetworksSettingsPage#19"
+msgid "Move upwards in list"
+msgstr ""
+
+#: NetworksSettingsPage#20
+msgctxt "NetworksSettingsPage#20"
+msgid "Move downwards in list"
+msgstr ""
+
+#: NetworksSettingsPage#21
+msgid "Commands"
+msgstr ""
+
+#: NetworksSettingsPage#22
 msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
 msgstr ""
 
-#: NetworksSettingsPage#15
+#: NetworksSettingsPage#23
 msgid "Commands to execute on connect:"
 msgstr ""
 
-#: NetworksSettingsPage#16
+#: NetworksSettingsPage#24
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely "
 "be needed here!"
 msgstr ""
 
-#: NetworksSettingsPage#17
-msgctxt "NetworksSettingsPage#17"
+#: NetworksSettingsPage#25
+msgctxt "NetworksSettingsPage#25"
 msgid "Connection"
 msgstr ""
 
-#: NetworksSettingsPage#18
-msgid "Control automatic reconnect to the network"
-msgstr ""
-
-#: NetworksSettingsPage#19
-msgid "Automatic Reconnect"
-msgstr ""
-
-#: NetworksSettingsPage#20
-msgid "Interval:"
-msgstr ""
-
-#: NetworksSettingsPage#21
-msgctxt "NetworksSettingsPage#21"
-msgid " s"
-msgstr ""
-
-#: NetworksSettingsPage#22
-msgid "Retries:"
-msgstr ""
-
-#: NetworksSettingsPage#23
-msgctxt "NetworksSettingsPage#23"
-msgid "Unlimited"
-msgstr ""
-
-#: NetworksSettingsPage#24
-msgid "Rejoin all channels on reconnect"
-msgstr ""
-
-#: NetworksSettingsPage#25
-msgid "Auto Identify"
-msgstr ""
-
 #: NetworksSettingsPage#26
-msgid "NickServ"
+msgid "Automatically reconnect to the IRC network after connection failures"
 msgstr ""
 
 #: NetworksSettingsPage#27
-msgid "Service:"
+msgid "Automatic Reconnect"
 msgstr ""
 
 #: NetworksSettingsPage#28
-msgctxt "NetworksSettingsPage#28"
-msgid "Password:"
+msgid "Wait"
 msgstr ""
 
 #: NetworksSettingsPage#29
-msgid "Use SASL Authentication"
+msgid " s"
 msgstr ""
 
 #: NetworksSettingsPage#30
-msgid "Account:"
+msgid "between retries"
 msgstr ""
 
 #: NetworksSettingsPage#31
-msgid "Encodings"
+msgid "Number of retries:"
 msgstr ""
 
 #: NetworksSettingsPage#32
+msgctxt "NetworksSettingsPage#32"
+msgid "Unlimited"
+msgstr ""
+
+#: NetworksSettingsPage#33
+msgid "Rejoin all channels after reconnect"
+msgstr ""
+
+#: NetworksSettingsPage#34
+msgid "Auto Identify"
+msgstr ""
+
+#: NetworksSettingsPage#35
+msgid "NickServ"
+msgstr ""
+
+#: NetworksSettingsPage#36
+msgid "Service:"
+msgstr ""
+
+#: NetworksSettingsPage#37
+msgctxt "NetworksSettingsPage#37"
+msgid "Password:"
+msgstr ""
+
+#: NetworksSettingsPage#38
+msgid "Use SASL Authentication"
+msgstr ""
+
+#: NetworksSettingsPage#39
+msgid "Account:"
+msgstr ""
+
+#: NetworksSettingsPage#40
+msgid "Encodings"
+msgstr ""
+
+#: NetworksSettingsPage#41
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
 msgstr ""
 
-#: NetworksSettingsPage#33
+#: NetworksSettingsPage#42
 msgid "Control encodings for in- and outgoing messages"
 msgstr ""
 
-#: NetworksSettingsPage#34
+#: NetworksSettingsPage#43
 msgid "Use Custom Encodings"
 msgstr ""
 
-#: NetworksSettingsPage#35
+#: NetworksSettingsPage#44
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
 msgstr ""
 
-#: NetworksSettingsPage#36
+#: NetworksSettingsPage#45
 msgid "Send messages in:"
 msgstr ""
 
-#: NetworksSettingsPage#37
+#: NetworksSettingsPage#46
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
 msgstr ""
 
-#: NetworksSettingsPage#38
+#: NetworksSettingsPage#47
 msgid "Receive fallback:"
 msgstr ""
 
-#: NetworksSettingsPage#39
+#: NetworksSettingsPage#48
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
 
-#: NetworksSettingsPage#40
+#: NetworksSettingsPage#49
 msgid "Server encoding:"
 msgstr ""
 
-#: NetworksSettingsPage#41
-msgctxt "NetworksSettingsPage#41"
-msgid "IRC"
-msgstr ""
-
-#: NetworksSettingsPage#42
-msgid "Networks"
-msgstr ""
-
-#: NetworksSettingsPage#43
-msgctxt "NetworksSettingsPage#43"
-msgid ""
-"<b>The following problems need to be corrected before your changes can be "
-"applied:</b><ul>"
-msgstr ""
-
-#: NetworksSettingsPage#44
-msgid "<li>All networks need at least one server defined</li>"
-msgstr ""
-
-#: NetworksSettingsPage#45
-msgctxt "NetworksSettingsPage#45"
-msgid "</ul>"
-msgstr ""
-
-#: NetworksSettingsPage#46
-msgid "Invalid Network Settings"
-msgstr ""
-
-#: NetworksSettingsPage#47
-msgid "Delete Network?"
-msgstr ""
-
-#: NetworksSettingsPage#48
-msgid ""
-"Do you really want to delete the network \"%1\" and all related settings, "
-"including the backlog?"
-msgstr ""
-
 #: NickEditDlg#1
-msgid "Edit Nickname"
+msgctxt "NickEditDlg#1"
+msgid "Add Nickname"
 msgstr ""
 
 #: NickEditDlg#2
-msgid "Please enter a valid nickname:"
+msgid "Edit Nickname"
 msgstr ""
 
 #: NickEditDlg#3
-msgid ""
-"A valid nickname may contain letters from the English alphabet, digits, and "
-"the special characters {, }, [, ], \\, |, `, ^, _ and -."
+msgid "Please enter a valid nickname:"
 msgstr ""
 
 #: NickEditDlg#4
-msgctxt "NickEditDlg#4"
-msgid "Add Nickname"
+msgid ""
+"A valid nickname may contain letters from the English alphabet, digits, and "
+"the special characters {, }, [, ], \\, |, `, ^, _ and -."
 msgstr ""
 
 #: NotificationsSettingsPage#1
@@ -3619,11 +3607,15 @@ msgid "Form"
 msgstr ""
 
 #: PhononNotificationConfigWidget#2
-msgid "Audio Notification (via Phonon)"
+msgid "Play a sound"
 msgstr ""
 
 #: PhononNotificationConfigWidget#3
-msgid "Play File:"
+msgid "Prelisten to the selected sound"
+msgstr ""
+
+#: PhononNotificationConfigWidget#4
+msgid "Select the sound file to play"
 msgstr ""
 
 #: PostgreSqlStorage#1
@@ -3902,82 +3894,82 @@ msgstr ""
 
 #: SettingsDlg#1
 msgctxt "SettingsDlg#1"
-msgid "Configure Quassel"
-msgstr ""
-
-#: SettingsDlg#2
-msgctxt "SettingsDlg#2"
 msgid "Settings"
 msgstr ""
 
-#: SettingsDlg#3
+#: SettingsDlg#2
 msgid "Save changes"
 msgstr ""
 
-#: SettingsDlg#4
+#: SettingsDlg#3
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
 msgstr ""
 
+#: SettingsDlg#4
+msgctxt "SettingsDlg#4"
+msgid "Configure %1"
+msgstr ""
+
 #: SettingsDlg#5
 msgctxt "SettingsDlg#5"
-msgid "Configure %1"
+msgid "Reload Settings"
 msgstr ""
 
 #: SettingsDlg#6
 msgctxt "SettingsDlg#6"
-msgid "Reload Settings"
+msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 
 #: SettingsDlg#7
 msgctxt "SettingsDlg#7"
-msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgid "Restore Defaults"
 msgstr ""
 
 #: SettingsDlg#8
 msgctxt "SettingsDlg#8"
-msgid "Restore Defaults"
+msgid "Do you like to restore the default values for this page?"
 msgstr ""
 
 #: SettingsDlg#9
 msgctxt "SettingsDlg#9"
-msgid "Do you like to restore the default values for this page?"
+msgid "Configure Quassel"
 msgstr ""
 
 #: SettingsPageDlg#1
 msgctxt "SettingsPageDlg#1"
-msgid "Configure Quassel"
+msgid "Configure %1"
 msgstr ""
 
 #: SettingsPageDlg#2
 msgctxt "SettingsPageDlg#2"
-msgid "Settings"
+msgid "Reload Settings"
 msgstr ""
 
 #: SettingsPageDlg#3
 msgctxt "SettingsPageDlg#3"
-msgid "Configure %1"
+msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 
 #: SettingsPageDlg#4
 msgctxt "SettingsPageDlg#4"
-msgid "Reload Settings"
+msgid "Restore Defaults"
 msgstr ""
 
 #: SettingsPageDlg#5
 msgctxt "SettingsPageDlg#5"
-msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgid "Do you like to restore the default values for this page?"
 msgstr ""
 
 #: SettingsPageDlg#6
 msgctxt "SettingsPageDlg#6"
-msgid "Restore Defaults"
+msgid "Configure Quassel"
 msgstr ""
 
 #: SettingsPageDlg#7
 msgctxt "SettingsPageDlg#7"
-msgid "Do you like to restore the default values for this page?"
+msgid "Settings"
 msgstr ""
 
 #: SignalProxy#1
@@ -4080,87 +4072,87 @@ msgid ""
 msgstr ""
 
 #: SslInfoDlg#1
-msgid "Security Information"
-msgstr ""
-
-#: SslInfoDlg#2
-msgid "<b>Hostname:</b>"
-msgstr ""
-
-#: SslInfoDlg#3
-msgid "<b>IP address:</b>"
-msgstr ""
-
-#: SslInfoDlg#4
-msgid "<b>Encryption:</b>"
-msgstr ""
-
-#: SslInfoDlg#5
-msgid "<b>Protocol:</b>"
-msgstr ""
-
-#: SslInfoDlg#6
-msgid "<b>Certificate chain:</b>"
-msgstr ""
-
-#: SslInfoDlg#7
-msgid "Subject"
-msgstr ""
-
-#: SslInfoDlg#8
-msgid "<b>Common name:</b>"
-msgstr ""
-
-#: SslInfoDlg#9
-msgid "<b>Organization:</b>"
-msgstr ""
-
-#: SslInfoDlg#10
-msgid "<b>Organizational unit:</b>"
-msgstr ""
-
-#: SslInfoDlg#11
-msgid "<b>Country:</b>"
-msgstr ""
-
-#: SslInfoDlg#12
-msgid "<b>State or province:</b>"
-msgstr ""
-
-#: SslInfoDlg#13
-msgid "<b>Locality:</b>"
-msgstr ""
-
-#: SslInfoDlg#14
-msgid "Issuer"
-msgstr ""
-
-#: SslInfoDlg#15
-msgid "<b>Validity period:</b>"
-msgstr ""
-
-#: SslInfoDlg#16
-msgid "<b>MD5 digest:</b>"
-msgstr ""
-
-#: SslInfoDlg#17
-msgid "<b>SHA1 digest:</b>"
-msgstr ""
-
-#: SslInfoDlg#18
-msgid "<b>Trusted:</b>"
-msgstr ""
-
-#: SslInfoDlg#19
 msgid "Yes"
 msgstr ""
 
-#: SslInfoDlg#20
+#: SslInfoDlg#2
 msgid "No, for the following reasons:<ul>"
 msgstr ""
 
-#: SslInfoDlg#21
+#: SslInfoDlg#3
 msgid "%1 to %2"
+msgstr ""
+
+#: SslInfoDlg#4
+msgid "Security Information"
+msgstr ""
+
+#: SslInfoDlg#5
+msgid "<b>Hostname:</b>"
+msgstr ""
+
+#: SslInfoDlg#6
+msgid "<b>IP address:</b>"
+msgstr ""
+
+#: SslInfoDlg#7
+msgid "<b>Encryption:</b>"
+msgstr ""
+
+#: SslInfoDlg#8
+msgid "<b>Protocol:</b>"
+msgstr ""
+
+#: SslInfoDlg#9
+msgid "<b>Certificate chain:</b>"
+msgstr ""
+
+#: SslInfoDlg#10
+msgid "Subject"
+msgstr ""
+
+#: SslInfoDlg#11
+msgid "<b>Common name:</b>"
+msgstr ""
+
+#: SslInfoDlg#12
+msgid "<b>Organization:</b>"
+msgstr ""
+
+#: SslInfoDlg#13
+msgid "<b>Organizational unit:</b>"
+msgstr ""
+
+#: SslInfoDlg#14
+msgid "<b>Country:</b>"
+msgstr ""
+
+#: SslInfoDlg#15
+msgid "<b>State or province:</b>"
+msgstr ""
+
+#: SslInfoDlg#16
+msgid "<b>Locality:</b>"
+msgstr ""
+
+#: SslInfoDlg#17
+msgid "Issuer"
+msgstr ""
+
+#: SslInfoDlg#18
+msgid "<b>Validity period:</b>"
+msgstr ""
+
+#: SslInfoDlg#19
+msgid "<b>MD5 digest:</b>"
+msgstr ""
+
+#: SslInfoDlg#20
+msgid "<b>SHA1 digest:</b>"
+msgstr ""
+
+#: SslInfoDlg#21
+msgid "<b>Trusted:</b>"
 msgstr ""
 
 #: StatusBufferItem#1
@@ -4185,15 +4177,7 @@ msgstr ""
 "        "
 
 #: SystrayNotificationBackend::ConfigWidget#1
-msgid "System Tray Icon"
-msgstr ""
-
-#: SystrayNotificationBackend::ConfigWidget#2
-msgid "Animate"
-msgstr ""
-
-#: SystrayNotificationBackend::ConfigWidget#3
-msgid "Show bubble"
+msgid "Show a message in a popup"
 msgstr ""
 
 #: TaskbarNotificationBackend::ConfigWidget#1
@@ -4211,7 +4195,7 @@ msgstr ""
 
 #: TaskbarNotificationBackend::ConfigWidget#4
 msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
-msgid " s"
+msgid " seconds"
 msgstr ""
 
 #: ToolBarActionProvider#1
@@ -4333,49 +4317,49 @@ msgstr ""
 
 #: TopicWidget#1
 msgctxt "TopicWidget#1"
-msgid "Form"
+msgid "Users: %1"
 msgstr ""
 
 #: TopicWidget#2
 msgctxt "TopicWidget#2"
-msgid "..."
+msgid "Lag: %1 msecs"
 msgstr ""
 
 #: TopicWidget#3
 msgctxt "TopicWidget#3"
-msgid "Users: %1"
+msgid "Form"
 msgstr ""
 
 #: TopicWidget#4
 msgctxt "TopicWidget#4"
-msgid "Lag: %1 msecs"
+msgid "..."
 msgstr ""
 
 #: TopicWidgetSettingsPage#1
 msgctxt "TopicWidgetSettingsPage#1"
-msgid "Form"
-msgstr ""
-
-#: TopicWidgetSettingsPage#2
-msgctxt "TopicWidgetSettingsPage#2"
-msgid "Custom font:"
-msgstr ""
-
-#: TopicWidgetSettingsPage#3
-msgid "Resize dynamically to fit contents"
-msgstr ""
-
-#: TopicWidgetSettingsPage#4
-msgid "On hover only"
-msgstr ""
-
-#: TopicWidgetSettingsPage#5
-msgctxt "TopicWidgetSettingsPage#5"
 msgid "Interface"
 msgstr ""
 
-#: TopicWidgetSettingsPage#6
+#: TopicWidgetSettingsPage#2
 msgid "Topic Widget"
+msgstr ""
+
+#: TopicWidgetSettingsPage#3
+msgctxt "TopicWidgetSettingsPage#3"
+msgid "Form"
+msgstr ""
+
+#: TopicWidgetSettingsPage#4
+msgctxt "TopicWidgetSettingsPage#4"
+msgid "Custom font:"
+msgstr ""
+
+#: TopicWidgetSettingsPage#5
+msgid "Resize dynamically to fit contents"
+msgstr ""
+
+#: TopicWidgetSettingsPage#6
+msgid "On hover only"
 msgstr ""
 
 #: UiStyle::StyledMessage#1
