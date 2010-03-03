@@ -71,8 +71,8 @@ private slots:
   void widgetChanged();
 
 private:
-  QCheckBox *_showBubbleBox, *_animateBox;
-  bool _showBubble, _animate;
+  QCheckBox *_showBubbleBox;
+  bool _showBubble;
 };
 
 #endif

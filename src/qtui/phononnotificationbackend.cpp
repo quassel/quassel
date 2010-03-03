@@ -89,6 +89,7 @@ PhononNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
   audioPreview(0)
 {
   ui.setupUi(this);
+  ui.enabled->setIcon(SmallIcon("media-playback-start"));
   ui.play->setIcon(SmallIcon("media-playback-start"));
   ui.open->setIcon(SmallIcon("document-open"));
 

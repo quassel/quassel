@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
+    <width>438</width>
     <height>35</height>
    </rect>
   </property>
@@ -16,8 +16,11 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QCheckBox" name="enabled">
+     <property name="toolTip">
+      <string>This enables support for the Ayatana Project's application indicator (libindicate).</string>
+     </property>
      <property name="text">
-      <string>Show messages in indicator</string>
+      <string>Show messages in application indicator</string>
      </property>
     </widget>
    </item>

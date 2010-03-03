@@ -21,13 +21,14 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QGroupBox>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include "systraynotificationbackend.h"
 
 #include "client.h"
 #include "clientsettings.h"
 #include "icon.h"
+#include "iconloader.h"
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"
@@ -130,23 +131,17 @@ SettingsPage *SystrayNotificationBackend::createConfigWidget() const {
 /***************************************************************************/
 
 SystrayNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayNotification", parent) {
-  QGroupBox *groupBox = new QGroupBox(tr("System Tray Icon"), this);
-  _animateBox = new QCheckBox(tr("Animate"));
-  connect(_animateBox, SIGNAL(toggled(bool)), this, SLOT(widgetChanged()));
-  _showBubbleBox = new QCheckBox(tr("Show bubble"));
+  _showBubbleBox = new QCheckBox(tr("Show a message in a popup"));
+  _showBubbleBox->setIcon(SmallIcon("dialog-information"));
   connect(_showBubbleBox, SIGNAL(toggled(bool)), this, SLOT(widgetChanged()));
-  QVBoxLayout *layout = new QVBoxLayout(groupBox);
-  layout->addWidget(_animateBox);
+  QHBoxLayout *layout = new QHBoxLayout(this);
   layout->addWidget(_showBubbleBox);
-  layout->addStretch(1);
-  QVBoxLayout *globalLayout = new QVBoxLayout(this);
-  globalLayout->addWidget(groupBox);
-
 }
 
 void SystrayNotificationBackend::ConfigWidget::widgetChanged() {
-  bool changed = (_showBubble != _showBubbleBox->isChecked() || _animate != _animateBox->isChecked());
-  if(changed != hasChanged()) setChangedState(changed);
+  bool changed = (_showBubble != _showBubbleBox->isChecked());
+  if(changed != hasChanged())
+    setChangedState(changed);
 }
 
 bool SystrayNotificationBackend::ConfigWidget::hasDefaults() const {
@@ -154,23 +149,19 @@ bool SystrayNotificationBackend::ConfigWidget::hasDefaults() const {
 }
 
 void SystrayNotificationBackend::ConfigWidget::defaults() {
-  _animateBox->setChecked(true);
   _showBubbleBox->setChecked(false);
   widgetChanged();
 }
 
 void SystrayNotificationBackend::ConfigWidget::load() {
   NotificationSettings s;
-  _animate = s.value("Systray/Animate", true).toBool();
   _showBubble = s.value("Systray/ShowBubble", false).toBool();
-  _animateBox->setChecked(_animate);
   _showBubbleBox->setChecked(_showBubble);
   setChangedState(false);
 }
 
 void SystrayNotificationBackend::ConfigWidget::save() {
   NotificationSettings s;
-  s.setValue("Systray/Animate", _animateBox->isChecked());
   s.setValue("Systray/ShowBubble", _showBubbleBox->isChecked());
   load();
 }

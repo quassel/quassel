@@ -23,6 +23,7 @@
 #include <QtGui>
 
 #include "clientsettings.h"
+#include "iconloader.h"
 #include "mainwin.h"
 #include "qtui.h"
 
@@ -68,15 +69,19 @@ TaskbarNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : Settin
 #else
   layout->addWidget(enabledBox = new QCheckBox(tr("Mark taskbar entry, timeout:"), this));
 #endif
+  enabledBox->setIcon(SmallIcon("flag-blue"));
+  enabledBox->setEnabled(true);
+
   timeoutBox = new QSpinBox(this);
-  timeoutBox->setMinimum(0);
+  timeoutBox->setMinimum(1);
   timeoutBox->setMaximum(99);
   timeoutBox->setSpecialValueText(tr("Unlimited"));
-  timeoutBox->setSuffix(tr(" s"));
+  timeoutBox->setSuffix(tr(" seconds"));
   layout->addWidget(timeoutBox);
-  layout->addStretch(1);
+  layout->addStretch(20);
 
   connect(enabledBox, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
+  connect(enabledBox, SIGNAL(toggled(bool)), timeoutBox, SLOT(setEnabled(bool)));
   connect(timeoutBox, SIGNAL(valueChanged(int)), SLOT(widgetChanged()));
 }
 

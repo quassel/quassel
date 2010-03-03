@@ -25,6 +25,7 @@
 
 #include "client.h"
 #include "clientsettings.h"
+#include "iconloader.h"
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"
@@ -154,6 +155,8 @@ IndicatorNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
 : SettingsPage("Internal", "IndicatorNotification", parent)
 {
   ui.setupUi(this);
+   // FIXME find proper icon (this one is used by the plasmoid as well)
+  ui.enabled->setIcon(SmallIcon("mail-message-new"));
 
   connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
 }

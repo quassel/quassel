@@ -40,7 +40,7 @@ NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
       _hasDefaults |= cw->hasDefaults();
     }
   }
-  layout->addStretch(1);
+  layout->addStretch(20);
   load();
 }
 
