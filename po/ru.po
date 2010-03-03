@@ -3,12 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-25 00:37+0200\n"
+"POT-Creation-Date: 2010-01-10 13:33+0200\n"
+"PO-Revision-Date: 2010-02-25 15:23+0000\n"
+"Last-Translator: Scott Kitterman <ubuntu@kitterman.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-03-03 01:08+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Language: ru\n"
 
 #: AboutDlg#1
@@ -17,19 +26,39 @@ msgstr "О Quassel"
 
 #: AboutDlg#2
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body "
+"style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-"
+"style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-"
+"left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 
 #: AboutDlg#3
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body "
+"style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-"
+"style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-"
+"left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version "
+"0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
 
 #: AboutDlg#4
 msgid "&About"
@@ -49,27 +78,78 @@ msgstr "&Благодарности"
 
 #: AboutDlg#8
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Версия:</b> %1<br><b>Версия протокола:</b> %2<br><b>Дата сборки:</b> %3"
+msgstr ""
+"<b>Версия:</b> %1<br><b>Версия протокола:</b> %2<br><b>Дата сборки:</b> %3"
 
 #: AboutDlg#9
-#, fuzzy
-msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-msgstr "<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2009 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC распространяется по двойной лицензии <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство значков &copy;  <a href=\"http://www.oxygen-icons.org\">Команда Oxygen</a> и используются по лицензии <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках пожалуйста сообщайте на  <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
+msgid ""
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+"and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
+"Team</a> and used under the <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+"report bugs."
+msgstr ""
+"<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2009 Quassel "
+"Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в "
+"сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC "
+"распространяется по двойной лицензии <a "
+"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a "
+"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство "
+"значков &copy;  <a href=\"http://www.oxygen-icons.org\">Команда Oxygen</a> и "
+"используются по лицензии <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках "
+"пожалуйста сообщайте на  <a href=\"http://bugs.quassel-"
+"irc.org\">http://bugs.quassel-irc.org</a>."
 
 #: AboutDlg#10
 msgid "Quassel IRC is mainly developed by:"
 msgstr "Quassel IRC разрабатывается в основном:"
 
 #: AboutDlg#11
-msgid "We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:"
-msgstr "Мы хотим выразить благодарность следующим людям, внесшим свой вклад (в алфавитном порядке), а также всем, кого мы забыли здесь упомянуть:"
+msgid ""
+"We would like to thank the following contributors (in alphabetical order) "
+"and everybody we forgot to mention here:"
+msgstr ""
+"Мы хотим выразить благодарность следующим людям, внесшим свой вклад (в "
+"алфавитном порядке), а также всем, кого мы забыли здесь упомянуть:"
 
 #: AboutDlg#12
-msgid "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr "Особая благодарность:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>за оригинальный значок Quassel - Всевидящее Око</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>за всю графическую работу для Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software, ранее известная как Trolltech</a></b></dt><dd>за создание Qt и Qtopia, и за поддержку развития QuasselTopia с помощью Greenphones и прочего</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>за поддержку жизни Qt, и за спонсорство разработки Quassel Mobile с помощью N810</dd>"
+msgid ""
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
+"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"creating all the artwork you see throughout Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software formerly known as "
+"Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
+"sponsoring development of Quassel Mobile with N810s</dd>"
+msgstr ""
+"Особая благодарность:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>за оригинальный значок "
+"Quassel - Всевидящее Око</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>за всю "
+"графическую работу для Quassel</dd><dt><img src=\":/pics/qt-logo-"
+"32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software, ранее "
+"известная как Trolltech</a></b></dt><dd>за создание Qt и Qtopia, и за "
+"поддержку развития QuasselTopia с помощью Greenphones и прочего</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>за поддержку жизни Qt, и за "
+"спонсорство разработки Quassel Mobile с помощью N810</dd>"
 
 #: AbstractSqlStorage#1
-msgid "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
+msgid ""
+"Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Используемая схема (версии %1) устарела. Обновляю до версии %2..."
 
 #: AbstractSqlStorage#2
@@ -77,11 +157,24 @@ msgid "Upgrade failed..."
 msgstr "Обновление не удалось..."
 
 #: AliasesModel#1
-msgid "<b>The shortcut for the alias</b><br />It can be used as a regular slash command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
+msgid ""
+"<b>The shortcut for the alias</b><br />It can be used as a regular slash "
+"command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
 msgstr ""
 
 #: AliasesModel#2
-msgid "<b>The string the shortcut will be expanded to</b><br /><b>special variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</b> represents all parameters from i on separated by spaces.<br /> - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of the selected channel<br /><br />Multiple commands can be separated with semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
+msgid ""
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
+"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
+"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
+"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
+"the selected channel<br /><br />Multiple commands can be separated with "
+"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
+"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
+"1 2 3\" when called like /test 1 2 3"
 msgstr ""
 
 #: AliasesModel#3
@@ -93,19 +186,16 @@ msgid "Expansion"
 msgstr "Расширение"
 
 #: AliasesSettingsPage#1
-#, fuzzy
 msgctxt "AliasesSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: AliasesSettingsPage#2
-#, fuzzy
 msgctxt "AliasesSettingsPage#2"
 msgid "New"
-msgstr "Новый"
+msgstr ""
 
 #: AliasesSettingsPage#3
-#, fuzzy
 msgctxt "AliasesSettingsPage#3"
 msgid "Delete"
 msgstr "Удалить"
@@ -113,14 +203,13 @@ msgstr "Удалить"
 #: AliasesSettingsPage#4
 msgctxt "AliasesSettingsPage#4"
 msgid "IRC"
-msgstr ""
+msgstr "IRC"
 
 #: AliasesSettingsPage#5
 msgid "Aliases"
 msgstr "Псевдонимы"
 
 #: AppearanceSettingsPage#1
-#, fuzzy
 msgctxt "AppearanceSettingsPage#1"
 msgid "Form"
 msgstr "Форма"
@@ -142,23 +231,22 @@ msgid "Set the application language. Requires restart!"
 msgstr "Задаёт язык приложения. Требует перезапуска!"
 
 #: AppearanceSettingsPage#6
-msgid "<Untranslated>"
-msgstr ""
-
-#: AppearanceSettingsPage#7
 msgid "<System Default>"
 msgstr "<По умолчанию>"
 
+#: AppearanceSettingsPage#7
+msgid "<Original>"
+msgstr "<Без изменений>"
+
 #: AppearanceSettingsPage#8
 msgid "Use custom stylesheet"
-msgstr ""
+msgstr "Другой список стилей"
 
 #: AppearanceSettingsPage#9
 msgid "Path:"
-msgstr ""
+msgstr "Путь:"
 
 #: AppearanceSettingsPage#10
-#, fuzzy
 msgctxt "AppearanceSettingsPage#10"
 msgid "..."
 msgstr "..."
@@ -169,7 +257,7 @@ msgstr "Показывать значок в трее"
 
 #: AppearanceSettingsPage#12
 msgid "Hide to tray on close button"
-msgstr ""
+msgstr "При закрытии сворачивать в системный лоток"
 
 #: AppearanceSettingsPage#13
 msgid "Message Redirection"
@@ -189,21 +277,20 @@ msgstr "Цель по умолчанию"
 
 #: AppearanceSettingsPage#17
 msgid "Status Window"
-msgstr ""
+msgstr "Окно статуса"
 
 #: AppearanceSettingsPage#18
 msgid "Current Chat"
-msgstr ""
+msgstr "Текущий чат"
 
 #: AppearanceSettingsPage#19
 msgid "Errors:"
 msgstr "Ошибки:"
 
 #: AppearanceSettingsPage#20
-#, fuzzy
 msgctxt "AppearanceSettingsPage#20"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr "Внешний вид"
 
 #: AppearanceSettingsPage#21
 msgid "Please choose a stylesheet file"
@@ -214,26 +301,26 @@ msgid "Away Log"
 msgstr "Журнал отсутствия"
 
 #: AwayLogView#2
-#, fuzzy
 msgctxt "AwayLogView#2"
 msgid "Show Network Name"
 msgstr "Показывать название сети"
 
 #: AwayLogView#3
-#, fuzzy
 msgctxt "AwayLogView#3"
 msgid "Show Buffer Name"
 msgstr "Показывать название буфера"
 
 #: BacklogSettingsPage#1
-#, fuzzy
 msgctxt "BacklogSettingsPage#1"
 msgid "Form"
 msgstr "Форма"
 
 #: BacklogSettingsPage#2
-msgid "Number of messages to be requested from the core when using scrolling up in the buffer view."
-msgstr "Количество запрашиваемых у ядра сообщений при прокрутке журнала вверх."
+msgid ""
+"Number of messages to be requested from the core when using scrolling up in "
+"the buffer view."
+msgstr ""
+"Количество запрашиваемых у ядра сообщений при прокрутке журнала вверх."
 
 #: BacklogSettingsPage#3
 msgid "Dynamic backlog amount:"
@@ -256,12 +343,18 @@ msgid "Globally unread messages"
 msgstr ""
 
 #: BacklogSettingsPage#8
-msgid "The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog."
+msgid ""
+"The simplest requester. It fetches a fixed amount of lines for each chat "
+"window from the backlog."
 msgstr ""
 
 #: BacklogSettingsPage#9
-msgid "amount of messages per buffer that are requested after the core connection has been established."
-msgstr "количество сообщений из каждого буфера, которые запрашиваются у ядра после установления соединения."
+msgid ""
+"amount of messages per buffer that are requested after the core connection "
+"has been established."
+msgstr ""
+"количество сообщений из каждого буфера, которые запрашиваются у ядра после "
+"установления соединения."
 
 #: BacklogSettingsPage#10
 msgid "Initial backlog amount:"
@@ -269,9 +362,11 @@ msgstr "Начальный размер журнала:"
 
 #: BacklogSettingsPage#11
 msgid ""
-"This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
+"This requester fetches unread messages for each chat window individually. "
+"The amount of lines can be limited per chat.\n"
 "\n"
-"You can also choose to fetch additional older chatlines to provide a better context."
+"You can also choose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
 
 #: BacklogSettingsPage#12
@@ -283,14 +378,17 @@ msgid "Limit:"
 msgstr "Предел:"
 
 #: BacklogSettingsPage#14
-#, fuzzy
 msgctxt "BacklogSettingsPage#14"
 msgid "Unlimited"
-msgstr "Неограничено"
+msgstr ""
 
 #: BacklogSettingsPage#15
-msgid "Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here."
-msgstr "Количество сообщений, запрашиваемых в дополнение к непрочитанным. Предел здесь не применяется."
+msgid ""
+"Amount of messages to be fetched in addition to the unread messages. The "
+"Limit does not apply here."
+msgstr ""
+"Количество сообщений, запрашиваемых в дополнение к непрочитанным. Предел "
+"здесь не применяется."
 
 #: BacklogSettingsPage#16
 msgid "Additional Messages:"
@@ -298,12 +396,16 @@ msgstr "Дополнительных сообщений:"
 
 #: BacklogSettingsPage#17
 msgid ""
-"This requester fetches all messages newer than the oldest unread message for all chats.\n"
+"This requester fetches all messages newer than the oldest unread message for "
+"all chats.\n"
 "\n"
-"Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).\n"
-"It is useful to limit the total amount of the backlog and is probably the fastest.\n"
+"Note: This requester is not recommended if you use hidden chat windows or "
+"have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the "
+"fastest.\n"
 "\n"
-"You can also chose to fetch additional older chatlines to provide a better context."
+"You can also chose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
 
 #: BacklogSettingsPage#18
@@ -311,15 +413,13 @@ msgid "Maximum amount of messages to be fetched over all buffers."
 msgstr "Максимальное количество сообщений, запрашиваемых из всех буферов."
 
 #: BacklogSettingsPage#19
-#, fuzzy
 msgctxt "BacklogSettingsPage#19"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: BacklogSettingsPage#20
-#, fuzzy
 msgid "Backlog Fetching"
-msgstr "Журнал"
+msgstr ""
 
 #: BufferItem#1
 msgid "<p> %1 - %2 </p>"
@@ -338,10 +438,9 @@ msgstr ""
 " Это нельзя обратить!"
 
 #: BufferViewEditDlg#1
-#, fuzzy
 msgctxt "BufferViewEditDlg#1"
 msgid "Dialog"
-msgstr "Диалог"
+msgstr ""
 
 #: BufferViewEditDlg#2
 msgid "Please enter a name for the chat list:"
@@ -356,38 +455,33 @@ msgid "Show / Hide Chats"
 msgstr ""
 
 #: BufferViewSettingsPage#1
-#, fuzzy
 msgctxt "BufferViewSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: BufferViewSettingsPage#2
-#, fuzzy
 msgctxt "BufferViewSettingsPage#2"
 msgid "Re&name..."
-msgstr "Пере&именовать..."
+msgstr ""
 
 #: BufferViewSettingsPage#3
-#, fuzzy
 msgctxt "BufferViewSettingsPage#3"
 msgid "&Add..."
-msgstr "Доб&авить..."
+msgstr ""
 
 #: BufferViewSettingsPage#4
-#, fuzzy
 msgctxt "BufferViewSettingsPage#4"
 msgid "De&lete"
-msgstr "У&далить"
+msgstr ""
 
 #: BufferViewSettingsPage#5
 msgid "Chat List Settings"
 msgstr ""
 
 #: BufferViewSettingsPage#6
-#, fuzzy
 msgctxt "BufferViewSettingsPage#6"
 msgid "Network:"
-msgstr "Сеть:"
+msgstr ""
 
 #: BufferViewSettingsPage#7
 msgid "All"
@@ -442,20 +536,18 @@ msgid "New Message"
 msgstr "Новое сообщение"
 
 #: BufferViewSettingsPage#19
-#, fuzzy
 msgctxt "BufferViewSettingsPage#19"
 msgid "Highlight"
-msgstr "Подсветка"
+msgstr ""
 
 #: BufferViewSettingsPage#20
 msgid "Preview:"
 msgstr "Предварительный просмотр:"
 
 #: BufferViewSettingsPage#21
-#, fuzzy
 msgctxt "BufferViewSettingsPage#21"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: BufferViewSettingsPage#22
 msgid "Custom Chat Lists"
@@ -538,21 +630,41 @@ msgid "Errors Occured:"
 msgstr "Произошли ошибки:"
 
 #: ChannelListDlg#7
-#, fuzzy
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
-msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\">СУПЕР ЗЛАЯ НЕПОПРАВИМАЯ ОШИБКА!!11адин</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
+"ERROR!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Lucida Grande'; font-size:13pt;\">ПРОИЗОШЛА СЕРЬЕЗНАЯ "
+"ОШИБКА!</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #: ChatMonitorSettingsPage#1
-#, fuzzy
 msgctxt "ChatMonitorSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: ChatMonitorSettingsPage#2
 msgid "Operation Mode:"
@@ -560,14 +672,42 @@ msgstr "Режим:"
 
 #: ChatMonitorSettingsPage#3
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
-msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Режимы:</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Белый список:</span> <span style=\" font-weight:400;\">В мониторе чата отображаются только буферы из списка справа.</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span>Буферы из списка справа монитором чата игнорируются.</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
+"style=\" font-weight:400;\">Only buffers on the right side are shown in "
+"chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
+"ignored in chatmonitor</p></body></html>"
+msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta "
+"name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-"
+"space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; "
+"font-size:9pt; font-weight:400; font-style:normal;\"><p style=\" margin-"
+"top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-"
+"indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Режимы:</span></p><p style=\" margin-top:0px; margin-"
+"bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-"
+"indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-"
+"decoration: underline;\">Белый список:</span> <span style=\" font-"
+"weight:400;\">В мониторе чата отображаются только буферы из списка "
+"справа.</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-"
+"left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span "
+"style=\" text-decoration: underline;\">Opt-Out:</span>Буферы из списка "
+"справа монитором чата игнорируются.</p></body></html>"
 
 #: ChatMonitorSettingsPage#4
 msgid "Available:"
@@ -586,7 +726,8 @@ msgid "Show:"
 msgstr "Показывать:"
 
 #: ChatMonitorSettingsPage#8
-msgid "Show highlights in chatmonitor even if the originating buffer is ignored"
+msgid ""
+"Show highlights in chatmonitor even if the originating buffer is ignored"
 msgstr "Показывать подсвеченные сообщения даже если их буфер игнорируется"
 
 #: ChatMonitorSettingsPage#9
@@ -598,16 +739,14 @@ msgid "Show own messages"
 msgstr "Показывать свои сообщения"
 
 #: ChatMonitorSettingsPage#11
-#, fuzzy
 msgctxt "ChatMonitorSettingsPage#11"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: ChatMonitorSettingsPage#12
-#, fuzzy
 msgctxt "ChatMonitorSettingsPage#12"
 msgid "Chat Monitor"
-msgstr "Монитор чата"
+msgstr ""
 
 #: ChatMonitorSettingsPage#13
 msgid "Opt In"
@@ -626,16 +765,14 @@ msgid "Show Own Messages"
 msgstr "Показывать свои сообщения"
 
 #: ChatMonitorView#2
-#, fuzzy
 msgctxt "ChatMonitorView#2"
 msgid "Show Network Name"
-msgstr "Показывать название сети"
+msgstr ""
 
 #: ChatMonitorView#3
-#, fuzzy
 msgctxt "ChatMonitorView#3"
 msgid "Show Buffer Name"
-msgstr "Показывать название буфера"
+msgstr ""
 
 #: ChatMonitorView#4
 msgid "Configure..."
@@ -646,16 +783,14 @@ msgid "Copy Selection"
 msgstr "Скопировать выделение"
 
 #: ChatViewSearchBar#1
-#, fuzzy
 msgctxt "ChatViewSearchBar#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: ChatViewSearchBar#2
-#, fuzzy
 msgctxt "ChatViewSearchBar#2"
 msgid "..."
-msgstr "..."
+msgstr ""
 
 #: ChatViewSearchBar#3
 msgid "case sensitive"
@@ -674,10 +809,9 @@ msgid "ignore joins, parts, etc."
 msgstr "игнорировать входы, уходы, и т. п."
 
 #: ChatViewSettingsPage#1
-#, fuzzy
 msgctxt "ChatViewSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: ChatViewSettingsPage#2
 msgid "Timestamp format:"
@@ -696,8 +830,10 @@ msgid "Allow colored text (mIRC color codes)"
 msgstr ""
 
 #: ChatViewSettingsPage#6
-msgid "Show a website preview window when hovering the mouse over a web address"
-msgstr "Показывать предварительный просмотр вебсайта при наведении мышью на адрес"
+msgid ""
+"Show a website preview window when hovering the mouse over a web address"
+msgstr ""
+"Показывать предварительный просмотр вебсайта при наведении мышью на адрес"
 
 #: ChatViewSettingsPage#7
 msgid "Show previews of webpages on URL hover"
@@ -712,10 +848,9 @@ msgid "Action:"
 msgstr ""
 
 #: ChatViewSettingsPage#10
-#, fuzzy
 msgctxt "ChatViewSettingsPage#10"
 msgid "..."
-msgstr "..."
+msgstr ""
 
 #: ChatViewSettingsPage#11
 msgid "Timestamp:"
@@ -762,10 +897,9 @@ msgid "Own messages:"
 msgstr ""
 
 #: ChatViewSettingsPage#22
-#, fuzzy
 msgctxt "ChatViewSettingsPage#22"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: ChatViewSettingsPage#23
 msgid "Chat View"
@@ -809,7 +943,9 @@ msgid "missed pings"
 msgstr ""
 
 #: ConnectionSettingsPage#7
-msgid "This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users' away status."
+msgid ""
+"This enables periodic polling of user information using /WHO. This is mostly "
+"interesting for tracking users' away status."
 msgstr ""
 
 #: ConnectionSettingsPage#8
@@ -842,28 +978,24 @@ msgid "Copy Link Address"
 msgstr "Скопировать адрес ссылки"
 
 #: ContextMenuActionProvider#1
-#, fuzzy
 msgctxt "ContextMenuActionProvider#1"
 msgid "Connect"
-msgstr "Соединиться"
+msgstr ""
 
 #: ContextMenuActionProvider#2
-#, fuzzy
 msgctxt "ContextMenuActionProvider#2"
 msgid "Disconnect"
-msgstr "Отсоединиться"
+msgstr ""
 
 #: ContextMenuActionProvider#3
-#, fuzzy
 msgctxt "ContextMenuActionProvider#3"
 msgid "Join"
-msgstr "Зайти"
+msgstr ""
 
 #: ContextMenuActionProvider#4
-#, fuzzy
 msgctxt "ContextMenuActionProvider#4"
 msgid "Part"
-msgstr "Выйти"
+msgstr ""
 
 #: ContextMenuActionProvider#5
 msgid "Delete Chat(s)..."
@@ -922,10 +1054,9 @@ msgid "Show Query"
 msgstr "Показать диалог"
 
 #: ContextMenuActionProvider#19
-#, fuzzy
 msgctxt "ContextMenuActionProvider#19"
 msgid "Whois"
-msgstr "Whois"
+msgstr ""
 
 #: ContextMenuActionProvider#20
 msgid "Version"
@@ -996,8 +1127,6 @@ msgid "Hide Events"
 msgstr "Спрятать события"
 
 #: ContextMenuActionProvider#37
-#, fuzzy
-msgctxt "ContextMenuActionProvider#37"
 msgid "CTCP"
 msgstr "CTCP"
 
@@ -1015,7 +1144,7 @@ msgstr ""
 
 #: ContextMenuActionProvider#41
 msgid "Existing Rules"
-msgstr ""
+msgstr "Имеющиеся правила"
 
 #: Core#1
 msgid "Could not initialize any storage backend! Exiting..."
@@ -1024,7 +1153,8 @@ msgstr "Не могу инициализировать ни одно храни�
 #: Core#2
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
-"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
+"Qt library with the sqlite or postgres plugin enabled in order for "
+"quasselcore\n"
 "to work."
 msgstr ""
 
@@ -1049,16 +1179,22 @@ msgid "Invalid listen address %1"
 msgstr "Некорректный адрес для прослушивания %1"
 
 #: Core#8
-msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "Ожидаю графических клиентов по адресу IPv4 %1 порт %2, использую протокол версии %3"
+msgid ""
+"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgstr ""
+"Ожидаю графических клиентов по адресу IPv4 %1 порт %2, использую протокол "
+"версии %3"
 
 #: Core#9
 msgid "Could not open IPv4 interface %1:%2: %3"
 msgstr "Не могу открыть интерфейс IPv4 %1:%2: %3"
 
 #: Core#10
-msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "Ожидаю графических клиентов по адресу IPv6 %1 порт %2, использую протокол версии %3"
+msgid ""
+"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgstr ""
+"Ожидаю графических клиентов по адресу IPv6 %1 порт %2, использую протокол "
+"версии %3"
 
 #: Core#11
 msgid "Could not open IPv6 interface %1:%2: %3"
@@ -1066,7 +1202,8 @@ msgstr "Не могу открыть интерфейс IPv6 %1:%2: %3"
 
 #: Core#12
 msgid "Invalid listen address %1, unknown network protocol"
-msgstr "Некорректный адрес для прослушивания %1, неизвестный сетевой протокол"
+msgstr ""
+"Некорректный адрес для прослушивания %1, неизвестный сетевой протокол"
 
 #: Core#13
 msgid "Could not open any network interfaces to listen on!"
@@ -1085,11 +1222,14 @@ msgid "Antique client trying to connect... refusing."
 msgstr "Древний клиент попытался подключиться... отказываю."
 
 #: Core#17
-msgid "<b>Your Quassel Client is too old!</b><br>This core needs at least client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr "<b>Ваш клиент Quassel слишком старый!</b><br>Этому ядру нужна версия клиент-серверного протокола по крайней мере %1.<br>Пожалуйста обновите клиент."
+msgid ""
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1.<br>Please consider upgrading your client."
+msgstr ""
+"<b>Ваш клиент Quassel слишком старый!</b><br>Этому ядру нужна версия клиент-"
+"серверного протокола по крайней мере %1.<br>Пожалуйста обновите клиент."
 
 #: Core#18
-#, fuzzy
 msgctxt "Core#18"
 msgid "Client"
 msgstr "Клиент"
@@ -1099,24 +1239,35 @@ msgid "too old, rejecting."
 msgstr "слишком старый, отказываю."
 
 #: Core#20
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr "<b>Ядро Quassel версии %1</b><br>Собрано: %2<br>Аптайм %3д%4ч%5м (с %6)"
+msgid ""
+"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgstr ""
+"<b>Ядро Quassel версии %1</b><br>Собрано: %2<br>Аптайм %3д%4ч%5м (с %6)"
 
 #: Core#21
 msgid "Starting TLS for Client:"
 msgstr "Запускаю TLS для клиента:"
 
 #: Core#22
-msgid "<b>Client not initialized!</b><br>You need to send an init message before trying to login."
-msgstr "<b>Клиент не инициализирован!</b><br>Вам нужно отправить инициализационное сообщение перед попыткой входа."
+msgid ""
+"<b>Client not initialized!</b><br>You need to send an init message before "
+"trying to login."
+msgstr ""
+"<b>Клиент не инициализирован!</b><br>Вам нужно отправить инициализационное "
+"сообщение перед попыткой входа."
 
 #: Core#23
 msgid "did not send an init message before trying to login, rejecting."
-msgstr "не отправил инициализационное сообщение перед попыткой входа, отказываю."
+msgstr ""
+"не отправил инициализационное сообщение перед попыткой входа, отказываю."
 
 #: Core#24
-msgid "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database."
-msgstr "<b>Неверное имя пользователя или пароль!</b><br>Предоставленные вами имя пользователя и пароль не найдены в базе."
+msgid ""
+"<b>Invalid username or password!</b><br>The username/password combination "
+"you supplied could not be found in the database."
+msgstr ""
+"<b>Неверное имя пользователя или пароль!</b><br>Предоставленные вами имя "
+"пользователя и пароль не найдены в базе."
 
 #: Core#25
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
@@ -1139,10 +1290,9 @@ msgid "Could not find a session for client:"
 msgstr ""
 
 #: CoreAccount#1
-#, fuzzy
 msgctxt "CoreAccount#1"
 msgid "Internal Core"
-msgstr "Использовать встроенное ядро"
+msgstr ""
 
 #: CoreAccountEditDlg#1
 msgid "Edit Core Account"
@@ -1165,13 +1315,11 @@ msgid "Hostname:"
 msgstr "Хост:"
 
 #: CoreAccountEditDlg#6
-#, fuzzy
 msgctxt "CoreAccountEditDlg#6"
 msgid "localhost"
-msgstr "localhost"
+msgstr ""
 
 #: CoreAccountEditDlg#7
-#, fuzzy
 msgctxt "CoreAccountEditDlg#7"
 msgid "Port:"
 msgstr "Порт:"
@@ -1181,7 +1329,6 @@ msgid "User:"
 msgstr "Пользователь:"
 
 #: CoreAccountEditDlg#9
-#, fuzzy
 msgctxt "CoreAccountEditDlg#9"
 msgid "Password:"
 msgstr "Пароль:"
@@ -1191,84 +1338,72 @@ msgid "Remember"
 msgstr "Запомнить"
 
 #: CoreAccountEditDlg#11
-#, fuzzy
 msgctxt "CoreAccountEditDlg#11"
 msgid "Use a Proxy"
-msgstr "Использовать прокси"
+msgstr ""
 
 #: CoreAccountEditDlg#12
-#, fuzzy
 msgctxt "CoreAccountEditDlg#12"
 msgid "Proxy Type:"
-msgstr "Тип прокси:"
+msgstr ""
 
 #: CoreAccountEditDlg#13
-#, fuzzy
 msgctxt "CoreAccountEditDlg#13"
 msgid "Socks 5"
-msgstr "Socks 5"
+msgstr ""
 
 #: CoreAccountEditDlg#14
-#, fuzzy
 msgctxt "CoreAccountEditDlg#14"
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 #: CoreAccountEditDlg#15
 msgid "Add Core Account"
 msgstr "Добавить аккаунт в ядре"
 
 #: CoreAccountModel#1
-#, fuzzy
 msgctxt "CoreAccountModel#1"
 msgid "Internal Core"
-msgstr "Использовать встроенное ядро"
+msgstr ""
 
 #: CoreAccountSettingsPage#1
 msgid "Connect to Quassel Core"
 msgstr "Соединение с ядром Quassel"
 
 #: CoreAccountSettingsPage#2
-#, fuzzy
 msgid "Core Accounts"
-msgstr "Добавить аккаунт в ядре"
+msgstr ""
 
 #: CoreAccountSettingsPage#3
 msgid "Edit..."
 msgstr "Правка..."
 
 #: CoreAccountSettingsPage#4
-#, fuzzy
 msgctxt "CoreAccountSettingsPage#4"
 msgid "Add..."
-msgstr "Добавить..."
+msgstr ""
 
 #: CoreAccountSettingsPage#5
-#, fuzzy
 msgctxt "CoreAccountSettingsPage#5"
 msgid "Delete"
-msgstr "Удалить"
+msgstr ""
 
 #: CoreAccountSettingsPage#6
-#, fuzzy
 msgid "Automatically connect on startup"
-msgstr "Автоматическое соединение"
+msgstr "Подключаться при запуске"
 
 #: CoreAccountSettingsPage#7
-#, fuzzy
 msgid "Connect to last account used"
-msgstr "Соединение с ядром Quassel"
+msgstr ""
 
 #: CoreAccountSettingsPage#8
-#, fuzzy
 msgid "Always connect to"
-msgstr "Соединиться с %1"
+msgstr "Всегда подключаться к"
 
 #: CoreAccountSettingsPage#9
-#, fuzzy
 msgctxt "CoreAccountSettingsPage#9"
 msgid "Remote Cores"
-msgstr "Попыток:"
+msgstr ""
 
 #: CoreConfigWizard#1
 msgid "Core Configuration Wizard"
@@ -1279,27 +1414,31 @@ msgid "Your core has been successfully configured. Logging you in..."
 msgstr "Ваше ядро сконфигурировано успешно. Выполняю вход в..."
 
 #: CoreConfigWizard#3
-msgid "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
-msgstr "Ошибка конфигурации ядра:<br><b>%1</b><br>Нажмите <em>Далее</em> чтобы начать сначала."
+msgid ""
+"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
+msgstr ""
+"Ошибка конфигурации ядра:<br><b>%1</b><br>Нажмите <em>Далее</em> чтобы "
+"начать сначала."
 
 #: CoreConfigWizard#4
-msgid "Your are now logged into your freshly configured Quassel Core!<br>Please remember to configure your identities and networks now."
-msgstr "Вы вошли в свежесконфигурированное ядро Quassel!<br>Теперь, пожалуйста, не забудьте настроить ваши личности и сети."
+msgid ""
+"Your are now logged into your freshly configured Quassel Core!<br>Please "
+"remember to configure your identities and networks now."
+msgstr ""
+"Вы вошли в свежесконфигурированное ядро Quassel!<br>Теперь, пожалуйста, не "
+"забудьте настроить ваши личности и сети."
 
 #: CoreConfigWizardAdminUserPage#1
-#, fuzzy
 msgctxt "CoreConfigWizardAdminUserPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: CoreConfigWizardAdminUserPage#2
-#, fuzzy
 msgctxt "CoreConfigWizardAdminUserPage#2"
 msgid "Username:"
 msgstr "Имя пользователя:"
 
 #: CoreConfigWizardAdminUserPage#3
-#, fuzzy
 msgctxt "CoreConfigWizardAdminUserPage#3"
 msgid "Password:"
 msgstr "Пароль:"
@@ -1309,22 +1448,22 @@ msgid "Repeat password:"
 msgstr "Повторите пароль:"
 
 #: CoreConfigWizardAdminUserPage#5
-#, fuzzy
 msgctxt "CoreConfigWizardAdminUserPage#5"
 msgid "Remember password"
-msgstr "Запомнить пароль"
+msgstr "Сохранить пароль"
 
 #: CoreConfigWizardAdminUserPage#6
 msgid ""
-"<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+"<b>Note:</b> Adding more users and changing your username/password is not "
+"possible via Quassel's client interface yet.\n"
+"If you need to do these things, please run \"<tt><nobr>quasselcore --"
+"help</nobr></tt>\"."
 msgstr ""
 
 #: CoreConfigWizardIntroPage#1
-#, fuzzy
 msgctxt "CoreConfigWizardIntroPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: CoreConfigWizardIntroPage#2
 msgid "This wizard will guide you through the setup of your Quassel Core."
@@ -1335,8 +1474,12 @@ msgid "Create Admin User"
 msgstr "Создание пользователя-администратора"
 
 #: CoreConfigWizardPages::AdminUserPage#2
-msgid "First, we will create a user on the core. This first user will have administrator privileges."
-msgstr "Для начала мы создадим пользователя в ядре. У этого первого пользователя будут привилегии администратора."
+msgid ""
+"First, we will create a user on the core. This first user will have "
+"administrator privileges."
+msgstr ""
+"Для начала мы создадим пользователя в ядре. У этого первого пользователя "
+"будут привилегии администратора."
 
 #: CoreConfigWizardPages::IntroPage#1
 msgid "Introduction"
@@ -1347,32 +1490,38 @@ msgid "Select Storage Backend"
 msgstr "Выбор средства хранения"
 
 #: CoreConfigWizardPages::StorageSelectionPage#2
-msgid "Please select a database backend for the Quassel Core storage to store the backlog and other data in."
-msgstr "Пожалуйста выберите движок базы данных, с помощью которого ядро Quassel будет хранить журнал и прочие данные."
+msgid ""
+"Please select a database backend for the Quassel Core storage to store the "
+"backlog and other data in."
+msgstr ""
+"Пожалуйста выберите движок базы данных, с помощью которого ядро Quassel "
+"будет хранить журнал и прочие данные."
 
 #: CoreConfigWizardPages::StorageSelectionPage#3
 msgid "Connection Properties"
-msgstr ""
+msgstr "Свойства соединения"
 
 #: CoreConfigWizardPages::SyncPage#1
 msgid "Storing Your Settings"
 msgstr "Сохранение настроек"
 
 #: CoreConfigWizardPages::SyncPage#2
-msgid "Your settings are now stored in the core, and you will be logged in automatically."
-msgstr "Ваши настройки сохраняются в ядре, вы будете подсоединены к ядру автоматически."
+msgid ""
+"Your settings are now stored in the core, and you will be logged in "
+"automatically."
+msgstr ""
+"Ваши настройки сохраняются в ядре, вы будете подсоединены к ядру "
+"автоматически."
 
 #: CoreConfigWizardStorageSelectionPage#1
-#, fuzzy
 msgctxt "CoreConfigWizardStorageSelectionPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: CoreConfigWizardStorageSelectionPage#2
-#, fuzzy
 msgctxt "CoreConfigWizardStorageSelectionPage#2"
 msgid "Storage Backend:"
-msgstr "Движок хранения:"
+msgstr "Программа хранения:"
 
 #: CoreConfigWizardStorageSelectionPage#3
 msgid "Description"
@@ -1383,10 +1532,9 @@ msgid "Foobar"
 msgstr "Foobar"
 
 #: CoreConfigWizardSyncPage#1
-#, fuzzy
 msgctxt "CoreConfigWizardSyncPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: CoreConfigWizardSyncPage#2
 msgid "Your Choices"
@@ -1401,10 +1549,9 @@ msgid "foo"
 msgstr "foo"
 
 #: CoreConfigWizardSyncPage#5
-#, fuzzy
 msgctxt "CoreConfigWizardSyncPage#5"
 msgid "Storage Backend:"
-msgstr "Движок хранения:"
+msgstr ""
 
 #: CoreConfigWizardSyncPage#6
 msgid "bar"
@@ -1419,47 +1566,39 @@ msgid "Authentication Required"
 msgstr ""
 
 #: CoreConnectAuthDlg#2
-#, fuzzy
 msgid "Please enter your account data:"
-msgstr "Пожалуйста введите название сети:"
+msgstr ""
 
 #: CoreConnectAuthDlg#3
-#, fuzzy
 msgctxt "CoreConnectAuthDlg#3"
 msgid "Password:"
 msgstr "Пароль:"
 
 #: CoreConnectAuthDlg#4
-#, fuzzy
 msgctxt "CoreConnectAuthDlg#4"
 msgid "Username:"
 msgstr "Имя пользователя:"
 
 #: CoreConnectAuthDlg#5
-#, fuzzy
 msgctxt "CoreConnectAuthDlg#5"
 msgid "Remember password"
-msgstr "Запомнить пароль"
+msgstr "Сохранить пароль"
 
 #: CoreConnectAuthDlg#6
-#, fuzzy
 msgid "Please enter your credentials for %1:"
-msgstr "Пожалуйста введите название сети:"
+msgstr ""
 
 #: CoreConnectDlg#1
-#, fuzzy
 msgid "Connect to Core"
-msgstr "&Подключиться к ядру..."
+msgstr "Подключение к ядру"
 
 #: CoreConnection#1
-#, fuzzy
 msgid "Network is down"
-msgstr "Сети"
+msgstr ""
 
 #: CoreConnection#2
-#, fuzzy
 msgid "Disconnected"
-msgstr "Отсоединиться"
+msgstr "Отключено"
 
 #: CoreConnection#3
 msgid "Looking up %1..."
@@ -1474,80 +1613,78 @@ msgid "Connected to %1"
 msgstr "Соединение с %1 установлено"
 
 #: CoreConnection#6
-#, fuzzy
 msgid "Disconnecting from %1..."
-msgstr "Соединяюсь с %1..."
+msgstr "Идет отключение от %1..."
 
 #: CoreConnection#7
-msgid "The Quassel Core you try to connect to is too old! Please consider upgrading."
-msgstr "Вы пытаетесь подключиться к слишком старому ядру Quassel! Пожалуйста обновите."
+msgid ""
+"The Quassel Core you try to connect to is too old! Please consider upgrading."
+msgstr ""
+"Вы пытаетесь подключиться к слишком старому ядру Quassel! Пожалуйста "
+"обновите."
 
 #: CoreConnection#8
-#, fuzzy
 msgid "Invalid data received from core"
-msgstr "<b>От ядра получены некорректные данные!</b><br>Отсоединяюсь."
+msgstr ""
 
 #: CoreConnection#9
-#, fuzzy
 msgid "Disconnected from core."
-msgstr "&Отключиться от ядра"
+msgstr ""
 
 #: CoreConnection#10
-#, fuzzy
 msgid "Unencrypted connection canceled"
-msgstr "Использовать безопасное соединение"
+msgstr ""
 
 #: CoreConnection#11
-#, fuzzy
 msgid "Synchronizing to core..."
-msgstr "&Подключиться к ядру..."
+msgstr "Синхронизация с ядром..."
 
 #: CoreConnection#12
-msgid "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at least core/client protocol v%1 to connect."
-msgstr "<b>Вы пытаетесь подключиться к слишком старому ядру Quassel!</b><br>Для соединения необходима поддержка клиент-серверного протокола по крайней мере версии %1."
+msgid ""
+"<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
+"least core/client protocol v%1 to connect."
+msgstr ""
+"<b>Вы пытаетесь подключиться к слишком старому ядру Quassel!</b><br>Для "
+"соединения необходима поддержка клиент-серверного протокола по крайней мере "
+"версии %1."
 
 #: CoreConnection#13
 msgid "Logging in..."
 msgstr "Авторизуюсь..."
 
 #: CoreConnection#14
-#, fuzzy
 msgid "Login canceled"
-msgstr "Зайти на канал"
+msgstr ""
 
 #: CoreConnection#15
-#, fuzzy
 msgid "Receiving session state"
-msgstr "Состояние сессии:"
+msgstr ""
 
 #: CoreConnection#16
-#, fuzzy
 msgid "Synchronizing to %1..."
-msgstr "Соединяюсь с %1..."
+msgstr "Синхронизация с %1..."
 
 #: CoreConnection#17
-#, fuzzy
 msgid "Receiving network states"
-msgstr "Состояния сетей:"
+msgstr "Получение состояния сетей"
 
 #: CoreConnection#18
-#, fuzzy
 msgid "Synchronized to %1"
-msgstr "День сменился на %1"
+msgstr ""
 
 #: CoreConnectionSettingsPage#1
-#, fuzzy
 msgctxt "CoreConnectionSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: CoreConnectionSettingsPage#2
-#, fuzzy
 msgid "Network Status Detection"
-msgstr "Состояния сетей:"
+msgstr ""
 
 #: CoreConnectionSettingsPage#3
-msgid "Rely on KDE's hardware layer to detect if we're online. Recommended for most KDE users"
+msgid ""
+"Rely on KDE's hardware layer to detect if we're online. Recommended for most "
+"KDE users"
 msgstr ""
 
 #: CoreConnectionSettingsPage#4
@@ -1555,81 +1692,81 @@ msgid "Use KDE's network status detection (via Solid)"
 msgstr ""
 
 #: CoreConnectionSettingsPage#5
-msgid "Actively ping the remote core and disconnect if we didn't get a reply after a certain time"
+msgid ""
+"Actively ping the remote core and disconnect if we didn't get a reply after "
+"a certain time"
 msgstr ""
+"Периодически запрашивать удаленное ядро, и отключаться, если от него нет "
+"отклика"
 
 #: CoreConnectionSettingsPage#6
 msgid "Ping timeout after"
-msgstr ""
+msgstr "Отключаться через"
 
 #: CoreConnectionSettingsPage#7
 msgctxt "CoreConnectionSettingsPage#7"
 msgid " seconds"
-msgstr ""
+msgstr " сек."
 
 #: CoreConnectionSettingsPage#8
-msgid "Only disconnect if the network socket gets closed by the operating system. This may take a long time after actually losing connectivity"
+msgid ""
+"Only disconnect if the network socket gets closed by the operating system. "
+"This may take a long time after actually losing connectivity"
 msgstr ""
+"Отключаться только после закрытия соединения системой. Обнаружение "
+"отключения может пройти занять много времени"
 
 #: CoreConnectionSettingsPage#9
 msgid "Never time out actively"
 msgstr ""
 
 #: CoreConnectionSettingsPage#10
-#, fuzzy
 msgid "Automatically reconnect on network failures"
-msgstr "Настройки автоматического соединения с сетью"
+msgstr "Автоматически переподключаться после разрыва соединения"
 
 #: CoreConnectionSettingsPage#11
 msgid "Retry every"
-msgstr ""
+msgstr "Повтор каждые"
 
 #: CoreConnectionSettingsPage#12
-#, fuzzy
 msgctxt "CoreConnectionSettingsPage#12"
 msgid "Remote Cores"
-msgstr "Попыток:"
+msgstr "Удаленные ядра"
 
 #: CoreConnectionSettingsPage#13
-#, fuzzy
 msgctxt "CoreConnectionSettingsPage#13"
 msgid "Connection"
-msgstr "Соединения"
+msgstr "Соединение"
 
 #: CoreConnectionStatusWidget#1
-#, fuzzy
 msgctxt "CoreConnectionStatusWidget#1"
 msgid "Form"
-msgstr "Форма"
-
-#: CoreConnectionStatusWidget#2
-#, fuzzy
-msgctxt "CoreConnectionStatusWidget#2"
-msgid "Message"
-msgstr "Сообщение"
-
-#: CoreConnectionStatusWidget#3
-#, fuzzy
-msgid "s"
-msgstr "сек"
-
-# milliseconds
-#: CoreConnectionStatusWidget#4
-msgid "ms"
 msgstr ""
 
+#: CoreConnectionStatusWidget#2
+msgctxt "CoreConnectionStatusWidget#2"
+msgid "Message"
+msgstr ""
+
+#: CoreConnectionStatusWidget#3
+msgid "s"
+msgstr ""
+
+#: CoreConnectionStatusWidget#4
+msgid "ms"
+msgstr "мс"
+
 #: CoreConnectionStatusWidget#5
-#, fuzzy
 msgid "(Lag: %1 %2)"
-msgstr "Лаг: %1 мс"
+msgstr "(Задержка: %1 %2)"
 
 #: CoreConnectionStatusWidget#6
 msgid "The connection to your core is encrypted with SSL."
-msgstr ""
+msgstr "Соединение с ядром использует SSL-шифрование."
 
 #: CoreConnectionStatusWidget#7
 msgid "The connection to your core is not encrypted."
-msgstr ""
+msgstr "Соединение с ядром не использует шифрование."
 
 #: CoreInfoDlg#1
 msgid "Core Information"
@@ -1668,15 +1805,13 @@ msgid "<build date>"
 msgstr "<build date>"
 
 #: CoreInfoDlg#10
-#, fuzzy
 msgctxt "CoreInfoDlg#10"
 msgid "Close"
 msgstr "Закрыть"
 
 #: CoreInfoDlg#11
-#, fuzzy
 msgid "%n Day(s)"
-msgstr "%n День"
+msgstr "%n дн."
 
 #: CoreInfoDlg#12
 msgid " %1:%2:%3 (since %4)"
@@ -1707,7 +1842,6 @@ msgid "Connection failure: %1"
 msgstr "Сбой соединения: %1"
 
 #: CoreSession#1
-#, fuzzy
 msgctxt "CoreSession#1"
 msgid "Client"
 msgstr "Клиент"
@@ -1717,20 +1851,27 @@ msgid "disconnected (UserId: %1)."
 msgstr "отсоединён (UserId: %1)."
 
 #: CoreSession#3
-msgid "CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!"
-msgstr "CoreSession::createNetwork(): Получен неверный networkId от ядра, пытаясь создать сеть %1!"
+msgid ""
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
+"create network %1!"
+msgstr ""
+"CoreSession::createNetwork(): Получен неверный networkId от ядра, пытаясь "
+"создать сеть %1!"
 
 #: CoreSession#4
-msgid "CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"
-msgstr "CoreSession::createNetwork(): Попытался создать уже существующую сеть, вместо этого обновляю!"
+msgid ""
+"CoreSession::createNetwork(): Trying to create a network that already "
+"exists, updating instead!"
+msgstr ""
+"CoreSession::createNetwork(): Попытался создать уже существующую сеть, "
+"вместо этого обновляю!"
 
 #: CoreUserInputHandler#1
 msgid "away"
 msgstr "отсутствует"
 
 #: CoreUserInputHandler#2
-#, fuzzy
-msgid "sending CTCP-%1 request to %2"
+msgid "sending CTCP-%1 request"
 msgstr "отправляю запрос CTCP-%1"
 
 #: CreateIdentityDlg#1
@@ -1766,22 +1907,8 @@ msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "Получен ответ на CTCP VERSION от %1: %2"
 
 #: CtcpHandler#5
-#, fuzzy
-msgid "Received CTCP TIME request by %1"
-msgstr "Получен запрос CTCP VERSION от %1"
-
-#: CtcpHandler#6
-#, fuzzy
-msgid "Received CTCP TIME answer from %1: %2"
-msgstr "Получен ответ на CTCP VERSION от %1: %2"
-
-#: CtcpHandler#7
 msgid "Received unknown CTCP %1 by %2"
 msgstr "Получен неизвестный CTCP %1 от %2"
-
-#: CtcpHandler#8
-msgid " with arguments: %1"
-msgstr ""
 
 #: DebugBufferViewOverlay#1
 msgid "Debug BufferView Overlay"
@@ -1801,11 +1928,11 @@ msgstr ""
 
 #: DebugBufferViewOverlay#5
 msgid "All Networks:"
-msgstr ""
+msgstr "Все сети:"
 
 #: DebugBufferViewOverlay#6
 msgid "Networks:"
-msgstr ""
+msgstr "Сети:"
 
 #: DebugBufferViewOverlay#7
 msgid "Buffers:"
@@ -1860,16 +1987,14 @@ msgid "Debug Log"
 msgstr "Журнал отладки"
 
 #: DebugLogWidget#2
-#, fuzzy
 msgctxt "DebugLogWidget#2"
 msgid "Close"
-msgstr "Закрыть"
+msgstr ""
 
 #: DesktopNotificationConfigWidget#1
-#, fuzzy
 msgctxt "DesktopNotificationConfigWidget#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: DesktopNotificationConfigWidget#2
 msgid "Desktop Notification (via D-Bus)"
@@ -1880,10 +2005,9 @@ msgid "Timeout:"
 msgstr "Тайм-аут:"
 
 #: DesktopNotificationConfigWidget#4
-#, fuzzy
 msgctxt "DesktopNotificationConfigWidget#4"
 msgid " s"
-msgstr "сек"
+msgstr " с."
 
 #: DesktopNotificationConfigWidget#5
 msgid "Position hint:"
@@ -1891,15 +2015,15 @@ msgstr "Положение:"
 
 #: DesktopNotificationConfigWidget#6
 msgid " px"
-msgstr "пикс."
+msgstr " пикс."
 
 #: DesktopNotificationConfigWidget#7
 msgid "X: "
-msgstr "X:"
+msgstr "X: "
 
 #: DesktopNotificationConfigWidget#8
 msgid "Y: "
-msgstr "Y:"
+msgstr "Y: "
 
 #: DesktopNotificationConfigWidget#9
 msgid "Queue unread notifications"
@@ -1907,11 +2031,11 @@ msgstr "Непрочитанные уведомления ставить в оч
 
 #: ExecWrapper#1
 msgid "Invalid command string for /exec: %1"
-msgstr ""
+msgstr "Недопустимая командная строка для /exec: %1"
 
 #: ExecWrapper#2
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr ""
+msgstr "Имя \"%1\" недопустимо: ../ или ..\\ не допускаются!"
 
 #: ExecWrapper#3
 msgid "Could not find script \"%1\""
@@ -1923,7 +2047,7 @@ msgstr ""
 
 #: ExecWrapper#5
 msgid "Script \"%1\" could not start."
-msgstr ""
+msgstr "Не удалось запустить сценарий \"%1\""
 
 #: ExecWrapper#6
 msgid "Script \"%1\" caused error %2."
@@ -1934,20 +2058,18 @@ msgid "Choose..."
 msgstr "Выбрать..."
 
 #: HighlightSettingsPage#1
-#, fuzzy
 msgctxt "HighlightSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: HighlightSettingsPage#2
 msgid "Custom Highlights"
 msgstr "Произвольные подсветки"
 
 #: HighlightSettingsPage#3
-#, fuzzy
 msgctxt "HighlightSettingsPage#3"
 msgid "Highlight"
-msgstr "Подсветка"
+msgstr ""
 
 #: HighlightSettingsPage#4
 msgid "RegEx"
@@ -1966,7 +2088,6 @@ msgid "Add"
 msgstr "Добавить"
 
 #: HighlightSettingsPage#8
-#, fuzzy
 msgctxt "HighlightSettingsPage#8"
 msgid "Remove"
 msgstr "Удалить"
@@ -1992,10 +2113,9 @@ msgid "Case sensitive"
 msgstr "Учитывать регистр"
 
 #: HighlightSettingsPage#14
-#, fuzzy
 msgctxt "HighlightSettingsPage#14"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: HighlightSettingsPage#15
 msgid "this shouldn't be empty"
@@ -2006,26 +2126,23 @@ msgid "highlight rule"
 msgstr "правило подсветки"
 
 #: IdentitiesSettingsPage#1
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#1"
 msgid "Rename Identity"
-msgstr "Переименовать личность"
+msgstr "Переименовать профиль"
 
 #: IdentitiesSettingsPage#2
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#2"
 msgid "..."
-msgstr "..."
+msgstr "…"
 
 #: IdentitiesSettingsPage#3
 msgid "Add Identity"
 msgstr "Добавить личность"
 
 #: IdentitiesSettingsPage#4
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#4"
 msgid "Add..."
-msgstr "Добавить..."
+msgstr ""
 
 #: IdentitiesSettingsPage#5
 msgid "Remove Identity"
@@ -2034,17 +2151,20 @@ msgstr "Удалить личность"
 #: IdentitiesSettingsPage#6
 msgctxt "IdentitiesSettingsPage#6"
 msgid "IRC"
-msgstr ""
+msgstr "IRC"
 
 #: IdentitiesSettingsPage#7
 msgid "Identities"
 msgstr "Личности"
 
 #: IdentitiesSettingsPage#8
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#8"
-msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
-msgstr "<b>Прежде чем сохранить настройки, необходимо устранить следующие проблемы:</b><ul>"
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
+msgstr ""
+"<b>Прежде чем сохранить настройки, необходимо устранить следующие "
+"проблемы:</b><ul>"
 
 #: IdentitiesSettingsPage#9
 msgid "<li>All identities need an identity name set</li>"
@@ -2063,7 +2183,6 @@ msgid "<li>You need to specify an ident for every identity</li>"
 msgstr "<li>Вам нужно указать идент для каждой личности</li>"
 
 #: IdentitiesSettingsPage#13
-#, fuzzy
 msgctxt "IdentitiesSettingsPage#13"
 msgid "</ul>"
 msgstr "</ul>"
@@ -2129,56 +2248,48 @@ msgid "Nicknames"
 msgstr "Ники"
 
 #: IdentityEditWidget#5
-#, fuzzy
 msgctxt "IdentityEditWidget#5"
 msgid "Add Nickname"
-msgstr "Добавить ник"
+msgstr ""
 
 #: IdentityEditWidget#6
-#, fuzzy
 msgctxt "IdentityEditWidget#6"
 msgid "&Add..."
-msgstr "Доб&авить..."
+msgstr ""
 
 #: IdentityEditWidget#7
 msgid "Remove Nickname"
 msgstr "Удалить ник"
 
 #: IdentityEditWidget#8
-#, fuzzy
 msgctxt "IdentityEditWidget#8"
 msgid "Remove"
 msgstr "Удалить"
 
 #: IdentityEditWidget#9
-#, fuzzy
 msgctxt "IdentityEditWidget#9"
 msgid "Rename Identity"
-msgstr "Переименовать личность"
+msgstr ""
 
 #: IdentityEditWidget#10
-#, fuzzy
 msgctxt "IdentityEditWidget#10"
 msgid "Re&name..."
-msgstr "Пере&именовать..."
+msgstr ""
 
 #: IdentityEditWidget#11
-#, fuzzy
 msgctxt "IdentityEditWidget#11"
 msgid "Move upwards in list"
-msgstr "Передвинуть вверх в списке"
+msgstr ""
 
 #: IdentityEditWidget#12
-#, fuzzy
 msgctxt "IdentityEditWidget#12"
 msgid "..."
-msgstr "..."
+msgstr "…"
 
 #: IdentityEditWidget#13
-#, fuzzy
 msgctxt "IdentityEditWidget#13"
 msgid "Move downwards in list"
-msgstr "Передвинуть вниз в списке"
+msgstr ""
 
 #: IdentityEditWidget#14
 msgid "A&way"
@@ -2206,7 +2317,8 @@ msgstr "Причина отсутствия:"
 
 #: IdentityEditWidget#20
 msgid "Set away when all clients have detached from the core"
-msgstr "Устанавливать состояние \"отсутствую\" когда все клиенты отсоединены от ядра"
+msgstr ""
+"Устанавливать состояние \"отсутствую\" когда все клиенты отсоединены от ядра"
 
 #: IdentityEditWidget#21
 msgid "Away On Detach"
@@ -2229,7 +2341,6 @@ msgid "minutes of being idle"
 msgstr "минут неактивности"
 
 #: IdentityEditWidget#26
-#, fuzzy
 msgctxt "IdentityEditWidget#26"
 msgid "Advanced"
 msgstr "Дополнительно"
@@ -2239,8 +2350,12 @@ msgid "Ident:"
 msgstr "Идент:"
 
 #: IdentityEditWidget#28
-msgid "The \"ident\" is part of your hostmask and, together with your host, uniquely identifies you within the IRC network."
-msgstr "\"Идент\" является частью хостмаски и вместе с хостом является однозначным идентификатором пользователя сети IRC."
+msgid ""
+"The \"ident\" is part of your hostmask and, together with your host, "
+"uniquely identifies you within the IRC network."
+msgstr ""
+"\"Идент\" является частью хостмаски и вместе с хостом является однозначным "
+"идентификатором пользователя сети IRC."
 
 #: IdentityEditWidget#29
 msgid "Messages"
@@ -2259,22 +2374,26 @@ msgid "Kick Reason:"
 msgstr "Причина изгнания:"
 
 #: IdentityEditWidget#33
-msgid "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr "Вам нужен клиент, умеющий работать с SSL, для редактирования ключа и сертификата SSL"
+msgid ""
+"You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
+msgstr ""
+"Вам нужен клиент, умеющий работать с SSL, для редактирования ключа и "
+"сертификата SSL"
 
 #: IdentityEditWidget#34
 msgid ""
-"Warning: you are not connected with a secured connection to the Quassel Core!\n"
-"Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
+"Warning: you are not connected with a secured connection to the Quassel "
+"Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
+"Certificate!"
 msgstr ""
 "Предупреждение: вы не используете безопасное соединение с ядром Quassel!\n"
 "В случае продолжения передача вашего ключа и сертификата будет небезопасной!"
 
 #: IdentityEditWidget#35
-#, fuzzy
 msgctxt "IdentityEditWidget#35"
 msgid "Continue"
-msgstr "Продолжить"
+msgstr ""
 
 #: IdentityEditWidget#36
 msgid "Use SSL Key"
@@ -2345,14 +2464,15 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown "
+"again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
 
 #: IgnoreListEditDlg#3
 msgid "Strictness"
-msgstr ""
+msgstr "Строгость"
 
 #: IgnoreListEditDlg#4
 msgid "Dynamic"
@@ -2374,28 +2494,22 @@ msgstr ""
 
 #: IgnoreListEditDlg#7
 msgid "Rule Type"
-msgstr ""
+msgstr "Тип правила"
 
 #: IgnoreListEditDlg#8
 msgid "Sender"
-msgstr ""
+msgstr "Отправитель"
 
 #: IgnoreListEditDlg#9
-#, fuzzy
 msgctxt "IgnoreListEditDlg#9"
 msgid "Message"
 msgstr "Сообщение"
 
 #: IgnoreListEditDlg#10
-#, fuzzy
-msgctxt "IgnoreListEditDlg#10"
-msgid "CTCP"
-msgstr "CTCP"
-
-#: IgnoreListEditDlg#11
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</p>\n"
+"<p>Depending on the type of the rule, the text is matched against "
+"either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -2405,64 +2519,66 @@ msgid ""
 "<br />\n"
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
+"from any host</p>"
+msgstr ""
+
+#: IgnoreListEditDlg#11
+msgctxt "IgnoreListEditDlg#11"
+msgid "Ignore Rule"
 msgstr ""
 
 #: IgnoreListEditDlg#12
-#, fuzzy
-msgctxt "IgnoreListEditDlg#12"
-msgid "Ignore Rule"
-msgstr "Список игнорируемых"
-
-#: IgnoreListEditDlg#13
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
-"<p>Otherwise rules allow wildcard matching with the following special characters:</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special "
+"characters:</p>\n"
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
 msgstr ""
 
-#: IgnoreListEditDlg#14
+#: IgnoreListEditDlg#13
 msgid "Regular expression"
-msgstr ""
+msgstr "Регулярное выражение"
 
-#: IgnoreListEditDlg#15
+#: IgnoreListEditDlg#14
 msgid ""
 "<p><b>Scope:</b></p>\n"
 "<p><u>Global:</u></p>\n"
 "<p>The rule is active for any channel on any network</p>\n"
 "<p><u>Network:</u></p>\n"
-"<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule "
+"should match</p>\n"
 "<p><u>Channel:</u></p>\n"
-"<p>The list below is interpreted as a list of channels for which the rule should match</p>"
+"<p>The list below is interpreted as a list of channels for which the rule "
+"should match</p>"
 msgstr ""
 
-#: IgnoreListEditDlg#16
+#: IgnoreListEditDlg#15
 msgid "Scope"
 msgstr ""
 
-#: IgnoreListEditDlg#17
+#: IgnoreListEditDlg#16
 msgid "Global"
 msgstr ""
 
-#: IgnoreListEditDlg#18
-#, fuzzy
-msgctxt "IgnoreListEditDlg#18"
+#: IgnoreListEditDlg#17
+msgctxt "IgnoreListEditDlg#17"
 msgid "Network"
-msgstr "Сеть:"
+msgstr ""
+
+#: IgnoreListEditDlg#18
+msgctxt "IgnoreListEditDlg#18"
+msgid "Channel"
+msgstr ""
 
 #: IgnoreListEditDlg#19
-#, fuzzy
-msgctxt "IgnoreListEditDlg#19"
-msgid "Channel"
-msgstr "Канал"
-
-#: IgnoreListEditDlg#20
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
+"<i>channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -2470,7 +2586,7 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 
-#: IgnoreListEditDlg#21
+#: IgnoreListEditDlg#20
 msgid ""
 "<p><b>Enable / Disable:</b></p>\n"
 "<p>Only enabled rules are filtered.\n"
@@ -2478,16 +2594,26 @@ msgid ""
 "For dynamic rules, disabling actually shows the filtered messages again.</p>"
 msgstr ""
 
-#: IgnoreListEditDlg#22
+#: IgnoreListEditDlg#21
 msgid "Rule is enabled"
 msgstr ""
 
 #: IgnoreListModel#1
-msgid "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For dynamic rules, disabling actually shows the filtered messages again"
+msgid ""
+"<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
+"dynamic rules, disabling actually shows the filtered messages again"
 msgstr ""
 
 #: IgnoreListModel#2
-msgid "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is matched against either:<br /><br />- <u>the message content:</u><br /><i>Example:<i><br />    \"*foobar*\" matches any text containing the word \"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any host<br />"
+msgid ""
+"<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
+"matched against either:<br /><br />- <u>the message content:</u><br "
+"/><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string "
+"<i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    "
+"\"*@foobar.com\" matches any sender from host foobar.com<br />    "
+"\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
+"host<br />"
 msgstr ""
 
 #: IgnoreListModel#3
@@ -2507,28 +2633,24 @@ msgid "Type"
 msgstr ""
 
 #: IgnoreListModel#7
-#, fuzzy
 msgctxt "IgnoreListModel#7"
 msgid "Ignore Rule"
-msgstr "Список игнорируемых"
+msgstr ""
 
 #: IgnoreListSettingsPage#1
-#, fuzzy
 msgctxt "IgnoreListSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: IgnoreListSettingsPage#2
-#, fuzzy
 msgctxt "IgnoreListSettingsPage#2"
 msgid "New"
-msgstr "Новый"
+msgstr ""
 
 #: IgnoreListSettingsPage#3
-#, fuzzy
 msgctxt "IgnoreListSettingsPage#3"
 msgid "Delete"
-msgstr "Удалить"
+msgstr ""
 
 #: IgnoreListSettingsPage#4
 msgid "&Edit"
@@ -2555,106 +2677,31 @@ msgid ""
 msgstr ""
 
 #: IndicatorNotificationConfigWidget#1
-#, fuzzy
 msgctxt "IndicatorNotificationConfigWidget#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: IndicatorNotificationConfigWidget#2
 msgid "Show messages in indicator"
 msgstr ""
 
 #: InputWidget#1
-#, fuzzy
 msgctxt "InputWidget#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: InputWidget#2
-#, fuzzy
-msgid "White"
-msgstr "Whois"
-
-#: InputWidget#3
-#, fuzzy
-msgid "Black"
-msgstr "Журнал"
-
-#: InputWidget#4
-msgid "Dark blue"
-msgstr ""
-
-#: InputWidget#5
-msgid "Dark green"
-msgstr ""
-
-#: InputWidget#6
-msgid "Red"
-msgstr ""
-
-#: InputWidget#7
-msgid "Dark red"
-msgstr ""
-
-#: InputWidget#8
-msgid "Dark magenta"
-msgstr ""
-
-#: InputWidget#9
-msgid "Orange"
-msgstr ""
-
-#: InputWidget#10
-msgid "Yellow"
-msgstr ""
-
-#: InputWidget#11
-msgid "Green"
-msgstr ""
-
-#: InputWidget#12
-msgid "Dark cyan"
-msgstr ""
-
-#: InputWidget#13
-msgid "Cyan"
-msgstr ""
-
-#: InputWidget#14
-#, fuzzy
-msgid "Blue"
-msgstr "Буфер"
-
-#: InputWidget#15
-msgid "Magenta"
-msgstr ""
-
-#: InputWidget#16
-msgid "Dark gray"
-msgstr ""
-
-#: InputWidget#17
-msgid "Light gray"
-msgstr ""
-
-#: InputWidget#18
-#, fuzzy
-msgid "Clear Color"
-msgstr "Очистить"
-
-#: InputWidget#19
 msgid "Focus Input Line"
 msgstr "Активировать строку ввода"
 
-#: InputWidget#20
+#: InputWidget#3
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
 #: InputWidgetSettingsPage#1
-#, fuzzy
 msgctxt "InputWidgetSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: InputWidgetSettingsPage#2
 msgctxt "InputWidgetSettingsPage#2"
@@ -2670,45 +2717,39 @@ msgid "Show nick selector"
 msgstr ""
 
 #: InputWidgetSettingsPage#5
-#, fuzzy
-msgid "Show style buttons"
-msgstr "Показывать значок в трее"
+msgid "Multi-Line Editing"
+msgstr "Многострочное поле текста"
 
 #: InputWidgetSettingsPage#6
-msgid "Multi-Line Editing"
-msgstr ""
+msgid "Show at most"
+msgstr "Показывать не более"
 
 #: InputWidgetSettingsPage#7
-msgid "Show at most"
-msgstr ""
+msgid "lines"
+msgstr "строк"
 
 #: InputWidgetSettingsPage#8
-msgid "lines"
-msgstr ""
-
-#: InputWidgetSettingsPage#9
 msgid "Enable scrollbars"
 msgstr ""
 
-#: InputWidgetSettingsPage#10
+#: InputWidgetSettingsPage#9
 msgid "Tab Completion"
 msgstr ""
 
-#: InputWidgetSettingsPage#11
+#: InputWidgetSettingsPage#10
 msgid "Completion suffix:"
 msgstr "Суффикс автодополнения:"
 
-#: InputWidgetSettingsPage#12
+#: InputWidgetSettingsPage#11
 msgid ": "
+msgstr ": "
+
+#: InputWidgetSettingsPage#12
+msgctxt "InputWidgetSettingsPage#12"
+msgid "Interface"
 msgstr ""
 
 #: InputWidgetSettingsPage#13
-#, fuzzy
-msgctxt "InputWidgetSettingsPage#13"
-msgid "Interface"
-msgstr "Интервал:"
-
-#: InputWidgetSettingsPage#14
 msgid "Input Widget"
 msgstr ""
 
@@ -2717,17 +2758,15 @@ msgid "Save && Connect"
 msgstr "Сохранить и соединиться"
 
 #: IrcListModel#1
-#, fuzzy
 msgctxt "IrcListModel#1"
 msgid "Channel"
-msgstr "Канал"
+msgstr ""
 
 #: IrcListModel#2
 msgid "Users"
 msgstr "Пользователи"
 
 #: IrcListModel#3
-#, fuzzy
 msgctxt "IrcListModel#3"
 msgid "Topic"
 msgstr "Тема"
@@ -2741,14 +2780,15 @@ msgid "Received RPL_ISUPPORT (005) without parameters!"
 msgstr "Получено RPL_ISUPPORT (005) без параметров!"
 
 #: IrcServerHandler#3
-msgid "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"
+msgid ""
+"Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
+"behavior!"
 msgstr "Получен нестандартный RPL_ISUPPORT: может случиться всё что угодно!"
 
 #: IrcServerHandler#4
-#, fuzzy
 msgctxt "IrcServerHandler#4"
 msgid "%1"
-msgstr "%1"
+msgstr ""
 
 #: IrcServerHandler#5
 msgid "[Whois] %1 is away: \"%2\""
@@ -2820,7 +2860,7 @@ msgstr ""
 
 #: IrcServerHandler#22
 msgid "Channel %1 created on %2"
-msgstr ""
+msgstr "Создан канал %1 на сервере %2"
 
 #: IrcServerHandler#23
 msgid "No topic is set for %1."
@@ -2847,41 +2887,36 @@ msgid "Nick already in use: %1"
 msgstr "Ник уже используется: %1"
 
 #: IrcServerHandler#29
-msgid "Nick/channel is temporarily unavailable: %1"
+msgid ""
+"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr ""
-
-#: IrcServerHandler#30
-msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
-msgstr "Среди ников в списке не найдено свободного и корректного. Используйте /nick <другой ник> для продолжения"
+"Среди ников в списке не найдено свободного и корректного. Используйте /nick "
+"<другой ник> для продолжения"
 
 #: IrcUserItem#1
-#, fuzzy
 msgctxt "IrcUserItem#1"
 msgid "idling since %1"
-msgstr "неактивен с %1"
+msgstr ""
 
 #: IrcUserItem#2
-#, fuzzy
 msgctxt "IrcUserItem#2"
 msgid "login time: %1"
-msgstr "время входа: %1"
+msgstr ""
 
 #: IrcUserItem#3
-#, fuzzy
 msgctxt "IrcUserItem#3"
 msgid "server: %1"
 msgstr "сервер: %1"
 
 #: ItemViewSettingsPage#1
-#, fuzzy
 msgctxt "ItemViewSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: ItemViewSettingsPage#2
 msgctxt "ItemViewSettingsPage#2"
 msgid "Custom font:"
-msgstr ""
+msgstr "Задать шрифт:"
 
 #: ItemViewSettingsPage#3
 msgid "Show icons"
@@ -2908,10 +2943,9 @@ msgid "Standard:"
 msgstr ""
 
 #: ItemViewSettingsPage#9
-#, fuzzy
 msgctxt "ItemViewSettingsPage#9"
 msgid "..."
-msgstr "..."
+msgstr "…"
 
 #: ItemViewSettingsPage#10
 msgid "Inactive:"
@@ -2946,20 +2980,18 @@ msgid "Away:"
 msgstr "Отсутствует:"
 
 #: ItemViewSettingsPage#18
-#, fuzzy
 msgctxt "ItemViewSettingsPage#18"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: ItemViewSettingsPage#19
 msgid "Chat & Nick Lists"
 msgstr ""
 
 #: ItemViewSettingsPage#20
-#, fuzzy
 msgctxt "ItemViewSettingsPage#20"
 msgid "Network"
-msgstr "Сеть:"
+msgstr ""
 
 #: ItemViewSettingsPage#21
 msgid "Inactive"
@@ -2974,23 +3006,13 @@ msgid "Unread messages"
 msgstr ""
 
 #: ItemViewSettingsPage#24
-#, fuzzy
 msgctxt "ItemViewSettingsPage#24"
 msgid "Highlight"
-msgstr "Подсветка"
+msgstr ""
 
 #: ItemViewSettingsPage#25
 msgid "Other activity"
 msgstr ""
-
-#: KNotificationBackend#1
-#, fuzzy
-msgctxt "KNotificationBackend#1"
-msgid "%n pending highlights"
-msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -3129,10 +3151,9 @@ msgid "Show Nick List"
 msgstr "Показать список ников"
 
 #: MainWin#35
-#, fuzzy
 msgctxt "MainWin#35"
 msgid "Chat Monitor"
-msgstr "Монитор чата"
+msgstr ""
 
 #: MainWin#36
 msgid "Show Chat Monitor"
@@ -3147,10 +3168,9 @@ msgid "Show Input Line"
 msgstr "Показать строку ввода"
 
 #: MainWin#39
-#, fuzzy
 msgctxt "MainWin#39"
 msgid "Topic"
-msgstr "Тема"
+msgstr ""
 
 #: MainWin#40
 msgid "Show Topic Line"
@@ -3169,16 +3189,17 @@ msgid "Not connected to core."
 msgstr "Нет соединения с ядром."
 
 #: MainWin#44
-#, fuzzy
 msgid "Unencrypted Connection"
-msgstr "Использовать безопасное соединение"
+msgstr ""
 
 #: MainWin#45
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr ""
 
 #: MainWin#46
-msgid "Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."
+msgid ""
+"Sensitive data, like passwords, will be transmitted unencrypted to your "
+"Quassel core."
 msgstr ""
 
 #: MainWin#47
@@ -3186,27 +3207,27 @@ msgid "<b>Your core does not support SSL encryption</b>"
 msgstr ""
 
 #: MainWin#48
-#, fuzzy
 msgid "Untrusted Security Certificate"
-msgstr "Использовать сертификат SSL"
+msgstr ""
 
 #: MainWin#49
-msgid "<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>"
+msgid ""
+"<b>The SSL certificate provided by the core at %1 is untrusted for the "
+"following reasons:</b>"
 msgstr ""
 
 #: MainWin#50
-#, fuzzy
 msgctxt "MainWin#50"
 msgid "Continue"
-msgstr "Продолжить"
+msgstr ""
 
 #: MainWin#51
-#, fuzzy
 msgid "Show Certificate"
-msgstr "Загрузить сертификат"
+msgstr ""
 
 #: MainWin#52
-msgid "Would you like to accept this certificate forever without being prompted?"
+msgid ""
+"Would you like to accept this certificate forever without being prompted?"
 msgstr ""
 
 #: MainWin#53
@@ -3218,19 +3239,17 @@ msgid "Forever"
 msgstr ""
 
 #: MainWin#55
-#, fuzzy
 msgid "Core Connection Error"
-msgstr "Продолжить соединение"
+msgstr ""
 
 #: MessageModel#1
 msgid "Requesting %1 messages from backlog for buffer %2:%3"
 msgstr "Запрашиваю %1 сообщений из журнала для буфера %2:%3"
 
 #: MsgProcessorStatusWidget#1
-#, fuzzy
 msgctxt "MsgProcessorStatusWidget#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: MsgProcessorStatusWidget#2
 msgid "Receiving Backlog"
@@ -3245,10 +3264,9 @@ msgid "Paste Protection"
 msgstr "Защита при вставке"
 
 #: NetworkAddDlg#1
-#, fuzzy
 msgctxt "NetworkAddDlg#1"
 msgid "Add Network"
-msgstr "Добавить сеть"
+msgstr ""
 
 #: NetworkAddDlg#2
 msgid "Use preset:"
@@ -3263,22 +3281,19 @@ msgid "Manual Settings"
 msgstr "Ручные настройки"
 
 #: NetworkAddDlg#5
-#, fuzzy
 msgctxt "NetworkAddDlg#5"
 msgid "Network name:"
-msgstr "Название сети:"
+msgstr ""
 
 #: NetworkAddDlg#6
-#, fuzzy
 msgctxt "NetworkAddDlg#6"
 msgid "Server address:"
-msgstr "Адрес сервера:"
+msgstr ""
 
 #: NetworkAddDlg#7
-#, fuzzy
 msgctxt "NetworkAddDlg#7"
 msgid "Port:"
-msgstr "Порт:"
+msgstr ""
 
 #: NetworkAddDlg#8
 msgid "Server password:"
@@ -3289,34 +3304,28 @@ msgid "Use secure connection"
 msgstr "Использовать безопасное соединение"
 
 #: NetworkEditDlg#1
-#, fuzzy
 msgctxt "NetworkEditDlg#1"
 msgid "Dialog"
-msgstr "Диалог"
+msgstr ""
 
 #: NetworkEditDlg#2
 msgid "Please enter a network name:"
 msgstr "Пожалуйста введите название сети:"
 
 #: NetworkEditDlg#3
-#, fuzzy
 msgctxt "NetworkEditDlg#3"
 msgid "Add Network"
-msgstr "Добавить сеть"
+msgstr ""
 
 #: NetworkItem#1
 msgid "Server: %1"
 msgstr "Сервер: %1"
 
 #: NetworkItem#2
-#, fuzzy
-msgctxt "NetworkItem#2"
 msgid "Users: %1"
 msgstr "Пользователи: %1"
 
 #: NetworkItem#3
-#, fuzzy
-msgctxt "NetworkItem#3"
 msgid "Lag: %1 msecs"
 msgstr "Лаг: %1 мс"
 
@@ -3325,27 +3334,32 @@ msgid "Chat"
 msgstr ""
 
 #: NetworkModel#2
-#, fuzzy
 msgctxt "NetworkModel#2"
 msgid "Topic"
-msgstr "Тема"
+msgstr ""
 
 #: NetworkModel#3
 msgid "Nick Count"
 msgstr "Ников"
 
 #: NetworkModelController#1
-#, fuzzy
 msgid "Do you want to delete the following buffer(s) permanently?"
-msgstr "Удалить следующий буфер навсегда?"
+msgstr ""
 
 #: NetworkModelController#2
-msgid "<b>Note:</b> This will delete all related data, including all backlog data, from the core's database and cannot be undone."
-msgstr "<b>Замечание:</b> Это удалит все соответствующие данные, включае весь журнал, из базы данных ядра без возможности отмены."
+msgid ""
+"<b>Note:</b> This will delete all related data, including all backlog data, "
+"from the core's database and cannot be undone."
+msgstr ""
+"<b>Замечание:</b> Это удалит все соответствующие данные, включае весь "
+"журнал, из базы данных ядра без возможности отмены."
 
 #: NetworkModelController#3
-msgid "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "<br>Нельзя удалить буфера активных каналов, сначала, пожалуйста, покиньте канал."
+msgid ""
+"<br>Active channel buffers cannot be deleted, please part the channel first."
+msgstr ""
+"<br>Нельзя удалить буфера активных каналов, сначала, пожалуйста, покиньте "
+"канал."
 
 #: NetworkModelController#4
 msgid "Remove buffers permanently?"
@@ -3356,10 +3370,9 @@ msgid "Join Channel"
 msgstr "Зайти на канал"
 
 #: NetworkModelController::JoinDlg#2
-#, fuzzy
 msgctxt "NetworkModelController::JoinDlg#2"
 msgid "Network:"
-msgstr "Сеть:"
+msgstr ""
 
 #: NetworkModelController::JoinDlg#3
 msgid "Channel:"
@@ -3370,28 +3383,24 @@ msgid "Setup Network Connection"
 msgstr "Настройка сетевого соединения"
 
 #: NetworksSettingsPage#1
-#, fuzzy
 msgctxt "NetworksSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: NetworksSettingsPage#2
-#, fuzzy
 msgctxt "NetworksSettingsPage#2"
 msgid "Re&name..."
-msgstr "Пере&именовать..."
+msgstr ""
 
 #: NetworksSettingsPage#3
-#, fuzzy
 msgctxt "NetworksSettingsPage#3"
 msgid "&Add..."
-msgstr "Доб&авить..."
+msgstr ""
 
 #: NetworksSettingsPage#4
-#, fuzzy
 msgctxt "NetworksSettingsPage#4"
 msgid "De&lete"
-msgstr "У&далить"
+msgstr ""
 
 #: NetworksSettingsPage#5
 msgid "Network Details"
@@ -3402,46 +3411,45 @@ msgid "Identity:"
 msgstr "Личность:"
 
 #: NetworksSettingsPage#7
-#, fuzzy
 msgctxt "NetworksSettingsPage#7"
 msgid "..."
-msgstr "..."
+msgstr ""
 
 #: NetworksSettingsPage#8
-#, fuzzy
 msgctxt "NetworksSettingsPage#8"
 msgid "Servers"
-msgstr "Серверы"
+msgstr ""
 
 #: NetworksSettingsPage#9
 msgid "Manage servers for this network"
 msgstr "Управление серверами данной сети"
 
 #: NetworksSettingsPage#10
-#, fuzzy
 msgctxt "NetworksSettingsPage#10"
 msgid "&Edit..."
-msgstr "&Править..."
+msgstr ""
 
 #: NetworksSettingsPage#11
-#, fuzzy
 msgctxt "NetworksSettingsPage#11"
 msgid "Move upwards in list"
-msgstr "Передвинуть вверх в списке"
+msgstr ""
 
 #: NetworksSettingsPage#12
-#, fuzzy
 msgctxt "NetworksSettingsPage#12"
 msgid "Move downwards in list"
-msgstr "Передвинуть вниз в списке"
+msgstr ""
 
 #: NetworksSettingsPage#13
 msgid "Commands"
 msgstr "Команды"
 
 #: NetworksSettingsPage#14
-msgid "Configure automatic identification or misc. commands to be executed after connecting to a server"
-msgstr "Настройка автоматического выполнения идентификационных или любых других команд при подключении к серверу"
+msgid ""
+"Configure automatic identification or misc. commands to be executed after "
+"connecting to a server"
+msgstr ""
+"Настройка автоматического выполнения идентификационных или любых других "
+"команд при подключении к серверу"
 
 #: NetworksSettingsPage#15
 msgid "Commands to execute on connect:"
@@ -3450,16 +3458,17 @@ msgstr "При подключении выполнить команды:"
 #: NetworksSettingsPage#16
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
-"Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely "
+"be needed here!"
 msgstr ""
 "Укажите список команд IRC, которые будут выполнены при подключении.\n"
-"Учтите, что Quassel автоматически входит на каналы, так что /join здесь нужен редко!"
+"Учтите, что Quassel автоматически входит на каналы, так что /join здесь "
+"нужен редко!"
 
 #: NetworksSettingsPage#17
-#, fuzzy
 msgctxt "NetworksSettingsPage#17"
 msgid "Connection"
-msgstr "Соединения"
+msgstr ""
 
 #: NetworksSettingsPage#18
 msgid "Control automatic reconnect to the network"
@@ -3474,20 +3483,18 @@ msgid "Interval:"
 msgstr "Интервал:"
 
 #: NetworksSettingsPage#21
-#, fuzzy
 msgctxt "NetworksSettingsPage#21"
 msgid " s"
-msgstr "сек"
+msgstr ""
 
 #: NetworksSettingsPage#22
 msgid "Retries:"
 msgstr "Попыток:"
 
 #: NetworksSettingsPage#23
-#, fuzzy
 msgctxt "NetworksSettingsPage#23"
 msgid "Unlimited"
-msgstr "Неограничено"
+msgstr ""
 
 #: NetworksSettingsPage#24
 msgid "Rejoin all channels on reconnect"
@@ -3506,38 +3513,30 @@ msgid "Service:"
 msgstr "Служба:"
 
 #: NetworksSettingsPage#28
-#, fuzzy
 msgctxt "NetworksSettingsPage#28"
 msgid "Password:"
-msgstr "Пароль:"
+msgstr ""
 
 #: NetworksSettingsPage#29
-#, fuzzy
-msgid "Use SASL Authentication"
-msgstr "Использовать сертификат SSL"
-
-#: NetworksSettingsPage#30
-#, fuzzy
-msgid "Account:"
-msgstr "Название аккаунта:"
-
-#: NetworksSettingsPage#31
 msgid "Encodings"
 msgstr "Кодировки"
 
-#: NetworksSettingsPage#32
-msgid "Configure advanced settings such as message encodings and automatic reconnect"
-msgstr "Настроить дополнительные параметры, такие как кодировки сообщений и автоматическое соединение"
+#: NetworksSettingsPage#30
+msgid ""
+"Configure advanced settings such as message encodings and automatic reconnect"
+msgstr ""
+"Настроить дополнительные параметры, такие как кодировки сообщений и "
+"автоматическое соединение"
 
-#: NetworksSettingsPage#33
+#: NetworksSettingsPage#31
 msgid "Control encodings for in- and outgoing messages"
 msgstr "Управление кодировками для входящих и исходящих сообщений"
 
-#: NetworksSettingsPage#34
+#: NetworksSettingsPage#32
 msgid "Use Custom Encodings"
 msgstr "Использовать свои кодировки"
 
-#: NetworksSettingsPage#35
+#: NetworksSettingsPage#33
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
@@ -3545,70 +3544,75 @@ msgstr ""
 "Укажите кодировки, в которых будут отправляться ваши сообщения.\n"
 "UTF-8 должен быть разумным выбором для большинства сетей."
 
-#: NetworksSettingsPage#36
+#: NetworksSettingsPage#34
 msgid "Send messages in:"
 msgstr "Отправлять сообщения в:"
 
-#: NetworksSettingsPage#37
+#: NetworksSettingsPage#35
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
 msgstr ""
-"Входящие сообщения, закодированные в Utf8, всегда будут обработаны как надо.\n"
+"Входящие сообщения, закодированные в Utf8, всегда будут обработаны как "
+"надо.\n"
 "Эти настройки затрагивают только сообщения не в кодировке Utf8."
 
-#: NetworksSettingsPage#38
+#: NetworksSettingsPage#36
 msgid "Receive fallback:"
 msgstr "Альтернативная входящая кодировка:"
 
-#: NetworksSettingsPage#39
+#: NetworksSettingsPage#37
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
 "Это определяет кодировку контрольных сообщений, ников и названий серверов.\n"
-"Если только вы *действительно* не знаете что делаете, оставьте тут ISO-8859-1!"
+"Если только вы *действительно* не знаете что делаете, оставьте тут ISO-8859-"
+"1!"
 
-#: NetworksSettingsPage#40
+#: NetworksSettingsPage#38
 msgid "Server encoding:"
 msgstr "Кодировка сервера:"
 
-#: NetworksSettingsPage#41
-msgctxt "NetworksSettingsPage#41"
+#: NetworksSettingsPage#39
+msgctxt "NetworksSettingsPage#39"
 msgid "IRC"
 msgstr ""
 
-#: NetworksSettingsPage#42
+#: NetworksSettingsPage#40
 msgid "Networks"
 msgstr "Сети"
 
-#: NetworksSettingsPage#43
-#, fuzzy
-msgctxt "NetworksSettingsPage#43"
-msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
-msgstr "<b>Прежде чем сохранить настройки, необходимо устранить следующие проблемы:</b><ul>"
+#: NetworksSettingsPage#41
+msgctxt "NetworksSettingsPage#41"
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
+msgstr ""
 
-#: NetworksSettingsPage#44
+#: NetworksSettingsPage#42
 msgid "<li>All networks need at least one server defined</li>"
 msgstr "<li>У каждой сети должен быть хотя бы один сервер</li>"
 
-#: NetworksSettingsPage#45
-#, fuzzy
-msgctxt "NetworksSettingsPage#45"
+#: NetworksSettingsPage#43
+msgctxt "NetworksSettingsPage#43"
 msgid "</ul>"
-msgstr "</ul>"
+msgstr ""
 
-#: NetworksSettingsPage#46
+#: NetworksSettingsPage#44
 msgid "Invalid Network Settings"
 msgstr "Некорректные настройки сети"
 
-#: NetworksSettingsPage#47
+#: NetworksSettingsPage#45
 msgid "Delete Network?"
 msgstr "Удалить сеть?"
 
-#: NetworksSettingsPage#48
-msgid "Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
-msgstr "Действительно удалить сеть \"%1\" и все сопутствующие данные, включая журнал?"
+#: NetworksSettingsPage#46
+msgid ""
+"Do you really want to delete the network \"%1\" and all related settings, "
+"including the backlog?"
+msgstr ""
+"Действительно удалить сеть \"%1\" и все сопутствующие данные, включая журнал?"
 
 #: NickEditDlg#1
 msgid "Edit Nickname"
@@ -3619,20 +3623,22 @@ msgid "Please enter a valid nickname:"
 msgstr "Пожалуйста, введите корректный ник:"
 
 #: NickEditDlg#3
-msgid "A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr "Корректный ник может содержать только буквы латинского алфавита, цифры и спецсимволы {, }, [, ], \\, |, `, ^, _ и -."
+msgid ""
+"A valid nickname may contain letters from the English alphabet, digits, and "
+"the special characters {, }, [, ], \\, |, `, ^, _ and -."
+msgstr ""
+"Корректный ник может содержать только буквы латинского алфавита, цифры и "
+"спецсимволы {, }, [, ], \\, |, `, ^, _ и -."
 
 #: NickEditDlg#4
-#, fuzzy
 msgctxt "NickEditDlg#4"
 msgid "Add Nickname"
-msgstr "Добавить ник"
+msgstr ""
 
 #: NotificationsSettingsPage#1
-#, fuzzy
 msgctxt "NotificationsSettingsPage#1"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: NotificationsSettingsPage#2
 msgid "Notifications"
@@ -3643,10 +3649,9 @@ msgid "Select Audio File"
 msgstr "Выбрать звуковой файл"
 
 #: PhononNotificationConfigWidget#1
-#, fuzzy
 msgctxt "PhononNotificationConfigWidget#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: PhononNotificationConfigWidget#2
 msgid "Audio Notification (via Phonon)"
@@ -3665,20 +3670,31 @@ msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
 msgstr "Всего запрашиваю сообщений: %1 для буферов: %2"
 
 #: QObject#2
-msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr "Запрашиваю до %1 всех непрочитанных сообщений из журнала (и дополнительные %2)"
+msgid ""
+"Requesting up to %1 of all unread backlog messages (plus additional %2)"
+msgstr ""
+"Запрашиваю до %1 всех непрочитанных сообщений из журнала (и дополнительные "
+"%2)"
 
 #: QObject#3
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr "Запрашиваю суммарно до %1 непрочитанных сообщений из журнала для %2 буферов"
+msgstr ""
+"Запрашиваю суммарно до %1 непрочитанных сообщений из журнала для %2 буферов"
 
 #: QObject#4
 msgid "Welcome to Quassel IRC"
 msgstr "Добро пожаловать в Quassel IRC"
 
 #: QObject#5
-msgid "This wizard will help you to set up your default identity and your IRC network connection.<br>This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."
-msgstr "Этот мастер поможет настроить личность по умолчанию и сетевое соединение с IRC.<br>Он устанавливает только базовые настройки. В любой момент можно отказаться от мастера и использовать окно настройки для более подробной конфигурации."
+msgid ""
+"This wizard will help you to set up your default identity and your IRC "
+"network connection.<br>This only covers basic settings. You can cancel this "
+"wizard any time and use the settings dialog for more detailed changes."
+msgstr ""
+"Этот мастер поможет настроить личность по умолчанию и сетевое соединение с "
+"IRC.<br>Он устанавливает только базовые настройки. В любой момент можно "
+"отказаться от мастера и использовать окно настройки для более подробной "
+"конфигурации."
 
 #: QssParser#1
 msgid "Invalid block declaration: %1"
@@ -3809,22 +3825,19 @@ msgid "<b>Query with %1</b>"
 msgstr "<b>Приват с %1</b>"
 
 #: QueryBufferItem#2
-#, fuzzy
 msgctxt "QueryBufferItem#2"
 msgid "idling since %1"
-msgstr "неактивен с %1"
+msgstr ""
 
 #: QueryBufferItem#3
-#, fuzzy
 msgctxt "QueryBufferItem#3"
 msgid "login time: %1"
-msgstr "время входа: %1"
+msgstr ""
 
 #: QueryBufferItem#4
-#, fuzzy
 msgctxt "QueryBufferItem#4"
 msgid "server: %1"
-msgstr "сервер: %1"
+msgstr ""
 
 #: SaveIdentitiesDlg#1
 msgid "Sync With Core"
@@ -3839,50 +3852,49 @@ msgid "Abort"
 msgstr "Прервать"
 
 #: ServerEditDlg#1
-#, fuzzy
 msgctxt "ServerEditDlg#1"
 msgid "Dialog"
-msgstr "Диалог"
+msgstr ""
 
 #: ServerEditDlg#2
 msgid "Server Info"
 msgstr "Информация о сервере"
 
 #: ServerEditDlg#3
-#, fuzzy
 msgctxt "ServerEditDlg#3"
 msgid "Server address:"
-msgstr "Адрес сервера:"
+msgstr ""
 
 #: ServerEditDlg#4
-#, fuzzy
 msgctxt "ServerEditDlg#4"
 msgid "Port:"
-msgstr "Порт:"
+msgstr ""
 
 #: ServerEditDlg#5
-#, fuzzy
 msgctxt "ServerEditDlg#5"
 msgid "Password:"
-msgstr "Пароль:"
+msgstr ""
 
 #: ServerEditDlg#6
 msgid "Use SSL"
 msgstr "Использовать SSL"
 
 #: ServerEditDlg#7
-#, fuzzy
 msgctxt "ServerEditDlg#7"
 msgid "Advanced"
-msgstr "Дополнительно"
+msgstr ""
 
 #: ServerEditDlg#8
 msgid "SSL Version:"
 msgstr "Версия SSL:"
 
 #: ServerEditDlg#9
-msgid "Do not change unless you're going to connect to a server not supporting SSLv3!"
-msgstr "Не меняйте, если не собираетесь подключаться к серверу, не поддерживающему SSLv3!"
+msgid ""
+"Do not change unless you're going to connect to a server not supporting "
+"SSLv3!"
+msgstr ""
+"Не меняйте, если не собираетесь подключаться к серверу, не поддерживающему "
+"SSLv3!"
 
 #: ServerEditDlg#10
 msgid "SSLv3 (default)"
@@ -3897,38 +3909,33 @@ msgid "TLSv1"
 msgstr "TLSv1"
 
 #: ServerEditDlg#13
-#, fuzzy
 msgctxt "ServerEditDlg#13"
 msgid "Use a Proxy"
-msgstr "Использовать прокси"
+msgstr ""
 
 #: ServerEditDlg#14
-#, fuzzy
 msgctxt "ServerEditDlg#14"
 msgid "Proxy Type:"
-msgstr "Тип прокси:"
+msgstr ""
 
 #: ServerEditDlg#15
-#, fuzzy
 msgctxt "ServerEditDlg#15"
 msgid "Socks 5"
-msgstr "Socks 5"
+msgstr ""
 
 #: ServerEditDlg#16
-#, fuzzy
 msgctxt "ServerEditDlg#16"
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 #: ServerEditDlg#17
 msgid "Proxy Host:"
 msgstr "Хост прокси:"
 
 #: ServerEditDlg#18
-#, fuzzy
 msgctxt "ServerEditDlg#18"
 msgid "localhost"
-msgstr "localhost"
+msgstr ""
 
 #: ServerEditDlg#19
 msgid "Proxy Username:"
@@ -3939,96 +3946,86 @@ msgid "Proxy Password:"
 msgstr "Пароль прокси:"
 
 #: SettingsDlg#1
-#, fuzzy
 msgctxt "SettingsDlg#1"
 msgid "Configure Quassel"
-msgstr "Настроить Quassel"
+msgstr ""
 
 #: SettingsDlg#2
-#, fuzzy
 msgctxt "SettingsDlg#2"
 msgid "Settings"
-msgstr "Настройки"
+msgstr ""
 
 #: SettingsDlg#3
 msgid "Save changes"
 msgstr "Сохранить изменения"
 
 #: SettingsDlg#4
-msgid "There are unsaved changes on the current configuration page. Would you like to apply your changes now?"
+msgid ""
+"There are unsaved changes on the current configuration page. Would you like "
+"to apply your changes now?"
 msgstr "В текущей вкладке есть несохранённые изменения. Применить их сейчас?"
 
 #: SettingsDlg#5
-#, fuzzy
 msgctxt "SettingsDlg#5"
 msgid "Configure %1"
-msgstr "Настроить %1"
+msgstr ""
 
 #: SettingsDlg#6
-#, fuzzy
 msgctxt "SettingsDlg#6"
 msgid "Reload Settings"
-msgstr "Вернуть настройки"
+msgstr ""
 
 #: SettingsDlg#7
-#, fuzzy
 msgctxt "SettingsDlg#7"
-msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Вернуть старый настройки, отменив все изменения на этой вкладке?"
+msgid ""
+"Do you like to reload the settings, undoing your changes on this page?"
+msgstr ""
 
 #: SettingsDlg#8
-#, fuzzy
 msgctxt "SettingsDlg#8"
 msgid "Restore Defaults"
-msgstr "Вернуть умолчания"
+msgstr ""
 
 #: SettingsDlg#9
-#, fuzzy
 msgctxt "SettingsDlg#9"
 msgid "Do you like to restore the default values for this page?"
-msgstr "Вернуть параметры по-умолчанию для этой вкладки?"
+msgstr ""
 
 #: SettingsPageDlg#1
-#, fuzzy
 msgctxt "SettingsPageDlg#1"
 msgid "Configure Quassel"
-msgstr "Настроить Quassel"
+msgstr ""
 
 #: SettingsPageDlg#2
-#, fuzzy
 msgctxt "SettingsPageDlg#2"
 msgid "Settings"
-msgstr "Настройки"
+msgstr ""
 
 #: SettingsPageDlg#3
-#, fuzzy
 msgctxt "SettingsPageDlg#3"
 msgid "Configure %1"
-msgstr "Настроить %1"
+msgstr ""
 
 #: SettingsPageDlg#4
-#, fuzzy
 msgctxt "SettingsPageDlg#4"
 msgid "Reload Settings"
-msgstr "Вернуть настройки"
+msgstr ""
 
 #: SettingsPageDlg#5
-#, fuzzy
 msgctxt "SettingsPageDlg#5"
-msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Вернуть старый настройки, отменив все изменения на этой вкладке?"
+msgid ""
+"Do you like to reload the settings, undoing your changes on this page?"
+msgstr ""
 
 #: SettingsPageDlg#6
-#, fuzzy
 msgctxt "SettingsPageDlg#6"
 msgid "Restore Defaults"
-msgstr "Вернуть умолчания"
+msgstr ""
 
 #: SettingsPageDlg#7
-#, fuzzy
 msgctxt "SettingsPageDlg#7"
 msgid "Do you like to restore the default values for this page?"
-msgstr "Вернуть параметры по-умолчанию для этой вкладки?"
+msgstr ""
 
 #: SignalProxy#1
 msgid "Peer tried to send package larger than max package size!"
@@ -4051,20 +4048,18 @@ msgid "Disconnecting"
 msgstr "Отсоединяюсь"
 
 #: SimpleNetworkEditor#1
-#, fuzzy
 msgctxt "SimpleNetworkEditor#1"
 msgid "Network name:"
-msgstr "Название сети:"
+msgstr ""
 
 #: SimpleNetworkEditor#2
 msgid "The name of the IRC network you are configuring"
 msgstr "Название настраиваемой IRC-сети"
 
 #: SimpleNetworkEditor#3
-#, fuzzy
 msgctxt "SimpleNetworkEditor#3"
 msgid "Servers"
-msgstr "Серверы"
+msgstr ""
 
 #: SimpleNetworkEditor#4
 msgid "A list of IRC servers belonging to this network"
@@ -4075,146 +4070,140 @@ msgid "Edit this server entry"
 msgstr "Редактировать этот сервер"
 
 #: SimpleNetworkEditor#6
-#, fuzzy
 msgctxt "SimpleNetworkEditor#6"
 msgid "&Edit..."
-msgstr "&Править..."
+msgstr ""
 
 #: SimpleNetworkEditor#7
 msgid "Add another IRC server"
 msgstr "Добавить другой IRC-сервер"
 
 #: SimpleNetworkEditor#8
-#, fuzzy
 msgctxt "SimpleNetworkEditor#8"
 msgid "&Add..."
-msgstr "Доб&авить..."
+msgstr ""
 
 #: SimpleNetworkEditor#9
 msgid "Remove this server entry from the list"
 msgstr "Удалить этот сервер из списка"
 
 #: SimpleNetworkEditor#10
-#, fuzzy
 msgctxt "SimpleNetworkEditor#10"
 msgid "De&lete"
-msgstr "У&далить"
+msgstr ""
 
 #: SimpleNetworkEditor#11
-#, fuzzy
 msgctxt "SimpleNetworkEditor#11"
 msgid "Move upwards in list"
-msgstr "Передвинуть вверх в списке"
+msgstr ""
 
 #: SimpleNetworkEditor#12
-#, fuzzy
 msgctxt "SimpleNetworkEditor#12"
 msgid "..."
-msgstr "..."
+msgstr ""
 
 #: SimpleNetworkEditor#13
-#, fuzzy
 msgctxt "SimpleNetworkEditor#13"
 msgid "Move downwards in list"
-msgstr "Передвинуть вниз в списке"
+msgstr ""
 
 #: SimpleNetworkEditor#14
 msgid "Join Channels Automatically"
 msgstr "Автоматически входить на каналы"
 
 #: SimpleNetworkEditor#15
-msgid "A list of IRC channels you will join automatically after connecting to the network"
-msgstr "Список каналов IRC, на которые клиент будет автоматически заходить при подключении к сети"
+msgid ""
+"A list of IRC channels you will join automatically after connecting to the "
+"network"
+msgstr ""
+"Список каналов IRC, на которые клиент будет автоматически заходить при "
+"подключении к сети"
 
 #: SqliteStorage#1
-msgid "SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine it is running on, and if you only expect a few users to use your core."
-msgstr "SQLite -- это основанная на файлах система управления базами данных, которая не требует никаких настроек. Она подходит для маленьких и средних баз данных, для которых не нужен доступ через сеть. Используйте SQLite, если ваше ядро Quassel должно хранить данные на той же машине, на которой запущено, и если вашим ядром не будет пользоваться много народу."
+msgid ""
+"SQLite is a file-based database engine that does not require any setup. It "
+"is suitable for small and medium-sized databases that do not require access "
+"via network. Use SQLite if your Quassel Core should store its data on the "
+"same machine it is running on, and if you only expect a few users to use "
+"your core."
+msgstr ""
+"SQLite -- это основанная на файлах система управления базами данных, которая "
+"не требует никаких настроек. Она подходит для маленьких и средних баз "
+"данных, для которых не нужен доступ через сеть. Используйте SQLite, если "
+"ваше ядро Quassel должно хранить данные на той же машине, на которой "
+"запущено, и если вашим ядром не будет пользоваться много народу."
 
 #: SslInfoDlg#1
-#, fuzzy
 msgid "Security Information"
-msgstr "Информация о ядре"
+msgstr ""
 
 #: SslInfoDlg#2
-#, fuzzy
 msgid "<b>Hostname:</b>"
-msgstr "Хост:"
+msgstr ""
 
 #: SslInfoDlg#3
-#, fuzzy
 msgid "<b>IP address:</b>"
-msgstr "<b>Режим:</b> %1"
+msgstr ""
 
 #: SslInfoDlg#4
 msgid "<b>Encryption:</b>"
 msgstr ""
 
 #: SslInfoDlg#5
-#, fuzzy
 msgid "<b>Protocol:</b>"
-msgstr "<b>Тема:</b> %1"
+msgstr ""
 
 #: SslInfoDlg#6
 msgid "<b>Certificate chain:</b>"
 msgstr ""
 
 #: SslInfoDlg#7
-#, fuzzy
 msgid "Subject"
-msgstr "Информация о субъекте"
+msgstr ""
 
 #: SslInfoDlg#8
-#, fuzzy
 msgid "<b>Common name:</b>"
-msgstr "ОбщееИмя:"
+msgstr ""
 
 #: SslInfoDlg#9
-#, fuzzy
 msgid "<b>Organization:</b>"
-msgstr "Организация:"
+msgstr ""
 
 #: SslInfoDlg#10
-#, fuzzy
 msgid "<b>Organizational unit:</b>"
-msgstr "Название отделения:"
+msgstr ""
 
 #: SslInfoDlg#11
-#, fuzzy
 msgid "<b>Country:</b>"
-msgstr "<b>Режим:</b> %1"
+msgstr ""
 
 #: SslInfoDlg#12
-#, fuzzy
 msgid "<b>State or province:</b>"
-msgstr "Название штата или области:"
+msgstr ""
 
 #: SslInfoDlg#13
-#, fuzzy
 msgid "<b>Locality:</b>"
-msgstr "<b>Тема:</b> %1"
+msgstr ""
 
 #: SslInfoDlg#14
-#, fuzzy
 msgid "Issuer"
-msgstr "Сертификат выдан"
+msgstr ""
 
 #: SslInfoDlg#15
 msgid "<b>Validity period:</b>"
 msgstr ""
 
 #: SslInfoDlg#16
-#, fuzzy
 msgid "<b>MD5 digest:</b>"
-msgstr "<b>Режим:</b> %1"
+msgstr ""
 
 #: SslInfoDlg#17
 msgid "<b>SHA1 digest:</b>"
 msgstr ""
 
 #: SslInfoDlg#18
-#, fuzzy
 msgid "<b>Trusted:</b>"
-msgstr "<b>Пользователи:</b> %1"
+msgstr ""
 
 #: SslInfoDlg#19
 msgid "Yes"
@@ -4231,24 +4220,6 @@ msgstr ""
 #: StatusBufferItem#1
 msgid "Status Buffer"
 msgstr "Буфер состояния"
-
-#: SystemTray#1
-msgid "&Minimize"
-msgstr ""
-
-#: SystemTray#2
-#, fuzzy
-msgid "&Restore"
-msgstr "Попыток:"
-
-#: SystrayNotificationBackend#1
-#, fuzzy
-msgctxt "SystrayNotificationBackend#1"
-msgid "%n pending highlights"
-msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"
@@ -4271,52 +4242,46 @@ msgid "Mark taskbar entry, timeout:"
 msgstr "Отметка на панели задач, таймаут:"
 
 #: TaskbarNotificationBackend::ConfigWidget#3
-#, fuzzy
 msgctxt "TaskbarNotificationBackend::ConfigWidget#3"
 msgid "Unlimited"
-msgstr "Неограничено"
+msgstr ""
 
 #: TaskbarNotificationBackend::ConfigWidget#4
-#, fuzzy
 msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
 msgid " s"
-msgstr "сек"
+msgstr ""
 
 #: ToolBarActionProvider#1
-#, fuzzy
 msgctxt "ToolBarActionProvider#1"
 msgid "Connect"
-msgstr "Соединиться"
+msgstr ""
 
 #: ToolBarActionProvider#2
 msgid "Connect to IRC"
 msgstr "Соединиться с IRC"
 
 #: ToolBarActionProvider#3
-#, fuzzy
 msgctxt "ToolBarActionProvider#3"
 msgid "Disconnect"
-msgstr "Отсоединиться"
+msgstr ""
 
 #: ToolBarActionProvider#4
 msgid "Disconnect from IRC"
 msgstr "Отсоединиться от IRC"
 
 #: ToolBarActionProvider#5
-#, fuzzy
 msgctxt "ToolBarActionProvider#5"
 msgid "Part"
-msgstr "Выйти"
+msgstr ""
 
 #: ToolBarActionProvider#6
 msgid "Leave currently selected channel"
 msgstr "Покинуть выделенный канал"
 
 #: ToolBarActionProvider#7
-#, fuzzy
 msgctxt "ToolBarActionProvider#7"
 msgid "Join"
-msgstr "Зайти"
+msgstr ""
 
 #: ToolBarActionProvider#8
 msgid "Join a channel"
@@ -4331,10 +4296,9 @@ msgid "Start a private conversation"
 msgstr "Начать личную беседу"
 
 #: ToolBarActionProvider#11
-#, fuzzy
 msgctxt "ToolBarActionProvider#11"
 msgid "Whois"
-msgstr "Whois"
+msgstr ""
 
 #: ToolBarActionProvider#12
 msgid "Request user information"
@@ -4405,34 +4369,19 @@ msgid "Disconnect from all"
 msgstr "Отключиться от всех"
 
 #: TopicWidget#1
-#, fuzzy
 msgctxt "TopicWidget#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: TopicWidget#2
-#, fuzzy
 msgctxt "TopicWidget#2"
 msgid "..."
-msgstr "..."
-
-#: TopicWidget#3
-#, fuzzy
-msgctxt "TopicWidget#3"
-msgid "Users: %1"
-msgstr "Пользователи: %1"
-
-#: TopicWidget#4
-#, fuzzy
-msgctxt "TopicWidget#4"
-msgid "Lag: %1 msecs"
-msgstr "Лаг: %1 мс"
+msgstr ""
 
 #: TopicWidgetSettingsPage#1
-#, fuzzy
 msgctxt "TopicWidgetSettingsPage#1"
 msgid "Form"
-msgstr "Форма"
+msgstr ""
 
 #: TopicWidgetSettingsPage#2
 msgctxt "TopicWidgetSettingsPage#2"
@@ -4448,20 +4397,18 @@ msgid "On hover only"
 msgstr ""
 
 #: TopicWidgetSettingsPage#5
-#, fuzzy
 msgctxt "TopicWidgetSettingsPage#5"
 msgid "Interface"
-msgstr "Интервал:"
+msgstr ""
 
 #: TopicWidgetSettingsPage#6
 msgid "Topic Widget"
 msgstr ""
 
 #: UiStyle::StyledMessage#1
-#, fuzzy
 msgctxt "UiStyle::StyledMessage#1"
 msgid "%1"
-msgstr "%1"
+msgstr ""
 
 #: UiStyle::StyledMessage#2
 msgid "%DN%1%DN %2"
@@ -4568,40 +4515,40 @@ msgid "<="
 msgstr ""
 
 #: UserCategoryItem#1
-#, fuzzy
 msgid "%n Owner(s)"
-msgstr "%n владелец"
+msgstr ""
 
 #: UserCategoryItem#2
-#, fuzzy
 msgid "%n Admin(s)"
-msgstr "%n администратор"
+msgstr ""
 
 #: UserCategoryItem#3
-#, fuzzy
 msgid "%n Operator(s)"
-msgstr "%n оператор"
+msgstr ""
 
 #: UserCategoryItem#4
-#, fuzzy
 msgid "%n Half-Op(s)"
-msgstr "%n полуоператор"
+msgstr ""
 
 #: UserCategoryItem#5
-#, fuzzy
 msgid "%n Voiced"
-msgstr "%n с голосом"
+msgstr ""
 
 #: UserCategoryItem#6
-#, fuzzy
 msgid "%n User(s)"
-msgstr "%n пользователь"
+msgstr ""
+
+#~ msgid "Form"
+#~ msgstr "Форма"
+
+#~ msgid "New"
+#~ msgstr "Новый"
+
+#~ msgid "Delete"
+#~ msgstr "Удалить"
 
 #~ msgid "Misc"
 #~ msgstr "Прочее"
-
-#~ msgid "<Original>"
-#~ msgstr "<Без изменений>"
 
 #~ msgid "Client Style"
 #~ msgstr "Стиль клиента"
@@ -4609,20 +4556,89 @@ msgstr "%n пользователь"
 #~ msgid "Language"
 #~ msgstr "Язык"
 
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgid "Show Network Name"
+#~ msgstr "Показывать название сети"
+
+#~ msgid "Show Buffer Name"
+#~ msgstr "Показывать название буфера"
+
+#~ msgid "Backlog"
+#~ msgstr "Журнал"
+
+#~ msgid "Unlimited"
+#~ msgstr "Неограничено"
+
+#~ msgid "Dialog"
+#~ msgstr "Диалог"
+
+#~ msgid "Re&name..."
+#~ msgstr "Пере&именовать..."
+
+#~ msgid "&Add..."
+#~ msgstr "Доб&авить..."
+
+#~ msgid "De&lete"
+#~ msgstr "У&далить"
+
+#~ msgid "Network:"
+#~ msgstr "Сеть:"
+
+#~ msgid "Highlight"
+#~ msgstr "Подсветка"
+
 #~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+#~ "type=\"text/css\">\n"
 #~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</p>\n"
-#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
-#~ msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\">СУПЕР ЗЛАЯ НЕПОПРАВИМАЯ ОШИБКА!!11адин</p><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html> {3C?} {4.0/?} {3.?} {40/?} {1\"?} {9p?} {400;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {13p?} {11<?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {13p?}"
+#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+#~ "weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+#~ "font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+#~ "family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+#~ msgstr ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta "
+#~ "name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-"
+#~ "space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; "
+#~ "font-size:9pt; font-weight:400; font-style:normal;\"><p style=\" margin-"
+#~ "top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-"
+#~ "indent:0; text-indent:0px; font-family:'Lucida Grande'; font-"
+#~ "size:13pt;\">СУПЕР ЗЛАЯ НЕПОПРАВИМАЯ ОШИБКА!!11адин</p><p style=\"-qt-"
+#~ "paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; "
+#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
+#~ "Grande'; font-size:13pt;\"></p></body></html> {3C?} {4.0/?} {3.?} {40/?} "
+#~ "{1\"?} {9p?} {400;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {13p?} {11<?} {0p?} "
+#~ "{0p?} {0p?} {0p?} {0;?} {0p?} {13p?}"
 
-#~ msgid "<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."
-#~ msgstr "<b>Этот клиент был собран без поддержки SSL!</b><br />Отключите использование SSL в настройках аккаунта."
+#~ msgid "Chat Monitor"
+#~ msgstr "Монитор чата"
 
-#~ msgid "<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."
-#~ msgstr "<b>Ядро Quassel, к которому вы пытаетесь подключиться не поддерживает SSL!</b><br />Если вы всё равно хотите подключиться, отключите использование SSL в настройках аккаунта."
+#~ msgid "<b>Invalid data received from core!</b><br>Disconnecting."
+#~ msgstr "<b>От ядра получены некорректные данные!</b><br>Отсоединяюсь."
+
+#~ msgid ""
+#~ "<b>This client is built without SSL Support!</b><br />Disable the usage of "
+#~ "SSL in the account settings."
+#~ msgstr ""
+#~ "<b>Этот клиент был собран без поддержки SSL!</b><br />Отключите "
+#~ "использование SSL в настройках аккаунта."
+
+#~ msgid ""
+#~ "<b>The Quassel Core you are trying to connect to does not support "
+#~ "SSL!</b><br />If you want to connect anyways, disable the usage of SSL in "
+#~ "the account settings."
+#~ msgstr ""
+#~ "<b>Ядро Quassel, к которому вы пытаетесь подключиться не поддерживает "
+#~ "SSL!</b><br />Если вы всё равно хотите подключиться, отключите использование "
+#~ "SSL в настройках аккаунта."
 
 #~ msgid "Cert Digest changed! was: %1"
 #~ msgstr "Хеш сертификата изменился! старый был: %1"
@@ -4630,35 +4646,102 @@ msgstr "%n пользователь"
 #~ msgid "No Host to connect to specified."
 #~ msgstr "Не указан хост для соединения."
 
+#~ msgid "Connection"
+#~ msgstr "Соединения"
+
+#~ msgid "Whois"
+#~ msgstr "Whois"
+
+#~ msgid "Client"
+#~ msgstr "Клиент"
+
+#~ msgid "Port:"
+#~ msgstr "Порт:"
+
+#~ msgid "localhost"
+#~ msgstr "localhost"
+
 #~ msgid "Use secure connection (SSL)"
 #~ msgstr "Использовать защищённое соединение (SSL)"
 
 #~ msgid "Use a proxy:"
 #~ msgstr "Использовать прокси:"
 
+#~ msgid "Proxy Type:"
+#~ msgstr "Тип прокси:"
+
+#~ msgid "Socks 5"
+#~ msgstr "Socks 5"
+
+#~ msgid "HTTP"
+#~ msgstr "HTTP"
+
 #~ msgid "Proxy Port:"
 #~ msgstr "Порт прокси:"
 
+#~ msgid "Username:"
+#~ msgstr "Имя пользователя:"
+
+#~ msgid "Password:"
+#~ msgstr "Пароль:"
+
+#~ msgid "Remember password"
+#~ msgstr "Запомнить пароль"
+
 #~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+#~ "type=\"text/css\">\n"
 #~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Note: </span><span style=\" font-size:10pt;\">Adding more users and changing your username/password is not possible via Quassel's interface yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:10pt;\">If you need to do these things have a look at the manageusers.py script which is located in the /scripts directory.</p></body></html>"
+#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+#~ "weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+#~ "font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Note: "
+#~ "</span><span style=\" font-size:10pt;\">Adding more users and changing your "
+#~ "username/password is not possible via Quassel's interface yet.</span></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+#~ "font-size:10pt;\">If you need to do these things have a look at the "
+#~ "manageusers.py script which is located in the /scripts "
+#~ "directory.</p></body></html>"
 #~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+#~ "type=\"text/css\">\n"
 #~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Замечание: </span><span style=\" font-size:10pt;\">Через интерфейс Quassel пока невозможно добавлять новых пользователей, а также изменять имя пользователя и пароль.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:10pt;\">Если вам нужно проделать эти вещи, взгляните на скрипт manageusers.py в директории /scripts.</p></body></html>"
+#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+#~ "weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+#~ "font-size:13pt;\"><span style=\" font-size:10pt; font-"
+#~ "weight:600;\">Замечание: </span><span style=\" font-size:10pt;\">Через "
+#~ "интерфейс Quassel пока невозможно добавлять новых пользователей, а также "
+#~ "изменять имя пользователя и пароль.</span></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+#~ "font-size:10pt;\">Если вам нужно проделать эти вещи, взгляните на скрипт "
+#~ "manageusers.py в директории /scripts.</p></body></html>"
+
+#~ msgid "Storage Backend:"
+#~ msgstr "Движок хранения:"
 
 #~ msgid "Remove Account Settings"
 #~ msgstr "Удаление настроек аккаунта"
 
-#~ msgid "Do you really want to remove your local settings for this Quassel Core account?<br>Note: This will <em>not</em> remove or change any data on the Core itself!"
-#~ msgstr "Вы действительно хотите удалить ваши локальные настройки для этого аккаунта ядра Quassel?<br>Замечание: это <em>не</em> удалит и никак не изменит данные в самом ядре!"
+#~ msgid ""
+#~ "Do you really want to remove your local settings for this Quassel Core "
+#~ "account?<br>Note: This will <em>not</em> remove or change any data on the "
+#~ "Core itself!"
+#~ msgstr ""
+#~ "Вы действительно хотите удалить ваши локальные настройки для этого аккаунта "
+#~ "ядра Quassel?<br>Замечание: это <em>не</em> удалит и никак не изменит данные "
+#~ "в самом ядре!"
+
+#~ msgid "Connect to %1"
+#~ msgstr "Соединиться с %1"
 
 #~ msgid "<div style=color:red;>Connection to %1 failed!</div>"
 #~ msgstr "<div style=\"color:red;\">Сбой соединения с %1!</div>"
@@ -4672,6 +4755,9 @@ msgstr "%n пользователь"
 #~ msgid "Login"
 #~ msgstr "Вход"
 
+#~ msgid "Add..."
+#~ msgstr "Добавить..."
+
 #~ msgid "Always use this account"
 #~ msgstr "Всегда использовать этот аккаунт"
 
@@ -4684,8 +4770,12 @@ msgstr "%n пользователь"
 #~ msgid "Configure your Quassel Core"
 #~ msgstr "Настройте ваше ядро Quassel"
 
-#~ msgid "The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core."
-#~ msgstr "Ядро Quassel, к которому вы подключились, ещё не настроено. Сейчас вы можете запустить мастер настройки, который поможет сконфигурировать ваше ядро."
+#~ msgid ""
+#~ "The Quassel Core you are connected to is not configured yet. You may now "
+#~ "launch a configuration wizard that helps you setting up your Core."
+#~ msgstr ""
+#~ "Ядро Quassel, к которому вы подключились, ещё не настроено. Сейчас вы можете "
+#~ "запустить мастер настройки, который поможет сконфигурировать ваше ядро."
 
 #~ msgid "Launch Wizard"
 #~ msgstr "Запустить мастер"
@@ -4693,11 +4783,24 @@ msgstr "%n пользователь"
 #~ msgid "Initializing your session..."
 #~ msgstr "Инициализирую ваш сеанс..."
 
-#~ msgid "<b>Please be patient while your client synchronizes with the Quassel Core!</b>"
-#~ msgstr "<b>Пожалуйста, наберитесь терпения, пока ваш клиент синхронизируется с ядром Quassel!</b>"
+#~ msgid ""
+#~ "<b>Please be patient while your client synchronizes with the Quassel "
+#~ "Core!</b>"
+#~ msgstr ""
+#~ "<b>Пожалуйста, наберитесь терпения, пока ваш клиент синхронизируется с ядром "
+#~ "Quassel!</b>"
+
+#~ msgid "Session state:"
+#~ msgstr "Состояние сессии:"
+
+#~ msgid "Network states:"
+#~ msgstr "Состояния сетей:"
 
 #~ msgid "0/0"
 #~ msgstr "0/0"
+
+#~ msgid "Use internal core"
+#~ msgstr "Использовать встроенное ядро"
 
 #~ msgid ""
 #~ "THIS IS A PLACEHOLDER\n"
@@ -4713,23 +4816,121 @@ msgstr "%n пользователь"
 #~ msgid "<div>Errors occurred while connecting to \"%1\":</div>"
 #~ msgstr "<div>При соединении с \"%1\" возникли ошибки:</div>"
 
+#~ msgid "Continue connection"
+#~ msgstr "Продолжить соединение"
+
+#~ msgid "Close"
+#~ msgstr "Закрыть"
+
+#~ msgid " s"
+#~ msgstr " сек"
+
 #~ msgid "Show System Tray Icon"
 #~ msgstr "Показывать значок в трее"
 
 #~ msgid "Tray Icon"
 #~ msgstr "Значок в трее"
 
+#~ msgid "Remove"
+#~ msgstr "Удалить"
+
+#~ msgid ""
+#~ "<b>The following problems need to be corrected before your changes can be "
+#~ "applied:</b><ul>"
+#~ msgstr ""
+#~ "<b>Прежде чем сохранить настройки, необходимо устранить следующие "
+#~ "проблемы:</b><ul>"
+
+#~ msgid "</ul>"
+#~ msgstr "</ul>"
+
+#~ msgid "Rename Identity"
+#~ msgstr "Переименовать личность"
+
+#~ msgid "Channel"
+#~ msgstr "Канал"
+
+#~ msgid "Topic"
+#~ msgstr "Тема"
+
+#~ msgid "%1"
+#~ msgstr "%1"
+
+#~ msgid "idling since %1"
+#~ msgstr "неактивен с %1"
+
+#~ msgid "login time: %1"
+#~ msgstr "время входа: %1"
+
+#~ msgid "server: %1"
+#~ msgstr "сервер: %1"
+
 #~ msgid "Core Lag: %1"
 #~ msgstr "Лаг ядра: %1"
+
+#~ msgid "Add Network"
+#~ msgstr "Добавить сеть"
+
+#~ msgid "Network name:"
+#~ msgstr "Название сети:"
+
+#~ msgid "Server address:"
+#~ msgstr "Адрес сервера:"
+
+#~ msgid "Servers"
+#~ msgstr "Серверы"
+
+#~ msgid "&Edit..."
+#~ msgstr "&Править..."
+
+#~ msgid "Use a Proxy"
+#~ msgstr "Использовать прокси"
+
+#~ msgid "Settings"
+#~ msgstr "Настройки"
+
+#~ msgid "Reload Settings"
+#~ msgstr "Вернуть настройки"
+
+#~ msgid ""
+#~ "Do you like to reload the settings, undoing your changes on this page?"
+#~ msgstr "Вернуть старый настройки, отменив все изменения на этой вкладке?"
+
+#~ msgid "Restore Defaults"
+#~ msgstr "Вернуть умолчания"
+
+#~ msgid "Do you like to restore the default values for this page?"
+#~ msgstr "Вернуть параметры по-умолчанию для этой вкладки?"
+
+#~ msgid "Configure Quassel"
+#~ msgstr "Настроить Quassel"
+
+#~ msgid "Configure %1"
+#~ msgstr "Настроить %1"
 
 #~ msgid "SSL Certificate used by %1"
 #~ msgstr "Сертификат SSL используется %1"
 
+#~ msgid "Issuer Info"
+#~ msgstr "Сертификат выдан"
+
+#~ msgid "Organization:"
+#~ msgstr "Организация:"
+
 #~ msgid "Locality Name:"
 #~ msgstr "Название местности:"
 
+#~ msgid "Organizational Unit Name:"
+#~ msgstr "Название отделения:"
+
 #~ msgid "Country Name:"
 #~ msgstr "Страна:"
+
+#~ msgid "State or Province Name:"
+#~ msgstr "Название штата или области:"
+
+#~ msgid "Subject Info"
+#~ msgstr "Информация о субъекте"
 
 #~ msgid "Additional Info"
 #~ msgstr "Дополнительная информация"
@@ -4749,14 +4950,76 @@ msgstr "%n пользователь"
 #~ msgid "Digest:"
 #~ msgstr "Хеш:"
 
-#~ msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2008 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-#~ msgstr "<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2008 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC распространяется по двойной лицензии <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство значков &copy;  <a href=\"http://www.oxygen-icons.org\">Команда Oxygen</a> и используются по лицензии <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках пожалуйста сообщайте на  <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
+#~ msgid "Day changed to %1"
+#~ msgstr "День сменился на %1"
 
-#~ msgid "Special thanks goes to:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>for great artwork and the Quassel logo/icon</dt><dt><b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating most of the other shiny icons you see throughout Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of Quasseltopia with Greenphones and more</dd>"
-#~ msgstr "Особая благодарность:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>за прекрасную графическую работу и логотип/значок Quassel</dt><dt><b><a href=\"http://www.oxygen-icons.org\">Команде Oxygen</a></b></dt><dd>за создания большинства шикарных значков, которые вы видите в Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Trolltech</a></b></dt><dd>за создание Qt и Qtopia, и за поддержку развития Quasseltopia с помощью Greenphones и прочего</dd>"
+#~ msgid ""
+#~ "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2008 by the "
+#~ "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+#~ "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+#~ "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+#~ "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+#~ "and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+#~ "icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
+#~ "Team</a> and used under the <a "
+#~ "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+#~ "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+#~ "report bugs."
+#~ msgstr ""
+#~ "<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2008 Quassel "
+#~ "Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+#~ "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в "
+#~ "сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC "
+#~ "распространяется по двойной лицензии <a "
+#~ "href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a "
+#~ "href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство "
+#~ "значков &copy;  <a href=\"http://www.oxygen-icons.org\">Команда Oxygen</a> и "
+#~ "используются по лицензии <a "
+#~ "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках "
+#~ "пожалуйста сообщайте на  <a href=\"http://bugs.quassel-"
+#~ "irc.org\">http://bugs.quassel-irc.org</a>."
 
-#~ msgid "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for great artwork and the Quassel logo/icon</dt><dt><b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating most of the other shiny icons you see throughout Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
-#~ msgstr "Особая благодарность:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>за прекрасную графическую работу и логотип/значок Quassel</dt><dt><b><a href=\"http://www.oxygen-icons.org\">Команде Oxygen</a></b></dt><dd>за создания большинства шикарных значков, которые вы видите в Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software, ранее известная как Trolltech</a></b></dt><dd>за создание Qt и Qtopia, и за поддержку развития QuasselTopia с помощью Greenphones и прочего</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>за поддержку жизни Qt, и за спонсорство разработки Quassel Mobile с помощью N810</dd>"
+#~ msgid ""
+#~ "Special thanks goes to:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>for "
+#~ "great artwork and the Quassel logo/icon</dt><dt><b><a "
+#~ "href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+#~ "creating most of the other shiny icons you see throughout "
+#~ "Quassel</dd><dt><b><a "
+#~ "href=\"http://www.trolltech.com\">Trolltech</a></b></dt><dd>for creating Qt "
+#~ "and Qtopia, and for sponsoring development of Quasseltopia with Greenphones "
+#~ "and more</dd>"
+#~ msgstr ""
+#~ "Особая благодарность:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>за "
+#~ "прекрасную графическую работу и логотип/значок Quassel</dt><dt><b><a "
+#~ "href=\"http://www.oxygen-icons.org\">Команде Oxygen</a></b></dt><dd>за "
+#~ "создания большинства шикарных значков, которые вы видите в "
+#~ "Quassel</dd><dt><b><a "
+#~ "href=\"http://www.trolltech.com\">Trolltech</a></b></dt><dd>за создание Qt и "
+#~ "Qtopia, и за поддержку развития Quasseltopia с помощью Greenphones и "
+#~ "прочего</dd>"
+
+#~ msgid ""
+#~ "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for "
+#~ "great artwork and the Quassel logo/icon</dt><dt><b><a "
+#~ "href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+#~ "creating most of the other shiny icons you see throughout "
+#~ "Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software formerly "
+#~ "known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for "
+#~ "sponsoring development of QuasselTopia with Greenphones and "
+#~ "more</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>for "
+#~ "keeping Qt alive, and for sponsoring development of Quassel Mobile with "
+#~ "N810s</dd>"
+#~ msgstr ""
+#~ "Особая благодарность:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>за "
+#~ "прекрасную графическую работу и логотип/значок Quassel</dt><dt><b><a "
+#~ "href=\"http://www.oxygen-icons.org\">Команде Oxygen</a></b></dt><dd>за "
+#~ "создания большинства шикарных значков, которые вы видите в "
+#~ "Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software, ранее "
+#~ "известная как Trolltech</a></b></dt><dd>за создание Qt и Qtopia, и за "
+#~ "поддержку развития QuasselTopia с помощью Greenphones и "
+#~ "прочего</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>за "
+#~ "поддержку жизни Qt, и за спонсорство разработки Quassel Mobile с помощью "
+#~ "N810</dd>"
 
 #~ msgid "Behaviour"
 #~ msgstr "Поведение"
@@ -4818,40 +5081,68 @@ msgstr "%n пользователь"
 #~ msgid "Global Unread Messages"
 #~ msgstr "Глобальное количество непрочитанных сообщений"
 
-#~ msgid "The simplest Requester. It fetches a fixed amount of lines for each buffer from the Backlog."
-#~ msgstr "Простейший вариант. Запрашивает фиксированное количество строк для каждого буфера из журнала."
-
 #~ msgid ""
-#~ "This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.\n"
-#~ "\n"
-#~ "You can also chose to fetch additional older chatlines to provide a better context."
+#~ "The simplest Requester. It fetches a fixed amount of lines for each buffer "
+#~ "from the Backlog."
 #~ msgstr ""
-#~ "Этот метод запрашивает непрочитанные сообщения для каждого буфера индивидуально. Количество строк может быть ограничено для каждого буфера.\n"
-#~ "\n"
-#~ "Также можно запрашивать дополнительное количество старых строк для лучшего контекста."
+#~ "Простейший вариант. Запрашивает фиксированное количество строк для каждого "
+#~ "буфера из журнала."
 
 #~ msgid ""
-#~ "This requester fetches all messages newer than the oldest unread message for all buffers. \n"
-#~ "This requester determines which is the oldest read message of all buffers and then requests one large chunk of messages across all buffers.\n"
+#~ "This requester fetches unread messages for each buffer individually. The "
+#~ "amount of lines can be limited per buffer.\n"
 #~ "\n"
-#~ "Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).\n"
-#~ "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
-#~ "\n"
-#~ "You can also chose to fetch additional older chatlines to provide a better context similar."
-#~ msgstr "Этот метод запрашивает все сообщения новее, чем самое старое сообщение из каждого буфера. Этот метод определяет самое старое прочитанное сообщение из всех буферов и затем запрашивает один большой кусок сообщений со всех буферовПримечание: не рекомендуется использовать этот метод, если используются скрытые буфера или есть неактивные буфера (например оконченные диалоги или каналы).Полезно его использовать для ограничения общего объёма журнала и достижение максимальной скорости.Также можно запросить дополнительно старые строки для лучшего контекста."
-
-#~ msgid ""
-#~ "This requester fetches all messages newer than the oldest unread message for all buffers.\n"
-#~ "\n"
-#~ "Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).\n"
-#~ "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
-#~ "\n"
-#~ "You can also chose to fetch additional older chatlines to provide a better context similar."
+#~ "You can also chose to fetch additional older chatlines to provide a better "
+#~ "context."
 #~ msgstr ""
-#~ "Этот метод запрашивает для каждого буфера все сообщения новее чем самое старое непрочитанное сообщение.\n"
+#~ "Этот метод запрашивает непрочитанные сообщения для каждого буфера "
+#~ "индивидуально. Количество строк может быть ограничено для каждого буфера.\n"
 #~ "\n"
-#~ "Примечание: этот метод не рекомендуется, при использовании скрытых или неактивных буферов (например, пустующих диалогов или каналов).\n"
-#~ "Он полезен для ограничения общего размера журнала, и является, вероятно, самым быстрым.\n"
+#~ "Также можно запрашивать дополнительное количество старых строк для лучшего "
+#~ "контекста."
+
+#~ msgid ""
+#~ "This requester fetches all messages newer than the oldest unread message for "
+#~ "all buffers. \n"
+#~ "This requester determines which is the oldest read message of all buffers "
+#~ "and then requests one large chunk of messages across all buffers.\n"
+#~ "\n"
+#~ "Note: this requester is not recommended if you use hidden buffer or have "
+#~ "inactive buffers (i.e.: no stale queries or channels).\n"
+#~ "It is useful to limit the total amount of the backlog and is probably the "
+#~ "fastest.\n"
+#~ "\n"
+#~ "You can also chose to fetch additional older chatlines to provide a better "
+#~ "context similar."
+#~ msgstr ""
+#~ "Этот метод запрашивает все сообщения новее, чем самое старое сообщение из "
+#~ "каждого буфера. Этот метод определяет самое старое прочитанное сообщение из "
+#~ "всех буферов и затем запрашивает один большой кусок сообщений со всех "
+#~ "буферовПримечание: не рекомендуется использовать этот метод, если "
+#~ "используются скрытые буфера или есть неактивные буфера (например оконченные "
+#~ "диалоги или каналы).Полезно его использовать для ограничения общего объёма "
+#~ "журнала и достижение максимальной скорости.Также можно запросить "
+#~ "дополнительно старые строки для лучшего контекста."
+
+#~ msgid ""
+#~ "This requester fetches all messages newer than the oldest unread message for "
+#~ "all buffers.\n"
+#~ "\n"
+#~ "Note: this requester is not recommended if you use hidden buffer or have "
+#~ "inactive buffers (i.e.: no stale queries or channels).\n"
+#~ "It is useful to limit the total amount of the backlog and is probably the "
+#~ "fastest.\n"
+#~ "\n"
+#~ "You can also chose to fetch additional older chatlines to provide a better "
+#~ "context similar."
+#~ msgstr ""
+#~ "Этот метод запрашивает для каждого буфера все сообщения новее чем самое "
+#~ "старое непрочитанное сообщение.\n"
+#~ "\n"
+#~ "Примечание: этот метод не рекомендуется, при использовании скрытых или "
+#~ "неактивных буферов (например, пустующих диалогов или каналов).\n"
+#~ "Он полезен для ограничения общего размера журнала, и является, вероятно, "
+#~ "самым быстрым.\n"
 #~ "\n"
 #~ "Также можно запрашивать дополнительные старые строки для лучшего контекста."
 
@@ -4874,13 +5165,29 @@ msgstr "%n пользователь"
 #~ msgstr "DynamicBacklogAmount"
 
 #~ msgid ""
-#~ "This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.\n"
+#~ "This requester fetches unread messages for each buffer individually. The "
+#~ "amount of lines can be limited per buffer.\n"
 #~ "\n"
-#~ "You can also choose to fetch additional older chatlines to provide a better context."
+#~ "You can also choose to fetch additional older chatlines to provide a better "
+#~ "context."
 #~ msgstr ""
-#~ "Этот метод запрашивает непрочитанные сообщения для каждого буфера индивидуально. Количество строк может быть ограничено для каждого буфера.\n"
+#~ "Этот метод запрашивает непрочитанные сообщения для каждого буфера "
+#~ "индивидуально. Количество строк может быть ограничено для каждого буфера.\n"
 #~ "\n"
-#~ "Также можно запрашивать дополнительное количество старых строк для лучшего контекста."
+#~ "Также можно запрашивать дополнительное количество старых строк для лучшего "
+#~ "контекста."
+
+#~ msgid "Connect"
+#~ msgstr "Соединиться"
+
+#~ msgid "Disconnect"
+#~ msgstr "Отсоединиться"
+
+#~ msgid "Join"
+#~ msgstr "Зайти"
+
+#~ msgid "Part"
+#~ msgstr "Выйти"
 
 #~ msgid "Hide buffers"
 #~ msgstr "Спрятать буферы"
@@ -4890,6 +5197,9 @@ msgstr "%n пользователь"
 
 #~ msgid "Delete buffer"
 #~ msgstr "Удалить буфер"
+
+#~ msgid "Ignore list"
+#~ msgstr "Список игнорируемых"
 
 #~ msgid "Join Events"
 #~ msgstr "Вход на канал"
@@ -4909,8 +5219,12 @@ msgstr "%n пользователь"
 #~ msgid "Remove buffer permanently?"
 #~ msgstr "Удалить буфер навсегда?"
 
-#~ msgid "Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog data, from the core's database!"
-#~ msgstr "Удалить буфер \"%1\" навсегда? Это удалить все относящиеся к нему данные, включая историю, из базы данных ядра!"
+#~ msgid ""
+#~ "Do you want to delete the buffer \"%1\" permanently? This will delete all "
+#~ "related data, including all backlog data, from the core's database!"
+#~ msgstr ""
+#~ "Удалить буфер \"%1\" навсегда? Это удалить все относящиеся к нему данные, "
+#~ "включая историю, из базы данных ядра!"
 
 #~ msgid "Mode"
 #~ msgstr "Режимы"
@@ -4982,16 +5296,63 @@ msgstr "%n пользователь"
 #~ msgstr "Ctrl+0"
 
 #~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+#~ "type=\"text/css\">\n"
 #~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Chat comfortably. Anywhere.</span></p></body></html>"
-#~ msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Разговаривать удобно. Везде.</span></p></body></html>"
+#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; "
+#~ "font-weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-"
+#~ "large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel "
+#~ "IRC</span></p>\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span "
+#~ "style=\" font-size:22pt;\">Chat comfortably. "
+#~ "Anywhere.</span></p></body></html>"
+#~ msgstr ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta "
+#~ "name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-"
+#~ "space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; "
+#~ "font-size:13pt; font-weight:400; font-style:normal;\"><p style=\" margin-"
+#~ "top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-"
+#~ "indent:0; text-indent:0px;\"><img src=\":/pics/quassel-large.png\" /><span "
+#~ "style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p><p style=\" "
+#~ "margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-"
+#~ "block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-"
+#~ "size:22pt;\">Разговаривать удобно. Везде.</span></p></body></html>"
 
 #~ msgid "Zoom Original"
 #~ msgstr "Восстановить размер"
+
+#~ msgid ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+#~ "type=\"text/css\">\n"
+#~ "p, li { white-space: pre-wrap; }\n"
+#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+#~ "weight:400; font-style:normal;\">\n"
+#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+#~ "font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</p>\n"
+#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+#~ "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+#~ "family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+#~ msgstr ""
+#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta "
+#~ "name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-"
+#~ "space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; "
+#~ "font-size:8pt; font-weight:400; font-style:normal;\"><p style=\" margin-"
+#~ "top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-"
+#~ "indent:0; text-indent:0px; font-family:'Lucida Grande'; font-"
+#~ "size:13pt;\">СУПЕР ЗЛАЯ НЕПОПРАВИМАЯ ОШИБКА!!11адин</p><p style=\"-qt-"
+#~ "paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; "
+#~ "margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
+#~ "Grande'; font-size:13pt;\"></p></body></html>"
 
 #~ msgid "Available Buffers:"
 #~ msgstr "Доступные буферы:"
@@ -5082,6 +5443,9 @@ msgstr "%n пользователь"
 
 #~ msgid "Rename Message:"
 #~ msgstr "Сообщение о переименовании:"
+
+#~ msgid "Message"
+#~ msgstr "Сообщение"
 
 #~ msgid "Sender:"
 #~ msgstr "Отправитель:"
@@ -5200,8 +5564,10 @@ msgstr "%n пользователь"
 #~ msgid "Loglevel Debug|Info|Warning|Error"
 #~ msgstr "Уровень журналирования Debug|Info|Warning|Error"
 
-#~ msgid "Specify the directory holding datafiles like the Sqlite DB and the SSL Cert"
-#~ msgstr "Укажите каталог, в котором лежат базы данных вроде Sqlite DB и сертификат SSL"
+#~ msgid ""
+#~ "Specify the directory holding datafiles like the Sqlite DB and the SSL Cert"
+#~ msgstr ""
+#~ "Укажите каталог, в котором лежат базы данных вроде Sqlite DB и сертификат SSL"
 
 #~ msgid "use internal core"
 #~ msgstr "использовать встроенное ядро"
@@ -5250,8 +5616,12 @@ msgstr "%n пользователь"
 #~ msgid "Nicks:"
 #~ msgstr "Ники:"
 
-#~ msgid "Some of these settings require a restart of the Quassel Client in order to take effect. We intend to fix this."
-#~ msgstr "Некоторые из этих настроек требуют перезапуска клиента Quassel. Мы планируем исправить это."
+#~ msgid ""
+#~ "Some of these settings require a restart of the Quassel Client in order to "
+#~ "take effect. We intend to fix this."
+#~ msgstr ""
+#~ "Некоторые из этих настроек требуют перезапуска клиента Quassel. Мы планируем "
+#~ "исправить это."
 
 #~ msgid "Minimize to tray on minimize button"
 #~ msgstr "Прятать  в трей при сворачивании"
@@ -5277,8 +5647,11 @@ msgstr "%n пользователь"
 #~ msgid "Mouse wheel changes displayed buffers"
 #~ msgstr "Изменять отображаемые буфера колёсиком мыши"
 
-#~ msgid "The suffix appended to a nick on completion via TAB. Default is \": \""
-#~ msgstr "Суффикс, добавляемый к нику при автодополнении клавишей TAB. По умолчанию \": \""
+#~ msgid ""
+#~ "The suffix appended to a nick on completion via TAB. Default is \": \""
+#~ msgstr ""
+#~ "Суффикс, добавляемый к нику при автодополнении клавишей TAB. По умолчанию "
+#~ "\": \""
 
 #~ msgid "Input Line"
 #~ msgstr "Строка ввода"
@@ -5289,6 +5662,15 @@ msgstr "%n пользователь"
 #~ msgid "Errors"
 #~ msgstr "Ошибки"
 
+#~ msgid "Add Nickname"
+#~ msgstr "Добавить ник"
+
+#~ msgid "Move upwards in list"
+#~ msgstr "Передвинуть вверх в списке"
+
+#~ msgid "Move downwards in list"
+#~ msgstr "Передвинуть вниз в списке"
+
 #~ msgid "Away Reason"
 #~ msgstr "Причина"
 
@@ -5296,7 +5678,12 @@ msgstr "%n пользователь"
 #~ msgstr "Ник"
 
 #~ msgid "Override default away reason for auto-away on detach"
-#~ msgstr "Игнорировать причину по умолчанию при автоматическом состоянии \"отсутствую\" при отсоединении"
+#~ msgstr ""
+#~ "Игнорировать причину по умолчанию при автоматическом состоянии "
+#~ "\"отсутствую\" при отсоединении"
+
+#~ msgid "Advanced"
+#~ msgstr "Дополнительно"
 
 #~ msgid "No Key Loaded"
 #~ msgstr "Ключ не загружен"
@@ -5304,20 +5691,31 @@ msgstr "%n пользователь"
 #~ msgid "continue"
 #~ msgstr "продолжить"
 
+#~ msgid "Continue"
+#~ msgstr "Продолжить"
+
 #~ msgid "Do you really want to paste %1 lines?"
 #~ msgid_plural "Do you really want to paste %1 lines?"
 #~ msgstr[0] "Действительно вставить %1 строку?"
 #~ msgstr[1] "Действительно вставить %1 строки?"
 #~ msgstr[2] "Действительно вставить %1 строк?"
 
-#~ msgid "There is a nickname in your identity's nicklist which contains illegal characters"
+#~ msgid ""
+#~ "There is a nickname in your identity's nicklist which contains illegal "
+#~ "characters"
 #~ msgstr "В списке ников вашей личности есть ник с недопустимыми символами"
 
-#~ msgid "Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"
-#~ msgstr "Из-за бага в сервере Unreal IRCd (и, возможно, в других) мы не можем определить ошибочный ник"
+#~ msgid ""
+#~ "Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable "
+#~ "to determine the erroneous nick"
+#~ msgstr ""
+#~ "Из-за бага в сервере Unreal IRCd (и, возможно, в других) мы не можем "
+#~ "определить ошибочный ник"
 
 #~ msgid "Please use: /nick <othernick> to continue or clean up your nicklist"
-#~ msgstr "Для продолжения используйте: /nick <другой ник> или почистите ваш список ников"
+#~ msgstr ""
+#~ "Для продолжения используйте: /nick <другой ник> или почистите ваш список "
+#~ "ников"
 
 #~ msgid "Edit &Networks..."
 #~ msgstr "&Редактировать сети..."
@@ -5348,6 +5746,9 @@ msgstr "%n пользователь"
 
 #~ msgid "Processing Messages"
 #~ msgstr "Обработка сообщений"
+
+#~ msgid "Buffer"
+#~ msgstr "Буфер"
 
 #~ msgid "Delete Buffer..."
 #~ msgstr "Удалить буфер..."
