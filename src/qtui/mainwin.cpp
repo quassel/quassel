@@ -247,6 +247,7 @@ void MainWin::saveStateToSettings(UiSettings &s) {
   s.setValue("MainWinMinimized", isMinimized());
   s.setValue("MainWinMaximized", isMaximized());
   s.setValue("MainWinHidden", !isVisible());
+  s.setValue("LastUsedBufferId", Client::bufferModel()->currentBuffer().toInt());
 
 #ifdef HAVE_KDE
   saveAutoSaveSettings();
@@ -751,6 +752,12 @@ void MainWin::setConnectedState() {
     IrcConnectionWizard *wizard = new IrcConnectionWizard(this, Qt::Sheet);
     wizard->show();
   }
+  else {
+    QtUiSettings s;
+    BufferId lastUsedBufferId(s.value("LastUsedBufferId").toInt());
+    if(lastUsedBufferId.isValid())
+      Client::bufferModel()->switchToBuffer(lastUsedBufferId);
+  }
 }
 
 void MainWin::loadLayout() {
@@ -1180,4 +1187,3 @@ void MainWin::on_actionDebugLog_triggered() {
 void MainWin::showStatusBarMessage(const QString &message) {
   statusBar()->showMessage(message, 10000);
 }
-
