@@ -247,7 +247,9 @@ void MainWin::saveStateToSettings(UiSettings &s) {
   s.setValue("MainWinMinimized", isMinimized());
   s.setValue("MainWinMaximized", isMaximized());
   s.setValue("MainWinHidden", !isVisible());
-  s.setValue("LastUsedBufferId", Client::bufferModel()->currentBuffer().toInt());
+  BufferId lastBufId = Client::bufferModel()->currentBuffer();
+  if(lastBufId.isValid())
+    s.setValue("LastUsedBufferId", lastBufId.toInt());
 
 #ifdef HAVE_KDE
   saveAutoSaveSettings();
