@@ -147,7 +147,7 @@ StatusNotifierItemDBus::StatusNotifierItemDBus(StatusNotifierItem *parent)
     m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
 {
    new StatusNotifierItemAdaptor(this);
-   qDebug() << "service is" << m_service;
+   //qDebug() << "service is" << m_service;
    m_dbus.registerService(m_service);
    m_dbus.registerObject("/StatusNotifierItem", this);
 }
