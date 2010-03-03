@@ -16,10 +16,13 @@ Without further ado, let's start:
 Version 0.6.0 (not yet released)
 ================================
 
+* Restore last selected buffer on restart
+* Optional per-chat history
 * SASL authentication support (e.g. supported by Freenode)
 * Allow inputting formatted (colored/bold/...) text in the inputline
 * Support the StatusNotifierItem DBus spec
   - Replace old-style tray icon where supported (currently KDE >= 4.4)
+  - Integrate freedesktop notifications support (libnotify or knotify)
 * Systemtray refactoring
   - Replace animation by blinking icon
   - Properly handle notifications and mainwindow toggle
