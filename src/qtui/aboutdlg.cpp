@@ -77,7 +77,7 @@ QString AboutDlg::contributors() const {
   res = tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:")
       + QString::fromUtf8("<br>"
            "<dl>"
-           "<dt><b>Daniel \"al\" Albers</b></dt><dd>German translation, various fixes and enhancements</dd>"
+           "<dt><b>Daniel \"al\" Albers</b></dt><dd>Master Of Translation, many fixes and enhancements</dd>"
            "<dt><b>Terje \"tan\" Andersen</b></dt><dd>Norwegian translation, documentation</dd>"
            "<dt><b>Tomáš \"scarabeus\" Chvátal</b></dt><dd>Czech translation</dd>"
            "<dt><b>Joshua \"tvakah\" Corbin</b></dt><dd>Various fixes</dd>"
@@ -93,6 +93,7 @@ QString AboutDlg::contributors() const {
            "<dt><b>John \"nox\" Hand</b></dt><dd>Former All-Seeing Eye logo</dd>"
            "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project founder, various improvements</dd>"
            "<dt><b>Thomas \"Datafreak\" Hogh</b></dt><dd>Windows builder</dd>"
+           "<dt><b>Johannes \"j0hu\" Huber</b></dt><dd>Various fixes and features</dd>"
            "<dt><b>Scott \"ScottK\" Kitterman<b></dt><dd>Kubuntu nightly packager, (packaging/build system) bughunter</dd>"
            "<dt><b>Paul \"Haudrauf\" Klumpp</b></dt><dd>Initial design and mainwindow layout</dd>"
            "<dt><b>Maia Kozheva</b></dt><dd>Russian translation</dd>"
