@@ -90,6 +90,7 @@ void AppearanceSettingsPage::initLanguageComboBox() {
     _locales << locale;
     ui.languageComboBox->addItem(QLocale::languageToString(locale.language()));
   }
+  ui.languageComboBox->model()->sort(0);
 }
 
 void AppearanceSettingsPage::defaults() {
