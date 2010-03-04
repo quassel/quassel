@@ -875,7 +875,7 @@ void Core::createUser() {
     return;
   }
 
-  if(_storage->addUser(username, password).isValid()) {
+  if(_configured && _storage->addUser(username, password).isValid()) {
     out << "Added user " << username << " successfully!" << endl;
   } else {
     qWarning() << "Unable to add user:" << qPrintable(username);
@@ -913,7 +913,7 @@ void Core::changeUserPass(const QString &username) {
     return;
   }
 
-  if(_storage->updateUser(userId, password)) {
+  if(_configured && _storage->updateUser(userId, password)) {
     out << "Password changed successfuly!" << endl;
   } else {
     qWarning() << "Failed to change password!";
