@@ -125,6 +125,7 @@ int main(int argc, char **argv) {
   QByteArray oldContents = gen.readAll();
   if(oldContents != contents) { // only touch the file if something changed
     gen.seek(0);
+    gen.resize(0);
     gen.write(contents);
     gen.waitForBytesWritten(10000);
   }
