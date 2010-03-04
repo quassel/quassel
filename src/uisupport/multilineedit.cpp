@@ -328,7 +328,8 @@ QString MultiLineEdit::convertRichtextToMircCodes() {
 
   while (cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor)) {
 
-    if (cursor.selectedText() == QString(QChar(QChar::LineSeparator))) {
+    if (cursor.selectedText() == QString(QChar(QChar::LineSeparator))
+      || cursor.selectedText() == QString(QChar(QChar::ParagraphSeparator))) {
       if (color) {
         color = false;
         mircText.append('\x03');
