@@ -90,8 +90,15 @@ void TopicWidget::setCustomFont(const QFont &f) {
 
 void TopicWidget::setTopic(const QModelIndex &index) {
   BufferId id = index.sibling(index.row(), 0).data(NetworkModel::BufferIdRole).value<BufferId>();
-  if(!id.isValid())
+  if(!id.isValid()) {
+    _topic = "";
+    _readonly = true;
+    ui.topicEditButton->setVisible(false);
+    ui.topicLabel->setText(_topic);
+    ui.topicLineEdit->setText(_topic);
+    switchPlain();
     return;
+  }
 
   const Network *network = Client::network(Client::networkModel()->networkId(id));
 
