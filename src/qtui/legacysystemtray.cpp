@@ -64,9 +64,13 @@ void LegacySystemTray::init() {
 void LegacySystemTray::syncLegacyIcon() {
   _trayIcon->setIcon(stateIcon());
 
+#if defined Q_WS_MAC || defined Q_WS_WIN
+  QString tooltip = QString("%1").arg(toolTipTitle());
+#else
   QString tooltip = QString("<b>%1</b>").arg(toolTipTitle());
+#endif
   if(!toolTipSubTitle().isEmpty())
-    tooltip += QString("<br>%1").arg(toolTipSubTitle());
+    tooltip += QString("\n%1").arg(toolTipSubTitle());
   _trayIcon->setToolTip(tooltip);
 }
 
