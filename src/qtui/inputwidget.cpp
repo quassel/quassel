@@ -149,6 +149,11 @@ void InputWidget::setCustomFont(const QVariant &v) {
   QFont font = v.value<QFont>();
   if(font.family().isEmpty())
     font = QApplication::font();
+  // we don't want font styles as this conflics with mirc code richtext editing
+  font.setBold(false);
+  font.setItalic(false);
+  font.setUnderline(false);
+  font.setStrikeOut(false);
   ui.inputEdit->setCustomFont(font);
 }
 
