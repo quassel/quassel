@@ -2732,10 +2732,9 @@ msgid "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected beha
 msgstr ""
 
 #: IrcServerHandler#4
-#, fuzzy
 msgctxt "IrcServerHandler#4"
 msgid "%1"
-msgstr "1"
+msgstr "%1"
 
 #: IrcServerHandler#5
 msgid "[Whois] %1 is away: \"%2\""
@@ -4426,10 +4425,9 @@ msgid "Topic Widget"
 msgstr ""
 
 #: UiStyle::StyledMessage#1
-#, fuzzy
 msgctxt "UiStyle::StyledMessage#1"
 msgid "%1"
-msgstr "1"
+msgstr "%1"
 
 #: UiStyle::StyledMessage#2
 msgid "%DN%1%DN %2"
