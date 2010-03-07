@@ -72,7 +72,7 @@ void BufferView::init() {
   setAnimated(true);
 
   // FIXME This is to workaround bug #663
-  setUniformRowHeights(true);
+  // setUniformRowHeights(true);
 
 #ifndef QT_NO_DRAGANDDROP
   setDragEnabled(true);
