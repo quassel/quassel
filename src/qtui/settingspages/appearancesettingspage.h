@@ -56,7 +56,7 @@ private:
 
   Ui::AppearanceSettingsPage ui;
   QHash<QString, QVariant> settings;
-  QList<QLocale> _locales;
+  QMap<QString, QLocale> _locales;
 
   inline QString settingsKey() const { return QString("QtUi"); }
 };

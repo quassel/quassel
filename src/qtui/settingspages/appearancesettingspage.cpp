@@ -87,8 +87,10 @@ void AppearanceSettingsPage::initLanguageComboBox() {
     if(!rx.cap(1).isEmpty())
       continue;
     QLocale locale(rx.cap(2));
-    _locales << locale;
-    ui.languageComboBox->addItem(QLocale::languageToString(locale.language()));
+    _locales[QLocale::languageToString(locale.language())] = locale;
+  }
+  foreach(QString language, _locales.keys()) {
+    ui.languageComboBox->addItem(language);
   }
 }
 
@@ -208,7 +210,7 @@ QLocale AppearanceSettingsPage::selectedLocale() const {
   else if(index == 0)
     locale = QLocale::c();
   else if(index > 1)
-    locale = _locales[index - 2];
+    locale = _locales.values()[index - 2];
 
   return locale;
 }
