@@ -347,6 +347,9 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
         moveCursor(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
         cut();
         return;
+
+      default:
+        break;
       }
     }
     else if(event->modifiers() & Qt::MetaModifier ||
@@ -414,6 +417,9 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
         }
         return;
       }
+
+      default:
+        break;
       }
     }
   }
