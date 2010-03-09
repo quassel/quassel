@@ -371,6 +371,12 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
       case Qt::Key_Greater:
         moveCursor(QTextCursor::End);
         return;
+
+        // modify
+      case Qt::Key_D:
+        moveCursor(QTextCursor::WordRight, QTextCursor::KeepAnchor);
+        cut();
+        return;
       }
     }
   }
