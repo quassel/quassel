@@ -314,7 +314,7 @@ void MainWin::setupActions() {
   coll->addAction("ConfigureNetworks", new Action(SmallIcon("configure"), tr("Configure &Networks..."), coll,
                                               this, SLOT(on_actionConfigureNetworks_triggered())));
   coll->addAction("Quit", new Action(SmallIcon("application-exit"), tr("&Quit"), coll,
-                                      this, SLOT(quit()), tr("Ctrl+Q")));
+                                      this, SLOT(quit()), QKeySequence::Quit));
 
   // View
   coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll,
@@ -329,14 +329,14 @@ void MainWin::setupActions() {
   coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
                                             this, SLOT(showAwayLog())));
   coll->addAction("ToggleMenuBar", new Action(SmallIcon("show-menu"), tr("Show &Menubar"), coll,
-                                                0, 0, tr("Ctrl+M")))->setCheckable(true);
+                                                0, 0, QKeySequence(Qt::CTRL + Qt::Key_M)))->setCheckable(true);
 
   coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
                                                 0, 0))->setCheckable(true);
 
   // Settings
   coll->addAction("ConfigureQuassel", new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
-                                                  this, SLOT(showSettingsDlg()), tr("F7")));
+                                                  this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7)));
 
   // Help
   coll->addAction("AboutQuassel", new Action(SmallIcon("quassel"), tr("&About Quassel"), coll,

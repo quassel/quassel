@@ -129,7 +129,7 @@ InputWidget::InputWidget(QWidget *parent)
   Action *activateInputline = coll->add<Action>("FocusInputLine");
   connect(activateInputline, SIGNAL(triggered()), SLOT(setFocus()));
   activateInputline->setText(tr("Focus Input Line"));
-  activateInputline->setShortcut(tr("Ctrl+L"));
+  activateInputline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
   connect(inputLine(), SIGNAL(currentCharFormatChanged(QTextCharFormat)), this, SLOT(currentCharFormatChanged(QTextCharFormat)));
 }
