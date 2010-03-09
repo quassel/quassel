@@ -394,6 +394,26 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
         textCursor().insertText(text.left(1).toUpper() + text.mid(1).toLower());
         return;
       }
+
+      case Qt::Key_T: { // transpose words
+        moveCursor(QTextCursor::StartOfWord);
+        moveCursor(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+        QString const word1 = textCursor().selectedText();
+        textCursor().clearSelection();
+        moveCursor(QTextCursor::WordRight);
+        moveCursor(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+        QString const word2 = textCursor().selectedText();
+        if(!word2.isEmpty() && !word1.isEmpty()) {
+          textCursor().insertText(word1);
+          moveCursor(QTextCursor::WordLeft);
+          moveCursor(QTextCursor::WordLeft);
+          moveCursor(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
+          textCursor().insertText(word2);
+          moveCursor(QTextCursor::WordRight);
+          moveCursor(QTextCursor::EndOfWord);
+        }
+        return;
+      }
       }
     }
   }
