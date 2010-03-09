@@ -69,6 +69,12 @@ ToolBarActionProvider::~ToolBarActionProvider() {
 
 }
 
+void ToolBarActionProvider::disconnectedFromCore() {
+  _currentBuffer = QModelIndex();
+  updateStates();
+  NetworkModelController::disconnectedFromCore();
+}
+
 void ToolBarActionProvider::updateStates() {
   action(BufferPart)->setEnabled(_currentBuffer.isValid()
                               && _currentBuffer.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer

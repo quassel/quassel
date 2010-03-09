@@ -116,6 +116,10 @@ public:
   };
   Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState)
 
+public slots:
+  virtual void connectedToCore() {}
+  virtual void disconnectedFromCore() {}
+
 protected:
   inline ActionCollection *actionCollection() const;
   inline QList<QModelIndex> indexList() const;

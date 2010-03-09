@@ -92,6 +92,9 @@ protected:
 
   virtual bool eventFilter(QObject *obj, QEvent *event);
 
+protected slots:
+  virtual void disconnectedFromCore();
+
 private:
   static inline GraphicalUi *instance();
 
