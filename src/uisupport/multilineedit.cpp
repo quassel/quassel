@@ -377,6 +377,23 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
         moveCursor(QTextCursor::WordRight, QTextCursor::KeepAnchor);
         cut();
         return;
+
+      case Qt::Key_U: // uppercase word
+        moveCursor(QTextCursor::WordRight, QTextCursor::KeepAnchor);
+        textCursor().insertText(textCursor().selectedText().toUpper());
+        return;
+
+      case Qt::Key_L: // lowercase word
+        moveCursor(QTextCursor::WordRight, QTextCursor::KeepAnchor);
+        textCursor().insertText(textCursor().selectedText().toLower());
+        return;
+
+      case Qt::Key_C: { // capitalize word
+        moveCursor(QTextCursor::WordRight, QTextCursor::KeepAnchor);
+        QString const text = textCursor().selectedText();
+        textCursor().insertText(text.left(1).toUpper() + text.mid(1).toLower());
+        return;
+      }
       }
     }
   }
