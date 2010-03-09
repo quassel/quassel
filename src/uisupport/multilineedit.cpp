@@ -349,7 +349,9 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
         return;
       }
     }
-    else if(event->modifiers() & Qt::MetaModifier) {
+    else if(event->modifiers() & Qt::MetaModifier ||
+            event->modifiers() & Qt::AltModifier)
+    {
       switch(event->key()) {
       case Qt::Key_Right:
         moveCursor(QTextCursor::WordRight);
