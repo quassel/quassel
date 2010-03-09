@@ -93,6 +93,7 @@ void QtUi::connectedToCore() {
 
 void QtUi::disconnectedFromCore() {
   _mainWin->disconnectedFromCore();
+  GraphicalUi::disconnectedFromCore();
 }
 
 void QtUi::useSystemTrayChanged(const QVariant &v) {

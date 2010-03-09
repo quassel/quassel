@@ -25,6 +25,7 @@
 
 #include "actioncollection.h"
 #include "contextmenuactionprovider.h"
+#include "toolbaractionprovider.h"
 
 #ifdef Q_WS_X11
 #  include <QX11Info>
@@ -81,6 +82,12 @@ void GraphicalUi::setToolBarActionProvider(ToolBarActionProvider *provider) {
 
 void GraphicalUi::setUiStyle(UiStyle *style) {
   _uiStyle = style;
+}
+
+void GraphicalUi::disconnectedFromCore() {
+  _contextMenuActionProvider->disconnectedFromCore();
+  _toolBarActionProvider->disconnectedFromCore();
+  AbstractUi::disconnectedFromCore();
 }
 
 bool GraphicalUi::eventFilter(QObject *obj, QEvent *event) {

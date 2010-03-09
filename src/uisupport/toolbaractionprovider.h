@@ -40,6 +40,9 @@ public:
 
   void addActions(QToolBar *, ToolBarType type);
 
+public slots:
+  virtual void disconnectedFromCore();
+
 protected:
   virtual void handleNetworkAction(ActionType, QAction *);
   virtual void handleBufferAction(ActionType, QAction *);
