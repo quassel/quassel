@@ -153,16 +153,16 @@ void CoreConnection::solidNetworkStatusChanged(Solid::Networking::Status status)
   switch(status) {
   case Solid::Networking::Unknown:
   case Solid::Networking::Connected:
-    qDebug() << "Solid: Network status changed to connected or unknown";
+    //qDebug() << "Solid: Network status changed to connected or unknown";
     if(state() == Disconnected) {
       if(_wantReconnect && s.autoReconnect()) {
         reconnectToCore();
       }
     }
     break;
+  case Solid::Networking::Disconnecting:
   case Solid::Networking::Unconnected:
-    qDebug() << "Solid: Disconnected";
-    if(!isLocalConnection())
+    if(state() != Disconnected && !isLocalConnection())
       disconnectFromCore(tr("Network is down"), true);
     break;
   default:
@@ -255,7 +255,7 @@ void CoreConnection::coreSocketError(QAbstractSocket::SocketError) {
 }
 
 void CoreConnection::coreSocketDisconnected() {
-  qDebug() << Q_FUNC_INFO;
+  // qDebug() << Q_FUNC_INFO;
   resetConnection(true);
   // FIXME handle disconnects gracefully
 }
