@@ -70,11 +70,13 @@ public:
   inline QStringList history() const { return _history; }
   inline QHash<int, QString> tempHistory() const { return _tempHistory; }
   inline qint32 idx() const { return _idx; }
+  inline bool emacsMode() const { return _emacsMode; }
 
 public slots:
   void setMode(Mode mode);
   void setMinHeight(int numLines);
   void setMaxHeight(int numLines);
+  void setEmacsMode(bool enable = true);
   void setScrollBarsEnabled(bool enable = true);
   void setSpellCheckEnabled(bool enable = true);
   void setPasteProtectionEnabled(bool enable = true, QWidget *msgBoxParent = 0);
@@ -119,6 +121,7 @@ private:
   int _maxHeight;
   bool _scrollBarsEnabled;
   bool _pasteProtectionEnabled;
+  bool _emacsMode;
 
   QSize _sizeHint;
   qreal _lastDocumentHeight;

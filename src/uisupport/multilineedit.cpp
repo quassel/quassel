@@ -168,6 +168,10 @@ QSize MultiLineEdit::minimumSizeHint() const {
   return sizeHint();
 }
 
+void MultiLineEdit::setEmacsMode(bool enable) {
+  _emacsMode = enable;
+}
+
 void MultiLineEdit::setSpellCheckEnabled(bool enable) {
 #ifdef HAVE_KDE
   setCheckSpellingEnabled(enable);
@@ -318,6 +322,62 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
     ;
   }
 
+  if(_emacsMode) {
+    if(event->modifiers() & Qt::ControlModifier) {
+      switch(event->key()) {
+        // move
+      case Qt::Key_A:
+        moveCursor(QTextCursor::StartOfLine);
+        return;
+      case Qt::Key_E:
+        moveCursor(QTextCursor::EndOfLine);
+        return;
+      case Qt::Key_F:
+        moveCursor(QTextCursor::Right);
+        return;
+      case Qt::Key_B:
+        moveCursor(QTextCursor::Left);
+        return;
+      case Qt::Key_Right:
+        moveCursor(QTextCursor::WordRight);
+        return;
+      case Qt::Key_Left:
+        moveCursor(QTextCursor::WordLeft);
+        return;
+
+        // modify
+      case Qt::Key_Y:
+        paste();
+        return;
+      case Qt::Key_K:
+        moveCursor(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
+        cut();
+        return;
+      }
+    }
+    else if(event->modifiers() & Qt::MetaModifier) {
+      switch(event->key()) {
+      case Qt::Key_Right:
+        moveCursor(QTextCursor::WordRight);
+        return;
+      case Qt::Key_Left:
+        moveCursor(QTextCursor::WordLeft);
+        return;
+      case Qt::Key_F:
+        moveCursor(QTextCursor::WordRight);
+        return;
+      case Qt::Key_B:
+        moveCursor(QTextCursor::WordLeft);
+        return;
+      case Qt::Key_Less:
+        moveCursor(QTextCursor::Start);
+        return;
+      case Qt::Key_Greater:
+        moveCursor(QTextCursor::End);
+        return;
+      }
+    }
+  }
 
 #ifdef HAVE_KDE
   KTextEdit::keyPressEvent(event);

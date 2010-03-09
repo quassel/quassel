@@ -106,6 +106,22 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="enableEmacsMode">
+     <property name="toolTip">
+      <string>Enables (limited) Emacs key bindings in the input field.</string>
+     </property>
+     <property name="text">
+      <string>Emacs key bindings</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">EnableEmacsMode</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Multi-Line Editing</string>

@@ -106,6 +106,9 @@ InputWidget::InputWidget(QWidget *parent)
   setEnableSpellCheck(s.value("EnableSpellCheck", false));
 #endif
 
+  s.notify("EnableEmacsMode", this, SLOT(setEnableEmacsMode(QVariant)));
+  setEnableEmacsMode(s.value("EnableEmacsMode", false));
+
   s.notify("ShowNickSelector", this, SLOT(setShowNickSelector(QVariant)));
   setShowNickSelector(s.value("ShowNickSelector", true));
 
@@ -159,6 +162,10 @@ void InputWidget::setCustomFont(const QVariant &v) {
 
 void InputWidget::setEnableSpellCheck(const QVariant &v) {
   ui.inputEdit->setSpellCheckEnabled(v.toBool());
+}
+
+void InputWidget::setEnableEmacsMode(const QVariant &v) {
+  ui.inputEdit->setEmacsMode(v.toBool());
 }
 
 void InputWidget::setShowNickSelector(const QVariant &v) {
