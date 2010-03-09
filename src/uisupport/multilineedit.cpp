@@ -338,12 +338,6 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
       case Qt::Key_B:
         moveCursor(QTextCursor::Left);
         return;
-      case Qt::Key_Right:
-        moveCursor(QTextCursor::WordRight);
-        return;
-      case Qt::Key_Left:
-        moveCursor(QTextCursor::WordLeft);
-        return;
 
         // modify
       case Qt::Key_Y:
