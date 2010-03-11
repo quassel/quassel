@@ -24,7 +24,6 @@
 #include "coresession.h"
 
 INIT_SYNCABLE_OBJECT(CoreIgnoreListManager)
-
 CoreIgnoreListManager::CoreIgnoreListManager(CoreSession *parent)
   : IgnoreListManager(parent)
 {
@@ -42,6 +41,11 @@ CoreIgnoreListManager::CoreIgnoreListManager(CoreSession *parent)
 
   //if(isEmpty())
     //loadDefaults();
+}
+
+IgnoreListManager::StrictnessType CoreIgnoreListManager::match(const RawMessage &rawMsg, const QString &networkName) {
+  //StrictnessType _match(const QString &msgContents, const QString &msgSender, Message::Type msgType, const QString &network, const QString &bufferName);
+  return _match(rawMsg.text, rawMsg.sender, rawMsg.type, networkName, rawMsg.target);
 }
 
 void CoreIgnoreListManager::save() const {

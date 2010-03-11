@@ -219,8 +219,15 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
   // KDE's notifications), hence we remove those just to be safe.
   QString text = text_;
   text.remove(QChar(0xfdd0)).remove(QChar(0xfdd1));
+  RawMessage rawMsg(networkId, type, bufferType, target, text, sender, flags);
 
-  _messageQueue << RawMessage(networkId, type, bufferType, target, text, sender, flags);
+  // check for HardStrictness ignore
+  CoreNetwork *currentNetwork = network(networkId);
+  QString networkName = currentNetwork ? currentNetwork->networkName() : QString("");
+  if(_ignoreListManager.match(rawMsg, networkName) == IgnoreListManager::HardStrictness)
+    return;
+
+  _messageQueue << rawMsg;
   if(!_processMessages) {
     _processMessages = true;
     QCoreApplication::postEvent(this, new ProcessMessagesEvent());
@@ -246,19 +253,12 @@ void CoreSession::customEvent(QEvent *event) {
 }
 
 void CoreSession::processMessages() {
-  QString networkName;
   if(_messageQueue.count() == 1) {
     const RawMessage &rawMsg = _messageQueue.first();
     BufferInfo bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
     Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
-
-    CoreNetwork *currentNetwork = network(bufferInfo.networkId());
-    networkName = currentNetwork ? currentNetwork->networkName() : QString("");
-    // if message is ignored with "HardStrictness" we discard it here
-    if(_ignoreListManager.match(msg, networkName) != IgnoreListManager::HardStrictness) {
-      Core::storeMessage(msg);
-      emit displayMsg(msg);
-    }
+    Core::storeMessage(msg);
+    emit displayMsg(msg);
   } else {
     QHash<NetworkId, QHash<QString, BufferInfo> > bufferInfoCache;
     MessageList messages;
@@ -273,11 +273,6 @@ void CoreSession::processMessages() {
       }
 
       Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
-      CoreNetwork *currentNetwork = network(bufferInfo.networkId());
-      networkName = currentNetwork ? currentNetwork->networkName() : QString("");
-      // if message is ignored with "HardStrictness" we discard it here
-      if(_ignoreListManager.match(msg, networkName) == IgnoreListManager::HardStrictness)
-        continue;
       messages << msg;
     }
     Core::storeMessages(messages);

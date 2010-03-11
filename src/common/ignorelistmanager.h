@@ -23,9 +23,8 @@
 
 #include <QString>
 
+#include "message.h"
 #include "syncableobject.h"
-
-class Message;
 
 class IgnoreListManager : public SyncableObject
 {
@@ -92,7 +91,7 @@ public:
     * \param network The networkname the message belongs to
     * \return UnmatchedStrictness, HardStrictness or SoftStrictness representing the match type
     */
-  StrictnessType match(const Message &msg, const QString &network = QString());
+  inline StrictnessType match(const Message &msg, const QString &network = QString()) { return _match(msg.contents(), msg.sender(), msg.type(), network, msg.bufferInfo().bufferName()); }
 
   bool ctcpMatch(const QString sender, const QString &network, const QString &type = QString());
 
@@ -137,8 +136,10 @@ public slots:
 
 protected:
   void setIgnoreList(const QList<IgnoreListItem> &ignoreList) { _ignoreList = ignoreList; }
-  // scopeRule is a ; separated list, string is a network/channel-name
-  bool scopeMatch(const QString &scopeRule, const QString &string) const;
+  bool scopeMatch(const QString &scopeRule, const QString &string) const;   // scopeRule is a ';'-separated list, string is a network/channel-name
+
+  StrictnessType _match(const QString &msgContents, const QString &msgSender, Message::Type msgType, const QString &network, const QString &bufferName);
+
 
 signals:
   void ignoreAdded(IgnoreType type, const QString &ignoreRule, bool isRegex, StrictnessType strictness, ScopeType scope, const QVariant &scopeRule, bool isActive);
