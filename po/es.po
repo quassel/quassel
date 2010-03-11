@@ -6,87 +6,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-10 13:33+0200\n"
-"PO-Revision-Date: 2010-02-25 17:19+0000\n"
+"POT-Creation-Date: 2010-03-03 10:51+0200\n"
+"PO-Revision-Date: 2010-03-08 06:52+0000\n"
 "Last-Translator: Paco Molinero <paco@byasl.com>\n"
 "Language-Team: Español <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-03-03 01:08+0000\n"
+"X-Launchpad-Export-Date: 2010-03-10 14:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Language: es_ES\n"
 
 #: AboutDlg#1
-msgid "About Quassel"
-msgstr "Sobre Quassel"
-
-#: AboutDlg#2
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
-
-#: AboutDlg#3
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
-"&gt;= 474 (2008-02-08)</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Versión 0.2.0-pre, "
-"Compilación &gt;= 474 (2008-02-08)</p></body></html>"
-
-#: AboutDlg#4
-msgid "&About"
-msgstr "&Sobre"
-
-#: AboutDlg#5
-msgid "A&uthors"
-msgstr "A&utores"
-
-#: AboutDlg#6
-msgid "&Contributors"
-msgstr "&Contribuidores"
-
-#: AboutDlg#7
-msgid "&Thanks To"
-msgstr "Agradecimien&tos a"
-
-#: AboutDlg#8
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 msgstr ""
 "<b>Versión:</b> %1<br><b>Versión de protocolo:</b> %2<br><b>Compilación:</b> "
 "%3"
 
-#: AboutDlg#9
+#: AboutDlg#2
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
 "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -98,23 +38,12 @@ msgid ""
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
 msgstr ""
-"<b>Un moderno cliente de IRC, distribuido</b><br><br>&copy;2005-2009 por el "
-"Proyecto Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-"
-"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
-"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC está sujeto "
-"a doble licencia bajo <a href=\"http://www.gnu.org/licenses/gpl-"
-"2.0.txt\">GPLv2</a> y <a href=\"http://www.gnu.org/licenses/gpl-"
-"3.0.txt\">GPLv3</a>.<br>La mayoría de los iconos son &copy; por el <a "
-"href=\"http://www.oxygen-icons.org\">Equipo de Oxigen</a> y usados bajo la "
-"<a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Por "
-"favor, utilice <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-"
-"irc.org</a> para reportar fallos."
 
-#: AboutDlg#10
+#: AboutDlg#3
 msgid "Quassel IRC is mainly developed by:"
 msgstr "Quassel IRC está principalmente desarrollado por:"
 
-#: AboutDlg#11
+#: AboutDlg#4
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
@@ -122,7 +51,7 @@ msgstr ""
 "Nos gustaría dar las gracias a los siguientes contribuidores (en orden "
 "alfabético) y a todas las personas que olvidamos mencionar aquí:"
 
-#: AboutDlg#12
+#: AboutDlg#5
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
 "eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
@@ -150,6 +79,66 @@ msgstr ""
 "src=\":/pics/nokia.png\"></a></b></dt><dd>por mantener Qt vivo, y por apoyar "
 "el desarrollo de Quassel Mobile con N810s</dd>"
 
+#: AboutDlg#6
+msgid "About Quassel"
+msgstr "Sobre Quassel"
+
+#: AboutDlg#7
+msgid ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
+
+#: AboutDlg#8
+msgid ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Versión 0.2.0-pre, "
+"Compilación &gt;= 474 (2008-02-08)</p></body></html>"
+
+#: AboutDlg#9
+msgid "&About"
+msgstr "&Acerca de"
+
+#: AboutDlg#10
+msgid "A&uthors"
+msgstr "A&utores"
+
+#: AboutDlg#11
+msgid "&Contributors"
+msgstr "&Contribuidores"
+
+#: AboutDlg#12
+msgid "&Thanks To"
+msgstr "Agradecimien&tos a"
+
 #: AbstractSqlStorage#1
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
@@ -166,8 +155,8 @@ msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
 msgstr ""
-"<b>El atajo para el alias</b><br />Puede ser usado como un comando habitual "
-"de slash.<br /><br /><b>ejemplo:</b> \"foo\" puede ser usado por /foo"
+"<b>El atajo para el alias</b><br />Puede ser usado como una orden habitual "
+"de slash.<br /><br /><b>ejemplo:</b> «foo» puede ser usado por /foo"
 
 #: AliasesModel#2
 msgid ""
@@ -198,7 +187,7 @@ msgstr ""
 
 #: AliasesModel#3
 msgid "Alias"
-msgstr "Atajo"
+msgstr "Alias"
 
 #: AliasesModel#4
 msgid "Expansion"
@@ -206,119 +195,123 @@ msgstr "Expansión"
 
 #: AliasesSettingsPage#1
 msgctxt "AliasesSettingsPage#1"
-msgid "Form"
-msgstr "Formulario"
-
-#: AliasesSettingsPage#2
-msgctxt "AliasesSettingsPage#2"
-msgid "New"
-msgstr "Nuevo"
-
-#: AliasesSettingsPage#3
-msgctxt "AliasesSettingsPage#3"
-msgid "Delete"
-msgstr "Borrar"
-
-#: AliasesSettingsPage#4
-msgctxt "AliasesSettingsPage#4"
 msgid "IRC"
 msgstr "IRC"
 
-#: AliasesSettingsPage#5
+#: AliasesSettingsPage#2
 msgid "Aliases"
-msgstr "Atajos"
+msgstr "Alias"
 
-#: AppearanceSettingsPage#1
-msgctxt "AppearanceSettingsPage#1"
+#: AliasesSettingsPage#3
+msgctxt "AliasesSettingsPage#3"
 msgid "Form"
 msgstr "Formulario"
 
+#: AliasesSettingsPage#4
+msgctxt "AliasesSettingsPage#4"
+msgid "New"
+msgstr "Nuevo"
+
+#: AliasesSettingsPage#5
+msgctxt "AliasesSettingsPage#5"
+msgid "Delete"
+msgstr "Borrar"
+
+#: AppearanceSettingsPage#1
+msgctxt "AppearanceSettingsPage#1"
+msgid "Interface"
+msgstr "Interfaz"
+
 #: AppearanceSettingsPage#2
+msgid "<System Default>"
+msgstr "<Predeterminado del sistema>"
+
+#: AppearanceSettingsPage#3
+msgid "Please choose a stylesheet file"
+msgstr "Elija un archivo de estilo"
+
+#: AppearanceSettingsPage#4
+msgctxt "AppearanceSettingsPage#4"
+msgid "Form"
+msgstr "Formulario"
+
+#: AppearanceSettingsPage#5
 msgid "Client style:"
 msgstr "Estilo de cliente:"
 
-#: AppearanceSettingsPage#3
+#: AppearanceSettingsPage#6
 msgid "Set application style"
 msgstr "Establezca el estilo de aplicación"
 
-#: AppearanceSettingsPage#4
+#: AppearanceSettingsPage#7
 msgid "Language:"
 msgstr "Lenguaje:"
 
-#: AppearanceSettingsPage#5
+#: AppearanceSettingsPage#8
 msgid "Set the application language. Requires restart!"
 msgstr ""
 "Establezca el lenguaje de la aplicación. ¡Requiere reiniciar la aplicación!"
 
-#: AppearanceSettingsPage#6
-msgid "<System Default>"
-msgstr "<Predeterminado del sistema>"
+#: AppearanceSettingsPage#9
+msgid "<Untranslated>"
+msgstr "<Sin traducir>"
 
-#: AppearanceSettingsPage#7
-msgid "<Original>"
-msgstr "<Original>"
-
-#: AppearanceSettingsPage#8
+#: AppearanceSettingsPage#10
 msgid "Use custom stylesheet"
 msgstr "Usar estilo de hoja personalizado"
 
-#: AppearanceSettingsPage#9
+#: AppearanceSettingsPage#11
 msgid "Path:"
-msgstr "Dirección:"
+msgstr "Ruta:"
 
-#: AppearanceSettingsPage#10
-msgctxt "AppearanceSettingsPage#10"
+#: AppearanceSettingsPage#12
+msgctxt "AppearanceSettingsPage#12"
 msgid "..."
 msgstr "..."
 
-#: AppearanceSettingsPage#11
+#: AppearanceSettingsPage#13
 msgid "Show system tray icon"
 msgstr "Mostrar icono en bandeja del sistema"
 
-#: AppearanceSettingsPage#12
+#: AppearanceSettingsPage#14
 msgid "Hide to tray on close button"
 msgstr "Minimizar a la bandeja de entrada en el botón de cerrar"
 
-#: AppearanceSettingsPage#13
+#: AppearanceSettingsPage#15
+msgid "Enable animations"
+msgstr "Activar animaciones"
+
+#: AppearanceSettingsPage#16
 msgid "Message Redirection"
 msgstr "Redirección de mensaje"
 
-#: AppearanceSettingsPage#14
+#: AppearanceSettingsPage#17
 msgid "User Notices:"
 msgstr "Noticias de usuario:"
 
-#: AppearanceSettingsPage#15
+#: AppearanceSettingsPage#18
 msgid "Server Notices:"
 msgstr "Noticias de servidor:"
 
-#: AppearanceSettingsPage#16
+#: AppearanceSettingsPage#19
 msgid "Default Target"
-msgstr "Objetivo por defecto"
+msgstr "Objetivo predeterminado"
 
-#: AppearanceSettingsPage#17
+#: AppearanceSettingsPage#20
 msgid "Status Window"
 msgstr "Ventana de estado"
 
-#: AppearanceSettingsPage#18
+#: AppearanceSettingsPage#21
 msgid "Current Chat"
 msgstr "Charla actual"
 
-#: AppearanceSettingsPage#19
+#: AppearanceSettingsPage#22
 msgid "Errors:"
 msgstr "Errores:"
 
-#: AppearanceSettingsPage#20
-msgctxt "AppearanceSettingsPage#20"
-msgid "Interface"
-msgstr "Interfaz"
-
-#: AppearanceSettingsPage#21
-msgid "Please choose a stylesheet file"
-msgstr "Por favor, elija un archivo de estilo de hoja"
-
 #: AwayLogView#1
 msgid "Away Log"
-msgstr "Registro de Ausencia"
+msgstr "Registro de ausencias"
 
 #: AwayLogView#2
 msgctxt "AwayLogView#2"
@@ -332,10 +325,19 @@ msgstr "Mostrar nombre del búfer"
 
 #: BacklogSettingsPage#1
 msgctxt "BacklogSettingsPage#1"
+msgid "Interface"
+msgstr "Interfaz"
+
+#: BacklogSettingsPage#2
+msgid "Backlog Fetching"
+msgstr "Obtención del registro"
+
+#: BacklogSettingsPage#3
+msgctxt "BacklogSettingsPage#3"
 msgid "Form"
 msgstr "Formulario"
 
-#: BacklogSettingsPage#2
+#: BacklogSettingsPage#4
 msgid ""
 "Number of messages to be requested from the core when using scrolling up in "
 "the buffer view."
@@ -343,27 +345,27 @@ msgstr ""
 "Número de mensajes a ser solicitados al núcleo cuando se usa el "
 "desplazamiento hacia arriba en el área de mensajes."
 
-#: BacklogSettingsPage#3
+#: BacklogSettingsPage#5
 msgid "Dynamic backlog amount:"
 msgstr "Tamaño para el registro dinámico de mensajes atrasados:"
 
-#: BacklogSettingsPage#4
+#: BacklogSettingsPage#6
 msgid "Backlog request method:"
 msgstr "Método de solicitud para el registro de mensajes atrasados:"
 
-#: BacklogSettingsPage#5
+#: BacklogSettingsPage#7
 msgid "Fixed amount per chat"
 msgstr "Cantidad fija por conversación:"
 
-#: BacklogSettingsPage#6
+#: BacklogSettingsPage#8
 msgid "Unread messages per chat"
 msgstr "Mensajes sin leer por conversación"
 
-#: BacklogSettingsPage#7
+#: BacklogSettingsPage#9
 msgid "Globally unread messages"
 msgstr "Mensajes sin leer en ámbito global"
 
-#: BacklogSettingsPage#8
+#: BacklogSettingsPage#10
 msgid ""
 "The simplest requester. It fetches a fixed amount of lines for each chat "
 "window from the backlog."
@@ -371,7 +373,7 @@ msgstr ""
 "La solicitud más simple. Obtiene una cantidad fija de lineas para cada "
 "ventana de conversación desde los mensajes atrasados."
 
-#: BacklogSettingsPage#9
+#: BacklogSettingsPage#11
 msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
@@ -379,11 +381,11 @@ msgstr ""
 "cantidad de mensajes por área de conversación que son solicitados después de "
 "que la conexión con el núcleo haya sido establecida."
 
-#: BacklogSettingsPage#10
+#: BacklogSettingsPage#12
 msgid "Initial backlog amount:"
 msgstr "Cantidad inicial de los mensajes atrasados:"
 
-#: BacklogSettingsPage#11
+#: BacklogSettingsPage#13
 msgid ""
 "This requester fetches unread messages for each chat window individually. "
 "The amount of lines can be limited per chat.\n"
@@ -398,21 +400,21 @@ msgstr ""
 "Usted también puede escoger obtener antiguas líneas de conversación "
 "adicionales para proporcionar un mejor contexto."
 
-#: BacklogSettingsPage#12
+#: BacklogSettingsPage#14
 msgid "Maximum amount of messages to be fetched per buffer."
 msgstr ""
 "Cantidad máxima de mensajes a ser obtenidos por área de conversación."
 
-#: BacklogSettingsPage#13
+#: BacklogSettingsPage#15
 msgid "Limit:"
 msgstr "Límite:"
 
-#: BacklogSettingsPage#14
-msgctxt "BacklogSettingsPage#14"
+#: BacklogSettingsPage#16
+msgctxt "BacklogSettingsPage#16"
 msgid "Unlimited"
 msgstr "Ilimitado"
 
-#: BacklogSettingsPage#15
+#: BacklogSettingsPage#17
 msgid ""
 "Amount of messages to be fetched in addition to the unread messages. The "
 "Limit does not apply here."
@@ -420,11 +422,11 @@ msgstr ""
 "Cantidad de mensajes a ser obtenidos en adición a los mensajes sin leer. El "
 "límite no se aplica aquí."
 
-#: BacklogSettingsPage#16
+#: BacklogSettingsPage#18
 msgid "Additional Messages:"
 msgstr "Mensajes adicionales:"
 
-#: BacklogSettingsPage#17
+#: BacklogSettingsPage#19
 msgid ""
 "This requester fetches all messages newer than the oldest unread message for "
 "all chats.\n"
@@ -449,20 +451,11 @@ msgstr ""
 "Usted también puede escoger obtener antiguas líneas de conversación "
 "adicionales para proporcionar un mejor contexto."
 
-#: BacklogSettingsPage#18
+#: BacklogSettingsPage#20
 msgid "Maximum amount of messages to be fetched over all buffers."
 msgstr ""
 "Máxima cantidad de mensajes a ser obtenidos sobre todas las áreas de "
 "conversación."
-
-#: BacklogSettingsPage#19
-msgctxt "BacklogSettingsPage#19"
-msgid "Interface"
-msgstr "Interfaz"
-
-#: BacklogSettingsPage#20
-msgid "Backlog Fetching"
-msgstr "Obtención del registro"
 
 #: BufferItem#1
 msgid "<p> %1 - %2 </p>"
@@ -500,38 +493,56 @@ msgstr "Mostrar / Ocultar conversaciones"
 
 #: BufferViewSettingsPage#1
 msgctxt "BufferViewSettingsPage#1"
-msgid "Form"
-msgstr "Formulario"
+msgid "Interface"
+msgstr "Interfaz"
 
 #: BufferViewSettingsPage#2
-msgctxt "BufferViewSettingsPage#2"
-msgid "Re&name..."
-msgstr "Re&nombrar..."
+msgid "Custom Chat Lists"
+msgstr "Listas de conversaciones personalizadas"
 
 #: BufferViewSettingsPage#3
-msgctxt "BufferViewSettingsPage#3"
-msgid "&Add..."
-msgstr "&Añadir..."
-
-#: BufferViewSettingsPage#4
-msgctxt "BufferViewSettingsPage#4"
-msgid "De&lete"
-msgstr "&Borrar"
-
-#: BufferViewSettingsPage#5
-msgid "Chat List Settings"
-msgstr "Preferencias de la lista de conversaciones"
-
-#: BufferViewSettingsPage#6
-msgctxt "BufferViewSettingsPage#6"
-msgid "Network:"
-msgstr "Red:"
-
-#: BufferViewSettingsPage#7
 msgid "All"
 msgstr "Todo"
 
+#: BufferViewSettingsPage#4
+msgid "Delete Chat List?"
+msgstr "¿Eliminar lista de conversaciones?"
+
+#: BufferViewSettingsPage#5
+msgid "Do you really want to delete the chat list \"%1\"?"
+msgstr ""
+"¿Está seguro de que quiere eliminar la lista de conversaciones \"%1\"?"
+
+#: BufferViewSettingsPage#6
+msgctxt "BufferViewSettingsPage#6"
+msgid "Form"
+msgstr "Formulario"
+
+#: BufferViewSettingsPage#7
+msgctxt "BufferViewSettingsPage#7"
+msgid "Re&name..."
+msgstr "Re&nombrar..."
+
 #: BufferViewSettingsPage#8
+msgctxt "BufferViewSettingsPage#8"
+msgid "&Add..."
+msgstr "&Añadir..."
+
+#: BufferViewSettingsPage#9
+msgctxt "BufferViewSettingsPage#9"
+msgid "De&lete"
+msgstr "&Borrar"
+
+#: BufferViewSettingsPage#10
+msgid "Chat List Settings"
+msgstr "Preferencias de la lista de conversaciones"
+
+#: BufferViewSettingsPage#11
+msgctxt "BufferViewSettingsPage#11"
+msgid "Network:"
+msgstr "Red:"
+
+#: BufferViewSettingsPage#12
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
@@ -539,72 +550,54 @@ msgstr ""
 "Esta opción no está disponible cuando todas las redes están visibles.\n"
 "En éste modo, el estado de la conversación no es mostrado por separado."
 
-#: BufferViewSettingsPage#9
+#: BufferViewSettingsPage#13
 msgid "Show status window"
 msgstr "Mostrar ventana de estado"
 
-#: BufferViewSettingsPage#10
+#: BufferViewSettingsPage#14
 msgid "Show channels"
 msgstr "Mostrar canales"
 
-#: BufferViewSettingsPage#11
+#: BufferViewSettingsPage#15
 msgid "Show queries"
 msgstr "Mostrar cuestiones"
 
-#: BufferViewSettingsPage#12
+#: BufferViewSettingsPage#16
 msgid "Hide inactive chats"
 msgstr "Esconder conversaciones inactivas"
 
-#: BufferViewSettingsPage#13
+#: BufferViewSettingsPage#17
 msgid "Add new chats automatically"
 msgstr "Añadir nuevas conversaciones automáticamente."
 
-#: BufferViewSettingsPage#14
+#: BufferViewSettingsPage#18
 msgid "Sort alphabetically"
 msgstr "Ordenar alfabéticamente"
 
-#: BufferViewSettingsPage#15
+#: BufferViewSettingsPage#19
 msgid "Minimum Activity:"
 msgstr "Actividad mínima:"
 
-#: BufferViewSettingsPage#16
+#: BufferViewSettingsPage#20
 msgid "No Activity"
 msgstr "Sin actividad"
 
-#: BufferViewSettingsPage#17
+#: BufferViewSettingsPage#21
 msgid "Other Activity"
 msgstr "Otra actividad"
 
-#: BufferViewSettingsPage#18
+#: BufferViewSettingsPage#22
 msgid "New Message"
 msgstr "Nuevo mensaje"
 
-#: BufferViewSettingsPage#19
-msgctxt "BufferViewSettingsPage#19"
-msgid "Highlight"
-msgstr "Resaltado"
-
-#: BufferViewSettingsPage#20
-msgid "Preview:"
-msgstr "Previsualizar:"
-
-#: BufferViewSettingsPage#21
-msgctxt "BufferViewSettingsPage#21"
-msgid "Interface"
-msgstr "Interfaz"
-
-#: BufferViewSettingsPage#22
-msgid "Custom Chat Lists"
-msgstr "Listas de conversaciones personalizadas"
-
 #: BufferViewSettingsPage#23
-msgid "Delete Chat List?"
-msgstr "¿Eliminar lista de conversaciones?"
+msgctxt "BufferViewSettingsPage#23"
+msgid "Highlight"
+msgstr "Resaltar"
 
 #: BufferViewSettingsPage#24
-msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr ""
-"¿Está seguro de que quiere eliminar la lista de conversaciones \"%1\"?"
+msgid "Preview:"
+msgstr "Previsualizar:"
 
 #: BufferViewWidget#1
 msgid "BufferView"
@@ -708,14 +701,40 @@ msgstr ""
 
 #: ChatMonitorSettingsPage#1
 msgctxt "ChatMonitorSettingsPage#1"
+msgid "Interface"
+msgstr "Interfaz"
+
+#: ChatMonitorSettingsPage#2
+msgctxt "ChatMonitorSettingsPage#2"
+msgid "Chat Monitor"
+msgstr "Monitor de charla"
+
+#: ChatMonitorSettingsPage#3
+msgid "Opt In"
+msgstr "Opt entrada"
+
+#: ChatMonitorSettingsPage#4
+msgid "Opt Out"
+msgstr "Opt salida"
+
+#: ChatMonitorSettingsPage#5
+msgid "Show:"
+msgstr "Mostrar:"
+
+#: ChatMonitorSettingsPage#6
+msgid "Ignore:"
+msgstr "Ignorar:"
+
+#: ChatMonitorSettingsPage#7
+msgctxt "ChatMonitorSettingsPage#7"
 msgid "Form"
 msgstr "Formulario"
 
-#: ChatMonitorSettingsPage#2
+#: ChatMonitorSettingsPage#8
 msgid "Operation Mode:"
 msgstr "Modo de operación:"
 
-#: ChatMonitorSettingsPage#3
+#: ChatMonitorSettingsPage#9
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
 "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -757,58 +776,32 @@ msgstr ""
 "decoration: underline;\">Opt-Out:</span> Conversaciones en el lado derecho "
 "serán ignoradas en el monitor de conversación</p></body></html>"
 
-#: ChatMonitorSettingsPage#4
+#: ChatMonitorSettingsPage#10
 msgid "Available:"
 msgstr "Disponible:"
 
-#: ChatMonitorSettingsPage#5
+#: ChatMonitorSettingsPage#11
 msgid "Move selected buffers to the left"
 msgstr "Mover las conversaciones seleccionadas a la izquierda"
 
-#: ChatMonitorSettingsPage#6
+#: ChatMonitorSettingsPage#12
 msgid "Move selected buffers to the right"
 msgstr "Mover las conversaciones seleccionadas a la derecha"
 
-#: ChatMonitorSettingsPage#7
-msgid "Show:"
-msgstr "Mostrar:"
-
-#: ChatMonitorSettingsPage#8
+#: ChatMonitorSettingsPage#13
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
 msgstr ""
 "Mostrar resaltados en el monitor de conversación incluso si la conversación "
 "original es ignorada"
 
-#: ChatMonitorSettingsPage#9
+#: ChatMonitorSettingsPage#14
 msgid "Always show highlighted messages"
 msgstr "Siempre mostrar los mensajes resaltados"
 
-#: ChatMonitorSettingsPage#10
+#: ChatMonitorSettingsPage#15
 msgid "Show own messages"
 msgstr "Mostrar mensajes propios"
-
-#: ChatMonitorSettingsPage#11
-msgctxt "ChatMonitorSettingsPage#11"
-msgid "Interface"
-msgstr "Interfaz"
-
-#: ChatMonitorSettingsPage#12
-msgctxt "ChatMonitorSettingsPage#12"
-msgid "Chat Monitor"
-msgstr "Monitor de charla"
-
-#: ChatMonitorSettingsPage#13
-msgid "Opt In"
-msgstr "Opt entrada"
-
-#: ChatMonitorSettingsPage#14
-msgid "Opt Out"
-msgstr "Opt salida"
-
-#: ChatMonitorSettingsPage#15
-msgid "Ignore:"
-msgstr "Ignorar:"
 
 #: ChatMonitorView#1
 msgid "Show Own Messages"
@@ -860,101 +853,101 @@ msgstr "ignorar entradas, salidas, etc."
 
 #: ChatViewSettingsPage#1
 msgctxt "ChatViewSettingsPage#1"
+msgid "Interface"
+msgstr "Interfaz"
+
+#: ChatViewSettingsPage#2
+msgid "Chat View"
+msgstr "Vista de conversación"
+
+#: ChatViewSettingsPage#3
+msgctxt "ChatViewSettingsPage#3"
 msgid "Form"
 msgstr "Formulario"
 
-#: ChatViewSettingsPage#2
+#: ChatViewSettingsPage#4
 msgid "Timestamp format:"
 msgstr "Formato de marca de tiempo:"
 
-#: ChatViewSettingsPage#3
+#: ChatViewSettingsPage#5
 msgid "[hh:mm:ss]"
 msgstr "[hh:mm:ss]"
 
-#: ChatViewSettingsPage#4
+#: ChatViewSettingsPage#6
 msgid "Custom chat window font:"
 msgstr "Personalizar la tipografía de la ventana de conversación"
 
-#: ChatViewSettingsPage#5
+#: ChatViewSettingsPage#7
 msgid "Allow colored text (mIRC color codes)"
 msgstr "Permitir texto en color (código de color mIRC)"
 
-#: ChatViewSettingsPage#6
+#: ChatViewSettingsPage#8
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr ""
 "Previsualizar página web en una ventana al pasar el ratón sobre una "
 "dirección web"
 
-#: ChatViewSettingsPage#7
+#: ChatViewSettingsPage#9
 msgid "Show previews of webpages on URL hover"
 msgstr "Previsualizar páginas web encima de una URL"
 
-#: ChatViewSettingsPage#8
+#: ChatViewSettingsPage#10
 msgid "Custom Colors"
 msgstr "Colores personalizados"
 
-#: ChatViewSettingsPage#9
+#: ChatViewSettingsPage#11
 msgid "Action:"
 msgstr "Acción:"
 
-#: ChatViewSettingsPage#10
-msgctxt "ChatViewSettingsPage#10"
+#: ChatViewSettingsPage#12
+msgctxt "ChatViewSettingsPage#12"
 msgid "..."
 msgstr "..."
 
-#: ChatViewSettingsPage#11
+#: ChatViewSettingsPage#13
 msgid "Timestamp:"
 msgstr "Timestamp:"
 
-#: ChatViewSettingsPage#12
+#: ChatViewSettingsPage#14
 msgid "Channel message:"
 msgstr "Mensaje del canal:"
 
-#: ChatViewSettingsPage#13
+#: ChatViewSettingsPage#15
 msgid "Highlight foreground:"
 msgstr "Resaltar el primer plano:"
 
-#: ChatViewSettingsPage#14
+#: ChatViewSettingsPage#16
 msgid "Command message:"
 msgstr "Mensaje de comando:"
 
-#: ChatViewSettingsPage#15
+#: ChatViewSettingsPage#17
 msgid "Highlight background:"
 msgstr "Resaltar el segundo plano:"
 
-#: ChatViewSettingsPage#16
+#: ChatViewSettingsPage#18
 msgid "Server message:"
 msgstr "Mensaje del servidor:"
 
-#: ChatViewSettingsPage#17
+#: ChatViewSettingsPage#19
 msgid "Marker line:"
 msgstr "Línea marcadora:"
 
-#: ChatViewSettingsPage#18
+#: ChatViewSettingsPage#20
 msgid "Error message:"
 msgstr "Mensaje de error:"
 
-#: ChatViewSettingsPage#19
+#: ChatViewSettingsPage#21
 msgid "Background:"
 msgstr "Segundo plano:"
 
-#: ChatViewSettingsPage#20
+#: ChatViewSettingsPage#22
 msgid "Use Sender Coloring"
 msgstr "Usar coloreado del emisor"
 
-#: ChatViewSettingsPage#21
+#: ChatViewSettingsPage#23
 msgid "Own messages:"
 msgstr "Mensajes propios:"
-
-#: ChatViewSettingsPage#22
-msgctxt "ChatViewSettingsPage#22"
-msgid "Interface"
-msgstr "Interfaz"
-
-#: ChatViewSettingsPage#23
-msgid "Chat View"
-msgstr "Vista de conversación"
 
 #: Client#1
 msgid "Identity already exists in client!"
@@ -969,31 +962,36 @@ msgid "Processed %1 messages in %2 seconds."
 msgstr "%1 mensajes procesados en %2 segundos."
 
 #: ConnectionSettingsPage#1
+msgctxt "ConnectionSettingsPage#1"
+msgid "IRC"
+msgstr "IRC"
+
+#: ConnectionSettingsPage#2
 msgid "Configure the IRC Connection"
 msgstr "Configurar la conexión IRC"
 
-#: ConnectionSettingsPage#2
+#: ConnectionSettingsPage#3
 msgid "Enable Ping Timeout Detection"
 msgstr "Activar la detección de Ping Timeout"
 
-#: ConnectionSettingsPage#3
+#: ConnectionSettingsPage#4
 msgid "Ping interval:"
 msgstr "Intervalo del Ping:"
 
-#: ConnectionSettingsPage#4
-msgctxt "ConnectionSettingsPage#4"
+#: ConnectionSettingsPage#5
+msgctxt "ConnectionSettingsPage#5"
 msgid " seconds"
 msgstr " segundos"
 
-#: ConnectionSettingsPage#5
+#: ConnectionSettingsPage#6
 msgid "Disconnect after"
 msgstr "Desconectar tras"
 
-#: ConnectionSettingsPage#6
+#: ConnectionSettingsPage#7
 msgid "missed pings"
 msgstr "ecos perdidos"
 
-#: ConnectionSettingsPage#7
+#: ConnectionSettingsPage#8
 msgid ""
 "This enables periodic polling of user information using /WHO. This is mostly "
 "interesting for tracking users' away status."
@@ -1001,30 +999,25 @@ msgstr ""
 "Esto activa un sondeo periódico de información de usuario utilizando /WHO. "
 "Esto es interesante para rastrear el estado de ausencia de los usuarios."
 
-#: ConnectionSettingsPage#8
+#: ConnectionSettingsPage#9
 msgid "Enable Automatic User Information Lookup (/WHO)"
 msgstr "Activa el rastreo de información de usuarios automático (/WHO)"
 
-#: ConnectionSettingsPage#9
+#: ConnectionSettingsPage#10
 msgid "Update interval:"
 msgstr "Intervalo de actualización:"
 
-#: ConnectionSettingsPage#10
+#: ConnectionSettingsPage#11
 msgid "Ignore channels with more than:"
 msgstr "Ignorar los canales con más de:"
 
-#: ConnectionSettingsPage#11
+#: ConnectionSettingsPage#12
 msgid " users"
 msgstr " usuarios"
 
-#: ConnectionSettingsPage#12
+#: ConnectionSettingsPage#13
 msgid "Minimum delay between requests:"
 msgstr "Tiempo mínimo entre peticiones:"
-
-#: ConnectionSettingsPage#13
-msgctxt "ConnectionSettingsPage#13"
-msgid "IRC"
-msgstr "IRC"
 
 #: ContentsChatItem#1
 msgid "Copy Link Address"
@@ -1180,6 +1173,7 @@ msgid "Hide Events"
 msgstr "Ocultar eventos"
 
 #: ContextMenuActionProvider#37
+msgctxt "ContextMenuActionProvider#37"
 msgid "CTCP"
 msgstr "CTCP"
 
@@ -1429,43 +1423,43 @@ msgid "Internal Core"
 msgstr "Núcleo interno"
 
 #: CoreAccountSettingsPage#1
+msgctxt "CoreAccountSettingsPage#1"
+msgid "Remote Cores"
+msgstr "Núcleos remotos"
+
+#: CoreAccountSettingsPage#2
 msgid "Connect to Quassel Core"
 msgstr "Conectarse al núcleo de Quassel"
 
-#: CoreAccountSettingsPage#2
+#: CoreAccountSettingsPage#3
 msgid "Core Accounts"
 msgstr "Cuentas del núcleo"
 
-#: CoreAccountSettingsPage#3
+#: CoreAccountSettingsPage#4
 msgid "Edit..."
 msgstr "Editar..."
 
-#: CoreAccountSettingsPage#4
-msgctxt "CoreAccountSettingsPage#4"
+#: CoreAccountSettingsPage#5
+msgctxt "CoreAccountSettingsPage#5"
 msgid "Add..."
 msgstr "Añadir..."
 
-#: CoreAccountSettingsPage#5
-msgctxt "CoreAccountSettingsPage#5"
+#: CoreAccountSettingsPage#6
+msgctxt "CoreAccountSettingsPage#6"
 msgid "Delete"
 msgstr "Borrar"
 
-#: CoreAccountSettingsPage#6
+#: CoreAccountSettingsPage#7
 msgid "Automatically connect on startup"
 msgstr "Conectar automáticamente al inicio"
 
-#: CoreAccountSettingsPage#7
+#: CoreAccountSettingsPage#8
 msgid "Connect to last account used"
 msgstr "Conectar a la última cuenta utilizada"
 
-#: CoreAccountSettingsPage#8
+#: CoreAccountSettingsPage#9
 msgid "Always connect to"
 msgstr "Conectar siempre a"
-
-#: CoreAccountSettingsPage#9
-msgctxt "CoreAccountSettingsPage#9"
-msgid "Remote Cores"
-msgstr "Núcleos remotos"
 
 #: CoreConfigWizard#1
 msgid "Core Configuration Wizard"
@@ -1631,31 +1625,31 @@ msgstr ""
 "Por favor, aguarde mientras sus preferencias son transmitidas al núcleo..."
 
 #: CoreConnectAuthDlg#1
+msgid "Please enter your credentials for %1:"
+msgstr "Por favor, introduzca sus credenciales para %1:"
+
+#: CoreConnectAuthDlg#2
 msgid "Authentication Required"
 msgstr "Autenticación requerida"
 
-#: CoreConnectAuthDlg#2
+#: CoreConnectAuthDlg#3
 msgid "Please enter your account data:"
 msgstr "Por favor, introduzca la información de su cuenta:"
 
-#: CoreConnectAuthDlg#3
-msgctxt "CoreConnectAuthDlg#3"
+#: CoreConnectAuthDlg#4
+msgctxt "CoreConnectAuthDlg#4"
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: CoreConnectAuthDlg#4
-msgctxt "CoreConnectAuthDlg#4"
+#: CoreConnectAuthDlg#5
+msgctxt "CoreConnectAuthDlg#5"
 msgid "Username:"
 msgstr "Usuario:"
 
-#: CoreConnectAuthDlg#5
-msgctxt "CoreConnectAuthDlg#5"
+#: CoreConnectAuthDlg#6
+msgctxt "CoreConnectAuthDlg#6"
 msgid "Remember password"
 msgstr "Recordar contraseña"
-
-#: CoreConnectAuthDlg#6
-msgid "Please enter your credentials for %1:"
-msgstr "Por favor, introduzca sus credenciales para %1:"
 
 #: CoreConnectDlg#1
 msgid "Connect to Core"
@@ -1743,14 +1737,24 @@ msgstr "Sincronizado a %1"
 
 #: CoreConnectionSettingsPage#1
 msgctxt "CoreConnectionSettingsPage#1"
+msgid "Remote Cores"
+msgstr "Núcleos remotos"
+
+#: CoreConnectionSettingsPage#2
+msgctxt "CoreConnectionSettingsPage#2"
+msgid "Connection"
+msgstr "Conexión"
+
+#: CoreConnectionSettingsPage#3
+msgctxt "CoreConnectionSettingsPage#3"
 msgid "Form"
 msgstr "Formulario"
 
-#: CoreConnectionSettingsPage#2
+#: CoreConnectionSettingsPage#4
 msgid "Network Status Detection"
 msgstr "Detección del estado de la red"
 
-#: CoreConnectionSettingsPage#3
+#: CoreConnectionSettingsPage#5
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most "
 "KDE users"
@@ -1758,11 +1762,11 @@ msgstr ""
 "Contar con la capa de hardware de KDE para detectar si se está en línea. "
 "Recomendado para la mayoría de usuarios KDE."
 
-#: CoreConnectionSettingsPage#4
+#: CoreConnectionSettingsPage#6
 msgid "Use KDE's network status detection (via Solid)"
 msgstr "Usar la detección del estado de la red de KDE (vía Solid)"
 
-#: CoreConnectionSettingsPage#5
+#: CoreConnectionSettingsPage#7
 msgid ""
 "Actively ping the remote core and disconnect if we didn't get a reply after "
 "a certain time"
@@ -1770,16 +1774,16 @@ msgstr ""
 "Hacer ping activamente al núcleo remoto y desconectar si no se obtuvo "
 "respuesta tras un cierto periodo"
 
-#: CoreConnectionSettingsPage#6
+#: CoreConnectionSettingsPage#8
 msgid "Ping timeout after"
 msgstr "Ping fuera de tiempo tras"
 
-#: CoreConnectionSettingsPage#7
-msgctxt "CoreConnectionSettingsPage#7"
+#: CoreConnectionSettingsPage#9
+msgctxt "CoreConnectionSettingsPage#9"
 msgid " seconds"
 msgstr " segundos"
 
-#: CoreConnectionSettingsPage#8
+#: CoreConnectionSettingsPage#10
 msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
@@ -1787,106 +1791,96 @@ msgstr ""
 "Sólo desconectar si la conexión de red se cierra por el sistema operativo. "
 "Esto podría tardar bastante tras perder la conectividad actualmente."
 
-#: CoreConnectionSettingsPage#9
+#: CoreConnectionSettingsPage#11
 msgid "Never time out actively"
 msgstr ""
 
-#: CoreConnectionSettingsPage#10
+#: CoreConnectionSettingsPage#12
 msgid "Automatically reconnect on network failures"
 msgstr "Reconectar automáticamente si falla la red"
 
-#: CoreConnectionSettingsPage#11
+#: CoreConnectionSettingsPage#13
 msgid "Retry every"
 msgstr "Reintentar cada"
 
-#: CoreConnectionSettingsPage#12
-msgctxt "CoreConnectionSettingsPage#12"
-msgid "Remote Cores"
-msgstr "Núcleos remotos"
-
-#: CoreConnectionSettingsPage#13
-msgctxt "CoreConnectionSettingsPage#13"
-msgid "Connection"
-msgstr "Conexión"
-
 #: CoreConnectionStatusWidget#1
-msgctxt "CoreConnectionStatusWidget#1"
-msgid "Form"
-msgstr "Formulario"
-
-#: CoreConnectionStatusWidget#2
-msgctxt "CoreConnectionStatusWidget#2"
-msgid "Message"
-msgstr "Mensaje"
-
-#: CoreConnectionStatusWidget#3
 msgid "s"
 msgstr "s"
 
-#: CoreConnectionStatusWidget#4
+#: CoreConnectionStatusWidget#2
 msgid "ms"
 msgstr "ms"
 
-#: CoreConnectionStatusWidget#5
+#: CoreConnectionStatusWidget#3
 msgid "(Lag: %1 %2)"
 msgstr "(Intervalo: %1 %2)"
 
-#: CoreConnectionStatusWidget#6
+#: CoreConnectionStatusWidget#4
 msgid "The connection to your core is encrypted with SSL."
 msgstr "La conexión con su núcleo está encriptada mediante SSL."
 
-#: CoreConnectionStatusWidget#7
+#: CoreConnectionStatusWidget#5
 msgid "The connection to your core is not encrypted."
 msgstr "La conexión con su núcleo está sin encriptar."
 
+#: CoreConnectionStatusWidget#6
+msgctxt "CoreConnectionStatusWidget#6"
+msgid "Form"
+msgstr "Formulario"
+
+#: CoreConnectionStatusWidget#7
+msgctxt "CoreConnectionStatusWidget#7"
+msgid "Message"
+msgstr "Mensaje"
+
 #: CoreInfoDlg#1
-msgid "Core Information"
-msgstr "Información del núcleo"
-
-#: CoreInfoDlg#2
-msgid "Version:"
-msgstr "Versión:"
-
-#: CoreInfoDlg#3
-msgid "<core version>"
-msgstr "<versión del núcleo>"
-
-#: CoreInfoDlg#4
-msgid "Uptime:"
-msgstr "Tiempo de funcionamiento:"
-
-#: CoreInfoDlg#5
-msgid "Connected Clients:"
-msgstr "Clientes conectados:"
-
-#: CoreInfoDlg#6
-msgid "<connected clients>"
-msgstr "<clientes conectados>"
-
-#: CoreInfoDlg#7
-msgid "<core uptime>"
-msgstr "<tiempo de funcionamiento del núcleo>"
-
-#: CoreInfoDlg#8
-msgid "Build date:"
-msgstr "Fecha de compilación:"
-
-#: CoreInfoDlg#9
-msgid "<build date>"
-msgstr "<fecha de compilación>"
-
-#: CoreInfoDlg#10
-msgctxt "CoreInfoDlg#10"
-msgid "Close"
-msgstr "Cerrar"
-
-#: CoreInfoDlg#11
 msgid "%n Day(s)"
 msgstr "%n día(s)"
 
-#: CoreInfoDlg#12
+#: CoreInfoDlg#2
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (desde %4)"
+
+#: CoreInfoDlg#3
+msgid "Core Information"
+msgstr "Información del núcleo"
+
+#: CoreInfoDlg#4
+msgid "Version:"
+msgstr "Versión:"
+
+#: CoreInfoDlg#5
+msgid "<core version>"
+msgstr "<versión del núcleo>"
+
+#: CoreInfoDlg#6
+msgid "Uptime:"
+msgstr "Tiempo de funcionamiento:"
+
+#: CoreInfoDlg#7
+msgid "Connected Clients:"
+msgstr "Clientes conectados:"
+
+#: CoreInfoDlg#8
+msgid "<connected clients>"
+msgstr "<clientes conectados>"
+
+#: CoreInfoDlg#9
+msgid "<core uptime>"
+msgstr "<tiempo de funcionamiento del núcleo>"
+
+#: CoreInfoDlg#10
+msgid "Build date:"
+msgstr "Fecha de compilación:"
+
+#: CoreInfoDlg#11
+msgid "<build date>"
+msgstr "<fecha de compilación>"
+
+#: CoreInfoDlg#12
+msgctxt "CoreInfoDlg#12"
+msgid "Close"
+msgstr "Cerrar"
 
 #: CoreNetwork#1
 msgid "Connection failed. Cycling to next Server"
@@ -1942,8 +1936,8 @@ msgid "away"
 msgstr "ausente"
 
 #: CoreUserInputHandler#2
-msgid "sending CTCP-%1 request"
-msgstr "enviando solicitud CTCP-%1"
+msgid "sending CTCP-%1 request to %2"
+msgstr "enviando peticiones CTCP-%1 a %2"
 
 #: CreateIdentityDlg#1
 msgid "Create New Identity"
@@ -1980,64 +1974,76 @@ msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "Recibida respuesta CTCP VERSION desde %1: %2"
 
 #: CtcpHandler#5
+msgid "Received CTCP TIME request by %1"
+msgstr "Recibiendo peticiones CTCP TIME de %1"
+
+#: CtcpHandler#6
+msgid "Received CTCP TIME answer from %1: %2"
+msgstr ""
+
+#: CtcpHandler#7
 msgid "Received unknown CTCP %1 by %2"
 msgstr "Recibido CTCP desconocido %1 por %2"
 
+#: CtcpHandler#8
+msgid " with arguments: %1"
+msgstr " con argumentos: %1"
+
 #: DebugBufferViewOverlay#1
-msgid "Debug BufferView Overlay"
-msgstr "Depurar el Revestimiento de la Vista de Conversación"
-
-#: DebugBufferViewOverlay#2
-msgid "Overlay View"
-msgstr "Vista del Revestimiento"
-
-#: DebugBufferViewOverlay#3
-msgid "Overlay Properties"
-msgstr "Propiedades del Revestimiento"
-
-#: DebugBufferViewOverlay#4
 msgid "BufferViews:"
 msgstr "Vistas de área de conversación:"
 
-#: DebugBufferViewOverlay#5
+#: DebugBufferViewOverlay#2
 msgid "All Networks:"
 msgstr "Todas las redes:"
 
-#: DebugBufferViewOverlay#6
+#: DebugBufferViewOverlay#3
 msgid "Networks:"
 msgstr "Redes:"
 
-#: DebugBufferViewOverlay#7
+#: DebugBufferViewOverlay#4
 msgid "Buffers:"
 msgstr "Conversaciones:"
 
-#: DebugBufferViewOverlay#8
+#: DebugBufferViewOverlay#5
 msgid "Removed buffers:"
 msgstr "Conversaciones borradas:"
 
-#: DebugBufferViewOverlay#9
+#: DebugBufferViewOverlay#6
 msgid "Temp. removed buffers:"
 msgstr "Conversaciones borradas temporalmente:"
 
-#: DebugBufferViewOverlay#10
+#: DebugBufferViewOverlay#7
 msgid "Add Buffers Automatically:"
 msgstr "Añadir conversaciones automáticamente:"
 
-#: DebugBufferViewOverlay#11
+#: DebugBufferViewOverlay#8
 msgid "Hide inactive buffers:"
 msgstr "Ocultar conversaciones inactivas:"
 
-#: DebugBufferViewOverlay#12
+#: DebugBufferViewOverlay#9
 msgid "Allowed buffer types:"
 msgstr "Tipos de conversaciones permitidas:"
 
-#: DebugBufferViewOverlay#13
+#: DebugBufferViewOverlay#10
 msgid "Minimum activity:"
 msgstr "Actividad mínima:"
 
-#: DebugBufferViewOverlay#14
+#: DebugBufferViewOverlay#11
 msgid "Is initialized:"
 msgstr "Está inicializado:"
+
+#: DebugBufferViewOverlay#12
+msgid "Debug BufferView Overlay"
+msgstr "Depurar el Revestimiento de la Vista de Conversación"
+
+#: DebugBufferViewOverlay#13
+msgid "Overlay View"
+msgstr "Vista del Revestimiento"
+
+#: DebugBufferViewOverlay#14
+msgid "Overlay Properties"
+msgstr "Propiedades del Revestimiento"
 
 #: DebugConsole#1
 msgid "Debug Console"
@@ -2063,44 +2069,6 @@ msgstr "Registro de depuración"
 msgctxt "DebugLogWidget#2"
 msgid "Close"
 msgstr "Cerrar"
-
-#: DesktopNotificationConfigWidget#1
-msgctxt "DesktopNotificationConfigWidget#1"
-msgid "Form"
-msgstr "Formulario"
-
-#: DesktopNotificationConfigWidget#2
-msgid "Desktop Notification (via D-Bus)"
-msgstr "Notificación de escritorio (vía D-Bus)"
-
-#: DesktopNotificationConfigWidget#3
-msgid "Timeout:"
-msgstr "Tiempo de espera:"
-
-#: DesktopNotificationConfigWidget#4
-msgctxt "DesktopNotificationConfigWidget#4"
-msgid " s"
-msgstr " s"
-
-#: DesktopNotificationConfigWidget#5
-msgid "Position hint:"
-msgstr "Indicador de posición:"
-
-#: DesktopNotificationConfigWidget#6
-msgid " px"
-msgstr " px"
-
-#: DesktopNotificationConfigWidget#7
-msgid "X: "
-msgstr "X: "
-
-#: DesktopNotificationConfigWidget#8
-msgid "Y: "
-msgstr "Y: "
-
-#: DesktopNotificationConfigWidget#9
-msgid "Queue unread notifications"
-msgstr "Encolar notificaciones sin leer"
 
 #: ExecWrapper#1
 msgid "Invalid command string for /exec: %1"
@@ -2132,152 +2100,152 @@ msgstr "Escoja..."
 
 #: HighlightSettingsPage#1
 msgctxt "HighlightSettingsPage#1"
-msgid "Form"
-msgstr "Formulario"
-
-#: HighlightSettingsPage#2
-msgid "Custom Highlights"
-msgstr "Personalizar resaltados"
-
-#: HighlightSettingsPage#3
-msgctxt "HighlightSettingsPage#3"
-msgid "Highlight"
-msgstr "Resaltado"
-
-#: HighlightSettingsPage#4
-msgid "RegEx"
-msgstr "RegEx"
-
-#: HighlightSettingsPage#5
-msgid "CS"
-msgstr "CS"
-
-#: HighlightSettingsPage#6
-msgid "Enable"
-msgstr "Activar"
-
-#: HighlightSettingsPage#7
-msgid "Add"
-msgstr "Añadir"
-
-#: HighlightSettingsPage#8
-msgctxt "HighlightSettingsPage#8"
-msgid "Remove"
-msgstr "Eliminar"
-
-#: HighlightSettingsPage#9
-msgid "Highlight Nicks"
-msgstr "Resaltar apodos"
-
-#: HighlightSettingsPage#10
-msgid "All nicks from identity"
-msgstr "Todos los apodos de la identidad"
-
-#: HighlightSettingsPage#11
-msgid "Current nick"
-msgstr "Apodo actual"
-
-#: HighlightSettingsPage#12
-msgid "None"
-msgstr "Ninguno"
-
-#: HighlightSettingsPage#13
-msgid "Case sensitive"
-msgstr "Distinguir mayúsculas"
-
-#: HighlightSettingsPage#14
-msgctxt "HighlightSettingsPage#14"
 msgid "Interface"
 msgstr "Interfaz"
 
-#: HighlightSettingsPage#15
+#: HighlightSettingsPage#2
+msgctxt "HighlightSettingsPage#2"
+msgid "Highlight"
+msgstr "Resaltar"
+
+#: HighlightSettingsPage#3
 msgid "this shouldn't be empty"
 msgstr "esto no debería estar vacío"
 
-#: HighlightSettingsPage#16
+#: HighlightSettingsPage#4
 msgid "highlight rule"
 msgstr "resaltar regla"
 
+#: HighlightSettingsPage#5
+msgctxt "HighlightSettingsPage#5"
+msgid "Form"
+msgstr "Formulario"
+
+#: HighlightSettingsPage#6
+msgid "Custom Highlights"
+msgstr "Personalizar resaltados"
+
+#: HighlightSettingsPage#7
+msgid "RegEx"
+msgstr "RegEx"
+
+#: HighlightSettingsPage#8
+msgid "CS"
+msgstr "CS"
+
+#: HighlightSettingsPage#9
+msgid "Enable"
+msgstr "Activar"
+
+#: HighlightSettingsPage#10
+msgid "Add"
+msgstr "Añadir"
+
+#: HighlightSettingsPage#11
+msgctxt "HighlightSettingsPage#11"
+msgid "Remove"
+msgstr "Eliminar"
+
+#: HighlightSettingsPage#12
+msgid "Highlight Nicks"
+msgstr "Resaltar apodos"
+
+#: HighlightSettingsPage#13
+msgid "All nicks from identity"
+msgstr "Todos los apodos de la identidad"
+
+#: HighlightSettingsPage#14
+msgid "Current nick"
+msgstr "Apodo actual"
+
+#: HighlightSettingsPage#15
+msgid "None"
+msgstr "Ninguno"
+
+#: HighlightSettingsPage#16
+msgid "Case sensitive"
+msgstr "Distinguir mayúsculas"
+
 #: IdentitiesSettingsPage#1
 msgctxt "IdentitiesSettingsPage#1"
-msgid "Rename Identity"
-msgstr "Renombrar la identidad"
-
-#: IdentitiesSettingsPage#2
-msgctxt "IdentitiesSettingsPage#2"
-msgid "..."
-msgstr "..."
-
-#: IdentitiesSettingsPage#3
-msgid "Add Identity"
-msgstr "Añadir identidad"
-
-#: IdentitiesSettingsPage#4
-msgctxt "IdentitiesSettingsPage#4"
-msgid "Add..."
-msgstr "Añadir..."
-
-#: IdentitiesSettingsPage#5
-msgid "Remove Identity"
-msgstr "Eliminar identidad"
-
-#: IdentitiesSettingsPage#6
-msgctxt "IdentitiesSettingsPage#6"
 msgid "IRC"
 msgstr "IRC"
 
-#: IdentitiesSettingsPage#7
+#: IdentitiesSettingsPage#2
 msgid "Identities"
 msgstr "Identidades"
 
-#: IdentitiesSettingsPage#8
-msgctxt "IdentitiesSettingsPage#8"
+#: IdentitiesSettingsPage#3
+msgctxt "IdentitiesSettingsPage#3"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
-"<b>Los siguientes problemas necesitan ser corregidos para que sus cambios "
-"puedan ser aplicados</b><ul>"
+"<b>Los siguientes problemas han de ser corregidos antes de que sus cambios "
+"puedan ser aplicados:</b><ul>"
 
-#: IdentitiesSettingsPage#9
+#: IdentitiesSettingsPage#4
 msgid "<li>All identities need an identity name set</li>"
 msgstr ""
 "<li>Todas las identidades necesitan un nombre de identidad establecido</li>"
 
-#: IdentitiesSettingsPage#10
+#: IdentitiesSettingsPage#5
 msgid "<li>Every identity needs at least one nickname defined</li>"
 msgstr "<li>Cada identidad necesita tener al menos un apodo definido</li>"
 
-#: IdentitiesSettingsPage#11
+#: IdentitiesSettingsPage#6
 msgid "<li>You need to specify a real name for every identity</li>"
 msgstr ""
 "<li>Usted necesita especificar al menos un nombre real para cada "
 "identidad</li>"
 
-#: IdentitiesSettingsPage#12
+#: IdentitiesSettingsPage#7
 msgid "<li>You need to specify an ident for every identity</li>"
 msgstr "<li>Debe especificar un nombre real para cada identidad</li>"
 
-#: IdentitiesSettingsPage#13
-msgctxt "IdentitiesSettingsPage#13"
+#: IdentitiesSettingsPage#8
+msgctxt "IdentitiesSettingsPage#8"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: IdentitiesSettingsPage#14
+#: IdentitiesSettingsPage#9
 msgid "One or more identities are invalid"
 msgstr "Una o más identidades son inválidas"
 
-#: IdentitiesSettingsPage#15
+#: IdentitiesSettingsPage#10
 msgid "Delete Identity?"
 msgstr "¿Eliminar identidad?"
 
-#: IdentitiesSettingsPage#16
+#: IdentitiesSettingsPage#11
 msgid "Do you really want to delete identity \"%1\"?"
 msgstr "¿Está seguro de que quiere eliminar la identidad \"%1\"?"
 
-#: IdentitiesSettingsPage#17
+#: IdentitiesSettingsPage#12
+msgctxt "IdentitiesSettingsPage#12"
+msgid "Rename Identity"
+msgstr "Renombrar identidad"
+
+#: IdentitiesSettingsPage#13
 msgid "Please enter a new name for the identity \"%1\"!"
 msgstr "¡Por favor, introduzca un nuevo nombre para la identidad \"%1\"!"
+
+#: IdentitiesSettingsPage#14
+msgctxt "IdentitiesSettingsPage#14"
+msgid "..."
+msgstr "..."
+
+#: IdentitiesSettingsPage#15
+msgid "Add Identity"
+msgstr "Añadir identidad"
+
+#: IdentitiesSettingsPage#16
+msgctxt "IdentitiesSettingsPage#16"
+msgid "Add..."
+msgstr "Añadir..."
+
+#: IdentitiesSettingsPage#17
+msgid "Remove Identity"
+msgstr "Eliminar identidad"
 
 #: Identity#1
 msgid "Quassel IRC User"
@@ -2309,124 +2277,156 @@ msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr "http://quassel-irc.org - Chatee cómodamente donde sea."
 
 #: IdentityEditWidget#1
+msgctxt "IdentityEditWidget#1"
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: IdentityEditWidget#2
+msgid "Load a Key"
+msgstr "Cargar una tecla"
+
+#: IdentityEditWidget#3
+msgid "No Key loaded"
+msgstr "No hay tecla cargada"
+
+#: IdentityEditWidget#4
+msgid "Load"
+msgstr "Cargar"
+
+#: IdentityEditWidget#5
+msgid "RSA"
+msgstr "RSA"
+
+#: IdentityEditWidget#6
+msgid "DSA"
+msgstr "DSA"
+
+#: IdentityEditWidget#7
+msgid "Clear"
+msgstr "Limpiar"
+
+#: IdentityEditWidget#8
+msgid "Load a Certificate"
+msgstr "Cargar un certificado"
+
+#: IdentityEditWidget#9
+msgid "No Certificate loaded"
+msgstr "Ningún certificado cargado"
+
+#: IdentityEditWidget#10
 msgid "General"
 msgstr "General"
 
-#: IdentityEditWidget#2
+#: IdentityEditWidget#11
 msgid "Real Name:"
 msgstr "Nombre real:"
 
-#: IdentityEditWidget#3
+#: IdentityEditWidget#12
 msgid "The \"Real Name\" is shown in /whois."
 msgstr "El \"nombre real\" es mostrado en /whois."
 
-#: IdentityEditWidget#4
+#: IdentityEditWidget#13
 msgid "Nicknames"
 msgstr "Apodos"
 
-#: IdentityEditWidget#5
-msgctxt "IdentityEditWidget#5"
+#: IdentityEditWidget#14
+msgctxt "IdentityEditWidget#14"
 msgid "Add Nickname"
-msgstr "Añadir el apodo"
+msgstr "Añadir apodo"
 
-#: IdentityEditWidget#6
-msgctxt "IdentityEditWidget#6"
+#: IdentityEditWidget#15
+msgctxt "IdentityEditWidget#15"
 msgid "&Add..."
 msgstr "&Añadir..."
 
-#: IdentityEditWidget#7
+#: IdentityEditWidget#16
 msgid "Remove Nickname"
 msgstr "Borrar apodo"
 
-#: IdentityEditWidget#8
-msgctxt "IdentityEditWidget#8"
+#: IdentityEditWidget#17
+msgctxt "IdentityEditWidget#17"
 msgid "Remove"
 msgstr "Eliminar"
 
-#: IdentityEditWidget#9
-msgctxt "IdentityEditWidget#9"
+#: IdentityEditWidget#18
+msgctxt "IdentityEditWidget#18"
 msgid "Rename Identity"
 msgstr "Renombrar identidad"
 
-#: IdentityEditWidget#10
-msgctxt "IdentityEditWidget#10"
+#: IdentityEditWidget#19
+msgctxt "IdentityEditWidget#19"
 msgid "Re&name..."
 msgstr "Re&nombrar..."
 
-#: IdentityEditWidget#11
-msgctxt "IdentityEditWidget#11"
+#: IdentityEditWidget#20
+msgctxt "IdentityEditWidget#20"
 msgid "Move upwards in list"
 msgstr "Subir en la lista"
 
-#: IdentityEditWidget#12
-msgctxt "IdentityEditWidget#12"
+#: IdentityEditWidget#21
+msgctxt "IdentityEditWidget#21"
 msgid "..."
 msgstr "..."
 
-#: IdentityEditWidget#13
-msgctxt "IdentityEditWidget#13"
+#: IdentityEditWidget#22
+msgctxt "IdentityEditWidget#22"
 msgid "Move downwards in list"
 msgstr "Bajar en la lista"
 
-#: IdentityEditWidget#14
+#: IdentityEditWidget#23
 msgid "A&way"
 msgstr "A&usente"
 
-#: IdentityEditWidget#15
+#: IdentityEditWidget#24
 msgid "Default Away Settings"
 msgstr "Preferencias de ausente por defecto"
 
-#: IdentityEditWidget#16
+#: IdentityEditWidget#25
 msgid "Nick to be used when being away"
 msgstr "Apodo para ser usado cuando se está ausente"
 
-#: IdentityEditWidget#17
+#: IdentityEditWidget#26
 msgid "Default away reason"
 msgstr "Razón de ausencia por defecto"
 
-#: IdentityEditWidget#18
+#: IdentityEditWidget#27
 msgid "Away Nick:"
 msgstr "Apodo de ausente:"
 
-#: IdentityEditWidget#19
+#: IdentityEditWidget#28
 msgid "Away Reason:"
 msgstr "Razón de ausencia:"
 
-#: IdentityEditWidget#20
+#: IdentityEditWidget#29
 msgid "Set away when all clients have detached from the core"
 msgstr ""
 "Establecer ausencia cuando todos los clientes se hayan separado del núcleo"
 
-#: IdentityEditWidget#21
+#: IdentityEditWidget#30
 msgid "Away On Detach"
 msgstr "Ausencia en separación"
 
-#: IdentityEditWidget#22
+#: IdentityEditWidget#31
 msgid "Not implemented yet"
 msgstr "Aun no implementado"
 
-#: IdentityEditWidget#23
+#: IdentityEditWidget#32
 msgid "Away On Idle"
 msgstr "Ausente cuando esté inactivo"
 
-#: IdentityEditWidget#24
+#: IdentityEditWidget#33
 msgid "Set away after"
 msgstr "Establecer ausente después de"
 
-#: IdentityEditWidget#25
+#: IdentityEditWidget#34
 msgid "minutes of being idle"
 msgstr "minutos para estar inactivo"
 
-#: IdentityEditWidget#26
-msgctxt "IdentityEditWidget#26"
-msgid "Advanced"
-msgstr "Avanzado"
-
-#: IdentityEditWidget#27
+#: IdentityEditWidget#35
 msgid "Ident:"
 msgstr "Ident"
 
-#: IdentityEditWidget#28
+#: IdentityEditWidget#36
 msgid ""
 "The \"ident\" is part of your hostmask and, together with your host, "
 "uniquely identifies you within the IRC network."
@@ -2434,30 +2434,30 @@ msgstr ""
 "\"Ident\" forma parte de su hostmask y, junto a su servidor, le identifica "
 "de manera única en la red de IRC."
 
-#: IdentityEditWidget#29
+#: IdentityEditWidget#37
 msgid "Messages"
 msgstr "Mensajes"
 
-#: IdentityEditWidget#30
+#: IdentityEditWidget#38
 msgid "Part Reason:"
 msgstr "Razón de la separación:"
 
-#: IdentityEditWidget#31
+#: IdentityEditWidget#39
 msgid "Quit Reason:"
 msgstr "Razón de la salida:"
 
-#: IdentityEditWidget#32
+#: IdentityEditWidget#40
 msgid "Kick Reason:"
 msgstr "Razón de expulsión:"
 
-#: IdentityEditWidget#33
+#: IdentityEditWidget#41
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
 msgstr ""
 "Usted necesita un cliente capaz de manejar SSL para editar su llave y su "
 "certificado internos SSL"
 
-#: IdentityEditWidget#34
+#: IdentityEditWidget#42
 msgid ""
 "Warning: you are not connected with a secured connection to the Quassel "
 "Core!\n"
@@ -2469,62 +2469,30 @@ msgstr ""
 "¡Si procede, provocará una transmisión sin encriptar de su llave SSL y su "
 "certificado SSL!"
 
-#: IdentityEditWidget#35
-msgctxt "IdentityEditWidget#35"
+#: IdentityEditWidget#43
+msgctxt "IdentityEditWidget#43"
 msgid "Continue"
 msgstr "Continuar"
 
-#: IdentityEditWidget#36
+#: IdentityEditWidget#44
 msgid "Use SSL Key"
 msgstr "Usar llave SSL"
 
-#: IdentityEditWidget#37
+#: IdentityEditWidget#45
 msgid "Key Type:"
 msgstr "Tipo de llave:"
 
-#: IdentityEditWidget#38
-msgid "No Key loaded"
-msgstr "No hay tecla cargada"
-
-#: IdentityEditWidget#39
-msgid "Load"
-msgstr "Cargar"
-
-#: IdentityEditWidget#40
+#: IdentityEditWidget#46
 msgid "Use SSL Certificate"
 msgstr "Usar certificado SSL"
 
-#: IdentityEditWidget#41
+#: IdentityEditWidget#47
 msgid "Organisation:"
 msgstr "Organización"
 
-#: IdentityEditWidget#42
-msgid "No Certificate loaded"
-msgstr "Ningún certificado cargado"
-
-#: IdentityEditWidget#43
+#: IdentityEditWidget#48
 msgid "CommonName:"
 msgstr "Nombre común:"
-
-#: IdentityEditWidget#44
-msgid "Load a Key"
-msgstr "Cargar una tecla"
-
-#: IdentityEditWidget#45
-msgid "RSA"
-msgstr "RSA"
-
-#: IdentityEditWidget#46
-msgid "DSA"
-msgstr "DSA"
-
-#: IdentityEditWidget#47
-msgid "Clear"
-msgstr "Limpiar"
-
-#: IdentityEditWidget#48
-msgid "Load a Certificate"
-msgstr "Cargar un certificado"
 
 #: IdentityPage#1
 msgid "Setup Identity"
@@ -2599,6 +2567,11 @@ msgid "Message"
 msgstr "Mensaje"
 
 #: IgnoreListEditDlg#10
+msgctxt "IgnoreListEditDlg#10"
+msgid "CTCP"
+msgstr "CTCP"
+
+#: IgnoreListEditDlg#11
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
 "<p>Depending on the type of the rule, the text is matched against "
@@ -2631,12 +2604,12 @@ msgstr ""
 "- <i>estúpido!.+</i> (RegEx) se ajusta a cualquier mensajero con el apodo "
 "<i>estúpido</i> de cualquier servidor</p>"
 
-#: IgnoreListEditDlg#11
-msgctxt "IgnoreListEditDlg#11"
+#: IgnoreListEditDlg#12
+msgctxt "IgnoreListEditDlg#12"
 msgid "Ignore Rule"
 msgstr "Ignorar regla"
 
-#: IgnoreListEditDlg#12
+#: IgnoreListEditDlg#13
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
@@ -2655,11 +2628,11 @@ msgstr ""
 "<br />\n"
 "?: representa \"exactamente un carácter\"</p>"
 
-#: IgnoreListEditDlg#13
+#: IgnoreListEditDlg#14
 msgid "Regular expression"
 msgstr "Expresión regular"
 
-#: IgnoreListEditDlg#14
+#: IgnoreListEditDlg#15
 msgid ""
 "<p><b>Scope:</b></p>\n"
 "<p><u>Global:</u></p>\n"
@@ -2681,25 +2654,25 @@ msgstr ""
 "<p>La lista de abajo es interpretada como una lista de canales a los cuales "
 "la regla debería ajustarse</p>"
 
-#: IgnoreListEditDlg#15
+#: IgnoreListEditDlg#16
 msgid "Scope"
 msgstr "Ámbito"
 
-#: IgnoreListEditDlg#16
+#: IgnoreListEditDlg#17
 msgid "Global"
 msgstr "Global"
 
-#: IgnoreListEditDlg#17
-msgctxt "IgnoreListEditDlg#17"
+#: IgnoreListEditDlg#18
+msgctxt "IgnoreListEditDlg#18"
 msgid "Network"
 msgstr "Red"
 
-#: IgnoreListEditDlg#18
-msgctxt "IgnoreListEditDlg#18"
+#: IgnoreListEditDlg#19
+msgctxt "IgnoreListEditDlg#19"
 msgid "Channel"
 msgstr "Canal"
 
-#: IgnoreListEditDlg#19
+#: IgnoreListEditDlg#20
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
 "<p>A scope rule is a semicolon separated list of either <i>network</i> or "
@@ -2720,7 +2693,7 @@ msgstr ""
 "Debería ajustarse a #foobar y a cualquier canal que empiece por "
 "<i>#quassel</i></p>"
 
-#: IgnoreListEditDlg#20
+#: IgnoreListEditDlg#21
 msgid ""
 "<p><b>Enable / Disable:</b></p>\n"
 "<p>Only enabled rules are filtered.\n"
@@ -2733,7 +2706,7 @@ msgstr ""
 "Para reglas dinámicas, desactivar hace que se vualvan a mostrar los mensajes "
 "filtrados.</p>"
 
-#: IgnoreListEditDlg#21
+#: IgnoreListEditDlg#22
 msgid "Rule is enabled"
 msgstr "Regla activada"
 
@@ -2789,37 +2762,18 @@ msgstr "Ignorar regla"
 
 #: IgnoreListSettingsPage#1
 msgctxt "IgnoreListSettingsPage#1"
-msgid "Form"
-msgstr "Formulario"
-
-#: IgnoreListSettingsPage#2
-msgctxt "IgnoreListSettingsPage#2"
-msgid "New"
-msgstr "Nuevo"
-
-#: IgnoreListSettingsPage#3
-msgctxt "IgnoreListSettingsPage#3"
-msgid "Delete"
-msgstr "Borrar"
-
-#: IgnoreListSettingsPage#4
-msgid "&Edit"
-msgstr "&Editar"
-
-#: IgnoreListSettingsPage#5
-msgctxt "IgnoreListSettingsPage#5"
 msgid "IRC"
 msgstr "IRC"
 
-#: IgnoreListSettingsPage#6
+#: IgnoreListSettingsPage#2
 msgid "Ignore List"
 msgstr "Regla para ignorar"
 
-#: IgnoreListSettingsPage#7
+#: IgnoreListSettingsPage#3
 msgid "Rule already exists"
 msgstr "La regla ya existe"
 
-#: IgnoreListSettingsPage#8
+#: IgnoreListSettingsPage#4
 msgid ""
 "There is already a rule\n"
 "\"%1\"\n"
@@ -2829,82 +2783,185 @@ msgstr ""
 "«%1»\n"
 "Escoja otra regla."
 
+#: IgnoreListSettingsPage#5
+msgctxt "IgnoreListSettingsPage#5"
+msgid "Form"
+msgstr "Formulario"
+
+#: IgnoreListSettingsPage#6
+msgctxt "IgnoreListSettingsPage#6"
+msgid "New"
+msgstr "Nuevo"
+
+#: IgnoreListSettingsPage#7
+msgctxt "IgnoreListSettingsPage#7"
+msgid "Delete"
+msgstr "Borrar"
+
+#: IgnoreListSettingsPage#8
+msgid "&Edit"
+msgstr "&Editar"
+
 #: IndicatorNotificationConfigWidget#1
 msgctxt "IndicatorNotificationConfigWidget#1"
 msgid "Form"
 msgstr "Formulario"
 
 #: IndicatorNotificationConfigWidget#2
-msgid "Show messages in indicator"
-msgstr "Mostrar mensajes en el indicador"
+msgid ""
+"This enables support for the Ayatana Project's application indicator "
+"(libindicate)."
+msgstr ""
+"Esto activa el soporte para el proyecto de Ayatana indicador de aplicaciones "
+"(libindicate)."
+
+#: IndicatorNotificationConfigWidget#3
+msgid "Show messages in application indicator"
+msgstr "Mostrar mensajes en el indicador de aplicaciones"
 
 #: InputWidget#1
-msgctxt "InputWidget#1"
-msgid "Form"
-msgstr "Formulario"
+msgid "White"
+msgstr "Blanco"
 
 #: InputWidget#2
+msgid "Black"
+msgstr "Negro"
+
+#: InputWidget#3
+msgid "Dark blue"
+msgstr "Azul oscuro"
+
+#: InputWidget#4
+msgid "Dark green"
+msgstr "Verde oscuro"
+
+#: InputWidget#5
+msgid "Red"
+msgstr "Rojo"
+
+#: InputWidget#6
+msgid "Dark red"
+msgstr "Rojo oscuro"
+
+#: InputWidget#7
+msgid "Dark magenta"
+msgstr "Magenta oscuro"
+
+#: InputWidget#8
+msgid "Orange"
+msgstr "Naranja"
+
+#: InputWidget#9
+msgid "Yellow"
+msgstr "Amarillo"
+
+#: InputWidget#10
+msgid "Green"
+msgstr "Verde"
+
+#: InputWidget#11
+msgid "Dark cyan"
+msgstr "Cian oscuro"
+
+#: InputWidget#12
+msgid "Cyan"
+msgstr "Cian"
+
+#: InputWidget#13
+msgid "Blue"
+msgstr "Azul"
+
+#: InputWidget#14
+msgid "Magenta"
+msgstr "Magenta"
+
+#: InputWidget#15
+msgid "Dark gray"
+msgstr "Gris oscuro"
+
+#: InputWidget#16
+msgid "Light gray"
+msgstr "Gris claro"
+
+#: InputWidget#17
+msgid "Clear Color"
+msgstr "Limpiar color"
+
+#: InputWidget#18
 msgid "Focus Input Line"
 msgstr "Enfocar a la línea de entrada de texto"
 
-#: InputWidget#3
+#: InputWidget#19
 msgid "Ctrl+L"
 msgstr "Ctrl+L"
 
-#: InputWidgetSettingsPage#1
-msgctxt "InputWidgetSettingsPage#1"
+#: InputWidget#20
+msgctxt "InputWidget#20"
 msgid "Form"
 msgstr "Formulario"
 
-#: InputWidgetSettingsPage#2
-msgctxt "InputWidgetSettingsPage#2"
-msgid "Custom font:"
-msgstr "Tipografía personalizada:"
-
-#: InputWidgetSettingsPage#3
-msgid "Enable spell check"
-msgstr "Activar revisión ortográfica"
-
-#: InputWidgetSettingsPage#4
-msgid "Show nick selector"
-msgstr "Mostrar el selector de apodo"
-
-#: InputWidgetSettingsPage#5
-msgid "Multi-Line Editing"
-msgstr "Edición multi-línea"
-
-#: InputWidgetSettingsPage#6
-msgid "Show at most"
-msgstr "Mostrar por encima"
-
-#: InputWidgetSettingsPage#7
-msgid "lines"
-msgstr "Líneas"
-
-#: InputWidgetSettingsPage#8
-msgid "Enable scrollbars"
-msgstr "Activar barras de desplazamiento"
-
-#: InputWidgetSettingsPage#9
-msgid "Tab Completion"
-msgstr "Autocompletar por Tabulador"
-
-#: InputWidgetSettingsPage#10
-msgid "Completion suffix:"
-msgstr "Sufijo para autocompletar:"
-
-#: InputWidgetSettingsPage#11
-msgid ": "
-msgstr ": "
-
-#: InputWidgetSettingsPage#12
-msgctxt "InputWidgetSettingsPage#12"
+#: InputWidgetSettingsPage#1
+msgctxt "InputWidgetSettingsPage#1"
 msgid "Interface"
 msgstr "Interfaz"
 
-#: InputWidgetSettingsPage#13
+#: InputWidgetSettingsPage#2
 msgid "Input Widget"
 msgstr "Componente de entrada de texto"
+
+#: InputWidgetSettingsPage#3
+msgctxt "InputWidgetSettingsPage#3"
+msgid "Form"
+msgstr "Formulario"
+
+#: InputWidgetSettingsPage#4
+msgctxt "InputWidgetSettingsPage#4"
+msgid "Custom font:"
+msgstr "Tipografía personalizada"
+
+#: InputWidgetSettingsPage#5
+msgid "Enable spell check"
+msgstr "Activar revisión ortográfica"
+
+#: InputWidgetSettingsPage#6
+msgid "Enable per chat history"
+msgstr "Activar historial por charla"
+
+#: InputWidgetSettingsPage#7
+msgid "Show nick selector"
+msgstr "Mostrar el selector de apodo"
+
+#: InputWidgetSettingsPage#8
+msgid "Show style buttons"
+msgstr "Mostrar botones de estilo"
+
+#: InputWidgetSettingsPage#9
+msgid "Multi-Line Editing"
+msgstr "Edición multi-línea"
+
+#: InputWidgetSettingsPage#10
+msgid "Show at most"
+msgstr "Mostrar por encima"
+
+#: InputWidgetSettingsPage#11
+msgid "lines"
+msgstr "Líneas"
+
+#: InputWidgetSettingsPage#12
+msgid "Enable scrollbars"
+msgstr "Activar barras de desplazamiento"
+
+#: InputWidgetSettingsPage#13
+msgid "Tab Completion"
+msgstr "Autocompletar por Tabulador"
+
+#: InputWidgetSettingsPage#14
+msgid "Completion suffix:"
+msgstr "Sufijo para autocompletar:"
+
+#: InputWidgetSettingsPage#15
+msgid ": "
+msgstr ": "
 
 #: IrcConnectionWizard#1
 msgid "Save && Connect"
@@ -3042,6 +3099,10 @@ msgid "Nick already in use: %1"
 msgstr "Este apodo ya está en uso: %1"
 
 #: IrcServerHandler#29
+msgid "Nick/channel is temporarily unavailable: %1"
+msgstr ""
+
+#: IrcServerHandler#30
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr ""
@@ -3065,109 +3126,114 @@ msgstr "servidor: %1"
 
 #: ItemViewSettingsPage#1
 msgctxt "ItemViewSettingsPage#1"
-msgid "Form"
-msgstr "Formulario"
-
-#: ItemViewSettingsPage#2
-msgctxt "ItemViewSettingsPage#2"
-msgid "Custom font:"
-msgstr "Tipografía personalizada:"
-
-#: ItemViewSettingsPage#3
-msgid "Show icons"
-msgstr "Mostrar iconos"
-
-#: ItemViewSettingsPage#4
-msgid "Chat List"
-msgstr "Lista de conversaciones"
-
-#: ItemViewSettingsPage#5
-msgid "Display topic in tooltip"
-msgstr "Mostrar tema en el globo de ayuda"
-
-#: ItemViewSettingsPage#6
-msgid "Mouse wheel changes selected chat"
-msgstr "La rueda del ratón cambia la conversación seleccionada"
-
-#: ItemViewSettingsPage#7
-msgid "Use Custom Colors"
-msgstr "Usar colores personalizados"
-
-#: ItemViewSettingsPage#8
-msgid "Standard:"
-msgstr "Estándar"
-
-#: ItemViewSettingsPage#9
-msgctxt "ItemViewSettingsPage#9"
-msgid "..."
-msgstr "..."
-
-#: ItemViewSettingsPage#10
-msgid "Inactive:"
-msgstr "Inactivo:"
-
-#: ItemViewSettingsPage#11
-msgid "Unread messages:"
-msgstr "Mensajes sin leer:"
-
-#: ItemViewSettingsPage#12
-msgid "Highlight:"
-msgstr "Resaltar:"
-
-#: ItemViewSettingsPage#13
-msgid "Other activity:"
-msgstr "Otra actividad:"
-
-#: ItemViewSettingsPage#14
-msgid "1"
-msgstr "1"
-
-#: ItemViewSettingsPage#15
-msgid "Custom Nick List Colors"
-msgstr "Colores de la lista de apodos personalizados"
-
-#: ItemViewSettingsPage#16
-msgid "Online:"
-msgstr "En línea:"
-
-#: ItemViewSettingsPage#17
-msgid "Away:"
-msgstr "Ausente:"
-
-#: ItemViewSettingsPage#18
-msgctxt "ItemViewSettingsPage#18"
 msgid "Interface"
 msgstr "Interfaz"
 
-#: ItemViewSettingsPage#19
+#: ItemViewSettingsPage#2
 msgid "Chat & Nick Lists"
 msgstr "Listas de Charlas & Apodos"
 
-#: ItemViewSettingsPage#20
-msgctxt "ItemViewSettingsPage#20"
+#: ItemViewSettingsPage#3
+msgctxt "ItemViewSettingsPage#3"
 msgid "Network"
 msgstr "Red"
 
-#: ItemViewSettingsPage#21
+#: ItemViewSettingsPage#4
 msgid "Inactive"
 msgstr "Inactivo"
 
-#: ItemViewSettingsPage#22
+#: ItemViewSettingsPage#5
 msgid "Normal"
 msgstr "Normal"
 
-#: ItemViewSettingsPage#23
+#: ItemViewSettingsPage#6
 msgid "Unread messages"
 msgstr "Mensajes sin leer"
 
-#: ItemViewSettingsPage#24
-msgctxt "ItemViewSettingsPage#24"
+#: ItemViewSettingsPage#7
+msgctxt "ItemViewSettingsPage#7"
 msgid "Highlight"
-msgstr "Resaltado"
+msgstr "Resaltar"
 
-#: ItemViewSettingsPage#25
+#: ItemViewSettingsPage#8
 msgid "Other activity"
 msgstr "Otra actividad"
+
+#: ItemViewSettingsPage#9
+msgctxt "ItemViewSettingsPage#9"
+msgid "Form"
+msgstr "Formulario"
+
+#: ItemViewSettingsPage#10
+msgctxt "ItemViewSettingsPage#10"
+msgid "Custom font:"
+msgstr "Tipografía personalizada"
+
+#: ItemViewSettingsPage#11
+msgid "Show icons"
+msgstr "Mostrar iconos"
+
+#: ItemViewSettingsPage#12
+msgid "Chat List"
+msgstr "Lista de conversaciones"
+
+#: ItemViewSettingsPage#13
+msgid "Display topic in tooltip"
+msgstr "Mostrar tema en el globo de ayuda"
+
+#: ItemViewSettingsPage#14
+msgid "Mouse wheel changes selected chat"
+msgstr "La rueda del ratón cambia la conversación seleccionada"
+
+#: ItemViewSettingsPage#15
+msgid "Use Custom Colors"
+msgstr "Usar colores personalizados"
+
+#: ItemViewSettingsPage#16
+msgid "Standard:"
+msgstr "Estándar"
+
+#: ItemViewSettingsPage#17
+msgctxt "ItemViewSettingsPage#17"
+msgid "..."
+msgstr "..."
+
+#: ItemViewSettingsPage#18
+msgid "Inactive:"
+msgstr "Inactivo:"
+
+#: ItemViewSettingsPage#19
+msgid "Unread messages:"
+msgstr "Mensajes sin leer:"
+
+#: ItemViewSettingsPage#20
+msgid "Highlight:"
+msgstr "Resaltar:"
+
+#: ItemViewSettingsPage#21
+msgid "Other activity:"
+msgstr "Otra actividad:"
+
+#: ItemViewSettingsPage#22
+msgid "1"
+msgstr "1"
+
+#: ItemViewSettingsPage#23
+msgid "Custom Nick List Colors"
+msgstr "Colores de la lista de apodos personalizados"
+
+#: ItemViewSettingsPage#24
+msgid "Online:"
+msgstr "En línea:"
+
+#: ItemViewSettingsPage#25
+msgid "Away:"
+msgstr "Ausente:"
+
+#: KNotificationBackend#1
+msgctxt "KNotificationBackend#1"
+msgid "%n pending highlights"
+msgstr ""
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -3263,7 +3329,7 @@ msgstr "Recargar estilo de hoja"
 
 #: MainWin#24
 msgid "Jump to hot chat"
-msgstr ""
+msgstr "Saltar a la charla siguiente"
 
 #: MainWin#25
 msgid "&File"
@@ -3482,10 +3548,12 @@ msgid "Server: %1"
 msgstr "Servidor: %1"
 
 #: NetworkItem#2
+msgctxt "NetworkItem#2"
 msgid "Users: %1"
 msgstr "Usuarios: %1"
 
 #: NetworkItem#3
+msgctxt "NetworkItem#3"
 msgid "Lag: %1 msecs"
 msgstr "Demora: %1 ms"
 
@@ -3507,6 +3575,10 @@ msgid "Do you want to delete the following buffer(s) permanently?"
 msgstr "¿Desea borrar los siguientes búfres permanentemente?"
 
 #: NetworkModelController#2
+msgid "...and <b>%1</b> more<br><br>"
+msgstr "...y <b>%1</b> más<br><br>"
+
+#: NetworkModelController#3
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
@@ -3514,14 +3586,14 @@ msgstr ""
 "<b>Nota:</b> Esto eliminará toda la información relacionada, incluyendo toda "
 "la información del registro del núcleo y es irreversible."
 
-#: NetworkModelController#3
+#: NetworkModelController#4
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
 msgstr ""
 "<br>Los canales en memoria que están con actividad, no pueden ser "
 "eliminados. Por favor, abandone el canal primero."
 
-#: NetworkModelController#4
+#: NetworkModelController#5
 msgid "Remove buffers permanently?"
 msgstr "¿Borrar canales en memoría permanentemente?"
 
@@ -3538,72 +3610,121 @@ msgstr "Red:"
 msgid "Channel:"
 msgstr "Canal:"
 
+#: NetworkModelController::JoinDlg#4
+msgctxt "NetworkModelController::JoinDlg#4"
+msgid "Password:"
+msgstr "Contraseña:"
+
 #: NetworkPage#1
 msgid "Setup Network Connection"
 msgstr "Configurar conexión de red"
 
 #: NetworksSettingsPage#1
 msgctxt "NetworksSettingsPage#1"
-msgid "Form"
-msgstr "Formulario"
+msgid "IRC"
+msgstr "IRC"
 
 #: NetworksSettingsPage#2
-msgctxt "NetworksSettingsPage#2"
-msgid "Re&name..."
-msgstr "Re&nombrar..."
+msgid "Networks"
+msgstr "Redes"
 
 #: NetworksSettingsPage#3
 msgctxt "NetworksSettingsPage#3"
-msgid "&Add..."
-msgstr "&Añadir..."
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
+msgstr ""
+"<b>Los siguientes problemas han de ser corregidos antes de que sus cambios "
+"puedan ser aplicados:</b><ul>"
 
 #: NetworksSettingsPage#4
-msgctxt "NetworksSettingsPage#4"
-msgid "De&lete"
-msgstr "&Borrar"
+msgid "<li>All networks need at least one server defined</li>"
+msgstr ""
+"<li>Todas las redes necesitan tener al menos un servidor definido</li>"
 
 #: NetworksSettingsPage#5
-msgid "Network Details"
-msgstr "Detalles de red"
+msgctxt "NetworksSettingsPage#5"
+msgid "</ul>"
+msgstr "</ul>"
 
 #: NetworksSettingsPage#6
-msgid "Identity:"
-msgstr "Identidad:"
+msgid "Invalid Network Settings"
+msgstr "Preferencias de red no válidas"
 
 #: NetworksSettingsPage#7
-msgctxt "NetworksSettingsPage#7"
-msgid "..."
-msgstr "..."
+msgid "Delete Network?"
+msgstr "¿Eliminar red?"
 
 #: NetworksSettingsPage#8
-msgctxt "NetworksSettingsPage#8"
-msgid "Servers"
-msgstr "Servidores"
+msgid ""
+"Do you really want to delete the network \"%1\" and all related settings, "
+"including the backlog?"
+msgstr ""
+"¿Está seguro de que desea eliminar la red \"%1\" y toda la información "
+"relacionada, inluyendo el registro?"
 
 #: NetworksSettingsPage#9
-msgid "Manage servers for this network"
-msgstr "Administrar servidores para esta red"
+msgctxt "NetworksSettingsPage#9"
+msgid "Form"
+msgstr "Formulario"
 
 #: NetworksSettingsPage#10
 msgctxt "NetworksSettingsPage#10"
-msgid "&Edit..."
-msgstr "&Editar..."
+msgid "Re&name..."
+msgstr "Re&nombrar..."
 
 #: NetworksSettingsPage#11
 msgctxt "NetworksSettingsPage#11"
-msgid "Move upwards in list"
-msgstr "Subir en la lista"
+msgid "&Add..."
+msgstr "&Añadir..."
 
 #: NetworksSettingsPage#12
 msgctxt "NetworksSettingsPage#12"
+msgid "De&lete"
+msgstr "&Borrar"
+
+#: NetworksSettingsPage#13
+msgid "Network Details"
+msgstr "Detalles de red"
+
+#: NetworksSettingsPage#14
+msgid "Identity:"
+msgstr "Identidad:"
+
+#: NetworksSettingsPage#15
+msgctxt "NetworksSettingsPage#15"
+msgid "..."
+msgstr "..."
+
+#: NetworksSettingsPage#16
+msgctxt "NetworksSettingsPage#16"
+msgid "Servers"
+msgstr "Servidores"
+
+#: NetworksSettingsPage#17
+msgid "Manage servers for this network"
+msgstr "Administrar servidores para esta red"
+
+#: NetworksSettingsPage#18
+msgctxt "NetworksSettingsPage#18"
+msgid "&Edit..."
+msgstr "&Editar..."
+
+#: NetworksSettingsPage#19
+msgctxt "NetworksSettingsPage#19"
+msgid "Move upwards in list"
+msgstr "Subir en la lista"
+
+#: NetworksSettingsPage#20
+msgctxt "NetworksSettingsPage#20"
 msgid "Move downwards in list"
 msgstr "Bajar en la lista"
 
-#: NetworksSettingsPage#13
+#: NetworksSettingsPage#21
 msgid "Commands"
 msgstr "Comandos"
 
-#: NetworksSettingsPage#14
+#: NetworksSettingsPage#22
 msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
@@ -3611,11 +3732,11 @@ msgstr ""
 "Configurar identificación automática u otros comandos a ser ejecutados tras "
 "conectar al servidor"
 
-#: NetworksSettingsPage#15
+#: NetworksSettingsPage#23
 msgid "Commands to execute on connect:"
 msgstr "Comandos a ejecutar al conectarse:"
 
-#: NetworksSettingsPage#16
+#: NetworksSettingsPage#24
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely "
@@ -3625,78 +3746,90 @@ msgstr ""
 "Tenga en cuenta que Quassel IRC recuerda los canales a los que estaba unido, "
 "por lo que, usar /join, raramente será necesario aquí."
 
-#: NetworksSettingsPage#17
-msgctxt "NetworksSettingsPage#17"
+#: NetworksSettingsPage#25
+msgctxt "NetworksSettingsPage#25"
 msgid "Connection"
 msgstr "Conexión"
 
-#: NetworksSettingsPage#18
-msgid "Control automatic reconnect to the network"
-msgstr "Control de reconexión automática a la red"
+#: NetworksSettingsPage#26
+msgid "Automatically reconnect to the IRC network after connection failures"
+msgstr ""
+"Reconectar automáticamente a la red IRC después de un error en la conexión"
 
-#: NetworksSettingsPage#19
+#: NetworksSettingsPage#27
 msgid "Automatic Reconnect"
 msgstr "Reconexión automática"
 
-#: NetworksSettingsPage#20
-msgid "Interval:"
-msgstr "Intervalo:"
+#: NetworksSettingsPage#28
+msgid "Wait"
+msgstr "Esperar"
 
-#: NetworksSettingsPage#21
-msgctxt "NetworksSettingsPage#21"
+#: NetworksSettingsPage#29
 msgid " s"
 msgstr " s"
 
-#: NetworksSettingsPage#22
-msgid "Retries:"
-msgstr "Intentos:"
+#: NetworksSettingsPage#30
+msgid "between retries"
+msgstr "entre reintentos"
 
-#: NetworksSettingsPage#23
-msgctxt "NetworksSettingsPage#23"
+#: NetworksSettingsPage#31
+msgid "Number of retries:"
+msgstr "Número de reintentos:"
+
+#: NetworksSettingsPage#32
+msgctxt "NetworksSettingsPage#32"
 msgid "Unlimited"
 msgstr "Ilimitado"
 
-#: NetworksSettingsPage#24
-msgid "Rejoin all channels on reconnect"
-msgstr "Volver a unirse a todos los canales al reconectarse"
+#: NetworksSettingsPage#33
+msgid "Rejoin all channels after reconnect"
+msgstr "Reunir todos los canales después de reconectar"
 
-#: NetworksSettingsPage#25
+#: NetworksSettingsPage#34
 msgid "Auto Identify"
 msgstr "Identificación automática"
 
-#: NetworksSettingsPage#26
+#: NetworksSettingsPage#35
 msgid "NickServ"
 msgstr "NickServ"
 
-#: NetworksSettingsPage#27
+#: NetworksSettingsPage#36
 msgid "Service:"
 msgstr "Servicio:"
 
-#: NetworksSettingsPage#28
-msgctxt "NetworksSettingsPage#28"
+#: NetworksSettingsPage#37
+msgctxt "NetworksSettingsPage#37"
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: NetworksSettingsPage#29
+#: NetworksSettingsPage#38
+msgid "Use SASL Authentication"
+msgstr "Usar autenticación SASL"
+
+#: NetworksSettingsPage#39
+msgid "Account:"
+msgstr "Cuenta:"
+
+#: NetworksSettingsPage#40
 msgid "Encodings"
 msgstr "Codificaciones"
 
-#: NetworksSettingsPage#30
+#: NetworksSettingsPage#41
 msgid ""
 "Configure advanced settings such as message encodings and automatic reconnect"
 msgstr ""
 "Configurar preferencias avanzadas como la codificación de los mensajes y la "
 "reconexión automática"
 
-#: NetworksSettingsPage#31
+#: NetworksSettingsPage#42
 msgid "Control encodings for in- and outgoing messages"
 msgstr "Control de codificación para los mensajes entrantes y salientes"
 
-#: NetworksSettingsPage#32
+#: NetworksSettingsPage#43
 msgid "Use Custom Encodings"
 msgstr "Usar codificaciones personalizadas"
 
-#: NetworksSettingsPage#33
+#: NetworksSettingsPage#44
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
@@ -3704,11 +3837,11 @@ msgstr ""
 "Especificar la codificación con la que serán enviados sus mensajes.\n"
 "UTF-8 debería ser una buena elección para la mayoría de las redes."
 
-#: NetworksSettingsPage#34
+#: NetworksSettingsPage#45
 msgid "Send messages in:"
 msgstr "Mnesajes enviados:"
 
-#: NetworksSettingsPage#35
+#: NetworksSettingsPage#46
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
@@ -3717,11 +3850,11 @@ msgstr ""
 "tales.\n"
 "Esto define la codificación de los mensajes que no están en UTF-8."
 
-#: NetworksSettingsPage#36
+#: NetworksSettingsPage#47
 msgid "Receive fallback:"
 msgstr "Recibir caída:"
 
-#: NetworksSettingsPage#37
+#: NetworksSettingsPage#48
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
@@ -3731,72 +3864,30 @@ msgstr ""
 "¡A menos que usted sepa *realmente* lo que está haciendo, deje esto como ISO-"
 "8859-1!"
 
-#: NetworksSettingsPage#38
+#: NetworksSettingsPage#49
 msgid "Server encoding:"
 msgstr "Codificación de Servidor:"
 
-#: NetworksSettingsPage#39
-msgctxt "NetworksSettingsPage#39"
-msgid "IRC"
-msgstr "IRC"
-
-#: NetworksSettingsPage#40
-msgid "Networks"
-msgstr "Redes"
-
-#: NetworksSettingsPage#41
-msgctxt "NetworksSettingsPage#41"
-msgid ""
-"<b>The following problems need to be corrected before your changes can be "
-"applied:</b><ul>"
-msgstr ""
-
-#: NetworksSettingsPage#42
-msgid "<li>All networks need at least one server defined</li>"
-msgstr ""
-"<li>Todas las redes necesitan tener al menos un servidor definido</li>"
-
-#: NetworksSettingsPage#43
-msgctxt "NetworksSettingsPage#43"
-msgid "</ul>"
-msgstr "</ul>"
-
-#: NetworksSettingsPage#44
-msgid "Invalid Network Settings"
-msgstr "Preferencias de red no válidas"
-
-#: NetworksSettingsPage#45
-msgid "Delete Network?"
-msgstr "¿Eliminar red?"
-
-#: NetworksSettingsPage#46
-msgid ""
-"Do you really want to delete the network \"%1\" and all related settings, "
-"including the backlog?"
-msgstr ""
-"¿Está seguro de que desea eliminar la red \"%1\" y toda la información "
-"relacionada, inluyendo el registro?"
-
 #: NickEditDlg#1
+msgctxt "NickEditDlg#1"
+msgid "Add Nickname"
+msgstr "Añadir apodo"
+
+#: NickEditDlg#2
 msgid "Edit Nickname"
 msgstr "Editar apodo"
 
-#: NickEditDlg#2
+#: NickEditDlg#3
 msgid "Please enter a valid nickname:"
 msgstr "Por favor, introduzca un apodo válido:"
 
-#: NickEditDlg#3
+#: NickEditDlg#4
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
 msgstr ""
 "Un apodo válido puede contener letras del alfabeto anglosajón, dígitos "
 "numéricos, y los carácteres especiales {, }, [, ], \\, |, `, ^, _ and -."
-
-#: NickEditDlg#4
-msgctxt "NickEditDlg#4"
-msgid "Add Nickname"
-msgstr "Añadir el apodo"
 
 #: NotificationsSettingsPage#1
 msgctxt "NotificationsSettingsPage#1"
@@ -3817,12 +3908,16 @@ msgid "Form"
 msgstr "Formulario"
 
 #: PhononNotificationConfigWidget#2
-msgid "Audio Notification (via Phonon)"
-msgstr "Notificación con sonido (vía Phonon)"
+msgid "Play a sound"
+msgstr "Reproducir un sonido"
 
 #: PhononNotificationConfigWidget#3
-msgid "Play File:"
-msgstr "Reproducir:"
+msgid "Prelisten to the selected sound"
+msgstr "Pre-escuchar el sonido seleccionado"
+
+#: PhononNotificationConfigWidget#4
+msgid "Select the sound file to play"
+msgstr "Seleccionar el archivo de sonido a reproducir"
 
 #: PostgreSqlStorage#1
 msgid "PostgreSQL Turbo Bomber HD!"
@@ -4115,19 +4210,14 @@ msgstr "Contraseña del Proxy:"
 
 #: SettingsDlg#1
 msgctxt "SettingsDlg#1"
-msgid "Configure Quassel"
-msgstr "Configurar Quassel"
-
-#: SettingsDlg#2
-msgctxt "SettingsDlg#2"
 msgid "Settings"
 msgstr "Configuración"
 
-#: SettingsDlg#3
+#: SettingsDlg#2
 msgid "Save changes"
 msgstr "Guardar cambios"
 
-#: SettingsDlg#4
+#: SettingsDlg#3
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
@@ -4135,67 +4225,74 @@ msgstr ""
 "Hay cambios no guardados en la página de configuración actual. ¿Le gustaría "
 "aplicar sus cambios ahora?"
 
-#: SettingsDlg#5
-msgctxt "SettingsDlg#5"
+#: SettingsDlg#4
+msgctxt "SettingsDlg#4"
 msgid "Configure %1"
 msgstr "Configurar %1"
 
-#: SettingsDlg#6
-msgctxt "SettingsDlg#6"
+#: SettingsDlg#5
+msgctxt "SettingsDlg#5"
 msgid "Reload Settings"
 msgstr "Recargar configuración"
 
-#: SettingsDlg#7
-msgctxt "SettingsDlg#7"
+#: SettingsDlg#6
+msgctxt "SettingsDlg#6"
 msgid ""
 "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
+"¿Quiere recargar las preferencias, deshaciendo sus cambios en esta página?"
+
+#: SettingsDlg#7
+msgctxt "SettingsDlg#7"
+msgid "Restore Defaults"
+msgstr "Restaurar predeterminados"
 
 #: SettingsDlg#8
 msgctxt "SettingsDlg#8"
-msgid "Restore Defaults"
-msgstr "Restaurar valores predeterminados"
+msgid "Do you like to restore the default values for this page?"
+msgstr "¿Le gustaría restaurar los valores predeterminados para ésta página?"
 
 #: SettingsDlg#9
 msgctxt "SettingsDlg#9"
-msgid "Do you like to restore the default values for this page?"
-msgstr ""
-
-#: SettingsPageDlg#1
-msgctxt "SettingsPageDlg#1"
 msgid "Configure Quassel"
 msgstr "Configurar Quassel"
 
-#: SettingsPageDlg#2
-msgctxt "SettingsPageDlg#2"
-msgid "Settings"
-msgstr "Opciones"
-
-#: SettingsPageDlg#3
-msgctxt "SettingsPageDlg#3"
+#: SettingsPageDlg#1
+msgctxt "SettingsPageDlg#1"
 msgid "Configure %1"
 msgstr "Configurar %1"
 
-#: SettingsPageDlg#4
-msgctxt "SettingsPageDlg#4"
+#: SettingsPageDlg#2
+msgctxt "SettingsPageDlg#2"
 msgid "Reload Settings"
-msgstr "Recargar contrafiguración"
+msgstr "Recargar configuración"
 
-#: SettingsPageDlg#5
-msgctxt "SettingsPageDlg#5"
+#: SettingsPageDlg#3
+msgctxt "SettingsPageDlg#3"
 msgid ""
 "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
+"¿Quiere recargar la configuración, deshaciendo sus cambios en esta página?"
+
+#: SettingsPageDlg#4
+msgctxt "SettingsPageDlg#4"
+msgid "Restore Defaults"
+msgstr "Restaurar predeterminados"
+
+#: SettingsPageDlg#5
+msgctxt "SettingsPageDlg#5"
+msgid "Do you like to restore the default values for this page?"
+msgstr "¿Le gustaría restaurar los valores predeterminados para ésta página?"
 
 #: SettingsPageDlg#6
 msgctxt "SettingsPageDlg#6"
-msgid "Restore Defaults"
-msgstr "Restaurar valores predeterminados"
+msgid "Configure Quassel"
+msgstr "Configurar Quassel"
 
 #: SettingsPageDlg#7
 msgctxt "SettingsPageDlg#7"
-msgid "Do you like to restore the default values for this page?"
-msgstr ""
+msgid "Settings"
+msgstr "Configuración"
 
 #: SignalProxy#1
 msgid "Peer tried to send package larger than max package size!"
@@ -4305,104 +4402,109 @@ msgstr ""
 "ejecutando, y si cabe esperar que sólo unos pocos usuarios usen su núcleo."
 
 #: SslInfoDlg#1
-msgid "Security Information"
-msgstr "Información de seguridad"
-
-#: SslInfoDlg#2
-msgid "<b>Hostname:</b>"
-msgstr "<b>Servidor:</b>"
-
-#: SslInfoDlg#3
-msgid "<b>IP address:</b>"
-msgstr "<b>Dirección IP:</b>"
-
-#: SslInfoDlg#4
-msgid "<b>Encryption:</b>"
-msgstr "<b>Encriptación:</b>"
-
-#: SslInfoDlg#5
-msgid "<b>Protocol:</b>"
-msgstr "<b>Protocolo:</b>"
-
-#: SslInfoDlg#6
-msgid "<b>Certificate chain:</b>"
-msgstr "<b>Cadena de certificado:</b>"
-
-#: SslInfoDlg#7
-msgid "Subject"
-msgstr "Asunto"
-
-#: SslInfoDlg#8
-msgid "<b>Common name:</b>"
-msgstr "<b>Nombre de pila</b>"
-
-#: SslInfoDlg#9
-msgid "<b>Organization:</b>"
-msgstr "<b>Organización:</b>"
-
-#: SslInfoDlg#10
-msgid "<b>Organizational unit:</b>"
-msgstr "<b>Unidad organizativa:</b>"
-
-#: SslInfoDlg#11
-msgid "<b>Country:</b>"
-msgstr "<b>País:</b>"
-
-#: SslInfoDlg#12
-msgid "<b>State or province:</b>"
-msgstr "<b>Estado o provincia:</b>"
-
-#: SslInfoDlg#13
-msgid "<b>Locality:</b>"
-msgstr "<b>Localidad:</b>"
-
-#: SslInfoDlg#14
-msgid "Issuer"
-msgstr "Emisor"
-
-#: SslInfoDlg#15
-msgid "<b>Validity period:</b>"
-msgstr "<b>Periodo de validez:</b>"
-
-#: SslInfoDlg#16
-msgid "<b>MD5 digest:</b>"
-msgstr "<b>Resumen MD5:</b>"
-
-#: SslInfoDlg#17
-msgid "<b>SHA1 digest:</b>"
-msgstr "<b>Resumen SHA1:</b>"
-
-#: SslInfoDlg#18
-msgid "<b>Trusted:</b>"
-msgstr "<b>Segura:</b>"
-
-#: SslInfoDlg#19
 msgid "Yes"
 msgstr "Sí"
 
-#: SslInfoDlg#20
+#: SslInfoDlg#2
 msgid "No, for the following reasons:<ul>"
 msgstr "No, por las siguientes razones:<ul>"
 
-#: SslInfoDlg#21
+#: SslInfoDlg#3
 msgid "%1 to %2"
 msgstr "%1 a %2"
+
+#: SslInfoDlg#4
+msgid "Security Information"
+msgstr "Información de seguridad"
+
+#: SslInfoDlg#5
+msgid "<b>Hostname:</b>"
+msgstr "<b>Servidor:</b>"
+
+#: SslInfoDlg#6
+msgid "<b>IP address:</b>"
+msgstr "<b>Dirección IP:</b>"
+
+#: SslInfoDlg#7
+msgid "<b>Encryption:</b>"
+msgstr "<b>Encriptación:</b>"
+
+#: SslInfoDlg#8
+msgid "<b>Protocol:</b>"
+msgstr "<b>Protocolo:</b>"
+
+#: SslInfoDlg#9
+msgid "<b>Certificate chain:</b>"
+msgstr "<b>Cadena de certificado:</b>"
+
+#: SslInfoDlg#10
+msgid "Subject"
+msgstr "Asunto"
+
+#: SslInfoDlg#11
+msgid "<b>Common name:</b>"
+msgstr "<b>Nombre de pila</b>"
+
+#: SslInfoDlg#12
+msgid "<b>Organization:</b>"
+msgstr "<b>Organización:</b>"
+
+#: SslInfoDlg#13
+msgid "<b>Organizational unit:</b>"
+msgstr "<b>Unidad organizativa:</b>"
+
+#: SslInfoDlg#14
+msgid "<b>Country:</b>"
+msgstr "<b>País:</b>"
+
+#: SslInfoDlg#15
+msgid "<b>State or province:</b>"
+msgstr "<b>Estado o provincia:</b>"
+
+#: SslInfoDlg#16
+msgid "<b>Locality:</b>"
+msgstr "<b>Localidad:</b>"
+
+#: SslInfoDlg#17
+msgid "Issuer"
+msgstr "Emisor"
+
+#: SslInfoDlg#18
+msgid "<b>Validity period:</b>"
+msgstr "<b>Periodo de validez:</b>"
+
+#: SslInfoDlg#19
+msgid "<b>MD5 digest:</b>"
+msgstr "<b>Resumen MD5:</b>"
+
+#: SslInfoDlg#20
+msgid "<b>SHA1 digest:</b>"
+msgstr "<b>Resumen SHA1:</b>"
+
+#: SslInfoDlg#21
+msgid "<b>Trusted:</b>"
+msgstr "<b>Segura:</b>"
 
 #: StatusBufferItem#1
 msgid "Status Buffer"
 msgstr "Área de estado"
 
+#: SystemTray#1
+msgid "&Minimize"
+msgstr "&Minimizar"
+
+#: SystemTray#2
+msgid "&Restore"
+msgstr "&Restaurar"
+
+#: SystrayNotificationBackend#1
+msgctxt "SystrayNotificationBackend#1"
+msgid "%n pending highlights"
+msgstr ""
+
 #: SystrayNotificationBackend::ConfigWidget#1
-msgid "System Tray Icon"
-msgstr "Icono de bandeja del sistema"
-
-#: SystrayNotificationBackend::ConfigWidget#2
-msgid "Animate"
-msgstr "Animar"
-
-#: SystrayNotificationBackend::ConfigWidget#3
-msgid "Show bubble"
-msgstr "Mostrar mensaje emergente"
+msgid "Show a message in a popup"
+msgstr "Mostrar un mensaje en una ventana emergente"
 
 #: TaskbarNotificationBackend::ConfigWidget#1
 msgid "Activate dock entry, timeout:"
@@ -4419,8 +4521,8 @@ msgstr "Ilimitado"
 
 #: TaskbarNotificationBackend::ConfigWidget#4
 msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
-msgid " s"
-msgstr " s"
+msgid " seconds"
+msgstr " segundos"
 
 #: ToolBarActionProvider#1
 msgctxt "ToolBarActionProvider#1"
@@ -4541,40 +4643,50 @@ msgstr "Desconectarse de todo"
 
 #: TopicWidget#1
 msgctxt "TopicWidget#1"
-msgid "Form"
-msgstr "Formulario"
+msgid "Users: %1"
+msgstr "Usuarios: %1"
 
 #: TopicWidget#2
 msgctxt "TopicWidget#2"
+msgid "Lag: %1 msecs"
+msgstr "Demora: %1 ms"
+
+#: TopicWidget#3
+msgctxt "TopicWidget#3"
+msgid "Form"
+msgstr "Formulario"
+
+#: TopicWidget#4
+msgctxt "TopicWidget#4"
 msgid "..."
 msgstr "..."
 
 #: TopicWidgetSettingsPage#1
 msgctxt "TopicWidgetSettingsPage#1"
-msgid "Form"
-msgstr "Formulario"
-
-#: TopicWidgetSettingsPage#2
-msgctxt "TopicWidgetSettingsPage#2"
-msgid "Custom font:"
-msgstr "Tipografía personalizada:"
-
-#: TopicWidgetSettingsPage#3
-msgid "Resize dynamically to fit contents"
-msgstr "Redimensionar dinámicamente para ajustarse al contenido"
-
-#: TopicWidgetSettingsPage#4
-msgid "On hover only"
-msgstr "Sólo al pasar por encima"
-
-#: TopicWidgetSettingsPage#5
-msgctxt "TopicWidgetSettingsPage#5"
 msgid "Interface"
 msgstr "Interfaz"
 
-#: TopicWidgetSettingsPage#6
+#: TopicWidgetSettingsPage#2
 msgid "Topic Widget"
 msgstr "Componente del tema"
+
+#: TopicWidgetSettingsPage#3
+msgctxt "TopicWidgetSettingsPage#3"
+msgid "Form"
+msgstr "Formulario"
+
+#: TopicWidgetSettingsPage#4
+msgctxt "TopicWidgetSettingsPage#4"
+msgid "Custom font:"
+msgstr "Tipografía personalizada"
+
+#: TopicWidgetSettingsPage#5
+msgid "Resize dynamically to fit contents"
+msgstr "Redimensionar dinámicamente para ajustarse al contenido"
+
+#: TopicWidgetSettingsPage#6
+msgid "On hover only"
+msgstr "Sólo al pasar por encima"
 
 #: UiStyle::StyledMessage#1
 msgctxt "UiStyle::StyledMessage#1"
@@ -4699,15 +4811,516 @@ msgstr "%n Operador(es)"
 
 #: UserCategoryItem#4
 msgid "%n Half-Op(s)"
-msgstr ""
+msgstr "%n semiOp(es)"
 
 #: UserCategoryItem#5
 msgid "%n Voiced"
-msgstr ""
+msgstr "%n con voz"
 
 #: UserCategoryItem#6
 msgid "%n User(s)"
 msgstr "%n Usuario(s)"
+
+#~ msgctxt "AliasesSettingsPage#2"
+#~ msgid "New"
+#~ msgstr "Nuevo"
+
+#~ msgctxt "AliasesSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "AliasesSettingsPage#4"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "AliasesSettingsPage#3"
+#~ msgid "Delete"
+#~ msgstr "Borrar"
+
+#~ msgctxt "AppearanceSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgid "<Original>"
+#~ msgstr "<Original>"
+
+#~ msgctxt "AppearanceSettingsPage#10"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "AppearanceSettingsPage#20"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "BacklogSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "BacklogSettingsPage#14"
+#~ msgid "Unlimited"
+#~ msgstr "Ilimitado"
+
+#~ msgctxt "BacklogSettingsPage#19"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "BufferViewSettingsPage#6"
+#~ msgid "Network:"
+#~ msgstr "Red:"
+
+#~ msgctxt "BufferViewSettingsPage#4"
+#~ msgid "De&lete"
+#~ msgstr "&Borrar"
+
+#~ msgctxt "BufferViewSettingsPage#3"
+#~ msgid "&Add..."
+#~ msgstr "&Añadir..."
+
+#~ msgctxt "BufferViewSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "BufferViewSettingsPage#21"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "BufferViewSettingsPage#19"
+#~ msgid "Highlight"
+#~ msgstr "Resaltado"
+
+#~ msgctxt "ChatMonitorSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "ChatMonitorSettingsPage#11"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "ChatViewSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "ChatViewSettingsPage#10"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "ChatViewSettingsPage#22"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "ConnectionSettingsPage#4"
+#~ msgid " seconds"
+#~ msgstr " segundos"
+
+#~ msgctxt "ConnectionSettingsPage#13"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgid "CTCP"
+#~ msgstr "CTCP"
+
+#~ msgctxt "BufferViewSettingsPage#2"
+#~ msgid "Re&name..."
+#~ msgstr "Re&nombrar..."
+
+#~ msgctxt "CoreAccountSettingsPage#9"
+#~ msgid "Remote Cores"
+#~ msgstr "Núcleos remotos"
+
+#~ msgid "Desktop Notification (via D-Bus)"
+#~ msgstr "Notificación de escritorio (vía D-Bus)"
+
+#~ msgctxt "ChatMonitorSettingsPage#12"
+#~ msgid "Chat Monitor"
+#~ msgstr "Monitor de charla"
+
+#~ msgctxt "CoreAccountSettingsPage#4"
+#~ msgid "Add..."
+#~ msgstr "Añadir..."
+
+#~ msgctxt "CoreAccountSettingsPage#5"
+#~ msgid "Delete"
+#~ msgstr "Borrar"
+
+#~ msgctxt "CoreConnectAuthDlg#5"
+#~ msgid "Remember password"
+#~ msgstr "Recordar contraseña"
+
+#~ msgctxt "CoreConnectAuthDlg#3"
+#~ msgid "Password:"
+#~ msgstr "Contraseña:"
+
+#~ msgctxt "CoreConnectAuthDlg#4"
+#~ msgid "Username:"
+#~ msgstr "Usuario:"
+
+#~ msgctxt "CoreConnectionSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "CoreConnectionSettingsPage#7"
+#~ msgid " seconds"
+#~ msgstr " segundos"
+
+#~ msgctxt "CoreConnectionStatusWidget#2"
+#~ msgid "Message"
+#~ msgstr "Mensaje"
+
+#~ msgctxt "CoreConnectionStatusWidget#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "CoreConnectionSettingsPage#13"
+#~ msgid "Connection"
+#~ msgstr "Conexión"
+
+#~ msgctxt "CoreConnectionSettingsPage#12"
+#~ msgid "Remote Cores"
+#~ msgstr "Núcleos remotos"
+
+#~ msgctxt "CoreInfoDlg#10"
+#~ msgid "Close"
+#~ msgstr "Cerrar"
+
+#~ msgid "X: "
+#~ msgstr "X: "
+
+#~ msgctxt "HighlightSettingsPage#8"
+#~ msgid "Remove"
+#~ msgstr "Eliminar"
+
+#~ msgctxt "HighlightSettingsPage#3"
+#~ msgid "Highlight"
+#~ msgstr "Resaltado"
+
+#~ msgctxt "HighlightSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "IdentitiesSettingsPage#13"
+#~ msgid "</ul>"
+#~ msgstr "</ul>"
+
+#~ msgctxt "IdentitiesSettingsPage#4"
+#~ msgid "Add..."
+#~ msgstr "Añadir..."
+
+#~ msgctxt "IdentitiesSettingsPage#2"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "IdentitiesSettingsPage#1"
+#~ msgid "Rename Identity"
+#~ msgstr "Renombrar la identidad"
+
+#~ msgctxt "HighlightSettingsPage#14"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "IdentitiesSettingsPage#6"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "DesktopNotificationConfigWidget#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "DesktopNotificationConfigWidget#4"
+#~ msgid " s"
+#~ msgstr " s"
+
+#~ msgid "Timeout:"
+#~ msgstr "Tiempo de espera:"
+
+#~ msgid " px"
+#~ msgstr " px"
+
+#~ msgid "Y: "
+#~ msgstr "Y: "
+
+#~ msgctxt "IdentityEditWidget#35"
+#~ msgid "Continue"
+#~ msgstr "Continuar"
+
+#~ msgctxt "IdentityEditWidget#5"
+#~ msgid "Add Nickname"
+#~ msgstr "Añadir el apodo"
+
+#~ msgctxt "IdentityEditWidget#6"
+#~ msgid "&Add..."
+#~ msgstr "&Añadir..."
+
+#~ msgctxt "IdentityEditWidget#9"
+#~ msgid "Rename Identity"
+#~ msgstr "Renombrar identidad"
+
+#~ msgctxt "IdentityEditWidget#10"
+#~ msgid "Re&name..."
+#~ msgstr "Re&nombrar..."
+
+#~ msgctxt "IdentityEditWidget#8"
+#~ msgid "Remove"
+#~ msgstr "Eliminar"
+
+#~ msgctxt "IdentityEditWidget#12"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "IdentityEditWidget#26"
+#~ msgid "Advanced"
+#~ msgstr "Avanzado"
+
+#~ msgctxt "IgnoreListSettingsPage#5"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "IgnoreListSettingsPage#3"
+#~ msgid "Delete"
+#~ msgstr "Borrar"
+
+#~ msgctxt "IgnoreListSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "IgnoreListSettingsPage#2"
+#~ msgid "New"
+#~ msgstr "Nuevo"
+
+#~ msgctxt "InputWidgetSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "InputWidget#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "IgnoreListEditDlg#11"
+#~ msgid "Ignore Rule"
+#~ msgstr "Ignorar regla"
+
+#~ msgctxt "IgnoreListEditDlg#18"
+#~ msgid "Channel"
+#~ msgstr "Canal"
+
+#~ msgctxt "IgnoreListEditDlg#17"
+#~ msgid "Network"
+#~ msgstr "Red"
+
+#~ msgctxt "InputWidgetSettingsPage#2"
+#~ msgid "Custom font:"
+#~ msgstr "Tipografía personalizada:"
+
+#~ msgctxt "InputWidgetSettingsPage#12"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "ItemViewSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "ItemViewSettingsPage#2"
+#~ msgid "Custom font:"
+#~ msgstr "Tipografía personalizada:"
+
+#~ msgctxt "ItemViewSettingsPage#9"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "ItemViewSettingsPage#18"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "ItemViewSettingsPage#20"
+#~ msgid "Network"
+#~ msgstr "Red"
+
+#~ msgctxt "ItemViewSettingsPage#24"
+#~ msgid "Highlight"
+#~ msgstr "Resaltado"
+
+#~ msgid "Users: %1"
+#~ msgstr "Usuarios: %1"
+
+#~ msgctxt "NetworksSettingsPage#17"
+#~ msgid "Connection"
+#~ msgstr "Conexión"
+
+#~ msgid "Interval:"
+#~ msgstr "Intervalo:"
+
+#~ msgctxt "NetworksSettingsPage#21"
+#~ msgid " s"
+#~ msgstr " s"
+
+#~ msgctxt "NetworksSettingsPage#7"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "NetworksSettingsPage#8"
+#~ msgid "Servers"
+#~ msgstr "Servidores"
+
+#~ msgctxt "NetworksSettingsPage#3"
+#~ msgid "&Add..."
+#~ msgstr "&Añadir..."
+
+#~ msgctxt "NetworksSettingsPage#2"
+#~ msgid "Re&name..."
+#~ msgstr "Re&nombrar..."
+
+#~ msgctxt "NetworksSettingsPage#4"
+#~ msgid "De&lete"
+#~ msgstr "&Borrar"
+
+#~ msgctxt "NetworksSettingsPage#10"
+#~ msgid "&Edit..."
+#~ msgstr "&Editar..."
+
+#~ msgctxt "NetworksSettingsPage#39"
+#~ msgid "IRC"
+#~ msgstr "IRC"
+
+#~ msgctxt "NetworksSettingsPage#28"
+#~ msgid "Password:"
+#~ msgstr "Contraseña:"
+
+#~ msgctxt "NetworksSettingsPage#23"
+#~ msgid "Unlimited"
+#~ msgstr "Ilimitado"
+
+#~ msgctxt "NetworksSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "NickEditDlg#4"
+#~ msgid "Add Nickname"
+#~ msgstr "Añadir el apodo"
+
+#~ msgctxt "NetworksSettingsPage#43"
+#~ msgid "</ul>"
+#~ msgstr "</ul>"
+
+#~ msgctxt "SettingsDlg#8"
+#~ msgid "Restore Defaults"
+#~ msgstr "Restaurar valores predeterminados"
+
+#~ msgctxt "SettingsPageDlg#1"
+#~ msgid "Configure Quassel"
+#~ msgstr "Configurar Quassel"
+
+#~ msgctxt "SettingsPageDlg#2"
+#~ msgid "Settings"
+#~ msgstr "Opciones"
+
+#~ msgctxt "SettingsDlg#2"
+#~ msgid "Settings"
+#~ msgstr "Configuración"
+
+#~ msgctxt "SettingsDlg#5"
+#~ msgid "Configure %1"
+#~ msgstr "Configurar %1"
+
+#~ msgctxt "SettingsPageDlg#6"
+#~ msgid "Restore Defaults"
+#~ msgstr "Restaurar valores predeterminados"
+
+#~ msgctxt "SettingsPageDlg#3"
+#~ msgid "Configure %1"
+#~ msgstr "Configurar %1"
+
+#~ msgid "Animate"
+#~ msgstr "Animar"
+
+#~ msgid "System Tray Icon"
+#~ msgstr "Icono de bandeja del sistema"
+
+#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
+#~ msgid " s"
+#~ msgstr " s"
+
+#~ msgctxt "TopicWidget#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "TopicWidgetSettingsPage#5"
+#~ msgid "Interface"
+#~ msgstr "Interfaz"
+
+#~ msgctxt "TopicWidget#2"
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgctxt "TopicWidgetSettingsPage#1"
+#~ msgid "Form"
+#~ msgstr "Formulario"
+
+#~ msgctxt "TopicWidgetSettingsPage#2"
+#~ msgid "Custom font:"
+#~ msgstr "Tipografía personalizada:"
+
+#~ msgctxt "IdentityEditWidget#11"
+#~ msgid "Move upwards in list"
+#~ msgstr "Subir en la lista"
+
+#~ msgctxt "IdentityEditWidget#13"
+#~ msgid "Move downwards in list"
+#~ msgstr "Bajar en la lista"
+
+#~ msgid "Show messages in indicator"
+#~ msgstr "Mostrar mensajes en el indicador"
+
+#~ msgctxt "NetworksSettingsPage#12"
+#~ msgid "Move downwards in list"
+#~ msgstr "Bajar en la lista"
+
+#~ msgctxt "NetworksSettingsPage#11"
+#~ msgid "Move upwards in list"
+#~ msgstr "Subir en la lista"
+
+#~ msgctxt "SettingsDlg#1"
+#~ msgid "Configure Quassel"
+#~ msgstr "Configurar Quassel"
+
+#~ msgctxt "SettingsDlg#6"
+#~ msgid "Reload Settings"
+#~ msgstr "Recargar configuración"
+
+#~ msgctxt "SettingsPageDlg#4"
+#~ msgid "Reload Settings"
+#~ msgstr "Recargar contrafiguración"
+
+#~ msgctxt "IdentitiesSettingsPage#8"
+#~ msgid ""
+#~ "<b>The following problems need to be corrected before your changes can be "
+#~ "applied:</b><ul>"
+#~ msgstr ""
+#~ "<b>Los siguientes problemas necesitan ser corregidos para que sus cambios "
+#~ "puedan ser aplicados</b><ul>"
+
+#~ msgid ""
+#~ "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the "
+#~ "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+#~ "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+#~ "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+#~ "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+#~ "and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+#~ "icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
+#~ "Team</a> and used under the <a "
+#~ "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+#~ "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+#~ "report bugs."
+#~ msgstr ""
+#~ "<b>Un moderno cliente de IRC, distribuido</b><br><br>&copy;2005-2009 por el "
+#~ "Proyecto Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-"
+#~ "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+#~ "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC está sujeto "
+#~ "a doble licencia bajo <a href=\"http://www.gnu.org/licenses/gpl-"
+#~ "2.0.txt\">GPLv2</a> y <a href=\"http://www.gnu.org/licenses/gpl-"
+#~ "3.0.txt\">GPLv3</a>.<br>La mayoría de los iconos son &copy; por el <a "
+#~ "href=\"http://www.oxygen-icons.org\">Equipo de Oxigen</a> y usados bajo la "
+#~ "<a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Por "
+#~ "favor, utilice <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-"
+#~ "irc.org</a> para reportar fallos."
 
 #~ msgid "IRC"
 #~ msgstr "IRC"
@@ -4834,8 +5447,14 @@ msgstr "%n Usuario(s)"
 #~ msgid "Close"
 #~ msgstr "Cerrar"
 
-#~ msgid " s"
-#~ msgstr " s"
+#~ msgid "sending CTCP-%1 request"
+#~ msgstr "enviando solicitud CTCP-%1"
+
+#~ msgid "Position hint:"
+#~ msgstr "Indicador de posición:"
+
+#~ msgid "Queue unread notifications"
+#~ msgstr "Encolar notificaciones sin leer"
 
 #~ msgid "Remove"
 #~ msgstr "Borrar"
@@ -4904,11 +5523,29 @@ msgstr "%n Usuario(s)"
 #~ msgid "Server address:"
 #~ msgstr "Dirección del servidor:"
 
+#~ msgid "Lag: %1 msecs"
+#~ msgstr "Demora: %1 ms"
+
 #~ msgid "Servers"
 #~ msgstr "Servidores"
 
 #~ msgid "&Edit..."
 #~ msgstr "&Editar..."
+
+#~ msgid "Control automatic reconnect to the network"
+#~ msgstr "Control de reconexión automática a la red"
+
+#~ msgid "Retries:"
+#~ msgstr "Intentos:"
+
+#~ msgid "Rejoin all channels on reconnect"
+#~ msgstr "Volver a unirse a todos los canales al reconectarse"
+
+#~ msgid "Audio Notification (via Phonon)"
+#~ msgstr "Notificación con sonido (vía Phonon)"
+
+#~ msgid "Play File:"
+#~ msgstr "Reproducir:"
 
 #~ msgid "Settings"
 #~ msgstr "Preferencias"
@@ -4932,3 +5569,6 @@ msgstr "%n Usuario(s)"
 
 #~ msgid "Configure Quassel"
 #~ msgstr "Configurar Quassel"
+
+#~ msgid "Show bubble"
+#~ msgstr "Mostrar mensaje emergente"
