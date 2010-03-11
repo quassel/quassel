@@ -177,20 +177,21 @@ private:
 
   QScriptEngine *scriptEngine;
 
-  struct RawMessage {
-    NetworkId networkId;
-    Message::Type type;
-    BufferInfo::Type bufferType;
-    QString target;
-    QString text;
-    QString sender;
-    Message::Flags flags;
-    RawMessage(NetworkId networkId, Message::Type type, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender, Message::Flags flags)
-      : networkId(networkId), type(type), bufferType(bufferType), target(target), text(text), sender(sender), flags(flags) {}
-  };
   QList<RawMessage> _messageQueue;
   bool _processMessages;
   CoreIgnoreListManager _ignoreListManager;
+};
+
+struct RawMessage {
+  NetworkId networkId;
+  Message::Type type;
+  BufferInfo::Type bufferType;
+  QString target;
+  QString text;
+  QString sender;
+  Message::Flags flags;
+  RawMessage(NetworkId networkId, Message::Type type, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender, Message::Flags flags)
+    : networkId(networkId), type(type), bufferType(bufferType), target(target), text(text), sender(sender), flags(flags) {}
 };
 
 #endif

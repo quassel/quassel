@@ -24,10 +24,7 @@
 #include <QStringList>
 #include <QRegExp>
 
-#include "message.h"
-
 INIT_SYNCABLE_OBJECT(IgnoreListManager)
-
 IgnoreListManager &IgnoreListManager::operator=(const IgnoreListManager &other) {
   if(this == &other)
     return *this;
@@ -117,21 +114,25 @@ void IgnoreListManager::addIgnoreListItem(int type, const QString &ignoreRule, b
   SYNC(ARG(type), ARG(ignoreRule), ARG(isRegEx), ARG(strictness), ARG(scope), ARG(scopeRule), ARG(isActive))
 }
 
-IgnoreListManager::StrictnessType IgnoreListManager::match(const Message &msg, const QString &network) {
-  if(!(msg.type() & (Message::Plain | Message::Notice | Message::Action)))
+IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgContents, const QString &msgSender, Message::Type msgType, const QString &network, const QString &bufferName) {
+  // We method don't rely on a proper Message object to make this method more versatile.
+  // This allows us to use it in the core with unprocessed Messages or in the Client
+  // with properly preprocessed Messages.
+  if(!(msgType & (Message::Plain | Message::Notice | Message::Action)))
     return UnmatchedStrictness;
 
   foreach(IgnoreListItem item, _ignoreList) {
     if(!item.isActive || item.type == CtcpIgnore)
       continue;
-    if(item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network)) ||
-       (item.scope == ChannelScope && scopeMatch(item.scopeRule, msg.bufferInfo().bufferName()))) {
+    if(item.scope == GlobalScope
+       || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network))
+       || (item.scope == ChannelScope && scopeMatch(item.scopeRule, bufferName))) {
 
       QString str;
       if(item.type == MessageIgnore)
-        str = msg.contents();
+        str = msgContents;
       else
-        str = msg.sender();
+        str = msgSender;
 
       QRegExp ruleRx = QRegExp(item.ignoreRule);
       ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
@@ -153,6 +154,7 @@ IgnoreListManager::StrictnessType IgnoreListManager::match(const Message &msg, c
   }
   return UnmatchedStrictness;
 }
+
 
 bool IgnoreListManager::scopeMatch(const QString &scopeRule, const QString &string) const {
   foreach(QString rule, scopeRule.split(";")) {

@@ -24,6 +24,7 @@
 #include "ignorelistmanager.h"
 
 class CoreSession;
+struct RawMessage;
 
 class CoreIgnoreListManager : public IgnoreListManager {
   SYNCABLE_OBJECT
@@ -33,6 +34,8 @@ public:
   explicit CoreIgnoreListManager(CoreSession *parent);
 
   inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
+
+  StrictnessType match(const RawMessage &rawMsg, const QString &networkName);
 
 public slots:
   virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { toggleIgnoreRule(ignoreRule); }
