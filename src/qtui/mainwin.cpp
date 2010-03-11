@@ -313,8 +313,9 @@ void MainWin::setupActions() {
                                           this, SLOT(showCoreInfoDlg())));
   coll->addAction("ConfigureNetworks", new Action(SmallIcon("configure"), tr("Configure &Networks..."), coll,
                                               this, SLOT(on_actionConfigureNetworks_triggered())));
+  // FIXME: use QKeySequence::Quit once we depend on Qt 4.6
   coll->addAction("Quit", new Action(SmallIcon("application-exit"), tr("&Quit"), coll,
-                                      this, SLOT(quit()), QKeySequence::Quit));
+                                     this, SLOT(quit()), Qt::CTRL + Qt::Key_Q));
 
   // View
   coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll,
