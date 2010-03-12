@@ -89,54 +89,65 @@ void TopicWidget::setCustomFont(const QFont &f) {
 }
 
 void TopicWidget::setTopic(const QModelIndex &index) {
-  BufferId id = index.sibling(index.row(), 0).data(NetworkModel::BufferIdRole).value<BufferId>();
-  if(!id.isValid()) {
-    _topic = "";
-    _readonly = true;
-    ui.topicEditButton->setVisible(false);
-    ui.topicLabel->setText(_topic);
-    ui.topicLineEdit->setText(_topic);
-    switchPlain();
-    return;
-  }
-
-  const Network *network = Client::network(Client::networkModel()->networkId(id));
-
   QString newtopic;
-  if(Client::networkModel()->bufferType(id) == BufferInfo::StatusBuffer) {
-    newtopic = QString("%1 (%2) | %3 | %4")
-    .arg(Qt::escape(network->networkName()))
-    .arg(Qt::escape(network->currentServer()))
-    .arg(tr("Users: %1").arg(network->ircUsers().count()))
-    .arg(tr("Lag: %1 msecs").arg(network->latency()));
-    _readonly = true;
-  } else if(Client::networkModel()->bufferType(id) == BufferInfo::QueryBuffer) {
-    newtopic = QString("%1").arg(index.sibling(index.row(), 0).data().toString());
-    const IrcUser *user = network->ircUser(QString(index.sibling(index.row(), 0).data().toString()));
-    if (user) {
-      if(!user->userModes().isEmpty())
-        newtopic.append(QString(" (+%1)").arg(user->userModes()));
-      if(!user->realName().isEmpty())
-        newtopic.append(QString(" | %1").arg(user->realName()));
-      newtopic.append(QString(" | %1").arg(user->hostmask().remove(0, user->hostmask().indexOf("!")+1)));
-    }
-    _readonly = true;
-  } else if(Client::networkModel()->bufferType(id) == BufferInfo::ChannelBuffer) {
-    newtopic = index.sibling(index.row(), 1).data().toString();
-    _readonly = false;
-  }
-  else {
-    newtopic = "";
-    _readonly = true;
-  }
+  bool readonly = true;
 
-  ui.topicEditButton->setVisible(!_readonly);
+  BufferId id = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+  if(id.isValid()) {
+    QModelIndex index0 = index.sibling(index.row(), 0);
+    const Network *network = Client::network(Client::networkModel()->networkId(id));
+
+    switch(Client::networkModel()->bufferType(id)) {
+    case BufferInfo::StatusBuffer:
+      if(network) {
+        newtopic = QString("%1 (%2) | %3 | %4")
+          .arg(Qt::escape(network->networkName()))
+          .arg(Qt::escape(network->currentServer()))
+          .arg(tr("Users: %1").arg(network->ircUsers().count()))
+          .arg(tr("Lag: %1 msecs").arg(network->latency()));
+      } else {
+        newtopic = index0.data(Qt::DisplayRole).toString();
+      }
+      break;
+
+    case BufferInfo::ChannelBuffer:
+      newtopic = index.sibling(index.row(), 1).data().toString();
+      readonly = false;
+      break;
+
+    case BufferInfo::QueryBuffer:
+      {
+        QString nickname = index0.data(Qt::DisplayRole).toString();
+        if(network) {
+          const IrcUser *user = network->ircUser(nickname);
+          if(user) {
+            newtopic = QString("%1%2%3 | %4@%5").arg(nickname)
+              .arg(user->userModes().isEmpty() ? QString() : QString(" (+%1)").arg(user->userModes()))
+              .arg(user->realName().isEmpty() ? QString() : QString(" | %1").arg(user->realName()))
+              .arg(user->user())
+            .arg(user->host());
+          } else { // no such user
+            newtopic = nickname;
+          }
+        } else { // no valid Network-Obj.
+          newtopic = nickname;
+        }
+        break;
+      }
+    default:
+      newtopic = index0.data(Qt::DisplayRole).toString();
+    }
+  }
 
   _topic = newtopic;
+  _readonly = readonly;
+
+  ui.topicEditButton->setVisible(!_readonly);
   ui.topicLabel->setText(newtopic);
   ui.topicLineEdit->setText(newtopic);
   switchPlain();
 }
+
 
 void TopicWidget::setReadOnly(const bool &readonly) {
   if(_readonly == readonly)
