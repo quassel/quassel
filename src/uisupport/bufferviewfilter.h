@@ -90,7 +90,7 @@ private slots:
   void showServerQueriesChanged();
 
 private:
-  QPointer<BufferViewConfig> _config;
+  QPointer<BufferViewConfig> _config, _tmpConfig;
   Qt::SortOrder _sortOrder;
 
   bool _showServerQueries;
