@@ -1,27 +1,80 @@
 [Global]
 IconName=quassel
 Comment=Quassel IRC
+Comment[en_GB]=Quassel IRC
+Comment[es]=IRC Quassel
+Comment[fr]=Quassel IRC
+Comment[hu]=Quassel IRC
+Comment[pt_BR]=Quassel IRC
+Comment[ru]=Quassel IRC
+Comment[sq]=Quassel IRC
+Comment[tr]=Quassel IRC
+Comment[uk]=Quassel IRC
 
 [Event/Highlight]
 Name=Highlight
+Name[en_GB]=Highlight
+Name[es]=Resaltado
+Name[pt_BR]=Realçar
+Name[ru]=Подсветка
+Name[sq]=Thekso
+Name[tr]=Vurgulama
+Name[uk]=Підсвічування
 Comment=A highlighted message has arrived
+Comment[en_GB]=A highlighted message has arrived
+Comment[es]=A llegado un mensaje resaltado
+Comment[pt_BR]=Realçar quando uma mensagem chegar
+Comment[sq]=Një mesazh i theksuar ka mbërritur
+Comment[tr]=Vurgulanmış bir ileti geldi
+Comment[uk]=Надійшло підсвічене повідомлення
 Sound=KDE-Im-Highlight-Msg.ogg
 Action=Sound|Popup|Taskbar
 
 [Event/HighlightFocused]
 Name=Highlight when focused
+Name[en_GB]=Highlight when focused
+Name[es]=Resaltado cuando está en el foco
+Name[pt_BR]=Realçar quando focado
+Name[sq]=Përzgjidh kur fokusohet
+Name[uk]=Підсвічування у фокусі
 Comment=A highlighted message has arrived while Quassel is focused
+Comment[en_GB]=A highlighted message has arrived while Quassel is focused
+Comment[es]=Ha llegado un mensaje resaltado mientras se enfocaba Quassel
+Comment[pt_BR]=Mensagem realçada quando chegar enquando o Quassel estiver focado
+Comment[sq]=një mesazh i përzgjedhur ka mbërritur kur Quassel ishte në fokus
+Comment[uk]=Під час перебування Quassel у фокусі надійшло підсвічене повідомлення
 Sound=KDE-Im-Highlight-Msg.ogg
 Action=Taskbar
 
 [Event/PrivMsg]
 Name=Private Message
+Name[en_GB]=Private Message
+Name[es]=Mensaje privado
+Name[pt_BR]=Mensagem privada
+Name[ru]=Личное сообщение
+Name[sq]=Mesazh Privat
+Name[uk]=Особисте повідомлення
 Comment=A private message (query) has arrived
+Comment[en_GB]=A private message (query) has arrived
+Comment[es]=Ha llegado un mensaje privado (consulta)
+Comment[pt_BR]=Uma mensagem privada (consulta) chegou
+Comment[sq]=një mesazh privat (kërkesë) ka mbërritur
+Comment[uk]=Надійшло особисте повідомлення (повідомлення діалогу)
 Sound=KDE-Im-Message-In.ogg
 Action=Sound|Popup|Taskbar
 
 [Event/PrivMsgFocused]
 Name=Private message when focused
+Name[en_GB]=Private message when focused
+Name[es]=Mensaje privado cuando está en el foco
+Name[pt_BR]=Mensagem privada quando focada
+Name[sq]=Mesazh Privat kur Fokusohet
+Name[uk]=Особисте повідомлення під час фокусування
 Comment=A private message (query) has arrived while Quassel is focused
+Comment[en_GB]=A private message (query) has arrived while Quassel is focused
+Comment[es]=Ha llegado un mensaje privado (consulta) mientras se enfocaba Quassel
+Comment[pt_BR]=Uma mensagem privada (consulta) chegou enquanto o Quassel está focado
+Comment[sq]=Një masazh privat (kërkesë) ka mbërritur kur Quassel ishte i fokusuar
+Comment[uk]=Під час перебування Quassel у фокусі надійшло особисте повідомлення (повідомлення з діалогу)
 Sound=KDE-Im-Message-In.ogg
 Action=Taskbar
