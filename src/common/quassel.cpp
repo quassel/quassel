@@ -122,7 +122,6 @@ void Quassel::quit() {
 */
 void Quassel::registerMetaTypes() {
   // Complex types
-  qRegisterMetaType<QVariant>("QVariant");
   qRegisterMetaType<Message>("Message");
   qRegisterMetaType<BufferInfo>("BufferInfo");
   qRegisterMetaType<NetworkInfo>("NetworkInfo");
@@ -130,7 +129,6 @@ void Quassel::registerMetaTypes() {
   qRegisterMetaType<Identity>("Identity");
   qRegisterMetaType<Network::ConnectionState>("Network::ConnectionState");
 
-  qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
   qRegisterMetaTypeStreamOperators<Message>("Message");
   qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
   qRegisterMetaTypeStreamOperators<NetworkInfo>("NetworkInfo");
@@ -151,6 +149,12 @@ void Quassel::registerMetaTypes() {
   qRegisterMetaTypeStreamOperators<UserId>("UserId");
   qRegisterMetaTypeStreamOperators<AccountId>("AccountId");
   qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
+
+  // Versions of Qt prior to 4.7 didn't define QVariant as a meta type
+  if(!QMetaType::type("QVariant")) {
+    qRegisterMetaType<QVariant>("QVariant");
+    qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
+  }
 }
 
 void Quassel::setupBuildInfo(const QString &generated) {
