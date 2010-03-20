@@ -142,6 +142,17 @@ void SyncableObject::fromVariantMap(const QVariantMap &properties) {
 bool SyncableObject::setInitValue(const QString &property, const QVariant &value) {
   QString handlername = QString("initSet") + property;
   handlername[7] = handlername[7].toUpper();
+
+  QString methodSignature = QString("%1(%2)").arg(handlername).arg(value.typeName());
+  int methodIdx = metaObject()->indexOfMethod(methodSignature.toAscii().constData());
+  if(methodIdx <  0) {
+    QByteArray normedMethodName = QMetaObject::normalizedSignature(methodSignature.toAscii().constData());
+    methodIdx = metaObject()->indexOfMethod(normedMethodName.constData());
+  }
+  if(methodIdx < 0) {
+    return false;
+  }
+
   QGenericArgument param(value.typeName(), value.constData());
   return QMetaObject::invokeMethod(this, handlername.toAscii(), param);
 }
