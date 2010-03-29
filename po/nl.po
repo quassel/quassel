@@ -1,27 +1,26 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Dutch translation for quassel
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# This file is distributed under the same license as the quassel package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: quassel\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-03-03 10:51+0200\n"
-"PO-Revision-Date: 2010-03-17 09:17+0000\n"
-"Last-Translator: Cihan Ersoy <Unknown>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2010-03-21 05:12+0000\n"
+"Last-Translator: Redmar <redmar.vdberg@gmail.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Launchpad-Export-Date: 2010-03-28 22:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
-"X-Language: tr\n"
 
 #: AboutDlg#1
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Sürüm:</b> %1<br><b>Protokol sürümü:</b> %2<br><b>İnşa:</b> %3"
+msgstr "<b>Versie:</b> %1<br><b>Protocol versie:</b> %2<br><b>Built:</b> %3"
 
 #: AboutDlg#2
 msgid ""
@@ -37,18 +36,29 @@ msgid ""
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
 msgstr ""
+"<b>Een moderne, gedistribueerde IRC-client</b><br><br>&copy;2005-2010 het "
+"Quassel project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> op <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel-IRC valt onder "
+"twee licenties: <a href=\"http://www.gnu.org/licenses/gpl-"
+"2.0.txt\">GPLv2</a> en <a href=\"http://www.gnu.org/licenses/gpl-"
+"3.0.txt\">GPLv3</a>.<br>De meeste pictogrammen zijn &copy; van het <a "
+"href=\"http://www.oxygen-icons.org\">Oxygen Team</a> en vallen onder de <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Gebruik <a "
+"href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> om bugs "
+"te melden."
 
 #: AboutDlg#3
 msgid "Quassel IRC is mainly developed by:"
-msgstr "Quassel IRC geliştiricileri:"
+msgstr "Quassel-IRC wordt voornamelijk ontwikkeld door:"
 
 #: AboutDlg#4
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
 msgstr ""
-"Aşağıdaki katkıcılara (alfabetik sırayla) ve buraya yazmayı unuttuğumuz "
-"herkese teşekkür ederiz:"
+"We willen de volgende personen (in alfabetische volgorde) bedanken die een "
+"steentje bijgedragen hebben, naast iedereen die we hier vergeten zijn:"
 
 #: AboutDlg#5
 msgid ""
@@ -65,10 +75,22 @@ msgid ""
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
 msgstr ""
+"Onze speciale dank gaat uit naar:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>voor het originele Quassel "
+"pictogram - The All-Seeing Eye</dt><dt><img "
+"src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-"
+"icons.org\">The Oxygen Team</a></b></dt><dd>voor het creëren van al het "
+"artwork dat u in Quassel ziet </dd><dt><img src=\":/pics/qt-logo-"
+"32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software het "
+"vroegere Trolltech</a></b></dt><dd>voor het maken van Qt en Qtopia, en voor "
+"het sponsoren van QuasselTopia met Greenphones en meer</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>voor het in stand houden van Qt en "
+"voor het sponsoren van de ontwikkeling van Quassel Mobile met N810's</dd>"
 
 #: AboutDlg#6
 msgid "About Quassel"
-msgstr "Quassel Hakkında"
+msgstr "Over Quassel"
 
 #: AboutDlg#7
 msgid ""
@@ -87,7 +109,7 @@ msgstr ""
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel-"
 "IRC</p></body></html>"
 
 #: AboutDlg#8
@@ -107,39 +129,44 @@ msgstr ""
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Sürüm 0.2.0-pre, İnşa "
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Versie 0.2.0-pre, Build "
 "&gt;= 474 (2008-02-08)</p></body></html>"
 
 #: AboutDlg#9
 msgid "&About"
-msgstr "&Hakkında"
+msgstr "I&nfo"
 
 #: AboutDlg#10
 msgid "A&uthors"
-msgstr "&Yazarlar"
+msgstr "A&uteurs"
 
 #: AboutDlg#11
 msgid "&Contributors"
-msgstr "&Katkıcılar"
+msgstr "&Medewerkers"
 
 #: AboutDlg#12
 msgid "&Thanks To"
-msgstr "&Teşekkürler"
+msgstr "Me&t dank aan"
 
 #: AbstractSqlStorage#1
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
-msgstr "Schema (sürüm %1) güncel değil. %2 sürümüne yükseltiniz..."
+msgstr ""
+"Het geïnstalleerde Schema (versie %1) is niet de laatste versie. Upgraden "
+"naar versie %2..."
 
 #: AbstractSqlStorage#2
 msgid "Upgrade failed..."
-msgstr "Yükseltme başarısız..."
+msgstr "Upgraden mislukt..."
 
 #: AliasesModel#1
 msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
 msgstr ""
+"<b>De afkorting voor de alias</b><br />Het kan als een regulier slash-"
+"commando gebruikt worden.<br /><br /><b>Voorbeeld:</b> \"foo\" kan gebruikt "
+"worden met /foo"
 
 #: AliasesModel#2
 msgid ""
@@ -155,84 +182,96 @@ msgid ""
 "be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
 "1 2 3\" when called like /test 1 2 3"
 msgstr ""
+"<b>De zin in de afkorting zal uitgeschreven worden naar</b><br /><b>speciale "
+"variabelen:</b><br /> - <b>$i</b> staat voor de i-de parameter.<br /> - "
+"<b>$i..j</b> staat voor de i-de to j-de parameter, gescheiden door "
+"spaties.<br /> - <b>$i..</b> staat voor alle parameters vanaf i gescheiden "
+"door spaties.<br /> - <b>$i:hostname</b> staat voor de hostname van de "
+"gebruiker geïdentificeerd door de i-de parameter of een * als dit niet "
+"bekend is.<br /> - <b>$0</b> de hele zin.<br /> - <b>$nick</b> uw huidige "
+"bijnaam<br /> - <b>$channel</b> de naam van het geselecteerde kanaal<br "
+"/><br />Meerdere commando's kunnen door puntkomma's gescheiden worden.<br "
+"/><br /><b>Voorbeeld:</b> \"Test $1; Test $2; Test Alle $0\" zal "
+"uitgeschreven worden als drie verschillende berichten \"Test 1\", \"Test 2\" "
+"and \"Test Alle 1 2 3\" wanneer aangeroepen met /test 1 2 3"
 
 #: AliasesModel#3
 msgid "Alias"
-msgstr "Kısaltma"
+msgstr "Alias"
 
 #: AliasesModel#4
 msgid "Expansion"
-msgstr "Genişleme"
+msgstr "Uitbreiding"
 
 #: AliasesSettingsPage#1
 msgctxt "AliasesSettingsPage#1"
 msgid "IRC"
-msgstr ""
+msgstr "IRC"
 
 #: AliasesSettingsPage#2
 msgid "Aliases"
-msgstr "Kısaltmalar"
+msgstr "Aliassen"
 
 #: AliasesSettingsPage#3
 msgctxt "AliasesSettingsPage#3"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: AliasesSettingsPage#4
 msgctxt "AliasesSettingsPage#4"
 msgid "New"
-msgstr ""
+msgstr "Nieuw"
 
 #: AliasesSettingsPage#5
 msgctxt "AliasesSettingsPage#5"
 msgid "Delete"
-msgstr ""
+msgstr "Verwijder"
 
 #: AppearanceSettingsPage#1
 msgctxt "AppearanceSettingsPage#1"
 msgid "Interface"
-msgstr ""
+msgstr "Interface"
 
 #: AppearanceSettingsPage#2
 msgid "<System Default>"
-msgstr "<Sistem Öntanımlı>"
+msgstr "<Systeemstandaard>"
 
 #: AppearanceSettingsPage#3
 msgid "Please choose a stylesheet file"
-msgstr "Lütfen bir biçem deposu dosyası seçin"
+msgstr "Kies een stylesheet-bestand"
 
 #: AppearanceSettingsPage#4
 msgctxt "AppearanceSettingsPage#4"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: AppearanceSettingsPage#5
 msgid "Client style:"
-msgstr "İstemci stili:"
+msgstr "Clientstijl:"
 
 #: AppearanceSettingsPage#6
 msgid "Set application style"
-msgstr "Uygulama biçimini ayarla:"
+msgstr "Stel programmastijl in"
 
 #: AppearanceSettingsPage#7
 msgid "Language:"
-msgstr "Dil:"
+msgstr "Taal:"
 
 #: AppearanceSettingsPage#8
 msgid "Set the application language. Requires restart!"
-msgstr "Uygulama dilini ayarla: Yeniden başlatılması gerekiyor!"
+msgstr "Stel de programmataal in. Herstart vereist!"
 
 #: AppearanceSettingsPage#9
 msgid "<Untranslated>"
-msgstr ""
+msgstr "<Onvertaald>"
 
 #: AppearanceSettingsPage#10
 msgid "Use custom stylesheet"
-msgstr "Özel biçem deposunu kullan"
+msgstr "Gebruik eigen stylesheet"
 
 #: AppearanceSettingsPage#11
 msgid "Path:"
-msgstr "Yol:"
+msgstr "Pad"
 
 #: AppearanceSettingsPage#12
 msgctxt "AppearanceSettingsPage#12"
@@ -241,113 +280,119 @@ msgstr "..."
 
 #: AppearanceSettingsPage#13
 msgid "Show system tray icon"
-msgstr "Sistem tepsisi simgesini göster"
+msgstr "Systeemvakpictogram tonen"
 
 #: AppearanceSettingsPage#14
 msgid "Hide to tray on close button"
-msgstr ""
+msgstr "Verberg naar systeemvak als het venster wordt gesloten"
 
 #: AppearanceSettingsPage#15
 msgid "Enable animations"
-msgstr "Canlandırmaları etkinleştir"
+msgstr "Activeer animaties"
 
 #: AppearanceSettingsPage#16
 msgid "Message Redirection"
-msgstr "Mesaj Yönlendirme"
+msgstr "Berichten doorsturen"
 
 #: AppearanceSettingsPage#17
 msgid "User Notices:"
-msgstr "Kullanıcı Bildirimleri:"
+msgstr "Gebruikers waarschuwingen:"
 
 #: AppearanceSettingsPage#18
 msgid "Server Notices:"
-msgstr "Sunucu Bildirimleri:"
+msgstr "Server waarschuwingen"
 
 #: AppearanceSettingsPage#19
 msgid "Default Target"
-msgstr "Öntanımlı Hedef"
+msgstr "Standaarddoel"
 
 #: AppearanceSettingsPage#20
 msgid "Status Window"
-msgstr "Durum Penceresi"
+msgstr "Statusvenster"
 
 #: AppearanceSettingsPage#21
 msgid "Current Chat"
-msgstr "Geçerli Sohbet"
+msgstr "Huidige chat"
 
 #: AppearanceSettingsPage#22
 msgid "Errors:"
-msgstr "Hatalar:"
+msgstr "Fouten:"
 
 #: AwayLogView#1
 msgid "Away Log"
-msgstr ""
+msgstr "Altijd loggen"
 
 #: AwayLogView#2
 msgctxt "AwayLogView#2"
 msgid "Show Network Name"
-msgstr "Ağ Adını Göster"
+msgstr "Toon netwerknaam"
 
 #: AwayLogView#3
 msgctxt "AwayLogView#3"
 msgid "Show Buffer Name"
-msgstr "Arabellek Adını Göster"
+msgstr "Toon buffernaam"
 
 #: BacklogSettingsPage#1
 msgctxt "BacklogSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: BacklogSettingsPage#2
 msgid "Backlog Fetching"
-msgstr ""
+msgstr "Backlog verkrijgen"
 
 #: BacklogSettingsPage#3
 msgctxt "BacklogSettingsPage#3"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: BacklogSettingsPage#4
 msgid ""
 "Number of messages to be requested from the core when using scrolling up in "
 "the buffer view."
 msgstr ""
+"Aantal berichten dat van de core gevraagd moet worden wanneer omhoog wordt "
+"gescrold in de buffer-view."
 
 #: BacklogSettingsPage#5
 msgid "Dynamic backlog amount:"
-msgstr "Dinamik backlog miktarı:"
+msgstr "Grootte van dynamische backlog"
 
 #: BacklogSettingsPage#6
 msgid "Backlog request method:"
-msgstr ""
+msgstr "Backlog aanvraagmethode:"
 
 #: BacklogSettingsPage#7
 msgid "Fixed amount per chat"
-msgstr ""
+msgstr "Vaste hoeveelheid per chat"
 
 #: BacklogSettingsPage#8
 msgid "Unread messages per chat"
-msgstr "Sohbet başına okunmayan iletiler"
+msgstr "Ongelezen berichten per chat"
 
 #: BacklogSettingsPage#9
 msgid "Globally unread messages"
-msgstr "Tüm okunmamış iletiler"
+msgstr "Globaal ongelezen berichten"
 
 #: BacklogSettingsPage#10
 msgid ""
 "The simplest requester. It fetches a fixed amount of lines for each chat "
 "window from the backlog."
 msgstr ""
+"Eenvoudig ophalen. Haal voor elk venster een vast aantal regels op van de "
+"backlog."
 
 #: BacklogSettingsPage#11
 msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
 msgstr ""
+"aantal berichten per buffer dat wordt opgevraagd nadat de core-verbinding "
+"tot stand is gebracht."
 
 #: BacklogSettingsPage#12
 msgid "Initial backlog amount:"
-msgstr "Başlangıç birikim miktarı:"
+msgstr "Initiële grootte backlog:"
 
 #: BacklogSettingsPage#13
 msgid ""
@@ -357,29 +402,36 @@ msgid ""
 "You can also choose to fetch additional older chatlines to provide a better "
 "context."
 msgstr ""
+"Haal voor elk individueel venster de ongelezen berichten op. Het maximale "
+"aantal regels kan per chat ingesteld worden.\n"
+"\n"
+"U kunt er ook voor kiezen nog extra regels op te vragen voor een betere "
+"context."
 
 #: BacklogSettingsPage#14
 msgid "Maximum amount of messages to be fetched per buffer."
-msgstr ""
+msgstr "Maximaal aantal berichten dat per buffer opgehaald kan worden."
 
 #: BacklogSettingsPage#15
 msgid "Limit:"
-msgstr "Sınır:"
+msgstr "Limiet:"
 
 #: BacklogSettingsPage#16
 msgctxt "BacklogSettingsPage#16"
 msgid "Unlimited"
-msgstr "Sınırsız"
+msgstr "Ongelimiteerd"
 
 #: BacklogSettingsPage#17
 msgid ""
 "Amount of messages to be fetched in addition to the unread messages. The "
 "Limit does not apply here."
 msgstr ""
+"Aantal berichten dat naast het aantal ongelezen berichten opgehaald kan "
+"worden. Het Limiet is hierbij niet van toepassing."
 
 #: BacklogSettingsPage#18
 msgid "Additional Messages:"
-msgstr "Ek Mesajlar:"
+msgstr "Extra berichten:"
 
 #: BacklogSettingsPage#19
 msgid ""
@@ -394,10 +446,19 @@ msgid ""
 "You can also chose to fetch additional older chatlines to provide a better "
 "context."
 msgstr ""
+"Haal voor elke chat alle berichten op die nieuwer zijn dan het oudste "
+"ongelezen bericht.\n"
+"\n"
+"Let op: Dit is niet aan te raden als u verborgen chatvensters gebruikt of "
+"inactieve chats heeft (dwz: geen stale-queries of kanalen).\n"
+"Het is wel nuttig om de totale grootte van het backlog te beperken en is "
+"waarschijnlijk het snelste.\n"
+"\n"
+"U kunt er ook van kiezen extra berichten op te halen voor een betere context."
 
 #: BacklogSettingsPage#20
 msgid "Maximum amount of messages to be fetched over all buffers."
-msgstr ""
+msgstr "Maximaal aantal op te halen berichten voor alle buffers bij elkaar."
 
 #: BufferItem#1
 msgid "<p> %1 - %2 </p>"
@@ -405,173 +466,175 @@ msgstr "<p> %1 - %2 </p>"
 
 #: BufferView#1
 msgid "Merge buffers permanently?"
-msgstr "Arabellekleri kalıcı olarak birleştireyim mi?"
+msgstr "Buffers definitief samenvoegen?"
 
 #: BufferView#2
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
 msgstr ""
-"\"%1\" arabelleğini kalıcı olarak \"%2\" arabelleğiyle birleştireyim mi?\n"
-"Bu işlem geri alınamaz!"
+"Wilt u de buffer \"%1\" definitief in buffer \"%2\" invoegen?\n"
+" Dit kan niet ongedaan gemaakt worden!"
 
 #: BufferViewEditDlg#1
 msgctxt "BufferViewEditDlg#1"
 msgid "Dialog"
-msgstr "İletişim Kutusu"
+msgstr "Dialoog"
 
 #: BufferViewEditDlg#2
 msgid "Please enter a name for the chat list:"
-msgstr "Sohbet listesi için lütfen bir isim girin:"
+msgstr "Vul een naam voor de chatlijst in:"
 
 #: BufferViewEditDlg#3
 msgid "Add Chat List"
-msgstr "Sohbet Listesi Ekle"
+msgstr "Chatlijst toevoegen"
 
 #: BufferViewFilter#1
 msgid "Show / Hide Chats"
-msgstr "Sohbetleri Göster / Gizle"
+msgstr "Chats tonen/verbergen"
 
 #: BufferViewSettingsPage#1
 msgctxt "BufferViewSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: BufferViewSettingsPage#2
 msgid "Custom Chat Lists"
-msgstr "Özel Sohbet Listeleri"
+msgstr "Eigen chatlijst"
 
 #: BufferViewSettingsPage#3
 msgid "All"
-msgstr "Tümü"
+msgstr "Alle"
 
 #: BufferViewSettingsPage#4
 msgid "Delete Chat List?"
-msgstr "Sohbet :Listesini Sil?"
+msgstr "Chatlijst verwijderen?"
 
 #: BufferViewSettingsPage#5
 msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr "Gerçekten \"%1\" sohbet listesini silmek istiyor musunuz?"
+msgstr "Wilt u echt de chatlijst \"%1\" verwijderen?"
 
 #: BufferViewSettingsPage#6
 msgctxt "BufferViewSettingsPage#6"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: BufferViewSettingsPage#7
 msgctxt "BufferViewSettingsPage#7"
 msgid "Re&name..."
-msgstr ""
+msgstr "Her&noemen..."
 
 #: BufferViewSettingsPage#8
 msgctxt "BufferViewSettingsPage#8"
 msgid "&Add..."
-msgstr "&Ekle..."
+msgstr "&Toevoegen..."
 
 #: BufferViewSettingsPage#9
 msgctxt "BufferViewSettingsPage#9"
 msgid "De&lete"
-msgstr ""
+msgstr "&Verwijderen"
 
 #: BufferViewSettingsPage#10
 msgid "Chat List Settings"
-msgstr "Sohbet Listesi Ayarları"
+msgstr "Chatlijst instellingen"
 
 #: BufferViewSettingsPage#11
 msgctxt "BufferViewSettingsPage#11"
 msgid "Network:"
-msgstr "Ağ:"
+msgstr "Netwerk:"
 
 #: BufferViewSettingsPage#12
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
 msgstr ""
+"Deze optie is niet beschikbaar wanneer alle Netwerken zichtbaar zijn.\n"
+"In deze modus wordt geen aparte statusbuffer getoond."
 
 #: BufferViewSettingsPage#13
 msgid "Show status window"
-msgstr "Durum penceresini göster"
+msgstr "Toon statusvenster"
 
 #: BufferViewSettingsPage#14
 msgid "Show channels"
-msgstr "Kanallları göster"
+msgstr "Toon kanalen"
 
 #: BufferViewSettingsPage#15
 msgid "Show queries"
-msgstr "Sorguları göster"
+msgstr "Toon aanvragen"
 
 #: BufferViewSettingsPage#16
 msgid "Hide inactive chats"
-msgstr "Etkin olmayan sohbetleri gizle"
+msgstr "Inactieve chats verbergen"
 
 #: BufferViewSettingsPage#17
 msgid "Add new chats automatically"
-msgstr "Yeni sohbetleri otomatik olarak ekle"
+msgstr "Automatisch nieuwe chats toevoegen"
 
 #: BufferViewSettingsPage#18
 msgid "Sort alphabetically"
-msgstr "Alfabetik sırala"
+msgstr "Op alfabet sorteren"
 
 #: BufferViewSettingsPage#19
 msgid "Minimum Activity:"
-msgstr "Asgari Etkinlik:"
+msgstr "Minimale activiteit:"
 
 #: BufferViewSettingsPage#20
 msgid "No Activity"
-msgstr "Etkinlik Yok"
+msgstr "Geen activiteit"
 
 #: BufferViewSettingsPage#21
 msgid "Other Activity"
-msgstr "Diğer Etkinlik"
+msgstr "Andere activiteit"
 
 #: BufferViewSettingsPage#22
 msgid "New Message"
-msgstr "Yeni Mesaj"
+msgstr "Nieuw bericht"
 
 #: BufferViewSettingsPage#23
 msgctxt "BufferViewSettingsPage#23"
 msgid "Highlight"
-msgstr "Vurgula"
+msgstr "Markeer"
 
 #: BufferViewSettingsPage#24
 msgid "Preview:"
-msgstr "Önizleme:"
+msgstr "Voorbeeld:"
 
 #: BufferViewWidget#1
 msgid "BufferView"
-msgstr "ArabellekGörünümü"
+msgstr "Bufferweergave"
 
 #: BufferWidget#1
 msgid "Zoom In"
-msgstr "Yaklaş"
+msgstr "Inzoomen"
 
 #: BufferWidget#2
 msgid "Zoom Out"
-msgstr "Uzaklaş"
+msgstr "Uitzoomen"
 
 #: BufferWidget#3
 msgid "Actual Size"
-msgstr "Gerçek Boyut"
+msgstr "Werkelijke grootte"
 
 #: ChannelBufferItem#1
 msgid "<b>Channel %1</b>"
-msgstr "<b>Kanal %1</b>"
+msgstr "<b>Kanaal %1</b>"
 
 #: ChannelBufferItem#2
 msgid "<b>Users:</b> %1"
-msgstr "<b>Kullanıcılar:</b> %1"
+msgstr "<b>Gebruikers:</b> %1"
 
 #: ChannelBufferItem#3
 msgid "<b>Mode:</b> %1"
-msgstr "<b>Mod:</b> %1"
+msgstr "<b>Modus:</b> %1"
 
 #: ChannelBufferItem#4
 msgid "<b>Topic:</b> %1"
-msgstr "<b>Konu:</b> %1"
+msgstr "<b>Onderwerp:</b> %1"
 
 #: ChannelBufferItem#5
 msgid "Not active <br /> Double-click to join"
-msgstr "Etkin değil <br /> Katılmak için çift-tıkla"
+msgstr "Niet actief <br /> Dubbelklik om binnen te gaan"
 
 #: ChannelBufferItem#6
 msgid "<p> %1 </p>"
@@ -579,31 +642,31 @@ msgstr "<p> %1 </p>"
 
 #: ChannelListDlg#1
 msgid "Channel List"
-msgstr "Kanal Listesi"
+msgstr "Kanaallijst"
 
 #: ChannelListDlg#2
 msgid "Search Pattern:"
-msgstr "Arama Deseni:"
+msgstr "Zoekpatroon:"
 
 #: ChannelListDlg#3
 msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows to pass search strings to the IRC Server."
 msgstr ""
-"Basit ve gelişmiş mod arasında seçim yap.\n"
-"Gelişmiş modda arama dizgileri IRC Sunucuya gönderilebilir."
+"Wissel tussen eenvoudige en geavanceerde modus.\n"
+"In de geavanceerde modus kunt u zoekopdrachten naar de IRC-server sturen."
 
 #: ChannelListDlg#4
 msgid "Show Channels"
-msgstr "Kanalları Göster"
+msgstr "Toon kanalen"
 
 #: ChannelListDlg#5
 msgid "Filter:"
-msgstr "Süzgeç:"
+msgstr "Filter:"
 
 #: ChannelListDlg#6
 msgid "Errors Occured:"
-msgstr "Hata Oluştu:"
+msgstr "Er zijn fouten opgetreden:"
 
 #: ChannelListDlg#7
 msgid ""
@@ -622,41 +685,55 @@ msgid ""
 "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
 "family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Lucida Grande'; font-size:13pt;\">SUPERERGE CATASTROFALE "
+"FOUT!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #: ChatMonitorSettingsPage#1
 msgctxt "ChatMonitorSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: ChatMonitorSettingsPage#2
 msgctxt "ChatMonitorSettingsPage#2"
 msgid "Chat Monitor"
-msgstr "Sohbet Ekranı"
+msgstr "Chatmonitor"
 
 #: ChatMonitorSettingsPage#3
 msgid "Opt In"
-msgstr ""
+msgstr "Opt in"
 
 #: ChatMonitorSettingsPage#4
 msgid "Opt Out"
-msgstr ""
+msgstr "Opt out"
 
 #: ChatMonitorSettingsPage#5
 msgid "Show:"
-msgstr "Göster:"
+msgstr "Toon:"
 
 #: ChatMonitorSettingsPage#6
 msgid "Ignore:"
-msgstr "Görmezden Gel:"
+msgstr "Negeer:"
 
 #: ChatMonitorSettingsPage#7
 msgctxt "ChatMonitorSettingsPage#7"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: ChatMonitorSettingsPage#8
 msgid "Operation Mode:"
-msgstr "İşlem Kipi:"
+msgstr "Operatie-modus:"
 
 #: ChatMonitorSettingsPage#9
 msgid ""
@@ -680,60 +757,79 @@ msgid ""
 "decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
 "ignored in chatmonitor</p></body></html>"
 msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Operatie-modus:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
+"style=\" font-weight:400;\">Alleen buffers aan de rechterkant worden in de "
+"chatmonitor getoond</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Opt-Out:</span> Buffers aan de rechterkant zullen "
+"in de chatmonitor genegeerd worden</p></body></html>"
 
 #: ChatMonitorSettingsPage#10
 msgid "Available:"
-msgstr "Kullanılabilir:"
+msgstr "Beschikbaar:"
 
 #: ChatMonitorSettingsPage#11
 msgid "Move selected buffers to the left"
-msgstr "Seçili arabellekleri sola taşı"
+msgstr "Verplaats de geselecteerde buffers naar links"
 
 #: ChatMonitorSettingsPage#12
 msgid "Move selected buffers to the right"
-msgstr "Seçili arabellekleri sağa taşı"
+msgstr "Verplaats de geselecteerde buffers naar rechts"
 
 #: ChatMonitorSettingsPage#13
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
 msgstr ""
-"Mesajın geldiği arabellek görmezden geliniyor olsa bile, vurgulamaları "
-"sohbet ekranında göster"
+"Toon markeringen in de chatmonitor zelfs als de oorspronkelijke buffer "
+"genegeerd wordt"
 
 #: ChatMonitorSettingsPage#14
 msgid "Always show highlighted messages"
-msgstr "Vurgulanmış mesajları daima göster"
+msgstr "Toon gemarkeerde berichten altijd"
 
 #: ChatMonitorSettingsPage#15
 msgid "Show own messages"
-msgstr "Kendi mesajlarımı göster"
+msgstr "Toon eigen berichten"
 
 #: ChatMonitorView#1
 msgid "Show Own Messages"
-msgstr "Kendi Mesajlarımı Göster"
+msgstr "Toon eigen berichten"
 
 #: ChatMonitorView#2
 msgctxt "ChatMonitorView#2"
 msgid "Show Network Name"
-msgstr "Ağ Adını Göster"
+msgstr "Toon netwerknaam"
 
 #: ChatMonitorView#3
 msgctxt "ChatMonitorView#3"
 msgid "Show Buffer Name"
-msgstr ""
+msgstr "Toon buffernaam"
 
 #: ChatMonitorView#4
 msgid "Configure..."
-msgstr "Yapılandır..."
+msgstr "Configureer..."
 
 #: ChatScene#1
 msgid "Copy Selection"
-msgstr "Seçimi Kopyala"
+msgstr "Selectie kopiëren"
 
 #: ChatViewSearchBar#1
 msgctxt "ChatViewSearchBar#1"
 msgid "Form"
-msgstr "Biçim"
+msgstr "Form"
 
 #: ChatViewSearchBar#2
 msgctxt "ChatViewSearchBar#2"
@@ -742,66 +838,66 @@ msgstr "..."
 
 #: ChatViewSearchBar#3
 msgid "case sensitive"
-msgstr "büyük ve küçük harfe duyarlı"
+msgstr "hoofdlettergevoelig"
 
 #: ChatViewSearchBar#4
 msgid "search nick"
-msgstr "takma ad ara"
+msgstr "zoek nick"
 
 #: ChatViewSearchBar#5
 msgid "search message"
-msgstr "mesaj ara"
+msgstr "zoek bericht"
 
 #: ChatViewSearchBar#6
 msgid "ignore joins, parts, etc."
-msgstr "katılma, ayrılma vs. görmezden gel"
+msgstr "negeer binnenkomen, verlaten, etc,"
 
 #: ChatViewSettingsPage#1
 msgctxt "ChatViewSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: ChatViewSettingsPage#2
 msgid "Chat View"
-msgstr "Sohbet Görünümü"
+msgstr "Chatvenster"
 
 #: ChatViewSettingsPage#3
 msgctxt "ChatViewSettingsPage#3"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: ChatViewSettingsPage#4
 msgid "Timestamp format:"
-msgstr "Zaman damgası biçimi:"
+msgstr "Tijdformaat"
 
 #: ChatViewSettingsPage#5
 msgid "[hh:mm:ss]"
-msgstr "[ss:dd:ss]"
+msgstr "[hh:mm:ss]"
 
 #: ChatViewSettingsPage#6
 msgid "Custom chat window font:"
-msgstr "Özel sohbet penceresi yazı tipi:"
+msgstr "Chatvenster lettertype:"
 
 #: ChatViewSettingsPage#7
 msgid "Allow colored text (mIRC color codes)"
-msgstr "Renkli metne izin ver (mIRC renk kodları)"
+msgstr "Sta gekleurde tekst toe (mIRC color codes)"
 
 #: ChatViewSettingsPage#8
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
-msgstr ""
+msgstr "Toon een previewvenster wanneer u uw muis boven een url houdt."
 
 #: ChatViewSettingsPage#9
 msgid "Show previews of webpages on URL hover"
-msgstr "URL üzerine gelindiğinde ağ sayfalarının önizlemelerini göster"
+msgstr "Toon previews van webpagina's als uw muis boven een url staat"
 
 #: ChatViewSettingsPage#10
 msgid "Custom Colors"
-msgstr "Özel Renkler"
+msgstr "Eigen kleuren"
 
 #: ChatViewSettingsPage#11
 msgid "Action:"
-msgstr "Eylem:"
+msgstr "Actie:"
 
 #: ChatViewSettingsPage#12
 msgctxt "ChatViewSettingsPage#12"
@@ -810,59 +906,59 @@ msgstr "..."
 
 #: ChatViewSettingsPage#13
 msgid "Timestamp:"
-msgstr "Zaman bilgisi:"
+msgstr "Tijd:"
 
 #: ChatViewSettingsPage#14
 msgid "Channel message:"
-msgstr "Kanal iletisi:"
+msgstr "Kanaalbericht:"
 
 #: ChatViewSettingsPage#15
 msgid "Highlight foreground:"
-msgstr ""
+msgstr "Voorgrond bij markering:"
 
 #: ChatViewSettingsPage#16
 msgid "Command message:"
-msgstr "Komut iletisi:"
+msgstr "Commandobericht:"
 
 #: ChatViewSettingsPage#17
 msgid "Highlight background:"
-msgstr "Arka plan vurgusu:"
+msgstr "Achtergrond bij markering:"
 
 #: ChatViewSettingsPage#18
 msgid "Server message:"
-msgstr "Sunucu iletisi:"
+msgstr "Serverbericht:"
 
 #: ChatViewSettingsPage#19
 msgid "Marker line:"
-msgstr ""
+msgstr "Markeerlijn:"
 
 #: ChatViewSettingsPage#20
 msgid "Error message:"
-msgstr "Hata iletisi:"
+msgstr "Foutbericht:"
 
 #: ChatViewSettingsPage#21
 msgid "Background:"
-msgstr "Arkaplan:"
+msgstr "Achtergrond:"
 
 #: ChatViewSettingsPage#22
 msgid "Use Sender Coloring"
-msgstr ""
+msgstr "Kleur naar verzender"
 
 #: ChatViewSettingsPage#23
 msgid "Own messages:"
-msgstr "Kendi iletilerin:"
+msgstr "Eigen berichten:"
 
 #: Client#1
 msgid "Identity already exists in client!"
-msgstr "İstemcide bu kimlik zaten mevcut!"
+msgstr "Identiteit bestaat al in client!"
 
 #: Client#2
 msgid "All Chats"
-msgstr "Tüm Sohbetler"
+msgstr "Alle chats"
 
 #: ClientBacklogManager#1
 msgid "Processed %1 messages in %2 seconds."
-msgstr "%1 mesaj %2 saniyede işlendi."
+msgstr "In %2 seconden %1 berichten verwerkt"
 
 #: ConnectionSettingsPage#1
 msgctxt "ConnectionSettingsPage#1"
@@ -871,147 +967,149 @@ msgstr "IRC"
 
 #: ConnectionSettingsPage#2
 msgid "Configure the IRC Connection"
-msgstr "IRC Bağlantısını Yapılandır"
+msgstr "Configureer de IRC-verbinding"
 
 #: ConnectionSettingsPage#3
 msgid "Enable Ping Timeout Detection"
-msgstr ""
+msgstr "Detecteer ping-timeout"
 
 #: ConnectionSettingsPage#4
 msgid "Ping interval:"
-msgstr ""
+msgstr "Ping-interval:"
 
 #: ConnectionSettingsPage#5
 msgctxt "ConnectionSettingsPage#5"
 msgid " seconds"
-msgstr ""
+msgstr " seconden"
 
 #: ConnectionSettingsPage#6
 msgid "Disconnect after"
-msgstr ""
+msgstr "Verbreek de verbinding na"
 
 #: ConnectionSettingsPage#7
 msgid "missed pings"
-msgstr ""
+msgstr "gemiste pings"
 
 #: ConnectionSettingsPage#8
 msgid ""
 "This enables periodic polling of user information using /WHO. This is mostly "
 "interesting for tracking users' away status."
 msgstr ""
+"Vraag periodiek gebruikersinformatie op met /WHO. Dit is vooral handig voor "
+"het bijhouden van de afwezigheidsstatus van gebruikers."
 
 #: ConnectionSettingsPage#9
 msgid "Enable Automatic User Information Lookup (/WHO)"
-msgstr ""
+msgstr "Activeer automatisch opvragen van gebruikersinformatie (/WHO)"
 
 #: ConnectionSettingsPage#10
 msgid "Update interval:"
-msgstr "Güncelleme aralığı:"
+msgstr "Vernieuwingsinterval"
 
 #: ConnectionSettingsPage#11
 msgid "Ignore channels with more than:"
-msgstr ""
+msgstr "Negeer kanalen met meer dan:"
 
 #: ConnectionSettingsPage#12
 msgid " users"
-msgstr " kullanıcılar"
+msgstr " gebruikers"
 
 #: ConnectionSettingsPage#13
 msgid "Minimum delay between requests:"
-msgstr ""
+msgstr "Minimale vertraging tussen aanvragen:"
 
 #: ContentsChatItem#1
 msgid "Copy Link Address"
-msgstr "Bağlantı Adresini Kopyala"
+msgstr "Kopieer link-adres"
 
 #: ContextMenuActionProvider#1
 msgctxt "ContextMenuActionProvider#1"
 msgid "Connect"
-msgstr "Bağlan"
+msgstr "Verbindt"
 
 #: ContextMenuActionProvider#2
 msgctxt "ContextMenuActionProvider#2"
 msgid "Disconnect"
-msgstr "Bağlantıyı Kes"
+msgstr "Verbreek verbinding"
 
 #: ContextMenuActionProvider#3
 msgctxt "ContextMenuActionProvider#3"
 msgid "Join"
-msgstr "Katıl"
+msgstr "Binnengaan"
 
 #: ContextMenuActionProvider#4
 msgctxt "ContextMenuActionProvider#4"
 msgid "Part"
-msgstr ""
+msgstr "Verlaat"
 
 #: ContextMenuActionProvider#5
 msgid "Delete Chat(s)..."
-msgstr "Sohbet(ler)i Sil..."
+msgstr "Verwijder chat(s)..."
 
 #: ContextMenuActionProvider#6
 msgid "Go to Chat"
-msgstr "Sohbete Git"
+msgstr "Ga naar chat"
 
 #: ContextMenuActionProvider#7
 msgid "Joins"
-msgstr "Katıldı"
+msgstr "Binnenkomstberichten"
 
 #: ContextMenuActionProvider#8
 msgid "Parts"
-msgstr "Ayrıldı"
+msgstr "Vertrekberichten"
 
 #: ContextMenuActionProvider#9
 msgid "Quits"
-msgstr "Çıktı"
+msgstr "Afsluitberichten"
 
 #: ContextMenuActionProvider#10
 msgid "Nick Changes"
-msgstr "Rumuz Değişimi"
+msgstr "Veranderde bijnaam"
 
 #: ContextMenuActionProvider#11
 msgid "Mode Changes"
-msgstr "Kip Değişimi"
+msgstr "Modus verandert"
 
 #: ContextMenuActionProvider#12
 msgid "Day Changes"
-msgstr "Gün Değişimi"
+msgstr "Dag verandert"
 
 #: ContextMenuActionProvider#13
 msgid "Topic Changes"
-msgstr ""
+msgstr "Onderwerp verandert"
 
 #: ContextMenuActionProvider#14
 msgid "Set as Default..."
-msgstr "Öntanımlı olarak ayarla..."
+msgstr "Stel in als standaard..."
 
 #: ContextMenuActionProvider#15
 msgid "Use Defaults..."
-msgstr "Öntanımlıları Kullan..."
+msgstr "Gebruik standaardwaarden..."
 
 #: ContextMenuActionProvider#16
 msgid "Join Channel..."
-msgstr "Kanala Katıl..."
+msgstr "Kanaal binnengaan..."
 
 #: ContextMenuActionProvider#17
 msgid "Start Query"
-msgstr "Konuşma Başlat"
+msgstr "Start aanvraag"
 
 #: ContextMenuActionProvider#18
 msgid "Show Query"
-msgstr "Konuşmayı Göster"
+msgstr "Toon aanvraag"
 
 #: ContextMenuActionProvider#19
 msgctxt "ContextMenuActionProvider#19"
 msgid "Whois"
-msgstr ""
+msgstr "Whois"
 
 #: ContextMenuActionProvider#20
 msgid "Version"
-msgstr "Sürüm"
+msgstr "Version"
 
 #: ContextMenuActionProvider#21
 msgid "Time"
-msgstr "Zaman"
+msgstr "Time"
 
 #: ContextMenuActionProvider#22
 msgid "Ping"
@@ -1023,31 +1121,31 @@ msgstr "Finger"
 
 #: ContextMenuActionProvider#24
 msgid "Custom..."
-msgstr "Özel..."
+msgstr "Eigen..."
 
 #: ContextMenuActionProvider#25
 msgid "Give Operator Status"
-msgstr "Operatör Yetkisi Ver"
+msgstr "Geef operatorstatus"
 
 #: ContextMenuActionProvider#26
 msgid "Take Operator Status"
-msgstr "Operatör Yetkisini Al"
+msgstr "Herroep operatorstatus"
 
 #: ContextMenuActionProvider#27
 msgid "Give Voice"
-msgstr "Voice Ver"
+msgstr "Geef Voice"
 
 #: ContextMenuActionProvider#28
 msgid "Take Voice"
-msgstr "Voice Al"
+msgstr "Herroep Voice"
 
 #: ContextMenuActionProvider#29
 msgid "Kick From Channel"
-msgstr "Kanaldan At"
+msgstr "Schop het kanaal uit"
 
 #: ContextMenuActionProvider#30
 msgid "Ban From Channel"
-msgstr "Kanaldan Banla"
+msgstr "Verban uit het kanaal"
 
 #: ContextMenuActionProvider#31
 msgid "Kick && Ban"
@@ -1055,48 +1153,48 @@ msgstr "Kick && Ban"
 
 #: ContextMenuActionProvider#32
 msgid "Hide Chat(s) Temporarily"
-msgstr "Sohbeti(leri) Geçici Olarak Sakla"
+msgstr "Chat(s) tijdelijk verbergen"
 
 #: ContextMenuActionProvider#33
 msgid "Hide Chat(s) Permanently"
-msgstr "Sohbeti(leri) Kalıcı Olarak Sakla"
+msgstr "Chat(s) permanent verbergen"
 
 #: ContextMenuActionProvider#34
 msgid "Show Channel List"
-msgstr "Kanal Listesini Göster"
+msgstr "Toon kanaallijst"
 
 #: ContextMenuActionProvider#35
 msgid "Show Ignore List"
-msgstr "Görmezden Gelinenlerin Listesini Göster"
+msgstr "Toon negeerlijst"
 
 #: ContextMenuActionProvider#36
 msgid "Hide Events"
-msgstr "Olayları Gizle"
+msgstr "Verberg gebeurtenissen"
 
 #: ContextMenuActionProvider#37
 msgctxt "ContextMenuActionProvider#37"
 msgid "CTCP"
-msgstr ""
+msgstr "CTCP"
 
 #: ContextMenuActionProvider#38
 msgid "Actions"
-msgstr "Eylemler"
+msgstr "Acties"
 
 #: ContextMenuActionProvider#39
 msgid "Ignore"
-msgstr "Ignore"
+msgstr "Negeer"
 
 #: ContextMenuActionProvider#40
 msgid "Add Ignore Rule"
-msgstr "Yok Sayma Kuralı Ekle"
+msgstr "Voeg negeer-regel toe"
 
 #: ContextMenuActionProvider#41
 msgid "Existing Rules"
-msgstr "Mevcut Kurallar"
+msgstr "Bestaande regels"
 
 #: Core#1
 msgid "Could not initialize any storage backend! Exiting..."
-msgstr "Herhangi bir depolama arkaucu başlatılamıyor! Çıkıyorum..."
+msgstr "Kon geen opslag-backend starten! Afsluiten..."
 
 #: Core#2
 msgid ""
@@ -1105,198 +1203,201 @@ msgid ""
 "quasselcore\n"
 "to work."
 msgstr ""
+"Quassel ondersteunt momenteel SQLite3 en PostgreSQL. U moet uw\n"
+"Qt-bibliotheek met de sqlite of postgres plug-in bouwen anders zal "
+"quasselcore\n"
+"niet werken."
 
 #: Core#3
 msgid "Calling restoreState() even though active sessions exist!"
-msgstr "Etkin oturum olduğu halde restoreState() çağırılıyor!"
+msgstr "restoreState() aanroepen hoewel een sessie actief is!"
 
 #: Core#4
 msgid "Admin user or password not set."
-msgstr "Admin kullanıcı ya da parolası ayarlanmamış."
+msgstr "Beheerderaccount of wachtwoord niet ingesteld."
 
 #: Core#5
 msgid "Could not setup storage!"
-msgstr "Depolama ayarlanamıyor!"
+msgstr "Kon opslag niet starten!"
 
 #: Core#6
 msgid "Creating admin user..."
-msgstr "Admin kullanıcı oluşturuluyor..."
+msgstr "Beheerderaccount instellen..."
 
 #: Core#7
 msgid "Invalid listen address %1"
-msgstr "Geçersiz dinleme adresi %1"
+msgstr "Ongeldig luisteradres %1"
 
 #: Core#8
 msgid ""
 "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr ""
-"GUI istemcileri IPv4 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
+"Op IPv4 %1 poort %2 naar GUI-clients luisteren met protocol versie %3"
 
 #: Core#9
 msgid "Could not open IPv4 interface %1:%2: %3"
-msgstr "IPv4 arayüzü açılamadı %1:%2: %3"
+msgstr "Kon IPv4-interface niet openen %1:%2: %3"
 
 #: Core#10
 msgid ""
 "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr ""
-"GUI istemcileri IPv6 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
+"Op IPv6 %1 poort %2 naar GUI-clients luisteren met protocol versie %3"
 
 #: Core#11
 msgid "Could not open IPv6 interface %1:%2: %3"
-msgstr "IPv6 arayüzü açılamadı %1:%2: %3"
+msgstr "Kon IPv6-interface niet openen %1:%2: %3"
 
 #: Core#12
 msgid "Invalid listen address %1, unknown network protocol"
-msgstr "Geçersiz dinleme adresi %1, bilinmeyen ağ protokolü"
+msgstr "Ongeldig luisteradres %1, onbekend netwerkprotocol"
 
 #: Core#13
 msgid "Could not open any network interfaces to listen on!"
-msgstr "Hiçbir dinlenecek ağ arayüzü açılamadı!"
+msgstr "Kon geen enkele netwerkinterface openen om bij te luisteren!"
 
 #: Core#14
 msgid "Client connected from"
-msgstr "İstemci şuradan bağlandı"
+msgstr "Client verbindt vanaf"
 
 #: Core#15
 msgid "Closing server for basic setup."
-msgstr "Temel kurulum için sunucu kapatılıyor."
+msgstr "Server afsluiten voor standaard set-up."
 
 #: Core#16
 msgid "Antique client trying to connect... refusing."
-msgstr "Antika istemci bağlanmaya çalışıyor... reddedildi."
+msgstr "Verouderde client probeert te verbinden... weiger."
 
 #: Core#17
 msgid ""
 "<b>Your Quassel Client is too old!</b><br>This core needs at least "
 "client/core protocol version %1.<br>Please consider upgrading your client."
 msgstr ""
-"<b>Quassel İstemciniz çok eski!</b><br>Bu çekirdek en azından "
-"istemci/çekirdek protokol sürümü %1 istemektedir.<br>Lütfen istemcinizin "
-"sürümünü yükseltin."
+"<b>Uw Quassel client is te oud!</b><br>Deze core heeft minstens client/core "
+"protocol versie %1 nodig.<br>Upgrade alstublieft uw client."
 
 #: Core#18
 msgctxt "Core#18"
 msgid "Client"
-msgstr "İstemci"
+msgstr "Client"
 
 #: Core#19
 msgid "too old, rejecting."
-msgstr "çok eski, reddediliyor."
+msgstr "te oud, weigeren."
 
 #: Core#20
 msgid ""
 "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr ""
-"<b>Quassel Çekirdek Sürüm %1</b><br>İnşa: %2<br>Up %3g%4s%5d (%6'dan beri)"
+"<b>Quassel-core versie %1</b><br>Built: %2<br>Op %3d%4h%5m (sinds %6)"
 
 #: Core#21
 msgid "Starting TLS for Client:"
-msgstr "İstemci için TLS Başlatılıyor:"
+msgstr "TLS voor client starten:"
 
 #: Core#22
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
 msgstr ""
-"<b>İstemci başlatılamadı!</b><br>Oturumu açmaya çalışmadan önce başlatma "
-"mesajı göndermeniz gerekmektedir."
+"<b>Client niet geïnitialiseerd!</b><br>U moet een init-bericht sturen "
+"voordat u probeert in te loggen."
 
 #: Core#23
 msgid "did not send an init message before trying to login, rejecting."
-msgstr ""
-"oturumu açmaya çalışmadan önce başlatma mesajı gönderilmedi, reddediliyor."
+msgstr "verstuurde geen init-bericht voordat er werd aangemeld, weigeren."
 
 #: Core#24
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr ""
-"<b>Geçersiz kullanıcı adı ya da parolası!</b><br>Yazdığınız kullanıcı "
-"adı/parola kombinasyonu veritabanında bulunamadı."
+"<b>Ongeldige gebruikersnaam of wachtwoord!</b><br>De "
+"gebruikersnaam/wachtwoord-combinatie die u opgaf kon niet in de database "
+"gevonden worden."
 
 #: Core#25
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
-msgstr "Başlatıldı ve \"%1\" olarak başarıyla doğrulandı (UserId: %2)."
+msgstr "initialisatie en authenticatie succesvol als \"%1\"(Userid: %2)."
 
 #: Core#26
 msgid "Non-authed client disconnected."
-msgstr "Yetkisiz istemci bağlantıyı kesti."
+msgstr "Verbinding zonder authenticatie verbroken."
 
 #: Core#27
 msgid "Non-authed client disconnected. (socket allready destroyed)"
-msgstr "Doğrulanmayan istemcinin bağlantısı kesildi. (soket yokedildi)"
+msgstr "Verbinding zonder authenticatie verbroken. (socket is al geleegd)"
 
 #: Core#28
 msgid "Could not initialize session for client:"
-msgstr "Şu istemci için oturum başlatılamadı:"
+msgstr "Kon geen sessie initialiseren voor client:"
 
 #: Core#29
 msgid "Could not find a session for client:"
-msgstr "İstemci için bir oturum bulunamadı:"
+msgstr "Kon geen sessie vinden voor client:"
 
 #: CoreAccount#1
 msgctxt "CoreAccount#1"
 msgid "Internal Core"
-msgstr ""
+msgstr "Interne core"
 
 #: CoreAccountEditDlg#1
 msgid "Edit Core Account"
-msgstr "Çekirdek Hesabını Düzenle"
+msgstr "Core-account bewerken"
 
 #: CoreAccountEditDlg#2
 msgid "Account Details"
-msgstr "Hesap Detayları"
+msgstr "Accountdetails"
 
 #: CoreAccountEditDlg#3
 msgid "Account Name:"
-msgstr "Hesap Adı:"
+msgstr "Accountnaam:"
 
 #: CoreAccountEditDlg#4
 msgid "Local Core"
-msgstr "Yerel Çekirdek"
+msgstr "Locale core"
 
 #: CoreAccountEditDlg#5
 msgid "Hostname:"
-msgstr "Sunucu Adı:"
+msgstr "Hostnaam:"
 
 #: CoreAccountEditDlg#6
 msgctxt "CoreAccountEditDlg#6"
 msgid "localhost"
-msgstr "yerelsunucu"
+msgstr "localhost"
 
 #: CoreAccountEditDlg#7
 msgctxt "CoreAccountEditDlg#7"
 msgid "Port:"
-msgstr "Yuva:"
+msgstr "Poort:"
 
 #: CoreAccountEditDlg#8
 msgid "User:"
-msgstr "Kullanıcı:"
+msgstr "Gebruiker:"
 
 #: CoreAccountEditDlg#9
 msgctxt "CoreAccountEditDlg#9"
 msgid "Password:"
-msgstr "Parola:"
+msgstr "Wachtwoord:"
 
 #: CoreAccountEditDlg#10
 msgid "Remember"
-msgstr "Hatırla"
+msgstr "Onthoudt"
 
 #: CoreAccountEditDlg#11
 msgctxt "CoreAccountEditDlg#11"
 msgid "Use a Proxy"
-msgstr "Vekil Sunucu Kullan"
+msgstr "Gebruik een proxy"
 
 #: CoreAccountEditDlg#12
 msgctxt "CoreAccountEditDlg#12"
 msgid "Proxy Type:"
-msgstr "Vekil Sunucu Tipi:"
+msgstr "Proxytype"
 
 #: CoreAccountEditDlg#13
 msgctxt "CoreAccountEditDlg#13"
 msgid "Socks 5"
-msgstr ""
+msgstr "Socks 5"
 
 #: CoreAccountEditDlg#14
 msgctxt "CoreAccountEditDlg#14"
@@ -1305,99 +1406,98 @@ msgstr "HTTP"
 
 #: CoreAccountEditDlg#15
 msgid "Add Core Account"
-msgstr "Çekirdek Hesabı Ekle"
+msgstr "Core-account toevoegen"
 
 #: CoreAccountModel#1
 msgctxt "CoreAccountModel#1"
 msgid "Internal Core"
-msgstr ""
+msgstr "Interne core"
 
 #: CoreAccountSettingsPage#1
 msgctxt "CoreAccountSettingsPage#1"
 msgid "Remote Cores"
-msgstr ""
+msgstr "Remote-core"
 
 #: CoreAccountSettingsPage#2
 msgid "Connect to Quassel Core"
-msgstr "Quassel Çekirdeğine Bağlan"
+msgstr "Verbindt met Quassel-core"
 
 #: CoreAccountSettingsPage#3
 msgid "Core Accounts"
-msgstr ""
+msgstr "Core-accounts"
 
 #: CoreAccountSettingsPage#4
 msgid "Edit..."
-msgstr "Düzenle..."
+msgstr "Bewerken..."
 
 #: CoreAccountSettingsPage#5
 msgctxt "CoreAccountSettingsPage#5"
 msgid "Add..."
-msgstr "Ekle..."
+msgstr "Toevoegen..."
 
 #: CoreAccountSettingsPage#6
 msgctxt "CoreAccountSettingsPage#6"
 msgid "Delete"
-msgstr "Sil"
+msgstr "Verwijder"
 
 #: CoreAccountSettingsPage#7
 msgid "Automatically connect on startup"
-msgstr "Başlangıçta otomatik olarak bağlan"
+msgstr "Bij starten automatisch verbinden"
 
 #: CoreAccountSettingsPage#8
 msgid "Connect to last account used"
-msgstr "En son kullanılan hesaba bağlan"
+msgstr "Met laatst gebruikte account verbinden"
 
 #: CoreAccountSettingsPage#9
 msgid "Always connect to"
-msgstr "Her zaman bağlan"
+msgstr "Altijd verbinden met"
 
 #: CoreConfigWizard#1
 msgid "Core Configuration Wizard"
-msgstr "Çekirdek Ayarlama Sihirbazı"
+msgstr "Core-configuratie"
 
 #: CoreConfigWizard#2
 msgid "Your core has been successfully configured. Logging you in..."
-msgstr ""
-"Çekirdeğiniz başarılı bir şekilde yapılandırıldı. Oturumunuz açılıyor..."
+msgstr "Uw core is succesvol geconfigureerd. Aanmelden..."
 
 #: CoreConfigWizard#3
 msgid ""
 "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
 msgstr ""
-"Çekirdek yapılandırması başarısız: <br><b>%1</b><br>Baştan başlamak için "
-"<em>İleri</em> düğmesine basın."
+"Core-configuratie mislukt:<br><b>%1</b><br>Druk op <em>volgende</em> om "
+"opnieuw te beginnen."
 
 #: CoreConfigWizard#4
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
 "remember to configure your identities and networks now."
 msgstr ""
-"Yeni yapılandırılmış Quassel Çekirdeğine bağlandınız!<br>Hesaplarınızı ve "
-"ağlarınızı yapılandırmayı unutmayın."
+"U bent nu aangemeld bij uw nieuw configureerde Quassel-core!<br>Denk er aan "
+"dat u uw netwerken en identiteiten nog moet instellen."
 
 #: CoreConfigWizardAdminUserPage#1
 msgctxt "CoreConfigWizardAdminUserPage#1"
 msgid "Form"
-msgstr "Biçim"
+msgstr "Form"
 
 #: CoreConfigWizardAdminUserPage#2
 msgctxt "CoreConfigWizardAdminUserPage#2"
 msgid "Username:"
-msgstr "Kullanıcı Adı:"
+msgstr "Gebruikersnaam:"
 
 #: CoreConfigWizardAdminUserPage#3
 msgctxt "CoreConfigWizardAdminUserPage#3"
 msgid "Password:"
-msgstr "Parola:"
+msgstr "Wachtwoord:"
 
 #: CoreConfigWizardAdminUserPage#4
 msgid "Repeat password:"
-msgstr "Parolayı yinele:"
+msgstr "Herhaal wachtwoord:"
 
 #: CoreConfigWizardAdminUserPage#5
 msgctxt "CoreConfigWizardAdminUserPage#5"
 msgid "Remember password"
-msgstr "Parolayı anımsa"
+msgstr "Wachtwoord onthouden"
 
 #: CoreConfigWizardAdminUserPage#6
 msgid ""
@@ -1406,73 +1506,77 @@ msgid ""
 "If you need to do these things, please run \"<tt><nobr>quasselcore --"
 "help</nobr></tt>\"."
 msgstr ""
+"<b>Let op:</b> Meer gebruikers toevoegen of uw gebruikersnaam/wachtwoord "
+"wijzigen is nog niet mogelijk via de Quassel-client interface.\n"
+"Als u dit wilt doen moet u \"<tt><nobr>quasselcore --help</nobr></tt>\" "
+"uitvoeren."
 
 #: CoreConfigWizardIntroPage#1
 msgctxt "CoreConfigWizardIntroPage#1"
 msgid "Form"
-msgstr "Biçim"
+msgstr "Form"
 
 #: CoreConfigWizardIntroPage#2
 msgid "This wizard will guide you through the setup of your Quassel Core."
-msgstr "Bu sihirbaz Quassel Çekirdeğinizi ayarlamanıza yardımcı olacak."
+msgstr "Deze wizard helpt u bij het opzetten van uw Quassel-core."
 
 #: CoreConfigWizardPages::AdminUserPage#1
 msgid "Create Admin User"
-msgstr "Admin Kullanıcı Oluştur"
+msgstr "Beheerder aanmaken"
 
 #: CoreConfigWizardPages::AdminUserPage#2
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
 msgstr ""
-"Öncelikle çekirdekte yeni bir kullanıcı oluşturacağız. Bu kullanıcı yönetici "
-"haklarına sahip olacak."
+"Eerst zullen we een gebruiker op de core aanmaken. Deze eerste gebruiker zal "
+"beheerdersrechten hebben."
 
 #: CoreConfigWizardPages::IntroPage#1
 msgid "Introduction"
-msgstr "Giriş"
+msgstr "Introductie"
 
 #: CoreConfigWizardPages::StorageSelectionPage#1
 msgid "Select Storage Backend"
-msgstr "Depolama Türünü Seç"
+msgstr "Selecteer opslag-backend"
 
 #: CoreConfigWizardPages::StorageSelectionPage#2
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
 msgstr ""
-"Lütfen Quassel Çekirdeğinin kayıt ve diğer verileri saklaması için bir "
-"veritabanı seçin."
+"Selecteer een database-backend voor de Quassel-core opslag om het backlog en "
+"andere data in op te slaan."
 
 #: CoreConfigWizardPages::StorageSelectionPage#3
 msgid "Connection Properties"
-msgstr "Bağlantı Özellikleri"
+msgstr "Eigenschappen verbinding"
 
 #: CoreConfigWizardPages::SyncPage#1
 msgid "Storing Your Settings"
-msgstr "Ayarlarınız Saklanıyor"
+msgstr "Uw instellingen opslaan"
 
 #: CoreConfigWizardPages::SyncPage#2
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
 "automatically."
 msgstr ""
-"Ayarlarınız çekirdekte kayıt edildi, ve otomatik olarak oturumunuz "
-"açılacaktır."
+"Uw instellingen zijn nu in de core opgeslagen en u zult automatisch "
+"aangemeld worden."
 
 #: CoreConfigWizardStorageSelectionPage#1
 msgctxt "CoreConfigWizardStorageSelectionPage#1"
 msgid "Form"
-msgstr "Biçim"
+msgstr "Form"
 
 #: CoreConfigWizardStorageSelectionPage#2
 msgctxt "CoreConfigWizardStorageSelectionPage#2"
 msgid "Storage Backend:"
-msgstr ""
+msgstr "Opslag-backend:"
 
 #: CoreConfigWizardStorageSelectionPage#3
 msgid "Description"
-msgstr "Açıklama"
+msgstr "Beschrijving"
 
 #: CoreConfigWizardStorageSelectionPage#4
 msgid "Foobar"
@@ -1481,15 +1585,15 @@ msgstr "Foobar"
 #: CoreConfigWizardSyncPage#1
 msgctxt "CoreConfigWizardSyncPage#1"
 msgid "Form"
-msgstr "Biçim"
+msgstr "Form"
 
 #: CoreConfigWizardSyncPage#2
 msgid "Your Choices"
-msgstr "Seçimleriniz"
+msgstr "Uw keuzes"
 
 #: CoreConfigWizardSyncPage#3
 msgid "Admin User:"
-msgstr "Admin Kullanıcı:"
+msgstr "Beheerder:"
 
 #: CoreConfigWizardSyncPage#4
 msgid "foo"
@@ -1498,7 +1602,7 @@ msgstr "foo"
 #: CoreConfigWizardSyncPage#5
 msgctxt "CoreConfigWizardSyncPage#5"
 msgid "Storage Backend:"
-msgstr ""
+msgstr "Opslag backend:"
 
 #: CoreConfigWizardSyncPage#6
 msgid "bar"
@@ -1506,179 +1610,186 @@ msgstr "bar"
 
 #: CoreConfigWizardSyncPage#7
 msgid "Please wait while your settings are being transmitted to the core..."
-msgstr "Ayarlarınız çekirdeğe gönderilirken lütfen bekleyiniz..."
+msgstr "Een moment, uw instellingen worden naar de core verzonden..."
 
 #: CoreConnectAuthDlg#1
 msgid "Please enter your credentials for %1:"
-msgstr ""
+msgstr "Vul uw aanmeldgegevens voor %1 in:"
 
 #: CoreConnectAuthDlg#2
 msgid "Authentication Required"
-msgstr "Kimlik Doğrulama Gerekiyor"
+msgstr "Aanmelden verplicht"
 
 #: CoreConnectAuthDlg#3
 msgid "Please enter your account data:"
-msgstr "Lütfen hesap verinizi girin:"
+msgstr "Vul uw accountgegevens in:"
 
 #: CoreConnectAuthDlg#4
 msgctxt "CoreConnectAuthDlg#4"
 msgid "Password:"
-msgstr "Parola:"
+msgstr "Wachtwoord:"
 
 #: CoreConnectAuthDlg#5
 msgctxt "CoreConnectAuthDlg#5"
 msgid "Username:"
-msgstr "Kullanıcı Adı:"
+msgstr "Gebruikersnaam:"
 
 #: CoreConnectAuthDlg#6
 msgctxt "CoreConnectAuthDlg#6"
 msgid "Remember password"
-msgstr "Parolayı hatırla"
+msgstr "Wachtwoord onthouden"
 
 #: CoreConnectDlg#1
 msgid "Connect to Core"
-msgstr ""
+msgstr "Verbindt met core"
 
 #: CoreConnection#1
 msgid "Network is down"
-msgstr "Ağ aktif değil"
+msgstr "Netwerk is niet actief"
 
 #: CoreConnection#2
 msgid "Disconnected"
-msgstr "Bağlantı kesildi"
+msgstr "Verbinding verbroken"
 
 #: CoreConnection#3
 msgid "Looking up %1..."
-msgstr "%1 aranıyor..."
+msgstr "%1 opzoeken..."
 
 #: CoreConnection#4
 msgid "Connecting to %1..."
-msgstr "%1e bağlanılıyor..."
+msgstr "Met %1 verbinden..."
 
 #: CoreConnection#5
 msgid "Connected to %1"
-msgstr "%1e bağlandı"
+msgstr "Verbonden met %1"
 
 #: CoreConnection#6
 msgid "Disconnecting from %1..."
-msgstr ""
+msgstr "Verbinding met %1 verbreken..."
 
 #: CoreConnection#7
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider upgrading."
 msgstr ""
-"Bağlanmaya çalıştığınız Quassel Çekirdeği çok eski! Lütfen yeni sürüme "
-"yükseltin."
+"De Quassel-core waarmee u wilt verbinden is te oud! Probeer een nieuwere "
+"versie te installeren."
 
 #: CoreConnection#8
 msgid "Invalid data received from core"
-msgstr ""
+msgstr "Ongeldige data van de core ontvangen"
 
 #: CoreConnection#9
 msgid "Disconnected from core."
-msgstr "Çekirdek ile bağlantı kesildi"
+msgstr "Verbinding met de core verbroken."
 
 #: CoreConnection#10
 msgid "Unencrypted connection canceled"
-msgstr "Şifresiz bağlantı iptal edildi"
+msgstr "Onversleutelde verbinding afgebroken"
 
 #: CoreConnection#11
 msgid "Synchronizing to core..."
-msgstr "Çekirdeğe eşleniyor..."
+msgstr "Met de core synchroniseren..."
 
 #: CoreConnection#12
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
 msgstr ""
-"<b>Bağlanmaya çalıştırğınız Quassel İstemcisi çok eski!</b><br>Bağlanmak "
-"için en azından çekirdek/istemci protokolü v%1 gerekli."
+"<b>De Quassel-core waarmee u wilt verbinden is te oud!</b><br>Minstens "
+"core/client protocol v%1 benodigd om te verbinden."
 
 #: CoreConnection#13
 msgid "Logging in..."
-msgstr "Oturum açılıyor..."
+msgstr "Aanmelden..."
 
 #: CoreConnection#14
 msgid "Login canceled"
-msgstr "Giriş iptal edildi"
+msgstr "Aanmelden afgebroken"
 
 #: CoreConnection#15
 msgid "Receiving session state"
-msgstr ""
+msgstr "Sessiestatus ontvangen"
 
 #: CoreConnection#16
 msgid "Synchronizing to %1..."
-msgstr "%1 ile eşleniyor..."
+msgstr "Met %1 synchroniseren..."
 
 #: CoreConnection#17
 msgid "Receiving network states"
-msgstr ""
+msgstr "Netwerkstatus ontvangen"
 
 #: CoreConnection#18
 msgid "Synchronized to %1"
-msgstr "%1 ile eşlenildi"
+msgstr "Met %1 gesynchroniseerd"
 
 #: CoreConnectionSettingsPage#1
 msgctxt "CoreConnectionSettingsPage#1"
 msgid "Remote Cores"
-msgstr ""
+msgstr "Core op afstand"
 
 #: CoreConnectionSettingsPage#2
 msgctxt "CoreConnectionSettingsPage#2"
 msgid "Connection"
-msgstr "Bağlantı"
+msgstr "Verbinding"
 
 #: CoreConnectionSettingsPage#3
 msgctxt "CoreConnectionSettingsPage#3"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: CoreConnectionSettingsPage#4
 msgid "Network Status Detection"
-msgstr "Ağ Durum Algılaması"
+msgstr "Netwerkstatus detecteren"
 
 #: CoreConnectionSettingsPage#5
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most "
 "KDE users"
 msgstr ""
+"Gebruik de KDE hardwarelayer om er achter te komen of we online zijn. "
+"Aangeraden voor de meeste KDE-gebruikers"
 
 #: CoreConnectionSettingsPage#6
 msgid "Use KDE's network status detection (via Solid)"
-msgstr ""
+msgstr "Gebruik de netwerkstatusdetectie van KDE (via Solid)"
 
 #: CoreConnectionSettingsPage#7
 msgid ""
 "Actively ping the remote core and disconnect if we didn't get a reply after "
 "a certain time"
 msgstr ""
+"Ping de core op afstand en verbreek de verbinding als we niet binnen een "
+"bepaalde tijd een reactie krijgen"
 
 #: CoreConnectionSettingsPage#8
 msgid "Ping timeout after"
-msgstr ""
+msgstr "Ping timeout na"
 
 #: CoreConnectionSettingsPage#9
 msgctxt "CoreConnectionSettingsPage#9"
 msgid " seconds"
-msgstr " saniye"
+msgstr " seconden"
 
 #: CoreConnectionSettingsPage#10
 msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
 msgstr ""
+"Verbreek de verbinding pas als de netwerk-socket door het besturingssysteem "
+"gesloten wordt. Dit kan lang na het daadwerkelijk verliezen van de "
+"verbinding zijn"
 
 #: CoreConnectionSettingsPage#11
 msgid "Never time out actively"
-msgstr ""
+msgstr "Nooit actief verlopen"
 
 #: CoreConnectionSettingsPage#12
 msgid "Automatically reconnect on network failures"
-msgstr "Ağ hatalarında otomatik olarak yeniden bağlan"
+msgstr "Automatisch opnieuw verbinden na netwerkfouten"
 
 #: CoreConnectionSettingsPage#13
 msgid "Retry every"
-msgstr ""
+msgstr "Probeer opnieuw na elke"
 
 #: CoreConnectionStatusWidget#1
 msgid "s"
@@ -1690,315 +1801,315 @@ msgstr "ms"
 
 #: CoreConnectionStatusWidget#3
 msgid "(Lag: %1 %2)"
-msgstr "(Lag: %1 %2)"
+msgstr "(Vertraging: %1 %2)"
 
 #: CoreConnectionStatusWidget#4
 msgid "The connection to your core is encrypted with SSL."
-msgstr "Çekirdek ile bağlantınız SSL ile şifrelenmiştir."
+msgstr "De verbinding met uw core is versleuteld met SSL."
 
 #: CoreConnectionStatusWidget#5
 msgid "The connection to your core is not encrypted."
-msgstr "Çekirdek ile bağlantınız şifrelenmemiştir."
+msgstr "De verbinding met uw core is niet versleuteld."
 
 #: CoreConnectionStatusWidget#6
 msgctxt "CoreConnectionStatusWidget#6"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: CoreConnectionStatusWidget#7
 msgctxt "CoreConnectionStatusWidget#7"
 msgid "Message"
-msgstr "İleti"
+msgstr "Bericht"
 
 #: CoreInfoDlg#1
 msgid "%n Day(s)"
-msgstr "%n Gün(ler)"
+msgstr "%n Dag(en)"
 
 #: CoreInfoDlg#2
 msgid " %1:%2:%3 (since %4)"
-msgstr " %1:%2:%3 (%4 den beri)"
+msgstr " %1:%2:%3 (sinds %4)"
 
 #: CoreInfoDlg#3
 msgid "Core Information"
-msgstr "Çekirdek Bilgisi"
+msgstr "Core informatie"
 
 #: CoreInfoDlg#4
 msgid "Version:"
-msgstr "Sürüm:"
+msgstr "Versie:"
 
 #: CoreInfoDlg#5
 msgid "<core version>"
-msgstr "<çekirdek sürümü>"
+msgstr "<core-versie>"
 
 #: CoreInfoDlg#6
 msgid "Uptime:"
-msgstr "Çalışma Zamanı:"
+msgstr "Uptime:"
 
 #: CoreInfoDlg#7
 msgid "Connected Clients:"
-msgstr "Bağlı olan İstemciler:"
+msgstr "Verbonden clients:"
 
 #: CoreInfoDlg#8
 msgid "<connected clients>"
-msgstr "<bağlı istemciler>"
+msgstr "<verbonden clients>"
 
 #: CoreInfoDlg#9
 msgid "<core uptime>"
-msgstr "<çekirdek çalışma zamanı>"
+msgstr "<core uptime>"
 
 #: CoreInfoDlg#10
 msgid "Build date:"
-msgstr "İnşa tarihi:"
+msgstr "Build datum:"
 
 #: CoreInfoDlg#11
 msgid "<build date>"
-msgstr "<inşa tarihi>"
+msgstr "<build datum>"
 
 #: CoreInfoDlg#12
 msgctxt "CoreInfoDlg#12"
 msgid "Close"
-msgstr "Kapat"
+msgstr "Sluit"
 
 #: CoreNetwork#1
 msgid "Connection failed. Cycling to next Server"
-msgstr "Bağlantı başarısız. Sonraki sunucuya geçiliyor"
+msgstr "Verbinden mislukt. Volgende server proberen"
 
 #: CoreNetwork#2
 msgid "Connecting to %1:%2..."
-msgstr "%1:%2 bağlanılıyor..."
+msgstr "Verbinden met %1:%2..."
 
 #: CoreNetwork#3
 msgid "Disconnecting. (%1)"
-msgstr "Bağlantı Kesiliyor. (%1)"
+msgstr "Verbinding verbreken. (%1)"
 
 #: CoreNetwork#4
 msgid "Core Shutdown"
-msgstr ""
+msgstr "Core uitschakelen"
 
 #: CoreNetwork#5
 msgid "Could not connect to %1 (%2)"
-msgstr "%1 (%2) bağlanılamadı"
+msgstr "Kon niet met %1 (%2) verbinden"
 
 #: CoreNetwork#6
 msgid "Connection failure: %1"
-msgstr "Bağlantı hatası: %1"
+msgstr "Verbinden mislukt: %1"
 
 #: CoreSession#1
 msgctxt "CoreSession#1"
 msgid "Client"
-msgstr "İstemci"
+msgstr "Client"
 
 #: CoreSession#2
 msgid "disconnected (UserId: %1)."
-msgstr "bağlantı kesildi (Kullanıcı: %1)."
+msgstr "verbinding verbroken (Userid: %1)."
 
 #: CoreSession#3
 msgid ""
 "CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
 "create network %1!"
 msgstr ""
-"CoreSession::createNetwork(): %1 ağı oluşturulmaya çalışılırken Çekirdekten "
-"geçersiz networkId alındı!"
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
+"create network %1!"
 
 #: CoreSession#4
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
 msgstr ""
-"CoreSession::createNetwork(): Zaten varolan bir ağı oluşturmaya çalışıyor, "
-"güncelliyorum!"
+"CoreSession::createNetwork(): Trying to create a network that already "
+"exists, updating instead!"
 
 #: CoreUserInputHandler#1
 msgid "away"
-msgstr "dışarıda"
+msgstr "afwezig"
 
 #: CoreUserInputHandler#2
 msgid "sending CTCP-%1 request to %2"
-msgstr ""
+msgstr "CTCP-%1 request naar %2 sturen"
 
 #: CreateIdentityDlg#1
 msgid "Create New Identity"
-msgstr "Yeni Kimlik Oluştur"
+msgstr "Nieuwe identiteit aanmaken"
 
 #: CreateIdentityDlg#2
 msgid "Identity name:"
-msgstr "Kimlik adı:"
+msgstr "Naam van identiteit:"
 
 #: CreateIdentityDlg#3
 msgid "Create blank identity"
-msgstr "Boş kimlik oluştur"
+msgstr "Lege identiteit aanmaken"
 
 #: CreateIdentityDlg#4
 msgid "Duplicate:"
-msgstr "Çoğalt:"
+msgstr "Dupliceer:"
 
 #: CtcpHandler#1
 msgid "Received CTCP PING request from %1"
-msgstr "%1 kullanıcısından CTCP PING isteği alındı"
+msgstr "CTCP PING request van %1 ontvangen"
 
 #: CtcpHandler#2
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
-msgstr "%1 kişisinden %2 saniye geri dönüş süresiyle CTCP PING cevabı alındı"
+msgstr "CTCP PING antwoord van %1 ontvangen met %2 seconden round trip time"
 
 #: CtcpHandler#3
 msgid "Received CTCP VERSION request by %1"
-msgstr "%1 kullanıcısından CTCP VERSION isteği alındı"
+msgstr "CTCP VERSION request van %1 ontvangen"
 
 #: CtcpHandler#4
 msgid "Received CTCP VERSION answer from %1: %2"
-msgstr "CTCP VERSION cevabı alındı %1: %2"
+msgstr "CTCP VERSION antwoord ontvangen van %1: %2"
 
 #: CtcpHandler#5
 msgid "Received CTCP TIME request by %1"
-msgstr ""
+msgstr "CTCP TIME request van %1 ontvangen"
 
 #: CtcpHandler#6
 msgid "Received CTCP TIME answer from %1: %2"
-msgstr ""
+msgstr "CTCP TIME antwoord van %1: %2 ontvangen"
 
 #: CtcpHandler#7
 msgid "Received unknown CTCP %1 by %2"
-msgstr ""
+msgstr "Onbekende CTCP %1 ontvangen van %2"
 
 #: CtcpHandler#8
 msgid " with arguments: %1"
-msgstr ""
+msgstr " met argumenten: %1"
 
 #: DebugBufferViewOverlay#1
 msgid "BufferViews:"
-msgstr ""
+msgstr "BufferViews:"
 
 #: DebugBufferViewOverlay#2
 msgid "All Networks:"
-msgstr "Tüm Ağlar:"
+msgstr "Alle netwerken:"
 
 #: DebugBufferViewOverlay#3
 msgid "Networks:"
-msgstr "Ağlar:"
+msgstr "Netwerken:"
 
 #: DebugBufferViewOverlay#4
 msgid "Buffers:"
-msgstr ""
+msgstr "Buffers:"
 
 #: DebugBufferViewOverlay#5
 msgid "Removed buffers:"
-msgstr ""
+msgstr "Verwijderde buffers:"
 
 #: DebugBufferViewOverlay#6
 msgid "Temp. removed buffers:"
-msgstr ""
+msgstr "Tijdelijk verwijderde buffers:"
 
 #: DebugBufferViewOverlay#7
 msgid "Add Buffers Automatically:"
-msgstr ""
+msgstr "Automatisch buffers toevoegen:"
 
 #: DebugBufferViewOverlay#8
 msgid "Hide inactive buffers:"
-msgstr ""
+msgstr "Inactieve buffers verbergen:"
 
 #: DebugBufferViewOverlay#9
 msgid "Allowed buffer types:"
-msgstr ""
+msgstr "Toegestane buffertypes:"
 
 #: DebugBufferViewOverlay#10
 msgid "Minimum activity:"
-msgstr ""
+msgstr "Minimale activiteit:"
 
 #: DebugBufferViewOverlay#11
 msgid "Is initialized:"
-msgstr ""
+msgstr "Is geïnitialiseerd:"
 
 #: DebugBufferViewOverlay#12
 msgid "Debug BufferView Overlay"
-msgstr ""
+msgstr "Debug BufferView Overlay"
 
 #: DebugBufferViewOverlay#13
 msgid "Overlay View"
-msgstr ""
+msgstr "Overlay View"
 
 #: DebugBufferViewOverlay#14
 msgid "Overlay Properties"
-msgstr ""
+msgstr "Overlay eigenschappen"
 
 #: DebugConsole#1
 msgid "Debug Console"
-msgstr "Hata Çıktı Konsolu"
+msgstr "Debug console"
 
 #: DebugConsole#2
 msgid "local"
-msgstr "yerel"
+msgstr "lokaal"
 
 #: DebugConsole#3
 msgid "core"
-msgstr "çekirdek"
+msgstr "core"
 
 #: DebugConsole#4
 msgid "Evaluate!"
-msgstr "Değerlendir!"
+msgstr "Evalueer!"
 
 #: DebugLogWidget#1
 msgid "Debug Log"
-msgstr "Hata Kaydı"
+msgstr "Debug log"
 
 #: DebugLogWidget#2
 msgctxt "DebugLogWidget#2"
 msgid "Close"
-msgstr "Kapat"
+msgstr "Sluit"
 
 #: ExecWrapper#1
 msgid "Invalid command string for /exec: %1"
-msgstr ""
+msgstr "Ongeldige opdracht voor /exec: %1"
 
 #: ExecWrapper#2
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr "\"%1\" ismi geçersiz: ../ ya da ..\\ izin verilmiyor!"
+msgstr "Naam \"%1\" is ongeldig: ../ of ..\\ is niet toegestaan!"
 
 #: ExecWrapper#3
 msgid "Could not find script \"%1\""
-msgstr "\"%1\" betiği bulunamadı"
+msgstr "Kon het script \"%1\" niet vinden"
 
 #: ExecWrapper#4
 msgid "Script \"%1\" crashed with exit code %2."
-msgstr ""
+msgstr "Script \"%1\" crashte met exit code %2."
 
 #: ExecWrapper#5
 msgid "Script \"%1\" could not start."
-msgstr "\"%1\" betiği başlatılamadı."
+msgstr "Script \"%1\" kon niet starten."
 
 #: ExecWrapper#6
 msgid "Script \"%1\" caused error %2."
-msgstr "\"%1\" betiği \"%2\" hatasına sebep oldu."
+msgstr "Script \"%1\" veroorzaakte fout %2."
 
 #: FontSelector#1
 msgid "Choose..."
-msgstr "Seç..."
+msgstr "Kies..."
 
 #: HighlightSettingsPage#1
 msgctxt "HighlightSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: HighlightSettingsPage#2
 msgctxt "HighlightSettingsPage#2"
 msgid "Highlight"
-msgstr "Vurgula"
+msgstr "Markeer"
 
 #: HighlightSettingsPage#3
 msgid "this shouldn't be empty"
-msgstr "bu boş olmamalı"
+msgstr "dit zou niet leeg moeten zijn"
 
 #: HighlightSettingsPage#4
 msgid "highlight rule"
-msgstr "vurgulama kuralı"
+msgstr "markeringsregel"
 
 #: HighlightSettingsPage#5
 msgctxt "HighlightSettingsPage#5"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: HighlightSettingsPage#6
 msgid "Custom Highlights"
-msgstr "Özel Vurgulamalar"
+msgstr "Eigen markering"
 
 #: HighlightSettingsPage#7
 msgid "RegEx"
@@ -2010,36 +2121,36 @@ msgstr "CS"
 
 #: HighlightSettingsPage#9
 msgid "Enable"
-msgstr "Etkin kıl"
+msgstr "Inschakelen"
 
 #: HighlightSettingsPage#10
 msgid "Add"
-msgstr "Ekle"
+msgstr "Toevoegen"
 
 #: HighlightSettingsPage#11
 msgctxt "HighlightSettingsPage#11"
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #: HighlightSettingsPage#12
 msgid "Highlight Nicks"
-msgstr "Takma Adları Vurgula"
+msgstr "Markeer nicks"
 
 #: HighlightSettingsPage#13
 msgid "All nicks from identity"
-msgstr "Hesaptaki tüm takma adları"
+msgstr "Alle nicks van identiteit"
 
 #: HighlightSettingsPage#14
 msgid "Current nick"
-msgstr "Mevcut takma ad"
+msgstr "Huidige nick"
 
 #: HighlightSettingsPage#15
 msgid "None"
-msgstr "Yok"
+msgstr "Geen"
 
 #: HighlightSettingsPage#16
 msgid "Case sensitive"
-msgstr "Büyük ve küçük harf duyarlı"
+msgstr "Hoofdlettergevoelig"
 
 #: IdentitiesSettingsPage#1
 msgctxt "IdentitiesSettingsPage#1"
@@ -2048,7 +2159,7 @@ msgstr "IRC"
 
 #: IdentitiesSettingsPage#2
 msgid "Identities"
-msgstr "Kimlikler"
+msgstr "Identiteiten"
 
 #: IdentitiesSettingsPage#3
 msgctxt "IdentitiesSettingsPage#3"
@@ -2056,24 +2167,25 @@ msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
-"<b>Değişikliklerin uygulanabilmesi için aşağıdaki sorunların düzeltilmesi "
-"gerekli:</b><ul>"
+"<b>De volgende problemen moeten opgelost worden voordat uw wijzigingen "
+"toegepast kunnen worden:</b><ul>"
 
 #: IdentitiesSettingsPage#4
 msgid "<li>All identities need an identity name set</li>"
-msgstr "<li>Tüm kimliklere bir kimlik isim kümesi gerekli</li>"
+msgstr "<li>U moet voor alle identiteiten een naam instellen</li>"
 
 #: IdentitiesSettingsPage#5
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr "<li>Her kimliğe en az bir tanımlı takma ad gerekmektedir</li>"
+msgstr ""
+"<li>Voor elke identiteit moet minstens een bijnaam ingesteld zijn</li>"
 
 #: IdentitiesSettingsPage#6
 msgid "<li>You need to specify a real name for every identity</li>"
-msgstr "<li>Her kimlik için gerçek ad belirtmeniz gerekiyor</li>"
+msgstr "<li>U moet voor elke identiteit een echte naam opgeven</li>"
 
 #: IdentitiesSettingsPage#7
 msgid "<li>You need to specify an ident for every identity</li>"
-msgstr "<li>Her kimlik için bir ident belirtmeniz gerekiyor</li>"
+msgstr "<li>U moet voor elke identiteit een ident opgeven</li>"
 
 #: IdentitiesSettingsPage#8
 msgctxt "IdentitiesSettingsPage#8"
@@ -2082,24 +2194,24 @@ msgstr "</ul>"
 
 #: IdentitiesSettingsPage#9
 msgid "One or more identities are invalid"
-msgstr "Bir ya da daha fazla kimlik geçersiz"
+msgstr "Een of meer identiteiten zijn niet geldig"
 
 #: IdentitiesSettingsPage#10
 msgid "Delete Identity?"
-msgstr "Kimliği Sil?"
+msgstr "Identiteit verwijderen?"
 
 #: IdentitiesSettingsPage#11
 msgid "Do you really want to delete identity \"%1\"?"
-msgstr "\"%1\" kimliğini gerçekten silmek istiyor musunuz?"
+msgstr "Wilt u echt identiteit \"%1\" verwijderen?"
 
 #: IdentitiesSettingsPage#12
 msgctxt "IdentitiesSettingsPage#12"
 msgid "Rename Identity"
-msgstr "Kimliği Yeniden Adlandır"
+msgstr "Identiteit hernoemen"
 
 #: IdentitiesSettingsPage#13
 msgid "Please enter a new name for the identity \"%1\"!"
-msgstr "\"%1\" kimliği için yeni bir ad girin lütfen!"
+msgstr "Vul een nieuwe naam in voor identiteit \"%1\"."
 
 #: IdentitiesSettingsPage#14
 msgctxt "IdentitiesSettingsPage#14"
@@ -2108,61 +2220,61 @@ msgstr "..."
 
 #: IdentitiesSettingsPage#15
 msgid "Add Identity"
-msgstr "Kimlik Ekle"
+msgstr "Identiteit toevoegen"
 
 #: IdentitiesSettingsPage#16
 msgctxt "IdentitiesSettingsPage#16"
 msgid "Add..."
-msgstr "Ekle..."
+msgstr "Toevoegen..."
 
 #: IdentitiesSettingsPage#17
 msgid "Remove Identity"
-msgstr "Kimliği Kaldır"
+msgstr "Identiteit verwijderen"
 
 #: Identity#1
 msgid "Quassel IRC User"
-msgstr "Quassel IRC Kullanıcısı"
+msgstr "Quassel IRC-gebruiker"
 
 #: Identity#2
 msgid "<empty>"
-msgstr "<empty>"
+msgstr "<leeg>"
 
 #: Identity#3
 msgid "Gone fishing."
-msgstr "Balığa gitti."
+msgstr "Aan het vissen."
 
 #: Identity#4
 msgid "Not here. No, really. not here!"
-msgstr "Burada yok. Cidden. Yok burada!"
+msgstr "Niet hier. Echt waar, niet hier!"
 
 #: Identity#5
 msgid "All Quassel clients vanished from the face of the earth..."
-msgstr "Tüm Quassel istemcileri gözden kayboldular..."
+msgstr "Alle Quassel-clients zijn van de aardbodem verdwenen..."
 
 #: Identity#6
 msgid "Kindergarten is elsewhere!"
-msgstr "Dönüşüm muhteşem olacaaaak!"
+msgstr "Kleutelschool is ergens anders!"
 
 #: Identity#7
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
-msgstr "http://quassel-irc.org - Her yerden rahatça konuş."
+msgstr "http://quassel-irc.org - Chat comfortabel. Waar dan ook."
 
 #: IdentityEditWidget#1
 msgctxt "IdentityEditWidget#1"
 msgid "Advanced"
-msgstr ""
+msgstr "Geavanceerd"
 
 #: IdentityEditWidget#2
 msgid "Load a Key"
-msgstr "Anahtar Yükle"
+msgstr "Laadt een sleutel"
 
 #: IdentityEditWidget#3
 msgid "No Key loaded"
-msgstr "Yüklü anahtar yok"
+msgstr "Geen sleutel geladen"
 
 #: IdentityEditWidget#4
 msgid "Load"
-msgstr "Yükle"
+msgstr "Laden"
 
 #: IdentityEditWidget#5
 msgid "RSA"
@@ -2174,65 +2286,65 @@ msgstr "DSA"
 
 #: IdentityEditWidget#7
 msgid "Clear"
-msgstr "Temizle"
+msgstr "Wis"
 
 #: IdentityEditWidget#8
 msgid "Load a Certificate"
-msgstr "Sertifika Yükle"
+msgstr "Laadt een certificaat"
 
 #: IdentityEditWidget#9
 msgid "No Certificate loaded"
-msgstr "Yüklü Sertifika Yok"
+msgstr "Geen certificaat geladen"
 
 #: IdentityEditWidget#10
 msgid "General"
-msgstr "Genel"
+msgstr "Algemeen"
 
 #: IdentityEditWidget#11
 msgid "Real Name:"
-msgstr "Gerçek Ad:"
+msgstr "Echte naam:"
 
 #: IdentityEditWidget#12
 msgid "The \"Real Name\" is shown in /whois."
-msgstr "\"Gerçek Ad\" /whois de gösterilir."
+msgstr "De \"Echte naam\" wordt getoond in /whois."
 
 #: IdentityEditWidget#13
 msgid "Nicknames"
-msgstr "Takma adlar"
+msgstr "Bijnamen (Nicknames)"
 
 #: IdentityEditWidget#14
 msgctxt "IdentityEditWidget#14"
 msgid "Add Nickname"
-msgstr "Takma Ad Ekle"
+msgstr "Bijnaam toevoegen"
 
 #: IdentityEditWidget#15
 msgctxt "IdentityEditWidget#15"
 msgid "&Add..."
-msgstr "&Ekle..."
+msgstr "&Toevoegen..."
 
 #: IdentityEditWidget#16
 msgid "Remove Nickname"
-msgstr "Takma Adı Kaldır"
+msgstr "Verwijder bijnaam"
 
 #: IdentityEditWidget#17
 msgctxt "IdentityEditWidget#17"
 msgid "Remove"
-msgstr ""
+msgstr "Verwijder"
 
 #: IdentityEditWidget#18
 msgctxt "IdentityEditWidget#18"
 msgid "Rename Identity"
-msgstr "Kimliği Yeniden Adlandır"
+msgstr "Identiteit hernoemen"
 
 #: IdentityEditWidget#19
 msgctxt "IdentityEditWidget#19"
 msgid "Re&name..."
-msgstr ""
+msgstr "Her&noemen..."
 
 #: IdentityEditWidget#20
 msgctxt "IdentityEditWidget#20"
 msgid "Move upwards in list"
-msgstr "Listede üste al"
+msgstr "In de lijst omhoog verplaatsen"
 
 #: IdentityEditWidget#21
 msgctxt "IdentityEditWidget#21"
@@ -2242,56 +2354,55 @@ msgstr "..."
 #: IdentityEditWidget#22
 msgctxt "IdentityEditWidget#22"
 msgid "Move downwards in list"
-msgstr "Listede alta al"
+msgstr "In de lijst omlaag verplaatsen"
 
 #: IdentityEditWidget#23
 msgid "A&way"
-msgstr "&Dışarıda"
+msgstr "&Weg"
 
 #: IdentityEditWidget#24
 msgid "Default Away Settings"
-msgstr "Öntanımlı Dışarıda Ayarları"
+msgstr "Standaard afwezigheidsinstellingen"
 
 #: IdentityEditWidget#25
 msgid "Nick to be used when being away"
-msgstr "Dışarıdayken kullanılacak takma ad"
+msgstr "Te gebruiken bijnaam als u afwezig bent"
 
 #: IdentityEditWidget#26
 msgid "Default away reason"
-msgstr "Öntanımlı dışarıda sebebi"
+msgstr "Standaard afwezigheidsreden"
 
 #: IdentityEditWidget#27
 msgid "Away Nick:"
-msgstr "Dışarıda Takma Adı:"
+msgstr "Afwezigheidsbijnaam:"
 
 #: IdentityEditWidget#28
 msgid "Away Reason:"
-msgstr "DIşarıda Sebebi:"
+msgstr "Afwezigheidsreden:"
 
 #: IdentityEditWidget#29
 msgid "Set away when all clients have detached from the core"
-msgstr ""
-"Tüm istemciler çekirdekten ayrıldıklarında durumu dışarıda olarak ayarla"
+msgstr "Stel afwezig in wanneer alle clients van de core ontkoppeld zijn"
 
 #: IdentityEditWidget#30
 msgid "Away On Detach"
-msgstr "Ayırınca Dışarıda Ol"
+msgstr "Afwezig bij ontkoppelen"
 
 #: IdentityEditWidget#31
 msgid "Not implemented yet"
-msgstr "Henüz tamamlanmadı"
+msgstr "Nog niet geïmplementeerd"
 
 #: IdentityEditWidget#32
 msgid "Away On Idle"
-msgstr "Boş Durunca Dışarıda Ol"
+msgstr "Afwezig bij geen activiteit"
 
 #: IdentityEditWidget#33
 msgid "Set away after"
-msgstr "Şundan sonra dışarıda olarak ayarla"
+msgstr "Stel afwezig in na"
 
 #: IdentityEditWidget#34
 msgid "minutes of being idle"
-msgstr "boşta kalma süresi"
+msgstr "minuten zonder activiteit"
 
 #: IdentityEditWidget#35
 msgid "Ident:"
@@ -2302,29 +2413,31 @@ msgid ""
 "The \"ident\" is part of your hostmask and, together with your host, "
 "uniquely identifies you within the IRC network."
 msgstr ""
+"Het \"identi\" is deel van uw hostmask en identificeert u, in combinatie met "
+"uw host, bij het IRC-netwerk."
 
 #: IdentityEditWidget#37
 msgid "Messages"
-msgstr "Mesajlar"
+msgstr "Berichten"
 
 #: IdentityEditWidget#38
 msgid "Part Reason:"
-msgstr "Ayrılma Sebebi:"
+msgstr "Vertrek reden:"
 
 #: IdentityEditWidget#39
 msgid "Quit Reason:"
-msgstr "Çıkma Sebebi:"
+msgstr "Afsluit reden:"
 
 #: IdentityEditWidget#40
 msgid "Kick Reason:"
-msgstr "Atılma Sebebi:"
+msgstr "Kick reden:"
 
 #: IdentityEditWidget#41
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
 msgstr ""
-"Çekirdeğinizin SSL Anahtar ve Sertifikasını düzenlemeniz için SSL Destekli "
-"bir İstemcinizin olması gerekiyor"
+"U heeft een clien nodig die SSL begrijpt als u de SSL-sleutel en -"
+"certificaat wilt bewerken"
 
 #: IdentityEditWidget#42
 msgid ""
@@ -2333,43 +2446,45 @@ msgid ""
 "Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
 "Certificate!"
 msgstr ""
+"Waarschuwing: uw verbinding met de Quassel-core is niet beveiligd! Als u "
+"doorgaat zult u uw SSL-sleutel en certificaat niet-beveiligd verzenden!"
 
 #: IdentityEditWidget#43
 msgctxt "IdentityEditWidget#43"
 msgid "Continue"
-msgstr "Devam Et"
+msgstr "Doorgaan"
 
 #: IdentityEditWidget#44
 msgid "Use SSL Key"
-msgstr "SSL Anahtarı Kullan"
+msgstr "Gebruik SSL-sleutel"
 
 #: IdentityEditWidget#45
 msgid "Key Type:"
-msgstr "Anahtar Türü:"
+msgstr "Sleuteltype:"
 
 #: IdentityEditWidget#46
 msgid "Use SSL Certificate"
-msgstr "SSL Sertifikası Kullan"
+msgstr "Gebruik SSL-certificaat"
 
 #: IdentityEditWidget#47
 msgid "Organisation:"
-msgstr "Organizasyon:"
+msgstr "Organisatie:"
 
 #: IdentityEditWidget#48
 msgid "CommonName:"
-msgstr "OrtakAd:"
+msgstr "CommonName:"
 
 #: IdentityPage#1
 msgid "Setup Identity"
-msgstr "Kurulum Kimliği"
+msgstr "Identiteit instellen"
 
 #: IdentityPage#2
 msgid "Default Identity"
-msgstr "Öntanımlı Kimlik"
+msgstr "Standaard identiteit"
 
 #: IgnoreListEditDlg#1
 msgid "Configure Ignore Rule"
-msgstr ""
+msgstr "Configureer negeer-regel"
 
 #: IgnoreListEditDlg#2
 msgid ""
@@ -2381,18 +2496,26 @@ msgid ""
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
+"<p><b>Strengheid:</b></p>\n"
+"<p><u>Dynamisch:</u></p>\n"
+"<p>Berichten worden \"on the fly\" gefilterd.\n"
+"Wanneer u de negeer-regel uitschakelt of verwijdert worden de berichten weer "
+"zichtbaar.</p>\n"
+"<p><u>Permanent:</u></p>\n"
+"<p>Berichten worden gefilterd voordat ze in de database opgeslagen "
+"worden.</p>"
 
 #: IgnoreListEditDlg#3
 msgid "Strictness"
-msgstr ""
+msgstr "Strengheid"
 
 #: IgnoreListEditDlg#4
 msgid "Dynamic"
-msgstr "Dinamik"
+msgstr "Dynamisch"
 
 #: IgnoreListEditDlg#5
 msgid "Permanent"
-msgstr "Kalıcı"
+msgstr "Permanent"
 
 #: IgnoreListEditDlg#6
 msgid ""
@@ -2403,24 +2526,30 @@ msgid ""
 "<p><u>Message:</u></p>\n"
 "<p>The rule is matched against the actual message content</p>"
 msgstr ""
+"<p><b>Regeltype:</b></p>\n"
+"<p><u>Afzender:</u></p>\n"
+"<p>De regel wordt gebruikt op grond de afzender\n"
+"<i>nick!ident@host.name<i></p>\n"
+"<p><u>Bericht:</u></p>\n"
+"<p>De regel wordt gebruikt op grond van de inhoud van het bericht</p>"
 
 #: IgnoreListEditDlg#7
 msgid "Rule Type"
-msgstr ""
+msgstr "Regeltype"
 
 #: IgnoreListEditDlg#8
 msgid "Sender"
-msgstr "Gönderen"
+msgstr "Afzender"
 
 #: IgnoreListEditDlg#9
 msgctxt "IgnoreListEditDlg#9"
 msgid "Message"
-msgstr "İleti"
+msgstr "Bericht"
 
 #: IgnoreListEditDlg#10
 msgctxt "IgnoreListEditDlg#10"
 msgid "CTCP"
-msgstr ""
+msgstr "CTCP"
 
 #: IgnoreListEditDlg#11
 msgid ""
@@ -2439,11 +2568,26 @@ msgid ""
 "- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
 "from any host</p>"
 msgstr ""
+"<p><b>Negeer-regel:</b></p>\n"
+"<p>Afhankelijk van het regeltype wordt de tekst vergeleken met:</p>\n"
+"<p><u>- de inhoud van het bericht:</u></p>\n"
+"<p><i>Voorbeeld:</i>\n"
+"<br />\n"
+"<i>*foobar*</i> is van toepassing op elke tekst die het woord <i>foobar</i> "
+"bevat</p>\n"
+"<p><u>- de afzender</u>  <i>(nick!ident@host.name)</i></p>\n"
+"<p><i>Voorbeelden:</i>\n"
+"<br />\n"
+"- <i>*@foobar.com</i> is van toepassing op elke verzender van host  "
+"<i>foobar.com</i>\n"
+"<br />\n"
+"- <i>stupid!.+</i> (RegEx) is van toepassing op elke verzender met de "
+"nickname <i>stupid</i> van elke host</p>"
 
 #: IgnoreListEditDlg#12
 msgctxt "IgnoreListEditDlg#12"
 msgid "Ignore Rule"
-msgstr ""
+msgstr "Negeer-regel"
 
 #: IgnoreListEditDlg#13
 msgid ""
@@ -2455,10 +2599,17 @@ msgid ""
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
 msgstr ""
+"<p><b>Gebruik regular expressions:</b></p>\n"
+"<p>Gebruik regular expression syntaxis.</p>\n"
+"<p>Anders kunnen regels ook wildcards bevatten met de volgende speciale "
+"tekens:</p>\n"
+"<p> *: staat voor \"elk aantal van welk teken dan ook\"\n"
+"<br />\n"
+"?: staat voor \"precies een teken\"</p>"
 
 #: IgnoreListEditDlg#14
 msgid "Regular expression"
-msgstr ""
+msgstr "Regular expression"
 
 #: IgnoreListEditDlg#15
 msgid ""
@@ -2472,24 +2623,33 @@ msgid ""
 "<p>The list below is interpreted as a list of channels for which the rule "
 "should match</p>"
 msgstr ""
+"<p><b>Bereik:</b></p>\n"
+"<p><u>Globaal:</u></p>\n"
+"<p>Deze regel is actief voor elk kanaal op elk netwerk</p>\n"
+"<p><u>Netwerk:</u></p>\n"
+"<p>De lijst hieronder bevat de netwerken waarop de regel van toepassing moet "
+"zijn</p>\n"
+"<p><u>Kanaal:</u></p>\n"
+"<p>De lijst hieronder bevat de kanalen waarop de regel van toepassing moet "
+"zijn</p>"
 
 #: IgnoreListEditDlg#16
 msgid "Scope"
-msgstr ""
+msgstr "Beriek"
 
 #: IgnoreListEditDlg#17
 msgid "Global"
-msgstr "Evrensel"
+msgstr "Globaal"
 
 #: IgnoreListEditDlg#18
 msgctxt "IgnoreListEditDlg#18"
 msgid "Network"
-msgstr "Ağ"
+msgstr "Netwerk"
 
 #: IgnoreListEditDlg#19
 msgctxt "IgnoreListEditDlg#19"
 msgid "Channel"
-msgstr ""
+msgstr "Kanaal"
 
 #: IgnoreListEditDlg#20
 msgid ""
@@ -2502,6 +2662,15 @@ msgid ""
 "<br />\n"
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
+"<p><b>Bereik regel:</b></p>\n"
+"<p>Het bereik van een regel is gegeven als een lijst van <i>netwerk</i>- of "
+"<i>kanaal</i>-namen, gescheiden door puntkomma's.</p>\n"
+"<p><i>Voorbeeld:</i>\n"
+"<br />\n"
+"<i>#quassel*; #foobar</i>\n"
+"<br />\n"
+"zou van toepassing zijn op #foobar en elk kanaal dat met <i>#quassel</i> "
+"begint.</p>"
 
 #: IgnoreListEditDlg#21
 msgid ""
@@ -2510,16 +2679,24 @@ msgid ""
 "<br />\n"
 "For dynamic rules, disabling actually shows the filtered messages again.</p>"
 msgstr ""
+"<p><b>Inschakelen/uitschakelen:</b></p>\n"
+"<p>Alleen ingeschakelde regels zijn van toepassing.\n"
+"<br />\n"
+"Voor dynamische regels zal uitschakelen de gefilterde berichten juist weer "
+"tonen.</p>"
 
 #: IgnoreListEditDlg#22
 msgid "Rule is enabled"
-msgstr "Kural aktif"
+msgstr "Regel is ingeschakeld"
 
 #: IgnoreListModel#1
 msgid ""
 "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
 "dynamic rules, disabling actually shows the filtered messages again"
 msgstr ""
+"<b>Inschakelen/uitschakelen:</b><br />Alleen ingeschakelde regels zijn van "
+"toepassing. <br /> Voor dynamische regels zal uitschakelen de gefilterde "
+"berichten juist weer tonen.</p>"
 
 #: IgnoreListModel#2
 msgid ""
@@ -2532,27 +2709,35 @@ msgid ""
 "\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
 "host<br />"
 msgstr ""
+"<b>Negeer-regel:</b><br />Afhankelijk van het type regels is deze van "
+"toepassing op:<br /><br />- <u>de inhoud van het bericht:</u><br "
+"/><i>Voorbeeld:<i><br />    \"*foobar*\" komt overeen met elke tekst die het "
+"woord \"foobar\" bevat\"<br /><br />- <u>de afzender "
+"<i>nick!ident@host.name<i></u><br /><i>Voorbeeld:</i><br />    "
+"\"*@foobar.com\" komt overeen met elke afzender van de host  foobar.com<br "
+"/>    \"stupid!.+\" (RegEx) komt overeen met elke afzender met de bijnaam "
+"\"stupid\" van elke host<br />"
 
 #: IgnoreListModel#3
 msgid "By Sender"
-msgstr ""
+msgstr "Naar afzender"
 
 #: IgnoreListModel#4
 msgid "By Message"
-msgstr ""
+msgstr "Naar bericht"
 
 #: IgnoreListModel#5
 msgid "Enabled"
-msgstr "Etkinleştirildi"
+msgstr "Ingeschakeld"
 
 #: IgnoreListModel#6
 msgid "Type"
-msgstr "Tür:"
+msgstr "Type"
 
 #: IgnoreListModel#7
 msgctxt "IgnoreListModel#7"
 msgid "Ignore Rule"
-msgstr ""
+msgstr "Negeer-regel"
 
 #: IgnoreListSettingsPage#1
 msgctxt "IgnoreListSettingsPage#1"
@@ -2561,11 +2746,11 @@ msgstr "IRC"
 
 #: IgnoreListSettingsPage#2
 msgid "Ignore List"
-msgstr ""
+msgstr "Negeerlijst"
 
 #: IgnoreListSettingsPage#3
 msgid "Rule already exists"
-msgstr "Kural zaten mevcut"
+msgstr "Regel bestaat al"
 
 #: IgnoreListSettingsPage#4
 msgid ""
@@ -2573,112 +2758,117 @@ msgid ""
 "\"%1\"\n"
 "Please choose another rule."
 msgstr ""
+"Er bestaat al een regel\n"
+"\"%1\"\n"
+"Kies een andere regel."
 
 #: IgnoreListSettingsPage#5
 msgctxt "IgnoreListSettingsPage#5"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: IgnoreListSettingsPage#6
 msgctxt "IgnoreListSettingsPage#6"
 msgid "New"
-msgstr "Yeni"
+msgstr "Nieuw"
 
 #: IgnoreListSettingsPage#7
 msgctxt "IgnoreListSettingsPage#7"
 msgid "Delete"
-msgstr "Sil"
+msgstr "Verwijder"
 
 #: IgnoreListSettingsPage#8
 msgid "&Edit"
-msgstr "&Düzenle"
+msgstr "Be&werk"
 
 #: IndicatorNotificationConfigWidget#1
 msgctxt "IndicatorNotificationConfigWidget#1"
 msgid "Form"
-msgstr "Biçim"
+msgstr "Form"
 
 #: IndicatorNotificationConfigWidget#2
 msgid ""
 "This enables support for the Ayatana Project's application indicator "
 "(libindicate)."
 msgstr ""
+"Dit activeert ondersteuning voor de yatana Project's application indicator "
+"(libindicate)."
 
 #: IndicatorNotificationConfigWidget#3
 msgid "Show messages in application indicator"
-msgstr ""
+msgstr "Toon berichten in applicatie-indicator"
 
 #: InputWidget#1
 msgid "White"
-msgstr "Beyaz"
+msgstr "Wit"
 
 #: InputWidget#2
 msgid "Black"
-msgstr "Siyah"
+msgstr "Zwart"
 
 #: InputWidget#3
 msgid "Dark blue"
-msgstr "Koyu mavi"
+msgstr "Donkerblauw"
 
 #: InputWidget#4
 msgid "Dark green"
-msgstr "Koyu yeşil"
+msgstr "Donkergroen"
 
 #: InputWidget#5
 msgid "Red"
-msgstr "Kırmızı"
+msgstr "Rood"
 
 #: InputWidget#6
 msgid "Dark red"
-msgstr "Koyu kırmızı"
+msgstr "Donkerrood"
 
 #: InputWidget#7
 msgid "Dark magenta"
-msgstr "Koyu eflatun"
+msgstr "Donkermagenta"
 
 #: InputWidget#8
 msgid "Orange"
-msgstr "Turuncu"
+msgstr "Oranje"
 
 #: InputWidget#9
 msgid "Yellow"
-msgstr "Sarı"
+msgstr "Geel"
 
 #: InputWidget#10
 msgid "Green"
-msgstr "Yeşil"
+msgstr "Groen"
 
 #: InputWidget#11
 msgid "Dark cyan"
-msgstr ""
+msgstr "Donkercyaan"
 
 #: InputWidget#12
 msgid "Cyan"
-msgstr ""
+msgstr "Cyaan"
 
 #: InputWidget#13
 msgid "Blue"
-msgstr "Mavi"
+msgstr "Blauw"
 
 #: InputWidget#14
 msgid "Magenta"
-msgstr "Eflatun"
+msgstr "Magenta"
 
 #: InputWidget#15
 msgid "Dark gray"
-msgstr "Koyu gri"
+msgstr "Donkergrijs"
 
 #: InputWidget#16
 msgid "Light gray"
-msgstr "Açık gri"
+msgstr "Lichtgrijs"
 
 #: InputWidget#17
 msgid "Clear Color"
-msgstr "Rengi Temizle"
+msgstr "Heldere kleur"
 
 #: InputWidget#18
 msgid "Focus Input Line"
-msgstr "Girdi satırına odaklan"
+msgstr "Focus inputregel"
 
 #: InputWidget#19
 msgid "Ctrl+L"
@@ -2687,66 +2877,66 @@ msgstr "Ctrl+L"
 #: InputWidget#20
 msgctxt "InputWidget#20"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: InputWidgetSettingsPage#1
 msgctxt "InputWidgetSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: InputWidgetSettingsPage#2
 msgid "Input Widget"
-msgstr ""
+msgstr "Input widget"
 
 #: InputWidgetSettingsPage#3
 msgctxt "InputWidgetSettingsPage#3"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: InputWidgetSettingsPage#4
 msgctxt "InputWidgetSettingsPage#4"
 msgid "Custom font:"
-msgstr "Özel yazı tipi:"
+msgstr "Eigen lettertype:"
 
 #: InputWidgetSettingsPage#5
 msgid "Enable spell check"
-msgstr "Yazım denetimini etkinleştir"
+msgstr "Spellingscontrole activeren"
 
 #: InputWidgetSettingsPage#6
 msgid "Enable per chat history"
-msgstr ""
+msgstr "Geschiedenis per chat activeren"
 
 #: InputWidgetSettingsPage#7
 msgid "Show nick selector"
-msgstr "Takma ad seçiciyi göster"
+msgstr "Toon nick-kiezen"
 
 #: InputWidgetSettingsPage#8
 msgid "Show style buttons"
-msgstr "Biçim düğmelerini göster"
+msgstr "Toon stijlknoppen"
 
 #: InputWidgetSettingsPage#9
 msgid "Multi-Line Editing"
-msgstr "Çok-Satırlı Düzenleme"
+msgstr "Meerdere regels bewerken"
 
 #: InputWidgetSettingsPage#10
 msgid "Show at most"
-msgstr ""
+msgstr "Toon maximaal"
 
 #: InputWidgetSettingsPage#11
 msgid "lines"
-msgstr "satırlar"
+msgstr "regels"
 
 #: InputWidgetSettingsPage#12
 msgid "Enable scrollbars"
-msgstr "Kaydırma çubuklarını etkinleştir"
+msgstr "Activeer schuifbalken"
 
 #: InputWidgetSettingsPage#13
 msgid "Tab Completion"
-msgstr "Sekme Tamamlaması"
+msgstr "Tab-completion"
 
 #: InputWidgetSettingsPage#14
 msgid "Completion suffix:"
-msgstr "Tamamlama soneki:"
+msgstr "Completion suffix:"
 
 #: InputWidgetSettingsPage#15
 msgid ": "
@@ -2754,37 +2944,37 @@ msgstr ": "
 
 #: IrcConnectionWizard#1
 msgid "Save && Connect"
-msgstr "Kaydet && Bağlan"
+msgstr "Save && Connect"
 
 #: IrcListModel#1
 msgctxt "IrcListModel#1"
 msgid "Channel"
-msgstr "Kanal"
+msgstr "Kanaal"
 
 #: IrcListModel#2
 msgid "Users"
-msgstr "Kullanıcılar"
+msgstr "Gebruikers"
 
 #: IrcListModel#3
 msgctxt "IrcListModel#3"
 msgid "Topic"
-msgstr ""
+msgstr "Onderwerp"
 
 #: IrcServerHandler#1
 msgid "%1 has changed topic for %2 to: \"%3\""
-msgstr "%1, %2 kanalının başlığını şu şekilde değiştirdi: \"%3\""
+msgstr "%1 heeft het onderwerp van %2 verandert naar: \"%3\""
 
 #: IrcServerHandler#2
 msgid "Received RPL_ISUPPORT (005) without parameters!"
-msgstr "Parametresiz RPL_ISUPPORT (005) alındı!"
+msgstr "Received RPL_ISUPPORT (005) without parameters!"
 
 #: IrcServerHandler#3
 msgid ""
 "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
 msgstr ""
-"RFC uyumlu olmayan RPL_ISUPPORT alındı: bu beklenmeyen bir davranışa yol "
-"açabilir!"
+"Received non RFC compliant RPL_ISUPPORT: dit kan tot onverwacht gedrag "
+"leiden!"
 
 #: IrcServerHandler#4
 msgctxt "IrcServerHandler#4"
@@ -2793,11 +2983,11 @@ msgstr "%1"
 
 #: IrcServerHandler#5
 msgid "[Whois] %1 is away: \"%2\""
-msgstr "[Whois] %1 dışarıda: \"%2\""
+msgstr "[Whois] %1 is afwezig: \"%2\""
 
 #: IrcServerHandler#6
 msgid "%1 is away: \"%2\""
-msgstr "%1 is away: \"%2\""
+msgstr "%1 is afwezig: \"%2\""
 
 #: IrcServerHandler#7
 msgid "[Whois] %1"
@@ -2809,7 +2999,7 @@ msgstr "[Whois] %1 is %2 (%3)"
 
 #: IrcServerHandler#9
 msgid "%1 is online via %2 (%3)"
-msgstr "%1, %2 (%3) aracılığıyla çevrimiçi"
+msgstr "%1 is online via %2 (%3)"
 
 #: IrcServerHandler#10
 msgid "[Whowas] %1"
@@ -2817,63 +3007,63 @@ msgstr "[Whowas] %1"
 
 #: IrcServerHandler#11
 msgid "[Whowas] %1 was %2 (%3)"
-msgstr ""
+msgstr "[Whowas] %1 was %2 (%3)"
 
 #: IrcServerHandler#12
 msgid "[Who] End of /WHO list for %1"
-msgstr "[Who] %1 için /WHO listesinin sonu"
+msgstr "[Who] Einde van de /WHO-lijst voor %1"
 
 #: IrcServerHandler#13
 msgid "[Whois] %1 is logged in since %2"
-msgstr ""
+msgstr "[Whois] %1 is aangemeld sinds %2"
 
 #: IrcServerHandler#14
 msgid "[Whois] %1 is idling for %2 (%3)"
-msgstr ""
+msgstr "[Whois] %1 is %2 (%3) inactief"
 
 #: IrcServerHandler#15
 msgid "[Whois] idle message: %1"
-msgstr "[Whois] boşta mesajı: %1"
+msgstr "[Whois] inactief-bericht: %1"
 
 #: IrcServerHandler#16
 msgid "[Whois] %1 is a user on channels: %2"
-msgstr ""
+msgstr "[Whois] %1 is een gebruiker in kanalen: %2"
 
 #: IrcServerHandler#17
 msgid "[Whois] %1 has voice on channels: %2"
-msgstr ""
+msgstr "[Whois] %1 heeft voice op kanalen: %2"
 
 #: IrcServerHandler#18
 msgid "[Whois] %1 is an operator on channels: %2"
-msgstr ""
+msgstr "[Whois] %1 is een operator op kanalen: %2"
 
 #: IrcServerHandler#19
 msgid "Channel %1 has %2 users. Topic is: %3"
-msgstr "Kanal %1'de %2 kullanıcı var. Konu: %3"
+msgstr "Kanaal %1 heeft %2 gebruikers. Onderwerp is: %3"
 
 #: IrcServerHandler#20
 msgid "End of channel list"
-msgstr "Kanal listesinin sonu"
+msgstr "Einde van kanaallijst"
 
 #: IrcServerHandler#21
 msgid "Homepage for %1 is %2"
-msgstr ""
+msgstr "Homepage van %1 is %2"
 
 #: IrcServerHandler#22
 msgid "Channel %1 created on %2"
-msgstr ""
+msgstr "Kanaal %1 is op %2 aangemaakt"
 
 #: IrcServerHandler#23
 msgid "No topic is set for %1."
-msgstr "%1 için konu ayarlanmamış."
+msgstr "Geen onderwerp ingesteld voor %1."
 
 #: IrcServerHandler#24
 msgid "Topic for %1 is \"%2\""
-msgstr "%1 kanalının konusu \"%2\""
+msgstr "Onderwerp voor %1 is \"%2\""
 
 #: IrcServerHandler#25
 msgid "Topic set by %1 on %2"
-msgstr ""
+msgstr "Onderwerp op %2 door %1 ingesteld"
 
 #: IrcServerHandler#26
 msgid "[Who] %1"
@@ -2881,106 +3071,106 @@ msgstr "[Who] %1"
 
 #: IrcServerHandler#27
 msgid "Nick %1 contains illegal characters"
-msgstr "%1 takma adı geçersiz karakterler içeriyor"
+msgstr "Nick %1 bevat niet-toegestane tekens"
 
 #: IrcServerHandler#28
 msgid "Nick already in use: %1"
-msgstr "%1 takma adı zaten kullanımda"
+msgstr "Nick is al in gebruik: %1"
 
 #: IrcServerHandler#29
 msgid "Nick/channel is temporarily unavailable: %1"
-msgstr "Takma ad/kanal geçici olarak ulaşılamaz: %1"
+msgstr "Nick/kanaal is tijdelijk niet beschikbaar: %1"
 
 #: IrcServerHandler#30
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr ""
-"Takma ad listesinde geçerli ve kullanılmayan takma ad bulunamadı. /nick "
-"<farklıtakmaad> ile farklı bir takma ad kullanın"
+"Geen beschikbare en toegestane nicks in de lijst gevonden. Gebruik /nick "
+"<anderenick> om door te gaan"
 
 #: IrcUserItem#1
 msgctxt "IrcUserItem#1"
 msgid "idling since %1"
-msgstr "%1'den beri boşta"
+msgstr "niet actief sinds %1"
 
 #: IrcUserItem#2
 msgctxt "IrcUserItem#2"
 msgid "login time: %1"
-msgstr "giriş zamanı: %1"
+msgstr "logintijd: %1"
 
 #: IrcUserItem#3
 msgctxt "IrcUserItem#3"
 msgid "server: %1"
-msgstr "sunucu: %1"
+msgstr "server: %1"
 
 #: ItemViewSettingsPage#1
 msgctxt "ItemViewSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: ItemViewSettingsPage#2
 msgid "Chat & Nick Lists"
-msgstr "Sohbet & Takma Ad Listeleri"
+msgstr "Chat & Nicklijsten"
 
 #: ItemViewSettingsPage#3
 msgctxt "ItemViewSettingsPage#3"
 msgid "Network"
-msgstr "Ağ"
+msgstr "Netwerk"
 
 #: ItemViewSettingsPage#4
 msgid "Inactive"
-msgstr "Etkin değil"
+msgstr "Niet actief"
 
 #: ItemViewSettingsPage#5
 msgid "Normal"
-msgstr "Normal"
+msgstr "Normaal"
 
 #: ItemViewSettingsPage#6
 msgid "Unread messages"
-msgstr "Okunmamış iletiler"
+msgstr "Ongelezen berichten"
 
 #: ItemViewSettingsPage#7
 msgctxt "ItemViewSettingsPage#7"
 msgid "Highlight"
-msgstr "Vurgula"
+msgstr "Markeer"
 
 #: ItemViewSettingsPage#8
 msgid "Other activity"
-msgstr "Diğer etkinlik"
+msgstr "Andere activiteit"
 
 #: ItemViewSettingsPage#9
 msgctxt "ItemViewSettingsPage#9"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: ItemViewSettingsPage#10
 msgctxt "ItemViewSettingsPage#10"
 msgid "Custom font:"
-msgstr "Özel yazı tipi:"
+msgstr "Eigen lettertype:"
 
 #: ItemViewSettingsPage#11
 msgid "Show icons"
-msgstr "Simgeleri göster"
+msgstr "Toon pictogrammen"
 
 #: ItemViewSettingsPage#12
 msgid "Chat List"
-msgstr "Sohbet Listesi"
+msgstr "Chatlijst"
 
 #: ItemViewSettingsPage#13
 msgid "Display topic in tooltip"
-msgstr "Araç ipucunda konuyu göster"
+msgstr "Toon onderwerp in tooltip"
 
 #: ItemViewSettingsPage#14
 msgid "Mouse wheel changes selected chat"
-msgstr "Fare tekeri seçilmiş sohbeti değiştirir"
+msgstr "Muiswiel verandert geselecteerde chat"
 
 #: ItemViewSettingsPage#15
 msgid "Use Custom Colors"
-msgstr "Özelleştirilmiş Renkleri Kullan"
+msgstr "Gebruik eigen kleuren"
 
 #: ItemViewSettingsPage#16
 msgid "Standard:"
-msgstr "Standart:"
+msgstr "Standaard:"
 
 #: ItemViewSettingsPage#17
 msgctxt "ItemViewSettingsPage#17"
@@ -2989,19 +3179,19 @@ msgstr "..."
 
 #: ItemViewSettingsPage#18
 msgid "Inactive:"
-msgstr "Etkin değil:"
+msgstr "Inactief:"
 
 #: ItemViewSettingsPage#19
 msgid "Unread messages:"
-msgstr "Okunmamış iletiler:"
+msgstr "Ongelezen berichten:"
 
 #: ItemViewSettingsPage#20
 msgid "Highlight:"
-msgstr "Vurgula:"
+msgstr "Markeer:"
 
 #: ItemViewSettingsPage#21
 msgid "Other activity:"
-msgstr "Diğer aktivite:"
+msgstr "Andere activiteit:"
 
 #: ItemViewSettingsPage#22
 msgid "1"
@@ -3009,40 +3199,40 @@ msgstr "1"
 
 #: ItemViewSettingsPage#23
 msgid "Custom Nick List Colors"
-msgstr "Özel Takma Ad Listesi Renkleri"
+msgstr "Eigen kleuren voor nicklijst"
 
 #: ItemViewSettingsPage#24
 msgid "Online:"
-msgstr "Çevrimiçi:"
+msgstr "Online:"
 
 #: ItemViewSettingsPage#25
 msgid "Away:"
-msgstr "Dışarıda:"
+msgstr "Afwezig:"
 
 #: KNotificationBackend#1
 msgctxt "KNotificationBackend#1"
 msgid "%n pending highlights"
-msgstr ""
+msgstr "%n markeringen in wachtrij"
 
 #: MainWin#1
 msgid "&Connect to Core..."
-msgstr "&Çekirdeğe Bağlan..."
+msgstr "Verbindt met &core..."
 
 #: MainWin#2
 msgid "&Disconnect from Core"
-msgstr "&Çekirdekle Bağlantıyı Kes"
+msgstr "&Verbreek verbinding met core"
 
 #: MainWin#3
 msgid "Core &Info..."
-msgstr "Çekirdek &Bilgisi..."
+msgstr "Core &informatie"
 
 #: MainWin#4
 msgid "Configure &Networks..."
-msgstr "A&ğları Yapılandır..."
+msgstr "&Netwerken configureren..."
 
 #: MainWin#5
 msgid "&Quit"
-msgstr "&Çık"
+msgstr "&Afsluiten"
 
 #: MainWin#6
 msgid "Ctrl+Q"
@@ -3050,23 +3240,23 @@ msgstr "Ctrl+Q"
 
 #: MainWin#7
 msgid "&Configure Chat Lists..."
-msgstr "Sohbet Listelerini &Yapılandır..."
+msgstr "&Configureer chatlijsten..."
 
 #: MainWin#8
 msgid "&Lock Layout"
-msgstr "Düzeni &Kilitle"
+msgstr "Zet &lay-out vast"
 
 #: MainWin#9
 msgid "Show &Search Bar"
-msgstr "&Arama Çubuğunu Göster"
+msgstr "Toon &zoekbalk"
 
 #: MainWin#10
 msgid "Show Away Log"
-msgstr ""
+msgstr "Toon afwezigheidslog"
 
 #: MainWin#11
 msgid "Show &Menubar"
-msgstr "&Menü Çubuğunu Göster"
+msgstr "Toon &menubalk"
 
 #: MainWin#12
 msgid "Ctrl+M"
@@ -3074,11 +3264,11 @@ msgstr "Ctrl+M"
 
 #: MainWin#13
 msgid "Show Status &Bar"
-msgstr "&Durum Çubuğunu Göster"
+msgstr "Toon status&balk"
 
 #: MainWin#14
 msgid "&Configure Quassel..."
-msgstr "Quasseli &Yapılandır..."
+msgstr "&Configureer Quassel..."
 
 #: MainWin#15
 msgid "F7"
@@ -3086,321 +3276,331 @@ msgstr "F7"
 
 #: MainWin#16
 msgid "&About Quassel"
-msgstr "Quassel &Hakkında"
+msgstr "&Over Quassel"
 
 #: MainWin#17
 msgid "About &Qt"
-msgstr "&Qt Hakkında"
+msgstr "Over &Qt"
 
 #: MainWin#18
 msgid "Debug &NetworkModel"
-msgstr "&NetworkModel Hata Ayıkla"
+msgstr "Debug &NetworkModel"
 
 #: MainWin#19
 msgid "Debug &BufferViewOverlay"
-msgstr ""
+msgstr "Debug &BufferViewOverlay"
 
 #: MainWin#20
 msgid "Debug &MessageModel"
-msgstr "&MessageModel Hata Ayıkla"
+msgstr "Debug &MessageModel"
 
 #: MainWin#21
 msgid "Debug &HotList"
-msgstr ""
+msgstr "Debug &HotList"
 
 #: MainWin#22
 msgid "Debug &Log"
-msgstr "&Log Hata Ayıkla"
+msgstr "Debug &log"
 
 #: MainWin#23
 msgid "Reload Stylesheet"
-msgstr ""
+msgstr "Herlaadt stijlsheet"
 
+# Niet heel exact, maar dit is wat jump to hot chat betekent:
+#
+# you switch to the channel with the oldest unread message
 #: MainWin#24
 msgid "Jump to hot chat"
-msgstr ""
+msgstr "Open het kanaal met oudste ongelezen bericht"
 
 #: MainWin#25
 msgid "&File"
-msgstr "&Dosya"
+msgstr "&Bestand"
 
 #: MainWin#26
 msgid "&Networks"
-msgstr "&Ağ"
+msgstr "&Netwerken"
 
 #: MainWin#27
 msgid "&View"
-msgstr "&Görünüm"
+msgstr "&Toon"
 
 #: MainWin#28
 msgid "&Chat Lists"
-msgstr "&Sohbet Listeleri"
+msgstr "&Chatlijsten"
 
 #: MainWin#29
 msgid "&Toolbars"
-msgstr "&Araç Çubukları"
+msgstr "&Werkbalken"
 
 #: MainWin#30
 msgid "&Settings"
-msgstr "&Ayarlar"
+msgstr "&Instellingen"
 
 #: MainWin#31
 msgid "&Help"
-msgstr "&Yardım"
+msgstr "&Hulp"
 
 #: MainWin#32
 msgid "Debug"
-msgstr "Hata Ayıkla"
+msgstr "Debug"
 
 #: MainWin#33
 msgid "Nicks"
-msgstr "Takma Adlar"
+msgstr "Nicks"
 
 #: MainWin#34
 msgid "Show Nick List"
-msgstr "Takma Ad Listesini Göster"
+msgstr "Toon nicklijst"
 
 #: MainWin#35
 msgctxt "MainWin#35"
 msgid "Chat Monitor"
-msgstr "Sohbet Ekranı"
+msgstr "Chatmonitor"
 
 #: MainWin#36
 msgid "Show Chat Monitor"
-msgstr "Sohbet Ekranını Göster"
+msgstr "Toon chatmonitor"
 
 #: MainWin#37
 msgid "Inputline"
-msgstr "Girdi Satırı"
+msgstr "Invoerregel"
 
 #: MainWin#38
 msgid "Show Input Line"
-msgstr "Girdi Satırını Göster"
+msgstr "Toon invoerregel"
 
 #: MainWin#39
 msgctxt "MainWin#39"
 msgid "Topic"
-msgstr ""
+msgstr "Onderwerp"
 
 #: MainWin#40
 msgid "Show Topic Line"
-msgstr "Konu Satırını Göster"
+msgstr "Toon onderwerpregel"
 
 #: MainWin#41
 msgid "Main Toolbar"
-msgstr "Ana Araç Çubuğu"
+msgstr "Hoofdwerkbalk"
 
 #: MainWin#42
 msgid "Connected to core."
-msgstr "Çekirdeğe bağlandı."
+msgstr "Met core verbonden."
 
 #: MainWin#43
 msgid "Not connected to core."
-msgstr "Çekirdeğe bağlı değil."
+msgstr "Niet met core verbonden."
 
 #: MainWin#44
 msgid "Unencrypted Connection"
-msgstr "Şifrelenmemiş Bağlantı"
+msgstr "Onversleutelde verbinding"
 
 #: MainWin#45
 msgid "<b>Your client does not support SSL encryption</b>"
-msgstr "<b>İstemciniz SSL şifrelemeyi desteklemiyor</b>"
+msgstr "<b>U client ondersteunt geen SSL-versleuteling</b>"
 
 #: MainWin#46
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr ""
+"Gevoelige gegevens, zoals wachtwoorden, zullen onversleuteld naar uw Quassel-"
+"core verzonden worden."
 
 #: MainWin#47
 msgid "<b>Your core does not support SSL encryption</b>"
-msgstr "<b>Çekirdeğiniz SSL şifrelemeyi desteklemiyor</b>"
+msgstr "<b>U core ondersteunt geen SSL-versleuteling</b>"
 
 #: MainWin#48
 msgid "Untrusted Security Certificate"
-msgstr "Güvenilmeyen Güvenlik Sertifikası"
+msgstr "Onbetrouwbaar beveiligingscertificaat"
 
 #: MainWin#49
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
 msgstr ""
+"<b>Het door de core op %1 opgegeven beveiligingscertificaat is om de "
+"volgende redenen onbetrouwbaar:</b>"
 
 #: MainWin#50
 msgctxt "MainWin#50"
 msgid "Continue"
-msgstr "Devam Et"
+msgstr "Doorgaan"
 
 #: MainWin#51
 msgid "Show Certificate"
-msgstr "Sertifikayı Göster"
+msgstr "Toon certificaat"
 
 #: MainWin#52
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr ""
+"Wilt u dit certificaat permanent accepteren zonder hierom gevraagd te worden?"
 
 #: MainWin#53
 msgid "Current Session Only"
-msgstr "Sadece Geçerli Oturum"
+msgstr "Alleen deze sessie"
 
 #: MainWin#54
 msgid "Forever"
-msgstr ""
+msgstr "Permanent"
 
 #: MainWin#55
 msgid "Core Connection Error"
-msgstr "Çekirdek Bağlantı Hatası"
+msgstr "Core-verbinding fout"
 
 #: MessageModel#1
 msgid "Requesting %1 messages from backlog for buffer %2:%3"
-msgstr ""
+msgstr "%1 berichten van de backlog aanvragen voor buffer %2:%3"
 
 #: MsgProcessorStatusWidget#1
 msgctxt "MsgProcessorStatusWidget#1"
 msgid "Form"
-msgstr "Biçim"
+msgstr "Form"
 
 #: MsgProcessorStatusWidget#2
 msgid "Receiving Backlog"
-msgstr ""
+msgstr "Backlog ontvangen"
 
 #: MultiLineEdit#1
 msgid "Do you really want to paste %n lines?"
-msgstr ""
+msgstr "Wilt u echt %n regels plakken?"
 
 #: MultiLineEdit#2
 msgid "Paste Protection"
-msgstr ""
+msgstr "Plak-bescherming"
 
 #: NetworkAddDlg#1
 msgctxt "NetworkAddDlg#1"
 msgid "Add Network"
-msgstr "Ağ Ekle"
+msgstr "Netwerk toevoegen"
 
 #: NetworkAddDlg#2
 msgid "Use preset:"
-msgstr ""
+msgstr "Gebruik voorinstellingen:"
 
 #: NetworkAddDlg#3
 msgid "Manually specify network settings"
-msgstr "Ağ ayarlarını elle belirt"
+msgstr "Handmatig netwerkinstellingen opgeven"
 
 #: NetworkAddDlg#4
 msgid "Manual Settings"
-msgstr "Manuel Ayarlar"
+msgstr "Handmatige instellingen"
 
 #: NetworkAddDlg#5
 msgctxt "NetworkAddDlg#5"
 msgid "Network name:"
-msgstr "Ağ adı:"
+msgstr "Netwerknaam:"
 
 #: NetworkAddDlg#6
 msgctxt "NetworkAddDlg#6"
 msgid "Server address:"
-msgstr "Sunucu adresi:"
+msgstr "Serveradres:"
 
 #: NetworkAddDlg#7
 msgctxt "NetworkAddDlg#7"
 msgid "Port:"
-msgstr "Yuva:"
+msgstr "Poort:"
 
 #: NetworkAddDlg#8
 msgid "Server password:"
-msgstr "Sunucu parolası:"
+msgstr "Serverwachtwoord:"
 
 #: NetworkAddDlg#9
 msgid "Use secure connection"
-msgstr "Güvenli bağlantı kullan"
+msgstr "Gebruik beveiligde verbinding"
 
 #: NetworkEditDlg#1
 msgctxt "NetworkEditDlg#1"
 msgid "Dialog"
-msgstr "İletişim Kutusu"
+msgstr "Dialoog"
 
 #: NetworkEditDlg#2
 msgid "Please enter a network name:"
-msgstr "Lütfen bir ağ adı girin:"
+msgstr "Vul een netwerknaam in:"
 
 #: NetworkEditDlg#3
 msgctxt "NetworkEditDlg#3"
 msgid "Add Network"
-msgstr "Ağ Ekle"
+msgstr "Netwerk toevoegen"
 
 #: NetworkItem#1
 msgid "Server: %1"
-msgstr "Sunucu: %1"
+msgstr "Server: %1"
 
 #: NetworkItem#2
 msgctxt "NetworkItem#2"
 msgid "Users: %1"
-msgstr "Kullanıcılar: %1"
+msgstr "Gebruikers: %1"
 
 #: NetworkItem#3
 msgctxt "NetworkItem#3"
 msgid "Lag: %1 msecs"
-msgstr ""
+msgstr "Vertraging: %1 msec"
 
 #: NetworkModel#1
 msgid "Chat"
-msgstr "Sohbet"
+msgstr "Chat"
 
 #: NetworkModel#2
 msgctxt "NetworkModel#2"
 msgid "Topic"
-msgstr ""
+msgstr "Onderwerp"
 
 #: NetworkModel#3
 msgid "Nick Count"
-msgstr "Takma Ad Sayısı"
+msgstr "Aantal nicks"
 
 #: NetworkModelController#1
 msgid "Do you want to delete the following buffer(s) permanently?"
-msgstr "Aşağıdaki arabelleği kalıcı olarak silmek istiyor musunuz?"
+msgstr "Wilt u de volgende buffer(s) permanent verwijderen?"
 
 #: NetworkModelController#2
 msgid "...and <b>%1</b> more<br><br>"
-msgstr ""
+msgstr "...en <b>%1</b> meer<br><br>"
 
 #: NetworkModelController#3
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
 msgstr ""
-"<b>Not:</b> Bu işlem tüm backlog verileri de dahil olmak üzere tüm ilgili "
-"verileri çekirdeğinizin veritabanından silecek ve geri dönüşü yok."
+"<b>Let op:</b> Dit zal alle bijbehorende gegevens, waaronder backlog "
+"gegevens, van de core-database verwijderen en kan niet ongedaan gemaakt "
+"worden."
 
 #: NetworkModelController#4
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
 msgstr ""
-"<br>Etkin kanal arabellekleri silinemez, lütfen önce kanaldan ayrılın."
+"<br>Actieve kanaalbuffers kunnen niet verwijderd worden, verlaat eerst het "
+"kanaal."
 
 #: NetworkModelController#5
 msgid "Remove buffers permanently?"
-msgstr "Arabellekleri kalıcı olarak sileyim mi?"
+msgstr "Buffers permanent verwijderen?"
 
 #: NetworkModelController::JoinDlg#1
 msgid "Join Channel"
-msgstr "Kanala Katıl"
+msgstr "Kanaal binnengaan"
 
 #: NetworkModelController::JoinDlg#2
 msgctxt "NetworkModelController::JoinDlg#2"
 msgid "Network:"
-msgstr "Ağ:"
+msgstr "Netwerk:"
 
 #: NetworkModelController::JoinDlg#3
 msgid "Channel:"
-msgstr "Kanal:"
+msgstr "Kanaal:"
 
 #: NetworkModelController::JoinDlg#4
 msgctxt "NetworkModelController::JoinDlg#4"
 msgid "Password:"
-msgstr "Parola:"
+msgstr "Wachtwoord:"
 
 #: NetworkPage#1
 msgid "Setup Network Connection"
-msgstr "Ağ Bağlantısını Ayarla"
+msgstr "Netwerkverbinding opzetten"
 
 #: NetworksSettingsPage#1
 msgctxt "NetworksSettingsPage#1"
@@ -3409,7 +3609,7 @@ msgstr "IRC"
 
 #: NetworksSettingsPage#2
 msgid "Networks"
-msgstr "Ağ"
+msgstr "Netwerken"
 
 #: NetworksSettingsPage#3
 msgctxt "NetworksSettingsPage#3"
@@ -3417,12 +3617,13 @@ msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
-"<b>Değişikliklerin uygulanabilmesi için aşağıdaki sorunların düzeltilmesi "
-"gerekli:</b><ul>"
+"<b>De volgende problemen moeten opgelost worden voordat uw wijzigingen "
+"toegepast kunnen worden:</b><ul>"
 
 #: NetworksSettingsPage#4
 msgid "<li>All networks need at least one server defined</li>"
-msgstr "<li>Tüm ağlarda en az bir sunucu tanımlı olması gerekir</li>"
+msgstr ""
+"<li>Voor alle netwerken moet minstens een server opgegeven worden</li>"
 
 #: NetworksSettingsPage#5
 msgctxt "NetworksSettingsPage#5"
@@ -3431,46 +3632,47 @@ msgstr "</ul>"
 
 #: NetworksSettingsPage#6
 msgid "Invalid Network Settings"
-msgstr "Geçersiz Ağ Ayarlarsı"
+msgstr "Ongeldige netwerkinstellingen"
 
 #: NetworksSettingsPage#7
 msgid "Delete Network?"
-msgstr "Ağı Sil?"
+msgstr "Netwerk verwijderen?"
 
 #: NetworksSettingsPage#8
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
 msgstr ""
-"\"%1\" ağını ve ilgili tüm ayarları gerçekten silmek istiyor musunuz?"
+"Wilt u echt netwerk \"%1\" en alle bijbehorende gegevens, waaronder het "
+"backlog, verwijderen?"
 
 #: NetworksSettingsPage#9
 msgctxt "NetworksSettingsPage#9"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: NetworksSettingsPage#10
 msgctxt "NetworksSettingsPage#10"
 msgid "Re&name..."
-msgstr ""
+msgstr "Her&noemen..."
 
 #: NetworksSettingsPage#11
 msgctxt "NetworksSettingsPage#11"
 msgid "&Add..."
-msgstr "&Ekle..."
+msgstr "&Toevoegen"
 
 #: NetworksSettingsPage#12
 msgctxt "NetworksSettingsPage#12"
 msgid "De&lete"
-msgstr ""
+msgstr "&Verwijder"
 
 #: NetworksSettingsPage#13
 msgid "Network Details"
-msgstr "Ağ Detayları"
+msgstr "Netwerkdetails"
 
 #: NetworksSettingsPage#14
 msgid "Identity:"
-msgstr "Kimlik:"
+msgstr "Identiteit:"
 
 #: NetworksSettingsPage#15
 msgctxt "NetworksSettingsPage#15"
@@ -3480,40 +3682,42 @@ msgstr "..."
 #: NetworksSettingsPage#16
 msgctxt "NetworksSettingsPage#16"
 msgid "Servers"
-msgstr "Sunucular"
+msgstr "Servers"
 
 #: NetworksSettingsPage#17
 msgid "Manage servers for this network"
-msgstr "Bu ağ için sunucuları düzenle"
+msgstr "Servers voor dit netwerk beheren"
 
 #: NetworksSettingsPage#18
 msgctxt "NetworksSettingsPage#18"
 msgid "&Edit..."
-msgstr "&Düzenle..."
+msgstr "Be&werken"
 
 #: NetworksSettingsPage#19
 msgctxt "NetworksSettingsPage#19"
 msgid "Move upwards in list"
-msgstr "Listede üste al"
+msgstr "In de lijst omhoog verplaatsen"
 
 #: NetworksSettingsPage#20
 msgctxt "NetworksSettingsPage#20"
 msgid "Move downwards in list"
-msgstr "Listede alta al"
+msgstr "In de lijst omlaag verplaatsen"
 
 #: NetworksSettingsPage#21
 msgid "Commands"
-msgstr "Komutlar"
+msgstr "Commando's"
 
 #: NetworksSettingsPage#22
 msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
 msgstr ""
+"Configureer automatische identificatie of andere commando's om uit te voeren "
+"nadat u met een server verbonden bent"
 
 #: NetworksSettingsPage#23
 msgid "Commands to execute on connect:"
-msgstr "Bağlanırken işletilecek komutlar:"
+msgstr "Bij het verbinden uit te voeren commando's:"
 
 #: NetworksSettingsPage#24
 msgid ""
@@ -3521,26 +3725,28 @@ msgid ""
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely "
 "be needed here!"
 msgstr ""
-"Bağlantıdan sonra işletilecek IRC komutların listesini belirtin.\n"
-"Quassel IRC kanallara otomatik olarak bağlanır, bu yüzden /join komutunu "
-"yazmanıza gerek yok!"
+"Geen een lijst IRC-commando's die uitgevoerd moeten worden bij het "
+"verbinden.\n"
+"Let op dat Quassel-IRC automatisch opnieuw met kanalen verbindt, zodat /join "
+"hier zelden nodig zal zijn!"
 
 #: NetworksSettingsPage#25
 msgctxt "NetworksSettingsPage#25"
 msgid "Connection"
-msgstr "Bağlantı"
+msgstr "Verbinding"
 
 #: NetworksSettingsPage#26
 msgid "Automatically reconnect to the IRC network after connection failures"
-msgstr "Bağlantı başarısız olursa IRC ağına otomatik olarak yeniden bağlan"
+msgstr ""
+"Automatisch opnieuw met het IRC-netwerk verbinden als de verbinding wegvalt"
 
 #: NetworksSettingsPage#27
 msgid "Automatic Reconnect"
-msgstr "Otomatik Yeniden Bağlanma"
+msgstr "Automatisch opnieuw verbinden"
 
 #: NetworksSettingsPage#28
 msgid "Wait"
-msgstr "Bekle"
+msgstr "Wacht"
 
 #: NetworksSettingsPage#29
 msgid " s"
@@ -3548,24 +3754,24 @@ msgstr " s"
 
 #: NetworksSettingsPage#30
 msgid "between retries"
-msgstr ""
+msgstr "tussen pogingen"
 
 #: NetworksSettingsPage#31
 msgid "Number of retries:"
-msgstr ""
+msgstr "Aantal pogingen:"
 
 #: NetworksSettingsPage#32
 msgctxt "NetworksSettingsPage#32"
 msgid "Unlimited"
-msgstr "Sınırsız"
+msgstr "Ongelimiteerd"
 
 #: NetworksSettingsPage#33
 msgid "Rejoin all channels after reconnect"
-msgstr "Yeniden bağlanma sonrası tüm kanallara tekrar katıl"
+msgstr "Ga alle kanalen weer binnen na opnieuw verbinden"
 
 #: NetworksSettingsPage#34
 msgid "Auto Identify"
-msgstr "Otomatik tanı"
+msgstr "Auto-identificatie"
 
 #: NetworksSettingsPage#35
 msgid "NickServ"
@@ -3573,146 +3779,149 @@ msgstr "NickServ"
 
 #: NetworksSettingsPage#36
 msgid "Service:"
-msgstr "Servis:"
+msgstr "Service:"
 
 #: NetworksSettingsPage#37
 msgctxt "NetworksSettingsPage#37"
 msgid "Password:"
-msgstr "Parola:"
+msgstr "Wachtwoord:"
 
 #: NetworksSettingsPage#38
 msgid "Use SASL Authentication"
-msgstr "SASL Doğrulaması Kullan"
+msgstr "Gebruik SASL-authenticatie"
 
 #: NetworksSettingsPage#39
 msgid "Account:"
-msgstr "Hesap:"
+msgstr "Account:"
 
 #: NetworksSettingsPage#40
 msgid "Encodings"
-msgstr "Kodlamalar"
+msgstr "Encodering"
 
 #: NetworksSettingsPage#41
 msgid ""
 "Configure advanced settings such as message encodings and automatic reconnect"
 msgstr ""
-"Mesaj kodlamaları ve otomatik yeniden bağlanma gibi gelişmiş ayarları "
-"yapılandır"
+"Configureer geavanceerde opties zoals bericht-encodering en automatisch "
+"opnieuw verbinden"
 
 #: NetworksSettingsPage#42
 msgid "Control encodings for in- and outgoing messages"
-msgstr "Gelen ve giden mesajlar için kodlamaları kontrol et"
+msgstr "Beheer encodings voor inkomende en uitgaande berichten"
 
 #: NetworksSettingsPage#43
 msgid "Use Custom Encodings"
-msgstr "Özel Kodlama Kullan"
+msgstr "Gebruik eigen encodering"
 
 #: NetworksSettingsPage#44
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
 msgstr ""
-"Giden mesajlarınızın kodlamasını belirtin.\n"
-"UTF-8 çoğu ağ için en uygun tercihtir."
+"Stel in in welke encoding uw berichten verzonden zullen worden.\n"
+"UTF-8 is een zinnige keuze voor de meeste netwerken."
 
 #: NetworksSettingsPage#45
 msgid "Send messages in:"
-msgstr "Mesajları yolla:"
+msgstr "Verzend berichten in:"
 
 #: NetworksSettingsPage#46
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
 msgstr ""
+"Binnenkomende berichten in Utf8 zullen altijd zo behandeld worden.\n"
+"Deze instellingen geven de codering voor berichten die niet Utf8 zijn."
 
 #: NetworksSettingsPage#47
 msgid "Receive fallback:"
-msgstr ""
+msgstr "Ontvang-terugvaloptie:"
 
 #: NetworksSettingsPage#48
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
-"Kontrol mesajlarının, takma adların ve sunucu adlarının nasıl kodlanacağını "
-"belirler.\n"
-"*Gerçekten* ne yapıyor olduğunuzu bilmiyorsanız, ISO-8859-1 olarak bırakın!"
+"Dit geeft de encodering van control-messages, nicks en servernamen aan.\n"
+"Tenzij u *echt* weet wat u doet moet u dit op ISO-8859-1 laten staan!"
 
 #: NetworksSettingsPage#49
 msgid "Server encoding:"
-msgstr "Sunucu kodlaması:"
+msgstr "Server encodering:"
 
 #: NickEditDlg#1
 msgctxt "NickEditDlg#1"
 msgid "Add Nickname"
-msgstr "Takma Ad Ekle"
+msgstr "Bijnaam toevoegen"
 
 #: NickEditDlg#2
 msgid "Edit Nickname"
-msgstr "Takma Ad Düzenle"
+msgstr "Bijnaam bewerken"
 
 #: NickEditDlg#3
 msgid "Please enter a valid nickname:"
-msgstr "Lütfen geçerli bir takma ad girin:"
+msgstr "Vul een geldige bijnaam in:"
 
 #: NickEditDlg#4
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
 msgstr ""
-"Geçerli bir takma ad İngiliz alfabesindeki harfleri, sayıları ve {, }, [, ], "
-"\\, |, `, ^, _ - özel karakterlerini içerebilir."
+"Een geldige bijnaam mag letters uit het alfabet bevatten, cijfers en de "
+"volgende speciale tekens: {, }, [, ], \\, |, `, ^, _ en -."
 
 #: NotificationsSettingsPage#1
 msgctxt "NotificationsSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: NotificationsSettingsPage#2
 msgid "Notifications"
-msgstr "Bildirimler"
+msgstr "Notificaties"
 
 #: PhononNotificationBackend::ConfigWidget#1
 msgid "Select Audio File"
-msgstr "Ses Dosyası Seçin"
+msgstr "Kies audiobestand"
 
 #: PhononNotificationConfigWidget#1
 msgctxt "PhononNotificationConfigWidget#1"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: PhononNotificationConfigWidget#2
 msgid "Play a sound"
-msgstr "Bir ses çal"
+msgstr "Speel een geluid"
 
 #: PhononNotificationConfigWidget#3
 msgid "Prelisten to the selected sound"
-msgstr ""
+msgstr "Luister naar het geselecteerde geluid"
 
 #: PhononNotificationConfigWidget#4
 msgid "Select the sound file to play"
-msgstr "Çalmak için ses dosyası seç"
+msgstr "Selecteer een audio bestand om af te spelen"
 
 #: PostgreSqlStorage#1
 msgid "PostgreSQL Turbo Bomber HD!"
-msgstr ""
+msgstr "PostgreSQL Turbo Bomber HD!"
 
 #: QObject#1
 msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
-msgstr ""
+msgstr "Een totaal van %1 backlog-berichten voor %2 buffers aanvragen"
 
 #: QObject#2
 msgid ""
 "Requesting up to %1 of all unread backlog messages (plus additional %2)"
 msgstr ""
+"Tot %1 van alle ongelezen backlog-berichten opvragen (plus nog %2 extra)"
 
 #: QObject#3
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
 msgstr ""
+"Een totaal van %1 ongelezen backlog-berichten voor %2 buffers aanvragen"
 
 #: QObject#4
 msgid "Welcome to Quassel IRC"
-msgstr "Quassel IRC'e Hoşgeldiniz"
+msgstr "Welkom bij Quassel-IRC"
 
 #: QObject#5
 msgid ""
@@ -3720,208 +3929,214 @@ msgid ""
 "network connection.<br>This only covers basic settings. You can cancel this "
 "wizard any time and use the settings dialog for more detailed changes."
 msgstr ""
+"Deze wizard helpt u bij het opzetten van uw standaard identiteit en uw IRC-"
+"netwerkverbinding.<br>Dit behandelt alleen standaard instellingen. U kunt "
+"deze wizard op elk moment annuleren en het instellingenvenster gebruiken "
+"voor gedetailleerden opties."
 
 #: QssParser#1
 msgid "Invalid block declaration: %1"
-msgstr ""
+msgstr "Ongeldig blok opgegeven: %1"
 
 #: QssParser#2
 msgid "Invalid palette role assignment: %1"
-msgstr ""
+msgstr "Ongeldige palette-role toegewezen: %1"
 
 #: QssParser#3
 msgid "Unknown palette role name: %1"
-msgstr ""
+msgstr "Onbekende palette-role-naam: %1"
 
 #: QssParser#4
 msgid "Invalid subelement name in %1"
-msgstr ""
+msgstr "Ongeldige subelementnaam in %1"
 
 #: QssParser#5
 msgid "Invalid message type in %1"
-msgstr ""
+msgstr "Ongeldig berichttype in %1"
 
 #: QssParser#6
 msgid "Invalid condition %1"
-msgstr ""
+msgstr "Ongeldige voorwaarde %1"
 
 #: QssParser#7
 msgid "Invalid message label: %1"
-msgstr "Geçersiz ileti etiketi: %1"
+msgstr "Ongeldig berichtlabel: %1"
 
 #: QssParser#8
 msgid "Invalid senderhash specification: %1"
-msgstr ""
+msgstr "Ongeldige senderhash specificatie: %1"
 
 #: QssParser#9
 msgid "Senderhash can be at most \"0x0f\"!"
-msgstr ""
+msgstr "Senderhash kan maximaal \"0x0f\" zijn!"
 
 #: QssParser#10
 msgid "Invalid format name: %1"
-msgstr ""
+msgstr "Ongeldige formatnaam: %1"
 
 #: QssParser#11
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
-msgstr ""
+msgstr "Ongeldige IRC-kleur opgegeven (moet tussen 00 en 0f liggen): %1"
 
 #: QssParser#12
 msgid "Unhandled condition: %1"
-msgstr ""
+msgstr "Onafgehandeld probleem: %1"
 
 #: QssParser#13
 msgid "Invalid proplist %1"
-msgstr ""
+msgstr "Ongeldige proplijst %1"
 
 #: QssParser#14
 msgid "Invalid chatlist item type %1"
-msgstr ""
+msgstr "Ongeldig chatlijstobjecttype %1"
 
 #: QssParser#15
 msgid "Invalid chatlist state %1"
-msgstr ""
+msgstr "Ongeldige chatlijststatus %1"
 
 #: QssParser#16
 msgid "Invalid property declaration: %1"
-msgstr ""
+msgstr "Ongeldige eigenschapdeclaratie: %1"
 
 #: QssParser#17
 msgid "Invalid font property: %1"
-msgstr ""
+msgstr "Ongeldige lettertype-eigenschap: %1"
 
 #: QssParser#18
 msgid "Unknown ChatLine property: %1"
-msgstr ""
+msgstr "Onbekende ChatLine eigenschap: %1"
 
 #: QssParser#19
 msgid "Invalid palette color role specification: %1"
-msgstr ""
+msgstr "Ongeldige palettekleur-role opgegeven: %1"
 
 #: QssParser#20
 msgid "Unknown palette color role: %1"
-msgstr ""
+msgstr "Onbekende palettekleur-role: %1"
 
 #: QssParser#21
 msgid "Invalid gradient declaration: %1"
-msgstr ""
+msgstr "Ongeldige gradiënt opgegeven: %1"
 
 #: QssParser#22
 msgid "Invalid gradient stops list: %1"
-msgstr ""
+msgstr "Ongeldige gradiënt-stoplijst: %1"
 
 #: QssParser#23
 msgid "Invalid font specification: %1"
-msgstr ""
+msgstr "Ongeldig lettertype opgegeven: %1"
 
 #: QssParser#24
 msgid "Invalid font style specification: %1"
-msgstr ""
+msgstr "Ongeldige lettertypestijl opgegeven: %1"
 
 #: QssParser#25
 msgid "Invalid font weight specification: %1"
-msgstr ""
+msgstr "Ongeldige lettertype-dikte opgegeven: %1"
 
 #: QssParser#26
 msgid "Invalid font size specification: %1"
-msgstr ""
+msgstr "Ongeldige lettertypegrootte opgegeven: %1"
 
 #: Quassel::secondsToString()#1
 msgid "year"
-msgstr "yıl"
+msgstr "jaar"
 
 #: Quassel::secondsToString()#2
 msgid "day"
-msgstr "gün"
+msgstr "dag"
 
 #: Quassel::secondsToString()#3
 msgid "h"
-msgstr "s"
+msgstr "h"
 
 #: Quassel::secondsToString()#4
 msgid "min"
-msgstr "dk"
+msgstr "min"
 
 #: Quassel::secondsToString()#5
 msgid "sec"
-msgstr "sn"
+msgstr "sec"
 
 #: QueryBufferItem#1
 msgid "<b>Query with %1</b>"
-msgstr "<b>%1 ile konuş</b>"
+msgstr "<b>Aanvraag met %1</b>"
 
 #: QueryBufferItem#2
 msgctxt "QueryBufferItem#2"
 msgid "idling since %1"
-msgstr "%1'den beri boşta"
+msgstr "niet actief sinds %1"
 
 #: QueryBufferItem#3
 msgctxt "QueryBufferItem#3"
 msgid "login time: %1"
-msgstr "giriş zamanı: %1"
+msgstr "logintijd: %1"
 
 #: QueryBufferItem#4
 msgctxt "QueryBufferItem#4"
 msgid "server: %1"
-msgstr "sunucu: %1"
+msgstr "server: %1"
 
 #: SaveIdentitiesDlg#1
 msgid "Sync With Core"
-msgstr "Çekirdek ile Senkronize Ol"
+msgstr "Met core synchroniseren"
 
 #: SaveIdentitiesDlg#2
 msgid "Syncing data with core, please wait..."
-msgstr "Çekirdek ile veriler senkronize oluyor, lütfen bekleyin..."
+msgstr "Gegevens met core synchroniseren, een moment..."
 
 #: SaveIdentitiesDlg#3
 msgid "Abort"
-msgstr "Vazgeç"
+msgstr "Afbreken"
 
 #: ServerEditDlg#1
 msgctxt "ServerEditDlg#1"
 msgid "Dialog"
-msgstr "İletişim Kutusu"
+msgstr "Dialoog"
 
 #: ServerEditDlg#2
 msgid "Server Info"
-msgstr "Sunucu Bilgisi"
+msgstr "Serverinformatie"
 
 #: ServerEditDlg#3
 msgctxt "ServerEditDlg#3"
 msgid "Server address:"
-msgstr "Sunucu adresi:"
+msgstr "Serveradres:"
 
 #: ServerEditDlg#4
 msgctxt "ServerEditDlg#4"
 msgid "Port:"
-msgstr ""
+msgstr "Poort:"
 
 #: ServerEditDlg#5
 msgctxt "ServerEditDlg#5"
 msgid "Password:"
-msgstr "Parola:"
+msgstr "Wachtwoord:"
 
 #: ServerEditDlg#6
 msgid "Use SSL"
-msgstr "SSL Kullan"
+msgstr "Gebruik SSL"
 
 #: ServerEditDlg#7
 msgctxt "ServerEditDlg#7"
 msgid "Advanced"
-msgstr ""
+msgstr "Geavanceerd"
 
 #: ServerEditDlg#8
 msgid "SSL Version:"
-msgstr "SSL Sürümü:"
+msgstr "SSL-versie"
 
 #: ServerEditDlg#9
 msgid ""
 "Do not change unless you're going to connect to a server not supporting "
 "SSLv3!"
 msgstr ""
+"Pas dit niet aan tenzij u met een server wilt verbinden die SSLv3 niet "
+"ondersteunt!"
 
 #: ServerEditDlg#10
 msgid "SSLv3 (default)"
-msgstr "SSLv3 (öntanımlı)"
+msgstr "SSLv3 (default)"
 
 #: ServerEditDlg#11
 msgid "SSLv2"
@@ -3934,17 +4149,17 @@ msgstr "TLSv1"
 #: ServerEditDlg#13
 msgctxt "ServerEditDlg#13"
 msgid "Use a Proxy"
-msgstr "Vekil Sunucu Kullan"
+msgstr "Gebruik een proxy"
 
 #: ServerEditDlg#14
 msgctxt "ServerEditDlg#14"
 msgid "Proxy Type:"
-msgstr "Vekil Sunucu Türü:"
+msgstr "Proxytype:"
 
 #: ServerEditDlg#15
 msgctxt "ServerEditDlg#15"
 msgid "Socks 5"
-msgstr ""
+msgstr "Socks 5"
 
 #: ServerEditDlg#16
 msgctxt "ServerEditDlg#16"
@@ -3953,176 +4168,180 @@ msgstr "HTTP"
 
 #: ServerEditDlg#17
 msgid "Proxy Host:"
-msgstr "Vekil Sunucu:"
+msgstr "Proxyhost:"
 
 #: ServerEditDlg#18
 msgctxt "ServerEditDlg#18"
 msgid "localhost"
-msgstr "yerelsunucu"
+msgstr "localhost"
 
 #: ServerEditDlg#19
 msgid "Proxy Username:"
-msgstr "Vekil Sunucu Kullanıcı adı:"
+msgstr "Proxy-gebruikersnaam:"
 
 #: ServerEditDlg#20
 msgid "Proxy Password:"
-msgstr "Vekil Sunucu Parolası:"
+msgstr "Proxywachtwoord:"
 
 #: SettingsDlg#1
 msgctxt "SettingsDlg#1"
 msgid "Settings"
-msgstr "Ayarlar"
+msgstr "Instellingen"
 
 #: SettingsDlg#2
 msgid "Save changes"
-msgstr "Değişiklikleri kaydet"
+msgstr "Veranderingen opslaan"
 
 #: SettingsDlg#3
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
 msgstr ""
-"Mevcut yapılandırma sayfasında kaydedilmemiş değişiklikler var. Bu "
-"değişiklikleri uygulamak ister misiniz?"
+"Er zijn nog niet opgeslagen veranderingen in de huidige configuratie. Wilt u "
+"deze veranderingen nu toepassen?"
 
 #: SettingsDlg#4
 msgctxt "SettingsDlg#4"
 msgid "Configure %1"
-msgstr "%1 Ögesini Yapılandır"
+msgstr "Configureer %1"
 
 #: SettingsDlg#5
 msgctxt "SettingsDlg#5"
 msgid "Reload Settings"
-msgstr "Ayarları Geri Yükle"
+msgstr "Instellingen herladen"
 
 #: SettingsDlg#6
 msgctxt "SettingsDlg#6"
 msgid ""
 "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
-"Bu sayfadaki değişiklikleri geri alıp eski ayarları yüklemek ister misiniz?"
+"Wilt u de instellingen herladen, waarmee u alle wijzigingen op deze pagina "
+"ongedaan maakt?"
 
 #: SettingsDlg#7
 msgctxt "SettingsDlg#7"
 msgid "Restore Defaults"
-msgstr "Öntanımlılara Dön"
+msgstr "Beginwaarden terugzetten"
 
 #: SettingsDlg#8
 msgctxt "SettingsDlg#8"
 msgid "Do you like to restore the default values for this page?"
-msgstr "Bu sayfa için öntanımlı değerleri yüklemek istiyor musunuz?"
+msgstr "Wilt u de beginwaarden voor deze pagina terugzetten?"
 
 #: SettingsDlg#9
 msgctxt "SettingsDlg#9"
 msgid "Configure Quassel"
-msgstr "Quassel'i Yapılandır"
+msgstr "Configureer Quassel"
 
 #: SettingsPageDlg#1
 msgctxt "SettingsPageDlg#1"
 msgid "Configure %1"
-msgstr "%1 Ögesini Yapılandır"
+msgstr "Configureer %1"
 
 #: SettingsPageDlg#2
 msgctxt "SettingsPageDlg#2"
 msgid "Reload Settings"
-msgstr "Ayarları Geri Yükle"
+msgstr "Instellingen herladen"
 
 #: SettingsPageDlg#3
 msgctxt "SettingsPageDlg#3"
 msgid ""
 "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
-"Bu sayfadaki değişiklikleri geri alıp eski ayarları yüklemek ister misiniz?"
+"Wilt u de instellingen herladen, waarmee u alle wijzigingen op deze pagina "
+"ongedaan maakt?"
 
 #: SettingsPageDlg#4
 msgctxt "SettingsPageDlg#4"
 msgid "Restore Defaults"
-msgstr "Öntanımlılara Dön"
+msgstr "Beginwaarden terugzetten"
 
 #: SettingsPageDlg#5
 msgctxt "SettingsPageDlg#5"
 msgid "Do you like to restore the default values for this page?"
-msgstr "Bu sayfa için öntanımlı değerleri yüklemek istiyor musunuz?"
+msgstr "Wilt u de beginwaarden voor deze pagina terugzetten?"
 
 #: SettingsPageDlg#6
 msgctxt "SettingsPageDlg#6"
 msgid "Configure Quassel"
-msgstr "Quassel'i Yapılandır"
+msgstr "Configureer Quassel"
 
 #: SettingsPageDlg#7
 msgctxt "SettingsPageDlg#7"
 msgid "Settings"
-msgstr "Ayarlar"
+msgstr "Instellingen"
 
 #: SignalProxy#1
 msgid "Peer tried to send package larger than max package size!"
 msgstr ""
+"Uw peer probeerde een pakket te sturen dat groter was dan de maximale "
+"pakketgrootte!"
 
 #: SignalProxy#2
 msgid "Peer tried to send 0 byte package!"
-msgstr ""
+msgstr "Uw peer probeerde een pakket te sturen van 0 bytes!"
 
 #: SignalProxy#3
 msgid "Peer sent corrupted compressed data!"
-msgstr ""
+msgstr "Uw peer verstuurde beschadigde gecomprimeerde data!"
 
 #: SignalProxy#4
 msgid "Peer sent corrupt data: unable to load QVariant!"
-msgstr ""
+msgstr "Uw peer verzond beschadigde data: kan QVariant niet laden!"
 
 #: SignalProxy#5
 msgid "Disconnecting"
-msgstr "Bağlantı kesiliyor"
+msgstr "Verbinding verbreken"
 
 #: SimpleNetworkEditor#1
 msgctxt "SimpleNetworkEditor#1"
 msgid "Network name:"
-msgstr "Ağ adı:"
+msgstr "Netwerknaam:"
 
 #: SimpleNetworkEditor#2
 msgid "The name of the IRC network you are configuring"
-msgstr "Yapılandırdığınız IRC ağının adı"
+msgstr "De naam van het IRC-netwerk dat u configureert"
 
 #: SimpleNetworkEditor#3
 msgctxt "SimpleNetworkEditor#3"
 msgid "Servers"
-msgstr "Sunucular"
+msgstr "Servers"
 
 #: SimpleNetworkEditor#4
 msgid "A list of IRC servers belonging to this network"
-msgstr "Bu ağa ait IRC sunucularının bir listesi"
+msgstr "Een lijst van alle IRC-servers die bij dit netwerk horen"
 
 #: SimpleNetworkEditor#5
 msgid "Edit this server entry"
-msgstr "Bu sunucu girdisini düzenle"
+msgstr "Bewerk deze serverinstellingen"
 
 #: SimpleNetworkEditor#6
 msgctxt "SimpleNetworkEditor#6"
 msgid "&Edit..."
-msgstr "&Düzenle..."
+msgstr "Be&werken..."
 
 #: SimpleNetworkEditor#7
 msgid "Add another IRC server"
-msgstr "Başka bir IRC sunucusu ekle"
+msgstr "Nog een IRC-server toevoegen"
 
 #: SimpleNetworkEditor#8
 msgctxt "SimpleNetworkEditor#8"
 msgid "&Add..."
-msgstr "&Ekle..."
+msgstr "&Toevoegen..."
 
 #: SimpleNetworkEditor#9
 msgid "Remove this server entry from the list"
-msgstr "Bu sunucu girdisini listeden kaldır"
+msgstr "Deze server van de lijst verwijderen"
 
 #: SimpleNetworkEditor#10
 msgctxt "SimpleNetworkEditor#10"
 msgid "De&lete"
-msgstr ""
+msgstr "&Verwijder"
 
 #: SimpleNetworkEditor#11
 msgctxt "SimpleNetworkEditor#11"
 msgid "Move upwards in list"
-msgstr "Listede üste al"
+msgstr "In de lijst omhoog verplaatsen"
 
 #: SimpleNetworkEditor#12
 msgctxt "SimpleNetworkEditor#12"
@@ -4132,19 +4351,19 @@ msgstr "..."
 #: SimpleNetworkEditor#13
 msgctxt "SimpleNetworkEditor#13"
 msgid "Move downwards in list"
-msgstr "Listede alta al"
+msgstr "In de lijst omlaag verplaatsen"
 
 #: SimpleNetworkEditor#14
 msgid "Join Channels Automatically"
-msgstr "Kanallara Otomatik olarak Katıl"
+msgstr "Automatisch kanalen binnengaan"
 
 #: SimpleNetworkEditor#15
 msgid ""
 "A list of IRC channels you will join automatically after connecting to the "
 "network"
 msgstr ""
-"Ağa bağlandıktan sonra otomatik olarak katılacağınız IRC kanallarının bir "
-"listesi"
+"Een lijst van IRC-kanalen die u automatisch zult binnengaan wanneer u met "
+"het netwerk verbindt"
 
 #: SqliteStorage#1
 msgid ""
@@ -4154,230 +4373,235 @@ msgid ""
 "same machine it is running on, and if you only expect a few users to use "
 "your core."
 msgstr ""
+"SQLite is een file-base database-engine die weinig configuratie behoeft. Het "
+"is geschikt voor kleine tot gemiddelde databases die geen toegang vanaf het "
+"netwerk nodig hebben. Gebruik SQLite als uw Quassel-core gegevens op de "
+"locale machine moet opslaan en als slechts een paar mensen uw core zullen "
+"gebruiken"
 
 #: SslInfoDlg#1
 msgid "Yes"
-msgstr "Evet"
+msgstr "Ja"
 
 #: SslInfoDlg#2
 msgid "No, for the following reasons:<ul>"
-msgstr "Aşağıdaki sebeplerden dolayı, hayır:<ul>"
+msgstr "Nee, om de volgende redenen:<ul>"
 
 #: SslInfoDlg#3
 msgid "%1 to %2"
-msgstr "%1 den %2 e"
+msgstr "%1 tot %2"
 
 #: SslInfoDlg#4
 msgid "Security Information"
-msgstr "Güvenlik Bilgisi"
+msgstr "Beveiligingsinformatie"
 
 #: SslInfoDlg#5
 msgid "<b>Hostname:</b>"
-msgstr "<b>Sunucu Adı:</b>"
+msgstr "<b>Hostnaam:</b>"
 
 #: SslInfoDlg#6
 msgid "<b>IP address:</b>"
-msgstr "<b>IP adresi:</b>"
+msgstr "<b>IP-adres:</b>"
 
 #: SslInfoDlg#7
 msgid "<b>Encryption:</b>"
-msgstr "<b>Şifreleme:</b>"
+msgstr "<b>Versleuteling:</b>"
 
 #: SslInfoDlg#8
 msgid "<b>Protocol:</b>"
-msgstr ""
+msgstr "<b>Protocol:</b>"
 
 #: SslInfoDlg#9
 msgid "<b>Certificate chain:</b>"
-msgstr ""
+msgstr "<b>Certificate chain:</b>"
 
 #: SslInfoDlg#10
 msgid "Subject"
-msgstr ""
+msgstr "Onderwerp"
 
 #: SslInfoDlg#11
 msgid "<b>Common name:</b>"
-msgstr ""
+msgstr "<b>Normale naam:</b>"
 
 #: SslInfoDlg#12
 msgid "<b>Organization:</b>"
-msgstr ""
+msgstr "<b>Organisatie:</b>"
 
 #: SslInfoDlg#13
 msgid "<b>Organizational unit:</b>"
-msgstr ""
+msgstr "<b>Organisatieonderdeel:</b>"
 
 #: SslInfoDlg#14
 msgid "<b>Country:</b>"
-msgstr "<b>Ülke:</b>"
+msgstr "<b>Land:</b>"
 
 #: SslInfoDlg#15
 msgid "<b>State or province:</b>"
-msgstr "<b>Eyalet veya il:</b>"
+msgstr "<b>Staat of provincie:</b>"
 
 #: SslInfoDlg#16
 msgid "<b>Locality:</b>"
-msgstr "<b>Semt:</b>"
+msgstr "<b>Lokaliteit:</b>"
 
 #: SslInfoDlg#17
 msgid "Issuer"
-msgstr ""
+msgstr "Uitgever"
 
 #: SslInfoDlg#18
 msgid "<b>Validity period:</b>"
-msgstr "<b>Geçerlilik süresi:</b>"
+msgstr "<b>Geldigheidsduur:</b>"
 
 #: SslInfoDlg#19
 msgid "<b>MD5 digest:</b>"
-msgstr ""
+msgstr "<b>MD5 controlesom:</b>"
 
 #: SslInfoDlg#20
 msgid "<b>SHA1 digest:</b>"
-msgstr ""
+msgstr "<b>SHA1 controlesom:</b>"
 
 #: SslInfoDlg#21
 msgid "<b>Trusted:</b>"
-msgstr "<b>Güvenilir:</b>"
+msgstr "<b>Vertrouwd:</b>"
 
 #: StatusBufferItem#1
 msgid "Status Buffer"
-msgstr "Durum Arabelleği"
+msgstr "Bufferstatus"
 
 #: SystemTray#1
 msgid "&Minimize"
-msgstr "&Küçült"
+msgstr "&Minimaliseren"
 
 #: SystemTray#2
 msgid "&Restore"
-msgstr "&Geri Yükle"
+msgstr "He&rstellen"
 
 #: SystrayNotificationBackend#1
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
-msgstr ""
+msgstr "%n markeringen in wachtrij"
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "Show a message in a popup"
-msgstr "Mesajı açılır pencerede göster"
+msgstr "Toon een bericht in pop-up venster"
 
 #: TaskbarNotificationBackend::ConfigWidget#1
 msgid "Activate dock entry, timeout:"
-msgstr ""
+msgstr "Activeer dockvermelding, timeout:"
 
 #: TaskbarNotificationBackend::ConfigWidget#2
 msgid "Mark taskbar entry, timeout:"
-msgstr "Görev çubuğu girdisini işaretle, zaman aşımı:"
+msgstr "Markeer taakbalkvermelding, timeout:"
 
 #: TaskbarNotificationBackend::ConfigWidget#3
 msgctxt "TaskbarNotificationBackend::ConfigWidget#3"
 msgid "Unlimited"
-msgstr "Sınırsız"
+msgstr "Ongelimiteerd"
 
 #: TaskbarNotificationBackend::ConfigWidget#4
 msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
 msgid " seconds"
-msgstr " saniye"
+msgstr " seconden"
 
 #: ToolBarActionProvider#1
 msgctxt "ToolBarActionProvider#1"
 msgid "Connect"
-msgstr "Bağlan"
+msgstr "Verbindt"
 
 #: ToolBarActionProvider#2
 msgid "Connect to IRC"
-msgstr "IRC'e Bağlan"
+msgstr "Verbindt met IRC"
 
 #: ToolBarActionProvider#3
 msgctxt "ToolBarActionProvider#3"
 msgid "Disconnect"
-msgstr "Bağlantıyı Kes"
+msgstr "Verbreek verbinding"
 
 #: ToolBarActionProvider#4
 msgid "Disconnect from IRC"
-msgstr "IRC bağlantısını kes"
+msgstr "Verbinding met IRC verbreken"
 
 #: ToolBarActionProvider#5
 msgctxt "ToolBarActionProvider#5"
 msgid "Part"
-msgstr ""
+msgstr "Verlaat"
 
 #: ToolBarActionProvider#6
 msgid "Leave currently selected channel"
-msgstr "Seçili kanaldan çık"
+msgstr "Verlaat het geselecteerde kanaal"
 
 #: ToolBarActionProvider#7
 msgctxt "ToolBarActionProvider#7"
 msgid "Join"
-msgstr "Katıl"
+msgstr "Binnengaan"
 
 #: ToolBarActionProvider#8
 msgid "Join a channel"
-msgstr "Bir kanala katıl"
+msgstr "Een kanaal binnengaan"
 
 #: ToolBarActionProvider#9
 msgid "Query"
-msgstr "Sorgula"
+msgstr "Aanvraag"
 
 #: ToolBarActionProvider#10
 msgid "Start a private conversation"
-msgstr "Özel bir konuşma başlat"
+msgstr "Start een privégesprek"
 
 #: ToolBarActionProvider#11
 msgctxt "ToolBarActionProvider#11"
 msgid "Whois"
-msgstr ""
+msgstr "Whois"
 
 #: ToolBarActionProvider#12
 msgid "Request user information"
-msgstr "Kullanıcı bilgisi iste"
+msgstr "Vraag gebruikersinformatie op"
 
 #: ToolBarActionProvider#13
 msgid "Op"
-msgstr ""
+msgstr "Op"
 
 #: ToolBarActionProvider#14
 msgid "Give operator privileges to user"
-msgstr ""
+msgstr "Geef operator-rechten aan gebruiker"
 
 #: ToolBarActionProvider#15
 msgid "Deop"
-msgstr ""
+msgstr "Deop"
 
 #: ToolBarActionProvider#16
 msgid "Take operator privileges from user"
-msgstr ""
+msgstr "Neem operator-rechten van gebruiker af"
 
 #: ToolBarActionProvider#17
 msgid "Voice"
-msgstr ""
+msgstr "Voice"
 
 #: ToolBarActionProvider#18
 msgid "Give voice to user"
-msgstr ""
+msgstr "Geef voice aan gebruiker"
 
 #: ToolBarActionProvider#19
 msgid "Devoice"
-msgstr ""
+msgstr "Ont-voice"
 
 #: ToolBarActionProvider#20
 msgid "Take voice from user"
-msgstr ""
+msgstr "Voice van gebruiker afnemen"
 
 #: ToolBarActionProvider#21
 msgid "Kick"
-msgstr ""
+msgstr "Kick"
 
 #: ToolBarActionProvider#22
 msgid "Remove user from channel"
-msgstr "Kullanıcıyı kanaldan çıkar"
+msgstr "Verwijder gebruiker van kanaal"
 
 #: ToolBarActionProvider#23
 msgid "Ban"
-msgstr "Yasakla"
+msgstr "Ban"
 
 #: ToolBarActionProvider#24
 msgid "Ban user from channel"
-msgstr "Kanalı kullanıcıya yasakla"
+msgstr "Verban gebruiker van kanaal"
 
 #: ToolBarActionProvider#25
 msgid "Kick/Ban"
@@ -4385,30 +4609,30 @@ msgstr "Kick/Ban"
 
 #: ToolBarActionProvider#26
 msgid "Remove and ban user from channel"
-msgstr ""
+msgstr "Verwijder en verban gebruiker van kanaal"
 
 #: ToolBarActionProvider#27
 msgid "Connect to all"
-msgstr "Hepsine bağlan"
+msgstr "Met alle verbinden"
 
 #: ToolBarActionProvider#28
 msgid "Disconnect from all"
-msgstr "Tüm bağlantıları kes"
+msgstr "Verbinding met alle verbreken"
 
 #: TopicWidget#1
 msgctxt "TopicWidget#1"
 msgid "Users: %1"
-msgstr "Kullanıcılar: %1"
+msgstr "Gebruikers: %1"
 
 #: TopicWidget#2
 msgctxt "TopicWidget#2"
 msgid "Lag: %1 msecs"
-msgstr ""
+msgstr "Vertraging: %1 msec"
 
 #: TopicWidget#3
 msgctxt "TopicWidget#3"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: TopicWidget#4
 msgctxt "TopicWidget#4"
@@ -4418,29 +4642,29 @@ msgstr "..."
 #: TopicWidgetSettingsPage#1
 msgctxt "TopicWidgetSettingsPage#1"
 msgid "Interface"
-msgstr "Arayüz"
+msgstr "Interface"
 
 #: TopicWidgetSettingsPage#2
 msgid "Topic Widget"
-msgstr ""
+msgstr "Onderwerpwidget"
 
 #: TopicWidgetSettingsPage#3
 msgctxt "TopicWidgetSettingsPage#3"
 msgid "Form"
-msgstr ""
+msgstr "Form"
 
 #: TopicWidgetSettingsPage#4
 msgctxt "TopicWidgetSettingsPage#4"
 msgid "Custom font:"
-msgstr "Özel yazı tipi:"
+msgstr "Eigen lettertype:"
 
 #: TopicWidgetSettingsPage#5
 msgid "Resize dynamically to fit contents"
-msgstr ""
+msgstr "Dynamisch herschalen om inhoud te bevatten"
 
 #: TopicWidgetSettingsPage#6
 msgid "On hover only"
-msgstr ""
+msgstr "Alleen bij over-zweven"
 
 #: UiStyle::StyledMessage#1
 msgctxt "UiStyle::StyledMessage#1"
@@ -4453,51 +4677,53 @@ msgstr "%DN%1%DN %2"
 
 #: UiStyle::StyledMessage#3
 msgid "You are now known as %DN%1%DN"
-msgstr "%DN%1%DN olarak biliniyorsunuz"
+msgstr "U staat nu bekend als %DN%1%DN"
 
 #: UiStyle::StyledMessage#4
 msgid "%DN%1%DN is now known as %DN%2%DN"
-msgstr ""
+msgstr "%DN%1%DN staat nu bekend als %DN%2%DN"
 
 #: UiStyle::StyledMessage#5
 msgid "User mode: %DM%1%DM"
-msgstr ""
+msgstr "Gebruikersmodus: %DM%1%DM"
 
 #: UiStyle::StyledMessage#6
 msgid "Mode %DM%1%DM by %DN%2%DN"
-msgstr ""
+msgstr "Modus %DM%1%DM door %DN%2%DN"
 
 #: UiStyle::StyledMessage#7
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH is %DC%4%DC binnengekomen"
 
 #: UiStyle::StyledMessage#8
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH heeft %DC%4%DC verlaten"
 
 #: UiStyle::StyledMessage#9
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
-msgstr ""
+msgstr "%DN%1%DN %DH(%2@%3)%DH heeft afgesloten"
 
 #: UiStyle::StyledMessage#10
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr ""
+msgstr "%DN%1%DN heeft %DN%2%DN %DC%3%DC uitgeschopt"
 
 #: UiStyle::StyledMessage#11
 msgid "{Day changed to %1}"
-msgstr ""
+msgstr "{Dag veranderd naar %1}"
 
 #: UiStyle::StyledMessage#12
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
+"De netsplit tussen %DH%1%DH en %DH%2%DH is voorbij. Gebruikers "
+"binnengekomen: "
 
 #: UiStyle::StyledMessage#13
 msgid "%DN%1%DN (%2 more)"
-msgstr ""
+msgstr "%DN%1%DN (%2 meer)"
 
 #: UiStyle::StyledMessage#14
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
-msgstr ""
+msgstr "Netsplit tussen %DH%1%DH en %DH%2%DH. Gebruikers verlaten: "
 
 #: UiStyle::StyledMessage#15
 msgid "[%1]"
@@ -4553,854 +4779,24 @@ msgstr "<="
 
 #: UserCategoryItem#1
 msgid "%n Owner(s)"
-msgstr ""
+msgstr "%n Eigenaar(s)"
 
 #: UserCategoryItem#2
 msgid "%n Admin(s)"
-msgstr ""
+msgstr "%n Administrator(s)"
 
 #: UserCategoryItem#3
 msgid "%n Operator(s)"
-msgstr ""
+msgstr "%n Operator(s)"
 
 #: UserCategoryItem#4
 msgid "%n Half-Op(s)"
-msgstr ""
+msgstr "%n Half-Op(s)"
 
 #: UserCategoryItem#5
 msgid "%n Voiced"
-msgstr ""
+msgstr "%n met voice"
 
 #: UserCategoryItem#6
 msgid "%n User(s)"
-msgstr ""
-
-#~ msgid "<Original>"
-#~ msgstr "<Özgün>"
-
-#~ msgid ""
-#~ "<b>This client is built without SSL Support!</b><br />Disable the usage of "
-#~ "SSL in the account settings."
-#~ msgstr ""
-#~ "<b>Bu istemci SSL Desteği olmadan derlenmiştir!</b><br />Hesap ayarlarından "
-#~ "SSL kullanımını devreden çıkarın."
-
-#~ msgid ""
-#~ "<b>The Quassel Core you are trying to connect to does not support "
-#~ "SSL!</b><br />If you want to connect anyways, disable the usage of SSL in "
-#~ "the account settings."
-#~ msgstr ""
-#~ "<b>Bağlanmaya çalıştığınız Quassel Çekirdeği SSL desteklemiyor!</b><br "
-#~ "/>Yine de bağlanmak istiyorsanız, hesap ayarlarından SSL kullanımını "
-#~ "devreden çıkarın."
-
-#~ msgid "Use secure connection (SSL)"
-#~ msgstr "Güvenli bağlantı kullan (SSL)"
-
-#~ msgid "Use a proxy:"
-#~ msgstr "Vekil sunucu kullan:"
-
-#~ msgid "Proxy Port:"
-#~ msgstr "Vekil Sunucu Portu"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
-#~ "weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
-#~ "font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Note: "
-#~ "</span><span style=\" font-size:10pt;\">Adding more users and changing your "
-#~ "username/password is not possible via Quassel's interface yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
-#~ "font-size:10pt;\">If you need to do these things have a look at the "
-#~ "manageusers.py script which is located in the /scripts "
-#~ "directory.</p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
-#~ "weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
-#~ "font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Note: "
-#~ "</span><span style=\" font-size:10pt;\">Adding more users and changing your "
-#~ "username/password is not possible via Quassel's interface yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
-#~ "font-size:10pt;\">If you need to do these things have a look at the "
-#~ "manageusers.py script which is located in the /scripts "
-#~ "directory.</p></body></html>"
-
-#~ msgid "Remove Account Settings"
-#~ msgstr "Hesap Ayarlarını Kaldır"
-
-#~ msgid ""
-#~ "Do you really want to remove your local settings for this Quassel Core "
-#~ "account?<br>Note: This will <em>not</em> remove or change any data on the "
-#~ "Core itself!"
-#~ msgstr ""
-#~ "Quassel Çekirdek hesabınızdaki yerel ayarlarınızı gerçekten kaldırmak "
-#~ "istiyor musunuz?<br>Not: Bu işlem Çekirdekte herhangi bir veri değişimi ya "
-#~ "da silinmesini <em>gerçekleştirmeyecek</em>!"
-
-#~ msgid "<div style=color:red;>Connection to %1 failed!</div>"
-#~ msgstr "<div style=color:red;>%1e bağlantı başarısız!</div>"
-
-#~ msgid "Not connected to %1."
-#~ msgstr "%1e bağlı değil."
-
-#~ msgid "Unknown connection state to %1"
-#~ msgstr "%1in bağlantı durumu belli değil"
-
-#~ msgid "Login"
-#~ msgstr "Oturum aç"
-
-#~ msgid "Always use this account"
-#~ msgstr "Her zaman bu hesabı kullan"
-
-#~ msgid "Initializing your connection"
-#~ msgstr "Bağlantınız başlatılıyor"
-
-#~ msgid "Connected to apollo.mindpool.net."
-#~ msgstr "apollo.mindpool.net'e bağlanıldı."
-
-#~ msgid ""
-#~ "THIS IS A PLACEHOLDER\n"
-#~ "TO\n"
-#~ "RESERVE\n"
-#~ "SOME SPACE"
-#~ msgstr ""
-#~ "THIS IS A PLACEHOLDER\n"
-#~ "TO\n"
-#~ "RESERVE\n"
-#~ "SOME SPACE"
-
-#~ msgid "Configure your Quassel Core"
-#~ msgstr "Quassel Çekirdeğini Yapılandır"
-
-#~ msgid ""
-#~ "The Quassel Core you are connected to is not configured yet. You may now "
-#~ "launch a configuration wizard that helps you setting up your Core."
-#~ msgstr ""
-#~ "Bağlandığınız Quassel Çekirdeği henüz yapılandırılmamış. Çekirdeği "
-#~ "yapılandırmak için yapılandırma sihirbazını başlatabilirsiniz."
-
-#~ msgid "Launch Wizard"
-#~ msgstr "Sihirbazı Başlat"
-
-#~ msgid "Initializing your session..."
-#~ msgstr "Oturumunuz başlatılıyor..."
-
-#~ msgid ""
-#~ "<b>Please be patient while your client synchronizes with the Quassel "
-#~ "Core!</b>"
-#~ msgstr ""
-#~ "<b>İstemciniz Quassel Çekirdeğiyle senkronize olurken lütfen bekleyiniz!</b>"
-
-#~ msgid "0/0"
-#~ msgstr "0/0"
-
-#~ msgid "Desktop Notification (via D-Bus)"
-#~ msgstr "Masaüstü Bildirimi (D-Bus)"
-
-#~ msgid "Timeout:"
-#~ msgstr "Zaman aşımı:"
-
-#~ msgid "Position hint:"
-#~ msgstr "İpucu pozisyonu:"
-
-#~ msgid " px"
-#~ msgstr " px"
-
-#~ msgid "X: "
-#~ msgstr "X: "
-
-#~ msgid "Y: "
-#~ msgstr "Y: "
-
-#~ msgid "Queue unread notifications"
-#~ msgstr "Okunmayan bildirimleri sıraya al"
-
-#~ msgid "Show System Tray Icon"
-#~ msgstr "Sistem Tepsisi Simgesini Göster"
-
-#~ msgid "Tray Icon"
-#~ msgstr "Tepsi Simgesi"
-
-#~ msgid "Core Lag: %1"
-#~ msgstr "Çekirdek Gecikmesi: %1"
-
-#~ msgid "Control automatic reconnect to the network"
-#~ msgstr "Ağa otomatik yeniden bağlanmayı kontrol et"
-
-#~ msgid "Interval:"
-#~ msgstr "Aralık:"
-
-#~ msgid "Retries:"
-#~ msgstr "Yeniden Deneme:"
-
-#~ msgid "Rejoin all channels on reconnect"
-#~ msgstr "Yeniden bağlanınca tüm kanallara yeniden katıl"
-
-#~ msgid "Audio Notification (via Phonon)"
-#~ msgstr "Sesli Bildirim (Phonon ile)"
-
-#~ msgid "Play File:"
-#~ msgstr "Dosya Oynat:"
-
-#~ msgid "System Tray Icon"
-#~ msgstr "Sistem Tepsisi Simgesi"
-
-#~ msgid "Animate"
-#~ msgstr "Hareketlendir"
-
-#~ msgid "Show bubble"
-#~ msgstr "Baloncuk göster"
-
-#~ msgid ""
-#~ "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2008 by the "
-#~ "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
-#~ "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
-#~ "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
-#~ "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
-#~ "and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
-#~ "icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
-#~ "Team</a> and used under the <a "
-#~ "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
-#~ "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
-#~ "report bugs."
-#~ msgstr ""
-#~ "<b>Modern, dağıtık bir IRC İstemcisi</b><br><br>&copy;2005-2008 Quassel "
-#~ "Projesi<br><a href=\"http://quassel-irc.org\">http://quassel-"
-#~ "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> <a "
-#~ "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC, <a "
-#~ "href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> ve <a "
-#~ "href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> lisanslarıyla "
-#~ "çift-lisanslıdır.<br>Çoğu simge &copy;<a href=\"http://www.oxygen-"
-#~ "icons.org\">Oxygen Team</a>'e aittir ve <a "
-#~ "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a> ile "
-#~ "lisanslanmıştır.<br><br>Hata raporlamak için lütfen <a "
-#~ "href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> "
-#~ "adresini kullanın."
-
-#~ msgid ""
-#~ "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for "
-#~ "great artwork and the Quassel logo/icon</dt><dt><b><a "
-#~ "href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
-#~ "creating most of the other shiny icons you see throughout "
-#~ "Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software formerly "
-#~ "known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for "
-#~ "sponsoring development of QuasselTopia with Greenphones and "
-#~ "more</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>for "
-#~ "keeping Qt alive, and for sponsoring development of Quassel Mobile with "
-#~ "N810s</dd>"
-#~ msgstr ""
-#~ "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for "
-#~ "great artwork and the Quassel logo/icon</dt><dt><b><a "
-#~ "href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
-#~ "creating most of the other shiny icons you see throughout "
-#~ "Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software formerly "
-#~ "known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for "
-#~ "sponsoring development of QuasselTopia with Greenphones and "
-#~ "more</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>for "
-#~ "keeping Qt alive, and for sponsoring development of Quassel Mobile with "
-#~ "N810s</dd>"
-
-#~ msgid "Behaviour"
-#~ msgstr "Davranış"
-
-#~ msgid "Appearance"
-#~ msgstr "Görünüm"
-
-#~ msgid "Note: needs client restart for full effect!"
-#~ msgstr ""
-#~ "Not: tüm etkilerin görülebilmesi için istemcinin yeniden başlatılması "
-#~ "gerekli!"
-
-#~ msgid "Misc:"
-#~ msgstr "Çeşitli:"
-
-#~ msgid "Show Web Previews"
-#~ msgstr "Web Önizlemelerini Göster"
-
-#~ msgid "Use Icons to represent away state of Users"
-#~ msgstr "Kullanıcıların dışarıda durumunu göstermek için simgeleri kullan"
-
-#~ msgid "Backlog Request Method:"
-#~ msgstr "Backlog Talep Metodu:"
-
-#~ msgid "Unread Messages per Buffer"
-#~ msgstr "Arabellek Başına Düşen Okunmamış Mesajlar"
-
-#~ msgid "Global Unread Messages"
-#~ msgstr "Genel Okunmamış Mesajlar"
-
-#~ msgid "Hide buffers"
-#~ msgstr "Arabellekleri gizle"
-
-#~ msgid "Hide buffers permanently"
-#~ msgstr "Arabellekleri kalıcı olarak gizle"
-
-#~ msgid "Delete buffer"
-#~ msgstr "Arabelleği sil"
-
-#~ msgid "Mode"
-#~ msgstr "Mod"
-
-#~ msgid "Day Change"
-#~ msgstr "Gün Değişimi"
-
-#~ msgid "Remove buffer permanently?"
-#~ msgstr "Arabelleği kalıcı olarak kaldır?"
-
-#~ msgid ""
-#~ "Do you want to delete the buffer \"%1\" permanently? This will delete all "
-#~ "related data, including all backlog data, from the core's database!"
-#~ msgstr ""
-#~ "\"%1\" arabelleğini kalıcı olarak silmek istiyor musunuz? Bu işlem "
-#~ "veritabanındaki tüm kayıt ve ilgili verileri silecektir!"
-
-#~ msgid "All Buffers"
-#~ msgstr "Tüm Arabellekler"
-
-#~ msgid "Please enter a name for the buffer view:"
-#~ msgstr "Arabellek görünümü için bir ad girin:"
-
-#~ msgid "Add Buffer View"
-#~ msgstr "Arabellek Görünümü Ekle"
-
-#~ msgid "Edit Mode"
-#~ msgstr "Düzenleme Modu"
-
-#~ msgid "Buffer Views"
-#~ msgstr "Arabellek Görünümleri"
-
-#~ msgid "Delete Buffer View?"
-#~ msgstr "Arabellek Görünümünü Sil?"
-
-#~ msgid "Do you really want to delete the buffer view \"%1\"?"
-#~ msgstr "\"%1\" arabellek görünümünü gerçekten silmek istiyor musunuz?"
-
-#~ msgid "Buffer View  Settings"
-#~ msgstr "Arabellek Görünümü Ayarları"
-
-#~ msgid "Restrict Buffers to:"
-#~ msgstr "Arabellekleri Kısıtla:"
-
-#~ msgid "Status Buffers"
-#~ msgstr "Durum Arabellekleri"
-
-#~ msgid "Channel Buffers"
-#~ msgstr "Kanal Arabellekleri"
-
-#~ msgid "Query Buffers"
-#~ msgstr "Sorgu Arabellekleri"
-
-#~ msgid "Hide inactive Buffers"
-#~ msgstr "Etkin olmayan arabellekleri gizle"
-
-#~ msgid "Add new Buffers automatically"
-#~ msgstr "Yeni arabellekleri otomatikman ekle"
-
-#~ msgid "Enlarge Chat View"
-#~ msgstr "Sohbet Görünümünü Genişlet"
-
-#~ msgid "Ctrl++"
-#~ msgstr "Ctrl++"
-
-#~ msgid "Demagnify Chat View"
-#~ msgstr "Sohbet Görünümünü Küçült"
-
-#~ msgid "Ctrl+-"
-#~ msgstr "Ctrl+-"
-
-#~ msgid "Normalize zoom of Chat View"
-#~ msgstr "Sohbet Görünümünü Yakınlaştır"
-
-#~ msgid "Ctrl+0"
-#~ msgstr "Ctrl+0"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-"
-#~ "large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel "
-#~ "IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span "
-#~ "style=\" font-size:22pt;\">Chat comfortably. "
-#~ "Anywhere.</span></p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-#~ "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-#~ "type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-"
-#~ "large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel "
-#~ "IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span "
-#~ "style=\" font-size:22pt;\">Chat comfortably. "
-#~ "Anywhere.</span></p></body></html>"
-
-#~ msgid "Available Buffers:"
-#~ msgstr "Mevcut Arabellekler:"
-
-#~ msgid "Show network name"
-#~ msgstr "Ağ adını göster"
-
-#~ msgid "Show buffer name"
-#~ msgstr "Arabellek adını göster"
-
-#~ msgid "Internal connections not yet supported."
-#~ msgstr "Dahili bağlantılar henüz desteklenmiyor."
-
-#~ msgid "Color settings"
-#~ msgstr "Renk ayarları"
-
-#~ msgid "Bufferview"
-#~ msgstr "Arabellek görünümü"
-
-#~ msgid "Activities:"
-#~ msgstr "Etkinlikler:"
-
-#~ msgid "FG"
-#~ msgstr "ÖP"
-
-#~ msgid "BG"
-#~ msgstr "AP"
-
-#~ msgid "Use BG"
-#~ msgstr "AP Kullan"
-
-#~ msgid "Default:"
-#~ msgstr "Öntanımlı:"
-
-#~ msgid "New Message:"
-#~ msgstr "Yeni Mesaj:"
-
-#~ msgid "Other Activity:"
-#~ msgstr "Diğer Etkinlik:"
-
-#~ msgid "Chatview"
-#~ msgstr "Sohbet Görünümü"
-
-#~ msgid "Server Activity"
-#~ msgstr "Sunucu Etkinliği"
-
-#~ msgid "Foreground"
-#~ msgstr "Önplan"
-
-#~ msgid "Background"
-#~ msgstr "Arkaplan"
-
-#~ msgid "Error Message:"
-#~ msgstr "Hata Mesajı:"
-
-#~ msgid "Notice Message:"
-#~ msgstr "Bildiri Mesajı:"
-
-#~ msgid "Plain Message:"
-#~ msgstr "Düz Mesaj:"
-
-#~ msgid "Server Message:"
-#~ msgstr "Sunucu Mesajı:"
-
-#~ msgid "Highlight Message:"
-#~ msgstr "Mesajı Vurgula:"
-
-#~ msgid "User Activity"
-#~ msgstr "Kullanıcı Etkinliği"
-
-#~ msgid "Action Message:"
-#~ msgstr "Eylem Mesajı:"
-
-#~ msgid "Join Message:"
-#~ msgstr "Katılma Mesajı:"
-
-#~ msgid "Kick Message:"
-#~ msgstr "Atılma Mesajı:"
-
-#~ msgid "Mode Message:"
-#~ msgstr "Mod Mesajı:"
-
-#~ msgid "Part Message:"
-#~ msgstr "Ayrılma Mesajı:"
-
-#~ msgid "Quit Message:"
-#~ msgstr "Çıkma Mesajı:"
-
-#~ msgid "Rename Message:"
-#~ msgstr "Yeniden Adlandırma Mesajı:"
-
-#~ msgid "Sender:"
-#~ msgstr "Gönderen:"
-
-#~ msgid "Nick:"
-#~ msgstr "Takma ad:"
-
-#~ msgid "Hostmask:"
-#~ msgstr "Sunucu maskesi:"
-
-#~ msgid "Channelname:"
-#~ msgstr "Kanal adı:"
-
-#~ msgid "Mode flags:"
-#~ msgstr "Mod bayrakları:"
-
-#~ msgid "Url:"
-#~ msgstr "Url:"
-
-#~ msgid "New Message Marker:"
-#~ msgstr "Yeni Mesaj İşareti:"
-
-#~ msgid "Mirc Color Codes"
-#~ msgstr "Mirc Renk Kodları"
-
-#~ msgid "Color Codes"
-#~ msgstr "Renk Kodları"
-
-#~ msgid "Color 0:"
-#~ msgstr "Renk 0:"
-
-#~ msgid "Color 1:"
-#~ msgstr "Renk 1:"
-
-#~ msgid "Color 2:"
-#~ msgstr "Renk 2:"
-
-#~ msgid "Color 3:"
-#~ msgstr "Renk 3:"
-
-#~ msgid "Color 4:"
-#~ msgstr "Renk 4:"
-
-#~ msgid "Color 5:"
-#~ msgstr "Renk 5:"
-
-#~ msgid "Color 6:"
-#~ msgstr "Renk 6:"
-
-#~ msgid "Color 7:"
-#~ msgstr "Renk 7:"
-
-#~ msgid "Color 8:"
-#~ msgstr "Renk 8:"
-
-#~ msgid "Color 14:"
-#~ msgstr "Renk 14:"
-
-#~ msgid "Color 15:"
-#~ msgstr "Renk 15:"
-
-#~ msgid "Color 13:"
-#~ msgstr "Renk 13:"
-
-#~ msgid "Color 12:"
-#~ msgstr "Renk 12:"
-
-#~ msgid "Color 11:"
-#~ msgstr "Renk 11:"
-
-#~ msgid "Color 10:"
-#~ msgstr "Renk 10:"
-
-#~ msgid "Color 9:"
-#~ msgstr "Renk 9:"
-
-#~ msgid "Nickview"
-#~ msgstr "Takma Ad Görünümü"
-
-#~ msgid "Nick status:"
-#~ msgstr "Takma ad durumu:"
-
-#~ msgid ""
-#~ "Currently, Quassel only supports SQLite3. You need to build your\n"
-#~ "Qt library with the sqlite plugin enabled in order for quasselcore\n"
-#~ "to work."
-#~ msgstr ""
-#~ "Şu an için Quassel sadece SQLite3 destekliyor. Quassel Çekirdeğinin\n"
-#~ "çalışması için Qt kitaplığını sqlite eklentisi aktif olacak şekilde\n"
-#~ "derlemeniz gerekmektedir."
-
-#~ msgid "The port quasselcore will listen at"
-#~ msgstr "Quassel çekirdeğinin dinleyeceği port"
-
-#~ msgid "Don't restore last core's state"
-#~ msgstr "Çekirdeğin son durumunu geri yükleme"
-
-#~ msgid "Path to logfile"
-#~ msgstr "Kayıt dosyasının yolu"
-
-#~ msgid "Loglevel Debug|Info|Warning|Error"
-#~ msgstr "Kayıt seviyesi Hata Ayıklama|Bilgi|Uyarı|Hata"
-
-#~ msgid ""
-#~ "Specify the directory holding datafiles like the Sqlite DB and the SSL Cert"
-#~ msgstr "SSL Sertfikası ve Sqlite DB gibi verilerin bulunduğu dizini belirtin"
-
-#~ msgid "Disconnecting."
-#~ msgstr "Bağlantı Kesiliyor."
-
-#~ msgid "Fonts"
-#~ msgstr "Yazıtipleri"
-
-#~ msgid "Custom Application Fonts"
-#~ msgstr "Özel Uygulama Yazıtipleri"
-
-#~ msgid "Font"
-#~ msgstr "Yazıtipi"
-
-#~ msgid "Topic:"
-#~ msgstr "Konu:"
-
-#~ msgid "Buffer Views:"
-#~ msgstr "Arabellek Görünümleri:"
-
-#~ msgid "Nick List:"
-#~ msgstr "Takma Ad Listesi:"
-
-#~ msgid "Inputline:"
-#~ msgstr "Girdi satırı:"
-
-#~ msgid "General:"
-#~ msgstr "Genel:"
-
-#~ msgid "Chat Widget"
-#~ msgstr "Sohbet Penceresi"
-
-#~ msgid "Nicks:"
-#~ msgstr "Takma adlar:"
-
-#~ msgid ""
-#~ "Some of these settings require a restart of the Quassel Client in order to "
-#~ "take effect. We intend to fix this."
-#~ msgstr ""
-#~ "Bu ayarlardan bazılarının etkin olabilmesi için Quassel İstemcisinin yeniden "
-#~ "başlatılması gerekir. Bunu düzeltmeyi planlıyoruz."
-
-#~ msgid "Minimize to tray on minimize button"
-#~ msgstr "Alçalt düğmesiyle sistem tepsisine küçült"
-
-#~ msgid "Minimize to tray on close button"
-#~ msgstr "Kapat düğmesiyle sistem tepsisine küçült"
-
-#~ msgid "Current Buffer"
-#~ msgstr "Mevcut Arabellek"
-
-#~ msgid "Errors"
-#~ msgstr "Hatalar"
-
-#~ msgid "Buffer View"
-#~ msgstr "Arabellek Görünümü"
-
-#~ msgid "Mouse wheel changes displayed buffers"
-#~ msgstr "Fare tekerleğiyle arabellekleri değiştir"
-
-#~ msgid ""
-#~ "The suffix appended to a nick on completion via TAB. Default is \": \""
-#~ msgstr "TAB ile takma ad tamamlamada eklenecek sonek. Öntanımlı \":\""
-
-#~ msgid "Input Line"
-#~ msgstr "Girdi Satırı"
-
-#~ msgid "Away Reason"
-#~ msgstr "Dışarıda Sebebi"
-
-#~ msgid "Away Nick"
-#~ msgstr "Dışarıda Rumuzu"
-
-#~ msgid "Override default away reason for auto-away on detach"
-#~ msgstr ""
-#~ "Ayrılırken otomatik dışarıda olma durumunda, öntanımlı dışarıda sebebini "
-#~ "geçersiz kıl"
-
-#~ msgid ""
-#~ "There is a nickname in your identity's nicklist which contains illegal "
-#~ "characters"
-#~ msgstr ""
-#~ "Kimliğinizin takma ad listesinde geçerli olmayan karakterlere sahip takma ad "
-#~ "var"
-
-#~ msgid "Please use: /nick <othernick> to continue or clean up your nicklist"
-#~ msgstr ""
-#~ "Lütfen: /nick <baskabirtakmaad> ile devam edin ya da takma ad listenizi "
-#~ "temizleyin"
-
-#~ msgid "Edit &Networks..."
-#~ msgstr "Ağları &Düzenle..."
-
-#~ msgid "&Manage Buffer Views..."
-#~ msgstr "Arabellek Görünümlerini &Yönet..."
-
-#~ msgid "&Lock Dock Positions"
-#~ msgstr "Dock Pozisyonlarını &Kilitle"
-
-#~ msgid "Ctrl+F"
-#~ msgstr "Ctrl+F"
-
-#~ msgid "&About Quassel..."
-#~ msgstr "Quassel &Hakkında..."
-
-#~ msgid "About &Qt..."
-#~ msgstr "&Qt Hakkında..."
-
-#~ msgid "&Buffer Views"
-#~ msgstr "&Arabellek Görünümleri"
-
-#~ msgid "Core Lag: %1 msec"
-#~ msgstr "Çekirdek Gecikmesi: %1 ms"
-
-#~ msgid "&Configure Buffer Views..."
-#~ msgstr "Ara&bellek Görünümlerini Yapılandır..."
-
-#~ msgid "Processing Messages"
-#~ msgstr "Mesajlar İşleniyor"
-
-#~ msgid "Delete Buffer(s)..."
-#~ msgstr "Arabellek(leri) Sil..."
-
-#~ msgid "Show Buffer"
-#~ msgstr "Arabelleği Göster"
-
-#~ msgid "Hide Buffer(s) Temporarily"
-#~ msgstr "Arabellek(leri) Geçici Olarak Gizle"
-
-#~ msgid "Hide Buffer(s) Permanently"
-#~ msgstr "Arabellek(leri) Kalıcı Olarak Gizle"
-
-#~ msgid "Apply first!"
-#~ msgstr "Önce uygula!"
-
-#~ msgid "Connect now"
-#~ msgstr "Şimdi bağlan"
-
-#~ msgid "Choose random server for connecting"
-#~ msgstr "Rastgele sunucuyla bağlan"
-
-#~ msgid "Perform"
-#~ msgstr "Gerçekleştir"
-
-#~ msgid "Use default settings for encodings (recommended)"
-#~ msgstr "Kodlamalar için öntanımlı ayarları seç (önerilen)"
-
-#~ msgid "Use defaults"
-#~ msgstr "Öntanımlıları kullan"
-
-#~ msgid "WHOIS"
-#~ msgstr "KİM"
-
-#~ msgid "VERSION"
-#~ msgstr "SÜRÜM"
-
-#~ msgid "PING"
-#~ msgstr "PING"
-
-#~ msgid "Modes"
-#~ msgstr "Modlar"
-
-#~ msgid "Op %1"
-#~ msgstr "Op %1"
-
-#~ msgid "Deop %1"
-#~ msgstr "Deop %1"
-
-#~ msgid "Voice %1"
-#~ msgstr "Voice %1"
-
-#~ msgid "Devoice %1"
-#~ msgstr "Devoice %1"
-
-#~ msgid "Kick %1"
-#~ msgstr "Kick %1"
-
-#~ msgid "Ban %1"
-#~ msgstr "Ban %1"
-
-#~ msgid "Kickban %1"
-#~ msgstr "Kickban %1"
-
-#~ msgid "DCC-Chat"
-#~ msgstr "DCC-Chat"
-
-#~ msgid "Send file"
-#~ msgstr "Dosya gönder"
-
-#~ msgid "Copy to Clipboard"
-#~ msgstr "Panoya Kopyala"
-
-#~ msgid "Enable debug output"
-#~ msgstr "Hata çıktısını etkinleştir"
-
-#~ msgid "Display this help and exit"
-#~ msgstr "Bu yardımı göster ve çık"
-
-#~ msgid "Client tried to send package larger than max package size!"
-#~ msgstr "İstemci, azami paket boyutundan büyük paket yollamaya çalıştı!"
-
-#~ msgid "Client tried to send 0 byte package!"
-#~ msgstr "İstemci, 0 byte paket yollamaya çalıştı!"
-
-#~ msgid "Client sent corrupted compressed data!"
-#~ msgstr "İstemci, bozuk bir sıkıştırılmış veri gönderdi!"
-
-#~ msgid "Client sent corrupt data: unable to load QVariant!"
-#~ msgstr "İstemci bozuk veri gönderdi: QVariant yüklenemedi!"
-
-#~ msgid "<b>Status buffer of %1</b>"
-#~ msgstr "<b>%1 Durum arabelleği</b>"
-
-#~ msgid "Drag to scroll the topic!"
-#~ msgstr "Başlığı kaydırmak için sürükle!"
-
-#~ msgid "%D0%1"
-#~ msgstr "%D0%1"
-
-#~ msgid "%Dn%1"
-#~ msgstr "%Dn%1"
-
-#~ msgid "%Ds%1"
-#~ msgstr "%Ds%1"
-
-#~ msgid "%De%1"
-#~ msgstr "%De%1"
-
-#~ msgid "%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-#~ msgstr "%Dj%DN%1%DN %DH(%2@%3)%DH katıldı %DC%4%DC"
-
-#~ msgid "%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-#~ msgstr "%Dp%DN%1%DN %DH(%2@%3)%DH ayrıldı %DC%4%DC"
-
-#~ msgid "%Dq%DN%1%DN %DH(%2@%3)%DH has quit"
-#~ msgstr "%Dq%DN%1%DN %DH(%2@%3)%DH çıktı"
-
-#~ msgid "%DrYou are now known as %DN%1%DN"
-#~ msgstr "%DrOlarak biliniyorsunuz %DN%1%DN"
-
-#~ msgid "%Dr%DN%1%DN is now known as %DN%2%DN"
-#~ msgstr "%Dr%DN%1%DN olarak biliniyor %DN%2%DN"
-
-#~ msgid "%Da%DN%1%DN %2"
-#~ msgstr "%Da%DN%1%DN %2"
-
-#~ msgid "%De[%1]"
-#~ msgstr "%De[%1]"
+msgstr "%n Gebruiker(s)"

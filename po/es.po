@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-03 10:51+0200\n"
-"PO-Revision-Date: 2010-03-08 06:52+0000\n"
-"Last-Translator: Paco Molinero <paco@byasl.com>\n"
+"PO-Revision-Date: 2010-03-28 14:27+0000\n"
+"Last-Translator: Julián Alarcón <alarconj@gmail.com>\n"
 "Language-Team: Español <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-03-10 14:00+0000\n"
+"X-Launchpad-Export-Date: 2010-03-28 22:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Language: es_ES\n"
 
@@ -38,6 +38,17 @@ msgid ""
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
 msgstr ""
+"<b>Un modero cliente de IRC distribuido</b><br><br>&copy;2005-2010 por el "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC está bajo "
+"la doble licencia <a href=\"http://www.gnu.org/licenses/gpl-"
+"2.0.txt\">GPLv2</a> y <a href=\"http://www.gnu.org/licenses/gpl-"
+"3.0.txt\">GPLv3</a>.<br>la mayoría de los íconos están &copy; por el <a "
+"href=\"http://www.oxygen-icons.org\">Equipo Oxygen</a> y usado bajo la <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Por favor "
+"entra a  <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-"
+"irc.org</a> para informar de fallos."
 
 #: AboutDlg#3
 msgid "Quassel IRC is mainly developed by:"
@@ -3100,7 +3111,7 @@ msgstr "Este apodo ya está en uso: %1"
 
 #: IrcServerHandler#29
 msgid "Nick/channel is temporarily unavailable: %1"
-msgstr ""
+msgstr "El Nick/Canal  no esta disponible temporalmente: %1"
 
 #: IrcServerHandler#30
 msgid ""
@@ -3233,7 +3244,7 @@ msgstr "Ausente:"
 #: KNotificationBackend#1
 msgctxt "KNotificationBackend#1"
 msgid "%n pending highlights"
-msgstr ""
+msgstr "%n resaltados pendientes"
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -4009,7 +4020,7 @@ msgstr "Condición no controlada: %1"
 
 #: QssParser#13
 msgid "Invalid proplist %1"
-msgstr ""
+msgstr "proplist %1 inválida"
 
 #: QssParser#14
 msgid "Invalid chatlist item type %1"
@@ -4061,7 +4072,7 @@ msgstr "Especificación de ancho de fuente no válida: %1"
 
 #: QssParser#26
 msgid "Invalid font size specification: %1"
-msgstr "Especificación de tamaño de fuente no válida: %"
+msgstr "Especificación de tamaño de tipografía no válida: %1"
 
 #: Quassel::secondsToString()#1
 msgid "year"
@@ -4500,7 +4511,7 @@ msgstr "&Restaurar"
 #: SystrayNotificationBackend#1
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
-msgstr ""
+msgstr "%n resaltados pendientes"
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "Show a message in a popup"
