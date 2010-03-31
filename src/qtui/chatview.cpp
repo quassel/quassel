@@ -77,6 +77,7 @@ void ChatView::init(MessageFilter *filter) {
   setScene(_scene);
 
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
+  _lastScrollbarPos = verticalScrollBar()->value();
 
   // only connect if client is synched with a core
   if(Client::isConnected())
