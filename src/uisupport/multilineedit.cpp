@@ -43,6 +43,7 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
     _minHeight(1),
     _maxHeight(5),
     _scrollBarsEnabled(true),
+    _pasteProtectionEnabled(true),
     _lastDocumentHeight(-1)
 {
 #if QT_VERSION >= 0x040500
