@@ -249,6 +249,7 @@ if(WITH_LIBINDICATE)
     pkg_check_modules(INDICATEQT indicate-qt>=0.2.1)
     if(INDICATEQT_FOUND)
       message(STATUS "Enabling Ayatana notification support")
+      set(HAVE_INDICATEQT true)
       add_definitions(-DHAVE_INDICATEQT)
     else(INDICATEQT_FOUND)
       message(STATUS "Disabling Ayatana notification support")
@@ -256,6 +257,8 @@ if(WITH_LIBINDICATE)
   endif(PKG_CONFIG_FOUND)
 else(WITH_LIBINDICATE)
   message(STATUS "Not enabling Ayatana notification support")
+  # We don't want to link against it even if another package has found it
+  set(INDICATEQT_LIBRARIES "")
 endif(WITH_LIBINDICATE)
 
 # Now set up install locations; those are set by KDE if integration is enabled
@@ -309,9 +312,9 @@ if(WIN32)
   endif(HAVE_SSL AND STATIC)
 endif(WIN32)
 
-if(INDICATEQT_FOUND)
+if(HAVE_INDICATEQT)
   add_definitions(-DXDG_APPS_INSTALL_DIR=${XDG_APPS_INSTALL_DIR})
-endif(INDICATEQT_FOUND)
+endif(HAVE_INDICATEQT)
 
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
