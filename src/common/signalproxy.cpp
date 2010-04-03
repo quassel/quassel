@@ -209,9 +209,7 @@ void SignalProxy::SignalProxyPeer::dispatchSignal(const RequestType &requestType
 //  SignalProxy
 // ==================================================
 SignalProxy::SignalProxy(QObject* parent)
-  : QObject(parent),
-  _heartBeatInterval(30),
-  _maxHeartBeatCount(2)
+  : QObject(parent)
 {
   setProxyMode(Client);
   init();
@@ -273,6 +271,8 @@ void SignalProxy::setProxyMode(ProxyMode mode) {
 }
 
 void SignalProxy::init() {
+  _heartBeatInterval = 0;
+  _maxHeartBeatCount = 0;
   _signalRelay = new SignalRelay(this);
   connect(&_heartBeatTimer, SIGNAL(timeout()), this, SLOT(sendHeartBeat()));
   setHeartBeatInterval(30);
