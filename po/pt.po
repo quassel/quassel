@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: quassel\n"
 "Report-Msgid-Bugs-To: Zé <ze@mandriva.org>\n"
 "POT-Creation-Date: 2010-03-03 10:51+0200\n"
-"PO-Revision-Date: 2010-04-04 02:13+0100\n"
+"PO-Revision-Date: 2010-04-04 07:38+0100\n"
 "Last-Translator: Zé <mmodem00@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -112,7 +112,7 @@ msgstr ""
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">IRC Quassel"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC"
 "</p></body></html>"
 
 #: AboutDlg#8
@@ -290,7 +290,7 @@ msgstr "Mostrar ícone na barra de tarefas"
 
 #: AppearanceSettingsPage#14
 msgid "Hide to tray on close button"
-msgstr "Esconder na barra de tarefas ao escolher o botão de fechar"
+msgstr "Esconder na barra de tarefas no botão fechar"
 
 #: AppearanceSettingsPage#15
 msgid "Enable animations"
@@ -393,8 +393,8 @@ msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
 msgstr ""
-"quantidade de mensagens por 'buffer' que são pedidas após a conexão do "
-"núcleo ser estabelecida."
+"quantidade de mensagens por 'buffer' que são pedidas após a conexão "
+" do núcleo ser estabelecida."
 
 #: BacklogSettingsPage#12
 msgid "Initial backlog amount:"
@@ -862,7 +862,7 @@ msgstr "procurar mensagem"
 
 #: ChatViewSearchBar#6
 msgid "ignore joins, parts, etc."
-msgstr "ignorar entradas, saídas, etc."
+msgstr "ignorar entradas, partidas, etc."
 
 #: ChatViewSettingsPage#1
 msgctxt "ChatViewSettingsPage#1"
@@ -985,7 +985,7 @@ msgstr "Configurar Conexão IRC"
 
 #: ConnectionSettingsPage#3
 msgid "Enable Ping Timeout Detection"
-msgstr "Activar Detecção de Ping Timeout"
+msgstr "Activar Detecção do Limite de Tempo do Ping"
 
 #: ConnectionSettingsPage#4
 msgid "Ping interval:"
@@ -1321,8 +1321,8 @@ msgstr ""
 #: Core#23
 msgid "did not send an init message before trying to login, rejecting."
 msgstr ""
-"não enviou uma mensagem de inicialização antes de tentar autenticar, a "
-"rejeitar."
+"não enviou uma mensagem de inicialização antes de tentar "
+"autenticar, a rejeitar."
 
 #: Core#24
 msgid ""
@@ -1787,7 +1787,7 @@ msgstr ""
 
 #: CoreConnectionSettingsPage#8
 msgid "Ping timeout after"
-msgstr "Ping após tempo limite"
+msgstr "Limite de tempo do ping após"
 
 #: CoreConnectionSettingsPage#9
 msgctxt "CoreConnectionSettingsPage#9"
@@ -2120,7 +2120,7 @@ msgstr "Destaque"
 
 #: HighlightSettingsPage#3
 msgid "this shouldn't be empty"
-msgstr "isso não deve ser vazio"
+msgstr "isso não deve estar vazio"
 
 #: HighlightSettingsPage#4
 msgid "highlight rule"
@@ -2256,7 +2256,7 @@ msgstr "Remover identidade"
 
 #: Identity#1
 msgid "Quassel IRC User"
-msgstr "Utilizador IRC Quassel"
+msgstr "Utilizador Quassel IRC"
 
 #: Identity#2
 msgid "<empty>"
@@ -2280,7 +2280,7 @@ msgstr "Jardim de Infância está em outro lugar!"
 
 #: Identity#7
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
-msgstr "http://quassel-irc.org - Bate-papo confortável em qualquer lugar."
+msgstr "http://quassel-irc.org - Converse confortavelmente. Em qualquer lugar."
 
 #: IdentityEditWidget#1
 msgctxt "IdentityEditWidget#1"
@@ -2426,7 +2426,7 @@ msgstr "Definir ausência após"
 
 #: IdentityEditWidget#34
 msgid "minutes of being idle"
-msgstr "minutos ao estar inactivo"
+msgstr "minutos de inactividade"
 
 #: IdentityEditWidget#35
 msgid "Ident:"
@@ -2559,7 +2559,7 @@ msgstr ""
 
 #: IgnoreListEditDlg#7
 msgid "Rule Type"
-msgstr ""
+msgstr "Tipo de Regra"
 
 #: IgnoreListEditDlg#8
 msgid "Sender"
@@ -2592,11 +2592,28 @@ msgid ""
 "- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
 "from any host</p>"
 msgstr ""
+"<p><b>Regra de Ignorar:</b></p>\n"
+"<p>Dependendo do tipo da regra, o texto é correspondido contra ou "
+"através:</p>\n"
+"<p><u>- do conteúdo da mensagem:</u></p>\n"
+"<p><i>Exemplo:</i>\n"
+"<br />\n"
+"<i>*foobar*</i> corresponde a qualquer texto contendo a palavra <i>foobar</i>"
+"</p>\n"
+"<p><u>- a string do remetente</u>  <i>(alcunha!ident@nome.maquina)</i></p>\n"
+"<p><i>Exemplos:</i>\n"
+"<br />\n"
+"- <i>*@foobar.com</i> corresponde a qualquer remetente da máquina <i>foobar."
+"com</i>\n"
+"<br />\n"
+"- <i>estúpido!.+</i> (RegEx) corresponde a qualquer remetente com a alcunha "
+"<i>estúpido</i> "
+"de qualquer máquina</p>"
 
 #: IgnoreListEditDlg#12
 msgctxt "IgnoreListEditDlg#12"
 msgid "Ignore Rule"
-msgstr ""
+msgstr "Ignorar Regra"
 
 #: IgnoreListEditDlg#13
 msgid ""
@@ -2608,6 +2625,14 @@ msgid ""
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
 msgstr ""
+"<p><b>Usar expressões regulares:</b></p>\n"
+"<p>Se activado, as regras seguem a sintaxe da expressão regular.</p>\n"
+"<p>De contrário as regras permitem a correspondência (wildcard) com os "
+"seguintes "
+"caracteres especiais:</p>\n"
+"<p> *: representa \"qualquer quantidade de qualquer caracter\"\n"
+"<br />\n"
+"?: representa \"exactamente um caracter\"</p>"
 
 #: IgnoreListEditDlg#14
 msgid "Regular expression"
@@ -2625,6 +2650,17 @@ msgid ""
 "<p>The list below is interpreted as a list of channels for which the rule "
 "should match</p>"
 msgstr ""
+"<p><b>Alcance:</b></p>\n"
+"<p><u>Global:</u></p>\n"
+"<p>A regra está activa para qualquer canal em qualquer rede</p>\n"
+"<p><u>Rede:</u></p>\n"
+"<p>A lista em baixo é interpretada como uma lista de redes para a qual a "
+"regra "
+"deve corresponder</p>\n"
+"<p><u>Canal:</u></p>\n"
+"<p>A lista em baixo é interpretada como uma lista de canais para os quais a "
+"regra "
+"deve corresponder</p>"
 
 #: IgnoreListEditDlg#16
 msgid "Scope"
@@ -2655,6 +2691,16 @@ msgid ""
 "<br />\n"
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
+"<p><b>Regra de alcance:</b></p>\n"
+"<p>Uma regra de alcance é uma lista separada com ponto e virgula de tanto da "
+"<i>rede</i> ou\n"
+"nomes do <i>canal</i>.</p>\n"
+"<p><i>Exemplo:</i>\n"
+"<br />\n"
+"<i>#quassel*; #foobar</i>\n"
+"<br />\n"
+"deverão corresponder a #foobar e a qualquer canal que comece por <i>"
+"#quassel</i></p>"
 
 #: IgnoreListEditDlg#21
 msgid ""
@@ -2694,6 +2740,15 @@ msgid ""
 "\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
 "host<br />"
 msgstr ""
+"<b>Regra de ignorar:</b><br />Dependendo do tipo da regra, o texto é "
+"correspondido contra:<br /><br />- <u>o conteúdo da mensagem:</u><br "
+"/><i>Exemplo:<i><br />    \"*foobar*\" corresponde a qualquer texto que "
+"contenha a palavra \"foobar\"<br /><br />- <u>a string remetente"
+"<i>alcunha!ident@nome.maquina<i></u><br /><i>Exemplo:</i><br />    "
+"\"*@foobar.com\" corresponde a qualquer remetente da máquina foobar.com<br />"
+"    "
+"\"estupido!.+\" (RegEx) corresponde a qualquer remetente com a alcunha "
+"\"estupido\" de qualquer máquina<br />"
 
 #: IgnoreListModel#3
 msgid "By Sender"
@@ -2992,7 +3047,7 @@ msgstr "[Who] Fim da lista /WHO para %1"
 
 #: IrcServerHandler#13
 msgid "[Whois] %1 is logged in since %2"
-msgstr "[Whois] %1 está a ser gravado desde %2"
+msgstr "[Whois] %1 está a ser registado desde %2"
 
 #: IrcServerHandler#14
 msgid "[Whois] %1 is idling for %2 (%3)"
@@ -3265,7 +3320,7 @@ msgstr "Depurar Modelo da &Rede"
 
 #: MainWin#19
 msgid "Debug &BufferViewOverlay"
-msgstr ""
+msgstr "Depurar &BufferViewOverlay"
 
 #: MainWin#20
 msgid "Debug &MessageModel"
@@ -3273,7 +3328,7 @@ msgstr "Depurar &Modelo da Mensagem"
 
 #: MainWin#21
 msgid "Debug &HotList"
-msgstr ""
+msgstr "Depurar Lista &Preferida"
 
 #: MainWin#22
 msgid "Debug &Log"
@@ -3285,7 +3340,7 @@ msgstr "Recarregar Folha de Estilo"
 
 #: MainWin#24
 msgid "Jump to hot chat"
-msgstr ""
+msgstr "Saltar para a conversa preferida"
 
 #: MainWin#25
 msgid "&File"
@@ -3697,8 +3752,8 @@ msgid ""
 "be needed here!"
 msgstr ""
 "Especifique uma lista de comandos IRC a serem executados após conectar.\n"
-"Note que o IRC Quassel reentra nos canais automaticamente, então o /join "
-"raramente será preciso aqui!"
+"Note que o Quassel IRC reentra nos canais automaticamente, como tal "
+"o /join raramente será preciso aqui!"
 
 #: NetworksSettingsPage#25
 msgctxt "NetworksSettingsPage#25"
@@ -3771,44 +3826,54 @@ msgstr "Codificações"
 msgid ""
 "Configure advanced settings such as message encodings and automatic reconnect"
 msgstr ""
+"Configurar definições avançadas tais como codificações da mensagem e "
+"reconexão automática"
 
 #: NetworksSettingsPage#42
 msgid "Control encodings for in- and outgoing messages"
-msgstr ""
+msgstr "Controlo das codificações para mensagens que entram e saem"
 
 #: NetworksSettingsPage#43
 msgid "Use Custom Encodings"
-msgstr ""
+msgstr "Usar Codificações Personalizadas"
 
 #: NetworksSettingsPage#44
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
 msgstr ""
+"Especificar com que codificação as suas mensagens serão enviadas.\n"
+"UTF-8 deve ser a escolha correcta para a maioria das redes."
 
 #: NetworksSettingsPage#45
 msgid "Send messages in:"
-msgstr ""
+msgstr "Enviar mensagens em:"
 
 #: NetworksSettingsPage#46
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
 msgstr ""
+"As mensagens recebidas em Utf8 serão sempre tratadas como tal.\n"
+"Esta configuração define a codificação para mensagens que não\n"
+"são Utf8."
 
 #: NetworksSettingsPage#47
 msgid "Receive fallback:"
-msgstr ""
+msgstr "Receber retorno:"
 
 #: NetworksSettingsPage#48
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
+"Isto especifica como as mensagens de controlo, as alcunhas e nomes dos\n"
+"servidores são codificados. A não ser que *realmente* saiba o que está a\n"
+"fazer, deixe este como ISO-8859-1!"
 
 #: NetworksSettingsPage#49
 msgid "Server encoding:"
-msgstr ""
+msgstr "Codificação do servidor:"
 
 #: NickEditDlg#1
 msgctxt "NickEditDlg#1"
@@ -3821,13 +3886,15 @@ msgstr "Editar Alcunha"
 
 #: NickEditDlg#3
 msgid "Please enter a valid nickname:"
-msgstr ""
+msgstr "Por favor indique uma alcunha válida:"
 
 #: NickEditDlg#4
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
 msgstr ""
+"Uma alcunha válida pode conter letras do alfabeto Inglês, dígitos, e "
+"caracteres especiais {, }, [, ], \\, |, `, ^, _ e -."
 
 #: NotificationsSettingsPage#1
 msgctxt "NotificationsSettingsPage#1"
@@ -3853,31 +3920,33 @@ msgstr "Reproduzir som"
 
 #: PhononNotificationConfigWidget#3
 msgid "Prelisten to the selected sound"
-msgstr ""
+msgstr "Escutar previamente o som seleccionado"
 
 #: PhononNotificationConfigWidget#4
 msgid "Select the sound file to play"
-msgstr ""
+msgstr "Seleccione o ficheiro de som a ser reproduzido"
 
 #: PostgreSqlStorage#1
 msgid "PostgreSQL Turbo Bomber HD!"
-msgstr ""
+msgstr "PostgreSQL Turbo Bomber HD!"
 
 #: QObject#1
 msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
-msgstr ""
+msgstr "A pedir um total de até %1 mensagens do histórico para %2 'buffers'"
 
 #: QObject#2
 msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
 msgstr ""
+"A pedir até %1 de todas as mensagens do histórico não lidas (acrescidos %2)"
 
 #: QObject#3
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
 msgstr ""
+"A pedir um total de até %1 mensagens do histórico não lidas para %2 'buffers'"
 
 #: QObject#4
 msgid "Welcome to Quassel IRC"
-msgstr ""
+msgstr "Bem-vindo ao Quassel IRC"
 
 #: QObject#5
 msgid ""
@@ -3885,110 +3954,114 @@ msgid ""
 "network connection.<br>This only covers basic settings. You can cancel this "
 "wizard any time and use the settings dialog for more detailed changes."
 msgstr ""
+"Este assistente irá ajudá-lo a definir a sua identificação predefinida e "
+"a sua rede de conexão IRC.<br>Isto apenas cobre as definições básicas. "
+"Pode cancelar este assistente a qualquer hora e usar o diálogo de definições "
+"para alterações mais detalhadas."
 
 #: QssParser#1
 msgid "Invalid block declaration: %1"
-msgstr ""
+msgstr "Declaração de bloco inválida: %1"
 
 #: QssParser#2
 msgid "Invalid palette role assignment: %1"
-msgstr ""
+msgstr "Atribuição da função da paleta inválida: %1"
 
 #: QssParser#3
 msgid "Unknown palette role name: %1"
-msgstr ""
+msgstr "Nome da função da paleta desconhecida: %1"
 
 #: QssParser#4
 msgid "Invalid subelement name in %1"
-msgstr ""
+msgstr "Nome de subelemento inválido em %1"
 
 #: QssParser#5
 msgid "Invalid message type in %1"
-msgstr ""
+msgstr "Tipo de mensagem inválida em %1"
 
 #: QssParser#6
 msgid "Invalid condition %1"
-msgstr ""
+msgstr "Condição inválida %1"
 
 #: QssParser#7
 msgid "Invalid message label: %1"
-msgstr ""
+msgstr "Etiqueta de mensagem inválida: %1"
 
 #: QssParser#8
 msgid "Invalid senderhash specification: %1"
-msgstr ""
+msgstr "Especificação senderhash inválida: %1"
 
 #: QssParser#9
 msgid "Senderhash can be at most \"0x0f\"!"
-msgstr ""
+msgstr "O senderhash pode ser no máximo \"0x0f\"!"
 
 #: QssParser#10
 msgid "Invalid format name: %1"
-msgstr ""
+msgstr "Formato de nome inválido: %1"
 
 #: QssParser#11
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
-msgstr ""
+msgstr "Especificação de cor IRC ilegal (deve estar entre 00 e 0f): %1"
 
 #: QssParser#12
 msgid "Unhandled condition: %1"
-msgstr ""
+msgstr "Condição não manuseada: %1"
 
 #: QssParser#13
 msgid "Invalid proplist %1"
-msgstr ""
+msgstr "Proplist inválido %1"
 
 #: QssParser#14
 msgid "Invalid chatlist item type %1"
-msgstr ""
+msgstr "Tipo do item chatlist inválido %1"
 
 #: QssParser#15
 msgid "Invalid chatlist state %1"
-msgstr ""
+msgstr "Estado  chatlist inválido %1"
 
 #: QssParser#16
 msgid "Invalid property declaration: %1"
-msgstr ""
+msgstr "Declaração de propriedade inválida: %1"
 
 #: QssParser#17
 msgid "Invalid font property: %1"
-msgstr ""
+msgstr "Propriedade de letra inválida: %1"
 
 #: QssParser#18
 msgid "Unknown ChatLine property: %1"
-msgstr ""
+msgstr "Propriedade ChatLine desconhecida: %1"
 
 #: QssParser#19
 msgid "Invalid palette color role specification: %1"
-msgstr ""
+msgstr "Especificação da função da paleta de cores inválida: %1"
 
 #: QssParser#20
 msgid "Unknown palette color role: %1"
-msgstr ""
+msgstr "Função da paleta de cores desconhecida: %1"
 
 #: QssParser#21
 msgid "Invalid gradient declaration: %1"
-msgstr ""
+msgstr "Declaração de gradiente inválida: %1"
 
 #: QssParser#22
 msgid "Invalid gradient stops list: %1"
-msgstr ""
+msgstr "Gradiente inválido pára a lista: %1"
 
 #: QssParser#23
 msgid "Invalid font specification: %1"
-msgstr ""
+msgstr "Especificação de letra inválido: %1"
 
 #: QssParser#24
 msgid "Invalid font style specification: %1"
-msgstr ""
+msgstr "Especificação do estilo da letra inválido: %1"
 
 #: QssParser#25
 msgid "Invalid font weight specification: %1"
-msgstr ""
+msgstr "Especificação do peso da letra inválido: %1"
 
 #: QssParser#26
 msgid "Invalid font size specification: %1"
-msgstr ""
+msgstr "Especificação de tamanho de letra inválida: %1"
 
 #: Quassel::secondsToString()#1
 msgid "year"
@@ -4012,34 +4085,34 @@ msgstr "seg"
 
 #: QueryBufferItem#1
 msgid "<b>Query with %1</b>"
-msgstr ""
+msgstr "<b>Consulta com %1</b>"
 
 #: QueryBufferItem#2
 msgctxt "QueryBufferItem#2"
 msgid "idling since %1"
-msgstr ""
+msgstr "Inactivo desde %1"
 
 #: QueryBufferItem#3
 msgctxt "QueryBufferItem#3"
 msgid "login time: %1"
-msgstr ""
+msgstr "hora de autenticação: %1"
 
 #: QueryBufferItem#4
 msgctxt "QueryBufferItem#4"
 msgid "server: %1"
-msgstr ""
+msgstr "servidor: %1"
 
 #: SaveIdentitiesDlg#1
 msgid "Sync With Core"
-msgstr ""
+msgstr "Sincronizar com o núcleo"
 
 #: SaveIdentitiesDlg#2
 msgid "Syncing data with core, please wait..."
-msgstr ""
+msgstr "A sincronizar dados com o núcleo, por favor aguarde..."
 
 #: SaveIdentitiesDlg#3
 msgid "Abort"
-msgstr "Interromper"
+msgstr "Abortar"
 
 #: ServerEditDlg#1
 msgctxt "ServerEditDlg#1"
@@ -4048,7 +4121,7 @@ msgstr "Diálogo"
 
 #: ServerEditDlg#2
 msgid "Server Info"
-msgstr ""
+msgstr "Informação do Servidor"
 
 #: ServerEditDlg#3
 msgctxt "ServerEditDlg#3"
@@ -4083,10 +4156,12 @@ msgid ""
 "Do not change unless you're going to connect to a server not supporting "
 "SSLv3!"
 msgstr ""
+"Não mude a não ser que se vá conectar a um servidor que não suporte "
+"SSLv3!"
 
 #: ServerEditDlg#10
 msgid "SSLv3 (default)"
-msgstr "SSLv3 (padrão)"
+msgstr "SSLv3 (predefinido)"
 
 #: ServerEditDlg#11
 msgid "SSLv2"
@@ -4099,12 +4174,12 @@ msgstr "TLSv1"
 #: ServerEditDlg#13
 msgctxt "ServerEditDlg#13"
 msgid "Use a Proxy"
-msgstr "Usar um proxy"
+msgstr "Usar um 'proxy'"
 
 #: ServerEditDlg#14
 msgctxt "ServerEditDlg#14"
 msgid "Proxy Type:"
-msgstr "Tipo de proxy:"
+msgstr "Tipo de 'Proxy':"
 
 #: ServerEditDlg#15
 msgctxt "ServerEditDlg#15"
@@ -4215,23 +4290,25 @@ msgstr "Configurar Quassel"
 #: SettingsPageDlg#7
 msgctxt "SettingsPageDlg#7"
 msgid "Settings"
-msgstr "Configurações"
+msgstr "Definições"
 
 #: SignalProxy#1
 msgid "Peer tried to send package larger than max package size!"
 msgstr ""
+"O ponto tentou enviar um pacote maior que tamanho máximo esperado pelo "
+"pacote!"
 
 #: SignalProxy#2
 msgid "Peer tried to send 0 byte package!"
-msgstr ""
+msgstr "O ponto tentou enviar um pacote de tamanho 0 byte!"
 
 #: SignalProxy#3
 msgid "Peer sent corrupted compressed data!"
-msgstr ""
+msgstr "O ponto enviou dados comprimidos corrompidos!"
 
 #: SignalProxy#4
 msgid "Peer sent corrupt data: unable to load QVariant!"
-msgstr ""
+msgstr "O ponto enviou dados corrompidos: incapaz de carregar o QVariant!"
 
 #: SignalProxy#5
 msgid "Disconnecting"
@@ -4317,6 +4394,11 @@ msgid ""
 "same machine it is running on, and if you only expect a few users to use "
 "your core."
 msgstr ""
+"O SQLite é um ficheiro baseado num motor de base de dados que não requer "
+"qualquer configuração. É adequado para bases de dados pequenas e médias "
+"que não requerem um acesso através da rede. Use o SQLite se o seu Núcleo "
+"Quassel deve guardar os dados na mesma máquina em que o está a correr, "
+"e se apenas espera que alguns utilizadores usem o seu núcleo."
 
 #: SslInfoDlg#1
 msgid "Yes"
@@ -4392,11 +4474,11 @@ msgstr "<b>Período de validade:</b>"
 
 #: SslInfoDlg#19
 msgid "<b>MD5 digest:</b>"
-msgstr ""
+msgstr "<b>Resumo MD5:</b>"
 
 #: SslInfoDlg#20
 msgid "<b>SHA1 digest:</b>"
-msgstr ""
+msgstr "<b>Resumo SHA1:</b>"
 
 #: SslInfoDlg#21
 msgid "<b>Trusted:</b>"
@@ -4404,7 +4486,7 @@ msgstr "<b>Confiável:</b>"
 
 #: StatusBufferItem#1
 msgid "Status Buffer"
-msgstr ""
+msgstr "EStado do 'Buffer'"
 
 #: SystemTray#1
 msgid "&Minimize"
@@ -4417,19 +4499,19 @@ msgstr "&Restaurar"
 #: SystrayNotificationBackend#1
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
-msgstr ""
+msgstr "%n destaques pendentes"
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "Show a message in a popup"
-msgstr ""
+msgstr "Mostra uma mensagem num 'popup'"
 
 #: TaskbarNotificationBackend::ConfigWidget#1
 msgid "Activate dock entry, timeout:"
-msgstr ""
+msgstr "Activar entrada da doca, limite de tempo:"
 
 #: TaskbarNotificationBackend::ConfigWidget#2
 msgid "Mark taskbar entry, timeout:"
-msgstr ""
+msgstr "Marcar entrada da barra de tarefas, intervalo de tempo:"
 
 #: TaskbarNotificationBackend::ConfigWidget#3
 msgctxt "TaskbarNotificationBackend::ConfigWidget#3"
@@ -4479,11 +4561,11 @@ msgstr "Entrar num canal"
 
 #: ToolBarActionProvider#9
 msgid "Query"
-msgstr "Privado"
+msgstr "Consulta"
 
 #: ToolBarActionProvider#10
 msgid "Start a private conversation"
-msgstr "Iniciar uma conversa privada"
+msgstr "Inicia uma conversa privada"
 
 #: ToolBarActionProvider#11
 msgctxt "ToolBarActionProvider#11"
@@ -4603,7 +4685,7 @@ msgstr "Redimensionar dinamicamente para caberem os conteúdos"
 
 #: TopicWidgetSettingsPage#6
 msgid "On hover only"
-msgstr ""
+msgstr "Em foco apenas"
 
 #: UiStyle::StyledMessage#1
 msgctxt "UiStyle::StyledMessage#1"
@@ -4653,6 +4735,8 @@ msgstr "{Dia mudado para %1}"
 #: UiStyle::StyledMessage#12
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
+"A separação de redes (netsplit) entre %DH%1%DH e %DH%2%DH terminou. Os "
+"utilizadores entraram: "
 
 #: UiStyle::StyledMessage#13
 msgid "%DN%1%DN (%2 more)"
@@ -4661,6 +4745,8 @@ msgstr "%DN%1%DN (mais %2)"
 #: UiStyle::StyledMessage#14
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr ""
+"Separação de redes (netsplit) entre %DH%1%DH e %DH%2%DH. Os utilizadores "
+"sairam: "
 
 #: UiStyle::StyledMessage#15
 msgid "[%1]"
