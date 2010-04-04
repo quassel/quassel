@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: quassel\n"
 "Report-Msgid-Bugs-To: Zé <ze@mandriva.org>\n"
 "POT-Creation-Date: 2010-03-03 10:51+0200\n"
-"PO-Revision-Date: 2010-04-04 07:38+0100\n"
+"PO-Revision-Date: 2010-04-04 07:42+0100\n"
 "Last-Translator: Zé <mmodem00@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -169,7 +169,7 @@ msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
 msgstr ""
-"<b>O atalho para o apelido</b><br />Pode ser usado como um comando de "
+"<b>O atalho para a alias</b><br />Pode ser usado como um comando de "
 "corte regular.<br /><br /><b>Exemplo:</b> \"foo\" pode ser usado por /foo"
 
 #: AliasesModel#2
@@ -203,7 +203,7 @@ msgstr ""
 
 #: AliasesModel#3
 msgid "Alias"
-msgstr "Alcunha"
+msgstr "Alias"
 
 #: AliasesModel#4
 msgid "Expansion"
@@ -216,7 +216,7 @@ msgstr "IRC"
 
 #: AliasesSettingsPage#2
 msgid "Aliases"
-msgstr "Alcunhas"
+msgstr "Aliases"
 
 #: AliasesSettingsPage#3
 msgctxt "AliasesSettingsPage#3"
@@ -240,11 +240,11 @@ msgstr "Interface"
 
 #: AppearanceSettingsPage#2
 msgid "<System Default>"
-msgstr "<Predefinição do sistema>"
+msgstr "<Predefinição do Sistema>"
 
 #: AppearanceSettingsPage#3
 msgid "Please choose a stylesheet file"
-msgstr "Por favor escolha um ficheiro estilo"
+msgstr "Por favor escolha um ficheiro de folha de estilo"
 
 #: AppearanceSettingsPage#4
 msgctxt "AppearanceSettingsPage#4"
