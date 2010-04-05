@@ -71,6 +71,9 @@ void BufferView::init() {
 
   setAnimated(true);
 
+  // FIXME This is to workaround bug #663
+  setUniformRowHeights(true);
+
 #ifndef QT_NO_DRAGANDDROP
   setDragEnabled(true);
   setAcceptDrops(true);
@@ -243,8 +246,8 @@ void BufferView::dropEvent(QDropEvent *event) {
     return QTreeView::dropEvent(event);
 
   int res = QMessageBox::question(0, tr("Merge buffers permanently?"),
-                                  tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
-                                  QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+				  tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
+				  QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
   if(res == QMessageBox::Yes) {
     Client::mergeBuffersPermanently(bufferId1, bufferId2);
   }
@@ -405,7 +408,7 @@ void BufferView::addFilterActions(QMenu *contextMenu, const QModelIndex &index) 
     if(!filterActions.isEmpty()) {
       contextMenu->addSeparator();
       foreach(QAction *action, filterActions) {
-        contextMenu->addAction(action);
+	contextMenu->addAction(action);
       }
     }
   }
@@ -441,11 +444,11 @@ void BufferView::wheelEvent(QWheelEvent* event) {
         QModelIndex parent = currentIndex.parent();
         QModelIndex aunt = parent.sibling( parent.row() + rowDelta, parent.column() );
         if( rowDelta == -1 )
-          resultingIndex = aunt.child( model()->rowCount( aunt ) - 1, 0 );
+	  resultingIndex = aunt.child( model()->rowCount( aunt ) - 1, 0 );
         else
-          resultingIndex = aunt.child( 0, 0 );
+	  resultingIndex = aunt.child( 0, 0 );
         if( !resultingIndex.isValid() )
-          return;
+	  return;
       }
   selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
   selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );

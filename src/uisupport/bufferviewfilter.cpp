@@ -46,7 +46,6 @@ public:
 BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config)
   : QSortFilterProxyModel(model),
     _config(0),
-    _tmpConfig(0),
     _sortOrder(Qt::AscendingOrder),
     _showServerQueries(false),
     _editMode(false),
@@ -57,8 +56,8 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
 
   setDynamicSortFilter(true);
 
-  connect(this, SIGNAL(_dataChanged(QModelIndex,QModelIndex)),
-          this, SLOT(_q_sourceDataChanged(QModelIndex,QModelIndex)));
+  connect(this, SIGNAL(_dataChanged(const QModelIndex &, const QModelIndex &)),
+	  this, SLOT(_q_sourceDataChanged(QModelIndex,QModelIndex)));
 
   _enableEditMode.setCheckable(true);
   _enableEditMode.setChecked(_editMode);
@@ -73,45 +72,51 @@ void BufferViewFilter::setConfig(BufferViewConfig *config) {
   if(_config == config)
     return;
 
-#if QT_VERSION >= 0x040600
-  beginResetModel();
-#endif
+  if(_config) {
+    disconnect(_config, 0, this, 0);
+  }
 
-  _tmpConfig = config;  // don't invalidate the old config before we're initialized
+  _config = config;
 
-  if(!config || config->isInitialized()) {
+  if(!config) {
+    invalidate();
+    setObjectName("");
+    return;
+  }
+
+  if(config->isInitialized()) {
     configInitialized();
   } else {
     // we use a queued connection here since manipulating the connection list of a sending object
     // doesn't seem to be such a good idea while executing a connected slots.
     connect(config, SIGNAL(initDone()), this, SLOT(configInitialized()), Qt::QueuedConnection);
-    //invalidate(); // not needed as we still have the old config and will reset once init is done
+    invalidate();
   }
 }
 
 void BufferViewFilter::configInitialized() {
-  if(_config) {
-    disconnect(_config, 0, this, 0);
-  }
+  if(!config())
+    return;
 
-  _config = _tmpConfig;
-  _tmpConfig = 0;
+//   connect(config(), SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(configChanged()), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(hideInactiveBuffersSet(bool)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(allowedBufferTypesSet(int)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(minimumActivitySet(int)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(bufferListSet()), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(bufferMoved(const BufferId &, int)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(invalidate()));
+//   connect(config(), SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(invalidate()));
 
-  if(config()) {
-    connect(config(), SIGNAL(configChanged()), this, SLOT(invalidate()));
-    disconnect(config(), SIGNAL(initDone()), this, SLOT(configInitialized()));
-    setObjectName(config()->bufferViewName());
-  } else {
-    setObjectName("");
-  }
+  disconnect(config(), SIGNAL(initDone()), this, SLOT(configInitialized()));
 
-  // not resetting the model can trigger bug #663 for some reason I haven't understood yet
-  // we get invalid model indexes in attached views even if no source model has been set yet... wtf?
-#if QT_VERSION >= 0x040600
-  endResetModel();
-#else
-  reset();
-#endif
+  setObjectName(config()->bufferViewName());
+
+  invalidate();
   emit configChanged();
 }
 
@@ -146,12 +151,12 @@ void BufferViewFilter::enableEditMode(bool enable) {
     QSet<BufferId>::const_iterator iter;
     for(iter = _toTempRemove.constBegin(); iter != _toTempRemove.constEnd(); iter++) {
       if(config()->temporarilyRemovedBuffers().contains(*iter))
-         continue;
+	 continue;
       config()->requestRemoveBuffer(*iter);
     }
     for(iter = _toRemove.constBegin(); iter != _toRemove.constEnd(); iter++) {
       if(config()->removedBuffers().contains(*iter))
-         continue;
+	 continue;
       config()->requestRemoveBufferPermanently(*iter);
     }
   }
@@ -180,7 +185,7 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
     if(bufferType != BufferInfo::QueryBuffer) {
       ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
       if(clientConf && clientConf->isLocked()) {
-        flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
+	flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
       }
     }
   }
@@ -205,29 +210,29 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     bufferId = bufferList[i].second;
     if(droppedNetworkId == networkId) {
       if(row < 0)
-        row = 0;
+	row = 0;
 
       if(row < rowCount(parent)) {
-        QModelIndex source_child = mapToSource(index(row, 0, parent));
-        BufferId beforeBufferId = sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>();
-        pos = config()->bufferList().indexOf(beforeBufferId);
-        if(_sortOrder == Qt::DescendingOrder)
-          pos++;
+	QModelIndex source_child = mapToSource(index(row, 0, parent));
+	BufferId beforeBufferId = sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>();
+	pos = config()->bufferList().indexOf(beforeBufferId);
+	if(_sortOrder == Qt::DescendingOrder)
+	  pos++;
       } else {
-        if(_sortOrder == Qt::AscendingOrder)
-          pos = config()->bufferList().count();
-        else
-          pos = 0;
+	if(_sortOrder == Qt::AscendingOrder)
+	  pos = config()->bufferList().count();
+	else
+	  pos = 0;
       }
 
       if(config()->bufferList().contains(bufferId) && !config()->sortAlphabetically()) {
-        if(config()->bufferList().indexOf(bufferId) < pos)
-          pos--;
-        ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
-        if(!clientConf || !clientConf->isLocked())
-          config()->requestMoveBuffer(bufferId, pos);
+	if(config()->bufferList().indexOf(bufferId) < pos)
+	  pos--;
+	ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+	if(!clientConf || !clientConf->isLocked())
+	  config()->requestMoveBuffer(bufferId, pos);
       } else {
-        config()->requestAddBuffer(bufferId, pos);
+	config()->requestAddBuffer(bufferId, pos);
       }
 
     } else {
@@ -275,14 +280,14 @@ void BufferViewFilter::addBuffers(const QList<BufferId> &bufferIds) const {
     bool lt;
     for(int i = 0; i < bufferList.count(); i++) {
       if(config() && config()->sortAlphabetically())
-        lt = bufferIdLessThan(bufferId, bufferList[i]);
+	lt = bufferIdLessThan(bufferId, bufferList[i]);
       else
-        lt = bufferId < config()->bufferList()[i];
+	lt = bufferId < config()->bufferList()[i];
 
       if(lt) {
-        pos = i;
-        bufferList.insert(pos, bufferId);
-        break;
+	pos = i;
+	bufferList.insert(pos, bufferId);
+	break;
       }
     }
     config()->requestAddBuffer(bufferId, pos);
@@ -304,7 +309,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     if(config()->isInitialized()
        && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
        && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
-           || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > BufferInfo::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
+	   || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > BufferInfo::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
       addBuffer(bufferId);
     }
     // note: adding the buffer to the valid list does not temper with the following filters ("show only channels" and stuff)
