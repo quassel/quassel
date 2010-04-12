@@ -83,10 +83,6 @@ bool BufferViewOverlayFilter::filterAcceptsRow(int source_row, const QModelIndex
   if(_overlay->minimumActivity() > activityLevel)
     return false;
 
-  bool isActive = sourceModel()->data(source_bufferIndex, NetworkModel::ItemActiveRole).toBool();
-  if(_overlay->hideInactiveBuffers() && !isActive && activityLevel <= BufferInfo::OtherActivity)
-    return false;
-
   int bufferType = sourceModel()->data(source_bufferIndex, NetworkModel::BufferTypeRole).toInt();
   if(!(_overlay->allowedBufferTypes() & bufferType))
     return false;
@@ -104,6 +100,7 @@ bool BufferViewOverlayFilter::filterAcceptsRow(int source_row, const QModelIndex
     return false;
 
   // the buffer is not known to us
-  return _overlay->addBuffersAutomatically();
+  qDebug() << "BufferViewOverlayFilter::filterAcceptsRow()" << bufferId << "is unknown!";
+  return false;
 }
 
