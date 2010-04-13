@@ -3081,9 +3081,6 @@ msgstr "Druga aktivnost"
 msgctxt "KNotificationBackend#1"
 msgid "%n pending highlights"
 msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -4340,9 +4337,6 @@ msgstr "Poskusov:"
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
 msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"

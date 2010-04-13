@@ -4098,9 +4098,6 @@ msgstr "&Palauta"
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
 msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"

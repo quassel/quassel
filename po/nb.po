@@ -2640,7 +2640,7 @@ msgstr "Skjema"
 #: InputWidget#2
 #, fuzzy
 msgid "White"
-msgstr "Whois"
+msgstr ""
 
 #: InputWidget#3
 msgid "Black"
@@ -3055,9 +3055,6 @@ msgstr "Annen aktivitet"
 msgctxt "KNotificationBackend#1"
 msgid "%n pending highlights"
 msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -4297,9 +4294,6 @@ msgstr "Forsøk:"
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
 msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"

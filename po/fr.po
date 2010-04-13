@@ -2612,12 +2612,12 @@ msgstr "Formulaire"
 #: InputWidget#2
 #, fuzzy
 msgid "White"
-msgstr "Whois"
+msgstr "Blanc"
 
 #: InputWidget#3
 #, fuzzy
 msgid "Black"
-msgstr "Historique"
+msgstr "Noir"
 
 #: InputWidget#4
 msgid "Dark blue"
@@ -3030,9 +3030,6 @@ msgstr "Autre activité"
 msgctxt "KNotificationBackend#1"
 msgid "%n pending highlights"
 msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: MainWin#1
 msgid "&Connect to Core..."
@@ -4286,9 +4283,6 @@ msgstr "Tentatives:"
 msgctxt "SystrayNotificationBackend#1"
 msgid "%n pending highlights"
 msgstr ""
-"\n"
-"            \n"
-"        "
 
 #: SystrayNotificationBackend::ConfigWidget#1
 msgid "System Tray Icon"
