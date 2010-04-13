@@ -504,6 +504,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
 QString UiStyle::mircToInternal(const QString &mirc_) {
   QString mirc = mirc_;
   mirc.replace('%', "%%");      // escape % just to be sure
+  mirc.replace('\t', "        ");      // tabs break layout, also this is italics in Konversation
   mirc.replace('\x02', "%B");
   mirc.replace('\x0f', "%O");
   mirc.replace('\x12', "%R");
