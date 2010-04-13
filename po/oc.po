@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: quassel\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-03-03 10:51+0200\n"
-"PO-Revision-Date: 2010-03-21 11:28+0000\n"
+"PO-Revision-Date: 2010-04-09 14:13+0000\n"
 "Last-Translator: Cédric VALMARY (Per Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-03-28 22:52+0000\n"
+"X-Launchpad-Export-Date: 2010-04-13 20:24+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: AboutDlg#1
@@ -141,7 +141,7 @@ msgstr ""
 
 #: AbstractSqlStorage#2
 msgid "Upgrade failed..."
-msgstr ""
+msgstr "Fracàs de la mesa a jorn..."
 
 #: AliasesModel#1
 msgid ""
@@ -203,7 +203,7 @@ msgstr "Interfàcia"
 
 #: AppearanceSettingsPage#2
 msgid "<System Default>"
-msgstr ""
+msgstr "<Sistèma per defaut>"
 
 #: AppearanceSettingsPage#3
 msgid "Please choose a stylesheet file"
@@ -216,11 +216,11 @@ msgstr "Formulari"
 
 #: AppearanceSettingsPage#5
 msgid "Client style:"
-msgstr ""
+msgstr "Estil del Client :"
 
 #: AppearanceSettingsPage#6
 msgid "Set application style"
-msgstr ""
+msgstr "Definir l'estil"
 
 #: AppearanceSettingsPage#7
 msgid "Language:"
@@ -228,7 +228,7 @@ msgstr "Lenga :"
 
 #: AppearanceSettingsPage#8
 msgid "Set the application language. Requires restart!"
-msgstr ""
+msgstr "Definir la lenga de l'aplicacion. Necessita una reaviada !"
 
 #: AppearanceSettingsPage#9
 msgid "<Untranslated>"
@@ -261,7 +261,7 @@ msgstr "Activar las animacions"
 
 #: AppearanceSettingsPage#16
 msgid "Message Redirection"
-msgstr ""
+msgstr "Redireccion de Messatge"
 
 #: AppearanceSettingsPage#17
 msgid "User Notices:"
@@ -277,11 +277,11 @@ msgstr ""
 
 #: AppearanceSettingsPage#20
 msgid "Status Window"
-msgstr ""
+msgstr "Fenèstra d'Estat"
 
 #: AppearanceSettingsPage#21
 msgid "Current Chat"
-msgstr ""
+msgstr "Dialòg Corrent"
 
 #: AppearanceSettingsPage#22
 msgid "Errors:"
@@ -289,17 +289,17 @@ msgstr "Errors :"
 
 #: AwayLogView#1
 msgid "Away Log"
-msgstr ""
+msgstr "Istoric d'abséncia"
 
 #: AwayLogView#2
 msgctxt "AwayLogView#2"
 msgid "Show Network Name"
-msgstr ""
+msgstr "Afichar lo Nom de la Ret"
 
 #: AwayLogView#3
 msgctxt "AwayLogView#3"
 msgid "Show Buffer Name"
-msgstr ""
+msgstr "Afichar lo Nom del Tampon"
 
 #: BacklogSettingsPage#1
 msgctxt "BacklogSettingsPage#1"
@@ -331,7 +331,7 @@ msgstr ""
 
 #: BacklogSettingsPage#7
 msgid "Fixed amount per chat"
-msgstr ""
+msgstr "Nombre fixe per dialòg"
 
 #: BacklogSettingsPage#8
 msgid "Unread messages per chat"

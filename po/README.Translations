@@ -33,14 +33,6 @@ NOTE: You'll need lupdate, lconvert, lrelease installed with your Qt in
       package that tool; in that case you won't get translations.
 
 
-Regenerating the .pot file can be done at least two ways. ``Translate
-Toolkit'' seems to provide better results, so the first one is
-preferred.
-
-With TT:
-lupdate ../src -ts quassel.ts && ts2po -P --duplicates=msgctxt -i \
-  quassel.ts -o quassel.pot && rm quassel.ts
-
-With only Qt tools:
+The .pot file can be regenerated with this command:
 lupdate ../src -ts quassel.ts && lconvert -i quassel.ts -o quassel.po \
   && msguniq -o quassel.pot quassel.po && rm quassel.ts quassel.po
