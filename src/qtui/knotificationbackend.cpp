@@ -84,7 +84,7 @@ void KNotificationBackend::removeNotificationById(uint notificationId) {
 
 void KNotificationBackend::close(uint notificationId) {
   removeNotificationById(notificationId);
-  if(!_notifications.count())
+  //if(!_notifications.count()) // FIXME make configurable
     QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
