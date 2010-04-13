@@ -27,7 +27,6 @@
 LegacySystemTray::LegacySystemTray(QWidget *parent)
   : SystemTray(parent),
   _blinkState(false),
-  _isVisible(true),
   _lastMessageId(0)
 {
 #ifndef HAVE_KDE
@@ -78,9 +77,9 @@ void LegacySystemTray::syncLegacyIcon() {
 }
 
 void LegacySystemTray::setVisible(bool visible) {
-  _isVisible = visible;
+  SystemTray::setVisible(visible);
   if(mode() == Legacy) {
-    if(visible)
+    if(shouldBeVisible())
       _trayIcon->show();
     else
       _trayIcon->hide();
@@ -91,7 +90,7 @@ bool LegacySystemTray::isVisible() const {
   if(mode() == Legacy) {
     return _trayIcon->isVisible();
   }
-  return false;
+  return SystemTray::isVisible();
 }
 
 void LegacySystemTray::setMode(Mode mode_) {
@@ -99,8 +98,10 @@ void LegacySystemTray::setMode(Mode mode_) {
 
   if(mode() == Legacy) {
     syncLegacyIcon();
-    if(_isVisible)
+    if(shouldBeVisible())
       _trayIcon->show();
+    else
+      _trayIcon->hide();
     if(state() == NeedsAttention)
       _blinkTimer.start();
   } else {

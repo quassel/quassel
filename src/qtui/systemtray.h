@@ -94,6 +94,7 @@ protected slots:
 protected:
   virtual void setMode(Mode mode);
   inline Mode mode() const;
+  inline bool shouldBeVisible() const;
 
   virtual Icon stateIcon() const;
   Icon stateIcon(State state) const;
@@ -111,6 +112,7 @@ private slots:
 private:
   Mode _mode;
   State _state;
+  bool _shouldBeVisible;
 
   QString _toolTipTitle, _toolTipSubTitle;
   Icon _passiveIcon, _activeIcon, _needsAttentionIcon;
@@ -127,6 +129,7 @@ bool SystemTray::isSystemTrayAvailable() const { return false; }
 bool SystemTray::isAlerted() const { return state() == NeedsAttention; }
 SystemTray::Mode SystemTray::mode() const { return _mode; }
 SystemTray::State SystemTray::state() const { return _state; }
+bool SystemTray::shouldBeVisible() const { return _shouldBeVisible; }
 QMenu *SystemTray::trayMenu() const { return _trayMenu; }
 QString SystemTray::toolTipTitle() const { return _toolTipTitle; }
 QString SystemTray::toolTipSubTitle() const { return _toolTipSubTitle; }

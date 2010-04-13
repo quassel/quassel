@@ -459,5 +459,21 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>useSystemTrayIcon</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>animateSystrayIcon</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>125</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

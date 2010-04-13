@@ -70,6 +70,16 @@ public:
     ~StatusNotifierItemDBus();
 
     /**
+     * Register the service to DBus
+     */
+    void registerService();
+
+    /**
+     * Unregister the service from DBus
+     */
+    void unregisterService();
+
+    /**
      * @return the service this object is registered on the bus under
      */
     QString service() const;

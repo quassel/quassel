@@ -66,7 +66,6 @@ private slots:
 private:
   QTimer _blinkTimer;
   bool _blinkState;
-  bool _isVisible;
   uint _lastMessageId;
 
 #ifdef HAVE_KDE
@@ -79,7 +78,10 @@ private:
 
 // inlines
 
-bool LegacySystemTray::isSystemTrayAvailable() const { return QSystemTrayIcon::isSystemTrayAvailable(); }
+bool LegacySystemTray::isSystemTrayAvailable() const {
+  return mode() == Legacy ? QSystemTrayIcon::isSystemTrayAvailable()
+                          : SystemTray::isSystemTrayAvailable();
+}
 
 #endif /* QT_NO_SYSTEMTRAYICON */
 
