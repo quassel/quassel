@@ -62,6 +62,7 @@ QtUi::QtUi() : GraphicalUi() {
 
   connect(_mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(_mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
+  connect(Client::instance(), SIGNAL(bufferMarkedAsRead(BufferId)), SLOT(closeNotifications(BufferId)));
 }
 
 QtUi::~QtUi() {
@@ -199,4 +200,10 @@ void QtUi::notificationActivated(uint notificationId) {
   closeNotification(notificationId);
 
   activateMainWidget();
+}
+
+void QtUi::bufferMarkedAsRead(BufferId bufferId) {
+  if(bufferId.isValid()) {
+    closeNotifications(bufferId);
+  }
 }

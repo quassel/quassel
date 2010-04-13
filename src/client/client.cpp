@@ -321,6 +321,7 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
   connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), this, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
   connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), _messageModel, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
+  connect(bufferSyncer(), SIGNAL(bufferMarkedAsRead(BufferId)), SIGNAL(bufferMarkedAsRead(BufferId)));
   connect(networkModel(), SIGNAL(setLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
   signalProxy()->synchronize(bufferSyncer());
 
@@ -530,6 +531,11 @@ void Client::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2) {
   QModelIndex idx = networkModel()->bufferIndex(bufferId1);
   bufferModel()->setCurrentIndex(bufferModel()->mapFromSource(idx));
   networkModel()->removeBuffer(bufferId2);
+}
+
+void Client::markBufferAsRead(BufferId id) {
+  if(id.isValid())
+    bufferSyncer()->requestMarkBufferAsRead(id);
 }
 
 void Client::logMessage(QtMsgType type, const char *msg) {

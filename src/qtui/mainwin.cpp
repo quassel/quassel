@@ -996,7 +996,7 @@ bool MainWin::event(QEvent *event) {
   if(event->type() == QEvent::WindowActivate) {
     BufferId buffer = Client::bufferModel()->currentBuffer();
     if(buffer.isValid())
-      QtUi::closeNotifications(buffer);
+      Client::instance()->markBufferAsRead(buffer);
   }
   return QMainWindow::event(event);
 }
@@ -1067,14 +1067,14 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
       else
         type = AbstractNotificationBackend::HighlightFocused;
 
-      QtUi::invokeNotification(bufId, type, sender, contents);
+      QtUi::instance()->invokeNotification(bufId, type, sender, contents);
     }
   }
 }
 
 void MainWin::currentBufferChanged(BufferId buffer) {
   if(buffer.isValid())
-    QtUi::closeNotifications(buffer);
+    Client::instance()->markBufferAsRead(buffer);
 }
 
 void MainWin::clientNetworkCreated(NetworkId id) {
