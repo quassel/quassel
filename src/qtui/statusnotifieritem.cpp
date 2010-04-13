@@ -54,6 +54,7 @@ void StatusNotifierItem::init() {
   qDBusRegisterMetaType<DBusToolTipStruct>();
 
   _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
+
   connect(this, SIGNAL(toolTipChanged(QString,QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
   connect(this, SIGNAL(animationEnabledChanged(bool)), _statusNotifierItemDBus, SIGNAL(NewAttentionIcon()));
 
@@ -134,6 +135,20 @@ void StatusNotifierItem::serviceChange(const QString& name, const QString& oldOw
   }
 }
 
+bool StatusNotifierItem::isSystemTrayAvailable() const {
+  if(mode() == StatusNotifier)
+    return true; // else it should be set to legacy on registration
+
+  return StatusNotifierItemParent::isSystemTrayAvailable();
+}
+
+bool StatusNotifierItem::isVisible() const {
+  if(mode() == StatusNotifier)
+    return shouldBeVisible(); // we don't have a way to check, so we need to trust everything went right
+
+  return StatusNotifierItemParent::isVisible();
+}
+
 void StatusNotifierItem::setMode(Mode mode_) {
   StatusNotifierItemParent::setMode(mode_);
 
@@ -147,6 +162,21 @@ void StatusNotifierItem::setState(State state_) {
 
   emit _statusNotifierItemDBus->NewStatus(metaObject()->enumerator(metaObject()->indexOfEnumerator("State")).valueToKey(state()));
   emit _statusNotifierItemDBus->NewIcon();
+}
+
+void StatusNotifierItem::setVisible(bool visible) {
+  LegacySystemTray::setVisible(visible);
+
+  if(mode() == StatusNotifier) {
+    if(shouldBeVisible()) {
+      _statusNotifierItemDBus->registerService();
+      registerToDaemon();
+    } else {
+      _statusNotifierItemDBus->unregisterService();
+      _statusNotifierWatcher->deleteLater();
+      _statusNotifierWatcher = 0;
+    }
+  }
 }
 
 QString StatusNotifierItem::title() const {

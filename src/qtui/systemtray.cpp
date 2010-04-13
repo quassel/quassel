@@ -38,6 +38,7 @@ SystemTray::SystemTray(QWidget *parent)
 : QObject(parent),
   _mode(Invalid),
   _state(Passive),
+  _shouldBeVisible(true),
   _passiveIcon(DesktopIcon("quassel_inactive")),
   _activeIcon(DesktopIcon("quassel")),
   _needsAttentionIcon(DesktopIcon("quassel_message")),
@@ -138,7 +139,7 @@ void SystemTray::setAlert(bool alerted) {
 }
 
 void SystemTray::setVisible(bool visible) {
-  Q_UNUSED(visible)
+  _shouldBeVisible = visible;
 }
 
 void SystemTray::setToolTip(const QString &title, const QString &subtitle) {

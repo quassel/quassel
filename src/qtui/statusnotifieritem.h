@@ -46,8 +46,12 @@ public:
   explicit StatusNotifierItem(QWidget *parent);
   virtual ~StatusNotifierItem();
 
+  virtual bool isSystemTrayAvailable() const;
+  virtual bool isVisible() const;
+
 public slots:
   virtual void setState(State state);
+  virtual void setVisible(bool visible);
   virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
   virtual void closeMessage(uint notificationId);
 

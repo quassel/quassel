@@ -148,13 +148,30 @@ StatusNotifierItemDBus::StatusNotifierItemDBus(StatusNotifierItem *parent)
 {
    new StatusNotifierItemAdaptor(this);
    //qDebug() << "service is" << m_service;
-   m_dbus.registerService(m_service);
+   registerService();
    m_dbus.registerObject("/StatusNotifierItem", this);
 }
 
 StatusNotifierItemDBus::~StatusNotifierItemDBus()
 {
-    m_dbus.unregisterService(m_service);
+    unregisterService();
+}
+
+// FIXME: prevent double registrations, also test this on platforms != KDE
+//
+void StatusNotifierItemDBus::registerService()
+{
+    //qDebug() << "registering to" << m_service;
+    m_dbus.registerService(m_service);
+}
+
+// FIXME: see above
+void StatusNotifierItemDBus::unregisterService()
+{
+    //qDebug() << "unregistering from" << m_service;
+    if(m_dbus.isConnected()) {
+        m_dbus.unregisterService(m_service);
+    }
 }
 
 QString StatusNotifierItemDBus::service() const
@@ -181,7 +198,7 @@ QString StatusNotifierItemDBus::Id() const
 }
 
 QString StatusNotifierItemDBus::Status() const
- {
+{
     return m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("State")).valueToKey(m_statusNotifierItem->state());
 }
 
