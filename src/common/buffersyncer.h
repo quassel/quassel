@@ -58,12 +58,16 @@ public slots:
 
   virtual inline void requestPurgeBufferIds() { REQUEST(NO_ARG); }
 
+  virtual inline void requestMarkBufferAsRead(BufferId buffer) { REQUEST(ARG(buffer)) emit bufferMarkedAsRead(buffer); }
+  virtual inline void markBufferAsRead(BufferId buffer) { SYNC(ARG(buffer)) emit bufferMarkedAsRead(buffer); }
+
 signals:
   void lastSeenMsgSet(BufferId buffer, const MsgId &msgId);
   void markerLineSet(BufferId buffer, const MsgId &msgId);
   void bufferRemoved(BufferId buffer);
   void bufferRenamed(BufferId buffer, QString newName);
   void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
+  void bufferMarkedAsRead(BufferId buffer);
 
 protected slots:
   bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);

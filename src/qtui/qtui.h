@@ -56,18 +56,20 @@ public:
   static void unregisterNotificationBackend(AbstractNotificationBackend *);
   static void unregisterAllNotificationBackends();
   static const QList<AbstractNotificationBackend *> &notificationBackends();
-  static uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text);
-  static void closeNotification(uint notificationId);
-  static void closeNotifications(BufferId bufferId = BufferId());
   static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
 
 public slots:
   virtual void init();
 
+  uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text);
+  void closeNotification(uint notificationId);
+  void closeNotifications(BufferId bufferId = BufferId());
+
 protected slots:
   void connectedToCore();
   void disconnectedFromCore();
   void notificationActivated(uint notificationId);
+  void bufferMarkedAsRead(BufferId);
 
 protected:
   virtual void minimizeRestore(bool show);

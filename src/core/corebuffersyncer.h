@@ -47,6 +47,8 @@ public slots:
 
   virtual void requestPurgeBufferIds();
 
+  virtual inline void requestMarkBufferAsRead(BufferId buffer) { markBufferAsRead(buffer); }
+
   void storeDirtyIds();
 
 protected:

@@ -171,12 +171,21 @@ signals:
 
   void logUpdated(const QString &msg);
 
+  //! Emitted when a buffer has been marked as read
+  /** This is currently triggered by setting lastSeenMsg, either local or remote,
+   *  or by bringing the window to front.
+   *  \param id The buffer that has been marked as read
+   */
+  void bufferMarkedAsRead(BufferId id);
+
 public slots:
   void disconnectFromCore();
 
   void bufferRemoved(BufferId bufferId);
   void bufferRenamed(BufferId bufferId, const QString &newName);
   void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
+
+  void markBufferAsRead(BufferId id);
 
 private slots:
   void setSyncedToCore();
