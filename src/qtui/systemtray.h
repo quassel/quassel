@@ -64,6 +64,7 @@ public:
   virtual ~SystemTray();
   virtual void init();
 
+  inline Mode mode() const;
   inline State state() const;
   inline bool isAlerted() const;
   virtual inline bool isSystemTrayAvailable() const;
@@ -93,7 +94,6 @@ protected slots:
 
 protected:
   virtual void setMode(Mode mode);
-  inline Mode mode() const;
   inline bool shouldBeVisible() const;
 
   virtual Icon stateIcon() const;
