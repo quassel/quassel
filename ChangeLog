@@ -13,9 +13,11 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.6.0 (not yet released)
-================================
+Version 0.6.0 (2010-04-14)
+==========================
 
+* New languages: en_GB, es, nl, oc, pt, pt_BR, sq, sv, uk, zh_CN
+* Updated existing languages
 * Restore last selected buffer on restart
 * Optional per-chat history
 * SASL authentication support (e.g. supported by Freenode)
@@ -47,7 +49,6 @@ Version 0.6.0 (not yet released)
 * Send unknown commands to server
 * New stylesheets
 * Use gettext for translations
-* Updated translations
 
 Version 0.5.2 (2010-01-18)
 ==========================
