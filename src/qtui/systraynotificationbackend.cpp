@@ -88,7 +88,8 @@ void SystrayNotificationBackend::close(uint notificationId) {
 void SystrayNotificationBackend::notificationActivated(uint notificationId) {
   if(!_blockActivation) {
     if(_notifications.count()) {
-      _blockActivation = true; // prevent double activation because both tray icon and bubble might send a signal
+      if(QtUi::mainWindow()->systemTray()->mode() == SystemTray::Legacy)
+        _blockActivation = true; // prevent double activation because both tray icon and bubble might send a signal
       if(!notificationId)
         notificationId = _notifications.count()? _notifications.last().notificationId : 0;
       emit activated(notificationId);
