@@ -534,7 +534,7 @@ void Client::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2) {
 }
 
 void Client::markBufferAsRead(BufferId id) {
-  if(id.isValid())
+  if(bufferSyncer() && id.isValid())
     bufferSyncer()->requestMarkBufferAsRead(id);
 }
 
