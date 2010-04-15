@@ -42,6 +42,9 @@ bool SqliteStorage::isAvailable() const {
 }
 
 QString SqliteStorage::displayName() const {
+  // We identify the backend to use for the monolithic core by its displayname.
+  // so only change this string if you _really_ have to and make sure the core
+  // setup for the mono client still works ;)
   return QString("SQLite");
 }
 
