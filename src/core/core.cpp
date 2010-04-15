@@ -262,7 +262,7 @@ QString Core::setupCoreForInternalUsage() {
   }
   setupData["AdminUser"] = "AdminUser";
   setupData["AdminPasswd"] = QString::number(pass);
-  setupData["Backend"] = _storageBackends[_storageBackends.keys().first()]->displayName();
+  setupData["Backend"] = QString("SQLite"); // mono client currently needs sqlite
   return setupCore(setupData);
 }
 
