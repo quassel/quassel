@@ -49,7 +49,7 @@ struct EnumModulesContext {
   EnumModulesContext(HANDLE hProcess, QTextStream &stream) : hProcess(hProcess), stream(stream) {}
 };
 
-BOOL CALLBACK EnumModulesCB(LPCSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
+BOOL CALLBACK EnumModulesCB(LPSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
   IMAGEHLP_MODULE64 mod;
   EnumModulesContext *context = (EnumModulesContext *)UserContext;
   mod.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
