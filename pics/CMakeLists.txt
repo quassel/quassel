@@ -2,7 +2,14 @@
 
 if(WIN32)
     if(MINGW)
-	set(COMMON_DEPS ${COMMON_DEPS} ../pics/win32.o PARENT_SCOPE)
+       find_program(WINDRES_EXECUTABLE NAMES windres)
+	if(WINDRES_EXECUTABLE)
+	  exec_program(windres
+	    ARGS "-i ${CMAKE_CURRENT_SOURCE_DIR}/win32.rc
+                 -o ${CMAKE_CURRENT_BINARY_DIR}/win32.o
+                 --include-dir=${CMAKE_CURRENT_SOURCE_DIR}")
+	  set(COMMON_DEPS ${COMMON_DEPS} ${CMAKE_CURRENT_BINARY_DIR}/win32.o PARENT_SCOPE)
+       endif(WINDRES_EXECUTABLE)
     else(MINGW)
 	set(COMMON_DEPS ${COMMON_DEPS} ../pics/win32.rc PARENT_SCOPE)
     endif(MINGW)
