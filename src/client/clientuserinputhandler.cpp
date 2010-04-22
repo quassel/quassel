@@ -65,6 +65,9 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const
       handleExec(clist.at(i).first, args);
     else {
       if(cmd == "JOIN" || cmd == "QUERY") {
+        if(args.section(' ', 0, 0).isEmpty()) {
+          continue;
+        }
         BufferId newBufId = Client::networkModel()->bufferId(bufferInfo.networkId(), args.section(' ', 0, 0));
         if(!newBufId.isValid()) {
           Client::bufferModel()->switchToBufferAfterCreation(bufferInfo.networkId(), args.section(' ', 0, 0));
