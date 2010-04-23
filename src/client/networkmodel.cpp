@@ -798,7 +798,7 @@ QString IrcUserItem::toolTip(int column) const {
   QStringList toolTip(QString("<b>%1</b>").arg(nickName()));
   if(_ircUser->userModes() != "") toolTip[0].append(QString(" (%1)").arg(_ircUser->userModes()));
   if(_ircUser->isAway()) {
-    toolTip[0].append(" is away");
+    toolTip[0].append(tr(" is away"));
     if(!_ircUser->awayMessage().isEmpty())
       toolTip[0].append(QString(" (%1)").arg(_ircUser->awayMessage()));
   }
