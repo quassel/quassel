@@ -167,6 +167,24 @@ QHash<int, BufferId> CoreAccountSettings::jumpKeyMap() {
   return keyMap;
 }
 
+void CoreAccountSettings::setBufferViewOverlay(const QSet<int> &viewIds) {
+  QVariantList variants;
+  foreach(int viewId, viewIds) {
+    variants << qVariantFromValue(viewId);
+  }
+  setAccountValue("BufferViewOverlay", variants);
+}
+
+QSet<int> CoreAccountSettings::bufferViewOverlay() {
+  QSet<int> viewIds;
+  QVariantList variants = accountValue("BufferViewOverlay").toList();
+  QVariantList::const_iterator iter = variants.constBegin();
+  for(QVariantList::const_iterator iter = variants.constBegin(); iter != variants.constEnd(); iter++) {
+    viewIds << iter->toInt();
+  }
+  return viewIds;
+}
+
 void CoreAccountSettings::removeAccount(AccountId id) {
   removeLocalKey(QString("%1").arg(id.toInt()));
 }

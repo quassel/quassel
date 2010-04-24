@@ -32,7 +32,8 @@
 INIT_SYNCABLE_OBJECT(ClientBacklogManager)
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
   : BacklogManager(parent),
-    _requester(0)
+  _requester(0),
+  _initBacklogRequested(false)
 {
 }
 
@@ -79,8 +80,9 @@ void ClientBacklogManager::receiveBacklogAll(MsgId first, MsgId last, int limit,
 }
 
 void ClientBacklogManager::requestInitialBacklog() {
-  if(_requester && !_buffersRequested.isEmpty()) {
-    // qWarning() << "ClientBacklogManager::requestInitialBacklog() called twice in the same session! (Backlog has already been requested)";
+  if(_initBacklogRequested) {
+    Q_ASSERT(_requester);
+    qWarning() << "ClientBacklogManager::requestInitialBacklog() called twice in the same session! (Backlog has already been requested)";
     return;
   }
 
@@ -98,6 +100,7 @@ void ClientBacklogManager::requestInitialBacklog() {
   };
 
   _requester->requestInitialBacklog();
+  _initBacklogRequested = true;
   if(_requester->isBuffering()) {
     updateProgress(0, _requester->totalBuffers());
   }
@@ -115,9 +118,14 @@ BufferIdList ClientBacklogManager::filterNewBufferIds(const BufferIdList &buffer
 }
 
 void ClientBacklogManager::checkForBacklog(const QList<BufferId> &bufferIds) {
+  // we ingore all backlogrequests until we had our initial request
+  if(!_initBacklogRequested) {
+    return;
+  }
+
   if(!_requester) {
     // during client start up this message is to be expected in some situations.
-    qDebug() << "ClientBacklogManager::checkForBacklog(): no active backlog requester (yet?).";
+    qDebug() << "ClientBacklogManager::checkForBacklog(): no active backlog requester.";
     return;
   }
   switch(_requester->type()) {
@@ -156,5 +164,6 @@ void ClientBacklogManager::dispatchMessages(const MessageList &messages, bool so
 void ClientBacklogManager::reset() {
   delete _requester;
   _requester = 0;
+  _initBacklogRequested = false;
   _buffersRequested.clear();
 }

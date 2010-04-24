@@ -51,6 +51,10 @@ public slots:
   void addView(int viewId);
   void removeView(int viewId);
 
+  void reset();
+  void save();
+  void restore();
+
   // updates propagated from the actual views
   void update();
 

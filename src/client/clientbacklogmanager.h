@@ -62,6 +62,7 @@ private:
   void dispatchMessages(const MessageList &messages, bool sort = false);
 
   BacklogRequester *_requester;
+  bool _initBacklogRequested;
   QSet<BufferId> _buffersRequested;
 };
 

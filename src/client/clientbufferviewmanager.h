@@ -36,6 +36,9 @@ public:
   QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
   ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
 
+public slots:
+  virtual void setInitialized();
+
 protected:
   virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
 };
