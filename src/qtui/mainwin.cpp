@@ -491,6 +491,11 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
 }
 
 void MainWin::bufferViewToggled(bool enabled) {
+  if(!enabled && !isVisible()) {
+    // hiding the mainwindow triggers a toggle of the bufferview (which pretty much sucks big time)
+    // since this isn't our fault and we can't do anything about it, we suppress the resulting calls
+    return;
+  }
   QAction *action = qobject_cast<QAction *>(sender());
   Q_ASSERT(action);
   BufferViewDock *dock = qobject_cast<BufferViewDock *>(action->parent());
@@ -502,23 +507,6 @@ void MainWin::bufferViewToggled(bool enabled) {
 
   if(enabled) {
     Client::bufferViewOverlay()->addView(dock->bufferViewId());
-    BufferViewConfig *config = dock->config();
-    if(config && config->isInitialized()) {
-      BufferIdList buffers;
-      if(config->networkId().isValid()) {
-        foreach(BufferId bufferId, config->bufferList()) {
-          if(Client::networkModel()->networkId(bufferId) == config->networkId())
-            buffers << bufferId;
-        }
-        foreach(BufferId bufferId, config->temporarilyRemovedBuffers().toList()) {
-          if(Client::networkModel()->networkId(bufferId) == config->networkId())
-            buffers << bufferId;
-        }
-      } else {
-        buffers = BufferIdList::fromSet(config->bufferList().toSet() + config->temporarilyRemovedBuffers());
-      }
-      Client::backlogManager()->checkForBacklog(buffers);
-    }
   } else {
     Client::bufferViewOverlay()->removeView(dock->bufferViewId());
   }
@@ -801,7 +789,6 @@ void MainWin::disconnectedFromCore() {
     if(dock && actionData.toInt() != -1) {
       removeAction(action);
       _bufferViews.removeAll(dock);
-      Client::bufferViewOverlay()->removeView(dock->bufferViewId());
       dock->deleteLater();
     }
   }

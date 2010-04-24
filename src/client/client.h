@@ -202,7 +202,6 @@ private slots:
   void coreNetworkRemoved(NetworkId);
 
   void requestInitialBacklog();
-  void createDefaultBufferView();
 
   void sendBufferedUserInput();
 

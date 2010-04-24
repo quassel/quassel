@@ -24,6 +24,7 @@
 
 #include "bufferviewconfig.h"
 #include "client.h"
+#include "clientbacklogmanager.h"
 #include "clientbufferviewmanager.h"
 #include "networkmodel.h"
 
@@ -38,6 +39,36 @@ BufferViewOverlay::BufferViewOverlay(QObject *parent)
 {
 }
 
+void BufferViewOverlay::reset() {
+  _aboutToUpdate = false;
+
+  _bufferViewIds.clear();
+  _uninitializedViewCount = 0;
+
+  _networkIds.clear();
+  _allowedBufferTypes = 0;
+  _minimumActivity = 0;
+
+  _buffers.clear();
+  _removedBuffers.clear();
+  _tempRemovedBuffers.clear();
+}
+
+void BufferViewOverlay::save() {
+  CoreAccountSettings().setBufferViewOverlay(_bufferViewIds);
+}
+
+void BufferViewOverlay::restore() {
+  QSet<int> currentIds = _bufferViewIds;
+  reset();
+  currentIds += CoreAccountSettings().bufferViewOverlay();
+
+  QSet<int>::const_iterator iter;
+  for(iter = currentIds.constBegin(); iter != currentIds.constEnd(); iter++) {
+    addView(*iter);
+  }
+}
+
 void BufferViewOverlay::addView(int viewId) {
   if(_bufferViewIds.contains(viewId))
     return;
@@ -49,15 +80,36 @@ void BufferViewOverlay::addView(int viewId) {
   }
 
   _bufferViewIds << viewId;
+  bool wasInitialized = isInitialized();
   _uninitializedViewCount++;
+
   if(config->isInitialized()) {
     viewInitialized(config);
+
+    if(wasInitialized) {
+      BufferIdList buffers;
+      if(config->networkId().isValid()) {
+        foreach(BufferId bufferId, config->bufferList()) {
+          if(Client::networkModel()->networkId(bufferId) == config->networkId())
+            buffers << bufferId;
+        }
+        foreach(BufferId bufferId, config->temporarilyRemovedBuffers().toList()) {
+          if(Client::networkModel()->networkId(bufferId) == config->networkId())
+            buffers << bufferId;
+        }
+      } else {
+        buffers = BufferIdList::fromSet(config->bufferList().toSet() + config->temporarilyRemovedBuffers());
+      }
+      Client::backlogManager()->checkForBacklog(buffers);
+    }
+
   } else {
     disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
     // we use a queued connection here since manipulating the connection list of a sending object
     // doesn't seem to be such a good idea while executing a connected slots.
     connect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()), Qt::QueuedConnection);
   }
+  save();
 }
 
 void BufferViewOverlay::removeView(int viewId) {
@@ -87,6 +139,7 @@ void BufferViewOverlay::removeView(int viewId) {
   update();
   if(!wasInitialized && isInitialized())
     emit initDone();
+  save();
 }
 
 void BufferViewOverlay::viewInitialized(BufferViewConfig *config) {
@@ -97,14 +150,6 @@ void BufferViewOverlay::viewInitialized(BufferViewConfig *config) {
   disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
 
   connect(config, SIGNAL(configChanged()), this, SLOT(update()));
-//   connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(update()));
-//   connect(config, SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(update()));
-//   connect(config, SIGNAL(allowedBufferTypesSet(int)), this, SLOT(update()));
-//   connect(config, SIGNAL(minimumActivitySet(int)), this, SLOT(update()));
-//   connect(config, SIGNAL(bufferListSet()), this, SLOT(update()));
-//   connect(config, SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(update()));
-//   connect(config, SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(update()));
-//   connect(config, SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(update()));
 
   // check if the view was removed in the meantime...
   if(_bufferViewIds.contains(config->bufferViewId()))

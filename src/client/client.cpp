@@ -328,7 +328,7 @@ void Client::setSyncedToCore() {
   // create a new BufferViewManager
   Q_ASSERT(!_bufferViewManager);
   _bufferViewManager = new ClientBufferViewManager(signalProxy(), this);
-  connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefaultBufferView()));
+  connect(_bufferViewManager, SIGNAL(initDone()), _bufferViewOverlay, SLOT(restore()));
 
   // create AliasManager
   Q_ASSERT(!_aliasManager);
@@ -359,20 +359,14 @@ void Client::requestInitialBacklog() {
   // triggers this slot. But we have to make sure that we know all buffers yet.
   // so we check the BufferSyncer and in case it wasn't initialized we wait for that instead
   if(!bufferSyncer()->isInitialized()) {
-    connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
+    disconnect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
     connect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
     return;
   }
-  _backlogManager->requestInitialBacklog();
-}
+  disconnect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
+  disconnect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
 
-void Client::createDefaultBufferView() {
-  if(bufferViewManager()->bufferViewConfigs().isEmpty()) {
-    BufferViewConfig config(-1);
-    config.setBufferViewName(tr("All Chats"));
-    config.initSetBufferList(networkModel()->allBufferIdsSorted());
-    bufferViewManager()->requestCreateBufferView(config.toVariantMap());
-  }
+  _backlogManager->requestInitialBacklog();
 }
 
 void Client::disconnectFromCore() {
@@ -403,6 +397,8 @@ void Client::setDisconnectedFromCore() {
     _bufferViewManager->deleteLater();
     _bufferViewManager = 0;
   }
+
+  _bufferViewOverlay->reset();
 
   if(_aliasManager) {
     _aliasManager->deleteLater();

@@ -21,6 +21,8 @@
 #include "clientbufferviewmanager.h"
 
 #include "clientbufferviewconfig.h"
+#include "client.h"
+#include "networkmodel.h"
 
 INIT_SYNCABLE_OBJECT(ClientBufferViewManager)
 ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
@@ -42,4 +44,14 @@ QList<ClientBufferViewConfig *> ClientBufferViewManager::clientBufferViewConfigs
 
 ClientBufferViewConfig *ClientBufferViewManager::clientBufferViewConfig(int bufferViewId) const {
   return static_cast<ClientBufferViewConfig *>(bufferViewConfig(bufferViewId));
+}
+
+void ClientBufferViewManager::setInitialized() {
+  if(bufferViewConfigs().isEmpty()) {
+    BufferViewConfig config(-1);
+    config.setBufferViewName(tr("All Chats"));
+    config.initSetBufferList(Client::networkModel()->allBufferIdsSorted());
+    requestCreateBufferView(config.toVariantMap());
+  }
+  BufferViewManager::setInitialized();
 }
