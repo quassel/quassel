@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>475</height>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,6 +88,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="allowMircColors">
+     <property name="toolTip">
+      <string>Show colored text in the chat window</string>
+     </property>
      <property name="text">
       <string>Allow colored text (mIRC color codes)</string>
      </property>
@@ -118,6 +121,25 @@
      </property>
      <property name="settingsKey" stdset="0">
       <string notr="true">ShowWebPreview</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="autoMarkerLine">
+     <property name="toolTip">
+      <string>Set the marker line to the bottom of the current chat window when selecting another channel</string>
+     </property>
+     <property name="text">
+      <string>Set marker line automatically when switching chats</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">AutoMarkerLine</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -766,6 +788,7 @@
   <tabstop>customChatViewFont</tabstop>
   <tabstop>allowMircColors</tabstop>
   <tabstop>showWebPreview</tabstop>
+  <tabstop>autoMarkerLine</tabstop>
   <tabstop>useCustomColors</tabstop>
   <tabstop>actionMsgColor</tabstop>
   <tabstop>channelMsgColor</tabstop>

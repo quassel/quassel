@@ -26,6 +26,7 @@
 #include "abstractbuffercontainer.h"
 
 class QGraphicsItem;
+class ChatView;
 class ChatViewSearchBar;
 class ChatViewSearchController;
 
@@ -44,9 +45,13 @@ public:
 protected:
   virtual AbstractChatView *createChatView(BufferId);
   virtual void removeChatView(BufferId);
+  virtual inline bool autoMarkerLine() const { return _autoMarkerLine; }
 
 protected slots:
+  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
   virtual void showChatView(BufferId);
+public slots:
+  virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
 
 private slots:
   void scrollToHighlight(QGraphicsItem *highlightItem);
@@ -54,11 +59,15 @@ private slots:
   void zoomOut();
   void zoomOriginal();
 
+  void setAutoMarkerLine(const QVariant &);
+
 private:
   Ui::BufferWidget ui;
   QHash<BufferId, QWidget *> _chatViews;
 
   ChatViewSearchController *_chatViewSearchController;
+
+  bool _autoMarkerLine;
 };
 
 #endif

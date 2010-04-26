@@ -26,9 +26,11 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "bufferwidget.h"
+#include "chatline.h"
 #include "chatview.h"
 #include "chatviewsearchbar.h"
 #include "chatviewsearchcontroller.h"
+#include "chatviewsettings.h"
 #include "client.h"
 #include "iconloader.h"
 #include "multilineedit.h"
@@ -38,7 +40,8 @@
 
 BufferWidget::BufferWidget(QWidget *parent)
   : AbstractBufferContainer(parent),
-    _chatViewSearchController(new ChatViewSearchController(this))
+    _chatViewSearchController(new ChatViewSearchController(this)),
+    _autoMarkerLine(true)
 {
   ui.setupUi(this);
   layout()->setContentsMargins(0, 0, 0, 0);
@@ -86,11 +89,22 @@ BufferWidget::BufferWidget(QWidget *parent)
   zoomOriginalChatview->setIcon(SmallIcon("zoom-original"));
   zoomOriginalChatview->setText(tr("Actual Size"));
   //zoomOriginalChatview->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0)); // used for RTS switching
+
+  Action *setMarkerLine = coll->add<Action>("SetMarkerLineToBottom", this, SLOT(setMarkerLine()));
+  setMarkerLine->setText(tr("Set Marker Line"));
+  setMarkerLine->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+
+  ChatViewSettings s;
+  s.initAndNotify("AutoMarkerLine", this, SLOT(setAutoMarkerLine(QVariant)), true);
 }
 
 BufferWidget::~BufferWidget() {
   delete _chatViewSearchController;
   _chatViewSearchController = 0;
+}
+
+void BufferWidget::setAutoMarkerLine(const QVariant &v) {
+  _autoMarkerLine = v.toBool();
 }
 
 AbstractChatView *BufferWidget::createChatView(BufferId id) {
@@ -128,7 +142,6 @@ void BufferWidget::scrollToHighlight(QGraphicsItem *highlightItem) {
     view->centerOn(highlightItem);
   }
 }
-
 
 void BufferWidget::zoomIn() {
   ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
@@ -192,5 +205,47 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
     return static_cast<QObject*>(ui.stackedWidget->currentWidget())->event(event);
   default:
     return false;
+  }
+}
+
+void BufferWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  ChatView *prevView = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+
+  AbstractBufferContainer::currentChanged(current, previous); // switch first to avoid a redraw
+
+  // we need to hide the marker line if it's already/still at the bottom of the view (and not scrolled up)
+  ChatView *curView = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+  if(curView) {
+    BufferId curBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
+    if(curBufferId.isValid()) {
+      MsgId markerMsgId = Client::networkModel()->markerLineMsgId(curBufferId);
+      if(markerMsgId == curView->lastMsgId() && markerMsgId == curView->lastVisibleMsgId())
+        curView->setMarkerLineVisible(false);
+      else
+        curView->setMarkerLineVisible(true);
+    }
+  }
+
+  if(prevView && autoMarkerLine())
+    setMarkerLine(prevView, false);
+}
+
+void BufferWidget::setMarkerLine(ChatView *view, bool allowGoingBack) {
+  if(!view)
+    view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+  if(!view)
+    return;
+
+  ChatLine *lastLine = view->lastVisibleChatLine();
+  if(lastLine) {
+    if(!allowGoingBack) {
+      QModelIndex idx = lastLine->index();
+      BufferId bufId = view->scene()->singleBufferId();
+      MsgId msgId = idx.data(MessageModel::MsgIdRole).value<MsgId>();
+      MsgId oldMsgId = Client::markerLine(bufId);
+      if(oldMsgId.isValid() && msgId <= oldMsgId)
+        return;
+    }
+    view->setMarkedLine(lastLine);
   }
 }

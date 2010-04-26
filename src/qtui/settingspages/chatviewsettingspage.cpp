@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "chatviewsettingspage.h"
+#include "client.h"
 #include "colorbutton.h"
 #include "qtui.h"
 #include "qtuistyle.h"
@@ -32,6 +33,13 @@ ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
   ui.showWebPreview->hide();
   ui.showWebPreview->setEnabled(false);
 #endif
+
+  // FIXME remove with protocol v11
+  if(!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
+    ui.autoMarkerLine->setEnabled(false);
+    ui.autoMarkerLine->setChecked(true);
+    ui.autoMarkerLine->setToolTip(tr("You need at 0.6 quasselcore to use this feature"));
+  }
 
   initAutoWidgets();
 }

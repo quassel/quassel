@@ -322,7 +322,7 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), this, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
   connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), _messageModel, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
   connect(bufferSyncer(), SIGNAL(bufferMarkedAsRead(BufferId)), SIGNAL(bufferMarkedAsRead(BufferId)));
-  connect(networkModel(), SIGNAL(setLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
+  connect(networkModel(), SIGNAL(requestSetLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
   signalProxy()->synchronize(bufferSyncer());
 
   // create a new BufferViewManager
@@ -470,9 +470,15 @@ void Client::setBufferLastSeenMsg(BufferId id, const MsgId &msgId) {
     bufferSyncer()->requestSetLastSeenMsg(id, msgId);
 }
 
-void Client::setBufferMarkerLine(BufferId id, const MsgId &msgId) {
+void Client::setMarkerLine(BufferId id, const MsgId &msgId) {
   if(bufferSyncer())
     bufferSyncer()->requestSetMarkerLine(id, msgId);
+}
+
+MsgId Client::markerLine(BufferId id) {
+  if(id.isValid() && networkModel())
+    return networkModel()->markerLineMsgId(id);
+  return MsgId();
 }
 
 void Client::removeBuffer(BufferId id) {

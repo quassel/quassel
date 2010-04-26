@@ -340,7 +340,9 @@ public slots:
   void networkRemoved(const NetworkId &networkId);
 
 signals:
-  void setLastSeenMsg(BufferId bufferId, MsgId msgId);
+  void requestSetLastSeenMsg(BufferId buffer, MsgId msg);
+  void lastSeenMsgSet(BufferId buffer, MsgId msg);
+  void markerLineSet(BufferId buffer, MsgId msg);
 
 private slots:
   void checkForRemovedBuffers(const QModelIndex &parent, int start, int end);

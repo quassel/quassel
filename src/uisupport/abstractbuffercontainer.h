@@ -52,7 +52,10 @@ protected:
    */
   virtual void removeChatView(BufferId) = 0;
 
-  virtual inline bool autoSetMarkerLine() const { return true; }
+  //! If true, the marker line will be set automatically on buffer switch
+  /** \return Whether the marker line should be set on buffer switch
+   */
+  virtual inline bool autoMarkerLine() const { return true; }
 
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);

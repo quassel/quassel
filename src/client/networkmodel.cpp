@@ -1022,6 +1022,7 @@ void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId
     return;
   }
   bufferItem->setLastSeenMsgId(msgId);
+  emit lastSeenMsgSet(bufferId, msgId);
 }
 
 void NetworkModel::setMarkerLineMsgId(const BufferId &bufferId, const MsgId &msgId) {
@@ -1032,6 +1033,7 @@ void NetworkModel::setMarkerLineMsgId(const BufferId &bufferId, const MsgId &msg
     return;
   }
   bufferItem->setMarkerLineMsgId(msgId);
+  emit markerLineSet(bufferId, msgId);
 }
 
 void NetworkModel::updateBufferActivity(Message &msg) {
@@ -1087,7 +1089,7 @@ void NetworkModel::updateBufferActivity(BufferItem *bufferItem, const Message &m
 
   bufferItem->updateActivityLevel(msg);
   if(bufferItem->isCurrentBuffer())
-    emit setLastSeenMsg(bufferItem->bufferId(), msg.msgId());
+    emit requestSetLastSeenMsg(bufferItem->bufferId(), msg.msgId());
 }
 
 void NetworkModel::setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel level) {

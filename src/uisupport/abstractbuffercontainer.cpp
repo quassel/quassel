@@ -97,8 +97,6 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
   if(prevBufferId.isValid() && _chatViews.contains(prevBufferId)) {
     MsgId msgId = _chatViews.value(prevBufferId)->lastMsgId();
     Client::setBufferLastSeenMsg(prevBufferId, msgId);
-    if(autoSetMarkerLine())
-      Client::setBufferMarkerLine(prevBufferId, msgId);
   }
 
   if(!bufferId.isValid()) {

@@ -45,7 +45,7 @@ public slots:
   void initSetMarkerLines(const QVariantList &);
 
   virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
-  virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
+  virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) setMarkerLine(buffer, msgId); }
 
   virtual inline void requestRemoveBuffer(BufferId buffer) { REQUEST(ARG(buffer)) }
   virtual void removeBuffer(BufferId buffer);

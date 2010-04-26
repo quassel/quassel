@@ -59,6 +59,9 @@ bool BufferSyncer::setMarkerLine(BufferId buffer, const MsgId &msgId) {
   if(!msgId.isValid())
     return false;
 
+  if(_markerLines.value(buffer) == msgId)
+    return false;
+
   _markerLines[buffer] = msgId;
   SYNC(ARG(buffer), ARG(msgId))
   emit markerLineSet(buffer, msgId);
