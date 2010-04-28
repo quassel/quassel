@@ -18,19 +18,22 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include <QDateTime>
+#include "clientuserinputhandler.h"
 
 #include "buffermodel.h"
 #include "client.h"
 #include "clientaliasmanager.h"
-#include "clientuserinputhandler.h"
 #include "clientsettings.h"
 #include "execwrapper.h"
 #include "ircuser.h"
 #include "network.h"
+#include "types.h"
+#include "bufferinfo.h"
+
+#include <QDateTime>
 
 ClientUserInputHandler::ClientUserInputHandler(QObject *parent)
-: QObject(parent)
+: BasicHandler(parent)
 {
   TabCompletionSettings s;
   s.notify("CompletionSuffix", this, SLOT(completionSuffixChanged(QVariant)));
@@ -46,6 +49,8 @@ void ClientUserInputHandler::completionSuffixChanged(const QVariant &v) {
 
 // this would be the place for a client-side hook
 void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg) {
+  if(msg.isEmpty())
+    return;
 
   if(!msg.startsWith('/')) {
     if(_nickRx.indexIn(msg) == 0) {
@@ -60,25 +65,39 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const
 
   for(int i = 0; i < clist.count(); i++) {
     QString cmd = clist.at(i).second.section(' ', 0, 0).remove(0, 1).toUpper();
-    QString args = clist.at(i).second.section(' ', 1);
-    if(cmd == "EXEC")
-      handleExec(clist.at(i).first, args);
-    else {
-      if(cmd == "JOIN" || cmd == "QUERY") {
-        BufferId newBufId = Client::networkModel()->bufferId(bufferInfo.networkId(), args.section(' ', 0, 0));
-        if(!newBufId.isValid()) {
-          Client::bufferModel()->switchToBufferAfterCreation(bufferInfo.networkId(), args.section(' ', 0, 0));
-        }
-        else {
-          Client::bufferModel()->switchToBuffer(newBufId);
-        }
-      }
-      emit sendInput(clist.at(i).first, clist.at(i).second);
-    }
+    QString payload = clist.at(i).second.section(' ', 1);
+    handle(cmd, Q_ARG(BufferInfo, clist.at(i).first), Q_ARG(QString, payload));
   }
+}
+
+void ClientUserInputHandler::defaultHandler(const QString &cmd, const BufferInfo &bufferInfo, const QString &text) {
+  QString command = QString("/%1 %2").arg(cmd, text);
+  emit sendInput(bufferInfo, command);
 }
 
 void ClientUserInputHandler::handleExec(const BufferInfo &bufferInfo, const QString &execString) {
   ExecWrapper *exec = new ExecWrapper(this); // gets suicidal when it's done
   exec->start(bufferInfo, execString);
+}
+
+void ClientUserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &text) {
+  switchBuffer(bufferInfo.networkId(), text.section(' ', 0, 0));
+  // send to core
+  defaultHandler("JOIN", bufferInfo, text);
+}
+
+void ClientUserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QString &text) {
+  switchBuffer(bufferInfo.networkId(), text.section(' ', 0, 0));
+  // send to core
+  defaultHandler("QUERY", bufferInfo, text);
+}
+
+void ClientUserInputHandler::switchBuffer(const NetworkId &networkId, const QString &bufferName) {
+  BufferId newBufId = Client::networkModel()->bufferId(networkId, bufferName);
+  if(!newBufId.isValid()) {
+    Client::bufferModel()->switchToBufferAfterCreation(networkId, bufferName);
+  }
+  else {
+    Client::bufferModel()->switchToBuffer(newBufId);
+  }
 }
