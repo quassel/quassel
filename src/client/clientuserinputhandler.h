@@ -21,7 +21,6 @@
 #ifndef CLIENTUSERINPUTHANDLER_H_
 #define CLIENTUSERINPUTHANDLER_H_
 
-//#include "bufferinfo.h"
 #include "basichandler.h"
 
 class BufferInfo;
