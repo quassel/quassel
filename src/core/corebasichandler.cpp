@@ -118,12 +118,14 @@ void CoreBasicHandler::putCmd(const QString &cmd, const QByteArray &param, const
 }
 
 void CoreBasicHandler::displayMsg(Message::Type msgType, QString target, const QString &text, const QString &sender, Message::Flags flags) {
-  if(!target.isEmpty() && network()->prefixes().contains(target[0]))
-    target = target.mid(1);
-
   IrcChannel *channel = network()->ircChannel(target);
-  if(!channel && (target.startsWith('$') || target.startsWith('#')))
-    target = nickFromMask(sender);
+  if(!channel) {
+    if(!target.isEmpty() && network()->prefixes().contains(target[0]))
+      target = target.mid(1);
+
+    if(target.startsWith('$') || target.startsWith('#'))
+      target = nickFromMask(sender);
+  }
 
   emit displayMsg(msgType, typeByTarget(target), target, text, sender, flags);
 }
