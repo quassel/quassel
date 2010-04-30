@@ -127,6 +127,10 @@ void AbstractTreeItem::customEvent(QEvent *event) {
   if(childRow == -1)
     return;
 
+  // since we are called asynchronously we have to recheck if the item in question still has no childs
+  if(removeEvent->child()->childCount())
+    return;
+
   removeChild(childRow);
 }
 
