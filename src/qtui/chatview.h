@@ -71,11 +71,17 @@ public:
 
   virtual bool event(QEvent *event);
 
+  inline bool isMarkerLineVisible() const { return _markerLineVisible; }
+  inline ChatLine *markedLine() const { return _markedLine; }
+
 public slots:
   inline virtual void clear() {}
   void zoomIn();
   void zoomOut();
   void zoomOriginal();
+
+  void setMarkerLineVisible(bool visible = true);
+  void setMarkedLine(ChatLine *line);
 
 protected:
   virtual void resizeEvent(QResizeEvent *event);
@@ -89,6 +95,7 @@ private slots:
   void mouseMoveWhileSelecting(const QPointF &scenePos);
   void scrollTimerTimeout();
   void invalidateFilter();
+  void markerLineSet(BufferId buffer, MsgId msg);
 
 private:
   void init(MessageFilter *filter);
@@ -100,6 +107,8 @@ private:
   QTimer _scrollTimer;
   int _scrollOffset;
   bool _invalidateFilter;
+  bool _markerLineVisible;
+  ChatLine *_markedLine;
 };
 
 

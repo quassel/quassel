@@ -55,6 +55,8 @@ void ChatView::init(MessageFilter *filter) {
   _bufferContainer = 0;
   _currentScaleFactor = 1;
   _invalidateFilter = false;
+  _markerLineVisible = true;
+  _markedLine = 0;
 
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -78,6 +80,8 @@ void ChatView::init(MessageFilter *filter) {
 
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
   _lastScrollbarPos = verticalScrollBar()->value();
+
+  connect(Client::networkModel(), SIGNAL(markerLineSet(BufferId,MsgId)), SLOT(markerLineSet(BufferId,MsgId)));
 
   // only connect if client is synched with a core
   if(Client::isConnected())
@@ -254,6 +258,45 @@ ChatLine *ChatView::lastVisibleChatLine() const {
     return scene()->chatLine(row);
 
   return 0;
+}
+
+void ChatView::setMarkerLineVisible(bool visible) {
+  if(visible != _markerLineVisible) {
+    _markerLineVisible = visible;
+  }
+}
+
+void ChatView::setMarkedLine(ChatLine *line) {
+  if(_markedLine == line)
+    return;
+
+  if(!scene()->isSingleBufferScene())
+    return;
+
+  if(line) {
+    BufferId bufId = scene()->singleBufferId();
+    Client::setMarkerLine(bufId, line->msgId());
+  }
+}
+
+void ChatView::markerLineSet(BufferId buffer, MsgId msg) {
+  if(!scene()->isSingleBufferScene() || scene()->singleBufferId() != buffer)
+    return;
+
+  ChatLine *newLine = scene()->chatLine(msg);
+  if(_markedLine == newLine)
+    return;
+
+  ChatLine *oldLine = _markedLine;
+  _markedLine = newLine;
+
+  if(oldLine)
+    oldLine->update();
+
+  if(newLine) {
+    setMarkerLineVisible(true);
+    newLine->update();
+  }
 }
 
 void ChatView::addActionsToMenu(QMenu *menu, const QPointF &pos) {

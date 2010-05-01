@@ -206,8 +206,7 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     MsgId myMsgId = myIdx.data(MessageModel::MsgIdRole).value<MsgId>();
     Message::Flags flags = (Message::Flags)myIdx.data(MessageModel::FlagsRole).toInt();
 
-    // don't show the marker if we wrote that new line
-    if(!(flags & Message::Self)) {
+    if(chatView()->isMarkerLineVisible()) {
       BufferId bufferId = BufferId(chatScene()->idString().toInt());
       MsgId lastSeenMsgId = Client::networkModel()->markerLineMsgId(bufferId);
       if(lastSeenMsgId < myMsgId && lastSeenMsgId >= prevMsgId) {
