@@ -138,6 +138,33 @@ ColumnHandleItem *ChatScene::secondColumnHandle() const {
   return _secondColHandle;
 }
 
+ChatLine *ChatScene::chatLine(MsgId msgId) const {
+  if(!_lines.count())
+    return 0;
+
+  QList<ChatLine*>::ConstIterator start = _lines.begin();
+  QList<ChatLine*>::ConstIterator end = _lines.end();
+  QList<ChatLine*>::ConstIterator middle;
+
+  int n = int(end - start);
+  int half;
+
+  while(n > 0) {
+    half = n >> 1;
+    middle = start + half;
+    if((*middle)->msgId() < msgId) {
+      start = middle + 1;
+      n -= half + 1;
+    } else {
+      n = half;
+    }
+  }
+  if((*start)->msgId() == msgId)
+    return *start;
+
+  return 0;
+}
+
 ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const {
   ChatLine *line = qgraphicsitem_cast<ChatLine*>(itemAt(scenePos));
   if(line)

@@ -82,7 +82,19 @@ public:
 
   ChatView *chatView() const;
   ChatItem *chatItemAt(const QPointF &pos) const;
-  inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
+  inline ChatLine *chatLine(int row) const { return (row < _lines.count()) ? _lines.value(row) : 0; }
+  inline ChatLine *chatLine(const QModelIndex &index) const { return _lines.value(index.row()); }
+
+  //! Find the ChatLine belonging to a MsgId
+  /** Searches for the ChatLine belonging to a MsgId.
+   *  Note that this method performs a binary search, hence it has as complexity of O(log n).
+   *  If there is more than one ChatLine for the given ID, the first one will be returned.
+   *  \param msgId The message ID to look for
+   *  \return The ChatLine corresponding to the given MsgId
+   */
+  ChatLine *chatLine(MsgId msgId) const;
+
+  inline ChatLine *lastLine() const { return _lines.count() ? _lines.last() : 0; }
 
   inline bool isSingleBufferScene() const { return _singleBufferId.isValid(); }
   inline BufferId singleBufferId() const { return _singleBufferId; }

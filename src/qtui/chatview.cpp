@@ -32,12 +32,11 @@
 #include "qtuistyle.h"
 #include "clientignorelistmanager.h"
 
+#include "chatline.h"
+
 ChatView::ChatView(BufferId bufferId, QWidget *parent)
   : QGraphicsView(parent),
-    AbstractChatView(),
-    _bufferContainer(0),
-    _currentScaleFactor(1),
-    _invalidateFilter(false)
+    AbstractChatView()
 {
   QList<BufferId> filterList;
   filterList.append(bufferId);
@@ -47,15 +46,16 @@ ChatView::ChatView(BufferId bufferId, QWidget *parent)
 
 ChatView::ChatView(MessageFilter *filter, QWidget *parent)
   : QGraphicsView(parent),
-    AbstractChatView(),
-    _bufferContainer(0),
-    _currentScaleFactor(1),
-    _invalidateFilter(false)
+    AbstractChatView()
 {
   init(filter);
 }
 
 void ChatView::init(MessageFilter *filter) {
+  _bufferContainer = 0;
+  _currentScaleFactor = 1;
+  _invalidateFilter = false;
+
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   setAlignment(Qt::AlignLeft|Qt::AlignBottom);
@@ -202,7 +202,58 @@ MsgId ChatView::lastMsgId() const {
   if(!model || model->rowCount() == 0)
     return MsgId();
 
-  return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
+  return model->index(model->rowCount() - 1, 0).data(MessageModel::MsgIdRole).value<MsgId>();
+}
+
+MsgId ChatView::lastVisibleMsgId() const {
+  ChatLine *line = lastVisibleChatLine();
+
+  if(line)
+    return line->msgId();
+
+  return MsgId();
+}
+
+bool chatLinePtrLessThan(ChatLine *one, ChatLine *other) {
+  return one->row() < other->row();
+}
+
+QSet<ChatLine *> ChatView::visibleChatLines(Qt::ItemSelectionMode mode) const {
+  QSet<ChatLine *> result;
+  foreach(QGraphicsItem *item, items(viewport()->rect().adjusted(-1, -1, 1, 1), mode)) {
+    ChatLine *line = qgraphicsitem_cast<ChatLine *>(item);
+    if(line)
+      result.insert(line);
+  }
+  return result;
+}
+
+QList<ChatLine *> ChatView::visibleChatLinesSorted(Qt::ItemSelectionMode mode) const {
+  QList<ChatLine *> result = visibleChatLines(mode).toList();
+  qSort(result.begin(), result.end(), chatLinePtrLessThan);
+  return result;
+}
+
+ChatLine *ChatView::lastVisibleChatLine() const {
+  if(!scene())
+    return 0;
+
+  QAbstractItemModel *model = scene()->model();
+  if(!model || model->rowCount() == 0)
+    return 0;
+
+  int row = -1;
+
+  QSet<ChatLine *> visibleLines = visibleChatLines(Qt::ContainsItemBoundingRect);
+  foreach(ChatLine *line, visibleLines) {
+    if(line->row() > row)
+      row = line->row();
+  }
+
+  if(row >= 0)
+    return scene()->chatLine(row);
+
+  return 0;
 }
 
 void ChatView::addActionsToMenu(QMenu *menu, const QPointF &pos) {

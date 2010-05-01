@@ -42,10 +42,30 @@ public:
   ChatView(BufferId bufferId, QWidget *parent = 0);
 
   virtual MsgId lastMsgId() const;
+  virtual MsgId lastVisibleMsgId() const;
   inline AbstractBufferContainer *bufferContainer() const { return _bufferContainer; }
   inline void setBufferContainer(AbstractBufferContainer *c) { _bufferContainer = c; }
 
   inline ChatScene *scene() const { return _scene; }
+
+  //! Return a set of ChatLines currently visible in the view
+  /** \param mode How partially visible ChatLines are handled
+   *  \return A set of visible ChatLines
+   */
+  QSet<ChatLine *> visibleChatLines(Qt::ItemSelectionMode mode = Qt::ContainsItemBoundingRect) const;
+
+  //! Return a sorted list of ChatLines currently visible in the view
+  /** \param mode How partially visible ChatLines are handled
+   *  \return A list of visible ChatLines sorted by row
+   *  \note If the order of ChatLines does not matter, use visibleChatLines() instead
+   */
+  QList<ChatLine *> visibleChatLinesSorted(Qt::ItemSelectionMode mode = Qt::ContainsItemBoundingRect) const;
+
+  //! Return the last fully visible ChatLine in this view
+  /** Using this method more efficient than calling visibleChatLinesSorted() and taking its last element.
+   *  \return The last fully visible ChatLine in the view
+   */
+  ChatLine *lastVisibleChatLine() const;
 
   virtual void addActionsToMenu(QMenu *, const QPointF &pos);
 

@@ -37,11 +37,14 @@ public:
 
   virtual inline QRectF boundingRect () const { return QRectF(0, 0, _width, _height); }
 
-  inline int row() { return _row; }
+  inline QModelIndex index() const { return model()->index(row(), 0); }
+  inline MsgId msgId() const { return index().data(MessageModel::MsgIdRole).value<MsgId>(); }
+  inline int row() const { return _row; }
   inline void setRow(int row) { _row = row; }
 
   inline const QAbstractItemModel *model() const { return _model; }
   inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
+  inline ChatView *chatView() const { return chatScene()->chatView(); }
 
   inline qreal width() const { return _width; }
   inline qreal height() const { return _height; }
