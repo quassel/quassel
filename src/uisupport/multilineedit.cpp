@@ -23,6 +23,7 @@
 #include <QMessageBox>
 #include <QScrollBar>
 
+#include "actioncollection.h"
 #include "bufferview.h"
 #include "graphicalui.h"
 #include "multilineedit.h"
@@ -31,12 +32,7 @@
 const int leftMargin = 3;
 
 MultiLineEdit::MultiLineEdit(QWidget *parent)
-  :
-#ifdef HAVE_KDE
-    KTextEdit(parent),
-#else
-    QTextEdit(parent),
-#endif
+  : MultiLineEditParent(parent),
     _idx(0),
     _mode(SingleLine),
     _singleLine(true),
@@ -237,6 +233,22 @@ bool MultiLineEdit::addToHistory(const QString &text, bool temporary) {
   return false;
 }
 
+bool MultiLineEdit::event(QEvent *e) {
+  // We need to make sure that global shortcuts aren't eaten
+  if(e->type() == QEvent::ShortcutOverride) {
+    QKeyEvent* event = static_cast<QKeyEvent *>(e);
+    QKeySequence key = QKeySequence(event->key() | event->modifiers());
+    foreach(QAction *action, GraphicalUi::actionCollection()->actions()) {
+      if(action->shortcuts().contains(key)) {
+        e->ignore();
+        return false;
+      }
+    }
+  }
+
+  return MultiLineEditParent::event(e);
+}
+
 void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
   // Workaround the fact that Qt < 4.5 doesn't know InsertLineSeparator yet
 #if QT_VERSION >= 0x040500
@@ -255,11 +267,7 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
       on_returnPressed();
       return;
     }
-#ifdef HAVE_KDE
-    KTextEdit::keyPressEvent(event);
-#else
-    QTextEdit::keyPressEvent(event);
-#endif
+    MultiLineEditParent::keyPressEvent(event);
     return;
   }
 

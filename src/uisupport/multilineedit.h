@@ -23,22 +23,19 @@
 
 #include <QKeyEvent>
 #include <QHash>
-#include <QTextEdit>
 
 #ifdef HAVE_KDE
 #  include <KDE/KTextEdit>
+#  define MultiLineEditParent KTextEdit
+#else
+#  include <QTextEdit>
+#  define MultiLineEditParent QTextEdit
 #endif
 
 class QKeyEvent;
 class TabCompleter;
 
-class MultiLineEdit : public
-#ifdef HAVE_KDE
-                  KTextEdit
-#else
-                  QTextEdit
-#endif
-{
+class MultiLineEdit : public MultiLineEditParent {
   Q_OBJECT
 
 public:
@@ -94,6 +91,7 @@ signals:
   void noTextEntered();
 
 protected:
+  virtual bool event(QEvent *e);
   virtual void keyPressEvent(QKeyEvent * event);
   virtual void resizeEvent(QResizeEvent *event);
 
