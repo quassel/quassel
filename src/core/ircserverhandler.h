@@ -34,6 +34,7 @@ public:
   void handleServerMsg(QByteArray rawMsg);
 
 public slots:
+  void handleInvite(const QString &prefix, const QList<QByteArray> &params);
   void handleJoin(const QString &prefix, const QList<QByteArray> &params);
   void handleKick(const QString &prefix, const QList<QByteArray> &params);
   void handleMode(const QString &prefix, const QList<QByteArray> &params);

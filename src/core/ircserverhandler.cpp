@@ -197,6 +197,21 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
 //******************************/
 // IRC SERVER HANDLER
 //******************************/
+void IrcServerHandler::handleInvite(const QString &prefix, const QList<QByteArray> &params) {
+  if(!checkParamCount("IrcServerHandler::handleInvite()", params, 2))
+    return;
+//   qDebug() << "IrcServerHandler::handleInvite()" << prefix << params;
+
+  IrcUser *ircuser = network()->updateNickFromMask(prefix);
+  if(!ircuser) {
+    return;
+  }
+
+  QString channel = serverDecode(params[1]);
+
+  emit displayMsg(Message::Invite, BufferInfo::StatusBuffer, "", tr("%1 invited you to channel %2").arg(ircuser->nick()).arg(channel));
+}
+
 void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray> &params) {
   if(!checkParamCount("IrcServerHandler::handleJoin()", params, 1))
     return;

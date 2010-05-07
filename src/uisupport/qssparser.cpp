@@ -230,6 +230,8 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       fmtType |= UiStyle::NetsplitJoinMsg;
     else if(msgType == "netsplit-quit")
       fmtType |= UiStyle::NetsplitQuitMsg;
+    else if(msgType == "invite")
+      fmtType |= UiStyle::InviteMsg;
     else {
       qWarning() << Q_FUNC_INFO << tr("Invalid message type in %1").arg(decl);
     }

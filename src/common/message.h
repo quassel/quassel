@@ -50,6 +50,7 @@ public:
     Topic     = 0x04000,
     NetsplitJoin = 0x08000,
     NetsplitQuit = 0x10000,
+    Invite = 0x20000,
   };
 
   // DO NOT CHANGE without knowing what you do, some of these flags are stored in the database

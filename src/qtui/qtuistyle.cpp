@@ -85,6 +85,7 @@ void QtUiStyle::generateSettingsQss() const {
         << msgTypeQss("topic", "CommandMsg", s)
         << msgTypeQss("netsplit-join", "CommandMsg", s)
         << msgTypeQss("netsplit-quit", "CommandMsg", s)
+        << msgTypeQss("invite", "CommandMsg", s)
         << "\n";
   }
 

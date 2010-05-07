@@ -91,6 +91,7 @@ ChatLine#daychange { foreground: #916409; }
 ChatLine#topic { foreground: #960096; }
 ChatLine#netsplit-join { foreground: #960096; }
 ChatLine#netsplit-quit { foreground: #960096; }
+ChatLine#invite { foreground: #916409; }
 
 // BufferView Colors
 ChatListItem[state="inactive"] { foreground: #a0a0a4; }
