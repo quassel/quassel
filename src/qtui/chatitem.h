@@ -33,6 +33,7 @@
 #include <QTextLayout>
 
 class ChatLine;
+class ChatView;
 
 /* All external positions are relative to the parent ChatLine */
 /* Yes, that's also true for the boundingRect() and related things */
@@ -41,12 +42,13 @@ class ChatItem {
 protected:
   // boundingRect is relative to the parent ChatLine
   ChatItem(const QRectF &boundingRect, ChatLine *parent);
-  virtual ~ChatItem() {}
+  virtual ~ChatItem();
 
 public:
   const QAbstractItemModel *model() const;
   ChatLine *chatLine() const;
   ChatScene *chatScene() const;
+  ChatView *chatView() const;
   int row() const;
   virtual ChatLineModel::ColumnType column() const = 0;
 
@@ -62,14 +64,6 @@ public:
   QPointF mapFromLine(const QPointF &) const;
   QPointF mapToScene(const QPointF &) const;
   QPointF mapFromScene(const QPointF &) const;
-
-  void initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
-  virtual inline void initLayout(QTextLayout *layout) const {
-    initLayoutHelper(layout, QTextOption::NoWrap);
-    doLayout(layout);
-  }
-  virtual void doLayout(QTextLayout *) const;
-  virtual UiStyle::FormatList formatList() const;
 
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   virtual inline int type() const { return ChatScene::ChatItemType; }
@@ -89,6 +83,13 @@ public:
   virtual void addActionsToMenu(QMenu *menu, const QPointF &itemPos);
   virtual void handleClick(const QPointF &pos, ChatScene::ClickMode);
 
+  void initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
+
+  //! Remove internally cached data
+  /** This removes e.g. the cached QTextLayout to avoid wasting space for nonvisible ChatLines
+   */
+  virtual void clearCache();
+
 protected:
   enum SelectionMode {
     NoSelection,
@@ -102,6 +103,12 @@ protected:
   virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *) {};
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *) {};
   virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *) {};
+
+  QTextLayout *layout() const;
+  virtual inline void initLayout(QTextLayout *layout) const { initLayout(layout, QTextOption::NoWrap); }
+  virtual void initLayout(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment alignment = Qt::AlignLeft) const;
+  virtual void doLayout(QTextLayout *) const;
+  virtual UiStyle::FormatList formatList() const;
 
   void paintBackground(QPainter *);
   QVector<QTextLayout::FormatRange> selectionFormats() const;
@@ -129,6 +136,8 @@ private:
 
   SelectionMode _selectionMode;
   qint16 _selectionStart, _selectionEnd;
+
+  mutable QTextLayout *_cachedLayout;
 
   // internal selection stuff
   void setSelection(int start, int length);
@@ -161,10 +170,7 @@ public:
 protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   virtual inline int type() const { return ChatScene::SenderChatItemType; }
-  virtual inline void initLayout(QTextLayout *layout) const {
-    initLayoutHelper(layout, QTextOption::ManualWrap, Qt::AlignRight);
-    doLayout(layout);
-  }
+  virtual inline void initLayout(QTextLayout *layout) const { ChatItem::initLayout(layout, QTextOption::ManualWrap, Qt::AlignRight); }
 };
 
 // ************************************************************
@@ -185,6 +191,8 @@ public:
   inline ChatLineModel::ColumnType column() const { return ChatLineModel::ContentsColumn; }
   QFontMetricsF *fontMetrics() const;
 
+  virtual void clearCache();
+
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
@@ -196,10 +204,7 @@ protected:
 
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
-  virtual inline void initLayout(QTextLayout *layout) const {
-    initLayoutHelper(layout, QTextOption::WrapAtWordBoundaryOrAnywhere);
-    doLayout(layout);
-  }
+  virtual inline void initLayout(QTextLayout *layout) const { ChatItem::initLayout(layout, QTextOption::WrapAtWordBoundaryOrAnywhere); }
   virtual void doLayout(QTextLayout *layout) const;
   virtual UiStyle::FormatList formatList() const;
 
@@ -207,7 +212,7 @@ private:
   class ActionProxy;
   class WrapColumnFinder;
 
-  ContentsChatItemPrivate *_data;
+  mutable ContentsChatItemPrivate *_data;
   ContentsChatItemPrivate *privateData() const;
 
   Clickable clickableAt(const QPointF &pos) const;
@@ -217,13 +222,14 @@ private:
   void clearWebPreview();
 
   qreal setGeometryByWidth(qreal w);
-  friend class ChatLine;
-  friend struct ContentsChatItemPrivate;
 
   QFontMetricsF *_fontMetrics;
 
   // we need a receiver for Action signals
   static ActionProxy _actionProxy;
+
+  friend class ChatLine;
+  friend struct ContentsChatItemPrivate;
 };
 
 struct ContentsChatItemPrivate {

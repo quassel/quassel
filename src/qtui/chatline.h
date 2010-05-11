@@ -35,6 +35,8 @@ public:
            const QPointF &senderPos, const QPointF &contentsPos,
            QGraphicsItem *parent = 0);
 
+  virtual ~ChatLine();
+
   virtual inline QRectF boundingRect () const { return QRectF(0, 0, _width, _height); }
 
   inline QModelIndex index() const { return model()->index(row(), 0); }
@@ -44,7 +46,7 @@ public:
 
   inline const QAbstractItemModel *model() const { return _model; }
   inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
-  inline ChatView *chatView() const { return chatScene()->chatView(); }
+  inline ChatView *chatView() const { return chatScene() ? chatScene()->chatView() : 0; }
 
   inline qreal width() const { return _width; }
   inline qreal height() const { return _height; }
@@ -68,6 +70,8 @@ public:
 
   void setSelected(bool selected, ChatLineModel::ColumnType minColumn = ChatLineModel::ContentsColumn);
   void setHighlighted(bool highlighted);
+
+  void clearCache();
 
 protected:
   virtual bool sceneEvent(QEvent *event);

@@ -123,6 +123,8 @@ bool ChatView::event(QEvent *event) {
 void ChatView::resizeEvent(QResizeEvent *event) {
   QGraphicsView::resizeEvent(event);
 
+  // FIXME: do we really need to scroll down on resize?
+
   // we can reduce viewport updates if we scroll to the bottom allready at the beginning
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
   scene()->updateForViewport(viewport()->width(), viewport()->height());
@@ -130,6 +132,8 @@ void ChatView::resizeEvent(QResizeEvent *event) {
 
   _lastScrollbarPos = verticalScrollBar()->maximum();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+
+  checkChatLineCaches();
 }
 
 void ChatView::adjustSceneRect() {
@@ -222,6 +226,7 @@ bool chatLinePtrLessThan(ChatLine *one, ChatLine *other) {
   return one->row() < other->row();
 }
 
+// TODO: figure out if it's cheaper to use a cached list (that we'd need to keep updated)
 QSet<ChatLine *> ChatView::visibleChatLines(Qt::ItemSelectionMode mode) const {
   QSet<ChatLine *> result;
   foreach(QGraphicsItem *item, items(viewport()->rect().adjusted(-1, -1, 1, 1), mode)) {
@@ -336,5 +341,31 @@ void ChatView::invalidateFilter() {
   // otherwise invalidate whenever the view is shown
   else {
     _invalidateFilter = true;
+  }
+}
+
+void ChatView::scrollContentsBy(int dx, int dy) {
+  QGraphicsView::scrollContentsBy(dx, dy);
+  checkChatLineCaches();
+}
+
+void ChatView::setHasCache(ChatLine *line, bool hasCache) {
+  if(hasCache)
+    _linesWithCache.insert(line);
+  else
+    _linesWithCache.remove(line);
+}
+
+void ChatView::checkChatLineCaches() {
+  qreal top = mapToScene(viewport()->rect().topLeft()).y() - 10; // some grace area to avoid premature cleaning
+  qreal bottom = mapToScene(viewport()->rect().bottomRight()).y() + 10;
+  QSet<ChatLine *>::iterator iter = _linesWithCache.begin();
+  while(iter != _linesWithCache.end()) {
+    ChatLine *line = *iter;
+    if(line->pos().y() + line->height() < top || line->pos().y() > bottom) {
+      line->clearCache();
+      iter = _linesWithCache.erase(iter);
+    } else
+      ++iter;
   }
 }

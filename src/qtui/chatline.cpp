@@ -59,6 +59,11 @@ ChatLine::ChatLine(int row, QAbstractItemModel *model,
   setHighlighted(index.data(MessageModel::FlagsRole).toInt() & Message::Highlight);
 }
 
+ChatLine::~ChatLine() {
+  if(chatView())
+    chatView()->setHasCache(this, false);
+}
+
 ChatItem *ChatLine::item(ChatLineModel::ColumnType column) {
   switch(column) {
     case ChatLineModel::TimestampColumn:
@@ -80,6 +85,12 @@ ChatItem *ChatLine::itemAt(const QPointF &pos) {
   if(_timestampItem.boundingRect().contains(pos))
     return &_timestampItem;
   return 0;
+}
+
+void ChatLine::clearCache() {
+  _timestampItem.clearCache();
+  _senderItem.clearCache();
+  _contentsItem.clearCache();
 }
 
 void ChatLine::setMouseGrabberItem(ChatItem *item) {

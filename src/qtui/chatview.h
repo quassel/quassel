@@ -69,10 +69,17 @@ public:
 
   virtual void addActionsToMenu(QMenu *, const QPointF &pos);
 
-  virtual bool event(QEvent *event);
-
   inline bool isMarkerLineVisible() const { return _markerLineVisible; }
   inline ChatLine *markedLine() const { return _markedLine; }
+
+  //! Tell the view that this ChatLine has cached data
+  /** ChatLines cache some layout data that should be cleared as soon as it's no
+   *  longer visible. A ChatLine caching data registers itself with this method to
+   *  tell the view about it. The view will call ChatLine::clearCache() when
+   *  appropriate.
+   *  \param line The ChatLine having cached data
+   */
+  void setHasCache(ChatLine *line, bool hasCache = true);
 
 public slots:
   inline virtual void clear() {}
@@ -84,7 +91,9 @@ public slots:
   void setMarkedLine(ChatLine *line);
 
 protected:
+  virtual bool event(QEvent *event);
   virtual void resizeEvent(QResizeEvent *event);
+  virtual void scrollContentsBy(int dx, int dy);
 
 protected slots:
   virtual void verticalScrollbarChanged(int);
@@ -92,6 +101,7 @@ protected slots:
 private slots:
   void lastLineChanged(QGraphicsItem *chatLine, qreal offset);
   void adjustSceneRect();
+  void checkChatLineCaches();
   void mouseMoveWhileSelecting(const QPointF &scenePos);
   void scrollTimerTimeout();
   void invalidateFilter();
@@ -109,6 +119,7 @@ private:
   bool _invalidateFilter;
   bool _markerLineVisible;
   ChatLine *_markedLine;
+  QSet<ChatLine *> _linesWithCache;
 };
 
 
