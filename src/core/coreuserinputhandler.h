@@ -68,6 +68,7 @@ public slots:
   void defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &text);
 
   void issueQuit(const QString &reason);
+  void issueAway(const QString &msg, bool autoCheck = true);
 
 protected:
   void timerEvent(QTimerEvent *event);

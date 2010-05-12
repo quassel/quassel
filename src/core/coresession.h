@@ -109,6 +109,9 @@ public slots:
 
   QHash<QString, QString> persistentChannels(NetworkId) const;
 
+  //! Marks us away (or unaway) on all networks
+  void globalAway(const QString &msg = QString());
+
 signals:
   void initialized();
   void sessionState(const QVariant &);

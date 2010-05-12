@@ -51,14 +51,31 @@ void CoreUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const Q
 // ====================
 void CoreUserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
+  if(msg.startsWith("-all")) {
+    if(msg.length() == 4) {
+      coreSession()->globalAway();
+      return;
+    }
+    Q_ASSERT(msg.length() > 4);
+    if(msg[4] == ' ') {
+      coreSession()->globalAway(msg.mid(5));
+      return;
+    }
+  }
+  issueAway(msg);
+}
 
+void CoreUserInputHandler::issueAway(const QString &msg, bool autoCheck) {
   QString awayMsg = msg;
   IrcUser *me = network()->me();
 
   // if there is no message supplied we have to check if we are already away or not
-  if(msg.isEmpty()) {
+  if(autoCheck && msg.isEmpty()) {
     if(me && !me->isAway()) {
-      awayMsg = network()->identityPtr()->awayReason();
+      Identity *identity = network()->identityPtr();
+      if(identity) {
+        awayMsg = identity->awayReason();
+      }
       if(awayMsg.isEmpty()) {
 	awayMsg = tr("away");
       }

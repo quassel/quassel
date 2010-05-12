@@ -515,6 +515,7 @@ void CoreSession::clientsDisconnected() {
 
     if(!net->isConnected())
       continue;
+
     identity = net->identityPtr();
     if(!identity)
       continue;
@@ -528,5 +529,20 @@ void CoreSession::clientsDisconnected() {
       net->setAutoAwayActive(true);
       net->userInputHandler()->handleAway(BufferInfo(), awayReason);
     }
+  }
+}
+
+
+void CoreSession::globalAway(const QString &msg) {
+  QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
+  CoreNetwork *net = 0;
+  while(netIter != _networks.end()) {
+    net = *netIter;
+    netIter++;
+
+    if(!net->isConnected())
+      continue;
+
+    net->userInputHandler()->issueAway(msg, false /* no force away */);
   }
 }
