@@ -346,6 +346,10 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
     if(!removeModes.isEmpty())
       ircUser->removeUserModes(removeModes);
 
+    if(network()->isMe(ircUser)) {
+      network()->updatePersistentModes(addModes, removeModes);
+    }
+
     // FIXME: redirect
     emit displayMsg(Message::Mode, BufferInfo::StatusBuffer, "", serverDecode(params).join(" "), prefix);
   }

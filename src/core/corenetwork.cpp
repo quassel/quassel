@@ -43,8 +43,8 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _lastUsedServerIndex(0),
 
     _lastPingTime(0),
-    _pingCount(0)
-
+    _pingCount(0),
+   _requestedUserModes('-')
 {
   _autoReconnectTimer.setSingleShot(true);
   _socketCloseTimer.setSingleShot(true);
@@ -200,7 +200,6 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
     if(me_->isAway())
       awayMsg = me_->awayMessage();
     Core::setAwayMessage(userId(), networkId(), awayMsg);
-    Core::setUserModes(userId(), networkId(), me_->userModes());
   }
 
   if(reason.isEmpty() && identityPtr())
@@ -421,17 +420,6 @@ void CoreNetwork::networkInitialized() {
   if(!awayMsg.isEmpty())
     userInputHandler()->handleAway(BufferInfo(), Core::awayMessage(userId(), networkId()));
 
-  // restore old user modes if server default mode is set.
-  IrcUser *me_ = me();
-  if(me_) {
-    if(!me_->userModes().isEmpty()) {
-      restoreUserModes();
-    } else {
-      connect(me_, SIGNAL(userModesSet(QString)), this, SLOT(restoreUserModes()));
-      connect(me_, SIGNAL(userModesAdded(QString)), this, SLOT(restoreUserModes()));
-    }
-  }
-
   sendPerform();
 
   enablePingTimeout();
@@ -452,6 +440,17 @@ void CoreNetwork::sendPerform() {
   // do auto identify
   if(useAutoIdentify() && !autoIdentifyService().isEmpty() && !autoIdentifyPassword().isEmpty()) {
     userInputHandler()->handleMsg(statusBuf, QString("%1 IDENTIFY %2").arg(autoIdentifyService(), autoIdentifyPassword()));
+  }
+
+  // restore old user modes if server default mode is set.
+  IrcUser *me_ = me();
+  if(me_) {
+    if(!me_->userModes().isEmpty()) {
+      restoreUserModes();
+    } else {
+      connect(me_, SIGNAL(userModesSet(QString)), this, SLOT(restoreUserModes()));
+      connect(me_, SIGNAL(userModesAdded(QString)), this, SLOT(restoreUserModes()));
+    }
   }
 
   // send perform list
@@ -484,18 +483,118 @@ void CoreNetwork::restoreUserModes() {
   disconnect(me_, SIGNAL(userModesSet(QString)), this, SLOT(restoreUserModes()));
   disconnect(me_, SIGNAL(userModesAdded(QString)), this, SLOT(restoreUserModes()));
 
-  QString removeModes;
-  QString addModes = Core::userModes(userId(), networkId());
+  QString modesDelta = Core::userModes(userId(), networkId());
   QString currentModes = me_->userModes();
 
-  removeModes = currentModes;
-  removeModes.remove(QRegExp(QString("[%1]").arg(addModes)));
-  addModes.remove(QRegExp(QString("[%1]").arg(currentModes)));
+  QString addModes, removeModes;
+  if(modesDelta.contains('-')) {
+    addModes = modesDelta.section('-', 0, 0);
+    removeModes = modesDelta.section('-', 1);
+  } else {
+    addModes = modesDelta;
+  }
 
-  removeModes = QString("%1 -%2").arg(me_->nick(), removeModes);
-  addModes = QString("%1 +%2").arg(me_->nick(), addModes);
-  userInputHandler()->handleMode(BufferInfo(), removeModes);
-  userInputHandler()->handleMode(BufferInfo(), addModes);
+
+  addModes.remove(QRegExp(QString("[%1]").arg(currentModes)));
+  if(currentModes.isEmpty())
+    removeModes = QString();
+  else
+    removeModes.remove(QRegExp(QString("[^%1]").arg(currentModes)));
+
+  if(addModes.isEmpty() && removeModes.isEmpty())
+    return;
+
+  if(!addModes.isEmpty())
+    addModes = '+' + addModes;
+  if(!removeModes.isEmpty())
+    removeModes = '-' + removeModes;
+
+  // don't use InputHandler::handleMode() as it keeps track of our persistent mode changes
+  putRawLine(serverEncode(QString("MODE %1 %2%3").arg(me_->nick()).arg(addModes).arg(removeModes)));
+}
+
+void CoreNetwork::updateIssuedModes(const QString &requestedModes) {
+  QString addModes;
+  QString removeModes;
+  bool addMode = true;
+
+  for(int i = 0; i < requestedModes.length(); i++) {
+    if(requestedModes[i] == '+') {
+      addMode = true;
+      continue;
+    }
+    if(requestedModes[i] == '-') {
+      addMode = false;
+      continue;
+    }
+    if(addMode) {
+      addModes += requestedModes[i];
+    } else {
+      removeModes += requestedModes[i];
+    }
+  }
+
+
+  QString addModesOld = _requestedUserModes.section('-', 0, 0);
+  QString removeModesOld = _requestedUserModes.section('-', 1);
+
+  addModes.remove(QRegExp(QString("[%1]").arg(addModesOld))); // deduplicate
+  addModesOld.remove(QRegExp(QString("[%1]").arg(removeModes))); // update
+  addModes += addModesOld;
+
+  removeModes.remove(QRegExp(QString("[%1]").arg(removeModesOld))); // deduplicate
+  removeModesOld.remove(QRegExp(QString("[%1]").arg(addModes))); // update
+  removeModes += removeModesOld;
+
+  _requestedUserModes = QString("%1-%2").arg(addModes).arg(removeModes);
+}
+
+void CoreNetwork::updatePersistentModes(QString addModes, QString removeModes) {
+  QString persistentUserModes = Core::userModes(userId(), networkId());
+
+  QString requestedAdd = _requestedUserModes.section('-', 0, 0);
+  QString requestedRemove = _requestedUserModes.section('-', 1);
+
+  QString persistentAdd, persistentRemove;
+  if(persistentUserModes.contains('-')) {
+    persistentAdd = persistentUserModes.section('-', 0, 0);
+    persistentRemove = persistentUserModes.section('-', 1);
+  } else {
+    persistentAdd = persistentUserModes;
+  }
+
+  // remove modes we didn't issue
+  if(requestedAdd.isEmpty())
+    addModes = QString();
+  else
+    addModes.remove(QRegExp(QString("[^%1]").arg(requestedAdd)));
+
+  if(requestedRemove.isEmpty())
+    removeModes = QString();
+  else
+    removeModes.remove(QRegExp(QString("[^%1]").arg(requestedRemove)));
+
+  // deduplicate
+  persistentAdd.remove(QRegExp(QString("[%1]").arg(addModes)));
+  persistentRemove.remove(QRegExp(QString("[%1]").arg(removeModes)));
+
+  // update
+  persistentAdd.remove(QRegExp(QString("[%1]").arg(removeModes)));
+  persistentRemove.remove(QRegExp(QString("[%1]").arg(addModes)));
+
+  // update issued mode list
+  requestedAdd.remove(QRegExp(QString("[%1]").arg(addModes)));
+  requestedRemove.remove(QRegExp(QString("[%1]").arg(removeModes)));
+  _requestedUserModes = QString("%1-%2").arg(requestedAdd).arg(requestedRemove);
+
+  persistentAdd += addModes;
+  persistentRemove += removeModes;
+  Core::setUserModes(userId(), networkId(), QString("%1-%2").arg(persistentAdd).arg(persistentRemove));
+}
+
+void CoreNetwork::resetPersistentModes() {
+  _requestedUserModes = QString('-');
+  Core::setUserModes(userId(), networkId(), QString());
 }
 
 void CoreNetwork::setUseAutoReconnect(bool use) {
