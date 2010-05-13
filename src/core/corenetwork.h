@@ -114,6 +114,10 @@ public slots:
 
   bool setAutoWhoDone(const QString &channel);
 
+  void updateIssuedModes(const QString &requestedModes);
+  void updatePersistentModes(QString addModes, QString removeModes);
+  void resetPersistentModes();
+
   Server usedServer() const;
 
   inline void resetPingTimeout() { _pingCount = 0; }
@@ -203,6 +207,8 @@ private:
   int _burstSize;           // size of the token bucket
   int _tokenBucket;         // the virtual bucket that holds the tokens
   QList<QByteArray> _msgQueue;
+
+  QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
 };
 
 #endif //CORENETWORK_H
