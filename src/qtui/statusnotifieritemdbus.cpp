@@ -39,6 +39,19 @@
 #include "statusnotifierwatcher.h"
 #include "statusnotifieritemadaptor.h"
 
+#ifdef Q_OS_WIN64    
+__inline int toInt(WId wid) 
+{
+        return (int)((__int64)wid);
+}
+
+#else
+__inline int toInt(WId wid) 
+{
+        return (int)wid;
+}
+#endif        
+
 // Marshall the ImageStruct data into a D-BUS argument
 const QDBusArgument &operator<<(QDBusArgument &argument, const DBusImageStruct &icon)
 {
@@ -204,7 +217,7 @@ QString StatusNotifierItemDBus::Status() const
 
 int StatusNotifierItemDBus::WindowId() const
 {
-    return (int)QtUi::mainWindow()->winId();
+    return toInt(QtUi::mainWindow()->winId());
 }
 
 
