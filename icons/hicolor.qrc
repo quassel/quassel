@@ -10,6 +10,7 @@
     <file>hicolor/22x22/status/quassel_message.png</file>
     <file>hicolor/32x32/status/quassel_message.png</file>
     <file>hicolor/48x48/status/quassel_message.png</file>
+    <file>hicolor/64x64/status/quassel_message.png</file>
     <file>hicolor/16x16/status/quassel_inactive.png</file>
     <file>hicolor/22x22/status/quassel_inactive.png</file>
     <file>hicolor/32x32/status/quassel_inactive.png</file>
