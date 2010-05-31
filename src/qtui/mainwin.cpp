@@ -120,6 +120,10 @@
 #include "settingspages/notificationssettingspage.h"
 #include "settingspages/topicwidgetsettingspage.h"
 
+#ifndef HAVE_KDE
+#  include "settingspages/shortcutssettingspage.h"
+#endif
+
 MainWin::MainWin(QWidget *parent)
 #ifdef HAVE_KDE
   : KMainWindow(parent),
@@ -339,6 +343,8 @@ void MainWin::setupActions() {
                                                 0, 0))->setCheckable(true);
 
   // Settings
+  coll->addAction("ConfigureShortcuts", new Action(SmallIcon("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
+                                                  this, SLOT(showShortcutsDlg())));
   coll->addAction("ConfigureQuassel", new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
                                                   this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7)));
 
@@ -408,6 +414,8 @@ void MainWin::setupMenus() {
 #ifdef HAVE_KDE
   _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
   _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
+#else
+  _settingsMenu->addAction(coll->action("ConfigureShortcuts"));
 #endif
   _settingsMenu->addAction(coll->action("ConfigureQuassel"));
 
@@ -974,11 +982,14 @@ void MainWin::showAboutDlg() {
   AboutDlg(this).exec();
 }
 
-#ifdef HAVE_KDE
 void MainWin::showShortcutsDlg() {
+#ifdef HAVE_KDE
   KShortcutsDialog::configure(QtUi::actionCollection("General"), KShortcutsEditor::LetterShortcutsDisallowed);
-}
+#else
+  SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
+  dlg.exec();
 #endif
+}
 
 /********************************************************************************************************/
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,9 @@ bool isChannelName(QString str);
 
 //! Strip mIRC format codes
 QString stripFormatCodes(QString);
+
+//! Remove accelerator markers (&) from the string
+QString stripAcceleratorMarkers(const QString &);
 
 QString secondsToString(int timeInSeconds);
 

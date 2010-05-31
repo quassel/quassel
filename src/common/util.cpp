@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -58,6 +58,22 @@ QString stripFormatCodes(QString str) {
   str.remove('\x1d');
   str.remove('\x1f');
   return str;
+}
+
+QString stripAcceleratorMarkers(const QString &label_) {
+  QString label = label_;
+  int p = 0;
+  forever {
+    p = label.indexOf('&', p);
+    if(p < 0 || p + 1 >= label.length())
+      break;
+
+    if(label.at(p + 1).isLetterOrNumber() || label.at(p + 1) == '&')
+      label.remove(p, 1);
+
+    ++p;
+  }
+  return label;
 }
 
 QString decodeString(const QByteArray &input, QTextCodec *codec) {

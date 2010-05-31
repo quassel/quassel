@@ -114,9 +114,8 @@ class MainWin
     void showSettingsDlg();
     void showNotificationsDlg();
     void showIgnoreList(QString newRule = QString());
-#ifdef HAVE_KDE
     void showShortcutsDlg();
-#endif
+
     void handleCoreConnectionError(const QString &errorMsg);
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
     void handleNoSslInClient(bool *accepted);
