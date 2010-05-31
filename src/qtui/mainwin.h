@@ -134,6 +134,9 @@ class MainWin
     void on_actionDebugHotList_triggered();
     void on_actionDebugLog_triggered();
 
+    void bindJumpKey();
+    void onJumpKey();
+
     void clientNetworkCreated(NetworkId);
     void clientNetworkRemoved(NetworkId);
     void clientNetworkUpdated();
@@ -197,6 +200,7 @@ class MainWin
     QPoint _normalPos; //!< Position of the non-maximized window
 
     BufferHotListFilter *_bufferHotList;
+    QHash<int, BufferId> _jumpKeyMap;
 
     friend class QtUi;
 };

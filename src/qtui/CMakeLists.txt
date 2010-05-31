@@ -37,7 +37,6 @@ set(SOURCES
     debugmessagemodelfilter.cpp
     inputwidget.cpp
     ircconnectionwizard.cpp
-    jumpkeyhandler.cpp
     legacysystemtray.cpp
     mainpage.cpp
     mainwin.cpp
@@ -84,7 +83,6 @@ set(MOC_HDRS
     debugmessagemodelfilter.h
     inputwidget.h
     ircconnectionwizard.h
-    jumpkeyhandler.h
     legacysystemtray.h
     mainpage.h
     mainwin.h

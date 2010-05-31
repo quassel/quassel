@@ -26,7 +26,6 @@
 #include "client.h"
 #include "iconloader.h"
 #include "ircuser.h"
-#include "jumpkeyhandler.h"
 #include "networkmodel.h"
 #include "qtui.h"
 #include "qtuisettings.h"
@@ -54,7 +53,6 @@ InputWidget::InputWidget(QWidget *parent)
 
   ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   ui.ownNick->installEventFilter(new MouseWheelFilter(this));
-  ui.inputEdit->installEventFilter(new JumpKeyHandler(this));
   ui.inputEdit->installEventFilter(this);
 
   ui.inputEdit->setMinHeight(1);
