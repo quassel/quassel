@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -112,7 +112,7 @@ void SettingsPageDlg::loadDefaults() {
   if(!currentPage()) return;
   int ret = QMessageBox::question(this, tr("Restore Defaults"), tr("Do you like to restore the default values for this page?"),
                                   QMessageBox::RestoreDefaults|QMessageBox::Cancel, QMessageBox::Cancel);
-  if(ret == QMessageBox::Yes) {
+  if(ret == QMessageBox::RestoreDefaults) {
     currentPage()->defaults();
   }
 }
