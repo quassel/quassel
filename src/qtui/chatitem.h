@@ -100,13 +100,13 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *) {};
-  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *) {};
-  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *) {};
+  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *) {}
+  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *) {}
+  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *) {}
 
   QTextLayout *layout() const;
-  virtual inline void initLayout(QTextLayout *layout) const { initLayout(layout, QTextOption::NoWrap); }
-  virtual void initLayout(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment alignment = Qt::AlignLeft) const;
+
+  virtual void initLayout(QTextLayout *layout) const;
   virtual void doLayout(QTextLayout *) const;
   virtual UiStyle::FormatList formatList() const;
 
@@ -125,9 +125,9 @@ protected:
 
   qint16 posToCursor(const QPointF &pos) const;
 
-  inline void setGeometry(qreal width, qreal height) { _boundingRect.setSize(QSizeF(width, height)); }
-  inline void setHeight(const qreal &height) { _boundingRect.setHeight(height); }
-  inline void setWidth(const qreal &width) { _boundingRect.setWidth(width); }
+  inline void setGeometry(qreal width, qreal height) { clearCache(); _boundingRect.setSize(QSizeF(width, height)); }
+  inline void setHeight(const qreal &height) { clearCache(); _boundingRect.setHeight(height); }
+  inline void setWidth(const qreal &width) { clearCache(); _boundingRect.setWidth(width); }
   inline void setPos(const QPointF &pos) { _boundingRect.moveTopLeft(pos); }
 
 private:
@@ -170,7 +170,7 @@ public:
 protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   virtual inline int type() const { return ChatScene::SenderChatItemType; }
-  virtual inline void initLayout(QTextLayout *layout) const { ChatItem::initLayout(layout, QTextOption::ManualWrap, Qt::AlignRight); }
+  virtual void initLayout(QTextLayout *layout) const;
 };
 
 // ************************************************************
@@ -204,7 +204,7 @@ protected:
 
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
-  virtual inline void initLayout(QTextLayout *layout) const { ChatItem::initLayout(layout, QTextOption::WrapAtWordBoundaryOrAnywhere); }
+  virtual void initLayout(QTextLayout *layout) const;
   virtual void doLayout(QTextLayout *layout) const;
   virtual UiStyle::FormatList formatList() const;
 

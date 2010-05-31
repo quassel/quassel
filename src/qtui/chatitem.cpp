@@ -115,11 +115,6 @@ void ChatItem::clearCache() {
   _cachedLayout = 0;
 }
 
-void ChatItem::initLayout(QTextLayout *layout, QTextOption::WrapMode mode, Qt::Alignment alignment) const {
-  initLayoutHelper(layout, mode, alignment);
-  doLayout(layout);
-}
-
 void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapMode, Qt::Alignment alignment) const {
   Q_ASSERT(layout);
 
@@ -133,6 +128,11 @@ void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapM
   QList<QTextLayout::FormatRange> formatRanges
          = QtUi::style()->toTextLayoutList(formatList(), layout->text().length(), data(ChatLineModel::MsgLabelRole).toUInt());
   layout->setAdditionalFormats(formatRanges);
+}
+
+void ChatItem::initLayout(QTextLayout *layout) const {
+  initLayoutHelper(layout, QTextOption::NoWrap);
+  doLayout(layout);
 }
 
 void ChatItem::doLayout(QTextLayout *layout) const {
@@ -405,6 +405,11 @@ void ChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
 // SenderChatItem
 // ************************************************************
 
+void SenderChatItem::initLayout(QTextLayout *layout) const {
+  initLayoutHelper(layout, QTextOption::ManualWrap, Qt::AlignRight);
+  doLayout(layout);
+}
+
 void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
   painter->save();
@@ -516,6 +521,11 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
     setGeometry(w, h);
 
   return h;
+}
+
+void ContentsChatItem::initLayout(QTextLayout *layout) const {
+  initLayoutHelper(layout, QTextOption::WrapAtWordBoundaryOrAnywhere);
+  doLayout(layout);
 }
 
 void ContentsChatItem::doLayout(QTextLayout *layout) const {
