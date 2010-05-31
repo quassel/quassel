@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,6 +46,15 @@ public:
   *  @param category The category (default: "General")
   */
   static ActionCollection *actionCollection(const QString &category = "General");
+  static QHash<QString, ActionCollection *> actionCollections();
+
+  //! Load custom shortcuts from ShortcutSettings
+  /** @note This method assumes that all configurable actions are defined when being called
+   */
+  static void loadShortcuts();
+
+  //! Save custom shortcuts to ShortcutSettings
+  static void saveShortcuts();
 
   inline static ContextMenuActionProvider *contextMenuActionProvider();
   inline static ToolBarActionProvider *toolBarActionProvider();
