@@ -45,7 +45,7 @@ public:
   *  create appropriate Action objects using GraphicalUi::actionCollection(cat)->add\<Action\>().
   *  @param category The category (default: "General")
   */
-  static ActionCollection *actionCollection(const QString &category = "General");
+  static ActionCollection *actionCollection(const QString &category = "General", const QString &translatedCategory = QString());
   static QHash<QString, ActionCollection *> actionCollections();
 
   //! Load custom shortcuts from ShortcutSettings

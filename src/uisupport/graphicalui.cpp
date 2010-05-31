@@ -59,11 +59,16 @@ void GraphicalUi::init() {
 #endif
 }
 
-ActionCollection *GraphicalUi::actionCollection(const QString &category) {
+ActionCollection *GraphicalUi::actionCollection(const QString &category, const QString &translatedCategory) {
   if(_actionCollections.contains(category))
     return _actionCollections.value(category);
   ActionCollection *coll = new ActionCollection(_mainWidget);
-  coll->setProperty("Category", category);
+
+  if(!translatedCategory.isEmpty())
+    coll->setProperty("Category", translatedCategory);
+  else
+    coll->setProperty("Category", category);
+
   if(_mainWidget)
     coll->addAssociatedWidget(_mainWidget);
   _actionCollections.insert(category, coll);

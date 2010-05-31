@@ -310,7 +310,7 @@ void MainWin::updateIcon() {
 }
 
 void MainWin::setupActions() {
-  ActionCollection *coll = QtUi::actionCollection("General");
+  ActionCollection *coll = QtUi::actionCollection("General", tr("General"));
   // File
   coll->addAction("ConnectCore", new Action(SmallIcon("network-connect"), tr("&Connect to Core..."), coll,
                                              this, SLOT(showCoreConnectionDlg())));
@@ -367,6 +367,8 @@ void MainWin::setupActions() {
                                        QtUi::style(), SLOT(reload()), QKeySequence::Refresh));
 
   // Navigation
+  coll = QtUi::actionCollection("Navigation", tr("Navigation"));
+
   coll->addAction("JumpHotBuffer", new Action(tr("Jump to hot chat"), coll,
                                               this, SLOT(on_jumpHotBuffer_triggered()), QKeySequence(Qt::META + Qt::Key_A)));
 }
@@ -984,7 +986,10 @@ void MainWin::showAboutDlg() {
 
 void MainWin::showShortcutsDlg() {
 #ifdef HAVE_KDE
-  KShortcutsDialog::configure(QtUi::actionCollection("General"), KShortcutsEditor::LetterShortcutsDisallowed);
+  KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed, this);
+  foreach(KActionCollection *coll, QtUi::actionCollections())
+    dlg.addCollection(coll, coll->property("Category").toString());
+  dlg.exec();
 #else
   SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
   dlg.exec();
