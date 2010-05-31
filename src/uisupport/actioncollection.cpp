@@ -28,6 +28,7 @@
 #include "actioncollection.h"
 
 #include "action.h"
+#include "uisettings.h"
 
 ActionCollection::ActionCollection(QObject *parent) : QObject(parent) {
   _connectTriggered = _connectHovered = false;
@@ -128,12 +129,30 @@ QAction *ActionCollection::takeAction(QAction *action) {
 }
 
 void ActionCollection::readSettings() {
+  ShortcutSettings s;
+  QStringList savedShortcuts = s.savedShortcuts();
 
+  foreach(const QString &name, _actionByName.keys()) {
+    if(!savedShortcuts.contains(name))
+      continue;
+    Action *action = qobject_cast<Action *>(_actionByName.value(name));
+    if(action)
+      action->setShortcut(s.loadShortcut(name), Action::ActiveShortcut);
+  }
 }
 
 void ActionCollection::writeSettings() const {
-
-
+  ShortcutSettings s;
+  foreach(const QString &name, _actionByName.keys()) {
+    Action *action = qobject_cast<Action *>(_actionByName.value(name));
+    if(!action)
+      continue;
+    if(!action->isShortcutConfigurable())
+      continue;
+    if(action->shortcut(Action::ActiveShortcut) == action->shortcut(Action::DefaultShortcut))
+      continue;
+    s.saveShortcut(name, action->shortcut(Action::ActiveShortcut));
+  }
 }
 
 void ActionCollection::slotActionTriggered() {

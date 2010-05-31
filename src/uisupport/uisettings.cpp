@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "uisettings.h"
+
+#include "action.h"
+#include "actioncollection.h"
 
 UiSettings::UiSettings(const QString &group)
   : ClientSettings(group)
@@ -124,3 +127,27 @@ void SessionSettings::sessionAging() {
   }
 }
 
+/**************************************************************************
+ * ShortcutSettings
+ **************************************************************************/
+
+ShortcutSettings::ShortcutSettings() : UiSettings("Shortcuts") {
+
+}
+
+void ShortcutSettings::clear() {
+  foreach(const QString &key, allLocalKeys())
+    removeLocalKey(key);
+}
+
+QStringList ShortcutSettings::savedShortcuts() {
+  return localChildKeys();
+}
+
+QKeySequence ShortcutSettings::loadShortcut(const QString &name) {
+  return localValue(name, QKeySequence()).value<QKeySequence>();
+}
+
+void ShortcutSettings::saveShortcut(const QString &name, const QKeySequence &seq) {
+  setLocalValue(name, seq);
+}

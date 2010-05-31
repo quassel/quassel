@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -67,6 +67,19 @@ public:
 
 private:
   QString _sessionId;
+};
+
+class ShortcutSettings : public UiSettings {
+public:
+  ShortcutSettings();
+
+  //! Remove all stored shortcuts
+  void clear();
+
+  QStringList savedShortcuts();
+
+  void saveShortcut(const QString &name, const QKeySequence &shortcut);
+  QKeySequence loadShortcut(const QString &name);
 };
 
 #endif

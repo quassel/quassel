@@ -206,6 +206,9 @@ void MainWin::init() {
   QtUi::registerNotificationBackend(new IndicatorNotificationBackend(this));
 #endif
 
+  // we assume that at this point, all configurable actions are defined!
+  QtUi::loadShortcuts();
+
   connect(bufferWidget(), SIGNAL(currentChanged(BufferId)), SLOT(currentBufferChanged(BufferId)));
 
   setDisconnectedState();  // Disable menus and stuff
