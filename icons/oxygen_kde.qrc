@@ -35,12 +35,14 @@
     <file alias="oxygen/16x16/actions/flag-blue.png">oxygen_kde/16x16/actions/flag-blue.png</file>
     <file alias="oxygen/16x16/actions/edit-rename.png">oxygen_kde/16x16/actions/edit-rename.png</file>
     <file alias="oxygen/16x16/actions/document-open.png">oxygen_kde/16x16/actions/document-open.png</file>
+    <file alias="oxygen/16x16/actions/configure-shortcuts.png">oxygen_kde/16x16/actions/configure-shortcuts.png</file>
     <file alias="oxygen/16x16/actions/format-text-bold.png">oxygen_kde/16x16/actions/format-text-bold.png</file>
     <file alias="oxygen/16x16/actions/go-up.png">oxygen_kde/16x16/actions/go-up.png</file>
     <file alias="oxygen/16x16/actions/document-encrypt.png">oxygen_kde/16x16/actions/document-encrypt.png</file>
     <file alias="oxygen/16x16/actions/irc-unvoice.png">oxygen_kde/16x16/actions/irc-unvoice.png</file>
     <file alias="oxygen/16x16/actions/configure.png">oxygen_kde/16x16/actions/configure.png</file>
     <file alias="oxygen/16x16/actions/irc-remove-operator.png">oxygen_kde/16x16/actions/irc-remove-operator.png</file>
+    <file alias="oxygen/16x16/actions/edit-clear-locationbar-ltr.png">oxygen_kde/16x16/actions/edit-clear-locationbar-ltr.png</file>
     <file alias="oxygen/16x16/actions/network-disconnect.png">oxygen_kde/16x16/actions/network-disconnect.png</file>
     <file alias="oxygen/16x16/actions/edit-find.png">oxygen_kde/16x16/actions/edit-find.png</file>
     <file alias="oxygen/16x16/actions/go-previous.png">oxygen_kde/16x16/actions/go-previous.png</file>
