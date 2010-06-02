@@ -32,6 +32,11 @@
 #include <QMessageBox>
 #include <QToolButton>
 
+// This defines the unicode symbols for special keys (kCommandUnicode and friends)
+#ifdef Q_WS_MAC
+#  include <Carbon/Carbon.h>
+#endif
+
 #include "action.h"
 #include "actioncollection.h"
 #include "iconloader.h"
