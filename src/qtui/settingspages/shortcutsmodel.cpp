@@ -142,7 +142,7 @@ QVariant ShortcutsModel::data(const QModelIndex &index, int role) const {
     case 0:
       return stripAcceleratorMarkers(action->text());
     case 1:
-      return item->shortcut.toString();
+      return item->shortcut.toString(QKeySequence::NativeText);
     default:
       return QVariant();
     }

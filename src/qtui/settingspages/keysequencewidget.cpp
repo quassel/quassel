@@ -240,27 +240,22 @@ bool KeySequenceWidget::isShiftAsModifierAllowed(int keyQt) const {
 }
 
 void KeySequenceWidget::updateShortcutDisplay() {
-  // make translators happy
-#if defined(Q_WS_MAC)
-  static QString metaKey = tr("Ctrl", "Ctrl key on Mac");
-  static QString ctrlKey = tr("⌘", "Cmd key on Mac");
-#else
-  static QString metaKey = tr("Meta", "Meta key");
-  static QString ctrlKey = tr("Ctrl", "Ctrl key");
-#endif
-  static QString altKey = tr("Alt", "Alt key");
-  static QString shiftKey = tr("Shift", "Shift key");
-
   QString s = _keySequence.toString(QKeySequence::NativeText);
   s.replace('&', QLatin1String("&&"));
 
   if(_isRecording) {
     if(_modifierKeys) {
-      if(_modifierKeys & Qt::META)  s += metaKey + '+';
-      if(_modifierKeys & Qt::CTRL)  s += ctrlKey + '+';
-      if(_modifierKeys & Qt::ALT)   s += altKey + '+';
-      if(_modifierKeys & Qt::SHIFT) s += shiftKey + '+';
-
+#ifdef Q_WS_MAC
+      if(_modifierKeys & Qt::META)  s += QChar(kControlUnicode);
+      if(_modifierKeys & Qt::ALT)   s += QChar(kOptionUnicode);
+      if(_modifierKeys & Qt::SHIFT) s += QChar(kShiftUnicode);
+      if(_modifierKeys & Qt::CTRL)  s += QChar(kCommandUnicode);
+#else
+      if(_modifierKeys & Qt::META)  s += tr("Meta", "Meta key") + '+';
+      if(_modifierKeys & Qt::CTRL)  s += tr("Ctrl", "Ctrl key") + '+';
+      if(_modifierKeys & Qt::ALT)   s += tr("Alt", "Alt key") + '+';
+      if(_modifierKeys & Qt::SHIFT) s += tr("Shift", "Shift key") + '+';
+#endif
     } else {
       s = tr("Input", "What the user inputs now will be taken as the new shortcut");
     }
@@ -353,7 +348,7 @@ bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence &seq) {
 
       if(!actIdx.data(ShortcutsModel::IsConfigurableRole).toBool()) {
         QMessageBox::warning(this, tr("Shortcut Conflict"),
-                             tr("The \"%1\" shortcut is already in use, and cannot be configured.\nPlease choose another one.").arg(seq.toString()),
+                             tr("The \"%1\" shortcut is already in use, and cannot be configured.\nPlease choose another one.").arg(seq.toString(QKeySequence::NativeText)),
                              QMessageBox::Ok);
         return false;
       }
@@ -362,7 +357,7 @@ bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence &seq) {
                       (tr("The \"%1\" shortcut is ambiguous with the shortcut for the following action:")
                        + "<br><ul><li>%2</li></ul><br>"
                        + tr("Do you want to reassign this shortcut to the selected action?")
-                       ).arg(seq.toString(), actIdx.data().toString()),
+                       ).arg(seq.toString(QKeySequence::NativeText), actIdx.data().toString()),
                       QMessageBox::Cancel, this);
       box.addButton(tr("Reassign"), QMessageBox::AcceptRole);
       if(box.exec() == QMessageBox::Cancel)

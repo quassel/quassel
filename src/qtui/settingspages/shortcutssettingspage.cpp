@@ -89,7 +89,7 @@ void ShortcutsSettingsPage::setWidgetStates() {
   if(ui.shortcutsView->currentIndex().isValid() && ui.shortcutsView->currentIndex().parent().isValid()) {
     QKeySequence active = ui.shortcutsView->currentIndex().data(ShortcutsModel::ActiveShortcutRole).value<QKeySequence>();
     QKeySequence def = ui.shortcutsView->currentIndex().data(ShortcutsModel::DefaultShortcutRole).value<QKeySequence>();
-    ui.defaultShortcut->setText(def.isEmpty()? tr("None") : def.toString());
+    ui.defaultShortcut->setText(def.isEmpty()? tr("None") : def.toString(QKeySequence::NativeText));
     ui.actionBox->setEnabled(true);
     if(active == def) {
       ui.useDefault->setChecked(true);
