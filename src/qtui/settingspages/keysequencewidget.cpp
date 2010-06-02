@@ -241,9 +241,14 @@ bool KeySequenceWidget::isShiftAsModifierAllowed(int keyQt) const {
 
 void KeySequenceWidget::updateShortcutDisplay() {
   // make translators happy
+#if defined(Q_WS_MAC)
+  static QString metaKey = tr("Ctrl", "Ctrl key on Mac");
+  static QString ctrlKey = tr("⌘", "Cmd key on Mac");
+#else
   static QString metaKey = tr("Meta", "Meta key");
-  static QString altKey = tr("Alt", "Alt key");
   static QString ctrlKey = tr("Ctrl", "Ctrl key");
+#endif
+  static QString altKey = tr("Alt", "Alt key");
   static QString shiftKey = tr("Shift", "Shift key");
 
   QString s = _keySequence.toString(QKeySequence::NativeText);
@@ -252,13 +257,8 @@ void KeySequenceWidget::updateShortcutDisplay() {
   if(_isRecording) {
     if(_modifierKeys) {
       if(_modifierKeys & Qt::META)  s += metaKey + '+';
-#if defined(Q_WS_MAC)
-      if(_modifierKeys & Qt::ALT)   s += altKey + '+';
-      if(_modifierKeys & Qt::CTRL)  s += ctrlKey + '+';
-#elif defined(Q_WS_X11)
       if(_modifierKeys & Qt::CTRL)  s += ctrlKey + '+';
       if(_modifierKeys & Qt::ALT)   s += altKey + '+';
-#endif
       if(_modifierKeys & Qt::SHIFT) s += shiftKey + '+';
 
     } else {
