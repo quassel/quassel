@@ -122,7 +122,7 @@ else(upper_build_type STREQUAL "RELEASE" OR upper_build_type STREQUAL "RELWITHDE
 endif(upper_build_type STREQUAL "RELEASE" OR upper_build_type STREQUAL "RELWITHDEBUGINFO")
 
 if(WANT_MONO OR WANT_QTCLIENT)
-  set(QT_MIN_VERSION "4.5.0")
+  set(QT_MIN_VERSION "4.6.0")
 else(WANT_MONO OR WANT_QTCLIENT)
   set(QT_MIN_VERSION "4.4.0")
 endif(WANT_MONO OR WANT_QTCLIENT)
