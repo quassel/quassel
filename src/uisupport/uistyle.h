@@ -136,10 +136,10 @@ public:
   static QString mircToInternal(const QString &);
   static inline QString timestampFormatString() { return _timestampFormatString; }
 
-  QTextCharFormat format(quint32 formatType, quint32 messageLabel);
-  QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel);
+  QTextCharFormat format(quint32 formatType, quint32 messageLabel) const;
+  QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel) const;
 
-  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel);
+  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel) const;
 
   inline const QBrush &brush(ColorRole role) const { return _uiStylePalette.at((int) role); }
   inline void setBrush(ColorRole role, const QBrush &brush) { _uiStylePalette[(int) role] = brush; }
@@ -159,9 +159,9 @@ protected:
 
   QTextCharFormat format(quint64 key) const;
   QTextCharFormat cachedFormat(quint32 formatType, quint32 messageLabel) const;
-  void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel);
-  void mergeFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel);
-  void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel);
+  void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel) const;
+  void mergeFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel) const;
+  void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel) const;
 
   static FormatType formatType(const QString &code);
   static QString formatCode(FormatType);
@@ -177,8 +177,8 @@ private:
   QVector<QBrush> _uiStylePalette;
   QBrush _markerLineBrush;
   QHash<quint64, QTextCharFormat> _formats;
-  QHash<quint64, QTextCharFormat> _formatCache;
-  QHash<quint64, QFontMetricsF *> _metricsCache;
+  mutable QHash<quint64, QTextCharFormat> _formatCache;
+  mutable QHash<quint64, QFontMetricsF *> _metricsCache;
   QHash<quint32, QTextCharFormat> _listItemFormats;
   static QHash<QString, FormatType> _formatCodes;
   static QString _timestampFormatString;

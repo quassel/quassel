@@ -292,11 +292,11 @@ QTextCharFormat UiStyle::cachedFormat(quint32 formatType, quint32 messageLabel) 
   return _formatCache.value(formatType | ((quint64)messageLabel << 32), QTextCharFormat());
 }
 
-void UiStyle::setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel) {
+void UiStyle::setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel) const {
   _formatCache[formatType | ((quint64)messageLabel << 32)] = format;
 }
 
-QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
+QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) const {
   // QFontMetricsF is not assignable, so we need to store pointers :/
   quint64 key = ftype | ((quint64)label << 32);
 
@@ -310,7 +310,7 @@ QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
 
 // NOTE: This and the following functions are intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
-QTextCharFormat UiStyle::format(quint32 ftype, quint32 label_) {
+QTextCharFormat UiStyle::format(quint32 ftype, quint32 label_) const {
   if(ftype == Invalid)
     return QTextCharFormat();
 
@@ -332,7 +332,7 @@ QTextCharFormat UiStyle::format(quint32 ftype, quint32 label_) {
   return fmt;
 }
 
-void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
+void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) const {
   mergeSubElementFormat(fmt, ftype & 0x00ff, label);
 
   // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
@@ -362,7 +362,7 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
 }
 
 // Merge a subelement format into an existing message format
-void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint64 label) {
+void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint64 label) const {
   quint64 key = ftype | label;
   fmt.merge(format(key & Q_UINT64_C(0x0000ffffffffff00)));  // label + subelement
   fmt.merge(format(key & Q_UINT64_C(0x0000ffffffffffff)));  // label + subelement + msgtype
@@ -421,7 +421,7 @@ QString UiStyle::formatCode(FormatType ftype) {
   return _formatCodes.key(ftype);
 }
 
-QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength, quint32 messageLabel) {
+QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength, quint32 messageLabel) const {
   QList<QTextLayout::FormatRange> formatRanges;
   QTextLayout::FormatRange range;
   int i = 0;
