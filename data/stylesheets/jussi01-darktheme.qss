@@ -13,7 +13,8 @@
 // Copyright (C) Jussi Schultink 2009
 
 // Custom ChatView Colors
-Palette { marker-line: #ff0000; }
+Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 #ff0000, stop: 0.1 transparent); }
+
 ChatView { background: #131313; }
 
 ChatLine[label="highlight"] {

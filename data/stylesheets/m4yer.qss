@@ -13,7 +13,7 @@ ChatLine[label="highlight"] {
 ChatLine::sender[label="highlight"] {
   background: #d7d7d7;
   font-weight:bold;
-  foreground: #0000aa;  
+  foreground: #0000aa;
 }
 
 ChatLine[label="selected"] {
@@ -36,7 +36,7 @@ ChatLine::timestamp { foreground: #707c70; }
 ChatLine::timestamp[sender="self"] { foreground: #707c70; }
 ChatLine::timestamp[label="highlight"] { foreground: #707c70; }
 
-Palette { marker-line: #ff0000; }
+Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 #ff0000, stop: 0.1 transparent); }
 
 ChatLine::url { foreground: #0000aa; }
 ChatLine::url[sender="self"] { foreground: #0000aa; }

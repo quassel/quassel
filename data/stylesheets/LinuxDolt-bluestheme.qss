@@ -14,7 +14,8 @@
 
 // Custom ChatView Colors
 ChatView { background: #00004b; }
-Palette { marker-line: #ff0000; }
+Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 #ff0000, stop: 0.1 transparent); }
+
 
 ChatLine[label="highlight"] { foreground: #f0f5ff; background: #00008b; }
 
