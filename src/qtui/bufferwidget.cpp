@@ -238,14 +238,15 @@ void BufferWidget::setMarkerLine(ChatView *view, bool allowGoingBack) {
 
   ChatLine *lastLine = view->lastVisibleChatLine();
   if(lastLine) {
+    QModelIndex idx = lastLine->index();
+    MsgId msgId = idx.data(MessageModel::MsgIdRole).value<MsgId>();
+
     if(!allowGoingBack) {
-      QModelIndex idx = lastLine->index();
       BufferId bufId = view->scene()->singleBufferId();
-      MsgId msgId = idx.data(MessageModel::MsgIdRole).value<MsgId>();
       MsgId oldMsgId = Client::markerLine(bufId);
       if(oldMsgId.isValid() && msgId <= oldMsgId)
         return;
     }
-    view->setMarkedLine(lastLine);
+    view->setMarkerLine(msgId);
   }
 }

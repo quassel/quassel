@@ -55,8 +55,6 @@ void ChatView::init(MessageFilter *filter) {
   _bufferContainer = 0;
   _currentScaleFactor = 1;
   _invalidateFilter = false;
-  _markerLineVisible = true;
-  _markedLine = 0;
 
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -266,42 +264,23 @@ ChatLine *ChatView::lastVisibleChatLine() const {
 }
 
 void ChatView::setMarkerLineVisible(bool visible) {
-  if(visible != _markerLineVisible) {
-    _markerLineVisible = visible;
-  }
+  scene()->setMarkerLineVisible(visible);
 }
 
-void ChatView::setMarkedLine(ChatLine *line) {
-  if(_markedLine == line)
-    return;
-
+void ChatView::setMarkerLine(MsgId msgId) {
   if(!scene()->isSingleBufferScene())
     return;
 
-  if(line) {
-    BufferId bufId = scene()->singleBufferId();
-    Client::setMarkerLine(bufId, line->msgId());
-  }
+  BufferId bufId = scene()->singleBufferId();
+  Client::setMarkerLine(bufId, msgId);
 }
 
-void ChatView::markerLineSet(BufferId buffer, MsgId msg) {
+void ChatView::markerLineSet(BufferId buffer, MsgId msgId) {
   if(!scene()->isSingleBufferScene() || scene()->singleBufferId() != buffer)
     return;
 
-  ChatLine *newLine = scene()->chatLine(msg);
-  if(_markedLine == newLine)
-    return;
-
-  ChatLine *oldLine = _markedLine;
-  _markedLine = newLine;
-
-  if(oldLine)
-    oldLine->update();
-
-  if(newLine) {
-    setMarkerLineVisible(true);
-    newLine->update();
-  }
+  scene()->setMarkerLine(msgId);
+  scene()->setMarkerLineVisible(true);
 }
 
 void ChatView::addActionsToMenu(QMenu *menu, const QPointF &pos) {

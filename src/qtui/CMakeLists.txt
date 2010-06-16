@@ -40,6 +40,7 @@ set(SOURCES
     legacysystemtray.cpp
     mainpage.cpp
     mainwin.cpp
+    markerlineitem.cpp
     msgprocessorstatuswidget.cpp
     nicklistwidget.cpp
     qtui.cpp
@@ -86,6 +87,7 @@ set(MOC_HDRS
     legacysystemtray.h
     mainpage.h
     mainwin.h
+    markerlineitem.h
     msgprocessorstatuswidget.h
     nicklistwidget.h
     qtui.h

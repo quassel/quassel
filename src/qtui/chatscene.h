@@ -36,6 +36,7 @@ class ChatItem;
 class ChatLine;
 class ChatView;
 class ColumnHandleItem;
+class MarkerLineItem;
 class WebPreviewItem;
 
 class QGraphicsSceneMouseEvent;
@@ -57,7 +58,8 @@ public:
     ContentsChatItemType,
     SearchHighlightType,
     WebPreviewType,
-    ColumnHandleType
+    ColumnHandleType,
+    MarkerLineType
   };
 
   enum ClickMode {
@@ -88,11 +90,13 @@ public:
   //! Find the ChatLine belonging to a MsgId
   /** Searches for the ChatLine belonging to a MsgId.
    *  Note that this method performs a binary search, hence it has as complexity of O(log n).
-   *  If there is more than one ChatLine for the given ID, the first one will be returned.
-   *  \param msgId The message ID to look for
+   *  If matchExact is false, and we don't have an exact match for the given msgId, we return the visible line right
+   *  above the requested one.
+   *  \param msgId      The message ID to look for
+   *  \param matchExact Whether we find only exact matches
    *  \return The ChatLine corresponding to the given MsgId
    */
-  ChatLine *chatLine(MsgId msgId) const;
+  ChatLine *chatLine(MsgId msgId, bool matchExact = true) const;
 
   inline ChatLine *lastLine() const { return _lines.count() ? _lines.last() : 0; }
 
@@ -121,6 +125,9 @@ public:
   void updateForViewport(qreal width, qreal height);
   void setWidth(qreal width);
   void layout(int start, int end, qreal width);
+
+  void setMarkerLineVisible(bool visible = true);
+  void setMarkerLine(MsgId msgId);
 
   // these are used by the chatitems to notify the scene and manage selections
   void setSelectingItem(ChatItem *item);
@@ -164,6 +171,8 @@ private slots:
 #endif
   void showWebPreviewChanged();
 
+  void rowsRemoved();
+
   void clickTimeout();
 
 private:
@@ -184,6 +193,9 @@ private:
   inline void updateSceneRect() { updateSceneRect(_sceneRect.width()); }
   void updateSceneRect(const QRectF &rect);
   qreal _viewportHeight;
+
+  MarkerLineItem *_markerLine;
+  bool _markerLineValid, _markerLineVisible;
 
   ColumnHandleItem *_firstColHandle, *_secondColHandle;
   qreal _firstColHandlePos, _secondColHandlePos;

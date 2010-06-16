@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2010 by the Quassel Project                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,57 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BUFFERWIDGET_H_
-#define BUFFERWIDGET_H_
+#include <QPainter>
 
-#include "ui_bufferwidget.h"
+#include "markerlineitem.h"
+#include "qtui.h"
 
-#include "abstractbuffercontainer.h"
+MarkerLineItem::MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent)
+  : QGraphicsObject(parent),
+    _boundingRect(0, 0, sceneWidth, 1)
+{
+  setZValue(8);
+  styleChanged(); // init brush and height
+  connect(QtUi::style(), SIGNAL(changed()), SLOT(styleChanged()));
+}
 
-class QGraphicsItem;
-class ChatView;
-class ChatViewSearchBar;
-class ChatViewSearchController;
+void MarkerLineItem::styleChanged() {
+  _brush = QtUi::style()->brush(UiStyle::MarkerLine);
 
-class BufferWidget : public AbstractBufferContainer {
-  Q_OBJECT
+  // if this is a solid color, we assume 1px because wesurely  don't surely don't want to fill the entire chatline.
+  // else, use the height of a single line of text to play around with gradients etc.
+  qreal height = 1.;
+  if(_brush.style() != Qt::SolidPattern)
+    height = QtUi::style()->fontMetrics(QtUiStyle::PlainMsg, 0)->lineSpacing();
 
-public:
-  BufferWidget(QWidget *parent);
-  ~BufferWidget();
 
-  virtual bool eventFilter(QObject *watched, QEvent *event);
+  prepareGeometryChange();
+  _boundingRect = QRectF(0, 0, scene()? scene()->width() : 100, height);
+}
 
-  inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
-  void addActionsToMenu(QMenu *, const QPointF &pos);
+void MarkerLineItem::sceneRectChanged(const QRectF &rect) {
+  prepareGeometryChange();
+  _boundingRect.setWidth(rect.width());
+}
 
-public slots:
-  virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
+void MarkerLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  Q_UNUSED(option);
+  Q_UNUSED(widget);
 
-protected:
-  virtual AbstractChatView *createChatView(BufferId);
-  virtual void removeChatView(BufferId);
-  virtual inline bool autoMarkerLine() const { return _autoMarkerLine; }
-
-protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void showChatView(BufferId);
-
-private slots:
-  void scrollToHighlight(QGraphicsItem *highlightItem);
-  void zoomIn();
-  void zoomOut();
-  void zoomOriginal();
-
-  void setAutoMarkerLine(const QVariant &);
-
-private:
-  Ui::BufferWidget ui;
-  QHash<BufferId, QWidget *> _chatViews;
-
-  ChatViewSearchController *_chatViewSearchController;
-
-  bool _autoMarkerLine;
-};
-
-#endif
+  painter->fillRect(boundingRect(), _brush);
+}

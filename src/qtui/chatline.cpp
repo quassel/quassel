@@ -209,25 +209,6 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   timestampItem()->paint(painter, option, widget);
   senderItem()->paint(painter, option, widget);
   contentsItem()->paint(painter, option, widget);
-
-  // new line marker
-  if(model_ && row() > 0  && chatScene()->isSingleBufferScene()) {
-    QModelIndex prevRowIdx = model_->index(row() - 1, 0);
-    MsgId prevMsgId = prevRowIdx.data(MessageModel::MsgIdRole).value<MsgId>();
-    MsgId myMsgId = myIdx.data(MessageModel::MsgIdRole).value<MsgId>();
-    Message::Flags flags = (Message::Flags)myIdx.data(MessageModel::FlagsRole).toInt();
-
-    if(chatView()->isMarkerLineVisible()) {
-      BufferId bufferId = BufferId(chatScene()->idString().toInt());
-      MsgId lastSeenMsgId = Client::networkModel()->markerLineMsgId(bufferId);
-      if(lastSeenMsgId < myMsgId && lastSeenMsgId >= prevMsgId) {
-        QLinearGradient gradient(0, 0, 0, contentsItem()->fontMetrics()->lineSpacing());
-        gradient.setColorAt(0, QtUi::style()->brush(UiStyle::MarkerLine).color()); // FIXME: Use full (gradient?) brush instead of just the color
-        gradient.setColorAt(0.1, Qt::transparent);
-        painter->fillRect(boundingRect(), gradient);
-      }
-    }
-  }
 }
 
 // We need to dispatch all mouse-related events to the appropriate (mouse grabbing) ChatItem

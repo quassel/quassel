@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2010 by the Quassel Project                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,57 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BUFFERWIDGET_H_
-#define BUFFERWIDGET_H_
+#ifndef MARKERLINEITEM_H_
+#define MARKERLINEITEM_H_
 
-#include "ui_bufferwidget.h"
+#include <QGraphicsObject>
 
-#include "abstractbuffercontainer.h"
+#include "chatscene.h"
 
-class QGraphicsItem;
-class ChatView;
-class ChatViewSearchBar;
-class ChatViewSearchController;
-
-class BufferWidget : public AbstractBufferContainer {
+class MarkerLineItem : public QGraphicsObject {
   Q_OBJECT
 
 public:
-  BufferWidget(QWidget *parent);
-  ~BufferWidget();
+  MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent = 0);
+  virtual inline int type() const { return ChatScene::MarkerLineType; }
 
-  virtual bool eventFilter(QObject *watched, QEvent *event);
+  inline QRectF boundingRect() const { return _boundingRect; }
 
-  inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
-  void addActionsToMenu(QMenu *, const QPointF &pos);
+  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public slots:
-  virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
-
-protected:
-  virtual AbstractChatView *createChatView(BufferId);
-  virtual void removeChatView(BufferId);
-  virtual inline bool autoMarkerLine() const { return _autoMarkerLine; }
-
-protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void showChatView(BufferId);
+  void sceneRectChanged(const QRectF &);
 
 private slots:
-  void scrollToHighlight(QGraphicsItem *highlightItem);
-  void zoomIn();
-  void zoomOut();
-  void zoomOriginal();
-
-  void setAutoMarkerLine(const QVariant &);
+  void styleChanged();
 
 private:
-  Ui::BufferWidget ui;
-  QHash<BufferId, QWidget *> _chatViews;
-
-  ChatViewSearchController *_chatViewSearchController;
-
-  bool _autoMarkerLine;
+  QRectF _boundingRect;
+  QBrush _brush;
 };
 
 #endif

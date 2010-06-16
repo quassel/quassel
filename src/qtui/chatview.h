@@ -69,9 +69,6 @@ public:
 
   virtual void addActionsToMenu(QMenu *, const QPointF &pos);
 
-  inline bool isMarkerLineVisible() const { return _markerLineVisible; }
-  inline ChatLine *markedLine() const { return _markedLine; }
-
   //! Tell the view that this ChatLine has cached data
   /** ChatLines cache some layout data that should be cleared as soon as it's no
    *  longer visible. A ChatLine caching data registers itself with this method to
@@ -88,7 +85,7 @@ public slots:
   void zoomOriginal();
 
   void setMarkerLineVisible(bool visible = true);
-  void setMarkedLine(ChatLine *line);
+  void setMarkerLine(MsgId msgId);
 
 protected:
   virtual bool event(QEvent *event);
@@ -117,8 +114,6 @@ private:
   QTimer _scrollTimer;
   int _scrollOffset;
   bool _invalidateFilter;
-  bool _markerLineVisible;
-  ChatLine *_markedLine;
   QSet<ChatLine *> _linesWithCache;
 };
 

@@ -47,6 +47,7 @@
 #include "contextmenuactionprovider.h"
 #include "iconloader.h"
 #include "mainwin.h"
+#include "markerlineitem.h"
 #include "messagefilter.h"
 #include "qtui.h"
 #include "qtuistyle.h"
@@ -64,6 +65,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _sceneRect(0, 0, width, 0),
     _firstLineRow(-1),
     _viewportHeight(0),
+    _markerLine(new MarkerLineItem(width)),
+    _markerLineValid(false),
+    _markerLineVisible(false),
     _cutoffMode(CutoffRight),
     _selectingItem(0),
     _selectionStart(-1),
@@ -76,6 +80,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   if(filter && filter->isSingleBufferFilter()) {
     _singleBufferId = filter->singleBufferId();
   }
+
+  addItem(_markerLine);
+  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), _markerLine, SLOT(sceneRectChanged(const QRectF &)));
 
   ChatViewSettings defaultSettings;
   int defaultFirstColHandlePos = defaultSettings.value("FirstColumnHandlePos", 80).toInt();
@@ -107,6 +114,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
           this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
           this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+  connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
+          this, SLOT(rowsRemoved()));
   connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
 
 #ifdef HAVE_WEBKIT
@@ -138,7 +147,7 @@ ColumnHandleItem *ChatScene::secondColumnHandle() const {
   return _secondColHandle;
 }
 
-ChatLine *ChatScene::chatLine(MsgId msgId) const {
+ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact) const {
   if(!_lines.count())
     return 0;
 
@@ -159,10 +168,22 @@ ChatLine *ChatScene::chatLine(MsgId msgId) const {
       n = half;
     }
   }
-  if((*start)->msgId() == msgId)
+
+  if(start != end && (*start)->msgId() == msgId)
     return *start;
 
-  return 0;
+  if(matchExact)
+    return 0;
+
+  // if we didn't find the exact msgId, take the next-lower one (this makes sense for lastSeen)
+  if(start == end) // higher than last element
+    return _lines.last();
+
+  if(start == _lines.begin()) // not (yet?) in our scene
+    return 0;
+
+  // return the next-lower line
+  return *(--start);
 }
 
 ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const {
@@ -178,6 +199,35 @@ bool ChatScene::containsBuffer(const BufferId &id) const {
     return filter->containsBuffer(id);
   else
     return false;
+}
+
+void ChatScene::setMarkerLineVisible(bool visible) {
+  _markerLineVisible = visible;
+  if(visible && _markerLineValid)
+    _markerLine->setVisible(true);
+  else
+    _markerLine->setVisible(false);
+}
+
+void ChatScene::setMarkerLine(MsgId msgId) {
+  if(msgId.isValid()) {
+    ChatLine *line = chatLine(msgId, false);
+    if(line) {
+      // if this was the last line, we won't see it because it's outside the sceneRect
+      // .. which is exactly what we want :)
+      _markerLine->setPos(line->pos() + QPointF(0, line->height()));
+
+      // DayChange messages might have been hidden outside the scene rect, don't make the markerline visible then!
+      if(_markerLine->pos().y() >= sceneRect().y()) {
+        _markerLineValid = true;
+        if(_markerLineVisible)
+          _markerLine->setVisible(true);
+        return;
+      }
+    }
+  }
+  _markerLineValid = false;
+  _markerLine->setVisible(false);
 }
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
@@ -310,6 +360,14 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   if(atBottom) {
     emit lastLineChanged(_lines.last(), h);
   }
+
+  // now move the marker line if necessary. we don't need to do anything if we appended lines though...
+  if(isSingleBufferScene()) {
+    if(!_markerLineValid || !atBottom) {
+      MsgId msgId = Client::markerLine(singleBufferId());
+      setMarkerLine(msgId);
+    }
+  }
 }
 
 void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
@@ -401,6 +459,14 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   if(needOffset)
     _firstLineRow -= end - start + 1;
   updateSceneRect();
+}
+
+void ChatScene::rowsRemoved() {
+  // move the marker line if necessary
+  if(isSingleBufferScene()) {
+    MsgId msgId = Client::markerLine(singleBufferId());
+    setMarkerLine(msgId);
+  }
 }
 
 void ChatScene::dataChanged(const QModelIndex &tl, const QModelIndex &br) {
