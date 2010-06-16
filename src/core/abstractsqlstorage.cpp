@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "abstractsqlstorage.h"
+#include "quassel.h"
 
 #include "logger.h"
 
@@ -93,6 +94,8 @@ void AbstractSqlStorage::addConnectionToPool() {
 
 Storage::State AbstractSqlStorage::init(const QVariantMap &settings) {
   setConnectionProperties(settings);
+
+  _debug = Quassel::isOptionSet("debug");
 
   QSqlDatabase db = logDb();
   if(!db.isValid() || !db.isOpen())
@@ -225,8 +228,10 @@ int AbstractSqlStorage::schemaVersion() {
 }
 
 bool AbstractSqlStorage::watchQuery(QSqlQuery &query) {
-  if(query.lastError().isValid()) {
-    qCritical() << "unhandled Error in QSqlQuery!";
+  bool queryError = query.lastError().isValid();
+  if(queryError || _debug) {
+    if(queryError)
+      qCritical() << "unhandled Error in QSqlQuery!";
     qCritical() << "                  last Query:\n" << qPrintable(query.lastQuery());
     qCritical() << "              executed Query:\n" << qPrintable(query.executedQuery());
     QVariantMap boundValues = query.boundValues();
@@ -263,7 +268,7 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery &query) {
     qCritical() << "              Driver Message:" << qPrintable(query.lastError().driverText());
     qCritical() << "                  DB Message:" << qPrintable(query.lastError().databaseText());
 
-    return false;
+    return !queryError;
   }
   return true;
 }

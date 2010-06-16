@@ -89,6 +89,7 @@ private:
   void addConnectionToPool();
 
   int _schemaVersion;
+  bool _debug;
 
   static int _nextConnectionId;
   QMutex _connectionPoolMutex;
