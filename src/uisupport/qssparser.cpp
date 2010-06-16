@@ -466,6 +466,7 @@ QBrush QssParser::parseBrush(const QString &str, bool *ok) {
       return QBrush();
     }
     QLinearGradient gradient(x1, y1, x2, y2);
+    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
     gradient.setStops(stops);
     if(ok)
       *ok = true;
@@ -487,6 +488,7 @@ QBrush QssParser::parseBrush(const QString &str, bool *ok) {
       return QBrush();
     }
     QConicalGradient gradient(cx, cy, angle);
+    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
     gradient.setStops(stops);
     if(ok)
       *ok = true;
@@ -510,6 +512,7 @@ QBrush QssParser::parseBrush(const QString &str, bool *ok) {
       return QBrush();
     }
     QRadialGradient gradient(cx, cy, radius, fx, fy);
+    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
     gradient.setStops(stops);
     if(ok)
       *ok = true;
