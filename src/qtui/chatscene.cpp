@@ -187,9 +187,11 @@ ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact) const {
 }
 
 ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const {
-  ChatLine *line = qgraphicsitem_cast<ChatLine*>(itemAt(scenePos));
-  if(line)
-    return line->itemAt(line->mapFromScene(scenePos));
+  foreach(QGraphicsItem *item, items(scenePos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder)) {
+    ChatLine *line = qgraphicsitem_cast<ChatLine*>(item);
+    if(line)
+      return line->itemAt(line->mapFromScene(scenePos));
+  }
   return 0;
 }
 
