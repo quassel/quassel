@@ -127,7 +127,7 @@ public:
   void layout(int start, int end, qreal width);
 
   void setMarkerLineVisible(bool visible = true);
-  void setMarkerLine(MsgId msgId);
+  void setMarkerLine(MsgId msgId = MsgId());
 
   // these are used by the chatitems to notify the scene and manage selections
   void setSelectingItem(ChatItem *item);
