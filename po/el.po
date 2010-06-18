@@ -227,8 +227,9 @@ msgstr "Διαγραφή"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
+#, fuzzy
 msgid "IRC"
-msgstr ""
+msgstr "IRC"
 
 #. ts-context AliasesSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
@@ -257,14 +258,16 @@ msgstr "Τοποθέτησε την γλώσσα εντύπου. Απαιτεί 
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:47
+#, fuzzy
 msgid "<Untranslated>"
-msgstr ""
+msgstr "<Untranslated>"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:52
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:74
+#, fuzzy
 msgid "<System Default>"
-msgstr ""
+msgstr "<System Default>"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:75
@@ -341,8 +344,9 @@ msgstr "Μονοπάτι:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:295
 #: ../src/qtui/ui/simplenetworkeditor.ui:168
 #: ../src/qtui/ui/simplenetworkeditor.ui:182 ../src/qtui/ui/topicwidget.ui:79
+#, fuzzy
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:150
@@ -357,7 +361,7 @@ msgstr "Απόκρυψε το δίσκο στο πάτημα του κουμπι
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:216
 msgid "Enable animations"
-msgstr ""
+msgstr "Ενεργοποίηση κινουμένων εικόνων"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:231
@@ -434,8 +438,9 @@ msgstr "Παρακαλώ διαλέξετε φύλλο διαμορφώσεως"
 
 #. ts-context AwayLogView
 #: ../src/qtui/awaylogview.cpp:33
+#, fuzzy
 msgid "Away Log"
-msgstr ""
+msgstr "Μακριά Log"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context AwayLogView
@@ -490,21 +495,27 @@ msgstr "Ο απλούστερος αιτητής. Φέρνει ένα σταθε
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
+#, fuzzy
 msgid "amount of messages per buffer that are requested after the core connection has been established."
-msgstr ""
+msgstr "ποσό των μηνυμάτων ανά μνήμης που ζητούνται μετά από την βασική σύνδεση που έχει δημιουργηθεί."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
+#, fuzzy
 msgid "Initial backlog amount:"
-msgstr ""
+msgstr "Αρχικό ποσό καθυστέρησης:"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
+#, fuzzy
 msgid ""
 "This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
 "\n"
 "You can also choose to fetch additional older chatlines to provide a better context."
 msgstr ""
+"Αυτός ο αιτητής προσκομίζει μή-αναγνωσμένα μηνύματα για κάθε παράθυρο συνομιλίας ξεχωριστά. Το ποσό των γραμμών μπορεί να περιορίζεται ανά συνομιλία.\n"
+"\n"
+"Μπορείτε επίσης να επιλέξετε να προσκομίσετε επιπλέον παλαιότερες γραμμές συνομιλίας για την παροχή καλύτερου πλαισίου."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
@@ -537,14 +548,16 @@ msgstr "Απεριόριστο"
 #: ../src/qtui/settingspages/backlogsettingspage.ui:270
 #: ../src/qtui/settingspages/backlogsettingspage.ui:382
 #: ../src/qtui/settingspages/backlogsettingspage.ui:392
+#, fuzzy
 msgid "Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here."
-msgstr ""
+msgstr "Το ποσό των μηνυμάτων που θα προσκομιστεί επιπρόσθετα από τα μή-αναγνωσμένα μηνύματα. Το Όριο δεν ισχύει εδώ."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
 #: ../src/qtui/settingspages/backlogsettingspage.ui:385
+#, fuzzy
 msgid "Additional Messages:"
-msgstr ""
+msgstr "Επιπρόσθετα μηνύματα:"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:324
