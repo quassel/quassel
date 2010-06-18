@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
-"PO-Revision-Date: 2010-06-14 13:41+0200\n"
+"PO-Revision-Date: 2010-06-18 18:25+0200\n"
 "Last-Translator: Tomáš Chvátal <scarabeus@gentoo.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -2137,7 +2137,7 @@ msgstr "(Zpoždění: %1 %2)"
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:75
 msgid "The connection to your core is encrypted with SSL."
-msgstr "Spojení k vašemu jádru není šifrované pomocí SSL."
+msgstr "Spojení k vašemu jádru je šifrované pomocí SSL."
 
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:78
