@@ -26,6 +26,7 @@
 #include "buffermodel.h"
 #include "buffersettings.h"
 #include "client.h"
+#include "clientignorelistmanager.h"
 #include "clientsettings.h"
 #include "ircchannel.h"
 #include "network.h"
@@ -248,6 +249,10 @@ void BufferItem::updateActivityLevel(const Message &msg) {
   }
 
   if(msg.flags() & Message::Self)	// don't update activity for our own messages
+    return;
+
+  if (Client::ignoreListManager()
+      && Client::ignoreListManager()->match(msg, qobject_cast<NetworkItem *>(parent())->networkName()))
     return;
 
   if(msg.msgId() <= lastSeenMsgId())
