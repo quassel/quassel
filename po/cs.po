@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
-"PO-Revision-Date: 2010-06-18 18:25+0200\n"
+"PO-Revision-Date: 2010-06-21 14:24+0200\n"
 "Last-Translator: Tomáš Chvátal <scarabeus@gentoo.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -3719,6 +3719,8 @@ msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
 msgstr ""
+"Klikněte na tlačítko a poté zadejte zkratku, kterou byste rádi používali.\n"
+"Například pro Ctrl+a držte klávesu Ctrl a stiskněte a."
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:259
@@ -3764,16 +3766,17 @@ msgstr "Konflikt zkratek"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:356
-#, fuzzy
 msgid ""
 "The \"%1\" shortcut is already in use, and cannot be configured.\n"
 "Please choose another one."
 msgstr ""
+"Zkratka \"%1\" je již používána a tedy nemůže být nastavena.\n"
+"Prosím zvolte jinou."
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
 msgid "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
-msgstr ""
+msgstr "Zkratka \"%1\" má nejednoznačný význam spolu se zkratkou pro následujíc činnost:"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:364
@@ -3903,102 +3906,102 @@ msgstr "Přejít na další aktivní záložku"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:381
 msgid "Set Quick Access #0"
-msgstr ""
+msgstr "Nastavit rychlý přístup #0"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:383
 msgid "Set Quick Access #1"
-msgstr ""
+msgstr "Nastavit rychlý přístup #1"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:385
 msgid "Set Quick Access #2"
-msgstr ""
+msgstr "Nastavit rychlý přístup #2"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:387
 msgid "Set Quick Access #3"
-msgstr ""
+msgstr "Nastavit rychlý přístup #3"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:389
 msgid "Set Quick Access #4"
-msgstr ""
+msgstr "Nastavit rychlý přístup #4"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:391
 msgid "Set Quick Access #5"
-msgstr ""
+msgstr "Nastavit rychlý přístup 5"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:393
 msgid "Set Quick Access #6"
-msgstr ""
+msgstr "Nastavit rychlý přístup #6"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:395
 msgid "Set Quick Access #7"
-msgstr ""
+msgstr "Nastavit rychlý přístup #7"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:397
 msgid "Set Quick Access #8"
-msgstr ""
+msgstr "Nastavit rychlý přístup #8"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:399
 msgid "Set Quick Access #9"
-msgstr ""
+msgstr "Nastavit rychlý přístup #9"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:402
 msgid "Quick Access #0"
-msgstr ""
+msgstr "Rychlý přístup #0"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:404
 msgid "Quick Access #1"
-msgstr ""
+msgstr "Rychlý přístup #1"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:406
 msgid "Quick Access #2"
-msgstr ""
+msgstr "Rychlý přístup #2"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:408
 msgid "Quick Access #3"
-msgstr ""
+msgstr "Rychlý přístup #3"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:410
 msgid "Quick Access #4"
-msgstr ""
+msgstr "Rychlý přístup #4"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:412
 msgid "Quick Access #5"
-msgstr ""
+msgstr "Rychlý přístup #5"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:414
 msgid "Quick Access #6"
-msgstr ""
+msgstr "Rychlý přístup #6"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:416
 msgid "Quick Access #7"
-msgstr ""
+msgstr "Rychlý přístup #7"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:418
 msgid "Quick Access #8"
-msgstr ""
+msgstr "Rychlý přístup #8"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:420
 msgid "Quick Access #9"
-msgstr ""
+msgstr "Rychlý přístup #9"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:427
