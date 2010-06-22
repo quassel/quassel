@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -183,8 +183,26 @@ void ChatLineModelItem::computeWrapList() const {
   layout.endLayout();
 
   while((idx = finder.toNextBoundary()) >= 0 && idx <= length) {
-    if(idx < length)
-      idx++;  // the boundary is *before* the actual character
+
+    // QTextBoundaryFinder has inconsistent behavior in Qt version up to and including 4.6.3 (at least).
+    // It doesn't point to the position we should break, but to the character before that.
+    // Unfortunately Qt decided to fix this by changing the behavior of QTBF, so now we have to add a version
+    // check. At the time of this writing, I'm still trying to get this reverted upstream...
+    //
+    // cf. https://bugs.webkit.org/show_bug.cgi?id=31076 and Qt commit e6ac173
+    static int needWorkaround = -1;
+    if(needWorkaround < 0) {
+      needWorkaround = 0;
+      QStringList versions = QString(qVersion()).split('.');
+      if(versions.count() == 3 && versions.at(0).toInt() == 4) {
+        if(versions.at(1).toInt() <= 6 && versions.at(2).toInt() <= 3)
+          needWorkaround = 1;
+      }
+    }
+    if(needWorkaround == 1) {
+      if(idx < length)
+        idx++;
+    }
 
     if(idx == oldidx)
       continue;
