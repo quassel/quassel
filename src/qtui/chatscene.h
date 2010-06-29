@@ -88,17 +88,21 @@ public:
   inline ChatLine *chatLine(const QModelIndex &index) const { return _lines.value(index.row()); }
 
   //! Find the ChatLine belonging to a MsgId
-  /** Searches for the ChatLine belonging to a MsgId.
+  /** Searches for the ChatLine belonging to a MsgId. If there are more than one ChatLine with the same msgId,
+   *  the first one is returned.
    *  Note that this method performs a binary search, hence it has as complexity of O(log n).
    *  If matchExact is false, and we don't have an exact match for the given msgId, we return the visible line right
    *  above the requested one.
    *  \param msgId      The message ID to look for
    *  \param matchExact Whether we find only exact matches
+   *  \param ignoreDayChange Whether we ignore day change messages
    *  \return The ChatLine corresponding to the given MsgId
    */
-  ChatLine *chatLine(MsgId msgId, bool matchExact = true) const;
+  ChatLine *chatLine(MsgId msgId, bool matchExact = true, bool ignoreDayChange = true) const;
 
   inline ChatLine *lastLine() const { return _lines.count() ? _lines.last() : 0; }
+
+  inline MarkerLineItem *markerLine() const { return _markerLine; }
 
   inline bool isSingleBufferScene() const { return _singleBufferId.isValid(); }
   inline BufferId singleBufferId() const { return _singleBufferId; }
@@ -128,6 +132,7 @@ public:
 
   void setMarkerLineVisible(bool visible = true);
   void setMarkerLine(MsgId msgId = MsgId());
+  void jumpToMarkerLine(bool requestBacklog);
 
   // these are used by the chatitems to notify the scene and manage selections
   void setSelectingItem(ChatItem *item);
@@ -195,7 +200,7 @@ private:
   qreal _viewportHeight;
 
   MarkerLineItem *_markerLine;
-  bool _markerLineValid, _markerLineVisible;
+  bool _markerLineVisible, _markerLineValid, _markerLineJumpPending;
 
   ColumnHandleItem *_firstColHandle, *_secondColHandle;
   qreal _firstColHandlePos, _secondColHandlePos;

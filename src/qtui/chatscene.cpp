@@ -66,8 +66,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _firstLineRow(-1),
     _viewportHeight(0),
     _markerLine(new MarkerLineItem(width)),
-    _markerLineValid(false),
     _markerLineVisible(false),
+    _markerLineValid(false),
+    _markerLineJumpPending(false),
     _cutoffMode(CutoffRight),
     _selectingItem(0),
     _selectionStart(-1),
@@ -147,7 +148,7 @@ ColumnHandleItem *ChatScene::secondColumnHandle() const {
   return _secondColHandle;
 }
 
-ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact) const {
+ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange) const {
   if(!_lines.count())
     return 0;
 
@@ -169,21 +170,37 @@ ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact) const {
     }
   }
 
-  if(start != end && (*start)->msgId() == msgId)
+  if(start != end && (*start)->msgId() == msgId && (ignoreDayChange? (*start)->msgType() != Message::DayChange : true))
     return *start;
 
   if(matchExact)
     return 0;
 
-  // if we didn't find the exact msgId, take the next-lower one (this makes sense for lastSeen)
-  if(start == end) // higher than last element
-    return _lines.last();
-
   if(start == _lines.begin()) // not (yet?) in our scene
     return 0;
 
+  // if we didn't find the exact msgId, take the next-lower one (this makes sense for lastSeen)
+
+  if(start == end) { // higher than last element
+    if(!ignoreDayChange)
+      return _lines.last();
+
+    for(int i = _lines.count() -1; i >= 0; i--) {
+      if(_lines.at(i)->msgType() != Message::DayChange)
+        return _lines.at(i);
+    }
+    return 0;
+  }
+
   // return the next-lower line
-  return *(--start);
+  if(!ignoreDayChange)
+    return *(--start);
+
+  do {
+    if((*(--start))->msgType() != Message::DayChange)
+      return *start;
+  } while(start != _lines.begin());
+  return 0;
 }
 
 ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const {
@@ -206,42 +223,70 @@ bool ChatScene::containsBuffer(const BufferId &id) const {
 void ChatScene::setMarkerLineVisible(bool visible) {
   _markerLineVisible = visible;
   if(visible && _markerLineValid)
-    _markerLine->setVisible(true);
+    markerLine()->setVisible(true);
   else
-    _markerLine->setVisible(false);
+    markerLine()->setVisible(false);
 }
 
 void ChatScene::setMarkerLine(MsgId msgId) {
   if(!isSingleBufferScene())
     return;
-  if(!msgId.isValid()) {
+
+  if(!msgId.isValid())
     msgId = Client::markerLine(singleBufferId());
-    if(!msgId.isValid()) {
-      _markerLineValid = false;
-      _markerLine->setVisible(false);
-      return;
+
+  if(msgId.isValid()) {
+    ChatLine *line = chatLine(msgId, false, true);
+    if(line) {
+      markerLine()->setChatLine(line);
+      // if this was the last line, we won't see it because it's outside the sceneRect
+      // .. which is exactly what we want :)
+      markerLine()->setPos(line->pos() + QPointF(0, line->height()));
+
+      // DayChange messages might have been hidden outside the scene rect, don't make the markerline visible then!
+      if(markerLine()->pos().y() >= sceneRect().y()) {
+        _markerLineValid = true;
+        if(_markerLineVisible)
+          markerLine()->setVisible(true);
+        if(_markerLineJumpPending) {
+          _markerLineJumpPending = false;
+          if(markerLine()->isVisible()) {
+            markerLine()->ensureVisible(QRectF(), 50, 50);
+          }
+        }
+        return;
+      }
     }
   }
+  _markerLineValid = false;
+  markerLine()->setVisible(false);
+}
 
-  ChatLine *line = chatLine(msgId, false);
-  if(line) {
-    // if this was the last line, we won't see it because it's outside the sceneRect
-    // .. which is exactly what we want :)
-    _markerLine->setPos(line->pos() + QPointF(0, line->height()));
+void ChatScene::jumpToMarkerLine(bool requestBacklog) {
+  if(!isSingleBufferScene())
+    return;
 
-    // DayChange messages might have been hidden outside the scene rect, don't make the markerline visible then!
-    if(_markerLine->pos().y() >= sceneRect().y()) {
-      _markerLineValid = true;
-      if(_markerLineVisible)
-        _markerLine->setVisible(true);
-      return;
+  if(markerLine()->isVisible()) {
+    markerLine()->ensureVisible(QRectF(), 50, 50);
+    return;
+  }
+  if(!_markerLineValid && requestBacklog) {
+    MsgId msgId = Client::markerLine(singleBufferId());
+    if(msgId.isValid()) {
+      _markerLineJumpPending = true;
+      Client::backlogManager()->requestBacklog(singleBufferId(), msgId, -1, -1, 0);
+
+      // If we filtered out the lastSeenMsg (by changing filters after setting it), we'd never jump because the above request
+      // won't fetch any prior lines. Thus, trigger a dynamic backlog request just in case, so repeated
+      // jump tries will eventually cause enough backlog to be fetched.
+      // This is a bit hackish, but not wasteful, as jumping to the top of the ChatView would trigger a dynamic fetch anyway.
+      this->requestBacklog();
     }
   }
 }
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   Q_UNUSED(index);
-
 
 //   QModelIndex sidx = model()->index(start, 2);
 //   QModelIndex eidx = model()->index(end, 2);
@@ -330,6 +375,8 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     for(int i = 0; i <= end; i++) {
       line = _lines.at(i);
       line->setPos(0, line->pos().y() - h);
+      if(line == markerLine()->chatLine())
+        markerLine()->setPos(line->pos() + QPointF(0, line->height()));
     }
   }
 
@@ -371,7 +418,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   }
 
   // now move the marker line if necessary. we don't need to do anything if we appended lines though...
-  if(!_markerLineValid || !atBottom)
+  if(!_markerLineValid)
     setMarkerLine();
 }
 
@@ -395,6 +442,8 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   QList<ChatLine *>::iterator lineIter = _lines.begin() + start;
   int lineCount = start;
   while(lineIter != _lines.end() && lineCount <= end) {
+    if((*lineIter) == markerLine()->chatLine())
+      markerLine()->setChatLine(0);
     h += (*lineIter)->height();
     delete *lineIter;
     lineIter = _lines.erase(lineIter);

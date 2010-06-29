@@ -25,11 +25,19 @@
 
 MarkerLineItem::MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent)
   : QGraphicsObject(parent),
-    _boundingRect(0, 0, sceneWidth, 1)
+    _boundingRect(0, 0, sceneWidth, 1),
+    _chatLine(0)
 {
+  setVisible(false);
   setZValue(8);
   styleChanged(); // init brush and height
   connect(QtUi::style(), SIGNAL(changed()), SLOT(styleChanged()));
+}
+
+void MarkerLineItem::setChatLine(ChatLine *line) {
+  _chatLine = line;
+  if(!line)
+    setVisible(false);
 }
 
 void MarkerLineItem::styleChanged() {

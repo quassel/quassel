@@ -44,6 +44,7 @@ public:
 
 public slots:
   virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
+  virtual void jumpToMarkerLine(ChatView *view = 0, bool requestBacklog = true);
 
 protected:
   virtual AbstractChatView *createChatView(BufferId);

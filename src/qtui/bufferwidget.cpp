@@ -94,6 +94,10 @@ BufferWidget::BufferWidget(QWidget *parent)
   setMarkerLine->setText(tr("Set Marker Line"));
   setMarkerLine->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
 
+  Action *jumpToMarkerLine = QtUi::actionCollection("Navigation")->add<Action>("JumpToMarkerLine", this, SLOT(jumpToMarkerLine()));
+  jumpToMarkerLine->setText(tr("Go to Marker Line"));
+  jumpToMarkerLine->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_K));
+
   ChatViewSettings s;
   s.initAndNotify("AutoMarkerLine", this, SLOT(setAutoMarkerLine(QVariant)), true);
 }
@@ -249,4 +253,13 @@ void BufferWidget::setMarkerLine(ChatView *view, bool allowGoingBack) {
     }
     view->setMarkerLine(msgId);
   }
+}
+
+void BufferWidget::jumpToMarkerLine(ChatView *view, bool requestBacklog) {
+  if(!view)
+    view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+  if(!view)
+    return;
+
+  view->jumpToMarkerLine(requestBacklog);
 }

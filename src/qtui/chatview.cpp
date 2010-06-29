@@ -241,7 +241,7 @@ QList<ChatLine *> ChatView::visibleChatLinesSorted(Qt::ItemSelectionMode mode) c
   return result;
 }
 
-ChatLine *ChatView::lastVisibleChatLine() const {
+ChatLine *ChatView::lastVisibleChatLine(bool ignoreDayChange) const {
   if(!scene())
     return 0;
 
@@ -253,7 +253,7 @@ ChatLine *ChatView::lastVisibleChatLine() const {
 
   QSet<ChatLine *> visibleLines = visibleChatLines(Qt::ContainsItemBoundingRect);
   foreach(ChatLine *line, visibleLines) {
-    if(line->row() > row)
+    if(line->row() > row && (ignoreDayChange? line->msgType() != Message::DayChange : true))
       row = line->row();
   }
 
@@ -281,6 +281,10 @@ void ChatView::markerLineSet(BufferId buffer, MsgId msgId) {
 
   scene()->setMarkerLine(msgId);
   scene()->setMarkerLineVisible(true);
+}
+
+void ChatView::jumpToMarkerLine(bool requestBacklog) {
+  scene()->jumpToMarkerLine(requestBacklog);
 }
 
 void ChatView::addActionsToMenu(QMenu *menu, const QPointF &pos) {

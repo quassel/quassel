@@ -65,7 +65,7 @@ public:
   /** Using this method more efficient than calling visibleChatLinesSorted() and taking its last element.
    *  \return The last fully visible ChatLine in the view
    */
-  ChatLine *lastVisibleChatLine() const;
+  ChatLine *lastVisibleChatLine(bool ignoreDayChange = false) const;
 
   virtual void addActionsToMenu(QMenu *, const QPointF &pos);
 
@@ -86,6 +86,7 @@ public slots:
 
   void setMarkerLineVisible(bool visible = true);
   void setMarkerLine(MsgId msgId);
+  void jumpToMarkerLine(bool requestBacklog);
 
 protected:
   virtual bool event(QEvent *event);

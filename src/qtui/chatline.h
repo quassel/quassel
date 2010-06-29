@@ -41,6 +41,8 @@ public:
 
   inline QModelIndex index() const { return model()->index(row(), 0); }
   inline MsgId msgId() const { return index().data(MessageModel::MsgIdRole).value<MsgId>(); }
+  inline Message::Type msgType() const { return (Message::Type)index().data(MessageModel::TypeRole).toInt(); }
+
   inline int row() const { return _row; }
   inline void setRow(int row) { _row = row; }
 
