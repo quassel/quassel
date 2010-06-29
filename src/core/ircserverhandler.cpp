@@ -798,7 +798,8 @@ void IrcServerHandler::handle311(const QString &prefix, const QList<QByteArray> 
     ircuser->setRealName(serverDecode(params.last()));
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is %2 (%3)") .arg(ircuser->nick()).arg(ircuser->hostmask()).arg(ircuser->realName()));
   } else {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is %2 (%3)") .arg(serverDecode(params[1])).arg(serverDecode(params[2])).arg(serverDecode(params.last())));
+    QString host = QString("%1!%2@%3").arg(serverDecode(params[0])).arg(serverDecode(params[1])).arg(serverDecode(params[2]));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is %2 (%3)") .arg(serverDecode(params[0])).arg(host).arg(serverDecode(params.last())));
   }
 }
 
