@@ -123,8 +123,6 @@ public:
 
   bool isScrollingAllowed() const;
 
-  virtual bool event(QEvent *e);
-
  public slots:
   void updateForViewport(qreal width, qreal height);
   void setWidth(qreal width);

@@ -597,7 +597,7 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
 void ContentsChatItem::endHoverMode() {
   if(privateData()) {
     if(privateData()->currentClickable.isValid()) {
-      chatLine()->setCursor(Qt::ArrowCursor);
+      chatLine()->unsetCursor();
       privateData()->currentClickable = Clickable();
     }
     clearWebPreview();

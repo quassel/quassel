@@ -1017,14 +1017,6 @@ void ChatScene::updateSceneRect(const QRectF &rect) {
   update();
 }
 
-bool ChatScene::event(QEvent *e) {
-  if(e->type() == QEvent::ApplicationPaletteChange) {
-    _firstColHandle->setColor(QApplication::palette().windowText().color());
-    _secondColHandle->setColor(QApplication::palette().windowText().color());
-  }
-  return QGraphicsScene::event(e);
-}
-
 // ========================================
 //  Webkit Only stuff
 // ========================================

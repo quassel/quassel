@@ -1,38 +1,35 @@
 /***************************************************************************
-*   Copyright (C) 2005-09 by the Quassel Project                          *
-*   devel@quassel-irc.org                                                 *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) version 3.                                           *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #ifndef COLUMNHANDLEITEM_H_
 #define COLUMNHANDLEITEM_H_
 
-#include <QObject>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
-#include <QTimeLine>
+#include <QPropertyAnimation>
 
 #include "chatscene.h"
 
-class ColumnHandleItem : public QObject, public QGraphicsItem {
+class ColumnHandleItem : public QGraphicsObject {
   Q_OBJECT
-#if QT_VERSION >= 0x040600
-  Q_INTERFACES(QGraphicsItem)
-#endif
+  Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
 public:
   ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
@@ -43,6 +40,8 @@ public:
   inline qreal sceneLeft() const { return _sceneLeft; }
   inline qreal sceneRight() const { return _sceneRight; }
 
+  inline qreal opacity() const { return _opacity; }
+
   void setXPos(qreal xpos);
   void setXLimits(qreal min, qreal max);
 
@@ -50,7 +49,7 @@ public:
 
 public slots:
   void sceneRectChanged(const QRectF &);
-  inline void setColor(const QColor &color) { _rulerColor = color; }
+  void setOpacity(qreal opacity);
 
 protected:
   void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -62,18 +61,15 @@ protected:
 signals:
   void positionChanged(qreal x);
 
-private slots:
-  void hoverChanged(qreal value);
-
 private:
   qreal _width;
   qreal _sceneLeft, _sceneRight;
   QRectF _boundingRect;
-  qreal _hover;
   bool _moving;
+  qreal _offset;
   qreal _minXPos, _maxXPos;
-  QTimeLine _timeLine;
-  QColor _rulerColor;
+  qreal _opacity;
+  QPropertyAnimation *_animation;
 };
 
 #endif
