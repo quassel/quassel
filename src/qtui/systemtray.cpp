@@ -63,7 +63,7 @@ void SystemTray::init() {
 #ifdef HAVE_KDE
   KMenu *kmenu;
   _trayMenu = kmenu = new KMenu();
-  kmenu->addTitle(qApp->windowIcon(), "Quassel IRC");
+  kmenu->addTitle(_activeIcon, "Quassel IRC");
 #else
   _trayMenu = new QMenu(associatedWidget());
 #endif
