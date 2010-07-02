@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2011 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +21,7 @@
 #ifndef MESSAGEMODEL_H_
 #define MESSAGEMODEL_H_
 
-#include <QAbstractItemModel>
+#include <QAbstractListModel>
 #include <QDateTime>
 
 #include "message.h"
@@ -30,7 +30,7 @@
 class MessageModelItem;
 struct MsgId;
 
-class MessageModel : public QAbstractItemModel {
+class MessageModel : public QAbstractListModel {
   Q_OBJECT
 
 public:
@@ -56,8 +56,6 @@ public:
 
   MessageModel(QObject *parent);
 
-  inline QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-  inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
   inline int rowCount(const QModelIndex &parent = QModelIndex()) const { return parent.isValid() ? 0 : messageCount(); }
   inline int columnCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return 3; }
 
@@ -113,14 +111,6 @@ private:
   QDateTime _nextDayChange;
   QHash<BufferId, int> _messagesWaiting;
 };
-
-// inlines
-QModelIndex MessageModel::index(int row, int column, const QModelIndex &parent) const {
-  if(row < 0 || row >= rowCount(parent) || column < 0 || column >= columnCount(parent))
-    return QModelIndex();
-
-  return createIndex(row, column);
-}
 
 // **************************************************
 //  MessageModelItem

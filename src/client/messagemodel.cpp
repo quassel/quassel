@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -34,7 +34,7 @@ public:
 };
 
 MessageModel::MessageModel(QObject *parent)
-  : QAbstractItemModel(parent)
+  : QAbstractListModel(parent)
 {
   QDateTime now = QDateTime::currentDateTime();
   now.setTimeSpec(Qt::UTC);
@@ -91,10 +91,10 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
     int remainingMsgs = msglist.count() - processedMsgs;
     if(remainingMsgs > 0) {
       if(msglist.first().msgId() < msglist.last().msgId()) {
-	// in Order - we have just successfully processed "processedMsg" messages from the end of the list
-	_messageBuffer = msglist.mid(0, remainingMsgs);
+        // in Order - we have just successfully processed "processedMsg" messages from the end of the list
+        _messageBuffer = msglist.mid(0, remainingMsgs);
       } else {
-	_messageBuffer = msglist.mid(processedMsgs);
+        _messageBuffer = msglist.mid(processedMsgs);
       }
       qSort(_messageBuffer);
       QCoreApplication::postEvent(this, new ProcessBufferEvent());
@@ -123,9 +123,9 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
       beginRemoveRows(QModelIndex(), prevIdx, prevIdx);
       Message oldDayChangeMsg = takeMessageAt(prevIdx);
       if(msglist.last().timestamp() < oldDayChangeMsg.timestamp()) {
-	// we have to reinsert it with a changed msgId
-	dayChangeMsg = oldDayChangeMsg;
-	dayChangeMsg.setMsgId(msglist.last().msgId());
+        // we have to reinsert it with a changed msgId
+        dayChangeMsg = oldDayChangeMsg;
+        dayChangeMsg.setMsgId(msglist.last().msgId());
       }
       endRemoveRows();
 
@@ -220,63 +220,63 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
       iter--;
 
       if(!fastForward && (*iter).msgId() <= minId)
-	break;
+        break;
       processedMsgs++;
 
       if(grouplist.isEmpty()) { // as long as we don't have a starting point, we have to update the dupeId
-	idx = indexForId((*iter).msgId());
-	if(idx >= 0 && !messagesIsEmpty())
-	  dupeId = messageItemAt(idx)->msgId();
+        idx = indexForId((*iter).msgId());
+        if(idx >= 0 && !messagesIsEmpty())
+          dupeId = messageItemAt(idx)->msgId();
       }
       if((*iter).msgId() != dupeId) {
-	if(!grouplist.isEmpty()) {
-	  QDateTime nextTs = grouplist.value(0).timestamp();
-	  QDateTime prevTs = (*iter).timestamp();
-	  nextTs.setTimeSpec(Qt::UTC);
-	  prevTs.setTimeSpec(Qt::UTC);
-	  uint nextDay = nextTs.toTime_t() / 86400;
-	  uint prevDay = prevTs.toTime_t() / 86400;
-	  if(nextDay != prevDay) {
-	    nextTs.setTime_t(nextDay * 86400);
-	    nextTs.setTimeSpec(Qt::LocalTime);
-	    Message dayChangeMsg = Message::ChangeOfDay(nextTs);
-	    dayChangeMsg.setMsgId((*iter).msgId());
-	    grouplist.prepend(dayChangeMsg);
-	  }
-	}
-	dupeId = (*iter).msgId();
-	grouplist.prepend(*iter);
+        if(!grouplist.isEmpty()) {
+          QDateTime nextTs = grouplist.value(0).timestamp();
+          QDateTime prevTs = (*iter).timestamp();
+          nextTs.setTimeSpec(Qt::UTC);
+          prevTs.setTimeSpec(Qt::UTC);
+          uint nextDay = nextTs.toTime_t() / 86400;
+          uint prevDay = prevTs.toTime_t() / 86400;
+          if(nextDay != prevDay) {
+            nextTs.setTime_t(nextDay * 86400);
+            nextTs.setTimeSpec(Qt::LocalTime);
+            Message dayChangeMsg = Message::ChangeOfDay(nextTs);
+            dayChangeMsg.setMsgId((*iter).msgId());
+            grouplist.prepend(dayChangeMsg);
+          }
+        }
+        dupeId = (*iter).msgId();
+        grouplist.prepend(*iter);
       }
     }
   } else {
     while(iter != msglist.constEnd()) {
       if(!fastForward && (*iter).msgId() <= minId)
-	break;
+        break;
       processedMsgs++;
 
       if(grouplist.isEmpty()) { // as long as we don't have a starting point, we have to update the dupeId
-	idx = indexForId((*iter).msgId());
-	if(idx >= 0 && !messagesIsEmpty())
-	  dupeId = messageItemAt(idx)->msgId();
+        idx = indexForId((*iter).msgId());
+        if(idx >= 0 && !messagesIsEmpty())
+          dupeId = messageItemAt(idx)->msgId();
       }
       if((*iter).msgId() != dupeId) {
-	if(!grouplist.isEmpty()) {
-	  QDateTime nextTs = grouplist.value(0).timestamp();
-	  QDateTime prevTs = (*iter).timestamp();
-	  nextTs.setTimeSpec(Qt::UTC);
-	  prevTs.setTimeSpec(Qt::UTC);
-	  uint nextDay = nextTs.toTime_t() / 86400;
-	  uint prevDay = prevTs.toTime_t() / 86400;
-	  if(nextDay != prevDay) {
-	    nextTs.setTime_t(nextDay * 86400);
-	    nextTs.setTimeSpec(Qt::LocalTime);
-	    Message dayChangeMsg = Message::ChangeOfDay(nextTs);
-	    dayChangeMsg.setMsgId((*iter).msgId());
-	    grouplist.prepend(dayChangeMsg);
-	  }
-	}
-	dupeId = (*iter).msgId();
-	grouplist.prepend(*iter);
+        if(!grouplist.isEmpty()) {
+          QDateTime nextTs = grouplist.value(0).timestamp();
+          QDateTime prevTs = (*iter).timestamp();
+          nextTs.setTimeSpec(Qt::UTC);
+          prevTs.setTimeSpec(Qt::UTC);
+          uint nextDay = nextTs.toTime_t() / 86400;
+          uint prevDay = prevTs.toTime_t() / 86400;
+          if(nextDay != prevDay) {
+            nextTs.setTime_t(nextDay * 86400);
+            nextTs.setTimeSpec(Qt::LocalTime);
+            Message dayChangeMsg = Message::ChangeOfDay(nextTs);
+            dayChangeMsg.setMsgId((*iter).msgId());
+            grouplist.prepend(dayChangeMsg);
+          }
+        }
+        dupeId = (*iter).msgId();
+        grouplist.prepend(*iter);
       }
       iter++;
     }
@@ -373,9 +373,9 @@ void MessageModel::requestBacklog(BufferId bufferId) {
     if(messageItemAt(i)->bufferId() == bufferId) {
       _messagesWaiting[bufferId] = requestCount;
       Client::backlogManager()->emitMessagesRequested(tr("Requesting %1 messages from backlog for buffer %2:%3")
-						      .arg(requestCount)
-						      .arg(Client::networkModel()->networkName(bufferId))
-						      .arg(Client::networkModel()->bufferName(bufferId)));
+                                                      .arg(requestCount)
+                                                      .arg(Client::networkModel()->networkName(bufferId))
+                                                      .arg(Client::networkModel()->bufferName(bufferId)));
       Client::backlogManager()->requestBacklog(bufferId, -1, messageItemAt(i)->msgId(), requestCount);
       return;
     }
@@ -453,9 +453,9 @@ bool MessageModelItem::operator>(const MessageModelItem &other) const {
 
 QDebug operator<<(QDebug dbg, const MessageModelItem &msgItem) {
   dbg.nospace() << qPrintable(QString("MessageModelItem(MsgId:")) << msgItem.msgId()
-		<< qPrintable(QString(",")) << msgItem.timestamp()
-		<< qPrintable(QString(", Type:")) << msgItem.msgType()
-		<< qPrintable(QString(", Flags:")) << msgItem.msgFlags() << qPrintable(QString(")"))
-		<< msgItem.data(1, Qt::DisplayRole).toString() << ":" << msgItem.data(2, Qt::DisplayRole).toString();
+                << qPrintable(QString(",")) << msgItem.timestamp()
+                << qPrintable(QString(", Type:")) << msgItem.msgType()
+                << qPrintable(QString(", Flags:")) << msgItem.msgFlags() << qPrintable(QString(")"))
+                << msgItem.data(1, Qt::DisplayRole).toString() << ":" << msgItem.data(2, Qt::DisplayRole).toString();
   return dbg;
 }
