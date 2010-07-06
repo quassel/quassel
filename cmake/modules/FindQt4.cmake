@@ -51,6 +51,7 @@
 #                    QT_USE_QTXMLPATTERNS
 #                    QT_USE_PHONON
 #                    QT_USE_QTSCRIPTTOOLS
+#                    QT_USE_QTDECLARATIVE
 #
 #  QT_USE_IMPORTED_TARGETS 
 #        If this variable is set to TRUE, FindQt4.cmake will create imported
@@ -198,6 +199,7 @@
 #  QT_QTXML_FOUND           True if QtXml was found.
 #  QT_QTXMLPATTERNS_FOUND   True if QtXmlPatterns was found.
 #  QT_PHONON_FOUND          True if phonon was found.
+#  QT_QTDECLARATIVE_FOUND   True if QtDeclarative was found.
 #
 #  QT_MAC_USE_COCOA    For Mac OS X, its whether Cocoa or Carbon is used.
 #                      In general, this should not be used, but its useful
@@ -247,7 +249,8 @@
 #  QT_QTXMLPATTERNS_INCLUDE_DIR  Path to "include/QtXmlPatterns"
 #  QT_PHONON_INCLUDE_DIR       Path to "include/phonon"
 #  QT_QTSCRIPTTOOLS_INCLUDE_DIR       Path to "include/QtScriptTools"
-#                            
+#  QT_QTDECLARATIVE_INCLUDE_DIR       Path to "include/QtDeclarative"
+#
 #  QT_BINARY_DIR               Path to "bin" of Qt4
 #  QT_LIBRARY_DIR              Path to "lib" of Qt4
 #  QT_PLUGINS_DIR              Path to "plugins" for Qt4
@@ -313,6 +316,8 @@
 #
 # The Phonon library:             QT_PHONON_LIBRARY
 #  
+# The QtDeclarative library:             QT_QTDECLARATIVE_LIBRARY
+#
 # also defined, but NOT for general use are
 #  QT_MOC_EXECUTABLE                   Where to find the moc tool.
 #  QT_UIC_EXECUTABLE                   Where to find the uic tool.
@@ -438,6 +443,7 @@ FIND_PROGRAM(QT_QMAKE_EXECUTABLE NAMES qmake qmake4 qmake-qt4 qmake-mac PATHS
   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Versions\\4.0.0;InstallDir]/bin"
   "[HKEY_CURRENT_USER\\Software\\Trolltech\\Versions\\${qt_install_version};InstallDir]/bin"
   $ENV{QTDIR}/bin
+  DOC "The qmake executable for the Qt installation to use"
 )
 
 IF (QT_QMAKE_EXECUTABLE)
@@ -459,6 +465,7 @@ IF (QT_QMAKE_EXECUTABLE)
       "[HKEY_CURRENT_USER\\Software\\Trolltech\\Qt3Versions\\4.0.0;InstallDir]/bin"
       "[HKEY_CURRENT_USER\\Software\\Trolltech\\Versions\\4.0.0;InstallDir]/bin"
       $ENV{QTDIR}/bin
+      DOC "The qmake executable for the Qt installation to use"
       )
     IF(QT_QMAKE_EXECUTABLE)
       EXEC_PROGRAM(${QT_QMAKE_EXECUTABLE} 
@@ -661,7 +668,7 @@ IF (QT4_QMAKE_FOUND)
   CHECK_SYMBOL_EXISTS(Q_WS_MAC "QtCore/qglobal.h" Q_WS_MAC)
   IF(Q_WS_MAC)
     IF(QT_QMAKE_CHANGED)
-      SET(QT_MAC_USE_COCOA "" CACHE BOOL "Use Cocoa on Mac" FORCE)
+      UNSET(QT_MAC_USE_COCOA CACHE)
     ENDIF(QT_QMAKE_CHANGED)
     CHECK_SYMBOL_EXISTS(QT_MAC_USE_COCOA "QtCore/qconfig.h" QT_MAC_USE_COCOA)
   ENDIF(Q_WS_MAC)
@@ -688,7 +695,8 @@ IF (QT4_QMAKE_FOUND)
 
   SET(QT_MODULES QtCore QtGui Qt3Support QtSvg QtScript QtTest QtUiTools 
                  QtHelp QtWebKit QtXmlPatterns QtNetwork QtMultimedia
-                 QtNsPlugin QtOpenGL QtSql QtXml QtDesigner QtDBus QtScriptTools)
+                 QtNsPlugin QtOpenGL QtSql QtXml QtDesigner QtDBus QtScriptTools
+                 QtDeclarative)
   
   IF(Q_WS_X11)
     SET(QT_MODULES ${QT_MODULES} QtMotif)
@@ -980,7 +988,7 @@ IF (QT4_QMAKE_FOUND)
 
       ENDIF(QT_USE_IMPORTED_TARGETS)
 
-#message(STATUS "QT_${basename}_LIBRARY: ${QT_${basename}_LIBRARY}")
+# message(STATUS "QT_${basename}_LIBRARY: ${QT_${basename}_LIBRARY}")
 
       SET(QT_${basename}_FOUND 1)
 
@@ -1005,6 +1013,7 @@ IF (QT4_QMAKE_FOUND)
   _QT4_ADJUST_LIB_VARS(QtAssistantClient)
   _QT4_ADJUST_LIB_VARS(QtCLucene)
   _QT4_ADJUST_LIB_VARS(QtDBus)
+  _QT4_ADJUST_LIB_VARS(QtDeclarative)
   _QT4_ADJUST_LIB_VARS(QtDesigner)
   _QT4_ADJUST_LIB_VARS(QtDesignerComponents)
   _QT4_ADJUST_LIB_VARS(QtHelp)
