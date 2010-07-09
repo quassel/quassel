@@ -920,10 +920,13 @@ void MainWin::setConnectedState() {
     wizard->show();
   }
   else {
-    QtUiSettings s;
-    BufferId lastUsedBufferId(s.value("LastUsedBufferId").toInt());
-    if(lastUsedBufferId.isValid())
-      Client::bufferModel()->switchToBuffer(lastUsedBufferId);
+    // Monolithic always preselects last used buffer - Client only if the connection died
+    if(Client::coreConnection()->wasReconnect() || Quassel::runMode() == Quassel::Monolithic) {
+      QtUiSettings s;
+      BufferId lastUsedBufferId(s.value("LastUsedBufferId").toInt());
+      if(lastUsedBufferId.isValid())
+        Client::bufferModel()->switchToBuffer(lastUsedBufferId);
+    }
   }
 }
 
@@ -976,10 +979,12 @@ void MainWin::disconnectedFromCore() {
     }
   }
 
+  // store last active buffer
   QtUiSettings s;
-  BufferId lastBufId = Client::bufferModel()->currentBuffer();
+  BufferId lastBufId = _bufferWidget->currentBuffer();
   if(lastBufId.isValid()) {
     s.setValue("LastUsedBufferId", lastBufId.toInt());
+    // clear the current selection
     Client::bufferModel()->standardSelectionModel()->clearSelection();
   }
   restoreState(s.value("MainWinState").toByteArray());
@@ -1307,6 +1312,14 @@ void MainWin::clientNetworkUpdated() {
   switch(net->connectionState()) {
   case Network::Initialized:
     action->setIcon(SmallIcon("network-connect"));
+    // if we have no currently selected buffer, jump to the first connecting statusbuffer
+    if(!bufferWidget()->currentBuffer().isValid()) {
+      QModelIndex idx = Client::networkModel()->networkIndex(net->networkId());
+      if(idx.isValid()) {
+        BufferId statusBufferId = idx.data(NetworkModel::BufferIdRole).value<BufferId>();
+        Client::bufferModel()->switchToBuffer(statusBufferId);
+      }
+    }
     break;
   case Network::Disconnected:
     action->setIcon(SmallIcon("network-disconnect"));

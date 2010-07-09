@@ -66,6 +66,9 @@ void AbstractBufferContainer::removeBuffer(BufferId bufferId) {
   _chatViews.take(bufferId);
 }
 
+/*
+  Switching to first buffer is now handled in MainWin::clientNetworkUpdated()
+
 void AbstractBufferContainer::rowsInserted(const QModelIndex &parent, int start, int end) {
   Q_UNUSED(end)
 
@@ -80,6 +83,7 @@ void AbstractBufferContainer::rowsInserted(const QModelIndex &parent, int start,
       setCurrentBuffer(id);
   }
 }
+*/
 
 void AbstractBufferContainer::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
   Q_UNUSED(previous)

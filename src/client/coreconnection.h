@@ -71,6 +71,9 @@ public:
   inline int progressValue() const;
   inline QString progressText() const;
 
+  //! Check if we consider the last connect as reconnect
+  inline bool wasReconnect() const { return _wasReconnect; }
+
 #ifdef HAVE_SSL
   inline const QSslSocket *sslSocket() const;
 #endif
@@ -182,6 +185,8 @@ private:
   QString _progressText;
 
   QString _coreInfoString(const QVariantMap &);
+  bool _wasReconnect;
+  bool _requestedDisconnect;
 
   inline CoreAccountModel *accountModel() const;
 

@@ -42,7 +42,9 @@ CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
   _wantReconnect(false),
   _progressMinimum(0),
   _progressMaximum(-1),
-  _progressValue(-1)
+  _progressValue(-1),
+  _wasReconnect(false),
+  _requestedDisconnect(false)
 {
   qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
 }
@@ -256,6 +258,7 @@ void CoreConnection::coreSocketError(QAbstractSocket::SocketError) {
 
 void CoreConnection::coreSocketDisconnected() {
   // qDebug() << Q_FUNC_INFO;
+  _wasReconnect = !_requestedDisconnect;
   resetConnection(true);
   // FIXME handle disconnects gracefully
 }
@@ -304,12 +307,15 @@ void CoreConnection::coreHasData() {
 }
 
 void CoreConnection::disconnectFromCore() {
+  _requestedDisconnect = true;
   disconnectFromCore(QString(), false);  // requested disconnect, so don't try to reconnect
 }
 
 void CoreConnection::disconnectFromCore(const QString &errorString, bool wantReconnect) {
   if(!wantReconnect)
     _reconnectTimer.stop();
+
+  _wasReconnect = wantReconnect; // store if disconnect was requested
 
   if(errorString.isEmpty())
     emit connectionError(tr("Disconnected"));
@@ -328,6 +334,7 @@ void CoreConnection::resetConnection(bool wantReconnect) {
     _socket->deleteLater();
     _socket = 0;
   }
+  _requestedDisconnect = false;
   _blockSize = 0;
 
   _coreMsgBuffer.clear();
