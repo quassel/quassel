@@ -85,7 +85,8 @@ void AbstractBufferContainer::currentChanged(const QModelIndex &current, const Q
   Q_UNUSED(previous)
 
   BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
-  if(newBufferId.isValid() && currentBuffer() != newBufferId) {
+  // To be able to reset the selected buffer, we don't check if buffer/index is valid here
+  if(currentBuffer() != newBufferId) {
     setCurrentBuffer(newBufferId);
     emit currentChanged(newBufferId);
     emit currentChanged(current);

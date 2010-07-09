@@ -977,6 +977,11 @@ void MainWin::disconnectedFromCore() {
   }
 
   QtUiSettings s;
+  BufferId lastBufId = Client::bufferModel()->currentBuffer();
+  if(lastBufId.isValid()) {
+    s.setValue("LastUsedBufferId", lastBufId.toInt());
+    Client::bufferModel()->standardSelectionModel()->clearSelection();
+  }
   restoreState(s.value("MainWinState").toByteArray());
   setDisconnectedState();
 }
