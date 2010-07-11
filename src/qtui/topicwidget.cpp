@@ -144,7 +144,7 @@ void TopicWidget::setTopic(const QModelIndex &index) {
 
   ui.topicEditButton->setVisible(!_readonly);
   ui.topicLabel->setText(newtopic);
-  ui.topicLineEdit->setText(newtopic);
+  ui.topicLineEdit->setPlainText(newtopic);
   switchPlain();
 }
 
@@ -199,7 +199,7 @@ void TopicWidget::switchEditable() {
 
 void TopicWidget::switchPlain() {
   ui.stackedWidget->setCurrentIndex(0);
-  ui.topicLineEdit->setText(_topic);
+  ui.topicLineEdit->setPlainText(_topic);
   updateGeometry();
   emit switchedPlain();
 }
