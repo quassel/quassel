@@ -1102,6 +1102,7 @@ bool PostgreSqlStorage::mergeBuffersPermanently(const UserId &user, const Buffer
 
   QSqlQuery delBufferQuery(logDb());
   delBufferQuery.prepare(queryString("delete_buffer_for_bufferid"));
+  delBufferQuery.bindValue(":userid", user.toInt());
   delBufferQuery.bindValue(":bufferid", bufferId2.toInt());
   safeExec(delBufferQuery);
   if(!watchQuery(delBufferQuery)) {
