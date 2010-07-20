@@ -70,6 +70,7 @@ class MainWin
 
     void addBufferView(ClientBufferViewConfig *config);
     BufferView *allBuffersView() const;
+    BufferView *activeBufferView() const;
 
     inline BufferWidget *bufferWidget() const { return _bufferWidget; }
     inline SystemTray *systemTray() const { return _systemTray; }
@@ -84,6 +85,8 @@ class MainWin
 
   public slots:
     void showStatusBarMessage(const QString &message);
+    void nextBufferView();     //!< Activate the next bufferview
+    void previousBufferView(); //!< Activate the previous bufferview
 
     //! Quit application
     void quit();
@@ -149,6 +152,8 @@ class MainWin
     void saveLayout();
 
     void bufferViewToggled(bool enabled);
+    void bufferViewVisibilityChanged(bool visible);
+    void changeActiveBufferView(bool backwards);
 
   signals:
     void connectToCore(const QVariantMap &connInfo);
@@ -201,6 +206,7 @@ class MainWin
 
     BufferHotListFilter *_bufferHotList;
     QHash<int, BufferId> _jumpKeyMap;
+    int _activeBufferViewIndex;
 
     friend class QtUi;
 };

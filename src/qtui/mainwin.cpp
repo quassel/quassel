@@ -134,7 +134,8 @@ MainWin::MainWin(QWidget *parent)
     _coreConnectionStatusWidget(new CoreConnectionStatusWidget(Client::coreConnection(), this)),
     _titleSetter(this),
     _awayLog(0),
-    _layoutLoaded(false)
+    _layoutLoaded(false),
+    _activeBufferViewIndex(-1)
 {
   setAttribute(Qt::WA_DeleteOnClose, false);  // we delete the mainwin manually
 
@@ -419,6 +420,12 @@ void MainWin::setupActions() {
                                          QKeySequence(jumpModifier + Qt::Key_8)))->setProperty("Index", 8);
   coll->addAction("JumpKey9", new Action(tr("Quick Access #9"), coll, this, SLOT(onJumpKey()),
                                          QKeySequence(jumpModifier + Qt::Key_9)))->setProperty("Index", 9);
+
+  // Buffer navigation
+  coll->addAction("NextBufferView", new Action(SmallIcon("go-next-view"), tr("Activate Next Chat List"), coll,
+                                               this, SLOT(nextBufferView()), QKeySequence(QKeySequence::Forward)));
+  coll->addAction("PreviousBufferView", new Action(SmallIcon("go-previous-view"), tr("Activate Previous Chat List"), coll,
+                                                   this, SLOT(previousBufferView()), QKeySequence(QKeySequence::Back)));
 }
 
 void MainWin::setupMenus() {
@@ -530,7 +537,11 @@ void MainWin::addBufferView(ClientBufferViewConfig *config) {
   _bufferViewsMenu->addAction(dock->toggleViewAction());
 
   connect(dock->toggleViewAction(), SIGNAL(toggled(bool)), this, SLOT(bufferViewToggled(bool)));
+  connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(bufferViewVisibilityChanged(bool)));
   _bufferViews.append(dock);
+
+  if(!activeBufferView())
+    nextBufferView();
 }
 
 void MainWin::removeBufferView(int bufferViewConfigId) {
@@ -544,8 +555,15 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
     dock = qobject_cast<BufferViewDock *>(action->parent());
     if(dock && actionData.toInt() == bufferViewConfigId) {
       removeAction(action);
-      _bufferViews.removeAll(dock);
       Client::bufferViewOverlay()->removeView(dock->bufferViewId());
+      _bufferViews.removeAll(dock);
+
+      if(dock->isActive()) {
+        dock->setActive(false);
+        _activeBufferViewIndex = -1;
+        nextBufferView();
+      }
+
       dock->deleteLater();
     }
   }
@@ -566,11 +584,18 @@ void MainWin::bufferViewToggled(bool enabled) {
   if(!_bufferViews.contains(dock))
     return;
 
-  if(enabled) {
+  if(enabled)
     Client::bufferViewOverlay()->addView(dock->bufferViewId());
-  } else {
+  else
     Client::bufferViewOverlay()->removeView(dock->bufferViewId());
-  }
+}
+
+void MainWin::bufferViewVisibilityChanged(bool visible) {
+  Q_UNUSED(visible);
+  BufferViewDock *dock = qobject_cast<BufferViewDock *>(sender());
+  Q_ASSERT(dock);
+  if((!dock->isHidden() && !activeBufferView()) || (dock->isHidden() && dock->isActive()))
+    nextBufferView();
 }
 
 BufferView *MainWin::allBuffersView() const {
@@ -578,6 +603,50 @@ BufferView *MainWin::allBuffersView() const {
   if(_bufferViews.count() > 0)
     return _bufferViews[0]->bufferView();
   return 0;
+}
+
+BufferView *MainWin::activeBufferView() const {
+  if(_activeBufferViewIndex < 0 || _activeBufferViewIndex >= _bufferViews.count())
+    return 0;
+  BufferViewDock *dock = _bufferViews.at(_activeBufferViewIndex);
+  return dock->isActive() ? qobject_cast<BufferView*>(dock->widget()) : 0;
+}
+
+void MainWin::changeActiveBufferView(bool backwards) {
+  BufferView *current = activeBufferView();
+  if(current)
+    qobject_cast<BufferViewDock*>(current->parent())->setActive(false);
+
+  if(!_bufferViews.count())
+    return;
+
+  int c = _bufferViews.count();
+  while(c--) { // yes, this will reactivate the current active one if all others fail
+    if(backwards) {
+      if(--_activeBufferViewIndex < 0)
+        _activeBufferViewIndex = _bufferViews.count()-1;
+    } else {
+      if(++_activeBufferViewIndex >= _bufferViews.count())
+        _activeBufferViewIndex = 0;
+    }
+
+    BufferViewDock *dock = _bufferViews.at(_activeBufferViewIndex);
+    if(dock->isHidden())
+      continue;
+
+    dock->setActive(true);
+    return;
+  }
+
+  _activeBufferViewIndex = -1;
+}
+
+void MainWin::nextBufferView() {
+  changeActiveBufferView(false);
+}
+
+void MainWin::previousBufferView() {
+  changeActiveBufferView(true);
 }
 
 void MainWin::showNotificationsDlg() {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -121,9 +121,19 @@ public:
   int bufferViewId() const;
   BufferViewConfig *config() const;
   inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
+  inline bool isActive() const { return _active; }
 
 public slots:
+  void setActive(bool active = true);
+
+private slots:
   void bufferViewRenamed(const QString &newName);
+  void updateTitle();
+
+private:
+
+  bool _active;
+  QString _title;
 };
 
 #endif

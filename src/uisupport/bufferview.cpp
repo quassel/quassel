@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -246,8 +246,8 @@ void BufferView::dropEvent(QDropEvent *event) {
     return QTreeView::dropEvent(event);
 
   int res = QMessageBox::question(0, tr("Merge buffers permanently?"),
-				  tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
-				  QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+                                  tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
+                                  QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
   if(res == QMessageBox::Yes) {
     Client::mergeBuffersPermanently(bufferId1, bufferId2);
   }
@@ -408,7 +408,7 @@ void BufferView::addFilterActions(QMenu *contextMenu, const QModelIndex &index) 
     if(!filterActions.isEmpty()) {
       contextMenu->addSeparator();
       foreach(QAction *action, filterActions) {
-	contextMenu->addAction(action);
+        contextMenu->addAction(action);
       }
     }
   }
@@ -444,11 +444,11 @@ void BufferView::wheelEvent(QWheelEvent* event) {
         QModelIndex parent = currentIndex.parent();
         QModelIndex aunt = parent.sibling( parent.row() + rowDelta, parent.column() );
         if( rowDelta == -1 )
-	  resultingIndex = aunt.child( model()->rowCount( aunt ) - 1, 0 );
+          resultingIndex = aunt.child( model()->rowCount( aunt ) - 1, 0 );
         else
-	  resultingIndex = aunt.child( 0, 0 );
+          resultingIndex = aunt.child( 0, 0 );
         if( !resultingIndex.isValid() )
-	  return;
+          return;
       }
   selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
   selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
@@ -528,16 +528,36 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
 //  BufferView Dock
 // ==============================
 BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
-  : QDockWidget(config->bufferViewName(), parent)
+  : QDockWidget(parent),
+    _active(false),
+    _title(config->bufferViewName())
 {
   setObjectName("BufferViewDock-" + QString::number(config->bufferViewId()));
   toggleViewAction()->setData(config->bufferViewId());
   setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
   connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(bufferViewRenamed(const QString &)));
+  updateTitle();
+}
+
+void BufferViewDock::updateTitle() {
+  QString title = _title;
+  if(isActive())
+    title.prepend(QString::fromUtf8("• "));
+  setWindowTitle(title);
+}
+
+void BufferViewDock::setActive(bool active) {
+  if(active != isActive()) {
+    _active = active;
+    updateTitle();
+    if(active)
+      raise(); // for tabbed docks
+  }
 }
 
 void BufferViewDock::bufferViewRenamed(const QString &newName) {
-  setWindowTitle(newName);
+  _title = newName;
+  updateTitle();
   toggleViewAction()->setText(newName);
 }
 
