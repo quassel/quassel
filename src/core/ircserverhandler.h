@@ -129,12 +129,10 @@ private:
   // key: quit message
   // value: the corresponding netsplit object
   QHash<QString, Netsplit*> _netsplits;
-  
-  #ifdef HAVE_QCA2
-  QByteArray decrypt(const QString &bufferName, QByteArray &message);
-  QString decryptTopic(const QString &bufferName, QString &topic);
-  #endif
-};
 
+#ifdef HAVE_QCA2
+  QByteArray decrypt(const QString &target, const QByteArray &message, bool isTopic = false);
+#endif
+};
 
 #endif

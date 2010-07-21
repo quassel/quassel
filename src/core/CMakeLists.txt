@@ -6,10 +6,6 @@ set(QT_USE_QTSQL 1)
 set(QT_USE_QTSCRIPT 1)
 include(${QT_USE_FILE})
 
-if (QCA2_FOUND)
-  include_directories(${QCA2_INCLUDE_DIR})
-endif (QCA2_FOUND)
-
 set(SOURCES
     abstractsqlstorage.cpp
     core.cpp
@@ -25,6 +21,7 @@ set(SOURCES
     coreignorelistmanager.cpp
     coreircchannel.cpp
     coreirclisthelper.cpp
+    coreircuser.cpp
     corenetwork.cpp
     corenetworkconfig.cpp
     coresession.cpp
@@ -54,6 +51,7 @@ set(MOC_HDRS
     coreignorelistmanager.h
     coreircchannel.h
     coreirclisthelper.h
+    coreircuser.h
     corenetwork.h
     corenetworkconfig.h
     coresession.h
@@ -76,6 +74,12 @@ if(HAVE_SSL)
   include_directories(${OPENSSL_INCLUDE_DIR})
 endif(HAVE_SSL)
 
+if(HAVE_QCA2)
+  set(SOURCES ${SOURCES} cipher.cpp)
+  set(HEADERS ${HEADERS} cipher.h)
+  include_directories(${QCA2_INCLUDE_DIR})
+endif(HAVE_QCA2)
+
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 set(CORE_RCS ${CORE_RCS} core/sql.qrc PARENT_SCOPE)
 
@@ -83,3 +87,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
 add_library(mod_core STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_core mod_common)
+
+if(HAVE_QCA2)
+  target_link_libraries(mod_core ${QCA2_LIBRARIES})
+endif(HAVE_QCA2)

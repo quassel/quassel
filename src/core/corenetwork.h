@@ -23,6 +23,7 @@
 
 #include "network.h"
 #include "coreircchannel.h"
+#include "coreircuser.h"
 
 #include <QTimer>
 
@@ -31,6 +32,10 @@
 # include <QSslError>
 #else
 # include <QTcpSocket>
+#endif
+
+#ifdef HAVE_QCA2
+#  include "cipher.h"
 #endif
 
 #include "coresession.h"
@@ -108,6 +113,12 @@ public slots:
   void addChannelKey(const QString &channel, const QString &key);
   void removeChannelKey(const QString &channel);
 
+  // Blowfish stuff
+#ifdef HAVE_QCA2
+  QByteArray cipherKey(const QString &recipient) const;
+  void setCipherKey(const QString &recipient, const QByteArray &key);
+#endif
+
   void setAutoWhoEnabled(bool enabled);
   void setAutoWhoInterval(int interval);
   void setAutoWhoDelay(int delay);
@@ -138,6 +149,13 @@ signals:
 
 protected:
   inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new CoreIrcChannel(channelname, this); }
+  inline virtual IrcUser *ircUserFactory(const QString &hostmask) { return new CoreIrcUser(hostmask, this); }
+
+protected slots:
+  // TODO: remove cached cipher keys, when appropriate
+  //virtual void removeIrcUser(IrcUser *ircuser);
+  //virtual void removeIrcChannel(IrcChannel *ircChannel);
+  //virtual void removeChansAndUsers();
 
 private slots:
   void socketHasData();
@@ -209,6 +227,9 @@ private:
   QList<QByteArray> _msgQueue;
 
   QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
+
+  // Blowfish key map
+  QHash<QString, QByteArray> _cipherKeys;
 };
 
 #endif //CORENETWORK_H

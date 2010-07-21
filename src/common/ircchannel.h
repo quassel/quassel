@@ -29,10 +29,6 @@
 
 #include "syncableobject.h"
 
-#ifdef HAVE_QCA2
-#include "cipher.h"
-#endif
-
 class IrcUser;
 class Network;
 
@@ -54,6 +50,7 @@ public:
   inline QString name() const { return _name; }
   inline QString topic() const { return _topic; }
   inline QString password() const { return _password; }
+  inline Network *network() const { return _network; }
 
   inline QList<IrcUser *> ircUsers() const { return _userModes.keys(); }
 
@@ -64,7 +61,7 @@ public:
   QString modeValue(const QChar &mode) const;
   QStringList modeValueList(const QChar &mode) const;
   QString channelModeString() const;
-  
+
   inline QTextCodec *codecForEncoding() const { return _codecForEncoding; }
   inline QTextCodec *codecForDecoding() const { return _codecForDecoding; }
   void setCodecForEncoding(const QString &codecName);
@@ -74,12 +71,6 @@ public:
 
   QString decodeString(const QByteArray &text) const;
   QByteArray encodeString(const QString &string) const;
-    
-  #ifdef HAVE_QCA2
-  Cipher* cipher();
-  #endif
-
-  void setEncrypted(bool);
 
 public slots:
   void setTopic(const QString &topic);
@@ -103,7 +94,7 @@ public slots:
 
   void addChannelMode(const QChar &mode, const QString &value);
   void removeChannelMode(const QChar &mode, const QString &value);
- 
+
   // init geters
   QVariantMap initUserModes() const;
   QVariantMap initChanModes() const;
@@ -111,7 +102,7 @@ public slots:
   // init seters
   void initSetUserModes(const QVariantMap &usermodes);
   void initSetChanModes(const QVariantMap &chanModes);
-  
+
 signals:
   void topicSet(const QString &topic); // needed by NetworkModel
 //   void passwordSet(const QString &password);
@@ -120,7 +111,7 @@ signals:
 //   void userModeRemoved(QString nick, QString mode);
 //   void channelModeAdded(const QChar &mode, const QString &value);
 //   void channelModeRemoved(const QChar &mode, const QString &value);
-  
+
   void ircUsersJoined(QList<IrcUser *> ircusers);
 //   void ircUsersJoined(QStringList nicks, QStringList modes);
   void ircUserParted(IrcUser *ircuser);
@@ -140,10 +131,10 @@ private:
   QString _name;
   QString _topic;
   QString _password;
-  
+
   QHash<IrcUser *, QString> _userModes;
 
-  Network *network;
+  Network *_network;
 
   QTextCodec *_codecForEncoding;
   QTextCodec *_codecForDecoding;
@@ -152,10 +143,6 @@ private:
   QHash<QChar, QString> _B_channelModes;
   QHash<QChar, QString> _C_channelModes;
   QSet<QChar> _D_channelModes;
-
-  #ifdef HAVE_QCA2
-  Cipher *_cipher;
-  #endif
 };
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -112,7 +112,7 @@ public:
     Server() : port(6667), useSsl(false), sslVersion(0), useProxy(false), proxyType(QNetworkProxy::Socks5Proxy), proxyHost("localhost"), proxyPort(8080) {}
     Server(const QString &host, uint port, const QString &password, bool useSsl)
       : host(host), port(port), password(password), useSsl(useSsl), sslVersion(0),
-	useProxy(false), proxyType(QNetworkProxy::Socks5Proxy), proxyHost("localhost"), proxyPort(8080) {}
+        useProxy(false), proxyType(QNetworkProxy::Socks5Proxy), proxyHost("localhost"), proxyPort(8080) {}
     bool operator==(const Server &other) const;
     bool operator!=(const Server &other) const;
   };
@@ -215,10 +215,6 @@ public:
   static QStringList presetDefaultChannels(const QString &networkName);
   static NetworkInfo networkInfoFromPreset(const QString &networkName);
 
-  // Blowfish stuff
-  QByteArray bufferKey(const QString &recipient) const;
-  void setBufferKey(const QString &recipient, const QByteArray &key);
-
 public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
@@ -275,10 +271,10 @@ public slots:
 
   void emitConnectionError(const QString &);
 
-private slots:
-  void removeIrcUser(IrcUser *ircuser);
-  void removeIrcChannel(IrcChannel *ircChannel);
-  void removeChansAndUsers();
+protected slots:
+  virtual void removeIrcUser(IrcUser *ircuser);
+  virtual void removeIrcChannel(IrcChannel *ircChannel);
+  virtual void removeChansAndUsers();
 
 signals:
   void aboutToBeDestroyed();
@@ -324,6 +320,7 @@ signals:
 
 protected:
   inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new IrcChannel(channelname, this); }
+  inline virtual IrcUser *ircUserFactory(const QString &hostmask) { return new IrcUser(hostmask, this); }
 
 private:
   QPointer<SignalProxy> _proxy;
@@ -345,9 +342,6 @@ private:
   QHash<QString, IrcChannel *> _ircChannels; // stores all known channels
   QHash<QString, QString> _supports;  // stores results from RPL_ISUPPORT
 
-  // Blowfish key map
-  QHash<QString, QByteArray> _keyHash;
-  
   ServerList _serverList;
   bool _useRandomServer;
   QStringList _perform;

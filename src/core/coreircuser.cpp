@@ -18,39 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef COREIRCCHANNEL_H
-#define COREIRCCHANNEL_H
+#include "coreircuser.h"
 
-#include "ircchannel.h"
+CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(hostmask, network) {
+#ifdef HAVE_QCA2
+  _cipher = 0;
+#endif
+}
+
+CoreIrcUser::~CoreIrcUser() {
+#ifdef HAVE_QCA2
+  delete _cipher;
+#endif
+}
 
 #ifdef HAVE_QCA2
-#  include "cipher.h"
+Cipher *CoreIrcUser::cipher() const {
+  if(!_cipher)
+    _cipher = new Cipher();
+
+  return _cipher;
+}
+
+void CoreIrcUser::setEncrypted(bool e) {
+  Q_UNUSED(e);
+  // TODO
+}
+
 #endif
-
-class CoreIrcChannel : public IrcChannel {
-  SYNCABLE_OBJECT
-  Q_OBJECT
-
-public:
-  CoreIrcChannel(const QString &channelname, Network *network);
-  virtual ~CoreIrcChannel();
-
-  inline virtual const QMetaObject *syncMetaObject() const { return &IrcChannel::staticMetaObject; }
-
-#ifdef HAVE_QCA2
-  Cipher *cipher() const;
-  void setEncrypted(bool);
-#endif
-
-  inline bool receivedWelcomeMsg() const { return _receivedWelcomeMsg; }
-  inline void setReceivedWelcomeMsg() { _receivedWelcomeMsg = true; }
-
-private:
-  bool _receivedWelcomeMsg;
-
-#ifdef HAVE_QCA2
-  mutable Cipher *_cipher;
-#endif
-};
-
-#endif //COREIRCCHANNEL_H

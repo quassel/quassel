@@ -47,10 +47,7 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     _codecForDecoding(0)
 {
   updateObjectName();
-  
-  #ifdef HAVE_QCA2
-  _cipher = 0;
-  #endif
+
 }
 
 IrcUser::~IrcUser() {
@@ -313,17 +310,4 @@ void IrcUser::setLastChannelActivity(BufferId buffer, const QDateTime &time) {
 void IrcUser::setLastSpokenTo(BufferId buffer, const QDateTime &time) {
   _lastSpokenTo[buffer] = time;
   emit lastSpokenToUpdated(buffer, time);
-}
-
-#ifdef HAVE_QCA2
-Cipher* IrcUser::cipher() {
-  if(!_cipher)
-    _cipher = new Cipher();
-  return _cipher;
-}
-#endif
-
-void IrcUser::setEncrypted(bool e) {
-  Q_UNUSED(e);
-  // TODO
 }

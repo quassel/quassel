@@ -1,8 +1,4 @@
 # Builds the common module
-if (QCA2_FOUND)
-    include_directories(${QCA2_INCLUDE_DIR})
-endif (QCA2_FOUND)
-
 set(QT_DONT_USE_QTGUI 1)
 set(QT_USE_QTNETWORK 1)
 include(${QT_USE_FILE})
@@ -30,18 +26,6 @@ set(SOURCES
     signalproxy.cpp
     syncableobject.cpp
     util.cpp)
-
-if (QCA2_FOUND)
-    set(SOURCES ${SOURCES}
-        cipher.cpp)
-endif (QCA2_FOUND)
-
-if(CMAKE_HOST_WIN32)
-    set(SOURCES ${SOURCES} logbacktrace_win.cpp)
-endif(CMAKE_HOST_WIN32)
-if(CMAKE_HOST_UNIX)
-    set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
-endif(CMAKE_HOST_UNIX)
 
 set(MOC_HDRS
     aliasmanager.h
@@ -71,15 +55,17 @@ set(HEADERS ${MOC_HDRS}
     types.h
     util.h)
 
-if (QCA2_FOUND)
-    set(HEADERS ${HEADERS}
-        cipher.h)
-endif (QCA2_FOUND)
-
 if(APPLE)
   set(SOURCES ${SOURCES} mac_utils.cpp)
   set(HEADERS ${HEADERS} mac_utils.h)
 endif(APPLE)
+
+if(CMAKE_HOST_WIN32)
+    set(SOURCES ${SOURCES} logbacktrace_win.cpp)
+endif(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_UNIX)
+    set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
+endif(CMAKE_HOST_UNIX)
 
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 
@@ -91,10 +77,6 @@ add_library(mod_common STATIC ${SOURCES} ${MOC})
 if(APPLE)
   target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
 endif(APPLE)
-
-if (QCA2_FOUND)
-  target_link_libraries(mod_common ${QCA2_LIBRARIES})
-endif (QCA2_FOUND)
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
   find_library(libdl dl)

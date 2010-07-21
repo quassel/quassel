@@ -30,10 +30,6 @@
 #include "syncableobject.h"
 #include "types.h"
 
-#ifdef HAVE_QCA2
-#include "cipher.h"
-#endif
-
 class SignalProxy;
 class Network;
 class IrcChannel;
@@ -100,12 +96,6 @@ public:
   inline QDateTime lastSpokenTo(BufferId id) const { return _lastSpokenTo.value(id); }
   void setLastSpokenTo(BufferId id, const QDateTime &time);
 
-  #ifdef HAVE_QCA2
-  Cipher* cipher();
-  #endif
-
-  void setEncrypted(bool);
-  
 public slots:
   void setUser(const QString &user);
   void setHost(const QString &host);
@@ -132,7 +122,7 @@ public slots:
 
   void addUserModes(const QString &modes);
   void removeUserModes(const QString &modes);
-  
+
 signals:
 //   void userSet(QString user);
 //   void hostSet(QString host);
@@ -200,10 +190,6 @@ private:
 
   QHash<BufferId, QDateTime> _lastActivity;
   QHash<BufferId, QDateTime> _lastSpokenTo;
-  
-  #ifdef HAVE_QCA2
-  Cipher *_cipher;
-  #endif
 };
 
 #endif

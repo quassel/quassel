@@ -11,14 +11,6 @@ if(HAVE_WEBKIT)
 endif(HAVE_WEBKIT)
 include(${QT_USE_FILE})
 
-if (QCA2_FOUND)
-  include_directories(${QCA2_INCLUDE_DIR})
-endif (QCA2_FOUND)
-
-if(INDICATEQT_FOUND)
-  include_directories(${INDICATEQT_INCLUDE_DIRS})
-endif(INDICATEQT_FOUND)
-
 set(SOURCES
     aboutdlg.cpp
     awaylogfilter.cpp
@@ -176,6 +168,7 @@ if(INDICATEQT_FOUND)
   set(SOURCES ${SOURCES} indicatornotificationbackend.cpp)
   set(MOC_HDRS ${MOC_HDRS} indicatornotificationbackend.h)
   set(FORMS ${FORMS} indicatornotificationconfigwidget.ui)
+  include_directories(${INDICATEQT_INCLUDE_DIRS})
 endif(INDICATEQT_FOUND)
 
 foreach(FORM ${FORMS})

@@ -276,6 +276,19 @@ void CoreNetwork::removeChannelKey(const QString &channel) {
   _channelKeys.remove(channel.toLower());
 }
 
+#ifdef HAVE_QCA2
+QByteArray CoreNetwork::cipherKey(const QString &recipient) const {
+  return _cipherKeys.value(recipient.toLower(), QByteArray());
+}
+
+void CoreNetwork::setCipherKey(const QString &recipient, const QByteArray &key) {
+  if(!key.isEmpty())
+    _cipherKeys[recipient.toLower()] = key;
+  else
+    _cipherKeys.remove(recipient.toLower());
+}
+#endif /* HAVE_QCA2 */
+
 bool CoreNetwork::setAutoWhoDone(const QString &channel) {
   QString chan = channel.toLower();
   if(_autoWhoPending.value(chan, 0) <= 0)
@@ -632,7 +645,7 @@ void CoreNetwork::sendPing() {
   uint now = QDateTime::currentDateTime().toTime_t();
   if(_pingCount != 0) {
     qDebug() << "UserId:" << userId() << "Network:" << networkName() << "missed" << _pingCount << "pings."
-	     << "BA:" << socket.bytesAvailable() << "BTW:" << socket.bytesToWrite();
+             << "BA:" << socket.bytesAvailable() << "BTW:" << socket.bytesToWrite();
   }
   if((int)_pingCount >= networkConfig()->maxPingCount() && now - _lastPingTime <= (uint)(_pingTimer.interval() / 1000) + 1) {
     // the second check compares the actual elapsed time since the last ping and the pingTimer interval

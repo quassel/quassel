@@ -18,39 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef COREIRCCHANNEL_H
-#define COREIRCCHANNEL_H
+#ifndef COREIRCUSER_H_
+#define COREIRCUSER_H_
 
-#include "ircchannel.h"
+#include "ircuser.h"
 
 #ifdef HAVE_QCA2
 #  include "cipher.h"
 #endif
 
-class CoreIrcChannel : public IrcChannel {
+class CoreIrcUser : public IrcUser {
   SYNCABLE_OBJECT
   Q_OBJECT
 
 public:
-  CoreIrcChannel(const QString &channelname, Network *network);
-  virtual ~CoreIrcChannel();
+  CoreIrcUser(const QString &hostmask, Network *network);
+  virtual ~CoreIrcUser();
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &IrcChannel::staticMetaObject; }
+  inline virtual const QMetaObject *syncMetaObject() const { return &IrcUser::staticMetaObject; }
 
 #ifdef HAVE_QCA2
   Cipher *cipher() const;
   void setEncrypted(bool);
 #endif
 
-  inline bool receivedWelcomeMsg() const { return _receivedWelcomeMsg; }
-  inline void setReceivedWelcomeMsg() { _receivedWelcomeMsg = true; }
-
-private:
-  bool _receivedWelcomeMsg;
-
 #ifdef HAVE_QCA2
+private:
   mutable Cipher *_cipher;
 #endif
 };
 
-#endif //COREIRCCHANNEL_H
+#endif

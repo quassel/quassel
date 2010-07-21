@@ -9,7 +9,7 @@
 # -DWITH_PHONON=OFF      : Disable Phonon support (audio notifications)
 # -DWITH_LIBINDICATE=OFF : Disable libindicate support (Ayatana notifications)
 # -DWITH_KDE=ON          : Enable KDE4 support
-# -DWITH_CRYPT=OFF       : Disable crypt support
+# -DWITH_CRYPT=OFF       : Disable encryption support
 # -DWITH_OXYGEN=(ON|OFF) : Whether to install Oxygen icons (default: yes, unless KDE > 4.3.0 is present and enabled)
 #
 # -DEMBED_DATA=ON        : Embed all data files in icons the binary, rather than installing them separately
@@ -45,7 +45,7 @@ option(WITH_WEBKIT   "Enable WebKit support (for link previews)"	ON)
 option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
 option(WITH_LIBINDICATE "Enable Ayatana notification support"           ON)
 option(WITH_KDE      "Enable KDE4 integration"				OFF)
-option(WITH_CRYPT    "Enable crypt support if present on system"	ON)
+option(WITH_CRYPT    "Enable encryption support if present on system"	ON)
 
 # We use icon paths from KDE 4.3.x, which are partially invalid on older and possibly
 # even on newer KDE versions. Do not disable this unless you are sure that your Quassel will
@@ -265,20 +265,20 @@ else(WITH_LIBINDICATE)
   set(INDICATEQT_LIBRARIES "")
 endif(WITH_LIBINDICATE)
 
-# Setup QtWebKit support
+# Setup encyption support
 if(WITH_CRYPT)
   find_package(QCA2)
   if(QCA2_FOUND)
-    message(STATUS "Found qca2, enabling crypt support")
+    message(STATUS "Found QCA2, enabling encryption support")
     add_definitions(-DHAVE_QCA2)
     set(LINK_QCA2 QCA2)
     set(HAVE_QCA2 true)
     set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_QCA2)
   else(QCA2_FOUND)
-    message(STATUS "qca2 not found, disabling crypt support")
+    message(STATUS "QCA2 not found, disabling encryption support")
   endif(QCA2_FOUND)
 else(WITH_CRYPT)
-  message(STATUS "Not enabling crypt support")
+  message(STATUS "Not enabling encryption support")
 endif(WITH_CRYPT)
 
 # Now set up install locations; those are set by KDE if integration is enabled
