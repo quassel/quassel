@@ -612,6 +612,28 @@ BufferView *MainWin::activeBufferView() const {
   return dock->isActive() ? qobject_cast<BufferView*>(dock->widget()) : 0;
 }
 
+void MainWin::changeActiveBufferView(int bufferViewId) {
+  if(bufferViewId < 0)
+    return;
+
+  BufferView *current = activeBufferView();
+  if(current) {
+    qobject_cast<BufferViewDock*>(current->parent())->setActive(false);
+    _activeBufferViewIndex = -1;
+  }
+
+  for(int i = 0; i < _bufferViews.count(); i++) {
+    BufferViewDock *dock = _bufferViews.at(i);
+    if(dock->bufferViewId() == bufferViewId && !dock->isHidden()) {
+      _activeBufferViewIndex = i;
+      dock->setActive(true);
+      return;
+    }
+  }
+
+  nextBufferView(); // fallback
+}
+
 void MainWin::changeActiveBufferView(bool backwards) {
   BufferView *current = activeBufferView();
   if(current)
@@ -893,14 +915,21 @@ void MainWin::loadLayout() {
   }
 
   restoreState(state, accountId);
+  int bufferViewId = s.value(QString("ActiveBufferView-%1").arg(accountId), -1).toInt();
+  if(bufferViewId >= 0)
+    changeActiveBufferView(bufferViewId);
+
   _layoutLoaded = true;
 }
 
 void MainWin::saveLayout() {
   QtUiSettings s;
   int accountId = _bufferViews.count()? Client::currentCoreAccount().accountId().toInt() : 0; // only save if we still have a layout!
-  if(accountId > 0)
+  if(accountId > 0) {
     s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
+    BufferView *view = activeBufferView();
+    s.setValue(QString("ActiveBufferView-%1").arg(accountId), view ? view->config()->bufferViewId() : -1);
+  }
 }
 
 void MainWin::disconnectedFromCore() {

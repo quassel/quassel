@@ -154,6 +154,7 @@ class MainWin
     void bufferViewToggled(bool enabled);
     void bufferViewVisibilityChanged(bool visible);
     void changeActiveBufferView(bool backwards);
+    void changeActiveBufferView(int bufferViewId);
 
   signals:
     void connectToCore(const QVariantMap &connInfo);

@@ -114,6 +114,7 @@ protected:
 // ==============================
 class BufferViewDock : public QDockWidget {
   Q_OBJECT
+  Q_PROPERTY(bool active READ isActive WRITE setActive STORED true)
 
 public:
   BufferViewDock(BufferViewConfig *config, QWidget *parent);
