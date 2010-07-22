@@ -21,7 +21,7 @@ if(WANT_QTCLIENT OR WANT_MONO)
 
   if(STATIC)
     link_directories(${QT_PLUGINS_DIR}/imageformats)
-    set(CLIENT_LIBS qjpeg qgif)
+    set(CLIENT_LIBS ${CLIENT_LIBS} qjpeg qgif)
   endif(STATIC)
 
 endif(WANT_QTCLIENT OR WANT_MONO)
@@ -51,11 +51,11 @@ if(WANT_CORE)
 endif(WANT_CORE)
 
 if(WANT_QTCLIENT)
-  setup_qt4_variables(${LINK_DBUS} GUI NETWORK ${LINK_WEBKIT})
+  setup_qt4_variables(GUI NETWORK ${CLIENT_QT4_VARS})
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
   add_dependencies(quasselclient po genversion_run)
   set_target_properties(quasselclient PROPERTIES
-                                      COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI"
+                                      COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB ${CLIENT_COMPILE_FLAGS} -DBUILD_QTUI"
                                       OUTPUT_NAME ../quasselclient)
   target_link_libraries(quasselclient ${LINK_KDE} mod_qtui mod_uisupport mod_client mod_common ${CLIENT_LIBS}
                                       ${QUASSEL_QT_LIBRARIES} ${QUASSEL_KDE_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${PHONON_LIBS} ${INDICATEQT_LIBRARIES})
@@ -63,12 +63,12 @@ if(WANT_QTCLIENT)
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
-  setup_qt4_variables(${LINK_DBUS} GUI NETWORK SCRIPT SQL ${LINK_WEBKIT})
+  setup_qt4_variables(GUI NETWORK SCRIPT SQL ${CLIENT_QT4_VARS})
   qt4_wrap_cpp(MOC qtui/monoapplication.h)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${MOC} ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
   add_dependencies(quassel po genversion_run)
   set_target_properties(quassel PROPERTIES
-                                COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO"
+                                COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB ${CLIENT_COMPILE_FLAGS} -DBUILD_MONO"
                                 OUTPUT_NAME ../quassel)
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${CLIENT_LIBS}
                                 ${QUASSEL_QT_LIBRARIES} ${QUASSEL_KDE_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${PHONON_LIBS} ${INDICATEQT_LIBRARIES})
