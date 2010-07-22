@@ -1,22 +1,10 @@
-/***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
- *   devel@quassel-irc.org                                                 *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) version 3.                                           *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+/*
+  This file has been derived from Konversation, the KDE IRC client.
+  You can redistribute it and/or modify it under the terms of the
+  GNU General Public License as published by the Free Software Foundation;
+  either version 2 of the License, or (at your option) any later version.
+*/
+
 /*
   Copyright (C) 1997 Robey Pointer <robeypointer@gmail.com>
   Copyright (C) 2005 Ismail Donmez <ismail@kde.org>
@@ -29,7 +17,7 @@
 
 Cipher::Cipher()
 {
-  m_primeNum = QCA::BigInteger("12745216229761186769575009943944198619149164746831579719941140425076456621824834322853258804883232842877311723249782818608677050956745409379781245497526069657222703636504651898833151008222772087491045206203033063108075098874712912417029101508315117935752962862335062591404043092163187352352197487303798807791605274487594646923"); 
+  m_primeNum = QCA::BigInteger("12745216229761186769575009943944198619149164746831579719941140425076456621824834322853258804883232842877311723249782818608677050956745409379781245497526069657222703636504651898833151008222772087491045206203033063108075098874712912417029101508315117935752962862335062591404043092163187352352197487303798807791605274487594646923");
   setType("blowfish");
 }
 
@@ -110,9 +98,9 @@ QByteArray Cipher::decrypt(QByteArray cipherText)
     else
     {
       if(cipherText.mid(0,4) == "+OK ")
-	cipherText = cipherText.mid(4);
+        cipherText = cipherText.mid(4);
       else
-	cipherText = cipherText.mid(5);
+        cipherText = cipherText.mid(5);
     }
   }
   //all other cases we fail
@@ -187,7 +175,7 @@ QByteArray Cipher::parseInitKeyX(QByteArray key)
 
   QByteArray publicKey = privateKey.y().toArray().toByteArray();
 
-  //remove leading 0 
+  //remove leading 0
   if(publicKey.length() > 135 && publicKey.at(0) == '\0')
     publicKey = publicKey.mid(1);
 
@@ -281,8 +269,8 @@ bool Cipher::encrypt(QByteArray& cipherText)
 
       if(temp == cipherText)
       {
-	// kDebug("CBC Encoding Failed");
-	return false;
+        // kDebug("CBC Encoding Failed");
+        return false;
       }
 
       cipherText = "+OK *" + temp;
@@ -293,8 +281,8 @@ bool Cipher::encrypt(QByteArray& cipherText)
 
       if(temp == cipherText)
       {
-	// kDebug("ECB Encoding Failed");
-	return false;
+        // kDebug("ECB Encoding Failed");
+        return false;
       }
 
       cipherText = "+OK " + temp;
@@ -411,7 +399,7 @@ QByteArray Cipher::byteToB64(QByteArray text)
       encoded.append(base64.at(right & 0x3F).toAscii());
       right = right >> 6;
     }
-    
+
     //TODO make sure the .toascii doesn't break anything
     for (int i = 0; i < 6; i++) {
       encoded.append(base64.at(left & 0x3F).toAscii());
@@ -461,5 +449,3 @@ QByteArray Cipher::b64ToByte(QByteArray text)
   }
   return decoded;
 }
-
-
