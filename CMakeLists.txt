@@ -10,6 +10,7 @@
 # -DWITH_LIBINDICATE=OFF : Disable libindicate support (Ayatana notifications)
 # -DWITH_KDE=ON          : Enable KDE4 support
 # -DWITH_CRYPT=OFF       : Disable encryption support
+# -DWITH_QML=ON          : Enable the QML-based UI (requires Qt 4.7+)
 # -DWITH_OXYGEN=(ON|OFF) : Whether to install Oxygen icons (default: yes, unless KDE > 4.3.0 is present and enabled)
 #
 # -DEMBED_DATA=ON        : Embed all data files in icons the binary, rather than installing them separately
@@ -46,6 +47,7 @@ option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
 option(WITH_LIBINDICATE "Enable Ayatana notification support"           ON)
 option(WITH_KDE      "Enable KDE4 integration"				OFF)
 option(WITH_CRYPT    "Enable encryption support if present on system"	ON)
+option(WITH_QML      "Enable the QML-based UI"                          OFF)
 
 # We use icon paths from KDE 4.3.x, which are partially invalid on older and possibly
 # even on newer KDE versions. Do not disable this unless you are sure that your Quassel will
@@ -143,7 +145,11 @@ endif(WANT_MONO OR WANT_CORE)
 
 # GUI stuff needs some new features
 if(BUILD_GUI)
-  set(QT_MIN_VERSION "4.6.0")
+  if(WITH_QML)
+    set(QT_MIN_VERSION "4.7.4")
+  else(WITH_QML)
+    set(QT_MIN_VERSION "4.6.0")
+  endif(WITH_QML)
 else(BUILD_GUI)
   set(QT_MIN_VERSION "4.4.0")
 endif(BUILD_GUI)
@@ -239,6 +245,21 @@ if(BUILD_GUI)
   else(WITH_WEBKIT)
     message(STATUS "Not enabling WebKit support")
   endif(WITH_WEBKIT)
+
+  # Setup QML support
+  if(WITH_QML)
+    if(QT_QTDECLARATIVE_FOUND)
+      message(STATUS "Found QtDeclarative, enabling the QML-based UI")
+      add_definitions(-DHAVE_QML)
+      set(CLIENT_QT4_VARS ${CLIENT_QT4_VARS} DECLARATIVE)
+      set(CLIENT_COMPILE_FLAGS "${CLIENT_COMPILE_FLAGS} -DQT_DECLARATIVE_LIB")
+      set(HAVE_QML true)
+    else(QT_QTDECLARATIVE_FOUND)
+      message(STATUS "QtDeclarative not found, disabling the QML-based UI")
+    endif(QT_QTDECLARATIVE_FOUND)
+  else(WITH_QML)
+    message(STATUS "Not enabling the QML-based UI")
+  endif(WITH_QML)
 
   # Setup KDE4 support
   if(WITH_KDE)
@@ -400,4 +421,5 @@ add_subdirectory(data)
 add_subdirectory(icons)
 add_subdirectory(pics)
 add_subdirectory(po)
+add_subdirectory(qml)
 add_subdirectory(src)

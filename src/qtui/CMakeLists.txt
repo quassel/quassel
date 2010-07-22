@@ -9,6 +9,9 @@ if(HAVE_WEBKIT)
   set(QT_USE_QTWEBKIT 1)
   set(QT_USE_XMLPATTERNS 1)
 endif(HAVE_WEBKIT)
+if(HAVE_QML)
+  set(QT_USE_QTDECLARATIVE 1)
+endif(HAVE_QML)
 include(${QT_USE_FILE})
 
 set(SOURCES
@@ -197,10 +200,11 @@ qt4_wrap_ui(UI ${FORMPATH} ${SPFRM})
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client
+                    ${CMAKE_SOURCE_DIR}/src/qmlui
                     ${CMAKE_SOURCE_DIR}/src/qtui
                     ${CMAKE_SOURCE_DIR}/src/qtui/settingspages
                     ${CMAKE_SOURCE_DIR}/src/uisupport
                     ${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${MOC} ${DBUS} ${UI} ${HEADERS})
-add_dependencies(mod_qtui mod_common mod_client mod_uisupport)
+add_dependencies(mod_qtui mod_common mod_client mod_qmlui mod_uisupport)
