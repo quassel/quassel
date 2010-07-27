@@ -650,6 +650,9 @@ void IrcServerHandler::handle005(const QString &prefix, const QList<QByteArray> 
     QString value = rawSupport.section("=", 1);
     network()->addSupport(key, value);
   }
+
+  /* determine our prefixes here to get an accurate result */
+  network()->determinePrefixes();
 }
 
 /* RPL_UMODEIS - "<user_modes> [<user_mode_params>]" */

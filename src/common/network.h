@@ -171,6 +171,7 @@ public:
 
   QString prefixes();
   QString prefixModes();
+  void determinePrefixes();
 
   bool supports(const QString &param) const { return _supports.contains(param); }
   QString support(const QString &param) const;
@@ -359,8 +360,6 @@ private:
   quint16 _autoReconnectRetries;
   bool _unlimitedReconnectRetries;
   bool _rejoinChannels;
-
-  void determinePrefixes();
 
   QTextCodec *_codecForServer;
   QTextCodec *_codecForEncoding;
