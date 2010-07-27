@@ -1039,6 +1039,23 @@ void IrcServerHandler::handle333(const QString &prefix, const QList<QByteArray> 
                   tr("Topic set by %1 on %2") .arg(serverDecode(params[1]), QDateTime::fromTime_t(channelDecode(channel, params[2]).toUInt()).toString()));
 }
 
+/* RPL_INVITING - "<nick> <channel>*/
+void IrcServerHandler::handle341(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  if(!checkParamCount("IrcServerHandler::handle341()", params, 2))
+    return;
+
+  QString nick = serverDecode(params[0]);
+
+  IrcChannel *channel = network()->ircChannel(serverDecode(params[1]));
+  if(!channel) {
+    qWarning() << "IrcServerHandler::handle341(): unknown channel:" << params[1];
+    return;
+  }
+  
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel->name(), tr("%1 has been invited to %2").arg(nick).arg(channel->name()));
+}
+
 /*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick>
               ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
 void IrcServerHandler::handle352(const QString &prefix, const QList<QByteArray> &params) {

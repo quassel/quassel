@@ -76,6 +76,7 @@ public slots:
   void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC
   void handle332(const QString &prefix, const QList<QByteArray> &params);   // RPL_TOPIC
   void handle333(const QString &prefix, const QList<QByteArray> &params);   // Topic set by...
+  void handle341(const QString &prefix, const QList<QByteArray> &params);   // RPL_INVITING
   void handle352(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOREPLY
   void handle353(const QString &prefix, const QList<QByteArray> &params);   // RPL_NAMREPLY
   void handle369(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOWAS
