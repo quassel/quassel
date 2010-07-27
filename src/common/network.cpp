@@ -749,6 +749,9 @@ void Network::determinePrefixes() {
       _prefixModes = defaultPrefixModes;
       return;
     }
+    // clear the existing modes, just in case we're run multiple times
+    _prefixes = QString();
+    _prefixModes = QString();
 
     // we just assume that in PREFIX are only prefix chars stored
     for(int i = 0; i < defaultPrefixes.size(); i++) {
