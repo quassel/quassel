@@ -886,7 +886,16 @@ void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> 
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2 (%3)").arg(ircuser->nick()).arg(secondsToString(ircuser->idleTime().secsTo(now))).arg(ircuser->idleTime().toString()));
 
   } else {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] idle message: %1").arg(userDecode(nick, params).join(" ")));
+    QDateTime now = QDateTime::currentDateTime();
+    int idleSecs = serverDecode(params[1]).toInt();
+    idleSecs *= -1;
+    QDateTime idleSince = now.addSecs(idleSecs);
+    if (params.size() > 3) { // we have a signon time
+      int loginTime = serverDecode(params[2]).toInt();
+      QDateTime datetime = QDateTime::fromTime_t(loginTime);
+      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is logged in since %2").arg(nick).arg(datetime.toString()));
+    }
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2 (%3)").arg(nick).arg(secondsToString(idleSince.secsTo(now))).arg(idleSince.toString()));
   }
 }
 
