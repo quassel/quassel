@@ -604,25 +604,15 @@ int CoreUserInputHandler::lastParamOverrun(const QString &cmd, const QList<QByte
 
 #ifdef HAVE_QCA2
 QByteArray CoreUserInputHandler::encrypt(const QString &target, const QByteArray &message_) const {
-  if(target.isEmpty() || message_.isEmpty())
+  if(message_.isEmpty())
     return message_;
 
-  QByteArray key = network()->cipherKey(target);
-  if(key.isEmpty())
+  Cipher *cipher = network()->cipher(target);
+  if(!cipher)
     return message_;
 
   QByteArray message = message_;
-
-  CoreIrcChannel *channel = qobject_cast<CoreIrcChannel *>(network()->ircChannel(target));
-  if(channel) {
-    if(channel->cipher()->setKey(key))
-      channel->cipher()->encrypt(message);
-  } else {
-    CoreIrcUser *user = qobject_cast<CoreIrcUser *>(network()->ircUser(target));
-    if(user && user->cipher()->setKey(key))
-      user->cipher()->encrypt(message);
-  }
-
+  cipher->encrypt(message);
   return message;
 }
 #endif

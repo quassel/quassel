@@ -277,6 +277,26 @@ void CoreNetwork::removeChannelKey(const QString &channel) {
 }
 
 #ifdef HAVE_QCA2
+Cipher *CoreNetwork::cipher(const QString &target) const {
+  if(target.isEmpty())
+    return 0;
+
+  QByteArray key = cipherKey(target);
+  if(key.isEmpty())
+    return 0;
+
+  CoreIrcChannel *channel = qobject_cast<CoreIrcChannel *>(ircChannel(target));
+  if(channel) {
+    if(channel->cipher()->setKey(key))
+      return channel->cipher();
+  } else {
+    CoreIrcUser *user = qobject_cast<CoreIrcUser *>(ircUser(target));
+    if(user && user->cipher()->setKey(key))
+      return user->cipher();
+  }
+  return 0;
+}
+
 QByteArray CoreNetwork::cipherKey(const QString &recipient) const {
   return _cipherKeys.value(recipient.toLower(), QByteArray());
 }

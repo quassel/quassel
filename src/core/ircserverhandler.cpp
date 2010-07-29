@@ -1249,25 +1249,15 @@ void IrcServerHandler::destroyNetsplits() {
 
 #ifdef HAVE_QCA2
 QByteArray IrcServerHandler::decrypt(const QString &bufferName, const QByteArray &message_, bool isTopic) {
-  if(bufferName.isEmpty() || message_.isEmpty())
+  if(message_.isEmpty())
     return message_;
 
-  const QByteArray key = network()->cipherKey(bufferName);
-  if(key.isEmpty())
+  Cipher *cipher = network()->cipher(bufferName);
+  if(!cipher)
     return message_;
 
   QByteArray message = message_;
-
-  CoreIrcChannel *channel = qobject_cast<CoreIrcChannel *>(network()->ircChannel(bufferName));
-  if(channel) {
-    if(channel->cipher()->setKey(key))
-      message = isTopic? channel->cipher()->decryptTopic(message) : channel->cipher()->decrypt(message);
-  } else {
-    CoreIrcUser *user = qobject_cast<CoreIrcUser *>(network()->ircUser(bufferName));
-    if(user && user->cipher()->setKey(key))
-      message = user->cipher()->decrypt(message);
-  }
-
+  message = isTopic? cipher->decryptTopic(message) : cipher->decrypt(message);
   return message;
 }
 #endif
