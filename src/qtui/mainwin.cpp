@@ -184,6 +184,7 @@ void MainWin::init() {
   setupNickWidget();
   setupInputWidget();
   setupChatMonitor();
+  setupViewMenuTail();
   setupStatusBar();
   setupToolBars();
   setupSystray();
@@ -339,6 +340,8 @@ void MainWin::setupActions() {
 
   coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
                                                 0, 0))->setCheckable(true);
+  coll->addAction("ToggleFullscreen", new Action(SmallIcon("window_fullscreen"), tr("&Fullscreen mode"), coll,
+                                                  this, SLOT(toggleFullscreen()), QKeySequence(Qt::Key_F11)));
 
   // Settings
   coll->addAction("ConfigureShortcuts", new Action(SmallIcon("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
@@ -790,6 +793,11 @@ void MainWin::setupTopicWidget() {
   dock->toggleViewAction()->setText(tr("Show Topic Line"));
 }
 
+void MainWin::setupViewMenuTail() {
+  _viewMenu->addSeparator();
+  _viewMenu->addAction(QtUi::actionCollection("General")->action("ToggleFullscreen"));
+}
+
 void MainWin::setupTitleSetter() {
   _titleSetter.setModel(Client::bufferModel());
   _titleSetter.setSelectionModel(Client::bufferModel()->standardSelectionModel());
@@ -1156,6 +1164,21 @@ void MainWin::showShortcutsDlg() {
   SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
   dlg.exec();
 #endif
+}
+
+void MainWin::toggleFullscreen() {
+  QAction *action = QtUi::actionCollection("General")->action("ToggleFullscreen");
+
+  if(isFullScreen()) {
+    showNormal();
+    action->setIcon(SmallIcon("window_fullscreen"));
+    action->setText(tr("&Fullscreen mode"));
+  }
+  else {
+    showFullScreen();
+    action->setIcon(SmallIcon("window_nofullscreen"));
+    action->setText(tr("&Normal mode"));
+  }
 }
 
 /********************************************************************************************************/

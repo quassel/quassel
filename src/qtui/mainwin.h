@@ -120,6 +120,7 @@ class MainWin
     void showNotificationsDlg();
     void showIgnoreList(QString newRule = QString());
     void showShortcutsDlg();
+    void toggleFullscreen();
 
     void handleCoreConnectionError(const QString &errorMsg);
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
@@ -180,6 +181,7 @@ class MainWin
     void setupChatMonitor();
     void setupInputWidget();
     void setupTopicWidget();
+    void setupViewMenuTail();
     void setupStatusBar();
     void setupSystray();
     void setupTitleSetter();
