@@ -425,7 +425,11 @@ void MainWin::setupActions() {
   coll->addAction("NextBufferView", new Action(SmallIcon("go-next-view"), tr("Activate Next Chat List"), coll,
                                                this, SLOT(nextBufferView()), QKeySequence(QKeySequence::Forward)));
   coll->addAction("PreviousBufferView", new Action(SmallIcon("go-previous-view"), tr("Activate Previous Chat List"), coll,
-                                                   this, SLOT(previousBufferView()), QKeySequence(QKeySequence::Back)));
+                                                   this, SLOT(previousBufferView()), QKeySequence::Back));
+  coll->addAction("NextBuffer", new Action(SmallIcon("go-down"), tr("Go to Next Chat"), coll,
+                                           this, SLOT(nextBuffer()), QKeySequence(Qt::ALT + Qt::Key_Down)));
+  coll->addAction("PreviousBuffer", new Action(SmallIcon("go-up"), tr("Go to Previous Chat"), coll,
+                                               this, SLOT(previousBuffer()), QKeySequence(Qt::ALT + Qt::Key_Up)));
 }
 
 void MainWin::setupMenus() {
@@ -669,6 +673,18 @@ void MainWin::nextBufferView() {
 
 void MainWin::previousBufferView() {
   changeActiveBufferView(true);
+}
+
+void MainWin::nextBuffer() {
+  BufferView *view = activeBufferView();
+  if(view)
+    view->nextBuffer();
+}
+
+void MainWin::previousBuffer() {
+  BufferView *view = activeBufferView();
+  if(view)
+    view->previousBuffer();
 }
 
 void MainWin::showNotificationsDlg() {

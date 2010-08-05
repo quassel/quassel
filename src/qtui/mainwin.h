@@ -87,6 +87,8 @@ class MainWin
     void showStatusBarMessage(const QString &message);
     void nextBufferView();     //!< Activate the next bufferview
     void previousBufferView(); //!< Activate the previous bufferview
+    void nextBuffer();
+    void previousBuffer();
 
     //! Quit application
     void quit();

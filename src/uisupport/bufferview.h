@@ -41,6 +41,11 @@ class BufferView : public QTreeView {
   Q_OBJECT
 
 public:
+  enum Direction {
+    Forward = 1,
+    Backward = -1
+  };
+
   BufferView(QWidget *parent = 0);
   void init();
 
@@ -58,6 +63,8 @@ public slots:
   void setRootIndexForNetworkId(const NetworkId &networkId);
   void removeSelectedBuffers(bool permanently = false);
   void menuActionTriggered(QAction *);
+  void nextBuffer();
+  void previousBuffer();
 
 signals:
   void removeBuffer(const QModelIndex &);
@@ -82,6 +89,8 @@ private slots:
 
   void on_configChanged();
   void on_layoutChanged();
+
+  void changeBuffer(Direction direction);
 
 private:
   QPointer<BufferViewConfig> _config;

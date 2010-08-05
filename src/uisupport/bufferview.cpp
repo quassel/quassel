@@ -428,31 +428,41 @@ void BufferView::menuActionTriggered(QAction *result) {
   }
 }
 
+void BufferView::nextBuffer() {
+  changeBuffer(Forward);
+}
+
+void BufferView::previousBuffer() {
+  changeBuffer(Backward);
+}
+
+void BufferView::changeBuffer(Direction direction) {
+  QModelIndex currentIndex = selectionModel()->currentIndex();
+  QModelIndex resultingIndex;
+  if(model()->hasIndex(  currentIndex.row() + direction, currentIndex.column(), currentIndex.parent()))
+    resultingIndex = currentIndex.sibling(currentIndex.row() + direction, currentIndex.column());
+
+  else {
+    //if we scroll into a the parent node...
+    QModelIndex parent = currentIndex.parent();
+    QModelIndex aunt = parent.sibling(parent.row() + direction, parent.column());
+    if(direction == Backward)
+      resultingIndex = aunt.child(model()->rowCount(aunt) - 1, 0);
+    else
+      resultingIndex = aunt.child(0, 0);
+    if(!resultingIndex.isValid())
+      return;
+  }
+  selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
+  selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
+}
+
 void BufferView::wheelEvent(QWheelEvent* event) {
   if(ItemViewSettings().mouseWheelChangesBuffer() == (bool)(event->modifiers() & Qt::AltModifier))
     return QTreeView::wheelEvent(event);
 
   int rowDelta = ( event->delta() > 0 ) ? -1 : 1;
-  QModelIndex currentIndex = selectionModel()->currentIndex();
-  QModelIndex resultingIndex;
-  if( model()->hasIndex(  currentIndex.row() + rowDelta, currentIndex.column(), currentIndex.parent() ) )
-    {
-      resultingIndex = currentIndex.sibling( currentIndex.row() + rowDelta, currentIndex.column() );
-    }
-    else //if we scroll into a the parent node...
-      {
-        QModelIndex parent = currentIndex.parent();
-        QModelIndex aunt = parent.sibling( parent.row() + rowDelta, parent.column() );
-        if( rowDelta == -1 )
-          resultingIndex = aunt.child( model()->rowCount( aunt ) - 1, 0 );
-        else
-          resultingIndex = aunt.child( 0, 0 );
-        if( !resultingIndex.isValid() )
-          return;
-      }
-  selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
-  selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
-
+  changeBuffer((Direction)rowDelta);
 }
 
 QSize BufferView::sizeHint() const {
