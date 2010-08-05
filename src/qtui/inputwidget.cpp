@@ -277,7 +277,12 @@ void InputWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int
   }
 }
 
+
 void InputWidget::updateEnabledState() {
+// FIXME: Find a visualization for this that does not disable the widget!
+//        Disabling kills global action shortcuts, plus users sometimes need/want to enter text
+//        even in inactive channels.
+#if 0
   QModelIndex currentIndex = selectionModel()->currentIndex();
 
   const Network *net = Client::networkModel()->networkByIndex(currentIndex);
@@ -288,7 +293,9 @@ void InputWidget::updateEnabledState() {
     // ... if we're not connected to the network at all
     enabled &= net->isConnected();
   }
+
   ui.inputEdit->setEnabled(enabled);
+#endif
 }
 
 const Network *InputWidget::currentNetwork() const {
