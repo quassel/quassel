@@ -23,6 +23,7 @@
 
 #include "corebasichandler.h"
 
+class Cipher;
 class Server;
 
 class CoreUserInputHandler : public CoreBasicHandler {
@@ -77,11 +78,11 @@ protected:
 
 private:
   void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
-  void putPrivmsg(const QByteArray &target, const QByteArray &message, bool isEncrypted);
+  void putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher = 0);
   int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
 
 #ifdef HAVE_QCA2
-  QByteArray encrypt(const QString &target, const QByteArray &message) const;
+  QByteArray encrypt(const QString &target, const QByteArray &message, bool *didEncrypt = 0) const;
 #endif
 
   struct Command {
