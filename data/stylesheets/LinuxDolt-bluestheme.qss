@@ -1,3 +1,7 @@
+// LinuxDolt's bluestheme Version 1.1
+
+// Copyright (C) Drew Patridge 2009-2010 <slicersv@gmail.com>
+
 // This file is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; version 2 of the License.
@@ -10,12 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this file.  If not, see <http://www.gnu.org/licenses/>.
 
-// Copyright (C) Drew Patridge 2009
+// ChangeLog:
+
+// Version 1.1 - Updated 2010/06/25
+// - fix Palette colors for changes in qt/kde color hinting
+// -- text changed to a light blueish violet
+// -- button-text changed to a light pure violet
+// - change markerline rule to follow my own coding style
+//   (single line does not exceed 79 cols, additional spacing)
+// - added this ChangeLog and rearranged the file header in general
+
+// Version 1.0-10189b4eb20d1b3b9579a6b51dde697691c18abd - Updated 2010/06/16
+// - automatic change in markerline rule due to UI changes
+//     (see git log for details)
+// -- change by Manuel Nickschas <sputnick@quassel-irc.org>
+
+// Version 1.0 - Updated 2009/11/06
+// - first public git release
 
 // Custom ChatView Colors
 ChatView { background: #00004b; }
-Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 #ff0000, stop: 0.1 transparent); }
-
+Palette {
+  marker-line: qlineargradient( x1: 0, y1: 0, x2: 0, y2: 1,
+				stop: 0 red, stop: 0.1 transparent );
+}
 
 ChatLine[label="highlight"] { foreground: #f0f5ff; background: #00008b; }
 
@@ -80,10 +102,10 @@ QTableView {
 Palette {
   link: #5fffbf; link-visited: #5fffbf;
 
-  window: #a0a5dd; window-text: #00004b; text: #00004b;
+  window: #a0a5dd; window-text: #00004b; text: #cc00ff;
 
   light: #8085b3; midlight: #606593;  button: #404573;
-  mid: #202553; dark: #000533; button-text: #0000b4; }
+  mid: #202553; dark: #000533; button-text: #ff00ff; }
 
 StyledLabel#topicLabel { background: #00004b; }
 MultiLineEdit { background: #00004b; color: #f0f5ff; }
