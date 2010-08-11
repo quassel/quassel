@@ -13,6 +13,30 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.7.0 (not yet released)
+================================
+
+* Bump Qt dependency: we need Qt 4.6 for client and monolithic now
+* Fullscreen mode (F11)
+* CTCP CLIENTINFO support
+* Shortcuts for navigation between chats (Alt+Left/Right/Up/Down) 
+* Add blowfish encryption (/setkey and /delkey; needs QCA2)
+* Shortcut editing for all platforms (!KDE)
+* Improved handling of invites
+* New tray icon for highlights
+* Global away
+* Emacs-style keybindings for the input line
+* Improved markerline behavior
+  - Allow manual setting (Ctrl+R)
+  - Provide shortcut for jumping to the markerline (Ctrl+K)
+* New languages: pt, jp
+* Many bugfixes
+
+Version 0.6.1 (2010-04-16)
+==========================
+
+* Critical bugfixes
+
 Version 0.6.0 (2010-04-14)
 ==========================
 
