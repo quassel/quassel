@@ -29,7 +29,7 @@ Version 0.7.0 (not yet released)
 * Improved markerline behavior
   - Allow manual setting (Ctrl+R)
   - Provide shortcut for jumping to the markerline (Ctrl+K)
-* New languages: pt, jp
+* New languages: pt, ja
 * Many bugfixes
 
 Version 0.6.1 (2010-04-16)
