@@ -162,6 +162,9 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
 }
 
 QByteArray CtcpHandler::pack(const QByteArray &ctcpTag, const QByteArray &message) {
+  if(message.isEmpty())
+    return XDELIM + ctcpTag + XDELIM;
+
   return XDELIM + ctcpTag + ' ' + xdelimQuote(message) + XDELIM;
 }
 
