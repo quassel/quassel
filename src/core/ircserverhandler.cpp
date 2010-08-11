@@ -873,10 +873,12 @@ void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> 
 
   QString nick = serverDecode(params[0]);
   IrcUser *ircuser = network()->ircUser(nick);
+  
+  QDateTime now = QDateTime::currentDateTime();
+  int idleSecs = serverDecode(params[1]).toInt();
+  idleSecs *= -1;
+  
   if(ircuser) {
-    QDateTime now = QDateTime::currentDateTime();
-    int idleSecs = serverDecode(params[1]).toInt();
-    idleSecs *= -1;
     ircuser->setIdleTime(now.addSecs(idleSecs));
     if(params.size() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
       int loginTime = serverDecode(params[2]).toInt();
@@ -884,11 +886,7 @@ void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> 
       emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is logged in since %2").arg(ircuser->nick()).arg(ircuser->loginTime().toString()));
     }
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2 (%3)").arg(ircuser->nick()).arg(secondsToString(ircuser->idleTime().secsTo(now))).arg(ircuser->idleTime().toString()));
-
   } else {
-    QDateTime now = QDateTime::currentDateTime();
-    int idleSecs = serverDecode(params[1]).toInt();
-    idleSecs *= -1;
     QDateTime idleSince = now.addSecs(idleSecs);
     if (params.size() > 3) { // we have a signon time
       int loginTime = serverDecode(params[2]).toInt();
