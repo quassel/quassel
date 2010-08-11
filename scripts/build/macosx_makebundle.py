@@ -16,6 +16,7 @@
 import os
 import os.path
 import sys
+import commands
 
 # ==============================
 #  Constants
@@ -37,7 +38,7 @@ if(os.path.dirname(EXE_NAME)):
     CONTENTS_DIR = os.path.dirname(EXE_NAME) + "/"
 CONTENTS_DIR += BUNDLE_NAME + ".app/Contents/"
 
-BUNDLE_VERSION = "0.3.0"
+BUNDLE_VERSION = commands.getoutput("git --git-dir="+SOURCE_DIR+"/.git/ describe")
 ICON_FILE = "pics/quassel.icns"
 
 def createBundle():
