@@ -393,8 +393,8 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action) 
       case NickCtcpTime:
         Client::userInput(bufferInfo, QString("/CTCP %1 TIME").arg(nick));
         break;
-      case NickCtcpFinger:
-        Client::userInput(bufferInfo, QString("/CTCP %1 FINGER").arg(nick));
+      case NickCtcpClientinfo:
+        Client::userInput(bufferInfo, QString("/CTCP %1 CLIENTINFO").arg(nick));
         break;
       case NickOp:
         Client::userInput(bufferInfo, QString("/OP %1").arg(nick));

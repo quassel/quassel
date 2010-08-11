@@ -188,6 +188,20 @@ void CtcpHandler::handleAction(CtcpType ctcptype, const QString &prefix, const Q
   emit displayMsg(Message::Action, typeByTarget(target), target, param, prefix);
 }
 
+void CtcpHandler::handleClientinfo(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+  Q_UNUSED(target)
+  if(ctcptype == CtcpQuery) {
+    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "CLIENTINFO"))
+      return;
+    reply(nickFromMask(prefix), "CLIENTINFO", QString("ACTION CLIENTINFO PING TIME VERSION"));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP CLIENTINFO request from %1").arg(prefix));
+  } else {
+    // display clientinfo answer
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP CLIENTINFO answer from %1: %2")
+                    .arg(nickFromMask(prefix)).arg(param));
+  }
+}
+
 void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {

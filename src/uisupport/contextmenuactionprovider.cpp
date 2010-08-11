@@ -62,7 +62,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   registerAction(NickCtcpVersion, tr("Version"));
   registerAction(NickCtcpTime, tr("Time"));
   registerAction(NickCtcpPing, tr("Ping"));
-  registerAction(NickCtcpFinger, tr("Finger"));
+  registerAction(NickCtcpClientinfo, tr("Client info"));
   registerAction(NickIgnoreCustom, tr("Custom..."));
 
   // these texts are only dummies! don't think about tr() here!
@@ -106,7 +106,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   nickCtcpMenu->addAction(action(NickCtcpPing));
   nickCtcpMenu->addAction(action(NickCtcpVersion));
   nickCtcpMenu->addAction(action(NickCtcpTime));
-  nickCtcpMenu->addAction(action(NickCtcpFinger));
+  nickCtcpMenu->addAction(action(NickCtcpClientinfo));
   _nickCtcpMenuAction = new Action(tr("CTCP"), 0);
   _nickCtcpMenuAction->setMenu(nickCtcpMenu);
 

@@ -80,7 +80,7 @@ public:
     NickCtcpVersion = 0x040000,
     NickCtcpPing = 0x050000,
     NickCtcpTime = 0x060000,
-    NickCtcpFinger = 0x070000,
+    NickCtcpClientinfo = 0x070000,
     NickOp = 0x080000,
     NickDeop = 0x090000,
     NickVoice = 0x0a0000,
