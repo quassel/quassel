@@ -73,6 +73,7 @@ public slots:
   void handle324(const QString &prefix, const QList<QByteArray> &params);   // RPL_CHANNELMODEIS
   void handle328(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel homepage)
   void handle329(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel creation time)
+  void handle330(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISACCOUNT (quakenet/snircd/undernet)
   void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC
   void handle332(const QString &prefix, const QList<QByteArray> &params);   // RPL_TOPIC
   void handle333(const QString &prefix, const QList<QByteArray> &params);   // Topic set by...

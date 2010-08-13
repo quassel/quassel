@@ -1005,6 +1005,18 @@ void IrcServerHandler::handle329(const QString &prefix, const QList<QByteArray> 
   emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Channel %1 created on %2").arg(channel, time.toString()));
 }
 
+/*  RPL_WHOISACCOUNT: "<nick> <account> :is authed as */
+void IrcServerHandler::handle330(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  if(!checkParamCount("IrcServerHandler::handle330()", params, 3))
+    return;
+
+  QString nick = serverDecode(params[0]);
+  QString account = serverDecode(params[1]);
+
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "",  tr("[Whois] %1 is authed as %2").arg(nick).arg(account));
+}
+
 /* RPL_NOTOPIC */
 void IrcServerHandler::handle331(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
