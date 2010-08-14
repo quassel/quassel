@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
-"PO-Revision-Date: 2010-06-21 14:24+0200\n"
-"Last-Translator: Tomáš Chvátal <scarabeus@gentoo.org>\n"
+"PO-Revision-Date: 2010-08-15 00:48+0200\n"
+"Last-Translator: \n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.1\n"
 "X-Language: cs\n"
 
 #. ts-context AboutDlg
@@ -87,12 +87,12 @@ msgid "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&n
 msgstr "Zvláště bychom rádi poděkovali:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>Johnu \"nox\" Handovi</b></dt><dd>pro skvělý artwork a Quassel logo/ikonku</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Oxygen Team</a></b></dt><dd>pro vytvoření většiny ostatních skvělých ikon, které můžete vidět všude možně v aplikaci</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software (dříve znám jako Trolltech)</a></b></dt><dd>za vytvoření Qt a Qtopia, a pro sponzorování vývoje QuasselTopia s Greenphones a dalších</dd><dt><b><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>pro udržování Qt naživu, a pro sponzorování vývoje Quassel Mobile N810</dd>"
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:112
+#: ../src/core/abstractsqlstorage.cpp:115
 msgid "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Instalované schéma (verze %1) není aktuální. aktualizuji na %2..."
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:114
+#: ../src/core/abstractsqlstorage.cpp:117
 msgid "Upgrade failed..."
 msgstr "Aktualizace selhala..."
 
@@ -586,7 +586,7 @@ msgid "Backlog Fetching"
 msgstr "Stahování historie"
 
 #. ts-context BufferItem
-#: ../src/client/networkmodel.cpp:341
+#: ../src/client/networkmodel.cpp:346
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 - %2 </p>"
 
@@ -809,33 +809,38 @@ msgstr "Současná velikost"
 msgid "Set Marker Line"
 msgstr "Nastavit značící řádku"
 
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:98
+msgid "Go to Marker Line"
+msgstr "Přejít na značící řádku"
+
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:498
+#: ../src/client/networkmodel.cpp:503
 msgid "<b>Channel %1</b>"
 msgstr "<b>Kanál %1</b>"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:501
+#: ../src/client/networkmodel.cpp:506
 msgid "<b>Users:</b> %1"
 msgstr "<b>uživatelé:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:505
+#: ../src/client/networkmodel.cpp:510
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Mód:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:516
+#: ../src/client/networkmodel.cpp:521
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Téma:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:520
+#: ../src/client/networkmodel.cpp:525
 msgid "Not active <br /> Double-click to join"
 msgstr "Neaktivní <br /> Dvojklikem vstupte"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:523
+#: ../src/client/networkmodel.cpp:528
 msgid "<p> %1 </p>"
 msgstr "<p> %1 </p>"
 
@@ -953,7 +958,7 @@ msgstr "Zobrazovat vlastní zprávy"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context MainWin
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-#: ../src/qtui/mainwin.cpp:633
+#: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
 msgstr "Monitor pokecu"
 
@@ -983,7 +988,7 @@ msgid "Configure..."
 msgstr "Nastavit..."
 
 #. ts-context ChatScene
-#: ../src/qtui/chatscene.cpp:627
+#: ../src/qtui/chatscene.cpp:745
 msgid "Copy Selection"
 msgstr "Kopírovat označené"
 
@@ -1359,8 +1364,8 @@ msgstr "Ping"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
-msgid "Finger"
-msgstr "Finger"
+msgid "Client info"
+msgstr "Informace o klientu"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
@@ -1958,97 +1963,97 @@ msgid "Connect to Core"
 msgstr "Připojit k jádru"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:166
+#: ../src/client/coreconnection.cpp:168
 msgid "Network is down"
 msgstr "Síť je mimo provoz"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:200
-#: ../src/client/coreconnection.cpp:315
+#: ../src/client/coreconnection.cpp:202
+#: ../src/client/coreconnection.cpp:321
 msgid "Disconnected"
 msgstr "Odpojeno"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:203
+#: ../src/client/coreconnection.cpp:205
 msgid "Looking up %1..."
 msgstr "Vyhledávám %1..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:206
-#: ../src/client/coreconnection.cpp:443
+#: ../src/client/coreconnection.cpp:208
+#: ../src/client/coreconnection.cpp:450
 msgid "Connecting to %1..."
 msgstr "Připojuji se k %1..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:209
-#: ../src/client/coreconnection.cpp:566
+#: ../src/client/coreconnection.cpp:211
+#: ../src/client/coreconnection.cpp:573
 msgid "Connected to %1"
 msgstr "Připojeno k %1..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:212
+#: ../src/client/coreconnection.cpp:214
 msgid "Disconnecting from %1..."
 msgstr "Odpojeno od %1..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:269
+#: ../src/client/coreconnection.cpp:272
 msgid "The Quassel Core you try to connect to is too old! Please consider upgrading."
 msgstr "Jádro Quasselu, ke kterému se snazíte připojit, je příliš staré! Prosíme zvažte jeho aktualizaci."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:297
+#: ../src/client/coreconnection.cpp:300
 msgid "Invalid data received from core"
 msgstr "Přijata neplatná data od jádra"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:342
+#: ../src/client/coreconnection.cpp:349
 msgid "Disconnected from core."
 msgstr "Odpojit od jádra."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:420
-#: ../src/client/coreconnection.cpp:504
-#: ../src/client/coreconnection.cpp:549
+#: ../src/client/coreconnection.cpp:427
+#: ../src/client/coreconnection.cpp:511
+#: ../src/client/coreconnection.cpp:556
 msgid "Unencrypted connection canceled"
 msgstr "Nešifrované spojení zrušeno"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:450
+#: ../src/client/coreconnection.cpp:457
 msgid "Synchronizing to core..."
 msgstr "Synchronizace s jádrem..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:471
+#: ../src/client/coreconnection.cpp:478
 msgid "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at least core/client protocol v%1 to connect."
 msgstr "<b>Jádro Quasselu, ke kterému se snažíte připojit, je příliš staré!</b><br> Požadovaný je protokol verze %1 pro spojení."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:585
+#: ../src/client/coreconnection.cpp:592
 msgid "Logging in..."
 msgstr "Probíhá přihlášení..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:590
+#: ../src/client/coreconnection.cpp:597
 msgid "Login canceled"
 msgstr "Přihlášení zrušeno"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:615
+#: ../src/client/coreconnection.cpp:622
 msgid "Receiving session state"
 msgstr "Příjem stavu sezení"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:617
+#: ../src/client/coreconnection.cpp:624
 msgid "Synchronizing to %1..."
 msgstr "Synchronizace s %1..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:641
+#: ../src/client/coreconnection.cpp:648
 msgid "Receiving network states"
 msgstr "Příjem stavů sítí"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:691
+#: ../src/client/coreconnection.cpp:698
 msgid "Synchronized to %1"
 msgstr "Synchronizováno s %1"
 
@@ -2233,12 +2238,12 @@ msgid "Core Shutdown"
 msgstr "Vypnutí jádra"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:306
+#: ../src/core/corenetwork.cpp:339
 msgid "Could not connect to %1 (%2)"
 msgstr "Nemohu se spojit s %1 (%2)"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:308
+#: ../src/core/corenetwork.cpp:341
 msgid "Connection failure: %1"
 msgstr "Chyba spojení: %1"
 
@@ -2258,14 +2263,54 @@ msgid "CoreSession::createNetwork(): Trying to create a network that already exi
 msgstr "CoreSession::createNetwork(): Síť s daným názvem již existuje. Aktualizuji místo duplikace!"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:80
+#: ../src/core/coreuserinputhandler.cpp:81
 msgid "away"
 msgstr "pryč"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:149
+#: ../src/core/coreuserinputhandler.cpp:150
 msgid "sending CTCP-%1 request to %2"
 msgstr "posílám %2 požadavek CTCP-%1"
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:173
+msgid "[usage] /delkey <nick|channel> deletes the encryption key for nick or channel or just /delkey when in a channel or query."
+msgstr "[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /delkey, když je na popředí."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:180
+msgid "No key has been set for %1."
+msgstr "Pro %1 není nastavena žádná klávesa."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:193
+msgid "The key for %1 has been deleted."
+msgstr "Klíč pro %1 byl smazán."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:197
+msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA2) library. Contact your distributor about a Quassel package with QCA2 support, or rebuild Quassel with QCA2 present."
+msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA2, nebo znovu sestavte Quassel s dostupnou QCA2."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:461
+msgid "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or channel. /setkey <key> when in a channel or query buffer sets the key for it."
+msgstr "[použití] /setkey <kanál|přezdívka> <klíč> nastaví šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /setkey <klíč>, když je na popředí."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:476
+msgid "The key for %1 has been set."
+msgstr "Klíč pro %1 byl nastaven."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:479
+msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA) library. Contact your distributor about a Quassel package with QCA support, or rebuild Quassel with QCA present."
+msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA, nebo znovu sestavte Quassel s dostupnou QCA."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:587
+msgid "[Error] Could not encrypt your message: %1"
+msgstr "[Chyba] Nemohu zašifrovat vaši zprávu: %1"
 
 #. ts-context CreateIdentityDlg
 #: ../src/qtui/settingspages/createidentitydlg.ui:17
@@ -2288,42 +2333,52 @@ msgid "Duplicate:"
 msgstr "Duplikovat:"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:194
+#: ../src/core/ctcphandler.cpp:197
+msgid "Received CTCP CLIENTINFO request from %1"
+msgstr "Obdržen CTCP CLIENTINFO požadavek od %1"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:200
+msgid "Received CTCP CLIENTINFO answer from %1: %2"
+msgstr "Obdržena CTCP CLIENTINFO odpověď od %1: %2"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:211
 msgid "Received CTCP PING request from %1"
 msgstr "Obdržen CTCP PING požadavek od %1"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:199
+#: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
 msgstr "Obdržena CTCP PING odpověď od %1 s %2 vteřinovým odstupem"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:212
+#: ../src/core/ctcphandler.cpp:229
 msgid "Received CTCP VERSION request by %1"
 msgstr "Obdržen CTCP VERSION požadavek od %1"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:215
+#: ../src/core/ctcphandler.cpp:232
 msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "Obdržena CTCP VERSION odpověď od %1: %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:226
+#: ../src/core/ctcphandler.cpp:243
 msgid "Received CTCP TIME request by %1"
 msgstr "Obdržen CTCP TIME požadavek od %1"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:229
+#: ../src/core/ctcphandler.cpp:246
 msgid "Received CTCP TIME answer from %1: %2"
 msgstr "Obdržena CTCP TIME odpověď od %1: %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:238
+#: ../src/core/ctcphandler.cpp:255
 msgid "Received unknown CTCP %1 by %2"
 msgstr "Obdrženo neznáme CTCP %1 od %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:240
+#: ../src/core/ctcphandler.cpp:257
 msgid " with arguments: %1"
 msgstr "s argumenty: %1"
 
@@ -2646,7 +2701,7 @@ msgstr "http://quassel-irc.org - Pohodlné vykecávání. Odkudkoliv."
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:30
-#: ../src/qtui/mainwin.cpp:310
+#: ../src/qtui/mainwin.cpp:312
 msgid "General"
 msgstr "Obecné"
 
@@ -2824,7 +2879,7 @@ msgstr ""
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
-#: ../src/qtui/mainwin.cpp:912
+#: ../src/qtui/mainwin.cpp:1044
 msgid "Continue"
 msgstr "Pokračovat"
 
@@ -3376,23 +3431,28 @@ msgstr "Uživatelé"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworkModel
 #: ../src/client/irclistmodel.cpp:61
-#: ../src/qtui/mainwin.cpp:671
-#: ../src/client/networkmodel.cpp:847
+#: ../src/qtui/mainwin.cpp:781
+#: ../src/client/networkmodel.cpp:852
 msgid "Topic"
 msgstr "Téma"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:557
+#: ../src/core/ircserverhandler.cpp:212
+msgid "%1 invited you to channel %2"
+msgstr "%1 vás pozval do kanálu %2"
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:584
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1 změnil téma pro %2 na: \"%3\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:607
+#: ../src/core/ircserverhandler.cpp:634
 msgid "Received RPL_ISUPPORT (005) without parameters!"
 msgstr "Obdrženo RPL_ISUPPORT (005) bez parametrů!"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:615
+#: ../src/core/ircserverhandler.cpp:642
 msgid "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"
 msgstr "Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému chování!"
 
@@ -3410,161 +3470,166 @@ msgstr "Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neoček�
 #. Error Message
 #. ----------
 #. Topic Message
+#. ----------
+#. Invite Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/core/ircserverhandler.cpp:632
-#: ../src/core/ircserverhandler.cpp:639
-#: ../src/core/ircserverhandler.cpp:646
-#: ../src/core/ircserverhandler.cpp:653
-#: ../src/uisupport/uistyle.cpp:575
-#: ../src/uisupport/uistyle.cpp:578
-#: ../src/uisupport/uistyle.cpp:618
-#: ../src/uisupport/uistyle.cpp:621
-#: ../src/uisupport/uistyle.cpp:624
-#: ../src/uisupport/uistyle.cpp:631
-#: ../src/uisupport/uistyle.cpp:732
+#: ../src/core/ircserverhandler.cpp:662
+#: ../src/core/ircserverhandler.cpp:669
+#: ../src/core/ircserverhandler.cpp:676
+#: ../src/core/ircserverhandler.cpp:683
+#: ../src/uisupport/uistyle.cpp:577
+#: ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:620
+#: ../src/uisupport/uistyle.cpp:623
+#: ../src/uisupport/uistyle.cpp:626
+#: ../src/uisupport/uistyle.cpp:633
+#: ../src/uisupport/uistyle.cpp:665
+#: ../src/uisupport/uistyle.cpp:739
 msgid "%1"
 msgstr "%1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:688
+#: ../src/core/ircserverhandler.cpp:718
 msgid "[Whois] %1 is away: \"%2\""
 msgstr "[Whois] %1 je pryč: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:694
-#: ../src/core/ircserverhandler.cpp:699
+#: ../src/core/ircserverhandler.cpp:724
+#: ../src/core/ircserverhandler.cpp:729
 msgid "%1 is away: \"%2\""
 msgstr "%1 je fuč: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:743
-#: ../src/core/ircserverhandler.cpp:757
-#: ../src/core/ircserverhandler.cpp:791
-#: ../src/core/ircserverhandler.cpp:807
-#: ../src/core/ircserverhandler.cpp:868
-#: ../src/core/ircserverhandler.cpp:900
+#: ../src/core/ircserverhandler.cpp:773
+#: ../src/core/ircserverhandler.cpp:787
+#: ../src/core/ircserverhandler.cpp:822
+#: ../src/core/ircserverhandler.cpp:838
+#: ../src/core/ircserverhandler.cpp:906
+#: ../src/core/ircserverhandler.cpp:938
 msgid "[Whois] %1"
 msgstr "[Whois] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:772
-#: ../src/core/ircserverhandler.cpp:774
+#: ../src/core/ircserverhandler.cpp:802
+#: ../src/core/ircserverhandler.cpp:805
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 je %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:789
+#: ../src/core/ircserverhandler.cpp:820
 msgid "%1 is online via %2 (%3)"
 msgstr "%1 je online skrze %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:793
-#: ../src/core/ircserverhandler.cpp:1071
+#: ../src/core/ircserverhandler.cpp:824
+#: ../src/core/ircserverhandler.cpp:1131
 msgid "[Whowas] %1"
 msgstr "[Whowas] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:819
+#: ../src/core/ircserverhandler.cpp:850
 msgid "[Whowas] %1 was %2 (%3)"
 msgstr "[Whowas] %1 byl %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:833
+#: ../src/core/ircserverhandler.cpp:864
 msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] Konec /WHO seznamu pro %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:853
+#: ../src/core/ircserverhandler.cpp:886
+#: ../src/core/ircserverhandler.cpp:894
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 je přihlášen od %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:855
+#: ../src/core/ircserverhandler.cpp:888
+#: ../src/core/ircserverhandler.cpp:896
 msgid "[Whois] %1 is idling for %2 (%3)"
 msgstr "[Whois] %1 je nečinný po %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:858
-msgid "[Whois] idle message: %1"
-msgstr "[Whois] důvod nečinnosti: %1"
-
-#. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:890
+#: ../src/core/ircserverhandler.cpp:928
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr "[Whois] %1 je uživatelem kanálů: %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:892
+#: ../src/core/ircserverhandler.cpp:930
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr "[Whois] %1 je mluvka na kanálech: %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:894
+#: ../src/core/ircserverhandler.cpp:932
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr "[Whois] %1 je dozorce na kanálech: %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:922
+#: ../src/core/ircserverhandler.cpp:960
 msgid "Channel %1 has %2 users. Topic is: %3"
 msgstr "Kanál %1 má %2 uživatelů. Tématem je: %3"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:931
+#: ../src/core/ircserverhandler.cpp:969
 msgid "End of channel list"
 msgstr "Konec seznamu s kanály"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:949
+#: ../src/core/ircserverhandler.cpp:987
 msgid "Homepage for %1 is %2"
 msgstr "Domovská stránka pro %1 je %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:967
+#: ../src/core/ircserverhandler.cpp:1005
 msgid "Channel %1 created on %2"
 msgstr "Kanál %1 byl vytvořen %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:981
+#: ../src/core/ircserverhandler.cpp:1019
 msgid "No topic is set for %1."
 msgstr "Pro %1 není nastaveno žádné téma."
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:996
+#: ../src/core/ircserverhandler.cpp:1039
 msgid "Topic for %1 is \"%2\""
 msgstr "Téma pro %1 je \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1007
+#: ../src/core/ircserverhandler.cpp:1050
 msgid "Topic set by %1 on %2"
 msgstr "Téma nastavil %1 v %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1030
+#: ../src/core/ircserverhandler.cpp:1067
+msgid "%1 has been invited to %2"
+msgstr "%1 byl pozván do %2"
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:1090
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1089
+#: ../src/core/ircserverhandler.cpp:1149
 msgid "Nick %1 contains illegal characters"
 msgstr "Přezdívka %1 obsahuje neplatné znaky"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1100
+#: ../src/core/ircserverhandler.cpp:1160
 msgid "Nick already in use: %1"
 msgstr "Přezdívka se již používá: %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1117
+#: ../src/core/ircserverhandler.cpp:1177
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr "Přezdívka/kanál je dočasně nedostupná: %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1210
+#: ../src/core/ircserverhandler.cpp:1270
 msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr "Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro pokračování použijte: /nick <jiná_přezdívka>"
 
 #. ts-context IrcUserItem
-#: ../src/client/networkmodel.cpp:801
+#: ../src/client/networkmodel.cpp:806
 msgid " is away"
 msgstr " je fuč"
 
@@ -3572,8 +3637,8 @@ msgstr " je fuč"
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:816
-#: ../src/client/networkmodel.cpp:442
+#: ../src/client/networkmodel.cpp:821
+#: ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
 msgstr "nic nedělá od %1"
 
@@ -3581,8 +3646,8 @@ msgstr "nic nedělá od %1"
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:819
-#: ../src/client/networkmodel.cpp:445
+#: ../src/client/networkmodel.cpp:824
+#: ../src/client/networkmodel.cpp:450
 msgid "login time: %1"
 msgstr "čas přihlášení: %1"
 
@@ -3590,8 +3655,8 @@ msgstr "čas přihlášení: %1"
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:822
-#: ../src/client/networkmodel.cpp:448
+#: ../src/client/networkmodel.cpp:827
+#: ../src/client/networkmodel.cpp:453
 msgid "server: %1"
 msgstr "server: %1"
 
@@ -3789,362 +3854,393 @@ msgid "Reassign"
 msgstr "Přeřadit"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:312
+#: ../src/qtui/mainwin.cpp:314
 msgid "&Connect to Core..."
 msgstr "Přip&ojit k jádru..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:314
+#: ../src/qtui/mainwin.cpp:316
 msgid "&Disconnect from Core"
 msgstr "O&dpojit od jádra"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:316
+#: ../src/qtui/mainwin.cpp:318
 msgid "Core &Info..."
 msgstr "&Informace jádra..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:318
+#: ../src/qtui/mainwin.cpp:320
 msgid "Configure &Networks..."
 msgstr "Nastavit &sítě..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:321
+#: ../src/qtui/mainwin.cpp:323
 msgid "&Quit"
 msgstr "&Ukončit"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:325
+#: ../src/qtui/mainwin.cpp:327
 msgid "&Configure Chat Lists..."
 msgstr "&Nastavit seznam pokeců..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:328
+#: ../src/qtui/mainwin.cpp:330
 msgid "&Lock Layout"
 msgstr "U&zamknout rozvržení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:332
+#: ../src/qtui/mainwin.cpp:334
 msgid "Show &Search Bar"
 msgstr "Zobrazit vy&hledávání"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:334
+#: ../src/qtui/mainwin.cpp:336
 msgid "Show Away Log"
 msgstr "Zobrazit Log pro Pryč"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:336
+#: ../src/qtui/mainwin.cpp:338
 msgid "Show &Menubar"
 msgstr "Zobrazit Hlavní &nabídku"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:339
+#: ../src/qtui/mainwin.cpp:341
 msgid "Show Status &Bar"
 msgstr "Zo&brazit stavový řádek"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:343
+#: ../src/qtui/mainwin.cpp:1185
+msgid "&Fullscreen mode"
+msgstr "Režim &celé obrazovky"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:347
 msgid "Configure &Shortcuts..."
 msgstr "Nastavit zk&ratky..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:345
+#: ../src/qtui/mainwin.cpp:349
 msgid "&Configure Quassel..."
 msgstr "&Nastavit Quassel..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:349
+#: ../src/qtui/mainwin.cpp:353
 msgid "&About Quassel"
 msgstr "O progr&amu Quassel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:351
+#: ../src/qtui/mainwin.cpp:355
 msgid "About &Qt"
 msgstr "O &Qt"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:353
+#: ../src/qtui/mainwin.cpp:357
 msgid "Debug &NetworkModel"
 msgstr "Ladění Sít&ového-Modelu"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:359
 msgid "Debug &BufferViewOverlay"
 msgstr "Ladění vrstvy P&ohledu na záložky"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:361
 msgid "Debug &MessageModel"
 msgstr "Ladění &Modelu-Zpráv"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:359
+#: ../src/qtui/mainwin.cpp:363
 msgid "Debug &HotList"
 msgstr "Ladění &Seznamů rozhovorů"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:365
 msgid "Debug &Log"
 msgstr "Ladící &Log"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:363
+#: ../src/qtui/mainwin.cpp:367
 msgid "Reload Stylesheet"
 msgstr "Pře-načíst styl"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:367
+#: ../src/qtui/mainwin.cpp:371
 msgid "Navigation"
 msgstr "Navigace"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:369
+#: ../src/qtui/mainwin.cpp:373
 msgid "Jump to hot chat"
 msgstr "Přejít na další aktivní záložku"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:385
 msgid "Set Quick Access #0"
 msgstr "Nastavit rychlý přístup #0"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:383
+#: ../src/qtui/mainwin.cpp:387
 msgid "Set Quick Access #1"
 msgstr "Nastavit rychlý přístup #1"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:385
+#: ../src/qtui/mainwin.cpp:389
 msgid "Set Quick Access #2"
 msgstr "Nastavit rychlý přístup #2"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:387
+#: ../src/qtui/mainwin.cpp:391
 msgid "Set Quick Access #3"
 msgstr "Nastavit rychlý přístup #3"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:389
+#: ../src/qtui/mainwin.cpp:393
 msgid "Set Quick Access #4"
 msgstr "Nastavit rychlý přístup #4"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:391
+#: ../src/qtui/mainwin.cpp:395
 msgid "Set Quick Access #5"
 msgstr "Nastavit rychlý přístup 5"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:393
+#: ../src/qtui/mainwin.cpp:397
 msgid "Set Quick Access #6"
 msgstr "Nastavit rychlý přístup #6"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:395
+#: ../src/qtui/mainwin.cpp:399
 msgid "Set Quick Access #7"
 msgstr "Nastavit rychlý přístup #7"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:397
+#: ../src/qtui/mainwin.cpp:401
 msgid "Set Quick Access #8"
 msgstr "Nastavit rychlý přístup #8"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:399
+#: ../src/qtui/mainwin.cpp:403
 msgid "Set Quick Access #9"
 msgstr "Nastavit rychlý přístup #9"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:402
+#: ../src/qtui/mainwin.cpp:406
 msgid "Quick Access #0"
 msgstr "Rychlý přístup #0"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:404
+#: ../src/qtui/mainwin.cpp:408
 msgid "Quick Access #1"
 msgstr "Rychlý přístup #1"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:406
+#: ../src/qtui/mainwin.cpp:410
 msgid "Quick Access #2"
 msgstr "Rychlý přístup #2"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:408
+#: ../src/qtui/mainwin.cpp:412
 msgid "Quick Access #3"
 msgstr "Rychlý přístup #3"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:410
+#: ../src/qtui/mainwin.cpp:414
 msgid "Quick Access #4"
 msgstr "Rychlý přístup #4"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:412
+#: ../src/qtui/mainwin.cpp:416
 msgid "Quick Access #5"
 msgstr "Rychlý přístup #5"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:414
+#: ../src/qtui/mainwin.cpp:418
 msgid "Quick Access #6"
 msgstr "Rychlý přístup #6"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:416
+#: ../src/qtui/mainwin.cpp:420
 msgid "Quick Access #7"
 msgstr "Rychlý přístup #7"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:422
 msgid "Quick Access #8"
 msgstr "Rychlý přístup #8"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:420
+#: ../src/qtui/mainwin.cpp:424
 msgid "Quick Access #9"
 msgstr "Rychlý přístup #9"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:427
+#: ../src/qtui/mainwin.cpp:428
+msgid "Activate Next Chat List"
+msgstr "Aktivovat další rozhovor"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:430
+msgid "Activate Previous Chat List"
+msgstr "Aktivovat předchozí rozhovor"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:432
+msgid "Go to Next Chat"
+msgstr "Přejít na další rozhovor"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:434
+msgid "Go to Previous Chat"
+msgstr "Přejít na předchozí rozhovor"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:441
 msgid "&File"
 msgstr "S&oubor"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:440
+#: ../src/qtui/mainwin.cpp:454
 msgid "&Networks"
 msgstr "&Sítě"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:446
+#: ../src/qtui/mainwin.cpp:460
 msgid "&View"
 msgstr "&Záložky"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:447
+#: ../src/qtui/mainwin.cpp:461
 msgid "&Chat Lists"
 msgstr "&Seznam pokeců"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:449
+#: ../src/qtui/mainwin.cpp:463
 msgid "&Toolbars"
 msgstr "Liš&ty"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:463
+#: ../src/qtui/mainwin.cpp:477
 msgid "&Settings"
 msgstr "Na&stavení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:472
+#: ../src/qtui/mainwin.cpp:486
 msgid "&Help"
 msgstr "&Nápověda"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:480
+#: ../src/qtui/mainwin.cpp:494
 msgid "Debug"
 msgstr "Debug"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:613
+#: ../src/qtui/mainwin.cpp:723
 msgid "Nicks"
 msgstr "Přezdívky"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:622
+#: ../src/qtui/mainwin.cpp:732
 msgid "Show Nick List"
 msgstr "Zobrazit seznam přezdívek"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:645
+#: ../src/qtui/mainwin.cpp:755
 msgid "Show Chat Monitor"
 msgstr "Zobrazí monitor pokecu"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:649
+#: ../src/qtui/mainwin.cpp:759
 msgid "Inputline"
 msgstr "Vstupní řádka"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:658
+#: ../src/qtui/mainwin.cpp:768
 msgid "Show Input Line"
 msgstr "Zobrazit řádku se vstupem"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:683
+#: ../src/qtui/mainwin.cpp:793
 msgid "Show Topic Line"
 msgstr "Zobrazit řádek s tématem"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:756
+#: ../src/qtui/mainwin.cpp:871
 msgid "Main Toolbar"
 msgstr "Hlavní nástrojová lišta"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:795
+#: ../src/qtui/mainwin.cpp:910
 msgid "Connected to core."
 msgstr "Připojen k jádru."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:869
+#: ../src/qtui/mainwin.cpp:1001
 msgid "Not connected to core."
 msgstr "Nepřipojen k jádru."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:883
-#: ../src/qtui/mainwin.cpp:891
+#: ../src/qtui/mainwin.cpp:1015
+#: ../src/qtui/mainwin.cpp:1023
 msgid "Unencrypted Connection"
 msgstr "Nešifrované spojení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:883
+#: ../src/qtui/mainwin.cpp:1015
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>Váš klient nepodporuje šifrování skrze SSL</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:885
-#: ../src/qtui/mainwin.cpp:893
+#: ../src/qtui/mainwin.cpp:1017
+#: ../src/qtui/mainwin.cpp:1025
 msgid "Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."
 msgstr "Citlivá data, například hesla, budou přenášena k jádru Quasselu bez použití šifrování."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:891
+#: ../src/qtui/mainwin.cpp:1023
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Vaše jádro nepodporuje šifrování skrze SSL</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:908
-#: ../src/qtui/mainwin.cpp:928
+#: ../src/qtui/mainwin.cpp:1040
+#: ../src/qtui/mainwin.cpp:1060
 msgid "Untrusted Security Certificate"
 msgstr "Nedůvěryhodný bezpečnostní certifikát"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:909
+#: ../src/qtui/mainwin.cpp:1041
 msgid "<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>"
 msgstr "<b>SSL certifikát poskytnutý jádrem %1 je nedůvěryhodný z následujících důvodů:</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:913
+#: ../src/qtui/mainwin.cpp:1045
 msgid "Show Certificate"
 msgstr "Zobrazit certifikát"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:929
+#: ../src/qtui/mainwin.cpp:1061
 msgid "Would you like to accept this certificate forever without being prompted?"
 msgstr "Chcete tento certifikát přijmout na trvalo a vyhnout se opětovnému schvalování?"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:931
+#: ../src/qtui/mainwin.cpp:1063
 msgid "Current Session Only"
 msgstr "Pouze současné sezení"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:932
+#: ../src/qtui/mainwin.cpp:1064
 msgid "Forever"
 msgstr "Navždy"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:941
+#: ../src/qtui/mainwin.cpp:1073
 msgid "Core Connection Error"
 msgstr "Chyba spojení s jádrem"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:1190
+msgid "&Normal mode"
+msgstr "&Normální režim"
 
 #. ts-context MessageModel
 #: ../src/client/messagemodel.cpp:375
@@ -4227,7 +4323,7 @@ msgid "Please enter a network name:"
 msgstr "Prosím zadejte název sítě:"
 
 #. ts-context NetworkItem
-#: ../src/client/networkmodel.cpp:195
+#: ../src/client/networkmodel.cpp:196
 msgid "Server: %1"
 msgstr "Server: %1"
 
@@ -4235,7 +4331,7 @@ msgstr "Server: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:196
+#: ../src/client/networkmodel.cpp:197
 #: ../src/qtui/topicwidget.cpp:106
 msgid "Users: %1"
 msgstr "Uživatelé: %1"
@@ -4244,18 +4340,18 @@ msgstr "Uživatelé: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:199
+#: ../src/client/networkmodel.cpp:200
 #: ../src/qtui/topicwidget.cpp:107
 msgid "Lag: %1 msecs"
 msgstr "Zpoždění: %1 msecs"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Chat"
 msgstr "Pokec"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Nick Count"
 msgstr "Počet přezdívek"
 
@@ -4584,7 +4680,7 @@ msgstr "Tento průvodce vám pomůže nastavit výchozí identitu a spojení k I
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:121
 #: ../src/uisupport/qssparser.cpp:166
-#: ../src/uisupport/qssparser.cpp:314
+#: ../src/uisupport/qssparser.cpp:316
 msgid "Invalid block declaration: %1"
 msgstr "Neplatná deklarace bloku: %1"
 
@@ -4604,116 +4700,116 @@ msgid "Invalid subelement name in %1"
 msgstr "Neplatný název pod-elementu v %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:234
+#: ../src/uisupport/qssparser.cpp:236
 msgid "Invalid message type in %1"
 msgstr "Neplatný typ zprávy v %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:243
+#: ../src/uisupport/qssparser.cpp:245
 msgid "Invalid condition %1"
 msgstr "Neplatný stav: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:255
+#: ../src/uisupport/qssparser.cpp:257
 msgid "Invalid message label: %1"
 msgstr "Neplatný popisek zprávy: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:266
+#: ../src/uisupport/qssparser.cpp:268
 msgid "Invalid senderhash specification: %1"
 msgstr "Neplatná specifikace hash odesílatele: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:270
+#: ../src/uisupport/qssparser.cpp:272
 msgid "Senderhash can be at most \"0x0f\"!"
 msgstr "Hash odesílatele může být maximálně \"0x0f\"!"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:285
+#: ../src/uisupport/qssparser.cpp:287
 msgid "Invalid format name: %1"
 msgstr "Neplatný název formátu: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:292
+#: ../src/uisupport/qssparser.cpp:294
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
 msgstr "Neplatná specifikace IRC barvy (musí být mezi 00 a 0f): %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:300
+#: ../src/uisupport/qssparser.cpp:302
 msgid "Unhandled condition: %1"
 msgstr "Neobsloužený stav: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:329
+#: ../src/uisupport/qssparser.cpp:331
 msgid "Invalid proplist %1"
 msgstr "Neplatný seznam vlastností: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:348
+#: ../src/uisupport/qssparser.cpp:350
 msgid "Invalid chatlist item type %1"
 msgstr "Neplatný typ položky seznamu rozhovorů: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:364
+#: ../src/uisupport/qssparser.cpp:366
 msgid "Invalid chatlist state %1"
 msgstr "Neplatný stav seznamu pokeců %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:390
+#: ../src/uisupport/qssparser.cpp:392
 msgid "Invalid property declaration: %1"
 msgstr "Neplatná deklarace vlastnosti: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:414
+#: ../src/uisupport/qssparser.cpp:416
 msgid "Invalid font property: %1"
 msgstr "Neplatná vlastnost písma: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:420
+#: ../src/uisupport/qssparser.cpp:422
 msgid "Unknown ChatLine property: %1"
 msgstr "Neznámá vlastnost ChatLine: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:442
+#: ../src/uisupport/qssparser.cpp:444
 msgid "Invalid palette color role specification: %1"
 msgstr "Neplatná specifikace role barevné palety: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:449
+#: ../src/uisupport/qssparser.cpp:451
 msgid "Unknown palette color role: %1"
 msgstr "Neznámá role barevné palety: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:456
-#: ../src/uisupport/qssparser.cpp:478
-#: ../src/uisupport/qssparser.cpp:499
+#: ../src/uisupport/qssparser.cpp:458
+#: ../src/uisupport/qssparser.cpp:481
+#: ../src/uisupport/qssparser.cpp:503
 msgid "Invalid gradient declaration: %1"
 msgstr "Neplatná deklarace gradientu: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:465
-#: ../src/uisupport/qssparser.cpp:486
-#: ../src/uisupport/qssparser.cpp:509
+#: ../src/uisupport/qssparser.cpp:467
+#: ../src/uisupport/qssparser.cpp:489
+#: ../src/uisupport/qssparser.cpp:513
 msgid "Invalid gradient stops list: %1"
 msgstr "Neplatný seznam zastavení gradientu: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:605
+#: ../src/uisupport/qssparser.cpp:610
 msgid "Invalid font specification: %1"
 msgstr "Neplatná specifikace písma: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:644
+#: ../src/uisupport/qssparser.cpp:649
 msgid "Invalid font style specification: %1"
 msgstr "Neplatná specifikace stylu písma: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:657
+#: ../src/uisupport/qssparser.cpp:662
 msgid "Invalid font weight specification: %1"
 msgstr "Neplatná specifikace proporcí písma: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:667
+#: ../src/uisupport/qssparser.cpp:672
 msgid "Invalid font size specification: %1"
 msgstr "Neplatná specifikace velikosti písma: %1"
 
@@ -4743,7 +4839,7 @@ msgid "sec"
 msgstr "sec"
 
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:424
+#: ../src/client/networkmodel.cpp:429
 msgid "<b>Query with %1</b>"
 msgstr "<b>Pokec s %1</b>"
 
@@ -5262,150 +5358,155 @@ msgstr "Rozhraní Tématu"
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:581
+#: ../src/uisupport/uistyle.cpp:583
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:585
+#: ../src/uisupport/uistyle.cpp:587
 msgid "You are now known as %DN%1%DN"
 msgstr "Nyní jste znám jako %DN%1%DN"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:586
+#: ../src/uisupport/uistyle.cpp:588
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN je nyní znám jako %DN%2%DN"
 
 #. Mode Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:590
+#: ../src/uisupport/uistyle.cpp:592
 msgid "User mode: %DM%1%DM"
 msgstr "Uživatelský režim: %DM%1%DM"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:591
+#: ../src/uisupport/uistyle.cpp:593
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "Režim %DM%1%DM od %DN%2%DN"
 
 #. Join Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:595
+#: ../src/uisupport/uistyle.cpp:597
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH vlezl do %DC%4%DC"
 
 #. Part Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:598
+#: ../src/uisupport/uistyle.cpp:600
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH opustil %DC%4%DC"
 
 #. Quit Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:603
+#: ../src/uisupport/uistyle.cpp:605
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH to zabalil"
 
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:610
+#: ../src/uisupport/uistyle.cpp:612
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN vykopnul %DN%2%DN z %DC%3%DC"
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:627
+#: ../src/uisupport/uistyle.cpp:629
 msgid "{Day changed to %1}"
 msgstr "{Den: %1}"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:639
+#: ../src/uisupport/uistyle.cpp:641
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr "Netsplit mezi %DH%1%DH a %DH%2%DH skončil. Vrátili se: "
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:643
-#: ../src/uisupport/uistyle.cpp:658
+#: ../src/uisupport/uistyle.cpp:645
+#: ../src/uisupport/uistyle.cpp:660
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN (%2 více)"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:653
+#: ../src/uisupport/uistyle.cpp:655
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "Netsplit mezi %DH%1%DH a %DH%2%DH. Opustili nás: "
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:662
-#: ../src/uisupport/uistyle.cpp:700
+#: ../src/uisupport/uistyle.cpp:667
+#: ../src/uisupport/uistyle.cpp:705
 msgid "[%1]"
 msgstr "[%1]"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:698
+#: ../src/uisupport/uistyle.cpp:703
 msgid "<%1>"
 msgstr "<%1>"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:702
+#: ../src/uisupport/uistyle.cpp:707
 msgid "-*-"
 msgstr "-*-"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:704
+#: ../src/uisupport/uistyle.cpp:709
 msgid "<->"
 msgstr "<->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:706
+#: ../src/uisupport/uistyle.cpp:711
 msgid "***"
 msgstr "***"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:708
+#: ../src/uisupport/uistyle.cpp:713
 msgid "-->"
 msgstr "-->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:710
-#: ../src/uisupport/uistyle.cpp:712
+#: ../src/uisupport/uistyle.cpp:715
+#: ../src/uisupport/uistyle.cpp:717
 msgid "<--"
 msgstr "<--"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:714
+#: ../src/uisupport/uistyle.cpp:719
 msgid "<-*"
 msgstr "<-*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:716
+#: ../src/uisupport/uistyle.cpp:721
 msgid "<-x"
 msgstr "<-x"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:718
-#: ../src/uisupport/uistyle.cpp:720
-#: ../src/uisupport/uistyle.cpp:722
-#: ../src/uisupport/uistyle.cpp:726
+#: ../src/uisupport/uistyle.cpp:723
+#: ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:727
+#: ../src/uisupport/uistyle.cpp:731
 msgid "*"
 msgstr "*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:724
+#: ../src/uisupport/uistyle.cpp:729
 msgid "-"
 msgstr "-"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:728
+#: ../src/uisupport/uistyle.cpp:733
 msgid "=>"
 msgstr "=>"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:730
+#: ../src/uisupport/uistyle.cpp:735
 msgid "<="
 msgstr "<="
 
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:737
+msgid "->"
+msgstr "->"
+
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:692
+#: ../src/client/networkmodel.cpp:697
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
 msgstr[0] "%n Vlastník"
@@ -5413,7 +5514,7 @@ msgstr[1] "%n Vlastníci"
 msgstr[2] "%n Vlastníků"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:693
+#: ../src/client/networkmodel.cpp:698
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
 msgstr[0] "%n Správce"
@@ -5421,7 +5522,7 @@ msgstr[1] "%n Správci"
 msgstr[2] "%n Správců"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:694
+#: ../src/client/networkmodel.cpp:699
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
 msgstr[0] "%n Dozorce"
@@ -5429,7 +5530,7 @@ msgstr[1] "%n Dozorci"
 msgstr[2] "%n Dozorců"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:695
+#: ../src/client/networkmodel.cpp:700
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
 msgstr[0] "%n Bachař"
@@ -5437,7 +5538,7 @@ msgstr[1] "%n Bachaři"
 msgstr[2] "%n Bachařů"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:696
+#: ../src/client/networkmodel.cpp:701
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
 msgstr[0] "%n Mluvka"
@@ -5445,15 +5546,9 @@ msgstr[1] "%n Mluvky"
 msgstr[2] "%n Mluvek"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:697
+#: ../src/client/networkmodel.cpp:702
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
 msgstr[0] "%n Uživatel"
 msgstr[1] "%n Uživatelé"
 msgstr[2] "%n Uživatelů"
-
-#~ msgid "Add Buffers Automatically:"
-#~ msgstr "Přidávat záložky automaticky:"
-
-#~ msgid "Hide inactive buffers:"
-#~ msgstr "Skrýt neaktivní záložky:"
