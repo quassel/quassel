@@ -26,6 +26,7 @@
 #  include <KMenuBar>
 #  include <KShortcutsDialog>
 #  include <KStatusBar>
+#  include <KToggleFullScreenAction>
 #  include <KToolBar>
 #  include <KWindowSystem>
 #endif
@@ -340,8 +341,15 @@ void MainWin::setupActions() {
 
   coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
                                                 0, 0))->setCheckable(true);
-  coll->addAction("ToggleFullscreen", new Action(SmallIcon("window_fullscreen"), tr("&Fullscreen mode"), coll,
-                                                  this, SLOT(toggleFullscreen()), QKeySequence(Qt::Key_F11)));
+
+#ifdef HAVE_KDE
+  QAction *fullScreenAct = KStandardAction::fullScreen(this, SLOT(toggleFullscreen()), this, coll);
+#else
+  QAction *fullScreenAct = new Action(SmallIcon("view-fullscreen"), tr("&Full Screen Mode"), coll,
+                             this, SLOT(toggleFullscreen()), QKeySequence(Qt::Key_F11));
+  fullScreenAct->setCheckable(true);
+#endif
+  coll->addAction("ToggleFullscreen", fullScreenAct);
 
   // Settings
   coll->addAction("ConfigureShortcuts", new Action(SmallIcon("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
@@ -1177,18 +1185,10 @@ void MainWin::showShortcutsDlg() {
 }
 
 void MainWin::toggleFullscreen() {
-  QAction *action = QtUi::actionCollection("General")->action("ToggleFullscreen");
-
-  if(isFullScreen()) {
+  if(isFullScreen())
     showNormal();
-    action->setIcon(SmallIcon("window_fullscreen"));
-    action->setText(tr("&Fullscreen mode"));
-  }
-  else {
+  else
     showFullScreen();
-    action->setIcon(SmallIcon("window_nofullscreen"));
-    action->setText(tr("&Normal mode"));
-  }
 }
 
 /********************************************************************************************************/
