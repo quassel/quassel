@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
 #endif
 #ifndef BUILD_QTUI
   // put core-only arguments here
-  cliParser->addOption("listen <address>[,<address[,...]]>", 0, "The address(es) quasselcore will listen on", "0.0.0.0,::");
+  cliParser->addOption("listen <address>[,<address[,...]]>", 0, "The address(es) quasselcore will listen on", "::,0.0.0.0");
   cliParser->addOption("port <port>",'p', "The port quasselcore will listen at", QString("4242"));
   cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
   cliParser->addOption("logfile <path>", 'l', "Path to logfile");
