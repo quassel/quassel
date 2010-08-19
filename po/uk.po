@@ -6,17 +6,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: quassel\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-04-18 12:31+0000\n"
-"PO-Revision-Date: 2010-04-18 17:47+0300\n"
+"POT-Creation-Date: 2010-08-11 22:01+0000\n"
+"PO-Revision-Date: 2010-08-20 05:52+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@gmail.com>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-04-18 14:36+0000\n"
-"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-08-20 05:56+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -88,7 +88,8 @@ msgstr "&Подяки"
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:32
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Версія:</b> %1<br><b>Версія протоколу:</b> %2<br><b>Зібрано:</b> %3"
+msgstr ""
+"<b>Версія:</b> %1<br><b>Версія протоколу:</b> %2<br><b>Зібрано:</b> %3"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:46
@@ -163,13 +164,13 @@ msgstr ""
 "розробки Quassel Mobile наданням декількох N810</dd>"
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:112
+#: ../src/core/abstractsqlstorage.cpp:115
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Встановлена схема (версія %1) є застарілою. Оновлення до версії %2…"
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:114
+#: ../src/core/abstractsqlstorage.cpp:117
 msgid "Upgrade failed..."
 msgstr "Спроба оновлення зазнала невдачі…"
 
@@ -221,30 +222,56 @@ msgstr "Замінник"
 msgid "Expansion"
 msgstr "Значення"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSearchBar
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardIntroPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardStorageSelectionPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardSyncPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IndicatorNotificationConfigWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MsgProcessorStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context PhononNotificationConfigWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSearchBar
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardIntroPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardStorageSelectionPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardSyncPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IndicatorNotificationConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MsgProcessorStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context PhononNotificationConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:13
 #: ../src/qtui/settingspages/appearancesettingspage.ui:14
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
@@ -267,32 +294,43 @@ msgstr "Значення"
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
 #: ../src/qtui/settingspages/networkssettingspage.ui:14
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:14
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:14
 #: ../src/qtui/ui/topicwidget.ui:32
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
 msgid "Form"
 msgstr "Форма"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:27
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:28
 msgid "New"
 msgstr "Створити"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:41
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:67
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:42
 msgid "Delete"
 msgstr "Вилучити"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
@@ -371,33 +409,33 @@ msgstr "Шлях:"
 #: ../src/qtui/ui/chatviewsearchbar.ui:19
 #: ../src/qtui/ui/chatviewsearchbar.ui:33
 #: ../src/qtui/ui/chatviewsearchbar.ui:44
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:152
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:176
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:200
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:237
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:261
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:292
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:316
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:340
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:364
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:381
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:421
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:438
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:455
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:472
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:489
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:506
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:523
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:540
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:557
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:574
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:591
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:608
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:625
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:642
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:659
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:676
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:704
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:174
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:198
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:222
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:259
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:283
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:314
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:338
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:362
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:386
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:403
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:443
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:460
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:477
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:494
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:511
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:528
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:545
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:562
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:579
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:596
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:613
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:630
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:647
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:664
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:681
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:698
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:726
 #: ../src/qtui/settingspages/identitiessettingspage.ui:34
 #: ../src/qtui/settingspages/identitiessettingspage.ui:77
 #: ../src/qtui/settingspages/identityeditwidget.ui:168
@@ -467,31 +505,44 @@ msgstr "Поточна балачка"
 msgid "Errors:"
 msgstr "Помилки:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NotificationsSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NotificationsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgid "Interface"
 msgstr "Інтерфейс"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:223
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgid "Please choose a stylesheet file"
 msgstr "Будь ласка, вкажіть файл таблиці стилів"
 
@@ -500,14 +551,18 @@ msgstr "Будь ласка, вкажіть файл таблиці стилів
 msgid "Away Log"
 msgstr "Журнал відсутності"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AwayLogView
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AwayLogView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorView
 #: ../src/qtui/awaylogview.cpp:44 ../src/qtui/chatmonitorview.cpp:59
 msgid "Show Network Name"
 msgstr "Показ назви мережі"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AwayLogView
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AwayLogView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorView
 #: ../src/qtui/awaylogview.cpp:49 ../src/qtui/chatmonitorview.cpp:64
 msgid "Show Buffer Name"
 msgstr "Показувати назву буфера"
@@ -598,9 +653,12 @@ msgstr "Максимальна кількість повідомлень на б
 msgid "Limit:"
 msgstr "Обмеження:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TaskbarNotificationBackend::ConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/settingspages/backlogsettingspage.ui:235
 #: ../src/qtui/settingspages/backlogsettingspage.ui:357
 #: ../src/qtui/settingspages/networkssettingspage.ui:464
@@ -663,7 +721,7 @@ msgid "Backlog Fetching"
 msgstr "Отримання журналу"
 
 #. ts-context BufferItem
-#: ../src/client/networkmodel.cpp:341
+#: ../src/client/networkmodel.cpp:346
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 — %2 </p>"
 
@@ -681,9 +739,12 @@ msgstr ""
 "Бажаєте об’єднати буфер «%1» з буфером «%2» на постійній основі?\n"
 " Скасувати результати цієї дії буде неможливо!"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 #: ../src/qtui/settingspages/networkeditdlg.ui:13
 #: ../src/qtui/settingspages/servereditdlg.ui:14
@@ -705,19 +766,26 @@ msgstr "Додати список балачки"
 msgid "Show / Hide Chats"
 msgstr "Показати/Приховати балачки"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:31
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgid "Re&name..."
 msgstr "Пере&йменувати…"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:48
 #: ../src/qtui/settingspages/identityeditwidget.ui:93
 #: ../src/qtui/settingspages/networkssettingspage.ui:65
@@ -726,9 +794,12 @@ msgstr "Пере&йменувати…"
 msgid "&Add..."
 msgstr "&Додати…"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:71
 #: ../src/qtui/settingspages/networkssettingspage.ui:88
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
@@ -741,8 +812,10 @@ msgstr "Ви&лучити"
 msgid "Chat List Settings"
 msgstr "Параметри списку балачки"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModelController::JoinDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModelController::JoinDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:92
 #: ../src/uisupport/networkmodelcontroller.cpp:487
 msgid "Network:"
@@ -813,9 +886,12 @@ msgstr "Інші дії"
 msgid "New Message"
 msgstr "Нове повідомлення"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
 #: ../src/qtui/settingspages/highlightsettingspage.ui:32
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
@@ -849,47 +925,57 @@ msgid "BufferView"
 msgstr "Перегляд буфера"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:76
+#: ../src/qtui/bufferwidget.cpp:79
 msgid "Zoom In"
 msgstr "Збільшити"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:82
+#: ../src/qtui/bufferwidget.cpp:85
 msgid "Zoom Out"
 msgstr "Зменшити"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:87
+#: ../src/qtui/bufferwidget.cpp:90
 msgid "Actual Size"
 msgstr "Фактичний розмір"
 
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:94
+msgid "Set Marker Line"
+msgstr "Встановити лінію позначки"
+
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:98
+msgid "Go to Marker Line"
+msgstr "Перейти до лінії позначки"
+
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:498
+#: ../src/client/networkmodel.cpp:503
 msgid "<b>Channel %1</b>"
 msgstr "<b>Канал %1</b>"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:501
+#: ../src/client/networkmodel.cpp:506
 msgid "<b>Users:</b> %1"
 msgstr "<b>Користувачі:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:505
+#: ../src/client/networkmodel.cpp:510
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Режим:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:516
+#: ../src/client/networkmodel.cpp:521
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Тема:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:520
+#: ../src/client/networkmodel.cpp:525
 msgid "Not active <br /> Double-click to join"
 msgstr "Не активовано <br /> Двічі клацніть, щоб приєднатися"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:523
+#: ../src/client/networkmodel.cpp:528
 msgid "<p> %1 </p>"
 msgstr "<p> %1 </p>"
 
@@ -1047,10 +1133,12 @@ msgstr "Завжди показувати підсвічені повідомл�
 msgid "Show own messages"
 msgstr "Показувати власні повідомлення"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-#: ../src/qtui/mainwin.cpp:584
+#: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
 msgstr "Спостереження за балачкою"
 
@@ -1080,7 +1168,7 @@ msgid "Configure..."
 msgstr "Налаштувати…"
 
 #. ts-context ChatScene
-#: ../src/qtui/chatscene.cpp:600
+#: ../src/qtui/chatscene.cpp:745
 msgid "Copy Selection"
 msgstr "Копіювати позначене"
 
@@ -1121,11 +1209,16 @@ msgstr "Нетиповий шрифт вікна балачки:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
+msgid "Show colored text in the chat window"
+msgstr "Показувати розфарбований текст у вікні балачки"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:95
 msgid "Allow colored text (mIRC color codes)"
 msgstr "Дозволити розфарбовування тексту (коди кольорів mIRC)"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:108
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr ""
@@ -1133,94 +1226,124 @@ msgstr ""
 "миші на веб-адресу"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:114
 msgid "Show previews of webpages on URL hover"
 msgstr "Показувати мініатюри веб-сторінок при наведенні вказівника на адресу"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:127
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:130
+msgid ""
+"Set the marker line to the bottom of the current chat window when selecting "
+"another channel"
+msgstr ""
+"Встановлювати лінію позначки у нижній частині поточного вікна балачки під "
+"час перемикання на інший канал"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:133
+msgid "Set marker line automatically when switching chats"
+msgstr "Встановлювати лінію позначки автоматично під час перемикання балачок"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:149
 msgid "Custom Colors"
 msgstr "Нетипові кольори"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:145
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:167
 msgid "Action:"
 msgstr "Дія:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:169
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:191
 msgid "Timestamp:"
 msgstr "Позначка часу:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:193
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:215
 msgid "Channel message:"
 msgstr "Повідомлення каналу:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:230
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:252
 msgid "Highlight foreground:"
 msgstr "Підсвічування тексту:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:254
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:276
 msgid "Command message:"
 msgstr "Повідомлення команди:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:278
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:300
 msgid "Highlight background:"
 msgstr "Підсвічування тла:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:285
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:307
 msgid "Server message:"
 msgstr "Повідомлення сервера:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:309
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:331
 msgid "Marker line:"
 msgstr "Лінія позначки"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:333
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:355
 msgid "Error message:"
 msgstr "Повідомлення про помилку:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:357
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:379
 msgid "Background:"
 msgstr "Тло:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:401
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:423
 msgid "Use Sender Coloring"
 msgstr "Розфарбування, визначене відправником"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:697
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:719
 msgid "Own messages:"
 msgstr "Власні повідомлення:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 msgid "Chat View"
 msgstr "Панель балачки"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
+msgid "You need at 0.6 quasselcore to use this feature"
+msgstr ""
+"Щоб скористатися цією можливістю, вам слід встановити версію 0.6 quasselcore"
 
 #. ts-context Client
 #: ../src/client/client.cpp:270
 msgid "Identity already exists in client!"
 msgstr "Такий профіль вже існує!"
 
-#. ts-context Client
-#: ../src/client/client.cpp:371
+#. ts-context ClientBacklogManager
+#: ../src/client/clientbacklogmanager.cpp:161
+msgid "Processed %1 messages in %2 seconds."
+msgstr "Оброблено %1 повідомлень за %2 секунд."
+
+#. ts-context ClientBufferViewManager
+#: ../src/client/clientbufferviewmanager.cpp:52
 msgid "All Chats"
 msgstr "Всі балачки"
 
-#. ts-context ClientBacklogManager
-#: ../src/client/clientbacklogmanager.cpp:153
-msgid "Processed %1 messages in %2 seconds."
-msgstr "Оброблено %1 повідомлень за %2 секунд."
+#. ts-context ClientUserInputHandler
+#: ../src/client/clientuserinputhandler.cpp:86
+msgid "/JOIN expects a channel"
+msgstr "/JOIN потрібно вказати канал"
+
+#. ts-context ClientUserInputHandler
+#: ../src/client/clientuserinputhandler.cpp:96
+msgid "/QUERY expects at least a nick"
+msgstr "/QUERY потрібно вказати принаймні один псевдонім"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
@@ -1237,9 +1360,12 @@ msgstr "Увімкнути виявлення перевищення часу о
 msgid "Ping interval:"
 msgstr "Проміжок між імпульсами:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TaskbarNotificationBackend::ConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/settingspages/connectionsettingspage.ui:44
 #: ../src/qtui/settingspages/connectionsettingspage.ui:155
 #: ../src/qtui/settingspages/connectionsettingspage.ui:213
@@ -1294,33 +1420,41 @@ msgid "Minimum delay between requests:"
 msgstr "Мінімальна затримка між запитами:"
 
 #. ts-context ContentsChatItem
-#: ../src/qtui/chatitem.cpp:644
+#: ../src/qtui/chatitem.cpp:683
 msgid "Copy Link Address"
 msgstr "Скопіювати адресу посилання"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:38
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgid "Connect"
 msgstr "З'єднатися"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:39
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgid "Disconnect"
 msgstr "Від'єднатися"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:41
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgid "Join"
 msgstr "Приєднатись"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:42
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgid "Part"
@@ -1396,8 +1530,10 @@ msgstr "Почати діалог"
 msgid "Show Query"
 msgstr "Показати діалог"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:60
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgid "Whois"
@@ -1420,8 +1556,8 @@ msgstr "Луна-імпульс"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
-msgid "Finger"
-msgstr "Відбиток"
+msgid "Client info"
+msgstr "Відомості щодо програми-клієнта"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
@@ -1563,7 +1699,8 @@ msgstr "Некоректна адреса очікування даних %1"
 
 #. ts-context Core
 #: ../src/core/core.cpp:402
-msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgid ""
+"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr ""
 "Очікування за встановлення з’єднання з графічними клієнтами за адресою IPv4 "
 "%1, порт %2. Використано версію протоколу %3"
@@ -1575,7 +1712,8 @@ msgstr "Не вдалося відкрити інтерфейс IPv4 %1:%2: %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:418
-msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgid ""
+"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr ""
 "Очікування за встановлення з’єднання з графічними клієнтами за адресою IPv6 "
 "%1, порт %2. Використано версію протоколу %3"
@@ -1624,8 +1762,10 @@ msgstr ""
 "цим ядром потрібно користуватися клієнтською частиною/протоколом ядра версії "
 "%1.<br>Будь ласка, оновіть вашу клієнтську частину."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context Core
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreSession
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context Core
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreSession
 #: ../src/core/core.cpp:518 ../src/core/core.cpp:608 ../src/core/core.cpp:632
 #: ../src/core/coresession.cpp:195
 msgid "Client"
@@ -1638,7 +1778,8 @@ msgstr "застарілий, відмовлено."
 
 #. ts-context Core
 #: ../src/core/core.cpp:535
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgid ""
+"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr ""
 "<b>Версія ядра Quassel %1</b><br>Зібрано: %2<br>Працює %3д%4г%5хв (з %6)"
 
@@ -1696,8 +1837,10 @@ msgstr "Не вдалося ініціалізувати сеанс для кл�
 msgid "Could not find a session for client:"
 msgstr "Не вдалося знайти сеансу клієнта:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccount
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccount
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountModel
 #: ../src/client/coreaccount.h:39 ../src/client/coreaccountmodel.cpp:64
 msgid "Internal Core"
 msgstr "Вбудоване ядро"
@@ -1729,17 +1872,22 @@ msgstr "Локальне ядро"
 msgid "Hostname:"
 msgstr "Назва вузла:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:47
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:180
 #: ../src/qtui/settingspages/servereditdlg.ui:220
 msgid "localhost"
 msgstr "localhost"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:54
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:187
 #: ../src/qtui/settingspages/networkadddlg.ui:95
@@ -1754,12 +1902,18 @@ msgstr "Порт:"
 msgid "User:"
 msgstr "Користувач:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModelController::JoinDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModelController::JoinDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:103
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:236
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:32
@@ -1776,29 +1930,37 @@ msgstr "Пароль:"
 msgid "Remember"
 msgstr "Запам'ятати"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:127
 #: ../src/qtui/settingspages/servereditdlg.ui:171
 msgid "Use a Proxy"
 msgstr "Використовувати проксі"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:139
 #: ../src/qtui/settingspages/servereditdlg.ui:188
 msgid "Proxy Type:"
 msgstr "Тип проксі:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:147
 #: ../src/qtui/settingspages/servereditdlg.ui:196
 msgid "Socks 5"
 msgstr "Socks 5"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:152
 #: ../src/qtui/settingspages/servereditdlg.ui:201
 msgid "HTTP"
@@ -1824,8 +1986,10 @@ msgstr "Облікові записи ядра"
 msgid "Edit..."
 msgstr "Змінити…"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:56
 #: ../src/qtui/settingspages/identitiessettingspage.ui:54
 msgid "Add..."
@@ -1846,8 +2010,10 @@ msgstr "З’єднуватися з попереднім використани
 msgid "Always connect to"
 msgstr "Завжди з’єднуватися з"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 msgid "Remote Cores"
@@ -1880,8 +2046,10 @@ msgstr ""
 "Тепер ви увійшли до системи щойно налаштованого ядра Quassel!<br>Будь ласка, "
 "не забудьте налаштувати ваші профілі та записи мереж."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
 #: ../src/qtui/ui/coreconnectauthdlg.ui:49
 msgid "Username:"
@@ -1892,8 +2060,10 @@ msgstr "Користувач:"
 msgid "Repeat password:"
 msgstr "Повторіть пароль:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:60
 #: ../src/qtui/ui/coreconnectauthdlg.ui:58
 msgid "Remember password"
@@ -1969,8 +2139,10 @@ msgstr ""
 "Вказані вами параметри буде збережено у ядрі. Наступні входи до системи буде "
 "виконано у автоматичному режимі."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardStorageSelectionPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardSyncPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardStorageSelectionPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgid "Storage Backend:"
@@ -2032,37 +2204,37 @@ msgid "Connect to Core"
 msgstr "З’єднатися з ядром"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:166
+#: ../src/client/coreconnection.cpp:168
 msgid "Network is down"
 msgstr "Мережу вимкнено"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:200 ../src/client/coreconnection.cpp:315
+#: ../src/client/coreconnection.cpp:202 ../src/client/coreconnection.cpp:321
 msgid "Disconnected"
 msgstr "Роз'єднано"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:203
+#: ../src/client/coreconnection.cpp:205
 msgid "Looking up %1..."
 msgstr "Пошук %1…"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:206 ../src/client/coreconnection.cpp:443
+#: ../src/client/coreconnection.cpp:208 ../src/client/coreconnection.cpp:450
 msgid "Connecting to %1..."
 msgstr "З'єднання з %1…"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:209 ../src/client/coreconnection.cpp:566
+#: ../src/client/coreconnection.cpp:211 ../src/client/coreconnection.cpp:573
 msgid "Connected to %1"
 msgstr "З'єднано з %1"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:212
+#: ../src/client/coreconnection.cpp:214
 msgid "Disconnecting from %1..."
 msgstr "Розірвання з’єднання з %1…"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:269
+#: ../src/client/coreconnection.cpp:272
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider upgrading."
 msgstr ""
@@ -2070,28 +2242,28 @@ msgstr ""
 "Будь ласка, спробуйте його оновити."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:297
+#: ../src/client/coreconnection.cpp:300
 msgid "Invalid data received from core"
 msgstr "Отримано некоректні дані від ядра"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:342
+#: ../src/client/coreconnection.cpp:349
 msgid "Disconnected from core."
 msgstr "Від’єднано від ядра."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:420 ../src/client/coreconnection.cpp:504
-#: ../src/client/coreconnection.cpp:549
+#: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
+#: ../src/client/coreconnection.cpp:556
 msgid "Unencrypted connection canceled"
 msgstr "Скасовано нешифроване з’єднання"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:450
+#: ../src/client/coreconnection.cpp:457
 msgid "Synchronizing to core..."
 msgstr "Синхронізація з ядром…"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:471
+#: ../src/client/coreconnection.cpp:478
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
@@ -2101,32 +2273,32 @@ msgstr ""
 "протоколу ядра/клієнта %1."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:585
+#: ../src/client/coreconnection.cpp:592
 msgid "Logging in..."
 msgstr "Вхід до системи…"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:590
+#: ../src/client/coreconnection.cpp:597
 msgid "Login canceled"
 msgstr "Вхід скасовано"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:615
+#: ../src/client/coreconnection.cpp:622
 msgid "Receiving session state"
 msgstr "Отримання стану сеансу"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:617
+#: ../src/client/coreconnection.cpp:624
 msgid "Synchronizing to %1..."
 msgstr "Синхронізація з %1…"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:641
+#: ../src/client/coreconnection.cpp:648
 msgid "Receiving network states"
 msgstr "Отримання мережевих станів"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:691
+#: ../src/client/coreconnection.cpp:698
 msgid "Synchronized to %1"
 msgstr "Синхронізовано з %1"
 
@@ -2190,15 +2362,19 @@ msgstr "Автоматично відновлювати з’єднання пі
 msgid "Retry every"
 msgstr "Повторювати спроби кожні"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgid "Connection"
 msgstr "З'єднання"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:32
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:79
 msgid "Message"
@@ -2276,8 +2452,10 @@ msgstr "Дата збирання:"
 msgid "<build date>"
 msgstr "<дата збирання>"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreInfoDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context DebugLogWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreInfoDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context DebugLogWidget
 #: ../src/qtui/ui/coreinfodlg.ui:81 ../src/qtui/ui/debuglogwidget.ui:43
 msgid "Close"
 msgstr "Закрити"
@@ -2308,22 +2486,22 @@ msgid "Connecting to %1:%2..."
 msgstr "З’єднання з %1:%2…"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:211
+#: ../src/core/corenetwork.cpp:210
 msgid "Disconnecting. (%1)"
 msgstr "Роз'єднання. (%1)"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:211
+#: ../src/core/corenetwork.cpp:210
 msgid "Core Shutdown"
 msgstr "Завершення роботи ядра"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:307
+#: ../src/core/corenetwork.cpp:339
 msgid "Could not connect to %1 (%2)"
 msgstr "Не вдалося встановити з’єднання з %1 (%2)"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:309
+#: ../src/core/corenetwork.cpp:341
 msgid "Connection failure: %1"
 msgstr "Помилка з'єднання: %1"
 
@@ -2351,14 +2529,81 @@ msgstr ""
 "існує, замість цього буде виконано оновленння запису!"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:63
+#: ../src/core/coreuserinputhandler.cpp:81
 msgid "away"
 msgstr "відсутній"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:132
+#: ../src/core/coreuserinputhandler.cpp:150
 msgid "sending CTCP-%1 request to %2"
 msgstr "надсилання запиту CTCP-%1 до %2"
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:173
+msgid ""
+"[usage] /delkey <nick|channel> deletes the encryption key for nick or "
+"channel or just /delkey when in a channel or query."
+msgstr ""
+"[використання] /delkey <псевдонім|канал> — вилучає ключ шифрування "
+"псевдоніма або каналу; простішою формою, /delkey, можна скористатися на "
+"певному каналі або під час діалогу."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:180
+msgid "No key has been set for %1."
+msgstr "Для %1 не було встановлено жодного ключа."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:193
+msgid "The key for %1 has been deleted."
+msgstr "Було вилучено ключ для %1."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:197
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
+"distributor about a Quassel package with QCA2 support, or rebuild Quassel "
+"with QCA2 present."
+msgstr ""
+"Помилка: для встановлення ключа шифрування Quassel має бути зібрано з "
+"підтримкою бібліотеки Qt Cryptographic Architecture (QCA2). Попросіть "
+"авторів вашого дистрибутива зібрати пакунок Quassel з підтримкою QCA2 або "
+"самі зберіть Quassel з підтримкою QCA2."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:461
+msgid ""
+"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
+"channel. /setkey <key> when in a channel or query buffer sets the key for it."
+msgstr ""
+"[використання] /setkey <псевдонім|канал> <ключ> — встановлює ключ шифрування "
+"для псевдоніма або каналу. Простіша форма /setkey <ключ> призначена для "
+"використання у окремому буфері каналу або діалогу, вона встановлює ключ для "
+"відповідного каналу або співрозмовника."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:476
+msgid "The key for %1 has been set."
+msgstr "Було встановлено ключ для %1."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:479
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA) library. Contact your "
+"distributor about a Quassel package with QCA support, or rebuild Quassel "
+"with QCA present."
+msgstr ""
+"Помилка: для встановлення ключа шифрування Quassel має бути зібрано з "
+"підтримкою бібліотеки Qt Cryptographic Architecture (QCA). Попросіть авторів "
+"вашого дистрибутива зібрати пакунок Quassel з підтримкою QCA або самі "
+"зберіть Quassel з підтримкою QCA."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:587
+msgid "[Error] Could not encrypt your message: %1"
+msgstr "[Помилка] Не вдалося зашифрувати ваше повідомлення: %1"
 
 #. ts-context CreateIdentityDlg
 #: ../src/qtui/settingspages/createidentitydlg.ui:17
@@ -2381,43 +2626,53 @@ msgid "Duplicate:"
 msgstr "Дублікат:"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:194
+#: ../src/core/ctcphandler.cpp:197
+msgid "Received CTCP CLIENTINFO request from %1"
+msgstr "Отримано запит CTCP CLIENTINFO від %1"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:200
+msgid "Received CTCP CLIENTINFO answer from %1: %2"
+msgstr "Отримано відповідь CTCP CLIENTINFO від %1: %2"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:211
 msgid "Received CTCP PING request from %1"
 msgstr "Отримано запит PING CTCP від %1"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:199
+#: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
 msgstr ""
 "Отримано відповідь PING CTCP від %1. Загальний час обробки — %2 секунд."
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:212
+#: ../src/core/ctcphandler.cpp:229
 msgid "Received CTCP VERSION request by %1"
 msgstr "Отримано запит VERSION CTCP від %1"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:215
+#: ../src/core/ctcphandler.cpp:232
 msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "Отримано відповідь на запит VERSION CTCP від %1: %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:226
+#: ../src/core/ctcphandler.cpp:243
 msgid "Received CTCP TIME request by %1"
 msgstr "Отримано запит TIME CTCP від %1"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:229
+#: ../src/core/ctcphandler.cpp:246
 msgid "Received CTCP TIME answer from %1: %2"
 msgstr "Отримано відповідь на запит TIME CTCP від %1: %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:238
+#: ../src/core/ctcphandler.cpp:255
 msgid "Received unknown CTCP %1 by %2"
 msgstr "Отримано невідомі дані CTCP %1 від %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:240
+#: ../src/core/ctcphandler.cpp:257
 msgid " with arguments: %1"
 msgstr " з параметрами: %1"
 
@@ -2468,26 +2723,16 @@ msgstr "Тимч. вилучені буфери:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:57
-msgid "Add Buffers Automatically:"
-msgstr "Автоматичне додавання буферів:"
-
-#. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:58
-msgid "Hide inactive buffers:"
-msgstr "Приховування неактивних буферів:"
-
-#. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:59
 msgid "Allowed buffer types:"
 msgstr "Дозволені типи буферів:"
 
 #. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:60
+#: ../src/qtui/debugbufferviewoverlay.cpp:58
 msgid "Minimum activity:"
 msgstr "Мінімальна активність:"
 
 #. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:62
+#: ../src/qtui/debugbufferviewoverlay.cpp:60
 msgid "Is initialized:"
 msgstr "Ініціалізація:"
 
@@ -2576,8 +2821,10 @@ msgstr "Увімкнути"
 msgid "Add"
 msgstr "Додати"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/highlightsettingspage.ui:62
 #: ../src/qtui/settingspages/identityeditwidget.ui:119
 msgid "Remove"
@@ -2598,8 +2845,14 @@ msgstr "Всі псевдоніми профілю"
 msgid "Current nick"
 msgstr "Поточний псевдонім"
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:108
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:75
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:92
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:102
 msgid "None"
 msgstr "Немає"
 
@@ -2618,8 +2871,10 @@ msgstr "слід заповнити"
 msgid "highlight rule"
 msgstr "підсвітити правило"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:322
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
@@ -2641,8 +2896,10 @@ msgstr "Вилучити профіль"
 msgid "Identities"
 msgstr "Профілі"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 #: ../src/qtui/settingspages/networkssettingspage.cpp:167
 msgid ""
@@ -2737,8 +2994,12 @@ msgstr "Тут вам не дитячий садок!"
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr "http://quassel-irc.org — спілкуйтеся комфортно. Будь-де."
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:30
+#: ../src/qtui/mainwin.cpp:312
 msgid "General"
 msgstr "Загальне"
 
@@ -2757,8 +3018,10 @@ msgstr "Значення «Справжнє ім’я» буде показан�
 msgid "Nicknames"
 msgstr "Псевдоніми"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NickEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NickEditDlg
 #: ../src/qtui/settingspages/identityeditwidget.ui:90
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgid "Add Nickname"
@@ -2769,18 +3032,24 @@ msgstr "Додавання псевдоніма"
 msgid "Remove Nickname"
 msgstr "Вилучити псевдонім"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/identityeditwidget.ui:165
 #: ../src/qtui/settingspages/networkssettingspage.ui:278
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgid "Move upwards in list"
 msgstr "Пересунути вгору списком"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/identityeditwidget.ui:179
 #: ../src/qtui/settingspages/networkssettingspage.ui:292
 #: ../src/qtui/ui/simplenetworkeditor.ui:179
@@ -2850,8 +3119,10 @@ msgstr "Встановлювати відсутність після"
 msgid "minutes of being idle"
 msgstr "хвилин без активності"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
 #: ../src/qtui/settingspages/identityeditwidget.cpp:219
 #: ../src/qtui/settingspages/servereditdlg.ui:119
@@ -2912,10 +3183,12 @@ msgstr ""
 "Якщо ви продовжите виконання цієї дії ваш ключ та сертифікат SSL буде "
 "передано нешифрованим з’єднанням!"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
-#: ../src/qtui/mainwin.cpp:864
+#: ../src/qtui/mainwin.cpp:1044
 msgid "Continue"
 msgstr "Продовжити"
 
@@ -3103,8 +3376,10 @@ msgstr ""
 "- <i>stupid!.+</i> (формальний вираз) відповідає будь-якому відправникові з "
 "псевдонімом <i>stupid</i> з будь-якого вузла</p>"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:195
 msgid "Ignore Rule"
@@ -3168,15 +3443,19 @@ msgstr "Область дії"
 msgid "Global"
 msgstr "Загальне"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
 msgid "Network"
 msgstr "Мережа"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcListModel
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:174
 #: ../src/client/irclistmodel.cpp:59
 msgid "Channel"
@@ -3314,98 +3593,101 @@ msgid "Show messages in application indicator"
 msgstr "Показувати повідомлення у індикаторі програм"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "White"
 msgstr "Білий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Black"
 msgstr "Чорний"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark blue"
 msgstr "Темно-синій"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark green"
 msgstr "Темно-зелений"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Red"
 msgstr "Червоний"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark red"
 msgstr "Темно-червоний"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark magenta"
 msgstr "Темно-бузковий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Orange"
 msgstr "Жовтогарячий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Yellow"
 msgstr "Жовтий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Green"
 msgstr "Зелений"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Dark cyan"
 msgstr "Темно-бірюзовий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Cyan"
 msgstr "Блакитний"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Blue"
 msgstr "Синій"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Magenta"
 msgstr "Малиновий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Dark gray"
 msgstr "Темно-сірий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Light gray"
 msgstr "Світло-сірий"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:86 ../src/qtui/inputwidget.cpp:87
+#: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
 msgid "Clear Color"
 msgstr "Зняти колір"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:131
+#: ../src/qtui/inputwidget.cpp:132
 msgid "Focus Input Line"
 msgstr "Фокусувати рядок введення"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
@@ -3434,36 +3716,48 @@ msgstr "Показувати кнопки стилів"
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:111
+msgid "Enables (limited) Emacs key bindings in the input field."
+msgstr ""
+"Вмикає (обмежену) підтримку клавіатурних скорочень Emacs у полі введення "
+"тексту."
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:114
+msgid "Emacs key bindings"
+msgstr "Клавіатурні скорочення Emacs"
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:127
 msgid "Multi-Line Editing"
 msgstr "Багаторядкове редагування"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:128
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
 msgid "Show at most"
 msgstr "Показувати не більше"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:154
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
 msgid "lines"
 msgstr "рядків"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:176
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
 msgid "Enable scrollbars"
 msgstr "Увімкнути смужки гортання"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:195
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
 msgid "Tab Completion"
 msgstr "Доповнення за Tab"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:203
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
 msgid "Completion suffix:"
 msgstr "Суфікс завершення:"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgid ": "
 msgstr ": "
 
@@ -3482,26 +3776,34 @@ msgstr "Зберегти і з'єднатись"
 msgid "Users"
 msgstr "Користувачі"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcListModel
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModel
-#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:622
-#: ../src/client/networkmodel.cpp:847
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModel
+#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:781
+#: ../src/client/networkmodel.cpp:852
 msgid "Topic"
 msgstr "Тема"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:553
+#: ../src/core/ircserverhandler.cpp:212
+msgid "%1 invited you to channel %2"
+msgstr "%1 запрошує вас на канал %2"
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:584
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1 змінює тему %2 на «%3»"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:603
+#: ../src/core/ircserverhandler.cpp:634
 msgid "Received RPL_ISUPPORT (005) without parameters!"
 msgstr "Отримано RPL_ISUPPORT (005) без параметрів!"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:611
+#: ../src/core/ircserverhandler.cpp:642
 msgid ""
 "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
@@ -3523,145 +3825,147 @@ msgstr ""
 #. Error Message
 #. ----------
 #. Topic Message
+#. ----------
+#. Invite Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/core/ircserverhandler.cpp:628 ../src/core/ircserverhandler.cpp:635
-#: ../src/core/ircserverhandler.cpp:642 ../src/core/ircserverhandler.cpp:649
-#: ../src/uisupport/uistyle.cpp:574 ../src/uisupport/uistyle.cpp:577
-#: ../src/uisupport/uistyle.cpp:617 ../src/uisupport/uistyle.cpp:620
-#: ../src/uisupport/uistyle.cpp:623 ../src/uisupport/uistyle.cpp:630
-#: ../src/uisupport/uistyle.cpp:731
+#: ../src/core/ircserverhandler.cpp:662 ../src/core/ircserverhandler.cpp:669
+#: ../src/core/ircserverhandler.cpp:676 ../src/core/ircserverhandler.cpp:683
+#: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
+#: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
+#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
 msgid "%1"
 msgstr "%1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:684
+#: ../src/core/ircserverhandler.cpp:718
 msgid "[Whois] %1 is away: \"%2\""
 msgstr "[Whois] %1 немає на місці: «%2»"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:690 ../src/core/ircserverhandler.cpp:695
+#: ../src/core/ircserverhandler.cpp:724 ../src/core/ircserverhandler.cpp:729
 msgid "%1 is away: \"%2\""
 msgstr "%1 відсутній(-ня): «%2»"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:739 ../src/core/ircserverhandler.cpp:753
-#: ../src/core/ircserverhandler.cpp:787 ../src/core/ircserverhandler.cpp:803
-#: ../src/core/ircserverhandler.cpp:864 ../src/core/ircserverhandler.cpp:896
+#: ../src/core/ircserverhandler.cpp:773 ../src/core/ircserverhandler.cpp:787
+#: ../src/core/ircserverhandler.cpp:822 ../src/core/ircserverhandler.cpp:838
+#: ../src/core/ircserverhandler.cpp:906 ../src/core/ircserverhandler.cpp:938
 msgid "[Whois] %1"
 msgstr "[Whois] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:768 ../src/core/ircserverhandler.cpp:770
+#: ../src/core/ircserverhandler.cpp:802 ../src/core/ircserverhandler.cpp:805
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 — %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:785
+#: ../src/core/ircserverhandler.cpp:820
 msgid "%1 is online via %2 (%3)"
 msgstr "%1 перебуває у мережі за допомогою %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:789 ../src/core/ircserverhandler.cpp:1067
+#: ../src/core/ircserverhandler.cpp:824 ../src/core/ircserverhandler.cpp:1131
 msgid "[Whowas] %1"
 msgstr "[Whowas] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:815
+#: ../src/core/ircserverhandler.cpp:850
 msgid "[Whowas] %1 was %2 (%3)"
 msgstr "[Whowas] %1 раніше був(була) %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:829
+#: ../src/core/ircserverhandler.cpp:864
 msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] Завершення списку /WHO %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:849
+#: ../src/core/ircserverhandler.cpp:886 ../src/core/ircserverhandler.cpp:894
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 спілкується з %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:851
+#: ../src/core/ircserverhandler.cpp:888 ../src/core/ircserverhandler.cpp:896
 msgid "[Whois] %1 is idling for %2 (%3)"
 msgstr "[Whois] %1 не виконує ніяких дій у %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:854
-msgid "[Whois] idle message: %1"
-msgstr "[Whois] повідомлення про неактивність: %1"
-
-#. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:886
+#: ../src/core/ircserverhandler.cpp:928
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr "[Whois] %1 є користувачем каналів %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:888
+#: ../src/core/ircserverhandler.cpp:930
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr "[Whois] %1 може писати на каналах %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:890
+#: ../src/core/ircserverhandler.cpp:932
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr "[Whois] %1 є оператором на каналах %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:918
+#: ../src/core/ircserverhandler.cpp:960
 msgid "Channel %1 has %2 users. Topic is: %3"
 msgstr "На каналі %1 %2 користувачів. Тема: %3"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:927
+#: ../src/core/ircserverhandler.cpp:969
 msgid "End of channel list"
 msgstr "Кінець списку каналу"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:945
+#: ../src/core/ircserverhandler.cpp:987
 msgid "Homepage for %1 is %2"
 msgstr "Домашньою сторінкою %1 є %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:963
+#: ../src/core/ircserverhandler.cpp:1005
 msgid "Channel %1 created on %2"
 msgstr "Канал %1 створено %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:977
+#: ../src/core/ircserverhandler.cpp:1019
 msgid "No topic is set for %1."
 msgstr "Тему на %1 не встановлено."
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:992
+#: ../src/core/ircserverhandler.cpp:1039
 msgid "Topic for %1 is \"%2\""
 msgstr "Темою %1 є «%2»"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1003
+#: ../src/core/ircserverhandler.cpp:1050
 msgid "Topic set by %1 on %2"
 msgstr "Тему встановлено %1 %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1026
+#: ../src/core/ircserverhandler.cpp:1067
+msgid "%1 has been invited to %2"
+msgstr "%1 було запрошено до %2"
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:1090
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1085
+#: ../src/core/ircserverhandler.cpp:1149
 msgid "Nick %1 contains illegal characters"
 msgstr "У псевдонімі %1 містяться заборонені символи"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1096
+#: ../src/core/ircserverhandler.cpp:1160
 msgid "Nick already in use: %1"
 msgstr "Псевдонім вже використано: %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1113
+#: ../src/core/ircserverhandler.cpp:1177
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr "Псевдонім або канал тимчасово недоступні: %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1206
+#: ../src/core/ircserverhandler.cpp:1270
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr ""
@@ -3669,21 +3973,32 @@ msgstr ""
 "Скористайтеся командою /nick <інший псевдонім>, щоб продовжити процедуру "
 "входу"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:816 ../src/client/networkmodel.cpp:442
+#. ts-context IrcUserItem
+#: ../src/client/networkmodel.cpp:806
+msgid " is away"
+msgstr " немає на місці"
+
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:821 ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
 msgstr "бездіяльність з %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:819 ../src/client/networkmodel.cpp:445
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:824 ../src/client/networkmodel.cpp:450
 msgid "login time: %1"
 msgstr "час входу до системи: %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:822 ../src/client/networkmodel.cpp:448
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:827 ../src/client/networkmodel.cpp:453
 msgid "server: %1"
 msgstr "сервер: %1"
 
@@ -3782,219 +4097,445 @@ msgstr "Непрочитані повідомлення"
 msgid "Other activity"
 msgstr "Інші дії"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context KNotificationBackend
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SystrayNotificationBackend
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context KNotificationBackend
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SystrayNotificationBackend
 #: ../src/qtui/knotificationbackend.cpp:115
-#: ../src/qtui/systraynotificationbackend.cpp:124
+#: ../src/qtui/systraynotificationbackend.cpp:125
 msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n підсвічування у черзі"
 msgstr[1] "%n підсвічування у черзі"
 msgstr[2] "%n підсвічувань у черзі"
 
+#. ts-context KeySequenceButton
+#: ../src/qtui/settingspages/keysequencewidget.cpp:77
+msgid "The key you just pressed is not supported by Qt."
+msgstr "Клавіша, яку ви тільки-но використали, не підтримується Qt."
+
+#. ts-context KeySequenceButton
+#: ../src/qtui/settingspages/keysequencewidget.cpp:78
+msgid "Unsupported Key"
+msgstr "Непідтримувана клавіша"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:169
+msgid ""
+"Click on the button, then enter the shortcut like you would in the program.\n"
+"Example for Ctrl+a: hold the Ctrl key and press a."
+msgstr ""
+"Натисніть кнопку, а потім введіть клавіатурне скорочення, яке ви бажаєте "
+"використовувати у програмі.\n"
+"Наприклад, для Ctrl+A: натисніть клавішу Ctrl, а потім клавішу «a»."
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:259
+msgctxt "Meta key"
+msgid "Meta"
+msgstr "Meta"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:260
+msgctxt "Ctrl key"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:261
+msgctxt "Alt key"
+msgid "Alt"
+msgstr "Alt"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:262
+msgctxt "Shift key"
+msgid "Shift"
+msgstr "Shift"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:265
+msgctxt "What the user inputs now will be taken as the new shortcut"
+msgid "Input"
+msgstr "Введіть"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:272
+msgctxt "No shortcut defined"
+msgid "None"
+msgstr "Немає"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:355
+#: ../src/qtui/settingspages/keysequencewidget.cpp:361
+msgid "Shortcut Conflict"
+msgstr "Конфлікт скорочень"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:356
+msgid ""
+"The \"%1\" shortcut is already in use, and cannot be configured.\n"
+"Please choose another one."
+msgstr ""
+"Клавіатурне скорочення «%1» вже використано. Його не можна повторювати.\n"
+"Будь ласка, виберіть інше клавіатурне скорочення."
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:362
+msgid ""
+"The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
+msgstr ""
+"Клавіатурне скорочення «%1» збігається з клавіатурним скороченням для "
+"виконання такої дії:"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:364
+msgid "Do you want to reassign this shortcut to the selected action?"
+msgstr "Бажаєте змінити клавіатурне скорочення для позначеної дії?"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:367
+msgid "Reassign"
+msgstr "Перепризначити"
+
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:308
+#: ../src/qtui/mainwin.cpp:314
 msgid "&Connect to Core..."
 msgstr "&З’єднатися з ядром…"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:310
+#: ../src/qtui/mainwin.cpp:316
 msgid "&Disconnect from Core"
 msgstr "&Від’єднатися від ядра"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:312
+#: ../src/qtui/mainwin.cpp:318
 msgid "Core &Info..."
 msgstr "Ві&домості щодо ядра…"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:314
+#: ../src/qtui/mainwin.cpp:320
 msgid "Configure &Networks..."
 msgstr "Налаштувати &мережі…"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:317
+#: ../src/qtui/mainwin.cpp:323
 msgid "&Quit"
 msgstr "Ви&йти"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:321
+#: ../src/qtui/mainwin.cpp:327
 msgid "&Configure Chat Lists..."
 msgstr "&Налаштувати списки балачки…"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:324
+#: ../src/qtui/mainwin.cpp:330
 msgid "&Lock Layout"
 msgstr "За&блокувати компонування"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:328
+#: ../src/qtui/mainwin.cpp:334
 msgid "Show &Search Bar"
 msgstr "Показувати &смужку пошуку"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:330
+#: ../src/qtui/mainwin.cpp:336
 msgid "Show Away Log"
 msgstr "Показувати журнал відсутності"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:332
+#: ../src/qtui/mainwin.cpp:338
 msgid "Show &Menubar"
 msgstr "Показувати смужку &меню"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:335
+#: ../src/qtui/mainwin.cpp:341
 msgid "Show Status &Bar"
 msgstr "Показувати п&анель стану"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:339
+#: ../src/qtui/mainwin.cpp:343 ../src/qtui/mainwin.cpp:1185
+msgid "&Fullscreen mode"
+msgstr "П&овноекранний режим"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:347
+msgid "Configure &Shortcuts..."
+msgstr "Налаштувати &скорочення..."
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:349
 msgid "&Configure Quassel..."
 msgstr "&Налаштувати Quassel…"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:343
+#: ../src/qtui/mainwin.cpp:353
 msgid "&About Quassel"
 msgstr "&Про Quassel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:345
+#: ../src/qtui/mainwin.cpp:355
 msgid "About &Qt"
 msgstr "Про &бібліотеку Qt"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:347
+#: ../src/qtui/mainwin.cpp:357
 msgid "Debug &NetworkModel"
 msgstr "Діа&гностика NetworkModel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:349
+#: ../src/qtui/mainwin.cpp:359
 msgid "Debug &BufferViewOverlay"
 msgstr "Ді&агностика BufferViewOverlay"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:351
+#: ../src/qtui/mainwin.cpp:361
 msgid "Debug &MessageModel"
 msgstr "&Діагностика MessageModel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:353
+#: ../src/qtui/mainwin.cpp:363
 msgid "Debug &HotList"
 msgstr "Діаг&ностика HotList"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:365
 msgid "Debug &Log"
 msgstr "Діагностика &журналу"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:367
 msgid "Reload Stylesheet"
 msgstr "Перезавантажити таблицю стилів"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:371
+msgid "Navigation"
+msgstr "Навігація"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:373
 msgid "Jump to hot chat"
 msgstr "перехід до активної балачки"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:385
+msgid "Set Quick Access #0"
+msgstr "Встановити пришвидшений доступ №0"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:387
+msgid "Set Quick Access #1"
+msgstr "Встановити пришвидшений доступ №1"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:389
+msgid "Set Quick Access #2"
+msgstr "Встановити пришвидшений доступ №2"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:391
+msgid "Set Quick Access #3"
+msgstr "Встановити пришвидшений доступ №3"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:393
+msgid "Set Quick Access #4"
+msgstr "Встановити пришвидшений доступ №4"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:395
+msgid "Set Quick Access #5"
+msgstr "Встановити пришвидшений доступ №5"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:397
+msgid "Set Quick Access #6"
+msgstr "Встановити пришвидшений доступ №6"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:399
+msgid "Set Quick Access #7"
+msgstr "Встановити пришвидшений доступ №7"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:401
+msgid "Set Quick Access #8"
+msgstr "Встановити пришвидшений доступ №8"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:403
+msgid "Set Quick Access #9"
+msgstr "Встановити пришвидшений доступ №9"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:406
+msgid "Quick Access #0"
+msgstr "Пришвидшений доступ №0"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:408
+msgid "Quick Access #1"
+msgstr "Пришвидшений доступ №1"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:410
+msgid "Quick Access #2"
+msgstr "Пришвидшений доступ №2"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:412
+msgid "Quick Access #3"
+msgstr "Пришвидшений доступ №3"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:414
+msgid "Quick Access #4"
+msgstr "Пришвидшений доступ №4"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:416
+msgid "Quick Access #5"
+msgstr "Пришвидшений доступ №5"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:418
+msgid "Quick Access #6"
+msgstr "Пришвидшений доступ №6"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:420
+msgid "Quick Access #7"
+msgstr "Пришвидшений доступ №7"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:422
+msgid "Quick Access #8"
+msgstr "Пришвидшений доступ №8"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:424
+msgid "Quick Access #9"
+msgstr "Пришвидшений доступ №9"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:428
+msgid "Activate Next Chat List"
+msgstr "Активувати наступний список балачки"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:430
+msgid "Activate Previous Chat List"
+msgstr "Активувати попередній список балачки"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:432
+msgid "Go to Next Chat"
+msgstr "Перейти до наступної балачки"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:434
+msgid "Go to Previous Chat"
+msgstr "Перейти до попередньої балачки"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:441
 msgid "&File"
 msgstr "&Файл"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:454
 msgid "&Networks"
 msgstr "&Мережі"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:387
+#: ../src/qtui/mainwin.cpp:460
 msgid "&View"
 msgstr "П&ерегляд"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:388
+#: ../src/qtui/mainwin.cpp:461
 msgid "&Chat Lists"
 msgstr "&Списки балачки"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:463
 msgid "&Toolbars"
 msgstr "&Панелі"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:404
+#: ../src/qtui/mainwin.cpp:477
 msgid "&Settings"
 msgstr "П&араметри"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:411
+#: ../src/qtui/mainwin.cpp:486
 msgid "&Help"
 msgstr "&Довідка"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:419
+#: ../src/qtui/mainwin.cpp:494
 msgid "Debug"
 msgstr "Зневадження"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:564
+#: ../src/qtui/mainwin.cpp:723
 msgid "Nicks"
 msgstr "Псевдоніми"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:573
+#: ../src/qtui/mainwin.cpp:732
 msgid "Show Nick List"
 msgstr "Показувати список псевдонімів"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:596
+#: ../src/qtui/mainwin.cpp:755
 msgid "Show Chat Monitor"
 msgstr "Показувати панель спостереження за балачкою"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:600
+#: ../src/qtui/mainwin.cpp:759
 msgid "Inputline"
 msgstr "Рядок введення"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:609
+#: ../src/qtui/mainwin.cpp:768
 msgid "Show Input Line"
 msgstr "Показувати рядок введення"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:634
+#: ../src/qtui/mainwin.cpp:793
 msgid "Show Topic Line"
 msgstr "Показувати рядок теми"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:707
+#: ../src/qtui/mainwin.cpp:871
 msgid "Main Toolbar"
 msgstr "Головна панель"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:746
+#: ../src/qtui/mainwin.cpp:910
 msgid "Connected to core."
 msgstr "З’єднано з ядром."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:821
+#: ../src/qtui/mainwin.cpp:1001
 msgid "Not connected to core."
 msgstr "Не з’єднано з ядром."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:835 ../src/qtui/mainwin.cpp:843
+#: ../src/qtui/mainwin.cpp:1015 ../src/qtui/mainwin.cpp:1023
 msgid "Unencrypted Connection"
 msgstr "Нешифроване з’єднання"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:835
+#: ../src/qtui/mainwin.cpp:1015
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr ""
 "<b>У вашій клієнтській програмі не передбачено підтримки шифрування SSL</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:837 ../src/qtui/mainwin.cpp:845
+#: ../src/qtui/mainwin.cpp:1017 ../src/qtui/mainwin.cpp:1025
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
@@ -4003,47 +4544,52 @@ msgstr ""
 "ядру Quassel."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:843
+#: ../src/qtui/mainwin.cpp:1023
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>У вашому ядрі не передбачено підтримки шифрування SSL</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:860 ../src/qtui/mainwin.cpp:880
+#: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1060
 msgid "Untrusted Security Certificate"
 msgstr "Ненадійний сертифікат безпеки"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:861
+#: ../src/qtui/mainwin.cpp:1041
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
 msgstr "<b>Сертифікат SSL наданий ядром %1 є ненадійним з таких причин:</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:865
+#: ../src/qtui/mainwin.cpp:1045
 msgid "Show Certificate"
 msgstr "Показати сертифікат"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:881
+#: ../src/qtui/mainwin.cpp:1061
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Хочете прийняти сертифікат назавжди без попереджень?"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:883
+#: ../src/qtui/mainwin.cpp:1063
 msgid "Current Session Only"
 msgstr "Тільки на поточний сеанс"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:884
+#: ../src/qtui/mainwin.cpp:1064
 msgid "Forever"
 msgstr "Завжди"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:893
+#: ../src/qtui/mainwin.cpp:1073
 msgid "Core Connection Error"
 msgstr "Помилка з’єднання з ядром"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:1190
+msgid "&Normal mode"
+msgstr "&Звичайний режим"
 
 #. ts-context MessageModel
 #: ../src/client/messagemodel.cpp:375
@@ -4056,7 +4602,7 @@ msgid "Receiving Backlog"
 msgstr "Отримання журналу"
 
 #. ts-context MultiLineEdit
-#: ../src/uisupport/multilineedit.cpp:547
+#: ../src/uisupport/multilineedit.cpp:661
 msgid "Do you really want to paste %n lines?"
 msgid_plural "Do you really want to paste %n lines?"
 msgstr[0] "Справді бажаєте вставити %n рядок?"
@@ -4064,12 +4610,14 @@ msgstr[1] "Справді бажаєте вставити %n рядки?"
 msgstr[2] "Справді бажаєте вставити %n рядків?"
 
 #. ts-context MultiLineEdit
-#: ../src/uisupport/multilineedit.cpp:556
+#: ../src/uisupport/multilineedit.cpp:670
 msgid "Paste Protection"
 msgstr "Захист від вставки"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkEditDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:14
 #: ../src/qtui/settingspages/networkssettingspage.cpp:705
 msgid "Add Network"
@@ -4090,15 +4638,19 @@ msgstr "Вказати параметри мережі вручну"
 msgid "Manual Settings"
 msgstr "Ручне визначення параметрів"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkadddlg.ui:75
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgid "Network name:"
 msgstr "Назва мережі:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:85
 #: ../src/qtui/settingspages/servereditdlg.ui:38
 msgid "Server address:"
@@ -4120,7 +4672,7 @@ msgid "Please enter a network name:"
 msgstr "Будь ласка, введіть назву мережі:"
 
 #. ts-context NetworkItem
-#: ../src/client/networkmodel.cpp:195
+#: ../src/client/networkmodel.cpp:196
 msgid "Server: %1"
 msgstr "Сервер: %1"
 
@@ -4128,7 +4680,7 @@ msgstr "Сервер: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:196 ../src/qtui/topicwidget.cpp:106
+#: ../src/client/networkmodel.cpp:197 ../src/qtui/topicwidget.cpp:106
 msgid "Users: %1"
 msgstr "Користувачі: %1"
 
@@ -4136,17 +4688,17 @@ msgstr "Користувачі: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:199 ../src/qtui/topicwidget.cpp:107
+#: ../src/client/networkmodel.cpp:200 ../src/qtui/topicwidget.cpp:107
 msgid "Lag: %1 msecs"
 msgstr "Затримка: %1 мс"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Chat"
 msgstr "Балачка"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Nick Count"
 msgstr "Кількість псевдонімів"
 
@@ -4210,8 +4762,10 @@ msgstr "Параметри мережі"
 msgid "Identity:"
 msgstr "Профіль:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkssettingspage.ui:190
 #: ../src/qtui/ui/simplenetworkeditor.ui:63
 msgid "Servers"
@@ -4222,8 +4776,10 @@ msgstr "Сервери"
 msgid "Manage servers for this network"
 msgstr "Керування записами серверів цієї мережі"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgid "&Edit..."
@@ -4476,7 +5032,8 @@ msgstr "Запит загалом на %1 повідомлень журналу 
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:106
-msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
+msgid ""
+"Requesting up to %1 of all unread backlog messages (plus additional %2)"
 msgstr ""
 "Запит на %1 з усіх непрочитаних повідомлень з журналу (плюс додаткові %2)"
 
@@ -4504,7 +5061,7 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
-#: ../src/uisupport/qssparser.cpp:314
+#: ../src/uisupport/qssparser.cpp:316
 msgid "Invalid block declaration: %1"
 msgstr "Некоректне оголошення блоку: %1"
 
@@ -4524,144 +5081,145 @@ msgid "Invalid subelement name in %1"
 msgstr "Некоректна назва піделемента у %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:234
+#: ../src/uisupport/qssparser.cpp:236
 msgid "Invalid message type in %1"
 msgstr "Некоректний тип повідомлення у %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:243
+#: ../src/uisupport/qssparser.cpp:245
 msgid "Invalid condition %1"
 msgstr "Некоректна умова %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:255
+#: ../src/uisupport/qssparser.cpp:257
 msgid "Invalid message label: %1"
 msgstr "Некоректна мітка повідомлення: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:266
+#: ../src/uisupport/qssparser.cpp:268
 msgid "Invalid senderhash specification: %1"
 msgstr "Некоректне визначення хешу відправника: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:270
+#: ../src/uisupport/qssparser.cpp:272
 msgid "Senderhash can be at most \"0x0f\"!"
 msgstr "Хеш відправника не може перевищувати \"0x0f\"!"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:285
+#: ../src/uisupport/qssparser.cpp:287
 msgid "Invalid format name: %1"
 msgstr "Некоректна назва формату: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:292
+#: ../src/uisupport/qssparser.cpp:294
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
-msgstr "Помилкове визначення кольору IRC (має бути значення від 00 до 0f): %1"
+msgstr ""
+"Помилкове визначення кольору IRC (має бути значення від 00 до 0f): %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:300
+#: ../src/uisupport/qssparser.cpp:302
 msgid "Unhandled condition: %1"
 msgstr "Непридатна до обробки умова: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:329
+#: ../src/uisupport/qssparser.cpp:331
 msgid "Invalid proplist %1"
 msgstr "Некоректний список властивостей %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:348
+#: ../src/uisupport/qssparser.cpp:350
 msgid "Invalid chatlist item type %1"
 msgstr "Некоректний тип елемента списку балачки %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:364
+#: ../src/uisupport/qssparser.cpp:366
 msgid "Invalid chatlist state %1"
 msgstr "Некоректний стан списку балачки %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:390
+#: ../src/uisupport/qssparser.cpp:392
 msgid "Invalid property declaration: %1"
 msgstr "Некоректне оголошення властивості: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:414
+#: ../src/uisupport/qssparser.cpp:416
 msgid "Invalid font property: %1"
 msgstr "Некоректна властивість шрифта: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:420
+#: ../src/uisupport/qssparser.cpp:422
 msgid "Unknown ChatLine property: %1"
 msgstr "Невідома властивість ChatLine: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:442
+#: ../src/uisupport/qssparser.cpp:444
 msgid "Invalid palette color role specification: %1"
 msgstr "Некоректне визначення ролі кольору палітри: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:449
+#: ../src/uisupport/qssparser.cpp:451
 msgid "Unknown palette color role: %1"
 msgstr "Невідома роль кольору у палітрі: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:456 ../src/uisupport/qssparser.cpp:478
-#: ../src/uisupport/qssparser.cpp:499
+#: ../src/uisupport/qssparser.cpp:458 ../src/uisupport/qssparser.cpp:481
+#: ../src/uisupport/qssparser.cpp:503
 msgid "Invalid gradient declaration: %1"
 msgstr "Некоректне визначення градієнта: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:465 ../src/uisupport/qssparser.cpp:486
-#: ../src/uisupport/qssparser.cpp:509
+#: ../src/uisupport/qssparser.cpp:467 ../src/uisupport/qssparser.cpp:489
+#: ../src/uisupport/qssparser.cpp:513
 msgid "Invalid gradient stops list: %1"
 msgstr "Некоректний список точок перемикання градієнта: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:605
+#: ../src/uisupport/qssparser.cpp:610
 msgid "Invalid font specification: %1"
 msgstr "Некоректне визначення шрифту: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:644
+#: ../src/uisupport/qssparser.cpp:649
 msgid "Invalid font style specification: %1"
 msgstr "Некоректне визначення гарнітури шрифту: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:657
+#: ../src/uisupport/qssparser.cpp:662
 msgid "Invalid font weight specification: %1"
 msgstr "Некоректне визначення товщини шрифту: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:667
+#: ../src/uisupport/qssparser.cpp:672
 msgid "Invalid font size specification: %1"
 msgstr "Некоректне визначення розмірів шрифту: %1"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:129
+#: ../src/common/util.cpp:145
 msgid "year"
 msgstr "рік"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:130
+#: ../src/common/util.cpp:146
 msgid "day"
 msgstr "день"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:131
+#: ../src/common/util.cpp:147
 msgid "h"
 msgstr "г"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:132
+#: ../src/common/util.cpp:148
 msgid "min"
 msgstr "хв"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:133
+#: ../src/common/util.cpp:149
 msgid "sec"
 msgstr "с"
 
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:424
+#: ../src/client/networkmodel.cpp:429
 msgid "<b>Query with %1</b>"
 msgstr "<b>Діалог з %1</b>"
 
@@ -4734,14 +5292,18 @@ msgstr "Користувач проксі:"
 msgid "Proxy Password:"
 msgstr "Пароль до проксі:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/ui/settingsdlg.ui:14 ../src/qtui/ui/settingspagedlg.ui:14
 msgid "Configure Quassel"
 msgstr "Налаштування Quassel"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
 #: ../src/qtui/settingsdlg.cpp:99 ../src/qtui/ui/settingspagedlg.ui:30
 msgid "Settings"
@@ -4761,38 +5323,84 @@ msgstr ""
 "На поточній сторінці налаштування є незбережені зміни. Бажаєте застосувати "
 "зміни негайно?"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #: ../src/qtui/settingspagedlg.cpp:36
 msgid "Configure %1"
 msgstr "Налаштувати %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Reload Settings"
 msgstr "Перезавантаження параметрів"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
-msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgid ""
+"Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 "Бажаєте повторно завантажити параметри із скасуванням всіх змін, внесених на "
 "цій сторінці?"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Restore Defaults"
 msgstr "Відновлення параметрів"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Do you like to restore the default values for this page?"
 msgstr "Бажаєте відновити типові значення на цій сторінці?"
+
+#. ts-context ShortcutsModel
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:110
+msgid "Action"
+msgstr "Дія"
+
+#. ts-context ShortcutsModel
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:112
+msgid "Shortcut"
+msgstr "Скорочення"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:22
+msgid "Search:"
+msgstr "Пошук:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:62
+msgid "Shortcut for Selected Action"
+msgstr "Скорочення для позначеної дії"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:68
+msgid "Default:"
+msgstr "Типове:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:82
+msgid "Custom:"
+msgstr "Нетипове:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
+msgid "Shortcuts"
+msgstr "Скорочення"
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:880
@@ -4861,7 +5469,7 @@ msgstr ""
 "з’єднання з мережею"
 
 #. ts-context SqliteStorage
-#: ../src/core/sqlitestorage.cpp:49
+#: ../src/core/sqlitestorage.cpp:52
 msgid ""
 "SQLite is a file-based database engine that does not require any setup. It "
 "is suitable for small and medium-sized databases that do not require access "
@@ -4997,7 +5605,7 @@ msgid "&Restore"
 msgstr "&Відновити"
 
 #. ts-context SystrayNotificationBackend::ConfigWidget
-#: ../src/qtui/systraynotificationbackend.cpp:134
+#: ../src/qtui/systraynotificationbackend.cpp:135
 msgid "Show a message in a popup"
 msgstr "Показати повідомлення у контекстному вікні"
 
@@ -5143,146 +5751,151 @@ msgstr "Віджет теми"
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:583
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:584
+#: ../src/uisupport/uistyle.cpp:587
 msgid "You are now known as %DN%1%DN"
 msgstr "Тепер вас показано як %DN%1%DN"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:585
+#: ../src/uisupport/uistyle.cpp:588
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN тепер показано як %DN%2%DN"
 
 #. Mode Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:589
+#: ../src/uisupport/uistyle.cpp:592
 msgid "User mode: %DM%1%DM"
 msgstr "Режим користувача: %DM%1%DM"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:590
+#: ../src/uisupport/uistyle.cpp:593
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "Режим %DM%1%DM, встановлено %DN%2%DN"
 
 #. Join Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:594
+#: ../src/uisupport/uistyle.cpp:597
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH приєднується до %DC%4%DC"
 
 #. Part Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:597
+#: ../src/uisupport/uistyle.cpp:600
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH полишає %DC%4%DC"
 
 #. Quit Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:602
+#: ../src/uisupport/uistyle.cpp:605
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH виходить"
 
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:609
+#: ../src/uisupport/uistyle.cpp:612
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN викинуто %DN%2%DN з %DC%3%DC"
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:626
+#: ../src/uisupport/uistyle.cpp:629
 msgid "{Day changed to %1}"
 msgstr "{День змінено на %1}"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:638
+#: ../src/uisupport/uistyle.cpp:641
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
 "Розділення між %DH%1%DH і %DH%2%DH завершено. Приєдналися користувачі: "
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:642 ../src/uisupport/uistyle.cpp:657
+#: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN (додалося %2)"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:652
+#: ../src/uisupport/uistyle.cpp:655
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "Розділення між %DH%1%DH і %DH%2%DH. Вийшло користувачів: "
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:661 ../src/uisupport/uistyle.cpp:699
+#: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
 msgid "[%1]"
 msgstr "[%1]"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:697
+#: ../src/uisupport/uistyle.cpp:703
 msgid "<%1>"
 msgstr "<%1>"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:701
+#: ../src/uisupport/uistyle.cpp:707
 msgid "-*-"
 msgstr "-*-"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:703
+#: ../src/uisupport/uistyle.cpp:709
 msgid "<->"
 msgstr "<->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:705
+#: ../src/uisupport/uistyle.cpp:711
 msgid "***"
 msgstr "***"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:707
+#: ../src/uisupport/uistyle.cpp:713
 msgid "-->"
 msgstr "-->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:709 ../src/uisupport/uistyle.cpp:711
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
 msgid "<--"
 msgstr "<--"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:713
+#: ../src/uisupport/uistyle.cpp:719
 msgid "<-*"
 msgstr "<-*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:715
+#: ../src/uisupport/uistyle.cpp:721
 msgid "<-x"
 msgstr "<-x"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:717 ../src/uisupport/uistyle.cpp:719
-#: ../src/uisupport/uistyle.cpp:721 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
 msgid "*"
 msgstr "*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:723
+#: ../src/uisupport/uistyle.cpp:729
 msgid "-"
 msgstr "-"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:727
+#: ../src/uisupport/uistyle.cpp:733
 msgid "=>"
 msgstr "=>"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:729
+#: ../src/uisupport/uistyle.cpp:735
 msgid "<="
 msgstr "<="
 
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:737
+msgid "->"
+msgstr "->"
+
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:692
+#: ../src/client/networkmodel.cpp:697
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
 msgstr[0] "%n власник"
@@ -5290,7 +5903,7 @@ msgstr[1] "%n власники"
 msgstr[2] "%n власників"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:693
+#: ../src/client/networkmodel.cpp:698
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
 msgstr[0] "%n адміністратор"
@@ -5298,7 +5911,7 @@ msgstr[1] "%n адміністратора"
 msgstr[2] "%n адміністраторів"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:694
+#: ../src/client/networkmodel.cpp:699
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
 msgstr[0] "%n оператор"
@@ -5306,7 +5919,7 @@ msgstr[1] "%n оператора"
 msgstr[2] "%n операторів"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:695
+#: ../src/client/networkmodel.cpp:700
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
 msgstr[0] "%n напівоператор"
@@ -5314,7 +5927,7 @@ msgstr[1] "%n напівоператора"
 msgstr[2] "%n напівоператорів"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:696
+#: ../src/client/networkmodel.cpp:701
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
 msgstr[0] "%n з правом допису"
@@ -5322,1272 +5935,21 @@ msgstr[1] "%n з правом допису"
 msgstr[2] "%n з правом допису"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:697
+#: ../src/client/networkmodel.cpp:702
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
 msgstr[0] "%n користувач"
 msgstr[1] "%n користувачі"
 msgstr[2] "%n користувачів"
 
-#~ msgctxt "AliasesSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
+#~ msgid "Finger"
+#~ msgstr "Відбиток"
 
-#~ msgctxt "AliasesSettingsPage#2"
-#~ msgid "New"
-#~ msgstr "Створити"
+#~ msgid "Add Buffers Automatically:"
+#~ msgstr "Автоматичне додавання буферів:"
 
-#~ msgctxt "AliasesSettingsPage#3"
-#~ msgid "Delete"
-#~ msgstr "Вилучити"
+#~ msgid "Hide inactive buffers:"
+#~ msgstr "Приховування неактивних буферів:"
 
-#~ msgctxt "AliasesSettingsPage#4"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "AppearanceSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "AppearanceSettingsPage#20"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "BacklogSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "BacklogSettingsPage#14"
-#~ msgid "Unlimited"
-#~ msgstr "Не обмежено"
-
-#~ msgctxt "BacklogSettingsPage#19"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "BufferViewEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "Діалогове вікно"
-
-#~ msgctxt "BufferViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "BufferViewSettingsPage#2"
-#~ msgid "Re&name..."
-#~ msgstr "Пере&йменувати…"
-
-#~ msgctxt "BufferViewSettingsPage#3"
-#~ msgid "&Add..."
-#~ msgstr "&Додати..."
-
-#~ msgctxt "BufferViewSettingsPage#4"
-#~ msgid "De&lete"
-#~ msgstr "Ви&лучити"
-
-#~ msgctxt "BufferViewSettingsPage#6"
-#~ msgid "Network:"
-#~ msgstr "Мережа:"
-
-#~ msgctxt "BufferViewSettingsPage#19"
-#~ msgid "Highlight"
-#~ msgstr "Підсвічування"
-
-#~ msgctxt "BufferViewSettingsPage#21"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ChatMonitorSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "ChatMonitorSettingsPage#11"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ChatViewSearchBar#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "ChatViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "ChatViewSettingsPage#10"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ChatViewSettingsPage#22"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ConnectionSettingsPage#4"
-#~ msgid " seconds"
-#~ msgstr " секунд"
-
-#~ msgctxt "ConnectionSettingsPage#13"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "ContextMenuActionProvider#1"
-#~ msgid "Connect"
-#~ msgstr "З'єднатися"
-
-#~ msgctxt "ContextMenuActionProvider#2"
-#~ msgid "Disconnect"
-#~ msgstr "Від'єднатися"
-
-#~ msgctxt "ContextMenuActionProvider#3"
-#~ msgid "Join"
-#~ msgstr "Приєднатись"
-
-#~ msgctxt "ContextMenuActionProvider#4"
-#~ msgid "Part"
-#~ msgstr "Полишити"
-
-#~ msgctxt "ContextMenuActionProvider#19"
-#~ msgid "Whois"
-#~ msgstr "Whois"
-
-#~ msgctxt "Core#18"
-#~ msgid "Client"
-#~ msgstr "Клієнт"
-
-#~ msgctxt "CoreAccountEditDlg#6"
-#~ msgid "localhost"
-#~ msgstr "localhost"
-
-#~ msgctxt "CoreAccountEditDlg#7"
-#~ msgid "Port:"
-#~ msgstr "Порт:"
-
-#~ msgctxt "CoreAccountEditDlg#9"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "CoreAccountEditDlg#11"
-#~ msgid "Use a Proxy"
-#~ msgstr "Використовувати проксі"
-
-#~ msgctxt "CoreAccountEditDlg#12"
-#~ msgid "Proxy Type:"
-#~ msgstr "Тип проксі:"
-
-#~ msgctxt "CoreAccountEditDlg#13"
-#~ msgid "Socks 5"
-#~ msgstr "Socks 5"
-
-#~ msgctxt "CoreAccountEditDlg#14"
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgctxt "CoreAccountSettingsPage#4"
-#~ msgid "Add..."
-#~ msgstr "Додати..."
-
-#~ msgctxt "CoreAccountSettingsPage#5"
-#~ msgid "Delete"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#2"
-#~ msgid "Username:"
-#~ msgstr "Користувач:"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#3"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#5"
-#~ msgid "Remember password"
-#~ msgstr "Запам'ятати пароль"
-
-#~ msgctxt "CoreConfigWizardIntroPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConfigWizardStorageSelectionPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConfigWizardStorageSelectionPage#2"
-#~ msgid "Storage Backend:"
-#~ msgstr "Сервер зберігання даних:"
-
-#~ msgctxt "CoreConfigWizardSyncPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConfigWizardSyncPage#5"
-#~ msgid "Storage Backend:"
-#~ msgstr "Сервер зберігання даних:"
-
-#~ msgctxt "CoreConnectAuthDlg#3"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "CoreConnectAuthDlg#4"
-#~ msgid "Username:"
-#~ msgstr "Користувач:"
-
-#~ msgctxt "CoreConnectAuthDlg#5"
-#~ msgid "Remember password"
-#~ msgstr "Запам'ятати пароль"
-
-#~ msgctxt "CoreConnectionSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConnectionSettingsPage#7"
-#~ msgid " seconds"
-#~ msgstr " секунд"
-
-#~ msgctxt "CoreConnectionSettingsPage#13"
-#~ msgid "Connection"
-#~ msgstr "З'єднання"
-
-#~ msgctxt "CoreConnectionStatusWidget#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConnectionStatusWidget#2"
-#~ msgid "Message"
-#~ msgstr "Повідомлення"
-
-#~ msgid "s"
-#~ msgstr "с"
-
-#~ msgid "ms"
-#~ msgstr "мс"
-
-#~ msgctxt "CoreInfoDlg#10"
-#~ msgid "Close"
-#~ msgstr "Закрити"
-
-#~ msgctxt "CoreSession#1"
-#~ msgid "Client"
-#~ msgstr "Клієнт"
-
-#~ msgid "sending CTCP-%1 request"
-#~ msgstr "надсилання запиту CTCP-%1"
-
-#~ msgctxt "DebugLogWidget#2"
-#~ msgid "Close"
-#~ msgstr "Закрити"
-
-#~ msgctxt "DesktopNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgid "Timeout:"
-#~ msgstr "Час очікування:"
-
-#~ msgctxt "DesktopNotificationConfigWidget#4"
-#~ msgid " s"
-#~ msgstr " с"
-
-#~ msgid " px"
-#~ msgstr " пк"
-
-#~ msgid "X: "
-#~ msgstr "X: "
-
-#~ msgid "Y: "
-#~ msgstr "Y: "
-
-#~ msgid "Queue unread notifications"
-#~ msgstr "Ставити непрочитані сповіщення у чергу"
-
-#~ msgctxt "HighlightSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "HighlightSettingsPage#3"
-#~ msgid "Highlight"
-#~ msgstr "Підсвічування"
-
-#~ msgctxt "HighlightSettingsPage#8"
-#~ msgid "Remove"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "HighlightSettingsPage#14"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "IdentitiesSettingsPage#1"
-#~ msgid "Rename Identity"
-#~ msgstr "Перейменувати профіль"
-
-#~ msgctxt "IdentitiesSettingsPage#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "IdentitiesSettingsPage#4"
-#~ msgid "Add..."
-#~ msgstr "Додати…"
-
-#~ msgctxt "IdentitiesSettingsPage#6"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "IdentityEditWidget#5"
-#~ msgid "Add Nickname"
-#~ msgstr "Додавання псевдоніма"
-
-#~ msgctxt "IdentityEditWidget#6"
-#~ msgid "&Add..."
-#~ msgstr "&Додати..."
-
-#~ msgctxt "IdentityEditWidget#8"
-#~ msgid "Remove"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "IdentityEditWidget#9"
-#~ msgid "Rename Identity"
-#~ msgstr "Перейменувати профіль"
-
-#~ msgctxt "IdentityEditWidget#10"
-#~ msgid "Re&name..."
-#~ msgstr "Пере&йменувати…"
-
-#~ msgctxt "IdentityEditWidget#26"
-#~ msgid "Advanced"
-#~ msgstr "Додатково"
-
-#~ msgctxt "IdentityEditWidget#35"
-#~ msgid "Continue"
-#~ msgstr "Продовжити"
-
-#~ msgctxt "IgnoreListEditDlg#9"
-#~ msgid "Message"
-#~ msgstr "Повідомлення"
-
-#~ msgctxt "IgnoreListEditDlg#17"
-#~ msgid "Network"
-#~ msgstr "Мережа"
-
-#~ msgctxt "IgnoreListEditDlg#18"
-#~ msgid "Channel"
-#~ msgstr "Канал"
-
-#~ msgctxt "IgnoreListSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "IgnoreListSettingsPage#2"
-#~ msgid "New"
-#~ msgstr "Створити"
-
-#~ msgctxt "IgnoreListSettingsPage#3"
-#~ msgid "Delete"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "IgnoreListSettingsPage#5"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "IndicatorNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "InputWidget#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgid "Ctrl+L"
-#~ msgstr "Ctrl+L"
-
-#~ msgctxt "InputWidgetSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "InputWidgetSettingsPage#2"
-#~ msgid "Custom font:"
-#~ msgstr "Нетиповий шрифт:"
-
-#~ msgctxt "InputWidgetSettingsPage#12"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "IrcListModel#1"
-#~ msgid "Channel"
-#~ msgstr "Канал"
-
-#~ msgctxt "IrcListModel#3"
-#~ msgid "Topic"
-#~ msgstr "Тема"
-
-#~ msgctxt "IrcUserItem#3"
-#~ msgid "server: %1"
-#~ msgstr "сервер: %1"
-
-#~ msgctxt "ItemViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "ItemViewSettingsPage#2"
-#~ msgid "Custom font:"
-#~ msgstr "Нетиповий шрифт:"
-
-#~ msgctxt "ItemViewSettingsPage#9"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ItemViewSettingsPage#18"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ItemViewSettingsPage#20"
-#~ msgid "Network"
-#~ msgstr "Мережа"
-
-#~ msgctxt "ItemViewSettingsPage#24"
-#~ msgid "Highlight"
-#~ msgstr "Підсвічування"
-
-#~ msgid "Ctrl+Q"
-#~ msgstr "Ctrl+Q"
-
-#~ msgid "Ctrl+M"
-#~ msgstr "Ctrl+M"
-
-#~ msgid "F7"
-#~ msgstr "F7"
-
-#~ msgctxt "MainWin#35"
-#~ msgid "Chat Monitor"
-#~ msgstr "Спостереження за балачкою"
-
-#~ msgctxt "MainWin#39"
-#~ msgid "Topic"
-#~ msgstr "Тема"
-
-#~ msgctxt "MainWin#50"
-#~ msgid "Continue"
-#~ msgstr "Продовжити"
-
-#~ msgctxt "MsgProcessorStatusWidget#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "NetworkAddDlg#1"
-#~ msgid "Add Network"
-#~ msgstr "Додавання мережі"
-
-#~ msgctxt "NetworkAddDlg#5"
-#~ msgid "Network name:"
-#~ msgstr "Назва мережі:"
-
-#~ msgctxt "NetworkAddDlg#6"
-#~ msgid "Server address:"
-#~ msgstr "Адреса сервера:"
-
-#~ msgctxt "NetworkAddDlg#7"
-#~ msgid "Port:"
-#~ msgstr "Порт:"
-
-#~ msgctxt "NetworkEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "Діалогове вікно"
-
-#~ msgctxt "NetworkEditDlg#3"
-#~ msgid "Add Network"
-#~ msgstr "Додавання мережі"
-
-#~ msgctxt "NetworkModel#2"
-#~ msgid "Topic"
-#~ msgstr "Тема"
-
-#~ msgctxt "NetworkModelController::JoinDlg#2"
-#~ msgid "Network:"
-#~ msgstr "Мережа:"
-
-#~ msgctxt "NetworksSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "NetworksSettingsPage#2"
-#~ msgid "Re&name..."
-#~ msgstr "Пере&йменувати…"
-
-#~ msgctxt "NetworksSettingsPage#3"
-#~ msgid "&Add..."
-#~ msgstr "&Додати..."
-
-#~ msgctxt "NetworksSettingsPage#4"
-#~ msgid "De&lete"
-#~ msgstr "Ви&лучити"
-
-#~ msgctxt "NetworksSettingsPage#7"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "NetworksSettingsPage#8"
-#~ msgid "Servers"
-#~ msgstr "Сервери"
-
-#~ msgctxt "NetworksSettingsPage#10"
-#~ msgid "&Edit..."
-#~ msgstr "&Змінити…"
-
-#~ msgctxt "NetworksSettingsPage#17"
-#~ msgid "Connection"
-#~ msgstr "З'єднання"
-
-#~ msgid "Interval:"
-#~ msgstr "Інтервал:"
-
-#~ msgctxt "NetworksSettingsPage#21"
-#~ msgid " s"
-#~ msgstr " с"
-
-#~ msgid "Retries:"
-#~ msgstr "Повторні спроби:"
-
-#~ msgctxt "NetworksSettingsPage#23"
-#~ msgid "Unlimited"
-#~ msgstr "Не обмежено"
-
-#~ msgid "Rejoin all channels on reconnect"
-#~ msgstr "Приєднуватия до всіх каналів при повторному з’єднанні"
-
-#~ msgctxt "NetworksSettingsPage#28"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "NetworksSettingsPage#39"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "NetworksSettingsPage#43"
-#~ msgid "</ul>"
-#~ msgstr "</ul>"
-
-#~ msgctxt "NickEditDlg#4"
-#~ msgid "Add Nickname"
-#~ msgstr "Додавання псевдоніма"
-
-#~ msgctxt "NotificationsSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "PhononNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgid "Audio Notification (via Phonon)"
-#~ msgstr "Звукове сповіщення (за допомогою Phonon)"
-
-#~ msgid "Play File:"
-#~ msgstr "Відтворити файл:"
-
-#~ msgctxt "QueryBufferItem#4"
-#~ msgid "server: %1"
-#~ msgstr "сервер: %1"
-
-#~ msgctxt "ServerEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "Діалогове вікно"
-
-#~ msgctxt "ServerEditDlg#3"
-#~ msgid "Server address:"
-#~ msgstr "Адреса сервера:"
-
-#~ msgctxt "ServerEditDlg#4"
-#~ msgid "Port:"
-#~ msgstr "Порт:"
-
-#~ msgctxt "ServerEditDlg#5"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "ServerEditDlg#7"
-#~ msgid "Advanced"
-#~ msgstr "Додатково"
-
-#~ msgctxt "ServerEditDlg#13"
-#~ msgid "Use a Proxy"
-#~ msgstr "Використання проксі"
-
-#~ msgctxt "ServerEditDlg#14"
-#~ msgid "Proxy Type:"
-#~ msgstr "Тип проксі:"
-
-#~ msgctxt "ServerEditDlg#15"
-#~ msgid "Socks 5"
-#~ msgstr "Socks 5"
-
-#~ msgctxt "ServerEditDlg#16"
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgctxt "ServerEditDlg#18"
-#~ msgid "localhost"
-#~ msgstr "localhost"
-
-#~ msgctxt "SettingsDlg#2"
-#~ msgid "Settings"
-#~ msgstr "Параметри"
-
-#~ msgctxt "SettingsDlg#5"
-#~ msgid "Configure %1"
-#~ msgstr "Налаштувати %1"
-
-#~ msgctxt "SettingsDlg#8"
-#~ msgid "Restore Defaults"
-#~ msgstr "Відновити типові параметри"
-
-#~ msgctxt "SettingsPageDlg#1"
-#~ msgid "Configure Quassel"
-#~ msgstr "Налаштування Quassel"
-
-#~ msgctxt "SettingsPageDlg#2"
-#~ msgid "Settings"
-#~ msgstr "Параметри"
-
-#~ msgctxt "SettingsPageDlg#3"
-#~ msgid "Configure %1"
-#~ msgstr "Налаштувати %1"
-
-#~ msgctxt "SettingsPageDlg#6"
-#~ msgid "Restore Defaults"
-#~ msgstr "Відновити типові параметри"
-
-#~ msgctxt "SimpleNetworkEditor#1"
-#~ msgid "Network name:"
-#~ msgstr "Назва мережі:"
-
-#~ msgctxt "SimpleNetworkEditor#3"
-#~ msgid "Servers"
-#~ msgstr "Сервери"
-
-#~ msgctxt "SimpleNetworkEditor#6"
-#~ msgid "&Edit..."
-#~ msgstr "&Змінити…"
-
-#~ msgctxt "SimpleNetworkEditor#8"
-#~ msgid "&Add..."
-#~ msgstr "&Додати…"
-
-#~ msgctxt "SimpleNetworkEditor#10"
-#~ msgid "De&lete"
-#~ msgstr "Ви&лучити"
-
-#~ msgctxt "SimpleNetworkEditor#11"
-#~ msgid "Move upwards in list"
-#~ msgstr "Пересунути вгору списком"
-
-#~ msgid "System Tray Icon"
-#~ msgstr "Піктограма у системному лотку"
-
-#~ msgid "Animate"
-#~ msgstr "Анімація"
-
-#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#3"
-#~ msgid "Unlimited"
-#~ msgstr "Не обмежено"
-
-#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
-#~ msgid " s"
-#~ msgstr " с"
-
-#~ msgctxt "ToolBarActionProvider#1"
-#~ msgid "Connect"
-#~ msgstr "З'єднатися"
-
-#~ msgctxt "ToolBarActionProvider#3"
-#~ msgid "Disconnect"
-#~ msgstr "Роз'єднатися"
-
-#~ msgctxt "ToolBarActionProvider#5"
-#~ msgid "Part"
-#~ msgstr "Полишити"
-
-#~ msgctxt "ToolBarActionProvider#7"
-#~ msgid "Join"
-#~ msgstr "Приєднатися"
-
-#~ msgctxt "ToolBarActionProvider#11"
-#~ msgid "Whois"
-#~ msgstr "Whois"
-
-#~ msgctxt "TopicWidget#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "TopicWidget#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "TopicWidgetSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "TopicWidgetSettingsPage#2"
-#~ msgid "Custom font:"
-#~ msgstr "Нетиповий шрифт:"
-
-#~ msgctxt "TopicWidgetSettingsPage#5"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "AwayLogView#2"
-#~ msgid "Show Network Name"
-#~ msgstr "Показувати назву мережі"
-
-#~ msgctxt "AwayLogView#3"
-#~ msgid "Show Buffer Name"
-#~ msgstr "Показувати назву буфера"
-
-#~ msgctxt "ChatMonitorView#2"
-#~ msgid "Show Network Name"
-#~ msgstr "Показ назви мережі"
-
-#~ msgctxt "ChatMonitorView#3"
-#~ msgid "Show Buffer Name"
-#~ msgstr "Показ назви буфера"
-
-#~ msgctxt "CoreAccount#1"
-#~ msgid "Internal Core"
-#~ msgstr "Вбудоване ядро"
-
-#~ msgctxt "CoreAccountModel#1"
-#~ msgid "Internal Core"
-#~ msgstr "Вбудоване ядро"
-
-#~ msgctxt "IgnoreListModel#7"
-#~ msgid "Ignore Rule"
-#~ msgstr "Правило ігнорування"
-
-#~ msgctxt "IrcServerHandler#4"
-#~ msgid "%1"
-#~ msgstr "%1"
-
-#~ msgctxt "SimpleNetworkEditor#13"
-#~ msgid "Move downwards in list"
-#~ msgstr "Пересунути вниз списком"
-
-#~ msgctxt "UiStyle::StyledMessage#1"
-#~ msgid "%1"
-#~ msgstr "%1"
-
-#~ msgctxt "IrcUserItem#1"
-#~ msgid "idling since %1"
-#~ msgstr "бездіяльність з %1"
-
-#~ msgctxt "IrcUserItem#2"
-#~ msgid "login time: %1"
-#~ msgstr "час входу до системи: %1"
-
-#~ msgctxt "QueryBufferItem#2"
-#~ msgid "idling since %1"
-#~ msgstr "бездіяльність з %1"
-
-#~ msgctxt "QueryBufferItem#3"
-#~ msgid "login time: %1"
-#~ msgstr "час входу до системи: %1"
-
-#~ msgctxt "AliasesSettingsPage#1"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "AliasesSettingsPage#5"
-#~ msgid "Delete"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "AppearanceSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "AliasesSettingsPage#3"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "AliasesSettingsPage#4"
-#~ msgid "New"
-#~ msgstr "Створити"
-
-#~ msgctxt "AppearanceSettingsPage#4"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "BufferViewSettingsPage#23"
-#~ msgid "Highlight"
-#~ msgstr "Підсвічування"
-
-#~ msgctxt "BufferViewSettingsPage#9"
-#~ msgid "De&lete"
-#~ msgstr "Ви&лучити"
-
-#~ msgctxt "BufferViewSettingsPage#11"
-#~ msgid "Network:"
-#~ msgstr "Мережа:"
-
-#~ msgctxt "BufferViewSettingsPage#7"
-#~ msgid "Re&name..."
-#~ msgstr "Пере&йменувати…"
-
-#~ msgctxt "BufferViewSettingsPage#6"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "BufferViewSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "BacklogSettingsPage#16"
-#~ msgid "Unlimited"
-#~ msgstr "Не обмежено"
-
-#~ msgctxt "BacklogSettingsPage#3"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "BacklogSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ChatMonitorSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ChatViewSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ChatMonitorSettingsPage#2"
-#~ msgid "Chat Monitor"
-#~ msgstr "Спостереження за балачкою"
-
-#~ msgctxt "ChatMonitorSettingsPage#7"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "ConnectionSettingsPage#1"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "CoreAccountSettingsPage#1"
-#~ msgid "Remote Cores"
-#~ msgstr "Віддалені ядра"
-
-#~ msgctxt "ConnectionSettingsPage#5"
-#~ msgid " seconds"
-#~ msgstr " секунд"
-
-#~ msgctxt "ContextMenuActionProvider#37"
-#~ msgid "CTCP"
-#~ msgstr "CTCP"
-
-#~ msgctxt "ChatViewSettingsPage#3"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConnectionStatusWidget#6"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConnectionSettingsPage#1"
-#~ msgid "Remote Cores"
-#~ msgstr "Віддалені ядра"
-
-#~ msgctxt "CoreConnectionSettingsPage#9"
-#~ msgid " seconds"
-#~ msgstr " секунд"
-
-#~ msgctxt "CoreAccountSettingsPage#6"
-#~ msgid "Delete"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "CoreConnectAuthDlg#5"
-#~ msgid "Username:"
-#~ msgstr "Користувач:"
-
-#~ msgctxt "CoreConnectAuthDlg#4"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "CoreConnectAuthDlg#6"
-#~ msgid "Remember password"
-#~ msgstr "Запам'ятати пароль"
-
-#~ msgctxt "CoreConnectionSettingsPage#3"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreConnectionSettingsPage#2"
-#~ msgid "Connection"
-#~ msgstr "З'єднання"
-
-#~ msgctxt "HighlightSettingsPage#2"
-#~ msgid "Highlight"
-#~ msgstr "Підсвічування"
-
-#~ msgctxt "HighlightSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "HighlightSettingsPage#11"
-#~ msgid "Remove"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "HighlightSettingsPage#5"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "CoreInfoDlg#12"
-#~ msgid "Close"
-#~ msgstr "Закрити"
-
-#~ msgctxt "CoreConnectionStatusWidget#7"
-#~ msgid "Message"
-#~ msgstr "Повідомлення"
-
-#~ msgctxt "IdentityEditWidget#15"
-#~ msgid "&Add..."
-#~ msgstr "&Додати…"
-
-#~ msgctxt "IdentitiesSettingsPage#3"
-#~ msgid ""
-#~ "<b>The following problems need to be corrected before your changes can be "
-#~ "applied:</b><ul>"
-#~ msgstr ""
-#~ "<b>До того, як ваші зміни буде застосовано, слід виправити такі "
-#~ "помилки:</b><ul>"
-
-#~ msgctxt "IdentitiesSettingsPage#1"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "IdentitiesSettingsPage#8"
-#~ msgid "</ul>"
-#~ msgstr "</ul>"
-
-#~ msgctxt "IdentityEditWidget#17"
-#~ msgid "Remove"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "IdentityEditWidget#1"
-#~ msgid "Advanced"
-#~ msgstr "Додатково"
-
-#~ msgctxt "IdentityEditWidget#14"
-#~ msgid "Add Nickname"
-#~ msgstr "Додавання псевдоніма"
-
-#~ msgctxt "IgnoreListEditDlg#19"
-#~ msgid "Channel"
-#~ msgstr "Канал"
-
-#~ msgctxt "IgnoreListEditDlg#18"
-#~ msgid "Network"
-#~ msgstr "Мережа"
-
-#~ msgctxt "IgnoreListEditDlg#10"
-#~ msgid "CTCP"
-#~ msgstr "CTCP"
-
-#~ msgctxt "IgnoreListEditDlg#12"
-#~ msgid "Ignore Rule"
-#~ msgstr "Правило ігнорування"
-
-#~ msgctxt "IdentityEditWidget#18"
-#~ msgid "Rename Identity"
-#~ msgstr "Перейменувати профіль"
-
-#~ msgctxt "IdentityEditWidget#19"
-#~ msgid "Re&name..."
-#~ msgstr "Пере&йменувати…"
-
-#~ msgctxt "IdentityEditWidget#20"
-#~ msgid "Move upwards in list"
-#~ msgstr "Пересунути вгору списком"
-
-#~ msgctxt "IdentityEditWidget#43"
-#~ msgid "Continue"
-#~ msgstr "Продовжити"
-
-#~ msgctxt "IdentityEditWidget#22"
-#~ msgid "Move downwards in list"
-#~ msgstr "Пересунути вниз списком"
-
-#~ msgctxt "IgnoreListSettingsPage#7"
-#~ msgid "Delete"
-#~ msgstr "Вилучити"
-
-#~ msgctxt "IgnoreListSettingsPage#6"
-#~ msgid "New"
-#~ msgstr "Створити"
-
-#~ msgctxt "IgnoreListSettingsPage#5"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "IgnoreListSettingsPage#1"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "InputWidgetSettingsPage#3"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "InputWidgetSettingsPage#4"
-#~ msgid "Custom font:"
-#~ msgstr "Нетиповий шрифт:"
-
-#~ msgctxt "InputWidgetSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "InputWidget#20"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "NetworkItem#2"
-#~ msgid "Users: %1"
-#~ msgstr "Користувачі: %1"
-
-#~ msgctxt "ItemViewSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "ItemViewSettingsPage#3"
-#~ msgid "Network"
-#~ msgstr "Мережа"
-
-#~ msgctxt "ItemViewSettingsPage#7"
-#~ msgid "Highlight"
-#~ msgstr "Підсвічування"
-
-#~ msgctxt "ItemViewSettingsPage#9"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "ItemViewSettingsPage#10"
-#~ msgid "Custom font:"
-#~ msgstr "Нетиповий шрифт:"
-
-#~ msgctxt "NetworkItem#3"
-#~ msgid "Lag: %1 msecs"
-#~ msgstr "Затримка: %1 мс"
-
-#~ msgctxt "NetworksSettingsPage#16"
-#~ msgid "Servers"
-#~ msgstr "Сервери"
-
-#~ msgctxt "NetworksSettingsPage#1"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "NetworksSettingsPage#3"
-#~ msgid ""
-#~ "<b>The following problems need to be corrected before your changes can be "
-#~ "applied:</b><ul>"
-#~ msgstr ""
-#~ "<b>До того, як ваші зміни буде застосовано, слід виправити такі "
-#~ "помилки:</b><ul>"
-
-#~ msgctxt "NetworkModelController::JoinDlg#4"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "NetworksSettingsPage#9"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "NetworksSettingsPage#5"
-#~ msgid "</ul>"
-#~ msgstr "</ul>"
-
-#~ msgctxt "NetworksSettingsPage#11"
-#~ msgid "&Add..."
-#~ msgstr "&Додати…"
-
-#~ msgctxt "NetworksSettingsPage#10"
-#~ msgid "Re&name..."
-#~ msgstr "Пере&йменувати…"
-
-#~ msgctxt "NetworksSettingsPage#12"
-#~ msgid "De&lete"
-#~ msgstr "Ви&лучити"
-
-#~ msgctxt "NetworksSettingsPage#25"
-#~ msgid "Connection"
-#~ msgstr "З'єднання"
-
-#~ msgctxt "NetworksSettingsPage#32"
-#~ msgid "Unlimited"
-#~ msgstr "Не обмежено"
-
-#~ msgctxt "NetworksSettingsPage#20"
-#~ msgid "Move downwards in list"
-#~ msgstr "Пересунути вниз списком"
-
-#~ msgctxt "NetworksSettingsPage#19"
-#~ msgid "Move upwards in list"
-#~ msgstr "Пересунути вгору списком"
-
-#~ msgctxt "NetworksSettingsPage#18"
-#~ msgid "&Edit..."
-#~ msgstr "&Змінити…"
-
-#~ msgctxt "NickEditDlg#1"
-#~ msgid "Add Nickname"
-#~ msgstr "Додавання псевдоніма"
-
-#~ msgctxt "SettingsDlg#1"
-#~ msgid "Settings"
-#~ msgstr "Параметри"
-
-#~ msgctxt "NetworksSettingsPage#37"
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgctxt "SettingsDlg#6"
-#~ msgid ""
-#~ "Do you like to reload the settings, undoing your changes on this page?"
-#~ msgstr ""
-#~ "Бажаєте повторно завантажити параметри із скасуванням всіх змін, внесених на "
-#~ "цій сторінці?"
-
-#~ msgctxt "SettingsDlg#7"
-#~ msgid "Restore Defaults"
-#~ msgstr "Відновити типові параметри"
-
-#~ msgctxt "SettingsDlg#5"
-#~ msgid "Reload Settings"
-#~ msgstr "Перезавантажити параметри"
-
-#~ msgctxt "SettingsPageDlg#2"
-#~ msgid "Reload Settings"
-#~ msgstr "Перезавантажити параметри"
-
-#~ msgctxt "SettingsPageDlg#1"
-#~ msgid "Configure %1"
-#~ msgstr "Налаштувати %1"
-
-#~ msgctxt "SettingsDlg#9"
-#~ msgid "Configure Quassel"
-#~ msgstr "Налаштування Quassel"
-
-#~ msgctxt "SettingsDlg#8"
-#~ msgid "Do you like to restore the default values for this page?"
-#~ msgstr "Бажаєте відновити типові значення на цій сторінці?"
-
-#~ msgctxt "SettingsPageDlg#5"
-#~ msgid "Do you like to restore the default values for this page?"
-#~ msgstr "Бажаєте відновити типові значення на цій сторінці?"
-
-#~ msgctxt "SettingsPageDlg#4"
-#~ msgid "Restore Defaults"
-#~ msgstr "Відновити типові параметри"
-
-#~ msgctxt "SettingsPageDlg#3"
-#~ msgid ""
-#~ "Do you like to reload the settings, undoing your changes on this page?"
-#~ msgstr ""
-#~ "Бажаєте повторно завантажити параметри із скасуванням всіх змін, внесених на "
-#~ "цій сторінці?"
-
-#~ msgctxt "TopicWidget#2"
-#~ msgid "Lag: %1 msecs"
-#~ msgstr "Затримка: %1 мс"
-
-#~ msgctxt "TopicWidget#3"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
-#~ msgid " seconds"
-#~ msgstr " секунд"
-
-#~ msgctxt "TopicWidget#1"
-#~ msgid "Users: %1"
-#~ msgstr "Користувачі: %1"
-
-#~ msgctxt "SettingsPageDlg#6"
-#~ msgid "Configure Quassel"
-#~ msgstr "Налаштування Quassel"
-
-#~ msgctxt "SettingsPageDlg#7"
-#~ msgid "Settings"
-#~ msgstr "Параметри"
-
-#~ msgctxt "TopicWidgetSettingsPage#3"
-#~ msgid "Form"
-#~ msgstr "Форма"
-
-#~ msgctxt "TopicWidgetSettingsPage#4"
-#~ msgid "Custom font:"
-#~ msgstr "Нетиповий шрифт:"
-
-#~ msgctxt "TopicWidgetSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Інтерфейс"
-
-#~ msgctxt "IdentitiesSettingsPage#12"
-#~ msgid "Rename Identity"
-#~ msgstr "Перейменувати профіль"
-
-#~ msgctxt "AppearanceSettingsPage#12"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "BufferViewSettingsPage#8"
-#~ msgid "&Add..."
-#~ msgstr "&Додати…"
-
-#~ msgctxt "ChatViewSearchBar#2"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "ChatViewSettingsPage#12"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "CoreAccountSettingsPage#5"
-#~ msgid "Add..."
-#~ msgstr "Додати…"
-
-#~ msgctxt "IdentitiesSettingsPage#14"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "IdentitiesSettingsPage#16"
-#~ msgid "Add..."
-#~ msgstr "Додати…"
-
-#~ msgctxt "IdentityEditWidget#21"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "ItemViewSettingsPage#17"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "KNotificationBackend#1"
-#~ msgid "%n pending highlights"
-#~ msgstr "%n підсвічувань у черзі"
-
-#~ msgctxt "NetworksSettingsPage#15"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "SettingsDlg#4"
-#~ msgid "Configure %1"
-#~ msgstr "Налаштування %1"
-
-#~ msgctxt "SimpleNetworkEditor#12"
-#~ msgid "..."
-#~ msgstr "…"
-
-#~ msgctxt "SystrayNotificationBackend#1"
-#~ msgid "%n pending highlights"
-#~ msgstr "%n підсвічувань у черзі"
-
-#~ msgctxt "TopicWidget#4"
-#~ msgid "..."
-#~ msgstr "…"
+#~ msgid "[Whois] idle message: %1"
+#~ msgstr "[Whois] повідомлення про неактивність: %1"
