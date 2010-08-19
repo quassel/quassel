@@ -3419,7 +3419,7 @@ msgstr "Salasana:"
 #: NetworksSettingsPage#29
 #, fuzzy
 msgid "Use SASL Authentication"
-msgstr "Käytä SSL-varmennetta"
+msgstr "Käytä SASL-varmennetta"
 
 #: NetworksSettingsPage#30
 msgid "Account:"

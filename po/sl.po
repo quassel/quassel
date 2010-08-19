@@ -3605,7 +3605,7 @@ msgstr "Geslo:"
 #: NetworksSettingsPage#29
 #, fuzzy
 msgid "Use SASL Authentication"
-msgstr "Uporabi potrdilo SSL"
+msgstr "Uporabi potrdilo SASL"
 
 #: NetworksSettingsPage#30
 #, fuzzy

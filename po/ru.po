@@ -4467,7 +4467,7 @@ msgstr "Служба:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 #, fuzzy
 msgid "Use SASL Authentication"
-msgstr "Использовать сертификат SSL"
+msgstr "Использовать SASL"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
