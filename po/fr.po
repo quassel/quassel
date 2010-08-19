@@ -3554,7 +3554,7 @@ msgstr "Mot de Passe:"
 #: NetworksSettingsPage#29
 #, fuzzy
 msgid "Use SASL Authentication"
-msgstr "Utiliser un certificat SSL"
+msgstr "Utiliser SASL"
 
 #: NetworksSettingsPage#30
 msgid "Account:"

@@ -4321,7 +4321,7 @@ msgstr "szolgáltatás:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 #, fuzzy
 msgid "Use SASL Authentication"
-msgstr "SSL tanúsítvány használata"
+msgstr "SASL tanúsítvány használata"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:625

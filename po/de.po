@@ -3436,7 +3436,7 @@ msgstr "Passwort:"
 
 #: NetworksSettingsPage#38
 msgid "Use SASL Authentication"
-msgstr "SSL-Zertifikat benutzen"
+msgstr "SASL-Authentifizierung benutzen"
 
 #: NetworksSettingsPage#39
 msgid "Account:"

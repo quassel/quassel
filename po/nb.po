@@ -3575,7 +3575,7 @@ msgstr "Passord:"
 #: NetworksSettingsPage#29
 #, fuzzy
 msgid "Use SASL Authentication"
-msgstr "Bruk SSL sertifikat"
+msgstr "Bruk SASL"
 
 #: NetworksSettingsPage#30
 #, fuzzy
