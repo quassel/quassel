@@ -26,7 +26,7 @@ else (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
 
   if (NOT WIN32)
     find_package(PkgConfig)
-    pkg_check_modules(PC_QCA2 qca2)
+    pkg_check_modules(PC_QCA2 QUIET qca2)
     set(QCA2_DEFINITIONS ${PC_QCA2_CFLAGS_OTHER})
   endif (NOT WIN32)
 
@@ -36,7 +36,7 @@ else (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
                   HINTS ${PC_QCA2_LIBDIR} ${PC_QCA2_LIBRARY_DIRS}
                   )
 
-  find_path(QCA2_INCLUDE_DIR qca.h 
+  find_path(QCA2_INCLUDE_DIR qca.h
             HINTS ${PC_QCA2_INCLUDEDIR} ${PC_QCA2_INCLUDE_DIRS}
             PATH_SUFFIXES QtCrypto)
 

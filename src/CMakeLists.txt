@@ -2,29 +2,23 @@
 
 add_subdirectory(common)
 include_directories(BEFORE common)
-if(WANT_CORE OR WANT_MONO)
+if(BUILD_CORE)
   add_subdirectory(core)
   include_directories(BEFORE core)
-endif(WANT_CORE OR WANT_MONO)
-if(WANT_QTCLIENT OR WANT_MONO)
+endif(BUILD_CORE)
+if(BUILD_GUI)
   add_subdirectory(client)
   add_subdirectory(uisupport)
   add_subdirectory(qtui)
   include_directories(BEFORE client)
   include_directories(BEFORE uisupport)
   include_directories(BEFORE qtui)
-#  if(HAVE_KDE)
-#    add_subdirectory(kdeui)
-#    include_directories(kdeui)
-#    set(LINK_KDE mod_kdeui)
-#  endif(HAVE_KDE)
 
   if(STATIC)
     link_directories(${QT_PLUGINS_DIR}/imageformats)
     set(CLIENT_LIBS ${CLIENT_LIBS} qjpeg qgif)
   endif(STATIC)
-
-endif(WANT_QTCLIENT OR WANT_MONO)
+endif(BUILD_GUI)
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
 
