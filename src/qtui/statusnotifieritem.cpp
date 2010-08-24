@@ -23,15 +23,44 @@
 
 #ifdef HAVE_DBUS
 
-#include "statusnotifieritem.h"
-#include "statusnotifieritemdbus.h"
-
 #include <QApplication>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QTextDocument>
 
+#include "quassel.h"
+#include "statusnotifieritem.h"
+#include "statusnotifieritemdbus.h"
+
 const int StatusNotifierItem::_protocolVersion = 0;
+
+#ifdef HAVE_DBUSMENU
+#  include "dbusmenuexporter.h"
+
+/**
+ * Specialization to provide access to icon names
+ */
+class QuasselDBusMenuExporter : public DBusMenuExporter {
+public:
+  QuasselDBusMenuExporter(const QString &dbusObjectPath, QMenu *menu, const QDBusConnection &dbusConnection)
+    : DBusMenuExporter(dbusObjectPath, menu, dbusConnection)
+  {}
+
+protected:
+  virtual QString iconNameForAction(QAction *action) { // TODO Qt 4.7: fixme when we have converted our iconloader
+    Icon icon(action->icon());
+#if QT_VERSION >= 0x040701
+    // QIcon::name() is in the 4.7 git branch, but it is not in 4.7 TP.
+    // If you get a build error here, you need to update your pre-release
+    // of Qt 4.7.
+    return icon.isNull() ? QString() : icon.name();
+#else
+    return QString();
+#endif
+  }
+};
+
+#endif /* HAVE_DBUSMENU */
 
 StatusNotifierItem::StatusNotifierItem(QWidget *parent)
   : StatusNotifierItemParent(parent),
@@ -76,13 +105,20 @@ void StatusNotifierItem::init() {
 
   StatusNotifierItemParent::init();
   trayMenu()->installEventFilter(this);
+
+  // use the appdata icon folder for now
+  _iconThemePath = Quassel::findDataFilePath("icons");
+
+#ifdef HAVE_DBUSMENU
+  _menuObjectPath = "/MenuBar";
+  new QuasselDBusMenuExporter(menuObjectPath(), trayMenu(), _statusNotifierItemDBus->dbusConnection()); // will be added as menu child
+#endif
 }
 
 void StatusNotifierItem::registerToDaemon() {
   if(!_statusNotifierWatcher) {
     QString interface("org.kde.StatusNotifierWatcher");
-    _statusNotifierWatcher = new org::kde::StatusNotifierWatcher(interface, "/StatusNotifierWatcher",
-                                                                 QDBusConnection::sessionBus());
+    _statusNotifierWatcher = new org::kde::StatusNotifierWatcher(interface, "/StatusNotifierWatcher", QDBusConnection::sessionBus());
   }
   if(_statusNotifierWatcher->isValid()
     && _statusNotifierWatcher->property("ProtocolVersion").toInt() == _protocolVersion) {
@@ -199,6 +235,14 @@ QString StatusNotifierItem::attentionIconName() const {
 
 QString StatusNotifierItem::toolTipIconName() const {
   return QString("quassel");
+}
+
+QString StatusNotifierItem::iconThemePath() const {
+  return _iconThemePath;
+}
+
+QString StatusNotifierItem::menuObjectPath() const {
+  return _menuObjectPath;
 }
 
 void StatusNotifierItem::activated(const QPoint &pos) {

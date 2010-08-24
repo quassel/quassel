@@ -63,6 +63,8 @@ protected:
   QString iconName() const;
   QString attentionIconName() const;
   QString toolTipIconName() const;
+  QString iconThemePath() const;
+  QString menuObjectPath() const;
 
   virtual bool eventFilter(QObject *watched, QEvent *event);
 
@@ -84,6 +86,9 @@ private:
   bool _notificationsClientSupportsMarkup;
   quint32 _lastNotificationsDBusId;
   QHash<uint, uint> _notificationsIdMap; ///< Maps our own notification ID to the D-Bus one
+
+  QString _iconThemePath;
+  QString _menuObjectPath;
 
   friend class StatusNotifierItemDBus;
 };

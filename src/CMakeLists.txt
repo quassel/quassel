@@ -28,10 +28,6 @@ qt4_add_resources(CLIENT_DEPS ${CLIENT_RCS})
 qt4_add_resources(CORE_DEPS ${CORE_RCS})
 qt4_add_resources(COMMON_DEPS ${COMMON_RCS})
 
-if(HAVE_INDICATEQT)
-  link_directories(${INDICATEQT_LIBRARY_DIRS})
-endif(HAVE_INDICATEQT)
-
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
@@ -52,7 +48,7 @@ if(WANT_QTCLIENT)
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB ${CLIENT_COMPILE_FLAGS} -DBUILD_QTUI"
                                       OUTPUT_NAME ../quasselclient)
   target_link_libraries(quasselclient ${LINK_KDE} mod_qtui mod_uisupport mod_client mod_common ${CLIENT_LIBS}
-                                      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_KDE_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${PHONON_LIBS} ${INDICATEQT_LIBRARIES})
+                                      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${CLIENT_LIBRARIES})
   install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_QTCLIENT)
 
@@ -65,7 +61,7 @@ if(WANT_MONO)
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB ${CLIENT_COMPILE_FLAGS} -DBUILD_MONO"
                                 OUTPUT_NAME ../quassel)
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${CLIENT_LIBS}
-                                ${QUASSEL_QT_LIBRARIES} ${QUASSEL_KDE_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${PHONON_LIBS} ${INDICATEQT_LIBRARIES})
+                                ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${CLIENT_LIBRARIES})
   install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_MONO)
 

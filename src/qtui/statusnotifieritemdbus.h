@@ -63,11 +63,18 @@ class StatusNotifierItemDBus : public QObject
     Q_PROPERTY(DBusImageVector AttentionIconPixmap READ AttentionIconPixmap)
     Q_PROPERTY(QString AttentionMovieName READ AttentionMovieName)
     Q_PROPERTY(DBusToolTipStruct ToolTip READ ToolTip)
+    Q_PROPERTY(QString IconThemePath READ IconThemePath)
+    Q_PROPERTY(QDBusObjectPath Menu READ Menu)
 
     friend class StatusNotifierItem;
 public:
     StatusNotifierItemDBus(StatusNotifierItem *parent);
     ~StatusNotifierItemDBus();
+
+    /**
+     * @return the dbus connection used by this object
+     */
+    QDBusConnection dbusConnection() const;
 
     /**
      * Register the service to DBus
@@ -155,6 +162,15 @@ public:
      */
     DBusToolTipStruct ToolTip() const;
 
+    /**
+     * @return path to extra icon theme, to load application specific icons
+     */
+    QString IconThemePath() const;
+
+    /**
+     * @return object path to the dbusmenu object
+     */
+    QDBusObjectPath Menu() const;
 
 public Q_SLOTS:
     //interaction
