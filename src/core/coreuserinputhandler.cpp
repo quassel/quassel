@@ -414,7 +414,7 @@ void CoreUserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QStri
   QString target = msg.section(' ', 0, 0);
   QString message = msg.section(' ', 1);
   if(message.isEmpty())
-    emit displayMsg(Message::Server, BufferInfo::QueryBuffer, target, "Starting query with " + target, network()->myNick(), Message::Self);
+    emit displayMsg(Message::Server, BufferInfo::QueryBuffer, target, tr("Starting query with ") + target, network()->myNick(), Message::Self);
   else
     emit displayMsg(Message::Plain, BufferInfo::QueryBuffer, target, message, network()->myNick(), Message::Self);
   handleMsg(bufferInfo, msg);
