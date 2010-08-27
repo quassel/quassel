@@ -94,6 +94,9 @@ bool LegacySystemTray::isVisible() const {
 }
 
 void LegacySystemTray::setMode(Mode mode_) {
+  if(mode_ == mode())
+    return;
+
   SystemTray::setMode(mode_);
 
   if(mode() == Legacy) {

@@ -71,6 +71,7 @@ protected:
 private slots:
   void activated(const QPoint &pos);
   void serviceChange(const QString& name, const QString& oldOwner, const QString& newOwner);
+  void checkForRegisteredHosts();
 
   void notificationClosed(uint id, uint reason);
   void notificationInvoked(uint id, const QString &action);
@@ -79,6 +80,7 @@ private:
   void registerToDaemon();
 
   static const int _protocolVersion;
+  static const QString _statusNotifierWatcherServiceName;
   StatusNotifierItemDBus *_statusNotifierItemDBus;
 
   org::kde::StatusNotifierWatcher *_statusNotifierWatcher;
