@@ -162,7 +162,6 @@ StatusNotifierItemDBus::StatusNotifierItemDBus(StatusNotifierItem *parent)
    new StatusNotifierItemAdaptor(this);
    //qDebug() << "service is" << m_service;
    registerService();
-   m_dbus.registerObject("/StatusNotifierItem", this);
 }
 
 StatusNotifierItemDBus::~StatusNotifierItemDBus()
@@ -181,6 +180,7 @@ void StatusNotifierItemDBus::registerService()
 {
     //qDebug() << "registering to" << m_service;
     m_dbus.registerService(m_service);
+    m_dbus.registerObject("/StatusNotifierItem", this);
 }
 
 // FIXME: see above
@@ -188,6 +188,7 @@ void StatusNotifierItemDBus::unregisterService()
 {
     //qDebug() << "unregistering from" << m_service;
     if(m_dbus.isConnected()) {
+        m_dbus.unregisterObject("/StatusNotifierItem");
         m_dbus.unregisterService(m_service);
     }
 }

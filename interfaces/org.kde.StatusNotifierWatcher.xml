@@ -35,5 +35,8 @@
 
     <signal name="StatusNotifierHostRegistered">
     </signal>
+
+    <signal name="StatusNotifierHostUnregistered">
+    </signal>
   </interface>
 </node>
