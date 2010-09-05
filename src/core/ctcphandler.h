@@ -48,15 +48,17 @@ public:
   void reply(const QString &bufname, const QString &ctcpTag, const QString &message);
 
 public slots:
-  void handleAction(CtcpType, const QString &prefix, const QString &target, const QString &param);
-  void handleClientinfo(CtcpType, const QString &prefix, const QString &target, const QString &param);
-  void handlePing(CtcpType, const QString &prefix, const QString &target, const QString &param);
-  void handleTime(CtcpType, const QString &prefix, const QString &target, const QString &param);
-  void handleVersion(CtcpType, const QString &prefix, const QString &target, const QString &param);
+  void handleAction(CtcpType, const QString &prefix, const QString &target, const QString &param, QString &reply);
+  void handleClientinfo(CtcpType, const QString &prefix, const QString &target, const QString &param, QString &reply);
+  void handlePing(CtcpType, const QString &prefix, const QString &target, const QString &param, QString &reply);
+  void handleTime(CtcpType, const QString &prefix, const QString &target, const QString &param, QString &reply);
+  void handleVersion(CtcpType, const QString &prefix, const QString &target, const QString &param, QString &reply);
 
-  void defaultHandler(const QString &cmd, CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param);
+  void defaultHandler(const QString &cmd, CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param, QString &reply);
 
 private:
+  void packedReply(const QString &bufname, const QList<QByteArray> &replies);
+
   QByteArray XDELIM;
   QHash<QByteArray, QByteArray> ctcpMDequoteHash;
   QHash<QByteArray, QByteArray> ctcpXDelimDequoteHash;

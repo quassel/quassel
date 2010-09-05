@@ -129,6 +129,7 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
   int xdelimPos = -1;
   int xdelimEndPos = -1;
   int spacePos = -1;
+  QList<QByteArray> replies;
   while((xdelimPos = dequotedMessage.indexOf(XDELIM)) != -1) {
     if(xdelimPos > 0)
       displayMsg(messageType, target, userDecode(target, dequotedMessage.left(xdelimPos)), prefix, flags);
@@ -154,7 +155,16 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
       ctcpparam = QString();
     }
 
-    handle(ctcpcmd, Q_ARG(CtcpType, ctcptype), Q_ARG(QString, prefix), Q_ARG(QString, target), Q_ARG(QString, ctcpparam));
+    if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName(), ctcpcmd.toUpper())) {
+      QString reply_;
+      handle(ctcpcmd, Q_ARG(CtcpType, ctcptype), Q_ARG(QString, prefix), Q_ARG(QString, target), Q_ARG(QString, ctcpparam), Q_ARG(QString, reply_));
+      if(ctcptype == CtcpQuery && !reply_.isNull()) {
+        replies << lowLevelQuote(pack(serverEncode(ctcpcmd), userEncode(nickFromMask(prefix), reply_)));
+      }
+    }
+  }
+  if(ctcptype == CtcpQuery && !replies.isEmpty()) {
+    packedReply(nickFromMask(prefix), replies);
   }
 
   if(!dequotedMessage.isEmpty())
@@ -180,20 +190,43 @@ void CtcpHandler::reply(const QString &bufname, const QString &ctcpTag, const QS
   emit putCmd("NOTICE", params);
 }
 
+void CtcpHandler::packedReply(const QString &bufname, const QList<QByteArray> &replies) {
+  QList<QByteArray> params;
+
+  int answerSize = 0;
+  for(int i = 0; i < replies.count(); i++) {
+    answerSize += replies.at(i).size();
+  }
+
+  QByteArray quotedReply(answerSize, 0);
+  int nextPos = 0;
+  QByteArray &reply = quotedReply;
+  for(int i = 0; i < replies.count(); i++) {
+    reply = replies.at(i);
+    quotedReply.replace(nextPos, reply.size(), reply);
+    nextPos += reply.size();
+  }
+
+  params << serverEncode(bufname) << quotedReply;
+  emit putCmd("NOTICE", params);
+}
+
 //******************************/
 // CTCP HANDLER
 //******************************/
-void CtcpHandler::handleAction(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+void CtcpHandler::handleAction(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param, QString &/*reply*/) {
   Q_UNUSED(ctcptype)
   emit displayMsg(Message::Action, typeByTarget(target), target, param, prefix);
 }
 
-void CtcpHandler::handleClientinfo(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+void CtcpHandler::handleClientinfo(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param, QString &reply) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "CLIENTINFO"))
-      return;
-    reply(nickFromMask(prefix), "CLIENTINFO", QString("ACTION CLIENTINFO PING TIME VERSION"));
+    QStringList supportedHandlers;
+    foreach(QString handler, providesHandlers()) {
+      supportedHandlers << handler.toUpper();
+    }
+    reply = supportedHandlers.join(" ");
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP CLIENTINFO request from %1").arg(prefix));
   } else {
     // display clientinfo answer
@@ -202,12 +235,10 @@ void CtcpHandler::handleClientinfo(CtcpType ctcptype, const QString &prefix, con
   }
 }
 
-void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param, QString &reply) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "PING"))
-      return;
-    reply(nickFromMask(prefix), "PING", param);
+    reply = param;
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING request from %1").arg(prefix));
   } else {
     // display ping answer
@@ -218,14 +249,10 @@ void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QSt
   }
 }
 
-void CtcpHandler::handleVersion(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+void CtcpHandler::handleVersion(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param, QString &reply) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "VERSION"))
-      return;
-    reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
-          .arg(Quassel::buildInfo().plainVersionString)
-          .arg(Quassel::buildInfo().buildDate));
+    reply = QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org").arg(Quassel::buildInfo().plainVersionString).arg(Quassel::buildInfo().buildDate);
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {
     // display Version answer
@@ -234,28 +261,24 @@ void CtcpHandler::handleVersion(CtcpType ctcptype, const QString &prefix, const 
   }
 }
 
-void CtcpHandler::handleTime(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+void CtcpHandler::handleTime(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param, QString &reply) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    if(_ignoreListManager->ctcpMatch(prefix, network()->networkName(), "TIME"))
-      return;
-    reply(nickFromMask(prefix), "TIME", QDateTime::currentDateTime().toString());
+    reply = QDateTime::currentDateTime().toString();
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP TIME request by %1").arg(prefix));
-  }
-  else {
+  } else {
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP TIME answer from %1: %2")
                     .arg(nickFromMask(prefix)).arg(param));
   }
 }
 
-void CtcpHandler::defaultHandler(const QString &cmd, CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
+void CtcpHandler::defaultHandler(const QString &cmd, CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param, QString &reply) {
   Q_UNUSED(ctcptype);
   Q_UNUSED(target);
-  if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName())) {
-    QString str = tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix);
-    if(!param.isEmpty())
-      str.append(tr(" with arguments: %1").arg(param));
-    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", str);
-  }
+  Q_UNUSED(reply);
+  QString str = tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix);
+  if(!param.isEmpty())
+    str.append(tr(" with arguments: %1").arg(param));
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", str);
 }
 
