@@ -18,28 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "coresession.h"
+
 #include <QtScript>
 
 #include "core.h"
-#include "coresession.h"
 #include "coreuserinputhandler.h"
-#include "signalproxy.h"
 #include "corebuffersyncer.h"
 #include "corebacklogmanager.h"
 #include "corebufferviewmanager.h"
-#include "coreirclisthelper.h"
-#include "corenetworkconfig.h"
-#include "storage.h"
-
 #include "coreidentity.h"
-#include "corenetwork.h"
-#include "ircuser.h"
-#include "ircchannel.h"
-
-#include "util.h"
-#include "coreusersettings.h"
-#include "logger.h"
 #include "coreignorelistmanager.h"
+#include "coreirclisthelper.h"
+#include "corenetwork.h"
+#include "corenetworkconfig.h"
+#include "coresessioneventprocessor.h"
+#include "coreusersettings.h"
+#include "eventmanager.h"
+#include "ircchannel.h"
+#include "ircuser.h"
+#include "logger.h"
+#include "signalproxy.h"
+#include "storage.h"
+#include "util.h"
 
 class ProcessMessagesEvent : public QEvent {
 public:
@@ -57,6 +58,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _ircListHelper(new CoreIrcListHelper(this)),
     _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
     _coreInfo(this),
+    _eventManager(new EventManager(this)),
+    _eventProcessor(new CoreSessionEventProcessor(this)),
     scriptEngine(new QScriptEngine(this)),
     _processMessages(false),
     _ignoreListManager(this)
@@ -86,6 +89,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   loadSettings();
   initScriptEngine();
+
+  eventManager()->registerObject(eventProcessor(), EventManager::Prepend, "process");
 
   // periodically save our session state
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));

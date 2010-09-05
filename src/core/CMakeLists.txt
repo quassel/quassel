@@ -25,6 +25,7 @@ set(SOURCES
     corenetwork.cpp
     corenetworkconfig.cpp
     coresession.cpp
+    coresessioneventprocessor.cpp
     coresettings.cpp
     coreuserinputhandler.cpp
     coreusersettings.cpp
@@ -55,6 +56,7 @@ set(MOC_HDRS
     corenetwork.h
     corenetworkconfig.h
     coresession.h
+    coresessioneventprocessor.h
     coreuserinputhandler.h
     ctcphandler.h
     ircserverhandler.h

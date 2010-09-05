@@ -33,14 +33,16 @@
 class CoreBacklogManager;
 class CoreBufferSyncer;
 class CoreBufferViewManager;
-class CoreIrcListHelper;
-class CoreNetworkConfig;
-class Identity;
 class CoreIdentity;
-class NetworkConnection;
+class CoreIrcListHelper;
 class CoreNetwork;
-struct NetworkInfo;
+class CoreNetworkConfig;
+class CoreSessionEventProcessor;
+class EventManager;
+class NetworkConnection;
 class SignalProxy;
+
+struct NetworkInfo;
 
 class QScriptEngine;
 
@@ -64,6 +66,9 @@ public:
 
   const AliasManager &aliasManager() const { return _aliasManager; }
   AliasManager &aliasManager() { return _aliasManager; }
+
+  inline EventManager *eventManager() const { return _eventManager; }
+  inline CoreSessionEventProcessor *eventProcessor() const { return _eventProcessor; }
 
   inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
 
@@ -177,6 +182,9 @@ private:
   CoreIrcListHelper *_ircListHelper;
   CoreNetworkConfig *_networkConfig;
   CoreCoreInfo _coreInfo;
+
+  EventManager *_eventManager;
+  CoreSessionEventProcessor *_eventProcessor;
 
   QScriptEngine *scriptEngine;
 
