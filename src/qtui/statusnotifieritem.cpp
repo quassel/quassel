@@ -72,6 +72,7 @@ void StatusNotifierItem::init() {
   if(_notificationsClient->isValid()) {
     QStringList desktopCapabilities = _notificationsClient->GetCapabilities();
     _notificationsClientSupportsMarkup = desktopCapabilities.contains("body-markup");
+    _notificationsClientSupportsActions = desktopCapabilities.contains("actions");
   }
 
   StatusNotifierItemParent::init();
@@ -230,7 +231,9 @@ void StatusNotifierItem::showMessage(const QString &title, const QString &messag
     if(_notificationsClientSupportsMarkup)
       message = Qt::escape(message);
 
-    QStringList actions = QStringList() << "activate" << "View";
+    QStringList actions;
+    if(_notificationsClientSupportsActions)
+      actions << "activate" << "View";
 
     // we always queue notifications right now
     QDBusReply<uint> reply = _notificationsClient->Notify(title, 0, "quassel", title, message, actions, QVariantMap(), timeout);

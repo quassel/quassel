@@ -82,6 +82,7 @@ private:
   org::kde::StatusNotifierWatcher *_statusNotifierWatcher;
   org::freedesktop::Notifications *_notificationsClient;
   bool _notificationsClientSupportsMarkup;
+  bool _notificationsClientSupportsActions;
   quint32 _lastNotificationsDBusId;
   QHash<uint, uint> _notificationsIdMap; ///< Maps our own notification ID to the D-Bus one
 
