@@ -23,14 +23,20 @@
 
 #include <QStringList>
 
+#include "eventmanager.h"
+
 class Event {
 
 public:
-  Event();
-  virtual ~Event();
+  explicit Event(EventManager::EventType type = EventManager::Invalid);
+  virtual ~Event() {};
 
-  virtual QStringList params() const;
+  inline EventManager::EventType type() const { return _type; }
 
+  //virtual QStringList params() const;
+
+private:
+  EventManager::EventType _type;
 };
 
 #endif

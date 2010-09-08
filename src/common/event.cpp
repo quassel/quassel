@@ -19,3 +19,9 @@
  ***************************************************************************/
 
 #include "event.h"
+
+Event::Event(EventManager::EventType type)
+  : _type(type)
+{
+
+}
