@@ -21,8 +21,6 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <QStringList>
-
 #include "eventmanager.h"
 
 class Event {
@@ -33,10 +31,10 @@ public:
 
   inline EventManager::EventType type() const { return _type; }
 
-  //virtual QStringList params() const;
-
 private:
   EventManager::EventType _type;
 };
+
+/*******/
 
 #endif

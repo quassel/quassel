@@ -23,6 +23,7 @@ set(SOURCES
     message.cpp
     network.cpp
     networkconfig.cpp
+    networkevent.cpp
     quassel.cpp
     settings.cpp
     signalproxy.cpp
@@ -54,6 +55,7 @@ set(HEADERS ${MOC_HDRS}
     bufferinfo.h
     cliparser.h
     event.h
+    networkevent.h
     logger.h
     message.h
     types.h

@@ -68,6 +68,7 @@ public:
 
     IrcServerEvent              = 0x00020000,
     IrcServerIncoming,
+    IrcServerParseError,
 
     IrcEvent                    = 0x00030000,
     IrcEventCap,

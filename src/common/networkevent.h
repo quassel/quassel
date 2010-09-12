@@ -18,26 +18,58 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORESESSIONEVENTPROCESSOR_H
-#define CORESESSIONEVENTPROCESSOR_H
+#ifndef NETWORKEVENT_H
+#define NETWORKEVENT_H
 
-#include <QObject>
+#include <QStringList>
+#include <QVariantList>
 
-class CoreSession;
-class Event;
+#include "event.h"
+#include "network.h"
 
-class CoreSessionEventProcessor : public QObject {
-  Q_OBJECT
+class NetworkEvent : public Event {
 
 public:
-  CoreSessionEventProcessor(CoreSession *session);
+  explicit NetworkEvent(EventManager::EventType type, Network *network)
+    : Event(type),
+      _network(network)
+  {}
 
-  inline CoreSession *coreSession() const { return _coreSession; }
-
-protected:
+  inline NetworkId networkId() const { return network()? network()->networkId() : NetworkId(); }
+  inline Network *network() const { return _network; }
 
 private:
-  CoreSession *_coreSession;
+  Network *_network;
+};
+
+class NetworkConnectionEvent : public NetworkEvent {
+
+public:
+  explicit NetworkConnectionEvent(EventManager::EventType type, Network *network, Network::ConnectionState state)
+    : NetworkEvent(type, network),
+      _state(state)
+  {}
+
+  inline Network::ConnectionState connectionState() const { return _state; }
+  inline void setConnectionState(Network::ConnectionState state) { _state = state; }
+
+private:
+  Network::ConnectionState _state;
+};
+
+class NetworkDataEvent : public NetworkEvent {
+
+public:
+  explicit NetworkDataEvent(EventManager::EventType type, Network *network, const QByteArray &data)
+    : NetworkEvent(type, network),
+      _data(data)
+  {}
+
+  inline QByteArray data() const { return _data; }
+  inline void setData(const QByteArray &data) { _data = data; }
+
+private:
+  QByteArray _data;
 };
 
 #endif

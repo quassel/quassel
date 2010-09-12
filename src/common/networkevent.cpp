@@ -18,26 +18,4 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORESESSIONEVENTPROCESSOR_H
-#define CORESESSIONEVENTPROCESSOR_H
-
-#include <QObject>
-
-class CoreSession;
-class Event;
-
-class CoreSessionEventProcessor : public QObject {
-  Q_OBJECT
-
-public:
-  CoreSessionEventProcessor(CoreSession *session);
-
-  inline CoreSession *coreSession() const { return _coreSession; }
-
-protected:
-
-private:
-  CoreSession *_coreSession;
-};
-
-#endif
+#include "networkevent.h"
