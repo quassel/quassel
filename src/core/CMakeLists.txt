@@ -30,6 +30,7 @@ set(SOURCES
     coreuserinputhandler.cpp
     coreusersettings.cpp
     ctcphandler.cpp
+    ircparser.cpp
     ircserverhandler.cpp
     netsplit.cpp
     postgresqlstorage.cpp
@@ -59,6 +60,7 @@ set(MOC_HDRS
     coresessioneventprocessor.h
     coreuserinputhandler.h
     ctcphandler.h
+    ircparser.h
     ircserverhandler.h
     netsplit.h
     postgresqlstorage.h

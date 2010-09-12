@@ -39,6 +39,7 @@ class CoreNetwork;
 class CoreNetworkConfig;
 class CoreSessionEventProcessor;
 class EventManager;
+class IrcParser;
 class NetworkConnection;
 class SignalProxy;
 
@@ -69,6 +70,7 @@ public:
 
   inline EventManager *eventManager() const { return _eventManager; }
   inline CoreSessionEventProcessor *eventProcessor() const { return _eventProcessor; }
+  inline IrcParser *ircParser() const { return _ircParser; }
 
   inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
 
@@ -185,6 +187,7 @@ private:
 
   EventManager *_eventManager;
   CoreSessionEventProcessor *_eventProcessor;
+  IrcParser *_ircParser;
 
   QScriptEngine *scriptEngine;
 

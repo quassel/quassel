@@ -36,6 +36,7 @@
 #include "coreusersettings.h"
 #include "eventmanager.h"
 #include "ircchannel.h"
+#include "ircparser.h"
 #include "ircuser.h"
 #include "logger.h"
 #include "signalproxy.h"
@@ -60,6 +61,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _coreInfo(this),
     _eventManager(new EventManager(this)),
     _eventProcessor(new CoreSessionEventProcessor(this)),
+    _ircParser(new IrcParser(this)),
     scriptEngine(new QScriptEngine(this)),
     _processMessages(false),
     _ignoreListManager(this)
@@ -90,7 +92,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   loadSettings();
   initScriptEngine();
 
-  eventManager()->registerObject(eventProcessor(), EventManager::Prepend, "process");
+  eventManager()->registerObject(ircParser(), EventManager::NormalPriority, "process");
+  eventManager()->registerObject(eventProcessor(), EventManager::HighPriority, "process");
 
   // periodically save our session state
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));

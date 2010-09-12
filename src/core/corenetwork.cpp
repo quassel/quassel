@@ -20,14 +20,14 @@
 
 #include "corenetwork.h"
 
+#include "ctcphandler.h"
 #include "core.h"
-#include "coresession.h"
 #include "coreidentity.h"
 #include "corenetworkconfig.h"
-
-#include "ircserverhandler.h"
+#include "coresession.h"
 #include "coreuserinputhandler.h"
-#include "ctcphandler.h"
+#include "ircserverhandler.h"
+#include "networkevent.h"
 
 INIT_SYNCABLE_OBJECT(CoreNetwork)
 CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
@@ -327,7 +327,9 @@ void CoreNetwork::setMyNick(const QString &mynick) {
 void CoreNetwork::socketHasData() {
   while(socket.canReadLine()) {
     QByteArray s = socket.readLine().trimmed();
-    ircServerHandler()->handleServerMsg(s);
+    ircServerHandler()->handleServerMsg(s); // FIXME remove with events
+
+    coreSession()->eventManager()->sendEvent(new NetworkDataEvent(EventManager::NetworkIncoming, this, s));
   }
 }
 
