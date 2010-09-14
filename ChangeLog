@@ -13,9 +13,10 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.7.0 (not yet released)
+Version 0.7.0 (2010-09-14)
 ================================
 
+* Improved DE integration, support for dbusmenu
 * Bump Qt dependency: we need Qt 4.6 for client and monolithic now
 * Fullscreen mode (F11)
 * CTCP CLIENTINFO support
@@ -29,7 +30,7 @@ Version 0.7.0 (not yet released)
 * Improved markerline behavior
   - Allow manual setting (Ctrl+R)
   - Provide shortcut for jumping to the markerline (Ctrl+K)
-* New languages: pt, ja
+* New languages: el, gl, ja
 * Many bugfixes
 
 Version 0.6.1 (2010-04-16)
