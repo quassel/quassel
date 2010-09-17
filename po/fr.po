@@ -7,9 +7,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"X-Language: fr\n"
 "Last-Translator: Bruno Patri <bruno.patri@gmail.com>\n"
-"PO-Revision-Date: 2010-09-04 19:03+0200\n"
+"PO-Revision-Date: 2010-09-17 09:10+0200\n"
 "Project-Id-Version: \n"
 "Language-Team: French <kde-francophone@kde.org>\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -828,7 +827,7 @@ msgstr "Nouveau message"
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
 msgid "Highlight"
-msgstr "Mise en valeur"
+msgstr "Surlignage"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:205
@@ -1053,14 +1052,14 @@ msgstr "Afficher :"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
 msgstr ""
-"Afficher les mises en valeur dans le moniteur de discussion même si le "
+"Afficher les messages surlignés dans le moniteur de discussion même si le "
 "tampon "
-"d'où elles proviennent est ignoré"
+"d'où ils proviennent est ignoré"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgid "Always show highlighted messages"
-msgstr "Toujours afficher les messages mis en valeur"
+msgstr "Toujours afficher les messages surlignés"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:157
@@ -1200,7 +1199,7 @@ msgstr "Message du canal :"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:252
 msgid "Highlight foreground:"
-msgstr "Couleur d'arrière-plan de la mise en valeur :"
+msgstr "Couleur de texte du surlignage :"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:276
@@ -1210,7 +1209,7 @@ msgstr "Message de commande :"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:300
 msgid "Highlight background:"
-msgstr "Couleur du texte de la mise en valeur :"
+msgstr "Couleur d'arrière-plan du surlignage :"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:307
@@ -2691,7 +2690,7 @@ msgstr "Sélectionner..."
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:19
 msgid "Custom Highlights"
-msgstr "Mises en valeur personnalisés"
+msgstr "Surlignage personnalisé"
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:37
@@ -2723,7 +2722,7 @@ msgstr "Supprimer"
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:85
 msgid "Highlight Nicks"
-msgstr "Mise en valeur des pseudos"
+msgstr "Surlignage des pseudos"
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:91
@@ -2759,7 +2758,7 @@ msgstr "ceci ne devrait pas être vide"
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.h:45
 msgid "highlight rule"
-msgstr "règle de mise en valeur"
+msgstr "règle de surlignage"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
 #. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
@@ -3237,7 +3236,7 @@ msgstr ""
 "<p><b>Règle d'exclusion :</b></p>\n"
 "<p>suivant le type de règle le texte doit correspondre soit :</"
 "p>\n"
-"<p><u>- tau contenu du message :</u></p>\n"
+"<p><u>- au contenu du message :</u></p>\n"
 "<p><i>Exemple :</i>\n"
 "<br />\n"
 "<i>*machin*</i> correspondra à tout texte contenant le mot <i>machin</i></p>"
@@ -3898,7 +3897,7 @@ msgstr "Messages non lus :"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:190
 msgid "Highlight:"
-msgstr "Mise en valeur :"
+msgstr "Surlignage :"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:214
@@ -3958,8 +3957,8 @@ msgstr "Autre activité"
 #: ../src/qtui/systraynotificationbackend.cpp:125
 msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
-msgstr[0] "%n mise en valeur en attente"
-msgstr[1] "%n mises en valeur en attente"
+msgstr[0] "%n message surligné en attente"
+msgstr[1] "%n messages surlignés en attente"
 
 #. ts-context KeySequenceButton
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
