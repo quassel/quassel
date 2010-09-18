@@ -1095,7 +1095,7 @@ msgstr "Fondo:"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:423
 msgid "Use Sender Coloring"
-msgstr ""
+msgstr "Usar coloreado do emisor"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:719
@@ -1145,12 +1145,12 @@ msgstr "Configurar a conexión IRC"
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:20
 msgid "Enable Ping Timeout Detection"
-msgstr ""
+msgstr "Activar a detección de fin do tempo de espera do eco"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:37
 msgid "Ping interval:"
-msgstr "Intervalo de ping:"
+msgstr "Intervalo de eco:"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ConnectionSettingsPage
@@ -1175,7 +1175,7 @@ msgstr "Desconectar tras"
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:103
 msgid "missed pings"
-msgstr ""
+msgstr "ecos perdidos"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
@@ -1340,7 +1340,7 @@ msgstr "Tempo"
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:64
 msgid "Ping"
-msgstr "Ping"
+msgstr "Eco"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
@@ -1444,7 +1444,7 @@ msgstr "Regras existentes"
 #. ts-context Core
 #: ../src/core/core.cpp:182
 msgid "Could not initialize any storage backend! Exiting..."
-msgstr ""
+msgstr "¡Non se puido iniciar o motor de almacenamento! Saíndo..."
 
 #. ts-context Core
 #: ../src/core/core.cpp:183
@@ -1453,6 +1453,9 @@ msgid ""
 "Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 "to work."
 msgstr ""
+"Actualmente, Quassel soporta SQLite3 e PostgreSQL. Precisas compilar\n"
+" a libraría Qt co complemento de sqlite u postgres activado para que quasselcore\n"
+"funcione."
 
 #. ts-context Core
 #: ../src/core/core.cpp:232
@@ -1467,7 +1470,7 @@ msgstr "Usuario administrador ou contrasinal non establecida."
 #. ts-context Core
 #: ../src/core/core.cpp:277
 msgid "Could not setup storage!"
-msgstr ""
+msgstr "¡Non se puido configurar o almacenamento!"
 
 #. ts-context Core
 #: ../src/core/core.cpp:281
@@ -1561,7 +1564,7 @@ msgstr ""
 #. ts-context Core
 #: ../src/core/core.cpp:608
 msgid "did not send an init message before trying to login, rejecting."
-msgstr ""
+msgstr "non enviou unha mensaxe de inicio antes de conectar, rexeitando."
 
 #. ts-context Core
 #: ../src/core/core.cpp:626
@@ -1853,7 +1856,7 @@ msgstr "Seleccione o motor de almacenamento"
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:183
 msgid "Please select a database backend for the Quassel Core storage to store the backlog and other data in."
-msgstr ""
+msgstr "Por favor, selecciona un motor de almacenamento para que o núcleo de Quassel poda almacenar o rexistro e outros datos."
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:277
@@ -1986,7 +1989,7 @@ msgstr "Desconectado do núcleo."
 #: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
 #: ../src/client/coreconnection.cpp:556
 msgid "Unencrypted connection canceled"
-msgstr ""
+msgstr "Conexión non cifrada cancelada"
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:457
@@ -2053,7 +2056,7 @@ msgstr ""
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:44
 msgid "Ping timeout after"
-msgstr ""
+msgstr "Fin do tempo de espera do eco despois de"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:100
@@ -2387,17 +2390,17 @@ msgstr "Conversacións:"
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:54
 msgid "Removed buffers:"
-msgstr ""
+msgstr "Conversacións borradas:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:55
 msgid "Temp. removed buffers:"
-msgstr ""
+msgstr "Conversacións temp. borradas:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:57
 msgid "Allowed buffer types:"
-msgstr ""
+msgstr "Tipos de conversación permitidos:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:58
@@ -2407,7 +2410,7 @@ msgstr "Actividade mínima:"
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:60
 msgid "Is initialized:"
-msgstr ""
+msgstr "Comezado:"
 
 #. ts-context DebugConsole
 #: ../src/qtui/ui/debugconsole.ui:14
@@ -2442,7 +2445,7 @@ msgstr "Cadea de comando inválida para /exec: %1"
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:53
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr ""
+msgstr "O nome \"%1\" non é válido: ¡Non se permite ../ ou ..\\!"
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:64
@@ -2452,7 +2455,7 @@ msgstr "Non se puido atopar o script \"%1\""
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:82
 msgid "Script \"%1\" crashed with exit code %2."
-msgstr ""
+msgstr "O script \"%1\" fallou co código de saída %2."
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:98
@@ -2462,7 +2465,7 @@ msgstr "O script \"%1\" con puido comezar."
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:100
 msgid "Script \"%1\" caused error %2."
-msgstr ""
+msgstr "O script \"%1\" produciu o erro %2."
 
 #. ts-context FontSelector
 #: ../src/uisupport/fontselector.cpp:31
@@ -2542,7 +2545,7 @@ msgstr "isto non debería estar baleiro"
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.h:45
 msgid "highlight rule"
-msgstr ""
+msgstr "regra de resalte"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentitiesSettingsPage
@@ -2581,12 +2584,12 @@ msgstr "<b>Os seguintes problemas precisan ser corrixidos antes de que os cambio
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
 msgid "<li>All identities need an identity name set</li>"
-msgstr ""
+msgstr "<li>Todas as identidades precisan dun nome de identidade definido</li>"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:180
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr ""
+msgstr "<li>Todas as identidades precisan de polo menos un alcume definido</li>"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:181
@@ -2645,7 +2648,7 @@ msgstr "Marchei pescar."
 #. ts-context Identity
 #: ../src/common/identity.cpp:172
 msgid "Not here. No, really. not here!"
-msgstr ""
+msgstr "Non estou. Non, realmente. ¡Non estou!"
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:175
@@ -2815,7 +2818,7 @@ msgstr "Mensaxes"
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:431
 msgid "Part Reason:"
-msgstr ""
+msgstr "Motivo da saída:"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:444
@@ -3437,7 +3440,7 @@ msgstr "[Whowas] %1 foi %2 (%3)"
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:864
 msgid "[Who] End of /WHO list for %1"
-msgstr ""
+msgstr "[Who] Fin da lista /WHO para %1"
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:886 ../src/core/ircserverhandler.cpp:894
@@ -3517,7 +3520,7 @@ msgstr "O alcume %1 contén caracteres ilegais"
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1160
 msgid "Nick already in use: %1"
-msgstr ""
+msgstr "Alcume en uso: %1"
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1177
@@ -3571,7 +3574,7 @@ msgstr "Lista de conversacións"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:72
 msgid "Display topic in tooltip"
-msgstr ""
+msgstr "Mostrar o tema nunha suxerencia"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:85
@@ -3631,7 +3634,7 @@ msgstr "Ausente:"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 msgid "Chat & Nick Lists"
-msgstr ""
+msgstr "Listas de Conversacións e Alcumes"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
@@ -3977,12 +3980,12 @@ msgstr ""
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:432
 msgid "Go to Next Chat"
-msgstr ""
+msgstr "Ir á conversación seguinte"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:434
 msgid "Go to Previous Chat"
-msgstr ""
+msgstr "Ir á conversación anterior"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:441
@@ -4262,7 +4265,7 @@ msgstr ""
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
 msgid "Remove buffers permanently?"
-msgstr ""
+msgstr "¿Borrar as conversacións permanentemente?"
 
 #. ts-context NetworkModelController::JoinDlg
 #: ../src/uisupport/networkmodelcontroller.cpp:484
