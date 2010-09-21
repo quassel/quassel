@@ -272,8 +272,7 @@ QString Core::setupCore(QVariantMap setupData) {
   if(user.isEmpty() || password.isEmpty()) {
     return tr("Admin user or password not set.");
   }
-  _configured = initStorage(setupData, true);
-  if(!_configured) {
+  if(_configured || !(_configured = initStorage(setupData, true))) {
     return tr("Could not setup storage!");
   }
   CoreSettings s;
