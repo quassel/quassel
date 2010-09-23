@@ -21,10 +21,12 @@
 #ifndef IRCPARSER_H
 #define IRCPARSER_H
 
-#include <QObject>
+#include "coresession.h"
 
-class CoreSession;
 class Event;
+class EventManager;
+class IrcEvent;
+class NetworkDataEvent;
 
 class IrcParser : public QObject {
   Q_OBJECT
@@ -33,9 +35,15 @@ public:
   IrcParser(CoreSession *session);
 
   inline CoreSession *coreSession() const { return _coreSession; }
+  inline EventManager *eventManager() const { return coreSession()->eventManager(); }
 
 protected:
-  Q_INVOKABLE void processNetworkIncoming(Event *e);
+  Q_INVOKABLE void processNetworkIncoming(NetworkDataEvent *e);
+
+  bool checkParamCount(const QString &cmd, const QList<QByteArray> &params, int minParams);
+
+  // no-op if we don't have crypto support!
+  QByteArray decrypt(Network *network, const QString &target, const QByteArray &message, bool isTopic = false);
 
 private:
   CoreSession *_coreSession;
