@@ -21,7 +21,6 @@
 #include "eventmanager.h"
 
 #include <QDebug>
-#include <QMetaEnum>
 
 #include "event.h"
 
@@ -29,11 +28,41 @@ EventManager::EventManager(QObject *parent) : QObject(parent) {
 
 }
 
-void EventManager::registerObject(QObject *object, Priority priority, const QString &methodPrefix) {
-  int eventEnumIndex = metaObject()->indexOfEnumerator("EventType");
-  Q_ASSERT(eventEnumIndex >= 0);
-  QMetaEnum eventEnum = metaObject()->enumerator(eventEnumIndex);
+QMetaEnum EventManager::eventEnum() const {
+  if(!_enum.isValid()) {
+    int eventEnumIndex = metaObject()->indexOfEnumerator("EventType");
+    Q_ASSERT(eventEnumIndex >= 0);
+    _enum = metaObject()->enumerator(eventEnumIndex);
+    Q_ASSERT(_enum.isValid());
+  }
+  return _enum;
+}
 
+EventManager::EventType EventManager::eventTypeByName(const QString &name) const {
+  int val = eventEnum().keyToValue(name.toLatin1());
+  return (val == -1) ? Invalid : static_cast<EventType>(val);
+}
+
+EventManager::EventType EventManager::eventGroupByName(const QString &name) const {
+  EventType type = eventTypeByName(name);
+  return type == Invalid? Invalid : static_cast<EventType>(type & EventGroupMask);
+}
+
+/* NOTE:
+   Registering and calling handlers works fine even if they specify a subclass of Event as their parameter.
+   However, this most probably is a result from a reinterpret_cast somewhere deep inside Qt, so there is *no*
+   type safety. If the event sent is of the wrong class type, you'll get a neat segfault!
+   Thus, we need to make sure that events are of the correct class type when sending!
+
+   We might add a registration-time check later, which will require matching the enum base name (e.g. "IrcEvent") with
+   the type the handler claims to support. This still won't protect us from someone sending an IrcEvent object
+   with an enum type "NetworkIncoming", for example.
+
+   Another way would be to add a check into the various Event subclasses, such that the ctor matches the given event type
+   with the actual class. Possibly (optionally) using rtti...
+*/
+
+void EventManager::registerObject(QObject *object, Priority priority, const QString &methodPrefix) {
   for(int i = object->metaObject()->methodOffset(); i < object->metaObject()->methodCount(); i++) {
     QString methodSignature(object->metaObject()->method(i).signature());
 
@@ -43,7 +72,7 @@ void EventManager::registerObject(QObject *object, Priority priority, const QStr
     methodSignature = methodSignature.section('(',0,0);  // chop the attribute list
     methodSignature = methodSignature.mid(methodPrefix.length()); // strip prefix
 
-    int eventType = eventEnum.keyToValue(methodSignature.toAscii());
+    int eventType = eventEnum().keyToValue(methodSignature.toAscii());
     if(eventType < 0) {
       qWarning() << Q_FUNC_INFO << QString("Could not find EventType %1").arg(methodSignature);
       continue;

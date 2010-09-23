@@ -31,8 +31,21 @@ public:
 
   inline EventManager::EventType type() const { return _type; }
 
+  inline void setFlag(EventManager::EventFlag flag) { _flags |= flag; }
+  inline void setFlags(EventManager::EventFlags flags) { _flags = flags; }
+
+  inline EventManager::EventFlags flags() const { return _flags; }
+
+  inline void stop() { setFlag(EventManager::Stopped); }
+  inline bool isStopped() { return _flags.testFlag(EventManager::Stopped); }
+
+  inline void setData(const QVariant &data) { _data = data; }
+  inline QVariant data() const { return _data; }
+
 private:
   EventManager::EventType _type;
+  EventManager::EventFlags _flags;
+  QVariant _data;
 };
 
 /*******/

@@ -21,13 +21,13 @@
 #ifndef EVENTMANAGER_H
 #define EVENTMANAGER_H
 
-#include <QHash>
-#include <QObject>
+#include <QMetaEnum>
 
 class Event;
 
 class EventManager : public QObject {
   Q_OBJECT
+  Q_FLAGS(EventFlag EventFlags)
   Q_ENUMS(EventType)
 
 public:
@@ -44,6 +44,12 @@ public:
     HighPriority,
     HighestPriority
   };
+
+  enum EventFlag {
+    Backlog = 0x40,
+    Stopped = 0x80
+  };
+  Q_DECLARE_FLAGS(EventFlags, EventFlag)
 
   /*
 
@@ -85,14 +91,20 @@ public:
     IrcEventPrivmsg,
     IrcEventQuit,
     IrcEventTopic,
+    IrcEventRawPrivmsg, ///< Undecoded privmsg (still needs CTCP parsing)
+    IrcEventRawNotice,  ///< Undecoded notice (still needs CTCP parsing)
+    IrcEventUnknown,    ///< Unknown non-numeric cmd
 
     IrcEventNumeric             = 0x00031000, /* needs 1000 (0x03e8) consecutive free values! */
+
+    MessageEvent                = 0x00040000, ///< Stringified event suitable for converting to Message
   };
 
   EventManager(QObject *parent = 0);
   //virtual ~EventManager();
 
-  QStringList providesEnums();
+  EventType eventTypeByName(const QString &name) const;
+  EventType eventGroupByName(const QString &name) const;
 
 public slots:
   void registerObject(QObject *object, Priority priority = NormalPriority, const QString &methodPrefix = "handle");
@@ -130,8 +142,13 @@ private:
 
   void dispatchEvent(Event *event);
 
-  HandlerHash _registeredHandlers;
+  //! @return the EventType enum
+  QMetaEnum eventEnum() const;
 
+  HandlerHash _registeredHandlers;
+  mutable QMetaEnum _enum;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(EventManager::EventFlags);
 
 #endif
