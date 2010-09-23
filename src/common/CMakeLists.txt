@@ -17,10 +17,12 @@ set(SOURCES
     identity.cpp
     ignorelistmanager.cpp
     ircchannel.cpp
+    ircevent.cpp
     irclisthelper.cpp
     ircuser.cpp
     logger.cpp
     message.cpp
+    messageevent.cpp
     network.cpp
     networkconfig.cpp
     networkevent.cpp
@@ -55,7 +57,9 @@ set(HEADERS ${MOC_HDRS}
     bufferinfo.h
     cliparser.h
     event.h
+    ircevent.h
     networkevent.h
+    messageevent.h
     logger.h
     message.h
     types.h
