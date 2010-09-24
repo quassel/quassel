@@ -21,6 +21,8 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include <QDebug>
+
 #include "eventmanager.h"
 
 class Event {
@@ -39,14 +41,22 @@ public:
   inline void stop() { setFlag(EventManager::Stopped); }
   inline bool isStopped() { return _flags.testFlag(EventManager::Stopped); }
 
-  inline void setData(const QVariant &data) { _data = data; }
-  inline QVariant data() const { return _data; }
+  //inline void setData(const QVariant &data) { _data = data; }
+  //inline QVariant data() const { return _data; }
+
+protected:
+  virtual inline QString className() const { return "Event"; }
+  virtual inline void debugInfo(QDebug &dbg) const { Q_UNUSED(dbg); }
 
 private:
   EventManager::EventType _type;
   EventManager::EventFlags _flags;
-  QVariant _data;
+  //QVariant _data;
+
+  friend QDebug operator<<(QDebug dbg, Event *e);
 };
+
+QDebug operator<<(QDebug dbg, Event *e);
 
 /*******/
 

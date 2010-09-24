@@ -25,3 +25,14 @@ Event::Event(EventManager::EventType type)
 {
 
 }
+
+QDebug operator<<(QDebug dbg, Event *e) {
+  dbg.nospace() << qPrintable(e->className()) << "("
+                << "type = 0x" << qPrintable(QString::number(e->type(), 16));
+  e->debugInfo(dbg);
+                //<< ", data = " << e->data(); // we don't use data anywhere yet
+  dbg.nospace() << ", flags = 0x" << qPrintable(QString::number(e->flags(), 16))
+                << ")";
+  return dbg.space();
+}
+

@@ -38,6 +38,10 @@ public:
   inline NetworkId networkId() const { return network()? network()->networkId() : NetworkId(); }
   inline Network *network() const { return _network; }
 
+protected:
+  virtual inline QString className() const { return "NetworkEvent"; }
+  virtual inline void debugInfo(QDebug &dbg) const { dbg.nospace() << ", net = " << qPrintable(_network->networkName()); }
+
 private:
   Network *_network;
 };
@@ -53,6 +57,13 @@ public:
   inline Network::ConnectionState connectionState() const { return _state; }
   inline void setConnectionState(Network::ConnectionState state) { _state = state; }
 
+protected:
+  virtual inline QString className() const { return "NetworkConnectionEvent"; }
+  virtual inline void debugInfo(QDebug &dbg) const {
+    NetworkEvent::debugInfo(dbg);
+    dbg.nospace() << ", state = " << qPrintable(QString::number(_state));
+  }
+
 private:
   Network::ConnectionState _state;
 };
@@ -67,6 +78,13 @@ public:
 
   inline QByteArray data() const { return _data; }
   inline void setData(const QByteArray &data) { _data = data; }
+
+protected:
+  virtual inline QString className() const { return "NetworkDataEvent"; }
+  virtual inline void debugInfo(QDebug &dbg) const {
+    NetworkEvent::debugInfo(dbg);
+    dbg.nospace() << ", data = " << data();
+  }
 
 private:
   QByteArray _data;

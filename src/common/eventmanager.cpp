@@ -48,6 +48,10 @@ EventManager::EventType EventManager::eventGroupByName(const QString &name) cons
   return type == Invalid? Invalid : static_cast<EventType>(type & EventGroupMask);
 }
 
+QString EventManager::enumName(EventType type) const {
+  return eventEnum().valueToKey(type);
+}
+
 /* NOTE:
    Registering and calling handlers works fine even if they specify a subclass of Event as their parameter.
    However, this most probably is a result from a reinterpret_cast somewhere deep inside Qt, so there is *no*
@@ -102,6 +106,7 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject *object
 
 // not threadsafe! if we should want that, we need to add a mutexed queue somewhere in this general area.
 void EventManager::sendEvent(Event *event) {
+  // qDebug() << "Sending" << event;
   dispatchEvent(event);
 }
 

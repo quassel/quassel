@@ -105,6 +105,7 @@ public:
 
   EventType eventTypeByName(const QString &name) const;
   EventType eventGroupByName(const QString &name) const;
+  QString enumName(EventType type) const;
 
 public slots:
   void registerObject(QObject *object, Priority priority = NormalPriority, const QString &methodPrefix = "handle");

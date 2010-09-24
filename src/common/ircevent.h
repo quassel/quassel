@@ -37,6 +37,14 @@ public:
   inline QStringList params() const { return _params; }
   inline void setParams(const QStringList &params) { _params = params; }
 
+protected:
+  virtual inline QString className() const { return "IrcEvent"; }
+  virtual inline void debugInfo(QDebug &dbg) const {
+    NetworkEvent::debugInfo(dbg);
+    dbg << ", prefix = " << qPrintable(prefix())
+        << ", params = " << params();
+  }
+
 private:
   QString _prefix;
   QStringList _params;
@@ -56,6 +64,16 @@ public:
   inline QString target() const { return _target; }
   inline void setTarget(const QString &target) { _target = target; }
 
+protected:
+  virtual inline QString className() const { return "IrcEventNumeric"; }
+  virtual inline void debugInfo(QDebug &dbg) const {
+    dbg << ", num = " << number();
+    NetworkEvent::debugInfo(dbg);
+    dbg << ", target = " << qPrintable(target())
+        << ", prefix = " << qPrintable(prefix())
+        << ", params = " << params();
+  }
+
 private:
   uint _number;
   QString _target;
@@ -74,6 +92,16 @@ public:
 
   inline QByteArray rawMessage() const { return _rawMessage; }
   inline void setRawMessage(const QByteArray &rawMessage) { _rawMessage = rawMessage; }
+
+protected:
+  virtual inline QString className() const { return "IrcEventRawMessage"; }
+  virtual inline void debugInfo(QDebug &dbg) const {
+    NetworkEvent::debugInfo(dbg);
+    dbg << ", target = " << qPrintable(target())
+        << ", prefix = " << qPrintable(prefix())
+        << ", msg = " << rawMessage();
+  }
+
 
 private:
   QByteArray _rawMessage;

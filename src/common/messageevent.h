@@ -52,6 +52,18 @@ public:
   inline void setMsgFlag(Message::Flag flag) { _msgFlags |= flag; }
   inline void setMsgFlags(Message::Flags flags) { _msgFlags = flags; }
 
+protected:
+  virtual inline QString className() const { return "MessageEvent"; }
+  virtual inline void debugInfo(QDebug &dbg) const {
+    NetworkEvent::debugInfo(dbg);
+    dbg.nospace() << ", sender = " << qPrintable(sender())
+                  << ", target = " << qPrintable(target())
+                  << ", text = " << text()
+                  << ", msgtype = " << qPrintable(QString::number(msgType(), 16))
+                  << ", buffertype = " << qPrintable(QString::number(bufferType(), 16))
+                  << ", msgflags = " << qPrintable(QString::number(msgFlags(), 16));
+  }
+
 private:
   BufferInfo::Type bufferTypeByTarget(const QString &target) const;
 
