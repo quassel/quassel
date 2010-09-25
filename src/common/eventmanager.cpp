@@ -20,12 +20,19 @@
 
 #include "eventmanager.h"
 
+#include <QCoreApplication>
+#include <QEvent>
 #include <QDebug>
 
 #include "event.h"
 
 EventManager::EventManager(QObject *parent) : QObject(parent) {
 
+}
+
+EventManager::~EventManager() {
+  // pending events won't be delivered anymore, but we do need to delete them
+  qDeleteAll(_eventQueue);
 }
 
 QMetaEnum EventManager::eventEnum() const {
@@ -107,10 +114,31 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject *object
 // not threadsafe! if we should want that, we need to add a mutexed queue somewhere in this general area.
 void EventManager::sendEvent(Event *event) {
   // qDebug() << "Sending" << event;
-  dispatchEvent(event);
+  _eventQueue.append(event);
+  if(_eventQueue.count() == 1) // we're not currently processing another event
+    processEvents();
+}
+
+void EventManager::customEvent(QEvent *event) {
+  if(event->type() == QEvent::User) {
+    processEvents();
+    event->accept();
+  }
+}
+
+void EventManager::processEvents() {
+  // we only process one event at a time for now, and let Qt's own event processing come in between
+  if(_eventQueue.isEmpty())
+    return;
+  dispatchEvent(_eventQueue.first());
+  _eventQueue.removeFirst();
+  if(_eventQueue.count())
+    QCoreApplication::postEvent(this, new QEvent(QEvent::User));
 }
 
 void EventManager::dispatchEvent(Event *event) {
+  //qDebug() << "Dispatching" << event;
+
   // we try handlers from specialized to generic by masking the enum
 
   // build a list sorted by priorities that contains all eligible handlers

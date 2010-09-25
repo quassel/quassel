@@ -101,7 +101,7 @@ public:
   };
 
   EventManager(QObject *parent = 0);
-  //virtual ~EventManager();
+  virtual ~EventManager();
 
   EventType eventTypeByName(const QString &name) const;
   EventType eventGroupByName(const QString &name) const;
@@ -119,6 +119,9 @@ public slots:
     @param event The event to be dispatched
    */
   void sendEvent(Event *event);
+
+protected:
+  virtual void customEvent(QEvent *event);
 
 private:
   struct Handler {
@@ -141,6 +144,7 @@ private:
   //! Add handlers to an existing sorted (by priority) handler list
   void insertHandlers(const QList<Handler> &newHandlers, QList<Handler> &existing);
 
+  void processEvents();
   void dispatchEvent(Event *event);
 
   //! @return the EventType enum
@@ -148,6 +152,8 @@ private:
 
   HandlerHash _registeredHandlers;
   mutable QMetaEnum _enum;
+
+  QList<Event *> _eventQueue;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(EventManager::EventFlags);
