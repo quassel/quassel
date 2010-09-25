@@ -40,6 +40,7 @@ class CoreNetworkConfig;
 class CoreSessionEventProcessor;
 class EventManager;
 class IrcParser;
+class MessageEvent;
 class NetworkConnection;
 class SignalProxy;
 
@@ -168,6 +169,9 @@ private:
   void loadSettings();
   void initScriptEngine();
   void processMessages();
+
+  /// Hook for converting events to the old displayMsg() handlers
+  Q_INVOKABLE void processMessageEvent(MessageEvent *event);
 
   UserId _user;
 

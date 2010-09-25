@@ -39,6 +39,7 @@
 #include "ircparser.h"
 #include "ircuser.h"
 #include "logger.h"
+#include "messageevent.h"
 #include "signalproxy.h"
 #include "storage.h"
 #include "util.h"
@@ -94,6 +95,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   eventManager()->registerObject(ircParser(), EventManager::NormalPriority, "process");
   eventManager()->registerObject(eventProcessor(), EventManager::HighPriority, "process");
+  eventManager()->registerObject(this, EventManager::LowPriority, "process"); // for sending MessageEvents to the client
 
   // periodically save our session state
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));
@@ -246,6 +248,11 @@ void CoreSession::recvStatusMsgFromServer(QString msg) {
   CoreNetwork *net = qobject_cast<CoreNetwork*>(sender());
   Q_ASSERT(net);
   emit displayStatusMsg(net->networkName(), msg);
+}
+
+void CoreSession::processMessageEvent(MessageEvent *event) {
+  recvMessageFromServer(event->networkId(), event->msgType(), event->bufferType(), event->target(),
+                        event->text(), event->sender(), event->msgFlags());
 }
 
 QList<BufferInfo> CoreSession::buffers() const {
