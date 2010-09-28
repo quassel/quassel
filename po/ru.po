@@ -12,10 +12,10 @@ msgstr ""
 "PO-Revision-Date: 2010-02-25 15:23+0000\n"
 "Last-Translator: Scott Kitterman <ubuntu@kitterman.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Launchpad-Export-Date: 2010-03-03 01:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
@@ -4210,18 +4210,11 @@ msgstr "Получаю журнал"
 
 #. ts-context MultiLineEdit
 #: ../src/uisupport/multilineedit.cpp:661
-#, fuzzy
 msgid "Do you really want to paste %n lines?"
 msgid_plural "Do you really want to paste %n lines?"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #. ts-context MultiLineEdit
 #: ../src/uisupport/multilineedit.cpp:670
@@ -4320,18 +4313,11 @@ msgstr "Ников"
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:154
-#, fuzzy
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:167
@@ -5486,93 +5472,51 @@ msgstr "<->"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:697
-#, fuzzy
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:698
-#, fuzzy
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:699
-#, fuzzy
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:700
-#, fuzzy
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:701
-#, fuzzy
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:702
-#, fuzzy
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
 msgstr[0] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[1] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 msgstr[2] ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"#-#-#-#-#  ru.po.0.6 (PACKAGE VERSION)  #-#-#-#-#\n"
 
 #~ msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
 #~ msgstr "<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2009 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC распространяется по двойной лицензии <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство значков &copy;  <a href=\"http://www.oxygen-icons.org\">Команда Oxygen</a> и используются по лицензии <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках пожалуйста сообщайте на  <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
