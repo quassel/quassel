@@ -109,9 +109,16 @@ public:
   QString enumName(EventType type) const;
 
 public slots:
-  void registerObject(QObject *object, Priority priority = NormalPriority, const QString &methodPrefix = "handle");
-  void registerEventHandler(EventType event, QObject *object, const char *slot, Priority priority = NormalPriority);
-  void registerEventHandler(QList<EventType> events, QObject *object, const char *slot, Priority priority = NormalPriority);
+  void registerObject(QObject *object, Priority priority = NormalPriority,
+                      const QString &methodPrefix = "process",
+                      const QString &filterPrefix = "filter");
+  void registerEventHandler(EventType event, QObject *object, const char *slot,
+                            Priority priority = NormalPriority, bool isFilter = false);
+  void registerEventHandler(QList<EventType> events, QObject *object, const char *slot,
+                            Priority priority = NormalPriority, bool isFilter = false);
+
+  void registerEventFilter(EventType event, QObject *object, const char *slot);
+  void registerEventFilter(QList<EventType> events, QObject *object, const char *slot);
 
   //! Send an event to the registered handlers
   /**
@@ -142,8 +149,15 @@ private:
   inline const HandlerHash &registeredHandlers() const { return _registeredHandlers; }
   inline HandlerHash &registeredHandlers() { return _registeredHandlers; }
 
+  inline const HandlerHash &registeredFilters() const { return _registeredFilters; }
+  inline HandlerHash &registeredFilters() { return _registeredFilters; }
+
   //! Add handlers to an existing sorted (by priority) handler list
   void insertHandlers(const QList<Handler> &newHandlers, QList<Handler> &existing);
+  //! Add filters to an existing filter hash
+  void insertFilters(const QList<Handler> &newFilters, QHash<QObject *, Handler> &existing);
+
+  int findEventType(const QString &methodSignature, const QString &methodPrefix) const;
 
   void processEvents();
   void dispatchEvent(Event *event);
@@ -152,6 +166,7 @@ private:
   QMetaEnum eventEnum() const;
 
   HandlerHash _registeredHandlers;
+  HandlerHash _registeredFilters;
   mutable QMetaEnum _enum;
 
   QList<Event *> _eventQueue;
