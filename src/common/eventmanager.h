@@ -96,6 +96,7 @@ public:
     IrcEventUnknown,    ///< Unknown non-numeric cmd
 
     IrcEventNumeric             = 0x00031000, /* needs 1000 (0x03e8) consecutive free values! */
+    IrcEventNumericMask         = 0x00000fff, /* for checking if an event is numeric */
 
     MessageEvent                = 0x00040000, ///< Stringified event suitable for converting to Message
   };

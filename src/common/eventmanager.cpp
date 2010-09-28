@@ -25,6 +25,7 @@
 #include <QDebug>
 
 #include "event.h"
+#include "ircevent.h"
 
 EventManager::EventManager(QObject *parent) : QObject(parent) {
 
@@ -83,13 +84,30 @@ void EventManager::registerObject(QObject *object, Priority priority, const QStr
     methodSignature = methodSignature.section('(',0,0);  // chop the attribute list
     methodSignature = methodSignature.mid(methodPrefix.length()); // strip prefix
 
-    int eventType = eventEnum().keyToValue(methodSignature.toAscii());
+    int eventType = -1;
+
+    // special handling for numeric IrcEvents: IrcEvent042 gets mapped to IrcEventNumeric + 42
+    if(methodSignature.length() == 8+3 && methodSignature.startsWith("IrcEvent")) {
+      int num = methodSignature.right(3).toUInt();
+      if(num > 0) {
+        QString numericSig = methodSignature.left(methodSignature.length() - 3) + "Numeric";
+        eventType = eventEnum().keyToValue(numericSig.toAscii());
+        if(eventType < 0) {
+          qWarning() << Q_FUNC_INFO << "Could not find EventType" << numericSig << "for handling" << methodSignature;
+          continue;
+        }
+        eventType += num;
+      }
+    }
+
+    if(eventType < 0)
+      eventType = eventEnum().keyToValue(methodSignature.toAscii());
     if(eventType < 0) {
-      qWarning() << Q_FUNC_INFO << QString("Could not find EventType %1").arg(methodSignature);
+      qWarning() << Q_FUNC_INFO << "Could not find EventType" << methodSignature;
       continue;
     }
     Handler handler(object, i, priority);
-    registeredHandlers()[static_cast<EventType>(eventType)].append(handler);
+    registeredHandlers()[eventType].append(handler);
     qDebug() << "Registered event handler for" << methodSignature << "in" << object;
   }
 }
@@ -143,7 +161,21 @@ void EventManager::dispatchEvent(Event *event) {
 
   // build a list sorted by priorities that contains all eligible handlers
   QList<Handler> handlers;
-  EventType type = event->type();
+  uint type = event->type();
+
+  // special handling for numeric IrcEvents
+  if((type & ~IrcEventNumericMask) == IrcEventNumeric) {
+    ::IrcEventNumeric *numEvent = static_cast< ::IrcEventNumeric *>(event);
+    if(!numEvent)
+      qWarning() << "Invalid event type for IrcEventNumeric!";
+    else {
+      int num = numEvent->number();
+      if(num > 0)
+        insertHandlers(registeredHandlers().value(type + num), handlers);
+    }
+  }
+
+  // exact type
   insertHandlers(registeredHandlers().value(type), handlers);
 
   // check if we have a generic handler for the event group
