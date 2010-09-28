@@ -30,6 +30,7 @@ set(SOURCES
     coreuserinputhandler.cpp
     coreusersettings.cpp
     ctcphandler.cpp
+    eventstringifier.cpp
     ircparser.cpp
     ircserverhandler.cpp
     netsplit.cpp
@@ -60,6 +61,7 @@ set(MOC_HDRS
     coresessioneventprocessor.h
     coreuserinputhandler.h
     ctcphandler.h
+    eventstringifier.h
     ircparser.h
     ircserverhandler.h
     netsplit.h
