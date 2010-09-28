@@ -14,6 +14,7 @@ set(SOURCES
     cliparser.cpp
     event.cpp
     eventmanager.cpp
+    eventstringifier.cpp
     identity.cpp
     ignorelistmanager.cpp
     ircchannel.cpp
@@ -41,6 +42,7 @@ set(MOC_HDRS
     bufferviewmanager.h
     coreinfo.h
     eventmanager.h
+    eventstringifier.h
     identity.h
     ignorelistmanager.h
     ircchannel.h

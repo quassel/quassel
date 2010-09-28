@@ -35,6 +35,7 @@
 #include "coresessioneventprocessor.h"
 #include "coreusersettings.h"
 #include "eventmanager.h"
+#include "eventstringifier.h"
 #include "ircchannel.h"
 #include "ircparser.h"
 #include "ircuser.h"
@@ -61,6 +62,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
     _coreInfo(this),
     _eventManager(new EventManager(this)),
+    _eventStringifier(new EventStringifier(this)),
     _eventProcessor(new CoreSessionEventProcessor(this)),
     _ircParser(new IrcParser(this)),
     scriptEngine(new QScriptEngine(this)),
@@ -93,9 +95,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   loadSettings();
   initScriptEngine();
 
-  eventManager()->registerObject(ircParser(), EventManager::NormalPriority, "process");
-  eventManager()->registerObject(eventProcessor(), EventManager::HighPriority, "process");
-  eventManager()->registerObject(this, EventManager::LowPriority, "process"); // for sending MessageEvents to the client
+  eventManager()->registerObject(ircParser(), EventManager::NormalPriority);
+  eventManager()->registerObject(eventProcessor(), EventManager::HighPriority);
+  eventManager()->registerObject(eventStringifier(), EventManager::NormalPriority);
+  eventManager()->registerObject(this, EventManager::LowPriority); // for sending MessageEvents to the client
 
   // periodically save our session state
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));

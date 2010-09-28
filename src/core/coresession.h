@@ -39,6 +39,7 @@ class CoreNetwork;
 class CoreNetworkConfig;
 class CoreSessionEventProcessor;
 class EventManager;
+class EventStringifier;
 class IrcParser;
 class MessageEvent;
 class NetworkConnection;
@@ -70,6 +71,7 @@ public:
   AliasManager &aliasManager() { return _aliasManager; }
 
   inline EventManager *eventManager() const { return _eventManager; }
+  inline EventStringifier *eventStringifier() const { return _eventStringifier; }
   inline CoreSessionEventProcessor *eventProcessor() const { return _eventProcessor; }
   inline IrcParser *ircParser() const { return _ircParser; }
 
@@ -190,6 +192,7 @@ private:
   CoreCoreInfo _coreInfo;
 
   EventManager *_eventManager;
+  EventStringifier *_eventStringifier; // should eventually move into client
   CoreSessionEventProcessor *_eventProcessor;
   IrcParser *_ircParser;
 
