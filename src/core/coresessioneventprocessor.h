@@ -24,7 +24,7 @@
 #include <QObject>
 
 class CoreSession;
-class Event;
+class IrcEventNumeric;
 
 class CoreSessionEventProcessor : public QObject {
   Q_OBJECT
@@ -33,6 +33,8 @@ public:
   CoreSessionEventProcessor(CoreSession *session);
 
   inline CoreSession *coreSession() const { return _coreSession; }
+
+  Q_INVOKABLE void processIrcEventNumeric(IrcEventNumeric *event);
 
 protected:
 

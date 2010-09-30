@@ -175,6 +175,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
         msg = decrypt(net, target, msg);
 
         events << new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg, net, prefix, target, msg);
+        //events << new MessageEvent(Message::Plain, net, net->channelDecode(target, msg), target, prefix);
       }
     }
     break;

@@ -47,6 +47,9 @@ public:
                                    const QString &target = QString(),
                                    Message::Flags msgFlags = Message::None);
 
+  //! Handle generic numeric events
+  Q_INVOKABLE void processIrcEventNumeric(IrcEventNumeric *event);
+
 public slots:
   //! Creates and sends a MessageEvent
   void displayMsg(NetworkEvent *event,

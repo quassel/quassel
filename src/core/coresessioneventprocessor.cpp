@@ -20,11 +20,26 @@
 
 #include "coresessioneventprocessor.h"
 
+#include "corenetwork.h"
 #include "coresession.h"
+#include "ircevent.h"
 
 CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
   : QObject(session),
   _coreSession(session)
 {
 
+}
+
+void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e) {
+  switch(e->number()) {
+
+  // CAP stuff
+  case 903: case 904: case 905: case 906: case 907:
+    qobject_cast<CoreNetwork *>(e->network())->putRawLine("CAP END");
+    break;
+
+  default:
+    break;
+  }
 }

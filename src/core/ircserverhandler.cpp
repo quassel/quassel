@@ -132,63 +132,8 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
   // we assume that all this happens in server encoding
   QStringList params = serverDecode(rawparams);
   uint num = cmd.toUInt();
-  if(num) {
-    // A lot of server messages don't really need their own handler because they don't do much.
-    // Catch and handle these here.
-    switch(num) {
-      // Welcome, status, info messages. Just display these.
-      case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
-        emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", params.join(" "), prefix);
-        break;
-      // Server error messages without param, just display them
-      case 409: case 411: case 412: case 422: case 424: case 445: case 446: case 451: case 462:
-      case 463: case 464: case 465: case 466: case 472: case 481: case 483: case 485: case 491: case 501: case 502:
-      case 431: // ERR_NONICKNAMEGIVEN
-        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" "), prefix);
-        break;
-      // Server error messages, display them in red. First param will be appended.
-      case 401: {
-        QString target = params.takeFirst();
-        emit displayMsg(Message::Error, target, params.join(" ") + " " + target, prefix, Message::Redirected);
-        break;
-      }
-      case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442: {
-        QString channelName = params.takeFirst();
-        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" ") + " " + channelName, prefix);
-        break;
-      }
-      // Server error messages which will be displayed with a colon between the first param and the rest
-      case 413: case 414: case 423: case 441: case 444: case 461:  // FIXME see below for the 47x codes
-      case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
-      case 436: // ERR_NICKCOLLISION
-      {
-        QString p = params.takeFirst();
-        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", p + ": " + params.join(" "));
-        break;
-      }
-      // Ignore these commands.
-      case 321: case 366: case 376:
-        break;
-
-      case 903: case 904: case 905: case 906: case 907:
-      {
-        network()->putRawLine("CAP END");
-        emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "", "CAP: " + params.join(""));
-      }
-      // Everything else will be marked in red, so we can add them somewhere.
-      default:
-        if(_whois) {
-          // many nets define their own WHOIS fields. we fetch those not in need of special attention here:
-          emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", "[Whois] " + params.join(" "), prefix);
-        } else {
-          if(coreSession()->ircListHelper()->requestInProgress(network()->networkId()))
-            coreSession()->ircListHelper()->reportError(params.join(" "));
-          else
-            emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", cmd + " " + params.join(" "), prefix);
-        }
-    }
-    //qDebug() << prefix <<":"<<cmd<<params;
-  } else {
+  // numeric commands are handled by the event system now
+  if(!num) {
     emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Unknown: ") + cmd + " " + params.join(" "), prefix);
     //qDebug() << prefix <<":"<<cmd<<params;
   }
@@ -873,11 +818,11 @@ void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> 
 
   QString nick = serverDecode(params[0]);
   IrcUser *ircuser = network()->ircUser(nick);
-  
+
   QDateTime now = QDateTime::currentDateTime();
   int idleSecs = serverDecode(params[1]).toInt();
   idleSecs *= -1;
-  
+
   if(ircuser) {
     ircuser->setIdleTime(now.addSecs(idleSecs));
     if(params.size() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
@@ -1075,7 +1020,7 @@ void IrcServerHandler::handle341(const QString &prefix, const QList<QByteArray> 
     qWarning() << "IrcServerHandler::handle341(): unknown channel:" << params[1];
     return;
   }
-  
+
   emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel->name(), tr("%1 has been invited to %2").arg(nick).arg(channel->name()));
 }
 
