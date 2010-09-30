@@ -24,6 +24,10 @@
 #include <QObject>
 
 #include "ircevent.h"
+#include "message.h"
+
+class CoreSession;
+class MessageEvent;
 
 //! Generates user-visible MessageEvents from incoming IrcEvents
 
@@ -32,9 +36,30 @@ class EventStringifier : public QObject {
   Q_OBJECT
 
 public:
-  EventStringifier(QObject *parent = 0);
+  explicit EventStringifier(CoreSession *parent);
 
+  inline CoreSession *coreSession() const { return _coreSession; }
+
+  MessageEvent *createMessageEvent(NetworkEvent *event,
+                                   Message::Type msgType,
+                                   const QString &msg,
+                                   const QString &sender = QString(),
+                                   const QString &target = QString(),
+                                   Message::Flags msgFlags = Message::None);
+
+public slots:
+  //! Creates and sends a MessageEvent
+  void displayMsg(NetworkEvent *event,
+                  Message::Type msgType,
+                  const QString &msg,
+                  const QString &sender = QString(),
+                  const QString &target = QString(),
+                  Message::Flags msgFlags = Message::None);
 private:
+  void sendMessageEvent(MessageEvent *event);
+
+  CoreSession *_coreSession;
+  bool _whois;
 
 };
 

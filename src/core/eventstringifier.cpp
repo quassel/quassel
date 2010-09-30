@@ -20,6 +20,28 @@
 
 #include "eventstringifier.h"
 
-EventStringifier::EventStringifier(QObject *parent) : QObject(parent) {
+#include "coresession.h"
+#include "messageevent.h"
 
+EventStringifier::EventStringifier(CoreSession *parent) : QObject(parent),
+  _coreSession(parent),
+  _whois(false)
+{
+
+}
+
+void EventStringifier::displayMsg(NetworkEvent *event, Message::Type msgType, const QString &msg, const QString &sender,
+                                  const QString &target, Message::Flags msgFlags) {
+  MessageEvent *msgEvent = createMessageEvent(event, msgType, msg, sender, target, msgFlags);
+  sendMessageEvent(msgEvent);
+}
+
+MessageEvent *EventStringifier::createMessageEvent(NetworkEvent *event, Message::Type msgType, const QString &msg, const QString &sender,
+                        const QString &target, Message::Flags msgFlags) {
+  MessageEvent *msgEvent = new MessageEvent(msgType, event->network(), msg, sender, target, msgFlags);
+  return msgEvent;
+}
+
+void EventStringifier::sendMessageEvent(MessageEvent *event) { qDebug() << event->text();
+  coreSession()->eventManager()->sendEvent(event);
 }
