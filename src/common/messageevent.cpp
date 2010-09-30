@@ -21,12 +21,12 @@
 #include "messageevent.h"
 
 
-MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &msg, const QString &target, const QString &sender, Message::Flags flags)
+MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &msg, const QString &sender, const QString &target, Message::Flags flags)
     : NetworkEvent(EventManager::MessageEvent, net),
       _msgType(msgType),
       _text(msg),
-      _target(target),
       _sender(sender),
+      _target(target),
       _msgFlags(flags)
 {
   IrcChannel *channel = network()->ircChannel(_target);

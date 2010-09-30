@@ -33,8 +33,8 @@ public:
   explicit MessageEvent(Message::Type msgType,
                         Network *network,
                         const QString &msg,
-                        const QString &target = QString(),
                         const QString &sender = QString(),
+                        const QString &target = QString(),
                         Message::Flags msgFlags = Message::None
                         );
 
@@ -69,7 +69,7 @@ private:
 
   Message::Type _msgType;
   BufferInfo::Type _bufferType;
-  QString _text, _target, _sender;
+  QString _text, _sender, _target;
   Message::Flags _msgFlags;
 };
 
