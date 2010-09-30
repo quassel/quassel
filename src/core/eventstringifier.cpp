@@ -42,7 +42,7 @@ MessageEvent *EventStringifier::createMessageEvent(NetworkEvent *event, Message:
   return msgEvent;
 }
 
-void EventStringifier::sendMessageEvent(MessageEvent *event) { qDebug() << event->text();
+void EventStringifier::sendMessageEvent(MessageEvent *event) {
   coreSession()->eventManager()->sendEvent(event);
 }
 

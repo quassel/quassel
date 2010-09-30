@@ -129,14 +129,10 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
 
 
 void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &rawparams) {
-  // we assume that all this happens in server encoding
-  QStringList params = serverDecode(rawparams);
-  uint num = cmd.toUInt();
-  // numeric commands are handled by the event system now
-  if(!num) {
-    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Unknown: ") + cmd + " " + params.join(" "), prefix);
-    //qDebug() << prefix <<":"<<cmd<<params;
-  }
+  // many commands are handled by the event system now
+  Q_UNUSED(cmd)
+  Q_UNUSED(prefix)
+  Q_UNUSED(rawparams)
 }
 
 //******************************/

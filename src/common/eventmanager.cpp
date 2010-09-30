@@ -116,13 +116,13 @@ void EventManager::registerObject(QObject *object, Priority priority, const QStr
     if(eventType > 0) {
       Handler handler(object, i, priority);
       registeredHandlers()[eventType].append(handler);
-      qDebug() << "Registered event handler for" << methodSignature << "in" << object;
+      //qDebug() << "Registered event handler for" << methodSignature << "in" << object;
     }
     eventType = findEventType(methodSignature, filterPrefix);
     if(eventType > 0) {
       Handler handler(object, i, priority);
       registeredFilters()[eventType].append(handler);
-      qDebug() << "Registered event filterer for" << methodSignature << "in" << object;
+      //qDebug() << "Registered event filterer for" << methodSignature << "in" << object;
     }
   }
 }
