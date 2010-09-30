@@ -254,8 +254,11 @@ void CoreSession::recvStatusMsgFromServer(QString msg) {
 }
 
 void CoreSession::processMessageEvent(MessageEvent *event) {
-  recvMessageFromServer(event->networkId(), event->msgType(), event->bufferType(), event->target(),
-                        event->text(), event->sender(), event->msgFlags());
+  recvMessageFromServer(event->networkId(), event->msgType(), event->bufferType(),
+                        event->target().isNull()? "" : event->target(),
+                        event->text().isNull()? "" : event->text(),
+                        event->sender().isNull()? "" : event->sender(),
+                        event->msgFlags());
 }
 
 QList<BufferInfo> CoreSession::buffers() const {
