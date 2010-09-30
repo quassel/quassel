@@ -31,6 +31,20 @@ CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
 
 }
 
+bool CoreSessionEventProcessor::checkParamCount(IrcEvent *e, int minParams) {
+  if(e->params().count() < minParams) {
+    if(e->type() == EventManager::IrcEventNumeric) {
+      qWarning() << "Command " << static_cast<IrcEventNumeric *>(e)->number() << " requires " << minParams << "params, got: " << e->params();
+    } else {
+      QString name = coreSession()->eventManager()->enumName(e->type());
+      qWarning() << qPrintable(name) << "requires" << minParams << "params, got:" << e->params();
+    }
+    e->stop();
+    return false;
+  }
+  return true;
+}
+
 void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e) {
   switch(e->number()) {
 

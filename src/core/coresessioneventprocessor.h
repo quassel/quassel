@@ -24,6 +24,7 @@
 #include <QObject>
 
 class CoreSession;
+class IrcEvent;
 class IrcEventNumeric;
 
 class CoreSessionEventProcessor : public QObject {
@@ -37,6 +38,7 @@ public:
   Q_INVOKABLE void processIrcEventNumeric(IrcEventNumeric *event);
 
 protected:
+  bool checkParamCount(IrcEvent *event, int minParams);
 
 private:
   CoreSession *_coreSession;

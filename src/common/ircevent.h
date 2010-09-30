@@ -22,6 +22,7 @@
 #define IRCEVENT_H
 
 #include "networkevent.h"
+#include "util.h"
 
 class IrcEvent : public NetworkEvent {
 public:
@@ -33,6 +34,8 @@ public:
 
   inline QString prefix() const { return _prefix; }
   inline void setPrefix(const QString &prefix) { _prefix = prefix; }
+
+  inline QString nick() const { return nickFromMask(prefix()); }
 
   inline QStringList params() const { return _params; }
   inline void setParams(const QStringList &params) { _params = params; }
