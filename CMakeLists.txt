@@ -11,6 +11,7 @@
 # -DWITH_KDE=ON          : Enable KDE4 support
 # -DWITH_CRYPT=OFF       : Disable encryption support
 # -DWITH_OXYGEN=(ON|OFF) : Whether to install Oxygen icons (default: yes, unless KDE > 4.3.0 is present and enabled)
+# -DWITH_SYSLOG=OFF       : Use syslog for logging
 #
 # -DEMBED_DATA=ON        : Embed all data files in icons the binary, rather than installing them separately
 #
@@ -46,6 +47,7 @@ option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
 option(WITH_LIBINDICATE "Enable Ayatana notification support"           ON)
 option(WITH_KDE      "Enable KDE4 integration"				OFF)
 option(WITH_CRYPT    "Enable encryption support if present on system"	ON)
+option(WITH_SYSLOG    "Use syslog for storing log data"          OFF)
 
 # We use icon paths from KDE 4.3.x, which are partially invalid on older and possibly
 # even on newer KDE versions. Do not disable this unless you are sure that your Quassel will
@@ -57,6 +59,10 @@ option(STATIC        "Enable static building (might not be portable)" OFF)
 if(APPLE)
   option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
 endif(APPLE)
+
+if(WITH_SYSLOG)
+  check_include_file(syslog.h HAVE_SYSLOG_H)
+endif(WITH_SYSLOG)
 
 # Default to embedding data in the static case
 if(STATIC OR WIN32)

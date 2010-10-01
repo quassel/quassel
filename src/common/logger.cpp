@@ -21,17 +21,37 @@
 #include "logger.h"
 #include "quassel.h"
 
+#ifdef HAVE_SYSLOG_H
+#include <syslog.h>
+#else
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
+#endif
 
 Logger::~Logger() {
   QDateTime date = QDateTime::currentDateTime();
-  if(_logLevel == DebugLevel) _buffer.prepend("Debug: ");
-  else if (_logLevel == InfoLevel) _buffer.prepend("Info: ");
-  else if (_logLevel == WarningLevel) _buffer.prepend("Warning: ");
-  else if (_logLevel == ErrorLevel) _buffer.prepend("Error: ");
+
+  switch (_logLevel) {
+    case DebugLevel:
+      _buffer.prepend("Debug: ");
+      break;
+    case InfoLevel:
+      _buffer.prepend("Info: ");
+      break;
+    case WarningLevel:
+      _buffer.prepend("Warning: ");
+      break;
+    case ErrorLevel:
+      _buffer.prepend("Error: ");
+      break;
+    default:
+      Q_ASSERT(_logLevel); // There should be no unknown log level
+      break;
+  }
+#ifndef HAVE_SYSLOG_H
   _buffer.prepend(date.toString("yyyy-MM-dd hh:mm:ss "));
+#endif
   log();
 }
 
@@ -45,6 +65,29 @@ void Logger::log() {
 
   if(_logLevel < lvl) return;
 
+#ifdef HAVE_SYSLOG_H
+  if (Quassel::isOptionSet("syslog")) {
+    int prio;
+    switch (lvl) {
+      case DebugLevel:
+        prio = LOG_DEBUG;
+        break;
+      case InfoLevel:
+        prio = LOG_INFO;
+        break;
+      case WarningLevel:
+        prio = LOG_WARNING;
+        break;
+      case ErrorLevel:
+        prio = LOG_ERR;
+        break;
+      default:
+        prio = LOG_INFO;
+        break;
+    }
+    syslog(LOG_USER & prio, "%s", qPrintable(_buffer));
+  }
+#else
   // if we can't open logfile we log to stdout
   QTextStream out(stdout);
   QFile file;
@@ -57,6 +100,7 @@ void Logger::log() {
   }
   out << _buffer << endl;
   if(file.isOpen()) file.close();
+#endif
 }
 
 
