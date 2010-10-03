@@ -50,6 +50,11 @@ public:
   //! Handle generic numeric events
   Q_INVOKABLE void processIrcEventNumeric(IrcEventNumeric *event);
 
+  Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
+  Q_INVOKABLE void earlyProcessIrcEventKick(IrcEvent *event);
+  Q_INVOKABLE void earlyProcessIrcEventNick(IrcEvent *event);
+  Q_INVOKABLE void earlyProcessIrcEventPart(IrcEvent *event);
+
 public slots:
   //! Creates and sends a MessageEvent
   void displayMsg(NetworkEvent *event,

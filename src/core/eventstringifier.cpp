@@ -109,3 +109,48 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
     }
   }
 }
+
+void EventStringifier::processIrcEventInvite(IrcEvent *e) {
+  displayMsg(e, Message::Invite, tr("%1 invited you to channel %2").arg(e->nick(), e->params().at(1)));
+}
+
+void EventStringifier::earlyProcessIrcEventKick(IrcEvent *e) {
+  IrcUser *victim = e->network()->ircUser(e->params().at(1));
+  if(victim) {
+    QString channel = e->params().at(0);
+    QString msg = victim->nick();
+    if(e->params().count() > 2)
+      msg += " " + e->params().at(2);
+
+    displayMsg(e, Message::Kick, msg, e->prefix(), channel);
+  }
+}
+
+// this needs to be called before the ircuser is renamed!
+void EventStringifier::earlyProcessIrcEventNick(IrcEvent *e) {
+  if(e->params().count() < 1)
+    return;
+
+  IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+  if(!ircuser) {
+    qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
+    return;
+  }
+
+  QString newnick = e->params().at(0);
+  QString oldnick = ircuser->nick();
+
+  QString sender = e->network()->isMyNick(oldnick) ? newnick : e->prefix();
+  foreach(const QString &channel, ircuser->channels())
+    displayMsg(e, Message::Nick, newnick, sender, channel);
+}
+
+void EventStringifier::earlyProcessIrcEventPart(IrcEvent *e) {
+  if(e->params().count() < 1)
+    return;
+
+  QString channel = e->params().at(0);
+  QString msg = e->params().count() > 1? e->params().at(1) : QString();
+
+  displayMsg(e, Message::Part, msg, e->prefix(), channel);
+}

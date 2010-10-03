@@ -138,20 +138,6 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
 //******************************/
 // IRC SERVER HANDLER
 //******************************/
-void IrcServerHandler::handleInvite(const QString &prefix, const QList<QByteArray> &params) {
-  if(!checkParamCount("IrcServerHandler::handleInvite()", params, 2))
-    return;
-//   qDebug() << "IrcServerHandler::handleInvite()" << prefix << params;
-
-  IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  if(!ircuser) {
-    return;
-  }
-
-  QString channel = serverDecode(params[1]);
-
-  emit displayMsg(Message::Invite, BufferInfo::StatusBuffer, "", tr("%1 invited you to channel %2").arg(ircuser->nick()).arg(channel));
-}
 
 void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray> &params) {
   if(!checkParamCount("IrcServerHandler::handleJoin()", params, 1))
@@ -180,28 +166,6 @@ void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray>
     network()->setChannelJoined(channel);
     putCmd("MODE", params[0]); // we want to know the modes of the channel we just joined, so we ask politely
   }
-}
-
-void IrcServerHandler::handleKick(const QString &prefix, const QList<QByteArray> &params) {
-  if(!checkParamCount("IrcServerHandler::handleKick()", params, 2))
-    return;
-
-  network()->updateNickFromMask(prefix);
-  IrcUser *victim = network()->ircUser(params[1]);
-  if(!victim)
-    return;
-
-  QString channel = serverDecode(params[0]);
-  victim->partChannel(channel);
-
-  QString msg;
-  if(params.count() > 2) // someone got a reason!
-    msg = QString("%1 %2").arg(victim->nick()).arg(channelDecode(channel, params[2]));
-  else
-    msg = victim->nick();
-
-  emit displayMsg(Message::Kick, BufferInfo::ChannelBuffer, channel, msg, prefix);
-  //if(network()->isMe(victim)) network()->setKickedFromChannel(channel);
 }
 
 void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray> &params) {
@@ -315,33 +279,6 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
   }
 }
 
-void IrcServerHandler::handleNick(const QString &prefix, const QList<QByteArray> &params) {
-  if(!checkParamCount("IrcServerHandler::handleNick()", params, 1))
-    return;
-
-  IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  if(!ircuser) {
-    qWarning() << "IrcServerHandler::handleNick(): Unknown IrcUser!";
-    return;
-  }
-  QString newnick = serverDecode(params[0]);
-  QString oldnick = ircuser->nick();
-
-  QString sender = network()->isMyNick(oldnick)
-    ? newnick
-    : prefix;
-
-
-  // the order is cruicial
-  // otherwise the client would rename the buffer, see that the assigned ircuser doesn't match anymore
-  // and remove the ircuser from the querybuffer leading to a wrong on/offline state
-  ircuser->setNick(newnick);
-  coreSession()->renameBuffer(network()->networkId(), newnick, oldnick);
-
-  foreach(QString channel, ircuser->channels())
-    emit displayMsg(Message::Nick, BufferInfo::ChannelBuffer, channel, newnick, sender);
-}
-
 void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArray> &params) {
   if(!checkParamCount("IrcServerHandler::handleNotice()", params, 2))
     return;
@@ -381,27 +318,6 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
     network()->ctcpHandler()->parse(Message::Notice, prefix, target, params[1]);
   }
 
-}
-
-void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray> &params) {
-  if(!checkParamCount("IrcServerHandler::handlePart()", params, 1))
-    return;
-
-  IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  QString channel = serverDecode(params[0]);
-  if(!ircuser) {
-    qWarning() << "IrcServerHandler::handlePart(): Unknown IrcUser!";
-    return;
-  }
-
-  ircuser->partChannel(channel);
-
-  QString msg;
-  if(params.count() > 1)
-    msg = userDecode(ircuser->nick(), params[1]);
-
-  emit displayMsg(Message::Part, BufferInfo::ChannelBuffer, channel, msg, prefix);
-  if(network()->isMe(ircuser)) network()->setChannelParted(channel);
 }
 
 void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray> &params) {

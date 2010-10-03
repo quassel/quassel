@@ -57,3 +57,52 @@ void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e) {
     break;
   }
 }
+
+void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent *e) {
+  if(checkParamCount(e, 2)) {
+    e->network()->updateNickFromMask(e->prefix());
+  }
+}
+
+void CoreSessionEventProcessor::processIrcEventKick(IrcEvent *e) {
+  if(checkParamCount(e, 2)) {
+    e->network()->updateNickFromMask(e->prefix());
+    IrcUser *victim = e->network()->ircUser(e->params().at(1));
+    if(victim) {
+      victim->partChannel(e->params().at(0));
+      //if(e->network()->isMe(victim)) e->network()->setKickedFromChannel(channel);
+    }
+  }
+}
+
+void CoreSessionEventProcessor::processIrcEventNick(IrcEvent *e) {
+  if(checkParamCount(e, 1)) {
+    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    if(!ircuser) {
+      qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
+      return;
+    }
+    QString newnick = e->params().at(0);
+    QString oldnick = ircuser->nick();
+
+    // the order is cruicial
+    // otherwise the client would rename the buffer, see that the assigned ircuser doesn't match anymore
+    // and remove the ircuser from the querybuffer leading to a wrong on/offline state
+    ircuser->setNick(newnick);
+    coreSession()->renameBuffer(e->networkId(), newnick, oldnick);
+  }
+}
+
+void CoreSessionEventProcessor::processIrcEventPart(IrcEvent *e) {
+  if(checkParamCount(e, 1)) {
+    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    if(!ircuser) {
+      qWarning() << Q_FUNC_INFO<< "Unknown IrcUser!";
+      return;
+    }
+    QString channel = e->params().at(0);
+    ircuser->partChannel(channel);
+    if(e->network()->isMe(ircuser))
+      qobject_cast<CoreNetwork *>(e->network())->setChannelParted(channel);
+  }
+}

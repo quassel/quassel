@@ -37,6 +37,11 @@ public:
 
   Q_INVOKABLE void processIrcEventNumeric(IrcEventNumeric *event);
 
+  Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventKick(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventNick(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventPart(IrcEvent *event);
+
 protected:
   bool checkParamCount(IrcEvent *event, int minParams);
 
