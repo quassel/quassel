@@ -50,8 +50,8 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   //qDebug() << e->number();
   switch(e->number()) {
   // Welcome, status, info messages. Just display these.
-  case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
-    displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
+  case 1: case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
+    displayMsg(e, Message::Server, e->params().join(" "), e->prefix()); qDebug () << e;
     break;
 
   // Server error messages without param, just display them
@@ -153,4 +153,16 @@ void EventStringifier::earlyProcessIrcEventPart(IrcEvent *e) {
   QString msg = e->params().count() > 1? e->params().at(1) : QString();
 
   displayMsg(e, Message::Part, msg, e->prefix(), channel);
+}
+
+void EventStringifier::processIrcEventPong(IrcEvent *e) {
+  QString timestamp = e->params().at(1);
+  QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
+  if(!sendTime.isValid())
+    displayMsg(e, Message::Server, "PONG " + e->params().join(" "), e->prefix());
+}
+
+void EventStringifier::processIrcEventTopic(IrcEvent *e) {
+  displayMsg(e, Message::Topic, tr("%1 has changed topic for %2 to: \"%3\"")
+             .arg(e->nick(), e->params().at(0), e->params().at(1)), QString(), e->params().at(0));
 }

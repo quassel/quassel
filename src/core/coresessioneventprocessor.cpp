@@ -58,6 +58,39 @@ void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e) {
   }
 }
 
+void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  if(e->params().at(0) != "+") {
+    qWarning() << "Invalid AUTHENTICATE" << e;
+    return;
+  }
+
+  CoreNetwork *net = coreNetwork(e);
+
+  QString construct = net->saslAccount();
+  construct.append(QChar(QChar::Null));
+  construct.append(net->saslAccount());
+  construct.append(QChar(QChar::Null));
+  construct.append(net->saslPassword());
+  QByteArray saslData = QByteArray(construct.toAscii().toBase64());
+  saslData.prepend("AUTHENTICATE ");
+  net->putRawLine(saslData);
+}
+
+void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e) {
+  // for SASL, there will only be a single param of 'sasl', however you can check here for
+  // additional CAP messages (ls, multi-prefix, et cetera).
+
+  if(e->params().count() == 3) {
+    if(e->params().at(2) == "sasl") {
+      // FIXME use event
+      coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN")); // Only working with PLAIN atm, blowfish later
+    }
+  }
+}
+
 void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent *e) {
   if(checkParamCount(e, 2)) {
     e->network()->updateNickFromMask(e->prefix());
@@ -106,3 +139,41 @@ void CoreSessionEventProcessor::processIrcEventPart(IrcEvent *e) {
       qobject_cast<CoreNetwork *>(e->network())->setChannelParted(channel);
   }
 }
+
+void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e) {
+  // the server is supposed to send back what we passed as param. and we send a timestamp
+  // but using quote and whatnought one can send arbitrary pings, so we have to do some sanity checks
+  if(checkParamCount(e, 2)) {
+    QString timestamp = e->params().at(1);
+    QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
+    if(sendTime.isValid())
+      e->network()->setLatency(sendTime.msecsTo(QTime::currentTime()) / 2);
+  }
+}
+
+void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent *e) {
+  if(checkParamCount(e, 2)) {
+    e->network()->updateNickFromMask(e->prefix());
+    IrcChannel *channel = e->network()->ircChannel(e->params().at(0));
+    if(channel)
+      channel->setTopic(e->params().at(1));
+  }
+}
+
+/* RPL_WELCOME */
+void CoreSessionEventProcessor::processIrcEvent001(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  QString myhostmask = e->params().at(0).section(' ', -1, -1);
+  e->network()->setCurrentServer(e->prefix());
+  e->network()->setMyNick(nickFromMask(myhostmask));
+}
+
+/* template
+void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+}
+*/

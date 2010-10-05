@@ -54,6 +54,10 @@ public:
   Q_INVOKABLE void earlyProcessIrcEventKick(IrcEvent *event);
   Q_INVOKABLE void earlyProcessIrcEventNick(IrcEvent *event);
   Q_INVOKABLE void earlyProcessIrcEventPart(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
+
+  // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 
 public slots:
   //! Creates and sends a MessageEvent

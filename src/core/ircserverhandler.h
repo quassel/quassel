@@ -38,13 +38,8 @@ public slots:
   void handleMode(const QString &prefix, const QList<QByteArray> &params);
   void handleNotice(const QString &prefix, const QList<QByteArray> &params);
   void handlePing(const QString &prefix, const QList<QByteArray> &params);
-  void handlePong(const QString &prefix, const QList<QByteArray> &params);
   void handlePrivmsg(const QString &prefix, const QList<QByteArray> &params);
   void handleQuit(const QString &prefix, const QList<QByteArray> &params);
-  void handleTopic(const QString &prefix, const QList<QByteArray> &params);
-  void handleCap(const QString &prefix, const QList<QByteArray> &params);   // CAP framework
-  void handleAuthenticate();                                                // SASL auth - no params
-  void handle001(const QString &prefix, const QList<QByteArray> &params);   // RPL_WELCOME
   void handle005(const QString &prefix, const QList<QByteArray> &params);   // RPL_ISUPPORT
   void handle221(const QString &prefix, const QList<QByteArray> &params);   // RPL_UMODEIS
   void handle250(const QString &prefix, const QList<QByteArray> &params);   // RPL_STATSDLINE

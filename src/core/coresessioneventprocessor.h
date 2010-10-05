@@ -21,7 +21,8 @@
 #ifndef CORESESSIONEVENTPROCESSOR_H
 #define CORESESSIONEVENTPROCESSOR_H
 
-#include <QObject>
+#include "corenetwork.h"
+#include "networkevent.h"
 
 class CoreSession;
 class IrcEvent;
@@ -37,13 +38,22 @@ public:
 
   Q_INVOKABLE void processIrcEventNumeric(IrcEventNumeric *event);
 
+  Q_INVOKABLE void processIrcEventAuthenticate(IrcEvent *event);   // SASL auth
+  Q_INVOKABLE void processIrcEventCap(IrcEvent *event);            // CAP framework
   Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
   Q_INVOKABLE void processIrcEventKick(IrcEvent *event);
   Q_INVOKABLE void processIrcEventNick(IrcEvent *event);
   Q_INVOKABLE void processIrcEventPart(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
+
+  Q_INVOKABLE void processIrcEvent001(IrcEvent *event);            // RPL_WELCOME
+
+  // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 
 protected:
   bool checkParamCount(IrcEvent *event, int minParams);
+  inline CoreNetwork *coreNetwork(NetworkEvent *e) const { return qobject_cast<CoreNetwork *>(e->network()); }
 
 private:
   CoreSession *_coreSession;

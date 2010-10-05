@@ -77,8 +77,8 @@ public:
     IrcServerParseError,
 
     IrcEvent                    = 0x00030000,
+    IrcEventAuthenticate,
     IrcEventCap,
-    IrcEventCapAuthenticate,
     IrcEventInvite,
     IrcEventJoin,
     IrcEventKick,

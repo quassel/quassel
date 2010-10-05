@@ -89,11 +89,12 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
   QString foo = serverDecode(params.takeFirst());
 
   // with SASL, the command is 'AUTHENTICATE +' and we should check for this here.
+  /* obsolete because of events
   if(foo == QString("AUTHENTICATE +")) {
     handleAuthenticate();
     return;
   }
-
+  */
   // a colon as the first chars indicates the existence of a prefix
   if(foo[0] == ':') {
     foo.remove(0, 1);
@@ -325,23 +326,6 @@ void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray>
   putCmd("PONG", params);
 }
 
-void IrcServerHandler::handlePong(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  // the server is supposed to send back what we passed as param. and we send a timestamp
-  // but using quote and whatnought one can send arbitrary pings, so we have to do some sanity checks
-  if(params.count() < 2)
-    return;
-
-  QString timestamp = serverDecode(params[1]);
-  QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
-  if(!sendTime.isValid()) {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", "PONG " + serverDecode(params).join(" "), prefix);
-    return;
-  }
-
-  network()->setLatency(sendTime.msecsTo(QTime::currentTime()) / 2);
-}
-
 void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArray> &params) {
   if(!checkParamCount("IrcServerHandler::handlePrivmsg()", params, 1))
     return;
@@ -413,73 +397,6 @@ void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray>
       emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, msg, prefix);
     ircuser->quit();
   }
-}
-
-void IrcServerHandler::handleTopic(const QString &prefix, const QList<QByteArray> &params) {
-  if(!checkParamCount("IrcServerHandler::handleTopic()", params, 1))
-    return;
-
-  IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  if(!ircuser)
-    return;
-
-  IrcChannel *channel = network()->ircChannel(serverDecode(params[0]));
-  if(!channel)
-    return;
-
-  QString topic;
-  if(params.count() > 1) {
-    QByteArray rawTopic = params[1];
-#ifdef HAVE_QCA2
-    rawTopic = decrypt(channel->name(), rawTopic, true);
-#endif
-    topic = channelDecode(channel->name(), rawTopic);
-  }
-
-  channel->setTopic(topic);
-
-  emit displayMsg(Message::Topic, BufferInfo::ChannelBuffer, channel->name(), tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel->name()).arg(topic));
-}
-
-void IrcServerHandler::handleCap(const QString &prefix, const QList<QByteArray> &params) {
-    // for SASL, there will only be a single param of 'sasl', however you can check here for
-    // additional CAP messages (ls, multi-prefix, et cetera).
-
-    Q_UNUSED(prefix);
-
-    if(params.size() == 3) {
-        QString param = serverDecode(params[2]);
-        if(param == QString("sasl")) {  // SASL Ready
-            network()->putRawLine(serverEncode("AUTHENTICATE PLAIN"));  // Only working with PLAIN atm, blowfish later
-        }
-    }
-}
-
-void IrcServerHandler::handleAuthenticate() {
-    QString construct = network()->saslAccount();
-    construct.append(QChar(QChar::Null));
-    construct.append(network()->saslAccount());
-    construct.append(QChar(QChar::Null));
-    construct.append(network()->saslPassword());
-    QByteArray saslData = QByteArray(construct.toAscii().toBase64());
-    saslData.prepend(QString("AUTHENTICATE ").toAscii());
-    network()->putRawLine(saslData);
-}
-
-/* RPL_WELCOME */
-void IrcServerHandler::handle001(const QString &prefix, const QList<QByteArray> &params) {
-  network()->setCurrentServer(prefix);
-
-  if(params.isEmpty()) {
-    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("%1 didn't supply a valid welcome message... expect some serious issues..."));
-  }
-  // there should be only one param: "Welcome to the Internet Relay Network <nick>!<user>@<host>"
-  QString param = serverDecode(params[0]);
-  QString myhostmask = param.section(' ', -1, -1);
-
-  network()->setMyNick(nickFromMask(myhostmask));
-
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", param, prefix);
 }
 
 /* RPL_ISUPPORT */
