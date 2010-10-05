@@ -48,6 +48,10 @@ public:
   Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
 
   Q_INVOKABLE void processIrcEvent001(IrcEvent *event);            // RPL_WELCOME
+  Q_INVOKABLE void processIrcEvent221(IrcEvent *event);            // RPL_UMODEIS
+  Q_INVOKABLE void processIrcEvent250(IrcEvent *event);            // RPL_STATSCONN
+  Q_INVOKABLE void processIrcEvent265(IrcEvent *event);            // RPL_LOCALUSERS
+  Q_INVOKABLE void processIrcEvent266(IrcEvent *event);            // RPL_GLOBALUSERS
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 

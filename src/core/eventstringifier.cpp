@@ -50,7 +50,9 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   //qDebug() << e->number();
   switch(e->number()) {
   // Welcome, status, info messages. Just display these.
-  case 1: case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
+  case 1: case 2: case 3: case 4: case 5:
+  case 221: case 250: case 251: case 252: case 253: case 254: case 255: case 265: case 266:
+  case 372: case 375:
     displayMsg(e, Message::Server, e->params().join(" "), e->prefix()); qDebug () << e;
     break;
 

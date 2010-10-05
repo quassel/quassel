@@ -41,10 +41,6 @@ public slots:
   void handlePrivmsg(const QString &prefix, const QList<QByteArray> &params);
   void handleQuit(const QString &prefix, const QList<QByteArray> &params);
   void handle005(const QString &prefix, const QList<QByteArray> &params);   // RPL_ISUPPORT
-  void handle221(const QString &prefix, const QList<QByteArray> &params);   // RPL_UMODEIS
-  void handle250(const QString &prefix, const QList<QByteArray> &params);   // RPL_STATSDLINE
-  void handle265(const QString &prefix, const QList<QByteArray> &params);   // RPL_LOCALUSERS
-  void handle266(const QString &prefix, const QList<QByteArray> &params);   // RPL_GLOBALUSERS
   void handle301(const QString &prefix, const QList<QByteArray> &params);   // RPL_AWAY
   void handle305(const QString &prefix, const QList<QByteArray> &params);   // RPL_UNAWAY
   void handle306(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOWAWAY

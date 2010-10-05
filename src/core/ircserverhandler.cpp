@@ -429,34 +429,6 @@ void IrcServerHandler::handle005(const QString &prefix, const QList<QByteArray> 
   network()->determinePrefixes();
 }
 
-/* RPL_UMODEIS - "<user_modes> [<user_mode_params>]" */
-void IrcServerHandler::handle221(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix)
-  //TODO: save information in network object
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
-}
-
-/* RPL_STATSCONN - "Highest connection cout: 8000 (7999 clients)" */
-void IrcServerHandler::handle250(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix)
-  //TODO: save information in network object
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
-}
-
-/* RPL_LOCALUSERS - "Current local user: 5024  Max: 7999 */
-void IrcServerHandler::handle265(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix)
-  //TODO: save information in network object
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
-}
-
-/* RPL_GLOBALUSERS - "Current global users: 46093  Max: 47650" */
-void IrcServerHandler::handle266(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix)
-  //TODO: save information in network object
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
-}
-
 /*
 WHOIS-Message:
    Replies 311 - 313, 317 - 319 are all replies generated in response to a WHOIS message.

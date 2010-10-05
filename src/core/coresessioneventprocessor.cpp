@@ -170,6 +170,26 @@ void CoreSessionEventProcessor::processIrcEvent001(IrcEvent *e) {
   e->network()->setMyNick(nickFromMask(myhostmask));
 }
 
+/* RPL_UMODEIS - "<user_modes> [<user_mode_params>]" */
+void CoreSessionEventProcessor::processIrcEvent221(IrcEvent *) {
+  // TODO: save information in network object
+}
+
+/* RPL_STATSCONN - "Highest connection cout: 8000 (7999 clients)" */
+void CoreSessionEventProcessor::processIrcEvent250(IrcEvent *) {
+  // TODO: save information in network object
+}
+
+/* RPL_LOCALUSERS - "Current local user: 5024  Max: 7999 */
+void CoreSessionEventProcessor::processIrcEvent265(IrcEvent *) {
+  // TODO: save information in network object
+}
+
+/* RPL_GLOBALUSERS - "Current global users: 46093  Max: 47650" */
+void CoreSessionEventProcessor::processIrcEvent266(IrcEvent *) {
+  // TODO: save information in network object
+}
+
 /* template
 void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
   if(!checkParamCount(e, 1))
