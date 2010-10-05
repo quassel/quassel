@@ -242,10 +242,10 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
     break;
 
   case EventManager::IrcEventTopic:
-    if(params.count() >= 2) {
+    if(params.count() >= 1) {
       QString channel = net->serverDecode(params.at(0));
       decParams << channel;
-      decParams << net->channelDecode(channel, decrypt(net, channel, params.at(1), true));
+      decParams << (params.count() >= 2? net->channelDecode(channel, decrypt(net, channel, params.at(1), true)) : QString());
     }
     break;
 
