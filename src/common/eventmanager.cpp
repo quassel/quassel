@@ -218,19 +218,20 @@ void EventManager::dispatchEvent(Event *event) {
   }
 
   // now dispatch the event
-  QList<Handler>::const_iterator it = handlers.begin();
-  while(it != handlers.end() && !event->isStopped()) {
+  QList<Handler>::const_iterator it;
+  for(it = handlers.begin(); it != handlers.end() && !event->isStopped(); ++it) {
     QObject *obj = it->object;
 
     if(ignored.contains(obj)) // we only deliver an event once to any given object
       continue;
+
+    ignored.insert(obj);
 
     if(filters.contains(obj)) { // we have a filter, so let's check if we want to deliver the event
       Handler filter = filters.value(obj);
       bool result = false;
       void *param[] = {Q_RETURN_ARG(bool, result).data(), Q_ARG(Event *, event).data() };
       obj->qt_metacall(QMetaObject::InvokeMetaMethod, filter.methodIndex, param);
-      ignored.insert(obj); // don't try to deliver the event again either way
       if(!result)
         continue; // mmmh, event filter told us to not accept
     }
@@ -238,8 +239,6 @@ void EventManager::dispatchEvent(Event *event) {
     // finally, deliverance!
     void *param[] = {0, Q_ARG(Event *, event).data() };
     obj->qt_metacall(QMetaObject::InvokeMetaMethod, it->methodIndex, param);
-
-    ++it;
   }
 
   // that's it
