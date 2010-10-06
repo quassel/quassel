@@ -52,6 +52,9 @@ public:
   Q_INVOKABLE void processIrcEvent250(IrcEvent *event);            // RPL_STATSCONN
   Q_INVOKABLE void processIrcEvent265(IrcEvent *event);            // RPL_LOCALUSERS
   Q_INVOKABLE void processIrcEvent266(IrcEvent *event);            // RPL_GLOBALUSERS
+  Q_INVOKABLE void processIrcEvent301(IrcEvent *event);            // RPL_AWAY
+  Q_INVOKABLE void processIrcEvent305(IrcEvent *event);            // RPL_UNAWAY
+  Q_INVOKABLE void processIrcEvent306(IrcEvent *event);            // RPL_NOWAWAY
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 

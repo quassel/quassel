@@ -442,69 +442,6 @@ WHOWAS-Message:
 
 */
 
-
-/*   RPL_AWAY - "<nick> :<away message>" */
-void IrcServerHandler::handle301(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  if(!checkParamCount("IrcServerHandler::handle301()", params, 2))
-    return;
-
-
-  QString nickName = serverDecode(params[0]);
-  QString awayMessage = userDecode(nickName, params[1]);
-
-  IrcUser *ircuser = network()->ircUser(nickName);
-  if(ircuser) {
-    ircuser->setAwayMessage(awayMessage);
-    ircuser->setAway(true);
-  }
-
-  // FIXME: proper redirection needed
-  if(_whois) {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is away: \"%2\"").arg(nickName).arg(awayMessage));
-  } else {
-    if(ircuser) {
-      int now = QDateTime::currentDateTime().toTime_t();
-      int silenceTime = 60;
-      if(ircuser->lastAwayMessage() + silenceTime < now) {
-        emit displayMsg(Message::Server, BufferInfo::QueryBuffer, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
-      }
-      ircuser->setLastAwayMessage(now);
-    } else {
-      // probably should not happen
-      emit displayMsg(Message::Server, BufferInfo::QueryBuffer, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
-    }
-  }
-}
-
-// 305  RPL_UNAWAY
-//      ":You are no longer marked as being away"
-void IrcServerHandler::handle305(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  IrcUser *me = network()->me();
-  if(me)
-    me->setAway(false);
-
-  if(!network()->autoAwayActive()) {
-    if(!params.isEmpty())
-      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[0]));
-  } else {
-    network()->setAutoAwayActive(false);
-  }
-}
-
-// 306  RPL_NOWAWAY
-//      ":You have been marked as being away"
-void IrcServerHandler::handle306(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  IrcUser *me = network()->me();
-  if(me)
-    me->setAway(true);
-
-  if(!params.isEmpty() && !network()->autoAwayActive())
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[0]));
-}
-
 /* RPL_WHOISSERVICE - "<user> is registered nick" */
 void IrcServerHandler::handle307(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)

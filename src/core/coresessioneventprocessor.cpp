@@ -190,6 +190,49 @@ void CoreSessionEventProcessor::processIrcEvent266(IrcEvent *) {
   // TODO: save information in network object
 }
 
+/*
+WHOIS-Message:
+   Replies 311 - 313, 317 - 319 are all replies generated in response to a WHOIS message.
+  and 301 (RPL_AWAY)
+              "<nick> :<away message>"
+WHO-Message:
+   Replies 352 and 315 paired are used to answer a WHO message.
+
+WHOWAS-Message:
+   Replies 314 and 369 are responses to a WHOWAS message.
+
+*/
+
+/* RPL_AWAY - "<nick> :<away message>" */
+void CoreSessionEventProcessor::processIrcEvent301(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
+  IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+  if(ircuser) {
+    ircuser->setAway(true);
+    ircuser->setAwayMessage(e->params().at(1));
+    //ircuser->setLastAwayMessage(now);
+  }
+}
+
+/* RPL_UNAWAY - ":You are no longer marked as being away" */
+void CoreSessionEventProcessor::processIrcEvent305(IrcEvent *e) {
+  IrcUser *me = e->network()->me();
+  if(me)
+    me->setAway(false);
+
+  if(e->network()->autoAwayActive())
+    e->network()->setAutoAwayActive(false);
+}
+
+/* RPL_NOWAWAY - ":You have been marked as being away" */
+void CoreSessionEventProcessor::processIrcEvent306(IrcEvent *e) {
+  IrcUser *me = e->network()->me();
+  if(me)
+    me->setAway(true);
+}
+
 /* template
 void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
   if(!checkParamCount(e, 1))

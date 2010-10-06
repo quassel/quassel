@@ -57,6 +57,10 @@ public:
   Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
   Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
 
+  Q_INVOKABLE void processIrcEvent301(IrcEvent *event);      // RPL_AWAY
+  Q_INVOKABLE void earlyProcessIrcEvent305(IrcEvent *event); // RPL_UNAWAY
+  Q_INVOKABLE void processIrcEvent306(IrcEvent *event);      // RPL_NOWAWAY
+
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 
 public slots:

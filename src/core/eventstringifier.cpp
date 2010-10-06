@@ -53,7 +53,7 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   case 1: case 2: case 3: case 4: case 5:
   case 221: case 250: case 251: case 252: case 253: case 254: case 255: case 265: case 266:
   case 372: case 375:
-    displayMsg(e, Message::Server, e->params().join(" "), e->prefix()); qDebug () << e;
+    displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
     break;
 
   // Server error messages without param, just display them
@@ -101,7 +101,7 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   default:
     if(_whois) {
       // many nets define their own WHOIS fields. we fetch those not in need of special attention here:
-      displayMsg(e, Message::Server, "[Whois] " + e->params().join(" "), e->prefix());
+      displayMsg(e, Message::Server, tr("[Whois] ") + e->params().join(" "), e->prefix());
     } else {
       // FIXME figure out how/where to do this in the future
       //if(coreSession()->ircListHelper()->requestInProgress(network()->networkId()))
@@ -167,4 +167,41 @@ void EventStringifier::processIrcEventPong(IrcEvent *e) {
 void EventStringifier::processIrcEventTopic(IrcEvent *e) {
   displayMsg(e, Message::Topic, tr("%1 has changed topic for %2 to: \"%3\"")
              .arg(e->nick(), e->params().at(0), e->params().at(1)), QString(), e->params().at(0));
+}
+
+void EventStringifier::processIrcEvent301(IrcEvent *e) {
+  QString nick = e->params().at(0);
+  QString awayMsg = e->params().at(1);
+  QString msg, target;
+  bool send = true;
+
+  // FIXME: proper redirection needed
+  if(_whois) {
+    msg = tr("[Whois] ");
+  } else {
+    target = nick;
+    IrcUser *ircuser = e->network()->ircUser(nick);
+    if(ircuser) {
+      int now = QDateTime::currentDateTime().toTime_t();
+      const int silenceTime = 60;
+      if(ircuser->lastAwayMessage() + silenceTime >= now)
+        send = false;
+      ircuser->setLastAwayMessage(now);
+    }
+  }
+  if(send)
+    displayMsg(e, Message::Server, msg + tr("%1 is away: \"%2\"").arg(nick, awayMsg), QString(), target);
+}
+
+/* RPL_UNAWAY */
+void EventStringifier::earlyProcessIrcEvent305(IrcEvent *e) {
+  // needs to be called early so we still get the old autoAwayActive state!
+  if(!e->network()->autoAwayActive())
+    displayMsg(e, Message::Server, tr("You are no longer marked as being away"));
+}
+
+/* RPL_NOWAWAY */
+void EventStringifier::processIrcEvent306(IrcEvent *e) {
+  if(!e->network()->autoAwayActive())
+    displayMsg(e, Message::Server, tr("You have been marked as being away"));
 }
