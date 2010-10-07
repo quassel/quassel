@@ -46,7 +46,8 @@ public:
   };
 
   enum EventFlag {
-    Backlog = 0x40,
+    Backlog = 0x20,
+    Silent  = 0x40, ///< Don't generate a MessageEvent
     Stopped = 0x80
   };
   Q_DECLARE_FLAGS(EventFlags, EventFlag)

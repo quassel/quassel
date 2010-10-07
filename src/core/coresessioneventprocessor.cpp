@@ -222,8 +222,10 @@ void CoreSessionEventProcessor::processIrcEvent305(IrcEvent *e) {
   if(me)
     me->setAway(false);
 
-  if(e->network()->autoAwayActive())
+  if(e->network()->autoAwayActive()) {
     e->network()->setAutoAwayActive(false);
+    e->setFlag(EventManager::Silent);
+  }
 }
 
 /* RPL_NOWAWAY - ":You have been marked as being away" */

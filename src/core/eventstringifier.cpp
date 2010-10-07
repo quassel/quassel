@@ -32,6 +32,9 @@ EventStringifier::EventStringifier(CoreSession *parent) : QObject(parent),
 
 void EventStringifier::displayMsg(NetworkEvent *event, Message::Type msgType, const QString &msg, const QString &sender,
                                   const QString &target, Message::Flags msgFlags) {
+  if(event->flags().testFlag(EventManager::Silent))
+    return;
+
   MessageEvent *msgEvent = createMessageEvent(event, msgType, msg, sender, target, msgFlags);
   sendMessageEvent(msgEvent);
 }
@@ -194,10 +197,8 @@ void EventStringifier::processIrcEvent301(IrcEvent *e) {
 }
 
 /* RPL_UNAWAY */
-void EventStringifier::earlyProcessIrcEvent305(IrcEvent *e) {
-  // needs to be called early so we still get the old autoAwayActive state!
-  if(!e->network()->autoAwayActive())
-    displayMsg(e, Message::Server, tr("You are no longer marked as being away"));
+void EventStringifier::processIrcEvent305(IrcEvent *e) {
+  displayMsg(e, Message::Server, tr("You are no longer marked as being away"));
 }
 
 /* RPL_NOWAWAY */
