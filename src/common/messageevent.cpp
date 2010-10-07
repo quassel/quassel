@@ -21,7 +21,8 @@
 #include "messageevent.h"
 
 
-MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &msg, const QString &sender, const QString &target, Message::Flags flags)
+MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &msg, const QString &sender, const QString &target,
+                           Message::Flags flags, const QDateTime &timestamp)
     : NetworkEvent(EventManager::MessageEvent, net),
       _msgType(msgType),
       _text(msg),
@@ -39,6 +40,8 @@ MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &m
   }
 
   _bufferType = bufferTypeByTarget(_target);
+
+  setTimestamp(timestamp);
 }
 
 BufferInfo::Type MessageEvent::bufferTypeByTarget(const QString &target) const {

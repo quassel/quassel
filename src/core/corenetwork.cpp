@@ -329,7 +329,13 @@ void CoreNetwork::socketHasData() {
     QByteArray s = socket.readLine().trimmed();
     ircServerHandler()->handleServerMsg(s); // FIXME remove with events
 
-    coreSession()->eventManager()->sendEvent(new NetworkDataEvent(EventManager::NetworkIncoming, this, s));
+    NetworkDataEvent *event = new NetworkDataEvent(EventManager::NetworkIncoming, this, s);
+#if QT_VERSION >= 0x040700
+    event->setTimestamp(QDateTime::currentDateTimeUtc());
+#else
+    event->setTimestamp(QDateTime::currentDateTime().toUTC());
+#endif
+    coreSession()->eventManager()->sendEvent(event);
   }
 }
 

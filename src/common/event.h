@@ -21,6 +21,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include <QDateTime>
 #include <QDebug>
 
 #include "eventmanager.h"
@@ -35,11 +36,13 @@ public:
 
   inline void setFlag(EventManager::EventFlag flag) { _flags |= flag; }
   inline void setFlags(EventManager::EventFlags flags) { _flags = flags; }
-
   inline EventManager::EventFlags flags() const { return _flags; }
 
   inline void stop() { setFlag(EventManager::Stopped); }
   inline bool isStopped() { return _flags.testFlag(EventManager::Stopped); }
+
+  inline void setTimestamp(const QDateTime &time) { _timestamp = time; }
+  inline QDateTime timestamp() const { return _timestamp; }
 
   //inline void setData(const QVariant &data) { _data = data; }
   //inline QVariant data() const { return _data; }
@@ -51,6 +54,7 @@ protected:
 private:
   EventManager::EventType _type;
   EventManager::EventFlags _flags;
+  QDateTime _timestamp;
   //QVariant _data;
 
   friend QDebug operator<<(QDebug dbg, Event *e);

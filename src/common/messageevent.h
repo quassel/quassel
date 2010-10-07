@@ -35,7 +35,8 @@ public:
                         const QString &msg,
                         const QString &sender = QString(),
                         const QString &target = QString(),
-                        Message::Flags msgFlags = Message::None
+                        Message::Flags msgFlags = Message::None,
+                        const QDateTime &timestamp = QDateTime()
                         );
 
   inline Message::Type msgType() const { return _msgType; }

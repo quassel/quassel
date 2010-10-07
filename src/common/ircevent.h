@@ -85,10 +85,14 @@ private:
 
 class IrcEventRawMessage : public IrcEvent {
 public:
-  explicit IrcEventRawMessage(EventManager::EventType type, Network *network, const QString &prefix, const QString &target, const QByteArray &rawMessage)
+  explicit inline IrcEventRawMessage(EventManager::EventType type, Network *network,
+                                     const QByteArray &rawMessage, const QString &prefix, const QString &target,
+                                     const QDateTime &timestamp = QDateTime())
     : IrcEvent(type, network, prefix, QStringList() << target),
       _rawMessage(rawMessage)
-  {}
+  {
+    setTimestamp(timestamp);
+  }
 
   inline QString target() const { return params().at(0); }
   inline void setTarget(const QString &target) { setParams(QStringList() << target); }

@@ -174,7 +174,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
 
         msg = decrypt(net, target, msg);
 
-        events << new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg, net, prefix, target, msg);
+        events << new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg, net, msg, prefix, target, e->timestamp());
         //events << new MessageEvent(Message::Plain, net, net->channelDecode(target, msg), target, prefix);
       }
     }
@@ -200,7 +200,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
             CoreIrcChannel *chan = static_cast<CoreIrcChannel *>(net->ircChannel(channelname)); // we only have CoreIrcChannels in the core, so this cast is safe
             if(chan && !chan->receivedWelcomeMsg()) {
               chan->setReceivedWelcomeMsg();
-              events << new MessageEvent(Message::Notice, net, decMsg, channelname, prefix);
+              events << new MessageEvent(Message::Notice, net, decMsg, prefix, channelname, Message::None, e->timestamp());
               continue;
             }
           }
@@ -214,7 +214,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
           if(!net->isChannelName(target))
             target = nickFromMask(prefix);
         }
-        events << new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, prefix, target, msg);
+        events << new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, msg, prefix, target, e->timestamp());
       }
     }
     break;
@@ -290,6 +290,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
     else
       event = new IrcEvent(type, net, prefix);
     event->setParams(decParams);
+    event->setTimestamp(e->timestamp());
     events << event;
   }
 
