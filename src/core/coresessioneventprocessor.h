@@ -55,6 +55,13 @@ public:
   Q_INVOKABLE void processIrcEvent301(IrcEvent *event);            // RPL_AWAY
   Q_INVOKABLE void processIrcEvent305(IrcEvent *event);            // RPL_UNAWAY
   Q_INVOKABLE void processIrcEvent306(IrcEvent *event);            // RPL_NOWAWAY
+  Q_INVOKABLE void processIrcEvent307(IrcEvent *event);            // RPL_WHOISSERVICE
+  Q_INVOKABLE void processIrcEvent310(IrcEvent *event);            // RPL_SUSERHOST
+  Q_INVOKABLE void processIrcEvent311(IrcEvent *event);            // RPL_WHOISUSER
+  Q_INVOKABLE void processIrcEvent312(IrcEvent *event);            // RPL_WHOISSERVER
+  Q_INVOKABLE void processIrcEvent313(IrcEvent *event);            // RPL_WHOISOPERATOR
+  Q_INVOKABLE void processIrcEvent315(IrcEvent *event);            // RPL_ENDOFWHO
+  Q_INVOKABLE void processIrcEvent317(IrcEvent *event);            // RPL_WHOISIDLE
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 

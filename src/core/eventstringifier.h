@@ -60,6 +60,14 @@ public:
   Q_INVOKABLE void processIrcEvent301(IrcEvent *event);      // RPL_AWAY
   Q_INVOKABLE void processIrcEvent305(IrcEvent *event);      // RPL_UNAWAY
   Q_INVOKABLE void processIrcEvent306(IrcEvent *event);      // RPL_NOWAWAY
+  Q_INVOKABLE void processIrcEvent311(IrcEvent *event);      // RPL_WHOISUSER
+  Q_INVOKABLE void processIrcEvent312(IrcEvent *event);      // RPL_WHOISSERVER
+  Q_INVOKABLE void processIrcEvent314(IrcEvent *event);      // RPL_WHOWASUSER
+  Q_INVOKABLE void processIrcEvent315(IrcEvent *event);      // RPL_ENDOFWHO
+  Q_INVOKABLE void processIrcEvent317(IrcEvent *event);      // RPL_WHOISIDLE
+  Q_INVOKABLE void processIrcEvent318(IrcEvent *event);      // RPL_ENDOFWHOIS
+  Q_INVOKABLE void processIrcEvent319(IrcEvent *event);      // RPL_WHOISCHANNELS
+  Q_INVOKABLE void processIrcEvent330(IrcEvent *event);      // RPL_WHOISACCOUNT (quakenet/snircd/undernet)
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 

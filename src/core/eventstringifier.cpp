@@ -207,3 +207,115 @@ void EventStringifier::processIrcEvent306(IrcEvent *e) {
   if(!e->network()->autoAwayActive())
     displayMsg(e, Message::Server, tr("You have been marked as being away"));
 }
+
+/*
+WHOIS-Message:
+   Replies 311 - 313, 317 - 319 are all replies generated in response to a WHOIS message.
+  and 301 (RPL_AWAY)
+              "<nick> :<away message>"
+WHO-Message:
+   Replies 352 and 315 paired are used to answer a WHO message.
+
+WHOWAS-Message:
+   Replies 314 and 369 are responses to a WHOWAS message.
+
+*/
+
+/*  RPL_WHOISUSER - "<nick> <user> <host> * :<real name>" */
+void EventStringifier::processIrcEvent311(IrcEvent *e) {
+  _whois = true;
+
+  const QString whoisUserString = tr("[Whois] %1 is %2 (%3)");
+
+  IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+  if(ircuser)
+    displayMsg(e, Message::Server, whoisUserString.arg(ircuser->nick(), ircuser->hostmask(), ircuser->realName()));
+  else {
+    QString host = QString("%1!%2@%3").arg(e->params().at(0), e->params().at(1), e->params().at(2));
+    displayMsg(e, Message::Server, whoisUserString.arg(e->params().at(0), host, e->params().last()));
+  }
+}
+
+/*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
+void EventStringifier::processIrcEvent312(IrcEvent *e) {
+  if(_whois)
+    displayMsg(e, Message::Server, tr("[Whois] %1 is online via %2 (%3)").arg(e->params().at(0), e->params().at(1), e->params().last()));
+  else
+    displayMsg(e, Message::Server, tr("[Whowas] %1 was online via %2 (%3)").arg(e->params().at(0), e->params().at(1), e->params().last()));
+}
+
+/*  RPL_WHOWASUSER - "<nick> <user> <host> * :<real name>" */
+void EventStringifier::processIrcEvent314(IrcEvent *e) {
+  if(e->params().count() < 3)
+    return;
+
+  displayMsg(e, Message::Server, tr("[Whowas] %1 was %2@%3 (%4)").arg(e->params()[0], e->params()[1], e->params()[2], e->params().last()));
+}
+
+/*  RPL_ENDOFWHO: "<name> :End of WHO list" */
+void EventStringifier::processIrcEvent315(IrcEvent *e) {
+  QStringList p = e->params();
+  p.takeLast(); // should be "End of WHO list"
+  displayMsg(e, Message::Server, tr("[Who] End of /WHO list for %1").arg(p.join(" ")));
+}
+
+/*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle"
+   (real life: "<nick> <integer> <integer> :seconds idle, signon time) */
+void EventStringifier::processIrcEvent317(IrcEvent *e) {
+  int idleSecs = e->params()[1].toInt();
+
+  if(e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
+    QDateTime loginTime = QDateTime::fromTime_t(e->params()[2].toInt());
+    displayMsg(e, Message::Server, tr("[Whois] %1 is logged in since %2").arg(e->params()[0], loginTime.toString()));
+  }
+  displayMsg(e, Message::Server, tr("[Whois] %1 is idling for %2 (since %3)")
+             .arg(e->params()[0], secondsToString(idleSecs), e->timestamp().toLocalTime().addSecs(-idleSecs).toString()));
+}
+
+/*  RPL_ENDOFWHOIS - "<nick> :End of WHOIS list" */
+void EventStringifier::processIrcEvent318(IrcEvent *e) {
+  _whois = false;
+  displayMsg(e, Message::Server, tr("[Whois] End of /WHOIS list"));
+}
+
+/*  RPL_WHOISCHANNELS - "<nick> :*( ( "@" / "+" ) <channel> " " )" */
+void EventStringifier::processIrcEvent319(IrcEvent *e) {
+  if(e->params().count() < 2)
+    return;
+
+  QString nick = e->params().first();
+  QStringList op;
+  QStringList voice;
+  QStringList user;
+  foreach(QString channel, e->params().last().split(" ")) {
+    if(channel.startsWith("@"))
+       op.append(channel.remove(0,1));
+    else if(channel.startsWith("+"))
+      voice.append(channel.remove(0,1));
+    else
+      user.append(channel);
+  }
+  if(!user.isEmpty())
+    displayMsg(e, Message::Server, tr("[Whois] %1 is a user on channels: %2").arg(nick, user.join(" ")));
+  if(!voice.isEmpty())
+    displayMsg(e, Message::Server, tr("[Whois] %1 has voice on channels: %2").arg(nick, voice.join(" ")));
+  if(!op.isEmpty())
+    displayMsg(e, Message::Server, tr("[Whois] %1 is an operator on channels: %2").arg(nick, op.join(" ")));
+}
+
+/*  RPL_WHOISACCOUNT: "<nick> <account> :is authed as */
+void EventStringifier::processIrcEvent330(IrcEvent *e) {
+  if(e->params().count() < 3)
+    return;
+
+  displayMsg(e, Message::Server, tr("[Whois] %1 is authed as %2").arg(e->params()[0], e->params()[1]));
+}
+
+// template
+/*
+
+void EventStringifier::processIrcEvent(IrcEvent *e) {
+
+}
+
+*/

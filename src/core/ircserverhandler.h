@@ -41,23 +41,11 @@ public slots:
   void handlePrivmsg(const QString &prefix, const QList<QByteArray> &params);
   void handleQuit(const QString &prefix, const QList<QByteArray> &params);
   void handle005(const QString &prefix, const QList<QByteArray> &params);   // RPL_ISUPPORT
-  void handle307(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISSERVICE
-  void handle310(const QString &prefix, const QList<QByteArray> &params);   // RPL_SUSERHOST
-  void handle311(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISUSER
-  void handle312(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISSERVER
-  void handle313(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISOPERATOR
-  void handle314(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOWASUSER
-  void handle315(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHO
-  void handle317(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISIDLE
-  void handle318(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOIS
-  void handle319(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISCHANNELS
-  void handle320(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISVIRT (is identified to services)
   void handle322(const QString &prefix, const QList<QByteArray> &params);   // RPL_LIST
   void handle323(const QString &prefix, const QList<QByteArray> &params);   // RPL_LISTEND
   void handle324(const QString &prefix, const QList<QByteArray> &params);   // RPL_CHANNELMODEIS
   void handle328(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel homepage)
   void handle329(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel creation time)
-  void handle330(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISACCOUNT (quakenet/snircd/undernet)
   void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC
   void handle332(const QString &prefix, const QList<QByteArray> &params);   // RPL_TOPIC
   void handle333(const QString &prefix, const QList<QByteArray> &params);   // Topic set by...

@@ -23,6 +23,7 @@
 #include "corenetwork.h"
 #include "coresession.h"
 #include "ircevent.h"
+#include "ircuser.h"
 
 CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
   : QObject(session),
@@ -234,6 +235,92 @@ void CoreSessionEventProcessor::processIrcEvent306(IrcEvent *e) {
   if(me)
     me->setAway(true);
 }
+
+/* RPL_WHOISSERVICE - "<user> is registered nick" */
+void CoreSessionEventProcessor::processIrcEvent307(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+  if(ircuser)
+    ircuser->setWhoisServiceReply(e->params().join(" "));
+}
+
+/* RPL_SUSERHOST - "<user> is available for help." */
+void CoreSessionEventProcessor::processIrcEvent310(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+  if(ircuser)
+    ircuser->setSuserHost(e->params().join(" "));
+}
+
+/*  RPL_WHOISUSER - "<nick> <user> <host> * :<real name>" */
+void CoreSessionEventProcessor::processIrcEvent311(IrcEvent *e) {
+  if(!checkParamCount(e, 3))
+    return;
+
+  IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+  if(ircuser) {
+    ircuser->setUser(e->params().at(1));
+    ircuser->setHost(e->params().at(2));
+    ircuser->setRealName(e->params().last());
+  }
+}
+
+/*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
+void CoreSessionEventProcessor::processIrcEvent312(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
+  IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+  if(ircuser)
+    ircuser->setServer(e->params().at(1));
+}
+
+/*  RPL_WHOISOPERATOR - "<nick> :is an IRC operator" */
+void CoreSessionEventProcessor::processIrcEvent313(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+  if(ircuser)
+    ircuser->setIrcOperator(e->params().last());
+}
+
+/*  RPL_ENDOFWHO: "<name> :End of WHO list" */
+void CoreSessionEventProcessor::processIrcEvent315(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  if(coreNetwork(e)->setAutoWhoDone(e->params()[0]))
+    e->setFlag(EventManager::Silent);
+}
+
+/*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle"
+   (real life: "<nick> <integer> <integer> :seconds idle, signon time) */
+void CoreSessionEventProcessor::processIrcEvent317(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
+  QDateTime loginTime;
+
+  int idleSecs = e->params()[1].toInt();
+  if(e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
+    int logintime = e->params()[2].toInt();
+    loginTime = QDateTime::fromTime_t(logintime);
+  }
+
+  IrcUser *ircuser = e->network()->ircUser(e->params()[0]);
+  if(ircuser) {
+    ircuser->setIdleTime(e->timestamp().addSecs(-idleSecs));
+    if(loginTime.isValid())
+      ircuser->setLoginTime(loginTime);
+  }
+}
+
+
 
 /* template
 void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
