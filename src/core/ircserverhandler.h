@@ -40,15 +40,7 @@ public slots:
   void handlePing(const QString &prefix, const QList<QByteArray> &params);
   void handlePrivmsg(const QString &prefix, const QList<QByteArray> &params);
   void handleQuit(const QString &prefix, const QList<QByteArray> &params);
-  void handle005(const QString &prefix, const QList<QByteArray> &params);   // RPL_ISUPPORT
-  void handle322(const QString &prefix, const QList<QByteArray> &params);   // RPL_LIST
-  void handle323(const QString &prefix, const QList<QByteArray> &params);   // RPL_LISTEND
   void handle324(const QString &prefix, const QList<QByteArray> &params);   // RPL_CHANNELMODEIS
-  void handle328(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel homepage)
-  void handle329(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel creation time)
-  void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC
-  void handle332(const QString &prefix, const QList<QByteArray> &params);   // RPL_TOPIC
-  void handle333(const QString &prefix, const QList<QByteArray> &params);   // Topic set by...
   void handle341(const QString &prefix, const QList<QByteArray> &params);   // RPL_INVITING
   void handle352(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOREPLY
   void handle353(const QString &prefix, const QList<QByteArray> &params);   // RPL_NAMREPLY

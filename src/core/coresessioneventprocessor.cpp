@@ -20,6 +20,7 @@
 
 #include "coresessioneventprocessor.h"
 
+#include "coreirclisthelper.h"
 #include "corenetwork.h"
 #include "coresession.h"
 #include "ircevent.h"
@@ -171,6 +172,23 @@ void CoreSessionEventProcessor::processIrcEvent001(IrcEvent *e) {
   e->network()->setMyNick(nickFromMask(myhostmask));
 }
 
+/* RPL_ISUPPORT */
+// TODO Complete 005 handling, also use sensible defaults for non-sent stuff
+void CoreSessionEventProcessor::processIrcEvent005(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  QString key, value;
+  for(int i = 0; i < e->params().count() - 1; i++) {
+    QString key = e->params()[i].section("=", 0, 0);
+    QString value = e->params()[i].section("=", 1);
+    e->network()->addSupport(key, value);
+  }
+
+  /* determine our prefixes here to get an accurate result */
+  e->network()->determinePrefixes();
+}
+
 /* RPL_UMODEIS - "<user_modes> [<user_mode_params>]" */
 void CoreSessionEventProcessor::processIrcEvent221(IrcEvent *) {
   // TODO: save information in network object
@@ -320,7 +338,57 @@ void CoreSessionEventProcessor::processIrcEvent317(IrcEvent *e) {
   }
 }
 
+/* RPL_LIST -  "<channel> <# visible> :<topic>" */
+void CoreSessionEventProcessor::processIrcEvent322(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
 
+  QString channelName;
+  quint32 userCount = 0;
+  QString topic;
+
+  switch(e->params().count()) {
+  case 3:
+    topic = e->params()[2];
+  case 2:
+    userCount = e->params()[1].toUInt();
+  case 1:
+    channelName = e->params()[0];
+  default:
+    break;
+  }
+  if(coreSession()->ircListHelper()->addChannel(e->networkId(), channelName, userCount, topic))
+    e->stop(); // consumed by IrcListHelper, so don't further process/show this event
+}
+
+/* RPL_LISTEND ":End of LIST" */
+void CoreSessionEventProcessor::processIrcEvent323(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  if(coreSession()->ircListHelper()->endOfChannelList(e->networkId()))
+    e->stop(); // consumed by IrcListHelper, so don't further process/show this event
+}
+
+/* RPL_NOTOPIC */
+void CoreSessionEventProcessor::processIrcEvent331(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  IrcChannel *chan = e->network()->ircChannel(e->params()[0]);
+  if(chan)
+    chan->setTopic(QString());
+}
+
+/* RPL_TOPIC */
+void CoreSessionEventProcessor::processIrcEvent332(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
+  IrcChannel *chan = e->network()->ircChannel(e->params()[0]);
+  if(chan)
+    chan->setTopic(e->params()[1]);
+}
 
 /* template
 void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {

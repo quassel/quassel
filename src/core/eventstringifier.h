@@ -57,6 +57,7 @@ public:
   Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
   Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
 
+  Q_INVOKABLE void processIrcEvent005(IrcEvent *event);      // RPL_ISUPPORT
   Q_INVOKABLE void processIrcEvent301(IrcEvent *event);      // RPL_AWAY
   Q_INVOKABLE void processIrcEvent305(IrcEvent *event);      // RPL_UNAWAY
   Q_INVOKABLE void processIrcEvent306(IrcEvent *event);      // RPL_NOWAWAY
@@ -67,7 +68,14 @@ public:
   Q_INVOKABLE void processIrcEvent317(IrcEvent *event);      // RPL_WHOISIDLE
   Q_INVOKABLE void processIrcEvent318(IrcEvent *event);      // RPL_ENDOFWHOIS
   Q_INVOKABLE void processIrcEvent319(IrcEvent *event);      // RPL_WHOISCHANNELS
+  Q_INVOKABLE void processIrcEvent322(IrcEvent *event);      // RPL_LIST
+  Q_INVOKABLE void processIrcEvent323(IrcEvent *event);      // RPL_LISTEND
+  Q_INVOKABLE void processIrcEvent328(IrcEvent *event);      // RPL_??? (channel creation time)
+  Q_INVOKABLE void processIrcEvent329(IrcEvent *event);      // RPL_??? (channel homepage)
   Q_INVOKABLE void processIrcEvent330(IrcEvent *event);      // RPL_WHOISACCOUNT (quakenet/snircd/undernet)
+  Q_INVOKABLE void processIrcEvent331(IrcEvent *event);      // RPL_NOTOPIC
+  Q_INVOKABLE void processIrcEvent332(IrcEvent *event);      // RPL_TOPIC
+  Q_INVOKABLE void processIrcEvent333(IrcEvent *event);      // RPL_??? (topic set by)
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 

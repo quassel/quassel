@@ -187,6 +187,14 @@ void EventStringifier::processIrcEventTopic(IrcEvent *e) {
              .arg(e->nick(), e->params().at(0), e->params().at(1)), QString(), e->params().at(0));
 }
 
+/* RPL_ISUPPORT */
+void EventStringifier::processIrcEvent005(IrcEvent *e) {
+  if(!e->params().last().contains(QRegExp("are supported (by|on) this server")))
+    displayMsg(e, Message::Error, tr("Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected behavior!"), e->prefix());
+  displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
+}
+
+/* RPL_AWAY - "<nick> :<away message>" */
 void EventStringifier::processIrcEvent301(IrcEvent *e) {
   QString nick = e->params().at(0);
   QString awayMsg = e->params().at(1);
@@ -317,12 +325,83 @@ void EventStringifier::processIrcEvent319(IrcEvent *e) {
     displayMsg(e, Message::Server, tr("[Whois] %1 is an operator on channels: %2").arg(nick, op.join(" ")));
 }
 
+/* RPL_LIST -  "<channel> <# visible> :<topic>" */
+void EventStringifier::processIrcEvent322(IrcEvent *e) {
+  QString channelName;
+  quint32 userCount = 0;
+  QString topic;
+
+  switch(e->params().count()) {
+  case 3:
+    topic = e->params()[2];
+  case 2:
+    userCount = e->params()[1].toUInt();
+  case 1:
+    channelName = e->params()[0];
+  default:
+    break;
+  }
+  displayMsg(e, Message::Server, tr("Channel %1 has %2 users. Topic is: \"%3\"")
+             .arg(channelName).arg(userCount).arg(topic));
+}
+
+/* RPL_LISTEND ":End of LIST" */
+void EventStringifier::processIrcEvent323(IrcEvent *e) {
+  displayMsg(e, Message::Server, tr("End of channel list"));
+}
+
+/* RPL_??? - "<channel> <homepage> */
+void EventStringifier::processIrcEvent328(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
+  QString channel = e->params()[0];
+  displayMsg(e, Message::Topic, tr("Homepage for %1 is %2").arg(channel, e->params()[1]), QString(), channel);
+}
+
+/* RPL_??? - "<channel> <creation time (unix)>" */
+void EventStringifier::processIrcEvent329(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
+  QString channel = e->params()[0];
+  uint unixtime = e->params()[1].toUInt();
+  if(!unixtime) {
+    qWarning() << Q_FUNC_INFO << "received invalid timestamp:" << e->params()[1];
+    return;
+  }
+  QDateTime time = QDateTime::fromTime_t(unixtime);
+  displayMsg(e, Message::Topic, tr("Channel %1 created on %2").arg(channel, time.toString()), QString(), channel);
+}
+
 /*  RPL_WHOISACCOUNT: "<nick> <account> :is authed as */
 void EventStringifier::processIrcEvent330(IrcEvent *e) {
   if(e->params().count() < 3)
     return;
 
   displayMsg(e, Message::Server, tr("[Whois] %1 is authed as %2").arg(e->params()[0], e->params()[1]));
+}
+
+/* RPL_NOTOPIC */
+void EventStringifier::processIrcEvent331(IrcEvent *e) {
+  QString channel = e->params().first();
+  displayMsg(e, Message::Topic, tr("No topic is set for %1.").arg(channel), QString(), channel);
+}
+
+/* RPL_TOPIC */
+void EventStringifier::processIrcEvent332(IrcEvent *e) {
+  QString channel = e->params().first();
+  displayMsg(e, Message::Topic, tr("Topic for %1 is \"%2\"").arg(channel, e->params()[1]), QString(), channel);
+}
+
+/* Topic set by... */
+void EventStringifier::processIrcEvent333(IrcEvent *e) {
+  if(!checkParamCount(e, 3))
+    return;
+
+  QString channel = e->params().first();
+  displayMsg(e, Message::Topic, tr("Topic set by %1 on %2")
+             .arg(e->params()[1], QDateTime::fromTime_t(e->params()[2].toInt()).toString()), QString(), channel);
 }
 
 // template

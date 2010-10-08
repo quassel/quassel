@@ -48,6 +48,7 @@ public:
   Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
 
   Q_INVOKABLE void processIrcEvent001(IrcEvent *event);            // RPL_WELCOME
+  Q_INVOKABLE void processIrcEvent005(IrcEvent *event);            // RPL_ISUPPORT
   Q_INVOKABLE void processIrcEvent221(IrcEvent *event);            // RPL_UMODEIS
   Q_INVOKABLE void processIrcEvent250(IrcEvent *event);            // RPL_STATSCONN
   Q_INVOKABLE void processIrcEvent265(IrcEvent *event);            // RPL_LOCALUSERS
@@ -62,6 +63,10 @@ public:
   Q_INVOKABLE void processIrcEvent313(IrcEvent *event);            // RPL_WHOISOPERATOR
   Q_INVOKABLE void processIrcEvent315(IrcEvent *event);            // RPL_ENDOFWHO
   Q_INVOKABLE void processIrcEvent317(IrcEvent *event);            // RPL_WHOISIDLE
+  Q_INVOKABLE void processIrcEvent322(IrcEvent *event);            // RPL_LIST
+  Q_INVOKABLE void processIrcEvent323(IrcEvent *event);            // RPL_LISTEND
+  Q_INVOKABLE void processIrcEvent331(IrcEvent *event);            // RPL_NOTOPIC
+  Q_INVOKABLE void processIrcEvent332(IrcEvent *event);            // RPL_TOPIC
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 
