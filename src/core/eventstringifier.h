@@ -79,7 +79,9 @@ public slots:
                   const QString &sender = QString(),
                   const QString &target = QString(),
                   Message::Flags msgFlags = Message::None);
+
 private:
+  bool checkParamCount(IrcEvent *event, int minParams);
   void sendMessageEvent(MessageEvent *event);
 
   CoreSession *_coreSession;

@@ -50,6 +50,20 @@ void EventStringifier::sendMessageEvent(MessageEvent *event) {
   coreSession()->eventManager()->sendEvent(event);
 }
 
+bool EventStringifier::checkParamCount(IrcEvent *e, int minParams) {
+  if(e->params().count() < minParams) {
+    if(e->type() == EventManager::IrcEventNumeric) {
+      qWarning() << "Command " << static_cast<IrcEventNumeric *>(e)->number() << " requires " << minParams << "params, got: " << e->params();
+    } else {
+      QString name = coreSession()->eventManager()->enumName(e->type());
+      qWarning() << qPrintable(name) << "requires" << minParams << "params, got:" << e->params();
+    }
+    e->stop();
+    return false;
+  }
+  return true;
+}
+
 void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   //qDebug() << e->number();
   switch(e->number()) {
@@ -134,7 +148,7 @@ void EventStringifier::earlyProcessIrcEventKick(IrcEvent *e) {
 
 // this needs to be called before the ircuser is renamed!
 void EventStringifier::earlyProcessIrcEventNick(IrcEvent *e) {
-  if(e->params().count() < 1)
+  if(!checkParamCount(e, 1))
     return;
 
   IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
@@ -152,7 +166,7 @@ void EventStringifier::earlyProcessIrcEventNick(IrcEvent *e) {
 }
 
 void EventStringifier::earlyProcessIrcEventPart(IrcEvent *e) {
-  if(e->params().count() < 1)
+  if(!checkParamCount(e, 1))
     return;
 
   QString channel = e->params().at(0);
@@ -197,12 +211,12 @@ void EventStringifier::processIrcEvent301(IrcEvent *e) {
     displayMsg(e, Message::Server, msg + tr("%1 is away: \"%2\"").arg(nick, awayMsg), QString(), target);
 }
 
-/* RPL_UNAWAY */
+/* RPL_UNAWAY - ":You are no longer marked as being away" */
 void EventStringifier::processIrcEvent305(IrcEvent *e) {
   displayMsg(e, Message::Server, tr("You are no longer marked as being away"));
 }
 
-/* RPL_NOWAWAY */
+/* RPL_NOWAWAY - ":You have been marked as being away" */
 void EventStringifier::processIrcEvent306(IrcEvent *e) {
   if(!e->network()->autoAwayActive())
     displayMsg(e, Message::Server, tr("You have been marked as being away"));
@@ -246,7 +260,7 @@ void EventStringifier::processIrcEvent312(IrcEvent *e) {
 
 /*  RPL_WHOWASUSER - "<nick> <user> <host> * :<real name>" */
 void EventStringifier::processIrcEvent314(IrcEvent *e) {
-  if(e->params().count() < 3)
+  if(!checkParamCount(e, 3))
     return;
 
   displayMsg(e, Message::Server, tr("[Whowas] %1 was %2@%3 (%4)").arg(e->params()[0], e->params()[1], e->params()[2], e->params().last()));
@@ -280,7 +294,7 @@ void EventStringifier::processIrcEvent318(IrcEvent *e) {
 
 /*  RPL_WHOISCHANNELS - "<nick> :*( ( "@" / "+" ) <channel> " " )" */
 void EventStringifier::processIrcEvent319(IrcEvent *e) {
-  if(e->params().count() < 2)
+  if(!checkParamCount(e, 2))
     return;
 
   QString nick = e->params().first();
