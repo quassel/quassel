@@ -390,6 +390,61 @@ void CoreSessionEventProcessor::processIrcEvent332(IrcEvent *e) {
     chan->setTopic(e->params()[1]);
 }
 
+/*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick>
+              ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
+void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e) {
+  if(!checkParamCount(e, 6))
+    return;
+
+  QString channel = e->params()[0];
+  IrcUser *ircuser = e->network()->ircUser(e->params()[4]);
+  if(ircuser) {
+    ircuser->setUser(e->params()[1]);
+    ircuser->setHost(e->params()[2]);
+
+    bool away = e->params()[5].startsWith("G");
+    ircuser->setAway(away);
+    ircuser->setServer(e->params()[3]);
+    ircuser->setRealName(e->params().last().section(" ", 1));
+  }
+
+  if(coreNetwork(e)->isAutoWhoInProgress(channel))
+    e->setFlag(EventManager::Silent);
+}
+
+/* RPL_NAMREPLY */
+void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e) {
+  if(!checkParamCount(e, 3))
+    return;
+
+  // param[0] is either "=", "*" or "@" indicating a public, private or secret channel
+  // we don't use this information at the time beeing
+  QString channelname = e->params()[1];
+
+  IrcChannel *channel = e->network()->ircChannel(channelname);
+  if(!channel) {
+    qWarning() << Q_FUNC_INFO << "Received unknown target channel:" << channelname;
+    return;
+  }
+
+  QStringList nicks;
+  QStringList modes;
+
+  foreach(QString nick, e->params()[2].split(' ')) {
+    QString mode;
+
+    if(e->network()->prefixes().contains(nick[0])) {
+      mode = e->network()->prefixToMode(nick[0]);
+      nick = nick.mid(1);
+    }
+
+    nicks << nick;
+    modes << mode;
+  }
+
+  channel->joinIrcUsers(nicks, modes);
+}
+
 /* template
 void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
   if(!checkParamCount(e, 1))

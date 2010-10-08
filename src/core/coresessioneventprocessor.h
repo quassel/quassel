@@ -67,6 +67,8 @@ public:
   Q_INVOKABLE void processIrcEvent323(IrcEvent *event);            // RPL_LISTEND
   Q_INVOKABLE void processIrcEvent331(IrcEvent *event);            // RPL_NOTOPIC
   Q_INVOKABLE void processIrcEvent332(IrcEvent *event);            // RPL_TOPIC
+  Q_INVOKABLE void processIrcEvent352(IrcEvent *event);            // RPL_WHOREPLY
+  Q_INVOKABLE void processIrcEvent353(IrcEvent *event);            // RPL_NAMREPLY
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 

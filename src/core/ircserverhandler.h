@@ -41,10 +41,6 @@ public slots:
   void handlePrivmsg(const QString &prefix, const QList<QByteArray> &params);
   void handleQuit(const QString &prefix, const QList<QByteArray> &params);
   void handle324(const QString &prefix, const QList<QByteArray> &params);   // RPL_CHANNELMODEIS
-  void handle341(const QString &prefix, const QList<QByteArray> &params);   // RPL_INVITING
-  void handle352(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOREPLY
-  void handle353(const QString &prefix, const QList<QByteArray> &params);   // RPL_NAMREPLY
-  void handle369(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOWAS
   void handle432(const QString &prefix, const QList<QByteArray> &params);   // ERR_ERRONEUSNICKNAME
   void handle433(const QString &prefix, const QList<QByteArray> &params);   // ERR_NICKNAMEINUSE
   void handle437(const QString &prefix, const QList<QByteArray> &params);   // ERR_UNAVAILRESOURCE

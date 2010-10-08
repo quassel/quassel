@@ -404,6 +404,26 @@ void EventStringifier::processIrcEvent333(IrcEvent *e) {
              .arg(e->params()[1], QDateTime::fromTime_t(e->params()[2].toInt()).toString()), QString(), channel);
 }
 
+/* RPL_INVITING - "<nick> <channel>*/
+void EventStringifier::processIrcEvent341(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
+  QString channel = e->params()[1];
+  displayMsg(e, Message::Server, tr("%1 has been invited to %2").arg(e->params().first(), channel), QString(), channel);
+}
+
+/*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick>
+              ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
+void EventStringifier::processIrcEvent352(IrcEvent *e) {
+  displayMsg(e, Message::Server, tr("[Who] %1").arg(e->params().join(" ")));
+}
+
+/*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */
+void EventStringifier::processIrcEvent369(IrcEvent *e) {
+  displayMsg(e, Message::Server, tr("End of /WHOWAS"));
+}
+
 // template
 /*
 
