@@ -363,7 +363,7 @@ void MainWin::setupActions() {
   configureQuasselAct->setMenuRole(QAction::PreferencesRole);
   #else
   QAction *configureQuasselAct = new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
-                                                  this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7))
+                                            this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7));
   #endif
   coll->addAction("ConfigureQuassel", configureQuasselAct);
 
