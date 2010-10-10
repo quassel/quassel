@@ -352,16 +352,31 @@ void MainWin::setupActions() {
   coll->addAction("ToggleFullscreen", fullScreenAct);
 
   // Settings
-  coll->addAction("ConfigureShortcuts", new Action(SmallIcon("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
-                                                  this, SLOT(showShortcutsDlg())));
-  coll->addAction("ConfigureQuassel", new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
-                                                  this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7)));
+  QAction *configureShortcutsAct = new Action(SmallIcon("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
+					      this, SLOT(showShortcutsDlg()));
+  configureShortcutsAct->setMenuRole(QAction::NoRole);
+  coll->addAction("ConfigureShortcuts", configureShortcutsAct);
+
+  #ifdef Q_WS_MAC
+  QAction *configureQuasselAct = new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
+					    this, SLOT(showSettingsDlg()));
+  configureQuasselAct->setMenuRole(QAction::PreferencesRole);
+  #else
+  QAction *configureQuasselAct = new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
+                                                  this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7))
+  #endif
+  coll->addAction("ConfigureQuassel", configureQuasselAct);
 
   // Help
-  coll->addAction("AboutQuassel", new Action(SmallIcon("quassel"), tr("&About Quassel"), coll,
-                                              this, SLOT(showAboutDlg())));
-  coll->addAction("AboutQt", new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll,
-                                         qApp, SLOT(aboutQt())));
+  QAction *aboutQuasselAct = new Action(SmallIcon("quassel"), tr("&About Quassel"), coll,
+					this, SLOT(showAboutDlg()));
+  aboutQuasselAct->setMenuRole(QAction::AboutRole);
+  coll->addAction("AboutQuassel", aboutQuasselAct);
+
+  QAction *aboutQtAct = new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll,
+				   qApp, SLOT(aboutQt()));
+  aboutQtAct->setMenuRole(QAction::AboutQtRole);
+  coll->addAction("AboutQt", aboutQtAct);
   coll->addAction("DebugNetworkModel", new Action(SmallIcon("tools-report-bug"), tr("Debug &NetworkModel"), coll,
                                        this, SLOT(on_actionDebugNetworkModel_triggered())));
   coll->addAction("DebugBufferViewOverlay", new Action(SmallIcon("tools-report-bug"), tr("Debug &BufferViewOverlay"), coll,
