@@ -105,11 +105,11 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   }
 
   // Ignore these commands.
-  case 321: case 366: case 376:
+  case 321: case 353: case 366: case 376:
     break;
 
   // CAP stuff
-  case 903: case 904: case 905: case 906: case 907:
+  case 900: case 903: case 904: case 905: case 906: case 907:
   {
     displayMsg(e, Message::Info, "CAP: " + e->params().join(""));
     break;
@@ -422,6 +422,21 @@ void EventStringifier::processIrcEvent352(IrcEvent *e) {
 /*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */
 void EventStringifier::processIrcEvent369(IrcEvent *e) {
   displayMsg(e, Message::Server, tr("End of /WHOWAS"));
+}
+
+/* ERR_ERRONEUSNICKNAME */
+void EventStringifier::processIrcEvent432(IrcEvent *e) {
+  displayMsg(e, Message::Error, tr("Nick %1 contains illegal characters").arg(e->params()[0]));
+}
+
+/* ERR_NICKNAMEINUSE */
+void EventStringifier::processIrcEvent433(IrcEvent *e) {
+  displayMsg(e, Message::Error, tr("Nick already in use: %1").arg(e->params()[0]));
+}
+
+/* ERR_UNAVAILRESOURCE */
+void EventStringifier::processIrcEvent437(IrcEvent *e) {
+  displayMsg(e, Message::Error, tr("Nick/channel is temporarily unavailable: %1").arg(e->params()[0]));
 }
 
 // template

@@ -69,12 +69,16 @@ public:
   Q_INVOKABLE void processIrcEvent332(IrcEvent *event);            // RPL_TOPIC
   Q_INVOKABLE void processIrcEvent352(IrcEvent *event);            // RPL_WHOREPLY
   Q_INVOKABLE void processIrcEvent353(IrcEvent *event);            // RPL_NAMREPLY
+  Q_INVOKABLE void processIrcEvent432(IrcEventNumeric *event);            // ERR_ERRONEUSNICKNAME
+  Q_INVOKABLE void processIrcEvent433(IrcEventNumeric *event);            // ERR_NICKNAMEINUSE
+  Q_INVOKABLE void processIrcEvent437(IrcEventNumeric *event);            // ERR_UNAVAILRESOURCE
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 
 protected:
   bool checkParamCount(IrcEvent *event, int minParams);
   inline CoreNetwork *coreNetwork(NetworkEvent *e) const { return qobject_cast<CoreNetwork *>(e->network()); }
+  void tryNextNick(NetworkEvent *e, const QString &errnick, bool erroneous = false);
 
 private:
   CoreSession *_coreSession;

@@ -25,6 +25,7 @@
 #include "coresession.h"
 #include "ircevent.h"
 #include "ircuser.h"
+#include "messageevent.h"
 
 CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
   : QObject(session),
@@ -45,6 +46,28 @@ bool CoreSessionEventProcessor::checkParamCount(IrcEvent *e, int minParams) {
     return false;
   }
   return true;
+}
+
+void CoreSessionEventProcessor::tryNextNick(NetworkEvent *e, const QString &errnick, bool erroneus) {
+  QStringList desiredNicks = coreSession()->identity(e->network()->identity())->nicks();
+  int nextNickIdx = desiredNicks.indexOf(errnick) + 1;
+  QString nextNick;
+  if(nextNickIdx > 0 && desiredNicks.size() > nextNickIdx) {
+    nextNick = desiredNicks[nextNickIdx];
+  } else {
+    if(erroneus) {
+      // FIXME Make this an ErrorEvent or something like that, so it's translated in the client
+      MessageEvent *msgEvent = new MessageEvent(Message::Error, e->network(),
+                                                tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"),
+                                                QString(), QString(), Message::None, e->timestamp());
+      coreSession()->eventManager()->sendEvent(msgEvent);
+      return;
+    } else {
+      nextNick = errnick + "_";
+    }
+  }
+  // FIXME Use a proper output event for this
+  coreNetwork(e)->putRawLine("NICK " + coreNetwork(e)->encodeServerString(nextNick));
 }
 
 void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e) {
@@ -445,6 +468,54 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e) {
   channel->joinIrcUsers(nicks, modes);
 }
 
+/* ERR_ERRONEUSNICKNAME */
+void CoreSessionEventProcessor::processIrcEvent432(IrcEventNumeric *e) {
+  QString errnick;
+  if(e->params().count() < 2) {
+    // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
+    // nick @@@
+    // :irc.scortum.moep.net 432  @@@ :Erroneous Nickname: Illegal characters
+    // correct server reply:
+    // :irc.scortum.moep.net 432 * @@@ :Erroneous Nickname: Illegal characters
+    e->params().prepend(e->target());
+    e->setTarget("*");
+  }
+  errnick = e->params()[0];
+
+  tryNextNick(e, errnick, true /* erroneus */);
+}
+
+/* ERR_NICKNAMEINUSE */
+void CoreSessionEventProcessor::processIrcEvent433(IrcEventNumeric *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  QString errnick = e->params().first();
+
+  // if there is a problem while connecting to the server -> we handle it
+  // but only if our connection has not been finished yet...
+  if(!e->network()->currentServer().isEmpty())
+    return;
+
+  tryNextNick(e, errnick);
+}
+
+/* ERR_UNAVAILRESOURCE */
+void CoreSessionEventProcessor::processIrcEvent437(IrcEventNumeric *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
+  QString errnick = e->params().first();
+
+  // if there is a problem while connecting to the server -> we handle it
+  // but only if our connection has not been finished yet...
+  if(!e->network()->currentServer().isEmpty())
+    return;
+
+  if(!e->network()->isChannelName(errnick))
+    tryNextNick(e, errnick);
+}
+
 /* template
 void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
   if(!checkParamCount(e, 1))
@@ -452,3 +523,4 @@ void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
 
 }
 */
+

@@ -405,60 +405,6 @@ void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> 
   handleMode(prefix, params);
 }
 
-/* ERR_ERRONEUSNICKNAME */
-void IrcServerHandler::handle432(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-
-  QString errnick;
-  if(params.size() < 2) {
-    // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
-    // nick @@@
-    // :irc.scortum.moep.net 432  @@@ :Erroneous Nickname: Illegal characters
-    // correct server reply:
-    // :irc.scortum.moep.net 432 * @@@ :Erroneous Nickname: Illegal characters
-    errnick = target();
-  } else {
-    errnick = params[0];
-  }
-  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Nick %1 contains illegal characters").arg(errnick));
-  tryNextNick(errnick, true /* erroneus */);
-}
-
-/* ERR_NICKNAMEINUSE */
-void IrcServerHandler::handle433(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  if(!checkParamCount("IrcServerHandler::handle433()", params, 1))
-    return;
-
-  QString errnick = serverDecode(params[0]);
-  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Nick already in use: %1").arg(errnick));
-
-  // if there is a problem while connecting to the server -> we handle it
-  // but only if our connection has not been finished yet...
-  if(!network()->currentServer().isEmpty())
-    return;
-
-  tryNextNick(errnick);
-}
-
-/* ERR_UNAVAILRESOURCE */
-void IrcServerHandler::handle437(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  if(!checkParamCount("IrcServerHandler::handle437()", params, 1))
-    return;
-
-  QString errnick = serverDecode(params[0]);
-  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Nick/channel is temporarily unavailable: %1").arg(errnick));
-
-  // if there is a problem while connecting to the server -> we handle it
-  // but only if our connection has not been finished yet...
-  if(!network()->currentServer().isEmpty())
-    return;
-
-  if(!network()->isChannelName(errnick))
-    tryNextNick(errnick);
-}
-
 /* Handle signals from Netsplit objects  */
 
 void IrcServerHandler::handleNetsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes, const QString& quitMessage)
