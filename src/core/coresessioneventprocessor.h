@@ -43,10 +43,10 @@ public:
   Q_INVOKABLE void processIrcEventCap(IrcEvent *event);            // CAP framework
   Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
   Q_INVOKABLE void processIrcEventJoin(IrcEvent *event);
-  Q_INVOKABLE void processIrcEventKick(IrcEvent *event);
+  Q_INVOKABLE void lateProcessIrcEventKick(IrcEvent *event);
   Q_INVOKABLE void processIrcEventMode(IrcEvent *event);
-  Q_INVOKABLE void processIrcEventNick(IrcEvent *event);
-  Q_INVOKABLE void processIrcEventPart(IrcEvent *event);
+  Q_INVOKABLE void lateProcessIrcEventNick(IrcEvent *event);
+  Q_INVOKABLE void lateProcessIrcEventPart(IrcEvent *event);
   Q_INVOKABLE void processIrcEventPing(IrcEvent *event);
   Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
   Q_INVOKABLE void processIrcEventQuit(IrcEvent *event);

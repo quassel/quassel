@@ -154,7 +154,10 @@ void EventStringifier::processIrcEventJoin(IrcEvent *e) {
   displayMsg(e, Message::Join, e->params()[0], e->prefix(), e->params()[0]);
 }
 
-void EventStringifier::earlyProcessIrcEventKick(IrcEvent *e) {
+void EventStringifier::processIrcEventKick(IrcEvent *e) {
+  if(!checkParamCount(e, 2))
+    return;
+
   IrcUser *victim = e->network()->ircUser(e->params().at(1));
   if(victim) {
     QString channel = e->params().at(0);
@@ -178,7 +181,7 @@ void EventStringifier::processIrcEventMode(IrcEvent *e) {
 }
 
 // this needs to be called before the ircuser is renamed!
-void EventStringifier::earlyProcessIrcEventNick(IrcEvent *e) {
+void EventStringifier::processIrcEventNick(IrcEvent *e) {
   if(!checkParamCount(e, 1))
     return;
 
@@ -196,7 +199,7 @@ void EventStringifier::earlyProcessIrcEventNick(IrcEvent *e) {
     displayMsg(e, Message::Nick, newnick, sender, channel);
 }
 
-void EventStringifier::earlyProcessIrcEventPart(IrcEvent *e) {
+void EventStringifier::processIrcEventPart(IrcEvent *e) {
   if(!checkParamCount(e, 1))
     return;
 

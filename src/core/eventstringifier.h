@@ -56,10 +56,10 @@ public:
 
   Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
   Q_INVOKABLE void processIrcEventJoin(IrcEvent *event);
-  Q_INVOKABLE void earlyProcessIrcEventKick(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventKick(IrcEvent *event);
   Q_INVOKABLE void processIrcEventMode(IrcEvent *event);
-  Q_INVOKABLE void earlyProcessIrcEventNick(IrcEvent *event);
-  Q_INVOKABLE void earlyProcessIrcEventPart(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventNick(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventPart(IrcEvent *event);
   Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
   Q_INVOKABLE void processIrcEventQuit(IrcEvent *event);
   Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);

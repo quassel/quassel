@@ -153,7 +153,7 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e) {
   }
 }
 
-void CoreSessionEventProcessor::processIrcEventKick(IrcEvent *e) {
+void CoreSessionEventProcessor::lateProcessIrcEventKick(IrcEvent *e) {
   if(checkParamCount(e, 2)) {
     e->network()->updateNickFromMask(e->prefix());
     IrcUser *victim = e->network()->ircUser(e->params().at(1));
@@ -270,7 +270,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e) {
   }
 }
 
-void CoreSessionEventProcessor::processIrcEventNick(IrcEvent *e) {
+void CoreSessionEventProcessor::lateProcessIrcEventNick(IrcEvent *e) {
   if(checkParamCount(e, 1)) {
     IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
     if(!ircuser) {
@@ -288,7 +288,7 @@ void CoreSessionEventProcessor::processIrcEventNick(IrcEvent *e) {
   }
 }
 
-void CoreSessionEventProcessor::processIrcEventPart(IrcEvent *e) {
+void CoreSessionEventProcessor::lateProcessIrcEventPart(IrcEvent *e) {
   if(checkParamCount(e, 1)) {
     IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
     if(!ircuser) {

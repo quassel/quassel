@@ -96,11 +96,11 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   initScriptEngine();
 
   eventManager()->registerObject(ircParser(), EventManager::NormalPriority);
-  eventManager()->registerObject(eventStringifier(), EventManager::HighPriority, "earlyProcess"); // some need to be sent before statechange
   eventManager()->registerObject(eventProcessor(), EventManager::HighPriority); // needs to process events *before* the stringifier!
   eventManager()->registerObject(eventStringifier(), EventManager::NormalPriority);
   eventManager()->registerObject(this, EventManager::LowPriority); // for sending MessageEvents to the client
-  eventManager()->registerObject(eventProcessor(), EventManager::LowPriority, "lateProcess"); // some events need to be handled after msg generation
+   // some events need to be handled after msg generation
+  eventManager()->registerObject(eventProcessor(), EventManager::LowPriority, "lateProcess");
 
   // periodically save our session state
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));
