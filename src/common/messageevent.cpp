@@ -41,7 +41,10 @@ MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &m
 
   _bufferType = bufferTypeByTarget(_target);
 
-  setTimestamp(timestamp);
+  if(timestamp.isValid())
+    setTimestamp(timestamp);
+  else
+    setTimestamp(QDateTime::currentDateTime());
 }
 
 BufferInfo::Type MessageEvent::bufferTypeByTarget(const QString &target) const {
