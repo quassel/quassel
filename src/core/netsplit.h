@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,17 +21,20 @@
 #ifndef NETSPLIT_H
 #define NETSPLIT_H
 
-#include <QObject>
 #include <QTimer>
 #include <QHash>
 #include <QPair>
 #include <QStringList>
 
+class Network;
+
 class Netsplit : public QObject
 {
   Q_OBJECT
 public:
-  Netsplit();
+  Netsplit(Network *network, QObject *parent = 0);
+
+  inline Network *network() const { return _network; }
 
   //! Add a user to the netsplit
   /** Call this method if you noticed a netsplit.
@@ -46,7 +49,6 @@ public:
 
   //! Remove a user from the netsplit
   /** Call this method if a user joined after a netsplit occured.
-
     *
     * \param sender   The sender string of the joined user
     * \param channel The channel that user shares with us
@@ -83,29 +85,32 @@ signals:
   //! A bulk-join of netsplitted users timed out
   /** Whenever the internal join-timer times out, we consider the bulk-join to be finished and emit that signal
     * for every channel. This is the end of a netsplit.
+    * \param net     The network
     * \param channel The IRC channel
     * \param users   A list of all users that joined that channel
     * \param modes   A list of all modes the users got set after joining again
     * \param quitMessage The Quitmessage and thus the servers that got split
     */
-  void netsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes, const QString &quitMessage);
+  void netsplitJoin(Network *net, const QString &channel, const QStringList &users, const QStringList &modes, const QString &quitMessage);
 
   //! A (probably bulk-) join of netsplitted users.
   /** If users hit by the split joined before the netsplit is considered over, join the users with a normal join.
+    * \param net     The network
     * \param channel The IRC channel
     * \param users   A list of all users that joined that channel
     * \param modes   A list of all modes the users got set after joining again
     */
-  void earlyJoin(const QString &channel, const QStringList &users, const QStringList &modes);
+  void earlyJoin(Network *net, const QString &channel, const QStringList &users, const QStringList &modes);
 
   //! A bulk-quit of netsplitted users timed out
   /** Whenever the internal quit-timer times out, we consider the bulk-quit to be finished and emit that signal
     * for every channel.
+    * \param net     The network
     * \param channel The IRC channel
     * \param users   A list of all users that quitted in that channel
     * \param quitMessage The Quitmessage and thus the servers that got split
     */
-  void netsplitQuit(const QString &channel, const QStringList &users, const QString &quitMessage);
+  void netsplitQuit(Network *net, const QString &channel, const QStringList &users, const QString &quitMessage);
 
   //! The Netsplit is considered finished
   /** This signal is emitted right after all netsplitJoin signals have been sent or whenever the
@@ -119,6 +124,7 @@ private slots:
   void quitTimeout();
 
 private:
+  Network *_network;
   QString _quitMsg;
   // key: channel name
   // value: senderstring, list of modes

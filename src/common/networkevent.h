@@ -90,4 +90,29 @@ private:
   QByteArray _data;
 };
 
+class NetworkSplitEvent : public NetworkEvent {
+
+public:
+  explicit NetworkSplitEvent(EventManager::EventType type,
+                             Network *network,
+                             const QString &channel,
+                             const QStringList &users,
+                             const QString &quitMsg)
+    : NetworkEvent(type, network),
+      _channel(channel),
+      _users(users),
+      _quitMsg(quitMsg)
+  {}
+
+  inline QString channel() const { return _channel; }
+  inline QStringList users() const { return _users; }
+  inline QString quitMessage() const { return _quitMsg; }
+
+private:
+  QString _channel;
+  QStringList _users;
+  QString _quitMsg;
+};
+
+
 #endif

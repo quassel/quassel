@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-2010 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,12 +19,14 @@
  ***************************************************************************/
 
 #include "netsplit.h"
+#include "network.h"
 #include "util.h"
 
 #include <QRegExp>
 
-Netsplit::Netsplit()
-    : _quitMsg(""), _sentQuit(false), _joinCounter(0), _quitCounter(0)
+Netsplit::Netsplit(Network *network, QObject *parent)
+  : QObject(parent),
+    _network(network), _quitMsg(""), _sentQuit(false), _joinCounter(0), _quitCounter(0)
 {
   _discardTimer.setSingleShot(true);
   _joinTimer.setSingleShot(true);
@@ -133,7 +135,7 @@ void Netsplit::joinTimeout()
   */
   if(_joinCounter < _quitCounter/3) {
     for(it = _joins.begin(); it != _joins.end(); ++it)
-      emit earlyJoin(it.key(), it.value().first, it.value().second);
+      emit earlyJoin(network(), it.key(), it.value().first, it.value().second);
 
     // we don't care about those anymore
     _joins.clear();
@@ -147,7 +149,7 @@ void Netsplit::joinTimeout()
 
   // send netsplitJoin for every recorded channel
   for(it = _joins.begin(); it != _joins.end(); ++it)
-    emit netsplitJoin(it.key(), it.value().first, it.value().second ,_quitMsg);
+    emit netsplitJoin(network(), it.key(), it.value().first, it.value().second ,_quitMsg);
   _joins.clear();
   _discardTimer.stop();
   emit finished();
@@ -170,7 +172,7 @@ void Netsplit::quitTimeout()
     // not yet sure how that could happen, but never send empty netsplit-quits
     // anyway.
     if(!usersToSend.isEmpty())
-      emit netsplitQuit(channelIter.key(), usersToSend, _quitMsg);
+      emit netsplitQuit(network(), channelIter.key(), usersToSend, _quitMsg);
   }
   _sentQuit = true;
 }

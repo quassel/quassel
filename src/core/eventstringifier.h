@@ -47,14 +47,21 @@ public:
                                    const QString &target = QString(),
                                    Message::Flags msgFlags = Message::None);
 
+  // legacy handlers
+  Q_INVOKABLE void processNetworkSplitJoin(NetworkSplitEvent *event);
+  Q_INVOKABLE void processNetworkSplitQuit(NetworkSplitEvent *event);
+
   //! Handle generic numeric events
   Q_INVOKABLE void processIrcEventNumeric(IrcEventNumeric *event);
 
   Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventJoin(IrcEvent *event);
   Q_INVOKABLE void earlyProcessIrcEventKick(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventMode(IrcEvent *event);
   Q_INVOKABLE void earlyProcessIrcEventNick(IrcEvent *event);
   Q_INVOKABLE void earlyProcessIrcEventPart(IrcEvent *event);
   Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventQuit(IrcEvent *event);
   Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
 
   Q_INVOKABLE void processIrcEvent005(IrcEvent *event);      // RPL_ISUPPORT
@@ -70,6 +77,7 @@ public:
   Q_INVOKABLE void processIrcEvent319(IrcEvent *event);      // RPL_WHOISCHANNELS
   Q_INVOKABLE void processIrcEvent322(IrcEvent *event);      // RPL_LIST
   Q_INVOKABLE void processIrcEvent323(IrcEvent *event);      // RPL_LISTEND
+  Q_INVOKABLE void processIrcEvent324(IrcEvent *event);      // RPL_CHANNELMODEIS
   Q_INVOKABLE void processIrcEvent328(IrcEvent *event);      // RPL_??? (channel creation time)
   Q_INVOKABLE void processIrcEvent329(IrcEvent *event);      // RPL_??? (channel homepage)
   Q_INVOKABLE void processIrcEvent330(IrcEvent *event);      // RPL_WHOISACCOUNT (quakenet/snircd/undernet)

@@ -46,9 +46,11 @@ public:
   };
 
   enum EventFlag {
-    Backlog = 0x20,
-    Silent  = 0x40, ///< Don't generate a MessageEvent
-    Stopped = 0x80
+    Fake     = 0x08, ///< Ignore this in CoreSessionEventProcessor
+    Netsplit = 0x10, ///< Netsplit join/part, ignore on display
+    Backlog  = 0x20,
+    Silent   = 0x40, ///< Don't generate a MessageEvent
+    Stopped  = 0x80
   };
   Q_DECLARE_FLAGS(EventFlags, EventFlag)
 
@@ -71,6 +73,8 @@ public:
     NetworkReconnecting,
     NetworkDisconnecting,
     NetworkDisconnected,
+    NetworkSplitJoin,
+    NetworkSplitQuit,
     NetworkIncoming,
 
     IrcServerEvent              = 0x00020000,

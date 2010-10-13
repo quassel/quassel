@@ -64,6 +64,19 @@ bool EventStringifier::checkParamCount(IrcEvent *e, int minParams) {
   return true;
 }
 
+/* These are only for legacy reasons; remove as soon as we handle NetworkSplitEvents properly */
+void EventStringifier::processNetworkSplitJoin(NetworkSplitEvent *e) {
+  QString msg = e->users().join("#:#") + "#:#" + e->quitMessage();
+  displayMsg(e, Message::NetsplitJoin, msg, QString(), e->channel());
+}
+
+void EventStringifier::processNetworkSplitQuit(NetworkSplitEvent *e) {
+  QString msg = e->users().join("#:#") + "#:#" + e->quitMessage();
+  displayMsg(e, Message::NetsplitQuit, msg, QString(), e->channel());
+}
+
+/* End legacy */
+
 void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   //qDebug() << e->number();
   switch(e->number()) {
@@ -134,6 +147,13 @@ void EventStringifier::processIrcEventInvite(IrcEvent *e) {
   displayMsg(e, Message::Invite, tr("%1 invited you to channel %2").arg(e->nick(), e->params().at(1)));
 }
 
+void EventStringifier::processIrcEventJoin(IrcEvent *e) {
+  if(e->testFlag(EventManager::Netsplit))
+    return;
+
+  displayMsg(e, Message::Join, e->params()[0], e->prefix(), e->params()[0]);
+}
+
 void EventStringifier::earlyProcessIrcEventKick(IrcEvent *e) {
   IrcUser *victim = e->network()->ircUser(e->params().at(1));
   if(victim) {
@@ -143,6 +163,17 @@ void EventStringifier::earlyProcessIrcEventKick(IrcEvent *e) {
       msg += " " + e->params().at(2);
 
     displayMsg(e, Message::Kick, msg, e->prefix(), channel);
+  }
+}
+
+void EventStringifier::processIrcEventMode(IrcEvent *e) {
+  if(e->network()->isChannelName(e->params().first())) {
+    // Channel Modes
+    displayMsg(e, Message::Mode, e->params().join(" "), e->prefix(), e->params().first());
+  } else {
+    // User Modes
+    // FIXME: redirect
+    displayMsg(e, Message::Mode, e->params().join(" "), e->prefix());
   }
 }
 
@@ -180,6 +211,18 @@ void EventStringifier::processIrcEventPong(IrcEvent *e) {
   QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
   if(!sendTime.isValid())
     displayMsg(e, Message::Server, "PONG " + e->params().join(" "), e->prefix());
+}
+
+void EventStringifier::processIrcEventQuit(IrcEvent *e) {
+  if(e->testFlag(EventManager::Netsplit))
+    return;
+
+  IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+  if(!ircuser)
+    return;
+
+  foreach(const QString &channel, ircuser->channels())
+    displayMsg(e, Message::Quit, e->params().count()? e->params().first() : QString(), e->prefix(), channel);
 }
 
 void EventStringifier::processIrcEventTopic(IrcEvent *e) {
@@ -348,6 +391,11 @@ void EventStringifier::processIrcEvent322(IrcEvent *e) {
 /* RPL_LISTEND ":End of LIST" */
 void EventStringifier::processIrcEvent323(IrcEvent *e) {
   displayMsg(e, Message::Server, tr("End of channel list"));
+}
+
+/* RPL_CHANNELMODEIS - "<channel> <mode> <mode params>" */
+void EventStringifier::processIrcEvent324(IrcEvent *e) {
+  processIrcEventMode(e);
 }
 
 /* RPL_??? - "<channel> <homepage> */

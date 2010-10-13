@@ -100,6 +100,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   eventManager()->registerObject(eventProcessor(), EventManager::HighPriority); // needs to process events *before* the stringifier!
   eventManager()->registerObject(eventStringifier(), EventManager::NormalPriority);
   eventManager()->registerObject(this, EventManager::LowPriority); // for sending MessageEvents to the client
+  eventManager()->registerObject(eventProcessor(), EventManager::LowPriority, "lateProcess"); // some events need to be handled after msg generation
 
   // periodically save our session state
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));

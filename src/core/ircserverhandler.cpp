@@ -40,11 +40,11 @@ IrcServerHandler::IrcServerHandler(CoreNetwork *parent)
   : CoreBasicHandler(parent),
     _whois(false)
 {
-  connect(parent, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetsplits()));
+
 }
 
 IrcServerHandler::~IrcServerHandler() {
-  destroyNetsplits();
+
 }
 
 /*! Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
@@ -140,146 +140,6 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
 // IRC SERVER HANDLER
 //******************************/
 
-void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray> &params) {
-  if(!checkParamCount("IrcServerHandler::handleJoin()", params, 1))
-    return;
-
-  QString channel = serverDecode(params[0]);
-  IrcUser *ircuser = network()->updateNickFromMask(prefix);
-
-  bool handledByNetsplit = false;
-  if(!_netsplits.empty()) {
-    foreach(Netsplit* n, _netsplits) {
-      handledByNetsplit = n->userJoined(prefix, channel);
-      if(handledByNetsplit)
-        break;
-    }
-  }
-
-  // normal join
-  if(!handledByNetsplit) {
-    emit displayMsg(Message::Join, BufferInfo::ChannelBuffer, channel, channel, prefix);
-    ircuser->joinChannel(channel);
-  }
-  //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
-
-  if(network()->isMe(ircuser)) {
-    network()->setChannelJoined(channel);
-    putCmd("MODE", params[0]); // we want to know the modes of the channel we just joined, so we ask politely
-  }
-}
-
-void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray> &params) {
-  if(!checkParamCount("IrcServerHandler::handleMode()", params, 2))
-    return;
-
-  if(network()->isChannelName(serverDecode(params[0]))) {
-    // Channel Modes
-    emit displayMsg(Message::Mode, BufferInfo::ChannelBuffer, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
-
-    IrcChannel *channel = network()->ircChannel(params[0]);
-    if(!channel) {
-      // we received mode information for a channel we're not in. that means probably we've just been kicked out or something like that
-      // anyways: we don't have a place to store the data --> discard the info.
-      return;
-    }
-
-    QString modes = params[1];
-    bool add = true;
-    int paramOffset = 2;
-    for(int c = 0; c < modes.length(); c++) {
-      if(modes[c] == '+') {
-        add = true;
-        continue;
-      }
-      if(modes[c] == '-') {
-        add = false;
-        continue;
-      }
-
-      if(network()->prefixModes().contains(modes[c])) {
-        // user channel modes (op, voice, etc...)
-        if(paramOffset < params.count()) {
-          IrcUser *ircUser = network()->ircUser(params[paramOffset]);
-          if(!ircUser) {
-            qWarning() << Q_FUNC_INFO << "Unknown IrcUser:" << params[paramOffset];
-          } else {
-            if(add) {
-              bool handledByNetsplit = false;
-              if(!_netsplits.empty()) {
-                foreach(Netsplit* n, _netsplits) {
-                  handledByNetsplit = n->userAlreadyJoined(ircUser->hostmask(), channel->name());
-                  if(handledByNetsplit) {
-                    n->addMode(ircUser->hostmask(), channel->name(), QString(modes[c]));
-                    break;
-                  }
-                }
-              }
-              if(!handledByNetsplit)
-                channel->addUserMode(ircUser, QString(modes[c]));
-            }
-            else
-              channel->removeUserMode(ircUser, QString(modes[c]));
-          }
-        } else {
-          qWarning() << "Received MODE with too few parameters:" << serverDecode(params);
-        }
-        paramOffset++;
-      } else {
-        // regular channel modes
-        QString value;
-        Network::ChannelModeType modeType = network()->channelModeType(modes[c]);
-        if(modeType == Network::A_CHANMODE || modeType == Network::B_CHANMODE || (modeType == Network::C_CHANMODE && add)) {
-          if(paramOffset < params.count()) {
-            value = params[paramOffset];
-          } else {
-            qWarning() << "Received MODE with too few parameters:" << serverDecode(params);
-          }
-          paramOffset++;
-        }
-
-        if(add)
-          channel->addChannelMode(modes[c], value);
-        else
-          channel->removeChannelMode(modes[c], value);
-      }
-    }
-
-  } else {
-    // pure User Modes
-    IrcUser *ircUser = network()->newIrcUser(params[0]);
-    QString modeString(serverDecode(params[1]));
-    QString addModes;
-    QString removeModes;
-    bool add = false;
-    for(int c = 0; c < modeString.count(); c++) {
-      if(modeString[c] == '+') {
-        add = true;
-        continue;
-      }
-      if(modeString[c] == '-') {
-        add = false;
-        continue;
-      }
-      if(add)
-        addModes += modeString[c];
-      else
-        removeModes += modeString[c];
-    }
-    if(!addModes.isEmpty())
-      ircUser->addUserModes(addModes);
-    if(!removeModes.isEmpty())
-      ircUser->removeUserModes(removeModes);
-
-    if(network()->isMe(ircUser)) {
-      network()->updatePersistentModes(addModes, removeModes);
-    }
-
-    // FIXME: redirect
-    emit displayMsg(Message::Mode, BufferInfo::StatusBuffer, "", serverDecode(params).join(" "), prefix);
-  }
-}
-
 void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArray> &params) {
   if(!checkParamCount("IrcServerHandler::handleNotice()", params, 2))
     return;
@@ -363,117 +223,6 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
   }
 }
 
-void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray> &params) {
-  IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  if(!ircuser) return;
-
-  QString msg;
-  if(params.count() > 0)
-    msg = userDecode(ircuser->nick(), params[0]);
-
-  // check if netsplit
-  if(Netsplit::isNetsplit(msg)) {
-    Netsplit *n;
-    if(!_netsplits.contains(msg)) {
-      n = new Netsplit();
-      connect(n, SIGNAL(finished()), this, SLOT(handleNetsplitFinished()));
-      connect(n, SIGNAL(netsplitJoin(const QString&, const QStringList&, const QStringList&, const QString&)),
-              this, SLOT(handleNetsplitJoin(const QString&, const QStringList&, const QStringList&, const QString&)));
-      connect(n, SIGNAL(netsplitQuit(const QString&, const QStringList&, const QString&)),
-              this, SLOT(handleNetsplitQuit(const QString&, const QStringList&, const QString&)));
-      connect(n, SIGNAL(earlyJoin(const QString&, const QStringList&, const QStringList&)),
-              this, SLOT(handleEarlyNetsplitJoin(const QString&, const QStringList&, const QStringList&)));
-      _netsplits.insert(msg, n);
-    }
-    else {
-      n = _netsplits[msg];
-    }
-    // add this user to the netsplit
-    n->userQuit(prefix, ircuser->channels(),msg);
-  }
-  // normal quit
-  else {
-    foreach(QString channel, ircuser->channels())
-      emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, msg, prefix);
-    ircuser->quit();
-  }
-}
-
-/* RPL_CHANNELMODEIS - "<channel> <mode> <mode params>" */
-void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  handleMode(prefix, params);
-}
-
-/* Handle signals from Netsplit objects  */
-
-void IrcServerHandler::handleNetsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes, const QString& quitMessage)
-{
-  IrcChannel *ircChannel = network()->ircChannel(channel);
-  if(!ircChannel) {
-    return;
-  }
-  QList<IrcUser *> ircUsers;
-  QStringList newModes = modes;
-  QStringList newUsers = users;
-
-  foreach(QString user, users) {
-    IrcUser *iu = network()->ircUser(nickFromMask(user));
-    if(iu)
-      ircUsers.append(iu);
-    else { // the user already quit
-      int idx = users.indexOf(user);
-      newUsers.removeAt(idx);
-      newModes.removeAt(idx);
-    }
-  }
-
-  QString msg = newUsers.join("#:#").append("#:#").append(quitMessage);
-  emit displayMsg(Message::NetsplitJoin, BufferInfo::ChannelBuffer, channel, msg);
-  ircChannel->joinIrcUsers(ircUsers, newModes);
-}
-
-void IrcServerHandler::handleNetsplitQuit(const QString &channel, const QStringList &users, const QString& quitMessage)
-{
-  QString msg = users.join("#:#").append("#:#").append(quitMessage);
-  emit displayMsg(Message::NetsplitQuit, BufferInfo::ChannelBuffer, channel, msg);
-  foreach(QString user, users) {
-    IrcUser *iu = network()->ircUser(nickFromMask(user));
-    if(iu)
-      iu->quit();
-  }
-}
-
-void IrcServerHandler::handleEarlyNetsplitJoin(const QString &channel, const QStringList &users, const QStringList &modes) {
-  IrcChannel *ircChannel = network()->ircChannel(channel);
-  if(!ircChannel) {
-    qDebug() << "handleEarlyNetsplitJoin(): channel " << channel << " invalid";
-    return;
-  }
-  QList<IrcUser *> ircUsers;
-  QStringList newModes = modes;
-
-  foreach(QString user, users) {
-    IrcUser *iu = network()->updateNickFromMask(user);
-    if(iu) {
-      ircUsers.append(iu);
-      emit displayMsg(Message::Join, BufferInfo::ChannelBuffer, channel, channel, user);
-    }
-    else {
-      newModes.removeAt(users.indexOf(user));
-    }
-  }
-  ircChannel->joinIrcUsers(ircUsers, newModes);
-}
-void IrcServerHandler::handleNetsplitFinished()
-{
-  Netsplit* n = qobject_cast<Netsplit*>(sender());
-  _netsplits.remove(_netsplits.key(n));
-  n->deleteLater();
-}
-
-/* */
-
 // FIXME networkConnection()->setChannelKey("") for all ERR replies indicating that a JOIN went wrong
 //       mostly, these are codes in the 47x range
 
@@ -503,11 +252,6 @@ bool IrcServerHandler::checkParamCount(const QString &methodName, const QList<QB
   } else {
     return true;
   }
-}
-
-void IrcServerHandler::destroyNetsplits() {
-  qDeleteAll(_netsplits);
-  _netsplits.clear();
 }
 
 #ifdef HAVE_QCA2

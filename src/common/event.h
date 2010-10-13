@@ -36,6 +36,7 @@ public:
 
   inline void setFlag(EventManager::EventFlag flag) { _flags |= flag; }
   inline void setFlags(EventManager::EventFlags flags) { _flags = flags; }
+  inline bool testFlag(EventManager::EventFlag flag) { return _flags.testFlag(flag); }
   inline EventManager::EventFlags flags() const { return _flags; }
 
   inline void stop() { setFlag(EventManager::Stopped); }
