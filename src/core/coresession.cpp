@@ -456,6 +456,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
     connect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
                  SLOT(recvMessageFromServer(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
     connect(net, SIGNAL(displayStatusMsg(QString)), SLOT(recvStatusMsgFromServer(QString)));
+    connect(net, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
 
     net->setNetworkInfo(info);
     net->setProxy(signalProxy());
@@ -475,7 +476,7 @@ void CoreSession::removeNetwork(NetworkId id) {
     return;
 
   if(net->connectionState() != Network::Disconnected) {
-    connect(net, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetwork(NetworkId)));
+    connect(net, SIGNAL(disconnected(NetworkId)), SLOT(destroyNetwork(NetworkId)));
     net->disconnectFromIrc();
   } else {
     destroyNetwork(id);

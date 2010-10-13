@@ -146,6 +146,7 @@ signals:
 
   void networkCreated(NetworkId);
   void networkRemoved(NetworkId);
+  void networkDisconnected(NetworkId);
 
 private slots:
   void removeClient(QIODevice *dev);
