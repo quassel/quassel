@@ -302,6 +302,12 @@ void CoreSessionEventProcessor::processIrcEventPart(IrcEvent *e) {
   }
 }
 
+void CoreSessionEventProcessor::processIrcEventPing(IrcEvent *e) {
+  QString param = e->params().count()? e->params().first() : QString();
+  // FIXME use events
+  coreNetwork(e)->putRawLine("PONG " + coreNetwork(e)->serverEncode(param));
+}
+
 void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e) {
   // the server is supposed to send back what we passed as param. and we send a timestamp
   // but using quote and whatnought one can send arbitrary pings, so we have to do some sanity checks

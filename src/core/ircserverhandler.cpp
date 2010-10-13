@@ -181,11 +181,6 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
 
 }
 
-void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix);
-  putCmd("PONG", params);
-}
-
 void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArray> &params) {
   if(!checkParamCount("IrcServerHandler::handlePrivmsg()", params, 1))
     return;

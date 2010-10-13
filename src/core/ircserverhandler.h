@@ -35,7 +35,6 @@ public:
 
 public slots:
   void handleNotice(const QString &prefix, const QList<QByteArray> &params);
-  void handlePing(const QString &prefix, const QList<QByteArray> &params);
   void handlePrivmsg(const QString &prefix, const QList<QByteArray> &params);
 
   void defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &params);

@@ -47,6 +47,7 @@ public:
   Q_INVOKABLE void processIrcEventMode(IrcEvent *event);
   Q_INVOKABLE void processIrcEventNick(IrcEvent *event);
   Q_INVOKABLE void processIrcEventPart(IrcEvent *event);
+  Q_INVOKABLE void processIrcEventPing(IrcEvent *event);
   Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
   Q_INVOKABLE void processIrcEventQuit(IrcEvent *event);
   Q_INVOKABLE void lateProcessIrcEventQuit(IrcEvent *event);
