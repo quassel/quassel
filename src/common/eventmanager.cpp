@@ -193,6 +193,8 @@ void EventManager::dispatchEvent(Event *event) {
   QSet<QObject *> ignored;
   uint type = event->type();
 
+  bool checkDupes = false;
+
   // special handling for numeric IrcEvents
   if((type & ~IrcEventNumericMask) == IrcEventNumeric) {
     ::IrcEventNumeric *numEvent = static_cast< ::IrcEventNumeric *>(event);
@@ -201,19 +203,20 @@ void EventManager::dispatchEvent(Event *event) {
     else {
       int num = numEvent->number();
       if(num > 0) {
-        insertHandlers(registeredHandlers().value(type + num), handlers);
+        insertHandlers(registeredHandlers().value(type + num), handlers, false);
         insertFilters(registeredFilters().value(type + num), filters);
+        checkDupes = true;
       }
     }
   }
 
   // exact type
-  insertHandlers(registeredHandlers().value(type), handlers);
+  insertHandlers(registeredHandlers().value(type), handlers, checkDupes);
   insertFilters(registeredFilters().value(type), filters);
 
   // check if we have a generic handler for the event group
   if((type & EventGroupMask) != type) {
-    insertHandlers(registeredHandlers().value(type & EventGroupMask), handlers);
+    insertHandlers(registeredHandlers().value(type & EventGroupMask), handlers, true);
     insertFilters(registeredFilters().value(type & EventGroupMask), filters);
   }
 
@@ -222,18 +225,18 @@ void EventManager::dispatchEvent(Event *event) {
   for(it = handlers.begin(); it != handlers.end() && !event->isStopped(); ++it) {
     QObject *obj = it->object;
 
-    if(ignored.contains(obj)) // we only deliver an event once to any given object
+    if(ignored.contains(obj)) // object has filtered the event
       continue;
-
-    ignored.insert(obj);
 
     if(filters.contains(obj)) { // we have a filter, so let's check if we want to deliver the event
       Handler filter = filters.value(obj);
       bool result = false;
       void *param[] = {Q_RETURN_ARG(bool, result).data(), Q_ARG(Event *, event).data() };
       obj->qt_metacall(QMetaObject::InvokeMetaMethod, filter.methodIndex, param);
-      if(!result)
+      if(!result) {
+        ignored.insert(obj);
         continue; // mmmh, event filter told us to not accept
+      }
     }
 
     // finally, deliverance!
@@ -245,19 +248,27 @@ void EventManager::dispatchEvent(Event *event) {
   delete event;
 }
 
-void EventManager::insertHandlers(const QList<Handler> &newHandlers, QList<Handler> &existing) {
+void EventManager::insertHandlers(const QList<Handler> &newHandlers, QList<Handler> &existing, bool checkDupes) {
   foreach(const Handler &handler, newHandlers) {
     if(existing.isEmpty())
       existing.append(handler);
     else {
-      // need to insert it at the proper position
+      // need to insert it at the proper position, but only if we don't yet have a handler for this event and object!
+      bool insert = true;
+      QList<Handler>::iterator insertpos = existing.end();
       QList<Handler>::iterator it = existing.begin();
       while(it != existing.end()) {
-        if(handler.priority > it->priority)
+        if(checkDupes && handler.object == it->object) {
+          insert = false;
           break;
+        }
+        if(insertpos == existing.end() && handler.priority > it->priority)
+          insertpos = it;
+
         ++it;
       }
-      existing.insert(it, handler);
+      if(insert)
+        existing.insert(it, handler);
     }
   }
 }

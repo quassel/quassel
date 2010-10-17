@@ -158,7 +158,7 @@ private:
   inline HandlerHash &registeredFilters() { return _registeredFilters; }
 
   //! Add handlers to an existing sorted (by priority) handler list
-  void insertHandlers(const QList<Handler> &newHandlers, QList<Handler> &existing);
+  void insertHandlers(const QList<Handler> &newHandlers, QList<Handler> &existing, bool checkDupes = false);
   //! Add filters to an existing filter hash
   void insertFilters(const QList<Handler> &newFilters, QHash<QObject *, Handler> &existing);
 
