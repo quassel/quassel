@@ -12,6 +12,7 @@ set(SOURCES
     bufferviewconfig.cpp
     bufferviewmanager.cpp
     cliparser.cpp
+    ctcpevent.cpp
     event.cpp
     eventmanager.cpp
     identity.cpp
@@ -56,6 +57,7 @@ set(HEADERS ${MOC_HDRS}
     abstractcliparser.h
     bufferinfo.h
     cliparser.h
+    ctcpevent.h
     event.h
     ircevent.h
     networkevent.h

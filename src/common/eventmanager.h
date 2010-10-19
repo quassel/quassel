@@ -46,13 +46,14 @@ public:
   };
 
   enum EventFlag {
+    Self     = 0x01, ///< Self-generated (user input) event
     Fake     = 0x08, ///< Ignore this in CoreSessionEventProcessor
     Netsplit = 0x10, ///< Netsplit join/part, ignore on display
     Backlog  = 0x20,
     Silent   = 0x40, ///< Don't generate a MessageEvent
     Stopped  = 0x80
   };
-  Q_DECLARE_FLAGS(EventFlags, EventFlag)
+  Q_DECLARE_FLAGS(EventFlags, EventFlag);
 
   /*
 
@@ -104,6 +105,9 @@ public:
     IrcEventNumericMask         = 0x00000fff, /* for checking if an event is numeric */
 
     MessageEvent                = 0x00040000, ///< Stringified event suitable for converting to Message
+
+    CtcpEvent                   = 0x00050000,
+    CtcpEventFlush,
   };
 
   EventManager(QObject *parent = 0);
@@ -111,6 +115,7 @@ public:
 
   EventType eventTypeByName(const QString &name) const;
   EventType eventGroupByName(const QString &name) const;
+
   QString enumName(EventType type) const;
 
 public slots:

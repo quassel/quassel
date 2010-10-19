@@ -38,6 +38,7 @@ class CoreIrcListHelper;
 class CoreNetwork;
 class CoreNetworkConfig;
 class CoreSessionEventProcessor;
+class CtcpParser;
 class EventManager;
 class EventStringifier;
 class IrcParser;
@@ -72,7 +73,8 @@ public:
 
   inline EventManager *eventManager() const { return _eventManager; }
   inline EventStringifier *eventStringifier() const { return _eventStringifier; }
-  inline CoreSessionEventProcessor *eventProcessor() const { return _eventProcessor; }
+  inline CoreSessionEventProcessor *sessionEventProcessor() const { return _sessionEventProcessor; }
+  inline CtcpParser *ctcpParser() const { return _ctcpParser; }
   inline IrcParser *ircParser() const { return _ircParser; }
 
   inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
@@ -194,7 +196,8 @@ private:
 
   EventManager *_eventManager;
   EventStringifier *_eventStringifier; // should eventually move into client
-  CoreSessionEventProcessor *_eventProcessor;
+  CoreSessionEventProcessor *_sessionEventProcessor;
+  CtcpParser *_ctcpParser;
   IrcParser *_ircParser;
 
   QScriptEngine *scriptEngine;

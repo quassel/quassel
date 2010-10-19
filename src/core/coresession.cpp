@@ -34,6 +34,7 @@
 #include "corenetworkconfig.h"
 #include "coresessioneventprocessor.h"
 #include "coreusersettings.h"
+#include "ctcpparser.h"
 #include "eventmanager.h"
 #include "eventstringifier.h"
 #include "ircchannel.h"
@@ -63,7 +64,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _coreInfo(this),
     _eventManager(new EventManager(this)),
     _eventStringifier(new EventStringifier(this)),
-    _eventProcessor(new CoreSessionEventProcessor(this)),
+    _sessionEventProcessor(new CoreSessionEventProcessor(this)),
+    _ctcpParser(new CtcpParser(this)),
     _ircParser(new IrcParser(this)),
     scriptEngine(new QScriptEngine(this)),
     _processMessages(false),
@@ -96,11 +98,13 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   initScriptEngine();
 
   eventManager()->registerObject(ircParser(), EventManager::NormalPriority);
-  eventManager()->registerObject(eventProcessor(), EventManager::HighPriority); // needs to process events *before* the stringifier!
+  eventManager()->registerObject(sessionEventProcessor(), EventManager::HighPriority); // needs to process events *before* the stringifier!
+  eventManager()->registerObject(ctcpParser(), EventManager::NormalPriority);
   eventManager()->registerObject(eventStringifier(), EventManager::NormalPriority);
   eventManager()->registerObject(this, EventManager::LowPriority); // for sending MessageEvents to the client
    // some events need to be handled after msg generation
-  eventManager()->registerObject(eventProcessor(), EventManager::LowPriority, "lateProcess");
+  eventManager()->registerObject(sessionEventProcessor(), EventManager::LowPriority, "lateProcess");
+  eventManager()->registerObject(ctcpParser(), EventManager::LowPriority, "send");
 
   // periodically save our session state
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));
