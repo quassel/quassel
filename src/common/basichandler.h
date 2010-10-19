@@ -32,6 +32,7 @@ class BasicHandler : public QObject {
 
 public:
   BasicHandler(QObject *parent = 0);
+  BasicHandler(const QString &methodPrefix, QObject *parent = 0);
 
   QStringList providesHandlers();
 
@@ -45,7 +46,8 @@ protected:
 private:
   const QHash<QString, int> &handlerHash();
   QHash<QString, int> _handlerHash;
-  int defaultHandler;
-  bool initDone;
+  int _defaultHandler;
+  bool _initDone;
+  QString _methodPrefix;
 };
 #endif
