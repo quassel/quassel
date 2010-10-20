@@ -29,11 +29,9 @@ set(SOURCES
     coresettings.cpp
     coreuserinputhandler.cpp
     coreusersettings.cpp
-    ctcphandler.cpp
     ctcpparser.cpp
     eventstringifier.cpp
     ircparser.cpp
-    ircserverhandler.cpp
     netsplit.cpp
     postgresqlstorage.cpp
     sessionthread.cpp
@@ -61,11 +59,9 @@ set(MOC_HDRS
     coresession.h
     coresessioneventprocessor.h
     coreuserinputhandler.h
-    ctcphandler.h
     ctcpparser.h
     eventstringifier.h
     ircparser.h
-    ircserverhandler.h
     netsplit.h
     postgresqlstorage.h
     sqlitestorage.h

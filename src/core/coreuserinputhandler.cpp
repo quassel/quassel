@@ -21,7 +21,7 @@
 
 #include "util.h"
 
-#include "ctcphandler.h"
+#include "ctcpparser.h"
 
 #include <QRegExp>
 
@@ -154,7 +154,8 @@ void CoreUserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QStrin
     message = QString::number(now);
   }
 
-  network()->ctcpHandler()->query(nick, ctcpTag, message);
+  // FIXME make this a proper event
+  coreNetwork()->coreSession()->ctcpParser()->query(coreNetwork(), nick, ctcpTag, message);
   emit displayMsg(Message::Action, BufferInfo::StatusBuffer, "", verboseMessage, network()->myNick());
 }
 
@@ -309,7 +310,8 @@ void CoreUserInputHandler::handleList(const BufferInfo &bufferInfo, const QStrin
 
 void CoreUserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return; // server buffer
-  network()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", msg);
+  // FIXME make this a proper event
+  coreNetwork()->coreSession()->ctcpParser()->query(coreNetwork(), bufferInfo.bufferName(), "ACTION", msg);
   emit displayMsg(Message::Action, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
 }
 

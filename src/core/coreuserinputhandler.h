@@ -22,6 +22,7 @@
 #define COREUSERINPUTHANDLER_H
 
 #include "corebasichandler.h"
+#include "corenetwork.h"
 
 class Cipher;
 class Server;
@@ -31,6 +32,7 @@ class CoreUserInputHandler : public CoreBasicHandler {
 
 public:
   CoreUserInputHandler(CoreNetwork *parent = 0);
+  inline CoreNetwork *coreNetwork() const { return qobject_cast<CoreNetwork *>(parent()); }
 
   void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
 

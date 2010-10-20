@@ -20,22 +20,18 @@
 
 #include "corenetwork.h"
 
-#include "ctcphandler.h"
 #include "core.h"
 #include "coreidentity.h"
 #include "corenetworkconfig.h"
 #include "coresession.h"
 #include "coreuserinputhandler.h"
-#include "ircserverhandler.h"
 #include "networkevent.h"
 
 INIT_SYNCABLE_OBJECT(CoreNetwork)
 CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   : Network(networkid, session),
     _coreSession(session),
-    _ircServerHandler(new IrcServerHandler(this)),
     _userInputHandler(new CoreUserInputHandler(this)),
-    _ctcpHandler(new CtcpHandler(this)),
     _autoReconnectCount(0),
     _quitRequested(false),
 
@@ -87,9 +83,7 @@ CoreNetwork::~CoreNetwork() {
   if(connectionState() != Disconnected && connectionState() != Network::Reconnecting)
     disconnectFromIrc(false);      // clean up, but this does not count as requested disconnect!
   disconnect(&socket, 0, this, 0); // this keeps the socket from triggering events during clean up
-  delete _ircServerHandler;
   delete _userInputHandler;
-  delete _ctcpHandler;
 }
 
 QString CoreNetwork::channelDecode(const QString &bufferName, const QByteArray &string) const {
@@ -327,8 +321,6 @@ void CoreNetwork::setMyNick(const QString &mynick) {
 void CoreNetwork::socketHasData() {
   while(socket.canReadLine()) {
     QByteArray s = socket.readLine().trimmed();
-    ircServerHandler()->handleServerMsg(s); // FIXME remove with events
-
     NetworkDataEvent *event = new NetworkDataEvent(EventManager::NetworkIncoming, this, s);
 #if QT_VERSION >= 0x040700
     event->setTimestamp(QDateTime::currentDateTimeUtc());

@@ -41,9 +41,7 @@
 #include "coresession.h"
 
 class CoreIdentity;
-class IrcServerHandler;
 class CoreUserInputHandler;
-class CtcpHandler;
 class CoreIgnoreListManager;
 
 class CoreNetwork : public Network {
@@ -59,9 +57,7 @@ public:
   inline CoreSession *coreSession() const { return _coreSession; }
   inline CoreNetworkConfig *networkConfig() const { return coreSession()->networkConfig(); }
 
-  inline IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
   inline CoreUserInputHandler *userInputHandler() const { return _userInputHandler; }
-  inline CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
   inline CoreIgnoreListManager *ignoreListManager() { return coreSession()->ignoreListManager(); }
 
   //! Decode a string using the server (network) decoding.
@@ -193,9 +189,7 @@ private:
   QTcpSocket socket;
 #endif
 
-  IrcServerHandler *_ircServerHandler;
   CoreUserInputHandler *_userInputHandler;
-  CtcpHandler *_ctcpHandler;
 
   QHash<QString, QString> _channelKeys;  // stores persistent channels and their passwords, if any
 
