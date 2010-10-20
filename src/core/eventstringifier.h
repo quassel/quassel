@@ -21,18 +21,18 @@
 #ifndef EVENTSTRINGIFIER_H
 #define EVENTSTRINGIFIER_H
 
-#include <QObject>
-
+#include "basichandler.h"
 #include "ircevent.h"
 #include "message.h"
 
 class CoreSession;
+class CtcpEvent;
 class MessageEvent;
 
 //! Generates user-visible MessageEvents from incoming IrcEvents
 
 /* replaces the string-generating parts of the old IrcServerHandler */
-class EventStringifier : public QObject {
+class EventStringifier : public BasicHandler {
   Q_OBJECT
 
 public:
@@ -92,6 +92,13 @@ public:
   Q_INVOKABLE void processIrcEvent437(IrcEvent *event);      // ERR_UNAVAILRESOURCE
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
+
+  /* CTCP handlers */
+  Q_INVOKABLE void processCtcpEvent(CtcpEvent *event);
+
+  Q_INVOKABLE void handleCtcpAction(CtcpEvent *event);
+  Q_INVOKABLE void handleCtcpPing(CtcpEvent *event);
+  Q_INVOKABLE void defaultHandler(const QString &cmd, CtcpEvent *event);
 
 public slots:
   //! Creates and sends a MessageEvent

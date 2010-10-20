@@ -21,15 +21,17 @@
 #ifndef CORESESSIONEVENTPROCESSOR_H
 #define CORESESSIONEVENTPROCESSOR_H
 
+#include "basichandler.h"
 #include "corenetwork.h"
 #include "networkevent.h"
 
 class CoreSession;
+class CtcpEvent;
 class IrcEvent;
 class IrcEventNumeric;
 class Netsplit;
 
-class CoreSessionEventProcessor : public QObject {
+class CoreSessionEventProcessor : public BasicHandler {
   Q_OBJECT
 
 public:
@@ -81,6 +83,16 @@ public:
   Q_INVOKABLE void processIrcEvent437(IrcEventNumeric *event);     // ERR_UNAVAILRESOURCE
 
   // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
+
+  /* CTCP handlers */
+  Q_INVOKABLE void processCtcpEvent(CtcpEvent *event);
+
+  Q_INVOKABLE void handleCtcpAction(CtcpEvent *event);
+  Q_INVOKABLE void handleCtcpClientinfo(CtcpEvent *event);
+  Q_INVOKABLE void handleCtcpPing(CtcpEvent *event);
+  Q_INVOKABLE void handleCtcpTime(CtcpEvent *event);
+  Q_INVOKABLE void handleCtcpVersion(CtcpEvent *event);
+  Q_INVOKABLE void defaultHandler(const QString &ctcpCmd, CtcpEvent *event);
 
 protected:
   bool checkParamCount(IrcEvent *event, int minParams);

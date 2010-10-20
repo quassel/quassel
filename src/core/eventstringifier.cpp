@@ -21,9 +21,10 @@
 #include "eventstringifier.h"
 
 #include "coresession.h"
+#include "ctcpevent.h"
 #include "messageevent.h"
 
-EventStringifier::EventStringifier(CoreSession *parent) : QObject(parent),
+EventStringifier::EventStringifier(CoreSession *parent) : BasicHandler("handleCtcp", parent),
   _coreSession(parent),
   _whois(false)
 {
@@ -498,3 +499,45 @@ void EventStringifier::processIrcEvent(IrcEvent *e) {
 }
 
 */
+
+/*******************************/
+/******** CTCP HANDLING ********/
+/*******************************/
+
+void EventStringifier::processCtcpEvent(CtcpEvent *e) {
+  if(e->type() != EventManager::CtcpEvent)
+    return;
+
+  if(e->testFlag(EventManager::Self)) {
+    displayMsg(e, Message::Action, tr("sending CTCP-%1 request to %2").arg(e->ctcpCmd(), e->target()), e->network()->myNick());
+    return;
+  }
+
+  handle(e->ctcpCmd(), Q_ARG(CtcpEvent *, e));
+}
+
+void EventStringifier::defaultHandler(const QString &ctcpCmd, CtcpEvent *e) {
+  Q_UNUSED(ctcpCmd);
+  if(e->ctcpType() == CtcpEvent::Query) {
+    QString unknown;
+    if(e->reply().isNull()) // all known core-side handlers (except for ACTION) set a reply!
+      //: Optional "unknown" in "Received unknown CTCP-FOO request by bar"
+      unknown = tr("unknown") + ' ';
+    displayMsg(e, Message::Server, tr("Received %1CTCP-%2 request by %3").arg(unknown, e->ctcpCmd(), e->prefix()));
+    return;
+  }
+  displayMsg(e, Message::Server, tr("Received CTCP-%1 answer from %2: %3").arg(e->ctcpCmd(), nickFromMask(e->prefix()), e->param()));
+}
+
+void EventStringifier::handleCtcpAction(CtcpEvent *e) {
+  displayMsg(e, Message::Action, e->param(), e->prefix(), e->target());
+}
+
+void EventStringifier::handleCtcpPing(CtcpEvent *e) {
+  if(e->ctcpType() == CtcpEvent::Query)
+    defaultHandler(e->ctcpCmd(), e);
+  else {
+    displayMsg(e, Message::Server, tr("Received CTCP-PING answer from %1 with %2 seconds round trip time")
+               .arg(nickFromMask(e->prefix())).arg(QDateTime::fromTime_t(e->param().toInt()).secsTo(e->timestamp())));
+  }
+}

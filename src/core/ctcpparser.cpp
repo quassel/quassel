@@ -188,7 +188,8 @@ void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype) {
   }
   if(!ctcpEvents.isEmpty()) {
     _replies.insert(uuid, CtcpReply(coreNetwork(e), nickFromMask(e->prefix())));
-    CtcpEvent *flushEvent = new CtcpEvent(uuid);
+    CtcpEvent *flushEvent = new CtcpEvent(EventManager::CtcpEventFlush, e->network(), e->prefix(), e->target(),
+                                          ctcptype, "INVALID", QString(), e->timestamp(), uuid);
     ctcpEvents << flushEvent;
     foreach(CtcpEvent *event, ctcpEvents) {
       coreSession()->eventManager()->sendEvent(event);
@@ -214,7 +215,8 @@ void CtcpParser::sendCtcpEvent(CtcpEvent *e) {
     }
   } else if(e->type() == EventManager::CtcpEventFlush && _replies.contains(e->uuid())) {
     CtcpReply reply = _replies.take(e->uuid());
-    packedReply(net, reply.bufferName, reply.replies);
+    if(reply.replies.count())
+      packedReply(net, reply.bufferName, reply.replies);
   }
 }
 

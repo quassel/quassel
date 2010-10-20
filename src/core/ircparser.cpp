@@ -213,7 +213,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
           if(!net->isChannelName(target))
             target = nickFromMask(prefix);
         }
-        events << new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, msg, prefix, target, e->timestamp());
+        events << new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, params[1], prefix, target, e->timestamp());
       }
     }
     break;
