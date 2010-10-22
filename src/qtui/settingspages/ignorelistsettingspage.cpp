@@ -303,8 +303,10 @@ void IgnoreListEditDlg::widgetHasChanged() {
   else {
     QStringList text = ui.scopeRuleTextEdit->toPlainText().split(";", QString::SkipEmptyParts);
     QStringList::iterator it = text.begin();
-    while(it != text.end())
-      (*it++).trimmed();
+    while(it != text.end()) {
+      *it = it->trimmed();
+      ++it;
+    }
 
     _clonedIgnoreListItem.scopeRule = text.join("; ");
   }
