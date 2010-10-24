@@ -56,6 +56,9 @@ QByteArray IrcParser::decrypt(Network *network, const QString &bufferName, const
 
   return isTopic? cipher->decryptTopic(message) : cipher->decrypt(message);
 #else
+  Q_UNUSED(network);
+  Q_UNUSED(bufferName);
+  Q_UNUSED(isTopic);
   return message;
 #endif
 }
