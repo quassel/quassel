@@ -1219,6 +1219,12 @@ bool PostgreSqlStorage::logMessage(Message &msg) {
     db.rollback();
     db.transaction();
 
+    if(!prepareQuery("insert_sender", queryString("insert_sender"), db)) {
+      qWarning() << "PostgreSqlStorage::logMessages(): unable to prepare query:" << queryString("insert_sender");
+      qWarning() << "  Error:" << db.lastError().text();
+      db.rollback();
+      return false;
+    }
 
     // it's possible that the sender was already added by another thread
     // since the insert might fail we're setting a savepoint
