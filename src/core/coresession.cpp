@@ -68,7 +68,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _ctcpParser(new CtcpParser(this)),
     _ircParser(new IrcParser(this)),
     scriptEngine(new QScriptEngine(this)),
-    _processMessages(false),
     _ignoreListManager(this)
 {
   SignalProxy *p = signalProxy();
@@ -97,6 +96,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   loadSettings();
   initScriptEngine();
 
+  connect(eventManager(), SIGNAL(eventQueueEmptied()), SLOT(processMessages()));
   eventManager()->registerObject(ircParser(), EventManager::NormalPriority);
   eventManager()->registerObject(sessionEventProcessor(), EventManager::HighPriority); // needs to process events *before* the stringifier!
   eventManager()->registerObject(ctcpParser(), EventManager::NormalPriority);
@@ -223,6 +223,9 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
   CoreNetwork *net = network(bufinfo.networkId());
   if(net) {
     net->userInput(bufinfo, msg);
+    // FIXME as soon as user input is event-based
+    // until then, user input doesn't trigger a message queue flush!
+    processMessages();
   } else {
     qWarning() << "Trying to send to unconnected network:" << msg;
   }
@@ -247,10 +250,6 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
     return;
 
   _messageQueue << rawMsg;
-  if(!_processMessages) {
-    _processMessages = true;
-    QCoreApplication::postEvent(this, new ProcessMessagesEvent());
-  }
 }
 
 void CoreSession::recvStatusMsgFromServer(QString msg) {
@@ -271,15 +270,10 @@ QList<BufferInfo> CoreSession::buffers() const {
   return Core::requestBuffers(user());
 }
 
-void CoreSession::customEvent(QEvent *event) {
-  if(event->type() != QEvent::User)
+void CoreSession::processMessages() {
+  if(_messageQueue.isEmpty())
     return;
 
-  processMessages();
-  event->accept();
-}
-
-void CoreSession::processMessages() {
   if(_messageQueue.count() == 1) {
     const RawMessage &rawMsg = _messageQueue.first();
     bool createBuffer = !(rawMsg.flags & Message::Redirected);
@@ -335,7 +329,6 @@ void CoreSession::processMessages() {
       emit displayMsg(messages[i]);
     }
   }
-  _processMessages = false;
   _messageQueue.clear();
 }
 

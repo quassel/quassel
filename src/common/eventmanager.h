@@ -138,6 +138,9 @@ public slots:
    */
   void sendEvent(Event *event);
 
+signals:
+  void eventQueueEmptied();
+
 protected:
   virtual void customEvent(QEvent *event);
 

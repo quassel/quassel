@@ -180,6 +180,8 @@ void EventManager::processEvents() {
   _eventQueue.removeFirst();
   if(_eventQueue.count())
     QCoreApplication::postEvent(this, new QEvent(QEvent::User));
+  else
+    emit eventQueueEmptied();
 }
 
 void EventManager::dispatchEvent(Event *event) {

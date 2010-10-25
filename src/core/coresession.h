@@ -155,6 +155,7 @@ private slots:
 
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(NetworkId networkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
+  void processMessages();
 
   void destroyNetwork(NetworkId);
 
@@ -167,13 +168,9 @@ private slots:
 
   void saveSessionState() const;
 
-protected:
-  virtual void customEvent(QEvent *event);
-
 private:
   void loadSettings();
   void initScriptEngine();
-  void processMessages();
 
   /// Hook for converting events to the old displayMsg() handlers
   Q_INVOKABLE void processMessageEvent(MessageEvent *event);
@@ -203,7 +200,6 @@ private:
   QScriptEngine *scriptEngine;
 
   QList<RawMessage> _messageQueue;
-  bool _processMessages;
   CoreIgnoreListManager _ignoreListManager;
 };
 
