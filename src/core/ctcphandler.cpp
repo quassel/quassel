@@ -155,7 +155,7 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
       ctcpparam = QString();
     }
 
-    if(!_ignoreListManager->ctcpMatch(prefix, network()->networkName(), ctcpcmd.toUpper())) {
+    if(ctcpcmd.toUpper() == QLatin1String("ACTION") || !_ignoreListManager->ctcpMatch(prefix, network()->networkName(), ctcpcmd.toUpper())) {
       QString reply_;
       handle(ctcpcmd, Q_ARG(CtcpType, ctcptype), Q_ARG(QString, prefix), Q_ARG(QString, target), Q_ARG(QString, ctcpparam), Q_ARG(QString, reply_));
       if(ctcptype == CtcpQuery && !reply_.isNull()) {
