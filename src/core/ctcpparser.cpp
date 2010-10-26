@@ -177,7 +177,8 @@ void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype) {
 
     ctcpcmd = ctcpcmd.toUpper();
 
-    if(!coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
+    // we don't want to block /me messages by the CTCP ignore list
+    if(ctcpcmd == QLatin1String("ACTION") || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
       if(uuid.isNull())
         uuid = QUuid::createUuid();
 
