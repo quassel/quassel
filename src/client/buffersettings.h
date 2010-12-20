@@ -52,7 +52,7 @@ public:
 
 
   // redirection settings (default)
-  inline int userNoticesTarget() { return localValue("UserNoticesTarget", DefaultBuffer).toInt(); }
+  inline int userNoticesTarget() { return localValue("UserNoticesTarget", DefaultBuffer | CurrentBuffer).toInt(); }
   inline void setUserNoticesTarget(int target) { setLocalValue("UserNoticesTarget", target); }
   inline int serverNoticesTarget() { return localValue("ServerNoticesTarget", StatusBuffer).toInt(); }
   inline void setServerNoticesTarget(int target) { setLocalValue("ServerNoticesTarget", target); }
