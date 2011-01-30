@@ -117,10 +117,9 @@ protected:
 
   bool beginReadOnlyTransaction(QSqlDatabase &db);
 
-  bool prepareQuery(const QString &handle, const QString &query, const QSqlDatabase &db);
-  QSqlQuery executePreparedQuery(const QString &handle, const QVariantList &params, const QSqlDatabase &db);
-  QSqlQuery executePreparedQuery(const QString &handle, const QVariant &param, const QSqlDatabase &db);
-  void deallocateQuery(const QString &handle, const QSqlDatabase &db);
+  QSqlQuery executePreparedQuery(const QString &queryname, const QVariantList &params, const QSqlDatabase &db);
+  QSqlQuery executePreparedQuery(const QString &queryname, const QVariant &param, const QSqlDatabase &db);
+  void deallocateQuery(const QString &queryname, const QSqlDatabase &db);
 
   inline void savePoint(const QString &handle, const QSqlDatabase &db) { db.exec(QString("SAVEPOINT %1").arg(handle)); }
   inline void rollbackSavePoint(const QString &handle, const QSqlDatabase &db) { db.exec(QString("ROLLBACK TO SAVEPOINT %1").arg(handle)); }
@@ -129,17 +128,14 @@ protected:
 private:
   void bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info);
   void bindServerInfo(QSqlQuery &query, const Network::Server &server);
+  QSqlQuery prepareAndExecuteQuery(const QString &queryname, const QString &paramstring, const QSqlDatabase &db);
+  inline QSqlQuery prepareAndExecuteQuery(const QString &queryname, const QSqlDatabase &db) { return prepareAndExecuteQuery(queryname, QString(), db); }
 
   QString _hostName;
   int _port;
   QString _databaseName;
   QString _userName;
   QString _password;
-
-  typedef QHash<QString, QString> QueryHash;
-  QHash<QString, QueryHash> _preparedQueries; // one query hash per db connection
-  QMutex _queryHashMutex;
-
 };
 
 inline void PostgreSqlStorage::safeExec(QSqlQuery &query) { query.exec(); }
