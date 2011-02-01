@@ -32,11 +32,11 @@
     <file>./SQL/PostgreSQL/16/migrate_write_sender.sql</file>
     <file>./SQL/PostgreSQL/16/migrate_write_usersetting.sql</file>
     <file>./SQL/PostgreSQL/16/select_authuser.sql</file>
-    <file>./SQL/PostgreSQL/16/select_bufferByName.sql</file>
-    <file>./SQL/PostgreSQL/16/select_bufferExists.sql</file>
     <file>./SQL/PostgreSQL/16/select_buffer_by_id.sql</file>
     <file>./SQL/PostgreSQL/16/select_buffer_lastseen_messages.sql</file>
     <file>./SQL/PostgreSQL/16/select_buffer_markerlinemsgids.sql</file>
+    <file>./SQL/PostgreSQL/16/select_bufferByName.sql</file>
+    <file>./SQL/PostgreSQL/16/select_bufferExists.sql</file>
     <file>./SQL/PostgreSQL/16/select_buffers.sql</file>
     <file>./SQL/PostgreSQL/16/select_buffers_for_network.sql</file>
     <file>./SQL/PostgreSQL/16/select_checkidentity.sql</file>
@@ -48,12 +48,13 @@
     <file>./SQL/PostgreSQL/16/select_messagesAllNew.sql</file>
     <file>./SQL/PostgreSQL/16/select_messagesNewerThan.sql</file>
     <file>./SQL/PostgreSQL/16/select_messagesRange.sql</file>
-    <file>./SQL/PostgreSQL/16/select_networkExists.sql</file>
     <file>./SQL/PostgreSQL/16/select_network_awaymsg.sql</file>
     <file>./SQL/PostgreSQL/16/select_network_usermode.sql</file>
+    <file>./SQL/PostgreSQL/16/select_networkExists.sql</file>
     <file>./SQL/PostgreSQL/16/select_networks_for_user.sql</file>
     <file>./SQL/PostgreSQL/16/select_nicks.sql</file>
     <file>./SQL/PostgreSQL/16/select_persistent_channels.sql</file>
+    <file>./SQL/PostgreSQL/16/select_senderid.sql</file>
     <file>./SQL/PostgreSQL/16/select_servers_for_network.sql</file>
     <file>./SQL/PostgreSQL/16/select_user_setting.sql</file>
     <file>./SQL/PostgreSQL/16/select_userid.sql</file>
@@ -110,6 +111,95 @@
     <file>./SQL/SQLite/15/upgrade_000_fix_ircservers.sql</file>
     <file>./SQL/SQLite/15/upgrade_000_fix_network.sql</file>
     <file>./SQL/SQLite/16/upgrade_000_alter_buffer_add_markerlinemsgid.sql</file>
+    <file>./SQL/SQLite/17/delete_backlog_by_uid.sql</file>
+    <file>./SQL/SQLite/17/delete_backlog_for_buffer.sql</file>
+    <file>./SQL/SQLite/17/delete_backlog_for_network.sql</file>
+    <file>./SQL/SQLite/17/delete_buffer_for_bufferid.sql</file>
+    <file>./SQL/SQLite/17/delete_buffers_by_uid.sql</file>
+    <file>./SQL/SQLite/17/delete_buffers_for_network.sql</file>
+    <file>./SQL/SQLite/17/delete_identity.sql</file>
+    <file>./SQL/SQLite/17/delete_ircservers_for_network.sql</file>
+    <file>./SQL/SQLite/17/delete_network.sql</file>
+    <file>./SQL/SQLite/17/delete_networks_by_uid.sql</file>
+    <file>./SQL/SQLite/17/delete_nicks.sql</file>
+    <file>./SQL/SQLite/17/delete_quasseluser.sql</file>
+    <file>./SQL/SQLite/17/insert_buffer.sql</file>
+    <file>./SQL/SQLite/17/insert_identity.sql</file>
+    <file>./SQL/SQLite/17/insert_message.sql</file>
+    <file>./SQL/SQLite/17/insert_network.sql</file>
+    <file>./SQL/SQLite/17/insert_nick.sql</file>
+    <file>./SQL/SQLite/17/insert_quasseluser.sql</file>
+    <file>./SQL/SQLite/17/insert_sender.sql</file>
+    <file>./SQL/SQLite/17/insert_server.sql</file>
+    <file>./SQL/SQLite/17/insert_user_setting.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_backlog.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_buffer.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_identity.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_identity_nick.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_ircserver.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_network.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_quasseluser.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_sender.sql</file>
+    <file>./SQL/SQLite/17/migrate_read_usersetting.sql</file>
+    <file>./SQL/SQLite/17/select_authuser.sql</file>
+    <file>./SQL/SQLite/17/select_buffer_by_id.sql</file>
+    <file>./SQL/SQLite/17/select_buffer_lastseen_messages.sql</file>
+    <file>./SQL/SQLite/17/select_buffer_markerlinemsgids.sql</file>
+    <file>./SQL/SQLite/17/select_bufferByName.sql</file>
+    <file>./SQL/SQLite/17/select_bufferExists.sql</file>
+    <file>./SQL/SQLite/17/select_buffers.sql</file>
+    <file>./SQL/SQLite/17/select_buffers_for_merge.sql</file>
+    <file>./SQL/SQLite/17/select_buffers_for_network.sql</file>
+    <file>./SQL/SQLite/17/select_checkidentity.sql</file>
+    <file>./SQL/SQLite/17/select_connected_networks.sql</file>
+    <file>./SQL/SQLite/17/select_identities.sql</file>
+    <file>./SQL/SQLite/17/select_internaluser.sql</file>
+    <file>./SQL/SQLite/17/select_messages.sql</file>
+    <file>./SQL/SQLite/17/select_messagesAll.sql</file>
+    <file>./SQL/SQLite/17/select_messagesAllNew.sql</file>
+    <file>./SQL/SQLite/17/select_messagesNewerThan.sql</file>
+    <file>./SQL/SQLite/17/select_messagesNewestK.sql</file>
+    <file>./SQL/SQLite/17/select_network_awaymsg.sql</file>
+    <file>./SQL/SQLite/17/select_network_usermode.sql</file>
+    <file>./SQL/SQLite/17/select_networkExists.sql</file>
+    <file>./SQL/SQLite/17/select_networks_for_user.sql</file>
+    <file>./SQL/SQLite/17/select_nicks.sql</file>
+    <file>./SQL/SQLite/17/select_persistent_channels.sql</file>
+    <file>./SQL/SQLite/17/select_servers_for_network.sql</file>
+    <file>./SQL/SQLite/17/select_user_setting.sql</file>
+    <file>./SQL/SQLite/17/select_userid.sql</file>
+    <file>./SQL/SQLite/17/setup_000_quasseluser.sql</file>
+    <file>./SQL/SQLite/17/setup_010_sender.sql</file>
+    <file>./SQL/SQLite/17/setup_020_network.sql</file>
+    <file>./SQL/SQLite/17/setup_030_buffer.sql</file>
+    <file>./SQL/SQLite/17/setup_040_buffer_idx.sql</file>
+    <file>./SQL/SQLite/17/setup_050_buffer_cname_idx.sql</file>
+    <file>./SQL/SQLite/17/setup_060_backlog.sql</file>
+    <file>./SQL/SQLite/17/setup_070_coreinfo.sql</file>
+    <file>./SQL/SQLite/17/setup_080_ircservers.sql</file>
+    <file>./SQL/SQLite/17/setup_090_backlog_idx.sql</file>
+    <file>./SQL/SQLite/17/setup_100_backlog_idx2.sql</file>
+    <file>./SQL/SQLite/17/setup_110_buffer_user_idx.sql</file>
+    <file>./SQL/SQLite/17/setup_120_user_setting.sql</file>
+    <file>./SQL/SQLite/17/setup_130_identity.sql</file>
+    <file>./SQL/SQLite/17/setup_140_identity_nick.sql</file>
+    <file>./SQL/SQLite/17/update_backlog_bufferid.sql</file>
+    <file>./SQL/SQLite/17/update_buffer_lastseen.sql</file>
+    <file>./SQL/SQLite/17/update_buffer_markerlinemsgid.sql</file>
+    <file>./SQL/SQLite/17/update_buffer_name.sql</file>
+    <file>./SQL/SQLite/17/update_buffer_persistent_channel.sql</file>
+    <file>./SQL/SQLite/17/update_buffer_set_channel_key.sql</file>
+    <file>./SQL/SQLite/17/update_identity.sql</file>
+    <file>./SQL/SQLite/17/update_network.sql</file>
+    <file>./SQL/SQLite/17/update_network_connected.sql</file>
+    <file>./SQL/SQLite/17/update_network_set_awaymsg.sql</file>
+    <file>./SQL/SQLite/17/update_network_set_usermode.sql</file>
+    <file>./SQL/SQLite/17/update_user_setting.sql</file>
+    <file>./SQL/SQLite/17/update_username.sql</file>
+    <file>./SQL/SQLite/17/update_userpassword.sql</file>
+    <file>./SQL/SQLite/17/upgrade_000_alter_network_add_sasl.sql</file>
+    <file>./SQL/SQLite/17/upgrade_001_alter_network_add_sasl.sql</file>
+    <file>./SQL/SQLite/17/upgrade_002_alter_network_add_sasl.sql</file>
     <file>./SQL/SQLite/2/upgrade_000_drop_buffergroup.sql</file>
     <file>./SQL/SQLite/2/upgrade_010_update_schemaversion.sql</file>
     <file>./SQL/SQLite/3/upgrade_000_update_backlog_flags.sql</file>
@@ -154,94 +244,5 @@
     <file>./SQL/SQLite/9/upgrade_000_create_backlog_idx.sql</file>
     <file>./SQL/SQLite/9/upgrade_010_create_backlog_idx2.sql</file>
     <file>./SQL/SQLite/9/upgrade_020_create_buffer_idx.sql</file>
-    <file>./SQL/SQLite/17/delete_backlog_by_uid.sql</file>
-    <file>./SQL/SQLite/17/delete_backlog_for_buffer.sql</file>
-    <file>./SQL/SQLite/17/delete_backlog_for_network.sql</file>
-    <file>./SQL/SQLite/17/delete_buffer_for_bufferid.sql</file>
-    <file>./SQL/SQLite/17/delete_buffers_by_uid.sql</file>
-    <file>./SQL/SQLite/17/delete_buffers_for_network.sql</file>
-    <file>./SQL/SQLite/17/delete_identity.sql</file>
-    <file>./SQL/SQLite/17/delete_ircservers_for_network.sql</file>
-    <file>./SQL/SQLite/17/delete_network.sql</file>
-    <file>./SQL/SQLite/17/delete_networks_by_uid.sql</file>
-    <file>./SQL/SQLite/17/delete_nicks.sql</file>
-    <file>./SQL/SQLite/17/delete_quasseluser.sql</file>
-    <file>./SQL/SQLite/17/insert_buffer.sql</file>
-    <file>./SQL/SQLite/17/insert_identity.sql</file>
-    <file>./SQL/SQLite/17/insert_message.sql</file>
-    <file>./SQL/SQLite/17/insert_network.sql</file>
-    <file>./SQL/SQLite/17/insert_nick.sql</file>
-    <file>./SQL/SQLite/17/insert_quasseluser.sql</file>
-    <file>./SQL/SQLite/17/insert_sender.sql</file>
-    <file>./SQL/SQLite/17/insert_server.sql</file>
-    <file>./SQL/SQLite/17/insert_user_setting.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_backlog.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_buffer.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_identity.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_identity_nick.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_ircserver.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_network.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_quasseluser.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_sender.sql</file>
-    <file>./SQL/SQLite/17/migrate_read_usersetting.sql</file>
-    <file>./SQL/SQLite/17/select_authuser.sql</file>
-    <file>./SQL/SQLite/17/select_bufferByName.sql</file>
-    <file>./SQL/SQLite/17/select_bufferExists.sql</file>
-    <file>./SQL/SQLite/17/select_buffer_by_id.sql</file>
-    <file>./SQL/SQLite/17/select_buffer_lastseen_messages.sql</file>
-    <file>./SQL/SQLite/17/select_buffer_markerlinemsgids.sql</file>
-    <file>./SQL/SQLite/17/select_buffers.sql</file>
-    <file>./SQL/SQLite/17/select_buffers_for_merge.sql</file>
-    <file>./SQL/SQLite/17/select_buffers_for_network.sql</file>
-    <file>./SQL/SQLite/17/select_checkidentity.sql</file>
-    <file>./SQL/SQLite/17/select_connected_networks.sql</file>
-    <file>./SQL/SQLite/17/select_identities.sql</file>
-    <file>./SQL/SQLite/17/select_internaluser.sql</file>
-    <file>./SQL/SQLite/17/select_messages.sql</file>
-    <file>./SQL/SQLite/17/select_messagesAll.sql</file>
-    <file>./SQL/SQLite/17/select_messagesAllNew.sql</file>
-    <file>./SQL/SQLite/17/select_messagesNewerThan.sql</file>
-    <file>./SQL/SQLite/17/select_messagesNewestK.sql</file>
-    <file>./SQL/SQLite/17/select_networkExists.sql</file>
-    <file>./SQL/SQLite/17/select_network_awaymsg.sql</file>
-    <file>./SQL/SQLite/17/select_network_usermode.sql</file>
-    <file>./SQL/SQLite/17/select_networks_for_user.sql</file>
-    <file>./SQL/SQLite/17/select_nicks.sql</file>
-    <file>./SQL/SQLite/17/select_persistent_channels.sql</file>
-    <file>./SQL/SQLite/17/select_servers_for_network.sql</file>
-    <file>./SQL/SQLite/17/select_user_setting.sql</file>
-    <file>./SQL/SQLite/17/select_userid.sql</file>
-    <file>./SQL/SQLite/17/setup_000_quasseluser.sql</file>
-    <file>./SQL/SQLite/17/setup_010_sender.sql</file>
-    <file>./SQL/SQLite/17/setup_020_network.sql</file>
-    <file>./SQL/SQLite/17/setup_030_buffer.sql</file>
-    <file>./SQL/SQLite/17/setup_040_buffer_idx.sql</file>
-    <file>./SQL/SQLite/17/setup_050_buffer_cname_idx.sql</file>
-    <file>./SQL/SQLite/17/setup_060_backlog.sql</file>
-    <file>./SQL/SQLite/17/setup_070_coreinfo.sql</file>
-    <file>./SQL/SQLite/17/setup_080_ircservers.sql</file>
-    <file>./SQL/SQLite/17/setup_090_backlog_idx.sql</file>
-    <file>./SQL/SQLite/17/setup_100_backlog_idx2.sql</file>
-    <file>./SQL/SQLite/17/setup_110_buffer_user_idx.sql</file>
-    <file>./SQL/SQLite/17/setup_120_user_setting.sql</file>
-    <file>./SQL/SQLite/17/setup_130_identity.sql</file>
-    <file>./SQL/SQLite/17/setup_140_identity_nick.sql</file>
-    <file>./SQL/SQLite/17/update_backlog_bufferid.sql</file>
-    <file>./SQL/SQLite/17/update_buffer_lastseen.sql</file>
-    <file>./SQL/SQLite/17/update_buffer_markerlinemsgid.sql</file>
-    <file>./SQL/SQLite/17/update_buffer_name.sql</file>
-    <file>./SQL/SQLite/17/update_buffer_persistent_channel.sql</file>
-    <file>./SQL/SQLite/17/update_buffer_set_channel_key.sql</file>
-    <file>./SQL/SQLite/17/update_identity.sql</file>
-    <file>./SQL/SQLite/17/update_network.sql</file>
-    <file>./SQL/SQLite/17/update_network_connected.sql</file>
-    <file>./SQL/SQLite/17/update_network_set_awaymsg.sql</file>
-    <file>./SQL/SQLite/17/update_network_set_usermode.sql</file>
-    <file>./SQL/SQLite/17/update_user_setting.sql</file>
-    <file>./SQL/SQLite/17/update_username.sql</file>
-    <file>./SQL/SQLite/17/update_userpassword.sql</file>
-    <file>./SQL/SQLite/17/upgrade_000_alter_network_add_sasl.sql</file>
-    <file>./SQL/SQLite/17/upgrade_001_alter_network_add_sasl.sql</file>
-    <file>./SQL/SQLite/17/upgrade_002_alter_network_add_sasl.sql</file>
 </qresource>
 </RCC>
