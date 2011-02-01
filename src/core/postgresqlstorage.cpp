@@ -1198,37 +1198,40 @@ bool PostgreSqlStorage::logMessage(Message &msg) {
     return false;
   }
 
+  QSqlQuery getSenderIdQuery = executePreparedQuery("select_senderid", msg.sender(), db);
+  int senderId;
+  if(getSenderIdQuery.first()) {
+    senderId = getSenderIdQuery.value(0).toInt();
+  } else {
+    // it's possible that the sender was already added by another thread
+    // since the insert might fail we're setting a savepoint
+    savePoint("sender_sp1", db);
+    QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", msg.sender(), db);
+
+    if(addSenderQuery.lastError().isValid()) {
+      rollbackSavePoint("sender_sp1", db);
+      getSenderIdQuery = db.exec(getSenderIdQuery.lastQuery());
+      getSenderIdQuery.first();
+      senderId = getSenderIdQuery.value(0).toInt();
+    } else {
+      releaseSavePoint("sender_sp1", db);
+      addSenderQuery.first();
+      senderId = addSenderQuery.value(0).toInt();
+    }
+  }
+
   QVariantList params;
   params << msg.timestamp()
 	 << msg.bufferInfo().bufferId().toInt()
 	 << msg.type()
 	 << (int)msg.flags()
-	 << msg.sender()
+	 << senderId
 	 << msg.contents();
   QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
 
-  if(logMessageQuery.lastError().isValid()) {
-    // first we need to reset the transaction
+  if(!watchQuery(logMessageQuery)) {
     db.rollback();
-    db.transaction();
-
-    // it's possible that the sender was already added by another thread
-    // since the insert might fail we're setting a savepoint
-    savePoint("sender_sp1", db);
-    QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", msg.sender(), db);
-    if(addSenderQuery.lastError().isValid())
-      rollbackSavePoint("sender_sp1", db);
-    else
-      releaseSavePoint("sender_sp1", db);
-
-    logMessageQuery = db.exec(logMessageQuery.lastQuery());
-    if(!watchQuery(logMessageQuery)) {
-      qDebug() << "==================== Sender Query:";
-      watchQuery(addSenderQuery);
-      qDebug() << "==================== /Sender Query";
-      db.rollback();
-      return false;
-    }
+    return false;
   }
 
   logMessageQuery.first();
@@ -1250,19 +1253,38 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs) {
     return false;
   }
 
-  QSet<QString> senders;
+  QList<int> senderIdList;
+  QHash<QString, int> senderIds;
+  QSqlQuery addSenderQuery;
+  QSqlQuery selectSenderQuery;;
   for(int i = 0; i < msgs.count(); i++) {
     const QString &sender = msgs.at(i).sender();
-    if(senders.contains(sender))
+    if(senderIds.contains(sender)) {
+      senderIdList << senderIds[sender];
       continue;
-    senders << sender;
+    }
 
-    savePoint("sender_sp", db);
-    QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", sender, db);
-    if(addSenderQuery.lastError().isValid())
-      rollbackSavePoint("sender_sp", db);
-    else
-      releaseSavePoint("sender_sp", db);
+    selectSenderQuery = executePreparedQuery("select_senderid", sender, db);
+    if(selectSenderQuery.first()) {
+      senderIdList << selectSenderQuery.value(0).toInt();
+      senderIds[sender] = selectSenderQuery.value(0).toInt();
+    } else {
+      savePoint("sender_sp", db);
+      addSenderQuery= executePreparedQuery("insert_sender", sender, db);
+      if(addSenderQuery.lastError().isValid()) {
+        // seems it was inserted meanwhile... by a different thread
+        rollbackSavePoint("sender_sp", db);
+        selectSenderQuery = db.exec(selectSenderQuery.lastQuery());
+        selectSenderQuery.first();
+        senderIdList << selectSenderQuery.value(0).toInt();
+        senderIds[sender] = selectSenderQuery.value(0).toInt();
+      } else {
+        releaseSavePoint("sender_sp", db);
+        addSenderQuery.first();
+        senderIdList << addSenderQuery.value(0).toInt();
+        senderIds[sender] = addSenderQuery.value(0).toInt();
+      }
+    }
   }
 
   // yes we loop twice over the same list. This avoids alternating queries.
@@ -1274,7 +1296,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs) {
 	   << msg.bufferInfo().bufferId().toInt()
 	   << msg.type()
 	   << (int)msg.flags()
-	   << msg.sender()
+	   << senderIdList.at(i)
 	   << msg.contents();
     QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
     if(!watchQuery(logMessageQuery)) {
@@ -1464,8 +1486,8 @@ QSqlQuery PostgreSqlStorage::prepareAndExecuteQuery(const QString &queryname, co
     }
     // we alwas execute the query again, even if the query was already prepared.
     // this ensures, that the error is properly propagated to the calling function
-    // (otherwise the lasst call would be the test select to pg_prepared_statements
-    // which always gives a proper result)
+    // (otherwise the last call would be the testing select to pg_prepared_statements
+    // which always gives a proper result and the error would be lost)
     if(paramstring.isNull()) {
       query = db.exec(QString("EXECUTE quassel_%1").arg(queryname));
     } else {
