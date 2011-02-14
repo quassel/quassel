@@ -912,7 +912,7 @@ void Core::changeUserPass(const QString &username) {
   }
 
   if(_configured && _storage->updateUser(userId, password)) {
-    out << "Password changed successfuly!" << endl;
+    out << "Password changed successfully!" << endl;
   } else {
     qWarning() << "Failed to change password!";
   }
