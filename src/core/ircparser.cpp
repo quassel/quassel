@@ -50,6 +50,9 @@ QByteArray IrcParser::decrypt(Network *network, const QString &bufferName, const
   if(message.isEmpty())
     return message;
 
+  if(!Cipher::neededFeaturesAvailable())
+    return message;
+
   Cipher *cipher = qobject_cast<CoreNetwork *>(network)->cipher(bufferName);
   if(!cipher)
     return message;

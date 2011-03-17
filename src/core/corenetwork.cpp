@@ -275,6 +275,9 @@ Cipher *CoreNetwork::cipher(const QString &target) const {
   if(target.isEmpty())
     return 0;
 
+  if(!Cipher::neededFeaturesAvailable())
+    return 0;
+
   QByteArray key = cipherKey(target);
   if(key.isEmpty())
     return 0;
