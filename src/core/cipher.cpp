@@ -13,6 +13,7 @@
 */
 
 #include "cipher.h"
+#include "logger.h"
 
 
 Cipher::Cipher()
@@ -448,4 +449,15 @@ QByteArray Cipher::b64ToByte(QByteArray text)
     }
   }
   return decoded;
+}
+
+bool Cipher::neededFeaturesAvailable()
+{
+  QCA::Initializer init;
+
+  if (QCA::isSupported("blowfish-ecb") && QCA::isSupported("blowfish-cbc") && QCA::isSupported("dh"))
+    return true;
+
+  qWarning() << "QCA provider plugin not found. It is usually provided by the qca-ossl plugin.";
+  return false;
 }

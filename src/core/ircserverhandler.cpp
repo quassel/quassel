@@ -1307,6 +1307,9 @@ QByteArray IrcServerHandler::decrypt(const QString &bufferName, const QByteArray
   if(message_.isEmpty())
     return message_;
 
+  if(!Cipher::neededFeaturesAvailable())
+    return message_;
+
   Cipher *cipher = network()->cipher(bufferName);
   if(!cipher)
     return message_;

@@ -33,6 +33,7 @@ class Cipher
     QByteArray key() { return m_key; }
     bool setType(const QString &type);
     QString type() { return m_type; }
+    static bool neededFeaturesAvailable();
 
   private:
     //direction is true for encrypt, false for decrypt

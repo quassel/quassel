@@ -46,6 +46,9 @@ Cipher *CoreIrcChannel::cipher() const {
 }
 
 void CoreIrcChannel::setEncrypted(bool e) {
+  if(!Cipher::neededFeaturesAvailable())
+    return;
+
   if(e) {
     if(topic().isEmpty())
       return;

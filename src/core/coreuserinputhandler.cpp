@@ -163,6 +163,9 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
   if(!bufferInfo.isValid())
     return;
 
+  if(!Cipher::neededFeaturesAvailable())
+    return;
+
   QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
   if(parms.isEmpty() && !bufferInfo.bufferName().isEmpty())
@@ -452,6 +455,9 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QStr
   if(!bufferInfo.isValid())
     return;
 
+  if(!Cipher::neededFeaturesAvailable())
+    return;
+
   QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
   if(parms.count() == 1 && !bufferInfo.bufferName().isEmpty())
@@ -634,6 +640,9 @@ QByteArray CoreUserInputHandler::encrypt(const QString &target, const QByteArray
     *didEncrypt = false;
 
   if(message_.isEmpty())
+    return message_;
+
+  if(!Cipher::neededFeaturesAvailable())
     return message_;
 
   Cipher *cipher = network()->cipher(target);
