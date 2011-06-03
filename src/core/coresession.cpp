@@ -453,6 +453,9 @@ void CoreSession::removeNetwork(NetworkId id) {
     return;
 
   if(net->connectionState() != Network::Disconnected) {
+    // make sure we no longer receive data from the tcp buffer
+    disconnect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)), this, 0);
+    disconnect(net, SIGNAL(displayStatusMsg(QString)), this, 0);
     connect(net, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetwork(NetworkId)));
     net->disconnectFromIrc();
   } else {
@@ -464,6 +467,16 @@ void CoreSession::destroyNetwork(NetworkId id) {
   QList<BufferId> removedBuffers = Core::requestBufferIdsForNetwork(user(), id);
   Network *net = _networks.take(id);
   if(net && Core::removeNetwork(user(), id)) {
+    // make sure that all unprocessed RawMessages from this network are removed
+    QList<RawMessage>::iterator messageIter = _messageQueue.begin();
+    while(messageIter != _messageQueue.end()) {
+      if(messageIter->networkId == id) {
+        messageIter = _messageQueue.erase(messageIter);
+      } else {
+        messageIter++;
+      }
+    }
+    // remove buffers from syncer
     foreach(BufferId bufferId, removedBuffers) {
       _bufferSyncer->removeBuffer(bufferId);
     }
