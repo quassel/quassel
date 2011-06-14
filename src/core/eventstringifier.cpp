@@ -28,7 +28,7 @@ EventStringifier::EventStringifier(CoreSession *parent) : BasicHandler("handleCt
   _coreSession(parent),
   _whois(false)
 {
-
+  connect(this, SIGNAL(newMessageEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 }
 
 void EventStringifier::displayMsg(NetworkEvent *event, Message::Type msgType, const QString &msg, const QString &sender,
@@ -37,7 +37,8 @@ void EventStringifier::displayMsg(NetworkEvent *event, Message::Type msgType, co
     return;
 
   MessageEvent *msgEvent = createMessageEvent(event, msgType, msg, sender, target, msgFlags);
-  sendMessageEvent(msgEvent);
+  //sendMessageEvent(msgEvent);
+  emit newMessageEvent(msgEvent);
 }
 
 MessageEvent *EventStringifier::createMessageEvent(NetworkEvent *event, Message::Type msgType, const QString &msg, const QString &sender,
@@ -45,10 +46,6 @@ MessageEvent *EventStringifier::createMessageEvent(NetworkEvent *event, Message:
   MessageEvent *msgEvent = new MessageEvent(msgType, event->network(), msg, sender, target, msgFlags);
   msgEvent->setTimestamp(event->timestamp());
   return msgEvent;
-}
-
-void EventStringifier::sendMessageEvent(MessageEvent *event) {
-  coreSession()->eventManager()->sendEvent(event);
 }
 
 bool EventStringifier::checkParamCount(IrcEvent *e, int minParams) {

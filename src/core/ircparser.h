@@ -37,6 +37,9 @@ public:
   inline CoreSession *coreSession() const { return _coreSession; }
   inline EventManager *eventManager() const { return coreSession()->eventManager(); }
 
+signals:
+  void newEvent(Event *);
+
 protected:
   Q_INVOKABLE void processNetworkIncoming(NetworkDataEvent *e);
 

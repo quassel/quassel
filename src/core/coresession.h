@@ -150,12 +150,14 @@ signals:
   void networkRemoved(NetworkId);
   void networkDisconnected(NetworkId);
 
+protected:
+  virtual void customEvent(QEvent *event);
+
 private slots:
   void removeClient(QIODevice *dev);
 
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(NetworkId networkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
-  void processMessages();
 
   void destroyNetwork(NetworkId);
 
@@ -169,6 +171,8 @@ private slots:
   void saveSessionState() const;
 
 private:
+  void processMessages();
+
   void loadSettings();
   void initScriptEngine();
 
@@ -200,6 +204,7 @@ private:
   QScriptEngine *scriptEngine;
 
   QList<RawMessage> _messageQueue;
+  bool _processMessages;
   CoreIgnoreListManager _ignoreListManager;
 };
 

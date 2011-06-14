@@ -43,6 +43,7 @@
 class CoreIdentity;
 class CoreUserInputHandler;
 class CoreIgnoreListManager;
+class Event;
 
 class CoreNetwork : public Network {
   SYNCABLE_OBJECT
@@ -143,6 +144,8 @@ signals:
 
   void quitRequested(NetworkId networkId);
   void sslErrors(const QVariant &errorData);
+
+  void newEvent(Event *event);
 
 protected:
   inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new CoreIrcChannel(channelname, this); }

@@ -77,6 +77,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   connect(&socket, SIGNAL(encrypted()), this, SLOT(socketInitialized()));
   connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
+  connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 }
 
 CoreNetwork::~CoreNetwork() {
@@ -330,7 +331,7 @@ void CoreNetwork::socketHasData() {
 #else
     event->setTimestamp(QDateTime::currentDateTime().toUTC());
 #endif
-    coreSession()->eventManager()->sendEvent(event);
+    emit newEvent(event);
   }
 }
 

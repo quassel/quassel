@@ -35,6 +35,7 @@ CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
   _coreSession(session)
 {
   connect(coreSession(), SIGNAL(networkDisconnected(NetworkId)), this, SLOT(destroyNetsplits(NetworkId)));
+  connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 }
 
 bool CoreSessionEventProcessor::checkParamCount(IrcEvent *e, int minParams) {
@@ -63,7 +64,7 @@ void CoreSessionEventProcessor::tryNextNick(NetworkEvent *e, const QString &errn
       MessageEvent *msgEvent = new MessageEvent(Message::Error, e->network(),
                                                 tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"),
                                                 QString(), QString(), Message::None, e->timestamp());
-      coreSession()->eventManager()->sendEvent(msgEvent);
+      emit newEvent(msgEvent);
       return;
     } else {
       nextNick = errnick + "_";
@@ -747,12 +748,12 @@ void CoreSessionEventProcessor::handleNetsplitJoin(Network *net,
 
   ircChannel->joinIrcUsers(ircUsers, newModes);
   NetworkSplitEvent *event = new NetworkSplitEvent(EventManager::NetworkSplitJoin, net, channel, newUsers, quitMessage);
-  coreSession()->eventManager()->sendEvent(event);
+  emit newEvent(event);
 }
 
 void CoreSessionEventProcessor::handleNetsplitQuit(Network *net, const QString &channel, const QStringList &users, const QString& quitMessage) {
   NetworkSplitEvent *event = new NetworkSplitEvent(EventManager::NetworkSplitQuit, net, channel, users, quitMessage);
-  coreSession()->eventManager()->sendEvent(event);
+  emit newEvent(event);
   foreach(QString user, users) {
     IrcUser *iu = net->ircUser(nickFromMask(user));
     if(iu)
@@ -784,7 +785,7 @@ void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network *net, const QStr
   ircChannel->joinIrcUsers(ircUsers, newModes);
   foreach(NetworkEvent *event, events) {
     event->setFlag(EventManager::Fake); // ignore this in here!
-    coreSession()->eventManager()->sendEvent(event);
+    emit newEvent(event);
   }
 }
 

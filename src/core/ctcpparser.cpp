@@ -39,6 +39,8 @@ CtcpParser::CtcpParser(CoreSession *coreSession, QObject *parent)
   QByteArray XQUOTE = QByteArray("\134");
   _ctcpXDelimDequoteHash[XQUOTE + XQUOTE] = XQUOTE;
   _ctcpXDelimDequoteHash[XQUOTE + QByteArray("a")] = XDELIM;
+
+  connect(this, SIGNAL(newEvent(Event *)), _coreSession->eventManager(), SLOT(postEvent(Event *)));
 }
 
 void CtcpParser::displayMsg(NetworkEvent *event, Message::Type msgType, const QString &msg, const QString &sender,
@@ -49,7 +51,7 @@ void CtcpParser::displayMsg(NetworkEvent *event, Message::Type msgType, const QS
   MessageEvent *msgEvent = new MessageEvent(msgType, event->network(), msg, sender, target, msgFlags);
   msgEvent->setTimestamp(event->timestamp());
 
-  coreSession()->eventManager()->sendEvent(msgEvent);
+  emit newEvent(msgEvent);
 }
 
 QByteArray CtcpParser::lowLevelQuote(const QByteArray &message) {
@@ -193,7 +195,7 @@ void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype) {
                                           ctcptype, "INVALID", QString(), e->timestamp(), uuid);
     ctcpEvents << flushEvent;
     foreach(CtcpEvent *event, ctcpEvents) {
-      coreSession()->eventManager()->sendEvent(event);
+      emit newEvent(event);
     }
   }
 

@@ -46,6 +46,9 @@ public:
 
   Q_INVOKABLE void sendCtcpEvent(CtcpEvent *event);
 
+signals:
+  void newEvent(Event *event);
+
 protected:
   inline CoreNetwork *coreNetwork(NetworkEvent *e) const { return qobject_cast<CoreNetwork *>(e->network()); }
 

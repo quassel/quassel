@@ -27,13 +27,21 @@
 #include "event.h"
 #include "ircevent.h"
 
-EventManager::EventManager(QObject *parent) : QObject(parent) {
+// ============================================================
+//  QueuedEvent
+// ============================================================
+class QueuedQuasselEvent : public QEvent {
+public:
+  QueuedQuasselEvent(Event *event)
+    : QEvent(QEvent::User), event(event) {}
+  Event *event;
+};
 
-}
-
-EventManager::~EventManager() {
-  // pending events won't be delivered anymore, but we do need to delete them
-  qDeleteAll(_eventQueue);
+// ============================================================
+//  EventManager
+// ============================================================
+EventManager::EventManager(QObject *parent)
+  : QObject(parent) {
 }
 
 QMetaEnum EventManager::eventEnum() const {
@@ -157,31 +165,35 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject *object
   }
 }
 
-// not threadsafe! if we should want that, we need to add a mutexed queue somewhere in this general area.
-void EventManager::sendEvent(Event *event) {
-  // qDebug() << "Sending" << event;
-  _eventQueue.append(event);
-  if(_eventQueue.count() == 1) // we're not currently processing another event
-    processEvents();
+void EventManager::postEvent(Event *event) {
+  if(sender() && sender()->thread() != this->thread()) {
+    QueuedQuasselEvent *queuedEvent = new QueuedQuasselEvent(event);
+    QCoreApplication::postEvent(this, queuedEvent);
+  } else {
+    if(_eventQueue.isEmpty())
+      // we're currently not processing events
+      processEvent(event);
+    else
+      _eventQueue.append(event);
+  }
 }
 
 void EventManager::customEvent(QEvent *event) {
   if(event->type() == QEvent::User) {
-    processEvents();
+    QueuedQuasselEvent *queuedEvent = static_cast<QueuedQuasselEvent *>(event);
+    processEvent(queuedEvent->event);
     event->accept();
   }
 }
 
-void EventManager::processEvents() {
-  // we only process one event at a time for now, and let Qt's own event processing come in between
-  if(_eventQueue.isEmpty())
-    return;
-  dispatchEvent(_eventQueue.first());
-  _eventQueue.removeFirst();
-  if(_eventQueue.count())
-    QCoreApplication::postEvent(this, new QEvent(QEvent::User));
-  else
-    emit eventQueueEmptied();
+void EventManager::processEvent(Event *event) {
+  Q_ASSERT(_eventQueue.isEmpty());
+  dispatchEvent(event);
+  // dispatching the event might cause new events to be generated. we process those afterwards.
+  while(!_eventQueue.isEmpty()) {
+    dispatchEvent(_eventQueue.first());
+    _eventQueue.removeFirst();
+  }
 }
 
 void EventManager::dispatchEvent(Event *event) {

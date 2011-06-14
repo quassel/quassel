@@ -109,9 +109,11 @@ public slots:
                   const QString &target = QString(),
                   Message::Flags msgFlags = Message::None);
 
+signals:
+  void newMessageEvent(Event *event);
+
 private:
   bool checkParamCount(IrcEvent *event, int minParams);
-  void sendMessageEvent(MessageEvent *event);
 
   CoreSession *_coreSession;
   bool _whois;

@@ -94,6 +94,9 @@ public:
   Q_INVOKABLE void handleCtcpVersion(CtcpEvent *event);
   Q_INVOKABLE void defaultHandler(const QString &ctcpCmd, CtcpEvent *event);
 
+signals:
+  void newEvent(Event *event);
+
 protected:
   bool checkParamCount(IrcEvent *event, int minParams);
   inline CoreNetwork *coreNetwork(NetworkEvent *e) const { return qobject_cast<CoreNetwork *>(e->network()); }

@@ -111,7 +111,6 @@ public:
   };
 
   EventManager(QObject *parent = 0);
-  virtual ~EventManager();
 
   EventType eventTypeByName(const QString &name) const;
   EventType eventGroupByName(const QString &name) const;
@@ -133,13 +132,9 @@ public slots:
   //! Send an event to the registered handlers
   /**
     The EventManager takes ownership of the event and will delete it once it's processed.
-    NOTE: This method is not threadsafe!
     @param event The event to be dispatched
    */
-  void sendEvent(Event *event);
-
-signals:
-  void eventQueueEmptied();
+  void postEvent(Event *event);
 
 protected:
   virtual void customEvent(QEvent *event);
@@ -172,7 +167,7 @@ private:
 
   int findEventType(const QString &methodSignature, const QString &methodPrefix) const;
 
-  void processEvents();
+  void processEvent(Event *event);
   void dispatchEvent(Event *event);
 
   //! @return the EventType enum
@@ -181,7 +176,6 @@ private:
   HandlerHash _registeredHandlers;
   HandlerHash _registeredFilters;
   mutable QMetaEnum _enum;
-
   QList<Event *> _eventQueue;
 };
 
