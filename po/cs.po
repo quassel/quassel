@@ -1,21 +1,22 @@
 # Copyright (C) 2009
 # This file is distributed under the same license as the Quassel package.
 #
-# Tomáš Chvátal <scarabeus@gentoo.org>, 2009, 2010.
+# Tomáš Chvátal <tomas.chvatal@gmail.com>, 2009, 2010, 2011.
+# Vít Pelčák <vit@pelcak.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
-"PO-Revision-Date: 2010-08-15 00:48+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2011-06-28 17:30+0200\n"
+"Last-Translator: Tomáš Chvátal <tomas.chvatal@gmail.com>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Lokalize 1.2\n"
 "X-Language: cs\n"
 
 #. ts-context AboutDlg
@@ -26,20 +27,40 @@ msgstr "O aplikaci Quassel"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">￼p, li { white-space: pre-wrap; }￼</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p><"
+"/body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"￼p, li { white-space: pre-wrap; }￼</style></head><body style=\" "
+"font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; "
+"font-style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
+"Quassel IRC</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">￼p, li { white-space: pre-wrap; }￼</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Verze 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, "
+"Build &gt;= 474 (2008-02-08)</p></body></html>"
+msgstr ""
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"￼p, li { white-space: pre-wrap; }￼</style></head><body style=\" "
+"font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; "
+"font-style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
+"Verze 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:115
@@ -68,8 +89,28 @@ msgstr "<b>Verze:</b> %1<br><b>Verze protokolu:</b> %2<br><b>Složení:</b> %3"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:46
-msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-msgstr "<b>A Moderní, distribuovaný IRC Client</b><br><br>Vytvořený &copy;2005-2010 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je duálně-licencován pod <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> a <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Většina ikon náleží &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a>u pod licencí <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Prosíme použijte <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> pro hlášení chyb."
+msgid ""
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel "
+"Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><"
+"a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is "
+"dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">"
+"GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<"
+"br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">"
+"Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl."
+"html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">"
+"http://bugs.quassel-irc.org</a> to report bugs."
+msgstr ""
+"<b>A Moderní, distribuovaný IRC Client</b><br><br>Vytvořený &copy;2005-2010 "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org<"
+"/a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je "
+"duálně-licencován pod <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">"
+"GPLv2</a> a <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
+"Většina ikon náleží &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen "
+"Team</a>u pod licencí <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL<"
+"/a>.<br><br>Prosíme použijte <a href=\"http://bugs.quassel-irc.org\">"
+"http://bugs.quassel-irc.org</a> pro hlášení chyb."
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -78,17 +119,44 @@ msgstr "Hlavní vývojáři Quassel IRC:"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:77
-msgid "We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:"
-msgstr "Rádi bychom poděkovali následujícím přispěvatelům (v abecedním pořadí) a také všem, na které jsme zde zapomněli:"
+msgid ""
+"We would like to thank the following contributors (in alphabetical order) and "
+"everybody we forgot to mention here:"
+msgstr ""
+"Rádi bychom poděkovali následujícím přispěvatelům (v abecedním pořadí) a také "
+"všem, na které jsme zde zapomněli:"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:135
-msgid "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr "Zvláště bychom rádi poděkovali:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>Johnu \"nox\" Handovi</b></dt><dd>pro skvělý artwork a Quassel logo/ikonku</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Oxygen Team</a></b></dt><dd>pro vytvoření většiny ostatních skvělých ikon, které můžete vidět všude možně v aplikaci</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software (dříve znám jako Trolltech)</a></b></dt><dd>za vytvoření Qt a Qtopia, a pro sponzorování vývoje QuasselTopia s Greenphones a dalších</dd><dt><b><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>pro udržování Qt naživu, a pro sponzorování vývoje Quassel Mobile N810</dd>"
+msgid ""
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">"
+"&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The "
+"All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"creating all the artwork you see throughout Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">"
+"Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and "
+"Qtopia, and for sponsoring development of QuasselTopia with Greenphones and "
+"more</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"><"
+"/a></b></dt><dd>for keeping Qt alive, and for sponsoring development of "
+"Quassel Mobile with N810s</dd>"
+msgstr ""
+"Zvláště bychom rádi poděkovali:<br><dl><dt><img src=\":/pics/quassel-eye."
+"png\">&nbsp;<b>Johnu \"nox\" Handovi</b></dt><dd>pro skvělý artwork a Quassel "
+"logo/ikonku</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">Oxygen Team</a></b></dt><dd>pro "
+"vytvoření většiny ostatních skvělých ikon, které můžete vidět všude možně v "
+"aplikaci</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software (dříve znám jako Trolltech)</a>"
+"</b></dt><dd>za vytvoření Qt a Qtopia, a pro sponzorování vývoje QuasselTopia "
+"s Greenphones a dalších</dd><dt><b><a href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>pro udržování Qt naživu, a pro "
+"sponzorování vývoje Quassel Mobile N810</dd>"
 
 #. ts-context AbstractSqlStorage
 #: ../src/core/abstractsqlstorage.cpp:115
-msgid "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
+msgid ""
+"Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Instalované schéma (verze %1) není aktuální. aktualizuji na %2..."
 
 #. ts-context AbstractSqlStorage
@@ -98,13 +166,38 @@ msgstr "Aktualizace selhala..."
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:55
-msgid "<b>The shortcut for the alias</b><br />It can be used as a regular slash command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
-msgstr "<b>Zkratka pro alternativu</b><br />Lze ji použít jako běžný lomítkový příkaz.<br /><br /><b>Příklad:</b> \"foo\" lze zavolat pomocí /foo"
+msgid ""
+"<b>The shortcut for the alias</b><br />It can be used as a regular slash "
+"command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
+msgstr ""
+"<b>Zkratka pro alternativu</b><br />Lze ji použít jako běžný lomítkový příkaz."
+"<br /><br /><b>Příklad:</b> \"foo\" lze zavolat pomocí /foo"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
-msgid "<b>The string the shortcut will be expanded to</b><br /><b>special variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</b> represents all parameters from i on separated by spaces.<br /> - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of the selected channel<br /><br />Multiple commands can be separated with semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
-msgstr "<b>Text na jaký bude převedena zkratka</b><br /><b>Speciální hodnoty:</b><br /> - <b>$i</b> reprezentuje i-tý parametr.<br /> - <b>$i..j</b> reprezentuje i-tý až j-tý parametr oddělený mezerami.<br /> - <b>$i..</b> reprezentuje všechny parametry od i-tého, oddělené mezerami.<br /> - <b>$i:hostname</b> reprezentuje název počítače uživatele identifikovaného i-tým parametrem nebo * pokud je neznámý.<br /> - <b>$0</b> celý text.<br /> - <b>$nick</b> vaše současná přezdívka<br /> - <b>$channel</b> název vybraného kanálu<br /><br />Oddělení více příkazů je umožněno pomocí středníku<br /><br /><b>Příklad:</b> \"Test $1; Test $2; Test All $0\" bude interpretováno jako \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
+msgid ""
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i."
+".j</b> represents the i'th to j'th parameter separated by spaces.<br /> - <b>"
+"$i..</b> represents all parameters from i on separated by spaces.<br /> - <b>"
+"$i:hostname</b> represents the hostname of the user identified by the i'th "
+"parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>"
+"$nick</b> your current nickname<br /> - <b>$channel</b> the name of the "
+"selected channel<br /><br />Multiple commands can be separated with "
+"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
+"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
+"1 2 3\" when called like /test 1 2 3"
+msgstr ""
+"<b>Text na jaký bude převedena zkratka</b><br /><b>Speciální hodnoty:</b><br "
+"/> - <b>$i</b> reprezentuje i-tý parametr.<br /> - <b>$i..j</b> reprezentuje "
+"i-tý až j-tý parametr oddělený mezerami.<br /> - <b>$i..</b> reprezentuje "
+"všechny parametry od i-tého, oddělené mezerami.<br /> - <b>$i:hostname</b> "
+"reprezentuje název počítače uživatele identifikovaného i-tým parametrem nebo "
+"* pokud je neznámý.<br /> - <b>$0</b> celý text.<br /> - <b>$nick</b> vaše "
+"současná přezdívka<br /> - <b>$channel</b> název vybraného kanálu<br /><br />"
+"Oddělení více příkazů je umožněno pomocí středníku<br /><br /><b>Příklad:</b> "
+"\"Test $1; Test $2; Test All $0\" bude interpretováno jako \"Test 1\", \"Test "
+"2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
@@ -464,8 +557,11 @@ msgstr "Zobrazit název záložky"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:22
-msgid "Number of messages to be requested from the core when using scrolling up in the buffer view."
-msgstr "Počet zpráv které se stáhnou z jádra při rolování myší ve zobrazené záložce."
+msgid ""
+"Number of messages to be requested from the core when using scrolling up in "
+"the buffer view."
+msgstr ""
+"Počet zpráv které se stáhnou z jádra při rolování myší ve zobrazené záložce."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
@@ -494,13 +590,21 @@ msgstr "Celkově nepřečtené zprávy"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:123
-msgid "The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog."
-msgstr "Nejjednodušší požadavek. Stáhne přesný počet řádků pro každou záložku z historie."
+msgid ""
+"The simplest requester. It fetches a fixed amount of lines for each chat "
+"window from the backlog."
+msgstr ""
+"Nejjednodušší požadavek. Stáhne přesný počet řádků pro každou záložku z "
+"historie."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
-msgid "amount of messages per buffer that are requested after the core connection has been established."
-msgstr "množství zpráv za záložku, které jsou vyžádány když bylo navázáno spojení s jádrem."
+msgid ""
+"amount of messages per buffer that are requested after the core connection "
+"has been established."
+msgstr ""
+"množství zpráv za záložku, které jsou vyžádány když bylo navázáno spojení s "
+"jádrem."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
@@ -510,13 +614,17 @@ msgstr "Výchozí množství historie:"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
 msgid ""
-"This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
+"This requester fetches unread messages for each chat window individually. The "
+"amount of lines can be limited per chat.\n"
 "\n"
-"You can also choose to fetch additional older chatlines to provide a better context."
+"You can also choose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Tento požadavek stáhne nepřečtené zprávy individuálně pro každou záložku. Množství řádek lze limitovat pro celý rozhovor.\n"
+"Tento požadavek stáhne nepřečtené zprávy individuálně pro každou záložku. "
+"Množství řádek lze limitovat pro celý rozhovor.\n"
 "\n"
-"Také můžete vybrat množství dodatečně stahovaných zastaralých zpráv pro lepší srozumitelnost."
+"Také můžete vybrat množství dodatečně stahovaných zastaralých zpráv pro lepší "
+"srozumitelnost."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
@@ -549,8 +657,12 @@ msgstr "Neomezeně"
 #: ../src/qtui/settingspages/backlogsettingspage.ui:270
 #: ../src/qtui/settingspages/backlogsettingspage.ui:382
 #: ../src/qtui/settingspages/backlogsettingspage.ui:392
-msgid "Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here."
-msgstr "Množství zpráv které se stáhnou dodatečně k nepřečteným zprávám. Omezení zde neplatí."
+msgid ""
+"Amount of messages to be fetched in addition to the unread messages. The "
+"Limit does not apply here."
+msgstr ""
+"Množství zpráv které se stáhnou dodatečně k nepřečteným zprávám. Omezení zde "
+"neplatí."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
@@ -561,17 +673,24 @@ msgstr "Dodatečné zprávy:"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:324
 msgid ""
-"This requester fetches all messages newer than the oldest unread message for all chats.\n"
+"This requester fetches all messages newer than the oldest unread message for "
+"all chats.\n"
 "\n"
-"Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).\n"
-"It is useful to limit the total amount of the backlog and is probably the fastest.\n"
+"Note: This requester is not recommended if you use hidden chat windows or "
+"have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the "
+"fastest.\n"
 "\n"
-"You can also chose to fetch additional older chatlines to provide a better context."
+"You can also chose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Tento požadavek stáhne všechny zprávy novější nežli nejstarší nepřečtené zprávy pro všechny záložky.\n"
+"Tento požadavek stáhne všechny zprávy novější nežli nejstarší nepřečtené "
+"zprávy pro všechny záložky.\n"
 "\n"
-"Poznámka: Tento požadavek není doporučen pokud používáte skryté, nebo neaktivní, záložky (tedy žádné nepoužívané pokecy ani kanály)\n"
-"Je užitečný k omezení celkového získávání historie a je pravděpodobně nejrychlejší.\n"
+"Poznámka: Tento požadavek není doporučen pokud používáte skryté, nebo "
+"neaktivní, záložky (tedy žádné nepoužívané místnosti ani kanály)\n"
+"Je užitečný k omezení celkového získávání historie a je pravděpodobně "
+"nejrychlejší.\n"
 "\n"
 "Můžete také vybrat dodatečné zprávy pro získání lepšího přehledu."
 
@@ -619,12 +738,12 @@ msgstr "Dialog"
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:22
 msgid "Please enter a name for the chat list:"
-msgstr "Prosím zadejte název pro seznam pokeců:"
+msgstr "Prosím zadejte název pro seznam místností:"
 
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
 msgid "Add Chat List"
-msgstr "Přidat seznam pokeců"
+msgstr "Přidat seznam místností"
 
 #. ts-context BufferViewFilter
 #: ../src/uisupport/bufferviewfilter.cpp:52
@@ -859,7 +978,9 @@ msgstr "Vyhledávaný text:"
 msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows to pass search strings to the IRC Server."
-msgstr "Přepnout mezi jednoduchým a pokročilým módem.￼Pokročilý mód umožňuje předat vyhledávaný řetězec IRC Serveru."
+msgstr ""
+"Přepnout mezi jednoduchým a pokročilým módem.￼Pokročilý mód umožňuje předat "
+"vyhledávaný řetězec IRC Serveru."
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:62
@@ -879,19 +1000,35 @@ msgstr "Nastalé chyby:"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3."
+"org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
+"ERROR!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+"font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3."
+"org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">ZOMG POLARNI LEDY OPRAVDU ROZTALY, TOHLE QUASSEL NEUSTOJI!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"font-family:'Lucida Grande'; font-size:13pt;\">ZOMG POLARNI LEDY OPRAVDU "
+"ROZTALY, TOHLE QUASSEL NEUSTOJI!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; "
+"font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
@@ -901,21 +1038,45 @@ msgstr "Operační režim:"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3."
+"org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"font-weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><"
+"span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <"
+"span style=\" font-weight:400;\">Only buffers on the right side are shown in "
+"chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will "
+"be ignored in chatmonitor</p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3."
+"org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">"
+"\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operační režimy:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Monitor pokecu zobrazuje pouze záložky na pravé straně.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span>Monitor pokecu ignoruje záložky na pravé straně.</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"font-weight:600;\">Operační režimy:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><"
+"span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <"
+"span style=\" font-weight:400;\">Monitor místností zobrazuje pouze záložky na "
+"pravé straně.</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; "
+"margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" "
+"text-decoration: underline;\">Opt-Out:</span>Monitor místností ignoruje "
+"záložky na pravé straně.</p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
@@ -940,8 +1101,11 @@ msgstr "Zobrazit:"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:147
-msgid "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr "Zobrazovat zvýraznění v monitoru pokecu i v případě, že záložka je ignorována"
+msgid ""
+"Show highlights in chatmonitor even if the originating buffer is ignored"
+msgstr ""
+"Zobrazovat zvýraznění v monitoru místností i v případě, že záložka je "
+"ignorována"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
@@ -960,7 +1124,7 @@ msgstr "Zobrazovat vlastní zprávy"
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 #: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
-msgstr "Monitor pokecu"
+msgstr "Monitor místností"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
@@ -1039,7 +1203,8 @@ msgstr "Povolit barevný text (mIRC kódy barev)"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:111
-msgid "Show a website preview window when hovering the mouse over a web address"
+msgid ""
+"Show a website preview window when hovering the mouse over a web address"
 msgstr "Zobrazit náhledy WWW stránek při podržení myši nad URL"
 
 #. ts-context ChatViewSettingsPage
@@ -1049,8 +1214,12 @@ msgstr "Zobrazí náhledy WWW stránek při podržení myši nad URL"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:130
-msgid "Set the marker line to the bottom of the current chat window when selecting another channel"
-msgstr "Nastavit značící linku na konec současného okna rozhovoru při výběru jiného kanálu"
+msgid ""
+"Set the marker line to the bottom of the current chat window when selecting "
+"another channel"
+msgstr ""
+"Nastavit značící linku na konec současného okna rozhovoru při výběru jiného "
+"kanálu"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:133
@@ -1145,7 +1314,7 @@ msgstr "Zpracováno %1 zpráv v %2 vteřin."
 #. ts-context ClientBufferViewManager
 #: ../src/client/clientbufferviewmanager.cpp:52
 msgid "All Chats"
-msgstr "Všechny pokecy"
+msgstr "Všechny místnosti"
 
 #. ts-context ClientUserInputHandler
 #: ../src/client/clientuserinputhandler.cpp:86
@@ -1195,12 +1364,17 @@ msgstr "Odpojit po"
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:103
 msgid "missed pings"
-msgstr "zmeškaných ping"
+msgstr "zmeškaných pingnutí"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
-msgid "This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users' away status."
-msgstr "Toto nastavení povolí periodické zjišťování informací o uživatelích s použitím příkazu /WHO. Tato funkce je zajímavá pro zjišťování důvodu proč je uživatel pryč."
+msgid ""
+"This enables periodic polling of user information using /WHO. This is mostly "
+"interesting for tracking users' away status."
+msgstr ""
+"Toto nastavení povolí periodické zjišťování informací o uživatelích s "
+"použitím příkazu /WHO. Tato funkce je zajímavá pro zjišťování důvodu proč je "
+"uživatel pryč."
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:131
@@ -1220,7 +1394,7 @@ msgstr "Ignorovat kanály s více než:"
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:184
 msgid " users"
-msgstr "uživatelé"
+msgstr " uživateli"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:206
@@ -1470,10 +1644,12 @@ msgstr "Nezdařilo se inicializovat libovolné ukládací rozhraní! Končím...
 #: ../src/core/core.cpp:183
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
-"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
+"Qt library with the sqlite or postgres plugin enabled in order for "
+"quasselcore\n"
 "to work."
 msgstr ""
-"V současné chvíli Quassel podporuje SQLite3 a PostgreSQL. Musíte sestavit vaši\n"
+"V současné chvíli Quassel podporuje SQLite3 a PostgreSQL. Musíte sestavit "
+"vaši\n"
 "Qt knihovnu s podporou sqlite nebo postgres pluginu aby jádro Quasselu\n"
 "mohlo fungovat."
 
@@ -1505,7 +1681,8 @@ msgstr "Neplatná adresa %1 pro poslech"
 #. ts-context Core
 #: ../src/core/core.cpp:402
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "Naslouchám pro GUI klienty na IPv4 %1 portu %2 s použitím protokolu verze %3"
+msgstr ""
+"Naslouchám pro GUI klienty na IPv4 %1 portu %2 s použitím protokolu verze %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:410
@@ -1515,7 +1692,8 @@ msgstr "Nezdařilo se otevření IPv4 rozhraní %1:%2: %3"
 #. ts-context Core
 #: ../src/core/core.cpp:418
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "Naslouchám pro GUI klienty na IPv6 %1 portu %2 s použitím protokolu verze %3"
+msgstr ""
+"Naslouchám pro GUI klienty na IPv6 %1 portu %2 s použitím protokolu verze %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:429
@@ -1549,8 +1727,12 @@ msgstr "Připojit se pokouší zastaralý klient... odmítám spojení."
 
 #. ts-context Core
 #: ../src/core/core.cpp:514
-msgid "<b>Your Quassel Client is too old!</b><br>This core needs at least client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr "<b>Váš Quassel Klient je příliš starý!</b><br>Toto jádro potřebuje klienta s protokolem alespoň verze %1.<br>Prosíme zvažte aktualizaci vašeho klienta."
+msgid ""
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1.<br>Please consider upgrading your client."
+msgstr ""
+"<b>Váš Quassel Klient je příliš starý!</b><br>Toto jádro potřebuje klienta s "
+"protokolem alespoň verze %1.<br>Prosíme zvažte aktualizaci vašeho klienta."
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context Core
@@ -1580,8 +1762,12 @@ msgstr "Zahajuji TLS pro klienta:"
 
 #. ts-context Core
 #: ../src/core/core.cpp:606
-msgid "<b>Client not initialized!</b><br>You need to send an init message before trying to login."
-msgstr "<b>Klient není inicializován!</b><br>Musíte poslat inicializační zprávu před pokusem o přihlášení."
+msgid ""
+"<b>Client not initialized!</b><br>You need to send an init message before "
+"trying to login."
+msgstr ""
+"<b>Klient není inicializován!</b><br>Musíte poslat inicializační zprávu před "
+"pokusem o přihlášení."
 
 #. ts-context Core
 #: ../src/core/core.cpp:608
@@ -1590,8 +1776,12 @@ msgstr "neodeslána inicializační zpráva před pokusem o přihlášení, odm�
 
 #. ts-context Core
 #: ../src/core/core.cpp:626
-msgid "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database."
-msgstr "<b>Neplatné uživatelské jméno či heslo!</b><br>Kombinace uživatelského jména a hesla kterou jste zadali nebyla nalezena v databázi."
+msgid ""
+"<b>Invalid username or password!</b><br>The username/password combination you "
+"supplied could not be found in the database."
+msgstr ""
+"<b>Neplatné uživatelské jméno či heslo!</b><br>Kombinace uživatelského jména "
+"a hesla kterou jste zadali nebyla nalezena v databázi."
 
 #. ts-context Core
 #: ../src/core/core.cpp:632
@@ -1813,13 +2003,20 @@ msgstr "Vaše jádro bylo úspěšně nastaveno. Přihlašuji se..."
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:104
-msgid "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
-msgstr "Nastavení jádra selhalo:<br><b>%1</b><br>Stiskněte <em>Další</em> pro opakování."
+msgid ""
+"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
+msgstr ""
+"Nastavení jádra selhalo:<br><b>%1</b><br>Stiskněte <em>Další</em> pro "
+"opakování."
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:119
-msgid "Your are now logged into your freshly configured Quassel Core!<br>Please remember to configure your identities and networks now."
-msgstr "Nyní jste připojeni k čerstvě nastavenému Quassel jádru!<br>Nezapomeňte si nyní nastavit své sítě a identity."
+msgid ""
+"Your are now logged into your freshly configured Quassel Core!<br>Please "
+"remember to configure your identities and networks now."
+msgstr ""
+"Nyní jste připojeni k čerstvě nastavenému Quassel jádru!<br>Nezapomeňte si "
+"nyní nastavit své sítě a identity."
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreConfigWizardAdminUserPage
@@ -1847,11 +2044,15 @@ msgstr "Pamatovat heslo"
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:69
 msgid ""
-"<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+"<b>Note:</b> Adding more users and changing your username/password is not "
+"possible via Quassel's client interface yet.\n"
+"If you need to do these things, please run \"<tt><nobr>quasselcore --help<"
+"/nobr></tt>\"."
 msgstr ""
-"<b>Poznámka:</b> Přidávání více uživatelů a změny uživatelského jména a hesla prozatím nejsou proveditelné skrze grafické rozhraní Quassel klienta.\n"
-"Pokud dané operace potřebujete provést, prosíme spusťte \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+"<b>Poznámka:</b> Přidávání více uživatelů a změny uživatelského jména a hesla "
+"prozatím nejsou proveditelné skrze grafické rozhraní Quassel klienta.\n"
+"Pokud dané operace potřebujete provést, prosíme spusťte \"<tt><nobr>"
+"quasselcore --help</nobr></tt>\"."
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
@@ -1865,8 +2066,12 @@ msgstr "Vytvořit účet administrátora"
 
 #. ts-context CoreConfigWizardPages::AdminUserPage
 #: ../src/qtui/coreconfigwizard.cpp:151
-msgid "First, we will create a user on the core. This first user will have administrator privileges."
-msgstr "Nejprve vytvoříme uživatele jádra. První (tento) uživatel bude mít administrátorská práva."
+msgid ""
+"First, we will create a user on the core. This first user will have "
+"administrator privileges."
+msgstr ""
+"Nejprve vytvoříme uživatele jádra. První (tento) uživatel bude mít "
+"administrátorská práva."
 
 #. ts-context CoreConfigWizardPages::IntroPage
 #: ../src/qtui/coreconfigwizard.cpp:135
@@ -1876,11 +2081,13 @@ msgstr "Úvod"
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:182
 msgid "Select Storage Backend"
-msgstr "Zvolte skladovací rozhraní"
+msgstr "Zvolte úložný systém"
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:183
-msgid "Please select a database backend for the Quassel Core storage to store the backlog and other data in."
+msgid ""
+"Please select a database backend for the Quassel Core storage to store the "
+"backlog and other data in."
 msgstr "Prosím zvolte databázové rozhraní pro ukládání dat Quassel jádra."
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
@@ -1895,17 +2102,18 @@ msgstr "Ukládám Vaše nastavení"
 
 #. ts-context CoreConfigWizardPages::SyncPage
 #: ../src/qtui/coreconfigwizard.cpp:318
-msgid "Your settings are now stored in the core, and you will be logged in automatically."
-msgstr "Vaše nastavení je nyní uloženo v Jádře a tedy budete automaticky přihlášeni."
+msgid ""
+"Your settings are now stored in the core, and you will be logged in "
+"automatically."
+msgstr ""
+"Vaše nastavení je nyní uloženo v Jádře a tedy budete automaticky přihlášeni."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreConfigWizardStorageSelectionPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreConfigWizardSyncPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardStorageSelectionPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgid "Storage Backend:"
-msgstr "Skladovací rozhraní:"
+msgstr "Úložný systém:"
 
 #. ts-context CoreConfigWizardStorageSelectionPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:56
@@ -1945,7 +2153,7 @@ msgstr "Prosím vyčkejte dokud se nastavení nepřenese k jádru..."
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconnectauthdlg.ui:14
 msgid "Authentication Required"
-msgstr "Autenifikace vyžadována"
+msgstr "Ověření totožnosti je vyžadováno"
 
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconnectauthdlg.ui:20
@@ -1997,8 +2205,11 @@ msgstr "Odpojeno od %1..."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:272
-msgid "The Quassel Core you try to connect to is too old! Please consider upgrading."
-msgstr "Jádro Quasselu, ke kterému se snazíte připojit, je příliš staré! Prosíme zvažte jeho aktualizaci."
+msgid ""
+"The Quassel Core you try to connect to is too old! Please consider upgrading."
+msgstr ""
+"Jádro Quasselu, ke kterému se snazíte připojit, je příliš staré! Prosíme "
+"zvažte jeho aktualizaci."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:300
@@ -2024,8 +2235,12 @@ msgstr "Synchronizace s jádrem..."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:478
-msgid "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at least core/client protocol v%1 to connect."
-msgstr "<b>Jádro Quasselu, ke kterému se snažíte připojit, je příliš staré!</b><br> Požadovaný je protokol verze %1 pro spojení."
+msgid ""
+"<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
+"least core/client protocol v%1 to connect."
+msgstr ""
+"<b>Jádro Quasselu, ke kterému se snažíte připojit, je příliš staré!</b><br> "
+"Požadovaný je protokol verze %1 pro spojení."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:592
@@ -2064,8 +2279,12 @@ msgstr "Detekce stavu sítě"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
-msgid "Rely on KDE's hardware layer to detect if we're online. Recommended for most KDE users"
-msgstr "Při detekci stavu spoléhat na hardwarovou vrstvu KDE. Doporučeno pro většinu KDE uživatelů"
+msgid ""
+"Rely on KDE's hardware layer to detect if we're online. Recommended for most "
+"KDE users"
+msgstr ""
+"Při detekci stavu spoléhat na hardwarovou vrstvu KDE. Doporučeno pro většinu "
+"uživatelů KDE"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:29
@@ -2076,8 +2295,12 @@ msgstr "Použít detekci stavu sítě KDE (skrze Solid)"
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:41
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:57
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:154
-msgid "Actively ping the remote core and disconnect if we didn't get a reply after a certain time"
-msgstr "Aktivně pinkat vzdálené jádro a odpojit pokud neobdržíme odpověď po určitém časovém intervalu"
+msgid ""
+"Actively ping the remote core and disconnect if we didn't get a reply after a "
+"certain time"
+msgstr ""
+"Aktivně pingat vzdálené jádro a odpojit pokud neobdržíme odpověď po určitém "
+"časovém intervalu"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:44
@@ -2086,8 +2309,12 @@ msgstr "Vypršení časového limitu po"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:100
-msgid "Only disconnect if the network socket gets closed by the operating system. This may take a long time after actually losing connectivity"
-msgstr "Odpojit pouze pokud bude síťový socket uzavřen operačním systémem. Může trvat poněkud déle nežli uzavře spojení po ztracení připojení"
+msgid ""
+"Only disconnect if the network socket gets closed by the operating system. "
+"This may take a long time after actually losing connectivity"
+msgstr ""
+"Odpojit pouze pokud bude síťový socket uzavřen operačním systémem. Může trvat "
+"poněkud déle nežli uzavře spojení po ztracení připojení"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:103
@@ -2254,13 +2481,21 @@ msgstr "odpojen (Id-Uživatele: %1)."
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:413
-msgid "CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!"
-msgstr "CoreSession::createNetwork(): Obdrženo špatné networkId od jádra při pokusu o vytvoření sítě %1!"
+msgid ""
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
+"create network %1!"
+msgstr ""
+"CoreSession::createNetwork(): Obdrženo špatné networkId od jádra při pokusu o "
+"vytvoření sítě %1!"
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:444
-msgid "CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"
-msgstr "CoreSession::createNetwork(): Síť s daným názvem již existuje. Aktualizuji místo duplikace!"
+msgid ""
+"CoreSession::createNetwork(): Trying to create a network that already exists, "
+"updating instead!"
+msgstr ""
+"CoreSession::createNetwork(): Síť s daným názvem již existuje. Aktualizuji "
+"místo duplikace!"
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:81
@@ -2274,8 +2509,13 @@ msgstr "posílám %2 požadavek CTCP-%1"
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:173
-msgid "[usage] /delkey <nick|channel> deletes the encryption key for nick or channel or just /delkey when in a channel or query."
-msgstr "[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /delkey, když je na popředí."
+msgid ""
+"[usage] /delkey <nick|channel> deletes the encryption key for nick or channel "
+"or just /delkey when in a channel or query."
+msgstr ""
+"[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo "
+"přezdívku. Odstranění klíče pro specifický kanál, či rozhovor, lze provést "
+"pomocí /delkey, bez argumentů v daném kanále, či rozhovoru."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:180
@@ -2289,13 +2529,27 @@ msgstr "Klíč pro %1 byl smazán."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:197
-msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA2) library. Contact your distributor about a Quassel package with QCA2 support, or rebuild Quassel with QCA2 present."
-msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA2, nebo znovu sestavte Quassel s dostupnou QCA2."
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
+"distributor about a Quassel package with QCA2 support, or rebuild Quassel "
+"with QCA2 present."
+msgstr ""
+"Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro "
+"knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora "
+"pro získání baličku Quassel s podporou QCA2, nebo znovu sestavte Quassel s "
+"dostupnou QCA2."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:461
-msgid "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or channel. /setkey <key> when in a channel or query buffer sets the key for it."
-msgstr "[použití] /setkey <kanál|přezdívka> <klíč> nastaví šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /setkey <klíč>, když je na popředí."
+msgid ""
+"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
+"channel. /setkey <key> when in a channel or query buffer sets the key for it."
+msgstr ""
+"[použití] /setkey <kanál|přezdívka> <klíč> nastaví šifrovací klíč pro kanál "
+"nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze "
+"provést "
+"pomocí /setkey <klíč>, v daném kanále, či rozhovoru."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:476
@@ -2304,8 +2558,16 @@ msgstr "Klíč pro %1 byl nastaven."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:479
-msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA) library. Contact your distributor about a Quassel package with QCA support, or rebuild Quassel with QCA present."
-msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA, nebo znovu sestavte Quassel s dostupnou QCA."
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA) library. Contact your "
+"distributor about a Quassel package with QCA support, or rebuild Quassel with "
+"QCA present."
+msgstr ""
+"Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro "
+"knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora "
+"pro získání baličku Quassel s podporou QCA, nebo znovu sestavte Quassel s "
+"dostupnou QCA."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:587
@@ -2335,55 +2597,56 @@ msgstr "Duplikovat:"
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:197
 msgid "Received CTCP CLIENTINFO request from %1"
-msgstr "Obdržen CTCP CLIENTINFO požadavek od %1"
+msgstr "Obdržen požadavek  CTCP CLIENTINFOod %1"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:200
 msgid "Received CTCP CLIENTINFO answer from %1: %2"
-msgstr "Obdržena CTCP CLIENTINFO odpověď od %1: %2"
+msgstr "Obdržena odpověď CTCP CLIENTINFO od %1: %2"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:211
 msgid "Received CTCP PING request from %1"
-msgstr "Obdržen CTCP PING požadavek od %1"
+msgstr "Obdržen požadavek CTCP PING od %1"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
-msgstr "Obdržena CTCP PING odpověď od %1 s %2 vteřinovým odstupem"
+msgstr "Obdržena odpověď CTCP PING od %1 s %2 vteřinovým odstupem"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:229
 msgid "Received CTCP VERSION request by %1"
-msgstr "Obdržen CTCP VERSION požadavek od %1"
+msgstr "Obdržen požadavek CTCP VERSION od %1"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:232
 msgid "Received CTCP VERSION answer from %1: %2"
-msgstr "Obdržena CTCP VERSION odpověď od %1: %2"
+msgstr "Obdržena odpověď CTCP VERSION od %1: %2"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:243
 msgid "Received CTCP TIME request by %1"
-msgstr "Obdržen CTCP TIME požadavek od %1"
+msgstr "Obdržen požadavek CTCP TIME od %1"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:246
 msgid "Received CTCP TIME answer from %1: %2"
-msgstr "Obdržena CTCP TIME odpověď od %1: %2"
+msgstr "Obdržena odpověď CTCP TIME od %1: %2"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:255
 msgid "Received unknown CTCP %1 by %2"
-msgstr "Obdrženo neznáme CTCP %1 od %2"
+msgstr "Obdrženo neznámé CTCP %1 od %2"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:257
 msgid " with arguments: %1"
-msgstr "s argumenty: %1"
+msgstr " s argumenty: %1"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:13
+#, fuzzy
 msgid "Debug BufferView Overlay"
 msgstr "Ladící vrstva záložek"
 
@@ -2534,7 +2797,7 @@ msgstr "Přidat"
 #: ../src/qtui/settingspages/highlightsettingspage.ui:62
 #: ../src/qtui/settingspages/identityeditwidget.ui:119
 msgid "Remove"
-msgstr "Odebrat"
+msgstr "Odstranit"
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:85
@@ -2565,7 +2828,7 @@ msgstr "Žádnou"
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:115
 msgid "Case sensitive"
-msgstr "Citlivý na velikost písma"
+msgstr "Rozlišovat velká/malá"
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:159
@@ -2608,7 +2871,9 @@ msgstr "Identity"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 #: ../src/qtui/settingspages/networkssettingspage.cpp:167
-msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
 msgstr "<b>Následující problémy je třeba opravit pro uložení změn:</b><ul>"
 
 #. ts-context IdentitiesSettingsPage
@@ -2813,7 +3078,7 @@ msgstr "Nastavit vzdálen při nicnedělání"
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:332
 msgid "Set away after"
-msgstr "Nastavit vzdálen po"
+msgstr "Nastavit \"pryč\" po"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:342
@@ -2837,8 +3102,12 @@ msgstr "Identifikace:"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:414
-msgid "The \"ident\" is part of your hostmask and, together with your host, uniquely identifies you within the IRC network."
-msgstr "\"Ident\" je částí vaší masky a spolu s názvem vašeho počítače vás unikátně označuje pro IRC síť."
+msgid ""
+"The \"ident\" is part of your hostmask and, together with your host, uniquely "
+"identifies you within the IRC network."
+msgstr ""
+"\"Ident\" je částí vaší masky a spolu s názvem vašeho počítače vás unikátně "
+"označuje pro IRC síť."
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:423
@@ -2862,14 +3131,19 @@ msgstr "Důvod pro vyhození:"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:488
-msgid "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr "Abyste byli schopni měnit nastavení SSL klíče a certifikátu musí váš klient podporovat SSL"
+msgid ""
+"You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
+msgstr ""
+"Abyste byli schopni měnit nastavení SSL klíče a certifikátu musí váš klient "
+"podporovat SSL"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgid ""
-"Warning: you are not connected with a secured connection to the Quassel Core!\n"
-"Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
+"Warning: you are not connected with a secured connection to the Quassel "
+"Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
+"Certificate!"
 msgstr ""
 "Varování: nejste připojeni k jádru zabezpečeným spojením!\n"
 "Pokračování povede k nešifrovanému přenosu vašeho SSL klíče a SSL certifikátu!"
@@ -2950,7 +3224,7 @@ msgstr "DSA"
 #: ../src/qtui/settingspages/identityeditwidget.cpp:330
 #: ../src/qtui/settingspages/identityeditwidget.cpp:369
 msgid "Clear"
-msgstr "Vyčistit"
+msgstr "Vyprázdnit"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.cpp:340
@@ -2965,7 +3239,7 @@ msgstr "Nastavení identity"
 #. ts-context IdentityPage
 #: ../src/qtui/ircconnectionwizard.cpp:112
 msgid "Default Identity"
-msgstr "Výchozí Identita"
+msgstr "Výchozí identita"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:15
@@ -2978,7 +3252,8 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown again.</p>"
+"\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
@@ -3035,7 +3310,8 @@ msgstr "Odesílatel"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</p>\n"
+"<p>Depending on the type of the rule, the text is matched against either:</p>"
+"\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3045,7 +3321,8 @@ msgid ""
 "<br />\n"
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
+"from any host</p>"
 msgstr ""
 "<p><b>Pravidlo ignorance:</b></p>\n"
 "<p>Podle typu pravidla je text kontrolován proti:</p>\n"
@@ -3056,9 +3333,11 @@ msgstr ""
 "<p><u>- textu odesílatele</u>  <i>(přezdívka!ident@název.počítače)</i></p>\n"
 "<p><i>Příklad:</i>\n"
 "<br />\n"
-"- <i>*@foobar.com</i> bude platit pro každý počítač z domény <i>foobar.com</i>\n"
+"- <i>*@foobar.com</i> bude platit pro každý počítač z domény <i>foobar.com</i>"
+"\n"
 "<br />\n"
-"- <i>hlupec!.+</i> (RegEx) platí pro každého uživatele s přezdívkou <i>hlupec</i>, který se může připojovat z libovolného počítače</p>"
+"- <i>hlupec!.+</i> (RegEx) platí pro každého uživatele s přezdívkou <i>"
+"hlupec</i>, který se může připojovat z libovolného počítače</p>"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IgnoreListEditDlg
@@ -3074,7 +3353,8 @@ msgstr "Pravidlo ignorance"
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
-"<p>Otherwise rules allow wildcard matching with the following special characters:</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special "
+"characters:</p>\n"
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
@@ -3089,7 +3369,7 @@ msgstr ""
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:131
 msgid "Regular expression"
-msgstr "Regulární výrazy"
+msgstr "Regulární výraz"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:143
@@ -3098,9 +3378,11 @@ msgid ""
 "<p><u>Global:</u></p>\n"
 "<p>The rule is active for any channel on any network</p>\n"
 "<p><u>Network:</u></p>\n"
-"<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule "
+"should match</p>\n"
 "<p><u>Channel:</u></p>\n"
-"<p>The list below is interpreted as a list of channels for which the rule should match</p>"
+"<p>The list below is interpreted as a list of channels for which the rule "
+"should match</p>"
 msgstr ""
 "<p><b>Rozsah:</b></p>\n"
 "<p><u>Globální:</u></p>\n"
@@ -3142,7 +3424,8 @@ msgstr "Kanál"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>"
+"channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -3150,7 +3433,8 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 "<p><b>Rozsah pravidla:</b></p>\n"
-"<p>Jedná se o seznam středníkem oddělených hodnot obsahujících seznam názvů <i>sítí</i> nebo <i>kanálů</i>.</p>\n"
+"<p>Jedná se o seznam středníkem oddělených hodnot obsahujících seznam názvů <"
+"i>sítí</i> nebo <i>kanálů</i>.</p>\n"
 "<p><i>Příklad:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -3173,17 +3457,35 @@ msgstr ""
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
 msgid "Rule is enabled"
-msgstr "Povolit pravidlo"
+msgstr "Pravidlo je povoleno"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:69
-msgid "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For dynamic rules, disabling actually shows the filtered messages again"
-msgstr "<b>Povolit / Zakázat:</b><br />Pouze povolená pravidla jsou filtrována.<br />Pro dynamická pravidla jsou jejich vypnutím filtrované zprávy znovu zobrazeny"
+msgid ""
+"<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
+"dynamic rules, disabling actually shows the filtered messages again"
+msgstr ""
+"<b>Povolit / Zakázat:</b><br />Pouze povolená pravidla jsou filtrována.<br />"
+"Pro dynamická pravidla jsou jejich vypnutím filtrované zprávy znovu zobrazeny"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
-msgid "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is matched against either:<br /><br />- <u>the message content:</u><br /><i>Example:<i><br />    \"*foobar*\" matches any text containing the word \"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any host<br />"
-msgstr "<b>Pravidlo ignorance:</b><br />Podle typu pravidla text je porovnáván vůči:<br /><br />- <u>obsahu zprávy:</u><br /><i>Příklad:<i><br />    \"*foobar*\" bude platit na jakýkoliv text obsahující \"foobar\"<br /><br />- <u>odesílateli <i>nick!ident@host.name<i></u><br /><i>Příklad:</i><br />    \"*@foobar.com\" platí na všechny odesílatele z domény foobar.com<br />    \"stupid!.+\" (RegEx) bude platit na kohokoliv s přezdívkou \"stupid\" a z libovolné adresy<br />"
+msgid ""
+"<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
+"matched against either:<br /><br />- <u>the message content:</u><br /><i>"
+"Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></u><"
+"br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from host "
+"foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with nickname "
+"\"stupid\" from any host<br />"
+msgstr ""
+"<b>Pravidlo ignorance:</b><br />Podle typu pravidla text je porovnáván vůči:<"
+"br /><br />- <u>obsahu zprávy:</u><br /><i>Příklad:<i><br />    \"*foobar*\" "
+"bude platit na jakýkoliv text obsahující \"foobar\"<br /><br />- <u>"
+"odesílateli <i>nick!ident@host.name<i></u><br /><i>Příklad:</i><br />    "
+"\"*@foobar.com\" platí na všechny odesílatele z domény foobar.com<br />    "
+"\"stupid!.+\" (RegEx) bude platit na kohokoliv s přezdívkou \"stupid\" a z "
+"libovolné adresy<br />"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
@@ -3233,8 +3535,11 @@ msgstr ""
 
 #. ts-context IndicatorNotificationConfigWidget
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
-msgid "This enables support for the Ayatana Project's application indicator (libindicate)."
-msgstr "Povoluje podporu aplikačního indikátoru projektu Ayatana (libindicate)."
+msgid ""
+"This enables support for the Ayatana Project's application indicator "
+"(libindicate)."
+msgstr ""
+"Povoluje podporu aplikačního indikátoru projektu Ayatana (libindicate)."
 
 #. ts-context IndicatorNotificationConfigWidget
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:23
@@ -3412,7 +3717,7 @@ msgstr ": "
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgid "Input Widget"
-msgstr "Vstupní řádka"
+msgstr "Vstupní widget"
 
 #. ts-context IrcConnectionWizard
 #: ../src/qtui/ircconnectionwizard.cpp:51
@@ -3453,8 +3758,11 @@ msgstr "Obdrženo RPL_ISUPPORT (005) bez parametrů!"
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:642
-msgid "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"
-msgstr "Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému chování!"
+msgid ""
+"Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"
+msgstr ""
+"Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému "
+"chování!"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcServerHandler
@@ -3625,13 +3933,16 @@ msgstr "Přezdívka/kanál je dočasně nedostupná: %1"
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1270
-msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
-msgstr "Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro pokračování použijte: /nick <jiná_přezdívka>"
+msgid ""
+"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
+msgstr ""
+"Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro "
+"pokračování použijte: /nick <jiná_přezdívka>"
 
 #. ts-context IrcUserItem
 #: ../src/client/networkmodel.cpp:806
 msgid " is away"
-msgstr " je fuč"
+msgstr " je pryč"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcUserItem
@@ -3668,7 +3979,7 @@ msgstr "Zobrazit ikonky"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:66
 msgid "Chat List"
-msgstr "Seznam pokeců"
+msgstr "Seznam místností"
 
 # WORD TRANSLATION :D
 #. ts-context ItemViewSettingsPage
@@ -3679,7 +3990,7 @@ msgstr "Zobrazit téma ve sponce (tooltip :))"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:85
 msgid "Mouse wheel changes selected chat"
-msgstr "Kolečko myši mění vybraný pokec"
+msgstr "Kolečko myši mění vybranou místnost"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:101
@@ -3704,12 +4015,12 @@ msgstr "Nepřečtené zprávy:"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:190
 msgid "Highlight:"
-msgstr "Zvýraznění:"
+msgstr "Zvýraznit:"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:214
 msgid "Other activity:"
-msgstr "Jiné činnosti:"
+msgstr "Jiná činnost:"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:272
@@ -3734,7 +4045,7 @@ msgstr "Pryč:"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 msgid "Chat & Nick Lists"
-msgstr "Pokec & Seznam přezdívek"
+msgstr "Místnosti & Seznam přezdívek"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
@@ -3840,8 +4151,11 @@ msgstr ""
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
-msgid "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
-msgstr "Zkratka \"%1\" má nejednoznačný význam spolu se zkratkou pro následujíc činnost:"
+msgid ""
+"The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
+msgstr ""
+"Zkratka \"%1\" má nejednoznačný význam spolu se zkratkou pro následujíc "
+"činnost:"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:364
@@ -3881,7 +4195,7 @@ msgstr "&Ukončit"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:327
 msgid "&Configure Chat Lists..."
-msgstr "&Nastavit seznam pokeců..."
+msgstr "&Nastavit seznam místností..."
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:330
@@ -4112,7 +4426,7 @@ msgstr "&Záložky"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:461
 msgid "&Chat Lists"
-msgstr "&Seznam pokeců"
+msgstr "&Seznam místností"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:463
@@ -4132,7 +4446,7 @@ msgstr "&Nápověda"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:494
 msgid "Debug"
-msgstr "Debug"
+msgstr "Ladění"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:723
@@ -4147,7 +4461,7 @@ msgstr "Zobrazit seznam přezdívek"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:755
 msgid "Show Chat Monitor"
-msgstr "Zobrazí monitor pokecu"
+msgstr "Zobrazí monitor místností"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:759
@@ -4193,8 +4507,12 @@ msgstr "<b>Váš klient nepodporuje šifrování skrze SSL</b>"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1017
 #: ../src/qtui/mainwin.cpp:1025
-msgid "Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."
-msgstr "Citlivá data, například hesla, budou přenášena k jádru Quasselu bez použití šifrování."
+msgid ""
+"Sensitive data, like passwords, will be transmitted unencrypted to your "
+"Quassel core."
+msgstr ""
+"Citlivá data, například hesla, budou přenášena k jádru Quasselu bez použití "
+"šifrování."
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1023
@@ -4209,8 +4527,12 @@ msgstr "Nedůvěryhodný bezpečnostní certifikát"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1041
-msgid "<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>"
-msgstr "<b>SSL certifikát poskytnutý jádrem %1 je nedůvěryhodný z následujících důvodů:</b>"
+msgid ""
+"<b>The SSL certificate provided by the core at %1 is untrusted for the "
+"following reasons:</b>"
+msgstr ""
+"<b>SSL certifikát poskytnutý jádrem %1 je nedůvěryhodný z následujících "
+"důvodů:</b>"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1045
@@ -4219,8 +4541,11 @@ msgstr "Zobrazit certifikát"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1061
-msgid "Would you like to accept this certificate forever without being prompted?"
-msgstr "Chcete tento certifikát přijmout na trvalo a vyhnout se opětovnému schvalování?"
+msgid ""
+"Would you like to accept this certificate forever without being prompted?"
+msgstr ""
+"Chcete tento certifikát přijmout na trvalo a vyhnout se opětovnému "
+"schvalování?"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1063
@@ -4370,13 +4695,19 @@ msgstr "...a <b>%1</b> více<br><br>"
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:168
-msgid "<b>Note:</b> This will delete all related data, including all backlog data, from the core's database and cannot be undone."
-msgstr "<b>Poznámka:</b> Tento krok smaže všechna relevantní data, včetně historie, z databáze jádra a nelze jej zvrátit."
+msgid ""
+"<b>Note:</b> This will delete all related data, including all backlog data, "
+"from the core's database and cannot be undone."
+msgstr ""
+"<b>Poznámka:</b> Tento krok smaže všechna relevantní data, včetně historie, z "
+"databáze jádra a nelze jej zvrátit."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:170
-msgid "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "<br>Aktivní záložky s kanály nelze smazat, nejprve musíte daný kanál opustit."
+msgid ""
+"<br>Active channel buffers cannot be deleted, please part the channel first."
+msgstr ""
+"<br>Aktivní záložky s kanály nelze smazat, nejprve musíte daný kanál opustit."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
@@ -4386,7 +4717,7 @@ msgstr "Odstranit trvale záložky?"
 #. ts-context NetworkModelController::JoinDlg
 #: ../src/uisupport/networkmodelcontroller.cpp:484
 msgid "Join Channel"
-msgstr "Vstoupit do kanálu"
+msgstr "Připojit se do kanálu"
 
 #. ts-context NetworkModelController::JoinDlg
 #: ../src/uisupport/networkmodelcontroller.cpp:489
@@ -4429,7 +4760,7 @@ msgstr "Spravovat servery pro tuto síť"
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgid "&Edit..."
-msgstr "&Editovat..."
+msgstr "&Upravit..."
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:337
@@ -4438,8 +4769,12 @@ msgstr "Příkazy"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:340
-msgid "Configure automatic identification or misc. commands to be executed after connecting to a server"
-msgstr "Natavit automatickou identifikaci, nebo různé příkazy ke spuštění, po připojení k serveru"
+msgid ""
+"Configure automatic identification or misc. commands to be executed after "
+"connecting to a server"
+msgstr ""
+"Natavit automatickou identifikaci, nebo různé příkazy ke spuštění, po "
+"připojení k serveru"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
@@ -4450,10 +4785,12 @@ msgstr "Příkazy, které se spustí při připojení:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:362
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
-"Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely be "
+"needed here!"
 msgstr ""
 "Seznam IRC příkazů, které se spustí při připojení.\n"
-"Quassel se automaticky připojuje ke kanálům, tedy /join zde s vysokou pravděpodobností nebude třeba!"
+"Quassel se automaticky připojuje ke kanálům, tedy /join zde s vysokou "
+"pravděpodobností nebude třeba!"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
@@ -4494,7 +4831,7 @@ msgstr "Znovu vstoupit do všech kanálů při opakovaném spojení"
 #: ../src/qtui/settingspages/networkssettingspage.ui:516
 #: ../src/qtui/settingspages/networkssettingspage.ui:525
 msgid "Auto Identify"
-msgstr "Automaticky identifikovat"
+msgstr "Automaticky se identifikovat"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:540
@@ -4523,8 +4860,11 @@ msgstr "Kódování"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:652
-msgid "Configure advanced settings such as message encodings and automatic reconnect"
-msgstr "Nastavení pokročilých možností, jako kódování a automatické opakování připojení"
+msgid ""
+"Configure advanced settings such as message encodings and automatic reconnect"
+msgstr ""
+"Nastavení pokročilých možností, jako kódování a automatické opakování "
+"připojení"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
@@ -4573,7 +4913,8 @@ msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
-"Tato volba specifikuje v jakém kódování jsou přezdívky, kontrolní zprávy a názvy serverů.\n"
+"Tato volba specifikuje v jakém kódování jsou přezdívky, kontrolní zprávy a "
+"názvy serverů.\n"
 "Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!"
 
 #. ts-context NetworksSettingsPage
@@ -4603,8 +4944,11 @@ msgstr "Smazat síť?"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:543
-msgid "Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
-msgstr "Opravdu chcete smazat síť \"%1\" a veškeré její nastavení, včetně historie?"
+msgid ""
+"Do you really want to delete the network \"%1\" and all related settings, "
+"including the backlog?"
+msgstr ""
+"Opravdu chcete smazat síť \"%1\" a veškeré její nastavení, včetně historie?"
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
@@ -4618,13 +4962,17 @@ msgstr "Prosím vložte validní přezdívku:"
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:32
-msgid "A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr "Validní přezdívka může obsahovat písmenka anglické abecedy, čísla, a speciální znaky {, }, [, ], \\, |, `, ^, _ a -."
+msgid ""
+"A valid nickname may contain letters from the English alphabet, digits, and "
+"the special characters {, }, [, ], \\, |, `, ^, _ and -."
+msgstr ""
+"Validní přezdívka může obsahovat písmenka anglické abecedy, čísla, a "
+"speciální znaky {, }, [, ], \\, |, `, ^, _ a -."
 
 #. ts-context NotificationsSettingsPage
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
 msgid "Notifications"
-msgstr "Oznámení"
+msgstr "Oznamování"
 
 #. ts-context PhononNotificationBackend::ConfigWidget
 #: ../src/qtui/phononnotificationbackend.cpp:143
@@ -4674,8 +5022,14 @@ msgstr "Vítejte v IRC klientu Quassel"
 
 #. ts-context QObject
 #: ../src/qtui/ircconnectionwizard.cpp:58
-msgid "This wizard will help you to set up your default identity and your IRC network connection.<br>This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."
-msgstr "Tento průvodce vám pomůže nastavit výchozí identitu a spojení k IRC síti.<br>Zaměřuje se pouze na základní nastavení. Můžete ho kdykoliv přerušit a použít nastavení v aplikaci pro podrobnější nastavení/změny."
+msgid ""
+"This wizard will help you to set up your default identity and your IRC "
+"network connection.<br>This only covers basic settings. You can cancel this "
+"wizard any time and use the settings dialog for more detailed changes."
+msgstr ""
+"Tento průvodce vám pomůže nastavit výchozí identitu a spojení k IRC síti.<br>"
+"Zaměřuje se pouze na základní nastavení. Můžete ho kdykoliv přerušit a použít "
+"nastavení v aplikaci pro podrobnější nastavení/změny."
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:121
@@ -4752,7 +5106,7 @@ msgstr "Neplatný typ položky seznamu rozhovorů: %1"
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:366
 msgid "Invalid chatlist state %1"
-msgstr "Neplatný stav seznamu pokeců %1"
+msgstr "Neplatný stav seznamu místností %1"
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:392
@@ -4856,7 +5210,7 @@ msgstr "Synchronizuji data s Jádrem, prosím o strpení..."
 #. ts-context SaveIdentitiesDlg
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:81
 msgid "Abort"
-msgstr "Zrušit"
+msgstr "Přerušit"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:30
@@ -4875,8 +5229,11 @@ msgstr "Verze SSL:"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:147
-msgid "Do not change unless you're going to connect to a server not supporting SSLv3!"
-msgstr "Tuto hodnotu měňte pouze za předpokladu, že se připojujete k serveru nepodporujícímu SSLv3!"
+msgid ""
+"Do not change unless you're going to connect to a server not supporting SSLv3!"
+msgstr ""
+"Tuto hodnotu měňte pouze za předpokladu, že se připojujete k serveru "
+"nepodporujícímu SSLv3!"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:151
@@ -4935,8 +5292,11 @@ msgstr "Uložit změny"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:110
-msgid "There are unsaved changes on the current configuration page. Would you like to apply your changes now?"
-msgstr "Na této konfigurační stránce jsou neuložené změny. Přejete si je uložit?"
+msgid ""
+"There are unsaved changes on the current configuration page. Would you like "
+"to apply your changes now?"
+msgstr ""
+"Na této konfigurační stránce jsou neuložené změny. Přejete si je uložit?"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
@@ -4964,7 +5324,8 @@ msgstr "Znovu načíst nastavení"
 #: ../src/qtui/settingsdlg.cpp:193
 #: ../src/qtui/settingspagedlg.cpp:104
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Opravdu chcete znovu načíst nastavení, odstraní všechny změny na této stránce?"
+msgstr ""
+"Opravdu chcete znovu načíst nastavení, odstraní všechny změny na této stránce?"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
@@ -5022,7 +5383,8 @@ msgstr "Zkratky"
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:880
 msgid "Peer tried to send package larger than max package size!"
-msgstr "Peer se pokusil odeslat balíček větší než je maximální povolená velikost!"
+msgstr ""
+"Peer se pokusil odeslat balíček větší než je maximální povolená velikost!"
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:885
@@ -5076,13 +5438,25 @@ msgstr "Automaticky vstoupit do"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:250
-msgid "A list of IRC channels you will join automatically after connecting to the network"
-msgstr "Seznam IRC kanálů ke kterým se automaticky připojíte po připojení do dané sítě"
+msgid ""
+"A list of IRC channels you will join automatically after connecting to the "
+"network"
+msgstr ""
+"Seznam IRC kanálů ke kterým se automaticky připojíte po připojení do dané sítě"
 
 #. ts-context SqliteStorage
 #: ../src/core/sqlitestorage.cpp:52
-msgid "SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine it is running on, and if you only expect a few users to use your core."
-msgstr "SQLite je souborově založený databázový server, který nevyžaduje nastavování. Je vhodný pro malé a střední databáze, které nepotřebují být přístupné přes síť. Použijte jej pokud vaše Quassel jádro ukládá data na stejném stroji na kterém běží a pokud očekáváte pouze pár připojujících se uživatelů k tomuto jádru."
+msgid ""
+"SQLite is a file-based database engine that does not require any setup. It is "
+"suitable for small and medium-sized databases that do not require access via "
+"network. Use SQLite if your Quassel Core should store its data on the same "
+"machine it is running on, and if you only expect a few users to use your core."
+msgstr ""
+"SQLite je souborově založený databázový server, který nevyžaduje nastavování. "
+"Je vhodný pro malé a střední databáze, které nepotřebují být přístupné přes "
+"síť. Použijte jej pokud vaše Quassel jádro ukládá data na stejném stroji na "
+"kterém běží a pokud očekáváte pouze pár připojujících se uživatelů k tomuto "
+"jádru."
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:14
@@ -5249,7 +5623,7 @@ msgstr "Vstoupí na kanál"
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgid "Query"
-msgstr "Vykecávat"
+msgstr "Soukromý rozhovor"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
@@ -5517,33 +5891,33 @@ msgstr[2] "%n Vlastníků"
 #: ../src/client/networkmodel.cpp:698
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] "%n Správce"
-msgstr[1] "%n Správci"
-msgstr[2] "%n Správců"
+msgstr[0] "%n Administrátor"
+msgstr[1] "%n Administrátoři"
+msgstr[2] "%n Administrátorů"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:699
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] "%n Dozorce"
-msgstr[1] "%n Dozorci"
-msgstr[2] "%n Dozorců"
+msgstr[0] "%n Stálý Správce"
+msgstr[1] "%n Stálý Správci"
+msgstr[2] "%n Stálých Správců"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:700
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] "%n Bachař"
-msgstr[1] "%n Bachaři"
-msgstr[2] "%n Bachařů"
+msgstr[0] "%n Správce"
+msgstr[1] "%n Správci"
+msgstr[2] "%n Správců"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:701
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] "%n Mluvka"
-msgstr[1] "%n Mluvky"
-msgstr[2] "%n Mluvek"
+msgstr[0] "%n Uživatel"
+msgstr[1] "%n Uživatelé"
+msgstr[2] "%n Uživatelů"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:702
@@ -5552,3 +5926,5 @@ msgid_plural "%n User(s)"
 msgstr[0] "%n Uživatel"
 msgstr[1] "%n Uživatelé"
 msgstr[2] "%n Uživatelů"
+
+
