@@ -995,7 +995,7 @@ void SignalProxy::receiveHeartBeatReply(AbstractPeer *peer, const QVariantList &
 }
 
 void SignalProxy::customEvent(QEvent *event) {
-  switch(event->type()) {
+  switch(+event->type()) {
   case PeerSignal:
     {
       PeerSignalEvent *e = static_cast<PeerSignalEvent *>(event);
