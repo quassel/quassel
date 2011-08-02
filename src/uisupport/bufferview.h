@@ -65,6 +65,7 @@ public slots:
   void menuActionTriggered(QAction *);
   void nextBuffer();
   void previousBuffer();
+  void hideCurrentBuffer();
 
 signals:
   void removeBuffer(const QModelIndex &);

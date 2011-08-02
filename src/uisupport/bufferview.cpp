@@ -485,6 +485,26 @@ void BufferView::wheelEvent(QWheelEvent* event) {
   changeBuffer((Direction)rowDelta);
 }
 
+void BufferView::hideCurrentBuffer() {
+  QModelIndex index = selectionModel()->currentIndex();
+  if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
+    return;
+  
+  BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+  
+  //The check above means we won't be looking at a network, which should always be the first row, so we can just go backwards.
+  changeBuffer(Backward);
+
+  /*if(removedRows.contains(bufferId))
+    continue;
+
+  removedRows << bufferId;*/
+  /*if(permanently)
+    config()->requestRemoveBufferPermanently(bufferId);
+  else*/
+  config()->requestRemoveBuffer(bufferId);
+}
+
 QSize BufferView::sizeHint() const {
   return QTreeView::sizeHint();
 

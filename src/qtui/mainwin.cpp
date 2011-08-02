@@ -456,6 +456,8 @@ void MainWin::setupActions() {
                                            this, SLOT(nextBuffer()), QKeySequence(Qt::ALT + Qt::Key_Down)));
   coll->addAction("PreviousBuffer", new Action(SmallIcon("go-up"), tr("Go to Previous Chat"), coll,
                                                this, SLOT(previousBuffer()), QKeySequence(Qt::ALT + Qt::Key_Up)));
+  coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll,
+                                                  this, SLOT(hideCurrentBuffer()), QKeySequence(Qt::ControlModifier + Qt::Key_W)));
 }
 
 void MainWin::setupMenus() {
@@ -711,6 +713,12 @@ void MainWin::previousBuffer() {
   BufferView *view = activeBufferView();
   if(view)
     view->previousBuffer();
+}
+
+void MainWin::hideCurrentBuffer() {
+  BufferView *view = activeBufferView();
+  if(view)
+    view->hideCurrentBuffer();
 }
 
 void MainWin::showNotificationsDlg() {
