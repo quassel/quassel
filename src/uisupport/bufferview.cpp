@@ -442,20 +442,37 @@ void BufferView::previousBuffer() {
 void BufferView::changeBuffer(Direction direction) {
   QModelIndex currentIndex = selectionModel()->currentIndex();
   QModelIndex resultingIndex;
-  if(model()->hasIndex(  currentIndex.row() + direction, currentIndex.column(), currentIndex.parent()))
-    resultingIndex = currentIndex.sibling(currentIndex.row() + direction, currentIndex.column());
 
-  else {
-    //if we scroll into a the parent node...
-    QModelIndex parent = currentIndex.parent();
-    QModelIndex aunt = parent.sibling(parent.row() + direction, parent.column());
-    if(direction == Backward)
-      resultingIndex = aunt.child(model()->rowCount(aunt) - 1, 0);
-    else
-      resultingIndex = aunt.child(0, 0);
-    if(!resultingIndex.isValid())
-      return;
+  if(currentIndex.parent().isValid()) {
+    //If we are a child node just switch among siblings unless it's the first/last child
+    resultingIndex = currentIndex.sibling(currentIndex.row() + direction, 0);
+
+    if(!resultingIndex.isValid()) {
+      QModelIndex parent = currentIndex.parent();
+      if(direction == Backward)
+        resultingIndex = parent;
+      else
+        resultingIndex = parent.sibling(parent.row() + direction, 0);
+    }
+  } else {
+    //If we have a toplevel node, try and get an adjacent child
+    if(direction == Backward) {
+      QModelIndex newParent = currentIndex.sibling(currentIndex.row() - 1, 0);
+      if(model()->hasChildren(newParent))
+        resultingIndex = newParent.child(model()->rowCount(newParent) - 1, 0);
+      else
+        resultingIndex = newParent;
+    } else {
+      if(model()->hasChildren(currentIndex))
+        resultingIndex = currentIndex.child(0, 0);
+      else
+        resultingIndex = currentIndex.sibling(currentIndex.row() + 1, 0);
+    }
   }
+
+  if(!resultingIndex.isValid())
+    return;
+
   selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
   selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
 }
