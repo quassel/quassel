@@ -281,6 +281,14 @@ QString TabCompletionSettings::completionSuffix() {
   return localValue("CompletionSuffix", ": ").toString();
 }
 
+void TabCompletionSettings::setAddSpaceMidSentence(const bool &space) {
+  setLocalValue("AddSpaceMidSentence", space);
+}
+
+bool TabCompletionSettings::addSpaceMidSentence() {
+  return localValue("AddSpaceMidSentence", false).toBool();
+}
+
 void TabCompletionSettings::setSortMode(SortMode mode) {
   setLocalValue("SortMode", mode);
 }

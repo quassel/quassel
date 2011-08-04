@@ -153,6 +153,9 @@ public:
   void setCompletionSuffix(const QString &);
   QString completionSuffix();
 
+  void setAddSpaceMidSentence(const bool &);
+  bool addSpaceMidSentence();
+
   void setSortMode(SortMode);
   SortMode sortMode();
 

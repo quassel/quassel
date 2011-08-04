@@ -254,6 +254,39 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QCheckBox" name="addSpaceMidSentence">
+          <property name="text">
+           <string>Add space after nick when completing mid-sentence</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="settingsKey" stdset="0">
+            <string notr="true">/TabCompletion/AddSpaceMidSentence</string>
+          </property>
+          <property name="defaultValue" stdset="0">
+            <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
