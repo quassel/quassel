@@ -122,14 +122,14 @@ void Network::setNetworkInfo(const NetworkInfo &info) {
   if(info.rejoinChannels != rejoinChannels()) setRejoinChannels(info.rejoinChannels);
 }
 
-QString Network::prefixToMode(const QString &prefix) {
+QString Network::prefixToMode(const QString &prefix) const {
   if(prefixes().contains(prefix))
     return QString(prefixModes()[prefixes().indexOf(prefix)]);
   else
     return QString();
 }
 
-QString Network::modeToPrefix(const QString &mode) {
+QString Network::modeToPrefix(const QString &mode) const {
   if(prefixModes().contains(mode))
     return QString(prefixes()[prefixModes().indexOf(mode)]);
   else
@@ -146,14 +146,14 @@ QStringList Network::nicks() const {
   return nicks;
 }
 
-QString Network::prefixes() {
+QString Network::prefixes() const {
   if(_prefixes.isNull())
     determinePrefixes();
 
   return _prefixes;
 }
 
-QString Network::prefixModes() {
+QString Network::prefixModes() const {
   if(_prefixModes.isNull())
     determinePrefixes();
 
@@ -732,7 +732,7 @@ void Network::emitConnectionError(const QString &errorMsg) {
 // ====================
 //  Private:
 // ====================
-void Network::determinePrefixes() {
+void Network::determinePrefixes() const {
   // seems like we have to construct them first
   QString prefix = support("PREFIX");
 
