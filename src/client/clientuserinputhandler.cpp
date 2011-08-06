@@ -29,6 +29,8 @@
 #include "network.h"
 #include "types.h"
 #include "bufferinfo.h"
+#include "clientbufferviewconfig.h"
+#include "clientbufferviewmanager.h"
 #include "messagemodel.h"
 
 #include <QDateTime>
@@ -108,5 +110,18 @@ void ClientUserInputHandler::switchBuffer(const NetworkId &networkId, const QStr
   }
   else {
     Client::bufferModel()->switchToBuffer(newBufId);
+    // unhide the buffer
+    ClientBufferViewManager *clientBufferViewManager = Client::bufferViewManager();
+    QList<ClientBufferViewConfig*> bufferViewConfigList = clientBufferViewManager->clientBufferViewConfigs();
+    foreach (ClientBufferViewConfig *bufferViewConfig, bufferViewConfigList) {
+      if (bufferViewConfig->temporarilyRemovedBuffers().contains(newBufId)) {
+        bufferViewConfig->addBuffer(newBufId, bufferViewConfig->bufferList().length());
+        //if (bufferViewConfig->sortAlphabetically()) {
+          // TODO we need to trigger a sort here, but can't reach the model required
+          // to get a bufferviewfilter, as the bufferviewmanager only managers configs
+          //BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+        //}
+      }
+    }
   }
 }
