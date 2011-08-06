@@ -135,10 +135,10 @@ public:
   //Network::ConnectionState connectionState() const;
   inline int connectionState() const { return _connectionState; }
 
-  QString prefixToMode(const QString &prefix);
-  inline QString prefixToMode(const QCharRef &prefix) { return prefixToMode(QString(prefix)); }
-  QString modeToPrefix(const QString &mode);
-  inline QString modeToPrefix(const QCharRef &mode) { return modeToPrefix(QString(mode)); }
+  QString prefixToMode(const QString &prefix) const;
+  inline QString prefixToMode(const QCharRef &prefix) const { return prefixToMode(QString(prefix)); }
+  QString modeToPrefix(const QString &mode) const;
+  inline QString modeToPrefix(const QCharRef &mode) const { return modeToPrefix(QString(mode)); }
 
   ChannelModeType channelModeType(const QString &mode);
   inline ChannelModeType channelModeType(const QCharRef &mode) { return channelModeType(QString(mode)); }
@@ -169,9 +169,9 @@ public:
   NetworkInfo networkInfo() const;
   void setNetworkInfo(const NetworkInfo &);
 
-  QString prefixes();
-  QString prefixModes();
-  void determinePrefixes();
+  QString prefixes() const;
+  QString prefixModes() const;
+  void determinePrefixes() const;
 
   bool supports(const QString &param) const { return _supports.contains(param); }
   QString support(const QString &param) const;
@@ -336,8 +336,8 @@ private:
   bool _connected;
   ConnectionState _connectionState;
 
-  QString _prefixes;
-  QString _prefixModes;
+  mutable QString _prefixes;
+  mutable QString _prefixModes;
 
   QHash<QString, IrcUser *> _ircUsers;  // stores all known nicks for the server
   QHash<QString, IrcChannel *> _ircChannels; // stores all known channels
