@@ -25,6 +25,7 @@
 #include <QGraphicsProxyWidget>
 #include <QPainter>
 #include <QWebView>
+#include <QWebSettings>
 
 WebPreviewItem::WebPreviewItem(const QUrl &url)
   : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
@@ -33,6 +34,7 @@ WebPreviewItem::WebPreviewItem(const QUrl &url)
   qreal frameWidth = 5;
 
   QWebView *webView = new QWebView;
+  webView->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
   webView->load(url);
   webView->resize(1000, 750);
   QGraphicsProxyWidget *proxyItem = new QGraphicsProxyWidget(this);
