@@ -47,6 +47,9 @@ public:
 
   virtual bool eventFilter(QObject *obj, QEvent *event);
 
+public slots:
+  void onTabCompletionKey();
+
 private:
 
   struct CompletionKey {

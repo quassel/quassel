@@ -28,6 +28,9 @@
 #include "network.h"
 #include "networkmodel.h"
 #include "uisettings.h"
+#include "action.h"
+#include "actioncollection.h"
+#include "qtui.h"
 
 #include <QRegExp>
 
@@ -42,7 +45,16 @@ TabCompleter::TabCompleter(MultiLineEdit *_lineEdit)
     _enabled(false),
     _nickSuffix(": ")
 {
+  // use both an Action and generic eventFilter, to make the shortcut configurable
+  // yet still be able to reset() when required
   _lineEdit->installEventFilter(this);
+  ActionCollection *coll = QtUi::actionCollection("General");
+  coll->addAction("TabCompletionKey", new Action(tr("Tab completion"), coll,
+                                              this, SLOT(onTabCompletionKey()), QKeySequence(Qt::Key_Tab)));
+}
+
+void TabCompleter::onTabCompletionKey() {
+  complete();
 }
 
 void TabCompleter::buildCompletionList() {
@@ -153,13 +165,10 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event) {
 
   QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
-  if(keyEvent->key() == Qt::Key_Tab) {
-    complete();
-    return true;
-  } else {
+  if(keyEvent->key() != QtUi::actionCollection("General")->action("TabCompletionKey")->shortcut()) {
     reset();
-    return false;
   }
+  return false;
 }
 
 // this determines the sort order
