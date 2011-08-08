@@ -34,13 +34,14 @@ class ShortcutsFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    ShortcutsFilter(QObject *parent = 0);
+    ShortcutsFilter(QList<QString> exclude = QList<QString>(), QObject *parent = 0);
 
 public slots:
     void setFilterString(const QString &filterString);
 
 protected:
     virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    QList<QString> _includeCategories;
 
 private:
     QString _filterString;
@@ -51,8 +52,7 @@ class ShortcutsSettingsPage : public SettingsPage
 {
     Q_OBJECT
 public:
-    ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
-
+    ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QList<QString> includeCategories, QWidget *parent, const QString &category=tr("Interface"), const QString &name=tr("Shortcuts"));
     inline bool hasDefaults() const { return true; }
 
 public slots:
@@ -66,7 +66,9 @@ private slots:
     void setWidgetStates();
     void toggledCustomOrDefault();
 
-private:
+protected:
+    void initui();
+
     Ui::ShortcutsSettingsPage ui;
     ShortcutsModel *_shortcutsModel;
     ShortcutsFilter *_shortcutsFilter;

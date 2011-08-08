@@ -39,6 +39,7 @@
 GraphicalUi *GraphicalUi::_instance = 0;
 QWidget *GraphicalUi::_mainWidget = 0;
 QHash<QString, ActionCollection *> GraphicalUi::_actionCollections;
+QHash<QString, ActionCollection *> GraphicalUi::_quickAccessorActionCollections;
 ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = 0;
 ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
 UiStyle *GraphicalUi::_uiStyle = 0;
@@ -84,14 +85,40 @@ ActionCollection *GraphicalUi::actionCollection(const QString &category, const Q
 }
 
 
-QHash<QString, ActionCollection *> GraphicalUi::actionCollections()
+ActionCollection *GraphicalUi::quickAccessorActionCollection(const QString &networkName)
 {
+    if (_quickAccessorActionCollections.contains(networkName))
+        return _quickAccessorActionCollections.value(networkName);
+    ActionCollection *coll = new ActionCollection(_mainWidget);
+
+    coll->setProperty("Category", networkName);
+
+    if (_mainWidget)
+        coll->addAssociatedWidget(_mainWidget);
+    _quickAccessorActionCollections.insert(networkName, coll);
+    return coll;
+}
+
+
+QHash<QString, ActionCollection *> GraphicalUi::quickAccessorActionCollections() {
+    return _quickAccessorActionCollections;
+}
+
+
+QHash<QString, ActionCollection *> GraphicalUi::actionCollections() {
     return _actionCollections;
 }
 
 
-void GraphicalUi::loadShortcuts()
+QHash<QString, ActionCollection *> GraphicalUi::allActionCollections()
 {
+    QHash<QString, ActionCollection *> all = _actionCollections;
+    all.unite(_quickAccessorActionCollections);
+    return all;
+}
+
+
+void GraphicalUi::loadShortcuts() {
     foreach(ActionCollection *coll, actionCollections())
     coll->readSettings();
 }
@@ -101,8 +128,9 @@ void GraphicalUi::saveShortcuts()
 {
     ShortcutSettings s;
     s.clear();
-    foreach(ActionCollection *coll, actionCollections())
-    coll->writeSettings();
+    foreach(ActionCollection *coll, actionCollections()) {
+        coll->writeSettings();
+    }
 }
 
 

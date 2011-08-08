@@ -56,6 +56,7 @@
 #include "actioncollection.h"
 #include "bufferhotlistfilter.h"
 #include "buffermodel.h"
+#include "buffersettings.h"
 #include "bufferview.h"
 #include "bufferviewoverlay.h"
 #include "bufferviewoverlayfilter.h"
@@ -94,6 +95,7 @@
 #include "qtuisettings.h"
 #include "qtuistyle.h"
 #include "receivefiledlg.h"
+#include "quickaccessorssettingspage.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "statusnotifieritem.h"
@@ -203,6 +205,7 @@ void MainWin::init()
         SLOT(messagesInserted(const QModelIndex &, int, int)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
+    connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(bufferShortcutsChanged(BufferId)), SLOT(updateQuickAccessor(BufferId)));
 
     connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList)), SLOT(showCoreConfigWizard(QVariantList)));
     connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
@@ -435,6 +438,13 @@ void MainWin::setupActions()
     configureShortcutsAct->setMenuRole(QAction::NoRole);
     coll->addAction("ConfigureShortcuts", configureShortcutsAct);
 
+#ifdef HAVE_KDE
+    QAction *configureQuickAccessorsAct = new Action(SmallIcon("configure-shortcuts"), tr("Configure &Quick Accessors..."), coll,
+        this, SLOT(showQuickAccessorsDlg()));
+    configureQuickAccessorsAct->setMenuRole(QAction::NoRole);
+    coll->addAction("ConfigureQuickAccessors", configureQuickAccessorsAct);
+#endif
+
 #ifdef Q_OS_MAC
     QAction *configureQuasselAct = new Action(QIcon::fromTheme("configure"), tr("&Configure Quassel..."), coll,
         this, SLOT(showSettingsDlg()));
@@ -479,57 +489,6 @@ void MainWin::setupActions()
 
     coll->addAction("ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll,
             this, SLOT(on_bufferSearch_triggered()), QKeySequence(Qt::CTRL + Qt::Key_S)));
-
-    // Jump keys
-#ifdef Q_OS_MAC
-    const int bindModifier = Qt::ControlModifier | Qt::AltModifier;
-    const int jumpModifier = Qt::ControlModifier;
-#else
-    const int bindModifier = Qt::ControlModifier;
-    const int jumpModifier = Qt::AltModifier;
-#endif
-
-    coll->addAction("BindJumpKey0", new Action(tr("Set Quick Access #0"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_0)))->setProperty("Index", 0);
-    coll->addAction("BindJumpKey1", new Action(tr("Set Quick Access #1"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_1)))->setProperty("Index", 1);
-    coll->addAction("BindJumpKey2", new Action(tr("Set Quick Access #2"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_2)))->setProperty("Index", 2);
-    coll->addAction("BindJumpKey3", new Action(tr("Set Quick Access #3"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_3)))->setProperty("Index", 3);
-    coll->addAction("BindJumpKey4", new Action(tr("Set Quick Access #4"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_4)))->setProperty("Index", 4);
-    coll->addAction("BindJumpKey5", new Action(tr("Set Quick Access #5"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_5)))->setProperty("Index", 5);
-    coll->addAction("BindJumpKey6", new Action(tr("Set Quick Access #6"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_6)))->setProperty("Index", 6);
-    coll->addAction("BindJumpKey7", new Action(tr("Set Quick Access #7"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_7)))->setProperty("Index", 7);
-    coll->addAction("BindJumpKey8", new Action(tr("Set Quick Access #8"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_8)))->setProperty("Index", 8);
-    coll->addAction("BindJumpKey9", new Action(tr("Set Quick Access #9"), coll, this, SLOT(bindJumpKey()),
-            QKeySequence(bindModifier + Qt::Key_9)))->setProperty("Index", 9);
-
-    coll->addAction("JumpKey0", new Action(tr("Quick Access #0"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_0)))->setProperty("Index", 0);
-    coll->addAction("JumpKey1", new Action(tr("Quick Access #1"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_1)))->setProperty("Index", 1);
-    coll->addAction("JumpKey2", new Action(tr("Quick Access #2"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_2)))->setProperty("Index", 2);
-    coll->addAction("JumpKey3", new Action(tr("Quick Access #3"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_3)))->setProperty("Index", 3);
-    coll->addAction("JumpKey4", new Action(tr("Quick Access #4"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_4)))->setProperty("Index", 4);
-    coll->addAction("JumpKey5", new Action(tr("Quick Access #5"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_5)))->setProperty("Index", 5);
-    coll->addAction("JumpKey6", new Action(tr("Quick Access #6"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_6)))->setProperty("Index", 6);
-    coll->addAction("JumpKey7", new Action(tr("Quick Access #7"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_7)))->setProperty("Index", 7);
-    coll->addAction("JumpKey8", new Action(tr("Quick Access #8"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_8)))->setProperty("Index", 8);
-    coll->addAction("JumpKey9", new Action(tr("Quick Access #9"), coll, this, SLOT(onJumpKey()),
-            QKeySequence(jumpModifier + Qt::Key_9)))->setProperty("Index", 9);
 
     // Buffer navigation
     coll->addAction("NextBufferView", new Action(QIcon::fromTheme("go-next-view"), tr("Activate Next Chat List"), coll,
@@ -586,6 +545,7 @@ void MainWin::setupMenus()
     _settingsMenu = menuBar()->addMenu(tr("&Settings"));
 #ifdef HAVE_KDE
     _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
+    _settingsMenu->addAction(coll->action("ConfigureQuickAccessors"));
     _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
 #else
     _settingsMenu->addAction(coll->action("ConfigureShortcuts"));
@@ -1140,6 +1100,35 @@ void MainWin::connectedToCore()
     }
 
     setConnectedState();
+    setupQuickAccessors();
+}
+
+
+void MainWin::setupQuickAccessors() {
+    QList<BufferId> allBufferIds = Client::networkModel()->allBufferIds();
+    QListIterator<BufferId> bufIter(allBufferIds);
+
+    foreach(ActionCollection *coll, QtUi::quickAccessorActionCollections()) {
+        coll->clear();
+    }
+
+    while(bufIter.hasNext()) {
+        updateQuickAccessor(bufIter.next());
+    }
+}
+
+
+void MainWin::updateQuickAccessor(BufferId id) {
+    BufferInfo info = Client::networkModel()->bufferInfo(id);
+    if(info.type() & (BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer)) {
+        QString networkName = Client::networkModel()->networkName(id);
+
+        BufferSettings settings(id);
+        Action *a = new Action(info.bufferName(), QtUi::quickAccessorActionCollection(networkName), this, SLOT(onJumpKey()));
+        a->setShortcut(settings.shortcut(), Action::ActiveShortcut);
+        a->setProperty("BufferId", qVariantFromValue(id));
+        QtUi::quickAccessorActionCollection(networkName)->addAction(QString("QuickAccessor%1").arg(id.toInt()), a);
+    }
 }
 
 
@@ -1477,8 +1466,11 @@ void MainWin::showShortcutsDlg()
     dlg.addCollection(coll, coll->property("Category").toString());
     dlg.configure(true);
 #else
-    SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
-    dlg.exec();
+    SettingsDlg *dlg = new SettingsDlg();
+    setupQuickAccessors();
+    dlg->registerSettingsPage(new ShortcutsSettingsPage(QtUi::allActionCollections(), QtUi::actionCollections().keys(), dlg));
+    dlg->registerSettingsPage(new QuickAccessorsSettingsPage(dlg));
+    dlg->show();
 #endif
 }
 
@@ -1495,6 +1487,16 @@ void MainWin::showNewTransferDlg(const QUuid &transferId)
     else {
         qWarning() << "Unknown transfer ID" << transferId;
     }
+}
+
+
+void MainWin::showQuickAccessorsDlg()
+{
+#ifdef HAVE_KDE
+    setupQuickAccessors();
+    SettingsPageDlg dlg(new QuickAccessorsSettingsPage(this), this);
+    dlg.exec();
+#endif
 }
 
 
@@ -1740,29 +1742,11 @@ void MainWin::onJumpKey()
     QAction *action = qobject_cast<QAction *>(sender());
     if (!action || !Client::bufferModel())
         return;
-    int idx = action->property("Index").toInt();
+    BufferId buffer = qvariant_cast<BufferId>(action->property("BufferId"));
+    BufferInfo info = Client::networkModel()->bufferInfo(buffer);
 
-    if (_jumpKeyMap.isEmpty())
-        _jumpKeyMap = CoreAccountSettings().jumpKeyMap();
-
-    if (!_jumpKeyMap.contains(idx))
-        return;
-
-    BufferId buffer = _jumpKeyMap.value(idx);
-    if (buffer.isValid())
+    if(buffer.isValid())
         Client::bufferModel()->switchToBuffer(buffer);
-}
-
-
-void MainWin::bindJumpKey()
-{
-    QAction *action = qobject_cast<QAction *>(sender());
-    if (!action || !Client::bufferModel())
-        return;
-    int idx = action->property("Index").toInt();
-
-    _jumpKeyMap[idx] = Client::bufferModel()->currentBuffer();
-    CoreAccountSettings().setJumpKeyMap(_jumpKeyMap);
 }
 
 

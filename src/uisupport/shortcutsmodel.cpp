@@ -46,6 +46,7 @@ ShortcutsModel::ShortcutsModel(const QHash<QString, ActionCollection *> &actionC
             item->actionItems.append(actionItem);
         }
         _categoryItems.append(item);
+        connect(coll, SIGNAL(changed(QAction*)), SLOT(collectionChanged(QAction*)));
     }
 }
 
@@ -249,6 +250,26 @@ void ShortcutsModel::defaults()
         for (int act = 0; act < rowCount(catidx); act++) {
             QModelIndex actidx = index(act, 1, catidx);
             setData(actidx, actidx.data(DefaultShortcutRole), ActiveShortcutRole);
+        }
+    }
+}
+
+
+void ShortcutsModel::collectionChanged(QAction *action)
+{
+    ActionCollection *coll = qobject_cast<ActionCollection *>(sender());
+    Q_ASSERT(coll);
+    foreach(Item *catItem, _categoryItems) {
+        if (catItem->collection != coll)
+            continue;
+
+        foreach(Item *actItem, catItem->actionItems) {
+            if (actItem->action == action) {
+                actItem->shortcut = action->shortcut();
+
+                QModelIndex catIdx = index(catItem->row, 0);
+                emit dataChanged(index(actItem->row, 1, catIdx), index(actItem->row, 1, catIdx));
+            }
         }
     }
 }

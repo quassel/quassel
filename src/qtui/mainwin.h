@@ -130,6 +130,8 @@ private slots:
     void showPasswordChangeDlg();
     void showNewTransferDlg(const QUuid &transferId);
     void onFullScreenToggled();
+    void showQuickAccessorsDlg();
+    void updateQuickAccessor(BufferId);
 
     void handleCoreConnectionError(const QString &errorMsg);
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
@@ -150,7 +152,6 @@ private slots:
     void on_actionDebugHotList_triggered();
     void on_actionDebugLog_triggered();
 
-    void bindJumpKey();
     void onJumpKey();
 
     void clientNetworkCreated(NetworkId);
@@ -199,6 +200,7 @@ private:
     void setupTitleSetter();
     void setupToolBars();
     void setupHotList();
+    void setupQuickAccessors();
 
     void updateIcon();
     void enableMenus();
@@ -223,7 +225,6 @@ private:
     QPoint _normalPos; //!< Position of the non-maximized window
 
     BufferHotListFilter *_bufferHotList;
-    QHash<int, BufferId> _jumpKeyMap;
     int _activeBufferViewIndex;
 
     bool _aboutToQuit; //closeEvent can occur multiple times on OSX

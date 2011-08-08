@@ -21,6 +21,8 @@
 #ifndef BUFFERSETTINGS_H
 #define BUFFERSETTINGS_H
 
+#include <QKeySequence>
+
 #include "clientsettings.h"
 #include "message.h"
 #include "types.h"
@@ -58,6 +60,10 @@ public:
     inline void setServerNoticesTarget(int target) { setLocalValue("ServerNoticesTarget", target); }
     inline int errorMsgsTarget() { return localValue("ErrorMsgsTarget", DefaultBuffer).toInt(); }
     inline void setErrorMsgsTarget(int target) { setLocalValue("ErrorMsgsTarget", target); }
+
+    // quick accessor shortcuts
+    inline QKeySequence shortcut() { return qvariant_cast<QKeySequence>(localValue("Shortcut")); }
+    inline void setShortcut(QKeySequence sequence) { setLocalValue("Shortcut", sequence); }
 };
 
 
