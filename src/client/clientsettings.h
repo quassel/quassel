@@ -73,9 +73,6 @@ public:
     QVariantMap retrieveAccountData(AccountId);
     void removeAccount(AccountId);
 
-    void setJumpKeyMap(const QHash<int, BufferId> &keyMap);
-    QHash<int, BufferId> jumpKeyMap();
-
     void setBufferViewOverlay(const QSet<int> &viewIds);
     QSet<int> bufferViewOverlay();
 

@@ -26,6 +26,7 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "messagefilter.h"
+#include "keysequencewidget.h"
 
 class QComboBox;
 class QDialogButtonBox;
@@ -54,6 +55,7 @@ public:
         BufferPart = 0x20,
         BufferSwitchTo = 0x30,
         BufferRemove = 0x40,
+        BufferSetShortcut = 0x50,
 
         // Hide actions
         HideMask = 0x0f00,
@@ -152,6 +154,7 @@ protected slots:
 signals:
     void showChannelList(NetworkId);
     void showIgnoreList(QString);
+    void bufferShortcutsChanged(BufferId);
 
 protected:
     virtual void handleNetworkAction(ActionType, QAction *);
@@ -162,6 +165,7 @@ protected:
     virtual void handleExternalAction(ActionType, QAction *);
 
     class JoinDlg;
+    class BufferShortcutPopup;
 
 private:
     NetworkModel *_model;
@@ -197,6 +201,25 @@ private:
     QLineEdit *channel;
     QLineEdit *password;
     QDialogButtonBox *buttonBox;
+};
+
+class NetworkModelController::BufferShortcutPopup : public QWidget {
+    Q_OBJECT
+
+public:
+    BufferShortcutPopup(BufferInfo, QWidget *parent = 0);
+
+private slots:
+    void onSequenceWidgetChanged(QKeySequence, QModelIndex conflicting);
+
+signals:
+    void keySequenceChanged(BufferId);
+
+private:
+    KeySequenceWidget *_keySeq;
+    BufferInfo _bufferInfo;
+    NetworkModelController *_controller;
+    ShortcutsModel *_shortcutsModel;
 };
 
 

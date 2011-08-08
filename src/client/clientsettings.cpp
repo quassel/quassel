@@ -176,32 +176,6 @@ QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &d
     return localValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), def);
 }
 
-
-void CoreAccountSettings::setJumpKeyMap(const QHash<int, BufferId> &keyMap)
-{
-    QVariantMap variants;
-    QHash<int, BufferId>::const_iterator mapIter = keyMap.constBegin();
-    while (mapIter != keyMap.constEnd()) {
-        variants[QString::number(mapIter.key())] = qVariantFromValue(mapIter.value());
-        ++mapIter;
-    }
-    setAccountValue("JumpKeyMap", variants);
-}
-
-
-QHash<int, BufferId> CoreAccountSettings::jumpKeyMap()
-{
-    QHash<int, BufferId> keyMap;
-    QVariantMap variants = accountValue("JumpKeyMap", QVariant()).toMap();
-    QVariantMap::const_iterator mapIter = variants.constBegin();
-    while (mapIter != variants.constEnd()) {
-        keyMap[mapIter.key().toInt()] = mapIter.value().value<BufferId>();
-        ++mapIter;
-    }
-    return keyMap;
-}
-
-
 void CoreAccountSettings::setBufferViewOverlay(const QSet<int> &viewIds)
 {
     QVariantList variants;

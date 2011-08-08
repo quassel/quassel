@@ -26,6 +26,7 @@
 
 class Action;
 class ActionCollection;
+class QAction;
 
 //! Model that exposes the actions from one or more ActionCollections
 /** This model takes one or more ActionCollections and exposes their actions as model items.
@@ -92,6 +93,9 @@ private:
 
     QList<Item *> _categoryItems;
     int _changedCount;
+
+protected slots:
+    void collectionChanged(QAction *action);
 };
 
 
