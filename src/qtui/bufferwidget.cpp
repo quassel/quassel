@@ -37,6 +37,9 @@
 #include "qtui.h"
 #include "settings.h"
 
+#ifdef HAVE_QML
+#  include "qmlchatview.h"
+#endif
 
 BufferWidget::BufferWidget(QWidget *parent)
   : AbstractBufferContainer(parent),
@@ -112,8 +115,13 @@ void BufferWidget::setAutoMarkerLine(const QVariant &v) {
 }
 
 AbstractChatView *BufferWidget::createChatView(BufferId id) {
+#ifdef HAVE_QML
+  QmlChatView *chatView;
+  chatView = new QmlChatView(id, this);
+#else
   ChatView *chatView;
   chatView = new ChatView(id, this);
+#endif
   chatView->setBufferContainer(this);
   _chatViews[id] = chatView;
   ui.stackedWidget->addWidget(chatView);
@@ -133,10 +141,14 @@ void BufferWidget::showChatView(BufferId id) {
   if(!id.isValid()) {
     ui.stackedWidget->setCurrentWidget(ui.page);
   } else {
+#ifdef HAVE_QML
+    QmlChatView *view = qobject_cast<QmlChatView *>(_chatViews.value(id));
+#else
     ChatView *view = qobject_cast<ChatView *>(_chatViews.value(id));
+#endif
     Q_ASSERT(view);
     ui.stackedWidget->setCurrentWidget(view);
-    _chatViewSearchController->setScene(view->scene());
+    //_chatViewSearchController->setScene(view->scene());
   }
 }
 

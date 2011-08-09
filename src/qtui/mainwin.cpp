@@ -47,7 +47,6 @@
 #include "bufferviewoverlayfilter.h"
 #include "bufferwidget.h"
 #include "channellistdlg.h"
-#include "chatlinemodel.h"
 #include "chatmonitorfilter.h"
 #include "chatmonitorview.h"
 #include "chatview.h"
@@ -71,6 +70,7 @@
 #include "irclistmodel.h"
 #include "ircconnectionwizard.h"
 #include "legacysystemtray.h"
+#include "messagemodel.h"
 #include "msgprocessorstatuswidget.h"
 #include "nicklistwidget.h"
 #include "qtuiapplication.h"
@@ -353,13 +353,13 @@ void MainWin::setupActions() {
 
   // Settings
   QAction *configureShortcutsAct = new Action(SmallIcon("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
-					      this, SLOT(showShortcutsDlg()));
+                                              this, SLOT(showShortcutsDlg()));
   configureShortcutsAct->setMenuRole(QAction::NoRole);
   coll->addAction("ConfigureShortcuts", configureShortcutsAct);
 
   #ifdef Q_WS_MAC
   QAction *configureQuasselAct = new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
-					    this, SLOT(showSettingsDlg()));
+                                            this, SLOT(showSettingsDlg()));
   configureQuasselAct->setMenuRole(QAction::PreferencesRole);
   #else
   QAction *configureQuasselAct = new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
@@ -369,12 +369,12 @@ void MainWin::setupActions() {
 
   // Help
   QAction *aboutQuasselAct = new Action(SmallIcon("quassel"), tr("&About Quassel"), coll,
-					this, SLOT(showAboutDlg()));
+                                        this, SLOT(showAboutDlg()));
   aboutQuasselAct->setMenuRole(QAction::AboutRole);
   coll->addAction("AboutQuassel", aboutQuasselAct);
 
   QAction *aboutQtAct = new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll,
-				   qApp, SLOT(aboutQt()));
+                                   qApp, SLOT(aboutQt()));
   aboutQtAct->setMenuRole(QAction::AboutQtRole);
   coll->addAction("AboutQt", aboutQtAct);
   coll->addAction("DebugNetworkModel", new Action(SmallIcon("tools-report-bug"), tr("Debug &NetworkModel"), coll,
@@ -763,6 +763,8 @@ void MainWin::setupNickWidget() {
 }
 
 void MainWin::setupChatMonitor() {
+// FIXME QML
+#ifndef HAVE_QML
   VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
   dock->setObjectName("ChatMonitorDock");
 
@@ -776,6 +778,7 @@ void MainWin::setupChatMonitor() {
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
   _viewMenu->addAction(dock->toggleViewAction());
   dock->toggleViewAction()->setText(tr("Show Chat Monitor"));
+#endif
 }
 
 void MainWin::setupInputWidget() {
@@ -1250,16 +1253,16 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
   bool hasFocus = QApplication::activeWindow() != 0;
 
   for(int i = start; i <= end; i++) {
-    QModelIndex idx = Client::messageModel()->index(i, ChatLineModel::ContentsColumn);
+    QModelIndex idx = Client::messageModel()->index(i, MessageModel::ContentsColumn);
     if(!idx.isValid()) {
       qDebug() << "MainWin::messagesInserted(): Invalid model index!";
       continue;
     }
-    Message::Flags flags = (Message::Flags)idx.data(ChatLineModel::FlagsRole).toInt();
+    Message::Flags flags = (Message::Flags)idx.data(MessageModel::FlagsRole).toInt();
     if(flags.testFlag(Message::Backlog) || flags.testFlag(Message::Self))
       continue;
 
-    BufferId bufId = idx.data(ChatLineModel::BufferIdRole).value<BufferId>();
+    BufferId bufId = idx.data(MessageModel::BufferIdRole).value<BufferId>();
     BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
 
     if(hasFocus && bufId == Client::bufferModel()->currentBuffer())
@@ -1269,9 +1272,9 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
       && !(Client::ignoreListManager() && Client::ignoreListManager()->match(idx.data(MessageModel::MessageRole).value<Message>(),
                                                                              Client::networkModel()->networkName(bufId))))
     {
-      QModelIndex senderIdx = Client::messageModel()->index(i, ChatLineModel::SenderColumn);
-      QString sender = senderIdx.data(ChatLineModel::EditRole).toString();
-      QString contents = idx.data(ChatLineModel::DisplayRole).toString();
+      QModelIndex senderIdx = Client::messageModel()->index(i, MessageModel::SenderColumn);
+      QString sender = senderIdx.data(MessageModel::EditRole).toString();
+      QString contents = idx.data(MessageModel::DisplayRole).toString();
       AbstractNotificationBackend::NotificationType type;
 
       if(bufType == BufferInfo::QueryBuffer && !hasFocus)

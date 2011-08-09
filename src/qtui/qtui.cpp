@@ -33,6 +33,10 @@
 #include "types.h"
 #include "util.h"
 
+#ifdef HAVE_QML
+#  include "qmlmessagemodel.h"
+#endif
+
 #ifdef Q_WS_X11
 #  include <QX11Info>
 #endif
@@ -81,7 +85,11 @@ void QtUi::init() {
 }
 
 MessageModel *QtUi::createMessageModel(QObject *parent) {
+#ifdef HAVE_QML
+  return new QmlMessageModel(parent);
+#else
   return new ChatLineModel(parent);
+#endif
 }
 
 AbstractMessageProcessor *QtUi::createMessageProcessor(QObject *parent) {
