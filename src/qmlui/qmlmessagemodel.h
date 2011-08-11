@@ -37,7 +37,7 @@ public:
     UserRole
   };
 
-  QmlMessageModel(QObject *parent);
+  QmlMessageModel(QObject *parent = 0);
   virtual QVariant data(const QModelIndex &index, int role) const;
 
   virtual inline const MessageModelItem *messageItemAt(int i) const { return &_messageList[i]; }
