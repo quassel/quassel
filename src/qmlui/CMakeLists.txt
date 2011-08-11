@@ -36,5 +36,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/uisupport
                     ${CMAKE_CURRENT_BINARY_DIR})
 
+set(CLIENT_RCS ${CLIENT_RCS} qmlui/qml/qml.qrc PARENT_SCOPE)
+
 add_library(mod_qmlui STATIC ${SOURCES} ${SPSRC} ${MOC} ${DBUS} ${UI} ${HEADERS})
 add_dependencies(mod_qmlui mod_common mod_client mod_uisupport)
