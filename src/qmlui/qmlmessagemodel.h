@@ -31,9 +31,7 @@ class QmlMessageModel : public MessageModel {
 
 public:
   enum QmlMessageModelRole {
-    TimestampRole = MessageModel::UserRole,
-    SenderRole,
-    ContentsRole,
+    ChatLineDataRole = MessageModel::UserRole,
     UserRole
   };
 

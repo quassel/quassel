@@ -18,17 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QtDeclarative>
+
 #include "qmlmessagemodel.h"
+#include "qmlchatline.h"
 
 QmlMessageModel::QmlMessageModel(QObject *parent)
   : MessageModel(parent)
 {
-  QHash<int, QByteArray> roles;
-  roles[TimestampRole] = "timestamp";
-  roles[SenderRole] = "sender";
-  roles[ContentsRole] = "contents";
-  setRoleNames(roles);
+  QmlChatLine::registerTypes();
 
+  QHash<int, QByteArray> roles;
+  roles[ChatLineDataRole] = "chatLineDataRole";
+  setRoleNames(roles);
 }
 
 void QmlMessageModel::insertMessages__(int pos, const QList<Message> &messages) {

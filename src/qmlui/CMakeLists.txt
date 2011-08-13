@@ -6,12 +6,14 @@ include(${QT_USE_FILE})
 
 
 set(SOURCES
+    qmlchatline.cpp
     qmlchatview.cpp
     qmlmessagemodel.cpp
     qmlmessagemodelitem.cpp
 )
 
 set(MOC_HDRS
+    qmlchatline.h
     qmlchatview.h
     qmlmessagemodel.h
 )

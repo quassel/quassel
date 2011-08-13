@@ -22,13 +22,13 @@
 #define QMLMESSAGEMODELITEM_H_
 
 #include "messagemodel.h"
+#include "uistyle.h"
 
 class QmlMessageModelItem : public MessageModelItem {
 public:
   QmlMessageModelItem(const Message &msg);
 
   virtual QVariant data(int column, int role) const;
-  virtual bool setData(int column, const QVariant &value, int role);
 
   virtual inline const Message &message() const { return _styledMsg; }
   virtual inline const QDateTime &timestamp() const { return _styledMsg.timestamp(); }
@@ -39,11 +39,7 @@ public:
   virtual inline Message::Flags msgFlags() const { return _styledMsg.flags(); }
 
 private:
-  QVariant timestampData(int role) const;
-  QVariant senderData(int role) const;
-  QVariant contentsData(int role) const;
-
-  Message _styledMsg;
+  UiStyle::StyledMessage _styledMsg;
 };
 
 #endif

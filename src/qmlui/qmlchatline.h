@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2010 by the Quassel Project                        *
+ *   Copyright (C) 2005-2011 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,36 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qmlchatline.h"
-#include "qmlmessagemodel.h"
-#include "qmlmessagemodelitem.h"
+#ifndef QMLCHATLINE_H_
+#define QMLCHATLINE_H_
+
+#include <QDeclarativeItem>
+
 #include "uistyle.h"
 
-QmlMessageModelItem::QmlMessageModelItem(const Message &msg)
-  : MessageModelItem(),
-    _styledMsg(msg)
-{
-  if(!msg.sender().contains('!'))
-    _styledMsg.setFlags(msg.flags() |= Message::ServerMsg);
-}
+class QmlChatLine : public QDeclarativeItem {
+  Q_OBJECT
 
-QVariant QmlMessageModelItem::data(int column, int role) const {
-  QVariant variant;
-  switch(role) {
-  case QmlMessageModel::ChatLineDataRole: {
-    QmlChatLine::Data data;
-    data.timestamp.text = _styledMsg.decoratedTimestamp();
-    data.timestamp.formats = UiStyle::FormatList() << qMakePair((quint16)0, (quint32)UiStyle::formatType(_styledMsg.type()) | UiStyle::Timestamp);
-    data.sender.text = _styledMsg.decoratedSender();
-    data.sender.formats = UiStyle::FormatList() << qMakePair((quint16)0, (quint32)UiStyle::formatType(_styledMsg.type()) | UiStyle::Sender);
-    data.contents.text = _styledMsg.plainContents();
-    data.contents.formats = _styledMsg.contentsFormatList();
-    return QVariant::fromValue<QmlChatLine::Data>(data);
-  }
-  default:
-    break;
-  }
-  if(!variant.isValid())
-    return MessageModelItem::data(column, role);
-  return variant;
-}
+  Q_PROPERTY(QVariant chatLineData READ chatLineData WRITE setChatLineData)
+
+  //Q_PROPERTY(QVariant )
+
+public:
+  //! Contains all data needed to render a QmlChatLine
+  struct Data {
+    struct ChatLineColumnData {
+      QString text;
+      UiStyle::FormatList formats;
+    };
+
+    ChatLineColumnData timestamp;
+    ChatLineColumnData sender;
+    ChatLineColumnData contents;
+  };
+
+  QmlChatLine(QDeclarativeItem *parent = 0);
+  virtual ~QmlChatLine();
+
+  inline Data data() const { return _data; }
+  inline QVariant chatLineData() const { return QVariant::fromValue<Data>(_data); }
+  inline void setChatLineData(const QVariant &data) { _data = data.value<Data>(); }
+
+  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+
+  static void registerTypes();
+
+private:
+  Data _data;
+};
+
+QDataStream &operator<<(QDataStream &out, const QmlChatLine::Data &data);
+QDataStream &operator>>(QDataStream &in, QmlChatLine::Data &data);
+
+Q_DECLARE_METATYPE(QmlChatLine::Data)
+
+#endif
