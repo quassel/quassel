@@ -1,11 +1,12 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Slovenian translation for Quassel IRC
+# Copyright (c) 2010 Quassel IRC
+# This file is distributed under the same license as the Quassel IRC package.
 #
 # Jure Repinc <jlp@holodeck1.com>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
 "PO-Revision-Date: 2010-09-03 23:21+0200\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"

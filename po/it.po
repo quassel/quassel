@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-04-18 12:31+0000\n"
 "PO-Revision-Date: 2010-07-01 09:30+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-04-23 16:17+0000\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"X-Language: it\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17

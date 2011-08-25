@@ -1,12 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Danish translation for Quassel IRC
+# Copyright (C) 2010
+# This file is distributed under the same license as the Quassel IRC package.
+# Adam Tulinius <mail@adamtulinius.dk>, 2010.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

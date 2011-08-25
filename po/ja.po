@@ -1,7 +1,7 @@
 # Japanese Translation for Quassel
 # by Daniel E. Moctezuma
 #
-# Copyright (c) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (c) 2010 Quassel IRC
 # This file is distributed under the same license as the Quassel package.
 #
 #
@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: quassel\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-05-05 02:45+0000\n"
 "PO-Revision-Date: 2010-09-04 18:55-0700\n"
 "Last-Translator: Daniel E. Moctezuma <democtezuma@gmail.com>\n"
@@ -20,6 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2010-06-07 22:20+0000\n"
 "X-Generator: Lokalize 1.0\n"
+"X-Language: ja\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17

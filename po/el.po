@@ -1,15 +1,15 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Greek translation for Quassel IRC
+# Copyright (c) 2010 Quassel IRC
+# This file is distributed under the same license as the Quassel IRC package.
+# Stefanos Sofroniou <ssofroni@cytanet.com.cy>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-05-05 02:45+0000\n"
 "PO-Revision-Date: 2010-06-18 15:18+0000\n"
-"Last-Translator: Stefanos Michael Sofroniou <Unknown>\n"
+"Last-Translator: Stefanos Sofroniou <ssofroni@cytanet.com.cy>\n"
 "Language-Team: Stefanos Michael Sofroniou <ssofroni@cytaney.com.cy>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,9 +18,9 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-08-11 21:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Country: CYPRUS\n"
-"X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Poedit-Language: Greek\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Language: el\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17

@@ -2,8 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -15,11 +14,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-03-03 01:08+0000\n"
 "Language: ru\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-03-03 01:08+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 "X-Language: ru\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -71,9 +70,8 @@ msgstr "<b>Версия:</b> %1<br><b>Версия протокола:</b> %2<br
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:46
-#, fuzzy
 msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-msgstr "<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2009 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC распространяется по двойной лицензии <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство значков &copy;  <a href=\"http://www.oxygen-icons.org\">Команда Oxygen</a> и используются по лицензии <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках пожалуйста сообщайте на  <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
+msgstr "<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2009 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC распространяется по двойной лицензии <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство значков лицензированы у   <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> &copy; и используются по лицензии <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках пожалуйста сообщайте на  <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -234,7 +232,6 @@ msgstr "Удалить"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
-#, fuzzy
 msgid "IRC"
 msgstr "IRC"
 
@@ -266,7 +263,7 @@ msgstr "Задаёт язык приложения. Требует переза�
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:47
 msgid "<Untranslated>"
-msgstr ""
+msgstr "<Untranslated>"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:52
@@ -348,8 +345,7 @@ msgstr "Путь:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:281
 #: ../src/qtui/settingspages/networkssettingspage.ui:295
 #: ../src/qtui/ui/simplenetworkeditor.ui:168
-#: ../src/qtui/ui/simplenetworkeditor.ui:182
-#: ../src/qtui/ui/topicwidget.ui:79
+#: ../src/qtui/ui/simplenetworkeditor.ui:182 ../src/qtui/ui/topicwidget.ui:79
 msgid "..."
 msgstr "..."
 
@@ -366,7 +362,7 @@ msgstr "При закрытии сворачивать в системный л�
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:216
 msgid "Enable animations"
-msgstr ""
+msgstr "Включить анимацию"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:231
@@ -436,14 +432,13 @@ msgstr "Ошибки:"
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Interface"
-msgstr "Внешний вид"
+msgstr "Интерфейс"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgid "Please choose a stylesheet file"
-msgstr ""
+msgstr "Выберите пожалуйста файл стилей"
 
 #. ts-context AwayLogView
 #: ../src/qtui/awaylogview.cpp:33
@@ -454,8 +449,7 @@ msgstr "Журнал отсутствия"
 #. ts-context AwayLogView
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ChatMonitorView
-#: ../src/qtui/awaylogview.cpp:44
-#: ../src/qtui/chatmonitorview.cpp:59
+#: ../src/qtui/awaylogview.cpp:44 ../src/qtui/chatmonitorview.cpp:59
 msgid "Show Network Name"
 msgstr "Показывать название сети"
 
@@ -463,8 +457,7 @@ msgstr "Показывать название сети"
 #. ts-context AwayLogView
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ChatMonitorView
-#: ../src/qtui/awaylogview.cpp:49
-#: ../src/qtui/chatmonitorview.cpp:64
+#: ../src/qtui/awaylogview.cpp:49 ../src/qtui/chatmonitorview.cpp:64
 msgid "Show Buffer Name"
 msgstr "Показывать название буфера"
 
@@ -481,27 +474,27 @@ msgstr "Динамический размер журнала:"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:75
 msgid "Backlog request method:"
-msgstr ""
+msgstr "Способ показа журнала:"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:83
 msgid "Fixed amount per chat"
-msgstr ""
+msgstr "Постоянное количество строк в чате"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:88
 msgid "Unread messages per chat"
-msgstr ""
+msgstr "Непрочитанные сообщения в чате"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:93
 msgid "Globally unread messages"
-msgstr ""
+msgstr "Общее количество непрочитанных сообщений"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:123
 msgid "The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog."
-msgstr ""
+msgstr "Самый простой запрос. Он получает постоянное количество строк для каждого окна чата из журнала."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
@@ -520,6 +513,9 @@ msgid ""
 "\n"
 "You can also choose to fetch additional older chatlines to provide a better context."
 msgstr ""
+"Этот запрос индивидуально извлекает непрочитанные сообщения для каждого окна чата. Количество полученных из журнала строк может быть ограничено.\n"
+"\n"
+"Также вы можете выбрать дополнительное количество строк, для извлечения, что-бы лучше понять тему разговора."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
@@ -580,7 +576,7 @@ msgstr "Максимальное количество сообщений, зап
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 msgid "Backlog Fetching"
-msgstr ""
+msgstr "Просмотр Журнала"
 
 #. ts-context BufferItem
 #: ../src/client/networkmodel.cpp:346
@@ -616,17 +612,17 @@ msgstr "Диалог"
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:22
 msgid "Please enter a name for the chat list:"
-msgstr ""
+msgstr "Пожалуйста, введите имя чатлиста:"
 
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
 msgid "Add Chat List"
-msgstr ""
+msgstr "Добавить Чатлист"
 
 #. ts-context BufferViewFilter
 #: ../src/uisupport/bufferviewfilter.cpp:52
 msgid "Show / Hide Chats"
-msgstr ""
+msgstr "Показать / Скрыть Чаты"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -672,7 +668,7 @@ msgstr "У&далить"
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:84
 msgid "Chat List Settings"
-msgstr ""
+msgstr "Настройки Чатлистов"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -701,27 +697,27 @@ msgstr ""
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
 msgid "Show status window"
-msgstr ""
+msgstr "Показать окно статуса"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:121
 msgid "Show channels"
-msgstr ""
+msgstr "Показывать каналы"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:128
 msgid "Show queries"
-msgstr ""
+msgstr "Показывать приваты"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:135
 msgid "Hide inactive chats"
-msgstr ""
+msgstr "Скрыть неактивные чаты"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:142
 msgid "Add new chats automatically"
-msgstr ""
+msgstr "Добавлять новые чаты автоматически"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
@@ -769,17 +765,17 @@ msgstr "Предварительный просмотр:"
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgid "Custom Chat Lists"
-msgstr ""
+msgstr "Пользовательские Чатлисты"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:342
 msgid "Delete Chat List?"
-msgstr ""
+msgstr "Удалить Чатлист?"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:343
 msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr ""
+msgstr "Вы действительно хотите удалить этот Чатлист \"%1\"?"
 
 #. ts-context BufferViewWidget
 #: ../src/qtui/ui/bufferviewwidget.ui:26
@@ -1007,27 +1003,27 @@ msgstr "игнорировать входы, уходы, и т. п."
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:22
 msgid "Timestamp format:"
-msgstr ""
+msgstr "Формат датировки:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:32
 msgid "[hh:mm:ss]"
-msgstr ""
+msgstr "[hh:mm:ss]"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:59
 msgid "Custom chat window font:"
-msgstr ""
+msgstr "Пользовательский шрифт окна чата:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
 msgid "Show colored text in the chat window"
-msgstr ""
+msgstr "Показать цветной текст в окне чата"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:95
 msgid "Allow colored text (mIRC color codes)"
-msgstr ""
+msgstr "Разрешить вывод цветного текста (mIRC color codes)"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:111
@@ -1052,7 +1048,7 @@ msgstr ""
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:149
 msgid "Custom Colors"
-msgstr ""
+msgstr "Пользовательские цвета"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:167
@@ -1112,12 +1108,12 @@ msgstr ""
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:719
 msgid "Own messages:"
-msgstr ""
+msgstr "Собственные сообщения:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 msgid "Chat View"
-msgstr ""
+msgstr "Вид Окна Чата"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
@@ -1137,7 +1133,7 @@ msgstr "Обработано сообщений: %1. Затрачено секу
 #. ts-context ClientBufferViewManager
 #: ../src/client/clientbufferviewmanager.cpp:52
 msgid "All Chats"
-msgstr ""
+msgstr "Все Чаты"
 
 #. ts-context ClientUserInputHandler
 #: ../src/client/clientuserinputhandler.cpp:86
@@ -1152,17 +1148,17 @@ msgstr ""
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
 msgid "Configure the IRC Connection"
-msgstr ""
+msgstr "Настройка подключения IRC"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:20
 msgid "Enable Ping Timeout Detection"
-msgstr ""
+msgstr "Включить определение Ping Timeout"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:37
 msgid "Ping interval:"
-msgstr ""
+msgstr "Пинг интервал:"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ConnectionSettingsPage
@@ -1176,49 +1172,48 @@ msgstr ""
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:60
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:157
 #: ../src/qtui/taskbarnotificationbackend.cpp:79
-#, fuzzy
 msgid " seconds"
 msgstr " сек."
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:80
 msgid "Disconnect after"
-msgstr ""
+msgstr "Отсоединиться после"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:103
 msgid "missed pings"
-msgstr ""
+msgstr "потерянных пингов"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
 msgid "This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users' away status."
-msgstr ""
+msgstr "Данный параметр периодически обновляет информацию о  пользователях, используя IRC команду /WHO. В основном, это нужно для отслеживания статуса отсутствия пользователя (Away)."
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:131
 msgid "Enable Automatic User Information Lookup (/WHO)"
-msgstr ""
+msgstr "Включить автоматическое получение информации о пользователях (/WHO)"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:148
 msgid "Update interval:"
-msgstr ""
+msgstr "Интервал обновления:"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:177
 msgid "Ignore channels with more than:"
-msgstr ""
+msgstr "Игнорировать каналы с более чем:"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:184
 msgid " users"
-msgstr ""
+msgstr "пользователи"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:206
 msgid "Minimum delay between requests:"
-msgstr ""
+msgstr "Минимальное время задержки между запросами:"
 
 #. ts-context ContentsChatItem
 #: ../src/qtui/chatitem.cpp:683
@@ -1264,12 +1259,12 @@ msgstr "Выйти"
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:43
 msgid "Delete Chat(s)..."
-msgstr ""
+msgstr "Удалить Чат(ы)..."
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:44
 msgid "Go to Chat"
-msgstr ""
+msgstr "Войти в Чат"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:46
@@ -1357,9 +1352,8 @@ msgstr "Ping"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
-#, fuzzy
 msgid "Client info"
-msgstr "Клиент"
+msgstr "Информация о IRC клиенте"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
@@ -1404,12 +1398,12 @@ msgstr "Выгнать и забанить"
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:86
 msgid "Hide Chat(s) Temporarily"
-msgstr ""
+msgstr "Скрыть чат(ы), временно"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:87
 msgid "Hide Chat(s) Permanently"
-msgstr ""
+msgstr "Скрыть чат(ы), Постоянно"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:88
@@ -1448,7 +1442,7 @@ msgstr "Игнорировать"
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:131
 msgid "Add Ignore Rule"
-msgstr ""
+msgstr "Добавить правило игнорирования "
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:132
@@ -1467,6 +1461,9 @@ msgid ""
 "Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 "to work."
 msgstr ""
+"Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
+"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
+"to work."
 
 #. ts-context Core
 #: ../src/core/core.cpp:232
@@ -1547,9 +1544,7 @@ msgstr "<b>Ваш клиент Quassel слишком старый!</b><br>Эт�
 #. ts-context Core
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreSession
-#: ../src/core/core.cpp:518
-#: ../src/core/core.cpp:608
-#: ../src/core/core.cpp:632
+#: ../src/core/core.cpp:518 ../src/core/core.cpp:608 ../src/core/core.cpp:632
 #: ../src/core/coresession.cpp:195
 msgid "Client"
 msgstr "Клиент"
@@ -1607,15 +1602,13 @@ msgstr "Не могу инициализировать сессию для кл�
 #. ts-context Core
 #: ../src/core/core.cpp:719
 msgid "Could not find a session for client:"
-msgstr ""
+msgstr "Не удалось найти сессии для клиента:"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccount
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountModel
-#: ../src/client/coreaccount.h:39
-#: ../src/client/coreaccountmodel.cpp:64
-#, fuzzy
+#: ../src/client/coreaccount.h:39 ../src/client/coreaccountmodel.cpp:64
 msgid "Internal Core"
 msgstr "Использовать встроенное ядро"
 
@@ -1753,7 +1746,7 @@ msgstr "Соединение с ядром Quassel"
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:30
 msgid "Core Accounts"
-msgstr ""
+msgstr "Учетные записи Quassel Core серверов"
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:45
@@ -1777,7 +1770,7 @@ msgstr "Подключаться при запуске"
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:136
 msgid "Connect to last account used"
-msgstr ""
+msgstr "Подключаюсь к учетной записи, использовавшейся в прошлый сеанс"
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:148
@@ -1790,9 +1783,8 @@ msgstr "Всегда подключаться к"
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
-#, fuzzy
 msgid "Remote Cores"
-msgstr "Удаленные ядра"
+msgstr "Удаленные Quassel Core сервера"
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:69
@@ -1843,6 +1835,8 @@ msgid ""
 "<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
 "If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
 msgstr ""
+"<b>Примечание:</b> В данной версии программы, добавление пользователей и изменение имени пользователя и пароля не возможно через интерфейс клиента Quassel.\n"
+"Если Вы хотите это сделать, выполните команду \"<tt><nobr>quasselcore --help</nobr></tt>\"."
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
@@ -1936,17 +1930,17 @@ msgstr "Пожалуйста подождите пока ваши настрой
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconnectauthdlg.ui:14
 msgid "Authentication Required"
-msgstr ""
+msgstr "Требуется проверка подлинности"
 
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconnectauthdlg.ui:20
 msgid "Please enter your account data:"
-msgstr ""
+msgstr "Пожалуйста, введите данные Вашей учётной записи:"
 
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/coreconnectdlg.cpp:75
 msgid "Please enter your credentials for %1:"
-msgstr ""
+msgstr "Пожалуйста, введите учетные данные для %1:"
 
 #. ts-context CoreConnectDlg
 #: ../src/qtui/coreconnectdlg.cpp:40
@@ -1956,11 +1950,10 @@ msgstr "Подключение к ядру"
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:168
 msgid "Network is down"
-msgstr ""
+msgstr "Сеть недоступна"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:202
-#: ../src/client/coreconnection.cpp:321
+#: ../src/client/coreconnection.cpp:202 ../src/client/coreconnection.cpp:321
 msgid "Disconnected"
 msgstr "Отключено"
 
@@ -1970,14 +1963,12 @@ msgid "Looking up %1..."
 msgstr "Ищу хост %1..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:208
-#: ../src/client/coreconnection.cpp:450
+#: ../src/client/coreconnection.cpp:208 ../src/client/coreconnection.cpp:450
 msgid "Connecting to %1..."
 msgstr "Соединяюсь с %1..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:211
-#: ../src/client/coreconnection.cpp:573
+#: ../src/client/coreconnection.cpp:211 ../src/client/coreconnection.cpp:573
 msgid "Connected to %1"
 msgstr "Соединение с %1 установлено"
 
@@ -2002,8 +1993,7 @@ msgid "Disconnected from core."
 msgstr ""
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:427
-#: ../src/client/coreconnection.cpp:511
+#: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
 #: ../src/client/coreconnection.cpp:556
 msgid "Unencrypted connection canceled"
 msgstr ""
@@ -2191,8 +2181,7 @@ msgstr "<build date>"
 #. ts-context CoreInfoDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context DebugLogWidget
-#: ../src/qtui/ui/coreinfodlg.ui:81
-#: ../src/qtui/ui/debuglogwidget.ui:43
+#: ../src/qtui/ui/coreinfodlg.ui:81 ../src/qtui/ui/debuglogwidget.ui:43
 msgid "Close"
 msgstr "Закрыть"
 
@@ -2216,8 +2205,7 @@ msgid "Connection failed. Cycling to next Server"
 msgstr "Сбой соединения. Пробую следующий сервер"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:161
-#: ../src/core/corenetwork.cpp:162
+#: ../src/core/corenetwork.cpp:161 ../src/core/corenetwork.cpp:162
 msgid "Connecting to %1:%2..."
 msgstr "Соединяюсь с %1:%2..."
 
@@ -2691,8 +2679,7 @@ msgid "Kindergarten is elsewhere!"
 msgstr "Детский сад в другом месте!"
 
 #. ts-context Identity
-#: ../src/common/identity.cpp:179
-#: ../src/common/identity.cpp:180
+#: ../src/common/identity.cpp:179 ../src/common/identity.cpp:180
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr "http://quassel-irc.org - Разговаривать удобно. Везде."
 
@@ -3273,8 +3260,7 @@ msgid "Light gray"
 msgstr ""
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:84
-#: ../src/qtui/inputwidget.cpp:85
+#: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
 #, fuzzy
 msgid "Clear Color"
 msgstr "Очистить"
@@ -3384,8 +3370,7 @@ msgstr "Пользователи"
 #. ts-context MainWin
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworkModel
-#: ../src/client/irclistmodel.cpp:61
-#: ../src/qtui/mainwin.cpp:781
+#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:781
 #: ../src/client/networkmodel.cpp:852
 msgid "Topic"
 msgstr "Тема"
@@ -3427,18 +3412,12 @@ msgstr "Получен нестандартный RPL_ISUPPORT: может сл�
 #. ----------
 #. Invite Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/core/ircserverhandler.cpp:662
-#: ../src/core/ircserverhandler.cpp:669
-#: ../src/core/ircserverhandler.cpp:676
-#: ../src/core/ircserverhandler.cpp:683
-#: ../src/uisupport/uistyle.cpp:577
-#: ../src/uisupport/uistyle.cpp:580
-#: ../src/uisupport/uistyle.cpp:620
-#: ../src/uisupport/uistyle.cpp:623
-#: ../src/uisupport/uistyle.cpp:626
-#: ../src/uisupport/uistyle.cpp:633
-#: ../src/uisupport/uistyle.cpp:665
-#: ../src/uisupport/uistyle.cpp:739
+#: ../src/core/ircserverhandler.cpp:662 ../src/core/ircserverhandler.cpp:669
+#: ../src/core/ircserverhandler.cpp:676 ../src/core/ircserverhandler.cpp:683
+#: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
+#: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
+#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
 msgid "%1"
 msgstr "%1"
 
@@ -3448,24 +3427,19 @@ msgid "[Whois] %1 is away: \"%2\""
 msgstr "[Whois] %1 отсутствует: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:724
-#: ../src/core/ircserverhandler.cpp:729
+#: ../src/core/ircserverhandler.cpp:724 ../src/core/ircserverhandler.cpp:729
 msgid "%1 is away: \"%2\""
 msgstr "%1 отсутствует: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:773
-#: ../src/core/ircserverhandler.cpp:787
-#: ../src/core/ircserverhandler.cpp:822
-#: ../src/core/ircserverhandler.cpp:838
-#: ../src/core/ircserverhandler.cpp:906
-#: ../src/core/ircserverhandler.cpp:938
+#: ../src/core/ircserverhandler.cpp:773 ../src/core/ircserverhandler.cpp:787
+#: ../src/core/ircserverhandler.cpp:822 ../src/core/ircserverhandler.cpp:838
+#: ../src/core/ircserverhandler.cpp:906 ../src/core/ircserverhandler.cpp:938
 msgid "[Whois] %1"
 msgstr "[Whois] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:802
-#: ../src/core/ircserverhandler.cpp:805
+#: ../src/core/ircserverhandler.cpp:802 ../src/core/ircserverhandler.cpp:805
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 это %2 (%3)"
 
@@ -3475,8 +3449,7 @@ msgid "%1 is online via %2 (%3)"
 msgstr "%1 подключен через %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:824
-#: ../src/core/ircserverhandler.cpp:1131
+#: ../src/core/ircserverhandler.cpp:824 ../src/core/ircserverhandler.cpp:1131
 msgid "[Whowas] %1"
 msgstr "[Whowas] %1"
 
@@ -3491,14 +3464,12 @@ msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] Конец списка /WHO для %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:886
-#: ../src/core/ircserverhandler.cpp:894
+#: ../src/core/ircserverhandler.cpp:886 ../src/core/ircserverhandler.cpp:894
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 в онлайне с %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:888
-#: ../src/core/ircserverhandler.cpp:896
+#: ../src/core/ircserverhandler.cpp:888 ../src/core/ircserverhandler.cpp:896
 msgid "[Whois] %1 is idling for %2 (%3)"
 msgstr "[Whois] %1 неактивен %2 (%3)"
 
@@ -3592,8 +3563,7 @@ msgstr "%1 отсутствует: \"%2\""
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:821
-#: ../src/client/networkmodel.cpp:447
+#: ../src/client/networkmodel.cpp:821 ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
 msgstr "неактивен с %1"
 
@@ -3601,8 +3571,7 @@ msgstr "неактивен с %1"
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:824
-#: ../src/client/networkmodel.cpp:450
+#: ../src/client/networkmodel.cpp:824 ../src/client/networkmodel.cpp:450
 msgid "login time: %1"
 msgstr "время входа: %1"
 
@@ -3610,8 +3579,7 @@ msgstr "время входа: %1"
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:827
-#: ../src/client/networkmodel.cpp:453
+#: ../src/client/networkmodel.cpp:827 ../src/client/networkmodel.cpp:453
 msgid "server: %1"
 msgstr "сервер: %1"
 
@@ -3863,8 +3831,7 @@ msgid "Show Status &Bar"
 msgstr "Показать строку &статуса"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:343
-#: ../src/qtui/mainwin.cpp:1185
+#: ../src/qtui/mainwin.cpp:343 ../src/qtui/mainwin.cpp:1185
 msgid "&Fullscreen mode"
 msgstr ""
 
@@ -4136,8 +4103,7 @@ msgid "Not connected to core."
 msgstr "Нет соединения с ядром."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:1015
-#: ../src/qtui/mainwin.cpp:1023
+#: ../src/qtui/mainwin.cpp:1015 ../src/qtui/mainwin.cpp:1023
 msgid "Unencrypted Connection"
 msgstr ""
 
@@ -4147,8 +4113,7 @@ msgid "<b>Your client does not support SSL encryption</b>"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:1017
-#: ../src/qtui/mainwin.cpp:1025
+#: ../src/qtui/mainwin.cpp:1017 ../src/qtui/mainwin.cpp:1025
 msgid "Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."
 msgstr ""
 
@@ -4158,8 +4123,7 @@ msgid "<b>Your core does not support SSL encryption</b>"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:1040
-#: ../src/qtui/mainwin.cpp:1060
+#: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1060
 msgid "Untrusted Security Certificate"
 msgstr ""
 
@@ -4287,8 +4251,7 @@ msgstr "Сервер: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:197
-#: ../src/qtui/topicwidget.cpp:106
+#: ../src/client/networkmodel.cpp:197 ../src/qtui/topicwidget.cpp:106
 msgid "Users: %1"
 msgstr "Пользователи: %1"
 
@@ -4296,8 +4259,7 @@ msgstr "Пользователи: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:200
-#: ../src/qtui/topicwidget.cpp:107
+#: ../src/client/networkmodel.cpp:200 ../src/qtui/topicwidget.cpp:107
 msgid "Lag: %1 msecs"
 msgstr "Лаг: %1 мс"
 
@@ -4332,7 +4294,7 @@ msgstr "<b>Замечание:</b> Это удалит все соответст
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgid "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "<br>Нельзя удалить буфера активных каналов, сначала, пожалуйста, покиньте канал."
+msgstr "<br>Нельзя удалить буферы активных каналов. Пожалуйста, сначала покиньте канал."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
@@ -4638,8 +4600,7 @@ msgid "This wizard will help you to set up your default identity and your IRC ne
 msgstr "Этот мастер поможет настроить личность по умолчанию и сетевое соединение с IRC.<br>Он устанавливает только базовые настройки. В любой момент можно отказаться от мастера и использовать окно настройки для более подробной конфигурации."
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:121
-#: ../src/uisupport/qssparser.cpp:166
+#: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
 #: ../src/uisupport/qssparser.cpp:316
 msgid "Invalid block declaration: %1"
 msgstr ""
@@ -4740,15 +4701,13 @@ msgid "Unknown palette color role: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:458
-#: ../src/uisupport/qssparser.cpp:481
+#: ../src/uisupport/qssparser.cpp:458 ../src/uisupport/qssparser.cpp:481
 #: ../src/uisupport/qssparser.cpp:503
 msgid "Invalid gradient declaration: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:467
-#: ../src/uisupport/qssparser.cpp:489
+#: ../src/uisupport/qssparser.cpp:467 ../src/uisupport/qssparser.cpp:489
 #: ../src/uisupport/qssparser.cpp:513
 msgid "Invalid gradient stops list: %1"
 msgstr ""
@@ -4872,8 +4831,7 @@ msgstr "Пароль прокси:"
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/ui/settingsdlg.ui:14
-#: ../src/qtui/ui/settingspagedlg.ui:14
+#: ../src/qtui/ui/settingsdlg.ui:14 ../src/qtui/ui/settingspagedlg.ui:14
 msgid "Configure Quassel"
 msgstr "Настроить Quassel"
 
@@ -4881,10 +4839,8 @@ msgstr "Настроить Quassel"
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/ui/settingsdlg.ui:35
-#: ../src/qtui/ui/settingsdlg.ui:50
-#: ../src/qtui/settingsdlg.cpp:99
-#: ../src/qtui/ui/settingspagedlg.ui:30
+#: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
+#: ../src/qtui/settingsdlg.cpp:99 ../src/qtui/ui/settingspagedlg.ui:30
 msgid "Settings"
 msgstr "Настройки"
 
@@ -4902,8 +4858,7 @@ msgstr "В текущей вкладке есть несохранённые и�
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:122
-#: ../src/qtui/settingsdlg.cpp:126
+#: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #: ../src/qtui/settingspagedlg.cpp:36
 msgid "Configure %1"
 msgstr "Настроить %1"
@@ -4912,8 +4867,7 @@ msgstr "Настроить %1"
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:193
-#: ../src/qtui/settingspagedlg.cpp:104
+#: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Reload Settings"
 msgstr "Вернуть настройки"
 
@@ -4921,8 +4875,7 @@ msgstr "Вернуть настройки"
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:193
-#: ../src/qtui/settingspagedlg.cpp:104
+#: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr "Вернуть старый настройки, отменив все изменения на этой вкладке?"
 
@@ -4930,8 +4883,7 @@ msgstr "Вернуть старый настройки, отменив все и
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:202
-#: ../src/qtui/settingspagedlg.cpp:113
+#: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Restore Defaults"
 msgstr "Вернуть умолчания"
 
@@ -4939,8 +4891,7 @@ msgstr "Вернуть умолчания"
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:202
-#: ../src/qtui/settingspagedlg.cpp:113
+#: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Do you like to restore the default values for this page?"
 msgstr "Вернуть параметры по-умолчанию для этой вкладки?"
 
@@ -5083,38 +5034,32 @@ msgid "Subject"
 msgstr ""
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:126
-#: ../src/qtui/ui/sslinfodlg.ui:248
+#: ../src/qtui/ui/sslinfodlg.ui:126 ../src/qtui/ui/sslinfodlg.ui:248
 msgid "<b>Common name:</b>"
 msgstr ""
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:143
-#: ../src/qtui/ui/sslinfodlg.ui:265
+#: ../src/qtui/ui/sslinfodlg.ui:143 ../src/qtui/ui/sslinfodlg.ui:265
 msgid "<b>Organization:</b>"
 msgstr ""
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:160
-#: ../src/qtui/ui/sslinfodlg.ui:282
+#: ../src/qtui/ui/sslinfodlg.ui:160 ../src/qtui/ui/sslinfodlg.ui:282
 msgid "<b>Organizational unit:</b>"
 msgstr ""
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:177
-#: ../src/qtui/ui/sslinfodlg.ui:299
+#: ../src/qtui/ui/sslinfodlg.ui:177 ../src/qtui/ui/sslinfodlg.ui:299
 msgid "<b>Country:</b>"
 msgstr ""
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:194
-#: ../src/qtui/ui/sslinfodlg.ui:316
+#: ../src/qtui/ui/sslinfodlg.ui:194 ../src/qtui/ui/sslinfodlg.ui:316
 msgid "<b>State or province:</b>"
 msgstr ""
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:231
-#: ../src/qtui/ui/sslinfodlg.ui:353
+#: ../src/qtui/ui/sslinfodlg.ui:231 ../src/qtui/ui/sslinfodlg.ui:353
 msgid "<b>Locality:</b>"
 msgstr ""
 
@@ -5164,8 +5109,7 @@ msgid "Status Buffer"
 msgstr "Буфер состояния"
 
 #. ts-context SystemTray
-#: ../src/qtui/systemtray.cpp:61
-#: ../src/qtui/systemtray.cpp:92
+#: ../src/qtui/systemtray.cpp:61 ../src/qtui/systemtray.cpp:92
 msgid "&Minimize"
 msgstr ""
 
@@ -5376,7 +5320,7 @@ msgstr ""
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:629
 msgid "{Day changed to %1}"
-msgstr ""
+msgstr "{Новые сутки. Сегодня: % 1}"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:641
@@ -5384,8 +5328,7 @@ msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:645
-#: ../src/uisupport/uistyle.cpp:660
+#: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
 msgid "%DN%1%DN (%2 more)"
 msgstr ""
 
@@ -5395,8 +5338,7 @@ msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:667
-#: ../src/uisupport/uistyle.cpp:705
+#: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
 msgid "[%1]"
 msgstr "[%1]"
 
@@ -5426,8 +5368,7 @@ msgid "-->"
 msgstr "-->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:715
-#: ../src/uisupport/uistyle.cpp:717
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
 msgid "<--"
 msgstr "<--"
 
@@ -5439,84 +5380,82 @@ msgstr "<-*"
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:721
 msgid "<-x"
-msgstr ""
+msgstr "<-x"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:723
-#: ../src/uisupport/uistyle.cpp:725
-#: ../src/uisupport/uistyle.cpp:727
-#: ../src/uisupport/uistyle.cpp:731
+#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
 msgid "*"
 msgstr "*"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:729
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:733
 msgid "=>"
-msgstr ""
+msgstr "=>"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:735
 msgid "<="
-msgstr ""
+msgstr "<="
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:737
-#, fuzzy
 msgid "->"
-msgstr "<->"
+msgstr "->"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:697
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%n Владелец(ы)"
+msgstr[1] "%n Владелец(ы)"
+msgstr[2] "%n Владелец(ы)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:698
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%n Админ(ов)"
+msgstr[1] "%n Админ(ов)"
+msgstr[2] "%n Админ(ов)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:699
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%n Оператор(ов)"
+msgstr[1] "%n Оператор(ов)"
+msgstr[2] "%n Оператор(ов)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:700
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%n Half-Оп(ов)"
+msgstr[1] "%n Half-Оп(ов)"
+msgstr[2] "%n Half-Оп(ов)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:701
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%n Голос(ов)"
+msgstr[1] "%n Голос(ов)"
+msgstr[2] "%n Голос(ов)"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:702
+#, fuzzy
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%n Пользовател(ь)ей"
+msgstr[1] "%n Пользовател(ь)ей"
+msgstr[2] "%n Пользовател(ь)ей"
 
 #~ msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2009 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
 #~ msgstr "<b>Современный, распределённый клиент IRC</b><br><br>&copy;2005-2009 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> в сети <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC распространяется по двойной лицензии <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> и <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Большинство значков &copy;  <a href=\"http://www.oxygen-icons.org\">Команда Oxygen</a> и используются по лицензии <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Об ошибках пожалуйста сообщайте на  <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."

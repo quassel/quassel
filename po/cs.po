@@ -1,3 +1,4 @@
+# Czech translation for Quassel IRC
 # Copyright (C) 2009
 # This file is distributed under the same license as the Quassel package.
 #
@@ -6,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-02-25 00:37+0200\n"
 "PO-Revision-Date: 2011-06-28 17:30+0200\n"
 "Last-Translator: Tomáš Chvátal <tomas.chvatal@gmail.com>\n"

@@ -1,11 +1,12 @@
-# Copyright (C) 2009
+# German translation for Quassel IRC
+# Copyright (C) 2009 Quassel IRC
 # This file is distributed under the same license as the Quassel package.
 #
 # Martin Mayer <m4yer@minad.de>, Michael Groh <brot@minad.de>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-08-27 16:39+0000\n"
 "PO-Revision-Date: 2010-09-08 23:36+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbers.com>\n"

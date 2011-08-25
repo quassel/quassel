@@ -2,48 +2,67 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Daniel Albers <daniel@lbers.com>, 2010.
+# Kristóf Kiszel <ulysses@kubuntu.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2010-04-13 23:22+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"PO-Revision-Date: 2010-10-07 11:43+0200\n"
+"Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
+"Language-Team: Magyar <kde-l10n-hu@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Language: hu_HU\n"
+"X-Generator: Lokalize 1.0\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
 msgid "About Quassel"
-msgstr "Quassel Névjegye"
+msgstr "A Quassel névjegye"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
+"html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" conent=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
+"html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Verzió: 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Verzió: 0.2.0-pre, "
+"Összeállítás "
+"&gt;= 474 (2008-02-08)</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:115
@@ -53,7 +72,7 @@ msgstr "&Névjegy"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:135
 msgid "A&uthors"
-msgstr "K&észítők"
+msgstr "&Szerzők"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:155
@@ -63,53 +82,115 @@ msgstr "&Közreműködők"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:175
 msgid "&Thanks To"
-msgstr "Köszöne&ttel"
+msgstr "K&öszönet"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:32
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Versziószám:</b> %1<br><b>Protokoll verziószáma:</b> %2<br><b>Built:</b> %3"
+msgstr ""
+"<b>Verzió:</b> %1<br><b>Protokollverzió:</b> %2<br><b>Összeállítva:</b> %3"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:46
-#, fuzzy
-msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-msgstr "<b>Modern, 2005 és 2009 között</b><br><br>&copy;a Quassel Project által létrehozott IRC kliens<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>A Quassel IRC kettős licensz alatt áll: <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> és <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Az ikonok többségét &copy; az <a href=\"http://www.oxygen-icons.org\">Oxygen Team </a> készítette melyet az <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>licensz alapján használunk.<br><br>Hibák bejelentésére kérjük a <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> -ot használja."
+msgid ""
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc."
+"org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+"and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</"
+"a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html"
+"\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org"
+"\">http://bugs.quassel-irc.org</a> to report bugs."
+msgstr ""
+"<b>Egy modern, elosztott IRC-kliens<b><br><br>&copy; A Quassel projekt, "
+"2005-2010.<br><a href=\"http://quassel-irc.org\">#quassel</a> a <a href=\" "
+"http://www.freenode.net\">Freenode</a> hálózaton.</a><br><br>A Quassel "
+"IRC a <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> és <a "
+"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> kettős licencek "
+"szerint érhető el.<br>A legtöbb ikon tulajdonosai az <a href=\" "
+"http://www.oxygen-icons.org\">Oxygen fejlesztői</a>, és a <a href=\"http:// "
+"www.gnu.org/licenses/lgpl.html\">LGPL</a> licenc alatt érhetők el.<br><br> "
+"Kérjük a hibákat a <a href=\"http://bugs.quassel-irc.org\">http://bugs."
+"quassel- "
+"irc.org</a> oldalon jelentsék."
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
 msgid "Quassel IRC is mainly developed by:"
-msgstr "A Quassel IRC programot fejlesztette:"
+msgstr "A Quassel IRC fő fejlesztői:"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:77
-msgid "We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:"
-msgstr "Szeretnénk köszönetet mondani a következő közreműködőknek, és mindazoknak akiket elfelejtettünk megemlíteni itt:"
+msgid ""
+"We would like to thank the following contributors (in alphabetical order) "
+"and everybody we forgot to mention here:"
+msgstr ""
+"Szeretnénk köszönetet mondani az alábbi közreműködőknek, és "
+"mindazoknak, akiket elfelejtettünk itt megemlíteni:"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:135
-#, fuzzy
-msgid "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr "Külön köszönetet mondunk:<br><dl><dt><b>John \"nox\" Hand-nek,</b></dt><dd>kiváló művészeti munkájáért, valamint a Quassel logo/ikon megalkotásáért,</dt><dt><b><a href=\"http://www.oxygen-icons.org\">Az Oxygen Team</a></b></dt><dd>-nek, a legtöbb, gyönyörű ikon megalkotásáért, melyek a Quasselben láthatóak, </dd><dt><b><a href=\"http://www.trolltech.com\">a Qt Softwarenek (korábban: Trolltech)</a></b></dt><dd>, a Qt és a Qtopia megalkotásáért és a QuasselTopia Greenphonon és más</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>telefonokon történő fejelsztés támogatásáért, a Qt életben tartásáért, és a Quassel Mobile N810s-en történő fejlesztés támogatásáért.</dd>"
+msgid ""
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;"
+"<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-"
+"Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://"
+"www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the "
+"artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png"
+"\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known "
+"as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a href="
+"\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for "
+"keeping Qt alive, and for sponsoring development of Quassel Mobile with "
+"N810s</dd>"
+msgstr ""
+"Külön köszönetet mondunk a következőknek:<br><dl><dt><img "
+"src=\":/pics/quassel-eye.png\">&nbsp;<b>John „nox” Handnek</b></dt><dd>a "
+"Quassel eredeti ikonjának, a Mindent Látó Szem készítőjének,</dt><dt><img "
+"src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-"
+"icons.org\">az Oxygen csapatnak</a></b></dt><dd>a Quasselben látható "
+"grafikák készítéséért,</dd><dt><img src=\":/pics/qt-logo-"
+"32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">a Qt Software-nek, "
+"korábbi nevén Trolltechnek</a></b></dt><dd>a Qt és a Qtopia létrehozásáért, "
+"a QuasselTopia Greenphone-on és továbbiakon történő fejlesztésének "
+"támogatásáért, valamint a</dd><dt><a href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a>-nak</b></dt><dd>a Qt életben tartásáért és a "
+"Quassel Mobile N810s-en történő fejlesztésének támogatásáért.</dd>"
 
 #. ts-context AbstractSqlStorage
 #: ../src/core/abstractsqlstorage.cpp:115
-msgid "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
-msgstr "A telepített séma (verziószám %1) nem friss. Frissítés a %2 verzióra..."
+msgid ""
+"Installed Schema (version %1) is not up to date. Upgrading to version %2..."
+msgstr ""
+"A telepített séma (verzió: %1) nem naprakész, frissítés a(z) %2 verzióra…"
 
 #. ts-context AbstractSqlStorage
 #: ../src/core/abstractsqlstorage.cpp:117
 msgid "Upgrade failed..."
-msgstr ""
+msgstr "Sikertelen frissítés…"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:55
-msgid "<b>The shortcut for the alias</b><br />It can be used as a regular slash command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
+msgid ""
+"<b>The shortcut for the alias</b><br />It can be used as a regular slash "
+"command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
 msgstr ""
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
-msgid "<b>The string the shortcut will be expanded to</b><br /><b>special variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</b> represents all parameters from i on separated by spaces.<br /> - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of the selected channel<br /><br />Multiple commands can be separated with semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
+msgid ""
+"<b>The string the shortcut will be expanded to</b><br /><b>special variables:"
+"</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> "
+"represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</"
+"b> represents all parameters from i on separated by spaces.<br /> - <b>$i:"
+"hostname</b> represents the hostname of the user identified by the i'th "
+"parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>"
+"$nick</b> your current nickname<br /> - <b>$channel</b> the name of the "
+"selected channel<br /><br />Multiple commands can be separated with "
+"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
+"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
+"1 2 3\" when called like /test 1 2 3"
 msgstr ""
 
 #. ts-context AliasesModel
@@ -120,7 +201,7 @@ msgstr "Álnév"
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:171
 msgid "Expansion"
-msgstr "Bővítés"
+msgstr "Bővítmény"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context AliasesSettingsPage
@@ -198,7 +279,7 @@ msgstr "Bővítés"
 #: ../src/qtui/ui/topicwidget.ui:32
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
 msgid "Form"
-msgstr "Forma"
+msgstr "Űrlap"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context AliasesSettingsPage
@@ -237,7 +318,7 @@ msgstr "Törlés"
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
 msgid "IRC"
-msgstr ""
+msgstr "IRC"
 
 #. ts-context AliasesSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
@@ -247,13 +328,12 @@ msgstr "Álnevek"
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:22
 msgid "Client style:"
-msgstr "Kliens stilus:"
+msgstr "Kliensstílus:"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:29
-#, fuzzy
 msgid "Set application style"
-msgstr "Egyedi Alkalmazások Betütipusai"
+msgstr "Alkalmazásstílus beállítása"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:36
@@ -263,29 +343,28 @@ msgstr "Nyelv:"
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:43
 msgid "Set the application language. Requires restart!"
-msgstr ""
+msgstr "Beállítja az alkalmazás nyelvét. Újraindítást igényel!"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:47
 msgid "<Untranslated>"
-msgstr ""
+msgstr "<Lefordítatlan>"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:52
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:74
 msgid "<System Default>"
-msgstr "Alapértelmezett"
+msgstr "<A rendszer alapértelmezése>"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:75
 msgid "Use custom stylesheet"
-msgstr ""
+msgstr "Egyéni stíluslap használata"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:109
-#, fuzzy
 msgid "Path:"
-msgstr "Kilépés"
+msgstr "Elérési út:"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context AppearanceSettingsPage
@@ -351,85 +430,71 @@ msgstr "Kilépés"
 #: ../src/qtui/settingspages/networkssettingspage.ui:281
 #: ../src/qtui/settingspages/networkssettingspage.ui:295
 #: ../src/qtui/ui/simplenetworkeditor.ui:168
-#: ../src/qtui/ui/simplenetworkeditor.ui:182
-#: ../src/qtui/ui/topicwidget.ui:79
+#: ../src/qtui/ui/simplenetworkeditor.ui:182 ../src/qtui/ui/topicwidget.ui:79
 msgid "..."
-msgstr "..."
+msgstr "…"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:150
 msgid "Show system tray icon"
-msgstr "Tálca Ikon Mutatása"
+msgstr "Paneltálcaikon megjelenítése"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
-#, fuzzy
 msgid "Hide to tray on close button"
-msgstr "Minimalizálás tálcara a bezárás gombbal"
+msgstr ""
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:216
 msgid "Enable animations"
-msgstr ""
+msgstr "Animációk engedélyezése"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:231
 msgid "Message Redirection"
-msgstr "Üzenet átirányítás"
+msgstr "Üzenetátirányítás"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:237
 msgid "User Notices:"
-msgstr "Felhasználó Figyelmeztetés:"
+msgstr ""
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:280
 msgid "Server Notices:"
-msgstr "Kiszolgáló Figyelmeztetés:"
+msgstr ""
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:294
 msgid "Default Target"
-msgstr "Alapértelmezett Cél"
+msgstr "Alapértelmezett cél"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:301
 msgid "Status Window"
-msgstr ""
+msgstr "Állapotablak"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:308
-#, fuzzy
 msgid "Current Chat"
-msgstr "Aktuális Becenév"
+msgstr ""
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:315
 msgid "Errors:"
 msgstr "Hibák:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context NotificationsSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ShortcutsSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NotificationsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
@@ -441,106 +506,102 @@ msgstr "Hibák:"
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Interface"
-msgstr "Intervallum:"
+msgstr "Felület"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgid "Please choose a stylesheet file"
-msgstr ""
+msgstr "Válasszon egy stíluslapfájlt"
 
 #. ts-context AwayLogView
 #: ../src/qtui/awaylogview.cpp:33
 msgid "Away Log"
-msgstr "Távollét Alatti Naplózás"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context AwayLogView
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ChatMonitorView
-#: ../src/qtui/awaylogview.cpp:44
-#: ../src/qtui/chatmonitorview.cpp:59
+#: ../src/qtui/awaylogview.cpp:44 ../src/qtui/chatmonitorview.cpp:59
 msgid "Show Network Name"
-msgstr "Hálózat Nevének Mutatása"
+msgstr "Hálózatnév megjelenítése"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context AwayLogView
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ChatMonitorView
-#: ../src/qtui/awaylogview.cpp:49
-#: ../src/qtui/chatmonitorview.cpp:64
+#: ../src/qtui/awaylogview.cpp:49 ../src/qtui/chatmonitorview.cpp:64
 msgid "Show Buffer Name"
-msgstr "Puffer Nevének Mutatása"
+msgstr "Puffernév megjelenítése"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:22
-msgid "Number of messages to be requested from the core when using scrolling up in the buffer view."
-msgstr "A lekérdezendő üzenetek száma a puffernézet görgetése közben."
+msgid ""
+"Number of messages to be requested from the core when using scrolling up in "
+"the buffer view."
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
 msgid "Dynamic backlog amount:"
-msgstr "Dinamikus napló mennyiesége:"
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:75
-#, fuzzy
 msgid "Backlog request method:"
-msgstr "Napló lekérdezés módszer:"
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:83
-#, fuzzy
 msgid "Fixed amount per chat"
-msgstr "Pufferenkénti rögzített mennyiség"
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:88
-#, fuzzy
 msgid "Unread messages per chat"
-msgstr "Pufferenkénti olvasatlan üzenetek"
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:93
-#, fuzzy
 msgid "Globally unread messages"
-msgstr "Általános olvasatlan üzenetek"
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:123
-#, fuzzy
-msgid "The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog."
-msgstr "A legegyszerűbb lekérdező. Rögzített mennyiségű sort tölt le minden pufferbe a Naplóból."
+msgid ""
+"The simplest requester. It fetches a fixed amount of lines for each chat "
+"window from the backlog."
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
-msgid "amount of messages per buffer that are requested after the core connection has been established."
-msgstr "pufferenkénti üzenetek mennyisége, melyeket a csatlakozás létrehozása után kér le a program."
+msgid ""
+"amount of messages per buffer that are requested after the core connection "
+"has been established."
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
 msgid "Initial backlog amount:"
-msgstr "Kiinduló napló mennyisége:"
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
-#, fuzzy
 msgid ""
-"This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
+"This requester fetches unread messages for each chat window individually. "
+"The amount of lines can be limited per chat.\n"
 "\n"
-"You can also choose to fetch additional older chatlines to provide a better context."
+"You can also choose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Ez a lekérdező minden olvasatlan üzenetet pufferenként külön gyűjti. A sorok száma pufferenként korlátozható.\n"
-"\n"
-"Lehetőség van további, korábbi sorok gyűjtésére is a jobb összefüggés biztosítása érdekében."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
 #: ../src/qtui/settingspages/backlogsettingspage.ui:232
 #: ../src/qtui/settingspages/backlogsettingspage.ui:354
 msgid "Maximum amount of messages to be fetched per buffer."
-msgstr "A pufferenkénti üzenetek maximális mennyisége."
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:225
@@ -566,8 +627,10 @@ msgstr "Korlátlan"
 #: ../src/qtui/settingspages/backlogsettingspage.ui:270
 #: ../src/qtui/settingspages/backlogsettingspage.ui:382
 #: ../src/qtui/settingspages/backlogsettingspage.ui:392
-msgid "Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here."
-msgstr "Az olvasatlan üzeneteken felül gyűjtentő üzenetek mennyisége. A korlátot ne itt adja meg."
+msgid ""
+"Amount of messages to be fetched in addition to the unread messages. The "
+"Limit does not apply here."
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
@@ -577,32 +640,28 @@ msgstr "További üzenetek:"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:324
-#, fuzzy
 msgid ""
-"This requester fetches all messages newer than the oldest unread message for all chats.\n"
+"This requester fetches all messages newer than the oldest unread message for "
+"all chats.\n"
 "\n"
-"Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).\n"
-"It is useful to limit the total amount of the backlog and is probably the fastest.\n"
+"Note: This requester is not recommended if you use hidden chat windows or "
+"have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the "
+"fastest.\n"
 "\n"
-"You can also chose to fetch additional older chatlines to provide a better context."
+"You can also chose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Ez a lekérdező minden pufferben összegyűjti az olvasatlan üzeneteket az újabbtól a régi felé haladva.\n"
-"\n"
-"Megjegyzés: Nem ajánlott ezt a lekérdezést használni, ha rendelkezik rejtett pufferrel vagy nem aktív pufferrel (azaz nincs elévült lekérdezés vagy csatorna).\n"
-"Hasznos, ha korlátozza a napló teljes mennyiségét, valószínűleg ez a leggyorsabb.\n"
-"\n"
-"Lehetőség van további, korábbi sorok gyűjtésére is a jobb összefüggés biztosítása érdekében."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:344
 msgid "Maximum amount of messages to be fetched over all buffers."
-msgstr "A pufferekben gyűjtendő üzenetek maximális mennyisége."
+msgstr ""
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
-#, fuzzy
 msgid "Backlog Fetching"
-msgstr "Napló"
+msgstr ""
 
 #. ts-context BufferItem
 #: ../src/client/networkmodel.cpp:346
@@ -612,14 +671,14 @@ msgstr "<p> %1 - %2 </p>"
 #. ts-context BufferView
 #: ../src/uisupport/bufferview.cpp:248
 msgid "Merge buffers permanently?"
-msgstr "Pufferok egyesítése véglegesen?"
+msgstr ""
 
 #. ts-context BufferView
 #: ../src/uisupport/bufferview.cpp:249
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
-msgstr "Szeretné összefűzni végleg az \"%1\" és \"%2\" puffert? A művelet nem visszavonható!"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewEditDlg
@@ -631,25 +690,22 @@ msgstr "Szeretné összefűzni végleg az \"%1\" és \"%2\" puffert? A művelet 
 #: ../src/qtui/settingspages/networkeditdlg.ui:13
 #: ../src/qtui/settingspages/servereditdlg.ui:14
 msgid "Dialog"
-msgstr "Párbeszéd"
+msgstr "Párbeszédablak"
 
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:22
-#, fuzzy
 msgid "Please enter a name for the chat list:"
-msgstr "Irjon be egy nevet a puffer nézetbe:"
+msgstr "Adjon egy nevet a csevegéslistának:"
 
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
-#, fuzzy
 msgid "Add Chat List"
-msgstr "Csatorna Lista"
+msgstr "Csevegéslista hozzáadása"
 
 #. ts-context BufferViewFilter
 #: ../src/uisupport/bufferviewfilter.cpp:52
-#, fuzzy
 msgid "Show / Hide Chats"
-msgstr "Pufferok Mutatása / Rejtése"
+msgstr "Csevegések megjelenítése/elrejtése"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -661,7 +717,7 @@ msgstr "Pufferok Mutatása / Rejtése"
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgid "Re&name..."
-msgstr "Át&nevezés..."
+msgstr "Át&nevezés…"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -677,7 +733,7 @@ msgstr "Át&nevezés..."
 #: ../src/qtui/settingspages/networkssettingspage.ui:235
 #: ../src/qtui/ui/simplenetworkeditor.ui:119
 msgid "&Add..."
-msgstr "&Hozzáadás..."
+msgstr "&Hozzáadás…"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -690,21 +746,17 @@ msgstr "&Hozzáadás..."
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
 #: ../src/qtui/ui/simplenetworkeditor.ui:139
 msgid "De&lete"
-msgstr "Tö&rlés"
+msgstr "&Törlés"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:84
-#, fuzzy
 msgid "Chat List Settings"
-msgstr "Színek"
+msgstr "A csevegéslista beállításai"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context NetworkModelController::JoinDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModelController::JoinDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:92
 #: ../src/uisupport/networkmodelcontroller.cpp:487
-#, fuzzy
 msgid "Network:"
 msgstr "Hálózat:"
 
@@ -720,63 +772,56 @@ msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
 msgstr ""
-"Ez az opció nem használható amikor minden Hálozat látható.\n"
-"Ebben a módban különálló státuszpufferek nem láthatók."
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
-#, fuzzy
 msgid "Show status window"
-msgstr "ÁllapotKijelző &Mutatása"
+msgstr "Állapotablak megjelenítése"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:121
-#, fuzzy
 msgid "Show channels"
-msgstr "Csatornak Mutatása"
+msgstr "Csatornák megjelenítése"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:128
-#, fuzzy
 msgid "Show queries"
-msgstr "Pufferek Mutatása"
+msgstr ""
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:135
-#, fuzzy
 msgid "Hide inactive chats"
-msgstr "Inaktív Pufferek Rejtése"
+msgstr "Inaktív csevegések elrejtése"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:142
-#, fuzzy
 msgid "Add new chats automatically"
-msgstr "Új Pufferek Autómatikus Hozzáadása"
+msgstr ""
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
 msgid "Sort alphabetically"
-msgstr "Rendezés abc sorrendben"
+msgstr "Rendezés ábécésorrendben"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
 msgid "Minimum Activity:"
-msgstr "Minimális Aktivitás:"
+msgstr "Minimális aktivitás"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:164
 msgid "No Activity"
-msgstr "Nincs Aktivitás"
+msgstr "Nincs aktivitás"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:169
 msgid "Other Activity"
-msgstr "Egyéb Aktivitás"
+msgstr "Egyéb aktivitások"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:174
 msgid "New Message"
-msgstr "Új Üzenet"
+msgstr "Új üzenet"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -798,41 +843,38 @@ msgstr "Előnézet:"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
-#, fuzzy
 msgid "Custom Chat Lists"
-msgstr "Egyéni Kiemelések"
+msgstr "Egyéni csevegéslisták"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:342
-#, fuzzy
 msgid "Delete Chat List?"
-msgstr "Adatlap Törlése?"
+msgstr "Törli a csevegéslistát?"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:343
-#, fuzzy
 msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr "Biztosan törli a \"%1\" profilt?"
+msgstr "Biztosan törölni akarja a(z) „%1” csevegéslistát?"
 
 #. ts-context BufferViewWidget
 #: ../src/qtui/ui/bufferviewwidget.ui:26
 msgid "BufferView"
-msgstr "PufferNézet"
+msgstr ""
 
 #. ts-context BufferWidget
 #: ../src/qtui/bufferwidget.cpp:79
 msgid "Zoom In"
-msgstr "Nagyítás +"
+msgstr "Nagyítás"
 
 #. ts-context BufferWidget
 #: ../src/qtui/bufferwidget.cpp:85
 msgid "Zoom Out"
-msgstr "Nagyítás -"
+msgstr "Kicsinyítés"
 
 #. ts-context BufferWidget
 #: ../src/qtui/bufferwidget.cpp:90
 msgid "Actual Size"
-msgstr "Aktuális Méret"
+msgstr "Tényleges méret"
 
 #. ts-context BufferWidget
 #: ../src/qtui/bufferwidget.cpp:94
@@ -847,7 +889,7 @@ msgstr ""
 #. ts-context ChannelBufferItem
 #: ../src/client/networkmodel.cpp:503
 msgid "<b>Channel %1</b>"
-msgstr "<b>Csatorna %1</b>"
+msgstr "<b>%1. csatorna</b>"
 
 #. ts-context ChannelBufferItem
 #: ../src/client/networkmodel.cpp:506
@@ -867,7 +909,7 @@ msgstr "<b>Téma:</b> %1"
 #. ts-context ChannelBufferItem
 #: ../src/client/networkmodel.cpp:525
 msgid "Not active <br /> Double-click to join"
-msgstr "Nem Aktív <br /> Dupla-kattintás a csatlakozáshoz"
+msgstr ""
 
 #. ts-context ChannelBufferItem
 #: ../src/client/networkmodel.cpp:528
@@ -877,12 +919,12 @@ msgstr "<p> %1 </p>"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:14
 msgid "Channel List"
-msgstr "Csatorna Lista"
+msgstr "Csatornalista"
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:38
 msgid "Search Pattern:"
-msgstr "Minta Keresése:"
+msgstr "Keresési minta:"
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:48
@@ -890,96 +932,106 @@ msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows to pass search strings to the IRC Server."
 msgstr ""
-"Válasszon egyszerű és haladó mód között.\n"
-"A haladó mód engedi szöveg keresését az IRC szerveren."
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:62
 msgid "Show Channels"
-msgstr "Csatornak Mutatása"
+msgstr "Csatornák megjelenítése"
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:86
 msgid "Filter:"
-msgstr "Filter:"
+msgstr "Szűrő:"
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgid "Errors Occured:"
-msgstr "Hibák Történtek:"
+msgstr "Hibák történtek:"
 
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
-#, fuzzy
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
-msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Csevegjen kényelmesen. Bárhol.</span></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</"
+"span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+msgstr ""
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
 msgid "Operation Mode:"
-msgstr "Művelet Mód:"
+msgstr ""
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
+"style=\" font-weight:400;\">Only buffers on the right side are shown in "
+"chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
+"ignored in chatmonitor</p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Műveleti módok:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Bekapcsolás:</span> <span style=\" font-weight:400;\">Csak a pufferek látszódnak a jobb oldalon a chatablakban</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Kikapcsolás:</span> A pufferek a jobb oldalon tiltásra kerülnek.</p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
-#, fuzzy
 msgid "Available:"
-msgstr "Rendelkezésre Álló Pufferek:"
+msgstr "Elérhető:"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:88
 msgid "Move selected buffers to the left"
-msgstr "KIválasztott pufferok mozgatása balra"
+msgstr "Kijelölt pufferek mozgatása balra"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:102
 msgid "Move selected buffers to the right"
-msgstr "KIválasztott pufferok mozgatása jobbra"
+msgstr "Kijelölt pufferek mozgatása jobbra"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:236
 msgid "Show:"
-msgstr "Mutat:"
+msgstr "Megjelenítés:"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:147
-msgid "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr "Mutassa a chatablakban a névkiemeléseket, akkor is, ha az eredeti puffer tiltott"
+msgid ""
+"Show highlights in chatmonitor even if the originating buffer is ignored"
+msgstr ""
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgid "Always show highlighted messages"
-msgstr "Mindig mutasd a kiemelt üzeneteket"
+msgstr "Mindig jelenjenek meg a kiemelt üzenetek"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:157
 msgid "Show own messages"
-msgstr "Saját Üzenetek Mutatása"
+msgstr "Saját üzenetek megjelenítése"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ChatMonitorSettingsPage
@@ -993,42 +1045,42 @@ msgstr "Csevegésfigyelő"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
 msgid "Opt In"
-msgstr "Bekapcsol"
+msgstr ""
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:59
 msgid "Opt Out"
-msgstr "Kikapcsol"
+msgstr ""
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:239
 msgid "Ignore:"
-msgstr "Mellőzés:"
+msgstr ""
 
 #. ts-context ChatMonitorView
 #: ../src/qtui/chatmonitorview.cpp:52
 msgid "Show Own Messages"
-msgstr "Saját Üzenetek Mutatása"
+msgstr "Saját üzenetek megjelenítése"
 
 #. ts-context ChatMonitorView
 #: ../src/qtui/chatmonitorview.cpp:71
 msgid "Configure..."
-msgstr "Beállít..."
+msgstr "Beállítás…"
 
 #. ts-context ChatScene
 #: ../src/qtui/chatscene.cpp:745
 msgid "Copy Selection"
-msgstr "Kiválasztottak másolása"
+msgstr "Kijelölés másolása"
 
 #. ts-context ChatViewSearchBar
 #: ../src/qtui/ui/chatviewsearchbar.ui:55
 msgid "case sensitive"
-msgstr "kis- és nagybetű érzékeny"
+msgstr "kis- és nagybetűk megkülönböztetése"
 
 #. ts-context ChatViewSearchBar
 #: ../src/qtui/ui/chatviewsearchbar.ui:62
 msgid "search nick"
-msgstr "becenév keresése"
+msgstr "álnév keresése"
 
 #. ts-context ChatViewSearchBar
 #: ../src/qtui/ui/chatviewsearchbar.ui:69
@@ -1038,13 +1090,12 @@ msgstr "üzenet keresése"
 #. ts-context ChatViewSearchBar
 #: ../src/qtui/ui/chatviewsearchbar.ui:82
 msgid "ignore joins, parts, etc."
-msgstr "kapcsolódások, társak stb. tiltása."
+msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:22
-#, fuzzy
 msgid "Timestamp format:"
-msgstr "Időbélyeg:"
+msgstr "Időbélyegző-formátum:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:32
@@ -1053,9 +1104,8 @@ msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:59
-#, fuzzy
 msgid "Custom chat window font:"
-msgstr "Egyedi Alkalmazások Betütipusai"
+msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
@@ -1069,7 +1119,8 @@ msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:111
-msgid "Show a website preview window when hovering the mouse over a web address"
+msgid ""
+"Show a website preview window when hovering the mouse over a web address"
 msgstr ""
 
 #. ts-context ChatViewSettingsPage
@@ -1079,7 +1130,9 @@ msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:130
-msgid "Set the marker line to the bottom of the current chat window when selecting another channel"
+msgid ""
+"Set the marker line to the bottom of the current chat window when selecting "
+"another channel"
 msgstr ""
 
 #. ts-context ChatViewSettingsPage
@@ -1089,50 +1142,43 @@ msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:149
-#, fuzzy
 msgid "Custom Colors"
-msgstr "Egyéni Kiemelések"
+msgstr "Egyéni színek"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:167
-#, fuzzy
 msgid "Action:"
-msgstr "Tevékenységek"
+msgstr "Művelet:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:191
 msgid "Timestamp:"
-msgstr "Időbélyeg:"
+msgstr "időbélyegző:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:215
-#, fuzzy
 msgid "Channel message:"
-msgstr "Csatorna neve:"
+msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:252
-#, fuzzy
 msgid "Highlight foreground:"
-msgstr "Kiemelt Üzenet:"
+msgstr "Előtér kiemelése:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:276
-#, fuzzy
 msgid "Command message:"
-msgstr "Üzenet Belépéskor:"
+msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:300
-#, fuzzy
 msgid "Highlight background:"
-msgstr "Kiemelt Üzenet:"
+msgstr "Háttér kiemelése:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:307
-#, fuzzy
 msgid "Server message:"
-msgstr "Kiszolgáló Üzenet:"
+msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:331
@@ -1141,15 +1187,13 @@ msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:355
-#, fuzzy
 msgid "Error message:"
-msgstr "Hiba Üzenet:"
+msgstr "Hibaüzenet:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:379
-#, fuzzy
 msgid "Background:"
-msgstr "Háttér"
+msgstr "Háttér:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:423
@@ -1158,15 +1202,13 @@ msgstr ""
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:719
-#, fuzzy
 msgid "Own messages:"
-msgstr "Saját Üzenetek Mutatása"
+msgstr "Saját üzenetek:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
-#, fuzzy
 msgid "Chat View"
-msgstr "CsevegésFigyelő"
+msgstr "Csevegésnézet"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
@@ -1176,12 +1218,12 @@ msgstr ""
 #. ts-context Client
 #: ../src/client/client.cpp:270
 msgid "Identity already exists in client!"
-msgstr "A profil már létezik!"
+msgstr ""
 
 #. ts-context ClientBacklogManager
 #: ../src/client/clientbacklogmanager.cpp:161
 msgid "Processed %1 messages in %2 seconds."
-msgstr "Feldolgozott %1 üzenet %2 másodpercen belül."
+msgstr "%1 üzenet feldolgozva %2 másodperc alatt."
 
 #. ts-context ClientBufferViewManager
 #: ../src/client/clientbufferviewmanager.cpp:52
@@ -1200,9 +1242,8 @@ msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
-#, fuzzy
 msgid "Configure the IRC Connection"
-msgstr "Kapcsolat folytatása"
+msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:20
@@ -1211,9 +1252,8 @@ msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:37
-#, fuzzy
 msgid "Ping interval:"
-msgstr "Intervallum:"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ConnectionSettingsPage
@@ -1228,13 +1268,12 @@ msgstr "Intervallum:"
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:157
 #: ../src/qtui/taskbarnotificationbackend.cpp:79
 msgid " seconds"
-msgstr ""
+msgstr " másodperc"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:80
-#, fuzzy
 msgid "Disconnect after"
-msgstr "Szétkapcsolás"
+msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:103
@@ -1243,7 +1282,9 @@ msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
-msgid "This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users' away status."
+msgid ""
+"This enables periodic polling of user information using /WHO. This is mostly "
+"interesting for tracking users' away status."
 msgstr ""
 
 #. ts-context ConnectionSettingsPage
@@ -1253,9 +1294,8 @@ msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:148
-#, fuzzy
 msgid "Update interval:"
-msgstr "Intervallum:"
+msgstr "Frissítési időköz:"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:177
@@ -1264,9 +1304,8 @@ msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:184
-#, fuzzy
 msgid " users"
-msgstr "Felhasználók"
+msgstr " felhasználó"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:206
@@ -1276,15 +1315,12 @@ msgstr ""
 #. ts-context ContentsChatItem
 #: ../src/qtui/chatitem.cpp:683
 msgid "Copy Link Address"
-msgstr "Hivatkozás Címének Másolása"
+msgstr "Hivatkozás címének másolása"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:38
 #: ../src/uisupport/toolbaractionprovider.cpp:31
-#, fuzzy
 msgid "Connect"
 msgstr "Kapcsolódás"
 
@@ -1295,7 +1331,7 @@ msgstr "Kapcsolódás"
 #: ../src/uisupport/contextmenuactionprovider.cpp:39
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgid "Disconnect"
-msgstr "Szétkapcsolás"
+msgstr "Kapcsolat bontása"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ContextMenuActionProvider
@@ -1304,7 +1340,7 @@ msgstr "Szétkapcsolás"
 #: ../src/uisupport/contextmenuactionprovider.cpp:41
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgid "Join"
-msgstr "Belépés"
+msgstr "Csatlakozás"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ContextMenuActionProvider
@@ -1317,9 +1353,8 @@ msgstr "Kilépés"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:43
-#, fuzzy
 msgid "Delete Chat(s)..."
-msgstr "Pufferek törlése..."
+msgstr "Csevegések törlése…"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:44
@@ -1329,7 +1364,7 @@ msgstr ""
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:46
 msgid "Joins"
-msgstr "Belépések"
+msgstr "Csatlakozások"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:47
@@ -1344,48 +1379,47 @@ msgstr "Kilépések"
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:49
 msgid "Nick Changes"
-msgstr "Becenév Változik"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:50
 msgid "Mode Changes"
-msgstr "Mód Változik"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:51
 msgid "Day Changes"
-msgstr "Nap változik"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:52
-#, fuzzy
 msgid "Topic Changes"
-msgstr "Becenév Változik"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:53
 msgid "Set as Default..."
-msgstr "Beállít Alapértelmezettként..."
+msgstr "Beállítás alapértelmezettnek…"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:54
 msgid "Use Defaults..."
-msgstr "Alapértelmezések Használata..."
+msgstr "Alapértelmezések használata…"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:56
 msgid "Join Channel..."
-msgstr "Belépés Csatornára..."
+msgstr "Csatlakozás csatornához…"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:58
 msgid "Start Query"
-msgstr "Párbeszéd Indítása"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:59
 msgid "Show Query"
-msgstr "Párbeszéd megjelenítése"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ContextMenuActionProvider
@@ -1399,7 +1433,7 @@ msgstr ""
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:62
 msgid "Version"
-msgstr "Verziószám"
+msgstr "Verzió"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:63
@@ -1413,77 +1447,73 @@ msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
-#, fuzzy
 msgid "Client info"
-msgstr "Kliens"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
-#, fuzzy
 msgid "Custom..."
-msgstr "Kilépés..."
+msgstr "Egyéni…"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:78
 msgid "Give Operator Status"
-msgstr "Operátor Jog Adása"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:79
 msgid "Take Operator Status"
-msgstr "Operátor Jog Elvétele"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:80
 msgid "Give Voice"
-msgstr "Voice jog adása"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:81
 msgid "Take Voice"
-msgstr "Voice jog elvétele"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:82
 msgid "Kick From Channel"
-msgstr "Kirugás A Csatornáról"
+msgstr "Kirúgás a csatornáról"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:83
 msgid "Ban From Channel"
-msgstr "Kitiltás A Csatornáról"
+msgstr "Kitiltás a csatornáról"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:84
 msgid "Kick && Ban"
-msgstr "Kirúgás && kitiltás"
+msgstr "Kirúgás és kitiltás"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:86
-#, fuzzy
 msgid "Hide Chat(s) Temporarily"
-msgstr "Puffer(ek) Ideiglenes Elrejtése"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:87
-#, fuzzy
 msgid "Hide Chat(s) Permanently"
-msgstr "Puffer(ek) Végleges Elrejtése"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:88
 msgid "Show Channel List"
-msgstr "Csatorna Lista Mutatása"
+msgstr "Csatornalista megjelenítése"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:89
 msgid "Show Ignore List"
-msgstr "Mellőzöttek Listája"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:102
 msgid "Hide Events"
-msgstr "Események Rejtése"
+msgstr "Események elrejtése"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context ContextMenuActionProvider
@@ -1492,18 +1522,17 @@ msgstr "Események Rejtése"
 #: ../src/uisupport/contextmenuactionprovider.cpp:110
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:86
 msgid "CTCP"
-msgstr ""
+msgstr "CTCP"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:122
 msgid "Actions"
-msgstr "Tevékenységek"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:126
-#, fuzzy
 msgid "Ignore"
-msgstr "Mellőzés:"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:131
@@ -1518,99 +1547,99 @@ msgstr ""
 #. ts-context Core
 #: ../src/core/core.cpp:182
 msgid "Could not initialize any storage backend! Exiting..."
-msgstr "Nem lehet a háttértárolót előkészíteni! Kilépés..."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:183
-#, fuzzy
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
-"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
+"Qt library with the sqlite or postgres plugin enabled in order for "
+"quasselcore\n"
 "to work."
-msgstr "A Quassel jelenleg az SQLite3-at támogatja. Qt könyvtár szükséges sqlite engedélyezéssel a quasselcore működése érdekében."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:232
 msgid "Calling restoreState() even though active sessions exist!"
-msgstr "restoreState() hívása amíg az aktív munkafolyamat él!"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:273
 msgid "Admin user or password not set."
-msgstr "Admin felhasználót vagy jelszót nem állítottak be."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:277
 msgid "Could not setup storage!"
-msgstr "A tárolót nem lehet beállítani!"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:281
 msgid "Creating admin user..."
-msgstr "Adminisztrátor Felhasználó Létrehozása..."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:394
 msgid "Invalid listen address %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:402
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "GUI kliens figyelése %1 számú IPv4-en, %2 porton, %3 számú protokollal"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:410
 msgid "Could not open IPv4 interface %1:%2: %3"
-msgstr "Nem lehet megnyitni az IPv4 csatolót %1:%2:%3"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:418
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "GUI kliens figyelése %1 számú IPv6-on, %2 porton, %3 számú protokollal"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:429
 msgid "Could not open IPv6 interface %1:%2: %3"
-msgstr "Nem lehet megnyitni az IPv6 csatolót %1:%2:%3"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:437
 msgid "Invalid listen address %1, unknown network protocol"
-msgstr "Nem érvényes figyelő cím %1, ismeretlen hálózati protokoll"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:446
 msgid "Could not open any network interfaces to listen on!"
-msgstr "Nem lehet hálózati csatolót nyitni!"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:480
 msgid "Client connected from"
-msgstr "Kliens kapcsolódása innen"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:483
 msgid "Closing server for basic setup."
-msgstr "Szerver leállítása alapbeállításokhoz."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:502
 msgid "Antique client trying to connect... refusing."
-msgstr "Régi kliens próbál kapcsolódni... elutasítás."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:514
-msgid "<b>Your Quassel Client is too old!</b><br>This core needs at least client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr "<b>Az Ön Quassel kliense túl régi!</b><br>A core legalább %1 számú protokoll verziót igényel.<br>Kérem fontolja meg kliensének frissítését."
+msgid ""
+"<b>Your Quassel Client is too old!</b><br>This core needs at least client/"
+"core protocol version %1.<br>Please consider upgrading your client."
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context Core
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreSession
-#: ../src/core/core.cpp:518
-#: ../src/core/core.cpp:608
-#: ../src/core/core.cpp:632
+#: ../src/core/core.cpp:518 ../src/core/core.cpp:608 ../src/core/core.cpp:632
 #: ../src/core/coresession.cpp:195
 msgid "Client"
 msgstr "Kliens"
@@ -1618,96 +1647,94 @@ msgstr "Kliens"
 #. ts-context Core
 #: ../src/core/core.cpp:518
 msgid "too old, rejecting."
-msgstr "túl régi, visszautasítás."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:535
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr "<b>Quassel Core Verziószám %1</b><br>Built: %2<br>Működési idő %3d%4h%5m (%6 óta)"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:588
 msgid "Starting TLS for Client:"
-msgstr "TLS Indítása a Klienshez:"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:606
-msgid "<b>Client not initialized!</b><br>You need to send an init message before trying to login."
-msgstr "<b>A kliens nem előkészített!</b><br>Indítási üzenet küldése szükséges a bejelentkezés előtt."
+msgid ""
+"<b>Client not initialized!</b><br>You need to send an init message before "
+"trying to login."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:608
 msgid "did not send an init message before trying to login, rejecting."
-msgstr "bejelentkezés előtti üzenet nem lett elküldve, visszautasítás."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:626
-msgid "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database."
-msgstr "<b>Nem megfelelő felhasználói név vagy jelszó!</b><br>Az Ön által megadott felhasználói név/jelszó páros nem található az adatbázisban."
+msgid ""
+"<b>Invalid username or password!</b><br>The username/password combination "
+"you supplied could not be found in the database."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:632
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
-msgstr "sikeresen beállított és azonosított mint \"%1\" (UserId: %2)."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:643
 msgid "Non-authed client disconnected."
-msgstr "Nem azonosított kliens bontotta a kapcsolatot."
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:649
 msgid "Non-authed client disconnected. (socket allready destroyed)"
-msgstr "Nem azonosított kliens kapcsolódása megszűnt (az illesztőpont már törölve)"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:697
 msgid "Could not initialize session for client:"
-msgstr "Nem lehet a munkamenetet előkészíteni a kliens számára:"
+msgstr ""
 
 #. ts-context Core
 #: ../src/core/core.cpp:719
-#, fuzzy
 msgid "Could not find a session for client:"
-msgstr "Nem lehet a munkamenetet előkészíteni a kliens számára:"
+msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreAccount
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreAccountModel
-#: ../src/client/coreaccount.h:39
-#: ../src/client/coreaccountmodel.cpp:64
-#, fuzzy
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccount
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountModel
+#: ../src/client/coreaccount.h:39 ../src/client/coreaccountmodel.cpp:64
 msgid "Internal Core"
-msgstr "Belső mag használata"
+msgstr ""
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:14
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:229
-#, fuzzy
 msgid "Edit Core Account"
-msgstr "Mag Fiók Szerkesztése"
+msgstr ""
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:20
 msgid "Account Details"
-msgstr "Profil Részletei"
+msgstr "Fiók részletei"
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:26
 msgid "Account Name:"
-msgstr "Felhasználói Profil Neve:"
+msgstr "Fióknév:"
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:33
 msgid "Local Core"
-msgstr "Helyi Mag"
+msgstr ""
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:40
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:173
 msgid "Hostname:"
-msgstr "Kiszolgálónév:"
+msgstr "Gépnév:"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountEditDlg
@@ -1717,7 +1744,7 @@ msgstr "Kiszolgálónév:"
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:180
 #: ../src/qtui/settingspages/servereditdlg.ui:220
 msgid "localhost"
-msgstr "Helyi Kiszolgáló"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountEditDlg
@@ -1774,7 +1801,7 @@ msgstr "Megjegyzés"
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:127
 #: ../src/qtui/settingspages/servereditdlg.ui:171
 msgid "Use a Proxy"
-msgstr "Proxy Használata"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountEditDlg
@@ -1783,7 +1810,7 @@ msgstr "Proxy Használata"
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:139
 #: ../src/qtui/settingspages/servereditdlg.ui:188
 msgid "Proxy Type:"
-msgstr "Proxy Tipusa:"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountEditDlg
@@ -1801,28 +1828,27 @@ msgstr ""
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:152
 #: ../src/qtui/settingspages/servereditdlg.ui:201
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:231
 msgid "Add Core Account"
-msgstr "Profil Hozzáadása"
+msgstr ""
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:20
 msgid "Connect to Quassel Core"
-msgstr "Kapcsolódás a Quassel Maghoz"
+msgstr ""
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:30
-#, fuzzy
 msgid "Core Accounts"
-msgstr "Profil Hozzáadása"
+msgstr ""
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:45
 msgid "Edit..."
-msgstr "Szerkesztés..."
+msgstr "Szerkesztés…"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountSettingsPage
@@ -1831,55 +1857,52 @@ msgstr "Szerkesztés..."
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:56
 #: ../src/qtui/settingspages/identitiessettingspage.ui:54
 msgid "Add..."
-msgstr "Hozzáadás..."
+msgstr "Hozzáadás…"
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:96
-#, fuzzy
 msgid "Automatically connect on startup"
-msgstr "Automatikus Újrakapcsolódás"
+msgstr ""
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:136
-#, fuzzy
 msgid "Connect to last account used"
-msgstr "Kapcsolódás a Quassel Maghoz"
+msgstr ""
 
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:148
-#, fuzzy
 msgid "Always connect to"
-msgstr "Kapcsolódás %1 hálózathoz"
+msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
-#, fuzzy
 msgid "Remote Cores"
-msgstr "Ismétel:"
+msgstr ""
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:69
 msgid "Core Configuration Wizard"
-msgstr "Mag Konfiguráció Varázsló"
+msgstr ""
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:97
 msgid "Your core has been successfully configured. Logging you in..."
-msgstr "A magot sikeresen beállítottuk. Bejelentkezés..."
+msgstr ""
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:104
-msgid "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
-msgstr "Mag konfiguráció nem sikerült:<br><b>%1</b><br>Nyomja meg a <em>Következő gombot</em> az újraindításhoz."
+msgid ""
+"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
+msgstr ""
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:119
-msgid "Your are now logged into your freshly configured Quassel Core!<br>Please remember to configure your identities and networks now."
-msgstr "Bejelentkeztél a frissen Konfigurált Quassel magba!<br>Ne felejtse el most beállítani a személyazonosságot és hálózatokat."
+msgid ""
+"Your are now logged into your freshly configured Quassel Core!<br>Please "
+"remember to configure your identities and networks now."
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreConfigWizardAdminUserPage
@@ -1893,7 +1916,7 @@ msgstr "Felhasználónév:"
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:46
 msgid "Repeat password:"
-msgstr "Jelszó Imétlése:"
+msgstr "Jelszó ismétlése"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreConfigWizardAdminUserPage
@@ -1907,55 +1930,62 @@ msgstr "Jelszó megjegyzése"
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:69
 msgid ""
-"<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+"<b>Note:</b> Adding more users and changing your username/password is not "
+"possible via Quassel's client interface yet.\n"
+"If you need to do these things, please run \"<tt><nobr>quasselcore --help</"
+"nobr></tt>\"."
 msgstr ""
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
 msgid "This wizard will guide you through the setup of your Quassel Core."
-msgstr "Ez a varázsló segíteni fogja Önt a Quassel mag Beállításaiban."
+msgstr ""
 
 #. ts-context CoreConfigWizardPages::AdminUserPage
 #: ../src/qtui/coreconfigwizard.cpp:150
 msgid "Create Admin User"
-msgstr "Adminisztrátor Felhasználó Létrehozása"
+msgstr ""
 
 #. ts-context CoreConfigWizardPages::AdminUserPage
 #: ../src/qtui/coreconfigwizard.cpp:151
-msgid "First, we will create a user on the core. This first user will have administrator privileges."
-msgstr "Először létre fogunk hozni egy felhasználót a magon. Ennek az első felhasználónak adminisztrátor kiváltságai lesznek."
+msgid ""
+"First, we will create a user on the core. This first user will have "
+"administrator privileges."
+msgstr ""
 
 #. ts-context CoreConfigWizardPages::IntroPage
 #: ../src/qtui/coreconfigwizard.cpp:135
 msgid "Introduction"
-msgstr "Bemutatás"
+msgstr "Bevezetés"
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:182
 msgid "Select Storage Backend"
-msgstr "HáttérTároló kiválasztása"
+msgstr ""
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:183
-msgid "Please select a database backend for the Quassel Core storage to store the backlog and other data in."
-msgstr "Kérem válasszon ki egy adatbázis-tárolót a Quassel mag raktárhoz, hogy tárolja tudja a restanciákat és egyéb adatokat."
+msgid ""
+"Please select a database backend for the Quassel Core storage to store the "
+"backlog and other data in."
+msgstr ""
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:277
-#, fuzzy
 msgid "Connection Properties"
-msgstr "Kapcsolat"
+msgstr ""
 
 #. ts-context CoreConfigWizardPages::SyncPage
 #: ../src/qtui/coreconfigwizard.cpp:317
 msgid "Storing Your Settings"
-msgstr "Beállítások Tárolása"
+msgstr ""
 
 #. ts-context CoreConfigWizardPages::SyncPage
 #: ../src/qtui/coreconfigwizard.cpp:318
-msgid "Your settings are now stored in the core, and you will be logged in automatically."
-msgstr "Az Ön beállításai tárolásra kerültek a magban, és a bejelentkezés automatikusan megtörténik."
+msgid ""
+"Your settings are now stored in the core, and you will be logged in "
+"automatically."
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreConfigWizardStorageSelectionPage
@@ -1964,7 +1994,7 @@ msgstr "Az Ön beállításai tárolásra kerültek a magban, és a bejelentkez�
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgid "Storage Backend:"
-msgstr "Háttér Tároló:"
+msgstr ""
 
 #. ts-context CoreConfigWizardStorageSelectionPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:56
@@ -1979,167 +2009,152 @@ msgstr ""
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:19
 msgid "Your Choices"
-msgstr "Az Ön választásai"
+msgstr ""
 
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:35
 msgid "Admin User:"
-msgstr "Adminisztrátor Felhasználó:"
+msgstr ""
 
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:42
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:62
 msgid "bar"
-msgstr ""
+msgstr "bar"
 
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:102
 msgid "Please wait while your settings are being transmitted to the core..."
-msgstr "Kérem várjon, az Ön beállításainak átvitele történik a magba..."
+msgstr ""
 
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconnectauthdlg.ui:14
 msgid "Authentication Required"
-msgstr ""
+msgstr "Hitelesítés szükséges"
 
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconnectauthdlg.ui:20
-#, fuzzy
 msgid "Please enter your account data:"
-msgstr "Hálózat nevének megadása:"
+msgstr ""
 
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/coreconnectdlg.cpp:75
-#, fuzzy
 msgid "Please enter your credentials for %1:"
-msgstr "Hálózat nevének megadása:"
+msgstr ""
 
 #. ts-context CoreConnectDlg
 #: ../src/qtui/coreconnectdlg.cpp:40
-#, fuzzy
 msgid "Connect to Core"
-msgstr "Csatlakozás a maghoz..."
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:168
-#, fuzzy
 msgid "Network is down"
-msgstr "Hálózatok"
+msgstr ""
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:202
-#: ../src/client/coreconnection.cpp:321
-#, fuzzy
+#: ../src/client/coreconnection.cpp:202 ../src/client/coreconnection.cpp:321
 msgid "Disconnected"
-msgstr "Szétkapcsolás"
+msgstr "Szétkapcsolva"
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:205
 msgid "Looking up %1..."
-msgstr "Keresés %1..."
+msgstr "%1 keresése…"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:208
-#: ../src/client/coreconnection.cpp:450
+#: ../src/client/coreconnection.cpp:208 ../src/client/coreconnection.cpp:450
 msgid "Connecting to %1..."
-msgstr "Kapcsolódás %1 hálózathoz..."
+msgstr ""
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:211
-#: ../src/client/coreconnection.cpp:573
+#: ../src/client/coreconnection.cpp:211 ../src/client/coreconnection.cpp:573
 msgid "Connected to %1"
-msgstr "Kapcsolódva %1 hálózathoz"
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:214
-#, fuzzy
 msgid "Disconnecting from %1..."
-msgstr "Kapcsolódás %1 hálózathoz..."
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:272
-msgid "The Quassel Core you try to connect to is too old! Please consider upgrading."
-msgstr "A Quassel mag amihez csatlakozni próbál elavult! Frissítés Ajánlott."
+msgid ""
+"The Quassel Core you try to connect to is too old! Please consider upgrading."
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:300
-#, fuzzy
 msgid "Invalid data received from core"
-msgstr "<b>Érvénytelen Adat érkezett a magból!</b><br>Szétkapcsolás."
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:349
-#, fuzzy
 msgid "Disconnected from core."
-msgstr "&Kapcsolat Bontása"
+msgstr ""
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:427
-#: ../src/client/coreconnection.cpp:511
+#: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
 #: ../src/client/coreconnection.cpp:556
-#, fuzzy
 msgid "Unencrypted connection canceled"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:457
-#, fuzzy
 msgid "Synchronizing to core..."
-msgstr "Csatlakozás a maghoz..."
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:478
-msgid "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at least core/client protocol v%1 to connect."
-msgstr "<b>A Quassel Core, mellyel kapcslódni próbál, túl régi! </b><br>Legalább v%1 számú core/kliens protokoll szükséges a kapcsolódáshoz. "
+msgid ""
+"<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
+"least core/client protocol v%1 to connect."
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:592
 msgid "Logging in..."
-msgstr "Belépés folyamatban…"
+msgstr "Bejelentkezés…"
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:597
-#, fuzzy
 msgid "Login canceled"
-msgstr "Belépés Csatornára"
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:622
-#, fuzzy
 msgid "Receiving session state"
-msgstr "Munkamenet állapota:"
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:624
-#, fuzzy
 msgid "Synchronizing to %1..."
-msgstr "Kapcsolódás %1 hálózathoz..."
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:648
-#, fuzzy
 msgid "Receiving network states"
-msgstr "Hálózat állapota:"
+msgstr ""
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:698
-#, fuzzy
 msgid "Synchronized to %1"
-msgstr "Nap váltása: %1"
+msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:20
-#, fuzzy
 msgid "Network Status Detection"
-msgstr "Hálózat állapota:"
+msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
-msgid "Rely on KDE's hardware layer to detect if we're online. Recommended for most KDE users"
+msgid ""
+"Rely on KDE's hardware layer to detect if we're online. Recommended for most "
+"KDE users"
 msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
@@ -2151,7 +2166,9 @@ msgstr ""
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:41
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:57
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:154
-msgid "Actively ping the remote core and disconnect if we didn't get a reply after a certain time"
+msgid ""
+"Actively ping the remote core and disconnect if we didn't get a reply after "
+"a certain time"
 msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
@@ -2161,7 +2178,9 @@ msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:100
-msgid "Only disconnect if the network socket gets closed by the operating system. This may take a long time after actually losing connectivity"
+msgid ""
+"Only disconnect if the network socket gets closed by the operating system. "
+"This may take a long time after actually losing connectivity"
 msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
@@ -2171,9 +2190,8 @@ msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:113
-#, fuzzy
 msgid "Automatically reconnect on network failures"
-msgstr "Automatikus újracsatlakás ellenőrzése a hálózathoz"
+msgstr ""
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:147
@@ -2202,19 +2220,18 @@ msgstr "Üzenet"
 #: ../src/qtui/coreconnectionstatuswidget.cpp:61
 msgctxt "seconds"
 msgid "s"
-msgstr ""
+msgstr "s"
 
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:61
 msgctxt "milliseconds"
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:62
-#, fuzzy
 msgid "(Lag: %1 %2)"
-msgstr "Késés: %1 msec"
+msgstr ""
 
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:75
@@ -2229,7 +2246,7 @@ msgstr ""
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:13
 msgid "Core Information"
-msgstr "Mag Információ"
+msgstr ""
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:21
@@ -2239,74 +2256,72 @@ msgstr "Verzió:"
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:28
 msgid "<core version>"
-msgstr "<mag verzió>"
+msgstr ""
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:35
 msgid "Uptime:"
-msgstr "Üzemidő:"
+msgstr ""
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:42
 msgid "Connected Clients:"
-msgstr "Kapcsolódott Kliensek:"
+msgstr ""
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:49
 msgid "<connected clients>"
-msgstr "<kapcsolódott kliensek>"
+msgstr ""
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:56
 msgid "<core uptime>"
-msgstr "<mag működési ideje>"
+msgstr ""
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:63
 msgid "Build date:"
-msgstr "Build dátuma:"
+msgstr ""
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:70
 msgid "<build date>"
-msgstr "<build dátuma>"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreInfoDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context DebugLogWidget
-#: ../src/qtui/ui/coreinfodlg.ui:81
-#: ../src/qtui/ui/debuglogwidget.ui:43
+#: ../src/qtui/ui/coreinfodlg.ui:81 ../src/qtui/ui/debuglogwidget.ui:43
 msgid "Close"
-msgstr "Bezár"
+msgstr "Bezárás"
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/coreinfodlg.cpp:53
 msgid "%n Day(s)"
 msgid_plural "%n Day(s)"
-msgstr[0] "%n Nap(ok)"
+msgstr[0] "%n nap"
+msgstr[1] "%n nap"
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/coreinfodlg.cpp:54
 msgid " %1:%2:%3 (since %4)"
-msgstr "%1:%2:%3 (%4 óta)"
+msgstr " %1:%2:%3 (%4 óta)"
 
 #. ts-context CoreNetwork
 #: ../src/core/corenetwork.cpp:153
 msgid "Connection failed. Cycling to next Server"
-msgstr "Kapcsolódás Sikertelen. Kapcsolódás a következő Kiszolgálóhoz"
+msgstr ""
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:161
-#: ../src/core/corenetwork.cpp:162
+#: ../src/core/corenetwork.cpp:161 ../src/core/corenetwork.cpp:162
 msgid "Connecting to %1:%2..."
-msgstr "Kapcsolódás %1:%2 hálózatokhoz..."
+msgstr ""
 
 #. ts-context CoreNetwork
 #: ../src/core/corenetwork.cpp:210
-#, fuzzy
 msgid "Disconnecting. (%1)"
-msgstr "Szétkapcsolódás."
+msgstr ""
 
 #. ts-context CoreNetwork
 #: ../src/core/corenetwork.cpp:210
@@ -2316,50 +2331,53 @@ msgstr ""
 #. ts-context CoreNetwork
 #: ../src/core/corenetwork.cpp:339
 msgid "Could not connect to %1 (%2)"
-msgstr "Nem lehet csatlakozni a %1 (%2)"
+msgstr ""
 
 #. ts-context CoreNetwork
 #: ../src/core/corenetwork.cpp:341
 msgid "Connection failure: %1"
-msgstr "Kapcsolódás sikertelen %1"
+msgstr ""
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:195
 msgid "disconnected (UserId: %1)."
-msgstr "kapcsolat bontva (Felhasználói azonosító: %1)."
+msgstr ""
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:413
-msgid "CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!"
-msgstr "CoreSession::createNetwork(): Érvénytelen hálózati azonosító érkezett a Magtól a %1 hálózat létrehozása közben!"
+msgid ""
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
+"create network %1!"
+msgstr ""
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:444
-msgid "CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"
-msgstr "CoreSession::createNetwork(): Kísérlet már meglévő hálózat létrehozásához, frissítés!"
+msgid ""
+"CoreSession::createNetwork(): Trying to create a network that already "
+"exists, updating instead!"
+msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:81
-#, fuzzy
 msgid "away"
-msgstr "Távollét:"
+msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:150
-#, fuzzy
 msgid "sending CTCP-%1 request to %2"
-msgstr "CTCP-%1 lekérdezés küldése"
+msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:173
-msgid "[usage] /delkey <nick|channel> deletes the encryption key for nick or channel or just /delkey when in a channel or query."
+msgid ""
+"[usage] /delkey <nick|channel> deletes the encryption key for nick or "
+"channel or just /delkey when in a channel or query."
 msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:180
-#, fuzzy
 msgid "No key has been set for %1."
-msgstr "Nincs topik beállítva a %1 részére."
+msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:193
@@ -2368,12 +2386,18 @@ msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:197
-msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA2) library. Contact your distributor about a Quassel package with QCA2 support, or rebuild Quassel with QCA2 present."
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
+"distributor about a Quassel package with QCA2 support, or rebuild Quassel "
+"with QCA2 present."
 msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:461
-msgid "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or channel. /setkey <key> when in a channel or query buffer sets the key for it."
+msgid ""
+"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
+"channel. /setkey <key> when in a channel or query buffer sets the key for it."
 msgstr ""
 
 #. ts-context CoreUserInputHandler
@@ -2383,7 +2407,11 @@ msgstr ""
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:479
-msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA) library. Contact your distributor about a Quassel package with QCA support, or rebuild Quassel with QCA present."
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA) library. Contact your "
+"distributor about a Quassel package with QCA support, or rebuild Quassel "
+"with QCA present."
 msgstr ""
 
 #. ts-context CoreUserInputHandler
@@ -2394,71 +2422,67 @@ msgstr ""
 #. ts-context CreateIdentityDlg
 #: ../src/qtui/settingspages/createidentitydlg.ui:17
 msgid "Create New Identity"
-msgstr "Új Profil Létrehozása"
+msgstr ""
 
 #. ts-context CreateIdentityDlg
 #: ../src/qtui/settingspages/createidentitydlg.ui:25
 msgid "Identity name:"
-msgstr "Profil neve:"
+msgstr ""
 
 #. ts-context CreateIdentityDlg
 #: ../src/qtui/settingspages/createidentitydlg.ui:37
 msgid "Create blank identity"
-msgstr "Üres Profil létrehozása"
+msgstr ""
 
 #. ts-context CreateIdentityDlg
 #: ../src/qtui/settingspages/createidentitydlg.ui:49
 msgid "Duplicate:"
-msgstr "Kettőzés:"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:197
-#, fuzzy
 msgid "Received CTCP CLIENTINFO request from %1"
-msgstr "CTCP PING kérés elfogadva a(z) %1 hálózattól"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:200
-#, fuzzy
 msgid "Received CTCP CLIENTINFO answer from %1: %2"
-msgstr "CTCP VERZIÓ válasz elfogadva a(z) %1 hálózattól: %2"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:211
 msgid "Received CTCP PING request from %1"
-msgstr "CTCP PING kérés elfogadva a(z) %1 hálózattól"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
-msgstr "CTCP PING válasz elfogadva a(z) %1 hálózattól %2 másodperc alatt"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:229
 msgid "Received CTCP VERSION request by %1"
-msgstr "CTCP VERZIÓ kérés elfogadva a(z) %1 hálózat által"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:232
 msgid "Received CTCP VERSION answer from %1: %2"
-msgstr "CTCP VERZIÓ válasz elfogadva a(z) %1 hálózattól: %2"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:243
-#, fuzzy
 msgid "Received CTCP TIME request by %1"
-msgstr "CTCP VERZIÓ kérés elfogadva a(z) %1 hálózat által"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:246
-#, fuzzy
 msgid "Received CTCP TIME answer from %1: %2"
-msgstr "CTCP VERZIÓ válasz elfogadva a(z) %1 hálózattól: %2"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:255
 msgid "Received unknown CTCP %1 by %2"
-msgstr "Ismeretlen CTCP fogadva %1 a %2 által"
+msgstr ""
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:257
@@ -2467,51 +2491,43 @@ msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:13
-#, fuzzy
 msgid "Debug BufferView Overlay"
-msgstr "Puffer Nézet Törlése?"
+msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:26
-#, fuzzy
 msgid "Overlay View"
-msgstr "PufferNézet"
+msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:39
-#, fuzzy
 msgid "Overlay Properties"
-msgstr "Beállítások..."
+msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:50
-#, fuzzy
 msgid "BufferViews:"
-msgstr "Puffer Nézetek:"
+msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:51
-#, fuzzy
 msgid "All Networks:"
-msgstr "Hálózat:"
+msgstr "Összes hálózat:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:52
-#, fuzzy
 msgid "Networks:"
-msgstr "Hálózat:"
+msgstr "Hálózatok:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:53
-#, fuzzy
 msgid "Buffers:"
-msgstr "Puffer"
+msgstr "Pufferek:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:54
-#, fuzzy
 msgid "Removed buffers:"
-msgstr "Pufferok egyesítése véglegesen?"
+msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:55
@@ -2520,15 +2536,13 @@ msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:57
-#, fuzzy
 msgid "Allowed buffer types:"
-msgstr "Minden Puffer"
+msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:58
-#, fuzzy
 msgid "Minimum activity:"
-msgstr "Minimális Aktivitás:"
+msgstr ""
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:60
@@ -2538,27 +2552,27 @@ msgstr ""
 #. ts-context DebugConsole
 #: ../src/qtui/ui/debugconsole.ui:14
 msgid "Debug Console"
-msgstr "Hibakereső Konzol"
+msgstr ""
 
 #. ts-context DebugConsole
 #: ../src/qtui/ui/debugconsole.ui:44
 msgid "local"
-msgstr "helyi"
+msgstr ""
 
 #. ts-context DebugConsole
 #: ../src/qtui/ui/debugconsole.ui:54
 msgid "core"
-msgstr "mag"
+msgstr ""
 
 #. ts-context DebugConsole
 #: ../src/qtui/ui/debugconsole.ui:82
 msgid "Evaluate!"
-msgstr "Kiértékel!"
+msgstr ""
 
 #. ts-context DebugLogWidget
 #: ../src/qtui/ui/debuglogwidget.ui:13
 msgid "Debug Log"
-msgstr "Hibakereső Naplózás"
+msgstr ""
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:45
@@ -2573,32 +2587,32 @@ msgstr ""
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:64
 msgid "Could not find script \"%1\""
-msgstr ""
+msgstr "A(z) „%1” parancsfájl nem található"
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:82
 msgid "Script \"%1\" crashed with exit code %2."
-msgstr ""
+msgstr "A(z) „%1” parancsfájl összeomlott a következő hibakóddal: %2."
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:98
 msgid "Script \"%1\" could not start."
-msgstr ""
+msgstr "A(z) „%1” parancsfájl nem indítható el."
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:100
 msgid "Script \"%1\" caused error %2."
-msgstr ""
+msgstr "A(z) „%1” parancsfájl a következő hibát okozta: %2."
 
 #. ts-context FontSelector
 #: ../src/uisupport/fontselector.cpp:31
 msgid "Choose..."
-msgstr "Kiválaszt..."
+msgstr "Kiválasztás…"
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:19
 msgid "Custom Highlights"
-msgstr "Egyéni Kiemelések"
+msgstr ""
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:37
@@ -2632,17 +2646,17 @@ msgstr "Eltávolítás"
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:85
 msgid "Highlight Nicks"
-msgstr "Kiemelt Becenevek"
+msgstr ""
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:91
 msgid "All nicks from identity"
-msgstr "Minden Becenév A Profilból"
+msgstr ""
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:98
 msgid "Current nick"
-msgstr "Aktuális Becenév"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context HighlightSettingsPage
@@ -2653,22 +2667,22 @@ msgstr "Aktuális Becenév"
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:92
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:102
 msgid "None"
-msgstr "Nincs"
+msgstr ""
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:115
 msgid "Case sensitive"
-msgstr "kis- és nagybetű érzékeny"
+msgstr ""
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:159
 msgid "this shouldn't be empty"
-msgstr "ez nem lehet üres"
+msgstr ""
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.h:45
 msgid "highlight rule"
-msgstr "kiemelés szabályai"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentitiesSettingsPage
@@ -2678,52 +2692,51 @@ msgstr "kiemelés szabályai"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:322
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
 msgid "Rename Identity"
-msgstr "Profil Átnevezése"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.ui:51
 msgid "Add Identity"
-msgstr "Profil Létrehozása"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.ui:74
 msgid "Remove Identity"
-msgstr "Profil Eltávolítása"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 msgid "Identities"
-msgstr "Azonosítók"
+msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 #: ../src/qtui/settingspages/networkssettingspage.cpp:167
-#, fuzzy
-msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
-msgstr "<b>A következő problémák javítása szükséges mielött változtatásai alkalmazásra kerülnek:</b><ul>"
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
 msgid "<li>All identities need an identity name set</li>"
-msgstr "<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:180
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr "<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:181
 msgid "<li>You need to specify a real name for every identity</li>"
-msgstr "<li>Minden személyazonossághoz szükséges valódi név megadása</li>"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:182
 msgid "<li>You need to specify an ident for every identity</li>"
-msgstr "<li>Minden személyazonossághoz szükséges egy azonosító megadása</li>"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentitiesSettingsPage
@@ -2737,58 +2750,57 @@ msgstr "</ul>"
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:184
 msgid "One or more identities are invalid"
-msgstr "Egy vagy több személyazonosság érvénytelen"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:310
 msgid "Delete Identity?"
-msgstr "Adatlap Törlése?"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:311
 msgid "Do you really want to delete identity \"%1\"?"
-msgstr "Biztosan törli a \"%1\" profilt?"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:323
 msgid "Please enter a new name for the identity \"%1\"!"
-msgstr "Kérem adjon meg egy nevet a(z) \"%1\" személyazonossághoz!"
+msgstr ""
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:134
 msgid "Quassel IRC User"
-msgstr "Quassel IRC Felhasználó"
+msgstr ""
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:162
 msgid "<empty>"
-msgstr "üres"
+msgstr ""
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:168
 msgid "Gone fishing."
-msgstr "Pecázni Mentem."
+msgstr ""
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:172
 msgid "Not here. No, really. not here!"
-msgstr "Nem vagyok itt. Nem, tényleg nem vagyok itt!"
+msgstr ""
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:175
 msgid "All Quassel clients vanished from the face of the earth..."
-msgstr "Minden Quassel kliens rejtett a föld arca előtt..."
+msgstr ""
 
 #. ts-context Identity
 #: ../src/common/identity.cpp:178
 msgid "Kindergarten is elsewhere!"
-msgstr "Az óvoda máshol van!"
+msgstr ""
 
 #. ts-context Identity
-#: ../src/common/identity.cpp:179
-#: ../src/common/identity.cpp:180
+#: ../src/common/identity.cpp:179 ../src/common/identity.cpp:180
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
-msgstr "http://quassel-irc.org - Csevegjen kényelmesen. Bárhol."
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -2802,17 +2814,17 @@ msgstr "Általános"
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:38
 msgid "Real Name:"
-msgstr "Valódi Név:"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:45
 msgid "The \"Real Name\" is shown in /whois."
-msgstr "A \"Valódi Név\" a /whois parancs során látható."
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:54
 msgid "Nicknames"
-msgstr "Becenevek"
+msgstr "Álnevek"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -2821,12 +2833,12 @@ msgstr "Becenevek"
 #: ../src/qtui/settingspages/identityeditwidget.ui:90
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgid "Add Nickname"
-msgstr "Becenév Hozzáadása"
+msgstr "Álnév hozzáadása"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:116
 msgid "Remove Nickname"
-msgstr "Becenév Eltávolítása"
+msgstr "Álnév eltávolítása"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -2838,7 +2850,7 @@ msgstr "Becenév Eltávolítása"
 #: ../src/qtui/settingspages/networkssettingspage.ui:278
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgid "Move upwards in list"
-msgstr "Mozgassa felfele a listában"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -2850,69 +2862,69 @@ msgstr "Mozgassa felfele a listában"
 #: ../src/qtui/settingspages/networkssettingspage.ui:292
 #: ../src/qtui/ui/simplenetworkeditor.ui:179
 msgid "Move downwards in list"
-msgstr "Mozgassa lefele a listában"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:227
 msgid "A&way"
-msgstr "T&ávollévő"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:233
 msgid "Default Away Settings"
-msgstr "Alap távolléti beállítások"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:244
 msgid "Nick to be used when being away"
-msgstr "Távollét Alatt használt Becenév"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:254
 msgid "Default away reason"
-msgstr "Alapértelmezett távolléti ok"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:261
 msgid "Away Nick:"
-msgstr "Becenév Távollét Alatt:"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:268
 #: ../src/qtui/settingspages/identityeditwidget.ui:297
 #: ../src/qtui/settingspages/identityeditwidget.ui:366
 msgid "Away Reason:"
-msgstr "Távollét oka:"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:280
 msgid "Set away when all clients have detached from the core"
-msgstr "Állítson be távollétet, amikor minden kliens le lett választva a magról"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:283
 msgid "Away On Detach"
-msgstr "Leválasztási távollét"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:315
 msgid "Not implemented yet"
-msgstr "Még nem megvalósított"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:318
 msgid "Away On Idle"
-msgstr "Üresjárati távollét"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:332
 msgid "Set away after"
-msgstr "Távollét beállítása"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:342
 msgid "minutes of being idle"
-msgstr "perc üresjárat után"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -2922,17 +2934,19 @@ msgstr "perc üresjárat után"
 #: ../src/qtui/settingspages/identityeditwidget.cpp:219
 #: ../src/qtui/settingspages/servereditdlg.ui:119
 msgid "Advanced"
-msgstr "Haladó"
+msgstr "Speciális"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:407
 msgid "Ident:"
-msgstr "Azonosság:"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:414
-msgid "The \"ident\" is part of your hostmask and, together with your host, uniquely identifies you within the IRC network."
-msgstr "A \"személyazonosság\" a gépmaszk része és az Ön gépével együtt egyedileg azonosítja Önt az IRC hálózaton belül."
+msgid ""
+"The \"ident\" is part of your hostmask and, together with your host, "
+"uniquely identifies you within the IRC network."
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:423
@@ -2942,29 +2956,32 @@ msgstr "Üzenetek"
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:431
 msgid "Part Reason:"
-msgstr "Távozás oka:"
+msgstr "Kilépési ok:"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:444
 msgid "Quit Reason:"
-msgstr "Kilépés oka:"
+msgstr "Kilépési ok:"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:454
 msgid "Kick Reason:"
-msgstr "Kirúgás Indoka:"
+msgstr "Kirúgási ok:"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:488
-msgid "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr "SSL képes kliensre van szüksége ahhoz, hogy a Mag SSL kulcsát és tanúsítványát"
+msgid ""
+"You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgid ""
-"Warning: you are not connected with a secured connection to the Quassel Core!\n"
-"Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
-msgstr "Figyelem: nem biztonságos módon csatlakozott a Quassel Maghoz! Ha folytatja, az SSL kulcs és SSL tanúsítvány kódolatlanul kerül átvitelre!"
+"Warning: you are not connected with a secured connection to the Quassel "
+"Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
+"Certificate!"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -2978,19 +2995,19 @@ msgstr "Folytatás"
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:584
 msgid "Use SSL Key"
-msgstr "SSL kulcs használata"
+msgstr "SSL-kulcs használata"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:598
 msgid "Key Type:"
-msgstr "Kulcs Típus:"
+msgstr "Kulcstípus:"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
 #: ../src/qtui/settingspages/identityeditwidget.cpp:317
 #: ../src/qtui/settingspages/identityeditwidget.cpp:328
 msgid "No Key loaded"
-msgstr "Kulcs nincs betöltve"
+msgstr "Nincs betöltve kulcs"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
@@ -3003,7 +3020,7 @@ msgstr "Betöltés"
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:637
 msgid "Use SSL Certificate"
-msgstr "SSL tanúsítvány használata"
+msgstr "SSL-tanúsítvány használata"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:656
@@ -3016,56 +3033,53 @@ msgstr "Szervezet:"
 #: ../src/qtui/settingspages/identityeditwidget.cpp:363
 #: ../src/qtui/settingspages/identityeditwidget.cpp:364
 msgid "No Certificate loaded"
-msgstr "Tanúsítvány nincs betöltve"
+msgstr "Nincs betöltve tanúsítvány"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:690
 msgid "CommonName:"
-msgstr "Általános Név:"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.cpp:290
 msgid "Load a Key"
-msgstr "Töltsön be egy kulcsot"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.cpp:322
 msgid "RSA"
-msgstr ""
+msgstr "RSA"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.cpp:325
 msgid "DSA"
-msgstr ""
+msgstr "DSA"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.cpp:330
 #: ../src/qtui/settingspages/identityeditwidget.cpp:369
 msgid "Clear"
-msgstr "Tiszta"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.cpp:340
 msgid "Load a Certificate"
-msgstr "Töltsön be egy tanúsítványt"
+msgstr ""
 
 #. ts-context IdentityPage
 #: ../src/qtui/ircconnectionwizard.cpp:107
-#, fuzzy
 msgid "Setup Identity"
-msgstr "Alapértelmezett Adatlap"
+msgstr ""
 
 #. ts-context IdentityPage
 #: ../src/qtui/ircconnectionwizard.cpp:112
-#, fuzzy
 msgid "Default Identity"
-msgstr "Alapértelmezett Adatlap"
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:15
-#, fuzzy
 msgid "Configure Ignore Rule"
-msgstr "Quassel Mag Konfiguráció "
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:27
@@ -3073,7 +3087,8 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown again.</"
+"p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
@@ -3106,21 +3121,20 @@ msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:66
-#, fuzzy
 msgid "Rule Type"
-msgstr "Kulcs Típus:"
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:72
-#, fuzzy
 msgid "Sender"
-msgstr "Küldő:"
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</p>\n"
+"<p>Depending on the type of the rule, the text is matched against either:</"
+"p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3130,25 +3144,24 @@ msgid ""
 "<br />\n"
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
+"from any host</p>"
 msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context IgnoreListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:195
-#, fuzzy
 msgid "Ignore Rule"
-msgstr "Mellőzés:"
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:123
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
-"<p>Otherwise rules allow wildcard matching with the following special characters:</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special "
+"characters:</p>\n"
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
@@ -3157,7 +3170,7 @@ msgstr ""
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:131
 msgid "Regular expression"
-msgstr ""
+msgstr "Reguláris kifejezés"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:143
@@ -3166,32 +3179,29 @@ msgid ""
 "<p><u>Global:</u></p>\n"
 "<p>The rule is active for any channel on any network</p>\n"
 "<p><u>Network:</u></p>\n"
-"<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule "
+"should match</p>\n"
 "<p><u>Channel:</u></p>\n"
-"<p>The list below is interpreted as a list of channels for which the rule should match</p>"
+"<p>The list below is interpreted as a list of channels for which the rule "
+"should match</p>"
 msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:152
-#, fuzzy
 msgid "Scope"
-msgstr "mag"
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:160
-#, fuzzy
 msgid "Global"
-msgstr "helyi"
+msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
-#, fuzzy
 msgid "Network"
-msgstr "Hálózat:"
+msgstr "Hálózat"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IgnoreListEditDlg
@@ -3206,7 +3216,8 @@ msgstr "Csatorna"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
+"<i>channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -3230,55 +3241,57 @@ msgstr ""
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:69
-msgid "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For dynamic rules, disabling actually shows the filtered messages again"
+msgid ""
+"<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
+"dynamic rules, disabling actually shows the filtered messages again"
 msgstr ""
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
-msgid "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is matched against either:<br /><br />- <u>the message content:</u><br /><i>Example:<i><br />    \"*foobar*\" matches any text containing the word \"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any host<br />"
+msgid ""
+"<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
+"matched against either:<br /><br />- <u>the message content:</u><br /"
+"><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></"
+"u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from "
+"host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with "
+"nickname \"stupid\" from any host<br />"
 msgstr ""
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
-#, fuzzy
 msgid "By Sender"
-msgstr "Küldő:"
+msgstr ""
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:91
-#, fuzzy
 msgid "By Message"
-msgstr "Üzenet"
+msgstr ""
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:193
-#, fuzzy
 msgid "Enabled"
-msgstr "Engedélyezés"
+msgstr ""
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:194
-#, fuzzy
 msgid "Type"
-msgstr "Kulcs Típus:"
+msgstr "Típus"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:56
-#, fuzzy
 msgid "&Edit"
-msgstr "&Szerkesztés..."
+msgstr "&Szerkesztés"
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
-#, fuzzy
 msgid "Ignore List"
-msgstr "Mellőzöttek Listája"
+msgstr ""
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:128
-#, fuzzy
 msgid "Rule already exists"
-msgstr "A profil már létezik!"
+msgstr ""
 
 #. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:129
@@ -3290,7 +3303,9 @@ msgstr ""
 
 #. ts-context IndicatorNotificationConfigWidget
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
-msgid "This enables support for the Ayatana Project's application indicator (libindicate)."
+msgid ""
+"This enables support for the Ayatana Project's application indicator "
+"(libindicate)."
 msgstr ""
 
 #. ts-context IndicatorNotificationConfigWidget
@@ -3301,96 +3316,92 @@ msgstr ""
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
 msgid "White"
-msgstr ""
+msgstr "Fehér"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
-#, fuzzy
 msgid "Black"
-msgstr "Napló"
+msgstr "Fekete"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
 msgid "Dark blue"
-msgstr ""
+msgstr "Sötétkék"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
 msgid "Dark green"
-msgstr ""
+msgstr "Sötétzöld"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
 msgid "Red"
-msgstr ""
+msgstr "Vörös"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
 msgid "Dark red"
-msgstr ""
+msgstr "Sötétvörös"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
 msgid "Dark magenta"
-msgstr ""
+msgstr "Sötétlila"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:73
 msgid "Orange"
-msgstr ""
+msgstr "Narancssárga"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Yellow"
-msgstr ""
+msgstr "Sárga"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Green"
-msgstr ""
+msgstr "Zöld"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Dark cyan"
-msgstr ""
+msgstr "Sötétcián"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Cyan"
-msgstr ""
+msgstr "Cián"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
-#, fuzzy
 msgid "Blue"
-msgstr "Puffer"
+msgstr "Kék"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Magenta"
-msgstr ""
+msgstr "Lila"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Dark gray"
-msgstr ""
+msgstr "Sötétszürke"
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Light gray"
-msgstr ""
+msgstr "Világosszürke"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:84
-#: ../src/qtui/inputwidget.cpp:85
-#, fuzzy
+#: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
 msgid "Clear Color"
-msgstr "Tiszta"
+msgstr ""
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:132
 msgid "Focus Input Line"
-msgstr "Fókus beviteli sor"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context InputWidgetSettingsPage
@@ -3416,15 +3427,13 @@ msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:79
-#, fuzzy
 msgid "Show nick selector"
-msgstr "Becenevek Megjelenítése"
+msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:95
-#, fuzzy
 msgid "Show style buttons"
-msgstr "Tálca Ikon Mutatása"
+msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:111
@@ -3443,15 +3452,13 @@ msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
-#, fuzzy
 msgid "Show at most"
-msgstr "Csevegésfigyelő"
+msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
-#, fuzzy
 msgid "lines"
-msgstr "Álnevek"
+msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
@@ -3460,32 +3467,28 @@ msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
-#, fuzzy
 msgid "Tab Completion"
-msgstr "Kiválasztottak másolása"
+msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
 msgid "Completion suffix:"
-msgstr "A kiegésztő utótag:"
+msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
-#, fuzzy
 msgid ": "
-msgstr "X: "
+msgstr ": "
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Input Widget"
-msgstr "Beviteli Mező"
+msgstr ""
 
 #. ts-context IrcConnectionWizard
 #: ../src/qtui/ircconnectionwizard.cpp:51
-#, fuzzy
 msgid "Save && Connect"
-msgstr "Kapcsolódás"
+msgstr ""
 
 #. ts-context IrcListModel
 #: ../src/client/irclistmodel.cpp:60
@@ -3498,11 +3501,10 @@ msgstr "Felhasználók"
 #. ts-context MainWin
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworkModel
-#: ../src/client/irclistmodel.cpp:61
-#: ../src/qtui/mainwin.cpp:781
+#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:781
 #: ../src/client/networkmodel.cpp:852
 msgid "Topic"
-msgstr "Téma"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:212
@@ -3512,17 +3514,19 @@ msgstr ""
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:584
 msgid "%1 has changed topic for %2 to: \"%3\""
-msgstr "%1 megváltoztatta a topikot %2 témáról \"%3\" témára"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:634
 msgid "Received RPL_ISUPPORT (005) without parameters!"
-msgstr "RPL_ISUPPORT (005) érkezett paraméterek nélkül!"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:642
-msgid "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"
-msgstr "RPL_ISUPPORT számára nem megfelelő RFC érkezett, mely váratlan viselkedéshez vezethet!"
+msgid ""
+"Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
+"behavior!"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcServerHandler
@@ -3541,132 +3545,116 @@ msgstr "RPL_ISUPPORT számára nem megfelelő RFC érkezett, mely váratlan vise
 #. ----------
 #. Invite Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/core/ircserverhandler.cpp:662
-#: ../src/core/ircserverhandler.cpp:669
-#: ../src/core/ircserverhandler.cpp:676
-#: ../src/core/ircserverhandler.cpp:683
-#: ../src/uisupport/uistyle.cpp:577
-#: ../src/uisupport/uistyle.cpp:580
-#: ../src/uisupport/uistyle.cpp:620
-#: ../src/uisupport/uistyle.cpp:623
-#: ../src/uisupport/uistyle.cpp:626
-#: ../src/uisupport/uistyle.cpp:633
-#: ../src/uisupport/uistyle.cpp:665
-#: ../src/uisupport/uistyle.cpp:739
+#: ../src/core/ircserverhandler.cpp:662 ../src/core/ircserverhandler.cpp:669
+#: ../src/core/ircserverhandler.cpp:676 ../src/core/ircserverhandler.cpp:683
+#: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
+#: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
+#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
 msgid "%1"
 msgstr "%1"
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:718
 msgid "[Whois] %1 is away: \"%2\""
-msgstr "[Whois] %1 távol: \"%2\""
+msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:724
-#: ../src/core/ircserverhandler.cpp:729
+#: ../src/core/ircserverhandler.cpp:724 ../src/core/ircserverhandler.cpp:729
 msgid "%1 is away: \"%2\""
-msgstr "%1 távol: \"%2\""
+msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:773
-#: ../src/core/ircserverhandler.cpp:787
-#: ../src/core/ircserverhandler.cpp:822
-#: ../src/core/ircserverhandler.cpp:838
-#: ../src/core/ircserverhandler.cpp:906
-#: ../src/core/ircserverhandler.cpp:938
+#: ../src/core/ircserverhandler.cpp:773 ../src/core/ircserverhandler.cpp:787
+#: ../src/core/ircserverhandler.cpp:822 ../src/core/ircserverhandler.cpp:838
+#: ../src/core/ircserverhandler.cpp:906 ../src/core/ircserverhandler.cpp:938
 msgid "[Whois] %1"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:802
-#: ../src/core/ircserverhandler.cpp:805
+#: ../src/core/ircserverhandler.cpp:802 ../src/core/ircserverhandler.cpp:805
 msgid "[Whois] %1 is %2 (%3)"
 msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:820
 msgid "%1 is online via %2 (%3)"
-msgstr "%1 online %2-on keresztül (%3)"
+msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:824
-#: ../src/core/ircserverhandler.cpp:1131
+#: ../src/core/ircserverhandler.cpp:824 ../src/core/ircserverhandler.cpp:1131
 msgid "[Whowas] %1"
 msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:850
 msgid "[Whowas] %1 was %2 (%3)"
-msgstr "[Whowas] %1 volt %2 (%3)"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:864
 msgid "[Who] End of /WHO list for %1"
-msgstr "[Ki] Vége a /WHO listának %1 részére"
+msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:886
-#: ../src/core/ircserverhandler.cpp:894
+#: ../src/core/ircserverhandler.cpp:886 ../src/core/ircserverhandler.cpp:894
 msgid "[Whois] %1 is logged in since %2"
-msgstr "[Whois] %1 bejelentkezett %2 óta"
+msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:888
-#: ../src/core/ircserverhandler.cpp:896
+#: ../src/core/ircserverhandler.cpp:888 ../src/core/ircserverhandler.cpp:896
 msgid "[Whois] %1 is idling for %2 (%3)"
-msgstr "[Whois] %1 távol %2 (%3) óta"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:928
 msgid "[Whois] %1 is a user on channels: %2"
-msgstr "[Whois] %1 felhasználó a következő hálózaton: %2"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:930
 msgid "[Whois] %1 has voice on channels: %2"
-msgstr "[Whois] %1 írási joga van a következő csatornákon: %2"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:932
 msgid "[Whois] %1 is an operator on channels: %2"
-msgstr "[Whois] %1 operátor a következő csatornákon: %2"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:960
 msgid "Channel %1 has %2 users. Topic is: %3"
-msgstr "A(z) %1 csatornán %2 felhasználó található. A topik: %3"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:969
 msgid "End of channel list"
-msgstr "Csatornalista vége"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:987
-#, fuzzy
 msgid "Homepage for %1 is %2"
-msgstr "A %1 részére a beállított topik: \"%2\""
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1005
-#, fuzzy
 msgid "Channel %1 created on %2"
-msgstr "Kapcsolódva %1 hálózathoz"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1019
 msgid "No topic is set for %1."
-msgstr "Nincs topik beállítva a %1 részére."
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1039
 msgid "Topic for %1 is \"%2\""
-msgstr "A %1 részére a beállított topik: \"%2\""
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1050
 msgid "Topic set by %1 on %2"
-msgstr "Topikot %1 állította be a %2 csatornán"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1067
@@ -3681,12 +3669,12 @@ msgstr ""
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1149
 msgid "Nick %1 contains illegal characters"
-msgstr "A(z) %1 álnév nem engedélyezett karaktereket tartalmaz"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1160
 msgid "Nick already in use: %1"
-msgstr "Az álnév már használatban van: %1"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1177
@@ -3695,78 +3683,64 @@ msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1270
-msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
-msgstr "Nem található szabad és érvényes álnév az álnévlistában. Használja a /nick <másikálnév> parancsot a folytatáshoz"
+msgid ""
+"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
+msgstr ""
 
 #. ts-context IrcUserItem
 #: ../src/client/networkmodel.cpp:806
-#, fuzzy
 msgid " is away"
-msgstr "Távollét:"
+msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:821
-#: ../src/client/networkmodel.cpp:447
-#, fuzzy
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:821 ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
-msgstr "üresjárat %1 óta"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:824
-#: ../src/client/networkmodel.cpp:450
+#: ../src/client/networkmodel.cpp:824 ../src/client/networkmodel.cpp:450
 msgid "login time: %1"
-msgstr "bejelentkezési idő: %1"
+msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:827
-#: ../src/client/networkmodel.cpp:453
-#, fuzzy
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:827 ../src/client/networkmodel.cpp:453
 msgid "server: %1"
-msgstr "szerver: %1"
+msgstr "kiszolgáló: %1"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:50
-#, fuzzy
 msgid "Show icons"
-msgstr "Becenevek Mutatása"
+msgstr "Ikonok megjelenítése"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:66
-#, fuzzy
 msgid "Chat List"
-msgstr "Csatorna Lista"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:72
 msgid "Display topic in tooltip"
-msgstr "Téma megjelenítése gyorstippként"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:85
-#, fuzzy
 msgid "Mouse wheel changes selected chat"
-msgstr "Egérgörgővel történő Puffer váltás"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:101
-#, fuzzy
 msgid "Use Custom Colors"
-msgstr "Egyedi Karakterkódolás"
+msgstr "Egyéni színek használata"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:118
-#, fuzzy
 msgid "Standard:"
-msgstr "Küldő:"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:142
@@ -3775,9 +3749,8 @@ msgstr "Inaktív:"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:166
-#, fuzzy
 msgid "Unread messages:"
-msgstr "Általános olvasatlan üzenetek"
+msgstr "Olvasatlan üzenetek:"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:190
@@ -3786,14 +3759,13 @@ msgstr "Kiemelés:"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:214
-#, fuzzy
 msgid "Other activity:"
-msgstr "Egyéb Aktivitás:"
+msgstr "Egyéb aktivitás:"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:272
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
@@ -3803,42 +3775,37 @@ msgstr ""
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:301
 msgid "Online:"
-msgstr "Online:"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:338
 msgid "Away:"
-msgstr "Távollét:"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
-#, fuzzy
 msgid "Chat & Nick Lists"
-msgstr "Becenevek Megjelenítése"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
-#, fuzzy
 msgid "Inactive"
-msgstr "Inaktív:"
+msgstr "Inaktív"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
-#, fuzzy
 msgid "Normal"
-msgstr "Forma"
+msgstr "Normál"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:38
-#, fuzzy
 msgid "Unread messages"
-msgstr "Általános olvasatlan üzenetek"
+msgstr "Olvasatlan üzenetek"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
-#, fuzzy
 msgid "Other activity"
-msgstr "Egyéb Aktivitás"
+msgstr "Egyéb aktivitás"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context KNotificationBackend
@@ -3849,6 +3816,7 @@ msgstr "Egyéb Aktivitás"
 msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context KeySequenceButton
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
@@ -3871,41 +3839,37 @@ msgstr ""
 #: ../src/qtui/settingspages/keysequencewidget.cpp:259
 msgctxt "Meta key"
 msgid "Meta"
-msgstr ""
+msgstr "Meta"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:260
-#, fuzzy
 msgctxt "Ctrl key"
 msgid "Ctrl"
-msgstr "Ctrl+L"
+msgstr "Ctrl"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:261
-#, fuzzy
 msgctxt "Alt key"
 msgid "Alt"
-msgstr "Összes"
+msgstr "Alt"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:262
 msgctxt "Shift key"
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:265
-#, fuzzy
 msgctxt "What the user inputs now will be taken as the new shortcut"
 msgid "Input"
-msgstr "Beviteli Mező"
+msgstr ""
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:272
-#, fuzzy
 msgctxt "No shortcut defined"
 msgid "None"
-msgstr "Nincs"
+msgstr ""
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:355
@@ -3922,7 +3886,8 @@ msgstr ""
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
-msgid "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
+msgid ""
+"The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
 msgstr ""
 
 #. ts-context KeySequenceWidget
@@ -3932,29 +3897,28 @@ msgstr ""
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:367
-#, fuzzy
 msgid "Reassign"
-msgstr "Munkamenet"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:314
 msgid "&Connect to Core..."
-msgstr "&Csatlakozás..."
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:316
 msgid "&Disconnect from Core"
-msgstr "&Kapcsolat Bontása"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:318
 msgid "Core &Info..."
-msgstr "Mag &Info..."
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:320
 msgid "Configure &Networks..."
-msgstr "Hálózatok &Beállítása..."
+msgstr "&Hálózatok beállítása…"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:323
@@ -3963,9 +3927,8 @@ msgstr "&Kilépés"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:327
-#, fuzzy
 msgid "&Configure Chat Lists..."
-msgstr "&Quassel Beállítások..."
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:330
@@ -3975,89 +3938,82 @@ msgstr ""
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:334
 msgid "Show &Search Bar"
-msgstr "Keresőmező &Megjelenítése"
+msgstr "Kere&sősáv megjelenítése"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:336
 msgid "Show Away Log"
-msgstr "Távollét Alatti Naplózás Megjelenítése"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:338
-#, fuzzy
 msgid "Show &Menubar"
-msgstr "Eszköztár Mutatása"
+msgstr "&Menüsor megjelenítése"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:341
 msgid "Show Status &Bar"
-msgstr "ÁllapotKijelző &Mutatása"
+msgstr "Álla&potsor megjelenítése"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:343
-#: ../src/qtui/mainwin.cpp:1185
+#: ../src/qtui/mainwin.cpp:343 ../src/qtui/mainwin.cpp:1185
 msgid "&Fullscreen mode"
-msgstr ""
+msgstr "&Teljes képernyős mód"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:347
-#, fuzzy
 msgid "Configure &Shortcuts..."
-msgstr "Hálózatok &Beállítása..."
+msgstr "A gyor&sbillentyűk beállítása…"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:349
 msgid "&Configure Quassel..."
-msgstr "&Quassel Beállítások..."
+msgstr "A Quass&el beállítása…"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:353
 msgid "&About Quassel"
-msgstr "&Quassel Névjegye"
+msgstr "A Quassel &névjegye"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:355
 msgid "About &Qt"
-msgstr "&Qt Néjegye"
+msgstr "A &Qt névjegye"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:357
 msgid "Debug &NetworkModel"
-msgstr "Hibakeresés &HálózatiModell"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:359
-#, fuzzy
 msgid "Debug &BufferViewOverlay"
-msgstr "Puffer Nézet Törlése?"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:361
 msgid "Debug &MessageModel"
-msgstr "Hibakeresés &ÜzenetModell"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:363
-#, fuzzy
 msgid "Debug &HotList"
-msgstr "Hibakeresés &Naplózás"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:365
 msgid "Debug &Log"
-msgstr "Hibakeresés &Naplózás"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:367
-#, fuzzy
 msgid "Reload Stylesheet"
-msgstr "Beállítások Újratöltése"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:371
-#, fuzzy
 msgid "Navigation"
-msgstr "Szervezet:"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:373
@@ -4166,9 +4122,8 @@ msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:428
-#, fuzzy
 msgid "Activate Next Chat List"
-msgstr "Adatlap Törlése?"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:430
@@ -4202,14 +4157,13 @@ msgstr "&Nézet"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:461
-#, fuzzy
 msgid "&Chat Lists"
-msgstr "Csatorna Lista"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:463
 msgid "&Toolbars"
-msgstr "&Eszköztár"
+msgstr "&Eszköztárak"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:477
@@ -4219,65 +4173,62 @@ msgstr "&Beállítások"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:486
 msgid "&Help"
-msgstr "&Segítség"
+msgstr "Sú&gó"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:494
 msgid "Debug"
-msgstr "Hibakereső"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:723
 msgid "Nicks"
-msgstr "Becenevek"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:732
 msgid "Show Nick List"
-msgstr "Becenevek Megjelenítése"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:755
 msgid "Show Chat Monitor"
-msgstr "Csevegésfigyelő"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:759
 msgid "Inputline"
-msgstr "Beviteli Mező"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:768
 msgid "Show Input Line"
-msgstr "Beviteli Mező Megjelenítése"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:793
 msgid "Show Topic Line"
-msgstr "Téma Mutatása"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:871
-#, fuzzy
 msgid "Main Toolbar"
-msgstr "&Eszköztár"
+msgstr "Fő eszköztár"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:910
 msgid "Connected to core."
-msgstr "Csatlakozva a maghoz."
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1001
 msgid "Not connected to core."
-msgstr "Nem kapcsolódott a maghoz."
+msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:1015
-#: ../src/qtui/mainwin.cpp:1023
-#, fuzzy
+#: ../src/qtui/mainwin.cpp:1015 ../src/qtui/mainwin.cpp:1023
 msgid "Unencrypted Connection"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1015
@@ -4285,9 +4236,10 @@ msgid "<b>Your client does not support SSL encryption</b>"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:1017
-#: ../src/qtui/mainwin.cpp:1025
-msgid "Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."
+#: ../src/qtui/mainwin.cpp:1017 ../src/qtui/mainwin.cpp:1025
+msgid ""
+"Sensitive data, like passwords, will be transmitted unencrypted to your "
+"Quassel core."
 msgstr ""
 
 #. ts-context MainWin
@@ -4296,26 +4248,26 @@ msgid "<b>Your core does not support SSL encryption</b>"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:1040
-#: ../src/qtui/mainwin.cpp:1060
-#, fuzzy
+#: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1060
 msgid "Untrusted Security Certificate"
-msgstr "SSL tanúsítvány használata"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1041
-msgid "<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>"
+msgid ""
+"<b>The SSL certificate provided by the core at %1 is untrusted for the "
+"following reasons:</b>"
 msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1045
-#, fuzzy
 msgid "Show Certificate"
-msgstr "Töltsön be egy tanúsítványt"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1061
-msgid "Would you like to accept this certificate forever without being prompted?"
+msgid ""
+"Would you like to accept this certificate forever without being prompted?"
 msgstr ""
 
 #. ts-context MainWin
@@ -4330,32 +4282,30 @@ msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1073
-#, fuzzy
 msgid "Core Connection Error"
-msgstr "Kapcsolat folytatása"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1190
-#, fuzzy
 msgid "&Normal mode"
-msgstr "Forma"
+msgstr ""
 
 #. ts-context MessageModel
 #: ../src/client/messagemodel.cpp:375
 msgid "Requesting %1 messages from backlog for buffer %2:%3"
-msgstr "%1 üzenet lekérdezése a naplóból a %2:%3 pufferbe"
+msgstr ""
 
 #. ts-context MsgProcessorStatusWidget
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
 msgid "Receiving Backlog"
-msgstr "Napló lehívása"
+msgstr ""
 
 #. ts-context MultiLineEdit
 #: ../src/uisupport/multilineedit.cpp:661
-#, fuzzy
 msgid "Do you really want to paste %n lines?"
 msgid_plural "Do you really want to paste %n lines?"
-msgstr[0] "Biztosan törli a \"%1\" profilt?"
+msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context MultiLineEdit
 #: ../src/uisupport/multilineedit.cpp:670
@@ -4369,22 +4319,22 @@ msgstr ""
 #: ../src/qtui/settingspages/networkadddlg.ui:14
 #: ../src/qtui/settingspages/networkssettingspage.cpp:705
 msgid "Add Network"
-msgstr "Hálózat Hozzáadása"
+msgstr "Hálózat hozzáadása"
 
 #. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:22
 msgid "Use preset:"
-msgstr "Előre megadott beállítások használata:"
+msgstr ""
 
 #. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:57
 msgid "Manually specify network settings"
-msgstr "Részletes Hálózati Beállítások"
+msgstr ""
 
 #. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:67
 msgid "Manual Settings"
-msgstr "Kézi Beállítások"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworkAddDlg
@@ -4393,32 +4343,29 @@ msgstr "Kézi Beállítások"
 #: ../src/qtui/settingspages/networkadddlg.ui:75
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgid "Network name:"
-msgstr "Hálózat Neve:"
+msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:85
 #: ../src/qtui/settingspages/servereditdlg.ui:38
-#, fuzzy
 msgid "Server address:"
-msgstr "Szerver Címe:"
+msgstr ""
 
 #. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:115
 msgid "Server password:"
-msgstr "Kiszolgáló Jelszó:"
+msgstr ""
 
 #. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:131
 msgid "Use secure connection"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #. ts-context NetworkEditDlg
 #: ../src/qtui/settingspages/networkeditdlg.ui:21
 msgid "Please enter a network name:"
-msgstr "Hálózat nevének megadása:"
+msgstr ""
 
 #. ts-context NetworkItem
 #: ../src/client/networkmodel.cpp:196
@@ -4429,8 +4376,7 @@ msgstr "Kiszolgáló: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:197
-#: ../src/qtui/topicwidget.cpp:106
+#: ../src/client/networkmodel.cpp:197 ../src/qtui/topicwidget.cpp:106
 msgid "Users: %1"
 msgstr "Felhasználók: %1"
 
@@ -4438,27 +4384,26 @@ msgstr "Felhasználók: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:200
-#: ../src/qtui/topicwidget.cpp:107
+#: ../src/client/networkmodel.cpp:200 ../src/qtui/topicwidget.cpp:107
 msgid "Lag: %1 msecs"
-msgstr "Késés: %1 msec"
+msgstr ""
 
 #. ts-context NetworkModel
 #: ../src/client/networkmodel.cpp:852
-#, fuzzy
 msgid "Chat"
-msgstr "CsevegésFigyelő"
+msgstr ""
 
 #. ts-context NetworkModel
 #: ../src/client/networkmodel.cpp:852
 msgid "Nick Count"
-msgstr "Becenév Számoló"
+msgstr ""
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:154
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
-msgstr[0] "Véglegesen törölni szeretné a következő puffer(eket)?"
+msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:167
@@ -4467,23 +4412,26 @@ msgstr ""
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:168
-msgid "<b>Note:</b> This will delete all related data, including all backlog data, from the core's database and cannot be undone."
-msgstr "<b>Megjegyzés:</b> Ez minden kapcsolódó adatot törölni fog, beleértve a Napló adatait a Mag adatbázisából, és a művelet nem visszavonható."
+msgid ""
+"<b>Note:</b> This will delete all related data, including all backlog data, "
+"from the core's database and cannot be undone."
+msgstr ""
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:170
-msgid "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "Aktív csatorna pufferek nem törölhetök, elsöként lépjen ki a csatornáról."
+msgid ""
+"<br>Active channel buffers cannot be deleted, please part the channel first."
+msgstr ""
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
 msgid "Remove buffers permanently?"
-msgstr "Pufferok egyesítése véglegesen?"
+msgstr ""
 
 #. ts-context NetworkModelController::JoinDlg
 #: ../src/uisupport/networkmodelcontroller.cpp:484
 msgid "Join Channel"
-msgstr "Belépés Csatornára"
+msgstr ""
 
 #. ts-context NetworkModelController::JoinDlg
 #: ../src/uisupport/networkmodelcontroller.cpp:489
@@ -4492,19 +4440,18 @@ msgstr "Csatorna:"
 
 #. ts-context NetworkPage
 #: ../src/qtui/ircconnectionwizard.cpp:148
-#, fuzzy
 msgid "Setup Network Connection"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:124
 msgid "Network Details"
-msgstr "Hálózat Részletei"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:132
 msgid "Identity:"
-msgstr "Azonosító:"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworksSettingsPage
@@ -4518,7 +4465,7 @@ msgstr "Kiszolgálók"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:193
 msgid "Manage servers for this network"
-msgstr "Kiszolgálók kezelése ehhez a hálózathoz"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworksSettingsPage
@@ -4527,40 +4474,42 @@ msgstr "Kiszolgálók kezelése ehhez a hálózathoz"
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgid "&Edit..."
-msgstr "&Szerkesztés..."
+msgstr "&Szerkesztés…"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:337
 msgid "Commands"
-msgstr "Parancsok"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:340
-msgid "Configure automatic identification or misc. commands to be executed after connecting to a server"
-msgstr "Automatikus azonosítás konfigurálása vagy egyéb, a kiszolgálóhoz történő csatlakozás után végrehajtandó parancsok beállítása"
+msgid ""
+"Configure automatic identification or misc. commands to be executed after "
+"connecting to a server"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
 msgid "Commands to execute on connect:"
-msgstr "Parancsok végrehajtása csatlakozáskor:"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:362
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
-"Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
-msgstr "Határozzon meg egy listát a csatlakozás után végrehajtandó parancsokról. Jegyezze meg, hogy a Quassel IRC automatikusan újracsatlakozik a csatornákhoz, így a /join parancs használata nagyon ritkán szükséges!"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely "
+"be needed here!"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
-#, fuzzy
 msgid "Automatically reconnect to the IRC network after connection failures"
-msgstr "Automatikus újracsatlakás ellenőrzése a hálózathoz"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:386
 msgid "Automatic Reconnect"
-msgstr "Automatikus Újrakapcsolódás"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:397
@@ -4570,7 +4519,7 @@ msgstr ""
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:404
 msgid " s"
-msgstr ""
+msgstr " s"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:420
@@ -4584,56 +4533,55 @@ msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:489
-#, fuzzy
 msgid "Rejoin all channels after reconnect"
-msgstr "Belépés minden csatornára újrakapcsolódáskor"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:516
 #: ../src/qtui/settingspages/networkssettingspage.ui:525
 msgid "Auto Identify"
-msgstr "Automatikus Azonosítás"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:540
 msgid "NickServ"
-msgstr "Becenév-kiszolgáló"
+msgstr "NickServ"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:557
 msgid "Service:"
-msgstr "szolgáltatás:"
+msgstr "Szolgáltatás:"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
-#, fuzzy
 msgid "Use SASL Authentication"
-msgstr "SASL tanúsítvány használata"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
 msgid "Account:"
-msgstr "Felhasználói Fiók:"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:649
 msgid "Encodings"
-msgstr "Karakterkódolások"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:652
-msgid "Configure advanced settings such as message encodings and automatic reconnect"
-msgstr "Haladó beállítások konfigurálása, mint üzenet kódolása és automatikus újracsatlakozás"
+msgid ""
+"Configure advanced settings such as message encodings and automatic reconnect"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
 msgid "Control encodings for in- and outgoing messages"
-msgstr "Be- és kimenő üzenetek kódolásának ellenőrzése"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:664
 msgid "Use Custom Encodings"
-msgstr "Egyedi Karakterkódolás"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:675
@@ -4641,12 +4589,12 @@ msgstr "Egyedi Karakterkódolás"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
-msgstr "Határozza meg, mely kódolású üzenetek fognak beérkezni. UTF-8 jó választás a legtöbb hálózathoz."
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:679
 msgid "Send messages in:"
-msgstr "Üzenet küldése:"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:706
@@ -4654,12 +4602,12 @@ msgstr "Üzenet küldése:"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
-msgstr "Az UTF-8-ban kódolt bejövő üzenetek minden esetben a következőképpen lesznek kezelve. Ez a beállítás határozza meg a kódolást, amelyek nem UTF-8-ban vannak."
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:710
 msgid "Receive fallback:"
-msgstr "Tartalék lekérése:"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:737
@@ -4667,12 +4615,12 @@ msgstr "Tartalék lekérése:"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr "Ez hatáozza meg, hogy az ellenőrző üzenetek, álnevek és kiszolgálónevek hogyan legyenek kódolva! Amennyiben valóban nem tudja, mit tegyen, hagyja ezt ISO-8859-1 kódoláson!"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:741
 msgid "Server encoding:"
-msgstr "Kiszolgáló Karakterkódolása:"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
@@ -4682,37 +4630,41 @@ msgstr "Hálózatok"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:168
 msgid "<li>All networks need at least one server defined</li>"
-msgstr "<li>Minden hálózat legalább egy kiszolgáló meghatározását igényli</li>"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:170
 msgid "Invalid Network Settings"
-msgstr "Érvénytelen Hálózati Beállítások"
+msgstr "Érvénytelen hálózatbeállítások"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:542
 msgid "Delete Network?"
-msgstr "Hálózat Törlése?"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:543
-msgid "Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
-msgstr "Valóban törölni szeretné a(z) %1 hálózatot és minden kapcsolódó beállítást, beleértve a Naplót?"
+msgid ""
+"Do you really want to delete the network \"%1\" and all related settings, "
+"including the backlog?"
+msgstr ""
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
 msgid "Edit Nickname"
-msgstr "Becenév Szerkesztése"
+msgstr ""
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:19
 msgid "Please enter a valid nickname:"
-msgstr "Használj érvényes becenevet:"
+msgstr ""
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:32
-msgid "A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr "Az érvényes becenév tartalmazhajta az angol abc betűit, számokat és a következő speciális karaktereket: {, }, [, ], \\, |, `, ^, _ és -."
+msgid ""
+"A valid nickname may contain letters from the English alphabet, digits, and "
+"the special characters {, }, [, ], \\, |, `, ^, _ and -."
+msgstr ""
 
 #. ts-context NotificationsSettingsPage
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
@@ -4722,13 +4674,12 @@ msgstr "Értesítések"
 #. ts-context PhononNotificationBackend::ConfigWidget
 #: ../src/qtui/phononnotificationbackend.cpp:143
 msgid "Select Audio File"
-msgstr "Hang Fájl Kiválasztása"
+msgstr ""
 
 #. ts-context PhononNotificationConfigWidget
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
-#, fuzzy
 msgid "Play a sound"
-msgstr "Távollét Oka"
+msgstr ""
 
 #. ts-context PhononNotificationConfigWidget
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:46
@@ -4749,41 +4700,41 @@ msgstr ""
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:82
 msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
-msgstr "A teljes %1 számú naplóüzenet lekérése a %2 pufferbe"
+msgstr ""
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:106
 msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr "Az összes %1 számú olvasatlan naplóüzenet lekérése (plusz kapcsolódó %2)"
+msgstr ""
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:123
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr "A teljes %1 számú olvasatlan naplóüzenet lekérése a %2 pufferbe"
+msgstr ""
 
 #. ts-context QObject
 #: ../src/qtui/ircconnectionwizard.cpp:56
-#, fuzzy
 msgid "Welcome to Quassel IRC"
-msgstr "Kapcsolódás a Quassel Maghoz"
+msgstr ""
 
 #. ts-context QObject
 #: ../src/qtui/ircconnectionwizard.cpp:58
-msgid "This wizard will help you to set up your default identity and your IRC network connection.<br>This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."
+msgid ""
+"This wizard will help you to set up your default identity and your IRC "
+"network connection.<br>This only covers basic settings. You can cancel this "
+"wizard any time and use the settings dialog for more detailed changes."
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:121
-#: ../src/uisupport/qssparser.cpp:166
+#: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
 #: ../src/uisupport/qssparser.cpp:316
 msgid "Invalid block declaration: %1"
 msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:140
-#, fuzzy
 msgid "Invalid palette role assignment: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:156
@@ -4792,27 +4743,23 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:192
-#, fuzzy
 msgid "Invalid subelement name in %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:236
-#, fuzzy
 msgid "Invalid message type in %1"
-msgstr "Üzenet küldése:"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:245
-#, fuzzy
 msgid "Invalid condition %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:257
-#, fuzzy
 msgid "Invalid message label: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:268
@@ -4826,9 +4773,8 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:287
-#, fuzzy
 msgid "Invalid format name: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:294
@@ -4842,21 +4788,18 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:331
-#, fuzzy
 msgid "Invalid proplist %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:350
-#, fuzzy
 msgid "Invalid chatlist item type %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:366
-#, fuzzy
 msgid "Invalid chatlist state %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:392
@@ -4865,9 +4808,8 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:416
-#, fuzzy
 msgid "Invalid font property: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:422
@@ -4885,19 +4827,16 @@ msgid "Unknown palette color role: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:458
-#: ../src/uisupport/qssparser.cpp:481
+#: ../src/uisupport/qssparser.cpp:458 ../src/uisupport/qssparser.cpp:481
 #: ../src/uisupport/qssparser.cpp:503
 msgid "Invalid gradient declaration: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:467
-#: ../src/uisupport/qssparser.cpp:489
+#: ../src/uisupport/qssparser.cpp:467 ../src/uisupport/qssparser.cpp:489
 #: ../src/uisupport/qssparser.cpp:513
-#, fuzzy
 msgid "Invalid gradient stops list: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:610
@@ -4932,7 +4871,7 @@ msgstr "nap"
 #. ts-context Quassel::secondsToString()
 #: ../src/common/util.cpp:147
 msgid "h"
-msgstr ""
+msgstr "óra"
 
 #. ts-context Quassel::secondsToString()
 #: ../src/common/util.cpp:148
@@ -4942,170 +4881,164 @@ msgstr "perc"
 #. ts-context Quassel::secondsToString()
 #: ../src/common/util.cpp:149
 msgid "sec"
-msgstr "mp"
+msgstr "másodperc"
 
 #. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:429
 msgid "<b>Query with %1</b>"
-msgstr "<b>csevegés %1 felhasználóval</b>"
+msgstr ""
 
 #. ts-context SaveIdentitiesDlg
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgid "Sync With Core"
-msgstr "Mag Szinkronizáció"
+msgstr ""
 
 #. ts-context SaveIdentitiesDlg
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:21
 msgid "Syncing data with core, please wait..."
-msgstr "Adatszinkronizálás a maggal, kérem várjon..."
+msgstr ""
 
 #. ts-context SaveIdentitiesDlg
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:81
 msgid "Abort"
-msgstr "Megszakít"
+msgstr "Megszakítás"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:30
 msgid "Server Info"
-msgstr "Szerver információ"
+msgstr "Szerverinformációk"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:94
 msgid "Use SSL"
-msgstr "SSl Használata"
+msgstr "SSL használata"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:140
 msgid "SSL Version:"
-msgstr "SSL Verzió:"
+msgstr "SSL-verzió:"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:147
-msgid "Do not change unless you're going to connect to a server not supporting SSLv3!"
-msgstr "Ne végezzen módosítást, ha nem fog SSLv3-at támogató szerverhez csatlakozni!"
+msgid ""
+"Do not change unless you're going to connect to a server not supporting "
+"SSLv3!"
+msgstr ""
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:151
 msgid "SSLv3 (default)"
-msgstr "SSLv3 (Alapértelmezett)"
+msgstr "SSLv3 (alapértelmezett)"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:156
 msgid "SSLv2"
-msgstr ""
+msgstr "SSLv2"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:161
 msgid "TLSv1"
-msgstr ""
+msgstr "TLSv1"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:213
 msgid "Proxy Host:"
-msgstr "Proxy Kiszolgáló:"
+msgstr ""
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:251
 msgid "Proxy Username:"
-msgstr "Proxy Felhasználónév:"
+msgstr ""
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:261
 msgid "Proxy Password:"
-msgstr "Proxy Jelszó:"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/ui/settingsdlg.ui:14
-#: ../src/qtui/ui/settingspagedlg.ui:14
+#: ../src/qtui/ui/settingsdlg.ui:14 ../src/qtui/ui/settingspagedlg.ui:14
 msgid "Configure Quassel"
-msgstr "Quassel Beállítások"
+msgstr "A Quassel beállítása"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/ui/settingsdlg.ui:35
-#: ../src/qtui/ui/settingsdlg.ui:50
-#: ../src/qtui/settingsdlg.cpp:99
-#: ../src/qtui/ui/settingspagedlg.ui:30
+#: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
+#: ../src/qtui/settingsdlg.cpp:99 ../src/qtui/ui/settingspagedlg.ui:30
 msgid "Settings"
 msgstr "Beállítások"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:109
 msgid "Save changes"
-msgstr "Változtatások Mentése"
+msgstr "Változtatások mentése"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:110
-msgid "There are unsaved changes on the current configuration page. Would you like to apply your changes now?"
-msgstr "Mentetlen változtatások vannak az aktuális konfigurációs oldalon. Szeretné most alkalmazni a változtatásokat?"
+msgid ""
+"There are unsaved changes on the current configuration page. Would you like "
+"to apply your changes now?"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:122
-#: ../src/qtui/settingsdlg.cpp:126
+#: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #: ../src/qtui/settingspagedlg.cpp:36
 msgid "Configure %1"
-msgstr "%1 Beállítása"
+msgstr "%1 beállítása"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:193
-#: ../src/qtui/settingspagedlg.cpp:104
+#: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Reload Settings"
-msgstr "Beállítások Újratöltése"
+msgstr "Beállítások újratöltése"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:193
-#: ../src/qtui/settingspagedlg.cpp:104
+#: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Szeretné újra betölteni a beállításokat, miközben elveti változtatásait ezen az oldalon?"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:202
-#: ../src/qtui/settingspagedlg.cpp:113
+#: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Restore Defaults"
-msgstr "Alapértelmezések Helyreállítása"
+msgstr "Alapértelmezések visszaállítása"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:202
-#: ../src/qtui/settingspagedlg.cpp:113
+#: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Do you like to restore the default values for this page?"
-msgstr "Szeretné helyreállítani ennek az oldalnak az alapértelmezett értékeit?"
+msgstr ""
 
 #. ts-context ShortcutsModel
 #: ../src/qtui/settingspages/shortcutsmodel.cpp:110
-#, fuzzy
 msgid "Action"
-msgstr "Tevékenységek"
+msgstr "Művelet"
 
 #. ts-context ShortcutsModel
 #: ../src/qtui/settingspages/shortcutsmodel.cpp:112
 msgid "Shortcut"
-msgstr ""
+msgstr "Gyorsbillentyű"
 
 #. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:22
-#, fuzzy
 msgid "Search:"
-msgstr "szolgáltatás:"
+msgstr "Keresés:"
 
 #. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:62
@@ -5119,34 +5052,33 @@ msgstr "Alapértelmezett:"
 
 #. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:82
-#, fuzzy
 msgid "Custom:"
-msgstr "Kilépés..."
+msgstr "Egyéni:"
 
 #. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 msgid "Shortcuts"
-msgstr ""
+msgstr "Gyorsbillentyűk"
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:880
 msgid "Peer tried to send package larger than max package size!"
-msgstr "A partner nagyobb csomagot próbált küldeni, mint a maximális csomagméret!"
+msgstr ""
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:885
 msgid "Peer tried to send 0 byte package!"
-msgstr "A partner 0 byte nagyságú csomagot próbált küldeni!"
+msgstr ""
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:902
 msgid "Peer sent corrupted compressed data!"
-msgstr "A partner sérült tömörített adatot küldött!"
+msgstr ""
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:917
 msgid "Peer sent corrupt data: unable to load QVariant!"
-msgstr "A partner sérült adatot küldött: nem lehetséges a QVariant betöltése!"
+msgstr ""
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:1050
@@ -5175,141 +5107,125 @@ msgstr ""
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:136
-#, fuzzy
 msgid "Remove this server entry from the list"
-msgstr "Felhasználó eltávolítasa a csatornáról"
+msgstr ""
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:226
-#, fuzzy
 msgid "Join Channels Automatically"
-msgstr "Belépés Csatornára"
+msgstr ""
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:250
-#, fuzzy
-msgid "A list of IRC channels you will join automatically after connecting to the network"
-msgstr "Automatikus újracsatlakás ellenőrzése a hálózathoz"
+msgid ""
+"A list of IRC channels you will join automatically after connecting to the "
+"network"
+msgstr ""
 
 #. ts-context SqliteStorage
 #: ../src/core/sqlitestorage.cpp:52
-msgid "SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine it is running on, and if you only expect a few users to use your core."
-msgstr "Az SQLite egy fájl alapú adatbázis motor, amely nem igényel semmi beállítást. Kis és közepes méretű adatbázisokhoz alkalmas, melyek nem igényelnek interneten keresztüli hozzáférést. Abban az esetben használjon SQLiteot, ha a Quassel Mag ugyanazon a géepn tárolja az adatokat, amelyen fut, és ha csak néhány felhasználó használja a magot."
+msgid ""
+"SQLite is a file-based database engine that does not require any setup. It "
+"is suitable for small and medium-sized databases that do not require access "
+"via network. Use SQLite if your Quassel Core should store its data on the "
+"same machine it is running on, and if you only expect a few users to use "
+"your core."
+msgstr ""
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:14
-#, fuzzy
 msgid "Security Information"
-msgstr "Mag Információ"
+msgstr "Biztonsági információk"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:22
-#, fuzzy
 msgid "<b>Hostname:</b>"
-msgstr "Kiszolgálónév:"
+msgstr "<b>Gépnév:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:39
-#, fuzzy
 msgid "<b>IP address:</b>"
-msgstr "<b>Mód:</b> %1"
+msgstr "<b>IP-cím:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:56
 msgid "<b>Encryption:</b>"
-msgstr ""
+msgstr "<b>Titkosítás:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:73
-#, fuzzy
 msgid "<b>Protocol:</b>"
-msgstr "<b>Téma:</b> %1"
+msgstr "<b>Protokoll:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:90
 msgid "<b>Certificate chain:</b>"
-msgstr ""
+msgstr "<b>Tanúsítványlánc:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:120
-#, fuzzy
 msgid "Subject"
-msgstr "Tárgy információ"
+msgstr "Tárgy"
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:126
-#: ../src/qtui/ui/sslinfodlg.ui:248
-#, fuzzy
+#: ../src/qtui/ui/sslinfodlg.ui:126 ../src/qtui/ui/sslinfodlg.ui:248
 msgid "<b>Common name:</b>"
-msgstr "Általános Név:"
+msgstr "<b>Általános név:</b>"
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:143
-#: ../src/qtui/ui/sslinfodlg.ui:265
-#, fuzzy
+#: ../src/qtui/ui/sslinfodlg.ui:143 ../src/qtui/ui/sslinfodlg.ui:265
 msgid "<b>Organization:</b>"
-msgstr "Szervezet:"
+msgstr "<b>Szervezet:</b>"
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:160
-#: ../src/qtui/ui/sslinfodlg.ui:282
-#, fuzzy
+#: ../src/qtui/ui/sslinfodlg.ui:160 ../src/qtui/ui/sslinfodlg.ui:282
 msgid "<b>Organizational unit:</b>"
-msgstr "Szervezeti Egység Neve:"
+msgstr "<b>Szervezeti egység:</b>"
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:177
-#: ../src/qtui/ui/sslinfodlg.ui:299
-#, fuzzy
+#: ../src/qtui/ui/sslinfodlg.ui:177 ../src/qtui/ui/sslinfodlg.ui:299
 msgid "<b>Country:</b>"
-msgstr "<b>Mód:</b> %1"
+msgstr "<b>Ország:</b>"
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:194
-#: ../src/qtui/ui/sslinfodlg.ui:316
-#, fuzzy
+#: ../src/qtui/ui/sslinfodlg.ui:194 ../src/qtui/ui/sslinfodlg.ui:316
 msgid "<b>State or province:</b>"
-msgstr "Állam vagy tartomány név:"
+msgstr "<b>Állam vagy tartomány:</b>"
 
 #. ts-context SslInfoDlg
-#: ../src/qtui/ui/sslinfodlg.ui:231
-#: ../src/qtui/ui/sslinfodlg.ui:353
-#, fuzzy
+#: ../src/qtui/ui/sslinfodlg.ui:231 ../src/qtui/ui/sslinfodlg.ui:353
 msgid "<b>Locality:</b>"
-msgstr "<b>Téma:</b> %1"
+msgstr "<b>Helység:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:242
-#, fuzzy
 msgid "Issuer"
-msgstr "Kibocsátó információja"
+msgstr "Kibocsátó"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:367
 msgid "<b>Validity period:</b>"
-msgstr ""
+msgstr "<b>Érvényességi időszak:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:384
-#, fuzzy
 msgid "<b>MD5 digest:</b>"
-msgstr "<b>Mód:</b> %1"
+msgstr "<b>MD5-összeg:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:401
 msgid "<b>SHA1 digest:</b>"
-msgstr ""
+msgstr "<b>SHA1-összeg:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:431
-#, fuzzy
 msgid "<b>Trusted:</b>"
-msgstr "<b>Felhasználók:</b> %1"
+msgstr "<b>Megbízható:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/sslinfodlg.cpp:69
 msgid "Yes"
-msgstr ""
+msgstr "Igen"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/sslinfodlg.cpp:71
@@ -5318,78 +5234,73 @@ msgstr ""
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/sslinfodlg.cpp:78
-#, fuzzy
 msgid "%1 to %2"
-msgstr "%1 - %2"
+msgstr ""
 
 #. ts-context StatusBufferItem
 #: ../src/client/networkmodel.h:144
-#, fuzzy
 msgid "Status Buffer"
-msgstr "Puffer Állapot"
-
-#. ts-context SystemTray
-#: ../src/qtui/systemtray.cpp:61
-#: ../src/qtui/systemtray.cpp:92
-msgid "&Minimize"
 msgstr ""
 
 #. ts-context SystemTray
+#: ../src/qtui/systemtray.cpp:61 ../src/qtui/systemtray.cpp:92
+msgid "&Minimize"
+msgstr "Mi&nimalizálás"
+
+#. ts-context SystemTray
 #: ../src/qtui/systemtray.cpp:94
-#, fuzzy
 msgid "&Restore"
-msgstr "Ismétel:"
+msgstr "&Visszaállítás"
 
 #. ts-context SystrayNotificationBackend::ConfigWidget
 #: ../src/qtui/systraynotificationbackend.cpp:135
-#, fuzzy
 msgid "Show a message in a popup"
-msgstr "Saját Üzenetek Mutatása"
+msgstr ""
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:68
 msgid "Activate dock entry, timeout:"
-msgstr "Dokkbejezés aktiválás, időtúllépés:"
+msgstr ""
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:70
 msgid "Mark taskbar entry, timeout:"
-msgstr "Panel bejegyzés jelölés, időtúllépés:"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgid "Connect to IRC"
-msgstr "Kapcsolódás az IRC-hez"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgid "Disconnect from IRC"
-msgstr "Kapcsolat bontása az IRC-vel"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgid "Leave currently selected channel"
-msgstr "A kiválasztott csatorna elhagyása"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgid "Join a channel"
-msgstr "Belépés Csatornára"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgid "Query"
-msgstr "Párbeszéd"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgid "Start a private conversation"
-msgstr "Privát párbeszéd indítása"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgid "Request user information"
-msgstr "Felhasználói információ lekérése"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:40
@@ -5399,37 +5310,37 @@ msgstr ""
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 msgid "Give operator privileges to user"
-msgstr "Operátori jogok adása a felhasználónak"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgid "Deop"
-msgstr "Operátori jogok elvétele"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgid "Take operator privileges from user"
-msgstr "Operátor Jog Elvétele"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgid "Voice"
-msgstr "Írási jog"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgid "Give voice to user"
-msgstr "Írási jog adása"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgid "Devoice"
-msgstr "Írási jog elvétele"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgid "Take voice from user"
-msgstr "Írási jog elvétele"
+msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:44
@@ -5439,7 +5350,7 @@ msgstr "Kirúgás"
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:44
 msgid "Remove user from channel"
-msgstr "Felhasználó eltávolítasa a csatornáról"
+msgstr "Felhasználó eltávolítása a csatornáról"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:45
@@ -5459,17 +5370,17 @@ msgstr "Kirúgás/kitiltás"
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgid "Remove and ban user from channel"
-msgstr "Felhasználó eltávolítasa és kitiltása a csatornáról"
+msgstr "Felhasználó eltávolítása és kitiltása a csatornáról"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:51
 msgid "Connect to all"
-msgstr "Kapcsolódás az összeshez"
+msgstr "Csatlakozás az összeshez"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:58
 msgid "Disconnect from all"
-msgstr "Lecsatlakozás az összesről"
+msgstr "Kapcsolat bontása az összessel"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
@@ -5483,77 +5394,66 @@ msgstr ""
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
-#, fuzzy
 msgid "Topic Widget"
-msgstr "Chat Felületi Elem"
+msgstr ""
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:583
-#, fuzzy
 msgid "%DN%1%DN %2"
-msgstr "%Da%DN%1%DN %2"
+msgstr ""
 
 #. Nick Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:587
-#, fuzzy
 msgid "You are now known as %DN%1%DN"
-msgstr "%DrMostantól %DN%1%DN néven ismert"
+msgstr ""
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:588
-#, fuzzy
 msgid "%DN%1%DN is now known as %DN%2%DN"
-msgstr "%Dr%DN%1%DN mostantól %DN%2%DN néven ismert"
+msgstr ""
 
 #. Mode Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:592
-#, fuzzy
 msgid "User mode: %DM%1%DM"
-msgstr "%DmUser mode: %DM%1%DM"
+msgstr ""
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:593
-#, fuzzy
 msgid "Mode %DM%1%DM by %DN%2%DN"
-msgstr "%DmMode %DM%1%DM by %DN%2%DN"
+msgstr ""
 
 #. Join Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:597
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-msgstr "%Dj%DN%1%DN %DH(%2@%3)%DH csatlakozott a %DC%4%DC csatornához"
+msgstr ""
 
 #. Part Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:600
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-msgstr "%Dp%DN%1%DN %DH(%2@%3)%DH kilépett innen %DC%4%DC"
+msgstr ""
 
 #. Quit Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:605
-#, fuzzy
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
-msgstr "%Dq%DN%1%DN %DH(%2@%3)%DH kilépett"
+msgstr ""
 
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:612
-#, fuzzy
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr "%Dk%DN%1%DN kirúgta %DN%2%DN felhasználót a %DC%3%DC csatornáról"
+msgstr ""
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:629
-#, fuzzy
 msgid "{Day changed to %1}"
-msgstr "Nap váltása: %1"
+msgstr ""
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:641
@@ -5561,11 +5461,9 @@ msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:645
-#: ../src/uisupport/uistyle.cpp:660
-#, fuzzy
+#: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
 msgid "%DN%1%DN (%2 more)"
-msgstr "%Da%DN%1%DN %2"
+msgstr ""
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:655
@@ -5573,8 +5471,7 @@ msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:667
-#: ../src/uisupport/uistyle.cpp:705
+#: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
 msgid "[%1]"
 msgstr "[%1]"
 
@@ -5586,102 +5483,105 @@ msgstr "<%1>"
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:707
 msgid "-*-"
-msgstr ""
+msgstr "-*-"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:709
 msgid "<->"
-msgstr ""
+msgstr "<->"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:711
 msgid "***"
-msgstr ""
+msgstr "***"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:713
 msgid "-->"
-msgstr ""
+msgstr "-->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:715
-#: ../src/uisupport/uistyle.cpp:717
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
 msgid "<--"
-msgstr ""
+msgstr "<--"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:719
 msgid "<-*"
-msgstr ""
+msgstr "<-*"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:721
 msgid "<-x"
-msgstr ""
+msgstr "<-x"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:723
-#: ../src/uisupport/uistyle.cpp:725
-#: ../src/uisupport/uistyle.cpp:727
-#: ../src/uisupport/uistyle.cpp:731
+#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:729
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:733
 msgid "=>"
-msgstr ""
+msgstr "=>"
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:735
 msgid "<="
-msgstr ""
+msgstr "<="
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:737
 msgid "->"
-msgstr ""
+msgstr "->"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:697
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
-msgstr[0] "%n Tulajdonos(ok)"
+msgstr[0] "%n tulajdonos"
+msgstr[1] "%n tulajdonos"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:698
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] "%n Adminisztrátor(ok)"
+msgstr[0] "%n adminisztrátor"
+msgstr[1] "%n adminisztrátor"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:699
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] "%n Operátor(ok)"
+msgstr[0] "%n operátor"
+msgstr[1] "%n operátor"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:700
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] "%n Fél-operátor(ok)"
+msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:701
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] "%n Írási joggal rendelkező(k)"
+msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:702
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] "%n Felhasználó(k)"
+msgstr[0] "%n felhasználó"
+msgstr[1] "%n felhasználó"
 
 #, fuzzy
 #~ msgid "Add Buffers Automatically:"
@@ -5704,7 +5604,9 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgstr "<Eredeti>"
 
 #~ msgid "Note: needs client restart for full effect!"
-#~ msgstr "Figyelmeztetés: A kliens újraindítása szükséges minden Változtatás megjelenítéséhez!"
+#~ msgstr ""
+#~ "Figyelmeztetés: A kliens újraindítása szükséges minden Változtatás "
+#~ "megjelenítéséhez!"
 
 #~ msgid "Misc:"
 #~ msgstr "Egyebek:"
@@ -5757,11 +5659,21 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgid "Do you really want to delete the buffer view \"%1\"?"
 #~ msgstr "Biztosan törölni akarja a puffer nézetet \"%1\"?"
 
-#~ msgid "<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."
-#~ msgstr "<b>Ez a kliens SSL támogatás nélküli!</b><br />Tiltsa az SSL használatot a fiók beállításoknál."
+#~ msgid ""
+#~ "<b>This client is built without SSL Support!</b><br />Disable the usage "
+#~ "of SSL in the account settings."
+#~ msgstr ""
+#~ "<b>Ez a kliens SSL támogatás nélküli!</b><br />Tiltsa az SSL használatot "
+#~ "a fiók beállításoknál."
 
-#~ msgid "<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."
-#~ msgstr "<b>A Quassel Core, melyhez kapcsolódni próbál, nem támogatja az SSL-t!</b><br />Ha kapcsolódni szeretne, tiltsa az SSL használatot a fiók beállításoknál."
+#~ msgid ""
+#~ "<b>The Quassel Core you are trying to connect to does not support SSL!</"
+#~ "b><br />If you want to connect anyways, disable the usage of SSL in the "
+#~ "account settings."
+#~ msgstr ""
+#~ "<b>A Quassel Core, melyhez kapcsolódni próbál, nem támogatja az SSL-t!</"
+#~ "b><br />Ha kapcsolódni szeretne, tiltsa az SSL használatot a fiók "
+#~ "beállításoknál."
 
 #~ msgid "No Host to connect to specified."
 #~ msgstr "Nincs megadott gép a kapcsolódáshoz."
@@ -5904,8 +5816,14 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgid "Remove Account Settings"
 #~ msgstr "Profil Beállítások Eltávolítása"
 
-#~ msgid "Do you really want to remove your local settings for this Quassel Core account?<br>Note: This will <em>not</em> remove or change any data on the Core itself!"
-#~ msgstr "Valóban el akarja távolítani az ehhez a Quassel Mag fiókhoz tartozó helyi beállításokat?<br>Megjegyzés: Ez <em>nem</em> távolít el vagy módosít bármilyen adatot a Magban!"
+#~ msgid ""
+#~ "Do you really want to remove your local settings for this Quassel Core "
+#~ "account?<br>Note: This will <em>not</em> remove or change any data on the "
+#~ "Core itself!"
+#~ msgstr ""
+#~ "Valóban el akarja távolítani az ehhez a Quassel Mag fiókhoz tartozó helyi "
+#~ "beállításokat?<br>Megjegyzés: Ez <em>nem</em> távolít el vagy módosít "
+#~ "bármilyen adatot a Magban!"
 
 #~ msgid "<div style=color:red;>Connection to %1 failed!</div>"
 #~ msgstr "<div style=color:red;>Csatlakozás a %1 hálózathoz sikertelen!</div>"
@@ -5928,8 +5846,12 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgid "Connected to apollo.mindpool.net."
 #~ msgstr "Csatlakozva az apollo.mindpool.net hálózathoz."
 
-#~ msgid "The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core."
-#~ msgstr "A csatlakoztatott Quassel Mag még nincs konfigurálva. Beállítás varázslót indíthat, mely segít a Mag beállításában."
+#~ msgid ""
+#~ "The Quassel Core you are connected to is not configured yet. You may now "
+#~ "launch a configuration wizard that helps you setting up your Core."
+#~ msgstr ""
+#~ "A csatlakoztatott Quassel Mag még nincs konfigurálva. Beállítás varázslót "
+#~ "indíthat, mely segít a Mag beállításában."
 
 #~ msgid "Launch Wizard"
 #~ msgstr "Varázsló Indítása"
@@ -5937,11 +5859,14 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgid "Initializing your session..."
 #~ msgstr "Munkamenet előkészítése..."
 
-#~ msgid "<b>Please be patient while your client synchronizes with the Quassel Core!</b>"
+#~ msgid ""
+#~ "<b>Please be patient while your client synchronizes with the Quassel Core!"
+#~ "</b>"
 #~ msgstr "<b>Türelmét kérem, amíg a kliens szinkronizál a Quassel Maggal!</b>"
 
 #~ msgid "<div>Errors occurred while connecting to \"%1\":</div>"
-#~ msgstr "<div>Hiba történt a(z) \"%1\" hálózathoz történő csatlakozás közben:</div>"
+#~ msgstr ""
+#~ "<div>Hiba történt a(z) \"%1\" hálózathoz történő csatlakozás közben:</div>"
 
 #~ msgid "view SSL Certificate"
 #~ msgstr "SSL tanúsítvány áttekintése"
@@ -5985,14 +5910,20 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgid "Nicks:"
 #~ msgstr "Becenevek:"
 
-#~ msgid "Some of these settings require a restart of the Quassel Client in order to take effect. We intend to fix this."
-#~ msgstr "Ezen beállítások közül néhány a Quassel kliens ujraindítását igényli."
+#~ msgid ""
+#~ "Some of these settings require a restart of the Quassel Client in order "
+#~ "to take effect. We intend to fix this."
+#~ msgstr ""
+#~ "Ezen beállítások közül néhány a Quassel kliens ujraindítását igényli."
 
 #~ msgid "Minimize to tray on minimize button"
 #~ msgstr "Minimalizálás tálcara a minimalizáló gombbal"
 
-#~ msgid "The suffix appended to a nick on completion via TAB. Default is \": \""
-#~ msgstr "A becenév végére kerülő utótag a TAB kiegészítéskor. Az alapértelemeztt a \": \""
+#~ msgid ""
+#~ "The suffix appended to a nick on completion via TAB. Default is \": \""
+#~ msgstr ""
+#~ "A becenév végére kerülő utótag a TAB kiegészítéskor. Az alapértelemeztt a "
+#~ "\": \""
 
 #~ msgid "Show System Tray Icon"
 #~ msgstr "Tálca Ikon Mutatása"
@@ -6004,16 +5935,25 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgstr "Aktuális Puffer"
 
 #~ msgid "Override default away reason for auto-away on detach"
-#~ msgstr "Alap távolléti ok felülírása automatikus távollétre leválasztás esetén"
+#~ msgstr ""
+#~ "Alap távolléti ok felülírása automatikus távollétre leválasztás esetén"
 
-#~ msgid "There is a nickname in your identity's nicklist which contains illegal characters"
-#~ msgstr "Az Ön személyazonossági listájában szerepel egy álnév, mely nem engedélyezett karaktereket tartalmaz"
+#~ msgid ""
+#~ "There is a nickname in your identity's nicklist which contains illegal "
+#~ "characters"
+#~ msgstr ""
+#~ "Az Ön személyazonossági listájában szerepel egy álnév, mely nem "
+#~ "engedélyezett karaktereket tartalmaz"
 
-#~ msgid "Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"
+#~ msgid ""
+#~ "Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're "
+#~ "unable to determine the erroneous nick"
 #~ msgstr "Egy hiba miatt nem tudjuk meghatározni a hibás álnevet"
 
 #~ msgid "Please use: /nick <othernick> to continue or clean up your nicklist"
-#~ msgstr "Kérem használja: /nick <másikálnév> parancsot a folytatáshoz, vagy tisztítsa meg az álnévlistát"
+#~ msgstr ""
+#~ "Kérem használja: /nick <másikálnév> parancsot a folytatáshoz, vagy "
+#~ "tisztítsa meg az álnévlistát"
 
 #~ msgid "&Configure Buffer Views..."
 #~ msgstr "&Puffer Nézet Konfigurálása..."
@@ -6105,8 +6045,12 @@ msgstr[0] "%n Felhasználó(k)"
 #~ msgid "Remove buffer permanently?"
 #~ msgstr "Puffer Végleges Eltávolítása?"
 
-#~ msgid "Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog data, from the core's database!"
-#~ msgstr "Véglegesen szeretnéd törölni a \"%1\" puffert? Ez törölni fog minden kapcsolódó adatot, minden restanciaadatot beleértve a mag adatbázisát!"
+#~ msgid ""
+#~ "Do you want to delete the buffer \"%1\" permanently? This will delete all "
+#~ "related data, including all backlog data, from the core's database!"
+#~ msgstr ""
+#~ "Véglegesen szeretnéd törölni a \"%1\" puffert? Ez törölni fog minden "
+#~ "kapcsolódó adatot, minden restanciaadatot beleértve a mag adatbázisát!"
 
 #~ msgid "Hide buffers"
 #~ msgstr "Pufferok rejtése"

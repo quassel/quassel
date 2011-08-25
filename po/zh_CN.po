@@ -1,12 +1,12 @@
 # Chinese (Simplified) translation for quassel
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the quassel package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# 冯超 <rainofchaos@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: quassel\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
 "POT-Creation-Date: 2010-03-03 10:51+0200\n"
 "PO-Revision-Date: 2010-03-12 08:14+0000\n"
 "Last-Translator: 冯超 <rainofchaos@gmail.com>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2010-03-28 22:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"X-Language: zh_CN\n"
 
 #: AboutDlg#1
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
