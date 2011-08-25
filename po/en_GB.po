@@ -7,17 +7,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: quassel\n"
 "Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
-"POT-Creation-Date: 2010-01-10 13:33+0200\n"
-"PO-Revision-Date: 2010-09-10 01:16+0200\n"
-"Last-Translator: Johannes Huber <johu@gmx.de>\n"
+"POT-Creation-Date: 2010-12-15 22:38+0000\n"
+"PO-Revision-Date: 2011-08-09 23:17+0000\n"
+"Last-Translator: Robert Readman <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-03-03 01:08+0000\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Launchpad-Export-Date: 2011-08-11 04:56+0000\n"
+"X-Generator: Launchpad (build 13644)\n"
 "X-Language: en_GB\n"
+
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context KNotificationBackend
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SystrayNotificationBackend
+#: ../src/qtui/knotificationbackend.cpp:115
+#: ../src/qtui/systraynotificationbackend.cpp:125
+msgid "%n pending highlights"
+msgid_plural "%n pending highlights"
+msgstr[0] "%n pending highlights"
+msgstr[1] "%n pending highlights"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -27,29 +38,29 @@ msgstr "About Quassel"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
-"html>"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
-"html>"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
 "font-weight:600; font-style:normal;\">\n"
@@ -57,8 +68,8 @@ msgid ""
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
 "&gt;= 474 (2008-02-08)</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
 "font-weight:600; font-style:normal;\">\n"
@@ -89,32 +100,35 @@ msgstr "&Thanks To"
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:32
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
+msgstr ""
+"<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:46
 msgid ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
-"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc."
-"org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
 "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
 "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
 "and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
-"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</"
-"a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html"
-"\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org"
-"\">http://bugs.quassel-irc.org</a> to report bugs."
+"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
+"Team</a> and used under the <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+"report bugs."
 msgstr ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-20010 by the "
-"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc."
-"org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
 "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
 "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
 "and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
-"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</"
-"a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html"
-"\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org"
-"\">http://bugs.quassel-irc.org</a> to report bugs."
+"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
+"Team</a> and used under the <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+"report bugs."
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -133,29 +147,31 @@ msgstr ""
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:135
 msgid ""
-"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;"
-"<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-"
-"Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://"
-"www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the "
-"artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png"
-"\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known "
-"as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
-"development of QuasselTopia with Greenphones and more</dd><dt><a href="
-"\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for "
-"keeping Qt alive, and for sponsoring development of Quassel Mobile with "
-"N810s</dd>"
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
+"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"creating all the artwork you see throughout Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software formerly known as "
+"Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
+"sponsoring development of Quassel Mobile with N810s</dd>"
 msgstr ""
-"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;"
-"<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-"
-"Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://"
-"www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the "
-"artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png"
-"\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known "
-"as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
-"development of QuasselTopia with Greenphones and more</dd><dt><a href="
-"\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for "
-"keeping Qt alive, and for sponsoring development of Quassel Mobile with "
-"N810s</dd>"
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
+"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"creating all the artwork you see throughout Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software formerly known as "
+"Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
+"sponsoring development of Quassel Mobile with N810s</dd>"
 
 #. ts-context AbstractSqlStorage
 #: ../src/core/abstractsqlstorage.cpp:115
@@ -181,26 +197,26 @@ msgstr ""
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
 msgid ""
-"<b>The string the shortcut will be expanded to</b><br /><b>special variables:"
-"</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> "
-"represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</"
-"b> represents all parameters from i on separated by spaces.<br /> - <b>$i:"
-"hostname</b> represents the hostname of the user identified by the i'th "
-"parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>"
-"$nick</b> your current nickname<br /> - <b>$channel</b> the name of the "
-"selected channel<br /><br />Multiple commands can be separated with "
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
+"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
+"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
+"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
+"the selected channel<br /><br />Multiple commands can be separated with "
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
 "be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
 "1 2 3\" when called like /test 1 2 3"
 msgstr ""
-"<b>The string the shortcut will be expanded to</b><br /><b>special variables:"
-"</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> "
-"represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</"
-"b> represents all parameters from i on separated by spaces.<br /> - <b>$i:"
-"hostname</b> represents the hostname of the user identified by the i'th "
-"parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>"
-"$nick</b> your current nickname<br /> - <b>$channel</b> the name of the "
-"selected channel<br /><br />Multiple commands can be separated with "
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
+"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
+"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
+"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
+"the selected channel<br /><br />Multiple commands can be separated with "
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
 "be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
 "1 2 3\" when called like /test 1 2 3"
@@ -215,31 +231,56 @@ msgstr "Alias"
 msgid "Expansion"
 msgstr "Expansion"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSearchBar
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardIntroPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardStorageSelectionPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardSyncPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IndicatorNotificationConfigWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MsgProcessorStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context PhononNotificationConfigWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ShortcutsSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSearchBar
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardIntroPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardStorageSelectionPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardSyncPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IndicatorNotificationConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MsgProcessorStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context PhononNotificationConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:13
 #: ../src/qtui/settingspages/appearancesettingspage.ui:14
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
@@ -268,27 +309,37 @@ msgstr "Expansion"
 msgid "Form"
 msgstr "Form"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:27
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:28
 msgid "New"
 msgstr "New"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:41
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:67
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:42
 msgid "Delete"
 msgstr "Delete"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
@@ -343,15 +394,24 @@ msgstr "Use custom stylesheet"
 msgid "Path:"
 msgstr "Path:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSearchBar
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSearchBar
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
 #: ../src/qtui/settingspages/appearancesettingspage.ui:141
 #: ../src/qtui/ui/chatviewsearchbar.ui:19
 #: ../src/qtui/ui/chatviewsearchbar.ui:33
@@ -452,17 +512,28 @@ msgstr "Current Chat"
 msgid "Errors:"
 msgstr "Errors:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NotificationsSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ShortcutsSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NotificationsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
@@ -487,14 +558,18 @@ msgstr "Please choose a stylesheet file"
 msgid "Away Log"
 msgstr "Away Log"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AwayLogView
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AwayLogView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorView
 #: ../src/qtui/awaylogview.cpp:44 ../src/qtui/chatmonitorview.cpp:59
 msgid "Show Network Name"
 msgstr "Show Network Name"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AwayLogView
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AwayLogView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorView
 #: ../src/qtui/awaylogview.cpp:49 ../src/qtui/chatmonitorview.cpp:64
 msgid "Show Buffer Name"
 msgstr "Show Buffer Name"
@@ -584,9 +659,12 @@ msgstr "Maximum amount of messages to be fetched per buffer."
 msgid "Limit:"
 msgstr "Limit:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TaskbarNotificationBackend::ConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/settingspages/backlogsettingspage.ui:235
 #: ../src/qtui/settingspages/backlogsettingspage.ui:357
 #: ../src/qtui/settingspages/networkssettingspage.ui:464
@@ -666,9 +744,12 @@ msgstr ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 #: ../src/qtui/settingspages/networkeditdlg.ui:13
 #: ../src/qtui/settingspages/servereditdlg.ui:14
@@ -690,19 +771,26 @@ msgstr "Add Chat List"
 msgid "Show / Hide Chats"
 msgstr "Show / Hide Chats"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:31
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgid "Re&name..."
 msgstr "Re&name..."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:48
 #: ../src/qtui/settingspages/identityeditwidget.ui:93
 #: ../src/qtui/settingspages/networkssettingspage.ui:65
@@ -711,9 +799,12 @@ msgstr "Re&name..."
 msgid "&Add..."
 msgstr "&Add..."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:71
 #: ../src/qtui/settingspages/networkssettingspage.ui:88
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
@@ -726,8 +817,10 @@ msgstr "De&lete"
 msgid "Chat List Settings"
 msgstr "Chat List Settings"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModelController::JoinDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModelController::JoinDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:92
 #: ../src/uisupport/networkmodelcontroller.cpp:487
 msgid "Network:"
@@ -798,9 +891,12 @@ msgstr "Other Activity"
 msgid "New Message"
 msgstr "New Message"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
 #: ../src/qtui/settingspages/highlightsettingspage.ui:32
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
@@ -925,32 +1021,32 @@ msgstr "Errors Occured:"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
 "weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</"
-"span></p>\n"
+"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
+"ERROR!!11</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
 "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
 "family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
 "weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</"
-"span></p>\n"
+"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
+"ERROR!!11</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
 "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
 "family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
@@ -963,10 +1059,10 @@ msgstr "Operation Mode:"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
 "weight:400; font-style:normal;\">\n"
@@ -983,10 +1079,10 @@ msgid ""
 "decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
 "ignored in chatmonitor</p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
 "weight:400; font-style:normal;\">\n"
@@ -1041,8 +1137,10 @@ msgstr "Always show highlighted messages"
 msgid "Show own messages"
 msgstr "Show own messages"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 #: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
@@ -1264,9 +1362,12 @@ msgstr "Enable Ping Timeout Detection"
 msgid "Ping interval:"
 msgstr "Ping interval:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TaskbarNotificationBackend::ConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/settingspages/connectionsettingspage.ui:44
 #: ../src/qtui/settingspages/connectionsettingspage.ui:155
 #: ../src/qtui/settingspages/connectionsettingspage.ui:213
@@ -1325,29 +1426,37 @@ msgstr "Minimum delay between requests:"
 msgid "Copy Link Address"
 msgstr "Copy Link Address"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:38
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgid "Connect"
 msgstr "Connect"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:39
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgid "Disconnect"
 msgstr "Disconnect"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:41
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgid "Join"
 msgstr "Join"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:42
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgid "Part"
@@ -1423,8 +1532,10 @@ msgstr "Start Query"
 msgid "Show Query"
 msgstr "Show Query"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:60
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgid "Whois"
@@ -1589,8 +1700,10 @@ msgstr "Invalid listen address %1"
 
 #. ts-context Core
 #: ../src/core/core.cpp:402
-msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgid ""
+"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgstr ""
+"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:410
@@ -1599,8 +1712,10 @@ msgstr "Could not open IPv4 interface %1:%2: %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:418
-msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgid ""
+"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgstr ""
+"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:429
@@ -1635,14 +1750,16 @@ msgstr "Antique client trying to connect... refusing."
 #. ts-context Core
 #: ../src/core/core.cpp:514
 msgid ""
-"<b>Your Quassel Client is too old!</b><br>This core needs at least client/"
-"core protocol version %1.<br>Please consider upgrading your client."
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1.<br>Please consider upgrading your client."
 msgstr ""
-"<b>Your Quassel Client is too old!</b><br>This core needs at least client/"
-"core protocol version %1.<br>Please consider upgrading your client."
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1.<br>Please consider upgrading your client."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context Core
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreSession
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context Core
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreSession
 #: ../src/core/core.cpp:518 ../src/core/core.cpp:608 ../src/core/core.cpp:632
 #: ../src/core/coresession.cpp:195
 msgid "Client"
@@ -1655,8 +1772,10 @@ msgstr "too old, rejecting."
 
 #. ts-context Core
 #: ../src/core/core.cpp:535
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgid ""
+"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgstr ""
+"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 
 #. ts-context Core
 #: ../src/core/core.cpp:588
@@ -1711,8 +1830,10 @@ msgstr "Could not initialise session for client:"
 msgid "Could not find a session for client:"
 msgstr "Could not find a session for client:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccount
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccount
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountModel
 #: ../src/client/coreaccount.h:39 ../src/client/coreaccountmodel.cpp:64
 msgid "Internal Core"
 msgstr "Internal Core"
@@ -1744,17 +1865,22 @@ msgstr "Local Core"
 msgid "Hostname:"
 msgstr "Hostname:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:47
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:180
 #: ../src/qtui/settingspages/servereditdlg.ui:220
 msgid "localhost"
 msgstr "localhost"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:54
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:187
 #: ../src/qtui/settingspages/networkadddlg.ui:95
@@ -1769,12 +1895,18 @@ msgstr "Port:"
 msgid "User:"
 msgstr "User:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModelController::JoinDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModelController::JoinDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:103
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:236
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:32
@@ -1791,29 +1923,37 @@ msgstr "Password:"
 msgid "Remember"
 msgstr "Remember"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:127
 #: ../src/qtui/settingspages/servereditdlg.ui:171
 msgid "Use a Proxy"
 msgstr "Use a Proxy"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:139
 #: ../src/qtui/settingspages/servereditdlg.ui:188
 msgid "Proxy Type:"
 msgstr "Proxy Type:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:147
 #: ../src/qtui/settingspages/servereditdlg.ui:196
 msgid "Socks 5"
 msgstr "Socks 5"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:152
 #: ../src/qtui/settingspages/servereditdlg.ui:201
 msgid "HTTP"
@@ -1839,8 +1979,10 @@ msgstr "Core Accounts"
 msgid "Edit..."
 msgstr "Edit..."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:56
 #: ../src/qtui/settingspages/identitiessettingspage.ui:54
 msgid "Add..."
@@ -1861,8 +2003,10 @@ msgstr "Connect to last account used"
 msgid "Always connect to"
 msgstr "Always connect to"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 msgid "Remote Cores"
@@ -1894,8 +2038,10 @@ msgstr ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
 "remember to configure your identities and networks now."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
 #: ../src/qtui/ui/coreconnectauthdlg.ui:49
 msgid "Username:"
@@ -1906,8 +2052,10 @@ msgstr "Username:"
 msgid "Repeat password:"
 msgstr "Repeat password:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:60
 #: ../src/qtui/ui/coreconnectauthdlg.ui:58
 msgid "Remember password"
@@ -1918,13 +2066,13 @@ msgstr "Remember password"
 msgid ""
 "<b>Note:</b> Adding more users and changing your username/password is not "
 "possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</"
-"nobr></tt>\"."
+"If you need to do these things, please run \"<tt><nobr>quasselcore --"
+"help</nobr></tt>\"."
 msgstr ""
 "<b>Note:</b> Adding more users and changing your username/password is not "
 "possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</"
-"nobr></tt>\"."
+"If you need to do these things, please run \"<tt><nobr>quasselcore --"
+"help</nobr></tt>\"."
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
@@ -1983,8 +2131,10 @@ msgstr ""
 "Your settings are now stored in the core, and you will be logged in "
 "automatically."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardStorageSelectionPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardSyncPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardStorageSelectionPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgid "Storage Backend:"
@@ -2201,15 +2351,19 @@ msgstr "Automatically reconnect on network failures"
 msgid "Retry every"
 msgstr "Retry every"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgid "Connection"
 msgstr "Connection"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:32
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:79
 msgid "Message"
@@ -2287,8 +2441,10 @@ msgstr "Build date:"
 msgid "<build date>"
 msgstr "<build date>"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreInfoDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context DebugLogWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreInfoDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context DebugLogWidget
 #: ../src/qtui/ui/coreinfodlg.ui:81 ../src/qtui/ui/debuglogwidget.ui:43
 msgid "Close"
 msgstr "Close"
@@ -2647,8 +2803,10 @@ msgstr "Enable"
 msgid "Add"
 msgstr "Add"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/highlightsettingspage.ui:62
 #: ../src/qtui/settingspages/identityeditwidget.ui:119
 msgid "Remove"
@@ -2695,8 +2853,10 @@ msgstr "this shouldn't be empty"
 msgid "highlight rule"
 msgstr "highlight rule"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:322
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
@@ -2718,8 +2878,10 @@ msgstr "Remove Identity"
 msgid "Identities"
 msgstr "Identities"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 #: ../src/qtui/settingspages/networkssettingspage.cpp:167
 msgid ""
@@ -2749,8 +2911,10 @@ msgstr "<li>You need to specify a real name for every identity</li>"
 msgid "<li>You need to specify an ident for every identity</li>"
 msgstr "<li>You need to specify an ident for every identity</li>"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:183
 #: ../src/qtui/settingspages/networkssettingspage.cpp:169
 msgid "</ul>"
@@ -2835,8 +2999,10 @@ msgstr "The \"Real Name\" is shown in /whois."
 msgid "Nicknames"
 msgstr "Nicknames"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NickEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NickEditDlg
 #: ../src/qtui/settingspages/identityeditwidget.ui:90
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgid "Add Nickname"
@@ -2847,18 +3013,24 @@ msgstr "Add Nickname"
 msgid "Remove Nickname"
 msgstr "Remove Nickname"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/identityeditwidget.ui:165
 #: ../src/qtui/settingspages/networkssettingspage.ui:278
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgid "Move upwards in list"
 msgstr "Move upwards in list"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/identityeditwidget.ui:179
 #: ../src/qtui/settingspages/networkssettingspage.ui:292
 #: ../src/qtui/ui/simplenetworkeditor.ui:179
@@ -2927,8 +3099,10 @@ msgstr "Set away after"
 msgid "minutes of being idle"
 msgstr "minutes of being idle"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
 #: ../src/qtui/settingspages/identityeditwidget.cpp:219
 #: ../src/qtui/settingspages/servereditdlg.ui:119
@@ -2989,8 +3163,10 @@ msgstr ""
 "Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
 "Certificate!"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
 #: ../src/qtui/mainwin.cpp:1044
 msgid "Continue"
@@ -3091,16 +3267,16 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</"
-"p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown "
+"again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</"
-"p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown "
+"again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 
@@ -3150,8 +3326,8 @@ msgstr "Sender"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</"
-"p>\n"
+"<p>Depending on the type of the rule, the text is matched against "
+"either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3165,8 +3341,8 @@ msgid ""
 "from any host</p>"
 msgstr ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</"
-"p>\n"
+"<p>Depending on the type of the rule, the text is matched against "
+"either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3179,8 +3355,10 @@ msgstr ""
 "- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
 "from any host</p>"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:195
 msgid "Ignore Rule"
@@ -3243,15 +3421,19 @@ msgstr "Scope"
 msgid "Global"
 msgstr "Global"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
 msgid "Network"
 msgstr "Network"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcListModel
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:174
 #: ../src/client/irclistmodel.cpp:59
 msgid "Channel"
@@ -3309,20 +3491,22 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
 msgid ""
 "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
-"matched against either:<br /><br />- <u>the message content:</u><br /"
-"><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
-"\"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></"
-"u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from "
-"host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with "
-"nickname \"stupid\" from any host<br />"
+"matched against either:<br /><br />- <u>the message content:</u><br "
+"/><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string "
+"<i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    "
+"\"*@foobar.com\" matches any sender from host foobar.com<br />    "
+"\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
+"host<br />"
 msgstr ""
 "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
-"matched against either:<br /><br />- <u>the message content:</u><br /"
-"><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
-"\"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></"
-"u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from "
-"host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with "
-"nickname \"stupid\" from any host<br />"
+"matched against either:<br /><br />- <u>the message content:</u><br "
+"/><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string "
+"<i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    "
+"\"*@foobar.com\" matches any sender from host foobar.com<br />    "
+"\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
+"host<br />"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
@@ -3474,9 +3658,12 @@ msgstr "Clear Colour"
 msgid "Focus Input Line"
 msgstr "Focus Input Line"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
@@ -3563,9 +3750,12 @@ msgstr "Save && Connect"
 msgid "Users"
 msgstr "Users"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcListModel
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModel
 #: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:781
 #: ../src/client/networkmodel.cpp:852
 msgid "Topic"
@@ -3595,8 +3785,10 @@ msgstr ""
 "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
 "behaviour!"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcServerHandler
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. Plain Message
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcServerHandler
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. Plain Message
 #. ----------
 #. Notice Message
 #. ----------
@@ -3758,20 +3950,26 @@ msgstr ""
 msgid " is away"
 msgstr " is away"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:821 ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
 msgstr "idling since %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:824 ../src/client/networkmodel.cpp:450
 msgid "login time: %1"
 msgstr "login time: %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:827 ../src/client/networkmodel.cpp:453
 msgid "server: %1"
 msgstr "server: %1"
@@ -3870,17 +4068,6 @@ msgstr "Unread messages"
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
 msgid "Other activity"
 msgstr "Other activity"
-
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context KNotificationBackend
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context SystrayNotificationBackend
-#: ../src/qtui/knotificationbackend.cpp:115
-#: ../src/qtui/systraynotificationbackend.cpp:125
-msgid "%n pending highlights"
-msgid_plural "%n pending highlights"
-msgstr[0] "%n pending highlights"
-msgstr[1] ""
 
 #. ts-context KeySequenceButton
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
@@ -4386,8 +4573,10 @@ msgstr[1] "Do you really want to paste %n lines?"
 msgid "Paste Protection"
 msgstr "Paste Protection"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkEditDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:14
 #: ../src/qtui/settingspages/networkssettingspage.cpp:705
 msgid "Add Network"
@@ -4408,15 +4597,19 @@ msgstr "Manually specify network settings"
 msgid "Manual Settings"
 msgstr "Manual Settings"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkadddlg.ui:75
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgid "Network name:"
 msgstr "Network name:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:85
 #: ../src/qtui/settingspages/servereditdlg.ui:38
 msgid "Server address:"
@@ -4526,8 +4719,10 @@ msgstr "Network Details"
 msgid "Identity:"
 msgstr "Identity:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkssettingspage.ui:190
 #: ../src/qtui/ui/simplenetworkeditor.ui:63
 msgid "Servers"
@@ -4538,8 +4733,10 @@ msgstr "Servers"
 msgid "Manage servers for this network"
 msgstr "Manage servers for this network"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgid "&Edit..."
@@ -4789,14 +4986,16 @@ msgstr "Requesting a total of up to %1 backlog messages for %2 buffers"
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:106
-msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
+msgid ""
+"Requesting up to %1 of all unread backlog messages (plus additional %2)"
 msgstr ""
 "Requesting up to %1 of all unread backlog messages (plus additional %2)"
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:123
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr "Requesting a total of up to %1 unread backlog messages for %2 buffers"
+msgstr ""
+"Requesting a total of up to %1 unread backlog messages for %2 buffers"
 
 #. ts-context QObject
 #: ../src/qtui/ircconnectionwizard.cpp:56
@@ -5046,14 +5245,18 @@ msgstr "Proxy Username:"
 msgid "Proxy Password:"
 msgstr "Proxy Password:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/ui/settingsdlg.ui:14 ../src/qtui/ui/settingspagedlg.ui:14
 msgid "Configure Quassel"
 msgstr "Configure Quassel"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
 #: ../src/qtui/settingsdlg.cpp:99 ../src/qtui/ui/settingspagedlg.ui:30
 msgid "Settings"
@@ -5073,33 +5276,45 @@ msgstr ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #: ../src/qtui/settingspagedlg.cpp:36
 msgid "Configure %1"
 msgstr "Configure %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Reload Settings"
 msgstr "Reload Settings"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
-msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Do you like to reload the settings, undoing your changes on this page?"
+msgid ""
+"Do you like to reload the settings, undoing your changes on this page?"
+msgstr ""
+"Do you like to reload the settings, undoing your changes on this page?"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Restore Defaults"
 msgstr "Restore Defaults"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Do you like to restore the default values for this page?"
 msgstr "Do you like to restore the default values for this page?"
@@ -5669,135 +5884,8 @@ msgid_plural "%n User(s)"
 msgstr[0] "%n User(s)"
 msgstr[1] "%n User(s)"
 
-#~ msgctxt "AppearanceSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgid "<Original>"
-#~ msgstr "<Original>"
-
-#~ msgctxt "BacklogSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "BacklogSettingsPage#19"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "BufferViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "BufferViewSettingsPage#21"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "ChatMonitorSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "ChatMonitorSettingsPage#11"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "ChatMonitorView#2"
-#~ msgid "Show Network Name"
-#~ msgstr "Show Network Name"
-
-#~ msgctxt "ChatMonitorView#3"
-#~ msgid "Show Buffer Name"
-#~ msgstr "Show Buffer Name"
-
-#~ msgctxt "ChatViewSearchBar#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "ChatViewSearchBar#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ChatViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "ChatViewSettingsPage#10"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ChatViewSettingsPage#22"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "ConnectionSettingsPage#13"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
 #~ msgid "Finger"
 #~ msgstr "Finger"
-
-#~ msgctxt "CoreAccountModel#1"
-#~ msgid "Internal Core"
-#~ msgstr "Internal Core"
-
-#~ msgctxt "CoreAccountSettingsPage#5"
-#~ msgid "Delete"
-#~ msgstr "Delete"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#3"
-#~ msgid "Password:"
-#~ msgstr "Password:"
-
-#~ msgctxt "CoreConfigWizardIntroPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "CoreConfigWizardStorageSelectionPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "CoreConfigWizardSyncPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "CoreConfigWizardSyncPage#5"
-#~ msgid "Storage Backend:"
-#~ msgstr "Storage Backend:"
-
-#~ msgctxt "CoreConnectAuthDlg#3"
-#~ msgid "Password:"
-#~ msgstr "Password:"
-
-#~ msgctxt "CoreConnectAuthDlg#4"
-#~ msgid "Username:"
-#~ msgstr "Username:"
-
-#~ msgctxt "CoreConnectAuthDlg#5"
-#~ msgid "Remember password"
-#~ msgstr "Remember password"
-
-#~ msgctxt "CoreConnectionSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "CoreConnectionSettingsPage#7"
-#~ msgid " seconds"
-#~ msgstr " seconds"
-
-#~ msgctxt "CoreConnectionSettingsPage#12"
-#~ msgid "Remote Cores"
-#~ msgstr "Remote Cores"
-
-#~ msgctxt "CoreConnectionStatusWidget#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "CoreSession#1"
-#~ msgid "Client"
-#~ msgstr "Client"
 
 #~ msgid "Add Buffers Automatically:"
 #~ msgstr "Add Buffers Automatically:"
@@ -5805,450 +5893,5 @@ msgstr[1] "%n User(s)"
 #~ msgid "Hide inactive buffers:"
 #~ msgstr "Hide inactive buffers:"
 
-#~ msgctxt "DebugLogWidget#2"
-#~ msgid "Close"
-#~ msgstr "Close"
-
-#~ msgctxt "DesktopNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgid "Desktop Notification (via D-Bus)"
-#~ msgstr "Desktop Notification (via D-Bus)"
-
-#~ msgid "Timeout:"
-#~ msgstr "Timeout:"
-
-#~ msgid "Position hint:"
-#~ msgstr "Position hint:"
-
-#~ msgid " px"
-#~ msgstr " px"
-
-#~ msgid "X: "
-#~ msgstr "X: "
-
-#~ msgid "Y: "
-#~ msgstr "Y: "
-
-#~ msgid "Queue unread notifications"
-#~ msgstr "Queue unread notifications"
-
-#~ msgctxt "HighlightSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "HighlightSettingsPage#3"
-#~ msgid "Highlight"
-#~ msgstr "Highlight"
-
-#~ msgctxt "HighlightSettingsPage#14"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "IdentitiesSettingsPage#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "IdentitiesSettingsPage#4"
-#~ msgid "Add..."
-#~ msgstr "Add..."
-
-#~ msgctxt "IdentitiesSettingsPage#6"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "IdentityEditWidget#6"
-#~ msgid "&Add..."
-#~ msgstr "&Add..."
-
-#~ msgctxt "IdentityEditWidget#8"
-#~ msgid "Remove"
-#~ msgstr "Remove"
-
-#~ msgctxt "IdentityEditWidget#9"
-#~ msgid "Rename Identity"
-#~ msgstr "Rename Identity"
-
-#~ msgctxt "IdentityEditWidget#10"
-#~ msgid "Re&name..."
-#~ msgstr "Re&name..."
-
-#~ msgctxt "IdentityEditWidget#12"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "IgnoreListEditDlg#9"
-#~ msgid "Message"
-#~ msgstr "Message"
-
-#~ msgctxt "IgnoreListModel#7"
-#~ msgid "Ignore Rule"
-#~ msgstr "Ignore Rule"
-
-#~ msgctxt "IgnoreListSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "IgnoreListSettingsPage#2"
-#~ msgid "New"
-#~ msgstr "New"
-
-#~ msgctxt "IgnoreListSettingsPage#3"
-#~ msgid "Delete"
-#~ msgstr "Delete"
-
-#~ msgctxt "IgnoreListSettingsPage#5"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "IndicatorNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "InputWidget#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "InputWidgetSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "InputWidgetSettingsPage#12"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "IrcListModel#1"
-#~ msgid "Channel"
-#~ msgstr "Channel"
-
 #~ msgid "[Whois] idle message: %1"
 #~ msgstr "[Whois] idle message: %1"
-
-#~ msgctxt "ItemViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "ItemViewSettingsPage#2"
-#~ msgid "Custom font:"
-#~ msgstr "Custom font:"
-
-#~ msgctxt "ItemViewSettingsPage#9"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ItemViewSettingsPage#18"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "ItemViewSettingsPage#20"
-#~ msgid "Network"
-#~ msgstr "Network"
-
-#~ msgctxt "ItemViewSettingsPage#24"
-#~ msgid "Highlight"
-#~ msgstr "Highlight"
-
-#~ msgid "Ctrl+Q"
-#~ msgstr "Ctrl+Q"
-
-#~ msgid "Ctrl+M"
-#~ msgstr "Ctrl+M"
-
-#~ msgid "F7"
-#~ msgstr "F7"
-
-#~ msgctxt "MainWin#35"
-#~ msgid "Chat Monitor"
-#~ msgstr "Chat Monitor"
-
-#~ msgctxt "MainWin#39"
-#~ msgid "Topic"
-#~ msgstr "Topic"
-
-#~ msgctxt "MainWin#50"
-#~ msgid "Continue"
-#~ msgstr "Continue"
-
-#~ msgctxt "MsgProcessorStatusWidget#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "NetworkAddDlg#7"
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgctxt "NetworkEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "Dialogue"
-
-#~ msgctxt "NetworkEditDlg#3"
-#~ msgid "Add Network"
-#~ msgstr "Add Network"
-
-#~ msgctxt "NetworkModel#2"
-#~ msgid "Topic"
-#~ msgstr "Topic"
-
-#~ msgctxt "NetworkModelController::JoinDlg#2"
-#~ msgid "Network:"
-#~ msgstr "Network:"
-
-#~ msgctxt "NetworksSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "NetworksSettingsPage#2"
-#~ msgid "Re&name..."
-#~ msgstr "Re&name..."
-
-#~ msgctxt "NetworksSettingsPage#3"
-#~ msgid "&Add..."
-#~ msgstr "&Add..."
-
-#~ msgctxt "NetworksSettingsPage#4"
-#~ msgid "De&lete"
-#~ msgstr "De&lete"
-
-#~ msgctxt "NetworksSettingsPage#7"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "NetworksSettingsPage#11"
-#~ msgid "Move upwards in list"
-#~ msgstr "Move upwards in list"
-
-#~ msgctxt "NetworksSettingsPage#12"
-#~ msgid "Move downwards in list"
-#~ msgstr "Move downwards in list"
-
-#~ msgctxt "NetworksSettingsPage#17"
-#~ msgid "Connection"
-#~ msgstr "Connection"
-
-#~ msgid "Control automatic reconnect to the network"
-#~ msgstr "Control automatic reconnect to the network"
-
-#~ msgid "Interval:"
-#~ msgstr "Interval:"
-
-#~ msgctxt "NetworksSettingsPage#21"
-#~ msgid " s"
-#~ msgstr " s"
-
-#~ msgctxt "NetworksSettingsPage#23"
-#~ msgid "Unlimited"
-#~ msgstr "Unlimited"
-
-#~ msgctxt "NetworksSettingsPage#28"
-#~ msgid "Password:"
-#~ msgstr "Password:"
-
-#~ msgctxt "NetworksSettingsPage#39"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "NetworksSettingsPage#41"
-#~ msgid ""
-#~ "<b>The following problems need to be corrected before your changes can be "
-#~ "applied:</b><ul>"
-#~ msgstr ""
-#~ "<b>The following problems need to be corrected before your changes can be "
-#~ "applied:</b><ul>"
-
-#~ msgctxt "NetworksSettingsPage#43"
-#~ msgid "</ul>"
-#~ msgstr "</ul>"
-
-#~ msgctxt "NickEditDlg#4"
-#~ msgid "Add Nickname"
-#~ msgstr "Add Nickname"
-
-#~ msgctxt "NotificationsSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "PhononNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgid "Audio Notification (via Phonon)"
-#~ msgstr "Audio Notification (via Phonon)"
-
-#~ msgid "Play File:"
-#~ msgstr "Play File:"
-
-#~ msgctxt "QueryBufferItem#2"
-#~ msgid "idling since %1"
-#~ msgstr "idling since %1"
-
-#~ msgctxt "QueryBufferItem#3"
-#~ msgid "login time: %1"
-#~ msgstr "login time: %1"
-
-#~ msgctxt "QueryBufferItem#4"
-#~ msgid "server: %1"
-#~ msgstr "server: %1"
-
-#~ msgctxt "ServerEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "Dialogue"
-
-#~ msgctxt "ServerEditDlg#3"
-#~ msgid "Server address:"
-#~ msgstr "Server address:"
-
-#~ msgctxt "ServerEditDlg#4"
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgctxt "ServerEditDlg#5"
-#~ msgid "Password:"
-#~ msgstr "Password:"
-
-#~ msgctxt "ServerEditDlg#7"
-#~ msgid "Advanced"
-#~ msgstr "Advanced"
-
-#~ msgctxt "ServerEditDlg#13"
-#~ msgid "Use a Proxy"
-#~ msgstr "Use a Proxy"
-
-#~ msgctxt "ServerEditDlg#14"
-#~ msgid "Proxy Type:"
-#~ msgstr "Proxy Type:"
-
-#~ msgctxt "ServerEditDlg#15"
-#~ msgid "Socks 5"
-#~ msgstr "Socks 5"
-
-#~ msgctxt "ServerEditDlg#16"
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgctxt "ServerEditDlg#18"
-#~ msgid "localhost"
-#~ msgstr "localhost"
-
-#~ msgctxt "SettingsPageDlg#1"
-#~ msgid "Configure Quassel"
-#~ msgstr "Configure Quassel"
-
-#~ msgctxt "SettingsPageDlg#2"
-#~ msgid "Settings"
-#~ msgstr "Settings"
-
-#~ msgctxt "SettingsPageDlg#3"
-#~ msgid "Configure %1"
-#~ msgstr "Configure %1"
-
-#~ msgctxt "SettingsPageDlg#4"
-#~ msgid "Reload Settings"
-#~ msgstr "Reload Settings"
-
-#~ msgctxt "SettingsPageDlg#5"
-#~ msgid ""
-#~ "Do you like to reload the settings, undoing your changes on this page?"
-#~ msgstr ""
-#~ "Do you like to reload the settings, undoing your changes on this page?"
-
-#~ msgctxt "SettingsPageDlg#6"
-#~ msgid "Restore Defaults"
-#~ msgstr "Restore Defaults"
-
-#~ msgctxt "SettingsPageDlg#7"
-#~ msgid "Do you like to restore the default values for this page?"
-#~ msgstr "Do you like to restore the default values for this page?"
-
-#~ msgctxt "SimpleNetworkEditor#1"
-#~ msgid "Network name:"
-#~ msgstr "Network name:"
-
-#~ msgctxt "SimpleNetworkEditor#3"
-#~ msgid "Servers"
-#~ msgstr "Servers"
-
-#~ msgctxt "SimpleNetworkEditor#6"
-#~ msgid "&Edit..."
-#~ msgstr "&Edit..."
-
-#~ msgctxt "SimpleNetworkEditor#8"
-#~ msgid "&Add..."
-#~ msgstr "&Add..."
-
-#~ msgctxt "SimpleNetworkEditor#10"
-#~ msgid "De&lete"
-#~ msgstr "De&lete"
-
-#~ msgctxt "SimpleNetworkEditor#11"
-#~ msgid "Move upwards in list"
-#~ msgstr "Move upwards in list"
-
-#~ msgctxt "SimpleNetworkEditor#12"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "SimpleNetworkEditor#13"
-#~ msgid "Move downwards in list"
-#~ msgstr "Move downwards in list"
-
-#~ msgid "System Tray Icon"
-#~ msgstr "System Tray Icon"
-
-#~ msgid "Animate"
-#~ msgstr "Animate"
-
-#~ msgid "Show bubble"
-#~ msgstr "Show bubble"
-
-#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#3"
-#~ msgid "Unlimited"
-#~ msgstr "Unlimited"
-
-#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
-#~ msgid " s"
-#~ msgstr " s"
-
-#~ msgctxt "ToolBarActionProvider#1"
-#~ msgid "Connect"
-#~ msgstr "Connect"
-
-#~ msgctxt "ToolBarActionProvider#3"
-#~ msgid "Disconnect"
-#~ msgstr "Disconnect"
-
-#~ msgctxt "ToolBarActionProvider#5"
-#~ msgid "Part"
-#~ msgstr "Part"
-
-#~ msgctxt "ToolBarActionProvider#7"
-#~ msgid "Join"
-#~ msgstr "Join"
-
-#~ msgctxt "ToolBarActionProvider#11"
-#~ msgid "Whois"
-#~ msgstr "Whois"
-
-#~ msgctxt "TopicWidget#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "TopicWidget#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "TopicWidgetSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgctxt "TopicWidgetSettingsPage#2"
-#~ msgid "Custom font:"
-#~ msgstr "Custom font:"
-
-#~ msgctxt "TopicWidgetSettingsPage#5"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "UiStyle::StyledMessage#1"
-#~ msgid "%1"
-#~ msgstr "%1"

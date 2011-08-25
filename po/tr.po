@@ -7,17 +7,202 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
-"POT-Creation-Date: 2010-03-03 10:51+0200\n"
-"PO-Revision-Date: 2010-05-21 11:21+0300\n"
-"Last-Translator: H. İbrahim Güngör <ibrahim@pardus.org.tr>\n"
+"POT-Creation-Date: 2010-12-15 22:38+0000\n"
+"PO-Revision-Date: 2011-07-17 18:15+0000\n"
+"Last-Translator: Mustafa VELİOĞLU <mustinet@mustinet.org>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-04-13 20:24+0000\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2011-07-18 04:48+0000\n"
+"X-Generator: Launchpad (build 13405)\n"
 "X-Language: tr\n"
-"X-Generator: Lokalize 1.0\n"
+
+#. ts-context AppearanceSettingsPage
+#: ../src/qtui/settingspages/appearancesettingspage.ui:308
+msgid "Current Chat"
+msgstr "Mevcut Sohbet"
+
+#. ts-context BufferViewEditDlg
+#: ../src/qtui/settingspages/buffervieweditdlg.ui:22
+msgid "Please enter a name for the chat list:"
+msgstr "Sohbet listesi için lütfen bir ad girin:"
+
+#. ts-context ChannelListDlg
+#: ../src/qtui/ui/channellistdlg.ui:86
+msgid "Filter:"
+msgstr "Filtre:"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:114
+msgid "Show previews of webpages on URL hover"
+msgstr "URL üzerine gelindiğinde web sayfalarının önizlemelerini göster"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:300
+msgid "Highlight background:"
+msgstr "Vurgulama arkaplanı:"
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:168
+msgid "Network is down"
+msgstr "Ağ etkin değil"
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:202 ../src/client/coreconnection.cpp:321
+msgid "Disconnected"
+msgstr "Bağlı değil"
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:349
+msgid "Disconnected from core."
+msgstr "Çekirdekle bağlantı kesildi."
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
+#: ../src/client/coreconnection.cpp:556
+msgid "Unencrypted connection canceled"
+msgstr "Şifrelenmemiş bağlantı iptal edildi"
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:457
+msgid "Synchronizing to core..."
+msgstr "Çekirdekle eşitleniyor..."
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:597
+msgid "Login canceled"
+msgstr "Oturum iptal edildi"
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:624
+msgid "Synchronizing to %1..."
+msgstr "%1 ile eşitleniyor..."
+
+#. ts-context CoreConnection
+#: ../src/client/coreconnection.cpp:698
+msgid "Synchronized to %1"
+msgstr "%1 ile eşitlendi"
+
+#. ts-context CoreConnectionSettingsPage
+#: ../src/qtui/settingspages/coreconnectionsettingspage.ui:20
+msgid "Network Status Detection"
+msgstr "Ağ Durumu Algılama"
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:53
+msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
+msgstr "\"%1\" adı geçersiz: ../ ya da ..\\ izin verilmiyor!"
+
+#. ts-context ExecWrapper
+#: ../src/client/execwrapper.cpp:100
+msgid "Script \"%1\" caused error %2."
+msgstr "\"%1\" betiği \"%2\" hatasına neden oldu."
+
+#. ts-context IdentityPage
+#: ../src/qtui/ircconnectionwizard.cpp:107
+msgid "Setup Identity"
+msgstr "Kimliği Ayarla"
+
+#. ts-context IgnoreListEditDlg
+#: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
+msgid "Rule is enabled"
+msgstr "Kural etkinleştirildi"
+
+#. ts-context InputWidget
+#: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
+msgid "Clear Color"
+msgstr "Renkleri Temizle"
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:50
+msgid "Enable spell check"
+msgstr "Yazım denetimi etkinleştir"
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:95
+msgid "Show style buttons"
+msgstr "Biçem düğmelerini göster"
+
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcUserItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context QueryBufferItem
+#: ../src/client/networkmodel.cpp:824 ../src/client/networkmodel.cpp:450
+msgid "login time: %1"
+msgstr "giriş zamanı: %1"
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:101
+msgid "Use Custom Colors"
+msgstr "Özel Renkleri Kullan"
+
+#. ts-context ItemViewSettingsPage
+#: ../src/qtui/settingspages/itemviewsettingspage.ui:214
+msgid "Other activity:"
+msgstr "Diğer etkinlik:"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:330
+msgid "&Lock Layout"
+msgstr "Arayüzü &Kilitle"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:1045
+msgid "Show Certificate"
+msgstr "Sertifika Göster"
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:580
+msgid "Use SASL Authentication"
+msgstr "SASL Kimlik Doğrulaması Kullan"
+
+#. ts-context PhononNotificationConfigWidget
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
+msgid "Play a sound"
+msgstr "Ses çal"
+
+#. ts-context PhononNotificationConfigWidget
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:59
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:69
+msgid "Select the sound file to play"
+msgstr "Oynatılacak ses dosyası seç"
+
+#. ts-context QObject
+#: ../src/qtui/ircconnectionwizard.cpp:56
+msgid "Welcome to Quassel IRC"
+msgstr "Quassel IRC Programına Hoş Geldiniz"
+
+#. ts-context SimpleNetworkEditor
+#: ../src/qtui/ui/simplenetworkeditor.ui:226
+msgid "Join Channels Automatically"
+msgstr "Kanallara Otomatik Olarak Katıl"
+
+#. ts-context SslInfoDlg
+#: ../src/qtui/sslinfodlg.cpp:78
+msgid "%1 to %2"
+msgstr "%1'den %2'ye"
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:31
+msgid "Connect to IRC"
+msgstr "IRC'ye Bağlan"
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:42
+msgid "Voice"
+msgstr "Ses"
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:45
+msgid "Ban user from channel"
+msgstr "Kullanıcıyı kanaldan yasakla"
+
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/toolbaractionprovider.cpp:51
+msgid "Connect to all"
+msgstr "Tümüne bağlan"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -27,29 +212,29 @@ msgstr "Quassel Hakkında"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
-"html>"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></"
-"html>"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
 "font-weight:600; font-style:normal;\">\n"
@@ -57,14 +242,14 @@ msgid ""
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
 "&gt;= 474 (2008-02-08)</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
 "font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Sürüm 0.2.0-pre, İnşa &gt;"
-"= 474 (2008-02-08)</p></body></html>"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Sürüm 0.2.0-pre, İnşa "
+"&gt;= 474 (2008-02-08)</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:115
@@ -95,15 +280,16 @@ msgstr "<b>Sürüm:</b> %1<br><b>Protokol sürümü:</b> %2<br><b>İnşa:</b> %3
 #: ../src/qtui/aboutdlg.cpp:46
 msgid ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
-"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc."
-"org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
 "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
 "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
 "and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
-"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</"
-"a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html"
-"\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org"
-"\">http://bugs.quassel-irc.org</a> to report bugs."
+"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
+"Team</a> and used under the <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+"report bugs."
 msgstr ""
 
 #. ts-context AboutDlg
@@ -123,27 +309,40 @@ msgstr ""
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:135
 msgid ""
-"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;"
-"<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-"
-"Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://"
-"www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the "
-"artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png"
-"\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known "
-"as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
-"development of QuasselTopia with Greenphones and more</dd><dt><a href="
-"\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for "
-"keeping Qt alive, and for sponsoring development of Quassel Mobile with "
-"N810s</dd>"
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
+"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"creating all the artwork you see throughout Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software formerly known as "
+"Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
+"sponsoring development of Quassel Mobile with N810s</dd>"
 msgstr ""
+"Özel teşekkürlerimiz:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>Orijinal Quassel ikonu - "
+"The All-Seeing Eye için</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>Quassel "
+"üzerinde gördüğümüz tüm grafik dizaynı için</dd><dt><img src=\":/pics/qt-"
+"logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software "
+"önceki adı ile Trolltech</a></b></dt><dd>Qt ve Qtopia'yı tasarladıkları "
+"için, ve Greenphones ve dahası var QuasselTopia geliştirme sponsorlukları "
+"için</dd><dt><a href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>Qt'ye canlılık verdikleri için, ve "
+"Quassel Mobile N810s ile ilgili geliştirilmesini sponsorize ettiklerinden "
+"dolayı onlara gidiyor</dd>"
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:112
+#: ../src/core/abstractsqlstorage.cpp:115
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Schema (sürüm %1) güncel değil. %2 sürümüne yükseltiniz..."
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:114
+#: ../src/core/abstractsqlstorage.cpp:117
 msgid "Upgrade failed..."
 msgstr "Yükseltme başarısız..."
 
@@ -157,14 +356,14 @@ msgstr ""
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
 msgid ""
-"<b>The string the shortcut will be expanded to</b><br /><b>special variables:"
-"</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> "
-"represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</"
-"b> represents all parameters from i on separated by spaces.<br /> - <b>$i:"
-"hostname</b> represents the hostname of the user identified by the i'th "
-"parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>"
-"$nick</b> your current nickname<br /> - <b>$channel</b> the name of the "
-"selected channel<br /><br />Multiple commands can be separated with "
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
+"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
+"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
+"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
+"the selected channel<br /><br />Multiple commands can be separated with "
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
 "be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
 "1 2 3\" when called like /test 1 2 3"
@@ -180,30 +379,56 @@ msgstr "Kısaltma"
 msgid "Expansion"
 msgstr "Genişleme"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSearchBar
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardIntroPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardStorageSelectionPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardSyncPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IndicatorNotificationConfigWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MsgProcessorStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context PhononNotificationConfigWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSearchBar
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardIntroPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardStorageSelectionPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardSyncPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IndicatorNotificationConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MsgProcessorStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context PhononNotificationConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:13
 #: ../src/qtui/settingspages/appearancesettingspage.ui:14
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
@@ -226,32 +451,43 @@ msgstr "Genişleme"
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
 #: ../src/qtui/settingspages/networkssettingspage.ui:14
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:14
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:14
 #: ../src/qtui/ui/topicwidget.ui:32
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
 msgid "Form"
 msgstr "Form"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:27
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:28
 msgid "New"
 msgstr "Yeni"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.ui:41
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:67
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:42
 msgid "Delete"
 msgstr "Sil"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AliasesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AliasesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
@@ -306,46 +542,55 @@ msgstr "Özel biçem deposunu kullan"
 msgid "Path:"
 msgstr "Yol:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSearchBar
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSearchBar
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
 #: ../src/qtui/settingspages/appearancesettingspage.ui:141
 #: ../src/qtui/ui/chatviewsearchbar.ui:19
 #: ../src/qtui/ui/chatviewsearchbar.ui:33
 #: ../src/qtui/ui/chatviewsearchbar.ui:44
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:152
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:176
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:200
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:237
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:261
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:292
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:316
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:340
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:364
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:381
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:421
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:438
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:455
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:472
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:489
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:506
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:523
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:540
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:557
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:574
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:591
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:608
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:625
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:642
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:659
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:676
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:704
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:174
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:198
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:222
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:259
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:283
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:314
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:338
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:362
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:386
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:403
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:443
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:460
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:477
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:494
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:511
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:528
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:545
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:562
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:579
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:596
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:613
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:630
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:647
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:664
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:681
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:698
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:726
 #: ../src/qtui/settingspages/identitiessettingspage.ui:34
 #: ../src/qtui/settingspages/identitiessettingspage.ui:77
 #: ../src/qtui/settingspages/identityeditwidget.ui:168
@@ -406,56 +651,68 @@ msgid "Status Window"
 msgstr "Durum Penceresi"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.ui:308
-msgid "Current Chat"
-msgstr "Mevcut Sohbet"
-
-#. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:315
 msgid "Errors:"
 msgstr "Hatalar:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AppearanceSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NotificationsSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AppearanceSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NotificationsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgid "Interface"
 msgstr "Arayüz"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:223
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgid "Please choose a stylesheet file"
 msgstr "Lütfen bir biçem deposu dosyası seçin"
 
 #. ts-context AwayLogView
 #: ../src/qtui/awaylogview.cpp:33
 msgid "Away Log"
-msgstr ""
+msgstr "Dışarıda Kayıtları"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AwayLogView
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AwayLogView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorView
 #: ../src/qtui/awaylogview.cpp:44 ../src/qtui/chatmonitorview.cpp:59
 msgid "Show Network Name"
 msgstr "Ağ Adını Göster"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context AwayLogView
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context AwayLogView
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorView
 #: ../src/qtui/awaylogview.cpp:49 ../src/qtui/chatmonitorview.cpp:64
 msgid "Show Buffer Name"
 msgstr "Arabellek Adını Göster"
@@ -485,12 +742,12 @@ msgstr "Sohbet başına sabit miktar"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:88
 msgid "Unread messages per chat"
-msgstr ""
+msgstr "Sohbet başına okunmayan iletiler"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:93
 msgid "Globally unread messages"
-msgstr ""
+msgstr "Tüm okunmamış iletiler"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:123
@@ -534,9 +791,12 @@ msgstr ""
 msgid "Limit:"
 msgstr "Sınır:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BacklogSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TaskbarNotificationBackend::ConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BacklogSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/settingspages/backlogsettingspage.ui:235
 #: ../src/qtui/settingspages/backlogsettingspage.ui:357
 #: ../src/qtui/settingspages/networkssettingspage.ui:464
@@ -586,7 +846,7 @@ msgid "Backlog Fetching"
 msgstr ""
 
 #. ts-context BufferItem
-#: ../src/client/networkmodel.cpp:341
+#: ../src/client/networkmodel.cpp:346
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 - %2 </p>"
 
@@ -604,19 +864,17 @@ msgstr ""
 "\"%1\" arabelleğini kalıcı olarak \"%2\" arabelleğiyle birleştireyim mi?\n"
 "Bu işlem geri alınamaz!"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 #: ../src/qtui/settingspages/networkeditdlg.ui:13
 #: ../src/qtui/settingspages/servereditdlg.ui:14
 msgid "Dialog"
 msgstr "İletişim Kutusu"
-
-#. ts-context BufferViewEditDlg
-#: ../src/qtui/settingspages/buffervieweditdlg.ui:22
-msgid "Please enter a name for the chat list:"
-msgstr ""
 
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
@@ -640,10 +898,14 @@ msgstr "Sohbetleri Göster / Gizle"
 msgid "Re&name..."
 msgstr "&Yeniden Adlandır..."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:48
 #: ../src/qtui/settingspages/identityeditwidget.ui:93
 #: ../src/qtui/settingspages/networkssettingspage.ui:65
@@ -652,9 +914,12 @@ msgstr "&Yeniden Adlandır..."
 msgid "&Add..."
 msgstr "&Ekle..."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:71
 #: ../src/qtui/settingspages/networkssettingspage.ui:88
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
@@ -667,8 +932,10 @@ msgstr "&Sil"
 msgid "Chat List Settings"
 msgstr "Sohbet Listesi Ayarları"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModelController::JoinDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModelController::JoinDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:92
 #: ../src/uisupport/networkmodelcontroller.cpp:487
 msgid "Network:"
@@ -737,9 +1004,12 @@ msgstr "Diğer Etkinlik"
 msgid "New Message"
 msgstr "Yeni Mesaj"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context BufferViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context BufferViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
 #: ../src/qtui/settingspages/highlightsettingspage.ui:32
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
@@ -773,47 +1043,57 @@ msgid "BufferView"
 msgstr "ArabellekGörünümü"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:76
+#: ../src/qtui/bufferwidget.cpp:79
 msgid "Zoom In"
 msgstr "Yaklaş"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:82
+#: ../src/qtui/bufferwidget.cpp:85
 msgid "Zoom Out"
 msgstr "Uzaklaş"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:87
+#: ../src/qtui/bufferwidget.cpp:90
 msgid "Actual Size"
 msgstr "Gerçek Boyut"
 
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:94
+msgid "Set Marker Line"
+msgstr ""
+
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:98
+msgid "Go to Marker Line"
+msgstr ""
+
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:498
+#: ../src/client/networkmodel.cpp:503
 msgid "<b>Channel %1</b>"
 msgstr "<b>Kanal %1</b>"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:501
+#: ../src/client/networkmodel.cpp:506
 msgid "<b>Users:</b> %1"
 msgstr "<b>Kullanıcılar:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:505
+#: ../src/client/networkmodel.cpp:510
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Mod:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:516
+#: ../src/client/networkmodel.cpp:521
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Konu:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:520
+#: ../src/client/networkmodel.cpp:525
 msgid "Not active <br /> Double-click to join"
 msgstr "Etkin değil <br /> Katılmak için çift-tıkla"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:523
+#: ../src/client/networkmodel.cpp:528
 msgid "<p> %1 </p>"
 msgstr "<p> %1 </p>"
 
@@ -842,11 +1122,6 @@ msgid "Show Channels"
 msgstr "Kanalları Göster"
 
 #. ts-context ChannelListDlg
-#: ../src/qtui/ui/channellistdlg.ui:86
-msgid "Filter:"
-msgstr "Süzgeç:"
-
-#. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgid "Errors Occured:"
 msgstr "Hata Oluştu:"
@@ -854,17 +1129,17 @@ msgstr "Hata Oluştu:"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
 "weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</"
-"span></p>\n"
+"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
+"ERROR!!11</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
 "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
 "family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
@@ -878,10 +1153,10 @@ msgstr "İşlem Kipi:"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-"REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
 "weight:400; font-style:normal;\">\n"
@@ -938,10 +1213,12 @@ msgstr "Vurgulanmış mesajları daima göster"
 msgid "Show own messages"
 msgstr "Kendi mesajlarımı göster"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ChatMonitorSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ChatMonitorSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-#: ../src/qtui/mainwin.cpp:584
+#: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
 msgstr "Sohbet Ekranı"
 
@@ -971,7 +1248,7 @@ msgid "Configure..."
 msgstr "Yapılandır..."
 
 #. ts-context ChatScene
-#: ../src/qtui/chatscene.cpp:600
+#: ../src/qtui/chatscene.cpp:745
 msgid "Copy Selection"
 msgstr "Seçimi Kopyala"
 
@@ -998,7 +1275,7 @@ msgstr "katılma, ayrılma vs. görmezden gel"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:22
 msgid "Timestamp format:"
-msgstr ""
+msgstr "Zaman damgası biçimi:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:32
@@ -1012,104 +1289,128 @@ msgstr "Özel sohbet penceresi yazı tipi:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
+msgid "Show colored text in the chat window"
+msgstr ""
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:95
 msgid "Allow colored text (mIRC color codes)"
 msgstr "Renkli metne izin ver (mIRC renk kodları)"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:108
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr ""
+"Fare web adresinin üzerinden geçerken websitesinin önizleme penceresini "
+"göster"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
-msgid "Show previews of webpages on URL hover"
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:130
+msgid ""
+"Set the marker line to the bottom of the current chat window when selecting "
+"another channel"
 msgstr ""
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:127
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:133
+msgid "Set marker line automatically when switching chats"
+msgstr ""
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:149
 msgid "Custom Colors"
 msgstr "Özel Renkler"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:145
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:167
 msgid "Action:"
 msgstr "Eylem:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:169
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:191
 msgid "Timestamp:"
 msgstr "Zaman bilgisi:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:193
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:215
 msgid "Channel message:"
 msgstr "Kanal iletisi:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:230
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:252
 msgid "Highlight foreground:"
 msgstr "Vurgulama önplanı:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:254
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:276
 msgid "Command message:"
 msgstr "Komut iletisi:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:278
-msgid "Highlight background:"
-msgstr "Vurgulama arkaplanı:"
-
-#. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:285
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:307
 msgid "Server message:"
 msgstr "Sunucu iletisi:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:309
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:331
 msgid "Marker line:"
 msgstr ""
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:333
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:355
 msgid "Error message:"
 msgstr "Hata iletisi:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:357
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:379
 msgid "Background:"
 msgstr "Arkaplan:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:401
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:423
 msgid "Use Sender Coloring"
 msgstr ""
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:697
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:719
 msgid "Own messages:"
 msgstr "Kendi iletilerin:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 msgid "Chat View"
 msgstr "Sohbet Görünümü"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
+msgid "You need at 0.6 quasselcore to use this feature"
+msgstr ""
 
 #. ts-context Client
 #: ../src/client/client.cpp:270
 msgid "Identity already exists in client!"
 msgstr "İstemcide bu kimlik zaten mevcut!"
 
-#. ts-context Client
-#: ../src/client/client.cpp:371
+#. ts-context ClientBacklogManager
+#: ../src/client/clientbacklogmanager.cpp:161
+msgid "Processed %1 messages in %2 seconds."
+msgstr "%1 mesaj %2 saniyede işlendi."
+
+#. ts-context ClientBufferViewManager
+#: ../src/client/clientbufferviewmanager.cpp:52
 msgid "All Chats"
 msgstr "Tüm Sohbetler"
 
-#. ts-context ClientBacklogManager
-#: ../src/client/clientbacklogmanager.cpp:153
-msgid "Processed %1 messages in %2 seconds."
-msgstr "%1 mesaj %2 saniyede işlendi."
+#. ts-context ClientUserInputHandler
+#: ../src/client/clientuserinputhandler.cpp:86
+msgid "/JOIN expects a channel"
+msgstr ""
+
+#. ts-context ClientUserInputHandler
+#: ../src/client/clientuserinputhandler.cpp:96
+msgid "/QUERY expects at least a nick"
+msgstr ""
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
@@ -1126,9 +1427,12 @@ msgstr ""
 msgid "Ping interval:"
 msgstr "Ping aralığı:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TaskbarNotificationBackend::ConfigWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/settingspages/connectionsettingspage.ui:44
 #: ../src/qtui/settingspages/connectionsettingspage.ui:155
 #: ../src/qtui/settingspages/connectionsettingspage.ui:213
@@ -1181,33 +1485,41 @@ msgid "Minimum delay between requests:"
 msgstr "İstemler arası en az bekleme süresi :"
 
 #. ts-context ContentsChatItem
-#: ../src/qtui/chatitem.cpp:644
+#: ../src/qtui/chatitem.cpp:683
 msgid "Copy Link Address"
 msgstr "Bağlantı Adresini Kopyala"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:38
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgid "Connect"
 msgstr "Bağlan"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:39
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgid "Disconnect"
 msgstr "Bağlantıyı Kes"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:41
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgid "Join"
 msgstr "Katıl"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:42
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgid "Part"
@@ -1283,8 +1595,10 @@ msgstr "Konuşma Başlat"
 msgid "Show Query"
 msgstr "Konuşmayı Göster"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ToolBarActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:60
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgid "Whois"
@@ -1307,8 +1621,8 @@ msgstr "Ping"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
-msgid "Finger"
-msgstr "Finger"
+msgid "Client info"
+msgstr ""
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
@@ -1375,8 +1689,10 @@ msgstr "Görmezden Gelinenlerin Listesini Göster"
 msgid "Hide Events"
 msgstr "Olayları Gizle"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
 #: ../src/uisupport/contextmenuactionprovider.cpp:110
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:86
 msgid "CTCP"
@@ -1443,7 +1759,8 @@ msgstr "Geçersiz dinleme adresi %1"
 
 #. ts-context Core
 #: ../src/core/core.cpp:402
-msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgid ""
+"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr ""
 "GUI istemcileri IPv4 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
 
@@ -1454,7 +1771,8 @@ msgstr "IPv4 arayüzü açılamadı %1:%2: %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:418
-msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgid ""
+"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr ""
 "GUI istemcileri IPv6 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
 
@@ -1491,15 +1809,17 @@ msgstr "Antika istemci bağlanmaya çalışıyor... reddedildi."
 #. ts-context Core
 #: ../src/core/core.cpp:514
 msgid ""
-"<b>Your Quassel Client is too old!</b><br>This core needs at least client/"
-"core protocol version %1.<br>Please consider upgrading your client."
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1.<br>Please consider upgrading your client."
 msgstr ""
-"<b>Quassel İstemciniz çok eski!</b><br>Bu çekirdek en azından istemci/"
-"çekirdek protokol sürümü %1 istemektedir.<br>Lütfen istemcinizin sürümünü "
-"yükseltin."
+"<b>Quassel İstemciniz çok eski!</b><br>Bu çekirdek en azından "
+"istemci/çekirdek protokol sürümü %1 istemektedir.<br>Lütfen istemcinizin "
+"sürümünü yükseltin."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context Core
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreSession
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context Core
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreSession
 #: ../src/core/core.cpp:518 ../src/core/core.cpp:608 ../src/core/core.cpp:632
 #: ../src/core/coresession.cpp:195
 msgid "Client"
@@ -1512,7 +1832,8 @@ msgstr "çok eski, reddediliyor."
 
 #. ts-context Core
 #: ../src/core/core.cpp:535
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgid ""
+"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr ""
 "<b>Quassel Çekirdek Sürüm %1</b><br>İnşa: %2<br>Up %3g%4s%5d (%6'dan beri)"
 
@@ -1542,8 +1863,8 @@ msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr ""
-"<b>Geçersiz kullanıcı adı ya da parolası!</b><br>Yazdığınız kullanıcı adı/"
-"parola kombinasyonu veritabanında bulunamadı."
+"<b>Geçersiz kullanıcı adı ya da parolası!</b><br>Yazdığınız kullanıcı "
+"adı/parola kombinasyonu veritabanında bulunamadı."
 
 #. ts-context Core
 #: ../src/core/core.cpp:632
@@ -1570,8 +1891,10 @@ msgstr "Şu istemci için oturum başlatılamadı:"
 msgid "Could not find a session for client:"
 msgstr "İstemci için bir oturum bulunamadı:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccount
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccount
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountModel
 #: ../src/client/coreaccount.h:39 ../src/client/coreaccountmodel.cpp:64
 msgid "Internal Core"
 msgstr "Dahili Çekirdek"
@@ -1613,9 +1936,12 @@ msgstr "Sunucu Adı:"
 msgid "localhost"
 msgstr "localhost"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:54
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:187
 #: ../src/qtui/settingspages/networkadddlg.ui:95
@@ -1630,12 +1956,18 @@ msgstr "Port:"
 msgid "User:"
 msgstr "Kullanıcı:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModelController::JoinDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModelController::JoinDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:103
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:236
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:32
@@ -1652,15 +1984,19 @@ msgstr "Parola:"
 msgid "Remember"
 msgstr "Hatırla"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:127
 #: ../src/qtui/settingspages/servereditdlg.ui:171
 msgid "Use a Proxy"
 msgstr "Vekil Sunucu Kullan"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:139
 #: ../src/qtui/settingspages/servereditdlg.ui:188
 msgid "Proxy Type:"
@@ -1675,8 +2011,10 @@ msgstr "Vekil Sunucu Tipi:"
 msgid "Socks 5"
 msgstr "Socks 5"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:152
 #: ../src/qtui/settingspages/servereditdlg.ui:201
 msgid "HTTP"
@@ -1702,8 +2040,10 @@ msgstr "Çekirdek Hesapları"
 msgid "Edit..."
 msgstr "Düzenle..."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:56
 #: ../src/qtui/settingspages/identitiessettingspage.ui:54
 msgid "Add..."
@@ -1722,10 +2062,12 @@ msgstr "En son kullanılan hesaba bağlan"
 #. ts-context CoreAccountSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:148
 msgid "Always connect to"
-msgstr ""
+msgstr "Her zaman bağlan"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreAccountSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreAccountSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 msgid "Remote Cores"
@@ -1759,8 +2101,10 @@ msgstr ""
 "Yeni yapılandırılmış Quassel Çekirdeğine bağlandınız!<br>Hesaplarınızı ve "
 "ağlarınızı yapılandırmayı unutmayın."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
 #: ../src/qtui/ui/coreconnectauthdlg.ui:49
 msgid "Username:"
@@ -1771,8 +2115,10 @@ msgstr "Kullanıcı Adı:"
 msgid "Repeat password:"
 msgstr "Parolayı yinele:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectAuthDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:60
 #: ../src/qtui/ui/coreconnectauthdlg.ui:58
 msgid "Remember password"
@@ -1783,8 +2129,8 @@ msgstr "Parolayı hatırla"
 msgid ""
 "<b>Note:</b> Adding more users and changing your username/password is not "
 "possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</"
-"nobr></tt>\"."
+"If you need to do these things, please run \"<tt><nobr>quasselcore --"
+"help</nobr></tt>\"."
 msgstr ""
 
 #. ts-context CoreConfigWizardIntroPage
@@ -1844,8 +2190,10 @@ msgstr ""
 "Ayarlarınız çekirdekte kayıt edildi, ve otomatik olarak oturumunuz "
 "açılacaktır."
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardStorageSelectionPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConfigWizardSyncPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardStorageSelectionPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgid "Storage Backend:"
@@ -1907,37 +2255,27 @@ msgid "Connect to Core"
 msgstr "Çekirdeğe Bağlan"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:166
-msgid "Network is down"
-msgstr ""
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:200 ../src/client/coreconnection.cpp:315
-msgid "Disconnected"
-msgstr "Bağlı değil"
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:203
+#: ../src/client/coreconnection.cpp:205
 msgid "Looking up %1..."
 msgstr "%1 aranıyor..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:206 ../src/client/coreconnection.cpp:443
+#: ../src/client/coreconnection.cpp:208 ../src/client/coreconnection.cpp:450
 msgid "Connecting to %1..."
 msgstr "%1e bağlanılıyor..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:209 ../src/client/coreconnection.cpp:566
+#: ../src/client/coreconnection.cpp:211 ../src/client/coreconnection.cpp:573
 msgid "Connected to %1"
 msgstr "%1e bağlandı"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:212
+#: ../src/client/coreconnection.cpp:214
 msgid "Disconnecting from %1..."
 msgstr ""
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:269
+#: ../src/client/coreconnection.cpp:272
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider upgrading."
 msgstr ""
@@ -1945,28 +2283,12 @@ msgstr ""
 "yükseltin."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:297
+#: ../src/client/coreconnection.cpp:300
 msgid "Invalid data received from core"
-msgstr ""
+msgstr "Çekirdekten geçersiz bilgi alındı."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:342
-msgid "Disconnected from core."
-msgstr "Çekirdekle bağlantı kesildi."
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:420 ../src/client/coreconnection.cpp:504
-#: ../src/client/coreconnection.cpp:549
-msgid "Unencrypted connection canceled"
-msgstr ""
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:450
-msgid "Synchronizing to core..."
-msgstr ""
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:471
+#: ../src/client/coreconnection.cpp:478
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
@@ -1975,39 +2297,19 @@ msgstr ""
 "için en azından çekirdek/istemci protokolü v%1 gerekli."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:585
+#: ../src/client/coreconnection.cpp:592
 msgid "Logging in..."
 msgstr "Oturum açılıyor..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:590
-msgid "Login canceled"
-msgstr "Oturum iptal edildi"
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:615
+#: ../src/client/coreconnection.cpp:622
 msgid "Receiving session state"
 msgstr "Oturum durumu alınıyor"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:617
-msgid "Synchronizing to %1..."
-msgstr ""
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:641
+#: ../src/client/coreconnection.cpp:648
 msgid "Receiving network states"
-msgstr ""
-
-#. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:691
-msgid "Synchronized to %1"
-msgstr ""
-
-#. ts-context CoreConnectionSettingsPage
-#: ../src/qtui/settingspages/coreconnectionsettingspage.ui:20
-msgid "Network Status Detection"
-msgstr "Ağ Durumu Algılama"
+msgstr "Ağ durumu alınıyor."
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
@@ -2058,15 +2360,19 @@ msgstr "Ağ hatalarında otomatik olarak yeniden bağlan"
 msgid "Retry every"
 msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgid "Connection"
 msgstr "Bağlantı"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreConnectionStatusWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectionStatusWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:32
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:79
 msgid "Message"
@@ -2092,12 +2398,12 @@ msgstr "(Lag: %1 %2)"
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:75
 msgid "The connection to your core is encrypted with SSL."
-msgstr ""
+msgstr "Çekirdek ile bağlantınız SSL ile şifrelenmiştir."
 
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:78
 msgid "The connection to your core is not encrypted."
-msgstr ""
+msgstr "Çekirdek ile bağlantınız şifrelenmemiştir."
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/ui/coreinfodlg.ui:13
@@ -2144,8 +2450,10 @@ msgstr "İnşa tarihi:"
 msgid "<build date>"
 msgstr "<inşa tarihi>"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context CoreInfoDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context DebugLogWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreInfoDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context DebugLogWidget
 #: ../src/qtui/ui/coreinfodlg.ui:81 ../src/qtui/ui/debuglogwidget.ui:43
 msgid "Close"
 msgstr "Kapat"
@@ -2172,22 +2480,22 @@ msgid "Connecting to %1:%2..."
 msgstr "%1:%2 bağlanılıyor..."
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:211
+#: ../src/core/corenetwork.cpp:210
 msgid "Disconnecting. (%1)"
 msgstr "Bağlantı Kesiliyor. (%1)"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:211
+#: ../src/core/corenetwork.cpp:210
 msgid "Core Shutdown"
 msgstr "Çekirdeği Kapat"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:307
+#: ../src/core/corenetwork.cpp:339
 msgid "Could not connect to %1 (%2)"
 msgstr "%1 (%2) bağlanılamadı"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:309
+#: ../src/core/corenetwork.cpp:341
 msgid "Connection failure: %1"
 msgstr "Bağlantı hatası: %1"
 
@@ -2215,13 +2523,65 @@ msgstr ""
 "güncelliyorum!"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:63
+#: ../src/core/coreuserinputhandler.cpp:81
 msgid "away"
 msgstr "dışarıda"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:132
+#: ../src/core/coreuserinputhandler.cpp:150
 msgid "sending CTCP-%1 request to %2"
+msgstr "%2 ye CTCP-%1 isteği gönderiliyor"
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:173
+msgid ""
+"[usage] /delkey <nick|channel> deletes the encryption key for nick or "
+"channel or just /delkey when in a channel or query."
+msgstr ""
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:180
+msgid "No key has been set for %1."
+msgstr ""
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:193
+msgid "The key for %1 has been deleted."
+msgstr ""
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:197
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
+"distributor about a Quassel package with QCA2 support, or rebuild Quassel "
+"with QCA2 present."
+msgstr ""
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:461
+msgid ""
+"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
+"channel. /setkey <key> when in a channel or query buffer sets the key for it."
+msgstr ""
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:476
+msgid "The key for %1 has been set."
+msgstr ""
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:479
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA) library. Contact your "
+"distributor about a Quassel package with QCA support, or rebuild Quassel "
+"with QCA present."
+msgstr ""
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:587
+msgid "[Error] Could not encrypt your message: %1"
 msgstr ""
 
 #. ts-context CreateIdentityDlg
@@ -2245,42 +2605,52 @@ msgid "Duplicate:"
 msgstr "Çoğalt:"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:194
+#: ../src/core/ctcphandler.cpp:197
+msgid "Received CTCP CLIENTINFO request from %1"
+msgstr ""
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:200
+msgid "Received CTCP CLIENTINFO answer from %1: %2"
+msgstr ""
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:211
 msgid "Received CTCP PING request from %1"
 msgstr "%1 kullanıcısından CTCP PING isteği alındı"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:199
+#: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
 msgstr "%1 kişisinden %2 saniye geri dönüş süresiyle CTCP PING cevabı alındı"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:212
+#: ../src/core/ctcphandler.cpp:229
 msgid "Received CTCP VERSION request by %1"
 msgstr "%1 kullanıcısından CTCP VERSION isteği alındı"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:215
+#: ../src/core/ctcphandler.cpp:232
 msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "CTCP VERSION cevabı alındı %1: %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:226
+#: ../src/core/ctcphandler.cpp:243
 msgid "Received CTCP TIME request by %1"
 msgstr ""
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:229
+#: ../src/core/ctcphandler.cpp:246
 msgid "Received CTCP TIME answer from %1: %2"
 msgstr ""
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:238
+#: ../src/core/ctcphandler.cpp:255
 msgid "Received unknown CTCP %1 by %2"
 msgstr ""
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:240
+#: ../src/core/ctcphandler.cpp:257
 msgid " with arguments: %1"
 msgstr ""
 
@@ -2331,26 +2701,16 @@ msgstr "Geçici olarak kaldırılan arabellekler:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:57
-msgid "Add Buffers Automatically:"
-msgstr "Arabellekleri Otomatik Ekle:"
-
-#. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:58
-msgid "Hide inactive buffers:"
-msgstr "Etkin olmayan arabellekleri gizle:"
-
-#. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:59
 msgid "Allowed buffer types:"
 msgstr "İzin verilen arabellek tipleri:"
 
 #. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:60
+#: ../src/qtui/debugbufferviewoverlay.cpp:58
 msgid "Minimum activity:"
 msgstr "Asgari etkinlik:"
 
 #. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:62
+#: ../src/qtui/debugbufferviewoverlay.cpp:60
 msgid "Is initialized:"
 msgstr ""
 
@@ -2385,14 +2745,9 @@ msgid "Invalid command string for /exec: %1"
 msgstr ""
 
 #. ts-context ExecWrapper
-#: ../src/client/execwrapper.cpp:53
-msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr ""
-
-#. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:64
 msgid "Could not find script \"%1\""
-msgstr ""
+msgstr "\"%1\" betiği bulunamadı"
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:82
@@ -2402,12 +2757,7 @@ msgstr ""
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:98
 msgid "Script \"%1\" could not start."
-msgstr ""
-
-#. ts-context ExecWrapper
-#: ../src/client/execwrapper.cpp:100
-msgid "Script \"%1\" caused error %2."
-msgstr ""
+msgstr "\"%1\" betiği başlatılamadı."
 
 #. ts-context FontSelector
 #: ../src/uisupport/fontselector.cpp:31
@@ -2439,8 +2789,10 @@ msgstr "Etkin kıl"
 msgid "Add"
 msgstr "Ekle"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context HighlightSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/highlightsettingspage.ui:62
 #: ../src/qtui/settingspages/identityeditwidget.ui:119
 msgid "Remove"
@@ -2461,8 +2813,14 @@ msgstr "Hesaptaki tüm takma adları"
 msgid "Current nick"
 msgstr "Mevcut takma ad"
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:108
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:75
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:92
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:102
 msgid "None"
 msgstr "Yok"
 
@@ -2481,8 +2839,10 @@ msgstr "bu boş olmamalı"
 msgid "highlight rule"
 msgstr "vurgulama kuralı"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentitiesSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentitiesSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:322
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
@@ -2599,8 +2959,12 @@ msgstr "Dönüşüm muhteşem olacaaaak!"
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr "http://quassel-irc.org - Her yerden rahatça konuş."
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:30
+#: ../src/qtui/mainwin.cpp:312
 msgid "General"
 msgstr "Genel"
 
@@ -2619,8 +2983,10 @@ msgstr "\"Gerçek Ad\" /whois de gösterilir."
 msgid "Nicknames"
 msgstr "Takma adlar"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NickEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NickEditDlg
 #: ../src/qtui/settingspages/identityeditwidget.ui:90
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgid "Add Nickname"
@@ -2718,8 +3084,10 @@ msgstr "Şundan sonra dışarıda olarak ayarla"
 msgid "minutes of being idle"
 msgstr "boşta kalma süresi"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
 #: ../src/qtui/settingspages/identityeditwidget.cpp:219
 #: ../src/qtui/settingspages/servereditdlg.ui:119
@@ -2775,10 +3143,12 @@ msgid ""
 "Certificate!"
 msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IdentityEditWidget
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
-#: ../src/qtui/mainwin.cpp:864
+#: ../src/qtui/mainwin.cpp:1044
 msgid "Continue"
 msgstr "Devam Et"
 
@@ -2857,11 +3227,6 @@ msgid "Load a Certificate"
 msgstr "Sertifika Yükle"
 
 #. ts-context IdentityPage
-#: ../src/qtui/ircconnectionwizard.cpp:107
-msgid "Setup Identity"
-msgstr "Kimliği Ayarla"
-
-#. ts-context IdentityPage
 #: ../src/qtui/ircconnectionwizard.cpp:112
 msgid "Default Identity"
 msgstr "Öntanımlı Kimlik"
@@ -2877,8 +3242,8 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</"
-"p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown "
+"again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
@@ -2923,8 +3288,8 @@ msgstr "Gönderen"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</"
-"p>\n"
+"<p>Depending on the type of the rule, the text is matched against "
+"either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -2938,8 +3303,10 @@ msgid ""
 "from any host</p>"
 msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:195
 msgid "Ignore Rule"
@@ -2986,15 +3353,19 @@ msgstr ""
 msgid "Global"
 msgstr "Evrensel"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
 msgid "Network"
 msgstr "Ağ"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IgnoreListEditDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IgnoreListEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcListModel
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:174
 #: ../src/client/irclistmodel.cpp:59
 msgid "Channel"
@@ -3022,11 +3393,6 @@ msgid ""
 "For dynamic rules, disabling actually shows the filtered messages again.</p>"
 msgstr ""
 
-#. ts-context IgnoreListEditDlg
-#: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
-msgid "Rule is enabled"
-msgstr "Kural etkinleştirildi"
-
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:69
 msgid ""
@@ -3038,12 +3404,13 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
 msgid ""
 "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
-"matched against either:<br /><br />- <u>the message content:</u><br /"
-"><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
-"\"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></"
-"u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from "
-"host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with "
-"nickname \"stupid\" from any host<br />"
+"matched against either:<br /><br />- <u>the message content:</u><br "
+"/><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string "
+"<i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    "
+"\"*@foobar.com\" matches any sender from host foobar.com<br />    "
+"\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
+"host<br />"
 msgstr ""
 
 #. ts-context IgnoreListModel
@@ -3088,6 +3455,9 @@ msgid ""
 "\"%1\"\n"
 "Please choose another rule."
 msgstr ""
+"Zaten bir kural var\n"
+"\"%1\"\n"
+"Lütfen başka bir kural seçin."
 
 #. ts-context IndicatorNotificationConfigWidget
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
@@ -3102,108 +3472,101 @@ msgid "Show messages in application indicator"
 msgstr ""
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "White"
 msgstr "Beyaz"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Black"
 msgstr "Siyah"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark blue"
 msgstr "Koyu mavi"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark green"
 msgstr "Koyu yeşil"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Red"
 msgstr "Kırmızı"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark red"
 msgstr "Koyu kırmızı"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark magenta"
-msgstr ""
+msgstr "Koyu eflatun"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Orange"
 msgstr "Turuncu"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Yellow"
 msgstr "Sarı"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Green"
 msgstr "Yeşil"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Dark cyan"
 msgstr ""
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Cyan"
 msgstr ""
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Blue"
 msgstr "Mavi"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Magenta"
-msgstr ""
+msgstr "Eflatun"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Dark gray"
 msgstr "Koyu gri"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Light gray"
 msgstr "Açık gri"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:86 ../src/qtui/inputwidget.cpp:87
-msgid "Clear Color"
-msgstr "Renkleri Temizle"
-
-#. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:131
+#: ../src/qtui/inputwidget.cpp:132
 msgid "Focus Input Line"
 msgstr "Girdi satırına odaklan"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context InputWidgetSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ItemViewSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context InputWidgetSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ItemViewSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
 msgid "Custom font:"
 msgstr "Özel Yazı Tipi:"
-
-#. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:50
-msgid "Enable spell check"
-msgstr "Yazım denetimi etkinleştir"
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:63
@@ -3213,45 +3576,50 @@ msgstr ""
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:79
 msgid "Show nick selector"
-msgstr ""
-
-#. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:95
-msgid "Show style buttons"
-msgstr "Biçem düğmelerini göster"
+msgstr "Takma ad seçiciyi göster"
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:111
-msgid "Multi-Line Editing"
+msgid "Enables (limited) Emacs key bindings in the input field."
 msgstr ""
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:128
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:114
+msgid "Emacs key bindings"
+msgstr ""
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:127
+msgid "Multi-Line Editing"
+msgstr "Çok-Satırlı Düzenleme"
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
 msgid "Show at most"
 msgstr ""
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:154
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
 msgid "lines"
 msgstr "satırlar"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:176
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
 msgid "Enable scrollbars"
 msgstr "Kaydırma çubuklarını etkinleştir"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:195
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
 msgid "Tab Completion"
 msgstr "Sekme Tamamlaması"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:203
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
 msgid "Completion suffix:"
 msgstr "Tamamlama soneki:"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgid ": "
 msgstr ": "
 
@@ -3270,26 +3638,34 @@ msgstr "Kaydet && Bağlan"
 msgid "Users"
 msgstr "Kullanıcılar"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcListModel
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context MainWin
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkModel
-#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:622
-#: ../src/client/networkmodel.cpp:847
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcListModel
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkModel
+#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:781
+#: ../src/client/networkmodel.cpp:852
 msgid "Topic"
 msgstr "Konu"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:553
+#: ../src/core/ircserverhandler.cpp:212
+msgid "%1 invited you to channel %2"
+msgstr "%1 sizi %2 odasına davet etti"
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:584
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1, %2 kanalının başlığını şu şekilde değiştirdi: \"%3\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:603
+#: ../src/core/ircserverhandler.cpp:634
 msgid "Received RPL_ISUPPORT (005) without parameters!"
 msgstr "Parametresiz RPL_ISUPPORT (005) alındı!"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:611
+#: ../src/core/ircserverhandler.cpp:642
 msgid ""
 "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
@@ -3297,8 +3673,10 @@ msgstr ""
 "RFC uyumlu olmayan RPL_ISUPPORT alındı: bu beklenmeyen bir davranışa yol "
 "açabilir!"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcServerHandler
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. Plain Message
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context IrcServerHandler
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. Plain Message
 #. ----------
 #. Notice Message
 #. ----------
@@ -3309,156 +3687,163 @@ msgstr ""
 #. Error Message
 #. ----------
 #. Topic Message
+#. ----------
+#. Invite Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/core/ircserverhandler.cpp:628 ../src/core/ircserverhandler.cpp:635
-#: ../src/core/ircserverhandler.cpp:642 ../src/core/ircserverhandler.cpp:649
-#: ../src/uisupport/uistyle.cpp:574 ../src/uisupport/uistyle.cpp:577
-#: ../src/uisupport/uistyle.cpp:617 ../src/uisupport/uistyle.cpp:620
-#: ../src/uisupport/uistyle.cpp:623 ../src/uisupport/uistyle.cpp:630
-#: ../src/uisupport/uistyle.cpp:731
+#: ../src/core/ircserverhandler.cpp:662 ../src/core/ircserverhandler.cpp:669
+#: ../src/core/ircserverhandler.cpp:676 ../src/core/ircserverhandler.cpp:683
+#: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
+#: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
+#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
 msgid "%1"
 msgstr "%1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:684
+#: ../src/core/ircserverhandler.cpp:718
 msgid "[Whois] %1 is away: \"%2\""
 msgstr "[Whois] %1 dışarıda: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:690 ../src/core/ircserverhandler.cpp:695
+#: ../src/core/ircserverhandler.cpp:724 ../src/core/ircserverhandler.cpp:729
 msgid "%1 is away: \"%2\""
 msgstr "%1 is away: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:739 ../src/core/ircserverhandler.cpp:753
-#: ../src/core/ircserverhandler.cpp:787 ../src/core/ircserverhandler.cpp:803
-#: ../src/core/ircserverhandler.cpp:864 ../src/core/ircserverhandler.cpp:896
+#: ../src/core/ircserverhandler.cpp:773 ../src/core/ircserverhandler.cpp:787
+#: ../src/core/ircserverhandler.cpp:822 ../src/core/ircserverhandler.cpp:838
+#: ../src/core/ircserverhandler.cpp:906 ../src/core/ircserverhandler.cpp:938
 msgid "[Whois] %1"
 msgstr "[Whois] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:768 ../src/core/ircserverhandler.cpp:770
+#: ../src/core/ircserverhandler.cpp:802 ../src/core/ircserverhandler.cpp:805
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 is %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:785
+#: ../src/core/ircserverhandler.cpp:820
 msgid "%1 is online via %2 (%3)"
 msgstr "%1, %2 (%3) aracılığıyla çevrimiçi"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:789 ../src/core/ircserverhandler.cpp:1067
+#: ../src/core/ircserverhandler.cpp:824 ../src/core/ircserverhandler.cpp:1131
 msgid "[Whowas] %1"
 msgstr "[Whowas] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:815
+#: ../src/core/ircserverhandler.cpp:850
 msgid "[Whowas] %1 was %2 (%3)"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:829
+#: ../src/core/ircserverhandler.cpp:864
 msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] %1 için /WHO listesinin sonu"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:849
+#: ../src/core/ircserverhandler.cpp:886 ../src/core/ircserverhandler.cpp:894
 msgid "[Whois] %1 is logged in since %2"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:851
+#: ../src/core/ircserverhandler.cpp:888 ../src/core/ircserverhandler.cpp:896
 msgid "[Whois] %1 is idling for %2 (%3)"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:854
-msgid "[Whois] idle message: %1"
-msgstr "[Whois] boşta mesajı: %1"
-
-#. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:886
+#: ../src/core/ircserverhandler.cpp:928
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:888
+#: ../src/core/ircserverhandler.cpp:930
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:890
+#: ../src/core/ircserverhandler.cpp:932
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:918
+#: ../src/core/ircserverhandler.cpp:960
 msgid "Channel %1 has %2 users. Topic is: %3"
 msgstr "Kanal %1'de %2 kullanıcı var. Konu: %3"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:927
+#: ../src/core/ircserverhandler.cpp:969
 msgid "End of channel list"
 msgstr "Kanal listesinin sonu"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:945
+#: ../src/core/ircserverhandler.cpp:987
 msgid "Homepage for %1 is %2"
-msgstr ""
+msgstr "%1 için anasayfa %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:963
+#: ../src/core/ircserverhandler.cpp:1005
 msgid "Channel %1 created on %2"
-msgstr ""
+msgstr "%1 kanalı %2 üzerinde oluşturuldu."
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:977
+#: ../src/core/ircserverhandler.cpp:1019
 msgid "No topic is set for %1."
 msgstr "%1 için konu ayarlanmamış."
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:992
+#: ../src/core/ircserverhandler.cpp:1039
 msgid "Topic for %1 is \"%2\""
 msgstr "%1 kanalının konusu \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1003
+#: ../src/core/ircserverhandler.cpp:1050
 msgid "Topic set by %1 on %2"
 msgstr ""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1026
+#: ../src/core/ircserverhandler.cpp:1067
+msgid "%1 has been invited to %2"
+msgstr ""
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:1090
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1085
+#: ../src/core/ircserverhandler.cpp:1149
 msgid "Nick %1 contains illegal characters"
 msgstr "%1 takma adı geçersiz karakterler içeriyor"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1096
+#: ../src/core/ircserverhandler.cpp:1160
 msgid "Nick already in use: %1"
 msgstr "%1 takma adı zaten kullanımda"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1113
+#: ../src/core/ircserverhandler.cpp:1177
 msgid "Nick/channel is temporarily unavailable: %1"
-msgstr ""
+msgstr "Takma ad/kanal geçici olarak ulaşılamaz: %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1206
+#: ../src/core/ircserverhandler.cpp:1270
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr ""
 "Takma ad listesinde geçerli ve kullanılmayan takma ad bulunamadı. /nick "
 "<farklıtakmaad> ile farklı bir takma ad kullanın"
 
+#. ts-context IrcUserItem
+#: ../src/client/networkmodel.cpp:806
+msgid " is away"
+msgstr ""
+
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:816 ../src/client/networkmodel.cpp:442
+#: ../src/client/networkmodel.cpp:821 ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
 msgstr ""
 
@@ -3466,13 +3851,7 @@ msgstr ""
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:819 ../src/client/networkmodel.cpp:445
-msgid "login time: %1"
-msgstr ""
-
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context IrcUserItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:822 ../src/client/networkmodel.cpp:448
+#: ../src/client/networkmodel.cpp:827 ../src/client/networkmodel.cpp:453
 msgid "server: %1"
 msgstr "sunucu: %1"
 
@@ -3494,12 +3873,7 @@ msgstr "Araç ipucunda konuyu göster"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:85
 msgid "Mouse wheel changes selected chat"
-msgstr ""
-
-#. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:101
-msgid "Use Custom Colors"
-msgstr ""
+msgstr "Fare tekeri seçilmiş sohbeti değiştirir"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:118
@@ -3522,11 +3896,6 @@ msgid "Highlight:"
 msgstr "Vurgula:"
 
 #. ts-context ItemViewSettingsPage
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:214
-msgid "Other activity:"
-msgstr "Diğer etkinlik:"
-
-#. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:272
 msgid "1"
 msgstr "1"
@@ -3534,7 +3903,7 @@ msgstr "1"
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgid "Custom Nick List Colors"
-msgstr ""
+msgstr "Özel Takma Ad Listesi Renkleri"
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:301
@@ -3576,260 +3945,473 @@ msgstr "Diğer etkinlik"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SystrayNotificationBackend
 #: ../src/qtui/knotificationbackend.cpp:115
-#: ../src/qtui/systraynotificationbackend.cpp:124
+#: ../src/qtui/systraynotificationbackend.cpp:125
 msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context KeySequenceButton
+#: ../src/qtui/settingspages/keysequencewidget.cpp:77
+msgid "The key you just pressed is not supported by Qt."
+msgstr ""
+
+#. ts-context KeySequenceButton
+#: ../src/qtui/settingspages/keysequencewidget.cpp:78
+msgid "Unsupported Key"
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:169
+msgid ""
+"Click on the button, then enter the shortcut like you would in the program.\n"
+"Example for Ctrl+a: hold the Ctrl key and press a."
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:259
+msgctxt "Meta key"
+msgid "Meta"
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:260
+msgctxt "Ctrl key"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:261
+msgctxt "Alt key"
+msgid "Alt"
+msgstr "Alt"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:262
+msgctxt "Shift key"
+msgid "Shift"
+msgstr "Shift"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:265
+msgctxt "What the user inputs now will be taken as the new shortcut"
+msgid "Input"
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:272
+msgctxt "No shortcut defined"
+msgid "None"
+msgstr "Hiçbiri"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:355
+#: ../src/qtui/settingspages/keysequencewidget.cpp:361
+msgid "Shortcut Conflict"
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:356
+msgid ""
+"The \"%1\" shortcut is already in use, and cannot be configured.\n"
+"Please choose another one."
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:362
+msgid ""
+"The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:364
+msgid "Do you want to reassign this shortcut to the selected action?"
+msgstr ""
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:367
+msgid "Reassign"
+msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:308
+#: ../src/qtui/mainwin.cpp:314
 msgid "&Connect to Core..."
 msgstr "&Çekirdeğe Bağlan..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:310
+#: ../src/qtui/mainwin.cpp:316
 msgid "&Disconnect from Core"
 msgstr "&Çekirdekle Bağlantıyı Kes"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:312
+#: ../src/qtui/mainwin.cpp:318
 msgid "Core &Info..."
 msgstr "Çekirdek &Bilgisi..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:314
+#: ../src/qtui/mainwin.cpp:320
 msgid "Configure &Networks..."
 msgstr "A&ğları Yapılandır..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:317
+#: ../src/qtui/mainwin.cpp:323
 msgid "&Quit"
 msgstr "&Çık"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:321
+#: ../src/qtui/mainwin.cpp:327
 msgid "&Configure Chat Lists..."
-msgstr ""
+msgstr "Sohbet Listelerini &Yapılandır..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:324
-msgid "&Lock Layout"
-msgstr "Arayüzü &Kilitle"
-
-#. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:328
+#: ../src/qtui/mainwin.cpp:334
 msgid "Show &Search Bar"
 msgstr "&Arama Çubuğunu Göster"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:330
+#: ../src/qtui/mainwin.cpp:336
 msgid "Show Away Log"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:332
+#: ../src/qtui/mainwin.cpp:338
 msgid "Show &Menubar"
 msgstr "&Menü Çubuğunu Göster"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:335
+#: ../src/qtui/mainwin.cpp:341
 msgid "Show Status &Bar"
 msgstr "&Durum Çubuğunu Göster"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:339
+#: ../src/qtui/mainwin.cpp:343 ../src/qtui/mainwin.cpp:1185
+msgid "&Fullscreen mode"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:347
+msgid "Configure &Shortcuts..."
+msgstr "&Kısayolları Yapılandır..."
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:349
 msgid "&Configure Quassel..."
 msgstr "Quasseli &Yapılandır..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:343
+#: ../src/qtui/mainwin.cpp:353
 msgid "&About Quassel"
 msgstr "Quassel &Hakkında"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:345
+#: ../src/qtui/mainwin.cpp:355
 msgid "About &Qt"
 msgstr "&Qt Hakkında"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:347
+#: ../src/qtui/mainwin.cpp:357
 msgid "Debug &NetworkModel"
 msgstr "&NetworkModel Hata Ayıkla"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:349
+#: ../src/qtui/mainwin.cpp:359
 msgid "Debug &BufferViewOverlay"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:351
+#: ../src/qtui/mainwin.cpp:361
 msgid "Debug &MessageModel"
 msgstr "&MessageModel Hata Ayıkla"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:353
+#: ../src/qtui/mainwin.cpp:363
 msgid "Debug &HotList"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:365
 msgid "Debug &Log"
 msgstr "&Log Hata Ayıkla"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:367
 msgid "Reload Stylesheet"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:371
+msgid "Navigation"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:373
 msgid "Jump to hot chat"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:385
+msgid "Set Quick Access #0"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:387
+msgid "Set Quick Access #1"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:389
+msgid "Set Quick Access #2"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:391
+msgid "Set Quick Access #3"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:393
+msgid "Set Quick Access #4"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:395
+msgid "Set Quick Access #5"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:397
+msgid "Set Quick Access #6"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:399
+msgid "Set Quick Access #7"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:401
+msgid "Set Quick Access #8"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:403
+msgid "Set Quick Access #9"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:406
+msgid "Quick Access #0"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:408
+msgid "Quick Access #1"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:410
+msgid "Quick Access #2"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:412
+msgid "Quick Access #3"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:414
+msgid "Quick Access #4"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:416
+msgid "Quick Access #5"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:418
+msgid "Quick Access #6"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:420
+msgid "Quick Access #7"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:422
+msgid "Quick Access #8"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:424
+msgid "Quick Access #9"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:428
+msgid "Activate Next Chat List"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:430
+msgid "Activate Previous Chat List"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:432
+msgid "Go to Next Chat"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:434
+msgid "Go to Previous Chat"
+msgstr ""
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:441
 msgid "&File"
 msgstr "&Dosya"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:454
 msgid "&Networks"
 msgstr "&Ağ"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:387
+#: ../src/qtui/mainwin.cpp:460
 msgid "&View"
 msgstr "&Görünüm"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:388
+#: ../src/qtui/mainwin.cpp:461
 msgid "&Chat Lists"
 msgstr "&Sohbet Listeleri"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:463
 msgid "&Toolbars"
 msgstr "&Araç Çubukları"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:404
+#: ../src/qtui/mainwin.cpp:477
 msgid "&Settings"
 msgstr "&Ayarlar"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:411
+#: ../src/qtui/mainwin.cpp:486
 msgid "&Help"
 msgstr "&Yardım"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:419
+#: ../src/qtui/mainwin.cpp:494
 msgid "Debug"
 msgstr "Hata Ayıkla"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:564
+#: ../src/qtui/mainwin.cpp:723
 msgid "Nicks"
 msgstr "Takma Adlar"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:573
+#: ../src/qtui/mainwin.cpp:732
 msgid "Show Nick List"
 msgstr "Takma Ad Listesini Göster"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:596
+#: ../src/qtui/mainwin.cpp:755
 msgid "Show Chat Monitor"
 msgstr "Sohbet Ekranını Göster"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:600
+#: ../src/qtui/mainwin.cpp:759
 msgid "Inputline"
 msgstr "Girdi Satırı"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:609
+#: ../src/qtui/mainwin.cpp:768
 msgid "Show Input Line"
 msgstr "Girdi Satırını Göster"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:634
+#: ../src/qtui/mainwin.cpp:793
 msgid "Show Topic Line"
 msgstr "Konu Satırını Göster"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:707
+#: ../src/qtui/mainwin.cpp:871
 msgid "Main Toolbar"
 msgstr "Ana Araç Çubuğu"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:746
+#: ../src/qtui/mainwin.cpp:910
 msgid "Connected to core."
 msgstr "Çekirdeğe bağlandı."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:821
+#: ../src/qtui/mainwin.cpp:1001
 msgid "Not connected to core."
 msgstr "Çekirdeğe bağlı değil."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:835 ../src/qtui/mainwin.cpp:843
+#: ../src/qtui/mainwin.cpp:1015 ../src/qtui/mainwin.cpp:1023
 msgid "Unencrypted Connection"
 msgstr "Şifrelenmemiş Bağlantı"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:835
+#: ../src/qtui/mainwin.cpp:1015
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>İstemciniz SSL şifrelemeyi desteklemiyor</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:837 ../src/qtui/mainwin.cpp:845
+#: ../src/qtui/mainwin.cpp:1017 ../src/qtui/mainwin.cpp:1025
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:843
+#: ../src/qtui/mainwin.cpp:1023
 msgid "<b>Your core does not support SSL encryption</b>"
-msgstr ""
+msgstr "<b>Çekirdeğiniz SSL şifrelemeyi desteklemiyor</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:860 ../src/qtui/mainwin.cpp:880
+#: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1060
 msgid "Untrusted Security Certificate"
-msgstr ""
+msgstr "Güvenilmeyen Güvenlik Sertifikası"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:861
+#: ../src/qtui/mainwin.cpp:1041
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:865
-msgid "Show Certificate"
-msgstr "Sertifika Göster"
-
-#. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:881
+#: ../src/qtui/mainwin.cpp:1061
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr ""
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:883
+#: ../src/qtui/mainwin.cpp:1063
 msgid "Current Session Only"
 msgstr "Sadece Geçerli Oturum"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:884
+#: ../src/qtui/mainwin.cpp:1064
 msgid "Forever"
 msgstr "Daima"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:893
+#: ../src/qtui/mainwin.cpp:1073
 msgid "Core Connection Error"
 msgstr "Çekirdek Bağlantı Hatası"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:1190
+msgid "&Normal mode"
+msgstr ""
 
 #. ts-context MessageModel
 #: ../src/client/messagemodel.cpp:375
@@ -3842,18 +4424,20 @@ msgid "Receiving Backlog"
 msgstr ""
 
 #. ts-context MultiLineEdit
-#: ../src/uisupport/multilineedit.cpp:547
+#: ../src/uisupport/multilineedit.cpp:661
 msgid "Do you really want to paste %n lines?"
 msgid_plural "Do you really want to paste %n lines?"
-msgstr[0] ""
+msgstr[0] "Gerçekten %n satırlarını yapıştırmak istiyor musunuz?"
 
 #. ts-context MultiLineEdit
-#: ../src/uisupport/multilineedit.cpp:556
+#: ../src/uisupport/multilineedit.cpp:670
 msgid "Paste Protection"
 msgstr "Yapıştırma Koruması"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkEditDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:14
 #: ../src/qtui/settingspages/networkssettingspage.cpp:705
 msgid "Add Network"
@@ -3874,15 +4458,19 @@ msgstr "Ağ ayarlarını elle belirt"
 msgid "Manual Settings"
 msgstr "Manuel Ayarlar"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkadddlg.ui:75
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgid "Network name:"
 msgstr "Ağ adı:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkAddDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context ServerEditDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkAddDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:85
 #: ../src/qtui/settingspages/servereditdlg.ui:38
 msgid "Server address:"
@@ -3904,29 +4492,33 @@ msgid "Please enter a network name:"
 msgstr "Lütfen bir ağ adı girin:"
 
 #. ts-context NetworkItem
-#: ../src/client/networkmodel.cpp:195
+#: ../src/client/networkmodel.cpp:196
 msgid "Server: %1"
 msgstr "Sunucu: %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:196 ../src/qtui/topicwidget.cpp:106
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
+#: ../src/client/networkmodel.cpp:197 ../src/qtui/topicwidget.cpp:106
 msgid "Users: %1"
 msgstr "Kullanıcılar: %1"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworkItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:199 ../src/qtui/topicwidget.cpp:107
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
+#: ../src/client/networkmodel.cpp:200 ../src/qtui/topicwidget.cpp:107
 msgid "Lag: %1 msecs"
 msgstr "Gecikme: %1 ms"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Chat"
 msgstr "Sohbet"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Nick Count"
 msgstr "Takma Ad Sayısı"
 
@@ -3935,6 +4527,7 @@ msgstr "Takma Ad Sayısı"
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
 msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:167
@@ -3954,7 +4547,8 @@ msgstr ""
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "<br>Etkin kanal arabellekleri silinemez, lütfen önce kanaldan ayrılın."
+msgstr ""
+"<br>Etkin kanal arabellekleri silinemez, lütfen önce kanaldan ayrılın."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
@@ -3986,8 +4580,10 @@ msgstr "Ağ Detayları"
 msgid "Identity:"
 msgstr "Kimlik:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkssettingspage.ui:190
 #: ../src/qtui/ui/simplenetworkeditor.ui:63
 msgid "Servers"
@@ -3998,8 +4594,10 @@ msgstr "Sunucular"
 msgid "Manage servers for this network"
 msgstr "Bu ağ için sunucuları düzenle"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context NetworksSettingsPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SimpleNetworkEditor
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworksSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SimpleNetworkEditor
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgid "&Edit..."
@@ -4036,7 +4634,7 @@ msgstr ""
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
 msgid "Automatically reconnect to the IRC network after connection failures"
-msgstr ""
+msgstr "Bağlantı başarısız olursa IRC ağına otomatik olarak yeniden bağlan"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:386
@@ -4066,7 +4664,7 @@ msgstr "Deneme sayısı:"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:489
 msgid "Rejoin all channels after reconnect"
-msgstr ""
+msgstr "Yeniden bağlanma sonrası tüm kanallara tekrar katıl"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:516
@@ -4083,11 +4681,6 @@ msgstr "NickServ"
 #: ../src/qtui/settingspages/networkssettingspage.ui:557
 msgid "Service:"
 msgstr "Servis:"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:580
-msgid "Use SASL Authentication"
-msgstr "SASL Kimlik Doğrulaması Kullan"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
@@ -4186,7 +4779,8 @@ msgstr "Ağı Sil?"
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
-msgstr "\"%1\" ağını ve ilgili tüm ayarları gerçekten silmek istiyor musunuz?"
+msgstr ""
+"\"%1\" ağını ve ilgili tüm ayarları gerçekten silmek istiyor musunuz?"
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
@@ -4218,20 +4812,9 @@ msgid "Select Audio File"
 msgstr "Ses Dosyası Seçin"
 
 #. ts-context PhononNotificationConfigWidget
-#: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
-msgid "Play a sound"
-msgstr "Ses çal"
-
-#. ts-context PhononNotificationConfigWidget
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:46
 msgid "Prelisten to the selected sound"
 msgstr ""
-
-#. ts-context PhononNotificationConfigWidget
-#: ../src/qtui/ui/phononnotificationconfigwidget.ui:59
-#: ../src/qtui/ui/phononnotificationconfigwidget.ui:69
-msgid "Select the sound file to play"
-msgstr "Oynatılacak ses dosyası seç"
 
 #. ts-context PostgreSqlStorage
 #: ../src/core/postgresqlstorage.cpp:62
@@ -4245,18 +4828,14 @@ msgstr ""
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:106
-msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
+msgid ""
+"Requesting up to %1 of all unread backlog messages (plus additional %2)"
 msgstr ""
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:123
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
 msgstr ""
-
-#. ts-context QObject
-#: ../src/qtui/ircconnectionwizard.cpp:56
-msgid "Welcome to Quassel IRC"
-msgstr "Quassel IRC Programına Hoş Geldiniz"
 
 #. ts-context QObject
 #: ../src/qtui/ircconnectionwizard.cpp:58
@@ -4268,7 +4847,7 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
-#: ../src/uisupport/qssparser.cpp:314
+#: ../src/uisupport/qssparser.cpp:316
 msgid "Invalid block declaration: %1"
 msgstr ""
 
@@ -4288,144 +4867,144 @@ msgid "Invalid subelement name in %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:234
+#: ../src/uisupport/qssparser.cpp:236
 msgid "Invalid message type in %1"
-msgstr ""
+msgstr "%1'de geçersiz ileti türü"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:243
+#: ../src/uisupport/qssparser.cpp:245
 msgid "Invalid condition %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:255
+#: ../src/uisupport/qssparser.cpp:257
 msgid "Invalid message label: %1"
-msgstr ""
+msgstr "Geçersiz ileti etiketi: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:266
+#: ../src/uisupport/qssparser.cpp:268
 msgid "Invalid senderhash specification: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:270
+#: ../src/uisupport/qssparser.cpp:272
 msgid "Senderhash can be at most \"0x0f\"!"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:285
+#: ../src/uisupport/qssparser.cpp:287
 msgid "Invalid format name: %1"
-msgstr ""
+msgstr "Geçersiz biçim adı: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:292
+#: ../src/uisupport/qssparser.cpp:294
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:300
+#: ../src/uisupport/qssparser.cpp:302
 msgid "Unhandled condition: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:329
+#: ../src/uisupport/qssparser.cpp:331
 msgid "Invalid proplist %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:348
+#: ../src/uisupport/qssparser.cpp:350
 msgid "Invalid chatlist item type %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:364
+#: ../src/uisupport/qssparser.cpp:366
 msgid "Invalid chatlist state %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:390
+#: ../src/uisupport/qssparser.cpp:392
 msgid "Invalid property declaration: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:414
+#: ../src/uisupport/qssparser.cpp:416
 msgid "Invalid font property: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:420
+#: ../src/uisupport/qssparser.cpp:422
 msgid "Unknown ChatLine property: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:442
+#: ../src/uisupport/qssparser.cpp:444
 msgid "Invalid palette color role specification: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:449
+#: ../src/uisupport/qssparser.cpp:451
 msgid "Unknown palette color role: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:456 ../src/uisupport/qssparser.cpp:478
-#: ../src/uisupport/qssparser.cpp:499
+#: ../src/uisupport/qssparser.cpp:458 ../src/uisupport/qssparser.cpp:481
+#: ../src/uisupport/qssparser.cpp:503
 msgid "Invalid gradient declaration: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:465 ../src/uisupport/qssparser.cpp:486
-#: ../src/uisupport/qssparser.cpp:509
+#: ../src/uisupport/qssparser.cpp:467 ../src/uisupport/qssparser.cpp:489
+#: ../src/uisupport/qssparser.cpp:513
 msgid "Invalid gradient stops list: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:605
+#: ../src/uisupport/qssparser.cpp:610
 msgid "Invalid font specification: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:644
+#: ../src/uisupport/qssparser.cpp:649
 msgid "Invalid font style specification: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:657
+#: ../src/uisupport/qssparser.cpp:662
 msgid "Invalid font weight specification: %1"
 msgstr ""
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:667
+#: ../src/uisupport/qssparser.cpp:672
 msgid "Invalid font size specification: %1"
 msgstr ""
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:129
+#: ../src/common/util.cpp:145
 msgid "year"
 msgstr "yıl"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:130
+#: ../src/common/util.cpp:146
 msgid "day"
 msgstr "gün"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:131
+#: ../src/common/util.cpp:147
 msgid "h"
 msgstr "s"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:132
+#: ../src/common/util.cpp:148
 msgid "min"
 msgstr "dk"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:133
+#: ../src/common/util.cpp:149
 msgid "sec"
 msgstr "sn"
 
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:424
+#: ../src/client/networkmodel.cpp:429
 msgid "<b>Query with %1</b>"
 msgstr "<b>%1 ile konuş</b>"
 
@@ -4496,14 +5075,18 @@ msgstr "Vekil Sunucu Kullanıcı adı:"
 msgid "Proxy Password:"
 msgstr "Vekil Sunucu Parolası:"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/ui/settingsdlg.ui:14 ../src/qtui/ui/settingspagedlg.ui:14
 msgid "Configure Quassel"
 msgstr "Quassel'i Yapılandır"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
 #: ../src/qtui/settingsdlg.cpp:99 ../src/qtui/ui/settingspagedlg.ui:30
 msgid "Settings"
@@ -4523,15 +5106,19 @@ msgstr ""
 "Mevcut yapılandırma sayfasında kaydedilmemiş değişiklikler var. Bu "
 "değişiklikleri uygulamak ister misiniz?"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #: ../src/qtui/settingspagedlg.cpp:36
 msgid "Configure %1"
 msgstr "%1 Yapılandır"
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Reload Settings"
 msgstr "Ayarları Yeniden Yükle"
@@ -4541,11 +5128,14 @@ msgstr "Ayarları Yeniden Yükle"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
-msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgid ""
+"Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#. ts-context SettingsPageDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Restore Defaults"
 msgstr "Öntanımlıları Yeniden Yükle"
@@ -4557,6 +5147,41 @@ msgstr "Öntanımlıları Yeniden Yükle"
 #: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
 msgid "Do you like to restore the default values for this page?"
 msgstr ""
+
+#. ts-context ShortcutsModel
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:110
+msgid "Action"
+msgstr "Eylem"
+
+#. ts-context ShortcutsModel
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:112
+msgid "Shortcut"
+msgstr "Kısayol"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:22
+msgid "Search:"
+msgstr "Arama:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:62
+msgid "Shortcut for Selected Action"
+msgstr "Seçilen Eylem İçin Kısayol"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:68
+msgid "Default:"
+msgstr "Öntanımlı:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:82
+msgid "Custom:"
+msgstr "Özel:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
+msgid "Shortcuts"
+msgstr "Kısayollar"
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:880
@@ -4586,32 +5211,27 @@ msgstr "Bağlantı kesiliyor"
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:35
 msgid "The name of the IRC network you are configuring"
-msgstr ""
+msgstr "Yapılandırdığınız IRC ağının adı"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:81
 msgid "A list of IRC servers belonging to this network"
-msgstr ""
+msgstr "Bu ağa ait IRC sunucularının bir listesi"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:96
 msgid "Edit this server entry"
-msgstr ""
+msgstr "Bu sunucu girdisini düzenle"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:116
 msgid "Add another IRC server"
-msgstr ""
+msgstr "Başka bir IRC sunucusu ekle"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:136
 msgid "Remove this server entry from the list"
-msgstr ""
-
-#. ts-context SimpleNetworkEditor
-#: ../src/qtui/ui/simplenetworkeditor.ui:226
-msgid "Join Channels Automatically"
-msgstr ""
+msgstr "Bu sunucu girdisini listeden kaldır"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:250
@@ -4619,9 +5239,11 @@ msgid ""
 "A list of IRC channels you will join automatically after connecting to the "
 "network"
 msgstr ""
+"Ağa bağlandıktan sonra otomatik olarak katılacağınız IRC kanallarının bir "
+"listesi"
 
 #. ts-context SqliteStorage
-#: ../src/core/sqlitestorage.cpp:49
+#: ../src/core/sqlitestorage.cpp:52
 msgid ""
 "SQLite is a file-based database engine that does not require any setup. It "
 "is suitable for small and medium-sized databases that do not require access "
@@ -4633,22 +5255,22 @@ msgstr ""
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:14
 msgid "Security Information"
-msgstr ""
+msgstr "Güvenlik Bilgisi"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:22
 msgid "<b>Hostname:</b>"
-msgstr ""
+msgstr "<b>Sunucu Adı:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:39
 msgid "<b>IP address:</b>"
-msgstr ""
+msgstr "<b>IP adresi:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:56
 msgid "<b>Encryption:</b>"
-msgstr ""
+msgstr "<b>Şifreleme:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:73
@@ -4658,7 +5280,7 @@ msgstr "<b>Protokol:</b>"
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:90
 msgid "<b>Certificate chain:</b>"
-msgstr ""
+msgstr "<b>Sertifika zinciri:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:120
@@ -4683,17 +5305,17 @@ msgstr ""
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:177 ../src/qtui/ui/sslinfodlg.ui:299
 msgid "<b>Country:</b>"
-msgstr ""
+msgstr "<b>Ülke:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:194 ../src/qtui/ui/sslinfodlg.ui:316
 msgid "<b>State or province:</b>"
-msgstr ""
+msgstr "<b>Eyalet veya il:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:231 ../src/qtui/ui/sslinfodlg.ui:353
 msgid "<b>Locality:</b>"
-msgstr ""
+msgstr "<b>Semt:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:242
@@ -4703,22 +5325,22 @@ msgstr "Yayıncı"
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:367
 msgid "<b>Validity period:</b>"
-msgstr ""
+msgstr "<b>Geçerlilik süresi:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:384
 msgid "<b>MD5 digest:</b>"
-msgstr ""
+msgstr "<b>MD5 özeti:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:401
 msgid "<b>SHA1 digest:</b>"
-msgstr ""
+msgstr "<b>SHA1 özeti:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:431
 msgid "<b>Trusted:</b>"
-msgstr ""
+msgstr "<b>Güvenilir:</b>"
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/sslinfodlg.cpp:69
@@ -4728,12 +5350,7 @@ msgstr "Evet"
 #. ts-context SslInfoDlg
 #: ../src/qtui/sslinfodlg.cpp:71
 msgid "No, for the following reasons:<ul>"
-msgstr ""
-
-#. ts-context SslInfoDlg
-#: ../src/qtui/sslinfodlg.cpp:78
-msgid "%1 to %2"
-msgstr ""
+msgstr "Aşağıdaki sebeplerden dolayı, hayır:<ul>"
 
 #. ts-context StatusBufferItem
 #: ../src/client/networkmodel.h:144
@@ -4743,17 +5360,17 @@ msgstr "Durum Arabelleği"
 #. ts-context SystemTray
 #: ../src/qtui/systemtray.cpp:61 ../src/qtui/systemtray.cpp:92
 msgid "&Minimize"
-msgstr ""
+msgstr "&Küçült"
 
 #. ts-context SystemTray
 #: ../src/qtui/systemtray.cpp:94
 msgid "&Restore"
-msgstr ""
+msgstr "&Geri Yükle"
 
 #. ts-context SystrayNotificationBackend::ConfigWidget
-#: ../src/qtui/systraynotificationbackend.cpp:134
+#: ../src/qtui/systraynotificationbackend.cpp:135
 msgid "Show a message in a popup"
-msgstr ""
+msgstr "Mesajı açılır pencerede göster"
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:68
@@ -4766,24 +5383,19 @@ msgid "Mark taskbar entry, timeout:"
 msgstr "Görev çubuğu girdisini işaretle, zaman aşımı:"
 
 #. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:31
-msgid "Connect to IRC"
-msgstr ""
-
-#. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgid "Disconnect from IRC"
-msgstr ""
+msgstr "IRC bağlantısını kes"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgid "Leave currently selected channel"
-msgstr ""
+msgstr "Seçili kanaldan çık"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgid "Join a channel"
-msgstr ""
+msgstr "Bir kanala katıl"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
@@ -4793,12 +5405,12 @@ msgstr "Sorgula"
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgid "Start a private conversation"
-msgstr ""
+msgstr "Özel bir konuşma başlat"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgid "Request user information"
-msgstr ""
+msgstr "Kullanıcı bilgisi iste"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:40
@@ -4822,13 +5434,8 @@ msgstr ""
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:42
-msgid "Voice"
-msgstr ""
-
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:42
 msgid "Give voice to user"
-msgstr ""
+msgstr "Kullanıcıya ses ver"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:43
@@ -4848,17 +5455,12 @@ msgstr "Tekmele"
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:44
 msgid "Remove user from channel"
-msgstr ""
+msgstr "Kullanıcıyı kanaldan çıkar"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:45
 msgid "Ban"
-msgstr ""
-
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:45
-msgid "Ban user from channel"
-msgstr ""
+msgstr "Yasakla"
 
 #. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:46
@@ -4871,14 +5473,9 @@ msgid "Remove and ban user from channel"
 msgstr "Kullanıcıyı kanaldan çıkar ve yasakla"
 
 #. ts-context ToolBarActionProvider
-#: ../src/uisupport/toolbaractionprovider.cpp:51
-msgid "Connect to all"
-msgstr ""
-
-#. ts-context ToolBarActionProvider
 #: ../src/uisupport/toolbaractionprovider.cpp:58
 msgid "Disconnect from all"
-msgstr ""
+msgstr "Tüm bağlantıları kes"
 
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
@@ -4897,1098 +5494,193 @@ msgstr ""
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:583
 msgid "%DN%1%DN %2"
-msgstr ""
+msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:584
+#: ../src/uisupport/uistyle.cpp:587
 msgid "You are now known as %DN%1%DN"
-msgstr ""
+msgstr "%DN%1%DN olarak biliniyorsunuz"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:585
+#: ../src/uisupport/uistyle.cpp:588
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr ""
 
 #. Mode Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:589
+#: ../src/uisupport/uistyle.cpp:592
 msgid "User mode: %DM%1%DM"
 msgstr "Kullanıcı modu: %DM%1%DM"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:590
+#: ../src/uisupport/uistyle.cpp:593
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr ""
 
 #. Join Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:594
+#: ../src/uisupport/uistyle.cpp:597
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr ""
 
 #. Part Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:597
+#: ../src/uisupport/uistyle.cpp:600
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH %DC%4%DC kanalını terketti"
 
 #. Quit Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:602
+#: ../src/uisupport/uistyle.cpp:605
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH çıktı"
 
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:609
+#: ../src/uisupport/uistyle.cpp:612
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN, %DN%2%DN kullanıcısını %DC%3%DC kanalından attı"
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:626
+#: ../src/uisupport/uistyle.cpp:629
 msgid "{Day changed to %1}"
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:638
+#: ../src/uisupport/uistyle.cpp:641
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:642 ../src/uisupport/uistyle.cpp:657
+#: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
 msgid "%DN%1%DN (%2 more)"
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:652
+#: ../src/uisupport/uistyle.cpp:655
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr ""
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:661 ../src/uisupport/uistyle.cpp:699
+#: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
 msgid "[%1]"
 msgstr "[%1]"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:697
+#: ../src/uisupport/uistyle.cpp:703
 msgid "<%1>"
 msgstr "<%1>"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:701
+#: ../src/uisupport/uistyle.cpp:707
 msgid "-*-"
 msgstr "-*-"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:703
+#: ../src/uisupport/uistyle.cpp:709
 msgid "<->"
 msgstr "<->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:705
+#: ../src/uisupport/uistyle.cpp:711
 msgid "***"
 msgstr "***"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:707
+#: ../src/uisupport/uistyle.cpp:713
 msgid "-->"
 msgstr "-->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:709 ../src/uisupport/uistyle.cpp:711
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
 msgid "<--"
 msgstr "<--"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:713
+#: ../src/uisupport/uistyle.cpp:719
 msgid "<-*"
 msgstr "<-*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:715
+#: ../src/uisupport/uistyle.cpp:721
 msgid "<-x"
-msgstr ""
+msgstr "<-x"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:717 ../src/uisupport/uistyle.cpp:719
-#: ../src/uisupport/uistyle.cpp:721 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
 msgid "*"
 msgstr "*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:723
-msgid "-"
-msgstr ""
-
-#. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:727
-msgid "=>"
-msgstr ""
-
-#. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:729
+msgid "-"
+msgstr "-"
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:733
+msgid "=>"
+msgstr "=>"
+
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:735
 msgid "<="
-msgstr ""
+msgstr "<="
 
-#. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:692
-msgid "%n Owner(s)"
-msgid_plural "%n Owner(s)"
-msgstr[0] ""
-
-#. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:693
-msgid "%n Admin(s)"
-msgid_plural "%n Admin(s)"
-msgstr[0] ""
-
-#. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:694
-msgid "%n Operator(s)"
-msgid_plural "%n Operator(s)"
-msgstr[0] ""
-
-#. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:695
-msgid "%n Half-Op(s)"
-msgid_plural "%n Half-Op(s)"
-msgstr[0] ""
-
-#. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:696
-msgid "%n Voiced"
-msgid_plural "%n Voiced"
-msgstr[0] ""
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:737
+msgid "->"
+msgstr "->"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:697
+msgid "%n Owner(s)"
+msgid_plural "%n Owner(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:698
+msgid "%n Admin(s)"
+msgid_plural "%n Admin(s)"
+msgstr[0] "%n Yönetici"
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:699
+msgid "%n Operator(s)"
+msgid_plural "%n Operator(s)"
+msgstr[0] "%n Operatör"
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:700
+msgid "%n Half-Op(s)"
+msgid_plural "%n Half-Op(s)"
+msgstr[0] "%n Yarı-Op"
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:701
+msgid "%n Voiced"
+msgid_plural "%n Voiced"
+msgstr[0] "%n Söz Sahibi"
+
+#. ts-context UserCategoryItem
+#: ../src/client/networkmodel.cpp:702
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] ""
+msgstr[0] "%n Kullanıcı"
 
-#~ msgctxt "AppearanceSettingsPage#4"
-#~ msgid "Form"
-#~ msgstr "Biçim"
+#~ msgid "[Whois] idle message: %1"
+#~ msgstr "[Whois] boşta mesajı: %1"
 
-#~ msgctxt "ChatMonitorView#2"
-#~ msgid "Show Network Name"
-#~ msgstr "Ağ Adını Göster"
+#~ msgid "Finger"
+#~ msgstr "Finger"
 
-#~ msgctxt "ChatViewSearchBar#1"
-#~ msgid "Form"
-#~ msgstr "Biçim"
+#~ msgid "Hide inactive buffers:"
+#~ msgstr "Etkin olmayan arabellekleri gizle:"
 
-#~ msgctxt "ConnectionSettingsPage#1"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "CoreAccountModel#1"
-#~ msgid "Internal Core"
-#~ msgstr "İç Çekirdek"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#1"
-#~ msgid "Form"
-#~ msgstr "Biçim"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#3"
-#~ msgid "Password:"
-#~ msgstr "Parola:"
-
-#~ msgctxt "CoreConfigWizardIntroPage#1"
-#~ msgid "Form"
-#~ msgstr "Biçim"
-
-#~ msgctxt "CoreConfigWizardStorageSelectionPage#1"
-#~ msgid "Form"
-#~ msgstr "Biçim"
-
-#~ msgctxt "CoreConfigWizardSyncPage#1"
-#~ msgid "Form"
-#~ msgstr "Biçim"
-
-#~ msgctxt "CoreSession#1"
-#~ msgid "Client"
-#~ msgstr "İstemci"
-
-#~ msgctxt "IdentitiesSettingsPage#1"
-#~ msgid "IRC"
-#~ msgstr "IRC"
-
-#~ msgctxt "IdentityEditWidget#17"
-#~ msgid "Remove"
-#~ msgstr "Kaldır"
-
-#~ msgctxt "IgnoreListEditDlg#9"
-#~ msgid "Message"
-#~ msgstr "İleti"
-
-#~ msgctxt "IgnoreListEditDlg#10"
-#~ msgid "CTCP"
-#~ msgstr "CTCP"
-
-#~ msgctxt "IndicatorNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Biçim"
-
-#~ msgid "Ctrl+L"
-#~ msgstr "Ctrl+L"
-
-#~ msgid "Ctrl+Q"
-#~ msgstr "Ctrl+Q"
-
-#~ msgid "Ctrl+M"
-#~ msgstr "Ctrl+M"
-
-#~ msgid "F7"
-#~ msgstr "F7"
-
-#~ msgctxt "MsgProcessorStatusWidget#1"
-#~ msgid "Form"
-#~ msgstr "Biçim"
-
-#~ msgctxt "NetworkAddDlg#7"
-#~ msgid "Port:"
-#~ msgstr "Yuva:"
-
-#~ msgctxt "NetworkEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "İletişim Kutusu"
-
-#~ msgctxt "NetworkEditDlg#3"
-#~ msgid "Add Network"
-#~ msgstr "Ağ Ekle"
-
-#~ msgctxt "ServerEditDlg#7"
-#~ msgid "Advanced"
-#~ msgstr "Gelişmiş"
-
-#~ msgctxt "ToolBarActionProvider#11"
-#~ msgid "Whois"
-#~ msgstr "Whois"
-
-#~ msgctxt "TopicWidget#2"
-#~ msgid "Lag: %1 msecs"
-#~ msgstr "Gecikme: %1 ms"
-
-#~ msgid "<Original>"
-#~ msgstr "<Özgün>"
-
-#~ msgid ""
-#~ "<b>This client is built without SSL Support!</b><br />Disable the usage "
-#~ "of SSL in the account settings."
-#~ msgstr ""
-#~ "<b>Bu istemci SSL Desteği olmadan derlenmiştir!</b><br />Hesap "
-#~ "ayarlarından SSL kullanımını devreden çıkarın."
-
-#~ msgid ""
-#~ "<b>The Quassel Core you are trying to connect to does not support SSL!</"
-#~ "b><br />If you want to connect anyways, disable the usage of SSL in the "
-#~ "account settings."
-#~ msgstr ""
-#~ "<b>Bağlanmaya çalıştığınız Quassel Çekirdeği SSL desteklemiyor!</b><br /"
-#~ ">Yine de bağlanmak istiyorsanız, hesap ayarlarından SSL kullanımını "
-#~ "devreden çıkarın."
-
-#~ msgid "Use secure connection (SSL)"
-#~ msgstr "Güvenli bağlantı kullan (SSL)"
-
-#~ msgid "Use a proxy:"
-#~ msgstr "Vekil sunucu kullan:"
-
-#~ msgid "Proxy Port:"
-#~ msgstr "Vekil Sunucu Portu"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#~ "REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#~ "css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-#~ "Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;"
-#~ "\">Note: </span><span style=\" font-size:10pt;\">Adding more users and "
-#~ "changing your username/password is not possible via Quassel's interface "
-#~ "yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-#~ "Grande'; font-size:10pt;\">If you need to do these things have a look at "
-#~ "the manageusers.py script which is located in the /scripts directory.</"
-#~ "p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#~ "REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#~ "css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-#~ "Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;"
-#~ "\">Note: </span><span style=\" font-size:10pt;\">Adding more users and "
-#~ "changing your username/password is not possible via Quassel's interface "
-#~ "yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida "
-#~ "Grande'; font-size:10pt;\">If you need to do these things have a look at "
-#~ "the manageusers.py script which is located in the /scripts directory.</"
-#~ "p></body></html>"
-
-#~ msgid "Remove Account Settings"
-#~ msgstr "Hesap Ayarlarını Kaldır"
-
-#~ msgid ""
-#~ "Do you really want to remove your local settings for this Quassel Core "
-#~ "account?<br>Note: This will <em>not</em> remove or change any data on the "
-#~ "Core itself!"
-#~ msgstr ""
-#~ "Quassel Çekirdek hesabınızdaki yerel ayarlarınızı gerçekten kaldırmak "
-#~ "istiyor musunuz?<br>Not: Bu işlem Çekirdekte herhangi bir veri değişimi "
-#~ "ya da silinmesini <em>gerçekleştirmeyecek</em>!"
-
-#~ msgid "<div style=color:red;>Connection to %1 failed!</div>"
-#~ msgstr "<div style=color:red;>%1e bağlantı başarısız!</div>"
-
-#~ msgid "Not connected to %1."
-#~ msgstr "%1e bağlı değil."
-
-#~ msgid "Unknown connection state to %1"
-#~ msgstr "%1in bağlantı durumu belli değil"
-
-#~ msgid "Login"
-#~ msgstr "Oturum aç"
-
-#~ msgid "Always use this account"
-#~ msgstr "Her zaman bu hesabı kullan"
-
-#~ msgid "Initializing your connection"
-#~ msgstr "Bağlantınız başlatılıyor"
-
-#~ msgid "Connected to apollo.mindpool.net."
-#~ msgstr "apollo.mindpool.net'e bağlanıldı."
-
-#~ msgid ""
-#~ "THIS IS A PLACEHOLDER\n"
-#~ "TO\n"
-#~ "RESERVE\n"
-#~ "SOME SPACE"
-#~ msgstr ""
-#~ "THIS IS A PLACEHOLDER\n"
-#~ "TO\n"
-#~ "RESERVE\n"
-#~ "SOME SPACE"
-
-#~ msgid "Configure your Quassel Core"
-#~ msgstr "Quassel Çekirdeğini Yapılandır"
-
-#~ msgid ""
-#~ "The Quassel Core you are connected to is not configured yet. You may now "
-#~ "launch a configuration wizard that helps you setting up your Core."
-#~ msgstr ""
-#~ "Bağlandığınız Quassel Çekirdeği henüz yapılandırılmamış. Çekirdeği "
-#~ "yapılandırmak için yapılandırma sihirbazını başlatabilirsiniz."
-
-#~ msgid "Launch Wizard"
-#~ msgstr "Sihirbazı Başlat"
-
-#~ msgid "Initializing your session..."
-#~ msgstr "Oturumunuz başlatılıyor..."
-
-#~ msgid ""
-#~ "<b>Please be patient while your client synchronizes with the Quassel Core!"
-#~ "</b>"
-#~ msgstr ""
-#~ "<b>İstemciniz Quassel Çekirdeğiyle senkronize olurken lütfen bekleyiniz!</"
-#~ "b>"
-
-#~ msgid "0/0"
-#~ msgstr "0/0"
-
-#~ msgid "Desktop Notification (via D-Bus)"
-#~ msgstr "Masaüstü Bildirimi (D-Bus)"
-
-#~ msgid "Timeout:"
-#~ msgstr "Zaman aşımı:"
-
-#~ msgid "Position hint:"
-#~ msgstr "İpucu pozisyonu:"
-
-#~ msgid " px"
-#~ msgstr " px"
-
-#~ msgid "X: "
-#~ msgstr "X: "
-
-#~ msgid "Y: "
-#~ msgstr "Y: "
-
-#~ msgid "Queue unread notifications"
-#~ msgstr "Okunmayan bildirimleri sıraya al"
-
-#~ msgid "Show System Tray Icon"
-#~ msgstr "Sistem Tepsisi Simgesini Göster"
-
-#~ msgid "Tray Icon"
-#~ msgstr "Tepsi Simgesi"
-
-#~ msgid "Core Lag: %1"
-#~ msgstr "Çekirdek Gecikmesi: %1"
-
-#~ msgid "Control automatic reconnect to the network"
-#~ msgstr "Ağa otomatik yeniden bağlanmayı kontrol et"
-
-#~ msgid "Interval:"
-#~ msgstr "Aralık:"
-
-#~ msgid "Rejoin all channels on reconnect"
-#~ msgstr "Yeniden bağlanınca tüm kanallara yeniden katıl"
-
-#~ msgid "Audio Notification (via Phonon)"
-#~ msgstr "Sesli Bildirim (Phonon ile)"
-
-#~ msgid "Play File:"
-#~ msgstr "Dosya Oynat:"
-
-#~ msgid "System Tray Icon"
-#~ msgstr "Sistem Tepsisi Simgesi"
-
-#~ msgid "Animate"
-#~ msgstr "Hareketlendir"
-
-#~ msgid "Show bubble"
-#~ msgstr "Baloncuk göster"
-
-#~ msgid ""
-#~ "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2008 by the "
-#~ "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc."
-#~ "org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
-#~ "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
-#~ "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</"
-#~ "a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>."
-#~ "<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org"
-#~ "\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/"
-#~ "licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs."
-#~ "quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-#~ msgstr ""
-#~ "<b>Modern, dağıtık bir IRC İstemcisi</b><br><br>&copy;2005-2008 Quassel "
-#~ "Projesi<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</"
-#~ "a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> <a href="
-#~ "\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC, <a href="
-#~ "\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> ve <a href=\"http://"
-#~ "www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> lisanslarıyla çift-"
-#~ "lisanslıdır.<br>Çoğu simge &copy;<a href=\"http://www.oxygen-icons.org"
-#~ "\">Oxygen Team</a>'e aittir ve <a href=\"http://www.gnu.org/licenses/lgpl."
-#~ "html\">LGPL</a> ile lisanslanmıştır.<br><br>Hata raporlamak için lütfen "
-#~ "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> "
-#~ "adresini kullanın."
-
-#~ msgid ""
-#~ "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for "
-#~ "great artwork and the Quassel logo/icon</dt><dt><b><a href=\"http://www."
-#~ "oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating most of "
-#~ "the other shiny icons you see throughout Quassel</dd><dt><b><a href="
-#~ "\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></"
-#~ "b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of "
-#~ "QuasselTopia with Greenphones and more</dd><dt><b><a href=\"http://www."
-#~ "nokia.com\">Nokia</a></b></dt><dd>for keeping Qt alive, and for "
-#~ "sponsoring development of Quassel Mobile with N810s</dd>"
-#~ msgstr ""
-#~ "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for "
-#~ "great artwork and the Quassel logo/icon</dt><dt><b><a href=\"http://www."
-#~ "oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating most of "
-#~ "the other shiny icons you see throughout Quassel</dd><dt><b><a href="
-#~ "\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></"
-#~ "b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of "
-#~ "QuasselTopia with Greenphones and more</dd><dt><b><a href=\"http://www."
-#~ "nokia.com\">Nokia</a></b></dt><dd>for keeping Qt alive, and for "
-#~ "sponsoring development of Quassel Mobile with N810s</dd>"
-
-#~ msgid "Behaviour"
-#~ msgstr "Davranış"
-
-#~ msgid "Appearance"
-#~ msgstr "Görünüm"
-
-#~ msgid "Note: needs client restart for full effect!"
-#~ msgstr ""
-#~ "Not: tüm etkilerin görülebilmesi için istemcinin yeniden başlatılması "
-#~ "gerekli!"
-
-#~ msgid "Misc:"
-#~ msgstr "Çeşitli:"
-
-#~ msgid "Show Web Previews"
-#~ msgstr "Web Önizlemelerini Göster"
-
-#~ msgid "Use Icons to represent away state of Users"
-#~ msgstr "Kullanıcıların dışarıda durumunu göstermek için simgeleri kullan"
-
-#~ msgid "Backlog Request Method:"
-#~ msgstr "Backlog Talep Metodu:"
-
-#~ msgid "Unread Messages per Buffer"
-#~ msgstr "Arabellek Başına Düşen Okunmamış Mesajlar"
-
-#~ msgid "Global Unread Messages"
-#~ msgstr "Genel Okunmamış Mesajlar"
-
-#~ msgid "Hide buffers"
-#~ msgstr "Arabellekleri gizle"
-
-#~ msgid "Hide buffers permanently"
-#~ msgstr "Arabellekleri kalıcı olarak gizle"
-
-#~ msgid "Delete buffer"
-#~ msgstr "Arabelleği sil"
-
-#~ msgid "Mode"
-#~ msgstr "Mod"
-
-#~ msgid "Day Change"
-#~ msgstr "Gün Değişimi"
-
-#~ msgid "Remove buffer permanently?"
-#~ msgstr "Arabelleği kalıcı olarak kaldır?"
-
-#~ msgid ""
-#~ "Do you want to delete the buffer \"%1\" permanently? This will delete all "
-#~ "related data, including all backlog data, from the core's database!"
-#~ msgstr ""
-#~ "\"%1\" arabelleğini kalıcı olarak silmek istiyor musunuz? Bu işlem "
-#~ "veritabanındaki tüm kayıt ve ilgili verileri silecektir!"
-
-#~ msgid "All Buffers"
-#~ msgstr "Tüm Arabellekler"
-
-#~ msgid "Please enter a name for the buffer view:"
-#~ msgstr "Arabellek görünümü için bir ad girin:"
-
-#~ msgid "Add Buffer View"
-#~ msgstr "Arabellek Görünümü Ekle"
-
-#~ msgid "Edit Mode"
-#~ msgstr "Düzenleme Modu"
-
-#~ msgid "Buffer Views"
-#~ msgstr "Arabellek Görünümleri"
-
-#~ msgid "Delete Buffer View?"
-#~ msgstr "Arabellek Görünümünü Sil?"
-
-#~ msgid "Do you really want to delete the buffer view \"%1\"?"
-#~ msgstr "\"%1\" arabellek görünümünü gerçekten silmek istiyor musunuz?"
-
-#~ msgid "Buffer View  Settings"
-#~ msgstr "Arabellek Görünümü Ayarları"
-
-#~ msgid "Restrict Buffers to:"
-#~ msgstr "Arabellekleri Kısıtla:"
-
-#~ msgid "Status Buffers"
-#~ msgstr "Durum Arabellekleri"
-
-#~ msgid "Channel Buffers"
-#~ msgstr "Kanal Arabellekleri"
-
-#~ msgid "Query Buffers"
-#~ msgstr "Sorgu Arabellekleri"
-
-#~ msgid "Hide inactive Buffers"
-#~ msgstr "Etkin olmayan arabellekleri gizle"
-
-#~ msgid "Add new Buffers automatically"
-#~ msgstr "Yeni arabellekleri otomatikman ekle"
-
-#~ msgid "Enlarge Chat View"
-#~ msgstr "Sohbet Görünümünü Genişlet"
-
-#~ msgid "Ctrl++"
-#~ msgstr "Ctrl++"
-
-#~ msgid "Demagnify Chat View"
-#~ msgstr "Sohbet Görünümünü Küçült"
-
-#~ msgid "Ctrl+-"
-#~ msgstr "Ctrl+-"
-
-#~ msgid "Normalize zoom of Chat View"
-#~ msgstr "Sohbet Görünümünü Yakınlaştır"
-
-#~ msgid "Ctrl+0"
-#~ msgstr "Ctrl+0"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#~ "REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#~ "css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/"
-#~ "quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;"
-#~ "\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span "
-#~ "style=\" font-size:22pt;\">Chat comfortably. Anywhere.</span></p></body></"
-#~ "html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#~ "REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#~ "css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; "
-#~ "font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/"
-#~ "quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;"
-#~ "\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#~ "right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span "
-#~ "style=\" font-size:22pt;\">Chat comfortably. Anywhere.</span></p></body></"
-#~ "html>"
-
-#~ msgid "Available Buffers:"
-#~ msgstr "Mevcut Arabellekler:"
-
-#~ msgid "Show network name"
-#~ msgstr "Ağ adını göster"
-
-#~ msgid "Show buffer name"
-#~ msgstr "Arabellek adını göster"
-
-#~ msgid "Internal connections not yet supported."
-#~ msgstr "Dahili bağlantılar henüz desteklenmiyor."
-
-#~ msgid "Bufferview"
-#~ msgstr "Arabellek görünümü"
-
-#~ msgid "Activities:"
-#~ msgstr "Etkinlikler:"
-
-#~ msgid "FG"
-#~ msgstr "ÖP"
-
-#~ msgid "BG"
-#~ msgstr "AP"
-
-#~ msgid "Use BG"
-#~ msgstr "AP Kullan"
-
-#~ msgid "Default:"
-#~ msgstr "Öntanımlı:"
-
-#~ msgid "New Message:"
-#~ msgstr "Yeni Mesaj:"
-
-#~ msgid "Other Activity:"
-#~ msgstr "Diğer Etkinlik:"
-
-#~ msgid "Chatview"
-#~ msgstr "Sohbet Görünümü"
-
-#~ msgid "Server Activity"
-#~ msgstr "Sunucu Etkinliği"
-
-#~ msgid "Foreground"
-#~ msgstr "Önplan"
-
-#~ msgid "Background"
-#~ msgstr "Arkaplan"
-
-#~ msgid "Error Message:"
-#~ msgstr "Hata Mesajı:"
-
-#~ msgid "Notice Message:"
-#~ msgstr "Bildiri Mesajı:"
-
-#~ msgid "Plain Message:"
-#~ msgstr "Düz Mesaj:"
-
-#~ msgid "Server Message:"
-#~ msgstr "Sunucu Mesajı:"
-
-#~ msgid "Highlight Message:"
-#~ msgstr "Mesajı Vurgula:"
-
-#~ msgid "User Activity"
-#~ msgstr "Kullanıcı Etkinliği"
-
-#~ msgid "Action Message:"
-#~ msgstr "Eylem Mesajı:"
-
-#~ msgid "Join Message:"
-#~ msgstr "Katılma Mesajı:"
-
-#~ msgid "Kick Message:"
-#~ msgstr "Atılma Mesajı:"
-
-#~ msgid "Mode Message:"
-#~ msgstr "Mod Mesajı:"
-
-#~ msgid "Part Message:"
-#~ msgstr "Ayrılma Mesajı:"
-
-#~ msgid "Quit Message:"
-#~ msgstr "Çıkma Mesajı:"
-
-#~ msgid "Rename Message:"
-#~ msgstr "Yeniden Adlandırma Mesajı:"
-
-#~ msgid "Sender:"
-#~ msgstr "Gönderen:"
-
-#~ msgid "Nick:"
-#~ msgstr "Takma ad:"
-
-#~ msgid "Hostmask:"
-#~ msgstr "Sunucu maskesi:"
-
-#~ msgid "Channelname:"
-#~ msgstr "Kanal adı:"
-
-#~ msgid "Mode flags:"
-#~ msgstr "Mod bayrakları:"
-
-#~ msgid "Url:"
-#~ msgstr "Url:"
-
-#~ msgid "New Message Marker:"
-#~ msgstr "Yeni Mesaj İşareti:"
-
-#~ msgid "Mirc Color Codes"
-#~ msgstr "Mirc Renk Kodları"
-
-#~ msgid "Color Codes"
-#~ msgstr "Renk Kodları"
-
-#~ msgid "Color 0:"
-#~ msgstr "Renk 0:"
-
-#~ msgid "Color 1:"
-#~ msgstr "Renk 1:"
-
-#~ msgid "Color 2:"
-#~ msgstr "Renk 2:"
-
-#~ msgid "Color 3:"
-#~ msgstr "Renk 3:"
-
-#~ msgid "Color 4:"
-#~ msgstr "Renk 4:"
-
-#~ msgid "Color 5:"
-#~ msgstr "Renk 5:"
-
-#~ msgid "Color 6:"
-#~ msgstr "Renk 6:"
-
-#~ msgid "Color 7:"
-#~ msgstr "Renk 7:"
-
-#~ msgid "Color 8:"
-#~ msgstr "Renk 8:"
-
-#~ msgid "Color 14:"
-#~ msgstr "Renk 14:"
-
-#~ msgid "Color 15:"
-#~ msgstr "Renk 15:"
-
-#~ msgid "Color 13:"
-#~ msgstr "Renk 13:"
-
-#~ msgid "Color 12:"
-#~ msgstr "Renk 12:"
-
-#~ msgid "Color 11:"
-#~ msgstr "Renk 11:"
-
-#~ msgid "Color 10:"
-#~ msgstr "Renk 10:"
-
-#~ msgid "Color 9:"
-#~ msgstr "Renk 9:"
-
-#~ msgid "Nickview"
-#~ msgstr "Takma Ad Görünümü"
-
-#~ msgid "Nick status:"
-#~ msgstr "Takma ad durumu:"
-
-#~ msgid ""
-#~ "Currently, Quassel only supports SQLite3. You need to build your\n"
-#~ "Qt library with the sqlite plugin enabled in order for quasselcore\n"
-#~ "to work."
-#~ msgstr ""
-#~ "Şu an için Quassel sadece SQLite3 destekliyor. Quassel Çekirdeğinin\n"
-#~ "çalışması için Qt kitaplığını sqlite eklentisi aktif olacak şekilde\n"
-#~ "derlemeniz gerekmektedir."
-
-#~ msgid "The port quasselcore will listen at"
-#~ msgstr "Quassel çekirdeğinin dinleyeceği port"
-
-#~ msgid "Don't restore last core's state"
-#~ msgstr "Çekirdeğin son durumunu geri yükleme"
-
-#~ msgid "Path to logfile"
-#~ msgstr "Kayıt dosyasının yolu"
-
-#~ msgid "Loglevel Debug|Info|Warning|Error"
-#~ msgstr "Kayıt seviyesi Hata Ayıklama|Bilgi|Uyarı|Hata"
-
-#~ msgid ""
-#~ "Specify the directory holding datafiles like the Sqlite DB and the SSL "
-#~ "Cert"
-#~ msgstr ""
-#~ "SSL Sertfikası ve Sqlite DB gibi verilerin bulunduğu dizini belirtin"
-
-#~ msgid "Disconnecting."
-#~ msgstr "Bağlantı Kesiliyor."
-
-#~ msgid "Fonts"
-#~ msgstr "Yazıtipleri"
-
-#~ msgid "Custom Application Fonts"
-#~ msgstr "Özel Uygulama Yazıtipleri"
-
-#~ msgid "Font"
-#~ msgstr "Yazıtipi"
-
-#~ msgid "Buffer Views:"
-#~ msgstr "Arabellek Görünümleri:"
-
-#~ msgid "Nick List:"
-#~ msgstr "Takma Ad Listesi:"
-
-#~ msgid "Inputline:"
-#~ msgstr "Girdi satırı:"
-
-#~ msgid "General:"
-#~ msgstr "Genel:"
-
-#~ msgid "Chat Widget"
-#~ msgstr "Sohbet Penceresi"
-
-#~ msgid "Nicks:"
-#~ msgstr "Takma adlar:"
-
-#~ msgid ""
-#~ "Some of these settings require a restart of the Quassel Client in order "
-#~ "to take effect. We intend to fix this."
-#~ msgstr ""
-#~ "Bu ayarlardan bazılarının etkin olabilmesi için Quassel İstemcisinin "
-#~ "yeniden başlatılması gerekir. Bunu düzeltmeyi planlıyoruz."
-
-#~ msgid "Minimize to tray on minimize button"
-#~ msgstr "Alçalt düğmesiyle sistem tepsisine küçült"
-
-#~ msgid "Minimize to tray on close button"
-#~ msgstr "Kapat düğmesiyle sistem tepsisine küçült"
-
-#~ msgid "Current Buffer"
-#~ msgstr "Mevcut Arabellek"
-
-#~ msgid "Errors"
-#~ msgstr "Hatalar"
-
-#~ msgid "Buffer View"
-#~ msgstr "Arabellek Görünümü"
-
-#~ msgid "Mouse wheel changes displayed buffers"
-#~ msgstr "Fare tekerleğiyle arabellekleri değiştir"
-
-#~ msgid ""
-#~ "The suffix appended to a nick on completion via TAB. Default is \": \""
-#~ msgstr "TAB ile takma ad tamamlamada eklenecek sonek. Öntanımlı \":\""
-
-#~ msgid "Input Line"
-#~ msgstr "Girdi Satırı"
-
-#~ msgid "Away Reason"
-#~ msgstr "Dışarıda Sebebi"
-
-#~ msgid "Away Nick"
-#~ msgstr "Dışarıda Rumuzu"
-
-#~ msgid "Override default away reason for auto-away on detach"
-#~ msgstr ""
-#~ "Ayrılırken otomatik dışarıda olma durumunda, öntanımlı dışarıda sebebini "
-#~ "geçersiz kıl"
-
-#~ msgid ""
-#~ "There is a nickname in your identity's nicklist which contains illegal "
-#~ "characters"
-#~ msgstr ""
-#~ "Kimliğinizin takma ad listesinde geçerli olmayan karakterlere sahip takma "
-#~ "ad var"
-
-#~ msgid "Please use: /nick <othernick> to continue or clean up your nicklist"
-#~ msgstr ""
-#~ "Lütfen: /nick <baskabirtakmaad> ile devam edin ya da takma ad listenizi "
-#~ "temizleyin"
-
-#~ msgid "Edit &Networks..."
-#~ msgstr "Ağları &Düzenle..."
-
-#~ msgid "&Manage Buffer Views..."
-#~ msgstr "Arabellek Görünümlerini &Yönet..."
-
-#~ msgid "&Lock Dock Positions"
-#~ msgstr "Dock Pozisyonlarını &Kilitle"
-
-#~ msgid "Ctrl+F"
-#~ msgstr "Ctrl+F"
-
-#~ msgid "&About Quassel..."
-#~ msgstr "Quassel &Hakkında..."
-
-#~ msgid "About &Qt..."
-#~ msgstr "&Qt Hakkında..."
-
-#~ msgid "&Buffer Views"
-#~ msgstr "&Arabellek Görünümleri"
-
-#~ msgid "Core Lag: %1 msec"
-#~ msgstr "Çekirdek Gecikmesi: %1 ms"
-
-#~ msgid "&Configure Buffer Views..."
-#~ msgstr "Ara&bellek Görünümlerini Yapılandır..."
-
-#~ msgid "Processing Messages"
-#~ msgstr "Mesajlar İşleniyor"
-
-#~ msgid "Delete Buffer(s)..."
-#~ msgstr "Arabellek(leri) Sil..."
-
-#~ msgid "Show Buffer"
-#~ msgstr "Arabelleği Göster"
-
-#~ msgid "Hide Buffer(s) Temporarily"
-#~ msgstr "Arabellek(leri) Geçici Olarak Gizle"
-
-#~ msgid "Hide Buffer(s) Permanently"
-#~ msgstr "Arabellek(leri) Kalıcı Olarak Gizle"
-
-#~ msgid "Apply first!"
-#~ msgstr "Önce uygula!"
-
-#~ msgid "Connect now"
-#~ msgstr "Şimdi bağlan"
-
-#~ msgid "Choose random server for connecting"
-#~ msgstr "Rastgele sunucuyla bağlan"
-
-#~ msgid "Perform"
-#~ msgstr "Gerçekleştir"
-
-#~ msgid "Use default settings for encodings (recommended)"
-#~ msgstr "Kodlamalar için öntanımlı ayarları seç (önerilen)"
-
-#~ msgid "WHOIS"
-#~ msgstr "KİM"
-
-#~ msgid "VERSION"
-#~ msgstr "SÜRÜM"
-
-#~ msgid "PING"
-#~ msgstr "PING"
-
-#~ msgid "Modes"
-#~ msgstr "Modlar"
-
-#~ msgid "Op %1"
-#~ msgstr "Op %1"
-
-#~ msgid "Deop %1"
-#~ msgstr "Deop %1"
-
-#~ msgid "Voice %1"
-#~ msgstr "Voice %1"
-
-#~ msgid "Devoice %1"
-#~ msgstr "Devoice %1"
-
-#~ msgid "Kick %1"
-#~ msgstr "Kick %1"
-
-#~ msgid "Ban %1"
-#~ msgstr "Ban %1"
-
-#~ msgid "Kickban %1"
-#~ msgstr "Kickban %1"
-
-#~ msgid "DCC-Chat"
-#~ msgstr "DCC-Chat"
-
-#~ msgid "Send file"
-#~ msgstr "Dosya gönder"
-
-#~ msgid "Copy to Clipboard"
-#~ msgstr "Panoya Kopyala"
-
-#~ msgid "Enable debug output"
-#~ msgstr "Hata çıktısını etkinleştir"
-
-#~ msgid "Display this help and exit"
-#~ msgstr "Bu yardımı göster ve çık"
-
-#~ msgid "Client tried to send package larger than max package size!"
-#~ msgstr "İstemci, azami paket boyutundan büyük paket yollamaya çalıştı!"
-
-#~ msgid "Client tried to send 0 byte package!"
-#~ msgstr "İstemci, 0 byte paket yollamaya çalıştı!"
-
-#~ msgid "Client sent corrupted compressed data!"
-#~ msgstr "İstemci, bozuk bir sıkıştırılmış veri gönderdi!"
-
-#~ msgid "Client sent corrupt data: unable to load QVariant!"
-#~ msgstr "İstemci bozuk veri gönderdi: QVariant yüklenemedi!"
-
-#~ msgid "<b>Status buffer of %1</b>"
-#~ msgstr "<b>%1 Durum arabelleği</b>"
-
-#~ msgid "Drag to scroll the topic!"
-#~ msgstr "Başlığı kaydırmak için sürükle!"
-
-#~ msgid "%D0%1"
-#~ msgstr "%D0%1"
-
-#~ msgid "%Dn%1"
-#~ msgstr "%Dn%1"
-
-#~ msgid "%Ds%1"
-#~ msgstr "%Ds%1"
-
-#~ msgid "%De%1"
-#~ msgstr "%De%1"
-
-#~ msgid "%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-#~ msgstr "%Dj%DN%1%DN %DH(%2@%3)%DH katıldı %DC%4%DC"
-
-#~ msgid "%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-#~ msgstr "%Dp%DN%1%DN %DH(%2@%3)%DH ayrıldı %DC%4%DC"
-
-#~ msgid "%Dq%DN%1%DN %DH(%2@%3)%DH has quit"
-#~ msgstr "%Dq%DN%1%DN %DH(%2@%3)%DH çıktı"
-
-#~ msgid "%DrYou are now known as %DN%1%DN"
-#~ msgstr "%DrOlarak biliniyorsunuz %DN%1%DN"
-
-#~ msgid "%Dr%DN%1%DN is now known as %DN%2%DN"
-#~ msgstr "%Dr%DN%1%DN olarak biliniyor %DN%2%DN"
-
-#~ msgid "%Da%DN%1%DN %2"
-#~ msgstr "%Da%DN%1%DN %2"
-
-#~ msgid "%De[%1]"
-#~ msgstr "%De[%1]"
+#~ msgid "Add Buffers Automatically:"
+#~ msgstr "Arabellekleri Otomatik Ekle:"

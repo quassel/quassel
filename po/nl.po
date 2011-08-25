@@ -6,16 +6,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: quassel\n"
-"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
-"POT-Creation-Date: 2010-05-05 02:45+0000\n"
-"PO-Revision-Date: 2010-08-07 10:35+0000\n"
+"Report-Msgid-Bugs-To: <translations@quassel-irc.org>\n"
+"POT-Creation-Date: 2010-12-15 22:38+0000\n"
+"PO-Revision-Date: 2010-10-20 12:44+0000\n"
 "Last-Translator: Redmar <redmar@ubuntu-nl.org>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-11 21:40+0000\n"
+"X-Launchpad-Export-Date: 2010-12-16 05:02+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Language: nl\n"
 
@@ -162,7 +162,7 @@ msgstr ""
 "voor het sponsoren van de ontwikkeling van Quassel Mobile met N810's</dd>"
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:112
+#: ../src/core/abstractsqlstorage.cpp:115
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr ""
@@ -170,7 +170,7 @@ msgstr ""
 "naar versie %2..."
 
 #. ts-context AbstractSqlStorage
-#: ../src/core/abstractsqlstorage.cpp:114
+#: ../src/core/abstractsqlstorage.cpp:117
 msgid "Upgrade failed..."
 msgstr "Upgraden mislukt..."
 
@@ -267,6 +267,8 @@ msgstr "Uitbreiding"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context PhononNotificationConfigWidget
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidgetSettingsPage
@@ -292,6 +294,7 @@ msgstr "Uitbreiding"
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
 #: ../src/qtui/settingspages/networkssettingspage.ui:14
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:14
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:14
 #: ../src/qtui/ui/topicwidget.ui:32
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
 msgid "Form"
@@ -404,33 +407,33 @@ msgstr "Pad"
 #: ../src/qtui/ui/chatviewsearchbar.ui:19
 #: ../src/qtui/ui/chatviewsearchbar.ui:33
 #: ../src/qtui/ui/chatviewsearchbar.ui:44
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:152
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:176
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:200
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:237
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:261
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:292
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:316
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:340
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:364
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:381
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:421
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:438
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:455
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:472
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:489
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:506
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:523
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:540
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:557
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:574
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:591
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:608
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:625
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:642
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:659
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:676
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:704
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:174
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:198
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:222
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:259
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:283
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:314
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:338
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:362
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:386
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:403
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:443
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:460
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:477
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:494
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:511
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:528
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:545
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:562
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:579
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:596
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:613
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:630
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:647
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:664
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:681
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:698
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:726
 #: ../src/qtui/settingspages/identitiessettingspage.ui:34
 #: ../src/qtui/settingspages/identitiessettingspage.ui:77
 #: ../src/qtui/settingspages/identityeditwidget.ui:168
@@ -519,22 +522,25 @@ msgstr "Fouten:"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NotificationsSettingsPage
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgid "Interface"
 msgstr "Interface"
 
 #. ts-context AppearanceSettingsPage
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:223
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgid "Please choose a stylesheet file"
 msgstr "Kies een stylesheet-bestand"
 
@@ -710,7 +716,7 @@ msgid "Backlog Fetching"
 msgstr "Backlog verkrijgen"
 
 #. ts-context BufferItem
-#: ../src/client/networkmodel.cpp:341
+#: ../src/client/networkmodel.cpp:346
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 - %2 </p>"
 
@@ -914,47 +920,57 @@ msgid "BufferView"
 msgstr "Bufferweergave"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:76
+#: ../src/qtui/bufferwidget.cpp:79
 msgid "Zoom In"
 msgstr "Inzoomen"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:82
+#: ../src/qtui/bufferwidget.cpp:85
 msgid "Zoom Out"
 msgstr "Uitzoomen"
 
 #. ts-context BufferWidget
-#: ../src/qtui/bufferwidget.cpp:87
+#: ../src/qtui/bufferwidget.cpp:90
 msgid "Actual Size"
 msgstr "Werkelijke grootte"
 
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:94
+msgid "Set Marker Line"
+msgstr "Stel markeerlijn in"
+
+#. ts-context BufferWidget
+#: ../src/qtui/bufferwidget.cpp:98
+msgid "Go to Marker Line"
+msgstr "Ga naar de markeerlijn"
+
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:498
+#: ../src/client/networkmodel.cpp:503
 msgid "<b>Channel %1</b>"
 msgstr "<b>Kanaal %1</b>"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:501
+#: ../src/client/networkmodel.cpp:506
 msgid "<b>Users:</b> %1"
 msgstr "<b>Gebruikers:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:505
+#: ../src/client/networkmodel.cpp:510
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Modus:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:516
+#: ../src/client/networkmodel.cpp:521
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Onderwerp:</b> %1"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:520
+#: ../src/client/networkmodel.cpp:525
 msgid "Not active <br /> Double-click to join"
 msgstr "Niet actief <br /> Dubbelklik om binnen te gaan"
 
 #. ts-context ChannelBufferItem
-#: ../src/client/networkmodel.cpp:523
+#: ../src/client/networkmodel.cpp:528
 msgid "<p> %1 </p>"
 msgstr "<p> %1 </p>"
 
@@ -1117,7 +1133,7 @@ msgstr "Toon eigen berichten"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context MainWin
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
-#: ../src/qtui/mainwin.cpp:584
+#: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
 msgstr "Chatmonitor"
 
@@ -1147,7 +1163,7 @@ msgid "Configure..."
 msgstr "Instellen…"
 
 #. ts-context ChatScene
-#: ../src/qtui/chatscene.cpp:600
+#: ../src/qtui/chatscene.cpp:745
 msgid "Copy Selection"
 msgstr "Selectie kopiëren"
 
@@ -1188,104 +1204,139 @@ msgstr "Chatvenster lettertype:"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
+msgid "Show colored text in the chat window"
+msgstr "Laat gekleurde text zien in het chat venster"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:95
 msgid "Allow colored text (mIRC color codes)"
 msgstr "Sta gekleurde tekst toe (mIRC color codes)"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:108
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr "Toon een previewvenster wanneer u uw muis boven een url houdt."
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:114
 msgid "Show previews of webpages on URL hover"
 msgstr "Toon previews van webpagina's als uw muis boven een url staat"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:127
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:130
+msgid ""
+"Set the marker line to the bottom of the current chat window when selecting "
+"another channel"
+msgstr ""
+"Stel de markeerlijn in onderaan het huidige chatvenster wanneer een ander "
+"kanaal geselecteerd wordt"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:133
+msgid "Set marker line automatically when switching chats"
+msgstr "Stel de markeerlijn automatisch in als chats gewisseld worden"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:149
 msgid "Custom Colors"
 msgstr "Eigen kleuren"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:145
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:167
 msgid "Action:"
 msgstr "Actie:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:169
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:191
 msgid "Timestamp:"
 msgstr "Tijd:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:193
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:215
 msgid "Channel message:"
 msgstr "Kanaalbericht:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:230
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:252
 msgid "Highlight foreground:"
 msgstr "Voorgrond bij markering:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:254
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:276
 msgid "Command message:"
 msgstr "Commandobericht:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:278
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:300
 msgid "Highlight background:"
 msgstr "Achtergrond bij markering:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:285
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:307
 msgid "Server message:"
 msgstr "Serverbericht:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:309
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:331
 msgid "Marker line:"
 msgstr "Markeerlijn:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:333
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:355
 msgid "Error message:"
 msgstr "Foutbericht:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:357
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:379
 msgid "Background:"
 msgstr "Achtergrond:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:401
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:423
 msgid "Use Sender Coloring"
 msgstr "Kleur naar verzender"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:697
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:719
 msgid "Own messages:"
 msgstr "Eigen berichten:"
 
 #. ts-context ChatViewSettingsPage
-#: ../src/qtui/settingspages/chatviewsettingspage.cpp:27
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 msgid "Chat View"
 msgstr "Chatvenster"
+
+#. ts-context ChatViewSettingsPage
+#: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
+msgid "You need at 0.6 quasselcore to use this feature"
+msgstr ""
+"U heeft minstens versie 0.6 van quasselcore nodig om deze optie te gebruiken"
 
 #. ts-context Client
 #: ../src/client/client.cpp:270
 msgid "Identity already exists in client!"
 msgstr "Identiteit bestaat al in client!"
 
-#. ts-context Client
-#: ../src/client/client.cpp:371
+#. ts-context ClientBacklogManager
+#: ../src/client/clientbacklogmanager.cpp:161
+msgid "Processed %1 messages in %2 seconds."
+msgstr "In %2 seconden %1 berichten verwerkt"
+
+#. ts-context ClientBufferViewManager
+#: ../src/client/clientbufferviewmanager.cpp:52
 msgid "All Chats"
 msgstr "Alle chats"
 
-#. ts-context ClientBacklogManager
-#: ../src/client/clientbacklogmanager.cpp:153
-msgid "Processed %1 messages in %2 seconds."
-msgstr "In %2 seconden %1 berichten verwerkt"
+#. ts-context ClientUserInputHandler
+#: ../src/client/clientuserinputhandler.cpp:86
+msgid "/JOIN expects a channel"
+msgstr "/JOIN verwacht een kanaal"
+
+#. ts-context ClientUserInputHandler
+#: ../src/client/clientuserinputhandler.cpp:96
+msgid "/QUERY expects at least a nick"
+msgstr "/QUERY verwacht minimaal een bijnaam"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
@@ -1362,7 +1413,7 @@ msgid "Minimum delay between requests:"
 msgstr "Minimale vertraging tussen aanvragen:"
 
 #. ts-context ContentsChatItem
-#: ../src/qtui/chatitem.cpp:644
+#: ../src/qtui/chatitem.cpp:683
 msgid "Copy Link Address"
 msgstr "Kopieer link-adres"
 
@@ -1498,8 +1549,8 @@ msgstr "Ping"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
-msgid "Finger"
-msgstr "Finger"
+msgid "Client info"
+msgstr "Client-informatie"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
@@ -2138,37 +2189,37 @@ msgid "Connect to Core"
 msgstr "Verbindt met core"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:166
+#: ../src/client/coreconnection.cpp:168
 msgid "Network is down"
 msgstr "Netwerk is niet actief"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:200 ../src/client/coreconnection.cpp:315
+#: ../src/client/coreconnection.cpp:202 ../src/client/coreconnection.cpp:321
 msgid "Disconnected"
 msgstr "Verbinding verbroken"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:203
+#: ../src/client/coreconnection.cpp:205
 msgid "Looking up %1..."
 msgstr "%1 opzoeken..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:206 ../src/client/coreconnection.cpp:443
+#: ../src/client/coreconnection.cpp:208 ../src/client/coreconnection.cpp:450
 msgid "Connecting to %1..."
 msgstr "Met %1 verbinden..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:209 ../src/client/coreconnection.cpp:566
+#: ../src/client/coreconnection.cpp:211 ../src/client/coreconnection.cpp:573
 msgid "Connected to %1"
 msgstr "Verbonden met %1"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:212
+#: ../src/client/coreconnection.cpp:214
 msgid "Disconnecting from %1..."
 msgstr "Verbinding met %1 verbreken..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:269
+#: ../src/client/coreconnection.cpp:272
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider upgrading."
 msgstr ""
@@ -2176,28 +2227,28 @@ msgstr ""
 "versie te installeren."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:297
+#: ../src/client/coreconnection.cpp:300
 msgid "Invalid data received from core"
 msgstr "Ongeldige data van de core ontvangen"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:342
+#: ../src/client/coreconnection.cpp:349
 msgid "Disconnected from core."
 msgstr "Verbinding met de core verbroken."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:420 ../src/client/coreconnection.cpp:504
-#: ../src/client/coreconnection.cpp:549
+#: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
+#: ../src/client/coreconnection.cpp:556
 msgid "Unencrypted connection canceled"
 msgstr "Onversleutelde verbinding afgebroken"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:450
+#: ../src/client/coreconnection.cpp:457
 msgid "Synchronizing to core..."
 msgstr "Met de core synchroniseren..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:471
+#: ../src/client/coreconnection.cpp:478
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
@@ -2206,32 +2257,32 @@ msgstr ""
 "core/client protocol v%1 benodigd om te verbinden."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:585
+#: ../src/client/coreconnection.cpp:592
 msgid "Logging in..."
 msgstr "Aanmelden..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:590
+#: ../src/client/coreconnection.cpp:597
 msgid "Login canceled"
 msgstr "Aanmelden afgebroken"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:615
+#: ../src/client/coreconnection.cpp:622
 msgid "Receiving session state"
 msgstr "Sessiestatus ontvangen"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:617
+#: ../src/client/coreconnection.cpp:624
 msgid "Synchronizing to %1..."
 msgstr "Met %1 synchroniseren..."
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:641
+#: ../src/client/coreconnection.cpp:648
 msgid "Receiving network states"
 msgstr "Netwerkstatus ontvangen"
 
 #. ts-context CoreConnection
-#: ../src/client/coreconnection.cpp:691
+#: ../src/client/coreconnection.cpp:698
 msgid "Synchronized to %1"
 msgstr "Met %1 gesynchroniseerd"
 
@@ -2416,22 +2467,22 @@ msgid "Connecting to %1:%2..."
 msgstr "Verbinden met %1:%2..."
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:211
+#: ../src/core/corenetwork.cpp:210
 msgid "Disconnecting. (%1)"
 msgstr "Verbinding verbreken. (%1)"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:211
+#: ../src/core/corenetwork.cpp:210
 msgid "Core Shutdown"
 msgstr "Core uitschakelen"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:307
+#: ../src/core/corenetwork.cpp:339
 msgid "Could not connect to %1 (%2)"
 msgstr "Kon niet met %1 (%2) verbinden"
 
 #. ts-context CoreNetwork
-#: ../src/core/corenetwork.cpp:309
+#: ../src/core/corenetwork.cpp:341
 msgid "Connection failure: %1"
 msgstr "Verbinden mislukt: %1"
 
@@ -2459,14 +2510,80 @@ msgstr ""
 "exists, updating instead!"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:63
+#: ../src/core/coreuserinputhandler.cpp:81
 msgid "away"
 msgstr "afwezig"
 
 #. ts-context CoreUserInputHandler
-#: ../src/core/coreuserinputhandler.cpp:132
+#: ../src/core/coreuserinputhandler.cpp:150
 msgid "sending CTCP-%1 request to %2"
 msgstr "CTCP-%1 request naar %2 sturen"
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:173
+msgid ""
+"[usage] /delkey <nick|channel> deletes the encryption key for nick or "
+"channel or just /delkey when in a channel or query."
+msgstr ""
+"[gebruik] /delkey <bijnaam|kanaal> verwijdert de encryptiesleutel voor "
+"bijnaam of kanaal, gebruik /delkey wanneer het in een kanaal of query wordt "
+"gebruikt."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:180
+msgid "No key has been set for %1."
+msgstr "Er is geen sleutel ingesteld voor %1."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:193
+msgid "The key for %1 has been deleted."
+msgstr "De sleutel voor %1 is verwijderd."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:197
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
+"distributor about a Quassel package with QCA2 support, or rebuild Quassel "
+"with QCA2 present."
+msgstr ""
+"Fout: Om een encryptiesleutel in te kunnen stellen moet Quassel Qt "
+"Cryptographic Architecture (QCA2) ondersteunen. Neem contact op met uw "
+"distributeur voor een Quassel pakket met QCA2 ondersteuning, of compileer "
+"Quassel met QCA2."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:461
+msgid ""
+"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
+"channel. /setkey <key> when in a channel or query buffer sets the key for it."
+msgstr ""
+"[gebruik] /setkey <bijnaam|kanaal> <key> stelt de encryptiesleutel in voor "
+"bijnaam of kanaal. /setkey <key> wanneer in een kanaal of query buffer stelt "
+"de sleutel in"
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:476
+msgid "The key for %1 has been set."
+msgstr "De sleutel voor %1 is nu ingesteld."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:479
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA) library. Contact your "
+"distributor about a Quassel package with QCA support, or rebuild Quassel "
+"with QCA present."
+msgstr ""
+"Fout: Om een encryptiesleutel in te kunnen stellen moet Quassel Qt "
+"Cryptographic Architecture (QCA) ondersteunen. Neem contact op met uw "
+"distributeur voor een Quassel pakket met QCA ondersteuning, of compileer "
+"Quassel met QCA."
+
+#. ts-context CoreUserInputHandler
+#: ../src/core/coreuserinputhandler.cpp:587
+msgid "[Error] Could not encrypt your message: %1"
+msgstr "[fout] Kan uw bericht niet versleutelen: %1"
 
 #. ts-context CreateIdentityDlg
 #: ../src/qtui/settingspages/createidentitydlg.ui:17
@@ -2489,42 +2606,52 @@ msgid "Duplicate:"
 msgstr "Dupliceer:"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:194
+#: ../src/core/ctcphandler.cpp:197
+msgid "Received CTCP CLIENTINFO request from %1"
+msgstr "CTCP CLIENTINFO-verzoek van %1 ontvangen"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:200
+msgid "Received CTCP CLIENTINFO answer from %1: %2"
+msgstr "CTCP CLIENTINFO-antwoord van %1 ontvangen: %2"
+
+#. ts-context CtcpHandler
+#: ../src/core/ctcphandler.cpp:211
 msgid "Received CTCP PING request from %1"
 msgstr "CTCP PING request van %1 ontvangen"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:199
+#: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
 msgstr "CTCP PING antwoord van %1 ontvangen met %2 seconden round trip time"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:212
+#: ../src/core/ctcphandler.cpp:229
 msgid "Received CTCP VERSION request by %1"
 msgstr "CTCP VERSION request van %1 ontvangen"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:215
+#: ../src/core/ctcphandler.cpp:232
 msgid "Received CTCP VERSION answer from %1: %2"
 msgstr "CTCP VERSION antwoord ontvangen van %1: %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:226
+#: ../src/core/ctcphandler.cpp:243
 msgid "Received CTCP TIME request by %1"
 msgstr "CTCP TIME request van %1 ontvangen"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:229
+#: ../src/core/ctcphandler.cpp:246
 msgid "Received CTCP TIME answer from %1: %2"
 msgstr "CTCP TIME antwoord van %1: %2 ontvangen"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:238
+#: ../src/core/ctcphandler.cpp:255
 msgid "Received unknown CTCP %1 by %2"
 msgstr "Onbekende CTCP %1 ontvangen van %2"
 
 #. ts-context CtcpHandler
-#: ../src/core/ctcphandler.cpp:240
+#: ../src/core/ctcphandler.cpp:257
 msgid " with arguments: %1"
 msgstr " met argumenten: %1"
 
@@ -2575,26 +2702,16 @@ msgstr "Tijdelijk verwijderde buffers:"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/debugbufferviewoverlay.cpp:57
-msgid "Add Buffers Automatically:"
-msgstr "Automatisch buffers toevoegen:"
-
-#. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:58
-msgid "Hide inactive buffers:"
-msgstr "Inactieve buffers verbergen:"
-
-#. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:59
 msgid "Allowed buffer types:"
 msgstr "Toegestane buffertypes:"
 
 #. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:60
+#: ../src/qtui/debugbufferviewoverlay.cpp:58
 msgid "Minimum activity:"
 msgstr "Minimale activiteit:"
 
 #. ts-context DebugBufferViewOverlay
-#: ../src/qtui/debugbufferviewoverlay.cpp:62
+#: ../src/qtui/debugbufferviewoverlay.cpp:60
 msgid "Is initialized:"
 msgstr "Is geïnitialiseerd:"
 
@@ -2707,8 +2824,14 @@ msgstr "Alle nicks van identiteit"
 msgid "Current nick"
 msgstr "Huidige nick"
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context HighlightSettingsPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:108
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:75
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:92
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:102
 msgid "None"
 msgstr "Geen"
 
@@ -2850,8 +2973,12 @@ msgstr "Kleutelschool is ergens anders!"
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr "http://quassel-irc.org - Chat comfortabel. Waar dan ook."
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:30
+#: ../src/qtui/mainwin.cpp:312
 msgid "General"
 msgstr "Algemeen"
 
@@ -3038,7 +3165,7 @@ msgstr ""
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context MainWin
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
-#: ../src/qtui/mainwin.cpp:864
+#: ../src/qtui/mainwin.cpp:1044
 msgid "Continue"
 msgstr "Doorgaan"
 
@@ -3444,92 +3571,92 @@ msgid "Show messages in application indicator"
 msgstr "Toon berichten in applicatie-indicator"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "White"
 msgstr "Wit"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Black"
 msgstr "Zwart"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark blue"
 msgstr "Donkerblauw"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark green"
 msgstr "Donkergroen"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Red"
 msgstr "Rood"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark red"
 msgstr "Donkerrood"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Dark magenta"
 msgstr "Donkermagenta"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:75
+#: ../src/qtui/inputwidget.cpp:73
 msgid "Orange"
 msgstr "Oranje"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Yellow"
 msgstr "Geel"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Green"
 msgstr "Groen"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Dark cyan"
 msgstr "Donkercyaan"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Cyan"
 msgstr "Cyaan"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Blue"
 msgstr "Blauw"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Magenta"
 msgstr "Magenta"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Dark gray"
 msgstr "Donkergrijs"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:76
+#: ../src/qtui/inputwidget.cpp:74
 msgid "Light gray"
 msgstr "Lichtgrijs"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:86 ../src/qtui/inputwidget.cpp:87
+#: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
 msgid "Clear Color"
 msgstr "Heldere kleur"
 
 #. ts-context InputWidget
-#: ../src/qtui/inputwidget.cpp:131
+#: ../src/qtui/inputwidget.cpp:132
 msgid "Focus Input Line"
 msgstr "Focus inputregel"
 
@@ -3567,36 +3694,46 @@ msgstr "Toon stijlknoppen"
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:111
+msgid "Enables (limited) Emacs key bindings in the input field."
+msgstr "Activeert (beperkte) Emacs-sneltoetsen in het invoerveld."
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:114
+msgid "Emacs key bindings"
+msgstr "Emacs-sneltoetsen"
+
+#. ts-context InputWidgetSettingsPage
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:127
 msgid "Multi-Line Editing"
 msgstr "Meerdere regels bewerken"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:128
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
 msgid "Show at most"
 msgstr "Toon maximaal"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:154
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
 msgid "lines"
 msgstr "regels"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:176
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
 msgid "Enable scrollbars"
 msgstr "Activeer schuifbalken"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:195
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
 msgid "Tab Completion"
 msgstr "Tab-completion"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:203
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
 msgid "Completion suffix:"
 msgstr "Completion suffix:"
 
 #. ts-context InputWidgetSettingsPage
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgid ": "
 msgstr ": "
 
@@ -3621,23 +3758,28 @@ msgstr "Gebruikers"
 #. ts-context MainWin
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworkModel
-#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:622
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:781
+#: ../src/client/networkmodel.cpp:852
 msgid "Topic"
 msgstr "Onderwerp"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:553
+#: ../src/core/ircserverhandler.cpp:212
+msgid "%1 invited you to channel %2"
+msgstr "%1 heeft u uitgenodigd voor kanaal %2"
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:584
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1 heeft het onderwerp van %2 verandert naar: \"%3\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:603
+#: ../src/core/ircserverhandler.cpp:634
 msgid "Received RPL_ISUPPORT (005) without parameters!"
 msgstr "Received RPL_ISUPPORT (005) without parameters!"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:611
+#: ../src/core/ircserverhandler.cpp:642
 msgid ""
 "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
@@ -3659,156 +3801,163 @@ msgstr ""
 #. Error Message
 #. ----------
 #. Topic Message
+#. ----------
+#. Invite Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/core/ircserverhandler.cpp:628 ../src/core/ircserverhandler.cpp:635
-#: ../src/core/ircserverhandler.cpp:642 ../src/core/ircserverhandler.cpp:649
-#: ../src/uisupport/uistyle.cpp:574 ../src/uisupport/uistyle.cpp:577
-#: ../src/uisupport/uistyle.cpp:617 ../src/uisupport/uistyle.cpp:620
-#: ../src/uisupport/uistyle.cpp:623 ../src/uisupport/uistyle.cpp:630
-#: ../src/uisupport/uistyle.cpp:731
+#: ../src/core/ircserverhandler.cpp:662 ../src/core/ircserverhandler.cpp:669
+#: ../src/core/ircserverhandler.cpp:676 ../src/core/ircserverhandler.cpp:683
+#: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
+#: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
+#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
 msgid "%1"
 msgstr "%1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:684
+#: ../src/core/ircserverhandler.cpp:718
 msgid "[Whois] %1 is away: \"%2\""
 msgstr "[Whois] %1 is afwezig: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:690 ../src/core/ircserverhandler.cpp:695
+#: ../src/core/ircserverhandler.cpp:724 ../src/core/ircserverhandler.cpp:729
 msgid "%1 is away: \"%2\""
 msgstr "%1 is afwezig: \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:739 ../src/core/ircserverhandler.cpp:753
-#: ../src/core/ircserverhandler.cpp:787 ../src/core/ircserverhandler.cpp:803
-#: ../src/core/ircserverhandler.cpp:864 ../src/core/ircserverhandler.cpp:896
+#: ../src/core/ircserverhandler.cpp:773 ../src/core/ircserverhandler.cpp:787
+#: ../src/core/ircserverhandler.cpp:822 ../src/core/ircserverhandler.cpp:838
+#: ../src/core/ircserverhandler.cpp:906 ../src/core/ircserverhandler.cpp:938
 msgid "[Whois] %1"
 msgstr "[Whois] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:768 ../src/core/ircserverhandler.cpp:770
+#: ../src/core/ircserverhandler.cpp:802 ../src/core/ircserverhandler.cpp:805
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 is %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:785
+#: ../src/core/ircserverhandler.cpp:820
 msgid "%1 is online via %2 (%3)"
 msgstr "%1 is online via %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:789 ../src/core/ircserverhandler.cpp:1067
+#: ../src/core/ircserverhandler.cpp:824 ../src/core/ircserverhandler.cpp:1131
 msgid "[Whowas] %1"
 msgstr "[Whowas] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:815
+#: ../src/core/ircserverhandler.cpp:850
 msgid "[Whowas] %1 was %2 (%3)"
 msgstr "[Whowas] %1 was %2 (%3)"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:829
+#: ../src/core/ircserverhandler.cpp:864
 msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] Einde van de /WHO-lijst voor %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:849
+#: ../src/core/ircserverhandler.cpp:886 ../src/core/ircserverhandler.cpp:894
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 is aangemeld sinds %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:851
+#: ../src/core/ircserverhandler.cpp:888 ../src/core/ircserverhandler.cpp:896
 msgid "[Whois] %1 is idling for %2 (%3)"
 msgstr "[Whois] %1 is %2 (%3) inactief"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:854
-msgid "[Whois] idle message: %1"
-msgstr "[Whois] inactief-bericht: %1"
-
-#. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:886
+#: ../src/core/ircserverhandler.cpp:928
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr "[Whois] %1 is een gebruiker in kanalen: %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:888
+#: ../src/core/ircserverhandler.cpp:930
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr "[Whois] %1 heeft voice op kanalen: %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:890
+#: ../src/core/ircserverhandler.cpp:932
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr "[Whois] %1 is een operator op kanalen: %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:918
+#: ../src/core/ircserverhandler.cpp:960
 msgid "Channel %1 has %2 users. Topic is: %3"
 msgstr "Kanaal %1 heeft %2 gebruikers. Onderwerp is: %3"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:927
+#: ../src/core/ircserverhandler.cpp:969
 msgid "End of channel list"
 msgstr "Einde van kanaallijst"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:945
+#: ../src/core/ircserverhandler.cpp:987
 msgid "Homepage for %1 is %2"
 msgstr "Homepage van %1 is %2"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:963
+#: ../src/core/ircserverhandler.cpp:1005
 msgid "Channel %1 created on %2"
 msgstr "Kanaal %1 is op %2 aangemaakt"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:977
+#: ../src/core/ircserverhandler.cpp:1019
 msgid "No topic is set for %1."
 msgstr "Geen onderwerp ingesteld voor %1."
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:992
+#: ../src/core/ircserverhandler.cpp:1039
 msgid "Topic for %1 is \"%2\""
 msgstr "Onderwerp voor %1 is \"%2\""
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1003
+#: ../src/core/ircserverhandler.cpp:1050
 msgid "Topic set by %1 on %2"
 msgstr "Onderwerp op %2 door %1 ingesteld"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1026
+#: ../src/core/ircserverhandler.cpp:1067
+msgid "%1 has been invited to %2"
+msgstr "%1 is uitgenodigd voor %2"
+
+#. ts-context IrcServerHandler
+#: ../src/core/ircserverhandler.cpp:1090
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1085
+#: ../src/core/ircserverhandler.cpp:1149
 msgid "Nick %1 contains illegal characters"
 msgstr "Nick %1 bevat niet-toegestane tekens"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1096
+#: ../src/core/ircserverhandler.cpp:1160
 msgid "Nick already in use: %1"
 msgstr "Nick is al in gebruik: %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1113
+#: ../src/core/ircserverhandler.cpp:1177
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr "Nick/kanaal is tijdelijk niet beschikbaar: %1"
 
 #. ts-context IrcServerHandler
-#: ../src/core/ircserverhandler.cpp:1206
+#: ../src/core/ircserverhandler.cpp:1270
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr ""
 "Geen beschikbare en toegestane nicks in de lijst gevonden. Gebruik /nick "
 "<anderenick> om door te gaan"
 
+#. ts-context IrcUserItem
+#: ../src/client/networkmodel.cpp:806
+msgid " is away"
+msgstr " is afwezig"
+
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:816 ../src/client/networkmodel.cpp:442
+#: ../src/client/networkmodel.cpp:821 ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
 msgstr "niet actief sinds %1"
 
@@ -3816,7 +3965,7 @@ msgstr "niet actief sinds %1"
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:819 ../src/client/networkmodel.cpp:445
+#: ../src/client/networkmodel.cpp:824 ../src/client/networkmodel.cpp:450
 msgid "login time: %1"
 msgstr "logintijd: %1"
 
@@ -3824,7 +3973,7 @@ msgstr "logintijd: %1"
 #. ts-context IrcUserItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:822 ../src/client/networkmodel.cpp:448
+#: ../src/client/networkmodel.cpp:827 ../src/client/networkmodel.cpp:453
 msgid "server: %1"
 msgstr "server: %1"
 
@@ -3928,217 +4077,441 @@ msgstr "Andere activiteit"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SystrayNotificationBackend
 #: ../src/qtui/knotificationbackend.cpp:115
-#: ../src/qtui/systraynotificationbackend.cpp:124
+#: ../src/qtui/systraynotificationbackend.cpp:125
 msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n markering in wachtrij"
 msgstr[1] "%n markeringen in wachtrij"
 
+#. ts-context KeySequenceButton
+#: ../src/qtui/settingspages/keysequencewidget.cpp:77
+msgid "The key you just pressed is not supported by Qt."
+msgstr "De toets die u net heeft ingedrukt wordt niet door Qt ondersteund."
+
+#. ts-context KeySequenceButton
+#: ../src/qtui/settingspages/keysequencewidget.cpp:78
+msgid "Unsupported Key"
+msgstr "Niet-ondersteunde toets"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:169
+msgid ""
+"Click on the button, then enter the shortcut like you would in the program.\n"
+"Example for Ctrl+a: hold the Ctrl key and press a."
+msgstr ""
+"Druk op de knop en vul dan de sneltoets in die u in het programma wilt "
+"gebruiken.\n"
+"Voorbeeld voor Ctrl+a: Houd de Ctrl-toets ingedrukt en druk op a."
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:259
+msgctxt "Meta key"
+msgid "Meta"
+msgstr "Meta"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:260
+msgctxt "Ctrl key"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:261
+msgctxt "Alt key"
+msgid "Alt"
+msgstr "Alt"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:262
+msgctxt "Shift key"
+msgid "Shift"
+msgstr "Shift"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:265
+msgctxt "What the user inputs now will be taken as the new shortcut"
+msgid "Input"
+msgstr "Invoer"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:272
+msgctxt "No shortcut defined"
+msgid "None"
+msgstr "Geen"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:355
+#: ../src/qtui/settingspages/keysequencewidget.cpp:361
+msgid "Shortcut Conflict"
+msgstr "Sneltoetsconflict"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:356
+msgid ""
+"The \"%1\" shortcut is already in use, and cannot be configured.\n"
+"Please choose another one."
+msgstr ""
+"De \"%1\" sneltoets is al in gebruik en kan niet geconfigureerd worden.\n"
+"Kies een andere sneltoets."
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:362
+msgid ""
+"The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
+msgstr ""
+"De \"%1\" sneltoets heeft een conflict met de sneltoets voor de volgende "
+"actie:"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:364
+msgid "Do you want to reassign this shortcut to the selected action?"
+msgstr "Wilt u deze sneltoets toewijzen aan de geselecteerde actie?"
+
+#. ts-context KeySequenceWidget
+#: ../src/qtui/settingspages/keysequencewidget.cpp:367
+msgid "Reassign"
+msgstr "Opnieuw toewijzen"
+
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:308
+#: ../src/qtui/mainwin.cpp:314
 msgid "&Connect to Core..."
 msgstr "Verbindt met &core..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:310
+#: ../src/qtui/mainwin.cpp:316
 msgid "&Disconnect from Core"
 msgstr "&Verbreek verbinding met core"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:312
+#: ../src/qtui/mainwin.cpp:318
 msgid "Core &Info..."
 msgstr "Core &informatie"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:314
+#: ../src/qtui/mainwin.cpp:320
 msgid "Configure &Networks..."
 msgstr "&Netwerken configureren..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:317
+#: ../src/qtui/mainwin.cpp:323
 msgid "&Quit"
 msgstr "&Afsluiten"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:321
+#: ../src/qtui/mainwin.cpp:327
 msgid "&Configure Chat Lists..."
 msgstr "&Configureer chatlijsten..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:324
+#: ../src/qtui/mainwin.cpp:330
 msgid "&Lock Layout"
-msgstr "Zet &lay-out vast"
+msgstr "Zet inde&ling vast"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:328
+#: ../src/qtui/mainwin.cpp:334
 msgid "Show &Search Bar"
 msgstr "Toon &zoekbalk"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:330
+#: ../src/qtui/mainwin.cpp:336
 msgid "Show Away Log"
 msgstr "Toon afwezigheidslog"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:332
+#: ../src/qtui/mainwin.cpp:338
 msgid "Show &Menubar"
 msgstr "Toon &menubalk"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:335
+#: ../src/qtui/mainwin.cpp:341
 msgid "Show Status &Bar"
 msgstr "Toon status&balk"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:339
+#: ../src/qtui/mainwin.cpp:343 ../src/qtui/mainwin.cpp:1185
+msgid "&Fullscreen mode"
+msgstr "&Schermvullend"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:347
+msgid "Configure &Shortcuts..."
+msgstr "&Sneltoetsen instellen…"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:349
 msgid "&Configure Quassel..."
 msgstr "&Configureer Quassel..."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:343
+#: ../src/qtui/mainwin.cpp:353
 msgid "&About Quassel"
 msgstr "&Over Quassel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:345
+#: ../src/qtui/mainwin.cpp:355
 msgid "About &Qt"
 msgstr "Over &Qt"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:347
+#: ../src/qtui/mainwin.cpp:357
 msgid "Debug &NetworkModel"
 msgstr "Debug &NetworkModel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:349
+#: ../src/qtui/mainwin.cpp:359
 msgid "Debug &BufferViewOverlay"
 msgstr "Debug &BufferViewOverlay"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:351
+#: ../src/qtui/mainwin.cpp:361
 msgid "Debug &MessageModel"
 msgstr "Debug &MessageModel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:353
+#: ../src/qtui/mainwin.cpp:363
 msgid "Debug &HotList"
 msgstr "Debug &HotList"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:365
 msgid "Debug &Log"
 msgstr "Debug &log"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:367
 msgid "Reload Stylesheet"
-msgstr "Herlaadt stijlsheet"
+msgstr "Stijlblad herladen"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:371
+msgid "Navigation"
+msgstr "Navigatie"
 
 # Niet heel exact, maar dit is wat jump to hot chat betekent:
 #
 # you switch to the channel with the oldest unread message
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:373
 msgid "Jump to hot chat"
 msgstr "Open het kanaal met oudste ongelezen bericht"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:385
+msgid "Set Quick Access #0"
+msgstr "Stel snel-wisselen #0 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:387
+msgid "Set Quick Access #1"
+msgstr "Stel snel-wisselen #1 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:389
+msgid "Set Quick Access #2"
+msgstr "Stel snel-wisselen #2 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:391
+msgid "Set Quick Access #3"
+msgstr "Stel snel-wisselen #3 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:393
+msgid "Set Quick Access #4"
+msgstr "Stel snel-wisselen #4 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:395
+msgid "Set Quick Access #5"
+msgstr "Stel snel-wisselen #5 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:397
+msgid "Set Quick Access #6"
+msgstr "Stel snel-wisselen #6 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:399
+msgid "Set Quick Access #7"
+msgstr "Stel snel-wisselen #7 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:401
+msgid "Set Quick Access #8"
+msgstr "Stel snel-wisselen #8 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:403
+msgid "Set Quick Access #9"
+msgstr "Stel snel-wisselen #9 in"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:406
+msgid "Quick Access #0"
+msgstr "Snel-wisselen #0"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:408
+msgid "Quick Access #1"
+msgstr "Snel-wisselen #1"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:410
+msgid "Quick Access #2"
+msgstr "Snel-wisselen #2"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:412
+msgid "Quick Access #3"
+msgstr "Snel-wisselen #3"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:414
+msgid "Quick Access #4"
+msgstr "Snel-wisselen #4"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:416
+msgid "Quick Access #5"
+msgstr "Snel-wisselen #5"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:418
+msgid "Quick Access #6"
+msgstr "Snel-wisselen #6"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:420
+msgid "Quick Access #7"
+msgstr "Snel-wisselen #7"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:422
+msgid "Quick Access #8"
+msgstr "Snel-wisselen #8"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:424
+msgid "Quick Access #9"
+msgstr "Snel-wisselen #9"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:428
+msgid "Activate Next Chat List"
+msgstr "Activeer volgende chatlijst"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:430
+msgid "Activate Previous Chat List"
+msgstr "Activeer vorige chatlijst"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:432
+msgid "Go to Next Chat"
+msgstr "Ga naar de volgende chatlijst"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:434
+msgid "Go to Previous Chat"
+msgstr "Ga naar de vorige chatlijst"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:441
 msgid "&File"
 msgstr "&Bestand"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:454
 msgid "&Networks"
 msgstr "&Netwerken"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:387
+#: ../src/qtui/mainwin.cpp:460
 msgid "&View"
 msgstr "&Toon"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:388
+#: ../src/qtui/mainwin.cpp:461
 msgid "&Chat Lists"
 msgstr "&Chatlijsten"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:463
 msgid "&Toolbars"
 msgstr "&Werkbalken"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:404
+#: ../src/qtui/mainwin.cpp:477
 msgid "&Settings"
 msgstr "&Instellingen"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:411
+#: ../src/qtui/mainwin.cpp:486
 msgid "&Help"
 msgstr "&Hulp"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:419
+#: ../src/qtui/mainwin.cpp:494
 msgid "Debug"
 msgstr "Debug"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:564
+#: ../src/qtui/mainwin.cpp:723
 msgid "Nicks"
 msgstr "Nicks"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:573
+#: ../src/qtui/mainwin.cpp:732
 msgid "Show Nick List"
 msgstr "Toon nicklijst"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:596
+#: ../src/qtui/mainwin.cpp:755
 msgid "Show Chat Monitor"
 msgstr "Toon chatmonitor"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:600
+#: ../src/qtui/mainwin.cpp:759
 msgid "Inputline"
 msgstr "Invoerregel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:609
+#: ../src/qtui/mainwin.cpp:768
 msgid "Show Input Line"
 msgstr "Toon invoerregel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:634
+#: ../src/qtui/mainwin.cpp:793
 msgid "Show Topic Line"
 msgstr "Toon onderwerpregel"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:707
+#: ../src/qtui/mainwin.cpp:871
 msgid "Main Toolbar"
 msgstr "Hoofdwerkbalk"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:746
+#: ../src/qtui/mainwin.cpp:910
 msgid "Connected to core."
 msgstr "Met core verbonden."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:821
+#: ../src/qtui/mainwin.cpp:1001
 msgid "Not connected to core."
 msgstr "Niet met core verbonden."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:835 ../src/qtui/mainwin.cpp:843
+#: ../src/qtui/mainwin.cpp:1015 ../src/qtui/mainwin.cpp:1023
 msgid "Unencrypted Connection"
 msgstr "Onversleutelde verbinding"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:835
+#: ../src/qtui/mainwin.cpp:1015
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>U client ondersteunt geen SSL-versleuteling</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:837 ../src/qtui/mainwin.cpp:845
+#: ../src/qtui/mainwin.cpp:1017 ../src/qtui/mainwin.cpp:1025
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
@@ -4147,17 +4520,17 @@ msgstr ""
 "core verzonden worden."
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:843
+#: ../src/qtui/mainwin.cpp:1023
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>U core ondersteunt geen SSL-versleuteling</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:860 ../src/qtui/mainwin.cpp:880
+#: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1060
 msgid "Untrusted Security Certificate"
 msgstr "Onbetrouwbaar beveiligingscertificaat"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:861
+#: ../src/qtui/mainwin.cpp:1041
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
@@ -4166,31 +4539,36 @@ msgstr ""
 "volgende redenen onbetrouwbaar:</b>"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:865
+#: ../src/qtui/mainwin.cpp:1045
 msgid "Show Certificate"
 msgstr "Toon certificaat"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:881
+#: ../src/qtui/mainwin.cpp:1061
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr ""
 "Wilt u dit certificaat permanent accepteren zonder hierom gevraagd te worden?"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:883
+#: ../src/qtui/mainwin.cpp:1063
 msgid "Current Session Only"
 msgstr "Alleen deze sessie"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:884
+#: ../src/qtui/mainwin.cpp:1064
 msgid "Forever"
 msgstr "Permanent"
 
 #. ts-context MainWin
-#: ../src/qtui/mainwin.cpp:893
+#: ../src/qtui/mainwin.cpp:1073
 msgid "Core Connection Error"
 msgstr "Core-verbinding fout"
+
+#. ts-context MainWin
+#: ../src/qtui/mainwin.cpp:1190
+msgid "&Normal mode"
+msgstr "&Normale modus"
 
 #. ts-context MessageModel
 #: ../src/client/messagemodel.cpp:375
@@ -4203,14 +4581,14 @@ msgid "Receiving Backlog"
 msgstr "Backlog ontvangen"
 
 #. ts-context MultiLineEdit
-#: ../src/uisupport/multilineedit.cpp:547
+#: ../src/uisupport/multilineedit.cpp:661
 msgid "Do you really want to paste %n lines?"
 msgid_plural "Do you really want to paste %n lines?"
 msgstr[0] "Wilt u echt %n regel plakken?"
 msgstr[1] "Wilt u echt %n regels plakken?"
 
 #. ts-context MultiLineEdit
-#: ../src/uisupport/multilineedit.cpp:556
+#: ../src/uisupport/multilineedit.cpp:670
 msgid "Paste Protection"
 msgstr "Plak-bescherming"
 
@@ -4272,7 +4650,7 @@ msgid "Please enter a network name:"
 msgstr "Vul een netwerknaam in:"
 
 #. ts-context NetworkItem
-#: ../src/client/networkmodel.cpp:195
+#: ../src/client/networkmodel.cpp:196
 msgid "Server: %1"
 msgstr "Server: %1"
 
@@ -4280,7 +4658,7 @@ msgstr "Server: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:196 ../src/qtui/topicwidget.cpp:106
+#: ../src/client/networkmodel.cpp:197 ../src/qtui/topicwidget.cpp:106
 msgid "Users: %1"
 msgstr "Gebruikers: %1"
 
@@ -4288,17 +4666,17 @@ msgstr "Gebruikers: %1"
 #. ts-context NetworkItem
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:199 ../src/qtui/topicwidget.cpp:107
+#: ../src/client/networkmodel.cpp:200 ../src/qtui/topicwidget.cpp:107
 msgid "Lag: %1 msecs"
 msgstr "Vertraging: %1 msec"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Chat"
 msgstr "Chat"
 
 #. ts-context NetworkModel
-#: ../src/client/networkmodel.cpp:847
+#: ../src/client/networkmodel.cpp:852
 msgid "Nick Count"
 msgstr "Aantal nicks"
 
@@ -4663,7 +5041,7 @@ msgstr ""
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
-#: ../src/uisupport/qssparser.cpp:314
+#: ../src/uisupport/qssparser.cpp:316
 msgid "Invalid block declaration: %1"
 msgstr "Ongeldig blok opgegeven: %1"
 
@@ -4683,144 +5061,144 @@ msgid "Invalid subelement name in %1"
 msgstr "Ongeldige subelementnaam in %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:234
+#: ../src/uisupport/qssparser.cpp:236
 msgid "Invalid message type in %1"
 msgstr "Ongeldig berichttype in %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:243
+#: ../src/uisupport/qssparser.cpp:245
 msgid "Invalid condition %1"
 msgstr "Ongeldige voorwaarde %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:255
+#: ../src/uisupport/qssparser.cpp:257
 msgid "Invalid message label: %1"
 msgstr "Ongeldig berichtlabel: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:266
+#: ../src/uisupport/qssparser.cpp:268
 msgid "Invalid senderhash specification: %1"
 msgstr "Ongeldige senderhash specificatie: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:270
+#: ../src/uisupport/qssparser.cpp:272
 msgid "Senderhash can be at most \"0x0f\"!"
 msgstr "Senderhash kan maximaal \"0x0f\" zijn!"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:285
+#: ../src/uisupport/qssparser.cpp:287
 msgid "Invalid format name: %1"
 msgstr "Ongeldige formatnaam: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:292
+#: ../src/uisupport/qssparser.cpp:294
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
 msgstr "Ongeldige IRC-kleur opgegeven (moet tussen 00 en 0f liggen): %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:300
+#: ../src/uisupport/qssparser.cpp:302
 msgid "Unhandled condition: %1"
 msgstr "Onafgehandeld probleem: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:329
+#: ../src/uisupport/qssparser.cpp:331
 msgid "Invalid proplist %1"
 msgstr "Ongeldige proplijst %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:348
+#: ../src/uisupport/qssparser.cpp:350
 msgid "Invalid chatlist item type %1"
 msgstr "Ongeldig chatlijstobjecttype %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:364
+#: ../src/uisupport/qssparser.cpp:366
 msgid "Invalid chatlist state %1"
 msgstr "Ongeldige chatlijststatus %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:390
+#: ../src/uisupport/qssparser.cpp:392
 msgid "Invalid property declaration: %1"
 msgstr "Ongeldige eigenschapdeclaratie: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:414
+#: ../src/uisupport/qssparser.cpp:416
 msgid "Invalid font property: %1"
 msgstr "Ongeldige lettertype-eigenschap: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:420
+#: ../src/uisupport/qssparser.cpp:422
 msgid "Unknown ChatLine property: %1"
 msgstr "Onbekende ChatLine eigenschap: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:442
+#: ../src/uisupport/qssparser.cpp:444
 msgid "Invalid palette color role specification: %1"
 msgstr "Ongeldige palettekleur-role opgegeven: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:449
+#: ../src/uisupport/qssparser.cpp:451
 msgid "Unknown palette color role: %1"
 msgstr "Onbekende palettekleur-role: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:456 ../src/uisupport/qssparser.cpp:478
-#: ../src/uisupport/qssparser.cpp:499
+#: ../src/uisupport/qssparser.cpp:458 ../src/uisupport/qssparser.cpp:481
+#: ../src/uisupport/qssparser.cpp:503
 msgid "Invalid gradient declaration: %1"
 msgstr "Ongeldige gradiënt opgegeven: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:465 ../src/uisupport/qssparser.cpp:486
-#: ../src/uisupport/qssparser.cpp:509
+#: ../src/uisupport/qssparser.cpp:467 ../src/uisupport/qssparser.cpp:489
+#: ../src/uisupport/qssparser.cpp:513
 msgid "Invalid gradient stops list: %1"
 msgstr "Ongeldige gradiënt-stoplijst: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:605
+#: ../src/uisupport/qssparser.cpp:610
 msgid "Invalid font specification: %1"
 msgstr "Ongeldig lettertype opgegeven: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:644
+#: ../src/uisupport/qssparser.cpp:649
 msgid "Invalid font style specification: %1"
 msgstr "Ongeldige lettertypestijl opgegeven: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:657
+#: ../src/uisupport/qssparser.cpp:662
 msgid "Invalid font weight specification: %1"
 msgstr "Ongeldige lettertype-dikte opgegeven: %1"
 
 #. ts-context QssParser
-#: ../src/uisupport/qssparser.cpp:667
+#: ../src/uisupport/qssparser.cpp:672
 msgid "Invalid font size specification: %1"
 msgstr "Ongeldige lettertypegrootte opgegeven: %1"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:129
+#: ../src/common/util.cpp:145
 msgid "year"
 msgstr "jaar"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:130
+#: ../src/common/util.cpp:146
 msgid "day"
 msgstr "dag"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:131
+#: ../src/common/util.cpp:147
 msgid "h"
 msgstr "h"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:132
+#: ../src/common/util.cpp:148
 msgid "min"
 msgstr "min"
 
 #. ts-context Quassel::secondsToString()
-#: ../src/common/util.cpp:133
+#: ../src/common/util.cpp:149
 msgid "sec"
 msgstr "sec"
 
 #. ts-context QueryBufferItem
-#: ../src/client/networkmodel.cpp:424
+#: ../src/client/networkmodel.cpp:429
 msgid "<b>Query with %1</b>"
 msgstr "<b>Aanvraag met %1</b>"
 
@@ -4968,6 +5346,41 @@ msgstr "Beginwaarden terugzetten"
 msgid "Do you like to restore the default values for this page?"
 msgstr "Wilt u de beginwaarden voor deze pagina terugzetten?"
 
+#. ts-context ShortcutsModel
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:110
+msgid "Action"
+msgstr "Actie"
+
+#. ts-context ShortcutsModel
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:112
+msgid "Shortcut"
+msgstr "Sneltoets"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:22
+msgid "Search:"
+msgstr "Zoek:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:62
+msgid "Shortcut for Selected Action"
+msgstr "Sneltoets voor de geselecteerde actie"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:68
+msgid "Default:"
+msgstr "Standaard:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.ui:82
+msgid "Custom:"
+msgstr "Aangepast:"
+
+#. ts-context ShortcutsSettingsPage
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
+msgid "Shortcuts"
+msgstr "Sneltoetsen"
+
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:880
 msgid "Peer tried to send package larger than max package size!"
@@ -5035,7 +5448,7 @@ msgstr ""
 "het netwerk verbindt"
 
 #. ts-context SqliteStorage
-#: ../src/core/sqlitestorage.cpp:49
+#: ../src/core/sqlitestorage.cpp:52
 msgid ""
 "SQLite is a file-based database engine that does not require any setup. It "
 "is suitable for small and medium-sized databases that do not require access "
@@ -5170,7 +5583,7 @@ msgid "&Restore"
 msgstr "He&rstellen"
 
 #. ts-context SystrayNotificationBackend::ConfigWidget
-#: ../src/qtui/systraynotificationbackend.cpp:134
+#: ../src/qtui/systraynotificationbackend.cpp:135
 msgid "Show a message in a popup"
 msgstr "Toon een bericht in pop-up venster"
 
@@ -5316,183 +5729,200 @@ msgstr "Onderwerpwidget"
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:580
+#: ../src/uisupport/uistyle.cpp:583
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:584
+#: ../src/uisupport/uistyle.cpp:587
 msgid "You are now known as %DN%1%DN"
 msgstr "U staat nu bekend als %DN%1%DN"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:585
+#: ../src/uisupport/uistyle.cpp:588
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN staat nu bekend als %DN%2%DN"
 
 #. Mode Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:589
+#: ../src/uisupport/uistyle.cpp:592
 msgid "User mode: %DM%1%DM"
 msgstr "Gebruikersmodus: %DM%1%DM"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:590
+#: ../src/uisupport/uistyle.cpp:593
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "Modus %DM%1%DM door %DN%2%DN"
 
 #. Join Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:594
+#: ../src/uisupport/uistyle.cpp:597
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH is %DC%4%DC binnengekomen"
 
 #. Part Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:597
+#: ../src/uisupport/uistyle.cpp:600
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH heeft %DC%4%DC verlaten"
 
 #. Quit Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:602
+#: ../src/uisupport/uistyle.cpp:605
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH heeft afgesloten"
 
 #. Kick Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:609
+#: ../src/uisupport/uistyle.cpp:612
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN heeft %DN%2%DN %DC%3%DC uitgeschopt"
 
 #. Day Change Message
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:626
+#: ../src/uisupport/uistyle.cpp:629
 msgid "{Day changed to %1}"
 msgstr "{Dag veranderd naar %1}"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:638
+#: ../src/uisupport/uistyle.cpp:641
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
 "De netsplit tussen %DH%1%DH en %DH%2%DH is voorbij. Gebruikers "
 "binnengekomen: "
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:642 ../src/uisupport/uistyle.cpp:657
+#: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN (%2 meer)"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:652
+#: ../src/uisupport/uistyle.cpp:655
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "Netsplit tussen %DH%1%DH en %DH%2%DH. Gebruikers verlaten: "
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:661 ../src/uisupport/uistyle.cpp:699
+#: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
 msgid "[%1]"
 msgstr "[%1]"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:697
+#: ../src/uisupport/uistyle.cpp:703
 msgid "<%1>"
 msgstr "<%1>"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:701
+#: ../src/uisupport/uistyle.cpp:707
 msgid "-*-"
 msgstr "-*-"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:703
+#: ../src/uisupport/uistyle.cpp:709
 msgid "<->"
 msgstr "<->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:705
+#: ../src/uisupport/uistyle.cpp:711
 msgid "***"
 msgstr "***"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:707
+#: ../src/uisupport/uistyle.cpp:713
 msgid "-->"
 msgstr "-->"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:709 ../src/uisupport/uistyle.cpp:711
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
 msgid "<--"
 msgstr "<--"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:713
+#: ../src/uisupport/uistyle.cpp:719
 msgid "<-*"
 msgstr "<-*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:715
+#: ../src/uisupport/uistyle.cpp:721
 msgid "<-x"
 msgstr "<-x"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:717 ../src/uisupport/uistyle.cpp:719
-#: ../src/uisupport/uistyle.cpp:721 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
 msgid "*"
 msgstr "*"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:723
+#: ../src/uisupport/uistyle.cpp:729
 msgid "-"
 msgstr "-"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:727
+#: ../src/uisupport/uistyle.cpp:733
 msgid "=>"
 msgstr "=>"
 
 #. ts-context UiStyle::StyledMessage
-#: ../src/uisupport/uistyle.cpp:729
+#: ../src/uisupport/uistyle.cpp:735
 msgid "<="
 msgstr "<="
 
+#. ts-context UiStyle::StyledMessage
+#: ../src/uisupport/uistyle.cpp:737
+msgid "->"
+msgstr "->"
+
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:692
+#: ../src/client/networkmodel.cpp:697
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
 msgstr[0] "%n Eigenaar"
 msgstr[1] "%n Eigenaars"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:693
+#: ../src/client/networkmodel.cpp:698
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
 msgstr[0] "%n Administrator"
 msgstr[1] "%n Administrators"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:694
+#: ../src/client/networkmodel.cpp:699
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
 msgstr[0] "%n Operator"
 msgstr[1] "%n Operators"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:695
+#: ../src/client/networkmodel.cpp:700
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
 msgstr[0] "%n Half-Op"
 msgstr[1] "%n Half-Ops"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:696
+#: ../src/client/networkmodel.cpp:701
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
 msgstr[0] "%n met voice"
 msgstr[1] "%n met voice"
 
 #. ts-context UserCategoryItem
-#: ../src/client/networkmodel.cpp:697
+#: ../src/client/networkmodel.cpp:702
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
 msgstr[0] "%n Gebruiker"
 msgstr[1] "%n Gebruikers"
+
+#~ msgid "Finger"
+#~ msgstr "Finger"
+
+#~ msgid "Add Buffers Automatically:"
+#~ msgstr "Automatisch buffers toevoegen:"
+
+#~ msgid "Hide inactive buffers:"
+#~ msgstr "Inactieve buffers verbergen:"
+
+#~ msgid "[Whois] idle message: %1"
+#~ msgstr "[Whois] inactief-bericht: %1"

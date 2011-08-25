@@ -7,17 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
-"POT-Creation-Date: 2010-08-27 16:39+0000\n"
-"PO-Revision-Date: 2010-09-08 23:36+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbers.com>\n"
+"POT-Creation-Date: 2010-12-15 22:38+0000\n"
+"PO-Revision-Date: 2011-06-03 06:57+0000\n"
+"Last-Translator: Finkregh <admin@gamesuniverse.net>\n"
 "Language-Team: German <devel@quassel-irc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-09-09 05:08+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-06-04 05:28+0000\n"
+"X-Generator: Launchpad (build 12959)\n"
 "X-Language: de_DE\n"
+
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
+#: ../src/qtui/ui/coreconnectauthdlg.ui:49
+msgid "Username:"
+msgstr "Benutzername:"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -2005,7 +2014,7 @@ msgstr "Immer verbinden mit"
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 msgid "Remote Cores"
-msgstr "Remote Cores"
+msgstr "Entfernte Cores"
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:69
@@ -2034,15 +2043,6 @@ msgstr ""
 "Sie sind jetzt bei Ihrem frisch konfigurierten Quassel-Core "
 "angemeldet!<br>Bitte denken Sie daran, jetzt Identitäten und Netzwerke zu "
 "konfigurieren."
-
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreConnectAuthDlg
-#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
-#: ../src/qtui/ui/coreconnectauthdlg.ui:49
-msgid "Username:"
-msgstr "Benutzerame:"
 
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:46

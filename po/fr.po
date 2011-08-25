@@ -1,22 +1,23 @@
 # French translation for Quassel IRC
 # Copyright (c) 2010 Quassel IRC
 # This file is distributed under the same license as the Quassel IRC package.
-# 
+#
 # Bruno Patri <bruno.patri@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
-"POT-Creation-Date: 2010-02-25 00:37+0200\n"
-"PO-Revision-Date: 2010-09-17 09:10+0200\n"
+"POT-Creation-Date: 2010-12-15 22:38+0000\n"
+"PO-Revision-Date: 2010-11-05 18:36+0000\n"
 "Last-Translator: Bruno Patri <bruno.patri@gmail.com>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Launchpad-Export-Date: 2010-12-16 05:02+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Language: fr\n"
-"X-Generator: Lokalize 1.1\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -26,28 +27,44 @@ msgstr "À propos de Quassel"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (08/02/2008)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (08/02/2008)</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:115
@@ -72,12 +89,36 @@ msgstr "&Remerciements"
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:32
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Version :</b> %1<br><b>Version du protocole :</b> %2<br><b>Compilation :</b> %3"
+msgstr ""
+"<b>Version :</b> %1<br><b>Version du protocole :</b> "
+"%2<br><b>Compilation :</b> %3"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:46
-msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-msgstr "<b>Un Client IRC distribué moderne</b><br><br>&copy;2005-2009 par le projet Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> sur <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC est sous double licence <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> et <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>La majorité des icônes proviennent de l'<a href=\"http://www.oxygen-icons.org\">équipe Oxygen</a> &copy; et sont utilisées sous licence <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Veuillez utiliser <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> pour signaler les bogues."
+msgid ""
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
+"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+"and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+"icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
+"Team</a> and used under the <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
+"<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
+"report bugs."
+msgstr ""
+"<b>Un Client IRC distribué moderne</b><br><br>&copy;2005-2009 par le projet "
+"Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> sur "
+"<a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC est sous "
+"double licence <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+"et <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>La "
+"majorité des icônes proviennent de l'<a href=\"http://www.oxygen-"
+"icons.org\">équipe Oxygen</a> &copy; et sont utilisées sous licence <a "
+"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Veuillez "
+"utiliser <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-"
+"irc.org</a> pour signaler les bogues."
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:62
@@ -86,18 +127,50 @@ msgstr "Quassel IRC est principalement développé par :"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:77
-msgid "We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:"
-msgstr "Nous voulons aussi remercier les contributeurs suivants (par ordre alphabétique) et toute personne que nous avons oublié de mentionner ici :"
+msgid ""
+"We would like to thank the following contributors (in alphabetical order) "
+"and everybody we forgot to mention here:"
+msgstr ""
+"Nous voulons aussi remercier les contributeurs suivants (par ordre "
+"alphabétique) et toute personne que nous avons oublié de mentionner ici :"
 
 #. ts-context AboutDlg
 #: ../src/qtui/aboutdlg.cpp:135
-msgid "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating all the artwork you see throughout Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr "Remerciements particuliers à :<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>pour son grand travail artistique et pour le logo Quassel</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">L'équipe Oxygen</a></b></dt><dd>pour la création de la majorité des autres belles icônes que vous pouvez voir dans Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software précédemment nommée Trolltech</a></b></dt><dd>pour la création de Qt et Qtopia, et comme sponsor du développement de QuasselTopia avec Greenphones et d'autres</dd><dt><b><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\">Nokia</a></b></dt><dd>pour garder en vie Qt, et pour sponsoriser le développement de Quassel Mobile avec N810s</dd>"
+msgid ""
+"Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
+"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"creating all the artwork you see throughout Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software formerly known as "
+"Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring "
+"development of QuasselTopia with Greenphones and more</dd><dt><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
+"sponsoring development of Quassel Mobile with N810s</dd>"
+msgstr ""
+"Remerciements particuliers à :<br><dl><dt><img src=\":/pics/quassel-"
+"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>pour son grand travail "
+"artistique et pour le logo Quassel</dt><dt><img "
+"src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-"
+"icons.org\">L'équipe Oxygen</a></b></dt><dd>pour la création de la majorité "
+"des autres belles icônes que vous pouvez voir dans Quassel</dd><dt><img "
+"src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
+"href=\"http://www.trolltech.com\">Qt Software précédemment nommée "
+"Trolltech</a></b></dt><dd>pour la création de Qt et Qtopia, et comme sponsor "
+"du développement de QuasselTopia avec Greenphones et d'autres</dd><dt><b><a "
+"href=\"http://www.nokia.com\"><img "
+"src=\":/pics/nokia.png\">Nokia</a></b></dt><dd>pour garder en vie Qt, et "
+"pour sponsoriser le développement de Quassel Mobile avec N810s</dd>"
 
 #. ts-context AbstractSqlStorage
 #: ../src/core/abstractsqlstorage.cpp:115
-msgid "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
-msgstr "Le schéma installé (version %1) n'est pas à jour. Mise à jour vers la version %2..."
+msgid ""
+"Installed Schema (version %1) is not up to date. Upgrading to version %2..."
+msgstr ""
+"Le schéma installé (version %1) n'est pas à jour. Mise à jour vers la "
+"version %2..."
 
 #. ts-context AbstractSqlStorage
 #: ../src/core/abstractsqlstorage.cpp:117
@@ -106,13 +179,41 @@ msgstr "Échec de la mise à jour..."
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:55
-msgid "<b>The shortcut for the alias</b><br />It can be used as a regular slash command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
-msgstr "<b>Raccourci pour l'alias</b><br />On peut s'en servir comme une commande barre oblique (slash) normale.<br /><br /><b>Exemple :</b> « truc » peut être utilisé à la place de /truc"
+msgid ""
+"<b>The shortcut for the alias</b><br />It can be used as a regular slash "
+"command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
+msgstr ""
+"<b>Raccourci pour l'alias</b><br />On peut s'en servir comme une commande "
+"barre oblique (slash) normale.<br /><br /><b>Exemple :</b> « truc » peut "
+"être utilisé à la place de /truc"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
-msgid "<b>The string the shortcut will be expanded to</b><br /><b>special variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br /> - <b>$i..</b> represents all parameters from i on separated by spaces.<br /> - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br /> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of the selected channel<br /><br />Multiple commands can be separated with semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
-msgstr "<b>La chaîne résultant du développement du raccourci</b><br /><b>variables spéciales :</b><br /> - <b>$i</b> représente le paramètre en position i.<br /> - <b>$i..j</b> représente les paramètres de i à j séparés par des espaces.<br /> - <b>$i..</b> représente tous les paramètres à partir de i séparés par des espaces.<br /> - <b>$i:hostname</b> représente le nom de l'hôte de l'utilisateur identifié par le paramètre en position i, ou une * s'il est inconnu.<br /> - <b>$0</b> la chaîne complète.<br /> - <b>$nick</b> votre pseudo actuel<br /> - <b>$channel</b> le nom du canal sélectionné<br /> <br />Les commandes multiples peuvent être séparés par un point-virgule<br /> <br /><b>Exemple :</b> « Test $1; Test $2; Test All $0 » sera développé en trois messages séparés « Test 1 », « Test 2 » et « Test All 1 2 3 », lors d'un appel. Ceci est équivalent à /test 1 2 3"
+msgid ""
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
+"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
+"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
+"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
+"the selected channel<br /><br />Multiple commands can be separated with "
+"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
+"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
+"1 2 3\" when called like /test 1 2 3"
+msgstr ""
+"<b>La chaîne résultant du développement du raccourci</b><br /><b>variables "
+"spéciales :</b><br /> - <b>$i</b> représente le paramètre en position i.<br "
+"/> - <b>$i..j</b> représente les paramètres de i à j séparés par des "
+"espaces.<br /> - <b>$i..</b> représente tous les paramètres à partir de i "
+"séparés par des espaces.<br /> - <b>$i:hostname</b> représente le nom de "
+"l'hôte de l'utilisateur identifié par le paramètre en position i, ou une * "
+"s'il est inconnu.<br /> - <b>$0</b> la chaîne complète.<br /> - <b>$nick</b> "
+"votre pseudo actuel<br /> - <b>$channel</b> le nom du canal sélectionné<br "
+"/> <br />Les commandes multiples peuvent être séparés par un point-"
+"virgule<br /> <br /><b>Exemple :</b> « Test $1; Test $2; Test All $0 » sera "
+"développé en trois messages séparés « Test 1 », « Test 2 » et « Test All 1 2 "
+"3 », lors d'un appel. Ceci est équivalent à /test 1 2 3"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
@@ -363,7 +464,9 @@ msgstr "Afficher l'icône dans la zone de notification des applications"
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
 msgid "Hide to tray on close button"
-msgstr "Réduire dans la zone de notification des applications en cliquant sur le bouton fermer"
+msgstr ""
+"Réduire dans la zone de notification des applications en cliquant sur le "
+"bouton fermer"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:216
@@ -469,8 +572,12 @@ msgstr "Afficher le nom du tampon"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:22
-msgid "Number of messages to be requested from the core when using scrolling up in the buffer view."
-msgstr "Nombre de messages à demander au composant central lors du défilement dans un tampon."
+msgid ""
+"Number of messages to be requested from the core when using scrolling up in "
+"the buffer view."
+msgstr ""
+"Nombre de messages à demander au composant central lors du défilement dans "
+"un tampon."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
@@ -499,13 +606,21 @@ msgstr "Nombre global de messages non lus"
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:123
-msgid "The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog."
-msgstr "C'est la demande la plus simple. Elle récupère un nombre fixe de lignes pour chaque fenêtre de conversation à partir de l'historique."
+msgid ""
+"The simplest requester. It fetches a fixed amount of lines for each chat "
+"window from the backlog."
+msgstr ""
+"C'est la demande la plus simple. Elle récupère un nombre fixe de lignes pour "
+"chaque fenêtre de conversation à partir de l'historique."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
-msgid "amount of messages per buffer that are requested after the core connection has been established."
-msgstr "nombre de messages demandés par tampon après l'établissement de la connexion principale."
+msgid ""
+"amount of messages per buffer that are requested after the core connection "
+"has been established."
+msgstr ""
+"nombre de messages demandés par tampon après l'établissement de la connexion "
+"principale."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
@@ -515,12 +630,17 @@ msgstr "Volume initial de l'historique :"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
 msgid ""
-"This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
+"This requester fetches unread messages for each chat window individually. "
+"The amount of lines can be limited per chat.\n"
 "\n"
-"You can also choose to fetch additional older chatlines to provide a better context."
+"You can also choose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Cette demande récupère les messages non lus de chaque fenêtre de conversation individuellement. Le nombre des lignes par tampon peut être limité.\n"
-"Vous pouvez aussi demander des lignes supplémentaires afin d'obtenir un meilleur contexte."
+"Cette demande récupère les messages non lus de chaque fenêtre de "
+"conversation individuellement. Le nombre des lignes par tampon peut être "
+"limité.\n"
+"Vous pouvez aussi demander des lignes supplémentaires afin d'obtenir un "
+"meilleur contexte."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
@@ -553,8 +673,12 @@ msgstr "Illimité"
 #: ../src/qtui/settingspages/backlogsettingspage.ui:270
 #: ../src/qtui/settingspages/backlogsettingspage.ui:382
 #: ../src/qtui/settingspages/backlogsettingspage.ui:392
-msgid "Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here."
-msgstr "Quantité de messages à récupérer en plus des messages non lus. La limite ne s'applique pas ici."
+msgid ""
+"Amount of messages to be fetched in addition to the unread messages. The "
+"Limit does not apply here."
+msgstr ""
+"Quantité de messages à récupérer en plus des messages non lus. La limite ne "
+"s'applique pas ici."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
@@ -565,19 +689,28 @@ msgstr "Messages supplémentaires :"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:324
 msgid ""
-"This requester fetches all messages newer than the oldest unread message for all chats.\n"
+"This requester fetches all messages newer than the oldest unread message for "
+"all chats.\n"
 "\n"
-"Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).\n"
-"It is useful to limit the total amount of the backlog and is probably the fastest.\n"
+"Note: This requester is not recommended if you use hidden chat windows or "
+"have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the "
+"fastest.\n"
 "\n"
-"You can also chose to fetch additional older chatlines to provide a better context."
+"You can also chose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Cette demande récupère tous les messages plus récents que le plus ancien message non lu pour toutes les conversations. \n"
+"Cette demande récupère tous les messages plus récents que le plus ancien "
+"message non lu pour toutes les conversations. \n"
 "\n"
-"Remarque : cette demande n'est pas recommandée si vous utilisez des fenêtres de conversation cachées ou si vous avez des conversations inactives (c.-à.-d. : sans requêtes ou dans des canaux obsolètes).\n"
-"Il est plus pratique de limiter le volume total de l'historique et c'est probablement plus rapide.\n"
+"Remarque : cette demande n'est pas recommandée si vous utilisez des fenêtres "
+"de conversation cachées ou si vous avez des conversations inactives (c.-à.-"
+"d. : sans requêtes ou dans des canaux obsolètes).\n"
+"Il est plus pratique de limiter le volume total de l'historique et c'est "
+"probablement plus rapide.\n"
 "\n"
-"Vous pouvez également choisir de récupérer des lignes  de discussion supplémentaires plus anciennes pour obtenir un meilleur contexte."
+"Vous pouvez également choisir de récupérer des lignes  de discussion "
+"supplémentaires plus anciennes pour obtenir un meilleur contexte."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:344
@@ -605,7 +738,8 @@ msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
 msgstr ""
-"Voulez-vous fusionner définitivement le tampon « %1 » dans le tampon « %2 » ?\n"
+"Voulez-vous fusionner définitivement le tampon « %1 » dans le tampon "
+"« %2 » ?\n"
 " Cette opération ne peut pas être annulée !"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
@@ -885,19 +1019,34 @@ msgstr "Erreurs survenues :"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
+"ERROR!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\">SUPER ERREUR CATASTROPHIQUE DE LA MORT ! 11</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; "
+"font-size:13pt;\">SUPER ERREUR CATASTROPHIQUE DE LA MORT ! 11</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
@@ -907,21 +1056,45 @@ msgstr "Mode de fonctionnement :"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
+"style=\" font-weight:400;\">Only buffers on the right side are shown in "
+"chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
+"ignored in chatmonitor</p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Modes de fonctionnement:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Activé :</span> <span style=\" font-weight:400;\">seuls les tampons visibles à droite sont affichés dans le moniteur de discussion</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Inactivé :</span> les tampons figurant à droite sont ignorés dans le moniteur de discussion</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Modes de fonctionnement:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Activé :</span> "
+"<span style=\" font-weight:400;\">seuls les tampons visibles à droite sont "
+"affichés dans le moniteur de discussion</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Inactivé :</span> les tampons figurant à droite "
+"sont ignorés dans le moniteur de discussion</p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
@@ -946,8 +1119,11 @@ msgstr "Afficher :"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:147
-msgid "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr "Afficher les messages surlignés dans le moniteur de discussion même si le tampon d'où ils proviennent est ignoré"
+msgid ""
+"Show highlights in chatmonitor even if the originating buffer is ignored"
+msgstr ""
+"Afficher les messages surlignés dans le moniteur de discussion même si le "
+"tampon d'où ils proviennent est ignoré"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
@@ -1045,8 +1221,11 @@ msgstr "Autoriser le texte en couleur (codes couleurs mIRC)"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:111
-msgid "Show a website preview window when hovering the mouse over a web address"
-msgstr "Affiche une fenêtre d'aperçu du site web quand la souris passe sur une adresse web"
+msgid ""
+"Show a website preview window when hovering the mouse over a web address"
+msgstr ""
+"Affiche une fenêtre d'aperçu du site web quand la souris passe sur une "
+"adresse web"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:114
@@ -1055,13 +1234,18 @@ msgstr "Afficher les aperçus de pages web au passage sur une URL"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:130
-msgid "Set the marker line to the bottom of the current chat window when selecting another channel"
-msgstr "Placer la ligne de séparation en bas de la fenêtre de conversation actuelle lors de la sélection d'un autre canal"
+msgid ""
+"Set the marker line to the bottom of the current chat window when selecting "
+"another channel"
+msgstr ""
+"Placer la ligne de séparation en bas de la fenêtre de conversation actuelle "
+"lors de la sélection d'un autre canal"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:133
 msgid "Set marker line automatically when switching chats"
-msgstr "Placer la ligne de séparation automatiquement lors du changement de canal"
+msgstr ""
+"Placer la ligne de séparation automatiquement lors du changement de canal"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:149
@@ -1136,7 +1320,8 @@ msgstr "Fenêtre de discussion"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgid "You need at 0.6 quasselcore to use this feature"
-msgstr "Il vous faut le composant central Quassel 0.6 pour utiliser cette fonction"
+msgstr ""
+"Il vous faut le composant central Quassel 0.6 pour utiliser cette fonction"
 
 #. ts-context Client
 #: ../src/client/client.cpp:270
@@ -1205,8 +1390,13 @@ msgstr "pings perdus"
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
-msgid "This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users' away status."
-msgstr "Ceci active l'analyse périodique des informations utilisateur à l'aide de /WHO. C'est particulièrement intéressant pour le suivi de l'absence des utilisateurs."
+msgid ""
+"This enables periodic polling of user information using /WHO. This is mostly "
+"interesting for tracking users' away status."
+msgstr ""
+"Ceci active l'analyse périodique des informations utilisateur à l'aide de "
+"/WHO. C'est particulièrement intéressant pour le suivi de l'absence des "
+"utilisateurs."
 
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:131
@@ -1476,11 +1666,13 @@ msgstr "Impossible d'initialiser une base de données ! Fin de l'opération..."
 #: ../src/core/core.cpp:183
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
-"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
+"Qt library with the sqlite or postgres plugin enabled in order for "
+"quasselcore\n"
 "to work."
 msgstr ""
 "Actuellement, Quassel prend en charge uniquement SQLite3 et PostgreSQL.\n"
-"Votre bibliothèque Qt doit être construite avec un module sqlite ou postgres activé pour que le composant central Quassel puisse fonctionner."
+"Votre bibliothèque Qt doit être construite avec un module sqlite ou postgres "
+"activé pour que le composant central Quassel puisse fonctionner."
 
 #. ts-context Core
 #: ../src/core/core.cpp:232
@@ -1490,7 +1682,8 @@ msgstr "Appel de restoreState() alors que des sessions actives existent !"
 #. ts-context Core
 #: ../src/core/core.cpp:273
 msgid "Admin user or password not set."
-msgstr "L'identifiant ou le mot de passe administrateur ne sont pas renseignés."
+msgstr ""
+"L'identifiant ou le mot de passe administrateur ne sont pas renseignés."
 
 #. ts-context Core
 #: ../src/core/core.cpp:277
@@ -1509,8 +1702,11 @@ msgstr "Adresse d'écoute %1 erronée"
 
 #. ts-context Core
 #: ../src/core/core.cpp:402
-msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "À l'écoute de clients à l'adresse IPv4 %1 port %2 avec la version %3 du protocole"
+msgid ""
+"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgstr ""
+"À l'écoute de clients à l'adresse IPv4 %1 port %2 avec la version %3 du "
+"protocole"
 
 #. ts-context Core
 #: ../src/core/core.cpp:410
@@ -1519,8 +1715,11 @@ msgstr "Impossible d'ouvrir l'interface IPv4 %1:%2 : %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:418
-msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "À l'écoute de clients à l'adresse IPv6 %1 port %2 avec la version %3 du protocole"
+msgid ""
+"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgstr ""
+"À l'écoute de clients à l'adresse IPv6 %1 port %2 avec la version %3 du "
+"protocole"
 
 #. ts-context Core
 #: ../src/core/core.cpp:429
@@ -1554,8 +1753,13 @@ msgstr "Un client archaïque essaye de se connecter... refusé."
 
 #. ts-context Core
 #: ../src/core/core.cpp:514
-msgid "<b>Your Quassel Client is too old!</b><br>This core needs at least client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr "<b>Votre client Quassel est trop ancien !</b><br>Le composant central requiert au minimum la version %1 du protocole client/composant central.<br>Veuillez mettre à jour votre client."
+msgid ""
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1.<br>Please consider upgrading your client."
+msgstr ""
+"<b>Votre client Quassel est trop ancien !</b><br>Le composant central "
+"requiert au minimum la version %1 du protocole client/composant "
+"central.<br>Veuillez mettre à jour votre client."
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context Core
@@ -1573,8 +1777,11 @@ msgstr "trop ancien, rejeté."
 
 #. ts-context Core
 #: ../src/core/core.cpp:535
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr "<b>Composant central Quassel version %1</b><br>Compilation : %2<br>En fonction pendant %3 j %4 h %5 min (depuis %6)"
+msgid ""
+"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgstr ""
+"<b>Composant central Quassel version %1</b><br>Compilation : %2<br>En "
+"fonction pendant %3 j %4 h %5 min (depuis %6)"
 
 #. ts-context Core
 #: ../src/core/core.cpp:588
@@ -1583,23 +1790,36 @@ msgstr "Lancement de TLS pour le client :"
 
 #. ts-context Core
 #: ../src/core/core.cpp:606
-msgid "<b>Client not initialized!</b><br>You need to send an init message before trying to login."
-msgstr "<b>Client non initialisé !</b><br>Vous devez envoyer un message d'initialisation avant d'essayer de vous connecter."
+msgid ""
+"<b>Client not initialized!</b><br>You need to send an init message before "
+"trying to login."
+msgstr ""
+"<b>Client non initialisé !</b><br>Vous devez envoyer un message "
+"d'initialisation avant d'essayer de vous connecter."
 
 #. ts-context Core
 #: ../src/core/core.cpp:608
 msgid "did not send an init message before trying to login, rejecting."
-msgstr "n'a pas envoyé de message d'initialisation avant d'essayer de se connecter, rejet."
+msgstr ""
+"n'a pas envoyé de message d'initialisation avant d'essayer de se connecter, "
+"rejet."
 
 #. ts-context Core
 #: ../src/core/core.cpp:626
-msgid "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database."
-msgstr "<b>identifiant ou mot de passe erroné !</b><br>Impossible de trouver a combinaison identifiant/mot de passe que vous avez fourni, dans la base de données."
+msgid ""
+"<b>Invalid username or password!</b><br>The username/password combination "
+"you supplied could not be found in the database."
+msgstr ""
+"<b>identifiant ou mot de passe erroné !</b><br>Impossible de trouver a "
+"combinaison identifiant/mot de passe que vous avez fourni, dans la base de "
+"données."
 
 #. ts-context Core
 #: ../src/core/core.cpp:632
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
-msgstr "initialisé et authentifié avec succès en tant que « %1 » (ID utilisateur : %2)."
+msgstr ""
+"initialisé et authentifié avec succès en tant que « %1 » (ID utilisateur : "
+"%2)."
 
 #. ts-context Core
 #: ../src/core/core.cpp:643
@@ -1811,17 +2031,26 @@ msgstr "Assistant de configuration du composant central"
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:97
 msgid "Your core has been successfully configured. Logging you in..."
-msgstr "Votre composant central a été configuré avec succès. Connexion à celui-ci..."
+msgstr ""
+"Votre composant central a été configuré avec succès. Connexion à celui-ci..."
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:104
-msgid "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
-msgstr "Échec de la configuration du composant central :<br><b>%1</b><br>Cliquez sur <em>Suivant</em> pour recommencer."
+msgid ""
+"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
+msgstr ""
+"Échec de la configuration du composant central :<br><b>%1</b><br>Cliquez sur "
+"<em>Suivant</em> pour recommencer."
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:119
-msgid "Your are now logged into your freshly configured Quassel Core!<br>Please remember to configure your identities and networks now."
-msgstr "Vous êtes maintenant connecté à votre composant central Quassel tout juste configuré !<br>N'oubliez pas de configurer vos identités et vos réseaux maintenant."
+msgid ""
+"Your are now logged into your freshly configured Quassel Core!<br>Please "
+"remember to configure your identities and networks now."
+msgstr ""
+"Vous êtes maintenant connecté à votre composant central Quassel tout juste "
+"configuré !<br>N'oubliez pas de configurer vos identités et vos réseaux "
+"maintenant."
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreConfigWizardAdminUserPage
@@ -1849,16 +2078,23 @@ msgstr "Mémoriser le mot de passe"
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:69
 msgid ""
-"<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+"<b>Note:</b> Adding more users and changing your username/password is not "
+"possible via Quassel's client interface yet.\n"
+"If you need to do these things, please run \"<tt><nobr>quasselcore --"
+"help</nobr></tt>\"."
 msgstr ""
-"<b>Remarque :</b> l'ajout d'autres utilisateurs et le changement du nom d'utilisateur et du mot de passe n'est pas possible dans l'interface client de Quassel pour le moment.\n"
-"Si vous devez le faire, veuillez exécuter « <tt><nobr>quasselcore --help</nobr></tt> »."
+"<b>Remarque :</b> l'ajout d'autres utilisateurs et le changement du nom "
+"d'utilisateur et du mot de passe n'est pas possible dans l'interface client "
+"de Quassel pour le moment.\n"
+"Si vous devez le faire, veuillez exécuter « <tt><nobr>quasselcore --"
+"help</nobr></tt> »."
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
 msgid "This wizard will guide you through the setup of your Quassel Core."
-msgstr "Cet assistant va vous guider dans la configuration de votre composant central Quassel."
+msgstr ""
+"Cet assistant va vous guider dans la configuration de votre composant "
+"central Quassel."
 
 #. ts-context CoreConfigWizardPages::AdminUserPage
 #: ../src/qtui/coreconfigwizard.cpp:150
@@ -1867,8 +2103,12 @@ msgstr "Créer l'utilisateur administrateur"
 
 #. ts-context CoreConfigWizardPages::AdminUserPage
 #: ../src/qtui/coreconfigwizard.cpp:151
-msgid "First, we will create a user on the core. This first user will have administrator privileges."
-msgstr "Nous allons d'abord créer un utilisateur pour le composant central. Le premier utilisateur aura les privilèges d'administrateur."
+msgid ""
+"First, we will create a user on the core. This first user will have "
+"administrator privileges."
+msgstr ""
+"Nous allons d'abord créer un utilisateur pour le composant central. Le "
+"premier utilisateur aura les privilèges d'administrateur."
 
 #. ts-context CoreConfigWizardPages::IntroPage
 #: ../src/qtui/coreconfigwizard.cpp:135
@@ -1882,8 +2122,12 @@ msgstr "Sélectionnez le type de base de données"
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:183
-msgid "Please select a database backend for the Quassel Core storage to store the backlog and other data in."
-msgstr "Veuillez sélectionner une base de données pour le stockage de l'historique ainsi que des autres données pour le composant central Quassel."
+msgid ""
+"Please select a database backend for the Quassel Core storage to store the "
+"backlog and other data in."
+msgstr ""
+"Veuillez sélectionner une base de données pour le stockage de l'historique "
+"ainsi que des autres données pour le composant central Quassel."
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:277
@@ -1897,8 +2141,12 @@ msgstr "Enregistrement de vos paramètres"
 
 #. ts-context CoreConfigWizardPages::SyncPage
 #: ../src/qtui/coreconfigwizard.cpp:318
-msgid "Your settings are now stored in the core, and you will be logged in automatically."
-msgstr "Vos paramètres sont maintenant enregistrés dans le composant central, et vous y serez connecté automatiquement."
+msgid ""
+"Your settings are now stored in the core, and you will be logged in "
+"automatically."
+msgstr ""
+"Vos paramètres sont maintenant enregistrés dans le composant central, et "
+"vous y serez connecté automatiquement."
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreConfigWizardStorageSelectionPage
@@ -1942,7 +2190,9 @@ msgstr "machin"
 #. ts-context CoreConfigWizardSyncPage
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:102
 msgid "Please wait while your settings are being transmitted to the core..."
-msgstr "Veuillez patienter le temps que vos paramètres soient transmis au composant central..."
+msgstr ""
+"Veuillez patienter le temps que vos paramètres soient transmis au composant "
+"central..."
 
 #. ts-context CoreConnectAuthDlg
 #: ../src/qtui/ui/coreconnectauthdlg.ui:14
@@ -1996,8 +2246,11 @@ msgstr "Déconnexion de %1..."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:272
-msgid "The Quassel Core you try to connect to is too old! Please consider upgrading."
-msgstr "Le composant central Quassel auquel vous vous connectez est trop ancien ! Veuillez le mettre à jour."
+msgid ""
+"The Quassel Core you try to connect to is too old! Please consider upgrading."
+msgstr ""
+"Le composant central Quassel auquel vous vous connectez est trop ancien ! "
+"Veuillez le mettre à jour."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:300
@@ -2022,8 +2275,13 @@ msgstr "Synchronisation avec le composant central..."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:478
-msgid "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at least core/client protocol v%1 to connect."
-msgstr "<b>Le composant central auquel vous essayez de vous connecter est trop ancien  !</b><br>Vous devez avoir au minimum la version %1 du protocole de composant central/client pour vous connecter."
+msgid ""
+"<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
+"least core/client protocol v%1 to connect."
+msgstr ""
+"<b>Le composant central auquel vous essayez de vous connecter est trop "
+"ancien  !</b><br>Vous devez avoir au minimum la version %1 du protocole de "
+"composant central/client pour vous connecter."
 
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:592
@@ -2062,8 +2320,12 @@ msgstr "Détection de l'état du réseau"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
-msgid "Rely on KDE's hardware layer to detect if we're online. Recommended for most KDE users"
-msgstr "Utilise la couche d'abstraction matérielle de KDE pour savoir si on est en ligne. Recommandé pour la plupart des utilisateurs de KDE."
+msgid ""
+"Rely on KDE's hardware layer to detect if we're online. Recommended for most "
+"KDE users"
+msgstr ""
+"Utilise la couche d'abstraction matérielle de KDE pour savoir si on est en "
+"ligne. Recommandé pour la plupart des utilisateurs de KDE."
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:29
@@ -2074,8 +2336,12 @@ msgstr "Utilise la détection d'état du réseau de KDE (via Solid)"
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:41
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:57
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:154
-msgid "Actively ping the remote core and disconnect if we didn't get a reply after a certain time"
-msgstr "Envoie des pings au composant central distant et se déconnecte si aucune réponse n'est obtenue après le délai imparti."
+msgid ""
+"Actively ping the remote core and disconnect if we didn't get a reply after "
+"a certain time"
+msgstr ""
+"Envoie des pings au composant central distant et se déconnecte si aucune "
+"réponse n'est obtenue après le délai imparti."
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:44
@@ -2084,8 +2350,12 @@ msgstr "Délai d'expiration du ping après"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:100
-msgid "Only disconnect if the network socket gets closed by the operating system. This may take a long time after actually losing connectivity"
-msgstr "Ne se déconnecte que si le socket est fermé par le système d'exploitation. Ceci peut prendre pas mal de temps avant que la déconnexion soit effective."
+msgid ""
+"Only disconnect if the network socket gets closed by the operating system. "
+"This may take a long time after actually losing connectivity"
+msgstr ""
+"Ne se déconnecte que si le socket est fermé par le système d'exploitation. "
+"Ceci peut prendre pas mal de temps avant que la déconnexion soit effective."
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:103
@@ -2140,7 +2410,8 @@ msgstr "(Latence : %1 %2)"
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:75
 msgid "The connection to your core is encrypted with SSL."
-msgstr "La connexion à votre composant central est chiffrée en utilisant SSL."
+msgstr ""
+"La connexion à votre composant central est chiffrée en utilisant SSL."
 
 #. ts-context CoreConnectionStatusWidget
 #: ../src/qtui/coreconnectionstatuswidget.cpp:78
@@ -2249,13 +2520,21 @@ msgstr "déconnecté (IdUtilisateur: %1)."
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:413
-msgid "CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!"
-msgstr "CoreSession::createNetwork() : le composant central a renvoyé un identifiant réseau erroné lors de la création du réseau %1 !"
+msgid ""
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
+"create network %1!"
+msgstr ""
+"CoreSession::createNetwork() : le composant central a renvoyé un identifiant "
+"réseau erroné lors de la création du réseau %1 !"
 
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:444
-msgid "CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"
-msgstr "CoreSession::createNetwork() : tentative de création d'un réseau déjà existant. Celui-ci a été mis à jour."
+msgid ""
+"CoreSession::createNetwork(): Trying to create a network that already "
+"exists, updating instead!"
+msgstr ""
+"CoreSession::createNetwork() : tentative de création d'un réseau déjà "
+"existant. Celui-ci a été mis à jour."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:81
@@ -2269,8 +2548,12 @@ msgstr "envoi d'une requête CTCP-%1 à %2"
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:173
-msgid "[usage] /delkey <nick|channel> deletes the encryption key for nick or channel or just /delkey when in a channel or query."
-msgstr "[utilisation] /delkey <pseudo|canal> supprime la clé de chiffrement pour le pseudo ou le canal ou simplement /delkey dans un canal ou une requête."
+msgid ""
+"[usage] /delkey <nick|channel> deletes the encryption key for nick or "
+"channel or just /delkey when in a channel or query."
+msgstr ""
+"[utilisation] /delkey <pseudo|canal> supprime la clé de chiffrement pour le "
+"pseudo ou le canal ou simplement /delkey dans un canal ou une requête."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:180
@@ -2284,13 +2567,26 @@ msgstr "La clé pour %1 a été supprimée."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:197
-msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA2) library. Contact your distributor about a Quassel package with QCA2 support, or rebuild Quassel with QCA2 present."
-msgstr "Erreur : définir une clé de chiffrement nécessite que Quassel ait été compilé avec la prise en charge de la bibliothèque QCA2. Veuillez contacter votre distributeur pour obtenir un paquet Quassel prenant en charge QCA2, ou bien re-compilez Quassel avec QCA2."
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
+"distributor about a Quassel package with QCA2 support, or rebuild Quassel "
+"with QCA2 present."
+msgstr ""
+"Erreur : définir une clé de chiffrement nécessite que Quassel ait été "
+"compilé avec la prise en charge de la bibliothèque QCA2. Veuillez contacter "
+"votre distributeur pour obtenir un paquet Quassel prenant en charge QCA2, ou "
+"bien re-compilez Quassel avec QCA2."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:461
-msgid "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or channel. /setkey <key> when in a channel or query buffer sets the key for it."
-msgstr "[utilisation] /setkey <pseudo|canal> <key> définit la clé de chiffrement pour un pseudo ou un canal. /setkey <key> dans un canal ou une requête définit la clé pour celui-ci."
+msgid ""
+"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
+"channel. /setkey <key> when in a channel or query buffer sets the key for it."
+msgstr ""
+"[utilisation] /setkey <pseudo|canal> <key> définit la clé de chiffrement "
+"pour un pseudo ou un canal. /setkey <key> dans un canal ou une requête "
+"définit la clé pour celui-ci."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:476
@@ -2299,8 +2595,16 @@ msgstr "La clé pour %1 a été définie."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:479
-msgid "Error: Setting an encryption key requires Quassel to have been built with support for the Qt Cryptographic Architecture (QCA) library. Contact your distributor about a Quassel package with QCA support, or rebuild Quassel with QCA present."
-msgstr "Erreur : définir une clé de chiffrement nécessite que Quassel ait été compilé avec la prise en charge de la bibliothèque QCA. Veuillez contacter votre distributeur concernant un paquet Quassel prenant en charge QCA, ou re-compilez Quassel avec QCA."
+msgid ""
+"Error: Setting an encryption key requires Quassel to have been built with "
+"support for the Qt Cryptographic Architecture (QCA) library. Contact your "
+"distributor about a Quassel package with QCA support, or rebuild Quassel "
+"with QCA present."
+msgstr ""
+"Erreur : définir une clé de chiffrement nécessite que Quassel ait été "
+"compilé avec la prise en charge de la bibliothèque QCA. Veuillez contacter "
+"votre distributeur concernant un paquet Quassel prenant en charge QCA, ou re-"
+"compilez Quassel avec QCA."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:587
@@ -2345,7 +2649,9 @@ msgstr "Réception d'une requête CTCP PING de %1"
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
-msgstr "Réception d'une requête CTCP PING de %1 avec des aller-retours pendant %2 secondes"
+msgstr ""
+"Réception d'une requête CTCP PING de %1 avec des aller-retours pendant %2 "
+"secondes"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:229
@@ -2470,7 +2776,8 @@ msgstr "Commande erronée pour /exec : %1"
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:53
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr "Le nom « %1 » n'est pas valable : ../ ou ..\\ ne sont pas autorisés !"
+msgstr ""
+"Le nom « %1 » n'est pas valable : ../ ou ..\\ ne sont pas autorisés !"
 
 #. ts-context ExecWrapper
 #: ../src/client/execwrapper.cpp:64
@@ -2603,13 +2910,18 @@ msgstr "Identités"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 #: ../src/qtui/settingspages/networkssettingspage.cpp:167
-msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
-msgstr "<b>Les problèmes suivants doivent être corrigés avant que vos changements puissent être appliqués :</b><ul>"
+msgid ""
+"<b>The following problems need to be corrected before your changes can be "
+"applied:</b><ul>"
+msgstr ""
+"<b>Les problèmes suivants doivent être corrigés avant que vos changements "
+"puissent être appliqués :</b><ul>"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
 msgid "<li>All identities need an identity name set</li>"
-msgstr "<li>Toutes les identités ont besoin qu'un nom d'identité soit défini</li>"
+msgstr ""
+"<li>Toutes les identités ont besoin qu'un nom d'identité soit défini</li>"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:180
@@ -2787,7 +3099,9 @@ msgstr "Motif d'absence :"
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:280
 msgid "Set away when all clients have detached from the core"
-msgstr "Placer en absence lorsque tous les clients sont déconnectés du composant central"
+msgstr ""
+"Placer en absence lorsque tous les clients sont déconnectés du composant "
+"central"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:283
@@ -2831,8 +3145,12 @@ msgstr "Ident :"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:414
-msgid "The \"ident\" is part of your hostmask and, together with your host, uniquely identifies you within the IRC network."
-msgstr "La partie « ident » fait partie de votre masque d'hôte, avec votre nom d'hôte, elle vous identifie de manière unique sur le réseau IRC."
+msgid ""
+"The \"ident\" is part of your hostmask and, together with your host, "
+"uniquely identifies you within the IRC network."
+msgstr ""
+"La partie « ident » fait partie de votre masque d'hôte, avec votre nom "
+"d'hôte, elle vous identifie de manière unique sur le réseau IRC."
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:423
@@ -2856,16 +3174,22 @@ msgstr "Motif d'exclusion :"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:488
-msgid "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr "Vous avez besoin d'un client gérant le SSL pour modifier vos clés et certificats SSL du composant central"
+msgid ""
+"You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
+msgstr ""
+"Vous avez besoin d'un client gérant le SSL pour modifier vos clés et "
+"certificats SSL du composant central"
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgid ""
-"Warning: you are not connected with a secured connection to the Quassel Core!\n"
-"Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
+"Warning: you are not connected with a secured connection to the Quassel "
+"Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
+"Certificate!"
 msgstr ""
-"Attention : votre connexion au composant central Quassel n'est pas sécurisée !\n"
+"Attention : votre connexion au composant central Quassel n'est pas sécurisée "
+"!\n"
 "Si vous poursuivez vos clé et certificat SSL seront transférés en clair !"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
@@ -2972,16 +3296,19 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown "
+"again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
 "<p><b>Stricte :</b></p>\n"
 "<p><u>Dynamique :</u></p>\n"
 "<p>les messages sont filtrés « à la volée ».\n"
-"Aussitôt que vous désactivez ou supprimez la règle d'exclusion, les messages sont affichés à nouveau.</p>\n"
+"Aussitôt que vous désactivez ou supprimez la règle d'exclusion, les messages "
+"sont affichés à nouveau.</p>\n"
 "<p><u>Permanente :</u></p>\n"
-"<p>les messages sont filtrés avant d'être stockés dans la base de données.</p>"
+"<p>les messages sont filtrés avant d'être stockés dans la base de "
+"données.</p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:35
@@ -3029,7 +3356,8 @@ msgstr "Émetteur"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</p>\n"
+"<p>Depending on the type of the rule, the text is matched against "
+"either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3039,20 +3367,23 @@ msgid ""
 "<br />\n"
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
+"from any host</p>"
 msgstr ""
 "<p><b>Règle d'exclusion :</b></p>\n"
 "<p>suivant le type de règle, le texte doit correspondre soit :</p>\n"
 "<p><u>- au contenu du message :</u></p>\n"
 "<p><i>Exemple :</i>\n"
 "<br />\n"
-"<i>*machin*</i> correspondra à tout texte contenant le mot <i>machin</i></p>\n"
+"<i>*machin*</i> correspondra à tout texte contenant le mot "
+"<i>machin</i></p>\n"
 "<p><u>- à l'identifiant utilisateur</u>  <i>(pseudo!ident@nom.hôte)</i></p>\n"
 "<p><i>Exemples :</i>\n"
 "<br />\n"
 "- <i>*@toto.fr</i> correspondra à tout utilisateur venant de <i>toto.fr</i>\n"
 "<br />\n"
-"- <i>sarkozy!.+</i> (RegEx) correspondra à tout utilisateur ayant pour pseudo <i>sarkozy</i> venant de n'importe quel hôte</p>"
+"- <i>sarkozy!.+</i> (RegEx) correspondra à tout utilisateur ayant pour "
+"pseudo <i>sarkozy</i> venant de n'importe quel hôte</p>"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IgnoreListEditDlg
@@ -3068,13 +3399,15 @@ msgstr "Règle d'exclusion"
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
-"<p>Otherwise rules allow wildcard matching with the following special characters:</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special "
+"characters:</p>\n"
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
 msgstr ""
 "<p><b>Utiliser les expression régulières :</b></p>\n"
-"<p>si cette option est activée, les règles obéissent à la syntaxe de l'expression régulière.</p>\n"
+"<p>si cette option est activée, les règles obéissent à la syntaxe de "
+"l'expression régulière.</p>\n"
 "<p>Sinon, les règles acceptent les caractères jokers suivants :</p>\n"
 "<p> * : représente n'importe un nombre de caractères quelconques.\n"
 "<br />\n"
@@ -3092,17 +3425,21 @@ msgid ""
 "<p><u>Global:</u></p>\n"
 "<p>The rule is active for any channel on any network</p>\n"
 "<p><u>Network:</u></p>\n"
-"<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule "
+"should match</p>\n"
 "<p><u>Channel:</u></p>\n"
-"<p>The list below is interpreted as a list of channels for which the rule should match</p>"
+"<p>The list below is interpreted as a list of channels for which the rule "
+"should match</p>"
 msgstr ""
 "<p><b>Portée :</b></p>\n"
 "<p><u>Globale :</u></p>\n"
 "<p>cette règle est active pour tout canal et pour tout réseau.</p>\n"
 "<p><u>Réseau :</u></p>\n"
-"<p>la règle doit correspondre à l'un des réseaux présents dans la liste suivante. </p>\n"
+"<p>la règle doit correspondre à l'un des réseaux présents dans la liste "
+"suivante. </p>\n"
 "<p><u>Canal :</u></p>\n"
-"<p>la règle doit correspondre à l'un des canaux présents dans la liste suivante. </p>"
+"<p>la règle doit correspondre à l'un des canaux présents dans la liste "
+"suivante. </p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:152
@@ -3136,7 +3473,8 @@ msgstr "Canal"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
+"<i>channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -3144,7 +3482,8 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 "<p><b>Règle étendue :</b></p>\n"
-"<p>une règle étendue est une liste de noms séparés par des points-virgule de<i>réseaux</i> ou de <i>canaux</i>.</p>\n"
+"<p>une règle étendue est une liste de noms séparés par des points-virgule "
+"de<i>réseaux</i> ou de <i>canaux</i>.</p>\n"
 "<p><i>Exemple :</i>\n"
 "<br />\n"
 "<i>#quassel*; #machin</i>\n"
@@ -3162,7 +3501,8 @@ msgstr ""
 "<p><b>Activée / désactivée :</b></p>\n"
 "<p>Seules les règles actives sont filtrées.\n"
 "<br />\n"
-"Pour les règles dynamiques, la désactivation affiche à nouveau les messages filtrés.</p>"
+"Pour les règles dynamiques, la désactivation affiche à nouveau les messages "
+"filtrés.</p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
@@ -3171,13 +3511,34 @@ msgstr "La règle est activée"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:69
-msgid "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For dynamic rules, disabling actually shows the filtered messages again"
-msgstr "<b>Activée / désactivée :</b><br />seules les règles actives sont filtrées.<br />Pour les règles dynamiques, la désactivation affiche à nouveau les messages filtrés"
+msgid ""
+"<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
+"dynamic rules, disabling actually shows the filtered messages again"
+msgstr ""
+"<b>Activée / désactivée :</b><br />seules les règles actives sont "
+"filtrées.<br />Pour les règles dynamiques, la désactivation affiche à "
+"nouveau les messages filtrés"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
-msgid "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is matched against either:<br /><br />- <u>the message content:</u><br /><i>Example:<i><br />    \"*foobar*\" matches any text containing the word \"foobar\"<br /><br />- <u>the sender string <i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    \"*@foobar.com\" matches any sender from host foobar.com<br />    \"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any host<br />"
-msgstr "<b>Règle d'exclusion :</b><br />Suivant le type de la règle le texte est comparé soit :<br /><br />- <u>au contenu du message:</u><br /><i>Exemple :<i><br />    \"*truc*\" correspondra à tout texte contenant « truc »<br /><br />- <u>à l'identifiant de l'utilisateur<i>pseudo!ident@nom.hôte<i></u><br /><i>Exemple :</i><br />    \"*@toto.fr\" correspondra à tous les utilisateurs venant de toto.fr<br />    \"sarkozy!.+\" (RegEx) correspondra à tous les utilisateurs ayant pour pseudo « sarkozy » quel que soit leur hôte. <br />"
+msgid ""
+"<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
+"matched against either:<br /><br />- <u>the message content:</u><br "
+"/><i>Example:<i><br />    \"*foobar*\" matches any text containing the word "
+"\"foobar\"<br /><br />- <u>the sender string "
+"<i>nick!ident@host.name<i></u><br /><i>Example:</i><br />    "
+"\"*@foobar.com\" matches any sender from host foobar.com<br />    "
+"\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
+"host<br />"
+msgstr ""
+"<b>Règle d'exclusion :</b><br />Suivant le type de la règle le texte est "
+"comparé soit :<br /><br />- <u>au contenu du message:</u><br "
+"/><i>Exemple :<i><br />    \"*truc*\" correspondra à tout texte contenant "
+"« truc »<br /><br />- <u>à l'identifiant de "
+"l'utilisateur<i>pseudo!ident@nom.hôte<i></u><br /><i>Exemple :</i><br />    "
+"\"*@toto.fr\" correspondra à tous les utilisateurs venant de toto.fr<br />   "
+" \"sarkozy!.+\" (RegEx) correspondra à tous les utilisateurs ayant pour "
+"pseudo « sarkozy » quel que soit leur hôte. <br />"
 
 #. ts-context IgnoreListModel
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
@@ -3227,8 +3588,12 @@ msgstr ""
 
 #. ts-context IndicatorNotificationConfigWidget
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
-msgid "This enables support for the Ayatana Project's application indicator (libindicate)."
-msgstr "Ceci active la prise en charge des notifications d'applications du projet Ayatana (libindicate)."
+msgid ""
+"This enables support for the Ayatana Project's application indicator "
+"(libindicate)."
+msgstr ""
+"Ceci active la prise en charge des notifications d'applications du projet "
+"Ayatana (libindicate)."
 
 #. ts-context IndicatorNotificationConfigWidget
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:23
@@ -3445,8 +3810,12 @@ msgstr "Réception de RPL_ISUPPORT (005) sans paramètres !"
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:642
-msgid "Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"
-msgstr "Réception d'un RPL_ISUPPORT non conforme à la RFC : ceci peut avoir des conséquences inattendues !"
+msgid ""
+"Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected "
+"behavior!"
+msgstr ""
+"Réception d'un RPL_ISUPPORT non conforme à la RFC : ceci peut avoir des "
+"conséquences inattendues !"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcServerHandler
@@ -3603,8 +3972,11 @@ msgstr "Pseudo/canal temporairement indisponible : %1"
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1270
-msgid "No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
-msgstr "Aucun pseudo libre et valable n'a été trouvé dans la liste. Utilisez : /nick <autrepseudo> pour continuer"
+msgid ""
+"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
+msgstr ""
+"Aucun pseudo libre et valable n'a été trouvé dans la liste. Utilisez : /nick "
+"<autrepseudo> pour continuer"
 
 #. ts-context IrcUserItem
 #: ../src/client/networkmodel.cpp:806
@@ -3739,12 +4111,13 @@ msgstr "Autre activité"
 msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n message surligné en attente"
-msgstr[1] "%n messages surlignés en attente"
+msgstr[1] "%n messages sulignés en attente"
 
 #. ts-context KeySequenceButton
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgid "The key you just pressed is not supported by Qt."
-msgstr "La touche que vous venez d'utiliser n'est pas prise en charge par Qt."
+msgstr ""
+"La touche que vous venez d'utiliser n'est pas prise en charge par Qt."
 
 #. ts-context KeySequenceButton
 #: ../src/qtui/settingspages/keysequencewidget.cpp:78
@@ -3757,8 +4130,10 @@ msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
 msgstr ""
-"Cliquez sur le bouton puis saisissez le raccourci tel que vous le feriez dans l'application.\n"
-"Par exemple, pour Ctrl+a, maintenez la touche Ctrl enfoncée puis appuyez sur a."
+"Cliquez sur le bouton puis saisissez le raccourci tel que vous le feriez "
+"dans l'application.\n"
+"Par exemple, pour Ctrl+a, maintenez la touche Ctrl enfoncée puis appuyez sur "
+"a."
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:259
@@ -3813,8 +4188,11 @@ msgstr ""
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
-msgid "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
-msgstr "Le raccourci « %1 » entre en conflit avec celui défini pour l'action suivante :"
+msgid ""
+"The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
+msgstr ""
+"Le raccourci « %1 » entre en conflit avec celui défini pour l'action "
+"suivante :"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:364
@@ -4024,7 +4402,7 @@ msgstr "Accès rapide n°4"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:416
 msgid "Quick Access #5"
-msgstr "Accès rapide n°5 "
+msgstr "Accès rapide n°5"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:418
@@ -4163,13 +4541,18 @@ msgstr "<b>Votre client ne prend pas en charge le chiffrement SSL</b>"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1017 ../src/qtui/mainwin.cpp:1025
-msgid "Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."
-msgstr "Les données sensibles, telles que les mots de passe, seront transmises en clair à votre composant central Quassel."
+msgid ""
+"Sensitive data, like passwords, will be transmitted unencrypted to your "
+"Quassel core."
+msgstr ""
+"Les données sensibles, telles que les mots de passe, seront transmises en "
+"clair à votre composant central Quassel."
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1023
 msgid "<b>Your core does not support SSL encryption</b>"
-msgstr "<b>Votre composant central ne prend pas en charge le chiffrement SSL</b>"
+msgstr ""
+"<b>Votre composant central ne prend pas en charge le chiffrement SSL</b>"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1060
@@ -4178,8 +4561,12 @@ msgstr "Certificat non digne de confiance"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1041
-msgid "<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>"
-msgstr "<b>Le certificat SSL fourni par le composant central sur %1 n'est pas digne de confiance pour les raisons suivantes :</b>"
+msgid ""
+"<b>The SSL certificate provided by the core at %1 is untrusted for the "
+"following reasons:</b>"
+msgstr ""
+"<b>Le certificat SSL fourni par le composant central sur %1 n'est pas digne "
+"de confiance pour les raisons suivantes :</b>"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1045
@@ -4188,8 +4575,11 @@ msgstr "Afficher le certificat"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1061
-msgid "Would you like to accept this certificate forever without being prompted?"
-msgstr "Voulez-vous accepter définitivement ce certificat et que la question ne soit plus posée ?"
+msgid ""
+"Would you like to accept this certificate forever without being prompted?"
+msgstr ""
+"Voulez-vous accepter définitivement ce certificat et que la question ne soit "
+"plus posée ?"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:1063
@@ -4335,13 +4725,21 @@ msgstr "...et <b>%1</b> de plus<br><br>"
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:168
-msgid "<b>Note:</b> This will delete all related data, including all backlog data, from the core's database and cannot be undone."
-msgstr "<b>Remarque :</b> ceci détruira toutes les données rattachées, y compris l'historique de la base de données du composant central, et cela ne peut être annulé."
+msgid ""
+"<b>Note:</b> This will delete all related data, including all backlog data, "
+"from the core's database and cannot be undone."
+msgstr ""
+"<b>Remarque :</b> ceci détruira toutes les données rattachées, y compris "
+"l'historique de la base de données du composant central, et cela ne peut "
+"être annulé."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:170
-msgid "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "<br>Les canaux actifs ne peuvent pas être supprimés. Veuillez quitter le canal auparavant."
+msgid ""
+"<br>Active channel buffers cannot be deleted, please part the channel first."
+msgstr ""
+"<br>Les canaux actifs ne peuvent pas être supprimés. Veuillez quitter le "
+"canal auparavant."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
@@ -4403,8 +4801,12 @@ msgstr "Commandes"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:340
-msgid "Configure automatic identification or misc. commands to be executed after connecting to a server"
-msgstr "Configure l'identification automatique ou diverses commandes qui doivent être exécutées après la connexion au serveur"
+msgid ""
+"Configure automatic identification or misc. commands to be executed after "
+"connecting to a server"
+msgstr ""
+"Configure l'identification automatique ou diverses commandes qui doivent "
+"être exécutées après la connexion au serveur"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
@@ -4415,15 +4817,18 @@ msgstr "Commandes à exécuter à la connexion :"
 #: ../src/qtui/settingspages/networkssettingspage.ui:362
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
-"Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely "
+"be needed here!"
 msgstr ""
 "Précisez la liste des commandes IRC à exécuter lors de la connexion\n"
-"Notez que Quassel IRC rejoint automatiquement les canaux, ainsi /join ne sera que très rarement nécessaire ici !"
+"Notez que Quassel IRC rejoint automatiquement les canaux, ainsi /join ne "
+"sera que très rarement nécessaire ici !"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
 msgid "Automatically reconnect to the IRC network after connection failures"
-msgstr "Se reconnecter automatiquement au réseau IRC après une perte de connexion"
+msgstr ""
+"Se reconnecter automatiquement au réseau IRC après une perte de connexion"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:386
@@ -4488,8 +4893,11 @@ msgstr "Encodages"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:652
-msgid "Configure advanced settings such as message encodings and automatic reconnect"
-msgstr "Configurer les paramètres avancés tels que l'encodage des messages et la reconnexion automatique"
+msgid ""
+"Configure advanced settings such as message encodings and automatic reconnect"
+msgstr ""
+"Configurer les paramètres avancés tels que l'encodage des messages et la "
+"reconnexion automatique"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
@@ -4522,7 +4930,9 @@ msgstr "Envoyer les messages en :"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
-msgstr "Les messages entrants encodés en UTF-8 seront toujours traités comme tels. Ce paramètre définit l'encodage des messages qui ne sont pas en UTF-8."
+msgstr ""
+"Les messages entrants encodés en UTF-8 seront toujours traités comme tels. "
+"Ce paramètre définit l'encodage des messages qui ne sont pas en UTF-8."
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:710
@@ -4535,7 +4945,10 @@ msgstr "Réception de repli :"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr "Ceci précise comment les messages de contrôles, les pseudos et les noms des serveurs sont encodés. À moins de *réellement* savoir ce que vous faites, laissez cela en ISO-8859-1 !"
+msgstr ""
+"Ceci précise comment les messages de contrôles, les pseudos et les noms des "
+"serveurs sont encodés. À moins de *réellement* savoir ce que vous faites, "
+"laissez cela en ISO-8859-1 !"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:741
@@ -4564,8 +4977,12 @@ msgstr "Supprimer le réseau ?"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.cpp:543
-msgid "Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
-msgstr "Voulez-vous vraiment supprimer le réseau « %1 » et tous les paramètres correspondants, y compris l'historique ?"
+msgid ""
+"Do you really want to delete the network \"%1\" and all related settings, "
+"including the backlog?"
+msgstr ""
+"Voulez-vous vraiment supprimer le réseau « %1 » et tous les paramètres "
+"correspondants, y compris l'historique ?"
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
@@ -4579,8 +4996,12 @@ msgstr "Veuillez saisir un pseudo valable :"
 
 #. ts-context NickEditDlg
 #: ../src/qtui/settingspages/nickeditdlg.ui:32
-msgid "A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr "Un pseudo valable peut contenir des lettres de l'alphabet anglais, des chiffres, et les caractères spéciaux {, }, [, ], \\, |, `, ^, _ et -."
+msgid ""
+"A valid nickname may contain letters from the English alphabet, digits, and "
+"the special characters {, }, [, ], \\, |, `, ^, _ and -."
+msgstr ""
+"Un pseudo valable peut contenir des lettres de l'alphabet anglais, des "
+"chiffres, et les caractères spéciaux {, }, [, ], \\, |, `, ^, _ et -."
 
 #. ts-context NotificationsSettingsPage
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
@@ -4620,13 +5041,17 @@ msgstr "Demande d'un maximum de %1 messages de l'historique pour %2 tampons"
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:106
-msgid "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr "Demande d'un maximum de %1 de tous les messages non lus (plus %2 supplémentaires)"
+msgid ""
+"Requesting up to %1 of all unread backlog messages (plus additional %2)"
+msgstr ""
+"Demande d'un maximum de %1 de tous les messages non lus (plus %2 "
+"supplémentaires)"
 
 #. ts-context QObject
 #: ../src/client/backlogrequester.cpp:123
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr "Demande d'un maximum de %1 messages non lus de l'historique pour %2 tampons"
+msgstr ""
+"Demande d'un maximum de %1 messages non lus de l'historique pour %2 tampons"
 
 #. ts-context QObject
 #: ../src/qtui/ircconnectionwizard.cpp:56
@@ -4635,8 +5060,15 @@ msgstr "Bienvenue sur Quassel IRC"
 
 #. ts-context QObject
 #: ../src/qtui/ircconnectionwizard.cpp:58
-msgid "This wizard will help you to set up your default identity and your IRC network connection.<br>This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."
-msgstr "Cet assistant vous aide à configurer votre identité par défaut et votre connexion au réseau IRC.<br>Ceci ne couvre uniquement que les réglages de base. Vous pouvez quitter l'assistant à tout moment et utiliser la fenêtre de configuration pour effectuer des modifications plus précises."
+msgid ""
+"This wizard will help you to set up your default identity and your IRC "
+"network connection.<br>This only covers basic settings. You can cancel this "
+"wizard any time and use the settings dialog for more detailed changes."
+msgstr ""
+"Cet assistant vous aide à configurer votre identité par défaut et votre "
+"connexion au réseau IRC.<br>Ceci ne couvre uniquement que les réglages de "
+"base. Vous pouvez quitter l'assistant à tout moment et utiliser la fenêtre "
+"de configuration pour effectuer des modifications plus précises."
 
 #. ts-context QssParser
 #: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
@@ -4809,7 +5241,8 @@ msgstr "Synchroniser avec le composant central"
 #. ts-context SaveIdentitiesDlg
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:21
 msgid "Syncing data with core, please wait..."
-msgstr "Synchronisation des données avec le composant central. Veuillez patienter..."
+msgstr ""
+"Synchronisation des données avec le composant central. Veuillez patienter..."
 
 #. ts-context SaveIdentitiesDlg
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:81
@@ -4833,8 +5266,12 @@ msgstr "Version SSL :"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:147
-msgid "Do not change unless you're going to connect to a server not supporting SSLv3!"
-msgstr "Ne modifiez pas ce paramètre sauf si vous vous connectez à un serveur ne prenant pas en charge SSLv3 !"
+msgid ""
+"Do not change unless you're going to connect to a server not supporting "
+"SSLv3!"
+msgstr ""
+"Ne modifiez pas ce paramètre sauf si vous vous connectez à un serveur ne "
+"prenant pas en charge SSLv3 !"
 
 #. ts-context ServerEditDlg
 #: ../src/qtui/settingspages/servereditdlg.ui:151
@@ -4890,8 +5327,12 @@ msgstr "Enregistrer les modifications"
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:110
-msgid "There are unsaved changes on the current configuration page. Would you like to apply your changes now?"
-msgstr "Il y a des modifications non enregistrées sur cette page de configuration. Voulez-vous appliquer vos changements maintenant ?"
+msgid ""
+"There are unsaved changes on the current configuration page. Would you like "
+"to apply your changes now?"
+msgstr ""
+"Il y a des modifications non enregistrées sur cette page de configuration. "
+"Voulez-vous appliquer vos changements maintenant ?"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
@@ -4915,8 +5356,11 @@ msgstr "Recharger les paramètres"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
-msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Voulez-vous recharger les paramètres, et annuler vos modifications sur cette page ?"
+msgid ""
+"Do you like to reload the settings, undoing your changes on this page?"
+msgstr ""
+"Voulez-vous recharger les paramètres, et annuler vos modifications sur cette "
+"page ?"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
@@ -4972,7 +5416,9 @@ msgstr "Raccourcis"
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:880
 msgid "Peer tried to send package larger than max package size!"
-msgstr "L'hôte distant a essayé d'envoyer un paquet plus gros que la taille maximum d'un paquet !"
+msgstr ""
+"L'hôte distant a essayé d'envoyer un paquet plus gros que la taille maximum "
+"d'un paquet !"
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:885
@@ -4987,7 +5433,9 @@ msgstr "L'hôte distant a envoyé des données compressées corrompues !"
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:917
 msgid "Peer sent corrupt data: unable to load QVariant!"
-msgstr "L'hôte distant a envoyé des données corrompues : impossible de charger QVariant !"
+msgstr ""
+"L'hôte distant a envoyé des données corrompues : impossible de charger "
+"QVariant !"
 
 #. ts-context SignalProxy
 #: ../src/common/signalproxy.cpp:1050
@@ -5026,13 +5474,27 @@ msgstr "Rejoindre les canaux automatiquement"
 
 #. ts-context SimpleNetworkEditor
 #: ../src/qtui/ui/simplenetworkeditor.ui:250
-msgid "A list of IRC channels you will join automatically after connecting to the network"
-msgstr "Liste des canaux IRC que vous voulez rejoindre automatiquement après connexion au réseau"
+msgid ""
+"A list of IRC channels you will join automatically after connecting to the "
+"network"
+msgstr ""
+"Liste des canaux IRC que vous voulez rejoindre automatiquement après "
+"connexion au réseau"
 
 #. ts-context SqliteStorage
 #: ../src/core/sqlitestorage.cpp:52
-msgid "SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine it is running on, and if you only expect a few users to use your core."
-msgstr "SQLite est un moteur de base de données par fichiers qui ne nécessite aucun paramétrage. Ceci est pratique pour de petites ou moyennes base de données n'ayant pas besoin d'être consultées à travers un réseau. Utilisez SQLite si votre composant central Quassel doit enregistrer ses données sur la machine à partir de laquelle il s'exécute, et s'il n'a que peu d'utilisateurs."
+msgid ""
+"SQLite is a file-based database engine that does not require any setup. It "
+"is suitable for small and medium-sized databases that do not require access "
+"via network. Use SQLite if your Quassel Core should store its data on the "
+"same machine it is running on, and if you only expect a few users to use "
+"your core."
+msgstr ""
+"SQLite est un moteur de base de données par fichiers qui ne nécessite aucun "
+"paramétrage. Ceci est pratique pour de petites ou moyennes base de données "
+"n'ayant pas besoin d'être consultées à travers un réseau. Utilisez SQLite si "
+"votre composant central Quassel doit enregistrer ses données sur la machine "
+"à partir de laquelle il s'exécute, et s'il n'a que peu d'utilisateurs."
 
 #. ts-context SslInfoDlg
 #: ../src/qtui/ui/sslinfodlg.ui:14
@@ -5360,7 +5822,8 @@ msgstr "{Jour modifié en %1}"
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:641
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
-msgstr "Coupure réseau entre %DH%1%DH et %DH%2%DH terminée. Utilisateurs ajoutés : "
+msgstr ""
+"Coupure réseau entre %DH%1%DH et %DH%2%DH terminée. Utilisateurs ajoutés : "
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
@@ -5370,7 +5833,9 @@ msgstr "%DN%1%DN (et %2 autres)"
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:655
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
-msgstr "Coupure réseau entre %DH%1%DH et %DH%2%DH. les Utilisateurs suivant sont partis :"
+msgstr ""
+"Coupure réseau entre %DH%1%DH et %DH%2%DH. les Utilisateurs suivant sont "
+"partis : "
 
 #. ts-context UiStyle::StyledMessage
 #: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
@@ -5485,128 +5950,8 @@ msgid_plural "%n User(s)"
 msgstr[0] "%n utilisateur"
 msgstr[1] "%n utilisateur(s)"
 
-#~ msgctxt "AppearanceSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "BacklogSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "BacklogSettingsPage#19"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "BufferViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "BufferViewSettingsPage#21"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "ChatMonitorSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "ChatMonitorSettingsPage#11"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "ChatMonitorView#2"
-#~ msgid "Show Network Name"
-#~ msgstr "Afficher le Nom du Réseau"
-
-#~ msgctxt "ChatMonitorView#3"
-#~ msgid "Show Buffer Name"
-#~ msgstr "Afficher le Nom du Tampon"
-
-#~ msgctxt "ChatViewSearchBar#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "ChatViewSearchBar#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ChatViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "ChatViewSettingsPage#10"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ChatViewSettingsPage#22"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
 #~ msgid "Finger"
 #~ msgstr "Finger"
-
-#~ msgctxt "CoreAccountModel#1"
-#~ msgid "Internal Core"
-#~ msgstr "Interne"
-
-#~ msgctxt "CoreAccountSettingsPage#5"
-#~ msgid "Delete"
-#~ msgstr "Supprimer"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "CoreConfigWizardAdminUserPage#3"
-#~ msgid "Password:"
-#~ msgstr "Mot de Passe:"
-
-#~ msgctxt "CoreConfigWizardIntroPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "CoreConfigWizardStorageSelectionPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "CoreConfigWizardSyncPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "CoreConfigWizardSyncPage#5"
-#~ msgid "Storage Backend:"
-#~ msgstr "Base de données:"
-
-#~ msgctxt "CoreConnectAuthDlg#3"
-#~ msgid "Password:"
-#~ msgstr "Mot de Passe:"
-
-#~ msgctxt "CoreConnectAuthDlg#4"
-#~ msgid "Username:"
-#~ msgstr "Nom d'Utiilisateur:"
-
-#~ msgctxt "CoreConnectAuthDlg#5"
-#~ msgid "Remember password"
-#~ msgstr "Mémoriser le mot de passe"
-
-#~ msgctxt "CoreConnectionSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "CoreConnectionSettingsPage#7"
-#~ msgid " seconds"
-#~ msgstr "secondes"
-
-#~ msgctxt "CoreConnectionSettingsPage#12"
-#~ msgid "Remote Cores"
-#~ msgstr "Hôte distant:"
-
-#~ msgctxt "CoreConnectionStatusWidget#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "CoreSession#1"
-#~ msgid "Client"
-#~ msgstr "Client"
 
 #~ msgid "Add Buffers Automatically:"
 #~ msgstr "Ajouter les tampons automatiquement:"
@@ -5614,2093 +5959,5 @@ msgstr[1] "%n utilisateur(s)"
 #~ msgid "Hide inactive buffers:"
 #~ msgstr "Cacher les tampons inactifs:"
 
-#~ msgctxt "DebugLogWidget#2"
-#~ msgid "Close"
-#~ msgstr "Fermer"
-
-#~ msgctxt "DesktopNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgid "Desktop Notification (via D-Bus)"
-#~ msgstr "Information Bureau (par Dbus)"
-
-#~ msgid "Timeout:"
-#~ msgstr "Délai d'expiration:"
-
-#~ msgid "Position hint:"
-#~ msgstr "Rappel de position:"
-
-#~ msgid " px"
-#~ msgstr " px"
-
-#~ msgid "X: "
-#~ msgstr "X: "
-
-#~ msgid "Y: "
-#~ msgstr "Y: "
-
-#~ msgid "Queue unread notifications"
-#~ msgstr "Mettre en attente les notifications non lues"
-
-#~ msgctxt "HighlightSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "HighlightSettingsPage#3"
-#~ msgid "Highlight"
-#~ msgstr "Surlignage"
-
-#~ msgctxt "HighlightSettingsPage#14"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "IdentitiesSettingsPage#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "IdentitiesSettingsPage#4"
-#~ msgid "Add..."
-#~ msgstr "Ajouter..."
-
-#~ msgctxt "IdentityEditWidget#6"
-#~ msgid "&Add..."
-#~ msgstr "&Ajouter..."
-
-#~ msgctxt "IdentityEditWidget#8"
-#~ msgid "Remove"
-#~ msgstr "Supprimer"
-
-#~ msgctxt "IdentityEditWidget#9"
-#~ msgid "Rename Identity"
-#~ msgstr "Renommer l'identité"
-
-#~ msgctxt "IdentityEditWidget#10"
-#~ msgid "Re&name..."
-#~ msgstr "&Renommer..."
-
-#~ msgctxt "IdentityEditWidget#12"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "IgnoreListEditDlg#9"
-#~ msgid "Message"
-#~ msgstr "Message"
-
-#~ msgctxt "IgnoreListEditDlg#10"
-#~ msgid "CTCP"
-#~ msgstr "CTCP"
-
-#~ msgctxt "IgnoreListModel#7"
-#~ msgid "Ignore Rule"
-#~ msgstr "Règle d'exclusion"
-
-#~ msgctxt "IgnoreListSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "IgnoreListSettingsPage#2"
-#~ msgid "New"
-#~ msgstr "Nouveau"
-
-#~ msgctxt "IgnoreListSettingsPage#3"
-#~ msgid "Delete"
-#~ msgstr "Supprimer"
-
-#~ msgctxt "IndicatorNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "InputWidget#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "InputWidgetSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "InputWidgetSettingsPage#13"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "IrcListModel#1"
-#~ msgid "Channel"
-#~ msgstr "Canal"
-
 #~ msgid "[Whois] idle message: %1"
 #~ msgstr "[Whois] message d'attente: %1"
-
-#~ msgctxt "ItemViewSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "ItemViewSettingsPage#2"
-#~ msgid "Custom font:"
-#~ msgstr "Police personnalisée:"
-
-#~ msgctxt "ItemViewSettingsPage#9"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "ItemViewSettingsPage#18"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "ItemViewSettingsPage#20"
-#~ msgid "Network"
-#~ msgstr "Réseau"
-
-#~ msgctxt "ItemViewSettingsPage#24"
-#~ msgid "Highlight"
-#~ msgstr "Surlignage"
-
-#~ msgid "Ctrl+Q"
-#~ msgstr "Ctrl+Q"
-
-#~ msgid "Ctrl+M"
-#~ msgstr "Ctrl+M"
-
-#~ msgid "F7"
-#~ msgstr "F7"
-
-#~ msgctxt "MainWin#35"
-#~ msgid "Chat Monitor"
-#~ msgstr "Moniteur de discussion"
-
-#~ msgctxt "MainWin#39"
-#~ msgid "Topic"
-#~ msgstr "Sujet"
-
-#~ msgctxt "MainWin#50"
-#~ msgid "Continue"
-#~ msgstr "Continuer"
-
-#~ msgctxt "MsgProcessorStatusWidget#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "NetworkAddDlg#7"
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgctxt "NetworkEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "Fenêtre"
-
-#~ msgctxt "NetworkEditDlg#3"
-#~ msgid "Add Network"
-#~ msgstr "Ajouter un réseau"
-
-#~ msgctxt "NetworkModel#2"
-#~ msgid "Topic"
-#~ msgstr "Sujet"
-
-#~ msgctxt "NetworkModelController::JoinDlg#2"
-#~ msgid "Network:"
-#~ msgstr "Réseau:"
-
-#~ msgctxt "NetworksSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "NetworksSettingsPage#2"
-#~ msgid "Re&name..."
-#~ msgstr "&Renommer..."
-
-#~ msgctxt "NetworksSettingsPage#3"
-#~ msgid "&Add..."
-#~ msgstr "&Ajouter..."
-
-#~ msgctxt "NetworksSettingsPage#4"
-#~ msgid "De&lete"
-#~ msgstr "&Supprimer"
-
-#~ msgctxt "NetworksSettingsPage#7"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "NetworksSettingsPage#11"
-#~ msgid "Move upwards in list"
-#~ msgstr "Monter dans la liste"
-
-#~ msgctxt "NetworksSettingsPage#12"
-#~ msgid "Move downwards in list"
-#~ msgstr "Descendre dans la liste"
-
-#~ msgctxt "NetworksSettingsPage#17"
-#~ msgid "Connection"
-#~ msgstr "Connexion"
-
-#~ msgid "Control automatic reconnect to the network"
-#~ msgstr "Contrôle de la reconnexion automatique au réseau"
-
-#~ msgid "Interval:"
-#~ msgstr "Intervalle:"
-
-#~ msgctxt "NetworksSettingsPage#21"
-#~ msgid " s"
-#~ msgstr "s"
-
-#~ msgid "Retries:"
-#~ msgstr "Tentatives:"
-
-#~ msgctxt "NetworksSettingsPage#23"
-#~ msgid "Unlimited"
-#~ msgstr "Illimité"
-
-#~ msgctxt "NetworksSettingsPage#28"
-#~ msgid "Password:"
-#~ msgstr "Mot de Passe:"
-
-#~ msgctxt "NetworksSettingsPage#43"
-#~ msgid "<b>The following problems need to be corrected before your changes can be applied:</b><ul>"
-#~ msgstr "<b>Les problèmes suivants doivent être corrigés avant que vos changements soient appliqués:</b><ul>"
-
-#~ msgctxt "NetworksSettingsPage#45"
-#~ msgid "</ul>"
-#~ msgstr "</ul>"
-
-#~ msgctxt "NickEditDlg#4"
-#~ msgid "Add Nickname"
-#~ msgstr "Ajouter un pseudo"
-
-#~ msgctxt "NotificationsSettingsPage#1"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "PhononNotificationConfigWidget#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgid "Audio Notification (via Phonon)"
-#~ msgstr "Notification Auditive (par Phonon)"
-
-#~ msgid "Play File:"
-#~ msgstr "Fichier joué:"
-
-#~ msgctxt "QueryBufferItem#2"
-#~ msgid "idling since %1"
-#~ msgstr "inactif depuis %1"
-
-#~ msgctxt "QueryBufferItem#3"
-#~ msgid "login time: %1"
-#~ msgstr "durée de connexion: %1"
-
-#~ msgctxt "QueryBufferItem#4"
-#~ msgid "server: %1"
-#~ msgstr "serveur: %1"
-
-#~ msgctxt "ServerEditDlg#1"
-#~ msgid "Dialog"
-#~ msgstr "Fenêtre"
-
-#~ msgctxt "ServerEditDlg#3"
-#~ msgid "Server address:"
-#~ msgstr "Adresse du Serveur:"
-
-#~ msgctxt "ServerEditDlg#4"
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgctxt "ServerEditDlg#5"
-#~ msgid "Password:"
-#~ msgstr "Mot de Passe:"
-
-#~ msgctxt "ServerEditDlg#7"
-#~ msgid "Advanced"
-#~ msgstr "Expert"
-
-#~ msgctxt "ServerEditDlg#13"
-#~ msgid "Use a Proxy"
-#~ msgstr "Utiliser un proxy"
-
-#~ msgctxt "ServerEditDlg#14"
-#~ msgid "Proxy Type:"
-#~ msgstr "Type de Proxy:"
-
-#~ msgctxt "ServerEditDlg#15"
-#~ msgid "Socks 5"
-#~ msgstr "Socks 5"
-
-#~ msgctxt "ServerEditDlg#16"
-#~ msgid "HTTP"
-#~ msgstr "HTTP"
-
-#~ msgctxt "ServerEditDlg#18"
-#~ msgid "localhost"
-#~ msgstr "localhost"
-
-#~ msgctxt "SettingsPageDlg#1"
-#~ msgid "Configure Quassel"
-#~ msgstr "Configurer Quassel"
-
-#~ msgctxt "SettingsPageDlg#2"
-#~ msgid "Settings"
-#~ msgstr "Paramètres"
-
-#~ msgctxt "SettingsPageDlg#3"
-#~ msgid "Configure %1"
-#~ msgstr "Configuration %1"
-
-#~ msgctxt "SettingsPageDlg#4"
-#~ msgid "Reload Settings"
-#~ msgstr "Recharger les paramètres"
-
-#~ msgctxt "SettingsPageDlg#5"
-#~ msgid "Do you like to reload the settings, undoing your changes on this page?"
-#~ msgstr "Voulez vous recharger les paramètres, et annuler vos changements sur cette page ?"
-
-#~ msgctxt "SettingsPageDlg#6"
-#~ msgid "Restore Defaults"
-#~ msgstr "Restaurer les valeurs par défaut"
-
-#~ msgctxt "SettingsPageDlg#7"
-#~ msgid "Do you like to restore the default values for this page?"
-#~ msgstr "Voulez-vous restaurer les paramètres par défaut de cette page?"
-
-#~ msgctxt "SimpleNetworkEditor#1"
-#~ msgid "Network name:"
-#~ msgstr "Nom du Réseau:"
-
-#~ msgctxt "SimpleNetworkEditor#3"
-#~ msgid "Servers"
-#~ msgstr "Serveurs"
-
-#~ msgctxt "SimpleNetworkEditor#6"
-#~ msgid "&Edit..."
-#~ msgstr "&Modifier..."
-
-#~ msgctxt "SimpleNetworkEditor#8"
-#~ msgid "&Add..."
-#~ msgstr "&Ajouter..."
-
-#~ msgctxt "SimpleNetworkEditor#10"
-#~ msgid "De&lete"
-#~ msgstr "&Supprimer"
-
-#~ msgctxt "SimpleNetworkEditor#11"
-#~ msgid "Move upwards in list"
-#~ msgstr "Monter dans la liste"
-
-#~ msgctxt "SimpleNetworkEditor#12"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "SimpleNetworkEditor#13"
-#~ msgid "Move downwards in list"
-#~ msgstr "Descendre dans la liste"
-
-#~ msgid "System Tray Icon"
-#~ msgstr "Icône système"
-
-#~ msgid "Animate"
-#~ msgstr "Animer"
-
-#~ msgid "Show bubble"
-#~ msgstr "Afficher une bulle"
-
-#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#3"
-#~ msgid "Unlimited"
-#~ msgstr "Illimité"
-
-#~ msgctxt "TaskbarNotificationBackend::ConfigWidget#4"
-#~ msgid " s"
-#~ msgstr "s"
-
-#~ msgctxt "ToolBarActionProvider#1"
-#~ msgid "Connect"
-#~ msgstr "Connecter"
-
-#~ msgctxt "ToolBarActionProvider#3"
-#~ msgid "Disconnect"
-#~ msgstr "Déconnecter"
-
-#~ msgctxt "ToolBarActionProvider#5"
-#~ msgid "Part"
-#~ msgstr "Partir"
-
-#~ msgctxt "ToolBarActionProvider#7"
-#~ msgid "Join"
-#~ msgstr "Rejoindre"
-
-#~ msgctxt "ToolBarActionProvider#11"
-#~ msgid "Whois"
-#~ msgstr "Whois"
-
-#~ msgctxt "TopicWidget#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "TopicWidget#2"
-#~ msgid "..."
-#~ msgstr "..."
-
-#~ msgctxt "TopicWidget#3"
-#~ msgid "Users: %1"
-#~ msgstr "Utilisateurs: %1"
-
-#~ msgctxt "TopicWidget#4"
-#~ msgid "Lag: %1 msecs"
-#~ msgstr "Lag: %1 ms"
-
-#~ msgctxt "TopicWidgetSettingsPage#1"
-#~ msgid "Form"
-#~ msgstr "Formulaire"
-
-#~ msgctxt "TopicWidgetSettingsPage#2"
-#~ msgid "Custom font:"
-#~ msgstr "Police personnalisée:"
-
-#~ msgctxt "TopicWidgetSettingsPage#5"
-#~ msgid "Interface"
-#~ msgstr "Interface"
-
-#~ msgctxt "UiStyle::StyledMessage#1"
-#~ msgid "%1"
-#~ msgstr "%1"
-
-#~ msgid "Misc"
-#~ msgstr "Divers"
-
-#~ msgid "<Original>"
-#~ msgstr "<Original>"
-
-#~ msgid "Client Style"
-#~ msgstr "Style du client"
-
-#~ msgid "Language"
-#~ msgstr "Langage"
-
-#~ msgid "<b>Invalid data received from core!</b><br>Disconnecting."
-#~ msgstr "<b>Données invalides reçues du noyau !</b><br>Déconnexion."
-
-#~ msgid "<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."
-#~ msgstr "<b>Ce client n'a pas compilé avec le support SSL !</b><br />Suppression de l'utilisation de SSL dans les paramètres de compte."
-
-#~ msgid "<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."
-#~ msgstr "<b>Le Noyau Quassel auquel vous essayez de vous conneter ne supporte pas le SSL!</b><br />Si vous voulez vous connect malgré tout, désactivez l'usage du SSL dans vos paramètres de compte."
-
-#~ msgid "No Host to connect to specified."
-#~ msgstr "L'hôte n'a pas été spécifié."
-
-#~ msgid "Cert Digest changed! was: %1"
-#~ msgstr "Le certificat a changé! C'était: %1"
-
-#~ msgid "Use secure connection (SSL)"
-#~ msgstr "Utiliser une connexion sécurisée (SSL)"
-
-#~ msgid "Use a proxy:"
-#~ msgstr "Utiliser un proxy:"
-
-#~ msgid "Proxy Port:"
-#~ msgstr "Port du Proxy:"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">Note: </span><span style=\" font-size:10pt;\">Adding more users and changing your username/password is not possible via Quassel's interface yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:10pt;\">If you need to do these things have a look at the manageusers.py script which is located in the /scripts directory.</p></body></html>"
-#~ msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"><span style=\" font-size:10pt; font-weight:600;\">PS: </span><span style=\" font-size:10pt;\"> Ajouter plus d'utilisateurs et changer votre nom/mot de passe n'est pas encore possible par l'interface Quassel.</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:10pt;\">Si vous avez besoin de faire cela voyez le script manageusers.py qui est dans le dossier /scripts.</p></body></html>"
-
-#~ msgid "Always use this account"
-#~ msgstr "Toujours utiliser ce compte"
-
-#~ msgid "Remove Account Settings"
-#~ msgstr "Supprimer les paramètres du compte"
-
-#~ msgid "Do you really want to remove your local settings for this Quassel Core account?<br>Note: This will <em>not</em> remove or change any data on the Core itself!"
-#~ msgstr "Voulez-vous réellement supprimer les informations locales pour ce compte noyau de Quassel ?<br>Notez que cela <em>ne</em> supprimera ou changera <em>aucun</em> paramètre dans le Noyau lui-même !"
-
-#~ msgid "Connect to %1"
-#~ msgstr "Connexion à %1"
-
-#~ msgid "<div style=color:red;>Connection to %1 failed!</div>"
-#~ msgstr "<div style=color:red;>Echec de la connexion à %1 !</div>"
-
-#~ msgid "Not connected to %1."
-#~ msgstr "Non connecté à %1."
-
-#~ msgid "Unknown connection state to %1"
-#~ msgstr "Etat de la connexion à %1 inconnu "
-
-#~ msgid "Login"
-#~ msgstr "Utilisateur"
-
-#~ msgid "Initializing your connection"
-#~ msgstr "Création de votre connexion"
-
-#~ msgid "Connected to apollo.mindpool.net."
-#~ msgstr "Connecté à apollo.mindpool.net."
-
-#~ msgid "Configure your Quassel Core"
-#~ msgstr "Configurer votre noyau Quassel"
-
-#~ msgid "The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core."
-#~ msgstr "Le Noyau Quassel auquel vous essayez de vous connecter n'est pas encore configuré. Vous pouvez maintenant lancer l'assistant de configuration qui vous aide à paramétrer votre Noyau."
-
-#~ msgid "Launch Wizard"
-#~ msgstr "Lancer l'Assistant"
-
-#~ msgid "Initializing your session..."
-#~ msgstr "Lancement de votre session..."
-
-#~ msgid "<b>Please be patient while your client synchronizes with the Quassel Core!</b>"
-#~ msgstr "<b>Merci de patienter le temps que votre client se synchronise avec le Noyau Quassel !</b>"
-
-#~ msgid "Network states:"
-#~ msgstr "Etat du réseau:"
-
-#~ msgid "Use internal core"
-#~ msgstr "Utiliser le noyau interne"
-
-#~ msgid ""
-#~ "THIS IS A PLACEHOLDER\n"
-#~ "TO\n"
-#~ "RESERVE\n"
-#~ "SOME SPACE"
-#~ msgstr ""
-#~ "THIS IS A PLACEHOLDER\n"
-#~ "TO\n"
-#~ "RESERVE\n"
-#~ "SOME SPACE"
-
-#~ msgid "<div>Errors occurred while connecting to \"%1\":</div>"
-#~ msgstr "<div>Erreurs lors de la connexion à \"%1\":</div>"
-
-#~ msgid "Continue connection"
-#~ msgstr "Continuer la connexion"
-
-#~ msgid "View SSL Certificate"
-#~ msgstr "Voir le certificat SSL"
-
-#~ msgid "Add to known hosts"
-#~ msgstr "Ajouter aux hôtes connus"
-
-#~ msgid "Show System Tray Icon"
-#~ msgstr "Afficher l'icône dans la barre de tâches"
-
-#~ msgid "Tray Icon"
-#~ msgstr "Icône de la barre de tâches"
-
-#~ msgid "Core Lag: %1"
-#~ msgstr "Lag noyau:  %1"
-
-#~ msgid "SSL Certificate used by %1"
-#~ msgstr "SSL Certificat émis par %1"
-
-#~ msgid "Locality Name:"
-#~ msgstr "Nom de la Localité:"
-
-#~ msgid "Country Name:"
-#~ msgstr "Nom du Pays:"
-
-#~ msgid "Additional Info"
-#~ msgstr "Info additionelle"
-
-#~ msgid "Valid From:"
-#~ msgstr "Valable à partir de:"
-
-#~ msgid "Valid To:"
-#~ msgstr "Valable jusqu'au:"
-
-#~ msgid "Hostname %1:"
-#~ msgstr "Nom de l'hôte %1:"
-
-#~ msgid "E-Mail Address %1:"
-#~ msgstr "Adresse Email %1:"
-
-#~ msgid "Digest:"
-#~ msgstr "Résumé:"
-
-#~ msgid ""
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Quassel IRC </span>(pre-release)</p></body></html>"
-#~ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Bitstream Vera Sans'; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Quassel IRC </span>(pré-version)</p></body></html>"
-
-#~ msgid "About"
-#~ msgstr "A propos"
-
-#~ msgid "Authors"
-#~ msgstr "Contributeurs"
-
-#~ msgid "Licence Agreement"
-#~ msgstr "Licence"
-
-#~ msgid ""
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Quassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; font-weight:600;\"><span style=\" font-size:8pt; font-weight:400;\">mobile edition</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:5pt;\"> </span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">(C) 2005-2007 by</p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt; font-weight:600;\">The Quassel IRC Team</p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">Manuel Nickschas</p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">Marcus Eggenberger</p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">Marco Genise</p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\"><span style=\" font-size:4pt;\"> </span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">&lt;http://quassel-irc.org&gt;</p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">&lt;devel@quassel-irc.org&gt;</p></body></html>"
-#~ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Quassel IRC</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; font-weight:600;\"><span style=\" font-size:8pt; font-weight:400;\">édition mobile</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:5pt;\"> </span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">(C) 2005-2007 by</p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt; font-weight:600;\">L'équipe Quassel IRC</p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">Manuel Nickschas</p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">Marcus Eggenberger</p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">Marco Genise</p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\"><span style=\" font-size:4pt;\"> </span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">&lt;http://quassel-irc.org&gt;</p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;\">&lt;devel@quassel-irc.org&gt;</p></body></html>"
-
-#~ msgid "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2008 by the Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-#~ msgstr "<b>Un Client IRC distribué et moderne</b><br><br>&copy;2005-2008 par le Projet Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> sur <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC est sous double licence <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> et <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>La majorité des icones proviennent &copy; de l'<a href=\"http://www.oxygen-icons.org\">Equipe Oxygen</a> et sont utilisés sous la <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Merci d'utiliser <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> pour transmettre les bogues."
-
-#~ msgid "Special thanks goes to:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>for great artwork and the Quassel logo/icon</dt><dt><b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating most of the other shiny icons you see throughout Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of Quasseltopia with Greenphones and more</dd>"
-#~ msgstr "Remerciements particuliers à:<br><dl><dt><b>John \"nox-Hand\" Hand</b></dt><dd>pour le beau travail artistique et le logo Quassel </dt><dt><b><a href=\"http://www.oxygen-icons.org\">L'Equipe Oxygen</a></b></dt><dd>pour avoir créé la majorité des belles icones que vous voyez dans Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Trolltech</a></b></dt><dd>pour avoir créé Qt et Qtopia, et pour le soutien du developpement de Quasseltopia avec Greenphones entre autres</dd>"
-
-#~ msgid "<b>Version %1</b><br>Protocol version: %2<br>Built: %3 %4"
-#~ msgstr "<b>Version %1</b><br>Version du protocole: %2<br>Compilation: %3 %4"
-
-#~ msgid "Special thanks goes to:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>for great artwork and the Quassel logo/icon</dt><dt><b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for creating most of the other shiny icons you see throughout Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt><dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
-#~ msgstr "Remerciements particuliers à:<br><dl><dt><b>John \"nox\" Hand</b></dt><dd>pour son grand travail artistique et pour le logo Quassel</dt><dt><b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>pour la création del a majorité des autres belles icones que vous pouvez voir dans Quassel</dd><dt><b><a href=\"http://www.trolltech.com\">Qt Software précédemment nommée Trolltech</a></b></dt><dd>pour la création de Qt et Qtopia, et comme sponsor du developpement de QuasselTopia avec Greenphones et d'autres</dd><dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>pour garder en vie Qt, et pour sponsoriser le developpement de Quassel Mobile avec N810s</dd>"
-
-#~ msgid "Administration"
-#~ msgstr "Administration"
-
-#~ msgid "Account Management"
-#~ msgstr "Gestion des comptes"
-
-#~ msgid ""
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Bitstream Vera Sans'; font-size:11pt;\"><span style=\" font-weight:600;\">Account Management</span></p></body></html>"
-#~ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Bitstream Vera Sans'; font-size:11pt;\"><span style=\" font-weight:600;\">Gestion des Comptes</span></p></body></html>"
-
-#~ msgid "Rename"
-#~ msgstr "Renommer"
-
-#~ msgid "Password..."
-#~ msgstr "Mot de Passe..."
-
-#~ msgid "Admin"
-#~ msgstr "Admin"
-
-#~ msgid "Setup Admin User"
-#~ msgstr "Paramètrage de l'Utilisateur Administrateur"
-
-#~ msgid "Name:"
-#~ msgstr "Nom:"
-
-#~ msgid "Behaviour"
-#~ msgstr "Comportement"
-
-#~ msgid "Appearance"
-#~ msgstr "Apparence"
-
-#~ msgid "<System>"
-#~ msgstr "<Système>"
-
-#~ msgid "Note: needs client restart for full effect!"
-#~ msgstr "N.B.: il est nécessaire de relancer le client!"
-
-#~ msgid "Misc:"
-#~ msgstr "Divers:"
-
-#~ msgid "Show Web Previews"
-#~ msgstr "Afficher les aperçus Web"
-
-#~ msgid "Use Icons to represent away state of Users"
-#~ msgstr "Utiliser des Icônes pour représenter les états d'absence des Utilisateurs"
-
-#~ msgid "Fonts"
-#~ msgstr "Polices"
-
-#~ msgid "Set font for the main chat window and the chat monitor"
-#~ msgstr "Définir la police pour la fenêtre principale de discussion et le moniteur de discussion"
-
-#~ msgid "Chat window:"
-#~ msgstr "Fenêtre de discussion:"
-
-#~ msgid "Font"
-#~ msgstr "Police"
-
-#~ msgid "Set font for channel and nick lists"
-#~ msgstr "Définir la police pour les listes de canaux et de pseudos"
-
-#~ msgid "Channel list:"
-#~ msgstr "Liste des canaux:"
-
-#~ msgid "Set font for the input line"
-#~ msgstr "Définir le police pour la ligne de saisie"
-
-#~ msgid "Input line:"
-#~ msgstr "Ligne de saisie:"
-
-#~ msgid "Show status icons in channel and nick lists"
-#~ msgstr "Affiche des icones dans les listes de canaux et de pseudos"
-
-#~ msgid "Use icons in channel and nick lists"
-#~ msgstr "Utiliser les icons dans les listes de canaux et de pseudos"
-
-#~ msgid "Backlog Request Method:"
-#~ msgstr "Méthode de demande de l'historique:"
-
-#~ msgid "Fixed Amount per Buffer"
-#~ msgstr "Montant fixe par tampon"
-
-#~ msgid "Unread Messages per Buffer"
-#~ msgstr "Messages non lus par tampon"
-
-#~ msgid "Global Unread Messages"
-#~ msgstr "Messages non lus globalement"
-
-#~ msgid "The simplest Requester. It fetches a fixed amount of lines for each buffer from the Backlog."
-#~ msgstr "C'est la demande la plus simple. Elle récupère un montant fixe de lignes de chaque tampon à partir de l'historique."
-
-#~ msgid ""
-#~ "This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.\n"
-#~ "\n"
-#~ "You can also chose to fetch additional older chatlines to provide a better context."
-#~ msgstr ""
-#~ "Cette demande récupère les messages non lus de chaque tampon individuellement. Le montant des lignes par tampon peut être limité.\n"
-#~ "\n"
-#~ "Vous pouvez aussi demander des lignes complémentaires afin d'obtenir un meilleur contexte."
-
-#~ msgid ""
-#~ "This requester fetches all messages newer than the oldest unread message for all buffers. \n"
-#~ "This requester determines which is the oldest read message of all buffers and then requests one large chunk of messages across all buffers.\n"
-#~ "\n"
-#~ "Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).\n"
-#~ "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
-#~ "\n"
-#~ "You can also chose to fetch additional older chatlines to provide a better context similar."
-#~ msgstr ""
-#~ "Cette demande récupère tout les messages plus récents que le plus ancien message non lu pour tous les tampons. \n"
-#~ "Cette demande détermine quel est le plus vieux message de tous les tampons puis demande l'ensemble des messages pour les tampons concernés.\n"
-#~ "\n"
-#~ "Info: cette demande n'est pas recommandée si vous utilisée des tampons cachés ou si vous avez des tampons inactifs (c.a.d. : pas de requêtes ou de canaux inutiles).\n"
-#~ "Il est plus pratique de limiter le montant total de l'historique et c'est probablement plus rapide.\n"
-#~ "\n"
-#~ "Vous pouvez également choisir de récupérer des lignes complémentaires plus anciennes de discussion pour obtenir un meilleur contexte."
-
-#~ msgid "FixedBacklogAmount"
-#~ msgstr "FixedBacklogAmount"
-
-#~ msgid "PerBufferUnreadBacklogLimit"
-#~ msgstr "PerBufferUnreadBacklogLimit"
-
-#~ msgid "PerBufferUnreadBacklogAdditional"
-#~ msgstr "PerBufferUnreadBacklogAdditional"
-
-#~ msgid ""
-#~ "This requester fetches all messages newer than the oldest unread message for all buffers.\n"
-#~ "\n"
-#~ "Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).\n"
-#~ "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
-#~ "\n"
-#~ "You can also chose to fetch additional older chatlines to provide a better context similar."
-#~ msgstr ""
-#~ "Cette demande récupère tous les messages plus récents que le plus ancien message non lu pour tous les tampons. \n"
-#~ "\n"
-#~ "Info: cette demande n'est pas recommandée si vous utilisez des tampons cachés ou si vous avez des tampons inactifs (c.a.d. : pas de requêtes ou de canaux inutiles).\n"
-#~ "Il est plus pratique de limiter le montant total de l'historique et c'est probablement plus rapide.\n"
-#~ "\n"
-#~ "Vous pouvez également choisir de récupérer des lignes complémentaires plus anciennes de discussion pour obtenir un meilleur contexte."
-
-#~ msgid "GlobalUnreadBacklogLimit"
-#~ msgstr "GlobalUnreadBacklogLimit"
-
-#~ msgid "GlobalUnreadBacklogAdditional"
-#~ msgstr "GlobalUnreadBacklogAdditional"
-
-#~ msgid "DynamicBacklogAmount"
-#~ msgstr "DynamicBacklogAmount"
-
-#~ msgid ""
-#~ "This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.\n"
-#~ "\n"
-#~ "You can also choose to fetch additional older chatlines to provide a better context."
-#~ msgstr ""
-#~ "Cette demande récupère les messages non lus de chaque tampon individuellement. Le montant des lignes par tampon peut être limité.\n"
-#~ "\n"
-#~ "Vous pouvez aussi demander des lignes complémentaires afin d'obtenir un meilleur contexte."
-
-#~ msgid "<b>Status buffer of %1</b>"
-#~ msgstr "<b>Etat du buffer %1</b>"
-
-#~ msgid "Away Message: %1"
-#~ msgstr "Message d'absence: %1"
-
-#~ msgid "Statistics"
-#~ msgstr "Statistiques"
-
-#~ msgid ""
-#~ "Created: 01.04.2007\n"
-#~ "Lines:     1234\n"
-#~ msgstr "Créé le: 01.04.2007Lignes:     1234"
-
-#~ msgid "Local Display"
-#~ msgstr "Affichage Local"
-
-#~ msgid "Show all messages"
-#~ msgstr "Voir tous les messages"
-
-#~ msgid "Show last"
-#~ msgstr "Voir le dernier"
-
-#~ msgid "messages"
-#~ msgstr "messages"
-
-#~ msgid "Show messages from the last"
-#~ msgstr "Voir les messages à partir de la fin"
-
-#~ msgid "days"
-#~ msgstr "jours"
-
-#~ msgid "Save as default"
-#~ msgstr "Sauver par défaut"
-
-#~ msgid "Keep all messages"
-#~ msgstr "Garder tous les messages"
-
-#~ msgid "Keep last"
-#~ msgstr "Garder les derniers"
-
-#~ msgid "Keep messages from the last"
-#~ msgstr "Garder les messages à partir du dernier"
-
-#~ msgid "Delete permanently"
-#~ msgstr "Supprimer definitivement"
-
-#~ msgid "Hide buffers"
-#~ msgstr "Cacher le tampon"
-
-#~ msgid "Hide buffers permanently"
-#~ msgstr "Cacher le tampon en permanence"
-
-#~ msgid "Delete buffer"
-#~ msgstr "Supprimer le tampon"
-
-#~ msgid "Ignore list"
-#~ msgstr "Liste d'ignorés"
-
-#~ msgid "Join Events"
-#~ msgstr "Avis d'entrée"
-
-#~ msgid "Part Events"
-#~ msgstr "Avis de départ"
-
-#~ msgid "Kill Events"
-#~ msgstr "Avis de Kill"
-
-#~ msgid "Quit Events"
-#~ msgstr "Avis de Sortie"
-
-#~ msgid "Mode Events"
-#~ msgstr "Avis de Mode"
-
-#~ msgid "Input channel name:"
-#~ msgstr "Entrez le nom du canal:"
-
-#~ msgid "Remove buffer permanently?"
-#~ msgstr "Supprimer le tampon définitivement ?"
-
-#~ msgid "Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog data, from the core's database!"
-#~ msgstr "Voulez vous supprimer le tampon \"%1\" de manière permanente ? Cela supprimera toutes les données correspondantes, y compris celles sauvées dans l'historique contenu dans la base de données du noyau !"
-
-#~ msgid "All Buffers"
-#~ msgstr "Tous tampons"
-
-#~ msgid "Please enter a name for the buffer view:"
-#~ msgstr "Merci de saisir un nom pour la vue:"
-
-#~ msgid "Add Buffer View"
-#~ msgstr "Ajouter une Vue"
-
-#~ msgid "Edit Mode"
-#~ msgstr "Mode édition"
-
-#~ msgid "Show / Hide buffers"
-#~ msgstr "Afficher / Cacher les tampons"
-
-#~ msgid "Buffer Views"
-#~ msgstr "Vues"
-
-#~ msgid "Delete Buffer View?"
-#~ msgstr "Supprimer la vue ?"
-
-#~ msgid "Do you really want to delete the buffer view \"%1\"?"
-#~ msgstr "Voulez vous réellement supprimer la vue \"%1\" ?"
-
-#~ msgid "Buffer View  Settings"
-#~ msgstr "Paramètres des Vues"
-
-#~ msgid "Restrict Buffers to:"
-#~ msgstr "Limiters les tampons à:"
-
-#~ msgid "Status Buffers"
-#~ msgstr "Tampons d'états"
-
-#~ msgid "Channel Buffers"
-#~ msgstr "Tampons de canaux"
-
-#~ msgid "Query Buffers"
-#~ msgstr "Tampons de dialogues"
-
-#~ msgid "Hide inactive Buffers"
-#~ msgstr "Cacher les tampons inactifs"
-
-#~ msgid "Add new Buffers automatically"
-#~ msgstr "Ajouter un nouveau tampon automatiquement"
-
-#~ msgid "Queries"
-#~ msgstr "Requêtes"
-
-#~ msgid "Nets"
-#~ msgstr "Réseaux"
-
-#~ msgid "Select Buffer"
-#~ msgstr "Selectionner le tampon"
-
-#~ msgid "Tab 1"
-#~ msgstr "Onglet 1"
-
-#~ msgid "YourNickname #quassel Network: The Topic"
-#~ msgstr "VotrePseudo #quassel Réseau: Le Sujet"
-
-#~ msgid ""
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"><span style=\" font-size:89pt; color:#00008b;\">Quassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Chat comfortably. Anywhere.</span></p></body></html>"
-#~ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"><span style=\" font-size:89pt; color:#00008b;\">Quassel IRC</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Chatter simplement. Partout.</span></p></body></html>"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/quassel/96x96/apps/quassel.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Chat comfortably. Anywhere.</span></p></body></html>"
-#~ msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/quassel/96x96/apps/quassel.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Chatter facilement. Partout.</span></p></body></html>"
-
-#~ msgid "Zoom Original"
-#~ msgstr "Zoom Original"
-
-#~ msgid "Ctrl+0"
-#~ msgstr "Ctrl+0"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Chat comfortably. Anywhere.</span></p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/pics/quassel-large.png\" /><span style=\" font-size:89pt; color:#00008b;\">uassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;\"><span style=\" font-size:22pt;\">Dialoguez simplement. Partout.</span></p></body></html>"
-
-#~ msgid "Search Channels"
-#~ msgstr "Recherche des Canaux"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">SUPER EVIL CATASTROPHIC ERROR!!11</p>\n"
-#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p></body></html>"
-#~ msgstr ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">SUPER ERREUR CATASTROPHIQUE !!11</p>\n"
-#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p></body></html>"
-
-#~ msgid ""
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Bitstream Vera Sans Mono'; font-size:8pt; font-weight:400; font-style:normal; text-decoration:none;\">\n"
-#~ "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Nimbus Mono L';\"></p></body></html>"
-#~ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Bitstream Vera Sans Mono'; font-size:8pt; font-weight:400; font-style:normal; text-decoration:none;\"><p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Nimbus Mono L';\"></p></body></html>"
-
-#~ msgid "32 Users"
-#~ msgstr "32 Utilisateurs"
-
-#~ msgid "@ Operators"
-#~ msgstr "@ Opérateurs"
-
-#~ msgid "4 Voiced"
-#~ msgstr "4 Voicés"
-
-#~ msgid "19 Users"
-#~ msgstr "19 Utilisateurs"
-
-#~ msgid "Available Buffers:"
-#~ msgstr "Tampons disponibles:"
-
-#~ msgid "Show network name"
-#~ msgstr "Montrer le nom du réseau"
-
-#~ msgid "Show buffer name"
-#~ msgstr "Montrer le nom du tampon"
-
-#~ msgid "Show search bar"
-#~ msgstr "Montrer la barre de recherche"
-
-#~ msgid "Show Search Bar"
-#~ msgstr "Montrer la barre de recherche"
-
-#~ msgid "TimestampFormat"
-#~ msgstr "TimestampFormat"
-
-#~ msgid "ShowWebPreview"
-#~ msgstr "ShowWebPreview"
-
-#~ msgid "Connecting..."
-#~ msgstr "Connexion..."
-
-#~ msgid "Requesting User states..."
-#~ msgstr "Récupération des informations de l'utilisateur..."
-
-#~ msgid "Requesting Channel states..."
-#~ msgstr "Récupération des informations sur les canaux..."
-
-#~ msgid "Internal connections not yet supported."
-#~ msgstr "Les connexions internes ne sont pas encore supportées."
-
-#~ msgid "Color settings"
-#~ msgstr "Options de Couleur"
-
-#~ msgid "Bufferview"
-#~ msgstr "Vue"
-
-#~ msgid "Activities:"
-#~ msgstr "Activités:"
-
-#~ msgid "FG"
-#~ msgstr "Avant"
-
-#~ msgid "BG"
-#~ msgstr "Fd"
-
-#~ msgid "Use BG"
-#~ msgstr "Utiliser le Fond"
-
-#~ msgid "New Message:"
-#~ msgstr "Nouveau message:"
-
-#~ msgid "Other Activity:"
-#~ msgstr "Autre activité:"
-
-#~ msgid "Chatview"
-#~ msgstr "Moniteur de discussion"
-
-#~ msgid "Server Activity"
-#~ msgstr "Activité du serveur"
-
-#~ msgid "Foreground"
-#~ msgstr "Devant"
-
-#~ msgid "Background"
-#~ msgstr "Fond"
-
-#~ msgid "Error Message:"
-#~ msgstr "Message d'erreur:"
-
-#~ msgid "Notice Message:"
-#~ msgstr "Message d'information:"
-
-#~ msgid "Plain Message:"
-#~ msgstr "Message normal:"
-
-#~ msgid "Server Message:"
-#~ msgstr "Message du serveur:"
-
-#~ msgid "Highlight Message:"
-#~ msgstr "Message surligné:"
-
-#~ msgid "User Activity"
-#~ msgstr "Activité utilisateur"
-
-#~ msgid "Action Message:"
-#~ msgstr "Message d'action:"
-
-#~ msgid "Join Message:"
-#~ msgstr "Message d'entrée:"
-
-#~ msgid "Kick Message:"
-#~ msgstr "Message de kick:"
-
-#~ msgid "Mode Message:"
-#~ msgstr "Message de mode:"
-
-#~ msgid "Part Message:"
-#~ msgstr "Message de sortie:"
-
-#~ msgid "Quit Message:"
-#~ msgstr "Message de départ:"
-
-#~ msgid "Rename Message:"
-#~ msgstr "Message de changement de pseudo:"
-
-#~ msgid "Sender:"
-#~ msgstr "Emetteur:"
-
-#~ msgid "Nick:"
-#~ msgstr "Pseudo:"
-
-#~ msgid "Hostmask:"
-#~ msgstr "Masque de l'hôte:"
-
-#~ msgid "Channelname:"
-#~ msgstr "Nom du Canal:"
-
-#~ msgid "Mode flags:"
-#~ msgstr "Drapeaux de Mode:"
-
-#~ msgid "Url:"
-#~ msgstr "Url:"
-
-#~ msgid "Mirc Color Codes"
-#~ msgstr "Codes Couleur Mirc"
-
-#~ msgid "Color Codes"
-#~ msgstr "Codes de Couleur"
-
-#~ msgid "Color 0:"
-#~ msgstr "Couleur 0:"
-
-#~ msgid "Color 1:"
-#~ msgstr "Couleur 1:"
-
-#~ msgid "Color 2:"
-#~ msgstr "Couleur 2:"
-
-#~ msgid "Color 3:"
-#~ msgstr "Couleur 3:"
-
-#~ msgid "Color 4:"
-#~ msgstr "Couleur 4:"
-
-#~ msgid "Color 5:"
-#~ msgstr "Couleur 5:"
-
-#~ msgid "Color 6:"
-#~ msgstr "Couleur 6:"
-
-#~ msgid "Color 7:"
-#~ msgstr "Couleur 7:"
-
-#~ msgid "Color 8:"
-#~ msgstr "Couleur 8:"
-
-#~ msgid "Color 14:"
-#~ msgstr "Couleur 14:"
-
-#~ msgid "Color 15:"
-#~ msgstr "Couleur 15:"
-
-#~ msgid "Color 13:"
-#~ msgstr "Couleur 13:"
-
-#~ msgid "Color 12:"
-#~ msgstr "Couleur 12:"
-
-#~ msgid "Color 11:"
-#~ msgstr "Couleur 11:"
-
-#~ msgid "Color 10:"
-#~ msgstr "Couleur 10:"
-
-#~ msgid "Color 9:"
-#~ msgstr "Couleur 9:"
-
-#~ msgid "Nickview"
-#~ msgstr "Vue des pseudos"
-
-#~ msgid "Nick status:"
-#~ msgstr "Etat des pseudos:"
-
-#~ msgid "New Message Marker:"
-#~ msgstr "Marque d'un nouveau message:"
-
-#~ msgid "Sender auto coloring:"
-#~ msgstr "Couleur automatique de l'emetteur:"
-
-#~ msgid "Conclusion"
-#~ msgstr "Conclusion"
-
-#~ msgid "Behavior"
-#~ msgstr "Comportement"
-
-#~ msgid "Delete Buffer(s)..."
-#~ msgstr "Supprimer le(s) tampon(s)..."
-
-#~ msgid "Show Buffer"
-#~ msgstr "Afficher le tampon"
-
-#~ msgid "Hide Buffer(s) Temporarily"
-#~ msgstr "Cacher le(s) tampon(s) temporairement"
-
-#~ msgid "Hide Buffer(s) Permanently"
-#~ msgstr "Cacher le(s) tampon(s) définitivement"
-
-#~ msgid "Client %1 too old, rejecting."
-#~ msgstr "Client %1 trop vieux, rejeté."
-
-#~ msgid "Client %1 did not send an init message before trying to login, rejecting."
-#~ msgstr "Le client %1 n'a pas envoyé de message de création avant d'essayer de se connecter, rejet de la demande."
-
-#~ msgid "Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3)."
-#~ msgstr "Client %1 crée et identifié avec succès comme \"%2\" (IdUtilisateur: %3)."
-
-#~ msgid "Could not initialize session for client %1!"
-#~ msgstr "Impossible de lancer la session pour le client %1 !"
-
-#~ msgid ""
-#~ "Currently, Quassel only supports SQLite3. You need to build your\n"
-#~ "Qt library with the sqlite plugin enabled in order for quasselcore\n"
-#~ "to work."
-#~ msgstr ""
-#~ "Actuellement, Quassel supporte uniquement SQLite3. Vous devez\n"
-#~ "construire votre librairie Qt avec le plugin sqlite activé pour que le \n"
-#~ "noyau quassel fonctionne."
-
-#~ msgid "Missing information"
-#~ msgstr "Information manquante"
-
-#~ msgid "Please enter all required information or discard changes to return to account selection."
-#~ msgstr "Merci de saisir toutes les informations demandées ou supprimez les changements pour revenir au choix du compte."
-
-#~ msgid "Non-unique account name"
-#~ msgstr "Nom de compte déjà utilisé"
-
-#~ msgid "Account names need to be unique. Please enter a different name or discard all changes to return to account selection."
-#~ msgstr "Les noms de compte doivent être uniques. Merci de saisir un nom différent ou de supprimer les changements pour revenir au choix du compte."
-
-#~ msgid "Host:"
-#~ msgstr "Hôte:"
-
-#~ msgid "Use built-in Quassel Core"
-#~ msgstr "Utiliser le noyau intégré de Quassel"
-
-#~ msgid "The port quasselcore will listen at"
-#~ msgstr "Le noyau quassel ecoutera sur le port "
-
-#~ msgid "Don't restore last core's state"
-#~ msgstr "Ne pas restaurer le dernier état du noyau"
-
-#~ msgid "Path to logfile"
-#~ msgstr "Chemin du fichier trace"
-
-#~ msgid "Loglevel Debug|Info|Warning|Error"
-#~ msgstr "Niveau de trace Debug|Info|Warning|Error"
-
-#~ msgid "Specify the directory holding datafiles like the Sqlite DB and the SSL Cert"
-#~ msgstr "Préciser le repertoire contenant les fichiers de données tel que Sqlite DB et le Certificat SSL"
-
-#~ msgid ""
-#~ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\">Note: Adding more users and changing your username/password is not possible via Quassel's interface yet.</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;\">If you need to do these things have a look at the manageusers.py script which is located in the /scripts directory.</p></body></html>"
-#~ msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\"><html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\">Note: Ajouter plus d'utilisateurs et changer votre nom/mot de passe n'est pas encore possible par l'interface Quassel.</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;\">Si vous avez besoin de faire cela regarder le script manageusers.py qui est dans le dossier /scripts.</p></body></html>"
-
-#~ msgid "Create Account"
-#~ msgstr "Créer le compte"
-
-#~ msgid "In order to connect to a Quassel Core, you need to create an account.<br>Please enter a name for this account now:"
-#~ msgstr "Afin de vous connecter au noyau Quassel, vous devez créer un compte.<br>Merci de saisir un nom pour ce compte maintenant:"
-
-#~ msgid "Default"
-#~ msgstr "Défaut"
-
-#~ msgid "Account name already exists!"
-#~ msgstr "Nom de compte déjà existant !"
-
-#~ msgid "An account named '%1' already exists, and account names must be unique!"
-#~ msgstr "Un compte nommé '%1' existe dejà, et les noms de compte doivent être uniques !"
-
-#~ msgid "Delete account?"
-#~ msgstr "Supprimer le compte ?"
-
-#~ msgid "Do you really want to delete the data for the account '%1'?<br>Note that this only affects your local account settings and will not remove any data from the core."
-#~ msgstr "Voules vous réellement supprimer les données de ce compte '%1' ?<br>Notez que cela affectera uniquement vos paramètres de compte locaux et que cela de supprime aucune donnés du noyau."
-
-#~ msgid "Can't connect to internal core at the moment [serious breakage due to switch to dynamic signals]. Please check back later."
-#~ msgstr "Impossible de se connecter au noyau pour le moment [serious breakage due to switch to dynamic signals]. Merci de vérifier plus tard."
-
-#~ msgid "Can't connect to internal core, since we are running as a standalone GUI!"
-#~ msgstr "Impossible de se connecter au coeur car vous utilisez une version Autonome!"
-
-#~ msgid "Connecting to internal core"
-#~ msgstr "Connexion au noyau interne"
-
-#~ msgid "Connecting to %1"
-#~ msgstr "Connexion à %1"
-
-#~ msgid "Invalid user or password. Pleasy try again.%1"
-#~ msgstr "Utilisateur ou mot de passe invalide. Merci de réessayer. %1"
-
-#~ msgid "<b>Could not connect to Quassel Core!</b><br>\n"
-#~ msgstr "<b>Impossible de se connecter au Noyau Quassel !</b><br>"
-
-#~ msgid "Account Settings"
-#~ msgstr "Paramètres du compte"
-
-#~ msgid "Use internal"
-#~ msgstr "Usage interne"
-
-#~ msgid "Connecting to..."
-#~ msgstr "Connexion à..."
-
-#~ msgid "GUI Profile:"
-#~ msgstr "Profil d'interface Utiliteur:"
-
-#~ msgid "New..."
-#~ msgstr "Nouveau..."
-
-#~ msgid "Always use this profile"
-#~ msgstr "Toujours utiliser ce profil"
-
-#~ msgid "Properties..."
-#~ msgstr "Propriétés..."
-
-#~ msgid "Select Core Account"
-#~ msgstr "Sélectionner le compte noyau"
-
-#~ msgid "Available Quassel Core accounts:"
-#~ msgstr "Comptes du noyau Quassel disponible:"
-
-#~ msgid ""
-#~ "Core Info\n"
-#~ "reserve\n"
-#~ "some\n"
-#~ "space"
-#~ msgstr ""
-#~ "Infos du Noyau\n"
-#~ "reserver\n"
-#~ "un peu\n"
-#~ "d'espace"
-
-#~ msgid "Channel states:"
-#~ msgstr "Etats du Canal:"
-
-#~ msgid "User states:"
-#~ msgstr "Etats de l'utilisateur:"
-
-#~ msgid "view SSL Certificate"
-#~ msgstr "voir le certificat SSL"
-
-#~ msgid "add to known hosts"
-#~ msgstr "ajouter aux hôtes connus"
-
-#~ msgid "Connection Progress"
-#~ msgstr "Connexion en Cours"
-
-#~ msgid "<b>Connection to core in progress.</b>"
-#~ msgstr "<b>Connexion au noyau en cours.</b>"
-
-#~ msgid "Connecting to core..."
-#~ msgstr "Connexion au noyau ..."
-
-#~ msgid "%p%"
-#~ msgstr "%p%"
-
-#~ msgid "Channels"
-#~ msgstr "Canaux"
-
-#~ msgid "%1 Day(s) %2:%3:%4 (since %5)"
-#~ msgstr "%1 jour(s) %2:%3:%4 (depuis le %5)"
-
-#~ msgid "Disconnecting."
-#~ msgstr "Déconnecte."
-
-#~ msgid "Client %1 disconnected (UserId: %2)."
-#~ msgstr "Client %1 déconnecté (IdUtilisateur: %2)."
-
-#~ msgid "Name \"%1\" is invalid: / or ../ are not allowed!"
-#~ msgstr "Le nom \"%1\" est invalide: les / ou les ../ ne sont pas autorisés!"
-
-#~ msgid "Custom Application Fonts"
-#~ msgstr "Polices personnalisées pour l'interface"
-
-#~ msgid "General:"
-#~ msgstr "Général:"
-
-#~ msgid "Topic:"
-#~ msgstr "Sujet:"
-
-#~ msgid "Buffer Views:"
-#~ msgstr "Vues:"
-
-#~ msgid "Nick List:"
-#~ msgstr "Liste des Pseudos:"
-
-#~ msgid "Chat Widget"
-#~ msgstr "Fenêtre de discussion"
-
-#~ msgid "Nicks:"
-#~ msgstr "Pseudos:"
-
-#~ msgid "Some of these settings require a restart of the Quassel Client in order to take effect. We intend to fix this."
-#~ msgstr "Certains de ces paramètres nécessitent le redémarrage du client Quassel pour prendre effet. Nous allons régler celà."
-
-#~ msgid "Inputline:"
-#~ msgstr "Ligne de Saisie:"
-
-#~ msgid "Identity"
-#~ msgstr "Identité"
-
-#~ msgid "Connect now"
-#~ msgstr "Connecter maintenant"
-
-#~ msgid "Choose random server for connecting"
-#~ msgstr "Choisir un serveur aléatoire pour se connecter"
-
-#~ msgid "Perform"
-#~ msgstr "Exécuter"
-
-#~ msgid "Network Encoding"
-#~ msgstr "Encodage du réseau"
-
-#~ msgid "Use defaults"
-#~ msgstr "Utiliser par défaut"
-
-#~ msgid "Use system tray icon:"
-#~ msgstr "Utiliser l'icône système:"
-
-#~ msgid "Minimize to tray on minimize button"
-#~ msgstr "Minimiser en icône en appuyant sur le bouton minimiser"
-
-#~ msgid "Minimize to tray on close button"
-#~ msgstr "Minimiser en icône en appuyant sur le bouton fermer"
-
-#~ msgid "Tray icon:"
-#~ msgstr "Icône système:"
-
-#~ msgid "User Notification:"
-#~ msgstr "Notification à l'Utilisateur:"
-
-#~ msgid "Animate tray icon"
-#~ msgstr "Animer l'icone"
-
-#~ msgid "Display pop-up messages"
-#~ msgstr "Afficher les messages d'aide"
-
-#~ msgid "Display user related messages and private Notices:"
-#~ msgstr "Afficher les messages des utilisateurs et les messages privés:"
-
-#~ msgid "in status buffer"
-#~ msgstr "dans le tampon d'état"
-
-#~ msgid "in query buffer (if exists)"
-#~ msgstr "dans le tampon de dialogue (s'il existe)"
-
-#~ msgid "in current buffer"
-#~ msgstr "dans le tampon courant"
-
-#~ msgid "Buffer view:"
-#~ msgstr "Vue Buffer:"
-
-#~ msgid "Mouse wheel changes displayed buffers"
-#~ msgstr "La roulette de la souris change de tampon affiché"
-
-#~ msgid "The suffix appended to a nick on completion via TAB. Default is \": \""
-#~ msgstr "Le suffixe ajouté au pseudo lorsqu'il est terminé par TAB est par défaut \": \""
-
-#~ msgid "Input Line:"
-#~ msgstr "Ligne de Saisie:"
-
-#~ msgid "Display User-Related Messages And Private Notices:"
-#~ msgstr "Afficher les messages pour l'utilisateur et les informations:"
-
-#~ msgid "Buffer View"
-#~ msgstr "Tampon"
-
-#~ msgid "Input Line"
-#~ msgstr "Ligne de Saisie"
-
-#~ msgid "Current Buffer"
-#~ msgstr "Tampon Courant"
-
-#~ msgid "Errors"
-#~ msgstr "Erreurs"
-
-#~ msgid "Highlight list"
-#~ msgstr "Liste de surlignage"
-
-#~ msgid "Highlight nicks"
-#~ msgstr "Surlignage des pseudos"
-
-#~ msgid "Data changed remotely!"
-#~ msgstr "Les données ont été modifiées à distance !"
-
-#~ msgid "Invalid Identity!"
-#~ msgstr "Identité invalide !"
-
-#~ msgid " You have not set a real name."
-#~ msgstr "Vous n'avez pas saisi de nom réel."
-
-#~ msgid " You have to specify an Ident."
-#~ msgstr "Vous devez spécifier un Ident."
-
-#~ msgid " You haven't entered any nicknames."
-#~ msgstr "Vous n'avez saisi aucun pseudo."
-
-#~ msgid "[%1]%2\n"
-#~ msgstr "[%1]%2\n"
-
-#~ msgid "Edit Identity"
-#~ msgstr "Modifier l'Identité"
-
-#~ msgid "&General"
-#~ msgstr "&Général"
-
-#~ msgid "Real Name"
-#~ msgstr "Nom Réel"
-
-#~ msgid "Ident"
-#~ msgstr "Ident"
-
-#~ msgid "Return Message"
-#~ msgstr "Message de retour"
-
-#~ msgid "Enable Auto Away"
-#~ msgstr "Activer l'Absence Automatique"
-
-#~ msgid "minutes"
-#~ msgstr "minutes"
-
-#~ msgid "&Messages"
-#~ msgstr "&Messages"
-
-#~ msgid "Part Reason"
-#~ msgstr "Motif de Départ"
-
-#~ msgid "Quit Reason"
-#~ msgstr "Motif de Sortie"
-
-#~ msgid "Kick Reason"
-#~ msgstr "Motif de Kick"
-
-#~ msgid "&Delete"
-#~ msgstr "&Supprimer"
-
-#~ msgid "&Cancel"
-#~ msgstr "A&nnuller"
-
-#~ msgid "Edit Identities"
-#~ msgstr "Modifier les Identités"
-
-#~ msgid "&Duplicate..."
-#~ msgstr "C&opier..."
-
-#~ msgid "&Rename..."
-#~ msgstr "&Renommer..."
-
-#~ msgid "Away Nick"
-#~ msgstr "Pseudo d'absence"
-
-#~ msgid "Auto Away"
-#~ msgstr "Absence Automatique"
-
-#~ msgid "Auto away after"
-#~ msgstr "Absence Automatique après"
-
-#~ msgid "Rename Nickname"
-#~ msgstr "Renommer le pseudo"
-
-#~ msgid "Override default away reason for auto-away on detach"
-#~ msgstr "Forcer le motif d'absence par défaut pour l'absence automatique sur détachement"
-
-#~ msgid "No Key Loaded"
-#~ msgstr "Pas de Clé chargée"
-
-#~ msgid "continue"
-#~ msgstr "continuer"
-
-#~ msgid "Brought fish."
-#~ msgstr "Ramène du poisson."
-
-#~ msgid "Back in action again!"
-#~ msgstr "A nouveau en action !"
-
-#~ msgid ""
-#~ "<p><b>Enabled:</b></p>\n"
-#~ "<p>Only enabled rules are filtered.\n"
-#~ "<br />\n"
-#~ "For dynamic rules, disabling actually shows the filtered messages again.</p>"
-#~ msgstr ""
-#~ "<p><b>Enabled:</b></p>\n"
-#~ "<p>Only enabled rules are filtered.\n"
-#~ "<br />\n"
-#~ "For dynamic rules, disabling actually shows the filtered messages again.</p>"
-
-#~ msgid "Do you really want to paste %1 lines?"
-#~ msgstr "Voulez vous vraiment coller %1 lignes ?"
-
-#~ msgid "This wizard will guide you through the setup process for your shiny new Quassel IRC Client."
-#~ msgstr "Cet assistant va vous guider dans le processus de paramétrage de votre tout nouveau client IRC Quassel."
-
-#~ msgid "Your desired nickname contains illegal characters!"
-#~ msgstr "Le pseudo que vous avez choisi contient des caractères illégaux!"
-
-#~ msgid "Please use /nick <othernick> to continue your IRC-Session!"
-#~ msgstr "Merci d'utiliser /nick <autrepseudo> pour continuer votre session IRC !"
-
-#~ msgid "Nick %1 is already taken"
-#~ msgstr "Le pseudo %1 est déjà utilisé"
-
-#~ msgid "There is a nickname in your identity's nicklist which contains illegal characters"
-#~ msgstr "Il y a un pseudo dans votre liste d'identié qui contient des caractères illégaux"
-
-#~ msgid "Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"
-#~ msgstr "En raison d'une bogue dans Unreal IRCd ( et peut être dans d'autres serveurs IRC) nous ne pouvons déterminer le pseudo erroné"
-
-#~ msgid "Please use: /nick <othernick> to continue or clean up your nicklist"
-#~ msgstr "Merci d'utiliser: /nick <autrepseudo> pour continuer ou de nettoyer votre liste de pseudos"
-
-#~ msgid "DisplayTopicInTooltip"
-#~ msgstr "DisplayTopicInTooltip"
-
-#~ msgid "background-color: rgba(220, 220, 255, 40%)"
-#~ msgstr "background-color: rgba(220, 220, 255, 40%)"
-
-#~ msgid ""
-#~ "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-#~ "p, li { white-space: pre-wrap; }\n"
-#~ "</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:29pt; color:#00008b;\">Quassel IRC</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#7fff00;\"><span style=\" font-size:10pt; color:#00008b;\">mobile edition</span></p>\n"
-#~ "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#483d8b;\"><span style=\" font-size:6pt; color:#000000;\">Chat comfortably. Anywhere.</span></p></body></html>"
-#~ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">p, li { white-space: pre-wrap; }</style></head><body style=\" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;\"><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:29pt; color:#00008b;\">Quassel IRC</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#7fff00;\"><span style=\" font-size:10pt; color:#00008b;\">édition mobile</span></p><p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#483d8b;\"><span style=\" font-size:6pt; color:#000000;\">Chattez simplement. Partout.</span></p></body></html>"
-
-#~ msgid "Waiting for core..."
-#~ msgstr "Attente du noyau..."
-
-#~ msgid "All Channels"
-#~ msgstr "Tous les canaux"
-
-#~ msgid "All Queries"
-#~ msgstr "Toutes les requêtes"
-
-#~ msgid "All Networks"
-#~ msgstr "Tous les réseaux"
-
-#~ msgid "MainWindow"
-#~ msgstr "Fenêtre principale"
-
-#~ msgid "Views"
-#~ msgstr "Vues"
-
-#~ msgid "Help"
-#~ msgstr "Aide"
-
-#~ msgid "Core"
-#~ msgstr "Noyau"
-
-#~ msgid "&Network List..."
-#~ msgstr "Liste des &Réseaux..."
-
-#~ msgid "F2"
-#~ msgstr "F2"
-
-#~ msgid "Quick &Connect..."
-#~ msgstr "&Connexion Rapide..."
-
-#~ msgid "Reconnect"
-#~ msgstr "Reconnecter"
-
-#~ msgid "Set Away globally"
-#~ msgstr "Mettre Absent partout"
-
-#~ msgid "Quit..."
-#~ msgstr "Quitter..."
-
-#~ msgid "Edit Identities..."
-#~ msgstr "Editer les identités..."
-
-#~ msgid "Configure Quassel..."
-#~ msgstr "Configurer Quassel..."
-
-#~ msgid "Manage Views..."
-#~ msgstr "Gérer les Vues..."
-
-#~ msgid "About Qt..."
-#~ msgstr "À propos de Qt..."
-
-#~ msgid "About Quassel IRC..."
-#~ msgstr "À propos de Quassel IRC..."
-
-#~ msgid "Import Backlog"
-#~ msgstr "Importer l'historique"
-
-#~ msgid "Edit &Networks..."
-#~ msgstr "&Modifier les réseaux..."
-
-#~ msgid "Statusbar"
-#~ msgstr "Barre d'état"
-
-#~ msgid "&Views"
-#~ msgstr "&Vues"
-
-#~ msgid "&Debug"
-#~ msgstr "&Debug"
-
-#~ msgid "Debug &Console"
-#~ msgstr "&Console et Déboguage"
-
-#~ msgid "Disconnect from Network..."
-#~ msgstr "Déconnecter du Réseau..."
-
-#~ msgid "&Edit Networks..."
-#~ msgstr "&Modifier les réseaux..."
-
-#~ msgid "Manage Buffer Views"
-#~ msgstr "Gérer les Vues"
-
-#~ msgid "Lock Dock Positions"
-#~ msgstr "Bloquer les positions des fenêtres"
-
-#~ msgid "Core Info"
-#~ msgstr "Info Noyau"
-
-#~ msgid "NetworkModel"
-#~ msgstr "Modèle Réseau"
-
-#~ msgid "Core Lag: %1 msec"
-#~ msgstr "Lag noyau:  %1 ms"
-
-#~ msgid "&Manage Buffer Views..."
-#~ msgstr "&Gérer les Vues..."
-
-#~ msgid "&Lock Dock Positions"
-#~ msgstr "&Bloquer les positions des fenêtres"
-
-#~ msgid "Ctrl+F"
-#~ msgstr "Ctrl+F"
-
-#~ msgid "&About Quassel..."
-#~ msgstr "&À propos de Quassel..."
-
-#~ msgid "About &Qt..."
-#~ msgstr "À propos de &Qt..."
-
-#~ msgid "&Buffer Views"
-#~ msgstr "&Vues"
-
-#~ msgid "&Configure Buffer Views..."
-#~ msgstr "&Configurer les Vues..."
-
-#~ msgid "%DT[%1]"
-#~ msgstr "%DT[%1]"
-
-#~ msgid "%DS<%1>"
-#~ msgstr "%DS<%1>"
-
-#~ msgid "%D0%1"
-#~ msgstr "%D0%1"
-
-#~ msgid "%Ds*"
-#~ msgstr "%Ds*"
-
-#~ msgid "%Ds%1"
-#~ msgstr "%Ds%1"
-
-#~ msgid "%De*"
-#~ msgstr "%De*"
-
-#~ msgid "%De%1"
-#~ msgstr "%De%1"
-
-#~ msgid "%Dj-->"
-#~ msgstr "%Dj-->"
-
-#~ msgid "%Dj%DN%DU%1%DU%DN %DH(%2@%3)%DH has joined %DC%DU%4%DU%DC"
-#~ msgstr "%Dj%DN%DU%1%DU%DN %DH(%2@%3)%DH a rejoint %DC%DU%4%DU%DC"
-
-#~ msgid "%Dp<--"
-#~ msgstr "%Dp<--"
-
-#~ msgid "%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH has left %DC%DU%4%DU%DC"
-#~ msgstr "%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH a quitté %DC%DU%4%DU%DC"
-
-#~ msgid "%Dq<--"
-#~ msgstr "%Dq<--"
-
-#~ msgid "%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit"
-#~ msgstr "%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH a quitté"
-
-#~ msgid "%Dk<-*"
-#~ msgstr "%Dk<-*"
-
-#~ msgid "%Dk%DN%DU%1%DU%DN has kicked %DN%DU%2%DU%DN from %DC%DU%3%DU%DC"
-#~ msgstr "%Dk%DN%DU%1%DU%DN a kické %DN%DU%2%DU%DN de %DC%DU%3%DU%DC"
-
-#~ msgid "%Dr<->"
-#~ msgstr "%Dr<->"
-
-#~ msgid "%DrYou are now known as %DN%1%DN"
-#~ msgstr "%DrVous vous appellez maintenant %DN%1%DN"
-
-#~ msgid "%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN"
-#~ msgstr "%Dr%DN%1%DN s'appelle maintenant %DN%DU%2%DU%DN"
-
-#~ msgid "%Dm***"
-#~ msgstr "%Dm***"
-
-#~ msgid "%DmUser mode: %DM%1%DM"
-#~ msgstr "%Dmmode Utilisateur: %DM%1%DM"
-
-#~ msgid "%DmMode %DM%1%DM by %DN%DU%2%DU%DN"
-#~ msgstr "%DmMode %DM%1%DM par %DN%DU%2%DU%DN"
-
-#~ msgid "%Da-*-"
-#~ msgstr "%Da-*-"
-
-#~ msgid "%Da%DN%DU%1%DU%DN %2"
-#~ msgstr "%Da%DN%DU%1%DU%DN %2"
-
-#~ msgid "%De[%1]"
-#~ msgstr "%De[%1]"
-
-#~ msgid "%Dn[%1]"
-#~ msgstr "%Dn[%1]"
-
-#~ msgid "%Dn%1"
-#~ msgstr "%Dn%1"
-
-#~ msgid "%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-#~ msgstr "%Dj%DN%1%DN %DH(%2@%3)%DH a rejoint %DC%4%DC"
-
-#~ msgid "%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-#~ msgstr "%Dp%DN%1%DN %DH(%2@%3)%DH a quitté %DC%4%DC"
-
-#~ msgid "%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-#~ msgstr "%Dk%DN%1%DN a kické %DN%2%DN de %DC%3%DC"
-
-#~ msgid "%Dr%DN%1%DN is now known as %DN%2%DN"
-#~ msgstr "%Dr%DN%1%DN s'appelle maintenant %DN%2%DN"
-
-#~ msgid "%DmMode %DM%1%DM by %DN%2%DN"
-#~ msgstr "%DmMode %DM%1%DM par %DN%2%DN"
-
-#~ msgid "%Da%DN%1%DN %2"
-#~ msgstr "%Da%DN%1%DN %2"
-
-#~ msgid "Processing Messages"
-#~ msgstr "Traitement des Messages"
-
-#~ msgid "Invalid Network Settings!"
-#~ msgstr "Paramètres réseau invalides !"
-
-#~ msgid "<b>Your network settings are invalid!</b><br>%1"
-#~ msgstr "<b>Vos paramètres réseaux sont invalides!</b><br>%1"
-
-#~ msgid " Network name already exists."
-#~ msgstr "Nom de réseau déjà existant."
-
-#~ msgid " You need to enter at least one server for this network."
-#~ msgstr "Vous devez sasir au moins un serveur pour ce réseau."
-
-#~ msgid "Group:"
-#~ msgstr "Groupe:"
-
-#~ msgid "Comment:"
-#~ msgstr "Commentaire:"
-
-#~ msgid "Move &Up"
-#~ msgstr "&Monter"
-
-#~ msgid "Move &Down"
-#~ msgstr "&Descendre"
-
-#~ msgid "These commands are executed after connect."
-#~ msgstr "Ces commandes sont exécutées après connexion."
-
-#~ msgid "Delete Buffer..."
-#~ msgstr "Supprimer le tampon..."
-
-#~ msgid "Apply to All Chat Views..."
-#~ msgstr "Appliquer à toutes les Vues..."
-
-#~ msgid "Apply first!"
-#~ msgstr "Appliquer d'abord !"
-
-#~ msgid "Use default settings for encodings (recommended)"
-#~ msgstr "Utiliser les paramètres par défaut pour l'encodage (recommandé)"
-
-#~ msgid "Edit Nick"
-#~ msgstr "Editer le Pseudo"
-
-#~ msgid "Nickname:"
-#~ msgstr "Pseudo:"
-
-#~ msgid "Nicks in Channel"
-#~ msgstr "Pseudos dans le Canal"
-
-#~ msgid "Not in channel"
-#~ msgstr "Pas dans le canal"
-
-#~ msgid "Op %1"
-#~ msgstr "Op %1"
-
-#~ msgid "Deop %1"
-#~ msgstr "Deop %1"
-
-#~ msgid "Voice %1"
-#~ msgstr "Voice %1"
-
-#~ msgid "Devoice %1"
-#~ msgstr "Dévoice %1"
-
-#~ msgid "Kick %1"
-#~ msgstr "Kicke %1"
-
-#~ msgid "Ban %1"
-#~ msgstr "Bannit %1"
-
-#~ msgid "Kickban %1"
-#~ msgstr "Kickebannit %1"
-
-#~ msgid "DCC-Chat"
-#~ msgstr "Chat-DCC"
-
-#~ msgid "Send file"
-#~ msgstr "Envoyer Fichier"
-
-#~ msgid "System Tray"
-#~ msgstr "Icône système"
-
-#~ msgid "Show Bubble"
-#~ msgstr "Voir les bulles"
-
-#~ msgid "Sends Quassel's notifications to a notification daemon compliant to Freedesktop's Notification specification (org.freedesktop.Notification)."
-#~ msgstr "Envoyer les informations de Quassel à un programme supportant la spécification Freedesktop (org.freedesktop.Notification)."
-
-#~ msgid "Desktop Notification (via DBus)"
-#~ msgstr "Information Bureau (par Dbus)"
-
-#~ msgid "Timeout"
-#~ msgstr "Délai expiré"
-
-#~ msgid "X"
-#~ msgstr "X"
-
-#~ msgid "Y"
-#~ msgstr "Y"
-
-#~ msgid "Show Toolbar"
-#~ msgstr "Afficher Barre d'outils"
-
-#~ msgid "Quit Quassel IRC?"
-#~ msgstr "Quitter Quassel IRC?"
-
-#~ msgid "Do you really want to quit Quassel IRC?"
-#~ msgstr "Voulez vous vraiment quitter Quassel IRC?"
-
-#~ msgid "Quit"
-#~ msgstr "Quitter"
-
-#~ msgid "Show Buffers"
-#~ msgstr "Afficher les Buffers"
-
-#~ msgid "Show Nicks"
-#~ msgstr "Afficher les Nicks"
-
-#~ msgid "About..."
-#~ msgstr "À Propos..."
-
-#~ msgid "Enable debug output"
-#~ msgstr "Activer le deboguage"
-
-#~ msgid "Display this help and exit"
-#~ msgstr "Afficher cette aide et quitter"
-
-#~ msgid "Edit Identity Name"
-#~ msgstr "Modifier le nom de l'identité"
-
-#~ msgid "Enter Server Details"
-#~ msgstr "Saisissez les infos du Serveur"
-
-#~ msgid "Remove Network?"
-#~ msgstr "Supprimer le Réseau ?"
-
-#~ msgid "Are you sure you want to delete the selected network(s)?"
-#~ msgstr "Etes vous sur de vouloir supprimer le ou les réseau(x) sélectionné(s) ?"
-
-#~ msgid "Server List"
-#~ msgstr "Liste des serveurs"
-
-#~ msgid "&Show this dialog on startup"
-#~ msgstr "&Voir cette fenêtre au démarrage"
-
-#~ msgid "&Connect"
-#~ msgstr "&Connecter"
-
-#~ msgid "C&lose"
-#~ msgstr "&Fermer"
-
-#~ msgid "Could not initialize session!"
-#~ msgstr "Impossible de commencer la session !"
-
-#~ msgid "Client tried to send package larger than max package size!"
-#~ msgstr "Le client a essayé d'envoyer un paquet supérieur à la taille maximum d'un paquet!"
-
-#~ msgid "local client"
-#~ msgstr "client local"
-
-#~ msgid "Client tried to send 0 byte package!"
-#~ msgstr "Le client a essayé d'envoyer un paquet de 0 octet!"
-
-#~ msgid "Client sent corrupted compressed data!"
-#~ msgstr "Le client a envoyé des données compressées corrompues!"
-
-#~ msgid "Client sent corrupt data: unable to load QVariant!"
-#~ msgstr "Le client a envoyé des données corrompues: impossible de charger QVariant!"
-
-#~ msgid "Could not open backlog database: %1"
-#~ msgstr "Impossible d'ouvrir la base de données: %1"
-
-#~ msgid "Disabling logging..."
-#~ msgstr "Arrêt de l'enregistrement..."
-
-#~ msgid "Could not create backlog table: %1"
-#~ msgstr "Impossible de créer la base système: %1"
-
-#~ msgid "Setup Storage Provider"
-#~ msgstr "Paramétrage de la base de données"
-
-#~ msgid "Please enter credentials for the selected storage provider."
-#~ msgstr "Merci d'entrer les codes pour la base de données sélectionnée."
-
-#~ msgid "Database:"
-#~ msgstr "Base de données"
-
-#~ msgid "Select Storage Provider"
-#~ msgstr "Selectionnez le type de base de données"
-
-#~ msgid "Please select the storage provider you want to use."
-#~ msgstr "Merci de selectionner le type de base de données que vous voulez utiliser"
-
-#~ msgid "Click to edit!"
-#~ msgstr "Cliquer pour éditer!"
-
-#~ msgid ""
-#~ "%1\n"
-#~ "\n"
-#~ "Click to edit!"
-#~ msgstr "%1Cliquer pour éditer !"
-
-#~ msgid "Drag to scroll the topic!"
-#~ msgstr "Tirer pour dérouler le sujet!"
-
-#~ msgid "%Dq%DN%1%DN %DH(%2@%3)%DH has quit"
-#~ msgstr "%Dq%DN%1%DN %DH(%2@%3)%DH est parti"

@@ -1,18 +1,25 @@
 # Norwegian (bokmål) translation for Quassel IRC
 # Copyright (c) 2010 Quassel IRC
 # This file is distributed under the same license as the Quassel IRC package.
-# 
-# Terje Andersen <teranders@gmail.com>, 2011.
+#
+# Terje Andersen <terander@guard.zapto.org>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: Quassel IRC\n"
-"Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2011-03-22 15:11+0000\n"
-"Last-Translator: tan <teranders@gmail.com>\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: <devel@quassel-irc.org>\n"
+"POT-Creation-Date: 2010-12-15 22:38+0000\n"
+"PO-Revision-Date: 2011-03-28 12:07+0000\n"
+"Last-Translator: FreqMod <Unknown>\n"
+"Language-Team: Norsk (bokmål) <i18n-nb@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nb\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2011-03-29 05:08+0000\n"
+"X-Generator: Launchpad (build 12559)\n"
+"X-Poedit-Country: NORWAY\n"
+"X-Language: nb_NO\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -22,28 +29,44 @@ msgstr "Om Quassel"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
+"IRC</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Versjon 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
+"font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\">Versjon 0.2.0-pre, Build "
+"&gt;= 474 (2008-02-08)</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:115
@@ -75,10 +98,10 @@ msgstr "<b>Versjon<b> %1<br><b>Protokoll versjon:</b> %2<br>Bygget:</b> %3"
 msgid ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
-"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
-" href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
-"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>"
-" and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
+"and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
 "icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
 "Team</a> and used under the <a "
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
@@ -87,13 +110,12 @@ msgid ""
 msgstr ""
 "<b>En moderne, distribuert IRC-klient</b><br><br>&copy;2005-2010 Quassel-"
 "projektet<br><a href=\"http://quassel-irc.org\">http://quassel-"
-"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> på <a"
-" href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC er "
-"dobbelt-lisensiert under<a "
-"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> og <a "
-"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>De fleste "
-"ikonene er &copy; av <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a>"
-" og brukes under <a "
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> på <a "
+"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC er dobbelt-"
+"lisensiert under<a href=\"http://www.gnu.org/licenses/gpl-"
+"2.0.txt\">GPLv2</a> og <a href=\"http://www.gnu.org/licenses/gpl-"
+"3.0.txt\">GPLv3</a>.<br>De fleste ikonene er &copy; av <a "
+"href=\"http://www.oxygen-icons.org\">Oxygen Team</a> og brukes under <a "
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Bruk <a "
 "href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> for å "
 "rapportere feil."
@@ -117,8 +139,8 @@ msgstr ""
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
 "eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
-"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a"
-" href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
+"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
 "creating all the artwork you see throughout Quassel</dd><dt><img "
 "src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
 "href=\"http://www.trolltech.com\">Qt Software formerly known as "
@@ -133,8 +155,8 @@ msgstr ""
 "Quassel logoen - The All-Seeing Eye</dt><dt><img "
 "src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-"
 "icons.org\">The Oxygen Team</a></b></dt><dd>for å ha laget de fleste av de "
-"flotte ikonene i Quassel</dd><dt><img src=\":/pics/qt-"
-"logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">QT Software, "
+"flotte ikonene i Quassel</dd><dt><img src=\":/pics/qt-logo-"
+"32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">QT Software, "
 "tidligere kjent som Trolltech</a></b></dt><dd>for å lage Qt og Qtopia, og "
 "for å sponse utviklingen av QuasselTopia med Greenphones og mer</dd><dt><a "
 "href=\"http://www.nokia.com\"><img "
@@ -146,8 +168,7 @@ msgstr ""
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr ""
-"Installert Schema (versjon %1) er ikke oppdatert. Oppgraderer til versjon "
-"%2..."
+"Installert skjema (versjon %1) er ikke oppdatert. Oppgrader til versjon %2..."
 
 #. ts-context AbstractSqlStorage
 #: ../src/core/abstractsqlstorage.cpp:117
@@ -170,23 +191,23 @@ msgid ""
 "<b>The string the shortcut will be expanded to</b><br /><b>special "
 "variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
 "<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
-"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br"
-" /> - <b>$i:hostname</b> represents the hostname of the user identified by "
-"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br"
-" /> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of"
-" the selected channel<br /><br />Multiple commands can be separated with "
-"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will"
-" be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test "
-"All 1 2 3\" when called like /test 1 2 3"
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
+"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
+"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
+"the selected channel<br /><br />Multiple commands can be separated with "
+"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
+"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
+"1 2 3\" when called like /test 1 2 3"
 msgstr ""
 "<b>Strengen hurtigtasten vil bli fortolket til</b><br /><b>spesielle "
 "variabler:</b><br /> - <b>$i</b> representer den x'te parameteren.<br /> - "
 "<b>$i..j</b> representer den x'te til y'te parameteren skilt av "
-"mellomrom.<br /> - <b>$i..</b> representer alle parameterne fra i og videre,"
-" skilt av mellomrom.<br /> - <b>$i:hostname</b> representer vertsnavnet til "
-"brukeren identifisert av den i'te parameteren, eller en * hvis ukjent.<br />"
-" - <b>$0</b> hele strengen.<br /> - <b>$nick</b> ditt nåværende kallenavn<br"
-" /> - <b>$channel</b> navnet på den valgte kanalen<br /><br />Flere "
+"mellomrom.<br /> - <b>$i..</b> representer alle parameterne fra i og videre, "
+"skilt av mellomrom.<br /> - <b>$i:hostname</b> representer vertsnavnet til "
+"brukeren identifisert av den i'te parameteren, eller en * hvis ukjent.<br /> "
+"- <b>$0</b> hele strengen.<br /> - <b>$nick</b> ditt nåværende kallenavn<br "
+"/> - <b>$channel</b> navnet på den valgte kanalen<br /><br />Flere "
 "kommandoer adskilt med semikoloner<br /><br /><b>Eksempel:</b> \"Test $1; "
 "Test $2; Test Alle $0\" vil bli fortolket til tre adskilte beskjeder \"Test "
 "1\", \"Test 2\" and \"Test Alle 1 2 3\" ble kallet som /test 1 2 3"
@@ -440,7 +461,7 @@ msgstr "Vis systemkurvikon"
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
 msgid "Hide to tray on close button"
-msgstr "Skjul til systemkurv ved lukking"
+msgstr ""
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:216
@@ -450,12 +471,12 @@ msgstr "Slå på animasjoner"
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:231
 msgid "Message Redirection"
-msgstr "Beskjed omdirigering"
+msgstr "Omdirigering av beskjeder"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:237
 msgid "User Notices:"
-msgstr "Bruker beskjeder:"
+msgstr "Brukerbeskjeder:"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:280
@@ -521,7 +542,7 @@ msgstr "Grensesnitt"
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgid "Please choose a stylesheet file"
-msgstr "Vennligst velg en stilsett fil"
+msgstr "Velg en stilarkfil"
 
 #. ts-context AwayLogView
 #: ../src/qtui/awaylogview.cpp:33
@@ -604,11 +625,14 @@ msgstr "Historikkmengde ved oppstart:"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
 msgid ""
-"This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
+"This requester fetches unread messages for each chat window individually. "
+"The amount of lines can be limited per chat.\n"
 "\n"
-"You can also choose to fetch additional older chatlines to provide a better context."
+"You can also choose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Denne forespørreren henter uleste beskjeder for hvert vindu individuelt. Mengden linjer kan begrenses per chat.\n"
+"Denne forespørreren henter uleste beskjeder for hvert vindu individuelt. "
+"Mengden linjer kan begrenses per chat.\n"
 "\n"
 "Du kan også hente eldre samtalelinjer i tillegg for å få en bedre sammenheng."
 
@@ -623,7 +647,7 @@ msgstr "Høyeste antall meldinger som blir hentet for hvert buffer."
 #: ../src/qtui/settingspages/backlogsettingspage.ui:225
 #: ../src/qtui/settingspages/backlogsettingspage.ui:347
 msgid "Limit:"
-msgstr "Begrensning:"
+msgstr "Grense:"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BacklogSettingsPage
@@ -648,7 +672,7 @@ msgid ""
 "Limit does not apply here."
 msgstr ""
 "Antall meldinger som blir hentet i tillegg til meldingene som ikke er lest "
-"før. Begrensningen gjelder ikke her."
+"før. Andre grenser gjelder ikke her."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
@@ -659,17 +683,25 @@ msgstr "Tilleggsmeldinger:"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:324
 msgid ""
-"This requester fetches all messages newer than the oldest unread message for all chats.\n"
+"This requester fetches all messages newer than the oldest unread message for "
+"all chats.\n"
 "\n"
-"Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).\n"
-"It is useful to limit the total amount of the backlog and is probably the fastest.\n"
+"Note: This requester is not recommended if you use hidden chat windows or "
+"have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the "
+"fastest.\n"
 "\n"
-"You can also chose to fetch additional older chatlines to provide a better context."
+"You can also chose to fetch additional older chatlines to provide a better "
+"context."
 msgstr ""
-"Denne forespørreren henter alle beskjeder nyere enn den eldste uleste beskjeder for alle samtalene.\n"
+"Denne forespørreren henter alle beskjeder nyere enn den eldste uleste "
+"beskjeder for alle samtalene.\n"
 "\n"
-"Merk: Denne forespørreren er ikke anbefalt hvis du benytter skjulte samtalevinduer, eller har inaktive samtaler (eksempelvis: ingen stansede spørringer, eller kanaler).\n"
-"Den er kjekk å benytte for å begrense den totale mengden med historikk og er sannsynligvis den kjappeste.\n"
+"Merk: Denne forespørreren er ikke anbefalt hvis du benytter skjulte "
+"samtalevinduer, eller har inaktive samtaler (eksempelvis: ingen stansede "
+"spørringer, eller kanaler).\n"
+"Den er kjekk å benytte for å begrense den totale mengden med historikk og er "
+"sannsynligvis den kjappeste.\n"
 "\n"
 "Du kan også hente eldre samtalelinjer i tillegg for å få en bedre sammenheng."
 
@@ -717,7 +749,7 @@ msgstr "Dialog"
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:22
 msgid "Please enter a name for the chat list:"
-msgstr "Vennligst oppgi et nav for samtale listen:"
+msgstr "Skriv inn et navn på samtalelisten:"
 
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
@@ -797,7 +829,7 @@ msgid ""
 "In this mode no separate status buffer is displayed."
 msgstr ""
 "Dette valget er ikke tilgjengelig når alle Nettverkene er synlige.\n"
-"In denne modusen kan ingen separate status buffere vises."
+"In denne modusen kan ingen separate statusbuffere vises."
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
@@ -979,19 +1011,35 @@ msgstr "Feil oppstod:"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
+"ERROR!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPEROND KATASTROFE FEIL!!11</span></p>\n"
-"p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Lucida Grande'; font-size:13pt;\">SUPEROND KATASTROFE "
+"FEIL!!11</span></p>\n"
+"p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
+"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
@@ -1001,21 +1049,45 @@ msgstr "Operasjonsmodus:"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
+"style=\" font-weight:400;\">Only buffers on the right side are shown in "
+"chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
+"ignored in chatmonitor</p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
+"type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operasjonsmoduser:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Velger:</span> <span style=\" font-weight:400;\">Kun buffere på høyre side blir vist i skravle monitoren</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Velger bort:</span> Buffere på høyre side vil bli ignorert i skravle monitoren</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
+"weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"weight:600;\">Operasjonsmoduser:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
+"style=\" font-weight:400; text-decoration: underline;\">Velger:</span> <span "
+"style=\" font-weight:400;\">Kun buffere på høyre side blir vist i skravle "
+"monitoren</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
+"decoration: underline;\">Velger bort:</span> Buffere på høyre side vil bli "
+"ignorert i skravle monitoren</p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
@@ -1043,7 +1115,8 @@ msgstr "Vis:"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
 msgstr ""
-"Vis uthevinger i skravle monitoren selv om opprinnelsesbufferen er ignorert"
+"Vis uthevinger i samtaleovervåkeren selv om bufferet de kommer fra er "
+"ignorert."
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
@@ -1062,7 +1135,7 @@ msgstr "Vis egne beskjeder"
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 #: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
-msgstr "Skravle monitor"
+msgstr "Samtaleovervåker"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
@@ -1144,8 +1217,8 @@ msgstr "Tillat farget tekst (mIRC fargekoder)"
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr ""
-"Vis et vindu med forhåndsvisning av en web side når musen svever over en web"
-" adresse"
+"Vis et vindu med forhåndsvisning av en web side når musen svever over en web "
+"adresse"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:114
@@ -1158,8 +1231,8 @@ msgid ""
 "Set the marker line to the bottom of the current chat window when selecting "
 "another channel"
 msgstr ""
-"Sett markeringslinjen til nederst på nåværende snakkevindu ved valg av annen"
-" kanal"
+"Sett markeringslinjen til nederst på nåværende snakkevindu ved valg av annen "
+"kanal"
 
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:133
@@ -1310,8 +1383,8 @@ msgstr "Ubesvarte ping"
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
 msgid ""
-"This enables periodic polling of user information using /WHO. This is mostly"
-" interesting for tracking users' away status."
+"This enables periodic polling of user information using /WHO. This is mostly "
+"interesting for tracking users' away status."
 msgstr ""
 "Dette aktiverer periodisk henting av brukerinformasjon ved hjelp av /WHO. "
 "Dette mest interessant for å følge brukeres bortestatus."
@@ -1584,11 +1657,13 @@ msgstr "Kunne ikke starte noen lagringsmotor! Avslutter..."
 #: ../src/core/core.cpp:183
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
-"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
+"Qt library with the sqlite or postgres plugin enabled in order for "
+"quasselcore\n"
 "to work."
 msgstr ""
 "Quassel støtter foreløpig SQLite3 og PostgreSQL. Du må bygge ditt\n"
-"Qt bibliotek med sqlite, eller postgres plugginn aktivert for at quasselkjernen\n"
+"Qt bibliotek med sqlite, eller postgres plugginn aktivert for at "
+"quasselkjernen\n"
 "skal virke."
 
 #. ts-context Core
@@ -1618,8 +1693,10 @@ msgstr "Ugyldig lytte adresse %1"
 
 #. ts-context Core
 #: ../src/core/core.cpp:402
-msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "Lytter etter GUI klienter på IPv4 %1 port %2 med protokoll versjon %3"
+msgid ""
+"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgstr ""
+"Lytter etter GUI klienter på IPv4 %1 port %2 med protokoll versjon %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:410
@@ -1628,8 +1705,10 @@ msgstr "Kunne ikke åpne IPv4 grensesnittet %1:%2: %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:418
-msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "Lytter etter GUI klienter på IPv6 %1 port %2 med protokoll versjon %3"
+msgid ""
+"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgstr ""
+"Lytter etter GUI klienter på IPv6 %1 port %2 med protokoll versjon %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:429
@@ -1686,7 +1765,8 @@ msgstr "for gammel, avviser."
 
 #. ts-context Core
 #: ../src/core/core.cpp:535
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgid ""
+"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr ""
 "<b>Quasselkjerne Versjon %1</b><br>Bygget: %2<br>Oppe %3d%4h%5m (siden %6)"
 
@@ -1940,8 +2020,7 @@ msgstr "Kjernen din er satt opp. Logger deg inn..."
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:104
 msgid ""
-"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start "
-"over."
+"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
 msgstr ""
 "Kunne ikke konfigurer kjernen.<br><b>%1</b><br>Trykk <em>Neste</em> for å "
 "starte på nytt."
@@ -1981,18 +2060,21 @@ msgstr "Husk passordet"
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:69
 msgid ""
-"<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+"<b>Note:</b> Adding more users and changing your username/password is not "
+"possible via Quassel's client interface yet.\n"
+"If you need to do these things, please run \"<tt><nobr>quasselcore --"
+"help</nobr></tt>\"."
 msgstr ""
-"<b>Beskjed:</b> Legge til flere brukere og endre ditt brukernavn/passord via Quassels klientgrensesnitt er ikke mulig enda.\n"
-"Hvis du må gjøre dette, vennligst kjør \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+"<b>Beskjed:</b> Legge til flere brukere og endre ditt brukernavn/passord via "
+"Quassels klientgrensesnitt er ikke mulig enda.\n"
+"Hvis du må gjøre dette, vennligst kjør \"<tt><nobr>quasselcore --"
+"help</nobr></tt>\"."
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
 msgid "This wizard will guide you through the setup of your Quassel Core."
 msgstr ""
-"Denne veiviseren vil guide deg gjennom konfigureringen av Quasselkjernen "
-"din."
+"Denne veiviseren vil guide deg gjennom konfigureringen av Quasselkjernen din."
 
 #. ts-context CoreConfigWizardPages::AdminUserPage
 #: ../src/qtui/coreconfigwizard.cpp:150
@@ -2140,8 +2222,7 @@ msgstr "Kobler fra %1..."
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:272
 msgid ""
-"The Quassel Core you try to connect to is too old! Please consider "
-"upgrading."
+"The Quassel Core you try to connect to is too old! Please consider upgrading."
 msgstr ""
 "Quasselkjernen du forsøker å koble til er for gammel! Du bør vurdere å "
 "oppgradere!"
@@ -2214,8 +2295,8 @@ msgstr "Oppdagelse av nettverkstilstand"
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
 msgid ""
-"Rely on KDE's hardware layer to detect if we're online. Recommended for most"
-" KDE users"
+"Rely on KDE's hardware layer to detect if we're online. Recommended for most "
+"KDE users"
 msgstr ""
 "Basere oss på KDE's maskinvarelag for å oppdage om vi er online. Anbefalt "
 "for de fleste KDE brukere"
@@ -2247,8 +2328,8 @@ msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
 msgstr ""
-"Kun koble fra hvis nettverkskoblingen blir lukket av operativsystemet. Dette"
-" kan ta lang tid etter faktisk å ha mistet forbindelsen"
+"Kun koble fra hvis nettverkskoblingen blir lukket av operativsystemet. Dette "
+"kan ta lang tid etter faktisk å ha mistet forbindelsen"
 
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:103
@@ -2413,8 +2494,8 @@ msgstr "Frakoblet (BrukerID: %1)."
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:413
 msgid ""
-"CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
-" create network %1!"
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
+"create network %1!"
 msgstr ""
 "CoreSession::createNetwork(): Fikk ugyldig nettverksID fra kjernen under "
 "forsøket på å opprette nettverket %1!"
@@ -2474,8 +2555,7 @@ msgstr ""
 #: ../src/core/coreuserinputhandler.cpp:461
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
-"channel. /setkey <key> when in a channel or query buffer sets the key for "
-"it."
+"channel. /setkey <key> when in a channel or query buffer sets the key for it."
 msgstr ""
 "[bruk] /setkey <kallenavn|kanal> <nøkkel> setter krypteringsnøkkelen for "
 "kallenavn, eller kanal. /setkey <nøkkel> når du er i en kanal, eller "
@@ -3070,11 +3150,15 @@ msgstr ""
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgid ""
-"Warning: you are not connected with a secured connection to the Quassel Core!\n"
-"Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
+"Warning: you are not connected with a secured connection to the Quassel "
+"Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
+"Certificate!"
 msgstr ""
-"Advarsel: Du er ikke tilknyttet over en sikker tilknyttning til Quassel Kjernen!\n"
-"Å fortsette vil resultere i en ukryptert overføring av din SSL nøkkel og SSL sertifikat!"
+"Advarsel: Du er ikke tilknyttet over en sikker tilknyttning til Quassel "
+"Kjernen!\n"
+"Å fortsette vil resultere i en ukryptert overføring av din SSL nøkkel og SSL "
+"sertifikat!"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -3180,14 +3264,16 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown "
+"again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
 "<p><b>strenhet:</b></p>\n"
 "<p><u>Dynamisk:</u></p>\n"
 "<p>Beskjeder blir filtrert \"on the fly\".\n"
-"Når du deaktiverer/sletter ignorer reglen, vil beskjedene bli vist igjen.</p>\n"
+"Når du deaktiverer/sletter ignorer reglen, vil beskjedene bli vist "
+"igjen.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Beskjedene blir filtrert før de blir lagret i databasen.</p>"
 
@@ -3237,7 +3323,8 @@ msgstr "Avsender"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against either:</p>\n"
+"<p>Depending on the type of the rule, the text is matched against "
+"either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3247,7 +3334,8 @@ msgid ""
 "<br />\n"
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
+"from any host</p>"
 msgstr ""
 "<p><b>Ignorer regel:</b></p>\n"
 "<p>Avhengig av typen regel blir teksten sjekket opp mot enten:</p>\n"
@@ -3258,9 +3346,11 @@ msgstr ""
 "<p><u>- avsender teksten</u>  <i>(nick!ident@verts.navn)</i></p>\n"
 "<p><i>Eksempelvis:</i>\n"
 "<br />\n"
-"- <i>*@foobar.com</i> stemmer med alle avsendere fra verten <i>foobar.com</i>\n"
+"- <i>*@foobar.com</i> stemmer med alle avsendere fra verten "
+"<i>foobar.com</i>\n"
 "<br />\n"
-"- <i>idiot!.+</i> (RegEx) stemmer med alle avsendere med kallenavnet <i>idiot</i> fra alle verter</p>"
+"- <i>idiot!.+</i> (RegEx) stemmer med alle avsendere med kallenavnet "
+"<i>idiot</i> fra alle verter</p>"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IgnoreListEditDlg
@@ -3276,14 +3366,16 @@ msgstr "Ignorer regel"
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
-"<p>Otherwise rules allow wildcard matching with the following special characters:</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special "
+"characters:</p>\n"
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
 msgstr ""
 "<p><b>Bruk regulære uttrykk:</b></p>\n"
 "<p>Hvis aktivert vil reglene følge regulære uttrykk.</p>\n"
-"<p>Alternativt vil reglene tillate jokertegn avstemming med følgende spesialtegn:</p>\n"
+"<p>Alternativt vil reglene tillate jokertegn avstemming med følgende "
+"spesialtegn:</p>\n"
 "<p> *: representerer \"alle størrelser med alle mulige tegn\"\n"
 "<br />\n"
 "?: representerer \"nøyaktig en karakter\"</p>"
@@ -3300,17 +3392,21 @@ msgid ""
 "<p><u>Global:</u></p>\n"
 "<p>The rule is active for any channel on any network</p>\n"
 "<p><u>Network:</u></p>\n"
-"<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule "
+"should match</p>\n"
 "<p><u>Channel:</u></p>\n"
-"<p>The list below is interpreted as a list of channels for which the rule should match</p>"
+"<p>The list below is interpreted as a list of channels for which the rule "
+"should match</p>"
 msgstr ""
 "<p><b>Omfang:</b></p>\n"
 "<p><u>Globalt:</u></p>\n"
 "<p>Regelen er aktiv for alle kanaler på alle nettverk</p>\n"
 "<p><u>Nettverk:</u></p>\n"
-"<p>Listen nedenfor blir benyttet som en en liste av nettverk som regelen skal stemme overens med</p>\n"
+"<p>Listen nedenfor blir benyttet som en en liste av nettverk som regelen "
+"skal stemme overens med</p>\n"
 "<p><u>Kanal:</u></p>\n"
-"<p>Listen nedenfor blir benyttet som en liste av kanaler som regelen skalstemme overens med</p>"
+"<p>Listen nedenfor blir benyttet som en liste av kanaler som regelen "
+"skalstemme overens med</p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:152
@@ -3344,7 +3440,8 @@ msgstr "Kanal"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
+"<i>channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -3352,7 +3449,8 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
+"<i>channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -3370,7 +3468,8 @@ msgstr ""
 "<p><b>Aktiver / Deaktiver:</b></p>\n"
 "<p>Kun aktiverte regler blir filtrert.\n"
 "<br />\n"
-"For dynamiske regler, deaktivering vil faktisk vise de filtrerte beskjedene igjen.</p>"
+"For dynamiske regler, deaktivering vil faktisk vise de filtrerte beskjedene "
+"igjen.</p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
@@ -3637,7 +3736,7 @@ msgstr ": "
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgid "Input Widget"
-msgstr "Innskrivningsdings"
+msgstr "Innskrivningsfelt"
 
 #. ts-context IrcConnectionWizard
 #: ../src/qtui/ircconnectionwizard.cpp:51
@@ -3839,8 +3938,7 @@ msgstr "Kallenavn/kanal er for tiden ikke tilgjengelig: %1"
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1270
 msgid ""
-"No free and valid nicks in nicklist found. use: /nick <othernick> to "
-"continue"
+"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
 msgstr ""
 "Ingen ledige, eller gyldige kallenavn i kallanavnslisten ble funnet. Bruk "
 "/nick <annet_kallenavn> for å fortsette"
@@ -3996,7 +4094,8 @@ msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
 msgstr ""
-"Trykk på knappen, og tast inn snarveien slik du ville gjort det i programmet.\n"
+"Trykk på knappen, og tast inn snarveien slik du ville gjort det i "
+"programmet.\n"
 "Eksempel for CTRL+a: Hold CTRL-tasten og trykk på a."
 
 #. ts-context KeySequenceWidget
@@ -4054,7 +4153,8 @@ msgstr ""
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
 msgid ""
 "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
-msgstr "\"%1\" snarveien er tvetydig ovenfor snarveien for følgende handling:"
+msgstr ""
+"\"%1\" snarveien er tvetydig ovenfor snarveien for følgende handling:"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:364
@@ -4324,7 +4424,7 @@ msgstr "&Vis"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:461
 msgid "&Chat Lists"
-msgstr "S&amtalelister"
+msgstr "&Samtalelister"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:463
@@ -4359,7 +4459,7 @@ msgstr "Vis &kallenavnliste"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:755
 msgid "Show Chat Monitor"
-msgstr "Vis &Skravlemonitor"
+msgstr "Vis &Samtaleovervåker"
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:759
@@ -4597,8 +4697,7 @@ msgstr ""
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
 msgstr ""
-"<br>Aktive kanal buffer kan ikke bli slettet, vennligst forlat kanalen "
-"først."
+"<br>Aktive kanal buffer kan ikke bli slettet, vennligst forlat kanalen først."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
@@ -4664,8 +4763,8 @@ msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
 msgstr ""
-"Konfigurer automatisk identifikasjon, eller forskjellige kommandoer som skal"
-" kjøres etter tilkoblin til en tjener"
+"Konfigurer automatisk identifikasjon, eller forskjellige kommandoer som skal "
+"kjøres etter tilkoblin til en tjener"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
@@ -4676,10 +4775,12 @@ msgstr "Kommandoer som skal utføres ved tilkobling:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:362
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
-"Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely "
+"be needed here!"
 msgstr ""
 "Spesifiser en list av IRC kommandoer som skal kjøres ved tilkobling.\n"
-"Husk at Quassel IRC automatisk gjenoppkobler til kanaler, så /join trengs sjeldent her!"
+"Husk at Quassel IRC automatisk gjenoppkobler til kanaler, så /join trengs "
+"sjeldent her!"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
@@ -4750,11 +4851,10 @@ msgstr "Koding"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:652
 msgid ""
-"Configure advanced settings such as message encodings and automatic "
-"reconnect"
+"Configure advanced settings such as message encodings and automatic reconnect"
 msgstr ""
-"Konfigurer avanserte innstillinger, slik som beskjed koding og automatisk "
-"gjenoppkobling"
+"Konfigurer avanserte innstillinger, slik som beskjedkoding og automatisk "
+"gjennoppkobling"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
@@ -4803,7 +4903,8 @@ msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
-"Dette spesifiserer hvordan kontrollbeskjeder, kallenavn og tjenernavn blir kodet.\n"
+"Dette spesifiserer hvordan kontrollbeskjeder, kallenavn og tjenernavn blir "
+"kodet.\n"
 "Med mindre du *virkelig* vet hva du gjør, la denne stå til ISO-8859-1!"
 
 #. ts-context NetworksSettingsPage
@@ -5210,7 +5311,8 @@ msgstr "Last inn innstillinger på nytt"
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
-msgid "Do you like to reload the settings, undoing your changes on this page?"
+msgid ""
+"Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 "Vil du laste inn innstillingene og angre endringene dine på denne siden?"
 
@@ -5608,7 +5710,7 @@ msgstr "Kun når musepekeren svever over"
 #. ts-context TopicWidgetSettingsPage
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgid "Topic Widget"
-msgstr "Emne dings"
+msgstr "Emnelinje"
 
 #. Action Message
 #. ts-context UiStyle::StyledMessage
@@ -5797,4 +5899,14 @@ msgid_plural "%n User(s)"
 msgstr[0] "%n Bruker(e)"
 msgstr[1] "%n Bruker(e)"
 
+#~ msgid "Finger"
+#~ msgstr "Finger"
 
+#~ msgid "Add Buffers Automatically:"
+#~ msgstr "Legg til buffere automatisk:"
+
+#~ msgid "Hide inactive buffers:"
+#~ msgstr "Skjul inaktive buffere:"
+
+#~ msgid "[Whois] idle message: %1"
+#~ msgstr "[Whois] inaktiv beskjed: %1"
