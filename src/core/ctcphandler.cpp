@@ -198,13 +198,10 @@ void CtcpHandler::packedReply(const QString &bufname, const QList<QByteArray> &r
     answerSize += replies.at(i).size();
   }
 
-  QByteArray quotedReply(answerSize, 0);
-  int nextPos = 0;
-  QByteArray &reply = quotedReply;
+  QByteArray quotedReply;
+  quotedReply.reserve(answerSize);
   for(int i = 0; i < replies.count(); i++) {
-    reply = replies.at(i);
-    quotedReply.replace(nextPos, reply.size(), reply);
-    nextPos += reply.size();
+    quotedReply.append(replies.at(i));
   }
 
   params << serverEncode(bufname) << quotedReply;
