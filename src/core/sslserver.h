@@ -49,6 +49,7 @@ private:
   QLinkedList<QTcpSocket *> _pendingConnections;
   QSslCertificate _cert;
   QSslKey _key;
+  QList<QSslCertificate> _ca;
   bool _isCertValid;
 };
 

@@ -60,6 +60,7 @@ void SslServer::incomingConnection(int socketDescriptor) {
     if(isCertValid()) {
       serverSocket->setLocalCertificate(_cert);
       serverSocket->setPrivateKey(_key);
+      serverSocket->addCaCertificates(_ca);
     }
     _pendingConnections << serverSocket;
     emit newConnection();
@@ -86,7 +87,19 @@ bool SslServer::setCertificate(const QString &path) {
       << "error:" << certFile.error();
     return false;
   }
-  _cert = QSslCertificate(&certFile);
+
+  QList<QSslCertificate> certList = QSslCertificate::fromDevice(&certFile);
+
+  if (certList.isEmpty()) {
+    quWarning() << "SslServer: Certificate file doesn't contain a certificate";
+    return false;
+  }
+
+  _cert = certList[0];
+  certList.removeFirst(); // remove server cert
+
+  // store CA and intermediates certs
+  _ca = certList;
 
   if(!certFile.reset()) {
     quWarning() << "SslServer: IO error reading certificate file";
