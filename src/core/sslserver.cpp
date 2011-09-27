@@ -114,8 +114,7 @@ bool SslServer::setCertificate(const QString &path) {
     return false;
   }
   if(!_cert.isValid()) {
-    quWarning() << "SslServer: Invalid certificate";
-    return false;
+    quWarning() << "SslServer: Invalid certificate (most likely expired)";
   }
   if(_key.isNull()) {
     quWarning() << "SslServer:" << qPrintable(path) << "contains no key data";
