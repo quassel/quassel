@@ -392,6 +392,12 @@ if(BUILD_GUI)
     )
   endif()
 
+find_package(Libsnore)
+if(LIBSNORE_FOUND)
+    add_definitions(-DHAVE_LIBSNORE -DLIBSNORE_PLUGIN_PATH="${LIBSNORE_PLUGIN_PATH}")
+    set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${LIBSNORE_LIBRARIES})
+    set(HAVE_SNORENOTIFY true)
+endif(LIBSNORE_FOUND)
 endif(BUILD_GUI)
 
 # Core-only deps
