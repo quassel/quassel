@@ -94,6 +94,9 @@
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
 #  endif
+#  ifdef HAVE_LIBSNORE
+#    include "snorenotificationbackend.h"
+#  endif
 #  include "systraynotificationbackend.h"
 #  include "taskbarnotificationbackend.h"
 #else /* HAVE_KDE */
@@ -212,7 +215,9 @@ void MainWin::init()
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
-#  ifndef QT_NO_SYSTEMTRAYICON
+#  ifdef HAVE_LIBSNORE
+    QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
+#  elif !defined(QT_NO_SYSTEMTRAYICON)
     QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
 #  endif
 
