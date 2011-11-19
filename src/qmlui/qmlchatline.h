@@ -75,6 +75,10 @@ public:
   };
 
   class ColumnLayout;
+  class TimestampLayout;
+  class SenderLayout;
+  class ContentsLayout;
+  class Layout;
 
   QmlChatLine(QDeclarativeItem *parent = 0);
   virtual ~QmlChatLine();
@@ -86,7 +90,7 @@ public:
   inline RenderData renderData() const { return _data; }
   void setRenderData(const RenderData &data);
 
-  ColumnLayout *layout() const;
+  Layout *layout();
 
   inline qreal timestampWidth() const { return _timestampWidth; }
   void setTimestampWidth(qreal w);
@@ -136,7 +140,7 @@ private:
 
   QVariant _test;
 
-  mutable ColumnLayout *_layout;
+  mutable Layout *_layout;
 };
 
 QDataStream &operator<<(QDataStream &out, const QmlChatLine::RenderData &data);
@@ -144,19 +148,64 @@ QDataStream &operator>>(QDataStream &in, QmlChatLine::RenderData &data);
 
 Q_DECLARE_METATYPE(QmlChatLine::RenderData)
 
-class QmlChatLine::ColumnLayout {
+/** Layout classes */
+
+class QmlChatLine::Layout {
 public:
-  explicit ColumnLayout(const QmlChatLine *parent);
-  virtual ~ColumnLayout() {}
+  explicit Layout(QmlChatLine *parent);
+  ~Layout();
 
   inline const QmlChatLine *chatLine() const { return _parent; }
 
   qreal height() const;
-  virtual void prepare();
-  virtual void draw(QPainter *p);
+  void compute();
+  void draw(QPainter *p);
 
 private:
-  const QmlChatLine *_parent;
+  QmlChatLine *_parent;
+  QmlChatLine::ColumnLayout *_timestampLayout, *_senderLayout, *_contentsLayout;
+};
+
+class QmlChatLine::ColumnLayout {
+public:
+  explicit ColumnLayout(QmlChatLine::ColumnType col, QmlChatLine *chatLine);
+  virtual ~ColumnLayout();
+
+  inline QmlChatLine *chatLine() const { return _parent; }
+  inline ColumnType columnType() const { return _type; }
+
+  virtual qreal height() const;
+  virtual void compute();
+  virtual void draw(QPainter *p);
+
+protected:
+  inline QTextLayout *layout() const { return _layout; }
+  void initLayout(QTextOption::WrapMode wrapMode, Qt::Alignment alignment);
+  QVector<QTextLayout::FormatRange> selectionFormats() const;
+
+private:
+  QmlChatLine *_parent;
+  ColumnType _type;
+  QTextLayout *_layout;
+};
+
+class QmlChatLine::TimestampLayout : public QmlChatLine::ColumnLayout {
+public:
+  explicit TimestampLayout(QmlChatLine *chatLine);
+
+};
+
+class QmlChatLine::SenderLayout : public QmlChatLine::ColumnLayout {
+public:
+  explicit SenderLayout(QmlChatLine *chatLine);
+
+};
+
+class QmlChatLine::ContentsLayout : public QmlChatLine::ColumnLayout {
+public:
+  explicit ContentsLayout(QmlChatLine *chatLine);
+
+  void compute();
 };
 
 #endif

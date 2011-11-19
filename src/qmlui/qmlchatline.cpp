@@ -17,8 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <QApplication>
 #include <QPainter>
 
+#include "graphicalui.h"
 #include "qmlchatline.h"
 
 void QmlChatLine::registerTypes() {
@@ -53,7 +55,7 @@ QmlChatLine::QmlChatLine(QDeclarativeItem *parent)
     _layout(0)
 {
   setFlag(ItemHasNoContents, false);
-  setImplicitHeight(20);
+  setImplicitHeight(QApplication::fontMetrics().height());
   setImplicitWidth(1000);
   connect(this, SIGNAL(columnWidthChanged(ColumnType)), SLOT(onColumnWidthChanged(ColumnType)));
 }
@@ -81,6 +83,10 @@ void QmlChatLine::setSenderWidth(qreal w) {
 void QmlChatLine::setContentsWidth(qreal w) {
   if(w != _contentsWidth) {
     _contentsWidth = w;
+
+    if(renderData().isValid)
+      layout()->compute();
+
     emit contentsWidthChanged(w);
     emit columnWidthChanged(ContentsColumn);
   }
@@ -135,6 +141,7 @@ QRectF QmlChatLine::columnBoundingRect(ColumnType colType) const {
 
 void QmlChatLine::setRenderData(const RenderData &data) {
   _data = data;
+
   if(_layout) {
     delete _layout;
     _layout = 0;
@@ -143,9 +150,9 @@ void QmlChatLine::setRenderData(const RenderData &data) {
   //update();
 }
 
-QmlChatLine::ColumnLayout *QmlChatLine::layout() const {
+QmlChatLine::Layout *QmlChatLine::layout() {
   if(!_layout) {
-    _layout = new ColumnLayout(this);
+    _layout = new Layout(this);
   }
   return _layout;
 }
@@ -153,44 +160,180 @@ QmlChatLine::ColumnLayout *QmlChatLine::layout() const {
 void QmlChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option)
   Q_UNUSED(widget)
-  //painter->drawText(0, 0, renderData()[TimestampColumn].text);
-  //painter->drawText(timestampWidth() + columnSpacing(), 0, renderData()[SenderColumn].text);
-  //painter->drawText(timestampWidth() + senderWidth() + 2*columnSpacing(), 0, renderData()[ContentsColumn].text);
-  layout()->draw(painter);
+  if(renderData().isValid)
+    layout()->draw(painter);
 }
 
 void QmlChatLine::onColumnWidthChanged(ColumnType colType) {
-
-  //qDebug() << "changed width" << _timestampWidth << _senderWidth << _contentsWidth;
-  //setImplicitHeight(implicitHeight() + 5);
-
-  if(colType == ContentsColumn) {
-    layout()->prepare();
-    setImplicitHeight(layout()->height());
-  }
-
+  Q_UNUSED(colType)
+  setImplicitWidth(_timestampWidth + _senderWidth + _contentsWidth);
   update();
 }
 
 /**************************************************************************************/
 
-QmlChatLine::ColumnLayout::ColumnLayout(const QmlChatLine *parent)
+QmlChatLine::Layout::Layout(QmlChatLine *parent)
   : _parent(parent)
+{
+  _timestampLayout = new TimestampLayout(parent);
+  _senderLayout = new SenderLayout(parent);
+  _contentsLayout = new ContentsLayout(parent);
+}
+
+QmlChatLine::Layout::~Layout() {
+  delete _timestampLayout;
+  delete _senderLayout;
+  delete _contentsLayout;
+}
+
+qreal QmlChatLine::Layout::height() const {
+  return _contentsLayout->height();
+}
+
+void QmlChatLine::Layout::compute() {
+  _timestampLayout->compute();
+  _senderLayout->compute();
+  _contentsLayout->compute();
+}
+
+void QmlChatLine::Layout::draw(QPainter *p) {
+  _timestampLayout->draw(p);
+  _senderLayout->draw(p);
+  _contentsLayout->draw(p);
+}
+
+/*************/
+
+QmlChatLine::ColumnLayout::ColumnLayout(QmlChatLine::ColumnType type, QmlChatLine *parent)
+  : _parent(parent),
+    _type(type),
+    _layout(0)
 {
 
 }
 
-qreal QmlChatLine::ColumnLayout::height() const {
-  return chatLine()->contentsWidth()/20;
+QmlChatLine::ColumnLayout::~ColumnLayout() {
+  delete _layout;
 }
 
-void QmlChatLine::ColumnLayout::prepare() {
+void QmlChatLine::ColumnLayout::initLayout(QTextOption::WrapMode wrapMode, Qt::Alignment alignment) {
+  if(_layout)
+    delete _layout;
 
+  const RenderData::Column &data = chatLine()->renderData()[columnType()];
+  _layout = new QTextLayout(data.text);
+
+  QTextOption option;
+  option.setWrapMode(wrapMode);
+  option.setAlignment(alignment);
+  layout()->setTextOption(option);
+
+  QList<QTextLayout::FormatRange> formats = GraphicalUi::uiStyle()->toTextLayoutList(data.formats, layout()->text().length(), chatLine()->renderData().messageLabel);
+  layout()->setAdditionalFormats(formats);
+
+  compute();
+}
+
+qreal QmlChatLine::ColumnLayout::height() const {
+  return layout()->boundingRect().height();
+}
+
+void QmlChatLine::ColumnLayout::compute() {
+  qreal width = chatLine()->columnBoundingRect(columnType()).width();
+  qreal h = 0;
+  layout()->beginLayout();
+  forever {
+    QTextLine line = layout()->createLine();
+    if(!line.isValid())
+      break;
+
+    line.setLineWidth(width);
+    line.setPosition(QPointF(0, h));
+    h += line.height();
+  }
+  layout()->endLayout();
 }
 
 void QmlChatLine::ColumnLayout::draw(QPainter *p) {
-  p->drawText(chatLine()->boundingRect(), chatLine()->renderData()[ContentsColumn].text);
-  //p->drawText(chatLine()->timestampWidth() + chatLine()->columnSpacing(), 0, chatLine()->renderData()[SenderColumn].text);
-  //p->drawText(chatLine()->timestampWidth() + chatLine()->senderWidth() + 2*chatLine()->columnSpacing(), 0, chatLine()->renderData()[ContentsColumn].text);
+  p->save();
 
+  QRectF rect = chatLine()->columnBoundingRect(columnType());
+
+  qreal layoutWidth = layout()->minimumWidth();
+  qreal offset = 0;
+
+  if(layout()->textOption().alignment() == Qt::AlignRight) {
+    /*
+      if(chatScene()->senderCutoffMode() == ChatScene::CutoffLeft)
+        offset = qMin(width() - layoutWidth, (qreal)0);
+      else
+        offset = qMax(layoutWidth - width(), (qreal)0);
+    */
+      offset = qMax(layoutWidth - rect.width(), (qreal)0);
+  }
+
+  if(layoutWidth > rect.width()) {
+    // Draw a nice gradient for longer items
+
+    QLinearGradient gradient;
+    if(offset < 0) {
+      gradient.setStart(0, 0);
+      gradient.setFinalStop(12, 0);
+      gradient.setColorAt(0, Qt::transparent);
+      gradient.setColorAt(1, Qt::white);
+    } else {
+      gradient.setStart(rect.width()-12, 0);
+      gradient.setFinalStop(rect.width(), 0);
+      gradient.setColorAt(0, Qt::white);
+      gradient.setColorAt(1, Qt::transparent);
+    }
+
+    QImage img(layout()->boundingRect().toRect().size(), QImage::Format_ARGB32_Premultiplied);
+    //img.fill(Qt::transparent);
+    QPainter imgPainter(&img);
+    imgPainter.fillRect(img.rect(), gradient);
+    imgPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    layout()->draw(&imgPainter, QPointF(qMax(offset, (qreal)0), 0), selectionFormats());
+    imgPainter.end();
+    p->drawImage(rect.topLeft(), img);
+  } else {
+    layout()->draw(p, rect.topLeft(), selectionFormats(), rect);
+  }
+
+  p->restore();
+}
+
+QVector<QTextLayout::FormatRange> QmlChatLine::ColumnLayout::selectionFormats() const {
+  return QVector<QTextLayout::FormatRange>();
+}
+
+/**************/
+
+QmlChatLine::TimestampLayout::TimestampLayout(QmlChatLine *chatLine)
+  : ColumnLayout(TimestampColumn, chatLine)
+{
+  initLayout(QTextOption::NoWrap, Qt::AlignLeft);
+}
+
+
+/**************/
+
+QmlChatLine::SenderLayout::SenderLayout(QmlChatLine *chatLine)
+  : ColumnLayout(SenderColumn, chatLine)
+{
+  initLayout(QTextOption::NoWrap, Qt::AlignRight);
+}
+
+
+/**************/
+
+QmlChatLine::ContentsLayout::ContentsLayout(QmlChatLine *chatLine)
+  : ColumnLayout(ContentsColumn, chatLine)
+{
+  initLayout(QTextOption::WrapAtWordBoundaryOrAnywhere, Qt::AlignLeft);
+}
+
+void QmlChatLine::ContentsLayout::compute() {
+  ColumnLayout::compute();
+  chatLine()->setImplicitHeight(layout()->boundingRect().height());
 }
