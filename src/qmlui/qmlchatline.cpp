@@ -28,17 +28,19 @@ void QmlChatLine::registerTypes() {
 }
 
 QDataStream &operator<<(QDataStream &out, const QmlChatLine::RenderData &data) {
+  out << data.isValid << data.messageLabel;
   for(int i = 0; i < (int)QmlChatLine::NumColumns; ++i) {
     const QmlChatLine::RenderData::Column &col = data[static_cast<QmlChatLine::ColumnType>(i)];
-    out << col.text << col.formats;
+    out << col.text << col.formats << col.background << col.selectedBackground;
   }
   return out;
 }
 
 QDataStream &operator>>(QDataStream &in, QmlChatLine::RenderData &data) {
+  in >> data.isValid >> data.messageLabel;
   for(int i = 0; i < (int)QmlChatLine::NumColumns; ++i) {
     QmlChatLine::RenderData::Column &col = data[static_cast<QmlChatLine::ColumnType>(i)];
-    in >> col.text >> col.formats;
+    in >> col.text >> col.formats >> col.background >> col.selectedBackground;
   }
   return in;
 }

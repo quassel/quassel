@@ -58,6 +58,7 @@ public:
     };
 
     qint32 messageLabel;
+    bool isValid;
 
     Column &operator[](ColumnType col) {
       return _data[col];
@@ -67,7 +68,7 @@ public:
       return _data[col];
     }
 
-    RenderData() { messageLabel = 0; }
+    RenderData() { messageLabel = 0; isValid = false; }
 
   private:
     Column _data[NumColumns];

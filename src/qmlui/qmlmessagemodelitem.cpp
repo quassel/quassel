@@ -65,6 +65,7 @@ QVariant QmlMessageModelItem::data(int column, int role) const {
     data[QmlChatLine::ContentsColumn].background = backgroundBrush(UiStyle::Contents).value<QBrush>();
     data[QmlChatLine::ContentsColumn].selectedBackground = backgroundBrush(UiStyle::Contents, true).value<QBrush>();
 
+    data.isValid = true;
     return QVariant::fromValue<QmlChatLine::RenderData>(data);
   }
 
