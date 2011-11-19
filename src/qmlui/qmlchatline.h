@@ -25,44 +25,137 @@
 
 #include "uistyle.h"
 
+class QAbstractItemModel;
+
+#include <QAbstractItemModel>
+
 class QmlChatLine : public QDeclarativeItem {
   Q_OBJECT
 
-  Q_PROPERTY(QVariant chatLineData READ chatLineData WRITE setChatLineData)
-
-  //Q_PROPERTY(QVariant )
+  Q_PROPERTY(QObject *model READ modelPointer WRITE setModelPointer)
+  Q_PROPERTY(QmlChatLine::RenderData renderData READ renderData WRITE setRenderData)
+  Q_PROPERTY(qreal timestampWidth READ timestampWidth WRITE setTimestampWidth NOTIFY timestampWidthChanged)
+  Q_PROPERTY(qreal senderWidth READ senderWidth WRITE setSenderWidth NOTIFY senderWidthChanged)
+  Q_PROPERTY(qreal contentsWidth READ contentsWidth WRITE setContentsWidth NOTIFY contentsWidthChanged)
+  Q_PROPERTY(qreal columnSpacing READ columnSpacing WRITE setColumnSpacing NOTIFY columnSpacingChanged)
+  Q_PROPERTY(QVariant test READ test WRITE setTest)
 
 public:
-  //! Contains all data needed to render a QmlChatLine
-  struct Data {
-    struct ChatLineColumnData {
+  enum ColumnType {
+    TimestampColumn,
+    SenderColumn,
+    ContentsColumn,
+    NumColumns
+  };
+
+  //! Contains all model data needed to render a QmlChatLine
+  struct RenderData {
+    struct Column {
       QString text;
       UiStyle::FormatList formats;
+      QBrush background;
+      QBrush selectedBackground;
     };
 
-    ChatLineColumnData timestamp;
-    ChatLineColumnData sender;
-    ChatLineColumnData contents;
+    qint32 messageLabel;
+
+    Column &operator[](ColumnType col) {
+      return _data[col];
+    }
+
+    Column const &operator[](ColumnType col) const {
+      return _data[col];
+    }
+
+    RenderData() { messageLabel = 0; }
+
+  private:
+    Column _data[NumColumns];
   };
+
+  class ColumnLayout;
 
   QmlChatLine(QDeclarativeItem *parent = 0);
   virtual ~QmlChatLine();
 
-  inline Data data() const { return _data; }
-  inline QVariant chatLineData() const { return QVariant::fromValue<Data>(_data); }
-  inline void setChatLineData(const QVariant &data) { _data = data.value<Data>(); }
+  inline QAbstractItemModel *model() const { return _model; }
+  inline QObject *modelPointer() const { return _model; }
+  void setModelPointer(QObject *model) { _model = qobject_cast<QAbstractItemModel *>(model); }
+
+  inline RenderData renderData() const { return _data; }
+  void setRenderData(const RenderData &data);
+
+  ColumnLayout *layout() const;
+
+  inline qreal timestampWidth() const { return _timestampWidth; }
+  void setTimestampWidth(qreal w);
+  inline qreal senderWidth() const { return _senderWidth; }
+  void setSenderWidth(qreal w);
+  inline qreal contentsWidth() const { return _contentsWidth; }
+  void setContentsWidth(qreal w);
+  inline qreal columnSpacing() const { return _columnSpacing; }
+  void setColumnSpacing(qreal s);
+
+  inline QString text() const { return renderData()[ContentsColumn].text; }
+
+  void setTest(const QVariant &test) { _test = test; qDebug() << "set test" << test; }
+  QVariant test() const { return _test; }
+
+  QPointF columnPos(ColumnType colType) const;
+  qreal columnWidth(ColumnType colType) const;
+  QRectF columnBoundingRect(ColumnType colType) const;
 
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
   static void registerTypes();
 
+signals:
+  void timestampWidthChanged(qreal);
+  void senderWidthChanged(qreal);
+  void contentsWidthChanged(qreal);
+  void columnWidthChanged(ColumnType column);
+  void columnSpacingChanged(qreal);
+
+public slots:
+  void onClicked(qreal mouseX, qreal mouseY) { qDebug() << "clicked" << mouseX << mouseY; }
+  void onPressed(qreal mouseX, qreal mouseY) { qDebug() << "pressed" << mouseX << mouseY; }
+  void onMousePositionChanged(qreal mouseX, qreal mouseY) { qDebug() << "moved" << mouseX << mouseY; }
+
+protected:
+
+protected slots:
+  void onColumnWidthChanged(ColumnType column);
+
 private:
-  Data _data;
+  QAbstractItemModel *_model;
+  RenderData _data;
+
+  qreal _timestampWidth, _senderWidth, _contentsWidth;
+  qreal _columnSpacing;
+
+  QVariant _test;
+
+  mutable ColumnLayout *_layout;
 };
 
-QDataStream &operator<<(QDataStream &out, const QmlChatLine::Data &data);
-QDataStream &operator>>(QDataStream &in, QmlChatLine::Data &data);
+QDataStream &operator<<(QDataStream &out, const QmlChatLine::RenderData &data);
+QDataStream &operator>>(QDataStream &in, QmlChatLine::RenderData &data);
 
-Q_DECLARE_METATYPE(QmlChatLine::Data)
+Q_DECLARE_METATYPE(QmlChatLine::RenderData)
+
+class QmlChatLine::ColumnLayout {
+public:
+  explicit ColumnLayout(const QmlChatLine *parent);
+  virtual ~ColumnLayout() {}
+
+  inline const QmlChatLine *chatLine() const { return _parent; }
+
+  qreal height() const;
+  virtual void prepare();
+  virtual void draw(QPainter *p);
+
+private:
+  const QmlChatLine *_parent;
+};
 
 #endif

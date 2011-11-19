@@ -29,7 +29,7 @@ QmlMessageModel::QmlMessageModel(QObject *parent)
   QmlChatLine::registerTypes();
 
   QHash<int, QByteArray> roles;
-  roles[ChatLineDataRole] = "chatLineDataRole";
+  roles[RenderDataRole] = "renderDataRole";
   setRoleNames(roles);
 }
 

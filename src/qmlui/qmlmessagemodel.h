@@ -31,7 +31,9 @@ class QmlMessageModel : public MessageModel {
 
 public:
   enum QmlMessageModelRole {
-    ChatLineDataRole = MessageModel::UserRole,
+    RenderDataRole = MessageModel::UserRole,
+    MsgLabelRole,
+    SelectedBackgroundRole,
     UserRole
   };
 
