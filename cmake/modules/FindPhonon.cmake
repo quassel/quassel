@@ -31,9 +31,28 @@ else(PHONON_FOUND)
    endif(PHONON_INCLUDE_DIR AND PHONON_LIBRARY)
 
    # As discussed on kde-buildsystem: first look at CMAKE_PREFIX_PATH, then at the suggested PATHS (kde4 install dir)
-   find_library(PHONON_LIBRARY NAMES phonon phonon4 PATHS ${KDE4_LIB_INSTALL_DIR} ${QT_LIBRARY_DIR} NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+   find_library(PHONON_LIBRARY_RELEASE NAMES phonon phonon4 PATHS ${KDE4_LIB_INSTALL_DIR} ${QT_LIBRARY_DIR} NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+   find_library(PHONON_LIBRARY_DEBUG NAMES phonond phonond4 PATHS ${KD4_LIB_INSTALL} ${QT_LIBRARY_DIR} NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
    # then at the default system locations (CMAKE_SYSTEM_PREFIX_PATH, i.e. /usr etc.)
-   find_library(PHONON_LIBRARY NAMES phonon phonon4)
+   find_library(PHONON_LIBRARY_RELEASE NAMES phonon phonon4)
+   find_library(PHONON_LIBRARY_DEBUG NAMES phonond phonond4)
+
+   # if the release- as well as the debug-version of the library have been found:
+   IF (PHONON_LIBRARY_DEBUG AND PHONON_LIBRARY_RELEASE)
+     # if the generator supports configuration types then set
+     # optimized and debug libraries, or if the CMAKE_BUILD_TYPE has a value
+     IF (CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+       SET(PHONON_LIBRARY       optimized ${PHONON_LIBRARY_RELEASE} debug ${PHONON_LIBRARY_DEBUG})
+     ELSE(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+       # if there are no configuration types and CMAKE_BUILD_TYPE has no value
+       # then just use the release libraries
+       SET(PHONON_LIBRARY       ${PHONON_LIBRARY_RELEASE} )
+     ENDIF(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+   ELSE(PHONON_LIBRARY_DEBUG AND PHONON_LIBRARY_RELEASE)
+     IF (PHONON_LIBRARY_RELEASE)
+       SET(PHONON_LIBRARY ${PHONON_LIBRARY_RELEASE})
+     ENDIF (PHONON_LIBRARY_RELEASE)
+   ENDIF (PHONON_LIBRARY_DEBUG AND PHONON_LIBRARY_RELEASE)
 
    find_path(PHONON_INCLUDE_DIR NAMES phonon/phonon_export.h PATHS ${KDE4_INCLUDE_INSTALL_DIR} ${QT_INCLUDE_DIR} ${INCLUDE_INSTALL_DIR} ${QT_LIBRARY_DIR} NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
    find_path(PHONON_INCLUDE_DIR NAMES phonon/phonon_export.h)
