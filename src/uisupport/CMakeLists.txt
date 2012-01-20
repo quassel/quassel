@@ -86,9 +86,7 @@ endif(HAVE_KDE)
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
-                    ${CMAKE_SOURCE_DIR}/src/client
-                    ${CMAKE_SOURCE_DIR}/src/qtui
-                    ${CMAKE_SOURCE_DIR}/src/uisupport)
+                    ${CMAKE_SOURCE_DIR}/src/client)
 
 add_library(mod_uisupport STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_uisupport mod_common mod_client)

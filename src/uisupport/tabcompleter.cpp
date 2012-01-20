@@ -30,7 +30,7 @@
 #include "uisettings.h"
 #include "action.h"
 #include "actioncollection.h"
-#include "qtui.h"
+#include "graphicalui.h"
 
 #include <QRegExp>
 
@@ -48,7 +48,7 @@ TabCompleter::TabCompleter(MultiLineEdit *_lineEdit)
   // use both an Action and generic eventFilter, to make the shortcut configurable
   // yet still be able to reset() when required
   _lineEdit->installEventFilter(this);
-  ActionCollection *coll = QtUi::actionCollection("General");
+  ActionCollection *coll = GraphicalUi::actionCollection("General");
   coll->addAction("TabCompletionKey", new Action(tr("Tab completion"), coll,
                                               this, SLOT(onTabCompletionKey()), QKeySequence(Qt::Key_Tab)));
 }
@@ -165,7 +165,7 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event) {
 
   QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
-  if(keyEvent->key() != QtUi::actionCollection("General")->action("TabCompletionKey")->shortcut()) {
+  if(keyEvent->key() != GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut()) {
     reset();
   }
   return false;
