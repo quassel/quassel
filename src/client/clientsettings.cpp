@@ -281,7 +281,7 @@ QString TabCompletionSettings::completionSuffix() {
   return localValue("CompletionSuffix", ": ").toString();
 }
 
-void TabCompletionSettings::setAddSpaceMidSentence(const bool &space) {
+void TabCompletionSettings::setAddSpaceMidSentence(bool space) {
   setLocalValue("AddSpaceMidSentence", space);
 }
 
