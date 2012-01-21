@@ -192,13 +192,13 @@ bool NetworksSettingsPage::testHasChanged() {
 void NetworksSettingsPage::setWidgetStates() {
   // network list
   if(ui.networkList->selectedItems().count()) {
-    NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
-    const Network *net = 0;
-    if(id > 0) net = Client::network(id);
     ui.detailsBox->setEnabled(true);
     ui.renameNetwork->setEnabled(true);
     ui.deleteNetwork->setEnabled(true);
+
     /* button disabled for now
+    NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+    const Network *net = id > 0 ? Client::network(id) : 0;
     ui.connectNow->setEnabled(net);
     //    && (Client::network(id)->connectionState() == Network::Initialized
     //    || Client::network(id)->connectionState() == Network::Disconnected));

@@ -57,7 +57,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   setDynamicSortFilter(true);
 
   connect(this, SIGNAL(_dataChanged(const QModelIndex &, const QModelIndex &)),
-	  this, SLOT(_q_sourceDataChanged(QModelIndex,QModelIndex)));
+          this, SLOT(_q_sourceDataChanged(QModelIndex,QModelIndex)));
 
   _enableEditMode.setCheckable(true);
   _enableEditMode.setChecked(_editMode);
@@ -151,12 +151,12 @@ void BufferViewFilter::enableEditMode(bool enable) {
     QSet<BufferId>::const_iterator iter;
     for(iter = _toTempRemove.constBegin(); iter != _toTempRemove.constEnd(); iter++) {
       if(config()->temporarilyRemovedBuffers().contains(*iter))
-	 continue;
+         continue;
       config()->requestRemoveBuffer(*iter);
     }
     for(iter = _toRemove.constBegin(); iter != _toRemove.constEnd(); iter++) {
       if(config()->removedBuffers().contains(*iter))
-	 continue;
+         continue;
       config()->requestRemoveBufferPermanently(*iter);
     }
   }
@@ -185,7 +185,7 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
     if(bufferType != BufferInfo::QueryBuffer) {
       ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
       if(clientConf && clientConf->isLocked()) {
-	flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
+        flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
       }
     }
   }
@@ -210,29 +210,29 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     bufferId = bufferList[i].second;
     if(droppedNetworkId == networkId) {
       if(row < 0)
-	row = 0;
+        row = 0;
 
       if(row < rowCount(parent)) {
-	QModelIndex source_child = mapToSource(index(row, 0, parent));
-	BufferId beforeBufferId = sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>();
-	pos = config()->bufferList().indexOf(beforeBufferId);
-	if(_sortOrder == Qt::DescendingOrder)
-	  pos++;
+        QModelIndex source_child = mapToSource(index(row, 0, parent));
+        BufferId beforeBufferId = sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>();
+        pos = config()->bufferList().indexOf(beforeBufferId);
+        if(_sortOrder == Qt::DescendingOrder)
+          pos++;
       } else {
-	if(_sortOrder == Qt::AscendingOrder)
-	  pos = config()->bufferList().count();
-	else
-	  pos = 0;
+        if(_sortOrder == Qt::AscendingOrder)
+          pos = config()->bufferList().count();
+        else
+          pos = 0;
       }
 
       if(config()->bufferList().contains(bufferId) && !config()->sortAlphabetically()) {
-	if(config()->bufferList().indexOf(bufferId) < pos)
-	  pos--;
-	ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
-	if(!clientConf || !clientConf->isLocked())
-	  config()->requestMoveBuffer(bufferId, pos);
+        if(config()->bufferList().indexOf(bufferId) < pos)
+          pos--;
+        ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+        if(!clientConf || !clientConf->isLocked())
+          config()->requestMoveBuffer(bufferId, pos);
       } else {
-	config()->requestAddBuffer(bufferId, pos);
+        config()->requestAddBuffer(bufferId, pos);
       }
 
     } else {
@@ -280,14 +280,14 @@ void BufferViewFilter::addBuffers(const QList<BufferId> &bufferIds) const {
     bool lt;
     for(int i = 0; i < bufferList.count(); i++) {
       if(config() && config()->sortAlphabetically())
-	lt = bufferIdLessThan(bufferId, bufferList[i]);
+        lt = bufferIdLessThan(bufferId, bufferList[i]);
       else
-	lt = bufferId < config()->bufferList()[i];
+        lt = bufferId < config()->bufferList()[i];
 
       if(lt) {
-	pos = i;
-	bufferList.insert(pos, bufferId);
-	break;
+        pos = i;
+        bufferList.insert(pos, bufferId);
+        break;
       }
     }
     config()->requestAddBuffer(bufferId, pos);
@@ -309,7 +309,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     if(config()->isInitialized()
        && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
        && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
-	   || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > BufferInfo::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
+           || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > BufferInfo::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
       addBuffer(bufferId);
     }
     // note: adding the buffer to the valid list does not temper with the following filters ("show only channels" and stuff)
@@ -404,8 +404,8 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QMod
 }
 
 bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  NetworkId leftNetworkId = sourceModel()->data(source_left, NetworkModel::NetworkIdRole).value<NetworkId>();
-  NetworkId rightNetworkId = sourceModel()->data(source_right, NetworkModel::NetworkIdRole).value<NetworkId>();
+  // NetworkId leftNetworkId = sourceModel()->data(source_left, NetworkModel::NetworkIdRole).value<NetworkId>();
+  // NetworkId rightNetworkId = sourceModel()->data(source_right, NetworkModel::NetworkIdRole).value<NetworkId>();
 
   return QSortFilterProxyModel::lessThan(source_left, source_right);
 }

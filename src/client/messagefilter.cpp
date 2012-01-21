@@ -135,7 +135,7 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     return true;
   }
 
-  MsgId msgId = sourceIdx.data(MessageModel::MsgIdRole).value<MsgId>();
+  // MsgId msgId = sourceIdx.data(MessageModel::MsgIdRole).value<MsgId>();
   Message::Flags flags = (Message::Flags)sourceIdx.data(MessageModel::FlagsRole).toInt();
 
   NetworkId myNetworkId = networkId();
@@ -154,12 +154,12 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     switch(messageType) {
     case Message::Notice:
       if(Client::networkModel()->bufferType(bufferId) != BufferInfo::ChannelBuffer) {
-	if(flags & Message::ServerMsg) {
-	  // server notice
-	  redirectionTarget = _serverNoticesTarget;
-	} else {
-	  redirectionTarget = _userNoticesTarget;
-	}
+        if(flags & Message::ServerMsg) {
+          // server notice
+          redirectionTarget = _serverNoticesTarget;
+        } else {
+          redirectionTarget = _userNoticesTarget;
+        }
       }
       break;
     case Message::Error:
@@ -175,21 +175,21 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     if(redirectionTarget & BufferSettings::CurrentBuffer && !(flags & Message::Backlog)) {
       BufferId redirectedTo = sourceModel()->data(sourceIdx, MessageModel::RedirectedToRole).value<BufferId>();
       if(!redirectedTo.isValid()) {
-	BufferId redirectedTo = Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
-	if(redirectedTo.isValid())
-	  sourceModel()->setData(sourceIdx, QVariant::fromValue<BufferId>(redirectedTo), MessageModel::RedirectedToRole);
+        BufferId redirectedTo = Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
+        if(redirectedTo.isValid())
+          sourceModel()->setData(sourceIdx, QVariant::fromValue<BufferId>(redirectedTo), MessageModel::RedirectedToRole);
       }
 
       if(_validBuffers.contains(redirectedTo))
-	return true;
+        return true;
     }
 
     if(redirectionTarget & BufferSettings::StatusBuffer) {
       QSet<BufferId>::const_iterator idIter = _validBuffers.constBegin();
       while(idIter != _validBuffers.constEnd()) {
-	if(Client::networkModel()->bufferType(*idIter) == BufferInfo::StatusBuffer)
-	  return true;
-	idIter++;
+        if(Client::networkModel()->bufferType(*idIter) == BufferInfo::StatusBuffer)
+          return true;
+        idIter++;
       }
     }
 
