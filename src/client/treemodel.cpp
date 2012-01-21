@@ -550,11 +550,9 @@ void TreeModel::debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start,
   qDebug() << "debug_rowsAboutToBeRemoved" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
 
   QModelIndex child;
-  AbstractTreeItem *childItem;
   for(int i = end; i >= start; i--) {
     child = parent.child(i, 0);
-    childItem = parentItem->child(i);
-    Q_ASSERT(childItem);
+    Q_ASSERT(parentItem->child(i));
     qDebug() << ">>>" << i << child << child.data().toString();
   }
 }
@@ -567,11 +565,9 @@ void TreeModel::debug_rowsInserted(const QModelIndex &parent, int start, int end
   qDebug() << "debug_rowsInserted:" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
 
   QModelIndex child;
-  AbstractTreeItem *childItem;
   for(int i = start; i <= end; i++) {
     child = parent.child(i, 0);
-    childItem = parentItem->child(i);
-    Q_ASSERT(childItem);
+    Q_ASSERT(parentItem->child(i));
     qDebug() << "<<<" << i << child << child.data().toString();
   }
 }

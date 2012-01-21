@@ -429,7 +429,6 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
 
   bool atTop = (start == 0);
   bool atBottom = (end == _lines.count() - 1);
-  bool moveTop = false;
 
   // clear selection
   if(_selectingItem) {
@@ -459,7 +458,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   if(_selectionStart >= 0) {
     int offset = end - start + 1;
     if(_selectionStart >= start)
-      _selectionStart = qMax(_selectionStart -= offset, start);
+      _selectionStart = qMax(_selectionStart - offset, start);
     if(_selectionEnd >= start)
       _selectionEnd -= offset;
     if(_firstSelectionRow >= start)
@@ -478,7 +477,6 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     int moveEnd = _lines.count() - 1;
     if(start < _lines.count() - start) {
       // move top part
-      moveTop = true;
       moveEnd = start - 1;
     } else {
       // move bottom part

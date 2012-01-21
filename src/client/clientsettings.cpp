@@ -178,7 +178,6 @@ void CoreAccountSettings::setBufferViewOverlay(const QSet<int> &viewIds) {
 QSet<int> CoreAccountSettings::bufferViewOverlay() {
   QSet<int> viewIds;
   QVariantList variants = accountValue("BufferViewOverlay").toList();
-  QVariantList::const_iterator iter = variants.constBegin();
   for(QVariantList::const_iterator iter = variants.constBegin(); iter != variants.constEnd(); iter++) {
     viewIds << iter->toInt();
   }
