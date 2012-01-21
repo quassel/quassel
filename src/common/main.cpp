@@ -105,12 +105,11 @@ int main(int argc, char **argv) {
   cliParser->addOption("port <port>",'p', "The port quasselcore will listen at", QString("4242"));
   cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
   cliParser->addOption("loglevel <level>", 'L', "Loglevel Debug|Info|Warning|Error", "Info");
-#ifdef HAVE_SYSLOG_H
-  cliParser->addSwitch("syslog", 0, "Send the log to syslog.");
-#else
-  cliParser->addOption("logfile <path>", 'l', "Path to logfile");
+#ifdef HAVE_SYSLOG
+  cliParser->addSwitch("syslog", 0, "Log to syslog");
 #endif
-  cliParser->addOption("select-backend <backendidentifier>", 0, "Starts an interactive session and switches your current storage backend to the new one. Attempts a merge if the new backend is uninitialized and the old backend supports migration. Otherwise prompts for new user credentials!");
+  cliParser->addOption("logfile <path>", 'l', "Log to a file");
+  cliParser->addOption("select-backend <backendidentifier>", 0, "Switch storage backend (migrating data if possible)");
   cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
   cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by the Quassel Project                             *
+ *   Copyright (C) 2005-2012 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,22 +21,15 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "types.h"
-
-#include <QString>
 #include <QStringList>
 #include <QTextStream>
 
+#include "quassel.h"
+#include "types.h"
+
 class Logger {
 public:
-  enum LogLevel {
-    DebugLevel,
-    InfoLevel,
-    WarningLevel,
-    ErrorLevel
-  };
-
-  inline Logger(LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
+  inline Logger(Quassel::LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
   ~Logger();
 
   static void logMessage(QtMsgType type, const char *msg);
@@ -50,22 +43,22 @@ private:
   void log();
   QTextStream _stream;
   QString _buffer;
-  LogLevel _logLevel;
+  Quassel::LogLevel _logLevel;
 };
 
 class quInfo : public Logger {
 public:
-  inline quInfo() : Logger(Logger::InfoLevel) {}
+  inline quInfo() : Logger(Quassel::InfoLevel) {}
 };
 
 class quWarning : public Logger {
 public:
-  inline quWarning() : Logger(Logger::WarningLevel) {}
+  inline quWarning() : Logger(Quassel::WarningLevel) {}
 };
 
 class quError : public Logger {
 public:
-  inline quError() : Logger(Logger::ErrorLevel) {}
+  inline quError() : Logger(Quassel::ErrorLevel) {}
 };
 
 #endif
