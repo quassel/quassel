@@ -637,11 +637,9 @@ void MultiLineEdit::on_returnPressed(const QString & text) {
       if(line.isEmpty())
         continue;
       addToHistory(line);
-    }
-    reset();
-    foreach(const QString &line, text.split('\n', QString::SkipEmptyParts)) {
       emit textEntered(line);
     }
+    reset();
     _tempHistory.clear();
   } else {
     emit noTextEntered();
