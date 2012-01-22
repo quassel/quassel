@@ -118,26 +118,28 @@ bool Quassel::init() {
   DEBUG = isOptionSet("debug");
 
   // set up logging
-  if(isOptionSet("loglevel")) {
-    QString level = optionValue("loglevel");
+  if(Quassel::runMode() != Quassel::ClientOnly) {
+    if(isOptionSet("loglevel")) {
+      QString level = optionValue("loglevel");
 
-    if(level == "Debug") _logLevel = DebugLevel;
-    else if(level == "Info") _logLevel = InfoLevel;
-    else if(level == "Warning") _logLevel= WarningLevel;
-    else if(level == "Error") _logLevel = ErrorLevel;
-  }
-
-  QString logfilename = optionValue("logfile");
-  if(!logfilename.isEmpty()) {
-    _logFile = new QFile(logfilename);
-    if(!_logFile->open(QIODevice::Append | QIODevice::Text)) {
-      qWarning() << "Could not open log file" << logfilename << ":" << _logFile->errorString();
-      _logFile->deleteLater();
-      _logFile = 0;
+      if(level == "Debug") _logLevel = DebugLevel;
+      else if(level == "Info") _logLevel = InfoLevel;
+      else if(level == "Warning") _logLevel= WarningLevel;
+      else if(level == "Error") _logLevel = ErrorLevel;
     }
-  }
 
-  _logToSyslog = isOptionSet("syslog");
+    QString logfilename = optionValue("logfile");
+    if(!logfilename.isEmpty()) {
+      _logFile = new QFile(logfilename);
+      if(!_logFile->open(QIODevice::Append | QIODevice::Text)) {
+        qWarning() << "Could not open log file" << logfilename << ":" << _logFile->errorString();
+        _logFile->deleteLater();
+        _logFile = 0;
+      }
+    }
+
+    _logToSyslog = isOptionSet("syslog");
+  }
 
   return true;
 }
