@@ -62,7 +62,7 @@ private slots:
   void setMaxLines(const QVariant &);
   void setMultiLineEnabled(const QVariant &);
   void setScrollBarsEnabled(const QVariant &);
-  void on_inputEdit_textEntered(const QString &text);
+  void onTextEntered(const QString &text);
   void changeNick(const QString &newNick) const;
 
   void setNetwork(NetworkId networkId);

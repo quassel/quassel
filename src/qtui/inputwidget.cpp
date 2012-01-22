@@ -132,6 +132,7 @@ InputWidget::InputWidget(QWidget *parent)
   activateInputline->setText(tr("Focus Input Line"));
   activateInputline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
+  connect(inputLine(), SIGNAL(textEntered(QString)), SLOT(onTextEntered(QString)), Qt::QueuedConnection); // make sure the line is already reset, bug #984
   connect(inputLine(), SIGNAL(currentCharFormatChanged(QTextCharFormat)), this, SLOT(currentCharFormatChanged(QTextCharFormat)));
 }
 
@@ -413,7 +414,7 @@ void InputWidget::changeNick(const QString &newNick) const {
   Client::userInput(BufferInfo::fakeStatusBuffer(net->networkId()), QString("/NICK %1").arg(newNick));
 }
 
-void InputWidget::on_inputEdit_textEntered(const QString &text) {
+void InputWidget::onTextEntered(const QString &text) {
   Client::userInput(currentBufferInfo(), text);
   ui.boldButton->setChecked(false);
   ui.underlineButton->setChecked(false);
