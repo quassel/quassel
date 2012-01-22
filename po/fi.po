@@ -1,106 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Daniel Albers <daniel@lbers.com>, 2011.
+#   <larso@gmx.com>, 2011.
+# mikuu <pinaatti@gmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-15 22:38+0000\n"
-"PO-Revision-Date: 2011-05-31 07:01+0000\n"
-"Last-Translator: Jiri Grönroos <Unknown>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
+"Project-Id-Version: Quassel IRC\n"
+"Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
+"PO-Revision-Date: 2011-11-20 00:12+0000\n"
+"Last-Translator: Larso <larso@gmx.com>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-06-01 04:53+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
-"X-Language: fi_FI\n"
-
-#. ts-context AliasesModel
-#: ../src/qtui/settingspages/aliasesmodel.cpp:59
-msgid ""
-"<b>The string the shortcut will be expanded to</b><br /><b>special "
-"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
-"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
-"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br "
-"/> - <b>$i:hostname</b> represents the hostname of the user identified by "
-"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br "
-"/> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of "
-"the selected channel<br /><br />Multiple commands can be separated with "
-"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will "
-"be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All "
-"1 2 3\" when called like /test 1 2 3"
-msgstr ""
-"<b>Merkkijono joksi lyhytkomento laajennetaan</b><br "
-"/><b>erikoismuuttujat:</b><br /> - <b>$i</b> merkkaa i:dettä parametria.<br "
-"/> - <b>$i..j</b> merkkaa parametreja i:dennestä j:denteen välilyönneillä "
-"erotettuna.<br /> - <b>$i..</b> merkkaa kaikkia parametreja i:dennestä "
-"eteenpäin välilyönneillä erotettuna.<br /> - <b>$i:hostname</b> merkkaa i:n "
-"tunnistaman käyttäjän verkko-osoitetta, tai * jos se on tuntematon.<br /> - "
-"<b>$0</b> koko merkkijono.<br /> - <b>$nick</b> nykyinen nimimerkkisi<br /> -"
-" <b>$channel</b> valitun kanavan nimi<br /><br />Monta komentoa voidaan "
-"erottaa toisistaan puolipisteillä.<br /><br /><b>Esimerkki:</b> \"Testi $1; "
-"Testi $2; Testi Kaikki $0\" laajennetaan kolmeksi erilliseksi viestiksi "
-"\"Testi 1\", \"Testi 2\" ja \"Testi Kaikki 1 2 3\" kun sitä kutsutaan "
-"komennolla /testi 1 2 3"
-
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ContextMenuActionProvider
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context ToolBarActionProvider
-#: ../src/uisupport/contextmenuactionprovider.cpp:60
-#: ../src/uisupport/toolbaractionprovider.cpp:38
-msgid "Whois"
-msgstr "Käyttäjän tiedot (whois)."
-
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreConfigWizardAdminUserPage
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context CoreConnectAuthDlg
-#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
-#: ../src/qtui/ui/coreconnectauthdlg.ui:49
-msgid "Username:"
-msgstr "Käyttäjän nimi:"
-
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context NetworkItem
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context TopicWidget
-#: ../src/client/networkmodel.cpp:200 ../src/qtui/topicwidget.cpp:107
-msgid "Lag: %1 msecs"
-msgstr "Viive: %1 ms"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:420
-msgid "between retries"
-msgstr "uudelleenyritysten välillä"
-
-#. ts-context NetworksSettingsPage
-#: ../src/qtui/settingspages/networkssettingspage.ui:444
-msgid "Number of retries:"
-msgstr "Uudelleenyritysten lukumäärä:"
-
-#. ts-context PhononNotificationConfigWidget
-#: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
-msgid "Play a sound"
-msgstr "Soita ääni"
-
-#. ts-context PhononNotificationConfigWidget
-#: ../src/qtui/ui/phononnotificationconfigwidget.ui:59
-#: ../src/qtui/ui/phononnotificationconfigwidget.ui:69
-msgid "Select the sound file to play"
-msgstr "Valitse soitettava ääni"
-
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context SettingsDlg
-#. #-#-#-#-#  quassel.po  #-#-#-#-#
-#. ts-context SettingsPageDlg
-#: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
-msgid "Restore Defaults"
-msgstr "Palauta oletukset."
+"Language: fi\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Virgin-Header: remove this line if you change anything in the header.\n"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:17
@@ -110,44 +26,28 @@ msgstr "Tietoja Quasselista"
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
-"&gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
 msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; "
-"font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build "
-"&gt;= 474 (2008-02-08)</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
 
 #. ts-context AboutDlg
 #: ../src/qtui/ui/aboutdlg.ui:115
@@ -180,10 +80,10 @@ msgstr ""
 msgid ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
-"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a "
-"href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
-"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> "
-"and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
+"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
+" href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
+"licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>"
+" and <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Most "
 "icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen "
 "Team</a> and used under the <a "
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
@@ -194,10 +94,11 @@ msgstr ""
 "href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a "
 "href=\"irc://irc.freenode.net/quassel\">#quassel</a> verkossa <a "
 "href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC on "
-"kaksoislisenssoitu <a href=\"http://www.gnu.org/licenses/gpl-"
-"2.0.txt\">GPLv2</a>:n ja <a href=\"http://www.gnu.org/licenses/gpl-"
-"3.0.txt\">GPLv3</a>:n alaisuudessa.<br>Suurin osa kuvakkeista on &copy; <a "
-"href=\"http://www.oxygen-icons.org\">Oxygen Team</a> ja niitä käytetään <a "
+"kaksoislisenssoitu <a "
+"href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>:n ja <a "
+"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>:n "
+"alaisuudessa.<br>Suurin osa kuvakkeista on &copy; <a href=\"http://www"
+".oxygen-icons.org\">Oxygen Team</a> ja niitä käytetään <a "
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a> -lisenssin "
 "alaisuudessa.<br><br>Käytä <a href=\"http://bugs.quassel-"
 "irc.org\">http://bugs.quassel-irc.org</a> saittia ilmoittaaksesi bugeista."
@@ -221,8 +122,8 @@ msgstr ""
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
 "eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>for the original Quassel "
-"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
-"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
+"icon - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a"
+" href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>for "
 "creating all the artwork you see throughout Quassel</dd><dt><img "
 "src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
 "href=\"http://www.trolltech.com\">Qt Software formerly known as "
@@ -266,6 +167,34 @@ msgstr ""
 "<b>Aliaksen lyhytkomento</b><br />Sitä voidaan käyttää kuten normaalia "
 "/komentoa.<br /><br /><b>Esimerkki:</b> lyhytkomentoa \"foo\" voidaan "
 "käyttää kirjoittamalla /foo"
+
+#. ts-context AliasesModel
+#: ../src/qtui/settingspages/aliasesmodel.cpp:59
+msgid ""
+"<b>The string the shortcut will be expanded to</b><br /><b>special "
+"variables:</b><br /> - <b>$i</b> represents the i'th parameter.<br /> - "
+"<b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br "
+"/> - <b>$i..</b> represents all parameters from i on separated by spaces.<br"
+" /> - <b>$i:hostname</b> represents the hostname of the user identified by "
+"the i'th parameter or a * if unknown.<br /> - <b>$0</b> the whole string.<br"
+" /> - <b>$nick</b> your current nickname<br /> - <b>$channel</b> the name of"
+" the selected channel<br /><br />Multiple commands can be separated with "
+"semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will"
+" be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test "
+"All 1 2 3\" when called like /test 1 2 3"
+msgstr ""
+"<b>Merkkijono joksi lyhytkomento laajennetaan</b><br "
+"/><b>erikoismuuttujat:</b><br /> - <b>$i</b> merkkaa i:dettä parametria.<br "
+"/> - <b>$i..j</b> merkkaa parametreja i:dennestä j:denteen välilyönneillä "
+"erotettuna.<br /> - <b>$i..</b> merkkaa kaikkia parametreja i:dennestä "
+"eteenpäin välilyönneillä erotettuna.<br /> - <b>$i:hostname</b> merkkaa i:n "
+"tunnistaman käyttäjän verkko-osoitetta, tai * jos se on tuntematon.<br /> - "
+"<b>$0</b> koko merkkijono.<br /> - <b>$nick</b> nykyinen nimimerkkisi<br /> "
+"- <b>$channel</b> valitun kanavan nimi<br /><br />Monta komentoa voidaan "
+"erottaa toisistaan puolipisteillä.<br /><br /><b>Esimerkki:</b> \"Testi $1; "
+"Testi $2; Testi Kaikki $0\" laajennetaan kolmeksi erilliseksi viestiksi "
+"\"Testi 1\", \"Testi 2\" ja \"Testi Kaikki 1 2 3\" kun sitä kutsutaan "
+"komennolla /testi 1 2 3"
 
 #. ts-context AliasesModel
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
@@ -402,7 +331,7 @@ msgstr "Aliakset"
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:22
 msgid "Client style:"
-msgstr "Asiakkaan tyyli:"
+msgstr "Käyttöliittymän tyyli:"
 
 #. ts-context AppearanceSettingsPage
 #: ../src/qtui/settingspages/appearancesettingspage.ui:29
@@ -668,7 +597,8 @@ msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
 msgstr ""
-"kuinka monta viestiä per puskuri pyydetään kun yhteys ytimeen on muodostettu."
+"kuinka monta viestiä per puskuri pyydetään kun yhteys ytimeen on "
+"muodostettu."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
@@ -678,17 +608,13 @@ msgstr "Aloitusviestimäärä:"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
 msgid ""
-"This requester fetches unread messages for each chat window individually. "
-"The amount of lines can be limited per chat.\n"
+"This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
 "\n"
-"You can also choose to fetch additional older chatlines to provide a better "
-"context."
+"You can also choose to fetch additional older chatlines to provide a better context."
 msgstr ""
-"Tämä pyyntötapa hakee jokaista keskusteluikkunaa kohden määrätyn määrän "
-"lukemattomia viestejä.\n"
+"Tämä pyyntötapa hakee jokaista keskusteluikkunaa kohden määrätyn määrän lukemattomia viestejä.\n"
 "\n"
-"Voit myös määrittää noudettavaksi vanhempia viestirivejä asiayhteyden "
-"selventämiseksi."
+"Voit myös määrittää noudettavaksi vanhempia viestirivejä asiayhteyden selventämiseksi."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
@@ -737,27 +663,19 @@ msgstr "Ylimääräiset viestit:"
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:324
 msgid ""
-"This requester fetches all messages newer than the oldest unread message for "
-"all chats.\n"
+"This requester fetches all messages newer than the oldest unread message for all chats.\n"
 "\n"
-"Note: This requester is not recommended if you use hidden chat windows or "
-"have inactive chats (i.e.: no stale queries or channels).\n"
-"It is useful to limit the total amount of the backlog and is probably the "
-"fastest.\n"
+"Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).\n"
+"It is useful to limit the total amount of the backlog and is probably the fastest.\n"
 "\n"
-"You can also chose to fetch additional older chatlines to provide a better "
-"context."
+"You can also chose to fetch additional older chatlines to provide a better context."
 msgstr ""
-"Tämä pyyntötapa hakee kaikki viestit jotka ovat uudempia kuin kaikkien "
-"keskustelujen vanhin lukematon viesti.\n"
+"Tämä pyyntötapa hakee kaikki viestit jotka ovat uudempia kuin kaikkien keskustelujen vanhin lukematon viesti.\n"
 "\n"
-"Huom: Tätä pyyntötapaa ei suositella jos käytät piilotettuja "
-"keskusteluikkunoita tai sinulla on epäaktiivisia keskusteluja.\n"
-"Se on hyödyllinen noudettujen rivien määrän vähentämiseksi ja on luutavasti "
-"nopein kaikista tavoista.\n"
+"Huom: Tätä pyyntötapaa ei suositella jos käytät piilotettuja keskusteluikkunoita tai sinulla on epäaktiivisia keskusteluja.\n"
+"Se on hyödyllinen noudettujen rivien määrän vähentämiseksi ja on luutavasti nopein kaikista tavoista.\n"
 "\n"
-"Voit myös määrittää noudettavaksi vanhempia viestirivejä asiayhteyden "
-"selventämiseksi."
+"Voit myös määrittää noudettavaksi vanhempia viestirivejä asiayhteyden selventämiseksi."
 
 #. ts-context BacklogSettingsPage
 #: ../src/qtui/settingspages/backlogsettingspage.ui:344
@@ -798,7 +716,7 @@ msgstr ""
 #: ../src/qtui/settingspages/networkeditdlg.ui:13
 #: ../src/qtui/settingspages/servereditdlg.ui:14
 msgid "Dialog"
-msgstr "Valintaikkuna"
+msgstr "Kysely"
 
 #. ts-context BufferViewEditDlg
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:22
@@ -825,7 +743,7 @@ msgstr "Näytä / piilota keskustelut"
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgid "Re&name..."
-msgstr "&Nimeä uudelleen..."
+msgstr "Uudelleennimeä..."
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -841,7 +759,7 @@ msgstr "&Nimeä uudelleen..."
 #: ../src/qtui/settingspages/networkssettingspage.ui:235
 #: ../src/qtui/ui/simplenetworkeditor.ui:119
 msgid "&Add..."
-msgstr "&Lisää..."
+msgstr "Lisää"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context BufferViewSettingsPage
@@ -854,7 +772,7 @@ msgstr "&Lisää..."
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
 #: ../src/qtui/ui/simplenetworkeditor.ui:139
 msgid "De&lete"
-msgstr "Poi&sta"
+msgstr "Poista"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:84
@@ -946,7 +864,7 @@ msgstr "Uusi viesti"
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
 msgid "Highlight"
-msgstr "Korostus"
+msgstr "Korosta:"
 
 #. ts-context BufferViewSettingsPage
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:205
@@ -991,12 +909,12 @@ msgstr "Todellinen koko"
 #. ts-context BufferWidget
 #: ../src/qtui/bufferwidget.cpp:94
 msgid "Set Marker Line"
-msgstr ""
+msgstr "Aseta merkkiviiva"
 
 #. ts-context BufferWidget
 #: ../src/qtui/bufferwidget.cpp:98
 msgid "Go to Marker Line"
-msgstr ""
+msgstr "Mene merkkiviivalle"
 
 #. ts-context ChannelBufferItem
 #: ../src/client/networkmodel.cpp:503
@@ -1065,34 +983,19 @@ msgstr "Tapahtuneet virheet:"
 #. ts-context ChannelListDlg
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC "
-"ERROR!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
-"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"family:'Lucida Grande'; font-size:13pt;\">MAAILMANLOPPU!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-"margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-"
-"family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">MAAILMANLOPPU!!11</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
@@ -1102,45 +1005,21 @@ msgstr "Toimintatila:"
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgid ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"weight:600;\">Operation modes:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
-"style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span "
-"style=\" font-weight:400;\">Only buffers on the right side are shown in "
-"chatmonitor</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
-"decoration: underline;\">Opt-Out:</span> Buffers on the right side will be "
-"ignored in chatmonitor</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
 msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
-"\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">\n"
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-"
-"weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-"weight:600;\">Toimintatilat:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span "
-"style=\" font-weight:400; text-decoration: underline;\">Mukaanotto:</span> "
-"<span style=\" font-weight:400;\">Vain oikealla puolella olevat puskurit "
-"näytetään keskusteluvahdissa</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-"
-"decoration: underline;\">Poisjättö:</span> Oikealla puolella olevia "
-"puskureita <em>ei</em> näytetä keskusteluvahdissa</p></body></html>"
+"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Toimintatilat:</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Mukaanotto:</span> <span style=\" font-weight:400;\">Vain oikealla puolella olevat puskurit näytetään keskusteluvahdissa</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Poisjättö:</span> Oikealla puolella olevia puskureita <em>ei</em> näytetä keskusteluvahdissa</p></body></html>"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
@@ -1186,7 +1065,7 @@ msgstr "Näytä omat viestit"
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 #: ../src/qtui/mainwin.cpp:743
 msgid "Chat Monitor"
-msgstr "Keskusteluvahti"
+msgstr "Keskustelumonitori"
 
 #. ts-context ChatMonitorSettingsPage
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
@@ -1361,7 +1240,7 @@ msgstr "Keskustelunäkymä"
 #. ts-context ChatViewSettingsPage
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgid "You need at 0.6 quasselcore to use this feature"
-msgstr ""
+msgstr "Tarvitset vähintään 0.6 quasselcoren tätä ominaisuutta varten"
 
 #. ts-context Client
 #: ../src/client/client.cpp:270
@@ -1393,7 +1272,6 @@ msgstr "/QUERY tarvitsee vähintään kutsumanimen"
 msgid "Configure the IRC Connection"
 msgstr "IRC-yhteyden asetukset"
 
-# Ping could be "tiedustelupaketti", but that would be way too long.
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:20
 msgid "Enable Ping Timeout Detection"
@@ -1432,11 +1310,11 @@ msgstr ":n epäonnistuneen pingin jälkeen"
 #. ts-context ConnectionSettingsPage
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
 msgid ""
-"This enables periodic polling of user information using /WHO. This is mostly "
-"interesting for tracking users' away status."
+"This enables periodic polling of user information using /WHO. This is mostly"
+" interesting for tracking users' away status."
 msgstr ""
-"Ottaa käyttöön ajoittaisen käyttäjätietojen kyselyn käyttämällä /WHO -"
-"komentoa. Suurin tällä saavutettua hyöty on käyttäjien poissaolotilan "
+"Ottaa käyttöön ajoittaisen käyttäjätietojen kyselyn käyttämällä /WHO "
+"-komentoa. Suurin tällä saavutettua hyöty on käyttäjien poissaolotilan "
 "seuraus."
 
 #. ts-context ConnectionSettingsPage
@@ -1575,6 +1453,15 @@ msgstr "Aloita yksityiskeskustelu"
 msgid "Show Query"
 msgstr "Näytä yksityiskeskustelu"
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ContextMenuActionProvider
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context ToolBarActionProvider
+#: ../src/uisupport/contextmenuactionprovider.cpp:60
+#: ../src/uisupport/toolbaractionprovider.cpp:38
+msgid "Whois"
+msgstr "Kukaon"
+
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:62
 msgid "Version"
@@ -1593,7 +1480,7 @@ msgstr "Ping"
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
 msgid "Client info"
-msgstr ""
+msgstr "Ohjelman tiedot"
 
 #. ts-context ContextMenuActionProvider
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
@@ -1698,12 +1585,10 @@ msgstr "Yhtään tietokantamoottoria ei saatu käyntiin! Lopetetaan..."
 #: ../src/core/core.cpp:183
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
-"Qt library with the sqlite or postgres plugin enabled in order for "
-"quasselcore\n"
+"Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 "to work."
 msgstr ""
-"Tällä hetkellä Quassel tukee SQLite3 ja PostgreSQL -tietokantoja. Sinun "
-"pitää kääntää\n"
+"Tällä hetkellä Quassel tukee SQLite3 ja PostgreSQL -tietokantoja. Sinun pitää kääntää\n"
 "Qt-kirjastosi joko sqlite tai postgres -lisäosan kanssa jotta quasselcore\n"
 "voi toimia."
 
@@ -1734,8 +1619,7 @@ msgstr "Virheellinen kuunteluosoite %1"
 
 #. ts-context Core
 #: ../src/core/core.cpp:402
-msgid ""
-"Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
+msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr ""
 "Odotetaan asiakkaita IPv4 %1 portissa %2 käyttäen protokollan versiota %3"
 
@@ -1746,8 +1630,7 @@ msgstr "Ei voitu avata IPv4-rajapintaa %1:%2: %3"
 
 #. ts-context Core
 #: ../src/core/core.cpp:418
-msgid ""
-"Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
+msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr ""
 "Odotetaan asiakkaita IPv6 %1 portissa %2 käyttäen protokollan versiota %3"
 
@@ -1797,7 +1680,7 @@ msgstr ""
 #: ../src/core/core.cpp:518 ../src/core/core.cpp:608 ../src/core/core.cpp:632
 #: ../src/core/coresession.cpp:195
 msgid "Client"
-msgstr "Asiakas"
+msgstr "Ohjelma"
 
 #. ts-context Core
 #: ../src/core/core.cpp:518
@@ -1806,8 +1689,7 @@ msgstr "liian vanha, hylätään."
 
 #. ts-context Core
 #: ../src/core/core.cpp:535
-msgid ""
-"<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr ""
 "<b>Quassel-ydin versio:</b> %1<br>Käännetty: %2<br>Päällä %3d%4h%5m (alkaen "
 "%6)"
@@ -1830,7 +1712,8 @@ msgstr ""
 #: ../src/core/core.cpp:608
 msgid "did not send an init message before trying to login, rejecting."
 msgstr ""
-"ei lähettänyt alustusviestiä ennen sisäänkirjautumisen yrittämistä, hylätään."
+"ei lähettänyt alustusviestiä ennen sisäänkirjautumisen yrittämistä, "
+"hylätään."
 
 #. ts-context Core
 #: ../src/core/core.cpp:626
@@ -1844,8 +1727,7 @@ msgstr ""
 #. ts-context Core
 #: ../src/core/core.cpp:632
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
-msgstr ""
-"alustettu ja todennettu onnistuneesti tunnuksella \"%1\" (UserId: %2)."
+msgstr "alustettu ja todennettu onnistuneesti tunnuksella \"%1\" (UserId: %2)."
 
 #. ts-context Core
 #: ../src/core/core.cpp:643
@@ -1873,7 +1755,7 @@ msgstr "Istuntoa ei voitu löytää asiakkaalle:"
 #. ts-context CoreAccountModel
 #: ../src/client/coreaccount.h:39 ../src/client/coreaccountmodel.cpp:64
 msgid "Internal Core"
-msgstr "Sisäinen ydin"
+msgstr "Sisäinen core"
 
 #. ts-context CoreAccountEditDlg
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:14
@@ -1967,7 +1849,7 @@ msgstr "Muista"
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:127
 #: ../src/qtui/settingspages/servereditdlg.ui:171
 msgid "Use a Proxy"
-msgstr "Käytä välityspalvelinta"
+msgstr "Käytä proxyä"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountEditDlg
@@ -1976,7 +1858,7 @@ msgstr "Käytä välityspalvelinta"
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:139
 #: ../src/qtui/settingspages/servereditdlg.ui:188
 msgid "Proxy Type:"
-msgstr "Välityspalvelimen tyyppi:"
+msgstr "Proxyn tyyppi:"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context CoreAccountEditDlg
@@ -2047,7 +1929,7 @@ msgstr "Yhdistä aina tiliin"
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:29
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 msgid "Remote Cores"
-msgstr "Ulkoiset ytimet"
+msgstr "Etä coret"
 
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:69
@@ -2062,7 +1944,8 @@ msgstr "Ytimesti asetukset on tehty onnistuneesti. Kirjaudutaan sisään..."
 #. ts-context CoreConfigWizard
 #: ../src/qtui/coreconfigwizard.cpp:104
 msgid ""
-"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start over."
+"Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start "
+"over."
 msgstr ""
 "Virhe ytimen asetuksissa:<br><b>%1</b><br>Paina <em>Seuraava</em> "
 "aloittaaksesi alusta."
@@ -2076,6 +1959,15 @@ msgstr ""
 "Olet nyt kirjautunut sisään tuoreeseen Quassel-ytimeesi!<br>Muista tehdä "
 "henkilöllisyyksiesi ja verkkojesi asetukset nyt."
 
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConfigWizardAdminUserPage
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context CoreConnectAuthDlg
+#: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
+#: ../src/qtui/ui/coreconnectauthdlg.ui:49
+msgid "Username:"
+msgstr "Käyttäjänimi:"
+
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:46
 msgid "Repeat password:"
@@ -2088,20 +1980,16 @@ msgstr "Toista salasana:"
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:60
 #: ../src/qtui/ui/coreconnectauthdlg.ui:58
 msgid "Remember password"
-msgstr "Muista salasana"
+msgstr "Muista salasana:"
 
 #. ts-context CoreConfigWizardAdminUserPage
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:69
 msgid ""
-"<b>Note:</b> Adding more users and changing your username/password is not "
-"possible via Quassel's client interface yet.\n"
-"If you need to do these things, please run \"<tt><nobr>quasselcore --"
-"help</nobr></tt>\"."
+"<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
+"If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
 msgstr ""
-"<b>Huom:</b> Käyttäjien lisääminen tai käyttäjänimen/salasanan vaihtaminen "
-"ei ole vielä mahdollista Quassel-asiakkaan kautta.\n"
-"Jos sinun täytyy tehdä jotain näistä asioista, aja \"<tt><nobr>quasselcore --"
-"help</nobr></tt>\" palvelimellasi."
+"<b>Huom:</b> Käyttäjien lisääminen tai käyttäjänimen/salasanan vaihtaminen ei ole vielä mahdollista Quassel-asiakkaan kautta.\n"
+"Jos sinun täytyy tehdä jotain näistä asioista, aja \"<tt><nobr>quasselcore --help</nobr></tt>\" palvelimellasi."
 
 #. ts-context CoreConfigWizardIntroPage
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
@@ -2138,8 +2026,8 @@ msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
 msgstr ""
-"Valitse tietokantamoottori jota Quassel-ydin käyttää takalokin ja muun datan "
-"tallennukseen."
+"Valitse tietokantamoottori jota Quassel-ydin käyttää takalokin ja muun datan"
+" tallennukseen."
 
 #. ts-context CoreConfigWizardPages::StorageSelectionPage
 #: ../src/qtui/coreconfigwizard.cpp:277
@@ -2167,7 +2055,7 @@ msgstr ""
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgid "Storage Backend:"
-msgstr "Tietokantamoottori:"
+msgstr "Tallennus backendi:"
 
 #. ts-context CoreConfigWizardStorageSelectionPage
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:56
@@ -2257,7 +2145,8 @@ msgstr "Katkaistaan yhteyttä kohteeseen %1..."
 #. ts-context CoreConnection
 #: ../src/client/coreconnection.cpp:272
 msgid ""
-"The Quassel Core you try to connect to is too old! Please consider upgrading."
+"The Quassel Core you try to connect to is too old! Please consider "
+"upgrading."
 msgstr ""
 "Quassel-ydin johon yrität yhdistää on liian vanha! Harkitse päivittämistä."
 
@@ -2329,8 +2218,8 @@ msgstr "Verkkoyhteyden tilan tunnistus"
 #. ts-context CoreConnectionSettingsPage
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
 msgid ""
-"Rely on KDE's hardware layer to detect if we're online. Recommended for most "
-"KDE users"
+"Rely on KDE's hardware layer to detect if we're online. Recommended for most"
+" KDE users"
 msgstr ""
 "Käytä KDE:n laitteistorajapintaa verkkoyhteyden saatavuuden tunnistamiseen. "
 "Suositellaan useimmille KDE:n käyttäjille"
@@ -2482,7 +2371,7 @@ msgstr "Sulje"
 #: ../src/qtui/coreinfodlg.cpp:53
 msgid "%n Day(s)"
 msgid_plural "%n Day(s)"
-msgstr[0] "% päivä"
+msgstr[0] "%n päivä"
 msgstr[1] "%n päivää"
 
 #. ts-context CoreInfoDlg
@@ -2528,8 +2417,8 @@ msgstr "yhteys katkaistu (UserId: %1)."
 #. ts-context CoreSession
 #: ../src/core/coresession.cpp:413
 msgid ""
-"CoreSession::createNetwork(): Got invalid networkId from Core when trying to "
-"create network %1!"
+"CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
+" create network %1!"
 msgstr ""
 "CoreSession::createNetwork(): Sai virheellisen networkId:n ytimeltä "
 "yrittäessään luoda verkkoa %1!"
@@ -2551,7 +2440,7 @@ msgstr "poissa"
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:150
 msgid "sending CTCP-%1 request to %2"
-msgstr ""
+msgstr "lähetetään CTCP-%1 pyyntö kohteeseen %2"
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:173
@@ -2565,7 +2454,7 @@ msgstr ""
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:180
 msgid "No key has been set for %1."
-msgstr "Kohteelle %1 ei ole asetettu avainta."
+msgstr "Avainta ei asetettu kohteelle %1."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:193
@@ -2580,15 +2469,16 @@ msgid ""
 "distributor about a Quassel package with QCA2 support, or rebuild Quassel "
 "with QCA2 present."
 msgstr ""
-"Virhe: Salausavaimen asettaminen vaatii Qt Cryptocraphic Architecture (QCA2) "
-"kirjaston Quasselia käännettäeissä. Ota yhteys jakelijaasi saadaksesi "
+"Virhe: Salausavaimen asettaminen vaatii Qt Cryptocraphic Architecture (QCA2)"
+" kirjaston Quasselia käännettäeissä. Ota yhteys jakelijaasi saadaksesi "
 "Quasselin QCA2-tuella, tai käännä Quassel uudestaan QCA2:n kanssa."
 
 #. ts-context CoreUserInputHandler
 #: ../src/core/coreuserinputhandler.cpp:461
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
-"channel. /setkey <key> when in a channel or query buffer sets the key for it."
+"channel. /setkey <key> when in a channel or query buffer sets the key for "
+"it."
 msgstr ""
 
 #. ts-context CoreUserInputHandler
@@ -2652,7 +2542,8 @@ msgstr "Vastaanotettiin CTCP PING -pyyntö kohteelta %1"
 #: ../src/core/ctcphandler.cpp:216
 msgid "Received CTCP PING answer from %1 with %2 seconds round trip time"
 msgstr ""
-"Vastaanotettiin CTCP PING -vastaus kohteelta %1, round-trip kesti %2 sekuntia"
+"Vastaanotettiin CTCP PING -vastaus kohteelta %1, round-trip kesti %2 "
+"sekuntia"
 
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:229
@@ -2682,7 +2573,7 @@ msgstr "Vastaanotettiin tuntematon CTCP %1 kohteelta %2"
 #. ts-context CtcpHandler
 #: ../src/core/ctcphandler.cpp:257
 msgid " with arguments: %1"
-msgstr " argumenteillä: %1"
+msgstr "argumenteillä: %1"
 
 #. ts-context DebugBufferViewOverlay
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:13
@@ -2836,7 +2727,7 @@ msgstr "Lisää"
 #: ../src/qtui/settingspages/highlightsettingspage.ui:62
 #: ../src/qtui/settingspages/identityeditwidget.ui:119
 msgid "Remove"
-msgstr "Poista"
+msgstr ""
 
 #. ts-context HighlightSettingsPage
 #: ../src/qtui/settingspages/highlightsettingspage.ui:85
@@ -2887,7 +2778,7 @@ msgstr "korostussääntö"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:322
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
 msgid "Rename Identity"
-msgstr "Uudelleennimeä henkilöllisyys"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.ui:51
@@ -2914,8 +2805,6 @@ msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
-"<b>Seuraavat virheet on korjattava, ennen kuin muutoksesi voidaan ottaa "
-"käyttöön:</b><ul>"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
@@ -2925,8 +2814,7 @@ msgstr "<li>Jokaisella henkilöllisyydellä pitää olla nimi</li>"
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:180
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr ""
-"<li>Jokainen henkilöllisyys tarvitsee vähintään yhden nimimerkin</li>"
+msgstr "<li>Jokainen henkilöllisyys tarvitsee vähintään yhden nimimerkin</li>"
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:181
@@ -2946,7 +2834,7 @@ msgstr "<li>Jokaisella henkilöllisyydellä pitää olla ident</li>"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:183
 #: ../src/qtui/settingspages/networkssettingspage.cpp:169
 msgid "</ul>"
-msgstr "</ul>"
+msgstr ""
 
 #. ts-context IdentitiesSettingsPage
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:184
@@ -3034,7 +2922,7 @@ msgstr "Nimimerkit"
 #: ../src/qtui/settingspages/identityeditwidget.ui:90
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgid "Add Nickname"
-msgstr "Lisää nimimerkki"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:116
@@ -3051,7 +2939,7 @@ msgstr "Poista nimimerkki"
 #: ../src/qtui/settingspages/networkssettingspage.ui:278
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgid "Move upwards in list"
-msgstr "Siirrä listalla ylöspäin"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -3063,7 +2951,7 @@ msgstr "Siirrä listalla ylöspäin"
 #: ../src/qtui/settingspages/networkssettingspage.ui:292
 #: ../src/qtui/ui/simplenetworkeditor.ui:179
 msgid "Move downwards in list"
-msgstr "Siirrä listalla alaspäin"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:227
@@ -3136,7 +3024,7 @@ msgstr "minuutin joutenolon jälkeen"
 #: ../src/qtui/settingspages/identityeditwidget.cpp:219
 #: ../src/qtui/settingspages/servereditdlg.ui:119
 msgid "Advanced"
-msgstr "Lisäasetukset"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:407
@@ -3183,14 +3071,11 @@ msgstr ""
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgid ""
-"Warning: you are not connected with a secured connection to the Quassel "
-"Core!\n"
-"Proceeding will cause an unencrypted transfer of your SSL Key and SSL "
-"Certificate!"
+"Warning: you are not connected with a secured connection to the Quassel Core!\n"
+"Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
 msgstr ""
 "Varoitus: et käytä suojattua yhteyttä Quassel-ytimeesi!\n"
-"Jatkamisesta seuraa SSL-avaimesi ja SSL-varmenteesi siirtäminen "
-"salaamattomana!"
+"Jatkamisesta seuraa SSL-avaimesi ja SSL-varmenteesi siirtäminen salaamattomana!"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IdentityEditWidget
@@ -3199,7 +3084,7 @@ msgstr ""
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
 #: ../src/qtui/mainwin.cpp:1044
 msgid "Continue"
-msgstr "Jatka"
+msgstr ""
 
 #. ts-context IdentityEditWidget
 #: ../src/qtui/settingspages/identityeditwidget.ui:584
@@ -3296,8 +3181,7 @@ msgid ""
 "<p><b>Strictness:</b></p>\n"
 "<p><u>Dynamic:</u></p>\n"
 "<p>Messages are filtered \"on the fly\".\n"
-"Whenever you disable/delete the ignore rule, the messages are shown "
-"again.</p>\n"
+"Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
 msgstr ""
@@ -3354,8 +3238,7 @@ msgstr "Lähettäjä"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgid ""
 "<p><b>Ignore rule:</b></p>\n"
-"<p>Depending on the type of the rule, the text is matched against "
-"either:</p>\n"
+"<p>Depending on the type of the rule, the text is matched against either:</p>\n"
 "<p><u>- the message content:</u></p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
@@ -3365,25 +3248,20 @@ msgid ""
 "<br />\n"
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> "
-"from any host</p>"
+"- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
 msgstr ""
 "<p><b>Suodatussääntö:</b></p>\n"
 "<p>Säännön tyypistä riippuen sitä verrataan joko:</p>\n"
 "<p><u>- viestin sisältöön:</u></p>\n"
 "<p><i>Esimerkki:</i>\n"
 "<br />\n"
-"<i>*foobar*</i> pätee kaikkiin viesteihin, jotka sisältävät sanan "
-"<i>foobar</i></p>\n"
-"<p><u>- lähettäjän merkkijonoon</u>  "
-"<i>(nimimerkki!ident@verkko.osoite)</i></p>\n"
+"<i>*foobar*</i> pätee kaikkiin viesteihin, jotka sisältävät sanan <i>foobar</i></p>\n"
+"<p><u>- lähettäjän merkkijonoon</u>  <i>(nimimerkki!ident@verkko.osoite)</i></p>\n"
 "<p><i>Esimerkkejä:</i>\n"
 "<br />\n"
-"- <i>*@foobar.com</i> osuu kaikkiin lähettäjiin osoitteesta "
-"<i>foobar.com</i>\n"
+"- <i>*@foobar.com</i> osuu kaikkiin lähettäjiin osoitteesta <i>foobar.com</i>\n"
 "<br />\n"
-"- <i>evo!.+</i> (RegEx) osuu kaikkiin lähettäjiin, joiden nimimerkki on "
-"<i>evo</i></p>"
+"- <i>evo!.+</i> (RegEx) osuu kaikkiin lähettäjiin, joiden nimimerkki on <i>evo</i></p>"
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IgnoreListEditDlg
@@ -3392,15 +3270,14 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:195
 msgid "Ignore Rule"
-msgstr "Suodatussääntö"
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:123
 msgid ""
 "<p><b>Use regular expressions:</b></p>\n"
 "<p>If enabled, rules follow regular expression syntax.</p>\n"
-"<p>Otherwise rules allow wildcard matching with the following special "
-"characters:</p>\n"
+"<p>Otherwise rules allow wildcard matching with the following special characters:</p>\n"
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
@@ -3424,11 +3301,9 @@ msgid ""
 "<p><u>Global:</u></p>\n"
 "<p>The rule is active for any channel on any network</p>\n"
 "<p><u>Network:</u></p>\n"
-"<p>The list below is interpreted as a list of networks for which the rule "
-"should match</p>\n"
+"<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
 "<p><u>Channel:</u></p>\n"
-"<p>The list below is interpreted as a list of channels for which the rule "
-"should match</p>"
+"<p>The list below is interpreted as a list of channels for which the rule should match</p>"
 msgstr ""
 "<p><b>Laajuus:</b></p>\n"
 "<p><u>Globaali:</u></p>\n"
@@ -3455,7 +3330,7 @@ msgstr "Globaali"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
 msgid "Network"
-msgstr "Verkko"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IgnoreListEditDlg
@@ -3464,14 +3339,13 @@ msgstr "Verkko"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:174
 #: ../src/client/irclistmodel.cpp:59
 msgid "Channel"
-msgstr "Kanava"
+msgstr ""
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgid ""
 "<p><b>Scope rule:</b></p>\n"
-"<p>A scope rule is a semicolon separated list of either <i>network</i> or "
-"<i>channel</i> names.</p>\n"
+"<p>A scope rule is a semicolon separated list of either <i>network</i> or <i>channel</i> names.</p>\n"
 "<p><i>Example:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
@@ -3479,14 +3353,12 @@ msgid ""
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
 msgstr ""
 "<p><b>Laajuussääntö:</b></p>\n"
-"<p>Laajuussääntö on puolipisteillä erotettu lista joko <i>verkkojen</i> tai "
-"<i>kanavien</i> nimiä.</p>\n"
+"<p>Laajuussääntö on puolipisteillä erotettu lista joko <i>verkkojen</i> tai <i>kanavien</i> nimiä.</p>\n"
 "<p><i>Esimerkki:</i>\n"
 "<br />\n"
 "<i>#quassel*; #foobar</i>\n"
 "<br />\n"
-"tarkoittaisi kanavaa #foobar sekä kaikkia kanavia joiden nimi alkaa "
-"<i>#quassel</i></p>"
+"tarkoittaisi kanavaa #foobar sekä kaikkia kanavia joiden nimi alkaa <i>#quassel</i></p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:214
@@ -3499,8 +3371,7 @@ msgstr ""
 "<p><b>Käytä / Älä käytä:</b></p>\n"
 "<p>Vain käytössä olevat säännöt suodattavat.\n"
 "<br />\n"
-"Dynaamisen säännön käytöstä poistaminen itseasiassa näyttää suodatetut "
-"viestit uudelleen</p>"
+"Dynaamisen säännön käytöstä poistaminen itseasiassa näyttää suodatetut viestit uudelleen</p>"
 
 #. ts-context IgnoreListEditDlg
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
@@ -3534,8 +3405,8 @@ msgstr ""
 "\"*foobar*\" täsmää kaikkeen tekstiin joka sisältää sanan \"foobar\"<br "
 "/><br />- <u>lähettäjämerkkijonoon "
 "<i>nimimerkki!ident@verkko.osoite<i></u><br /><i>Esimerkki:</i><br />    "
-"\"*@foobar.com\" täsmää kaikkiin lähettäjiin osoitteesta foobar.com<br />    "
-"\"idiootti!.+\" (RegEx) täsmää kaikkiin lähettäjjiin nimimerkiltään "
+"\"*@foobar.com\" täsmää kaikkiin lähettäjiin osoitteesta foobar.com<br />"
+"    \"idiootti!.+\" (RegEx) täsmää kaikkiin lähettäjjiin nimimerkiltään "
 "\"idiootti\" mistä verkko-osoitteesta tahansa<br />"
 
 #. ts-context IgnoreListModel
@@ -3659,7 +3530,7 @@ msgstr "Turkoosi"
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
 msgid "Blue"
-msgstr "Sininen"
+msgstr ""
 
 #. ts-context InputWidget
 #: ../src/qtui/inputwidget.cpp:74
@@ -3696,7 +3567,7 @@ msgstr "Kohdista syöterivi"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
 msgid "Custom font:"
-msgstr "Oma kirjasin:"
+msgstr ""
 
 #. ts-context InputWidgetSettingsPage
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:50
@@ -3787,7 +3658,7 @@ msgstr "Käyttäjät"
 #: ../src/client/irclistmodel.cpp:61 ../src/qtui/mainwin.cpp:781
 #: ../src/client/networkmodel.cpp:852
 msgid "Topic"
-msgstr "Otsikko"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:212
@@ -3837,7 +3708,7 @@ msgstr ""
 #: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
 #: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
 msgid "%1"
-msgstr "%1"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:718
@@ -3944,7 +3815,7 @@ msgstr "Aiheen no asettanut %1 %2"
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1067
 msgid "%1 has been invited to %2"
-msgstr "%1 on kutsuttu kanavalle %2"
+msgstr ""
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1090
@@ -3964,12 +3835,13 @@ msgstr "Nimimerkki jo käytössä: %1"
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1177
 msgid "Nick/channel is temporarily unavailable: %1"
-msgstr "Nimimerkki/kanava ei ole juuri nyt käytettävissä: %1"
+msgstr "Nimimerkki/kanava ei ole juuri nyt käytettävissä: %1 "
 
 #. ts-context IrcServerHandler
 #: ../src/core/ircserverhandler.cpp:1270
 msgid ""
-"No free and valid nicks in nicklist found. use: /nick <othernick> to continue"
+"No free and valid nicks in nicklist found. use: /nick <othernick> to "
+"continue"
 msgstr ""
 "Vapaita ja kelpoja nimimerkkejä ei löytynyt. käytä /nick <nimimerkki> "
 "jatkaaksesi"
@@ -3977,7 +3849,7 @@ msgstr ""
 #. ts-context IrcUserItem
 #: ../src/client/networkmodel.cpp:806
 msgid " is away"
-msgstr " on poissa"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcUserItem
@@ -3985,7 +3857,7 @@ msgstr " on poissa"
 #. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:821 ../src/client/networkmodel.cpp:447
 msgid "idling since %1"
-msgstr "jouten alkaen %1"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcUserItem
@@ -3993,7 +3865,7 @@ msgstr "jouten alkaen %1"
 #. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:824 ../src/client/networkmodel.cpp:450
 msgid "login time: %1"
-msgstr "sisäänkirjautumisaika: %1"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context IrcUserItem
@@ -4001,7 +3873,7 @@ msgstr "sisäänkirjautumisaika: %1"
 #. ts-context QueryBufferItem
 #: ../src/client/networkmodel.cpp:827 ../src/client/networkmodel.cpp:453
 msgid "server: %1"
-msgstr "palvelin: %1"
+msgstr ""
 
 #. ts-context ItemViewSettingsPage
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:50
@@ -4106,8 +3978,8 @@ msgstr "Muu toiminta"
 #: ../src/qtui/systraynotificationbackend.cpp:125
 msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
-msgstr[0] "%n korostusta odottaa"
-msgstr[1] "%n korostusta odottaa"
+msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context KeySequenceButton
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
@@ -4125,8 +3997,8 @@ msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
 msgstr ""
-"Napsauta painiketta ja paina sen jälkeen näppäinyhdistelmää.\n"
-"Esim. Ctrl+A:lle: paina Ctrl-näppäintä pohjassa, sitten paina A."
+"Klikkaa nappulaa ja kirjoita lyhytvalinta, jonka haluat asettaa.\n"
+"Esimerkiksi Ctrl+a: pidä Ctrl pohjassa ja paina a:ta."
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:259
@@ -4150,13 +4022,13 @@ msgstr "Alt"
 #: ../src/qtui/settingspages/keysequencewidget.cpp:262
 msgctxt "Shift key"
 msgid "Shift"
-msgstr "Vaihto"
+msgstr "Shift"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:265
 msgctxt "What the user inputs now will be taken as the new shortcut"
 msgid "Input"
-msgstr "Sisääntulo"
+msgstr "Syöte"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:272
@@ -4176,12 +4048,13 @@ msgid ""
 "The \"%1\" shortcut is already in use, and cannot be configured.\n"
 "Please choose another one."
 msgstr ""
+"Lyhytvalintaa \"%1\" ei voi asettaa, se on jo käytössä. Valitse joku toinen."
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
 msgid ""
 "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
-msgstr ""
+msgstr "Lyhytvalinta \"%1\" on päällekkäinen tälle toiminnolle:"
 
 #. ts-context KeySequenceWidget
 #: ../src/qtui/settingspages/keysequencewidget.cpp:364
@@ -4251,12 +4124,12 @@ msgstr "Näytä &tilarivi"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:343 ../src/qtui/mainwin.cpp:1185
 msgid "&Fullscreen mode"
-msgstr "&Kokoruutu"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:347
 msgid "Configure &Shortcuts..."
-msgstr "Määritä &pikanäppäimet..."
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:349
@@ -4306,7 +4179,7 @@ msgstr "Lataa tyylisivu uudelleen"
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:371
 msgid "Navigation"
-msgstr "Selaus"
+msgstr ""
 
 #. ts-context MainWin
 #: ../src/qtui/mainwin.cpp:373
@@ -4599,8 +4472,8 @@ msgstr "Vastaanotetaan takalokia"
 #: ../src/uisupport/multilineedit.cpp:661
 msgid "Do you really want to paste %n lines?"
 msgid_plural "Do you really want to paste %n lines?"
-msgstr[0] "Haluatko varmasti liittää yhden rivin?"
-msgstr[1] "Haluatko varmasti liittää %n riviä?"
+msgstr[0] ""
+msgstr[1] ""
 
 #. ts-context MultiLineEdit
 #: ../src/uisupport/multilineedit.cpp:670
@@ -4614,7 +4487,7 @@ msgstr "Liittämissuoja"
 #: ../src/qtui/settingspages/networkadddlg.ui:14
 #: ../src/qtui/settingspages/networkssettingspage.cpp:705
 msgid "Add Network"
-msgstr "Lisää verkko"
+msgstr ""
 
 #. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:22
@@ -4638,7 +4511,7 @@ msgstr "Manuaaliset asetukset"
 #: ../src/qtui/settingspages/networkadddlg.ui:75
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgid "Network name:"
-msgstr "Verkon nimi:"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context NetworkAddDlg
@@ -4647,7 +4520,7 @@ msgstr "Verkon nimi:"
 #: ../src/qtui/settingspages/networkadddlg.ui:85
 #: ../src/qtui/settingspages/servereditdlg.ui:38
 msgid "Server address:"
-msgstr "Palvelimen osoite:"
+msgstr ""
 
 #. ts-context NetworkAddDlg
 #: ../src/qtui/settingspages/networkadddlg.ui:115
@@ -4675,7 +4548,15 @@ msgstr "Palvelin: %1"
 #. ts-context TopicWidget
 #: ../src/client/networkmodel.cpp:197 ../src/qtui/topicwidget.cpp:106
 msgid "Users: %1"
-msgstr "Käyttäjiä: %1"
+msgstr ""
+
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context NetworkItem
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context TopicWidget
+#: ../src/client/networkmodel.cpp:200 ../src/qtui/topicwidget.cpp:107
+msgid "Lag: %1 msecs"
+msgstr ""
 
 #. ts-context NetworkModel
 #: ../src/client/networkmodel.cpp:852
@@ -4712,8 +4593,7 @@ msgstr ""
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr ""
-"<br>Aktiivista kanavapuskuria ei voi poistaa, poistu kanavalta ensin."
+msgstr "<br>Aktiivista kanavapuskuria ei voi poistaa, poistu kanavalta ensin."
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:172
@@ -4752,7 +4632,7 @@ msgstr "Henkilöllisyys:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:190
 #: ../src/qtui/ui/simplenetworkeditor.ui:63
 msgid "Servers"
-msgstr "Palvelimet"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:193
@@ -4766,7 +4646,7 @@ msgstr "Hallitse tämän verkon palvelimia"
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgid "&Edit..."
-msgstr "&Muokkaa..."
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:337
@@ -4791,18 +4671,15 @@ msgstr "Yhdistettäessä suoritettavat komennot:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:362
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
-"Note that Quassel IRC automatically rejoins channels, so /join will rarely "
-"be needed here!"
+"Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
 msgstr ""
 "Määritä lista IRC-komentoja, jotka suoritetaan yhdistyksen jälkeen.\n"
-"Huomioi että Quassel IRC liittyy automaattisesti takaisin kanaville, joten "
-"/join -komentoa tuskin tässä tarvitaan!"
+"Huomioi että Quassel IRC liittyy automaattisesti takaisin kanaville, joten /join -komentoa tuskin tässä tarvitaan!"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
 msgid "Automatically reconnect to the IRC network after connection failures"
 msgstr ""
-"Yhdistä automaattisesti uudelleen IRC-verkkoon yhteyskatkojen jälkeen"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:386
@@ -4812,17 +4689,27 @@ msgstr "Automaattinen uudelleenyhdistys"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:397
 msgid "Wait"
-msgstr "Odota"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:404
 msgid " s"
-msgstr " s"
+msgstr ""
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:420
+msgid "between retries"
+msgstr "uudelleenyritysten välillä"
+
+#. ts-context NetworksSettingsPage
+#: ../src/qtui/settingspages/networkssettingspage.ui:444
+msgid "Number of retries:"
+msgstr "Uudelleenyritysten lukumäärä:"
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:489
 msgid "Rejoin all channels after reconnect"
-msgstr "Liity uudelleen kaikille kanaville uudelleenyhdistämisen jälkeen"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:516
@@ -4843,7 +4730,7 @@ msgstr "Palvelu:"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 msgid "Use SASL Authentication"
-msgstr "Käytä SASL-tunnistautumista"
+msgstr ""
 
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
@@ -4858,7 +4745,8 @@ msgstr "Merkkikoodaukset"
 #. ts-context NetworksSettingsPage
 #: ../src/qtui/settingspages/networkssettingspage.ui:652
 msgid ""
-"Configure advanced settings such as message encodings and automatic reconnect"
+"Configure advanced settings such as message encodings and automatic "
+"reconnect"
 msgstr "Määritä edistyneitä asetuksia, kuten viestien merkkikoodauksia"
 
 #. ts-context NetworksSettingsPage
@@ -4908,8 +4796,7 @@ msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr ""
-"Tämä määrittää miten ohjausviestit, nimimerkit ja palvelinnimet "
-"merkkikoodataan.\n"
+"Tämä määrittää miten ohjausviestit, nimimerkit ja palvelinnimet merkkikoodataan.\n"
 "Josset *todella* tiedä mitä teet, jätä tämä ISO-8859-1:ksi!"
 
 #. ts-context NetworksSettingsPage
@@ -4976,9 +4863,20 @@ msgid "Select Audio File"
 msgstr "Valitse äänitiedosto"
 
 #. ts-context PhononNotificationConfigWidget
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
+msgid "Play a sound"
+msgstr "Soita ääni"
+
+#. ts-context PhononNotificationConfigWidget
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:46
 msgid "Prelisten to the selected sound"
 msgstr "Esikuuntele valittu ääni"
+
+#. ts-context PhononNotificationConfigWidget
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:59
+#: ../src/qtui/ui/phononnotificationconfigwidget.ui:69
+msgid "Select the sound file to play"
+msgstr "Valitse soitettava ääni"
 
 #. ts-context PostgreSqlStorage
 #: ../src/core/postgresqlstorage.cpp:62
@@ -5014,9 +4912,9 @@ msgid ""
 "network connection.<br>This only covers basic settings. You can cancel this "
 "wizard any time and use the settings dialog for more detailed changes."
 msgstr ""
-"Tämä ohjattu toiminto auttaa sinua asettamaan oletushenkilöllisyytesi ja IRC-"
-"verkko yhteytesi.<br>Tähän sisältyy vain perusteet. Voit peruuttaa tämän "
-"ohjatun toiminnon milloin vain ja käyttää asetusikkunaa "
+"Tämä ohjattu toiminto auttaa sinua asettamaan oletushenkilöllisyytesi ja "
+"IRC-verkko yhteytesi.<br>Tähän sisältyy vain perusteet. Voit peruuttaa tämän"
+" ohjatun toiminnon milloin vain ja käyttää asetusikkunaa "
 "yksityiskohtaisempien muutosten tekoon."
 
 #. ts-context QssParser
@@ -5255,7 +5153,7 @@ msgstr "Salasana:"
 #. ts-context SettingsPageDlg
 #: ../src/qtui/ui/settingsdlg.ui:14 ../src/qtui/ui/settingspagedlg.ui:14
 msgid "Configure Quassel"
-msgstr "Quasselin asetukset"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
@@ -5264,7 +5162,7 @@ msgstr "Quasselin asetukset"
 #: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
 #: ../src/qtui/settingsdlg.cpp:99 ../src/qtui/ui/settingspagedlg.ui:30
 msgid "Settings"
-msgstr "Asetukset"
+msgstr ""
 
 #. ts-context SettingsDlg
 #: ../src/qtui/settingsdlg.cpp:109
@@ -5287,7 +5185,7 @@ msgstr ""
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #: ../src/qtui/settingspagedlg.cpp:36
 msgid "Configure %1"
-msgstr "Asetukset: %1"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
@@ -5295,18 +5193,23 @@ msgstr "Asetukset: %1"
 #. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
 msgid "Reload Settings"
-msgstr "Lataa asetukset uudelleen"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsPageDlg
 #: ../src/qtui/settingsdlg.cpp:193 ../src/qtui/settingspagedlg.cpp:104
-msgid ""
-"Do you like to reload the settings, undoing your changes on this page?"
+msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
-"Haluatko ladata asetukset uudelleen samalla kumoten tällä sivulla tekemäsi "
-"muutokset?"
+
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsDlg
+#. #-#-#-#-#  quassel.po  #-#-#-#-#
+#. ts-context SettingsPageDlg
+#: ../src/qtui/settingsdlg.cpp:202 ../src/qtui/settingspagedlg.cpp:113
+msgid "Restore Defaults"
+msgstr ""
 
 #. #-#-#-#-#  quassel.po  #-#-#-#-#
 #. ts-context SettingsDlg
@@ -5339,7 +5242,7 @@ msgstr "Lyhytvalinta valitulle toiminnalle:"
 #. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:68
 msgid "Default:"
-msgstr "Oletus:"
+msgstr ""
 
 #. ts-context ShortcutsSettingsPage
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:82
@@ -5552,7 +5455,7 @@ msgstr "&Palauta"
 #. ts-context SystrayNotificationBackend::ConfigWidget
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgid "Show a message in a popup"
-msgstr "Näytä viesti ponnahdusikkunassa"
+msgstr ""
 
 #. ts-context TaskbarNotificationBackend::ConfigWidget
 #: ../src/qtui/taskbarnotificationbackend.cpp:68
@@ -5880,14 +5783,4 @@ msgid_plural "%n User(s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#~ msgid "Finger"
-#~ msgstr "Sormenjälki (Finger)"
 
-#~ msgid "Add Buffers Automatically:"
-#~ msgstr "Lisää puskurit automaattisesti:"
-
-#~ msgid "[Whois] idle message: %1"
-#~ msgstr "[Whois] joutenoloviesti: %1"
-
-#~ msgid "Hide inactive buffers:"
-#~ msgstr "Piilota ei-aktiiviset puskurit:"
