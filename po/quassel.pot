@@ -4,6 +4,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Qt-Contexts: true\n"
+"Project-Id-Version: \n"
+"PO-Revision-Date: 2011-06-03 06:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
 
 #: ../src/qtui/ui/aboutdlg.ui:17
 msgctxt "AboutDlg|"
@@ -827,7 +832,7 @@ msgctxt "ChatMonitorView|"
 msgid "Configure..."
 msgstr ""
 
-#: ../src/qtui/chatscene.cpp:745
+#: ../src/qtui/chatscene.cpp:743
 msgctxt "ChatScene|"
 msgid "Copy Selection"
 msgstr ""
@@ -1044,12 +1049,12 @@ msgctxt "ClientBufferViewManager|"
 msgid "All Chats"
 msgstr ""
 
-#: ../src/client/clientuserinputhandler.cpp:86
+#: ../src/client/clientuserinputhandler.cpp:88
 msgctxt "ClientUserInputHandler|"
 msgid "/JOIN expects a channel"
 msgstr ""
 
-#: ../src/client/clientuserinputhandler.cpp:96
+#: ../src/client/clientuserinputhandler.cpp:98
 msgctxt "ClientUserInputHandler|"
 msgid "/QUERY expects at least a nick"
 msgstr ""
@@ -2197,6 +2202,7 @@ msgid ""
 msgstr ""
 
 #: ../src/core/coreuserinputhandler.cpp:184
+#: ../src/core/coreuserinputhandler.cpp:517
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
@@ -2209,6 +2215,7 @@ msgid "The key for %1 has been deleted."
 msgstr ""
 
 #: ../src/core/coreuserinputhandler.cpp:201
+#: ../src/core/coreuserinputhandler.cpp:525
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2245,7 +2252,20 @@ msgid ""
 "with QCA present."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:595
+#: ../src/core/coreuserinputhandler.cpp:509
+msgctxt "CoreUserInputHandler|"
+msgid ""
+"[usage] /showkey <nick|channel> shows the encryption key for nick or channel "
+"or just /showkey when in a channel or query."
+msgstr ""
+
+#: ../src/core/coreuserinputhandler.cpp:521
+#, qt-format
+msgctxt "CoreUserInputHandler|"
+msgid "The key for %1 is %2"
+msgstr ""
+
+#: ../src/core/coreuserinputhandler.cpp:633
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
@@ -3534,6 +3554,11 @@ msgstr ""
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgctxt "InputWidgetSettingsPage|"
 msgid ": "
+msgstr ""
+
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
+msgctxt "InputWidgetSettingsPage|"
+msgid "Add space after nick when completing mid-sentence"
 msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
@@ -5459,6 +5484,11 @@ msgstr[0] ""
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"
 msgid "Show a message in a popup"
+msgstr ""
+
+#: ../src/uisupport/tabcompleter.cpp:52
+msgctxt "TabCompleter|"
+msgid "Tab completion"
 msgstr ""
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:68
