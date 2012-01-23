@@ -4,7 +4,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: Quassel IRC\n"
-"PO-Revision-Date: 2011-06-03 06:57+0000\n"
+"PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -3688,11 +3688,6 @@ msgctxt "ItemViewSettingsPage|"
 msgid "Other activity:"
 msgstr ""
 
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:272
-msgctxt "ItemViewSettingsPage|"
-msgid "1"
-msgstr ""
-
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgctxt "ItemViewSettingsPage|"
 msgid "Custom Nick List Colors"
@@ -5726,7 +5721,7 @@ msgstr ""
 #: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
 #: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
 #: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
-#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
+#: ../src/uisupport/uistyle.cpp:665
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
@@ -5828,67 +5823,6 @@ msgstr ""
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:707
-msgctxt "UiStyle::StyledMessage|"
-msgid "-*-"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:709
-msgctxt "UiStyle::StyledMessage|"
-msgid "<->"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:711
-msgctxt "UiStyle::StyledMessage|"
-msgid "***"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:713
-msgctxt "UiStyle::StyledMessage|"
-msgid "-->"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
-msgctxt "UiStyle::StyledMessage|"
-msgid "<--"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:719
-msgctxt "UiStyle::StyledMessage|"
-msgid "<-*"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:721
-msgctxt "UiStyle::StyledMessage|"
-msgid "<-x"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
-#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
-msgctxt "UiStyle::StyledMessage|"
-msgid "*"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:729
-msgctxt "UiStyle::StyledMessage|"
-msgid "-"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:733
-msgctxt "UiStyle::StyledMessage|"
-msgid "=>"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:735
-msgctxt "UiStyle::StyledMessage|"
-msgid "<="
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:737
-msgctxt "UiStyle::StyledMessage|"
-msgid "->"
 msgstr ""
 
 #: ../src/client/networkmodel.cpp:697

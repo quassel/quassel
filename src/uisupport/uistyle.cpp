@@ -704,39 +704,39 @@ QString UiStyle::StyledMessage::decoratedSender() const {
     case Message::Notice:
       return tr("[%1]").arg(plainSender()); break;
     case Message::Action:
-      return tr("-*-"); break;
+      return "-*-"; break;
     case Message::Nick:
-      return tr("<->"); break;
+      return "<->"; break;
     case Message::Mode:
-      return tr("***"); break;
+      return "***"; break;
     case Message::Join:
-      return tr("-->"); break;
+      return "-->"; break;
     case Message::Part:
-      return tr("<--"); break;
+      return "<--"; break;
     case Message::Quit:
-      return tr("<--"); break;
+      return "<--"; break;
     case Message::Kick:
-      return tr("<-*"); break;
+      return "<-*"; break;
     case Message::Kill:
-      return tr("<-x"); break;
+      return "<-x"; break;
     case Message::Server:
-      return tr("*"); break;
+      return "*"; break;
     case Message::Info:
-      return tr("*"); break;
+      return "*"; break;
     case Message::Error:
-      return tr("*"); break;
+      return "*"; break;
     case Message::DayChange:
-      return tr("-"); break;
+      return "-"; break;
     case Message::Topic:
-      return tr("*"); break;
+      return "*"; break;
     case Message::NetsplitJoin:
-      return tr("=>"); break;
+      return "=>"; break;
     case Message::NetsplitQuit:
-      return tr("<="); break;
+      return "<="; break;
     case Message::Invite:
-      return tr("->"); break;
+      return "->"; break;
     default:
-      return tr("%1").arg(plainSender());
+      return QString("%1").arg(plainSender());
   }
 }
 
