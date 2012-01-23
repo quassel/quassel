@@ -1,12 +1,12 @@
 # 
 # Translators:
 # Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>, 2010.
-# Daniel Albers <daniel@lbers.com>, 2011.
+# Daniel Albers <daniel@lbers.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-23 18:06+0000\n"
+"PO-Revision-Date: 2012-01-23 22:13+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbers.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -4583,7 +4583,7 @@ msgstr "Senhal :"
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 msgctxt "NetworksSettingsPage|"
 msgid "Use SASL Authentication"
-msgstr "Utilizar un certificat SSL"
+msgstr "Utilizar un certificat SASL"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
 msgctxt "NetworksSettingsPage|"

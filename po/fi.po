@@ -1,13 +1,13 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011.
+# Daniel Albers <daniel@lbers.com>, 2011, 2012.
 #   <larso@gmx.com>, 2011.
 # mikuu <pinaatti@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-23 18:06+0000\n"
+"PO-Revision-Date: 2012-01-23 22:12+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbers.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -4773,7 +4773,7 @@ msgstr "Salasana:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 msgctxt "NetworksSettingsPage|"
 msgid "Use SASL Authentication"
-msgstr "Käytä SSL-varmennetta"
+msgstr "Käytä SASL-varmennetta"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
 msgctxt "NetworksSettingsPage|"

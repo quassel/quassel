@@ -1,12 +1,12 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2010, 2011.
+# Daniel Albers <daniel@lbers.com>, 2010, 2011, 2012.
 # Kristóf Kiszel <ulysses@kubuntu.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-23 18:06+0000\n"
+"PO-Revision-Date: 2012-01-23 22:12+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbers.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -4653,7 +4653,7 @@ msgstr "Jelszó:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 msgctxt "NetworksSettingsPage|"
 msgid "Use SASL Authentication"
-msgstr "SSL-tanúsítvány használata"
+msgstr "SASL-tanúsítvány használata"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
 msgctxt "NetworksSettingsPage|"
