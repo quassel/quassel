@@ -3967,8 +3967,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n ausstehende Hervorhebungen"
 msgstr[1] "%n ausstehende Hervorhebungen"
-msgstr[2] "%n ausstehende Hervorhebungen"
-msgstr[3] "%n ausstehende Hervorhebungen"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -5755,8 +5753,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n ausstehende Hervorhebungen"
 msgstr[1] "%n ausstehende Hervorhebungen"
-msgstr[2] "%n ausstehende Hervorhebungen"
-msgstr[3] "%n ausstehende Hervorhebungen"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"

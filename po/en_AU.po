@@ -3935,8 +3935,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n pending highlights"
 msgstr[1] "%n pending highlights"
-msgstr[2] "%n pending highlights"
-msgstr[3] "%n pending highlights"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -5718,8 +5716,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n pending highlights"
 msgstr[1] "%n pending highlights"
-msgstr[2] "%n pending highlights"
-msgstr[3] "%n pending highlights"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"

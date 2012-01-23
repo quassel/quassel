@@ -3959,8 +3959,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n destaque pendente"
 msgstr[1] "%n destaques pendentes"
-msgstr[2] "%n destaque pendente"
-msgstr[3] "%n destaques pendentes"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -5751,8 +5749,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n destaque pendente"
 msgstr[1] "%n destaques pendentes"
-msgstr[2] "%n destaque pendente"
-msgstr[3] "%n destaques pendentes"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"

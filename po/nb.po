@@ -3942,8 +3942,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n utheving(er) er ikke lest"
 msgstr[1] "%n utheving(er) er ikke lest"
-msgstr[2] "%n utheving(er) er ikke lest"
-msgstr[3] "%n utheving(er) er ikke lest"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -5728,8 +5726,6 @@ msgid "%n pending highlights"
 msgid_plural "%n pending highlights"
 msgstr[0] "%n utheving(er) er ikke lest"
 msgstr[1] "%n utheving(er) er ikke lest"
-msgstr[2] "%n utheving(er) er ikke lest"
-msgstr[3] "%n utheving(er) er ikke lest"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"

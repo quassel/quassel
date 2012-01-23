@@ -3969,9 +3969,6 @@ msgid_plural "%n pending highlights"
 msgstr[0] "%n підсвічування у черзі"
 msgstr[1] "%n підсвічування у черзі"
 msgstr[2] "%n підсвічувань у черзі"
-msgstr[3] "%n підсвічування у черзі"
-msgstr[4] "%n підсвічування у черзі"
-msgstr[5] "%n підсвічувань у черзі"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -5762,9 +5759,6 @@ msgid_plural "%n pending highlights"
 msgstr[0] "%n підсвічування у черзі"
 msgstr[1] "%n підсвічування у черзі"
 msgstr[2] "%n підсвічувань у черзі"
-msgstr[3] "%n підсвічування у черзі"
-msgstr[4] "%n підсвічування у черзі"
-msgstr[5] "%n підсвічувань у черзі"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"

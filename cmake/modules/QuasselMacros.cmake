@@ -19,13 +19,14 @@ endmacro(setup_qt4_variables)
 
 # This generates a .ts from a .po file
 macro(generate_ts outvar basename)
-  set(input ${CMAKE_SOURCE_DIR}/po/${basename}.po)
+  set(input ${basename}.po)
   set(output ${CMAKE_BINARY_DIR}/po/${basename}.ts)
   add_custom_command(OUTPUT ${output}
           COMMAND ${QT_LCONVERT_EXECUTABLE}
           ARGS -i ${input}
                -of ts
                -o ${output}
+          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/po
 # This is a workaround to add (duplicate) strings that lconvert missed to the .ts
           COMMAND ${QT_LUPDATE_EXECUTABLE}
           ARGS -silent

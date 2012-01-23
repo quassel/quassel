@@ -3937,9 +3937,6 @@ msgid_plural "%n pending highlights"
 msgstr[0] "%n zbývající zvýraznění"
 msgstr[1] "%n zbývající zvýraznění"
 msgstr[2] "%n zbývajících zvýraznění"
-msgstr[3] "%n zbývající zvýraznění"
-msgstr[4] "%n zbývající zvýraznění"
-msgstr[5] "%n zbývajících zvýraznění"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -5725,9 +5722,6 @@ msgid_plural "%n pending highlights"
 msgstr[0] "%n zbývající zvýraznění"
 msgstr[1] "%n zbývající zvýraznění"
 msgstr[2] "%n zbývajících zvýraznění"
-msgstr[3] "%n zbývající zvýraznění"
-msgstr[4] "%n zbývající zvýraznění"
-msgstr[5] "%n zbývajících zvýraznění"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"

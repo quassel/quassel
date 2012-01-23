@@ -3941,10 +3941,6 @@ msgstr[0] "%n čakajoč poudarek"
 msgstr[1] "%n čakajoča poudarka"
 msgstr[2] "%n čakajoči poudarki"
 msgstr[3] "%n čakajočih poudarkov"
-msgstr[4] "%n čakajoč poudarek"
-msgstr[5] "%n čakajoča poudarka"
-msgstr[6] "%n čakajoči poudarki"
-msgstr[7] "%n čakajočih poudarkov"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -5730,10 +5726,6 @@ msgstr[0] "%n čakajoč poudarek"
 msgstr[1] "%n čakajoča poudarka"
 msgstr[2] "%n čakajoči poudarki"
 msgstr[3] "%n čakajočih poudarkov"
-msgstr[4] "%n čakajoč poudarek"
-msgstr[5] "%n čakajoča poudarka"
-msgstr[6] "%n čakajoči poudarki"
-msgstr[7] "%n čakajočih poudarkov"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"
