@@ -1,0 +1,14 @@
+diff --git b/po/quassel.pot a/po/quassel.pot
+index dcfb526..d460562 100644
+--- b/po/quassel.pot
++++ a/po/quassel.pot
+@@ -5,2 +5,9 @@ msgstr ""
+ "Content-Transfer-Encoding: 8bit\n"
++"Project-Id-Version: Quassel IRC\n"
++"PO-Revision-Date: \n"
++"Last-Translator: \n"
++"Language-Team: \n"
++"Language: en_US\n"
++"Plural-Forms: nplurals=2; plural=(n != 1)\n"
++"Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
+ "X-Qt-Contexts: true\n"
