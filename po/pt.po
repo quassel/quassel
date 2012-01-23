@@ -2463,7 +2463,8 @@ msgstr "Fechar"
 #: ../src/qtui/coreinfodlg.cpp:53
 msgid "%n Day(s)"
 msgid_plural "%n Day(s)"
-msgstr[0] "%n Dia(s)"
+msgstr[0] "%n Dia"
+msgstr[1] "%n Dias"
 
 #. ts-context CoreInfoDlg
 #: ../src/qtui/coreinfodlg.cpp:54

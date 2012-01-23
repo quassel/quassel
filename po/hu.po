@@ -4514,7 +4514,8 @@ msgstr "Becenév Számoló"
 #: ../src/uisupport/networkmodelcontroller.cpp:154
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
-msgstr[0] "Véglegesen törölni szeretné a következő puffer(eket)?"
+msgstr[0] "Véglegesen törölni szeretné a következő puffer?"
+msgstr[1] "Véglegesen törölni szeretné a következő puffereket?"
 
 #. ts-context NetworkModelController
 #: ../src/uisupport/networkmodelcontroller.cpp:167
@@ -5723,7 +5724,8 @@ msgstr[1] "%n fél-operátor"
 #: ../src/client/networkmodel.cpp:701
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] "%n Írási joggal rendelkező(k)"
+msgstr[0] "%n Írási joggal rendelkező"
+msgstr[1] "%n Írási joggal rendelkezők"
 
 #. ts-context UserCategoryItem
 #: ../src/client/networkmodel.cpp:702
