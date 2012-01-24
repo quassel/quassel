@@ -1,12 +1,12 @@
 # 
 # Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+# Daniel Albers <daniel@lbe.rs>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-23 18:06+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbers.com>\n"
+"PO-Revision-Date: 2012-01-24 15:35+0000\n"
+"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -757,7 +757,7 @@ msgstr "Filter:"
 
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgctxt "ChannelListDlg|"
-msgid "Errors Occured:"
+msgid "Errors Occurred:"
 msgstr "Errors Occurred:"
 
 #: ../src/qtui/ui/channellistdlg.ui:132
@@ -2204,8 +2204,8 @@ msgstr "Close"
 msgctxt "CoreInfoDlg|"
 msgid "%n Day(s)"
 msgid_plural "%n Day(s)"
-msgstr[0] "%n Day(s)"
-msgstr[1] "%n Day(s)"
+msgstr[0] "%n Day"
+msgstr[1] "%n Days"
 
 #: ../src/qtui/coreinfodlg.cpp:54
 #, qt-format
@@ -3868,11 +3868,6 @@ msgctxt "ItemViewSettingsPage|"
 msgid "Other activity:"
 msgstr "Other activity:"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:272
-msgctxt "ItemViewSettingsPage|"
-msgid "1"
-msgstr "1"
-
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgctxt "ItemViewSettingsPage|"
 msgid "Custom Nick List Colors"
@@ -3933,7 +3928,7 @@ msgstr "Other activity"
 msgctxt "KNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
-msgstr[0] "%n pending highlights"
+msgstr[0] "%n pending highlight"
 msgstr[1] "%n pending highlights"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
@@ -4450,10 +4445,10 @@ msgstr "Receiving Backlog"
 #: ../src/uisupport/multilineedit.cpp:661
 #, qt-format
 msgctxt "MultiLineEdit|"
-msgid "Do you really want to paste %n lines?"
-msgid_plural "Do you really want to paste %n lines?"
-msgstr[0] ""
-msgstr[1] ""
+msgid "Do you really want to paste %n line(s)?"
+msgid_plural "Do you really want to paste %n line(s)?"
+msgstr[0] "Do you really want to paste %n line?"
+msgstr[1] "Do you really want to paste %n lines?"
 
 #: ../src/uisupport/multilineedit.cpp:670
 msgctxt "MultiLineEdit|"
@@ -4557,8 +4552,8 @@ msgstr "Nick Count"
 msgctxt "NetworkModelController|"
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
-msgstr[0] "Do you want to delete the following buffer(s) permanently?"
-msgstr[1] "Do you want to delete the following buffer(s) permanently?"
+msgstr[0] "Do you want to delete the following buffer permanently?"
+msgstr[1] "Do you want to delete the following buffers permanently?"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:167
 #, qt-format
@@ -5714,7 +5709,7 @@ msgstr "&Restore"
 msgctxt "SystrayNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
-msgstr[0] "%n pending highlights"
+msgstr[0] "%n pending highlight"
 msgstr[1] "%n pending highlights"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
@@ -5955,7 +5950,7 @@ msgstr "Topic Widget"
 #: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
 #: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
 #: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
-#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
+#: ../src/uisupport/uistyle.cpp:665
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
@@ -6059,98 +6054,37 @@ msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
 msgstr "<%1>"
 
-#: ../src/uisupport/uistyle.cpp:707
-msgctxt "UiStyle::StyledMessage|"
-msgid "-*-"
-msgstr "-*-"
-
-#: ../src/uisupport/uistyle.cpp:709
-msgctxt "UiStyle::StyledMessage|"
-msgid "<->"
-msgstr "<->"
-
-#: ../src/uisupport/uistyle.cpp:711
-msgctxt "UiStyle::StyledMessage|"
-msgid "***"
-msgstr "***"
-
-#: ../src/uisupport/uistyle.cpp:713
-msgctxt "UiStyle::StyledMessage|"
-msgid "-->"
-msgstr "-->"
-
-#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
-msgctxt "UiStyle::StyledMessage|"
-msgid "<--"
-msgstr "<--"
-
-#: ../src/uisupport/uistyle.cpp:719
-msgctxt "UiStyle::StyledMessage|"
-msgid "<-*"
-msgstr "<-*"
-
-#: ../src/uisupport/uistyle.cpp:721
-msgctxt "UiStyle::StyledMessage|"
-msgid "<-x"
-msgstr "<-x"
-
-#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
-#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
-msgctxt "UiStyle::StyledMessage|"
-msgid "*"
-msgstr "*"
-
-#: ../src/uisupport/uistyle.cpp:729
-msgctxt "UiStyle::StyledMessage|"
-msgid "-"
-msgstr "-"
-
-#: ../src/uisupport/uistyle.cpp:733
-msgctxt "UiStyle::StyledMessage|"
-msgid "=>"
-msgstr "=>"
-
-#: ../src/uisupport/uistyle.cpp:735
-msgctxt "UiStyle::StyledMessage|"
-msgid "<="
-msgstr "<="
-
-#: ../src/uisupport/uistyle.cpp:737
-msgctxt "UiStyle::StyledMessage|"
-msgid "->"
-msgstr "->"
-
 #: ../src/client/networkmodel.cpp:697
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
-msgstr[0] "%n Owner(s)"
-msgstr[1] "%n Owner(s)"
+msgstr[0] "%n Owner"
+msgstr[1] "%n Owners"
 
 #: ../src/client/networkmodel.cpp:698
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] "%n Admin(s)"
-msgstr[1] "%n Admin(s)"
+msgstr[0] "%n Admin"
+msgstr[1] "%n Admins"
 
 #: ../src/client/networkmodel.cpp:699
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] "%n Operator(s)"
-msgstr[1] "%n Operator(s)"
+msgstr[0] "%n Operator"
+msgstr[1] "%n Operators"
 
 #: ../src/client/networkmodel.cpp:700
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] "%n Half-Op(s)"
-msgstr[1] "%n Half-Op(s)"
+msgstr[0] "%n Half-Op"
+msgstr[1] "%n Half-Ops"
 
 #: ../src/client/networkmodel.cpp:701
 #, qt-format
@@ -6165,7 +6099,7 @@ msgstr[1] "%n Voiced"
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] "%n User(s)"
-msgstr[1] "%n User(s)"
+msgstr[0] "%n User"
+msgstr[1] "%n Users"
 
 

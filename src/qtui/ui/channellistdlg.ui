@@ -95,7 +95,7 @@ Advanced mode allows to pass search strings to the IRC Server.</string>
    <item>
     <widget class="QLabel" name="errorLabel">
      <property name="text">
-      <string>Errors Occured:</string>
+      <string>Errors Occurred:</string>
      </property>
     </widget>
    </item>

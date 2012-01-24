@@ -696,7 +696,7 @@ msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgctxt "ChannelListDlg|"
-msgid "Errors Occured:"
+msgid "Errors Occurred:"
 msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:132

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-23 18:06+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbers.com>\n"
+"PO-Revision-Date: 2012-01-24 15:34+0000\n"
+"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -705,7 +705,7 @@ msgstr "Filter:"
 
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgctxt "ChannelListDlg|"
-msgid "Errors Occured:"
+msgid "Errors Occurred:"
 msgstr "Fejl opstod:"
 
 #: ../src/qtui/ui/channellistdlg.ui:132
@@ -3688,11 +3688,6 @@ msgctxt "ItemViewSettingsPage|"
 msgid "Other activity:"
 msgstr "Anden aktivitet"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.ui:272
-msgctxt "ItemViewSettingsPage|"
-msgid "1"
-msgstr "1"
-
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgctxt "ItemViewSettingsPage|"
 msgid "Custom Nick List Colors"
@@ -4260,8 +4255,8 @@ msgstr ""
 #: ../src/uisupport/multilineedit.cpp:661
 #, qt-format
 msgctxt "MultiLineEdit|"
-msgid "Do you really want to paste %n lines?"
-msgid_plural "Do you really want to paste %n lines?"
+msgid "Do you really want to paste %n line(s)?"
+msgid_plural "Do you really want to paste %n line(s)?"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -5736,7 +5731,7 @@ msgstr ""
 #: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
 #: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
 #: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
-#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:739
+#: ../src/uisupport/uistyle.cpp:665
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
@@ -5838,67 +5833,6 @@ msgstr ""
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:707
-msgctxt "UiStyle::StyledMessage|"
-msgid "-*-"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:709
-msgctxt "UiStyle::StyledMessage|"
-msgid "<->"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:711
-msgctxt "UiStyle::StyledMessage|"
-msgid "***"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:713
-msgctxt "UiStyle::StyledMessage|"
-msgid "-->"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:717
-msgctxt "UiStyle::StyledMessage|"
-msgid "<--"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:719
-msgctxt "UiStyle::StyledMessage|"
-msgid "<-*"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:721
-msgctxt "UiStyle::StyledMessage|"
-msgid "<-x"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:723 ../src/uisupport/uistyle.cpp:725
-#: ../src/uisupport/uistyle.cpp:727 ../src/uisupport/uistyle.cpp:731
-msgctxt "UiStyle::StyledMessage|"
-msgid "*"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:729
-msgctxt "UiStyle::StyledMessage|"
-msgid "-"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:733
-msgctxt "UiStyle::StyledMessage|"
-msgid "=>"
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:735
-msgctxt "UiStyle::StyledMessage|"
-msgid "<="
-msgstr ""
-
-#: ../src/uisupport/uistyle.cpp:737
-msgctxt "UiStyle::StyledMessage|"
-msgid "->"
 msgstr ""
 
 #: ../src/client/networkmodel.cpp:697
