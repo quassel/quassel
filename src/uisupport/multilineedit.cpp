@@ -658,7 +658,7 @@ void MultiLineEdit::on_textChanged() {
       clear();
 
       if(lines.count() >= 4) {
-        QString msg = tr("Do you really want to paste %n lines?", "", lines.count());
+        QString msg = tr("Do you really want to paste %n line(s)?", "", lines.count());
         msg += "<p>";
         for(int i = 0; i < 4; i++) {
           msg += Qt::escape(lines[i].left(40));

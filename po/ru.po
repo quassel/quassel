@@ -3871,8 +3871,8 @@ msgstr "Другая активность"
 #: ../src/qtui/knotificationbackend.cpp:115
 #, qt-format
 msgctxt "KNotificationBackend|"
-msgid "%n pending highlights"
-msgid_plural "%n pending highlights"
+msgid "%n pending highlight(s)"
+msgid_plural "%n pending highlight(s)"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -5648,8 +5648,8 @@ msgstr ""
 #: ../src/qtui/systraynotificationbackend.cpp:125
 #, qt-format
 msgctxt "SystrayNotificationBackend|"
-msgid "%n pending highlights"
-msgid_plural "%n pending highlights"
+msgid "%n pending highlight(s)"
+msgid_plural "%n pending highlight(s)"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""

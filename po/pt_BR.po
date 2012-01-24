@@ -3955,8 +3955,8 @@ msgstr "Outra atividade"
 #: ../src/qtui/knotificationbackend.cpp:115
 #, qt-format
 msgctxt "KNotificationBackend|"
-msgid "%n pending highlights"
-msgid_plural "%n pending highlights"
+msgid "%n pending highlight(s)"
+msgid_plural "%n pending highlight(s)"
 msgstr[0] "%n destaque pendente"
 msgstr[1] "%n destaques pendentes"
 
@@ -5745,8 +5745,8 @@ msgstr "&Restaurar"
 #: ../src/qtui/systraynotificationbackend.cpp:125
 #, qt-format
 msgctxt "SystrayNotificationBackend|"
-msgid "%n pending highlights"
-msgid_plural "%n pending highlights"
+msgid "%n pending highlight(s)"
+msgid_plural "%n pending highlight(s)"
 msgstr[0] "%n destaque pendente"
 msgstr[1] "%n destaques pendentes"
 

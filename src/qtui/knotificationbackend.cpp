@@ -112,7 +112,7 @@ void KNotificationBackend::notificationActivated(uint notificationId) {
 
 void KNotificationBackend::updateToolTip() {
   QtUi::mainWindow()->systemTray()->setToolTip("Quassel IRC",
-                                               _notifications.count()? tr("%n pending highlights", "", _notifications.count()) : QString());
+                                               _notifications.count()? tr("%n pending highlight(s)", "", _notifications.count()) : QString());
 }
 
 SettingsPage *KNotificationBackend::createConfigWidget() const {

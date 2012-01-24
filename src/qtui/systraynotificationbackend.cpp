@@ -122,7 +122,7 @@ void SystrayNotificationBackend::animateChanged(const QVariant &v) {
 
 void SystrayNotificationBackend::updateToolTip() {
   QtUi::mainWindow()->systemTray()->setToolTip("Quassel IRC",
-                                               _notifications.count()? tr("%n pending highlights", "", _notifications.count()) : QString());
+                                               _notifications.count()? tr("%n pending highlight(s)", "", _notifications.count()) : QString());
 }
 
 SettingsPage *SystrayNotificationBackend::createConfigWidget() const {
