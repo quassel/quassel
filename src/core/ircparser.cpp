@@ -275,7 +275,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e) {
       break;
 
     case 333:  /* Topic set by... */
-      if(params.count() >= 2) {
+      if(params.count() >= 3) {
         QString channel = net->serverDecode(params.at(0));
         decParams << channel << net->serverDecode(params.at(1));
         decParams << net->channelDecode(channel, params.at(2));

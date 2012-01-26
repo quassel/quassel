@@ -665,6 +665,9 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e) {
 
 /* ERR_ERRONEUSNICKNAME */
 void CoreSessionEventProcessor::processIrcEvent432(IrcEventNumeric *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
   QString errnick;
   if(e->params().count() < 2) {
     // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:

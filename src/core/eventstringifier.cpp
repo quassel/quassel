@@ -94,12 +94,18 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
 
   // Server error messages, display them in red. First param will be appended.
   case 401: {
+    if(!checkParamCount(e, 1))
+      return;
+
     QString target = e->params().takeFirst();
     displayMsg(e, Message::Error, e->params().join(" ") + " " + target, e->prefix(), target, Message::Redirected);
     break;
   }
 
   case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442: {
+    if(!checkParamCount(e, 1))
+      return;
+
     QString channelName = e->params().takeFirst();
     displayMsg(e, Message::Error, e->params().join(" ") + " " + channelName, e->prefix());
     break;
@@ -110,6 +116,9 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
   case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
   case 436: // ERR_NICKCOLLISION
   {
+    if(!checkParamCount(e, 1))
+      return;
+
     QString p = e->params().takeFirst();
     displayMsg(e, Message::Error, p + ": " + e->params().join(" "));
     break;
@@ -475,16 +484,25 @@ void EventStringifier::processIrcEvent369(IrcEvent *e) {
 
 /* ERR_ERRONEUSNICKNAME */
 void EventStringifier::processIrcEvent432(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
   displayMsg(e, Message::Error, tr("Nick %1 contains illegal characters").arg(e->params()[0]));
 }
 
 /* ERR_NICKNAMEINUSE */
 void EventStringifier::processIrcEvent433(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
   displayMsg(e, Message::Error, tr("Nick already in use: %1").arg(e->params()[0]));
 }
 
 /* ERR_UNAVAILRESOURCE */
 void EventStringifier::processIrcEvent437(IrcEvent *e) {
+  if(!checkParamCount(e, 1))
+    return;
+
   displayMsg(e, Message::Error, tr("Nick/channel is temporarily unavailable: %1").arg(e->params()[0]));
 }
 
