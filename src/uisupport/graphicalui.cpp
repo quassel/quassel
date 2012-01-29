@@ -201,7 +201,7 @@ bool GraphicalUi::checkMainWidgetVisibility(bool perform) {
   }
 #else
 
-  if(!mainWidget()->isVisible() || mainWidget()->isMinimized()) {
+  if(!mainWidget()->isVisible() || mainWidget()->isMinimized() || !mainWidget()->isActiveWindow()) {
     if(perform)
       minimizeRestore(true);
     return true;
