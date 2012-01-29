@@ -76,6 +76,9 @@ void Logger::log() {
     }
     syslog(LOG_USER & prio, "%s", qPrintable(_buffer));
   }
+  // don't log to stdout if --syslog was specified (but neither ignore --logfile)
+  if(!Quassel::logFile())
+    return;
 #endif
 
   _buffer.prepend(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss "));
