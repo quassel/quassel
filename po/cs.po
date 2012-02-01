@@ -2,12 +2,13 @@
 # Translators:
 # Daniel Albers <daniel@lbers.com>, 2011.
 # Tomáš Chvátal <scarabeus@gentoo.org>, 2009, 2010.
+# Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-24 15:34+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
+"PO-Revision-Date: 2012-02-13 10:36+0000\n"
+"Last-Translator: Tomáš Chvátal <tomas.chvatal@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,13 +29,7 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">￼p, li { white-space: pre-wrap; }￼</style></head><body "
-"style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-"
-"style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; margin-"
-"left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel "
-"IRC</p></body></html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">￼p, li { white-space: pre-wrap; }￼</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgctxt "AboutDlg|"
@@ -43,13 +38,7 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style "
-"type=\"text/css\">￼p, li { white-space: pre-wrap; }￼</style></head><body "
-"style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-"
-"style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; margin-"
-"left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Verze "
-"0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">￼p, li { white-space: pre-wrap; }￼</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">￼<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Verze 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:115
 msgctxt "AboutDlg|"
@@ -91,18 +80,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr ""
-"<b>A Moderní, distribuovaný IRC Client</b><br><br>Vytvořený &copy;2005-2012 "
-"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
-"irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a"
-" href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je duálně-"
-"licencován pod <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>"
-" a <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Většina"
-" ikon náleží &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a>u"
-" pod licencí <a "
-"href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Prosíme "
-"použijte <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-"
-"irc.org</a> pro hlášení chyb."
+msgstr "<b>A Moderní, distribuovaný IRC Client</b><br><br>Vytvořený &copy;2005-2012 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je duálně-licencován pod <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> a <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Většina ikon náleží &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a>u pod licencí <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Prosíme použijte <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> pro hlášení chyb."
 
 #: ../src/qtui/aboutdlg.cpp:62
 msgctxt "AboutDlg|"
@@ -114,9 +92,7 @@ msgctxt "AboutDlg|"
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
-msgstr ""
-"Rádi bychom poděkovali následujícím přispěvatelům (v abecedním pořadí) a "
-"také všem, na které jsme zde zapomněli:"
+msgstr "Rádi bychom poděkovali následujícím přispěvatelům (v abecedním pořadí) a také všem, na které jsme zde zapomněli:"
 
 #: ../src/qtui/aboutdlg.cpp:135
 msgctxt "AboutDlg|"
@@ -133,19 +109,7 @@ msgid ""
 "href=\"http://www.nokia.com\"><img "
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr ""
-"Zvláště bychom rádi poděkovali:<br><dl><dt><img src=\":/pics/quassel-"
-"eye.png\">&nbsp;<b>Johnu \"nox\" Handovi</b></dt><dd>pro skvělý artwork a "
-"Quassel logo/ikonku</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
-"href=\"http://www.oxygen-icons.org\">Oxygen Team</a></b></dt><dd>pro "
-"vytvoření většiny ostatních skvělých ikon, které můžete vidět všude možně v "
-"aplikaci</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a "
-"href=\"http://www.trolltech.com\">Qt Software (dříve znám jako "
-"Trolltech)</a></b></dt><dd>za vytvoření Qt a Qtopia, a pro sponzorování "
-"vývoje QuasselTopia s Greenphones a dalších</dd><dt><b><a "
-"href=\"http://www.nokia.com\"><img "
-"src=\":/pics/nokia.png\"></a></b></dt><dd>pro udržování Qt naživu, a pro "
-"sponzorování vývoje Quassel Mobile N810</dd>"
+msgstr "Zvláště bychom rádi poděkovali:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>Johnu \"nox\" Handovi</b></dt><dd>pro skvělý artwork a Quassel logo/ikonku</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Oxygen Team</a></b></dt><dd>pro vytvoření většiny ostatních skvělých ikon, které můžete vidět všude možně v aplikaci</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software (dříve znám jako Trolltech)</a></b></dt><dd>za vytvoření Qt a Qtopia, a pro sponzorování vývoje QuasselTopia s Greenphones a dalších</dd><dt><b><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>pro udržování Qt naživu, a pro sponzorování vývoje Quassel Mobile N810</dd>"
 
 #: ../src/core/abstractsqlstorage.cpp:115
 #, qt-format
@@ -164,9 +128,7 @@ msgctxt "AliasesModel|"
 msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
-msgstr ""
-"<b>Zkratka pro alternativu</b><br />Lze ji použít jako běžný lomítkový "
-"příkaz.<br /><br /><b>Příklad:</b> \"foo\" lze zavolat pomocí /foo"
+msgstr "<b>Zkratka pro alternativu</b><br />Lze ji použít jako běžný lomítkový příkaz.<br /><br /><b>Příklad:</b> \"foo\" lze zavolat pomocí /foo"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
 msgctxt "AliasesModel|"
@@ -182,18 +144,7 @@ msgid ""
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will"
 " be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test "
 "All 1 2 3\" when called like /test 1 2 3"
-msgstr ""
-"<b>Text na jaký bude převedena zkratka</b><br /><b>Speciální hodnoty:</b><br"
-" /> - <b>$i</b> reprezentuje i-tý parametr.<br /> - <b>$i..j</b> "
-"reprezentuje i-tý až j-tý parametr oddělený mezerami.<br /> - <b>$i..</b> "
-"reprezentuje všechny parametry od i-tého, oddělené mezerami.<br /> - "
-"<b>$i:hostname</b> reprezentuje název počítače uživatele identifikovaného "
-"i-tým parametrem nebo * pokud je neznámý.<br /> - <b>$0</b> celý text.<br />"
-" - <b>$nick</b> vaše současná přezdívka<br /> - <b>$channel</b> název "
-"vybraného kanálu<br /><br />Oddělení více příkazů je umožněno pomocí "
-"středníku<br /><br /><b>Příklad:</b> \"Test $1; Test $2; Test All $0\" bude "
-"interpretováno jako \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when "
-"called like /test 1 2 3"
+msgstr "<b>Text na jaký bude převedena zkratka</b><br /><b>Speciální hodnoty:</b><br /> - <b>$i</b> reprezentuje i-tý parametr.<br /> - <b>$i..j</b> reprezentuje i-tý až j-tý parametr oddělený mezerami.<br /> - <b>$i..</b> reprezentuje všechny parametry od i-tého, oddělené mezerami.<br /> - <b>$i:hostname</b> reprezentuje název počítače uživatele identifikovaného i-tým parametrem nebo * pokud je neznámý.<br /> - <b>$0</b> celý text.<br /> - <b>$nick</b> vaše současná přezdívka<br /> - <b>$channel</b> název vybraného kanálu<br /><br />Oddělení více příkazů je umožněno pomocí středníku<br /><br /><b>Příklad:</b> \"Test $1; Test $2; Test All $0\" bude interpretováno jako \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
 msgctxt "AliasesModel|"
@@ -366,8 +317,7 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Number of messages to be requested from the core when using scrolling up in "
 "the buffer view."
-msgstr ""
-"Počet zpráv které se stáhnou z jádra při rolování myší ve zobrazené záložce."
+msgstr "Počet zpráv které se stáhnou z jádra při rolování myší ve zobrazené záložce."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
 msgctxt "BacklogSettingsPage|"
@@ -399,18 +349,14 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "The simplest requester. It fetches a fixed amount of lines for each chat "
 "window from the backlog."
-msgstr ""
-"Nejjednodušší požadavek. Stáhne přesný počet řádků pro každou záložku z "
-"historie."
+msgstr "Nejjednodušší požadavek. Stáhne přesný počet řádků pro každou záložku z historie."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
 msgctxt "BacklogSettingsPage|"
 msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
-msgstr ""
-"množství zpráv za záložku, které jsou vyžádány když bylo navázáno spojení s "
-"jádrem."
+msgstr "množství zpráv za záložku, které jsou vyžádány když bylo navázáno spojení s jádrem."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
 msgctxt "BacklogSettingsPage|"
@@ -423,10 +369,7 @@ msgid ""
 "This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
 "\n"
 "You can also choose to fetch additional older chatlines to provide a better context."
-msgstr ""
-"Tento požadavek stáhne nepřečtené zprávy individuálně pro každou záložku. Množství řádek lze limitovat pro celý rozhovor.\n"
-"\n"
-"Také můžete vybrat množství dodatečně stahovaných zastaralých zpráv pro lepší srozumitelnost."
+msgstr "Tento požadavek stáhne nepřečtené zprávy individuálně pro každou záložku. Množství řádek lze limitovat pro celý rozhovor.\n\nTaké můžete vybrat množství dodatečně stahovaných zastaralých zpráv pro lepší srozumitelnost."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
 #: ../src/qtui/settingspages/backlogsettingspage.ui:232
@@ -455,9 +398,7 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Amount of messages to be fetched in addition to the unread messages. The "
 "Limit does not apply here."
-msgstr ""
-"Množství zpráv které se stáhnou dodatečně k nepřečteným zprávám. Omezení zde"
-" neplatí."
+msgstr "Množství zpráv které se stáhnou dodatečně k nepřečteným zprávám. Omezení zde neplatí."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
 #: ../src/qtui/settingspages/backlogsettingspage.ui:385
@@ -474,13 +415,7 @@ msgid ""
 "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
 "\n"
 "You can also chose to fetch additional older chatlines to provide a better context."
-msgstr ""
-"Tento požadavek stáhne všechny zprávy novější nežli nejstarší nepřečtené zprávy pro všechny záložky.\n"
-"\n"
-"Poznámka: Tento požadavek není doporučen pokud používáte skryté, nebo neaktivní, záložky (tedy žádné nepoužívané místnosti ani kanály)\n"
-"Je užitečný k omezení celkového získávání historie a je pravděpodobně nejrychlejší.\n"
-"\n"
-"Můžete také vybrat dodatečné zprávy pro získání lepšího přehledu."
+msgstr "Tento požadavek stáhne všechny zprávy novější nežli nejstarší nepřečtené zprávy pro všechny záložky.\n\nPoznámka: Tento požadavek není doporučen pokud používáte skryté, nebo neaktivní, záložky (tedy žádné nepoužívané místnosti ani kanály)\nJe užitečný k omezení celkového získávání historie a je pravděpodobně nejrychlejší.\n\nMůžete také vybrat dodatečné zprávy pro získání lepšího přehledu."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:344
 msgctxt "BacklogSettingsPage|"
@@ -514,9 +449,7 @@ msgctxt "BufferView|"
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
-msgstr ""
-"Opravdu chcete trvale sloučit záložku \"%1\" do záložky \"%2\"?\n"
-"￼Tuto operaci nelze zvrátit!"
+msgstr "Opravdu chcete trvale sloučit záložku \"%1\" do záložky \"%2\"?\n￼Tuto operaci nelze zvrátit!"
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 msgctxt "BufferViewEditDlg|"
@@ -579,9 +512,7 @@ msgctxt "BufferViewSettingsPage|"
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
-msgstr ""
-"Tato možnost není dostupná když jsou viditelné všechny sítě\n"
-"V daném režimu nejsou zobrazeny separátní záložky stavu."
+msgstr "Tato možnost není dostupná když jsou viditelné všechny sítě\nV daném režimu nejsou zobrazeny separátní záložky stavu."
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
 msgctxt "BufferViewSettingsPage|"
@@ -744,9 +675,7 @@ msgctxt "ChannelListDlg|"
 msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows to pass search strings to the IRC Server."
-msgstr ""
-"Přepnout mezi jednoduchým a pokročilým módem.￼Pokročilý mód umožňuje předat "
-"vyhledávaný řetězec IRC Serveru."
+msgstr "Přepnout mezi jednoduchým a pokročilým módem.￼Pokročilý mód umožňuje předat vyhledávaný řetězec IRC Serveru."
 
 #: ../src/qtui/ui/channellistdlg.ui:62
 msgctxt "ChannelListDlg|"
@@ -772,13 +701,7 @@ msgid ""
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
-msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">ZOMG POLARNI LEDY OPRAVDU ROZTALY, TOHLE QUASSEL NEUSTOJI!!11</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
+msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">ZOMG POLARNI LEDY OPRAVDU ROZTALY, TOHLE QUASSEL NEUSTOJI!!11</span></p>\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:14
 msgctxt "ChatMonitorSettingsPage|"
@@ -800,14 +723,7 @@ msgid ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
-msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operační režimy:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Monitor místností zobrazuje pouze záložky na pravé straně.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span>Monitor místností ignoruje záložky na pravé straně.</p></body></html>"
+msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operační režimy:</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Monitor místností zobrazuje pouze záložky na pravé straně.</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span>Monitor místností ignoruje záložky na pravé straně.</p></body></html>"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
 msgctxt "ChatMonitorSettingsPage|"
@@ -834,9 +750,7 @@ msgstr "Zobrazit:"
 msgctxt "ChatMonitorSettingsPage|"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr ""
-"Zobrazovat zvýraznění v monitoru místností i v případě, že záložka je "
-"ignorována"
+msgstr "Zobrazovat zvýraznění v monitoru místností i v případě, že záložka je ignorována"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgctxt "ChatMonitorSettingsPage|"
@@ -976,9 +890,7 @@ msgctxt "ChatViewSettingsPage|"
 msgid ""
 "Set the marker line to the bottom of the current chat window when selecting "
 "another channel"
-msgstr ""
-"Nastavit značící linku na konec současného okna rozhovoru při výběru jiného "
-"kanálu"
+msgstr "Nastavit značící linku na konec současného okna rozhovoru při výběru jiného kanálu"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:133
 msgctxt "ChatViewSettingsPage|"
@@ -1159,10 +1071,7 @@ msgctxt "ConnectionSettingsPage|"
 msgid ""
 "This enables periodic polling of user information using /WHO. This is mostly"
 " interesting for tracking users' away status."
-msgstr ""
-"Toto nastavení povolí periodické zjišťování informací o uživatelích s "
-"použitím příkazu /WHO. Tato funkce je zajímavá pro zjišťování důvodu proč je"
-" uživatel pryč."
+msgstr "Toto nastavení povolí periodické zjišťování informací o uživatelích s použitím příkazu /WHO. Tato funkce je zajímavá pro zjišťování důvodu proč je uživatel pryč."
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:131
 msgctxt "ConnectionSettingsPage|"
@@ -1415,10 +1324,7 @@ msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
 "Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 "to work."
-msgstr ""
-"V současné chvíli Quassel podporuje SQLite3 a PostgreSQL. Musíte sestavit vaši\n"
-"Qt knihovnu s podporou sqlite nebo postgres pluginu aby jádro Quasselu\n"
-"mohlo fungovat."
+msgstr "V současné chvíli Quassel podporuje SQLite3 a PostgreSQL. Musíte sestavit vaši\nQt knihovnu s podporou sqlite nebo postgres pluginu aby jádro Quasselu\nmohlo fungovat."
 
 #: ../src/core/core.cpp:232
 msgctxt "Core|"
@@ -1450,8 +1356,7 @@ msgstr "Neplatná adresa %1 pro poslech"
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr ""
-"Naslouchám pro GUI klienty na IPv6 %1 portu %2 s použitím protokolu verze %3"
+msgstr "Naslouchám pro GUI klienty na IPv6 %1 portu %2 s použitím protokolu verze %3"
 
 #: ../src/core/core.cpp:409
 #, qt-format
@@ -1463,8 +1368,7 @@ msgstr "Nezdařilo se otevření IPv6 rozhraní %1:%2: %3"
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr ""
-"Naslouchám pro GUI klienty na IPv4 %1 portu %2 s použitím protokolu verze %3"
+msgstr "Naslouchám pro GUI klienty na IPv4 %1 portu %2 s použitím protokolu verze %3"
 
 #: ../src/core/core.cpp:427
 #, qt-format
@@ -1504,9 +1408,7 @@ msgctxt "Core|"
 msgid ""
 "<b>Your Quassel Client is too old!</b><br>This core needs at least "
 "client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr ""
-"<b>Váš Quassel Klient je příliš starý!</b><br>Toto jádro potřebuje klienta s"
-" protokolem alespoň verze %1.<br>Prosíme zvažte aktualizaci vašeho klienta."
+msgstr "<b>Váš Quassel Klient je příliš starý!</b><br>Toto jádro potřebuje klienta s protokolem alespoň verze %1.<br>Prosíme zvažte aktualizaci vašeho klienta."
 
 #: ../src/core/core.cpp:516 ../src/core/core.cpp:606 ../src/core/core.cpp:630
 msgctxt "Core|"
@@ -1534,9 +1436,7 @@ msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
-msgstr ""
-"<b>Klient není inicializován!</b><br>Musíte poslat inicializační zprávu před"
-" pokusem o přihlášení."
+msgstr "<b>Klient není inicializován!</b><br>Musíte poslat inicializační zprávu před pokusem o přihlášení."
 
 #: ../src/core/core.cpp:606
 msgctxt "Core|"
@@ -1548,9 +1448,7 @@ msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
-msgstr ""
-"<b>Neplatné uživatelské jméno či heslo!</b><br>Kombinace uživatelského jména"
-" a hesla kterou jste zadali nebyla nalezena v databázi."
+msgstr "<b>Neplatné uživatelské jméno či heslo!</b><br>Kombinace uživatelského jména a hesla kterou jste zadali nebyla nalezena v databázi."
 
 #: ../src/core/core.cpp:630
 #, qt-format
@@ -1730,18 +1628,14 @@ msgctxt "CoreConfigWizard|"
 msgid ""
 "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start "
 "over."
-msgstr ""
-"Nastavení jádra selhalo:<br><b>%1</b><br>Stiskněte <em>Další</em> pro "
-"opakování."
+msgstr "Nastavení jádra selhalo:<br><b>%1</b><br>Stiskněte <em>Další</em> pro opakování."
 
 #: ../src/qtui/coreconfigwizard.cpp:119
 msgctxt "CoreConfigWizard|"
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
 "remember to configure your identities and networks now."
-msgstr ""
-"Nyní jste připojeni k čerstvě nastavenému Quassel jádru!<br>Nezapomeňte si "
-"nyní nastavit své sítě a identity."
+msgstr "Nyní jste připojeni k čerstvě nastavenému Quassel jádru!<br>Nezapomeňte si nyní nastavit své sítě a identity."
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:14
 msgctxt "CoreConfigWizardAdminUserPage|"
@@ -1773,9 +1667,7 @@ msgctxt "CoreConfigWizardAdminUserPage|"
 msgid ""
 "<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
 "If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
-msgstr ""
-"<b>Poznámka:</b> Přidávání více uživatelů a změny uživatelského jména a hesla prozatím nejsou proveditelné skrze grafické rozhraní Quassel klienta.\n"
-"Pokud dané operace potřebujete provést, prosíme spusťte \"<tt><nobr>quasselcore --help</nobr></tt>\"."
+msgstr "<b>Poznámka:</b> Přidávání více uživatelů a změny uživatelského jména a hesla prozatím nejsou proveditelné skrze grafické rozhraní Quassel klienta.\nPokud dané operace potřebujete provést, prosíme spusťte \"<tt><nobr>quasselcore --help</nobr></tt>\"."
 
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:13
 msgctxt "CoreConfigWizardIntroPage|"
@@ -1797,9 +1689,7 @@ msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
-msgstr ""
-"Nejprve vytvoříme uživatele jádra. První (tento) uživatel bude mít "
-"administrátorská práva."
+msgstr "Nejprve vytvoříme uživatele jádra. První (tento) uživatel bude mít administrátorská práva."
 
 #: ../src/qtui/coreconfigwizard.cpp:135
 msgctxt "CoreConfigWizardPages::IntroPage|"
@@ -1833,8 +1723,7 @@ msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
 "automatically."
-msgstr ""
-"Vaše nastavení je nyní uloženo v Jádře a tedy budete automaticky přihlášeni."
+msgstr "Vaše nastavení je nyní uloženo v Jádře a tedy budete automaticky přihlášeni."
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
 msgctxt "CoreConfigWizardStorageSelectionPage|"
@@ -1966,9 +1855,7 @@ msgctxt "CoreConnection|"
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider "
 "upgrading."
-msgstr ""
-"Jádro Quasselu, ke kterému se snazíte připojit, je příliš staré! Prosíme "
-"zvažte jeho aktualizaci."
+msgstr "Jádro Quasselu, ke kterému se snazíte připojit, je příliš staré! Prosíme zvažte jeho aktualizaci."
 
 #: ../src/client/coreconnection.cpp:300
 msgctxt "CoreConnection|"
@@ -1997,9 +1884,7 @@ msgctxt "CoreConnection|"
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
-msgstr ""
-"<b>Jádro Quasselu, ke kterému se snažíte připojit, je příliš staré!</b><br> "
-"Požadovaný je protokol verze %1 pro spojení."
+msgstr "<b>Jádro Quasselu, ke kterému se snažíte připojit, je příliš staré!</b><br> Požadovaný je protokol verze %1 pro spojení."
 
 #: ../src/client/coreconnection.cpp:592
 msgctxt "CoreConnection|"
@@ -2048,9 +1933,7 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most"
 " KDE users"
-msgstr ""
-"Při detekci stavu spoléhat na hardwarovou vrstvu KDE. Doporučeno pro většinu"
-" KDE uživatelů"
+msgstr "Při detekci stavu spoléhat na hardwarovou vrstvu KDE. Doporučeno pro většinu KDE uživatelů"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:29
 msgctxt "CoreConnectionSettingsPage|"
@@ -2064,9 +1947,7 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Actively ping the remote core and disconnect if we didn't get a reply after "
 "a certain time"
-msgstr ""
-"Aktivně pinkat vzdálené jádro a odpojit pokud neobdržíme odpověď po určitém "
-"časovém intervalu"
+msgstr "Aktivně pinkat vzdálené jádro a odpojit pokud neobdržíme odpověď po určitém časovém intervalu"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:44
 msgctxt "CoreConnectionSettingsPage|"
@@ -2084,9 +1965,7 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
-msgstr ""
-"Odpojit pouze pokud bude síťový socket uzavřen operačním systémem. Může "
-"trvat poněkud déle nežli uzavře spojení po ztracení připojení"
+msgstr "Odpojit pouze pokud bude síťový socket uzavřen operačním systémem. Může trvat poněkud déle nežli uzavře spojení po ztracení připojení"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:103
 msgctxt "CoreConnectionSettingsPage|"
@@ -2265,27 +2144,21 @@ msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
 " create network %1!"
-msgstr ""
-"CoreSession::createNetwork(): Obdrženo špatné networkId od jádra při pokusu "
-"o vytvoření sítě %1!"
+msgstr "CoreSession::createNetwork(): Obdrženo špatné networkId od jádra při pokusu o vytvoření sítě %1!"
 
 #: ../src/core/coresession.cpp:472
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
-msgstr ""
-"CoreSession::createNetwork(): Síť s daným názvem již existuje. Aktualizuji "
-"místo duplikace!"
+msgstr "CoreSession::createNetwork(): Síť s daným názvem již existuje. Aktualizuji místo duplikace!"
 
 #: ../src/core/coresessioneventprocessor.cpp:65
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
-msgstr ""
-"Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro "
-"pokračování použijte: /nick <jiná_přezdívka>"
+msgstr "Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro pokračování použijte: /nick <jiná_přezdívka>"
 
 #: ../src/core/coreuserinputhandler.cpp:81
 msgctxt "CoreUserInputHandler|"
@@ -2303,10 +2176,7 @@ msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /delkey <nick|channel> deletes the encryption key for nick or "
 "channel or just /delkey when in a channel or query."
-msgstr ""
-"[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo "
-"přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést "
-"pomocí /delkey, když je na popředí."
+msgstr "[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /delkey, když je na popředí."
 
 #: ../src/core/coreuserinputhandler.cpp:184
 #: ../src/core/coreuserinputhandler.cpp:517
@@ -2329,17 +2199,13 @@ msgid ""
 "support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
 "distributor about a Quassel package with QCA2 support, or rebuild Quassel "
 "with QCA2 present."
-msgstr ""
-"Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou "
-"pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého "
-"distributora pro získání baličku Quassel s podporou QCA2, nebo znovu "
-"sestavte Quassel s dostupnou QCA2."
+msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA2, nebo znovu sestavte Quassel s dostupnou QCA2."
 
 #: ../src/core/coreuserinputhandler.cpp:422
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Starting query with %1"
-msgstr ""
+msgstr "Zahajuji rozhovor s %1"
 
 #: ../src/core/coreuserinputhandler.cpp:469
 msgctxt "CoreUserInputHandler|"
@@ -2347,10 +2213,7 @@ msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
 "channel. /setkey <key> when in a channel or query buffer sets the key for "
 "it."
-msgstr ""
-"[použití] /setkey <kanál|přezdívka> <klíč> nastaví šifrovací klíč pro kanál "
-"nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze "
-"provést pomocí /setkey <klíč>, když je na popředí."
+msgstr "[použití] /setkey <kanál|přezdívka> <klíč> nastaví šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /setkey <klíč>, když je na popředí."
 
 #: ../src/core/coreuserinputhandler.cpp:484
 #, qt-format
@@ -2365,21 +2228,14 @@ msgid ""
 "support for the Qt Cryptographic Architecture (QCA) library. Contact your "
 "distributor about a Quassel package with QCA support, or rebuild Quassel "
 "with QCA present."
-msgstr ""
-"Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou "
-"pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého "
-"distributora pro získání baličku Quassel s podporou QCA, nebo znovu sestavte"
-" Quassel s dostupnou QCA."
+msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA, nebo znovu sestavte Quassel s dostupnou QCA."
 
 #: ../src/core/coreuserinputhandler.cpp:509
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
-msgstr ""
-"[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo "
-"přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést "
-"pomocí /delkey, když je na popředí."
+msgstr "[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /delkey, když je na popředí."
 
 #: ../src/core/coreuserinputhandler.cpp:521
 #, qt-format
@@ -2525,9 +2381,7 @@ msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
-msgstr ""
-"Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému "
-"chování!"
+msgstr "Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému chování!"
 
 #: ../src/core/eventstringifier.cpp:263
 #, qt-format
@@ -2538,12 +2392,12 @@ msgstr "%1 je fuč: \"%2\""
 #: ../src/core/eventstringifier.cpp:268
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
-msgstr ""
+msgstr "Již nejste označen jako nedostupný"
 
 #: ../src/core/eventstringifier.cpp:274
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
-msgstr ""
+msgstr "Byl jste označen jako nedostupný"
 
 #: ../src/core/eventstringifier.cpp:294
 #, qt-format
@@ -2567,7 +2421,7 @@ msgstr "[Whowas] %1 byl %2 (%3)"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
-msgstr ""
+msgstr "[Whowas] %1 byl %2@%3 (%4)"
 
 #: ../src/core/eventstringifier.cpp:325
 #, qt-format
@@ -2672,7 +2526,7 @@ msgstr "[Who] %1"
 #: ../src/core/eventstringifier.cpp:473
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
-msgstr ""
+msgstr "Konec /WHOWAS"
 
 #: ../src/core/eventstringifier.cpp:478
 #, qt-format
@@ -2702,19 +2556,19 @@ msgstr "posílám %2 požadavek CTCP-%1"
 #: ../src/core/eventstringifier.cpp:522
 msgctxt "EventStringifier|"
 msgid "unknown"
-msgstr ""
+msgstr "neznámý"
 
 #: ../src/core/eventstringifier.cpp:523
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
-msgstr ""
+msgstr "Obdržen %1CTCP-%2 požadavek od %3"
 
 #: ../src/core/eventstringifier.cpp:526
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
-msgstr ""
+msgstr "Obdržena CTCP-%1 odpověď od %2: %3"
 
 #: ../src/core/eventstringifier.cpp:537
 #, qt-format
@@ -3114,9 +2968,7 @@ msgctxt "IdentityEditWidget|"
 msgid ""
 "The \"ident\" is part of your hostmask and, together with your host, "
 "uniquely identifies you within the IRC network."
-msgstr ""
-"\"Ident\" je částí vaší masky a spolu s názvem vašeho počítače vás unikátně "
-"označuje pro IRC síť."
+msgstr "\"Ident\" je částí vaší masky a spolu s názvem vašeho počítače vás unikátně označuje pro IRC síť."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:423
 msgctxt "IdentityEditWidget|"
@@ -3142,18 +2994,14 @@ msgstr "Důvod pro vyhození:"
 msgctxt "IdentityEditWidget|"
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr ""
-"Abyste byli schopni měnit nastavení SSL klíče a certifikátu musí váš klient "
-"podporovat SSL"
+msgstr "Abyste byli schopni měnit nastavení SSL klíče a certifikátu musí váš klient podporovat SSL"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgctxt "IdentityEditWidget|"
 msgid ""
 "Warning: you are not connected with a secured connection to the Quassel Core!\n"
 "Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
-msgstr ""
-"Varování: nejste připojeni k jádru zabezpečeným spojením!\n"
-"Pokračování povede k nešifrovanému přenosu vašeho SSL klíče a SSL certifikátu!"
+msgstr "Varování: nejste připojeni k jádru zabezpečeným spojením!\nPokračování povede k nešifrovanému přenosu vašeho SSL klíče a SSL certifikátu!"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
 msgctxt "IdentityEditWidget|"
@@ -3258,13 +3106,7 @@ msgid ""
 "Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
-msgstr ""
-"<p><b>Přísnost:</b></p>\n"
-"<p><u>Dynamická:</u></p>\n"
-"<p>Zprávy jsou filtrovány \"za běhu\".\n"
-"Pokud je pravidlo zakázáno, zprávy se znovu objeví.</p>\n"
-"<p><u>Permanentní:</u></p>\n"
-"<p>Zprávy jsou filtrovány ještě před uložením do databáze.</p>"
+msgstr "<p><b>Přísnost:</b></p>\n<p><u>Dynamická:</u></p>\n<p>Zprávy jsou filtrovány \"za běhu\".\nPokud je pravidlo zakázáno, zprávy se znovu objeví.</p>\n<p><u>Permanentní:</u></p>\n<p>Zprávy jsou filtrovány ještě před uložením do databáze.</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:35
 msgctxt "IgnoreListEditDlg|"
@@ -3290,13 +3132,7 @@ msgid ""
 "<i>nick!ident@host.name<i></p>\n"
 "<p><u>Message:</u></p>\n"
 "<p>The rule is matched against the actual message content</p>"
-msgstr ""
-"<p><b>Typ pravidla:</b></p>\n"
-"<p><u>Odesílatel:</u></p>\n"
-"<p>Pravidlo je porovnáváno vůči odesílateli\n"
-"<i>přezdívka!ident@jméno.počítače<i></p>\n"
-"<p><u>Zpráva:</u></p>\n"
-"<p>Pravidlo je porovnáváno vůči obsahu dané zprávy</p>"
+msgstr "<p><b>Typ pravidla:</b></p>\n<p><u>Odesílatel:</u></p>\n<p>Pravidlo je porovnáváno vůči odesílateli\n<i>přezdívka!ident@jméno.počítače<i></p>\n<p><u>Zpráva:</u></p>\n<p>Pravidlo je porovnáváno vůči obsahu dané zprávy</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:66
 msgctxt "IgnoreListEditDlg|"
@@ -3333,19 +3169,7 @@ msgid ""
 "- <i>*@foobar.com</i> matches any sender from host <i>foobar.com</i>\n"
 "<br />\n"
 "- <i>stupid!.+</i> (RegEx) matches any sender with nickname <i>stupid</i> from any host</p>"
-msgstr ""
-"<p><b>Pravidlo ignorance:</b></p>\n"
-"<p>Podle typu pravidla je text kontrolován proti:</p>\n"
-"<p><u>- obsahu zprávy:</u></p>\n"
-"<p><i>Příklad:</i>\n"
-"<br />\n"
-"<i>*foobar*</i> platí pro libovolný text obsahující <i>foobar</i></p>\n"
-"<p><u>- textu odesílatele</u>  <i>(přezdívka!ident@název.počítače)</i></p>\n"
-"<p><i>Příklad:</i>\n"
-"<br />\n"
-"- <i>*@foobar.com</i> bude platit pro každý počítač z domény <i>foobar.com</i>\n"
-"<br />\n"
-"- <i>hlupec!.+</i> (RegEx) platí pro každého uživatele s přezdívkou <i>hlupec</i>, který se může připojovat z libovolného počítače</p>"
+msgstr "<p><b>Pravidlo ignorance:</b></p>\n<p>Podle typu pravidla je text kontrolován proti:</p>\n<p><u>- obsahu zprávy:</u></p>\n<p><i>Příklad:</i>\n<br />\n<i>*foobar*</i> platí pro libovolný text obsahující <i>foobar</i></p>\n<p><u>- textu odesílatele</u>  <i>(přezdívka!ident@název.počítače)</i></p>\n<p><i>Příklad:</i>\n<br />\n- <i>*@foobar.com</i> bude platit pro každý počítač z domény <i>foobar.com</i>\n<br />\n- <i>hlupec!.+</i> (RegEx) platí pro každého uživatele s přezdívkou <i>hlupec</i>, který se může připojovat z libovolného počítače</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 msgctxt "IgnoreListEditDlg|"
@@ -3361,13 +3185,7 @@ msgid ""
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
-msgstr ""
-"<p><b>Používat regulární výrazy:</b></p>\n"
-"<p>Při povolení je pravidlo zpracováno jako regulární výraz.</p>\n"
-"<p>V opačném případě pravidla povolují tyto speciální znaky:</p>\n"
-"<p> *: reprezentuje \"libovolné množství znaků\"\n"
-"<br />\n"
-"?: reprezentuje \"právě jeden znak\"</p>"
+msgstr "<p><b>Používat regulární výrazy:</b></p>\n<p>Při povolení je pravidlo zpracováno jako regulární výraz.</p>\n<p>V opačném případě pravidla povolují tyto speciální znaky:</p>\n<p> *: reprezentuje \"libovolné množství znaků\"\n<br />\n?: reprezentuje \"právě jeden znak\"</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:131
 msgctxt "IgnoreListEditDlg|"
@@ -3384,14 +3202,7 @@ msgid ""
 "<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
 "<p><u>Channel:</u></p>\n"
 "<p>The list below is interpreted as a list of channels for which the rule should match</p>"
-msgstr ""
-"<p><b>Rozsah:</b></p>\n"
-"<p><u>Globální:</u></p>\n"
-"<p>Pravidlo je platné pro všechny sítě a na všech kanálech</p>\n"
-"<p><u>Síť:</u></p>\n"
-"<p>Seznam je interpretován jako seznam sítí, kde je pravidlo platné</p>\n"
-"<p><u>Kanál:</u></p>\n"
-"<p>Seznam je interpretován jako seznam kanálů, kde je pravidlo platné</p>"
+msgstr "<p><b>Rozsah:</b></p>\n<p><u>Globální:</u></p>\n<p>Pravidlo je platné pro všechny sítě a na všech kanálech</p>\n<p><u>Síť:</u></p>\n<p>Seznam je interpretován jako seznam sítí, kde je pravidlo platné</p>\n<p><u>Kanál:</u></p>\n<p>Seznam je interpretován jako seznam kanálů, kde je pravidlo platné</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:152
 msgctxt "IgnoreListEditDlg|"
@@ -3423,14 +3234,7 @@ msgid ""
 "<i>#quassel*; #foobar</i>\n"
 "<br />\n"
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
-msgstr ""
-"<p><b>Rozsah pravidla:</b></p>\n"
-"<p>Jedná se o seznam středníkem oddělených hodnot obsahujících seznam názvů <i>sítí</i> nebo <i>kanálů</i>.</p>\n"
-"<p><i>Příklad:</i>\n"
-"<br />\n"
-"<i>#quassel*; #foobar</i>\n"
-"<br />\n"
-"bude platit na #foobar a na každý kanál začínající <i>#quassel</i></p>"
+msgstr "<p><b>Rozsah pravidla:</b></p>\n<p>Jedná se o seznam středníkem oddělených hodnot obsahujících seznam názvů <i>sítí</i> nebo <i>kanálů</i>.</p>\n<p><i>Příklad:</i>\n<br />\n<i>#quassel*; #foobar</i>\n<br />\nbude platit na #foobar a na každý kanál začínající <i>#quassel</i></p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:214
 msgctxt "IgnoreListEditDlg|"
@@ -3439,11 +3243,7 @@ msgid ""
 "<p>Only enabled rules are filtered.\n"
 "<br />\n"
 "For dynamic rules, disabling actually shows the filtered messages again.</p>"
-msgstr ""
-"<p><b>Povolit / Zakázat:</b></p>\n"
-"<p>Pouze povolená pravidla jsou filtrována.\n"
-"<br />\n"
-"Pro dynamická pravidla vypnutí opětovně zobrazí dříve filtrované zprávy.</p>"
+msgstr "<p><b>Povolit / Zakázat:</b></p>\n<p>Pouze povolená pravidla jsou filtrována.\n<br />\nPro dynamická pravidla vypnutí opětovně zobrazí dříve filtrované zprávy.</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
 msgctxt "IgnoreListEditDlg|"
@@ -3455,10 +3255,7 @@ msgctxt "IgnoreListModel|"
 msgid ""
 "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
 "dynamic rules, disabling actually shows the filtered messages again"
-msgstr ""
-"<b>Povolit / Zakázat:</b><br />Pouze povolená pravidla jsou filtrována.<br "
-"/>Pro dynamická pravidla jsou jejich vypnutím filtrované zprávy znovu "
-"zobrazeny"
+msgstr "<b>Povolit / Zakázat:</b><br />Pouze povolená pravidla jsou filtrována.<br />Pro dynamická pravidla jsou jejich vypnutím filtrované zprávy znovu zobrazeny"
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:73
 msgctxt "IgnoreListModel|"
@@ -3471,14 +3268,7 @@ msgid ""
 "\"*@foobar.com\" matches any sender from host foobar.com<br />    "
 "\"stupid!.+\" (RegEx) matches any sender with nickname \"stupid\" from any "
 "host<br />"
-msgstr ""
-"<b>Pravidlo ignorance:</b><br />Podle typu pravidla text je porovnáván "
-"vůči:<br /><br />- <u>obsahu zprávy:</u><br /><i>Příklad:<i><br />    "
-"\"*foobar*\" bude platit na jakýkoliv text obsahující \"foobar\"<br /><br "
-"/>- <u>odesílateli <i>nick!ident@host.name<i></u><br /><i>Příklad:</i><br />"
-"    \"*@foobar.com\" platí na všechny odesílatele z domény foobar.com<br />"
-"    \"stupid!.+\" (RegEx) bude platit na kohokoliv s přezdívkou \"stupid\" a"
-" z libovolné adresy<br />"
+msgstr "<b>Pravidlo ignorance:</b><br />Podle typu pravidla text je porovnáván vůči:<br /><br />- <u>obsahu zprávy:</u><br /><i>Příklad:<i><br />    \"*foobar*\" bude platit na jakýkoliv text obsahující \"foobar\"<br /><br />- <u>odesílateli <i>nick!ident@host.name<i></u><br /><i>Příklad:</i><br />    \"*@foobar.com\" platí na všechny odesílatele z domény foobar.com<br />    \"stupid!.+\" (RegEx) bude platit na kohokoliv s přezdívkou \"stupid\" a z libovolné adresy<br />"
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
 msgctxt "IgnoreListModel|"
@@ -3547,10 +3337,7 @@ msgid ""
 "There is already a rule\n"
 "\"%1\"\n"
 "Please choose another rule."
-msgstr ""
-"Pravidlo již existuje\n"
-"\"%1\"\n"
-"Prosím vyberte jiné pravidlo."
+msgstr "Pravidlo již existuje\n\"%1\"\nProsím vyberte jiné pravidlo."
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:14
 msgctxt "IndicatorNotificationConfigWidget|"
@@ -3562,8 +3349,7 @@ msgctxt "IndicatorNotificationConfigWidget|"
 msgid ""
 "This enables support for the Ayatana Project's application indicator "
 "(libindicate)."
-msgstr ""
-"Povoluje podporu aplikačního indikátoru projektu Ayatana (libindicate)."
+msgstr "Povoluje podporu aplikačního indikátoru projektu Ayatana (libindicate)."
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:23
 msgctxt "IndicatorNotificationConfigWidget|"
@@ -3743,7 +3529,7 @@ msgstr ": "
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
 msgctxt "InputWidgetSettingsPage|"
 msgid "Add space after nick when completing mid-sentence"
-msgstr ""
+msgstr "Přidat mezeru za přezdívku, při doplňování uprostřed věty"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgctxt "InputWidgetSettingsPage|"
@@ -3948,9 +3734,7 @@ msgctxt "KeySequenceWidget|"
 msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
-msgstr ""
-"Klikněte na tlačítko a poté zadejte zkratku, kterou byste rádi používali.\n"
-"Například pro Ctrl+a držte klávesu Ctrl a stiskněte a."
+msgstr "Klikněte na tlačítko a poté zadejte zkratku, kterou byste rádi používali.\nNapříklad pro Ctrl+a držte klávesu Ctrl a stiskněte a."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:259
 msgctxt "KeySequenceWidget|Meta key"
@@ -3995,18 +3779,14 @@ msgctxt "KeySequenceWidget|"
 msgid ""
 "The \"%1\" shortcut is already in use, and cannot be configured.\n"
 "Please choose another one."
-msgstr ""
-"Zkratka \"%1\" je již používána a tedy nemůže být nastavena.\n"
-"Prosím zvolte jinou."
+msgstr "Zkratka \"%1\" je již používána a tedy nemůže být nastavena.\nProsím zvolte jinou."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
 #, qt-format
 msgctxt "KeySequenceWidget|"
 msgid ""
 "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
-msgstr ""
-"Zkratka \"%1\" má nejednoznačný význam spolu se zkratkou pro následujíc "
-"činnost:"
+msgstr "Zkratka \"%1\" má nejednoznačný význam spolu se zkratkou pro následujíc činnost:"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:364
 msgctxt "KeySequenceWidget|"
@@ -4373,9 +4153,7 @@ msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
-msgstr ""
-"Citlivá data, například hesla, budou přenášena k jádru Quasselu bez použití "
-"šifrování."
+msgstr "Citlivá data, například hesla, budou přenášena k jádru Quasselu bez použití šifrování."
 
 #: ../src/qtui/mainwin.cpp:1046
 msgctxt "MainWin|"
@@ -4393,9 +4171,7 @@ msgctxt "MainWin|"
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
-msgstr ""
-"<b>SSL certifikát poskytnutý jádrem %1 je nedůvěryhodný z následujících "
-"důvodů:</b>"
+msgstr "<b>SSL certifikát poskytnutý jádrem %1 je nedůvěryhodný z následujících důvodů:</b>"
 
 #: ../src/qtui/mainwin.cpp:1067
 msgctxt "MainWin|"
@@ -4411,9 +4187,7 @@ msgstr "Zobrazit certifikát"
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
-msgstr ""
-"Chcete tento certifikát přijmout na trvalo a vyhnout se opětovnému "
-"schvalování?"
+msgstr "Chcete tento certifikát přijmout na trvalo a vyhnout se opětovnému schvalování?"
 
 #: ../src/qtui/mainwin.cpp:1086
 msgctxt "MainWin|"
@@ -4572,17 +4346,13 @@ msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
-msgstr ""
-"<b>Poznámka:</b> Tento krok smaže všechna relevantní data, včetně historie, "
-"z databáze jádra a nelze jej zvrátit."
+msgstr "<b>Poznámka:</b> Tento krok smaže všechna relevantní data, včetně historie, z databáze jádra a nelze jej zvrátit."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgctxt "NetworkModelController|"
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr ""
-"<br>Aktivní záložky s kanály nelze smazat, nejprve musíte daný kanál "
-"opustit."
+msgstr "<br>Aktivní záložky s kanály nelze smazat, nejprve musíte daný kanál opustit."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:172
 msgctxt "NetworkModelController|"
@@ -4688,9 +4458,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
-msgstr ""
-"Natavit automatickou identifikaci, nebo různé příkazy ke spuštění, po "
-"připojení k serveru"
+msgstr "Natavit automatickou identifikaci, nebo různé příkazy ke spuštění, po připojení k serveru"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
 msgctxt "NetworksSettingsPage|"
@@ -4702,9 +4470,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
-msgstr ""
-"Seznam IRC příkazů, které se spustí při připojení.\n"
-"Quassel se automaticky připojuje ke kanálům, tedy /join zde s vysokou pravděpodobností nebude třeba!"
+msgstr "Seznam IRC příkazů, které se spustí při připojení.\nQuassel se automaticky připojuje ke kanálům, tedy /join zde s vysokou pravděpodobností nebude třeba!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgctxt "NetworksSettingsPage|"
@@ -4793,9 +4559,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
-msgstr ""
-"Nastavení pokročilých možností, jako kódování a automatické opakování "
-"připojení"
+msgstr "Nastavení pokročilých možností, jako kódování a automatické opakování připojení"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
 msgctxt "NetworksSettingsPage|"
@@ -4813,9 +4577,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
-msgstr ""
-"Specifikuje v jakém kódování budete odesílat zprávy.\n"
-"UTF-8 je dosti inteligentní volba pro většinu sítí."
+msgstr "Specifikuje v jakém kódování budete odesílat zprávy.\nUTF-8 je dosti inteligentní volba pro většinu sítí."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:679
 msgctxt "NetworksSettingsPage|"
@@ -4828,9 +4590,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
-msgstr ""
-"Příchozí zprávy kódované v UTF8 budou vždy rozpoznány.\n"
-"Toto nastavení definuje kódování pro zprávy které nejsou v UTF8."
+msgstr "Příchozí zprávy kódované v UTF8 budou vždy rozpoznány.\nToto nastavení definuje kódování pro zprávy které nejsou v UTF8."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:710
 msgctxt "NetworksSettingsPage|"
@@ -4843,9 +4603,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr ""
-"Tato volba specifikuje v jakém kódování jsou přezdívky, kontrolní zprávy a názvy serverů.\n"
-"Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!"
+msgstr "Tato volba specifikuje v jakém kódování jsou přezdívky, kontrolní zprávy a názvy serverů.\nPokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:741
 msgctxt "NetworksSettingsPage|"
@@ -4895,8 +4653,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
-msgstr ""
-"Opravdu chcete smazat síť \"%1\" a veškeré její nastavení, včetně historie?"
+msgstr "Opravdu chcete smazat síť \"%1\" a veškeré její nastavení, včetně historie?"
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
 msgctxt "NickEditDlg|"
@@ -4913,9 +4670,7 @@ msgctxt "NickEditDlg|"
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr ""
-"Validní přezdívka může obsahovat písmenka anglické abecedy, čísla, a "
-"speciální znaky {, }, [, ], \\, |, `, ^, _ a -."
+msgstr "Validní přezdívka může obsahovat písmenka anglické abecedy, čísla, a speciální znaky {, }, [, ], \\, |, `, ^, _ a -."
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgctxt "NickEditDlg|"
@@ -4993,10 +4748,7 @@ msgid ""
 "This wizard will help you to set up your default identity and your IRC "
 "network connection.<br>This only covers basic settings. You can cancel this "
 "wizard any time and use the settings dialog for more detailed changes."
-msgstr ""
-"Tento průvodce vám pomůže nastavit výchozí identitu a spojení k IRC "
-"síti.<br>Zaměřuje se pouze na základní nastavení. Můžete ho kdykoliv "
-"přerušit a použít nastavení v aplikaci pro podrobnější nastavení/změny."
+msgstr "Tento průvodce vám pomůže nastavit výchozí identitu a spojení k IRC síti.<br>Zaměřuje se pouze na základní nastavení. Můžete ho kdykoliv přerušit a použít nastavení v aplikaci pro podrobnější nastavení/změny."
 
 #: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
 #: ../src/uisupport/qssparser.cpp:316
@@ -5266,9 +5018,7 @@ msgctxt "ServerEditDlg|"
 msgid ""
 "Do not change unless you're going to connect to a server not supporting "
 "SSLv3!"
-msgstr ""
-"Tuto hodnotu měňte pouze za předpokladu, že se připojujete k serveru "
-"nepodporujícímu SSLv3!"
+msgstr "Tuto hodnotu měňte pouze za předpokladu, že se připojujete k serveru nepodporujícímu SSLv3!"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:151
 msgctxt "ServerEditDlg|"
@@ -5346,8 +5096,7 @@ msgctxt "SettingsDlg|"
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
-msgstr ""
-"Na této konfigurační stránce jsou neuložené změny. Přejete si je uložit?"
+msgstr "Na této konfigurační stránce jsou neuložené změny. Přejete si je uložit?"
 
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #, qt-format
@@ -5363,9 +5112,7 @@ msgstr "Znovu načíst nastavení"
 #: ../src/qtui/settingsdlg.cpp:193
 msgctxt "SettingsDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr ""
-"Opravdu chcete znovu načíst nastavení, odstraní všechny změny na této "
-"stránce?"
+msgstr "Opravdu chcete znovu načíst nastavení, odstraní všechny změny na této stránce?"
 
 #: ../src/qtui/settingsdlg.cpp:202
 msgctxt "SettingsDlg|"
@@ -5401,9 +5148,7 @@ msgstr "Znovu načíst nastavení"
 #: ../src/qtui/settingspagedlg.cpp:104
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr ""
-"Opravdu chcete znovu načíst nastavení, odstraní všechny změny na této "
-"stránce?"
+msgstr "Opravdu chcete znovu načíst nastavení, odstraní všechny změny na této stránce?"
 
 #: ../src/qtui/settingspagedlg.cpp:113
 msgctxt "SettingsPageDlg|"
@@ -5470,8 +5215,7 @@ msgstr "Zkratky"
 #: ../src/common/signalproxy.cpp:880
 msgctxt "SignalProxy|"
 msgid "Peer tried to send package larger than max package size!"
-msgstr ""
-"Peer se pokusil odeslat balíček větší než je maximální povolená velikost!"
+msgstr "Peer se pokusil odeslat balíček větší než je maximální povolená velikost!"
 
 #: ../src/common/signalproxy.cpp:885
 msgctxt "SignalProxy|"
@@ -5569,9 +5313,7 @@ msgctxt "SimpleNetworkEditor|"
 msgid ""
 "A list of IRC channels you will join automatically after connecting to the "
 "network"
-msgstr ""
-"Seznam IRC kanálů ke kterým se automaticky připojíte po připojení do dané "
-"sítě"
+msgstr "Seznam IRC kanálů ke kterým se automaticky připojíte po připojení do dané sítě"
 
 #: ../src/core/sqlitestorage.cpp:52
 msgctxt "SqliteStorage|"
@@ -5581,12 +5323,7 @@ msgid ""
 "via network. Use SQLite if your Quassel Core should store its data on the "
 "same machine it is running on, and if you only expect a few users to use "
 "your core."
-msgstr ""
-"SQLite je souborově založený databázový server, který nevyžaduje "
-"nastavování. Je vhodný pro malé a střední databáze, které nepotřebují být "
-"přístupné přes síť. Použijte jej pokud vaše Quassel jádro ukládá data na "
-"stejném stroji na kterém běží a pokud očekáváte pouze pár připojujících se "
-"uživatelů k tomuto jádru."
+msgstr "SQLite je souborově založený databázový server, který nevyžaduje nastavování. Je vhodný pro malé a střední databáze, které nepotřebují být přístupné přes síť. Použijte jej pokud vaše Quassel jádro ukládá data na stejném stroji na kterém běží a pokud očekáváte pouze pár připojujících se uživatelů k tomuto jádru."
 
 #: ../src/qtui/ui/sslinfodlg.ui:14
 msgctxt "SslInfoDlg|"
@@ -6113,5 +5850,3 @@ msgid_plural "%n User(s)"
 msgstr[0] "%n Uživatel"
 msgstr[1] "%n Uživatelé"
 msgstr[2] "%n Uživatelů"
-
-

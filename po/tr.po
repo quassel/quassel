@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-24 15:34+0000\n"
+"PO-Revision-Date: 2012-02-13 10:36+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,11 +28,7 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgctxt "AboutDlg|"
@@ -41,11 +37,7 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Sürüm 0.2.0-pre, İnşa &gt;= 474 (2008-02-08)</p></body></html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Sürüm 0.2.0-pre, İnşa &gt;= 474 (2008-02-08)</p></body></html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:115
 msgctxt "AboutDlg|"
@@ -99,9 +91,7 @@ msgctxt "AboutDlg|"
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
-msgstr ""
-"Aşağıdaki katkıcılara (alfabetik sırayla) ve buraya yazmayı unuttuğumuz "
-"herkese teşekkür ederiz:"
+msgstr "Aşağıdaki katkıcılara (alfabetik sırayla) ve buraya yazmayı unuttuğumuz herkese teşekkür ederiz:"
 
 #: ../src/qtui/aboutdlg.cpp:135
 msgctxt "AboutDlg|"
@@ -118,19 +108,7 @@ msgid ""
 "href=\"http://www.nokia.com\"><img "
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr ""
-"Özel teşekkürlerimiz:<br><dl><dt><img src=\":/pics/quassel-"
-"eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>Orijinal Quassel ikonu - "
-"The All-Seeing Eye için</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a "
-"href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>Quassel"
-" üzerinde gördüğümüz tüm grafik dizaynı için</dd><dt><img src=\":/pics/qt-"
-"logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software "
-"önceki adı ile Trolltech</a></b></dt><dd>Qt ve Qtopia'yı tasarladıkları "
-"için, ve Greenphones ve dahası var QuasselTopia geliştirme sponsorlukları "
-"için</dd><dt><a href=\"http://www.nokia.com\"><img "
-"src=\":/pics/nokia.png\"></a></b></dt><dd>Qt'ye canlılık verdikleri için, ve"
-" Quassel Mobile N810s ile ilgili geliştirilmesini sponsorize ettiklerinden "
-"dolayı onlara gidiyor</dd>"
+msgstr "Özel teşekkürlerimiz:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>Orijinal Quassel ikonu - The All-Seeing Eye için</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>Quassel üzerinde gördüğümüz tüm grafik dizaynı için</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software önceki adı ile Trolltech</a></b></dt><dd>Qt ve Qtopia'yı tasarladıkları için, ve Greenphones ve dahası var QuasselTopia geliştirme sponsorlukları için</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>Qt'ye canlılık verdikleri için, ve Quassel Mobile N810s ile ilgili geliştirilmesini sponsorize ettiklerinden dolayı onlara gidiyor</dd>"
 
 #: ../src/core/abstractsqlstorage.cpp:115
 #, qt-format
@@ -470,9 +448,7 @@ msgctxt "BufferView|"
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
-msgstr ""
-"\"%1\" arabelleğini kalıcı olarak \"%2\" arabelleğiyle birleştireyim mi?\n"
-"Bu işlem geri alınamaz!"
+msgstr "\"%1\" arabelleğini kalıcı olarak \"%2\" arabelleğiyle birleştireyim mi?\nBu işlem geri alınamaz!"
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 msgctxt "BufferViewEditDlg|"
@@ -698,9 +674,7 @@ msgctxt "ChannelListDlg|"
 msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows to pass search strings to the IRC Server."
-msgstr ""
-"Basit ve gelişmiş mod arasında seçim yap.\n"
-"Gelişmiş modda arama dizgileri IRC Sunucuya gönderilebilir."
+msgstr "Basit ve gelişmiş mod arasında seçim yap.\nGelişmiş modda arama dizgileri IRC Sunucuya gönderilebilir."
 
 #: ../src/qtui/ui/channellistdlg.ui:62
 msgctxt "ChannelListDlg|"
@@ -726,11 +700,7 @@ msgid ""
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Sürüm 0.2.0-pre, İnşa &gt;= 474 (2008-02-08)</p></body></html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Sürüm 0.2.0-pre, İnşa &gt;= 474 (2008-02-08)</p></body></html>"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:14
 msgctxt "ChatMonitorSettingsPage|"
@@ -779,9 +749,7 @@ msgstr "Göster:"
 msgctxt "ChatMonitorSettingsPage|"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr ""
-"Mesajın geldiği arabellek görmezden geliniyor olsa bile, vurgulamaları "
-"sohbet ekranında göster"
+msgstr "Mesajın geldiği arabellek görmezden geliniyor olsa bile, vurgulamaları sohbet ekranında göster"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgctxt "ChatMonitorSettingsPage|"
@@ -909,9 +877,7 @@ msgstr "Renkli metne izin ver (mIRC renk kodları)"
 msgctxt "ChatViewSettingsPage|"
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
-msgstr ""
-"Fare web adresinin üzerinden geçerken websitesinin önizleme penceresini "
-"göster"
+msgstr "Fare web adresinin üzerinden geçerken websitesinin önizleme penceresini göster"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:114
 msgctxt "ChatViewSettingsPage|"
@@ -1389,8 +1355,7 @@ msgstr "Geçersiz dinleme adresi %1"
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr ""
-"GUI istemcileri IPv6 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
+msgstr "GUI istemcileri IPv6 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
 
 #: ../src/core/core.cpp:409
 #, qt-format
@@ -1402,8 +1367,7 @@ msgstr "IPv6 arayüzü açılamadı %1:%2: %3"
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr ""
-"GUI istemcileri IPv4 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
+msgstr "GUI istemcileri IPv4 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
 
 #: ../src/core/core.cpp:427
 #, qt-format
@@ -1443,10 +1407,7 @@ msgctxt "Core|"
 msgid ""
 "<b>Your Quassel Client is too old!</b><br>This core needs at least "
 "client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr ""
-"<b>Quassel İstemciniz çok eski!</b><br>Bu çekirdek en azından "
-"istemci/çekirdek protokol sürümü %1 istemektedir.<br>Lütfen istemcinizin "
-"sürümünü yükseltin."
+msgstr "<b>Quassel İstemciniz çok eski!</b><br>Bu çekirdek en azından istemci/çekirdek protokol sürümü %1 istemektedir.<br>Lütfen istemcinizin sürümünü yükseltin."
 
 #: ../src/core/core.cpp:516 ../src/core/core.cpp:606 ../src/core/core.cpp:630
 msgctxt "Core|"
@@ -1462,8 +1423,7 @@ msgstr "çok eski, reddediliyor."
 #, qt-format
 msgctxt "Core|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr ""
-"<b>Quassel Çekirdek Sürüm %1</b><br>İnşa: %2<br>Up %3g%4s%5d (%6'dan beri)"
+msgstr "<b>Quassel Çekirdek Sürüm %1</b><br>İnşa: %2<br>Up %3g%4s%5d (%6'dan beri)"
 
 #: ../src/core/core.cpp:586
 msgctxt "Core|"
@@ -1475,24 +1435,19 @@ msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
-msgstr ""
-"<b>İstemci başlatılamadı!</b><br>Oturumu açmaya çalışmadan önce başlatma "
-"mesajı göndermeniz gerekmektedir."
+msgstr "<b>İstemci başlatılamadı!</b><br>Oturumu açmaya çalışmadan önce başlatma mesajı göndermeniz gerekmektedir."
 
 #: ../src/core/core.cpp:606
 msgctxt "Core|"
 msgid "did not send an init message before trying to login, rejecting."
-msgstr ""
-"oturumu açmaya çalışmadan önce başlatma mesajı gönderilmedi, reddediliyor."
+msgstr "oturumu açmaya çalışmadan önce başlatma mesajı gönderilmedi, reddediliyor."
 
 #: ../src/core/core.cpp:624
 msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
-msgstr ""
-"<b>Geçersiz kullanıcı adı ya da parolası!</b><br>Yazdığınız kullanıcı "
-"adı/parola kombinasyonu veritabanında bulunamadı."
+msgstr "<b>Geçersiz kullanıcı adı ya da parolası!</b><br>Yazdığınız kullanıcı adı/parola kombinasyonu veritabanında bulunamadı."
 
 #: ../src/core/core.cpp:630
 #, qt-format
@@ -1664,8 +1619,7 @@ msgstr "Çekirdek Ayarlama Sihirbazı"
 #: ../src/qtui/coreconfigwizard.cpp:97
 msgctxt "CoreConfigWizard|"
 msgid "Your core has been successfully configured. Logging you in..."
-msgstr ""
-"Çekirdeğiniz başarılı bir şekilde yapılandırıldı. Oturumunuz açılıyor..."
+msgstr "Çekirdeğiniz başarılı bir şekilde yapılandırıldı. Oturumunuz açılıyor..."
 
 #: ../src/qtui/coreconfigwizard.cpp:104
 #, qt-format
@@ -1673,18 +1627,14 @@ msgctxt "CoreConfigWizard|"
 msgid ""
 "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start "
 "over."
-msgstr ""
-"Çekirdek yapılandırması başarısız: <br><b>%1</b><br>Baştan başlamak için "
-"<em>İleri</em> düğmesine basın."
+msgstr "Çekirdek yapılandırması başarısız: <br><b>%1</b><br>Baştan başlamak için <em>İleri</em> düğmesine basın."
 
 #: ../src/qtui/coreconfigwizard.cpp:119
 msgctxt "CoreConfigWizard|"
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
 "remember to configure your identities and networks now."
-msgstr ""
-"Yeni yapılandırılmış Quassel Çekirdeğine bağlandınız!<br>Hesaplarınızı ve "
-"ağlarınızı yapılandırmayı unutmayın."
+msgstr "Yeni yapılandırılmış Quassel Çekirdeğine bağlandınız!<br>Hesaplarınızı ve ağlarınızı yapılandırmayı unutmayın."
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:14
 msgctxt "CoreConfigWizardAdminUserPage|"
@@ -1738,9 +1688,7 @@ msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
-msgstr ""
-"Öncelikle çekirdekte yeni bir kullanıcı oluşturacağız. Bu kullanıcı yönetici"
-" haklarına sahip olacak."
+msgstr "Öncelikle çekirdekte yeni bir kullanıcı oluşturacağız. Bu kullanıcı yönetici haklarına sahip olacak."
 
 #: ../src/qtui/coreconfigwizard.cpp:135
 msgctxt "CoreConfigWizardPages::IntroPage|"
@@ -1757,9 +1705,7 @@ msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
-msgstr ""
-"Lütfen Quassel Çekirdeğinin kayıt ve diğer verileri saklaması için bir "
-"veritabanı seçin."
+msgstr "Lütfen Quassel Çekirdeğinin kayıt ve diğer verileri saklaması için bir veritabanı seçin."
 
 #: ../src/qtui/coreconfigwizard.cpp:277
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
@@ -1776,9 +1722,7 @@ msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
 "automatically."
-msgstr ""
-"Ayarlarınız çekirdekte kayıt edildi, ve otomatik olarak oturumunuz "
-"açılacaktır."
+msgstr "Ayarlarınız çekirdekte kayıt edildi, ve otomatik olarak oturumunuz açılacaktır."
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
 msgctxt "CoreConfigWizardStorageSelectionPage|"
@@ -1910,9 +1854,7 @@ msgctxt "CoreConnection|"
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider "
 "upgrading."
-msgstr ""
-"Bağlanmaya çalıştığınız Quassel Çekirdeği çok eski! Lütfen yeni sürüme "
-"yükseltin."
+msgstr "Bağlanmaya çalıştığınız Quassel Çekirdeği çok eski! Lütfen yeni sürüme yükseltin."
 
 #: ../src/client/coreconnection.cpp:300
 msgctxt "CoreConnection|"
@@ -1941,9 +1883,7 @@ msgctxt "CoreConnection|"
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
-msgstr ""
-"<b>Bağlanmaya çalıştırğınız Quassel İstemcisi çok eski!</b><br>Bağlanmak "
-"için en azından çekirdek/istemci protokolü v%1 gerekli."
+msgstr "<b>Bağlanmaya çalıştırğınız Quassel İstemcisi çok eski!</b><br>Bağlanmak için en azından çekirdek/istemci protokolü v%1 gerekli."
 
 #: ../src/client/coreconnection.cpp:592
 msgctxt "CoreConnection|"
@@ -1992,8 +1932,7 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most"
 " KDE users"
-msgstr ""
-"Ağ durumunu KDE'nin donanım katmanından al. KDE kullanıcıları için önerilir."
+msgstr "Ağ durumunu KDE'nin donanım katmanından al. KDE kullanıcıları için önerilir."
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:29
 msgctxt "CoreConnectionSettingsPage|"
@@ -2202,27 +2141,21 @@ msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
 " create network %1!"
-msgstr ""
-"CoreSession::createNetwork(): %1 ağı oluşturulmaya çalışılırken Çekirdekten "
-"geçersiz networkId alındı!"
+msgstr "CoreSession::createNetwork(): %1 ağı oluşturulmaya çalışılırken Çekirdekten geçersiz networkId alındı!"
 
 #: ../src/core/coresession.cpp:472
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
-msgstr ""
-"CoreSession::createNetwork(): Zaten varolan bir ağı oluşturmaya çalışıyor, "
-"güncelliyorum!"
+msgstr "CoreSession::createNetwork(): Zaten varolan bir ağı oluşturmaya çalışıyor, güncelliyorum!"
 
 #: ../src/core/coresessioneventprocessor.cpp:65
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
-msgstr ""
-"Takma ad listesinde geçerli ve kullanılmayan takma ad bulunamadı. /nick "
-"<farklıtakmaad> ile farklı bir takma ad kullanın"
+msgstr "Takma ad listesinde geçerli ve kullanılmayan takma ad bulunamadı. /nick <farklıtakmaad> ile farklı bir takma ad kullanın"
 
 #: ../src/core/coreuserinputhandler.cpp:81
 msgctxt "CoreUserInputHandler|"
@@ -2445,9 +2378,7 @@ msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
-msgstr ""
-"RFC uyumlu olmayan RPL_ISUPPORT alındı: bu beklenmeyen bir davranışa yol "
-"açabilir!"
+msgstr "RFC uyumlu olmayan RPL_ISUPPORT alındı: bu beklenmeyen bir davranışa yol açabilir!"
 
 #: ../src/core/eventstringifier.cpp:263
 #, qt-format
@@ -2991,8 +2922,7 @@ msgstr "DIşarıda Sebebi:"
 #: ../src/qtui/settingspages/identityeditwidget.ui:280
 msgctxt "IdentityEditWidget|"
 msgid "Set away when all clients have detached from the core"
-msgstr ""
-"Tüm istemciler çekirdekten ayrıldıklarında durumu dışarıda olarak ayarla"
+msgstr "Tüm istemciler çekirdekten ayrıldıklarında durumu dışarıda olarak ayarla"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:283
 msgctxt "IdentityEditWidget|"
@@ -3061,9 +2991,7 @@ msgstr "Atılma Sebebi:"
 msgctxt "IdentityEditWidget|"
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr ""
-"Çekirdeğinizin SSL Anahtar ve Sertifikasını düzenlemeniz için SSL Destekli "
-"bir İstemcinizin olması gerekiyor"
+msgstr "Çekirdeğinizin SSL Anahtar ve Sertifikasını düzenlemeniz için SSL Destekli bir İstemcinizin olması gerekiyor"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgctxt "IdentityEditWidget|"
@@ -3406,10 +3334,7 @@ msgid ""
 "There is already a rule\n"
 "\"%1\"\n"
 "Please choose another rule."
-msgstr ""
-"Zaten bir kural var\n"
-"\"%1\"\n"
-"Lütfen başka bir kural seçin."
+msgstr "Zaten bir kural var\n\"%1\"\nLütfen başka bir kural seçin."
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:14
 msgctxt "IndicatorNotificationConfigWidget|"
@@ -3849,10 +3774,7 @@ msgctxt "KeySequenceWidget|"
 msgid ""
 "The \"%1\" shortcut is already in use, and cannot be configured.\n"
 "Please choose another one."
-msgstr ""
-"Zaten bir kural var\n"
-"\"%1\"\n"
-"Lütfen başka bir kural seçin."
+msgstr "Zaten bir kural var\n\"%1\"\nLütfen başka bir kural seçin."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
 #, qt-format
@@ -4415,16 +4337,13 @@ msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
-msgstr ""
-"<b>Not:</b> Bu işlem tüm backlog verileri de dahil olmak üzere tüm ilgili "
-"verileri çekirdeğinizin veritabanından silecek ve geri dönüşü yok."
+msgstr "<b>Not:</b> Bu işlem tüm backlog verileri de dahil olmak üzere tüm ilgili verileri çekirdeğinizin veritabanından silecek ve geri dönüşü yok."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgctxt "NetworkModelController|"
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr ""
-"<br>Etkin kanal arabellekleri silinemez, lütfen önce kanaldan ayrılın."
+msgstr "<br>Etkin kanal arabellekleri silinemez, lütfen önce kanaldan ayrılın."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:172
 msgctxt "NetworkModelController|"
@@ -4542,9 +4461,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
-msgstr ""
-"Bağlantıdan sonra işletilecek IRC komutların listesini belirtin.\n"
-"Quassel IRC kanallara otomatik olarak bağlanır, bu yüzden /join komutunu yazmanıza gerek yok!"
+msgstr "Bağlantıdan sonra işletilecek IRC komutların listesini belirtin.\nQuassel IRC kanallara otomatik olarak bağlanır, bu yüzden /join komutunu yazmanıza gerek yok!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgctxt "NetworksSettingsPage|"
@@ -4633,9 +4550,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
-msgstr ""
-"Mesaj kodlamaları ve otomatik yeniden bağlanma gibi gelişmiş ayarları "
-"yapılandır"
+msgstr "Mesaj kodlamaları ve otomatik yeniden bağlanma gibi gelişmiş ayarları yapılandır"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
 msgctxt "NetworksSettingsPage|"
@@ -4653,9 +4568,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
-msgstr ""
-"Giden mesajlarınızın kodlamasını belirtin.\n"
-"UTF-8 çoğu ağ için en uygun tercihtir."
+msgstr "Giden mesajlarınızın kodlamasını belirtin.\nUTF-8 çoğu ağ için en uygun tercihtir."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:679
 msgctxt "NetworksSettingsPage|"
@@ -4681,9 +4594,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr ""
-"Kontrol mesajlarının, takma adların ve sunucu adlarının nasıl kodlanacağını belirler.\n"
-"*Gerçekten* ne yapıyor olduğunuzu bilmiyorsanız, ISO-8859-1 olarak bırakın!"
+msgstr "Kontrol mesajlarının, takma adların ve sunucu adlarının nasıl kodlanacağını belirler.\n*Gerçekten* ne yapıyor olduğunuzu bilmiyorsanız, ISO-8859-1 olarak bırakın!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:741
 msgctxt "NetworksSettingsPage|"
@@ -4750,9 +4661,7 @@ msgctxt "NickEditDlg|"
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr ""
-"Geçerli bir takma ad İngiliz alfabesindeki harfleri, sayıları ve {, }, [, ],"
-" \\, |, `, ^, _ - özel karakterlerini içerebilir."
+msgstr "Geçerli bir takma ad İngiliz alfabesindeki harfleri, sayıları ve {, }, [, ], \\, |, `, ^, _ - özel karakterlerini içerebilir."
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgctxt "NickEditDlg|"
@@ -5178,9 +5087,7 @@ msgctxt "SettingsDlg|"
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
-msgstr ""
-"Mevcut yapılandırma sayfasında kaydedilmemiş değişiklikler var. Bu "
-"değişiklikleri uygulamak ister misiniz?"
+msgstr "Mevcut yapılandırma sayfasında kaydedilmemiş değişiklikler var. Bu değişiklikleri uygulamak ister misiniz?"
 
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #, qt-format
@@ -5397,9 +5304,7 @@ msgctxt "SimpleNetworkEditor|"
 msgid ""
 "A list of IRC channels you will join automatically after connecting to the "
 "network"
-msgstr ""
-"Ağa bağlandıktan sonra otomatik olarak katılacağınız IRC kanallarının bir "
-"listesi"
+msgstr "Ağa bağlandıktan sonra otomatik olarak katılacağınız IRC kanallarının bir listesi"
 
 #: ../src/core/sqlitestorage.cpp:52
 msgctxt "SqliteStorage|"
@@ -5922,5 +5827,3 @@ msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
 msgstr[0] "%n Kullanıcı"
-
-

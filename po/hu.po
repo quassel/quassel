@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-01-24 15:34+0000\n"
+"PO-Revision-Date: 2012-02-13 10:37+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,11 +28,7 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; fonts-size:15pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; fonts-size:15pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgctxt "AboutDlg|"
@@ -41,11 +37,7 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Verzió: 0.2.0-pre, Build &gt;=474 (2008-02-08)</p></body</html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Verzió: 0.2.0-pre, Build &gt;=474 (2008-02-08)</p></body</html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:115
 msgctxt "AboutDlg|"
@@ -71,8 +63,7 @@ msgstr "K&öszönet"
 #, qt-format
 msgctxt "AboutDlg|"
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr ""
-"<b>Verzió:</b> %1<br><b>Protokollverzió:</b> %2<br><b>Összeállítva:</b> %3"
+msgstr "<b>Verzió:</b> %1<br><b>Protokollverzió:</b> %2<br><b>Összeállítva:</b> %3"
 
 #: ../src/qtui/aboutdlg.cpp:46
 msgctxt "AboutDlg|"
@@ -88,17 +79,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr ""
-"<b>Egy modern, elosztott IRC-kliens<b><br><br>&copy; A Quassel projekt, "
-"2005-2012.<br><a href=\"http://quassel-irc.org\">#quassel</a> a <a href=\" "
-"http://www.freenode.net\">Freenode</a> hálózaton.</a><br><br>A Quassel IRC a"
-" <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> és <a "
-"href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> kettős licencek "
-"szerint érhető el.<br>A legtöbb ikon tulajdonosai az <a href=\" http://www"
-".oxygen-icons.org\">Oxygen fejlesztői</a>, és a <a href=\"http:// "
-"www.gnu.org/licenses/lgpl.html\">LGPL</a> licenc alatt érhetők el.<br><br> "
-"Kérjük a hibákat a <a href=\"http://bugs.quassel-"
-"irc.org\">http://bugs.quassel- irc.org</a> oldalon jelentsék."
+msgstr "<b>Egy modern, elosztott IRC-kliens<b><br><br>&copy; A Quassel projekt, 2005-2012.<br><a href=\"http://quassel-irc.org\">#quassel</a> a <a href=\" http://www.freenode.net\">Freenode</a> hálózaton.</a><br><br>A Quassel IRC a <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> és <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> kettős licencek szerint érhető el.<br>A legtöbb ikon tulajdonosai az <a href=\" http://www.oxygen-icons.org\">Oxygen fejlesztői</a>, és a <a href=\"http:// www.gnu.org/licenses/lgpl.html\">LGPL</a> licenc alatt érhetők el.<br><br> Kérjük a hibákat a <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel- irc.org</a> oldalon jelentsék."
 
 #: ../src/qtui/aboutdlg.cpp:62
 msgctxt "AboutDlg|"
@@ -110,9 +91,7 @@ msgctxt "AboutDlg|"
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
-msgstr ""
-"Szeretnénk köszönetet mondani a következő közreműködőknek, és mindazoknak "
-"akiket elfelejtettünk itt megemlíteni:"
+msgstr "Szeretnénk köszönetet mondani a következő közreműködőknek, és mindazoknak akiket elfelejtettünk itt megemlíteni:"
 
 #: ../src/qtui/aboutdlg.cpp:135
 msgctxt "AboutDlg|"
@@ -129,20 +108,7 @@ msgid ""
 "href=\"http://www.nokia.com\"><img "
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr ""
-"Külön köszönetet mondunk a következőknek:<br><dl><dt><img src=\":/pics"
-"/quassel-eye.png\">&nbsp;<b>John „nox” Handnek</b></dt><dd>a Quassel eredeti"
-" ikonjának, a Mindent Látó Szem készítőjének,</dt><dt><img "
-"src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-"
-"icons.org\">az Oxygen csapatnak</a></b></dt><dd>a Quasselben látható "
-"grafikák készítéséért,</dd><dt><img src=\":/pics/qt-"
-"logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">a Qt Software-"
-"nek, korábbi nevén Trolltechnek</a></b></dt><dd>a Qt és a Qtopia "
-"létrehozásáért, a QuasselTopia Greenphone-on és továbbiakon történő "
-"fejlesztésének támogatásáért, valamint a</dd><dt><a "
-"href=\"http://www.nokia.com\"><img "
-"src=\":/pics/nokia.png\"></a>-nak</b></dt><dd>a Qt életben tartásáért és a "
-"Quassel Mobile N810s-en történő fejlesztésének támogatásáért.</dd>"
+msgstr "Külön köszönetet mondunk a következőknek:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John „nox” Handnek</b></dt><dd>a Quassel eredeti ikonjának, a Mindent Látó Szem készítőjének,</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">az Oxygen csapatnak</a></b></dt><dd>a Quasselben látható grafikák készítéséért,</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">a Qt Software-nek, korábbi nevén Trolltechnek</a></b></dt><dd>a Qt és a Qtopia létrehozásáért, a QuasselTopia Greenphone-on és továbbiakon történő fejlesztésének támogatásáért, valamint a</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a>-nak</b></dt><dd>a Qt életben tartásáért és a Quassel Mobile N810s-en történő fejlesztésének támogatásáért.</dd>"
 
 #: ../src/core/abstractsqlstorage.cpp:115
 #, qt-format
@@ -161,10 +127,7 @@ msgctxt "AliasesModel|"
 msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
-msgstr ""
-"<b>Az álnév gyorsbillentyűje</b><br />Ugyanúgy használható, mint egy "
-"általános perjeles parancs.<br /><br /><b>Például a „foo” használható /foo "
-"alakban"
+msgstr "<b>Az álnév gyorsbillentyűje</b><br />Ugyanúgy használható, mint egy általános perjeles parancs.<br /><br /><b>Például a „foo” használható /foo alakban"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
 msgctxt "AliasesModel|"
@@ -392,9 +355,7 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
-msgstr ""
-"pufferenkénti üzenetek mennyisége, melyeket a csatlakozás létrehozása után "
-"kér le a program."
+msgstr "pufferenkénti üzenetek mennyisége, melyeket a csatlakozás létrehozása után kér le a program."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
 msgctxt "BacklogSettingsPage|"
@@ -436,9 +397,7 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Amount of messages to be fetched in addition to the unread messages. The "
 "Limit does not apply here."
-msgstr ""
-"Az olvasatlan üzeneteken felül gyűjtentő üzenetek mennyisége. A korlátot ne "
-"itt adja meg."
+msgstr "Az olvasatlan üzeneteken felül gyűjtentő üzenetek mennyisége. A korlátot ne itt adja meg."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
 #: ../src/qtui/settingspages/backlogsettingspage.ui:385
@@ -489,9 +448,7 @@ msgctxt "BufferView|"
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
-msgstr ""
-"Szeretné összefűzni végleg az \"%1\" és \"%2\" puffert? A művelet nem "
-"visszavonható!"
+msgstr "Szeretné összefűzni végleg az \"%1\" és \"%2\" puffert? A művelet nem visszavonható!"
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 msgctxt "BufferViewEditDlg|"
@@ -554,9 +511,7 @@ msgctxt "BufferViewSettingsPage|"
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
-msgstr ""
-"Ez az opció nem használható amikor minden Hálozat látható.\n"
-"Ebben a módban különálló státuszpufferek nem láthatók."
+msgstr "Ez az opció nem használható amikor minden Hálozat látható.\nEbben a módban különálló státuszpufferek nem láthatók."
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
 msgctxt "BufferViewSettingsPage|"
@@ -719,9 +674,7 @@ msgctxt "ChannelListDlg|"
 msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows to pass search strings to the IRC Server."
-msgstr ""
-"Válasszon egyszerű és haladó mód között.\n"
-"A haladó mód engedi szöveg keresését az IRC szerveren."
+msgstr "Válasszon egyszerű és haladó mód között.\nA haladó mód engedi szöveg keresését az IRC szerveren."
 
 #: ../src/qtui/ui/channellistdlg.ui:62
 msgctxt "ChannelListDlg|"
@@ -747,14 +700,7 @@ msgid ""
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
-msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Műveleti módok:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Bekapcsolás:</span> <span style=\" font-weight:400;\">Csak a pufferek látszódnak a jobb oldalon a chatablakban</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Kikapcsolás:</span> A pufferek a jobb oldalon tiltásra kerülnek.</p></body></html>"
+msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Műveleti módok:</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Bekapcsolás:</span> <span style=\" font-weight:400;\">Csak a pufferek látszódnak a jobb oldalon a chatablakban</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Kikapcsolás:</span> A pufferek a jobb oldalon tiltásra kerülnek.</p></body></html>"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:14
 msgctxt "ChatMonitorSettingsPage|"
@@ -776,14 +722,7 @@ msgid ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
-msgstr ""
-"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Műveleti módok:</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Bekapcsolás:</span> <span style=\" font-weight:400;\">Csak a pufferek látszódnak a jobb oldalon a chatablakban</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Kikapcsolás:</span> A pufferek a jobb oldalon tiltásra kerülnek.</p></body></html>"
+msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Műveleti módok:</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Bekapcsolás:</span> <span style=\" font-weight:400;\">Csak a pufferek látszódnak a jobb oldalon a chatablakban</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Kikapcsolás:</span> A pufferek a jobb oldalon tiltásra kerülnek.</p></body></html>"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
 msgctxt "ChatMonitorSettingsPage|"
@@ -810,9 +749,7 @@ msgstr "Megjelenítés:"
 msgctxt "ChatMonitorSettingsPage|"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr ""
-"Mutassa a chatablakban a névkiemeléseket, akkor is, ha az eredeti puffer "
-"tiltott"
+msgstr "Mutassa a chatablakban a névkiemeléseket, akkor is, ha az eredeti puffer tiltott"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgctxt "ChatMonitorSettingsPage|"
@@ -1418,8 +1355,7 @@ msgstr "Nem érvényes figyelő cím %1"
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr ""
-"GUI kliens figyelése %1 számú IPv6-on, %2 porton, %3 számú protokollal"
+msgstr "GUI kliens figyelése %1 számú IPv6-on, %2 porton, %3 számú protokollal"
 
 #: ../src/core/core.cpp:409
 #, qt-format
@@ -1431,8 +1367,7 @@ msgstr "Nem lehet megnyitni az IPv6 csatolót %1:%2:%3"
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr ""
-"GUI kliens figyelése %1 számú IPv4-en, %2 porton, %3 számú protokollal"
+msgstr "GUI kliens figyelése %1 számú IPv4-en, %2 porton, %3 számú protokollal"
 
 #: ../src/core/core.cpp:427
 #, qt-format
@@ -1472,9 +1407,7 @@ msgctxt "Core|"
 msgid ""
 "<b>Your Quassel Client is too old!</b><br>This core needs at least "
 "client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr ""
-"<b>Az Ön Quassel kliense túl régi!</b><br>A core legalább %1 számú protokoll"
-" verziót igényel.<br>Kérem fontolja meg kliensének frissítését."
+msgstr "<b>Az Ön Quassel kliense túl régi!</b><br>A core legalább %1 számú protokoll verziót igényel.<br>Kérem fontolja meg kliensének frissítését."
 
 #: ../src/core/core.cpp:516 ../src/core/core.cpp:606 ../src/core/core.cpp:630
 msgctxt "Core|"
@@ -1490,9 +1423,7 @@ msgstr "túl régi, visszautasítás."
 #, qt-format
 msgctxt "Core|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr ""
-"<b>Quassel Core Verziószám %1</b><br>Built: %2<br>Működési idő %3d%4h%5m (%6"
-" óta)"
+msgstr "<b>Quassel Core Verziószám %1</b><br>Built: %2<br>Működési idő %3d%4h%5m (%6 óta)"
 
 #: ../src/core/core.cpp:586
 msgctxt "Core|"
@@ -1504,9 +1435,7 @@ msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
-msgstr ""
-"<b>A kliens nem előkészített!</b><br>Indítási üzenet küldése szükséges a "
-"bejelentkezés előtt."
+msgstr "<b>A kliens nem előkészített!</b><br>Indítási üzenet küldése szükséges a bejelentkezés előtt."
 
 #: ../src/core/core.cpp:606
 msgctxt "Core|"
@@ -1518,9 +1447,7 @@ msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
-msgstr ""
-"<b>Nem megfelelő felhasználói név vagy jelszó!</b><br>Az Ön által megadott "
-"felhasználói név/jelszó páros nem található az adatbázisban."
+msgstr "<b>Nem megfelelő felhasználói név vagy jelszó!</b><br>Az Ön által megadott felhasználói név/jelszó páros nem található az adatbázisban."
 
 #: ../src/core/core.cpp:630
 #, qt-format
@@ -1536,8 +1463,7 @@ msgstr "Nem azonosított kliens bontotta a kapcsolatot."
 #: ../src/core/core.cpp:647
 msgctxt "Core|"
 msgid "Non-authed client disconnected. (socket allready destroyed)"
-msgstr ""
-"Nem azonosított kliens kapcsolódása megszűnt (az illesztőpont már törölve)"
+msgstr "Nem azonosított kliens kapcsolódása megszűnt (az illesztőpont már törölve)"
 
 #: ../src/core/core.cpp:695
 msgctxt "Core|"
@@ -1701,18 +1627,14 @@ msgctxt "CoreConfigWizard|"
 msgid ""
 "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start "
 "over."
-msgstr ""
-"Mag konfiguráció nem sikerült:<br><b>%1</b><br>Nyomja meg a <em>Következő "
-"gombot</em> az újraindításhoz."
+msgstr "Mag konfiguráció nem sikerült:<br><b>%1</b><br>Nyomja meg a <em>Következő gombot</em> az újraindításhoz."
 
 #: ../src/qtui/coreconfigwizard.cpp:119
 msgctxt "CoreConfigWizard|"
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
 "remember to configure your identities and networks now."
-msgstr ""
-"Bejelentkeztél a frissen Konfigurált Quassel magba!<br>Ne felejtse el most "
-"beállítani a személyazonosságot és hálózatokat."
+msgstr "Bejelentkeztél a frissen Konfigurált Quassel magba!<br>Ne felejtse el most beállítani a személyazonosságot és hálózatokat."
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:14
 msgctxt "CoreConfigWizardAdminUserPage|"
@@ -1766,9 +1688,7 @@ msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
-msgstr ""
-"Először létre fogunk hozni egy felhasználót a magon. Ennek az első "
-"felhasználónak adminisztrátor kiváltságai lesznek."
+msgstr "Először létre fogunk hozni egy felhasználót a magon. Ennek az első felhasználónak adminisztrátor kiváltságai lesznek."
 
 #: ../src/qtui/coreconfigwizard.cpp:135
 msgctxt "CoreConfigWizardPages::IntroPage|"
@@ -1785,9 +1705,7 @@ msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
-msgstr ""
-"Kérem válasszon ki egy adatbázis-tárolót a Quassel mag raktárhoz, hogy "
-"tárolja tudja a restanciákat és egyéb adatokat."
+msgstr "Kérem válasszon ki egy adatbázis-tárolót a Quassel mag raktárhoz, hogy tárolja tudja a restanciákat és egyéb adatokat."
 
 #: ../src/qtui/coreconfigwizard.cpp:277
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
@@ -1804,9 +1722,7 @@ msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
 "automatically."
-msgstr ""
-"Az Ön beállításai tárolásra kerültek a magban, és a bejelentkezés "
-"automatikusan megtörténik."
+msgstr "Az Ön beállításai tárolásra kerültek a magban, és a bejelentkezés automatikusan megtörténik."
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
 msgctxt "CoreConfigWizardStorageSelectionPage|"
@@ -1967,9 +1883,7 @@ msgctxt "CoreConnection|"
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
-msgstr ""
-"<b>A Quassel Core, mellyel kapcslódni próbál, túl régi! </b><br>Legalább v%1"
-" számú core/kliens protokoll szükséges a kapcsolódáshoz."
+msgstr "<b>A Quassel Core, mellyel kapcslódni próbál, túl régi! </b><br>Legalább v%1 számú core/kliens protokoll szükséges a kapcsolódáshoz."
 
 #: ../src/client/coreconnection.cpp:592
 msgctxt "CoreConnection|"
@@ -2228,27 +2142,21 @@ msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
 " create network %1!"
-msgstr ""
-"CoreSession::createNetwork(): Érvénytelen hálózati azonosító érkezett a "
-"Magtól a %1 hálózat létrehozása közben!"
+msgstr "CoreSession::createNetwork(): Érvénytelen hálózati azonosító érkezett a Magtól a %1 hálózat létrehozása közben!"
 
 #: ../src/core/coresession.cpp:472
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
-msgstr ""
-"CoreSession::createNetwork(): Kísérlet már meglévő hálózat létrehozásához, "
-"frissítés!"
+msgstr "CoreSession::createNetwork(): Kísérlet már meglévő hálózat létrehozásához, frissítés!"
 
 #: ../src/core/coresessioneventprocessor.cpp:65
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
-msgstr ""
-"Nem található szabad és érvényes álnév az álnévlistában. Használja a /nick "
-"<másikálnév> parancsot a folytatáshoz"
+msgstr "Nem található szabad és érvényes álnév az álnévlistában. Használja a /nick <másikálnév> parancsot a folytatáshoz"
 
 #: ../src/core/coreuserinputhandler.cpp:81
 msgctxt "CoreUserInputHandler|"
@@ -2471,9 +2379,7 @@ msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
-msgstr ""
-"RPL_ISUPPORT számára nem megfelelő RFC érkezett, mely váratlan viselkedéshez"
-" vezethet!"
+msgstr "RPL_ISUPPORT számára nem megfelelő RFC érkezett, mely váratlan viselkedéshez vezethet!"
 
 #: ../src/core/eventstringifier.cpp:263
 #, qt-format
@@ -2837,14 +2743,12 @@ msgstr ""
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>All identities need an identity name set</li>"
-msgstr ""
-"<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
+msgstr "<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:180
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr ""
-"<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
+msgstr "<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:181
 msgctxt "IdentitiesSettingsPage|"
@@ -3019,8 +2923,7 @@ msgstr "Távollét oka:"
 #: ../src/qtui/settingspages/identityeditwidget.ui:280
 msgctxt "IdentityEditWidget|"
 msgid "Set away when all clients have detached from the core"
-msgstr ""
-"Állítson be távollétet, amikor minden kliens le lett választva a magról"
+msgstr "Állítson be távollétet, amikor minden kliens le lett választva a magról"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:283
 msgctxt "IdentityEditWidget|"
@@ -3063,9 +2966,7 @@ msgctxt "IdentityEditWidget|"
 msgid ""
 "The \"ident\" is part of your hostmask and, together with your host, "
 "uniquely identifies you within the IRC network."
-msgstr ""
-"A \"személyazonosság\" a gépmaszk része és az Ön gépével együtt egyedileg "
-"azonosítja Önt az IRC hálózaton belül."
+msgstr "A \"személyazonosság\" a gépmaszk része és az Ön gépével együtt egyedileg azonosítja Önt az IRC hálózaton belül."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:423
 msgctxt "IdentityEditWidget|"
@@ -3091,18 +2992,14 @@ msgstr "Kirúgási ok:"
 msgctxt "IdentityEditWidget|"
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr ""
-"SSL képes kliensre van szüksége ahhoz, hogy a Mag SSL kulcsát és "
-"tanúsítványát"
+msgstr "SSL képes kliensre van szüksége ahhoz, hogy a Mag SSL kulcsát és tanúsítványát"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgctxt "IdentityEditWidget|"
 msgid ""
 "Warning: you are not connected with a secured connection to the Quassel Core!\n"
 "Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
-msgstr ""
-"Figyelem: nem biztonságos módon csatlakozott a Quassel Maghoz! Ha folytatja,"
-" az SSL kulcs és SSL tanúsítvány kódolatlanul kerül átvitelre!"
+msgstr "Figyelem: nem biztonságos módon csatlakozott a Quassel Maghoz! Ha folytatja, az SSL kulcs és SSL tanúsítvány kódolatlanul kerül átvitelre!"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
 msgctxt "IdentityEditWidget|"
@@ -4444,16 +4341,13 @@ msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
-msgstr ""
-"<b>Megjegyzés:</b> Ez minden kapcsolódó adatot törölni fog, beleértve a "
-"Napló adatait a Mag adatbázisából, és a művelet nem visszavonható."
+msgstr "<b>Megjegyzés:</b> Ez minden kapcsolódó adatot törölni fog, beleértve a Napló adatait a Mag adatbázisából, és a művelet nem visszavonható."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgctxt "NetworkModelController|"
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr ""
-"Aktív csatorna pufferek nem törölhetök, elsöként lépjen ki a csatornáról."
+msgstr "Aktív csatorna pufferek nem törölhetök, elsöként lépjen ki a csatornáról."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:172
 msgctxt "NetworkModelController|"
@@ -4559,9 +4453,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
-msgstr ""
-"Automatikus azonosítás konfigurálása vagy egyéb, a kiszolgálóhoz történő "
-"csatlakozás után végrehajtandó parancsok beállítása"
+msgstr "Automatikus azonosítás konfigurálása vagy egyéb, a kiszolgálóhoz történő csatlakozás után végrehajtandó parancsok beállítása"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
 msgctxt "NetworksSettingsPage|"
@@ -4573,10 +4465,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
-msgstr ""
-"Határozzon meg egy listát a csatlakozás után végrehajtandó parancsokról. "
-"Jegyezze meg, hogy a Quassel IRC automatikusan újracsatlakozik a "
-"csatornákhoz, így a /join parancs használata nagyon ritkán szükséges!"
+msgstr "Határozzon meg egy listát a csatlakozás után végrehajtandó parancsokról. Jegyezze meg, hogy a Quassel IRC automatikusan újracsatlakozik a csatornákhoz, így a /join parancs használata nagyon ritkán szükséges!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgctxt "NetworksSettingsPage|"
@@ -4665,9 +4554,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
-msgstr ""
-"Haladó beállítások konfigurálása, mint üzenet kódolása és automatikus "
-"újracsatlakozás"
+msgstr "Haladó beállítások konfigurálása, mint üzenet kódolása és automatikus újracsatlakozás"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
 msgctxt "NetworksSettingsPage|"
@@ -4685,9 +4572,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
-msgstr ""
-"Határozza meg, mely kódolású üzenetek fognak beérkezni. UTF-8 jó választás a"
-" legtöbb hálózathoz."
+msgstr "Határozza meg, mely kódolású üzenetek fognak beérkezni. UTF-8 jó választás a legtöbb hálózathoz."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:679
 msgctxt "NetworksSettingsPage|"
@@ -4700,10 +4585,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
-msgstr ""
-"Az UTF-8-ban kódolt bejövő üzenetek minden esetben a következőképpen lesznek"
-" kezelve. Ez a beállítás határozza meg a kódolást, amelyek nem UTF-8-ban "
-"vannak."
+msgstr "Az UTF-8-ban kódolt bejövő üzenetek minden esetben a következőképpen lesznek kezelve. Ez a beállítás határozza meg a kódolást, amelyek nem UTF-8-ban vannak."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:710
 msgctxt "NetworksSettingsPage|"
@@ -4716,10 +4598,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr ""
-"Ez hatáozza meg, hogy az ellenőrző üzenetek, álnevek és kiszolgálónevek "
-"hogyan legyenek kódolva! Amennyiben valóban nem tudja, mit tegyen, hagyja "
-"ezt ISO-8859-1 kódoláson!"
+msgstr "Ez hatáozza meg, hogy az ellenőrző üzenetek, álnevek és kiszolgálónevek hogyan legyenek kódolva! Amennyiben valóban nem tudja, mit tegyen, hagyja ezt ISO-8859-1 kódoláson!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:741
 msgctxt "NetworksSettingsPage|"
@@ -4746,8 +4625,7 @@ msgstr ""
 #: ../src/qtui/settingspages/networkssettingspage.cpp:168
 msgctxt "NetworksSettingsPage|"
 msgid "<li>All networks need at least one server defined</li>"
-msgstr ""
-"<li>Minden hálózat legalább egy kiszolgáló meghatározását igényli</li>"
+msgstr "<li>Minden hálózat legalább egy kiszolgáló meghatározását igényli</li>"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:169
 msgctxt "NetworksSettingsPage|"
@@ -4770,9 +4648,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
-msgstr ""
-"Valóban törölni szeretné a(z) %1 hálózatot és minden kapcsolódó beállítást, "
-"beleértve a Naplót?"
+msgstr "Valóban törölni szeretné a(z) %1 hálózatot és minden kapcsolódó beállítást, beleértve a Naplót?"
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
 msgctxt "NickEditDlg|"
@@ -4789,9 +4665,7 @@ msgctxt "NickEditDlg|"
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr ""
-"Az érvényes becenév tartalmazhajta az angol abc betűit, számokat és a "
-"következő speciális karaktereket: {, }, [, ], \\, |, `, ^, _ és -."
+msgstr "Az érvényes becenév tartalmazhajta az angol abc betűit, számokat és a következő speciális karaktereket: {, }, [, ], \\, |, `, ^, _ és -."
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgctxt "NickEditDlg|"
@@ -4850,8 +4724,7 @@ msgstr "A teljes %1 számú naplóüzenet lekérése a %2 pufferbe"
 msgctxt "QObject|"
 msgid ""
 "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr ""
-"Az összes %1 számú olvasatlan naplóüzenet lekérése (plusz kapcsolódó %2)"
+msgstr "Az összes %1 számú olvasatlan naplóüzenet lekérése (plusz kapcsolódó %2)"
 
 #: ../src/client/backlogrequester.cpp:123
 #, qt-format
@@ -5140,8 +5013,7 @@ msgctxt "ServerEditDlg|"
 msgid ""
 "Do not change unless you're going to connect to a server not supporting "
 "SSLv3!"
-msgstr ""
-"Ne végezzen módosítást, ha nem fog SSLv3-at támogató szerverhez csatlakozni!"
+msgstr "Ne végezzen módosítást, ha nem fog SSLv3-at támogató szerverhez csatlakozni!"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:151
 msgctxt "ServerEditDlg|"
@@ -5219,9 +5091,7 @@ msgctxt "SettingsDlg|"
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
-msgstr ""
-"Mentetlen változtatások vannak az aktuális konfigurációs oldalon. Szeretné "
-"most alkalmazni a változtatásokat?"
+msgstr "Mentetlen változtatások vannak az aktuális konfigurációs oldalon. Szeretné most alkalmazni a változtatásokat?"
 
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #, qt-format
@@ -5237,9 +5107,7 @@ msgstr "Beállítások újratöltése"
 #: ../src/qtui/settingsdlg.cpp:193
 msgctxt "SettingsDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr ""
-"Szeretné újra betölteni a beállításokat, miközben elveti változtatásait ezen"
-" az oldalon?"
+msgstr "Szeretné újra betölteni a beállításokat, miközben elveti változtatásait ezen az oldalon?"
 
 #: ../src/qtui/settingsdlg.cpp:202
 msgctxt "SettingsDlg|"
@@ -5249,8 +5117,7 @@ msgstr "Alapértelmezések visszaállítása"
 #: ../src/qtui/settingsdlg.cpp:202
 msgctxt "SettingsDlg|"
 msgid "Do you like to restore the default values for this page?"
-msgstr ""
-"Szeretné helyreállítani ennek az oldalnak az alapértelmezett értékeit?"
+msgstr "Szeretné helyreállítani ennek az oldalnak az alapértelmezett értékeit?"
 
 #: ../src/qtui/ui/settingspagedlg.ui:14
 msgctxt "SettingsPageDlg|"
@@ -5276,9 +5143,7 @@ msgstr "Beállítások újratöltése"
 #: ../src/qtui/settingspagedlg.cpp:104
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr ""
-"Szeretné újra betölteni a beállításokat, miközben elveti változtatásait ezen"
-" az oldalon?"
+msgstr "Szeretné újra betölteni a beállításokat, miközben elveti változtatásait ezen az oldalon?"
 
 #: ../src/qtui/settingspagedlg.cpp:113
 msgctxt "SettingsPageDlg|"
@@ -5288,8 +5153,7 @@ msgstr "Alapértelmezések visszaállítása"
 #: ../src/qtui/settingspagedlg.cpp:113
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to restore the default values for this page?"
-msgstr ""
-"Szeretné helyreállítani ennek az oldalnak az alapértelmezett értékeit?"
+msgstr "Szeretné helyreállítani ennek az oldalnak az alapértelmezett értékeit?"
 
 #: ../src/qtui/settingspages/shortcutsmodel.cpp:110
 msgctxt "ShortcutsModel|"
@@ -5346,8 +5210,7 @@ msgstr "Gyorsbillentyűk"
 #: ../src/common/signalproxy.cpp:880
 msgctxt "SignalProxy|"
 msgid "Peer tried to send package larger than max package size!"
-msgstr ""
-"A partner nagyobb csomagot próbált küldeni, mint a maximális csomagméret!"
+msgstr "A partner nagyobb csomagot próbált küldeni, mint a maximális csomagméret!"
 
 #: ../src/common/signalproxy.cpp:885
 msgctxt "SignalProxy|"
@@ -5455,12 +5318,7 @@ msgid ""
 "via network. Use SQLite if your Quassel Core should store its data on the "
 "same machine it is running on, and if you only expect a few users to use "
 "your core."
-msgstr ""
-"Az SQLite egy fájl alapú adatbázis motor, amely nem igényel semmi "
-"beállítást. Kis és közepes méretű adatbázisokhoz alkalmas, melyek nem "
-"igényelnek interneten keresztüli hozzáférést. Abban az esetben használjon "
-"SQLiteot, ha a Quassel Mag ugyanazon a géepn tárolja az adatokat, amelyen "
-"fut, és ha csak néhány felhasználó használja a magot."
+msgstr "Az SQLite egy fájl alapú adatbázis motor, amely nem igényel semmi beállítást. Kis és közepes méretű adatbázisokhoz alkalmas, melyek nem igényelnek interneten keresztüli hozzáférést. Abban az esetben használjon SQLiteot, ha a Quassel Mag ugyanazon a géepn tárolja az adatokat, amelyen fut, és ha csak néhány felhasználó használja a magot."
 
 #: ../src/qtui/ui/sslinfodlg.ui:14
 msgctxt "SslInfoDlg|"
@@ -5980,5 +5838,3 @@ msgid "%n User(s)"
 msgid_plural "%n User(s)"
 msgstr[0] "%n felhasználó"
 msgstr[1] "%n felhasználó"
-
-
