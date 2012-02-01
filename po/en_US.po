@@ -66,7 +66,7 @@ msgstr ""
 #: ../src/qtui/aboutdlg.cpp:46
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2010 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2012 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
