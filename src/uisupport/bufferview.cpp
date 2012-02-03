@@ -65,11 +65,14 @@ void BufferView::init() {
   hideColumn(1);
   hideColumn(2);
   setIndentation(10);
+
   expandAll();
 
   header()->hide(); // nobody seems to use this anyway
 
-  setAnimated(true);
+  // breaks with Qt 4.8
+  if(QString("4.8.0") > qVersion()) // FIXME breaks with Qt versions >= 4.10!
+    setAnimated(true);
 
   // FIXME This is to workaround bug #663
   setUniformRowHeights(true);
