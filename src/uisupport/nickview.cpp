@@ -44,7 +44,6 @@ NickView::NickView(QWidget *parent)
   : QTreeView(parent)
 {
   setIndentation(10);
-  setAnimated(true);
   header()->hide();
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setSortingEnabled(true);
@@ -52,6 +51,10 @@ NickView::NickView(QWidget *parent)
 
   setContextMenuPolicy(Qt::CustomContextMenu);
   setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+  // breaks with Qt 4.8
+  if(QString("4.8.0") > qVersion()) // FIXME breaks with Qt versions >= 4.10!
+    setAnimated(true);
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(showContextMenu(const QPoint&)));
 
