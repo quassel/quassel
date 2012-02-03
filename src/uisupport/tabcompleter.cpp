@@ -144,6 +144,7 @@ void TabCompleter::complete() {
       _lastCompletionLength += _nickSuffix.length();
     } else if (s.addSpaceMidSentence()) {
       _lineEdit->insert(" ");
+      _lastCompletionLength++;
     }
 
   // we're at the end of the list -> start over again
