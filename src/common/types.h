@@ -60,32 +60,32 @@ inline QDebug operator<<(QDebug dbg, const SignedId &signedId) { dbg.space() << 
 inline uint qHash(const SignedId &id) { return qHash(id.toInt()); }
 
 struct UserId : public SignedId {
-  inline UserId(int _id = 0) : SignedId(_id) {};
+  inline UserId(int _id = 0) : SignedId(_id) {}
   //inline operator QVariant() const { return QVariant::fromValue<UserId>(*this); }  // no automatic conversion!
 };
 
 struct MsgId : public SignedId {
-  inline MsgId(int _id = 0) : SignedId(_id) {};
+  inline MsgId(int _id = 0) : SignedId(_id) {}
   //inline operator QVariant() const { return QVariant::fromValue<MsgId>(*this); }
 };
 
 struct BufferId : public SignedId {
-  inline BufferId(int _id = 0) : SignedId(_id) {};
+  inline BufferId(int _id = 0) : SignedId(_id) {}
   //inline operator QVariant() const { return QVariant::fromValue<BufferId>(*this); }
 };
 
 struct NetworkId : public SignedId {
-  inline NetworkId(int _id = 0) : SignedId(_id) {};
+  inline NetworkId(int _id = 0) : SignedId(_id) {}
   //inline operator QVariant() const { return QVariant::fromValue<NetworkId>(*this); }
 };
 
 struct IdentityId : public SignedId {
-  inline IdentityId(int _id = 0) : SignedId(_id) {};
+  inline IdentityId(int _id = 0) : SignedId(_id) {}
   //inline operator QVariant() const { return QVariant::fromValue<IdentityId>(*this); }
 };
 
 struct AccountId : public SignedId {
-  inline AccountId(int _id = 0) : SignedId(_id) {};
+  inline AccountId(int _id = 0) : SignedId(_id) {}
 };
 
 Q_DECLARE_METATYPE(UserId)
@@ -101,8 +101,8 @@ typedef QList<BufferId> BufferIdList;
 
 //! Base class for exceptions.
 struct Exception {
-  Exception(QString msg = "Unknown Exception") : _msg(msg) {};
-  virtual ~Exception() {}; // make gcc happy
+  Exception(QString msg = "Unknown Exception") : _msg(msg) {}
+  virtual ~Exception() {} // make gcc happy
   virtual inline QString msg() { return _msg; }
 
   protected:
