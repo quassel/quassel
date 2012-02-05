@@ -76,22 +76,21 @@ void Logger::log() {
     }
     syslog(LOG_USER & prio, "%s", qPrintable(_buffer));
   }
-  // don't log to stdout if --syslog was specified (but neither ignore --logfile)
-  if(!Quassel::logFile())
-    return;
 #endif
 
-  _buffer.prepend(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss "));
+  // if we neither use syslog nor have a logfile we log to stdout
 
-  // if we don't have a logfile we log to stdout
+  if(Quassel::logFile() || !Quassel::logToSyslog()) {
+    _buffer.prepend(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss "));
 
-  QTextStream out(stdout);
-  if(Quassel::logFile() && Quassel::logFile()->isOpen()) {
-    _buffer.remove(QChar('\n'));
-    out.setDevice(Quassel::logFile());
+    QTextStream out(stdout);
+    if(Quassel::logFile() && Quassel::logFile()->isOpen()) {
+      _buffer.remove(QChar('\n'));
+      out.setDevice(Quassel::logFile());
+    }
+
+    out << _buffer << endl;
   }
-
-  out << _buffer << endl;
 }
 
 
