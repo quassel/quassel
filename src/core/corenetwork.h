@@ -85,6 +85,13 @@ public:
 
   inline UserId userId() const { return _coreSession->user(); }
 
+  inline QAbstractSocket::SocketState socketState() { return socket.state(); }
+  inline bool socketConnected() { return socket.state() == QAbstractSocket::ConnectedState; }
+  inline QHostAddress localAddress() { return socket.localAddress(); }
+  inline QHostAddress peerAddress() { return socket.peerAddress(); }
+  inline quint16 localPort() { return socket.localPort(); }
+  inline quint16 peerPort() { return socket.peerPort(); }
+
 public slots:
   virtual void setMyNick(const QString &mynick);
 
