@@ -39,7 +39,7 @@ bool OidentdConfigGenerator::init() {
 
   quasselStanza = QRegExp(QString("^lport .* { .* } #%1$").arg(configTag));
 
-  if (update())
+  if (parseConfig(true) && writeConfig())
     _initialized = true;
 
   qDebug() << "konichi wa °-°";
@@ -47,16 +47,21 @@ bool OidentdConfigGenerator::init() {
   return _initialized;
 }
 
-bool OidentdConfigGenerator::update() {
-  if (parseConfig())
-    qDebug() << "oidentd config parsed successfully";
-  else
-    qDebug() << QString("parsing oidentd config failed (%1 [%2])").arg(_configFile->errorString()).arg(_configFile->error());
+bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort) {
+  qDebug() << "localAddress" << localAddress;
+  qDebug() << "localPort" << localPort;
+  qDebug() << "peerAddress" << peerAddress;
+  qDebug() << "peerPort" << peerPort;
+  qDebug() << "ident" << identity->ident();
+
+  QString ident = identity->ident();
+
+  _config.append(QString("lport %1 { reply \"%2\" } #%3\n").arg(localPort).arg(ident).arg(configTag));
 
   return writeConfig();
 }
 
-bool OidentdConfigGenerator::parseConfig() {
+bool OidentdConfigGenerator::parseConfig(bool stripQuasselStanzas) {
   qDebug() << "_configFile name" << _configFile->fileName();
   qDebug() << "open?" << _configFile->isOpen();
   if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite))
@@ -66,7 +71,7 @@ bool OidentdConfigGenerator::parseConfig() {
   while (!_configFile->atEnd()) {
     QByteArray line = _configFile->readLine();
 
-    if (checkLine(line))
+    if (!stripQuasselStanzas || checkLine(line))
       parsedConfig.append(line);
   }
 
@@ -76,7 +81,14 @@ bool OidentdConfigGenerator::parseConfig() {
 }
 
 bool OidentdConfigGenerator::writeConfig() {
-  return true;
+  if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite))
+    return false;
+
+  //FIXME: thread safety
+  QTextStream out(_configFile);
+  out << _config;
+
+  return _configFile->flush();
 }
 
 bool OidentdConfigGenerator::checkLine(const QByteArray &line) {

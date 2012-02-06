@@ -25,6 +25,7 @@
 #include <QString>
 #include <QVariant>
 #include <QTextStream>
+#include <QHostAddress>
 
 class SignedId {
   protected:
@@ -94,6 +95,8 @@ Q_DECLARE_METATYPE(BufferId)
 Q_DECLARE_METATYPE(NetworkId)
 Q_DECLARE_METATYPE(IdentityId)
 Q_DECLARE_METATYPE(AccountId)
+
+Q_DECLARE_METATYPE(QHostAddress)
 
 // a few typedefs
 typedef QList<MsgId> MsgIdList;

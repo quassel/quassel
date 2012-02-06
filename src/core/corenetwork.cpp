@@ -68,7 +68,6 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   connect(&_autoWhoCycleTimer, SIGNAL(timeout()), this, SLOT(startAutoWhoCycle()));
   connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(fillBucketAndProcessQueue()));
 
-  connect(&socket, SIGNAL(connected()), Core::instance()->oidentdConfigGenerator(), SLOT(update()));
   connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
@@ -79,6 +78,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
   connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
+  connect(this, SIGNAL(newSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)));
 }
 
 CoreNetwork::~CoreNetwork() {
@@ -351,6 +351,7 @@ void CoreNetwork::socketError(QAbstractSocket::SocketError error) {
 }
 
 void CoreNetwork::socketInitialized() {
+qDebug() << "connected()";
   Server server = usedServer();
 #ifdef HAVE_SSL
   if(server.useSsl && !socket.isEncrypted())
@@ -363,6 +364,8 @@ void CoreNetwork::socketInitialized() {
     disconnectFromIrc();
     return;
   }
+
+  emit newSocket(identity, localAddress(), localPort(), peerAddress(), peerPort());
 
   // TokenBucket to avoid sending too much at once
   _messageDelay = 2200;    // this seems to be a safe value (2.2 seconds delay)

@@ -25,7 +25,9 @@
 #include <QDir>
 #include <QFile>
 #include <QDateTime>
+#include <QHostAddress>
 
+#include "coreidentity.h"
 #include <QDebug>
 
 class OidentdConfigGenerator : public QObject
@@ -40,12 +42,12 @@ public:
 signals:
     
 public slots:
-  bool update();
+  bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
 
 private:
   bool init();
   bool writeConfig();
-  bool parseConfig();
+  bool parseConfig(bool stripQuasselStanzas = false);
   bool checkLine(const QByteArray &line);
 
   bool _initialized;

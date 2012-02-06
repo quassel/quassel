@@ -169,8 +169,6 @@ Core::Core()
 }
 
 void Core::init() {
-  _oidentdConfigGenerator = new OidentdConfigGenerator();
-
   CoreSettings cs;
   _configured = initStorage(cs.storageSettings().toMap());
 
@@ -203,6 +201,8 @@ void Core::init() {
   connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   if(!startListening()) exit(1); // TODO make this less brutal
+
+  _oidentdConfigGenerator = new OidentdConfigGenerator(this);
 }
 
 Core::~Core() {
