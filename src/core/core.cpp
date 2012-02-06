@@ -169,6 +169,8 @@ Core::Core()
 }
 
 void Core::init() {
+  _oidentdConfigGenerator = new OidentdConfigGenerator();
+
   CoreSettings cs;
   _configured = initStorage(cs.storageSettings().toMap());
 
@@ -240,6 +242,7 @@ void Core::restoreState() {
     return;
   }
   */
+
   QVariantList activeSessions = s.coreState().toMap()["ActiveSessions"].toList();
   if(activeSessions.count() > 0) {
     quInfo() << "Restoring previous core state...";

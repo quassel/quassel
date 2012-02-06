@@ -26,6 +26,7 @@
 #include "coreircuser.h"
 
 #include <QTimer>
+#include <QDebug>
 
 #ifdef HAVE_SSL
 # include <QSslSocket>
@@ -33,6 +34,7 @@
 #else
 # include <QTcpSocket>
 #endif
+#include <QAbstractSocket>
 
 #ifdef HAVE_QCA2
 #  include "cipher.h"

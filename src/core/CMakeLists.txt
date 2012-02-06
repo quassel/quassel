@@ -24,6 +24,7 @@ set(SOURCES
     coreircuser.cpp
     corenetwork.cpp
     corenetworkconfig.cpp
+    oidentdconfiggenerator.cpp
     coresession.cpp
     coresessioneventprocessor.cpp
     coresettings.cpp
@@ -56,6 +57,7 @@ set(MOC_HDRS
     coreircuser.h
     corenetwork.h
     corenetworkconfig.h
+    oidentdconfiggenerator.h
     coresession.h
     coresessioneventprocessor.h
     coreuserinputhandler.h

@@ -68,6 +68,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   connect(&_autoWhoCycleTimer, SIGNAL(timeout()), this, SLOT(startAutoWhoCycle()));
   connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(fillBucketAndProcessQueue()));
 
+  connect(&socket, SIGNAL(connected()), Core::instance()->oidentdConfigGenerator(), SLOT(update()));
   connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));

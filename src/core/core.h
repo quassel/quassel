@@ -33,6 +33,7 @@
 #  include <QTcpSocket>
 #  include <QTcpServer>
 #endif
+#include "oidentdconfiggenerator.h"
 
 #include "storage.h"
 #include "bufferinfo.h"
@@ -404,6 +405,8 @@ public:
 
   static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
+  inline OidentdConfigGenerator *oidentdConfigGenerator() { return _oidentdConfigGenerator; }
+
   static const int AddClientEventId;
 
 public slots:
@@ -471,6 +474,8 @@ private:
 #else
   QTcpServer _server, _v6server;
 #endif
+
+  OidentdConfigGenerator *_oidentdConfigGenerator;
 
   QHash<QTcpSocket *, quint32> blocksizes;
   QHash<QTcpSocket *, QVariantMap> clientInfo;
