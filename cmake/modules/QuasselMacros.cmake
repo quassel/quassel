@@ -42,7 +42,7 @@ macro(generate_ts outvar basename)
   set(input ${basename}.po)
   set(output ${CMAKE_BINARY_DIR}/po/${basename}.ts)
   add_custom_command(OUTPUT ${output}
-          COMMAND cd  /D ${CMAKE_SOURCE_DIR}/po && ${QT_LCONVERT_EXECUTABLE}
+          COMMAND ${QT_LCONVERT_EXECUTABLE}
           ARGS -i ${input}
                -of ts
                -o ${output}

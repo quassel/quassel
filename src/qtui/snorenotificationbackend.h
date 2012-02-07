@@ -27,7 +27,7 @@
 
 
 namespace Snore{
-class SnoreCore;
+class SnoreServer;
 }
 
 #include <snore/core/notification/notification.h>
@@ -53,7 +53,7 @@ private slots:
 
 private:
     class ConfigWidget;
-    Snore::SnoreCore *m_snore;
+    Snore::SnoreServer *m_snore;
     Snore::Notification::Action *m_action;
     QHash<uint,Snore::Notification> m_notifications;
     QHash<uint,uint> m_notificationIds;
@@ -63,7 +63,7 @@ class SnoreNotificationBackend::ConfigWidget : public SettingsPage {
     Q_OBJECT
 
 public:
-    ConfigWidget(Snore::SnoreCore *snore,QWidget *parent = 0);
+    ConfigWidget(Snore::SnoreServer *snore,QWidget *parent = 0);
     void save();
     void load();
     bool hasDefaults() const;
@@ -73,7 +73,7 @@ private slots:
     void backendChanged(QString);
 
 private:
-    Snore::SnoreCore *m_snore;
+    Snore::SnoreServer *m_snore;
     QComboBox *m_backends;
     QString m_backend;
     //  QSpinBox *timeoutBox;
