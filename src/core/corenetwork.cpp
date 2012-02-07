@@ -78,7 +78,9 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
   connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
-  connect(this, SIGNAL(newSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)));
+
+  if(Quassel::isOptionSet("oidentd"))
+    connect(this, SIGNAL(newSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)));
 }
 
 CoreNetwork::~CoreNetwork() {

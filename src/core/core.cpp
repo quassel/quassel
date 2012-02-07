@@ -202,7 +202,8 @@ void Core::init() {
   connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   if(!startListening()) exit(1); // TODO make this less brutal
 
-  _oidentdConfigGenerator = new OidentdConfigGenerator(this);
+  if(Quassel::isOptionSet("oidentd"))
+    _oidentdConfigGenerator = new OidentdConfigGenerator(this);
 }
 
 Core::~Core() {

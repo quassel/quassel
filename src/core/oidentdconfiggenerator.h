@@ -27,6 +27,7 @@
 #include <QDateTime>
 #include <QHostAddress>
 
+#include "quassel.h"
 #include "coreidentity.h"
 #include <QDebug>
 
@@ -36,9 +37,6 @@ class OidentdConfigGenerator : public QObject
 public:
   explicit OidentdConfigGenerator(QObject *parent = 0);
 
-  QDir configDir;
-  QString configFileName;
-    
 signals:
     
 public slots:
@@ -55,8 +53,10 @@ private:
   QFile *_configFile;
   QByteArray _config;
 
+  QDir configDir;
+  QString configFileName;
+  QString configPath;
   QString configTag;
-
   QRegExp quasselStanza;
 };
 

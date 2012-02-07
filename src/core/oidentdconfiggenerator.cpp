@@ -32,9 +32,15 @@ OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
 bool OidentdConfigGenerator::init() {
   configDir = QDir::homePath();
   configFileName = ".oidentd.conf";
+
+  if(Quassel::isOptionSet("oidentd-conffile"))
+    configPath = Quassel::optionValue("oidentd-conffile");
+  else
+    configPath = configDir.absoluteFilePath(configFileName);
+
   configTag = " stanza created by Quassel";
 
-  _configFile = new QFile(configDir.absoluteFilePath(configFileName));
+  _configFile = new QFile(configPath);
   qDebug() << "1: _configFile" << _configFile->fileName();
 
   quasselStanza = QRegExp(QString("^lport .* { .* } #%1$").arg(configTag));
