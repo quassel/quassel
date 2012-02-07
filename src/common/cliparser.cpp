@@ -33,20 +33,20 @@ CliParser::CliParser() : AbstractCliParser() {
 void CliParser::addArgument(const QString &longName_, const CliParserArg &arg) {
   QString longName = longName_;
   longName.remove(QRegExp("\\s*<.*>\\s*")); // KCmdLineArgs takes args of the form "arg <defval>"
-  if(argsHash.contains(longName)) qWarning() << "Warning: Multiple definition of argument" << longName;
+  if(argsMap.contains(longName)) qWarning() << "Warning: Multiple definition of argument" << longName;
   if(arg.shortName != 0 && !lnameOfShortArg(arg.shortName).isNull())
     qWarning().nospace() << "Warning: Redefining shortName '" << arg.shortName << "' for " << longName << " previously defined for " << lnameOfShortArg(arg.shortName);
-  argsHash.insert(longName, arg);
+  argsMap.insert(longName, arg);
 }
 
 bool CliParser::addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value) {
-  if(argsHash.contains(name)){
-    if(type == CliParserArg::CliArgOption && argsHash.value(name).type == type) {
-      argsHash[name].value = escapedValue(value);
+  if(argsMap.contains(name)){
+    if(type == CliParserArg::CliArgOption && argsMap.value(name).type == type) {
+      argsMap[name].value = escapedValue(value);
       return true;
     }
-    else if (type == CliParserArg::CliArgSwitch && argsHash.value(name).type == type) {
-      argsHash[name].boolValue = true;
+    else if (type == CliParserArg::CliArgSwitch && argsMap.value(name).type == type) {
+      argsMap[name].boolValue = true;
       return true;
     }
   }
@@ -57,13 +57,13 @@ bool CliParser::addLongArg(const CliParserArg::CliArgType type, const QString &n
 bool CliParser::addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value) {
   QString longName = lnameOfShortArg(shortName);
   if(!longName.isNull()) {
-    if(type == CliParserArg::CliArgOption && argsHash.value(longName).type == type) {
-      argsHash[longName].value = escapedValue(value);
+    if(type == CliParserArg::CliArgOption && argsMap.value(longName).type == type) {
+      argsMap[longName].value = escapedValue(value);
       return true;
     }
     else if (type == CliParserArg::CliArgSwitch) {
-      if(argsHash.value(longName).type == type) {
-        argsHash[longName].boolValue = true;
+      if(argsMap.value(longName).type == type) {
+        argsMap[longName].boolValue = true;
         return true;
       }
       // arg is an option but detected as a switch -> argument is missing
@@ -153,11 +153,11 @@ void CliParser::usage() {
   std::cout << "Usage: " << qPrintable(QFileInfo(argsRaw.at(0)).completeBaseName()) << " [arguments]" << std::endl;
 
   // get size of longName field
-  QStringList keys = argsHash.keys();
+  QStringList keys = argsMap.keys();
   uint lnameFieldSize = 0;
   foreach (QString key, keys) {
     uint size = 0;
-    if(argsHash.value(key).type == CliParserArg::CliArgOption)
+    if(argsMap.value(key).type == CliParserArg::CliArgOption)
       size += key.size()*2;
     else
       size += key.size();
@@ -166,8 +166,8 @@ void CliParser::usage() {
     if(size > lnameFieldSize) lnameFieldSize = size;
   }
 
-  QHash<QString, CliParserArg>::const_iterator arg;
-  for(arg = argsHash.constBegin(); arg != argsHash.constEnd(); ++arg) {
+  QMap<QString, CliParserArg>::const_iterator arg;
+  for(arg = argsMap.constBegin(); arg != argsMap.constEnd(); ++arg) {
     QString output;
     QString lnameField;
 
@@ -191,11 +191,11 @@ void CliParser::usage() {
 }
 
 QString CliParser::value(const QString &longName) {
-  if(argsHash.contains(longName) && argsHash.value(longName).type == CliParserArg::CliArgOption) {
-    if(!argsHash.value(longName).value.isNull())
-      return argsHash.value(longName).value;
+  if(argsMap.contains(longName) && argsMap.value(longName).type == CliParserArg::CliArgOption) {
+    if(!argsMap.value(longName).value.isNull())
+      return argsMap.value(longName).value;
     else
-      return argsHash.value(longName).def;
+      return argsMap.value(longName).def;
   }
   else {
     qWarning() << "Warning: Requested value of not defined argument" << longName << "or argument is a switch";
@@ -204,9 +204,9 @@ QString CliParser::value(const QString &longName) {
 }
 
 bool CliParser::isSet(const QString &longName) {
-  if(argsHash.contains(longName)) {
-    if(argsHash.value(longName).type == CliParserArg::CliArgOption) return !argsHash.value(longName).value.isNull();
-    else return argsHash.value(longName).boolValue;
+  if(argsMap.contains(longName)) {
+    if(argsMap.value(longName).type == CliParserArg::CliArgOption) return !argsMap.value(longName).value.isNull();
+    else return argsMap.value(longName).boolValue;
   }
   else {
     qWarning() << "Warning: Requested isSet of not defined argument" << longName;
@@ -215,8 +215,8 @@ bool CliParser::isSet(const QString &longName) {
 }
 
 QString CliParser::lnameOfShortArg(const char arg) {
-  QHash<QString, CliParserArg>::const_iterator cur;
-  for (cur = argsHash.constBegin(); cur != argsHash.constEnd(); ++cur) {
+  QMap<QString, CliParserArg>::const_iterator cur;
+  for (cur = argsMap.constBegin(); cur != argsMap.constEnd(); ++cur) {
     if(cur.value().shortName == arg) return cur.key();
   }
   return QString();

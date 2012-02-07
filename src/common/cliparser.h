@@ -21,7 +21,7 @@
 #ifndef CLIPARSER_H
 #define CLIPARSER_H
 
-#include <QHash>
+#include <QMap>
 
 #include "abstractcliparser.h"
 
@@ -44,7 +44,7 @@ private:
   QString lnameOfShortArg(const char arg);
 
   QStringList argsRaw;
-  QHash<QString, CliParserArg> argsHash;
+  QMap<QString, CliParserArg> argsMap;
 };
 
 #endif
