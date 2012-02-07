@@ -31,9 +31,8 @@
 #include <iostream>
 
 
-#include <snore/core/snoreserver.h>
+#include <snore/core/snore.h>
 #include <snore/core/notification/notification.h>
-#include <snore/core/interface.h>
 
 
 SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
@@ -45,29 +44,9 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     notificationSettings.notify("Snore/Backend", this, SLOT(backendChanged(const QVariant &)));
 
     //TODO: try to get an instance of the tray icon to be able to show popups
-    m_snore = new Snore::SnoreServer();
-    QDir pluginsDir(qApp->applicationDirPath()+"/snoreplugins");
-    if(!pluginsDir.exists())
-        pluginsDir = QDir(LIBSNORE_PLUGIN_PATH);
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.path()+"/"+fileName);
-        QObject *plugin = loader.instance();
-        if (plugin == NULL) {
-            qDebug()<<"Failed loading plugin: "<<pluginsDir.path()+"/"+fileName<<loader.errorString();
-            continue;
-        }
-        Snore::Notification_Backend *sp = dynamic_cast< Snore::Notification_Backend*>(plugin);
-        if(sp==NULL){
-            qDebug()<<"Error:"<<fileName<<" is not a Snarl backend" ;
-            plugin->deleteLater();
-            continue;
-        }
-        qDebug()<<"Loading Notification Backend"<<sp->name();
-        m_snore->publicatePlugin(sp);
-    }
-
-    Snore::Application *a= new Snore::Application("Quassel",Snore::SnoreIcon(DesktopIcon("quassel").toImage()));
-
+    m_snore = new Snore::SnoreCore();
+    m_snore->loadPlugins(Snore::PluginContainer::BACKEND);
+    Snore::Application *a = new Snore::Application("Quassel",Snore::SnoreIcon(DesktopIcon("quassel").toImage()));
 
     connect(m_snore,SIGNAL(actionInvoked(Snore::Notification)),this,SLOT(actionInvoked(Snore::Notification)));
 
@@ -122,19 +101,19 @@ SettingsPage *SnoreNotificationBackend::createConfigWidget()const{
 
 /***************************************************************************/
 
-SnoreNotificationBackend::ConfigWidget::ConfigWidget(Snore::SnoreServer  *snore,QWidget *parent)
+SnoreNotificationBackend::ConfigWidget::ConfigWidget(Snore::SnoreCore *snore,QWidget *parent)
     :SettingsPage("Internal", "SnoreNotification", parent),
       m_snore(snore)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget( m_backends = new QComboBox(this));
-    m_backends->insertItems(0,m_snore->primaryNotificationBackends());
+    m_backends->insertItems(0,m_snore->notificationBackends());
 
     connect(m_backends, SIGNAL(currentIndexChanged(QString)), SLOT(backendChanged(QString)));
 }
 
 void SnoreNotificationBackend::ConfigWidget::backendChanged(QString b){
-    if(b!=m_snore->primaryNotificationBackend())
+    if(b != m_snore->primaryNotificationBackend())
         setChangedState(true);
 }
 
