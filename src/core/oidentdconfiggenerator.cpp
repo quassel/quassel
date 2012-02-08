@@ -28,6 +28,11 @@ OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
     init();
 }
 
+OidentdConfigGenerator::~OidentdConfigGenerator() {
+  _quasselConfig.clear();
+  writeConfig();
+}
+
 bool OidentdConfigGenerator::init() {
   configDir = QDir::homePath();
   configFileName = ".oidentd.conf";
@@ -48,11 +53,9 @@ bool OidentdConfigGenerator::init() {
   quasselStanzaTemplate = QString("lport %1 { reply \"%2\" } #%3\n");
   quasselStanzaRx = QRegExp(QString("^lport .* \\{ .* \\} #%1\\r?\\n").arg(configTag));
 
-  _mutex.lock();
   // initially remove all Quassel stanzas that might be present
   if (parseConfig(false) && writeConfig())
     _initialized = true;
-  _mutex.unlock();
 
   return _initialized;
 }
@@ -61,11 +64,9 @@ bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHost
   Q_UNUSED(localAddress) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
   QString ident = identity->ident();
 
-  _config.append(quasselStanzaTemplate.arg(localPort).arg(ident).arg(configTag));
+  _quasselConfig.append(quasselStanzaTemplate.arg(localPort).arg(ident).arg(configTag));
 
-  _mutex.lock();
   bool ret = writeConfig();
-  _mutex.unlock();
 
   return ret;
 }
@@ -76,32 +77,40 @@ bool OidentdConfigGenerator::removeSocket(const CoreIdentity *identity, const QH
   return true;
 }
 
-bool OidentdConfigGenerator::parseConfig(bool keepQuasselStanzas) {
+bool OidentdConfigGenerator::parseConfig(bool readQuasselStanzas) {
   if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite))
     return false;
+  _mutex.lock();
 
-  QByteArray parsedConfig;
+  _parsedConfig.clear();
+  _configFile->seek(0);
   while (!_configFile->atEnd()) {
     QByteArray line = _configFile->readLine();
 
-    if (keepQuasselStanzas || !lineByUs(line))
-      parsedConfig.append(line);
+    if (!lineByUs(line))
+      _parsedConfig.append(line);
+    else if (readQuasselStanzas)
+      _quasselConfig.append(line);
   }
 
-  _config = parsedConfig;
-
+  _configFile->close();
+  _mutex.unlock();
   return true;
 }
 
 bool OidentdConfigGenerator::writeConfig() {
   if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite | QIODevice::Text))
     return false;
+  _mutex.lock();
 
   _configFile->seek(0);
   _configFile->resize(0);
-  _configFile->write(_config);
+  _configFile->write(_parsedConfig);
+  _configFile->write(_quasselConfig);
 
-  return _configFile->flush();
+  _configFile->close();
+  _mutex.unlock();
+  return true;
 }
 
 bool OidentdConfigGenerator::lineByUs(const QByteArray &line) {

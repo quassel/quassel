@@ -36,6 +36,7 @@ class OidentdConfigGenerator : public QObject
     Q_OBJECT
 public:
   explicit OidentdConfigGenerator(QObject *parent = 0);
+  ~OidentdConfigGenerator();
 
 signals:
     
@@ -46,13 +47,14 @@ public slots:
 private:
   bool init();
   bool writeConfig();
-  bool parseConfig(bool keepQuasselStanzas = true);
+  bool parseConfig(bool readQuasselStanzas = false);
   bool lineByUs(const QByteArray &line);
 
   bool _initialized;
   QDateTime _lastSync;
   QFile *_configFile;
-  QByteArray _config;
+  QByteArray _parsedConfig;
+  QByteArray _quasselConfig;
   // Mutex isn't strictly necessary at the moment, since with the current invocation in Core only one instance at a time exists
   QMutex _mutex;
 
