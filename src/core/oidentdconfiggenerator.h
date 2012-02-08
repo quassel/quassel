@@ -26,6 +26,7 @@
 #include <QFile>
 #include <QDateTime>
 #include <QHostAddress>
+#include <QMutex>
 
 #include "quassel.h"
 #include "coreidentity.h"
@@ -53,6 +54,7 @@ private:
   QDateTime _lastSync;
   QFile *_configFile;
   QByteArray _config;
+  QMutex _mutex;
 
   QDir configDir;
   QString configFileName;

@@ -43,10 +43,12 @@ bool OidentdConfigGenerator::init() {
   _configFile = new QFile(configPath);
   qDebug() << "1: _configFile" << _configFile->fileName();
 
-  quasselStanza = QRegExp(QString("^lport .* { .* } #%1$").arg(configTag));
+  quasselStanza = QRegExp(QString("^lport .* \\{ .* \\} #%1\\n").arg(configTag));
 
+  _mutex.lock();
   if (parseConfig(false) && writeConfig())
     _initialized = true;
+  _mutex.unlock();
 
   qDebug() << "OidentdConfigGenerator" << (!_initialized ? "not" : "") << "initialized";
 
@@ -64,7 +66,9 @@ bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHost
 
   _config.append(QString("lport %1 { reply \"%2\" } #%3\n").arg(localPort).arg(ident).arg(configTag));
 
+  _mutex.lock();
   bool ret = writeConfig();
+  _mutex.unlock();
   qDebug() << "config written" << ret;
 
   return ret;
@@ -99,16 +103,16 @@ bool OidentdConfigGenerator::parseConfig(bool keepQuasselStanzas) {
 }
 
 bool OidentdConfigGenerator::writeConfig() {
-  if (!_configFile->isOpen() && !_configFile->open(QFile::WriteOnly | QFile::Truncate))
+  if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite | QIODevice::Text | QFile::Truncate))
     return false;
 
-  //FIXME: thread safety
-  QTextStream out(_configFile);
-  out << _config;
+  _configFile->seek(0);
+  _configFile->resize(0);
+  _configFile->write(_config);
 
   return _configFile->flush();
 }
 
 bool OidentdConfigGenerator::lineByUs(const QByteArray &line) {
-  return !quasselStanza.exactMatch(line);
+  return quasselStanza.exactMatch(line);
 }
