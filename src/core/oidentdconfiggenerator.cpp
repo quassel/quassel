@@ -71,14 +71,17 @@ bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHost
   return ret;
 }
 
-// not yet implemented
+//! not yet implemented
 bool OidentdConfigGenerator::removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort) {
   Q_UNUSED(identity) Q_UNUSED(localAddress) Q_UNUSED(localPort) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
   return true;
 }
 
 bool OidentdConfigGenerator::parseConfig(bool readQuasselStanzas) {
-  if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite))
+  if (!_configFile->exists())
+    return true;
+
+  if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadOnly))
     return false;
   _mutex.lock();
 
@@ -99,8 +102,13 @@ bool OidentdConfigGenerator::parseConfig(bool readQuasselStanzas) {
 }
 
 bool OidentdConfigGenerator::writeConfig() {
-  if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite | QIODevice::Text))
+  mode_t prev_umask = umask(S_IXUSR | S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH); // == 0133, rw-r--r--
+  bool not_open = (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite | QIODevice::Text));
+  umask(prev_umask);
+
+  if (not_open)
     return false;
+
   _mutex.lock();
 
   _configFile->seek(0);

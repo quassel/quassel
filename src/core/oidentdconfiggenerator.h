@@ -28,8 +28,30 @@
 #include <QHostAddress>
 #include <QMutex>
 
+#ifndef Q_OS_WIN32
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#endif /* Q_OS_WIN32 */
+
 #include "quassel.h"
 #include "coreidentity.h"
+
+//!  Produces oidentd configuration files
+/*!
+  Upon IRC connect this class puts the clients' ident data into an oidentd configuration file.
+
+  The default path is <~/.oidentd.conf>.
+
+  For oidentd to incorporate this file, the global oidentd.conf has to state something like this:
+
+  user "quassel" {
+    default {
+      allow spoof
+      allow spoof_all
+    }
+  }
+
+*/
 
 class OidentdConfigGenerator : public QObject
 {
@@ -38,8 +60,6 @@ public:
   explicit OidentdConfigGenerator(QObject *parent = 0);
   ~OidentdConfigGenerator();
 
-signals:
-    
 public slots:
   bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
   bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
