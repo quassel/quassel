@@ -54,13 +54,15 @@ private:
   QDateTime _lastSync;
   QFile *_configFile;
   QByteArray _config;
+  // Mutex isn't strictly necessary at the moment, since with the current invocation in Core only one instance at a time exists
   QMutex _mutex;
 
   QDir configDir;
   QString configFileName;
   QString configPath;
   QString configTag;
-  QRegExp quasselStanza;
+  QRegExp quasselStanzaRx;
+  QString quasselStanzaTemplate;
 };
 
 #endif // OIDENTDCONFIGGENERATOR_H
