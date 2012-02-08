@@ -41,12 +41,13 @@ signals:
     
 public slots:
   bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
+  bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
 
 private:
   bool init();
   bool writeConfig();
-  bool parseConfig(bool stripQuasselStanzas = false);
-  bool checkLine(const QByteArray &line);
+  bool parseConfig(bool keepQuasselStanzas = true);
+  bool lineByUs(const QByteArray &line);
 
   bool _initialized;
   QDateTime _lastSync;

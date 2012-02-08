@@ -79,8 +79,10 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
 #endif
   connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 
-  if(Quassel::isOptionSet("oidentd"))
-    connect(this, SIGNAL(newSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)));
+  if(Quassel::isOptionSet("oidentd")) {
+    connect(this, SIGNAL(socketInitialized(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)));
+    connect(this, SIGNAL(socketDisconnected(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(removeSocket(const CoreIdentity*,QHostAddress,quint16,QHostAddress,quint16)));
+  }
 }
 
 CoreNetwork::~CoreNetwork() {
@@ -367,7 +369,7 @@ qDebug() << "connected()";
     return;
   }
 
-  emit newSocket(identity, localAddress(), localPort(), peerAddress(), peerPort());
+  emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
 
   // TokenBucket to avoid sending too much at once
   _messageDelay = 2200;    // this seems to be a safe value (2.2 seconds delay)
@@ -413,6 +415,7 @@ void CoreNetwork::socketDisconnected() {
 
   setConnected(false);
   emit disconnected(networkId());
+  emit socketDisconnected(identityPtr(), localAddress(), localPort(), peerAddress(), peerPort());
   if(_quitRequested) {
     _quitRequested = false;
     setConnectionState(Network::Disconnected);

@@ -45,10 +45,10 @@ bool OidentdConfigGenerator::init() {
 
   quasselStanza = QRegExp(QString("^lport .* { .* } #%1$").arg(configTag));
 
-  if (parseConfig(true) && writeConfig())
+  if (parseConfig(false) && writeConfig())
     _initialized = true;
 
-  qDebug() << "konichi wa °-°";
+  qDebug() << "OidentdConfigGenerator" << (!_initialized ? "not" : "") << "initialized";
 
   return _initialized;
 }
@@ -64,12 +64,22 @@ bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHost
 
   _config.append(QString("lport %1 { reply \"%2\" } #%3\n").arg(localPort).arg(ident).arg(configTag));
 
-  return writeConfig();
+  bool ret = writeConfig();
+  qDebug() << "config written" << ret;
+
+  return ret;
 }
 
-bool OidentdConfigGenerator::parseConfig(bool stripQuasselStanzas) {
+// not yet implemented
+bool OidentdConfigGenerator::removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort) {
+  Q_UNUSED(identity) Q_UNUSED(localAddress) Q_UNUSED(localPort) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
+  return true;
+}
+
+bool OidentdConfigGenerator::parseConfig(bool keepQuasselStanzas) {
   qDebug() << "_configFile name" << _configFile->fileName();
   qDebug() << "open?" << _configFile->isOpen();
+  qDebug() << "keeping our stanzas?" << keepQuasselStanzas;
   if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite))
     return false;
 
@@ -77,7 +87,9 @@ bool OidentdConfigGenerator::parseConfig(bool stripQuasselStanzas) {
   while (!_configFile->atEnd()) {
     QByteArray line = _configFile->readLine();
 
-    if (!stripQuasselStanzas || checkLine(line))
+    qDebug() << "line" << line;
+    qDebug() << "line by us?" << lineByUs(line);
+    if (keepQuasselStanzas || !lineByUs(line))
       parsedConfig.append(line);
   }
 
@@ -87,7 +99,7 @@ bool OidentdConfigGenerator::parseConfig(bool stripQuasselStanzas) {
 }
 
 bool OidentdConfigGenerator::writeConfig() {
-  if (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite))
+  if (!_configFile->isOpen() && !_configFile->open(QFile::WriteOnly | QFile::Truncate))
     return false;
 
   //FIXME: thread safety
@@ -97,6 +109,6 @@ bool OidentdConfigGenerator::writeConfig() {
   return _configFile->flush();
 }
 
-bool OidentdConfigGenerator::checkLine(const QByteArray &line) {
+bool OidentdConfigGenerator::lineByUs(const QByteArray &line) {
   return !quasselStanza.exactMatch(line);
 }
