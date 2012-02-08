@@ -25,9 +25,11 @@
 
 #include "settingspage.h"
 
+#include "ui_snorentificationconfigwidget.h"
 
 namespace Snore{
 class SnoreCore;
+class SnoreIcon;
 }
 
 #include <snore/core/notification/notification.h>
@@ -50,6 +52,7 @@ public slots:
     void actionInvoked(Snore::Notification);
 private slots:
   void backendChanged(const QVariant &);
+  void timeoutChanged(const QVariant &);
 
 private:
     class ConfigWidget;
@@ -57,6 +60,8 @@ private:
     Snore::Notification::Action *m_action;
     QHash<uint,Snore::Notification> m_notifications;
     QHash<uint,uint> m_notificationIds;
+    Snore::SnoreIcon m_icon;
+    int m_timeout;
 };
 
 class SnoreNotificationBackend::ConfigWidget : public SettingsPage {
@@ -70,12 +75,13 @@ public:
     void defaults();
 
 private slots:
-    void backendChanged(QString);
+    void backendChanged(const QString&);
+    void timeoutChanged(int);
 
 private:
+    Ui::SnoreNotificationConfigWidget ui;
     Snore::SnoreCore *m_snore;
-    QComboBox *m_backends;
-    QString m_backend;
+
     //  QSpinBox *timeoutBox;
 
     //  bool enabled;
