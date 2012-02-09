@@ -355,7 +355,6 @@ void CoreNetwork::socketError(QAbstractSocket::SocketError error) {
 }
 
 void CoreNetwork::socketInitialized() {
-qDebug() << "connected()";
   Server server = usedServer();
 #ifdef HAVE_SSL
   if(server.useSsl && !socket.isEncrypted())

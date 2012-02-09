@@ -30,7 +30,6 @@
 
 #include "quassel.h"
 #include "coreidentity.h"
-#include <QDebug>
 
 class OidentdConfigGenerator : public QObject
 {

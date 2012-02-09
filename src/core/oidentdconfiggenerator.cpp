@@ -24,7 +24,6 @@ OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
   QObject(parent),
   _initialized(false)
 {
-  qDebug() << "OidentdConfigGenerator() checking for being initialized";
   if (!_initialized)
     init();
 }
@@ -41,7 +40,6 @@ bool OidentdConfigGenerator::init() {
   configTag = " stanza created by Quassel";
 
   _configFile = new QFile(configPath);
-  qDebug() << "1: _configFile" << _configFile->fileName();
 
   // Rx has to match Template in order for cleanup to work.
   // Template should be enhanced with the "from" parameter as soon as Quassel gains
