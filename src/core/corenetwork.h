@@ -26,7 +26,6 @@
 #include "coreircuser.h"
 
 #include <QTimer>
-#include <QDebug>
 
 #ifdef HAVE_SSL
 # include <QSslSocket>
@@ -87,12 +86,12 @@ public:
 
   inline UserId userId() const { return _coreSession->user(); }
 
-  inline QAbstractSocket::SocketState socketState() { return socket.state(); }
-  inline bool socketConnected() { return socket.state() == QAbstractSocket::ConnectedState; }
-  inline QHostAddress localAddress() { return socket.localAddress(); }
-  inline QHostAddress peerAddress() { return socket.peerAddress(); }
-  inline quint16 localPort() { return socket.localPort(); }
-  inline quint16 peerPort() { return socket.peerPort(); }
+  inline QAbstractSocket::SocketState socketState() const { return socket.state(); }
+  inline bool socketConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
+  inline QHostAddress localAddress() const { return socket.localAddress(); }
+  inline QHostAddress peerAddress() const { return socket.peerAddress(); }
+  inline quint16 localPort() const { return socket.localPort(); }
+  inline quint16 peerPort() const { return socket.peerPort(); }
 
 public slots:
   virtual void setMyNick(const QString &mynick);

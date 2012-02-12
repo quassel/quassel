@@ -31,27 +31,28 @@ OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
 OidentdConfigGenerator::~OidentdConfigGenerator() {
   _quasselConfig.clear();
   writeConfig();
+  _configFile->deleteLater();
 }
 
 bool OidentdConfigGenerator::init() {
-  configDir = QDir::homePath();
-  configFileName = ".oidentd.conf";
+  _configDir = QDir::homePath();
+  _configFileName = ".oidentd.conf";
 
   if(Quassel::isOptionSet("oidentd-conffile"))
-    configPath = Quassel::optionValue("oidentd-conffile");
+    _configPath = Quassel::optionValue("oidentd-conffile");
   else
-    configPath = configDir.absoluteFilePath(configFileName);
+    _configPath = _configDir.absoluteFilePath(_configFileName);
 
-  configTag = " stanza created by Quassel";
+  _configTag = " stanza created by Quassel";
 
-  _configFile = new QFile(configPath);
+  _configFile = new QFile(_configPath);
 
   // Rx has to match Template in order for cleanup to work.
   // Template should be enhanced with the "from" parameter as soon as Quassel gains
   // the ability to bind to an IP on client sockets.
 
-  quasselStanzaTemplate = QString("lport %1 { reply \"%2\" } #%3\n");
-  quasselStanzaRx = QRegExp(QString("^lport .* \\{ .* \\} #%1\\r?\\n").arg(configTag));
+  _quasselStanzaTemplate = QString("lport %1 { reply \"%2\" } #%3\n");
+  _quasselStanzaRx = QRegExp(QString("^lport .* \\{ .* \\} #%1\\r?\\n").arg(_configTag));
 
   // initially remove all Quassel stanzas that might be present
   if (parseConfig(false) && writeConfig())
@@ -64,7 +65,7 @@ bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHost
   Q_UNUSED(localAddress) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
   QString ident = identity->ident();
 
-  _quasselConfig.append(quasselStanzaTemplate.arg(localPort).arg(ident).arg(configTag));
+  _quasselConfig.append(_quasselStanzaTemplate.arg(localPort).arg(ident).arg(_configTag).toAscii());
 
   bool ret = writeConfig();
 
@@ -122,5 +123,5 @@ bool OidentdConfigGenerator::writeConfig() {
 }
 
 bool OidentdConfigGenerator::lineByUs(const QByteArray &line) {
-  return quasselStanzaRx.exactMatch(line);
+  return _quasselStanzaRx.exactMatch(line);
 }

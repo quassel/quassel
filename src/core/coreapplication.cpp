@@ -22,7 +22,6 @@
 
 #include "core.h"
 #include "logger.h"
-#include <QDebug>
 
 CoreApplicationInternal::CoreApplicationInternal()
   : _coreCreated(false)

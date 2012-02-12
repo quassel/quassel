@@ -56,7 +56,7 @@
 
 class OidentdConfigGenerator : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
   explicit OidentdConfigGenerator(QObject *parent = 0);
   ~OidentdConfigGenerator();
@@ -79,12 +79,12 @@ private:
   // Mutex isn't strictly necessary at the moment, since with the current invocation in Core only one instance at a time exists
   QMutex _mutex;
 
-  QDir configDir;
-  QString configFileName;
-  QString configPath;
-  QString configTag;
-  QRegExp quasselStanzaRx;
-  QString quasselStanzaTemplate;
+  QDir _configDir;
+  QString _configFileName;
+  QString _configPath;
+  QString _configTag;
+  QRegExp _quasselStanzaRx;
+  QString _quasselStanzaTemplate;
 };
 
 #endif // OIDENTDCONFIGGENERATOR_H
