@@ -27,6 +27,7 @@
 #include <QDateTime>
 #include <QHostAddress>
 #include <QMutex>
+#include <QByteArray>
 
 #ifndef Q_OS_WIN32
 #  include <sys/types.h>
