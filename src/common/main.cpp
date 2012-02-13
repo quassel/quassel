@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
   cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
   cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
   cliParser->addSwitch("oidentd", 0, "Enable oidentd integration");
-  cliParser->addOption("oidentd-conffile <file>", 0, "change path to oidentd configuration file");
+  cliParser->addOption("oidentd-conffile <file>", 0, "Set path to oidentd configuration file");
 #endif
 
 #ifdef HAVE_KDE

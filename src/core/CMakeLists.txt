@@ -24,7 +24,6 @@ set(SOURCES
     coreircuser.cpp
     corenetwork.cpp
     corenetworkconfig.cpp
-    oidentdconfiggenerator.cpp
     coresession.cpp
     coresessioneventprocessor.cpp
     coresettings.cpp
@@ -34,6 +33,7 @@ set(SOURCES
     eventstringifier.cpp
     ircparser.cpp
     netsplit.cpp
+    oidentdconfiggenerator.cpp
     postgresqlstorage.cpp
     sessionthread.cpp
     sqlitestorage.cpp
@@ -57,7 +57,6 @@ set(MOC_HDRS
     coreircuser.h
     corenetwork.h
     corenetworkconfig.h
-    oidentdconfiggenerator.h
     coresession.h
     coresessioneventprocessor.h
     coreuserinputhandler.h
@@ -65,6 +64,7 @@ set(MOC_HDRS
     eventstringifier.h
     ircparser.h
     netsplit.h
+    oidentdconfiggenerator.h
     postgresqlstorage.h
     sqlitestorage.h
     storage.h

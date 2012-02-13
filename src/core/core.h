@@ -33,12 +33,12 @@
 #  include <QTcpSocket>
 #  include <QTcpServer>
 #endif
-#include "oidentdconfiggenerator.h"
 
-#include "storage.h"
 #include "bufferinfo.h"
 #include "message.h"
+#include "oidentdconfiggenerator.h"
 #include "sessionthread.h"
+#include "storage.h"
 #include "types.h"
 
 class CoreSession;
@@ -405,7 +405,7 @@ public:
 
   static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
-  inline OidentdConfigGenerator *oidentdConfigGenerator() { return _oidentdConfigGenerator; }
+  inline OidentdConfigGenerator *oidentdConfigGenerator() const { return _oidentdConfigGenerator; }
 
   static const int AddClientEventId;
 

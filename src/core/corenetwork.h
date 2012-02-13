@@ -33,7 +33,6 @@
 #else
 # include <QTcpSocket>
 #endif
-#include <QAbstractSocket>
 
 #ifdef HAVE_QCA2
 #  include "cipher.h"
