@@ -35,11 +35,6 @@
 #include "networkmodel.h"
 #include "types.h"
 
-class ExpandAllEvent : public QEvent {
-public:
-  ExpandAllEvent() : QEvent(QEvent::User) {}
-};
-
 NickView::NickView(QWidget *parent)
   : QTreeView(parent)
 {
@@ -52,9 +47,9 @@ NickView::NickView(QWidget *parent)
   setContextMenuPolicy(Qt::CustomContextMenu);
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  // breaks with Qt 4.8
-  if(QString("4.8.0") > qVersion()) // FIXME breaks with Qt versions >= 4.10!
-    setAnimated(true);
+//   // breaks with Qt 4.8
+//   if(QString("4.8.0") > qVersion()) // FIXME breaks with Qt versions >= 4.10!
+     setAnimated(true);
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(showContextMenu(const QPoint&)));
 
@@ -88,14 +83,14 @@ void NickView::setModel(QAbstractItemModel *model_) {
 void NickView::rowsInserted(const QModelIndex &parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
   if(model()->data(parent, NetworkModel::ItemTypeRole) == NetworkModel::UserCategoryItemType && !isExpanded(parent)) {
-    QCoreApplication::postEvent(this, new ExpandAllEvent);
+    unanimatedExpandAll();
   }
 }
 
 void NickView::setRootIndex(const QModelIndex &index) {
   QAbstractItemView::setRootIndex(index);
   if(index.isValid())
-    QCoreApplication::postEvent(this, new ExpandAllEvent);
+    unanimatedExpandAll();
 }
 
 QModelIndexList NickView::selectedIndexes() const {
@@ -109,6 +104,17 @@ QModelIndexList NickView::selectedIndexes() const {
 
   return indexList;
 }
+
+void NickView::unanimatedExpandAll() {
+  // since of Qt Version 4.8.0 the default expandAll will not properly work if
+  // animations are enabled. Therefore we perform an unanimated expand when a
+  // model is set or a toplevel node is inserted.
+  bool wasAnimated = isAnimated();
+  setAnimated(false);
+  expandAll();
+  setAnimated(wasAnimated);
+}
+
 
 void NickView::showContextMenu(const QPoint &pos ) {
   Q_UNUSED(pos);
@@ -128,35 +134,4 @@ void NickView::startQuery(const QModelIndex &index) {
     return;
 
   Client::bufferModel()->switchToOrStartQuery(networkId, ircUser->nick());
-}
-
-void NickView::customEvent(QEvent *event) {
-  // THIS IS A REPLACEMENT FOR expandAll()
-  /* WARNING: do not call expandAll()!
-   * it fucks up big time in combination with sorting and changing the rootIndex
-   * the following sequence of commands leads to unexpected behavior when inserting new items
-   * setSortingEnabled(true);
-   * setModel();
-   * expandAll();
-   * setRootIndex();
-   */
-  if(event->type() != QEvent::User)
-    return;
-
-  if(!model())
-    return;
-
-  QModelIndex topLevelIdx;
-  for(int i = 0; i < model()->rowCount(rootIndex()); i++) {
-    topLevelIdx = model()->index(i, 0, rootIndex());
-    if(isExpanded(topLevelIdx))
-      continue;
-    else {
-      expand(topLevelIdx);
-      if(i < model()->rowCount(rootIndex()) - 1)
-        QCoreApplication::postEvent(this, new ExpandAllEvent);
-      break;
-    }
-  }
-  event->accept();
 }
