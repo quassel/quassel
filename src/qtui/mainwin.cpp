@@ -390,6 +390,9 @@ void MainWin::setupActions() {
   coll->addAction("ReloadStyle", new Action(SmallIcon("view-refresh"), tr("Reload Stylesheet"), coll,
                                        QtUi::style(), SLOT(reload()), QKeySequence::Refresh));
 
+  coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll,
+                                                  this, SLOT(hideCurrentBuffer()), QKeySequence::Close));
+
   // Navigation
   coll = QtUi::actionCollection("Navigation", tr("Navigation"));
 
@@ -456,8 +459,6 @@ void MainWin::setupActions() {
                                            this, SLOT(nextBuffer()), QKeySequence(Qt::ALT + Qt::Key_Down)));
   coll->addAction("PreviousBuffer", new Action(SmallIcon("go-up"), tr("Go to Previous Chat"), coll,
                                                this, SLOT(previousBuffer()), QKeySequence(Qt::ALT + Qt::Key_Up)));
-  coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll,
-                                                  this, SLOT(hideCurrentBuffer()), QKeySequence(Qt::ControlModifier + Qt::Key_W)));
 }
 
 void MainWin::setupMenus() {

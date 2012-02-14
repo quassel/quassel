@@ -489,9 +489,9 @@ void BufferView::hideCurrentBuffer() {
   QModelIndex index = selectionModel()->currentIndex();
   if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
     return;
-  
+
   BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
-  
+
   //The check above means we won't be looking at a network, which should always be the first row, so we can just go backwards.
   changeBuffer(Backward);
 
