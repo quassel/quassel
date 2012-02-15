@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-02-13 10:36+0000\n"
-"Last-Translator: differentreality <differentreality@gmail.com>\n"
+"PO-Revision-Date: 2012-03-31 17:13+0000\n"
+"Last-Translator: Theofilos Intzoglou <int.teo@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,7 +67,7 @@ msgstr "Ευχαριστίες στους"
 #, qt-format
 msgctxt "AboutDlg|"
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Έκδοση:</b> %1<br><b>Έκδοση πρωτοκόλλου:</b> %2<br><b>κατασκευή:</b> %3"
+msgstr "<b>Έκδοση:</b> %1<br><b>Έκδοση πρωτοκόλλου:</b> %2<br><b>Κατασκευή:</b> %3"
 
 #: ../src/qtui/aboutdlg.cpp:46
 msgctxt "AboutDlg|"
@@ -112,7 +112,7 @@ msgid ""
 "href=\"http://www.nokia.com\"><img "
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr "Ιδιαίτερες ευχαριστίες πηγαίνουν στους:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>για την γνήσια εικόνα του Quassel - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>για την δεξιοτεχνική δουλειά που βλέπετε ολωσδιόλου του Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Το Qt πρόγραμμα παλαιώτερα γνωστό ως Trolltech</a></b></dt><dd> για την δημιουργία του Qt και του Qtopia, και για την επιχορήγηση ανάπτυξης του QuasselTopia με Greenphones και άλλα </dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd> που κρατούν το Qt ζωντανό, και που επιχορηγούν την ανάπτυξη του Quassel Mobile με N810s</dd>"
+msgstr "Ιδιαίτερες ευχαριστίες πηγαίνουν στους:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>για το πρωτότυπο εικονίδιο του Quassel - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Στην Ομάδα Oxygen</a></b></dt><dd>για την δημιουργία όλων των γραφικών που βλέπετε σε όλο το Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Την Qt Software παλαιότερα γνωστή ως Trolltech</a></b></dt><dd> για την δημιουργία του Qt και του Qtopia, και για την επιχορήγηση ανάπτυξης του QuasselTopia με Greenphones και άλλα </dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd> που κρατούν το Qt ζωντανό, και που επιχορηγούν την ανάπτυξη του Quassel Mobile με N810</dd>"
 
 #: ../src/core/abstractsqlstorage.cpp:115
 #, qt-format
@@ -124,7 +124,7 @@ msgstr "Το εγκατεστημένο Schema (έκδοση %1) δεν είνα
 #: ../src/core/abstractsqlstorage.cpp:117
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
-msgstr "Αναβάθμιση απέτυχε..."
+msgstr "Η αναβάθμιση απέτυχε..."
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:55
 msgctxt "AliasesModel|"
@@ -147,7 +147,7 @@ msgid ""
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will"
 " be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test "
 "All 1 2 3\" when called like /test 1 2 3"
-msgstr ""
+msgstr "<b>Το αλφαριθμητικό στο οποίο θα αναπτυχθεί η συντόμευση</b><br /><b>ειδικές μεταβλητές:</b><br /> - <b>$i</b> αναπαριστά την i-οστή παράμετρο.<br /> - <b>$i..j</b> αναπαριστά τις i-οστή έως j-οστή παραμέτρους χωρισμένες με κενά.<br /> - <b>$i..</b> αναπαριστά όλες τις παραμέτρους από την i και πέρα χωρισμένες με κενά.<br /> - <b>$i:hostname</b> αναπαριστά το hostname του χρήστη που προσδιορίζεται από την i-οστή παράμετρο ή ένα * αν είναι άγνωστο.<br /> - <b>$0</b> ολόκληρο το αλφαριθμητικό.<br /> - <b>$nick</b> το τρέχον ψευδώνυμό σας<br /> - <b>$channel</b> το όνοματου επιλεγμένου καναλιού<br /><br />Πολλαπλές εντολές μπορούν να διαχωριστούν με τη χρήση ερωτηματικού<br /><br /><b>Παράδειγμα:</b> \"Test $1; Test $2; Test All $0\" θα αναπτυχθεί σε τρία ξεχωριστά μηνύματα \"Test 1\", \"Test 2\" και \"Test All 1 2 3\" όταν κληθεί ως /test 1 2 3"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
 msgctxt "AliasesModel|"
@@ -192,12 +192,12 @@ msgstr "Μορφή"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:22
 msgctxt "AppearanceSettingsPage|"
 msgid "Client style:"
-msgstr "Διαμόρφωση πελάτη:"
+msgstr "Στυλ πελάτη:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:29
 msgctxt "AppearanceSettingsPage|"
 msgid "Set application style"
-msgstr "Τοποθέτησε διαμόρφωση εντύπου"
+msgstr "Όρισε στυλ εφαρμογής"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:36
 msgctxt "AppearanceSettingsPage|"
@@ -207,28 +207,28 @@ msgstr "Γλώσσα:"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:43
 msgctxt "AppearanceSettingsPage|"
 msgid "Set the application language. Requires restart!"
-msgstr "Τοποθέτησε την γλώσσα εντύπου. Απαιτεί επανέναρξη!"
+msgstr "Όρισε την γλώσσα της εφαρμογής. Απαιτεί επανέναρξη!"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:47
 msgctxt "AppearanceSettingsPage|"
 msgid "<Untranslated>"
-msgstr ""
+msgstr "<Untranslated>"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:52
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:74
 msgctxt "AppearanceSettingsPage|"
 msgid "<System Default>"
-msgstr ""
+msgstr "<System Default>"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:75
 msgctxt "AppearanceSettingsPage|"
 msgid "Use custom stylesheet"
-msgstr "Χρησιμοποίησε ειδικής κατασκευής φύλλο διαμόρφωσης"
+msgstr "Χρησιμοποίησε προσωποποιημένο stylesheet"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:109
 msgctxt "AppearanceSettingsPage|"
 msgid "Path:"
-msgstr "Μονοπάτι:"
+msgstr "Διαδρομή:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:141
 msgctxt "AppearanceSettingsPage|"
@@ -238,17 +238,17 @@ msgstr "..."
 #: ../src/qtui/settingspages/appearancesettingspage.ui:150
 msgctxt "AppearanceSettingsPage|"
 msgid "Show system tray icon"
-msgstr "Δείξε την εικόνα του δίσκου συστήματος"
+msgstr "Εμφάνισε εικονίδιο στην περιοχή ειδοποίησης"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
 msgctxt "AppearanceSettingsPage|"
 msgid "Hide to tray on close button"
-msgstr "Απόκρυψε το δίσκο στο πάτημα του κουμπιού κλεισίματος"
+msgstr "Απόκρυψε στο χώρο ειδοποιήσεων στο πάτημα του κουμπιού κλεισίματος"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:216
 msgctxt "AppearanceSettingsPage|"
 msgid "Enable animations"
-msgstr "Ενεργοποίηση κινουμένων εικόνων"
+msgstr "Ενεργοποίηση κινουμένων γραφικών"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:231
 msgctxt "AppearanceSettingsPage|"
@@ -258,37 +258,37 @@ msgstr "Προώθηση μηνύματος"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:237
 msgctxt "AppearanceSettingsPage|"
 msgid "User Notices:"
-msgstr "Γνωστοποιήσεις του χρήστη"
+msgstr "Ειδοποιήσεις χρήστη:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:280
 msgctxt "AppearanceSettingsPage|"
 msgid "Server Notices:"
-msgstr "Ειδοποιήσεις Server:"
+msgstr "Ειδοποιήσεις διακομιστή:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:294
 msgctxt "AppearanceSettingsPage|"
 msgid "Default Target"
-msgstr "Στόχος εξ'ορισμού"
+msgstr "Προκαθορισμένος Στόχος"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:301
 msgctxt "AppearanceSettingsPage|"
 msgid "Status Window"
-msgstr "Υπόσταση Παραθύρου"
+msgstr "Παράθυρο Κατάστασης"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:308
 msgctxt "AppearanceSettingsPage|"
 msgid "Current Chat"
-msgstr "Παρούσα Συνομιλία"
+msgstr "Τρέχουσα Συνομιλία"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:315
 msgctxt "AppearanceSettingsPage|"
 msgid "Errors:"
-msgstr "Λάθοι:"
+msgstr "Λάθη:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 msgctxt "AppearanceSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgctxt "AppearanceSettingsPage|"
@@ -298,17 +298,17 @@ msgstr "Παρακαλώ διαλέξετε φύλλο διαμορφώσεως"
 #: ../src/qtui/awaylogview.cpp:33
 msgctxt "AwayLogView|"
 msgid "Away Log"
-msgstr ""
+msgstr "Αρχείο καταγραφής κατά την απουσία"
 
 #: ../src/qtui/awaylogview.cpp:44
 msgctxt "AwayLogView|"
 msgid "Show Network Name"
-msgstr "Εμφάνιση Ονόματος Δικτύου"
+msgstr "Εμφάνισε Όνομα Δικτύου"
 
 #: ../src/qtui/awaylogview.cpp:49
 msgctxt "AwayLogView|"
 msgid "Show Buffer Name"
-msgstr "Εμφάνιση Ονόματος Προσωρινής Μνήμης"
+msgstr "Εμφάνισε Όνομα Προσωρινής Μνήμης"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
 msgctxt "BacklogSettingsPage|"
@@ -320,12 +320,12 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Number of messages to be requested from the core when using scrolling up in "
 "the buffer view."
-msgstr "Αριθμός των μηνυμάτων που θα κληθούν από τον πυρήνα όταν χρησιμοποιηθεί η ανακύλιση στην θέα της προσωρινής μνήμης."
+msgstr "Ο αριθμός των μηνυμάτων που θα κληθούν από τον πυρήνα όταν χρησιμοποιηθεί η κύλιση προς τα πάνω στην προβολή της προσωρινής μνήμης."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
 msgctxt "BacklogSettingsPage|"
 msgid "Dynamic backlog amount:"
-msgstr "Δυναμική ποσότητα εκκρεμοτήτων:"
+msgstr "Δυναμική ποσότητα αποθέματος:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:75
 msgctxt "BacklogSettingsPage|"
@@ -335,7 +335,7 @@ msgstr "Μέθοδος αίτησης αποθέματος:"
 #: ../src/qtui/settingspages/backlogsettingspage.ui:83
 msgctxt "BacklogSettingsPage|"
 msgid "Fixed amount per chat"
-msgstr "Σταθερό ποσό ανά συνομιλία"
+msgstr "Σταθερή ποσότητα ανά συνομιλία"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:88
 msgctxt "BacklogSettingsPage|"
@@ -352,19 +352,19 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "The simplest requester. It fetches a fixed amount of lines for each chat "
 "window from the backlog."
-msgstr "Ο απλούστερος αιτητής. Φέρνει ένα σταθερό ποσό γραμμών για κάθε παράθυρο συνομιλίας από το απόθεμα."
+msgstr "Ο απλούστερος αιτητής. Φέρνει μια σταθερή ποσότητα γραμμών για κάθε παράθυρο συνομιλίας από το απόθεμα."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
 msgctxt "BacklogSettingsPage|"
 msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
-msgstr ""
+msgstr "ποσότητα μηνυμάτων ανά προσωρινή μνήμη που αιτούνται μόλις η επικοινωνία με τον πυρήνα έχει αποκατασταθεί."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
 msgctxt "BacklogSettingsPage|"
 msgid "Initial backlog amount:"
-msgstr "Δυναμική ποσότητα εκκρεμοτήτων:"
+msgstr "Αρχική ποσότητα αποθέματος:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
 msgctxt "BacklogSettingsPage|"
@@ -372,14 +372,14 @@ msgid ""
 "This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
 "\n"
 "You can also choose to fetch additional older chatlines to provide a better context."
-msgstr ""
+msgstr "Αυτός ο αιτητής φέρνει αδιάβαστα μηνύματα για κάθε παράθυρο συνομιλίας ξεχωριστά. Ο αριθμός των γραμμών μπορεί να οριστεί ανά συνομιλία.\n\nΜπορείτε επίσης να επιλέξετε να φέρει επιπρόσθετα παλιότερες γραμμές συνομιλιών για να παρέχει ένα καλύτερο γενικό πλαίσιο."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
 #: ../src/qtui/settingspages/backlogsettingspage.ui:232
 #: ../src/qtui/settingspages/backlogsettingspage.ui:354
 msgctxt "BacklogSettingsPage|"
 msgid "Maximum amount of messages to be fetched per buffer."
-msgstr "Μέγιστο ποσό μηνυμάτων που θα αποφέρουν ανά προσωρινή μνήμη."
+msgstr "Μέγιστη ποσότητα μηνυμάτων που θα ανασυρθούν ανά προσωρινή μνήμη."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:225
 #: ../src/qtui/settingspages/backlogsettingspage.ui:347
@@ -401,7 +401,7 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Amount of messages to be fetched in addition to the unread messages. The "
 "Limit does not apply here."
-msgstr ""
+msgstr "Ποσότητα μηνυμάτων που θα ανασυρθούν επιπλέον των αναγνωσμένων μηνυμάτων. Το Όριο δεν εφαρμόζεται εδώ."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
 #: ../src/qtui/settingspages/backlogsettingspage.ui:385
@@ -418,22 +418,22 @@ msgid ""
 "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
 "\n"
 "You can also chose to fetch additional older chatlines to provide a better context."
-msgstr ""
+msgstr "Αυτός ο αιτητής φέρνει όλα τα μηνύματα που είναι νεότερα από το παλαιότερο αδιάβαστο μήνυμα όλων των συνομιλιών.\n\nΣημείωση: Αυτός ο αιτητής δεν προτείνετε αν χρησιμοποιείτε κρυμμένα παράθυρα συνομιλιών ή έχετε ανενεργές συνομιλίες (δηλ.: δεν υπάρχουν παλιό ερώτημα ή κανάλια).\nΕίναι χρήσιμο να θέσετε όριο στην συνολική ποσότητα αποθέματος και είναι πιθανώς και το πιο γρήγορο.\n\nΜπορείτε επίσης να επιλέξετε να φέρει επιπρόσθετα παλιές γραμμές συνομιλιών για να παρέχει ένα καλύτερο γενικό πλαίσιο."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:344
 msgctxt "BacklogSettingsPage|"
 msgid "Maximum amount of messages to be fetched over all buffers."
-msgstr "Μέγιστο ποσό μηνυμάτων που θα αποφέρουν ανά προσωρινή μνήμη."
+msgstr "Μέγιστη ποσότητα μηνυμάτων που θα ανασυρθούν σε όλες τις προσωρινές μνήμες."
 
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 msgctxt "BacklogSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 msgctxt "BacklogSettingsPage|"
 msgid "Backlog Fetching"
-msgstr ""
+msgstr "Ανάσυρση Αποθέματος"
 
 #: ../src/client/networkmodel.cpp:346
 #, qt-format
@@ -441,38 +441,38 @@ msgctxt "BufferItem|"
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 - %2 </p>"
 
-#: ../src/uisupport/bufferview.cpp:248
+#: ../src/uisupport/bufferview.cpp:251
 msgctxt "BufferView|"
 msgid "Merge buffers permanently?"
-msgstr "Συχγώνευση προσωρινών μνημών οριστικά;"
+msgstr "Οριστική συγχώνευση προσωρινών μνημών;"
 
-#: ../src/uisupport/bufferview.cpp:249
+#: ../src/uisupport/bufferview.cpp:252
 #, qt-format
 msgctxt "BufferView|"
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
-msgstr "Θέλετε να συχγωνεύσετε την προσωρινή μνήμη \"%1\" οριστικά μέσα στην προσωρινή μνήμη \"%2\"; Αυτό δεν μπορεί να αντιστραφεί."
+msgstr "Θέλετε να συγχωνεύσετε την προσωρινή μνήμη \"%1\" οριστικά με την προσωρινή μνήμη \"%2\";\n Αυτό δεν μπορεί να αντιστραφεί."
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 msgctxt "BufferViewEditDlg|"
 msgid "Dialog"
-msgstr ""
+msgstr "Διάλογος"
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:22
 msgctxt "BufferViewEditDlg|"
 msgid "Please enter a name for the chat list:"
-msgstr "Παρακαλώ εισάγετε όνομα για τη λίστα συνομιλίας"
+msgstr "Παρακαλώ εισάγετε όνομα για τη λίστα συνομιλίας:"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
 msgctxt "BufferViewEditDlg|"
 msgid "Add Chat List"
-msgstr ""
+msgstr "Προσθήκη Λίστας Συνομιλίας"
 
 #: ../src/uisupport/bufferviewfilter.cpp:52
 msgctxt "BufferViewFilter|"
 msgid "Show / Hide Chats"
-msgstr ""
+msgstr "Εμφάνιση / Απόκρυψη Συνομιλιών"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:14
 msgctxt "BufferViewSettingsPage|"
@@ -508,19 +508,19 @@ msgstr "Δίκτυο:"
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:117
 msgctxt "BufferViewSettingsPage|"
 msgid "All"
-msgstr "All"
+msgstr "Όλα"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:110
 msgctxt "BufferViewSettingsPage|"
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
-msgstr ""
+msgstr "Αυτή η επιλογή δεν είναι διαθέσιμη όταν όλα τα Δίκτυα είναι ορατά.\nΣε αυτή την κατάσταση δεν εμφανίζεται ξεχωριστή προσωρινή μνήμη κατάστασης."
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
 msgctxt "BufferViewSettingsPage|"
 msgid "Show status window"
-msgstr "Υπόσταση Παραθύρου"
+msgstr "Εμφάνιση παραθύρου κατάστασης"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:121
 msgctxt "BufferViewSettingsPage|"
@@ -530,7 +530,7 @@ msgstr "Εμφάνιση καναλιών"
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:128
 msgctxt "BufferViewSettingsPage|"
 msgid "Show queries"
-msgstr "Εμφάνιση Ονόματος Προσωρινής Μνήμης"
+msgstr "Εμφάνιση ερωτημάτων"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:135
 msgctxt "BufferViewSettingsPage|"
@@ -545,12 +545,12 @@ msgstr "Αυτόματη προσθήκη νέων συνομιλιών"
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
 msgctxt "BufferViewSettingsPage|"
 msgid "Sort alphabetically"
-msgstr "Διάταξη Αλφηβητικά"
+msgstr "Αλφαβητική ταξινόμηση"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
 msgctxt "BufferViewSettingsPage|"
 msgid "Minimum Activity:"
-msgstr ""
+msgstr "Ελάχιστη Δραστηριότητα:"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:164
 msgctxt "BufferViewSettingsPage|"
@@ -570,38 +570,38 @@ msgstr "Νέο Μήνυμα"
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
 msgctxt "BufferViewSettingsPage|"
 msgid "Highlight"
-msgstr ""
+msgstr "Τονισμός"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:205
 msgctxt "BufferViewSettingsPage|"
 msgid "Preview:"
-msgstr "Μορφή εμφάνισης ημερομηνίας/ώρας (timestamp)"
+msgstr "Προεπισκόπηση:"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgctxt "BufferViewSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgctxt "BufferViewSettingsPage|"
 msgid "Custom Chat Lists"
-msgstr ""
+msgstr "Προσαρμοσμένες Λίστες Συνομιλιών"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:342
 msgctxt "BufferViewSettingsPage|"
 msgid "Delete Chat List?"
-msgstr ""
+msgstr "Διαγραφή Λίστας Συνομιλίας;"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:343
 #, qt-format
 msgctxt "BufferViewSettingsPage|"
 msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr ""
+msgstr "Σίγουρα θέλετε να διαγράψετε τη λίστα συνομιλίας \"%1\";"
 
 #: ../src/qtui/ui/bufferviewwidget.ui:26
 msgctxt "BufferViewWidget|"
 msgid "BufferView"
-msgstr ""
+msgstr "ΠροβολήΣυνομιλίας"
 
 #: ../src/qtui/bufferwidget.cpp:79
 msgctxt "BufferWidget|"
@@ -693,7 +693,7 @@ msgstr "Φίλτρο:"
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgctxt "ChannelListDlg|"
 msgid "Errors Occurred:"
-msgstr "Λάθοι:"
+msgstr "Εμφανίστηκαν Σφάλματα:"
 
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgctxt "ChannelListDlg|"
@@ -736,12 +736,12 @@ msgstr "Διαθεσιμότητα:"
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:88
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Move selected buffers to the left"
-msgstr "Μετακίνηση επιλεγμένων                στα αριστερά"
+msgstr "Μετακίνηση επιλεγμένων συνομιλιών στα αριστερά"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:102
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Move selected buffers to the right"
-msgstr "Μετακίνση επιλεγμένων              στα δεξιά"
+msgstr "Μετακίνση επιλεγμένων συνομιλιών στα δεξιά"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:236
@@ -753,7 +753,7 @@ msgstr "Εμφάνιση:"
 msgctxt "ChatMonitorSettingsPage|"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr ""
+msgstr "Εμφάνιση τονισμών στην παρακολούθηση συνομιλιών ακόμη και αν η συνομιλία από την οποία προέρχεται ο τονισμός αγνοείται"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgctxt "ChatMonitorSettingsPage|"
@@ -768,12 +768,12 @@ msgstr "Εμφάνιση των δικών σας μηνυμάτων"
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Chat Monitor"
-msgstr "Παρακολούθηση Συνμομιλίας"
+msgstr "Παρακολούθηση Συνομιλίας"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
 msgctxt "ChatMonitorSettingsPage|"
@@ -1319,7 +1319,7 @@ msgstr "Υπάρχοντες Κανόνες"
 #: ../src/core/core.cpp:182
 msgctxt "Core|"
 msgid "Could not initialize any storage backend! Exiting..."
-msgstr ""
+msgstr "Αδυναμία εκκίνησης συστήματος αποθήκευσης! Έξοδος..."
 
 #: ../src/core/core.cpp:183
 msgctxt "Core|"
@@ -1329,83 +1329,83 @@ msgid ""
 "to work."
 msgstr "Το Quassel υποστηρίζει SQLite3 και PostgreSQL. Χρειάζεται να χτίσετε\nτη βιβλιοθήκη Qt με ενεργοποιημένο το πρόσθετο sqlite ή postgres\nώστε να δουλέψει το quasselcore"
 
-#: ../src/core/core.cpp:232
+#: ../src/core/core.cpp:235
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
 msgstr "Κλήση της restoreState() αν και υπάρχουν ενεργές συνεδρίες!"
 
-#: ../src/core/core.cpp:273
+#: ../src/core/core.cpp:277
 msgctxt "Core|"
 msgid "Admin user or password not set."
 msgstr "Δεν έχει καθοριστεί λογαριασμός διαχειριστή ή κωδικός"
 
-#: ../src/core/core.cpp:276
+#: ../src/core/core.cpp:280
 msgctxt "Core|"
 msgid "Could not setup storage!"
 msgstr "Αδυναμία ρύθμισης χώρου αποθήκευσης!"
 
-#: ../src/core/core.cpp:280
+#: ../src/core/core.cpp:284
 msgctxt "Core|"
 msgid "Creating admin user..."
 msgstr "Δημιουργία διαχειριστή..."
 
-#: ../src/core/core.cpp:393
+#: ../src/core/core.cpp:397
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
 msgstr "Άκυρη διεύθυνση ανταπόκρισης %1"
 
-#: ../src/core/core.cpp:401
+#: ../src/core/core.cpp:405
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr ""
+msgstr "Αναμονή για πελάτης με γραφικό περιβάλλον σε IPv6 %1 θύρα %2 με χρήση πρωτοκόλλου έκδοσης %3"
 
-#: ../src/core/core.cpp:409
+#: ../src/core/core.cpp:413
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
 msgstr "Αδυναμία ανοίγματος διεπαφής IPv6 %1:%2: %3"
 
-#: ../src/core/core.cpp:417
+#: ../src/core/core.cpp:421
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr ""
+msgstr "Αναμονή για πελάτης με γραφικό περιβάλλον σε IPv4 %1 θύρα %2 με χρήση πρωτοκόλλου έκδοσης %3"
 
-#: ../src/core/core.cpp:427
+#: ../src/core/core.cpp:431
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
 msgstr "Αδυναμία ανοίγματος διεπαφής IPv4 %1:%2: %3"
 
-#: ../src/core/core.cpp:435
+#: ../src/core/core.cpp:439
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
 msgstr "Άκυρφη διεύθυνση ανταπόκρισης %1, άγνωστο πρωτόκολλο δικτύου"
 
-#: ../src/core/core.cpp:444
+#: ../src/core/core.cpp:448
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
-msgstr ""
+msgstr "Αδυναμία ανοίγματος διεπαφών δικτύου προς λήψη δεδομένων!"
 
-#: ../src/core/core.cpp:478
+#: ../src/core/core.cpp:482
 msgctxt "Core|"
 msgid "Client connected from"
 msgstr "Πελάτης συνδεδεμένος από"
 
-#: ../src/core/core.cpp:481
+#: ../src/core/core.cpp:485
 msgctxt "Core|"
 msgid "Closing server for basic setup."
 msgstr "Κλείσιμο εξυπηρετητή για βασική ρύθμιση."
 
-#: ../src/core/core.cpp:500
+#: ../src/core/core.cpp:504
 msgctxt "Core|"
 msgid "Antique client trying to connect... refusing."
 msgstr "Προσπάθεια σύνδεσης από απαρχαιωμένο πελάτη... απόρριψη."
 
-#: ../src/core/core.cpp:512
+#: ../src/core/core.cpp:516
 #, qt-format
 msgctxt "Core|"
 msgid ""
@@ -1413,68 +1413,68 @@ msgid ""
 "client/core protocol version %1.<br>Please consider upgrading your client."
 msgstr "<b>Ο Πελάτης Quassel που έχετε είναι πολύ παλιός!</b><br>Αυτός ο πυρήνας χρειάζεται για το πρωτόκολλο πελάτη/πυρήνα τουλάχιστον έκδοση %1.<br>Παρακαλώ αναβαθμίστε τον πελάτη."
 
-#: ../src/core/core.cpp:516 ../src/core/core.cpp:606 ../src/core/core.cpp:630
+#: ../src/core/core.cpp:520 ../src/core/core.cpp:610 ../src/core/core.cpp:634
 msgctxt "Core|"
 msgid "Client"
-msgstr "Πελάτης:"
+msgstr "Πελάτης"
 
-#: ../src/core/core.cpp:516
+#: ../src/core/core.cpp:520
 msgctxt "Core|"
 msgid "too old, rejecting."
 msgstr "πολύ παλιά έκδοση, απόρριψη. "
 
-#: ../src/core/core.cpp:533
+#: ../src/core/core.cpp:537
 #, qt-format
 msgctxt "Core|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr "<b>Έκδοση Πυρήνα Quassel %1</b><br>Χτήσιμο: %2<br>Ενεργό %3d%4h%5m (από %6)"
 
-#: ../src/core/core.cpp:586
+#: ../src/core/core.cpp:590
 msgctxt "Core|"
 msgid "Starting TLS for Client:"
 msgstr "Έναρξη TLS για τον Πελάτη:"
 
-#: ../src/core/core.cpp:604
+#: ../src/core/core.cpp:608
 msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
-msgstr ""
+msgstr "<b>Αδυναμία αρχικοποίησης πελάτη!</b><br>Χρειάζεται να στείλετε ένα μήνυμα αρχικοποίησης πριν προσπαθήσετε να εισέλθετε."
 
-#: ../src/core/core.cpp:606
+#: ../src/core/core.cpp:610
 msgctxt "Core|"
 msgid "did not send an init message before trying to login, rejecting."
-msgstr ""
+msgstr "δε στάλθηκε μήνυμα αρχικοποίησης πριν την προσπάθεια εισόδου, απόρριψη."
 
-#: ../src/core/core.cpp:624
+#: ../src/core/core.cpp:628
 msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr "<b>Λάθος όνομα χρήστη ή κωδικού</b><br>Ο συνδυασμός όνομα χρήστη και κωδικού που δώσατε δε βρέθηκε στη βάση δεδομένων."
 
-#: ../src/core/core.cpp:630
+#: ../src/core/core.cpp:634
 #, qt-format
 msgctxt "Core|"
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
 msgstr "Επιτυχημένη αρχικοποίηση και πιστοποίηση ως \"%1\" (Αναγωνριστικό Χρήστη: %2)."
 
-#: ../src/core/core.cpp:641
+#: ../src/core/core.cpp:645
 msgctxt "Core|"
 msgid "Non-authed client disconnected."
 msgstr "Αποσύνδεση μη-πιστοποιημένου πελάτη."
 
-#: ../src/core/core.cpp:647
+#: ../src/core/core.cpp:651
 msgctxt "Core|"
 msgid "Non-authed client disconnected. (socket allready destroyed)"
 msgstr "Αποσύνδεση μη-πιστοποιημένου πελάτη. (Το socket έχει ήδη καταστραφεί)"
 
-#: ../src/core/core.cpp:695
+#: ../src/core/core.cpp:699
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
 msgstr "Αδύνατη η αρχικοποίηση συνεδρίας για τον πελάτη:"
 
-#: ../src/core/core.cpp:717
+#: ../src/core/core.cpp:721
 msgctxt "Core|"
 msgid "Could not find a session for client:"
 msgstr "Αδύνατη η εύρεση συνεδρίας για τον πελάτη:"
@@ -1702,14 +1702,14 @@ msgstr "Εισαγωγή"
 #: ../src/qtui/coreconfigwizard.cpp:182
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Select Storage Backend"
-msgstr ""
+msgstr "Επιλογή Συστήματος Αποθήκευσης"
 
 #: ../src/qtui/coreconfigwizard.cpp:183
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
-msgstr ""
+msgstr "Παρακαλώ επιλέξτε μια βάση δεδομένων όπου ο πυρήνας Quassel θα αποθηκεύει τις συνομιλίες και άλλα δεδομένα."
 
 #: ../src/qtui/coreconfigwizard.cpp:277
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
@@ -1726,17 +1726,17 @@ msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
 "automatically."
-msgstr ""
+msgstr "Οι ρυθμίσεις σας έχουν αποθηκευτοί στον πυρήνα και θα εισέλθετε αυτόματα."
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
 msgctxt "CoreConfigWizardStorageSelectionPage|"
 msgid "Form"
-msgstr "Φόρμα"
+msgstr "Μορφή"
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 msgctxt "CoreConfigWizardStorageSelectionPage|"
 msgid "Storage Backend:"
-msgstr ""
+msgstr "Σύστημα Αποθήκευσης:"
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:56
 msgctxt "CoreConfigWizardStorageSelectionPage|"
@@ -1766,17 +1766,17 @@ msgstr "Διαχειριστής:"
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:42
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Storage Backend:"
-msgstr ""
+msgstr "Σύστημα Αποθήκευσης:"
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:62
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "bar"
-msgstr ""
+msgstr "bar"
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:102
 msgctxt "CoreConfigWizardSyncPage|"
@@ -1812,7 +1812,7 @@ msgstr "Να θυμάσαι τον κωδικό"
 #, qt-format
 msgctxt "CoreConnectAuthDlg|"
 msgid "Please enter your credentials for %1:"
-msgstr ""
+msgstr "Παρακαλώ εισάγετε τα στοιχεία πιστοποίησης για %1"
 
 #: ../src/qtui/coreconnectdlg.cpp:40
 msgctxt "CoreConnectDlg|"
@@ -1858,7 +1858,7 @@ msgctxt "CoreConnection|"
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider "
 "upgrading."
-msgstr ""
+msgstr "Προσπαθείτε να συνδεθείτε σε έναν πολύ παλιό πυρήνα του Quassel! Παρακαλώ προβείτε σε αναβάθμιση."
 
 #: ../src/client/coreconnection.cpp:300
 msgctxt "CoreConnection|"
@@ -1887,7 +1887,7 @@ msgctxt "CoreConnection|"
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
-msgstr ""
+msgstr "<b>Προσπαθείτε να συνδεθείτε σε πολύ παλιό πυρήνα του Quassel!</b><br>Για να γίνει σύνδεση χρειάζεται πρωτόκολλο πυρήνα/πελάτη τουλάχιστος έκδοσης %1."
 
 #: ../src/client/coreconnection.cpp:592
 msgctxt "CoreConnection|"
@@ -1902,7 +1902,7 @@ msgstr "Ακύρωση εισόδου"
 #: ../src/client/coreconnection.cpp:622
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
-msgstr ""
+msgstr "Λήψη κατάστασης συνεδρίας"
 
 #: ../src/client/coreconnection.cpp:624
 #, qt-format
@@ -1936,12 +1936,12 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most"
 " KDE users"
-msgstr ""
+msgstr "Εντοπισμός σύνδεσης από το επίπεδο υλικού του KDE. Προτείνεται για τους περισσότερους χρήστες KDE"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:29
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Use KDE's network status detection (via Solid)"
-msgstr ""
+msgstr "Ανίχνευση κατάστασης δικτύου από το KDE (μέσω του Solid)"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:41
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:57
@@ -1950,12 +1950,12 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Actively ping the remote core and disconnect if we didn't get a reply after "
 "a certain time"
-msgstr ""
+msgstr "Κάνε ping ενεργά στον απομακρυσμένο πυρήνα και αποσυνδέσου αν δεν λάβεις απάντηση μετά από συγκεκριμένο χρόνο"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:44
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Ping timeout after"
-msgstr ""
+msgstr "Παρέλευσης του μέγιστου χρόνου για το ping μετά από"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:60
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:157
@@ -1968,7 +1968,7 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
-msgstr ""
+msgstr "Αποσύνδεση μόνο αν η υποδοχή δικτύου κλείσει από το λειτουργικό σύστημα. Αυτό μπορεί να πάρει αρκετή ώρα αφού έχει χαθεί πραγματικά η σύνδεση"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:103
 msgctxt "CoreConnectionSettingsPage|"
@@ -1978,7 +1978,7 @@ msgstr ""
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:113
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Automatically reconnect on network failures"
-msgstr ""
+msgstr "Αυτόματη επανασύνδεση μετά από αποτυχία δικτύου"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:147
 msgctxt "CoreConnectionSettingsPage|"
@@ -2019,7 +2019,7 @@ msgstr "ms"
 #, qt-format
 msgctxt "CoreConnectionStatusWidget|"
 msgid "(Lag: %1 %2)"
-msgstr ""
+msgstr "(Καθυστέρηση: %1 %2)"
 
 #: ../src/qtui/coreconnectionstatuswidget.cpp:75
 msgctxt "CoreConnectionStatusWidget|"
@@ -2044,12 +2044,12 @@ msgstr "Έκδοση:"
 #: ../src/qtui/ui/coreinfodlg.ui:28
 msgctxt "CoreInfoDlg|"
 msgid "<core version>"
-msgstr ""
+msgstr "<έκδοση πυρήνα>"
 
 #: ../src/qtui/ui/coreinfodlg.ui:35
 msgctxt "CoreInfoDlg|"
 msgid "Uptime:"
-msgstr ""
+msgstr "Χρόνος Σύνδεσης:"
 
 #: ../src/qtui/ui/coreinfodlg.ui:42
 msgctxt "CoreInfoDlg|"
@@ -2059,22 +2059,22 @@ msgstr "Συνδεδεμένοι Πελάτες:"
 #: ../src/qtui/ui/coreinfodlg.ui:49
 msgctxt "CoreInfoDlg|"
 msgid "<connected clients>"
-msgstr ""
+msgstr "<connected clients>"
 
 #: ../src/qtui/ui/coreinfodlg.ui:56
 msgctxt "CoreInfoDlg|"
 msgid "<core uptime>"
-msgstr ""
+msgstr "<core uptime>"
 
 #: ../src/qtui/ui/coreinfodlg.ui:63
 msgctxt "CoreInfoDlg|"
 msgid "Build date:"
-msgstr ""
+msgstr "Ημερομηνία δημιουργίας:"
 
 #: ../src/qtui/ui/coreinfodlg.ui:70
 msgctxt "CoreInfoDlg|"
 msgid "<build date>"
-msgstr ""
+msgstr "<build date>"
 
 #: ../src/qtui/ui/coreinfodlg.ui:81
 msgctxt "CoreInfoDlg|"
@@ -2095,35 +2095,35 @@ msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (από %4)"
 
-#: ../src/core/corenetwork.cpp:148
+#: ../src/core/corenetwork.cpp:153
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
-msgstr ""
+msgstr "Αποτυχία σύνδεσης. Κυκλική επιλογή επόμενου Εξυπηρετητή."
 
-#: ../src/core/corenetwork.cpp:156 ../src/core/corenetwork.cpp:157
+#: ../src/core/corenetwork.cpp:161 ../src/core/corenetwork.cpp:162
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
 msgstr "Σύνδεση σε %1:%2..."
 
-#: ../src/core/corenetwork.cpp:205
+#: ../src/core/corenetwork.cpp:210
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr "Αποσύνδεση. (%1)"
 
-#: ../src/core/corenetwork.cpp:205
+#: ../src/core/corenetwork.cpp:210
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
-msgstr ""
+msgstr "Κλείσιμο Πυρήνα"
 
-#: ../src/core/corenetwork.cpp:343
+#: ../src/core/corenetwork.cpp:348
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "Αδυναμία σύνδεση σε %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:345
+#: ../src/core/corenetwork.cpp:350
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
@@ -2138,7 +2138,7 @@ msgstr "Πελάτης"
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
-msgstr ""
+msgstr "αποσυνδέθηκε (ΑναγωνριστικόΧρήστη: %1)."
 
 #: ../src/core/coresession.cpp:440
 #, qt-format
@@ -2146,21 +2146,21 @@ msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
 " create network %1!"
-msgstr ""
+msgstr "CoreSession::createNetwork(): Πήρα εσφαλμένο networkId από τον Πυρήνα κατά την προσπάθεια δημιουργίας του δικτύου %1!"
 
 #: ../src/core/coresession.cpp:472
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
-msgstr ""
+msgstr "CoreSession::createNetwork(): Προσπάθεια δημιουργίας δικτύου που υπάρχει ήδη, γίνεται ενημέρωση του ήδη υπάρχοντος!"
 
 #: ../src/core/coresessioneventprocessor.cpp:65
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
-msgstr ""
+msgstr "Δε βρέθηκαν ελεύθερα και έγκυρα ψευδώνυμα στη λίστα ψευδώνυμων. χρησειμοποιείστε /nick <άλλο_ψευδώνυμο> για να συνεχίσετε"
 
 #: ../src/core/coreuserinputhandler.cpp:81
 msgctxt "CoreUserInputHandler|"
@@ -2171,7 +2171,7 @@ msgstr "απών"
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "sending CTCP-%1 request to %2"
-msgstr ""
+msgstr "αποστολή αίτησης CTCP-%1 στο %2"
 
 #: ../src/core/coreuserinputhandler.cpp:177
 msgctxt "CoreUserInputHandler|"
@@ -2249,7 +2249,7 @@ msgstr "Το κλειδί για το %1 είναι %2"
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
-msgstr ""
+msgstr "[Σφάλμα] Αδυναμία κρυπτογράφησης του μηνύματός σας: %1"
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:17
 msgctxt "CreateIdentityDlg|"
@@ -2274,305 +2274,305 @@ msgstr "Διπλότυπο"
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:13
 msgctxt "DebugBufferViewOverlay|"
 msgid "Debug BufferView Overlay"
-msgstr ""
+msgstr "Αποσφαλμάτωση Επικάλυψης BufferView"
 
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:26
 msgctxt "DebugBufferViewOverlay|"
 msgid "Overlay View"
-msgstr ""
+msgstr "Προβολή Επικάλυψης"
 
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:39
 msgctxt "DebugBufferViewOverlay|"
 msgid "Overlay Properties"
-msgstr ""
+msgstr "Ιδιότητες Επικάλυψης"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:50
 msgctxt "DebugBufferViewOverlay|"
 msgid "BufferViews:"
-msgstr ""
+msgstr "ΠροβολήΣυνομιλίας:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:51
 msgctxt "DebugBufferViewOverlay|"
 msgid "All Networks:"
-msgstr ""
+msgstr "Όλα τα δίκτυα:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:52
 msgctxt "DebugBufferViewOverlay|"
 msgid "Networks:"
-msgstr ""
+msgstr "Δίκτυα:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:53
 msgctxt "DebugBufferViewOverlay|"
 msgid "Buffers:"
-msgstr ""
+msgstr "Αποθηκευμένες Συνομιλίες:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:54
 msgctxt "DebugBufferViewOverlay|"
 msgid "Removed buffers:"
-msgstr ""
+msgstr "Διεγραμμένες συνομιλίες:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:55
 msgctxt "DebugBufferViewOverlay|"
 msgid "Temp. removed buffers:"
-msgstr ""
+msgstr "Προσωρινά διεγραμμένες συνομιλίες:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:57
 msgctxt "DebugBufferViewOverlay|"
 msgid "Allowed buffer types:"
-msgstr ""
+msgstr "Επιτρεπόμενοι τύποι συνομιλιών:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:58
 msgctxt "DebugBufferViewOverlay|"
 msgid "Minimum activity:"
-msgstr ""
+msgstr "Ελάχιστη δραστηριότητα:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:60
 msgctxt "DebugBufferViewOverlay|"
 msgid "Is initialized:"
-msgstr ""
+msgstr "Έχει αρχικοποιηθεί:"
 
 #: ../src/qtui/ui/debugconsole.ui:14
 msgctxt "DebugConsole|"
 msgid "Debug Console"
-msgstr ""
+msgstr "Κονσόλα Αποσφαλμάτωσης"
 
 #: ../src/qtui/ui/debugconsole.ui:44
 msgctxt "DebugConsole|"
 msgid "local"
-msgstr ""
+msgstr "τοπικό"
 
 #: ../src/qtui/ui/debugconsole.ui:54
 msgctxt "DebugConsole|"
 msgid "core"
-msgstr ""
+msgstr "πυρήνας"
 
 #: ../src/qtui/ui/debugconsole.ui:82
 msgctxt "DebugConsole|"
 msgid "Evaluate!"
-msgstr ""
+msgstr "Αξιολόγηση!"
 
 #: ../src/qtui/ui/debuglogwidget.ui:13
 msgctxt "DebugLogWidget|"
 msgid "Debug Log"
-msgstr ""
+msgstr "Καταγραφή Αποσφαλμάτωσης"
 
 #: ../src/qtui/ui/debuglogwidget.ui:43
 msgctxt "DebugLogWidget|"
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: ../src/core/eventstringifier.cpp:133 ../src/core/eventstringifier.cpp:250
+#: ../src/core/eventstringifier.cpp:142 ../src/core/eventstringifier.cpp:259
 msgctxt "EventStringifier|"
 msgid "[Whois] "
-msgstr ""
+msgstr "[Whois] "
 
-#: ../src/core/eventstringifier.cpp:145
+#: ../src/core/eventstringifier.cpp:154
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 invited you to channel %2"
-msgstr ""
+msgstr "Ο χρήστης %1 σας προσκάλεσε στο κανάλι %2"
 
-#: ../src/core/eventstringifier.cpp:230
+#: ../src/core/eventstringifier.cpp:239
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
-msgstr ""
+msgstr "Ο χρήστης %1 άλλαξε το θέμα του καναλιού %2 σε: \"%3\""
 
-#: ../src/core/eventstringifier.cpp:237
+#: ../src/core/eventstringifier.cpp:246
 msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:263
+#: ../src/core/eventstringifier.cpp:272
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
-msgstr ""
+msgstr "Ο χρήστης %1 είναι απών: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:268
+#: ../src/core/eventstringifier.cpp:277
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
-msgstr ""
+msgstr "Δεν εμφανίζεστε πια ως απών"
 
-#: ../src/core/eventstringifier.cpp:274
+#: ../src/core/eventstringifier.cpp:283
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
-msgstr ""
+msgstr "Εμφανίζεστε πλέον ως απών"
 
-#: ../src/core/eventstringifier.cpp:294
+#: ../src/core/eventstringifier.cpp:303
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
-msgstr ""
+msgstr "[Whois] Ο χρήστης %1 είναι %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:308
+#: ../src/core/eventstringifier.cpp:317
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
-msgstr ""
+msgstr "[Whois] Ο χρήστης %1 είναι συνδεδεμένος μέσω %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:310
+#: ../src/core/eventstringifier.cpp:319
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
-msgstr ""
+msgstr "[Whowas] Ο χρήστης %1 ήταν συνδεδεμένος μέσω %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:318
+#: ../src/core/eventstringifier.cpp:327
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
-msgstr ""
+msgstr "[Whowas] Ο χρήστης %1 ήταν %2@%3 (%4)"
 
-#: ../src/core/eventstringifier.cpp:325
+#: ../src/core/eventstringifier.cpp:334
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] End of /WHO list for %1"
-msgstr ""
+msgstr "[Who] Τέλος λίστας /WHO για τον χρήστη %1"
 
-#: ../src/core/eventstringifier.cpp:335
+#: ../src/core/eventstringifier.cpp:344
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
-msgstr ""
+msgstr "[Whois]Ο %1 έχει εισέλθει από τις %2"
 
-#: ../src/core/eventstringifier.cpp:337
+#: ../src/core/eventstringifier.cpp:346
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
-msgstr ""
+msgstr "[Whois] Ο %1 είναι ανενεργός για %2 (από %3)"
 
-#: ../src/core/eventstringifier.cpp:344
+#: ../src/core/eventstringifier.cpp:353
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
-msgstr ""
+msgstr "[Whois] Τέλος λίστας /WHOIS"
 
-#: ../src/core/eventstringifier.cpp:365
+#: ../src/core/eventstringifier.cpp:374
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
-msgstr ""
+msgstr "[Whois] Ο %1 είναι χρήστης στα κανάλια: %2"
 
-#: ../src/core/eventstringifier.cpp:367
+#: ../src/core/eventstringifier.cpp:376
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
-msgstr ""
+msgstr "[Whois]Ο %1 έχει φωνή στα κανάλια: %2"
 
-#: ../src/core/eventstringifier.cpp:369
+#: ../src/core/eventstringifier.cpp:378
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
-msgstr ""
+msgstr "[Whois] Ο %1 είναι διαχειριστής στα κανάλια: %2"
 
-#: ../src/core/eventstringifier.cpp:388
+#: ../src/core/eventstringifier.cpp:397
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 has %2 users. Topic is: \"%3\""
-msgstr ""
+msgstr "Το κανάλι %1 έχει %2 χρήστες. Το θέμα του είναι: \"%3\""
 
-#: ../src/core/eventstringifier.cpp:394
+#: ../src/core/eventstringifier.cpp:403
 msgctxt "EventStringifier|"
 msgid "End of channel list"
-msgstr ""
+msgstr "Τέλος της λίστας καναλιών"
 
-#: ../src/core/eventstringifier.cpp:408
+#: ../src/core/eventstringifier.cpp:417
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Homepage for %1 is %2"
-msgstr ""
+msgstr "Αρχική σελίδα του %1 είναι η %2"
 
-#: ../src/core/eventstringifier.cpp:423
+#: ../src/core/eventstringifier.cpp:432
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 created on %2"
-msgstr ""
+msgstr "Το κανάλι %1 δημιουργήθηκε στις %2"
 
-#: ../src/core/eventstringifier.cpp:431
+#: ../src/core/eventstringifier.cpp:440
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
-msgstr ""
+msgstr "[Whois] Ο %1 έχει πιστοποιηθεί ως %2"
 
-#: ../src/core/eventstringifier.cpp:437
+#: ../src/core/eventstringifier.cpp:446
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "No topic is set for %1."
-msgstr ""
-
-#: ../src/core/eventstringifier.cpp:443
-#, qt-format
-msgctxt "EventStringifier|"
-msgid "Topic for %1 is \"%2\""
-msgstr ""
+msgstr "Δεν υπάρχει θέμα καναλιού για το κανάλι %1"
 
 #: ../src/core/eventstringifier.cpp:452
 #, qt-format
 msgctxt "EventStringifier|"
-msgid "Topic set by %1 on %2"
-msgstr ""
+msgid "Topic for %1 is \"%2\""
+msgstr "Το θέμα του καναλιού %1 είναι \"%2\""
 
-#: ../src/core/eventstringifier.cpp:462
+#: ../src/core/eventstringifier.cpp:461
+#, qt-format
+msgctxt "EventStringifier|"
+msgid "Topic set by %1 on %2"
+msgstr "Το θέμα ορίστηκε από τον χρήστη %1 στο κανάλι %2"
+
+#: ../src/core/eventstringifier.cpp:471
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has been invited to %2"
-msgstr ""
+msgstr "Καλέσατε τον χρήστη %1 στο κανάλι %2"
 
-#: ../src/core/eventstringifier.cpp:468
+#: ../src/core/eventstringifier.cpp:477
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] %1"
-msgstr ""
+msgstr "[Who] %1"
 
-#: ../src/core/eventstringifier.cpp:473
+#: ../src/core/eventstringifier.cpp:482
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
-msgstr ""
+msgstr "Τέλος /WHOWAS"
 
-#: ../src/core/eventstringifier.cpp:478
+#: ../src/core/eventstringifier.cpp:490
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick %1 contains illegal characters"
-msgstr ""
+msgstr "Το ψευδώνυμο %1 περιέχει μη έγκυρους χαρακτήρες"
 
-#: ../src/core/eventstringifier.cpp:483
+#: ../src/core/eventstringifier.cpp:498
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick already in use: %1"
-msgstr ""
+msgstr "Το ψευδώνυμο %1 χρησιμοποιείται ήδη"
 
-#: ../src/core/eventstringifier.cpp:488
+#: ../src/core/eventstringifier.cpp:506
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick/channel is temporarily unavailable: %1"
-msgstr ""
+msgstr "Το ψευδώνυμο/κανάλι %1 δεν είναι διαθέσιμο προσωρινά"
 
-#: ../src/core/eventstringifier.cpp:509
+#: ../src/core/eventstringifier.cpp:527
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
-msgstr ""
+msgstr "αποστολή αίτησης CTCP-%1 στον %2"
 
 #. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
-#: ../src/core/eventstringifier.cpp:522
+#: ../src/core/eventstringifier.cpp:540
 msgctxt "EventStringifier|"
 msgid "unknown"
-msgstr ""
+msgstr "άγνωστο"
 
-#: ../src/core/eventstringifier.cpp:523
+#: ../src/core/eventstringifier.cpp:541
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
-msgstr ""
+msgstr "Λήψη αίτησης %1CTCP-%2 από %3"
 
-#: ../src/core/eventstringifier.cpp:526
+#: ../src/core/eventstringifier.cpp:544
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
-msgstr ""
+msgstr "Λήψη απάντησης CTCP-%1 από %2: %3"
 
-#: ../src/core/eventstringifier.cpp:537
+#: ../src/core/eventstringifier.cpp:555
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
@@ -2582,42 +2582,42 @@ msgstr ""
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Invalid command string for /exec: %1"
-msgstr ""
+msgstr "Άκυρη εντολή για /exec: %1"
 
 #: ../src/client/execwrapper.cpp:53
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr ""
+msgstr "Το όνομα \"%1\" δεν είναι έγκυρο: τα ../ και ..\\ δεν επιτρέπονται!"
 
 #: ../src/client/execwrapper.cpp:64
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Could not find script \"%1\""
-msgstr ""
+msgstr "Αδυναμία εύρεσης του προγράμματος \"%1\""
 
 #: ../src/client/execwrapper.cpp:82
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" crashed with exit code %2."
-msgstr ""
+msgstr "Απρόσμενος τερματισμός του προγράμματος \"%1\" με κωδικό εξόδου %2."
 
 #: ../src/client/execwrapper.cpp:98
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" could not start."
-msgstr ""
+msgstr "Αδυναμία έναρξης του προγράμματος \"%1\"."
 
 #: ../src/client/execwrapper.cpp:100
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" caused error %2."
-msgstr ""
+msgstr "Το πρόγραμμα \"%1\" προκάλεσε σφάλμα %2."
 
 #: ../src/uisupport/fontselector.cpp:31
 msgctxt "FontSelector|"
 msgid "Choose..."
-msgstr ""
+msgstr "Επιλογή..."
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:13
 msgctxt "HighlightSettingsPage|"
@@ -2627,18 +2627,18 @@ msgstr "Μορφή"
 #: ../src/qtui/settingspages/highlightsettingspage.ui:19
 msgctxt "HighlightSettingsPage|"
 msgid "Custom Highlights"
-msgstr ""
+msgstr "Προσαρμοσμένη Υπογράμμιση"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:32
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 msgctxt "HighlightSettingsPage|"
 msgid "Highlight"
-msgstr ""
+msgstr "Υπογράμμιση"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:37
 msgctxt "HighlightSettingsPage|"
 msgid "RegEx"
-msgstr ""
+msgstr "Κανονική Έκφραση"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:42
 msgctxt "HighlightSettingsPage|"
@@ -2648,42 +2648,42 @@ msgstr ""
 #: ../src/qtui/settingspages/highlightsettingspage.ui:47
 msgctxt "HighlightSettingsPage|"
 msgid "Enable"
-msgstr ""
+msgstr "Ενεργοποίηση"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:55
 msgctxt "HighlightSettingsPage|"
 msgid "Add"
-msgstr ""
+msgstr "Προσθήκη"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:62
 msgctxt "HighlightSettingsPage|"
 msgid "Remove"
-msgstr ""
+msgstr "Αφαίρεση"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:85
 msgctxt "HighlightSettingsPage|"
 msgid "Highlight Nicks"
-msgstr ""
+msgstr "Υπογράμμιση Ψευδώνυμων"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:91
 msgctxt "HighlightSettingsPage|"
 msgid "All nicks from identity"
-msgstr ""
+msgstr "Όλα τα ψευδώνυμα της ταυτότητας"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:98
 msgctxt "HighlightSettingsPage|"
 msgid "Current nick"
-msgstr "Παρούσα Συνομιλία"
+msgstr "Τρέχον ψευδώνυμο"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:108
 msgctxt "HighlightSettingsPage|"
 msgid "None"
-msgstr ""
+msgstr "Κανένα"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:115
 msgctxt "HighlightSettingsPage|"
 msgid "Case sensitive"
-msgstr ""
+msgstr "Διαφοροποίηση πεζών-κεφαλαίων"
 
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 msgctxt "HighlightSettingsPage|"
@@ -2693,29 +2693,29 @@ msgstr "Διεπαφή"
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:159
 msgctxt "HighlightSettingsPage|"
 msgid "this shouldn't be empty"
-msgstr ""
+msgstr "αυτό δε θα έπρεπε να είναι κενό "
 
 #: ../src/qtui/settingspages/highlightsettingspage.h:45
 msgctxt "HighlightSettingsPage|"
 msgid "highlight rule"
-msgstr ""
+msgstr "κανόνας υπογράμμισης"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:322
 msgctxt "IdentitiesSettingsPage|"
 msgid "Rename Identity"
-msgstr ""
+msgstr "Μετονομασία Ταυτότητας"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:34
 #: ../src/qtui/settingspages/identitiessettingspage.ui:77
 msgctxt "IdentitiesSettingsPage|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:51
 msgctxt "IdentitiesSettingsPage|"
 msgid "Add Identity"
-msgstr ""
+msgstr "Προσθήκη Ταυτότητας"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:54
 msgctxt "IdentitiesSettingsPage|"
@@ -2725,7 +2725,7 @@ msgstr "Προσθήκη..."
 #: ../src/qtui/settingspages/identitiessettingspage.ui:74
 msgctxt "IdentitiesSettingsPage|"
 msgid "Remove Identity"
-msgstr ""
+msgstr "Αφαίρεση Ταυτότητας"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 msgctxt "IdentitiesSettingsPage|"
@@ -2735,235 +2735,235 @@ msgstr "IRC"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 msgctxt "IdentitiesSettingsPage|"
 msgid "Identities"
-msgstr ""
+msgstr "Ταυτότητες"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 msgctxt "IdentitiesSettingsPage|"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
-msgstr ""
+msgstr "<b>Τα ακόλουθα προβλήματα πρέπει να διορθωθούν πριν γίνουν οι αλλαγές σας:</b><ul>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>All identities need an identity name set</li>"
-msgstr ""
+msgstr "<li>Όλες οι ταυτότητες χρειάζονται να έχει οριστεί το όνομα ταυτοητας</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:180
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr ""
+msgstr "<li>Κάθε ταυτότητα χρειάζεται να έχει οριστεί τουλάχιστον ένα ψευδώνυμο</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:181
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify a real name for every identity</li>"
-msgstr ""
+msgstr "<li>Χρειάζεται να εισάγετε ένα πραγματικό όνομα για κάθε ταυτότητα</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:182
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify an ident for every identity</li>"
-msgstr ""
+msgstr "<li>Χρειάζεται να εισάγετε ένα αναγνωριστικό για κάθε ταυτότητα</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:183
 msgctxt "IdentitiesSettingsPage|"
 msgid "</ul>"
-msgstr ""
+msgstr "</ul>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:184
 msgctxt "IdentitiesSettingsPage|"
 msgid "One or more identities are invalid"
-msgstr ""
+msgstr "Μία ή περισσότερες ταυτότητες είναι άκυρες"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:310
 msgctxt "IdentitiesSettingsPage|"
 msgid "Delete Identity?"
-msgstr ""
+msgstr "Διαγραφή ταυτότητας;"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:311
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Do you really want to delete identity \"%1\"?"
-msgstr ""
+msgstr "Σίγουρα επιθυμείτε τη διαγραφή της ταυτότητας \"%1\"?"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:323
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Please enter a new name for the identity \"%1\"!"
-msgstr ""
+msgstr "Παρακαλώ εισάγετε ένα νέο όνομα για την ταυτότητα \"%1\"!"
 
 #: ../src/common/identity.cpp:134
 msgctxt "Identity|"
 msgid "Quassel IRC User"
-msgstr ""
+msgstr "Quassel IRC Χρήστης"
 
 #: ../src/common/identity.cpp:162
 msgctxt "Identity|"
 msgid "<empty>"
-msgstr ""
+msgstr "<empty>"
 
 #: ../src/common/identity.cpp:168
 msgctxt "Identity|"
 msgid "Gone fishing."
-msgstr ""
+msgstr "Είμαι για ψάρεμα."
 
 #: ../src/common/identity.cpp:172
 msgctxt "Identity|"
 msgid "Not here. No, really. not here!"
-msgstr ""
+msgstr "Δεν είμαι εδώ. Πραγματικά. Δεν είμαι εδώ!"
 
 #: ../src/common/identity.cpp:175
 msgctxt "Identity|"
 msgid "All Quassel clients vanished from the face of the earth..."
-msgstr ""
+msgstr "Όλοι οι πελάτες Quassel εξαφανίστηκαν από προσώπου γης. "
 
 #: ../src/common/identity.cpp:178
 msgctxt "Identity|"
 msgid "Kindergarten is elsewhere!"
-msgstr ""
+msgstr "Εδώ δεν είναι παιδικός σταθμός!"
 
 #: ../src/common/identity.cpp:179 ../src/common/identity.cpp:180
 msgctxt "Identity|"
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
-msgstr ""
+msgstr "http://quassel-irc.org - Συνομιλήστε άνετα. Παντού."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:30
 msgctxt "IdentityEditWidget|"
 msgid "General"
-msgstr ""
+msgstr "Γενικά"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:38
 msgctxt "IdentityEditWidget|"
 msgid "Real Name:"
-msgstr ""
+msgstr "Πραγματικό Όνομα:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:45
 msgctxt "IdentityEditWidget|"
 msgid "The \"Real Name\" is shown in /whois."
-msgstr ""
+msgstr "Το \"Πραγματικό Όνομα\" εμφανίζεται στο /whois."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:54
 msgctxt "IdentityEditWidget|"
 msgid "Nicknames"
-msgstr ""
+msgstr "Ψευδώνυμα"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:90
 msgctxt "IdentityEditWidget|"
 msgid "Add Nickname"
-msgstr ""
+msgstr "Προσθήκη ψευδώνυμου"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:93
 msgctxt "IdentityEditWidget|"
 msgid "&Add..."
-msgstr ""
+msgstr "&Προσθήκη..."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:116
 msgctxt "IdentityEditWidget|"
 msgid "Remove Nickname"
-msgstr ""
+msgstr "Αφαίρεση ψευδώνυμου"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:119
 msgctxt "IdentityEditWidget|"
 msgid "Remove"
-msgstr ""
+msgstr "Αφαίρεση"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
 msgctxt "IdentityEditWidget|"
 msgid "Rename Identity"
-msgstr ""
+msgstr "Μετονομασία Ταυτότητας"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 msgctxt "IdentityEditWidget|"
 msgid "Re&name..."
-msgstr ""
+msgstr "&Μετονομασία"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:165
 msgctxt "IdentityEditWidget|"
 msgid "Move upwards in list"
-msgstr ""
+msgstr "Μετακίνηση προς τα πάνω στη λίστα"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:168
 #: ../src/qtui/settingspages/identityeditwidget.ui:182
 msgctxt "IdentityEditWidget|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:179
 msgctxt "IdentityEditWidget|"
 msgid "Move downwards in list"
-msgstr ""
+msgstr "Μετακίνηση προς τα κάτω στη λίστα"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:227
 msgctxt "IdentityEditWidget|"
 msgid "A&way"
-msgstr ""
+msgstr "&Απών"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:233
 msgctxt "IdentityEditWidget|"
 msgid "Default Away Settings"
-msgstr "Στόχος εξ'ορισμού"
+msgstr "Προεπιλεγμένες Ρυθμίσεις Απουσίας"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:244
 msgctxt "IdentityEditWidget|"
 msgid "Nick to be used when being away"
-msgstr ""
+msgstr "Ποιο ψευδώνυμο να χρησιμοποιείται όταν λείπετε;"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:254
 msgctxt "IdentityEditWidget|"
 msgid "Default away reason"
-msgstr "Στόχος εξ'ορισμού"
+msgstr "Προεπιλεγμένη αιτιολογία απουσίας"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:261
 msgctxt "IdentityEditWidget|"
 msgid "Away Nick:"
-msgstr ""
+msgstr "Ψευδώνυμο κατά τη διάρκεια που απουσιάζετε:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:268
 #: ../src/qtui/settingspages/identityeditwidget.ui:297
 #: ../src/qtui/settingspages/identityeditwidget.ui:366
 msgctxt "IdentityEditWidget|"
 msgid "Away Reason:"
-msgstr ""
+msgstr "Αιτιολογία Απουσίας:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:280
 msgctxt "IdentityEditWidget|"
 msgid "Set away when all clients have detached from the core"
-msgstr ""
+msgstr "Ορισμός ως απών όταν όλοι οι πελάτες αποσυνδεθούν από τον πυρήνα"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:283
 msgctxt "IdentityEditWidget|"
 msgid "Away On Detach"
-msgstr ""
+msgstr "Ορισμός ως απών κάτα την αποσύνδεση από τον πυρήνα"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:315
 msgctxt "IdentityEditWidget|"
 msgid "Not implemented yet"
-msgstr ""
+msgstr "Δεν έχει υλοποιηθεί ακόμα"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:318
 msgctxt "IdentityEditWidget|"
 msgid "Away On Idle"
-msgstr ""
+msgstr "Ορισμός ως απών όταν είστε ανενεργός"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:332
 msgctxt "IdentityEditWidget|"
 msgid "Set away after"
-msgstr ""
+msgstr "Ορισμός απουσίας μετά από "
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:342
 msgctxt "IdentityEditWidget|"
 msgid "minutes of being idle"
-msgstr ""
+msgstr "λεπτά που είστε ανενεργός"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
 #: ../src/qtui/settingspages/identityeditwidget.cpp:219
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
-msgstr ""
+msgstr "Προχωρημένες"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:407
 msgctxt "IdentityEditWidget|"
 msgid "Ident:"
-msgstr ""
+msgstr "Αναγνωριστικό:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:414
 msgctxt "IdentityEditWidget|"
@@ -2975,57 +2975,57 @@ msgstr ""
 #: ../src/qtui/settingspages/identityeditwidget.ui:423
 msgctxt "IdentityEditWidget|"
 msgid "Messages"
-msgstr ""
+msgstr "Μηνύματα"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:431
 msgctxt "IdentityEditWidget|"
 msgid "Part Reason:"
-msgstr ""
+msgstr "Αιτία Εξόδου:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:444
 msgctxt "IdentityEditWidget|"
 msgid "Quit Reason:"
-msgstr ""
+msgstr "Αιτία Αποσύνδεσης:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:454
 msgctxt "IdentityEditWidget|"
 msgid "Kick Reason:"
-msgstr ""
+msgstr "Αιτία Απομάκρυνσης:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:488
 msgctxt "IdentityEditWidget|"
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr ""
+msgstr "Απαιτείται πελάτης με δυνατότητες SSL για να μπορέσετε να επεξεργαστείτε το κλειδί και το πιστοποιητικό SSL του πυρήνα σας"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgctxt "IdentityEditWidget|"
 msgid ""
 "Warning: you are not connected with a secured connection to the Quassel Core!\n"
 "Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
-msgstr ""
+msgstr "Προσοχή: δεν είστε συνδεδεμένος μέσω ασφαλής σύνδεσης στο πυρήνα Quassel!\nΑν συνεχίσετε το κλειδί και το πιστοποιητικό SSL θα μεταδοθούν μη-κρυπτογραφημένα!"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
 msgctxt "IdentityEditWidget|"
 msgid "Continue"
-msgstr ""
+msgstr "Συνέχιση"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:584
 msgctxt "IdentityEditWidget|"
 msgid "Use SSL Key"
-msgstr ""
+msgstr "Χρήση Κλειδιού SSL"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:598
 msgctxt "IdentityEditWidget|"
 msgid "Key Type:"
-msgstr ""
+msgstr "Τύπος Κλειδιού:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
 #: ../src/qtui/settingspages/identityeditwidget.cpp:317
 #: ../src/qtui/settingspages/identityeditwidget.cpp:328
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
-msgstr ""
+msgstr "Δε φορτώθηκε Κλειδί"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
@@ -3033,17 +3033,17 @@ msgstr ""
 #: ../src/qtui/settingspages/identityeditwidget.cpp:365
 msgctxt "IdentityEditWidget|"
 msgid "Load"
-msgstr ""
+msgstr "Φόρτωση"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:637
 msgctxt "IdentityEditWidget|"
 msgid "Use SSL Certificate"
-msgstr ""
+msgstr "Χρήση Πιστοποιητικού SSL"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:656
 msgctxt "IdentityEditWidget|"
 msgid "Organisation:"
-msgstr "<b>Οργανισμός:</b>"
+msgstr "Οργανισμός:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
@@ -3051,43 +3051,43 @@ msgstr "<b>Οργανισμός:</b>"
 #: ../src/qtui/settingspages/identityeditwidget.cpp:364
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
-msgstr ""
+msgstr "Δεν έχει φορτωθεί Πιστοποιητικό"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:690
 msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
-msgstr "<b>Κοινό όνομα:</b>"
+msgstr "ΚοινόΌνομα:"
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:290
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
-msgstr ""
+msgstr "Φόρτωση κλειδιού"
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:322
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
-msgstr ""
+msgstr "RSA"
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:325
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
-msgstr ""
+msgstr "DSA"
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:330
 #: ../src/qtui/settingspages/identityeditwidget.cpp:369
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
-msgstr ""
+msgstr "Εκκαθάριση"
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:340
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
-msgstr ""
+msgstr "Φόρτωση Πιστοποιητικού"
 
 #: ../src/qtui/ircconnectionwizard.cpp:107
 msgctxt "IdentityPage|"
 msgid "Setup Identity"
-msgstr ""
+msgstr "Ορισμός Ταυτότητας"
 
 #: ../src/qtui/ircconnectionwizard.cpp:112
 msgctxt "IdentityPage|"
@@ -3097,7 +3097,7 @@ msgstr "Στόχος εξ'ορισμού"
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:15
 msgctxt "IgnoreListEditDlg|"
 msgid "Configure Ignore Rule"
-msgstr ""
+msgstr "Ρύθμιση Κανόνα Αγνόησης"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:27
 msgctxt "IgnoreListEditDlg|"
@@ -3113,17 +3113,17 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:35
 msgctxt "IgnoreListEditDlg|"
 msgid "Strictness"
-msgstr ""
+msgstr "Αυστηρότητα"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:41
 msgctxt "IgnoreListEditDlg|"
 msgid "Dynamic"
-msgstr ""
+msgstr "Δυναμικό"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:48
 msgctxt "IgnoreListEditDlg|"
 msgid "Permanent"
-msgstr ""
+msgstr "Μόνιμο"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:58
 msgctxt "IgnoreListEditDlg|"
@@ -3139,12 +3139,12 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:66
 msgctxt "IgnoreListEditDlg|"
 msgid "Rule Type"
-msgstr ""
+msgstr "Τύπος Κανόνα"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:72
 msgctxt "IgnoreListEditDlg|"
 msgid "Sender"
-msgstr ""
+msgstr "Απόστολέας"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:79
 msgctxt "IgnoreListEditDlg|"
@@ -3176,7 +3176,7 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 msgctxt "IgnoreListEditDlg|"
 msgid "Ignore Rule"
-msgstr ""
+msgstr "Κανόνας Αγνόησης"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:123
 msgctxt "IgnoreListEditDlg|"
@@ -3192,7 +3192,7 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:131
 msgctxt "IgnoreListEditDlg|"
 msgid "Regular expression"
-msgstr ""
+msgstr "Κανονική Έκφραση"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:143
 msgctxt "IgnoreListEditDlg|"
@@ -3209,22 +3209,22 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:152
 msgctxt "IgnoreListEditDlg|"
 msgid "Scope"
-msgstr ""
+msgstr "Πεδίο δράσης"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:160
 msgctxt "IgnoreListEditDlg|"
 msgid "Global"
-msgstr ""
+msgstr "Γενικός"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 msgctxt "IgnoreListEditDlg|"
 msgid "Network"
-msgstr ""
+msgstr "Δίκτυο"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:174
 msgctxt "IgnoreListEditDlg|"
 msgid "Channel"
-msgstr ""
+msgstr "Κανάλι"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgctxt "IgnoreListEditDlg|"
@@ -3250,7 +3250,7 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:220
 msgctxt "IgnoreListEditDlg|"
 msgid "Rule is enabled"
-msgstr ""
+msgstr "Ο κανόνας έχει ενεργοποιηθεί."
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:69
 msgctxt "IgnoreListModel|"
@@ -3275,27 +3275,27 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:89
 msgctxt "IgnoreListModel|"
 msgid "By Sender"
-msgstr ""
+msgstr "Βάσει Αποστολέα"
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:91
 msgctxt "IgnoreListModel|"
 msgid "By Message"
-msgstr ""
+msgstr "Βάσει Μηνύματος"
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:193
 msgctxt "IgnoreListModel|"
 msgid "Enabled"
-msgstr ""
+msgstr "Ενεργοποιημένο"
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:194
 msgctxt "IgnoreListModel|"
 msgid "Type"
-msgstr ""
+msgstr "Τύπος"
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:195
 msgctxt "IgnoreListModel|"
 msgid "Ignore Rule"
-msgstr ""
+msgstr "Κανόνας Αγνόησης"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:14
 msgctxt "IgnoreListSettingsPage|"
@@ -3315,7 +3315,7 @@ msgstr "Διαγραφή"
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:56
 msgctxt "IgnoreListSettingsPage|"
 msgid "&Edit"
-msgstr ""
+msgstr "Επε&ξεργασία"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgctxt "IgnoreListSettingsPage|"
@@ -3325,12 +3325,12 @@ msgstr "IRC"
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgctxt "IgnoreListSettingsPage|"
 msgid "Ignore List"
-msgstr ""
+msgstr "Λίστα Αγνόησης"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:128
 msgctxt "IgnoreListSettingsPage|"
 msgid "Rule already exists"
-msgstr ""
+msgstr "Ο κανόνας υπάρχει ήδη"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:129
 #, qt-format
@@ -3339,7 +3339,7 @@ msgid ""
 "There is already a rule\n"
 "\"%1\"\n"
 "Please choose another rule."
-msgstr ""
+msgstr "Υπάρχει ήδη ένας κανόνας\n\"%1\"\nΠαρακαλώ επιλέξτε άλλον κανόνα."
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:14
 msgctxt "IndicatorNotificationConfigWidget|"
@@ -3351,12 +3351,12 @@ msgctxt "IndicatorNotificationConfigWidget|"
 msgid ""
 "This enables support for the Ayatana Project's application indicator "
 "(libindicate)."
-msgstr ""
+msgstr "Αυτό ενεργοποιεί υποστήριξη για την ένδειξη εφαρμογής του Σχεδίου Ayatana (libindicate)."
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:23
 msgctxt "IndicatorNotificationConfigWidget|"
 msgid "Show messages in application indicator"
-msgstr ""
+msgstr "Εμφάνιση μηνυμάτων στο πίνακα εφαρμογών"
 
 #: ../src/qtui/ui/inputwidget.ui:26
 msgctxt "InputWidget|"
@@ -3366,87 +3366,87 @@ msgstr "Μορφή"
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "White"
-msgstr ""
+msgstr "Άσπρο"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Black"
-msgstr ""
+msgstr "Μαύρο"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark blue"
-msgstr ""
+msgstr "Σκούρο Μπλε"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark green"
-msgstr ""
+msgstr "Σκούρο πράσινο"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Red"
-msgstr ""
+msgstr "Κόκκινο"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark red"
-msgstr ""
+msgstr "Σκούρο κόκκινο"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark magenta"
-msgstr ""
+msgstr "Σκούρο μοβ"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Orange"
-msgstr ""
+msgstr "Πορτοκαλί"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Yellow"
-msgstr ""
+msgstr "Κίτρινο"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Green"
-msgstr ""
+msgstr "Πράσινο"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark cyan"
-msgstr ""
+msgstr "Σκούρο γαλάζιο"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Cyan"
-msgstr ""
+msgstr "Γαλάζιο"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Blue"
-msgstr ""
+msgstr "Μπλε"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Magenta"
-msgstr ""
+msgstr "Μοβ"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark gray"
-msgstr ""
+msgstr "Σκούρο γκρι"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Light gray"
-msgstr ""
+msgstr "Ανοιχτό γκρι"
 
 #: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
 msgctxt "InputWidget|"
 msgid "Clear Color"
-msgstr ""
+msgstr "Αφαίρεση Χρώματος"
 
 #: ../src/qtui/inputwidget.cpp:132
 msgctxt "InputWidget|"
@@ -3461,130 +3461,130 @@ msgstr "Μορφή"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
 msgctxt "InputWidgetSettingsPage|"
 msgid "Custom font:"
-msgstr ""
+msgstr "Προσαρμοσμένη γραμματοσειρά:"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:50
 msgctxt "InputWidgetSettingsPage|"
 msgid "Enable spell check"
-msgstr ""
+msgstr "Ενεργοποίηση ελέγχου ορθογραφίας"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:63
 msgctxt "InputWidgetSettingsPage|"
 msgid "Enable per chat history"
-msgstr ""
+msgstr "Ενεργοποίηση ιστορικού ανά συνομιλία"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:79
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show nick selector"
-msgstr ""
+msgstr "Εμφάνιση επιλογής ψευδώνυμου"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:95
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show style buttons"
-msgstr "Δείξε την εικόνα του δίσκου συστήματος"
+msgstr "Εμφάνισε κουμπιά στυλ"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:111
 msgctxt "InputWidgetSettingsPage|"
 msgid "Enables (limited) Emacs key bindings in the input field."
-msgstr ""
+msgstr "Ενεργοποιεί (ορισμένες) αντιστοιχήσεις πλήκτρων του Emacs στο πεδίο εισαγωγής."
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:114
 msgctxt "InputWidgetSettingsPage|"
 msgid "Emacs key bindings"
-msgstr ""
+msgstr "Αντιστοιχήσεις πλήκτρων του Emacs"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:127
 msgctxt "InputWidgetSettingsPage|"
 msgid "Multi-Line Editing"
-msgstr ""
+msgstr "Επεξεργασία σε πολλαπλές γραμμές"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show at most"
-msgstr ""
+msgstr "Εμφάνιση το πολύ"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
 msgctxt "InputWidgetSettingsPage|"
 msgid "lines"
-msgstr "Μήνυμα καναλιού:"
+msgstr "γραμμές"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
 msgctxt "InputWidgetSettingsPage|"
 msgid "Enable scrollbars"
-msgstr ""
+msgstr "Ενεργοποίηση μπάρας κύλισης"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
 msgctxt "InputWidgetSettingsPage|"
 msgid "Tab Completion"
-msgstr ""
+msgstr "Αυτόματη Συμπλήρωση με το Tab"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
 msgctxt "InputWidgetSettingsPage|"
 msgid "Completion suffix:"
-msgstr ""
+msgstr "Στίξη μετά τη συμπλήρωση:"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgctxt "InputWidgetSettingsPage|"
 msgid ": "
-msgstr ""
+msgstr ": "
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
 msgctxt "InputWidgetSettingsPage|"
 msgid "Add space after nick when completing mid-sentence"
-msgstr ""
+msgstr "Προσθήκη κενού μετά το ψευδώνυμο όταν συμπληρώνεται στη μέση της πρότασης"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgctxt "InputWidgetSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgctxt "InputWidgetSettingsPage|"
 msgid "Input Widget"
-msgstr ""
+msgstr "Γραφικό στοιχείο εισαγωγής"
 
 #: ../src/qtui/ircconnectionwizard.cpp:51
 msgctxt "IrcConnectionWizard|"
 msgid "Save && Connect"
-msgstr ""
+msgstr "Αποθήκευση && Σύνδεση"
 
 #: ../src/client/irclistmodel.cpp:59
 msgctxt "IrcListModel|"
 msgid "Channel"
-msgstr ""
+msgstr "Κανάλι"
 
 #: ../src/client/irclistmodel.cpp:60
 msgctxt "IrcListModel|"
 msgid "Users"
-msgstr ""
+msgstr "Χρήστες"
 
 #: ../src/client/irclistmodel.cpp:61
 msgctxt "IrcListModel|"
 msgid "Topic"
-msgstr ""
+msgstr "Θέμα"
 
 #: ../src/client/networkmodel.cpp:806
 msgctxt "IrcUserItem|"
 msgid " is away"
-msgstr ""
+msgstr " είναι απών"
 
 #: ../src/client/networkmodel.cpp:821
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "idling since %1"
-msgstr ""
+msgstr "ανενεργός από %1"
 
 #: ../src/client/networkmodel.cpp:824
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "login time: %1"
-msgstr ""
+msgstr "χρόνος εισόδου: %1"
 
 #: ../src/client/networkmodel.cpp:827
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "server: %1"
-msgstr ""
+msgstr "εξυπηρετητής: %1"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:14
 msgctxt "ItemViewSettingsPage|"
@@ -3594,37 +3594,37 @@ msgstr "Μορφή"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
 msgctxt "ItemViewSettingsPage|"
 msgid "Custom font:"
-msgstr ""
+msgstr "Προσαρμοσμένη γραμματοσειρά:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:50
 msgctxt "ItemViewSettingsPage|"
 msgid "Show icons"
-msgstr ""
+msgstr "Εμφάνιση εικονιδίων"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:66
 msgctxt "ItemViewSettingsPage|"
 msgid "Chat List"
-msgstr ""
+msgstr "Λίστα συνομιλιών"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:72
 msgctxt "ItemViewSettingsPage|"
 msgid "Display topic in tooltip"
-msgstr ""
+msgstr "Προβολή θέματος στην αναδυόμενη βοήθεια"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:85
 msgctxt "ItemViewSettingsPage|"
 msgid "Mouse wheel changes selected chat"
-msgstr ""
+msgstr "Αλλαγή επιλεγμένης συνομιλίας με τη ροδέλα του ποντικιού"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:101
 msgctxt "ItemViewSettingsPage|"
 msgid "Use Custom Colors"
-msgstr "Χρησιμοποίησε ειδικής κατασκευής φύλλο διαμόρφωσης"
+msgstr "Χρήση Προσαρμοσμένων Χρωμάτων"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:118
 msgctxt "ItemViewSettingsPage|"
 msgid "Standard:"
-msgstr ""
+msgstr "Προεπιλογή:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:125
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:149
@@ -3635,107 +3635,107 @@ msgstr ""
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:345
 msgctxt "ItemViewSettingsPage|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:142
 msgctxt "ItemViewSettingsPage|"
 msgid "Inactive:"
-msgstr ""
+msgstr "Ανενεργό:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:166
 msgctxt "ItemViewSettingsPage|"
 msgid "Unread messages:"
-msgstr "Αδιάβαστα μηνύματα ανά συνομιλία"
+msgstr "Μη αναγνωσμένα μηνύματα:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:190
 msgctxt "ItemViewSettingsPage|"
 msgid "Highlight:"
-msgstr ""
+msgstr "Υπογράμμιση:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:214
 msgctxt "ItemViewSettingsPage|"
 msgid "Other activity:"
-msgstr ""
+msgstr "Άλλη δραστηριότητα:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgctxt "ItemViewSettingsPage|"
 msgid "Custom Nick List Colors"
-msgstr ""
+msgstr "Προσαρμοσμένα Χρώματα στη Λίστα Ψευδώνυμων"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:301
 msgctxt "ItemViewSettingsPage|"
 msgid "Online:"
-msgstr ""
+msgstr "Συνδεδεμένος:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:338
 msgctxt "ItemViewSettingsPage|"
 msgid "Away:"
-msgstr ""
+msgstr "Απών:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 msgctxt "ItemViewSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 msgctxt "ItemViewSettingsPage|"
 msgid "Chat & Nick Lists"
-msgstr ""
+msgstr "Λίστες Συνομιλιών & Ψευδώνυμων"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
 msgctxt "ItemViewSettingsPage|"
 msgid "Network"
-msgstr ""
+msgstr "Δίκτυο"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
 msgctxt "ItemViewSettingsPage|"
 msgid "Inactive"
-msgstr ""
+msgstr "Ανενεργός"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
 msgctxt "ItemViewSettingsPage|"
 msgid "Normal"
-msgstr ""
+msgstr "Κανονικό"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:38
 msgctxt "ItemViewSettingsPage|"
 msgid "Unread messages"
-msgstr "Αδιάβαστα μηνύματα ανά συνομιλία"
+msgstr "Αδιάβαστα μηνύματα"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
 msgctxt "ItemViewSettingsPage|"
 msgid "Highlight"
-msgstr ""
+msgstr "Υπογράμμιση"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
 msgctxt "ItemViewSettingsPage|"
 msgid "Other activity"
-msgstr ""
+msgstr "Άλλη δραστηριότητα"
 
 #: ../src/qtui/knotificationbackend.cpp:115
 #, qt-format
 msgctxt "KNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n υπογράμμιση σε εξέλιξη"
+msgstr[1] "%n υπογραμμίσεις σε εξέλιξη"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
 msgid "The key you just pressed is not supported by Qt."
-msgstr ""
+msgstr "Το πλήκτρο που μόλις πατήσατε δεν υποστηρίζεται από την Qt."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:78
 msgctxt "KeySequenceButton|"
 msgid "Unsupported Key"
-msgstr ""
+msgstr "Μη υποστηριζόμενο Κλειδί"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:169
 msgctxt "KeySequenceWidget|"
 msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
-msgstr ""
+msgstr "Πατήστε το κουμπί και εισάγετε τη συντόμευση όπως θα το κάνατε στο πρόγραμμα.\nΠαράδειγμα για Ctrl+α: κρατήστε πατημένο το Ctrl και πατήστε το α."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:259
 msgctxt "KeySequenceWidget|Meta key"
@@ -3745,34 +3745,34 @@ msgstr ""
 #: ../src/qtui/settingspages/keysequencewidget.cpp:260
 msgctxt "KeySequenceWidget|Ctrl key"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:261
 msgctxt "KeySequenceWidget|Alt key"
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:262
 msgctxt "KeySequenceWidget|Shift key"
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:265
 msgctxt ""
 "KeySequenceWidget|What the user inputs now will be taken as the new shortcut"
 msgid "Input"
-msgstr ""
+msgstr "Είσοδος"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:272
 msgctxt "KeySequenceWidget|No shortcut defined"
 msgid "None"
-msgstr ""
+msgstr "Κανένα"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:355
 #: ../src/qtui/settingspages/keysequencewidget.cpp:361
 msgctxt "KeySequenceWidget|"
 msgid "Shortcut Conflict"
-msgstr ""
+msgstr "Σύγκρουση Συντομεύσεων"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:356
 #, qt-format
@@ -3780,114 +3780,114 @@ msgctxt "KeySequenceWidget|"
 msgid ""
 "The \"%1\" shortcut is already in use, and cannot be configured.\n"
 "Please choose another one."
-msgstr ""
+msgstr "Η συντόμευση \"%1\" χρησιμοποιείται ήδη.\nΠαρακαλώ επιλέξτε μια διαφορετική συντόμευση."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:362
 #, qt-format
 msgctxt "KeySequenceWidget|"
 msgid ""
 "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
-msgstr ""
+msgstr "Η συντόμευση \"%1\" δεν είναι ξεκάθαρη για την ακόλουθη ενέργεια:"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:364
 msgctxt "KeySequenceWidget|"
 msgid "Do you want to reassign this shortcut to the selected action?"
-msgstr ""
+msgstr "Θέλετε να δηλώσετε άλλη συντόμευση για την επιλεγμένη ενέργεια;"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:367
 msgctxt "KeySequenceWidget|"
 msgid "Reassign"
-msgstr ""
+msgstr "Επανεκχώρηση"
 
 #: ../src/qtui/mainwin.cpp:313
 msgctxt "MainWin|"
 msgid "General"
-msgstr ""
+msgstr "Γενικά"
 
 #: ../src/qtui/mainwin.cpp:315
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
-msgstr ""
+msgstr "&Σύνδεση στον Πυρήνα..."
 
 #: ../src/qtui/mainwin.cpp:317
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
-msgstr ""
+msgstr "&Αποσύδνεση από τον Πυρήνα"
 
 #: ../src/qtui/mainwin.cpp:319
 msgctxt "MainWin|"
 msgid "Core &Info..."
-msgstr ""
+msgstr "Πυρήνας Π&ληροφορίες"
 
 #: ../src/qtui/mainwin.cpp:321
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
-msgstr ""
+msgstr "Ρύθμιση &Δικτύων"
 
 #: ../src/qtui/mainwin.cpp:324
 msgctxt "MainWin|"
 msgid "&Quit"
-msgstr ""
+msgstr "&Έξοδος"
 
 #: ../src/qtui/mainwin.cpp:328
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
-msgstr ""
+msgstr "&Ρύθμιση Λιστών Συνομιλίας..."
 
 #: ../src/qtui/mainwin.cpp:331
 msgctxt "MainWin|"
 msgid "&Lock Layout"
-msgstr ""
+msgstr "Κ&λείδωμα Διάταξης"
 
 #: ../src/qtui/mainwin.cpp:335
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
-msgstr ""
+msgstr "Εμφάνιση Μπάρας &Αναζήτησης"
 
 #: ../src/qtui/mainwin.cpp:337
 msgctxt "MainWin|"
 msgid "Show Away Log"
-msgstr ""
+msgstr "Εμφάνιση Καταγραφής κατά την Απουσία"
 
 #: ../src/qtui/mainwin.cpp:339
 msgctxt "MainWin|"
 msgid "Show &Menubar"
-msgstr ""
+msgstr "Εμφάνιση Μπάρας &Μενού"
 
 #: ../src/qtui/mainwin.cpp:342
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
-msgstr ""
+msgstr "Εμφάνιση Μπάρας &Κατάστασης"
 
 #: ../src/qtui/mainwin.cpp:348
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
-msgstr ""
+msgstr "Λειτουργία σε Όλη την &Οθόνη"
 
 #: ../src/qtui/mainwin.cpp:355
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
-msgstr ""
+msgstr "Ρύθμιση &Συντομέυσεων"
 
 #: ../src/qtui/mainwin.cpp:361 ../src/qtui/mainwin.cpp:365
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
-msgstr ""
+msgstr "Ρύ&θμιση Quassel"
 
 #: ../src/qtui/mainwin.cpp:371
 msgctxt "MainWin|"
 msgid "&About Quassel"
-msgstr "Περί του Quassel"
+msgstr "&Περί του Quassel"
 
 #: ../src/qtui/mainwin.cpp:376
 msgctxt "MainWin|"
 msgid "About &Qt"
-msgstr "Περί"
+msgstr "Περί &Qt"
 
 #: ../src/qtui/mainwin.cpp:380
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
-msgstr ""
+msgstr "Αποσφαλμάτωση &Δικτύου"
 
 #: ../src/qtui/mainwin.cpp:382
 msgctxt "MainWin|"
@@ -3897,7 +3897,7 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
-msgstr ""
+msgstr "Αποσφαλμάτωση &Μηνυμάτων"
 
 #: ../src/qtui/mainwin.cpp:386
 msgctxt "MainWin|"
@@ -3907,303 +3907,308 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:388
 msgctxt "MainWin|"
 msgid "Debug &Log"
-msgstr ""
+msgstr "Αποσφαλμάτωση &Καταγραφής"
 
 #: ../src/qtui/mainwin.cpp:390
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
-msgstr "Χρησιμοποίησε ειδικής κατασκευής φύλλο διαμόρφωσης"
+msgstr "Επαναφόρτωση φύλλου διαμόρφωσης"
 
-#: ../src/qtui/mainwin.cpp:394
+#: ../src/qtui/mainwin.cpp:393
+msgctxt "MainWin|"
+msgid "Hide Current Buffer"
+msgstr "Απόκρυψη Τρέχουσας Συνομιλίας"
+
+#: ../src/qtui/mainwin.cpp:397
 msgctxt "MainWin|"
 msgid "Navigation"
-msgstr ""
+msgstr "Πλοήγηση"
 
-#: ../src/qtui/mainwin.cpp:396
+#: ../src/qtui/mainwin.cpp:399
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:408
+#: ../src/qtui/mainwin.cpp:411
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #0"
 
-#: ../src/qtui/mainwin.cpp:410
+#: ../src/qtui/mainwin.cpp:413
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #1"
 
-#: ../src/qtui/mainwin.cpp:412
+#: ../src/qtui/mainwin.cpp:415
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #2"
 
-#: ../src/qtui/mainwin.cpp:414
+#: ../src/qtui/mainwin.cpp:417
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #3"
 
-#: ../src/qtui/mainwin.cpp:416
+#: ../src/qtui/mainwin.cpp:419
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #4"
 
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:421
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #5"
 
-#: ../src/qtui/mainwin.cpp:420
+#: ../src/qtui/mainwin.cpp:423
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #6"
 
-#: ../src/qtui/mainwin.cpp:422
+#: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #7"
 
-#: ../src/qtui/mainwin.cpp:424
+#: ../src/qtui/mainwin.cpp:427
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
-msgstr ""
-
-#: ../src/qtui/mainwin.cpp:426
-msgctxt "MainWin|"
-msgid "Set Quick Access #9"
-msgstr ""
+msgstr "Ορισμός Γρήγορης Πρόσβασης #8"
 
 #: ../src/qtui/mainwin.cpp:429
 msgctxt "MainWin|"
-msgid "Quick Access #0"
-msgstr ""
+msgid "Set Quick Access #9"
+msgstr "Ορισμός Γρήγορης Πρόσβασης #9"
 
-#: ../src/qtui/mainwin.cpp:431
+#: ../src/qtui/mainwin.cpp:432
+msgctxt "MainWin|"
+msgid "Quick Access #0"
+msgstr "Γρήγορη Πρόσβαση #0"
+
+#: ../src/qtui/mainwin.cpp:434
 msgctxt "MainWin|"
 msgid "Quick Access #1"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #1"
 
-#: ../src/qtui/mainwin.cpp:433
+#: ../src/qtui/mainwin.cpp:436
 msgctxt "MainWin|"
 msgid "Quick Access #2"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #2"
 
-#: ../src/qtui/mainwin.cpp:435
+#: ../src/qtui/mainwin.cpp:438
 msgctxt "MainWin|"
 msgid "Quick Access #3"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #3"
 
-#: ../src/qtui/mainwin.cpp:437
+#: ../src/qtui/mainwin.cpp:440
 msgctxt "MainWin|"
 msgid "Quick Access #4"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #4"
 
-#: ../src/qtui/mainwin.cpp:439
+#: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
 msgid "Quick Access #5"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #5"
 
-#: ../src/qtui/mainwin.cpp:441
+#: ../src/qtui/mainwin.cpp:444
 msgctxt "MainWin|"
 msgid "Quick Access #6"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #6"
 
-#: ../src/qtui/mainwin.cpp:443
+#: ../src/qtui/mainwin.cpp:446
 msgctxt "MainWin|"
 msgid "Quick Access #7"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #7"
 
-#: ../src/qtui/mainwin.cpp:445
+#: ../src/qtui/mainwin.cpp:448
 msgctxt "MainWin|"
 msgid "Quick Access #8"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #8"
 
-#: ../src/qtui/mainwin.cpp:447
+#: ../src/qtui/mainwin.cpp:450
 msgctxt "MainWin|"
 msgid "Quick Access #9"
-msgstr ""
+msgstr "Γρήγορη Πρόσβαση #9"
 
-#: ../src/qtui/mainwin.cpp:451
+#: ../src/qtui/mainwin.cpp:454
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
-msgstr ""
+msgstr "Ενεργοποίηση Επόμενης Λίστας Συνομιλίας"
 
-#: ../src/qtui/mainwin.cpp:453
+#: ../src/qtui/mainwin.cpp:456
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
-msgstr ""
+msgstr "Ενεργοποίηση Προηγούμενης Λίστας Συνομιλίας"
 
-#: ../src/qtui/mainwin.cpp:455
+#: ../src/qtui/mainwin.cpp:458
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
-msgstr ""
+msgstr "Μετάβαση στην Επόμενη Συνομιλία"
 
-#: ../src/qtui/mainwin.cpp:457
+#: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
-msgstr ""
+msgstr "Μετάβαση στην Προηγούμενη Συνομιλία"
 
-#: ../src/qtui/mainwin.cpp:464
+#: ../src/qtui/mainwin.cpp:467
 msgctxt "MainWin|"
 msgid "&File"
-msgstr ""
+msgstr "&Αρχείο"
 
-#: ../src/qtui/mainwin.cpp:477
+#: ../src/qtui/mainwin.cpp:480
 msgctxt "MainWin|"
 msgid "&Networks"
-msgstr ""
-
-#: ../src/qtui/mainwin.cpp:483
-msgctxt "MainWin|"
-msgid "&View"
-msgstr ""
-
-#: ../src/qtui/mainwin.cpp:484
-msgctxt "MainWin|"
-msgid "&Chat Lists"
-msgstr ""
+msgstr "&Δίκτυα"
 
 #: ../src/qtui/mainwin.cpp:486
 msgctxt "MainWin|"
-msgid "&Toolbars"
-msgstr ""
+msgid "&View"
+msgstr "&Προβολή"
 
-#: ../src/qtui/mainwin.cpp:500
+#: ../src/qtui/mainwin.cpp:487
+msgctxt "MainWin|"
+msgid "&Chat Lists"
+msgstr "&Λίστες Συνομιλίας"
+
+#: ../src/qtui/mainwin.cpp:489
+msgctxt "MainWin|"
+msgid "&Toolbars"
+msgstr "&Εργαλεία"
+
+#: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
 msgid "&Settings"
-msgstr ""
+msgstr "&Ρυθμίσεις"
 
-#: ../src/qtui/mainwin.cpp:509
+#: ../src/qtui/mainwin.cpp:512
 msgctxt "MainWin|"
 msgid "&Help"
-msgstr ""
+msgstr "&Βοήθεια"
 
-#: ../src/qtui/mainwin.cpp:517
+#: ../src/qtui/mainwin.cpp:520
 msgctxt "MainWin|"
 msgid "Debug"
-msgstr ""
-
-#: ../src/qtui/mainwin.cpp:746
-msgctxt "MainWin|"
-msgid "Nicks"
-msgstr ""
+msgstr "Αποσφαλμάτωση"
 
 #: ../src/qtui/mainwin.cpp:755
 msgctxt "MainWin|"
-msgid "Show Nick List"
-msgstr ""
+msgid "Nicks"
+msgstr "Ψευδώνυμα"
 
-#: ../src/qtui/mainwin.cpp:766
+#: ../src/qtui/mainwin.cpp:764
+msgctxt "MainWin|"
+msgid "Show Nick List"
+msgstr "Εμφάνιση Λίστας Ψευδώνυμων"
+
+#: ../src/qtui/mainwin.cpp:775
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "Παρακολούθηση Συνμομιλίας"
 
-#: ../src/qtui/mainwin.cpp:778
+#: ../src/qtui/mainwin.cpp:787
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
-msgstr ""
-
-#: ../src/qtui/mainwin.cpp:782
-msgctxt "MainWin|"
-msgid "Inputline"
-msgstr ""
+msgstr "Εμφάνιση Παρακολούθησης Συνομιλίας"
 
 #: ../src/qtui/mainwin.cpp:791
 msgctxt "MainWin|"
-msgid "Show Input Line"
-msgstr ""
+msgid "Inputline"
+msgstr "Γραμμή Ειαγωγής"
 
-#: ../src/qtui/mainwin.cpp:804
+#: ../src/qtui/mainwin.cpp:800
+msgctxt "MainWin|"
+msgid "Show Input Line"
+msgstr "Εμφάνιση Γραμμής Εισαγωγής"
+
+#: ../src/qtui/mainwin.cpp:813
 msgctxt "MainWin|"
 msgid "Topic"
-msgstr ""
+msgstr "Θέμα"
 
-#: ../src/qtui/mainwin.cpp:816
+#: ../src/qtui/mainwin.cpp:825
 msgctxt "MainWin|"
 msgid "Show Topic Line"
-msgstr ""
+msgstr "Εμφάνιση Γραμμής Θέματος"
 
-#: ../src/qtui/mainwin.cpp:894
+#: ../src/qtui/mainwin.cpp:903
 msgctxt "MainWin|"
 msgid "Main Toolbar"
-msgstr ""
+msgstr "Βασικά Εργαλεία"
 
-#: ../src/qtui/mainwin.cpp:933
+#: ../src/qtui/mainwin.cpp:942
 msgctxt "MainWin|"
 msgid "Connected to core."
-msgstr ""
+msgstr "Συνδέθηκε στον πυρήνα."
 
-#: ../src/qtui/mainwin.cpp:1024
+#: ../src/qtui/mainwin.cpp:1033
 msgctxt "MainWin|"
 msgid "Not connected to core."
-msgstr ""
+msgstr "Δε συνδέθηκε στον πυρήνα."
 
-#: ../src/qtui/mainwin.cpp:1038 ../src/qtui/mainwin.cpp:1046
+#: ../src/qtui/mainwin.cpp:1047 ../src/qtui/mainwin.cpp:1055
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
-msgstr ""
+msgstr "Μη Κρυπτογραφημένη Σύνδεση"
 
-#: ../src/qtui/mainwin.cpp:1038
+#: ../src/qtui/mainwin.cpp:1047
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
-msgstr ""
+msgstr "<b>Ο πελάτης σας δεν υποστηρίζει κρυπτογράφηση SSL</b>"
 
-#: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1048
+#: ../src/qtui/mainwin.cpp:1049 ../src/qtui/mainwin.cpp:1057
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
-msgstr ""
+msgstr "Ευαίσθητα δεδομένα, όπως κωδικοί, θα μεταδοθούν μη κρυπτογραφημένα στον πυρήνα Quassel."
 
-#: ../src/qtui/mainwin.cpp:1046
+#: ../src/qtui/mainwin.cpp:1055
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
-msgstr ""
+msgstr "<b>Ο πυρήνας σας δεν υποστηρίζει κρυπτογράφηση SSL</b>"
 
-#: ../src/qtui/mainwin.cpp:1063 ../src/qtui/mainwin.cpp:1083
+#: ../src/qtui/mainwin.cpp:1072 ../src/qtui/mainwin.cpp:1092
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
-msgstr ""
+msgstr "Αναξιόπιστο Πιστοποιητικό Ασφαλείας"
 
-#: ../src/qtui/mainwin.cpp:1064
+#: ../src/qtui/mainwin.cpp:1073
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
-msgstr ""
+msgstr "<b>Το πιστοποιητικό SSL που παρέχει ο πυρήνας στο %1 είναι αναξιόοπιστος για τους ακόλουθους λόγους:</b>"
 
-#: ../src/qtui/mainwin.cpp:1067
+#: ../src/qtui/mainwin.cpp:1076
 msgctxt "MainWin|"
 msgid "Continue"
-msgstr ""
+msgstr "Συνέχεια"
 
-#: ../src/qtui/mainwin.cpp:1068
+#: ../src/qtui/mainwin.cpp:1077
 msgctxt "MainWin|"
 msgid "Show Certificate"
-msgstr ""
+msgstr "Εμφάνιση Πιστοποιητικού"
 
-#: ../src/qtui/mainwin.cpp:1084
+#: ../src/qtui/mainwin.cpp:1093
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
-msgstr ""
+msgstr "Θέλετε να γίνεται πάντα αποδοχή του πιστοποιητικού χωρίς ερώτηση;"
 
-#: ../src/qtui/mainwin.cpp:1086
+#: ../src/qtui/mainwin.cpp:1095
 msgctxt "MainWin|"
 msgid "Current Session Only"
-msgstr ""
-
-#: ../src/qtui/mainwin.cpp:1087
-msgctxt "MainWin|"
-msgid "Forever"
-msgstr ""
+msgstr "Μόνο Τρέχουσα Συνεδρία"
 
 #: ../src/qtui/mainwin.cpp:1096
 msgctxt "MainWin|"
+msgid "Forever"
+msgstr "Για πάντα"
+
+#: ../src/qtui/mainwin.cpp:1105
+msgctxt "MainWin|"
 msgid "Core Connection Error"
-msgstr ""
+msgstr "Σφάλμα Σύνδεσης Πυρήνα"
 
 #: ../src/client/messagemodel.cpp:375
 #, qt-format
@@ -4219,45 +4224,45 @@ msgstr "Μορφή"
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
 msgctxt "MsgProcessorStatusWidget|"
 msgid "Receiving Backlog"
-msgstr ""
+msgstr "Λήψη Αποθηκευμένων Συνομιλιών"
 
 #: ../src/uisupport/multilineedit.cpp:661
 #, qt-format
 msgctxt "MultiLineEdit|"
 msgid "Do you really want to paste %n line(s)?"
 msgid_plural "Do you really want to paste %n line(s)?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Σίγουρα θέλετε να επικολλήσετε & να αποστείλετε %n γραμμές;"
+msgstr[1] "Σίγουρα θέλετε να επικολλήσετε & να αποστείλετε %n γραμμές;"
 
 #: ../src/uisupport/multilineedit.cpp:670
 msgctxt "MultiLineEdit|"
 msgid "Paste Protection"
-msgstr ""
+msgstr "Προστασία Επικόλλησης"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:14
 msgctxt "NetworkAddDlg|"
 msgid "Add Network"
-msgstr ""
+msgstr "Προσθήκη Δικτύου"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:22
 msgctxt "NetworkAddDlg|"
 msgid "Use preset:"
-msgstr ""
+msgstr "Χρήση προεπιλογής:"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:57
 msgctxt "NetworkAddDlg|"
 msgid "Manually specify network settings"
-msgstr ""
+msgstr "Χειροκίνητος προσδιορισμός ρυθμίσεων δικτύου"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:67
 msgctxt "NetworkAddDlg|"
 msgid "Manual Settings"
-msgstr ""
+msgstr "Χειρικίνητες Ρυθμίσεις"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:75
 msgctxt "NetworkAddDlg|"
 msgid "Network name:"
-msgstr "Εμφάνιση Ονόματος Δικτύου"
+msgstr "Όνομα δικτύου:"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:85
 msgctxt "NetworkAddDlg|"
@@ -4272,96 +4277,96 @@ msgstr "Θύρα:"
 #: ../src/qtui/settingspages/networkadddlg.ui:115
 msgctxt "NetworkAddDlg|"
 msgid "Server password:"
-msgstr ""
+msgstr "Κωδικός εξυπηρετητή:"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:131
 msgctxt "NetworkAddDlg|"
 msgid "Use secure connection"
-msgstr ""
+msgstr "Χρήση ασφαλής σύνδεσης"
 
 #: ../src/qtui/settingspages/networkeditdlg.ui:13
 msgctxt "NetworkEditDlg|"
 msgid "Dialog"
-msgstr ""
+msgstr "Παράθυρο"
 
 #: ../src/qtui/settingspages/networkeditdlg.ui:21
 msgctxt "NetworkEditDlg|"
 msgid "Please enter a network name:"
-msgstr ""
+msgstr "Παρακαλώ εισάγετε ένα όνομα δικτύου:"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:705
 msgctxt "NetworkEditDlg|"
 msgid "Add Network"
-msgstr ""
+msgstr "Προσθήκη Δικτύου"
 
 #: ../src/client/networkmodel.cpp:196
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Server: %1"
-msgstr ""
+msgstr "Εξυπηρετήτής: %1"
 
 #: ../src/client/networkmodel.cpp:197
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Users: %1"
-msgstr ""
+msgstr "Χρήστες: %1"
 
 #: ../src/client/networkmodel.cpp:200
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
-msgstr ""
+msgstr "Καθυστέρηση: %1 msecs"
 
 #: ../src/client/networkmodel.cpp:852
 msgctxt "NetworkModel|"
 msgid "Chat"
-msgstr ""
+msgstr "Συνομιλία"
 
 #: ../src/client/networkmodel.cpp:852
 msgctxt "NetworkModel|"
 msgid "Topic"
-msgstr ""
+msgstr "Θέμα"
 
 #: ../src/client/networkmodel.cpp:852
 msgctxt "NetworkModel|"
 msgid "Nick Count"
-msgstr ""
+msgstr "Καταμέτρηση Ψευδώνυμων"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:154
 msgctxt "NetworkModelController|"
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Θέλετε να διαγράψετε την ακόλουθη συνομιλία μόνιμα;"
+msgstr[1] "Θέλετε να διαγράψετε τις ακόλουθες συνομιλίες μόνιμα;"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:167
 #, qt-format
 msgctxt "NetworkModelController|"
 msgid "...and <b>%1</b> more<br><br>"
-msgstr ""
+msgstr "...και <b>%1</b> περισσότερα<br><br>"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:168
 msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
-msgstr ""
+msgstr "<b>Σημείωση:</b> Αυτή η ενέργεια θα διαγράψει όλα τα σχετικά δεδομένα, συμπεριλαμβανομένου των αποθηκευμένων συνομιλιών, από τη βάση δεδομένων του πυρήνα και δεν μπορεί να αναιρεθεί."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgctxt "NetworkModelController|"
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr ""
+msgstr "<br>Αδυναμία διαγραφής ενεργών συνομιλιών, παρακαλώ αποχωρήστε πρώτα από το κανάλι."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:172
 msgctxt "NetworkModelController|"
 msgid "Remove buffers permanently?"
-msgstr "Συχγώνευση προσωρινών μνημών οριστικά;"
+msgstr "Μόνιμη αφαίρεση συνομιλιών;"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:484
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Join Channel"
-msgstr ""
+msgstr "Είσοδος σε Κανάλι"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:487
 msgctxt "NetworkModelController::JoinDlg|"
@@ -4371,7 +4376,7 @@ msgstr "Δίκτυο:"
 #: ../src/uisupport/networkmodelcontroller.cpp:489
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Channel:"
-msgstr ""
+msgstr "Κανάλι:"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:491
 msgctxt "NetworkModelController::JoinDlg|"
@@ -4381,7 +4386,7 @@ msgstr "Κωδικός:"
 #: ../src/qtui/ircconnectionwizard.cpp:148
 msgctxt "NetworkPage|"
 msgid "Setup Network Connection"
-msgstr ""
+msgstr "Στήσιμο Σύνδεσης Δικτύου"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:14
 msgctxt "NetworksSettingsPage|"
@@ -4391,85 +4396,85 @@ msgstr "Μορφή"
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgctxt "NetworksSettingsPage|"
 msgid "Re&name..."
-msgstr ""
+msgstr "&Μετονομασία"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:65
 #: ../src/qtui/settingspages/networkssettingspage.ui:235
 msgctxt "NetworksSettingsPage|"
 msgid "&Add..."
-msgstr ""
+msgstr "&Προσθήκη"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:88
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
 msgctxt "NetworksSettingsPage|"
 msgid "De&lete"
-msgstr "Διαγραφή"
+msgstr "&Διαγραφή"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:124
 msgctxt "NetworksSettingsPage|"
 msgid "Network Details"
-msgstr ""
+msgstr "Λεπτομέριες Δικτύου"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:132
 msgctxt "NetworksSettingsPage|"
 msgid "Identity:"
-msgstr ""
+msgstr "Ταυτότητα:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:149
 #: ../src/qtui/settingspages/networkssettingspage.ui:281
 #: ../src/qtui/settingspages/networkssettingspage.ui:295
 msgctxt "NetworksSettingsPage|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:190
 msgctxt "NetworksSettingsPage|"
 msgid "Servers"
-msgstr "Ειδοποιήσεις Server:"
+msgstr "Εξυπηρετητές"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:193
 msgctxt "NetworksSettingsPage|"
 msgid "Manage servers for this network"
-msgstr ""
+msgstr "Διαχείριση εξυπηρετητών για αυτό το δίκτυο"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 msgctxt "NetworksSettingsPage|"
 msgid "&Edit..."
-msgstr ""
+msgstr "&Επεξεργασία..."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:278
 msgctxt "NetworksSettingsPage|"
 msgid "Move upwards in list"
-msgstr ""
+msgstr "Μετακίνηση προς τα πάνω στη λίστα"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:292
 msgctxt "NetworksSettingsPage|"
 msgid "Move downwards in list"
-msgstr ""
+msgstr "Μετακίνηση προς τα κάτω στη λίστα"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:337
 msgctxt "NetworksSettingsPage|"
 msgid "Commands"
-msgstr ""
+msgstr "Εντολές"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:340
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
-msgstr ""
+msgstr "Ρύθμιση αυτόματης ταυτοποίησης ή εκτέλεσης επιπρόσθετων εντολών μετά τη σύνδεση με έναν εξυπηρετητή"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
 msgctxt "NetworksSettingsPage|"
 msgid "Commands to execute on connect:"
-msgstr ""
+msgstr "Εντολές προς εκτέλεση κατά τη σύνδεση:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:362
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
-msgstr ""
+msgstr "Προσδιορίστε μια λίστα εντολών του IRC που θα εκτελούνται κατά τη σύνδεση.\nΣημειώστε ότι το Quassel εισέρχεται αυτόματα στα κανάλια, οπότε η εντολή /join χρειάζεται σπάνια εδώ!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgctxt "NetworksSettingsPage|"
@@ -4479,32 +4484,32 @@ msgstr "Σύνδεση"
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
 msgctxt "NetworksSettingsPage|"
 msgid "Automatically reconnect to the IRC network after connection failures"
-msgstr ""
+msgstr "Αυτόματη επανασύνδεση στο δίκτυο IRC μετά από αποτυχία σύνδεσης"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:386
 msgctxt "NetworksSettingsPage|"
 msgid "Automatic Reconnect"
-msgstr ""
+msgstr "Αυτόματη επανασύνδεση"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:397
 msgctxt "NetworksSettingsPage|"
 msgid "Wait"
-msgstr ""
+msgstr "Αναμονή"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:404
 msgctxt "NetworksSettingsPage|"
 msgid " s"
-msgstr ""
+msgstr " s"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:420
 msgctxt "NetworksSettingsPage|"
 msgid "between retries"
-msgstr ""
+msgstr "ανάμεσα στις προσάθειες"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:444
 msgctxt "NetworksSettingsPage|"
 msgid "Number of retries:"
-msgstr ""
+msgstr "Αριθμός προσπαθειών:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:464
 msgctxt "NetworksSettingsPage|"
@@ -4514,23 +4519,23 @@ msgstr "Απεριόριστο"
 #: ../src/qtui/settingspages/networkssettingspage.ui:489
 msgctxt "NetworksSettingsPage|"
 msgid "Rejoin all channels after reconnect"
-msgstr ""
+msgstr "Είσοδος σε όλα τα κανάλια μετά την επανασύνδεση"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:516
 #: ../src/qtui/settingspages/networkssettingspage.ui:525
 msgctxt "NetworksSettingsPage|"
 msgid "Auto Identify"
-msgstr ""
+msgstr "Αυτόματη Αναγνώριση"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:540
 msgctxt "NetworksSettingsPage|"
 msgid "NickServ"
-msgstr ""
+msgstr "NickServ"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:557
 msgctxt "NetworksSettingsPage|"
 msgid "Service:"
-msgstr "Ειδοποιήσεις Server:"
+msgstr "Υπηρεσία:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:567
 #: ../src/qtui/settingspages/networkssettingspage.ui:615
@@ -4541,34 +4546,34 @@ msgstr "Κωδικός:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 msgctxt "NetworksSettingsPage|"
 msgid "Use SASL Authentication"
-msgstr ""
+msgstr "Χρήση Πιστοποίησης SASL"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
 msgctxt "NetworksSettingsPage|"
 msgid "Account:"
-msgstr ""
+msgstr "Λογαριασμός:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:649
 msgctxt "NetworksSettingsPage|"
 msgid "Encodings"
-msgstr ""
+msgstr "Κωδικοποιήσεις"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:652
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
-msgstr ""
+msgstr "Ρύθμιση προχωρημένων επιλογών όπως κωδικοποίηση μηνυμάτων και αυτόματη επανασύνδεση"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
 msgctxt "NetworksSettingsPage|"
 msgid "Control encodings for in- and outgoing messages"
-msgstr ""
+msgstr "Έλεγχος κωδικοποίησης για εισερχόμενα και εξερχόμενα μηνύματα"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:664
 msgctxt "NetworksSettingsPage|"
 msgid "Use Custom Encodings"
-msgstr ""
+msgstr "Χρήση Προσαρμοσμένων Κωδικοποιήσεων"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:675
 #: ../src/qtui/settingspages/networkssettingspage.ui:695
@@ -4576,12 +4581,12 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
-msgstr ""
+msgstr "Προσδιορίστε την κωδικοποίηση με την οποία θα αποστέλλονται τα μηνύματά σας.\nΤο UTF-8 είναι μια ασφαλής επιλογή για τα περισσότερα δίκτυα."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:679
 msgctxt "NetworksSettingsPage|"
 msgid "Send messages in:"
-msgstr ""
+msgstr "Αποστολή μηνυμάτων σε:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:706
 #: ../src/qtui/settingspages/networkssettingspage.ui:726
@@ -4589,12 +4594,12 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
-msgstr ""
+msgstr "Τα εισερχόμενα μηνύματα κωδικοποιημένα σε Utf8 θα αντιμετωπίζονται ως τέτοια.\nΑυτή η ρύθμιση ορίζει την κωδικοποίηση των μηνυμάτων που δεν είναι Utf8."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:710
 msgctxt "NetworksSettingsPage|"
 msgid "Receive fallback:"
-msgstr ""
+msgstr "Λήψη εφεδρικού:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:737
 #: ../src/qtui/settingspages/networkssettingspage.ui:751
@@ -4602,12 +4607,12 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr ""
+msgstr "Αυτό ορίζει πως είναι κωδικοποιημένα τα μηνύματα ελέγχου, τα ψευδώνυμα και τα ονόματα των εξυπηρετητών. Αφήστε το σε ISO-8859-1 εκτός αν *πραγματικά* ξέρετε τι κάνετε!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:741
 msgctxt "NetworksSettingsPage|"
 msgid "Server encoding:"
-msgstr "Ειδοποιήσεις Server:"
+msgstr "Κωδικοποίηση εξυπηρετητή:"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
 msgctxt "NetworksSettingsPage|"
@@ -4617,34 +4622,34 @@ msgstr "IRC"
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
 msgctxt "NetworksSettingsPage|"
 msgid "Networks"
-msgstr ""
+msgstr "Δίκτυα"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:167
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
-msgstr ""
+msgstr "<b>Τα ακόλουθα προβλήματα πρέπει να διορθωθούν πριν την εφαρμογή των αλλαγών:</b><ul>"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:168
 msgctxt "NetworksSettingsPage|"
 msgid "<li>All networks need at least one server defined</li>"
-msgstr ""
+msgstr "<li>Όλα τα δίκτυα χρειάζονται να έχει οριστεί τουλάχιστονς ένας εξυπηρετητής</li>"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:169
 msgctxt "NetworksSettingsPage|"
 msgid "</ul>"
-msgstr ""
+msgstr "</ul>"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:170
 msgctxt "NetworksSettingsPage|"
 msgid "Invalid Network Settings"
-msgstr ""
+msgstr "Μη Έγκυρες Ρυθμίσεις Δικτύου"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:542
 msgctxt "NetworksSettingsPage|"
 msgid "Delete Network?"
-msgstr ""
+msgstr "Διαγραφή Δικτύου;"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:543
 #, qt-format
@@ -4652,44 +4657,44 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
-msgstr ""
+msgstr "Σίγουρα επιθυμείτε τη διαγραφή του δικτύου\"%1\" και όλων των σχετικών ρυθμίσεων, συμπεριλαμβανομένου των αποθηκευμένων συνομιλιών;"
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
 msgctxt "NickEditDlg|"
 msgid "Edit Nickname"
-msgstr ""
+msgstr "Επεξεργασία Ψευδώνυμου"
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:19
 msgctxt "NickEditDlg|"
 msgid "Please enter a valid nickname:"
-msgstr ""
+msgstr "Παρακαλώ εισάγετε ένα έγκυρο ψευδώνυμο:"
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:32
 msgctxt "NickEditDlg|"
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr ""
+msgstr "Ένα έγκυρο ψευδώνυμο μπορεί να περιέχει γράμματα της αγγλικής αλφαβήτας, αριθμούς και τους ειδικούς χαρακτήρες {, }, [, ], \\, |, `, ^, _ και -."
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgctxt "NickEditDlg|"
 msgid "Add Nickname"
-msgstr ""
+msgstr "Προσθήκη Ψευδώνυμου"
 
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
 msgctxt "NotificationsSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
 msgctxt "NotificationsSettingsPage|"
 msgid "Notifications"
-msgstr ""
+msgstr "Ειδοποιήσεις"
 
 #: ../src/qtui/phononnotificationbackend.cpp:143
 msgctxt "PhononNotificationBackend::ConfigWidget|"
 msgid "Select Audio File"
-msgstr ""
+msgstr "Επιλογή Αρχείου Ήχου"
 
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:14
 msgctxt "PhononNotificationConfigWidget|"
@@ -4699,47 +4704,47 @@ msgstr "Μορφή"
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
 msgctxt "PhononNotificationConfigWidget|"
 msgid "Play a sound"
-msgstr ""
+msgstr "Αναπαραγωγή ήχου"
 
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:46
 msgctxt "PhononNotificationConfigWidget|"
 msgid "Prelisten to the selected sound"
-msgstr ""
+msgstr "Προεπισκόπηση επιλεγμένου ήχου"
 
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:59
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:69
 msgctxt "PhononNotificationConfigWidget|"
 msgid "Select the sound file to play"
-msgstr ""
+msgstr "Επιλογή ήχου προς αναπαραγωγή"
 
 #: ../src/core/postgresqlstorage.cpp:62
 msgctxt "PostgreSqlStorage|"
 msgid "PostgreSQL Turbo Bomber HD!"
-msgstr ""
+msgstr "PostgreSQL Turbo Bomber HD!"
 
 #: ../src/client/backlogrequester.cpp:82
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
-msgstr ""
+msgstr "Ζήτηση έως %1 αποθηκευμένων μηνυμάτων για %2 συνομιλίες"
 
 #: ../src/client/backlogrequester.cpp:106
 #, qt-format
 msgctxt "QObject|"
 msgid ""
 "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr ""
+msgstr "Ζήτηση έως %1 όλων των μη αναγνωσμένων αποθηκευμένων μηνυμάτων (συν %2 επιπλέον)"
 
 #: ../src/client/backlogrequester.cpp:123
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr ""
+msgstr "Ζήτηση έως %1 μη αναγνωσμένων αποθηκευμένων μηνυμάτων για %2 συνομιλίες"
 
 #: ../src/qtui/ircconnectionwizard.cpp:56
 msgctxt "QObject|"
 msgid "Welcome to Quassel IRC"
-msgstr ""
+msgstr "Καλωσήρθατε στο Quassel IRC"
 
 #: ../src/qtui/ircconnectionwizard.cpp:58
 msgctxt "QObject|"
@@ -4747,50 +4752,50 @@ msgid ""
 "This wizard will help you to set up your default identity and your IRC "
 "network connection.<br>This only covers basic settings. You can cancel this "
 "wizard any time and use the settings dialog for more detailed changes."
-msgstr ""
+msgstr "Αυτός ο οδηγός θα σας βοηθήσει να ρυθμίσετε την προεπιλεγμένη ταυτότητα και τη σύνδεση στο δίκτυο IRC.<br>Περιλαμβάνει μόνο βασικές ρυθμίσεις. Μπορείτε να ακυρώσετε τον οδηγό οποιαδήποτε στιγμή και να χρησιμοποιήσετε το παράθυρο ρυθμίσεων για πιο λεπτομερείς αλλαγές."
 
 #: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
 #: ../src/uisupport/qssparser.cpp:316
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid block declaration: %1"
-msgstr ""
+msgstr "Μη έγκυρη δήλωση μπλοκ: %1"
 
 #: ../src/uisupport/qssparser.cpp:140
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette role assignment: %1"
-msgstr ""
+msgstr "Μη έγκυρη ανάθεση ρόλου παλέτας: %1"
 
 #: ../src/uisupport/qssparser.cpp:156
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette role name: %1"
-msgstr ""
+msgstr "Άγνωστο όνομα ρόλου παλέτας: %1"
 
 #: ../src/uisupport/qssparser.cpp:192
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid subelement name in %1"
-msgstr ""
+msgstr "Μη έγκυρο όνομα υποστοιχείου στο %1"
 
 #: ../src/uisupport/qssparser.cpp:236
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message type in %1"
-msgstr ""
+msgstr "Μη έγκυρος τύπος μηνύματος στο %1"
 
 #: ../src/uisupport/qssparser.cpp:245
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid condition %1"
-msgstr ""
+msgstr "Μη έγκυρη συνθήκη %1"
 
 #: ../src/uisupport/qssparser.cpp:257
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message label: %1"
-msgstr ""
+msgstr "Άκυρη ετικέτα μηνύματος: %1"
 
 #: ../src/uisupport/qssparser.cpp:268
 #, qt-format
@@ -4807,25 +4812,25 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid format name: %1"
-msgstr ""
+msgstr "Μη έγκυρη μορφή ονόματος: %1"
 
 #: ../src/uisupport/qssparser.cpp:294
 #, qt-format
 msgctxt "QssParser|"
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
-msgstr ""
+msgstr "Μη έγκυρο χρώμα για το IRC (πρέπει να είναι ανάμεσα σε 00 και 0f): %1"
 
 #: ../src/uisupport/qssparser.cpp:302
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unhandled condition: %1"
-msgstr ""
+msgstr "Αδιαχείριστη κατάσταση: %1"
 
 #: ../src/uisupport/qssparser.cpp:331
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid proplist %1"
-msgstr ""
+msgstr "Μη έγκυρη proplist %1"
 
 #: ../src/uisupport/qssparser.cpp:350
 #, qt-format
@@ -4837,44 +4842,44 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist state %1"
-msgstr ""
+msgstr "Μη έγκυρη κατάσταση λίστας συνομιλιών %1"
 
 #: ../src/uisupport/qssparser.cpp:392
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid property declaration: %1"
-msgstr ""
+msgstr "Μη έγκυρη δήλωση ιδιότητας: %1"
 
 #: ../src/uisupport/qssparser.cpp:416
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font property: %1"
-msgstr ""
+msgstr "Μη έγκυρη ιδιότητα γραμματοσειράς: %1"
 
 #: ../src/uisupport/qssparser.cpp:422
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown ChatLine property: %1"
-msgstr ""
+msgstr "Άγνωση ιδιότητα Γραμμής-Συνομιλίας: %1"
 
 #: ../src/uisupport/qssparser.cpp:444
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette color role specification: %1"
-msgstr ""
+msgstr "Μη έγκυρος ορισμός ρόλου χρώματος παλέτας: %1"
 
 #: ../src/uisupport/qssparser.cpp:451
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette color role: %1"
-msgstr ""
+msgstr "Άγνωστος ρόλος χρώματος παλέτας: %1"
 
 #: ../src/uisupport/qssparser.cpp:458 ../src/uisupport/qssparser.cpp:481
 #: ../src/uisupport/qssparser.cpp:503
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient declaration: %1"
-msgstr ""
+msgstr "Μη έγκυρη δήλωση διαβάθμισης: %1"
 
 #: ../src/uisupport/qssparser.cpp:467 ../src/uisupport/qssparser.cpp:489
 #: ../src/uisupport/qssparser.cpp:513
@@ -4887,104 +4892,104 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font specification: %1"
-msgstr ""
+msgstr "Μη έγκυρος προσδιορισμός γραμματοσειράς: %1"
 
 #: ../src/uisupport/qssparser.cpp:649
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font style specification: %1"
-msgstr ""
+msgstr "Μη έγκυρος προσδιορισμός στυλ γραμματοσειράς: %1"
 
 #: ../src/uisupport/qssparser.cpp:662
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font weight specification: %1"
-msgstr ""
+msgstr "Μη έγκυρο βάρος γραμματοσειράς: %1"
 
 #: ../src/uisupport/qssparser.cpp:672
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font size specification: %1"
-msgstr ""
+msgstr "Μη έγκυρος προσδιορισμός μεγέθους γραμματοσειράς: %1"
 
 #: ../src/common/util.cpp:145
 msgctxt "Quassel::secondsToString()|"
 msgid "year"
-msgstr ""
+msgstr "χρόνος"
 
 #: ../src/common/util.cpp:146
 msgctxt "Quassel::secondsToString()|"
 msgid "day"
-msgstr ""
+msgstr "μέρα"
 
 #: ../src/common/util.cpp:147
 msgctxt "Quassel::secondsToString()|"
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #: ../src/common/util.cpp:148
 msgctxt "Quassel::secondsToString()|"
 msgid "min"
-msgstr ""
+msgstr "min"
 
 #: ../src/common/util.cpp:149
 msgctxt "Quassel::secondsToString()|"
 msgid "sec"
-msgstr ""
+msgstr "sec"
 
 #: ../src/client/networkmodel.cpp:429
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
-msgstr ""
+msgstr "<b>Προσωπική συνομιλία με %1</b>"
 
 #: ../src/client/networkmodel.cpp:447
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "idling since %1"
-msgstr ""
+msgstr "ανανεργός από %1"
 
 #: ../src/client/networkmodel.cpp:450
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "login time: %1"
-msgstr ""
+msgstr "χρόνος εισόδου: %1"
 
 #: ../src/client/networkmodel.cpp:453
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "server: %1"
-msgstr ""
+msgstr "εξυπηρετητής: %1"
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgctxt "SaveIdentitiesDlg|"
 msgid "Sync With Core"
-msgstr ""
+msgstr "Συγχρονισμός Με Πυρήνα"
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:21
 msgctxt "SaveIdentitiesDlg|"
 msgid "Syncing data with core, please wait..."
-msgstr ""
+msgstr "Συγχρονισός δεδομένων με τον πυρήνα, παρακαλώ περιμένετε..."
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:81
 msgctxt "SaveIdentitiesDlg|"
 msgid "Abort"
-msgstr ""
+msgstr "Ματαίωση"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:14
 msgctxt "ServerEditDlg|"
 msgid "Dialog"
-msgstr ""
+msgstr "Παράθυρο"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:30
 msgctxt "ServerEditDlg|"
 msgid "Server Info"
-msgstr "Ειδοποιήσεις Server:"
+msgstr "Πληροφορίες Εξυπηρετητή"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:38
 msgctxt "ServerEditDlg|"
 msgid "Server address:"
-msgstr "Ειδοποιήσεις Server:"
+msgstr "Διεύθυνση εξυπηρετητή:"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:45
 #: ../src/qtui/settingspages/servereditdlg.ui:227
@@ -5000,39 +5005,39 @@ msgstr "Κωδικός:"
 #: ../src/qtui/settingspages/servereditdlg.ui:94
 msgctxt "ServerEditDlg|"
 msgid "Use SSL"
-msgstr ""
+msgstr "Χρήση SSL"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:119
 msgctxt "ServerEditDlg|"
 msgid "Advanced"
-msgstr ""
+msgstr "Για Προχωρημένους"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:140
 msgctxt "ServerEditDlg|"
 msgid "SSL Version:"
-msgstr ""
+msgstr "Έκδοση SSL:"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:147
 msgctxt "ServerEditDlg|"
 msgid ""
 "Do not change unless you're going to connect to a server not supporting "
 "SSLv3!"
-msgstr ""
+msgstr "Μην το αλλάξετε εκτός και αν συνδεθείτε σε εξυπηρετητή που δεν υποστηρίζει SSLv3!"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:151
 msgctxt "ServerEditDlg|"
 msgid "SSLv3 (default)"
-msgstr ""
+msgstr "SSLv3 (προεπιλογή)"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:156
 msgctxt "ServerEditDlg|"
 msgid "SSLv2"
-msgstr ""
+msgstr "SSLv2"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:161
 msgctxt "ServerEditDlg|"
 msgid "TLSv1"
-msgstr ""
+msgstr "TLSv1"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:171
 msgctxt "ServerEditDlg|"
@@ -5042,7 +5047,7 @@ msgstr "Χρήση Διαμεσολαβητή"
 #: ../src/qtui/settingspages/servereditdlg.ui:188
 msgctxt "ServerEditDlg|"
 msgid "Proxy Type:"
-msgstr "Τύπος Διαμεσολαβητή"
+msgstr "Τύπος Διαμεσολαβητή:"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:196
 msgctxt "ServerEditDlg|"
@@ -5057,7 +5062,7 @@ msgstr "HTTP"
 #: ../src/qtui/settingspages/servereditdlg.ui:213
 msgctxt "ServerEditDlg|"
 msgid "Proxy Host:"
-msgstr ""
+msgstr "Εξυπηρετητής Διαμεσολαβητή:"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:220
 msgctxt "ServerEditDlg|"
@@ -5067,61 +5072,61 @@ msgstr "localhost"
 #: ../src/qtui/settingspages/servereditdlg.ui:251
 msgctxt "ServerEditDlg|"
 msgid "Proxy Username:"
-msgstr ""
+msgstr "Όνομα Χρήστη Διαμεσολαβητή:"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:261
 msgctxt "ServerEditDlg|"
 msgid "Proxy Password:"
-msgstr ""
+msgstr "Κωδικός Διαμεσολαβητή:"
 
 #: ../src/qtui/ui/settingsdlg.ui:14
 msgctxt "SettingsDlg|"
 msgid "Configure Quassel"
-msgstr "Περί του Quassel"
+msgstr "Ρύθμιση του Quassel"
 
 #: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
 #: ../src/qtui/settingsdlg.cpp:99
 msgctxt "SettingsDlg|"
 msgid "Settings"
-msgstr ""
+msgstr "Ρυθμίσεις"
 
 #: ../src/qtui/settingsdlg.cpp:109
 msgctxt "SettingsDlg|"
 msgid "Save changes"
-msgstr ""
+msgstr "Αποθήκευση αλλαγών"
 
 #: ../src/qtui/settingsdlg.cpp:110
 msgctxt "SettingsDlg|"
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
-msgstr ""
+msgstr "Υπάρχουν μη αποθηκευμένες αλλαγές στην τρέχουσα σελίδα ρυθμίσεων. Θέλετε να εφαρμόσετε τις αλλαγές σας τώρα;"
 
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #, qt-format
 msgctxt "SettingsDlg|"
 msgid "Configure %1"
-msgstr ""
+msgstr "Ρύθμιση %1"
 
 #: ../src/qtui/settingsdlg.cpp:193
 msgctxt "SettingsDlg|"
 msgid "Reload Settings"
-msgstr ""
+msgstr "Επαναφόρτωση Ρυθίσεων"
 
 #: ../src/qtui/settingsdlg.cpp:193
 msgctxt "SettingsDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr ""
+msgstr "Θέλετε να φορτώσετε τις ρυθμίσεις, ακυρώνοντας τις  αλλαγές σε αυτή τη σελίδα;"
 
 #: ../src/qtui/settingsdlg.cpp:202
 msgctxt "SettingsDlg|"
 msgid "Restore Defaults"
-msgstr ""
+msgstr "Επαναφορά Προεπιλογών"
 
 #: ../src/qtui/settingsdlg.cpp:202
 msgctxt "SettingsDlg|"
 msgid "Do you like to restore the default values for this page?"
-msgstr ""
+msgstr "Θέλετε να επαναφέρετε τις προεπιλεγμένες τιμές για αυτές τις σελίδες;"
 
 #: ../src/qtui/ui/settingspagedlg.ui:14
 msgctxt "SettingsPageDlg|"
@@ -5131,43 +5136,43 @@ msgstr "Περί του Quassel"
 #: ../src/qtui/ui/settingspagedlg.ui:30
 msgctxt "SettingsPageDlg|"
 msgid "Settings"
-msgstr ""
+msgstr "Ρυθμίσεις"
 
 #: ../src/qtui/settingspagedlg.cpp:36
 #, qt-format
 msgctxt "SettingsPageDlg|"
 msgid "Configure %1"
-msgstr ""
+msgstr "Ρύθμιση %1"
 
 #: ../src/qtui/settingspagedlg.cpp:104
 msgctxt "SettingsPageDlg|"
 msgid "Reload Settings"
-msgstr ""
+msgstr "Επαναφόρτωση Ρυθμίσεων"
 
 #: ../src/qtui/settingspagedlg.cpp:104
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr ""
+msgstr "Θέλετε να φορτώσετε τις ρυθμίσεις, ακυρώνοντας τις  αλλαγές σε αυτή τη σελίδα;"
 
 #: ../src/qtui/settingspagedlg.cpp:113
 msgctxt "SettingsPageDlg|"
 msgid "Restore Defaults"
-msgstr ""
+msgstr "Επαναφορά Προεπιλογών"
 
 #: ../src/qtui/settingspagedlg.cpp:113
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to restore the default values for this page?"
-msgstr ""
+msgstr "Θέλετε να επαναφέρετε τις προεπιλεγμένες τιμές για αυτές τις σελίδες;"
 
 #: ../src/qtui/settingspages/shortcutsmodel.cpp:110
 msgctxt "ShortcutsModel|"
 msgid "Action"
-msgstr ""
+msgstr "Ενέργεια"
 
 #: ../src/qtui/settingspages/shortcutsmodel.cpp:112
 msgctxt "ShortcutsModel|"
 msgid "Shortcut"
-msgstr ""
+msgstr "Συντόμευση"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:14
 msgctxt "ShortcutsSettingsPage|"
@@ -5177,109 +5182,109 @@ msgstr "Μορφή"
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:22
 msgctxt "ShortcutsSettingsPage|"
 msgid "Search:"
-msgstr ""
+msgstr "Αναζήτηση:"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:62
 msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcut for Selected Action"
-msgstr ""
+msgstr "Συντόμευση για Επιλεγμένη Ενέργεια"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:68
 msgctxt "ShortcutsSettingsPage|"
 msgid "Default:"
-msgstr "Στόχος εξ'ορισμού"
+msgstr "Προεπιλογή:"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:75
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:92
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:102
 msgctxt "ShortcutsSettingsPage|"
 msgid "None"
-msgstr ""
+msgstr "Κανένα"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:82
 msgctxt "ShortcutsSettingsPage|"
 msgid "Custom:"
-msgstr ""
+msgstr "Προσαρμοσμένο:"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 msgctxt "ShortcutsSettingsPage|"
 msgid "Interface"
-msgstr "Διεπιφάνεια"
+msgstr "Διεπαφή"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
-msgstr ""
+msgstr "Συντομεύσεις"
 
 #: ../src/common/signalproxy.cpp:880
 msgctxt "SignalProxy|"
 msgid "Peer tried to send package larger than max package size!"
-msgstr ""
+msgstr "Ένας ομότιμος κόμβος προσπάθησε να στείλει πακέτο μεγαλύτερο από το μέγιστο δυνατό μέγεθος πακέτου!"
 
 #: ../src/common/signalproxy.cpp:885
 msgctxt "SignalProxy|"
 msgid "Peer tried to send 0 byte package!"
-msgstr ""
+msgstr "Προσπάθεια αποστολής πακέτου 0 byte!"
 
 #: ../src/common/signalproxy.cpp:902
 msgctxt "SignalProxy|"
 msgid "Peer sent corrupted compressed data!"
-msgstr ""
+msgstr "Αποστολή κατεστραμένων συμπιεσμένων δεδομένων!"
 
 #: ../src/common/signalproxy.cpp:917
 msgctxt "SignalProxy|"
 msgid "Peer sent corrupt data: unable to load QVariant!"
-msgstr ""
+msgstr "Αποστολή κατεστραμένων δεδομένων: αδυναμία φόρτωσης QVariant!"
 
 #: ../src/common/signalproxy.cpp:1050
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
-msgstr ""
+msgstr "Γίνεται αποσύνδεση"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgctxt "SimpleNetworkEditor|"
 msgid "Network name:"
-msgstr "Εμφάνιση Ονόματος Δικτύου"
+msgstr "Όνομα δικτύου:"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:35
 msgctxt "SimpleNetworkEditor|"
 msgid "The name of the IRC network you are configuring"
-msgstr ""
+msgstr "Το όνομα του IRC δικτύου που ρυθμίζετε"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:63
 msgctxt "SimpleNetworkEditor|"
 msgid "Servers"
-msgstr "Ειδοποιήσεις Server:"
+msgstr "Εξυπηρετητές:"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:81
 msgctxt "SimpleNetworkEditor|"
 msgid "A list of IRC servers belonging to this network"
-msgstr ""
+msgstr "Λίστα IRC εξυπηρετητών που ανήκουν σε αυτό το δίκτυο"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:96
 msgctxt "SimpleNetworkEditor|"
 msgid "Edit this server entry"
-msgstr ""
+msgstr "Επεξεργασία αυτού του εξυπηρετητή"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgctxt "SimpleNetworkEditor|"
 msgid "&Edit..."
-msgstr ""
+msgstr "&Επεξεργασία"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:116
 msgctxt "SimpleNetworkEditor|"
 msgid "Add another IRC server"
-msgstr ""
+msgstr "Προσθήκη κι άλλου εξυπηρετητή IRC"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:119
 msgctxt "SimpleNetworkEditor|"
 msgid "&Add..."
-msgstr ""
+msgstr "&Προσθήκη"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:136
 msgctxt "SimpleNetworkEditor|"
 msgid "Remove this server entry from the list"
-msgstr ""
+msgstr "Αφαίρεση του εξυπηρετητή από τη λίστα"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:139
 msgctxt "SimpleNetworkEditor|"
@@ -5289,30 +5294,30 @@ msgstr "Διαγραφή"
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgctxt "SimpleNetworkEditor|"
 msgid "Move upwards in list"
-msgstr ""
+msgstr "Μετακίνηση προς τα πάνω στη λίστα"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:168
 #: ../src/qtui/ui/simplenetworkeditor.ui:182
 msgctxt "SimpleNetworkEditor|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:179
 msgctxt "SimpleNetworkEditor|"
 msgid "Move downwards in list"
-msgstr ""
+msgstr "Μετακίνηση προς τα κάτω στη λίστα"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:226
 msgctxt "SimpleNetworkEditor|"
 msgid "Join Channels Automatically"
-msgstr ""
+msgstr "Αυτόματη Είσοδος στα Κανάλια"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:250
 msgctxt "SimpleNetworkEditor|"
 msgid ""
 "A list of IRC channels you will join automatically after connecting to the "
 "network"
-msgstr ""
+msgstr "Λίστα των IRC καναλιών στα οποία θα εισέρχεστε αυτόματα όταν θα συνδέεστε στο δίκτυο"
 
 #: ../src/core/sqlitestorage.cpp:52
 msgctxt "SqliteStorage|"
@@ -5322,12 +5327,12 @@ msgid ""
 "via network. Use SQLite if your Quassel Core should store its data on the "
 "same machine it is running on, and if you only expect a few users to use "
 "your core."
-msgstr ""
+msgstr "Η SQLite είναι μια μηχανή βάσης δεδομένων βασισμένη σε αρχεία που δεν απαιτεί καμία εγκατάσταση. Είναι κατάλληλη για μικρές και μεσαίου μεγέθους βάσεις δεδομένων που δεν απαιτούν πρόσβαση μέσω δικτύου. Χρησιμοποιήστε SQLite αν θέλετε ο Πυρήνας Quassel να αποθηκεύει τα δεδομένα του στο ίδιο μηχάνημα που τρέχει, και μόνο αν περιμένετε λίγους χρήστες να χρησιμοποιήσουν τον πυρήνα σας."
 
 #: ../src/qtui/ui/sslinfodlg.ui:14
 msgctxt "SslInfoDlg|"
 msgid "Security Information"
-msgstr ""
+msgstr "Πληροφορίες Ασφαλείας"
 
 #: ../src/qtui/ui/sslinfodlg.ui:22
 msgctxt "SslInfoDlg|"
@@ -5337,7 +5342,7 @@ msgstr "<b>Κοινό όνομα:</b>"
 #: ../src/qtui/ui/sslinfodlg.ui:39
 msgctxt "SslInfoDlg|"
 msgid "<b>IP address:</b>"
-msgstr ""
+msgstr "<b>IP διεύθυνση:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:56
 msgctxt "SslInfoDlg|"
@@ -5392,43 +5397,43 @@ msgstr "<b>Τοποθεσία:</b>"
 #: ../src/qtui/ui/sslinfodlg.ui:242
 msgctxt "SslInfoDlg|"
 msgid "Issuer"
-msgstr ""
+msgstr "Εκδότης"
 
 #: ../src/qtui/ui/sslinfodlg.ui:367
 msgctxt "SslInfoDlg|"
 msgid "<b>Validity period:</b>"
-msgstr "<b>Τοποθεσία:</b>"
+msgstr "<b>Περίοδος εγκυρότητας:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:384
 msgctxt "SslInfoDlg|"
 msgid "<b>MD5 digest:</b>"
-msgstr ""
+msgstr "<b>Σύνοψη MD5:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:401
 msgctxt "SslInfoDlg|"
 msgid "<b>SHA1 digest:</b>"
-msgstr ""
+msgstr "<b>Σύνοψη SHA1:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:431
 msgctxt "SslInfoDlg|"
 msgid "<b>Trusted:</b>"
-msgstr "<b>Χώρα:</b>"
+msgstr "<b>Έμπιστο:</b>"
 
 #: ../src/qtui/sslinfodlg.cpp:69
 msgctxt "SslInfoDlg|"
 msgid "Yes"
-msgstr ""
+msgstr "Ναι"
 
 #: ../src/qtui/sslinfodlg.cpp:71
 msgctxt "SslInfoDlg|"
 msgid "No, for the following reasons:<ul>"
-msgstr ""
+msgstr "Όχι, για τους ακόλουθους λόγους:<ul>"
 
 #: ../src/qtui/sslinfodlg.cpp:78
 #, qt-format
 msgctxt "SslInfoDlg|"
 msgid "%1 to %2"
-msgstr ""
+msgstr "%1 σε %2"
 
 #: ../src/client/networkmodel.h:144
 msgctxt "StatusBufferItem|"
@@ -5438,7 +5443,7 @@ msgstr ""
 #: ../src/qtui/systemtray.cpp:61 ../src/qtui/systemtray.cpp:92
 msgctxt "SystemTray|"
 msgid "&Minimize"
-msgstr ""
+msgstr "&Ελαχιστοποίηση"
 
 #: ../src/qtui/systemtray.cpp:94
 msgctxt "SystemTray|"
@@ -5450,18 +5455,18 @@ msgstr "Επαναφορά"
 msgctxt "SystrayNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n υπογράμμιση σε εξέλιξη"
+msgstr[1] "%n υπογραμμίσεις σε εξέλιξη"
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"
 msgid "Show a message in a popup"
-msgstr ""
+msgstr "Εμφάνιση μηνύματος σε αναδυόμενο παράθυρο"
 
 #: ../src/uisupport/tabcompleter.cpp:52
 msgctxt "TabCompleter|"
 msgid "Tab completion"
-msgstr ""
+msgstr "Αυτόματη συμπλήρωση με Tab"
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:68
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
@@ -5491,7 +5496,7 @@ msgstr "Σύνδεση"
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgctxt "ToolBarActionProvider|"
 msgid "Connect to IRC"
-msgstr ""
+msgstr "Σύνδεση στο IRC"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgctxt "ToolBarActionProvider|"
@@ -5501,7 +5506,7 @@ msgstr "Αποσύνδεση"
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgctxt "ToolBarActionProvider|"
 msgid "Disconnect from IRC"
-msgstr ""
+msgstr "Αποσύνδεση από το IRC"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgctxt "ToolBarActionProvider|"
@@ -5511,7 +5516,7 @@ msgstr "Αποχώρηση"
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgctxt "ToolBarActionProvider|"
 msgid "Leave currently selected channel"
-msgstr ""
+msgstr "Έξοδος από το επιλεγμένο κανάλι"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgctxt "ToolBarActionProvider|"
@@ -5521,17 +5526,17 @@ msgstr "Είσοδος"
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgctxt "ToolBarActionProvider|"
 msgid "Join a channel"
-msgstr ""
+msgstr "Είσοδος σε κανάλι"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgctxt "ToolBarActionProvider|"
 msgid "Query"
-msgstr ""
+msgstr "Προσωπική Συζήτηση με"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgctxt "ToolBarActionProvider|"
 msgid "Start a private conversation"
-msgstr ""
+msgstr "Έναρξη προσωπικής συζήτησης"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgctxt "ToolBarActionProvider|"
@@ -5541,87 +5546,87 @@ msgstr "Πληροφορίες Χρήστη"
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgctxt "ToolBarActionProvider|"
 msgid "Request user information"
-msgstr ""
+msgstr "Αίτηση για πληροφορίες χρήστη"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 msgctxt "ToolBarActionProvider|"
 msgid "Op"
-msgstr ""
+msgstr "Διαχειριστής"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 msgctxt "ToolBarActionProvider|"
 msgid "Give operator privileges to user"
-msgstr ""
+msgstr "Δώσε δικαιώματα διαχειριστή στον χρήστη"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgctxt "ToolBarActionProvider|"
 msgid "Deop"
-msgstr ""
+msgstr "Μη-Διαχειριστής"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgctxt "ToolBarActionProvider|"
 msgid "Take operator privileges from user"
-msgstr ""
+msgstr "Αφαίρεση δικαιωμάτων διαχειριστή από τον χρήστη"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgctxt "ToolBarActionProvider|"
 msgid "Voice"
-msgstr ""
+msgstr "Φωνή"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgctxt "ToolBarActionProvider|"
 msgid "Give voice to user"
-msgstr ""
+msgstr "Δώσε φωνή στον χρήστη"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgctxt "ToolBarActionProvider|"
 msgid "Devoice"
-msgstr ""
+msgstr "Όχι-φωνή"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgctxt "ToolBarActionProvider|"
 msgid "Take voice from user"
-msgstr ""
+msgstr "Αφαίρεση φωνής από τον χρήστη"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:44
 msgctxt "ToolBarActionProvider|"
 msgid "Kick"
-msgstr ""
+msgstr "Απομάκρυνση"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:44
 msgctxt "ToolBarActionProvider|"
 msgid "Remove user from channel"
-msgstr ""
+msgstr "Αφαίρεση χρήστη από το κανάλι"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:45
 msgctxt "ToolBarActionProvider|"
 msgid "Ban"
-msgstr ""
+msgstr "Απαγόρευση"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:45
 msgctxt "ToolBarActionProvider|"
 msgid "Ban user from channel"
-msgstr ""
+msgstr "Απαγόρευση χρήστη στο κανάλι"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"
 msgid "Kick/Ban"
-msgstr ""
+msgstr "Απομάκρυνση/Απαγόρευση"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"
 msgid "Remove and ban user from channel"
-msgstr ""
+msgstr "Απομάκρυνση και απαγόρευση χρήστη από το κανάλι"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:51
 msgctxt "ToolBarActionProvider|"
 msgid "Connect to all"
-msgstr ""
+msgstr "Σύνδεση σε όλα"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:58
 msgctxt "ToolBarActionProvider|"
 msgid "Disconnect from all"
-msgstr ""
+msgstr "Αποσύνδεση από όλα"
 
 #: ../src/qtui/ui/topicwidget.ui:32
 msgctxt "TopicWidget|"
@@ -5631,19 +5636,19 @@ msgstr "Μορφή"
 #: ../src/qtui/ui/topicwidget.ui:79
 msgctxt "TopicWidget|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/topicwidget.cpp:106
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
-msgstr ""
+msgstr "Χρήστες: %1"
 
 #: ../src/qtui/topicwidget.cpp:107
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Lag: %1 msecs"
-msgstr ""
+msgstr "Καθυστέρηση: %1 msecs"
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
 msgctxt "TopicWidgetSettingsPage|"
@@ -5653,12 +5658,12 @@ msgstr "Μορφή"
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Custom font:"
-msgstr ""
+msgstr "Προσαρμοσμένη γραμματοσειρά:"
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Resize dynamically to fit contents"
-msgstr ""
+msgstr "Δυναμική προσαρμογή μεγέθους για να χωράει το περιεχόμενο"
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:84
 msgctxt "TopicWidgetSettingsPage|"
@@ -5673,7 +5678,7 @@ msgstr "Διεπιφάνεια"
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Topic Widget"
-msgstr ""
+msgstr "Γραφικό στοιχείο θέματος"
 
 #. Plain Message
 #. ----------
@@ -5695,150 +5700,150 @@ msgstr ""
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
-msgstr ""
+msgstr "%1"
 
 #. Action Message
 #: ../src/uisupport/uistyle.cpp:583
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
-msgstr ""
+msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #: ../src/uisupport/uistyle.cpp:587
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "You are now known as %DN%1%DN"
-msgstr ""
+msgstr "Μετονομαστήκατε σε %DN%1%DN"
 
 #: ../src/uisupport/uistyle.cpp:588
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN is now known as %DN%2%DN"
-msgstr ""
+msgstr "Ο χρήστης %DN%1%DN μετονομάστηκε σε %DN%2%DN"
 
 #. Mode Message
 #: ../src/uisupport/uistyle.cpp:592
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "User mode: %DM%1%DM"
-msgstr ""
+msgstr "Λειτουργία χρήστη: %DM%1%DM"
 
 #: ../src/uisupport/uistyle.cpp:593
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
-msgstr ""
+msgstr "Λειτουργία %DM%1%DM από τον %DN%2%DN"
 
 #. Join Message
 #: ../src/uisupport/uistyle.cpp:597
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
-msgstr ""
+msgstr "Ο χρήστης %DN%1%DN %DH(%2@%3)%DH εισήλθε στο %DC%4%DC"
 
 #. Part Message
 #: ../src/uisupport/uistyle.cpp:600
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
-msgstr ""
+msgstr "Ο χρήστης %DN%1%DN %DH(%2@%3)%DH αποχώρησε από το %DC%4%DC"
 
 #. Quit Message
 #: ../src/uisupport/uistyle.cpp:605
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
-msgstr ""
+msgstr "Ο Χρήστης %DN%1%DN %DH(%2@%3)%DH αποσυνδέθηκε"
 
 #. Kick Message
 #: ../src/uisupport/uistyle.cpp:612
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr ""
+msgstr "Ο χρήστης %DN%1%DN έδιωξε τον %DN%2%DN από το κανάλι %DC%3%DC"
 
 #. Day Change Message
 #: ../src/uisupport/uistyle.cpp:629
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
-msgstr ""
+msgstr "{Αλλαγή ημέρας σε %1}"
 
 #: ../src/uisupport/uistyle.cpp:641
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
-msgstr ""
+msgstr "Το netsplit μεταξύ %DH%1%DH και %DH%2%DH τελείωσε. Χρήστες που συνδέθηκαν: "
 
 #: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN (%2 more)"
-msgstr ""
+msgstr "%DN%1%DN (%2 περισσότεροι)"
 
 #: ../src/uisupport/uistyle.cpp:655
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
-msgstr ""
+msgstr "Netsplit ανάμεσα σε %DH%1%DH και %DH%2%DH. Οι χρήστες που αποσυνδέθηκαν: "
 
 #: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
-msgstr ""
+msgstr "[%1]"
 
 #: ../src/uisupport/uistyle.cpp:703
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
-msgstr ""
+msgstr "<%1>"
 
 #: ../src/client/networkmodel.cpp:697
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n Ιδιοκτήτης"
+msgstr[1] "%n Ιδιοκτήτες"
 
 #: ../src/client/networkmodel.cpp:698
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n "
+msgstr[1] "%n Admin(s)"
 
 #: ../src/client/networkmodel.cpp:699
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n Διαχειριστής"
+msgstr[1] "%n Διαχειριστές"
 
 #: ../src/client/networkmodel.cpp:700
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n Μισός-Διαχειριστής"
+msgstr[1] "%n Μισοί-Διαχειριστές"
 
 #: ../src/client/networkmodel.cpp:701
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n πήρε φωνή"
+msgstr[1] "%n πήραν φωνή"
 
 #: ../src/client/networkmodel.cpp:702
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n Χρήστης(-ες)"
+msgstr[1] "%n Χρήστης(-ες)"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-02-13 10:37+0000\n"
+"PO-Revision-Date: 2012-02-14 23:41+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: Swedish (http://www.transifex.net/projects/p/quassel/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -438,12 +438,12 @@ msgctxt "BufferItem|"
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 - %2 </p>"
 
-#: ../src/uisupport/bufferview.cpp:248
+#: ../src/uisupport/bufferview.cpp:251
 msgctxt "BufferView|"
 msgid "Merge buffers permanently?"
 msgstr "Slå ihop buffertar permanent?"
 
-#: ../src/uisupport/bufferview.cpp:249
+#: ../src/uisupport/bufferview.cpp:252
 #, qt-format
 msgctxt "BufferView|"
 msgid ""
@@ -1326,83 +1326,83 @@ msgid ""
 "to work."
 msgstr ""
 
-#: ../src/core/core.cpp:232
+#: ../src/core/core.cpp:235
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
 msgstr ""
 
-#: ../src/core/core.cpp:273
+#: ../src/core/core.cpp:277
 msgctxt "Core|"
 msgid "Admin user or password not set."
 msgstr ""
 
-#: ../src/core/core.cpp:276
+#: ../src/core/core.cpp:280
 msgctxt "Core|"
 msgid "Could not setup storage!"
 msgstr ""
 
-#: ../src/core/core.cpp:280
+#: ../src/core/core.cpp:284
 msgctxt "Core|"
 msgid "Creating admin user..."
 msgstr "Skapar administrativ användare..."
 
-#: ../src/core/core.cpp:393
+#: ../src/core/core.cpp:397
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
 msgstr "Ogiltig lyssningsadress %1"
 
-#: ../src/core/core.cpp:401
+#: ../src/core/core.cpp:405
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr ""
 
-#: ../src/core/core.cpp:409
+#: ../src/core/core.cpp:413
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
 msgstr ""
 
-#: ../src/core/core.cpp:417
+#: ../src/core/core.cpp:421
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr ""
 
-#: ../src/core/core.cpp:427
+#: ../src/core/core.cpp:431
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
 msgstr ""
 
-#: ../src/core/core.cpp:435
+#: ../src/core/core.cpp:439
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
 msgstr "Ogiltig lyssningsadress %1"
 
-#: ../src/core/core.cpp:444
+#: ../src/core/core.cpp:448
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
 msgstr ""
 
-#: ../src/core/core.cpp:478
+#: ../src/core/core.cpp:482
 msgctxt "Core|"
 msgid "Client connected from"
 msgstr "Klient ansluten från"
 
-#: ../src/core/core.cpp:481
+#: ../src/core/core.cpp:485
 msgctxt "Core|"
 msgid "Closing server for basic setup."
 msgstr ""
 
-#: ../src/core/core.cpp:500
+#: ../src/core/core.cpp:504
 msgctxt "Core|"
 msgid "Antique client trying to connect... refusing."
 msgstr "Antik klient försöker ansluta... nekar."
 
-#: ../src/core/core.cpp:512
+#: ../src/core/core.cpp:516
 #, qt-format
 msgctxt "Core|"
 msgid ""
@@ -1410,68 +1410,68 @@ msgid ""
 "client/core protocol version %1.<br>Please consider upgrading your client."
 msgstr ""
 
-#: ../src/core/core.cpp:516 ../src/core/core.cpp:606 ../src/core/core.cpp:630
+#: ../src/core/core.cpp:520 ../src/core/core.cpp:610 ../src/core/core.cpp:634
 msgctxt "Core|"
 msgid "Client"
 msgstr "Klient"
 
-#: ../src/core/core.cpp:516
+#: ../src/core/core.cpp:520
 msgctxt "Core|"
 msgid "too old, rejecting."
 msgstr ""
 
-#: ../src/core/core.cpp:533
+#: ../src/core/core.cpp:537
 #, qt-format
 msgctxt "Core|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr "<b>Quassel Core version %1</b><br>Byggdes: %2<br>Upptid %3d%4h%5m (sedan %6)"
 
-#: ../src/core/core.cpp:586
+#: ../src/core/core.cpp:590
 msgctxt "Core|"
 msgid "Starting TLS for Client:"
 msgstr ""
 
-#: ../src/core/core.cpp:604
+#: ../src/core/core.cpp:608
 msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
 msgstr ""
 
-#: ../src/core/core.cpp:606
+#: ../src/core/core.cpp:610
 msgctxt "Core|"
 msgid "did not send an init message before trying to login, rejecting."
 msgstr ""
 
-#: ../src/core/core.cpp:624
+#: ../src/core/core.cpp:628
 msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr ""
 
-#: ../src/core/core.cpp:630
+#: ../src/core/core.cpp:634
 #, qt-format
 msgctxt "Core|"
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
 msgstr ""
 
-#: ../src/core/core.cpp:641
+#: ../src/core/core.cpp:645
 msgctxt "Core|"
 msgid "Non-authed client disconnected."
 msgstr ""
 
-#: ../src/core/core.cpp:647
+#: ../src/core/core.cpp:651
 msgctxt "Core|"
 msgid "Non-authed client disconnected. (socket allready destroyed)"
 msgstr ""
 
-#: ../src/core/core.cpp:695
+#: ../src/core/core.cpp:699
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
 msgstr ""
 
-#: ../src/core/core.cpp:717
+#: ../src/core/core.cpp:721
 msgctxt "Core|"
 msgid "Could not find a session for client:"
 msgstr ""
@@ -2092,35 +2092,35 @@ msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (sedan %4)"
 
-#: ../src/core/corenetwork.cpp:148
+#: ../src/core/corenetwork.cpp:153
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
 msgstr ""
 
-#: ../src/core/corenetwork.cpp:156 ../src/core/corenetwork.cpp:157
+#: ../src/core/corenetwork.cpp:161 ../src/core/corenetwork.cpp:162
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
 msgstr "Ansluter till %1:%2..."
 
-#: ../src/core/corenetwork.cpp:205
+#: ../src/core/corenetwork.cpp:210
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr "Kopplar från. (%1)"
 
-#: ../src/core/corenetwork.cpp:205
+#: ../src/core/corenetwork.cpp:210
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr ""
 
-#: ../src/core/corenetwork.cpp:343
+#: ../src/core/corenetwork.cpp:348
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "Kunde inte ansluta till %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:345
+#: ../src/core/corenetwork.cpp:350
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
@@ -2358,218 +2358,218 @@ msgctxt "DebugLogWidget|"
 msgid "Close"
 msgstr "Stäng"
 
-#: ../src/core/eventstringifier.cpp:133 ../src/core/eventstringifier.cpp:250
+#: ../src/core/eventstringifier.cpp:142 ../src/core/eventstringifier.cpp:259
 msgctxt "EventStringifier|"
 msgid "[Whois] "
 msgstr "[Whois] %1"
 
-#: ../src/core/eventstringifier.cpp:145
+#: ../src/core/eventstringifier.cpp:154
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 invited you to channel %2"
 msgstr "%1 har bjudit in dig till kanalen %2"
 
-#: ../src/core/eventstringifier.cpp:230
+#: ../src/core/eventstringifier.cpp:239
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1 har ändrat ämnet för %2 till: \"%3\""
 
-#: ../src/core/eventstringifier.cpp:237
+#: ../src/core/eventstringifier.cpp:246
 msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:263
+#: ../src/core/eventstringifier.cpp:272
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
 msgstr "%1 är frånvarande: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:268
+#: ../src/core/eventstringifier.cpp:277
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:274
+#: ../src/core/eventstringifier.cpp:283
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:294
+#: ../src/core/eventstringifier.cpp:303
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 är %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:308
+#: ../src/core/eventstringifier.cpp:317
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
 msgstr "%1 är ansluten via %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:310
+#: ../src/core/eventstringifier.cpp:319
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
 msgstr "[Whowas] %1 var %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:318
+#: ../src/core/eventstringifier.cpp:327
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:325
+#: ../src/core/eventstringifier.cpp:334
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] End of /WHO list for %1"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:335
+#: ../src/core/eventstringifier.cpp:344
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 är inloggad sedan %2"
 
-#: ../src/core/eventstringifier.cpp:337
+#: ../src/core/eventstringifier.cpp:346
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
 msgstr "[Whois] %1 har varit inaktiv i %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:344
+#: ../src/core/eventstringifier.cpp:353
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:365
+#: ../src/core/eventstringifier.cpp:374
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr "[Whois] %1 är en användare på kanaler: %2"
 
-#: ../src/core/eventstringifier.cpp:367
+#: ../src/core/eventstringifier.cpp:376
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr "[Whois] %1 är en användare på kanaler: %2"
 
-#: ../src/core/eventstringifier.cpp:369
+#: ../src/core/eventstringifier.cpp:378
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr "[Whois] %1 är en operatör på kanaler: %2"
 
-#: ../src/core/eventstringifier.cpp:388
+#: ../src/core/eventstringifier.cpp:397
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 has %2 users. Topic is: \"%3\""
 msgstr "Kanalen %1 har %2 användare. Ämnet är: %3"
 
-#: ../src/core/eventstringifier.cpp:394
+#: ../src/core/eventstringifier.cpp:403
 msgctxt "EventStringifier|"
 msgid "End of channel list"
 msgstr "Slut på kanallistan"
 
-#: ../src/core/eventstringifier.cpp:408
+#: ../src/core/eventstringifier.cpp:417
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Homepage for %1 is %2"
 msgstr "Webbsidan för %1 är %2"
 
-#: ../src/core/eventstringifier.cpp:423
+#: ../src/core/eventstringifier.cpp:432
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 created on %2"
 msgstr "Kanalen %1 skapades %2"
 
-#: ../src/core/eventstringifier.cpp:431
+#: ../src/core/eventstringifier.cpp:440
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
 msgstr "[Whois] %1 är frånvarande: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:437
+#: ../src/core/eventstringifier.cpp:446
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "No topic is set for %1."
 msgstr "Inget ämne har ställts in för %1."
 
-#: ../src/core/eventstringifier.cpp:443
+#: ../src/core/eventstringifier.cpp:452
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic for %1 is \"%2\""
 msgstr "Ämnet för %1 är \"%2\""
 
-#: ../src/core/eventstringifier.cpp:452
+#: ../src/core/eventstringifier.cpp:461
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic set by %1 on %2"
 msgstr "Ämnet inställt av %1 den %2"
 
-#: ../src/core/eventstringifier.cpp:462
+#: ../src/core/eventstringifier.cpp:471
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has been invited to %2"
 msgstr "%1 har blivit inbjuden till %2"
 
-#: ../src/core/eventstringifier.cpp:468
+#: ../src/core/eventstringifier.cpp:477
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
-#: ../src/core/eventstringifier.cpp:473
+#: ../src/core/eventstringifier.cpp:482
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:478
+#: ../src/core/eventstringifier.cpp:490
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick %1 contains illegal characters"
 msgstr "Smeknamnet %1 innehåller otillåtna tecken"
 
-#: ../src/core/eventstringifier.cpp:483
+#: ../src/core/eventstringifier.cpp:498
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick already in use: %1"
 msgstr "Smeknamnet används redan: %1"
 
-#: ../src/core/eventstringifier.cpp:488
+#: ../src/core/eventstringifier.cpp:506
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:509
+#: ../src/core/eventstringifier.cpp:527
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "skickar CTCP-%1-fråga till %2"
 
 #. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
-#: ../src/core/eventstringifier.cpp:522
+#: ../src/core/eventstringifier.cpp:540
 msgctxt "EventStringifier|"
 msgid "unknown"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:523
+#: ../src/core/eventstringifier.cpp:541
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:526
+#: ../src/core/eventstringifier.cpp:544
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:537
+#: ../src/core/eventstringifier.cpp:555
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
@@ -3911,259 +3911,264 @@ msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "Använd anpassad stilmall"
 
-#: ../src/qtui/mainwin.cpp:394
+#: ../src/qtui/mainwin.cpp:393
+msgctxt "MainWin|"
+msgid "Hide Current Buffer"
+msgstr ""
+
+#: ../src/qtui/mainwin.cpp:397
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "Navigation"
 
-#: ../src/qtui/mainwin.cpp:396
+#: ../src/qtui/mainwin.cpp:399
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:408
+#: ../src/qtui/mainwin.cpp:411
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:410
+#: ../src/qtui/mainwin.cpp:413
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:412
+#: ../src/qtui/mainwin.cpp:415
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:414
+#: ../src/qtui/mainwin.cpp:417
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:416
+#: ../src/qtui/mainwin.cpp:419
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:421
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:420
+#: ../src/qtui/mainwin.cpp:423
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:422
+#: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:424
+#: ../src/qtui/mainwin.cpp:427
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:426
+#: ../src/qtui/mainwin.cpp:429
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:429
+#: ../src/qtui/mainwin.cpp:432
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:431
+#: ../src/qtui/mainwin.cpp:434
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:433
+#: ../src/qtui/mainwin.cpp:436
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:435
+#: ../src/qtui/mainwin.cpp:438
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:437
+#: ../src/qtui/mainwin.cpp:440
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:439
+#: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:441
+#: ../src/qtui/mainwin.cpp:444
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:443
+#: ../src/qtui/mainwin.cpp:446
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:445
+#: ../src/qtui/mainwin.cpp:448
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:447
+#: ../src/qtui/mainwin.cpp:450
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:451
+#: ../src/qtui/mainwin.cpp:454
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "Ta bort chattlista?"
 
-#: ../src/qtui/mainwin.cpp:453
+#: ../src/qtui/mainwin.cpp:456
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr "Gå till föregående chatt"
 
-#: ../src/qtui/mainwin.cpp:455
+#: ../src/qtui/mainwin.cpp:458
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr "Gå till nästa chatt"
 
-#: ../src/qtui/mainwin.cpp:457
+#: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr "Gå till föregående chatt"
 
-#: ../src/qtui/mainwin.cpp:464
+#: ../src/qtui/mainwin.cpp:467
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "&Arkiv"
 
-#: ../src/qtui/mainwin.cpp:477
+#: ../src/qtui/mainwin.cpp:480
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "&Nätverk"
 
-#: ../src/qtui/mainwin.cpp:483
+#: ../src/qtui/mainwin.cpp:486
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "&Visa"
 
-#: ../src/qtui/mainwin.cpp:484
+#: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "&Chattlistor"
 
-#: ../src/qtui/mainwin.cpp:486
+#: ../src/qtui/mainwin.cpp:489
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "Ver&ktygsrader"
 
-#: ../src/qtui/mainwin.cpp:500
+#: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "&Inställningar"
 
-#: ../src/qtui/mainwin.cpp:509
+#: ../src/qtui/mainwin.cpp:512
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "&Hjälp"
 
-#: ../src/qtui/mainwin.cpp:517
+#: ../src/qtui/mainwin.cpp:520
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "Felsök"
 
-#: ../src/qtui/mainwin.cpp:746
+#: ../src/qtui/mainwin.cpp:755
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "Smeknamn"
 
-#: ../src/qtui/mainwin.cpp:755
+#: ../src/qtui/mainwin.cpp:764
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "Visa smeknamnslista"
 
-#: ../src/qtui/mainwin.cpp:766
+#: ../src/qtui/mainwin.cpp:775
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "Chattmonitor"
 
-#: ../src/qtui/mainwin.cpp:778
+#: ../src/qtui/mainwin.cpp:787
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "Visa chattmonitor"
 
-#: ../src/qtui/mainwin.cpp:782
+#: ../src/qtui/mainwin.cpp:791
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "Visa inmatningsrad"
 
-#: ../src/qtui/mainwin.cpp:791
+#: ../src/qtui/mainwin.cpp:800
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "Visa inmatningsrad"
 
-#: ../src/qtui/mainwin.cpp:804
+#: ../src/qtui/mainwin.cpp:813
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "Ämne"
 
-#: ../src/qtui/mainwin.cpp:816
+#: ../src/qtui/mainwin.cpp:825
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "Visa ämnesrad"
 
-#: ../src/qtui/mainwin.cpp:894
+#: ../src/qtui/mainwin.cpp:903
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "Huvudverktygsrad"
 
-#: ../src/qtui/mainwin.cpp:933
+#: ../src/qtui/mainwin.cpp:942
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "Anslut till core."
 
-#: ../src/qtui/mainwin.cpp:1024
+#: ../src/qtui/mainwin.cpp:1033
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Inte ansluten till core."
 
-#: ../src/qtui/mainwin.cpp:1038 ../src/qtui/mainwin.cpp:1046
+#: ../src/qtui/mainwin.cpp:1047 ../src/qtui/mainwin.cpp:1055
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Okrypterad anslutning"
 
-#: ../src/qtui/mainwin.cpp:1038
+#: ../src/qtui/mainwin.cpp:1047
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>Din klient saknar stöd för SSL-kryptering</b>"
 
-#: ../src/qtui/mainwin.cpp:1040 ../src/qtui/mainwin.cpp:1048
+#: ../src/qtui/mainwin.cpp:1049 ../src/qtui/mainwin.cpp:1057
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1046
+#: ../src/qtui/mainwin.cpp:1055
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Din klient saknar stöd för SSL-kryptering</b>"
 
-#: ../src/qtui/mainwin.cpp:1063 ../src/qtui/mainwin.cpp:1083
+#: ../src/qtui/mainwin.cpp:1072 ../src/qtui/mainwin.cpp:1092
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "Använd SSL-certifikat"
 
-#: ../src/qtui/mainwin.cpp:1064
+#: ../src/qtui/mainwin.cpp:1073
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4171,33 +4176,33 @@ msgid ""
 "following reasons:</b>"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1067
+#: ../src/qtui/mainwin.cpp:1076
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Fortsätt"
 
-#: ../src/qtui/mainwin.cpp:1068
+#: ../src/qtui/mainwin.cpp:1077
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Visa certifikat"
 
-#: ../src/qtui/mainwin.cpp:1084
+#: ../src/qtui/mainwin.cpp:1093
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1086
+#: ../src/qtui/mainwin.cpp:1095
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Endast aktuell session"
 
-#: ../src/qtui/mainwin.cpp:1087
+#: ../src/qtui/mainwin.cpp:1096
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "För alltid"
 
-#: ../src/qtui/mainwin.cpp:1096
+#: ../src/qtui/mainwin.cpp:1105
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Anslutning"

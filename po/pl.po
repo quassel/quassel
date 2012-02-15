@@ -1,25 +1,24 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2010, 2011, 2012.
-# Kristóf Kiszel <ulysses@kubuntu.org>, 2010.
+#   <matwa@poczta.pl>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-02-14 23:41+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
+"PO-Revision-Date: 2012-03-05 10:08+0000\n"
+"Last-Translator: derpella <matwa@poczta.pl>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Qt-Contexts: true\n"
 
 #: ../src/qtui/ui/aboutdlg.ui:17
 msgctxt "AboutDlg|"
 msgid "About Quassel"
-msgstr "A Quassel névjegye"
+msgstr "Quassel- informacje"
 
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgctxt "AboutDlg|"
@@ -28,7 +27,7 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; fonts-size:15pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:75
 msgctxt "AboutDlg|"
@@ -37,33 +36,33 @@ msgid ""
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Verzió: 0.2.0-pre, Build &gt;=474 (2008-02-08)</p></body</html>"
+msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
 
 #: ../src/qtui/ui/aboutdlg.ui:115
 msgctxt "AboutDlg|"
 msgid "&About"
-msgstr "&Névjegy"
+msgstr "&Informacje"
 
 #: ../src/qtui/ui/aboutdlg.ui:135
 msgctxt "AboutDlg|"
 msgid "A&uthors"
-msgstr "&Készítők"
+msgstr "A&utorzy"
 
 #: ../src/qtui/ui/aboutdlg.ui:155
 msgctxt "AboutDlg|"
 msgid "&Contributors"
-msgstr "Kö&zreműködők"
+msgstr "&Kontrybutorzy"
 
 #: ../src/qtui/ui/aboutdlg.ui:175
 msgctxt "AboutDlg|"
 msgid "&Thanks To"
-msgstr "K&öszönet"
+msgstr "&Podziękowania"
 
 #: ../src/qtui/aboutdlg.cpp:32
 #, qt-format
 msgctxt "AboutDlg|"
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Verzió:</b> %1<br><b>Protokollverzió:</b> %2<br><b>Összeállítva:</b> %3"
+msgstr "<b>Wersja:</b> %1<br><b>Wersja protokołu:</b> %2<br><b>Built:</b> %3"
 
 #: ../src/qtui/aboutdlg.cpp:46
 msgctxt "AboutDlg|"
@@ -79,19 +78,19 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Egy modern, elosztott IRC-kliens<b><br><br>&copy; A Quassel projekt, 2005-2012.<br><a href=\"http://quassel-irc.org\">#quassel</a> a <a href=\" http://www.freenode.net\">Freenode</a> hálózaton.</a><br><br>A Quassel IRC a <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> és <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> kettős licencek szerint érhető el.<br>A legtöbb ikon tulajdonosai az <a href=\" http://www.oxygen-icons.org\">Oxygen fejlesztői</a>, és a <a href=\"http:// www.gnu.org/licenses/lgpl.html\">LGPL</a> licenc alatt érhetők el.<br><br> Kérjük a hibákat a <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel- irc.org</a> oldalon jelentsék."
+msgstr ""
 
 #: ../src/qtui/aboutdlg.cpp:62
 msgctxt "AboutDlg|"
 msgid "Quassel IRC is mainly developed by:"
-msgstr "A Quassel IRC fő fejlesztői:"
+msgstr "Quassel IRC jest dziełem:"
 
 #: ../src/qtui/aboutdlg.cpp:77
 msgctxt "AboutDlg|"
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
-msgstr "Szeretnénk köszönetet mondani a következő közreműködőknek, és mindazoknak akiket elfelejtettünk itt megemlíteni:"
+msgstr "Pragniemy podziękować następującym kontrybutorom (w kolejności alfabetycznej) oraz wszystkim, których zapomnieliśmy wspomnieć tutaj:"
 
 #: ../src/qtui/aboutdlg.cpp:135
 msgctxt "AboutDlg|"
@@ -108,26 +107,26 @@ msgid ""
 "href=\"http://www.nokia.com\"><img "
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr "Külön köszönetet mondunk a következőknek:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John „nox” Handnek</b></dt><dd>a Quassel eredeti ikonjának, a Mindent Látó Szem készítőjének,</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">az Oxygen csapatnak</a></b></dt><dd>a Quasselben látható grafikák készítéséért,</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">a Qt Software-nek, korábbi nevén Trolltechnek</a></b></dt><dd>a Qt és a Qtopia létrehozásáért, a QuasselTopia Greenphone-on és továbbiakon történő fejlesztésének támogatásáért, valamint a</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a>-nak</b></dt><dd>a Qt életben tartásáért és a Quassel Mobile N810s-en történő fejlesztésének támogatásáért.</dd>"
+msgstr "Specjalne podziękowania dla:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>Johna \"nox\" Hand</b></dt><dd>za oryginalną ikonę Quassela - The All-Seeing Eye</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>za stworzenie całej grafiki</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software znane wcześniej jako Trolltech</a></b></dt><dd>za stworzenie Qt i Qtopii, i za sponsorowanie tworzenia QuasselTopii z Greenphones i więcej</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>za utrzymywanie Qt przy życiu, oraz sponsorowanie Quassel Mobile dla N810s</dd>"
 
 #: ../src/core/abstractsqlstorage.cpp:115
 #, qt-format
 msgctxt "AbstractSqlStorage|"
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
-msgstr "A telepített séma (verzió: %1) nem friss. Frissítés a(z) %2 verzióra…"
+msgstr "Zainstalowana Schema (version %1) nie jest aktualna. Aktualizacja do wersji %2..."
 
 #: ../src/core/abstractsqlstorage.cpp:117
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
-msgstr "Sikertelen frissítés…"
+msgstr "Aktualizacja zakończona niepowodzeniem..."
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:55
 msgctxt "AliasesModel|"
 msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
-msgstr "<b>Az álnév gyorsbillentyűje</b><br />Ugyanúgy használható, mint egy általános perjeles parancs.<br /><br /><b>Például a „foo” használható /foo alakban"
+msgstr "<b>Skróty dla aliasów</b><br />Mogą być używane jako zwykłe polecenia zaczynające się od slasha<br /><br /><b>Przykład:</b> \"foo\" może być używane jako /foo"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:59
 msgctxt "AliasesModel|"
@@ -143,32 +142,32 @@ msgid ""
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will"
 " be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test "
 "All 1 2 3\" when called like /test 1 2 3"
-msgstr ""
+msgstr "<b>Ciąg skrótu będzie rozszerzony do</b><br /><b>specjalnych zmiennych</b><br /> - <b>$i</b> reprezentuje i-ty parametr.<br /> - <b>$i..j</b> reprezentuje parametry od i-tego do j-tego, rozdzielone spacjami.<br /> - <b>$i..</b> reprezentuje wszystkie parametry zaczynając od i, rozdzielone spacjami.<br /> - <b>$i:hostname</b> reprezentuje nazwę hostu użytkownika zdefiniowanego i-tym parametrem, lub *, gdy jest nieznany.<br /> - <b>$0</b>cały ciąg.<br /> - <b>$nick</b> Twój aktualny nick<br /> - <b>$channel</b> nazwa wybranego kanału<br /><br />Wiele poleceń może być rozdzielonych średnikiem<br /><br /><b>Przykład:</b> \"Test $1; Test $2; Test All $0\" będzie rozwinięty do trzech różnych wiadomości: \"Test 1\", \"Test 2\" i \"Test All 1 2 3\" , kiedy wezwane /test 1 2 3"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:170
 msgctxt "AliasesModel|"
 msgid "Alias"
-msgstr "Álnév"
+msgstr "Alias"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:171
 msgctxt "AliasesModel|"
 msgid "Expansion"
-msgstr "Bővítmény"
+msgstr "Rozszerzenie"
 
 #: ../src/qtui/settingspages/aliasessettingspage.ui:13
 msgctxt "AliasesSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/aliasessettingspage.ui:27
 msgctxt "AliasesSettingsPage|"
 msgid "New"
-msgstr "Új"
+msgstr "Nowe"
 
 #: ../src/qtui/settingspages/aliasessettingspage.ui:41
 msgctxt "AliasesSettingsPage|"
 msgid "Delete"
-msgstr "Törlés"
+msgstr "Usuń"
 
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
 msgctxt "AliasesSettingsPage|"
@@ -178,170 +177,170 @@ msgstr "IRC"
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
 msgctxt "AliasesSettingsPage|"
 msgid "Aliases"
-msgstr "Álnevek"
+msgstr "Aliasy"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:14
 msgctxt "AppearanceSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:22
 msgctxt "AppearanceSettingsPage|"
 msgid "Client style:"
-msgstr "Kliensstílus:"
+msgstr "Styl klienta:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:29
 msgctxt "AppearanceSettingsPage|"
 msgid "Set application style"
-msgstr "Alkalmazásstílus beállítása"
+msgstr "Ustaw styl aplikacji"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:36
 msgctxt "AppearanceSettingsPage|"
 msgid "Language:"
-msgstr "Nyelv:"
+msgstr "Języki:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:43
 msgctxt "AppearanceSettingsPage|"
 msgid "Set the application language. Requires restart!"
-msgstr "Beállítja az alkalmazás nyelvét. Újraindítást igényel!"
+msgstr "Ustaw język aplikacji. Wymaga restartu!"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:47
 msgctxt "AppearanceSettingsPage|"
 msgid "<Untranslated>"
-msgstr "<Lefordítatlan>"
+msgstr "<nieprzetłumaczone>"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:52
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:74
 msgctxt "AppearanceSettingsPage|"
 msgid "<System Default>"
-msgstr "<A rendszer alapértelmezése>"
+msgstr "<domyślny dla systemu>"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:75
 msgctxt "AppearanceSettingsPage|"
 msgid "Use custom stylesheet"
-msgstr "Egyéni stíluslap használata"
+msgstr "Użyj własnego zestawu stylów"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:109
 msgctxt "AppearanceSettingsPage|"
 msgid "Path:"
-msgstr "Elérési út:"
+msgstr "Ścieżka:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:141
 msgctxt "AppearanceSettingsPage|"
 msgid "..."
-msgstr "…"
+msgstr "..."
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:150
 msgctxt "AppearanceSettingsPage|"
 msgid "Show system tray icon"
-msgstr "Paneltálcaikon megjelenítése"
+msgstr "Pokaż ikonę w trayu"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
 msgctxt "AppearanceSettingsPage|"
 msgid "Hide to tray on close button"
-msgstr ""
+msgstr "Chowaj do traya przy zamknięciu programu"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:216
 msgctxt "AppearanceSettingsPage|"
 msgid "Enable animations"
-msgstr "Animációk engedélyezése"
+msgstr "Włącz animacje"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:231
 msgctxt "AppearanceSettingsPage|"
 msgid "Message Redirection"
-msgstr "Üzenetátirányítás"
+msgstr "Przekierunkowanie wiadomości"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:237
 msgctxt "AppearanceSettingsPage|"
 msgid "User Notices:"
-msgstr "Felhasználó Figyelmeztetés:"
+msgstr "Powiadomienia od użytownika:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:280
 msgctxt "AppearanceSettingsPage|"
 msgid "Server Notices:"
-msgstr "Kiszolgáló Figyelmeztetés:"
+msgstr "Powiadomienia od serwera:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:294
 msgctxt "AppearanceSettingsPage|"
 msgid "Default Target"
-msgstr "Alapértelmezett cél"
+msgstr "Domyślny cel"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:301
 msgctxt "AppearanceSettingsPage|"
 msgid "Status Window"
-msgstr "Állapotablak"
+msgstr "Okno statusu"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:308
 msgctxt "AppearanceSettingsPage|"
 msgid "Current Chat"
-msgstr "Aktuális Becenév"
+msgstr "Bieżąca rozmowa"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:315
 msgctxt "AppearanceSettingsPage|"
 msgid "Errors:"
-msgstr "Hibák:"
+msgstr "Błędy:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:35
 msgctxt "AppearanceSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr "Interface"
 
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:225
 msgctxt "AppearanceSettingsPage|"
 msgid "Please choose a stylesheet file"
-msgstr "Válasszon egy stíluslapfájlt"
+msgstr "Proszę wybrać plik stylu"
 
 #: ../src/qtui/awaylogview.cpp:33
 msgctxt "AwayLogView|"
 msgid "Away Log"
-msgstr "Távollét Alatti Naplózás"
+msgstr "Log nieobecności"
 
 #: ../src/qtui/awaylogview.cpp:44
 msgctxt "AwayLogView|"
 msgid "Show Network Name"
-msgstr "Hálózatnév megjelenítése"
+msgstr "Pokaż nazwę sieci"
 
 #: ../src/qtui/awaylogview.cpp:49
 msgctxt "AwayLogView|"
 msgid "Show Buffer Name"
-msgstr "Puffernév megjelenítése"
+msgstr "Pokaż nazwę buferu"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
 msgctxt "BacklogSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:22
 msgctxt "BacklogSettingsPage|"
 msgid ""
 "Number of messages to be requested from the core when using scrolling up in "
 "the buffer view."
-msgstr "A lekérdezendő üzenetek száma a puffernézet görgetése közben."
+msgstr "Ilość wiadomości pobieranych od rdzenia przy przewijaniu w górę od zabuferowanego widoku."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
 msgctxt "BacklogSettingsPage|"
 msgid "Dynamic backlog amount:"
-msgstr "Dinamikus napló mennyiesége:"
+msgstr "Ilość dynamicznego backlogu:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:75
 msgctxt "BacklogSettingsPage|"
 msgid "Backlog request method:"
-msgstr ""
+msgstr "Metoda pobierania backlogu:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:83
 msgctxt "BacklogSettingsPage|"
 msgid "Fixed amount per chat"
-msgstr ""
+msgstr "Stała ilość na jedną rozmowę"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:88
 msgctxt "BacklogSettingsPage|"
 msgid "Unread messages per chat"
-msgstr "Olvasatlan üzenetek"
+msgstr "Nieprzeczytane wiadomości na rozmowę"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:93
 msgctxt "BacklogSettingsPage|"
 msgid "Globally unread messages"
-msgstr "Olvasatlan üzenetek"
+msgstr "Nieprzeczytane wiadomości ogółem"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:123
 msgctxt "BacklogSettingsPage|"
@@ -355,12 +354,12 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "amount of messages per buffer that are requested after the core connection "
 "has been established."
-msgstr "pufferenkénti üzenetek mennyisége, melyeket a csatlakozás létrehozása után kér le a program."
+msgstr ""
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
 msgctxt "BacklogSettingsPage|"
 msgid "Initial backlog amount:"
-msgstr "Kiinduló napló mennyisége:"
+msgstr "Początkowa ilość backlogu:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
 msgctxt "BacklogSettingsPage|"
@@ -375,19 +374,19 @@ msgstr ""
 #: ../src/qtui/settingspages/backlogsettingspage.ui:354
 msgctxt "BacklogSettingsPage|"
 msgid "Maximum amount of messages to be fetched per buffer."
-msgstr "A pufferenkénti üzenetek maximális mennyisége."
+msgstr ""
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:225
 #: ../src/qtui/settingspages/backlogsettingspage.ui:347
 msgctxt "BacklogSettingsPage|"
 msgid "Limit:"
-msgstr "Korlát:"
+msgstr "Limit:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:235
 #: ../src/qtui/settingspages/backlogsettingspage.ui:357
 msgctxt "BacklogSettingsPage|"
 msgid "Unlimited"
-msgstr "Korlátlan"
+msgstr "Bez limitu"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:260
 #: ../src/qtui/settingspages/backlogsettingspage.ui:270
@@ -397,13 +396,13 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Amount of messages to be fetched in addition to the unread messages. The "
 "Limit does not apply here."
-msgstr "Az olvasatlan üzeneteken felül gyűjtentő üzenetek mennyisége. A korlátot ne itt adja meg."
+msgstr ""
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:263
 #: ../src/qtui/settingspages/backlogsettingspage.ui:385
 msgctxt "BacklogSettingsPage|"
 msgid "Additional Messages:"
-msgstr "További üzenetek:"
+msgstr ""
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:324
 msgctxt "BacklogSettingsPage|"
@@ -419,17 +418,17 @@ msgstr ""
 #: ../src/qtui/settingspages/backlogsettingspage.ui:344
 msgctxt "BacklogSettingsPage|"
 msgid "Maximum amount of messages to be fetched over all buffers."
-msgstr "A pufferekben gyűjtendő üzenetek maximális mennyisége."
+msgstr ""
 
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 msgctxt "BacklogSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr "Interface"
 
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 msgctxt "BacklogSettingsPage|"
 msgid "Backlog Fetching"
-msgstr ""
+msgstr "Pobieranie backlogu"
 
 #: ../src/client/networkmodel.cpp:346
 #, qt-format
@@ -440,7 +439,7 @@ msgstr "<p> %1 - %2 </p>"
 #: ../src/uisupport/bufferview.cpp:251
 msgctxt "BufferView|"
 msgid "Merge buffers permanently?"
-msgstr "Pufferok egyesítése véglegesen?"
+msgstr "Czy na pewno połączyć bufery na stałe?"
 
 #: ../src/uisupport/bufferview.cpp:252
 #, qt-format
@@ -448,90 +447,90 @@ msgctxt "BufferView|"
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
-msgstr "Szeretné összefűzni végleg az \"%1\" és \"%2\" puffert? A művelet nem visszavonható!"
+msgstr ""
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 msgctxt "BufferViewEditDlg|"
 msgid "Dialog"
-msgstr "Párbeszédablak"
+msgstr ""
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:22
 msgctxt "BufferViewEditDlg|"
 msgid "Please enter a name for the chat list:"
-msgstr "Adjon egy nevet a csevegéslistának:"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
 msgctxt "BufferViewEditDlg|"
 msgid "Add Chat List"
-msgstr "Csevegéslista hozzáadása"
+msgstr ""
 
 #: ../src/uisupport/bufferviewfilter.cpp:52
 msgctxt "BufferViewFilter|"
 msgid "Show / Hide Chats"
-msgstr "Csevegések megjelenítése/elrejtése"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:14
 msgctxt "BufferViewSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:31
 msgctxt "BufferViewSettingsPage|"
 msgid "Re&name..."
-msgstr "Át&nevezés…"
+msgstr "Zmień &nazwę"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:48
 msgctxt "BufferViewSettingsPage|"
 msgid "&Add..."
-msgstr "&Hozzáadás…"
+msgstr "Dod&aj"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:71
 msgctxt "BufferViewSettingsPage|"
 msgid "De&lete"
-msgstr "&Törlés"
+msgstr "&Usuń"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:84
 msgctxt "BufferViewSettingsPage|"
 msgid "Chat List Settings"
-msgstr "A csevegéslista beállításai"
+msgstr "Ustawienia listy rozmów"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:92
 msgctxt "BufferViewSettingsPage|"
 msgid "Network:"
-msgstr "Hálózat:"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:100
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:117
 msgctxt "BufferViewSettingsPage|"
 msgid "All"
-msgstr "Összes"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:110
 msgctxt "BufferViewSettingsPage|"
 msgid ""
 "This option is not available when all Networks are visible.\n"
 "In this mode no separate status buffer is displayed."
-msgstr "Ez az opció nem használható amikor minden Hálozat látható.\nEbben a módban különálló státuszpufferek nem láthatók."
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
 msgctxt "BufferViewSettingsPage|"
 msgid "Show status window"
-msgstr "Állapotablak megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:121
 msgctxt "BufferViewSettingsPage|"
 msgid "Show channels"
-msgstr "Csatornák megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:128
 msgctxt "BufferViewSettingsPage|"
 msgid "Show queries"
-msgstr "Párbeszéd megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:135
 msgctxt "BufferViewSettingsPage|"
 msgid "Hide inactive chats"
-msgstr "Inaktív csevegések elrejtése"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:142
 msgctxt "BufferViewSettingsPage|"
@@ -541,78 +540,78 @@ msgstr ""
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
 msgctxt "BufferViewSettingsPage|"
 msgid "Sort alphabetically"
-msgstr "Rendezés ábécésorrendben"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
 msgctxt "BufferViewSettingsPage|"
 msgid "Minimum Activity:"
-msgstr "Minimális aktivitás"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:164
 msgctxt "BufferViewSettingsPage|"
 msgid "No Activity"
-msgstr "Nincs aktivitás"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:169
 msgctxt "BufferViewSettingsPage|"
 msgid "Other Activity"
-msgstr "Egyéb aktivitások"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:174
 msgctxt "BufferViewSettingsPage|"
 msgid "New Message"
-msgstr "Új üzenet"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
 msgctxt "BufferViewSettingsPage|"
 msgid "Highlight"
-msgstr "Kiemelés"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:205
 msgctxt "BufferViewSettingsPage|"
 msgid "Preview:"
-msgstr "Előnézet:"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgctxt "BufferViewSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgctxt "BufferViewSettingsPage|"
 msgid "Custom Chat Lists"
-msgstr "Egyéni csevegéslisták"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:342
 msgctxt "BufferViewSettingsPage|"
 msgid "Delete Chat List?"
-msgstr "Törli a csevegéslistát?"
+msgstr ""
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:343
 #, qt-format
 msgctxt "BufferViewSettingsPage|"
 msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr "Biztosan törölni akarja a(z) „%1” csevegéslistát?"
+msgstr ""
 
 #: ../src/qtui/ui/bufferviewwidget.ui:26
 msgctxt "BufferViewWidget|"
 msgid "BufferView"
-msgstr "PufferNézet"
+msgstr ""
 
 #: ../src/qtui/bufferwidget.cpp:79
 msgctxt "BufferWidget|"
 msgid "Zoom In"
-msgstr "Nagyítás"
+msgstr ""
 
 #: ../src/qtui/bufferwidget.cpp:85
 msgctxt "BufferWidget|"
 msgid "Zoom Out"
-msgstr "Kicsinyítés"
+msgstr ""
 
 #: ../src/qtui/bufferwidget.cpp:90
 msgctxt "BufferWidget|"
 msgid "Actual Size"
-msgstr "Tényleges méret"
+msgstr ""
 
 #: ../src/qtui/bufferwidget.cpp:94
 msgctxt "BufferWidget|"
@@ -634,7 +633,7 @@ msgstr ""
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
-msgstr "<b>Felhasználók:</b> %1"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:510
 #, qt-format
@@ -651,45 +650,45 @@ msgstr ""
 #: ../src/client/networkmodel.cpp:525
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
-msgstr "Nem Aktív <br /> Dupla-kattintás a csatlakozáshoz"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:528
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
-msgstr "<p> %1 </p>"
+msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:14
 msgctxt "ChannelListDlg|"
 msgid "Channel List"
-msgstr "Csatornalista"
+msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:38
 msgctxt "ChannelListDlg|"
 msgid "Search Pattern:"
-msgstr "Keresési minta:"
+msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:48
 msgctxt "ChannelListDlg|"
 msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows to pass search strings to the IRC Server."
-msgstr "Válasszon egyszerű és haladó mód között.\nA haladó mód engedi szöveg keresését az IRC szerveren."
+msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:62
 msgctxt "ChannelListDlg|"
 msgid "Show Channels"
-msgstr "Csatornák megjelenítése"
+msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:86
 msgctxt "ChannelListDlg|"
 msgid "Filter:"
-msgstr "Szűrő:"
+msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgctxt "ChannelListDlg|"
 msgid "Errors Occurred:"
-msgstr "Hibák történtek:"
+msgstr ""
 
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgctxt "ChannelListDlg|"
@@ -700,17 +699,17 @@ msgid ""
 "</style></head><body style=\" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Lucida Grande'; font-size:13pt;\">SUPER EVIL CATASTROPHIC ERROR!!11</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;\"></p></body></html>"
-msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Műveleti módok:</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Bekapcsolás:</span> <span style=\" font-weight:400;\">Csak a pufferek látszódnak a jobb oldalon a chatablakban</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Kikapcsolás:</span> A pufferek a jobb oldalon tiltásra kerülnek.</p></body></html>"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:14
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Operation Mode:"
-msgstr "Művelet Mód:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:29
 msgctxt "ChatMonitorSettingsPage|"
@@ -722,136 +721,136 @@ msgid ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
-msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Műveleti módok:</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Bekapcsolás:</span> <span style=\" font-weight:400;\">Csak a pufferek látszódnak a jobb oldalon a chatablakban</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Kikapcsolás:</span> A pufferek a jobb oldalon tiltásra kerülnek.</p></body></html>"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Available:"
-msgstr "Elérhető:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:88
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Move selected buffers to the left"
-msgstr "Kijelölt pufferek mozgatása balra"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:102
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Move selected buffers to the right"
-msgstr "Kijelölt pufferek mozgatása jobbra"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:236
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show:"
-msgstr "Megjelenítés:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:147
 msgctxt "ChatMonitorSettingsPage|"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr "Mutassa a chatablakban a névkiemeléseket, akkor is, ha az eredeti puffer tiltott"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Always show highlighted messages"
-msgstr "Mindig jelenjenek meg a kiemelt üzenetek"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:157
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show own messages"
-msgstr "Saját üzenetek megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Chat Monitor"
-msgstr "Csevegésfigyelő"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Opt In"
-msgstr "Bekapcsol"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:59
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Opt Out"
-msgstr "Kikapcsol"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:239
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Ignore:"
-msgstr "Mellőzés:"
+msgstr ""
 
 #: ../src/qtui/chatmonitorview.cpp:52
 msgctxt "ChatMonitorView|"
 msgid "Show Own Messages"
-msgstr "Saját üzenetek megjelenítése"
+msgstr ""
 
 #: ../src/qtui/chatmonitorview.cpp:59
 msgctxt "ChatMonitorView|"
 msgid "Show Network Name"
-msgstr "Hálózatnév megjelenítése"
+msgstr ""
 
 #: ../src/qtui/chatmonitorview.cpp:64
 msgctxt "ChatMonitorView|"
 msgid "Show Buffer Name"
-msgstr "Puffernév megjelenítése"
+msgstr ""
 
 #: ../src/qtui/chatmonitorview.cpp:71
 msgctxt "ChatMonitorView|"
 msgid "Configure..."
-msgstr "Beállítás…"
+msgstr ""
 
 #: ../src/qtui/chatscene.cpp:743
 msgctxt "ChatScene|"
 msgid "Copy Selection"
-msgstr "Kijelölés másolása"
+msgstr ""
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:13
 msgctxt "ChatViewSearchBar|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:19
 #: ../src/qtui/ui/chatviewsearchbar.ui:33
 #: ../src/qtui/ui/chatviewsearchbar.ui:44
 msgctxt "ChatViewSearchBar|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:55
 msgctxt "ChatViewSearchBar|"
 msgid "case sensitive"
-msgstr "kis- és nagybetűk megkülönböztetése"
+msgstr ""
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:62
 msgctxt "ChatViewSearchBar|"
 msgid "search nick"
-msgstr "álnév keresése"
+msgstr ""
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:69
 msgctxt "ChatViewSearchBar|"
 msgid "search message"
-msgstr "üzenet keresése"
+msgstr ""
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:82
 msgctxt "ChatViewSearchBar|"
 msgid "ignore joins, parts, etc."
-msgstr "kapcsolódások, társak stb. tiltása."
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:14
 msgctxt "ChatViewSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:22
 msgctxt "ChatViewSettingsPage|"
 msgid "Timestamp format:"
-msgstr "Időbélyegző-formátum:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:32
 msgctxt "ChatViewSettingsPage|"
@@ -861,7 +860,7 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:59
 msgctxt "ChatViewSettingsPage|"
 msgid "Custom chat window font:"
-msgstr "Egyéni csevegéslisták"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:92
 msgctxt "ChatViewSettingsPage|"
@@ -899,12 +898,12 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:149
 msgctxt "ChatViewSettingsPage|"
 msgid "Custom Colors"
-msgstr "Egyéni színek"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:167
 msgctxt "ChatViewSettingsPage|"
 msgid "Action:"
-msgstr "Művelet:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:174
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:198
@@ -935,37 +934,37 @@ msgstr "Művelet:"
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:726
 msgctxt "ChatViewSettingsPage|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:191
 msgctxt "ChatViewSettingsPage|"
 msgid "Timestamp:"
-msgstr "időbélyegző:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:215
 msgctxt "ChatViewSettingsPage|"
 msgid "Channel message:"
-msgstr "Saját üzenetek:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:252
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight foreground:"
-msgstr "Előtér kiemelése:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:276
 msgctxt "ChatViewSettingsPage|"
 msgid "Command message:"
-msgstr "Saját üzenetek:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:300
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight background:"
-msgstr "Háttér kiemelése:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:307
 msgctxt "ChatViewSettingsPage|"
 msgid "Server message:"
-msgstr "Hibaüzenet:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:331
 msgctxt "ChatViewSettingsPage|"
@@ -975,12 +974,12 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:355
 msgctxt "ChatViewSettingsPage|"
 msgid "Error message:"
-msgstr "Hibaüzenet:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:379
 msgctxt "ChatViewSettingsPage|"
 msgid "Background:"
-msgstr "Háttér:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:423
 msgctxt "ChatViewSettingsPage|"
@@ -990,17 +989,17 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:719
 msgctxt "ChatViewSettingsPage|"
 msgid "Own messages:"
-msgstr "Saját üzenetek:"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 msgctxt "ChatViewSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:28
 msgctxt "ChatViewSettingsPage|"
 msgid "Chat View"
-msgstr "Csevegésnézet"
+msgstr ""
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
@@ -1010,18 +1009,18 @@ msgstr ""
 #: ../src/client/client.cpp:270
 msgctxt "Client|"
 msgid "Identity already exists in client!"
-msgstr "A profil már létezik!"
+msgstr ""
 
 #: ../src/client/clientbacklogmanager.cpp:161
 #, qt-format
 msgctxt "ClientBacklogManager|"
 msgid "Processed %1 messages in %2 seconds."
-msgstr "%1 üzenet feldolgozva %2 másodperc alatt."
+msgstr ""
 
 #: ../src/client/clientbufferviewmanager.cpp:52
 msgctxt "ClientBufferViewManager|"
 msgid "All Chats"
-msgstr "Csevegéslista hozzáadása"
+msgstr ""
 
 #: ../src/client/clientuserinputhandler.cpp:88
 msgctxt "ClientUserInputHandler|"
@@ -1041,24 +1040,24 @@ msgstr ""
 #: ../src/qtui/settingspages/connectionsettingspage.ui:20
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable Ping Timeout Detection"
-msgstr "Animációk engedélyezése"
+msgstr ""
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:37
 msgctxt "ConnectionSettingsPage|"
 msgid "Ping interval:"
-msgstr "Frissítési időköz:"
+msgstr ""
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:44
 #: ../src/qtui/settingspages/connectionsettingspage.ui:155
 #: ../src/qtui/settingspages/connectionsettingspage.ui:213
 msgctxt "ConnectionSettingsPage|"
 msgid " seconds"
-msgstr " másodperc"
+msgstr ""
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:80
 msgctxt "ConnectionSettingsPage|"
 msgid "Disconnect after"
-msgstr "Szétkapcsolva"
+msgstr ""
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:103
 msgctxt "ConnectionSettingsPage|"
@@ -1080,7 +1079,7 @@ msgstr ""
 #: ../src/qtui/settingspages/connectionsettingspage.ui:148
 msgctxt "ConnectionSettingsPage|"
 msgid "Update interval:"
-msgstr "Frissítési időköz:"
+msgstr ""
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:177
 msgctxt "ConnectionSettingsPage|"
@@ -1090,7 +1089,7 @@ msgstr ""
 #: ../src/qtui/settingspages/connectionsettingspage.ui:184
 msgctxt "ConnectionSettingsPage|"
 msgid " users"
-msgstr " felhasználó"
+msgstr ""
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:206
 msgctxt "ConnectionSettingsPage|"
@@ -1100,37 +1099,37 @@ msgstr ""
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
 msgid "IRC"
-msgstr "IRC"
+msgstr ""
 
 #: ../src/qtui/chatitem.cpp:683
 msgctxt "ContentsChatItem|"
 msgid "Copy Link Address"
-msgstr "Hivatkozás címének másolása"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:38
 msgctxt "ContextMenuActionProvider|"
 msgid "Connect"
-msgstr "Kapcsolódás"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:39
 msgctxt "ContextMenuActionProvider|"
 msgid "Disconnect"
-msgstr "Kapcsolat bontása"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:41
 msgctxt "ContextMenuActionProvider|"
 msgid "Join"
-msgstr "Csatlakozás"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:42
 msgctxt "ContextMenuActionProvider|"
 msgid "Part"
-msgstr "Kilépés"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:43
 msgctxt "ContextMenuActionProvider|"
 msgid "Delete Chat(s)..."
-msgstr "Csevegések törlése…"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:44
 msgctxt "ContextMenuActionProvider|"
@@ -1140,62 +1139,62 @@ msgstr ""
 #: ../src/uisupport/contextmenuactionprovider.cpp:46
 msgctxt "ContextMenuActionProvider|"
 msgid "Joins"
-msgstr "Csatlakozások"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:47
 msgctxt "ContextMenuActionProvider|"
 msgid "Parts"
-msgstr "Kilépések"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:48
 msgctxt "ContextMenuActionProvider|"
 msgid "Quits"
-msgstr "Kilépések"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:49
 msgctxt "ContextMenuActionProvider|"
 msgid "Nick Changes"
-msgstr "Becenév Változik"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:50
 msgctxt "ContextMenuActionProvider|"
 msgid "Mode Changes"
-msgstr "Mód Változik"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:51
 msgctxt "ContextMenuActionProvider|"
 msgid "Day Changes"
-msgstr "Nap változik"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:52
 msgctxt "ContextMenuActionProvider|"
 msgid "Topic Changes"
-msgstr "Becenév Változik"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:53
 msgctxt "ContextMenuActionProvider|"
 msgid "Set as Default..."
-msgstr "Beállítás alapértelmezettnek…"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:54
 msgctxt "ContextMenuActionProvider|"
 msgid "Use Defaults..."
-msgstr "Alapértelmezések használata…"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:56
 msgctxt "ContextMenuActionProvider|"
 msgid "Join Channel..."
-msgstr "Csatlakozás csatornához…"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:58
 msgctxt "ContextMenuActionProvider|"
 msgid "Start Query"
-msgstr "Párbeszéd Indítása"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:59
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Query"
-msgstr "Párbeszéd megjelenítése"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:60
 msgctxt "ContextMenuActionProvider|"
@@ -1205,12 +1204,12 @@ msgstr ""
 #: ../src/uisupport/contextmenuactionprovider.cpp:62
 msgctxt "ContextMenuActionProvider|"
 msgid "Version"
-msgstr "Verzió"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:63
 msgctxt "ContextMenuActionProvider|"
 msgid "Time"
-msgstr "Idő"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:64
 msgctxt "ContextMenuActionProvider|"
@@ -1220,47 +1219,47 @@ msgstr ""
 #: ../src/uisupport/contextmenuactionprovider.cpp:65
 msgctxt "ContextMenuActionProvider|"
 msgid "Client info"
-msgstr "Kliens"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:66
 msgctxt "ContextMenuActionProvider|"
 msgid "Custom..."
-msgstr "Egyéni…"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:78
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Operator Status"
-msgstr "Operátor Jog Adása"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:79
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Operator Status"
-msgstr "Operátor Jog Elvétele"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:80
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Voice"
-msgstr "Voice jog adása"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:81
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Voice"
-msgstr "Voice jog elvétele"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:82
 msgctxt "ContextMenuActionProvider|"
 msgid "Kick From Channel"
-msgstr "Kirúgás a csatornáról"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:83
 msgctxt "ContextMenuActionProvider|"
 msgid "Ban From Channel"
-msgstr "Kitiltás a csatornáról"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:84
 msgctxt "ContextMenuActionProvider|"
 msgid "Kick && Ban"
-msgstr "Kirúgás és kitiltás"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:86
 msgctxt "ContextMenuActionProvider|"
@@ -1275,32 +1274,32 @@ msgstr ""
 #: ../src/uisupport/contextmenuactionprovider.cpp:88
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Channel List"
-msgstr "Csatornalista megjelenítése"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:89
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Ignore List"
-msgstr "Mellőzöttek Listája"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:102
 msgctxt "ContextMenuActionProvider|"
 msgid "Hide Events"
-msgstr "Események elrejtése"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:110
 msgctxt "ContextMenuActionProvider|"
 msgid "CTCP"
-msgstr "CTCP"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:122
 msgctxt "ContextMenuActionProvider|"
 msgid "Actions"
-msgstr "Tevékenységek"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:126
 msgctxt "ContextMenuActionProvider|"
 msgid "Ignore"
-msgstr "Mellőzés:"
+msgstr ""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:131
 msgctxt "ContextMenuActionProvider|"
@@ -1315,7 +1314,7 @@ msgstr ""
 #: ../src/core/core.cpp:182
 msgctxt "Core|"
 msgid "Could not initialize any storage backend! Exiting..."
-msgstr "Nem lehet a háttértárolót előkészíteni! Kilépés..."
+msgstr ""
 
 #: ../src/core/core.cpp:183
 msgctxt "Core|"
@@ -1328,78 +1327,78 @@ msgstr ""
 #: ../src/core/core.cpp:235
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
-msgstr "restoreState() hívása amíg az aktív munkafolyamat él!"
+msgstr ""
 
 #: ../src/core/core.cpp:277
 msgctxt "Core|"
 msgid "Admin user or password not set."
-msgstr "Admin felhasználót vagy jelszót nem állítottak be."
+msgstr ""
 
 #: ../src/core/core.cpp:280
 msgctxt "Core|"
 msgid "Could not setup storage!"
-msgstr "A tárolót nem lehet beállítani!"
+msgstr ""
 
 #: ../src/core/core.cpp:284
 msgctxt "Core|"
 msgid "Creating admin user..."
-msgstr "Adminisztrátor Felhasználó Létrehozása..."
+msgstr ""
 
 #: ../src/core/core.cpp:397
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/core/core.cpp:405
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "GUI kliens figyelése %1 számú IPv6-on, %2 porton, %3 számú protokollal"
+msgstr ""
 
 #: ../src/core/core.cpp:413
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
-msgstr "Nem lehet megnyitni az IPv6 csatolót %1:%2:%3"
+msgstr ""
 
 #: ../src/core/core.cpp:421
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "GUI kliens figyelése %1 számú IPv4-en, %2 porton, %3 számú protokollal"
+msgstr ""
 
 #: ../src/core/core.cpp:431
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
-msgstr "Nem lehet megnyitni az IPv4 csatolót %1:%2:%3"
+msgstr ""
 
 #: ../src/core/core.cpp:439
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
-msgstr "Nem érvényes figyelő cím %1, ismeretlen hálózati protokoll"
+msgstr ""
 
 #: ../src/core/core.cpp:448
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
-msgstr "Nem lehet hálózati csatolót nyitni!"
+msgstr ""
 
 #: ../src/core/core.cpp:482
 msgctxt "Core|"
 msgid "Client connected from"
-msgstr "Kliens kapcsolódása innen"
+msgstr ""
 
 #: ../src/core/core.cpp:485
 msgctxt "Core|"
 msgid "Closing server for basic setup."
-msgstr "Szerver leállítása alapbeállításokhoz."
+msgstr ""
 
 #: ../src/core/core.cpp:504
 msgctxt "Core|"
 msgid "Antique client trying to connect... refusing."
-msgstr "Régi kliens próbál kapcsolódni... elutasítás."
+msgstr ""
 
 #: ../src/core/core.cpp:516
 #, qt-format
@@ -1407,144 +1406,144 @@ msgctxt "Core|"
 msgid ""
 "<b>Your Quassel Client is too old!</b><br>This core needs at least "
 "client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr "<b>Az Ön Quassel kliense túl régi!</b><br>A core legalább %1 számú protokoll verziót igényel.<br>Kérem fontolja meg kliensének frissítését."
+msgstr ""
 
 #: ../src/core/core.cpp:520 ../src/core/core.cpp:610 ../src/core/core.cpp:634
 msgctxt "Core|"
 msgid "Client"
-msgstr "Kliens"
+msgstr ""
 
 #: ../src/core/core.cpp:520
 msgctxt "Core|"
 msgid "too old, rejecting."
-msgstr "túl régi, visszautasítás."
+msgstr ""
 
 #: ../src/core/core.cpp:537
 #, qt-format
 msgctxt "Core|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr "<b>Quassel Core Verziószám %1</b><br>Built: %2<br>Működési idő %3d%4h%5m (%6 óta)"
+msgstr ""
 
 #: ../src/core/core.cpp:590
 msgctxt "Core|"
 msgid "Starting TLS for Client:"
-msgstr "TLS Indítása a Klienshez:"
+msgstr ""
 
 #: ../src/core/core.cpp:608
 msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
-msgstr "<b>A kliens nem előkészített!</b><br>Indítási üzenet küldése szükséges a bejelentkezés előtt."
+msgstr ""
 
 #: ../src/core/core.cpp:610
 msgctxt "Core|"
 msgid "did not send an init message before trying to login, rejecting."
-msgstr "bejelentkezés előtti üzenet nem lett elküldve, visszautasítás."
+msgstr ""
 
 #: ../src/core/core.cpp:628
 msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
-msgstr "<b>Nem megfelelő felhasználói név vagy jelszó!</b><br>Az Ön által megadott felhasználói név/jelszó páros nem található az adatbázisban."
+msgstr ""
 
 #: ../src/core/core.cpp:634
 #, qt-format
 msgctxt "Core|"
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
-msgstr "sikeresen beállított és azonosított mint \"%1\" (UserId: %2)."
+msgstr ""
 
 #: ../src/core/core.cpp:645
 msgctxt "Core|"
 msgid "Non-authed client disconnected."
-msgstr "Nem azonosított kliens bontotta a kapcsolatot."
+msgstr ""
 
 #: ../src/core/core.cpp:651
 msgctxt "Core|"
 msgid "Non-authed client disconnected. (socket allready destroyed)"
-msgstr "Nem azonosított kliens kapcsolódása megszűnt (az illesztőpont már törölve)"
+msgstr ""
 
 #: ../src/core/core.cpp:699
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
-msgstr "Nem lehet a munkamenetet előkészíteni a kliens számára:"
+msgstr ""
 
 #: ../src/core/core.cpp:721
 msgctxt "Core|"
 msgid "Could not find a session for client:"
-msgstr "Nem lehet a munkamenetet előkészíteni a kliens számára:"
+msgstr ""
 
 #: ../src/client/coreaccount.h:39
 msgctxt "CoreAccount|"
 msgid "Internal Core"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:14
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:229
 msgctxt "CoreAccountEditDlg|"
 msgid "Edit Core Account"
-msgstr "Mag Profil Szerkesztése"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:20
 msgctxt "CoreAccountEditDlg|"
 msgid "Account Details"
-msgstr "Fiók részletei"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:26
 msgctxt "CoreAccountEditDlg|"
 msgid "Account Name:"
-msgstr "Fióknév:"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:33
 msgctxt "CoreAccountEditDlg|"
 msgid "Local Core"
-msgstr "Helyi Mag"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:40
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:173
 msgctxt "CoreAccountEditDlg|"
 msgid "Hostname:"
-msgstr "Gépnév:"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:47
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:180
 msgctxt "CoreAccountEditDlg|"
 msgid "localhost"
-msgstr "Helyi Kiszolgáló"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:54
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:187
 msgctxt "CoreAccountEditDlg|"
 msgid "Port:"
-msgstr "Port:"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:93
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:226
 msgctxt "CoreAccountEditDlg|"
 msgid "User:"
-msgstr "Felhasználó:"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:103
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:236
 msgctxt "CoreAccountEditDlg|"
 msgid "Password:"
-msgstr "Jelszó:"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:117
 msgctxt "CoreAccountEditDlg|"
 msgid "Remember"
-msgstr "Megjegyzés"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:127
 msgctxt "CoreAccountEditDlg|"
 msgid "Use a Proxy"
-msgstr "Proxy Használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:139
 msgctxt "CoreAccountEditDlg|"
 msgid "Proxy Type:"
-msgstr "Proxy Tipusa:"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:147
 msgctxt "CoreAccountEditDlg|"
@@ -1554,52 +1553,52 @@ msgstr ""
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:152
 msgctxt "CoreAccountEditDlg|"
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:231
 msgctxt "CoreAccountEditDlg|"
 msgid "Add Core Account"
-msgstr "Profil Hozzáadása"
+msgstr ""
 
 #: ../src/client/coreaccountmodel.cpp:64
 msgctxt "CoreAccountModel|"
 msgid "Internal Core"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:20
 msgctxt "CoreAccountSettingsPage|"
 msgid "Connect to Quassel Core"
-msgstr "Kapcsolódás a Quassel Maghoz"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:30
 msgctxt "CoreAccountSettingsPage|"
 msgid "Core Accounts"
-msgstr "Profil Hozzáadása"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:45
 msgctxt "CoreAccountSettingsPage|"
 msgid "Edit..."
-msgstr "Szerkesztés…"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:56
 msgctxt "CoreAccountSettingsPage|"
 msgid "Add..."
-msgstr "Hozzáadás…"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:67
 msgctxt "CoreAccountSettingsPage|"
 msgid "Delete"
-msgstr "Törlés"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:96
 msgctxt "CoreAccountSettingsPage|"
 msgid "Automatically connect on startup"
-msgstr "Automatikus kapcsolódás induláskor"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:136
 msgctxt "CoreAccountSettingsPage|"
 msgid "Connect to last account used"
-msgstr "Kapcsolódás a Quassel Maghoz"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:148
 msgctxt "CoreAccountSettingsPage|"
@@ -1614,12 +1613,12 @@ msgstr ""
 #: ../src/qtui/coreconfigwizard.cpp:69
 msgctxt "CoreConfigWizard|"
 msgid "Core Configuration Wizard"
-msgstr "Mag Konfiguráció Varázsló"
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:97
 msgctxt "CoreConfigWizard|"
 msgid "Your core has been successfully configured. Logging you in..."
-msgstr "A magot sikeresen beállítottuk. Bejelentkezés..."
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:104
 #, qt-format
@@ -1627,39 +1626,39 @@ msgctxt "CoreConfigWizard|"
 msgid ""
 "Core configuration failed:<br><b>%1</b><br>Press <em>Next</em> to start "
 "over."
-msgstr "Mag konfiguráció nem sikerült:<br><b>%1</b><br>Nyomja meg a <em>Következő gombot</em> az újraindításhoz."
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:119
 msgctxt "CoreConfigWizard|"
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
 "remember to configure your identities and networks now."
-msgstr "Bejelentkeztél a frissen Konfigurált Quassel magba!<br>Ne felejtse el most beállítani a személyazonosságot és hálózatokat."
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:14
 msgctxt "CoreConfigWizardAdminUserPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
 msgctxt "CoreConfigWizardAdminUserPage|"
 msgid "Username:"
-msgstr "Felhasználónév:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:32
 msgctxt "CoreConfigWizardAdminUserPage|"
 msgid "Password:"
-msgstr "Jelszó:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:46
 msgctxt "CoreConfigWizardAdminUserPage|"
 msgid "Repeat password:"
-msgstr "Jelszó ismétlése"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:60
 msgctxt "CoreConfigWizardAdminUserPage|"
 msgid "Remember password"
-msgstr "Jelszó megjegyzése"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:69
 msgctxt "CoreConfigWizardAdminUserPage|"
@@ -1671,73 +1670,73 @@ msgstr ""
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:13
 msgctxt "CoreConfigWizardIntroPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
 msgctxt "CoreConfigWizardIntroPage|"
 msgid "This wizard will guide you through the setup of your Quassel Core."
-msgstr "Ez a varázsló segíteni fogja Önt a Quassel mag Beállításaiban."
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:150
 msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid "Create Admin User"
-msgstr "Adminisztrátor Felhasználó Létrehozása"
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:151
 msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
-msgstr "Először létre fogunk hozni egy felhasználót a magon. Ennek az első felhasználónak adminisztrátor kiváltságai lesznek."
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:135
 msgctxt "CoreConfigWizardPages::IntroPage|"
 msgid "Introduction"
-msgstr "Bevezetés"
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:182
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Select Storage Backend"
-msgstr "HáttérTároló kiválasztása"
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:183
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
-msgstr "Kérem válasszon ki egy adatbázis-tárolót a Quassel mag raktárhoz, hogy tárolja tudja a restanciákat és egyéb adatokat."
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:277
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Connection Properties"
-msgstr "Kapcsolat"
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:317
 msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid "Storing Your Settings"
-msgstr "Beállítások Tárolása"
+msgstr ""
 
 #: ../src/qtui/coreconfigwizard.cpp:318
 msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
 "automatically."
-msgstr "Az Ön beállításai tárolásra kerültek a magban, és a bejelentkezés automatikusan megtörténik."
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
 msgctxt "CoreConfigWizardStorageSelectionPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 msgctxt "CoreConfigWizardStorageSelectionPage|"
 msgid "Storage Backend:"
-msgstr "Háttér Tároló:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:56
 msgctxt "CoreConfigWizardStorageSelectionPage|"
 msgid "Description"
-msgstr "Leírás"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:62
 msgctxt "CoreConfigWizardStorageSelectionPage|"
@@ -1747,62 +1746,62 @@ msgstr ""
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:13
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:19
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Your Choices"
-msgstr "Az Ön választásai"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:35
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Admin User:"
-msgstr "Adminisztrátor Felhasználó:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:42
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "foo"
-msgstr "foo"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Storage Backend:"
-msgstr "Háttér Tároló:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:62
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "bar"
-msgstr "bar"
+msgstr ""
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:102
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Please wait while your settings are being transmitted to the core..."
-msgstr "Kérem várjon, az Ön beállításainak átvitele történik a magba..."
+msgstr ""
 
 #: ../src/qtui/ui/coreconnectauthdlg.ui:14
 msgctxt "CoreConnectAuthDlg|"
 msgid "Authentication Required"
-msgstr "Hitelesítés szükséges"
+msgstr ""
 
 #: ../src/qtui/ui/coreconnectauthdlg.ui:20
 msgctxt "CoreConnectAuthDlg|"
 msgid "Please enter your account data:"
-msgstr "Hálózat nevének megadása:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconnectauthdlg.ui:35
 msgctxt "CoreConnectAuthDlg|"
 msgid "Password:"
-msgstr "Jelszó:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconnectauthdlg.ui:49
 msgctxt "CoreConnectAuthDlg|"
 msgid "Username:"
-msgstr "Felhasználónév:"
+msgstr ""
 
 #: ../src/qtui/ui/coreconnectauthdlg.ui:58
 msgctxt "CoreConnectAuthDlg|"
 msgid "Remember password"
-msgstr "Jelszó megjegyzése"
+msgstr ""
 
 #: ../src/qtui/coreconnectdlg.cpp:75
 #, qt-format
@@ -1813,48 +1812,48 @@ msgstr ""
 #: ../src/qtui/coreconnectdlg.cpp:40
 msgctxt "CoreConnectDlg|"
 msgid "Connect to Core"
-msgstr "&Csatlakozás..."
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:168
 msgctxt "CoreConnection|"
 msgid "Network is down"
-msgstr "Hálózatok"
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:202 ../src/client/coreconnection.cpp:321
 msgctxt "CoreConnection|"
 msgid "Disconnected"
-msgstr "Szétkapcsolva"
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:205
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Looking up %1..."
-msgstr "%1 keresése…"
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:208 ../src/client/coreconnection.cpp:450
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connecting to %1..."
-msgstr "Kapcsolódás %1 hálózathoz..."
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:211 ../src/client/coreconnection.cpp:573
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connected to %1"
-msgstr "Kapcsolódva %1 hálózathoz"
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:214
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Disconnecting from %1..."
-msgstr "Lekapcsolódás erről %1..."
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:272
 msgctxt "CoreConnection|"
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider "
 "upgrading."
-msgstr "A Quassel mag amihez csatlakozni próbál elavult! Frissítés Ajánlott."
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:300
 msgctxt "CoreConnection|"
@@ -1864,18 +1863,18 @@ msgstr ""
 #: ../src/client/coreconnection.cpp:349
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
-msgstr "&Kapcsolat Bontása"
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
 #: ../src/client/coreconnection.cpp:556
 msgctxt "CoreConnection|"
 msgid "Unencrypted connection canceled"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:457
 msgctxt "CoreConnection|"
 msgid "Synchronizing to core..."
-msgstr "&Csatlakozás..."
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:478
 #, qt-format
@@ -1883,12 +1882,12 @@ msgctxt "CoreConnection|"
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
 "least core/client protocol v%1 to connect."
-msgstr "<b>A Quassel Core, mellyel kapcslódni próbál, túl régi! </b><br>Legalább v%1 számú core/kliens protokoll szükséges a kapcsolódáshoz."
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:592
 msgctxt "CoreConnection|"
 msgid "Logging in..."
-msgstr "Bejelentkezés…"
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:597
 msgctxt "CoreConnection|"
@@ -1904,7 +1903,7 @@ msgstr ""
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
-msgstr "Kapcsolódás %1 hálózathoz..."
+msgstr ""
 
 #: ../src/client/coreconnection.cpp:648
 msgctxt "CoreConnection|"
@@ -1915,17 +1914,17 @@ msgstr ""
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
-msgstr "Kapcsolódva %1 hálózathoz"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:14
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:20
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Network Status Detection"
-msgstr "Hálózat Részletei"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:26
 msgctxt "CoreConnectionSettingsPage|"
@@ -1957,7 +1956,7 @@ msgstr ""
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:157
 msgctxt "CoreConnectionSettingsPage|"
 msgid " seconds"
-msgstr " másodperc"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:100
 msgctxt "CoreConnectionSettingsPage|"
@@ -1974,7 +1973,7 @@ msgstr ""
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:113
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Automatically reconnect on network failures"
-msgstr "Automatikus kapcsolódás induláskor"
+msgstr ""
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:147
 msgctxt "CoreConnectionSettingsPage|"
@@ -1989,27 +1988,27 @@ msgstr ""
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Connection"
-msgstr "Kapcsolat"
+msgstr ""
 
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:14
 msgctxt "CoreConnectionStatusWidget|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:32
 msgctxt "CoreConnectionStatusWidget|"
 msgid "Message"
-msgstr "Üzenet"
+msgstr ""
 
 #: ../src/qtui/coreconnectionstatuswidget.cpp:61
 msgctxt "CoreConnectionStatusWidget|seconds"
 msgid "s"
-msgstr "s"
+msgstr ""
 
 #: ../src/qtui/coreconnectionstatuswidget.cpp:61
 msgctxt "CoreConnectionStatusWidget|milliseconds"
 msgid "ms"
-msgstr "ms"
+msgstr ""
 
 #: ../src/qtui/coreconnectionstatuswidget.cpp:62
 #, qt-format
@@ -2030,83 +2029,84 @@ msgstr ""
 #: ../src/qtui/ui/coreinfodlg.ui:13
 msgctxt "CoreInfoDlg|"
 msgid "Core Information"
-msgstr "Mag Információ"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:21
 msgctxt "CoreInfoDlg|"
 msgid "Version:"
-msgstr "Verzió:"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:28
 msgctxt "CoreInfoDlg|"
 msgid "<core version>"
-msgstr "<mag verzió>"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:35
 msgctxt "CoreInfoDlg|"
 msgid "Uptime:"
-msgstr "Üzemidő:"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:42
 msgctxt "CoreInfoDlg|"
 msgid "Connected Clients:"
-msgstr "Kapcsolódott Kliensek:"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:49
 msgctxt "CoreInfoDlg|"
 msgid "<connected clients>"
-msgstr "<kapcsolódott kliensek>"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:56
 msgctxt "CoreInfoDlg|"
 msgid "<core uptime>"
-msgstr "<mag működési ideje>"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:63
 msgctxt "CoreInfoDlg|"
 msgid "Build date:"
-msgstr "Build dátuma:"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:70
 msgctxt "CoreInfoDlg|"
 msgid "<build date>"
-msgstr "<build dátuma>"
+msgstr ""
 
 #: ../src/qtui/ui/coreinfodlg.ui:81
 msgctxt "CoreInfoDlg|"
 msgid "Close"
-msgstr "Bezárás"
+msgstr ""
 
 #: ../src/qtui/coreinfodlg.cpp:53
 #, qt-format
 msgctxt "CoreInfoDlg|"
 msgid "%n Day(s)"
 msgid_plural "%n Day(s)"
-msgstr[0] "%n nap"
-msgstr[1] "%n nap"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/qtui/coreinfodlg.cpp:54
 #, qt-format
 msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
-msgstr " %1:%2:%3 (%4 óta)"
+msgstr ""
 
 #: ../src/core/corenetwork.cpp:153
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
-msgstr "Kapcsolódás Sikertelen. Kapcsolódás a következő Kiszolgálóhoz"
+msgstr ""
 
 #: ../src/core/corenetwork.cpp:161 ../src/core/corenetwork.cpp:162
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
-msgstr "Kapcsolódás %1:%2 hálózatokhoz..."
+msgstr ""
 
 #: ../src/core/corenetwork.cpp:210
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
-msgstr "Lekapcsolódás. (%1)"
+msgstr ""
 
 #: ../src/core/corenetwork.cpp:210
 msgctxt "CoreNetwork|"
@@ -2117,24 +2117,24 @@ msgstr ""
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
-msgstr "Nem lehet csatlakozni a %1 (%2)"
+msgstr ""
 
 #: ../src/core/corenetwork.cpp:350
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
-msgstr "Kapcsolódás sikertelen %1"
+msgstr ""
 
 #: ../src/core/coresession.cpp:214
 msgctxt "CoreSession|"
 msgid "Client"
-msgstr "Kliens"
+msgstr ""
 
 #: ../src/core/coresession.cpp:214
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
-msgstr "kapcsolat bontva (Felhasználói azonosító: %1)."
+msgstr ""
 
 #: ../src/core/coresession.cpp:440
 #, qt-format
@@ -2142,21 +2142,21 @@ msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
 " create network %1!"
-msgstr "CoreSession::createNetwork(): Érvénytelen hálózati azonosító érkezett a Magtól a %1 hálózat létrehozása közben!"
+msgstr ""
 
 #: ../src/core/coresession.cpp:472
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
-msgstr "CoreSession::createNetwork(): Kísérlet már meglévő hálózat létrehozásához, frissítés!"
+msgstr ""
 
 #: ../src/core/coresessioneventprocessor.cpp:65
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
-msgstr "Nem található szabad és érvényes álnév az álnévlistában. Használja a /nick <másikálnév> parancsot a folytatáshoz"
+msgstr ""
 
 #: ../src/core/coreuserinputhandler.cpp:81
 msgctxt "CoreUserInputHandler|"
@@ -2181,7 +2181,7 @@ msgstr ""
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
-msgstr "Nincs topik beállítva a %1 részére."
+msgstr ""
 
 #: ../src/core/coreuserinputhandler.cpp:197
 #, qt-format
@@ -2239,7 +2239,7 @@ msgstr ""
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 is %2"
-msgstr "A %1 részére a beállított topik: \"%2\""
+msgstr ""
 
 #: ../src/core/coreuserinputhandler.cpp:633
 #, qt-format
@@ -2250,22 +2250,22 @@ msgstr ""
 #: ../src/qtui/settingspages/createidentitydlg.ui:17
 msgctxt "CreateIdentityDlg|"
 msgid "Create New Identity"
-msgstr "Új Profil Létrehozása"
+msgstr ""
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:25
 msgctxt "CreateIdentityDlg|"
 msgid "Identity name:"
-msgstr "Profil neve:"
+msgstr ""
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:37
 msgctxt "CreateIdentityDlg|"
 msgid "Create blank identity"
-msgstr "Üres Profil létrehozása"
+msgstr ""
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:49
 msgctxt "CreateIdentityDlg|"
 msgid "Duplicate:"
-msgstr "Kettőzés:"
+msgstr ""
 
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:13
 msgctxt "DebugBufferViewOverlay|"
@@ -2285,27 +2285,27 @@ msgstr ""
 #: ../src/qtui/debugbufferviewoverlay.cpp:50
 msgctxt "DebugBufferViewOverlay|"
 msgid "BufferViews:"
-msgstr "PufferNézet"
+msgstr ""
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:51
 msgctxt "DebugBufferViewOverlay|"
 msgid "All Networks:"
-msgstr "Összes hálózat:"
+msgstr ""
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:52
 msgctxt "DebugBufferViewOverlay|"
 msgid "Networks:"
-msgstr "Hálózatok:"
+msgstr ""
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:53
 msgctxt "DebugBufferViewOverlay|"
 msgid "Buffers:"
-msgstr "Pufferek:"
+msgstr ""
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:54
 msgctxt "DebugBufferViewOverlay|"
 msgid "Removed buffers:"
-msgstr "Pufferok egyesítése véglegesen?"
+msgstr ""
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:55
 msgctxt "DebugBufferViewOverlay|"
@@ -2320,7 +2320,7 @@ msgstr ""
 #: ../src/qtui/debugbufferviewoverlay.cpp:58
 msgctxt "DebugBufferViewOverlay|"
 msgid "Minimum activity:"
-msgstr "Minimális aktivitás"
+msgstr ""
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:60
 msgctxt "DebugBufferViewOverlay|"
@@ -2330,32 +2330,32 @@ msgstr ""
 #: ../src/qtui/ui/debugconsole.ui:14
 msgctxt "DebugConsole|"
 msgid "Debug Console"
-msgstr "Hibakereső Konzol"
+msgstr ""
 
 #: ../src/qtui/ui/debugconsole.ui:44
 msgctxt "DebugConsole|"
 msgid "local"
-msgstr "helyi"
+msgstr ""
 
 #: ../src/qtui/ui/debugconsole.ui:54
 msgctxt "DebugConsole|"
 msgid "core"
-msgstr "mag"
+msgstr ""
 
 #: ../src/qtui/ui/debugconsole.ui:82
 msgctxt "DebugConsole|"
 msgid "Evaluate!"
-msgstr "Kiértékel!"
+msgstr ""
 
 #: ../src/qtui/ui/debuglogwidget.ui:13
 msgctxt "DebugLogWidget|"
 msgid "Debug Log"
-msgstr "Hibakereső Naplózás"
+msgstr ""
 
 #: ../src/qtui/ui/debuglogwidget.ui:43
 msgctxt "DebugLogWidget|"
 msgid "Close"
-msgstr "Bezárás"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:142 ../src/core/eventstringifier.cpp:259
 msgctxt "EventStringifier|"
@@ -2372,20 +2372,20 @@ msgstr ""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
-msgstr "%1 megváltoztatta a topikot %2 témáról \"%3\" témára"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:246
 msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
-msgstr "RPL_ISUPPORT számára nem megfelelő RFC érkezett, mely váratlan viselkedéshez vezethet!"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:272
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
-msgstr "%1 távol: \"%2\""
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:277
 msgctxt "EventStringifier|"
@@ -2401,19 +2401,19 @@ msgstr ""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
-msgstr "[Whowas] %1 volt %2 (%3)"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:317
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
-msgstr "%1 online %2-on keresztül (%3)"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:319
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
-msgstr "[Whowas] %1 volt %2 (%3)"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:327
 #, qt-format
@@ -2425,59 +2425,59 @@ msgstr ""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] End of /WHO list for %1"
-msgstr "[Ki] Vége a /WHO listának %1 részére"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:344
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
-msgstr "[Whois] %1 bejelentkezett %2 óta"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:346
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
-msgstr "[Whois] %1 távol %2 (%3) óta"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:353
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
-msgstr "[Ki] Vége a /WHO listának %1 részére"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:374
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
-msgstr "[Whois] %1 felhasználó a következő hálózaton: %2"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:376
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
-msgstr "[Whois] %1 írási joga van a következő csatornákon: %2"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:378
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
-msgstr "[Whois] %1 operátor a következő csatornákon: %2"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:397
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 has %2 users. Topic is: \"%3\""
-msgstr "A(z) %1 csatornán %2 felhasználó található. A topik: %3"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:403
 msgctxt "EventStringifier|"
 msgid "End of channel list"
-msgstr "Csatornalista vége"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:417
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Homepage for %1 is %2"
-msgstr "A %1 részére a beállított topik: \"%2\""
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:432
 #, qt-format
@@ -2489,25 +2489,25 @@ msgstr ""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
-msgstr "[Whois] %1 távol: \"%2\""
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:446
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "No topic is set for %1."
-msgstr "Nincs topik beállítva a %1 részére."
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:452
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic for %1 is \"%2\""
-msgstr "A %1 részére a beállított topik: \"%2\""
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:461
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic set by %1 on %2"
-msgstr "Topikot %1 állította be a %2 csatornán"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:471
 #, qt-format
@@ -2530,13 +2530,13 @@ msgstr ""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick %1 contains illegal characters"
-msgstr "A(z) %1 álnév nem engedélyezett karaktereket tartalmaz"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:498
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick already in use: %1"
-msgstr "Az álnév már használatban van: %1"
+msgstr ""
 
 #: ../src/core/eventstringifier.cpp:506
 #, qt-format
@@ -2572,7 +2572,7 @@ msgstr ""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
-msgstr "CTCP PING válasz elfogadva a(z) %1 hálózattól %2 másodperc alatt"
+msgstr ""
 
 #: ../src/client/execwrapper.cpp:45
 #, qt-format
@@ -2584,52 +2584,52 @@ msgstr ""
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr "Név \"%1\" érvénytelen: ../ vagy ..\\ nem engedélyezett!"
+msgstr ""
 
 #: ../src/client/execwrapper.cpp:64
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Could not find script \"%1\""
-msgstr "A(z) „%1” parancsfájl nem található"
+msgstr ""
 
 #: ../src/client/execwrapper.cpp:82
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" crashed with exit code %2."
-msgstr "A(z) „%1” parancsfájl összeomlott a következő hibakóddal: %2."
+msgstr ""
 
 #: ../src/client/execwrapper.cpp:98
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" could not start."
-msgstr "A(z) „%1” parancsfájl nem indítható el."
+msgstr ""
 
 #: ../src/client/execwrapper.cpp:100
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" caused error %2."
-msgstr "A(z) „%1” parancsfájl a következő hibát okozta: %2."
+msgstr ""
 
 #: ../src/uisupport/fontselector.cpp:31
 msgctxt "FontSelector|"
 msgid "Choose..."
-msgstr "Kiválasztás…"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:13
 msgctxt "HighlightSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:19
 msgctxt "HighlightSettingsPage|"
 msgid "Custom Highlights"
-msgstr "Egyéni Kiemelések"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:32
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 msgctxt "HighlightSettingsPage|"
 msgid "Highlight"
-msgstr "Kiemelés"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:37
 msgctxt "HighlightSettingsPage|"
@@ -2644,94 +2644,94 @@ msgstr ""
 #: ../src/qtui/settingspages/highlightsettingspage.ui:47
 msgctxt "HighlightSettingsPage|"
 msgid "Enable"
-msgstr "Engedélyezés"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:55
 msgctxt "HighlightSettingsPage|"
 msgid "Add"
-msgstr "Hozzáadás"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:62
 msgctxt "HighlightSettingsPage|"
 msgid "Remove"
-msgstr "Eltávolítás"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:85
 msgctxt "HighlightSettingsPage|"
 msgid "Highlight Nicks"
-msgstr "Kiemelt Becenevek"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:91
 msgctxt "HighlightSettingsPage|"
 msgid "All nicks from identity"
-msgstr "Minden Becenév A Profilból"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:98
 msgctxt "HighlightSettingsPage|"
 msgid "Current nick"
-msgstr "Aktuális Becenév"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:108
 msgctxt "HighlightSettingsPage|"
 msgid "None"
-msgstr "Nincs"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:115
 msgctxt "HighlightSettingsPage|"
 msgid "Case sensitive"
-msgstr "kis- és nagybetű érzékeny"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:30
 msgctxt "HighlightSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:159
 msgctxt "HighlightSettingsPage|"
 msgid "this shouldn't be empty"
-msgstr "ez nem lehet üres"
+msgstr ""
 
 #: ../src/qtui/settingspages/highlightsettingspage.h:45
 msgctxt "HighlightSettingsPage|"
 msgid "highlight rule"
-msgstr "kiemelés szabályai"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:322
 msgctxt "IdentitiesSettingsPage|"
 msgid "Rename Identity"
-msgstr "Profil Átnevezése"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:34
 #: ../src/qtui/settingspages/identitiessettingspage.ui:77
 msgctxt "IdentitiesSettingsPage|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:51
 msgctxt "IdentitiesSettingsPage|"
 msgid "Add Identity"
-msgstr "Profil Létrehozása"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:54
 msgctxt "IdentitiesSettingsPage|"
 msgid "Add..."
-msgstr "Hozzáadás…"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:74
 msgctxt "IdentitiesSettingsPage|"
 msgid "Remove Identity"
-msgstr "Profil Eltávolítása"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 msgctxt "IdentitiesSettingsPage|"
 msgid "IRC"
-msgstr "IRC"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 msgctxt "IdentitiesSettingsPage|"
 msgid "Identities"
-msgstr "Azonosítók"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:178
 msgctxt "IdentitiesSettingsPage|"
@@ -2743,43 +2743,43 @@ msgstr ""
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:179
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>All identities need an identity name set</li>"
-msgstr "<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:180
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr "<li>Minden személyazonossághoz szükséges azonosító név beállítása</li>"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:181
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify a real name for every identity</li>"
-msgstr "<li>Minden személyazonossághoz szükséges valódi név megadása</li>"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:182
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify an ident for every identity</li>"
-msgstr "<li>Minden személyazonossághoz szükséges egy azonosító megadása</li>"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:183
 msgctxt "IdentitiesSettingsPage|"
 msgid "</ul>"
-msgstr "</ul>"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:184
 msgctxt "IdentitiesSettingsPage|"
 msgid "One or more identities are invalid"
-msgstr "Egy vagy több személyazonosság érvénytelen"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:310
 msgctxt "IdentitiesSettingsPage|"
 msgid "Delete Identity?"
-msgstr "Adatlap Törlése?"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:311
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Do you really want to delete identity \"%1\"?"
-msgstr "Biztosan törli a \"%1\" profilt?"
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:323
 #, qt-format
@@ -2790,238 +2790,238 @@ msgstr ""
 #: ../src/common/identity.cpp:134
 msgctxt "Identity|"
 msgid "Quassel IRC User"
-msgstr "Quassel IRC Felhasználó"
+msgstr ""
 
 #: ../src/common/identity.cpp:162
 msgctxt "Identity|"
 msgid "<empty>"
-msgstr "üres"
+msgstr ""
 
 #: ../src/common/identity.cpp:168
 msgctxt "Identity|"
 msgid "Gone fishing."
-msgstr "Pecázni Mentem."
+msgstr ""
 
 #: ../src/common/identity.cpp:172
 msgctxt "Identity|"
 msgid "Not here. No, really. not here!"
-msgstr "Nem vagyok itt. Nem, tényleg nem vagyok itt!"
+msgstr ""
 
 #: ../src/common/identity.cpp:175
 msgctxt "Identity|"
 msgid "All Quassel clients vanished from the face of the earth..."
-msgstr "Minden Quassel kliens rejtett a föld arca előtt..."
+msgstr ""
 
 #: ../src/common/identity.cpp:178
 msgctxt "Identity|"
 msgid "Kindergarten is elsewhere!"
-msgstr "Az óvoda máshol van!"
+msgstr ""
 
 #: ../src/common/identity.cpp:179 ../src/common/identity.cpp:180
 msgctxt "Identity|"
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
-msgstr "http://quassel-irc.org - Csevegjen kényelmesen. Bárhol."
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:30
 msgctxt "IdentityEditWidget|"
 msgid "General"
-msgstr "Általános"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:38
 msgctxt "IdentityEditWidget|"
 msgid "Real Name:"
-msgstr "Valódi Név:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:45
 msgctxt "IdentityEditWidget|"
 msgid "The \"Real Name\" is shown in /whois."
-msgstr "A \"Valódi Név\" a /whois parancs során látható."
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:54
 msgctxt "IdentityEditWidget|"
 msgid "Nicknames"
-msgstr "Álnevek"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:90
 msgctxt "IdentityEditWidget|"
 msgid "Add Nickname"
-msgstr "Álnév hozzáadása"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:93
 msgctxt "IdentityEditWidget|"
 msgid "&Add..."
-msgstr "&Hozzáadás…"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:116
 msgctxt "IdentityEditWidget|"
 msgid "Remove Nickname"
-msgstr "Álnév eltávolítása"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:119
 msgctxt "IdentityEditWidget|"
 msgid "Remove"
-msgstr "Eltávolítás"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
 msgctxt "IdentityEditWidget|"
 msgid "Rename Identity"
-msgstr "Profil Átnevezése"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 msgctxt "IdentityEditWidget|"
 msgid "Re&name..."
-msgstr "Át&nevezés…"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:165
 msgctxt "IdentityEditWidget|"
 msgid "Move upwards in list"
-msgstr "Mozgassa felfele a listában"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:168
 #: ../src/qtui/settingspages/identityeditwidget.ui:182
 msgctxt "IdentityEditWidget|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:179
 msgctxt "IdentityEditWidget|"
 msgid "Move downwards in list"
-msgstr "Mozgassa lefele a listában"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:227
 msgctxt "IdentityEditWidget|"
 msgid "A&way"
-msgstr "T&ávollévő"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:233
 msgctxt "IdentityEditWidget|"
 msgid "Default Away Settings"
-msgstr "Alap távolléti beállítások"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:244
 msgctxt "IdentityEditWidget|"
 msgid "Nick to be used when being away"
-msgstr "Távollét Alatt használt Becenév"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:254
 msgctxt "IdentityEditWidget|"
 msgid "Default away reason"
-msgstr "Alapértelmezett távolléti ok"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:261
 msgctxt "IdentityEditWidget|"
 msgid "Away Nick:"
-msgstr "Becenév Távollét Alatt:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:268
 #: ../src/qtui/settingspages/identityeditwidget.ui:297
 #: ../src/qtui/settingspages/identityeditwidget.ui:366
 msgctxt "IdentityEditWidget|"
 msgid "Away Reason:"
-msgstr "Távollét oka:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:280
 msgctxt "IdentityEditWidget|"
 msgid "Set away when all clients have detached from the core"
-msgstr "Állítson be távollétet, amikor minden kliens le lett választva a magról"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:283
 msgctxt "IdentityEditWidget|"
 msgid "Away On Detach"
-msgstr "Leválasztási távollét"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:315
 msgctxt "IdentityEditWidget|"
 msgid "Not implemented yet"
-msgstr "Még nem megvalósított"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:318
 msgctxt "IdentityEditWidget|"
 msgid "Away On Idle"
-msgstr "Üresjárati távollét"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:332
 msgctxt "IdentityEditWidget|"
 msgid "Set away after"
-msgstr "Távollét beállítása"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:342
 msgctxt "IdentityEditWidget|"
 msgid "minutes of being idle"
-msgstr "perc üresjárat után"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
 #: ../src/qtui/settingspages/identityeditwidget.cpp:219
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
-msgstr "Speciális"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:407
 msgctxt "IdentityEditWidget|"
 msgid "Ident:"
-msgstr "Azonosság:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:414
 msgctxt "IdentityEditWidget|"
 msgid ""
 "The \"ident\" is part of your hostmask and, together with your host, "
 "uniquely identifies you within the IRC network."
-msgstr "A \"személyazonosság\" a gépmaszk része és az Ön gépével együtt egyedileg azonosítja Önt az IRC hálózaton belül."
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:423
 msgctxt "IdentityEditWidget|"
 msgid "Messages"
-msgstr "Üzenetek"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:431
 msgctxt "IdentityEditWidget|"
 msgid "Part Reason:"
-msgstr "Kilépési ok:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:444
 msgctxt "IdentityEditWidget|"
 msgid "Quit Reason:"
-msgstr "Kilépési ok:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:454
 msgctxt "IdentityEditWidget|"
 msgid "Kick Reason:"
-msgstr "Kirúgási ok:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:488
 msgctxt "IdentityEditWidget|"
 msgid ""
 "You need an SSL Capable Client to edit your Cores SSL Key and Certificate"
-msgstr "SSL képes kliensre van szüksége ahhoz, hogy a Mag SSL kulcsát és tanúsítványát"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:517
 msgctxt "IdentityEditWidget|"
 msgid ""
 "Warning: you are not connected with a secured connection to the Quassel Core!\n"
 "Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!"
-msgstr "Figyelem: nem biztonságos módon csatlakozott a Quassel Maghoz! Ha folytatja, az SSL kulcs és SSL tanúsítvány kódolatlanul kerül átvitelre!"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:546
 msgctxt "IdentityEditWidget|"
 msgid "Continue"
-msgstr "Folytatás"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:584
 msgctxt "IdentityEditWidget|"
 msgid "Use SSL Key"
-msgstr "SSL-kulcs használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:598
 msgctxt "IdentityEditWidget|"
 msgid "Key Type:"
-msgstr "Kulcstípus:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
 #: ../src/qtui/settingspages/identityeditwidget.cpp:317
 #: ../src/qtui/settingspages/identityeditwidget.cpp:328
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
-msgstr "Nincs betöltve kulcs"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
@@ -3029,17 +3029,17 @@ msgstr "Nincs betöltve kulcs"
 #: ../src/qtui/settingspages/identityeditwidget.cpp:365
 msgctxt "IdentityEditWidget|"
 msgid "Load"
-msgstr "Betöltés"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:637
 msgctxt "IdentityEditWidget|"
 msgid "Use SSL Certificate"
-msgstr "SSL-tanúsítvány használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:656
 msgctxt "IdentityEditWidget|"
 msgid "Organisation:"
-msgstr "Szervezet:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
@@ -3047,53 +3047,53 @@ msgstr "Szervezet:"
 #: ../src/qtui/settingspages/identityeditwidget.cpp:364
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
-msgstr "Nincs betöltve tanúsítvány"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:690
 msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
-msgstr "Általános Név:"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:290
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
-msgstr "Töltsön be egy kulcsot"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:322
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
-msgstr "RSA"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:325
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
-msgstr "DSA"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:330
 #: ../src/qtui/settingspages/identityeditwidget.cpp:369
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
-msgstr "Tiszta"
+msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:340
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
-msgstr "Töltsön be egy tanúsítványt"
+msgstr ""
 
 #: ../src/qtui/ircconnectionwizard.cpp:107
 msgctxt "IdentityPage|"
 msgid "Setup Identity"
-msgstr "Adatlap Törlése?"
+msgstr ""
 
 #: ../src/qtui/ircconnectionwizard.cpp:112
 msgctxt "IdentityPage|"
 msgid "Default Identity"
-msgstr "Alapértelmezett Profil"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:15
 msgctxt "IgnoreListEditDlg|"
 msgid "Configure Ignore Rule"
-msgstr "A Quassel beállítása"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:27
 msgctxt "IgnoreListEditDlg|"
@@ -3135,7 +3135,7 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:66
 msgctxt "IgnoreListEditDlg|"
 msgid "Rule Type"
-msgstr "Kulcstípus:"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:72
 msgctxt "IgnoreListEditDlg|"
@@ -3145,12 +3145,12 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:79
 msgctxt "IgnoreListEditDlg|"
 msgid "Message"
-msgstr "Üzenet"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:86
 msgctxt "IgnoreListEditDlg|"
 msgid "CTCP"
-msgstr "CTCP"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:98
 msgctxt "IgnoreListEditDlg|"
@@ -3172,7 +3172,7 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:112
 msgctxt "IgnoreListEditDlg|"
 msgid "Ignore Rule"
-msgstr "Mellőzés:"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:123
 msgctxt "IgnoreListEditDlg|"
@@ -3188,7 +3188,7 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:131
 msgctxt "IgnoreListEditDlg|"
 msgid "Regular expression"
-msgstr "Reguláris kifejezés"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:143
 msgctxt "IgnoreListEditDlg|"
@@ -3215,12 +3215,12 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 msgctxt "IgnoreListEditDlg|"
 msgid "Network"
-msgstr "Hálózat"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:174
 msgctxt "IgnoreListEditDlg|"
 msgid "Channel"
-msgstr "Csatorna"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgctxt "IgnoreListEditDlg|"
@@ -3276,57 +3276,57 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:91
 msgctxt "IgnoreListModel|"
 msgid "By Message"
-msgstr "Üzenet szerint"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:193
 msgctxt "IgnoreListModel|"
 msgid "Enabled"
-msgstr "Engedélyezés"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:194
 msgctxt "IgnoreListModel|"
 msgid "Type"
-msgstr "Típus"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistmodel.cpp:195
 msgctxt "IgnoreListModel|"
 msgid "Ignore Rule"
-msgstr "Mellőzés:"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:14
 msgctxt "IgnoreListSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:28
 msgctxt "IgnoreListSettingsPage|"
 msgid "New"
-msgstr "Új"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:42
 msgctxt "IgnoreListSettingsPage|"
 msgid "Delete"
-msgstr "Törlés"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:56
 msgctxt "IgnoreListSettingsPage|"
 msgid "&Edit"
-msgstr "&Szerkesztés"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgctxt "IgnoreListSettingsPage|"
 msgid "IRC"
-msgstr "IRC"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgctxt "IgnoreListSettingsPage|"
 msgid "Ignore List"
-msgstr "Mellőzöttek Listája"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:128
 msgctxt "IgnoreListSettingsPage|"
 msgid "Rule already exists"
-msgstr "A profil már létezik!"
+msgstr ""
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:129
 #, qt-format
@@ -3340,7 +3340,7 @@ msgstr ""
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:14
 msgctxt "IndicatorNotificationConfigWidget|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
 msgctxt "IndicatorNotificationConfigWidget|"
@@ -3357,107 +3357,107 @@ msgstr ""
 #: ../src/qtui/ui/inputwidget.ui:26
 msgctxt "InputWidget|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "White"
-msgstr "Fehér"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Black"
-msgstr "Fekete"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark blue"
-msgstr "Sötétkék"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark green"
-msgstr "Sötétzöld"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Red"
-msgstr "Vörös"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark red"
-msgstr "Sötétvörös"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark magenta"
-msgstr "Sötétlila"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Orange"
-msgstr "Narancssárga"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Yellow"
-msgstr "Sárga"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Green"
-msgstr "Zöld"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark cyan"
-msgstr "Sötétcián"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Cyan"
-msgstr "Cián"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Blue"
-msgstr "Kék"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Magenta"
-msgstr "Lila"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark gray"
-msgstr "Sötétszürke"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Light gray"
-msgstr "Világosszürke"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
 msgctxt "InputWidget|"
 msgid "Clear Color"
-msgstr "Tiszta"
+msgstr ""
 
 #: ../src/qtui/inputwidget.cpp:132
 msgctxt "InputWidget|"
 msgid "Focus Input Line"
-msgstr "Fókus beviteli sor"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:14
 msgctxt "InputWidgetSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
 msgctxt "InputWidgetSettingsPage|"
 msgid "Custom font:"
-msgstr "Egyéni:"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:50
 msgctxt "InputWidgetSettingsPage|"
@@ -3472,12 +3472,12 @@ msgstr ""
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:79
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show nick selector"
-msgstr "Becenevek Megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:95
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show style buttons"
-msgstr "Paneltálcaikon megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:111
 msgctxt "InputWidgetSettingsPage|"
@@ -3497,12 +3497,12 @@ msgstr ""
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show at most"
-msgstr "Csevegésfigyelő"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
 msgctxt "InputWidgetSettingsPage|"
 msgid "lines"
-msgstr "Online:"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
 msgctxt "InputWidgetSettingsPage|"
@@ -3512,17 +3512,17 @@ msgstr ""
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
 msgctxt "InputWidgetSettingsPage|"
 msgid "Tab Completion"
-msgstr "Kijelölés másolása"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
 msgctxt "InputWidgetSettingsPage|"
 msgid "Completion suffix:"
-msgstr "A kiegésztő utótag:"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgctxt "InputWidgetSettingsPage|"
 msgid ": "
-msgstr ": "
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
 msgctxt "InputWidgetSettingsPage|"
@@ -3532,37 +3532,37 @@ msgstr ""
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgctxt "InputWidgetSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
 msgctxt "InputWidgetSettingsPage|"
 msgid "Input Widget"
-msgstr "Beviteli Mező"
+msgstr ""
 
 #: ../src/qtui/ircconnectionwizard.cpp:51
 msgctxt "IrcConnectionWizard|"
 msgid "Save && Connect"
-msgstr "Kapcsolódás"
+msgstr ""
 
 #: ../src/client/irclistmodel.cpp:59
 msgctxt "IrcListModel|"
 msgid "Channel"
-msgstr "Csatorna"
+msgstr ""
 
 #: ../src/client/irclistmodel.cpp:60
 msgctxt "IrcListModel|"
 msgid "Users"
-msgstr "Felhasználók"
+msgstr ""
 
 #: ../src/client/irclistmodel.cpp:61
 msgctxt "IrcListModel|"
 msgid "Topic"
-msgstr "Téma"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:806
 msgctxt "IrcUserItem|"
 msgid " is away"
-msgstr "%1 távol: \"%2\""
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:821
 #, qt-format
@@ -3574,38 +3574,38 @@ msgstr ""
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "login time: %1"
-msgstr "bejelentkezési idő: %1"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:827
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "server: %1"
-msgstr "kiszolgáló: %1"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:14
 msgctxt "ItemViewSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
 msgctxt "ItemViewSettingsPage|"
 msgid "Custom font:"
-msgstr "Egyéni:"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:50
 msgctxt "ItemViewSettingsPage|"
 msgid "Show icons"
-msgstr "Ikonok megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:66
 msgctxt "ItemViewSettingsPage|"
 msgid "Chat List"
-msgstr "Csevegéslista hozzáadása"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:72
 msgctxt "ItemViewSettingsPage|"
 msgid "Display topic in tooltip"
-msgstr "Téma megjelenítése gyorstippként"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:85
 msgctxt "ItemViewSettingsPage|"
@@ -3615,7 +3615,7 @@ msgstr ""
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:101
 msgctxt "ItemViewSettingsPage|"
 msgid "Use Custom Colors"
-msgstr "Egyéni színek használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:118
 msgctxt "ItemViewSettingsPage|"
@@ -3631,82 +3631,82 @@ msgstr ""
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:345
 msgctxt "ItemViewSettingsPage|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:142
 msgctxt "ItemViewSettingsPage|"
 msgid "Inactive:"
-msgstr "Inaktív:"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:166
 msgctxt "ItemViewSettingsPage|"
 msgid "Unread messages:"
-msgstr "Olvasatlan üzenetek:"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:190
 msgctxt "ItemViewSettingsPage|"
 msgid "Highlight:"
-msgstr "Kiemelés:"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:214
 msgctxt "ItemViewSettingsPage|"
 msgid "Other activity:"
-msgstr "Egyéb aktivitás:"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgctxt "ItemViewSettingsPage|"
 msgid "Custom Nick List Colors"
-msgstr "Egyéni színek"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:301
 msgctxt "ItemViewSettingsPage|"
 msgid "Online:"
-msgstr "Online:"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:338
 msgctxt "ItemViewSettingsPage|"
 msgid "Away:"
-msgstr "Távollét:"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 msgctxt "ItemViewSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
 msgctxt "ItemViewSettingsPage|"
 msgid "Chat & Nick Lists"
-msgstr "Becenevek Megjelenítése"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
 msgctxt "ItemViewSettingsPage|"
 msgid "Network"
-msgstr "Hálózat"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
 msgctxt "ItemViewSettingsPage|"
 msgid "Inactive"
-msgstr "Inaktív"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
 msgctxt "ItemViewSettingsPage|"
 msgid "Normal"
-msgstr "Normál"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:38
 msgctxt "ItemViewSettingsPage|"
 msgid "Unread messages"
-msgstr "Olvasatlan üzenetek"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
 msgctxt "ItemViewSettingsPage|"
 msgid "Highlight"
-msgstr "Kiemelés"
+msgstr ""
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
 msgctxt "ItemViewSettingsPage|"
 msgid "Other activity"
-msgstr "Egyéb aktivitás"
+msgstr ""
 
 #: ../src/qtui/knotificationbackend.cpp:115
 #, qt-format
@@ -3715,6 +3715,7 @@ msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:77
 msgctxt "KeySequenceButton|"
@@ -3736,39 +3737,39 @@ msgstr ""
 #: ../src/qtui/settingspages/keysequencewidget.cpp:259
 msgctxt "KeySequenceWidget|Meta key"
 msgid "Meta"
-msgstr "Meta"
+msgstr ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:260
 msgctxt "KeySequenceWidget|Ctrl key"
 msgid "Ctrl"
-msgstr "Ctrl"
+msgstr ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:261
 msgctxt "KeySequenceWidget|Alt key"
 msgid "Alt"
-msgstr "Alt"
+msgstr ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:262
 msgctxt "KeySequenceWidget|Shift key"
 msgid "Shift"
-msgstr "Shift"
+msgstr ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:265
 msgctxt ""
 "KeySequenceWidget|What the user inputs now will be taken as the new shortcut"
 msgid "Input"
-msgstr "Beviteli Mező"
+msgstr ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:272
 msgctxt "KeySequenceWidget|No shortcut defined"
 msgid "None"
-msgstr "Nincs"
+msgstr ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:355
 #: ../src/qtui/settingspages/keysequencewidget.cpp:361
 msgctxt "KeySequenceWidget|"
 msgid "Shortcut Conflict"
-msgstr "Gyorsbillentyű"
+msgstr ""
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:356
 #, qt-format
@@ -3798,37 +3799,37 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:313
 msgctxt "MainWin|"
 msgid "General"
-msgstr "Általános"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:315
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
-msgstr "&Csatlakozás..."
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:317
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
-msgstr "&Kapcsolat Bontása"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:319
 msgctxt "MainWin|"
 msgid "Core &Info..."
-msgstr "Mag &Info..."
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:321
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
-msgstr "&Hálózatok beállítása…"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:324
 msgctxt "MainWin|"
 msgid "&Quit"
-msgstr "&Kilépés"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:328
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
-msgstr "A Quass&el beállítása…"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:331
 msgctxt "MainWin|"
@@ -3838,52 +3839,52 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:335
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
-msgstr "Kere&sősáv megjelenítése"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:337
 msgctxt "MainWin|"
 msgid "Show Away Log"
-msgstr "Távollét Alatti Naplózás Megjelenítése"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:339
 msgctxt "MainWin|"
 msgid "Show &Menubar"
-msgstr "&Menüsor megjelenítése"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:342
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
-msgstr "Álla&potsor megjelenítése"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:348
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
-msgstr "&Teljes képernyős mód"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:355
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
-msgstr "A gyor&sbillentyűk beállítása…"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:361 ../src/qtui/mainwin.cpp:365
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
-msgstr "A Quass&el beállítása…"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:371
 msgctxt "MainWin|"
 msgid "&About Quassel"
-msgstr "A Quassel &névjegye"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:376
 msgctxt "MainWin|"
 msgid "About &Qt"
-msgstr "A &Qt névjegye"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:380
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
-msgstr "Hibakeresés &HálózatiModell"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:382
 msgctxt "MainWin|"
@@ -3893,22 +3894,22 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
-msgstr "Hibakeresés &ÜzenetModell"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:386
 msgctxt "MainWin|"
 msgid "Debug &HotList"
-msgstr "Hibakeresés &Naplózás"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:388
 msgctxt "MainWin|"
 msgid "Debug &Log"
-msgstr "Hibakeresés &Naplózás"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:390
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
-msgstr "Egyéni stíluslap használata"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:393
 msgctxt "MainWin|"
@@ -3918,7 +3919,7 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:397
 msgctxt "MainWin|"
 msgid "Navigation"
-msgstr "Szervezet:"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:399
 msgctxt "MainWin|"
@@ -4028,7 +4029,7 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:454
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
-msgstr "Törli a csevegéslistát?"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:456
 msgctxt "MainWin|"
@@ -4048,102 +4049,102 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:467
 msgctxt "MainWin|"
 msgid "&File"
-msgstr "&Fájl"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:480
 msgctxt "MainWin|"
 msgid "&Networks"
-msgstr "&Hálózatok"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:486
 msgctxt "MainWin|"
 msgid "&View"
-msgstr "&Nézet"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "&Chat Lists"
-msgstr "Csevegéslista hozzáadása"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:489
 msgctxt "MainWin|"
 msgid "&Toolbars"
-msgstr "&Eszköztárak"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
 msgid "&Settings"
-msgstr "&Beállítások"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:512
 msgctxt "MainWin|"
 msgid "&Help"
-msgstr "Sú&gó"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:520
 msgctxt "MainWin|"
 msgid "Debug"
-msgstr "Hibakereső"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:755
 msgctxt "MainWin|"
 msgid "Nicks"
-msgstr "Becenevek"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:764
 msgctxt "MainWin|"
 msgid "Show Nick List"
-msgstr "Becenevek Megjelenítése"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:775
 msgctxt "MainWin|"
 msgid "Chat Monitor"
-msgstr "Csevegésfigyelő"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:787
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
-msgstr "Csevegésfigyelő"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:791
 msgctxt "MainWin|"
 msgid "Inputline"
-msgstr "Beviteli Mező"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:800
 msgctxt "MainWin|"
 msgid "Show Input Line"
-msgstr "Beviteli Mező Megjelenítése"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:813
 msgctxt "MainWin|"
 msgid "Topic"
-msgstr "Téma"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:825
 msgctxt "MainWin|"
 msgid "Show Topic Line"
-msgstr "Téma Mutatása"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:903
 msgctxt "MainWin|"
 msgid "Main Toolbar"
-msgstr "Fő eszköztár"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:942
 msgctxt "MainWin|"
 msgid "Connected to core."
-msgstr "Csatlakozva a maghoz."
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:1033
 msgctxt "MainWin|"
 msgid "Not connected to core."
-msgstr "Nem kapcsolódott a maghoz."
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:1047 ../src/qtui/mainwin.cpp:1055
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:1047
 msgctxt "MainWin|"
@@ -4165,7 +4166,7 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:1072 ../src/qtui/mainwin.cpp:1092
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
-msgstr "SSL-tanúsítvány használata"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:1073
 #, qt-format
@@ -4178,12 +4179,12 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:1076
 msgctxt "MainWin|"
 msgid "Continue"
-msgstr "Folytatás"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:1077
 msgctxt "MainWin|"
 msgid "Show Certificate"
-msgstr "Töltsön be egy tanúsítványt"
+msgstr ""
 
 #: ../src/qtui/mainwin.cpp:1093
 msgctxt "MainWin|"
@@ -4204,23 +4205,23 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:1105
 msgctxt "MainWin|"
 msgid "Core Connection Error"
-msgstr "Kapcsolat"
+msgstr ""
 
 #: ../src/client/messagemodel.cpp:375
 #, qt-format
 msgctxt "MessageModel|"
 msgid "Requesting %1 messages from backlog for buffer %2:%3"
-msgstr "%1 üzenet lekérdezése a naplóból a %2:%3 pufferbe"
+msgstr ""
 
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
 msgctxt "MsgProcessorStatusWidget|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
 msgctxt "MsgProcessorStatusWidget|"
 msgid "Receiving Backlog"
-msgstr "Napló lehívása"
+msgstr ""
 
 #: ../src/uisupport/multilineedit.cpp:661
 #, qt-format
@@ -4229,6 +4230,7 @@ msgid "Do you really want to paste %n line(s)?"
 msgid_plural "Do you really want to paste %n line(s)?"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/uisupport/multilineedit.cpp:670
 msgctxt "MultiLineEdit|"
@@ -4238,74 +4240,74 @@ msgstr ""
 #: ../src/qtui/settingspages/networkadddlg.ui:14
 msgctxt "NetworkAddDlg|"
 msgid "Add Network"
-msgstr "Hálózat hozzáadása"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:22
 msgctxt "NetworkAddDlg|"
 msgid "Use preset:"
-msgstr "Előre megadott beállítások használata:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:57
 msgctxt "NetworkAddDlg|"
 msgid "Manually specify network settings"
-msgstr "Részletes Hálózati Beállítások"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:67
 msgctxt "NetworkAddDlg|"
 msgid "Manual Settings"
-msgstr "Kézi Beállítások"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:75
 msgctxt "NetworkAddDlg|"
 msgid "Network name:"
-msgstr "Hálózat Neve:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:85
 msgctxt "NetworkAddDlg|"
 msgid "Server address:"
-msgstr "Kiszolgáló Jelszó:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:95
 msgctxt "NetworkAddDlg|"
 msgid "Port:"
-msgstr "Port:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:115
 msgctxt "NetworkAddDlg|"
 msgid "Server password:"
-msgstr "Kiszolgáló Jelszó:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkadddlg.ui:131
 msgctxt "NetworkAddDlg|"
 msgid "Use secure connection"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkeditdlg.ui:13
 msgctxt "NetworkEditDlg|"
 msgid "Dialog"
-msgstr "Párbeszédablak"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkeditdlg.ui:21
 msgctxt "NetworkEditDlg|"
 msgid "Please enter a network name:"
-msgstr "Hálózat nevének megadása:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:705
 msgctxt "NetworkEditDlg|"
 msgid "Add Network"
-msgstr "Hálózat hozzáadása"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:196
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Server: %1"
-msgstr "Kiszolgáló: %1"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:197
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Users: %1"
-msgstr "Felhasználók: %1"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:200
 #, qt-format
@@ -4316,24 +4318,25 @@ msgstr ""
 #: ../src/client/networkmodel.cpp:852
 msgctxt "NetworkModel|"
 msgid "Chat"
-msgstr "Csevegésnézet"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:852
 msgctxt "NetworkModel|"
 msgid "Topic"
-msgstr "Téma"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:852
 msgctxt "NetworkModel|"
 msgid "Nick Count"
-msgstr "Becenév Számoló"
+msgstr ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:154
 msgctxt "NetworkModelController|"
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
-msgstr[0] "Véglegesen törölni szeretné a következő puffer?"
-msgstr[1] "Véglegesen törölni szeretné a következő puffereket?"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:167
 #, qt-format
@@ -4346,136 +4349,136 @@ msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
-msgstr "<b>Megjegyzés:</b> Ez minden kapcsolódó adatot törölni fog, beleértve a Napló adatait a Mag adatbázisából, és a művelet nem visszavonható."
+msgstr ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:170
 msgctxt "NetworkModelController|"
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "Aktív csatorna pufferek nem törölhetök, elsöként lépjen ki a csatornáról."
+msgstr ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:172
 msgctxt "NetworkModelController|"
 msgid "Remove buffers permanently?"
-msgstr "Pufferok egyesítése véglegesen?"
+msgstr ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:484
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Join Channel"
-msgstr "Belépés Csatornára"
+msgstr ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:487
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Network:"
-msgstr "Hálózat:"
+msgstr ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:489
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Channel:"
-msgstr "Csatorna:"
+msgstr ""
 
 #: ../src/uisupport/networkmodelcontroller.cpp:491
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Password:"
-msgstr "Jelszó:"
+msgstr ""
 
 #: ../src/qtui/ircconnectionwizard.cpp:148
 msgctxt "NetworkPage|"
 msgid "Setup Network Connection"
-msgstr "Biztonsági Kapcsolat Használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:14
 msgctxt "NetworksSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgctxt "NetworksSettingsPage|"
 msgid "Re&name..."
-msgstr "Át&nevezés…"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:65
 #: ../src/qtui/settingspages/networkssettingspage.ui:235
 msgctxt "NetworksSettingsPage|"
 msgid "&Add..."
-msgstr "&Hozzáadás…"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:88
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
 msgctxt "NetworksSettingsPage|"
 msgid "De&lete"
-msgstr "&Törlés"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:124
 msgctxt "NetworksSettingsPage|"
 msgid "Network Details"
-msgstr "Hálózat Részletei"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:132
 msgctxt "NetworksSettingsPage|"
 msgid "Identity:"
-msgstr "Azonosító:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:149
 #: ../src/qtui/settingspages/networkssettingspage.ui:281
 #: ../src/qtui/settingspages/networkssettingspage.ui:295
 msgctxt "NetworksSettingsPage|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:190
 msgctxt "NetworksSettingsPage|"
 msgid "Servers"
-msgstr "Kiszolgálók"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:193
 msgctxt "NetworksSettingsPage|"
 msgid "Manage servers for this network"
-msgstr "Kiszolgálók kezelése ehhez a hálózathoz"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 msgctxt "NetworksSettingsPage|"
 msgid "&Edit..."
-msgstr "&Szerkesztés…"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:278
 msgctxt "NetworksSettingsPage|"
 msgid "Move upwards in list"
-msgstr "Mozgassa felfele a listában"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:292
 msgctxt "NetworksSettingsPage|"
 msgid "Move downwards in list"
-msgstr "Mozgassa lefele a listában"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:337
 msgctxt "NetworksSettingsPage|"
 msgid "Commands"
-msgstr "Parancsok"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:340
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure automatic identification or misc. commands to be executed after "
 "connecting to a server"
-msgstr "Automatikus azonosítás konfigurálása vagy egyéb, a kiszolgálóhoz történő csatlakozás után végrehajtandó parancsok beállítása"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:346
 msgctxt "NetworksSettingsPage|"
 msgid "Commands to execute on connect:"
-msgstr "Parancsok végrehajtása csatlakozáskor:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:362
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
-msgstr "Határozzon meg egy listát a csatlakozás után végrehajtandó parancsokról. Jegyezze meg, hogy a Quassel IRC automatikusan újracsatlakozik a csatornákhoz, így a /join parancs használata nagyon ritkán szükséges!"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgctxt "NetworksSettingsPage|"
 msgid "Connection"
-msgstr "Kapcsolat"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:383
 msgctxt "NetworksSettingsPage|"
@@ -4485,7 +4488,7 @@ msgstr ""
 #: ../src/qtui/settingspages/networkssettingspage.ui:386
 msgctxt "NetworksSettingsPage|"
 msgid "Automatic Reconnect"
-msgstr "Automatikus Újrakapcsolódás"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:397
 msgctxt "NetworksSettingsPage|"
@@ -4495,7 +4498,7 @@ msgstr ""
 #: ../src/qtui/settingspages/networkssettingspage.ui:404
 msgctxt "NetworksSettingsPage|"
 msgid " s"
-msgstr " s"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:420
 msgctxt "NetworksSettingsPage|"
@@ -4510,7 +4513,7 @@ msgstr ""
 #: ../src/qtui/settingspages/networkssettingspage.ui:464
 msgctxt "NetworksSettingsPage|"
 msgid "Unlimited"
-msgstr "Korlátlan"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:489
 msgctxt "NetworksSettingsPage|"
@@ -4521,55 +4524,55 @@ msgstr ""
 #: ../src/qtui/settingspages/networkssettingspage.ui:525
 msgctxt "NetworksSettingsPage|"
 msgid "Auto Identify"
-msgstr "Automatikus Azonosítás"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:540
 msgctxt "NetworksSettingsPage|"
 msgid "NickServ"
-msgstr "NickServ"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:557
 msgctxt "NetworksSettingsPage|"
 msgid "Service:"
-msgstr "Szolgáltatás:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:567
 #: ../src/qtui/settingspages/networkssettingspage.ui:615
 msgctxt "NetworksSettingsPage|"
 msgid "Password:"
-msgstr "Jelszó:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:580
 msgctxt "NetworksSettingsPage|"
 msgid "Use SASL Authentication"
-msgstr "SASL-tanúsítvány használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:625
 msgctxt "NetworksSettingsPage|"
 msgid "Account:"
-msgstr "Felhasználói Fiók:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:649
 msgctxt "NetworksSettingsPage|"
 msgid "Encodings"
-msgstr "Karakterkódolások"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:652
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
-msgstr "Haladó beállítások konfigurálása, mint üzenet kódolása és automatikus újracsatlakozás"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:661
 msgctxt "NetworksSettingsPage|"
 msgid "Control encodings for in- and outgoing messages"
-msgstr "Be- és kimenő üzenetek kódolásának ellenőrzése"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:664
 msgctxt "NetworksSettingsPage|"
 msgid "Use Custom Encodings"
-msgstr "Egyedi Karakterkódolás"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:675
 #: ../src/qtui/settingspages/networkssettingspage.ui:695
@@ -4577,12 +4580,12 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
-msgstr "Határozza meg, mely kódolású üzenetek fognak beérkezni. UTF-8 jó választás a legtöbb hálózathoz."
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:679
 msgctxt "NetworksSettingsPage|"
 msgid "Send messages in:"
-msgstr "Üzenet küldése:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:706
 #: ../src/qtui/settingspages/networkssettingspage.ui:726
@@ -4590,12 +4593,12 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
-msgstr "Az UTF-8-ban kódolt bejövő üzenetek minden esetben a következőképpen lesznek kezelve. Ez a beállítás határozza meg a kódolást, amelyek nem UTF-8-ban vannak."
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:710
 msgctxt "NetworksSettingsPage|"
 msgid "Receive fallback:"
-msgstr "Tartalék lekérése:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:737
 #: ../src/qtui/settingspages/networkssettingspage.ui:751
@@ -4603,22 +4606,22 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr "Ez hatáozza meg, hogy az ellenőrző üzenetek, álnevek és kiszolgálónevek hogyan legyenek kódolva! Amennyiben valóban nem tudja, mit tegyen, hagyja ezt ISO-8859-1 kódoláson!"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:741
 msgctxt "NetworksSettingsPage|"
 msgid "Server encoding:"
-msgstr "Kiszolgáló Karakterkódolása:"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
 msgctxt "NetworksSettingsPage|"
 msgid "IRC"
-msgstr "IRC"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
 msgctxt "NetworksSettingsPage|"
 msgid "Networks"
-msgstr "Hálózatok"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:167
 msgctxt "NetworksSettingsPage|"
@@ -4630,22 +4633,22 @@ msgstr ""
 #: ../src/qtui/settingspages/networkssettingspage.cpp:168
 msgctxt "NetworksSettingsPage|"
 msgid "<li>All networks need at least one server defined</li>"
-msgstr "<li>Minden hálózat legalább egy kiszolgáló meghatározását igényli</li>"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:169
 msgctxt "NetworksSettingsPage|"
 msgid "</ul>"
-msgstr "</ul>"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:170
 msgctxt "NetworksSettingsPage|"
 msgid "Invalid Network Settings"
-msgstr "Érvénytelen hálózatbeállítások"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:542
 msgctxt "NetworksSettingsPage|"
 msgid "Delete Network?"
-msgstr "Hálózat Törlése?"
+msgstr ""
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:543
 #, qt-format
@@ -4653,49 +4656,49 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
-msgstr "Valóban törölni szeretné a(z) %1 hálózatot és minden kapcsolódó beállítást, beleértve a Naplót?"
+msgstr ""
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
 msgctxt "NickEditDlg|"
 msgid "Edit Nickname"
-msgstr "Becenév Szerkesztése"
+msgstr ""
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:19
 msgctxt "NickEditDlg|"
 msgid "Please enter a valid nickname:"
-msgstr "Használj érvényes becenevet:"
+msgstr ""
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:32
 msgctxt "NickEditDlg|"
 msgid ""
 "A valid nickname may contain letters from the English alphabet, digits, and "
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
-msgstr "Az érvényes becenév tartalmazhajta az angol abc betűit, számokat és a következő speciális karaktereket: {, }, [, ], \\, |, `, ^, _ és -."
+msgstr ""
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:420
 msgctxt "NickEditDlg|"
 msgid "Add Nickname"
-msgstr "Álnév hozzáadása"
+msgstr ""
 
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
 msgctxt "NotificationsSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/notificationssettingspage.cpp:28
 msgctxt "NotificationsSettingsPage|"
 msgid "Notifications"
-msgstr "Értesítések"
+msgstr ""
 
 #: ../src/qtui/phononnotificationbackend.cpp:143
 msgctxt "PhononNotificationBackend::ConfigWidget|"
 msgid "Select Audio File"
-msgstr "Hang Fájl Kiválasztása"
+msgstr ""
 
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:14
 msgctxt "PhononNotificationConfigWidget|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
 msgctxt "PhononNotificationConfigWidget|"
@@ -4722,25 +4725,25 @@ msgstr ""
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
-msgstr "A teljes %1 számú naplóüzenet lekérése a %2 pufferbe"
+msgstr ""
 
 #: ../src/client/backlogrequester.cpp:106
 #, qt-format
 msgctxt "QObject|"
 msgid ""
 "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr "Az összes %1 számú olvasatlan naplóüzenet lekérése (plusz kapcsolódó %2)"
+msgstr ""
 
 #: ../src/client/backlogrequester.cpp:123
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr "A teljes %1 számú olvasatlan naplóüzenet lekérése a %2 pufferbe"
+msgstr ""
 
 #: ../src/qtui/ircconnectionwizard.cpp:56
 msgctxt "QObject|"
 msgid "Welcome to Quassel IRC"
-msgstr "Kapcsolódás a Quassel Maghoz"
+msgstr ""
 
 #: ../src/qtui/ircconnectionwizard.cpp:58
 msgctxt "QObject|"
@@ -4761,7 +4764,7 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette role assignment: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:156
 #, qt-format
@@ -4773,7 +4776,7 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid subelement name in %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:236
 #, qt-format
@@ -4785,13 +4788,13 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid condition %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:257
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message label: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:268
 #, qt-format
@@ -4808,7 +4811,7 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid format name: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:294
 #, qt-format
@@ -4826,19 +4829,19 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid proplist %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:350
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist item type %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:366
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist state %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:392
 #, qt-format
@@ -4850,7 +4853,7 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font property: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:422
 #, qt-format
@@ -4882,7 +4885,7 @@ msgstr ""
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient stops list: %1"
-msgstr "Nem érvényes figyelő cím %1"
+msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:610
 #, qt-format
@@ -4911,33 +4914,33 @@ msgstr ""
 #: ../src/common/util.cpp:145
 msgctxt "Quassel::secondsToString()|"
 msgid "year"
-msgstr "év"
+msgstr ""
 
 #: ../src/common/util.cpp:146
 msgctxt "Quassel::secondsToString()|"
 msgid "day"
-msgstr "nap"
+msgstr ""
 
 #: ../src/common/util.cpp:147
 msgctxt "Quassel::secondsToString()|"
 msgid "h"
-msgstr "óra"
+msgstr ""
 
 #: ../src/common/util.cpp:148
 msgctxt "Quassel::secondsToString()|"
 msgid "min"
-msgstr "perc"
+msgstr ""
 
 #: ../src/common/util.cpp:149
 msgctxt "Quassel::secondsToString()|"
 msgid "sec"
-msgstr "másodperc"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:429
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
-msgstr "<b>csevegés %1 felhasználóval</b>"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:447
 #, qt-format
@@ -4949,101 +4952,101 @@ msgstr ""
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "login time: %1"
-msgstr "bejelentkezési idő: %1"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:453
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "server: %1"
-msgstr "kiszolgáló: %1"
+msgstr ""
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgctxt "SaveIdentitiesDlg|"
 msgid "Sync With Core"
-msgstr "Mag Szinkronizáció"
+msgstr ""
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:21
 msgctxt "SaveIdentitiesDlg|"
 msgid "Syncing data with core, please wait..."
-msgstr "Adatszinkronizálás a maggal, kérem várjon..."
+msgstr ""
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:81
 msgctxt "SaveIdentitiesDlg|"
 msgid "Abort"
-msgstr "Megszakítás"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:14
 msgctxt "ServerEditDlg|"
 msgid "Dialog"
-msgstr "Párbeszédablak"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:30
 msgctxt "ServerEditDlg|"
 msgid "Server Info"
-msgstr "Szerverinformációk"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:38
 msgctxt "ServerEditDlg|"
 msgid "Server address:"
-msgstr "Kiszolgáló Jelszó:"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:45
 #: ../src/qtui/settingspages/servereditdlg.ui:227
 msgctxt "ServerEditDlg|"
 msgid "Port:"
-msgstr "Port:"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:72
 msgctxt "ServerEditDlg|"
 msgid "Password:"
-msgstr "Jelszó:"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:94
 msgctxt "ServerEditDlg|"
 msgid "Use SSL"
-msgstr "SSL használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:119
 msgctxt "ServerEditDlg|"
 msgid "Advanced"
-msgstr "Speciális"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:140
 msgctxt "ServerEditDlg|"
 msgid "SSL Version:"
-msgstr "SSL-verzió:"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:147
 msgctxt "ServerEditDlg|"
 msgid ""
 "Do not change unless you're going to connect to a server not supporting "
 "SSLv3!"
-msgstr "Ne végezzen módosítást, ha nem fog SSLv3-at támogató szerverhez csatlakozni!"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:151
 msgctxt "ServerEditDlg|"
 msgid "SSLv3 (default)"
-msgstr "SSLv3 (alapértelmezett)"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:156
 msgctxt "ServerEditDlg|"
 msgid "SSLv2"
-msgstr "SSLv2"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:161
 msgctxt "ServerEditDlg|"
 msgid "TLSv1"
-msgstr "TLSv1"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:171
 msgctxt "ServerEditDlg|"
 msgid "Use a Proxy"
-msgstr "Proxy Használata"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:188
 msgctxt "ServerEditDlg|"
 msgid "Proxy Type:"
-msgstr "Proxy Tipusa:"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:196
 msgctxt "ServerEditDlg|"
@@ -5053,50 +5056,50 @@ msgstr ""
 #: ../src/qtui/settingspages/servereditdlg.ui:201
 msgctxt "ServerEditDlg|"
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:213
 msgctxt "ServerEditDlg|"
 msgid "Proxy Host:"
-msgstr "Proxy Kiszolgáló:"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:220
 msgctxt "ServerEditDlg|"
 msgid "localhost"
-msgstr "Helyi Kiszolgáló"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:251
 msgctxt "ServerEditDlg|"
 msgid "Proxy Username:"
-msgstr "Proxy Felhasználónév:"
+msgstr ""
 
 #: ../src/qtui/settingspages/servereditdlg.ui:261
 msgctxt "ServerEditDlg|"
 msgid "Proxy Password:"
-msgstr "Proxy Jelszó:"
+msgstr ""
 
 #: ../src/qtui/ui/settingsdlg.ui:14
 msgctxt "SettingsDlg|"
 msgid "Configure Quassel"
-msgstr "A Quassel beállítása"
+msgstr ""
 
 #: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
 #: ../src/qtui/settingsdlg.cpp:99
 msgctxt "SettingsDlg|"
 msgid "Settings"
-msgstr "Beállítások"
+msgstr ""
 
 #: ../src/qtui/settingsdlg.cpp:109
 msgctxt "SettingsDlg|"
 msgid "Save changes"
-msgstr "Változtatások mentése"
+msgstr ""
 
 #: ../src/qtui/settingsdlg.cpp:110
 msgctxt "SettingsDlg|"
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
-msgstr "Mentetlen változtatások vannak az aktuális konfigurációs oldalon. Szeretné most alkalmazni a változtatásokat?"
+msgstr ""
 
 #: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
 #, qt-format
@@ -5107,32 +5110,32 @@ msgstr ""
 #: ../src/qtui/settingsdlg.cpp:193
 msgctxt "SettingsDlg|"
 msgid "Reload Settings"
-msgstr "Beállítások újratöltése"
+msgstr ""
 
 #: ../src/qtui/settingsdlg.cpp:193
 msgctxt "SettingsDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Szeretné újra betölteni a beállításokat, miközben elveti változtatásait ezen az oldalon?"
+msgstr ""
 
 #: ../src/qtui/settingsdlg.cpp:202
 msgctxt "SettingsDlg|"
 msgid "Restore Defaults"
-msgstr "Alapértelmezések visszaállítása"
+msgstr ""
 
 #: ../src/qtui/settingsdlg.cpp:202
 msgctxt "SettingsDlg|"
 msgid "Do you like to restore the default values for this page?"
-msgstr "Szeretné helyreállítani ennek az oldalnak az alapértelmezett értékeit?"
+msgstr ""
 
 #: ../src/qtui/ui/settingspagedlg.ui:14
 msgctxt "SettingsPageDlg|"
 msgid "Configure Quassel"
-msgstr "A Quassel beállítása"
+msgstr ""
 
 #: ../src/qtui/ui/settingspagedlg.ui:30
 msgctxt "SettingsPageDlg|"
 msgid "Settings"
-msgstr "Beállítások"
+msgstr ""
 
 #: ../src/qtui/settingspagedlg.cpp:36
 #, qt-format
@@ -5143,42 +5146,42 @@ msgstr ""
 #: ../src/qtui/settingspagedlg.cpp:104
 msgctxt "SettingsPageDlg|"
 msgid "Reload Settings"
-msgstr "Beállítások újratöltése"
+msgstr ""
 
 #: ../src/qtui/settingspagedlg.cpp:104
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
-msgstr "Szeretné újra betölteni a beállításokat, miközben elveti változtatásait ezen az oldalon?"
+msgstr ""
 
 #: ../src/qtui/settingspagedlg.cpp:113
 msgctxt "SettingsPageDlg|"
 msgid "Restore Defaults"
-msgstr "Alapértelmezések visszaállítása"
+msgstr ""
 
 #: ../src/qtui/settingspagedlg.cpp:113
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to restore the default values for this page?"
-msgstr "Szeretné helyreállítani ennek az oldalnak az alapértelmezett értékeit?"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutsmodel.cpp:110
 msgctxt "ShortcutsModel|"
 msgid "Action"
-msgstr "Művelet"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutsmodel.cpp:112
 msgctxt "ShortcutsModel|"
 msgid "Shortcut"
-msgstr "Gyorsbillentyű"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:14
 msgctxt "ShortcutsSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:22
 msgctxt "ShortcutsSettingsPage|"
 msgid "Search:"
-msgstr "Keresés:"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:62
 msgctxt "ShortcutsSettingsPage|"
@@ -5188,59 +5191,59 @@ msgstr ""
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:68
 msgctxt "ShortcutsSettingsPage|"
 msgid "Default:"
-msgstr "Alapértelmezett:"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:75
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:92
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:102
 msgctxt "ShortcutsSettingsPage|"
 msgid "None"
-msgstr "Nincs"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:82
 msgctxt "ShortcutsSettingsPage|"
 msgid "Custom:"
-msgstr "Egyéni:"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 msgctxt "ShortcutsSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
 msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
-msgstr "Gyorsbillentyűk"
+msgstr ""
 
 #: ../src/common/signalproxy.cpp:880
 msgctxt "SignalProxy|"
 msgid "Peer tried to send package larger than max package size!"
-msgstr "A partner nagyobb csomagot próbált küldeni, mint a maximális csomagméret!"
+msgstr ""
 
 #: ../src/common/signalproxy.cpp:885
 msgctxt "SignalProxy|"
 msgid "Peer tried to send 0 byte package!"
-msgstr "A partner 0 byte nagyságú csomagot próbált küldeni!"
+msgstr ""
 
 #: ../src/common/signalproxy.cpp:902
 msgctxt "SignalProxy|"
 msgid "Peer sent corrupted compressed data!"
-msgstr "A partner sérült tömörített adatot küldött!"
+msgstr ""
 
 #: ../src/common/signalproxy.cpp:917
 msgctxt "SignalProxy|"
 msgid "Peer sent corrupt data: unable to load QVariant!"
-msgstr "A partner sérült adatot küldött: nem lehetséges a QVariant betöltése!"
+msgstr ""
 
 #: ../src/common/signalproxy.cpp:1050
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
-msgstr "Kapcsolat bontása"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgctxt "SimpleNetworkEditor|"
 msgid "Network name:"
-msgstr "Hálózat Neve:"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:35
 msgctxt "SimpleNetworkEditor|"
@@ -5250,7 +5253,7 @@ msgstr ""
 #: ../src/qtui/ui/simplenetworkeditor.ui:63
 msgctxt "SimpleNetworkEditor|"
 msgid "Servers"
-msgstr "Kiszolgálók"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:81
 msgctxt "SimpleNetworkEditor|"
@@ -5265,7 +5268,7 @@ msgstr ""
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgctxt "SimpleNetworkEditor|"
 msgid "&Edit..."
-msgstr "&Szerkesztés…"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:116
 msgctxt "SimpleNetworkEditor|"
@@ -5275,38 +5278,38 @@ msgstr ""
 #: ../src/qtui/ui/simplenetworkeditor.ui:119
 msgctxt "SimpleNetworkEditor|"
 msgid "&Add..."
-msgstr "&Hozzáadás…"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:136
 msgctxt "SimpleNetworkEditor|"
 msgid "Remove this server entry from the list"
-msgstr "Felhasználó eltávolítása a csatornáról"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:139
 msgctxt "SimpleNetworkEditor|"
 msgid "De&lete"
-msgstr "&Törlés"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgctxt "SimpleNetworkEditor|"
 msgid "Move upwards in list"
-msgstr "Mozgassa felfele a listában"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:168
 #: ../src/qtui/ui/simplenetworkeditor.ui:182
 msgctxt "SimpleNetworkEditor|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:179
 msgctxt "SimpleNetworkEditor|"
 msgid "Move downwards in list"
-msgstr "Mozgassa lefele a listában"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:226
 msgctxt "SimpleNetworkEditor|"
 msgid "Join Channels Automatically"
-msgstr "Belépés Csatornára"
+msgstr ""
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:250
 msgctxt "SimpleNetworkEditor|"
@@ -5323,102 +5326,102 @@ msgid ""
 "via network. Use SQLite if your Quassel Core should store its data on the "
 "same machine it is running on, and if you only expect a few users to use "
 "your core."
-msgstr "Az SQLite egy fájl alapú adatbázis motor, amely nem igényel semmi beállítást. Kis és közepes méretű adatbázisokhoz alkalmas, melyek nem igényelnek interneten keresztüli hozzáférést. Abban az esetben használjon SQLiteot, ha a Quassel Mag ugyanazon a géepn tárolja az adatokat, amelyen fut, és ha csak néhány felhasználó használja a magot."
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:14
 msgctxt "SslInfoDlg|"
 msgid "Security Information"
-msgstr "Biztonsági információk"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:22
 msgctxt "SslInfoDlg|"
 msgid "<b>Hostname:</b>"
-msgstr "<b>Gépnév:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:39
 msgctxt "SslInfoDlg|"
 msgid "<b>IP address:</b>"
-msgstr "<b>IP-cím:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:56
 msgctxt "SslInfoDlg|"
 msgid "<b>Encryption:</b>"
-msgstr "<b>Titkosítás:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:73
 msgctxt "SslInfoDlg|"
 msgid "<b>Protocol:</b>"
-msgstr "<b>Protokoll:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:90
 msgctxt "SslInfoDlg|"
 msgid "<b>Certificate chain:</b>"
-msgstr "<b>Tanúsítványlánc:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:120
 msgctxt "SslInfoDlg|"
 msgid "Subject"
-msgstr "Tárgy"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:126 ../src/qtui/ui/sslinfodlg.ui:248
 msgctxt "SslInfoDlg|"
 msgid "<b>Common name:</b>"
-msgstr "<b>Általános név:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:143 ../src/qtui/ui/sslinfodlg.ui:265
 msgctxt "SslInfoDlg|"
 msgid "<b>Organization:</b>"
-msgstr "<b>Szervezet:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:160 ../src/qtui/ui/sslinfodlg.ui:282
 msgctxt "SslInfoDlg|"
 msgid "<b>Organizational unit:</b>"
-msgstr "<b>Szervezeti egység:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:177 ../src/qtui/ui/sslinfodlg.ui:299
 msgctxt "SslInfoDlg|"
 msgid "<b>Country:</b>"
-msgstr "<b>Ország:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:194 ../src/qtui/ui/sslinfodlg.ui:316
 msgctxt "SslInfoDlg|"
 msgid "<b>State or province:</b>"
-msgstr "<b>Állam vagy tartomány:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:231 ../src/qtui/ui/sslinfodlg.ui:353
 msgctxt "SslInfoDlg|"
 msgid "<b>Locality:</b>"
-msgstr "<b>Helység:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:242
 msgctxt "SslInfoDlg|"
 msgid "Issuer"
-msgstr "Kibocsátó"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:367
 msgctxt "SslInfoDlg|"
 msgid "<b>Validity period:</b>"
-msgstr "<b>Érvényességi időszak:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:384
 msgctxt "SslInfoDlg|"
 msgid "<b>MD5 digest:</b>"
-msgstr "<b>MD5-összeg:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:401
 msgctxt "SslInfoDlg|"
 msgid "<b>SHA1 digest:</b>"
-msgstr "<b>SHA1-összeg:</b>"
+msgstr ""
 
 #: ../src/qtui/ui/sslinfodlg.ui:431
 msgctxt "SslInfoDlg|"
 msgid "<b>Trusted:</b>"
-msgstr "<b>Megbízható:</b>"
+msgstr ""
 
 #: ../src/qtui/sslinfodlg.cpp:69
 msgctxt "SslInfoDlg|"
 msgid "Yes"
-msgstr "Igen"
+msgstr ""
 
 #: ../src/qtui/sslinfodlg.cpp:71
 msgctxt "SslInfoDlg|"
@@ -5434,17 +5437,17 @@ msgstr ""
 #: ../src/client/networkmodel.h:144
 msgctxt "StatusBufferItem|"
 msgid "Status Buffer"
-msgstr "Állapot Puffer"
+msgstr ""
 
 #: ../src/qtui/systemtray.cpp:61 ../src/qtui/systemtray.cpp:92
 msgctxt "SystemTray|"
 msgid "&Minimize"
-msgstr "Mi&nimalizálás"
+msgstr ""
 
 #: ../src/qtui/systemtray.cpp:94
 msgctxt "SystemTray|"
 msgid "&Restore"
-msgstr "&Visszaállítás"
+msgstr ""
 
 #: ../src/qtui/systraynotificationbackend.cpp:125
 #, qt-format
@@ -5453,11 +5456,12 @@ msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/qtui/systraynotificationbackend.cpp:135
 msgctxt "SystrayNotificationBackend::ConfigWidget|"
 msgid "Show a message in a popup"
-msgstr "Saját üzenetek megjelenítése"
+msgstr ""
 
 #: ../src/uisupport/tabcompleter.cpp:52
 msgctxt "TabCompleter|"
@@ -5467,72 +5471,72 @@ msgstr ""
 #: ../src/qtui/taskbarnotificationbackend.cpp:68
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Activate dock entry, timeout:"
-msgstr "Dokkbejezés aktiválás, időtúllépés:"
+msgstr ""
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:70
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Mark taskbar entry, timeout:"
-msgstr "Panel bejegyzés jelölés, időtúllépés:"
+msgstr ""
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:78
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Unlimited"
-msgstr "Korlátlan"
+msgstr ""
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:79
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid " seconds"
-msgstr " másodperc"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgctxt "ToolBarActionProvider|"
 msgid "Connect"
-msgstr "Kapcsolódás"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:31
 msgctxt "ToolBarActionProvider|"
 msgid "Connect to IRC"
-msgstr "Kapcsolódás az IRC-hez"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgctxt "ToolBarActionProvider|"
 msgid "Disconnect"
-msgstr "Kapcsolat bontása"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:32
 msgctxt "ToolBarActionProvider|"
 msgid "Disconnect from IRC"
-msgstr "Kapcsolat bontása az IRC-vel"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgctxt "ToolBarActionProvider|"
 msgid "Part"
-msgstr "Kilépés"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgctxt "ToolBarActionProvider|"
 msgid "Leave currently selected channel"
-msgstr "A kiválasztott csatorna elhagyása"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgctxt "ToolBarActionProvider|"
 msgid "Join"
-msgstr "Csatlakozás"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgctxt "ToolBarActionProvider|"
 msgid "Join a channel"
-msgstr "Belépés Csatornára"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgctxt "ToolBarActionProvider|"
 msgid "Query"
-msgstr "Párbeszéd"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgctxt "ToolBarActionProvider|"
 msgid "Start a private conversation"
-msgstr "Privát párbeszéd indítása"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgctxt "ToolBarActionProvider|"
@@ -5542,7 +5546,7 @@ msgstr ""
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgctxt "ToolBarActionProvider|"
 msgid "Request user information"
-msgstr "Felhasználói információ lekérése"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 msgctxt "ToolBarActionProvider|"
@@ -5552,93 +5556,93 @@ msgstr ""
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 msgctxt "ToolBarActionProvider|"
 msgid "Give operator privileges to user"
-msgstr "Operátori jogok adása a felhasználónak"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgctxt "ToolBarActionProvider|"
 msgid "Deop"
-msgstr "Operátori jogok elvétele"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgctxt "ToolBarActionProvider|"
 msgid "Take operator privileges from user"
-msgstr "Operátor Jog Elvétele"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgctxt "ToolBarActionProvider|"
 msgid "Voice"
-msgstr "Írási jog"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgctxt "ToolBarActionProvider|"
 msgid "Give voice to user"
-msgstr "Írási jog adása"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgctxt "ToolBarActionProvider|"
 msgid "Devoice"
-msgstr "Írási jog elvétele"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgctxt "ToolBarActionProvider|"
 msgid "Take voice from user"
-msgstr "Írási jog elvétele"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:44
 msgctxt "ToolBarActionProvider|"
 msgid "Kick"
-msgstr "Kirúgás"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:44
 msgctxt "ToolBarActionProvider|"
 msgid "Remove user from channel"
-msgstr "Felhasználó eltávolítása a csatornáról"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:45
 msgctxt "ToolBarActionProvider|"
 msgid "Ban"
-msgstr "Kitiltás"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:45
 msgctxt "ToolBarActionProvider|"
 msgid "Ban user from channel"
-msgstr "Felhasználó kitiltása a csatornáról"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"
 msgid "Kick/Ban"
-msgstr "Kirúgás/kitiltás"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"
 msgid "Remove and ban user from channel"
-msgstr "Felhasználó eltávolítása és kitiltása a csatornáról"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:51
 msgctxt "ToolBarActionProvider|"
 msgid "Connect to all"
-msgstr "Csatlakozás az összeshez"
+msgstr ""
 
 #: ../src/uisupport/toolbaractionprovider.cpp:58
 msgctxt "ToolBarActionProvider|"
 msgid "Disconnect from all"
-msgstr "Kapcsolat bontása az összessel"
+msgstr ""
 
 #: ../src/qtui/ui/topicwidget.ui:32
 msgctxt "TopicWidget|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/ui/topicwidget.ui:79
 msgctxt "TopicWidget|"
 msgid "..."
-msgstr "…"
+msgstr ""
 
 #: ../src/qtui/topicwidget.cpp:106
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
-msgstr "Felhasználók: %1"
+msgstr ""
 
 #: ../src/qtui/topicwidget.cpp:107
 #, qt-format
@@ -5649,12 +5653,12 @@ msgstr ""
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Form"
-msgstr "Űrlap"
+msgstr ""
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Custom font:"
-msgstr "Egyéni:"
+msgstr ""
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:50
 msgctxt "TopicWidgetSettingsPage|"
@@ -5669,7 +5673,7 @@ msgstr ""
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Interface"
-msgstr "Felület"
+msgstr ""
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
 msgctxt "TopicWidgetSettingsPage|"
@@ -5788,58 +5792,64 @@ msgstr ""
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
-msgstr "[%1]"
+msgstr ""
 
 #: ../src/uisupport/uistyle.cpp:703
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
-msgstr "<%1>"
+msgstr ""
 
 #: ../src/client/networkmodel.cpp:697
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
-msgstr[0] "%n tulajdonos"
-msgstr[1] "%n tulajdonos"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/client/networkmodel.cpp:698
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] "%n adminisztrátor"
-msgstr[1] "%n adminisztrátor"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/client/networkmodel.cpp:699
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] "%n operátor"
-msgstr[1] "%n operátor"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/client/networkmodel.cpp:700
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] "%n fél-operátor"
-msgstr[1] "%n fél-operátor"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/client/networkmodel.cpp:701
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] "%n Írási joggal rendelkező"
-msgstr[1] "%n Írási joggal rendelkezők"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: ../src/client/networkmodel.cpp:702
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] "%n felhasználó"
-msgstr[1] "%n felhasználó"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
