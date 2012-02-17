@@ -85,20 +85,22 @@ public:
     NickDeop = 0x090000,
     NickVoice = 0x0a0000,
     NickDevoice = 0x0b0000,
-    NickKick = 0x0c0000,
-    NickBan = 0x0d0000,
-    NickKickBan = 0x0e0000,
-    NickIgnoreUser = 0x0f0000,
-    NickIgnoreHost = 0x100000,
-    NickIgnoreDomain = 0x200000,
-    NickIgnoreCustom = 0x300000,
-    // The next 5 types have stay together
+    NickHalfop = 0x0c0000,
+    NickDehalfop = 0x0d0000,
+    NickKick = 0x0e0000,
+    NickBan = 0x0f0000,
+    NickKickBan = 0x100000,
+    NickIgnoreUser = 0x200000,
+    NickIgnoreHost = 0x300000,
+    NickIgnoreDomain = 0x400000,
+    NickIgnoreCustom = 0x500000,
+    // The next 5 types have to stay together
     // Don't change without reading ContextMenuActionProvider::addIgnoreMenu!
-    NickIgnoreToggleEnabled0 = 0x400000,
-    NickIgnoreToggleEnabled1 = 0x500000,
-    NickIgnoreToggleEnabled2 = 0x600000,
-    NickIgnoreToggleEnabled3 = 0x700000,
-    NickIgnoreToggleEnabled4 = 0x800000,
+    NickIgnoreToggleEnabled0 = 0x600000,
+    NickIgnoreToggleEnabled1 = 0x700000,
+    NickIgnoreToggleEnabled2 = 0x800000,
+    NickIgnoreToggleEnabled3 = 0x900000,
+    NickIgnoreToggleEnabled4 = 0xa00000,
 
     // Actions that are handled externally
     // These emit a signal to the action requester, rather than being handled here

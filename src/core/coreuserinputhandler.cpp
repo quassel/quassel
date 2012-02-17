@@ -213,6 +213,14 @@ void CoreUserInputHandler::handleDeop(const BufferInfo &bufferInfo, const QStrin
   emit putCmd("MODE", serverEncode(params));
 }
 
+void CoreUserInputHandler::handleDehalfop(const BufferInfo &bufferInfo, const QString &msg) {
+  QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+  QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'h';
+  QStringList params;
+  params << bufferInfo.bufferName() << m << nicks;
+  emit putCmd("MODE", serverEncode(params));
+}
+
 void CoreUserInputHandler::handleDevoice(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'v';
@@ -368,6 +376,14 @@ void CoreUserInputHandler::handleNotice(const BufferInfo &bufferInfo, const QStr
   params << serverEncode(bufferName) << channelEncode(bufferInfo.bufferName(), payload);
   emit putCmd("NOTICE", params);
   emit displayMsg(Message::Notice, bufferName, payload, network()->myNick(), Message::Self);
+}
+
+void CoreUserInputHandler::handleHalfop(const BufferInfo &bufferInfo, const QString &msg) {
+  QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+  QString m = "+"; for(int i = 0; i < nicks.count(); i++) m += 'h';
+  QStringList params;
+  params << bufferInfo.bufferName() << m << nicks;
+  emit putCmd("MODE", serverEncode(params));
 }
 
 void CoreUserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg) {

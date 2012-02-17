@@ -402,6 +402,12 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action) 
       case NickDeop:
         Client::userInput(bufferInfo, QString("/DEOP %1").arg(nick));
         break;
+      case NickHalfop:
+        Client::userInput(bufferInfo, QString("/HALFOP %1").arg(nick));
+        break;
+      case NickDehalfop:
+        Client::userInput(bufferInfo, QString("/DEHALFOP %1").arg(nick));
+        break;
       case NickVoice:
         Client::userInput(bufferInfo, QString("/VOICE %1").arg(nick));
         break;

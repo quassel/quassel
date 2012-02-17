@@ -43,6 +43,7 @@ public slots:
   void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
   void handleDelkey(const BufferInfo &bufferInfo, const QString &text);
   void handleDeop(const BufferInfo &bufferInfo, const QString &text);
+  void handleDehalfop(const BufferInfo &bufferInfo, const QString &text);
   void handleDevoice(const BufferInfo &bufferInfo, const QString &text);
   void handleInvite(const BufferInfo &bufferInfo, const QString &text);
   void handleJoin(const BufferInfo &bufferInfo, const QString &text);
@@ -56,6 +57,7 @@ public slots:
   void handleNotice(const BufferInfo &bufferInfo, const QString &text);
   void handleOper(const BufferInfo &bufferInfo, const QString &text);
   void handleOp(const BufferInfo &bufferInfo, const QString &text);
+  void handleHalfop(const BufferInfo &bufferInfo, const QString &text);
   void handlePart(const BufferInfo &bufferInfo, const QString &text);
   void handlePing(const BufferInfo &bufferInfo, const QString &text);
   void handleQuery(const BufferInfo &bufferInfo, const QString &text);

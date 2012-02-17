@@ -77,6 +77,8 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
 
   registerAction(NickOp, SmallIcon("irc-operator"), tr("Give Operator Status"));
   registerAction(NickDeop, SmallIcon("irc-remove-operator"), tr("Take Operator Status"));
+  registerAction(NickHalfop, SmallIcon("irc-voice"), tr("Give Half-Operator Status"));
+  registerAction(NickDehalfop, SmallIcon("irc-unvoice"), tr("Take Half-Operator Status"));
   registerAction(NickVoice, SmallIcon("irc-voice"), tr("Give Voice"));
   registerAction(NickDevoice, SmallIcon("irc-unvoice"), tr("Take Voice"));
   registerAction(NickKick, SmallIcon("im-kick-user"), tr("Kick From Channel"));
@@ -113,6 +115,9 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   QMenu *nickModeMenu = new QMenu();
   nickModeMenu->addAction(action(NickOp));
   nickModeMenu->addAction(action(NickDeop));
+  // this is where the halfops will be placed if available
+  nickModeMenu->addAction(action(NickHalfop));
+  nickModeMenu->addAction(action(NickDehalfop));
   nickModeMenu->addAction(action(NickVoice));
   nickModeMenu->addAction(action(NickDevoice));
   nickModeMenu->addSeparator();
@@ -318,6 +323,16 @@ void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex
 
     IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
     if(ircUser) {
+      Network *network = ircUser->network();
+      // only show entries for usermode +h if server supports it
+      if(network && network->prefixModes().contains('h')) {
+        action(NickHalfop)->setVisible(true);
+        action(NickDehalfop)->setVisible(true);
+      }
+      else {
+        action(NickHalfop)->setVisible(false);
+        action(NickDehalfop)->setVisible(false);
+      }
       // ignoreliststuff
       QString bufferName;
       BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
