@@ -304,7 +304,7 @@ void MainWin::updateIcon() {
   if(Client::isConnected())
     icon = DesktopIcon("quassel", size);
   else
-    icon = DesktopIcon("quassel_inactive", size);
+    icon = DesktopIcon("quassel-inactive", size);
   setWindowIcon(icon);
   qApp->setWindowIcon(icon);
 }
