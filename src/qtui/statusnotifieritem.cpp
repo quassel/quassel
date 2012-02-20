@@ -222,14 +222,14 @@ QString StatusNotifierItem::title() const {
 
 QString StatusNotifierItem::iconName() const {
   if(state() == Passive)
-    return QString("quassel_inactive");
+    return QString("quassel-inactive");
   else
     return QString("quassel");
 }
 
 QString StatusNotifierItem::attentionIconName() const {
   if(animationEnabled())
-    return QString("quassel_message");
+    return QString("quassel-message");
   else
     return QString("quassel");
 }
