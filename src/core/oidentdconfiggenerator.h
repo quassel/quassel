@@ -29,10 +29,10 @@
 #include <QMutex>
 #include <QByteArray>
 
-#ifndef Q_OS_WIN32
+#ifdef HAVE_UMASK
 #  include <sys/types.h>
 #  include <sys/stat.h>
-#endif /* Q_OS_WIN32 */
+#endif /* HAVE_UMASK */
 
 #include "quassel.h"
 #include "coreidentity.h"

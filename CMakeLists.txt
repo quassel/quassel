@@ -398,6 +398,11 @@ if(HAVE_INDICATEQT)
   add_definitions(-DXDG_APPS_INSTALL_DIR=${XDG_APPS_INSTALL_DIR})
 endif(HAVE_INDICATEQT)
 
+CHECK_FUNCTION_EXISTS(umask HAVE_UMASK)
+if(HAVE_UMASK)
+  add_definitions(-DHAVE_UMASK)
+endif(HAVE_UMASK)
+
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
 add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)

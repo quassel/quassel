@@ -103,9 +103,13 @@ bool OidentdConfigGenerator::parseConfig(bool readQuasselStanzas) {
 }
 
 bool OidentdConfigGenerator::writeConfig() {
+#ifdef HAVE_UMASK
   mode_t prev_umask = umask(S_IXUSR | S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH); // == 0133, rw-r--r--
+#endif
   bool not_open = (!_configFile->isOpen() && !_configFile->open(QIODevice::ReadWrite | QIODevice::Text));
+#ifdef HAVE_UMASK
   umask(prev_umask);
+#endif
 
   if (not_open)
     return false;
