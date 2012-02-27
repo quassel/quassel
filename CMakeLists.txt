@@ -23,6 +23,7 @@
 
 project(QuasselIRC)
 
+include(CheckFunctionExists)
 include(CheckIncludeFile)
 
 # cmake 2.6.2 is required for KDE >=4.2 and should be widespread enough now
@@ -398,7 +399,7 @@ if(HAVE_INDICATEQT)
   add_definitions(-DXDG_APPS_INSTALL_DIR=${XDG_APPS_INSTALL_DIR})
 endif(HAVE_INDICATEQT)
 
-CHECK_FUNCTION_EXISTS(umask HAVE_UMASK)
+check_function_exists(umask HAVE_UMASK)
 if(HAVE_UMASK)
   add_definitions(-DHAVE_UMASK)
 endif(HAVE_UMASK)
