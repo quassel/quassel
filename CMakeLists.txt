@@ -399,10 +399,12 @@ if(HAVE_INDICATEQT)
   add_definitions(-DXDG_APPS_INSTALL_DIR=${XDG_APPS_INSTALL_DIR})
 endif(HAVE_INDICATEQT)
 
-check_function_exists(umask HAVE_UMASK)
-if(HAVE_UMASK)
-  add_definitions(-DHAVE_UMASK)
-endif(HAVE_UMASK)
+if(NOT WIN32)
+  check_function_exists(umask HAVE_UMASK)
+  if(HAVE_UMASK)
+    add_definitions(-DHAVE_UMASK)
+  endif(HAVE_UMASK)
+endif(NOT WIN32)
 
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
