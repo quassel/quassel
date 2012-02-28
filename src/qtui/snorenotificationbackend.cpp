@@ -80,7 +80,7 @@ void SnoreNotificationBackend::timeoutChanged(const QVariant &v){
 void SnoreNotificationBackend::notify(const Notification &n){
     QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
     QString message = QString("<%1> %2").arg(n.sender, n.message);
-    Snore::Notification noti("Quassel",tr("Private Message"),title,message,m_icon);
+    Snore::Notification noti("Quassel",tr("Private Message"),title,message,m_icon,m_timeout);
     noti.addAction(m_action);
     m_snore->broadcastNotification(noti);
     m_notifications.insert(noti.id(),noti);
