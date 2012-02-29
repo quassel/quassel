@@ -27,6 +27,8 @@
 #include "client.h"
 #include "iconloader.h"
 #include "networkmodel.h"
+#include "systraynotificationbackend.h"
+#include "qtui.h"
 
 #include <iostream>
 
@@ -36,10 +38,12 @@
 
 
 SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
-    :AbstractNotificationBackend(parent)
+    :AbstractNotificationBackend(parent),
+      m_systrayBackend(NULL)
 {
     NotificationSettings notificationSettings;
     QString backend = notificationSettings.value("Snore/Backend", "SystemTray").toString();
+    m_timeout = notificationSettings.value("Snore/Timeout",10).toInt();
 
     notificationSettings.notify("Snore/Backend", this, SLOT(backendChanged(const QVariant &)));
     notificationSettings.notify("Snore/Backend", this, SLOT(timeoutChanged(const QVariant &)));
@@ -70,7 +74,20 @@ SnoreNotificationBackend::~SnoreNotificationBackend(){
 }
 
 void SnoreNotificationBackend::backendChanged(const QVariant &v){
-    m_snore->setPrimaryNotificationBackend(v.toString());
+    QString backend = v.toString();
+    if(backend == "SystemTray"){
+        if(m_systrayBackend == NULL){
+            m_systrayBackend = new SystrayNotificationBackend(this);
+            QtUi::registerNotificationBackend(m_systrayBackend);
+        }
+    }else{
+        if(m_systrayBackend != NULL){
+            QtUi::unregisterNotificationBackend(m_systrayBackend);
+            delete m_systrayBackend;
+            m_systrayBackend = NULL;
+        }
+        m_snore->setPrimaryNotificationBackend(backend);
+    }
 }
 
 void SnoreNotificationBackend::timeoutChanged(const QVariant &v){
@@ -78,6 +95,8 @@ void SnoreNotificationBackend::timeoutChanged(const QVariant &v){
 }
 
 void SnoreNotificationBackend::notify(const Notification &n){
+    if(m_systrayBackend != NULL)
+        return;
     QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
     QString message = QString("<%1> %2").arg(n.sender, n.message);
     Snore::Notification noti("Quassel",tr("Private Message"),title,message,m_icon,m_timeout);
@@ -88,12 +107,14 @@ void SnoreNotificationBackend::notify(const Notification &n){
 }
 
 void SnoreNotificationBackend::close(uint notificationId){
+    if(m_systrayBackend != NULL)
+        return;
     Snore::Notification n = m_notifications.take(m_notificationIds.take(notificationId));
     m_snore->closeNotification(n,Snore::NotificationEnums::CloseReasons::CLOSED);
 }
 
 void SnoreNotificationBackend::actionInvoked(Snore::Notification n){
-            emit activated(m_notificationIds.key(n.id()));
+    emit activated(m_notificationIds.key(n.id()));
 }
 
 SettingsPage *SnoreNotificationBackend::createConfigWidget()const{
@@ -111,14 +132,12 @@ SnoreNotificationBackend::ConfigWidget::ConfigWidget(Snore::SnoreCore *snore,QWi
     ui.backends->insertItems(0,m_snore->notificationBackends());
 
     connect(ui.backends, SIGNAL(currentIndexChanged(QString)), SLOT(backendChanged(QString)));
-    connect(ui.timeout,SIGNAL(valueChanged( const QString & text)),this,SLOT());
+    connect(ui.timeout,SIGNAL(valueChanged(int)),this,SLOT(timeoutChanged(int)));
 }
 
 void SnoreNotificationBackend::ConfigWidget::backendChanged(const QString &b){
-    if(b != m_snore->primaryNotificationBackend()){
         ui.backends->setCurrentIndex(ui.backends->findText(b));
         setChangedState(true);
-    }
 }
 
 void SnoreNotificationBackend::ConfigWidget::timeoutChanged(int i){
@@ -139,7 +158,7 @@ void SnoreNotificationBackend::ConfigWidget::defaults() {
 void SnoreNotificationBackend::ConfigWidget::load() {
     NotificationSettings s;
     QString backend = s.value("Snore/Backend", "SystemTray").toString();
-    int timeout = s.value("Snore/Timeout","10").toInt();
+    int timeout = s.value("Snore/Timeout",10).toInt();
     ui.backends->setCurrentIndex(ui.backends->findText(backend));
     ui.timeout->setValue(timeout);
     setChangedState(false);

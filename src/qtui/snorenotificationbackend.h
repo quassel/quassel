@@ -31,6 +31,7 @@ namespace Snore{
 class SnoreCore;
 class SnoreIcon;
 }
+class SystrayNotificationBackend;
 
 #include <snore/core/notification/notification.h>
 
@@ -56,6 +57,7 @@ private slots:
 
 private:
     class ConfigWidget;
+    SystrayNotificationBackend * m_systrayBackend;
     Snore::SnoreCore *m_snore;
     Snore::Notification::Action *m_action;
     QHash<uint,Snore::Notification> m_notifications;
