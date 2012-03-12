@@ -440,7 +440,12 @@ void EventStringifier::processIrcEvent330(IrcEvent *e) {
   if(e->params().count() < 3)
     return;
 
-  displayMsg(e, Message::Server, tr("[Whois] %1 is authed as %2").arg(e->params()[0], e->params()[1]));
+  // check for whois or whowas
+  if (_whois) {
+    displayMsg(e, Message::Server, tr("[Whois] %1 is authed as %2").arg(e->params()[0], e->params()[1]));
+  } else {
+    displayMsg(e, Message::Server, tr("[Whowas] %1 was authed as %2").arg(e->params()[0], e->params()[1]));
+  }
 }
 
 /* RPL_NOTOPIC */
