@@ -44,27 +44,31 @@ EventManager::EventManager(QObject *parent)
   : QObject(parent) {
 }
 
-QMetaEnum EventManager::eventEnum() const {
+QMetaEnum EventManager::eventEnum() {
   if(!_enum.isValid()) {
-    int eventEnumIndex = metaObject()->indexOfEnumerator("EventType");
+    int eventEnumIndex = staticMetaObject.indexOfEnumerator("EventType");
     Q_ASSERT(eventEnumIndex >= 0);
-    _enum = metaObject()->enumerator(eventEnumIndex);
+    _enum = staticMetaObject.enumerator(eventEnumIndex);
     Q_ASSERT(_enum.isValid());
   }
   return _enum;
 }
 
-EventManager::EventType EventManager::eventTypeByName(const QString &name) const {
+EventManager::EventType EventManager::eventTypeByName(const QString &name) {
   int val = eventEnum().keyToValue(name.toLatin1());
   return (val == -1) ? Invalid : static_cast<EventType>(val);
 }
 
-EventManager::EventType EventManager::eventGroupByName(const QString &name) const {
+EventManager::EventType EventManager::eventGroupByName(const QString &name) {
   EventType type = eventTypeByName(name);
   return type == Invalid? Invalid : static_cast<EventType>(type & EventGroupMask);
 }
 
-QString EventManager::enumName(EventType type) const {
+QString EventManager::enumName(EventType type) {
+  return eventEnum().valueToKey(type);
+}
+
+QString EventManager::enumName(int type) {
   return eventEnum().valueToKey(type);
 }
 
@@ -295,3 +299,5 @@ void EventManager::insertFilters(const QList<Handler> &newFilters, QHash<QObject
       existing[filter.object] = filter;
   }
 }
+
+QMetaEnum EventManager::_enum;

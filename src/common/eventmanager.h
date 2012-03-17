@@ -112,10 +112,10 @@ public:
 
   EventManager(QObject *parent = 0);
 
-  EventType eventTypeByName(const QString &name) const;
-  EventType eventGroupByName(const QString &name) const;
-
-  QString enumName(EventType type) const;
+  static EventType eventTypeByName(const QString &name);
+  static EventType eventGroupByName(const QString &name);
+  static QString enumName(EventType type);
+  static QString enumName(int type); // for sanity tests
 
 public slots:
   void registerObject(QObject *object, Priority priority = NormalPriority,
@@ -171,12 +171,12 @@ private:
   void dispatchEvent(Event *event);
 
   //! @return the EventType enum
-  QMetaEnum eventEnum() const;
+  static QMetaEnum eventEnum();
 
   HandlerHash _registeredHandlers;
   HandlerHash _registeredFilters;
-  mutable QMetaEnum _enum;
   QList<Event *> _eventQueue;
+  static QMetaEnum _enum;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(EventManager::EventFlags);
