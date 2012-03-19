@@ -92,13 +92,14 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
     displayMsg(e, Message::Error, e->params().join(" "), e->prefix());
     break;
 
-  // Server error messages, display them in red. First param will be appended.
+  // Server error messages, display them in red. Colon between first param and rest.
   case 401: {
     if(!checkParamCount(e, 1))
       return;
 
-    QString target = e->params().takeFirst();
-    displayMsg(e, Message::Error, e->params().join(" ") + " " + target, e->prefix(), target, Message::Redirected);
+    QStringList params = e->params();
+    QString target = params.takeFirst();
+    displayMsg(e, Message::Error, target + ": " + params.join(" "), e->prefix(), target, Message::Redirected);
     break;
   }
 
@@ -106,8 +107,9 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
     if(!checkParamCount(e, 1))
       return;
 
-    QString channelName = e->params().takeFirst();
-    displayMsg(e, Message::Error, e->params().join(" ") + " " + channelName, e->prefix());
+    QStringList params = e->params();
+    QString channelName = params.takeFirst();
+    displayMsg(e, Message::Error, channelName + ": " + params.join(" "), e->prefix());
     break;
   }
 
@@ -119,8 +121,9 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e) {
     if(!checkParamCount(e, 1))
       return;
 
-    QString p = e->params().takeFirst();
-    displayMsg(e, Message::Error, p + ": " + e->params().join(" "));
+    QStringList params = e->params();
+    QString p = params.takeFirst();
+    displayMsg(e, Message::Error, p + ": " + params.join(" "));
     break;
   }
 
