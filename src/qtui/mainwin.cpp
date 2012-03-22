@@ -1271,29 +1271,39 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
     BufferId bufId = idx.data(ChatLineModel::BufferIdRole).value<BufferId>();
     BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
 
+    // check if bufferId belongs to the shown chatlists
+    if(!(Client::bufferViewOverlay()->bufferIds().contains(bufId) ||
+         Client::bufferViewOverlay()->tempRemovedBufferIds().contains(bufId)))
+      continue;
+
+    // check if it's the buffer currently displayed
     if(hasFocus && bufId == Client::bufferModel()->currentBuffer())
       continue;
 
-    if((flags & Message::Highlight || bufType == BufferInfo::QueryBuffer)
-      && !(Client::ignoreListManager() && Client::ignoreListManager()->match(idx.data(MessageModel::MessageRole).value<Message>(),
-                                                                             Client::networkModel()->networkName(bufId))))
-    {
-      QModelIndex senderIdx = Client::messageModel()->index(i, ChatLineModel::SenderColumn);
-      QString sender = senderIdx.data(ChatLineModel::EditRole).toString();
-      QString contents = idx.data(ChatLineModel::DisplayRole).toString();
-      AbstractNotificationBackend::NotificationType type;
+    // only show notifications for higlights or queries
+    if(bufType != BufferInfo::QueryBuffer && !(flags & Message::Highlight))
+      continue;
 
-      if(bufType == BufferInfo::QueryBuffer && !hasFocus)
-        type = AbstractNotificationBackend::PrivMsg;
-      else if(bufType == BufferInfo::QueryBuffer && hasFocus)
-        type = AbstractNotificationBackend::PrivMsgFocused;
-      else if(flags & Message::Highlight && !hasFocus)
-        type = AbstractNotificationBackend::Highlight;
-      else
-        type = AbstractNotificationBackend::HighlightFocused;
+    // and of course: don't notify for ignored messages
+    if(Client::ignoreListManager() && Client::ignoreListManager()->match(idx.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufId)))
+      continue;
 
-      QtUi::instance()->invokeNotification(bufId, type, sender, contents);
-    }
+    // seems like we have a legit notification candidate!
+    QModelIndex senderIdx = Client::messageModel()->index(i, ChatLineModel::SenderColumn);
+    QString sender = senderIdx.data(ChatLineModel::EditRole).toString();
+    QString contents = idx.data(ChatLineModel::DisplayRole).toString();
+    AbstractNotificationBackend::NotificationType type;
+
+    if(bufType == BufferInfo::QueryBuffer && !hasFocus)
+      type = AbstractNotificationBackend::PrivMsg;
+    else if(bufType == BufferInfo::QueryBuffer && hasFocus)
+      type = AbstractNotificationBackend::PrivMsgFocused;
+    else if(flags & Message::Highlight && !hasFocus)
+      type = AbstractNotificationBackend::Highlight;
+    else
+      type = AbstractNotificationBackend::HighlightFocused;
+
+    QtUi::instance()->invokeNotification(bufId, type, sender, contents);
   }
 }
 
