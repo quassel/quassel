@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tx pull $* &&
+tx pull $* > /dev/null &&
 git add po/*.po && (
   translators=$(while read mode pofile; do
     translator=$(git diff --cached -- ${pofile} | perl -le '
