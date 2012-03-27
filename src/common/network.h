@@ -47,7 +47,7 @@ struct NetworkInfo;
 class Network : public SyncableObject {
   SYNCABLE_OBJECT
   Q_OBJECT
-  Q_ENUMS(ConnectionState Network::ConnectionState)
+  Q_ENUMS(ConnectionState)
 
   Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName STORED false)
   Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer STORED false)
