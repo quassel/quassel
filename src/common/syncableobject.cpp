@@ -105,15 +105,14 @@ QVariantMap SyncableObject::toVariantMap() {
       qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.signature() << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
       continue;
     }
-    QVariant value = QVariant(variantType);
-    QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), &value);
+
+    QVariant value(variantType, (const void *) 0);
+    QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
     QMetaObject::invokeMethod(this, methodname.toAscii(), genericvalue);
 
     properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
   }
-  // properties["Payload"] = QByteArray(10000000, 'a');  // for testing purposes
   return properties;
-
 }
 
 void SyncableObject::fromVariantMap(const QVariantMap &properties) {
