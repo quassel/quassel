@@ -1,13 +1,16 @@
 # Builds the client module
 
-# We still have some minor deps to QtUi: QItemSelectionModel
-# set(QT_DONT_USE_QTGUI 1)
-set(QT_USE_QTNETWORK 1)
-set(QT_USE_QTDBUS 1)
-include(${QT_USE_FILE})
+# In Qt4, we still have some minor deps to QtUi: QItemSelectionModel, QSortFilterProxyModel
+# Still in Qt5: QAbstractItemView in BufferModel
+if(NOT WITH_QT5)
+  setup_qt_variables(Gui Network DBus)
+else(NOT WITH_QT5)
+  setup_qt_variables(Widgets Network DBus)
+endif(NOT WITH_QT5)
 
 set(SOURCES
     abstractmessageprocessor.cpp
+    abstractui.cpp
     backlogrequester.cpp
     buffermodel.cpp
     buffersettings.cpp
@@ -17,6 +20,7 @@ set(SOURCES
     clientbacklogmanager.cpp
     clientbufferviewconfig.cpp
     clientbufferviewmanager.cpp
+    clientcoreinfo.cpp
     clientidentity.cpp
     clientignorelistmanager.cpp
     clientirclisthelper.cpp
@@ -66,9 +70,13 @@ set(HEADERS
     coreaccount.h
    )
 
-qt4_wrap_cpp(MOC ${MOC_HDRS})
+include_directories(${CMAKE_SOURCE_DIR}/src/common ${QUASSEL_QT_INCLUDES})
 
-include_directories(${CMAKE_SOURCE_DIR}/src/common)
+if(NOT WITH_QT5)
+  qt4_wrap_cpp(MOC ${MOC_HDRS})
+endif(NOT WITH_QT5)
 
 add_library(mod_client STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_client mod_common)
+
+set_target_properties(mod_client PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")

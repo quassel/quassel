@@ -1,7 +1,6 @@
 # Builds the common module
-set(QT_DONT_USE_QTGUI 1)
-set(QT_USE_QTNETWORK 1)
-include(${QT_USE_FILE})
+
+setup_qt_variables(Core Network)
 
 set(SOURCES
     aliasmanager.cpp
@@ -12,6 +11,7 @@ set(SOURCES
     bufferviewconfig.cpp
     bufferviewmanager.cpp
     cliparser.cpp
+    coreinfo.cpp
     ctcpevent.cpp
     event.cpp
     eventmanager.cpp
@@ -79,12 +79,16 @@ if(CMAKE_HOST_UNIX)
     set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
 endif(CMAKE_HOST_UNIX)
 
-qt4_wrap_cpp(MOC ${MOC_HDRS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR} ${QUASSEL_QT_INCLUDES})  # for version.inc and version.gen
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})  # for version.inc and version.gen
+if(NOT WITH_QT5)
+  qt4_wrap_cpp(MOC ${MOC_HDRS})
+endif(NOT WITH_QT5)
+
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES version.gen)
 
 add_library(mod_common STATIC ${SOURCES} ${MOC})
+set_target_properties(mod_common PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")
 
 if(APPLE)
   target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")

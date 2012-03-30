@@ -1,16 +1,15 @@
 # Builds the uisupport module
 
-set(QT_DONT_USE_QTGUI 0)
-set(QT_USE_QTNETWORK 1)
-include(${QT_USE_FILE})
-
-if (QCA2_FOUND)
-  include_directories(${QCA2_INCLUDE_DIR})
-endif (QCA2_FOUND)
+if(WITH_QT5)
+  setup_qt_variables(Widgets Network)
+else(WITH_QT5)
+  setup_qt_variables(Gui Network)
+endif(WITH_QT5)
 
 set(SOURCES
     abstractbuffercontainer.cpp
     abstractitemview.cpp
+    abstractnotificationbackend.cpp
     action.cpp
     actioncollection.cpp
     bufferhotlistfilter.cpp
@@ -83,10 +82,15 @@ if(HAVE_KDE)
     set(HEADERS ${HEADERS} kcmdlinewrapper.h)
 endif(HAVE_KDE)
 
-qt4_wrap_cpp(MOC ${MOC_HDRS})
-
 include_directories(${CMAKE_SOURCE_DIR}/src/common
-                    ${CMAKE_SOURCE_DIR}/src/client)
+                    ${CMAKE_SOURCE_DIR}/src/client
+                    ${QUASSEL_QT_INCLUDES}
+                    ${QCA2_INCLUDE_DIR})
+
+if(NOT WITH_QT5)
+  qt4_wrap_cpp(MOC ${MOC_HDRS})
+endif(NOT WITH_QT5)
 
 add_library(mod_uisupport STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_uisupport mod_common mod_client)
+set_target_properties(mod_uisupport PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")

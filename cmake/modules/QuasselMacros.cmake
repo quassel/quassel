@@ -1,21 +1,41 @@
-# This macro sets variables for additional Qt modules.
-# We need this because targets need different Qt4 modules, i.e. different libs
-# and defines. We can't simply include UseQt4 several times, since definitions add up.
-# We workaround this by using our own macro to figure out what to add.
+# This macro sets variables for the Qt modules we need.
 
-macro(setup_qt4_variables)
+macro(setup_qt_variables)
   set(QUASSEL_QT_LIBRARIES )
+  set(QUASSEL_QT_INCLUDES ${QT_INCLUDE_DIR})    # Qt4
+  set(QUASSEL_QT_DEFINITIONS ${QT_DEFINITIONS}) # Qt4
+
   IF(WIN32)
-    set(MAIN MAIN)
+    set(MAIN Main)
   ENDIF(WIN32)
-  foreach(qtmod CORE ${ARGV} ${MAIN})
-    set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_QT${qtmod}_LIBRARY})
-    if(STATIC)
-      set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_${qtmod}_LIB_DEPENDENCIES})
-    endif(STATIC)
-  endforeach(qtmod ${ARGV})
-  set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_LIBRARIES})
-endmacro(setup_qt4_variables)
+  foreach(qtmod Core ${ARGV} ${MAIN})
+    if(WITH_QT5)
+      find_package(Qt5${qtmod} ${QT_MIN_VERSION} REQUIRED)
+      list(APPEND QUASSEL_QT_LIBRARIES ${Qt5${qtmod}_LIBRARIES})
+      list(APPEND QUASSEL_QT_INCLUDES ${Qt5${qtmod}_INCLUDE_DIRS})
+      list(APPEND QUASSEL_QT_DEFINITIONS ${Qt5${qtmod}_DEFINITIONS} ${Qt5${qtmod}_EXECUTABLE_COMPILE_FLAGS})
+    else(WITH_QT5)
+      string(TOUPPER ${qtmod} QTMOD)
+      list(APPEND QUASSEL_QT_LIBRARIES ${QT_QT${QTMOD}_LIBRARY})
+      if(STATIC)
+        list(APPEND QUASSEL_QT_LIBRARIES ${QT_QT${QTMOD}_LIB_DEPENDENCIES})
+      endif(STATIC)
+      list(APPEND QUASSEL_QT_INCLUDES ${QT_QT${QTMOD}_INCLUDE_DIR})
+      list(APPEND QUASSEL_QT_DEFINITIONS -DQT_QT${QTMOD}_LIB)
+    endif(WITH_QT5)
+  endforeach(qtmod)
+
+  list(REMOVE_DUPLICATES QUASSEL_QT_LIBRARIES)
+  list(REMOVE_DUPLICATES QUASSEL_QT_INCLUDES)
+  list(REMOVE_DUPLICATES QUASSEL_QT_DEFINITIONS)
+
+  # The COMPILE_FLAGS property expects a string, not a list...
+  set(QUASSEL_QT_COMPILEFLAGS )
+  foreach(flag ${QUASSEL_QT_DEFINITIONS})
+    set(QUASSEL_QT_COMPILEFLAGS "${QUASSEL_QT_COMPILEFLAGS} ${flag}")
+  endforeach(flag)
+
+endmacro(setup_qt_variables)
 
 # This generates a .ts from a .po file
 macro(generate_ts outvar basename)
