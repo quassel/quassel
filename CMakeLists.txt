@@ -199,7 +199,7 @@ else(WITH_QT5)
   endif(QT)
 
   # Now that we have the correct $PATH, lets find Qt!
-  find_package(Qt4 REQUIRED)
+  find_package(Qt4 ${QT_MIN_VERSION} REQUIRED)
 endif(WITH_QT5)
 
 
