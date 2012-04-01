@@ -27,6 +27,7 @@
 #include <QGraphicsScene>
 #include <QSet>
 #include <QTimer>
+#include <QUrl>
 
 #include "chatlinemodel.h"
 #include "messagefilter.h"

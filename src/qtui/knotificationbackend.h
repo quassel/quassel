@@ -21,6 +21,8 @@
 #ifndef KNOTIFICATIONBACKEND_H_
 #define KNOTIFICATIONBACKEND_H_
 
+#include <QPointer>
+
 #include "abstractnotificationbackend.h"
 #include "settingspage.h"
 #include "systemtray.h"

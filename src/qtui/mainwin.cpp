@@ -19,6 +19,11 @@
  ***************************************************************************/
 #include "mainwin.h"
 
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QStatusBar>
+#include <QToolBar>
+
 #ifdef HAVE_KDE
 #  include <KAction>
 #  include <KActionCollection>

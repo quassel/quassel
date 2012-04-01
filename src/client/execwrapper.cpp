@@ -19,6 +19,7 @@
 ***************************************************************************/
 
 #include <QFile>
+#include <QTextCodec>
 
 #include "execwrapper.h"
 

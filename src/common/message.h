@@ -21,7 +21,7 @@
 #ifndef MESSAGE_H_
 #define MESSAGE_H_
 
-#include <QString>
+#include <QCoreApplication>
 #include <QDateTime>
 
 #include "bufferinfo.h"
