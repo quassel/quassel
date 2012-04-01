@@ -187,6 +187,10 @@ if(WITH_QT5)
   find_package(Qt5Core ${QT_MIN_VERSION} REQUIRED)
   # We need QtWidgets
   set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} Widgets)
+
+  # Setup the i18n-related variables
+  find_package(Qt5LinguistTools)
+
 else(WITH_QT5)
   # Select a Qt installation here, if you don't want to use system Qt
   if(QT)
@@ -197,6 +201,18 @@ else(WITH_QT5)
   # Now that we have the correct $PATH, lets find Qt!
   find_package(Qt4 REQUIRED)
 endif(WITH_QT5)
+
+
+# Neither Qt4 nor Qt5 consider lconvert relevant, so they don't support finding it...
+# Rather than shipping hacked buildsys files, let's just infer the path from lrelease
+if(QT_LRELEASE_EXECUTABLE)
+  get_filename_component(_lrelease_path ${QT_LRELEASE_EXECUTABLE} PATH)
+  if(WITH_QT5)
+    find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+  else(WITH_QT5)
+    find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt4 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+  endif(WITH_QT5)
+endif(QT_LRELEASE_EXECUTABLE)
 
 
 # Execinfo is needed for generating backtraces
@@ -465,7 +481,6 @@ if(NOT WIN32)
     add_definitions(-DHAVE_UMASK)
   endif(HAVE_UMASK)
 endif(NOT WIN32)
-
 
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
