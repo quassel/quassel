@@ -56,12 +56,12 @@ else (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
   ENDIF (QCA2_LIBRARIES_DEBUG AND QCA2_LIBRARIES_RELEASE)
 
 
-  find_path(QCA2_INCLUDE_DIR qca.h
+  find_path(QCA2_INCLUDE_DIR QtCrypto
             HINTS ${PC_QCA2_INCLUDEDIR} ${PC_QCA2_INCLUDE_DIRS}
             PATH_SUFFIXES QtCrypto)
 
   include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(QCA2 QCA2_LIBRARIES QCA2_INCLUDE_DIR)
+  find_package_handle_standard_args(QCA2  DEFAULT_MSG  QCA2_LIBRARIES QCA2_INCLUDE_DIR)
 
   mark_as_advanced(QCA2_INCLUDE_DIR QCA2_LIBRARIES)
 
