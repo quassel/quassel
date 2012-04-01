@@ -21,7 +21,8 @@
 #ifndef SETTINGSDLG_H
 #define SETTINGSDLG_H
 
-#include <QtGui>
+#include <QDialog>
+
 #include "ui_settingsdlg.h"
 
 #include "settingspage.h"

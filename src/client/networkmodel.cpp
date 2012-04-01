@@ -21,6 +21,7 @@
 #include "networkmodel.h"
 
 #include <QAbstractItemView>
+#include <QMimeData>
 #include <QTextDocument> 	// for Qt::escape()
 
 #include "buffermodel.h"

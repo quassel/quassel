@@ -20,6 +20,7 @@
 
 #include "verticaldock.h"
 
+#include <qdrawutil.h>
 #include <QLayout>
 #include <QPainter>
 

@@ -20,7 +20,6 @@
 #ifndef BUFFERINFO_H
 #define BUFFERINFO_H
 
-#include <QtCore>
 #include "types.h"
 
 class QString;

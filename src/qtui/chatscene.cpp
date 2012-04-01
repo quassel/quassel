@@ -24,6 +24,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMimeData>
 #include <QPersistentModelIndex>
 
 #ifdef HAVE_KDE

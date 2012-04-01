@@ -32,7 +32,6 @@
 
 class QGraphicsItem;
 class ChatLine;
-class ChatScene;
 class SearchHighlightItem;
 
 class ChatViewSearchController : public QObject {

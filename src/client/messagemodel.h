@@ -23,6 +23,7 @@
 
 #include <QAbstractItemModel>
 #include <QDateTime>
+#include <QTimer>
 
 #include "message.h"
 #include "types.h"

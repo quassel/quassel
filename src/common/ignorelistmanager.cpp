@@ -20,6 +20,7 @@
 
 #include "ignorelistmanager.h"
 
+#include <QtCore>
 #include <QDebug>
 #include <QStringList>
 #include <QRegExp>
