@@ -1,0 +1,36 @@
+Qt5 Support in Quassel IRC
+==========================
+
+As the Qt5 alpha release is around the corner, I've started to play around with it
+mostly to see how much effort the porting of Quassel would be. It turns out that there
+was no porting effort at all; after adding support for it in the build system
+(which led me to clean up a lot of the Qt4-related mess that has been in there forever),
+fixing some bugs that were hidden before, and cleaning up some #includes, all of the code
+seems to just compile and mostly work. In particular, none of our black voodoo and QMeta
+abuse broke with Qt5. Additionally, you can freely combine both Qt4 and Qt5 clients and cores.
+Well done, Qt Team!
+
+To enable building against Qt5, pass -DWITH_QT5=1 to cmake. Note that Qt5 (the bindir) needs
+to be in your current $PATH unless you have installed Qt5 into one of the usual system locations.
+
+At this time there are a few known issues:
+
+* Some of our optional dependencies don't exist in Qt5 versions and thus need to be disabled
+  (most of them are forcibly disabled in the build system). This includes QCA (QtCrypto) support,
+  DBusMenu, libindicate, and unfortunately also KDE. As new versions of those show up, we'll
+  enable them again.
+
+* The Quassel UI looks rather fugly with Qt5, at least on my box, as there are no style plugins, no
+  themes, no desktop integration. Well, enough for a proof of concept, I guess.
+
+* The CMake files for Phonon shipped with Qt5 are buggy, so linking fails. No Phonon support at
+  this time.
+
+* SSL does not seem to work in the server currently. You might have to pass -DWITH_OPENSSL=0 to cmake
+  to make it work at all (try this if you don't get a connection from your client).
+
+So, feel free to play around, let me know about issues, but be aware that this is not in any way
+tested or supported at this time.
+
+Cheers,
+~ Sputnick
