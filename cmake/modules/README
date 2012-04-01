@@ -1,8 +1,5 @@
 Most of these modules have been copied from KDE's repository.
 
-FindQt4 has been adjusted to find lconvert, plus we don't require X11
-headers to be present.
-
 Files starting with Quassel* are solely created by us.
 
 Below is the contents of KDE's original README:
