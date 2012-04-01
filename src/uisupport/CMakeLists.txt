@@ -84,8 +84,11 @@ endif(HAVE_KDE)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client
-                    ${QUASSEL_QT_INCLUDES}
-                    ${QCA2_INCLUDE_DIR})
+                    ${QUASSEL_QT_INCLUDES})
+
+if(HAVE_QCA2)
+  include_directories(${QCA2_INCLUDE_DIR})
+endif(HAVE_QCA2)
 
 if(NOT WITH_QT5)
   qt4_wrap_cpp(MOC ${MOC_HDRS})
