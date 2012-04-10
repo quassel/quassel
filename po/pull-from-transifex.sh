@@ -1,7 +1,10 @@
 #!/bin/bash
 
-tx pull $* > /dev/null &&
-git add po/*.po && (
+tx pull -a $* > /dev/null &&
+for po in po/*.po; do
+  basename "${po%.po}"
+done | sort > po/LINGUAS &&
+git add po/*.po po/LINGUAS && (
   translators=$(while read mode pofile; do
     translator=$(git diff --cached -- ${pofile} | perl -le '
       while (<>) {
@@ -21,5 +24,5 @@ git add po/*.po && (
   git commit -em "Update translations from Transifex
 
 Many thanks to:
-${translators}" po/*.po
+${translators}"
 )
