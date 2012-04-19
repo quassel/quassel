@@ -25,6 +25,16 @@
      </item>
      <item>
       <widget class="QLineEdit" name="timestampFormat">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usage examples:&lt;/p&gt;
+&lt;table cellpadding=&quot;2&quot;&gt;
+&lt;tr&gt;&lt;td&gt;dd.MM.yyyy&lt;/td&gt;&lt;td&gt;21.05.2001&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;ddd MMMM d yy&lt;/td&gt;&lt;td&gt;Tue May 21 01&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;hh:mm:ss.zzz&lt;/td&gt;&lt;td&gt;14:13:09.042&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;h:m:s ap&lt;/td&gt;&lt;td&gt;2:13:9 pm&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string/>
        </property>
