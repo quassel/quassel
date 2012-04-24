@@ -436,14 +436,31 @@ void CoreUserInputHandler::handleHalfop(const BufferInfo &bufferInfo, const QStr
     emit putCmd("MODE", serverEncode(params));
 }
 
-
-void CoreUserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg)
-{
-    QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
-    QString m = "+"; for (int i = 0; i < nicks.count(); i++) m += 'o';
+void CoreUserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg) {
+  QStringList nicks;
+  if (msg == "*") {
+    const QList<IrcUser*> users = network()->ircChannel(bufferInfo.bufferName())->ircUsers();
+    foreach(IrcUser *user, users) {
+      if (!network()->ircChannel(bufferInfo.bufferName())->userModes(user).contains("o"))
+	nicks.append(user->nick());
+    }
+  } else { 
+    nicks = msg.split(' ', QString::SkipEmptyParts);
+  }
+  if (nicks.count() == 0) return;
+  
+  bool isNumber;
+  int maxModes = network()->support("MODES").toInt(&isNumber);
+  if (!isNumber || maxModes == 0) maxModes = 1;
+  
+  while (!nicks.isEmpty()) {
+    int amount = qMin(nicks.count(), maxModes);
+    QString m = "+"; for(int i = 0; i < amount; i++) m += 'o';
     QStringList params;
-    params << bufferInfo.bufferName() << m << nicks;
+    params << bufferInfo.bufferName() << m;
+    for(int i = 0; i < amount; i++) params << nicks.takeFirst();
     emit putCmd("MODE", serverEncode(params));
+  }
 }
 
 
