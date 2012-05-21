@@ -46,6 +46,7 @@ set(MOC_HDRS
     corebufferviewconfig.h
     corebufferviewmanager.h
     corecoreinfo.h
+    coreeventmanager.h
     coreidentity.h
     coreignorelistmanager.h
     coreircchannel.h

@@ -72,6 +72,13 @@ QString EventManager::enumName(int type) {
   return eventEnum().valueToKey(type);
 }
 
+Event *EventManager::createEvent(const QVariantMap &map) {
+  QVariantMap m = map;
+
+  Network *net = networkById(m.take("network").toInt());
+  return Event::fromVariantMap(m, net);
+}
+
 /* NOTE:
    Registering and calling handlers works fine even if they specify a subclass of Event as their parameter.
    However, this most probably is a result from a reinterpret_cast somewhere deep inside Qt, so there is *no*

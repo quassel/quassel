@@ -18,34 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ctcpevent.h"
+#ifndef COREEVENTMANAGER_H
+#define COREEVENTMANAGER_H
 
-Event *CtcpEvent::create(EventManager::EventType type, QVariantMap &map, Network *network) {
-  if(type == EventManager::CtcpEvent || type == EventManager::CtcpEventFlush)
-    return new CtcpEvent(type, map, network);
+#include "corenetwork.h"
+#include "coresession.h"
+#include "eventmanager.h"
 
-  return 0;
-}
+class CoreSession;
 
-
-CtcpEvent::CtcpEvent(EventManager::EventType type, QVariantMap &map, Network *network)
-  : IrcEvent(type, map, network)
+class CoreEventManager : public EventManager
 {
-  _ctcpType = static_cast<CtcpType>(map.take("ctcpType").toInt());
-  _ctcpCmd = map.take("ctcpCmd").toString();
-  _target = map.take("target").toString();
-  _param = map.take("param").toString();
-  _reply = map.take("repy").toString();
-  _uuid = map.take("uuid").toString();
-}
+  Q_OBJECT
 
+public:
+  CoreEventManager(CoreSession *session)
+    : EventManager(session)
+    , _coreSession(session)
+  { }
 
-void CtcpEvent::toVariantMap(QVariantMap &map) const {
-  IrcEvent::toVariantMap(map);
-  map["ctcpType"] = ctcpType();
-  map["ctcpCmd"] = ctcpCmd();
-  map["target"] = target();
-  map["param"] = param();
-  map["reply"] = reply();
-  map["uuid"] = uuid().toString();
-}
+protected:
+  inline Network *networkById(NetworkId id) const { return _coreSession->network(id); }
+
+private:
+  CoreSession *_coreSession;
+};
+
+#endif

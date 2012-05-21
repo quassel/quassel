@@ -64,7 +64,12 @@ public:
   inline QUuid uuid() const { return _uuid; }
   inline void setUuid(const QUuid &uuid) { _uuid = uuid; }
 
+  static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
+
 protected:
+  explicit CtcpEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "CtcpEvent"; }
   virtual inline void debugInfo(QDebug &dbg) const {
     NetworkEvent::debugInfo(dbg);

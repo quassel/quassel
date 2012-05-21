@@ -40,7 +40,12 @@ public:
   inline QStringList params() const { return _params; }
   inline void setParams(const QStringList &params) { _params = params; }
 
+  static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
+
 protected:
+  explicit IrcEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "IrcEvent"; }
   virtual inline void debugInfo(QDebug &dbg) const {
     NetworkEvent::debugInfo(dbg);
@@ -68,6 +73,9 @@ public:
   inline void setTarget(const QString &target) { _target = target; }
 
 protected:
+  explicit IrcEventNumeric(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "IrcEventNumeric"; }
   virtual inline void debugInfo(QDebug &dbg) const {
     dbg << ", num = " << number();
@@ -81,6 +89,7 @@ private:
   uint _number;
   QString _target;
 
+  friend class IrcEvent;
 };
 
 class IrcEventRawMessage : public IrcEvent {
@@ -101,6 +110,9 @@ public:
   inline void setRawMessage(const QByteArray &rawMessage) { _rawMessage = rawMessage; }
 
 protected:
+  explicit IrcEventRawMessage(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "IrcEventRawMessage"; }
   virtual inline void debugInfo(QDebug &dbg) const {
     NetworkEvent::debugInfo(dbg);
@@ -112,6 +124,8 @@ protected:
 
 private:
   QByteArray _rawMessage;
+
+  friend class IrcEvent;
 };
 
 #endif

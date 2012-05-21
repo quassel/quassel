@@ -23,7 +23,10 @@
 
 #include <QMetaEnum>
 
+#include "types.h"
+
 class Event;
+class Network;
 
 class EventManager : public QObject {
   Q_OBJECT
@@ -53,7 +56,7 @@ public:
     Silent   = 0x40, ///< Don't generate a MessageEvent
     Stopped  = 0x80
   };
-  Q_DECLARE_FLAGS(EventFlags, EventFlag);
+  Q_DECLARE_FLAGS(EventFlags, EventFlag)
 
   /*
 
@@ -107,7 +110,7 @@ public:
     MessageEvent                = 0x00040000, ///< Stringified event suitable for converting to Message
 
     CtcpEvent                   = 0x00050000,
-    CtcpEventFlush,
+    CtcpEventFlush
   };
 
   EventManager(QObject *parent = 0);
@@ -116,6 +119,8 @@ public:
   static EventType eventGroupByName(const QString &name);
   static QString enumName(EventType type);
   static QString enumName(int type); // for sanity tests
+
+  Event *createEvent(const QVariantMap &map);
 
 public slots:
   void registerObject(QObject *object, Priority priority = NormalPriority,
@@ -137,6 +142,7 @@ public slots:
   void postEvent(Event *event);
 
 protected:
+  virtual Network *networkById(NetworkId id) const = 0;
   virtual void customEvent(QEvent *event);
 
 private:

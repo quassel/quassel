@@ -27,6 +27,7 @@
 #include "corebuffersyncer.h"
 #include "corebacklogmanager.h"
 #include "corebufferviewmanager.h"
+#include "coreeventmanager.h"
 #include "coreidentity.h"
 #include "coreignorelistmanager.h"
 #include "coreirclisthelper.h"
@@ -35,7 +36,6 @@
 #include "coresessioneventprocessor.h"
 #include "coreusersettings.h"
 #include "ctcpparser.h"
-#include "eventmanager.h"
 #include "eventstringifier.h"
 #include "ircchannel.h"
 #include "ircparser.h"
@@ -62,7 +62,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _ircListHelper(new CoreIrcListHelper(this)),
     _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
     _coreInfo(this),
-    _eventManager(new EventManager(this)),
+    _eventManager(new CoreEventManager(this)),
     _eventStringifier(new EventStringifier(this)),
     _sessionEventProcessor(new CoreSessionEventProcessor(this)),
     _ctcpParser(new CtcpParser(this)),

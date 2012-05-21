@@ -38,13 +38,20 @@ public:
   inline NetworkId networkId() const { return network()? network()->networkId() : NetworkId(); }
   inline Network *network() const { return _network; }
 
+  static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
+
 protected:
+  explicit NetworkEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "NetworkEvent"; }
   virtual inline void debugInfo(QDebug &dbg) const { dbg.nospace() << ", net = " << qPrintable(_network->networkName()); }
 
 private:
   Network *_network;
 };
+
+/*****************************************************************************/
 
 class NetworkConnectionEvent : public NetworkEvent {
 
@@ -58,6 +65,9 @@ public:
   inline void setConnectionState(Network::ConnectionState state) { _state = state; }
 
 protected:
+  explicit NetworkConnectionEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "NetworkConnectionEvent"; }
   virtual inline void debugInfo(QDebug &dbg) const {
     NetworkEvent::debugInfo(dbg);
@@ -66,6 +76,8 @@ protected:
 
 private:
   Network::ConnectionState _state;
+
+  friend class NetworkEvent;
 };
 
 class NetworkDataEvent : public NetworkEvent {
@@ -80,6 +92,9 @@ public:
   inline void setData(const QByteArray &data) { _data = data; }
 
 protected:
+  explicit NetworkDataEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "NetworkDataEvent"; }
   virtual inline void debugInfo(QDebug &dbg) const {
     NetworkEvent::debugInfo(dbg);
@@ -88,6 +103,8 @@ protected:
 
 private:
   QByteArray _data;
+
+  friend class NetworkEvent;
 };
 
 class NetworkSplitEvent : public NetworkEvent {
@@ -108,10 +125,24 @@ public:
   inline QStringList users() const { return _users; }
   inline QString quitMessage() const { return _quitMsg; }
 
+protected:
+  explicit NetworkSplitEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
+  virtual inline QString className() const { return "NetworkSplitEvent"; }
+  virtual inline void debugInfo(QDebug &dbg) const {
+    NetworkEvent::debugInfo(dbg);
+    dbg.nospace() << ", channel = " << qPrintable(channel())
+                  << ", users = " << users()
+                  << ", quitmsg = " << quitMessage();
+  }
+
 private:
   QString _channel;
   QStringList _users;
   QString _quitMsg;
+
+  friend class NetworkEvent;
 };
 
 

@@ -20,6 +20,13 @@
 
 #include "messageevent.h"
 
+Event *MessageEvent::create(EventManager::EventType type, QVariantMap &map, Network *network) {
+  if(type == EventManager::MessageEvent)
+    return new MessageEvent(type, map, network);
+
+  return 0;
+}
+
 
 MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &msg, const QString &sender, const QString &target,
                            Message::Flags flags, const QDateTime &timestamp)
@@ -46,6 +53,30 @@ MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &m
   else
     setTimestamp(QDateTime::currentDateTime());
 }
+
+
+MessageEvent::MessageEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+  : NetworkEvent(type, map, network)
+{
+  _msgType = static_cast<Message::Type>(map.take("messageType").toInt());
+  _msgFlags = static_cast<Message::Flags>(map.take("messageFlags").toInt());
+  _bufferType = static_cast<BufferInfo::Type>(map.take("bufferType").toInt());
+  _text = map.take("text").toString();
+  _sender = map.take("sender").toString();
+  _target = map.take("target").toString();
+}
+
+
+void MessageEvent::toVariantMap(QVariantMap &map) const {
+  NetworkEvent::toVariantMap(map);
+  map["messageType"] = msgType();
+  map["messageFlags"] = (int)msgFlags();
+  map["bufferType"] = bufferType();
+  map["text"] = text();
+  map["sender"] = sender();
+  map["target"] = target();
+}
+
 
 BufferInfo::Type MessageEvent::bufferTypeByTarget(const QString &target) const {
   if(target.isEmpty())

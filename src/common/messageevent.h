@@ -53,7 +53,12 @@ public:
   inline void setMsgFlag(Message::Flag flag) { _msgFlags |= flag; }
   inline void setMsgFlags(Message::Flags flags) { _msgFlags = flags; }
 
+  static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
+
 protected:
+  explicit MessageEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+  void toVariantMap(QVariantMap &map) const;
+
   virtual inline QString className() const { return "MessageEvent"; }
   virtual inline void debugInfo(QDebug &dbg) const {
     NetworkEvent::debugInfo(dbg);
