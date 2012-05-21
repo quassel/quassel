@@ -60,8 +60,8 @@ set(HEADERS ${MOC_HDRS}
     ctcpevent.h
     event.h
     ircevent.h
-    networkevent.h
     messageevent.h
+    networkevent.h
     logger.h
     message.h
     types.h
@@ -87,7 +87,7 @@ endif(NOT WITH_QT5)
 
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES version.gen)
 
-add_library(mod_common STATIC ${SOURCES} ${MOC})
+add_library(mod_common STATIC ${SOURCES} ${HEADERS} ${MOC})
 set_target_properties(mod_common PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")
 
 if(APPLE)
