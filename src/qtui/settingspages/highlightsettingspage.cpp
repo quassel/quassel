@@ -38,8 +38,8 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
   ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setToolTip("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
   ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setWhatsThis("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
 
-  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setToolTip("<b>Chan</b>: This regular expression determines for which <b>Channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
-  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setWhatsThis("<b>Chan</b>: This regular expression determines for which <b>Channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setToolTip("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setWhatsThis("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
 
   ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::NameColumn, QHeaderView::Stretch);
   ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
@@ -116,7 +116,7 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
   highlightRule["RegEx"] = regex;
   highlightRule["CS"] = cs;
   highlightRule["Enable"] = enable;
-  highlightRule["Chan"] = chanName;
+  highlightRule["Channel"] = chanName;
 
   highlightList.append(highlightRule);
 }
@@ -182,7 +182,7 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item) {
     case HighlightSettingsPage::ChanColumn:
       if(!item->text().isEmpty() && item->text().trimmed().isEmpty())
         item->setText("");
-      highlightRule["Chan"] = item->text();
+      highlightRule["Channel"] = item->text();
       break;
   }
   highlightList[item->row()] = highlightRule;
@@ -200,7 +200,7 @@ void HighlightSettingsPage::load() {
     bool regex = highlightRule["RegEx"].toBool();
     bool cs = highlightRule["CS"].toBool();
     bool enable = highlightRule["Enable"].toBool();
-    QString chanName = highlightRule["Chan"].toString();
+    QString chanName = highlightRule["Channel"].toString();
 
     addNewRow(name, regex, cs, enable, chanName, true);
   }

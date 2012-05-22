@@ -50,7 +50,7 @@
         </column>
         <column>
          <property name="text">
-          <string>Chan</string>
+          <string>Channel</string>
          </property>
         </column>
        </widget>

@@ -173,7 +173,7 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant) {
                                      rule["Enable"].toBool(),
                                      rule["CS"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
                                      rule["RegEx"].toBool(),
-                                     rule["Chan"].toString());
+                                     rule["Channel"].toString());
     iter++;
   }
 }
