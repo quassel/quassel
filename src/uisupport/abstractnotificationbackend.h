@@ -28,45 +28,46 @@
 
 class SettingsPage;
 
-class AbstractNotificationBackend : public QObject {
-  Q_OBJECT
+class AbstractNotificationBackend : public QObject
+{
+    Q_OBJECT
 
 public:
-  enum NotificationType {
-    Highlight = 0x01,
-    PrivMsg = 0x02,
-    HighlightFocused = 0x11,
-    PrivMsgFocused = 0x12
-  };
+    enum NotificationType {
+        Highlight = 0x01,
+        PrivMsg = 0x02,
+        HighlightFocused = 0x11,
+        PrivMsgFocused = 0x12
+    };
 
-  struct Notification {
-    uint notificationId;
-    BufferId bufferId;
-    NotificationType type;
-    QString sender;
-    QString message;
+    struct Notification {
+        uint notificationId;
+        BufferId bufferId;
+        NotificationType type;
+        QString sender;
+        QString message;
 
-    Notification(uint id_, BufferId buf_, NotificationType type_, const QString &sender_, const QString &msg_)
-      : notificationId(id_), bufferId(buf_), type(type_), sender(sender_), message(msg_) {};
-  };
+        Notification(uint id_, BufferId buf_, NotificationType type_, const QString &sender_, const QString &msg_)
+            : notificationId(id_), bufferId(buf_), type(type_), sender(sender_), message(msg_) {};
+    };
 
-  inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};
-  virtual ~AbstractNotificationBackend() {};
+    inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};
+    virtual ~AbstractNotificationBackend() {};
 
-  virtual void notify(const Notification &) = 0;
-  virtual void close(uint notificationId) { Q_UNUSED(notificationId); }
+    virtual void notify(const Notification &) = 0;
+    virtual void close(uint notificationId) { Q_UNUSED(notificationId); }
 
-  //! Factory to create a configuration widget suitable for a specific notification backend
-  /**
-   * AbstractNotification will not take ownership of that configWidget!
-   * In case you need to communicate with the configWidget directly, make your connections here
-   */
-  virtual SettingsPage *createConfigWidget() const = 0;
+    //! Factory to create a configuration widget suitable for a specific notification backend
+    /**
+     * AbstractNotification will not take ownership of that configWidget!
+     * In case you need to communicate with the configWidget directly, make your connections here
+     */
+    virtual SettingsPage *createConfigWidget() const = 0;
 
 signals:
-  //! May be emitted by the notification to tell the MainWin to raise itself
-  void activated(uint notificationId = 0);
-
+    //! May be emitted by the notification to tell the MainWin to raise itself
+    void activated(uint notificationId = 0);
 };
+
 
 #endif

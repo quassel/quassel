@@ -26,25 +26,27 @@
 
 #include "clientcoreinfo.h"
 
-class CoreInfoDlg : public QDialog {
-  Q_OBJECT
+class CoreInfoDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  CoreInfoDlg(QWidget *parent = 0);
+    CoreInfoDlg(QWidget *parent = 0);
 
 public slots:
-  void coreInfoAvailable();
+    void coreInfoAvailable();
 
 protected:
-  virtual void timerEvent(QTimerEvent *) { updateUptime(); }
+    virtual void timerEvent(QTimerEvent *) { updateUptime(); }
 
 private slots:
-  void on_closeButton_clicked() { reject(); }
-  void updateUptime();
+    void on_closeButton_clicked() { reject(); }
+    void updateUptime();
 
 private:
-  Ui::CoreInfoDlg ui;
-  ClientCoreInfo _coreInfo;
+    Ui::CoreInfoDlg ui;
+    ClientCoreInfo _coreInfo;
 };
+
 
 #endif //COREINFODLG_H

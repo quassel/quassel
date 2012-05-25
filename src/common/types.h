@@ -27,11 +27,12 @@
 #include <QTextStream>
 #include <QHostAddress>
 
-class SignedId {
-  protected:
+class SignedId
+{
+protected:
     qint32 id;
 
-  public:
+public:
     inline SignedId(int _id = 0) { id = _id; }
     inline qint32 toInt() const { return id; }
     inline bool isValid() const { return id > 0; }
@@ -54,6 +55,7 @@ class SignedId {
     friend QDataStream &operator>>(QDataStream &in, SignedId &signedId);
 };
 
+
 inline QDataStream &operator<<(QDataStream &out, const SignedId &signedId) { out << signedId.toInt(); return out; }
 inline QDataStream &operator>>(QDataStream &in, SignedId &signedId) { in >> signedId.id; return in; }
 inline QTextStream &operator<<(QTextStream &out, const SignedId &signedId) { out << QString::number(signedId.toInt()); return out; }
@@ -61,32 +63,32 @@ inline QDebug operator<<(QDebug dbg, const SignedId &signedId) { dbg.space() << 
 inline uint qHash(const SignedId &id) { return qHash(id.toInt()); }
 
 struct UserId : public SignedId {
-  inline UserId(int _id = 0) : SignedId(_id) {}
-  //inline operator QVariant() const { return QVariant::fromValue<UserId>(*this); }  // no automatic conversion!
+    inline UserId(int _id = 0) : SignedId(_id) {}
+    //inline operator QVariant() const { return QVariant::fromValue<UserId>(*this); }  // no automatic conversion!
 };
 
 struct MsgId : public SignedId {
-  inline MsgId(int _id = 0) : SignedId(_id) {}
-  //inline operator QVariant() const { return QVariant::fromValue<MsgId>(*this); }
+    inline MsgId(int _id = 0) : SignedId(_id) {}
+    //inline operator QVariant() const { return QVariant::fromValue<MsgId>(*this); }
 };
 
 struct BufferId : public SignedId {
-  inline BufferId(int _id = 0) : SignedId(_id) {}
-  //inline operator QVariant() const { return QVariant::fromValue<BufferId>(*this); }
+    inline BufferId(int _id = 0) : SignedId(_id) {}
+    //inline operator QVariant() const { return QVariant::fromValue<BufferId>(*this); }
 };
 
 struct NetworkId : public SignedId {
-  inline NetworkId(int _id = 0) : SignedId(_id) {}
-  //inline operator QVariant() const { return QVariant::fromValue<NetworkId>(*this); }
+    inline NetworkId(int _id = 0) : SignedId(_id) {}
+    //inline operator QVariant() const { return QVariant::fromValue<NetworkId>(*this); }
 };
 
 struct IdentityId : public SignedId {
-  inline IdentityId(int _id = 0) : SignedId(_id) {}
-  //inline operator QVariant() const { return QVariant::fromValue<IdentityId>(*this); }
+    inline IdentityId(int _id = 0) : SignedId(_id) {}
+    //inline operator QVariant() const { return QVariant::fromValue<IdentityId>(*this); }
 };
 
 struct AccountId : public SignedId {
-  inline AccountId(int _id = 0) : SignedId(_id) {}
+    inline AccountId(int _id = 0) : SignedId(_id) {}
 };
 
 Q_DECLARE_METATYPE(UserId)
@@ -104,11 +106,11 @@ typedef QList<BufferId> BufferIdList;
 
 //! Base class for exceptions.
 struct Exception {
-  Exception(QString msg = "Unknown Exception") : _msg(msg) {}
-  virtual ~Exception() {} // make gcc happy
-  virtual inline QString msg() { return _msg; }
+    Exception(QString msg = "Unknown Exception") : _msg(msg) {}
+    virtual ~Exception() {} // make gcc happy
+    virtual inline QString msg() { return _msg; }
 
-  protected:
+protected:
     QString _msg;
 };
 

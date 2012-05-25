@@ -26,25 +26,27 @@
 #include "settingspage.h"
 #include "ui_backlogsettingspage.h"
 
-class BacklogSettingsPage : public SettingsPage {
-  Q_OBJECT
+class BacklogSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  BacklogSettingsPage(QWidget *parent = 0);
+    BacklogSettingsPage(QWidget *parent = 0);
 
-  inline QString settingsKey() const { return "Backlog"; }
-  bool hasDefaults() const;
+    inline QString settingsKey() const { return "Backlog"; }
+    bool hasDefaults() const;
 
 public slots:
-  void save();
-  void load();
-  void defaults();
+    void save();
+    void load();
+    void defaults();
 
 private slots:
-  void widgetHasChanged();
+    void widgetHasChanged();
 
 private:
-  Ui::BacklogSettingsPage ui;
+    Ui::BacklogSettingsPage ui;
 };
+
 
 #endif

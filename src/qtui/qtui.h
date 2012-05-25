@@ -34,61 +34,63 @@ class QtUiMessageProcessor;
 /** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
  *  from both QMainWindow and AbstractUi (because of multiple inheritance of QObject).
  */
-class QtUi : public GraphicalUi {
-  Q_OBJECT
+class QtUi : public GraphicalUi
+{
+    Q_OBJECT
 
 public:
-  QtUi();
-  ~QtUi();
+    QtUi();
+    ~QtUi();
 
-  MessageModel *createMessageModel(QObject *parent);
-  AbstractMessageProcessor *createMessageProcessor(QObject *parent);
+    MessageModel *createMessageModel(QObject *parent);
+    AbstractMessageProcessor *createMessageProcessor(QObject *parent);
 
-  inline static QtUi *instance();
-  inline static QtUiStyle *style();
-  inline static MainWin *mainWindow();
+    inline static QtUi *instance();
+    inline static QtUiStyle *style();
+    inline static MainWin *mainWindow();
 
-  static bool haveSystemTray();
+    static bool haveSystemTray();
 
-  /* Notifications */
+    /* Notifications */
 
-  static void registerNotificationBackend(AbstractNotificationBackend *);
-  static void unregisterNotificationBackend(AbstractNotificationBackend *);
-  static void unregisterAllNotificationBackends();
-  static const QList<AbstractNotificationBackend *> &notificationBackends();
-  static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
+    static void registerNotificationBackend(AbstractNotificationBackend *);
+    static void unregisterNotificationBackend(AbstractNotificationBackend *);
+    static void unregisterAllNotificationBackends();
+    static const QList<AbstractNotificationBackend *> &notificationBackends();
+    static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
 
 public slots:
-  virtual void init();
+    virtual void init();
 
-  uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text);
-  void closeNotification(uint notificationId);
-  void closeNotifications(BufferId bufferId = BufferId());
+    uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text);
+    void closeNotification(uint notificationId);
+    void closeNotifications(BufferId bufferId = BufferId());
 
 protected slots:
-  void connectedToCore();
-  void disconnectedFromCore();
-  void notificationActivated(uint notificationId);
-  void bufferMarkedAsRead(BufferId);
+    void connectedToCore();
+    void disconnectedFromCore();
+    void notificationActivated(uint notificationId);
+    void bufferMarkedAsRead(BufferId);
 
 protected:
-  virtual void minimizeRestore(bool show);
-  virtual bool isHidingMainWidgetAllowed() const;
+    virtual void minimizeRestore(bool show);
+    virtual bool isHidingMainWidgetAllowed() const;
 
 private slots:
-  void useSystemTrayChanged(const QVariant &);
+    void useSystemTrayChanged(const QVariant &);
 
 private:
-  static QtUi *_instance;
-  static MainWin *_mainWin;
-  static QList<AbstractNotificationBackend *> _notificationBackends;
-  static QList<AbstractNotificationBackend::Notification> _notifications;
+    static QtUi *_instance;
+    static MainWin *_mainWin;
+    static QList<AbstractNotificationBackend *> _notificationBackends;
+    static QList<AbstractNotificationBackend::Notification> _notifications;
 
-  bool _useSystemTray;
+    bool _useSystemTray;
 };
 
+
 QtUi *QtUi::instance() { return _instance ? _instance : new QtUi(); }
-QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle*>(uiStyle()); }
+QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle *>(uiStyle()); }
 MainWin *QtUi::mainWindow() { return _mainWin; }
 
 #endif

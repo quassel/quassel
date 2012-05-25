@@ -27,16 +27,18 @@
 
 INIT_SYNCABLE_OBJECT(CoreCoreInfo)
 CoreCoreInfo::CoreCoreInfo(CoreSession *parent)
-  : CoreInfo(parent),
+    : CoreInfo(parent),
     _coreSession(parent)
 {
 }
 
-QVariantMap CoreCoreInfo::coreData() const {
-  QVariantMap data;
-  data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
-  data["quasselBuildDate"] = Quassel::buildInfo().buildDate;
-  data["startTime"] = Core::instance()->startTime();
-  data["sessionConnectedClients"] = _coreSession->signalProxy()->peerCount();
-  return data;
+
+QVariantMap CoreCoreInfo::coreData() const
+{
+    QVariantMap data;
+    data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
+    data["quasselBuildDate"] = Quassel::buildInfo().buildDate;
+    data["startTime"] = Core::instance()->startTime();
+    data["sessionConnectedClients"] = _coreSession->signalProxy()->peerCount();
+    return data;
 }

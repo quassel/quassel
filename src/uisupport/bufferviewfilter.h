@@ -34,78 +34,81 @@
 /*****************************************
  * Buffer View Filter
  *****************************************/
-class BufferViewFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class BufferViewFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  enum Mode {
-    NoActive = 0x01,
-    NoInactive = 0x02,
-    SomeNets = 0x04,
-    AllNets = 0x08,
-    NoChannels = 0x10,
-    NoQueries = 0x20,
-    NoServers = 0x40,
-    FullCustom = 0x80
-  };
-  Q_DECLARE_FLAGS(Modes, Mode)
+    enum Mode {
+        NoActive = 0x01,
+        NoInactive = 0x02,
+        SomeNets = 0x04,
+        AllNets = 0x08,
+        NoChannels = 0x10,
+        NoQueries = 0x20,
+        NoServers = 0x40,
+        FullCustom = 0x80
+    };
+    Q_DECLARE_FLAGS(Modes, Mode)
 
-  BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = 0);
+    BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = 0);
 
-  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-  virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
-  QVariant data(const QModelIndex &index, int role) const;
-  QVariant checkedState(const QModelIndex &index) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant checkedState(const QModelIndex &index) const;
 
-  bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-  bool setCheckedState(const QModelIndex &index, Qt::CheckState state);
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    bool setCheckedState(const QModelIndex &index, Qt::CheckState state);
 
-  void setConfig(BufferViewConfig *config);
-  inline BufferViewConfig *config() const { return _config; }
+    void setConfig(BufferViewConfig *config);
+    inline BufferViewConfig *config() const { return _config; }
 
-  virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+    virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
 
-  QList<QAction *> actions(const QModelIndex &index);
+    QList<QAction *> actions(const QModelIndex &index);
 
 public slots:
-  void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
-  void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
-  void checkItemsForRemoval(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
+    void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
+    void checkItemsForRemoval(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 protected:
-  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-  bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
-  bool bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
-  bool networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
-  virtual void customEvent(QEvent *event);
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    bool bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    bool networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    virtual void customEvent(QEvent *event);
 
 signals:
-  void _dataChanged(const QModelIndex &source_topLeft, const QModelIndex &source_bottomRight);
-  void configChanged();
+    void _dataChanged(const QModelIndex &source_topLeft, const QModelIndex &source_bottomRight);
+    void configChanged();
 
 private slots:
-  void configInitialized();
-  void enableEditMode(bool enable);
-  void showServerQueriesChanged();
+    void configInitialized();
+    void enableEditMode(bool enable);
+    void showServerQueriesChanged();
 
 private:
-  QPointer<BufferViewConfig> _config;
-  Qt::SortOrder _sortOrder;
+    QPointer<BufferViewConfig> _config;
+    Qt::SortOrder _sortOrder;
 
-  bool _showServerQueries;
-  bool _editMode;
-  QAction _enableEditMode;
-  QSet<BufferId> _toAdd;
-  QSet<BufferId> _toTempRemove;
-  QSet<BufferId> _toRemove;
+    bool _showServerQueries;
+    bool _editMode;
+    QAction _enableEditMode;
+    QSet<BufferId> _toAdd;
+    QSet<BufferId> _toTempRemove;
+    QSet<BufferId> _toRemove;
 
-  bool filterAcceptBuffer(const QModelIndex &) const;
-  bool filterAcceptNetwork(const QModelIndex &) const;
-  void addBuffer(const BufferId &bufferId) const;
-  void addBuffers(const QList<BufferId> &bufferIds) const;
-  static bool bufferIdLessThan(const BufferId &, const BufferId &);
+    bool filterAcceptBuffer(const QModelIndex &) const;
+    bool filterAcceptNetwork(const QModelIndex &) const;
+    void addBuffer(const BufferId &bufferId) const;
+    void addBuffers(const QList<BufferId> &bufferIds) const;
+    static bool bufferIdLessThan(const BufferId &, const BufferId &);
 };
+
+
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)
 
 #endif // BUFFERVIEWFILTER_H_

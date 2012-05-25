@@ -25,36 +25,38 @@
 
 #include "network.h"
 
-class SimpleNetworkEditor : public QWidget {
-  Q_OBJECT
+class SimpleNetworkEditor : public QWidget
+{
+    Q_OBJECT
 
 public:
-  SimpleNetworkEditor(QWidget *parent = 0);
+    SimpleNetworkEditor(QWidget *parent = 0);
 
-  void displayNetworkInfo(const NetworkInfo &networkInfo);
-  void saveToNetworkInfo(NetworkInfo &networkInfo);
+    void displayNetworkInfo(const NetworkInfo &networkInfo);
+    void saveToNetworkInfo(NetworkInfo &networkInfo);
 
-  QStringList defaultChannels() const;
-  void setDefaultChannels(const QStringList &channels);
+    QStringList defaultChannels() const;
+    void setDefaultChannels(const QStringList &channels);
 
 signals:
-  void widgetHasChanged();
+    void widgetHasChanged();
 
 private slots:
-  // code duplication from settingspages/networkssettingspage.{h|cpp}
-  void on_serverList_itemSelectionChanged();
-  void on_addServer_clicked();
-  void on_deleteServer_clicked();
-  void on_editServer_clicked();
-  void on_upServer_clicked();
-  void on_downServer_clicked();
+    // code duplication from settingspages/networkssettingspage.{h|cpp}
+    void on_serverList_itemSelectionChanged();
+    void on_addServer_clicked();
+    void on_deleteServer_clicked();
+    void on_editServer_clicked();
+    void on_upServer_clicked();
+    void on_downServer_clicked();
 
-  void setWidgetStates();
+    void setWidgetStates();
 
 private:
-  Ui::SimpleNetworkEditor ui;
+    Ui::SimpleNetworkEditor ui;
 
-  NetworkInfo _networkInfo;
+    NetworkInfo _networkInfo;
 };
+
 
 #endif //SIMPLENETWORKEDITOR_H

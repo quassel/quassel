@@ -28,52 +28,56 @@
 
 #include "ui_phononnotificationconfigwidget.h"
 
-class PhononNotificationBackend : public AbstractNotificationBackend {
-  Q_OBJECT
+class PhononNotificationBackend : public AbstractNotificationBackend
+{
+    Q_OBJECT
 
 public:
-  PhononNotificationBackend(QObject *parent = 0);
-  ~PhononNotificationBackend();
+    PhononNotificationBackend(QObject *parent = 0);
+    ~PhononNotificationBackend();
 
-  void notify(const Notification &);
-  void close(uint notificationId);
-  virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &);
+    void close(uint notificationId);
+    virtual SettingsPage *createConfigWidget() const;
 
 private slots:
-  void enabledChanged(const QVariant &);
-  void audioFileChanged(const QVariant &);
-  void createMediaObject(const QString &name);
+    void enabledChanged(const QVariant &);
+    void audioFileChanged(const QVariant &);
+    void createMediaObject(const QString &name);
 
 private:
-  class ConfigWidget;
+    class ConfigWidget;
 
-  bool _enabled;
-  Phonon::MediaObject *_media;
+    bool _enabled;
+    Phonon::MediaObject *_media;
 };
 
-class PhononNotificationBackend::ConfigWidget : public SettingsPage {
-  Q_OBJECT
+
+class PhononNotificationBackend::ConfigWidget : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  ConfigWidget(QWidget *parent = 0);
-  ~ConfigWidget();
+    ConfigWidget(QWidget *parent = 0);
+    ~ConfigWidget();
 
-  void save();
-  void load();
-  bool hasDefaults() const;
-  void defaults();
+    void save();
+    void load();
+    bool hasDefaults() const;
+    void defaults();
 
 private slots:
-  void widgetChanged();
-  void on_open_clicked();
-  void on_play_clicked();
+    void widgetChanged();
+    void on_open_clicked();
+    void on_play_clicked();
 
 private:
-  Ui::PhononNotificationConfigWidget ui;
+    Ui::PhononNotificationConfigWidget ui;
 
-  bool enabled;
-  QString filename;
-  Phonon::MediaObject *audioPreview;
+    bool enabled;
+    QString filename;
+    Phonon::MediaObject *audioPreview;
 };
+
 
 #endif

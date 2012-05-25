@@ -27,27 +27,30 @@
 #include <QHash>
 #include <QGenericArgument>
 
-class BasicHandler : public QObject {
-  Q_OBJECT
+class BasicHandler : public QObject
+{
+    Q_OBJECT
 
 public:
-  BasicHandler(QObject *parent = 0);
-  BasicHandler(const QString &methodPrefix, QObject *parent = 0);
+    BasicHandler(QObject *parent = 0);
+    BasicHandler(const QString &methodPrefix, QObject *parent = 0);
 
-  QStringList providesHandlers();
+    QStringList providesHandlers();
 
 protected:
-  virtual void handle(const QString &member, QGenericArgument val0 = QGenericArgument(0),
-                      QGenericArgument val1 = QGenericArgument(), QGenericArgument val2 = QGenericArgument(),
-                      QGenericArgument val3 = QGenericArgument(), QGenericArgument val4 = QGenericArgument(),
-                      QGenericArgument val5 = QGenericArgument(), QGenericArgument val6 = QGenericArgument(),
-                      QGenericArgument val7 = QGenericArgument(), QGenericArgument val8 = QGenericArgument());
+    virtual void handle(const QString &member, QGenericArgument val0 = QGenericArgument(0),
+        QGenericArgument val1 = QGenericArgument(), QGenericArgument val2 = QGenericArgument(),
+        QGenericArgument val3 = QGenericArgument(), QGenericArgument val4 = QGenericArgument(),
+        QGenericArgument val5 = QGenericArgument(), QGenericArgument val6 = QGenericArgument(),
+        QGenericArgument val7 = QGenericArgument(), QGenericArgument val8 = QGenericArgument());
 
 private:
-  const QHash<QString, int> &handlerHash();
-  QHash<QString, int> _handlerHash;
-  int _defaultHandler;
-  bool _initDone;
-  QString _methodPrefix;
+    const QHash<QString, int> &handlerHash();
+    QHash<QString, int> _handlerHash;
+    int _defaultHandler;
+    bool _initDone;
+    QString _methodPrefix;
 };
+
+
 #endif

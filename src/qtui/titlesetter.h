@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef TITLESETTER_H
 #define TITLESETTER_H
 
@@ -26,17 +25,18 @@
 
 class MainWin;
 
-class TitleSetter : public AbstractItemView {
-  Q_OBJECT
+class TitleSetter : public AbstractItemView
+{
+    Q_OBJECT
 
-  public:
+public:
     TitleSetter(MainWin *parent);
 
-  protected slots:
+protected slots:
     virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
     virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
-  private:
+private:
     MainWin *_mainWin;
     void changeWindowTitle(const QModelIndex &index);
 };

@@ -22,19 +22,21 @@
 
 INIT_SYNCABLE_OBJECT(ClientBufferViewConfig)
 ClientBufferViewConfig::ClientBufferViewConfig(int bufferViewId, QObject *parent)
-  : BufferViewConfig(bufferViewId, parent),
+    : BufferViewConfig(bufferViewId, parent),
     _locked(false)
 {
-  connect(this, SIGNAL(initDone()), this, SLOT(ensureDecoration()));
+    connect(this, SIGNAL(initDone()), this, SLOT(ensureDecoration()));
 }
+
 
 // currently we don't have a possibility to configure disableDecoration
 // if we have an old config this value can be true which is... bad.
 // so we upgrade the core stored bufferViewConfig.
 // This can be removed with the next release
-void ClientBufferViewConfig::ensureDecoration() {
-  if(!disableDecoration())
-    return;
-  setDisableDecoration(false);
-  requestUpdate(toVariantMap());
+void ClientBufferViewConfig::ensureDecoration()
+{
+    if (!disableDecoration())
+        return;
+    setDisableDecoration(false);
+    requestUpdate(toVariantMap());
 }

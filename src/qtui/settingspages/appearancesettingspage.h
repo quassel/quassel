@@ -30,35 +30,37 @@
 #include "settingspage.h"
 #include "ui_appearancesettingspage.h"
 
-class AppearanceSettingsPage : public SettingsPage {
-  Q_OBJECT
+class AppearanceSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  AppearanceSettingsPage(QWidget *parent = 0);
+    AppearanceSettingsPage(QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const { return true; }
 
 public slots:
-  void save();
-  void load();
-  void defaults();
+    void save();
+    void load();
+    void defaults();
 
 private slots:
-  void widgetHasChanged();
+    void widgetHasChanged();
 
-  void chooseStyleSheet();
+    void chooseStyleSheet();
 
 private:
-  bool testHasChanged();
-  void initStyleComboBox();
-  void initLanguageComboBox();
-  QLocale selectedLocale() const;
+    bool testHasChanged();
+    void initStyleComboBox();
+    void initLanguageComboBox();
+    QLocale selectedLocale() const;
 
-  Ui::AppearanceSettingsPage ui;
-  QHash<QString, QVariant> settings;
-  QMap<QString, QLocale> _locales;
+    Ui::AppearanceSettingsPage ui;
+    QHash<QString, QVariant> settings;
+    QMap<QString, QLocale> _locales;
 
-  inline QString settingsKey() const { return QString("QtUi"); }
+    inline QString settingsKey() const { return QString("QtUi"); }
 };
+
 
 #endif

@@ -26,25 +26,27 @@
 #include "abstractcliparser.h"
 
 //! Quassel's own parser for command line arguments
-class CliParser : public AbstractCliParser {
+class CliParser : public AbstractCliParser
+{
 public:
-  CliParser();
+    CliParser();
 
-  bool init(const QStringList &arguments = QStringList());
+    bool init(const QStringList &arguments = QStringList());
 
-  QString value(const QString &longName);
-  bool isSet(const QString &longName);
-  void usage();
+    QString value(const QString &longName);
+    bool isSet(const QString &longName);
+    void usage();
 
 private:
-  void addArgument(const QString &longName, const CliParserArg &arg);
-  bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
-  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
-  QString escapedValue(const QString &value);
-  QString lnameOfShortArg(const char arg);
+    void addArgument(const QString &longName, const CliParserArg &arg);
+    bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
+    bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
+    QString escapedValue(const QString &value);
+    QString lnameOfShortArg(const char arg);
 
-  QStringList argsRaw;
-  QMap<QString, CliParserArg> argsMap;
+    QStringList argsRaw;
+    QMap<QString, CliParserArg> argsMap;
 };
+
 
 #endif

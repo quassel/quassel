@@ -23,24 +23,26 @@
 
 #include "ui_debugconsole.h"
 
-class DebugConsole : public QDialog {
-  Q_OBJECT
+class DebugConsole : public QDialog
+{
+    Q_OBJECT
 
 public:
-  DebugConsole(QWidget *parent = 0);
-  virtual ~DebugConsole();
+    DebugConsole(QWidget *parent = 0);
+    virtual ~DebugConsole();
 
 public slots:
-  void scriptResult(QString result);
+    void scriptResult(QString result);
 
 signals:
-  void scriptRequest(QString script);
+    void scriptRequest(QString script);
 
 private slots:
-  void on_evalButton_clicked();
-  
+    void on_evalButton_clicked();
+
 private:
-  Ui::DebugConsole ui;
+    Ui::DebugConsole ui;
 };
+
 
 #endif

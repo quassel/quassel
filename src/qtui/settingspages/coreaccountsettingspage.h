@@ -33,10 +33,11 @@
 class CoreAccountModel;
 class FilteredCoreAccountModel;
 
-class CoreAccountSettingsPage : public SettingsPage {
-  Q_OBJECT
+class CoreAccountSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
-  public:
+public:
     CoreAccountSettingsPage(QWidget *parent = 0);
 
     inline bool hasDefaults() const { return false; }
@@ -44,7 +45,7 @@ class CoreAccountSettingsPage : public SettingsPage {
 
     AccountId selectedAccount() const;
 
-  public slots:
+public slots:
     void save();
     void load();
 
@@ -54,7 +55,7 @@ class CoreAccountSettingsPage : public SettingsPage {
 signals:
     void connectToCore(AccountId accId);
 
-  private slots:
+private slots:
     void on_addAccountButton_clicked();
     void on_editAccountButton_clicked();
     void on_deleteAccountButton_clicked();
@@ -66,7 +67,7 @@ signals:
     void rowsAboutToBeRemoved(const QModelIndex &index, int start, int end);
     void rowsInserted(const QModelIndex &index, int start, int end);
 
-  private:
+private:
     Ui::CoreAccountSettingsPage ui;
 
     CoreAccountModel *_model;
@@ -84,45 +85,50 @@ signals:
     inline QString settingsKey() const { return QString("CoreAccounts"); }
 };
 
+
 // ========================================
 //  CoreAccountEditDlg
 // ========================================
-class CoreAccountEditDlg : public QDialog {
-  Q_OBJECT
+class CoreAccountEditDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  CoreAccountEditDlg(const CoreAccount &account, QWidget *parent = 0);
+    CoreAccountEditDlg(const CoreAccount &account, QWidget *parent = 0);
 
-  CoreAccount account();
+    CoreAccount account();
 
 private slots:
-  void on_hostName_textChanged(const QString &);
-  void on_accountName_textChanged(const QString &);
-  void on_user_textChanged(const QString &);
+    void on_hostName_textChanged(const QString &);
+    void on_accountName_textChanged(const QString &);
+    void on_user_textChanged(const QString &);
 
-  void setWidgetStates();
+    void setWidgetStates();
 
 private:
-  Ui::CoreAccountEditDlg ui;
-  CoreAccount _account;
+    Ui::CoreAccountEditDlg ui;
+    CoreAccount _account;
 };
+
 
 // ========================================
 //  FilteredCoreAccountModel
 // ========================================
 
 //! This filters out the internal account from the non-monolithic client's UI
-class FilteredCoreAccountModel : public QSortFilterProxyModel {
-  Q_OBJECT
+class FilteredCoreAccountModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent = 0);
+    FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent = 0);
 
 protected:
-  virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private:
-  AccountId _internalAccount;
+    AccountId _internalAccount;
 };
+
 
 #endif

@@ -26,20 +26,22 @@
 #include <KCmdLineOptions>
 
 //! Wrapper for KCmdLineOptions
-class KCmdLineWrapper : public AbstractCliParser {
+class KCmdLineWrapper : public AbstractCliParser
+{
 public:
-  KCmdLineWrapper();
+    KCmdLineWrapper();
 
-  bool init(const QStringList &arguments = QStringList());
+    bool init(const QStringList &arguments = QStringList());
 
-  QString value(const QString &longName);
-  bool isSet(const QString &longName);
-  void usage();
+    QString value(const QString &longName);
+    bool isSet(const QString &longName);
+    void usage();
 
 private:
-  void addArgument(const QString &longName, const CliParserArg &arg);
+    void addArgument(const QString &longName, const CliParserArg &arg);
 
-  KCmdLineOptions _cmdLineOptions;
+    KCmdLineOptions _cmdLineOptions;
 };
+
 
 #endif

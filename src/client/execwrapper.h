@@ -25,34 +25,36 @@
 
 #include "bufferinfo.h"
 
-class ExecWrapper : public QObject {
-  Q_OBJECT
+class ExecWrapper : public QObject
+{
+    Q_OBJECT
 
 public:
-  ExecWrapper(QObject *parent = 0);
+    ExecWrapper(QObject *parent = 0);
 
 public slots:
-  void start(const BufferInfo &info, const QString &command);
+    void start(const BufferInfo &info, const QString &command);
 
 signals:
-  void error(const QString &errorMsg);
-  void output(const QString &out);
+    void error(const QString &errorMsg);
+    void output(const QString &out);
 
 private slots:
-  void processReadStdout();
-  void processReadStderr();
-  void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
-  void processError(QProcess::ProcessError);
+    void processReadStdout();
+    void processReadStderr();
+    void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void processError(QProcess::ProcessError);
 
-  void postStdout(const QString &);
-  void postStderr(const QString &);
+    void postStdout(const QString &);
+    void postStderr(const QString &);
 
 private:
-  QProcess _process;
-  BufferInfo _bufferInfo;
-  QString _scriptName;
-  QString _stdoutBuffer;
-  QString _stderrBuffer;
+    QProcess _process;
+    BufferInfo _bufferInfo;
+    QString _scriptName;
+    QString _stdoutBuffer;
+    QString _stderrBuffer;
 };
+
 
 #endif

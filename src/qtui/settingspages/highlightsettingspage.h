@@ -27,45 +27,47 @@
 #include "settingspage.h"
 #include "ui_highlightsettingspage.h"
 
-class HighlightSettingsPage : public SettingsPage {
-  Q_OBJECT
+class HighlightSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
-  public:
+public:
     HighlightSettingsPage(QWidget *parent = 0);
 
     bool hasDefaults() const;
 
-  public slots:
+public slots:
     void save();
     void load();
     void defaults();
 
-  private slots:
+private slots:
     void widgetHasChanged();
     void addNewRow(QString name = tr("highlight rule"), bool regex = false, bool cs = true, bool enable = true, QString chanName = "", bool self = false);
     void removeSelectedRows();
     void selectRow(QTableWidgetItem *item);
     void tableChanged(QTableWidgetItem *item);
 
-  private:
+private:
     Ui::HighlightSettingsPage ui;
-    QVariantList  highlightList;
+    QVariantList highlightList;
     // QVariant -> QHash<QString, QVariant>:
     //    regex:  bool
     //    name:   QString
     //    enable: bool
     enum column {
-      NameColumn = 0,
-      RegExColumn = 1,
-      CsColumn = 2,
-      EnableColumn = 3,
-      ChanColumn = 4,
-      ColumnCount = 5
+        NameColumn = 0,
+        RegExColumn = 1,
+        CsColumn = 2,
+        EnableColumn = 3,
+        ChanColumn = 4,
+        ColumnCount = 5
     };
 
     void emptyTable();
 
     bool testHasChanged();
 };
+
 
 #endif

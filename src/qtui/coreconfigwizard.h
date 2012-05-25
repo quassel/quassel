@@ -33,22 +33,23 @@
 class CoreConnection;
 
 namespace CoreConfigWizardPages {
-  class SyncPage;
-  class SyncRelayPage;
+class SyncPage;
+class SyncRelayPage;
 };
 
-class CoreConfigWizard : public QWizard {
-  Q_OBJECT
+class CoreConfigWizard : public QWizard
+{
+    Q_OBJECT
 
-  public:
+public:
     enum {
-      IntroPage,
-      AdminUserPage,
-      StorageSelectionPage,
-      SyncPage,
-      SyncRelayPage,
-      StorageDetailsPage,
-      ConclusionPage
+        IntroPage,
+        AdminUserPage,
+        StorageSelectionPage,
+        SyncPage,
+        SyncRelayPage,
+        StorageDetailsPage,
+        ConclusionPage
     };
 
     CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent = 0);
@@ -56,21 +57,21 @@ class CoreConfigWizard : public QWizard {
 
     inline CoreConnection *coreConnection() const { return _connection; }
 
-  signals:
+signals:
     void setupCore(const QVariant &setupData);
     void loginToCore(const QString &user, const QString &password, bool rememberPassword);
 
-  public slots:
+public slots:
     void loginSuccess();
     void syncFinished();
 
-  private slots:
+private slots:
     void prepareCoreSetup(const QString &backend, const QVariantMap &connectionProperties);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &);
     void startOver();
 
-  private:
+private:
     QHash<QString, QVariant> _backends;
     CoreConfigWizardPages::SyncPage *syncPage;
     CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
@@ -78,87 +79,95 @@ class CoreConfigWizard : public QWizard {
     CoreConnection *_connection;
 };
 
+
 namespace CoreConfigWizardPages {
-
-  class IntroPage : public QWizardPage {
+class IntroPage : public QWizardPage
+{
     Q_OBJECT
 
-    public:
-      IntroPage(QWidget *parent = 0);
-      int nextId() const;
-    private:
-      Ui::CoreConfigWizardIntroPage ui;
-  };
+public:
+    IntroPage(QWidget *parent = 0);
+    int nextId() const;
+private:
+    Ui::CoreConfigWizardIntroPage ui;
+};
 
-  class AdminUserPage : public QWizardPage {
+
+class AdminUserPage : public QWizardPage
+{
     Q_OBJECT
 
-    public:
-      AdminUserPage(QWidget *parent = 0);
-      int nextId() const;
-      bool isComplete() const;
-    private:
-      Ui::CoreConfigWizardAdminUserPage ui;
-  };
+public:
+    AdminUserPage(QWidget *parent = 0);
+    int nextId() const;
+    bool isComplete() const;
+private:
+    Ui::CoreConfigWizardAdminUserPage ui;
+};
 
-  class StorageSelectionPage : public QWizardPage {
+
+class StorageSelectionPage : public QWizardPage
+{
     Q_OBJECT
 
-    public:
-      StorageSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
-      int nextId() const;
-      QString selectedBackend() const;
-      QVariantMap connectionProperties() const;
+public:
+    StorageSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
+    int nextId() const;
+    QString selectedBackend() const;
+    QVariantMap connectionProperties() const;
 
-    private slots:
-      void on_backendList_currentIndexChanged();
-    private:
-      Ui::CoreConfigWizardStorageSelectionPage ui;
-      QGroupBox *_connectionBox;
-      QHash<QString, QVariant> _backends;
-  };
+private slots:
+    void on_backendList_currentIndexChanged();
+private:
+    Ui::CoreConfigWizardStorageSelectionPage ui;
+    QGroupBox *_connectionBox;
+    QHash<QString, QVariant> _backends;
+};
 
-  class SyncPage : public QWizardPage {
+
+class SyncPage : public QWizardPage
+{
     Q_OBJECT
 
-    public:
-      SyncPage(QWidget *parent = 0);
-      void initializePage();
-      int nextId() const;
-      bool isComplete() const;
+public:
+    SyncPage(QWidget *parent = 0);
+    void initializePage();
+    int nextId() const;
+    bool isComplete() const;
 
-    public slots:
-      void setStatus(const QString &status);
-      void setError(bool);
-      void setComplete(bool);
+public slots:
+    void setStatus(const QString &status);
+    void setError(bool);
+    void setComplete(bool);
 
-    signals:
-      void setupCore(const QString &backend, const QVariantMap &);
+signals:
+    void setupCore(const QString &backend, const QVariantMap &);
 
-    private:
-      Ui::CoreConfigWizardSyncPage ui;
-      bool complete;
-      bool hasError;
-  };
+private:
+    Ui::CoreConfigWizardSyncPage ui;
+    bool complete;
+    bool hasError;
+};
 
-  class SyncRelayPage : public QWizardPage {
+
+class SyncRelayPage : public QWizardPage
+{
     Q_OBJECT
 
-    public:
-      SyncRelayPage(QWidget *parent = 0);
-      int nextId() const;
-      enum Mode { Success, Error };
+public:
+    SyncRelayPage(QWidget *parent = 0);
+    int nextId() const;
+    enum Mode { Success, Error };
 
-    public slots:
-      void setMode(Mode);
+public slots:
+    void setMode(Mode);
 
-    signals:
-      void startOver() const;
+signals:
+    void startOver() const;
 
-    private:
-      Mode mode;
-  };
-
+private:
+    Mode mode;
+};
 }
 
 #endif

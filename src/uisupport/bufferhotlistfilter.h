@@ -23,18 +23,20 @@
 
 #include <QSortFilterProxyModel>
 
-class BufferHotListFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class BufferHotListFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  BufferHotListFilter(QAbstractItemModel *source, QObject *parent = 0);
+    BufferHotListFilter(QAbstractItemModel *source, QObject *parent = 0);
 
-  virtual inline int columnCount(const QModelIndex &) const { return 1; }
+    virtual inline int columnCount(const QModelIndex &) const { return 1; }
 //   QVariant data(const QModelIndex &index, int role) const;
 
 protected:
-  virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-  virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
 };
+
 
 #endif //BUFFERHOTLISTFILTER_H

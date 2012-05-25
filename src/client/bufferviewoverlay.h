@@ -28,65 +28,67 @@
 class BufferViewConfig;
 class ClientBufferViewConfig;
 
-class BufferViewOverlay : public QObject {
-  Q_OBJECT
+class BufferViewOverlay : public QObject
+{
+    Q_OBJECT
 
 public:
-  BufferViewOverlay(QObject *parent = 0);
+    BufferViewOverlay(QObject *parent = 0);
 
-  inline const QSet<int> &bufferViewIds() { return _bufferViewIds; }
-  bool allNetworks();
+    inline const QSet<int> &bufferViewIds() { return _bufferViewIds; }
+    bool allNetworks();
 
-  const QSet<NetworkId> &networkIds();
-  const QSet<BufferId> &bufferIds();
-  const QSet<BufferId> &removedBufferIds();
-  const QSet<BufferId> &tempRemovedBufferIds();
+    const QSet<NetworkId> &networkIds();
+    const QSet<BufferId> &bufferIds();
+    const QSet<BufferId> &removedBufferIds();
+    const QSet<BufferId> &tempRemovedBufferIds();
 
-  int allowedBufferTypes();
-  int minimumActivity();
+    int allowedBufferTypes();
+    int minimumActivity();
 
-  inline bool isInitialized() { return _uninitializedViewCount == 0; }
+    inline bool isInitialized() { return _uninitializedViewCount == 0; }
 
 public slots:
-  void addView(int viewId);
-  void removeView(int viewId);
+    void addView(int viewId);
+    void removeView(int viewId);
 
-  void reset();
-  void save();
-  void restore();
+    void reset();
+    void save();
+    void restore();
 
-  // updates propagated from the actual views
-  void update();
+    // updates propagated from the actual views
+    void update();
 
 signals:
-  void hasChanged();
-  void initDone();
+    void hasChanged();
+    void initDone();
 
 protected:
-  virtual void customEvent(QEvent *event);
+    virtual void customEvent(QEvent *event);
 
 private slots:
-  void viewInitialized();
-  void viewInitialized(BufferViewConfig *config);
+    void viewInitialized();
+    void viewInitialized(BufferViewConfig *config);
 
 private:
-  void updateHelper();
-  QSet<BufferId> filterBuffersByConfig(const QList<BufferId> &buffers, const BufferViewConfig *config);
+    void updateHelper();
+    QSet<BufferId> filterBuffersByConfig(const QList<BufferId> &buffers, const BufferViewConfig *config);
 
-  bool _aboutToUpdate;
+    bool _aboutToUpdate;
 
-  QSet<int> _bufferViewIds;
-  int _uninitializedViewCount;
+    QSet<int> _bufferViewIds;
+    int _uninitializedViewCount;
 
-  QSet<NetworkId> _networkIds;
-  int _allowedBufferTypes;
-  int _minimumActivity;
+    QSet<NetworkId> _networkIds;
+    int _allowedBufferTypes;
+    int _minimumActivity;
 
-  QSet<BufferId> _buffers;
-  QSet<BufferId> _removedBuffers;
-  QSet<BufferId> _tempRemovedBuffers;
+    QSet<BufferId> _buffers;
+    QSet<BufferId> _removedBuffers;
+    QSet<BufferId> _tempRemovedBuffers;
 
-  static const int _updateEventId;
+    static const int _updateEventId;
 };
+
 
 #endif //BUFFERVIEWOVERLAY_H

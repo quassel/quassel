@@ -30,42 +30,44 @@ class CoreSession;
 class QIODevice;
 class SignalProxy;
 
-class SessionThread : public QThread {
-  Q_OBJECT
+class SessionThread : public QThread
+{
+    Q_OBJECT
 
 public:
-  SessionThread(UserId user, bool restoreState, QObject *parent = 0);
-  ~SessionThread();
+    SessionThread(UserId user, bool restoreState, QObject *parent = 0);
+    ~SessionThread();
 
-  void run();
+    void run();
 
-  CoreSession *session();
-  UserId user();
+    CoreSession *session();
+    UserId user();
 
 public slots:
-  void addClient(QObject *peer);
+    void addClient(QObject *peer);
 
 private slots:
-  void setSessionInitialized();
+    void setSessionInitialized();
 
 signals:
-  void initialized();
-  void shutdown();
+    void initialized();
+    void shutdown();
 
-  void addRemoteClient(QIODevice *);
-  void addInternalClient(SignalProxy *);
+    void addRemoteClient(QIODevice *);
+    void addInternalClient(SignalProxy *);
 
 private:
-  CoreSession *_session;
-  UserId _user;
-  QList<QObject *> clientQueue;
-  bool _sessionInitialized;
-  bool _restoreState;
+    CoreSession *_session;
+    UserId _user;
+    QList<QObject *> clientQueue;
+    bool _sessionInitialized;
+    bool _restoreState;
 
-  bool isSessionInitialized();
-  void addClientToSession(QObject *peer);
-  void addRemoteClientToSession(QIODevice *socket);
-  void addInternalClientToSession(SignalProxy *proxy);
+    bool isSessionInitialized();
+    void addClientToSession(QObject *peer);
+    void addRemoteClientToSession(QIODevice *socket);
+    void addInternalClientToSession(SignalProxy *proxy);
 };
+
 
 #endif

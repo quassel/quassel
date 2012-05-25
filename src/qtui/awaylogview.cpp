@@ -28,27 +28,29 @@
 #include "chatscene.h"
 
 AwayLogView::AwayLogView(AwayLogFilter *filter, QWidget *parent)
-  : ChatMonitorView(filter, parent)
+    : ChatMonitorView(filter, parent)
 {
-  setWindowTitle(tr("Away Log"));
+    setWindowTitle(tr("Away Log"));
 }
 
-void AwayLogView::addActionsToMenu(QMenu *menu, const QPointF &pos) {
-  ChatView::addActionsToMenu(menu, pos);
-  if(!menu->isEmpty())
-    menu->addSeparator();
 
-  if(scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
-    menu->addSeparator();
+void AwayLogView::addActionsToMenu(QMenu *menu, const QPointF &pos)
+{
+    ChatView::addActionsToMenu(menu, pos);
+    if (!menu->isEmpty())
+        menu->addSeparator();
 
-    QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
-    showNetworkAction->setCheckable(true);
-    showNetworkAction->setChecked(filter()->showFields() & ChatMonitorFilter::NetworkField);
-    showNetworkAction->setData(ChatMonitorFilter::NetworkField);
+    if (scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
+        menu->addSeparator();
 
-    QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
-    showBufferAction->setCheckable(true);
-    showBufferAction->setChecked(filter()->showFields() & ChatMonitorFilter::BufferField);
-    showBufferAction->setData(ChatMonitorFilter::BufferField);
-  }
+        QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
+        showNetworkAction->setCheckable(true);
+        showNetworkAction->setChecked(filter()->showFields() & ChatMonitorFilter::NetworkField);
+        showNetworkAction->setData(ChatMonitorFilter::NetworkField);
+
+        QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
+        showBufferAction->setCheckable(true);
+        showBufferAction->setChecked(filter()->showFields() & ChatMonitorFilter::BufferField);
+        showBufferAction->setData(ChatMonitorFilter::BufferField);
+    }
 }

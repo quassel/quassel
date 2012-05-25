@@ -30,44 +30,48 @@
 class KNotification;
 class KNotifyConfigWidget;
 
-class KNotificationBackend : public AbstractNotificationBackend {
-  Q_OBJECT
+class KNotificationBackend : public AbstractNotificationBackend
+{
+    Q_OBJECT
 
 public:
-  KNotificationBackend(QObject *parent = 0);
+    KNotificationBackend(QObject *parent = 0);
 
-  void notify(const Notification &);
-  void close(uint notificationId);
-  virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &);
+    void close(uint notificationId);
+    virtual SettingsPage *createConfigWidget() const;
 
 private slots:
-  void notificationActivated();
-  void notificationActivated(SystemTray::ActivationReason);
-  void notificationActivated(uint notificationId);
+    void notificationActivated();
+    void notificationActivated(SystemTray::ActivationReason);
+    void notificationActivated(uint notificationId);
 
 private:
-  class ConfigWidget;
+    class ConfigWidget;
 
-  void removeNotificationById(uint id);
-  void updateToolTip();
+    void removeNotificationById(uint id);
+    void updateToolTip();
 
-  QList<QPair<uint, QPointer<KNotification> > > _notifications;
+    QList<QPair<uint, QPointer<KNotification> > > _notifications;
 };
 
-class KNotificationBackend::ConfigWidget : public SettingsPage {
-  Q_OBJECT
+
+class KNotificationBackend::ConfigWidget : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(QWidget *parent = 0);
 
-  void save();
-  void load();
+    void save();
+    void load();
 
 private slots:
-  void widgetChanged(bool);
+    void widgetChanged(bool);
 
 private:
-  KNotifyConfigWidget *_widget;
+    KNotifyConfigWidget *_widget;
 };
+
 
 #endif

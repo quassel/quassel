@@ -23,9 +23,9 @@
 
 #include "settings.h"
 
-class CoreSettings : public Settings {
-
-  public:
+class CoreSettings : public Settings
+{
+public:
     virtual ~CoreSettings();
     CoreSettings(const QString group = "Core");
 
@@ -36,7 +36,7 @@ class CoreSettings : public Settings {
 
     void setCoreState(const QVariant &data);
     QVariant coreState(const QVariant &def = QVariant());
-
 };
+
 
 #endif /*_CORESETTINGS_H_*/

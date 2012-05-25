@@ -24,29 +24,31 @@
 #include "uistyle.h"
 #include "qtuisettings.h"
 
-class QtUiStyle : public UiStyle {
-  Q_OBJECT
+class QtUiStyle : public UiStyle
+{
+    Q_OBJECT
 
 public:
-  QtUiStyle(QObject *parent = 0);
-  virtual ~QtUiStyle();
+    QtUiStyle(QObject *parent = 0);
+    virtual ~QtUiStyle();
 
-  virtual inline qreal firstColumnSeparator() const { return 6; }
-  virtual inline qreal secondColumnSeparator() const { return 6; }
+    virtual inline qreal firstColumnSeparator() const { return 6; }
+    virtual inline qreal secondColumnSeparator() const { return 6; }
 
 public slots:
-  void generateSettingsQss() const;
+    void generateSettingsQss() const;
 
 private slots:
-  void updateTimestampFormatString();
+    void updateTimestampFormatString();
 
 private:
-  QString fontDescription(const QFont &font) const;
-  QString color(const QString &key, UiSettings &settings) const;
+    QString fontDescription(const QFont &font) const;
+    QString color(const QString &key, UiSettings &settings) const;
 
-  QString msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const;
-  QString senderQss(int i, UiSettings &settings) const;
-  QString chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const;
+    QString msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const;
+    QString senderQss(int i, UiSettings &settings) const;
+    QString chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const;
 };
+
 
 #endif

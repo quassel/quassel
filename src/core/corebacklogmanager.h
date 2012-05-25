@@ -25,21 +25,23 @@
 
 class CoreSession;
 
-class CoreBacklogManager : public BacklogManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreBacklogManager : public BacklogManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreBacklogManager(CoreSession *coreSession = 0);
+    CoreBacklogManager(CoreSession *coreSession = 0);
 
-  CoreSession *coreSession() { return _coreSession; }
+    CoreSession *coreSession() { return _coreSession; }
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
-  virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 };
+
 
 #endif // COREBACKLOGMANAGER_H

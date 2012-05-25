@@ -23,25 +23,27 @@
 #include "corenetworkconfig.h"
 
 INIT_SYNCABLE_OBJECT(CoreNetworkConfig)
-CoreNetworkConfig::CoreNetworkConfig(const QString& objectName, CoreSession* session)
-  : NetworkConfig(objectName, session)
+CoreNetworkConfig::CoreNetworkConfig(const QString &objectName, CoreSession *session)
+    : NetworkConfig(objectName, session)
 {
-  setAllowClientUpdates(true);
+    setAllowClientUpdates(true);
 
-  if(!session) {
-    qWarning() << Q_FUNC_INFO << "No CoreSession set, cannot load network configuration!";
-    return;
-  }
+    if (!session) {
+        qWarning() << Q_FUNC_INFO << "No CoreSession set, cannot load network configuration!";
+        return;
+    }
 
-  fromVariantMap(Core::getUserSetting(session->user(), objectName).toMap());
+    fromVariantMap(Core::getUserSetting(session->user(), objectName).toMap());
 }
 
-void CoreNetworkConfig::save() {
-  CoreSession *session = qobject_cast<CoreSession *>(parent());
-  if(!session) {
-    qWarning() << Q_FUNC_INFO << "No CoreSession set, cannot save network configuration!";
-    return;
-  }
 
-  Core::setUserSetting(session->user(), objectName(), toVariantMap());
+void CoreNetworkConfig::save()
+{
+    CoreSession *session = qobject_cast<CoreSession *>(parent());
+    if (!session) {
+        qWarning() << Q_FUNC_INFO << "No CoreSession set, cannot save network configuration!";
+        return;
+    }
+
+    Core::setUserSetting(session->user(), objectName(), toVariantMap());
 }

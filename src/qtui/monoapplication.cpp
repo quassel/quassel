@@ -25,42 +25,48 @@
 #include "qtui.h"
 
 MonolithicApplication::MonolithicApplication(int &argc, char **argv)
-  : QtUiApplication(argc, argv),
+    : QtUiApplication(argc, argv),
     _internalInitDone(false)
 {
-  _internal = new CoreApplicationInternal(); // needed for parser options
+    _internal = new CoreApplicationInternal(); // needed for parser options
 #if defined(HAVE_KDE) || defined(Q_OS_MAC)
-  disableCrashhandler();
+    disableCrashhandler();
 #endif /* HAVE_KDE || Q_OS_MAC */
-  setRunMode(Quassel::Monolithic);
+    setRunMode(Quassel::Monolithic);
 }
 
-bool MonolithicApplication::init() {
-  if(!Quassel::init()) // parse args
-    return false;
 
-  connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
+bool MonolithicApplication::init()
+{
+    if (!Quassel::init()) // parse args
+        return false;
 
-  if(isOptionSet("port")) {
-    startInternalCore();
-  }
+    connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
 
-  return QtUiApplication::init();
+    if (isOptionSet("port")) {
+        startInternalCore();
+    }
+
+    return QtUiApplication::init();
 }
 
-MonolithicApplication::~MonolithicApplication() {
-  // Client needs to be destroyed first
-  Client::destroy();
-  delete _internal;
+
+MonolithicApplication::~MonolithicApplication()
+{
+    // Client needs to be destroyed first
+    Client::destroy();
+    delete _internal;
 }
 
-void MonolithicApplication::startInternalCore() {
-  if(!_internalInitDone) {
-    _internal->init();
-    _internalInitDone = true;
-  }
-  Core *core = Core::instance();
-  CoreConnection *connection = Client::coreConnection();
-  connect(connection, SIGNAL(connectToInternalCore(SignalProxy *)), core, SLOT(setupInternalClientSession(SignalProxy *)));
-  connect(core, SIGNAL(sessionState(const QVariant &)), connection, SLOT(internalSessionStateReceived(const QVariant &)));
+
+void MonolithicApplication::startInternalCore()
+{
+    if (!_internalInitDone) {
+        _internal->init();
+        _internalInitDone = true;
+    }
+    Core *core = Core::instance();
+    CoreConnection *connection = Client::coreConnection();
+    connect(connection, SIGNAL(connectToInternalCore(SignalProxy *)), core, SLOT(setupInternalClientSession(SignalProxy *)));
+    connect(core, SIGNAL(sessionState(const QVariant &)), connection, SLOT(internalSessionStateReceived(const QVariant &)));
 }

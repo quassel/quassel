@@ -54,109 +54,109 @@ class QSpinBox;
  *    - QComboBox (currentIndex())
  *    - QSpinBox (value())
  */
-class SettingsPage : public QWidget {
-  Q_OBJECT
+class SettingsPage : public QWidget
+{
+    Q_OBJECT
 
 public:
-  SettingsPage(const QString &category, const QString &name, QWidget *parent = 0);
-  virtual ~SettingsPage() {};
+    SettingsPage(const QString &category, const QString &name, QWidget *parent = 0);
+    virtual ~SettingsPage() {};
 
-  //! The category of this settings page.
-  inline virtual QString category() const { return _category; }
+    //! The category of this settings page.
+    inline virtual QString category() const { return _category; }
 
-  //! The title of this settings page.
-  inline virtual QString title() const { return _title; }
+    //! The title of this settings page.
+    inline virtual QString title() const { return _title; }
 
-  //! Whether the settingspage needs a core connection to be selectable
-  /** This is a hint for the settingspage dialog. Do not rely on the settingspage not being
-   *  visible if disconnected, and care about disabling it yourself.
-   */
-  inline virtual bool needsCoreConnection() const { return false; }
-
-  //! The key this settings page stores its values under
-  /** This needs to be overriden to enable automatic loading/saving/hasChanged checking of widgets.
-   *  The child widgets' values will be stored in client settings under this key. Every widget that
-   *  should be automatically handled needs to have a \c settingsKey property set, and should also provide
-   *  a \c defaultValue property.
-   *  You can return an empty string (as opposed to a null string) to use the config root as a base, and
-   *  you can override this key for individual widgets by prefixing their SettingsKey with /.
-   */
-  inline virtual QString settingsKey() const { return QString(); }
-
-  //! Derived classes need to define this and return true if they have default settings.
-  /** If this method returns true, the "Restore Defaults" button in the SettingsDlg is
-   *  enabled. You also need to provide an implementation of defaults() then.
-   *
-   * The default implementation returns false.
+    //! Whether the settingspage needs a core connection to be selectable
+    /** This is a hint for the settingspage dialog. Do not rely on the settingspage not being
+     *  visible if disconnected, and care about disabling it yourself.
      */
-  inline virtual bool hasDefaults() const { return false; }
+    inline virtual bool needsCoreConnection() const { return false; }
 
-  //! Check if there are changes in the page, compared to the state saved in permanent storage.
-  inline bool hasChanged() const { return _changed || _autoWidgetsChanged; }
+    //! The key this settings page stores its values under
+    /** This needs to be overriden to enable automatic loading/saving/hasChanged checking of widgets.
+     *  The child widgets' values will be stored in client settings under this key. Every widget that
+     *  should be automatically handled needs to have a \c settingsKey property set, and should also provide
+     *  a \c defaultValue property.
+     *  You can return an empty string (as opposed to a null string) to use the config root as a base, and
+     *  you can override this key for individual widgets by prefixing their SettingsKey with /.
+     */
+    inline virtual QString settingsKey() const { return QString(); }
 
-  //! Called immediately before save() is called.
-  /** Derived classes should return false if saving is not possible (e.g. the current settings are invalid).
-   *  \return false, if the SettingsPage cannot be saved in its current state.
-   */
-  inline virtual bool aboutToSave() { return true; }
+    //! Derived classes need to define this and return true if they have default settings.
+    /** If this method returns true, the "Restore Defaults" button in the SettingsDlg is
+     *  enabled. You also need to provide an implementation of defaults() then.
+     *
+     * The default implementation returns false.
+       */
+    inline virtual bool hasDefaults() const { return false; }
 
-  //! sets checked state depending on \checked and stores the value for later comparision
-  static void load(QCheckBox *box, bool checked);
-  static bool hasChanged(QCheckBox *box);
-  static void load(QComboBox *box, int index);
-  static bool hasChanged(QComboBox *box);
-  static void load(QSpinBox *box, int value);
-  static bool hasChanged(QSpinBox *box);
+    //! Check if there are changes in the page, compared to the state saved in permanent storage.
+    inline bool hasChanged() const { return _changed || _autoWidgetsChanged; }
+
+    //! Called immediately before save() is called.
+    /** Derived classes should return false if saving is not possible (e.g. the current settings are invalid).
+     *  \return false, if the SettingsPage cannot be saved in its current state.
+     */
+    inline virtual bool aboutToSave() { return true; }
+
+    //! sets checked state depending on \checked and stores the value for later comparision
+    static void load(QCheckBox *box, bool checked);
+    static bool hasChanged(QCheckBox *box);
+    static void load(QComboBox *box, int index);
+    static bool hasChanged(QComboBox *box);
+    static void load(QSpinBox *box, int value);
+    static bool hasChanged(QSpinBox *box);
 
 public slots:
-  //! Save settings to permanent storage.
-  /** This baseclass implementation saves the autoWidgets, so be sure to call it if you use
-   *  this feature in your settingsPage!
-   */
-  virtual void save();
+    //! Save settings to permanent storage.
+    /** This baseclass implementation saves the autoWidgets, so be sure to call it if you use
+     *  this feature in your settingsPage!
+     */
+    virtual void save();
 
-  //! Load settings from permanent storage, overriding any changes the user might have made in the dialog.
-  /** This baseclass implementation loads the autoWidgets, so be sure to call it if you use
-   *  this feature in your settingsPage!
-   */
-  virtual void load();
+    //! Load settings from permanent storage, overriding any changes the user might have made in the dialog.
+    /** This baseclass implementation loads the autoWidgets, so be sure to call it if you use
+     *  this feature in your settingsPage!
+     */
+    virtual void load();
 
-  //! Restore defaults, overriding any changes the user might have made in the dialog.
-  /** This baseclass implementation loads the defaults of the autoWidgets (if available), so be sure
-   *  to call it if you use this feature in your settingsPage!
-   */
-  virtual void defaults();
+    //! Restore defaults, overriding any changes the user might have made in the dialog.
+    /** This baseclass implementation loads the defaults of the autoWidgets (if available), so be sure
+     *  to call it if you use this feature in your settingsPage!
+     */
+    virtual void defaults();
 
 protected slots:
-  //! Calling this slot is equivalent to calling setChangedState(true).
-  inline void changed() { setChangedState(true); }
+    //! Calling this slot is equivalent to calling setChangedState(true).
+    inline void changed() { setChangedState(true); }
 
-  //! This should be called whenever the widget state changes from unchanged to change or the other way round.
-  void setChangedState(bool hasChanged = true);
+    //! This should be called whenever the widget state changes from unchanged to change or the other way round.
+    void setChangedState(bool hasChanged = true);
 
 protected:
-  void initAutoWidgets();
-  virtual QVariant loadAutoWidgetValue(const QString &widgetName);
-  virtual void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
+    void initAutoWidgets();
+    virtual QVariant loadAutoWidgetValue(const QString &widgetName);
+    virtual void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
 
 signals:
-  //! Emitted whenever the widget state changes.
-  void changed(bool hasChanged);
+    //! Emitted whenever the widget state changes.
+    void changed(bool hasChanged);
 
 private slots:
-  // for auto stuff
-  void autoWidgetHasChanged();
+    // for auto stuff
+    void autoWidgetHasChanged();
 
 private:
-  void findAutoWidgets(QObject *parent, QObjectList *widgetList) const;
-  QByteArray autoWidgetPropertyName(QObject *widget) const;
-  QString autoWidgetSettingsKey(QObject *widget) const;
+    void findAutoWidgets(QObject *parent, QObjectList *widgetList) const;
+    QByteArray autoWidgetPropertyName(QObject *widget) const;
+    QString autoWidgetSettingsKey(QObject *widget) const;
 
-  QString _category, _title;
-  bool _changed, _autoWidgetsChanged;
-  QObjectList _autoWidgets;
+    QString _category, _title;
+    bool _changed, _autoWidgetsChanged;
+    QObjectList _autoWidgets;
 };
-
 
 
 #endif

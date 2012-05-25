@@ -20,9 +20,9 @@
 #include "topicwidgetsettingspage.h"
 
 TopicWidgetSettingsPage::TopicWidgetSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Interface"), tr("Topic Widget"), parent)
+    : SettingsPage(tr("Interface"), tr("Topic Widget"), parent)
 {
-  ui.setupUi(this);
+    ui.setupUi(this);
 
-  initAutoWidgets();
+    initAutoWidgets();
 }

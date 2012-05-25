@@ -25,45 +25,47 @@
 
 #include "messagefilter.h"
 
-class ChatMonitorFilter : public MessageFilter {
-  Q_OBJECT
+class ChatMonitorFilter : public MessageFilter
+{
+    Q_OBJECT
 
 public:
-  enum SenderFields {
-    NoField = 0x00,
-    NetworkField = 0x01,
-    BufferField = 0x02,
-    SenderField = 0x04,
-    AllFields = 0xff
-  };
+    enum SenderFields {
+        NoField = 0x00,
+        NetworkField = 0x01,
+        BufferField = 0x02,
+        SenderField = 0x04,
+        AllFields = 0xff
+    };
 
-  ChatMonitorFilter(MessageModel *model, QObject *parent = 0);
+    ChatMonitorFilter(MessageModel *model, QObject *parent = 0);
 
-  virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-  virtual QString idString() const { return "ChatMonitor"; }
-  virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual QString idString() const { return "ChatMonitor"; }
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-  int showFields() const { return _showFields; }
-  bool showOwnMessages() const { return _showOwnMessages; }
+    int showFields() const { return _showFields; }
+    bool showOwnMessages() const { return _showOwnMessages; }
 
 public slots:
-  void addShowField(int field);
-  void removeShowField(int field);
-  void setShowOwnMessages(bool show);
+    void addShowField(int field);
+    void removeShowField(int field);
+    void setShowOwnMessages(bool show);
 
 private slots:
-  void showFieldsSettingChanged(const QVariant &newValue);
-  void showOwnMessagesSettingChanged(const QVariant &newValue);
-  void showHighlightsSettingChanged(const QVariant &newValue);
-  void operationModeSettingChanged(const QVariant &newValue);
-  void buffersSettingChanged(const QVariant &newValue);
+    void showFieldsSettingChanged(const QVariant &newValue);
+    void showOwnMessagesSettingChanged(const QVariant &newValue);
+    void showHighlightsSettingChanged(const QVariant &newValue);
+    void operationModeSettingChanged(const QVariant &newValue);
+    void buffersSettingChanged(const QVariant &newValue);
 
 private:
-  int _showFields;
-  bool _showOwnMessages;
-  QList<BufferId> _bufferIds;
-  bool _showHighlights;
-  int _operationMode;
+    int _showFields;
+    bool _showOwnMessages;
+    QList<BufferId> _bufferIds;
+    bool _showHighlights;
+    int _operationMode;
 };
+
 
 #endif

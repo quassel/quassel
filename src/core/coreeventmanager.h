@@ -29,19 +29,20 @@ class CoreSession;
 
 class CoreEventManager : public EventManager
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  CoreEventManager(CoreSession *session)
-    : EventManager(session)
-    , _coreSession(session)
-  { }
+    CoreEventManager(CoreSession *session)
+        : EventManager(session)
+        , _coreSession(session)
+    {}
 
 protected:
-  inline Network *networkById(NetworkId id) const { return _coreSession->network(id); }
+    inline Network *networkById(NetworkId id) const { return _coreSession->network(id); }
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 };
+
 
 #endif

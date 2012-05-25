@@ -21,36 +21,44 @@
 #include "qtuisettings.h"
 
 QtUiSettings::QtUiSettings(const QString &subGroup)
-  : UiSettings(QString("QtUi/%1").arg(subGroup))
+    : UiSettings(QString("QtUi/%1").arg(subGroup))
 {
 }
 
+
 QtUiSettings::QtUiSettings()
-  : UiSettings("QtUi")
+    : UiSettings("QtUi")
 {
 }
+
 
 /***********************************************************************/
 QtUiStyleSettings::QtUiStyleSettings(const QString &subGroup)
-  : UiSettings(QString("QtUiStyle/%1").arg(subGroup))
+    : UiSettings(QString("QtUiStyle/%1").arg(subGroup))
 {
 }
 
+
 QtUiStyleSettings::QtUiStyleSettings()
-  : UiSettings("QtUiStyle")
+    : UiSettings("QtUiStyle")
 {
 }
+
 
 /***********************************************************************/
 
-WarningsSettings::WarningsSettings() : UiSettings("Warnings") {
-
+WarningsSettings::WarningsSettings() : UiSettings("Warnings")
+{
 }
 
-bool WarningsSettings::showWarning(const QString &key) {
-  return localValue(key, true).toBool();
+
+bool WarningsSettings::showWarning(const QString &key)
+{
+    return localValue(key, true).toBool();
 }
 
-void WarningsSettings::setShowWarning(const QString &key, bool show) {
-  setLocalValue(key, show);
+
+void WarningsSettings::setShowWarning(const QString &key, bool show)
+{
+    setLocalValue(key, show);
 }

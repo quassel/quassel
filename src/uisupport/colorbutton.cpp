@@ -30,33 +30,40 @@
 #  include <QColorDialog>
 #endif
 
-ColorButton::ColorButton(QWidget *parent) : QToolButton(parent) {
-  setText("");
-  connect(this, SIGNAL(clicked()), SLOT(chooseColor()));
+ColorButton::ColorButton(QWidget *parent) : QToolButton(parent)
+{
+    setText("");
+    connect(this, SIGNAL(clicked()), SLOT(chooseColor()));
 }
 
-void ColorButton::setColor(const QColor &color) {
-  _color = color;
-  QPixmap pixmap(QSize(32,32));
-  pixmap.fill(color);
-  setIcon(pixmap);
 
-  emit colorChanged(color);
+void ColorButton::setColor(const QColor &color)
+{
+    _color = color;
+    QPixmap pixmap(QSize(32, 32));
+    pixmap.fill(color);
+    setIcon(pixmap);
+
+    emit colorChanged(color);
 }
 
-QColor ColorButton::color() const {
-  return _color;
+
+QColor ColorButton::color() const
+{
+    return _color;
 }
 
-void ColorButton::chooseColor() {
+
+void ColorButton::chooseColor()
+{
 #ifdef HAVE_KDE
-  QColor c = color();
-  KColorDialog::getColor(c, this);
+    QColor c = color();
+    KColorDialog::getColor(c, this);
 #else
-  QColor c = QColorDialog::getColor(color(), this);
+    QColor c = QColorDialog::getColor(color(), this);
 #endif
 
-  if(c.isValid()) {
-    setColor(c);
-  }
+    if (c.isValid()) {
+        setColor(c);
+    }
 }

@@ -41,274 +41,323 @@ const QString StatusNotifierItem::_statusNotifierWatcherServiceName("org.kde.Sta
 /**
  * Specialization to provide access to icon names
  */
-class QuasselDBusMenuExporter : public DBusMenuExporter {
+class QuasselDBusMenuExporter : public DBusMenuExporter
+{
 public:
-  QuasselDBusMenuExporter(const QString &dbusObjectPath, QMenu *menu, const QDBusConnection &dbusConnection)
-    : DBusMenuExporter(dbusObjectPath, menu, dbusConnection)
-  {}
+    QuasselDBusMenuExporter(const QString &dbusObjectPath, QMenu *menu, const QDBusConnection &dbusConnection)
+        : DBusMenuExporter(dbusObjectPath, menu, dbusConnection)
+    {}
 
 protected:
-  virtual QString iconNameForAction(QAction *action) { // TODO Qt 4.7: fixme when we have converted our iconloader
-    Icon icon(action->icon());
+    virtual QString iconNameForAction(QAction *action) // TODO Qt 4.7: fixme when we have converted our iconloader
+    {
+        Icon icon(action->icon());
 #if QT_VERSION >= 0x040701
-    // QIcon::name() is in the 4.7 git branch, but it is not in 4.7 TP.
-    // If you get a build error here, you need to update your pre-release
-    // of Qt 4.7.
-    return icon.isNull() ? QString() : icon.name();
+        // QIcon::name() is in the 4.7 git branch, but it is not in 4.7 TP.
+        // If you get a build error here, you need to update your pre-release
+        // of Qt 4.7.
+        return icon.isNull() ? QString() : icon.name();
 #else
-    return QString();
+        return QString();
 #endif
-  }
+    }
 };
+
 
 #endif /* HAVE_DBUSMENU */
 
 StatusNotifierItem::StatusNotifierItem(QWidget *parent)
-  : StatusNotifierItemParent(parent),
-  _statusNotifierItemDBus(0),
-  _statusNotifierWatcher(0),
-  _notificationsClient(0),
-  _notificationsClientSupportsMarkup(true),
-  _lastNotificationsDBusId(0)
+    : StatusNotifierItemParent(parent),
+    _statusNotifierItemDBus(0),
+    _statusNotifierWatcher(0),
+    _notificationsClient(0),
+    _notificationsClientSupportsMarkup(true),
+    _lastNotificationsDBusId(0)
 {
-
 }
 
-StatusNotifierItem::~StatusNotifierItem() {
-  delete _statusNotifierWatcher;
+
+StatusNotifierItem::~StatusNotifierItem()
+{
+    delete _statusNotifierWatcher;
 }
 
-void StatusNotifierItem::init() {
-  qDBusRegisterMetaType<DBusImageStruct>();
-  qDBusRegisterMetaType<DBusImageVector>();
-  qDBusRegisterMetaType<DBusToolTipStruct>();
 
-  _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
+void StatusNotifierItem::init()
+{
+    qDBusRegisterMetaType<DBusImageStruct>();
+    qDBusRegisterMetaType<DBusImageVector>();
+    qDBusRegisterMetaType<DBusToolTipStruct>();
 
-  connect(this, SIGNAL(toolTipChanged(QString,QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
-  connect(this, SIGNAL(animationEnabledChanged(bool)), _statusNotifierItemDBus, SIGNAL(NewAttentionIcon()));
+    _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
 
-  QDBusServiceWatcher *watcher = new QDBusServiceWatcher(_statusNotifierWatcherServiceName,
-                                                         QDBusConnection::sessionBus(),
-                                                         QDBusServiceWatcher::WatchForOwnerChange,
-                                                         this);
-  connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)), SLOT(serviceChange(QString,QString,QString)));
+    connect(this, SIGNAL(toolTipChanged(QString, QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
+    connect(this, SIGNAL(animationEnabledChanged(bool)), _statusNotifierItemDBus, SIGNAL(NewAttentionIcon()));
 
-  setMode(StatusNotifier);
+    QDBusServiceWatcher *watcher = new QDBusServiceWatcher(_statusNotifierWatcherServiceName,
+        QDBusConnection::sessionBus(),
+        QDBusServiceWatcher::WatchForOwnerChange,
+        this);
+    connect(watcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), SLOT(serviceChange(QString, QString, QString)));
 
-  _notificationsClient = new org::freedesktop::Notifications("org.freedesktop.Notifications", "/org/freedesktop/Notifications",
-                                                             QDBusConnection::sessionBus(), this);
+    setMode(StatusNotifier);
 
-  connect(_notificationsClient, SIGNAL(NotificationClosed(uint,uint)), SLOT(notificationClosed(uint,uint)));
-  connect(_notificationsClient, SIGNAL(ActionInvoked(uint,QString)), SLOT(notificationInvoked(uint,QString)));
+    _notificationsClient = new org::freedesktop::Notifications("org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+        QDBusConnection::sessionBus(), this);
 
-  if(_notificationsClient->isValid()) {
-    QStringList desktopCapabilities = _notificationsClient->GetCapabilities();
-    _notificationsClientSupportsMarkup = desktopCapabilities.contains("body-markup");
-    _notificationsClientSupportsActions = desktopCapabilities.contains("actions");
-  }
+    connect(_notificationsClient, SIGNAL(NotificationClosed(uint, uint)), SLOT(notificationClosed(uint, uint)));
+    connect(_notificationsClient, SIGNAL(ActionInvoked(uint, QString)), SLOT(notificationInvoked(uint, QString)));
 
-  StatusNotifierItemParent::init();
-  trayMenu()->installEventFilter(this);
+    if (_notificationsClient->isValid()) {
+        QStringList desktopCapabilities = _notificationsClient->GetCapabilities();
+        _notificationsClientSupportsMarkup = desktopCapabilities.contains("body-markup");
+        _notificationsClientSupportsActions = desktopCapabilities.contains("actions");
+    }
 
-  // use the appdata icon folder for now
-  _iconThemePath = Quassel::findDataFilePath("icons");
+    StatusNotifierItemParent::init();
+    trayMenu()->installEventFilter(this);
+
+    // use the appdata icon folder for now
+    _iconThemePath = Quassel::findDataFilePath("icons");
 
 #ifdef HAVE_DBUSMENU
-  _menuObjectPath = "/MenuBar";
-  new QuasselDBusMenuExporter(menuObjectPath(), trayMenu(), _statusNotifierItemDBus->dbusConnection()); // will be added as menu child
+    _menuObjectPath = "/MenuBar";
+    new QuasselDBusMenuExporter(menuObjectPath(), trayMenu(), _statusNotifierItemDBus->dbusConnection()); // will be added as menu child
 #endif
 }
 
-void StatusNotifierItem::registerToDaemon() {
-  if(!_statusNotifierWatcher) {
-    _statusNotifierWatcher = new org::kde::StatusNotifierWatcher(_statusNotifierWatcherServiceName,
-                                                                 "/StatusNotifierWatcher",
-                                                                 QDBusConnection::sessionBus());
-    connect(_statusNotifierWatcher, SIGNAL(StatusNotifierHostRegistered()), SLOT(checkForRegisteredHosts()));
-    connect(_statusNotifierWatcher, SIGNAL(StatusNotifierHostUnregistered()), SLOT(checkForRegisteredHosts()));
-  }
-  if(_statusNotifierWatcher->isValid()
-    && _statusNotifierWatcher->property("ProtocolVersion").toInt() == _protocolVersion) {
 
-    _statusNotifierWatcher->RegisterStatusNotifierItem(_statusNotifierItemDBus->service());
-    checkForRegisteredHosts();
-
-  } else {
-    //qDebug() << "StatusNotifierWatcher not reachable!";
-    setMode(Legacy);
-  }
-}
-
-void StatusNotifierItem::serviceChange(const QString& name, const QString& oldOwner, const QString& newOwner) {
-  Q_UNUSED(name);
-  if(newOwner.isEmpty()) {
-    //unregistered
-    //qDebug() << "Connection to the StatusNotifierWatcher lost";
-    delete _statusNotifierWatcher;
-    _statusNotifierWatcher = 0;
-    setMode(Legacy);
-  } else if(oldOwner.isEmpty()) {
-    //registered
-    setMode(StatusNotifier);
-  }
-}
-
-void StatusNotifierItem::checkForRegisteredHosts() {
-  if(!_statusNotifierWatcher || !_statusNotifierWatcher->property("IsStatusNotifierHostRegistered").toBool())
-    setMode(Legacy);
-  else
-    setMode(StatusNotifier);
-}
-
-bool StatusNotifierItem::isSystemTrayAvailable() const {
-  if(mode() == StatusNotifier)
-    return true; // else it should be set to legacy on registration
-
-  return StatusNotifierItemParent::isSystemTrayAvailable();
-}
-
-bool StatusNotifierItem::isVisible() const {
-  if(mode() == StatusNotifier)
-    return shouldBeVisible(); // we don't have a way to check, so we need to trust everything went right
-
-  return StatusNotifierItemParent::isVisible();
-}
-
-void StatusNotifierItem::setMode(Mode mode_) {
-  if(mode_ == mode())
-    return;
-
-  if(mode_ != StatusNotifier) {
-    _statusNotifierItemDBus->unregisterService();
-  }
-
-  StatusNotifierItemParent::setMode(mode_);
-
-  if(mode() == StatusNotifier) {
-    _statusNotifierItemDBus->registerService();
-    registerToDaemon();
-  }
-}
-
-void StatusNotifierItem::setState(State state_) {
-  StatusNotifierItemParent::setState(state_);
-
-  emit _statusNotifierItemDBus->NewStatus(metaObject()->enumerator(metaObject()->indexOfEnumerator("State")).valueToKey(state()));
-  emit _statusNotifierItemDBus->NewIcon();
-}
-
-void StatusNotifierItem::setVisible(bool visible) {
-  if(visible == isVisible())
-    return;
-
-  LegacySystemTray::setVisible(visible);
-
-  if(mode() == StatusNotifier) {
-    if(shouldBeVisible()) {
-      _statusNotifierItemDBus->registerService();
-      registerToDaemon();
-    } else {
-      _statusNotifierItemDBus->unregisterService();
-      _statusNotifierWatcher->deleteLater();
-      _statusNotifierWatcher = 0;
+void StatusNotifierItem::registerToDaemon()
+{
+    if (!_statusNotifierWatcher) {
+        _statusNotifierWatcher = new org::kde::StatusNotifierWatcher(_statusNotifierWatcherServiceName,
+            "/StatusNotifierWatcher",
+            QDBusConnection::sessionBus());
+        connect(_statusNotifierWatcher, SIGNAL(StatusNotifierHostRegistered()), SLOT(checkForRegisteredHosts()));
+        connect(_statusNotifierWatcher, SIGNAL(StatusNotifierHostUnregistered()), SLOT(checkForRegisteredHosts()));
     }
-  }
+    if (_statusNotifierWatcher->isValid()
+        && _statusNotifierWatcher->property("ProtocolVersion").toInt() == _protocolVersion) {
+        _statusNotifierWatcher->RegisterStatusNotifierItem(_statusNotifierItemDBus->service());
+        checkForRegisteredHosts();
+    }
+    else {
+        //qDebug() << "StatusNotifierWatcher not reachable!";
+        setMode(Legacy);
+    }
 }
 
-QString StatusNotifierItem::title() const {
-  return QString("Quassel IRC");
+
+void StatusNotifierItem::serviceChange(const QString &name, const QString &oldOwner, const QString &newOwner)
+{
+    Q_UNUSED(name);
+    if (newOwner.isEmpty()) {
+        //unregistered
+        //qDebug() << "Connection to the StatusNotifierWatcher lost";
+        delete _statusNotifierWatcher;
+        _statusNotifierWatcher = 0;
+        setMode(Legacy);
+    }
+    else if (oldOwner.isEmpty()) {
+        //registered
+        setMode(StatusNotifier);
+    }
 }
 
-QString StatusNotifierItem::iconName() const {
-  if(state() == Passive)
-    return QString("quassel-inactive");
-  else
+
+void StatusNotifierItem::checkForRegisteredHosts()
+{
+    if (!_statusNotifierWatcher || !_statusNotifierWatcher->property("IsStatusNotifierHostRegistered").toBool())
+        setMode(Legacy);
+    else
+        setMode(StatusNotifier);
+}
+
+
+bool StatusNotifierItem::isSystemTrayAvailable() const
+{
+    if (mode() == StatusNotifier)
+        return true;  // else it should be set to legacy on registration
+
+    return StatusNotifierItemParent::isSystemTrayAvailable();
+}
+
+
+bool StatusNotifierItem::isVisible() const
+{
+    if (mode() == StatusNotifier)
+        return shouldBeVisible();  // we don't have a way to check, so we need to trust everything went right
+
+    return StatusNotifierItemParent::isVisible();
+}
+
+
+void StatusNotifierItem::setMode(Mode mode_)
+{
+    if (mode_ == mode())
+        return;
+
+    if (mode_ != StatusNotifier) {
+        _statusNotifierItemDBus->unregisterService();
+    }
+
+    StatusNotifierItemParent::setMode(mode_);
+
+    if (mode() == StatusNotifier) {
+        _statusNotifierItemDBus->registerService();
+        registerToDaemon();
+    }
+}
+
+
+void StatusNotifierItem::setState(State state_)
+{
+    StatusNotifierItemParent::setState(state_);
+
+    emit _statusNotifierItemDBus->NewStatus(metaObject()->enumerator(metaObject()->indexOfEnumerator("State")).valueToKey(state()));
+    emit _statusNotifierItemDBus->NewIcon();
+}
+
+
+void StatusNotifierItem::setVisible(bool visible)
+{
+    if (visible == isVisible())
+        return;
+
+    LegacySystemTray::setVisible(visible);
+
+    if (mode() == StatusNotifier) {
+        if (shouldBeVisible()) {
+            _statusNotifierItemDBus->registerService();
+            registerToDaemon();
+        }
+        else {
+            _statusNotifierItemDBus->unregisterService();
+            _statusNotifierWatcher->deleteLater();
+            _statusNotifierWatcher = 0;
+        }
+    }
+}
+
+
+QString StatusNotifierItem::title() const
+{
+    return QString("Quassel IRC");
+}
+
+
+QString StatusNotifierItem::iconName() const
+{
+    if (state() == Passive)
+        return QString("quassel-inactive");
+    else
+        return QString("quassel");
+}
+
+
+QString StatusNotifierItem::attentionIconName() const
+{
+    if (animationEnabled())
+        return QString("quassel-message");
+    else
+        return QString("quassel");
+}
+
+
+QString StatusNotifierItem::toolTipIconName() const
+{
     return QString("quassel");
 }
 
-QString StatusNotifierItem::attentionIconName() const {
-  if(animationEnabled())
-    return QString("quassel-message");
-  else
-    return QString("quassel");
+
+QString StatusNotifierItem::iconThemePath() const
+{
+    return _iconThemePath;
 }
 
-QString StatusNotifierItem::toolTipIconName() const {
-  return QString("quassel");
+
+QString StatusNotifierItem::menuObjectPath() const
+{
+    return _menuObjectPath;
 }
 
-QString StatusNotifierItem::iconThemePath() const {
-  return _iconThemePath;
+
+void StatusNotifierItem::activated(const QPoint &pos)
+{
+    Q_UNUSED(pos)
+    activate(Trigger);
 }
 
-QString StatusNotifierItem::menuObjectPath() const {
-  return _menuObjectPath;
-}
 
-void StatusNotifierItem::activated(const QPoint &pos) {
-  Q_UNUSED(pos)
-  activate(Trigger);
-}
-
-bool StatusNotifierItem::eventFilter(QObject *watched, QEvent *event) {
-  if(mode() == StatusNotifier) {
-    //FIXME: ugly ugly workaround to weird QMenu's focus problems
+bool StatusNotifierItem::eventFilter(QObject *watched, QEvent *event)
+{
+    if (mode() == StatusNotifier) {
+        //FIXME: ugly ugly workaround to weird QMenu's focus problems
 #ifdef HAVE_KDE
-    if(watched == trayMenu() &&
-       (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton))) {
-      // put at the back of event queue to let the action activate anyways
-      QTimer::singleShot(0, trayMenu(), SLOT(hide()));
-    }
+        if (watched == trayMenu() &&
+            (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton))) {
+            // put at the back of event queue to let the action activate anyways
+            QTimer::singleShot(0, trayMenu(), SLOT(hide()));
+        }
 #else
-    if(watched == trayMenu() && event->type() == QEvent::HoverLeave) {
-      trayMenu()->hide();
-    }
+        if (watched == trayMenu() && event->type() == QEvent::HoverLeave) {
+            trayMenu()->hide();
+        }
 #endif
-  }
-  return StatusNotifierItemParent::eventFilter(watched, event);
-}
-
-void StatusNotifierItem::showMessage(const QString &title, const QString &message_, SystemTray::MessageIcon icon, int timeout, uint notificationId) {
-  QString message = message_;
-  if(_notificationsClient->isValid()) {
-    if(_notificationsClientSupportsMarkup)
-      message = Qt::escape(message);
-
-    QStringList actions;
-    if(_notificationsClientSupportsActions)
-      actions << "activate" << "View";
-
-    // we always queue notifications right now
-    QDBusReply<uint> reply = _notificationsClient->Notify(title, 0, "quassel", title, message, actions, QVariantMap(), timeout);
-    if(reply.isValid()) {
-      uint dbusid = reply.value();
-      _notificationsIdMap.insert(dbusid, notificationId);
-      _lastNotificationsDBusId = dbusid;
     }
-  } else
-    StatusNotifierItemParent::showMessage(title, message, icon, timeout, notificationId);
+    return StatusNotifierItemParent::eventFilter(watched, event);
 }
 
-void StatusNotifierItem::closeMessage(uint notificationId) {
-  foreach(uint dbusid, _notificationsIdMap.keys()) {
-    if(_notificationsIdMap.value(dbusid) == notificationId) {
-      _notificationsIdMap.remove(dbusid);
-      _notificationsClient->CloseNotification(dbusid);
+
+void StatusNotifierItem::showMessage(const QString &title, const QString &message_, SystemTray::MessageIcon icon, int timeout, uint notificationId)
+{
+    QString message = message_;
+    if (_notificationsClient->isValid()) {
+        if (_notificationsClientSupportsMarkup)
+            message = Qt::escape(message);
+
+        QStringList actions;
+        if (_notificationsClientSupportsActions)
+            actions << "activate" << "View";
+
+        // we always queue notifications right now
+        QDBusReply<uint> reply = _notificationsClient->Notify(title, 0, "quassel", title, message, actions, QVariantMap(), timeout);
+        if (reply.isValid()) {
+            uint dbusid = reply.value();
+            _notificationsIdMap.insert(dbusid, notificationId);
+            _lastNotificationsDBusId = dbusid;
+        }
     }
-  }
-  _lastNotificationsDBusId = 0;
+    else
+        StatusNotifierItemParent::showMessage(title, message, icon, timeout, notificationId);
 }
 
-void StatusNotifierItem::notificationClosed(uint dbusid, uint reason) {
-  Q_UNUSED(reason)
-  _lastNotificationsDBusId = 0;
-  emit messageClosed(_notificationsIdMap.take(dbusid));
+
+void StatusNotifierItem::closeMessage(uint notificationId)
+{
+    foreach(uint dbusid, _notificationsIdMap.keys()) {
+        if (_notificationsIdMap.value(dbusid) == notificationId) {
+            _notificationsIdMap.remove(dbusid);
+            _notificationsClient->CloseNotification(dbusid);
+        }
+    }
+    _lastNotificationsDBusId = 0;
 }
 
-void StatusNotifierItem::notificationInvoked(uint dbusid, const QString &action) {
-  Q_UNUSED(action)
-  emit messageClicked(_notificationsIdMap.value(dbusid, 0));
+
+void StatusNotifierItem::notificationClosed(uint dbusid, uint reason)
+{
+    Q_UNUSED(reason)
+    _lastNotificationsDBusId = 0;
+    emit messageClosed(_notificationsIdMap.take(dbusid));
 }
+
+
+void StatusNotifierItem::notificationInvoked(uint dbusid, const QString &action)
+{
+    Q_UNUSED(action)
+    emit messageClicked(_notificationsIdMap.value(dbusid, 0));
+}
+
 
 #endif

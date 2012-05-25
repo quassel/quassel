@@ -29,85 +29,89 @@
 #include "logger.h"
 #include "quassel.h"
 
-Logger::~Logger() {
-  log();
+Logger::~Logger()
+{
+    log();
 }
 
-void Logger::log() {
-  if(_logLevel < Quassel::logLevel())
-    return;
 
-  switch(_logLevel) {
-  case Quassel::DebugLevel:
-    _buffer.prepend("Debug: ");
-    break;
-  case Quassel::InfoLevel:
-    _buffer.prepend("Info: ");
-    break;
+void Logger::log()
+{
+    if (_logLevel < Quassel::logLevel())
+        return;
+
+    switch (_logLevel) {
+    case Quassel::DebugLevel:
+        _buffer.prepend("Debug: ");
+        break;
+    case Quassel::InfoLevel:
+        _buffer.prepend("Info: ");
+        break;
     case Quassel::WarningLevel:
-    _buffer.prepend("Warning: ");
-    break;
-  case Quassel::ErrorLevel:
-    _buffer.prepend("Error: ");
-    break;
-  default:
-    break;
-  }
+        _buffer.prepend("Warning: ");
+        break;
+    case Quassel::ErrorLevel:
+        _buffer.prepend("Error: ");
+        break;
+    default:
+        break;
+    }
 
 #ifdef HAVE_SYSLOG
-  if(Quassel::logToSyslog()) {
-    int prio;
-    switch(_logLevel) {
-    case Quassel::DebugLevel:
-      prio = LOG_DEBUG;
-      break;
-    case Quassel::InfoLevel:
-      prio = LOG_INFO;
-      break;
-    case Quassel::WarningLevel:
-      prio = LOG_WARNING;
-      break;
-    case Quassel::ErrorLevel:
-      prio = LOG_ERR;
-      break;
-    default:
-      prio = LOG_INFO;
-      break;
+    if (Quassel::logToSyslog()) {
+        int prio;
+        switch (_logLevel) {
+        case Quassel::DebugLevel:
+            prio = LOG_DEBUG;
+            break;
+        case Quassel::InfoLevel:
+            prio = LOG_INFO;
+            break;
+        case Quassel::WarningLevel:
+            prio = LOG_WARNING;
+            break;
+        case Quassel::ErrorLevel:
+            prio = LOG_ERR;
+            break;
+        default:
+            prio = LOG_INFO;
+            break;
+        }
+        syslog(LOG_USER & prio, "%s", qPrintable(_buffer));
     }
-    syslog(LOG_USER & prio, "%s", qPrintable(_buffer));
-  }
 #endif
 
-  // if we neither use syslog nor have a logfile we log to stdout
+    // if we neither use syslog nor have a logfile we log to stdout
 
-  if(Quassel::logFile() || !Quassel::logToSyslog()) {
-    _buffer.prepend(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss "));
+    if (Quassel::logFile() || !Quassel::logToSyslog()) {
+        _buffer.prepend(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss "));
 
-    QTextStream out(stdout);
-    if(Quassel::logFile() && Quassel::logFile()->isOpen()) {
-      _buffer.remove(QChar('\n'));
-      out.setDevice(Quassel::logFile());
+        QTextStream out(stdout);
+        if (Quassel::logFile() && Quassel::logFile()->isOpen()) {
+            _buffer.remove(QChar('\n'));
+            out.setDevice(Quassel::logFile());
+        }
+
+        out << _buffer << endl;
     }
-
-    out << _buffer << endl;
-  }
 }
 
 
-void Logger::logMessage(QtMsgType type, const char *msg) {
-  switch (type) {
-  case QtDebugMsg:
-    Logger(Quassel::DebugLevel) << msg;
-    break;
-  case QtWarningMsg:
-    Logger(Quassel::WarningLevel) << msg;
-    break;
-  case QtCriticalMsg:
-    Logger(Quassel::ErrorLevel) << msg;
-    break;
-  case QtFatalMsg:
-    Logger(Quassel::ErrorLevel) << msg;
-    Quassel::logFatalMessage(msg);
-    return;
-  }
+void Logger::logMessage(QtMsgType type, const char *msg)
+{
+    switch (type) {
+    case QtDebugMsg:
+        Logger(Quassel::DebugLevel) << msg;
+        break;
+    case QtWarningMsg:
+        Logger(Quassel::WarningLevel) << msg;
+        break;
+    case QtCriticalMsg:
+        Logger(Quassel::ErrorLevel) << msg;
+        break;
+    case QtFatalMsg:
+        Logger(Quassel::ErrorLevel) << msg;
+        Quassel::logFatalMessage(msg);
+        return;
+    }
 }

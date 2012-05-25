@@ -23,46 +23,53 @@
 
 INIT_SYNCABLE_OBJECT(CoreIrcChannel)
 CoreIrcChannel::CoreIrcChannel(const QString &channelname, Network *network)
-  : IrcChannel(channelname, network),
+    : IrcChannel(channelname, network),
     _receivedWelcomeMsg(false)
 {
 #ifdef HAVE_QCA2
-  _cipher = 0;
+    _cipher = 0;
 #endif
 }
 
-CoreIrcChannel::~CoreIrcChannel() {
+
+CoreIrcChannel::~CoreIrcChannel()
+{
 #ifdef HAVE_QCA2
-  delete _cipher;
+    delete _cipher;
 #endif
 }
 
+
 #ifdef HAVE_QCA2
-Cipher *CoreIrcChannel::cipher() const {
-  if(!_cipher)
-    _cipher = new Cipher();
+Cipher *CoreIrcChannel::cipher() const
+{
+    if (!_cipher)
+        _cipher = new Cipher();
 
-  return _cipher;
+    return _cipher;
 }
 
-void CoreIrcChannel::setEncrypted(bool e) {
-  if(!Cipher::neededFeaturesAvailable())
-    return;
 
-  if(e) {
-    if(topic().isEmpty())
-      return;
+void CoreIrcChannel::setEncrypted(bool e)
+{
+    if (!Cipher::neededFeaturesAvailable())
+        return;
 
-    QByteArray key = qobject_cast<CoreNetwork *>(network())->cipherKey(name());
-    if(key.isEmpty())
-      return;
+    if (e) {
+        if (topic().isEmpty())
+            return;
 
-    if(!cipher()->setKey(key))
-      return;
+        QByteArray key = qobject_cast<CoreNetwork *>(network())->cipherKey(name());
+        if (key.isEmpty())
+            return;
 
-    QByteArray decrypted = cipher()->decryptTopic(topic().toAscii());
-    setTopic(decodeString(decrypted));
-  }
+        if (!cipher()->setKey(key))
+            return;
+
+        QByteArray decrypted = cipher()->decryptTopic(topic().toAscii());
+        setTopic(decodeString(decrypted));
+    }
 }
+
 
 #endif

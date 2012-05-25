@@ -24,44 +24,47 @@
 #include <QDockWidget>
 #include <QSize>
 
-class VerticalDockTitle : public QWidget {
-  Q_OBJECT
+class VerticalDockTitle : public QWidget
+{
+    Q_OBJECT
 
 public:
-  VerticalDockTitle(QDockWidget *parent);
+    VerticalDockTitle(QDockWidget *parent);
 
-  virtual QSize sizeHint() const;
-  virtual QSize minimumSizeHint() const;
-  void show(bool show_);
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
+    void show(bool show_);
 
 protected:
-  virtual void paintEvent(QPaintEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
 
 private:
-  bool _show;
-};
-
-class EmptyDockTitle : public QWidget {
-  Q_OBJECT
-
-public:
-  inline EmptyDockTitle(QDockWidget *parent) : QWidget(parent) {}
-
-  inline virtual QSize sizeHint() const { return QSize(0,0); }
+    bool _show;
 };
 
 
-class VerticalDock : public QDockWidget {
-  Q_OBJECT
+class EmptyDockTitle : public QWidget
+{
+    Q_OBJECT
 
 public:
-  VerticalDock(const QString &title, QWidget *parent = 0, Qt::WindowFlags flags = 0);
-  VerticalDock(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    inline EmptyDockTitle(QDockWidget *parent) : QWidget(parent) {}
 
-  void showTitle(bool show);
-  void setDefaultTitleWidget();
+    inline virtual QSize sizeHint() const { return QSize(0, 0); }
+};
+
+
+class VerticalDock : public QDockWidget
+{
+    Q_OBJECT
+
+public:
+    VerticalDock(const QString &title, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    VerticalDock(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+
+    void showTitle(bool show);
+    void setDefaultTitleWidget();
 };
 
 
 #endif // VERTICALDOCKTITLE_H
-  

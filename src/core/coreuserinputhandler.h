@@ -27,77 +27,79 @@
 class Cipher;
 class Server;
 
-class CoreUserInputHandler : public CoreBasicHandler {
-  Q_OBJECT
+class CoreUserInputHandler : public CoreBasicHandler
+{
+    Q_OBJECT
 
 public:
-  CoreUserInputHandler(CoreNetwork *parent = 0);
-  inline CoreNetwork *coreNetwork() const { return qobject_cast<CoreNetwork *>(parent()); }
+    CoreUserInputHandler(CoreNetwork *parent = 0);
+    inline CoreNetwork *coreNetwork() const { return qobject_cast<CoreNetwork *>(parent()); }
 
-  void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
+    void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
 
 public slots:
-  void handleAway(const BufferInfo &bufferInfo, const QString &text);
-  void handleBan(const BufferInfo &bufferInfo, const QString &text);
-  void handleUnban(const BufferInfo &bufferInfo, const QString &text);
-  void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
-  void handleDelkey(const BufferInfo &bufferInfo, const QString &text);
-  void handleDeop(const BufferInfo &bufferInfo, const QString &text);
-  void handleDehalfop(const BufferInfo &bufferInfo, const QString &text);
-  void handleDevoice(const BufferInfo &bufferInfo, const QString &text);
-  void handleInvite(const BufferInfo &bufferInfo, const QString &text);
-  void handleJoin(const BufferInfo &bufferInfo, const QString &text);
-  void handleKick(const BufferInfo &bufferInfo, const QString &text);
-  void handleKill(const BufferInfo &bufferInfo, const QString &text);
-  void handleList(const BufferInfo &bufferInfo, const QString &text);
-  void handleMe(const BufferInfo &bufferInfo, const QString &text);
-  void handleMode(const BufferInfo &bufferInfo, const QString &text);
-  void handleMsg(const BufferInfo &bufferInfo, const QString &text);
-  void handleNick(const BufferInfo &bufferInfo, const QString &text);
-  void handleNotice(const BufferInfo &bufferInfo, const QString &text);
-  void handleOper(const BufferInfo &bufferInfo, const QString &text);
-  void handleOp(const BufferInfo &bufferInfo, const QString &text);
-  void handleHalfop(const BufferInfo &bufferInfo, const QString &text);
-  void handlePart(const BufferInfo &bufferInfo, const QString &text);
-  void handlePing(const BufferInfo &bufferInfo, const QString &text);
-  void handleQuery(const BufferInfo &bufferInfo, const QString &text);
-  void handleQuit(const BufferInfo &bufferInfo, const QString &text);
-  void handleQuote(const BufferInfo &bufferInfo, const QString &text);
-  void handleSay(const BufferInfo &bufferInfo, const QString &text);
-  void handleSetkey(const BufferInfo &bufferInfo, const QString &text);
-  void handleShowkey(const BufferInfo &bufferInfo, const QString &text);
-  void handleTopic(const BufferInfo &bufferInfo, const QString &text);
-  void handleVoice(const BufferInfo &bufferInfo, const QString &text);
-  void handleWait(const BufferInfo &bufferInfo, const QString &text);
-  void handleWho(const BufferInfo &bufferInfo, const QString &text);
-  void handleWhois(const BufferInfo &bufferInfo, const QString &text);
-  void handleWhowas(const BufferInfo &bufferInfo, const QString &text);
+    void handleAway(const BufferInfo &bufferInfo, const QString &text);
+    void handleBan(const BufferInfo &bufferInfo, const QString &text);
+    void handleUnban(const BufferInfo &bufferInfo, const QString &text);
+    void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
+    void handleDelkey(const BufferInfo &bufferInfo, const QString &text);
+    void handleDeop(const BufferInfo &bufferInfo, const QString &text);
+    void handleDehalfop(const BufferInfo &bufferInfo, const QString &text);
+    void handleDevoice(const BufferInfo &bufferInfo, const QString &text);
+    void handleInvite(const BufferInfo &bufferInfo, const QString &text);
+    void handleJoin(const BufferInfo &bufferInfo, const QString &text);
+    void handleKick(const BufferInfo &bufferInfo, const QString &text);
+    void handleKill(const BufferInfo &bufferInfo, const QString &text);
+    void handleList(const BufferInfo &bufferInfo, const QString &text);
+    void handleMe(const BufferInfo &bufferInfo, const QString &text);
+    void handleMode(const BufferInfo &bufferInfo, const QString &text);
+    void handleMsg(const BufferInfo &bufferInfo, const QString &text);
+    void handleNick(const BufferInfo &bufferInfo, const QString &text);
+    void handleNotice(const BufferInfo &bufferInfo, const QString &text);
+    void handleOper(const BufferInfo &bufferInfo, const QString &text);
+    void handleOp(const BufferInfo &bufferInfo, const QString &text);
+    void handleHalfop(const BufferInfo &bufferInfo, const QString &text);
+    void handlePart(const BufferInfo &bufferInfo, const QString &text);
+    void handlePing(const BufferInfo &bufferInfo, const QString &text);
+    void handleQuery(const BufferInfo &bufferInfo, const QString &text);
+    void handleQuit(const BufferInfo &bufferInfo, const QString &text);
+    void handleQuote(const BufferInfo &bufferInfo, const QString &text);
+    void handleSay(const BufferInfo &bufferInfo, const QString &text);
+    void handleSetkey(const BufferInfo &bufferInfo, const QString &text);
+    void handleShowkey(const BufferInfo &bufferInfo, const QString &text);
+    void handleTopic(const BufferInfo &bufferInfo, const QString &text);
+    void handleVoice(const BufferInfo &bufferInfo, const QString &text);
+    void handleWait(const BufferInfo &bufferInfo, const QString &text);
+    void handleWho(const BufferInfo &bufferInfo, const QString &text);
+    void handleWhois(const BufferInfo &bufferInfo, const QString &text);
+    void handleWhowas(const BufferInfo &bufferInfo, const QString &text);
 
-  void defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &text);
+    void defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &text);
 
-  void issueQuit(const QString &reason);
-  void issueAway(const QString &msg, bool autoCheck = true);
+    void issueQuit(const QString &reason);
+    void issueAway(const QString &msg, bool autoCheck = true);
 
 protected:
-  void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event);
 
 private:
-  void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
-  void putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher = 0);
-  int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
+    void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
+    void putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher = 0);
+    int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
 
 #ifdef HAVE_QCA2
-  QByteArray encrypt(const QString &target, const QByteArray &message, bool *didEncrypt = 0) const;
+    QByteArray encrypt(const QString &target, const QByteArray &message, bool *didEncrypt = 0) const;
 #endif
 
-  struct Command {
-    BufferInfo bufferInfo;
-    QString command;
-    Command(const BufferInfo &info, const QString &command) : bufferInfo(info), command(command) {}
-    Command() {}
-  };
+    struct Command {
+        BufferInfo bufferInfo;
+        QString command;
+        Command(const BufferInfo &info, const QString &command) : bufferInfo(info), command(command) {}
+        Command() {}
+    };
 
-  QHash<int, Command> _delayedCommands;
+    QHash<int, Command> _delayedCommands;
 };
+
 
 #endif

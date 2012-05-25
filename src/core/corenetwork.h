@@ -45,198 +45,202 @@ class CoreUserInputHandler;
 class CoreIgnoreListManager;
 class Event;
 
-class CoreNetwork : public Network {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreNetwork : public Network
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreNetwork(const NetworkId &networkid, CoreSession *session);
-  ~CoreNetwork();
-  inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
+    CoreNetwork(const NetworkId &networkid, CoreSession *session);
+    ~CoreNetwork();
+    inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
 
-  inline CoreIdentity *identityPtr() const { return coreSession()->identity(identity()); }
-  inline CoreSession *coreSession() const { return _coreSession; }
-  inline CoreNetworkConfig *networkConfig() const { return coreSession()->networkConfig(); }
+    inline CoreIdentity *identityPtr() const { return coreSession()->identity(identity()); }
+    inline CoreSession *coreSession() const { return _coreSession; }
+    inline CoreNetworkConfig *networkConfig() const { return coreSession()->networkConfig(); }
 
-  inline CoreUserInputHandler *userInputHandler() const { return _userInputHandler; }
-  inline CoreIgnoreListManager *ignoreListManager() { return coreSession()->ignoreListManager(); }
+    inline CoreUserInputHandler *userInputHandler() const { return _userInputHandler; }
+    inline CoreIgnoreListManager *ignoreListManager() { return coreSession()->ignoreListManager(); }
 
-  //! Decode a string using the server (network) decoding.
-  inline QString serverDecode(const QByteArray &string) const { return decodeServerString(string); }
+    //! Decode a string using the server (network) decoding.
+    inline QString serverDecode(const QByteArray &string) const { return decodeServerString(string); }
 
-  //! Decode a string using a channel-specific encoding if one is set (and use the standard encoding else).
-  QString channelDecode(const QString &channelName, const QByteArray &string) const;
+    //! Decode a string using a channel-specific encoding if one is set (and use the standard encoding else).
+    QString channelDecode(const QString &channelName, const QByteArray &string) const;
 
-  //! Decode a string using an IrcUser-specific encoding, if one exists (using the standaed encoding else).
-  QString userDecode(const QString &userNick, const QByteArray &string) const;
+    //! Decode a string using an IrcUser-specific encoding, if one exists (using the standaed encoding else).
+    QString userDecode(const QString &userNick, const QByteArray &string) const;
 
-  //! Encode a string using the server (network) encoding.
-  inline QByteArray serverEncode(const QString &string) const { return encodeServerString(string); }
+    //! Encode a string using the server (network) encoding.
+    inline QByteArray serverEncode(const QString &string) const { return encodeServerString(string); }
 
-  //! Encode a string using the channel-specific encoding, if set, and use the standard encoding else.
-  QByteArray channelEncode(const QString &channelName, const QString &string) const;
+    //! Encode a string using the channel-specific encoding, if set, and use the standard encoding else.
+    QByteArray channelEncode(const QString &channelName, const QString &string) const;
 
-  //! Encode a string using the user-specific encoding, if set, and use the standard encoding else.
-  QByteArray userEncode(const QString &userNick, const QString &string) const;
+    //! Encode a string using the user-specific encoding, if set, and use the standard encoding else.
+    QByteArray userEncode(const QString &userNick, const QString &string) const;
 
-  inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
+    inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
 
-  inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoPending.value(channel.toLower(), 0); }
+    inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoPending.value(channel.toLower(), 0); }
 
-  inline UserId userId() const { return _coreSession->user(); }
+    inline UserId userId() const { return _coreSession->user(); }
 
-  inline QAbstractSocket::SocketState socketState() const { return socket.state(); }
-  inline bool socketConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
-  inline QHostAddress localAddress() const { return socket.localAddress(); }
-  inline QHostAddress peerAddress() const { return socket.peerAddress(); }
-  inline quint16 localPort() const { return socket.localPort(); }
-  inline quint16 peerPort() const { return socket.peerPort(); }
+    inline QAbstractSocket::SocketState socketState() const { return socket.state(); }
+    inline bool socketConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
+    inline QHostAddress localAddress() const { return socket.localAddress(); }
+    inline QHostAddress peerAddress() const { return socket.peerAddress(); }
+    inline quint16 localPort() const { return socket.localPort(); }
+    inline quint16 peerPort() const { return socket.peerPort(); }
 
 public slots:
-  virtual void setMyNick(const QString &mynick);
+    virtual void setMyNick(const QString &mynick);
 
-  virtual void requestConnect() const;
-  virtual void requestDisconnect() const;
-  virtual void requestSetNetworkInfo(const NetworkInfo &info);
+    virtual void requestConnect() const;
+    virtual void requestDisconnect() const;
+    virtual void requestSetNetworkInfo(const NetworkInfo &info);
 
-  virtual void setUseAutoReconnect(bool);
-  virtual void setAutoReconnectInterval(quint32);
-  virtual void setAutoReconnectRetries(quint16);
+    virtual void setUseAutoReconnect(bool);
+    virtual void setAutoReconnectInterval(quint32);
+    virtual void setAutoReconnectRetries(quint16);
 
-  void setPingInterval(int interval);
+    void setPingInterval(int interval);
 
-  void connectToIrc(bool reconnecting = false);
-  void disconnectFromIrc(bool requested = true, const QString &reason = QString(), bool withReconnect = false);
+    void connectToIrc(bool reconnecting = false);
+    void disconnectFromIrc(bool requested = true, const QString &reason = QString(), bool withReconnect = false);
 
-  void userInput(BufferInfo bufferInfo, QString msg);
-  void putRawLine(QByteArray input);
-  void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
+    void userInput(BufferInfo bufferInfo, QString msg);
+    void putRawLine(QByteArray input);
+    void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
 
-  void setChannelJoined(const QString &channel);
-  void setChannelParted(const QString &channel);
-  void addChannelKey(const QString &channel, const QString &key);
-  void removeChannelKey(const QString &channel);
+    void setChannelJoined(const QString &channel);
+    void setChannelParted(const QString &channel);
+    void addChannelKey(const QString &channel, const QString &key);
+    void removeChannelKey(const QString &channel);
 
-  // Blowfish stuff
+    // Blowfish stuff
 #ifdef HAVE_QCA2
-  Cipher *cipher(const QString &recipient) const;
-  QByteArray cipherKey(const QString &recipient) const;
-  void setCipherKey(const QString &recipient, const QByteArray &key);
+    Cipher *cipher(const QString &recipient) const;
+    QByteArray cipherKey(const QString &recipient) const;
+    void setCipherKey(const QString &recipient, const QByteArray &key);
 #endif
 
-  void setAutoWhoEnabled(bool enabled);
-  void setAutoWhoInterval(int interval);
-  void setAutoWhoDelay(int delay);
+    void setAutoWhoEnabled(bool enabled);
+    void setAutoWhoInterval(int interval);
+    void setAutoWhoDelay(int delay);
 
-  bool setAutoWhoDone(const QString &channel);
+    bool setAutoWhoDone(const QString &channel);
 
-  void updateIssuedModes(const QString &requestedModes);
-  void updatePersistentModes(QString addModes, QString removeModes);
-  void resetPersistentModes();
+    void updateIssuedModes(const QString &requestedModes);
+    void updatePersistentModes(QString addModes, QString removeModes);
+    void resetPersistentModes();
 
-  Server usedServer() const;
+    Server usedServer() const;
 
-  inline void resetPingTimeout() { _pingCount = 0; }
+    inline void resetPingTimeout() { _pingCount = 0; }
 
-  inline void displayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None) {
-    emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
-  }
+    inline void displayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None)
+    {
+        emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
+    }
+
 
 signals:
-  void recvRawServerMsg(QString);
-  void displayStatusMsg(QString);
-  void displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
-  void disconnected(NetworkId networkId);
-  void connectionError(const QString &errorMsg);
+    void recvRawServerMsg(QString);
+    void displayStatusMsg(QString);
+    void displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
+    void disconnected(NetworkId networkId);
+    void connectionError(const QString &errorMsg);
 
-  void quitRequested(NetworkId networkId);
-  void sslErrors(const QVariant &errorData);
+    void quitRequested(NetworkId networkId);
+    void sslErrors(const QVariant &errorData);
 
-  void newEvent(Event *event);
-  void socketInitialized(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
-  void socketDisconnected(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
+    void newEvent(Event *event);
+    void socketInitialized(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
+    void socketDisconnected(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
 
 protected:
-  inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new CoreIrcChannel(channelname, this); }
-  inline virtual IrcUser *ircUserFactory(const QString &hostmask) { return new CoreIrcUser(hostmask, this); }
+    inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new CoreIrcChannel(channelname, this); }
+    inline virtual IrcUser *ircUserFactory(const QString &hostmask) { return new CoreIrcUser(hostmask, this); }
 
 protected slots:
-  // TODO: remove cached cipher keys, when appropriate
-  //virtual void removeIrcUser(IrcUser *ircuser);
-  //virtual void removeIrcChannel(IrcChannel *ircChannel);
-  //virtual void removeChansAndUsers();
+    // TODO: remove cached cipher keys, when appropriate
+    //virtual void removeIrcUser(IrcUser *ircuser);
+    //virtual void removeIrcChannel(IrcChannel *ircChannel);
+    //virtual void removeChansAndUsers();
 
 private slots:
-  void socketHasData();
-  void socketError(QAbstractSocket::SocketError);
-  void socketInitialized();
-  inline void socketCloseTimeout() { socket.disconnectFromHost(); }
-  void socketDisconnected();
-  void socketStateChanged(QAbstractSocket::SocketState);
-  void networkInitialized();
+    void socketHasData();
+    void socketError(QAbstractSocket::SocketError);
+    void socketInitialized();
+    inline void socketCloseTimeout() { socket.disconnectFromHost(); }
+    void socketDisconnected();
+    void socketStateChanged(QAbstractSocket::SocketState);
+    void networkInitialized();
 
-  void sendPerform();
-  void restoreUserModes();
-  void doAutoReconnect();
-  void sendPing();
-  void enablePingTimeout(bool enable = true);
-  void disablePingTimeout();
-  void sendAutoWho();
-  void startAutoWhoCycle();
+    void sendPerform();
+    void restoreUserModes();
+    void doAutoReconnect();
+    void sendPing();
+    void enablePingTimeout(bool enable = true);
+    void disablePingTimeout();
+    void sendAutoWho();
+    void startAutoWhoCycle();
 
 #ifdef HAVE_SSL
-  void sslErrors(const QList<QSslError> &errors);
+    void sslErrors(const QList<QSslError> &errors);
 #endif
 
-  void fillBucketAndProcessQueue();
+    void fillBucketAndProcessQueue();
 
-  void writeToSocket(const QByteArray &data);
+    void writeToSocket(const QByteArray &data);
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 
 #ifdef HAVE_SSL
-  QSslSocket socket;
+    QSslSocket socket;
 #else
-  QTcpSocket socket;
+    QTcpSocket socket;
 #endif
 
-  CoreUserInputHandler *_userInputHandler;
+    CoreUserInputHandler *_userInputHandler;
 
-  QHash<QString, QString> _channelKeys;  // stores persistent channels and their passwords, if any
+    QHash<QString, QString> _channelKeys; // stores persistent channels and their passwords, if any
 
-  QTimer _autoReconnectTimer;
-  int _autoReconnectCount;
+    QTimer _autoReconnectTimer;
+    int _autoReconnectCount;
 
-  QTimer _socketCloseTimer;
+    QTimer _socketCloseTimer;
 
-  /* this flag triggers quitRequested() once the socket is closed
-   * it is needed to determine whether or not the connection needs to be
-   * in the automatic session restore. */
-  bool _quitRequested;
-  QString _quitReason;
+    /* this flag triggers quitRequested() once the socket is closed
+     * it is needed to determine whether or not the connection needs to be
+     * in the automatic session restore. */
+    bool _quitRequested;
+    QString _quitReason;
 
-  bool _previousConnectionAttemptFailed;
-  int _lastUsedServerIndex;
+    bool _previousConnectionAttemptFailed;
+    int _lastUsedServerIndex;
 
-  QTimer _pingTimer;
-  uint _lastPingTime;
-  uint _pingCount;
+    QTimer _pingTimer;
+    uint _lastPingTime;
+    uint _pingCount;
 
-  QStringList _autoWhoQueue;
-  QHash<QString, int> _autoWhoPending;
-  QTimer _autoWhoTimer, _autoWhoCycleTimer;
+    QStringList _autoWhoQueue;
+    QHash<QString, int> _autoWhoPending;
+    QTimer _autoWhoTimer, _autoWhoCycleTimer;
 
-  QTimer _tokenBucketTimer;
-  int _messageDelay;        // token refill speed in ms
-  int _burstSize;           // size of the token bucket
-  int _tokenBucket;         // the virtual bucket that holds the tokens
-  QList<QByteArray> _msgQueue;
+    QTimer _tokenBucketTimer;
+    int _messageDelay;      // token refill speed in ms
+    int _burstSize;         // size of the token bucket
+    int _tokenBucket;       // the virtual bucket that holds the tokens
+    QList<QByteArray> _msgQueue;
 
-  QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
+    QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
 
-  // Blowfish key map
-  QHash<QString, QByteArray> _cipherKeys;
+    // Blowfish key map
+    QHash<QString, QByteArray> _cipherKeys;
 };
+
 
 #endif //CORENETWORK_H

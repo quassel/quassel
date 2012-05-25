@@ -21,35 +21,36 @@
 #include "abstractitemview.h"
 
 AbstractItemView::AbstractItemView(QWidget *parent)
-  : QWidget(parent),
+    : QWidget(parent),
     _model(0),
     _selectionModel(0)
 {
 }
 
-void AbstractItemView::setModel(QAbstractItemModel *model) {
-  if(_model) {
-    disconnect(_model, 0, this, 0);
-  }
-  _model = model;
-  connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(dataChanged(QModelIndex, QModelIndex)));
-  connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-	  this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
-  connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)),
-	  this, SLOT(rowsInserted(QModelIndex, int, int)));
+
+void AbstractItemView::setModel(QAbstractItemModel *model)
+{
+    if (_model) {
+        disconnect(_model, 0, this, 0);
+    }
+    _model = model;
+    connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+        this, SLOT(dataChanged(QModelIndex, QModelIndex)));
+    connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
+        this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+    connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)),
+        this, SLOT(rowsInserted(QModelIndex, int, int)));
 }
 
 
-
-void AbstractItemView::setSelectionModel(QItemSelectionModel *selectionModel) {
-  if(_selectionModel) {
-    disconnect(_selectionModel, 0, this, 0);
-  }
-  _selectionModel = selectionModel;
-  connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(currentChanged(QModelIndex, QModelIndex)));
-  connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-	  this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
+void AbstractItemView::setSelectionModel(QItemSelectionModel *selectionModel)
+{
+    if (_selectionModel) {
+        disconnect(_selectionModel, 0, this, 0);
+    }
+    _selectionModel = selectionModel;
+    connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+        this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+        this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
 }
-

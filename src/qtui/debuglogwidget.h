@@ -23,17 +23,19 @@
 
 #include "ui_debuglogwidget.h"
 
-class DebugLogWidget : public QWidget {
-  Q_OBJECT
+class DebugLogWidget : public QWidget
+{
+    Q_OBJECT
 
 public:
-  DebugLogWidget(QWidget *parent = 0);
+    DebugLogWidget(QWidget *parent = 0);
 
 private slots:
-  void logUpdated(const QString &msg);
+    void logUpdated(const QString &msg);
 
 private:
-  Ui::DebugLogWidget ui;
+    Ui::DebugLogWidget ui;
 };
+
 
 #endif //DEBUGLOGWIDGET_H

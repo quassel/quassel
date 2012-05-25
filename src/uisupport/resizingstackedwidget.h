@@ -23,16 +23,18 @@
 
 #include <QStackedWidget>
 
-class ResizingStackedWidget : public QStackedWidget {
-  Q_OBJECT
+class ResizingStackedWidget : public QStackedWidget
+{
+    Q_OBJECT
 
 public:
-  ResizingStackedWidget(QWidget *parent = 0);
+    ResizingStackedWidget(QWidget *parent = 0);
 
-  virtual QSize sizeHint() const;
+    virtual QSize sizeHint() const;
 
 private slots:
-  void indexChanged(int index);
+    void indexChanged(int index);
 };
+
 
 #endif // RESIZINGSTACKEDWIDGET_H_

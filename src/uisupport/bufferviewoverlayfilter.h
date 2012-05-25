@@ -27,22 +27,24 @@
 
 class BufferViewOverlay;
 
-class BufferViewOverlayFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class BufferViewOverlayFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = 0);
+    BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = 0);
 
-  void setOverlay(BufferViewOverlay *overlay);
+    void setOverlay(BufferViewOverlay *overlay);
 
 protected:
-  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private slots:
-  void overlayDestroyed();
+    void overlayDestroyed();
 
 private:
-  BufferViewOverlay *_overlay;
+    BufferViewOverlay *_overlay;
 };
+
 
 #endif // BUFFERVIEWOVERLAYFILTER_H_

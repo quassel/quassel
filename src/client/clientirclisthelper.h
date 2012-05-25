@@ -23,28 +23,30 @@
 
 #include "irclisthelper.h"
 
-class ClientIrcListHelper : public IrcListHelper {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class ClientIrcListHelper : public IrcListHelper
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  inline ClientIrcListHelper(QObject *object = 0) : IrcListHelper(object) {};
+    inline ClientIrcListHelper(QObject *object = 0) : IrcListHelper(object) {};
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &IrcListHelper::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &IrcListHelper::staticMetaObject; }
 
 public slots:
-  virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
-  virtual void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QVariantList &channels);
-  virtual void reportFinishedList(const NetworkId &netId);
-  inline virtual void reportError(const QString &error) { emit errorReported(error); }
+    virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
+    virtual void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QVariantList &channels);
+    virtual void reportFinishedList(const NetworkId &netId);
+    inline virtual void reportError(const QString &error) { emit errorReported(error); }
 
 signals:
-  void channelListReceived(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
-  void finishedListReported(const NetworkId &netId);
-  void errorReported(const QString &error);
+    void channelListReceived(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
+    void finishedListReported(const NetworkId &netId);
+    void errorReported(const QString &error);
 
 private:
-  NetworkId _netId;
+    NetworkId _netId;
 };
+
 
 #endif //CLIENTIRCLISTHELPER_H

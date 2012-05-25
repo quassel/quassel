@@ -30,131 +30,162 @@
 #include "qtui.h"
 
 PhononNotificationBackend::PhononNotificationBackend(QObject *parent)
-  : AbstractNotificationBackend(parent),
-  _media(0)
+    : AbstractNotificationBackend(parent),
+    _media(0)
 {
-  NotificationSettings notificationSettings;
-  _enabled = notificationSettings.value("Phonon/Enabled", true).toBool();
-  createMediaObject(notificationSettings.value("Phonon/AudioFile", QString()).toString());
+    NotificationSettings notificationSettings;
+    _enabled = notificationSettings.value("Phonon/Enabled", true).toBool();
+    createMediaObject(notificationSettings.value("Phonon/AudioFile", QString()).toString());
 
-  notificationSettings.notify("Phonon/Enabled", this, SLOT(enabledChanged(const QVariant &)));
-  notificationSettings.notify("Phonon/AudioFile", this, SLOT(audioFileChanged(const QVariant &)));
+    notificationSettings.notify("Phonon/Enabled", this, SLOT(enabledChanged(const QVariant &)));
+    notificationSettings.notify("Phonon/AudioFile", this, SLOT(audioFileChanged(const QVariant &)));
 }
 
-PhononNotificationBackend::~PhononNotificationBackend() {
-  if(_media)
-    delete _media;
+
+PhononNotificationBackend::~PhononNotificationBackend()
+{
+    if (_media)
+        delete _media;
 }
 
-void PhononNotificationBackend::notify(const Notification &notification) {
-  if(_enabled && _media && (notification.type == Highlight || notification.type == PrivMsg)) {
-    _media->stop();
-    _media->play();
-  }
+
+void PhononNotificationBackend::notify(const Notification &notification)
+{
+    if (_enabled && _media && (notification.type == Highlight || notification.type == PrivMsg)) {
+        _media->stop();
+        _media->play();
+    }
 }
 
-void PhononNotificationBackend::close(uint notificationId) {
-  Q_UNUSED(notificationId);
+
+void PhononNotificationBackend::close(uint notificationId)
+{
+    Q_UNUSED(notificationId);
 }
 
-void PhononNotificationBackend::enabledChanged(const QVariant &v) {
-  _enabled = v.toBool();
+
+void PhononNotificationBackend::enabledChanged(const QVariant &v)
+{
+    _enabled = v.toBool();
 }
 
-void PhononNotificationBackend::audioFileChanged(const QVariant &v) {
-  createMediaObject(v.toString());
+
+void PhononNotificationBackend::audioFileChanged(const QVariant &v)
+{
+    createMediaObject(v.toString());
 }
 
-SettingsPage *PhononNotificationBackend::createConfigWidget() const {
-  return new ConfigWidget();
+
+SettingsPage *PhononNotificationBackend::createConfigWidget() const
+{
+    return new ConfigWidget();
 }
 
-void PhononNotificationBackend::createMediaObject(const QString &file) {
-  if(_media)
-    delete _media;
 
-  if(file.isEmpty()) {
-    _media = 0;
-    return;
-  }
+void PhononNotificationBackend::createMediaObject(const QString &file)
+{
+    if (_media)
+        delete _media;
 
-  _media = Phonon::createPlayer(Phonon::NotificationCategory,
-                                Phonon::MediaSource(file));
+    if (file.isEmpty()) {
+        _media = 0;
+        return;
+    }
+
+    _media = Phonon::createPlayer(Phonon::NotificationCategory,
+        Phonon::MediaSource(file));
 }
+
 
 /***************************************************************************/
 
 PhononNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
-: SettingsPage("Internal", "PhononNotification", parent),
-  audioPreview(0)
+    : SettingsPage("Internal", "PhononNotification", parent),
+    audioPreview(0)
 {
-  ui.setupUi(this);
-  ui.enabled->setIcon(SmallIcon("media-playback-start"));
-  ui.play->setIcon(SmallIcon("media-playback-start"));
-  ui.open->setIcon(SmallIcon("document-open"));
+    ui.setupUi(this);
+    ui.enabled->setIcon(SmallIcon("media-playback-start"));
+    ui.play->setIcon(SmallIcon("media-playback-start"));
+    ui.open->setIcon(SmallIcon("document-open"));
 
-  connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
-  connect(ui.filename, SIGNAL(textChanged(const QString &)), SLOT(widgetChanged()));
+    connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
+    connect(ui.filename, SIGNAL(textChanged(const QString &)), SLOT(widgetChanged()));
 }
 
-PhononNotificationBackend::ConfigWidget::~ConfigWidget() {
-  if(audioPreview)
-    delete audioPreview;
+
+PhononNotificationBackend::ConfigWidget::~ConfigWidget()
+{
+    if (audioPreview)
+        delete audioPreview;
 }
 
-void PhononNotificationBackend::ConfigWidget::widgetChanged() {
-  ui.play->setEnabled(ui.enabled->isChecked() && !ui.filename->text().isEmpty());
 
-  bool changed = (enabled != ui.enabled->isChecked()
-               || filename != ui.filename->text());
+void PhononNotificationBackend::ConfigWidget::widgetChanged()
+{
+    ui.play->setEnabled(ui.enabled->isChecked() && !ui.filename->text().isEmpty());
 
-  if(changed != hasChanged()) setChangedState(changed);
+    bool changed = (enabled != ui.enabled->isChecked()
+                    || filename != ui.filename->text());
+
+    if (changed != hasChanged()) setChangedState(changed);
 }
 
-bool PhononNotificationBackend::ConfigWidget::hasDefaults() const {
-  return true;
+
+bool PhononNotificationBackend::ConfigWidget::hasDefaults() const
+{
+    return true;
 }
 
-void PhononNotificationBackend::ConfigWidget::defaults() {
-  ui.enabled->setChecked(false);
-  ui.filename->setText(QString());
-  widgetChanged();
-}
 
-void PhononNotificationBackend::ConfigWidget::load() {
-  NotificationSettings s;
-  enabled = s.value("Phonon/Enabled", false).toBool();
-  filename = s.value("Phonon/AudioFile", QString()).toString();
-
-  ui.enabled->setChecked(enabled);
-  ui.filename->setText(filename);
-
-  setChangedState(false);
-}
-
-void PhononNotificationBackend::ConfigWidget::save() {
-  NotificationSettings s;
-  s.setValue("Phonon/Enabled", ui.enabled->isChecked());
-  s.setValue("Phonon/AudioFile", ui.filename->text());
-  load();
-}
-
-void PhononNotificationBackend::ConfigWidget::on_open_clicked() {
-  QString file = QFileDialog::getOpenFileName(this, tr("Select Audio File"));
-  if(!file.isEmpty()) {
-    ui.filename->setText(file);
-    ui.play->setEnabled(true);
+void PhononNotificationBackend::ConfigWidget::defaults()
+{
+    ui.enabled->setChecked(false);
+    ui.filename->setText(QString());
     widgetChanged();
-  }
 }
 
-void PhononNotificationBackend::ConfigWidget::on_play_clicked() {
-  if(!ui.filename->text().isEmpty()) {
-    if(audioPreview)
-      delete audioPreview;
 
-    audioPreview = Phonon::createPlayer(Phonon::NotificationCategory,
-                                        Phonon::MediaSource(ui.filename->text()));
-    audioPreview->play();
-  }
+void PhononNotificationBackend::ConfigWidget::load()
+{
+    NotificationSettings s;
+    enabled = s.value("Phonon/Enabled", false).toBool();
+    filename = s.value("Phonon/AudioFile", QString()).toString();
+
+    ui.enabled->setChecked(enabled);
+    ui.filename->setText(filename);
+
+    setChangedState(false);
+}
+
+
+void PhononNotificationBackend::ConfigWidget::save()
+{
+    NotificationSettings s;
+    s.setValue("Phonon/Enabled", ui.enabled->isChecked());
+    s.setValue("Phonon/AudioFile", ui.filename->text());
+    load();
+}
+
+
+void PhononNotificationBackend::ConfigWidget::on_open_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("Select Audio File"));
+    if (!file.isEmpty()) {
+        ui.filename->setText(file);
+        ui.play->setEnabled(true);
+        widgetChanged();
+    }
+}
+
+
+void PhononNotificationBackend::ConfigWidget::on_play_clicked()
+{
+    if (!ui.filename->text().isEmpty()) {
+        if (audioPreview)
+            delete audioPreview;
+
+        audioPreview = Phonon::createPlayer(Phonon::NotificationCategory,
+            Phonon::MediaSource(ui.filename->text()));
+        audioPreview->play();
+    }
 }

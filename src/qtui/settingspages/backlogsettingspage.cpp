@@ -24,45 +24,55 @@
 #include "backlogsettings.h"
 
 BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Interface"), tr("Backlog Fetching"), parent)
+    : SettingsPage(tr("Interface"), tr("Backlog Fetching"), parent)
 {
-  ui.setupUi(this);
-  initAutoWidgets();
-  // not an auto widget, because we store index + 1
+    ui.setupUi(this);
+    initAutoWidgets();
+    // not an auto widget, because we store index + 1
 
-  // FIXME: global backlog requester disabled until issues ruled out
-  ui.requesterType->removeItem(2);
+    // FIXME: global backlog requester disabled until issues ruled out
+    ui.requesterType->removeItem(2);
 
-  connect(ui.requesterType, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.requesterType, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
 }
 
-bool BacklogSettingsPage::hasDefaults() const {
-  return true;
+
+bool BacklogSettingsPage::hasDefaults() const
+{
+    return true;
 }
 
-void BacklogSettingsPage::defaults() {
-  ui.requesterType->setCurrentIndex(0);
 
-  SettingsPage::defaults();
+void BacklogSettingsPage::defaults()
+{
+    ui.requesterType->setCurrentIndex(0);
+
+    SettingsPage::defaults();
 }
 
-void BacklogSettingsPage::load() {
-  BacklogSettings backlogSettings;
-  int index = backlogSettings.requesterType() - 1;
-  ui.requesterType->setProperty("storedValue", index);
-  ui.requesterType->setCurrentIndex(index);
 
-  SettingsPage::load();
+void BacklogSettingsPage::load()
+{
+    BacklogSettings backlogSettings;
+    int index = backlogSettings.requesterType() - 1;
+    ui.requesterType->setProperty("storedValue", index);
+    ui.requesterType->setCurrentIndex(index);
+
+    SettingsPage::load();
 }
 
-void BacklogSettingsPage::save() {
-  BacklogSettings backlogSettings;
-  backlogSettings.setRequesterType(ui.requesterType->currentIndex() + 1);
-  ui.requesterType->setProperty("storedValue", ui.requesterType->currentIndex());
 
-  SettingsPage::save();
+void BacklogSettingsPage::save()
+{
+    BacklogSettings backlogSettings;
+    backlogSettings.setRequesterType(ui.requesterType->currentIndex() + 1);
+    ui.requesterType->setProperty("storedValue", ui.requesterType->currentIndex());
+
+    SettingsPage::save();
 }
 
-void BacklogSettingsPage::widgetHasChanged() {
-  setChangedState(ui.requesterType->currentIndex() != ui.requesterType->property("storedValue").toInt());
+
+void BacklogSettingsPage::widgetHasChanged()
+{
+    setChangedState(ui.requesterType->currentIndex() != ui.requesterType->property("storedValue").toInt());
 }

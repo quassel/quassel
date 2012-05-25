@@ -24,71 +24,83 @@
 
 INIT_SYNCABLE_OBJECT(CoreIdentity)
 CoreIdentity::CoreIdentity(IdentityId id, QObject *parent)
-  : Identity(id, parent)
+    : Identity(id, parent)
 #ifdef HAVE_SSL
-  , _certManager(*this)
+    , _certManager(*this)
 #endif
 {
 #ifdef HAVE_SSL
-  connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
-  connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
+    connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+    connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
 #endif
 }
+
 
 CoreIdentity::CoreIdentity(const Identity &other, QObject *parent)
-  : Identity(other, parent)
+    : Identity(other, parent)
 #ifdef HAVE_SSL
-  , _certManager(*this)
+    , _certManager(*this)
 #endif
 {
 #ifdef HAVE_SSL
-  connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
-  connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
+    connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+    connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
 #endif
 }
 
+
 CoreIdentity::CoreIdentity(const CoreIdentity &other, QObject *parent)
-  : Identity(other, parent)
+    : Identity(other, parent)
 #ifdef HAVE_SSL
-  , _sslKey(other._sslKey),
+    , _sslKey(other._sslKey),
     _sslCert(other._sslCert),
     _certManager(*this)
 #endif
 {
 #ifdef HAVE_SSL
-  connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
-  connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
+    connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+    connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
 #endif
 }
 
-void CoreIdentity::synchronize(SignalProxy *proxy) {
-  proxy->synchronize(this);
+
+void CoreIdentity::synchronize(SignalProxy *proxy)
+{
+    proxy->synchronize(this);
 #ifdef HAVE_SSL
-  proxy->synchronize(&_certManager);
+    proxy->synchronize(&_certManager);
 #endif
 }
+
 
 #ifdef HAVE_SSL
-void CoreIdentity::setSslKey(const QByteArray &encoded) {
-  QSslKey key(encoded, QSsl::Rsa);
-  if(key.isNull())
-    key = QSslKey(encoded, QSsl::Dsa);
-  setSslKey(key);
+void CoreIdentity::setSslKey(const QByteArray &encoded)
+{
+    QSslKey key(encoded, QSsl::Rsa);
+    if (key.isNull())
+        key = QSslKey(encoded, QSsl::Dsa);
+    setSslKey(key);
 }
 
-void CoreIdentity::setSslCert(const QByteArray &encoded) {
-  setSslCert(QSslCertificate(encoded));
+
+void CoreIdentity::setSslCert(const QByteArray &encoded)
+{
+    setSslCert(QSslCertificate(encoded));
 }
+
+
 #endif
 
-CoreIdentity &CoreIdentity::operator=(const CoreIdentity &identity) {
-  Identity::operator=(identity);
+CoreIdentity &CoreIdentity::operator=(const CoreIdentity &identity)
+{
+    Identity::operator=(identity);
 #ifdef HAVE_SSL
-  _sslKey = identity._sslKey;
-  _sslCert = identity._sslCert;
+    _sslKey = identity._sslKey;
+    _sslCert = identity._sslCert;
 #endif
-  return *this;
+    return *this;
 }
+
 
 #ifdef HAVE_SSL
 // ========================================
@@ -96,23 +108,31 @@ CoreIdentity &CoreIdentity::operator=(const CoreIdentity &identity) {
 // ========================================
 INIT_SYNCABLE_OBJECT(CoreCertManager)
 CoreCertManager::CoreCertManager(CoreIdentity &identity)
-  : CertManager(identity.id()),
+    : CertManager(identity.id()),
     identity(identity)
 {
-  setAllowClientUpdates(true);
+    setAllowClientUpdates(true);
 }
 
-void CoreCertManager::setId(IdentityId id) {
-  renameObject(QString::number(id.toInt()));
+
+void CoreCertManager::setId(IdentityId id)
+{
+    renameObject(QString::number(id.toInt()));
 }
 
-void CoreCertManager::setSslKey(const QByteArray &encoded) {
-  identity.setSslKey(encoded);
-  CertManager::setSslKey(encoded);
+
+void CoreCertManager::setSslKey(const QByteArray &encoded)
+{
+    identity.setSslKey(encoded);
+    CertManager::setSslKey(encoded);
 }
 
-void CoreCertManager::setSslCert(const QByteArray &encoded) {
-  identity.setSslCert(encoded);
-  CertManager::setSslCert(encoded);
+
+void CoreCertManager::setSslCert(const QByteArray &encoded)
+{
+    identity.setSslCert(encoded);
+    CertManager::setSslCert(encoded);
 }
+
+
 #endif //HAVE_SSL

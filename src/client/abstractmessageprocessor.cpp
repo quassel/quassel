@@ -23,6 +23,6 @@
 #include "client.h"
 
 AbstractMessageProcessor::AbstractMessageProcessor(QObject *parent)
-  : QObject(parent)
+    : QObject(parent)
 {
 }

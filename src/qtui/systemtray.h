@@ -26,102 +26,104 @@
 class Action;
 class QMenu;
 
-class SystemTray : public QObject {
-  Q_OBJECT
-  Q_ENUMS(State Mode MessageIcon ActivationReason)
+class SystemTray : public QObject
+{
+    Q_OBJECT
+    Q_ENUMS(State Mode MessageIcon ActivationReason)
 
-public:
-  enum State {
-    Passive,
-    Active,
-    NeedsAttention
-  };
+public :
+        enum State {
+        Passive,
+        Active,
+        NeedsAttention
+    };
 
-  enum Mode {
-    Invalid,
-    Legacy,
-    StatusNotifier
-  };
+    enum Mode {
+        Invalid,
+        Legacy,
+        StatusNotifier
+    };
 
-  // same as in QSystemTrayIcon
-  enum MessageIcon {
-    NoIcon,
-    Information,
-    Warning,
-    Critical
-  };
+    // same as in QSystemTrayIcon
+    enum MessageIcon {
+        NoIcon,
+        Information,
+        Warning,
+        Critical
+    };
 
-  // same as in QSystemTrayIcon
-  enum ActivationReason {
-    Unknown,
-    Context,
-    DoubleClick,
-    Trigger,
-    MiddleClick
-  };
+    // same as in QSystemTrayIcon
+    enum ActivationReason {
+        Unknown,
+        Context,
+        DoubleClick,
+        Trigger,
+        MiddleClick
+    };
 
-  explicit SystemTray(QWidget *parent);
-  virtual ~SystemTray();
-  virtual void init();
+    explicit SystemTray(QWidget *parent);
+    virtual ~SystemTray();
+    virtual void init();
 
-  inline Mode mode() const;
-  inline State state() const;
-  inline bool isAlerted() const;
-  virtual inline bool isSystemTrayAvailable() const;
+    inline Mode mode() const;
+    inline State state() const;
+    inline bool isAlerted() const;
+    virtual inline bool isSystemTrayAvailable() const;
 
-  void setAlert(bool alerted);
-  virtual inline bool isVisible() const { return false; }
+    void setAlert(bool alerted);
+    virtual inline bool isVisible() const { return false; }
 
-  QWidget *associatedWidget() const;
+    QWidget *associatedWidget() const;
 
 public slots:
-  virtual void setState(State);
-  virtual void setVisible(bool visible = true);
-  virtual void setToolTip(const QString &title, const QString &subtitle);
-  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
-  virtual void closeMessage(uint notificationId) { Q_UNUSED(notificationId) }
+    virtual void setState(State);
+    virtual void setVisible(bool visible = true);
+    virtual void setToolTip(const QString &title, const QString &subtitle);
+    virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
+    virtual void closeMessage(uint notificationId) { Q_UNUSED(notificationId) }
 
 signals:
-  void activated(SystemTray::ActivationReason);
-  void iconChanged(const Icon &);
-  void animationEnabledChanged(bool);
-  void toolTipChanged(const QString &title, const QString &subtitle);
-  void messageClicked(uint notificationId);
-  void messageClosed(uint notificationId);
+    void activated(SystemTray::ActivationReason);
+    void iconChanged(const Icon &);
+    void animationEnabledChanged(bool);
+    void toolTipChanged(const QString &title, const QString &subtitle);
+    void messageClicked(uint notificationId);
+    void messageClosed(uint notificationId);
 
 protected slots:
-  virtual void activate(SystemTray::ActivationReason = Trigger);
+    virtual void activate(SystemTray::ActivationReason = Trigger);
 
 protected:
-  virtual void setMode(Mode mode);
-  inline bool shouldBeVisible() const;
+    virtual void setMode(Mode mode);
+    inline bool shouldBeVisible() const;
 
-  virtual Icon stateIcon() const;
-  Icon stateIcon(State state) const;
-  inline QString toolTipTitle() const;
-  inline QString toolTipSubTitle() const;
-  inline QMenu *trayMenu() const;
+    virtual Icon stateIcon() const;
+    Icon stateIcon(State state) const;
+    inline QString toolTipTitle() const;
+    inline QString toolTipSubTitle() const;
+    inline QMenu *trayMenu() const;
 
-  inline bool animationEnabled() const;
+    inline bool animationEnabled() const;
 
 private slots:
-  void minimizeRestore();
-  void trayMenuAboutToShow();
-  void enableAnimationChanged(const QVariant &);
+    void minimizeRestore();
+    void trayMenuAboutToShow();
+    void enableAnimationChanged(const QVariant &);
 
 private:
-  Mode _mode;
-  State _state;
-  bool _shouldBeVisible;
+    Mode _mode;
+    State _state;
+    bool _shouldBeVisible;
 
-  QString _toolTipTitle, _toolTipSubTitle;
-  Icon _passiveIcon, _activeIcon, _needsAttentionIcon;
-  bool _animationEnabled;
+    QString _toolTipTitle, _toolTipSubTitle;
+    Icon _passiveIcon, _activeIcon, _needsAttentionIcon;
+    bool _animationEnabled;
 
-  QMenu *_trayMenu;
-  QWidget *_associatedWidget;
-  Action *_minimizeRestoreAction;
+    QMenu *_trayMenu;
+    QWidget *_associatedWidget;
+    Action *_minimizeRestoreAction;
 };
+
 
 // inlines
 

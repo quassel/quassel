@@ -46,268 +46,339 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     _codecForEncoding(0),
     _codecForDecoding(0)
 {
-  updateObjectName();
-
+    updateObjectName();
 }
 
-IrcUser::~IrcUser() {
+
+IrcUser::~IrcUser()
+{
 }
+
 
 // ====================
 //  PUBLIC:
 // ====================
 
-QString IrcUser::hostmask() const {
-  return QString("%1!%2@%3").arg(nick()).arg(user()).arg(host());
-}
-
-QDateTime IrcUser::idleTime() {
-  if(QDateTime::currentDateTime().toTime_t() - _idleTimeSet.toTime_t() > 1200)
-    _idleTime = QDateTime();
-  return _idleTime;
-}
-
-QStringList IrcUser::channels() const {
-  QStringList chanList;
-  IrcChannel *channel;
-  foreach(channel, _channels) {
-    chanList << channel->name();
-  }
-  return chanList;
+QString IrcUser::hostmask() const
+{
+    return QString("%1!%2@%3").arg(nick()).arg(user()).arg(host());
 }
 
 
-void IrcUser::setCodecForEncoding(const QString &name) {
-  setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
+QDateTime IrcUser::idleTime()
+{
+    if (QDateTime::currentDateTime().toTime_t() - _idleTimeSet.toTime_t() > 1200)
+        _idleTime = QDateTime();
+    return _idleTime;
 }
 
-void IrcUser::setCodecForEncoding(QTextCodec *codec) {
-  _codecForEncoding = codec;
+
+QStringList IrcUser::channels() const
+{
+    QStringList chanList;
+    IrcChannel *channel;
+    foreach(channel, _channels) {
+        chanList << channel->name();
+    }
+    return chanList;
 }
 
-void IrcUser::setCodecForDecoding(const QString &name) {
-  setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
+
+void IrcUser::setCodecForEncoding(const QString &name)
+{
+    setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
 }
 
-void IrcUser::setCodecForDecoding(QTextCodec *codec) {
-  _codecForDecoding = codec;
+
+void IrcUser::setCodecForEncoding(QTextCodec *codec)
+{
+    _codecForEncoding = codec;
 }
 
-QString IrcUser::decodeString(const QByteArray &text) const {
-  if(!codecForDecoding()) return network()->decodeString(text);
-  return ::decodeString(text, codecForDecoding());
+
+void IrcUser::setCodecForDecoding(const QString &name)
+{
+    setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
 }
 
-QByteArray IrcUser::encodeString(const QString &string) const {
-  if(codecForEncoding()) {
-    return codecForEncoding()->fromUnicode(string);
-  }
-  return network()->encodeString(string);
+
+void IrcUser::setCodecForDecoding(QTextCodec *codec)
+{
+    _codecForDecoding = codec;
 }
+
+
+QString IrcUser::decodeString(const QByteArray &text) const
+{
+    if (!codecForDecoding()) return network()->decodeString(text);
+    return ::decodeString(text, codecForDecoding());
+}
+
+
+QByteArray IrcUser::encodeString(const QString &string) const
+{
+    if (codecForEncoding()) {
+        return codecForEncoding()->fromUnicode(string);
+    }
+    return network()->encodeString(string);
+}
+
 
 // ====================
 //  PUBLIC SLOTS:
 // ====================
-void IrcUser::setUser(const QString &user) {
-  if(!user.isEmpty() && _user != user) {
-    _user = user;
-    SYNC(ARG(user));
-  }
+void IrcUser::setUser(const QString &user)
+{
+    if (!user.isEmpty() && _user != user) {
+        _user = user;
+        SYNC(ARG(user));
+    }
 }
 
-void IrcUser::setRealName(const QString &realName) {
-  if (!realName.isEmpty() && _realName != realName) {
-    _realName = realName;
-    SYNC(ARG(realName))
-  }
+
+void IrcUser::setRealName(const QString &realName)
+{
+    if (!realName.isEmpty() && _realName != realName) {
+        _realName = realName;
+        SYNC(ARG(realName))
+    }
 }
 
-void IrcUser::setAway(const bool &away) {
-  if(away != _away) {
-    _away = away;
-    SYNC(ARG(away))
-    emit awaySet(away);
-  }
+
+void IrcUser::setAway(const bool &away)
+{
+    if (away != _away) {
+        _away = away;
+        SYNC(ARG(away))
+        emit awaySet(away);
+    }
 }
 
-void IrcUser::setAwayMessage(const QString &awayMessage) {
-  if(!awayMessage.isEmpty() && _awayMessage != awayMessage) {
-    _awayMessage = awayMessage;
-    SYNC(ARG(awayMessage))
-  }
+
+void IrcUser::setAwayMessage(const QString &awayMessage)
+{
+    if (!awayMessage.isEmpty() && _awayMessage != awayMessage) {
+        _awayMessage = awayMessage;
+        SYNC(ARG(awayMessage))
+    }
 }
 
-void IrcUser::setIdleTime(const QDateTime &idleTime) {
-  if(idleTime.isValid() && _idleTime != idleTime) {
-    _idleTime = idleTime;
-    _idleTimeSet = QDateTime::currentDateTime();
-    SYNC(ARG(idleTime))
-  }
+
+void IrcUser::setIdleTime(const QDateTime &idleTime)
+{
+    if (idleTime.isValid() && _idleTime != idleTime) {
+        _idleTime = idleTime;
+        _idleTimeSet = QDateTime::currentDateTime();
+        SYNC(ARG(idleTime))
+    }
 }
 
-void IrcUser::setLoginTime(const QDateTime &loginTime) {
-  if(loginTime.isValid() && _loginTime != loginTime) {
-    _loginTime = loginTime;
-    SYNC(ARG(loginTime))
-  }
+
+void IrcUser::setLoginTime(const QDateTime &loginTime)
+{
+    if (loginTime.isValid() && _loginTime != loginTime) {
+        _loginTime = loginTime;
+        SYNC(ARG(loginTime))
+    }
 }
 
-void IrcUser::setServer(const QString &server) {
-  if(!server.isEmpty() && _server != server) {
-    _server = server;
-    SYNC(ARG(server))
-  }
+
+void IrcUser::setServer(const QString &server)
+{
+    if (!server.isEmpty() && _server != server) {
+        _server = server;
+        SYNC(ARG(server))
+    }
 }
 
-void IrcUser::setIrcOperator(const QString &ircOperator) {
-  if(!ircOperator.isEmpty() && _ircOperator != ircOperator) {
-    _ircOperator = ircOperator;
-    SYNC(ARG(ircOperator))
-  }
+
+void IrcUser::setIrcOperator(const QString &ircOperator)
+{
+    if (!ircOperator.isEmpty() && _ircOperator != ircOperator) {
+        _ircOperator = ircOperator;
+        SYNC(ARG(ircOperator))
+    }
 }
 
-void IrcUser::setLastAwayMessage(const int &lastAwayMessage) {
-  if(lastAwayMessage > _lastAwayMessage) {
-    _lastAwayMessage = lastAwayMessage;
-    SYNC(ARG(lastAwayMessage))
-  }
+
+void IrcUser::setLastAwayMessage(const int &lastAwayMessage)
+{
+    if (lastAwayMessage > _lastAwayMessage) {
+        _lastAwayMessage = lastAwayMessage;
+        SYNC(ARG(lastAwayMessage))
+    }
 }
 
-void IrcUser::setHost(const QString &host) {
-  if(!host.isEmpty() && _host != host) {
-    _host = host;
-    SYNC(ARG(host))
-  }
+
+void IrcUser::setHost(const QString &host)
+{
+    if (!host.isEmpty() && _host != host) {
+        _host = host;
+        SYNC(ARG(host))
+    }
 }
 
-void IrcUser::setNick(const QString &nick) {
-  if(!nick.isEmpty() && nick != _nick) {
-    _nick = nick;
-    updateObjectName();
-    SYNC(ARG(nick))
-    emit nickSet(nick);
-  }
+
+void IrcUser::setNick(const QString &nick)
+{
+    if (!nick.isEmpty() && nick != _nick) {
+        _nick = nick;
+        updateObjectName();
+        SYNC(ARG(nick))
+        emit nickSet(nick);
+    }
 }
 
-void IrcUser::setWhoisServiceReply(const QString &whoisServiceReply) {
-  if(!whoisServiceReply.isEmpty() && whoisServiceReply != _whoisServiceReply) {
-    _whoisServiceReply = whoisServiceReply;
-    SYNC(ARG(whoisServiceReply))
-  }
+
+void IrcUser::setWhoisServiceReply(const QString &whoisServiceReply)
+{
+    if (!whoisServiceReply.isEmpty() && whoisServiceReply != _whoisServiceReply) {
+        _whoisServiceReply = whoisServiceReply;
+        SYNC(ARG(whoisServiceReply))
+    }
 }
 
-void IrcUser::setSuserHost(const QString &suserHost) {
-  if(!suserHost.isEmpty() && suserHost != _suserHost) {
-    _suserHost = suserHost;
-    SYNC(ARG(suserHost))
-  }
+
+void IrcUser::setSuserHost(const QString &suserHost)
+{
+    if (!suserHost.isEmpty() && suserHost != _suserHost) {
+        _suserHost = suserHost;
+        SYNC(ARG(suserHost))
+    }
 }
 
-void IrcUser::updateObjectName() {
-  renameObject(QString::number(network()->networkId().toInt()) + "/" + _nick);
+
+void IrcUser::updateObjectName()
+{
+    renameObject(QString::number(network()->networkId().toInt()) + "/" + _nick);
 }
 
-void IrcUser::updateHostmask(const QString &mask) {
-  if(mask == hostmask())
-    return;
 
-  QString user = userFromMask(mask);
-  QString host = hostFromMask(mask);
-  setUser(user);
-  setHost(host);
+void IrcUser::updateHostmask(const QString &mask)
+{
+    if (mask == hostmask())
+        return;
+
+    QString user = userFromMask(mask);
+    QString host = hostFromMask(mask);
+    setUser(user);
+    setHost(host);
 }
 
-void IrcUser::joinChannel(IrcChannel *channel) {
-  Q_ASSERT(channel);
-  if(!_channels.contains(channel)) {
-    _channels.insert(channel);
-    channel->joinIrcUser(this);
-  }
+
+void IrcUser::joinChannel(IrcChannel *channel)
+{
+    Q_ASSERT(channel);
+    if (!_channels.contains(channel)) {
+        _channels.insert(channel);
+        channel->joinIrcUser(this);
+    }
 }
 
-void IrcUser::joinChannel(const QString &channelname) {
-  joinChannel(network()->newIrcChannel(channelname));
+
+void IrcUser::joinChannel(const QString &channelname)
+{
+    joinChannel(network()->newIrcChannel(channelname));
 }
 
-void IrcUser::partChannel(IrcChannel *channel) {
-  if(_channels.contains(channel)) {
-    _channels.remove(channel);
-    disconnect(channel, 0, this, 0);
-    channel->part(this);
-    QString channelName = channel->name();
-    SYNC_OTHER(partChannel, ARG(channelName))
-    if(_channels.isEmpty() && !network()->isMe(this))
-      quit();
-  }
+
+void IrcUser::partChannel(IrcChannel *channel)
+{
+    if (_channels.contains(channel)) {
+        _channels.remove(channel);
+        disconnect(channel, 0, this, 0);
+        channel->part(this);
+        QString channelName = channel->name();
+        SYNC_OTHER(partChannel, ARG(channelName))
+        if (_channels.isEmpty() && !network()->isMe(this))
+            quit();
+    }
 }
 
-void IrcUser::partChannel(const QString &channelname) {
-  IrcChannel *channel = network()->ircChannel(channelname);
-  if(channel == 0) {
-    qWarning() << "IrcUser::partChannel(): received part for unknown Channel" << channelname;
-  } else {
-    partChannel(channel);
-  }
+
+void IrcUser::partChannel(const QString &channelname)
+{
+    IrcChannel *channel = network()->ircChannel(channelname);
+    if (channel == 0) {
+        qWarning() << "IrcUser::partChannel(): received part for unknown Channel" << channelname;
+    }
+    else {
+        partChannel(channel);
+    }
 }
 
-void IrcUser::quit() {
-  QList<IrcChannel *> channels = _channels.toList();
-  _channels.clear();
-  foreach(IrcChannel *channel, channels) {
-    disconnect(channel, 0, this, 0);
-    channel->part(this);
-  }
-  network()->removeIrcUser(this);
-  SYNC(NO_ARG)
-  emit quited();
+
+void IrcUser::quit()
+{
+    QList<IrcChannel *> channels = _channels.toList();
+    _channels.clear();
+    foreach(IrcChannel *channel, channels) {
+        disconnect(channel, 0, this, 0);
+        channel->part(this);
+    }
+    network()->removeIrcUser(this);
+    SYNC(NO_ARG)
+    emit quited();
 }
 
-void IrcUser::channelDestroyed() {
-  // private slot!
-  IrcChannel *channel = static_cast<IrcChannel*>(sender());
-  if(_channels.contains(channel)) {
-    _channels.remove(channel);
-    if(_channels.isEmpty() && !network()->isMe(this))
-      quit();
-  }
+
+void IrcUser::channelDestroyed()
+{
+    // private slot!
+    IrcChannel *channel = static_cast<IrcChannel *>(sender());
+    if (_channels.contains(channel)) {
+        _channels.remove(channel);
+        if (_channels.isEmpty() && !network()->isMe(this))
+            quit();
+    }
 }
 
-void IrcUser::setUserModes(const QString &modes) {
-  _userModes = modes;
-  SYNC(ARG(modes))
-  emit userModesSet(modes);
+
+void IrcUser::setUserModes(const QString &modes)
+{
+    _userModes = modes;
+    SYNC(ARG(modes))
+    emit userModesSet(modes);
 }
 
-void IrcUser::addUserModes(const QString &modes) {
-  if(modes.isEmpty())
-    return;
 
-  for(int i = 0; i < modes.count(); i++) {
-    if(!_userModes.contains(modes[i]))
-      _userModes += modes[i];
-  }
+void IrcUser::addUserModes(const QString &modes)
+{
+    if (modes.isEmpty())
+        return;
 
-  SYNC(ARG(modes))
-  emit userModesAdded(modes);
+    for (int i = 0; i < modes.count(); i++) {
+        if (!_userModes.contains(modes[i]))
+            _userModes += modes[i];
+    }
+
+    SYNC(ARG(modes))
+    emit userModesAdded(modes);
 }
 
-void IrcUser::removeUserModes(const QString &modes) {
-  if(modes.isEmpty())
-    return;
 
-  for(int i = 0; i < modes.count(); i++) {
-    _userModes.remove(modes[i]);
-  }
-  SYNC(ARG(modes))
-  emit userModesRemoved(modes);
+void IrcUser::removeUserModes(const QString &modes)
+{
+    if (modes.isEmpty())
+        return;
+
+    for (int i = 0; i < modes.count(); i++) {
+        _userModes.remove(modes[i]);
+    }
+    SYNC(ARG(modes))
+    emit userModesRemoved(modes);
 }
 
-void IrcUser::setLastChannelActivity(BufferId buffer, const QDateTime &time) {
-  _lastActivity[buffer] = time;
-  emit lastChannelActivityUpdated(buffer, time);
+
+void IrcUser::setLastChannelActivity(BufferId buffer, const QDateTime &time)
+{
+    _lastActivity[buffer] = time;
+    emit lastChannelActivityUpdated(buffer, time);
 }
 
-void IrcUser::setLastSpokenTo(BufferId buffer, const QDateTime &time) {
-  _lastSpokenTo[buffer] = time;
-  emit lastSpokenToUpdated(buffer, time);
+
+void IrcUser::setLastSpokenTo(BufferId buffer, const QDateTime &time)
+{
+    _lastSpokenTo[buffer] = time;
+    emit lastSpokenToUpdated(buffer, time);
 }

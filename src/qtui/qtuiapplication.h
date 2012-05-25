@@ -35,29 +35,32 @@
 class QtUi;
 
 #ifdef HAVE_KDE
-class QtUiApplication : public KApplication, public Quassel {
+class QtUiApplication : public KApplication, public Quassel
+{
 #else
-class QtUiApplication : public QApplication, public Quassel {
+class QtUiApplication : public QApplication, public Quassel
+{
 #endif
 
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  QtUiApplication(int &, char **);
-  ~QtUiApplication();
-  virtual bool init();
+    QtUiApplication(int &, char **);
+    ~QtUiApplication();
+    virtual bool init();
 
-  void resumeSessionIfPossible();
-  virtual void commitData(QSessionManager &manager);
-  virtual void saveState(QSessionManager &manager);
+    void resumeSessionIfPossible();
+    virtual void commitData(QSessionManager &manager);
+    virtual void saveState(QSessionManager &manager);
 
-  inline bool isAboutToQuit() const { return _aboutToQuit; }
+    inline bool isAboutToQuit() const { return _aboutToQuit; }
 
 protected:
-  virtual void quit();
+    virtual void quit();
 
 private:
-  bool _aboutToQuit;
+    bool _aboutToQuit;
 };
+
 
 #endif

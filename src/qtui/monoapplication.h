@@ -25,20 +25,22 @@
 
 class CoreApplicationInternal;
 
-class MonolithicApplication : public QtUiApplication {
-  Q_OBJECT
+class MonolithicApplication : public QtUiApplication
+{
+    Q_OBJECT
 public:
-  MonolithicApplication(int &, char **);
-  ~MonolithicApplication();
+    MonolithicApplication(int &, char **);
+    ~MonolithicApplication();
 
-  bool init();
+    bool init();
 
 private slots:
-  void startInternalCore();
+    void startInternalCore();
 
 private:
-  CoreApplicationInternal *_internal;
-  bool _internalInitDone;
+    CoreApplicationInternal *_internal;
+    bool _internalInitDone;
 };
+
 
 #endif

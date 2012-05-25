@@ -30,65 +30,67 @@
 class CoreSession;
 class CtcpEvent;
 
-class CtcpParser : public QObject {
-  Q_OBJECT
+class CtcpParser : public QObject
+{
+    Q_OBJECT
 
 public:
-  CtcpParser(CoreSession *coreSession, QObject *parent = 0);
+    CtcpParser(CoreSession *coreSession, QObject *parent = 0);
 
-  inline CoreSession *coreSession() const { return _coreSession; }
+    inline CoreSession *coreSession() const { return _coreSession; }
 
-  void query(CoreNetwork *network, const QString &bufname, const QString &ctcpTag, const QString &message);
-  void reply(CoreNetwork *network, const QString &bufname, const QString &ctcpTag, const QString &message);
+    void query(CoreNetwork *network, const QString &bufname, const QString &ctcpTag, const QString &message);
+    void reply(CoreNetwork *network, const QString &bufname, const QString &ctcpTag, const QString &message);
 
-  Q_INVOKABLE void processIrcEventRawNotice(IrcEventRawMessage *event);
-  Q_INVOKABLE void processIrcEventRawPrivmsg(IrcEventRawMessage *event);
+    Q_INVOKABLE void processIrcEventRawNotice(IrcEventRawMessage *event);
+    Q_INVOKABLE void processIrcEventRawPrivmsg(IrcEventRawMessage *event);
 
-  Q_INVOKABLE void sendCtcpEvent(CtcpEvent *event);
+    Q_INVOKABLE void sendCtcpEvent(CtcpEvent *event);
 
 signals:
-  void newEvent(Event *event);
+    void newEvent(Event *event);
 
 protected:
-  inline CoreNetwork *coreNetwork(NetworkEvent *e) const { return qobject_cast<CoreNetwork *>(e->network()); }
+    inline CoreNetwork *coreNetwork(NetworkEvent *e) const { return qobject_cast<CoreNetwork *>(e->network()); }
 
-  // FIXME duplicates functionality in EventStringifier, maybe want to put that in something common
-  //! Creates and sends a MessageEvent
-  void displayMsg(NetworkEvent *event,
-                  Message::Type msgType,
-                  const QString &msg,
-                  const QString &sender = QString(),
-                  const QString &target = QString(),
-                  Message::Flags msgFlags = Message::None);
+    // FIXME duplicates functionality in EventStringifier, maybe want to put that in something common
+    //! Creates and sends a MessageEvent
+    void displayMsg(NetworkEvent *event,
+        Message::Type msgType,
+        const QString &msg,
+        const QString &sender = QString(),
+        const QString &target = QString(),
+        Message::Flags msgFlags = Message::None);
 
-  void parse(IrcEventRawMessage *event, Message::Type msgType);
+    void parse(IrcEventRawMessage *event, Message::Type msgType);
 
-  QByteArray lowLevelQuote(const QByteArray &);
-  QByteArray lowLevelDequote(const QByteArray &);
-  QByteArray xdelimQuote(const QByteArray &);
-  QByteArray xdelimDequote(const QByteArray &);
+    QByteArray lowLevelQuote(const QByteArray &);
+    QByteArray lowLevelDequote(const QByteArray &);
+    QByteArray xdelimQuote(const QByteArray &);
+    QByteArray xdelimDequote(const QByteArray &);
 
-  QByteArray pack(const QByteArray &ctcpTag, const QByteArray &message);
-  void packedReply(CoreNetwork *network, const QString &bufname, const QList<QByteArray> &replies);
+    QByteArray pack(const QByteArray &ctcpTag, const QByteArray &message);
+    void packedReply(CoreNetwork *network, const QString &bufname, const QList<QByteArray> &replies);
 
 private:
-  inline QString targetDecode(IrcEventRawMessage *e, const QByteArray &msg) { return coreNetwork(e)->userDecode(e->target(), msg); }
+    inline QString targetDecode(IrcEventRawMessage *e, const QByteArray &msg) { return coreNetwork(e)->userDecode(e->target(), msg); }
 
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 
-  struct CtcpReply {
-    CoreNetwork *network;
-    QString bufferName;
-    QList<QByteArray> replies;
+    struct CtcpReply {
+        CoreNetwork *network;
+        QString bufferName;
+        QList<QByteArray> replies;
 
-    CtcpReply() : network(0) {}
-    CtcpReply(CoreNetwork *net, const QString &buf) : network(net), bufferName(buf) {}
-  };
+        CtcpReply() : network(0) {}
+        CtcpReply(CoreNetwork *net, const QString &buf) : network(net), bufferName(buf) {}
+    };
 
-  QHash<QUuid, CtcpReply> _replies;
+    QHash<QUuid, CtcpReply> _replies;
 
-  QHash<QByteArray, QByteArray> _ctcpMDequoteHash;
-  QHash<QByteArray, QByteArray> _ctcpXDelimDequoteHash;
+    QHash<QByteArray, QByteArray> _ctcpMDequoteHash;
+    QHash<QByteArray, QByteArray> _ctcpXDelimDequoteHash;
 };
+
 
 #endif

@@ -23,23 +23,23 @@
 
 #include "mainpage.h"
 
-MainPage::MainPage(QWidget *parent) : QWidget(parent) {
-
-
+MainPage::MainPage(QWidget *parent) : QWidget(parent)
+{
 }
 
-void MainPage::paintEvent(QPaintEvent *event) {
-  Q_UNUSED(event);
 
-  QPainter painter(this);
-  QImage img(":/pics/quassel-logo.png"); // FIXME load externally
+void MainPage::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
 
-  if(img.height() > height() || img.width() > width())
-    img = img.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QPainter painter(this);
+    QImage img(":/pics/quassel-logo.png"); // FIXME load externally
 
-  int xmargin = (width() - img.width()) / 2;
-  int ymargin = (height() - img.height()) / 2;
+    if (img.height() > height() || img.width() > width())
+        img = img.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-  painter.drawImage(xmargin, ymargin, img);
+    int xmargin = (width() - img.width()) / 2;
+    int ymargin = (height() - img.height()) / 2;
 
+    painter.drawImage(xmargin, ymargin, img);
 }

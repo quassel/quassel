@@ -30,32 +30,36 @@
  * NickViewFilter
  ******************************************************************************************/
 NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
-  : QSortFilterProxyModel(parent),
+    : QSortFilterProxyModel(parent),
     _bufferId(bufferId)
 {
-  setSourceModel(parent);
-  setDynamicSortFilter(true);
-  setSortCaseSensitivity(Qt::CaseInsensitive);
-  setSortRole(TreeModel::SortRole);
+    setSourceModel(parent);
+    setDynamicSortFilter(true);
+    setSortCaseSensitivity(Qt::CaseInsensitive);
+    setSortRole(TreeModel::SortRole);
 }
 
-bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
-  // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's children are accepted
-  if(!source_parent.isValid())
-    return true;
 
-  QModelIndex source_child = source_parent.child(source_row, 0);
-  return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
+bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+    // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's children are accepted
+    if (!source_parent.isValid())
+        return true;
+
+    QModelIndex source_child = source_parent.child(source_row, 0);
+    return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
 }
 
-QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
-  switch(role) {
-  case Qt::FontRole:
-  case Qt::ForegroundRole:
-  case Qt::BackgroundRole:
-  case Qt::DecorationRole:
-    return GraphicalUi::uiStyle()->nickViewItemData(mapToSource(index), role);
-  default:
-    return QSortFilterProxyModel::data(index, role);
-  }
+
+QVariant NickViewFilter::data(const QModelIndex &index, int role) const
+{
+    switch (role) {
+    case Qt::FontRole:
+    case Qt::ForegroundRole:
+    case Qt::BackgroundRole:
+    case Qt::DecorationRole:
+        return GraphicalUi::uiStyle()->nickViewItemData(mapToSource(index), role);
+    default:
+        return QSortFilterProxyModel::data(index, role);
+    }
 }

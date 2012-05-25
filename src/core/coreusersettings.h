@@ -28,9 +28,9 @@
 
 #include <QVariantMap>
 
-class CoreUserSettings : public CoreSettings {
-
-  public:
+class CoreUserSettings : public CoreSettings
+{
+public:
     CoreUserSettings(UserId user);
 
     Identity identity(IdentityId id);
@@ -41,7 +41,7 @@ class CoreUserSettings : public CoreSettings {
     void setSessionState(const QVariant &data);
     QVariant sessionState(const QVariant &def = QVariant());
 
-  private:
+private:
     // this stuff should only be accessed by CoreSession!
     QVariantMap sessionData();
     QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
@@ -51,5 +51,6 @@ class CoreUserSettings : public CoreSettings {
 
     friend class CoreSession;
 };
+
 
 #endif

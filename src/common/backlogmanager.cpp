@@ -21,12 +21,15 @@
 #include "backlogmanager.h"
 
 INIT_SYNCABLE_OBJECT(BacklogManager)
-QVariantList BacklogManager::requestBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional) {
-  REQUEST(ARG(bufferId), ARG(first), ARG(last), ARG(limit), ARG(additional))
-  return QVariantList();
+QVariantList BacklogManager::requestBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional)
+{
+    REQUEST(ARG(bufferId), ARG(first), ARG(last), ARG(limit), ARG(additional))
+    return QVariantList();
 }
 
-QVariantList BacklogManager::requestBacklogAll(MsgId first, MsgId last, int limit, int additional) {
-  REQUEST(ARG(first), ARG(last), ARG(limit), ARG(additional))
-  return QVariantList();
+
+QVariantList BacklogManager::requestBacklogAll(MsgId first, MsgId last, int limit, int additional)
+{
+    REQUEST(ARG(first), ARG(last), ARG(limit), ARG(additional))
+    return QVariantList();
 }

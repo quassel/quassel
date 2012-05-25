@@ -23,10 +23,12 @@
 #include <QCryptographicHash>
 
 Storage::Storage(QObject *parent)
-  : QObject(parent)
+    : QObject(parent)
 {
 }
 
-QString Storage::cryptedPassword(const QString &password) {
-  return QString(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex());
+
+QString Storage::cryptedPassword(const QString &password)
+{
+    return QString(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex());
 }

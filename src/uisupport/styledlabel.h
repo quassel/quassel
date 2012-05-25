@@ -26,67 +26,69 @@
 #include "clickable.h"
 #include "uistyle.h"
 
-class StyledLabel : public QFrame {
-  Q_OBJECT
+class StyledLabel : public QFrame
+{
+    Q_OBJECT
 
 public:
-  enum ResizeMode {
-    NoResize,
-    DynamicResize,
-    ResizeOnHover
-  };
+    enum ResizeMode {
+        NoResize,
+        DynamicResize,
+        ResizeOnHover
+    };
 
-  StyledLabel(QWidget *parent = 0);
+    StyledLabel(QWidget *parent = 0);
 
-  void setText(const QString &text);
-  void setCustomFont(const QFont &font);
+    void setText(const QString &text);
+    void setCustomFont(const QFont &font);
 
-  virtual QSize sizeHint() const;
-  //virtual QSize minimumSizeHint() const;
+    virtual QSize sizeHint() const;
+    //virtual QSize minimumSizeHint() const;
 
-  inline QTextOption::WrapMode wrapMode() const { return _wrapMode; }
-  void setWrapMode(QTextOption::WrapMode mode);
+    inline QTextOption::WrapMode wrapMode() const { return _wrapMode; }
+    void setWrapMode(QTextOption::WrapMode mode);
 
-  inline Qt::Alignment alignment() const { return _alignment; }
-  void setAlignment(Qt::Alignment alignment);
+    inline Qt::Alignment alignment() const { return _alignment; }
+    void setAlignment(Qt::Alignment alignment);
 
-  inline bool toolTipEnabled() const { return _toolTipEnabled; }
-  void setToolTipEnabled(bool);
+    inline bool toolTipEnabled() const { return _toolTipEnabled; }
+    void setToolTipEnabled(bool);
 
-  inline ResizeMode resizeMode() const { return _resizeMode; }
-  void setResizeMode(ResizeMode);
+    inline ResizeMode resizeMode() const { return _resizeMode; }
+    void setResizeMode(ResizeMode);
 
 signals:
-  void clickableActivated(const Clickable &click);
+    void clickableActivated(const Clickable &click);
 
 protected:
-  virtual void paintEvent(QPaintEvent *event);
-  virtual void resizeEvent(QResizeEvent *event);
-  virtual void enterEvent(QEvent *);
-  virtual void leaveEvent(QEvent *);
-  virtual void mouseMoveEvent(QMouseEvent *event);
-  virtual void mousePressEvent(QMouseEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
+    virtual void enterEvent(QEvent *);
+    virtual void leaveEvent(QEvent *);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
 
-  int posToCursor(const QPointF &pos);
+    int posToCursor(const QPointF &pos);
 
 private:
-  QSize _sizeHint;
-  QTextOption::WrapMode _wrapMode;
-  Qt::Alignment _alignment;
-  QTextLayout _layout;
-  ClickableList _clickables;
-  bool _toolTipEnabled;
-  ResizeMode _resizeMode;
+    QSize _sizeHint;
+    QTextOption::WrapMode _wrapMode;
+    Qt::Alignment _alignment;
+    QTextLayout _layout;
+    ClickableList _clickables;
+    bool _toolTipEnabled;
+    ResizeMode _resizeMode;
 
-  QList<QTextLayout::FormatRange> _layoutList;
-  QVector<QTextLayout::FormatRange> _extraLayoutList;
+    QList<QTextLayout::FormatRange> _layoutList;
+    QVector<QTextLayout::FormatRange> _extraLayoutList;
 
-  void layout();
-  void updateSizeHint();
-  void updateToolTip();
+    void layout();
+    void updateSizeHint();
+    void updateToolTip();
 
-  void setHoverMode(int start, int length);
-  void endHoverMode();
+    void setHoverMode(int start, int length);
+    void endHoverMode();
 };
+
 
 #endif

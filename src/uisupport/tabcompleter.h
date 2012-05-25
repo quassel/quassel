@@ -31,50 +31,51 @@ class MultiLineEdit;
 class IrcUser;
 class Network;
 
-class TabCompleter : public QObject {
-  Q_OBJECT
+class TabCompleter : public QObject
+{
+    Q_OBJECT
 
 public:
-  enum Type {
-    UserTab = 0x01,
-    ChannelTab = 0x02
-  };
+    enum Type {
+        UserTab = 0x01,
+        ChannelTab = 0x02
+    };
 
-  explicit TabCompleter(MultiLineEdit *inputLine_);
+    explicit TabCompleter(MultiLineEdit *inputLine_);
 
-  void reset();
-  void complete();
+    void reset();
+    void complete();
 
-  virtual bool eventFilter(QObject *obj, QEvent *event);
+    virtual bool eventFilter(QObject *obj, QEvent *event);
 
 public slots:
-  void onTabCompletionKey();
+    void onTabCompletionKey();
 
 private:
 
-  struct CompletionKey {
-    inline CompletionKey(const QString &n) { contents = n; }
-    bool operator<(const CompletionKey &other) const;
-    QString contents;
-  };
+    struct CompletionKey {
+        inline CompletionKey(const QString &n) { contents = n; }
+        bool operator<(const CompletionKey &other) const;
+        QString contents;
+    };
 
-  QPointer<MultiLineEdit> _lineEdit;
-  bool _enabled;
-  QString _nickSuffix;
+    QPointer<MultiLineEdit> _lineEdit;
+    bool _enabled;
+    QString _nickSuffix;
 
-  static const Network *_currentNetwork;
-  static BufferId _currentBufferId;
-  static QString _currentBufferName;
-  static Type _completionType;
+    static const Network *_currentNetwork;
+    static BufferId _currentBufferId;
+    static QString _currentBufferName;
+    static Type _completionType;
 
-  QMap<CompletionKey, QString> _completionMap;
-  // QStringList completionTemplates;
+    QMap<CompletionKey, QString> _completionMap;
+    // QStringList completionTemplates;
 
-  QMap<CompletionKey, QString>::Iterator _nextCompletion;
-  int _lastCompletionLength;
+    QMap<CompletionKey, QString>::Iterator _nextCompletion;
+    int _lastCompletionLength;
 
-  void buildCompletionList();
-
+    void buildCompletionList();
 };
+
 
 #endif

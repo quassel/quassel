@@ -24,63 +24,76 @@
 #include "coreuserinputhandler.h"
 
 INIT_SYNCABLE_OBJECT(CoreIrcListHelper)
-QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters) {
-  if(_finishedChannelLists.contains(netId))
-    return _finishedChannelLists.take(netId);
-     
-  if(_channelLists.contains(netId)) {
-    _queuedQuery[netId] = channelFilters.join(",");
-  } else {
-    dispatchQuery(netId, channelFilters.join(","));
-  }
-  return QVariantList();
-}
+QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters)
+{
+    if (_finishedChannelLists.contains(netId))
+        return _finishedChannelLists.take(netId);
 
-bool CoreIrcListHelper::addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic) {
-  if(!_channelLists.contains(netId))
-    return false;
-
-  _channelLists[netId] << ChannelDescription(channelName, userCount, topic);
-  return true;
-}
-
-bool CoreIrcListHelper::dispatchQuery(const NetworkId &netId, const QString &query) {
-  CoreNetwork *network = coreSession()->network(netId);
-  if(network) {
-    _channelLists[netId] = QList<ChannelDescription>();
-    network->userInputHandler()->handleList(BufferInfo(), query);
-    _queryTimeout[startTimer(10000)] = netId;
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId) {
-  if(_queuedQuery.contains(netId)) {
-    // we're no longer interessted in the current data. drop it and issue a new request.
-    return dispatchQuery(netId, _queuedQuery.take(netId));
-  } else if(_channelLists.contains(netId)) {
-    QVariantList channelList;
-    foreach(ChannelDescription channel, _channelLists[netId]) {
-      QVariantList channelVariant;
-      channelVariant << channel.channelName
-		     << channel.userCount
-		     << channel.topic;
-      channelList << qVariantFromValue<QVariant>(channelVariant);
+    if (_channelLists.contains(netId)) {
+        _queuedQuery[netId] = channelFilters.join(",");
     }
-    _finishedChannelLists[netId] = channelList;
-    _channelLists.remove(netId);
-    reportFinishedList(netId);
-    return true;
-  } else {
-    return false;
-  }
+    else {
+        dispatchQuery(netId, channelFilters.join(","));
+    }
+    return QVariantList();
 }
 
-void CoreIrcListHelper::timerEvent(QTimerEvent *event) {
-  int timerId = event->timerId();
-  killTimer(timerId);
-  NetworkId netId = _queryTimeout.take(timerId);
-  endOfChannelList(netId);
+
+bool CoreIrcListHelper::addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic)
+{
+    if (!_channelLists.contains(netId))
+        return false;
+
+    _channelLists[netId] << ChannelDescription(channelName, userCount, topic);
+    return true;
+}
+
+
+bool CoreIrcListHelper::dispatchQuery(const NetworkId &netId, const QString &query)
+{
+    CoreNetwork *network = coreSession()->network(netId);
+    if (network) {
+        _channelLists[netId] = QList<ChannelDescription>();
+        network->userInputHandler()->handleList(BufferInfo(), query);
+        _queryTimeout[startTimer(10000)] = netId;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId)
+{
+    if (_queuedQuery.contains(netId)) {
+        // we're no longer interessted in the current data. drop it and issue a new request.
+        return dispatchQuery(netId, _queuedQuery.take(netId));
+    }
+    else if (_channelLists.contains(netId)) {
+        QVariantList channelList;
+        foreach(ChannelDescription channel, _channelLists[netId]) {
+            QVariantList channelVariant;
+            channelVariant << channel.channelName
+                           << channel.userCount
+                           << channel.topic;
+            channelList << qVariantFromValue<QVariant>(channelVariant);
+        }
+        _finishedChannelLists[netId] = channelList;
+        _channelLists.remove(netId);
+        reportFinishedList(netId);
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+void CoreIrcListHelper::timerEvent(QTimerEvent *event)
+{
+    int timerId = event->timerId();
+    killTimer(timerId);
+    NetworkId netId = _queryTimeout.take(timerId);
+    endOfChannelList(netId);
 }

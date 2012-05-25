@@ -25,43 +25,43 @@
 
 #include "ui_topicwidget.h"
 
-class TopicWidget : public AbstractItemView {
-  Q_OBJECT
+class TopicWidget : public AbstractItemView
+{
+    Q_OBJECT
 
 public:
-  TopicWidget(QWidget *parent = 0);
+    TopicWidget(QWidget *parent = 0);
 
-  void setTopic(const QModelIndex& index);
-  void setCustomFont(const QFont &);
-  void setReadOnly(const bool &readonly);
+    void setTopic(const QModelIndex &index);
+    void setCustomFont(const QFont &);
+    void setReadOnly(const bool &readonly);
 
-  virtual bool eventFilter(QObject *obj, QEvent *event);
-  inline bool isReadOnly() const { return _readonly; }
+    virtual bool eventFilter(QObject *obj, QEvent *event);
+    inline bool isReadOnly() const { return _readonly; }
 
-  signals:
+signals:
     void switchedPlain();
 
 protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private slots:
-  void on_topicLineEdit_textEntered();
-  void on_topicEditButton_clicked();
-  void switchEditable();
-  void switchPlain();
-  void clickableActivated(const Clickable &);
-  void updateResizeMode();
-  void setCustomFont(const QVariant &);
-  void setUseCustomFont(const QVariant &);
+    void on_topicLineEdit_textEntered();
+    void on_topicEditButton_clicked();
+    void switchEditable();
+    void switchPlain();
+    void clickableActivated(const Clickable &);
+    void updateResizeMode();
+    void setCustomFont(const QVariant &);
+    void setUseCustomFont(const QVariant &);
 
 private:
-  Ui::TopicWidget ui;
+    Ui::TopicWidget ui;
 
-  QString _topic;
-  bool _mouseEntered;
-  bool _readonly;
-
+    QString _topic;
+    bool _mouseEntered;
+    bool _readonly;
 };
 
 

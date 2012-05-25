@@ -30,46 +30,48 @@ class ChatView;
 class ChatViewSearchBar;
 class ChatViewSearchController;
 
-class BufferWidget : public AbstractBufferContainer {
-  Q_OBJECT
+class BufferWidget : public AbstractBufferContainer
+{
+    Q_OBJECT
 
 public:
-  BufferWidget(QWidget *parent);
-  ~BufferWidget();
+    BufferWidget(QWidget *parent);
+    ~BufferWidget();
 
-  virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
 
-  inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
-  void addActionsToMenu(QMenu *, const QPointF &pos);
+    inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
+    void addActionsToMenu(QMenu *, const QPointF &pos);
 
 public slots:
-  virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
-  virtual void jumpToMarkerLine(ChatView *view = 0, bool requestBacklog = true);
+    virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
+    virtual void jumpToMarkerLine(ChatView *view = 0, bool requestBacklog = true);
 
 protected:
-  virtual AbstractChatView *createChatView(BufferId);
-  virtual void removeChatView(BufferId);
-  virtual inline bool autoMarkerLine() const { return _autoMarkerLine; }
+    virtual AbstractChatView *createChatView(BufferId);
+    virtual void removeChatView(BufferId);
+    virtual inline bool autoMarkerLine() const { return _autoMarkerLine; }
 
 protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void showChatView(BufferId);
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    virtual void showChatView(BufferId);
 
 private slots:
-  void scrollToHighlight(QGraphicsItem *highlightItem);
-  void zoomIn();
-  void zoomOut();
-  void zoomOriginal();
+    void scrollToHighlight(QGraphicsItem *highlightItem);
+    void zoomIn();
+    void zoomOut();
+    void zoomOriginal();
 
-  void setAutoMarkerLine(const QVariant &);
+    void setAutoMarkerLine(const QVariant &);
 
 private:
-  Ui::BufferWidget ui;
-  QHash<BufferId, QWidget *> _chatViews;
+    Ui::BufferWidget ui;
+    QHash<BufferId, QWidget *> _chatViews;
 
-  ChatViewSearchController *_chatViewSearchController;
+    ChatViewSearchController *_chatViewSearchController;
 
-  bool _autoMarkerLine;
+    bool _autoMarkerLine;
 };
+
 
 #endif

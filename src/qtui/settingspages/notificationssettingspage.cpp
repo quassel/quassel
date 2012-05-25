@@ -25,54 +25,63 @@
 #include "qtui.h"
 
 NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Interface"), tr("Notifications"), parent),
-  _hasDefaults(false)
+    : SettingsPage(tr("Interface"), tr("Notifications"), parent),
+    _hasDefaults(false)
 {
-
-  QVBoxLayout *layout = new QVBoxLayout(this);
-  foreach(AbstractNotificationBackend *backend, QtUi::notificationBackends()) {
-    SettingsPage *cw = backend->createConfigWidget();
-    if(cw) {
-      cw->setParent(this);
-      _configWidgets.append(cw);
-      layout->addWidget(cw);
-      connect(cw, SIGNAL(changed(bool)), SLOT(widgetHasChanged()));
-      _hasDefaults |= cw->hasDefaults();
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    foreach(AbstractNotificationBackend *backend, QtUi::notificationBackends()) {
+        SettingsPage *cw = backend->createConfigWidget();
+        if (cw) {
+            cw->setParent(this);
+            _configWidgets.append(cw);
+            layout->addWidget(cw);
+            connect(cw, SIGNAL(changed(bool)), SLOT(widgetHasChanged()));
+            _hasDefaults |= cw->hasDefaults();
+        }
     }
-  }
-  layout->addStretch(20);
-  load();
+    layout->addStretch(20);
+    load();
 }
 
-bool NotificationsSettingsPage::hasDefaults() const {
-  return _hasDefaults;
+
+bool NotificationsSettingsPage::hasDefaults() const
+{
+    return _hasDefaults;
 }
 
-void NotificationsSettingsPage::defaults() {
-  foreach(SettingsPage *cw, _configWidgets)
+
+void NotificationsSettingsPage::defaults()
+{
+    foreach(SettingsPage *cw, _configWidgets)
     cw->defaults();
-  widgetHasChanged();
+    widgetHasChanged();
 }
 
-void NotificationsSettingsPage::load() {
-  foreach(SettingsPage *cw, _configWidgets)
+
+void NotificationsSettingsPage::load()
+{
+    foreach(SettingsPage *cw, _configWidgets)
     cw->load();
-  setChangedState(false);
+    setChangedState(false);
 }
 
-void NotificationsSettingsPage::save() {
-  foreach(SettingsPage *cw, _configWidgets)
+
+void NotificationsSettingsPage::save()
+{
+    foreach(SettingsPage *cw, _configWidgets)
     cw->save();
-  setChangedState(false);
+    setChangedState(false);
 }
 
-void NotificationsSettingsPage::widgetHasChanged() {
-  bool changed = false;
-  foreach(SettingsPage *cw, _configWidgets) {
-    if(cw->hasChanged()) {
-      changed = true;
-      break;
+
+void NotificationsSettingsPage::widgetHasChanged()
+{
+    bool changed = false;
+    foreach(SettingsPage *cw, _configWidgets) {
+        if (cw->hasChanged()) {
+            changed = true;
+            break;
+        }
     }
-  }
-  if(changed != hasChanged()) setChangedState(changed);
+    if (changed != hasChanged()) setChangedState(changed);
 }

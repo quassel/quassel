@@ -25,25 +25,27 @@
 
 class CoreSession;
 
-class CoreNetworkConfig : public NetworkConfig {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreNetworkConfig : public NetworkConfig
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreNetworkConfig(const QString &objectName, CoreSession *parent);
+    CoreNetworkConfig(const QString &objectName, CoreSession *parent);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &NetworkConfig::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &NetworkConfig::staticMetaObject; }
 
-  void save();
+    void save();
 
 public slots:
-  virtual inline void requestSetPingTimeoutEnabled(bool enabled) { setPingTimeoutEnabled(enabled); }
-  virtual inline void requestSetPingInterval(int interval) { setPingInterval(interval); }
-  virtual inline void requestSetMaxPingCount(int count) { setMaxPingCount(count); }
-  virtual inline void requestSetAutoWhoEnabled(bool enabled) { setAutoWhoEnabled(enabled); }
-  virtual inline void requestSetAutoWhoInterval(int interval) { setAutoWhoInterval(interval); }
-  virtual inline void requestSetAutoWhoNickLimit(int nickLimit) { setAutoWhoNickLimit(nickLimit); }
-  virtual inline void requestSetAutoWhoDelay(int delay) { setAutoWhoDelay(delay); }
+    virtual inline void requestSetPingTimeoutEnabled(bool enabled) { setPingTimeoutEnabled(enabled); }
+    virtual inline void requestSetPingInterval(int interval) { setPingInterval(interval); }
+    virtual inline void requestSetMaxPingCount(int count) { setMaxPingCount(count); }
+    virtual inline void requestSetAutoWhoEnabled(bool enabled) { setAutoWhoEnabled(enabled); }
+    virtual inline void requestSetAutoWhoInterval(int interval) { setAutoWhoInterval(interval); }
+    virtual inline void requestSetAutoWhoNickLimit(int nickLimit) { setAutoWhoNickLimit(nickLimit); }
+    virtual inline void requestSetAutoWhoDelay(int delay) { setAutoWhoDelay(delay); }
 };
+
 
 #endif

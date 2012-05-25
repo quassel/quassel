@@ -23,18 +23,19 @@
 #include "client.h"
 
 DebugLogWidget::DebugLogWidget(QWidget *parent)
-  : QWidget(parent)
+    : QWidget(parent)
 {
-  ui.setupUi(this);
-  setAttribute(Qt::WA_DeleteOnClose, true);
-  ui.textEdit->setPlainText(Client::debugLog());
-  connect(Client::instance(), SIGNAL(logUpdated(const QString &)), this, SLOT(logUpdated(const QString &)));
-  ui.textEdit->setReadOnly(true);
+    ui.setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose, true);
+    ui.textEdit->setPlainText(Client::debugLog());
+    connect(Client::instance(), SIGNAL(logUpdated(const QString &)), this, SLOT(logUpdated(const QString &)));
+    ui.textEdit->setReadOnly(true);
 }
 
-void DebugLogWidget::logUpdated(const QString &msg) {
-  ui.textEdit->moveCursor(QTextCursor::End);
-  ui.textEdit->insertPlainText(msg);
-  ui.textEdit->moveCursor(QTextCursor::End);
-}
 
+void DebugLogWidget::logUpdated(const QString &msg)
+{
+    ui.textEdit->moveCursor(QTextCursor::End);
+    ui.textEdit->insertPlainText(msg);
+    ui.textEdit->moveCursor(QTextCursor::End);
+}

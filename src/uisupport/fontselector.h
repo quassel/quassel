@@ -24,30 +24,32 @@
 #include <QLabel>
 #include <QWidget>
 
-class FontSelector : public QWidget {
-  Q_OBJECT
-  Q_PROPERTY(QFont selectedFont READ selectedFont WRITE setSelectedFont)
+class FontSelector : public QWidget
+{
+    Q_OBJECT
+    Q_PROPERTY(QFont selectedFont READ selectedFont WRITE setSelectedFont)
 
-public:
-  FontSelector(QWidget *parent = 0);
+public :
+        FontSelector(QWidget *parent = 0);
 
-  inline const QFont &selectedFont() const { return _font; }
+    inline const QFont &selectedFont() const { return _font; }
 
 public slots:
-  void setSelectedFont(const QFont &font);
+    void setSelectedFont(const QFont &font);
 
 signals:
-  void fontChanged(const QFont &);
+    void fontChanged(const QFont &);
 
 protected:
-  void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e);
 
 protected slots:
-  void chooseFont();
+    void chooseFont();
 
 private:
-  QFont _font;
-  QLabel *_demo;
+    QFont _font;
+    QLabel *_demo;
 };
+
 
 #endif // FONTSELECTOR_H_

@@ -28,46 +28,50 @@
 class QCheckBox;
 class QSpinBox;
 
-class TaskbarNotificationBackend : public AbstractNotificationBackend {
-  Q_OBJECT
+class TaskbarNotificationBackend : public AbstractNotificationBackend
+{
+    Q_OBJECT
 
 public:
-  TaskbarNotificationBackend(QObject *parent = 0);
+    TaskbarNotificationBackend(QObject *parent = 0);
 
-  void notify(const Notification &);
-  void close(uint notificationId);
-  virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &);
+    void close(uint notificationId);
+    virtual SettingsPage *createConfigWidget() const;
 
 private slots:
-  void enabledChanged(const QVariant &);
-  void timeoutChanged(const QVariant &);
+    void enabledChanged(const QVariant &);
+    void timeoutChanged(const QVariant &);
 
 private:
-  class ConfigWidget;
+    class ConfigWidget;
 
-  bool _enabled;
-  int _timeout;
+    bool _enabled;
+    int _timeout;
 };
 
-class TaskbarNotificationBackend::ConfigWidget : public SettingsPage {
-  Q_OBJECT
+
+class TaskbarNotificationBackend::ConfigWidget : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  ConfigWidget(QWidget *parent = 0);
-  void save();
-  void load();
-  bool hasDefaults() const;
-  void defaults();
+    ConfigWidget(QWidget *parent = 0);
+    void save();
+    void load();
+    bool hasDefaults() const;
+    void defaults();
 
 private slots:
-  void widgetChanged();
+    void widgetChanged();
 
 private:
-  QCheckBox *enabledBox;
-  QSpinBox *timeoutBox;
+    QCheckBox *enabledBox;
+    QSpinBox *timeoutBox;
 
-  bool enabled;
-  int timeout;
+    bool enabled;
+    int timeout;
 };
+
 
 #endif

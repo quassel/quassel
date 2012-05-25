@@ -22,17 +22,21 @@
 
 ResizingStackedWidget::ResizingStackedWidget(QWidget *parent) : QStackedWidget(parent)
 {
-  connect(this, SIGNAL(currentChanged(int)), SLOT(indexChanged(int)));
+    connect(this, SIGNAL(currentChanged(int)), SLOT(indexChanged(int)));
 }
 
-QSize ResizingStackedWidget::sizeHint() const {
-  QWidget *widget = currentWidget();
-  if(!widget)
-    return QSize();
-  return widget->sizeHint();
+
+QSize ResizingStackedWidget::sizeHint() const
+{
+    QWidget *widget = currentWidget();
+    if (!widget)
+        return QSize();
+    return widget->sizeHint();
 }
 
-void ResizingStackedWidget::indexChanged(int index) {
-  Q_UNUSED(index)
-  updateGeometry();
+
+void ResizingStackedWidget::indexChanged(int index)
+{
+    Q_UNUSED(index)
+    updateGeometry();
 }

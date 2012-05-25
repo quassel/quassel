@@ -26,43 +26,45 @@
 #include <QList>
 #include "chatlinemodelitem.h"
 
-class ChatLineModel : public MessageModel {
-  Q_OBJECT
+class ChatLineModel : public MessageModel
+{
+    Q_OBJECT
 
 public:
-  enum ChatLineRole {
-    WrapListRole = MessageModel::UserRole,
-    MsgLabelRole,
-    SelectedBackgroundRole
-  };
+    enum ChatLineRole {
+        WrapListRole = MessageModel::UserRole,
+        MsgLabelRole,
+        SelectedBackgroundRole
+    };
 
-  ChatLineModel(QObject *parent = 0);
+    ChatLineModel(QObject *parent = 0);
 
-  typedef ChatLineModelItem::Word Word;
-  typedef ChatLineModelItem::WrapList WrapList;
-  virtual inline const MessageModelItem *messageItemAt(int i) const { return &_messageList[i]; }
+    typedef ChatLineModelItem::Word Word;
+    typedef ChatLineModelItem::WrapList WrapList;
+    virtual inline const MessageModelItem *messageItemAt(int i) const { return &_messageList[i]; }
 protected:
 //   virtual MessageModelItem *createMessageModelItem(const Message &);
 
-  virtual inline int messageCount() const { return _messageList.count(); }
-  virtual inline bool messagesIsEmpty() const { return _messageList.isEmpty(); }
-  virtual inline MessageModelItem *messageItemAt(int i) { return &_messageList[i]; }
-  virtual inline const MessageModelItem *firstMessageItem() const { return &_messageList.first(); }
-  virtual inline MessageModelItem *firstMessageItem() { return &_messageList.first(); }
-  virtual inline const MessageModelItem *lastMessageItem() const { return &_messageList.last(); }
-  virtual inline MessageModelItem *lastMessageItem() { return &_messageList.last(); }
-  virtual inline void insertMessage__(int pos, const Message &msg) { _messageList.insert(pos, ChatLineModelItem(msg)); }
-  virtual void insertMessages__(int pos, const QList<Message> &);
-  virtual inline void removeMessageAt(int i) { _messageList.removeAt(i); }
-  virtual inline void removeAllMessages() { _messageList.clear(); }
-  virtual Message takeMessageAt(int i);
+    virtual inline int messageCount() const { return _messageList.count(); }
+    virtual inline bool messagesIsEmpty() const { return _messageList.isEmpty(); }
+    virtual inline MessageModelItem *messageItemAt(int i) { return &_messageList[i]; }
+    virtual inline const MessageModelItem *firstMessageItem() const { return &_messageList.first(); }
+    virtual inline MessageModelItem *firstMessageItem() { return &_messageList.first(); }
+    virtual inline const MessageModelItem *lastMessageItem() const { return &_messageList.last(); }
+    virtual inline MessageModelItem *lastMessageItem() { return &_messageList.last(); }
+    virtual inline void insertMessage__(int pos, const Message &msg) { _messageList.insert(pos, ChatLineModelItem(msg)); }
+    virtual void insertMessages__(int pos, const QList<Message> &);
+    virtual inline void removeMessageAt(int i) { _messageList.removeAt(i); }
+    virtual inline void removeAllMessages() { _messageList.clear(); }
+    virtual Message takeMessageAt(int i);
 
 protected slots:
-  virtual void styleChanged();
+    virtual void styleChanged();
 
 private:
-  QList<ChatLineModelItem> _messageList;
+    QList<ChatLineModelItem> _messageList;
 };
+
 
 QDataStream &operator<<(QDataStream &out, const ChatLineModel::WrapList);
 QDataStream &operator>>(QDataStream &in, ChatLineModel::WrapList &);
@@ -70,4 +72,3 @@ QDataStream &operator>>(QDataStream &in, ChatLineModel::WrapList &);
 Q_DECLARE_METATYPE(ChatLineModel::WrapList)
 
 #endif
-

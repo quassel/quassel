@@ -27,25 +27,27 @@
 #  include "cipher.h"
 #endif
 
-class CoreIrcUser : public IrcUser {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreIrcUser : public IrcUser
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreIrcUser(const QString &hostmask, Network *network);
-  virtual ~CoreIrcUser();
+    CoreIrcUser(const QString &hostmask, Network *network);
+    virtual ~CoreIrcUser();
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &IrcUser::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &IrcUser::staticMetaObject; }
 
 #ifdef HAVE_QCA2
-  Cipher *cipher() const;
-  void setEncrypted(bool);
+    Cipher *cipher() const;
+    void setEncrypted(bool);
 #endif
 
 #ifdef HAVE_QCA2
 private:
-  mutable Cipher *_cipher;
+    mutable Cipher *_cipher;
 #endif
 };
+
 
 #endif

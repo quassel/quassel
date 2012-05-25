@@ -25,7 +25,7 @@
 #include <QDataStream>
 
 Message::Message(const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, Flags flags)
-  : _timestamp(QDateTime::currentDateTime().toUTC()),
+    : _timestamp(QDateTime::currentDateTime().toUTC()),
     _bufferInfo(bufferInfo),
     _contents(contents),
     _sender(sender),
@@ -33,9 +33,10 @@ Message::Message(const BufferInfo &bufferInfo, Type type, const QString &content
     _flags(flags)
 {
 }
+
 
 Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, Flags flags)
-  : _timestamp(ts),
+    : _timestamp(ts),
     _bufferInfo(bufferInfo),
     _contents(contents),
     _sender(sender),
@@ -44,33 +45,39 @@ Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, c
 {
 }
 
-QDataStream &operator<<(QDataStream &out, const Message &msg) {
-  out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
-      << msg.bufferInfo() << msg.sender().toUtf8() << msg.contents().toUtf8();
-  return out;
+
+QDataStream &operator<<(QDataStream &out, const Message &msg)
+{
+    out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
+    << msg.bufferInfo() << msg.sender().toUtf8() << msg.contents().toUtf8();
+    return out;
 }
 
-QDataStream &operator>>(QDataStream &in, Message &msg) {
-  quint8 f;
-  quint32 t;
-  quint32 ts;
-  QByteArray s, m;
-  BufferInfo buf;
-  in >> msg._msgId >> ts >> t >> f >> buf >> s >> m;
-  msg._type = (Message::Type)t;
-  msg._flags = (Message::Flags)f;
-  msg._bufferInfo = buf;
-  msg._timestamp = QDateTime::fromTime_t(ts);
-  msg._sender = QString::fromUtf8(s);
-  msg._contents = QString::fromUtf8(m);
-  return in;
+
+QDataStream &operator>>(QDataStream &in, Message &msg)
+{
+    quint8 f;
+    quint32 t;
+    quint32 ts;
+    QByteArray s, m;
+    BufferInfo buf;
+    in >> msg._msgId >> ts >> t >> f >> buf >> s >> m;
+    msg._type = (Message::Type)t;
+    msg._flags = (Message::Flags)f;
+    msg._bufferInfo = buf;
+    msg._timestamp = QDateTime::fromTime_t(ts);
+    msg._sender = QString::fromUtf8(s);
+    msg._contents = QString::fromUtf8(m);
+    return in;
 }
 
-QDebug operator<<(QDebug dbg, const Message &msg) {
-  dbg.nospace() << qPrintable(QString("Message(MsgId:")) << msg.msgId()
-	      << qPrintable(QString(",")) << msg.timestamp()
-	      << qPrintable(QString(", Type:")) << msg.type()
-	      << qPrintable(QString(", Flags:")) << msg.flags() << qPrintable(QString(")"))
-	      << msg.sender() << ":" << msg.contents();
-  return dbg;
+
+QDebug operator<<(QDebug dbg, const Message &msg)
+{
+    dbg.nospace() << qPrintable(QString("Message(MsgId:")) << msg.msgId()
+    << qPrintable(QString(",")) << msg.timestamp()
+    << qPrintable(QString(", Type:")) << msg.type()
+    << qPrintable(QString(", Flags:")) << msg.flags() << qPrintable(QString(")"))
+    << msg.sender() << ":" << msg.contents();
+    return dbg;
 }

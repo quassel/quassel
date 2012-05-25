@@ -26,61 +26,67 @@
 
 #include "coreaccount.h"
 
-class CoreAccountModel : public QAbstractListModel {
-  Q_OBJECT
+class CoreAccountModel : public QAbstractListModel
+{
+    Q_OBJECT
 
 public:
-  enum {
-    AccountIdRole = Qt::UserRole,
-    UuidRole
-  };
+    enum {
+        AccountIdRole = Qt::UserRole,
+        UuidRole
+    };
 
-  CoreAccountModel(QObject *parent = 0);
-  CoreAccountModel(const CoreAccountModel *other, QObject *parent = 0);
+    CoreAccountModel(QObject *parent = 0);
+    CoreAccountModel(const CoreAccountModel *other, QObject *parent = 0);
 
-  inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
-  virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-  CoreAccount account(const QModelIndex &) const;
-  CoreAccount account(AccountId) const;
-  QList<CoreAccount> accounts() const;
-  QList<AccountId> accountIds() const;
-  QModelIndex accountIndex(AccountId id) const;
+    CoreAccount account(const QModelIndex &) const;
+    CoreAccount account(AccountId) const;
+    QList<CoreAccount> accounts() const;
+    QList<AccountId> accountIds() const;
+    QModelIndex accountIndex(AccountId id) const;
 
-  inline AccountId internalAccount() const;
+    inline AccountId internalAccount() const;
 
-  AccountId createOrUpdateAccount(const CoreAccount &newAccountData = CoreAccount());
-  CoreAccount takeAccount(AccountId);
-  void removeAccount(AccountId);
+    AccountId createOrUpdateAccount(const CoreAccount &newAccountData = CoreAccount());
+    CoreAccount takeAccount(AccountId);
+    void removeAccount(AccountId);
 
-  void update(const CoreAccountModel *other);
+    void update(const CoreAccountModel *other);
 
-  bool operator==(const CoreAccountModel &other) const;
+    bool operator==(const CoreAccountModel &other) const;
 
 public slots:
-  void save();
-  void load();
-  void clear();
+    void save();
+    void load();
+    void clear();
 
 protected:
-  void insertAccount(const CoreAccount &);
-  int findAccountIdx(AccountId) const;
+    void insertAccount(const CoreAccount &);
+    int findAccountIdx(AccountId) const;
 
 private:
-  int listIndex(AccountId);
+    int listIndex(AccountId);
 
-  QList<CoreAccount> _accounts;
-  QSet<AccountId> _removedAccounts;
-  AccountId _internalAccount;
+    QList<CoreAccount> _accounts;
+    QSet<AccountId> _removedAccounts;
+    AccountId _internalAccount;
 };
 
+
 // Inlines
-int CoreAccountModel::rowCount(const QModelIndex &) const {
-  return _accounts.count();
+int CoreAccountModel::rowCount(const QModelIndex &) const
+{
+    return _accounts.count();
 }
 
-AccountId CoreAccountModel::internalAccount() const {
-  return _internalAccount;
+
+AccountId CoreAccountModel::internalAccount() const
+{
+    return _internalAccount;
 }
+
 
 #endif

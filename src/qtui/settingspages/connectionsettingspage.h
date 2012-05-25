@@ -26,27 +26,29 @@
 
 #include "ui_connectionsettingspage.h"
 
-class ConnectionSettingsPage : public SettingsPage {
-  Q_OBJECT
+class ConnectionSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
-  public:
+public:
     ConnectionSettingsPage(QWidget *parent = 0);
 
     bool hasDefaults() const;
     bool needsCoreConnection() const { return true; }
 
-  public slots:
+public slots:
 
-  private slots:
+private slots:
     void clientConnected();
     void clientDisconnected();
     void initDone();
 
-  private:
+private:
     QVariant loadAutoWidgetValue(const QString &widgetName);
     void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
 
     Ui::ConnectionSettingsPage ui;
 };
+
 
 #endif

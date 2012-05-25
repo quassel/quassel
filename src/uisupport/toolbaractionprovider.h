@@ -25,46 +25,48 @@
 
 class QToolBar;
 
-class ToolBarActionProvider : public NetworkModelController {
-  Q_OBJECT
+class ToolBarActionProvider : public NetworkModelController
+{
+    Q_OBJECT
 
 public:
-  ToolBarActionProvider(QObject *parent = 0);
-  virtual ~ToolBarActionProvider();
+    ToolBarActionProvider(QObject *parent = 0);
+    virtual ~ToolBarActionProvider();
 
-  enum ToolBarType {
-    MainToolBar,
-    ChatViewToolBar,
-    NickToolBar
-  };
+    enum ToolBarType {
+        MainToolBar,
+        ChatViewToolBar,
+        NickToolBar
+    };
 
-  void addActions(QToolBar *, ToolBarType type);
+    void addActions(QToolBar *, ToolBarType type);
 
 public slots:
-  virtual void disconnectedFromCore();
+    virtual void disconnectedFromCore();
 
 protected:
-  virtual void handleNetworkAction(ActionType, QAction *);
-  virtual void handleBufferAction(ActionType, QAction *);
-  virtual void handleNickAction(ActionType, QAction *);
-  virtual void handleGeneralAction(ActionType, QAction *);
+    virtual void handleNetworkAction(ActionType, QAction *);
+    virtual void handleBufferAction(ActionType, QAction *);
+    virtual void handleNickAction(ActionType, QAction *);
+    virtual void handleGeneralAction(ActionType, QAction *);
 
 private slots:
-  void networkCreated(NetworkId id);
-  void networkRemoved(NetworkId id);
-  void networkUpdated(const Network *net = 0);
-  void connectOrDisconnectNet();
+    void networkCreated(NetworkId id);
+    void networkRemoved(NetworkId id);
+    void networkUpdated(const Network *net = 0);
+    void connectOrDisconnectNet();
 
-  void currentBufferChanged(const QModelIndex &);
-  void nickSelectionChanged(const QModelIndexList &);
+    void currentBufferChanged(const QModelIndex &);
+    void nickSelectionChanged(const QModelIndexList &);
 
-  void updateStates();
+    void updateStates();
 
 private:
-  QMenu *_networksConnectMenu, *_networksDisconnectMenu;
-  QHash<NetworkId, Action *> _networkActions;
-  QModelIndex _currentBuffer;
-  QModelIndexList _selectedNicks;
+    QMenu *_networksConnectMenu, *_networksDisconnectMenu;
+    QHash<NetworkId, Action *> _networkActions;
+    QModelIndex _currentBuffer;
+    QModelIndexList _selectedNicks;
 };
+
 
 #endif

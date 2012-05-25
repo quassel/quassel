@@ -28,34 +28,37 @@
 #include <QWebSettings>
 
 WebPreviewItem::WebPreviewItem(const QUrl &url)
-  : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
+    : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
     _boundingRect(0, 0, 400, 300)
 {
-  qreal frameWidth = 5;
+    qreal frameWidth = 5;
 
-  QWebView *webView = new QWebView;
-  webView->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
-  webView->load(url);
-  webView->resize(1000, 750);
-  QGraphicsProxyWidget *proxyItem = new QGraphicsProxyWidget(this);
-  proxyItem->setWidget(webView);
-  proxyItem->setAcceptHoverEvents(false);
+    QWebView *webView = new QWebView;
+    webView->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
+    webView->load(url);
+    webView->resize(1000, 750);
+    QGraphicsProxyWidget *proxyItem = new QGraphicsProxyWidget(this);
+    proxyItem->setWidget(webView);
+    proxyItem->setAcceptHoverEvents(false);
 
-  qreal xScale = (_boundingRect.width() - 2 * frameWidth) / webView->width();
-  qreal yScale = (_boundingRect.height() - 2 * frameWidth) / webView->height();
-  proxyItem->scale(xScale, yScale);
-  proxyItem->setPos(frameWidth, frameWidth);
+    qreal xScale = (_boundingRect.width() - 2 * frameWidth) / webView->width();
+    qreal yScale = (_boundingRect.height() - 2 * frameWidth) / webView->height();
+    proxyItem->scale(xScale, yScale);
+    proxyItem->setPos(frameWidth, frameWidth);
 
-  setZValue(30);
+    setZValue(30);
 }
 
-void WebPreviewItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-  Q_UNUSED(option); Q_UNUSED(widget);
-  painter->setClipRect(boundingRect());
-  painter->setPen(QPen(Qt::black, 5));
-  painter->setBrush(Qt::black);
-  painter->setRenderHints(QPainter::Antialiasing);
-  painter->drawRoundedRect(boundingRect(), 10, 10);
+
+void WebPreviewItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option); Q_UNUSED(widget);
+    painter->setClipRect(boundingRect());
+    painter->setPen(QPen(Qt::black, 5));
+    painter->setBrush(Qt::black);
+    painter->setRenderHints(QPainter::Antialiasing);
+    painter->drawRoundedRect(boundingRect(), 10, 10);
 }
+
 
 #endif //#ifdef HAVE_WEBKIT

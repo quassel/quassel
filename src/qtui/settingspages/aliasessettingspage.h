@@ -26,28 +26,30 @@
 
 #include "aliasesmodel.h"
 
-class AliasesSettingsPage : public SettingsPage {
-  Q_OBJECT
+class AliasesSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  AliasesSettingsPage(QWidget *parent = 0);
+    AliasesSettingsPage(QWidget *parent = 0);
 
-  virtual inline bool hasDefaults() const { return true; }
-  virtual inline bool needsCoreConnection() const { return true; }
+    virtual inline bool hasDefaults() const { return true; }
+    virtual inline bool needsCoreConnection() const { return true; }
 
 public slots:
-  void save();
-  void load();
-  void defaults();
+    void save();
+    void load();
+    void defaults();
 
 private slots:
-  void enableDialog(bool);
-  void deleteSelectedAlias();
+    void enableDialog(bool);
+    void deleteSelectedAlias();
 
 private:
-  Ui::AliasesSettingsPage ui;
+    Ui::AliasesSettingsPage ui;
 
-  AliasesModel _aliasesModel;
+    AliasesModel _aliasesModel;
 };
+
 
 #endif //ALIASESSETTINGSPAGE_H

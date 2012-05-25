@@ -23,18 +23,19 @@
 
 #include "aliasmanager.h"
 
-class ClientAliasManager : public AliasManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class ClientAliasManager : public AliasManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  explicit ClientAliasManager(QObject *parent = 0);
+    explicit ClientAliasManager(QObject *parent = 0);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &AliasManager::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &AliasManager::staticMetaObject; }
 
 protected:
-  const Network *network(NetworkId) const;
-
+    const Network *network(NetworkId) const;
 };
+
 
 #endif //CLIENTALIASMANAGER_H

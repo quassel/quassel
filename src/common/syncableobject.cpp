@@ -29,177 +29,205 @@
 
 INIT_SYNCABLE_OBJECT(SyncableObject)
 SyncableObject::SyncableObject(QObject *parent)
-  : QObject(parent),
+    : QObject(parent),
     _initialized(false),
     _allowClientUpdates(false)
 {
 }
+
 
 SyncableObject::SyncableObject(const QString &objectName, QObject *parent)
-  : QObject(parent),
+    : QObject(parent),
     _initialized(false),
     _allowClientUpdates(false)
 {
-  setObjectName(objectName);
+    setObjectName(objectName);
 }
 
+
 SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent)
-  : QObject(parent),
+    : QObject(parent),
     _initialized(other._initialized),
     _allowClientUpdates(other._allowClientUpdates)
 {
 }
 
-SyncableObject::~SyncableObject() {
-  QList<SignalProxy *>::iterator proxyIter = _signalProxies.begin();
-  while(proxyIter != _signalProxies.end()) {
-    SignalProxy *proxy = (*proxyIter);
-    proxyIter = _signalProxies.erase(proxyIter);
-    proxy->stopSynchronize(this);
-  }
+
+SyncableObject::~SyncableObject()
+{
+    QList<SignalProxy *>::iterator proxyIter = _signalProxies.begin();
+    while (proxyIter != _signalProxies.end()) {
+        SignalProxy *proxy = (*proxyIter);
+        proxyIter = _signalProxies.erase(proxyIter);
+        proxy->stopSynchronize(this);
+    }
 }
 
-SyncableObject &SyncableObject::operator=(const SyncableObject &other) {
-  if(this == &other)
+
+SyncableObject &SyncableObject::operator=(const SyncableObject &other)
+{
+    if (this == &other)
+        return *this;
+
+    _initialized = other._initialized;
+    _allowClientUpdates = other._allowClientUpdates;
     return *this;
-
-  _initialized = other._initialized;
-  _allowClientUpdates = other._allowClientUpdates;
-  return *this;
 }
 
-bool SyncableObject::isInitialized() const {
-  return _initialized;
+
+bool SyncableObject::isInitialized() const
+{
+    return _initialized;
 }
 
-void SyncableObject::setInitialized() {
-  _initialized = true;
-  emit initDone();
+
+void SyncableObject::setInitialized()
+{
+    _initialized = true;
+    emit initDone();
 }
 
-QVariantMap SyncableObject::toVariantMap() {
-  QVariantMap properties;
 
-  const QMetaObject* meta = metaObject();
+QVariantMap SyncableObject::toVariantMap()
+{
+    QVariantMap properties;
 
-  // we collect data from properties
-  QMetaProperty prop;
-  QString propName;
-  for(int i = 0; i < meta->propertyCount(); i++) {
-    prop = meta->property(i);
-    propName = QString(prop.name());
-    if(propName == "objectName")
-      continue;
-    properties[propName] = prop.read(this);
-  }
+    const QMetaObject *meta = metaObject();
 
-  // ...as well as methods, which have names starting with "init"
-  for(int i = 0; i < meta->methodCount(); i++) {
-    QMetaMethod method = meta->method(i);
-    QString methodname(SignalProxy::ExtendedMetaObject::methodName(method));
-    if(!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
-      continue;
-
-    QVariant::Type variantType = QVariant::nameToType(method.typeName());
-    if(variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
-      qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.signature() << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
-      continue;
+    // we collect data from properties
+    QMetaProperty prop;
+    QString propName;
+    for (int i = 0; i < meta->propertyCount(); i++) {
+        prop = meta->property(i);
+        propName = QString(prop.name());
+        if (propName == "objectName")
+            continue;
+        properties[propName] = prop.read(this);
     }
 
-    QVariant value(variantType, (const void *) 0);
-    QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
-    QMetaObject::invokeMethod(this, methodname.toAscii(), genericvalue);
+    // ...as well as methods, which have names starting with "init"
+    for (int i = 0; i < meta->methodCount(); i++) {
+        QMetaMethod method = meta->method(i);
+        QString methodname(SignalProxy::ExtendedMetaObject::methodName(method));
+        if (!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
+            continue;
 
-    properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
-  }
-  return properties;
+        QVariant::Type variantType = QVariant::nameToType(method.typeName());
+        if (variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
+            qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.signature() << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
+            continue;
+        }
+
+        QVariant value(variantType, (const void *)0);
+        QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
+        QMetaObject::invokeMethod(this, methodname.toAscii(), genericvalue);
+
+        properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
+    }
+    return properties;
 }
 
-void SyncableObject::fromVariantMap(const QVariantMap &properties) {
-  const QMetaObject *meta = metaObject();
 
-  QVariantMap::const_iterator iterator = properties.constBegin();
-  QString propName;
-  while(iterator != properties.constEnd()) {
-    propName = iterator.key();
-    if(propName == "objectName") {
-      iterator++;
-      continue;
+void SyncableObject::fromVariantMap(const QVariantMap &properties)
+{
+    const QMetaObject *meta = metaObject();
+
+    QVariantMap::const_iterator iterator = properties.constBegin();
+    QString propName;
+    while (iterator != properties.constEnd()) {
+        propName = iterator.key();
+        if (propName == "objectName") {
+            iterator++;
+            continue;
+        }
+
+        int propertyIndex = meta->indexOfProperty(propName.toAscii());
+
+        if (propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
+            setInitValue(propName, iterator.value());
+        else
+            setProperty(propName.toAscii(), iterator.value());
+        // qDebug() << "<<< SYNC:" << name << iterator.value();
+        iterator++;
+    }
+}
+
+
+bool SyncableObject::setInitValue(const QString &property, const QVariant &value)
+{
+    QString handlername = QString("initSet") + property;
+    handlername[7] = handlername[7].toUpper();
+
+    QString methodSignature = QString("%1(%2)").arg(handlername).arg(value.typeName());
+    int methodIdx = metaObject()->indexOfMethod(methodSignature.toAscii().constData());
+    if (methodIdx <  0) {
+        QByteArray normedMethodName = QMetaObject::normalizedSignature(methodSignature.toAscii().constData());
+        methodIdx = metaObject()->indexOfMethod(normedMethodName.constData());
+    }
+    if (methodIdx < 0) {
+        return false;
     }
 
-    int propertyIndex = meta->indexOfProperty(propName.toAscii());
-
-    if(propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
-      setInitValue(propName, iterator.value());
-    else
-      setProperty(propName.toAscii(), iterator.value());
-    // qDebug() << "<<< SYNC:" << name << iterator.value();
-    iterator++;
-  }
+    QGenericArgument param(value.typeName(), value.constData());
+    return QMetaObject::invokeMethod(this, handlername.toAscii(), param);
 }
 
-bool SyncableObject::setInitValue(const QString &property, const QVariant &value) {
-  QString handlername = QString("initSet") + property;
-  handlername[7] = handlername[7].toUpper();
 
-  QString methodSignature = QString("%1(%2)").arg(handlername).arg(value.typeName());
-  int methodIdx = metaObject()->indexOfMethod(methodSignature.toAscii().constData());
-  if(methodIdx <  0) {
-    QByteArray normedMethodName = QMetaObject::normalizedSignature(methodSignature.toAscii().constData());
-    methodIdx = metaObject()->indexOfMethod(normedMethodName.constData());
-  }
-  if(methodIdx < 0) {
-    return false;
-  }
-
-  QGenericArgument param(value.typeName(), value.constData());
-  return QMetaObject::invokeMethod(this, handlername.toAscii(), param);
+void SyncableObject::renameObject(const QString &newName)
+{
+    const QString oldName = objectName();
+    if (oldName != newName) {
+        setObjectName(newName);
+        foreach(SignalProxy *proxy, _signalProxies) {
+            proxy->renameObject(this, newName, oldName);
+        }
+    }
 }
 
-void SyncableObject::renameObject(const QString &newName) {
-  const QString oldName = objectName();
-  if(oldName != newName) {
-    setObjectName(newName);
+
+void SyncableObject::update(const QVariantMap &properties)
+{
+    fromVariantMap(properties);
+    SYNC(ARG(properties))
+    emit updated();
+}
+
+
+void SyncableObject::requestUpdate(const QVariantMap &properties)
+{
+    if (allowClientUpdates()) {
+        update(properties);
+    }
+    REQUEST(ARG(properties))
+}
+
+
+void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...) const
+{
+    //qDebug() << Q_FUNC_INFO << modeType << funcname;
     foreach(SignalProxy *proxy, _signalProxies) {
-      proxy->renameObject(this, newName, oldName);
+        va_list ap;
+        va_start(ap, funcname);
+        proxy->sync_call__(this, modeType, funcname, ap);
+        va_end(ap);
     }
-  }
 }
 
-void SyncableObject::update(const QVariantMap &properties) {
-  fromVariantMap(properties);
-  SYNC(ARG(properties))
-  emit updated();
+
+void SyncableObject::synchronize(SignalProxy *proxy)
+{
+    if (_signalProxies.contains(proxy))
+        return;
+    _signalProxies << proxy;
 }
 
-void SyncableObject::requestUpdate(const QVariantMap &properties) {
-  if(allowClientUpdates()) {
-    update(properties);
-  }
-  REQUEST(ARG(properties))
-}
 
-void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...) const {
-  //qDebug() << Q_FUNC_INFO << modeType << funcname;
-  foreach(SignalProxy *proxy, _signalProxies) {
-    va_list ap;
-    va_start(ap, funcname);
-    proxy->sync_call__(this, modeType, funcname, ap);
-    va_end(ap);
-  }
-}
-
-void SyncableObject::synchronize(SignalProxy *proxy) {
-  if(_signalProxies.contains(proxy))
-    return;
-  _signalProxies << proxy;
-}
-
-void SyncableObject::stopSynchronize(SignalProxy *proxy) {
-  for(int i = 0; i < _signalProxies.count(); i++) {
-    if(_signalProxies[i] == proxy) {
-      _signalProxies.removeAt(i);
-      break;
+void SyncableObject::stopSynchronize(SignalProxy *proxy)
+{
+    for (int i = 0; i < _signalProxies.count(); i++) {
+        if (_signalProxies[i] == proxy) {
+            _signalProxies.removeAt(i);
+            break;
+        }
     }
-  }
 }

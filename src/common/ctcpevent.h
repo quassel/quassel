@@ -25,67 +25,71 @@
 
 #include <QUuid>
 
-class CtcpEvent : public IrcEvent {
-
+class CtcpEvent : public IrcEvent
+{
 public:
-  enum CtcpType {
-    Query,
-    Reply
-  };
+    enum CtcpType {
+        Query,
+        Reply
+    };
 
-  explicit CtcpEvent(EventManager::EventType type, Network *network, const QString &prefix, const QString &target,
-                     CtcpType ctcpType, const QString &ctcpCmd, const QString &param,
-                     const QDateTime &timestamp = QDateTime(), const QUuid &uuid = QUuid())
-    : IrcEvent(type, network, prefix),
-    _ctcpType(ctcpType),
-    _ctcpCmd(ctcpCmd),
-    _target(target),
-    _param(param),
-    _uuid(uuid)
-  {
-    setTimestamp(timestamp);
-  }
+    explicit CtcpEvent(EventManager::EventType type, Network *network, const QString &prefix, const QString &target,
+        CtcpType ctcpType, const QString &ctcpCmd, const QString &param,
+        const QDateTime &timestamp = QDateTime(), const QUuid &uuid = QUuid())
+        : IrcEvent(type, network, prefix),
+        _ctcpType(ctcpType),
+        _ctcpCmd(ctcpCmd),
+        _target(target),
+        _param(param),
+        _uuid(uuid)
+    {
+        setTimestamp(timestamp);
+    }
 
-  inline CtcpType ctcpType() const { return _ctcpType; }
-  inline void setCtcpType(CtcpType type) { _ctcpType = type; }
 
-  inline QString ctcpCmd() const { return _ctcpCmd; }
-  inline void setCtcpCmd(const QString &ctcpCmd) { _ctcpCmd = ctcpCmd; }
+    inline CtcpType ctcpType() const { return _ctcpType; }
+    inline void setCtcpType(CtcpType type) { _ctcpType = type; }
 
-  inline QString target() const { return _target; }
-  inline void setTarget(const QString &target) { _target = target; }
+    inline QString ctcpCmd() const { return _ctcpCmd; }
+    inline void setCtcpCmd(const QString &ctcpCmd) { _ctcpCmd = ctcpCmd; }
 
-  inline QString param() const { return _param; }
-  inline void setParam(const QString &param) { _param = param; }
+    inline QString target() const { return _target; }
+    inline void setTarget(const QString &target) { _target = target; }
 
-  inline QString reply() const { return _reply; }
-  inline void setReply(const QString &reply) { _reply = reply; }
+    inline QString param() const { return _param; }
+    inline void setParam(const QString &param) { _param = param; }
 
-  inline QUuid uuid() const { return _uuid; }
-  inline void setUuid(const QUuid &uuid) { _uuid = uuid; }
+    inline QString reply() const { return _reply; }
+    inline void setReply(const QString &reply) { _reply = reply; }
 
-  static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
+    inline QUuid uuid() const { return _uuid; }
+    inline void setUuid(const QUuid &uuid) { _uuid = uuid; }
+
+    static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
 
 protected:
-  explicit CtcpEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-  void toVariantMap(QVariantMap &map) const;
+    explicit CtcpEvent(EventManager::EventType type, QVariantMap &map, Network *network);
+    void toVariantMap(QVariantMap &map) const;
 
-  virtual inline QString className() const { return "CtcpEvent"; }
-  virtual inline void debugInfo(QDebug &dbg) const {
-    NetworkEvent::debugInfo(dbg);
-    dbg << ", prefix = " << qPrintable(prefix())
-        << ", target = " << qPrintable(target())
-        << ", ctcptype = " << (ctcpType() == Query? "query" : "reply")
-        << ", cmd = " << qPrintable(ctcpCmd())
-        << ", param = " << qPrintable(param())
-        << ", reply = " << qPrintable(reply());
-  }
+    virtual inline QString className() const { return "CtcpEvent"; }
+    virtual inline void debugInfo(QDebug &dbg) const
+    {
+        NetworkEvent::debugInfo(dbg);
+        dbg << ", prefix = " << qPrintable(prefix())
+            << ", target = " << qPrintable(target())
+            << ", ctcptype = " << (ctcpType() == Query ? "query" : "reply")
+            << ", cmd = " << qPrintable(ctcpCmd())
+            << ", param = " << qPrintable(param())
+            << ", reply = " << qPrintable(reply());
+    }
+
 
 private:
-  CtcpType _ctcpType;
-  QString _ctcpCmd;
-  QString _target, _param, _reply;
-  QUuid _uuid;
+    CtcpType _ctcpType;
+    QString _ctcpCmd;
+    QString _target, _param, _reply;
+    QUuid _uuid;
 };
+
 
 #endif

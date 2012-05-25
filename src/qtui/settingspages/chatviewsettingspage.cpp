@@ -25,27 +25,29 @@
 #include "qtuistyle.h"
 
 ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Interface"), tr("Chat View"), parent)
+    : SettingsPage(tr("Interface"), tr("Chat View"), parent)
 {
-  ui.setupUi(this);
+    ui.setupUi(this);
 
 #ifndef HAVE_WEBKIT
-  ui.showWebPreview->hide();
-  ui.showWebPreview->setEnabled(false);
+    ui.showWebPreview->hide();
+    ui.showWebPreview->setEnabled(false);
 #endif
 
-  // FIXME remove with protocol v11
-  if(!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
-    ui.autoMarkerLine->setEnabled(false);
-    ui.autoMarkerLine->setChecked(true);
-    ui.autoMarkerLine->setToolTip(tr("You need at 0.6 quasselcore to use this feature"));
-  }
+    // FIXME remove with protocol v11
+    if (!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
+        ui.autoMarkerLine->setEnabled(false);
+        ui.autoMarkerLine->setChecked(true);
+        ui.autoMarkerLine->setToolTip(tr("You need at 0.6 quasselcore to use this feature"));
+    }
 
-  initAutoWidgets();
+    initAutoWidgets();
 }
 
-void ChatViewSettingsPage::save() {
-  SettingsPage::save();
-  QtUi::style()->generateSettingsQss();
-  QtUi::style()->reload();
+
+void ChatViewSettingsPage::save()
+{
+    SettingsPage::save();
+    QtUi::style()->generateSettingsQss();
+    QtUi::style()->reload();
 }

@@ -32,98 +32,106 @@
 #ifdef HAVE_SSL
 
 SslServer::SslServer(QObject *parent)
-  : QTcpServer(parent),
-  _isCertValid(false)
+    : QTcpServer(parent),
+    _isCertValid(false)
 {
-  static bool sslWarningShown = false;
-  if(!setCertificate(Quassel::configDirPath() + "quasselCert.pem")) {
-    if(!sslWarningShown) {
-      quWarning()
-        << "SslServer: Unable to set certificate file\n"
-        << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-        << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
-      sslWarningShown=true;
+    static bool sslWarningShown = false;
+    if (!setCertificate(Quassel::configDirPath() + "quasselCert.pem")) {
+        if (!sslWarningShown) {
+            quWarning()
+            << "SslServer: Unable to set certificate file\n"
+            << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            sslWarningShown = true;
+        }
     }
-  }
 }
 
-QTcpSocket *SslServer::nextPendingConnection() {
-  if(_pendingConnections.isEmpty())
-    return 0;
-  else
-    return _pendingConnections.takeFirst();
+
+QTcpSocket *SslServer::nextPendingConnection()
+{
+    if (_pendingConnections.isEmpty())
+        return 0;
+    else
+        return _pendingConnections.takeFirst();
 }
 
-void SslServer::incomingConnection(int socketDescriptor) {
-  QSslSocket *serverSocket = new QSslSocket(this);
-  if(serverSocket->setSocketDescriptor(socketDescriptor)) {
-    if(isCertValid()) {
-      serverSocket->setLocalCertificate(_cert);
-      serverSocket->setPrivateKey(_key);
-      serverSocket->addCaCertificates(_ca);
+
+void SslServer::incomingConnection(int socketDescriptor)
+{
+    QSslSocket *serverSocket = new QSslSocket(this);
+    if (serverSocket->setSocketDescriptor(socketDescriptor)) {
+        if (isCertValid()) {
+            serverSocket->setLocalCertificate(_cert);
+            serverSocket->setPrivateKey(_key);
+            serverSocket->addCaCertificates(_ca);
+        }
+        _pendingConnections << serverSocket;
+        emit newConnection();
     }
-    _pendingConnections << serverSocket;
-    emit newConnection();
-  } else {
-    delete serverSocket;
-  }
+    else {
+        delete serverSocket;
+    }
 }
 
-bool SslServer::setCertificate(const QString &path) {
-  _isCertValid = false;
 
-  if(path.isEmpty())
-    return false;
+bool SslServer::setCertificate(const QString &path)
+{
+    _isCertValid = false;
 
-  QFile certFile(path);
-  if(!certFile.exists()) {
-    quWarning() << "SslServer: Certificate file" << qPrintable(path) << "does not exist";
-    return false;
-  }
+    if (path.isEmpty())
+        return false;
 
-  if(!certFile.open(QIODevice::ReadOnly)) {
-    quWarning()
-      << "SslServer: Failed to open certificate file" << qPrintable(path)
-      << "error:" << certFile.error();
-    return false;
-  }
+    QFile certFile(path);
+    if (!certFile.exists()) {
+        quWarning() << "SslServer: Certificate file" << qPrintable(path) << "does not exist";
+        return false;
+    }
 
-  QList<QSslCertificate> certList = QSslCertificate::fromDevice(&certFile);
+    if (!certFile.open(QIODevice::ReadOnly)) {
+        quWarning()
+        << "SslServer: Failed to open certificate file" << qPrintable(path)
+        << "error:" << certFile.error();
+        return false;
+    }
 
-  if (certList.isEmpty()) {
-    quWarning() << "SslServer: Certificate file doesn't contain a certificate";
-    return false;
-  }
+    QList<QSslCertificate> certList = QSslCertificate::fromDevice(&certFile);
 
-  _cert = certList[0];
-  certList.removeFirst(); // remove server cert
+    if (certList.isEmpty()) {
+        quWarning() << "SslServer: Certificate file doesn't contain a certificate";
+        return false;
+    }
 
-  // store CA and intermediates certs
-  _ca = certList;
+    _cert = certList[0];
+    certList.removeFirst(); // remove server cert
 
-  if(!certFile.reset()) {
-    quWarning() << "SslServer: IO error reading certificate file";
-    return false;
-  }
+    // store CA and intermediates certs
+    _ca = certList;
 
-  _key = QSslKey(&certFile, QSsl::Rsa);
-  certFile.close();
+    if (!certFile.reset()) {
+        quWarning() << "SslServer: IO error reading certificate file";
+        return false;
+    }
 
-  if(_cert.isNull()) {
-    quWarning() << "SslServer:" << qPrintable(path) << "contains no certificate data";
-    return false;
-  }
-  if(!_cert.isValid()) {
-    quWarning() << "SslServer: Invalid certificate (most likely expired)";
-  }
-  if(_key.isNull()) {
-    quWarning() << "SslServer:" << qPrintable(path) << "contains no key data";
-    return false;
-  }
+    _key = QSslKey(&certFile, QSsl::Rsa);
+    certFile.close();
 
-  _isCertValid = true;
+    if (_cert.isNull()) {
+        quWarning() << "SslServer:" << qPrintable(path) << "contains no certificate data";
+        return false;
+    }
+    if (!_cert.isValid()) {
+        quWarning() << "SslServer: Invalid certificate (most likely expired)";
+    }
+    if (_key.isNull()) {
+        quWarning() << "SslServer:" << qPrintable(path) << "contains no key data";
+        return false;
+    }
 
-  return _isCertValid;
+    _isCertValid = true;
+
+    return _isCertValid;
 }
+
 
 #endif // HAVE_SSL

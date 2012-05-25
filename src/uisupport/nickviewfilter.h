@@ -28,21 +28,23 @@
 class NetworkModel;
 
 // This is proxymodel is purely for the sorting right now
-class NickViewFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class NickViewFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  NickViewFilter(const BufferId &bufferId, NetworkModel *parent = 0);
+    NickViewFilter(const BufferId &bufferId, NetworkModel *parent = 0);
 
-  virtual QVariant data(const QModelIndex &index, int role) const;
-  QVariant icon(const QModelIndex &index) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
+    QVariant icon(const QModelIndex &index) const;
 
 protected:
-  virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-  QVariant styleData(const QModelIndex &index, int role) const;
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    QVariant styleData(const QModelIndex &index, int role) const;
 
 private:
-  BufferId _bufferId;
+    BufferId _bufferId;
 };
+
 
 #endif

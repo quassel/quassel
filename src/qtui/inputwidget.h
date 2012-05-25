@@ -32,87 +32,90 @@
 
 class MultiLineEdit;
 
-class InputWidget : public AbstractItemView {
-  Q_OBJECT
+class InputWidget : public AbstractItemView
+{
+    Q_OBJECT
 
 public:
-  InputWidget(QWidget *parent = 0);
-  virtual ~InputWidget();
+    InputWidget(QWidget *parent = 0);
+    virtual ~InputWidget();
 
-  const Network *currentNetwork() const;
+    const Network *currentNetwork() const;
 
-  inline MultiLineEdit* inputLine() const { return ui.inputEdit; }
+    inline MultiLineEdit *inputLine() const { return ui.inputEdit; }
 
 protected:
-  virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
 
 protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private slots:
-  void setCustomFont(const QVariant &font);
-  void setUseCustomFont(const QVariant &);
-  void setEnableSpellCheck(const QVariant &);
-  void setEnableEmacsMode(const QVariant &);
-  void setShowNickSelector(const QVariant &);
-  void setShowStyleButtons(const QVariant &);
-  void setEnablePerChatHistory(const QVariant &);
-  void setMaxLines(const QVariant &);
-  void setMultiLineEnabled(const QVariant &);
-  void setScrollBarsEnabled(const QVariant &);
-  void onTextEntered(const QString &text);
-  void changeNick(const QString &newNick) const;
+    void setCustomFont(const QVariant &font);
+    void setUseCustomFont(const QVariant &);
+    void setEnableSpellCheck(const QVariant &);
+    void setEnableEmacsMode(const QVariant &);
+    void setShowNickSelector(const QVariant &);
+    void setShowStyleButtons(const QVariant &);
+    void setEnablePerChatHistory(const QVariant &);
+    void setMaxLines(const QVariant &);
+    void setMultiLineEnabled(const QVariant &);
+    void setScrollBarsEnabled(const QVariant &);
+    void onTextEntered(const QString &text);
+    void changeNick(const QString &newNick) const;
 
-  void setNetwork(NetworkId networkId);
-  void setIdentity(IdentityId identityId);
-  void connectMyIrcUser();
-  void updateNickSelector() const;
-  void updateEnabledState();
+    void setNetwork(NetworkId networkId);
+    void setIdentity(IdentityId identityId);
+    void connectMyIrcUser();
+    void updateNickSelector() const;
+    void updateEnabledState();
 
-  BufferInfo currentBufferInfo() const;
+    BufferInfo currentBufferInfo() const;
 
-  void currentCharFormatChanged(const QTextCharFormat &format);
-  void on_showStyleButton_toggled(bool checked);
-  void on_boldButton_clicked(bool checked);
-  void on_italicButton_clicked(bool checked);
-  void on_underlineButton_clicked(bool checked);
-  void colorChosen(QAction *action);
-  void colorHighlightChosen(QAction *action);
+    void currentCharFormatChanged(const QTextCharFormat &format);
+    void on_showStyleButton_toggled(bool checked);
+    void on_boldButton_clicked(bool checked);
+    void on_italicButton_clicked(bool checked);
+    void on_underlineButton_clicked(bool checked);
+    void colorChosen(QAction *action);
+    void colorHighlightChosen(QAction *action);
 
 private:
-  Ui::InputWidget ui;
+    Ui::InputWidget ui;
 
-  NetworkId _networkId;
-  IdentityId _identityId;
-  QMenu *_colorMenu, *_colorFillMenu;
+    NetworkId _networkId;
+    IdentityId _identityId;
+    QMenu *_colorMenu, *_colorFillMenu;
 
-  void mergeFormatOnSelection(const QTextCharFormat &format);
-  void fontChanged(const QFont &f);
-  QIcon createColorToolButtonIcon(const QIcon &icon, const QColor &color);
-  QTextCharFormat getFormatOfWordOrSelection();
-  void setFormatOnSelection(const QTextCharFormat &format);
+    void mergeFormatOnSelection(const QTextCharFormat &format);
+    void fontChanged(const QFont &f);
+    QIcon createColorToolButtonIcon(const QIcon &icon, const QColor &color);
+    QTextCharFormat getFormatOfWordOrSelection();
+    void setFormatOnSelection(const QTextCharFormat &format);
 
-  bool _perChatHistory;
-  struct HistoryState {
-    QStringList history;
-    QHash<int, QString> tempHistory;
-    qint32 idx;
-    QString inputLine;
-    inline HistoryState() : idx(0) {};
-  };
+    bool _perChatHistory;
+    struct HistoryState {
+        QStringList history;
+        QHash<int, QString> tempHistory;
+        qint32 idx;
+        QString inputLine;
+        inline HistoryState() : idx(0) {};
+    };
 
-  QMap<BufferId, HistoryState> historyMap;
+    QMap<BufferId, HistoryState> historyMap;
 };
 
 
-class MouseWheelFilter : public QObject {
-  Q_OBJECT
+class MouseWheelFilter : public QObject
+{
+    Q_OBJECT
 
 public:
-  MouseWheelFilter(QObject *parent = 0);
-  virtual bool eventFilter(QObject *obj, QEvent *event);
+    MouseWheelFilter(QObject *parent = 0);
+    virtual bool eventFilter(QObject *obj, QEvent *event);
 };
+
 
 #endif // INPUTWIDGET_H

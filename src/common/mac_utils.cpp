@@ -22,16 +22,17 @@
 
 #include <QVarLengthArray>
 
-QString CFStringToQString(CFStringRef str) {
-  if(!str)
-    return QString();
+QString CFStringToQString(CFStringRef str)
+{
+    if (!str)
+        return QString();
 
-  CFIndex length = CFStringGetLength(str);
-  const UniChar *chars = CFStringGetCharactersPtr(str);
-  if(chars)
-    return QString(reinterpret_cast<const QChar *>(chars), length);
+    CFIndex length = CFStringGetLength(str);
+    const UniChar *chars = CFStringGetCharactersPtr(str);
+    if (chars)
+        return QString(reinterpret_cast<const QChar *>(chars), length);
 
-  QVarLengthArray<UniChar> buffer(length);
-  CFStringGetCharacters(str, CFRangeMake(0, length), buffer.data());
-  return QString(reinterpret_cast<const QChar *>(buffer.constData()), length);
+    QVarLengthArray<UniChar> buffer(length);
+    CFStringGetCharacters(str, CFRangeMake(0, length), buffer.data());
+    return QString(reinterpret_cast<const QChar *>(buffer.constData()), length);
 }

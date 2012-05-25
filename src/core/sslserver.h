@@ -28,30 +28,32 @@
 #include <QTcpServer>
 #include <QLinkedList>
 
-class SslServer : public QTcpServer {
-  Q_OBJECT
+class SslServer : public QTcpServer
+{
+    Q_OBJECT
 
 public:
-  SslServer(QObject *parent = 0);
+    SslServer(QObject *parent = 0);
 
-  virtual inline bool hasPendingConnections() const { return !_pendingConnections.isEmpty(); }
-  virtual QTcpSocket *nextPendingConnection();
+    virtual inline bool hasPendingConnections() const { return !_pendingConnections.isEmpty(); }
+    virtual QTcpSocket *nextPendingConnection();
 
-  virtual inline const QSslCertificate &certificate() const { return _cert; }
-  virtual inline const QSslKey &key() const { return _key; }
-  virtual inline bool isCertValid() const { return _isCertValid; }
+    virtual inline const QSslCertificate &certificate() const { return _cert; }
+    virtual inline const QSslKey &key() const { return _key; }
+    virtual inline bool isCertValid() const { return _isCertValid; }
 
 protected:
-  virtual void incomingConnection(int socketDescriptor);
-  virtual bool setCertificate(const QString &path);
+    virtual void incomingConnection(int socketDescriptor);
+    virtual bool setCertificate(const QString &path);
 
 private:
-  QLinkedList<QTcpSocket *> _pendingConnections;
-  QSslCertificate _cert;
-  QSslKey _key;
-  QList<QSslCertificate> _ca;
-  bool _isCertValid;
+    QLinkedList<QTcpSocket *> _pendingConnections;
+    QSslCertificate _cert;
+    QSslKey _key;
+    QList<QSslCertificate> _ca;
+    bool _isCertValid;
 };
+
 
 #endif //HAVE_SSL
 

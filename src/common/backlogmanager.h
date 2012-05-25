@@ -24,24 +24,26 @@
 #include "syncableobject.h"
 #include "types.h"
 
-class BacklogManager : public SyncableObject {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class BacklogManager : public SyncableObject
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  BacklogManager(QObject *parent = 0) : SyncableObject(parent) {}
-  inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+    BacklogManager(QObject *parent = 0) : SyncableObject(parent) {}
+    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
-  inline virtual void receiveBacklog(BufferId, MsgId, MsgId, int, int, QVariantList) {};
+    virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    inline virtual void receiveBacklog(BufferId, MsgId, MsgId, int, int, QVariantList) {};
 
-  virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
-  inline virtual void receiveBacklogAll(MsgId, MsgId, int, int, QVariantList) {};
+    virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    inline virtual void receiveBacklogAll(MsgId, MsgId, int, int, QVariantList) {};
 
 signals:
-  void backlogRequested(BufferId, MsgId, MsgId, int, int);
-  void backlogAllRequested(MsgId, MsgId, int, int);
+    void backlogRequested(BufferId, MsgId, MsgId, int, int);
+    void backlogAllRequested(MsgId, MsgId, int, int);
 };
+
 
 #endif // BACKLOGMANAGER_H

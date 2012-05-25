@@ -23,23 +23,25 @@
 
 #include "bufferviewconfig.h"
 
-class ClientBufferViewConfig : public BufferViewConfig {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class ClientBufferViewConfig : public BufferViewConfig
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  ClientBufferViewConfig(int bufferViewId, QObject *parent = 0);
+    ClientBufferViewConfig(int bufferViewId, QObject *parent = 0);
 
-  inline bool isLocked() { return _locked || sortAlphabetically(); }
-  inline void setLocked(bool locked) { _locked = locked; }
-  inline void lock() { setLocked(true); };
-  inline void unlock() { setLocked(false); };
+    inline bool isLocked() { return _locked || sortAlphabetically(); }
+    inline void setLocked(bool locked) { _locked = locked; }
+    inline void lock() { setLocked(true); };
+    inline void unlock() { setLocked(false); };
 
 private slots:
-  void ensureDecoration(); // remove this in next release
+    void ensureDecoration(); // remove this in next release
 
 private:
-  bool _locked;
+    bool _locked;
 };
+
 
 #endif //CLIENTBUFFERVIEWCONFIG_H

@@ -25,82 +25,88 @@
 #include "types.h"
 
 BufferViewOverlayFilter::BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay)
-  : QSortFilterProxyModel(model),
+    : QSortFilterProxyModel(model),
     _overlay(0)
 {
-  setOverlay(overlay);
-  setSourceModel(model);
+    setOverlay(overlay);
+    setSourceModel(model);
 
-  setDynamicSortFilter(true);
+    setDynamicSortFilter(true);
 }
 
-void BufferViewOverlayFilter::setOverlay(BufferViewOverlay *overlay) {
-  if(_overlay == overlay)
-    return;
 
-  if(_overlay) {
-    disconnect(_overlay, 0, this, 0);
-  }
+void BufferViewOverlayFilter::setOverlay(BufferViewOverlay *overlay)
+{
+    if (_overlay == overlay)
+        return;
 
-  _overlay = overlay;
+    if (_overlay) {
+        disconnect(_overlay, 0, this, 0);
+    }
 
-  if(!overlay) {
+    _overlay = overlay;
+
+    if (!overlay) {
+        invalidate();
+        return;
+    }
+
+    connect(overlay, SIGNAL(destroyed()), this, SLOT(overlayDestroyed()));
+    connect(overlay, SIGNAL(hasChanged()), this, SLOT(invalidate()));
     invalidate();
-    return;
-  }
-
-  connect(overlay, SIGNAL(destroyed()), this, SLOT(overlayDestroyed()));
-  connect(overlay, SIGNAL(hasChanged()), this, SLOT(invalidate()));
-  invalidate();
 }
 
-void BufferViewOverlayFilter::overlayDestroyed() {
-  setOverlay(0);
+
+void BufferViewOverlayFilter::overlayDestroyed()
+{
+    setOverlay(0);
 }
 
-bool BufferViewOverlayFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
-  if(!_overlay)
+
+bool BufferViewOverlayFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+    if (!_overlay)
+        return false;
+
+    QModelIndex source_bufferIndex = sourceModel()->index(source_row, 0, source_parent);
+
+    if (!source_bufferIndex.isValid()) {
+        qWarning() << "filterAcceptsRow has been called with an invalid Child";
+        return false;
+    }
+
+    NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_bufferIndex, NetworkModel::ItemTypeRole).toInt();
+
+    NetworkId networkId = sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>();
+    if (!_overlay->networkIds().contains(networkId) && !_overlay->allNetworks()) {
+        return false;
+    }
+    else if (itemType == NetworkModel::NetworkItemType) {
+        // network items don't need further checks.
+        return true;
+    }
+
+    int activityLevel = sourceModel()->data(source_bufferIndex, NetworkModel::BufferActivityRole).toInt();
+    if (_overlay->minimumActivity() > activityLevel)
+        return false;
+
+    int bufferType = sourceModel()->data(source_bufferIndex, NetworkModel::BufferTypeRole).toInt();
+    if (!(_overlay->allowedBufferTypes() & bufferType))
+        return false;
+
+    BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
+    Q_ASSERT(bufferId.isValid());
+
+    if (_overlay->bufferIds().contains(bufferId))
+        return true;
+
+    if (_overlay->tempRemovedBufferIds().contains(bufferId))
+        return activityLevel > BufferInfo::OtherActivity;
+
+    if (_overlay->removedBufferIds().contains(bufferId))
+        return false;
+
+    // the buffer is not known to us
+    qDebug() << "BufferViewOverlayFilter::filterAcceptsRow()" << bufferId << "is unknown!";
     return false;
-
-  QModelIndex source_bufferIndex = sourceModel()->index(source_row, 0, source_parent);
-
-  if(!source_bufferIndex.isValid()) {
-    qWarning() << "filterAcceptsRow has been called with an invalid Child";
-    return false;
-  }
-
-  NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_bufferIndex, NetworkModel::ItemTypeRole).toInt();
-
-  NetworkId networkId = sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>();
-  if(!_overlay->networkIds().contains(networkId) && ! _overlay->allNetworks()) {
-    return false;
-  } else if(itemType == NetworkModel::NetworkItemType) {
-    // network items don't need further checks.
-    return true;
-  }
-
-  int activityLevel = sourceModel()->data(source_bufferIndex, NetworkModel::BufferActivityRole).toInt();
-  if(_overlay->minimumActivity() > activityLevel)
-    return false;
-
-  int bufferType = sourceModel()->data(source_bufferIndex, NetworkModel::BufferTypeRole).toInt();
-  if(!(_overlay->allowedBufferTypes() & bufferType))
-    return false;
-
-  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
-  Q_ASSERT(bufferId.isValid());
-
-  if(_overlay->bufferIds().contains(bufferId))
-    return true;
-
-  if(_overlay->tempRemovedBufferIds().contains(bufferId))
-    return activityLevel > BufferInfo::OtherActivity;
-
-  if(_overlay->removedBufferIds().contains(bufferId))
-    return false;
-
-  // the buffer is not known to us
-  qDebug() << "BufferViewOverlayFilter::filterAcceptsRow()" << bufferId << "is unknown!";
-  return false;
 }
-

@@ -25,26 +25,27 @@
 
 class CoreSession;
 
-class CoreBufferViewManager : public BufferViewManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreBufferViewManager : public BufferViewManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
-  
-  inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewManager::staticMetaObject; }
+    CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
+
+    inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewManager::staticMetaObject; }
 
 public slots:
-  virtual void requestCreateBufferView(const QVariantMap &properties);
-  virtual void requestCreateBufferViews(const QVariantList &properties);
-  virtual void requestDeleteBufferView(int bufferViewId);
-  virtual void requestDeleteBufferViews(const QVariantList &bufferViews);
+    virtual void requestCreateBufferView(const QVariantMap &properties);
+    virtual void requestCreateBufferViews(const QVariantList &properties);
+    virtual void requestDeleteBufferView(int bufferViewId);
+    virtual void requestDeleteBufferViews(const QVariantList &bufferViews);
 
-  void saveBufferViews();
+    void saveBufferViews();
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 };
 
-#endif // COREBUFFERVIEWMANAGER_H
 
+#endif // COREBUFFERVIEWMANAGER_H

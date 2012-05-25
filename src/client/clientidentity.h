@@ -25,66 +25,71 @@
 
 class ClientCertManager;
 
-class CertIdentity : public Identity {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CertIdentity : public Identity
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CertIdentity(IdentityId id = 0, QObject *parent = 0);
-  CertIdentity(const Identity &other, QObject *parent = 0);
-  CertIdentity(const CertIdentity &other, QObject *parent = 0);
+    CertIdentity(IdentityId id = 0, QObject *parent = 0);
+    CertIdentity(const Identity &other, QObject *parent = 0);
+    CertIdentity(const CertIdentity &other, QObject *parent = 0);
 
 #ifdef HAVE_SSL
-  inline bool isDirty() const { return _isDirty; }
+    inline bool isDirty() const { return _isDirty; }
 #else
-  inline bool isDirty() const { return false; }
+    inline bool isDirty() const { return false; }
 #endif
 
 #ifdef HAVE_SSL
-  void enableEditSsl(bool enable = true);
-  inline const QSslKey &sslKey() const { return _sslKey; }
-  inline const QSslCertificate &sslCert() const { return _sslCert; }
+    void enableEditSsl(bool enable = true);
+    inline const QSslKey &sslKey() const { return _sslKey; }
+    inline const QSslCertificate &sslCert() const { return _sslCert; }
 
-  void setSslKey(const QSslKey &key);
-  void setSslCert(const QSslCertificate &cert);
+    void setSslKey(const QSslKey &key);
+    void setSslCert(const QSslCertificate &cert);
 
 public slots:
-  void requestUpdateSslSettings();
+    void requestUpdateSslSettings();
 
 signals:
-  void sslSettingsUpdated();
+    void sslSettingsUpdated();
 
 private slots:
-  void markClean();
+    void markClean();
 
 private:
-  ClientCertManager *_certManager;
-  bool _isDirty;
-  QSslKey _sslKey;
-  QSslCertificate _sslCert;
+    ClientCertManager *_certManager;
+    bool _isDirty;
+    QSslKey _sslKey;
+    QSslCertificate _sslCert;
 #endif //HAVE_SSL
 };
+
 
 // ========================================
 //  ClientCertManager
 // ========================================
 #ifdef HAVE_SSL
-class ClientCertManager : public CertManager {
-  Q_OBJECT
+class ClientCertManager : public CertManager
+{
+    Q_OBJECT
 
 public:
-  ClientCertManager(IdentityId id, CertIdentity *parent) : CertManager(id, parent), _certIdentity(parent) {}
+    ClientCertManager(IdentityId id, CertIdentity *parent) : CertManager(id, parent), _certIdentity(parent) {}
 
-  virtual inline const QSslKey &sslKey() const { return _certIdentity->sslKey(); }
-  virtual inline const QSslCertificate &sslCert() const { return _certIdentity->sslCert(); }
+    virtual inline const QSslKey &sslKey() const { return _certIdentity->sslKey(); }
+    virtual inline const QSslCertificate &sslCert() const { return _certIdentity->sslCert(); }
 
 public slots:
-  virtual void setSslKey(const QByteArray &encoded);
-  virtual void setSslCert(const QByteArray &encoded);
+    virtual void setSslKey(const QByteArray &encoded);
+    virtual void setSslCert(const QByteArray &encoded);
 
 private:
-  CertIdentity *_certIdentity;
+    CertIdentity *_certIdentity;
 };
+
+
 #endif //HAVE_SSL
 
 #endif //CLIENTIDENTITY_H

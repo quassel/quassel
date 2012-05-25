@@ -26,7 +26,6 @@
 #include <QString>
 #include <QMetaMethod>
 
-
 // TODO Use versions from Network instead
 QString nickFromMask(QString mask);
 QString userFromMask(QString mask);
@@ -53,22 +52,26 @@ QString decodeString(const QByteArray &input, QTextCodec *codec = 0);
 uint editingDistance(const QString &s1, const QString &s2);
 
 template<typename T>
-QVariantList toVariantList(const QList<T> &list) {
-  QVariantList variants;
-  for(int i = 0; i < list.count(); i++) {
-    variants << QVariant::fromValue<T>(list[i]);
-  }
-  return variants;
+QVariantList toVariantList(const QList<T> &list)
+{
+    QVariantList variants;
+    for (int i = 0; i < list.count(); i++) {
+        variants << QVariant::fromValue<T>(list[i]);
+    }
+    return variants;
 }
 
+
 template<typename T>
-QList<T> fromVariantList(const QVariantList &variants) {
-  QList<T> list;
-  for(int i = 0; i < variants.count(); i++) {
-    list << variants[i].value<T>();
-  }
-  return list;
+QList<T> fromVariantList(const QVariantList &variants)
+{
+    QList<T> list;
+    for (int i = 0; i < variants.count(); i++) {
+        list << variants[i].value<T>();
+    }
+    return list;
 }
+
 
 QByteArray prettyDigest(const QByteArray &digest);
 

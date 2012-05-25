@@ -28,27 +28,29 @@ class ColorButton;
 class QSignalMapper;
 class QTreeWidgetItem;
 
-class ItemViewSettingsPage : public SettingsPage {
-  Q_OBJECT
+class ItemViewSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  ItemViewSettingsPage(QWidget *parent = 0);
+    ItemViewSettingsPage(QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const { return true; }
 
 public slots:
-  void save();
+    void save();
 
 private slots:
-  void updateBufferViewPreview(QWidget *button);
+    void updateBufferViewPreview(QWidget *button);
 
 private:
-  Ui::ItemViewSettingsPage ui;
-  QSignalMapper *_mapper;
-  QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem,
-                  *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
+    Ui::ItemViewSettingsPage ui;
+    QSignalMapper *_mapper;
+    QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem,
+    *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
 
-  inline QString settingsKey() const { return QString("ItemViews"); }
+    inline QString settingsKey() const { return QString("ItemViews"); }
 };
+
 
 #endif

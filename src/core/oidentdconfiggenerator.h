@@ -56,35 +56,36 @@
 
 class OidentdConfigGenerator : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit OidentdConfigGenerator(QObject *parent = 0);
-  ~OidentdConfigGenerator();
+    explicit OidentdConfigGenerator(QObject *parent = 0);
+    ~OidentdConfigGenerator();
 
 public slots:
-  bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
-  bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
+    bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
+    bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
 
 private:
-  bool init();
-  bool writeConfig();
-  bool parseConfig(bool readQuasselStanzas = false);
-  bool lineByUs(const QByteArray &line);
+    bool init();
+    bool writeConfig();
+    bool parseConfig(bool readQuasselStanzas = false);
+    bool lineByUs(const QByteArray &line);
 
-  bool _initialized;
-  QDateTime _lastSync;
-  QFile *_configFile;
-  QByteArray _parsedConfig;
-  QByteArray _quasselConfig;
-  // Mutex isn't strictly necessary at the moment, since with the current invocation in Core only one instance at a time exists
-  QMutex _mutex;
+    bool _initialized;
+    QDateTime _lastSync;
+    QFile *_configFile;
+    QByteArray _parsedConfig;
+    QByteArray _quasselConfig;
+    // Mutex isn't strictly necessary at the moment, since with the current invocation in Core only one instance at a time exists
+    QMutex _mutex;
 
-  QDir _configDir;
-  QString _configFileName;
-  QString _configPath;
-  QString _configTag;
-  QRegExp _quasselStanzaRx;
-  QString _quasselStanzaTemplate;
+    QDir _configDir;
+    QString _configFileName;
+    QString _configPath;
+    QString _configTag;
+    QRegExp _quasselStanzaRx;
+    QString _quasselStanzaTemplate;
 };
+
 
 #endif // OIDENTDCONFIGGENERATOR_H

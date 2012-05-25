@@ -23,60 +23,61 @@
 
 #include "syncableobject.h"
 
-class NetworkConfig : public SyncableObject {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class NetworkConfig : public SyncableObject
+{
+    SYNCABLE_OBJECT
+    Q_OBJECT
 
-  Q_PROPERTY(bool pingTimeoutEnabled READ pingTimeoutEnabled WRITE setPingTimeoutEnabled)
-  Q_PROPERTY(int pingInterval READ pingInterval WRITE setPingInterval)
-  Q_PROPERTY(int maxPingCount READ maxPingCount WRITE setMaxPingCount)
-  Q_PROPERTY(bool autoWhoEnabled READ autoWhoEnabled WRITE setAutoWhoEnabled)
-  Q_PROPERTY(int autoWhoInterval READ autoWhoInterval WRITE setAutoWhoInterval)
-  Q_PROPERTY(int autoWhoNickLimit READ autoWhoNickLimit WRITE setAutoWhoNickLimit)
-  Q_PROPERTY(int autoWhoDelay READ autoWhoDelay WRITE setAutoWhoDelay)
+    Q_PROPERTY(bool pingTimeoutEnabled READ pingTimeoutEnabled WRITE setPingTimeoutEnabled)
+    Q_PROPERTY(int pingInterval READ pingInterval WRITE setPingInterval)
+    Q_PROPERTY(int maxPingCount READ maxPingCount WRITE setMaxPingCount)
+    Q_PROPERTY(bool autoWhoEnabled READ autoWhoEnabled WRITE setAutoWhoEnabled)
+    Q_PROPERTY(int autoWhoInterval READ autoWhoInterval WRITE setAutoWhoInterval)
+    Q_PROPERTY(int autoWhoNickLimit READ autoWhoNickLimit WRITE setAutoWhoNickLimit)
+    Q_PROPERTY(int autoWhoDelay READ autoWhoDelay WRITE setAutoWhoDelay)
 
-public:
-  NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = 0);
+public :
+        NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = 0);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
 public slots:
-  inline bool pingTimeoutEnabled() const { return _pingTimeoutEnabled; }
-  void setPingTimeoutEnabled(bool);
-  virtual inline void requestSetPingTimeoutEnabled(bool b) { REQUEST(ARG(b)) }
+    inline bool pingTimeoutEnabled() const { return _pingTimeoutEnabled; }
+    void setPingTimeoutEnabled(bool);
+    virtual inline void requestSetPingTimeoutEnabled(bool b) { REQUEST(ARG(b)) }
 
-  inline int pingInterval() const { return _pingInterval; }
-  void setPingInterval(int);
-  virtual inline void requestSetPingInterval(int i) { REQUEST(ARG(i)) }
+    inline int pingInterval() const { return _pingInterval; }
+    void setPingInterval(int);
+    virtual inline void requestSetPingInterval(int i) { REQUEST(ARG(i)) }
 
-  inline int maxPingCount() const { return _maxPingCount; }
-  void setMaxPingCount(int);
-  virtual inline void requestSetMaxPingCount(int i) { REQUEST(ARG(i)) }
+    inline int maxPingCount() const { return _maxPingCount; }
+    void setMaxPingCount(int);
+    virtual inline void requestSetMaxPingCount(int i) { REQUEST(ARG(i)) }
 
-  inline bool autoWhoEnabled() const { return _autoWhoEnabled; }
-  void setAutoWhoEnabled(bool);
-  virtual inline void requestSetAutoWhoEnabled(bool b) { REQUEST(ARG(b)) }
+    inline bool autoWhoEnabled() const { return _autoWhoEnabled; }
+    void setAutoWhoEnabled(bool);
+    virtual inline void requestSetAutoWhoEnabled(bool b) { REQUEST(ARG(b)) }
 
-  inline int autoWhoInterval() const { return _autoWhoInterval; }
-  void setAutoWhoInterval(int);
-  virtual inline void requestSetAutoWhoInterval(int i) { REQUEST(ARG(i)) }
+    inline int autoWhoInterval() const { return _autoWhoInterval; }
+    void setAutoWhoInterval(int);
+    virtual inline void requestSetAutoWhoInterval(int i) { REQUEST(ARG(i)) }
 
-  inline int autoWhoNickLimit() const { return _autoWhoNickLimit; }
-  void setAutoWhoNickLimit(int);
-  virtual inline void requestSetAutoWhoNickLimit(int i) { REQUEST(ARG(i)) }
+    inline int autoWhoNickLimit() const { return _autoWhoNickLimit; }
+    void setAutoWhoNickLimit(int);
+    virtual inline void requestSetAutoWhoNickLimit(int i) { REQUEST(ARG(i)) }
 
-  inline int autoWhoDelay() const { return _autoWhoDelay; }
-  void setAutoWhoDelay(int);
-  virtual inline void requestSetAutoWhoDelay(int i) { REQUEST(ARG(i)) }
+    inline int autoWhoDelay() const { return _autoWhoDelay; }
+    void setAutoWhoDelay(int);
+    virtual inline void requestSetAutoWhoDelay(int i) { REQUEST(ARG(i)) }
 
 signals:
-  void pingTimeoutEnabledSet(bool);
-  void pingIntervalSet(int);
+    void pingTimeoutEnabledSet(bool);
+    void pingIntervalSet(int);
 //   void maxPingCountSet(int);
-  void autoWhoEnabledSet(bool);
-  void autoWhoIntervalSet(int);
+    void autoWhoEnabledSet(bool);
+    void autoWhoIntervalSet(int);
 //   void autoWhoNickLimitSet(int);
-  void autoWhoDelaySet(int);
+    void autoWhoDelaySet(int);
 
 //   void setPingTimeoutEnabledRequested(bool);
 //   void setPingIntervalRequested(int);
@@ -87,14 +88,15 @@ signals:
 //   void setAutoWhoDelayRequested(int);
 
 private:
-  bool _pingTimeoutEnabled;
-  int _pingInterval;
-  int _maxPingCount;
+    bool _pingTimeoutEnabled;
+    int _pingInterval;
+    int _maxPingCount;
 
-  bool _autoWhoEnabled;
-  int _autoWhoInterval;
-  int _autoWhoNickLimit;
-  int _autoWhoDelay;
+    bool _autoWhoEnabled;
+    int _autoWhoInterval;
+    int _autoWhoNickLimit;
+    int _autoWhoDelay;
 };
+
 
 #endif

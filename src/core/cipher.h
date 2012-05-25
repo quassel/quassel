@@ -15,17 +15,17 @@
 #ifndef CIPHER_H
 #define CIPHER_H
 
-#include<QtCrypto>
+#include <QtCrypto>
 
 class Cipher
 {
-  public:
+public:
     Cipher();
-    explicit Cipher(QByteArray key, QString cipherType=QString("blowfish"));
+    explicit Cipher(QByteArray key, QString cipherType = QString("blowfish"));
     ~Cipher();
     QByteArray decrypt(QByteArray cipher);
     QByteArray decryptTopic(QByteArray cipher);
-    bool encrypt(QByteArray& cipher);
+    bool encrypt(QByteArray &cipher);
     QByteArray initKeyExchange();
     QByteArray parseInitKeyX(QByteArray key);
     bool parseFinishKeyX(QByteArray key);
@@ -35,7 +35,7 @@ class Cipher
     QString type() { return m_type; }
     static bool neededFeaturesAvailable();
 
-  private:
+private:
     //direction is true for encrypt, false for decrypt
     QByteArray blowfishCBC(QByteArray cipherText, bool direction);
     QByteArray blowfishECB(QByteArray cipherText, bool direction);
@@ -49,4 +49,6 @@ class Cipher
     QString m_type;
     bool m_cbc;
 };
+
+
 #endif // CIPHER_H

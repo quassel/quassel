@@ -23,15 +23,17 @@
 
 #include "bufferview.h"
 
-class PreviewBufferView : public BufferView {
-  Q_OBJECT
+class PreviewBufferView : public BufferView
+{
+    Q_OBJECT
 
 public:
-  PreviewBufferView(QWidget *parent = 0) : BufferView(parent) {}
+    PreviewBufferView(QWidget *parent = 0) : BufferView(parent) {}
 
 protected:
-  virtual void keyPressEvent(QKeyEvent *event) { QTreeView::keyPressEvent(event); }
-  virtual void contextMenuEvent(QContextMenuEvent *) {}
+    virtual void keyPressEvent(QKeyEvent *event) { QTreeView::keyPressEvent(event); }
+    virtual void contextMenuEvent(QContextMenuEvent *) {}
 };
+
 
 #endif //PREVIEWBUFFERVIEW_H

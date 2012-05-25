@@ -29,33 +29,37 @@
 
 class CoreAccountSettingsPage;
 
-class CoreConnectDlg : public QDialog {
-  Q_OBJECT
+class CoreConnectDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  CoreConnectDlg(QWidget *parent = 0);
-  AccountId selectedAccount() const;
+    CoreConnectDlg(QWidget *parent = 0);
+    AccountId selectedAccount() const;
 
-  void accept();
+    void accept();
 
 private:
-  CoreAccountSettingsPage *_settingsPage;
+    CoreAccountSettingsPage *_settingsPage;
 };
 
-class CoreConnectAuthDlg : public QDialog {
-  Q_OBJECT
+
+class CoreConnectAuthDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = 0);
+    CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = 0);
 
-  void accept();
+    void accept();
 
 private slots:
-  void setButtonStates();
+    void setButtonStates();
 
 private:
-  Ui::CoreConnectAuthDlg ui;
-  CoreAccount *_account;
+    Ui::CoreConnectAuthDlg ui;
+    CoreAccount *_account;
 };
+
 
 #endif

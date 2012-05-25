@@ -23,100 +23,103 @@
 
 #include <QAbstractProxyModel>
 
-class FlatProxyModel : public QAbstractProxyModel {
-  Q_OBJECT
+class FlatProxyModel : public QAbstractProxyModel
+{
+    Q_OBJECT
 
 public:
-  FlatProxyModel(QObject *parent = 0);
+    FlatProxyModel(QObject *parent = 0);
 
-  virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
-  virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
+    virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
+    virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
 
-  virtual QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection) const;
-  virtual QItemSelection mapSelectionToSource(const QItemSelection &proxySelection) const;
+    virtual QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection) const;
+    virtual QItemSelection mapSelectionToSource(const QItemSelection &proxySelection) const;
 
-  virtual void setSourceModel(QAbstractItemModel *sourceModel);
+    virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
-  virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
-  virtual QModelIndex parent(const QModelIndex &index) const;
+    virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    virtual QModelIndex parent(const QModelIndex &index) const;
 
-  virtual int rowCount(const QModelIndex &index) const;
-  virtual int columnCount(const QModelIndex &index) const;
+    virtual int rowCount(const QModelIndex &index) const;
+    virtual int columnCount(const QModelIndex &index) const;
 
 public slots:
-  void linkTest() const;
-  void completenessTest() const;
+    void linkTest() const;
+    void completenessTest() const;
 
 private slots:
-  void on_columnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-  void on_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-  void on_columnsInserted(const QModelIndex &parent, int start, int end);
-  void on_columnsRemoved(const QModelIndex &parent, int start, int end);
-  
-  void on_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void on_columnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void on_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void on_columnsInserted(const QModelIndex &parent, int start, int end);
+    void on_columnsRemoved(const QModelIndex &parent, int start, int end);
+
+    void on_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 //   void on_headerDataChanged(Qt::Orientation orientation, int first, int last);
 
-  void on_layoutAboutToBeChanged();
-  void on_layoutChanged();
+    void on_layoutAboutToBeChanged();
+    void on_layoutChanged();
 
-  inline void on_modelAboutToBeReset() { reset(); }
-  // void on_modelReset();
+    inline void on_modelAboutToBeReset() { reset(); }
+    // void on_modelReset();
 
-  void on_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-  void on_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-  void on_rowsInserted(const QModelIndex &parent, int start, int end);
-  void on_rowsRemoved(const QModelIndex &parent, int start, int end);
+    void on_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void on_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void on_rowsInserted(const QModelIndex &parent, int start, int end);
+    void on_rowsRemoved(const QModelIndex &parent, int start, int end);
 
 private:
-  QList<int> _childCount;
+    QList<int> _childCount;
 
-  class SourceItem;
-  SourceItem *_rootSourceItem;
+    class SourceItem;
+    SourceItem *_rootSourceItem;
 
-  void insertSubTree(const QModelIndex &source_idx, bool emitInsert = true);
-  SourceItem *insertSubTreeHelper(SourceItem *parentItem, SourceItem *lastItem_, const QModelIndex &source_idx);
+    void insertSubTree(const QModelIndex &source_idx, bool emitInsert = true);
+    SourceItem *insertSubTreeHelper(SourceItem *parentItem, SourceItem *lastItem_, const QModelIndex &source_idx);
 
-  void removeSubTree(const QModelIndex &source_idx, bool emitRemove = true);
+    void removeSubTree(const QModelIndex &source_idx, bool emitRemove = true);
 
-  SourceItem *sourceToInternal(const QModelIndex &sourceIndex) const;
+    SourceItem *sourceToInternal(const QModelIndex &sourceIndex) const;
 
-  void checkChildCount(const QModelIndex &index, const SourceItem *item, int &pos) const;
+    void checkChildCount(const QModelIndex &index, const SourceItem *item, int &pos) const;
 
-  class _RangeRect {
-  public:
-    int left, right, top, bottom;
-    SourceItem *topItem, *bottomItem;
-    bool operator<(const _RangeRect &other) const;
-  };
+    class _RangeRect
+    {
+public:
+        int left, right, top, bottom;
+        SourceItem *topItem, *bottomItem;
+        bool operator<(const _RangeRect &other) const;
+    };
 };
 
 
-class FlatProxyModel::SourceItem {
+class FlatProxyModel::SourceItem
+{
 public:
-  SourceItem(int row = 0, SourceItem *parent = 0);
-  ~SourceItem();
+    SourceItem(int row = 0, SourceItem *parent = 0);
+    ~SourceItem();
 
-  inline SourceItem *parent() const { return _parent; }
-  inline SourceItem *child(int i) const { return _childs[i]; }
-  inline int childCount() const { return _childs.count(); }
+    inline SourceItem *parent() const { return _parent; }
+    inline SourceItem *child(int i) const { return _childs[i]; }
+    inline int childCount() const { return _childs.count(); }
 
-  inline int pos() const { return _pos; }
-  inline SourceItem *next() const { return _next; }
+    inline int pos() const { return _pos; }
+    inline SourceItem *next() const { return _next; }
 
-  int sourceRow() const;
-  SourceItem *findChild(int proxyPos) const;
+    int sourceRow() const;
+    SourceItem *findChild(int proxyPos) const;
 
 private:
-  inline void removeChild(SourceItem *item) { _childs.removeAt(_childs.indexOf(item)); }
-  inline void setPos(int i) { _pos = i; }
-  inline void setNext(SourceItem *next) { _next = next; }
+    inline void removeChild(SourceItem *item) { _childs.removeAt(_childs.indexOf(item)); }
+    inline void setPos(int i) { _pos = i; }
+    inline void setNext(SourceItem *next) { _next = next; }
 
-  SourceItem *_parent;
-  QList<SourceItem *> _childs;
-  int _pos;
-  SourceItem *_next;
+    SourceItem *_parent;
+    QList<SourceItem *> _childs;
+    int _pos;
+    SourceItem *_next;
 
-  friend class FlatProxyModel;
+    friend class FlatProxyModel;
 };
 
 

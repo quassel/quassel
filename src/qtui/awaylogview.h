@@ -25,12 +25,14 @@
 
 class AwayLogFilter;
 
-class AwayLogView : public ChatMonitorView {
-  Q_OBJECT
+class AwayLogView : public ChatMonitorView
+{
+    Q_OBJECT
 
 public:
-  AwayLogView(AwayLogFilter *filter, QWidget *parent = 0);
-  virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
+    AwayLogView(AwayLogFilter *filter, QWidget *parent = 0);
+    virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
 };
+
 
 #endif //AWAYLOGVIEW_H

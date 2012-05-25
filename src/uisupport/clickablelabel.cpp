@@ -24,15 +24,16 @@
 #include <QMouseEvent>
 
 ClickableLabel::ClickableLabel(QWidget *parent)
-  : QLabel(parent)
+    : QLabel(parent)
 {
 }
 
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent *event) {
-  if(event->pos().x() > size().width() || event->pos().y() > size().height())
-    return;
+void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->pos().x() > size().width() || event->pos().y() > size().height())
+        return;
 
-  event->accept();
-  emit clicked();
+    event->accept();
+    emit clicked();
 }

@@ -58,89 +58,106 @@ QHash<QString, SettingsChangeNotifier *> Settings::settingsChangeNotifier;
 // */
 // }
 
-void Settings::notify(const QString &key, QObject *receiver, const char *slot) {
-  QObject::connect(notifier(normalizedKey(group, key)), SIGNAL(valueChanged(const QVariant &)),
-                   receiver, slot);
+void Settings::notify(const QString &key, QObject *receiver, const char *slot)
+{
+    QObject::connect(notifier(normalizedKey(group, key)), SIGNAL(valueChanged(const QVariant &)),
+        receiver, slot);
 }
 
-void Settings::initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue) {
-  notify(key, receiver, slot);
-  emit notifier(normalizedKey(group, key))->valueChanged(localValue(key, defaultValue));
+
+void Settings::initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue)
+{
+    notify(key, receiver, slot);
+    emit notifier(normalizedKey(group, key))->valueChanged(localValue(key, defaultValue));
 }
 
-uint Settings::version() {
-  // we don't cache this value, and we ignore the group
-  create_qsettings;
-  uint ver = s.value("Config/Version", 0).toUInt();
-  if(!ver) {
-    // No version, so create one
-    s.setValue("Config/Version", VERSION);
-    return VERSION;
-  }
-  return ver;
-}
 
-QStringList Settings::allLocalKeys() {
-  create_qsettings;
-  s.beginGroup(group);
-  QStringList res = s.allKeys();
-  s.endGroup();
-  return res;
-}
-
-QStringList Settings::localChildKeys(const QString &rootkey) {
-  QString g;
-  if(rootkey.isEmpty())
-    g = group;
-  else
-    g = QString("%1/%2").arg(group, rootkey);
-
-  create_qsettings;
-  s.beginGroup(g);
-  QStringList res = s.childKeys();
-  s.endGroup();
-  return res;
-}
-
-QStringList Settings::localChildGroups(const QString &rootkey) {
-  QString g;
-  if(rootkey.isEmpty())
-    g = group;
-  else
-    g = QString("%1/%2").arg(group, rootkey);
-
-  create_qsettings;
-  s.beginGroup(g);
-  QStringList res = s.childGroups();
-  s.endGroup();
-  return res;
-}
-
-void Settings::setLocalValue(const QString &key, const QVariant &data) {
-  QString normKey = normalizedKey(group, key);
-  create_qsettings;
-  s.setValue(normKey, data);
-  setCacheValue(normKey, data);
-  if(hasNotifier(normKey)) {
-    emit notifier(normKey)->valueChanged(data);
-  }
-}
-
-const QVariant &Settings::localValue(const QString &key, const QVariant &def) {
-  QString normKey = normalizedKey(group, key);
-  if(!isCached(normKey)) {
+uint Settings::version()
+{
+    // we don't cache this value, and we ignore the group
     create_qsettings;
-    setCacheValue(normKey, s.value(normKey, def));
-  }
-  return cacheValue(normKey);
+    uint ver = s.value("Config/Version", 0).toUInt();
+    if (!ver) {
+        // No version, so create one
+        s.setValue("Config/Version", VERSION);
+        return VERSION;
+    }
+    return ver;
 }
 
-void Settings::removeLocalKey(const QString &key) {
-  create_qsettings;
-  s.beginGroup(group);
-  s.remove(key);
-  s.endGroup();
-  QString normKey = normalizedKey(group, key);
-  if(isCached(normKey))
-    settingsCache.remove(normKey);
+
+QStringList Settings::allLocalKeys()
+{
+    create_qsettings;
+    s.beginGroup(group);
+    QStringList res = s.allKeys();
+    s.endGroup();
+    return res;
+}
+
+
+QStringList Settings::localChildKeys(const QString &rootkey)
+{
+    QString g;
+    if (rootkey.isEmpty())
+        g = group;
+    else
+        g = QString("%1/%2").arg(group, rootkey);
+
+    create_qsettings;
+    s.beginGroup(g);
+    QStringList res = s.childKeys();
+    s.endGroup();
+    return res;
+}
+
+
+QStringList Settings::localChildGroups(const QString &rootkey)
+{
+    QString g;
+    if (rootkey.isEmpty())
+        g = group;
+    else
+        g = QString("%1/%2").arg(group, rootkey);
+
+    create_qsettings;
+    s.beginGroup(g);
+    QStringList res = s.childGroups();
+    s.endGroup();
+    return res;
+}
+
+
+void Settings::setLocalValue(const QString &key, const QVariant &data)
+{
+    QString normKey = normalizedKey(group, key);
+    create_qsettings;
+    s.setValue(normKey, data);
+    setCacheValue(normKey, data);
+    if (hasNotifier(normKey)) {
+        emit notifier(normKey)->valueChanged(data);
+    }
+}
+
+
+const QVariant &Settings::localValue(const QString &key, const QVariant &def)
+{
+    QString normKey = normalizedKey(group, key);
+    if (!isCached(normKey)) {
+        create_qsettings;
+        setCacheValue(normKey, s.value(normKey, def));
+    }
+    return cacheValue(normKey);
+}
+
+
+void Settings::removeLocalKey(const QString &key)
+{
+    create_qsettings;
+    s.beginGroup(group);
+    s.remove(key);
+    s.endGroup();
+    QString normKey = normalizedKey(group, key);
+    if (isCached(normKey))
+        settingsCache.remove(normKey);
 }

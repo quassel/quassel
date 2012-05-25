@@ -22,30 +22,42 @@
 
 #include "quassel.h"
 
-CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName) {
-
+CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName)
+{
 }
 
-CoreSettings::~CoreSettings() {
+
+CoreSettings::~CoreSettings()
+{
 }
 
-void CoreSettings::setStorageSettings(const QVariant &data) {
-  setLocalValue("StorageSettings", data);
+
+void CoreSettings::setStorageSettings(const QVariant &data)
+{
+    setLocalValue("StorageSettings", data);
 }
 
-QVariant CoreSettings::storageSettings(const QVariant &def) {
-  return localValue("StorageSettings", def);
+
+QVariant CoreSettings::storageSettings(const QVariant &def)
+{
+    return localValue("StorageSettings", def);
 }
+
 
 // FIXME remove
-QVariant CoreSettings::oldDbSettings() {
-  return localValue("DatabaseSettings");
+QVariant CoreSettings::oldDbSettings()
+{
+    return localValue("DatabaseSettings");
 }
 
-void CoreSettings::setCoreState(const QVariant &data) {
-  setLocalValue("CoreState", data);
+
+void CoreSettings::setCoreState(const QVariant &data)
+{
+    setLocalValue("CoreState", data);
 }
 
-QVariant CoreSettings::coreState(const QVariant &def) {
-  return localValue("CoreState", def);
+
+QVariant CoreSettings::coreState(const QVariant &def)
+{
+    return localValue("CoreState", def);
 }

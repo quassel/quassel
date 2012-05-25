@@ -35,65 +35,70 @@ class QPainter;
 class QAbstractItemModel;
 
 // the delegate is used to draw the checkbox in column 0
-class IgnoreListDelegate : public QStyledItemDelegate {
-  Q_OBJECT
+class IgnoreListDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
 
 public:
-  IgnoreListDelegate(QWidget *parent = 0) : QStyledItemDelegate(parent) {}
-  void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &index) const;
-  bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-                   const QModelIndex &index);
+    IgnoreListDelegate(QWidget *parent = 0) : QStyledItemDelegate(parent) {}
+    void paint(QPainter *painter, const QStyleOptionViewItem &option,
+        const QModelIndex &index) const;
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+        const QModelIndex &index);
 };
 
-class IgnoreListEditDlg : public QDialog {
-  Q_OBJECT
+
+class IgnoreListEditDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent = 0, bool enabled = false);
-  inline IgnoreListManager::IgnoreListItem ignoreListItem() { return _ignoreListItem; }
-  void enableOkButton(bool state);
+    IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent = 0, bool enabled = false);
+    inline IgnoreListManager::IgnoreListItem ignoreListItem() { return _ignoreListItem; }
+    void enableOkButton(bool state);
 
 private slots:
-  void widgetHasChanged();
-  void aboutToAccept() { _ignoreListItem = _clonedIgnoreListItem; }
+    void widgetHasChanged();
+    void aboutToAccept() { _ignoreListItem = _clonedIgnoreListItem; }
 
 private:
-  IgnoreListManager::IgnoreListItem _ignoreListItem;
-  IgnoreListManager::IgnoreListItem _clonedIgnoreListItem;
-  bool _hasChanged;
-  Ui::IgnoreListEditDlg ui;
-  QButtonGroup _typeButtonGroup;
-  QButtonGroup _strictnessButtonGroup;
-  QButtonGroup _scopeButtonGroup;
+    IgnoreListManager::IgnoreListItem _ignoreListItem;
+    IgnoreListManager::IgnoreListItem _clonedIgnoreListItem;
+    bool _hasChanged;
+    Ui::IgnoreListEditDlg ui;
+    QButtonGroup _typeButtonGroup;
+    QButtonGroup _strictnessButtonGroup;
+    QButtonGroup _scopeButtonGroup;
 };
 
-class IgnoreListSettingsPage : public SettingsPage {
-  Q_OBJECT
+
+class IgnoreListSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  IgnoreListSettingsPage(QWidget *parent = 0);
-  ~IgnoreListSettingsPage();
-  virtual inline bool hasDefaults() const { return false; }
-  virtual inline bool needsCoreConnection() const { return true; }
-  void editIgnoreRule(const QString &ignoreRule);
+    IgnoreListSettingsPage(QWidget *parent = 0);
+    ~IgnoreListSettingsPage();
+    virtual inline bool hasDefaults() const { return false; }
+    virtual inline bool needsCoreConnection() const { return true; }
+    void editIgnoreRule(const QString &ignoreRule);
 
 public slots:
-  void save();
-  void load();
-  void defaults();
-  void newIgnoreRule(QString rule = QString());
+    void save();
+    void load();
+    void defaults();
+    void newIgnoreRule(QString rule = QString());
 
 private slots:
-  void enableDialog(bool);
-  void deleteSelectedIgnoreRule();
-  void editSelectedIgnoreRule();
-  void selectionChanged(const QItemSelection &selection, const QItemSelection &);
+    void enableDialog(bool);
+    void deleteSelectedIgnoreRule();
+    void editSelectedIgnoreRule();
+    void selectionChanged(const QItemSelection &selection, const QItemSelection &);
 
 private:
-  IgnoreListDelegate *_delegate;
-  Ui::IgnoreListSettingsPage ui;
-  IgnoreListModel _ignoreListModel;
+    IgnoreListDelegate *_delegate;
+    Ui::IgnoreListSettingsPage ui;
+    IgnoreListModel _ignoreListModel;
 };
 
 

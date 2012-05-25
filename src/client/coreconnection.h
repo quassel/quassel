@@ -43,155 +43,157 @@ class CoreAccountModel;
 class Network;
 class SignalProxy;
 
-class CoreConnection : public QObject {
-  Q_OBJECT
+class CoreConnection : public QObject
+{
+    Q_OBJECT
 
 public:
-  enum ConnectionState {
-    Disconnected,
-    Connecting,
-    Connected,
-    Synchronizing,
-    Synchronized
-  };
+    enum ConnectionState {
+        Disconnected,
+        Connecting,
+        Connected,
+        Synchronizing,
+        Synchronized
+    };
 
-  CoreConnection(CoreAccountModel *model, QObject *parent = 0);
+    CoreConnection(CoreAccountModel *model, QObject *parent = 0);
 
-  void init();
+    void init();
 
-  inline bool isConnected() const;
-  inline ConnectionState state() const;
-  inline CoreAccount currentAccount() const;
+    inline bool isConnected() const;
+    inline ConnectionState state() const;
+    inline CoreAccount currentAccount() const;
 
-  bool isEncrypted() const;
-  bool isLocalConnection() const;
+    bool isEncrypted() const;
+    bool isLocalConnection() const;
 
-  inline int progressMinimum() const;
-  inline int progressMaximum() const;
-  inline int progressValue() const;
-  inline QString progressText() const;
+    inline int progressMinimum() const;
+    inline int progressMaximum() const;
+    inline int progressValue() const;
+    inline QString progressText() const;
 
-  //! Check if we consider the last connect as reconnect
-  inline bool wasReconnect() const { return _wasReconnect; }
+    //! Check if we consider the last connect as reconnect
+    inline bool wasReconnect() const { return _wasReconnect; }
 
 #ifdef HAVE_SSL
-  inline const QSslSocket *sslSocket() const;
+    inline const QSslSocket *sslSocket() const;
 #endif
 
 public slots:
-  bool connectToCore(AccountId = 0);
-  void reconnectToCore();
-  void disconnectFromCore();
+    bool connectToCore(AccountId = 0);
+    void reconnectToCore();
+    void disconnectFromCore();
 
 signals:
-  void stateChanged(CoreConnection::ConnectionState);
-  void encrypted(bool isEncrypted = true);
-  void synchronized();
-  void lagUpdated(int msecs);
+    void stateChanged(CoreConnection::ConnectionState);
+    void encrypted(bool isEncrypted = true);
+    void synchronized();
+    void lagUpdated(int msecs);
 
-  void connectionError(const QString &errorMsg);
-  void connectionErrorPopup(const QString &errorMsg);
-  void connectionWarnings(const QStringList &warnings);
-  void connectionMsg(const QString &msg);
-  void disconnected();
+    void connectionError(const QString &errorMsg);
+    void connectionErrorPopup(const QString &errorMsg);
+    void connectionWarnings(const QStringList &warnings);
+    void connectionMsg(const QString &msg);
+    void disconnected();
 
-  void progressRangeChanged(int minimum, int maximum);
-  void progressValueChanged(int value);
-  void progressTextChanged(const QString &);
+    void progressRangeChanged(int minimum, int maximum);
+    void progressValueChanged(int value);
+    void progressTextChanged(const QString &);
 
-  void startCoreSetup(const QVariantList &);
-  void coreSetupSuccess();
-  void coreSetupFailed(const QString &error);
+    void startCoreSetup(const QVariantList &);
+    void coreSetupSuccess();
+    void coreSetupFailed(const QString &error);
 
-  void startInternalCore();
-  void connectToInternalCore(SignalProxy *proxy);
+    void startInternalCore();
+    void connectToInternalCore(SignalProxy *proxy);
 
-  // These signals MUST be handled synchronously!
-  void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
-  void handleNoSslInClient(bool *accepted);
-  void handleNoSslInCore(bool *accepted);
+    // These signals MUST be handled synchronously!
+    void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
+    void handleNoSslInClient(bool *accepted);
+    void handleNoSslInCore(bool *accepted);
 #ifdef HAVE_SSL
-  void handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently);
+    void handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently);
 #endif
 
 private slots:
-  void connectToCurrentAccount();
-  void disconnectFromCore(const QString &errorString, bool wantReconnect = true);
+    void connectToCurrentAccount();
+    void disconnectFromCore(const QString &errorString, bool wantReconnect = true);
 
-  void socketStateChanged(QAbstractSocket::SocketState);
-  void coreSocketError(QAbstractSocket::SocketError);
-  void coreHasData();
-  void coreSocketConnected();
-  void coreSocketDisconnected();
+    void socketStateChanged(QAbstractSocket::SocketState);
+    void coreSocketError(QAbstractSocket::SocketError);
+    void coreHasData();
+    void coreSocketConnected();
+    void coreSocketDisconnected();
 
-  void clientInitAck(const QVariantMap &msg);
+    void clientInitAck(const QVariantMap &msg);
 
-  // for sync progress
-  void networkInitDone();
-  void checkSyncState();
+    // for sync progress
+    void networkInitDone();
+    void checkSyncState();
 
-  void syncToCore(const QVariantMap &sessionState);
-  void internalSessionStateReceived(const QVariant &packedState);
-  void sessionStateReceived(const QVariantMap &state);
+    void syncToCore(const QVariantMap &sessionState);
+    void internalSessionStateReceived(const QVariant &packedState);
+    void sessionStateReceived(const QVariantMap &state);
 
-  void resetConnection(bool wantReconnect = false);
-  void connectionReady();
+    void resetConnection(bool wantReconnect = false);
+    void connectionReady();
 
-  void loginToCore(const QString &user, const QString &password, bool remember); // for config wizard
-  void loginToCore(const QString &previousError = QString());
-  void loginSuccess();
-  void loginFailed(const QString &errorMessage);
+    void loginToCore(const QString &user, const QString &password, bool remember); // for config wizard
+    void loginToCore(const QString &previousError = QString());
+    void loginSuccess();
+    void loginFailed(const QString &errorMessage);
 
-  void doCoreSetup(const QVariant &setupData);
+    void doCoreSetup(const QVariant &setupData);
 
-  void updateProgress(int value, int maximum);
-  void setProgressText(const QString &text);
-  void setProgressValue(int value);
-  void setProgressMinimum(int minimum);
-  void setProgressMaximum(int maximum);
+    void updateProgress(int value, int maximum);
+    void setProgressText(const QString &text);
+    void setProgressValue(int value);
+    void setProgressMinimum(int minimum);
+    void setProgressMaximum(int maximum);
 
-  void setState(QAbstractSocket::SocketState socketState);
-  void setState(ConnectionState state);
+    void setState(QAbstractSocket::SocketState socketState);
+    void setState(ConnectionState state);
 
 #ifdef HAVE_SSL
-  void sslSocketEncrypted();
-  void sslErrors();
+    void sslSocketEncrypted();
+    void sslErrors();
 #endif
 
-  void networkDetectionModeChanged(const QVariant &mode);
-  void pingTimeoutIntervalChanged(const QVariant &interval);
-  void reconnectIntervalChanged(const QVariant &interval);
-  void reconnectTimeout();
+    void networkDetectionModeChanged(const QVariant &mode);
+    void pingTimeoutIntervalChanged(const QVariant &interval);
+    void reconnectIntervalChanged(const QVariant &interval);
+    void reconnectTimeout();
 
 #ifdef HAVE_KDE
-  void solidNetworkStatusChanged(Solid::Networking::Status status);
+    void solidNetworkStatusChanged(Solid::Networking::Status status);
 #endif
 
 private:
-  CoreAccountModel *_model;
-  CoreAccount _account;
-  QVariantMap _coreMsgBuffer;
+    CoreAccountModel *_model;
+    CoreAccount _account;
+    QVariantMap _coreMsgBuffer;
 
-  QPointer<QAbstractSocket> _socket;
-  quint32 _blockSize;
-  ConnectionState _state;
+    QPointer<QAbstractSocket> _socket;
+    quint32 _blockSize;
+    ConnectionState _state;
 
-  QTimer _reconnectTimer;
-  bool _wantReconnect;
+    QTimer _reconnectTimer;
+    bool _wantReconnect;
 
-  QSet<QObject *> _netsToSync;
-  int _numNetsToSync;
-  int _progressMinimum, _progressMaximum, _progressValue;
-  QString _progressText;
+    QSet<QObject *> _netsToSync;
+    int _numNetsToSync;
+    int _progressMinimum, _progressMaximum, _progressValue;
+    QString _progressText;
 
-  QString _coreInfoString(const QVariantMap &);
-  bool _wasReconnect;
-  bool _requestedDisconnect;
+    QString _coreInfoString(const QVariantMap &);
+    bool _wasReconnect;
+    bool _requestedDisconnect;
 
-  inline CoreAccountModel *accountModel() const;
+    inline CoreAccountModel *accountModel() const;
 
-  friend class CoreConfigWizard;
+    friend class CoreConfigWizard;
 };
+
 
 Q_DECLARE_METATYPE(CoreConnection::ConnectionState)
 

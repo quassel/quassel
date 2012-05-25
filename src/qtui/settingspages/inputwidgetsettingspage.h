@@ -24,18 +24,20 @@
 #include "settingspage.h"
 #include "ui_inputwidgetsettingspage.h"
 
-class InputWidgetSettingsPage : public SettingsPage {
-  Q_OBJECT
+class InputWidgetSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  InputWidgetSettingsPage(QWidget *parent = 0);
+    InputWidgetSettingsPage(QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const { return true; }
 
 private:
-  Ui::InputWidgetSettingsPage ui;
+    Ui::InputWidgetSettingsPage ui;
 
-  inline QString settingsKey() const { return QString("InputWidget"); }
+    inline QString settingsKey() const { return QString("InputWidget"); }
 };
+
 
 #endif

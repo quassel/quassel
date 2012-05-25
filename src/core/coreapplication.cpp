@@ -24,61 +24,69 @@
 #include "logger.h"
 
 CoreApplicationInternal::CoreApplicationInternal()
-  : _coreCreated(false)
+    : _coreCreated(false)
 {
-
 }
 
-CoreApplicationInternal::~CoreApplicationInternal() {
-  if(_coreCreated) {
-    Core::saveState();
-    Core::destroy();
-  }
+
+CoreApplicationInternal::~CoreApplicationInternal()
+{
+    if (_coreCreated) {
+        Core::saveState();
+        Core::destroy();
+    }
 }
 
-bool CoreApplicationInternal::init() {
-  /* FIXME
-  This is an initial check if logfile is writable since the warning would spam stdout if done
-  in current Logger implementation. Can be dropped whenever the logfile is only opened once.
-  */
-  QFile logFile;
-  if(!Quassel::optionValue("logfile").isEmpty()) {
-    logFile.setFileName(Quassel::optionValue("logfile"));
-    if(!logFile.open(QIODevice::Append | QIODevice::Text))
-      qWarning("Warning: Couldn't open logfile '%s' - will log to stdout instead",qPrintable(logFile.fileName()));
-    else logFile.close();
-  }
 
-  Core::instance();  // create and init the core
-  _coreCreated = true;
+bool CoreApplicationInternal::init()
+{
+    /* FIXME
+    This is an initial check if logfile is writable since the warning would spam stdout if done
+    in current Logger implementation. Can be dropped whenever the logfile is only opened once.
+    */
+    QFile logFile;
+    if (!Quassel::optionValue("logfile").isEmpty()) {
+        logFile.setFileName(Quassel::optionValue("logfile"));
+        if (!logFile.open(QIODevice::Append | QIODevice::Text))
+            qWarning("Warning: Couldn't open logfile '%s' - will log to stdout instead", qPrintable(logFile.fileName()));
+        else logFile.close();
+    }
 
-  if(!Quassel::isOptionSet("norestore"))
-    Core::restoreState();
+    Core::instance(); // create and init the core
+    _coreCreated = true;
 
-  return true;
+    if (!Quassel::isOptionSet("norestore"))
+        Core::restoreState();
+
+    return true;
 }
+
 
 /*****************************************************************************/
 
 CoreApplication::CoreApplication(int &argc, char **argv)
-  : QCoreApplication(argc, argv), Quassel()
+    : QCoreApplication(argc, argv), Quassel()
 {
 #ifdef Q_OS_MAC
-  disableCrashhandler();
+    disableCrashhandler();
 #endif /* Q_OS_MAC */
 
-  setRunMode(Quassel::CoreOnly);
-  _internal = new CoreApplicationInternal();
+    setRunMode(Quassel::CoreOnly);
+    _internal = new CoreApplicationInternal();
 }
 
-CoreApplication::~CoreApplication() {
-  delete _internal;
+
+CoreApplication::~CoreApplication()
+{
+    delete _internal;
 }
 
-bool CoreApplication::init() {
-  if(Quassel::init() && _internal->init()) {
-    qInstallMsgHandler(Logger::logMessage);
-    return true;
-  }
-  return false;
+
+bool CoreApplication::init()
+{
+    if (Quassel::init() && _internal->init()) {
+        qInstallMsgHandler(Logger::logMessage);
+        return true;
+    }
+    return false;
 }

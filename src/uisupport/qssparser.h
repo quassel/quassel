@@ -23,20 +23,21 @@
 
 #include "uistyle.h"
 
-class QssParser {
-  Q_DECLARE_TR_FUNCTIONS(QssParser)
+class QssParser
+{
+    Q_DECLARE_TR_FUNCTIONS(QssParser)
 
-  public:
+public:
     QssParser();
 
     void processStyleSheet(QString &sheet);
 
     inline QPalette palette() const { return _palette; }
     inline QVector<QBrush> uiStylePalette() const { return _uiStylePalette; }
-    inline const QHash<quint64, QTextCharFormat>& formats() const { return _formats; }
-    inline const QHash<quint32, QTextCharFormat>& listItemFormats() const { return _listItemFormats; }
+    inline const QHash<quint64, QTextCharFormat> &formats() const { return _formats; }
+    inline const QHash<quint32, QTextCharFormat> &listItemFormats() const { return _listItemFormats; }
 
-  protected:
+protected:
     typedef QList<qreal> ColorTuple;
 
     void parseChatLineBlock(const QString &decl, const QString &contents);
@@ -64,12 +65,13 @@ class QssParser {
     QHash<QString, QPalette::ColorRole> _paletteColorRoles;
     QHash<QString, UiStyle::ColorRole> _uiStyleColorRoles;
 
-  private:
+private:
     QPalette _palette;
     QVector<QBrush> _uiStylePalette;
     QHash<quint64, QTextCharFormat> _formats;
     QHash<quint32, QTextCharFormat> _listItemFormats;
     int _maxSenderHash;
 };
+
 
 #endif

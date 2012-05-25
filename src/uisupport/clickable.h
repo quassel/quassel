@@ -27,42 +27,43 @@
 
 class QModelIndex;
 
-class Clickable {
-
+class Clickable
+{
 public:
-  // Don't change these enums without also changing dependent methods!
-  enum Type {
-    Invalid = -1,
-    Url = 0,
-    Channel = 1,
-    Nick = 2
-  };
+    // Don't change these enums without also changing dependent methods!
+    enum Type {
+        Invalid = -1,
+        Url = 0,
+        Channel = 1,
+        Nick = 2
+    };
 
-  explicit inline Clickable(Type type = Invalid, quint16 start = 0, quint16 length = 0)
-  : _type(type), _start(start), _length(length)
-  {}
+    explicit inline Clickable(Type type = Invalid, quint16 start = 0, quint16 length = 0)
+        : _type(type), _start(start), _length(length)
+    {}
 
-  inline Type type() const { return _type; }
-  inline quint16 start() const { return _start; }
-  inline quint16 length() const { return _length; }
+    inline Type type() const { return _type; }
+    inline quint16 start() const { return _start; }
+    inline quint16 length() const { return _length; }
 
-  inline bool isValid() const { return _type != Invalid; }
+    inline bool isValid() const { return _type != Invalid; }
 
-  void activate(NetworkId networkId, const QString &bufferName) const;
+    void activate(NetworkId networkId, const QString &bufferName) const;
 
 private:
-  Type _type;
-  quint16 _start;
-  quint16 _length;
+    Type _type;
+    quint16 _start;
+    quint16 _length;
 };
 
-class ClickableList : public QList<Clickable> {
 
+class ClickableList : public QList<Clickable>
+{
 public:
-  static ClickableList fromString(const QString &);
+    static ClickableList fromString(const QString &);
 
-  Clickable atCursorPos(int idx);
-
+    Clickable atCursorPos(int idx);
 };
+
 
 #endif // CLICKABLE_H_

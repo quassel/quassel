@@ -25,20 +25,20 @@
 
 #include "ui_aboutdlg.h"
 
-class AboutDlg : public QDialog {
-  Q_OBJECT
+class AboutDlg : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
     AboutDlg(QWidget *parent = 0);
 
-  private:
+private:
     Ui::AboutDlg ui;
 
     QString about() const;
     QString authors() const;
     QString contributors() const;
     QString thanksTo() const;
-
 };
 
 

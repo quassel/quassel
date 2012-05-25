@@ -42,14 +42,17 @@
 #ifdef Q_OS_WIN64
 __inline int toInt(WId wid)
 {
-        return (int)((__int64)wid);
+    return (int)((__int64)wid);
 }
+
 
 #else
 __inline int toInt(WId wid)
 {
-        return (int)wid;
+    return (int)wid;
 }
+
+
 #endif
 
 // Marshall the ImageStruct data into a D-BUS argument
@@ -62,6 +65,7 @@ const QDBusArgument &operator<<(QDBusArgument &argument, const DBusImageStruct &
     argument.endStructure();
     return argument;
 }
+
 
 // Retrieve the ImageStruct data from the D-BUS argument
 const QDBusArgument &operator>>(const QDBusArgument &argument, DBusImageStruct &icon)
@@ -88,12 +92,13 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, DBusImageStruct &
 const QDBusArgument &operator<<(QDBusArgument &argument, const DBusImageVector &iconVector)
 {
     argument.beginArray(qMetaTypeId<DBusImageStruct>());
-    for (int i=0; i<iconVector.size(); ++i) {
+    for (int i = 0; i < iconVector.size(); ++i) {
         argument << iconVector[i];
     }
     argument.endArray();
     return argument;
 }
+
 
 // Retrieve the ImageVector data from the D-BUS argument
 const QDBusArgument &operator>>(const QDBusArgument &argument, DBusImageVector &iconVector)
@@ -101,17 +106,17 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, DBusImageVector &
     argument.beginArray();
     iconVector.clear();
 
-    while ( !argument.atEnd() ) {
-       DBusImageStruct element;
-       argument >> element;
-       iconVector.append(element);
+    while (!argument.atEnd()) {
+        DBusImageStruct element;
+        argument >> element;
+        iconVector.append(element);
     }
 
     argument.endArray();
 
-
     return argument;
 }
+
 
 // Marshall the ToolTipStruct data into a D-BUS argument
 const QDBusArgument &operator<<(QDBusArgument &argument, const DBusToolTipStruct &toolTip)
@@ -124,6 +129,7 @@ const QDBusArgument &operator<<(QDBusArgument &argument, const DBusToolTipStruct
     argument.endStructure();
     return argument;
 }
+
 
 // Retrieve the ToolTipStruct data from the D-BUS argument
 const QDBusArgument &operator>>(const QDBusArgument &argument, DBusToolTipStruct &toolTip)
@@ -152,27 +158,30 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, DBusToolTipStruct
 int StatusNotifierItemDBus::s_serviceCount = 0;
 
 StatusNotifierItemDBus::StatusNotifierItemDBus(StatusNotifierItem *parent)
-  : QObject(parent),
+    : QObject(parent),
     m_statusNotifierItem(parent),
     m_service(QString("org.kde.StatusNotifierItem-%1-%2")
-                      .arg(QCoreApplication::applicationPid())
-                      .arg(++s_serviceCount)),
+        .arg(QCoreApplication::applicationPid())
+        .arg(++s_serviceCount)),
     m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
 {
-   new StatusNotifierItemAdaptor(this);
-   //qDebug() << "service is" << m_service;
-   registerService();
+    new StatusNotifierItemAdaptor(this);
+    //qDebug() << "service is" << m_service;
+    registerService();
 }
+
 
 StatusNotifierItemDBus::~StatusNotifierItemDBus()
 {
     unregisterService();
 }
 
+
 QDBusConnection StatusNotifierItemDBus::dbusConnection() const
 {
     return m_dbus;
 }
+
 
 // FIXME: prevent double registrations, also test this on platforms != KDE
 //
@@ -183,20 +192,23 @@ void StatusNotifierItemDBus::registerService()
     m_dbus.registerObject("/StatusNotifierItem", this);
 }
 
+
 // FIXME: see above
 void StatusNotifierItemDBus::unregisterService()
 {
     //qDebug() << "unregistering from" << m_service;
-    if(m_dbus.isConnected()) {
+    if (m_dbus.isConnected()) {
         m_dbus.unregisterObject("/StatusNotifierItem");
         m_dbus.unregisterService(m_service);
     }
 }
 
+
 QString StatusNotifierItemDBus::service() const
 {
     return m_service;
 }
+
 
 //DBUS slots
 //Values and calls have been adapted to Quassel
@@ -206,20 +218,24 @@ QString StatusNotifierItemDBus::Category() const
     return QString("Communications"); // no need to make this configurable for Quassel
 }
 
+
 QString StatusNotifierItemDBus::Title() const
 {
     return m_statusNotifierItem->title();
 }
+
 
 QString StatusNotifierItemDBus::Id() const
 {
     return QString("QuasselIRC");
 }
 
+
 QString StatusNotifierItemDBus::Status() const
 {
     return m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("State")).valueToKey(m_statusNotifierItem->state());
 }
+
 
 int StatusNotifierItemDBus::WindowId() const
 {
@@ -235,20 +251,24 @@ QString StatusNotifierItemDBus::IconName() const
     return m_statusNotifierItem->iconName();
 }
 
+
 DBusImageVector StatusNotifierItemDBus::IconPixmap() const
 {
     return DBusImageVector();
 }
+
 
 QString StatusNotifierItemDBus::OverlayIconName() const
 {
     return QString();
 }
 
+
 DBusImageVector StatusNotifierItemDBus::OverlayIconPixmap() const
 {
     return DBusImageVector();
 }
+
 
 //Requesting attention icon and movie
 
@@ -257,10 +277,12 @@ QString StatusNotifierItemDBus::AttentionIconName() const
     return m_statusNotifierItem->attentionIconName();
 }
 
+
 DBusImageVector StatusNotifierItemDBus::AttentionIconPixmap() const
 {
     return DBusImageVector();
 }
+
 
 QString StatusNotifierItemDBus::AttentionMovieName() const
 {
@@ -281,10 +303,12 @@ DBusToolTipStruct StatusNotifierItemDBus::ToolTip() const
     return toolTip;
 }
 
+
 QString StatusNotifierItemDBus::IconThemePath() const
 {
     return m_statusNotifierItem->iconThemePath();
 }
+
 
 //Menu
 
@@ -307,21 +331,24 @@ void StatusNotifierItemDBus::ContextMenu(int x, int y)
 #ifdef HAVE_KDE
         m_statusNotifierItem->trayMenu()->setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
 #endif
-        m_statusNotifierItem->trayMenu()->popup(QPoint(x,y));
+        m_statusNotifierItem->trayMenu()->popup(QPoint(x, y));
 #ifdef HAVE_KDE
         KWindowSystem::setState(m_statusNotifierItem->trayMenu()->winId(), NET::SkipTaskbar|NET::SkipPager|NET::KeepAbove);
         KWindowSystem::setType(m_statusNotifierItem->trayMenu()->winId(), NET::PopupMenu);
         KWindowSystem::forceActiveWindow(m_statusNotifierItem->trayMenu()->winId());
 #endif
-    } else {
+    }
+    else {
         m_statusNotifierItem->trayMenu()->hide();
     }
 }
 
+
 void StatusNotifierItemDBus::Activate(int x, int y)
 {
-    m_statusNotifierItem->activated(QPoint(x,y));
+    m_statusNotifierItem->activated(QPoint(x, y));
 }
+
 
 void StatusNotifierItemDBus::SecondaryActivate(int x, int y)
 {
@@ -329,6 +356,7 @@ void StatusNotifierItemDBus::SecondaryActivate(int x, int y)
     Q_UNUSED(y)
     // emit m_statusNotifierItem->secondaryActivateRequested(QPoint(x,y));
 }
+
 
 void StatusNotifierItemDBus::Scroll(int delta, const QString &orientation)
 {

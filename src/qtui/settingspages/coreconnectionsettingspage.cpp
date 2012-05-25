@@ -21,74 +21,87 @@
 #include "coreconnectionsettingspage.h"
 
 CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Remote Cores"), tr("Connection"), parent) {
-  ui.setupUi(this);
+    : SettingsPage(tr("Remote Cores"), tr("Connection"), parent)
+{
+    ui.setupUi(this);
 #ifndef HAVE_KDE
-  ui.useSolid->hide();
+    ui.useSolid->hide();
 #endif
 
-  initAutoWidgets();
+    initAutoWidgets();
 
-  connect(ui.useSolid, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-  connect(ui.usePingTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-  connect(ui.useNoTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+    connect(ui.useSolid, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+    connect(ui.usePingTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+    connect(ui.useNoTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
 }
 
-void CoreConnectionSettingsPage::widgetHasChanged() {
-  bool hasChanged = false;
-  CoreConnectionSettings::NetworkDetectionMode mode = modeFromRadioButtons();
-  if(mode != _detectionMode)
-    hasChanged = true;
 
-  setChangedState(hasChanged);
+void CoreConnectionSettingsPage::widgetHasChanged()
+{
+    bool hasChanged = false;
+    CoreConnectionSettings::NetworkDetectionMode mode = modeFromRadioButtons();
+    if (mode != _detectionMode)
+        hasChanged = true;
+
+    setChangedState(hasChanged);
 }
 
-void CoreConnectionSettingsPage::defaults() {
+
+void CoreConnectionSettingsPage::defaults()
+{
 #ifdef HAVE_KDE
-  setRadioButtons(CoreConnectionSettings::UseSolid);
+    setRadioButtons(CoreConnectionSettings::UseSolid);
 #else
-  setRadioButtons(CoreConnectionSettings::UsePingTimeout);
+    setRadioButtons(CoreConnectionSettings::UsePingTimeout);
 #endif
 
-  SettingsPage::defaults();
+    SettingsPage::defaults();
 }
 
-void CoreConnectionSettingsPage::load() {
-  CoreConnectionSettings s;
-  _detectionMode = s.networkDetectionMode();
-  setRadioButtons(_detectionMode);
-  SettingsPage::load();
+
+void CoreConnectionSettingsPage::load()
+{
+    CoreConnectionSettings s;
+    _detectionMode = s.networkDetectionMode();
+    setRadioButtons(_detectionMode);
+    SettingsPage::load();
 }
 
-void CoreConnectionSettingsPage::save() {
-  _detectionMode = modeFromRadioButtons();
-  CoreConnectionSettings s;
-  s.setNetworkDetectionMode(_detectionMode);
-  SettingsPage::save();
+
+void CoreConnectionSettingsPage::save()
+{
+    _detectionMode = modeFromRadioButtons();
+    CoreConnectionSettings s;
+    s.setNetworkDetectionMode(_detectionMode);
+    SettingsPage::save();
 }
 
-void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::NetworkDetectionMode mode) {
-  switch(mode) {
+
+void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::NetworkDetectionMode mode)
+{
+    switch (mode) {
 #ifdef HAVE_KDE
-  case CoreConnectionSettings::UseSolid:
-    ui.useSolid->setChecked(true);
-    break;
+    case CoreConnectionSettings::UseSolid:
+        ui.useSolid->setChecked(true);
+        break;
 #endif
-  case CoreConnectionSettings::UsePingTimeout:
-    ui.usePingTimeout->setChecked(true);
-    break;
-  default:
-    ui.useNoTimeout->setChecked(true);
-  }
+    case CoreConnectionSettings::UsePingTimeout:
+        ui.usePingTimeout->setChecked(true);
+        break;
+    default:
+        ui.useNoTimeout->setChecked(true);
+    }
 }
 
-CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettingsPage::modeFromRadioButtons() const {
-#ifdef HAVE_KDE
-  if(ui.useSolid->isChecked())
-    return CoreConnectionSettings::UseSolid;
-#endif
-  if(ui.usePingTimeout->isChecked())
-    return CoreConnectionSettings::UsePingTimeout;
 
-  return CoreConnectionSettings::NoActiveDetection;
+CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettingsPage::modeFromRadioButtons() const
+{
+#ifdef HAVE_KDE
+    if (ui.useSolid->isChecked())
+        return CoreConnectionSettings::UseSolid;
+#endif
+    if (ui.usePingTimeout->isChecked())
+        return CoreConnectionSettings::UsePingTimeout;
+
+    return CoreConnectionSettings::NoActiveDetection;
 }

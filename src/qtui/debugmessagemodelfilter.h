@@ -23,13 +23,15 @@
 
 #include <QSortFilterProxyModel>
 
-class DebugMessageModelFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class DebugMessageModelFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 
 public:
-  DebugMessageModelFilter(QObject *parent = 0);
-  QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-  virtual QVariant data(const QModelIndex &index, int role) const;
+    DebugMessageModelFilter(QObject *parent = 0);
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 };
+
 
 #endif //DEBUGMESSAGEMODELFILTER_H

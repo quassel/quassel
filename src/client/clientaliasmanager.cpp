@@ -24,11 +24,12 @@
 
 INIT_SYNCABLE_OBJECT(ClientAliasManager)
 ClientAliasManager::ClientAliasManager(QObject *parent)
-  : AliasManager(parent)
+    : AliasManager(parent)
 {
-
 }
 
-const Network *ClientAliasManager::network(NetworkId id) const {
-  return Client::network(id);
+
+const Network *ClientAliasManager::network(NetworkId id) const
+{
+    return Client::network(id);
 }

@@ -23,17 +23,19 @@
 
 #include "ui_msgprocessorstatuswidget.h"
 
-class MsgProcessorStatusWidget : public QWidget {
-  Q_OBJECT
+class MsgProcessorStatusWidget : public QWidget
+{
+    Q_OBJECT
 
 public:
-  MsgProcessorStatusWidget(QWidget *parent = 0);
+    MsgProcessorStatusWidget(QWidget *parent = 0);
 
 public slots:
-  void setProgress(int value, int max);
+    void setProgress(int value, int max);
 
 private:
-  Ui::MsgProcessorStatusWidget ui;
+    Ui::MsgProcessorStatusWidget ui;
 };
+
 
 #endif

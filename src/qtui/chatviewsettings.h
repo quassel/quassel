@@ -26,26 +26,29 @@
 class ChatScene;
 class ChatView;
 
-class ChatViewSettings : public QtUiSettings {
+class ChatViewSettings : public QtUiSettings
+{
 public:
-  Q_ENUMS(OperationMode)
-  public:
+    Q_ENUMS(OperationMode)
+public:
     enum OperationMode {
-      InvalidMode = 0,
-      OptIn = 1,
-      OptOut = 2
+        InvalidMode = 0,
+        OptIn = 1,
+        OptOut = 2
     };
-  Q_DECLARE_FLAGS(operationModes, OperationMode);
+    Q_DECLARE_FLAGS(operationModes, OperationMode);
 
-  ChatViewSettings(const QString &id = "__default__");
-  ChatViewSettings(ChatScene *scene);
-  ChatViewSettings(ChatView *view);
+    ChatViewSettings(const QString &id = "__default__");
+    ChatViewSettings(ChatScene *scene);
+    ChatViewSettings(ChatView *view);
 
-  inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
-  inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
+    inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
+    inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 
-  inline QString timestampFormatString() { return localValue("TimestampFormat", "[hh:mm:ss]").toString(); }
-  inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
+    inline QString timestampFormatString() { return localValue("TimestampFormat", "[hh:mm:ss]").toString(); }
+    inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
 };
+
+
 Q_DECLARE_METATYPE(ChatViewSettings::OperationMode);
 #endif //CHATVIEWSETTINGS_H

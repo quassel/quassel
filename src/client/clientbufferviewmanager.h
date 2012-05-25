@@ -26,21 +26,23 @@
 class ClientBufferViewConfig;
 class BufferViewOverlay;
 
-class ClientBufferViewManager : public BufferViewManager {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class ClientBufferViewManager : public BufferViewManager
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  ClientBufferViewManager(SignalProxy *proxy, QObject *parent = 0);
+    ClientBufferViewManager(SignalProxy *proxy, QObject *parent = 0);
 
-  QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
-  ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
+    QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
+    ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
 
 public slots:
-  virtual void setInitialized();
+    virtual void setInitialized();
 
 protected:
-  virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
+    virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
 };
+
 
 #endif //CLIENTBUFFERVIEWMANAGER_H

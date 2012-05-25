@@ -28,28 +28,30 @@ class EventManager;
 class IrcEvent;
 class NetworkDataEvent;
 
-class IrcParser : public QObject {
-  Q_OBJECT
+class IrcParser : public QObject
+{
+    Q_OBJECT
 
 public:
-  IrcParser(CoreSession *session);
+    IrcParser(CoreSession *session);
 
-  inline CoreSession *coreSession() const { return _coreSession; }
-  inline EventManager *eventManager() const { return coreSession()->eventManager(); }
+    inline CoreSession *coreSession() const { return _coreSession; }
+    inline EventManager *eventManager() const { return coreSession()->eventManager(); }
 
 signals:
-  void newEvent(Event *);
+    void newEvent(Event *);
 
 protected:
-  Q_INVOKABLE void processNetworkIncoming(NetworkDataEvent *e);
+    Q_INVOKABLE void processNetworkIncoming(NetworkDataEvent *e);
 
-  bool checkParamCount(const QString &cmd, const QList<QByteArray> &params, int minParams);
+    bool checkParamCount(const QString &cmd, const QList<QByteArray> &params, int minParams);
 
-  // no-op if we don't have crypto support!
-  QByteArray decrypt(Network *network, const QString &target, const QByteArray &message, bool isTopic = false);
+    // no-op if we don't have crypto support!
+    QByteArray decrypt(Network *network, const QString &target, const QByteArray &message, bool isTopic = false);
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 };
+
 
 #endif

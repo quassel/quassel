@@ -31,38 +31,40 @@
 
 class QSpacerItem;
 
-class ChannelListDlg : public QDialog {
-  Q_OBJECT
+class ChannelListDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  ChannelListDlg(QWidget *parent = 0);
+    ChannelListDlg(QWidget *parent = 0);
 
-  void setNetwork(NetworkId netId);
+    void setNetwork(NetworkId netId);
 
 protected slots:
-  void requestSearch();
-  void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
-  void reportFinishedList();
-  void joinChannel(const QModelIndex &);
+    void requestSearch();
+    void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
+    void reportFinishedList();
+    void joinChannel(const QModelIndex &);
 
 private slots:
-  inline void toggleMode() { setAdvancedMode(!_advancedMode); }
-  void showError(const QString &error);
+    inline void toggleMode() { setAdvancedMode(!_advancedMode); }
+    void showError(const QString &error);
 
 private:
-  void showFilterLine(bool show);
-  void showErrors(bool show);
-  void enableQuery(bool enable);
-  void setAdvancedMode(bool advanced);
+    void showFilterLine(bool show);
+    void showErrors(bool show);
+    void enableQuery(bool enable);
+    void setAdvancedMode(bool advanced);
 
-  Ui::ChannelListDlg ui;
+    Ui::ChannelListDlg ui;
 
-  bool _listFinished;
-  NetworkId _netId;
-  IrcListModel _ircListModel;
-  QSortFilterProxyModel _sortFilter;
-  QSpacerItem *_simpleModeSpacer;
-  bool _advancedMode;
+    bool _listFinished;
+    NetworkId _netId;
+    IrcListModel _ircListModel;
+    QSortFilterProxyModel _sortFilter;
+    QSpacerItem *_simpleModeSpacer;
+    bool _advancedMode;
 };
+
 
 #endif //CHANNELLIST_H

@@ -30,43 +30,47 @@
 class ActionCollection;
 class ShortcutsModel;
 
-class ShortcutsFilter : public QSortFilterProxyModel {
-  Q_OBJECT
+class ShortcutsFilter : public QSortFilterProxyModel
+{
+    Q_OBJECT
 public:
-  ShortcutsFilter(QObject *parent = 0);
+    ShortcutsFilter(QObject *parent = 0);
 
 public slots:
-  void setFilterString(const QString &filterString);
+    void setFilterString(const QString &filterString);
 
 protected:
-  virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private:
-  QString _filterString;
+    QString _filterString;
 };
 
-class ShortcutsSettingsPage : public SettingsPage {
-  Q_OBJECT
-public:
-  ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+class ShortcutsSettingsPage : public SettingsPage
+{
+    Q_OBJECT
+public:
+    ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
+
+    inline bool hasDefaults() const { return true; }
 
 public slots:
-  void save();
-  void load();
-  void defaults();
+    void save();
+    void load();
+    void defaults();
 
 private slots:
-  void on_searchEdit_textChanged(const QString &text);
-  void keySequenceChanged(const QKeySequence &seq, const QModelIndex &conflicting);
-  void setWidgetStates();
-  void toggledCustomOrDefault();
+    void on_searchEdit_textChanged(const QString &text);
+    void keySequenceChanged(const QKeySequence &seq, const QModelIndex &conflicting);
+    void setWidgetStates();
+    void toggledCustomOrDefault();
 
 private:
-  Ui::ShortcutsSettingsPage ui;
-  ShortcutsModel *_shortcutsModel;
-  ShortcutsFilter *_shortcutsFilter;
+    Ui::ShortcutsSettingsPage ui;
+    ShortcutsModel *_shortcutsModel;
+    ShortcutsFilter *_shortcutsFilter;
 };
+
 
 #endif // SHORTCUTSSETTINGSPAGE_H

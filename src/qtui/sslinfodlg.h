@@ -33,19 +33,21 @@ class QSslSocket;
 
 class QSslCertificate;
 
-class SslInfoDlg : public QDialog {
-  Q_OBJECT
+class SslInfoDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  SslInfoDlg(const QSslSocket *socket, QWidget *parent = 0);
-  inline const QSslSocket *socket() const { return _socket; }
+    SslInfoDlg(const QSslSocket *socket, QWidget *parent = 0);
+    inline const QSslSocket *socket() const { return _socket; }
 
 private slots:
-  void setCurrentCert(int index);
+    void setCurrentCert(int index);
 
 private:
-  Ui::SslInfoDlg ui;
-  const QSslSocket *_socket;
+    Ui::SslInfoDlg ui;
+    const QSslSocket *_socket;
 };
+
 
 #endif

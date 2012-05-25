@@ -37,50 +37,54 @@ class Indicator;
 
 typedef QHash<BufferId, Indicator *> IndicatorHash;
 
-class IndicatorNotificationBackend : public AbstractNotificationBackend {
-  Q_OBJECT
+class IndicatorNotificationBackend : public AbstractNotificationBackend
+{
+    Q_OBJECT
 
 public:
-  IndicatorNotificationBackend(QObject *parent = 0);
-  ~IndicatorNotificationBackend();
+    IndicatorNotificationBackend(QObject *parent = 0);
+    ~IndicatorNotificationBackend();
 
-  void notify(const Notification &);
-  void close(uint notificationId);
-  virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &);
+    void close(uint notificationId);
+    virtual SettingsPage *createConfigWidget() const;
 
 private slots:
-  void activateMainWidget();
-  void enabledChanged(const QVariant &);
-  void indicatorDisplayed(QIndicate::Indicator *);
+    void activateMainWidget();
+    void enabledChanged(const QVariant &);
+    void indicatorDisplayed(QIndicate::Indicator *);
 
 private:
-  class ConfigWidget;
+    class ConfigWidget;
 
-  bool _enabled;
+    bool _enabled;
 
-  QIndicate::Server *_server;
-  IndicatorHash _indicatorHash;
+    QIndicate::Server *_server;
+    IndicatorHash _indicatorHash;
 };
 
-class IndicatorNotificationBackend::ConfigWidget : public SettingsPage {
-  Q_OBJECT
+
+class IndicatorNotificationBackend::ConfigWidget : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  ConfigWidget(QWidget *parent = 0);
-  ~ConfigWidget();
+    ConfigWidget(QWidget *parent = 0);
+    ~ConfigWidget();
 
-  void save();
-  void load();
-  bool hasDefaults() const;
-  void defaults();
+    void save();
+    void load();
+    bool hasDefaults() const;
+    void defaults();
 
 private slots:
-  void widgetChanged();
+    void widgetChanged();
 
 private:
-  Ui::IndicatorNotificationConfigWidget ui;
+    Ui::IndicatorNotificationConfigWidget ui;
 
-  bool enabled;
+    bool enabled;
 };
+
 
 #endif

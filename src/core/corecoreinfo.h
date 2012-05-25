@@ -28,21 +28,23 @@ class CoreSession;
 /*
  * Yes this name is somewhat stupid... but it fits the general naming scheme
  * which is prefixing core specific sync objects with "Core"... ;)
- */ 
-class CoreCoreInfo : public CoreInfo {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+ */
+class CoreCoreInfo : public CoreInfo
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreCoreInfo(CoreSession *parent);
+    CoreCoreInfo(CoreSession *parent);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &CoreInfo::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &CoreInfo::staticMetaObject; }
 
 public slots:
-  virtual QVariantMap coreData() const;
+    virtual QVariantMap coreData() const;
 
 private:
-  CoreSession *_coreSession;
+    CoreSession *_coreSession;
 };
+
 
 #endif //CORECOREINFO_H

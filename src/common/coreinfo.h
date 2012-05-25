@@ -27,17 +27,19 @@
  * gather various informations about the core.
  */
 
-class CoreInfo : public SyncableObject {
-  Q_OBJECT
+class CoreInfo : public SyncableObject
+{
+    Q_OBJECT
 
-  Q_PROPERTY(QVariantMap coreData READ coreData WRITE setCoreData STORED false)
+    Q_PROPERTY(QVariantMap coreData READ coreData WRITE setCoreData STORED false)
 
-public:
-  CoreInfo(QObject *parent = 0) : SyncableObject(parent) {}
+public :
+        CoreInfo(QObject *parent = 0) : SyncableObject(parent) {}
 
 public slots:
-  virtual inline QVariantMap coreData() const { return QVariantMap(); }
-  virtual inline void setCoreData(const QVariantMap &) {}
+    virtual inline QVariantMap coreData() const { return QVariantMap(); }
+    virtual inline void setCoreData(const QVariantMap &) {}
 };
+
 
 #endif //COREINFO_H

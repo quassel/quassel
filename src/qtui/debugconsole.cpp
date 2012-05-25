@@ -23,24 +23,29 @@
 #include "signalproxy.h"
 
 DebugConsole::DebugConsole(QWidget *parent)
-  : QDialog(parent)
+    : QDialog(parent)
 {
-  ui.setupUi(this);
+    ui.setupUi(this);
 
-  Client::signalProxy()->attachSignal(this, SIGNAL(scriptRequest(QString)));
-  Client::signalProxy()->attachSlot(SIGNAL(scriptResult(QString)), this, SLOT(scriptResult(QString)));
-
+    Client::signalProxy()->attachSignal(this, SIGNAL(scriptRequest(QString)));
+    Client::signalProxy()->attachSlot(SIGNAL(scriptResult(QString)), this, SLOT(scriptResult(QString)));
 }
 
-DebugConsole::~DebugConsole() {
+
+DebugConsole::~DebugConsole()
+{
 }
 
-void DebugConsole::on_evalButton_clicked() {
-  if(ui.selectCore->isChecked()) {
-    emit scriptRequest(ui.scriptEdit->toPlainText());
-  }
+
+void DebugConsole::on_evalButton_clicked()
+{
+    if (ui.selectCore->isChecked()) {
+        emit scriptRequest(ui.scriptEdit->toPlainText());
+    }
 }
 
-void DebugConsole::scriptResult(QString result) {
-  ui.resultLabel->setText(result);
+
+void DebugConsole::scriptResult(QString result)
+{
+    ui.resultLabel->setText(result);
 }

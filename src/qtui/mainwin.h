@@ -56,13 +56,14 @@ class KHelpMenu;
 //!\brief The main window of Quassel's QtUi.
 class MainWin
 #ifdef HAVE_KDE
-: public KMainWindow {
+    : public KMainWindow
+{
 #else
 : public QMainWindow {
 #endif
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     MainWin(QWidget *parent = 0);
     virtual ~MainWin();
 
@@ -83,7 +84,7 @@ class MainWin
     void saveStateToSettings(UiSettings &);
     void restoreStateFromSettings(UiSettings &);
 
-  public slots:
+public slots:
     void showStatusBarMessage(const QString &message);
     void hideCurrentBuffer();
     void nextBufferView();     //!< Activate the next bufferview
@@ -94,18 +95,18 @@ class MainWin
     //! Quit application
     void quit();
 
-  protected:
+protected:
     void closeEvent(QCloseEvent *event);
     void moveEvent(QMoveEvent *event);
     void resizeEvent(QResizeEvent *event);
 
-  protected slots:
+protected slots:
     void connectedToCore();
     void setConnectedState();
     void disconnectedFromCore();
     void setDisconnectedState();
 
-  private slots:
+private slots:
     void addBufferView(int bufferViewConfigId);
     void awayLogDestroyed();
     void removeBufferView(int bufferViewConfigId);
@@ -160,11 +161,11 @@ class MainWin
     void changeActiveBufferView(bool backwards);
     void changeActiveBufferView(int bufferViewId);
 
-  signals:
+signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
 
-  private:
+private:
 #ifdef HAVE_KDE
     KHelpMenu *_kHelpMenu;
 #endif
@@ -216,5 +217,6 @@ class MainWin
 
     friend class QtUi;
 };
+
 
 #endif

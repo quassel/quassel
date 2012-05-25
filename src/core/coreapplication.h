@@ -32,30 +32,33 @@
 /// Encapsulates CoreApplication's logic.
 /** This allows it to be reused within MonolithicApplication as well.
  */
-class CoreApplicationInternal {
-  Q_DECLARE_TR_FUNCTIONS(CoreApplicationInternal)
+class CoreApplicationInternal
+{
+    Q_DECLARE_TR_FUNCTIONS(CoreApplicationInternal)
 
-  public:
+public:
     CoreApplicationInternal();
     ~CoreApplicationInternal();
 
     bool init();
 
-  private:
+private:
     bool _coreCreated;
 };
 
-class CoreApplication : public QCoreApplication, public Quassel {
 
-  Q_OBJECT
-  public:
+class CoreApplication : public QCoreApplication, public Quassel
+{
+    Q_OBJECT
+public:
     CoreApplication(int &argc, char **argv);
     ~CoreApplication();
 
     bool init();
 
-  private:
+private:
     CoreApplicationInternal *_internal;
 };
+
 
 #endif

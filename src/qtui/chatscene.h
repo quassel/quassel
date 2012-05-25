@@ -42,203 +42,205 @@ class WebPreviewItem;
 
 class QGraphicsSceneMouseEvent;
 
-class ChatScene : public QGraphicsScene {
-  Q_OBJECT
+class ChatScene : public QGraphicsScene
+{
+    Q_OBJECT
 
 public:
-  enum CutoffMode {
-    CutoffLeft,
-    CutoffRight
-  };
+    enum CutoffMode {
+        CutoffLeft,
+        CutoffRight
+    };
 
-  enum ItemType {
-    ChatLineType = QGraphicsItem::UserType + 1,
-    ChatItemType,
-    TimestampChatItemType,
-    SenderChatItemType,
-    ContentsChatItemType,
-    SearchHighlightType,
-    WebPreviewType,
-    ColumnHandleType,
-    MarkerLineType
-  };
+    enum ItemType {
+        ChatLineType = QGraphicsItem::UserType + 1,
+        ChatItemType,
+        TimestampChatItemType,
+        SenderChatItemType,
+        ContentsChatItemType,
+        SearchHighlightType,
+        WebPreviewType,
+        ColumnHandleType,
+        MarkerLineType
+    };
 
-  enum ClickMode {
-    NoClick,
-    DragStartClick,
-    SingleClick,
-    DoubleClick,
-    TripleClick
-  };
+    enum ClickMode {
+        NoClick,
+        DragStartClick,
+        SingleClick,
+        DoubleClick,
+        TripleClick
+    };
 
-  ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent);
-  virtual ~ChatScene();
+    ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent);
+    virtual ~ChatScene();
 
-  inline QAbstractItemModel *model() const { return _model; }
-  inline MessageFilter *filter() const { return qobject_cast<MessageFilter*>(_model); }
-  inline QString idString() const { return _idString; }
+    inline QAbstractItemModel *model() const { return _model; }
+    inline MessageFilter *filter() const { return qobject_cast<MessageFilter *>(_model); }
+    inline QString idString() const { return _idString; }
 
-  int rowByScenePos(qreal y) const;
-  inline int rowByScenePos(const QPointF &pos) const { return rowByScenePos(pos.y()); }
-  ChatLineModel::ColumnType columnByScenePos(qreal x) const ;
-  inline ChatLineModel::ColumnType columnByScenePos(const QPointF &pos) const { return columnByScenePos(pos.x()); }
+    int rowByScenePos(qreal y) const;
+    inline int rowByScenePos(const QPointF &pos) const { return rowByScenePos(pos.y()); }
+    ChatLineModel::ColumnType columnByScenePos(qreal x) const;
+    inline ChatLineModel::ColumnType columnByScenePos(const QPointF &pos) const { return columnByScenePos(pos.x()); }
 
-  ChatView *chatView() const;
-  ChatItem *chatItemAt(const QPointF &pos) const;
-  inline ChatLine *chatLine(int row) const { return (row < _lines.count()) ? _lines.value(row) : 0; }
-  inline ChatLine *chatLine(const QModelIndex &index) const { return _lines.value(index.row()); }
+    ChatView *chatView() const;
+    ChatItem *chatItemAt(const QPointF &pos) const;
+    inline ChatLine *chatLine(int row) const { return (row < _lines.count()) ? _lines.value(row) : 0; }
+    inline ChatLine *chatLine(const QModelIndex &index) const { return _lines.value(index.row()); }
 
-  //! Find the ChatLine belonging to a MsgId
-  /** Searches for the ChatLine belonging to a MsgId. If there are more than one ChatLine with the same msgId,
-   *  the first one is returned.
-   *  Note that this method performs a binary search, hence it has as complexity of O(log n).
-   *  If matchExact is false, and we don't have an exact match for the given msgId, we return the visible line right
-   *  above the requested one.
-   *  \param msgId      The message ID to look for
-   *  \param matchExact Whether we find only exact matches
-   *  \param ignoreDayChange Whether we ignore day change messages
-   *  \return The ChatLine corresponding to the given MsgId
-   */
-  ChatLine *chatLine(MsgId msgId, bool matchExact = true, bool ignoreDayChange = true) const;
+    //! Find the ChatLine belonging to a MsgId
+    /** Searches for the ChatLine belonging to a MsgId. If there are more than one ChatLine with the same msgId,
+     *  the first one is returned.
+     *  Note that this method performs a binary search, hence it has as complexity of O(log n).
+     *  If matchExact is false, and we don't have an exact match for the given msgId, we return the visible line right
+     *  above the requested one.
+     *  \param msgId      The message ID to look for
+     *  \param matchExact Whether we find only exact matches
+     *  \param ignoreDayChange Whether we ignore day change messages
+     *  \return The ChatLine corresponding to the given MsgId
+     */
+    ChatLine *chatLine(MsgId msgId, bool matchExact = true, bool ignoreDayChange = true) const;
 
-  inline ChatLine *lastLine() const { return _lines.count() ? _lines.last() : 0; }
+    inline ChatLine *lastLine() const { return _lines.count() ? _lines.last() : 0; }
 
-  inline MarkerLineItem *markerLine() const { return _markerLine; }
+    inline MarkerLineItem *markerLine() const { return _markerLine; }
 
-  inline bool isSingleBufferScene() const { return _singleBufferId.isValid(); }
-  inline BufferId singleBufferId() const { return _singleBufferId; }
-  bool containsBuffer(const BufferId &id) const;
+    inline bool isSingleBufferScene() const { return _singleBufferId.isValid(); }
+    inline BufferId singleBufferId() const { return _singleBufferId; }
+    bool containsBuffer(const BufferId &id) const;
 
-  ColumnHandleItem *firstColumnHandle() const;
-  ColumnHandleItem *secondColumnHandle() const;
+    ColumnHandleItem *firstColumnHandle() const;
+    ColumnHandleItem *secondColumnHandle() const;
 
-  inline CutoffMode senderCutoffMode() const { return _cutoffMode; }
-  inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
+    inline CutoffMode senderCutoffMode() const { return _cutoffMode; }
+    inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
 
-  QString selection() const;
-  bool hasSelection() const;
-  bool hasGlobalSelection() const;
-  bool isPosOverSelection(const QPointF &) const;
-  bool isGloballySelecting() const;
-  void initiateDrag(QWidget *source);
+    QString selection() const;
+    bool hasSelection() const;
+    bool hasGlobalSelection() const;
+    bool isPosOverSelection(const QPointF &) const;
+    bool isGloballySelecting() const;
+    void initiateDrag(QWidget *source);
 
-  bool isScrollingAllowed() const;
+    bool isScrollingAllowed() const;
 
- public slots:
-  void updateForViewport(qreal width, qreal height);
-  void setWidth(qreal width);
-  void layout(int start, int end, qreal width);
+public slots:
+    void updateForViewport(qreal width, qreal height);
+    void setWidth(qreal width);
+    void layout(int start, int end, qreal width);
 
-  void setMarkerLineVisible(bool visible = true);
-  void setMarkerLine(MsgId msgId = MsgId());
-  void jumpToMarkerLine(bool requestBacklog);
+    void setMarkerLineVisible(bool visible = true);
+    void setMarkerLine(MsgId msgId = MsgId());
+    void jumpToMarkerLine(bool requestBacklog);
 
-  // these are used by the chatitems to notify the scene and manage selections
-  void setSelectingItem(ChatItem *item);
-  ChatItem *selectingItem() const { return _selectingItem; }
-  void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
-  void clearGlobalSelection();
-  void clearSelection();
-  void selectionToClipboard(QClipboard::Mode = QClipboard::Clipboard);
-  void stringToClipboard(const QString &str, QClipboard::Mode = QClipboard::Clipboard);
+    // these are used by the chatitems to notify the scene and manage selections
+    void setSelectingItem(ChatItem *item);
+    ChatItem *selectingItem() const { return _selectingItem; }
+    void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
+    void clearGlobalSelection();
+    void clearSelection();
+    void selectionToClipboard(QClipboard::Mode = QClipboard::Clipboard);
+    void stringToClipboard(const QString &str, QClipboard::Mode = QClipboard::Clipboard);
 
-  void requestBacklog();
+    void requestBacklog();
 
 #ifdef HAVE_WEBKIT
-  void loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect);
-  void clearWebPreview(ChatItem *parentItem = 0);
+    void loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect);
+    void clearWebPreview(ChatItem *parentItem = 0);
 #endif
 
 signals:
-  void lastLineChanged(QGraphicsItem *item, qreal offset);
-  void layoutChanged(); // indicates changes to the scenerect due to resizing of the contentsitems
-  void mouseMoveWhileSelecting(const QPointF &scenePos);
+    void lastLineChanged(QGraphicsItem *item, qreal offset);
+    void layoutChanged(); // indicates changes to the scenerect due to resizing of the contentsitems
+    void mouseMoveWhileSelecting(const QPointF &scenePos);
 
 protected:
-  virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent);
-  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-  virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-  virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
-  virtual void handleClick(Qt::MouseButton button, const QPointF &scenePos);
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    virtual void handleClick(Qt::MouseButton button, const QPointF &scenePos);
 
 protected slots:
-  void rowsInserted(const QModelIndex &, int, int);
-  void rowsAboutToBeRemoved(const QModelIndex &, int, int);
-  void dataChanged(const QModelIndex &, const QModelIndex &);
+    void rowsInserted(const QModelIndex &, int, int);
+    void rowsAboutToBeRemoved(const QModelIndex &, int, int);
+    void dataChanged(const QModelIndex &, const QModelIndex &);
 
 private slots:
-  void firstHandlePositionChanged(qreal xpos);
-  void secondHandlePositionChanged(qreal xpos);
+    void firstHandlePositionChanged(qreal xpos);
+    void secondHandlePositionChanged(qreal xpos);
 #ifdef HAVE_WEBKIT
-  void webPreviewNextStep();
+    void webPreviewNextStep();
 #endif
-  void showWebPreviewChanged();
+    void showWebPreviewChanged();
 
-  void rowsRemoved();
+    void rowsRemoved();
 
-  void clickTimeout();
+    void clickTimeout();
 
 private:
-  void setHandleXLimits();
-  void updateSelection(const QPointF &pos);
+    void setHandleXLimits();
+    void updateSelection(const QPointF &pos);
 
-  ChatView *_chatView;
-  QString _idString;
-  QAbstractItemModel *_model;
-  QList<ChatLine *> _lines;
-  BufferId _singleBufferId;
+    ChatView *_chatView;
+    QString _idString;
+    QAbstractItemModel *_model;
+    QList<ChatLine *> _lines;
+    BufferId _singleBufferId;
 
-  // calls to QChatScene::sceneRect() are very expensive. As we manage the scenerect ourselves
-  // we store the size in a member variable.
-  QRectF _sceneRect;
-  int _firstLineRow; // the first row to display (aka: not a daychange msg)
-  void updateSceneRect(qreal width);
-  inline void updateSceneRect() { updateSceneRect(_sceneRect.width()); }
-  void updateSceneRect(const QRectF &rect);
-  qreal _viewportHeight;
+    // calls to QChatScene::sceneRect() are very expensive. As we manage the scenerect ourselves
+    // we store the size in a member variable.
+    QRectF _sceneRect;
+    int _firstLineRow; // the first row to display (aka: not a daychange msg)
+    void updateSceneRect(qreal width);
+    inline void updateSceneRect() { updateSceneRect(_sceneRect.width()); }
+    void updateSceneRect(const QRectF &rect);
+    qreal _viewportHeight;
 
-  MarkerLineItem *_markerLine;
-  bool _markerLineVisible, _markerLineValid, _markerLineJumpPending;
+    MarkerLineItem *_markerLine;
+    bool _markerLineVisible, _markerLineValid, _markerLineJumpPending;
 
-  ColumnHandleItem *_firstColHandle, *_secondColHandle;
-  qreal _firstColHandlePos, _secondColHandlePos;
-  CutoffMode _cutoffMode;
+    ColumnHandleItem *_firstColHandle, *_secondColHandle;
+    qreal _firstColHandlePos, _secondColHandlePos;
+    CutoffMode _cutoffMode;
 
-  ChatItem *_selectingItem;
-  int _selectionStartCol, _selectionMinCol;
-  int _selectionStart;
-  int _selectionEnd;
-  int _firstSelectionRow;
-  bool _isSelecting;
+    ChatItem *_selectingItem;
+    int _selectionStartCol, _selectionMinCol;
+    int _selectionStart;
+    int _selectionEnd;
+    int _firstSelectionRow;
+    bool _isSelecting;
 
-  QTimer _clickTimer;
-  ClickMode _clickMode;
-  QPointF _clickPos;
-  bool _clickHandled;
-  bool _leftButtonPressed;
+    QTimer _clickTimer;
+    ClickMode _clickMode;
+    QPointF _clickPos;
+    bool _clickHandled;
+    bool _leftButtonPressed;
 
-  bool _showWebPreview;
+    bool _showWebPreview;
 
 #ifdef HAVE_WEBKIT
-  struct WebPreview {
-    enum PreviewState {
-      NoPreview,
-      NewPreview,
-      DelayPreview,
-      ShowPreview,
-      HidePreview
+    struct WebPreview {
+        enum PreviewState {
+            NoPreview,
+            NewPreview,
+            DelayPreview,
+            ShowPreview,
+            HidePreview
+        };
+        ChatItem *parentItem;
+        QGraphicsItem *previewItem;
+        QUrl url;
+        QRectF urlRect;
+        PreviewState previewState;
+        QTimer timer;
+        WebPreview() : parentItem(0), previewItem(0), previewState(NoPreview) {}
     };
-    ChatItem *parentItem;
-    QGraphicsItem *previewItem;
-    QUrl url;
-    QRectF urlRect;
-    PreviewState previewState;
-    QTimer timer;
-    WebPreview() : parentItem(0), previewItem(0), previewState(NoPreview) {}
-  };
-  WebPreview webPreview;
+    WebPreview webPreview;
 #endif // HAVE_WEBKIT
 };
+
 
 #endif

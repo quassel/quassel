@@ -25,15 +25,18 @@
 
 #include <QGraphicsItem>
 
-class WebPreviewItem : public QGraphicsItem {
+class WebPreviewItem : public QGraphicsItem
+{
 public:
-  WebPreviewItem(const QUrl &url);
-  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-  virtual inline QRectF boundingRect() const { return _boundingRect; }
+    WebPreviewItem(const QUrl &url);
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual inline QRectF boundingRect() const { return _boundingRect; }
 
 private:
-  QRectF _boundingRect;
+    QRectF _boundingRect;
 };
+
+
 #endif //#ifdef HAVE_WEBKIT
 
 #endif //WEBPREVIEWITEM_H

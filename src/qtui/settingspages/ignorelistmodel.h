@@ -26,68 +26,74 @@
 
 #include "clientignorelistmanager.h"
 
-class IgnoreListModel : public QAbstractItemModel {
-  Q_OBJECT
+class IgnoreListModel : public QAbstractItemModel
+{
+    Q_OBJECT
 
 public:
-  IgnoreListModel(QObject *parent = 0);
+    IgnoreListModel(QObject *parent = 0);
 
-  virtual QVariant data(const QModelIndex &index, int role) const;
-  virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
-  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-  QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
-  inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
+    inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
 
-  inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
-  inline int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    inline int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-  inline bool configChanged() const { return _configChanged; }
-  inline bool isReady() const { return _modelReady; }
+    inline bool configChanged() const { return _configChanged; }
+    inline bool isReady() const { return _modelReady; }
 
-  const IgnoreListManager::IgnoreListItem &ignoreListItemAt(int row) const;
-  void setIgnoreListItemAt(int row, const IgnoreListManager::IgnoreListItem &item);
-  bool newIgnoreRule(const IgnoreListManager::IgnoreListItem &item);
-  const QModelIndex indexOf(const QString &rule);
+    const IgnoreListManager::IgnoreListItem &ignoreListItemAt(int row) const;
+    void setIgnoreListItemAt(int row, const IgnoreListManager::IgnoreListItem &item);
+    bool newIgnoreRule(const IgnoreListManager::IgnoreListItem &item);
+    const QModelIndex indexOf(const QString &rule);
 
 public slots:
-  void loadDefaults();
-  void removeIgnoreRule(int index);
-  void revert();
-  void commit();
+    void loadDefaults();
+    void removeIgnoreRule(int index);
+    void revert();
+    void commit();
 
 signals:
-  void configChanged(bool);
-  void modelReady(bool);
+    void configChanged(bool);
+    void modelReady(bool);
 
 private:
-  ClientIgnoreListManager _clonedIgnoreListManager;
-  bool _configChanged;
-  bool _modelReady;
+    ClientIgnoreListManager _clonedIgnoreListManager;
+    bool _configChanged;
+    bool _modelReady;
 
-  const IgnoreListManager &ignoreListManager() const;
-  IgnoreListManager &ignoreListManager();
-  IgnoreListManager &cloneIgnoreListManager();
+    const IgnoreListManager &ignoreListManager() const;
+    IgnoreListManager &ignoreListManager();
+    IgnoreListManager &cloneIgnoreListManager();
 
 private slots:
-  void clientConnected();
-  void clientDisconnected();
-  void initDone();
+    void clientConnected();
+    void clientDisconnected();
+    void initDone();
 };
 
+
 // Inlines
-int IgnoreListModel::rowCount(const QModelIndex &parent) const {
-  Q_UNUSED(parent);
-  return isReady() ? ignoreListManager().count() : 0;
+int IgnoreListModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return isReady() ? ignoreListManager().count() : 0;
 }
 
-int IgnoreListModel::columnCount(const QModelIndex &parent) const {
-  Q_UNUSED(parent);
-  return isReady() ? 3 : 0;
+
+int IgnoreListModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return isReady() ? 3 : 0;
 }
+
 
 #endif //IGNORELISTMODEL_H

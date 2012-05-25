@@ -26,39 +26,45 @@
 
 INIT_SYNCABLE_OBJECT(CoreAliasManager)
 CoreAliasManager::CoreAliasManager(CoreSession *parent)
-  : AliasManager(parent)
+    : AliasManager(parent)
 {
-  CoreSession *session = qobject_cast<CoreSession *>(parent);
-  if(!session) {
-    qWarning() << "CoreAliasManager: unable to load Aliases. Parent is not a Coresession!";
-    loadDefaults();
-    return;
-  }
+    CoreSession *session = qobject_cast<CoreSession *>(parent);
+    if (!session) {
+        qWarning() << "CoreAliasManager: unable to load Aliases. Parent is not a Coresession!";
+        loadDefaults();
+        return;
+    }
 
-  initSetAliases(Core::getUserSetting(session->user(), "Aliases").toMap());
-  if(isEmpty())
-    loadDefaults();
+    initSetAliases(Core::getUserSetting(session->user(), "Aliases").toMap());
+    if (isEmpty())
+        loadDefaults();
 
-  // we store our settings whenever they change
-  connect(this, SIGNAL(updatedRemotely()), SLOT(save()));
+    // we store our settings whenever they change
+    connect(this, SIGNAL(updatedRemotely()), SLOT(save()));
 }
 
-void CoreAliasManager::save() const {
-  CoreSession *session = qobject_cast<CoreSession *>(parent());
-  if(!session) {
-    qWarning() << "CoreAliasManager: unable to save Aliases. Parent is not a Coresession!";
-    return;
-  }
 
-  Core::setUserSetting(session->user(), "Aliases", initAliases());
+void CoreAliasManager::save() const
+{
+    CoreSession *session = qobject_cast<CoreSession *>(parent());
+    if (!session) {
+        qWarning() << "CoreAliasManager: unable to save Aliases. Parent is not a Coresession!";
+        return;
+    }
+
+    Core::setUserSetting(session->user(), "Aliases", initAliases());
 }
 
-const Network *CoreAliasManager::network(NetworkId id) const {
-  return qobject_cast<CoreSession *>(parent())->network(id);
+
+const Network *CoreAliasManager::network(NetworkId id) const
+{
+    return qobject_cast<CoreSession *>(parent())->network(id);
 }
 
-void CoreAliasManager::loadDefaults() {
-  foreach(Alias alias, AliasManager::defaults()) {
-    addAlias(alias.name, alias.expansion);
-  }
+
+void CoreAliasManager::loadDefaults()
+{
+    foreach(Alias alias, AliasManager::defaults()) {
+        addAlias(alias.name, alias.expansion);
+    }
 }

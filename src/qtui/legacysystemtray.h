@@ -33,55 +33,58 @@
 
 #include "systemtray.h"
 
-class LegacySystemTray : public SystemTray {
-  Q_OBJECT
+class LegacySystemTray : public SystemTray
+{
+    Q_OBJECT
 
 public:
-  explicit LegacySystemTray(QWidget *parent);
-  virtual ~LegacySystemTray() {}
-  virtual void init();
+    explicit LegacySystemTray(QWidget *parent);
+    virtual ~LegacySystemTray() {}
+    virtual void init();
 
-  virtual bool isVisible() const;
-  virtual inline bool isSystemTrayAvailable() const;
-  virtual Icon stateIcon() const; // overriden to care about blinkState
+    virtual bool isVisible() const;
+    virtual inline bool isSystemTrayAvailable() const;
+    virtual Icon stateIcon() const; // overriden to care about blinkState
 
 public slots:
-  virtual void setState(State state);
-  virtual void setVisible(bool visible = true);
-  virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
-  virtual void closeMessage(uint notificationId);
+    virtual void setState(State state);
+    virtual void setVisible(bool visible = true);
+    virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
+    virtual void closeMessage(uint notificationId);
 
 protected slots:
 
 protected:
-  virtual void setMode(Mode mode);
+    virtual void setMode(Mode mode);
 
 private slots:
-  void on_blinkTimeout();
-  void on_activated(QSystemTrayIcon::ActivationReason);
-  void on_messageClicked();
+    void on_blinkTimeout();
+    void on_activated(QSystemTrayIcon::ActivationReason);
+    void on_messageClicked();
 
-  void syncLegacyIcon();
+    void syncLegacyIcon();
 
 private:
-  QTimer _blinkTimer;
-  bool _blinkState;
-  uint _lastMessageId;
+    QTimer _blinkTimer;
+    bool _blinkState;
+    uint _lastMessageId;
 
 #ifdef HAVE_KDE
-  KSystemTrayIcon *_trayIcon;
+    KSystemTrayIcon *_trayIcon;
 #else
-  QSystemTrayIcon *_trayIcon;
+    QSystemTrayIcon *_trayIcon;
 #endif
-
 };
+
 
 // inlines
 
-bool LegacySystemTray::isSystemTrayAvailable() const {
-  return mode() == Legacy ? QSystemTrayIcon::isSystemTrayAvailable()
-                          : SystemTray::isSystemTrayAvailable();
+bool LegacySystemTray::isSystemTrayAvailable() const
+{
+    return mode() == Legacy ? QSystemTrayIcon::isSystemTrayAvailable()
+           : SystemTray::isSystemTrayAvailable();
 }
+
 
 #endif /* QT_NO_SYSTEMTRAYICON */
 

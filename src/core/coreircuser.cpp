@@ -20,29 +20,37 @@
 
 #include "coreircuser.h"
 
-CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(hostmask, network) {
+CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(hostmask, network)
+{
 #ifdef HAVE_QCA2
-  _cipher = 0;
+    _cipher = 0;
 #endif
 }
 
-CoreIrcUser::~CoreIrcUser() {
+
+CoreIrcUser::~CoreIrcUser()
+{
 #ifdef HAVE_QCA2
-  delete _cipher;
+    delete _cipher;
 #endif
 }
 
+
 #ifdef HAVE_QCA2
-Cipher *CoreIrcUser::cipher() const {
-  if(!_cipher)
-    _cipher = new Cipher();
+Cipher *CoreIrcUser::cipher() const
+{
+    if (!_cipher)
+        _cipher = new Cipher();
 
-  return _cipher;
+    return _cipher;
 }
 
-void CoreIrcUser::setEncrypted(bool e) {
-  Q_UNUSED(e);
-  // TODO
+
+void CoreIrcUser::setEncrypted(bool e)
+{
+    Q_UNUSED(e);
+    // TODO
 }
+
 
 #endif

@@ -37,114 +37,119 @@
 /*****************************************
  * The TreeView showing the Buffers
  *****************************************/
-class BufferView : public QTreeView {
-  Q_OBJECT
+class BufferView : public QTreeView
+{
+    Q_OBJECT
 
 public:
-  enum Direction {
-    Forward = 1,
-    Backward = -1
-  };
+    enum Direction {
+        Forward = 1,
+        Backward = -1
+    };
 
-  BufferView(QWidget *parent = 0);
-  void init();
+    BufferView(QWidget *parent = 0);
+    void init();
 
-  void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
-  virtual void setSelectionModel(QItemSelectionModel *selectionModel);
+    void setModel(QAbstractItemModel *model);
+    void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
+    virtual void setSelectionModel(QItemSelectionModel *selectionModel);
 
-  void setConfig(BufferViewConfig *config);
-  inline BufferViewConfig *config() { return _config; }
+    void setConfig(BufferViewConfig *config);
+    inline BufferViewConfig *config() { return _config; }
 
-  void addActionsToMenu(QMenu *menu, const QModelIndex &index);
-  void addFilterActions(QMenu *contextMenu, const QModelIndex &index);
+    void addActionsToMenu(QMenu *menu, const QModelIndex &index);
+    void addFilterActions(QMenu *contextMenu, const QModelIndex &index);
 
 public slots:
-  void setRootIndexForNetworkId(const NetworkId &networkId);
-  void removeSelectedBuffers(bool permanently = false);
-  void menuActionTriggered(QAction *);
-  void nextBuffer();
-  void previousBuffer();
-  void hideCurrentBuffer();
+    void setRootIndexForNetworkId(const NetworkId &networkId);
+    void removeSelectedBuffers(bool permanently = false);
+    void menuActionTriggered(QAction *);
+    void nextBuffer();
+    void previousBuffer();
+    void hideCurrentBuffer();
 
 signals:
-  void removeBuffer(const QModelIndex &);
-  void removeBufferPermanently(const QModelIndex &);
+    void removeBuffer(const QModelIndex &);
+    void removeBufferPermanently(const QModelIndex &);
 
 protected:
-  virtual void keyPressEvent(QKeyEvent *);
-  virtual void dropEvent(QDropEvent *event);
-  virtual void rowsInserted(const QModelIndex & parent, int start, int end);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-  virtual void wheelEvent(QWheelEvent *);
-  virtual QSize sizeHint() const;
-  virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
-  virtual void contextMenuEvent(QContextMenuEvent *event);
+    virtual void keyPressEvent(QKeyEvent *);
+    virtual void dropEvent(QDropEvent *event);
+    virtual void rowsInserted(const QModelIndex &parent, int start, int end);
+    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    virtual void wheelEvent(QWheelEvent *);
+    virtual QSize sizeHint() const;
+    virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 
 private slots:
-  void joinChannel(const QModelIndex &index);
-  void toggleHeader(bool checked);
+    void joinChannel(const QModelIndex &index);
+    void toggleHeader(bool checked);
 
-  void storeExpandedState(const QModelIndex &networkIdx);
-  void setExpandedState(const QModelIndex &networkIdx);
+    void storeExpandedState(const QModelIndex &networkIdx);
+    void setExpandedState(const QModelIndex &networkIdx);
 
-  void on_configChanged();
-  void on_layoutChanged();
+    void on_configChanged();
+    void on_layoutChanged();
 
-  void changeBuffer(Direction direction);
+    void changeBuffer(Direction direction);
 
 private:
-  QPointer<BufferViewConfig> _config;
+    QPointer<BufferViewConfig> _config;
 
-  enum ExpandedState {
-    WasExpanded = 0x01,
-    WasActive = 0x02
-  };
-  QHash<NetworkId, short> _expandedState;
-
+    enum ExpandedState {
+        WasExpanded = 0x01,
+        WasActive = 0x02
+    };
+    QHash<NetworkId, short> _expandedState;
 };
+
 
 // ******************************
 //  BufferViewDelgate
 // ******************************
 
-class BufferViewDelegate : public QStyledItemDelegate {
-  Q_OBJECT
+class BufferViewDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
 
 public:
-  BufferViewDelegate(QObject *parent = 0);
-  bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+    BufferViewDelegate(QObject *parent = 0);
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 
 protected:
-  virtual void customEvent(QEvent *event);
+    virtual void customEvent(QEvent *event);
 };
+
 
 // ==============================
 //  BufferView Dock
 // ==============================
-class BufferViewDock : public QDockWidget {
-  Q_OBJECT
-  Q_PROPERTY(bool active READ isActive WRITE setActive STORED true)
+class BufferViewDock : public QDockWidget
+{
+    Q_OBJECT
+    Q_PROPERTY(bool active READ isActive WRITE setActive STORED true)
 
-public:
-  BufferViewDock(BufferViewConfig *config, QWidget *parent);
+public :
+        BufferViewDock(BufferViewConfig *config, QWidget *parent);
 
-  int bufferViewId() const;
-  BufferViewConfig *config() const;
-  inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
-  inline bool isActive() const { return _active; }
+    int bufferViewId() const;
+    BufferViewConfig *config() const;
+    inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
+    inline bool isActive() const { return _active; }
 
 public slots:
-  void setActive(bool active = true);
+    void setActive(bool active = true);
 
 private slots:
-  void bufferViewRenamed(const QString &newName);
-  void updateTitle();
+    void bufferViewRenamed(const QString &newName);
+    void updateTitle();
 
 private:
 
-  bool _active;
-  QString _title;
+    bool _active;
+    QString _title;
 };
+
 
 #endif

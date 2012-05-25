@@ -20,7 +20,6 @@
 
 #include <QStringList>
 
-
 #include "clientsettings.h"
 
 #include <QHostAddress>
@@ -28,302 +27,402 @@
 #include <QSslSocket>
 #endif
 
-
 #include "client.h"
 #include "quassel.h"
 
-ClientSettings::ClientSettings(QString g) : Settings(g, Quassel::buildInfo().clientApplicationName) {
+ClientSettings::ClientSettings(QString g) : Settings(g, Quassel::buildInfo().clientApplicationName)
+{
 }
 
-ClientSettings::~ClientSettings() {
+
+ClientSettings::~ClientSettings()
+{
 }
+
 
 /***********************************************************************************************/
 
 CoreAccountSettings::CoreAccountSettings(const QString &subgroup)
-  : ClientSettings("CoreAccounts"),
+    : ClientSettings("CoreAccounts"),
     _subgroup(subgroup)
 {
 }
 
-void CoreAccountSettings::notify(const QString &key, QObject *receiver, const char *slot) {
-  ClientSettings::notify(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), receiver, slot);
+
+void CoreAccountSettings::notify(const QString &key, QObject *receiver, const char *slot)
+{
+    ClientSettings::notify(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), receiver, slot);
 }
 
-QList<AccountId> CoreAccountSettings::knownAccounts() {
-  QList<AccountId> ids;
-  foreach(const QString &key, localChildGroups()) {
-    AccountId acc = key.toInt();
-    if(acc.isValid())
-      ids << acc;
-  }
-  return ids;
+
+QList<AccountId> CoreAccountSettings::knownAccounts()
+{
+    QList<AccountId> ids;
+    foreach(const QString &key, localChildGroups()) {
+        AccountId acc = key.toInt();
+        if (acc.isValid())
+            ids << acc;
+    }
+    return ids;
 }
 
-AccountId CoreAccountSettings::lastAccount() {
-  return localValue("LastAccount", 0).toInt();
+
+AccountId CoreAccountSettings::lastAccount()
+{
+    return localValue("LastAccount", 0).toInt();
 }
 
-void CoreAccountSettings::setLastAccount(AccountId account) {
-  setLocalValue("LastAccount", account.toInt());
+
+void CoreAccountSettings::setLastAccount(AccountId account)
+{
+    setLocalValue("LastAccount", account.toInt());
 }
 
-AccountId CoreAccountSettings::autoConnectAccount() {
-  return localValue("AutoConnectAccount", 0).toInt();
+
+AccountId CoreAccountSettings::autoConnectAccount()
+{
+    return localValue("AutoConnectAccount", 0).toInt();
 }
 
-void CoreAccountSettings::setAutoConnectAccount(AccountId account) {
-  setLocalValue("AutoConnectAccount", account.toInt());
+
+void CoreAccountSettings::setAutoConnectAccount(AccountId account)
+{
+    setLocalValue("AutoConnectAccount", account.toInt());
 }
 
-bool CoreAccountSettings::autoConnectOnStartup() {
-  return localValue("AutoConnectOnStartup", false).toBool();
+
+bool CoreAccountSettings::autoConnectOnStartup()
+{
+    return localValue("AutoConnectOnStartup", false).toBool();
 }
 
-void CoreAccountSettings::setAutoConnectOnStartup(bool b) {
-  setLocalValue("AutoConnectOnStartup", b);
+
+void CoreAccountSettings::setAutoConnectOnStartup(bool b)
+{
+    setLocalValue("AutoConnectOnStartup", b);
 }
 
-bool CoreAccountSettings::autoConnectToFixedAccount() {
-  return localValue("AutoConnectToFixedAccount", false).toBool();
+
+bool CoreAccountSettings::autoConnectToFixedAccount()
+{
+    return localValue("AutoConnectToFixedAccount", false).toBool();
 }
 
-void CoreAccountSettings::setAutoConnectToFixedAccount(bool b) {
-  setLocalValue("AutoConnectToFixedAccount", b);
+
+void CoreAccountSettings::setAutoConnectToFixedAccount(bool b)
+{
+    setLocalValue("AutoConnectToFixedAccount", b);
 }
 
-void CoreAccountSettings::storeAccountData(AccountId id, const QVariantMap &data) {
-  QString base = QString::number(id.toInt());
-  foreach(const QString &key, data.keys()) {
-    setLocalValue(base + "/" + key, data.value(key));
-  }
 
-  // FIXME Migration from 0.5 -> 0.6
-  removeLocalKey(QString("%1/Connection").arg(base));
+void CoreAccountSettings::storeAccountData(AccountId id, const QVariantMap &data)
+{
+    QString base = QString::number(id.toInt());
+    foreach(const QString &key, data.keys()) {
+        setLocalValue(base + "/" + key, data.value(key));
+    }
+
+    // FIXME Migration from 0.5 -> 0.6
+    removeLocalKey(QString("%1/Connection").arg(base));
 }
 
-QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id) {
-  QVariantMap map;
-  QString base = QString::number(id.toInt());
-  foreach(const QString &key, localChildKeys(base)) {
-    map[key] = localValue(base + "/" + key);
-  }
 
-  // FIXME Migration from 0.5 -> 0.6
-  if(!map.contains("Uuid") && map.contains("Connection")) {
-    QVariantMap oldmap = map.value("Connection").toMap();
-    map["AccountName"] = oldmap.value("AccountName");
-    map["HostName"] = oldmap.value("Host");
-    map["Port"] = oldmap.value("Port");
-    map["User"] = oldmap.value("User");
-    map["Password"] = oldmap.value("Password");
-    map["StorePassword"] = oldmap.value("RememberPasswd");
-    map["UseSSL"] = oldmap.value("useSsl");
-    map["UseProxy"] = oldmap.value("useProxy");
-    map["ProxyHostName"] = oldmap.value("proxyHost");
-    map["ProxyPort"] = oldmap.value("proxyPort");
-    map["ProxyUser"] = oldmap.value("proxyUser");
-    map["ProxyPassword"] = oldmap.value("proxyPassword");
-    map["ProxyType"] = oldmap.value("proxyType");
-    map["Internal"] = oldmap.value("InternalAccount");
+QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id)
+{
+    QVariantMap map;
+    QString base = QString::number(id.toInt());
+    foreach(const QString &key, localChildKeys(base)) {
+        map[key] = localValue(base + "/" + key);
+    }
 
-    map["AccountId"] = id.toInt();
-    map["Uuid"] = QUuid::createUuid().toString();
-  }
+    // FIXME Migration from 0.5 -> 0.6
+    if (!map.contains("Uuid") && map.contains("Connection")) {
+        QVariantMap oldmap = map.value("Connection").toMap();
+        map["AccountName"] = oldmap.value("AccountName");
+        map["HostName"] = oldmap.value("Host");
+        map["Port"] = oldmap.value("Port");
+        map["User"] = oldmap.value("User");
+        map["Password"] = oldmap.value("Password");
+        map["StorePassword"] = oldmap.value("RememberPasswd");
+        map["UseSSL"] = oldmap.value("useSsl");
+        map["UseProxy"] = oldmap.value("useProxy");
+        map["ProxyHostName"] = oldmap.value("proxyHost");
+        map["ProxyPort"] = oldmap.value("proxyPort");
+        map["ProxyUser"] = oldmap.value("proxyUser");
+        map["ProxyPassword"] = oldmap.value("proxyPassword");
+        map["ProxyType"] = oldmap.value("proxyType");
+        map["Internal"] = oldmap.value("InternalAccount");
 
-  return map;
+        map["AccountId"] = id.toInt();
+        map["Uuid"] = QUuid::createUuid().toString();
+    }
+
+    return map;
 }
 
-void CoreAccountSettings::setAccountValue(const QString &key, const QVariant &value) {
-  if(!Client::currentCoreAccount().isValid())
-    return;
-  setLocalValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), value);
+
+void CoreAccountSettings::setAccountValue(const QString &key, const QVariant &value)
+{
+    if (!Client::currentCoreAccount().isValid())
+        return;
+    setLocalValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), value);
 }
 
-QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &def) {
-  if(!Client::currentCoreAccount().isValid())
-    return QVariant();
-  return localValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), def);
+
+QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &def)
+{
+    if (!Client::currentCoreAccount().isValid())
+        return QVariant();
+    return localValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), def);
 }
 
-void CoreAccountSettings::setJumpKeyMap(const QHash<int, BufferId> &keyMap) {
-  QVariantMap variants;
-  QHash<int, BufferId>::const_iterator mapIter = keyMap.constBegin();
-  while(mapIter != keyMap.constEnd()) {
-    variants[QString::number(mapIter.key())] = qVariantFromValue(mapIter.value());
-    ++mapIter;
-  }
-  setAccountValue("JumpKeyMap", variants);
+
+void CoreAccountSettings::setJumpKeyMap(const QHash<int, BufferId> &keyMap)
+{
+    QVariantMap variants;
+    QHash<int, BufferId>::const_iterator mapIter = keyMap.constBegin();
+    while (mapIter != keyMap.constEnd()) {
+        variants[QString::number(mapIter.key())] = qVariantFromValue(mapIter.value());
+        ++mapIter;
+    }
+    setAccountValue("JumpKeyMap", variants);
 }
 
-QHash<int, BufferId> CoreAccountSettings::jumpKeyMap() {
-  QHash<int, BufferId> keyMap;
-  QVariantMap variants = accountValue("JumpKeyMap", QVariant()).toMap();
-  QVariantMap::const_iterator mapIter = variants.constBegin();
-  while(mapIter != variants.constEnd()) {
-    keyMap[mapIter.key().toInt()] = mapIter.value().value<BufferId>();
-    ++mapIter;
-  }
-  return keyMap;
+
+QHash<int, BufferId> CoreAccountSettings::jumpKeyMap()
+{
+    QHash<int, BufferId> keyMap;
+    QVariantMap variants = accountValue("JumpKeyMap", QVariant()).toMap();
+    QVariantMap::const_iterator mapIter = variants.constBegin();
+    while (mapIter != variants.constEnd()) {
+        keyMap[mapIter.key().toInt()] = mapIter.value().value<BufferId>();
+        ++mapIter;
+    }
+    return keyMap;
 }
 
-void CoreAccountSettings::setBufferViewOverlay(const QSet<int> &viewIds) {
-  QVariantList variants;
-  foreach(int viewId, viewIds) {
-    variants << qVariantFromValue(viewId);
-  }
-  setAccountValue("BufferViewOverlay", variants);
+
+void CoreAccountSettings::setBufferViewOverlay(const QSet<int> &viewIds)
+{
+    QVariantList variants;
+    foreach(int viewId, viewIds) {
+        variants << qVariantFromValue(viewId);
+    }
+    setAccountValue("BufferViewOverlay", variants);
 }
 
-QSet<int> CoreAccountSettings::bufferViewOverlay() {
-  QSet<int> viewIds;
-  QVariantList variants = accountValue("BufferViewOverlay").toList();
-  for(QVariantList::const_iterator iter = variants.constBegin(); iter != variants.constEnd(); iter++) {
-    viewIds << iter->toInt();
-  }
-  return viewIds;
+
+QSet<int> CoreAccountSettings::bufferViewOverlay()
+{
+    QSet<int> viewIds;
+    QVariantList variants = accountValue("BufferViewOverlay").toList();
+    for (QVariantList::const_iterator iter = variants.constBegin(); iter != variants.constEnd(); iter++) {
+        viewIds << iter->toInt();
+    }
+    return viewIds;
 }
 
-void CoreAccountSettings::removeAccount(AccountId id) {
-  removeLocalKey(QString("%1").arg(id.toInt()));
+
+void CoreAccountSettings::removeAccount(AccountId id)
+{
+    removeLocalKey(QString("%1").arg(id.toInt()));
 }
 
-void CoreAccountSettings::clearAccounts() {
-  foreach(const QString &key, localChildGroups())
+
+void CoreAccountSettings::clearAccounts()
+{
+    foreach(const QString &key, localChildGroups())
     removeLocalKey(key);
 }
+
 
 /***********************************************************************************************/
 // CoreConnectionSettings:
 
 CoreConnectionSettings::CoreConnectionSettings() : ClientSettings("CoreConnection") {}
 
-void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode) {
-  setLocalValue("NetworkDetectionMode", mode);
+void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
+{
+    setLocalValue("NetworkDetectionMode", mode);
 }
 
-CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode() {
+
+CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode()
+{
 #ifdef HAVE_KDE
-  NetworkDetectionMode def = UseSolid;
+    NetworkDetectionMode def = UseSolid;
 #else
-  NetworkDetectionMode def = UsePingTimeout;
+    NetworkDetectionMode def = UsePingTimeout;
 #endif
-  return (NetworkDetectionMode)localValue("NetworkDetectionMode", def).toInt();
+    return (NetworkDetectionMode)localValue("NetworkDetectionMode", def).toInt();
 }
 
-void CoreConnectionSettings::setAutoReconnect(bool autoReconnect) {
-  setLocalValue("AutoReconnect", autoReconnect);
+
+void CoreConnectionSettings::setAutoReconnect(bool autoReconnect)
+{
+    setLocalValue("AutoReconnect", autoReconnect);
 }
 
-bool CoreConnectionSettings::autoReconnect() {
-  return localValue("AutoReconnect", true).toBool();
+
+bool CoreConnectionSettings::autoReconnect()
+{
+    return localValue("AutoReconnect", true).toBool();
 }
 
-void CoreConnectionSettings::setPingTimeoutInterval(int interval) {
-  setLocalValue("PingTimeoutInterval", interval);
+
+void CoreConnectionSettings::setPingTimeoutInterval(int interval)
+{
+    setLocalValue("PingTimeoutInterval", interval);
 }
 
-int CoreConnectionSettings::pingTimeoutInterval() {
-  return localValue("PingTimeoutInterval", 60).toInt();
+
+int CoreConnectionSettings::pingTimeoutInterval()
+{
+    return localValue("PingTimeoutInterval", 60).toInt();
 }
 
-void CoreConnectionSettings::setReconnectInterval(int interval) {
-  setLocalValue("ReconnectInterval", interval);
+
+void CoreConnectionSettings::setReconnectInterval(int interval)
+{
+    setLocalValue("ReconnectInterval", interval);
 }
 
-int CoreConnectionSettings::reconnectInterval() {
-  return localValue("ReconnectInterval", 60).toInt();
+
+int CoreConnectionSettings::reconnectInterval()
+{
+    return localValue("ReconnectInterval", 60).toInt();
 }
+
 
 /***********************************************************************************************/
 // NotificationSettings:
 
-NotificationSettings::NotificationSettings() : ClientSettings("Notification") {
+NotificationSettings::NotificationSettings() : ClientSettings("Notification")
+{
 }
 
-void NotificationSettings::setHighlightList(const QVariantList &highlightList) {
-  setLocalValue("Highlights/CustomList", highlightList);
+
+void NotificationSettings::setHighlightList(const QVariantList &highlightList)
+{
+    setLocalValue("Highlights/CustomList", highlightList);
 }
 
-QVariantList NotificationSettings::highlightList() {
-  return localValue("Highlights/CustomList").toList();
+
+QVariantList NotificationSettings::highlightList()
+{
+    return localValue("Highlights/CustomList").toList();
 }
 
-void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickType highlightNickType) {
-  setLocalValue("Highlights/HighlightNick", highlightNickType);
+
+void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickType highlightNickType)
+{
+    setLocalValue("Highlights/HighlightNick", highlightNickType);
 }
 
-NotificationSettings::HighlightNickType NotificationSettings::highlightNick() {
-  return (NotificationSettings::HighlightNickType) localValue("Highlights/HighlightNick", CurrentNick).toInt();
+
+NotificationSettings::HighlightNickType NotificationSettings::highlightNick()
+{
+    return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick", CurrentNick).toInt();
 }
 
-void NotificationSettings::setNicksCaseSensitive(bool cs) {
-  setLocalValue("Highlights/NicksCaseSensitive", cs);
+
+void NotificationSettings::setNicksCaseSensitive(bool cs)
+{
+    setLocalValue("Highlights/NicksCaseSensitive", cs);
 }
 
-bool NotificationSettings::nicksCaseSensitive() {
-  return localValue("Highlights/NicksCaseSensitive", false).toBool();
+
+bool NotificationSettings::nicksCaseSensitive()
+{
+    return localValue("Highlights/NicksCaseSensitive", false).toBool();
 }
+
 
 // ========================================
 //  TabCompletionSettings
 // ========================================
 
-TabCompletionSettings::TabCompletionSettings() : ClientSettings("TabCompletion") {
+TabCompletionSettings::TabCompletionSettings() : ClientSettings("TabCompletion")
+{
 }
 
-void TabCompletionSettings::setCompletionSuffix(const QString &suffix) {
-  setLocalValue("CompletionSuffix", suffix);
+
+void TabCompletionSettings::setCompletionSuffix(const QString &suffix)
+{
+    setLocalValue("CompletionSuffix", suffix);
 }
 
-QString TabCompletionSettings::completionSuffix() {
-  return localValue("CompletionSuffix", ": ").toString();
+
+QString TabCompletionSettings::completionSuffix()
+{
+    return localValue("CompletionSuffix", ": ").toString();
 }
 
-void TabCompletionSettings::setAddSpaceMidSentence(bool space) {
-  setLocalValue("AddSpaceMidSentence", space);
+
+void TabCompletionSettings::setAddSpaceMidSentence(bool space)
+{
+    setLocalValue("AddSpaceMidSentence", space);
 }
 
-bool TabCompletionSettings::addSpaceMidSentence() {
-  return localValue("AddSpaceMidSentence", false).toBool();
+
+bool TabCompletionSettings::addSpaceMidSentence()
+{
+    return localValue("AddSpaceMidSentence", false).toBool();
 }
 
-void TabCompletionSettings::setSortMode(SortMode mode) {
-  setLocalValue("SortMode", mode);
+
+void TabCompletionSettings::setSortMode(SortMode mode)
+{
+    setLocalValue("SortMode", mode);
 }
 
-TabCompletionSettings::SortMode TabCompletionSettings::sortMode() {
-  return static_cast<SortMode>(localValue("SortMode"), LastActivity);
+
+TabCompletionSettings::SortMode TabCompletionSettings::sortMode()
+{
+    return static_cast<SortMode>(localValue("SortMode"), LastActivity);
 }
 
-void TabCompletionSettings::setCaseSensitivity(Qt::CaseSensitivity cs) {
-  setLocalValue("CaseSensitivity", cs);
+
+void TabCompletionSettings::setCaseSensitivity(Qt::CaseSensitivity cs)
+{
+    setLocalValue("CaseSensitivity", cs);
 }
 
-Qt::CaseSensitivity TabCompletionSettings::caseSensitivity() {
-  return (Qt::CaseSensitivity)localValue("CaseSensitivity", Qt::CaseInsensitive).toInt();
+
+Qt::CaseSensitivity TabCompletionSettings::caseSensitivity()
+{
+    return (Qt::CaseSensitivity)localValue("CaseSensitivity", Qt::CaseInsensitive).toInt();
 }
 
-void TabCompletionSettings::setUseLastSpokenTo(bool use) {
-  setLocalValue("UseLastSpokenTo", use);
+
+void TabCompletionSettings::setUseLastSpokenTo(bool use)
+{
+    setLocalValue("UseLastSpokenTo", use);
 }
 
-bool TabCompletionSettings::useLastSpokenTo() {
-  return localValue("UseLastSpokenTo", false).toBool();
+
+bool TabCompletionSettings::useLastSpokenTo()
+{
+    return localValue("UseLastSpokenTo", false).toBool();
 }
+
 
 // ========================================
 //  ItemViewSettings
 // ========================================
 
-ItemViewSettings::ItemViewSettings(const QString &group) : ClientSettings(group) {
-
+ItemViewSettings::ItemViewSettings(const QString &group) : ClientSettings(group)
+{
 }
 
-bool ItemViewSettings::displayTopicInTooltip() {
-  return localValue("DisplayTopicInTooltip", false).toBool();
+
+bool ItemViewSettings::displayTopicInTooltip()
+{
+    return localValue("DisplayTopicInTooltip", false).toBool();
 }
 
-bool ItemViewSettings::mouseWheelChangesBuffer() {
-  return localValue("MouseWheelChangesBuffer", false).toBool();
+
+bool ItemViewSettings::mouseWheelChangesBuffer()
+{
+    return localValue("MouseWheelChangesBuffer", false).toBool();
 }

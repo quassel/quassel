@@ -30,25 +30,27 @@
  *  \NOTE: When this is called, all backends need to be already registered. No dynamic changes
  *         are tracked or reacted to!
  */
-class NotificationsSettingsPage : public SettingsPage {
-  Q_OBJECT
+class NotificationsSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
-  public:
+public:
     NotificationsSettingsPage(QWidget *parent = 0);
 
     bool hasDefaults() const;
 
-  public slots:
+public slots:
     void save();
     void load();
     void defaults();
 
-  private slots:
+private slots:
     void widgetHasChanged();
 
-  private:
+private:
     QList<SettingsPage *> _configWidgets;
     bool _hasDefaults;
 };
+
 
 #endif

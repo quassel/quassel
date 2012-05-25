@@ -27,38 +27,46 @@
 #include "quassel.h"
 #include "types.h"
 
-class Logger {
+class Logger
+{
 public:
-  inline Logger(Quassel::LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
-  ~Logger();
+    inline Logger(Quassel::LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
+    ~Logger();
 
-  static void logMessage(QtMsgType type, const char *msg);
+    static void logMessage(QtMsgType type, const char *msg);
 
-  template<typename T>
-  inline Logger &operator<<(const T &value) { _stream << value << " "; return *this; }
-  inline Logger &operator<<(const QStringList & t) { _stream << t.join(" ") << " "; return *this; }
-  inline Logger &operator<<(bool t) { _stream << (t ? "true" : "false") << " "; return *this; }
+    template<typename T>
+    inline Logger &operator<<(const T &value) { _stream << value << " "; return *this; }
+    inline Logger &operator<<(const QStringList &t) { _stream << t.join(" ") << " "; return *this; }
+    inline Logger &operator<<(bool t) { _stream << (t ? "true" : "false") << " "; return *this; }
 
 private:
-  void log();
-  QTextStream _stream;
-  QString _buffer;
-  Quassel::LogLevel _logLevel;
+    void log();
+    QTextStream _stream;
+    QString _buffer;
+    Quassel::LogLevel _logLevel;
 };
 
-class quInfo : public Logger {
+
+class quInfo : public Logger
+{
 public:
-  inline quInfo() : Logger(Quassel::InfoLevel) {}
+    inline quInfo() : Logger(Quassel::InfoLevel) {}
 };
 
-class quWarning : public Logger {
+
+class quWarning : public Logger
+{
 public:
-  inline quWarning() : Logger(Quassel::WarningLevel) {}
+    inline quWarning() : Logger(Quassel::WarningLevel) {}
 };
 
-class quError : public Logger {
+
+class quError : public Logger
+{
 public:
-  inline quError() : Logger(Quassel::ErrorLevel) {}
+    inline quError() : Logger(Quassel::ErrorLevel) {}
 };
+
 
 #endif

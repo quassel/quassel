@@ -28,26 +28,27 @@
 
 class BufferViewConfig;
 
-class ChatMonitorSettingsPage : public SettingsPage {
-  Q_OBJECT
+class ChatMonitorSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
-  public:
+public:
     ChatMonitorSettingsPage(QWidget *parent = 0);
     bool hasDefaults() const;
 
-  public slots:
+public slots:
     void save();
     void load();
     void loadSettings();
     void defaults();
 
-  private slots:
+private slots:
     void widgetHasChanged();
     void on_activateBuffer_clicked();
     void on_deactivateBuffer_clicked();
     void switchOperationMode(int idx);
 
-  private:
+private:
     Ui::ChatMonitorSettingsPage ui;
     QHash<QString, QVariant> settings;
     bool testHasChanged();
@@ -56,4 +57,6 @@ class ChatMonitorSettingsPage : public SettingsPage {
     BufferViewConfig *_configAvailable;
     BufferViewConfig *_configActive;
 };
+
+
 #endif

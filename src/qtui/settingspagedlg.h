@@ -27,14 +27,15 @@
 
 #include "settingspage.h"
 
-class SettingsPageDlg : public QDialog {
-  Q_OBJECT
-  public:
-    SettingsPageDlg(SettingsPage * page, QWidget *parent = 0);
+class SettingsPageDlg : public QDialog
+{
+    Q_OBJECT
+public:
+    SettingsPageDlg(SettingsPage *page, QWidget *parent = 0);
 
     SettingsPage *currentPage() const;
 
-  private slots:
+private slots:
     void buttonClicked(QAbstractButton *);
     bool applyChanges();
     void undoChanges();
@@ -42,11 +43,11 @@ class SettingsPageDlg : public QDialog {
     void loadDefaults();
     void setButtonStates();
 
-  private:
+private:
     Ui::SettingsPageDlg ui;
 
     SettingsPage *_currentPage;
-
 };
+
 
 #endif

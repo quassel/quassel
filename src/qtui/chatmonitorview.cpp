@@ -39,77 +39,87 @@
 #include "clientignorelistmanager.h"
 
 ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
-  : ChatView(filter, parent),
+    : ChatView(filter, parent),
     _filter(filter)
 {
-  scene()->setSenderCutoffMode(ChatScene::CutoffLeft);
-  connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
+    scene()->setSenderCutoffMode(ChatScene::CutoffLeft);
+    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
 }
 
-void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos) {
-  ChatView::addActionsToMenu(menu, pos);
-  menu->addSeparator();
-  QAction *showOwnNicksAction = menu->addAction(tr("Show Own Messages"), _filter, SLOT(setShowOwnMessages(bool)));
-  showOwnNicksAction->setCheckable(true);
-  showOwnNicksAction->setChecked(_filter->showOwnMessages());
 
-  if(scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
+void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
+{
+    ChatView::addActionsToMenu(menu, pos);
     menu->addSeparator();
+    QAction *showOwnNicksAction = menu->addAction(tr("Show Own Messages"), _filter, SLOT(setShowOwnMessages(bool)));
+    showOwnNicksAction->setCheckable(true);
+    showOwnNicksAction->setChecked(_filter->showOwnMessages());
 
-    QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
-    showNetworkAction->setCheckable(true);
-    showNetworkAction->setChecked(_filter->showFields() & ChatMonitorFilter::NetworkField);
-    showNetworkAction->setData(ChatMonitorFilter::NetworkField);
+    if (scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
+        menu->addSeparator();
 
-    QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
-    showBufferAction->setCheckable(true);
-    showBufferAction->setChecked(_filter->showFields() & ChatMonitorFilter::BufferField);
-    showBufferAction->setData(ChatMonitorFilter::BufferField);
-  }
+        QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
+        showNetworkAction->setCheckable(true);
+        showNetworkAction->setChecked(_filter->showFields() & ChatMonitorFilter::NetworkField);
+        showNetworkAction->setData(ChatMonitorFilter::NetworkField);
 
-  menu->addSeparator();
-  menu->addAction(SmallIcon("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
+        QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
+        showBufferAction->setCheckable(true);
+        showBufferAction->setChecked(_filter->showFields() & ChatMonitorFilter::BufferField);
+        showBufferAction->setData(ChatMonitorFilter::BufferField);
+    }
+
+    menu->addSeparator();
+    menu->addAction(SmallIcon("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
 }
 
-void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
-  if(scene()->columnByScenePos(event->pos()) != ChatLineModel::SenderColumn) {
-    ChatView::mouseDoubleClickEvent(event);
-    return;
-  }
 
-  ChatItem *chatItem = scene()->chatItemAt(mapToScene(event->pos()));
-  if(!chatItem) {
-    event->ignore();
-    return;
-  }
+void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (scene()->columnByScenePos(event->pos()) != ChatLineModel::SenderColumn) {
+        ChatView::mouseDoubleClickEvent(event);
+        return;
+    }
 
-  event->accept();
-  BufferId bufferId = chatItem->data(MessageModel::BufferIdRole).value<BufferId>();
-  if(!bufferId.isValid())
-    return;
+    ChatItem *chatItem = scene()->chatItemAt(mapToScene(event->pos()));
+    if (!chatItem) {
+        event->ignore();
+        return;
+    }
 
-  Client::bufferModel()->switchToBuffer(bufferId);
+    event->accept();
+    BufferId bufferId = chatItem->data(MessageModel::BufferIdRole).value<BufferId>();
+    if (!bufferId.isValid())
+        return;
+
+    Client::bufferModel()->switchToBuffer(bufferId);
 }
 
-void ChatMonitorView::showFieldsChanged(bool checked) {
-  QAction *showAction = qobject_cast<QAction *>(sender());
-  if(!showAction)
-    return;
 
-  if(checked)
-    _filter->addShowField(showAction->data().toInt());
-  else
-    _filter->removeShowField(showAction->data().toInt());
+void ChatMonitorView::showFieldsChanged(bool checked)
+{
+    QAction *showAction = qobject_cast<QAction *>(sender());
+    if (!showAction)
+        return;
+
+    if (checked)
+        _filter->addShowField(showAction->data().toInt());
+    else
+        _filter->removeShowField(showAction->data().toInt());
 }
 
-void ChatMonitorView::showSettingsPage() {
-  SettingsPageDlg dlg(new ChatMonitorSettingsPage(), this);
-  dlg.exec();
+
+void ChatMonitorView::showSettingsPage()
+{
+    SettingsPageDlg dlg(new ChatMonitorSettingsPage(), this);
+    dlg.exec();
 }
+
 
 // connect only after client is synced to core since ChatMonitorView is created before
 // the ignoreListManager
-void ChatMonitorView::coreConnectionStateChanged(bool connected) {
-  if(connected)
-    connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), _filter, SLOT(invalidateFilter()));
+void ChatMonitorView::coreConnectionStateChanged(bool connected)
+{
+    if (connected)
+        connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), _filter, SLOT(invalidateFilter()));
 }

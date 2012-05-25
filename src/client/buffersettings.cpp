@@ -21,31 +21,38 @@
 #include "buffersettings.h"
 
 BufferSettings::BufferSettings(BufferId bufferId)
-  : ClientSettings(QString("Buffer/%1").arg(bufferId.toInt()))
+    : ClientSettings(QString("Buffer/%1").arg(bufferId.toInt()))
 {
 }
+
 
 BufferSettings::BufferSettings(const QString &idString)
-  : ClientSettings(QString("Buffer/%1").arg(idString))
+    : ClientSettings(QString("Buffer/%1").arg(idString))
 {
 }
 
-void BufferSettings::filterMessage(Message::Type msgType, bool filter) {
-  if(!hasFilter())
-    setLocalValue("hasMessageTypeFilter", true);
-  if(filter)
-    setLocalValue("MessageTypeFilter", localValue("MessageTypeFilter", 0).toInt() | msgType);
-  else
-    setLocalValue("MessageTypeFilter", localValue("MessageTypeFilter", 0).toInt() & ~msgType);
+
+void BufferSettings::filterMessage(Message::Type msgType, bool filter)
+{
+    if (!hasFilter())
+        setLocalValue("hasMessageTypeFilter", true);
+    if (filter)
+        setLocalValue("MessageTypeFilter", localValue("MessageTypeFilter", 0).toInt() | msgType);
+    else
+        setLocalValue("MessageTypeFilter", localValue("MessageTypeFilter", 0).toInt() & ~msgType);
 }
 
-void BufferSettings::setMessageFilter(int filter) {
-  if(!hasFilter())
-    setLocalValue("hasMessageTypeFilter", true);
-  setLocalValue("MessageTypeFilter", filter);
+
+void BufferSettings::setMessageFilter(int filter)
+{
+    if (!hasFilter())
+        setLocalValue("hasMessageTypeFilter", true);
+    setLocalValue("MessageTypeFilter", filter);
 }
 
-void BufferSettings::removeFilter() {
-  setLocalValue("hasMessageTypeFilter", false);
-  removeLocalKey("MessageTypeFilter");
+
+void BufferSettings::removeFilter()
+{
+    setLocalValue("hasMessageTypeFilter", false);
+    removeLocalKey("MessageTypeFilter");
 }

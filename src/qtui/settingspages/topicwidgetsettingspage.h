@@ -24,18 +24,20 @@
 #include "settingspage.h"
 #include "ui_topicwidgetsettingspage.h"
 
-class TopicWidgetSettingsPage : public SettingsPage {
-  Q_OBJECT
+class TopicWidgetSettingsPage : public SettingsPage
+{
+    Q_OBJECT
 
 public:
-  TopicWidgetSettingsPage(QWidget *parent = 0);
+    TopicWidgetSettingsPage(QWidget *parent = 0);
 
-  inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const { return true; }
 
 private:
-  Ui::TopicWidgetSettingsPage ui;
+    Ui::TopicWidgetSettingsPage ui;
 
-  inline QString settingsKey() const { return QString("TopicWidget"); }
+    inline QString settingsKey() const { return QString("TopicWidget"); }
 };
+
 
 #endif

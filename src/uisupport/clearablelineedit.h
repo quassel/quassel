@@ -25,20 +25,22 @@
 
 class QToolButton;
 
-class ClearableLineEdit : public QLineEdit {
-  Q_OBJECT
+class ClearableLineEdit : public QLineEdit
+{
+    Q_OBJECT
 
 public:
-  ClearableLineEdit(QWidget *parent = 0);
+    ClearableLineEdit(QWidget *parent = 0);
 
 protected:
-  void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
-  void updateClearButton(const QString &text);
+    void updateClearButton(const QString &text);
 
 private:
-  QToolButton *clearButton;
+    QToolButton *clearButton;
 };
+
 
 #endif // CLEARABLELINEEDIT_H

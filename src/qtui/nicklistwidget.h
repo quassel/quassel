@@ -34,50 +34,53 @@ class Buffer;
 class NickView;
 class QDockWidget;
 
-class NickListWidget : public AbstractItemView {
-  Q_OBJECT
+class NickListWidget : public AbstractItemView
+{
+    Q_OBJECT
 
 public:
-  NickListWidget(QWidget *parent = 0);
+    NickListWidget(QWidget *parent = 0);
 
 public slots:
-  void showWidget(bool visible);
+    void showWidget(bool visible);
 
 signals:
-  void nickSelectionChanged(const QModelIndexList &);
+    void nickSelectionChanged(const QModelIndexList &);
 
 protected:
-  virtual QSize sizeHint() const;
-  virtual void hideEvent(QHideEvent *);
-  virtual void showEvent(QShowEvent *);
+    virtual QSize sizeHint() const;
+    virtual void hideEvent(QHideEvent *);
+    virtual void showEvent(QShowEvent *);
 
 protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 
 private slots:
-  void removeBuffer(BufferId bufferId);
-  void nickSelectionChanged();
+    void removeBuffer(BufferId bufferId);
+    void nickSelectionChanged();
 
 private:
-  Ui::NickListWidget ui;
-  QHash<BufferId, NickView *> nickViews;
+    Ui::NickListWidget ui;
+    QHash<BufferId, NickView *> nickViews;
 
-  QDockWidget *dock() const;
+    QDockWidget *dock() const;
 };
 
 
 // ==============================
 //  NickList Dock
 // ==============================
-class NickListDock : public QDockWidget {
-  Q_OBJECT
+class NickListDock : public QDockWidget
+{
+    Q_OBJECT
 
 public:
-  NickListDock(const QString &title, QWidget *parent = 0);
-  // ~NickListDock();
+    NickListDock(const QString &title, QWidget *parent = 0);
+    // ~NickListDock();
 
-  // virtual bool event(QEvent *event);
+    // virtual bool event(QEvent *event);
 };
+
 
 #endif

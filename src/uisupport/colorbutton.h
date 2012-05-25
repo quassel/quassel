@@ -23,28 +23,30 @@
 
 #include <QToolButton>
 
-class ColorButton : public QToolButton {
-  Q_OBJECT
-  Q_PROPERTY(QColor color READ color WRITE setColor USER true)
+class ColorButton : public QToolButton
+{
+    Q_OBJECT
+    Q_PROPERTY(QColor color READ color WRITE setColor USER true)
 
-public:
-  explicit ColorButton(QWidget *parent = 0);
-  explicit ColorButton(const QColor &c, QWidget *parent = 0);
+public :
+        explicit ColorButton(QWidget *parent = 0);
+    explicit ColorButton(const QColor &c, QWidget *parent = 0);
 
-  void setColor(const QColor &color);
-  QColor color() const;
+    void setColor(const QColor &color);
+    QColor color() const;
 
 signals:
-  void colorChanged(const QColor &);
+    void colorChanged(const QColor &);
 
 protected:
-  //void paintEvent(QPaintEvent *event);
+    //void paintEvent(QPaintEvent *event);
 
 private slots:
-  void chooseColor();
+    void chooseColor();
 
 private:
-  QColor _color;
+    QColor _color;
 };
+
 
 #endif

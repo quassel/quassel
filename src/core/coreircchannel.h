@@ -27,30 +27,32 @@
 #  include "cipher.h"
 #endif
 
-class CoreIrcChannel : public IrcChannel {
-  SYNCABLE_OBJECT
-  Q_OBJECT
+class CoreIrcChannel : public IrcChannel
+{
+    SYNCABLE_OBJECT
+        Q_OBJECT
 
 public:
-  CoreIrcChannel(const QString &channelname, Network *network);
-  virtual ~CoreIrcChannel();
+    CoreIrcChannel(const QString &channelname, Network *network);
+    virtual ~CoreIrcChannel();
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &IrcChannel::staticMetaObject; }
+    inline virtual const QMetaObject *syncMetaObject() const { return &IrcChannel::staticMetaObject; }
 
 #ifdef HAVE_QCA2
-  Cipher *cipher() const;
-  void setEncrypted(bool);
+    Cipher *cipher() const;
+    void setEncrypted(bool);
 #endif
 
-  inline bool receivedWelcomeMsg() const { return _receivedWelcomeMsg; }
-  inline void setReceivedWelcomeMsg() { _receivedWelcomeMsg = true; }
+    inline bool receivedWelcomeMsg() const { return _receivedWelcomeMsg; }
+    inline void setReceivedWelcomeMsg() { _receivedWelcomeMsg = true; }
 
 private:
-  bool _receivedWelcomeMsg;
+    bool _receivedWelcomeMsg;
 
 #ifdef HAVE_QCA2
-  mutable Cipher *_cipher;
+    mutable Cipher *_cipher;
 #endif
 };
+
 
 #endif //COREIRCCHANNEL_H

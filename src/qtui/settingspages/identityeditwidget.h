@@ -31,83 +31,86 @@
 
 #include "clientidentity.h"
 
-class IdentityEditWidget : public QWidget {
-  Q_OBJECT
+class IdentityEditWidget : public QWidget
+{
+    Q_OBJECT
 
 public:
-  IdentityEditWidget(QWidget *parent = 0);
+    IdentityEditWidget(QWidget *parent = 0);
 
-  enum SslState {
-    NoSsl,
-    UnsecureSsl,
-    AllowSsl
-  };
+    enum SslState {
+        NoSsl,
+        UnsecureSsl,
+        AllowSsl
+    };
 
-  void displayIdentity(CertIdentity *id, CertIdentity *saveId = 0);
-  void saveToIdentity(CertIdentity *id);
+    void displayIdentity(CertIdentity *id, CertIdentity *saveId = 0);
+    void saveToIdentity(CertIdentity *id);
 
 public slots:
-  void setSslState(SslState state);
-  void showAdvanced(bool advanced);
+    void setSslState(SslState state);
+    void showAdvanced(bool advanced);
 
 protected:
 #ifdef HAVE_SSL
-  virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
 #endif
 
 signals:
-  void requestEditSsl();
-  void widgetHasChanged();
+    void requestEditSsl();
+    void widgetHasChanged();
 
 private slots:
-  void on_addNick_clicked();
-  void on_deleteNick_clicked();
-  void on_renameNick_clicked();
-  void on_nickUp_clicked();
-  void on_nickDown_clicked();
+    void on_addNick_clicked();
+    void on_deleteNick_clicked();
+    void on_renameNick_clicked();
+    void on_nickUp_clicked();
+    void on_nickDown_clicked();
 
 #ifdef HAVE_SSL
-  void on_clearOrLoadKeyButton_clicked();
-  void on_clearOrLoadCertButton_clicked();
+    void on_clearOrLoadKeyButton_clicked();
+    void on_clearOrLoadCertButton_clicked();
 #endif
-  void setWidgetStates();
+    void setWidgetStates();
 
 #ifdef HAVE_SSL
-  void sslDragEnterEvent(QDragEnterEvent *event);
-  void sslDropEvent(QDropEvent *event, bool isCert);
+    void sslDragEnterEvent(QDragEnterEvent *event);
+    void sslDropEvent(QDropEvent *event, bool isCert);
 #endif
 
 private:
-  Ui::IdentityEditWidget ui;
-  bool _editSsl;
+    Ui::IdentityEditWidget ui;
+    bool _editSsl;
 
 #ifdef HAVE_SSL
-  QSslKey keyByFilename(const QString &filename);
-  void showKeyState(const QSslKey &key);
-  QSslCertificate certByFilename(const QString &filename);
-  void showCertState(const QSslCertificate &cert);
+    QSslKey keyByFilename(const QString &filename);
+    void showKeyState(const QSslKey &key);
+    QSslCertificate certByFilename(const QString &filename);
+    void showCertState(const QSslCertificate &cert);
 #endif
 
-  bool testHasChanged();
+    bool testHasChanged();
 };
 
-class NickEditDlg : public QDialog {
-  Q_OBJECT
+
+class NickEditDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-  NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
-  QString nick() const;
+    QString nick() const;
 
 private slots:
-  void on_nickEdit_textChanged(const QString &);
+    void on_nickEdit_textChanged(const QString &);
 
 private:
-  Ui::NickEditDlg ui;
+    Ui::NickEditDlg ui;
 
-  QString oldNick;
-  QStringList existing;
-
+    QString oldNick;
+    QStringList existing;
 };
+
 
 #endif //IDENTITYEDITWIDGET_H

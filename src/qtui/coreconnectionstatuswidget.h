@@ -27,26 +27,28 @@
 
 #include "coreconnection.h"
 
-class CoreConnectionStatusWidget : public QWidget {
-  Q_OBJECT
+class CoreConnectionStatusWidget : public QWidget
+{
+    Q_OBJECT
 
 public:
-  CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent = 0);
+    CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent = 0);
 
-  inline CoreConnection *coreConnection() const { return _coreConnection; }
+    inline CoreConnection *coreConnection() const { return _coreConnection; }
 
 public slots:
-  void update();
-  void updateLag(int msecs);
+    void update();
+    void updateLag(int msecs);
 
 private slots:
-  void connectionStateChanged(CoreConnection::ConnectionState);
-  void progressRangeChanged(int min, int max);
+    void connectionStateChanged(CoreConnection::ConnectionState);
+    void progressRangeChanged(int min, int max);
 
 private:
-  Ui::CoreConnectionStatusWidget ui;
+    Ui::CoreConnectionStatusWidget ui;
 
-  CoreConnection *_coreConnection;
+    CoreConnection *_coreConnection;
 };
+
 
 #endif // CORECONNECTIONSTATUSWIDGET_H

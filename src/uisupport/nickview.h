@@ -25,32 +25,34 @@
 
 #include "bufferinfo.h"
 
-class NickView : public QTreeView {
-  Q_OBJECT
+class NickView : public QTreeView
+{
+    Q_OBJECT
 
 public:
-  NickView(QWidget *parent = 0);
+    NickView(QWidget *parent = 0);
 
 protected:
-  virtual void rowsInserted(const QModelIndex &parent, int start, int end);
+    virtual void rowsInserted(const QModelIndex &parent, int start, int end);
 
-  //! This reimplementation ensures that the current index is first in list
-  virtual QModelIndexList selectedIndexes() const;
+    //! This reimplementation ensures that the current index is first in list
+    virtual QModelIndexList selectedIndexes() const;
 
-  void unanimatedExpandAll();
+    void unanimatedExpandAll();
 
 public slots:
-  virtual void setModel(QAbstractItemModel *model);
-  virtual void setRootIndex(const QModelIndex &index);
-  void init();
-  void showContextMenu(const QPoint & pos);
-  void startQuery(const QModelIndex & modelIndex);
+    virtual void setModel(QAbstractItemModel *model);
+    virtual void setRootIndex(const QModelIndex &index);
+    void init();
+    void showContextMenu(const QPoint &pos);
+    void startQuery(const QModelIndex &modelIndex);
 
 signals:
-  void selectionUpdated();
+    void selectionUpdated();
 
 private:
-  friend class NickListWidget;  // needs selectedIndexes()
+    friend class NickListWidget; // needs selectedIndexes()
 };
+
 
 #endif

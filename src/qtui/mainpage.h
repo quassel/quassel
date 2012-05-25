@@ -23,16 +23,16 @@
 
 #include <QWidget>
 
-class MainPage : public QWidget {
-  Q_OBJECT
+class MainPage : public QWidget
+{
+    Q_OBJECT
 
 public:
-  MainPage(QWidget *parent = 0);
+    MainPage(QWidget *parent = 0);
 
 protected:
-  void paintEvent(QPaintEvent *event);
-
-
+    void paintEvent(QPaintEvent *event);
 };
+
 
 #endif

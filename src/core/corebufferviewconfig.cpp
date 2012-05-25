@@ -22,13 +22,14 @@
 
 INIT_SYNCABLE_OBJECT(CoreBufferViewConfig)
 CoreBufferViewConfig::CoreBufferViewConfig(int bufferViewId, QObject *parent)
-  : BufferViewConfig(bufferViewId, parent)
+    : BufferViewConfig(bufferViewId, parent)
 {
-  setAllowClientUpdates(true);
+    setAllowClientUpdates(true);
 }
 
+
 CoreBufferViewConfig::CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent)
-  : BufferViewConfig(bufferViewId, properties, parent)
+    : BufferViewConfig(bufferViewId, properties, parent)
 {
-  setAllowClientUpdates(true);
+    setAllowClientUpdates(true);
 }
