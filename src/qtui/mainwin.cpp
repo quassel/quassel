@@ -306,7 +306,9 @@ void MainWin::restoreStateFromSettings(UiSettings &s)
     move(_normalPos);
 #endif
 
-    if (s.value("MainWinHidden").toBool() && QtUi::haveSystemTray())
+    if ((Quassel::isOptionSet("hidewindow")
+            || s.value("MainWinHidden").toBool())
+            && _systemTray->isSystemTrayAvailable())
         QtUi::hideMainWidget();
     else if (s.value("MainWinMinimized").toBool())
         showMinimized();

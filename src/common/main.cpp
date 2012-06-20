@@ -98,6 +98,7 @@ int main(int argc, char **argv)
     cliParser->addOption("qss <file.qss>", 0, "Load a custom application stylesheet");
     cliParser->addSwitch("debugbufferswitches", 0, "Enables debugging for bufferswitches");
     cliParser->addSwitch("debugmodel", 0, "Enables debugging for models");
+    cliParser->addSwitch("hidewindow", 0, "Start the client minimized to the system tray");
 #endif
 #ifndef BUILD_QTUI
     // put core-only arguments here
