@@ -2,11 +2,18 @@
 
 # In Qt4, we still have some minor deps to QtUi: QItemSelectionModel, QSortFilterProxyModel
 # Still in Qt5: QAbstractItemView in BufferModel
-if(NOT WITH_QT5)
-  setup_qt_variables(Gui Network DBus)
-else(NOT WITH_QT5)
-  setup_qt_variables(Widgets Network DBus)
-endif(NOT WITH_QT5)
+
+set(_modules )
+
+if(WITH_QT5)
+  list(APPEND _modules Widgets)
+endif(WITH_QT5)
+
+if(HAVE_DBUS)
+  list(APPEND _modules DBus)
+endif(HAVE_DBUS)
+
+setup_qt_variables(Gui Network ${_modules})
 
 set(SOURCES
     abstractmessageprocessor.cpp
