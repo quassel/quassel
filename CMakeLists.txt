@@ -142,10 +142,10 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 
 # Mac build stuff
 if(APPLE AND DEPLOY)
-  set(CMAKE_OSX_ARCHITECTURES "i386;ppc")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.4")
-  set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.4u.sdk/")
-  add_definitions(-DMAC_10_4_SDK)
+  set(CMAKE_OSX_ARCHITECTURES "x86_64")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.6")
+  set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.6.sdk/")
+  add_definitions(-DMAC_10_6_SDK)
 endif(APPLE AND DEPLOY)
 
 # Simplify checks
