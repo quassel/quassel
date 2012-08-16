@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QString>
 #include <QVariant>
+#include <QDataStream>
 #include <QTextStream>
 #include <QHostAddress>
 #include <QDataStream>

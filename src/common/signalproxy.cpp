@@ -96,7 +96,11 @@ void SignalProxy::SignalRelay::attachSignal(QObject *sender, int signalId, const
     }
     else {
         fn = SIGNAL(fakeMethodSignature());
+#if QT_VERSION >= 0x050000
+        fn = fn.replace("fakeMethodSignature()", sender->metaObject()->method(signalId).methodSignature());
+#else
         fn = fn.replace("fakeMethodSignature()", sender->metaObject()->method(signalId).signature());
+#endif
     }
 
     _slots[slotId] = Signal(sender, signalId, fn);
@@ -141,7 +145,11 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
             const QList<int> &argTypes = eMeta->argTypes(signal.signalId);
             for (int i = 0; i < argTypes.size(); i++) {
                 if (argTypes[i] == 0) {
+#if QT_VERSION >= 0x050000
+                    qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(_id).methodSignature().constData());
+#else
                     qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(_id).signature());
+#endif
                     qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
                     return _id;
                 }
@@ -636,7 +644,11 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
     // check for argument compatibility and build params array
     for (int i = 0; i < numArgs; i++) {
         if (!params[i].isValid()) {
+#if QT_VERSION >= 0x050000
+            qWarning() << "SignalProxy::invokeSlot(): received invalid data for argument number" << i << "of method" << QString("%1::%2()").arg(receiver->metaObject()->className()).arg(receiver->metaObject()->method(methodId).methodSignature().constData());
+#else
             qWarning() << "SignalProxy::invokeSlot(): received invalid data for argument number" << i << "of method" << QString("%1::%2()").arg(receiver->metaObject()->className()).arg(receiver->metaObject()->method(methodId).signature());
+#endif
             qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
             return false;
         }
@@ -805,7 +817,11 @@ SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta, boo
         if (_meta->method(i).methodType() != QMetaMethod::Slot)
             continue;
 
+#if QT_VERSION >= 0x050000
+        if (_meta->method(i).methodSignature().contains('*'))
+#else
         if (QByteArray(_meta->method(i).signature()).contains('*'))
+#endif
             continue;  // skip methods with ptr params
 
         QByteArray method = methodName(_meta->method(i));
@@ -834,7 +850,11 @@ SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta, boo
             }
             if (checkConflicts) {
                 qWarning() << "class" << meta->className() << "contains overloaded methods which is currently not supported!";
+#if QT_VERSION >= 0x050000
+                qWarning() << " - " << _meta->method(i).methodSignature() << "conflicts with" << _meta->method(_methodIds[method]).methodSignature();
+#else
                 qWarning() << " - " << _meta->method(i).signature() << "conflicts with" << _meta->method(_methodIds[method]).signature();
+#endif
             }
             continue;
         }
@@ -874,7 +894,11 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap()
             if (QMetaType::Void == (QMetaType::Type)returnType(i))
                 continue;
 
+#if QT_VERSION >= 0x050000
+            signature = requestSlot.methodSignature();
+#else
             signature = QByteArray(requestSlot.signature());
+#endif
             if (!signature.startsWith("request"))
                 continue;
 
@@ -908,14 +932,22 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap()
 
 QByteArray SignalProxy::ExtendedMetaObject::methodName(const QMetaMethod &method)
 {
+#if QT_VERSION >= 0x050000
+    QByteArray sig(method.methodSignature());
+#else
     QByteArray sig(method.signature());
+#endif
     return sig.left(sig.indexOf("("));
 }
 
 
 QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod &method)
 {
+#if QT_VERSION >= 0x050000
+    QString methodname = QString(method.methodSignature()).section("(", 0, 0);
+#else
     QString methodname = QString(method.signature()).section("(", 0, 0);
+#endif
 
     // determine where we have to chop:
     int upperCharPos;
@@ -953,7 +985,11 @@ SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaM
     _argTypes = argTypes;
 
     // determine minArgCount
+#if QT_VERSION >= 0x050000
+    QString signature(method.methodSignature());
+#else
     QString signature(method.signature());
+#endif
     _minArgCount = method.parameterTypes().count() - signature.count("=");
 
     _receiverMode = (_methodName.startsWith("request"))

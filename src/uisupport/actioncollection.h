@@ -96,7 +96,11 @@ signals:
     void actionTriggered(QAction *action);
 
 protected slots:
+#if QT_VERSION >= 0x050000
+    virtual void connectNotify(const QMetaMethod &method);
+#else
     virtual void connectNotify(const char *signal);
+#endif
     virtual void slotActionTriggered();
 
 private slots:

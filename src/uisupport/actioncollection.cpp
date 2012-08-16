@@ -202,11 +202,18 @@ void ActionCollection::actionDestroyed(QObject *obj)
     unlistAction(action);
 }
 
-
+#if QT_VERSION >= 0x050000
+void ActionCollection::connectNotify(const QMetaMethod &method)
+#else
 void ActionCollection::connectNotify(const char *signal)
+#endif
 {
     if (_connectHovered && _connectTriggered)
         return;
+
+#if QT_VERSION >= 0x050000
+    QByteArray signal = method.methodSignature();
+#endif
 
     if (QMetaObject::normalizedSignature(SIGNAL(actionHovered(QAction *))) == signal) {
         if (!_connectHovered) {
@@ -223,7 +230,11 @@ void ActionCollection::connectNotify(const char *signal)
         }
     }
 
+#if QT_VERSION >= 0x050000
+    QObject::connectNotify(method);
+#else
     QObject::connectNotify(signal);
+#endif
 }
 
 
