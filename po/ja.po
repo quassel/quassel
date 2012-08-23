@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-02-14 23:41+0000\n"
+"PO-Revision-Date: 2012-06-24 20:04+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -59,13 +59,13 @@ msgctxt "AboutDlg|"
 msgid "&Thanks To"
 msgstr "&Thanks To"
 
-#: ../src/qtui/aboutdlg.cpp:32
+#: ../src/qtui/aboutdlg.cpp:33
 #, qt-format
 msgctxt "AboutDlg|"
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 msgstr ""
 
-#: ../src/qtui/aboutdlg.cpp:46
+#: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
 "<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2012 by the "
@@ -81,19 +81,19 @@ msgid ""
 "report bugs."
 msgstr ""
 
-#: ../src/qtui/aboutdlg.cpp:62
+#: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"
 msgid "Quassel IRC is mainly developed by:"
 msgstr "Quassel IRC の主要な開発者："
 
-#: ../src/qtui/aboutdlg.cpp:77
+#: ../src/qtui/aboutdlg.cpp:84
 msgctxt "AboutDlg|"
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
 msgstr ""
 
-#: ../src/qtui/aboutdlg.cpp:135
+#: ../src/qtui/aboutdlg.cpp:167
 msgctxt "AboutDlg|"
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
@@ -110,26 +110,26 @@ msgid ""
 "sponsoring development of Quassel Mobile with N810s</dd>"
 msgstr ""
 
-#: ../src/core/abstractsqlstorage.cpp:115
+#: ../src/core/abstractsqlstorage.cpp:124
 #, qt-format
 msgctxt "AbstractSqlStorage|"
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr ""
 
-#: ../src/core/abstractsqlstorage.cpp:117
+#: ../src/core/abstractsqlstorage.cpp:126
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
 msgstr "更新に失敗しました..."
 
-#: ../src/qtui/settingspages/aliasesmodel.cpp:55
+#: ../src/qtui/settingspages/aliasesmodel.cpp:57
 msgctxt "AliasesModel|"
 msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
 msgstr ""
 
-#: ../src/qtui/settingspages/aliasesmodel.cpp:59
+#: ../src/qtui/settingspages/aliasesmodel.cpp:61
 msgctxt "AliasesModel|"
 msgid ""
 "<b>The string the shortcut will be expanded to</b><br /><b>special "
@@ -145,12 +145,12 @@ msgid ""
 "All 1 2 3\" when called like /test 1 2 3"
 msgstr ""
 
-#: ../src/qtui/settingspages/aliasesmodel.cpp:170
+#: ../src/qtui/settingspages/aliasesmodel.cpp:185
 msgctxt "AliasesModel|"
 msgid "Alias"
 msgstr "別名"
 
-#: ../src/qtui/settingspages/aliasesmodel.cpp:171
+#: ../src/qtui/settingspages/aliasesmodel.cpp:186
 msgctxt "AliasesModel|"
 msgid "Expansion"
 msgstr ""
@@ -211,7 +211,7 @@ msgid "<Untranslated>"
 msgstr "＜未翻訳＞"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:52
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:74
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:76
 msgctxt "AppearanceSettingsPage|"
 msgid "<System Default>"
 msgstr "＜システムデフォルト＞"
@@ -286,7 +286,7 @@ msgctxt "AppearanceSettingsPage|"
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ../src/qtui/settingspages/appearancesettingspage.cpp:225
+#: ../src/qtui/settingspages/appearancesettingspage.cpp:242
 msgctxt "AppearanceSettingsPage|"
 msgid "Please choose a stylesheet file"
 msgstr "スタイルシートのファイルを選択してください"
@@ -296,12 +296,12 @@ msgctxt "AwayLogView|"
 msgid "Away Log"
 msgstr "退席中："
 
-#: ../src/qtui/awaylogview.cpp:44
+#: ../src/qtui/awaylogview.cpp:46
 msgctxt "AwayLogView|"
 msgid "Show Network Name"
 msgstr "ネットワーク名を表示"
 
-#: ../src/qtui/awaylogview.cpp:49
+#: ../src/qtui/awaylogview.cpp:51
 msgctxt "AwayLogView|"
 msgid "Show Buffer Name"
 msgstr "バッファ名を表示"
@@ -431,18 +431,18 @@ msgctxt "BacklogSettingsPage|"
 msgid "Backlog Fetching"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:346
+#: ../src/client/networkmodel.cpp:386
 #, qt-format
 msgctxt "BufferItem|"
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 - %2 </p>"
 
-#: ../src/uisupport/bufferview.cpp:251
+#: ../src/uisupport/bufferview.cpp:272
 msgctxt "BufferView|"
 msgid "Merge buffers permanently?"
 msgstr "完全にバッファをマージしますか？"
 
-#: ../src/uisupport/bufferview.cpp:252
+#: ../src/uisupport/bufferview.cpp:273
 #, qt-format
 msgctxt "BufferView|"
 msgid ""
@@ -460,12 +460,12 @@ msgctxt "BufferViewEditDlg|"
 msgid "Please enter a name for the chat list:"
 msgstr "ネットワーク名を入力してください："
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:520
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:575
 msgctxt "BufferViewEditDlg|"
 msgid "Add Chat List"
 msgstr "チャットリストを追加"
 
-#: ../src/uisupport/bufferviewfilter.cpp:52
+#: ../src/uisupport/bufferviewfilter.cpp:54
 msgctxt "BufferViewFilter|"
 msgid "Show / Hide Chats"
 msgstr "チャットを表示・隠す"
@@ -501,7 +501,7 @@ msgid "Network:"
 msgstr "ネットワーク："
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:100
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:117
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:123
 msgctxt "BufferViewSettingsPage|"
 msgid "All"
 msgstr "すべて"
@@ -583,12 +583,12 @@ msgctxt "BufferViewSettingsPage|"
 msgid "Custom Chat Lists"
 msgstr "カスタムチャットリスト"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:342
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:378
 msgctxt "BufferViewSettingsPage|"
 msgid "Delete Chat List?"
 msgstr "チャットリストを削除してもよろしいですか？"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:343
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:379
 #, qt-format
 msgctxt "BufferViewSettingsPage|"
 msgid "Do you really want to delete the chat list \"%1\"?"
@@ -599,61 +599,61 @@ msgctxt "BufferViewWidget|"
 msgid "BufferView"
 msgstr "バッファビュー"
 
-#: ../src/qtui/bufferwidget.cpp:79
+#: ../src/qtui/bufferwidget.cpp:78
 msgctxt "BufferWidget|"
 msgid "Zoom In"
 msgstr "拡大"
 
-#: ../src/qtui/bufferwidget.cpp:85
+#: ../src/qtui/bufferwidget.cpp:84
 msgctxt "BufferWidget|"
 msgid "Zoom Out"
 msgstr "縮小"
 
-#: ../src/qtui/bufferwidget.cpp:90
+#: ../src/qtui/bufferwidget.cpp:89
 msgctxt "BufferWidget|"
 msgid "Actual Size"
 msgstr "実際サイズ"
 
-#: ../src/qtui/bufferwidget.cpp:94
+#: ../src/qtui/bufferwidget.cpp:93
 msgctxt "BufferWidget|"
 msgid "Set Marker Line"
 msgstr "しおり："
 
-#: ../src/qtui/bufferwidget.cpp:98
+#: ../src/qtui/bufferwidget.cpp:97
 msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
 msgstr "しおり："
 
-#: ../src/client/networkmodel.cpp:503
+#: ../src/client/networkmodel.cpp:565
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Channel %1</b>"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:506
+#: ../src/client/networkmodel.cpp:568
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
 msgstr "<b>ユーザ：</b> %1"
 
-#: ../src/client/networkmodel.cpp:510
+#: ../src/client/networkmodel.cpp:572
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Mode:</b> %1"
-msgstr ""
+msgstr "<b>モード：</b> %1"
 
-#: ../src/client/networkmodel.cpp:521
+#: ../src/client/networkmodel.cpp:583
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Topic:</b> %1"
-msgstr ""
+msgstr "<b>トピック：</b> %1"
 
-#: ../src/client/networkmodel.cpp:525
+#: ../src/client/networkmodel.cpp:588
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:528
+#: ../src/client/networkmodel.cpp:591
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
@@ -740,7 +740,7 @@ msgid "Move selected buffers to the right"
 msgstr "選択してるバッファを右に動く"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:236
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:258
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show:"
 msgstr "表示："
@@ -771,42 +771,42 @@ msgctxt "ChatMonitorSettingsPage|"
 msgid "Chat Monitor"
 msgstr "チャットモニター"
 
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:58
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:59
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Opt In"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:59
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:60
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Opt Out"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:239
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:261
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Ignore:"
 msgstr "無視："
 
-#: ../src/qtui/chatmonitorview.cpp:52
+#: ../src/qtui/chatmonitorview.cpp:54
 msgctxt "ChatMonitorView|"
 msgid "Show Own Messages"
 msgstr "自分のメッセージを表示"
 
-#: ../src/qtui/chatmonitorview.cpp:59
+#: ../src/qtui/chatmonitorview.cpp:61
 msgctxt "ChatMonitorView|"
 msgid "Show Network Name"
 msgstr "ネットワーク名を表示"
 
-#: ../src/qtui/chatmonitorview.cpp:64
+#: ../src/qtui/chatmonitorview.cpp:66
 msgctxt "ChatMonitorView|"
 msgid "Show Buffer Name"
 msgstr "バッファ名を表示"
 
-#: ../src/qtui/chatmonitorview.cpp:71
+#: ../src/qtui/chatmonitorview.cpp:73
 msgctxt "ChatMonitorView|"
 msgid "Configure..."
 msgstr "設定..."
 
-#: ../src/qtui/chatscene.cpp:743
+#: ../src/qtui/chatscene.cpp:803
 msgctxt "ChatScene|"
 msgid "Copy Selection"
 msgstr "セレクションをコピー"
@@ -853,141 +853,154 @@ msgctxt "ChatViewSettingsPage|"
 msgid "Timestamp format:"
 msgstr "タイムスタンプのフォーマット："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:32
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:29
+msgctxt "ChatViewSettingsPage|"
+msgid ""
+"<html><head/><body><p>Usage examples:</p>\n"
+"<table cellpadding=\"2\">\n"
+"<tr><td>dd.MM.yyyy</td><td>21.05.2001</td></tr>\n"
+"<tr><td>ddd MMMM d yy</td><td>Tue May 21 01</td></tr>\n"
+"<tr><td>hh:mm:ss.zzz</td><td>14:13:09.042</td></tr>\n"
+"<tr><td>h:m:s ap</td><td>2:13:9 pm</td></tr>\n"
+"</table>\n"
+"</body></html>"
+msgstr ""
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:42
 msgctxt "ChatViewSettingsPage|"
 msgid "[hh:mm:ss]"
 msgstr "[hh:mm:ss]"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:59
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:69
 msgctxt "ChatViewSettingsPage|"
 msgid "Custom chat window font:"
 msgstr "カスタムチャットウィンドウのフォント："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:92
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:102
 msgctxt "ChatViewSettingsPage|"
 msgid "Show colored text in the chat window"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:95
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:105
 msgctxt "ChatViewSettingsPage|"
 msgid "Allow colored text (mIRC color codes)"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:111
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:121
 msgctxt "ChatViewSettingsPage|"
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:114
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:124
 msgctxt "ChatViewSettingsPage|"
 msgid "Show previews of webpages on URL hover"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:130
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:140
 msgctxt "ChatViewSettingsPage|"
 msgid ""
 "Set the marker line to the bottom of the current chat window when selecting "
 "another channel"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:133
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:143
 msgctxt "ChatViewSettingsPage|"
 msgid "Set marker line automatically when switching chats"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:149
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:159
 msgctxt "ChatViewSettingsPage|"
 msgid "Custom Colors"
 msgstr "カスタム色"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:167
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:177
 msgctxt "ChatViewSettingsPage|"
 msgid "Action:"
 msgstr "操作："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:174
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:198
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:222
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:259
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:283
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:314
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:338
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:362
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:386
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:403
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:443
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:460
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:477
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:494
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:511
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:528
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:545
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:562
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:579
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:596
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:613
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:630
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:647
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:664
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:681
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:698
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:726
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:184
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:208
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:232
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:269
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:293
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:324
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:348
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:372
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:396
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:413
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:453
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:470
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:487
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:504
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:521
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:538
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:555
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:572
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:589
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:606
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:623
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:640
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:657
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:674
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:691
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:708
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:736
 msgctxt "ChatViewSettingsPage|"
 msgid "..."
 msgstr "..."
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:191
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:201
 msgctxt "ChatViewSettingsPage|"
 msgid "Timestamp:"
 msgstr "タイムスタンプ："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:215
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:225
 msgctxt "ChatViewSettingsPage|"
 msgid "Channel message:"
 msgstr "チャンネルメッセージ："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:252
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:262
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight foreground:"
 msgstr "強調表示の前景色："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:276
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:286
 msgctxt "ChatViewSettingsPage|"
 msgid "Command message:"
 msgstr "コマンドメッセージ："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:300
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:310
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight background:"
 msgstr "強調表示の背景色："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:307
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:317
 msgctxt "ChatViewSettingsPage|"
 msgid "Server message:"
 msgstr "サーバメッセージ："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:331
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:341
 msgctxt "ChatViewSettingsPage|"
 msgid "Marker line:"
 msgstr "しおり："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:355
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:365
 msgctxt "ChatViewSettingsPage|"
 msgid "Error message:"
 msgstr "エラーメッセージ："
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:379
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:389
 msgctxt "ChatViewSettingsPage|"
 msgid "Background:"
 msgstr "背景:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:423
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:433
 msgctxt "ChatViewSettingsPage|"
 msgid "Use Sender Coloring"
 msgstr ""
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:719
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:729
 msgctxt "ChatViewSettingsPage|"
 msgid "Own messages:"
 msgstr "自分のメッセージ："
@@ -1007,28 +1020,28 @@ msgctxt "ChatViewSettingsPage|"
 msgid "You need at 0.6 quasselcore to use this feature"
 msgstr ""
 
-#: ../src/client/client.cpp:270
+#: ../src/client/client.cpp:318
 msgctxt "Client|"
 msgid "Identity already exists in client!"
 msgstr ""
 
-#: ../src/client/clientbacklogmanager.cpp:161
+#: ../src/client/clientbacklogmanager.cpp:178
 #, qt-format
 msgctxt "ClientBacklogManager|"
 msgid "Processed %1 messages in %2 seconds."
 msgstr ""
 
-#: ../src/client/clientbufferviewmanager.cpp:52
+#: ../src/client/clientbufferviewmanager.cpp:60
 msgctxt "ClientBufferViewManager|"
 msgid "All Chats"
 msgstr "すべてのチャット"
 
-#: ../src/client/clientuserinputhandler.cpp:88
+#: ../src/client/clientuserinputhandler.cpp:98
 msgctxt "ClientUserInputHandler|"
 msgid "/JOIN expects a channel"
 msgstr ""
 
-#: ../src/client/clientuserinputhandler.cpp:98
+#: ../src/client/clientuserinputhandler.cpp:110
 msgctxt "ClientUserInputHandler|"
 msgid "/QUERY expects at least a nick"
 msgstr ""
@@ -1102,222 +1115,232 @@ msgctxt "ConnectionSettingsPage|"
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/qtui/chatitem.cpp:683
+#: ../src/qtui/chatitem.cpp:803
 msgctxt "ContentsChatItem|"
 msgid "Copy Link Address"
 msgstr "リンクアドレスをコピー"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:38
+#: ../src/uisupport/contextmenuactionprovider.cpp:39
 msgctxt "ContextMenuActionProvider|"
 msgid "Connect"
 msgstr "接続"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:39
+#: ../src/uisupport/contextmenuactionprovider.cpp:40
 msgctxt "ContextMenuActionProvider|"
 msgid "Disconnect"
 msgstr "切断"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:41
+#: ../src/uisupport/contextmenuactionprovider.cpp:42
 msgctxt "ContextMenuActionProvider|"
 msgid "Join"
 msgstr "入室"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:42
+#: ../src/uisupport/contextmenuactionprovider.cpp:43
 msgctxt "ContextMenuActionProvider|"
 msgid "Part"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:43
+#: ../src/uisupport/contextmenuactionprovider.cpp:44
 msgctxt "ContextMenuActionProvider|"
 msgid "Delete Chat(s)..."
 msgstr "チャットを削除..."
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:44
+#: ../src/uisupport/contextmenuactionprovider.cpp:45
 msgctxt "ContextMenuActionProvider|"
 msgid "Go to Chat"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:46
+#: ../src/uisupport/contextmenuactionprovider.cpp:47
 msgctxt "ContextMenuActionProvider|"
 msgid "Joins"
 msgstr "入室"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:47
+#: ../src/uisupport/contextmenuactionprovider.cpp:48
 msgctxt "ContextMenuActionProvider|"
 msgid "Parts"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:48
+#: ../src/uisupport/contextmenuactionprovider.cpp:49
 msgctxt "ContextMenuActionProvider|"
 msgid "Quits"
 msgstr "閉じる(&Q)"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:49
+#: ../src/uisupport/contextmenuactionprovider.cpp:50
 msgctxt "ContextMenuActionProvider|"
 msgid "Nick Changes"
 msgstr "ニックの変更"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:50
+#: ../src/uisupport/contextmenuactionprovider.cpp:51
 msgctxt "ContextMenuActionProvider|"
 msgid "Mode Changes"
 msgstr "モードの変更"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:51
+#: ../src/uisupport/contextmenuactionprovider.cpp:52
 msgctxt "ContextMenuActionProvider|"
 msgid "Day Changes"
 msgstr "日付の変更"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:52
+#: ../src/uisupport/contextmenuactionprovider.cpp:53
 msgctxt "ContextMenuActionProvider|"
 msgid "Topic Changes"
 msgstr "トピックの変更"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:53
+#: ../src/uisupport/contextmenuactionprovider.cpp:54
 msgctxt "ContextMenuActionProvider|"
 msgid "Set as Default..."
 msgstr "既定として適当"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:54
+#: ../src/uisupport/contextmenuactionprovider.cpp:55
 msgctxt "ContextMenuActionProvider|"
 msgid "Use Defaults..."
 msgstr "既定を使用..."
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:56
+#: ../src/uisupport/contextmenuactionprovider.cpp:57
 msgctxt "ContextMenuActionProvider|"
 msgid "Join Channel..."
 msgstr "チャンネルに入室..."
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:58
+#: ../src/uisupport/contextmenuactionprovider.cpp:59
 msgctxt "ContextMenuActionProvider|"
 msgid "Start Query"
 msgstr "クエリを表示"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:59
+#: ../src/uisupport/contextmenuactionprovider.cpp:60
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Query"
 msgstr "クエリを表示"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:60
+#: ../src/uisupport/contextmenuactionprovider.cpp:61
 msgctxt "ContextMenuActionProvider|"
 msgid "Whois"
 msgstr "ユーザ情報"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:62
+#: ../src/uisupport/contextmenuactionprovider.cpp:63
 msgctxt "ContextMenuActionProvider|"
 msgid "Version"
 msgstr "バージョン"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:63
+#: ../src/uisupport/contextmenuactionprovider.cpp:64
 msgctxt "ContextMenuActionProvider|"
 msgid "Time"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:64
+#: ../src/uisupport/contextmenuactionprovider.cpp:65
 msgctxt "ContextMenuActionProvider|"
 msgid "Ping"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:65
+#: ../src/uisupport/contextmenuactionprovider.cpp:66
 msgctxt "ContextMenuActionProvider|"
 msgid "Client info"
 msgstr "クライアント情報"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:66
+#: ../src/uisupport/contextmenuactionprovider.cpp:67
 msgctxt "ContextMenuActionProvider|"
 msgid "Custom..."
 msgstr "カスタム..."
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:78
+#: ../src/uisupport/contextmenuactionprovider.cpp:79
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Operator Status"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:79
+#: ../src/uisupport/contextmenuactionprovider.cpp:80
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Operator Status"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:80
+#: ../src/uisupport/contextmenuactionprovider.cpp:81
+msgctxt "ContextMenuActionProvider|"
+msgid "Give Half-Operator Status"
+msgstr ""
+
+#: ../src/uisupport/contextmenuactionprovider.cpp:82
+msgctxt "ContextMenuActionProvider|"
+msgid "Take Half-Operator Status"
+msgstr ""
+
+#: ../src/uisupport/contextmenuactionprovider.cpp:83
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Voice"
 msgstr "発言権を与える"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:81
+#: ../src/uisupport/contextmenuactionprovider.cpp:84
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Voice"
 msgstr "発言権を奪う"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:82
+#: ../src/uisupport/contextmenuactionprovider.cpp:85
 msgctxt "ContextMenuActionProvider|"
 msgid "Kick From Channel"
 msgstr "チャンネルに入室"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:83
+#: ../src/uisupport/contextmenuactionprovider.cpp:86
 msgctxt "ContextMenuActionProvider|"
 msgid "Ban From Channel"
 msgstr "チャンネルに入室"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:84
+#: ../src/uisupport/contextmenuactionprovider.cpp:87
 msgctxt "ContextMenuActionProvider|"
 msgid "Kick && Ban"
 msgstr "追放 (Kick / Ban)"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:86
+#: ../src/uisupport/contextmenuactionprovider.cpp:89
 msgctxt "ContextMenuActionProvider|"
 msgid "Hide Chat(s) Temporarily"
 msgstr "一時的にチャットを隠す"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:87
+#: ../src/uisupport/contextmenuactionprovider.cpp:90
 msgctxt "ContextMenuActionProvider|"
 msgid "Hide Chat(s) Permanently"
 msgstr "完全にチャットを隠しますか？"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:88
+#: ../src/uisupport/contextmenuactionprovider.cpp:91
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Channel List"
 msgstr "チャンネルリストを表示"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:89
+#: ../src/uisupport/contextmenuactionprovider.cpp:92
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Ignore List"
 msgstr "無視リストを表示"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:102
+#: ../src/uisupport/contextmenuactionprovider.cpp:105
 msgctxt "ContextMenuActionProvider|"
 msgid "Hide Events"
 msgstr "イベントを隠す"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:110
+#: ../src/uisupport/contextmenuactionprovider.cpp:113
 msgctxt "ContextMenuActionProvider|"
 msgid "CTCP"
 msgstr "CTCP"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:122
+#: ../src/uisupport/contextmenuactionprovider.cpp:128
 msgctxt "ContextMenuActionProvider|"
 msgid "Actions"
 msgstr "操作"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:126
+#: ../src/uisupport/contextmenuactionprovider.cpp:132
 msgctxt "ContextMenuActionProvider|"
 msgid "Ignore"
 msgstr "無視する"
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:131
+#: ../src/uisupport/contextmenuactionprovider.cpp:137
 msgctxt "ContextMenuActionProvider|"
 msgid "Add Ignore Rule"
 msgstr ""
 
-#: ../src/uisupport/contextmenuactionprovider.cpp:132
+#: ../src/uisupport/contextmenuactionprovider.cpp:138
 msgctxt "ContextMenuActionProvider|"
 msgid "Existing Rules"
 msgstr ""
 
-#: ../src/core/core.cpp:182
+#: ../src/core/core.cpp:188
 msgctxt "Core|"
 msgid "Could not initialize any storage backend! Exiting..."
 msgstr ""
 
-#: ../src/core/core.cpp:183
+#: ../src/core/core.cpp:189
 msgctxt "Core|"
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
@@ -1325,83 +1348,83 @@ msgid ""
 "to work."
 msgstr ""
 
-#: ../src/core/core.cpp:235
+#: ../src/core/core.cpp:247
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
 msgstr ""
 
-#: ../src/core/core.cpp:277
+#: ../src/core/core.cpp:293
 msgctxt "Core|"
 msgid "Admin user or password not set."
 msgstr ""
 
-#: ../src/core/core.cpp:280
+#: ../src/core/core.cpp:296
 msgctxt "Core|"
 msgid "Could not setup storage!"
 msgstr ""
 
-#: ../src/core/core.cpp:284
+#: ../src/core/core.cpp:300
 msgctxt "Core|"
 msgid "Creating admin user..."
 msgstr "管理ユーザを作成"
 
-#: ../src/core/core.cpp:397
+#: ../src/core/core.cpp:432
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
 msgstr ""
 
-#: ../src/core/core.cpp:405
+#: ../src/core/core.cpp:441
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr ""
 
-#: ../src/core/core.cpp:413
+#: ../src/core/core.cpp:450
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
 msgstr ""
 
-#: ../src/core/core.cpp:421
+#: ../src/core/core.cpp:458
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr ""
 
-#: ../src/core/core.cpp:431
+#: ../src/core/core.cpp:469
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
 msgstr ""
 
-#: ../src/core/core.cpp:439
+#: ../src/core/core.cpp:477
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
 msgstr ""
 
-#: ../src/core/core.cpp:448
+#: ../src/core/core.cpp:486
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
 msgstr ""
 
-#: ../src/core/core.cpp:482
+#: ../src/core/core.cpp:524
 msgctxt "Core|"
 msgid "Client connected from"
 msgstr "コアから切断しました。"
 
-#: ../src/core/core.cpp:485
+#: ../src/core/core.cpp:527
 msgctxt "Core|"
 msgid "Closing server for basic setup."
 msgstr ""
 
-#: ../src/core/core.cpp:504
+#: ../src/core/core.cpp:550
 msgctxt "Core|"
 msgid "Antique client trying to connect... refusing."
 msgstr ""
 
-#: ../src/core/core.cpp:516
+#: ../src/core/core.cpp:562
 #, qt-format
 msgctxt "Core|"
 msgid ""
@@ -1409,79 +1432,79 @@ msgid ""
 "client/core protocol version %1.<br>Please consider upgrading your client."
 msgstr ""
 
-#: ../src/core/core.cpp:520 ../src/core/core.cpp:610 ../src/core/core.cpp:634
+#: ../src/core/core.cpp:566 ../src/core/core.cpp:657 ../src/core/core.cpp:683
 msgctxt "Core|"
 msgid "Client"
 msgstr "クライアント"
 
-#: ../src/core/core.cpp:520
+#: ../src/core/core.cpp:566
 msgctxt "Core|"
 msgid "too old, rejecting."
 msgstr ""
 
-#: ../src/core/core.cpp:537
+#: ../src/core/core.cpp:583
 #, qt-format
 msgctxt "Core|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr ""
 
-#: ../src/core/core.cpp:590
+#: ../src/core/core.cpp:637
 msgctxt "Core|"
 msgid "Starting TLS for Client:"
 msgstr ""
 
-#: ../src/core/core.cpp:608
+#: ../src/core/core.cpp:655
 msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
 msgstr ""
 
-#: ../src/core/core.cpp:610
+#: ../src/core/core.cpp:657
 msgctxt "Core|"
 msgid "did not send an init message before trying to login, rejecting."
 msgstr ""
 
-#: ../src/core/core.cpp:628
+#: ../src/core/core.cpp:677
 msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr ""
 
-#: ../src/core/core.cpp:634
+#: ../src/core/core.cpp:683
 #, qt-format
 msgctxt "Core|"
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
 msgstr ""
 
-#: ../src/core/core.cpp:645
+#: ../src/core/core.cpp:696
 msgctxt "Core|"
 msgid "Non-authed client disconnected."
 msgstr ""
 
-#: ../src/core/core.cpp:651
+#: ../src/core/core.cpp:703
 msgctxt "Core|"
 msgid "Non-authed client disconnected. (socket allready destroyed)"
 msgstr ""
 
-#: ../src/core/core.cpp:699
+#: ../src/core/core.cpp:755
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
 msgstr ""
 
-#: ../src/core/core.cpp:721
+#: ../src/core/core.cpp:781
 msgctxt "Core|"
 msgid "Could not find a session for client:"
 msgstr "”%1”のスクリプトを見つかれませんでした。"
 
-#: ../src/client/coreaccount.h:39
+#: ../src/client/coreaccount.h:40
 msgctxt "CoreAccount|"
 msgid "Internal Core"
 msgstr "内部コア"
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:14
-#: ../src/qtui/settingspages/coreaccountsettingspage.cpp:229
+#: ../src/qtui/settingspages/coreaccountsettingspage.cpp:260
 msgctxt "CoreAccountEditDlg|"
 msgid "Edit Core Account"
 msgstr "コアアカウントを編集"
@@ -1556,12 +1579,12 @@ msgctxt "CoreAccountEditDlg|"
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../src/qtui/settingspages/coreaccountsettingspage.cpp:231
+#: ../src/qtui/settingspages/coreaccountsettingspage.cpp:262
 msgctxt "CoreAccountEditDlg|"
 msgid "Add Core Account"
 msgstr "コアアカウントを追加"
 
-#: ../src/client/coreaccountmodel.cpp:64
+#: ../src/client/coreaccountmodel.cpp:68
 msgctxt "CoreAccountModel|"
 msgid "Internal Core"
 msgstr "内部コア"
@@ -1616,12 +1639,12 @@ msgctxt "CoreConfigWizard|"
 msgid "Core Configuration Wizard"
 msgstr "コアの設定ウイザード"
 
-#: ../src/qtui/coreconfigwizard.cpp:97
+#: ../src/qtui/coreconfigwizard.cpp:103
 msgctxt "CoreConfigWizard|"
 msgid "Your core has been successfully configured. Logging you in..."
 msgstr "コアの設定に成功しました。ログイン中..."
 
-#: ../src/qtui/coreconfigwizard.cpp:104
+#: ../src/qtui/coreconfigwizard.cpp:112
 #, qt-format
 msgctxt "CoreConfigWizard|"
 msgid ""
@@ -1629,7 +1652,7 @@ msgid ""
 "over."
 msgstr ""
 
-#: ../src/qtui/coreconfigwizard.cpp:119
+#: ../src/qtui/coreconfigwizard.cpp:131
 msgctxt "CoreConfigWizard|"
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
@@ -1678,46 +1701,46 @@ msgctxt "CoreConfigWizardIntroPage|"
 msgid "This wizard will guide you through the setup of your Quassel Core."
 msgstr ""
 
-#: ../src/qtui/coreconfigwizard.cpp:150
+#: ../src/qtui/coreconfigwizard.cpp:167
 msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid "Create Admin User"
 msgstr "管理ユーザを作成"
 
-#: ../src/qtui/coreconfigwizard.cpp:151
+#: ../src/qtui/coreconfigwizard.cpp:168
 msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
 msgstr ""
 
-#: ../src/qtui/coreconfigwizard.cpp:135
+#: ../src/qtui/coreconfigwizard.cpp:150
 msgctxt "CoreConfigWizardPages::IntroPage|"
 msgid "Introduction"
 msgstr ""
 
-#: ../src/qtui/coreconfigwizard.cpp:182
+#: ../src/qtui/coreconfigwizard.cpp:203
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Select Storage Backend"
 msgstr "保存バックエンドを選択"
 
-#: ../src/qtui/coreconfigwizard.cpp:183
+#: ../src/qtui/coreconfigwizard.cpp:204
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
 msgstr ""
 
-#: ../src/qtui/coreconfigwizard.cpp:277
+#: ../src/qtui/coreconfigwizard.cpp:305
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Connection Properties"
 msgstr "接続の設定"
 
-#: ../src/qtui/coreconfigwizard.cpp:317
+#: ../src/qtui/coreconfigwizard.cpp:347
 msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid "Storing Your Settings"
 msgstr "設定を保存"
 
-#: ../src/qtui/coreconfigwizard.cpp:318
+#: ../src/qtui/coreconfigwizard.cpp:348
 msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
@@ -1804,80 +1827,80 @@ msgctxt "CoreConnectAuthDlg|"
 msgid "Remember password"
 msgstr "パスワードを保存"
 
-#: ../src/qtui/coreconnectdlg.cpp:75
+#: ../src/qtui/coreconnectdlg.cpp:81
 #, qt-format
 msgctxt "CoreConnectAuthDlg|"
 msgid "Please enter your credentials for %1:"
 msgstr ""
 
-#: ../src/qtui/coreconnectdlg.cpp:40
+#: ../src/qtui/coreconnectdlg.cpp:41
 msgctxt "CoreConnectDlg|"
 msgid "Connect to Core"
 msgstr "コアに接続"
 
-#: ../src/client/coreconnection.cpp:168
+#: ../src/client/coreconnection.cpp:189
 msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "ネットワーク"
 
-#: ../src/client/coreconnection.cpp:202 ../src/client/coreconnection.cpp:321
+#: ../src/client/coreconnection.cpp:229 ../src/client/coreconnection.cpp:369
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "切断しました"
 
-#: ../src/client/coreconnection.cpp:205
+#: ../src/client/coreconnection.cpp:232
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Looking up %1..."
 msgstr "%1 に接続中..."
 
-#: ../src/client/coreconnection.cpp:208 ../src/client/coreconnection.cpp:450
+#: ../src/client/coreconnection.cpp:235 ../src/client/coreconnection.cpp:507
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connecting to %1..."
 msgstr "%1 に接続中..."
 
-#: ../src/client/coreconnection.cpp:211 ../src/client/coreconnection.cpp:573
+#: ../src/client/coreconnection.cpp:238 ../src/client/coreconnection.cpp:641
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connected to %1"
 msgstr "%1 に接続しました"
 
-#: ../src/client/coreconnection.cpp:214
+#: ../src/client/coreconnection.cpp:241
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Disconnecting from %1..."
 msgstr "%1 から切断中..."
 
-#: ../src/client/coreconnection.cpp:272
+#: ../src/client/coreconnection.cpp:309
 msgctxt "CoreConnection|"
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider "
 "upgrading."
 msgstr ""
 
-#: ../src/client/coreconnection.cpp:300
+#: ../src/client/coreconnection.cpp:344
 msgctxt "CoreConnection|"
 msgid "Invalid data received from core"
 msgstr ""
 
-#: ../src/client/coreconnection.cpp:349
+#: ../src/client/coreconnection.cpp:399
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "コアから切断しました。"
 
-#: ../src/client/coreconnection.cpp:427 ../src/client/coreconnection.cpp:511
-#: ../src/client/coreconnection.cpp:556
+#: ../src/client/coreconnection.cpp:484 ../src/client/coreconnection.cpp:573
+#: ../src/client/coreconnection.cpp:622
 msgctxt "CoreConnection|"
 msgid "Unencrypted connection canceled"
 msgstr "安全な接続を使う"
 
-#: ../src/client/coreconnection.cpp:457
+#: ../src/client/coreconnection.cpp:516
 msgctxt "CoreConnection|"
 msgid "Synchronizing to core..."
 msgstr "コアに接続(&C)..."
 
-#: ../src/client/coreconnection.cpp:478
+#: ../src/client/coreconnection.cpp:539
 #, qt-format
 msgctxt "CoreConnection|"
 msgid ""
@@ -1885,33 +1908,33 @@ msgid ""
 "least core/client protocol v%1 to connect."
 msgstr ""
 
-#: ../src/client/coreconnection.cpp:592
+#: ../src/client/coreconnection.cpp:665
 msgctxt "CoreConnection|"
 msgid "Logging in..."
 msgstr "ログイン中..."
 
-#: ../src/client/coreconnection.cpp:597
+#: ../src/client/coreconnection.cpp:670
 msgctxt "CoreConnection|"
 msgid "Login canceled"
 msgstr "ログインがキャンセルしました"
 
-#: ../src/client/coreconnection.cpp:622
+#: ../src/client/coreconnection.cpp:699
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr ""
 
-#: ../src/client/coreconnection.cpp:624
+#: ../src/client/coreconnection.cpp:701
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "%1 に接続中..."
 
-#: ../src/client/coreconnection.cpp:648
+#: ../src/client/coreconnection.cpp:731
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr ""
 
-#: ../src/client/coreconnection.cpp:698
+#: ../src/client/coreconnection.cpp:785
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2001,28 +2024,28 @@ msgctxt "CoreConnectionStatusWidget|"
 msgid "Message"
 msgstr "メッセージ"
 
-#: ../src/qtui/coreconnectionstatuswidget.cpp:61
+#: ../src/qtui/coreconnectionstatuswidget.cpp:66
 msgctxt "CoreConnectionStatusWidget|seconds"
 msgid "s"
 msgstr "秒"
 
-#: ../src/qtui/coreconnectionstatuswidget.cpp:61
+#: ../src/qtui/coreconnectionstatuswidget.cpp:66
 msgctxt "CoreConnectionStatusWidget|milliseconds"
 msgid "ms"
 msgstr "秒"
 
-#: ../src/qtui/coreconnectionstatuswidget.cpp:62
+#: ../src/qtui/coreconnectionstatuswidget.cpp:67
 #, qt-format
 msgctxt "CoreConnectionStatusWidget|"
 msgid "(Lag: %1 %2)"
 msgstr ""
 
-#: ../src/qtui/coreconnectionstatuswidget.cpp:75
+#: ../src/qtui/coreconnectionstatuswidget.cpp:83
 msgctxt "CoreConnectionStatusWidget|"
 msgid "The connection to your core is encrypted with SSL."
 msgstr ""
 
-#: ../src/qtui/coreconnectionstatuswidget.cpp:78
+#: ../src/qtui/coreconnectionstatuswidget.cpp:87
 msgctxt "CoreConnectionStatusWidget|"
 msgid "The connection to your core is not encrypted."
 msgstr ""
@@ -2077,65 +2100,65 @@ msgctxt "CoreInfoDlg|"
 msgid "Close"
 msgstr "閉じる"
 
-#: ../src/qtui/coreinfodlg.cpp:53
+#: ../src/qtui/coreinfodlg.cpp:57
 #, qt-format
 msgctxt "CoreInfoDlg|"
 msgid "%n Day(s)"
 msgid_plural "%n Day(s)"
 msgstr[0] ""
 
-#: ../src/qtui/coreinfodlg.cpp:54
+#: ../src/qtui/coreinfodlg.cpp:58
 #, qt-format
 msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 （%4 から）"
 
-#: ../src/core/corenetwork.cpp:153
+#: ../src/core/corenetwork.cpp:166
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
 msgstr ""
 
-#: ../src/core/corenetwork.cpp:161 ../src/core/corenetwork.cpp:162
+#: ../src/core/corenetwork.cpp:174 ../src/core/corenetwork.cpp:175
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
 msgstr ""
 
-#: ../src/core/corenetwork.cpp:210
+#: ../src/core/corenetwork.cpp:227
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr ""
 
-#: ../src/core/corenetwork.cpp:210
+#: ../src/core/corenetwork.cpp:227
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr ""
 
-#: ../src/core/corenetwork.cpp:348
+#: ../src/core/corenetwork.cpp:396
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr ""
 
-#: ../src/core/corenetwork.cpp:350
+#: ../src/core/corenetwork.cpp:398
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
 msgstr "接続に失敗しました：%1"
 
-#: ../src/core/coresession.cpp:214
+#: ../src/core/coresession.cpp:236
 msgctxt "CoreSession|"
 msgid "Client"
 msgstr "クライアント"
 
-#: ../src/core/coresession.cpp:214
+#: ../src/core/coresession.cpp:236
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
 msgstr ""
 
-#: ../src/core/coresession.cpp:440
+#: ../src/core/coresession.cpp:497
 #, qt-format
 msgctxt "CoreSession|"
 msgid ""
@@ -2143,53 +2166,53 @@ msgid ""
 " create network %1!"
 msgstr ""
 
-#: ../src/core/coresession.cpp:472
+#: ../src/core/coresession.cpp:529
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
 msgstr ""
 
-#: ../src/core/coresessioneventprocessor.cpp:65
+#: ../src/core/coresessioneventprocessor.cpp:71
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:81
+#: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
 msgid "away"
 msgstr "退席中"
 
-#: ../src/core/coreuserinputhandler.cpp:150
+#: ../src/core/coreuserinputhandler.cpp:169
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "sending CTCP-%1 request to %2"
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:177
+#: ../src/core/coreuserinputhandler.cpp:198
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /delkey <nick|channel> deletes the encryption key for nick or "
 "channel or just /delkey when in a channel or query."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:184
-#: ../src/core/coreuserinputhandler.cpp:517
+#: ../src/core/coreuserinputhandler.cpp:205
+#: ../src/core/coreuserinputhandler.cpp:606
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:197
+#: ../src/core/coreuserinputhandler.cpp:218
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been deleted."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:201
-#: ../src/core/coreuserinputhandler.cpp:525
+#: ../src/core/coreuserinputhandler.cpp:222
+#: ../src/core/coreuserinputhandler.cpp:614
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2198,13 +2221,13 @@ msgid ""
 "with QCA2 present."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:422
+#: ../src/core/coreuserinputhandler.cpp:499
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Starting query with %1"
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:469
+#: ../src/core/coreuserinputhandler.cpp:556
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
@@ -2212,13 +2235,13 @@ msgid ""
 "it."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:484
+#: ../src/core/coreuserinputhandler.cpp:571
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been set."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:487
+#: ../src/core/coreuserinputhandler.cpp:574
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2227,20 +2250,20 @@ msgid ""
 "with QCA present."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:509
+#: ../src/core/coreuserinputhandler.cpp:598
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:521
+#: ../src/core/coreuserinputhandler.cpp:610
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 is %2"
 msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:633
+#: ../src/core/coreuserinputhandler.cpp:738
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
@@ -2356,347 +2379,358 @@ msgctxt "DebugLogWidget|"
 msgid "Close"
 msgstr "閉じる"
 
-#: ../src/core/eventstringifier.cpp:142 ../src/core/eventstringifier.cpp:259
+#: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:360
 msgctxt "EventStringifier|"
 msgid "[Whois] "
 msgstr "ユーザ情報"
 
-#: ../src/core/eventstringifier.cpp:154
+#: ../src/core/eventstringifier.cpp:234
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 invited you to channel %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:239
+#: ../src/core/eventstringifier.cpp:336
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:246
+#: ../src/core/eventstringifier.cpp:345
 msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:272
+#: ../src/core/eventstringifier.cpp:374
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:277
+#: ../src/core/eventstringifier.cpp:381
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:283
+#: ../src/core/eventstringifier.cpp:389
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:303
+#: ../src/core/eventstringifier.cpp:411
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:317
+#: ../src/core/eventstringifier.cpp:427
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:319
+#: ../src/core/eventstringifier.cpp:429
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:327
+#: ../src/core/eventstringifier.cpp:439
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:334
+#: ../src/core/eventstringifier.cpp:448
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] End of /WHO list for %1"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:344
+#: ../src/core/eventstringifier.cpp:460
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:346
+#: ../src/core/eventstringifier.cpp:462
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:353
+#: ../src/core/eventstringifier.cpp:471
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:374
+#: ../src/core/eventstringifier.cpp:494
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:376
+#: ../src/core/eventstringifier.cpp:496
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:378
+#: ../src/core/eventstringifier.cpp:498
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:397
+#: ../src/core/eventstringifier.cpp:519
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 has %2 users. Topic is: \"%3\""
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:403
+#: ../src/core/eventstringifier.cpp:527
 msgctxt "EventStringifier|"
 msgid "End of channel list"
 msgstr "チャンネルリストを表示"
 
-#: ../src/core/eventstringifier.cpp:417
+#: ../src/core/eventstringifier.cpp:545
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Homepage for %1 is %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:432
+#: ../src/core/eventstringifier.cpp:562
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 created on %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:440
+#: ../src/core/eventstringifier.cpp:574
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:446
+#: ../src/core/eventstringifier.cpp:577
+#, qt-format
+msgctxt "EventStringifier|"
+msgid "[Whowas] %1 was authed as %2"
+msgstr ""
+
+#: ../src/core/eventstringifier.cpp:586
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "No topic is set for %1."
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:452
+#: ../src/core/eventstringifier.cpp:594
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic for %1 is \"%2\""
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:461
+#: ../src/core/eventstringifier.cpp:605
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic set by %1 on %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:471
+#: ../src/core/eventstringifier.cpp:617
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has been invited to %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:477
+#: ../src/core/eventstringifier.cpp:625
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] %1"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:482
+#: ../src/core/eventstringifier.cpp:632
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:490
+#: ../src/core/eventstringifier.cpp:642
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick %1 contains illegal characters"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:498
+#: ../src/core/eventstringifier.cpp:652
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick already in use: %1"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:506
+#: ../src/core/eventstringifier.cpp:662
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:527
+#: ../src/core/eventstringifier.cpp:685
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr ""
 
 #. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
-#: ../src/core/eventstringifier.cpp:540
+#: ../src/core/eventstringifier.cpp:700
 msgctxt "EventStringifier|"
 msgid "unknown"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:541
+#: ../src/core/eventstringifier.cpp:701
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:544
+#: ../src/core/eventstringifier.cpp:704
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:555
+#: ../src/core/eventstringifier.cpp:719
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
 msgstr ""
 
-#: ../src/client/execwrapper.cpp:45
+#: ../src/client/execwrapper.cpp:49
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Invalid command string for /exec: %1"
 msgstr ""
 
-#: ../src/client/execwrapper.cpp:53
+#: ../src/client/execwrapper.cpp:58
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
 msgstr ""
 
-#: ../src/client/execwrapper.cpp:64
+#: ../src/client/execwrapper.cpp:69
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Could not find script \"%1\""
-msgstr ""
+msgstr "”%1”のスクリプトを見つかれませんでした。"
 
-#: ../src/client/execwrapper.cpp:82
+#: ../src/client/execwrapper.cpp:93
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" crashed with exit code %2."
 msgstr ""
 
-#: ../src/client/execwrapper.cpp:98
+#: ../src/client/execwrapper.cpp:111
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" could not start."
 msgstr ""
 
-#: ../src/client/execwrapper.cpp:100
+#: ../src/client/execwrapper.cpp:113
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Script \"%1\" caused error %2."
 msgstr ""
 
-#: ../src/uisupport/fontselector.cpp:31
+#: ../src/uisupport/fontselector.cpp:32
 msgctxt "FontSelector|"
 msgid "Choose..."
 msgstr "選択..."
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:13
+#: ../src/qtui/settingspages/highlightsettingspage.ui:14
 msgctxt "HighlightSettingsPage|"
 msgid "Form"
 msgstr "フォーム"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:19
+#: ../src/qtui/settingspages/highlightsettingspage.ui:20
 msgctxt "HighlightSettingsPage|"
 msgid "Custom Highlights"
 msgstr "カスタムの強調"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:32
-#: ../src/qtui/settingspages/highlightsettingspage.cpp:30
+#: ../src/qtui/settingspages/highlightsettingspage.ui:33
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:29
 msgctxt "HighlightSettingsPage|"
 msgid "Highlight"
 msgstr "強調"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:37
+#: ../src/qtui/settingspages/highlightsettingspage.ui:38
 msgctxt "HighlightSettingsPage|"
 msgid "RegEx"
 msgstr "RegEx"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:42
+#: ../src/qtui/settingspages/highlightsettingspage.ui:43
 msgctxt "HighlightSettingsPage|"
 msgid "CS"
 msgstr "CS"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:47
+#: ../src/qtui/settingspages/highlightsettingspage.ui:48
 msgctxt "HighlightSettingsPage|"
 msgid "Enable"
 msgstr "有効"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:55
+#: ../src/qtui/settingspages/highlightsettingspage.ui:53
+msgctxt "HighlightSettingsPage|"
+msgid "Channel"
+msgstr "チャンネル"
+
+#: ../src/qtui/settingspages/highlightsettingspage.ui:69
 msgctxt "HighlightSettingsPage|"
 msgid "Add"
 msgstr "追加"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:62
+#: ../src/qtui/settingspages/highlightsettingspage.ui:76
 msgctxt "HighlightSettingsPage|"
 msgid "Remove"
 msgstr "削除"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:85
+#: ../src/qtui/settingspages/highlightsettingspage.ui:101
 msgctxt "HighlightSettingsPage|"
 msgid "Highlight Nicks"
 msgstr "ニックを強調"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:91
+#: ../src/qtui/settingspages/highlightsettingspage.ui:107
 msgctxt "HighlightSettingsPage|"
 msgid "All nicks from identity"
 msgstr ""
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:98
+#: ../src/qtui/settingspages/highlightsettingspage.ui:114
 msgctxt "HighlightSettingsPage|"
 msgid "Current nick"
 msgstr "現在のニック"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:108
+#: ../src/qtui/settingspages/highlightsettingspage.ui:124
 msgctxt "HighlightSettingsPage|"
 msgid "None"
 msgstr "なし"
 
-#: ../src/qtui/settingspages/highlightsettingspage.ui:115
+#: ../src/qtui/settingspages/highlightsettingspage.ui:131
 msgctxt "HighlightSettingsPage|"
 msgid "Case sensitive"
 msgstr "大文字小文字を区別"
 
-#: ../src/qtui/settingspages/highlightsettingspage.cpp:30
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:29
 msgctxt "HighlightSettingsPage|"
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ../src/qtui/settingspages/highlightsettingspage.cpp:159
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:184
 msgctxt "HighlightSettingsPage|"
 msgid "this shouldn't be empty"
 msgstr ""
 
-#: ../src/qtui/settingspages/highlightsettingspage.h:45
+#: ../src/qtui/settingspages/highlightsettingspage.h:46
 msgctxt "HighlightSettingsPage|"
 msgid "highlight rule"
 msgstr "強調の規則"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:322
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:364
 msgctxt "IdentitiesSettingsPage|"
 msgid "Rename Identity"
 msgstr "個人情報名を変更"
@@ -2732,91 +2766,91 @@ msgctxt "IdentitiesSettingsPage|"
 msgid "Identities"
 msgstr "個人情報"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:178
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:199
 msgctxt "IdentitiesSettingsPage|"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:179
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:200
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>All identities need an identity name set</li>"
 msgstr ""
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:180
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:201
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>Every identity needs at least one nickname defined</li>"
 msgstr ""
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:181
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:202
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify a real name for every identity</li>"
 msgstr ""
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:182
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:203
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify an ident for every identity</li>"
 msgstr ""
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:183
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:204
 msgctxt "IdentitiesSettingsPage|"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:184
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:205
 msgctxt "IdentitiesSettingsPage|"
 msgid "One or more identities are invalid"
 msgstr ""
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:310
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:350
 msgctxt "IdentitiesSettingsPage|"
 msgid "Delete Identity?"
 msgstr "個人情報を削除してもよろしいですか？"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:311
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:351
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Do you really want to delete identity \"%1\"?"
 msgstr "本当に\" %1 \"のチャットリストを削除しますか？"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:323
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:365
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Please enter a new name for the identity \"%1\"!"
 msgstr ""
 
-#: ../src/common/identity.cpp:134
+#: ../src/common/identity.cpp:147
 msgctxt "Identity|"
 msgid "Quassel IRC User"
 msgstr "Quassel IRC ユーザ"
 
-#: ../src/common/identity.cpp:162
+#: ../src/common/identity.cpp:177
 msgctxt "Identity|"
 msgid "<empty>"
 msgstr "＜空＞"
 
-#: ../src/common/identity.cpp:168
+#: ../src/common/identity.cpp:183
 msgctxt "Identity|"
 msgid "Gone fishing."
 msgstr ""
 
-#: ../src/common/identity.cpp:172
+#: ../src/common/identity.cpp:187
 msgctxt "Identity|"
 msgid "Not here. No, really. not here!"
 msgstr ""
 
-#: ../src/common/identity.cpp:175
+#: ../src/common/identity.cpp:190
 msgctxt "Identity|"
 msgid "All Quassel clients vanished from the face of the earth..."
 msgstr ""
 
-#: ../src/common/identity.cpp:178
+#: ../src/common/identity.cpp:193
 msgctxt "Identity|"
 msgid "Kindergarten is elsewhere!"
 msgstr ""
 
-#: ../src/common/identity.cpp:179 ../src/common/identity.cpp:180
+#: ../src/common/identity.cpp:194 ../src/common/identity.cpp:195
 msgctxt "Identity|"
 msgid "http://quassel-irc.org - Chat comfortably. Anywhere."
 msgstr ""
@@ -2950,7 +2984,7 @@ msgid "minutes of being idle"
 msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
-#: ../src/qtui/settingspages/identityeditwidget.cpp:219
+#: ../src/qtui/settingspages/identityeditwidget.cpp:236
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
 msgstr "詳細"
@@ -3016,16 +3050,16 @@ msgid "Key Type:"
 msgstr "Proxy タイプ"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
-#: ../src/qtui/settingspages/identityeditwidget.cpp:317
-#: ../src/qtui/settingspages/identityeditwidget.cpp:328
+#: ../src/qtui/settingspages/identityeditwidget.cpp:350
+#: ../src/qtui/settingspages/identityeditwidget.cpp:362
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
 msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
-#: ../src/qtui/settingspages/identityeditwidget.cpp:318
-#: ../src/qtui/settingspages/identityeditwidget.cpp:365
+#: ../src/qtui/settingspages/identityeditwidget.cpp:351
+#: ../src/qtui/settingspages/identityeditwidget.cpp:405
 msgctxt "IdentityEditWidget|"
 msgid "Load"
 msgstr "ロード"
@@ -3042,8 +3076,8 @@ msgstr ""
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
-#: ../src/qtui/settingspages/identityeditwidget.cpp:363
-#: ../src/qtui/settingspages/identityeditwidget.cpp:364
+#: ../src/qtui/settingspages/identityeditwidget.cpp:403
+#: ../src/qtui/settingspages/identityeditwidget.cpp:404
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
 msgstr ""
@@ -3053,38 +3087,38 @@ msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
 msgstr "ホスト名："
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:290
+#: ../src/qtui/settingspages/identityeditwidget.cpp:319
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
 msgstr ""
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:322
+#: ../src/qtui/settingspages/identityeditwidget.cpp:356
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
 msgstr "RSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:325
+#: ../src/qtui/settingspages/identityeditwidget.cpp:359
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
 msgstr "DSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:330
-#: ../src/qtui/settingspages/identityeditwidget.cpp:369
+#: ../src/qtui/settingspages/identityeditwidget.cpp:364
+#: ../src/qtui/settingspages/identityeditwidget.cpp:410
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
 msgstr "クリア"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:340
+#: ../src/qtui/settingspages/identityeditwidget.cpp:376
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
 msgstr ""
 
-#: ../src/qtui/ircconnectionwizard.cpp:107
+#: ../src/qtui/ircconnectionwizard.cpp:115
 msgctxt "IdentityPage|"
 msgid "Setup Identity"
 msgstr "個人情報を設定"
 
-#: ../src/qtui/ircconnectionwizard.cpp:112
+#: ../src/qtui/ircconnectionwizard.cpp:120
 msgctxt "IdentityPage|"
 msgid "Default Identity"
 msgstr "デフォルトの個人情報"
@@ -3247,14 +3281,14 @@ msgctxt "IgnoreListEditDlg|"
 msgid "Rule is enabled"
 msgstr ""
 
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:69
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:71
 msgctxt "IgnoreListModel|"
 msgid ""
 "<b>Enable / Disable:</b><br />Only enabled rules are filtered.<br />For "
 "dynamic rules, disabling actually shows the filtered messages again"
 msgstr ""
 
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:73
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:75
 msgctxt "IgnoreListModel|"
 msgid ""
 "<b>Ignore rule:</b><br />Depending on the type of the rule, the text is "
@@ -3267,27 +3301,27 @@ msgid ""
 "host<br />"
 msgstr ""
 
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:89
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:91
 msgctxt "IgnoreListModel|"
 msgid "By Sender"
 msgstr ""
 
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:91
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:93
 msgctxt "IgnoreListModel|"
 msgid "By Message"
 msgstr "メッセージ"
 
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:193
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:208
 msgctxt "IgnoreListModel|"
 msgid "Enabled"
 msgstr "有効"
 
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:194
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:209
 msgctxt "IgnoreListModel|"
 msgid "Type"
 msgstr "タイプ"
 
-#: ../src/qtui/settingspages/ignorelistmodel.cpp:195
+#: ../src/qtui/settingspages/ignorelistmodel.cpp:210
 msgctxt "IgnoreListModel|"
 msgid "Ignore Rule"
 msgstr "無視する"
@@ -3322,12 +3356,12 @@ msgctxt "IgnoreListSettingsPage|"
 msgid "Ignore List"
 msgstr "無視リストを表示"
 
-#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:128
+#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:144
 msgctxt "IgnoreListSettingsPage|"
 msgid "Rule already exists"
 msgstr ""
 
-#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:129
+#: ../src/qtui/settingspages/ignorelistsettingspage.cpp:145
 #, qt-format
 msgctxt "IgnoreListSettingsPage|"
 msgid ""
@@ -3528,54 +3562,54 @@ msgctxt "InputWidgetSettingsPage|"
 msgid "Add space after nick when completing mid-sentence"
 msgstr ""
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
+#: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:24
 msgctxt "InputWidgetSettingsPage|"
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:23
+#: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:24
 msgctxt "InputWidgetSettingsPage|"
 msgid "Input Widget"
 msgstr "トピックウィジェット"
 
-#: ../src/qtui/ircconnectionwizard.cpp:51
+#: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
 msgid "Save && Connect"
 msgstr "接続"
 
-#: ../src/client/irclistmodel.cpp:59
+#: ../src/client/irclistmodel.cpp:65
 msgctxt "IrcListModel|"
 msgid "Channel"
 msgstr "チャンネル"
 
-#: ../src/client/irclistmodel.cpp:60
+#: ../src/client/irclistmodel.cpp:66
 msgctxt "IrcListModel|"
 msgid "Users"
 msgstr "ユーザ"
 
-#: ../src/client/irclistmodel.cpp:61
+#: ../src/client/irclistmodel.cpp:67
 msgctxt "IrcListModel|"
 msgid "Topic"
 msgstr "トピック"
 
-#: ../src/client/networkmodel.cpp:806
+#: ../src/client/networkmodel.cpp:911
 msgctxt "IrcUserItem|"
 msgid " is away"
 msgstr "退席中"
 
-#: ../src/client/networkmodel.cpp:821
+#: ../src/client/networkmodel.cpp:926
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "idling since %1"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:824
+#: ../src/client/networkmodel.cpp:929
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "login time: %1"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:827
+#: ../src/client/networkmodel.cpp:932
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "server: %1"
@@ -3667,108 +3701,108 @@ msgctxt "ItemViewSettingsPage|"
 msgid "Away:"
 msgstr "退席中："
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:29
 msgctxt "ItemViewSettingsPage|"
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:28
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:29
 msgctxt "ItemViewSettingsPage|"
 msgid "Chat & Nick Lists"
 msgstr "チャット＆ニックネームリスト"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:33
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:34
 msgctxt "ItemViewSettingsPage|"
 msgid "Network"
 msgstr "ネットワーク"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:36
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
 msgctxt "ItemViewSettingsPage|"
 msgid "Inactive"
 msgstr "非アクティブ"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:38
 msgctxt "ItemViewSettingsPage|"
 msgid "Normal"
 msgstr ""
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:38
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
 msgctxt "ItemViewSettingsPage|"
 msgid "Unread messages"
 msgstr "未読のメッセージ"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:39
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
 msgctxt "ItemViewSettingsPage|"
 msgid "Highlight"
 msgstr "強調"
 
-#: ../src/qtui/settingspages/itemviewsettingspage.cpp:40
+#: ../src/qtui/settingspages/itemviewsettingspage.cpp:41
 msgctxt "ItemViewSettingsPage|"
 msgid "Other activity"
 msgstr "他の活動"
 
-#: ../src/qtui/knotificationbackend.cpp:115
+#: ../src/qtui/knotificationbackend.cpp:130
 #, qt-format
 msgctxt "KNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
 msgstr[0] ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:77
+#: ../src/qtui/settingspages/keysequencewidget.cpp:80
 msgctxt "KeySequenceButton|"
 msgid "The key you just pressed is not supported by Qt."
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:78
+#: ../src/qtui/settingspages/keysequencewidget.cpp:81
 msgctxt "KeySequenceButton|"
 msgid "Unsupported Key"
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:169
+#: ../src/qtui/settingspages/keysequencewidget.cpp:176
 msgctxt "KeySequenceWidget|"
 msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:259
+#: ../src/qtui/settingspages/keysequencewidget.cpp:274
 msgctxt "KeySequenceWidget|Meta key"
 msgid "Meta"
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:260
+#: ../src/qtui/settingspages/keysequencewidget.cpp:275
 msgctxt "KeySequenceWidget|Ctrl key"
 msgid "Ctrl"
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:261
+#: ../src/qtui/settingspages/keysequencewidget.cpp:276
 msgctxt "KeySequenceWidget|Alt key"
 msgid "Alt"
 msgstr "すべて"
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:262
+#: ../src/qtui/settingspages/keysequencewidget.cpp:277
 msgctxt "KeySequenceWidget|Shift key"
 msgid "Shift"
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:265
+#: ../src/qtui/settingspages/keysequencewidget.cpp:281
 msgctxt ""
 "KeySequenceWidget|What the user inputs now will be taken as the new shortcut"
 msgid "Input"
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:272
+#: ../src/qtui/settingspages/keysequencewidget.cpp:288
 msgctxt "KeySequenceWidget|No shortcut defined"
 msgid "None"
 msgstr "なし"
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:355
-#: ../src/qtui/settingspages/keysequencewidget.cpp:361
+#: ../src/qtui/settingspages/keysequencewidget.cpp:383
+#: ../src/qtui/settingspages/keysequencewidget.cpp:389
 msgctxt "KeySequenceWidget|"
 msgid "Shortcut Conflict"
 msgstr "ショートカット"
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:356
+#: ../src/qtui/settingspages/keysequencewidget.cpp:384
 #, qt-format
 msgctxt "KeySequenceWidget|"
 msgid ""
@@ -3776,396 +3810,396 @@ msgid ""
 "Please choose another one."
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:362
+#: ../src/qtui/settingspages/keysequencewidget.cpp:390
 #, qt-format
 msgctxt "KeySequenceWidget|"
 msgid ""
 "The \"%1\" shortcut is ambiguous with the shortcut for the following action:"
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:364
+#: ../src/qtui/settingspages/keysequencewidget.cpp:392
 msgctxt "KeySequenceWidget|"
 msgid "Do you want to reassign this shortcut to the selected action?"
 msgstr ""
 
-#: ../src/qtui/settingspages/keysequencewidget.cpp:367
+#: ../src/qtui/settingspages/keysequencewidget.cpp:395
 msgctxt "KeySequenceWidget|"
 msgid "Reassign"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:313
+#: ../src/qtui/mainwin.cpp:332
 msgctxt "MainWin|"
 msgid "General"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:315
+#: ../src/qtui/mainwin.cpp:334
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
 msgstr "コアに接続(&C)..."
 
-#: ../src/qtui/mainwin.cpp:317
+#: ../src/qtui/mainwin.cpp:336
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
 msgstr "コアに切断(&D)..."
 
-#: ../src/qtui/mainwin.cpp:319
+#: ../src/qtui/mainwin.cpp:338
 msgctxt "MainWin|"
 msgid "Core &Info..."
 msgstr "コア情報(&I)..."
 
-#: ../src/qtui/mainwin.cpp:321
+#: ../src/qtui/mainwin.cpp:340
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
 msgstr "ネットワークを設定(&N)..."
 
-#: ../src/qtui/mainwin.cpp:324
+#: ../src/qtui/mainwin.cpp:343
 msgctxt "MainWin|"
 msgid "&Quit"
 msgstr "閉じる(&Q)"
 
-#: ../src/qtui/mainwin.cpp:328
+#: ../src/qtui/mainwin.cpp:347
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
 msgstr "チャットリストを設定(&C)..."
 
-#: ../src/qtui/mainwin.cpp:331
+#: ../src/qtui/mainwin.cpp:350
 msgctxt "MainWin|"
 msgid "&Lock Layout"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:335
+#: ../src/qtui/mainwin.cpp:354
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
 msgstr "検索バーを表示(&S)"
 
-#: ../src/qtui/mainwin.cpp:337
+#: ../src/qtui/mainwin.cpp:356
 msgctxt "MainWin|"
 msgid "Show Away Log"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:339
+#: ../src/qtui/mainwin.cpp:358
 msgctxt "MainWin|"
 msgid "Show &Menubar"
 msgstr "メニューバーを表示(&M)"
 
-#: ../src/qtui/mainwin.cpp:342
+#: ../src/qtui/mainwin.cpp:361
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
 msgstr "ステータスバーを表示(&B)"
 
-#: ../src/qtui/mainwin.cpp:348
+#: ../src/qtui/mainwin.cpp:367
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:374
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
 msgstr "ネットワークを設定(&N)..."
 
-#: ../src/qtui/mainwin.cpp:361 ../src/qtui/mainwin.cpp:365
+#: ../src/qtui/mainwin.cpp:380 ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
 msgstr "Quassel を設定(&C)..."
 
-#: ../src/qtui/mainwin.cpp:371
+#: ../src/qtui/mainwin.cpp:390
 msgctxt "MainWin|"
 msgid "&About Quassel"
 msgstr "Quassel について(&A)"
 
-#: ../src/qtui/mainwin.cpp:376
+#: ../src/qtui/mainwin.cpp:395
 msgctxt "MainWin|"
 msgid "About &Qt"
 msgstr "Qt について(&Q)"
 
-#: ../src/qtui/mainwin.cpp:380
+#: ../src/qtui/mainwin.cpp:399
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:382
+#: ../src/qtui/mainwin.cpp:401
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:384
+#: ../src/qtui/mainwin.cpp:403
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
 msgstr "新しいメッセージ"
 
-#: ../src/qtui/mainwin.cpp:386
+#: ../src/qtui/mainwin.cpp:405
 msgctxt "MainWin|"
 msgid "Debug &HotList"
 msgstr "デバグログ(&L)"
 
-#: ../src/qtui/mainwin.cpp:388
+#: ../src/qtui/mainwin.cpp:407
 msgctxt "MainWin|"
 msgid "Debug &Log"
 msgstr "デバグログ(&L)"
 
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:409
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "スタイルシートを再読み込む"
 
-#: ../src/qtui/mainwin.cpp:393
+#: ../src/qtui/mainwin.cpp:412
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:397
+#: ../src/qtui/mainwin.cpp:416
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "通知"
 
-#: ../src/qtui/mainwin.cpp:399
+#: ../src/qtui/mainwin.cpp:418
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:411
+#: ../src/qtui/mainwin.cpp:430
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:413
+#: ../src/qtui/mainwin.cpp:432
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:415
+#: ../src/qtui/mainwin.cpp:434
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:417
+#: ../src/qtui/mainwin.cpp:436
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:419
+#: ../src/qtui/mainwin.cpp:438
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:421
+#: ../src/qtui/mainwin.cpp:440
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:423
+#: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:425
+#: ../src/qtui/mainwin.cpp:444
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:427
+#: ../src/qtui/mainwin.cpp:446
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:429
+#: ../src/qtui/mainwin.cpp:448
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:432
+#: ../src/qtui/mainwin.cpp:451
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:434
+#: ../src/qtui/mainwin.cpp:453
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:436
+#: ../src/qtui/mainwin.cpp:455
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:438
+#: ../src/qtui/mainwin.cpp:457
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:440
+#: ../src/qtui/mainwin.cpp:459
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:442
+#: ../src/qtui/mainwin.cpp:461
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:444
+#: ../src/qtui/mainwin.cpp:463
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:446
+#: ../src/qtui/mainwin.cpp:465
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:448
+#: ../src/qtui/mainwin.cpp:467
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:450
+#: ../src/qtui/mainwin.cpp:469
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:454
+#: ../src/qtui/mainwin.cpp:473
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "チャットリストを削除してもよろしいですか？"
 
-#: ../src/qtui/mainwin.cpp:456
+#: ../src/qtui/mainwin.cpp:475
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:458
+#: ../src/qtui/mainwin.cpp:477
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:460
+#: ../src/qtui/mainwin.cpp:479
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:467
+#: ../src/qtui/mainwin.cpp:488
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "ファイル(&F)"
 
-#: ../src/qtui/mainwin.cpp:480
+#: ../src/qtui/mainwin.cpp:501
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "ネットワーク(&N)"
 
-#: ../src/qtui/mainwin.cpp:486
+#: ../src/qtui/mainwin.cpp:507
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "表示(&V)"
 
-#: ../src/qtui/mainwin.cpp:487
+#: ../src/qtui/mainwin.cpp:508
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "チャットリスト(&C)"
 
-#: ../src/qtui/mainwin.cpp:489
+#: ../src/qtui/mainwin.cpp:510
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "ツールバー（&T）"
 
-#: ../src/qtui/mainwin.cpp:503
+#: ../src/qtui/mainwin.cpp:524
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "設定(&S)"
 
-#: ../src/qtui/mainwin.cpp:512
+#: ../src/qtui/mainwin.cpp:533
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "ヘルプ(&H)"
 
-#: ../src/qtui/mainwin.cpp:520
+#: ../src/qtui/mainwin.cpp:541
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "デバグ"
 
-#: ../src/qtui/mainwin.cpp:755
+#: ../src/qtui/mainwin.cpp:817
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "ニック"
 
-#: ../src/qtui/mainwin.cpp:764
+#: ../src/qtui/mainwin.cpp:826
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "ニックリストを表示"
 
-#: ../src/qtui/mainwin.cpp:775
+#: ../src/qtui/mainwin.cpp:839
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "チャットモニター"
 
-#: ../src/qtui/mainwin.cpp:787
+#: ../src/qtui/mainwin.cpp:851
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "チャットモニタを表示"
 
-#: ../src/qtui/mainwin.cpp:791
+#: ../src/qtui/mainwin.cpp:857
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "オンライン："
 
-#: ../src/qtui/mainwin.cpp:800
+#: ../src/qtui/mainwin.cpp:866
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "無視リストを表示"
 
-#: ../src/qtui/mainwin.cpp:813
+#: ../src/qtui/mainwin.cpp:881
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "トピック"
 
-#: ../src/qtui/mainwin.cpp:825
+#: ../src/qtui/mainwin.cpp:893
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "ニックリストを表示"
 
-#: ../src/qtui/mainwin.cpp:903
+#: ../src/qtui/mainwin.cpp:987
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "メインツールバー"
 
-#: ../src/qtui/mainwin.cpp:942
+#: ../src/qtui/mainwin.cpp:1030
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "コアに接続"
 
-#: ../src/qtui/mainwin.cpp:1033
+#: ../src/qtui/mainwin.cpp:1129
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "コアから切断しました。"
 
-#: ../src/qtui/mainwin.cpp:1047 ../src/qtui/mainwin.cpp:1055
+#: ../src/qtui/mainwin.cpp:1147 ../src/qtui/mainwin.cpp:1157
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "安全な接続を使う"
 
-#: ../src/qtui/mainwin.cpp:1047
+#: ../src/qtui/mainwin.cpp:1147
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1049 ../src/qtui/mainwin.cpp:1057
+#: ../src/qtui/mainwin.cpp:1149 ../src/qtui/mainwin.cpp:1159
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1055
+#: ../src/qtui/mainwin.cpp:1157
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1072 ../src/qtui/mainwin.cpp:1092
+#: ../src/qtui/mainwin.cpp:1175 ../src/qtui/mainwin.cpp:1196
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1073
+#: ../src/qtui/mainwin.cpp:1176
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4173,38 +4207,38 @@ msgid ""
 "following reasons:</b>"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1076
+#: ../src/qtui/mainwin.cpp:1179
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1077
+#: ../src/qtui/mainwin.cpp:1180
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "クエリを表示"
 
-#: ../src/qtui/mainwin.cpp:1093
+#: ../src/qtui/mainwin.cpp:1197
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1095
+#: ../src/qtui/mainwin.cpp:1199
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1096
+#: ../src/qtui/mainwin.cpp:1200
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:1105
+#: ../src/qtui/mainwin.cpp:1211
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "接続の設定"
 
-#: ../src/client/messagemodel.cpp:375
+#: ../src/client/messagemodel.cpp:404
 #, qt-format
 msgctxt "MessageModel|"
 msgid "Requesting %1 messages from backlog for buffer %2:%3"
@@ -4220,14 +4254,14 @@ msgctxt "MsgProcessorStatusWidget|"
 msgid "Receiving Backlog"
 msgstr ""
 
-#: ../src/uisupport/multilineedit.cpp:661
+#: ../src/uisupport/multilineedit.cpp:718
 #, qt-format
 msgctxt "MultiLineEdit|"
 msgid "Do you really want to paste %n line(s)?"
 msgid_plural "Do you really want to paste %n line(s)?"
 msgstr[0] ""
 
-#: ../src/uisupport/multilineedit.cpp:670
+#: ../src/uisupport/multilineedit.cpp:727
 msgctxt "MultiLineEdit|"
 msgid "Paste Protection"
 msgstr ""
@@ -4287,95 +4321,95 @@ msgctxt "NetworkEditDlg|"
 msgid "Please enter a network name:"
 msgstr "ネットワーク名を入力してください："
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:705
+#: ../src/qtui/settingspages/networkssettingspage.cpp:792
 msgctxt "NetworkEditDlg|"
 msgid "Add Network"
 msgstr "ネットワーク"
 
-#: ../src/client/networkmodel.cpp:196
+#: ../src/client/networkmodel.cpp:213
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Server: %1"
 msgstr "サーバ：%1"
 
-#: ../src/client/networkmodel.cpp:197
+#: ../src/client/networkmodel.cpp:214
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Users: %1"
 msgstr "ユーザ：%1"
 
-#: ../src/client/networkmodel.cpp:200
+#: ../src/client/networkmodel.cpp:217
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:852
+#: ../src/client/networkmodel.cpp:960
 msgctxt "NetworkModel|"
 msgid "Chat"
 msgstr "チャット"
 
-#: ../src/client/networkmodel.cpp:852
+#: ../src/client/networkmodel.cpp:960
 msgctxt "NetworkModel|"
 msgid "Topic"
 msgstr "トピック"
 
-#: ../src/client/networkmodel.cpp:852
+#: ../src/client/networkmodel.cpp:960
 msgctxt "NetworkModel|"
 msgid "Nick Count"
 msgstr "ニックの変更"
 
-#: ../src/uisupport/networkmodelcontroller.cpp:154
+#: ../src/uisupport/networkmodelcontroller.cpp:177
 msgctxt "NetworkModelController|"
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
 msgstr[0] ""
 
-#: ../src/uisupport/networkmodelcontroller.cpp:167
+#: ../src/uisupport/networkmodelcontroller.cpp:190
 #, qt-format
 msgctxt "NetworkModelController|"
 msgid "...and <b>%1</b> more<br><br>"
 msgstr ""
 
-#: ../src/uisupport/networkmodelcontroller.cpp:168
+#: ../src/uisupport/networkmodelcontroller.cpp:191
 msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
 msgstr ""
 
-#: ../src/uisupport/networkmodelcontroller.cpp:170
+#: ../src/uisupport/networkmodelcontroller.cpp:193
 msgctxt "NetworkModelController|"
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
 msgstr ""
 
-#: ../src/uisupport/networkmodelcontroller.cpp:172
+#: ../src/uisupport/networkmodelcontroller.cpp:195
 msgctxt "NetworkModelController|"
 msgid "Remove buffers permanently?"
 msgstr "完全にバッファを削除しますか？"
 
-#: ../src/uisupport/networkmodelcontroller.cpp:484
+#: ../src/uisupport/networkmodelcontroller.cpp:530
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Join Channel"
 msgstr "チャンネルに入室"
 
-#: ../src/uisupport/networkmodelcontroller.cpp:487
+#: ../src/uisupport/networkmodelcontroller.cpp:533
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Network:"
 msgstr "ネットワーク："
 
-#: ../src/uisupport/networkmodelcontroller.cpp:489
+#: ../src/uisupport/networkmodelcontroller.cpp:535
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Channel:"
 msgstr "チャンネル："
 
-#: ../src/uisupport/networkmodelcontroller.cpp:491
+#: ../src/uisupport/networkmodelcontroller.cpp:537
 msgctxt "NetworkModelController::JoinDlg|"
 msgid "Password:"
 msgstr "パスワード："
 
-#: ../src/qtui/ircconnectionwizard.cpp:148
+#: ../src/qtui/ircconnectionwizard.cpp:158
 msgctxt "NetworkPage|"
 msgid "Setup Network Connection"
 msgstr "ネットワーク接続を設定"
@@ -4616,34 +4650,34 @@ msgctxt "NetworksSettingsPage|"
 msgid "Networks"
 msgstr "ネットワーク"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:167
+#: ../src/qtui/settingspages/networkssettingspage.cpp:176
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr ""
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:168
+#: ../src/qtui/settingspages/networkssettingspage.cpp:177
 msgctxt "NetworksSettingsPage|"
 msgid "<li>All networks need at least one server defined</li>"
 msgstr ""
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:169
+#: ../src/qtui/settingspages/networkssettingspage.cpp:178
 msgctxt "NetworksSettingsPage|"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:170
+#: ../src/qtui/settingspages/networkssettingspage.cpp:179
 msgctxt "NetworksSettingsPage|"
 msgid "Invalid Network Settings"
 msgstr "ネットワーク詳細"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:542
+#: ../src/qtui/settingspages/networkssettingspage.cpp:602
 msgctxt "NetworksSettingsPage|"
 msgid "Delete Network?"
 msgstr "ネットワークを削除してもよろしいですか？"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:543
+#: ../src/qtui/settingspages/networkssettingspage.cpp:603
 #, qt-format
 msgctxt "NetworksSettingsPage|"
 msgid ""
@@ -4668,7 +4702,7 @@ msgid ""
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
 msgstr ""
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:420
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:474
 msgctxt "NickEditDlg|"
 msgid "Add Nickname"
 msgstr "ニックネームを追加"
@@ -4683,7 +4717,7 @@ msgctxt "NotificationsSettingsPage|"
 msgid "Notifications"
 msgstr "通知"
 
-#: ../src/qtui/phononnotificationbackend.cpp:143
+#: ../src/qtui/phononnotificationbackend.cpp:172
 msgctxt "PhononNotificationBackend::ConfigWidget|"
 msgid "Select Audio File"
 msgstr "オーディオファイルを選択"
@@ -4709,25 +4743,25 @@ msgctxt "PhononNotificationConfigWidget|"
 msgid "Select the sound file to play"
 msgstr ""
 
-#: ../src/core/postgresqlstorage.cpp:62
+#: ../src/core/postgresqlstorage.cpp:72
 msgctxt "PostgreSqlStorage|"
 msgid "PostgreSQL Turbo Bomber HD!"
 msgstr ""
 
-#: ../src/client/backlogrequester.cpp:82
+#: ../src/client/backlogrequester.cpp:95
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
 msgstr ""
 
-#: ../src/client/backlogrequester.cpp:106
+#: ../src/client/backlogrequester.cpp:122
 #, qt-format
 msgctxt "QObject|"
 msgid ""
 "Requesting up to %1 of all unread backlog messages (plus additional %2)"
 msgstr ""
 
-#: ../src/client/backlogrequester.cpp:123
+#: ../src/client/backlogrequester.cpp:142
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
@@ -4746,208 +4780,208 @@ msgid ""
 "wizard any time and use the settings dialog for more detailed changes."
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:121 ../src/uisupport/qssparser.cpp:166
-#: ../src/uisupport/qssparser.cpp:316
+#: ../src/uisupport/qssparser.cpp:129 ../src/uisupport/qssparser.cpp:179
+#: ../src/uisupport/qssparser.cpp:335
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid block declaration: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:140
+#: ../src/uisupport/qssparser.cpp:148
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette role assignment: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:156
+#: ../src/uisupport/qssparser.cpp:167
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette role name: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:192
+#: ../src/uisupport/qssparser.cpp:205
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid subelement name in %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:236
+#: ../src/uisupport/qssparser.cpp:249
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message type in %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:245
+#: ../src/uisupport/qssparser.cpp:258
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid condition %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:257
+#: ../src/uisupport/qssparser.cpp:270
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message label: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:268
+#: ../src/uisupport/qssparser.cpp:282
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid senderhash specification: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:272
+#: ../src/uisupport/qssparser.cpp:286
 msgctxt "QssParser|"
 msgid "Senderhash can be at most \"0x0f\"!"
-msgstr ""
-
-#: ../src/uisupport/qssparser.cpp:287
-#, qt-format
-msgctxt "QssParser|"
-msgid "Invalid format name: %1"
-msgstr ""
-
-#: ../src/uisupport/qssparser.cpp:294
-#, qt-format
-msgctxt "QssParser|"
-msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
 msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:302
 #, qt-format
 msgctxt "QssParser|"
-msgid "Unhandled condition: %1"
+msgid "Invalid format name: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:331
+#: ../src/uisupport/qssparser.cpp:310
 #, qt-format
 msgctxt "QssParser|"
-msgid "Invalid proplist %1"
+msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
+msgstr ""
+
+#: ../src/uisupport/qssparser.cpp:319
+#, qt-format
+msgctxt "QssParser|"
+msgid "Unhandled condition: %1"
 msgstr ""
 
 #: ../src/uisupport/qssparser.cpp:350
 #, qt-format
 msgctxt "QssParser|"
+msgid "Invalid proplist %1"
+msgstr ""
+
+#: ../src/uisupport/qssparser.cpp:369
+#, qt-format
+msgctxt "QssParser|"
 msgid "Invalid chatlist item type %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:366
+#: ../src/uisupport/qssparser.cpp:385
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist state %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:392
+#: ../src/uisupport/qssparser.cpp:415
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid property declaration: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:416
+#: ../src/uisupport/qssparser.cpp:439
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font property: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:422
+#: ../src/uisupport/qssparser.cpp:445
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown ChatLine property: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:444
+#: ../src/uisupport/qssparser.cpp:469
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette color role specification: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:451
+#: ../src/uisupport/qssparser.cpp:476
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette color role: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:458 ../src/uisupport/qssparser.cpp:481
-#: ../src/uisupport/qssparser.cpp:503
+#: ../src/uisupport/qssparser.cpp:483 ../src/uisupport/qssparser.cpp:506
+#: ../src/uisupport/qssparser.cpp:528
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient declaration: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:467 ../src/uisupport/qssparser.cpp:489
-#: ../src/uisupport/qssparser.cpp:513
+#: ../src/uisupport/qssparser.cpp:492 ../src/uisupport/qssparser.cpp:514
+#: ../src/uisupport/qssparser.cpp:538
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient stops list: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:610
+#: ../src/uisupport/qssparser.cpp:647
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font specification: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:649
+#: ../src/uisupport/qssparser.cpp:688
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font style specification: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:662
+#: ../src/uisupport/qssparser.cpp:703
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font weight specification: %1"
 msgstr ""
 
-#: ../src/uisupport/qssparser.cpp:672
+#: ../src/uisupport/qssparser.cpp:715
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font size specification: %1"
 msgstr ""
 
-#: ../src/common/util.cpp:145
+#: ../src/common/util.cpp:162
 msgctxt "Quassel::secondsToString()|"
 msgid "year"
 msgstr "年"
 
-#: ../src/common/util.cpp:146
+#: ../src/common/util.cpp:163
 msgctxt "Quassel::secondsToString()|"
 msgid "day"
 msgstr "日"
 
-#: ../src/common/util.cpp:147
+#: ../src/common/util.cpp:164
 msgctxt "Quassel::secondsToString()|"
 msgid "h"
 msgstr "時"
 
-#: ../src/common/util.cpp:148
+#: ../src/common/util.cpp:165
 msgctxt "Quassel::secondsToString()|"
 msgid "min"
 msgstr "分"
 
-#: ../src/common/util.cpp:149
+#: ../src/common/util.cpp:166
 msgctxt "Quassel::secondsToString()|"
 msgid "sec"
 msgstr "秒"
 
-#: ../src/client/networkmodel.cpp:429
+#: ../src/client/networkmodel.cpp:482
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:447
+#: ../src/client/networkmodel.cpp:500
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "idling since %1"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:450
+#: ../src/client/networkmodel.cpp:503
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "login time: %1"
 msgstr ""
 
-#: ../src/client/networkmodel.cpp:453
+#: ../src/client/networkmodel.cpp:506
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "server: %1"
@@ -5077,45 +5111,45 @@ msgid "Configure Quassel"
 msgstr "Quassel を設定"
 
 #: ../src/qtui/ui/settingsdlg.ui:35 ../src/qtui/ui/settingsdlg.ui:50
-#: ../src/qtui/settingsdlg.cpp:99
+#: ../src/qtui/settingsdlg.cpp:111
 msgctxt "SettingsDlg|"
 msgid "Settings"
 msgstr "設定"
 
-#: ../src/qtui/settingsdlg.cpp:109
+#: ../src/qtui/settingsdlg.cpp:121
 msgctxt "SettingsDlg|"
 msgid "Save changes"
 msgstr "変更を保存"
 
-#: ../src/qtui/settingsdlg.cpp:110
+#: ../src/qtui/settingsdlg.cpp:122
 msgctxt "SettingsDlg|"
 msgid ""
 "There are unsaved changes on the current configuration page. Would you like "
 "to apply your changes now?"
 msgstr ""
 
-#: ../src/qtui/settingsdlg.cpp:122 ../src/qtui/settingsdlg.cpp:126
+#: ../src/qtui/settingsdlg.cpp:136 ../src/qtui/settingsdlg.cpp:140
 #, qt-format
 msgctxt "SettingsDlg|"
 msgid "Configure %1"
-msgstr ""
+msgstr "%1 を設定"
 
-#: ../src/qtui/settingsdlg.cpp:193
+#: ../src/qtui/settingsdlg.cpp:220
 msgctxt "SettingsDlg|"
 msgid "Reload Settings"
 msgstr "設定を再読み込む"
 
-#: ../src/qtui/settingsdlg.cpp:193
+#: ../src/qtui/settingsdlg.cpp:220
 msgctxt "SettingsDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 
-#: ../src/qtui/settingsdlg.cpp:202
+#: ../src/qtui/settingsdlg.cpp:231
 msgctxt "SettingsDlg|"
 msgid "Restore Defaults"
 msgstr "既定を使用..."
 
-#: ../src/qtui/settingsdlg.cpp:202
+#: ../src/qtui/settingsdlg.cpp:231
 msgctxt "SettingsDlg|"
 msgid "Do you like to restore the default values for this page?"
 msgstr ""
@@ -5130,38 +5164,38 @@ msgctxt "SettingsPageDlg|"
 msgid "Settings"
 msgstr "設定"
 
-#: ../src/qtui/settingspagedlg.cpp:36
+#: ../src/qtui/settingspagedlg.cpp:39
 #, qt-format
 msgctxt "SettingsPageDlg|"
 msgid "Configure %1"
-msgstr ""
+msgstr "%1 を設定"
 
-#: ../src/qtui/settingspagedlg.cpp:104
+#: ../src/qtui/settingspagedlg.cpp:120
 msgctxt "SettingsPageDlg|"
 msgid "Reload Settings"
 msgstr "設定を再読み込む"
 
-#: ../src/qtui/settingspagedlg.cpp:104
+#: ../src/qtui/settingspagedlg.cpp:120
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to reload the settings, undoing your changes on this page?"
 msgstr ""
 
-#: ../src/qtui/settingspagedlg.cpp:113
+#: ../src/qtui/settingspagedlg.cpp:131
 msgctxt "SettingsPageDlg|"
 msgid "Restore Defaults"
 msgstr "既定を使用..."
 
-#: ../src/qtui/settingspagedlg.cpp:113
+#: ../src/qtui/settingspagedlg.cpp:131
 msgctxt "SettingsPageDlg|"
 msgid "Do you like to restore the default values for this page?"
 msgstr ""
 
-#: ../src/qtui/settingspages/shortcutsmodel.cpp:110
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:121
 msgctxt "ShortcutsModel|"
 msgid "Action"
 msgstr "操作"
 
-#: ../src/qtui/settingspages/shortcutsmodel.cpp:112
+#: ../src/qtui/settingspages/shortcutsmodel.cpp:123
 msgctxt "ShortcutsModel|"
 msgid "Shortcut"
 msgstr "ショートカット"
@@ -5187,8 +5221,8 @@ msgid "Default:"
 msgstr "デフォルト："
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:75
-#: ../src/qtui/settingspages/shortcutssettingspage.cpp:92
-#: ../src/qtui/settingspages/shortcutssettingspage.cpp:102
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:99
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:111
 msgctxt "ShortcutsSettingsPage|"
 msgid "None"
 msgstr "なし"
@@ -5198,37 +5232,37 @@ msgctxt "ShortcutsSettingsPage|"
 msgid "Custom:"
 msgstr "カスタム："
 
-#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:65
 msgctxt "ShortcutsSettingsPage|"
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ../src/qtui/settingspages/shortcutssettingspage.cpp:60
+#: ../src/qtui/settingspages/shortcutssettingspage.cpp:65
 msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
 msgstr "ショートカット"
 
-#: ../src/common/signalproxy.cpp:880
+#: ../src/common/signalproxy.cpp:981
 msgctxt "SignalProxy|"
 msgid "Peer tried to send package larger than max package size!"
 msgstr ""
 
-#: ../src/common/signalproxy.cpp:885
+#: ../src/common/signalproxy.cpp:986
 msgctxt "SignalProxy|"
 msgid "Peer tried to send 0 byte package!"
 msgstr ""
 
-#: ../src/common/signalproxy.cpp:902
+#: ../src/common/signalproxy.cpp:1003
 msgctxt "SignalProxy|"
 msgid "Peer sent corrupted compressed data!"
 msgstr ""
 
-#: ../src/common/signalproxy.cpp:917
+#: ../src/common/signalproxy.cpp:1019
 msgctxt "SignalProxy|"
 msgid "Peer sent corrupt data: unable to load QVariant!"
 msgstr ""
 
-#: ../src/common/signalproxy.cpp:1050
+#: ../src/common/signalproxy.cpp:1168
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
 msgstr "切断中"
@@ -5311,7 +5345,7 @@ msgid ""
 "network"
 msgstr ""
 
-#: ../src/core/sqlitestorage.cpp:52
+#: ../src/core/sqlitestorage.cpp:60
 msgctxt "SqliteStorage|"
 msgid ""
 "SQLite is a file-based database engine that does not require any setup. It "
@@ -5411,45 +5445,45 @@ msgctxt "SslInfoDlg|"
 msgid "<b>Trusted:</b>"
 msgstr "<b>ホスト名：</b>"
 
-#: ../src/qtui/sslinfodlg.cpp:69
+#: ../src/qtui/sslinfodlg.cpp:71
 msgctxt "SslInfoDlg|"
 msgid "Yes"
 msgstr ""
 
-#: ../src/qtui/sslinfodlg.cpp:71
+#: ../src/qtui/sslinfodlg.cpp:73
 msgctxt "SslInfoDlg|"
 msgid "No, for the following reasons:<ul>"
 msgstr ""
 
-#: ../src/qtui/sslinfodlg.cpp:78
+#: ../src/qtui/sslinfodlg.cpp:80
 #, qt-format
 msgctxt "SslInfoDlg|"
 msgid "%1 to %2"
 msgstr ""
 
-#: ../src/client/networkmodel.h:144
+#: ../src/client/networkmodel.h:149
 msgctxt "StatusBufferItem|"
 msgid "Status Buffer"
 msgstr "ステータスバッファ"
 
-#: ../src/qtui/systemtray.cpp:61 ../src/qtui/systemtray.cpp:92
+#: ../src/qtui/systemtray.cpp:68 ../src/qtui/systemtray.cpp:101
 msgctxt "SystemTray|"
 msgid "&Minimize"
 msgstr "最小化"
 
-#: ../src/qtui/systemtray.cpp:94
+#: ../src/qtui/systemtray.cpp:103
 msgctxt "SystemTray|"
 msgid "&Restore"
 msgstr "復元(&R)"
 
-#: ../src/qtui/systraynotificationbackend.cpp:125
+#: ../src/qtui/systraynotificationbackend.cpp:142
 #, qt-format
 msgctxt "SystrayNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
 msgstr[0] ""
 
-#: ../src/qtui/systraynotificationbackend.cpp:135
+#: ../src/qtui/systraynotificationbackend.cpp:156
 msgctxt "SystrayNotificationBackend::ConfigWidget|"
 msgid "Show a message in a popup"
 msgstr "メッセージをポップアップで表示"
@@ -5459,22 +5493,22 @@ msgctxt "TabCompleter|"
 msgid "Tab completion"
 msgstr ""
 
-#: ../src/qtui/taskbarnotificationbackend.cpp:68
+#: ../src/qtui/taskbarnotificationbackend.cpp:83
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Activate dock entry, timeout:"
 msgstr ""
 
-#: ../src/qtui/taskbarnotificationbackend.cpp:70
+#: ../src/qtui/taskbarnotificationbackend.cpp:85
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Mark taskbar entry, timeout:"
 msgstr ""
 
-#: ../src/qtui/taskbarnotificationbackend.cpp:78
+#: ../src/qtui/taskbarnotificationbackend.cpp:93
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Unlimited"
 msgstr "無制限"
 
-#: ../src/qtui/taskbarnotificationbackend.cpp:79
+#: ../src/qtui/taskbarnotificationbackend.cpp:94
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid " seconds"
 msgstr " 秒"
@@ -5629,13 +5663,13 @@ msgctxt "TopicWidget|"
 msgid "..."
 msgstr "..."
 
-#: ../src/qtui/topicwidget.cpp:106
+#: ../src/qtui/topicwidget.cpp:118
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
 msgstr "ユーザ：%1"
 
-#: ../src/qtui/topicwidget.cpp:107
+#: ../src/qtui/topicwidget.cpp:119
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Lag: %1 msecs"
@@ -5661,12 +5695,12 @@ msgctxt "TopicWidgetSettingsPage|"
 msgid "On hover only"
 msgstr ""
 
-#: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
+#: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:24
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:23
+#: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:24
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Topic Widget"
 msgstr "トピックウィジェット"
@@ -5684,149 +5718,149 @@ msgstr "トピックウィジェット"
 #. Topic Message
 #. ----------
 #. Invite Message
-#: ../src/uisupport/uistyle.cpp:577 ../src/uisupport/uistyle.cpp:580
-#: ../src/uisupport/uistyle.cpp:620 ../src/uisupport/uistyle.cpp:623
-#: ../src/uisupport/uistyle.cpp:626 ../src/uisupport/uistyle.cpp:633
-#: ../src/uisupport/uistyle.cpp:665
+#: ../src/uisupport/uistyle.cpp:638 ../src/uisupport/uistyle.cpp:641
+#: ../src/uisupport/uistyle.cpp:682 ../src/uisupport/uistyle.cpp:685
+#: ../src/uisupport/uistyle.cpp:688 ../src/uisupport/uistyle.cpp:695
+#: ../src/uisupport/uistyle.cpp:729
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
 msgstr ""
 
 #. Action Message
-#: ../src/uisupport/uistyle.cpp:583
+#: ../src/uisupport/uistyle.cpp:644
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
-#: ../src/uisupport/uistyle.cpp:587
+#: ../src/uisupport/uistyle.cpp:648
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "You are now known as %DN%1%DN"
 msgstr ""
 
-#: ../src/uisupport/uistyle.cpp:588
+#: ../src/uisupport/uistyle.cpp:649
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr ""
 
 #. Mode Message
-#: ../src/uisupport/uistyle.cpp:592
+#: ../src/uisupport/uistyle.cpp:653
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "User mode: %DM%1%DM"
 msgstr "ユーザモード：%DM%1%DM"
 
-#: ../src/uisupport/uistyle.cpp:593
+#: ../src/uisupport/uistyle.cpp:654
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr ""
 
 #. Join Message
-#: ../src/uisupport/uistyle.cpp:597
+#: ../src/uisupport/uistyle.cpp:658
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr ""
 
 #. Part Message
-#: ../src/uisupport/uistyle.cpp:600
+#: ../src/uisupport/uistyle.cpp:661
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr ""
 
 #. Quit Message
-#: ../src/uisupport/uistyle.cpp:605
+#: ../src/uisupport/uistyle.cpp:666
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr ""
 
 #. Kick Message
-#: ../src/uisupport/uistyle.cpp:612
+#: ../src/uisupport/uistyle.cpp:674
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr ""
 
 #. Day Change Message
-#: ../src/uisupport/uistyle.cpp:629
+#: ../src/uisupport/uistyle.cpp:691
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
 msgstr ""
 
-#: ../src/uisupport/uistyle.cpp:641
+#: ../src/uisupport/uistyle.cpp:704
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
 
-#: ../src/uisupport/uistyle.cpp:645 ../src/uisupport/uistyle.cpp:660
+#: ../src/uisupport/uistyle.cpp:708 ../src/uisupport/uistyle.cpp:724
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN %2"
 
-#: ../src/uisupport/uistyle.cpp:655
+#: ../src/uisupport/uistyle.cpp:719
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr ""
 
-#: ../src/uisupport/uistyle.cpp:667 ../src/uisupport/uistyle.cpp:705
+#: ../src/uisupport/uistyle.cpp:731 ../src/uisupport/uistyle.cpp:779
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
 msgstr "[%1]"
 
-#: ../src/uisupport/uistyle.cpp:703
+#: ../src/uisupport/uistyle.cpp:777
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
 msgstr "<%1>"
 
-#: ../src/client/networkmodel.cpp:697
+#: ../src/client/networkmodel.cpp:783
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
 msgstr[0] "%n 所有者"
 
-#: ../src/client/networkmodel.cpp:698
+#: ../src/client/networkmodel.cpp:785
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
 msgstr[0] "%n 管理者"
 
-#: ../src/client/networkmodel.cpp:699
+#: ../src/client/networkmodel.cpp:787
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
 msgstr[0] "%n オペレータ"
 
-#: ../src/client/networkmodel.cpp:700
+#: ../src/client/networkmodel.cpp:789
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
 msgstr[0] "%n サブオペレータ"
 
-#: ../src/client/networkmodel.cpp:701
+#: ../src/client/networkmodel.cpp:791
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
 msgstr[0] "%n 発言権所持者"
 
-#: ../src/client/networkmodel.cpp:702
+#: ../src/client/networkmodel.cpp:793
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
