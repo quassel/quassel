@@ -25,6 +25,7 @@
 
 #include "network.h"
 #include "settingspage.h"
+#include "clientidentity.h"
 
 #include "ui_networkssettingspage.h"
 #include "ui_networkadddlg.h"
@@ -65,6 +66,10 @@ private slots:
     void clientIdentityRemoved(IdentityId);
     void clientIdentityUpdated();
 
+#ifdef HAVE_SSL
+    void sslUpdated();
+#endif
+
     void on_networkList_itemSelectionChanged();
     void on_addNetwork_clicked();
     void on_deleteNetwork_clicked();
@@ -86,6 +91,9 @@ private:
     NetworkId currentId;
     QHash<NetworkId, NetworkInfo> networkInfos;
     bool _ignoreWidgetChanges;
+#ifdef HAVE_SSL
+    CertIdentity *_cid;
+#endif
 
     QPixmap connectedIcon, connectingIcon, disconnectedIcon;
 

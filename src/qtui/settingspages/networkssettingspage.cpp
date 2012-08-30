@@ -35,12 +35,20 @@
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("Networks"), parent)
+#ifdef HAVE_SSL
+      , _cid(0)
+#endif
 {
     ui.setupUi(this);
 
     // hide SASL options for older cores
     if (!(Client::coreFeatures() & Quassel::SaslAuthentication))
         ui.sasl->hide();
+    if (!(Client::coreFeatures() & Quassel::SaslExternal))
+        ui.label_saslext->hide();
+#ifndef HAVE_SSL
+    ui.label_saslext->hide();
+#endif
 
     // set up icons
     ui.renameNetwork->setIcon(SmallIcon("edit-rename"));
@@ -469,6 +477,20 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
     _ignoreWidgetChanges = true;
     if (id != 0) {
         NetworkInfo info = networkInfos[id];
+
+#ifdef HAVE_SSL
+        // this is only needed when the core supports SASL EXTERNAL
+        if (Client::coreFeatures() & Quassel::SaslExternal) {
+            if (_cid) {
+                disconnect(_cid, SIGNAL(sslSettingsUpdated()), this, SLOT(sslUpdated()));
+                delete _cid;
+            }
+            _cid = new CertIdentity(*Client::identity(info.identity), this);
+            _cid->enableEditSsl(true);
+            connect(_cid, SIGNAL(sslSettingsUpdated()), this, SLOT(sslUpdated()));
+        }
+#endif
+
         ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
         ui.serverList->clear();
         foreach(Network::Server server, info.serverList) {
@@ -506,6 +528,12 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
     }
     else {
         // just clear widgets
+#ifdef HAVE_SSL
+        if (_cid) {
+            disconnect(_cid, SIGNAL(sslSettingsUpdated()), this, SLOT(sslUpdated()));
+            delete _cid;
+        }
+#endif
         ui.identityList->setCurrentIndex(-1);
         ui.serverList->clear();
         ui.performEdit->clear();
@@ -547,6 +575,26 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info)
     info.unlimitedReconnectRetries = ui.unlimitedRetries->isChecked();
     info.rejoinChannels = ui.rejoinOnReconnect->isChecked();
 }
+
+
+#ifdef HAVE_SSL
+void NetworksSettingsPage::sslUpdated()
+{
+    if (_cid && !_cid->sslKey().isNull()) {
+        ui.saslAccount->setDisabled(true);
+        ui.label_10->setDisabled(true);
+        ui.saslPassword->setDisabled(true);
+        ui.label_11->setDisabled(true);
+        ui.label_saslext->setHidden(false);
+    } else {
+        ui.saslAccount->setDisabled(false);
+        ui.label_10->setDisabled(false);
+        ui.saslPassword->setDisabled(false);
+        ui.label_11->setDisabled(false);
+        ui.label_saslext->setHidden(true);
+    }
+}
+#endif
 
 
 /*** Network list ***/

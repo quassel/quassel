@@ -71,8 +71,9 @@ public:
     enum Feature {
         SynchronizedMarkerLine = 0x0001,
         SaslAuthentication = 0x0002,
+        SaslExternal = 0x0004,
 
-        NumFeatures = 0x0002
+        NumFeatures = 0x0004
     };
     Q_DECLARE_FLAGS(Features, Feature);
 

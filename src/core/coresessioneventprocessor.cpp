@@ -112,14 +112,22 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
 
     CoreNetwork *net = coreNetwork(e);
 
-    QString construct = net->saslAccount();
-    construct.append(QChar(QChar::Null));
-    construct.append(net->saslAccount());
-    construct.append(QChar(QChar::Null));
-    construct.append(net->saslPassword());
-    QByteArray saslData = QByteArray(construct.toAscii().toBase64());
-    saslData.prepend("AUTHENTICATE ");
-    net->putRawLine(saslData);
+#ifdef HAVE_SSL
+    if (net->identityPtr()->sslCert().isNull()) {
+#endif
+        QString construct = net->saslAccount();
+        construct.append(QChar(QChar::Null));
+        construct.append(net->saslAccount());
+        construct.append(QChar(QChar::Null));
+        construct.append(net->saslPassword());
+        QByteArray saslData = QByteArray(construct.toAscii().toBase64());
+        saslData.prepend("AUTHENTICATE ");
+        net->putRawLine(saslData);
+#ifdef HAVE_SSL
+    } else {
+        net->putRawLine("AUTHENTICATE +");
+    }
+#endif
 }
 
 
@@ -131,7 +139,17 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     if (e->params().count() == 3) {
         if (e->params().at(2).startsWith("sasl")) { // Freenode (at least) sends "sasl " with a trailing space for some reason!
             // FIXME use event
-            coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN")); // Only working with PLAIN atm, blowfish later
+            // if the current identity has a cert set, use SASL EXTERNAL
+#ifdef HAVE_SSL
+            if (!coreNetwork(e)->identityPtr()->sslCert().isNull()) {
+                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE EXTERNAL"));
+            } else {
+#endif
+                // Only working with PLAIN atm, blowfish later
+                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN"));
+#ifdef HAVE_SSL
+            }
+#endif
         }
     }
 }
