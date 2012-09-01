@@ -59,11 +59,6 @@ public:
         HeartBeatReply
     };
 
-    enum ClientConnectionType {
-        SignalProxyConnection,
-        IODeviceConnection
-    };
-
     enum CustomEvents {
         PeerSignal = QEvent::User,
         RemovePeer
