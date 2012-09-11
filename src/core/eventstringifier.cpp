@@ -457,10 +457,14 @@ void EventStringifier::processIrcEvent317(IrcEvent *e)
 
     if (e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
         QDateTime loginTime = QDateTime::fromTime_t(e->params()[2].toInt());
-        displayMsg(e, Message::Server, tr("[Whois] %1 is logged in since %2").arg(e->params()[0], loginTime.toString()));
+        //: Time format. See http://qt-project.org/doc/qt-4.8/qdatetime.html#toString
+        QString formattedLoginTime = loginTime.toString(tr("MMMM d yyyy hh:mm"));
+        displayMsg(e, Message::Server, tr("[Whois] %1 is logged in since %2").arg(e->params()[0], formattedLoginTime));
     }
+    //: Time format. See http://qt-project.org/doc/qt-4.8/qdatetime.html#toString
+    QString idlingSince = e->timestamp().toLocalTime().addSecs(-idleSecs).toString(tr("MMMM d yyyy hh:mm"));
     displayMsg(e, Message::Server, tr("[Whois] %1 is idling for %2 (since %3)")
-        .arg(e->params()[0], secondsToString(idleSecs), e->timestamp().toLocalTime().addSecs(-idleSecs).toString()));
+        .arg(e->params()[0], secondsToString(idleSecs), idlingSince));
 }
 
 
@@ -559,7 +563,9 @@ void EventStringifier::processIrcEvent329(IrcEvent *e)
         return;
     }
     QDateTime time = QDateTime::fromTime_t(unixtime);
-    displayMsg(e, Message::Topic, tr("Channel %1 created on %2").arg(channel, time.toString()), QString(), channel);
+    //: Time format. See http://qt-project.org/doc/qt-4.8/qdatetime.html#toString
+    QString formattedTime = time.toString(tr("MMMM d yyyy hh:mm"));
+    displayMsg(e, Message::Topic, tr("Channel %1 created on %2").arg(channel, formattedTime), QString(), channel);
 }
 
 
@@ -602,8 +608,10 @@ void EventStringifier::processIrcEvent333(IrcEvent *e)
         return;
 
     QString channel = e->params().first();
+    //: Time format. See http://qt-project.org/doc/qt-4.8/qdatetime.html#toString
+    QString topicSetTime = QDateTime::fromTime_t(e->params()[2].toInt()).toString(tr("MMMM d yyyy hh:mm"));
     displayMsg(e, Message::Topic, tr("Topic set by %1 on %2")
-        .arg(e->params()[1], QDateTime::fromTime_t(e->params()[2].toInt()).toString()), QString(), channel);
+        .arg(e->params()[1], topicSetTime), QString(), channel);
 }
 
 

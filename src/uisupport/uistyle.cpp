@@ -687,8 +687,12 @@ void UiStyle::StyledMessage::style() const
         //: Error Message
         t = tr("%1").arg(txt); break;
     case Message::DayChange:
+    {
+        //: Date format. See http://qt-project.org/doc/qt-4.8/qdate.html#toString
+        QString newDate = timestamp().toString(tr("MMMM d yyyy"));
         //: Day Change Message
-        t = tr("{Day changed to %1}").arg(timestamp().toString());
+        t = tr("{Day changed to %1}").arg(newDate);
+    }
         break;
     case Message::Topic:
         //: Topic Message
