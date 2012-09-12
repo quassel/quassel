@@ -101,6 +101,7 @@ public :
         IrcEventPrivmsg,
         IrcEventQuit,
         IrcEventTopic,
+        IrcEventWallops,
         IrcEventRawPrivmsg, ///< Undecoded privmsg (still needs CTCP parsing)
         IrcEventRawNotice, ///< Undecoded notice (still needs CTCP parsing)
         IrcEventUnknown, ///< Unknown non-numeric cmd

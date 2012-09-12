@@ -337,6 +337,11 @@ void EventStringifier::processIrcEventTopic(IrcEvent *e)
         .arg(e->nick(), e->params().at(0), e->params().at(1)), QString(), e->params().at(0));
 }
 
+void EventStringifier::processIrcEventWallops(IrcEvent *e)
+{
+    displayMsg(e, Message::Server, tr("[Operwall] %1: %2").arg(e->nick(), e->params().join(" ")));
+}
+
 
 /* RPL_ISUPPORT */
 void EventStringifier::processIrcEvent005(IrcEvent *e)
