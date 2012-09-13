@@ -21,7 +21,7 @@
 #include <QFileDialog>
 
 #include <phonon/mediaobject.h>
-
+#include <Phonon/BackendCapabilities>
 #include "phononnotificationbackend.h"
 
 #include "clientsettings.h"
@@ -122,12 +122,24 @@ PhononNotificationBackend::ConfigWidget::~ConfigWidget()
 
 void PhononNotificationBackend::ConfigWidget::widgetChanged()
 {
-    ui.play->setEnabled(ui.enabled->isChecked() && !ui.filename->text().isEmpty());
+    bool audioAvailable = ! Phonon::BackendCapabilities::availableAudioOutputDevices().isEmpty();
+    if ( ! audioAvailable )
+    {
+        ui.enabled->setChecked( false );
+        ui.enabled->setEnabled( false );
+        ui.play->setEnabled( false );
+        ui.open->setEnabled( false );
+        ui.filename->setEnabled( false );
+    }
+    else
+    {
+        ui.play->setEnabled(ui.enabled->isChecked() && !ui.filename->text().isEmpty());
 
-    bool changed = (enabled != ui.enabled->isChecked()
-                    || filename != ui.filename->text());
+        bool changed = (enabled != ui.enabled->isChecked()
+                || filename != ui.filename->text());
 
-    if (changed != hasChanged()) setChangedState(changed);
+        if (changed != hasChanged()) setChangedState(changed);
+    }
 }
 
 
