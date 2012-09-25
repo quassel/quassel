@@ -35,6 +35,7 @@ class NetworkConfig : public SyncableObject
     Q_PROPERTY(int autoWhoInterval READ autoWhoInterval WRITE setAutoWhoInterval)
     Q_PROPERTY(int autoWhoNickLimit READ autoWhoNickLimit WRITE setAutoWhoNickLimit)
     Q_PROPERTY(int autoWhoDelay READ autoWhoDelay WRITE setAutoWhoDelay)
+    Q_PROPERTY(bool standardCtcp READ standardCtcp WRITE setStandardCtcp)
 
 public :
         NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = 0);
@@ -70,6 +71,10 @@ public slots:
     void setAutoWhoDelay(int);
     virtual inline void requestSetAutoWhoDelay(int i) { REQUEST(ARG(i)) }
 
+    inline bool standardCtcp() const { return _standardCtcp; }
+    void setStandardCtcp(bool);
+    virtual inline void requestSetStandardCtcp(bool b) { REQUEST(ARG(b)) }
+
 signals:
     void pingTimeoutEnabledSet(bool);
     void pingIntervalSet(int);
@@ -78,6 +83,7 @@ signals:
     void autoWhoIntervalSet(int);
 //   void autoWhoNickLimitSet(int);
     void autoWhoDelaySet(int);
+    void standardCtcpSet(bool);
 
 //   void setPingTimeoutEnabledRequested(bool);
 //   void setPingIntervalRequested(int);
@@ -96,6 +102,8 @@ private:
     int _autoWhoInterval;
     int _autoWhoNickLimit;
     int _autoWhoDelay;
+
+    bool _standardCtcp;
 };
 
 

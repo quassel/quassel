@@ -85,6 +85,8 @@ QVariant ConnectionSettingsPage::loadAutoWidgetValue(const QString &widgetName)
         return config->autoWhoNickLimit();
     if (widgetName == "autoWhoDelay")
         return config->autoWhoDelay();
+    if (widgetName == "standardCtcp")
+        return config->standardCtcp();
 
     return SettingsPage::loadAutoWidgetValue(widgetName);
 }
@@ -109,6 +111,8 @@ void ConnectionSettingsPage::saveAutoWidgetValue(const QString &widgetName, cons
         config->requestSetAutoWhoNickLimit(value.toInt());
     else if (widgetName == "autoWhoDelay")
         config->requestSetAutoWhoDelay(value.toInt());
+    else if (widgetName == "standardCtcp")
+        config->requestSetStandardCtcp(value.toBool());
 
     else
         SettingsPage::saveAutoWidgetValue(widgetName, value);

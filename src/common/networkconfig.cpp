@@ -29,7 +29,8 @@ NetworkConfig::NetworkConfig(const QString &objectName, QObject *parent)
     _autoWhoEnabled(true),
     _autoWhoInterval(90),
     _autoWhoNickLimit(200),
-    _autoWhoDelay(5)
+    _autoWhoDelay(5),
+    _standardCtcp(false)
 {
 }
 
@@ -106,4 +107,15 @@ void NetworkConfig::setAutoWhoDelay(int delay)
     _autoWhoDelay = delay;
     SYNC(ARG(delay))
     emit autoWhoDelaySet(delay);
+}
+
+
+void NetworkConfig::setStandardCtcp(bool enabled)
+{
+    if (_standardCtcp == enabled)
+        return;
+
+    _standardCtcp = enabled;
+    SYNC(ARG(enabled))
+    emit standardCtcpSet(enabled);
 }

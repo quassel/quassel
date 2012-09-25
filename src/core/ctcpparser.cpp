@@ -20,6 +20,7 @@
 
 #include "ctcpparser.h"
 
+#include "corenetworkconfig.h"
 #include "coresession.h"
 #include "ctcpevent.h"
 #include "messageevent.h"
@@ -148,8 +149,6 @@ void CtcpParser::processIrcEventRawPrivmsg(IrcEventRawMessage *event)
 
 void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype)
 {
-    QByteArray ctcp;
-
     //lowlevel message dequote
     QByteArray dequotedMessage = lowLevelDequote(e->rawMessage());
 
@@ -160,6 +159,53 @@ void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype)
     Message::Flags flags = (ctcptype == CtcpEvent::Reply && !e->network()->isChannelName(e->target()))
                            ? Message::Redirected
                            : Message::None;
+
+    if (coreSession()->networkConfig()->standardCtcp())
+        parseStandard(e, messagetype, dequotedMessage, ctcptype, flags);
+    else
+        parseSimple(e, messagetype, dequotedMessage, ctcptype, flags);
+}
+
+
+// only accept CTCPs in their simplest form, i.e. one ctcp, from start to
+// end, no text around it; not as per the 'specs', but makes people happier
+void CtcpParser::parseSimple(IrcEventRawMessage *e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
+{
+    if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.count() -1] != '\001') {
+        displayMsg(e, messagetype, targetDecode(e, dequotedMessage), e->prefix(), e->target(), flags);
+    } else {
+        int spacePos = -1;
+        QString ctcpcmd, ctcpparam;
+
+        QByteArray ctcp = xdelimDequote(dequotedMessage.mid(1, dequotedMessage.count() - 2));
+        spacePos = ctcp.indexOf(' ');
+        if (spacePos != -1) {
+            ctcpcmd = targetDecode(e, ctcp.left(spacePos));
+            ctcpparam = targetDecode(e, ctcp.mid(spacePos + 1));
+        } else {
+            ctcpcmd = targetDecode(e, ctcp);
+            ctcpparam = QString();
+        }
+        ctcpcmd = ctcpcmd.toUpper();
+
+        // we don't want to block /me messages by the CTCP ignore list
+        if (ctcpcmd == QLatin1String("ACTION") || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
+            QUuid uuid = QUuid::createUuid();
+            _replies.insert(uuid, CtcpReply(coreNetwork(e), nickFromMask(e->prefix())));
+            CtcpEvent *event = new CtcpEvent(EventManager::CtcpEvent, e->network(), e->prefix(), e->target(),
+                ctcptype, ctcpcmd, ctcpparam, e->timestamp(), uuid);
+            emit newEvent(event);
+            CtcpEvent *flushEvent = new CtcpEvent(EventManager::CtcpEventFlush, e->network(), e->prefix(), e->target(),
+                ctcptype, "INVALID", QString(), e->timestamp(), uuid);
+            emit newEvent(flushEvent);
+        }
+    }
+}
+
+
+void CtcpParser::parseStandard(IrcEventRawMessage *e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
+{
+    QByteArray ctcp;
 
     QList<CtcpEvent *> ctcpEvents;
     QUuid uuid; // needed to group all replies together

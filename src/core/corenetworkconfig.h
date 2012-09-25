@@ -45,6 +45,7 @@ public slots:
     virtual inline void requestSetAutoWhoInterval(int interval) { setAutoWhoInterval(interval); }
     virtual inline void requestSetAutoWhoNickLimit(int nickLimit) { setAutoWhoNickLimit(nickLimit); }
     virtual inline void requestSetAutoWhoDelay(int delay) { setAutoWhoDelay(delay); }
+    virtual inline void requestSetStandardCtcp(bool enabled) { setStandardCtcp(enabled); }
 };
 
 

@@ -26,6 +26,7 @@
 #include "corenetwork.h"
 #include "eventmanager.h"
 #include "ircevent.h"
+#include "ctcpevent.h"
 
 class CoreSession;
 class CtcpEvent;
@@ -63,6 +64,8 @@ protected:
         Message::Flags msgFlags = Message::None);
 
     void parse(IrcEventRawMessage *event, Message::Type msgType);
+    void parseSimple(IrcEventRawMessage *e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags);
+    void parseStandard(IrcEventRawMessage *e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags);
 
     QByteArray lowLevelQuote(const QByteArray &);
     QByteArray lowLevelDequote(const QByteArray &);
