@@ -134,6 +134,7 @@ void IdentityEditWidget::displayIdentity(CertIdentity *id, CertIdentity *saveId)
 
 void IdentityEditWidget::saveToIdentity(CertIdentity *id)
 {
+    QRegExp linebreaks = QRegExp("[\\r\\n]");
     id->setRealName(ui.realName->text());
     QStringList nicks;
     for (int i = 0; i < ui.nicknameList->count(); i++) {
@@ -142,19 +143,19 @@ void IdentityEditWidget::saveToIdentity(CertIdentity *id)
     id->setNicks(nicks);
     id->setAwayNick(ui.awayNick->text());
     id->setAwayNickEnabled(true);
-    id->setAwayReason(ui.awayReason->text());
+    id->setAwayReason(ui.awayReason->text().remove(linebreaks));
     id->setAwayReasonEnabled(true);
     id->setAutoAwayEnabled(ui.autoAwayEnabled->isChecked());
     id->setAutoAwayTime(ui.autoAwayTime->value());
-    id->setAutoAwayReason(ui.autoAwayReason->text());
+    id->setAutoAwayReason(ui.autoAwayReason->text().remove(linebreaks));
     id->setAutoAwayReasonEnabled(ui.autoAwayReasonEnabled->isChecked());
     id->setDetachAwayEnabled(ui.detachAwayEnabled->isChecked());
-    id->setDetachAwayReason(ui.detachAwayReason->text());
+    id->setDetachAwayReason(ui.detachAwayReason->text().remove(linebreaks));
     id->setDetachAwayReasonEnabled(true);
     id->setIdent(ui.ident->text());
-    id->setKickReason(ui.kickReason->text());
-    id->setPartReason(ui.partReason->text());
-    id->setQuitReason(ui.quitReason->text());
+    id->setKickReason(ui.kickReason->text().remove(linebreaks));
+    id->setPartReason(ui.partReason->text().remove(linebreaks));
+    id->setQuitReason(ui.quitReason->text().remove(linebreaks));
 #ifdef HAVE_SSL
     id->setSslKey(QSslKey(ui.keyTypeLabel->property("sslKey").toByteArray(), (QSsl::KeyAlgorithm)(ui.keyTypeLabel->property("sslKeyType").toInt())));
     id->setSslCert(QSslCertificate(ui.certOrgLabel->property("sslCert").toByteArray()));
