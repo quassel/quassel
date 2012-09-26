@@ -75,6 +75,9 @@ protected:
     QByteArray pack(const QByteArray &ctcpTag, const QByteArray &message);
     void packedReply(CoreNetwork *network, const QString &bufname, const QList<QByteArray> &replies);
 
+private slots:
+    void setStandardCtcp(bool enabled);
+
 private:
     inline QString targetDecode(IrcEventRawMessage *e, const QByteArray &msg) { return coreNetwork(e)->userDecode(e->target(), msg); }
 

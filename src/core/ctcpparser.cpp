@@ -37,11 +37,21 @@ CtcpParser::CtcpParser(CoreSession *coreSession, QObject *parent)
     _ctcpMDequoteHash[MQUOTE + 'r'] = QByteArray(1, '\r');
     _ctcpMDequoteHash[MQUOTE + MQUOTE] = MQUOTE;
 
-    QByteArray XQUOTE = QByteArray("\134");
-    _ctcpXDelimDequoteHash[XQUOTE + XQUOTE] = XQUOTE;
-    _ctcpXDelimDequoteHash[XQUOTE + QByteArray("a")] = XDELIM;
+    setStandardCtcp(_coreSession->networkConfig()->standardCtcp());
 
+    connect(_coreSession->networkConfig(), SIGNAL(standardCtcpSet(bool)), this, SLOT(setStandardCtcp(bool)));
     connect(this, SIGNAL(newEvent(Event *)), _coreSession->eventManager(), SLOT(postEvent(Event *)));
+}
+
+
+void CtcpParser::setStandardCtcp(bool enabled)
+{
+    QByteArray XQUOTE = QByteArray("\134");
+    if (enabled)
+        _ctcpXDelimDequoteHash[XQUOTE + XQUOTE] = XQUOTE;
+    else
+        _ctcpXDelimDequoteHash.remove(XQUOTE + XQUOTE);
+    _ctcpXDelimDequoteHash[XQUOTE + QByteArray("a")] = XDELIM;
 }
 
 
