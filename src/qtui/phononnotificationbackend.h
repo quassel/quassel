@@ -49,6 +49,7 @@ private:
     class ConfigWidget;
 
     bool _enabled;
+    bool _audioAvailable;
     Phonon::MediaObject *_media;
 };
 
@@ -75,6 +76,7 @@ private:
     Ui::PhononNotificationConfigWidget ui;
 
     bool enabled;
+    bool _audioAvailable;
     QString filename;
     Phonon::MediaObject *audioPreview;
 };

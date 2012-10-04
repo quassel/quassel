@@ -33,6 +33,7 @@ PhononNotificationBackend::PhononNotificationBackend(QObject *parent)
     : AbstractNotificationBackend(parent),
     _media(0)
 {
+    _audioAvailable = ! Phonon::BackendCapabilities::availableAudioOutputDevices().isEmpty() ;
     NotificationSettings notificationSettings;
     _enabled = notificationSettings.value("Phonon/Enabled", true).toBool();
     createMediaObject(notificationSettings.value("Phonon/AudioFile", QString()).toString());
@@ -51,9 +52,13 @@ PhononNotificationBackend::~PhononNotificationBackend()
 
 void PhononNotificationBackend::notify(const Notification &notification)
 {
-    if (_enabled && _media && (notification.type == Highlight || notification.type == PrivMsg)) {
-        _media->stop();
-        _media->play();
+    if (_enabled && (notification.type == Highlight || notification.type == PrivMsg)) {
+        if (_audioAvailable) {
+            _media->stop();
+            _media->play();
+        }
+        else
+            QApplication::beep();
     }
 }
 
@@ -104,6 +109,7 @@ PhononNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
     audioPreview(0)
 {
     ui.setupUi(this);
+    _audioAvailable = ! Phonon::BackendCapabilities::availableAudioOutputDevices().isEmpty() ;
     ui.enabled->setIcon(SmallIcon("media-playback-start"));
     ui.play->setIcon(SmallIcon("media-playback-start"));
     ui.open->setIcon(SmallIcon("document-open"));
@@ -122,14 +128,12 @@ PhononNotificationBackend::ConfigWidget::~ConfigWidget()
 
 void PhononNotificationBackend::ConfigWidget::widgetChanged()
 {
-    bool audioAvailable = ! Phonon::BackendCapabilities::availableAudioOutputDevices().isEmpty();
-    if ( ! audioAvailable )
+    if ( ! _audioAvailable )
     {
-        ui.enabled->setChecked( false );
-        ui.enabled->setEnabled( false );
-        ui.play->setEnabled( false );
+        ui.play->setEnabled( ui.enabled->isChecked() );
         ui.open->setEnabled( false );
         ui.filename->setEnabled( false );
+        ui.filename->setText( QString() );
     }
     else
     {
@@ -192,12 +196,16 @@ void PhononNotificationBackend::ConfigWidget::on_open_clicked()
 
 void PhononNotificationBackend::ConfigWidget::on_play_clicked()
 {
-    if (!ui.filename->text().isEmpty()) {
-        if (audioPreview)
-            delete audioPreview;
+    if (_audioAvailable) {
+        if (!ui.filename->text().isEmpty()) {
+            if (audioPreview)
+                delete audioPreview;
 
-        audioPreview = Phonon::createPlayer(Phonon::NotificationCategory,
-            Phonon::MediaSource(ui.filename->text()));
-        audioPreview->play();
+            audioPreview = Phonon::createPlayer(Phonon::NotificationCategory,
+                    Phonon::MediaSource(ui.filename->text()));
+            audioPreview->play();
+        }
     }
+    else
+        QApplication::beep();
 }
