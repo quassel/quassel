@@ -279,21 +279,26 @@ void PostgreSqlStorage::setUserSetting(UserId userId, const QString &settingName
     out << data;
 
     QSqlDatabase db = logDb();
-    QSqlQuery query(db);
-    query.prepare(queryString("insert_user_setting"));
-    query.bindValue(":userid", userId.toInt());
-    query.bindValue(":settingname", settingName);
-    query.bindValue(":settingvalue", rawData);
-    safeExec(query);
+    QSqlQuery selectQuery(db);
+    selectQuery.prepare(queryString("select_user_setting"));
+    selectQuery.bindValue(":userid", userId.toInt());
+    selectQuery.bindValue(":settingname", settingName);
+    safeExec(selectQuery);
 
-    if (query.lastError().isValid()) {
-        QSqlQuery updateQuery(db);
-        updateQuery.prepare(queryString("update_user_setting"));
-        updateQuery.bindValue(":userid", userId.toInt());
-        updateQuery.bindValue(":settingname", settingName);
-        updateQuery.bindValue(":settingvalue", rawData);
-        safeExec(updateQuery);
+    QString setQueryString;
+    if (!selectQuery.first()) {
+        setQueryString = queryString("insert_user_setting");
     }
+    else {
+        setQueryString = queryString("update_user_setting");
+    }
+
+    QSqlQuery setQuery(db);
+    setQuery.prepare(setQueryString);
+    setQuery.bindValue(":userid", userId.toInt());
+    setQuery.bindValue(":settingname", settingName);
+    setQuery.bindValue(":settingvalue", rawData);
+    safeExec(setQuery);
 }
 
 
