@@ -68,6 +68,7 @@ option(STATIC        "Enable static building (might not be portable)" OFF)
 
 if(APPLE)
   option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
+  option(WITH_NOTIFICATION_CENTER "Enable OS X Notification Center support" ON)
 endif(APPLE)
 
 # Default to embedding data in the static case
@@ -369,6 +370,15 @@ if(BUILD_GUI)
     # We don't want to link against it even if another package has found it
     set(INDICATEQT_LIBRARIES "")
   endif(WITH_LIBINDICATE AND NOT WITH_QT5)
+
+  # Setup OS X notification center support
+  if(WITH_NOTIFICATION_CENTER AND APPLE)
+    set(HAVE_NOTIFICATION_CENTER true)
+    add_definitions(-DHAVE_NOTIFICATION_CENTER)
+    set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES}
+      /System/Library/Frameworks/Foundation.framework
+    )
+  endif()
 
 endif(BUILD_GUI)
 

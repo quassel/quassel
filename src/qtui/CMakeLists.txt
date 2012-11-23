@@ -182,6 +182,11 @@ if(INDICATEQT_FOUND)
   include_directories(${INDICATEQT_INCLUDE_DIRS})
 endif(INDICATEQT_FOUND)
 
+if(HAVE_NOTIFICATION_CENTER)
+  set(SOURCES ${SOURCES} osxnotificationbackend.mm)
+  set(MOC_HDRS ${MOC_HDRS} osxnotificationbackend.h)
+endif()
+
 foreach(FORM ${FORMS})
   set(FORMPATH ${FORMPATH} ui/${FORM})
 endforeach(FORM ${FORMS})
