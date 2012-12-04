@@ -375,7 +375,8 @@ void CoreNetwork::setMyNick(const QString &mynick)
 void CoreNetwork::socketHasData()
 {
     while (socket.canReadLine()) {
-        QByteArray s = socket.readLine().trimmed();
+        QByteArray s = socket.readLine();
+        s.chop(2);
         NetworkDataEvent *event = new NetworkDataEvent(EventManager::NetworkIncoming, this, s);
 #if QT_VERSION >= 0x040700
         event->setTimestamp(QDateTime::currentDateTimeUtc());
