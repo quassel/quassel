@@ -102,6 +102,7 @@ AliasManager::AliasList AliasManager::defaults()
             << Alias("chanserv",  "/msg chanserv $0")
             << Alias("hs", "/msg hostserv $0")
             << Alias("hostserv", "/msg hostserv $0")
+            << Alias("wii", "/whois $0 $0")
             << Alias("back", "/quote away");
 
 #ifdef Q_OS_LINUX
