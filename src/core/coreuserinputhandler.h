@@ -83,6 +83,7 @@ protected:
     void timerEvent(QTimerEvent *event);
 
 private:
+    void doMode(const BufferInfo& bufferInfo, const QChar& addOrRemove, const QChar& mode, QStringList nicks);
     void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
     void putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher = 0);
     int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
