@@ -226,7 +226,7 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
 #endif
 }
 
-void CoreUserInputHandler::doMode(const BufferInfo &bufferInfo, const QChar& addOrRemove, const QChar& mode, QString nicks)
+void CoreUserInputHandler::doMode(const BufferInfo &bufferInfo, const QChar& addOrRemove, const QChar& mode, const QString &nicks)
 {
     QString m;
     bool isNumber;
