@@ -55,6 +55,7 @@ option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
 option(WITH_LIBINDICATE "Enable Ayatana notification support"           ON)
 option(WITH_KDE      "Enable KDE4 integration"				OFF)
 option(WITH_CRYPT    "Enable encryption support if present on system"	ON)
+option(WITH_LDAP     "Enable LDAP authentication support if present on system"	ON)
 option(WITH_SYSLOG   "Use syslog for storing log data"			ON)
 
 # We use icon paths from KDE 4.3.x, which are partially invalid on older and possibly
@@ -391,6 +392,19 @@ if(BUILD_CORE)
   else(WITH_CRYPT AND NOT WITH_QT5)
     message(STATUS "Not enabling encryption support")
   endif(WITH_CRYPT AND NOT WITH_QT5)
+
+  # Setup LDAP authentication support
+  if(WITH_LDAP)
+    find_package(Ldap)
+    if(LDAP_FOUND)
+      message(STATUS "Enabling LDAP authentication support")
+      set(HAVE_LDAP true)
+    else(LDAP_FOUND)
+      message(STATUS "Disabling LDAP authentication support")
+    endif(LDAP_FOUND)
+  else(WITH_LDAP)
+    message(STATUS "Not enabling LDAP authentication support")
+  endif(WITH_LDAP)
 
   # Setup syslog support
   if(WITH_SYSLOG)
