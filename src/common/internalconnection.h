@@ -18,56 +18,74 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SESSIONTHREAD_H
-#define SESSIONTHREAD_H
+#ifndef INTERNALCONNECTION_H
+#define INTERNALCONNECTION_H
 
-#include <QMutex>
-#include <QThread>
+#include <QTcpSocket>
 
-#include "types.h"
+#include "signalproxy.h"
 
-class CoreSession;
-class InternalConnection;
-class RemoteConnection;
-class QIODevice;
+class QEvent;
 
-class SessionThread : public QThread
+class InternalConnection : public SignalProxy::AbstractPeer
 {
     Q_OBJECT
 
 public:
-    SessionThread(UserId user, bool restoreState, QObject *parent = 0);
-    ~SessionThread();
+    enum EventType {
+        SyncMessageEvent = QEvent::User,
+        RpcCallEvent,
+        InitRequestEvent,
+        InitDataEvent
+    };
 
-    void run();
+    InternalConnection(QObject *parent = 0);
+    virtual ~InternalConnection();
 
-    CoreSession *session();
-    UserId user();
+    QString description() const;
+
+    SignalProxy *signalProxy() const;
+    void setSignalProxy(SignalProxy *proxy);
+
+    InternalConnection *peer() const;
+    void setPeer(InternalConnection *peer);
+
+    bool isOpen() const;
+    bool isSecure() const;
+    bool isLocal() const;
+
+    int lag() const;
+
+    void dispatch(const SignalProxy::SyncMessage &msg);
+    void dispatch(const SignalProxy::RpcCall &msg);
+    void dispatch(const SignalProxy::InitRequest &msg);
+    void dispatch(const SignalProxy::InitData &msg);
 
 public slots:
-    void addClient(QObject *peer);
-
-private slots:
-    void setSessionInitialized();
+    void close(const QString &reason = QString());
 
 signals:
-    void initialized();
-    void shutdown();
 
-    void addRemoteClient(RemoteConnection *);
-    void addInternalClient(InternalConnection *);
+    void disconnected();
+    void error(QAbstractSocket::SocketError);
+
+protected:
+    void customEvent(QEvent *event);
+
+private slots:
+    void peerDisconnected();
 
 private:
-    CoreSession *_session;
-    UserId _user;
-    QList<QObject *> clientQueue;
-    bool _sessionInitialized;
-    bool _restoreState;
+    template<class T>
+    void dispatch(EventType eventType, const T &msg);
 
-    bool isSessionInitialized();
-    void addClientToSession(QObject *peer);
-    void addRemoteClientToSession(RemoteConnection *connection);
-    void addInternalClientToSession(InternalConnection *client);
+    template<class T>
+    void handle(const T &msg);
+
+private:
+    SignalProxy *_proxy;
+    InternalConnection *_peer;
+    bool _isOpen;
 };
 
 

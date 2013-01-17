@@ -23,6 +23,7 @@
 #include "core.h"
 #include "coresession.h"
 #include "coresettings.h"
+#include "internalconnection.h"
 #include "postgresqlstorage.h"
 #include "quassel.h"
 #include "signalproxy.h"
@@ -31,6 +32,8 @@
 #include "logger.h"
 
 #include "util.h"
+
+#include "protocols/legacy/legacyconnection.h"
 
 // migration related
 #include <QFile>
@@ -54,8 +57,8 @@ const int Core::AddClientEventId = QEvent::registerEventType();
 class AddClientEvent : public QEvent
 {
 public:
-    AddClientEvent(QTcpSocket *socket, UserId uid) : QEvent(QEvent::Type(Core::AddClientEventId)), socket(socket), userId(uid) {}
-    QTcpSocket *socket;
+    AddClientEvent(RemoteConnection *connection, UserId uid) : QEvent(QEvent::Type(Core::AddClientEventId)), connection(connection), userId(uid) {}
+    RemoteConnection *connection;
     UserId userId;
 };
 
@@ -215,8 +218,8 @@ void Core::init()
 
 Core::~Core()
 {
-    foreach(QTcpSocket *socket, blocksizes.keys()) {
-        socket->disconnectFromHost(); // disconnect non authed clients
+    foreach(RemoteConnection *connection, clientInfo.keys()) {
+        connection->close(); // disconnect non authed clients
     }
     qDeleteAll(sessions);
     qDeleteAll(_storageBackends);
@@ -515,12 +518,13 @@ void Core::incomingConnection()
     Q_ASSERT(server);
     while (server->hasPendingConnections()) {
         QTcpSocket *socket = server->nextPendingConnection();
-        connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
-        connect(socket, SIGNAL(readyRead()), this, SLOT(clientHasData()));
-        connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
+        RemoteConnection *connection = new LegacyConnection(socket, this);
 
-        QVariantMap clientInfo;
-        blocksizes.insert(socket, (quint32)0);
+        connect(connection, SIGNAL(disconnected()), SLOT(clientDisconnected()));
+        connect(connection, SIGNAL(dataReceived(QVariant)), SLOT(processClientMessage(QVariant)));
+        connect(connection, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(socketError(QAbstractSocket::SocketError)));
+
+        clientInfo.insert(connection, QVariantMap());
         quInfo() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
 
         if (!_configured) {
@@ -530,27 +534,22 @@ void Core::incomingConnection()
 }
 
 
-void Core::clientHasData()
+void Core::processClientMessage(const QVariant &data)
 {
-    QTcpSocket *socket = dynamic_cast<QTcpSocket *>(sender());
-    Q_ASSERT(socket && blocksizes.contains(socket));
-    QVariant item;
-    while (SignalProxy::readDataFromDevice(socket, blocksizes[socket], item)) {
-        QVariantMap msg = item.toMap();
-        processClientMessage(socket, msg);
-        if (!blocksizes.contains(socket)) break;  // this socket is no longer ours to handle!
+    RemoteConnection *connection = qobject_cast<RemoteConnection *>(sender());
+    if (!connection) {
+        qWarning() << Q_FUNC_INFO << "Message not sent by RemoteConnection!";
+        return;
     }
-}
 
-
-void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg)
-{
+    QVariantMap msg = data.toMap();
     if (!msg.contains("MsgType")) {
         // Client is way too old, does not even use the current init format
         qWarning() << qPrintable(tr("Antique client trying to connect... refusing."));
-        socket->close();
+        connection->close();
         return;
     }
+
     // OK, so we have at least an init message format we can understand
     if (msg["MsgType"] == "ClientInit") {
         QVariantMap reply;
@@ -562,9 +561,10 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg)
             reply["Error"] = tr("<b>Your Quassel Client is too old!</b><br>"
                                 "This core needs at least client/core protocol version %1.<br>"
                                 "Please consider upgrading your client.").arg(Quassel::buildInfo().coreNeedsProtocol);
-            SignalProxy::writeDataToDevice(socket, reply);
-            qWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("too old, rejecting."));
-            socket->close(); return;
+            connection->writeSocketData(reply);
+            qWarning() << qPrintable(tr("Client")) << connection->description() << qPrintable(tr("too old, rejecting."));
+            connection->close();
+            return;
         }
 
         reply["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
@@ -590,8 +590,8 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg)
 
 #ifdef HAVE_SSL
         SslServer *sslServer = qobject_cast<SslServer *>(&_server);
-        QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
-        bool supportSsl = (bool)sslServer && (bool)sslSocket && sslServer->isCertValid();
+        QSslSocket *sslSocket = qobject_cast<QSslSocket *>(connection->socket());
+        bool supportSsl = sslServer && sslSocket && sslServer->isCertValid();
 #else
         bool supportSsl = false;
 #endif
@@ -626,36 +626,36 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg)
         else {
             reply["Configured"] = true;
         }
-        clientInfo[socket] = msg; // store for future reference
+        clientInfo[connection] = msg; // store for future reference
         reply["MsgType"] = "ClientInitAck";
-        SignalProxy::writeDataToDevice(socket, reply);
-        socket->flush(); // ensure that the write cache is flushed before we switch to ssl
+        connection->writeSocketData(reply);
+        connection->socket()->flush(); // ensure that the write cache is flushed before we switch to ssl
 
 #ifdef HAVE_SSL
         // after we told the client that we are ssl capable we switch to ssl mode
         if (supportSsl && msg["UseSsl"].toBool()) {
-            qDebug() << qPrintable(tr("Starting TLS for Client:"))  << qPrintable(socket->peerAddress().toString());
-            connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
+            qDebug() << qPrintable(tr("Starting TLS for Client:"))  << connection->description();
+            connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), SLOT(sslErrors(const QList<QSslError> &)));
             sslSocket->startServerEncryption();
         }
 #endif
 
 #ifndef QT_NO_COMPRESS
         if (supportsCompression && msg["UseCompression"].toBool()) {
-            socket->setProperty("UseCompression", true);
-            qDebug() << "Using compression for Client:" << qPrintable(socket->peerAddress().toString());
+            connection->socket()->setProperty("UseCompression", true);
+            qDebug() << "Using compression for Client:" << qPrintable(connection->socket()->peerAddress().toString());
         }
 #endif
     }
     else {
         // for the rest, we need an initialized connection
-        if (!clientInfo.contains(socket)) {
+        if (!clientInfo.contains(connection)) {
             QVariantMap reply;
             reply["MsgType"] = "ClientLoginReject";
             reply["Error"] = tr("<b>Client not initialized!</b><br>You need to send an init message before trying to login.");
-            SignalProxy::writeDataToDevice(socket, reply);
-            qWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("did not send an init message before trying to login, rejecting."));
-            socket->close(); return;
+            connection->writeSocketData(reply);
+            qWarning() << qPrintable(tr("Client")) << qPrintable(connection->socket()->peerAddress().toString()) << qPrintable(tr("did not send an init message before trying to login, rejecting."));
+            connection->close(); return;
         }
         if (msg["MsgType"] == "CoreSetupData") {
             QVariantMap reply;
@@ -667,7 +667,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg)
             else {
                 reply["MsgType"] = "CoreSetupAck";
             }
-            SignalProxy::writeDataToDevice(socket, reply);
+            connection->writeSocketData(reply);
         }
         else if (msg["MsgType"] == "ClientLogin") {
             QVariantMap reply;
@@ -675,13 +675,13 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg)
             if (uid == 0) {
                 reply["MsgType"] = "ClientLoginReject";
                 reply["Error"] = tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.");
-                SignalProxy::writeDataToDevice(socket, reply);
+                connection->writeSocketData(reply);
                 return;
             }
             reply["MsgType"] = "ClientLoginAck";
-            SignalProxy::writeDataToDevice(socket, reply);
-            quInfo() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("initialized and authenticated successfully as \"%1\" (UserId: %2).").arg(msg["User"].toString()).arg(uid.toInt()));
-            setupClientSession(socket, uid);
+            connection->writeSocketData(reply);
+            quInfo() << qPrintable(tr("Client")) << qPrintable(connection->socket()->peerAddress().toString()) << qPrintable(tr("initialized and authenticated successfully as \"%1\" (UserId: %2).").arg(msg["User"].toString()).arg(uid.toInt()));
+            setupClientSession(connection, uid);
         }
     }
 }
@@ -690,41 +690,12 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg)
 // Potentially called during the initialization phase (before handing the connection off to the session)
 void Core::clientDisconnected()
 {
-    QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-    if (socket) {
-        // here it's safe to call methods on socket!
-        quInfo() << qPrintable(tr("Non-authed client disconnected.")) << qPrintable(socket->peerAddress().toString());
-        blocksizes.remove(socket);
-        clientInfo.remove(socket);
-        socket->deleteLater();
-    }
-    else {
-        // we have to crawl through the hashes and see if we find a victim to remove
-        qDebug() << qPrintable(tr("Non-authed client disconnected. (socket allready destroyed)"));
+    RemoteConnection *connection = qobject_cast<RemoteConnection *>(sender());
+    Q_ASSERT(connection);
 
-        // DO NOT CALL ANY METHODS ON socket!!
-        socket = static_cast<QTcpSocket *>(sender());
-
-        QHash<QTcpSocket *, quint32>::iterator blockSizeIter = blocksizes.begin();
-        while (blockSizeIter != blocksizes.end()) {
-            if (blockSizeIter.key() == socket) {
-                blockSizeIter = blocksizes.erase(blockSizeIter);
-            }
-            else {
-                blockSizeIter++;
-            }
-        }
-
-        QHash<QTcpSocket *, QVariantMap>::iterator clientInfoIter = clientInfo.begin();
-        while (clientInfoIter != clientInfo.end()) {
-            if (clientInfoIter.key() == socket) {
-                clientInfoIter = clientInfo.erase(clientInfoIter);
-            }
-            else {
-                clientInfoIter++;
-            }
-        }
-    }
+    quInfo() << qPrintable(tr("Non-authed client disconnected.")) << qPrintable(connection->socket()->peerAddress().toString());
+    clientInfo.remove(connection);
+    connection->deleteLater();
 
     // make server listen again if still not configured
     if (!_configured) {
@@ -736,13 +707,12 @@ void Core::clientDisconnected()
 }
 
 
-void Core::setupClientSession(QTcpSocket *socket, UserId uid)
+void Core::setupClientSession(RemoteConnection *connection, UserId uid)
 {
     // From now on everything is handled by the client session
-    disconnect(socket, 0, this, 0);
-    socket->flush();
-    blocksizes.remove(socket);
-    clientInfo.remove(socket);
+    disconnect(connection, 0, this, 0);
+    connection->socket()->flush();
+    clientInfo.remove(connection);
 
     // Find or create session for validated user
     SessionThread *session;
@@ -752,15 +722,15 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid)
     else {
         session = createSession(uid);
         if (!session) {
-            qWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(socket->peerAddress().toString());
-            socket->close();
+            qWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(connection->socket()->peerAddress().toString());
+            connection->close();
             return;
         }
     }
 
     // as we are currently handling an event triggered by incoming data on this socket
     // it is unsafe to directly move the socket to the client thread.
-    QCoreApplication::postEvent(this, new AddClientEvent(socket, uid));
+    QCoreApplication::postEvent(this, new AddClientEvent(connection, uid));
 }
 
 
@@ -768,27 +738,27 @@ void Core::customEvent(QEvent *event)
 {
     if (event->type() == AddClientEventId) {
         AddClientEvent *addClientEvent = static_cast<AddClientEvent *>(event);
-        addClientHelper(addClientEvent->socket, addClientEvent->userId);
+        addClientHelper(addClientEvent->connection, addClientEvent->userId);
         return;
     }
 }
 
 
-void Core::addClientHelper(QTcpSocket *socket, UserId uid)
+void Core::addClientHelper(RemoteConnection *connection, UserId uid)
 {
     // Find or create session for validated user
     if (!sessions.contains(uid)) {
-        qWarning() << qPrintable(tr("Could not find a session for client:")) << qPrintable(socket->peerAddress().toString());
-        socket->close();
+        qWarning() << qPrintable(tr("Could not find a session for client:")) << qPrintable(connection->socket()->peerAddress().toString());
+        connection->close();
         return;
     }
 
     SessionThread *session = sessions[uid];
-    session->addClient(socket);
+    session->addClient(connection);
 }
 
 
-void Core::setupInternalClientSession(SignalProxy *proxy)
+void Core::setupInternalClientSession(InternalConnection *clientConnection)
 {
     if (!_configured) {
         stopListening();
@@ -804,13 +774,18 @@ void Core::setupInternalClientSession(SignalProxy *proxy)
         return;
     }
 
+    InternalConnection *coreConnection = new InternalConnection(this);
+    coreConnection->setPeer(clientConnection);
+    clientConnection->setPeer(coreConnection);
+
     // Find or create session for validated user
-    SessionThread *sess;
+    SessionThread *sessionThread;
     if (sessions.contains(uid))
-        sess = sessions[uid];
+        sessionThread = sessions[uid];
     else
-        sess = createSession(uid);
-    sess->addClient(proxy);
+        sessionThread = createSession(uid);
+
+    sessionThread->addClient(coreConnection);
 }
 
 
@@ -841,9 +816,9 @@ void Core::sslErrors(const QList<QSslError> &errors)
 
 void Core::socketError(QAbstractSocket::SocketError err)
 {
-    QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(sender());
-    if (socket && err != QAbstractSocket::RemoteHostClosedError)
-        qWarning() << "Core::socketError()" << socket << err << socket->errorString();
+    RemoteConnection *connection = qobject_cast<RemoteConnection *>(sender());
+    if (connection && err != QAbstractSocket::RemoteHostClosedError)
+        qWarning() << "Core::socketError()" << connection->socket() << err << connection->socket()->errorString();
 }
 
 

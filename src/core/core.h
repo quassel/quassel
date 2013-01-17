@@ -42,9 +42,10 @@
 #include "types.h"
 
 class CoreSession;
+class RemoteConnection;
+struct NetworkInfo;
 class SessionThread;
 class SignalProxy;
-struct NetworkInfo;
 
 class AbstractSqlMigrationReader;
 class AbstractSqlMigrationWriter;
@@ -484,7 +485,7 @@ public slots:
     /** \note This method is threadsafe.
      */
     void syncStorage();
-    void setupInternalClientSession(SignalProxy *proxy);
+    void setupInternalClientSession(InternalConnection *clientConnection);
 
 signals:
     //! Sent when a BufferInfo is updated in storage.
@@ -500,7 +501,6 @@ private slots:
     bool startListening();
     void stopListening(const QString &msg = QString());
     void incomingConnection();
-    void clientHasData();
     void clientDisconnected();
 
     bool initStorage(const QString &backend, QVariantMap settings, bool setup = false);
@@ -511,6 +511,8 @@ private slots:
 #endif
     void socketError(QAbstractSocket::SocketError);
 
+    void processClientMessage(const QVariant &data);
+
 private:
     Core();
     ~Core();
@@ -518,9 +520,8 @@ private:
     static Core *instanceptr;
 
     SessionThread *createSession(UserId userId, bool restoreState = false);
-    void setupClientSession(QTcpSocket *socket, UserId uid);
-    void addClientHelper(QTcpSocket *socket, UserId uid);
-    void processClientMessage(QTcpSocket *socket, const QVariantMap &msg);
+    void setupClientSession(RemoteConnection *connection, UserId uid);
+    void addClientHelper(RemoteConnection *connection, UserId uid);
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
     QString setupCoreForInternalUsage();
     QString setupCore(QVariantMap setupData);
@@ -547,8 +548,7 @@ private:
 
     OidentdConfigGenerator *_oidentdConfigGenerator;
 
-    QHash<QTcpSocket *, quint32> blocksizes;
-    QHash<QTcpSocket *, QVariantMap> clientInfo;
+    QHash<RemoteConnection *, QVariantMap> clientInfo;
 
     QHash<QString, Storage *> _storageBackends;
 

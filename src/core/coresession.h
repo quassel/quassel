@@ -28,6 +28,7 @@
 #include "corealiasmanager.h"
 #include "coreignorelistmanager.h"
 #include "message.h"
+#include "signalproxy.h"
 #include "storage.h"
 
 class CoreBacklogManager;
@@ -41,10 +42,11 @@ class CoreSessionEventProcessor;
 class CtcpParser;
 class EventManager;
 class EventStringifier;
+class InternalConnection;
 class IrcParser;
 class MessageEvent;
 class NetworkConnection;
-class SignalProxy;
+class RemoteConnection;
 
 struct NetworkInfo;
 
@@ -87,8 +89,8 @@ public:
     void restoreSessionState();
 
 public slots:
-    void addClient(QIODevice *device);
-    void addClient(SignalProxy *proxy);
+    void addClient(RemoteConnection *connection);
+    void addClient(InternalConnection *connection);
 
     void msgFromClient(BufferInfo, QString message);
 
@@ -155,7 +157,7 @@ protected:
     virtual void customEvent(QEvent *event);
 
 private slots:
-    void removeClient(QIODevice *dev);
+    void removeClient(SignalProxy::AbstractPeer *peer);
 
     void recvStatusMsgFromServer(QString msg);
     void recvMessageFromServer(NetworkId networkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);

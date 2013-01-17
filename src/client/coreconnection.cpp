@@ -28,23 +28,26 @@
 #include "clientsettings.h"
 #include "coreaccountmodel.h"
 #include "identity.h"
+#include "internalconnection.h"
 #include "network.h"
 #include "networkmodel.h"
 #include "quassel.h"
 #include "signalproxy.h"
 #include "util.h"
 
+#include "protocols/legacy/legacyconnection.h"
+
 CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
     : QObject(parent),
     _model(model),
-    _blockSize(0),
     _state(Disconnected),
     _wantReconnect(false),
     _progressMinimum(0),
     _progressMaximum(-1),
     _progressValue(-1),
     _wasReconnect(false),
-    _requestedDisconnect(false)
+    _requestedDisconnect(false),
+    _resetting(false)
 {
     qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
 }
@@ -120,7 +123,7 @@ void CoreConnection::updateProgress(int value, int max)
 
 void CoreConnection::reconnectTimeout()
 {
-    if (!_socket) {
+    if (!_connection) {
         CoreConnectionSettings s;
         if (_wantReconnect && s.autoReconnect()) {
 #ifdef HAVE_KDE
@@ -198,12 +201,7 @@ void CoreConnection::solidNetworkStatusChanged(Solid::Networking::Status status)
 
 bool CoreConnection::isEncrypted() const
 {
-#ifndef HAVE_SSL
-    return false;
-#else
-    QSslSocket *sock = qobject_cast<QSslSocket *>(_socket);
-    return isConnected() && sock && sock->isEncrypted();
-#endif
+    return _connection && _connection->isSecure();
 }
 
 
@@ -213,7 +211,7 @@ bool CoreConnection::isLocalConnection() const
         return false;
     if (currentAccount().isInternal())
         return true;
-    if (_socket->peerAddress().isInSubnet(QHostAddress::LocalHost, 0x00ffffff))
+    if (_connection->isLocal())
         return true;
 
     return false;
@@ -285,76 +283,74 @@ void CoreConnection::setState(ConnectionState state)
 
 void CoreConnection::coreSocketError(QAbstractSocket::SocketError)
 {
-    qDebug() << "coreSocketError" << _socket << _socket->errorString();
     disconnectFromCore(_socket->errorString(), true);
 }
 
 
 void CoreConnection::coreSocketDisconnected()
 {
-    // qDebug() << Q_FUNC_INFO;
     _wasReconnect = !_requestedDisconnect;
     resetConnection(true);
     // FIXME handle disconnects gracefully
 }
 
 
-void CoreConnection::coreHasData()
+// note: this still expects the legacy protocol
+// note²: after cleaning this up, we can probably get rid of _socket altogether
+void CoreConnection::coreHasData(const QVariant &item)
 {
-    QVariant item;
-    while (SignalProxy::readDataFromDevice(_socket, _blockSize, item)) {
-        QVariantMap msg = item.toMap();
-        if (!msg.contains("MsgType")) {
-            // This core is way too old and does not even speak our init protocol...
-            emit connectionErrorPopup(tr("The Quassel Core you try to connect to is too old! Please consider upgrading."));
-            disconnectFromCore(QString(), false);
-            return;
-        }
-        if (msg["MsgType"] == "ClientInitAck") {
-            clientInitAck(msg);
-        }
-        else if (msg["MsgType"] == "ClientInitReject") {
-            emit connectionErrorPopup(msg["Error"].toString());
-            disconnectFromCore(QString(), false);
-            return;
-        }
-        else if (msg["MsgType"] == "CoreSetupAck") {
-            emit coreSetupSuccess();
-        }
-        else if (msg["MsgType"] == "CoreSetupReject") {
-            emit coreSetupFailed(msg["Error"].toString());
-        }
-        else if (msg["MsgType"] == "ClientLoginReject") {
-            loginFailed(msg["Error"].toString());
-        }
-        else if (msg["MsgType"] == "ClientLoginAck") {
-            loginSuccess();
-        }
-        else if (msg["MsgType"] == "SessionInit") {
-            // that's it, let's hand over to the signal proxy
-            // if the socket is an orphan, the signalProxy adopts it.
-            // -> we don't need to care about it anymore
-            _socket->setParent(0);
-            Client::signalProxy()->addPeer(_socket);
-
-            sessionStateReceived(msg["SessionState"].toMap());
-            break; // this is definitively the last message we process here!
-        }
-        else {
-            disconnectFromCore(tr("Invalid data received from core"), false);
-            return;
-        }
+    QVariantMap msg = item.toMap();
+    if (!msg.contains("MsgType")) {
+        // This core is way too old and does not even speak our init protocol...
+        emit connectionErrorPopup(tr("The Quassel Core you try to connect to is too old! Please consider upgrading."));
+        disconnectFromCore(QString(), false);
+        return;
     }
-    if (_blockSize > 0) {
-        updateProgress(_socket->bytesAvailable(), _blockSize);
+    if (msg["MsgType"] == "ClientInitAck") {
+        clientInitAck(msg);
+    }
+    else if (msg["MsgType"] == "ClientInitReject") {
+        emit connectionErrorPopup(msg["Error"].toString());
+        disconnectFromCore(QString(), false);
+        return;
+    }
+    else if (msg["MsgType"] == "CoreSetupAck") {
+        emit coreSetupSuccess();
+    }
+    else if (msg["MsgType"] == "CoreSetupReject") {
+        emit coreSetupFailed(msg["Error"].toString());
+    }
+    else if (msg["MsgType"] == "ClientLoginReject") {
+        loginFailed(msg["Error"].toString());
+    }
+    else if (msg["MsgType"] == "ClientLoginAck") {
+        loginSuccess();
+    }
+    else if (msg["MsgType"] == "SessionInit") {
+        // that's it, let's hand over to the signal proxy
+        // if the connection is an orphan, the signalProxy adopts it.
+        // -> we don't need to care about it anymore
+
+        disconnect(_connection, 0, this, 0);
+
+        _connection->setParent(0);
+        Client::signalProxy()->addPeer(_connection);
+
+        sessionStateReceived(msg["SessionState"].toMap());
+    }
+    else {
+        disconnectFromCore(tr("Invalid data received from core"), false);
+        return;
     }
 }
 
 
 void CoreConnection::disconnectFromCore()
 {
-    _requestedDisconnect = true;
-    disconnectFromCore(QString(), false); // requested disconnect, so don't try to reconnect
+    if (_socket) {
+        _requestedDisconnect = true;
+        disconnectFromCore(QString(), false); // requested disconnect, so don't try to reconnect
+    }
 }
 
 
@@ -365,30 +361,42 @@ void CoreConnection::disconnectFromCore(const QString &errorString, bool wantRec
 
     _wasReconnect = wantReconnect; // store if disconnect was requested
 
+    resetConnection(wantReconnect);
+
     if (errorString.isEmpty())
         emit connectionError(tr("Disconnected"));
     else
         emit connectionError(errorString);
-
-    Client::signalProxy()->removeAllPeers();
-    resetConnection(wantReconnect);
 }
 
 
 void CoreConnection::resetConnection(bool wantReconnect)
 {
+    if (_resetting)
+        return;
+    _resetting = true;
+
     _wantReconnect = wantReconnect;
 
-    if (_socket) {
+    if (_connection) {
+        disconnect(_socket, 0, this, 0);
+        disconnect(_connection, 0, this, 0);
+        _connection->close();
+
+        if (_connection->parent() == this)
+            _connection->deleteLater(); // if it's not us, it belongs to the sigproxy which will delete it
+        _socket = 0;      // socket is owned and will be deleted by RemoteConnection
+        _connection = 0;
+    }
+    else if (_socket) {
         disconnect(_socket, 0, this, 0);
         _socket->deleteLater();
         _socket = 0;
     }
+
     _requestedDisconnect = false;
-    _blockSize = 0;
 
     _coreMsgBuffer.clear();
-
     _netsToSync.clear();
     _numNetsToSync = 0;
 
@@ -404,6 +412,8 @@ void CoreConnection::resetConnection(bool wantReconnect)
     if (wantReconnect && s.autoReconnect()) {
         _reconnectTimer.start();
     }
+
+    _resetting = false;
 }
 
 
@@ -464,7 +474,11 @@ void CoreConnection::connectToCurrentAccount()
             return;
         }
         emit startInternalCore();
-        emit connectToInternalCore(Client::instance()->signalProxy());
+
+        InternalConnection *conn = new InternalConnection();
+        Client::instance()->signalProxy()->addPeer(conn); // sigproxy will take ownership
+        emit connectToInternalCore(conn);
+
         return;
     }
 
@@ -472,7 +486,7 @@ void CoreConnection::connectToCurrentAccount()
 
     Q_ASSERT(!_socket);
 #ifdef HAVE_SSL
-    QSslSocket *sock = new QSslSocket(Client::instance());
+    QSslSocket *sock = new QSslSocket(this);
     // make sure the warning is shown if we happen to connect without SSL support later
     s.setAccountValue("ShowNoClientSslWarning", true);
 #else
@@ -487,7 +501,7 @@ void CoreConnection::connectToCurrentAccount()
             s.setAccountValue("ShowNoClientSslWarning", false);
         }
     }
-    QTcpSocket *sock = new QTcpSocket(Client::instance());
+    QTcpSocket *sock = new QTcpSocket(this);
 #endif
 
 #ifndef QT_NO_NETWORKPROXY
@@ -498,7 +512,6 @@ void CoreConnection::connectToCurrentAccount()
 #endif
 
     _socket = sock;
-    connect(sock, SIGNAL(readyRead()), SLOT(coreHasData()));
     connect(sock, SIGNAL(connected()), SLOT(coreSocketConnected()));
     connect(sock, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
     connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(coreSocketError(QAbstractSocket::SocketError)));
@@ -511,6 +524,12 @@ void CoreConnection::connectToCurrentAccount()
 
 void CoreConnection::coreSocketConnected()
 {
+    // Create the connection which will handle the incoming data
+    Q_ASSERT(!_connection);
+    _connection = new LegacyConnection(_socket, this);
+    connect(_connection, SIGNAL(dataReceived(QVariant)), SLOT(coreHasData(QVariant)));
+    connect(_connection, SIGNAL(transferProgress(int,int)), SLOT(updateProgress(int,int)));
+
     // Phase One: Send client info and wait for core info
 
     emit connectionMsg(tr("Synchronizing to core..."));
@@ -527,7 +546,7 @@ void CoreConnection::coreSocketConnected()
     clientInit["UseCompression"] = false;
 #endif
 
-    SignalProxy::writeDataToDevice(_socket, clientInit);
+    qobject_cast<RemoteConnection *>(_connection)->writeSocketData(clientInit);
 }
 
 
@@ -676,7 +695,7 @@ void CoreConnection::loginToCore(const QString &prevError)
     clientLogin["MsgType"] = "ClientLogin";
     clientLogin["User"] = currentAccount().user();
     clientLogin["Password"] = currentAccount().password();
-    SignalProxy::writeDataToDevice(_socket, clientLogin);
+    qobject_cast<RemoteConnection*>(_connection)->writeSocketData(clientLogin);
 }
 
 
@@ -705,10 +724,6 @@ void CoreConnection::loginSuccess()
 void CoreConnection::sessionStateReceived(const QVariantMap &state)
 {
     updateProgress(100, 100);
-
-    // rest of communication happens through SignalProxy...
-    disconnect(_socket, SIGNAL(readyRead()), this, 0);
-    disconnect(_socket, SIGNAL(connected()), this, 0);
 
     syncToCore(state);
 }
@@ -794,5 +809,5 @@ void CoreConnection::doCoreSetup(const QVariant &setupData)
     QVariantMap setup;
     setup["MsgType"] = "CoreSetupData";
     setup["SetupData"] = setupData;
-    SignalProxy::writeDataToDevice(_socket, setup);
+    qobject_cast<RemoteConnection *>(_connection)->writeSocketData(setup);
 }

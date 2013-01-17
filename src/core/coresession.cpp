@@ -37,14 +37,16 @@
 #include "coreusersettings.h"
 #include "ctcpparser.h"
 #include "eventstringifier.h"
+#include "internalconnection.h"
 #include "ircchannel.h"
 #include "ircparser.h"
 #include "ircuser.h"
 #include "logger.h"
 #include "messageevent.h"
-#include "signalproxy.h"
 #include "storage.h"
 #include "util.h"
+
+#include "protocols/legacy/legacyconnection.h"
 
 class ProcessMessagesEvent : public QEvent
 {
@@ -56,7 +58,7 @@ public:
 CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     : QObject(parent),
     _user(uid),
-    _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
+    _signalProxy(new SignalProxy(SignalProxy::Server, this)),
     _aliasManager(this),
     _bufferSyncer(new CoreBufferSyncer(this)),
     _backlogManager(new CoreBacklogManager(this)),
@@ -77,10 +79,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->setHeartBeatInterval(30);
     p->setMaxHeartBeatCount(60); // 30 mins until we throw a dead socket out
 
-    connect(p, SIGNAL(peerRemoved(QIODevice *)), this, SLOT(removeClient(QIODevice *)));
+    connect(p, SIGNAL(peerRemoved(SignalProxy::AbstractPeer*)), SLOT(removeClient(SignalProxy::AbstractPeer*)));
 
-    connect(p, SIGNAL(connected()), this, SLOT(clientsConnected()));
-    connect(p, SIGNAL(disconnected()), this, SLOT(clientsDisconnected()));
+    connect(p, SIGNAL(connected()), SLOT(clientsConnected()));
+    connect(p, SIGNAL(disconnected()), SLOT(clientsDisconnected()));
 
     p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
     p->attachSignal(this, SIGNAL(displayMsg(Message)));
@@ -204,36 +206,28 @@ void CoreSession::restoreSessionState()
 }
 
 
-void CoreSession::addClient(QIODevice *device)
+void CoreSession::addClient(RemoteConnection *connection)
 {
-    if (!device) {
-        qCritical() << "Invoking CoreSession::addClient with a QObject that is not a QIODevice!";
-    }
-    else {
-        // if the socket is an orphan, the signalProxy adopts it.
-        // -> we don't need to care about it anymore
-        device->setParent(0);
-        signalProxy()->addPeer(device);
-        QVariantMap reply;
-        reply["MsgType"] = "SessionInit";
-        reply["SessionState"] = sessionState();
-        SignalProxy::writeDataToDevice(device, reply);
-    }
+    QVariantMap reply;
+    reply["MsgType"] = "SessionInit";
+    reply["SessionState"] = sessionState();
+    connection->writeSocketData(reply);
+    signalProxy()->addPeer(connection);
 }
 
 
-void CoreSession::addClient(SignalProxy *proxy)
+void CoreSession::addClient(InternalConnection *connection)
 {
-    signalProxy()->addPeer(proxy);
+    signalProxy()->addPeer(connection);
     emit sessionState(sessionState());
 }
 
 
-void CoreSession::removeClient(QIODevice *iodev)
+void CoreSession::removeClient(SignalProxy::AbstractPeer *peer)
 {
-    QTcpSocket *socket = qobject_cast<QTcpSocket *>(iodev);
-    if (socket)
-        quInfo() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
+    RemoteConnection *connection = qobject_cast<RemoteConnection *>(peer);
+    if (connection)
+        quInfo() << qPrintable(tr("Client")) << connection->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
 }
 
 

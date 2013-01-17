@@ -24,6 +24,8 @@
 #include "core.h"
 #include "qtui.h"
 
+class InternalConnection;
+
 MonolithicApplication::MonolithicApplication(int &argc, char **argv)
     : QtUiApplication(argc, argv),
     _internalInitDone(false)
@@ -43,6 +45,7 @@ bool MonolithicApplication::init()
 
     connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
 
+    // FIXME what's this for?
     if (isOptionSet("port")) {
         startInternalCore();
     }
@@ -67,6 +70,6 @@ void MonolithicApplication::startInternalCore()
     }
     Core *core = Core::instance();
     CoreConnection *connection = Client::coreConnection();
-    connect(connection, SIGNAL(connectToInternalCore(SignalProxy *)), core, SLOT(setupInternalClientSession(SignalProxy *)));
-    connect(core, SIGNAL(sessionState(const QVariant &)), connection, SLOT(internalSessionStateReceived(const QVariant &)));
+    connect(connection, SIGNAL(connectToInternalCore(InternalConnection*)), core, SLOT(setupInternalClientSession(InternalConnection*)));
+    connect(core, SIGNAL(sessionState(QVariant)), connection, SLOT(internalSessionStateReceived(QVariant)));
 }

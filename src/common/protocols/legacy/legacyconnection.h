@@ -18,57 +18,56 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SESSIONTHREAD_H
-#define SESSIONTHREAD_H
+#ifndef LEGACYCONNECTION_H
+#define LEGACYCONNECTION_H
 
-#include <QMutex>
-#include <QThread>
+#include <QDataStream>
 
-#include "types.h"
+#include "../../remoteconnection.h"
 
-class CoreSession;
-class InternalConnection;
-class RemoteConnection;
-class QIODevice;
+class QDataStream;
 
-class SessionThread : public QThread
+class LegacyConnection : public RemoteConnection
 {
     Q_OBJECT
 
 public:
-    SessionThread(UserId user, bool restoreState, QObject *parent = 0);
-    ~SessionThread();
+    enum RequestType {
+        Sync = 1,
+        RpcCall,
+        InitRequest,
+        InitData,
+        HeartBeat,
+        HeartBeatReply
+    };
 
-    void run();
+    LegacyConnection(QTcpSocket *socket, QObject *parent = 0);
+    ~LegacyConnection() {}
 
-    CoreSession *session();
-    UserId user();
+    void setSignalProxy(SignalProxy *proxy);
 
-public slots:
-    void addClient(QObject *peer);
+    void dispatch(const SignalProxy::SyncMessage &msg);
+    void dispatch(const SignalProxy::RpcCall &msg);
+    void dispatch(const SignalProxy::InitRequest &msg);
+    void dispatch(const SignalProxy::InitData &msg);
+
+    void dispatch(const RemoteConnection::HeartBeat &msg);
+    void dispatch(const RemoteConnection::HeartBeatReply &msg);
+
+    // FIXME: this is only used for the auth phase and should be replaced by something more generic
+    void writeSocketData(const QVariant &item);
 
 private slots:
-    void setSessionInitialized();
-
-signals:
-    void initialized();
-    void shutdown();
-
-    void addRemoteClient(RemoteConnection *);
-    void addInternalClient(InternalConnection *);
+    void socketDataAvailable();
 
 private:
-    CoreSession *_session;
-    UserId _user;
-    QList<QObject *> clientQueue;
-    bool _sessionInitialized;
-    bool _restoreState;
+    bool readSocketData(QVariant &item);
+    void handlePackedFunc(const QVariant &packedFunc);
+    void dispatchPackedFunc(const QVariantList &packedFunc);
 
-    bool isSessionInitialized();
-    void addClientToSession(QObject *peer);
-    void addRemoteClientToSession(RemoteConnection *connection);
-    void addInternalClientToSession(InternalConnection *client);
+    QDataStream _stream;
+    qint32 _blockSize;
+    bool _useCompression;
 };
-
 
 #endif

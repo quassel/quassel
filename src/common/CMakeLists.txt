@@ -17,6 +17,7 @@ set(SOURCES
     eventmanager.cpp
     identity.cpp
     ignorelistmanager.cpp
+    internalconnection.cpp
     ircchannel.cpp
     ircevent.cpp
     irclisthelper.cpp
@@ -28,10 +29,14 @@ set(SOURCES
     networkconfig.cpp
     networkevent.cpp
     quassel.cpp
+    remoteconnection.cpp
     settings.cpp
     signalproxy.cpp
     syncableobject.cpp
-    util.cpp)
+    util.cpp
+
+    protocols/legacy/legacyconnection.cpp
+)
 
 set(MOC_HDRS
     aliasmanager.h
@@ -44,14 +49,19 @@ set(MOC_HDRS
     eventmanager.h
     identity.h
     ignorelistmanager.h
+    internalconnection.h
     ircchannel.h
     irclisthelper.h
     ircuser.h
     network.h
     networkconfig.h
+    remoteconnection.h
     settings.h
     signalproxy.h
-    syncableobject.h)
+    syncableobject.h
+
+    protocols/legacy/legacyconnection.h
+)
 
 set(HEADERS ${MOC_HDRS}
     abstractcliparser.h

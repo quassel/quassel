@@ -37,9 +37,11 @@
 #endif
 
 #include "coreaccount.h"
+#include "remoteconnection.h"
 #include "types.h"
 
 class CoreAccountModel;
+class InternalConnection;
 class Network;
 class SignalProxy;
 
@@ -105,7 +107,7 @@ signals:
     void coreSetupFailed(const QString &error);
 
     void startInternalCore();
-    void connectToInternalCore(SignalProxy *proxy);
+    void connectToInternalCore(InternalConnection *connection);
 
     // These signals MUST be handled synchronously!
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
@@ -121,7 +123,7 @@ private slots:
 
     void socketStateChanged(QAbstractSocket::SocketState);
     void coreSocketError(QAbstractSocket::SocketError);
-    void coreHasData();
+    void coreHasData(const QVariant &item);
     void coreSocketConnected();
     void coreSocketDisconnected();
 
@@ -173,8 +175,8 @@ private:
     CoreAccount _account;
     QVariantMap _coreMsgBuffer;
 
-    QPointer<QAbstractSocket> _socket;
-    quint32 _blockSize;
+    QPointer<QTcpSocket> _socket;
+    QPointer<SignalProxy::AbstractPeer> _connection;
     ConnectionState _state;
 
     QTimer _reconnectTimer;
@@ -188,6 +190,7 @@ private:
     QString _coreInfoString(const QVariantMap &);
     bool _wasReconnect;
     bool _requestedDisconnect;
+    bool _resetting;
 
     inline CoreAccountModel *accountModel() const;
 

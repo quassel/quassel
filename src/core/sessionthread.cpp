@@ -18,12 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QMutexLocker>
-
+#include "core.h"
+#include "coresession.h"
+#include "internalconnection.h"
+#include "remoteconnection.h"
 #include "sessionthread.h"
 #include "signalproxy.h"
-#include "coresession.h"
-#include "core.h"
 
 SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent)
     : QThread(parent),
@@ -72,6 +72,7 @@ void SessionThread::setSessionInitialized()
 }
 
 
+// this and the following related methods are executed in the Core thread!
 void SessionThread::addClient(QObject *peer)
 {
     if (isSessionInitialized()) {
@@ -85,42 +86,44 @@ void SessionThread::addClient(QObject *peer)
 
 void SessionThread::addClientToSession(QObject *peer)
 {
-    QIODevice *socket = qobject_cast<QIODevice *>(peer);
-    if (socket) {
-        addRemoteClientToSession(socket);
+    RemoteConnection *connection = qobject_cast<RemoteConnection *>(peer);
+    if (connection) {
+        addRemoteClientToSession(connection);
         return;
     }
 
-    SignalProxy *proxy = qobject_cast<SignalProxy *>(peer);
-    if (proxy) {
-        addInternalClientToSession(proxy);
+    InternalConnection *internal = qobject_cast<InternalConnection *>(peer);
+    if (internal) {
+        addInternalClientToSession(internal);
         return;
     }
 
-    qWarning() << "SessionThread::addClient() received neither QIODevice nor SignalProxy as peer!" << peer;
+    qWarning() << "SessionThread::addClient() received invalid peer!" << peer;
 }
 
 
-void SessionThread::addRemoteClientToSession(QIODevice *socket)
+void SessionThread::addRemoteClientToSession(RemoteConnection *connection)
 {
-    socket->setParent(0);
-    socket->moveToThread(session()->thread());
-    emit addRemoteClient(socket);
+    connection->setParent(0);
+    connection->moveToThread(session()->thread());
+    emit addRemoteClient(connection);
 }
 
 
-void SessionThread::addInternalClientToSession(SignalProxy *proxy)
+void SessionThread::addInternalClientToSession(InternalConnection *connection)
 {
-    emit addInternalClient(proxy);
+    connection->setParent(0);
+    connection->moveToThread(session()->thread());
+    emit addInternalClient(connection);
 }
 
 
 void SessionThread::run()
 {
     _session = new CoreSession(user(), _restoreState);
-    connect(this, SIGNAL(addRemoteClient(QIODevice *)), _session, SLOT(addClient(QIODevice *)));
-    connect(this, SIGNAL(addInternalClient(SignalProxy *)), _session, SLOT(addClient(SignalProxy *)));
-    connect(_session, SIGNAL(sessionState(const QVariant &)), Core::instance(), SIGNAL(sessionState(const QVariant &)));
+    connect(this, SIGNAL(addRemoteClient(RemoteConnection*)), _session, SLOT(addClient(RemoteConnection*)));
+    connect(this, SIGNAL(addInternalClient(InternalConnection*)), _session, SLOT(addClient(InternalConnection*)));
+    connect(_session, SIGNAL(sessionState(QVariant)), Core::instance(), SIGNAL(sessionState(QVariant)));
     emit initialized();
     exec();
     delete _session;
