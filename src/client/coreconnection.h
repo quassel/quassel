@@ -60,23 +60,23 @@ public:
 
     void init();
 
-    inline bool isConnected() const;
-    inline ConnectionState state() const;
-    inline CoreAccount currentAccount() const;
+    bool isConnected() const;
+    ConnectionState state() const;
+    CoreAccount currentAccount() const;
 
     bool isEncrypted() const;
     bool isLocalConnection() const;
 
-    inline int progressMinimum() const;
-    inline int progressMaximum() const;
-    inline int progressValue() const;
-    inline QString progressText() const;
+    int progressMinimum() const;
+    int progressMaximum() const;
+    int progressValue() const;
+    QString progressText() const;
 
     //! Check if we consider the last connect as reconnect
-    inline bool wasReconnect() const { return _wasReconnect; }
+    bool wasReconnect() const { return _wasReconnect; }
 
 #ifdef HAVE_SSL
-    inline const QSslSocket *sslSocket() const;
+    const QSslSocket *sslSocket() const;
 #endif
 
 public slots:
@@ -198,18 +198,18 @@ private:
 Q_DECLARE_METATYPE(CoreConnection::ConnectionState)
 
 // Inlines
-int CoreConnection::progressMinimum() const { return _progressMinimum; }
-int CoreConnection::progressMaximum() const { return _progressMaximum; }
-int CoreConnection::progressValue() const { return _progressValue; }
-QString CoreConnection::progressText() const { return _progressText; }
+inline int CoreConnection::progressMinimum() const { return _progressMinimum; }
+inline int CoreConnection::progressMaximum() const { return _progressMaximum; }
+inline int CoreConnection::progressValue() const { return _progressValue; }
+inline QString CoreConnection::progressText() const { return _progressText; }
 
-CoreConnection::ConnectionState CoreConnection::state() const { return _state; }
-bool CoreConnection::isConnected() const { return state() >= Connected; }
-CoreAccount CoreConnection::currentAccount() const { return _account; }
-CoreAccountModel *CoreConnection::accountModel() const { return _model; }
+inline CoreConnection::ConnectionState CoreConnection::state() const { return _state; }
+inline bool CoreConnection::isConnected() const { return state() >= Connected; }
+inline CoreAccount CoreConnection::currentAccount() const { return _account; }
+inline CoreAccountModel *CoreConnection::accountModel() const { return _model; }
 
 #ifdef HAVE_SSL
-const QSslSocket *CoreConnection::sslSocket() const { return qobject_cast<QSslSocket *>(_socket); }
+inline const QSslSocket *CoreConnection::sslSocket() const { return qobject_cast<QSslSocket *>(_socket); }
 #endif
 
 #endif
