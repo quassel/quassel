@@ -33,8 +33,11 @@
 #include <QByteArray>
 #include <QTimer>
 
+#include "protocol.h"
+
 class SyncableObject;
 struct QMetaObject;
+
 
 class SignalProxy : public QObject
 {
@@ -44,11 +47,6 @@ class SignalProxy : public QObject
 
 public:
     class AbstractPeer;
-
-    class SyncMessage;
-    class RpcCall;
-    class InitRequest;
-    class InitData;
 
     enum ProxyMode {
         Server,
@@ -131,10 +129,10 @@ private:
     template<class T>
     void dispatch(const T &protoMessage);
 
-    void handle(AbstractPeer *peer, const SyncMessage &syncMessage);
-    void handle(AbstractPeer *peer, const RpcCall &rpcCall);
-    void handle(AbstractPeer *peer, const InitRequest &initRequest);
-    void handle(AbstractPeer *peer, const InitData &initData);
+    void handle(AbstractPeer *peer, const Protocol::SyncMessage &syncMessage);
+    void handle(AbstractPeer *peer, const Protocol::RpcCall &rpcCall);
+    void handle(AbstractPeer *peer, const Protocol::InitRequest &initRequest);
+    void handle(AbstractPeer *peer, const Protocol::InitData &initData);
 
     bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue);
     bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList());
@@ -182,7 +180,7 @@ class SignalProxy::ExtendedMetaObject
 {
     class MethodDescriptor
     {
-public:
+    public:
         MethodDescriptor(const QMetaMethod &method);
         MethodDescriptor() : _returnType(-1), _minArgCount(-1), _receiverMode(SignalProxy::Client) {}
 
@@ -192,7 +190,7 @@ public:
         inline int minArgCount() const { return _minArgCount; }
         inline SignalProxy::ProxyMode receiverMode() const { return _receiverMode; }
 
-private:
+    private:
         QByteArray _methodName;
         QList<int> _argTypes;
         int _returnType;
@@ -257,10 +255,10 @@ public:
     virtual int lag() const = 0;
 
 public slots:
-    virtual void dispatch(const SyncMessage &msg) = 0;
-    virtual void dispatch(const RpcCall &msg) = 0;
-    virtual void dispatch(const InitRequest &msg) = 0;
-    virtual void dispatch(const InitData &msg) = 0;
+    virtual void dispatch(const Protocol::SyncMessage &msg) = 0;
+    virtual void dispatch(const Protocol::RpcCall &msg) = 0;
+    virtual void dispatch(const Protocol::InitRequest &msg) = 0;
+    virtual void dispatch(const Protocol::InitData &msg) = 0;
 
     virtual void close(const QString &reason = QString()) = 0;
 
@@ -269,77 +267,6 @@ signals:
     void error(QAbstractSocket::SocketError);
     void secureStateChanged(bool secure = true);
     void lagUpdated(int msecs);
-};
-
-
-// ==================================================
-//  Protocol Messages
-// ==================================================
-class SignalProxy::SyncMessage
-{
-public:
-    inline SyncMessage(const QByteArray &className, const QString &objectName, const QByteArray &slotName, const QVariantList &params)
-    : _className(className), _objectName(objectName), _slotName(slotName), _params(params) {}
-
-    inline QByteArray className() const { return _className; }
-    inline QString objectName() const { return _objectName; }
-    inline QByteArray slotName() const { return _slotName; }
-
-    inline QVariantList params() const { return _params; }
-
-private:
-    QByteArray _className;
-    QString _objectName;
-    QByteArray _slotName;
-    QVariantList _params;
-};
-
-
-class SignalProxy::RpcCall
-{
-public:
-    inline RpcCall(const QByteArray &slotName, const QVariantList &params)
-    : _slotName(slotName), _params(params) {}
-
-    inline QByteArray slotName() const { return _slotName; }
-    inline QVariantList params() const { return _params; }
-
-private:
-    QByteArray _slotName;
-    QVariantList _params;
-};
-
-
-class SignalProxy::InitRequest
-{
-public:
-    inline InitRequest(const QByteArray &className, const QString &objectName)
-    : _className(className), _objectName(objectName) {}
-
-    inline QByteArray className() const { return _className; }
-    inline QString objectName() const { return _objectName; }
-
-private:
-    QByteArray _className;
-    QString _objectName;
-};
-
-
-class SignalProxy::InitData
-{
-public:
-    inline InitData(const QByteArray &className, const QString &objectName, const QVariantMap &initData)
-    : _className(className), _objectName(objectName), _initData(initData) {}
-
-    inline QByteArray className() const { return _className; }
-    inline QString objectName() const { return _objectName; }
-
-    inline QVariantMap initData() const { return _initData; }
-
-private:
-    QByteArray _className;
-    QString _objectName;
-    QVariantMap _initData;
 };
 
 #endif

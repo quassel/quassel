@@ -24,6 +24,7 @@
 #include <QDateTime>
 #include <QTcpSocket>
 
+#include "protocol.h"
 #include "signalproxy.h"
 
 class QTimer;
@@ -67,19 +68,16 @@ signals:
     void transferProgress(int current, int max);
 
 protected:
-    class HeartBeat;
-    class HeartBeatReply;
-
     SignalProxy *signalProxy() const;
 
     template<class T>
     void handle(const T &protoMessage);
 
-    void handle(const HeartBeat &heartBeat);
-    void handle(const HeartBeatReply &heartBeatReply);
-
-    virtual void dispatch(const HeartBeat &msg) = 0;
-    virtual void dispatch(const HeartBeatReply &msg) = 0;
+    // These protocol messages get handled internally and won't reach SignalProxy
+    void handle(const Protocol::HeartBeat &heartBeat);
+    void handle(const Protocol::HeartBeatReply &heartBeatReply);
+    virtual void dispatch(const Protocol::HeartBeat &msg) = 0;
+    virtual void dispatch(const Protocol::HeartBeatReply &msg) = 0;
 
 private slots:
     void sendHeartBeat();
@@ -91,32 +89,6 @@ private:
     QTimer *_heartBeatTimer;
     int _heartBeatCount;
     int _lag;
-};
-
-
-// These protocol messages get handled internally and won't reach SignalProxy
-
-class RemoteConnection::HeartBeat
-{
-public:
-    inline HeartBeat(const QDateTime &timestamp) : _timestamp(timestamp) {}
-
-    inline QDateTime timestamp() const { return _timestamp; }
-
-private:
-    QDateTime _timestamp;
-};
-
-
-class RemoteConnection::HeartBeatReply
-{
-public:
-    inline HeartBeatReply(const QDateTime &timestamp) : _timestamp(timestamp) {}
-
-    inline QDateTime timestamp() const { return _timestamp; }
-
-private:
-    QDateTime _timestamp;
 };
 
 

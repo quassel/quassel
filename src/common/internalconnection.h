@@ -23,6 +23,7 @@
 
 #include <QTcpSocket>
 
+#include "protocol.h"
 #include "signalproxy.h"
 
 class QEvent;
@@ -56,10 +57,10 @@ public:
 
     int lag() const;
 
-    void dispatch(const SignalProxy::SyncMessage &msg);
-    void dispatch(const SignalProxy::RpcCall &msg);
-    void dispatch(const SignalProxy::InitRequest &msg);
-    void dispatch(const SignalProxy::InitData &msg);
+    void dispatch(const Protocol::SyncMessage &msg);
+    void dispatch(const Protocol::RpcCall &msg);
+    void dispatch(const Protocol::InitRequest &msg);
+    void dispatch(const Protocol::InitData &msg);
 
 public slots:
     void close(const QString &reason = QString());

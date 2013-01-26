@@ -40,8 +40,11 @@
 #include <QEvent>
 #include <QCoreApplication>
 
+#include "protocol.h"
 #include "syncableobject.h"
 #include "util.h"
+
+using namespace Protocol;
 
 class RemovePeerEvent : public QEvent
 {
@@ -153,7 +156,7 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
                 params << QVariant(argTypes[i], _a[i+1]);
             }
 
-            proxy()->dispatch(SignalProxy::RpcCall(signal.signature, params));
+            proxy()->dispatch(RpcCall(signal.signature, params));
         }
         _id -= _slots.count();
     }
@@ -508,7 +511,7 @@ void SignalProxy::dispatch(const T &protoMessage)
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SignalProxy::SyncMessage &syncMessage)
+void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SyncMessage &syncMessage)
 {
     if (!_syncSlave.contains(syncMessage.className()) || !_syncSlave[syncMessage.className()].contains(syncMessage.objectName())) {
         qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(syncMessage.className(), syncMessage.slotName(), syncMessage.objectName())
@@ -550,7 +553,7 @@ void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SignalProxy::Syn
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SignalProxy::InitRequest &initRequest)
+void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const InitRequest &initRequest)
 {
    if (!_syncSlave.contains(initRequest.className())) {
         qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
@@ -569,7 +572,7 @@ void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SignalProxy::Ini
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SignalProxy::InitData &initData)
+void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const InitData &initData)
 {
     Q_UNUSED(peer)
 
@@ -590,7 +593,7 @@ void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SignalProxy::Ini
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SignalProxy::RpcCall &rpcCall)
+void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const RpcCall &rpcCall)
 {
     Q_UNUSED(peer)
 

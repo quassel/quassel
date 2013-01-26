@@ -23,6 +23,8 @@
 
 #include "internalconnection.h"
 
+using namespace Protocol;
+
 template<class T>
 class PeerMessageEvent : public QEvent
 {
@@ -131,25 +133,25 @@ void InternalConnection::peerDisconnected()
 }
 
 
-void InternalConnection::dispatch(const SignalProxy::SyncMessage &msg)
+void InternalConnection::dispatch(const SyncMessage &msg)
 {
     dispatch(SyncMessageEvent, msg);
 }
 
 
-void InternalConnection::dispatch(const SignalProxy::RpcCall &msg)
+void InternalConnection::dispatch(const RpcCall &msg)
 {
     dispatch(RpcCallEvent, msg);
 }
 
 
-void InternalConnection::dispatch(const SignalProxy::InitRequest &msg)
+void InternalConnection::dispatch(const InitRequest &msg)
 {
     dispatch(InitRequestEvent, msg);
 }
 
 
-void InternalConnection::dispatch(const SignalProxy::InitData &msg)
+void InternalConnection::dispatch(const InitData &msg)
 {
     dispatch(InitDataEvent, msg);
 }
@@ -186,22 +188,22 @@ void InternalConnection::customEvent(QEvent *event)
 {
     switch ((int)event->type()) {
         case SyncMessageEvent: {
-            PeerMessageEvent<SignalProxy::SyncMessage> *e = static_cast<PeerMessageEvent<SignalProxy::SyncMessage> *>(event);
+            PeerMessageEvent<SyncMessage> *e = static_cast<PeerMessageEvent<SyncMessage> *>(event);
             handle(e->message);
             break;
         }
         case RpcCallEvent: {
-            PeerMessageEvent<SignalProxy::RpcCall> *e = static_cast<PeerMessageEvent<SignalProxy::RpcCall> *>(event);
+            PeerMessageEvent<RpcCall> *e = static_cast<PeerMessageEvent<RpcCall> *>(event);
             handle(e->message);
             break;
         }
         case InitRequestEvent: {
-            PeerMessageEvent<SignalProxy::InitRequest> *e = static_cast<PeerMessageEvent<SignalProxy::InitRequest> *>(event);
+            PeerMessageEvent<InitRequest> *e = static_cast<PeerMessageEvent<InitRequest> *>(event);
             handle(e->message);
             break;
         }
         case InitDataEvent: {
-            PeerMessageEvent<SignalProxy::InitData> *e = static_cast<PeerMessageEvent<SignalProxy::InitData> *>(event);
+            PeerMessageEvent<InitData> *e = static_cast<PeerMessageEvent<InitData> *>(event);
             handle(e->message);
             break;
         }

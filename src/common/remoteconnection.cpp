@@ -27,6 +27,8 @@
 
 #include "remoteconnection.h"
 
+using namespace Protocol;
+
 RemoteConnection::RemoteConnection(QTcpSocket *socket, QObject *parent)
     : SignalProxy::AbstractPeer(parent),
     _socket(socket),

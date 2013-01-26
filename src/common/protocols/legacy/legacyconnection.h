@@ -46,13 +46,13 @@ public:
 
     void setSignalProxy(SignalProxy *proxy);
 
-    void dispatch(const SignalProxy::SyncMessage &msg);
-    void dispatch(const SignalProxy::RpcCall &msg);
-    void dispatch(const SignalProxy::InitRequest &msg);
-    void dispatch(const SignalProxy::InitData &msg);
+    void dispatch(const Protocol::SyncMessage &msg);
+    void dispatch(const Protocol::RpcCall &msg);
+    void dispatch(const Protocol::InitRequest &msg);
+    void dispatch(const Protocol::InitData &msg);
 
-    void dispatch(const RemoteConnection::HeartBeat &msg);
-    void dispatch(const RemoteConnection::HeartBeatReply &msg);
+    void dispatch(const Protocol::HeartBeat &msg);
+    void dispatch(const Protocol::HeartBeatReply &msg);
 
     // FIXME: this is only used for the auth phase and should be replaced by something more generic
     void writeSocketData(const QVariant &item);

@@ -20,6 +20,8 @@
 
 #include "legacyconnection.h"
 
+using namespace Protocol;
+
 LegacyConnection::LegacyConnection(QTcpSocket *socket, QObject *parent)
     : RemoteConnection(socket, parent),
     _blockSize(0),
@@ -164,7 +166,7 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
             QByteArray className = params.takeFirst().toByteArray();
             QString objectName = params.takeFirst().toString();
             QByteArray slotName = params.takeFirst().toByteArray();
-            handle(SignalProxy::SyncMessage(className, objectName, slotName, params));
+            handle(Protocol::SyncMessage(className, objectName, slotName, params));
             break;
         }
         case RpcCall: {
@@ -173,7 +175,7 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
                 return;
             }
             QByteArray slotName = params.takeFirst().toByteArray();
-            handle(SignalProxy::RpcCall(slotName, params));
+            handle(Protocol::RpcCall(slotName, params));
             break;
         }
         case InitRequest: {
@@ -183,7 +185,7 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
             }
             QByteArray className = params[0].toByteArray();
             QString objectName = params[1].toString();
-            handle(SignalProxy::InitRequest(className, objectName));
+            handle(Protocol::InitRequest(className, objectName));
             break;
         }
         case InitData: {
@@ -194,7 +196,7 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
             QByteArray className = params[0].toByteArray();
             QString objectName = params[1].toString();
             QVariantMap initData = params[2].toMap();
-            handle(SignalProxy::InitData(className, objectName, initData));
+            handle(Protocol::InitData(className, objectName, initData));
             break;
         }
         case HeartBeat: {
@@ -206,7 +208,7 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
             // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
             QDateTime dateTime = QDateTime::currentDateTimeUtc();
             dateTime.setTime(params[0].toTime());
-            handle(RemoteConnection::HeartBeat(dateTime));
+            handle(Protocol::HeartBeat(dateTime));
             break;
         }
         case HeartBeatReply: {
@@ -218,7 +220,7 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
             // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
             QDateTime dateTime = QDateTime::currentDateTimeUtc();
             dateTime.setTime(params[0].toTime());
-            handle(RemoteConnection::HeartBeatReply(dateTime));
+            handle(Protocol::HeartBeatReply(dateTime));
             break;
         }
 
@@ -226,37 +228,37 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
 }
 
 
-void LegacyConnection::dispatch(const SignalProxy::SyncMessage &msg)
+void LegacyConnection::dispatch(const Protocol::SyncMessage &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)Sync << msg.className() << msg.objectName() << msg.slotName() << msg.params());
 }
 
 
-void LegacyConnection::dispatch(const SignalProxy::RpcCall &msg)
+void LegacyConnection::dispatch(const Protocol::RpcCall &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.slotName() << msg.params());
 }
 
 
-void LegacyConnection::dispatch(const SignalProxy::InitRequest &msg)
+void LegacyConnection::dispatch(const Protocol::InitRequest &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)InitRequest << msg.className() << msg.objectName());
 }
 
 
-void LegacyConnection::dispatch(const SignalProxy::InitData &msg)
+void LegacyConnection::dispatch(const Protocol::InitData &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className() << msg.objectName() << msg.initData());
 }
 
 
-void LegacyConnection::dispatch(const RemoteConnection::HeartBeat &msg)
+void LegacyConnection::dispatch(const Protocol::HeartBeat &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)HeartBeat << msg.timestamp().time());
 }
 
 
-void LegacyConnection::dispatch(const RemoteConnection::HeartBeatReply &msg)
+void LegacyConnection::dispatch(const Protocol::HeartBeatReply &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)HeartBeatReply << msg.timestamp().time());
 }

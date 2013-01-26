@@ -74,6 +74,7 @@ set(HEADERS ${MOC_HDRS}
     networkevent.h
     logger.h
     message.h
+    protocol.h
     types.h
     util.h)
 
