@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2012 by the Quassel Project                        *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -47,7 +47,7 @@ QString AboutDlg::about() const
 {
     QString res;
     res = tr("<b>A modern, distributed IRC Client</b><br><br>"
-             "&copy;2005-2012 by the Quassel Project<br>"
+             "&copy;2005-2013 by the Quassel Project<br>"
              "<a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br>"
              "<a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>"
              "Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and "
