@@ -166,7 +166,11 @@ void RemoteConnection::handle(const HeartBeat &heartBeat)
 void RemoteConnection::handle(const HeartBeatReply &heartBeatReply)
 {
     _heartBeatCount = 0;
-    emit lagUpdated(heartBeatReply.timestamp().msecsTo(QDateTime::currentDateTimeUtc()));
+#if QT_VERSION < 0x040700
+    emit lagUpdated(heartBeatReply.timestamp().time().msecsTo(QTime::currentTime()) / 2);
+#else
+    emit lagUpdated(heartBeatReply.timestamp().msecsTo(QDateTime::currentDateTime()) / 2);
+#endif
 }
 
 
@@ -185,7 +189,7 @@ void RemoteConnection::sendHeartBeat()
         emit lagUpdated(_lag);
     }
 
-    dispatch(HeartBeat(QDateTime::currentDateTimeUtc()));
+    dispatch(HeartBeat(QDateTime::currentDateTime()));
     ++_heartBeatCount;
 }
 
