@@ -59,13 +59,6 @@ void CoreIrcChannel::setEncrypted(bool e)
         if (topic().isEmpty())
             return;
 
-        QByteArray key = qobject_cast<CoreNetwork *>(network())->cipherKey(name());
-        if (key.isEmpty())
-            return;
-
-        if (!cipher()->setKey(key))
-            return;
-
         QByteArray decrypted = cipher()->decryptTopic(topic().toAscii());
         setTopic(decodeString(decrypted));
     }

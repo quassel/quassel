@@ -310,7 +310,7 @@ void CoreNetwork::removeChannelKey(const QString &channel)
 
 
 #ifdef HAVE_QCA2
-Cipher *CoreNetwork::cipher(const QString &target) const
+Cipher *CoreNetwork::cipher(const QString &target)
 {
     if (target.isEmpty())
         return 0;
@@ -318,39 +318,51 @@ Cipher *CoreNetwork::cipher(const QString &target) const
     if (!Cipher::neededFeaturesAvailable())
         return 0;
 
-    QByteArray key = cipherKey(target);
-    if (key.isEmpty())
-        return 0;
-
     CoreIrcChannel *channel = qobject_cast<CoreIrcChannel *>(ircChannel(target));
     if (channel) {
-        if (channel->cipher()->setKey(key))
-            return channel->cipher();
+        return channel->cipher();
     }
-    else {
-        CoreIrcUser *user = qobject_cast<CoreIrcUser *>(ircUser(target));
-        if (user && user->cipher()->setKey(key))
-            return user->cipher();
+    CoreIrcUser *user = qobject_cast<CoreIrcUser *>(ircUser(target));
+    if (user) {
+        return user->cipher();
+    } else if (!isChannelName(target)) {
+        return qobject_cast<CoreIrcUser*>(newIrcUser(target))->cipher();
     }
     return 0;
 }
 
 
-QByteArray CoreNetwork::cipherKey(const QString &recipient) const
+QByteArray CoreNetwork::cipherKey(const QString &target) const
 {
-    return _cipherKeys.value(recipient.toLower(), QByteArray());
+    CoreIrcChannel *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    if (c)
+        return c->cipher()->key();
+
+    CoreIrcUser *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    if (u)
+        return u->cipher()->key();
+
+    return QByteArray();
 }
 
 
-void CoreNetwork::setCipherKey(const QString &recipient, const QByteArray &key)
+void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
 {
-    if (!key.isEmpty())
-        _cipherKeys[recipient.toLower()] = key;
-    else
-        _cipherKeys.remove(recipient.toLower());
+    CoreIrcChannel *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    if (c) {
+        c->setEncrypted(c->cipher()->setKey(key));
+        return;
+    }
+
+    CoreIrcUser *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    if (!u && !isChannelName(target))
+        u = qobject_cast<CoreIrcUser*>(newIrcUser(target));
+
+    if (u) {
+        u->setEncrypted(u->cipher()->setKey(key));
+        return;
+    }
 }
-
-
 #endif /* HAVE_QCA2 */
 
 bool CoreNetwork::setAutoWhoDone(const QString &channel)

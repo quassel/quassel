@@ -207,14 +207,6 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
     }
 
     network()->setCipherKey(target, QByteArray());
-
-    if (network()->isChannelName(target) && network()->channels().contains(target)) {
-        qobject_cast<CoreIrcChannel *>(network()->ircChannel(target))->setEncrypted(false);
-    }
-    else if (network()->nicks().contains(target)) {
-        qobject_cast<CoreIrcUser *>(network()->ircUser(target))->setEncrypted(false);
-    }
-
     emit displayMsg(Message::Info, bufferInfo.bufferName(), tr("The key for %1 has been deleted.").arg(target));
 
 #else
@@ -560,13 +552,7 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QStr
 
     QString target = parms.at(0);
     QByteArray key = parms.at(1).toLocal8Bit();
-
     network()->setCipherKey(target, key);
-
-    if (network()->isChannelName(target) && network()->channels().contains(target))
-        qobject_cast<CoreIrcChannel *>(network()->ircChannel(target))->setEncrypted(true);
-    else if (network()->nicks().contains(target))
-        qobject_cast<CoreIrcUser *>(network()->ircUser(target))->setEncrypted(true);
 
     emit displayMsg(Message::Info, bufferInfo.bufferName(), tr("The key for %1 has been set.").arg(target));
 #else
@@ -716,7 +702,7 @@ void CoreUserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray
         QByteArray crypted = message.left(splitPos);
         bool isEncrypted = false;
 #ifdef HAVE_QCA2
-        if (cipher && !message.isEmpty()) {
+        if (cipher && !cipher->key().isEmpty() && !message.isEmpty()) {
             isEncrypted = cipher->encrypt(crypted);
         }
 #endif
@@ -797,7 +783,7 @@ QByteArray CoreUserInputHandler::encrypt(const QString &target, const QByteArray
         return message_;
 
     Cipher *cipher = network()->cipher(target);
-    if (!cipher)
+    if (!cipher || cipher->key().isEmpty())
         return message_;
 
     QByteArray message = message_;

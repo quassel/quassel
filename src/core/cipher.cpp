@@ -35,8 +35,10 @@ Cipher::~Cipher()
 
 bool Cipher::setKey(QByteArray key)
 {
-    if (key.isEmpty())
+    if (key.isEmpty()) {
+        m_key.clear();
         return false;
+    }
 
     if (key.mid(0, 4).toLower() == "ecb:")
     {
