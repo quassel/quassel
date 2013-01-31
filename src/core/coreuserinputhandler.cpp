@@ -319,6 +319,50 @@ void CoreUserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QStrin
 }
 
 
+void CoreUserInputHandler::handleKeyx(const BufferInfo &bufferInfo, const QString &msg)
+{
+#ifdef HAVE_QCA2
+    if (!bufferInfo.isValid())
+        return;
+
+    if (!Cipher::neededFeaturesAvailable())
+        return;
+
+    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+
+    if (parms.count() == 0 && !bufferInfo.bufferName().isEmpty())
+        parms.prepend(bufferInfo.bufferName());
+    else if (parms.count() != 1) {
+        emit displayMsg(Message::Info, bufferInfo.bufferName(),
+            tr("[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the target."));
+        return;
+    }
+
+    QString target = parms.at(0);
+
+    Cipher *cipher = network()->cipher(target);
+    if (!cipher) // happens when there is no CoreIrcChannel for the target
+        return;
+
+    QByteArray pubKey = cipher->initKeyExchange();
+    if (pubKey.isEmpty())
+        emit displayMsg(Message::Error, bufferInfo.bufferName(), tr("Failed to initiate key exchange with %1.").arg(target));
+    else {
+        QList<QByteArray> params;
+        params << serverEncode(target) << serverEncode("DH1080_INIT ") + pubKey;
+        emit putCmd("NOTICE", params);
+        emit displayMsg(Message::Info, bufferInfo.bufferName(), tr("Initiated key exchange with %1.").arg(target));
+    }
+#else
+    Q_UNUSED(msg)
+    emit displayMsg(Message::Error, bufferInfo.bufferName(), tr("Error: Setting an encryption key requires Quassel to have been built "
+                                                                "with support for the Qt Cryptographic Architecture (QCA) library. "
+                                                                "Contact your distributor about a Quassel package with QCA "
+                                                                "support, or rebuild Quassel with QCA present."));
+#endif
+}
+
+
 void CoreUserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &msg)
 {
     QString nick = msg.section(' ', 0, 0, QString::SectionSkipEmpty);

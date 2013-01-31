@@ -28,6 +28,7 @@
 
 #ifdef HAVE_QCA2
 #  include "cipher.h"
+#  include "keyevent.h"
 #endif
 
 IrcParser::IrcParser(CoreSession *session) :
@@ -228,7 +229,16 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
                     if (!net->isChannelName(target))
                         target = nickFromMask(prefix);
                 }
-                events << new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, params[1], prefix, target, e->timestamp());
+
+#ifdef HAVE_QCA2
+                // Handle DH1080 key exchange
+                if (params[1].startsWith("DH1080_INIT")) {
+                    events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Init, params[1].mid(12));
+                } else if (params[1].startsWith("DH1080_FINISH")) {
+                    events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Finish, params[1].mid(14));
+                } else
+#endif
+                    events << new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, params[1], prefix, target, e->timestamp());
             }
         }
         break;
