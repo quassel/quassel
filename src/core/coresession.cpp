@@ -350,7 +350,7 @@ void CoreSession::processMessages()
 
         // recheck if there exists a buffer to store a redirected message in
         for (int i = 0; i < redirectedMessages.count(); i++) {
-            const RawMessage &rawMsg = _messageQueue.at(i);
+            const RawMessage &rawMsg = redirectedMessages.at(i);
             if (bufferInfoCache.contains(rawMsg.networkId) && bufferInfoCache[rawMsg.networkId].contains(rawMsg.target)) {
                 bufferInfo = bufferInfoCache[rawMsg.networkId][rawMsg.target];
             }
