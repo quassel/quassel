@@ -30,9 +30,8 @@ project(QuasselIRC)
 include(CheckFunctionExists)
 include(CheckIncludeFile)
 
-# cmake 2.6.2 is required for KDE >=4.2 and should be widespread enough now
 # For building against Qt5, we check for an even newer cmake version below!
-cmake_minimum_required(VERSION 2.6.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
 
 if(COMMAND cmake_policy)
    cmake_policy(SET CMP0003 NEW)
