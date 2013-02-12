@@ -88,7 +88,7 @@ TaskbarNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : Settin
     enabledBox->setEnabled(true);
 
     timeoutBox = new QSpinBox(this);
-    timeoutBox->setMinimum(1);
+    timeoutBox->setMinimum(0);
     timeoutBox->setMaximum(99);
     timeoutBox->setSpecialValueText(tr("Unlimited"));
     timeoutBox->setSuffix(tr(" seconds"));
