@@ -1,0 +1,74 @@
+DBus Interface Specification
+
+Docky implements the DockManager specificiation as well as a custom DBus specification.
+DockManager DBus Interface Specification
+
+DBus unique path: net.launchpad.DockManager
+
+Object paths:
+    /net/launchpad/DockManager
+
+- Interface: net.launchpad.DockManager
+  * Methods:
+    * GetCapabilities       ()                         -> (Array of [String] capabilities)
+    * GetItems              ()                         -> (Array of [Object path])
+    * GetItemsByName        (String name               -> (Array of [Object path])
+    * GetItemsByDesktopFile (String desktop_file_name) -> (Array of [Object path])
+    * GetItemsByPID         (Int32 pid)                -> (Array of [Object path])
+    * GetItemByXid          (Int64 xid)                -> (Object path)
+  * Signals:
+    * ItemAdded             (Object path)
+    * ItemRemoved           (Object path)
+
+capabilities:
+
+- dock-item-attention
+- dock-item-badge
+- dock-item-icon-file
+- dock-item-message
+- dock-item-progress
+- dock-item-tooltip
+- dock-item-waiting
+
+- menu-item-container-title
+- menu-item-icon-file
+- menu-item-icon-name
+- menu-item-with-label
+- menu-item-with-uri
+
+
+    /net/launchpad/DockManager/Item[.+] (unspecified identifier)
+
+- Interface: net.launchpad.DockItem
+  * Methods:
+    * AddMenuItem       (Dict of {String key, Variant value} menu_hints) -> (Int32 id)
+    * RemoveMenuItem    (Int32 id)
+    * UpdateDockItem    (Dict of {String key, Variant value} hints)
+  * Properties (implementing org.freedesktop.DBus.Properties)
+    * string DesktopFile
+    * string Uri
+  * Signals:
+    * MenuItemActivated (Int32 id)
+
+Supported menu_hints:
+
+Required:
+ - label + String
+   OR
+ - uri + String
+Optional:
+ - container-title + String
+ - icon-file + String
+ - icon-name + String
+
+Implementor can choose whether icon setting will be honored when the menu item is specified using the "uri" key.
+
+Supported hints: All hints are optional.
+- attention + Boolean
+- badge + String
+- icon-file + String
+- message + String
+- progress + Int
+- tooltip + String
+- waiting + Boolean
+
