@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.freedesktop.DockManager">
+    <method name="GetCapabilities">
+      <arg name="result" type="as" direction="out"/>
+    </method>
+    <method name="GetItems">
+      <arg name="result" type="ao" direction="out"/>
+    </method>
+    <method name="GetItemsByName">
+      <arg name="name" type="s" direction="in"/>
+      <arg name="result" type="ao" direction="out"/>
+    </method>
+    <method name="GetItemsByDesktopFile">
+      <arg name="desktop_file" type="s" direction="in"/>
+      <arg name="result" type="ao" direction="out"/>
+    </method>
+    <method name="GetItemsByPid">
+      <arg name="pid" type="i" direction="in"/>
+      <arg name="result" type="ao" direction="out"/>
+    </method>
+    <method name="GetItemByXid">
+      <arg name="xid" type="x" direction="in"/>
+      <arg name="result" type="o" direction="out"/>
+    </method>
+    <method name="AwnSetVisibility">
+      <arg name="win_name" type="s" direction="in"/>
+      <arg name="visible" type="b" direction="in"/>
+    </method>
+    <method name="AwnRegisterProxyItem">
+      <arg name="desktop_file" type="s" direction="in"/>
+      <arg name="uri" type="s" direction="in"/>
+      <arg name="result" type="o" direction="out"/>
+    </method>
+    <signal name="ItemAdded">
+      <arg name="path" type="o"/>
+    </signal>
+    <signal name="ItemRemoved">
+      <arg name="path" type="o"/>
+    </signal>
+  </interface>
+</node>

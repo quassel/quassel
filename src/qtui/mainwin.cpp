@@ -112,6 +112,10 @@
   #include "osxnotificationbackend.h"
 #endif
 
+#ifdef HAVE_DBUS
+  #include "dockmanagernotificationbackend.h"
+#endif
+
 #include "settingspages/aliasessettingspage.h"
 #include "settingspages/appearancesettingspage.h"
 #include "settingspages/backlogsettingspage.h"
@@ -224,6 +228,10 @@ void MainWin::init()
 
 #ifdef HAVE_NOTIFICATION_CENTER
     QtUi::registerNotificationBackend(new OSXNotificationBackend(this));
+#endif
+
+#ifdef HAVE_DBUS
+    QtUi::registerNotificationBackend(new DockManagerNotificationBackend(this));
 #endif
 
     // we assume that at this point, all configurable actions are defined!
