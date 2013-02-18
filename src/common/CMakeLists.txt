@@ -17,7 +17,7 @@ set(SOURCES
     eventmanager.cpp
     identity.cpp
     ignorelistmanager.cpp
-    internalconnection.cpp
+    internalpeer.cpp
     ircchannel.cpp
     ircevent.cpp
     irclisthelper.cpp
@@ -29,13 +29,13 @@ set(SOURCES
     networkconfig.cpp
     networkevent.cpp
     quassel.cpp
-    remoteconnection.cpp
+    remotepeer.cpp
     settings.cpp
     signalproxy.cpp
     syncableobject.cpp
     util.cpp
 
-    protocols/legacy/legacyconnection.cpp
+    protocols/legacy/legacypeer.cpp
 )
 
 set(MOC_HDRS
@@ -49,18 +49,18 @@ set(MOC_HDRS
     eventmanager.h
     identity.h
     ignorelistmanager.h
-    internalconnection.h
+    internalpeer.h
     ircchannel.h
     irclisthelper.h
     ircuser.h
     network.h
     networkconfig.h
-    remoteconnection.h
+    remotepeer.h
     settings.h
     signalproxy.h
     syncableobject.h
 
-    protocols/legacy/legacyconnection.h
+    protocols/legacy/legacypeer.h
 )
 
 set(HEADERS ${MOC_HDRS}

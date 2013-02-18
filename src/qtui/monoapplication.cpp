@@ -24,7 +24,7 @@
 #include "core.h"
 #include "qtui.h"
 
-class InternalConnection;
+class InternalPeer;
 
 MonolithicApplication::MonolithicApplication(int &argc, char **argv)
     : QtUiApplication(argc, argv),
@@ -70,6 +70,6 @@ void MonolithicApplication::startInternalCore()
     }
     Core *core = Core::instance();
     CoreConnection *connection = Client::coreConnection();
-    connect(connection, SIGNAL(connectToInternalCore(InternalConnection*)), core, SLOT(setupInternalClientSession(InternalConnection*)));
+    connect(connection, SIGNAL(connectToInternalCore(InternalPeer*)), core, SLOT(setupInternalClientSession(InternalPeer*)));
     connect(core, SIGNAL(sessionState(QVariant)), connection, SLOT(internalSessionStateReceived(QVariant)));
 }

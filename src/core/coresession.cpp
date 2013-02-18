@@ -37,7 +37,7 @@
 #include "coreusersettings.h"
 #include "ctcpparser.h"
 #include "eventstringifier.h"
-#include "internalconnection.h"
+#include "internalpeer.h"
 #include "ircchannel.h"
 #include "ircparser.h"
 #include "ircuser.h"
@@ -46,7 +46,7 @@
 #include "storage.h"
 #include "util.h"
 
-#include "protocols/legacy/legacyconnection.h"
+#include "protocols/legacy/legacypeer.h"
 
 class ProcessMessagesEvent : public QEvent
 {
@@ -206,28 +206,28 @@ void CoreSession::restoreSessionState()
 }
 
 
-void CoreSession::addClient(RemoteConnection *connection)
+void CoreSession::addClient(RemotePeer *peer)
 {
     QVariantMap reply;
     reply["MsgType"] = "SessionInit";
     reply["SessionState"] = sessionState();
-    connection->writeSocketData(reply);
-    signalProxy()->addPeer(connection);
+    peer->writeSocketData(reply);
+    signalProxy()->addPeer(peer);
 }
 
 
-void CoreSession::addClient(InternalConnection *connection)
+void CoreSession::addClient(InternalPeer *peer)
 {
-    signalProxy()->addPeer(connection);
+    signalProxy()->addPeer(peer);
     emit sessionState(sessionState());
 }
 
 
 void CoreSession::removeClient(SignalProxy::AbstractPeer *peer)
 {
-    RemoteConnection *connection = qobject_cast<RemoteConnection *>(peer);
-    if (connection)
-        quInfo() << qPrintable(tr("Client")) << connection->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
+    RemotePeer *p = qobject_cast<RemotePeer *>(peer);
+    if (p)
+        quInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
 }
 
 

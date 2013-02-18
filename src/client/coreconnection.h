@@ -37,11 +37,11 @@
 #endif
 
 #include "coreaccount.h"
-#include "remoteconnection.h"
+#include "remotepeer.h"
 #include "types.h"
 
 class CoreAccountModel;
-class InternalConnection;
+class InternalPeer;
 class Network;
 class SignalProxy;
 
@@ -107,7 +107,7 @@ signals:
     void coreSetupFailed(const QString &error);
 
     void startInternalCore();
-    void connectToInternalCore(InternalConnection *connection);
+    void connectToInternalCore(InternalPeer *connection);
 
     // These signals MUST be handled synchronously!
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
@@ -176,7 +176,7 @@ private:
     QVariantMap _coreMsgBuffer;
 
     QPointer<QTcpSocket> _socket;
-    QPointer<SignalProxy::AbstractPeer> _connection;
+    QPointer<SignalProxy::AbstractPeer> _peer;
     ConnectionState _state;
 
     QTimer _reconnectTimer;

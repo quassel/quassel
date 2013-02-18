@@ -28,14 +28,14 @@
 #include "clientsettings.h"
 #include "coreaccountmodel.h"
 #include "identity.h"
-#include "internalconnection.h"
+#include "internalpeer.h"
 #include "network.h"
 #include "networkmodel.h"
 #include "quassel.h"
 #include "signalproxy.h"
 #include "util.h"
 
-#include "protocols/legacy/legacyconnection.h"
+#include "protocols/legacy/legacypeer.h"
 
 CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
     : QObject(parent),
@@ -123,7 +123,7 @@ void CoreConnection::updateProgress(int value, int max)
 
 void CoreConnection::reconnectTimeout()
 {
-    if (!_connection) {
+    if (!_peer) {
         CoreConnectionSettings s;
         if (_wantReconnect && s.autoReconnect()) {
 #ifdef HAVE_KDE
@@ -201,7 +201,7 @@ void CoreConnection::solidNetworkStatusChanged(Solid::Networking::Status status)
 
 bool CoreConnection::isEncrypted() const
 {
-    return _connection && _connection->isSecure();
+    return _peer && _peer->isSecure();
 }
 
 
@@ -211,7 +211,7 @@ bool CoreConnection::isLocalConnection() const
         return false;
     if (currentAccount().isInternal())
         return true;
-    if (_connection->isLocal())
+    if (_peer->isLocal())
         return true;
 
     return false;
@@ -331,10 +331,10 @@ void CoreConnection::coreHasData(const QVariant &item)
         // if the connection is an orphan, the signalProxy adopts it.
         // -> we don't need to care about it anymore
 
-        disconnect(_connection, 0, this, 0);
+        disconnect(_peer, 0, this, 0);
 
-        _connection->setParent(0);
-        Client::signalProxy()->addPeer(_connection);
+        _peer->setParent(0);
+        Client::signalProxy()->addPeer(_peer);
 
         sessionStateReceived(msg["SessionState"].toMap());
     }
@@ -378,15 +378,15 @@ void CoreConnection::resetConnection(bool wantReconnect)
 
     _wantReconnect = wantReconnect;
 
-    if (_connection) {
+    if (_peer) {
         disconnect(_socket, 0, this, 0);
-        disconnect(_connection, 0, this, 0);
-        _connection->close();
+        disconnect(_peer, 0, this, 0);
+        _peer->close();
 
-        if (_connection->parent() == this)
-            _connection->deleteLater(); // if it's not us, it belongs to the sigproxy which will delete it
+        if (_peer->parent() == this)
+            _peer->deleteLater(); // if it's not us, it belongs to the sigproxy which will delete it
         _socket = 0;      // socket is owned and will be deleted by RemoteConnection
-        _connection = 0;
+        _peer = 0;
     }
     else if (_socket) {
         disconnect(_socket, 0, this, 0);
@@ -475,9 +475,9 @@ void CoreConnection::connectToCurrentAccount()
         }
         emit startInternalCore();
 
-        InternalConnection *conn = new InternalConnection();
-        Client::instance()->signalProxy()->addPeer(conn); // sigproxy will take ownership
-        emit connectToInternalCore(conn);
+        InternalPeer *peer = new InternalPeer();
+        Client::instance()->signalProxy()->addPeer(peer); // sigproxy will take ownership
+        emit connectToInternalCore(peer);
 
         return;
     }
@@ -525,10 +525,10 @@ void CoreConnection::connectToCurrentAccount()
 void CoreConnection::coreSocketConnected()
 {
     // Create the connection which will handle the incoming data
-    Q_ASSERT(!_connection);
-    _connection = new LegacyConnection(_socket, this);
-    connect(_connection, SIGNAL(dataReceived(QVariant)), SLOT(coreHasData(QVariant)));
-    connect(_connection, SIGNAL(transferProgress(int,int)), SLOT(updateProgress(int,int)));
+    Q_ASSERT(!_peer);
+    _peer = new LegacyPeer(_socket, this);
+    connect(_peer, SIGNAL(dataReceived(QVariant)), SLOT(coreHasData(QVariant)));
+    connect(_peer, SIGNAL(transferProgress(int,int)), SLOT(updateProgress(int,int)));
 
     // Phase One: Send client info and wait for core info
 
@@ -546,7 +546,7 @@ void CoreConnection::coreSocketConnected()
     clientInit["UseCompression"] = false;
 #endif
 
-    qobject_cast<RemoteConnection *>(_connection)->writeSocketData(clientInit);
+    qobject_cast<RemotePeer *>(_peer)->writeSocketData(clientInit);
 }
 
 
@@ -695,7 +695,7 @@ void CoreConnection::loginToCore(const QString &prevError)
     clientLogin["MsgType"] = "ClientLogin";
     clientLogin["User"] = currentAccount().user();
     clientLogin["Password"] = currentAccount().password();
-    qobject_cast<RemoteConnection*>(_connection)->writeSocketData(clientLogin);
+    qobject_cast<RemotePeer*>(_peer)->writeSocketData(clientLogin);
 }
 
 
@@ -809,5 +809,5 @@ void CoreConnection::doCoreSetup(const QVariant &setupData)
     QVariantMap setup;
     setup["MsgType"] = "CoreSetupData";
     setup["SetupData"] = setupData;
-    qobject_cast<RemoteConnection *>(_connection)->writeSocketData(setup);
+    qobject_cast<RemotePeer *>(_peer)->writeSocketData(setup);
 }

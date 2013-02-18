@@ -42,7 +42,7 @@
 #include "types.h"
 
 class CoreSession;
-class RemoteConnection;
+class RemotePeer;
 struct NetworkInfo;
 class SessionThread;
 class SignalProxy;
@@ -485,7 +485,7 @@ public slots:
     /** \note This method is threadsafe.
      */
     void syncStorage();
-    void setupInternalClientSession(InternalConnection *clientConnection);
+    void setupInternalClientSession(InternalPeer *clientConnection);
 
 signals:
     //! Sent when a BufferInfo is updated in storage.
@@ -520,8 +520,8 @@ private:
     static Core *instanceptr;
 
     SessionThread *createSession(UserId userId, bool restoreState = false);
-    void setupClientSession(RemoteConnection *connection, UserId uid);
-    void addClientHelper(RemoteConnection *connection, UserId uid);
+    void setupClientSession(RemotePeer *peer, UserId uid);
+    void addClientHelper(RemotePeer *peer, UserId uid);
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
     QString setupCoreForInternalUsage();
     QString setupCore(QVariantMap setupData);
@@ -548,7 +548,7 @@ private:
 
     OidentdConfigGenerator *_oidentdConfigGenerator;
 
-    QHash<RemoteConnection *, QVariantMap> clientInfo;
+    QHash<RemotePeer *, QVariantMap> clientInfo;
 
     QHash<QString, Storage *> _storageBackends;
 

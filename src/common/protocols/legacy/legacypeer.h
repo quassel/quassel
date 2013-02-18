@@ -18,76 +18,56 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef INTERNALCONNECTION_H
-#define INTERNALCONNECTION_H
+#ifndef LEGACYPEER_H
+#define LEGACYPEER_H
 
-#include <QTcpSocket>
+#include <QDataStream>
 
-#include "protocol.h"
-#include "signalproxy.h"
+#include "../../remotepeer.h"
 
-class QEvent;
+class QDataStream;
 
-class InternalConnection : public SignalProxy::AbstractPeer
+class LegacyPeer : public RemotePeer
 {
     Q_OBJECT
 
 public:
-    enum EventType {
-        SyncMessageEvent = QEvent::User,
-        RpcCallEvent,
-        InitRequestEvent,
-        InitDataEvent
+    enum RequestType {
+        Sync = 1,
+        RpcCall,
+        InitRequest,
+        InitData,
+        HeartBeat,
+        HeartBeatReply
     };
 
-    InternalConnection(QObject *parent = 0);
-    virtual ~InternalConnection();
+    LegacyPeer(QTcpSocket *socket, QObject *parent = 0);
+    ~LegacyPeer() {}
 
-    QString description() const;
-
-    SignalProxy *signalProxy() const;
     void setSignalProxy(SignalProxy *proxy);
-
-    InternalConnection *peer() const;
-    void setPeer(InternalConnection *peer);
-
-    bool isOpen() const;
-    bool isSecure() const;
-    bool isLocal() const;
-
-    int lag() const;
 
     void dispatch(const Protocol::SyncMessage &msg);
     void dispatch(const Protocol::RpcCall &msg);
     void dispatch(const Protocol::InitRequest &msg);
     void dispatch(const Protocol::InitData &msg);
 
-public slots:
-    void close(const QString &reason = QString());
+    void dispatch(const Protocol::HeartBeat &msg);
+    void dispatch(const Protocol::HeartBeatReply &msg);
 
-signals:
-
-    void disconnected();
-    void error(QAbstractSocket::SocketError);
-
-protected:
-    void customEvent(QEvent *event);
+    // FIXME: this is only used for the auth phase and should be replaced by something more generic
+    void writeSocketData(const QVariant &item);
 
 private slots:
-    void peerDisconnected();
+    void socketDataAvailable();
 
 private:
-    template<class T>
-    void dispatch(EventType eventType, const T &msg);
+    bool readSocketData(QVariant &item);
+    void handlePackedFunc(const QVariant &packedFunc);
+    void dispatchPackedFunc(const QVariantList &packedFunc);
 
-    template<class T>
-    void handle(const T &msg);
-
-private:
-    SignalProxy *_proxy;
-    InternalConnection *_peer;
-    bool _isOpen;
+    QDataStream _stream;
+    qint32 _blockSize;
+    bool _useCompression;
 };
-
 
 #endif

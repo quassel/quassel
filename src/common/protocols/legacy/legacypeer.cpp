@@ -18,12 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "legacyconnection.h"
+#include "legacypeer.h"
 
 using namespace Protocol;
 
-LegacyConnection::LegacyConnection(QTcpSocket *socket, QObject *parent)
-    : RemoteConnection(socket, parent),
+LegacyPeer::LegacyPeer(QTcpSocket *socket, QObject *parent)
+    : RemotePeer(socket, parent),
     _blockSize(0),
     _useCompression(false)
 {
@@ -34,9 +34,9 @@ LegacyConnection::LegacyConnection(QTcpSocket *socket, QObject *parent)
 }
 
 
-void LegacyConnection::setSignalProxy(SignalProxy *proxy)
+void LegacyPeer::setSignalProxy(::SignalProxy *proxy)
 {
-    RemoteConnection::setSignalProxy(proxy);
+    RemotePeer::setSignalProxy(proxy);
 
     if (proxy) {
         // enable compression now if requested - the initial handshake is uncompressed in the legacy protocol!
@@ -46,7 +46,7 @@ void LegacyConnection::setSignalProxy(SignalProxy *proxy)
 }
 
 
-void LegacyConnection::socketDataAvailable()
+void LegacyPeer::socketDataAvailable()
 {
     QVariant item;
     while (readSocketData(item)) {
@@ -59,7 +59,7 @@ void LegacyConnection::socketDataAvailable()
 }
 
 
-bool LegacyConnection::readSocketData(QVariant &item)
+bool LegacyPeer::readSocketData(QVariant &item)
 {
     if (_blockSize == 0) {
         if (socket()->bytesAvailable() < 4)
@@ -118,7 +118,7 @@ bool LegacyConnection::readSocketData(QVariant &item)
 }
 
 
-void LegacyConnection::writeSocketData(const QVariant &item)
+void LegacyPeer::writeSocketData(const QVariant &item)
 {
     if (!socket()->isOpen()) {
         qWarning() << Q_FUNC_INFO << "Can't write to a closed socket!";
@@ -147,7 +147,7 @@ void LegacyConnection::writeSocketData(const QVariant &item)
 }
 
 
-void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
+void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
 {
     QVariantList params(packedFunc.toList());
 
@@ -228,43 +228,43 @@ void LegacyConnection::handlePackedFunc(const QVariant &packedFunc)
 }
 
 
-void LegacyConnection::dispatch(const Protocol::SyncMessage &msg)
+void LegacyPeer::dispatch(const Protocol::SyncMessage &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)Sync << msg.className() << msg.objectName() << msg.slotName() << msg.params());
 }
 
 
-void LegacyConnection::dispatch(const Protocol::RpcCall &msg)
+void LegacyPeer::dispatch(const Protocol::RpcCall &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.slotName() << msg.params());
 }
 
 
-void LegacyConnection::dispatch(const Protocol::InitRequest &msg)
+void LegacyPeer::dispatch(const Protocol::InitRequest &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)InitRequest << msg.className() << msg.objectName());
 }
 
 
-void LegacyConnection::dispatch(const Protocol::InitData &msg)
+void LegacyPeer::dispatch(const Protocol::InitData &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className() << msg.objectName() << msg.initData());
 }
 
 
-void LegacyConnection::dispatch(const Protocol::HeartBeat &msg)
+void LegacyPeer::dispatch(const Protocol::HeartBeat &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)HeartBeat << msg.timestamp().time());
 }
 
 
-void LegacyConnection::dispatch(const Protocol::HeartBeatReply &msg)
+void LegacyPeer::dispatch(const Protocol::HeartBeatReply &msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)HeartBeatReply << msg.timestamp().time());
 }
 
 
-void LegacyConnection::dispatchPackedFunc(const QVariantList &packedFunc)
+void LegacyPeer::dispatchPackedFunc(const QVariantList &packedFunc)
 {
     writeSocketData(QVariant(packedFunc));
 }

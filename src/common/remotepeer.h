@@ -18,8 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef REMOTECONNECTION_H
-#define REMOTECONNECTION_H
+#ifndef REMOTEPEER_H
+#define REMOTEPEER_H
 
 #include <QDateTime>
 #include <QTcpSocket>
@@ -29,13 +29,13 @@
 
 class QTimer;
 
-class RemoteConnection : public SignalProxy::AbstractPeer
+class RemotePeer : public SignalProxy::AbstractPeer
 {
     Q_OBJECT
 
 public:
-    RemoteConnection(QTcpSocket *socket, QObject *parent = 0);
-    virtual ~RemoteConnection() {};
+    RemotePeer(QTcpSocket *socket, QObject *parent = 0);
+    virtual ~RemotePeer() {};
 
     void setSignalProxy(SignalProxy *proxy);
 
@@ -91,10 +91,9 @@ private:
     int _lag;
 };
 
-
 // Template methods we need in the header
 template<class T> inline
-void RemoteConnection::handle(const T &protoMessage)
+void RemotePeer::handle(const T &protoMessage)
 {
     if (!signalProxy()) {
         qWarning() << Q_FUNC_INFO << "Cannot handle messages without a SignalProxy!";

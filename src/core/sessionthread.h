@@ -27,8 +27,8 @@
 #include "types.h"
 
 class CoreSession;
-class InternalConnection;
-class RemoteConnection;
+class InternalPeer;
+class RemotePeer;
 class QIODevice;
 
 class SessionThread : public QThread
@@ -54,8 +54,8 @@ signals:
     void initialized();
     void shutdown();
 
-    void addRemoteClient(RemoteConnection *);
-    void addInternalClient(InternalConnection *);
+    void addRemoteClient(RemotePeer *peer);
+    void addInternalClient(InternalPeer *peer);
 
 private:
     CoreSession *_session;
@@ -66,8 +66,8 @@ private:
 
     bool isSessionInitialized();
     void addClientToSession(QObject *peer);
-    void addRemoteClientToSession(RemoteConnection *connection);
-    void addInternalClientToSession(InternalConnection *client);
+    void addRemoteClientToSession(RemotePeer *remotePeer);
+    void addInternalClientToSession(InternalPeer *internalPeer);
 };
 
 

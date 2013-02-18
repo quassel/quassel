@@ -168,8 +168,8 @@ private:
 
     friend class SignalRelay;
     friend class SyncableObject;
-    friend class InternalConnection;
-    friend class RemoteConnection;
+    friend class InternalPeer;
+    friend class RemotePeer;
 };
 
 

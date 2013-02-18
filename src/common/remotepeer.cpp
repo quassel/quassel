@@ -25,11 +25,11 @@
 #  include <QSslSocket>
 #endif
 
-#include "remoteconnection.h"
+#include "remotepeer.h"
 
 using namespace Protocol;
 
-RemoteConnection::RemoteConnection(QTcpSocket *socket, QObject *parent)
+RemotePeer::RemotePeer(QTcpSocket *socket, QObject *parent)
     : SignalProxy::AbstractPeer(parent),
     _socket(socket),
     _signalProxy(0),
@@ -51,7 +51,7 @@ RemoteConnection::RemoteConnection(QTcpSocket *socket, QObject *parent)
 }
 
 
-QString RemoteConnection::description() const
+QString RemotePeer::description() const
 {
     if (socket())
         return socket()->peerAddress().toString();
@@ -60,13 +60,13 @@ QString RemoteConnection::description() const
 }
 
 
-SignalProxy *RemoteConnection::signalProxy() const
+::SignalProxy *RemotePeer::signalProxy() const
 {
     return _signalProxy;
 }
 
 
-void RemoteConnection::setSignalProxy(SignalProxy *proxy)
+void RemotePeer::setSignalProxy(::SignalProxy *proxy)
 {
     if (proxy == _signalProxy)
         return;
@@ -91,7 +91,7 @@ void RemoteConnection::setSignalProxy(SignalProxy *proxy)
 }
 
 
-void RemoteConnection::changeHeartBeatInterval(int secs)
+void RemotePeer::changeHeartBeatInterval(int secs)
 {
     if(secs <= 0)
         _heartBeatTimer->stop();
@@ -102,19 +102,19 @@ void RemoteConnection::changeHeartBeatInterval(int secs)
 }
 
 
-int RemoteConnection::lag() const
+int RemotePeer::lag() const
 {
     return _lag;
 }
 
 
-QTcpSocket *RemoteConnection::socket() const
+QTcpSocket *RemotePeer::socket() const
 {
     return _socket;
 }
 
 
-bool RemoteConnection::isSecure() const
+bool RemotePeer::isSecure() const
 {
     if (socket()) {
         if (isLocal())
@@ -129,7 +129,7 @@ bool RemoteConnection::isSecure() const
 }
 
 
-bool RemoteConnection::isLocal() const
+bool RemotePeer::isLocal() const
 {
     if (socket()) {
         if (socket()->peerAddress() == QHostAddress::LocalHost || socket()->peerAddress() == QHostAddress::LocalHostIPv6)
@@ -139,13 +139,13 @@ bool RemoteConnection::isLocal() const
 }
 
 
-bool RemoteConnection::isOpen() const
+bool RemotePeer::isOpen() const
 {
     return socket() && socket()->state() == QTcpSocket::ConnectedState;
 }
 
 
-void RemoteConnection::close(const QString &reason)
+void RemotePeer::close(const QString &reason)
 {
     if (!reason.isEmpty()) {
         qWarning() << "Disconnecting:" << reason;
@@ -157,13 +157,13 @@ void RemoteConnection::close(const QString &reason)
 }
 
 
-void RemoteConnection::handle(const HeartBeat &heartBeat)
+void RemotePeer::handle(const HeartBeat &heartBeat)
 {
     dispatch(HeartBeatReply(heartBeat.timestamp()));
 }
 
 
-void RemoteConnection::handle(const HeartBeatReply &heartBeatReply)
+void RemotePeer::handle(const HeartBeatReply &heartBeatReply)
 {
     _heartBeatCount = 0;
 #if QT_VERSION < 0x040700
@@ -174,7 +174,7 @@ void RemoteConnection::handle(const HeartBeatReply &heartBeatReply)
 }
 
 
-void RemoteConnection::sendHeartBeat()
+void RemotePeer::sendHeartBeat()
 {
     if (signalProxy()->maxHeartBeatCount() > 0 && _heartBeatCount >= signalProxy()->maxHeartBeatCount()) {
         qWarning() << "Disconnecting peer:" << description()

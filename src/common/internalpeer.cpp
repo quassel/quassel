@@ -21,7 +21,7 @@
 #include <QCoreApplication>
 #include <QThread>
 
-#include "internalconnection.h"
+#include "internalpeer.h"
 
 using namespace Protocol;
 
@@ -29,14 +29,14 @@ template<class T>
 class PeerMessageEvent : public QEvent
 {
 public:
-    PeerMessageEvent(InternalConnection *sender, InternalConnection::EventType eventType, const T &message)
+    PeerMessageEvent(InternalPeer *sender, InternalPeer::EventType eventType, const T &message)
     : QEvent(QEvent::Type(eventType)), sender(sender), message(message) {}
-    InternalConnection *sender;
+    InternalPeer *sender;
     T message;
 };
 
 
-InternalConnection::InternalConnection(QObject *parent)
+InternalPeer::InternalPeer(QObject *parent)
     : SignalProxy::AbstractPeer(parent),
     _proxy(0),
     _peer(0),
@@ -46,38 +46,38 @@ InternalConnection::InternalConnection(QObject *parent)
 }
 
 
-InternalConnection::~InternalConnection()
+InternalPeer::~InternalPeer()
 {
     if (_isOpen)
         emit disconnected();
 }
 
 
-QString InternalConnection::description() const
+QString InternalPeer::description() const
 {
     return tr("internal connection");
 }
 
 
-bool InternalConnection::isOpen() const
+bool InternalPeer::isOpen() const
 {
     return true;
 }
 
 
-bool InternalConnection::isSecure() const
+bool InternalPeer::isSecure() const
 {
     return true;
 }
 
 
-bool InternalConnection::isLocal() const
+bool InternalPeer::isLocal() const
 {
     return true;
 }
 
 
-void InternalConnection::close(const QString &reason)
+void InternalPeer::close(const QString &reason)
 {
     // FIXME
     Q_UNUSED(reason)
@@ -85,13 +85,13 @@ void InternalConnection::close(const QString &reason)
 }
 
 
-int InternalConnection::lag() const
+int InternalPeer::lag() const
 {
     return 0;
 }
 
 
-void InternalConnection::setSignalProxy(SignalProxy *proxy)
+void InternalPeer::setSignalProxy(::SignalProxy *proxy)
 {
     if (!proxy && _proxy) {
         _proxy = 0;
@@ -111,7 +111,7 @@ void InternalConnection::setSignalProxy(SignalProxy *proxy)
 }
 
 
-void InternalConnection::setPeer(InternalConnection *peer)
+void InternalPeer::setPeer(InternalPeer *peer)
 {
     if (_peer) {
         qWarning() << Q_FUNC_INFO << "Peer already set, ignoring!";
@@ -122,7 +122,7 @@ void InternalConnection::setPeer(InternalConnection *peer)
 }
 
 
-void InternalConnection::peerDisconnected()
+void InternalPeer::peerDisconnected()
 {
     disconnect(_peer, 0, this, 0);
     _peer = 0;
@@ -133,32 +133,32 @@ void InternalConnection::peerDisconnected()
 }
 
 
-void InternalConnection::dispatch(const SyncMessage &msg)
+void InternalPeer::dispatch(const SyncMessage &msg)
 {
     dispatch(SyncMessageEvent, msg);
 }
 
 
-void InternalConnection::dispatch(const RpcCall &msg)
+void InternalPeer::dispatch(const RpcCall &msg)
 {
     dispatch(RpcCallEvent, msg);
 }
 
 
-void InternalConnection::dispatch(const InitRequest &msg)
+void InternalPeer::dispatch(const InitRequest &msg)
 {
     dispatch(InitRequestEvent, msg);
 }
 
 
-void InternalConnection::dispatch(const InitData &msg)
+void InternalPeer::dispatch(const InitData &msg)
 {
     dispatch(InitDataEvent, msg);
 }
 
 
 template<class T>
-void InternalConnection::dispatch(EventType eventType, const T &msg)
+void InternalPeer::dispatch(EventType eventType, const T &msg)
 {
     if (!_peer) {
         qWarning() << Q_FUNC_INFO << "Cannot dispatch a message without a peer!";
@@ -173,7 +173,7 @@ void InternalConnection::dispatch(EventType eventType, const T &msg)
 
 
 template<class T>
-void InternalConnection::handle(const T &msg)
+void InternalPeer::handle(const T &msg)
 {
     if (!_proxy) {
         qWarning() << Q_FUNC_INFO << "Cannot handle a message without having a signal proxy set!";
@@ -184,7 +184,7 @@ void InternalConnection::handle(const T &msg)
 }
 
 
-void InternalConnection::customEvent(QEvent *event)
+void InternalPeer::customEvent(QEvent *event)
 {
     switch ((int)event->type()) {
         case SyncMessageEvent: {

@@ -42,11 +42,11 @@ class CoreSessionEventProcessor;
 class CtcpParser;
 class EventManager;
 class EventStringifier;
-class InternalConnection;
+class InternalPeer;
 class IrcParser;
 class MessageEvent;
 class NetworkConnection;
-class RemoteConnection;
+class RemotePeer;
 
 struct NetworkInfo;
 
@@ -89,8 +89,8 @@ public:
     void restoreSessionState();
 
 public slots:
-    void addClient(RemoteConnection *connection);
-    void addClient(InternalConnection *connection);
+    void addClient(RemotePeer *peer);
+    void addClient(InternalPeer *peer);
 
     void msgFromClient(BufferInfo, QString message);
 

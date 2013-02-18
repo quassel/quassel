@@ -20,8 +20,8 @@
 
 #include "core.h"
 #include "coresession.h"
-#include "internalconnection.h"
-#include "remoteconnection.h"
+#include "internalpeer.h"
+#include "remotepeer.h"
 #include "sessionthread.h"
 #include "signalproxy.h"
 
@@ -86,13 +86,13 @@ void SessionThread::addClient(QObject *peer)
 
 void SessionThread::addClientToSession(QObject *peer)
 {
-    RemoteConnection *connection = qobject_cast<RemoteConnection *>(peer);
-    if (connection) {
-        addRemoteClientToSession(connection);
+    RemotePeer *remote = qobject_cast<RemotePeer *>(peer);
+    if (remote) {
+        addRemoteClientToSession(remote);
         return;
     }
 
-    InternalConnection *internal = qobject_cast<InternalConnection *>(peer);
+    InternalPeer *internal = qobject_cast<InternalPeer *>(peer);
     if (internal) {
         addInternalClientToSession(internal);
         return;
@@ -102,27 +102,27 @@ void SessionThread::addClientToSession(QObject *peer)
 }
 
 
-void SessionThread::addRemoteClientToSession(RemoteConnection *connection)
+void SessionThread::addRemoteClientToSession(RemotePeer *remotePeer)
 {
-    connection->setParent(0);
-    connection->moveToThread(session()->thread());
-    emit addRemoteClient(connection);
+    remotePeer->setParent(0);
+    remotePeer->moveToThread(session()->thread());
+    emit addRemoteClient(remotePeer);
 }
 
 
-void SessionThread::addInternalClientToSession(InternalConnection *connection)
+void SessionThread::addInternalClientToSession(InternalPeer *internalPeer)
 {
-    connection->setParent(0);
-    connection->moveToThread(session()->thread());
-    emit addInternalClient(connection);
+    internalPeer->setParent(0);
+    internalPeer->moveToThread(session()->thread());
+    emit addInternalClient(internalPeer);
 }
 
 
 void SessionThread::run()
 {
     _session = new CoreSession(user(), _restoreState);
-    connect(this, SIGNAL(addRemoteClient(RemoteConnection*)), _session, SLOT(addClient(RemoteConnection*)));
-    connect(this, SIGNAL(addInternalClient(InternalConnection*)), _session, SLOT(addClient(InternalConnection*)));
+    connect(this, SIGNAL(addRemoteClient(RemotePeer*)), _session, SLOT(addClient(RemotePeer*)));
+    connect(this, SIGNAL(addInternalClient(InternalPeer*)), _session, SLOT(addClient(InternalPeer*)));
     connect(_session, SIGNAL(sessionState(QVariant)), Core::instance(), SIGNAL(sessionState(QVariant)));
     emit initialized();
     exec();
