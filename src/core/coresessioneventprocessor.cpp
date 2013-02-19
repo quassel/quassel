@@ -129,7 +129,7 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     // additional CAP messages (ls, multi-prefix, et cetera).
 
     if (e->params().count() == 3) {
-        if (e->params().at(2) == "sasl") {
+        if (e->params().at(2).startsWith("sasl")) { // Freenode (at least) sends "sasl " with a trailing space for some reason!
             // FIXME use event
             coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN")); // Only working with PLAIN atm, blowfish later
         }
