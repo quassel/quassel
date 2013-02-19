@@ -113,6 +113,10 @@ public :
 
         CtcpEvent                   = 0x00050000,
         CtcpEventFlush
+
+#ifdef HAVE_QCA2
+        ,KeyEvent                    = 0x00060000
+#endif
     };
 
     EventManager(QObject *parent = 0);

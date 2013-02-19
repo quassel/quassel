@@ -78,6 +78,11 @@ set(HEADERS ${MOC_HDRS}
     types.h
     util.h)
 
+if (HAVE_QCA2)
+    set(SOURCES ${SOURCES} keyevent.cpp)
+    set(HEADERS ${HEADERS} keyevent.h)
+endif(HAVE_QCA2)
+
 if(APPLE)
   set(SOURCES ${SOURCES} mac_utils.cpp)
   set(HEADERS ${HEADERS} mac_utils.h)

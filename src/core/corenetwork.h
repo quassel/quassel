@@ -120,7 +120,7 @@ public slots:
 
     // Blowfish stuff
 #ifdef HAVE_QCA2
-    Cipher *cipher(const QString &recipient) const;
+    Cipher *cipher(const QString &recipient);
     QByteArray cipherKey(const QString &recipient) const;
     void setCipherKey(const QString &recipient, const QByteArray &key);
 #endif
