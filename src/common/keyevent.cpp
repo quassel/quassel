@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2013 by the Quassel Project                        *
+ *   Copyright (C) 2013 by the Quassel Project                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,51 +18,30 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coreircchannel.h"
-#include "corenetwork.h"
+#include "keyevent.h"
 
-INIT_SYNCABLE_OBJECT(CoreIrcChannel)
-CoreIrcChannel::CoreIrcChannel(const QString &channelname, Network *network)
-    : IrcChannel(channelname, network),
-    _receivedWelcomeMsg(false)
+Event *KeyEvent::create(EventManager::EventType type, QVariantMap &map, Network *network)
 {
-#ifdef HAVE_QCA2
-    _cipher = 0;
-#endif
+    if (type == EventManager::KeyEvent)
+        return new KeyEvent(type, map, network);
+
+    return 0;
 }
 
 
-CoreIrcChannel::~CoreIrcChannel()
+KeyEvent::KeyEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+    : IrcEvent(type, map, network)
 {
-#ifdef HAVE_QCA2
-    delete _cipher;
-#endif
+    _exchangeType = static_cast<ExchangeType>(map.take("exchangeType").toInt());
+    _target = map.take("target").toString();
+    _key = map.take("key").toByteArray();
 }
 
 
-#ifdef HAVE_QCA2
-Cipher *CoreIrcChannel::cipher() const
+void KeyEvent::toVariantMap(QVariantMap &map) const
 {
-    if (!_cipher)
-        _cipher = new Cipher();
-
-    return _cipher;
+    IrcEvent::toVariantMap(map);
+    map["exchangeType"] = exchangeType();
+    map["target"] = target();
+    map["key"] = key();
 }
-
-
-void CoreIrcChannel::setEncrypted(bool e)
-{
-    if (!Cipher::neededFeaturesAvailable())
-        return;
-
-    if (e) {
-        if (topic().isEmpty())
-            return;
-
-        QByteArray decrypted = cipher()->decryptTopic(topic().toAscii());
-        setTopic(decodeString(decrypted));
-    }
-}
-
-
-#endif

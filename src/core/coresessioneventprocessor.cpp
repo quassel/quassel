@@ -30,6 +30,10 @@
 #include "netsplit.h"
 #include "quassel.h"
 
+#ifdef HAVE_QCA2
+#  include "keyevent.h"
+#endif
+
 CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
     : BasicHandler("handleCtcp", session),
     _coreSession(session)
@@ -434,6 +438,42 @@ void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent *e)
             channel->setTopic(e->params().at(1));
     }
 }
+
+
+#ifdef HAVE_QCA2
+void CoreSessionEventProcessor::processKeyEvent(KeyEvent *e)
+{
+    if (!Cipher::neededFeaturesAvailable()) {
+        emit newEvent(new MessageEvent(Message::Error, e->network(), tr("Unable to perform key exchange."), e->prefix(), e->target(), Message::None, e->timestamp()));
+        return;
+    }
+    CoreNetwork *net = qobject_cast<CoreNetwork*>(e->network());
+    Cipher *c = net->cipher(e->target());
+    if (!c) // happens when there is no CoreIrcChannel for the target (i.e. never?)
+        return;
+
+    if (e->exchangeType() == KeyEvent::Init) {
+        QByteArray pubKey = c->parseInitKeyX(e->key());
+        if (pubKey.isEmpty()) {
+            emit newEvent(new MessageEvent(Message::Error, e->network(), tr("Unable to parse the DH1080_INIT. Key exchange failed."), e->prefix(), e->target(), Message::None, e->timestamp()));
+            return;
+        } else {
+            net->setCipherKey(e->target(), c->key());
+            emit newEvent(new MessageEvent(Message::Info, e->network(), tr("Your key is set and messages will be encrypted."), e->prefix(), e->target(), Message::None, e->timestamp()));
+            QList<QByteArray> p;
+            p << net->serverEncode(e->target()) << net->serverEncode("DH1080_FINISH ")+pubKey;
+            net->putCmd("NOTICE", p);
+        }
+    } else {
+        if (c->parseFinishKeyX(e->key())) {
+            net->setCipherKey(e->target(), c->key());
+            emit newEvent(new MessageEvent(Message::Info, e->network(), tr("Your key is set and messages will be encrypted."), e->prefix(), e->target(), Message::None, e->timestamp()));
+        } else {
+            emit newEvent(new MessageEvent(Message::Info, e->network(), tr("Failed to parse DH1080_FINISH. Key exchange failed."), e->prefix(), e->target(), Message::None, e->timestamp()));
+        }
+    }
+}
+#endif
 
 
 /* RPL_WELCOME */

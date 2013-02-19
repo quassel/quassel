@@ -48,6 +48,7 @@ public slots:
     void handleDevoice(const BufferInfo &bufferInfo, const QString &text);
     void handleInvite(const BufferInfo &bufferInfo, const QString &text);
     void handleJoin(const BufferInfo &bufferInfo, const QString &text);
+    void handleKeyx(const BufferInfo &bufferInfo, const QString &text);
     void handleKick(const BufferInfo &bufferInfo, const QString &text);
     void handleKill(const BufferInfo &bufferInfo, const QString &text);
     void handleList(const BufferInfo &bufferInfo, const QString &text);
