@@ -615,7 +615,7 @@ void EventStringifier::processIrcEvent333(IrcEvent *e)
     QDateTime topicSetTime = QDateTime::fromTime_t(e->params()[2].toInt());
     displayMsg(e, Message::Topic, tr("Topic set by %1 on %2")
         .arg(e->params()[1],
-	     QLocale().toString(topicSetTime, QLocale().dateTimeFormat()), QString(), channel));
+	     QLocale().toString(topicSetTime, QLocale().dateTimeFormat())), QString(), channel);
 }
 
 
