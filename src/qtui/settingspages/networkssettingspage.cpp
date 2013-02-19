@@ -45,9 +45,9 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     if (!(Client::coreFeatures() & Quassel::SaslAuthentication))
         ui.sasl->hide();
     if (!(Client::coreFeatures() & Quassel::SaslExternal))
-        ui.label_saslext->hide();
+        ui.saslExtInfo->hide();
 #ifndef HAVE_SSL
-    ui.label_saslext->hide();
+    ui.saslExtInfo->hide();
 #endif
 
     // set up icons
@@ -582,16 +582,16 @@ void NetworksSettingsPage::sslUpdated()
 {
     if (_cid && !_cid->sslKey().isNull()) {
         ui.saslAccount->setDisabled(true);
-        ui.label_10->setDisabled(true);
+        ui.saslAccountLabel->setDisabled(true);
         ui.saslPassword->setDisabled(true);
-        ui.label_11->setDisabled(true);
-        ui.label_saslext->setHidden(false);
+        ui.saslPasswordLabel->setDisabled(true);
+        ui.saslExtInfo->setHidden(false);
     } else {
         ui.saslAccount->setDisabled(false);
-        ui.label_10->setDisabled(false);
+        ui.saslAccountLabel->setDisabled(false);
         ui.saslPassword->setDisabled(false);
-        ui.label_11->setDisabled(false);
-        ui.label_saslext->setHidden(true);
+        ui.saslPasswordLabel->setDisabled(false);
+        ui.saslExtInfo->setHidden(true);
     }
 }
 #endif
