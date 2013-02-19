@@ -28,6 +28,7 @@
 #include <QStringList>
 #include <QRegExp>
 #include <QFile>
+#include <QCoreApplication>
 
 int main(int argc, char **argv)
 {
@@ -35,8 +36,11 @@ int main(int argc, char **argv)
         qFatal("Usage: ./genversion <git_root> <target_file>");
         return 255;
     }
-    QString gitroot = argv[1];
-    QString target = argv[2];
+
+    QCoreApplication app(argc, argv);
+
+    QString gitroot = app.arguments()[1];
+    QString target = app.arguments()[2];
     QString basever, protover, clientneeds, coreneeds, descrver, dirty;
     QString committish, commitdate;
 
