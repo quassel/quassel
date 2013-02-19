@@ -43,9 +43,9 @@ public slots:
     void handleUnban(const BufferInfo &bufferInfo, const QString &text);
     void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
     void handleDelkey(const BufferInfo &bufferInfo, const QString &text);
-    void handleDeop(const BufferInfo &bufferInfo, const QString &text);
-    void handleDehalfop(const BufferInfo &bufferInfo, const QString &text);
-    void handleDevoice(const BufferInfo &bufferInfo, const QString &text);
+    void handleDeop(const BufferInfo& bufferInfo, const QString &nicks);
+    void handleDehalfop(const BufferInfo& bufferInfo, const QString &nicks);
+    void handleDevoice(const BufferInfo& bufferInfo, const QString &nicks);
     void handleInvite(const BufferInfo &bufferInfo, const QString &text);
     void handleJoin(const BufferInfo &bufferInfo, const QString &text);
     void handleKeyx(const BufferInfo &bufferInfo, const QString &text);
@@ -58,8 +58,8 @@ public slots:
     void handleNick(const BufferInfo &bufferInfo, const QString &text);
     void handleNotice(const BufferInfo &bufferInfo, const QString &text);
     void handleOper(const BufferInfo &bufferInfo, const QString &text);
-    void handleOp(const BufferInfo &bufferInfo, const QString &text);
-    void handleHalfop(const BufferInfo &bufferInfo, const QString &text);
+    void handleOp(const BufferInfo& bufferInfo, const QString &nicks);
+    void handleHalfop(const BufferInfo& bufferInfo, const QString &nicks);
     void handlePart(const BufferInfo &bufferInfo, const QString &text);
     void handlePing(const BufferInfo &bufferInfo, const QString &text);
     void handleQuery(const BufferInfo &bufferInfo, const QString &text);
@@ -84,6 +84,7 @@ protected:
     void timerEvent(QTimerEvent *event);
 
 private:
+    void doMode(const BufferInfo& bufferInfo, const QChar &addOrRemove, const QChar &mode, const QString &nickList);
     void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
     void putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher = 0);
     int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
