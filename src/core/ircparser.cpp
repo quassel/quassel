@@ -308,6 +308,11 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
         for (int i = decParams.count(); i < params.count(); i++)
             decParams << net->serverDecode(params.at(i));
 
+        // We want to trim the last param just in case, except for PRIVMSG and NOTICE
+        // ... but those happen to be the only ones not using defaultHandling anyway
+        if (!decParams.isEmpty() && decParams.last().endsWith(' '))
+            decParams.append(decParams.takeLast().trimmed());
+
         IrcEvent *event;
         if (type == EventManager::IrcEventNumeric)
             event = new IrcEventNumeric(num, net, prefix, target);
