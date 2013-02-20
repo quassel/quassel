@@ -21,17 +21,8 @@
 #ifndef SIGNALPROXY_H
 #define SIGNALPROXY_H
 
-#include <QAbstractSocket>
 #include <QEvent>
-#include <QList>
-#include <QHash>
-#include <QVariant>
-#include <QVariantMap>
-#include <QPair>
 #include <QSet>
-#include <QString>
-#include <QByteArray>
-#include <QTimer>
 
 #include "protocol.h"
 

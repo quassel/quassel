@@ -21,7 +21,7 @@
 #ifndef PEER_H
 #define PEER_H
 
-#include <QObject>
+#include <QAbstractSocket>
 
 #include "protocol.h"
 #include "signalproxy.h"

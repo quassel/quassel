@@ -18,27 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "signalproxy.h"
-
-#include <QObject>
-#include <QIODevice>
-#include <QAbstractSocket>
+#include <QCoreApplication>
 #include <QHostAddress>
-#include <QHash>
-#include <QMultiHash>
-#include <QList>
-#include <QSet>
-#include <QDebug>
 #include <QMetaMethod>
 #include <QMetaProperty>
-#include <QRegExp>
-#ifdef HAVE_SSL
-#include <QSslSocket>
-#endif
 #include <QThread>
-#include <QTime>
-#include <QEvent>
-#include <QCoreApplication>
+
+#ifdef HAVE_SSL
+    #include <QSslSocket>
+#endif
+
+#include "signalproxy.h"
 
 #include "peer.h"
 #include "protocol.h"
