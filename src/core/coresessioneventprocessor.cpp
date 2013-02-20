@@ -794,7 +794,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     QStringList nicks;
     QStringList modes;
 
-    foreach(QString nick, e->params()[2].split(' ')) {
+    foreach(QString nick, e->params()[2].split(' ', QString::SkipEmptyParts)) {
         QString mode;
 
         if (e->network()->prefixes().contains(nick[0])) {
