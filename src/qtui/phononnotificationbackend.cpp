@@ -20,8 +20,8 @@
 
 #include <QFileDialog>
 
-#include <Phonon/MediaObject>
-#include <Phonon/BackendCapabilities>
+#include <phonon/mediaobject.h>
+#include <phonon/backendcapabilities.h>
 
 #include "phononnotificationbackend.h"
 
