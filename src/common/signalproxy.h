@@ -250,8 +250,6 @@ public:
     virtual bool isSecure() const = 0;
     virtual bool isLocal() const = 0;
 
-    virtual QString errorString() const { return QString(); }
-
     virtual int lag() const = 0;
 
 public slots:
