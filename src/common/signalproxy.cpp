@@ -40,6 +40,7 @@
 #include <QEvent>
 #include <QCoreApplication>
 
+#include "peer.h"
 #include "protocol.h"
 #include "syncableobject.h"
 #include "util.h"
@@ -49,8 +50,8 @@ using namespace Protocol;
 class RemovePeerEvent : public QEvent
 {
 public:
-    RemovePeerEvent(SignalProxy::AbstractPeer *peer) : QEvent(QEvent::Type(SignalProxy::RemovePeerEvent)), peer(peer) {}
-    SignalProxy::AbstractPeer *peer;
+    RemovePeerEvent(Peer *peer) : QEvent(QEvent::Type(SignalProxy::RemovePeerEvent)), peer(peer) {}
+    Peer *peer;
 };
 
 
@@ -257,7 +258,7 @@ void SignalProxy::setMaxHeartBeatCount(int max)
 }
 
 
-bool SignalProxy::addPeer(AbstractPeer *peer)
+bool SignalProxy::addPeer(Peer *peer)
 {
     if (!peer)
         return false;
@@ -300,14 +301,14 @@ void SignalProxy::removeAllPeers()
 {
     Q_ASSERT(proxyMode() == Server || _peers.count() <= 1);
     // wee need to copy that list since we modify it in the loop
-    QSet<AbstractPeer *> peers = _peers;
-    foreach(AbstractPeer *peer, peers) {
+    QSet<Peer *> peers = _peers;
+    foreach(Peer *peer, peers) {
         removePeer(peer);
     }
 }
 
 
-void SignalProxy::removePeer(AbstractPeer *peer)
+void SignalProxy::removePeer(Peer *peer)
 {
     if (!peer) {
         qWarning() << Q_FUNC_INFO << "Trying to remove a null peer!";
@@ -342,7 +343,7 @@ void SignalProxy::removePeer(AbstractPeer *peer)
 
 void SignalProxy::removePeerBySender()
 {
-    removePeer(qobject_cast<SignalProxy::AbstractPeer *>(sender()));
+    removePeer(qobject_cast<Peer *>(sender()));
 }
 
 
@@ -502,7 +503,7 @@ void SignalProxy::stopSynchronize(SyncableObject *obj)
 template<class T>
 void SignalProxy::dispatch(const T &protoMessage)
 {
-    foreach (AbstractPeer *peer, _peers) {
+    foreach (Peer *peer, _peers) {
         if (peer->isOpen())
             peer->dispatch(protoMessage);
         else
@@ -511,7 +512,7 @@ void SignalProxy::dispatch(const T &protoMessage)
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SyncMessage &syncMessage)
+void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
 {
     if (!_syncSlave.contains(syncMessage.className()) || !_syncSlave[syncMessage.className()].contains(syncMessage.objectName())) {
         qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(syncMessage.className(), syncMessage.slotName(), syncMessage.objectName())
@@ -553,7 +554,7 @@ void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const SyncMessage &syn
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const InitRequest &initRequest)
+void SignalProxy::handle(Peer *peer, const InitRequest &initRequest)
 {
    if (!_syncSlave.contains(initRequest.className())) {
         qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
@@ -572,7 +573,7 @@ void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const InitRequest &ini
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const InitData &initData)
+void SignalProxy::handle(Peer *peer, const InitData &initData)
 {
     Q_UNUSED(peer)
 
@@ -593,7 +594,7 @@ void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const InitData &initDa
 }
 
 
-void SignalProxy::handle(SignalProxy::AbstractPeer *peer, const RpcCall &rpcCall)
+void SignalProxy::handle(Peer *peer, const RpcCall &rpcCall)
 {
     Q_UNUSED(peer)
 
@@ -772,7 +773,7 @@ void SignalProxy::updateSecureState()
     bool wasSecure = _secure;
 
     _secure = !_peers.isEmpty();
-    foreach (const AbstractPeer *peer,  _peers) {
+    foreach (const Peer *peer,  _peers) {
         _secure &= peer->isSecure();
     }
 

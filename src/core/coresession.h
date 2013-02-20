@@ -28,7 +28,6 @@
 #include "corealiasmanager.h"
 #include "coreignorelistmanager.h"
 #include "message.h"
-#include "signalproxy.h"
 #include "storage.h"
 
 class CoreBacklogManager;
@@ -44,9 +43,11 @@ class EventManager;
 class EventStringifier;
 class InternalPeer;
 class IrcParser;
+class Peer;
 class MessageEvent;
 class NetworkConnection;
 class RemotePeer;
+class SignalProxy;
 
 struct NetworkInfo;
 
@@ -157,7 +158,7 @@ protected:
     virtual void customEvent(QEvent *event);
 
 private slots:
-    void removeClient(SignalProxy::AbstractPeer *peer);
+    void removeClient(Peer *peer);
 
     void recvStatusMsgFromServer(QString msg);
     void recvMessageFromServer(NetworkId networkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);

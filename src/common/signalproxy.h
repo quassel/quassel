@@ -35,9 +35,10 @@
 
 #include "protocol.h"
 
-class SyncableObject;
-struct QMetaObject;
+class QMetaObject;
 
+class Peer;
+class SyncableObject;
 
 class SignalProxy : public QObject
 {
@@ -46,8 +47,6 @@ class SignalProxy : public QObject
     class SignalRelay;
 
 public:
-    class AbstractPeer;
-
     enum ProxyMode {
         Server,
         Client
@@ -69,7 +68,7 @@ public:
     void setMaxHeartBeatCount(int max);
     inline int maxHeartBeatCount() const { return _maxHeartBeatCount; }
 
-    bool addPeer(AbstractPeer *peer);
+    bool addPeer(Peer *peer);
 
     bool attachSignal(QObject *sender, const char *signal, const QByteArray &sigName = QByteArray());
     bool attachSlot(const QByteArray &sigName, QObject *recv, const char *slot);
@@ -104,7 +103,7 @@ private slots:
     void updateSecureState();
 
 signals:
-    void peerRemoved(SignalProxy::AbstractPeer *peer);
+    void peerRemoved(Peer *peer);
     void connected();
     void disconnected();
     void objectInitialized(SyncableObject *);
@@ -123,16 +122,19 @@ private:
 
     static const QMetaObject *metaObject(const QObject *obj);
 
-    void removePeer(AbstractPeer *peer);
+    void removePeer(Peer *peer);
     void removeAllPeers();
 
     template<class T>
     void dispatch(const T &protoMessage);
 
-    void handle(AbstractPeer *peer, const Protocol::SyncMessage &syncMessage);
-    void handle(AbstractPeer *peer, const Protocol::RpcCall &rpcCall);
-    void handle(AbstractPeer *peer, const Protocol::InitRequest &initRequest);
-    void handle(AbstractPeer *peer, const Protocol::InitData &initData);
+    void handle(Peer *peer, const Protocol::SyncMessage &syncMessage);
+    void handle(Peer *peer, const Protocol::RpcCall &rpcCall);
+    void handle(Peer *peer, const Protocol::InitRequest &initRequest);
+    void handle(Peer *peer, const Protocol::InitData &initData);
+
+    template<class T>
+    void handle(Peer *peer, T) { Q_ASSERT(0); }
 
     bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue);
     bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList());
@@ -143,7 +145,7 @@ private:
 
     static void disconnectDevice(QIODevice *dev, const QString &reason = QString());
 
-    QSet<AbstractPeer *> _peers;
+    QSet<Peer *> _peers;
 
     // containg a list of argtypes for fast access
     QHash<const QMetaObject *, ExtendedMetaObject *> _extendedMetaObjects;
@@ -168,8 +170,7 @@ private:
 
     friend class SignalRelay;
     friend class SyncableObject;
-    friend class InternalPeer;
-    friend class RemotePeer;
+    friend class Peer;
 };
 
 
@@ -229,42 +230,6 @@ private:
     QHash<int, MethodDescriptor> _methods;
     QHash<QByteArray, int> _methodIds;
     QHash<int, int> _receiveMap; // if slot x is called then hand over the result to slot y
-};
-
-
-// ==================================================
-//  AbstractPeer
-// ==================================================
-class SignalProxy::AbstractPeer : public QObject
-{
-    Q_OBJECT
-
-public:
-    AbstractPeer(QObject *parent = 0) : QObject(parent) {}
-
-    virtual QString description() const = 0;
-
-    virtual void setSignalProxy(SignalProxy *proxy) = 0;
-
-    virtual bool isOpen() const = 0;
-    virtual bool isSecure() const = 0;
-    virtual bool isLocal() const = 0;
-
-    virtual int lag() const = 0;
-
-public slots:
-    virtual void dispatch(const Protocol::SyncMessage &msg) = 0;
-    virtual void dispatch(const Protocol::RpcCall &msg) = 0;
-    virtual void dispatch(const Protocol::InitRequest &msg) = 0;
-    virtual void dispatch(const Protocol::InitData &msg) = 0;
-
-    virtual void close(const QString &reason = QString()) = 0;
-
-signals:
-    void disconnected();
-    void error(QAbstractSocket::SocketError);
-    void secureStateChanged(bool secure = true);
-    void lagUpdated(int msecs);
 };
 
 #endif

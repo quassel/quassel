@@ -37,7 +37,7 @@ public:
 
 
 InternalPeer::InternalPeer(QObject *parent)
-    : SignalProxy::AbstractPeer(parent),
+    : Peer(parent),
     _proxy(0),
     _peer(0),
     _isOpen(true)
@@ -88,6 +88,12 @@ void InternalPeer::close(const QString &reason)
 int InternalPeer::lag() const
 {
     return 0;
+}
+
+
+::SignalProxy *InternalPeer::signalProxy() const
+{
+    return _proxy;
 }
 
 
@@ -169,18 +175,6 @@ void InternalPeer::dispatch(EventType eventType, const T &msg)
         _peer->handle(msg);
     else
         QCoreApplication::postEvent(_peer, new PeerMessageEvent<T>(this, eventType, msg));
-}
-
-
-template<class T>
-void InternalPeer::handle(const T &msg)
-{
-    if (!_proxy) {
-        qWarning() << Q_FUNC_INFO << "Cannot handle a message without having a signal proxy set!";
-        return;
-    }
-
-    _proxy->handle(this, msg);
 }
 
 

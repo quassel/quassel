@@ -30,7 +30,7 @@
 using namespace Protocol;
 
 RemotePeer::RemotePeer(QTcpSocket *socket, QObject *parent)
-    : SignalProxy::AbstractPeer(parent),
+    : Peer(parent),
     _socket(socket),
     _signalProxy(0),
     _heartBeatTimer(new QTimer(this)),

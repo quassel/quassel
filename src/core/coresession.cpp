@@ -79,7 +79,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->setHeartBeatInterval(30);
     p->setMaxHeartBeatCount(60); // 30 mins until we throw a dead socket out
 
-    connect(p, SIGNAL(peerRemoved(SignalProxy::AbstractPeer*)), SLOT(removeClient(SignalProxy::AbstractPeer*)));
+    connect(p, SIGNAL(peerRemoved(Peer*)), SLOT(removeClient(Peer*)));
 
     connect(p, SIGNAL(connected()), SLOT(clientsConnected()));
     connect(p, SIGNAL(disconnected()), SLOT(clientsDisconnected()));
@@ -223,7 +223,7 @@ void CoreSession::addClient(InternalPeer *peer)
 }
 
 
-void CoreSession::removeClient(SignalProxy::AbstractPeer *peer)
+void CoreSession::removeClient(Peer *peer)
 {
     RemotePeer *p = qobject_cast<RemotePeer *>(peer);
     if (p)

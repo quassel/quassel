@@ -27,6 +27,11 @@
 
 namespace Protocol {
 
+enum Handler {
+    SignalProxy
+};
+
+
 /*** handled by SignalProxy ***/
 
 class SyncMessage
@@ -34,6 +39,8 @@ class SyncMessage
 public:
     inline SyncMessage(const QByteArray &className, const QString &objectName, const QByteArray &slotName, const QVariantList &params)
     : _className(className), _objectName(objectName), _slotName(slotName), _params(params) {}
+
+    inline Handler handler() const { return SignalProxy; }
 
     inline QByteArray className() const { return _className; }
     inline QString objectName() const { return _objectName; }
@@ -55,6 +62,8 @@ public:
     inline RpcCall(const QByteArray &slotName, const QVariantList &params)
     : _slotName(slotName), _params(params) {}
 
+    inline Handler handler() const { return SignalProxy; }
+
     inline QByteArray slotName() const { return _slotName; }
     inline QVariantList params() const { return _params; }
 
@@ -70,6 +79,8 @@ public:
     inline InitRequest(const QByteArray &className, const QString &objectName)
     : _className(className), _objectName(objectName) {}
 
+    inline Handler handler() const { return SignalProxy; }
+
     inline QByteArray className() const { return _className; }
     inline QString objectName() const { return _objectName; }
 
@@ -84,6 +95,8 @@ class InitData
 public:
     inline InitData(const QByteArray &className, const QString &objectName, const QVariantMap &initData)
     : _className(className), _objectName(objectName), _initData(initData) {}
+
+    inline Handler handler() const { return SignalProxy; }
 
     inline QByteArray className() const { return _className; }
     inline QString objectName() const { return _objectName; }

@@ -28,6 +28,7 @@ set(SOURCES
     network.cpp
     networkconfig.cpp
     networkevent.cpp
+    peer.cpp
     quassel.cpp
     remotepeer.cpp
     settings.cpp
@@ -55,6 +56,7 @@ set(MOC_HDRS
     ircuser.h
     network.h
     networkconfig.h
+    peer.h
     remotepeer.h
     settings.h
     signalproxy.h

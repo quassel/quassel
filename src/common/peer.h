@@ -18,83 +18,69 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef REMOTEPEER_H
-#define REMOTEPEER_H
+#ifndef PEER_H
+#define PEER_H
 
-#include <QDateTime>
+#include <QObject>
 
-#include "peer.h"
 #include "protocol.h"
 #include "signalproxy.h"
 
-class QTcpSocket;
-class QTimer;
-
-class RemotePeer : public Peer
+class Peer : public QObject
 {
     Q_OBJECT
 
 public:
-    RemotePeer(QTcpSocket *socket, QObject *parent = 0);
-    virtual ~RemotePeer() {};
+    Peer(QObject *parent = 0) : QObject(parent) {}
 
-    void setSignalProxy(SignalProxy *proxy);
+    virtual QString description() const = 0;
 
-    QString description() const;
+    virtual SignalProxy *signalProxy() const = 0;
+    virtual void setSignalProxy(SignalProxy *proxy) = 0;
 
-    bool isOpen() const;
-    bool isSecure() const;
-    bool isLocal() const;
+    virtual bool isOpen() const = 0;
+    virtual bool isSecure() const = 0;
+    virtual bool isLocal() const = 0;
 
-    int lag() const;
-
-    bool compressionEnabled() const;
-    void setCompressionEnabled(bool enabled);
-
-    QTcpSocket *socket() const;
-
-    // this is only used for the auth phase and should be replaced by something more generic
-    virtual void writeSocketData(const QVariant &item) = 0;
+    virtual int lag() const = 0;
 
 public slots:
-    void close(const QString &reason = QString());
+    virtual void dispatch(const Protocol::SyncMessage &msg) = 0;
+    virtual void dispatch(const Protocol::RpcCall &msg) = 0;
+    virtual void dispatch(const Protocol::InitRequest &msg) = 0;
+    virtual void dispatch(const Protocol::InitData &msg) = 0;
+
+    virtual void close(const QString &reason = QString()) = 0;
 
 signals:
-    // this is only used for the auth phase and should be replaced by something more generic
-    void dataReceived(const QVariant &item);
-
-    void transferProgress(int current, int max);
+    void disconnected();
+    void error(QAbstractSocket::SocketError);
+    void secureStateChanged(bool secure = true);
+    void lagUpdated(int msecs);
 
 protected:
-    SignalProxy *signalProxy() const;
-
     template<class T>
     void handle(const T &protoMessage);
-
-    // These protocol messages get handled internally and won't reach SignalProxy
-    void handle(const Protocol::HeartBeat &heartBeat);
-    void handle(const Protocol::HeartBeatReply &heartBeatReply);
-    virtual void dispatch(const Protocol::HeartBeat &msg) = 0;
-    virtual void dispatch(const Protocol::HeartBeatReply &msg) = 0;
-
-private slots:
-    void sendHeartBeat();
-    void changeHeartBeatInterval(int secs);
-
-private:
-    QTcpSocket *_socket;
-    SignalProxy *_signalProxy;
-    QTimer *_heartBeatTimer;
-    int _heartBeatCount;
-    int _lag;
 };
 
 
+// Template method needed in the header
 template<class T> inline
-void RemotePeer::handle(const T &protoMessage)
+void Peer::handle(const T &protoMessage)
 {
-    Peer::handle(protoMessage);
-}
+    switch(protoMessage.handler()) {
+        case Protocol::SignalProxy:
+            if (!signalProxy()) {
+                qWarning() << Q_FUNC_INFO << "Cannot handle message without a SignalProxy!";
+                return;
+            }
+            signalProxy()->handle(this, protoMessage);
+            break;
 
+        default:
+            qWarning() << Q_FUNC_INFO << "Unknown handler for protocol message!";
+            return;
+    }
+}
 
 #endif

@@ -43,6 +43,7 @@
 class CoreAccountModel;
 class InternalPeer;
 class Network;
+class Peer;
 class SignalProxy;
 
 class CoreConnection : public QObject
@@ -176,7 +177,7 @@ private:
     QVariantMap _coreMsgBuffer;
 
     QPointer<QTcpSocket> _socket;
-    QPointer<SignalProxy::AbstractPeer> _peer;
+    QPointer<Peer> _peer;
     ConnectionState _state;
 
     QTimer _reconnectTimer;
