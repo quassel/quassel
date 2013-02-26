@@ -34,105 +34,70 @@ enum Handler {
 
 /*** handled by SignalProxy ***/
 
-class SyncMessage
+struct SignalProxyMessage
 {
-public:
+    inline Handler handler() const { return SignalProxy; }
+};
+
+
+struct SyncMessage : public SignalProxyMessage
+{
     inline SyncMessage(const QByteArray &className, const QString &objectName, const QByteArray &slotName, const QVariantList &params)
-    : _className(className), _objectName(objectName), _slotName(slotName), _params(params) {}
+    : className(className), objectName(objectName), slotName(slotName), params(params) {}
 
-    inline Handler handler() const { return SignalProxy; }
-
-    inline QByteArray className() const { return _className; }
-    inline QString objectName() const { return _objectName; }
-    inline QByteArray slotName() const { return _slotName; }
-
-    inline QVariantList params() const { return _params; }
-
-private:
-    QByteArray _className;
-    QString _objectName;
-    QByteArray _slotName;
-    QVariantList _params;
+    QByteArray className;
+    QString objectName;
+    QByteArray slotName;
+    QVariantList params;
 };
 
 
-class RpcCall
+struct RpcCall : public SignalProxyMessage
 {
-public:
     inline RpcCall(const QByteArray &slotName, const QVariantList &params)
-    : _slotName(slotName), _params(params) {}
+    : slotName(slotName), params(params) {}
 
-    inline Handler handler() const { return SignalProxy; }
-
-    inline QByteArray slotName() const { return _slotName; }
-    inline QVariantList params() const { return _params; }
-
-private:
-    QByteArray _slotName;
-    QVariantList _params;
+    QByteArray slotName;
+    QVariantList params;
 };
 
 
-class InitRequest
+struct InitRequest : public SignalProxyMessage
 {
-public:
     inline InitRequest(const QByteArray &className, const QString &objectName)
-    : _className(className), _objectName(objectName) {}
+    : className(className), objectName(objectName) {}
 
-    inline Handler handler() const { return SignalProxy; }
-
-    inline QByteArray className() const { return _className; }
-    inline QString objectName() const { return _objectName; }
-
-private:
-    QByteArray _className;
-    QString _objectName;
+    QByteArray className;
+    QString objectName;
 };
 
 
-class InitData
+struct InitData : public SignalProxyMessage
 {
-public:
     inline InitData(const QByteArray &className, const QString &objectName, const QVariantMap &initData)
-    : _className(className), _objectName(objectName), _initData(initData) {}
+    : className(className), objectName(objectName), initData(initData) {}
 
-    inline Handler handler() const { return SignalProxy; }
-
-    inline QByteArray className() const { return _className; }
-    inline QString objectName() const { return _objectName; }
-
-    inline QVariantMap initData() const { return _initData; }
-
-private:
-    QByteArray _className;
-    QString _objectName;
-    QVariantMap _initData;
+    QByteArray className;
+    QString objectName;
+    QVariantMap initData;
 };
 
 
 /*** handled by RemoteConnection ***/
 
-class HeartBeat
+struct HeartBeat
 {
-public:
-    inline HeartBeat(const QDateTime &timestamp) : _timestamp(timestamp) {}
+    inline HeartBeat(const QDateTime &timestamp) : timestamp(timestamp) {}
 
-    inline QDateTime timestamp() const { return _timestamp; }
-
-private:
-    QDateTime _timestamp;
+    QDateTime timestamp;
 };
 
 
-class HeartBeatReply
+struct HeartBeatReply
 {
-public:
-    inline HeartBeatReply(const QDateTime &timestamp) : _timestamp(timestamp) {}
+    inline HeartBeatReply(const QDateTime &timestamp) : timestamp(timestamp) {}
 
-    inline QDateTime timestamp() const { return _timestamp; }
-
-private:
-    QDateTime _timestamp;
+    QDateTime timestamp;
 };
 
 

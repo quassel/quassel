@@ -232,37 +232,37 @@ void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
 
 void LegacyPeer::dispatch(const Protocol::SyncMessage &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)Sync << msg.className() << msg.objectName() << msg.slotName() << msg.params());
+    dispatchPackedFunc(QVariantList() << (qint16)Sync << msg.className << msg.objectName << msg.slotName << msg.params);
 }
 
 
 void LegacyPeer::dispatch(const Protocol::RpcCall &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.slotName() << msg.params());
+    dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.slotName << msg.params);
 }
 
 
 void LegacyPeer::dispatch(const Protocol::InitRequest &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)InitRequest << msg.className() << msg.objectName());
+    dispatchPackedFunc(QVariantList() << (qint16)InitRequest << msg.className << msg.objectName);
 }
 
 
 void LegacyPeer::dispatch(const Protocol::InitData &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className() << msg.objectName() << msg.initData());
+    dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName << msg.initData);
 }
 
 
 void LegacyPeer::dispatch(const Protocol::HeartBeat &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)HeartBeat << msg.timestamp().time());
+    dispatchPackedFunc(QVariantList() << (qint16)HeartBeat << msg.timestamp.time());
 }
 
 
 void LegacyPeer::dispatch(const Protocol::HeartBeatReply &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)HeartBeatReply << msg.timestamp().time());
+    dispatchPackedFunc(QVariantList() << (qint16)HeartBeatReply << msg.timestamp.time());
 }
 
 

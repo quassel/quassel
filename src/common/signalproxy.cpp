@@ -504,28 +504,28 @@ void SignalProxy::dispatch(const T &protoMessage)
 
 void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
 {
-    if (!_syncSlave.contains(syncMessage.className()) || !_syncSlave[syncMessage.className()].contains(syncMessage.objectName())) {
-        qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(syncMessage.className(), syncMessage.slotName(), syncMessage.objectName())
-                   << syncMessage.params();
+    if (!_syncSlave.contains(syncMessage.className) || !_syncSlave[syncMessage.className].contains(syncMessage.objectName)) {
+        qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName)
+                   << syncMessage.params;
         return;
     }
 
-    SyncableObject *receiver = _syncSlave[syncMessage.className()][syncMessage.objectName()];
+    SyncableObject *receiver = _syncSlave[syncMessage.className][syncMessage.objectName];
     ExtendedMetaObject *eMeta = extendedMetaObject(receiver);
-    if (!eMeta->slotMap().contains(syncMessage.slotName())) {
-        qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(syncMessage.className(), syncMessage.slotName(), syncMessage.objectName())
-                   << syncMessage.params();
+    if (!eMeta->slotMap().contains(syncMessage.slotName)) {
+        qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName)
+                   << syncMessage.params;
         return;
     }
 
-    int slotId = eMeta->slotMap()[syncMessage.slotName()];
+    int slotId = eMeta->slotMap()[syncMessage.slotName];
     if (proxyMode() != eMeta->receiverMode(slotId)) {
         qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed. Wrong ProxyMode!", eMeta->methodName(slotId).constData());
         return;
     }
 
     QVariant returnValue((QVariant::Type)eMeta->returnType(slotId));
-    if (!invokeSlot(receiver, slotId, syncMessage.params(), returnValue)) {
+    if (!invokeSlot(receiver, slotId, syncMessage.params, returnValue)) {
         qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", eMeta->methodName(slotId).constData());
         return;
     }
@@ -534,9 +534,9 @@ void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
         int receiverId = eMeta->receiveMap()[slotId];
         QVariantList returnParams;
         if (eMeta->argTypes(receiverId).count() > 1)
-            returnParams << syncMessage.params();
+            returnParams << syncMessage.params;
         returnParams << returnValue;
-        peer->dispatch(SyncMessage(syncMessage.className(), syncMessage.objectName(), eMeta->methodName(receiverId), returnParams));
+        peer->dispatch(SyncMessage(syncMessage.className, syncMessage.objectName, eMeta->methodName(receiverId), returnParams));
     }
 
     // send emit update signal
@@ -546,20 +546,20 @@ void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
 
 void SignalProxy::handle(Peer *peer, const InitRequest &initRequest)
 {
-   if (!_syncSlave.contains(initRequest.className())) {
+   if (!_syncSlave.contains(initRequest.className)) {
         qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
-                   << initRequest.className();
+                   << initRequest.className;
         return;
     }
 
-    if (!_syncSlave[initRequest.className()].contains(initRequest.objectName())) {
+    if (!_syncSlave[initRequest.className].contains(initRequest.objectName)) {
         qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Object:"
-                   << initRequest.className() << initRequest.objectName();
+                   << initRequest.className << initRequest.objectName;
         return;
     }
 
-    SyncableObject *obj = _syncSlave[initRequest.className()][initRequest.objectName()];
-    peer->dispatch(InitData(initRequest.className(), initRequest.objectName(), initData(obj)));
+    SyncableObject *obj = _syncSlave[initRequest.className][initRequest.objectName];
+    peer->dispatch(InitData(initRequest.className, initRequest.objectName, initData(obj)));
 }
 
 
@@ -567,20 +567,20 @@ void SignalProxy::handle(Peer *peer, const InitData &initData)
 {
     Q_UNUSED(peer)
 
-    if (!_syncSlave.contains(initData.className())) {
+    if (!_syncSlave.contains(initData.className)) {
         qWarning() << "SignalProxy::handleInitData() received initData for unregistered Class:"
-                   << initData.className();
+                   << initData.className;
         return;
     }
 
-    if (!_syncSlave[initData.className()].contains(initData.objectName())) {
+    if (!_syncSlave[initData.className].contains(initData.objectName)) {
         qWarning() << "SignalProxy::handleInitData() received initData for unregistered Object:"
-                   << initData.className() << initData.objectName();
+                   << initData.className << initData.objectName;
         return;
     }
 
-    SyncableObject *obj = _syncSlave[initData.className()][initData.objectName()];
-    setInitData(obj, initData.initData());
+    SyncableObject *obj = _syncSlave[initData.className][initData.objectName];
+    setInitData(obj, initData.initData);
 }
 
 
@@ -590,11 +590,11 @@ void SignalProxy::handle(Peer *peer, const RpcCall &rpcCall)
 
     QObject *receiver;
     int methodId;
-    SlotHash::const_iterator slot = _attachedSlots.constFind(rpcCall.slotName());
-    while (slot != _attachedSlots.constEnd() && slot.key() == rpcCall.slotName()) {
+    SlotHash::const_iterator slot = _attachedSlots.constFind(rpcCall.slotName);
+    while (slot != _attachedSlots.constEnd() && slot.key() == rpcCall.slotName) {
         receiver = (*slot).first;
         methodId = (*slot).second;
-        if (!invokeSlot(receiver, methodId, rpcCall.params())) {
+        if (!invokeSlot(receiver, methodId, rpcCall.params)) {
             ExtendedMetaObject *eMeta = extendedMetaObject(receiver);
             qWarning("SignalProxy::handleSignal(): invokeMethod for \"%s\" failed ", eMeta->methodName(methodId).constData());
         }

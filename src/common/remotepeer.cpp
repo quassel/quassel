@@ -161,7 +161,7 @@ void RemotePeer::close(const QString &reason)
 
 void RemotePeer::handle(const HeartBeat &heartBeat)
 {
-    dispatch(HeartBeatReply(heartBeat.timestamp()));
+    dispatch(HeartBeatReply(heartBeat.timestamp));
 }
 
 
