@@ -68,8 +68,8 @@ signals:
 protected:
     SignalProxy *signalProxy() const;
 
-    template<class T>
-    void handle(const T &protoMessage);
+    using Peer::handle;
+    using Peer::dispatch;
 
     // These protocol messages get handled internally and won't reach SignalProxy
     void handle(const Protocol::HeartBeat &heartBeat);
@@ -88,13 +88,5 @@ private:
     int _heartBeatCount;
     int _lag;
 };
-
-
-template<class T> inline
-void RemotePeer::handle(const T &protoMessage)
-{
-    Peer::handle(protoMessage);
-}
-
 
 #endif
