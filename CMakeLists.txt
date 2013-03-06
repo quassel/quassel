@@ -29,6 +29,7 @@ project(QuasselIRC)
 
 include(CheckFunctionExists)
 include(CheckIncludeFile)
+include(CheckCXXCompilerFlag)
 
 # For building against Qt5, we check for an even newer cmake version below!
 cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
@@ -102,42 +103,50 @@ if(LINK_EXTRA)
   link_libraries(${LINK_EXTRA})
 endif(LINK_EXTRA)
 
-# Build Type
-# We need to make sure it's not empty
-# Supported: Release, RelWithDebugInfo, Debug, Debugfull
+# Build Types
 
-# On WIN32, only Release seems to work correctly (?)
-if(WIN32)
-  set(DEFAULT_BUILD_TYPE "Release")
-else(WIN32)
-  set(DEFAULT_BUILD_TYPE "RelWithDebugInfo")
-endif(WIN32)
+if(CMAKE_CONFIGURATION_TYPES)
+   set(CMAKE_CONFIGURATION_TYPES Release RelWithDebInfo Debug Debugfull Profile MinSizeRel)
+   set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
+     "Reset the configurations to what we need"
+     FORCE)
+endif()
 
-set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE} CACHE STRING "CMake Build Type")
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE} CACHE STRING "CMake Build Type" FORCE)
-endif(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
+     "Choose the type of build, options are: None Debug Release RelWithDebInfo Debug Debugfull Profile MinSizeRel."
+     FORCE)
+endif()
 
 # Qt debug flags
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_DEBUG QT_DEBUG)
-set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_FULLDEBUG QT_DEBUG)
+set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_DEBUGFULL QT_DEBUG)
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_RELEASE QT_NO_DEBUG NDEBUG)
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_RELWITHDEBINFO QT_NO_DEBUG NDEBUG)
+set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_PROFILE QT_NO_DEBUG NDEBUG)
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_MINSIZEREL QT_NO_DEBUG NDEBUG)
 
-IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS QT_NO_DEBUG NDEBUG)
-ENDIF()
+endif()
 
 # Enable various flags on gcc
 if(CMAKE_COMPILER_IS_GNUCXX)
   # Let's just hope that all gccs support these options and skip the tests...
   # -fno-strict-aliasing is needed apparently for Qt < 4.6
   set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -ansi -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing")
-  set(CMAKE_CXX_FLAGS_RELEASE          "-O2 ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBUGINFO "-g -O2 ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUG            "-g -ggdb -fno-reorder-blocks -fno-schedule-insns -fno-inline ${CMAKE_CXX_FLAGS}")
-  set(CMAKE_CXX_FLAGS_DEBUGFULL        "-g3 ${CMAKE_CXX_FLAGS_DEBUG}")
+#  set(CMAKE_CXX_FLAGS_RELEASE          "-O2")   # use CMake default
+#  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O2")  # use CMake default
+  set(CMAKE_CXX_FLAGS_DEBUG             "-g -ggdb -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
+  set(CMAKE_CXX_FLAGS_DEBUGFULL         "-g3 -ggdb -fno-inline")
+  set(CMAKE_CXX_FLAGS_PROFILE           "-g3 -ggdb -fno-inline -ftest-coverage -fprofile-arcs")
+
+  set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -ansi -W -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing -Wundef -Wcast-align -Wpointer-arith -Wformat-security -fno-check-new -fno-common")
+
+  check_cxx_compiler_flag(-Woverloaded-virtual CXX_W_OVERLOADED_VIRTUAL)
+  if(CXX_W_OVERLOADED_VIRTUAL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Woverloaded-virtual")
+  endif()
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 # Mac build stuff
