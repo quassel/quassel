@@ -69,7 +69,10 @@ option(STATIC        "Enable static building (might not be portable)" OFF)
 
 if(APPLE)
   option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
-  option(WITH_NOTIFICATION_CENTER "Enable OS X Notification Center support" ON)
+  # Notification Center is only available in > 10.8, which is Darwin v12
+  if(CMAKE_SYSTEM_VERSION VERSION_GREATER "11.9.9")
+    option(WITH_NOTIFICATION_CENTER "Enable OS X Notification Center support" ON)
+  endif(CMAKE_SYSTEM_VERSION VERSION_GREATER "11.9.9")
 endif(APPLE)
 
 # Default to embedding data in the static case
