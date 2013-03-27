@@ -496,31 +496,14 @@ void Quassel::loadTranslation(const QLocale &locale)
     qApp->installTranslator(quasselTranslator);
 
 #if QT_VERSION >= 0x040800
-    bool success = qtTranslator->load(locale, QString("qt_%1"), translationDirPath());
+    bool success = qtTranslator->load(locale, QString("qt_"), translationDirPath());
     if (!success)
         qtTranslator->load(locale, QString("qt_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     quasselTranslator->load(locale, QString(""), translationDirPath());
 #else
-    QString localeName = locale.name();
-
-    // if the user did not specify a language in the settings, the system locale
-    // is used, but Qt < 4.8 does not respect language settings. This bit is
-    // based on QLocale::uiLanguages() as in Qt 4.8.3
-    if (locale == QLocale::system()) {
-        // FIXME: does it make sense to set the locale to the system locale?
-        QLocale::setDefault(locale);
-        QVariant res = QSystemLocale().query(QSystemLocale::UILanguages, QVariant());
-        if (!res.isNull()) {
-            QString newName = res.toStringList()[0];
-            if (!newName.isEmpty()) {
-                localeName = newName.replace('-', "_"); // silly Qt.
-            }
-        }
-    }
-
-    bool success = qtTranslator->load(QString("qt_%1").arg(localeName), translationDirPath());
+    bool success = qtTranslator->load(QString("qt_%1").arg(locale.name()), translationDirPath());
     if (!success)
-        qtTranslator->load(QString("qt_%1").arg(localeName), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    quasselTranslator->load(QString("%1").arg(localeName), translationDirPath());
+        qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    quasselTranslator->load(QString("%1").arg(locale.name()), translationDirPath());
 #endif
 }
