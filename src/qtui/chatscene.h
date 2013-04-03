@@ -143,6 +143,8 @@ public slots:
     void selectionToClipboard(QClipboard::Mode = QClipboard::Clipboard);
     void stringToClipboard(const QString &str, QClipboard::Mode = QClipboard::Clipboard);
 
+    void webSearchOnSelection();
+
     void requestBacklog();
 
 #ifdef HAVE_WEBKIT
@@ -220,6 +222,8 @@ private:
     bool _leftButtonPressed;
 
     bool _showWebPreview;
+
+    static const int _webSearchSelectionTextMaxVisible = 24;
 
 #ifdef HAVE_WEBKIT
     struct WebPreview {

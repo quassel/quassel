@@ -20,12 +20,14 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QDrag>
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMimeData>
 #include <QPersistentModelIndex>
+#include <QUrl>
 
 #ifdef HAVE_KDE
 #  include <KMenuBar>
@@ -813,6 +815,13 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
         QAction *act = new Action(SmallIcon("edit-copy"), tr("Copy Selection"), &menu, this,
             SLOT(selectionToClipboard()), QKeySequence::Copy);
         menu.insertAction(sep, act);
+
+        QString searchSelectionText = selection();
+        if (searchSelectionText.length() > _webSearchSelectionTextMaxVisible)
+            searchSelectionText = searchSelectionText.left(_webSearchSelectionTextMaxVisible).append(QString::fromUtf8("\u2026"));
+        searchSelectionText = tr("Search '%1'").arg(searchSelectionText);
+
+        menu.addAction(SmallIcon("zoom-in"), searchSelectionText, this, SLOT(webSearchOnSelection()));
     }
 
     if (QtUi::mainWindow()->menuBar()->isHidden())
@@ -1044,6 +1053,21 @@ void ChatScene::clearSelection()
     clearGlobalSelection();
     if (selectingItem())
         selectingItem()->clearSelection();
+}
+
+
+/******** *************************************************************************************/
+
+void ChatScene::webSearchOnSelection()
+{
+    if (!hasSelection())
+        return;
+
+    ChatViewSettings settings;
+    QString webSearchBaseUrl = settings.webSearchUrlFormatString();
+    QString webSearchUrl = webSearchBaseUrl.replace(QString("%s"), selection());
+    QUrl url = QUrl::fromUserInput(webSearchUrl);
+    QDesktopServices::openUrl(url);
 }
 
 
