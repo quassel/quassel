@@ -65,7 +65,7 @@ protected:
         dbg << ", prefix = " << qPrintable(prefix())
             << ", target = " << qPrintable(target())
             << ", exchangetype = " << (exchangeType() == Init ? "init" : "finish")
-            << ", key = " << qPrintable(key());
+            << ", key = " << key();
     }
 
 
