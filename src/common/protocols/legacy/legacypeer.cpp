@@ -208,7 +208,7 @@ void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
             }
             // The legacy protocol would only send a QTime, no QDateTime
             // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
-            QDateTime dateTime = QDateTime::currentDateTimeUtc();
+            QDateTime dateTime = QDateTime::currentDateTime().toUTC();
             dateTime.setTime(params[0].toTime());
             handle(Protocol::HeartBeat(dateTime));
             break;
@@ -220,7 +220,7 @@ void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
             }
             // The legacy protocol would only send a QTime, no QDateTime
             // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
-            QDateTime dateTime = QDateTime::currentDateTimeUtc();
+            QDateTime dateTime = QDateTime::currentDateTime().toUTC();
             dateTime.setTime(params[0].toTime());
             handle(Protocol::HeartBeatReply(dateTime));
             break;

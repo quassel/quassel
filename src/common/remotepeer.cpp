@@ -166,11 +166,7 @@ void RemotePeer::handle(const HeartBeat &heartBeat)
 void RemotePeer::handle(const HeartBeatReply &heartBeatReply)
 {
     _heartBeatCount = 0;
-#if QT_VERSION < 0x040700
-    emit lagUpdated(heartBeatReply.timestamp().time().msecsTo(QTime::currentTime()) / 2);
-#else
-    emit lagUpdated(heartBeatReply.timestamp().msecsTo(QDateTime::currentDateTime()) / 2);
-#endif
+    emit lagUpdated(heartBeatReply.timestamp().msecsTo(QDateTime::currentDateTime().toUTC()) / 2);
 }
 
 
@@ -189,8 +185,6 @@ void RemotePeer::sendHeartBeat()
         emit lagUpdated(_lag);
     }
 
-    dispatch(HeartBeat(QDateTime::currentDateTime()));
+    dispatch(HeartBeat(QDateTime::currentDateTime().toUTC()));
     ++_heartBeatCount;
 }
-
-
