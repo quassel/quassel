@@ -42,11 +42,10 @@ CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
     _model(model),
     _state(Disconnected),
     _wantReconnect(false),
+    _wasReconnect(false),
     _progressMinimum(0),
     _progressMaximum(-1),
     _progressValue(-1),
-    _wasReconnect(false),
-    _requestedDisconnect(false),
     _resetting(false)
 {
     qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
@@ -56,7 +55,6 @@ CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
 void CoreConnection::init()
 {
     Client::signalProxy()->setHeartBeatInterval(30);
-    connect(Client::signalProxy(), SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
     connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), SIGNAL(lagUpdated(int)));
 
     _reconnectTimer.setSingleShot(true);
@@ -289,8 +287,8 @@ void CoreConnection::coreSocketError(QAbstractSocket::SocketError)
 
 void CoreConnection::coreSocketDisconnected()
 {
-    _wasReconnect = !_requestedDisconnect;
-    resetConnection(true);
+    _wasReconnect = false;
+    resetConnection(_wantReconnect);
     // FIXME handle disconnects gracefully
 }
 
@@ -347,10 +345,8 @@ void CoreConnection::coreHasData(const QVariant &item)
 
 void CoreConnection::disconnectFromCore()
 {
-    if (_socket) {
-        _requestedDisconnect = true;
+    if (_socket)
         disconnectFromCore(QString(), false); // requested disconnect, so don't try to reconnect
-    }
 }
 
 
@@ -359,9 +355,11 @@ void CoreConnection::disconnectFromCore(const QString &errorString, bool wantRec
     if (!wantReconnect)
         _reconnectTimer.stop();
 
-    _wasReconnect = wantReconnect; // store if disconnect was requested
+    _wantReconnect = wantReconnect; // store if disconnect was requested
+    _wasReconnect = false;
 
-    resetConnection(wantReconnect);
+    if (_socket)
+        _socket->close();
 
     if (errorString.isEmpty())
         emit connectionError(tr("Disconnected"));
@@ -394,8 +392,6 @@ void CoreConnection::resetConnection(bool wantReconnect)
         _socket = 0;
     }
 
-    _requestedDisconnect = false;
-
     _coreMsgBuffer.clear();
     _netsToSync.clear();
     _numNetsToSync = 0;
@@ -419,8 +415,10 @@ void CoreConnection::resetConnection(bool wantReconnect)
 
 void CoreConnection::reconnectToCore()
 {
-    if (currentAccount().isValid())
+    if (currentAccount().isValid()) {
+        _wasReconnect = true;
         connectToCore(currentAccount().accountId());
+    }
 }
 
 

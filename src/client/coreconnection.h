@@ -182,6 +182,7 @@ private:
 
     QTimer _reconnectTimer;
     bool _wantReconnect;
+    bool _wasReconnect;
 
     QSet<QObject *> _netsToSync;
     int _numNetsToSync;
@@ -189,8 +190,6 @@ private:
     QString _progressText;
 
     QString _coreInfoString(const QVariantMap &);
-    bool _wasReconnect;
-    bool _requestedDisconnect;
     bool _resetting;
 
     inline CoreAccountModel *accountModel() const;
