@@ -717,7 +717,7 @@ void UiStyle::StyledMessage::style() const
     case Message::DayChange:
     {
         //: Day Change Message
-        t = tr("{Day changed to %1}").arg(QLocale().toString(timestamp(), QLocale().dateFormat()));
+        t = tr("{Day changed to %1}").arg(timestamp().date().toString(Qt::DefaultLocaleLongDate));
     }
         break;
     case Message::Topic:

@@ -461,14 +461,14 @@ void EventStringifier::processIrcEvent317(IrcEvent *e)
     int idleSecs = e->params()[1].toInt();
 
     if (e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
-        QDateTime loginTime = QDateTime::fromTime_t(e->params()[2].toInt());
+        QDateTime loginTime = QDateTime::fromTime_t(e->params()[2].toInt()).toUTC();
         displayMsg(e, Message::Server, tr("[Whois] %1 is logged in since %2")
-	    .arg(e->params()[0], QLocale().toString(loginTime, QLocale().dateTimeFormat())));
+	    .arg(e->params()[0], loginTime.toString("yyyy-MM-dd hh:mm:ss UTC")));
     }
-    QDateTime idlingSince = e->timestamp().toLocalTime().addSecs(-idleSecs);
+    QDateTime idlingSince = e->timestamp().toLocalTime().addSecs(-idleSecs).toUTC();
     displayMsg(e, Message::Server, tr("[Whois] %1 is idling for %2 (since %3)")
         .arg(e->params()[0], secondsToString(idleSecs),
-	     QLocale().toString(idlingSince, QLocale().dateTimeFormat())));
+	     idlingSince.toString("yyyy-MM-dd hh:mm:ss UTC")));
 }
 
 
@@ -566,9 +566,9 @@ void EventStringifier::processIrcEvent329(IrcEvent *e)
         qWarning() << Q_FUNC_INFO << "received invalid timestamp:" << e->params()[1];
         return;
     }
-    QDateTime time = QDateTime::fromTime_t(unixtime);
+    QDateTime time = QDateTime::fromTime_t(unixtime).toUTC();
     displayMsg(e, Message::Topic, tr("Channel %1 created on %2")
-        .arg(channel, QLocale().toString(time, QLocale().dateTimeFormat())),
+        .arg(channel, time.toString("yyyy-MM-dd hh:mm:ss UTC")),
 	QString(), channel);
 }
 
@@ -612,10 +612,10 @@ void EventStringifier::processIrcEvent333(IrcEvent *e)
         return;
 
     QString channel = e->params().first();
-    QDateTime topicSetTime = QDateTime::fromTime_t(e->params()[2].toInt());
+    QDateTime topicSetTime = QDateTime::fromTime_t(e->params()[2].toInt()).toUTC();
     displayMsg(e, Message::Topic, tr("Topic set by %1 on %2")
         .arg(e->params()[1],
-	     QLocale().toString(topicSetTime, QLocale().dateTimeFormat())), QString(), channel);
+	     topicSetTime.toString("yyyy-MM-dd hh:mm:ss UTC")), QString(), channel);
 }
 
 
