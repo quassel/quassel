@@ -23,6 +23,8 @@
 
 #ifdef HAVE_SSL
 #  include <QSslSocket>
+#else
+#  include <QTcpSocket>
 #endif
 
 #include "remotepeer.h"
