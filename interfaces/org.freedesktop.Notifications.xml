@@ -27,6 +27,7 @@
       <arg name="actions" type="as" direction="in"/>
       <arg name="hints" type="a{sv}" direction="in"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.In6" value="QVariantMap"/>
+      <annotation name="com.trolltech.QtDBus.QtTypeName.In6" value="QVariantMap"/>
       <arg name="expire_timeout" type="i" direction="in"/>
     </method>
     <method name="CloseNotification">
