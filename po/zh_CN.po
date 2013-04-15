@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2012-06-24 20:04+0000\n"
+"PO-Revision-Date: 2013-04-15 23:58+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "<b>版本</b> %1<br><b>协议版本：</b> %2<br><b>编译：</b> %3"
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2012 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -93,7 +93,7 @@ msgid ""
 "and everybody we forgot to mention here:"
 msgstr "我们感谢下列贡献者(按字母顺序排列)和所有我们忘记在这里提及的人们："
 
-#: ../src/qtui/aboutdlg.cpp:167
+#: ../src/qtui/aboutdlg.cpp:185
 msgctxt "AboutDlg|"
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
@@ -1110,6 +1110,11 @@ msgctxt "ConnectionSettingsPage|"
 msgid "Minimum delay between requests:"
 msgstr "请求之间的最小延时："
 
+#: ../src/qtui/settingspages/connectionsettingspage.ui:250
+msgctxt "ConnectionSettingsPage|"
+msgid "Enable standard-compliant CTCP behavior"
+msgstr ""
+
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
 msgid "IRC"
@@ -1335,12 +1340,12 @@ msgctxt "ContextMenuActionProvider|"
 msgid "Existing Rules"
 msgstr "现有规则"
 
-#: ../src/core/core.cpp:188
+#: ../src/core/core.cpp:190
 msgctxt "Core|"
 msgid "Could not initialize any storage backend! Exiting..."
 msgstr "无法初始化任何存储后端！正在退出..."
 
-#: ../src/core/core.cpp:189
+#: ../src/core/core.cpp:191
 msgctxt "Core|"
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
@@ -1348,83 +1353,83 @@ msgid ""
 "to work."
 msgstr "目前 Quassel 支持 SQLite3 和 PostgreSQL。您需要在启用\n sqlite 和 postgres 插件的条件下重新编译 Qt 库才能让 quasselcore\n正常工作。"
 
-#: ../src/core/core.cpp:247
+#: ../src/core/core.cpp:249
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
 msgstr "尽管有活动的会话，仍然调用 restoreState()！"
 
-#: ../src/core/core.cpp:293
+#: ../src/core/core.cpp:295
 msgctxt "Core|"
 msgid "Admin user or password not set."
 msgstr "管理员的用户名或密码未设置。"
 
-#: ../src/core/core.cpp:296
+#: ../src/core/core.cpp:298
 msgctxt "Core|"
 msgid "Could not setup storage!"
 msgstr "无法设置存储！"
 
-#: ../src/core/core.cpp:300
+#: ../src/core/core.cpp:302
 msgctxt "Core|"
 msgid "Creating admin user..."
 msgstr "正在创建管理员用户..."
 
-#: ../src/core/core.cpp:432
+#: ../src/core/core.cpp:434
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
 msgstr "无效的侦听地址 %1"
 
-#: ../src/core/core.cpp:441
+#: ../src/core/core.cpp:443
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr "正在 IPv6 %1 端口 %2 上进行 GUI 客户端侦听，使用 %3 版本协议"
 
-#: ../src/core/core.cpp:450
+#: ../src/core/core.cpp:452
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
 msgstr "无法打开 IPv6 接口 %1:%2：%3"
 
-#: ../src/core/core.cpp:458
+#: ../src/core/core.cpp:460
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr "正在 IPv4 %1 端口 %2 上进行 GUI 客户端侦听，使用 %3 版本协议"
 
-#: ../src/core/core.cpp:469
+#: ../src/core/core.cpp:471
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
 msgstr "无法打开 IPv4 接口 %1:%2：%3"
 
-#: ../src/core/core.cpp:477
+#: ../src/core/core.cpp:479
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
 msgstr "侦听地址 %1 无效，网络协议未知"
 
-#: ../src/core/core.cpp:486
+#: ../src/core/core.cpp:488
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
 msgstr "无法打开任何可侦听的网络接口"
 
-#: ../src/core/core.cpp:524
+#: ../src/core/core.cpp:527
 msgctxt "Core|"
 msgid "Client connected from"
 msgstr "客户端已连接自"
 
-#: ../src/core/core.cpp:527
+#: ../src/core/core.cpp:530
 msgctxt "Core|"
 msgid "Closing server for basic setup."
 msgstr "关闭服务器以进行基本设置。"
 
-#: ../src/core/core.cpp:550
+#: ../src/core/core.cpp:547
 msgctxt "Core|"
 msgid "Antique client trying to connect... refusing."
 msgstr "旧版的客户端正在尝试连接...拒绝。"
 
-#: ../src/core/core.cpp:562
+#: ../src/core/core.cpp:560
 #, qt-format
 msgctxt "Core|"
 msgid ""
@@ -1432,68 +1437,63 @@ msgid ""
 "client/core protocol version %1.<br>Please consider upgrading your client."
 msgstr "<b>您的 Quassel 客户端太过时了！</b><br>此核心至少需要客户端/核心协议版本 %1。<br>请考虑更新您的客户端。"
 
-#: ../src/core/core.cpp:566 ../src/core/core.cpp:657 ../src/core/core.cpp:683
+#: ../src/core/core.cpp:564 ../src/core/core.cpp:656 ../src/core/core.cpp:682
 msgctxt "Core|"
 msgid "Client"
 msgstr "客戶端"
 
-#: ../src/core/core.cpp:566
+#: ../src/core/core.cpp:564
 msgctxt "Core|"
 msgid "too old, rejecting."
 msgstr "过旧，拒绝。"
 
-#: ../src/core/core.cpp:583
+#: ../src/core/core.cpp:582
 #, qt-format
 msgctxt "Core|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr "<b>Quassel 核心版本 %1</b><br>编译：%2<br>已运行 %3天%4小时%5分(始于 %6)"
 
-#: ../src/core/core.cpp:637
+#: ../src/core/core.cpp:636
 msgctxt "Core|"
 msgid "Starting TLS for Client:"
 msgstr "正在启动客户端的 TLS："
 
-#: ../src/core/core.cpp:655
+#: ../src/core/core.cpp:654
 msgctxt "Core|"
 msgid ""
 "<b>Client not initialized!</b><br>You need to send an init message before "
 "trying to login."
 msgstr "<b>客户端没有初始化！</b><br>您需要先发送一个 init(初始化) 消息才能尝试登录。"
 
-#: ../src/core/core.cpp:657
+#: ../src/core/core.cpp:656
 msgctxt "Core|"
 msgid "did not send an init message before trying to login, rejecting."
 msgstr "在尝试登录前没有发送初始化消息，拒绝。"
 
-#: ../src/core/core.cpp:677
+#: ../src/core/core.cpp:676
 msgctxt "Core|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr "<b>用户名或密码无效！</b><br>您提供的用户名/密码组合在数据库中找不到。"
 
-#: ../src/core/core.cpp:683
+#: ../src/core/core.cpp:682
 #, qt-format
 msgctxt "Core|"
 msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
 msgstr "已成功初始化并认证为“%1”(用户ID：%2)。"
 
-#: ../src/core/core.cpp:696
+#: ../src/core/core.cpp:695
 msgctxt "Core|"
 msgid "Non-authed client disconnected."
 msgstr "非认证客户端已断开。"
 
-#: ../src/core/core.cpp:703
-msgctxt "Core|"
-msgid "Non-authed client disconnected. (socket allready destroyed)"
-msgstr "非认证客户端已断开。(已销毁套接字)"
-
-#: ../src/core/core.cpp:755
+#: ../src/core/core.cpp:724
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
 msgstr "无法初始化客户端会话："
 
-#: ../src/core/core.cpp:781
+#: ../src/core/core.cpp:750
 msgctxt "Core|"
 msgid "Could not find a session for client:"
 msgstr "无法找到客户端会话："
@@ -1838,69 +1838,69 @@ msgctxt "CoreConnectDlg|"
 msgid "Connect to Core"
 msgstr "连接到核心"
 
-#: ../src/client/coreconnection.cpp:189
+#: ../src/client/coreconnection.cpp:190
 msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "网络已断"
 
-#: ../src/client/coreconnection.cpp:229 ../src/client/coreconnection.cpp:369
+#: ../src/client/coreconnection.cpp:225 ../src/client/coreconnection.cpp:365
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "连接已断开"
 
-#: ../src/client/coreconnection.cpp:232
+#: ../src/client/coreconnection.cpp:228
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Looking up %1..."
 msgstr "正在查找 %1..."
 
-#: ../src/client/coreconnection.cpp:235 ../src/client/coreconnection.cpp:507
+#: ../src/client/coreconnection.cpp:231 ../src/client/coreconnection.cpp:518
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connecting to %1..."
 msgstr "正在连接 %1..."
 
-#: ../src/client/coreconnection.cpp:238 ../src/client/coreconnection.cpp:641
+#: ../src/client/coreconnection.cpp:234 ../src/client/coreconnection.cpp:658
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connected to %1"
 msgstr "已连接到 %1"
 
-#: ../src/client/coreconnection.cpp:241
+#: ../src/client/coreconnection.cpp:237
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Disconnecting from %1..."
 msgstr "正在从 %1 断开..."
 
-#: ../src/client/coreconnection.cpp:309
+#: ../src/client/coreconnection.cpp:303
 msgctxt "CoreConnection|"
 msgid ""
 "The Quassel Core you try to connect to is too old! Please consider "
 "upgrading."
 msgstr "您试图连接的 Quassel 核心过于陈旧！请考虑升级。"
 
-#: ../src/client/coreconnection.cpp:344
+#: ../src/client/coreconnection.cpp:340
 msgctxt "CoreConnection|"
 msgid "Invalid data received from core"
 msgstr "从核心接收的数据无效"
 
-#: ../src/client/coreconnection.cpp:399
+#: ../src/client/coreconnection.cpp:403
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "已从核心断开。"
 
-#: ../src/client/coreconnection.cpp:484 ../src/client/coreconnection.cpp:573
-#: ../src/client/coreconnection.cpp:622
+#: ../src/client/coreconnection.cpp:496 ../src/client/coreconnection.cpp:590
+#: ../src/client/coreconnection.cpp:639
 msgctxt "CoreConnection|"
 msgid "Unencrypted connection canceled"
 msgstr "已取消了未加密连接"
 
-#: ../src/client/coreconnection.cpp:516
+#: ../src/client/coreconnection.cpp:533
 msgctxt "CoreConnection|"
 msgid "Synchronizing to core..."
 msgstr "正在与核心同步..."
 
-#: ../src/client/coreconnection.cpp:539
+#: ../src/client/coreconnection.cpp:556
 #, qt-format
 msgctxt "CoreConnection|"
 msgid ""
@@ -1908,33 +1908,33 @@ msgid ""
 "least core/client protocol v%1 to connect."
 msgstr "<b>您试图连接的 Quassel 核心过于陈旧！</b><br>至少需要核心/客户端协议 v%1 才能连接。"
 
-#: ../src/client/coreconnection.cpp:665
+#: ../src/client/coreconnection.cpp:682
 msgctxt "CoreConnection|"
 msgid "Logging in..."
 msgstr "正在登录..."
 
-#: ../src/client/coreconnection.cpp:670
+#: ../src/client/coreconnection.cpp:687
 msgctxt "CoreConnection|"
 msgid "Login canceled"
 msgstr "登录已取消"
 
-#: ../src/client/coreconnection.cpp:699
+#: ../src/client/coreconnection.cpp:716
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "正在接收会话状态"
 
-#: ../src/client/coreconnection.cpp:701
+#: ../src/client/coreconnection.cpp:718
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "正在与 %1 同步..."
 
-#: ../src/client/coreconnection.cpp:731
+#: ../src/client/coreconnection.cpp:744
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "正在接收网络状态"
 
-#: ../src/client/coreconnection.cpp:785
+#: ../src/client/coreconnection.cpp:798
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2135,30 +2135,30 @@ msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr "核心关闭"
 
-#: ../src/core/corenetwork.cpp:396
+#: ../src/core/corenetwork.cpp:409
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "无法连接到 %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:398
+#: ../src/core/corenetwork.cpp:411
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
 msgstr "连接失败：%1"
 
-#: ../src/core/coresession.cpp:236
+#: ../src/core/coresession.cpp:230
 msgctxt "CoreSession|"
 msgid "Client"
 msgstr "客戶端"
 
-#: ../src/core/coresession.cpp:236
+#: ../src/core/coresession.cpp:230
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
 msgstr "已断开(用户ID：%1)。"
 
-#: ../src/core/coresession.cpp:497
+#: ../src/core/coresession.cpp:491
 #, qt-format
 msgctxt "CoreSession|"
 msgid ""
@@ -2166,19 +2166,40 @@ msgid ""
 " create network %1!"
 msgstr "CoreSession::createNetwork()：在尝试创建网络 %1 时收到来自核心的无效的网络ID！"
 
-#: ../src/core/coresession.cpp:529
+#: ../src/core/coresession.cpp:523
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
 msgstr "CoreSession::createNetwork()：尝试创建已存在的网络，请换为更新！"
 
-#: ../src/core/coresessioneventprocessor.cpp:71
+#: ../src/core/coresessioneventprocessor.cpp:75
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
 msgstr "昵称列表中没有空闲和有效的昵称。使用：/nick <其他昵称> 继续"
+
+#: ../src/core/coresessioneventprocessor.cpp:447
+msgctxt "CoreSessionEventProcessor|"
+msgid "Unable to perform key exchange."
+msgstr ""
+
+#: ../src/core/coresessioneventprocessor.cpp:458
+msgctxt "CoreSessionEventProcessor|"
+msgid "Unable to parse the DH1080_INIT. Key exchange failed."
+msgstr ""
+
+#: ../src/core/coresessioneventprocessor.cpp:462
+#: ../src/core/coresessioneventprocessor.cpp:470
+msgctxt "CoreSessionEventProcessor|"
+msgid "Your key is set and messages will be encrypted."
+msgstr ""
+
+#: ../src/core/coresessioneventprocessor.cpp:472
+msgctxt "CoreSessionEventProcessor|"
+msgid "Failed to parse DH1080_FINISH. Key exchange failed."
+msgstr ""
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2191,28 +2212,28 @@ msgctxt "CoreUserInputHandler|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "正在向 %2 发送 CTCP-%1 请求"
 
-#: ../src/core/coreuserinputhandler.cpp:198
+#: ../src/core/coreuserinputhandler.cpp:199
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /delkey <nick|channel> deletes the encryption key for nick or "
 "channel or just /delkey when in a channel or query."
 msgstr "[用法] /delkey <昵称|频道> 删除昵称或频道对应的加密密钥，在频道或查询中，只用 /delkey 即可。"
 
-#: ../src/core/coreuserinputhandler.cpp:205
-#: ../src/core/coreuserinputhandler.cpp:606
+#: ../src/core/coreuserinputhandler.cpp:206
+#: ../src/core/coreuserinputhandler.cpp:648
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
 msgstr "没有为 %1 设置密钥。"
 
-#: ../src/core/coreuserinputhandler.cpp:218
+#: ../src/core/coreuserinputhandler.cpp:211
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been deleted."
 msgstr "%1 的密钥已经删除。"
 
-#: ../src/core/coreuserinputhandler.cpp:222
-#: ../src/core/coreuserinputhandler.cpp:614
+#: ../src/core/coreuserinputhandler.cpp:215
+#: ../src/core/coreuserinputhandler.cpp:656
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2221,27 +2242,27 @@ msgid ""
 "with QCA2 present."
 msgstr "错误：设置加密密钥要求编译的 Quassel 内建 Qt 加密架构(QCA2)库支持。请联系您的发行商查找带 QCA2 支持的 Quassel 软件包，或者使用现有的 QCA2 重新编译 Quassel。"
 
-#: ../src/core/coreuserinputhandler.cpp:499
-#, qt-format
-msgctxt "CoreUserInputHandler|"
-msgid "Starting query with %1"
-msgstr ""
-
-#: ../src/core/coreuserinputhandler.cpp:556
+#: ../src/core/coreuserinputhandler.cpp:367
 msgctxt "CoreUserInputHandler|"
 msgid ""
-"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
-"channel. /setkey <key> when in a channel or query buffer sets the key for "
-"it."
-msgstr "[用法] /setkey <昵称|频道> <密钥> 设置昵称或频道对应的加密密钥。在频道或查询缓冲区中时，使用 /setkey <密钥> 将设置相应于频道或缓存的密钥。"
+"[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
+"target."
+msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:571
+#: ../src/core/coreuserinputhandler.cpp:379
 #, qt-format
 msgctxt "CoreUserInputHandler|"
-msgid "The key for %1 has been set."
-msgstr "%1 的密钥已经设置。"
+msgid "Failed to initiate key exchange with %1."
+msgstr ""
 
-#: ../src/core/coreuserinputhandler.cpp:574
+#: ../src/core/coreuserinputhandler.cpp:384
+#, qt-format
+msgctxt "CoreUserInputHandler|"
+msgid "Initiated key exchange with %1."
+msgstr ""
+
+#: ../src/core/coreuserinputhandler.cpp:388
+#: ../src/core/coreuserinputhandler.cpp:616
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2250,20 +2271,40 @@ msgid ""
 "with QCA present."
 msgstr "错误：设置加密密钥要求编译的 Quassel 内建 Qt 加密架构(QCA)库支持。联系您的发行商查找带 QCA 支持的 Quassel 软件包，或者用现有的 QCA 重新编译 Quassel。"
 
-#: ../src/core/coreuserinputhandler.cpp:598
+#: ../src/core/coreuserinputhandler.cpp:546
+#, qt-format
+msgctxt "CoreUserInputHandler|"
+msgid "Starting query with %1"
+msgstr ""
+
+#: ../src/core/coreuserinputhandler.cpp:604
+msgctxt "CoreUserInputHandler|"
+msgid ""
+"[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
+"channel. /setkey <key> when in a channel or query buffer sets the key for "
+"it."
+msgstr "[用法] /setkey <昵称|频道> <密钥> 设置昵称或频道对应的加密密钥。在频道或查询缓冲区中时，使用 /setkey <密钥> 将设置相应于频道或缓存的密钥。"
+
+#: ../src/core/coreuserinputhandler.cpp:613
+#, qt-format
+msgctxt "CoreUserInputHandler|"
+msgid "The key for %1 has been set."
+msgstr "%1 的密钥已经设置。"
+
+#: ../src/core/coreuserinputhandler.cpp:640
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
 msgstr "[用法] /delkey <昵称|频道> 删除昵称或频道对应的加密密钥，在频道或查询中，只用 /delkey 即可。"
 
-#: ../src/core/coreuserinputhandler.cpp:610
+#: ../src/core/coreuserinputhandler.cpp:652
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 is %2"
 msgstr "%1 的主页为 %2"
 
-#: ../src/core/coreuserinputhandler.cpp:738
+#: ../src/core/coreuserinputhandler.cpp:780
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
@@ -2379,7 +2420,12 @@ msgctxt "DebugLogWidget|"
 msgid "Close"
 msgstr "关闭"
 
-#: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:360
+#: ../src/qtui/dockmanagernotificationbackend.cpp:184
+msgctxt "DockManagerNotificationBackend::ConfigWidget|"
+msgid "Mark dockmanager entry"
+msgstr ""
+
+#: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
 msgctxt "EventStringifier|"
 msgid "[Whois] "
 msgstr "[Whois] %1"
@@ -2396,207 +2442,213 @@ msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1 已将 %2 的话题更改为：“%3”"
 
-#: ../src/core/eventstringifier.cpp:345
+#: ../src/core/eventstringifier.cpp:342
+#, qt-format
+msgctxt "EventStringifier|"
+msgid "[Operwall] %1: %2"
+msgstr ""
+
+#: ../src/core/eventstringifier.cpp:350
 msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
 msgstr "收到了与 RFC 不兼容的 RPL_ISUPPORT：这可能导致意外的行为！"
 
-#: ../src/core/eventstringifier.cpp:374
+#: ../src/core/eventstringifier.cpp:379
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
 msgstr "%1 状态为离开：“%2”"
 
-#: ../src/core/eventstringifier.cpp:381
+#: ../src/core/eventstringifier.cpp:386
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:389
+#: ../src/core/eventstringifier.cpp:394
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:411
+#: ../src/core/eventstringifier.cpp:416
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 为 %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:427
+#: ../src/core/eventstringifier.cpp:432
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
 msgstr "%1 已在 %2 上线 (%3)"
 
-#: ../src/core/eventstringifier.cpp:429
+#: ../src/core/eventstringifier.cpp:434
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
 msgstr "[Whowas] %1 曾是 %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:439
+#: ../src/core/eventstringifier.cpp:444
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:448
+#: ../src/core/eventstringifier.cpp:453
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] %1 的 /WHO 列表结尾"
 
-#: ../src/core/eventstringifier.cpp:460
+#: ../src/core/eventstringifier.cpp:465
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 已登录，始于 %2"
 
-#: ../src/core/eventstringifier.cpp:462
+#: ../src/core/eventstringifier.cpp:469
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
 msgstr "[Whois] %1 已空闲 %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:471
+#: ../src/core/eventstringifier.cpp:479
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
 msgstr "[Who] %1 的 /WHO 列表结尾"
 
-#: ../src/core/eventstringifier.cpp:494
+#: ../src/core/eventstringifier.cpp:502
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr "[Whois] %1 是以下频道上的用户：%2"
 
-#: ../src/core/eventstringifier.cpp:496
+#: ../src/core/eventstringifier.cpp:504
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr "[Whois] %1 是以下频道上的用户：%2"
 
-#: ../src/core/eventstringifier.cpp:498
+#: ../src/core/eventstringifier.cpp:506
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr "[Whois] %1 是以下频道的管理员：%2"
 
-#: ../src/core/eventstringifier.cpp:519
+#: ../src/core/eventstringifier.cpp:527
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 has %2 users. Topic is: \"%3\""
 msgstr "频道 %1 有 %2 位用户。话题为：%3"
 
-#: ../src/core/eventstringifier.cpp:527
+#: ../src/core/eventstringifier.cpp:535
 msgctxt "EventStringifier|"
 msgid "End of channel list"
 msgstr "频道列表末尾"
 
-#: ../src/core/eventstringifier.cpp:545
+#: ../src/core/eventstringifier.cpp:553
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Homepage for %1 is %2"
 msgstr "%1 的主页为 %2"
 
-#: ../src/core/eventstringifier.cpp:562
+#: ../src/core/eventstringifier.cpp:570
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 created on %2"
 msgstr "%1 频道创建于 %2"
 
-#: ../src/core/eventstringifier.cpp:574
+#: ../src/core/eventstringifier.cpp:584
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
 msgstr "[Whois] %1 状态为离开：“%2”"
 
-#: ../src/core/eventstringifier.cpp:577
+#: ../src/core/eventstringifier.cpp:587
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was authed as %2"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:586
+#: ../src/core/eventstringifier.cpp:596
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "No topic is set for %1."
 msgstr "%1 没有设定主题。"
 
-#: ../src/core/eventstringifier.cpp:594
+#: ../src/core/eventstringifier.cpp:604
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic for %1 is \"%2\""
 msgstr "%1 的话题为“%2”"
 
-#: ../src/core/eventstringifier.cpp:605
+#: ../src/core/eventstringifier.cpp:616
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic set by %1 on %2"
 msgstr "话题由 %1 于 %2 设置"
 
-#: ../src/core/eventstringifier.cpp:617
+#: ../src/core/eventstringifier.cpp:629
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has been invited to %2"
 msgstr "%1 受邀加入 %2"
 
-#: ../src/core/eventstringifier.cpp:625
+#: ../src/core/eventstringifier.cpp:637
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
-#: ../src/core/eventstringifier.cpp:632
+#: ../src/core/eventstringifier.cpp:644
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:642
+#: ../src/core/eventstringifier.cpp:654
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick %1 contains illegal characters"
 msgstr "昵称 %1 含有非法字符"
 
-#: ../src/core/eventstringifier.cpp:652
+#: ../src/core/eventstringifier.cpp:664
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick already in use: %1"
 msgstr "昵称已经使用：%1"
 
-#: ../src/core/eventstringifier.cpp:662
+#: ../src/core/eventstringifier.cpp:674
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr "昵称/频道临时不可用：%1"
 
-#: ../src/core/eventstringifier.cpp:685
+#: ../src/core/eventstringifier.cpp:697
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "正在向 %2 发送 CTCP-%1 请求"
 
 #. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
-#: ../src/core/eventstringifier.cpp:700
+#: ../src/core/eventstringifier.cpp:712
 msgctxt "EventStringifier|"
 msgid "unknown"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:701
+#: ../src/core/eventstringifier.cpp:713
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:704
+#: ../src/core/eventstringifier.cpp:716
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:719
+#: ../src/core/eventstringifier.cpp:731
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
@@ -2730,7 +2782,7 @@ msgid "highlight rule"
 msgstr "高亮规则"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:364
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:369
 msgctxt "IdentitiesSettingsPage|"
 msgid "Rename Identity"
 msgstr "重命名身份"
@@ -2766,55 +2818,55 @@ msgctxt "IdentitiesSettingsPage|"
 msgid "Identities"
 msgstr "身份"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:199
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:204
 msgctxt "IdentitiesSettingsPage|"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr "<b>在应用更改前，您需要修正收下问题：</b><ul>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:200
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:205
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>All identities need an identity name set</li>"
 msgstr "<li>所有的身份需要一个身份名称组</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:201
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:206
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>Every identity needs at least one nickname defined</li>"
 msgstr "<li>每个身份必须定义至少一个昵称</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:202
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:207
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify a real name for every identity</li>"
 msgstr "<li>您必须为每个身份指定一个真名</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:203
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:208
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify an ident for every identity</li>"
 msgstr "<li>您需要为每个身份指定一个标识(ID)</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:204
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:209
 msgctxt "IdentitiesSettingsPage|"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:205
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:210
 msgctxt "IdentitiesSettingsPage|"
 msgid "One or more identities are invalid"
 msgstr "一个或多个身份无效"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:350
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:355
 msgctxt "IdentitiesSettingsPage|"
 msgid "Delete Identity?"
 msgstr "删除身份？"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:351
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:356
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Do you really want to delete identity \"%1\"?"
 msgstr "您真的要删除身份“%1”？"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:365
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:370
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Please enter a new name for the identity \"%1\"!"
@@ -2984,7 +3036,7 @@ msgid "minutes of being idle"
 msgstr "空闲的分钟数"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
-#: ../src/qtui/settingspages/identityeditwidget.cpp:236
+#: ../src/qtui/settingspages/identityeditwidget.cpp:237
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
 msgstr "高级"
@@ -3050,16 +3102,16 @@ msgid "Key Type:"
 msgstr "密钥类型："
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
-#: ../src/qtui/settingspages/identityeditwidget.cpp:350
-#: ../src/qtui/settingspages/identityeditwidget.cpp:362
+#: ../src/qtui/settingspages/identityeditwidget.cpp:351
+#: ../src/qtui/settingspages/identityeditwidget.cpp:363
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
 msgstr "没有加载密钥"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
-#: ../src/qtui/settingspages/identityeditwidget.cpp:351
-#: ../src/qtui/settingspages/identityeditwidget.cpp:405
+#: ../src/qtui/settingspages/identityeditwidget.cpp:352
+#: ../src/qtui/settingspages/identityeditwidget.cpp:406
 msgctxt "IdentityEditWidget|"
 msgid "Load"
 msgstr "加载"
@@ -3076,8 +3128,8 @@ msgstr "组织："
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
-#: ../src/qtui/settingspages/identityeditwidget.cpp:403
 #: ../src/qtui/settingspages/identityeditwidget.cpp:404
+#: ../src/qtui/settingspages/identityeditwidget.cpp:405
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
 msgstr "没有加载证书"
@@ -3087,28 +3139,28 @@ msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
 msgstr "常用名："
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:319
+#: ../src/qtui/settingspages/identityeditwidget.cpp:320
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
 msgstr "加载密钥"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:356
+#: ../src/qtui/settingspages/identityeditwidget.cpp:357
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
 msgstr "RSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:359
+#: ../src/qtui/settingspages/identityeditwidget.cpp:360
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
 msgstr "DSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:364
-#: ../src/qtui/settingspages/identityeditwidget.cpp:410
+#: ../src/qtui/settingspages/identityeditwidget.cpp:365
+#: ../src/qtui/settingspages/identityeditwidget.cpp:411
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
 msgstr "清除"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:376
+#: ../src/qtui/settingspages/identityeditwidget.cpp:377
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
 msgstr "加载证书"
@@ -3572,6 +3624,11 @@ msgctxt "InputWidgetSettingsPage|"
 msgid "Input Widget"
 msgstr "输入组件"
 
+#: ../src/common/internalpeer.cpp:58
+msgctxt "InternalPeer|"
+msgid "internal connection"
+msgstr ""
+
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
 msgid "Save && Connect"
@@ -3827,379 +3884,379 @@ msgctxt "KeySequenceWidget|"
 msgid "Reassign"
 msgstr "重新指派"
 
-#: ../src/qtui/mainwin.cpp:332
+#: ../src/qtui/mainwin.cpp:350
 msgctxt "MainWin|"
 msgid "General"
 msgstr "常规"
 
-#: ../src/qtui/mainwin.cpp:334
+#: ../src/qtui/mainwin.cpp:352
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
 msgstr "连接到核心(&C)..."
 
-#: ../src/qtui/mainwin.cpp:336
+#: ../src/qtui/mainwin.cpp:354
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
 msgstr "从核心断开(&D)"
 
-#: ../src/qtui/mainwin.cpp:338
+#: ../src/qtui/mainwin.cpp:356
 msgctxt "MainWin|"
 msgid "Core &Info..."
 msgstr "核心信息(&I)..."
 
-#: ../src/qtui/mainwin.cpp:340
+#: ../src/qtui/mainwin.cpp:358
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
 msgstr "配置网络(&N)..."
 
-#: ../src/qtui/mainwin.cpp:343
+#: ../src/qtui/mainwin.cpp:361
 msgctxt "MainWin|"
 msgid "&Quit"
 msgstr "退出(&Q)"
 
-#: ../src/qtui/mainwin.cpp:347
+#: ../src/qtui/mainwin.cpp:365
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
 msgstr "配置聊天列表(&C)..."
 
-#: ../src/qtui/mainwin.cpp:350
+#: ../src/qtui/mainwin.cpp:368
 msgctxt "MainWin|"
 msgid "&Lock Layout"
 msgstr "锁定布局(&L)"
 
-#: ../src/qtui/mainwin.cpp:354
+#: ../src/qtui/mainwin.cpp:372
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
 msgstr "显示搜索栏(&S)"
 
-#: ../src/qtui/mainwin.cpp:356
+#: ../src/qtui/mainwin.cpp:374
 msgctxt "MainWin|"
 msgid "Show Away Log"
 msgstr "显示离开记录"
 
-#: ../src/qtui/mainwin.cpp:358
+#: ../src/qtui/mainwin.cpp:376
 msgctxt "MainWin|"
 msgid "Show &Menubar"
 msgstr "显示菜单栏(&M)"
 
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:379
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
 msgstr "显示状态栏(&B)"
 
-#: ../src/qtui/mainwin.cpp:367
+#: ../src/qtui/mainwin.cpp:385
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
 msgstr "全屏模式(&F)"
 
-#: ../src/qtui/mainwin.cpp:374
+#: ../src/qtui/mainwin.cpp:392
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
 msgstr "配置快捷键(&S)..."
 
-#: ../src/qtui/mainwin.cpp:380 ../src/qtui/mainwin.cpp:384
+#: ../src/qtui/mainwin.cpp:398 ../src/qtui/mainwin.cpp:402
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
 msgstr "配置 Quassel(&C)..."
 
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:408
 msgctxt "MainWin|"
 msgid "&About Quassel"
 msgstr "关于 Quassel(&A)"
 
-#: ../src/qtui/mainwin.cpp:395
+#: ../src/qtui/mainwin.cpp:413
 msgctxt "MainWin|"
 msgid "About &Qt"
 msgstr "关于&Qt"
 
-#: ../src/qtui/mainwin.cpp:399
+#: ../src/qtui/mainwin.cpp:417
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
 msgstr "调试网络模型(&N)"
 
-#: ../src/qtui/mainwin.cpp:401
+#: ../src/qtui/mainwin.cpp:419
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
 msgstr "调试缓存视图覆盖(&B)"
 
-#: ../src/qtui/mainwin.cpp:403
+#: ../src/qtui/mainwin.cpp:421
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
 msgstr "调试消息模型(&M)"
 
-#: ../src/qtui/mainwin.cpp:405
+#: ../src/qtui/mainwin.cpp:423
 msgctxt "MainWin|"
 msgid "Debug &HotList"
 msgstr "调试日志(&L)"
 
-#: ../src/qtui/mainwin.cpp:407
+#: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "Debug &Log"
 msgstr "调试日志(&L)"
 
-#: ../src/qtui/mainwin.cpp:409
+#: ../src/qtui/mainwin.cpp:427
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "重新加载样式表"
 
-#: ../src/qtui/mainwin.cpp:412
+#: ../src/qtui/mainwin.cpp:430
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:416
+#: ../src/qtui/mainwin.cpp:434
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "导航"
 
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:436
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr ""
 
-#: ../src/qtui/mainwin.cpp:430
+#: ../src/qtui/mainwin.cpp:448
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr "设置快速访问 #0"
 
-#: ../src/qtui/mainwin.cpp:432
+#: ../src/qtui/mainwin.cpp:450
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr "设置快速访问 #1"
 
-#: ../src/qtui/mainwin.cpp:434
+#: ../src/qtui/mainwin.cpp:452
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr "设置快速访问 #2"
 
-#: ../src/qtui/mainwin.cpp:436
+#: ../src/qtui/mainwin.cpp:454
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr "设置快速访问 #3"
 
-#: ../src/qtui/mainwin.cpp:438
+#: ../src/qtui/mainwin.cpp:456
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr "设置快速访问 #4"
 
-#: ../src/qtui/mainwin.cpp:440
+#: ../src/qtui/mainwin.cpp:458
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr "设置快速访问 #5"
 
-#: ../src/qtui/mainwin.cpp:442
+#: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr "设置快速访问 #6"
 
-#: ../src/qtui/mainwin.cpp:444
+#: ../src/qtui/mainwin.cpp:462
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr "设置快速访问 #7"
 
-#: ../src/qtui/mainwin.cpp:446
+#: ../src/qtui/mainwin.cpp:464
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr "设置快速访问 #8"
 
-#: ../src/qtui/mainwin.cpp:448
+#: ../src/qtui/mainwin.cpp:466
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr "设置快速访问 #9"
 
-#: ../src/qtui/mainwin.cpp:451
+#: ../src/qtui/mainwin.cpp:469
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr "快速访问 #0"
 
-#: ../src/qtui/mainwin.cpp:453
+#: ../src/qtui/mainwin.cpp:471
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr "快速访问 #1"
 
-#: ../src/qtui/mainwin.cpp:455
+#: ../src/qtui/mainwin.cpp:473
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr "快速访问 #2"
 
-#: ../src/qtui/mainwin.cpp:457
+#: ../src/qtui/mainwin.cpp:475
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr "快速访问 #3"
 
-#: ../src/qtui/mainwin.cpp:459
+#: ../src/qtui/mainwin.cpp:477
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr "快速访问 #4"
 
-#: ../src/qtui/mainwin.cpp:461
+#: ../src/qtui/mainwin.cpp:479
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr "快速访问 #5"
 
-#: ../src/qtui/mainwin.cpp:463
+#: ../src/qtui/mainwin.cpp:481
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr "快速访问 #6"
 
-#: ../src/qtui/mainwin.cpp:465
+#: ../src/qtui/mainwin.cpp:483
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr "快速访问 #7"
 
-#: ../src/qtui/mainwin.cpp:467
+#: ../src/qtui/mainwin.cpp:485
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr "快速访问 #8"
 
-#: ../src/qtui/mainwin.cpp:469
+#: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr "快速访问 #9"
 
-#: ../src/qtui/mainwin.cpp:473
+#: ../src/qtui/mainwin.cpp:491
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "激活下一个聊天列表"
 
-#: ../src/qtui/mainwin.cpp:475
+#: ../src/qtui/mainwin.cpp:493
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr "激活上一个聊天列表"
 
-#: ../src/qtui/mainwin.cpp:477
+#: ../src/qtui/mainwin.cpp:495
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr "转到下个聊天"
 
-#: ../src/qtui/mainwin.cpp:479
+#: ../src/qtui/mainwin.cpp:497
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr "转到上个聊天"
 
-#: ../src/qtui/mainwin.cpp:488
+#: ../src/qtui/mainwin.cpp:506
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "文件(&F)"
 
-#: ../src/qtui/mainwin.cpp:501
+#: ../src/qtui/mainwin.cpp:519
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "网络(&N)"
 
-#: ../src/qtui/mainwin.cpp:507
+#: ../src/qtui/mainwin.cpp:525
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "查看(&V)"
 
-#: ../src/qtui/mainwin.cpp:508
+#: ../src/qtui/mainwin.cpp:526
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "聊天列表(&C)"
 
-#: ../src/qtui/mainwin.cpp:510
+#: ../src/qtui/mainwin.cpp:528
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "工具栏(&T)"
 
-#: ../src/qtui/mainwin.cpp:524
+#: ../src/qtui/mainwin.cpp:542
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "设置(&S)"
 
-#: ../src/qtui/mainwin.cpp:533
+#: ../src/qtui/mainwin.cpp:551
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "帮助(&H)"
 
-#: ../src/qtui/mainwin.cpp:541
+#: ../src/qtui/mainwin.cpp:559
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "调试"
 
-#: ../src/qtui/mainwin.cpp:817
+#: ../src/qtui/mainwin.cpp:835
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "昵称"
 
-#: ../src/qtui/mainwin.cpp:826
+#: ../src/qtui/mainwin.cpp:844
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "显示昵称列表"
 
-#: ../src/qtui/mainwin.cpp:839
+#: ../src/qtui/mainwin.cpp:857
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "聊天监视器"
 
-#: ../src/qtui/mainwin.cpp:851
+#: ../src/qtui/mainwin.cpp:869
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "显示聊天监视器"
 
-#: ../src/qtui/mainwin.cpp:857
+#: ../src/qtui/mainwin.cpp:875
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "输入行"
 
-#: ../src/qtui/mainwin.cpp:866
+#: ../src/qtui/mainwin.cpp:884
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "显示输入行"
 
-#: ../src/qtui/mainwin.cpp:881
+#: ../src/qtui/mainwin.cpp:899
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "主题"
 
-#: ../src/qtui/mainwin.cpp:893
+#: ../src/qtui/mainwin.cpp:911
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "显示话题行"
 
-#: ../src/qtui/mainwin.cpp:987
+#: ../src/qtui/mainwin.cpp:1005
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "主工具栏"
 
-#: ../src/qtui/mainwin.cpp:1030
+#: ../src/qtui/mainwin.cpp:1048
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "已连接到核心。"
 
-#: ../src/qtui/mainwin.cpp:1129
+#: ../src/qtui/mainwin.cpp:1147
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "未连接到核心。"
 
-#: ../src/qtui/mainwin.cpp:1147 ../src/qtui/mainwin.cpp:1157
+#: ../src/qtui/mainwin.cpp:1165 ../src/qtui/mainwin.cpp:1175
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "未加密的连接"
 
-#: ../src/qtui/mainwin.cpp:1147
+#: ../src/qtui/mainwin.cpp:1165
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>您的客户端不支持 SSL 加密</b>"
 
-#: ../src/qtui/mainwin.cpp:1149 ../src/qtui/mainwin.cpp:1159
+#: ../src/qtui/mainwin.cpp:1167 ../src/qtui/mainwin.cpp:1177
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr "像密码这样的敏感信息将以未加密的形式转送到您的 Quassel 核心。"
 
-#: ../src/qtui/mainwin.cpp:1157
+#: ../src/qtui/mainwin.cpp:1175
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>您的核心不支持 SSL 加密</b>"
 
-#: ../src/qtui/mainwin.cpp:1175 ../src/qtui/mainwin.cpp:1196
+#: ../src/qtui/mainwin.cpp:1193 ../src/qtui/mainwin.cpp:1214
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "不信任的安全证书"
 
-#: ../src/qtui/mainwin.cpp:1176
+#: ../src/qtui/mainwin.cpp:1194
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4207,33 +4264,33 @@ msgid ""
 "following reasons:</b>"
 msgstr "<b>核心于 %1 提供的 SSL 证书不可信，原因如下：</b>"
 
-#: ../src/qtui/mainwin.cpp:1179
+#: ../src/qtui/mainwin.cpp:1197
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "继续"
 
-#: ../src/qtui/mainwin.cpp:1180
+#: ../src/qtui/mainwin.cpp:1198
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "显示证书"
 
-#: ../src/qtui/mainwin.cpp:1197
+#: ../src/qtui/mainwin.cpp:1215
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "您想要永远接受此证书而不再提醒吗？"
 
-#: ../src/qtui/mainwin.cpp:1199
+#: ../src/qtui/mainwin.cpp:1217
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "只对当前会话"
 
-#: ../src/qtui/mainwin.cpp:1200
+#: ../src/qtui/mainwin.cpp:1218
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "永远"
 
-#: ../src/qtui/mainwin.cpp:1211
+#: ../src/qtui/mainwin.cpp:1229
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "核心连接错误"
@@ -4321,7 +4378,7 @@ msgctxt "NetworkEditDlg|"
 msgid "Please enter a network name:"
 msgstr "请输入一个网络名："
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:792
+#: ../src/qtui/settingspages/networkssettingspage.cpp:840
 msgctxt "NetworkEditDlg|"
 msgid "Add Network"
 msgstr "添加网络"
@@ -4579,63 +4636,71 @@ msgctxt "NetworksSettingsPage|"
 msgid "Account:"
 msgstr "账户："
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:649
+#: ../src/qtui/settingspages/networkssettingspage.ui:635
+msgctxt "NetworksSettingsPage|"
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> because"
+" the identity has an ssl certificate set, SASL EXTERNAL will be "
+"used.</p></body></html>"
+msgstr ""
+
+#: ../src/qtui/settingspages/networkssettingspage.ui:659
 msgctxt "NetworksSettingsPage|"
 msgid "Encodings"
 msgstr "编码"
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:652
+#: ../src/qtui/settingspages/networkssettingspage.ui:662
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
 msgstr "配置高级设置，如消息编码和自动重连"
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:661
+#: ../src/qtui/settingspages/networkssettingspage.ui:671
 msgctxt "NetworksSettingsPage|"
 msgid "Control encodings for in- and outgoing messages"
 msgstr "控制发送接收消息的编码"
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:664
+#: ../src/qtui/settingspages/networkssettingspage.ui:674
 msgctxt "NetworksSettingsPage|"
 msgid "Use Custom Encodings"
 msgstr "使用自定义编码"
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:675
-#: ../src/qtui/settingspages/networkssettingspage.ui:695
+#: ../src/qtui/settingspages/networkssettingspage.ui:685
+#: ../src/qtui/settingspages/networkssettingspage.ui:705
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
 msgstr "指定发送消息使用的编码。\n对所有网络来说，UTF-8 都是个明智的选择。"
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:679
+#: ../src/qtui/settingspages/networkssettingspage.ui:689
 msgctxt "NetworksSettingsPage|"
 msgid "Send messages in:"
 msgstr "发送消息使用："
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:706
-#: ../src/qtui/settingspages/networkssettingspage.ui:726
+#: ../src/qtui/settingspages/networkssettingspage.ui:716
+#: ../src/qtui/settingspages/networkssettingspage.ui:736
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
 msgstr "收到的以 Utf8 编码的消息总是会原样处理。\n此设置定义了那些不是 Utf8 的消息的编码。"
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:710
+#: ../src/qtui/settingspages/networkssettingspage.ui:720
 msgctxt "NetworksSettingsPage|"
 msgid "Receive fallback:"
 msgstr "接收后备："
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:737
-#: ../src/qtui/settingspages/networkssettingspage.ui:751
+#: ../src/qtui/settingspages/networkssettingspage.ui:747
+#: ../src/qtui/settingspages/networkssettingspage.ui:761
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
 msgstr "此项指定控制消息、昵称和服务器名称的编码。\n除非您*真的*知道这是什么意思，否则请保持默认值 ISO-8859-1！"
 
-#: ../src/qtui/settingspages/networkssettingspage.ui:741
+#: ../src/qtui/settingspages/networkssettingspage.ui:751
 msgctxt "NetworksSettingsPage|"
 msgid "Server encoding:"
 msgstr "服务器编码："
@@ -4650,34 +4715,34 @@ msgctxt "NetworksSettingsPage|"
 msgid "Networks"
 msgstr "网络"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:176
+#: ../src/qtui/settingspages/networkssettingspage.cpp:184
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr "<b>在应用更改前，您需要修正收下问题：</b><ul>"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:177
+#: ../src/qtui/settingspages/networkssettingspage.cpp:185
 msgctxt "NetworksSettingsPage|"
 msgid "<li>All networks need at least one server defined</li>"
 msgstr "<li>所有的网络至少需要指定一个服务器</li>"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:178
+#: ../src/qtui/settingspages/networkssettingspage.cpp:186
 msgctxt "NetworksSettingsPage|"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:179
+#: ../src/qtui/settingspages/networkssettingspage.cpp:187
 msgctxt "NetworksSettingsPage|"
 msgid "Invalid Network Settings"
 msgstr "无效的网络设置"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:602
+#: ../src/qtui/settingspages/networkssettingspage.cpp:650
 msgctxt "NetworksSettingsPage|"
 msgid "Delete Network?"
 msgstr "删除网络？"
 
-#: ../src/qtui/settingspages/networkssettingspage.cpp:603
+#: ../src/qtui/settingspages/networkssettingspage.cpp:651
 #, qt-format
 msgctxt "NetworksSettingsPage|"
 msgid ""
@@ -4702,7 +4767,7 @@ msgid ""
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
 msgstr "有效的昵称可以包含英文字母、数字和{、}、[、]、\\、|、`、^、_ 和 - 这几个特殊字符。"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:474
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:479
 msgctxt "NickEditDlg|"
 msgid "Add Nickname"
 msgstr "添加昵称"
@@ -4717,7 +4782,7 @@ msgctxt "NotificationsSettingsPage|"
 msgid "Notifications"
 msgstr "通知"
 
-#: ../src/qtui/phononnotificationbackend.cpp:172
+#: ../src/qtui/phononnotificationbackend.cpp:186
 msgctxt "PhononNotificationBackend::ConfigWidget|"
 msgid "Select Audio File"
 msgstr "选择音频文件"
@@ -4938,27 +5003,27 @@ msgctxt "QssParser|"
 msgid "Invalid font size specification: %1"
 msgstr "无效的字号指定：%1"
 
-#: ../src/common/util.cpp:162
+#: ../src/common/util.cpp:169
 msgctxt "Quassel::secondsToString()|"
 msgid "year"
 msgstr "年"
 
-#: ../src/common/util.cpp:163
+#: ../src/common/util.cpp:170
 msgctxt "Quassel::secondsToString()|"
 msgid "day"
 msgstr "日"
 
-#: ../src/common/util.cpp:164
+#: ../src/common/util.cpp:171
 msgctxt "Quassel::secondsToString()|"
 msgid "h"
 msgstr "小时"
 
-#: ../src/common/util.cpp:165
+#: ../src/common/util.cpp:172
 msgctxt "Quassel::secondsToString()|"
 msgid "min"
 msgstr "分钟"
 
-#: ../src/common/util.cpp:166
+#: ../src/common/util.cpp:173
 msgctxt "Quassel::secondsToString()|"
 msgid "sec"
 msgstr "秒"
@@ -5242,27 +5307,7 @@ msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
 msgstr "快捷键"
 
-#: ../src/common/signalproxy.cpp:981
-msgctxt "SignalProxy|"
-msgid "Peer tried to send package larger than max package size!"
-msgstr "对方尝试发送比超过最大尺寸的包！"
-
-#: ../src/common/signalproxy.cpp:986
-msgctxt "SignalProxy|"
-msgid "Peer tried to send 0 byte package!"
-msgstr "对方尝试发送 0 字节包！"
-
-#: ../src/common/signalproxy.cpp:1003
-msgctxt "SignalProxy|"
-msgid "Peer sent corrupted compressed data!"
-msgstr "对方发送了损坏的压缩数据！"
-
-#: ../src/common/signalproxy.cpp:1019
-msgctxt "SignalProxy|"
-msgid "Peer sent corrupt data: unable to load QVariant!"
-msgstr "对方发送了损坏的数据：无法加载 QVariant！"
-
-#: ../src/common/signalproxy.cpp:1168
+#: ../src/common/signalproxy.cpp:736
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
 msgstr "正在断开"
@@ -5718,108 +5763,108 @@ msgstr "话题组件"
 #. Topic Message
 #. ----------
 #. Invite Message
-#: ../src/uisupport/uistyle.cpp:638 ../src/uisupport/uistyle.cpp:641
-#: ../src/uisupport/uistyle.cpp:682 ../src/uisupport/uistyle.cpp:685
-#: ../src/uisupport/uistyle.cpp:688 ../src/uisupport/uistyle.cpp:695
-#: ../src/uisupport/uistyle.cpp:729
+#: ../src/uisupport/uistyle.cpp:666 ../src/uisupport/uistyle.cpp:669
+#: ../src/uisupport/uistyle.cpp:710 ../src/uisupport/uistyle.cpp:713
+#: ../src/uisupport/uistyle.cpp:716 ../src/uisupport/uistyle.cpp:725
+#: ../src/uisupport/uistyle.cpp:759
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
 msgstr "%1"
 
 #. Action Message
-#: ../src/uisupport/uistyle.cpp:644
+#: ../src/uisupport/uistyle.cpp:672
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
-#: ../src/uisupport/uistyle.cpp:648
+#: ../src/uisupport/uistyle.cpp:676
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "You are now known as %DN%1%DN"
 msgstr "您现在叫做 %DN%1%DN"
 
-#: ../src/uisupport/uistyle.cpp:649
+#: ../src/uisupport/uistyle.cpp:677
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN 现在叫 %DN%2%DN"
 
 #. Mode Message
-#: ../src/uisupport/uistyle.cpp:653
+#: ../src/uisupport/uistyle.cpp:681
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "User mode: %DM%1%DM"
 msgstr "用户模式：%DM%1%DM"
 
-#: ../src/uisupport/uistyle.cpp:654
+#: ../src/uisupport/uistyle.cpp:682
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "由 %DN%2%DN 设定模式 %DM%1%DM"
 
 #. Join Message
-#: ../src/uisupport/uistyle.cpp:658
+#: ../src/uisupport/uistyle.cpp:686
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH 已加入 %DC%4%DC"
 
 #. Part Message
-#: ../src/uisupport/uistyle.cpp:661
+#: ../src/uisupport/uistyle.cpp:689
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH 已离开 %DC%4%DC"
 
 #. Quit Message
-#: ../src/uisupport/uistyle.cpp:666
+#: ../src/uisupport/uistyle.cpp:694
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH 已退出"
 
 #. Kick Message
-#: ../src/uisupport/uistyle.cpp:674
+#: ../src/uisupport/uistyle.cpp:702
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN 已将 %DN%2%DN 踢出 %DC%3%DC"
 
 #. Day Change Message
-#: ../src/uisupport/uistyle.cpp:691
+#: ../src/uisupport/uistyle.cpp:720
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
 msgstr "{日期更改为 %1}"
 
-#: ../src/uisupport/uistyle.cpp:704
+#: ../src/uisupport/uistyle.cpp:734
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr ""
 
-#: ../src/uisupport/uistyle.cpp:708 ../src/uisupport/uistyle.cpp:724
+#: ../src/uisupport/uistyle.cpp:738 ../src/uisupport/uistyle.cpp:754
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN (还有 %2)"
 
-#: ../src/uisupport/uistyle.cpp:719
+#: ../src/uisupport/uistyle.cpp:749
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr ""
 
-#: ../src/uisupport/uistyle.cpp:731 ../src/uisupport/uistyle.cpp:779
+#: ../src/uisupport/uistyle.cpp:761 ../src/uisupport/uistyle.cpp:809
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
 msgstr "[%1]"
 
-#: ../src/uisupport/uistyle.cpp:777
+#: ../src/uisupport/uistyle.cpp:807
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
