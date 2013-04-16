@@ -352,7 +352,9 @@ void CoreConnection::disconnectFromCore()
 
 void CoreConnection::disconnectFromCore(const QString &errorString, bool wantReconnect)
 {
-    if (!wantReconnect)
+    if (wantReconnect)
+        _reconnectTimer.start();
+    else
         _reconnectTimer.stop();
 
     _wantReconnect = wantReconnect; // store if disconnect was requested
