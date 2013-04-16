@@ -13,8 +13,66 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+
+Version 0.9.0 (2013-04-16)
+==========================
+
+* Halfop support
+* Channel-specific highlights
+* Support for intermediate CA certificates
+* Support the DockManager interface
+* OSX Notification Center support
+* DH1080 key exchange
+* SASL EXTERNAL support
+* Improvements for Retina displays on OSX
+* Supporting to start minimized to tray
+* Rudimentary support for Qt5 (obsolete again because upstream changed too much)
+* Refactor of SignalProxy, network and protocol code
+* First pieces of the coming protocol abstraction
+* Build system improvements
+* Various bugfixes
+* New and updated translations
+* Reformatted ALL the source code
+
+Version 0.8.0 (2012-03-20)
+==========================
+
+* Make tab completion key configurable
+* Syslog support for the core
+* Make the core more robust against random invalid input
+* oidentd support
+* Build system improvements
+* Many new and updated translations
+* Various bugfixes
+
+Version 0.7.4 (2012-03-20)
+--------------------------
+
+* Improve keyboard navigation
+* Bump Oxygen icons
+* Conform with icon naming spec
+* Remove JS support from webpreview
+* Fix support for Qt 4.8
+* Several bugfixes and cleanups
+
+Version 0.7.3 (2011-09-08)
+--------------------------
+
+* Fix a core crash
+
+Version 0.7.2 (2011-03-24)
+--------------------------
+
+* PostgreSQL improvements
+* Various bugfixes
+
+Version 0.7.1 (2010-09-21)
+--------------------------
+
+* Critical fixes for CTCP and connection handshake
+
 Version 0.7.0 (2010-09-14)
-================================
+==========================
 
 * Improved DE integration, support for dbusmenu
 * Bump Qt dependency: we need Qt 4.6 for client and monolithic now
@@ -34,7 +92,7 @@ Version 0.7.0 (2010-09-14)
 * Many bugfixes
 
 Version 0.6.1 (2010-04-16)
-==========================
+--------------------------
 
 * Critical bugfixes
 
@@ -76,13 +134,13 @@ Version 0.6.0 (2010-04-14)
 * Use gettext for translations
 
 Version 0.5.2 (2010-01-18)
-==========================
+--------------------------
 
 * CTCP ignore
 * Buildsystem fixes
 
 Version 0.5.1 (2009-11-21)
-==========================
+--------------------------
 
 * Many Bugfixes
 * Updated translations
@@ -125,19 +183,19 @@ Version 0.5.0 (2009-10-14)
 * Smart nickname completion (most recently active)
 
 Version 0.4.3 (2009-08-26)
-==========================
+--------------------------
 
-Bugfixes and translation updates
+* Bugfixes and translation updates
 
 Version 0.4.2 (2009-05-20)
-==========================
+--------------------------
 
-Bugfixes and translation updates
+* Bugfixes and translation updates
 
 Version 0.4.1 (2009-03-18)
-==========================
+--------------------------
 
-Bugfixes and translation updates
+* Bugfixes and translation updates
 
 Version 0.4.0 (2009-02-17)
 ==========================
@@ -178,7 +236,7 @@ Version 0.4.0 (2009-02-17)
   - Drag'n'Drop
 
 Version 0.3.1 (2008-11-20)
-==========================
+--------------------------
 
 * Nick changes and day change messages can now be hidden
 * Web previews and status icons can be disabled
