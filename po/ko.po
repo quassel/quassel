@@ -1,14 +1,16 @@
 # 
 # Translators:
-# Tae-Hoon KWON <zerolaunch@naver.com>, 2012.
-#   <zerolaunch@naver.com>, 2012.
+# ujuc Gang <potopro@gmail.com>, 2013
+# ujuc Gang <potopro@gmail.com>, 2013
+# Tae-Hoon KWON <zerolaunch@naver.com>, 2012
+# Tae-Hoon KWON <zerolaunch@naver.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-16 00:00+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2013-10-02 13:30+0000\n"
+"Last-Translator: ujuc Gang <potopro@gmail.com>\n"
+"Language-Team: Korean (http://www.transifex.com/projects/p/quassel/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -689,7 +691,7 @@ msgstr "필터:"
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgctxt "ChannelListDlg|"
 msgid "Errors Occurred:"
-msgstr ""
+msgstr "에러 발생:"
 
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgctxt "ChannelListDlg|"
@@ -864,7 +866,7 @@ msgid ""
 "<tr><td>h:m:s ap</td><td>2:13:9 pm</td></tr>\n"
 "</table>\n"
 "</body></html>"
-msgstr ""
+msgstr "<html><head/><body><p>사용 예제:</p>\n<table cellpadding=\"2\">\n<tr><td>dd.MM.yyyy</td><td>21.05.2001</td></tr>\n<tr><td>ddd MMMM d yy</td><td>Tue May 21 01</td></tr>\n<tr><td>hh:mm:ss.zzz</td><td>14:13:09.042</td></tr>\n<tr><td>h:m:s ap</td><td>2:13:9 pm</td></tr>\n</table>\n</body></html>"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:42
 msgctxt "ChatViewSettingsPage|"
@@ -1258,12 +1260,12 @@ msgstr "운영권 가져오기"
 #: ../src/uisupport/contextmenuactionprovider.cpp:81
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Half-Operator Status"
-msgstr ""
+msgstr "하프 운영권 주기"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:82
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Half-Operator Status"
-msgstr ""
+msgstr "하프 운영권 가져오기"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:83
 msgctxt "ContextMenuActionProvider|"
@@ -2569,7 +2571,7 @@ msgstr "[Whois] %1 님은 %2 님으로 인증됨"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was authed as %2"
-msgstr ""
+msgstr "[Whowas] %1님은 $2님으로 인증됨"
 
 #: ../src/core/eventstringifier.cpp:596
 #, qt-format
@@ -2729,7 +2731,7 @@ msgstr "활성"
 #: ../src/qtui/settingspages/highlightsettingspage.ui:53
 msgctxt "HighlightSettingsPage|"
 msgid "Channel"
-msgstr ""
+msgstr "채널"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:69
 msgctxt "HighlightSettingsPage|"
@@ -3147,12 +3149,12 @@ msgstr ""
 #: ../src/qtui/settingspages/identityeditwidget.cpp:357
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
-msgstr ""
+msgstr "RSA"
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:360
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
-msgstr ""
+msgstr "DSA"
 
 #: ../src/qtui/settingspages/identityeditwidget.cpp:365
 #: ../src/qtui/settingspages/identityeditwidget.cpp:411
@@ -3300,12 +3302,12 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:167
 msgctxt "IgnoreListEditDlg|"
 msgid "Network"
-msgstr ""
+msgstr "네트워크"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:174
 msgctxt "IgnoreListEditDlg|"
 msgid "Channel"
-msgstr ""
+msgstr "채널"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:183
 msgctxt "IgnoreListEditDlg|"
@@ -3396,7 +3398,7 @@ msgstr "삭제"
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:56
 msgctxt "IgnoreListSettingsPage|"
 msgid "&Edit"
-msgstr ""
+msgstr "수정(&E)"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgctxt "IgnoreListSettingsPage|"
@@ -3447,82 +3449,82 @@ msgstr "형태"
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "White"
-msgstr ""
+msgstr "흰색"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Black"
-msgstr ""
+msgstr "검은색"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark blue"
-msgstr ""
+msgstr "남색"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark green"
-msgstr ""
+msgstr "진녹색"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Red"
-msgstr ""
+msgstr "빨간색"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark red"
-msgstr ""
+msgstr "진홍색"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Dark magenta"
-msgstr ""
+msgstr "어두운 자홍색"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
 msgid "Orange"
-msgstr ""
+msgstr "오렌지"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Yellow"
-msgstr ""
+msgstr "노란색"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Green"
-msgstr ""
+msgstr "녹색"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark cyan"
-msgstr ""
+msgstr "검 청록색"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Cyan"
-msgstr ""
+msgstr "청록색"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Blue"
-msgstr ""
+msgstr "파란색"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Magenta"
-msgstr ""
+msgstr "자홍색"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark gray"
-msgstr ""
+msgstr "검회색"
 
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Light gray"
-msgstr ""
+msgstr "밝은 회색"
 
 #: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
 msgctxt "InputWidget|"
@@ -3607,7 +3609,7 @@ msgstr ""
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgctxt "InputWidgetSettingsPage|"
 msgid ": "
-msgstr ""
+msgstr ":"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
 msgctxt "InputWidgetSettingsPage|"
@@ -3637,7 +3639,7 @@ msgstr ""
 #: ../src/client/irclistmodel.cpp:65
 msgctxt "IrcListModel|"
 msgid "Channel"
-msgstr ""
+msgstr "채널"
 
 #: ../src/client/irclistmodel.cpp:66
 msgctxt "IrcListModel|"
@@ -3751,7 +3753,7 @@ msgstr ""
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:301
 msgctxt "ItemViewSettingsPage|"
 msgid "Online:"
-msgstr ""
+msgstr "온라인:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:338
 msgctxt "ItemViewSettingsPage|"
@@ -3771,7 +3773,7 @@ msgstr ""
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:34
 msgctxt "ItemViewSettingsPage|"
 msgid "Network"
-msgstr ""
+msgstr "네트워크"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
 msgctxt "ItemViewSettingsPage|"
@@ -3830,23 +3832,23 @@ msgstr ""
 #: ../src/qtui/settingspages/keysequencewidget.cpp:275
 msgctxt "KeySequenceWidget|Ctrl key"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:276
 msgctxt "KeySequenceWidget|Alt key"
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:277
 msgctxt "KeySequenceWidget|Shift key"
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:281
 msgctxt ""
 "KeySequenceWidget|What the user inputs now will be taken as the new shortcut"
 msgid "Input"
-msgstr ""
+msgstr "입력"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:288
 msgctxt "KeySequenceWidget|No shortcut defined"
@@ -3892,42 +3894,42 @@ msgstr "일반"
 #: ../src/qtui/mainwin.cpp:352
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
-msgstr ""
+msgstr "코어에 연결(&C)..."
 
 #: ../src/qtui/mainwin.cpp:354
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
-msgstr ""
+msgstr "코어에서 연결 해제(&D)"
 
 #: ../src/qtui/mainwin.cpp:356
 msgctxt "MainWin|"
 msgid "Core &Info..."
-msgstr ""
+msgstr "코어 정보(&I)"
 
 #: ../src/qtui/mainwin.cpp:358
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
-msgstr ""
+msgstr "네트워크 구성(&N)..."
 
 #: ../src/qtui/mainwin.cpp:361
 msgctxt "MainWin|"
 msgid "&Quit"
-msgstr ""
+msgstr "종료(&Q)"
 
 #: ../src/qtui/mainwin.cpp:365
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
-msgstr ""
+msgstr "채팅 목록 구성(&C)..."
 
 #: ../src/qtui/mainwin.cpp:368
 msgctxt "MainWin|"
 msgid "&Lock Layout"
-msgstr ""
+msgstr "레이아웃 잠금(&L)"
 
 #: ../src/qtui/mainwin.cpp:372
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
-msgstr ""
+msgstr "검색 바 보여주기(&S)"
 
 #: ../src/qtui/mainwin.cpp:374
 msgctxt "MainWin|"
@@ -3937,37 +3939,37 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:376
 msgctxt "MainWin|"
 msgid "Show &Menubar"
-msgstr ""
+msgstr "메뉴바 보이기(&M)"
 
 #: ../src/qtui/mainwin.cpp:379
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
-msgstr ""
+msgstr "상태바 보여주기(&B)"
 
 #: ../src/qtui/mainwin.cpp:385
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
-msgstr ""
+msgstr "전체 화면 모드(&F)"
 
 #: ../src/qtui/mainwin.cpp:392
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
-msgstr ""
+msgstr "단축키 구성(&S)..."
 
 #: ../src/qtui/mainwin.cpp:398 ../src/qtui/mainwin.cpp:402
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
-msgstr ""
+msgstr "Quassel 구성(&C)..."
 
 #: ../src/qtui/mainwin.cpp:408
 msgctxt "MainWin|"
 msgid "&About Quassel"
-msgstr ""
+msgstr "Quassel 정보(&A)"
 
 #: ../src/qtui/mainwin.cpp:413
 msgctxt "MainWin|"
 msgid "About &Qt"
-msgstr ""
+msgstr "Qt 정보(&Q)"
 
 #: ../src/qtui/mainwin.cpp:417
 msgctxt "MainWin|"
@@ -4007,7 +4009,7 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:434
 msgctxt "MainWin|"
 msgid "Navigation"
-msgstr ""
+msgstr "네비게이션"
 
 #: ../src/qtui/mainwin.cpp:436
 msgctxt "MainWin|"
@@ -4017,102 +4019,102 @@ msgstr ""
 #: ../src/qtui/mainwin.cpp:448
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
-msgstr ""
+msgstr "빠른 접속 설정 #0"
 
 #: ../src/qtui/mainwin.cpp:450
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
-msgstr ""
+msgstr "빠른 접속 설정 #1"
 
 #: ../src/qtui/mainwin.cpp:452
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
-msgstr ""
+msgstr "빠른 접속 설정 #2"
 
 #: ../src/qtui/mainwin.cpp:454
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
-msgstr ""
+msgstr "빠른 접속 설정 #3"
 
 #: ../src/qtui/mainwin.cpp:456
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
-msgstr ""
+msgstr "빠른 접속 설정 #4"
 
 #: ../src/qtui/mainwin.cpp:458
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
-msgstr ""
+msgstr "빠른 접속 설정 #5"
 
 #: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
-msgstr ""
+msgstr "빠른 접속 설정 #6"
 
 #: ../src/qtui/mainwin.cpp:462
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
-msgstr ""
+msgstr "빠른 접속 설정 #7"
 
 #: ../src/qtui/mainwin.cpp:464
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
-msgstr ""
+msgstr "빠른 접속 설정 #8"
 
 #: ../src/qtui/mainwin.cpp:466
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
-msgstr ""
+msgstr "빠른 접속 설정 #9"
 
 #: ../src/qtui/mainwin.cpp:469
 msgctxt "MainWin|"
 msgid "Quick Access #0"
-msgstr ""
+msgstr "빠른 접속 #0"
 
 #: ../src/qtui/mainwin.cpp:471
 msgctxt "MainWin|"
 msgid "Quick Access #1"
-msgstr ""
+msgstr "빠른 접속 #1"
 
 #: ../src/qtui/mainwin.cpp:473
 msgctxt "MainWin|"
 msgid "Quick Access #2"
-msgstr ""
+msgstr "빠른 접속 #2"
 
 #: ../src/qtui/mainwin.cpp:475
 msgctxt "MainWin|"
 msgid "Quick Access #3"
-msgstr ""
+msgstr "빠른 접속 #3"
 
 #: ../src/qtui/mainwin.cpp:477
 msgctxt "MainWin|"
 msgid "Quick Access #4"
-msgstr ""
+msgstr "빠른 접속 #4"
 
 #: ../src/qtui/mainwin.cpp:479
 msgctxt "MainWin|"
 msgid "Quick Access #5"
-msgstr ""
+msgstr "빠른 접속 #5"
 
 #: ../src/qtui/mainwin.cpp:481
 msgctxt "MainWin|"
 msgid "Quick Access #6"
-msgstr ""
+msgstr "빠른 접속 #6"
 
 #: ../src/qtui/mainwin.cpp:483
 msgctxt "MainWin|"
 msgid "Quick Access #7"
-msgstr ""
+msgstr "빠른 접속 #7"
 
 #: ../src/qtui/mainwin.cpp:485
 msgctxt "MainWin|"
 msgid "Quick Access #8"
-msgstr ""
+msgstr "빠른 접속 #8"
 
 #: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "Quick Access #9"
-msgstr ""
+msgstr "빠른 접속 #9"
 
 #: ../src/qtui/mainwin.cpp:491
 msgctxt "MainWin|"

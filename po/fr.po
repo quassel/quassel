@@ -1,16 +1,17 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbe.rs>, 2012.
-# Daniel Albers <daniel@lbers.com>, 2011.
-#   <gr3cko@gmail.com>, 2011.
-#   <munto@free.fr>, 2012.
+# Daniel Albers <daniel@lbe.rs>, 2012
+# Daniel Albers <daniel@lbers.com>, 2011
+# GrecKo <gr3cko@gmail.com>, 2011
+# Guillaume Gay <guillaume.gay@bigfoot.com>, 2013
+# Dorian <munto@free.fr>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-16 00:16+0000\n"
+"PO-Revision-Date: 2013-04-29 08:28+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"Language-Team: French (http://www.transifex.com/projects/p/quassel/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -866,7 +867,7 @@ msgid ""
 "<tr><td>h:m:s ap</td><td>2:13:9 pm</td></tr>\n"
 "</table>\n"
 "</body></html>"
-msgstr ""
+msgstr "<html><head/><body><p>Exemples d'utilisation :</p>\n<table cellpadding=\"2\">\n<tr><td>dd.MM.yyyy</td><td>21.05.2001</td></tr>\n<tr><td>ddd MMMM d yy</td><td>Mar Mai 21 01</td></tr>\n<tr><td>hh:mm:ss.zzz</td><td>14:13:09.042</td></tr>\n<tr><td>h:m:s ap</td><td>2:13:9 pm</td></tr>\n</table>\n</body></html>"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:42
 msgctxt "ChatViewSettingsPage|"
@@ -1115,7 +1116,7 @@ msgstr "Délai minimum entre les requêtes :"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:250
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable standard-compliant CTCP behavior"
-msgstr ""
+msgstr "Activer un comportement à la norme standard CTCP"
 
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
@@ -1260,12 +1261,12 @@ msgstr "Enlever le statut d'opérateur"
 #: ../src/uisupport/contextmenuactionprovider.cpp:81
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Half-Operator Status"
-msgstr ""
+msgstr "Donner le statut de \"mi-opérateur\""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:82
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Half-Operator Status"
-msgstr ""
+msgstr "Retirer le statut de \"mi-opérateur\""
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:83
 msgctxt "ContextMenuActionProvider|"
@@ -2186,23 +2187,23 @@ msgstr "Aucun pseudo libre et valable n'a été trouvé dans la liste. Utilisez�
 #: ../src/core/coresessioneventprocessor.cpp:447
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange."
-msgstr ""
+msgstr "Impossible d'effectuer l'échange de clés. "
 
 #: ../src/core/coresessioneventprocessor.cpp:458
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
-msgstr ""
+msgstr "Impossible d'analyser DH1080_INIT. Échec de l'échange de clés. "
 
 #: ../src/core/coresessioneventprocessor.cpp:462
 #: ../src/core/coresessioneventprocessor.cpp:470
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
-msgstr ""
+msgstr "Votre clé est définie et les messages seront chiffrés."
 
 #: ../src/core/coresessioneventprocessor.cpp:472
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
-msgstr ""
+msgstr "Échec de l'analyse DH1080_FINISH. Échec de l'échange de clés. "
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2250,19 +2251,19 @@ msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
 "target."
-msgstr ""
+msgstr "[utilisation] /keyx [<surnom|canal>] Initie un échange de clés DH1080 avec la cible. "
 
 #: ../src/core/coreuserinputhandler.cpp:379
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
-msgstr ""
+msgstr "Échec à l'initiation de l'échange de clé avec %1. "
 
 #: ../src/core/coreuserinputhandler.cpp:384
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
-msgstr ""
+msgstr "Initiation de l'échange de clés avec %1."
 
 #: ../src/core/coreuserinputhandler.cpp:388
 #: ../src/core/coreuserinputhandler.cpp:616
@@ -2426,7 +2427,7 @@ msgstr "Fermer"
 #: ../src/qtui/dockmanagernotificationbackend.cpp:184
 msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
-msgstr ""
+msgstr "Marquer l'entrée dockmanager"
 
 #: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
 msgctxt "EventStringifier|"
@@ -2449,7 +2450,7 @@ msgstr "%1 à changé le sujet de %2 en : « %3 »"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
-msgstr ""
+msgstr "[Operwall] %1 : %2"
 
 #: ../src/core/eventstringifier.cpp:350
 msgctxt "EventStringifier|"
@@ -2572,7 +2573,7 @@ msgstr "[Whois] %1 est absent : « %2 »"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was authed as %2"
-msgstr ""
+msgstr "[Whowas] %1 a été authentifié comme %2"
 
 #: ../src/core/eventstringifier.cpp:596
 #, qt-format
@@ -3630,7 +3631,7 @@ msgstr "Composant de saisie"
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
 msgid "internal connection"
-msgstr ""
+msgstr "connexion interne"
 
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
@@ -4648,7 +4649,7 @@ msgid ""
 "<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> because"
 " the identity has an ssl certificate set, SASL EXTERNAL will be "
 "used.</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p><span style=\" font-weight:600;\">Remarque :</span> étant donné que l'identité a un certificat ssl établi, SASL EXTERNAL sera utilisé.</p></body></html>"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:659
 msgctxt "NetworksSettingsPage|"

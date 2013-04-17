@@ -1,14 +1,15 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011.
-#   <fionov@gmail.com>, 2012.
+# Daniel Albers <daniel@lbers.com>, 2011
+# sfionov <fionov@gmail.com>, 2012
+# sfionov <fionov@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-15 23:50+0000\n"
+"PO-Revision-Date: 2013-07-09 11:25+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/quassel/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
