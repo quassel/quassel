@@ -1,16 +1,17 @@
 # 
 # Translators:
-# Adam Tulinius <mail@adamtulinius.dk>, 2010.
-# Daniel Albers <daniel@lbe.rs>, 2012.
-# Daniel Albers <daniel@lbers.com>, 2011.
-# Per Nielsen <>, 2012.
+# Adam Tulinius <mail@adamtulinius.dk>, 2010
+# Daniel Albers <daniel@lbe.rs>, 2012
+# Daniel Albers <daniel@lbers.com>, 2011
+# furyfire <frazzer@hotmail.com>, 2013
+# Per Nielsen <>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-15 23:53+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2013-05-14 07:40+0000\n"
+"Last-Translator: furyfire <frazzer@hotmail.com>\n"
+"Language-Team: Danish (http://www.transifex.com/projects/p/quassel/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -160,7 +161,7 @@ msgstr "Udvidelse"
 #: ../src/qtui/settingspages/aliasessettingspage.ui:13
 msgctxt "AliasesSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/aliasessettingspage.ui:27
 msgctxt "AliasesSettingsPage|"
@@ -185,7 +186,7 @@ msgstr "Aliasser"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:14
 msgctxt "AppearanceSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:22
 msgctxt "AppearanceSettingsPage|"
@@ -306,12 +307,12 @@ msgstr "Vis netværk navn"
 #: ../src/qtui/awaylogview.cpp:51
 msgctxt "AwayLogView|"
 msgid "Show Buffer Name"
-msgstr ""
+msgstr "Vis buffer navn"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
 msgctxt "BacklogSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:22
 msgctxt "BacklogSettingsPage|"
@@ -475,7 +476,7 @@ msgstr "Vis kanaler"
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:14
 msgctxt "BufferViewSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:31
 msgctxt "BufferViewSettingsPage|"
@@ -619,12 +620,12 @@ msgstr "Faktisk størrelse"
 #: ../src/qtui/bufferwidget.cpp:93
 msgctxt "BufferWidget|"
 msgid "Set Marker Line"
-msgstr ""
+msgstr "Sæt markings linje"
 
 #: ../src/qtui/bufferwidget.cpp:97
 msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
-msgstr ""
+msgstr "Gå til markerings linje"
 
 #: ../src/client/networkmodel.cpp:565
 #, qt-format
@@ -653,7 +654,7 @@ msgstr "<b>Emne:</b> %1"
 #: ../src/client/networkmodel.cpp:588
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
-msgstr "Inaktiv <br /> dobbel-klik for at joine"
+msgstr "Inaktiv <br /> dobbelt-klik for at joine"
 
 #: ../src/client/networkmodel.cpp:591
 #, qt-format
@@ -669,14 +670,14 @@ msgstr "Kanal-liste"
 #: ../src/qtui/ui/channellistdlg.ui:38
 msgctxt "ChannelListDlg|"
 msgid "Search Pattern:"
-msgstr "Søge mønster:"
+msgstr "Søge streng:"
 
 #: ../src/qtui/ui/channellistdlg.ui:48
 msgctxt "ChannelListDlg|"
 msgid ""
 "Toggle between simple and advanced mode.\n"
 "Advanced mode allows one to pass search strings to the IRC Server."
-msgstr "Skift mellem simpel og advanceret tilstand.\nAdvanceret tilstand gør det muligt at sende søge strenge til IRC-serveren."
+msgstr "Skift mellem simpel og advanceret tilstand. Avanceret tilstand gør det muligt at sende søge strenge til IRC-serveren."
 
 #: ../src/qtui/ui/channellistdlg.ui:62
 msgctxt "ChannelListDlg|"
@@ -707,7 +708,7 @@ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:14
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:22
 msgctxt "ChatMonitorSettingsPage|"
@@ -729,23 +730,23 @@ msgstr ""
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Available:"
-msgstr ""
+msgstr "Tilgængelig:"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:88
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Move selected buffers to the left"
-msgstr ""
+msgstr "Flyt valgte buffere til venstre"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:102
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Move selected buffers to the right"
-msgstr ""
+msgstr "Fly valgte buffere til højre"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:258
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show:"
-msgstr ""
+msgstr "Vis:"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:147
 msgctxt "ChatMonitorSettingsPage|"
@@ -786,7 +787,7 @@ msgstr ""
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:261
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Ignore:"
-msgstr ""
+msgstr "Ignorer:"
 
 #: ../src/qtui/chatmonitorview.cpp:54
 msgctxt "ChatMonitorView|"
@@ -801,7 +802,7 @@ msgstr "Vis netværk navn"
 #: ../src/qtui/chatmonitorview.cpp:66
 msgctxt "ChatMonitorView|"
 msgid "Show Buffer Name"
-msgstr ""
+msgstr "Vis buffer navn"
 
 #: ../src/qtui/chatmonitorview.cpp:73
 msgctxt "ChatMonitorView|"
@@ -811,19 +812,19 @@ msgstr "Konfigurer..."
 #: ../src/qtui/chatscene.cpp:803
 msgctxt "ChatScene|"
 msgid "Copy Selection"
-msgstr ""
+msgstr "Kopier valgte"
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:13
 msgctxt "ChatViewSearchBar|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:19
 #: ../src/qtui/ui/chatviewsearchbar.ui:33
 #: ../src/qtui/ui/chatviewsearchbar.ui:44
 msgctxt "ChatViewSearchBar|"
 msgid "..."
-msgstr "Rediger..."
+msgstr "..."
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:55
 msgctxt "ChatViewSearchBar|"
@@ -848,7 +849,7 @@ msgstr "ignorér joins, parts, osv."
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:14
 msgctxt "ChatViewSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:22
 msgctxt "ChatViewSettingsPage|"
@@ -881,7 +882,7 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:102
 msgctxt "ChatViewSettingsPage|"
 msgid "Show colored text in the chat window"
-msgstr ""
+msgstr "Vis farvet text i chat vinduet"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:105
 msgctxt "ChatViewSettingsPage|"
@@ -892,7 +893,7 @@ msgstr "Tillad farvet text (mIRC farve koder)"
 msgctxt "ChatViewSettingsPage|"
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
-msgstr ""
+msgstr "Vis webside eksempel når mus hover over en webaddresse"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:124
 msgctxt "ChatViewSettingsPage|"
@@ -919,7 +920,7 @@ msgstr "Brugerdefinerede fremhævninger"
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:177
 msgctxt "ChatViewSettingsPage|"
 msgid "Action:"
-msgstr ""
+msgstr "Handlinger:"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:184
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:208
@@ -950,7 +951,7 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:736
 msgctxt "ChatViewSettingsPage|"
 msgid "..."
-msgstr "Rediger..."
+msgstr "..."
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:201
 msgctxt "ChatViewSettingsPage|"
@@ -980,17 +981,17 @@ msgstr "Fremhæv navne"
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:317
 msgctxt "ChatViewSettingsPage|"
 msgid "Server message:"
-msgstr "søg i besked"
+msgstr "Server besked:"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:341
 msgctxt "ChatViewSettingsPage|"
 msgid "Marker line:"
-msgstr ""
+msgstr "Marker linje:"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:365
 msgctxt "ChatViewSettingsPage|"
 msgid "Error message:"
-msgstr "søg i besked"
+msgstr "Fejl besked:"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:389
 msgctxt "ChatViewSettingsPage|"
@@ -1051,7 +1052,7 @@ msgstr ""
 #: ../src/qtui/settingspages/connectionsettingspage.ui:14
 msgctxt "ConnectionSettingsPage|"
 msgid "Configure the IRC Connection"
-msgstr ""
+msgstr "Konfigurer IRC forbindelsen"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:20
 msgctxt "ConnectionSettingsPage|"
@@ -1061,7 +1062,7 @@ msgstr ""
 #: ../src/qtui/settingspages/connectionsettingspage.ui:37
 msgctxt "ConnectionSettingsPage|"
 msgid "Ping interval:"
-msgstr ""
+msgstr "Ping interval:"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:44
 #: ../src/qtui/settingspages/connectionsettingspage.ui:155
@@ -1073,12 +1074,12 @@ msgstr "sekunder"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:80
 msgctxt "ConnectionSettingsPage|"
 msgid "Disconnect after"
-msgstr "Af&bryd fra server"
+msgstr "Af&bryd fra server efter"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:103
 msgctxt "ConnectionSettingsPage|"
 msgid "missed pings"
-msgstr ""
+msgstr "mistede pings"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
 msgctxt "ConnectionSettingsPage|"
@@ -1125,7 +1126,7 @@ msgstr "IRC"
 #: ../src/qtui/chatitem.cpp:803
 msgctxt "ContentsChatItem|"
 msgid "Copy Link Address"
-msgstr ""
+msgstr "Kopier link "
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:39
 msgctxt "ContextMenuActionProvider|"
@@ -1150,7 +1151,7 @@ msgstr "Forlad"
 #: ../src/uisupport/contextmenuactionprovider.cpp:44
 msgctxt "ContextMenuActionProvider|"
 msgid "Delete Chat(s)..."
-msgstr ""
+msgstr "Slet chat(s)..."
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:45
 msgctxt "ContextMenuActionProvider|"
@@ -1175,7 +1176,7 @@ msgstr "&Afslut"
 #: ../src/uisupport/contextmenuactionprovider.cpp:50
 msgctxt "ContextMenuActionProvider|"
 msgid "Nick Changes"
-msgstr "Navn-skift"
+msgstr "Navne-skift"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:51
 msgctxt "ContextMenuActionProvider|"
@@ -1664,7 +1665,7 @@ msgstr "Du er nu logget på din ny-opsatte Quassel server!<br>Husk at konfigurer
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:14
 msgctxt "CoreConfigWizardAdminUserPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:22
 msgctxt "CoreConfigWizardAdminUserPage|"
@@ -1696,7 +1697,7 @@ msgstr ""
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:13
 msgctxt "CoreConfigWizardIntroPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
 msgctxt "CoreConfigWizardIntroPage|"
@@ -1752,7 +1753,7 @@ msgstr "Dine indstillinger er nu gemt på serveren, og du vil blive logget på a
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:13
 msgctxt "CoreConfigWizardStorageSelectionPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 msgctxt "CoreConfigWizardStorageSelectionPage|"
@@ -1772,7 +1773,7 @@ msgstr ""
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:13
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:19
 msgctxt "CoreConfigWizardSyncPage|"
@@ -1945,7 +1946,7 @@ msgstr "Forbundet til %1"
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:14
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:20
 msgctxt "CoreConnectionSettingsPage|"
@@ -2019,7 +2020,7 @@ msgstr "Forbundet til %1"
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:14
 msgctxt "CoreConnectionStatusWidget|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/coreconnectionstatuswidget.ui:32
 msgctxt "CoreConnectionStatusWidget|"
@@ -2701,7 +2702,7 @@ msgstr "Vælg..."
 #: ../src/qtui/settingspages/highlightsettingspage.ui:14
 msgctxt "HighlightSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:20
 msgctxt "HighlightSettingsPage|"
@@ -3384,7 +3385,7 @@ msgstr ""
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:14
 msgctxt "IgnoreListSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:28
 msgctxt "IgnoreListSettingsPage|"
@@ -3428,7 +3429,7 @@ msgstr ""
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:14
 msgctxt "IndicatorNotificationConfigWidget|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:20
 msgctxt "IndicatorNotificationConfigWidget|"
@@ -3445,7 +3446,7 @@ msgstr ""
 #: ../src/qtui/ui/inputwidget.ui:26
 msgctxt "InputWidget|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/inputwidget.cpp:73
 msgctxt "InputWidget|"
@@ -3540,7 +3541,7 @@ msgstr "Fokuser input felt"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:14
 msgctxt "InputWidgetSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:22
 msgctxt "InputWidgetSettingsPage|"
@@ -3678,7 +3679,7 @@ msgstr "Server: %1"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:14
 msgctxt "ItemViewSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:22
 msgctxt "ItemViewSettingsPage|"
@@ -4308,7 +4309,7 @@ msgstr "Henter %1 beskeder fra backlog til bufferen %2:%3"
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
 msgctxt "MsgProcessorStatusWidget|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
 msgctxt "MsgProcessorStatusWidget|"
@@ -4480,7 +4481,7 @@ msgstr ""
 #: ../src/qtui/settingspages/networkssettingspage.ui:14
 msgctxt "NetworksSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgctxt "NetworksSettingsPage|"
@@ -4796,7 +4797,7 @@ msgstr ""
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:14
 msgctxt "PhononNotificationConfigWidget|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/phononnotificationconfigwidget.ui:20
 msgctxt "PhononNotificationConfigWidget|"
@@ -5274,7 +5275,7 @@ msgstr ""
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:14
 msgctxt "ShortcutsSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:22
 msgctxt "ShortcutsSettingsPage|"
@@ -5708,7 +5709,7 @@ msgstr "Af&bryd fra server"
 #: ../src/qtui/ui/topicwidget.ui:32
 msgctxt "TopicWidget|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/ui/topicwidget.ui:79
 msgctxt "TopicWidget|"
@@ -5730,7 +5731,7 @@ msgstr "Lag: %1 msecs"
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:14
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Form"
-msgstr ""
+msgstr "Fra"
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:22
 msgctxt "TopicWidgetSettingsPage|"

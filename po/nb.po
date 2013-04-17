@@ -1,17 +1,18 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbe.rs>, 2012.
-# Daniel Albers <daniel@lbers.com>, 2011.
-#   <sandsmark@samfundet.no>, 2012.
-# Terje Andersen <terander@guard.zapto.org>, 2009.
-# Terje Andersen <teranders@gmail.com>, 2011.
+# Daniel Albers <daniel@lbe.rs>, 2012
+# Daniel Albers <daniel@lbers.com>, 2011
+# sandsmark <inactive+sandsmark@transifex.com>, 2013
+# sandsmark <inactive+sandsmark@transifex.com>, 2012
+# Terje Andersen <terander@guard.zapto.org>, 2009
+# Terje Andersen <teranders@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-15 23:50+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2013-05-07 18:18+0000\n"
+"Last-Translator: sandsmark <inactive+sandsmark@transifex.com>\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.com/projects/p/quassel/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -82,7 +83,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr ""
+msgstr "<b>En moderne, distribuert IRC-klient</b><br><br>&copy;2005-2010 Quassel-projektet<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> på <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC er dobbelt-lisensiert under<a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> og <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>De fleste ikonene er &copy; av <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> og brukes under <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Bruk <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> for å rapportere feil."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"
@@ -1116,7 +1117,7 @@ msgstr "Korteste opphold mellom spørringer:"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:250
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable standard-compliant CTCP behavior"
-msgstr ""
+msgstr "Bruk standard CTCP-oppførsel"
 
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
@@ -2108,8 +2109,8 @@ msgstr "Lukk"
 msgctxt "CoreInfoDlg|"
 msgid "%n Day(s)"
 msgid_plural "%n Day(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n dag"
+msgstr[1] "%n dager"
 
 #: ../src/qtui/coreinfodlg.cpp:58
 #, qt-format
@@ -2126,13 +2127,13 @@ msgstr "Greide ikke å koble til. Prøver neste tjener"
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
-msgstr ""
+msgstr "Kobler til %1:%2:..."
 
 #: ../src/core/corenetwork.cpp:227
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
-msgstr ""
+msgstr "Kobler fra (%1)"
 
 #: ../src/core/corenetwork.cpp:227
 msgctxt "CoreNetwork|"
@@ -2187,23 +2188,23 @@ msgstr "Ingen ledige eller gyldige kallenavn i kallanavnslisten ble funnet. Velg
 #: ../src/core/coresessioneventprocessor.cpp:447
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange."
-msgstr ""
+msgstr "Kunne ikke utføre nøkkelutveksling"
 
 #: ../src/core/coresessioneventprocessor.cpp:458
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
-msgstr ""
+msgstr "Kunne ikke tolke DH_1080_INIT. Nøkkelutveksling feilet."
 
 #: ../src/core/coresessioneventprocessor.cpp:462
 #: ../src/core/coresessioneventprocessor.cpp:470
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
-msgstr ""
+msgstr "Nøkkel satt, meldinger vil nå bli kryptert."
 
 #: ../src/core/coresessioneventprocessor.cpp:472
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
-msgstr ""
+msgstr "Kunne ikke tolke DH1080_FINISH. Nøkkelutveksling feilet."
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2251,19 +2252,19 @@ msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
 "target."
-msgstr ""
+msgstr "[bruk] /keyx [<kallenavn|kanal>] Starter DH1080-basert nøkkelutveksling med en bruker eller en kanal."
 
 #: ../src/core/coreuserinputhandler.cpp:379
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
-msgstr ""
+msgstr "Kunne ikke starte nøkkelutveksling med %1."
 
 #: ../src/core/coreuserinputhandler.cpp:384
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
-msgstr ""
+msgstr "Startet nøkkeltutveksling med %1."
 
 #: ../src/core/coreuserinputhandler.cpp:388
 #: ../src/core/coreuserinputhandler.cpp:616
@@ -2306,7 +2307,7 @@ msgstr "[bruk] /delkey <kallenavn|kanal> sletter krypteringsnøkkelen for kallen
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 is %2"
-msgstr ""
+msgstr "Nøkkelen for %1 er %2"
 
 #: ../src/core/coreuserinputhandler.cpp:780
 #, qt-format
@@ -2427,7 +2428,7 @@ msgstr "Lukk"
 #: ../src/qtui/dockmanagernotificationbackend.cpp:184
 msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
-msgstr ""
+msgstr "Markér dockmanager-innslag."
 
 #: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
 msgctxt "EventStringifier|"
@@ -2450,7 +2451,7 @@ msgstr "%1 har endret emne for %2 til: \"%3\""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
-msgstr ""
+msgstr "[Operwall] %1: %2"
 
 #: ../src/core/eventstringifier.cpp:350
 msgctxt "EventStringifier|"
@@ -2463,7 +2464,7 @@ msgstr "Mottok RPL_ISUPPORT som ikke passer med IRC-standarden: dette kan føre 
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
-msgstr ""
+msgstr "%1 er borte: \"%2\""
 
 #: ../src/core/eventstringifier.cpp:386
 msgctxt "EventStringifier|"
@@ -2479,7 +2480,7 @@ msgstr "Du er satt som ikke tilgjengelig"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
-msgstr ""
+msgstr "[Whois] %1 er %2 (%3)"
 
 #: ../src/core/eventstringifier.cpp:432
 #, qt-format
@@ -2585,7 +2586,7 @@ msgstr "Inget emne satt for %1."
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic for %1 is \"%2\""
-msgstr ""
+msgstr "Emne for %1 er \"%2\""
 
 #: ../src/core/eventstringifier.cpp:616
 #, qt-format
@@ -2795,7 +2796,7 @@ msgstr "Omdøp Identitet"
 #: ../src/qtui/settingspages/identitiessettingspage.ui:77
 msgctxt "IdentitiesSettingsPage|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:51
 msgctxt "IdentitiesSettingsPage|"
@@ -2959,7 +2960,7 @@ msgstr "Omdøp Identitet"
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 msgctxt "IdentityEditWidget|"
 msgid "Re&name..."
-msgstr ""
+msgstr "Gi nytt &navn..."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:165
 msgctxt "IdentityEditWidget|"
@@ -2970,7 +2971,7 @@ msgstr "Flytt oppover i listen"
 #: ../src/qtui/settingspages/identityeditwidget.ui:182
 msgctxt "IdentityEditWidget|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:179
 msgctxt "IdentityEditWidget|"
@@ -2980,7 +2981,7 @@ msgstr "Flytt nedover i listen"
 #: ../src/qtui/settingspages/identityeditwidget.ui:227
 msgctxt "IdentityEditWidget|"
 msgid "A&way"
-msgstr ""
+msgstr "&Borte"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:233
 msgctxt "IdentityEditWidget|"
@@ -3581,7 +3582,7 @@ msgstr "Emacs hurtigtaster"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:127
 msgctxt "InputWidgetSettingsPage|"
 msgid "Multi-Line Editing"
-msgstr ""
+msgstr "Flerlinjeredigering"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
 msgctxt "InputWidgetSettingsPage|"
@@ -3611,7 +3612,7 @@ msgstr "Fullførings endelse:"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgctxt "InputWidgetSettingsPage|"
 msgid ": "
-msgstr ""
+msgstr ":"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
 msgctxt "InputWidgetSettingsPage|"
@@ -3631,7 +3632,7 @@ msgstr "Innskrivningsfelt"
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
 msgid "internal connection"
-msgstr ""
+msgstr "intern tilkobling"
 
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
@@ -3725,7 +3726,7 @@ msgstr "Standard:"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:345
 msgctxt "ItemViewSettingsPage|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:142
 msgctxt "ItemViewSettingsPage|"
@@ -3807,8 +3808,8 @@ msgstr "Annen aktivitet"
 msgctxt "KNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n ulest utheving"
+msgstr[1] "%n uthevinger er ikke lest"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:80
 msgctxt "KeySequenceButton|"
@@ -4222,7 +4223,7 @@ msgstr "Vis &Emnelinjen"
 #: ../src/qtui/mainwin.cpp:1005
 msgctxt "MainWin|"
 msgid "Main Toolbar"
-msgstr "Hoved verktøylinje"
+msgstr "Hovedverktøylinje"
 
 #: ../src/qtui/mainwin.cpp:1048
 msgctxt "MainWin|"
@@ -4321,8 +4322,8 @@ msgstr "Mottar historikken"
 msgctxt "MultiLineEdit|"
 msgid "Do you really want to paste %n line(s)?"
 msgid_plural "Do you really want to paste %n line(s)?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ønsker du å lime inn %n linje?"
+msgstr[1] "Ønsker du å lime inn %n linjer?"
 
 #: ../src/uisupport/multilineedit.cpp:727
 msgctxt "MultiLineEdit|"
@@ -4393,13 +4394,13 @@ msgstr "Legg til nettverk"
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Server: %1"
-msgstr ""
+msgstr "Tjener: %1"
 
 #: ../src/client/networkmodel.cpp:214
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Users: %1"
-msgstr ""
+msgstr "Brukere: %1"
 
 #: ../src/client/networkmodel.cpp:217
 #, qt-format
@@ -4426,8 +4427,8 @@ msgstr "Antall kallenavn"
 msgctxt "NetworkModelController|"
 msgid "Do you want to delete the following buffer(s) permanently?"
 msgid_plural "Do you want to delete the following buffer(s) permanently?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ønsker du å slette følgende buffer permanent?"
+msgstr[1] "Ønsker du å slette følgende buffere permanent?"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:190
 #, qt-format
@@ -4486,7 +4487,7 @@ msgstr "Skjema"
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgctxt "NetworksSettingsPage|"
 msgid "Re&name..."
-msgstr ""
+msgstr "Gi nytt &navn..."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:65
 #: ../src/qtui/settingspages/networkssettingspage.ui:235
@@ -4498,7 +4499,7 @@ msgstr "&Legg til..."
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
 msgctxt "NetworksSettingsPage|"
 msgid "De&lete"
-msgstr ""
+msgstr "S&lett"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:124
 msgctxt "NetworksSettingsPage|"
@@ -4515,7 +4516,7 @@ msgstr "Identitet:"
 #: ../src/qtui/settingspages/networkssettingspage.ui:295
 msgctxt "NetworksSettingsPage|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:190
 msgctxt "NetworksSettingsPage|"
@@ -4649,7 +4650,7 @@ msgid ""
 "<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> because"
 " the identity has an ssl certificate set, SASL EXTERNAL will be "
 "used.</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p><span style=\" font-weight:600;\">Notis:</span> identiteten har et SSL-sertifikat satt, SASL EXTERNAL vil bli brukt.</p></body></html>"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:659
 msgctxt "NetworksSettingsPage|"
@@ -5367,7 +5368,7 @@ msgstr "Fjerne denne server oppføringen fra listen"
 #: ../src/qtui/ui/simplenetworkeditor.ui:139
 msgctxt "SimpleNetworkEditor|"
 msgid "De&lete"
-msgstr ""
+msgstr "S&lett"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgctxt "SimpleNetworkEditor|"
@@ -5378,7 +5379,7 @@ msgstr "Flytt oppover i listen"
 #: ../src/qtui/ui/simplenetworkeditor.ui:182
 msgctxt "SimpleNetworkEditor|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:179
 msgctxt "SimpleNetworkEditor|"
@@ -5511,7 +5512,7 @@ msgstr "Nei, for følgende grunner:<ul>"
 #, qt-format
 msgctxt "SslInfoDlg|"
 msgid "%1 to %2"
-msgstr ""
+msgstr "%1 til %2"
 
 #: ../src/client/networkmodel.h:149
 msgctxt "StatusBufferItem|"
@@ -5533,8 +5534,8 @@ msgstr "&Gjenopprett"
 msgctxt "SystrayNotificationBackend|"
 msgid "%n pending highlight(s)"
 msgid_plural "%n pending highlight(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n usett utheving"
+msgstr[1] "%n usette uthevinger"
 
 #: ../src/qtui/systraynotificationbackend.cpp:156
 msgctxt "SystrayNotificationBackend::ConfigWidget|"
@@ -5714,13 +5715,13 @@ msgstr "Skjema"
 #: ../src/qtui/ui/topicwidget.ui:79
 msgctxt "TopicWidget|"
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: ../src/qtui/topicwidget.cpp:118
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
-msgstr ""
+msgstr "Brukere: %1"
 
 #: ../src/qtui/topicwidget.cpp:119
 #, qt-format
@@ -5778,14 +5779,14 @@ msgstr "Emnelinje"
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
-msgstr ""
+msgstr "%1"
 
 #. Action Message
 #: ../src/uisupport/uistyle.cpp:672
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
-msgstr ""
+msgstr "%DN%1%DN %2"
 
 #. Nick Message
 #: ../src/uisupport/uistyle.cpp:676
@@ -5811,7 +5812,7 @@ msgstr "Brukermodus: %DM%1%DM"
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
-msgstr ""
+msgstr "Modus %DM%1%DM av %DN%2%DN"
 
 #. Join Message
 #: ../src/uisupport/uistyle.cpp:686
@@ -5870,58 +5871,58 @@ msgstr "Nettverkssplitt mellom %DH%1%DH og %DH%2%DH. Brukere avsluttet: "
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
-msgstr ""
+msgstr "[%1]"
 
 #: ../src/uisupport/uistyle.cpp:807
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
-msgstr ""
+msgstr "<%1>"
 
 #: ../src/client/networkmodel.cpp:783
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
 msgid_plural "%n Owner(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n eier"
+msgstr[1] "%n eiere"
 
 #: ../src/client/networkmodel.cpp:785
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n administrato"
+msgstr[1] "%n administratorer"
 
 #: ../src/client/networkmodel.cpp:787
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
 msgid_plural "%n Operator(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n operatør"
+msgstr[1] "%n operatører"
 
 #: ../src/client/networkmodel.cpp:789
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
 msgid_plural "%n Half-Op(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n halvoperatør"
+msgstr[1] "%n halvoperatører"
 
 #: ../src/client/networkmodel.cpp:791
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n med talerstatus"
+msgstr[1] "%n med talerstatus"
 
 #: ../src/client/networkmodel.cpp:793
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
 msgid_plural "%n User(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%n bruker"
+msgstr[1] "%n brukere"
