@@ -216,7 +216,11 @@ int StyledLabel::posToCursor(const QPointF &pos)
 void StyledLabel::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() == Qt::NoButton) {
+#if QT_VERSION < 0x050000
         Clickable click = _clickables.atCursorPos(posToCursor(event->posF()));
+#else
+        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+#endif
         if (click.isValid())
             setHoverMode(click.start(), click.length());
         else
@@ -243,7 +247,11 @@ void StyledLabel::leaveEvent(QEvent *)
 void StyledLabel::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
+#if QT_VERSION < 0x050000
         Clickable click = _clickables.atCursorPos(posToCursor(event->posF()));
+#else
+        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+#endif
         if (click.isValid())
             emit clickableActivated(click);
     }
