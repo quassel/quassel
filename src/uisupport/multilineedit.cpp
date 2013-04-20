@@ -718,7 +718,11 @@ void MultiLineEdit::on_textChanged()
                 QString msg = tr("Do you really want to paste %n line(s)?", "", lines.count());
                 msg += "<p>";
                 for (int i = 0; i < 4; i++) {
+#if QT_VERSION < 0x050000
                     msg += Qt::escape(lines[i].left(40));
+#else
+                    msg += lines[i].left(40).toHtmlEscaped();
+#endif
                     if (lines[i].count() > 40)
                         msg += "...";
                     msg += "<br />";

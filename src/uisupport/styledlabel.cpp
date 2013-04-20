@@ -156,7 +156,11 @@ void StyledLabel::setText(const QString &text)
 void StyledLabel::updateToolTip()
 {
     if (frameRect().width() - 2*frameWidth() < _layout.minimumWidth())
+#if QT_VERSION < 0x050000
         setToolTip(QString("<qt>%1</qt>").arg(Qt::escape(_layout.text())));  // only rich text gets wordwrapped!
+#else
+        setToolTip(QString("<qt>%1</qt>").arg(_layout.text().toHtmlEscaped()));  // only rich text gets wordwrapped!
+#endif
     else
         setToolTip(QString());
 }

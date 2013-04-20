@@ -314,7 +314,11 @@ void StatusNotifierItem::showMessage(const QString &title, const QString &messag
     QString message = message_;
     if (_notificationsClient->isValid()) {
         if (_notificationsClientSupportsMarkup)
+#if QT_VERSION < 0x050000
             message = Qt::escape(message);
+#else
+            message = message.toHtmlEscaped();
+#endif
 
         QStringList actions;
         if (_notificationsClientSupportsActions)

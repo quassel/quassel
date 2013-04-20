@@ -22,7 +22,9 @@
 
 #include <QAbstractItemView>
 #include <QMimeData>
+#if QT_VERSION < 0x050000
 #include <QTextDocument>        // for Qt::escape()
+#endif
 
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -209,8 +211,13 @@ QString NetworkItem::toolTip(int column) const
 {
     Q_UNUSED(column);
 
+#if QT_VERSION < 0x050000
     QStringList toolTip(QString("<b>%1</b>").arg(Qt::escape(networkName())));
     toolTip.append(tr("Server: %1").arg(Qt::escape(currentServer())));
+#else
+    QStringList toolTip(QString("<b>%1</b>").arg(networkName().toHtmlEscaped()));
+    toolTip.append(tr("Server: %1").arg(currentServer().toHtmlEscaped()));
+#endif
     toolTip.append(tr("Users: %1").arg(nickCount()));
 
     if (_network) {
@@ -572,7 +579,11 @@ QString ChannelBufferItem::toolTip(int column) const
     Q_UNUSED(column);
     QStringList toolTip;
 
+#if QT_VERSION < 0x050000
     toolTip.append(tr("<b>Channel %1</b>").arg(Qt::escape(bufferName())));
+#else
+    toolTip.append(tr("<b>Channel %1</b>").arg(bufferName().toHtmlEscaped()));
+#endif
     if (isActive()) {
         //TODO: add channel modes
         toolTip.append(tr("<b>Users:</b> %1").arg(nickCount()));
@@ -588,7 +599,11 @@ QString ChannelBufferItem::toolTip(int column) const
             QString _topic = topic();
             if (_topic != "") {
                 _topic = stripFormatCodes(_topic);
+#if QT_VERSION < 0x050000
                 _topic = Qt::escape(_topic);
+#else
+                _topic = _topic.toHtmlEscaped();
+#endif
                 toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
                 toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
             }
