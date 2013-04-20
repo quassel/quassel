@@ -38,7 +38,7 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
     _opacity(0),
     _animation(new QPropertyAnimation(this, "opacity", this))
 {
-    setAcceptsHoverEvents(true);
+    setAcceptHoverEvents(true);
     setZValue(10);
     setCursor(QCursor(Qt::OpenHandCursor));
 
