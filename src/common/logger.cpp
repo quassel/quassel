@@ -97,6 +97,7 @@ void Logger::log()
 }
 
 
+#if QT_VERSION < 0x050000
 void Logger::logMessage(QtMsgType type, const char *msg)
 {
     switch (type) {
@@ -115,3 +116,25 @@ void Logger::logMessage(QtMsgType type, const char *msg)
         return;
     }
 }
+#else
+void Logger::logMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context)
+
+    switch (type) {
+    case QtDebugMsg:
+        Logger(Quassel::DebugLevel) << msg.toLocal8Bit().constData();
+        break;
+    case QtWarningMsg:
+        Logger(Quassel::WarningLevel) << msg.toLocal8Bit().constData();
+        break;
+    case QtCriticalMsg:
+        Logger(Quassel::ErrorLevel) << msg.toLocal8Bit().constData();
+        break;
+    case QtFatalMsg:
+        Logger(Quassel::ErrorLevel) << msg.toLocal8Bit().constData();
+        Quassel::logFatalMessage(msg.toLocal8Bit().constData());
+        return;
+    }
+}
+#endif

@@ -33,7 +33,11 @@ public:
     inline Logger(Quassel::LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
     ~Logger();
 
+#if QT_VERSION < 0x050000
     static void logMessage(QtMsgType type, const char *msg);
+#else
+    static void logMessage(QtMsgType, const QMessageLogContext&, const QString&);
+#endif
 
     template<typename T>
     inline Logger &operator<<(const T &value) { _stream << value << " "; return *this; }

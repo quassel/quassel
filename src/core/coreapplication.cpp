@@ -85,7 +85,11 @@ CoreApplication::~CoreApplication()
 bool CoreApplication::init()
 {
     if (Quassel::init() && _internal->init()) {
+#if QT_VERSION < 0x050000
         qInstallMsgHandler(Logger::logMessage);
+#else
+        qInstallMessageHandler(Logger::logMessage);
+#endif
         return true;
     }
     return false;

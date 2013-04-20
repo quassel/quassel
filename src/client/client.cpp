@@ -646,6 +646,7 @@ void Client::markBufferAsRead(BufferId id)
 }
 
 
+#if QT_VERSION < 0x050000
 void Client::logMessage(QtMsgType type, const char *msg)
 {
     fprintf(stderr, "%s\n", msg);
@@ -665,3 +666,26 @@ void Client::logMessage(QtMsgType type, const char *msg)
         emit instance()->logUpdated(msgString);
     }
 }
+#else
+void Client::logMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context);
+
+    fprintf(stderr, "%s\n", msg.toLocal8Bit().constData());
+    fflush(stderr);
+    if (type == QtFatalMsg) {
+        Quassel::logFatalMessage(msg.toLocal8Bit().constData());
+    }
+    else {
+        QString msgString = QString("%1\n").arg(msg);
+
+        //Check to see if there is an instance around, else we risk recursions
+        //when calling instance() and creating new ones.
+        if (!instanceExists())
+            return;
+
+        instance()->_debugLog << msgString;
+        emit instance()->logUpdated(msgString);
+    }
+}
+#endif
