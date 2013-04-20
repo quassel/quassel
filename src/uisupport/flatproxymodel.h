@@ -60,7 +60,7 @@ private slots:
     void on_layoutAboutToBeChanged();
     void on_layoutChanged();
 
-    inline void on_modelAboutToBeReset() { reset(); }
+    inline void on_modelAboutToBeReset() { beginResetModel(); endResetModel(); }
     // void on_modelReset();
 
     void on_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);

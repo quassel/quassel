@@ -262,7 +262,8 @@ void IgnoreListModel::revert()
 
     _configChanged = false;
     emit configChanged(false);
-    reset();
+    beginResetModel();
+    endResetModel();
 }
 
 
@@ -279,7 +280,8 @@ void IgnoreListModel::commit()
 void IgnoreListModel::initDone()
 {
     _modelReady = true;
-    reset();
+    beginResetModel();
+    endResetModel();
     emit modelReady(true);
 }
 
@@ -299,7 +301,8 @@ void IgnoreListModel::clientDisconnected()
     // clear
     _clonedIgnoreListManager = ClientIgnoreListManager();
     _modelReady = false;
-    reset();
+    beginResetModel();
+    endResetModel();
     emit modelReady(false);
 }
 
