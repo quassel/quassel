@@ -577,14 +577,14 @@ void InputWidget::colorChosen(QAction *action)
 {
     QTextCharFormat fmt;
     QColor color;
-    if (qVariantValue<QString>(action->data()) == "") {
+    if (action->data().value<QString>() == "") {
         color = Qt::transparent;
         fmt = getFormatOfWordOrSelection();
         fmt.clearForeground();
         setFormatOnSelection(fmt);
     }
     else {
-        color = QColor(inputLine()->rgbColorFromMirc(qVariantValue<QString>(action->data())));
+        color = QColor(inputLine()->rgbColorFromMirc(action->data().value<QString>()));
         fmt.setForeground(color);
         mergeFormatOnSelection(fmt);
     }
@@ -597,14 +597,14 @@ void InputWidget::colorHighlightChosen(QAction *action)
 {
     QTextCharFormat fmt;
     QColor color;
-    if (qVariantValue<QString>(action->data()) == "") {
+    if (action->data().value<QString>() == "") {
         color = Qt::transparent;
         fmt = getFormatOfWordOrSelection();
         fmt.clearBackground();
         setFormatOnSelection(fmt);
     }
     else {
-        color = QColor(inputLine()->rgbColorFromMirc(qVariantValue<QString>(action->data())));
+        color = QColor(inputLine()->rgbColorFromMirc(action->data().value<QString>()));
         fmt.setBackground(color);
         mergeFormatOnSelection(fmt);
     }

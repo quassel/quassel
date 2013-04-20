@@ -175,7 +175,7 @@ void NickListWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, 
             if (!variant.isValid())
                 continue;
 
-            BufferId bufferId = qVariantValue<BufferId>(variant);
+            BufferId bufferId = variant.value<BufferId>();
             removeBuffer(bufferId);
         }
     }
