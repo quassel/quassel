@@ -179,7 +179,7 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event)
 
     QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
-    if (keyEvent->key() != GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut()) {
+    if (keyEvent->key() != GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut()[0]) {
         reset();
     }
     return false;
