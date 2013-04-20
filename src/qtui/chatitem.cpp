@@ -509,11 +509,8 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
         pixmap.fill(Qt::transparent);
         QPainter pixPainter(&pixmap);
         layout()->draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), additionalFormats());
-        pixPainter.end();
 
         // Create alpha channel mask
-        QPixmap mask(pixmap.size());
-        QPainter maskPainter(&mask);
         QLinearGradient gradient;
         if (offset < 0) {
             gradient.setStart(0, 0);
@@ -527,8 +524,8 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
             gradient.setColorAt(0, Qt::white);
             gradient.setColorAt(1, Qt::black);
         }
-        maskPainter.fillRect(0, 0, pixmap.width(), pixmap.height(), gradient);
-        pixmap.setAlphaChannel(mask);
+        pixPainter.fillRect(0, 0, pixmap.width(), pixmap.height(), gradient);
+        pixPainter.end();
         painter->drawPixmap(pos(), pixmap);
     }
     else {
