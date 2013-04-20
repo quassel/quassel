@@ -41,11 +41,19 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setToolTip("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setWhatsThis("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
 
+#if QT_VERSION < 0x050000
     ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::NameColumn, QHeaderView::Stretch);
     ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
     ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
     ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
     ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
+#else
+    ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::NameColumn, QHeaderView::Stretch);
+    ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
+    ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
+    ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
+    ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
+#endif
 
     connect(ui.add, SIGNAL(clicked(bool)), this, SLOT(addNewRow()));
     connect(ui.remove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedRows()));
