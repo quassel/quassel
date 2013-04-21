@@ -28,7 +28,7 @@ CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/
 Identity CoreUserSettings::identity(IdentityId id)
 {
     QVariant v = localValue(QString("Identities/%1").arg(id.toInt()));
-    if (qVariantCanConvert<Identity>(v)) {
+    if (v.canConvert<Identity>()) {
         return v.value<Identity>();
     }
     return Identity();
