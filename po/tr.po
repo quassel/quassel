@@ -675,7 +675,7 @@ msgstr "Arama Deseni:"
 msgctxt "ChannelListDlg|"
 msgid ""
 "Toggle between simple and advanced mode.\n"
-"Advanced mode allows to pass search strings to the IRC Server."
+"Advanced mode allows one to pass search strings to the IRC Server."
 msgstr "Basit ve gelişmiş mod arasında seçim yap.\nGelişmiş modda arama dizgileri IRC Sunucuya gönderilebilir."
 
 #: ../src/qtui/ui/channellistdlg.ui:62

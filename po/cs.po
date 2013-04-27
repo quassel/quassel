@@ -675,7 +675,7 @@ msgstr "Vyhledávaný text:"
 msgctxt "ChannelListDlg|"
 msgid ""
 "Toggle between simple and advanced mode.\n"
-"Advanced mode allows to pass search strings to the IRC Server."
+"Advanced mode allows one to pass search strings to the IRC Server."
 msgstr "Přepnout mezi jednoduchým a pokročilým módem.￼Pokročilý mód umožňuje předat vyhledávaný řetězec IRC Serveru."
 
 #: ../src/qtui/ui/channellistdlg.ui:62
