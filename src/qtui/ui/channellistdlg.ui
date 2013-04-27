@@ -46,7 +46,7 @@
       <widget class="ClickableLabel" name="advancedModeLabel">
        <property name="toolTip">
         <string>Toggle between simple and advanced mode.
-Advanced mode allows to pass search strings to the IRC Server.</string>
+Advanced mode allows one to pass search strings to the IRC Server.</string>
        </property>
        <property name="text">
         <string/>
