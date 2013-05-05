@@ -33,6 +33,8 @@ class InstallQt(object):
 
         self.needFrameworks = []
 
+        self.findFrameworkPath()
+
         executables = [self.executableDir + "/" + executable for executable in os.listdir(self.executableDir)]
 
         for executable in executables:
@@ -42,11 +44,21 @@ class InstallQt(object):
                     self.installFramework(framework)
             self.changeDylPath(executable)
 
+    def findFrameworkPath(self):
+        otoolProcess = Popen('qmake -query QT_INSTALL_LIBS', shell=True, stdout=PIPE, stderr=PIPE)
+        self.sourceFrameworkPath = otoolProcess.stdout.read().strip()
+        otoolProcess.stdout.close()
+        otoolProcess.wait()
+
+
     def installFramework(self, framework):
         try:
             os.mkdir(self.frameworkDir)
         except:
             pass
+
+        if not framework.startswith('/'):
+            framework = "%s/%s" % (self.sourceFrameworkPath, framework)
 
         # Copy Framework
         os.system('cp -R "%s" "%s"' % (framework, self.frameworkDir))
