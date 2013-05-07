@@ -45,10 +45,10 @@ class InstallQt(object):
             self.changeDylPath(executable)
 
     def findFrameworkPath(self):
-        otoolProcess = Popen('qmake -query QT_INSTALL_LIBS', shell=True, stdout=PIPE, stderr=PIPE)
-        self.sourceFrameworkPath = otoolProcess.stdout.read().strip()
-        otoolProcess.stdout.close()
-        otoolProcess.wait()
+        qmakeProcess = Popen('qmake -query QT_INSTALL_LIBS', shell=True, stdout=PIPE, stderr=PIPE)
+        self.sourceFrameworkPath = qmakeProcess.stdout.read().strip()
+        qmakeProcess.stdout.close()
+        qmakeProcess.wait()
 
 
     def installFramework(self, framework):
@@ -94,7 +94,9 @@ class InstallQt(object):
         otoolPipe = Popen('otool -L "%s"' % app, shell=True, stdout=PIPE).stdout
         otoolOutput = [line for line in otoolPipe]
         otoolPipe.close()
-        libs = [line.split()[0] for line in otoolOutput[1:] if "Qt" in line and not "@executable_path" in line]
+        libs = [line.split()[0] for line in otoolOutput[1:] if ("Qt" in line
+                                                               or "phonon" in line)
+                                                               and not "@executable_path" in line]
         frameworks = [lib[:lib.find(".framework")+len(".framework")] for lib in libs]
         return zip(frameworks, libs)
 
