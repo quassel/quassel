@@ -25,8 +25,10 @@
 #include "coresettings.h"
 #include "internalpeer.h"
 #include "postgresqlstorage.h"
+#include "postgresqlldapstorage.h"
 #include "quassel.h"
 #include "sqlitestorage.h"
+#include "sqliteldapstorage.h"
 #include "network.h"
 #include "logger.h"
 
@@ -311,7 +313,9 @@ void Core::registerStorageBackends()
 {
     // Register storage backends here!
     registerStorageBackend(new SqliteStorage(this));
+    registerStorageBackend(new SqliteLdapStorage(this));
     registerStorageBackend(new PostgreSqlStorage(this));
+    registerStorageBackend(new PostgreSqlLdapStorage(this));
 }
 
 

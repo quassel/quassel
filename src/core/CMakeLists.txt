@@ -83,6 +83,12 @@ if(HAVE_QCA2)
   include_directories(${QCA2_INCLUDE_DIR})
 endif(HAVE_QCA2)
 
+if(HAVE_LDAP)
+  set(SOURCES ${SOURCES} ldapstorage.cpp sqliteldapstorage.cpp postgresqlldapstorage.cpp)
+  set(MOC_HDRS ${MOC_HDRS} ldapstorage.h sqliteldapstorage.h postgresqlldapstorage.h)
+  include_directories(${LDAP_INCLUDE_DIR})
+endif(HAVE_LDAP)
+
 include_directories(${CMAKE_SOURCE_DIR}/src/common ${QUASSEL_QT_INCLUDES})
 
 if(NOT WITH_QT5)
@@ -98,3 +104,7 @@ set_target_properties(mod_core PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLA
 if(HAVE_QCA2)
   target_link_libraries(mod_core ${QCA2_LIBRARIES})
 endif(HAVE_QCA2)
+
+if(HAVE_LDAP)
+  target_link_libraries(mod_core ${LDAP_LIBRARIES})
+endif(HAVE_LDAP)
