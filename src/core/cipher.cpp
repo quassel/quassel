@@ -473,6 +473,5 @@ bool Cipher::neededFeaturesAvailable()
     if (QCA::isSupported("blowfish-ecb") && QCA::isSupported("blowfish-cbc") && QCA::isSupported("dh"))
         return true;
 
-    qWarning() << "QCA provider plugin not found. It is usually provided by the qca-ossl plugin.";
     return false;
 }
