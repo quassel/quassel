@@ -186,8 +186,10 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
     if (!bufferInfo.isValid())
         return;
 
-    if (!Cipher::neededFeaturesAvailable())
+    if (!Cipher::neededFeaturesAvailable()) {
+        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
+    }
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
@@ -225,7 +227,7 @@ void CoreUserInputHandler::doMode(const BufferInfo &bufferInfo, const QChar& add
     bool isNumber;
     int maxModes = network()->support("MODES").toInt(&isNumber);
     if (!isNumber || maxModes == 0) maxModes = 1;
-    
+
     QStringList nickList;
     if (nicks == "*") { // All users in channel
         const QList<IrcUser*> users = network()->ircChannel(bufferInfo.bufferName())->ircUsers();
@@ -234,12 +236,12 @@ void CoreUserInputHandler::doMode(const BufferInfo &bufferInfo, const QChar& add
                 || (addOrRemove == '-' && network()->ircChannel(bufferInfo.bufferName())->userModes(user).contains(mode)))
                 nickList.append(user->nick());
         }
-    } else { 
+    } else {
         nickList = nicks.split(' ', QString::SkipEmptyParts);
     }
-    
+
     if (nickList.count() == 0) return;
-    
+
     while (!nickList.isEmpty()) {
         int amount = qMin(nickList.count(), maxModes);
         QString m = addOrRemove; for(int i = 0; i < amount; i++) m += mode;
@@ -355,8 +357,10 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo &bufferInfo, const QStrin
     if (!bufferInfo.isValid())
         return;
 
-    if (!Cipher::neededFeaturesAvailable())
+    if (!Cipher::neededFeaturesAvailable()) {
+        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
+    }
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
@@ -592,8 +596,10 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QStr
     if (!bufferInfo.isValid())
         return;
 
-    if (!Cipher::neededFeaturesAvailable())
+    if (!Cipher::neededFeaturesAvailable()) {
+        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
+    }
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
@@ -628,8 +634,10 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
     if (!bufferInfo.isValid())
         return;
 
-    if (!Cipher::neededFeaturesAvailable())
+    if (!Cipher::neededFeaturesAvailable()) {
+        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
+    }
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
