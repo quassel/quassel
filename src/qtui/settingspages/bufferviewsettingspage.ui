@@ -137,6 +137,13 @@ In this mode no separate status buffer is displayed.</string>
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="hideInactiveNetworks">
+        <property name="text">
+         <string>Hide inactive networks</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="addNewBuffersAutomatically">
         <property name="text">
          <string>Add new chats automatically</string>

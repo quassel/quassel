@@ -377,6 +377,10 @@ bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) cons
     if (!config())
         return true;
 
+    if (config()->hideInactiveNetworks() && !(sourceModel()->data(source_index, NetworkModel::ItemActiveRole).toBool())) {
+        return false;
+    }
+
     if (!config()->networkId().isValid()) {
         return true;
     }
