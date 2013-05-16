@@ -507,7 +507,7 @@ void CoreConnection::connectToCurrentAccount()
 #ifndef QT_NO_NETWORKPROXY
     if (_account.useProxy()) {
         QNetworkProxy proxy(_account.proxyType(), _account.proxyHostName(), _account.proxyPort(), _account.proxyUser(), _account.proxyPassword());
-        sock->setProxy(proxy);
+        QNetworkProxy::setApplicationProxy(proxy);
     }
 #endif
 
