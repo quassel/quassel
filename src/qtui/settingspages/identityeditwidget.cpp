@@ -25,6 +25,7 @@
 #include <QDropEvent>
 #include <QFileDialog>
 #include <QUrl>
+#include <QMessageBox>
 
 #include "client.h"
 #include "iconloader.h"
@@ -340,6 +341,7 @@ QSslKey IdentityEditWidget::keyByFilename(const QString &filename)
                 goto returnKey;
         }
     }
+    QMessageBox::information(this, tr("Failed to read key"), tr("Failed to read the key file. It is either incompatible or invalid. Note that the key file must not have a passphrase."));
 returnKey:
     return key;
 }
