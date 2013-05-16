@@ -572,6 +572,9 @@ QString UiStyle::mircToInternal(const QString &mirc_)
                 case '\x0f':
                     mirc += "%O";
                     break;
+                case '\x09':
+                    mirc += "        ";
+                    break;
                 case '\x12':
                 case '\x16':
                     mirc += "%R";
@@ -589,10 +592,6 @@ QString UiStyle::mircToInternal(const QString &mirc_)
                     mirc += QChar(0x2400 + c.unicode());
             }
         } else {
-            if (c == '\t') {
-                mirc += "        ";
-                continue;
-            }
             if (c == '%')
                 mirc += c;
             mirc += c;
