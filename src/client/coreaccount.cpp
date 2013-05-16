@@ -28,6 +28,7 @@ CoreAccount::CoreAccount(AccountId accountId)
     _storePassword = false;
     _useSsl = true;
     _useProxy = false;
+    _useSystemProxy = false;
     _proxyType = QNetworkProxy::Socks5Proxy;
     _proxyPort = 8080;
 }
@@ -98,6 +99,10 @@ void CoreAccount::setUseProxy(bool useProxy)
     _useProxy = useProxy;
 }
 
+void CoreAccount::setUseSystemProxy(bool useSystemProxy)
+{
+    _useSystemProxy = useSystemProxy;
+}
 
 void CoreAccount::setProxyType(QNetworkProxy::ProxyType type)
 {
@@ -146,6 +151,7 @@ QVariantMap CoreAccount::toVariantMap(bool forcePassword) const
     v["Port"] = port();
     v["UseSSL"] = useSsl();
     v["UseProxy"] = useProxy();
+    v["UseSystemProxy"] = useSystemProxy();
     v["ProxyType"] = proxyType();
     v["ProxyUser"] = proxyUser();
     v["ProxyPassword"] = proxyPassword();
@@ -168,6 +174,7 @@ void CoreAccount::fromVariantMap(const QVariantMap &v)
     setPort(v.value("Port").toUInt());
     setUseSsl(v.value("UseSSL").toBool());
     setUseProxy(v.value("UseProxy").toBool());
+    setUseSystemProxy(v.value("UseSystemProxy").toBool());
     setProxyType((QNetworkProxy::ProxyType)v.value("ProxyType").toInt());
     setProxyUser(v.value("ProxyUser").toString());
     setProxyPassword(v.value("ProxyPassword").toString());
