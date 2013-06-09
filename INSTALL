@@ -13,8 +13,8 @@ Note that quasselcore is no longer being built by default, since it tends to
 confuse users more than it helped. It will be back as soon as we have simple mode
 implemented.
 
-We now use CMake as our build system. CMake supports and encourages out-of-source 
-builds, which do not clutter the source directory. You can (and should) thus use 
+We now use CMake as our build system. CMake supports and encourages out-of-source
+builds, which do not clutter the source directory. You can (and should) thus use
 an arbitrary directory for building.
 
 There is no "make distclean"; "make clean" should usually be enough since CMake
