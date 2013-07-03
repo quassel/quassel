@@ -325,7 +325,7 @@ if(BUILD_GUI)
       include_directories(${KDE4_INCLUDES})
       add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
       set(HAVE_KDE 1)
-      set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} ${KDE4_SOLID_LIBS} knotifyconfig)
+      set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} ${KDE4_SOLID_LIBS} ${KDE4_KNOTIFYCONFIG_LIBRARY})
       # We always use external icons for KDE4 support, since we use its iconloader rather than our own
       set(EMBED_DATA OFF)
     else(KDE4_FOUND)
