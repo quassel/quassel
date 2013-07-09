@@ -5848,7 +5848,7 @@ msgstr "%DN%1%DN выкинул %DN%2%DN из %DC%3%DC"
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
-msgstr "{Новые сутки. Сегодня: % 1}"
+msgstr "{Новые сутки. Сегодня: %1}"
 
 #: ../src/uisupport/uistyle.cpp:734
 #, qt-format
