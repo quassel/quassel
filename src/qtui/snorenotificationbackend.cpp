@@ -110,7 +110,7 @@ void SnoreNotificationBackend::close(uint notificationId){
     if(m_systrayBackend != NULL)
         return;
     Snore::Notification n = m_notifications.take(m_notificationIds.take(notificationId));
-    m_snore->closeNotification(n,Snore::NotificationEnums::CloseReasons::CLOSED);
+    m_snore->requestCloseNotification(n,Snore::NotificationEnums::CloseReasons::CLOSED);
 }
 
 void SnoreNotificationBackend::actionInvoked(Snore::Notification n){
