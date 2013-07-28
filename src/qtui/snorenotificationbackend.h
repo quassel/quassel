@@ -1,6 +1,6 @@
 /***************************************************************************
-*   Copyright (C) 2011 by the Patrick von Reth                            *
-*   patrick.vonreth@gmail.com                                             *
+*   Copyright (C) 2011-2013 by the Patrick von Reth                       *
+*   vonreth@kde.org                                                       *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
 *   it under the terms of the GNU General Public License as published by  *
