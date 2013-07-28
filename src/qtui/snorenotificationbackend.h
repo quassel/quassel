@@ -1,5 +1,5 @@
 /***************************************************************************
-*   Copyright (C) 2011-2013 by the Patrick von Reth                       *
+*   Copyright (C) 2011-2013 by Patrick von Reth                           *
 *   vonreth@kde.org                                                       *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
