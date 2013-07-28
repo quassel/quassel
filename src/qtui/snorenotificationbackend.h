@@ -29,7 +29,7 @@
 
 namespace Snore{
 class SnoreCore;
-class SnoreIcon;
+class Icon;
 }
 class SystrayNotificationBackend;
 
@@ -59,10 +59,8 @@ private:
     class ConfigWidget;
     SystrayNotificationBackend * m_systrayBackend;
     Snore::SnoreCore *m_snore;
-    Snore::Notification::Action *m_action;
-    QHash<uint,Snore::Notification> m_notifications;
     QHash<uint,uint> m_notificationIds;
-    Snore::SnoreIcon m_icon;
+    Snore::Icon m_icon;
     int m_timeout;
 };
 
