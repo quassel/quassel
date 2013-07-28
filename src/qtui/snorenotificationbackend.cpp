@@ -50,12 +50,13 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
 
     //TODO: try to get an instance of the tray icon to be able to show popups
     m_snore = new Snore::SnoreCore();
+    m_snore->hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
     m_snore->loadPlugins(Snore::PluginContainer::BACKEND);
-    Snore::Application *a = new Snore::Application("Quassel",Snore::SnoreIcon(DesktopIcon("quassel").toImage()));
+    Snore::Application *a = new Snore::Application("Quassel",Snore::Icon(DesktopIcon("quassel").toImage()));
 
     connect(m_snore,SIGNAL(actionInvoked(Snore::Notification)),this,SLOT(actionInvoked(Snore::Notification)));
 
-    m_icon = Snore::SnoreIcon(DesktopIcon("dialog-information").toImage());
+    m_icon = Snore::Icon(DesktopIcon("dialog-information").toImage());
 
     a->addAlert(new Snore::Alert(tr("Private Message"),tr("Private Message")));
 
@@ -63,9 +64,6 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     m_snore->applicationIsInitialized (a);
 
     m_snore->setPrimaryNotificationBackend(backend);
-
-    m_action = new Snore::Notification::Action(1,"View");
-
 }
 
 SnoreNotificationBackend::~SnoreNotificationBackend(){
@@ -100,21 +98,20 @@ void SnoreNotificationBackend::notify(const Notification &n){
     QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
     QString message = QString("<%1> %2").arg(n.sender, n.message);
     Snore::Notification noti("Quassel",tr("Private Message"),title,message,m_icon,m_timeout);
-    noti.addAction(m_action);
-    m_snore->broadcastNotification(noti);
-    m_notifications.insert(noti.id(),noti);
+    noti.hints().setValue("QUASSEL_ID",n.notificationId);
     m_notificationIds.insert(n.notificationId,noti.id());
+    m_snore->broadcastNotification(noti);
 }
 
 void SnoreNotificationBackend::close(uint notificationId){
     if(m_systrayBackend != NULL)
         return;
-    Snore::Notification n = m_notifications.take(m_notificationIds.take(notificationId));
+    Snore::Notification n = m_snore->getActiveNotificationByID(m_notificationIds.take(notificationId));
     m_snore->requestCloseNotification(n,Snore::NotificationEnums::CloseReasons::CLOSED);
 }
 
 void SnoreNotificationBackend::actionInvoked(Snore::Notification n){
-    emit activated(m_notificationIds.key(n.id()));
+    emit activated(n.hints().value("QUASSEL_ID").toUInt());
 }
 
 SettingsPage *SnoreNotificationBackend::createConfigWidget()const{
