@@ -37,6 +37,12 @@ NOTE: In order to reconfigure, you need to remove CMakeCache.txt (or empty
 
 Quassel recognizes the following options:
 
+LINGUAS="<languages">
+    Allow to choose which languages should be compiled into the binary.
+    <languages> is a space- or comma-separated list of language codes.
+    Note that this is not a cmake variable, but an environment variable.
+    Example: LINGUAS="de en_US"
+
 -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
     Allow to choose which Quassel binaries to build.
 
@@ -65,11 +71,6 @@ Quassel recognizes the following options:
 
 -DWITH_CRYPT=OFF
     Disable crypt support
-
--DLINGUAS="<languages">
-    Allow to choose which languages should be compiled into the binary.
-    <languages> is a space- or comma-separated list of language codes.
-    Example: -DLINGUAS="de en_US"
 
 -DEMBED_DATA=ON
     Embed all external data files (e.g. icons) into the binary. This will give you a
