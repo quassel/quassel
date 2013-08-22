@@ -154,6 +154,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="autoMarkerLineOnLostFocus">
+     <property name="toolTip">
+      <string>Set the marker line to the bottom of the current chat window when Quassel loses focus.</string>
+     </property>
+     <property name="text">
+      <string>Set marker line automatically when Quassel loses focus</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>AutoMarkerLineOnLostFocus</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="label_2">
