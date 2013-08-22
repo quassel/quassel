@@ -1365,11 +1365,17 @@ void MainWin::toggleFullscreen()
 /********************************************************************************************************/
 
 bool MainWin::event(QEvent *event)
-{
-    if (event->type() == QEvent::WindowActivate) {
-        BufferId buffer = Client::bufferModel()->currentBuffer();
-        if (buffer.isValid())
-            Client::instance()->markBufferAsRead(buffer);
+{  
+    switch(event->type()) {
+    case QEvent::WindowActivate:
+        BufferId bufferId = Client::bufferModel()->currentBuffer();
+        if (bufferId.isValid())
+            Client::instance()->markBufferAsRead(bufferId);
+        break;
+    case QEvent::WindowDeactivate:
+        if (bufferWidget()->autoMarkerLineOnLostFocus())
+            bufferWidget()->setMarkerLine();
+        break;
     }
     return QMainWindow::event(event);
 }
