@@ -123,6 +123,7 @@ public slots:
     Cipher *cipher(const QString &recipient);
     QByteArray cipherKey(const QString &recipient) const;
     void setCipherKey(const QString &recipient, const QByteArray &key);
+    bool cipherUsesCBC(const QString &target);
 #endif
 
     void setAutoWhoEnabled(bool enabled);
