@@ -237,9 +237,6 @@ private:
     QList<QByteArray> _msgQueue;
 
     QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
-
-    // Blowfish key map
-    QHash<QString, QByteArray> _cipherKeys;
 };
 
 
