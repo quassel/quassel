@@ -657,7 +657,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
         return;
     }
 
-    emit displayMsg(Message::Info, bufname, tr("The key for %1 is %2").arg(target).arg(QString(key)));
+    emit displayMsg(Message::Info, bufname, tr("The key for %1 is %2:%3").arg(target, network()->cipherUsesCBC(target) ? "CBC" : "ECB", QString(key)));
 
 #else
     Q_UNUSED(msg)
