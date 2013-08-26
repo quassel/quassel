@@ -34,6 +34,7 @@ public:
     bool setType(const QString &type);
     QString type() { return m_type; }
     static bool neededFeaturesAvailable();
+    inline bool usesCBC() { return m_cbc; }
 
 private:
     //direction is true for encrypt, false for decrypt

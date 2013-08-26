@@ -363,6 +363,19 @@ void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
         return;
     }
 }
+
+
+bool CoreNetwork::cipherUsesCBC(const QString &target)
+{
+    CoreIrcChannel *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    if (c)
+        return c->cipher()->usesCBC();
+    CoreIrcUser *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    if (u)
+        return u->cipher()->usesCBC();
+
+    return false;
+}
 #endif /* HAVE_QCA2 */
 
 bool CoreNetwork::setAutoWhoDone(const QString &channel)

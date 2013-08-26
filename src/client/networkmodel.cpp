@@ -522,6 +522,7 @@ void QueryBufferItem::setIrcUser(IrcUser *ircUser)
     if (ircUser) {
         connect(ircUser, SIGNAL(quited()), this, SLOT(removeIrcUser()));
         connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
+        connect(ircUser, SIGNAL(encryptedSet(bool)), this, SLOT(setEncrypted(bool)));
     }
 
     _ircUser = ircUser;
@@ -600,6 +601,8 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel)
 
     connect(ircChannel, SIGNAL(topicSet(QString)),
         this, SLOT(setTopic(QString)));
+    connect(ircChannel, SIGNAL(encryptedSet(bool)),
+        this, SLOT(setEncrypted(bool)));
     connect(ircChannel, SIGNAL(ircUsersJoined(QList<IrcUser *> )),
         this, SLOT(join(QList<IrcUser *> )));
     connect(ircChannel, SIGNAL(ircUserParted(IrcUser *)),

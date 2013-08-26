@@ -52,6 +52,7 @@ class IrcUser : public SyncableObject
     Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage STORED false)
     Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply STORED false)
     Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost STORED false)
+    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted STORED false)
 
     Q_PROPERTY(QStringList channels READ channels STORED false)
     Q_PROPERTY(QString userModes READ userModes WRITE setUserModes)
@@ -74,6 +75,7 @@ public :
     inline int lastAwayMessage() const { return _lastAwayMessage; }
     inline QString whoisServiceReply() const { return _whoisServiceReply; }
     inline QString suserHost() const { return _suserHost; }
+    inline bool encrypted() const { return _encrypted; }
     inline Network *network() const { return _network; }
 
     inline QString userModes() const { return _userModes; }
@@ -111,6 +113,7 @@ public slots:
     void setLastAwayMessage(const int &lastAwayMessage);
     void setWhoisServiceReply(const QString &whoisServiceReply);
     void setSuserHost(const QString &suserHost);
+    void setEncrypted(bool encrypted);
     void updateHostmask(const QString &mask);
 
     void setUserModes(const QString &modes);
@@ -138,6 +141,7 @@ signals:
 //   void lastAwayMessageSet(int lastAwayMessage);
 //   void whoisServiceReplySet(QString whoisServiceReply);
 //   void suserHostSet(QString suserHost);
+    void encryptedSet(bool encrypted);
 
     void userModesSet(QString modes);
     void userModesAdded(QString modes);
@@ -183,6 +187,7 @@ private:
     int _lastAwayMessage;
     QString _whoisServiceReply;
     QString _suserHost;
+    bool _encrypted;
 
     // QSet<QString> _channels;
     QSet<IrcChannel *> _channels;

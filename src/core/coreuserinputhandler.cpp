@@ -368,11 +368,16 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo &bufferInfo, const QStrin
         parms.prepend(bufferInfo.bufferName());
     else if (parms.count() != 1) {
         emit displayMsg(Message::Info, bufname,
-            tr("[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the target."));
+            tr("[usage] /keyx [<nick>] Initiates a DH1080 key exchange with the target."));
         return;
     }
 
     QString target = parms.at(0);
+
+    if (network()->isChannelName(target)) {
+        emit displayMsg(Message::Info, bufname, tr("It is only possible to exchange keys in a query buffer."));
+        return;
+    }
 
     Cipher *cipher = network()->cipher(target);
     if (!cipher) // happens when there is no CoreIrcChannel for the target
@@ -657,7 +662,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
         return;
     }
 
-    emit displayMsg(Message::Info, bufname, tr("The key for %1 is %2").arg(target).arg(QString(key)));
+    emit displayMsg(Message::Info, bufname, tr("The key for %1 is %2:%3").arg(target, network()->cipherUsesCBC(target) ? "CBC" : "ECB", QString(key)));
 
 #else
     Q_UNUSED(msg)
