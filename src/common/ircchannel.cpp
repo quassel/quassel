@@ -36,6 +36,7 @@ IrcChannel::IrcChannel(const QString &channelname, Network *network)
     _initialized(false),
     _name(channelname),
     _topic(QString()),
+    _encrypted(false),
     _network(network),
     _codecForEncoding(0),
     _codecForDecoding(0)
@@ -149,6 +150,13 @@ void IrcChannel::setPassword(const QString &password)
 {
     _password = password;
     SYNC(ARG(password))
+}
+
+void IrcChannel::setEncrypted(bool encrypted)
+{
+    _encrypted = encrypted;
+    SYNC(ARG(encrypted))
+    emit encryptedSet(encrypted);
 }
 
 
