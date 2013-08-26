@@ -40,7 +40,6 @@ public:
 
 #ifdef HAVE_QCA2
     Cipher *cipher() const;
-    void setEncrypted(bool);
 #endif
 
 #ifdef HAVE_QCA2

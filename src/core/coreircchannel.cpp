@@ -52,6 +52,8 @@ Cipher *CoreIrcChannel::cipher() const
 
 void CoreIrcChannel::setEncrypted(bool e)
 {
+    IrcChannel::setEncrypted(e);
+
     if (!Cipher::neededFeaturesAvailable())
         return;
 

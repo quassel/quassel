@@ -40,6 +40,7 @@ class IrcChannel : public SyncableObject
     Q_PROPERTY(QString name READ name STORED false)
     Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
     Q_PROPERTY(QString password READ password WRITE setPassword STORED false)
+    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted STORED false)
 
 public :
         IrcChannel(const QString &channelname, Network *network);
@@ -51,6 +52,7 @@ public :
     inline QString name() const { return _name; }
     inline QString topic() const { return _topic; }
     inline QString password() const { return _password; }
+    inline bool encrypted() const { return _encrypted; }
     inline Network *network() const { return _network; }
 
     inline QList<IrcUser *> ircUsers() const { return _userModes.keys(); }
@@ -76,6 +78,7 @@ public :
 public slots:
     void setTopic(const QString &topic);
     void setPassword(const QString &password);
+    void setEncrypted(bool encrypted);
 
     void joinIrcUsers(const QList<IrcUser *> &users, const QStringList &modes);
     void joinIrcUsers(const QStringList &nicks, const QStringList &modes);
@@ -106,6 +109,7 @@ public slots:
 
 signals:
     void topicSet(const QString &topic); // needed by NetworkModel
+    void encryptedSet(bool encrypted);
 //   void passwordSet(const QString &password);
 //   void userModesSet(QString nick, QString modes);
 //   void userModeAdded(QString nick, QString mode);
@@ -132,6 +136,7 @@ private:
     QString _name;
     QString _topic;
     QString _password;
+    bool _encrypted;
 
     QHash<IrcUser *, QString> _userModes;
 

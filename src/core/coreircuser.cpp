@@ -46,11 +46,4 @@ Cipher *CoreIrcUser::cipher() const
 }
 
 
-void CoreIrcUser::setEncrypted(bool e)
-{
-    Q_UNUSED(e);
-    // TODO
-}
-
-
 #endif
