@@ -48,6 +48,7 @@ public:
     inline bool useSsl() const { return _useSsl; }
 
     inline bool useProxy() const { return _useProxy; }
+    inline bool useSystemProxy() const { return _useSystemProxy; }
     inline QNetworkProxy::ProxyType proxyType() const { return _proxyType; }
     inline QString proxyUser() const { return _proxyUser; }
     inline QString proxyHostName() const { return _proxyHostName; }
@@ -65,6 +66,7 @@ public:
     void setUseSsl(bool);
 
     void setUseProxy(bool);
+    void setUseSystemProxy(bool);
     void setProxyType(QNetworkProxy::ProxyType);
     void setProxyUser(const QString &);
     void setProxyHostName(const QString &);
@@ -88,7 +90,7 @@ private:
     bool _internal;
     QString _user, _password, _hostName;
     uint _port;
-    bool _storePassword, _useSsl, _useProxy;
+    bool _storePassword, _useSsl, _useProxy, _useSystemProxy;
     QNetworkProxy::ProxyType _proxyType;
     QString _proxyUser, _proxyPassword, _proxyHostName;
     uint _proxyPort;

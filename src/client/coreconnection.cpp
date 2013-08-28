@@ -22,6 +22,7 @@
 
 #ifndef QT_NO_NETWORKPROXY
 #  include <QNetworkProxy>
+#  include <QUrl>
 #endif
 
 #include "client.h"
@@ -507,7 +508,19 @@ void CoreConnection::connectToCurrentAccount()
 #ifndef QT_NO_NETWORKPROXY
     if (_account.useProxy()) {
         QNetworkProxy proxy(_account.proxyType(), _account.proxyHostName(), _account.proxyPort(), _account.proxyUser(), _account.proxyPassword());
-        sock->setProxy(proxy);
+
+        if (_account.useSystemProxy()) {
+            QNetworkProxyQuery npq(QUrl("http://www.quassel-irc.org"));
+            QList<QNetworkProxy> listOfProxies = QNetworkProxyFactory::systemProxyForQuery(npq);
+
+            foreach (QNetworkProxy p, listOfProxies) {
+                if(p.hostName() != "") {
+                    proxy = p;
+                    break;
+                }
+            }
+        }
+        QNetworkProxy::setApplicationProxy(proxy);
     }
 #endif
 
