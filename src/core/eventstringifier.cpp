@@ -104,6 +104,10 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e)
     case 253:
     case 254:
     case 255:
+    case 256:
+    case 257:
+    case 258:
+    case 259:
     case 265:
     case 266:
     case 372:
@@ -112,6 +116,7 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e)
         break;
 
     // Server error messages without param, just display them
+    case 263:
     case 409:
     case 411:
     case 412:
