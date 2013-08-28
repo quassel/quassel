@@ -81,9 +81,7 @@ public slots:
     void setScrollBarsEnabled(bool enable = true);
     void setSpellCheckEnabled(bool enable = true);
     void setPasteProtectionEnabled(bool enable = true, QWidget *msgBoxParent = 0);
-
-    // Note: Enabling wrap will make isSingleLine() not work correctly, so only use this if minHeight() > 1!
-    void setWordWrapEnabled(bool enable = true);
+    void setLineWrapEnabled(bool enable = false);
 
     inline void setHistory(QStringList history) { _history = history; }
     inline void setTempHistory(QHash<int, QString> tempHistory) { _tempHistory = tempHistory; }

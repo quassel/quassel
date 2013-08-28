@@ -30,7 +30,7 @@ TopicWidget::TopicWidget(QWidget *parent)
 {
     ui.setupUi(this);
     ui.topicEditButton->setIcon(SmallIcon("edit-rename"));
-    ui.topicLineEdit->setWordWrapEnabled(true);
+    ui.topicLineEdit->setLineWrapEnabled(true);
     ui.topicLineEdit->installEventFilter(this);
 
     connect(ui.topicLabel, SIGNAL(clickableActivated(Clickable)), SLOT(clickableActivated(Clickable)));

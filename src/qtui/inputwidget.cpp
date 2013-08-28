@@ -122,6 +122,9 @@ InputWidget::InputWidget(QWidget *parent)
     s.notify("EnableScrollBars", this, SLOT(setScrollBarsEnabled(QVariant)));
     setScrollBarsEnabled(s.value("EnableScrollBars", true));
 
+    s.notify("EnableLineWrap", this, SLOT(setLineWrapEnabled(QVariant)));
+    setLineWrapEnabled(s.value("EnableLineWrap", false));
+
     s.notify("EnableMultiLine", this, SLOT(setMultiLineEnabled(QVariant)));
     setMultiLineEnabled(s.value("EnableMultiLine", true));
 
@@ -206,6 +209,12 @@ void InputWidget::setMaxLines(const QVariant &v)
 void InputWidget::setScrollBarsEnabled(const QVariant &v)
 {
     ui.inputEdit->setScrollBarsEnabled(v.toBool());
+}
+
+
+void InputWidget::setLineWrapEnabled(const QVariant &v)
+{
+    ui.inputEdit->setLineWrapEnabled(v.toBool());
 }
 
 

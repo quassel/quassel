@@ -122,6 +122,22 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="enableLineWrapMode">
+     <property name="toolTip">
+      <string>Enables line wrapping for input.</string>
+     </property>
+     <property name="text">
+      <string>Line wrapping</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">EnableLineWrap</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Multi-Line Editing</string>

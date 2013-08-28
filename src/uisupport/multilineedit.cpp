@@ -53,7 +53,7 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
 #endif
 
     setMode(SingleLine);
-    setWordWrapEnabled(false);
+    setLineWrapEnabled(false);
     reset();
 
     connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
@@ -95,6 +95,13 @@ void MultiLineEdit::setMode(Mode mode)
         return;
 
     _mode = mode;
+}
+
+
+void MultiLineEdit::setLineWrapEnabled(bool enable)
+{
+    setLineWrapMode(enable ? WidgetWidth : NoWrap);
+    updateSizeHint();
 }
 
 
@@ -204,13 +211,6 @@ void MultiLineEdit::setSpellCheckEnabled(bool enable)
 #else
     Q_UNUSED(enable)
 #endif
-}
-
-
-void MultiLineEdit::setWordWrapEnabled(bool enable)
-{
-    setLineWrapMode(enable ? WidgetWidth : NoWrap);
-    updateSizeHint();
 }
 
 

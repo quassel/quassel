@@ -61,6 +61,7 @@ private slots:
     void setShowStyleButtons(const QVariant &);
     void setEnablePerChatHistory(const QVariant &);
     void setMaxLines(const QVariant &);
+    void setLineWrapEnabled(const QVariant &);
     void setMultiLineEnabled(const QVariant &);
     void setScrollBarsEnabled(const QVariant &);
     void onTextEntered(const QString &text);
