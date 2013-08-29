@@ -58,7 +58,6 @@ signals:
     void putRawLine(const QByteArray &msg);
 
 protected:
-    void displayMsg(Message::Type, QString target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
     void putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix = QByteArray());
 
     inline CoreNetwork *network() const { return _network; }
