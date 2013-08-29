@@ -65,6 +65,7 @@ InputWidget::InputWidget(QWidget *parent)
     ui.underlineButton->setIcon(SmallIcon("format-text-underline"));
     ui.textcolorButton->setIcon(SmallIcon("format-text-color"));
     ui.highlightcolorButton->setIcon(SmallIcon("format-fill-color"));
+    ui.encryptionIconLabel->hide();
 
     _colorMenu = new QMenu();
     _colorFillMenu = new QMenu();
@@ -289,8 +290,24 @@ void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
     QItemSelectionRange changedArea(topLeft, bottomRight);
     if (changedArea.contains(selectionModel()->currentIndex())) {
         updateEnabledState();
+
+        bool encrypted = false;
+
+        IrcChannel *chan = qobject_cast<IrcChannel *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcChannelRole).value<QObject *>());
+        if (chan)
+            encrypted = chan->encrypted();
+
+        IrcUser *user = qobject_cast<IrcUser *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcUserRole).value<QObject *>());
+        if (user)
+            encrypted = user->encrypted();
+
+        if (encrypted)
+            ui.encryptionIconLabel->show();
+        else
+            ui.encryptionIconLabel->hide();
     }
-};
+}
+
 
 void InputWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {

@@ -125,6 +125,7 @@ public :
 
 public slots:
     virtual inline void setTopic(const QString &) { emit dataChanged(1); }
+    virtual inline void setEncrypted(bool) { emit dataChanged(); }
 
 private:
     BufferInfo _bufferInfo;

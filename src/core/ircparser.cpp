@@ -232,9 +232,9 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
 
 #ifdef HAVE_QCA2
                 // Handle DH1080 key exchange
-                if (params[1].startsWith("DH1080_INIT")) {
+                if (params[1].startsWith("DH1080_INIT") && !net->isChannelName(target)) {
                     events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Init, params[1].mid(12));
-                } else if (params[1].startsWith("DH1080_FINISH")) {
+                } else if (params[1].startsWith("DH1080_FINISH") && !net->isChannelName(target)) {
                     events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Finish, params[1].mid(14));
                 } else
 #endif

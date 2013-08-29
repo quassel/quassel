@@ -123,6 +123,7 @@ public slots:
     Cipher *cipher(const QString &recipient);
     QByteArray cipherKey(const QString &recipient) const;
     void setCipherKey(const QString &recipient, const QByteArray &key);
+    bool cipherUsesCBC(const QString &target);
 #endif
 
     void setAutoWhoEnabled(bool enabled);
@@ -237,9 +238,6 @@ private:
     QList<QByteArray> _msgQueue;
 
     QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
-
-    // Blowfish key map
-    QHash<QString, QByteArray> _cipherKeys;
 };
 
 

@@ -42,6 +42,7 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     _ircOperator(),
     _lastAwayMessage(0),
     _whoisServiceReply(),
+    _encrypted(false),
     _network(network),
     _codecForEncoding(0),
     _codecForDecoding(0)
@@ -245,6 +246,14 @@ void IrcUser::setSuserHost(const QString &suserHost)
         _suserHost = suserHost;
         SYNC(ARG(suserHost))
     }
+}
+
+
+void IrcUser::setEncrypted(bool encrypted)
+{
+    _encrypted = encrypted;
+    emit encryptedSet(encrypted);
+    SYNC(ARG(encrypted))
 }
 
 
