@@ -1016,7 +1016,7 @@ void CoreSessionEventProcessor::handleCtcpClientinfo(CtcpEvent *e)
 
 void CoreSessionEventProcessor::handleCtcpPing(CtcpEvent *e)
 {
-    e->setReply(e->param());
+    e->setReply(e->param().isNull() ? "" : e->param());
 }
 
 
