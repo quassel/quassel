@@ -98,8 +98,10 @@ QVariantMap PostgreSqlStorage::setupDefaults() const
 
 void PostgreSqlStorage::initDbSession(QSqlDatabase &db)
 {
+#if QT_VERSION < 0x040805
     // this blows... but unfortunately Qt's PG driver forces us to this...
     db.exec("set standard_conforming_strings = off");
+#endif
     db.exec("set escape_string_warning = off");
 }
 
