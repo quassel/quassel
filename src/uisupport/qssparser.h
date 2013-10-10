@@ -70,7 +70,6 @@ private:
     QVector<QBrush> _uiStylePalette;
     QHash<quint64, QTextCharFormat> _formats;
     QHash<quint32, QTextCharFormat> _listItemFormats;
-    int _maxSenderHash;
 };
 
 
