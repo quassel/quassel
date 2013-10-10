@@ -24,7 +24,7 @@
 #include "basichandler.h"
 
 class BufferInfo;
-class NetworkId;
+struct NetworkId;
 
 class ClientUserInputHandler : public BasicHandler
 {
