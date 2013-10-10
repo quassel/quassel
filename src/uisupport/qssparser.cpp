@@ -23,7 +23,6 @@
 #include "qssparser.h"
 
 QssParser::QssParser()
-    : _maxSenderHash(0)
 {
     _palette = QApplication::palette();
 
