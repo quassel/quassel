@@ -96,11 +96,47 @@ QVariantMap PostgreSqlStorage::setupDefaults() const
 }
 
 
-void PostgreSqlStorage::initDbSession(QSqlDatabase &db)
+bool PostgreSqlStorage::initDbSession(QSqlDatabase &db)
 {
-    // this blows... but unfortunately Qt's PG driver forces us to this...
-    db.exec("set standard_conforming_strings = off");
-    db.exec("set escape_string_warning = off");
+    // check whether the Qt driver performs string escaping or not.
+    // i.e. test if it doubles slashes.
+    QSqlField testField;
+    testField.setType(QVariant::String);
+    testField.setValue("\\");
+    QString formattedString = db.driver()->formatValue(testField);
+    switch(formattedString.count('\\')) {
+    case 2:
+        // yes it does... and we cannot do anything to change the behavior of Qt.
+        // If this is a legacy DB (Postgres < 8.2), then everything is already ok,
+        // as this is the expected behavior.
+        // If it is a newer version, switch to legacy mode.
+
+        quWarning() << "Switching Postgres to legacy mode. (set standard conforming strings to off)";
+        // If the following calls fail, it is a legacy DB anyways, so it doesn't matter
+        // and no need to check the outcome.
+        db.exec("set standard_conforming_strings = off");
+        db.exec("set escape_string_warning = off");
+        break;
+    case 1:
+        // ok, so Qt does not escape...
+        // That means we have to ensure that postgres uses standard conforming strings...
+        {
+            QSqlQuery query = db.exec("set standard_conforming_strings = on");
+            if (query.lastError().isValid()) {
+                // We cannot enable standard conforming strings...
+                // since Quassel does no escaping by itself, this would yield a major vulnerability.
+                quError() << "Failed to enable standard_conforming_strings for the Postgres db!";
+                return false;
+            }
+        }
+        break;
+    default:
+        // The slash got replaced with 0 or more than 2 slashes! o_O
+        quError() << "Your version of Qt does something _VERY_ strange to slashes in QSqlQueries! You should consult your trusted doctor!";
+        return false;
+        break;
+    }
+    return true;
 }
 
 
