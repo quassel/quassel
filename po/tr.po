@@ -4,11 +4,13 @@
 # H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2010
 # zeugma <sunder67@hotmail.com>, 2013
 # volkangezer <volkangezer@gmail.com>, 2013
+# volkangezer <volkangezer@gmail.com>, 2013
+# zeugma <sunder67@hotmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-07-15 23:04+0000\n"
+"PO-Revision-Date: 2013-11-20 11:02+0000\n"
 "Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/quassel/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -95,7 +97,7 @@ msgid ""
 "and everybody we forgot to mention here:"
 msgstr "Aşağıdaki katkıcılara (alfabetik sırayla) ve buraya yazmayı unuttuğumuz herkese teşekkür ederiz:"
 
-#: ../src/qtui/aboutdlg.cpp:185
+#: ../src/qtui/aboutdlg.cpp:194
 msgctxt "AboutDlg|"
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
@@ -112,14 +114,14 @@ msgid ""
 "sponsoring development of Quassel Mobile with N810s</dd>"
 msgstr "Özel teşekkürlerimiz:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>Orijinal Quassel ikonu - The All-Seeing Eye için</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt><dd>Quassel üzerinde gördüğümüz tüm grafik dizaynı için</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software önceki adı ile Trolltech</a></b></dt><dd>Qt ve Qtopia'yı tasarladıkları için, ve Greenphones ve dahası var QuasselTopia geliştirme sponsorlukları için</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>Qt'ye canlılık verdikleri için, ve Quassel Mobile N810s ile ilgili geliştirilmesini sponsorize ettiklerinden dolayı onlara gidiyor</dd>"
 
-#: ../src/core/abstractsqlstorage.cpp:124
+#: ../src/core/abstractsqlstorage.cpp:127
 #, qt-format
 msgctxt "AbstractSqlStorage|"
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Schema (sürüm %1) güncel değil. %2 sürümüne yükseltiniz..."
 
-#: ../src/core/abstractsqlstorage.cpp:126
+#: ../src/core/abstractsqlstorage.cpp:129
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
 msgstr "Yükseltme başarısız..."
@@ -236,7 +238,7 @@ msgstr "..."
 #: ../src/qtui/settingspages/appearancesettingspage.ui:150
 msgctxt "AppearanceSettingsPage|"
 msgid "Show system tray icon"
-msgstr "Sistem tepsisi simgesini göster"
+msgstr "Sistem çekmecesi simgesini göster"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
 msgctxt "AppearanceSettingsPage|"
@@ -626,36 +628,36 @@ msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
 msgstr "İşaretçi Satırına Git"
 
-#: ../src/client/networkmodel.cpp:565
+#: ../src/client/networkmodel.cpp:566
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Channel %1</b>"
 msgstr "<b>Kanal %1</b>"
 
-#: ../src/client/networkmodel.cpp:568
+#: ../src/client/networkmodel.cpp:569
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
 msgstr "<b>Kullanıcılar:</b> %1"
 
-#: ../src/client/networkmodel.cpp:572
+#: ../src/client/networkmodel.cpp:573
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Mod:</b> %1"
 
-#: ../src/client/networkmodel.cpp:583
+#: ../src/client/networkmodel.cpp:584
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Konu:</b> %1"
 
-#: ../src/client/networkmodel.cpp:588
+#: ../src/client/networkmodel.cpp:589
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
 msgstr "Etkin değil <br /> Katılmak için çift-tıkla"
 
-#: ../src/client/networkmodel.cpp:591
+#: ../src/client/networkmodel.cpp:592
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
@@ -1020,7 +1022,7 @@ msgstr "Sohbet Görünümü"
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
 msgid "You need at least version 0.6 of quasselcore to use this feature"
-msgstr "Bu özellik için 0.6 quasselcore'a ihtiyacınız var"
+msgstr "Bu özelliği kullanabilmeniz için QuasselCore'un en az 0.6 sürümüne ihtiyacınız var"
 
 #: ../src/client/client.cpp:318
 msgctxt "Client|"
@@ -1845,7 +1847,7 @@ msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "Ağ etkin değil"
 
-#: ../src/client/coreconnection.cpp:225 ../src/client/coreconnection.cpp:365
+#: ../src/client/coreconnection.cpp:225 ../src/client/coreconnection.cpp:367
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "Bağlı değil"
@@ -1856,13 +1858,13 @@ msgctxt "CoreConnection|"
 msgid "Looking up %1..."
 msgstr "%1 aranıyor..."
 
-#: ../src/client/coreconnection.cpp:231 ../src/client/coreconnection.cpp:518
+#: ../src/client/coreconnection.cpp:231 ../src/client/coreconnection.cpp:520
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connecting to %1..."
 msgstr "%1e bağlanılıyor..."
 
-#: ../src/client/coreconnection.cpp:234 ../src/client/coreconnection.cpp:658
+#: ../src/client/coreconnection.cpp:234 ../src/client/coreconnection.cpp:660
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connected to %1"
@@ -1886,23 +1888,23 @@ msgctxt "CoreConnection|"
 msgid "Invalid data received from core"
 msgstr "Çekirdekten geçersiz bilgi alındı."
 
-#: ../src/client/coreconnection.cpp:403
+#: ../src/client/coreconnection.cpp:405
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "Çekirdekle bağlantı kesildi."
 
-#: ../src/client/coreconnection.cpp:496 ../src/client/coreconnection.cpp:590
-#: ../src/client/coreconnection.cpp:639
+#: ../src/client/coreconnection.cpp:498 ../src/client/coreconnection.cpp:592
+#: ../src/client/coreconnection.cpp:641
 msgctxt "CoreConnection|"
 msgid "Unencrypted connection canceled"
 msgstr "Şifrelenmemiş bağlantı iptal edildi"
 
-#: ../src/client/coreconnection.cpp:533
+#: ../src/client/coreconnection.cpp:535
 msgctxt "CoreConnection|"
 msgid "Synchronizing to core..."
 msgstr "Çekirdekle eşitleniyor..."
 
-#: ../src/client/coreconnection.cpp:556
+#: ../src/client/coreconnection.cpp:558
 #, qt-format
 msgctxt "CoreConnection|"
 msgid ""
@@ -1910,33 +1912,33 @@ msgid ""
 "least core/client protocol v%1 to connect."
 msgstr "<b>Bağlanmaya çalıştırğınız Quassel İstemcisi çok eski!</b><br>Bağlanmak için en azından çekirdek/istemci protokolü v%1 gerekli."
 
-#: ../src/client/coreconnection.cpp:682
+#: ../src/client/coreconnection.cpp:684
 msgctxt "CoreConnection|"
 msgid "Logging in..."
 msgstr "Oturum açılıyor..."
 
-#: ../src/client/coreconnection.cpp:687
+#: ../src/client/coreconnection.cpp:689
 msgctxt "CoreConnection|"
 msgid "Login canceled"
 msgstr "Oturum iptal edildi"
 
-#: ../src/client/coreconnection.cpp:716
+#: ../src/client/coreconnection.cpp:718
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "Oturum durumu alınıyor"
 
-#: ../src/client/coreconnection.cpp:718
+#: ../src/client/coreconnection.cpp:720
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "%1 ile eşitleniyor..."
 
-#: ../src/client/coreconnection.cpp:744
+#: ../src/client/coreconnection.cpp:746
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "Ağ durumu alınıyor."
 
-#: ../src/client/coreconnection.cpp:798
+#: ../src/client/coreconnection.cpp:800
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2138,13 +2140,13 @@ msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr "Çekirdeği Kapat"
 
-#: ../src/core/corenetwork.cpp:409
+#: ../src/core/corenetwork.cpp:422
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "%1 (%2) bağlanılamadı"
 
-#: ../src/core/corenetwork.cpp:411
+#: ../src/core/corenetwork.cpp:424
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
@@ -2185,8 +2187,8 @@ msgstr "Takma ad listesinde geçerli ve kullanılmayan takma ad bulunamadı. /ni
 
 #: ../src/core/coresessioneventprocessor.cpp:447
 msgctxt "CoreSessionEventProcessor|"
-msgid "Unable to perform key exchange."
-msgstr "Anahtar değişimi yapma başarısız"
+msgid "Unable to perform key exchange, missing qca-ossl plugin."
+msgstr "Anahtar değişimi yapılamadı, qca-ossl eklentisi eksik."
 
 #: ../src/core/coresessioneventprocessor.cpp:458
 msgctxt "CoreSessionEventProcessor|"
@@ -2215,28 +2217,38 @@ msgctxt "CoreUserInputHandler|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "%2 ye CTCP-%1 isteği gönderiliyor"
 
-#: ../src/core/coreuserinputhandler.cpp:199
+#: ../src/core/coreuserinputhandler.cpp:190
+#: ../src/core/coreuserinputhandler.cpp:361
+#: ../src/core/coreuserinputhandler.cpp:605
+#: ../src/core/coreuserinputhandler.cpp:643
+msgctxt "CoreUserInputHandler|"
+msgid ""
+"Error: QCA provider plugin not found. It is usually provided by the qca-ossl"
+" plugin."
+msgstr "Hata: QCA sağlayıcı eklentisi bulunamadı. Genellikle qca-ossl eklentisi ile sağlanmaktadır"
+
+#: ../src/core/coreuserinputhandler.cpp:201
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /delkey <nick|channel> deletes the encryption key for nick or "
 "channel or just /delkey when in a channel or query."
 msgstr "[kullanım] /delkey <takmaad|kanal> bir takma ad veya kanal için şifreleme anahtarını siler veya bir kanalda iken sadece /delkey."
 
-#: ../src/core/coreuserinputhandler.cpp:206
-#: ../src/core/coreuserinputhandler.cpp:648
+#: ../src/core/coreuserinputhandler.cpp:208
+#: ../src/core/coreuserinputhandler.cpp:661
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
 msgstr "%1 için konu ayarlanmamış."
 
-#: ../src/core/coreuserinputhandler.cpp:211
+#: ../src/core/coreuserinputhandler.cpp:213
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been deleted."
 msgstr "%1 için anahtar silindi."
 
-#: ../src/core/coreuserinputhandler.cpp:215
-#: ../src/core/coreuserinputhandler.cpp:656
+#: ../src/core/coreuserinputhandler.cpp:217
+#: ../src/core/coreuserinputhandler.cpp:669
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2245,27 +2257,31 @@ msgid ""
 "with QCA2 present."
 msgstr "Hata: Bir şifreleme anahtarı ayarlamak, Quassel'in Qt Kriptografik Mimari (QCA2) kütüphanesi ile derlenmiş olmasını gerektirir. Quassel paketinin QCA2 desteği için dağıtıcınızla iletişime geçin veya Quassel'i QCA2 etkin olarak tekrar derleyin."
 
-#: ../src/core/coreuserinputhandler.cpp:367
+#: ../src/core/coreuserinputhandler.cpp:371
 msgctxt "CoreUserInputHandler|"
 msgid ""
-"[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
-"target."
-msgstr "[kullanım] /keyx [<takmaad|kanal>] Hedef ile DH1080 anahtar değişimi başlatır."
+"[usage] /keyx [<nick>] Initiates a DH1080 key exchange with the target."
+msgstr "[kullanım] /keyx [<takmaad>] Hedef ile DH1080 anahtar değişimi başlatır."
 
-#: ../src/core/coreuserinputhandler.cpp:379
+#: ../src/core/coreuserinputhandler.cpp:378
+msgctxt "CoreUserInputHandler|"
+msgid "It is only possible to exchange keys in a query buffer."
+msgstr "Sadece sorgu tamponu içerisinde anahtar değişimi mümkündür."
+
+#: ../src/core/coreuserinputhandler.cpp:388
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
 msgstr "%1 ile anahtar değişimi başlatma başarısız."
 
-#: ../src/core/coreuserinputhandler.cpp:384
+#: ../src/core/coreuserinputhandler.cpp:393
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
 msgstr "%1 ile anahtar değişimi başlatıldı."
 
-#: ../src/core/coreuserinputhandler.cpp:388
-#: ../src/core/coreuserinputhandler.cpp:616
+#: ../src/core/coreuserinputhandler.cpp:397
+#: ../src/core/coreuserinputhandler.cpp:627
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2274,13 +2290,13 @@ msgid ""
 "with QCA present."
 msgstr "Hata: Bir şifreleme anahtarı ayarlamak, Quassel'in Qt Kriptografik Mimari (QCA) kütüphanesi ile derlenmiş olmasını gerektirir. Quassel paketinin QCA desteği için dağıtıcınızla iletişime geçin veya Quassel'i QCA etkin olarak tekrar derleyin."
 
-#: ../src/core/coreuserinputhandler.cpp:546
+#: ../src/core/coreuserinputhandler.cpp:555
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Starting query with %1"
 msgstr "Sorguya %1 ile başlanıyor"
 
-#: ../src/core/coreuserinputhandler.cpp:604
+#: ../src/core/coreuserinputhandler.cpp:615
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
@@ -2288,26 +2304,26 @@ msgid ""
 "it."
 msgstr "[kullanım] /setkey <takmaad|kanal> <anahtar> takmaad veya kanal için şifreleme anahtarı belirler. /setkey <anahtar> ise bir kanalda veya sorgu tamponunda anahtarı ayarlar."
 
-#: ../src/core/coreuserinputhandler.cpp:613
+#: ../src/core/coreuserinputhandler.cpp:624
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been set."
 msgstr "%1 için anahtar belirlendi"
 
-#: ../src/core/coreuserinputhandler.cpp:640
+#: ../src/core/coreuserinputhandler.cpp:653
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
 msgstr "[kullanım] /delkey <takmaad|kanal> bir takma ad veya kanal için şifreleme anahtarını gösterir veya bir kanal veya sorguda iken sadece /showkey."
 
-#: ../src/core/coreuserinputhandler.cpp:652
+#: ../src/core/coreuserinputhandler.cpp:665
 #, qt-format
 msgctxt "CoreUserInputHandler|"
-msgid "The key for %1 is %2"
-msgstr "%1 için anahtar %2"
+msgid "The key for %1 is %2:%3"
+msgstr "%1 için anahtar %2:%3"
 
-#: ../src/core/coreuserinputhandler.cpp:780
+#: ../src/core/coreuserinputhandler.cpp:793
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
@@ -2428,230 +2444,230 @@ msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
 msgstr "Tutturma yönetici girdisini işaretle"
 
-#: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
+#: ../src/core/eventstringifier.cpp:224 ../src/core/eventstringifier.cpp:370
 msgctxt "EventStringifier|"
 msgid "[Whois] "
 msgstr "[Whois] %1"
 
-#: ../src/core/eventstringifier.cpp:234
+#: ../src/core/eventstringifier.cpp:239
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 invited you to channel %2"
 msgstr "%1 sizi %2 odasına davet etti"
 
-#: ../src/core/eventstringifier.cpp:336
+#: ../src/core/eventstringifier.cpp:341
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1, %2 kanalının başlığını şu şekilde değiştirdi: \"%3\""
 
-#: ../src/core/eventstringifier.cpp:342
+#: ../src/core/eventstringifier.cpp:347
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
 msgstr "[Operwall] %1: %2"
 
-#: ../src/core/eventstringifier.cpp:350
+#: ../src/core/eventstringifier.cpp:355
 msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
 msgstr "RFC uyumlu olmayan RPL_ISUPPORT alındı: bu beklenmeyen bir davranışa yol açabilir!"
 
-#: ../src/core/eventstringifier.cpp:379
+#: ../src/core/eventstringifier.cpp:384
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
 msgstr "%1 uzakta: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:386
+#: ../src/core/eventstringifier.cpp:391
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
 msgstr "Artık uzakta işaretli değilsiniz"
 
-#: ../src/core/eventstringifier.cpp:394
+#: ../src/core/eventstringifier.cpp:399
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
 msgstr "Uzakta olarak işaretlendiniz"
 
-#: ../src/core/eventstringifier.cpp:416
+#: ../src/core/eventstringifier.cpp:421
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1, %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:432
+#: ../src/core/eventstringifier.cpp:437
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
 msgstr "%1, %2 (%3) aracılığıyla çevrimiçi"
 
-#: ../src/core/eventstringifier.cpp:434
+#: ../src/core/eventstringifier.cpp:439
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
 msgstr "%1, %2 (%3) aracılığıyla çevrimiçi"
 
-#: ../src/core/eventstringifier.cpp:444
+#: ../src/core/eventstringifier.cpp:449
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
 msgstr "[Whowas] %1, %2@%3 (%4) idi"
 
-#: ../src/core/eventstringifier.cpp:453
+#: ../src/core/eventstringifier.cpp:458
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] %1 için /WHO listesinin sonu"
 
-#: ../src/core/eventstringifier.cpp:465
+#: ../src/core/eventstringifier.cpp:470
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 dışarıda: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:469
+#: ../src/core/eventstringifier.cpp:474
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
 msgstr "[Whois] %1 is %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:479
+#: ../src/core/eventstringifier.cpp:484
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
 msgstr "[Who] %1 için /WHO listesinin sonu"
 
-#: ../src/core/eventstringifier.cpp:502
+#: ../src/core/eventstringifier.cpp:507
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr "[Whois] %1 dışarıda: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:504
+#: ../src/core/eventstringifier.cpp:509
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr "[Whois] %1 dışarıda: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:506
+#: ../src/core/eventstringifier.cpp:511
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr "[Whois] %1 dışarıda: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:527
+#: ../src/core/eventstringifier.cpp:532
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 has %2 users. Topic is: \"%3\""
 msgstr "Kanal %1'de %2 kullanıcı var. Konu: %3"
 
-#: ../src/core/eventstringifier.cpp:535
+#: ../src/core/eventstringifier.cpp:540
 msgctxt "EventStringifier|"
 msgid "End of channel list"
 msgstr "Kanal listesinin sonu"
 
-#: ../src/core/eventstringifier.cpp:553
+#: ../src/core/eventstringifier.cpp:558
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Homepage for %1 is %2"
 msgstr "%1 için anasayfa %2"
 
-#: ../src/core/eventstringifier.cpp:570
+#: ../src/core/eventstringifier.cpp:575
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 created on %2"
 msgstr "%1 kanalı %2 üzerinde oluşturuldu."
 
-#: ../src/core/eventstringifier.cpp:584
+#: ../src/core/eventstringifier.cpp:589
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
 msgstr "[Whois] %1 dışarıda: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:587
+#: ../src/core/eventstringifier.cpp:592
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was authed as %2"
 msgstr "[Whowas] %1, %2 olarak kimlik doğrulamıştı"
 
-#: ../src/core/eventstringifier.cpp:596
+#: ../src/core/eventstringifier.cpp:601
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "No topic is set for %1."
 msgstr "%1 için konu ayarlanmamış."
 
-#: ../src/core/eventstringifier.cpp:604
+#: ../src/core/eventstringifier.cpp:609
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic for %1 is \"%2\""
 msgstr "%1 kanalının konusu \"%2\""
 
-#: ../src/core/eventstringifier.cpp:616
+#: ../src/core/eventstringifier.cpp:621
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic set by %1 on %2"
 msgstr "%1 kanalının konusu \"%2\""
 
-#: ../src/core/eventstringifier.cpp:629
+#: ../src/core/eventstringifier.cpp:634
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has been invited to %2"
 msgstr "%1 sizi %2 odasına davet etti"
 
-#: ../src/core/eventstringifier.cpp:637
+#: ../src/core/eventstringifier.cpp:642
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
-#: ../src/core/eventstringifier.cpp:644
+#: ../src/core/eventstringifier.cpp:649
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
 msgstr "/WHOWAS sonu"
 
-#: ../src/core/eventstringifier.cpp:654
+#: ../src/core/eventstringifier.cpp:659
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick %1 contains illegal characters"
 msgstr "%1 takma adı geçersiz karakterler içeriyor"
 
-#: ../src/core/eventstringifier.cpp:664
+#: ../src/core/eventstringifier.cpp:669
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick already in use: %1"
 msgstr "%1 takma adı zaten kullanımda"
 
-#: ../src/core/eventstringifier.cpp:674
+#: ../src/core/eventstringifier.cpp:679
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr "Takma ad/kanal geçici olarak ulaşılamaz: %1"
 
-#: ../src/core/eventstringifier.cpp:697
+#: ../src/core/eventstringifier.cpp:702
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "%2 ye CTCP-%1 isteği gönderiliyor"
 
 #. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
-#: ../src/core/eventstringifier.cpp:712
+#: ../src/core/eventstringifier.cpp:717
 msgctxt "EventStringifier|"
 msgid "unknown"
 msgstr "bilinmiyor"
 
-#: ../src/core/eventstringifier.cpp:713
+#: ../src/core/eventstringifier.cpp:718
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
 msgstr "%3 tarafından %1CTCP-%2 isteği alındı"
 
-#: ../src/core/eventstringifier.cpp:716
+#: ../src/core/eventstringifier.cpp:721
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
 msgstr "CTCP-%1 cevabı alındı %2: %3"
 
-#: ../src/core/eventstringifier.cpp:731
+#: ../src/core/eventstringifier.cpp:736
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
@@ -3039,7 +3055,7 @@ msgid "minutes of being idle"
 msgstr "boşta kalma süresi"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
-#: ../src/qtui/settingspages/identityeditwidget.cpp:237
+#: ../src/qtui/settingspages/identityeditwidget.cpp:238
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
 msgstr "Gelişmiş"
@@ -3105,16 +3121,16 @@ msgid "Key Type:"
 msgstr "Anahtar Türü:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
-#: ../src/qtui/settingspages/identityeditwidget.cpp:351
-#: ../src/qtui/settingspages/identityeditwidget.cpp:363
+#: ../src/qtui/settingspages/identityeditwidget.cpp:353
+#: ../src/qtui/settingspages/identityeditwidget.cpp:365
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
 msgstr "Yüklü anahtar yok"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
-#: ../src/qtui/settingspages/identityeditwidget.cpp:352
-#: ../src/qtui/settingspages/identityeditwidget.cpp:406
+#: ../src/qtui/settingspages/identityeditwidget.cpp:354
+#: ../src/qtui/settingspages/identityeditwidget.cpp:408
 msgctxt "IdentityEditWidget|"
 msgid "Load"
 msgstr "Yükle"
@@ -3131,8 +3147,8 @@ msgstr "Organizasyon:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
-#: ../src/qtui/settingspages/identityeditwidget.cpp:404
-#: ../src/qtui/settingspages/identityeditwidget.cpp:405
+#: ../src/qtui/settingspages/identityeditwidget.cpp:406
+#: ../src/qtui/settingspages/identityeditwidget.cpp:407
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
 msgstr "Yüklü Sertifika Yok"
@@ -3142,28 +3158,40 @@ msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
 msgstr "OrtakAd:"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:320
+#: ../src/qtui/settingspages/identityeditwidget.cpp:321
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
 msgstr "Anahtar Yükle"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:357
+#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+msgctxt "IdentityEditWidget|"
+msgid "Failed to read key"
+msgstr "Anahtar okuma başarısız"
+
+#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+msgctxt "IdentityEditWidget|"
+msgid ""
+"Failed to read the key file. It is either incompatible or invalid. Note that"
+" the key file must not have a passphrase."
+msgstr "Anahtar dosyası okuma başarısız. Uyumsuz veya geçerli değil. Anahtar dosyasının bir parolaya sahip olmaması gerektiğini unutmayın."
+
+#: ../src/qtui/settingspages/identityeditwidget.cpp:359
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
 msgstr "RSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:360
+#: ../src/qtui/settingspages/identityeditwidget.cpp:362
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
 msgstr "DSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:365
-#: ../src/qtui/settingspages/identityeditwidget.cpp:411
+#: ../src/qtui/settingspages/identityeditwidget.cpp:367
+#: ../src/qtui/settingspages/identityeditwidget.cpp:413
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
 msgstr "Temizle"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:377
+#: ../src/qtui/settingspages/identityeditwidget.cpp:379
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
 msgstr "Sertifika Yükle"
@@ -3447,92 +3475,92 @@ msgctxt "InputWidget|"
 msgid "Form"
 msgstr "Form"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "White"
 msgstr "Beyaz"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Black"
 msgstr "Siyah"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark blue"
 msgstr "Koyu mavi"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark green"
 msgstr "Koyu yeşil"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Red"
 msgstr "Kırmızı"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark red"
 msgstr "Koyu kırmızı"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark magenta"
 msgstr "Koyu eflatun"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Orange"
 msgstr "Turuncu"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Yellow"
 msgstr "Sarı"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Green"
 msgstr "Yeşil"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Dark cyan"
 msgstr "Koyu eflatun"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Cyan"
 msgstr "Camgöbeği"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Blue"
 msgstr "Mavi"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Magenta"
 msgstr "Eflatun"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Dark gray"
 msgstr "Koyu gri"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Light gray"
 msgstr "Açık gri"
 
-#: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
+#: ../src/qtui/inputwidget.cpp:85 ../src/qtui/inputwidget.cpp:86
 msgctxt "InputWidget|"
 msgid "Clear Color"
 msgstr "Renkleri Temizle"
 
-#: ../src/qtui/inputwidget.cpp:132
+#: ../src/qtui/inputwidget.cpp:133
 msgctxt "InputWidget|"
 msgid "Focus Input Line"
 msgstr "Girdi satırına odaklan"
@@ -3652,24 +3680,24 @@ msgctxt "IrcListModel|"
 msgid "Topic"
 msgstr "Konu"
 
-#: ../src/client/networkmodel.cpp:911
+#: ../src/client/networkmodel.cpp:914
 msgctxt "IrcUserItem|"
 msgid " is away"
 msgstr "%1 is away: \"%2\""
 
-#: ../src/client/networkmodel.cpp:926
+#: ../src/client/networkmodel.cpp:929
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "idling since %1"
 msgstr "%1 süresinden beri boşta"
 
-#: ../src/client/networkmodel.cpp:929
+#: ../src/client/networkmodel.cpp:932
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "login time: %1"
 msgstr "giriş zamanı: %1"
 
-#: ../src/client/networkmodel.cpp:932
+#: ../src/client/networkmodel.cpp:935
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "server: %1"
@@ -4406,17 +4434,17 @@ msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
 msgstr "Gecikme: %1 ms"
 
-#: ../src/client/networkmodel.cpp:960
+#: ../src/client/networkmodel.cpp:963
 msgctxt "NetworkModel|"
 msgid "Chat"
 msgstr "Sohbet"
 
-#: ../src/client/networkmodel.cpp:960
+#: ../src/client/networkmodel.cpp:963
 msgctxt "NetworkModel|"
 msgid "Topic"
 msgstr "Konu"
 
-#: ../src/client/networkmodel.cpp:960
+#: ../src/client/networkmodel.cpp:963
 msgctxt "NetworkModel|"
 msgid "Nick Count"
 msgstr "Takma Ad Sayısı"
@@ -4851,159 +4879,159 @@ msgid ""
 "wizard any time and use the settings dialog for more detailed changes."
 msgstr "Bu sihirbaz öntanımlı kimliğinizi ve IRC ağ bağlantınızı ayarlamanıza yardımcı olacak.<br>Bu sadece temel ayarları içerir. Bu sihirbazı herhangi bir anda iptal edip, daha ayrıntılı değişiklikler için ayarlar iletişim penceresini kullanabilirsiniz."
 
-#: ../src/uisupport/qssparser.cpp:129 ../src/uisupport/qssparser.cpp:179
-#: ../src/uisupport/qssparser.cpp:335
+#: ../src/uisupport/qssparser.cpp:128 ../src/uisupport/qssparser.cpp:178
+#: ../src/uisupport/qssparser.cpp:334
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid block declaration: %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:148
+#: ../src/uisupport/qssparser.cpp:147
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette role assignment: %1"
 msgstr "Geçersiz dinleme adresi %1"
 
-#: ../src/uisupport/qssparser.cpp:167
+#: ../src/uisupport/qssparser.cpp:166
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette role name: %1"
 msgstr "Bilinmeyen palet görev adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:205
+#: ../src/uisupport/qssparser.cpp:204
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid subelement name in %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:249
+#: ../src/uisupport/qssparser.cpp:248
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message type in %1"
 msgstr "%1'de geçersiz ileti türü"
 
-#: ../src/uisupport/qssparser.cpp:258
+#: ../src/uisupport/qssparser.cpp:257
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid condition %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:270
+#: ../src/uisupport/qssparser.cpp:269
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message label: %1"
 msgstr "Geçersiz ileti etiketi: %1"
 
-#: ../src/uisupport/qssparser.cpp:282
+#: ../src/uisupport/qssparser.cpp:281
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid senderhash specification: %1"
 msgstr "Geçersiz gönderici kodlama niteliği: %1"
 
-#: ../src/uisupport/qssparser.cpp:286
+#: ../src/uisupport/qssparser.cpp:285
 msgctxt "QssParser|"
 msgid "Senderhash can be at most \"0x0f\"!"
 msgstr "Gönderici anahtarı en fazla \"0x0f\" olabilir!"
 
-#: ../src/uisupport/qssparser.cpp:302
+#: ../src/uisupport/qssparser.cpp:301
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid format name: %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:310
+#: ../src/uisupport/qssparser.cpp:309
 #, qt-format
 msgctxt "QssParser|"
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
 msgstr "Geçersiz IRC renk niteliği (00 ile 0f arasında olmalı): %1"
 
-#: ../src/uisupport/qssparser.cpp:319
+#: ../src/uisupport/qssparser.cpp:318
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unhandled condition: %1"
 msgstr "Ele alınmamış durum: %1"
 
-#: ../src/uisupport/qssparser.cpp:350
+#: ../src/uisupport/qssparser.cpp:349
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid proplist %1"
 msgstr "Geçersiz dinleme adresi %1"
 
-#: ../src/uisupport/qssparser.cpp:369
+#: ../src/uisupport/qssparser.cpp:368
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist item type %1"
 msgstr "Geçersiz dinleme adresi %1"
 
-#: ../src/uisupport/qssparser.cpp:385
+#: ../src/uisupport/qssparser.cpp:384
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist state %1"
 msgstr "Geçersiz dinleme adresi %1"
 
-#: ../src/uisupport/qssparser.cpp:415
+#: ../src/uisupport/qssparser.cpp:414
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid property declaration: %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:439
+#: ../src/uisupport/qssparser.cpp:438
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font property: %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:445
+#: ../src/uisupport/qssparser.cpp:444
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown ChatLine property: %1"
 msgstr "Bilinmeyen SohbetSatır özelliği: %1"
 
-#: ../src/uisupport/qssparser.cpp:469
+#: ../src/uisupport/qssparser.cpp:468
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette color role specification: %1"
 msgstr "Geçersiz palet renk görev niteliği: %1"
 
-#: ../src/uisupport/qssparser.cpp:476
+#: ../src/uisupport/qssparser.cpp:475
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette color role: %1"
 msgstr "Bilinmeyen palet renk görevi: %1"
 
-#: ../src/uisupport/qssparser.cpp:483 ../src/uisupport/qssparser.cpp:506
-#: ../src/uisupport/qssparser.cpp:528
+#: ../src/uisupport/qssparser.cpp:482 ../src/uisupport/qssparser.cpp:505
+#: ../src/uisupport/qssparser.cpp:527
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient declaration: %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:492 ../src/uisupport/qssparser.cpp:514
-#: ../src/uisupport/qssparser.cpp:538
+#: ../src/uisupport/qssparser.cpp:491 ../src/uisupport/qssparser.cpp:513
+#: ../src/uisupport/qssparser.cpp:537
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient stops list: %1"
 msgstr "%1'de geçersiz ileti türü"
 
-#: ../src/uisupport/qssparser.cpp:647
+#: ../src/uisupport/qssparser.cpp:646
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font specification: %1"
 msgstr "Geçersiz biçim adı: %1"
 
-#: ../src/uisupport/qssparser.cpp:688
+#: ../src/uisupport/qssparser.cpp:687
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font style specification: %1"
 msgstr "Geçersiz yazı tipi biçem niteliği: %1"
 
-#: ../src/uisupport/qssparser.cpp:703
+#: ../src/uisupport/qssparser.cpp:702
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font weight specification: %1"
 msgstr "Geçersiz yazı tipi ağırlık niteliği: %1"
 
-#: ../src/uisupport/qssparser.cpp:715
+#: ../src/uisupport/qssparser.cpp:714
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font size specification: %1"
@@ -5512,7 +5540,7 @@ msgctxt "SslInfoDlg|"
 msgid "%1 to %2"
 msgstr "%1 kullanıcısından %2 kullanıcısına"
 
-#: ../src/client/networkmodel.h:149
+#: ../src/client/networkmodel.h:150
 msgctxt "StatusBufferItem|"
 msgid "Status Buffer"
 msgstr "Durum Arabelleği"
@@ -5715,13 +5743,13 @@ msgctxt "TopicWidget|"
 msgid "..."
 msgstr "..."
 
-#: ../src/qtui/topicwidget.cpp:118
+#: ../src/qtui/topicwidget.cpp:120
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
 msgstr "Kullanıcılar: %1"
 
-#: ../src/qtui/topicwidget.cpp:119
+#: ../src/qtui/topicwidget.cpp:121
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Lag: %1 msecs"
@@ -5770,114 +5798,114 @@ msgstr "Konu Değişimi"
 #. Topic Message
 #. ----------
 #. Invite Message
-#: ../src/uisupport/uistyle.cpp:666 ../src/uisupport/uistyle.cpp:669
-#: ../src/uisupport/uistyle.cpp:710 ../src/uisupport/uistyle.cpp:713
-#: ../src/uisupport/uistyle.cpp:716 ../src/uisupport/uistyle.cpp:725
-#: ../src/uisupport/uistyle.cpp:759
+#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:668
+#: ../src/uisupport/uistyle.cpp:709 ../src/uisupport/uistyle.cpp:712
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:724
+#: ../src/uisupport/uistyle.cpp:758
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
 msgstr "%1"
 
 #. Action Message
-#: ../src/uisupport/uistyle.cpp:672
+#: ../src/uisupport/uistyle.cpp:671
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
-#: ../src/uisupport/uistyle.cpp:676
+#: ../src/uisupport/uistyle.cpp:675
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "You are now known as %DN%1%DN"
 msgstr "%DN%1%DN olarak biliniyorsunuz"
 
-#: ../src/uisupport/uistyle.cpp:677
+#: ../src/uisupport/uistyle.cpp:676
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN şimdi %DN%2%DN olarak biliniyor"
 
 #. Mode Message
-#: ../src/uisupport/uistyle.cpp:681
+#: ../src/uisupport/uistyle.cpp:680
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "User mode: %DM%1%DM"
 msgstr "Kullanıcı modu: %DM%1%DM"
 
-#: ../src/uisupport/uistyle.cpp:682
+#: ../src/uisupport/uistyle.cpp:681
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "%DN%2%DN tarafından, %DM%1%DM kipi"
 
 #. Join Message
-#: ../src/uisupport/uistyle.cpp:686
+#: ../src/uisupport/uistyle.cpp:685
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH %DC%4%DC kanala katıldı"
 
 #. Part Message
-#: ../src/uisupport/uistyle.cpp:689
+#: ../src/uisupport/uistyle.cpp:688
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH %DC%4%DC kanalını terketti"
 
 #. Quit Message
-#: ../src/uisupport/uistyle.cpp:694
+#: ../src/uisupport/uistyle.cpp:693
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH çıktı"
 
 #. Kick Message
-#: ../src/uisupport/uistyle.cpp:702
+#: ../src/uisupport/uistyle.cpp:701
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN, %DN%2%DN kullanıcısını %DC%3%DC kanalından attı"
 
 #. Day Change Message
-#: ../src/uisupport/uistyle.cpp:720
+#: ../src/uisupport/uistyle.cpp:719
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
 msgstr "%1 ile eşitlendi"
 
-#: ../src/uisupport/uistyle.cpp:734
+#: ../src/uisupport/uistyle.cpp:733
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr "%DH%1%DH ve %DH%2%DH arasında ağ bölme bitti. Katılan kullanıcılar:"
 
-#: ../src/uisupport/uistyle.cpp:738 ../src/uisupport/uistyle.cpp:754
+#: ../src/uisupport/uistyle.cpp:737 ../src/uisupport/uistyle.cpp:753
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN %2"
 
-#: ../src/uisupport/uistyle.cpp:749
+#: ../src/uisupport/uistyle.cpp:748
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "%DH%1%DH ve %DH%2%DH arasında ağ bölme. Çıkan kullanıcılar:"
 
-#: ../src/uisupport/uistyle.cpp:761 ../src/uisupport/uistyle.cpp:809
+#: ../src/uisupport/uistyle.cpp:760 ../src/uisupport/uistyle.cpp:808
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
 msgstr "[%1]"
 
-#: ../src/uisupport/uistyle.cpp:807
+#: ../src/uisupport/uistyle.cpp:806
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
 msgstr "<%1>"
 
-#: ../src/client/networkmodel.cpp:783
+#: ../src/client/networkmodel.cpp:786
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
@@ -5885,7 +5913,7 @@ msgid_plural "%n Owner(s)"
 msgstr[0] "%n Sahip"
 msgstr[1] "%n Sahip"
 
-#: ../src/client/networkmodel.cpp:785
+#: ../src/client/networkmodel.cpp:788
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
@@ -5893,7 +5921,7 @@ msgid_plural "%n Admin(s)"
 msgstr[0] "%n Yönetici"
 msgstr[1] "%n Yöneticiler"
 
-#: ../src/client/networkmodel.cpp:787
+#: ../src/client/networkmodel.cpp:790
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
@@ -5901,7 +5929,7 @@ msgid_plural "%n Operator(s)"
 msgstr[0] "%n Operatör"
 msgstr[1] "%n Operatörler"
 
-#: ../src/client/networkmodel.cpp:789
+#: ../src/client/networkmodel.cpp:792
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
@@ -5909,7 +5937,7 @@ msgid_plural "%n Half-Op(s)"
 msgstr[0] "%n Yarı-Op"
 msgstr[1] "%n Yarı-Op"
 
-#: ../src/client/networkmodel.cpp:791
+#: ../src/client/networkmodel.cpp:794
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
@@ -5917,7 +5945,7 @@ msgid_plural "%n Voiced"
 msgstr[0] "%n Söz Sahibi"
 msgstr[1] "%n Söz Sahibi"
 
-#: ../src/client/networkmodel.cpp:793
+#: ../src/client/networkmodel.cpp:796
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"

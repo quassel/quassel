@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-08-12 12:26+0000\n"
-"Last-Translator: Vít Pelčák <vit@pelcak.org>\n"
+"PO-Revision-Date: 2013-11-20 11:02+0000\n"
+"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/quassel/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -95,7 +95,7 @@ msgid ""
 "and everybody we forgot to mention here:"
 msgstr "Rádi bychom poděkovali následujícím přispěvatelům (v abecedním pořadí) a také všem, na které jsme zde zapomněli:"
 
-#: ../src/qtui/aboutdlg.cpp:185
+#: ../src/qtui/aboutdlg.cpp:194
 msgctxt "AboutDlg|"
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
@@ -112,14 +112,14 @@ msgid ""
 "sponsoring development of Quassel Mobile with N810s</dd>"
 msgstr "Zvláště bychom rádi poděkovali:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>Johnu \"nox\" Handovi</b></dt><dd>pro skvělý artwork a Quassel logo/ikonku</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Oxygen Team</a></b></dt><dd>pro vytvoření většiny ostatních skvělých ikon, které můžete vidět všude možně v aplikaci</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software (dříve znám jako Trolltech)</a></b></dt><dd>za vytvoření Qt a Qtopia, a pro sponzorování vývoje QuasselTopia s Greenphones a dalších</dd><dt><b><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>pro udržování Qt naživu, a pro sponzorování vývoje Quassel Mobile N810</dd>"
 
-#: ../src/core/abstractsqlstorage.cpp:124
+#: ../src/core/abstractsqlstorage.cpp:127
 #, qt-format
 msgctxt "AbstractSqlStorage|"
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Instalované schéma (verze %1) není aktuální. aktualizuji na %2..."
 
-#: ../src/core/abstractsqlstorage.cpp:126
+#: ../src/core/abstractsqlstorage.cpp:129
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
 msgstr "Aktualizace selhala..."
@@ -626,36 +626,36 @@ msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
 msgstr "Přejít na značící řádku"
 
-#: ../src/client/networkmodel.cpp:565
+#: ../src/client/networkmodel.cpp:566
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Channel %1</b>"
 msgstr "<b>Kanál %1</b>"
 
-#: ../src/client/networkmodel.cpp:568
+#: ../src/client/networkmodel.cpp:569
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
 msgstr "<b>uživatelé:</b> %1"
 
-#: ../src/client/networkmodel.cpp:572
+#: ../src/client/networkmodel.cpp:573
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Mód:</b> %1"
 
-#: ../src/client/networkmodel.cpp:583
+#: ../src/client/networkmodel.cpp:584
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Téma:</b> %1"
 
-#: ../src/client/networkmodel.cpp:588
+#: ../src/client/networkmodel.cpp:589
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
 msgstr "Neaktivní <br /> Dvojklikem vstupte"
 
-#: ../src/client/networkmodel.cpp:591
+#: ../src/client/networkmodel.cpp:592
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
@@ -1210,12 +1210,12 @@ msgstr "Vstoupit do kanálu..."
 #: ../src/uisupport/contextmenuactionprovider.cpp:59
 msgctxt "ContextMenuActionProvider|"
 msgid "Start Query"
-msgstr "Zahájit pokec"
+msgstr "Zahájit rozhovor"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:60
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Query"
-msgstr "Zobrazit pokec"
+msgstr "Zobrazit rozhovor"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:61
 msgctxt "ContextMenuActionProvider|"
@@ -1845,7 +1845,7 @@ msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "Síť je mimo provoz"
 
-#: ../src/client/coreconnection.cpp:225 ../src/client/coreconnection.cpp:365
+#: ../src/client/coreconnection.cpp:225 ../src/client/coreconnection.cpp:367
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "Odpojeno"
@@ -1856,13 +1856,13 @@ msgctxt "CoreConnection|"
 msgid "Looking up %1..."
 msgstr "Vyhledávám %1..."
 
-#: ../src/client/coreconnection.cpp:231 ../src/client/coreconnection.cpp:518
+#: ../src/client/coreconnection.cpp:231 ../src/client/coreconnection.cpp:520
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connecting to %1..."
 msgstr "Připojuji se k %1..."
 
-#: ../src/client/coreconnection.cpp:234 ../src/client/coreconnection.cpp:658
+#: ../src/client/coreconnection.cpp:234 ../src/client/coreconnection.cpp:660
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connected to %1"
@@ -1886,23 +1886,23 @@ msgctxt "CoreConnection|"
 msgid "Invalid data received from core"
 msgstr "Přijata neplatná data od jádra"
 
-#: ../src/client/coreconnection.cpp:403
+#: ../src/client/coreconnection.cpp:405
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "Odpojit od jádra."
 
-#: ../src/client/coreconnection.cpp:496 ../src/client/coreconnection.cpp:590
-#: ../src/client/coreconnection.cpp:639
+#: ../src/client/coreconnection.cpp:498 ../src/client/coreconnection.cpp:592
+#: ../src/client/coreconnection.cpp:641
 msgctxt "CoreConnection|"
 msgid "Unencrypted connection canceled"
 msgstr "Nešifrované spojení zrušeno"
 
-#: ../src/client/coreconnection.cpp:533
+#: ../src/client/coreconnection.cpp:535
 msgctxt "CoreConnection|"
 msgid "Synchronizing to core..."
 msgstr "Synchronizace s jádrem..."
 
-#: ../src/client/coreconnection.cpp:556
+#: ../src/client/coreconnection.cpp:558
 #, qt-format
 msgctxt "CoreConnection|"
 msgid ""
@@ -1910,33 +1910,33 @@ msgid ""
 "least core/client protocol v%1 to connect."
 msgstr "<b>Jádro Quasselu, ke kterému se snažíte připojit, je příliš staré!</b><br> Požadovaný je protokol verze %1 pro spojení."
 
-#: ../src/client/coreconnection.cpp:682
+#: ../src/client/coreconnection.cpp:684
 msgctxt "CoreConnection|"
 msgid "Logging in..."
 msgstr "Probíhá přihlášení..."
 
-#: ../src/client/coreconnection.cpp:687
+#: ../src/client/coreconnection.cpp:689
 msgctxt "CoreConnection|"
 msgid "Login canceled"
 msgstr "Přihlášení zrušeno"
 
-#: ../src/client/coreconnection.cpp:716
+#: ../src/client/coreconnection.cpp:718
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "Příjem stavu sezení"
 
-#: ../src/client/coreconnection.cpp:718
+#: ../src/client/coreconnection.cpp:720
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "Synchronizace s %1..."
 
-#: ../src/client/coreconnection.cpp:744
+#: ../src/client/coreconnection.cpp:746
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "Příjem stavů sítí"
 
-#: ../src/client/coreconnection.cpp:798
+#: ../src/client/coreconnection.cpp:800
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2139,13 +2139,13 @@ msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr "Vypnutí jádra"
 
-#: ../src/core/corenetwork.cpp:409
+#: ../src/core/corenetwork.cpp:422
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "Nemohu se spojit s %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:411
+#: ../src/core/corenetwork.cpp:424
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
@@ -2186,8 +2186,8 @@ msgstr "Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezd�
 
 #: ../src/core/coresessioneventprocessor.cpp:447
 msgctxt "CoreSessionEventProcessor|"
-msgid "Unable to perform key exchange."
-msgstr "Nelze provést výměnu klíče."
+msgid "Unable to perform key exchange, missing qca-ossl plugin."
+msgstr "Nelze provést výměnu klíče. Chybí modul qca-ossl."
 
 #: ../src/core/coresessioneventprocessor.cpp:458
 msgctxt "CoreSessionEventProcessor|"
@@ -2216,28 +2216,38 @@ msgctxt "CoreUserInputHandler|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "posílám %2 požadavek CTCP-%1"
 
-#: ../src/core/coreuserinputhandler.cpp:199
+#: ../src/core/coreuserinputhandler.cpp:190
+#: ../src/core/coreuserinputhandler.cpp:361
+#: ../src/core/coreuserinputhandler.cpp:605
+#: ../src/core/coreuserinputhandler.cpp:643
+msgctxt "CoreUserInputHandler|"
+msgid ""
+"Error: QCA provider plugin not found. It is usually provided by the qca-ossl"
+" plugin."
+msgstr "Chyba: Modul poskytovatele QCA nenalezen. Je obvykle poskytován modulem qca-ossl."
+
+#: ../src/core/coreuserinputhandler.cpp:201
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /delkey <nick|channel> deletes the encryption key for nick or "
 "channel or just /delkey when in a channel or query."
 msgstr "[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /delkey, když je na popředí."
 
-#: ../src/core/coreuserinputhandler.cpp:206
-#: ../src/core/coreuserinputhandler.cpp:648
+#: ../src/core/coreuserinputhandler.cpp:208
+#: ../src/core/coreuserinputhandler.cpp:661
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
 msgstr "Pro %1 není nastavena žádná klávesa."
 
-#: ../src/core/coreuserinputhandler.cpp:211
+#: ../src/core/coreuserinputhandler.cpp:213
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been deleted."
 msgstr "Klíč pro %1 byl smazán."
 
-#: ../src/core/coreuserinputhandler.cpp:215
-#: ../src/core/coreuserinputhandler.cpp:656
+#: ../src/core/coreuserinputhandler.cpp:217
+#: ../src/core/coreuserinputhandler.cpp:669
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2246,27 +2256,31 @@ msgid ""
 "with QCA2 present."
 msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA2, nebo znovu sestavte Quassel s dostupnou QCA2."
 
-#: ../src/core/coreuserinputhandler.cpp:367
+#: ../src/core/coreuserinputhandler.cpp:371
 msgctxt "CoreUserInputHandler|"
 msgid ""
-"[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
-"target."
-msgstr "[usage] /keyx [<nick|channel>] Spustí s cílem výměnu klíče DH1080."
+"[usage] /keyx [<nick>] Initiates a DH1080 key exchange with the target."
+msgstr "[usage] /keyx [<nick>] Spustí s cílem výměnu klíče DH1080."
 
-#: ../src/core/coreuserinputhandler.cpp:379
+#: ../src/core/coreuserinputhandler.cpp:378
+msgctxt "CoreUserInputHandler|"
+msgid "It is only possible to exchange keys in a query buffer."
+msgstr "Výměnu klíčů je možno provést pouze v rámci rozhovoru."
+
+#: ../src/core/coreuserinputhandler.cpp:388
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
 msgstr "Selhala inicializace výměny klíče s %1."
 
-#: ../src/core/coreuserinputhandler.cpp:384
+#: ../src/core/coreuserinputhandler.cpp:393
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
 msgstr "Spuštěna výměna klíče s %1."
 
-#: ../src/core/coreuserinputhandler.cpp:388
-#: ../src/core/coreuserinputhandler.cpp:616
+#: ../src/core/coreuserinputhandler.cpp:397
+#: ../src/core/coreuserinputhandler.cpp:627
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2275,13 +2289,13 @@ msgid ""
 "with QCA present."
 msgstr "Chyba: Nastavení šifrovacího klíče vyžaduje sestavení Quasselu s podporou pro knihovnu Qt Kryptografické Architektury (QCA). Kontaktujte svého distributora pro získání baličku Quassel s podporou QCA, nebo znovu sestavte Quassel s dostupnou QCA."
 
-#: ../src/core/coreuserinputhandler.cpp:546
+#: ../src/core/coreuserinputhandler.cpp:555
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Starting query with %1"
 msgstr "Zahajuji rozhovor s %1"
 
-#: ../src/core/coreuserinputhandler.cpp:604
+#: ../src/core/coreuserinputhandler.cpp:615
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
@@ -2289,26 +2303,26 @@ msgid ""
 "it."
 msgstr "[použití] /setkey <kanál|přezdívka> <klíč> nastaví šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /setkey <klíč>, když je na popředí."
 
-#: ../src/core/coreuserinputhandler.cpp:613
+#: ../src/core/coreuserinputhandler.cpp:624
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been set."
 msgstr "Klíč pro %1 byl nastaven."
 
-#: ../src/core/coreuserinputhandler.cpp:640
+#: ../src/core/coreuserinputhandler.cpp:653
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
 msgstr "[použití] /delkey <kanál|přezdívka> smaže šifrovací klíč pro kanál nebo přezdívku. Nastavení klíče pro specifický kanál, či rozhovor, lze provést pomocí /delkey, když je na popředí."
 
-#: ../src/core/coreuserinputhandler.cpp:652
+#: ../src/core/coreuserinputhandler.cpp:665
 #, qt-format
 msgctxt "CoreUserInputHandler|"
-msgid "The key for %1 is %2"
-msgstr "Domovská stránka pro %1 je %2"
+msgid "The key for %1 is %2:%3"
+msgstr "Klíč pro %1 je %2:%3"
 
-#: ../src/core/coreuserinputhandler.cpp:780
+#: ../src/core/coreuserinputhandler.cpp:793
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
@@ -2429,230 +2443,230 @@ msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
 msgstr ""
 
-#: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
+#: ../src/core/eventstringifier.cpp:224 ../src/core/eventstringifier.cpp:370
 msgctxt "EventStringifier|"
 msgid "[Whois] "
 msgstr "[Whois] %1"
 
-#: ../src/core/eventstringifier.cpp:234
+#: ../src/core/eventstringifier.cpp:239
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 invited you to channel %2"
 msgstr "%1 vás pozval do kanálu %2"
 
-#: ../src/core/eventstringifier.cpp:336
+#: ../src/core/eventstringifier.cpp:341
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
 msgstr "%1 změnil téma pro %2 na: \"%3\""
 
-#: ../src/core/eventstringifier.cpp:342
+#: ../src/core/eventstringifier.cpp:347
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
 msgstr "[Operwall] %1: %2"
 
-#: ../src/core/eventstringifier.cpp:350
+#: ../src/core/eventstringifier.cpp:355
 msgctxt "EventStringifier|"
 msgid ""
 "Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected "
 "behavior!"
 msgstr "Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému chování!"
 
-#: ../src/core/eventstringifier.cpp:379
+#: ../src/core/eventstringifier.cpp:384
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 is away: \"%2\""
 msgstr "%1 je pryč: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:386
+#: ../src/core/eventstringifier.cpp:391
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
 msgstr "Již nejste označen jako nedostupný"
 
-#: ../src/core/eventstringifier.cpp:394
+#: ../src/core/eventstringifier.cpp:399
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
 msgstr "Byl jste označen jako nedostupný"
 
-#: ../src/core/eventstringifier.cpp:416
+#: ../src/core/eventstringifier.cpp:421
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
 msgstr "[Whois] %1 je %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:432
+#: ../src/core/eventstringifier.cpp:437
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
 msgstr "%1 je online skrze %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:434
+#: ../src/core/eventstringifier.cpp:439
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
 msgstr "[Whowas] %1 byl %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:444
+#: ../src/core/eventstringifier.cpp:449
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
 msgstr "[Whowas] %1 byl %2@%3 (%4)"
 
-#: ../src/core/eventstringifier.cpp:453
+#: ../src/core/eventstringifier.cpp:458
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] End of /WHO list for %1"
 msgstr "[Who] Konec /WHO seznamu pro %1"
 
-#: ../src/core/eventstringifier.cpp:465
+#: ../src/core/eventstringifier.cpp:470
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
 msgstr "[Whois] %1 je přihlášen od %2"
 
-#: ../src/core/eventstringifier.cpp:469
+#: ../src/core/eventstringifier.cpp:474
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
 msgstr "[Whois] %1 je nečinný po %2 (%3)"
 
-#: ../src/core/eventstringifier.cpp:479
+#: ../src/core/eventstringifier.cpp:484
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
 msgstr "[Who] Konec /WHO seznamu pro %1"
 
-#: ../src/core/eventstringifier.cpp:502
+#: ../src/core/eventstringifier.cpp:507
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
 msgstr "[Whois] %1 je uživatelem kanálů: %2"
 
-#: ../src/core/eventstringifier.cpp:504
+#: ../src/core/eventstringifier.cpp:509
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
 msgstr "[Whois] %1 je mluvka na kanálech: %2"
 
-#: ../src/core/eventstringifier.cpp:506
+#: ../src/core/eventstringifier.cpp:511
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
 msgstr "[Whois] %1 je dozorce na kanálech: %2"
 
-#: ../src/core/eventstringifier.cpp:527
+#: ../src/core/eventstringifier.cpp:532
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 has %2 users. Topic is: \"%3\""
 msgstr "Kanál %1 má %2 uživatelů. Tématem je: %3"
 
-#: ../src/core/eventstringifier.cpp:535
+#: ../src/core/eventstringifier.cpp:540
 msgctxt "EventStringifier|"
 msgid "End of channel list"
 msgstr "Konec seznamu s kanály"
 
-#: ../src/core/eventstringifier.cpp:553
+#: ../src/core/eventstringifier.cpp:558
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Homepage for %1 is %2"
 msgstr "Domovská stránka pro %1 je %2"
 
-#: ../src/core/eventstringifier.cpp:570
+#: ../src/core/eventstringifier.cpp:575
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Channel %1 created on %2"
 msgstr "Kanál %1 byl vytvořen %2"
 
-#: ../src/core/eventstringifier.cpp:584
+#: ../src/core/eventstringifier.cpp:589
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
 msgstr "[Whois] %1 je pryč: \"%2\""
 
-#: ../src/core/eventstringifier.cpp:587
+#: ../src/core/eventstringifier.cpp:592
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was authed as %2"
 msgstr "[Whowas] %1 byl ověřen jako %2"
 
-#: ../src/core/eventstringifier.cpp:596
+#: ../src/core/eventstringifier.cpp:601
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "No topic is set for %1."
 msgstr "Pro %1 není nastaveno žádné téma."
 
-#: ../src/core/eventstringifier.cpp:604
+#: ../src/core/eventstringifier.cpp:609
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic for %1 is \"%2\""
 msgstr "Téma pro %1 je \"%2\""
 
-#: ../src/core/eventstringifier.cpp:616
+#: ../src/core/eventstringifier.cpp:621
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic set by %1 on %2"
 msgstr "Téma nastavil %1 v %2"
 
-#: ../src/core/eventstringifier.cpp:629
+#: ../src/core/eventstringifier.cpp:634
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has been invited to %2"
 msgstr "%1 byl pozván do %2"
 
-#: ../src/core/eventstringifier.cpp:637
+#: ../src/core/eventstringifier.cpp:642
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Who] %1"
 msgstr "[Who] %1"
 
-#: ../src/core/eventstringifier.cpp:644
+#: ../src/core/eventstringifier.cpp:649
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
 msgstr "Konec /WHOWAS"
 
-#: ../src/core/eventstringifier.cpp:654
+#: ../src/core/eventstringifier.cpp:659
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick %1 contains illegal characters"
 msgstr "Přezdívka %1 obsahuje neplatné znaky"
 
-#: ../src/core/eventstringifier.cpp:664
+#: ../src/core/eventstringifier.cpp:669
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick already in use: %1"
 msgstr "Přezdívka se již používá: %1"
 
-#: ../src/core/eventstringifier.cpp:674
+#: ../src/core/eventstringifier.cpp:679
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Nick/channel is temporarily unavailable: %1"
 msgstr "Přezdívka/kanál je dočasně nedostupná: %1"
 
-#: ../src/core/eventstringifier.cpp:697
+#: ../src/core/eventstringifier.cpp:702
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "posílám %2 požadavek CTCP-%1"
 
 #. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
-#: ../src/core/eventstringifier.cpp:712
+#: ../src/core/eventstringifier.cpp:717
 msgctxt "EventStringifier|"
 msgid "unknown"
 msgstr "neznámý"
 
-#: ../src/core/eventstringifier.cpp:713
+#: ../src/core/eventstringifier.cpp:718
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
 msgstr "Obdržen %1CTCP-%2 požadavek od %3"
 
-#: ../src/core/eventstringifier.cpp:716
+#: ../src/core/eventstringifier.cpp:721
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
 msgstr "Obdržena CTCP-%1 odpověď od %2: %3"
 
-#: ../src/core/eventstringifier.cpp:731
+#: ../src/core/eventstringifier.cpp:736
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
@@ -3040,7 +3054,7 @@ msgid "minutes of being idle"
 msgstr "minut nicnedělání"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
-#: ../src/qtui/settingspages/identityeditwidget.cpp:237
+#: ../src/qtui/settingspages/identityeditwidget.cpp:238
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
 msgstr "Pokročilé"
@@ -3106,16 +3120,16 @@ msgid "Key Type:"
 msgstr "Typ klíče:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
-#: ../src/qtui/settingspages/identityeditwidget.cpp:351
-#: ../src/qtui/settingspages/identityeditwidget.cpp:363
+#: ../src/qtui/settingspages/identityeditwidget.cpp:353
+#: ../src/qtui/settingspages/identityeditwidget.cpp:365
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
 msgstr "Nebyl načten žádný klíč"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
-#: ../src/qtui/settingspages/identityeditwidget.cpp:352
-#: ../src/qtui/settingspages/identityeditwidget.cpp:406
+#: ../src/qtui/settingspages/identityeditwidget.cpp:354
+#: ../src/qtui/settingspages/identityeditwidget.cpp:408
 msgctxt "IdentityEditWidget|"
 msgid "Load"
 msgstr "Načíst"
@@ -3132,8 +3146,8 @@ msgstr "Organizace:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
-#: ../src/qtui/settingspages/identityeditwidget.cpp:404
-#: ../src/qtui/settingspages/identityeditwidget.cpp:405
+#: ../src/qtui/settingspages/identityeditwidget.cpp:406
+#: ../src/qtui/settingspages/identityeditwidget.cpp:407
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
 msgstr "Nebyl načten žádný certifikát"
@@ -3143,28 +3157,40 @@ msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
 msgstr "Běžné jméno:"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:320
+#: ../src/qtui/settingspages/identityeditwidget.cpp:321
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
 msgstr "Načíst klíč"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:357
+#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+msgctxt "IdentityEditWidget|"
+msgid "Failed to read key"
+msgstr "Klíč nelze přečíst"
+
+#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+msgctxt "IdentityEditWidget|"
+msgid ""
+"Failed to read the key file. It is either incompatible or invalid. Note that"
+" the key file must not have a passphrase."
+msgstr "Nelze přečíst soubor klíče. Je buďto nekompatibilní nebo neplatný. Pamatujte, že soubor klíče musí být bez hesla."
+
+#: ../src/qtui/settingspages/identityeditwidget.cpp:359
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
 msgstr "RSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:360
+#: ../src/qtui/settingspages/identityeditwidget.cpp:362
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
 msgstr "DSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:365
-#: ../src/qtui/settingspages/identityeditwidget.cpp:411
+#: ../src/qtui/settingspages/identityeditwidget.cpp:367
+#: ../src/qtui/settingspages/identityeditwidget.cpp:413
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
 msgstr "Vyčistit"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:377
+#: ../src/qtui/settingspages/identityeditwidget.cpp:379
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
 msgstr "Načíst certifikát"
@@ -3448,92 +3474,92 @@ msgctxt "InputWidget|"
 msgid "Form"
 msgstr "Form"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "White"
 msgstr "Bílá"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Black"
 msgstr "Černá"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark blue"
 msgstr "Tmavě modrá"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark green"
 msgstr "Tmavě zelená"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Red"
 msgstr "Červená"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark red"
 msgstr "Tmavě červená"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Dark magenta"
 msgstr "Tmavě fuchsová"
 
-#: ../src/qtui/inputwidget.cpp:73
+#: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "Orange"
 msgstr "Orange"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Yellow"
 msgstr "Žlutá"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Green"
 msgstr "Zelená"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Dark cyan"
 msgstr "Tmavě modrozelená"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Cyan"
 msgstr "Azurová"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Blue"
 msgstr "Modrá"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Magenta"
 msgstr "Purpurová"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Dark gray"
 msgstr "Tmavě šedá"
 
-#: ../src/qtui/inputwidget.cpp:74
+#: ../src/qtui/inputwidget.cpp:75
 msgctxt "InputWidget|"
 msgid "Light gray"
 msgstr "Světle šedá"
 
-#: ../src/qtui/inputwidget.cpp:84 ../src/qtui/inputwidget.cpp:85
+#: ../src/qtui/inputwidget.cpp:85 ../src/qtui/inputwidget.cpp:86
 msgctxt "InputWidget|"
 msgid "Clear Color"
 msgstr "Smazat barvu"
 
-#: ../src/qtui/inputwidget.cpp:132
+#: ../src/qtui/inputwidget.cpp:133
 msgctxt "InputWidget|"
 msgid "Focus Input Line"
 msgstr "Přepnout na vstupní řádku"
@@ -3653,24 +3679,24 @@ msgctxt "IrcListModel|"
 msgid "Topic"
 msgstr "Téma"
 
-#: ../src/client/networkmodel.cpp:911
+#: ../src/client/networkmodel.cpp:914
 msgctxt "IrcUserItem|"
 msgid " is away"
 msgstr " je pryč"
 
-#: ../src/client/networkmodel.cpp:926
+#: ../src/client/networkmodel.cpp:929
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "idling since %1"
 msgstr "nic nedělá od %1"
 
-#: ../src/client/networkmodel.cpp:929
+#: ../src/client/networkmodel.cpp:932
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "login time: %1"
 msgstr "čas přihlášení: %1"
 
-#: ../src/client/networkmodel.cpp:932
+#: ../src/client/networkmodel.cpp:935
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "server: %1"
@@ -4409,17 +4435,17 @@ msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
 msgstr "Zpoždění: %1 msecs"
 
-#: ../src/client/networkmodel.cpp:960
+#: ../src/client/networkmodel.cpp:963
 msgctxt "NetworkModel|"
 msgid "Chat"
 msgstr "Pokec"
 
-#: ../src/client/networkmodel.cpp:960
+#: ../src/client/networkmodel.cpp:963
 msgctxt "NetworkModel|"
 msgid "Topic"
 msgstr "Téma"
 
-#: ../src/client/networkmodel.cpp:960
+#: ../src/client/networkmodel.cpp:963
 msgctxt "NetworkModel|"
 msgid "Nick Count"
 msgstr "Počet přezdívek"
@@ -4855,159 +4881,159 @@ msgid ""
 "wizard any time and use the settings dialog for more detailed changes."
 msgstr "Tento průvodce vám pomůže nastavit výchozí identitu a spojení k IRC síti.<br>Zaměřuje se pouze na základní nastavení. Můžete ho kdykoliv přerušit a použít nastavení v aplikaci pro podrobnější nastavení/změny."
 
-#: ../src/uisupport/qssparser.cpp:129 ../src/uisupport/qssparser.cpp:179
-#: ../src/uisupport/qssparser.cpp:335
+#: ../src/uisupport/qssparser.cpp:128 ../src/uisupport/qssparser.cpp:178
+#: ../src/uisupport/qssparser.cpp:334
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid block declaration: %1"
 msgstr "Neplatná deklarace bloku: %1"
 
-#: ../src/uisupport/qssparser.cpp:148
+#: ../src/uisupport/qssparser.cpp:147
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette role assignment: %1"
 msgstr "Neplatné přiřazení role palety: %1"
 
-#: ../src/uisupport/qssparser.cpp:167
+#: ../src/uisupport/qssparser.cpp:166
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette role name: %1"
 msgstr "Neznámý název role palety: %1"
 
-#: ../src/uisupport/qssparser.cpp:205
+#: ../src/uisupport/qssparser.cpp:204
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid subelement name in %1"
 msgstr "Neplatný název pod-elementu v %1"
 
-#: ../src/uisupport/qssparser.cpp:249
+#: ../src/uisupport/qssparser.cpp:248
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message type in %1"
 msgstr "Neplatný typ zprávy v %1"
 
-#: ../src/uisupport/qssparser.cpp:258
+#: ../src/uisupport/qssparser.cpp:257
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid condition %1"
 msgstr "Neplatný stav: %1"
 
-#: ../src/uisupport/qssparser.cpp:270
+#: ../src/uisupport/qssparser.cpp:269
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid message label: %1"
 msgstr "Neplatný popisek zprávy: %1"
 
-#: ../src/uisupport/qssparser.cpp:282
+#: ../src/uisupport/qssparser.cpp:281
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid senderhash specification: %1"
 msgstr "Neplatná specifikace hash odesílatele: %1"
 
-#: ../src/uisupport/qssparser.cpp:286
+#: ../src/uisupport/qssparser.cpp:285
 msgctxt "QssParser|"
 msgid "Senderhash can be at most \"0x0f\"!"
 msgstr "Hash odesílatele může být maximálně \"0x0f\"!"
 
-#: ../src/uisupport/qssparser.cpp:302
+#: ../src/uisupport/qssparser.cpp:301
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid format name: %1"
 msgstr "Neplatný název formátu: %1"
 
-#: ../src/uisupport/qssparser.cpp:310
+#: ../src/uisupport/qssparser.cpp:309
 #, qt-format
 msgctxt "QssParser|"
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
 msgstr "Neplatná specifikace IRC barvy (musí být mezi 00 a 0f): %1"
 
-#: ../src/uisupport/qssparser.cpp:319
+#: ../src/uisupport/qssparser.cpp:318
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unhandled condition: %1"
 msgstr "Neobsloužený stav: %1"
 
-#: ../src/uisupport/qssparser.cpp:350
+#: ../src/uisupport/qssparser.cpp:349
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid proplist %1"
 msgstr "Neplatný seznam vlastností: %1"
 
-#: ../src/uisupport/qssparser.cpp:369
+#: ../src/uisupport/qssparser.cpp:368
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist item type %1"
 msgstr "Neplatný typ položky seznamu rozhovorů: %1"
 
-#: ../src/uisupport/qssparser.cpp:385
+#: ../src/uisupport/qssparser.cpp:384
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist state %1"
 msgstr "Neplatný stav seznamu místností %1"
 
-#: ../src/uisupport/qssparser.cpp:415
+#: ../src/uisupport/qssparser.cpp:414
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid property declaration: %1"
 msgstr "Neplatná deklarace vlastnosti: %1"
 
-#: ../src/uisupport/qssparser.cpp:439
+#: ../src/uisupport/qssparser.cpp:438
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font property: %1"
 msgstr "Neplatná vlastnost písma: %1"
 
-#: ../src/uisupport/qssparser.cpp:445
+#: ../src/uisupport/qssparser.cpp:444
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown ChatLine property: %1"
 msgstr "Neznámá vlastnost ChatLine: %1"
 
-#: ../src/uisupport/qssparser.cpp:469
+#: ../src/uisupport/qssparser.cpp:468
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette color role specification: %1"
 msgstr "Neplatná specifikace role barevné palety: %1"
 
-#: ../src/uisupport/qssparser.cpp:476
+#: ../src/uisupport/qssparser.cpp:475
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette color role: %1"
 msgstr "Neznámá role barevné palety: %1"
 
-#: ../src/uisupport/qssparser.cpp:483 ../src/uisupport/qssparser.cpp:506
-#: ../src/uisupport/qssparser.cpp:528
+#: ../src/uisupport/qssparser.cpp:482 ../src/uisupport/qssparser.cpp:505
+#: ../src/uisupport/qssparser.cpp:527
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient declaration: %1"
 msgstr "Neplatná deklarace gradientu: %1"
 
-#: ../src/uisupport/qssparser.cpp:492 ../src/uisupport/qssparser.cpp:514
-#: ../src/uisupport/qssparser.cpp:538
+#: ../src/uisupport/qssparser.cpp:491 ../src/uisupport/qssparser.cpp:513
+#: ../src/uisupport/qssparser.cpp:537
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient stops list: %1"
 msgstr "Neplatný seznam zastavení gradientu: %1"
 
-#: ../src/uisupport/qssparser.cpp:647
+#: ../src/uisupport/qssparser.cpp:646
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font specification: %1"
 msgstr "Neplatná specifikace písma: %1"
 
-#: ../src/uisupport/qssparser.cpp:688
+#: ../src/uisupport/qssparser.cpp:687
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font style specification: %1"
 msgstr "Neplatná specifikace stylu písma: %1"
 
-#: ../src/uisupport/qssparser.cpp:703
+#: ../src/uisupport/qssparser.cpp:702
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font weight specification: %1"
 msgstr "Neplatná specifikace proporcí písma: %1"
 
-#: ../src/uisupport/qssparser.cpp:715
+#: ../src/uisupport/qssparser.cpp:714
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font size specification: %1"
@@ -5042,7 +5068,7 @@ msgstr "sec"
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
-msgstr "<b>Pokec s %1</b>"
+msgstr "<b>Rozhovor s %1</b>"
 
 #: ../src/client/networkmodel.cpp:500
 #, qt-format
@@ -5516,7 +5542,7 @@ msgctxt "SslInfoDlg|"
 msgid "%1 to %2"
 msgstr "%1 k %2"
 
-#: ../src/client/networkmodel.h:149
+#: ../src/client/networkmodel.h:150
 msgctxt "StatusBufferItem|"
 msgid "Status Buffer"
 msgstr "Záložka stavu"
@@ -5613,7 +5639,7 @@ msgstr "Vstoupí na kanál"
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgctxt "ToolBarActionProvider|"
 msgid "Query"
-msgstr "Vykecávat"
+msgstr "Oslovit"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgctxt "ToolBarActionProvider|"
@@ -5720,13 +5746,13 @@ msgctxt "TopicWidget|"
 msgid "..."
 msgstr "..."
 
-#: ../src/qtui/topicwidget.cpp:118
+#: ../src/qtui/topicwidget.cpp:120
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
 msgstr "Uživatelé: %1"
 
-#: ../src/qtui/topicwidget.cpp:119
+#: ../src/qtui/topicwidget.cpp:121
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Lag: %1 msecs"
@@ -5775,114 +5801,114 @@ msgstr "Rozhraní Tématu"
 #. Topic Message
 #. ----------
 #. Invite Message
-#: ../src/uisupport/uistyle.cpp:666 ../src/uisupport/uistyle.cpp:669
-#: ../src/uisupport/uistyle.cpp:710 ../src/uisupport/uistyle.cpp:713
-#: ../src/uisupport/uistyle.cpp:716 ../src/uisupport/uistyle.cpp:725
-#: ../src/uisupport/uistyle.cpp:759
+#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:668
+#: ../src/uisupport/uistyle.cpp:709 ../src/uisupport/uistyle.cpp:712
+#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:724
+#: ../src/uisupport/uistyle.cpp:758
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
 msgstr "%1"
 
 #. Action Message
-#: ../src/uisupport/uistyle.cpp:672
+#: ../src/uisupport/uistyle.cpp:671
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
-#: ../src/uisupport/uistyle.cpp:676
+#: ../src/uisupport/uistyle.cpp:675
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "You are now known as %DN%1%DN"
 msgstr "Nyní jste znám jako %DN%1%DN"
 
-#: ../src/uisupport/uistyle.cpp:677
+#: ../src/uisupport/uistyle.cpp:676
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN je nyní znám jako %DN%2%DN"
 
 #. Mode Message
-#: ../src/uisupport/uistyle.cpp:681
+#: ../src/uisupport/uistyle.cpp:680
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "User mode: %DM%1%DM"
 msgstr "Uživatelský režim: %DM%1%DM"
 
-#: ../src/uisupport/uistyle.cpp:682
+#: ../src/uisupport/uistyle.cpp:681
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "Režim %DM%1%DM od %DN%2%DN"
 
 #. Join Message
-#: ../src/uisupport/uistyle.cpp:686
+#: ../src/uisupport/uistyle.cpp:685
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH se připojil do %DC%4%DC"
 
 #. Part Message
-#: ../src/uisupport/uistyle.cpp:689
+#: ../src/uisupport/uistyle.cpp:688
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH opustil %DC%4%DC"
 
 #. Quit Message
-#: ../src/uisupport/uistyle.cpp:694
+#: ../src/uisupport/uistyle.cpp:693
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH se odpojil"
 
 #. Kick Message
-#: ../src/uisupport/uistyle.cpp:702
+#: ../src/uisupport/uistyle.cpp:701
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN vykopnul %DN%2%DN z %DC%3%DC"
 
 #. Day Change Message
-#: ../src/uisupport/uistyle.cpp:720
+#: ../src/uisupport/uistyle.cpp:719
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
 msgstr "{Den: %1}"
 
-#: ../src/uisupport/uistyle.cpp:734
+#: ../src/uisupport/uistyle.cpp:733
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr "Netsplit mezi %DH%1%DH a %DH%2%DH skončil. Vrátili se: "
 
-#: ../src/uisupport/uistyle.cpp:738 ../src/uisupport/uistyle.cpp:754
+#: ../src/uisupport/uistyle.cpp:737 ../src/uisupport/uistyle.cpp:753
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN (%2 více)"
 
-#: ../src/uisupport/uistyle.cpp:749
+#: ../src/uisupport/uistyle.cpp:748
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "Netsplit mezi %DH%1%DH a %DH%2%DH. Opustili nás: "
 
-#: ../src/uisupport/uistyle.cpp:761 ../src/uisupport/uistyle.cpp:809
+#: ../src/uisupport/uistyle.cpp:760 ../src/uisupport/uistyle.cpp:808
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
 msgstr "[%1]"
 
-#: ../src/uisupport/uistyle.cpp:807
+#: ../src/uisupport/uistyle.cpp:806
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
 msgstr "<%1>"
 
-#: ../src/client/networkmodel.cpp:783
+#: ../src/client/networkmodel.cpp:786
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
@@ -5891,7 +5917,7 @@ msgstr[0] "%n Vlastník"
 msgstr[1] "%n Vlastníci"
 msgstr[2] "%n Vlastníků"
 
-#: ../src/client/networkmodel.cpp:785
+#: ../src/client/networkmodel.cpp:788
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
@@ -5900,7 +5926,7 @@ msgstr[0] "%n Administrátor"
 msgstr[1] "%n Administrátoři"
 msgstr[2] "%n Administrátorů"
 
-#: ../src/client/networkmodel.cpp:787
+#: ../src/client/networkmodel.cpp:790
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
@@ -5909,7 +5935,7 @@ msgstr[0] "%n Stálý Správce"
 msgstr[1] "%n Stálý Správci"
 msgstr[2] "%n Stálých Správců"
 
-#: ../src/client/networkmodel.cpp:789
+#: ../src/client/networkmodel.cpp:792
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
@@ -5918,7 +5944,7 @@ msgstr[0] "%n Správce"
 msgstr[1] "%n Správci"
 msgstr[2] "%n Správců"
 
-#: ../src/client/networkmodel.cpp:791
+#: ../src/client/networkmodel.cpp:794
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
@@ -5927,7 +5953,7 @@ msgstr[0] "%n Uživatel"
 msgstr[1] "%n Uživatelé"
 msgstr[2] "%n Uživatelů"
 
-#: ../src/client/networkmodel.cpp:793
+#: ../src/client/networkmodel.cpp:796
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
