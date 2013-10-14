@@ -124,6 +124,12 @@ public slots:
      */
     virtual UserId getUserId(const QString &username) = 0;
 
+    //! Get the corresponding username to a given UserId
+    /** \param userId The UserId to get the UserName for
+     *  \return The username corresponding to the UserId
+     */
+    virtual QString getUserName(const UserId userId) = 0;
+
     //! Determine the UserId of the internal user
     /** \return A valid UserId if the password matches the username; 0 else
      */
