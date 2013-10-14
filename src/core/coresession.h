@@ -24,6 +24,7 @@
 #include <QString>
 #include <QVariant>
 
+#include "core.h"
 #include "corecoreinfo.h"
 #include "corealiasmanager.h"
 #include "coreignorelistmanager.h"
@@ -64,6 +65,7 @@ public:
 
     QList<BufferInfo> buffers() const;
     inline UserId user() const { return _user; }
+    inline QString userName() const { return Core::instance()->getUserName(_user); }
     CoreNetwork *network(NetworkId) const;
     CoreIdentity *identity(IdentityId) const;
     inline CoreNetworkConfig *networkConfig() const { return _networkConfig; }
