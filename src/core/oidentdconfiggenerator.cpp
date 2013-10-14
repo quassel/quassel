@@ -20,6 +20,8 @@
 
 #include "oidentdconfiggenerator.h"
 
+#include "core.h"
+
 OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
     QObject(parent),
     _initialized(false)
@@ -66,10 +68,14 @@ bool OidentdConfigGenerator::init()
 }
 
 
-bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
+bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, UserId user, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
 {
     Q_UNUSED(localAddress) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
-    QString ident = identity->ident();
+    QString ident;
+    if (Quassel::isOptionSet("oidentd-forceuser"))
+        ident = Core::instance()->getUserName(user);
+    else
+        ident = identity->ident();
 
     _quasselConfig.append(_quasselStanzaTemplate.arg(localPort).arg(ident).arg(_configTag).toAscii());
 
@@ -80,9 +86,9 @@ bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHost
 
 
 //! not yet implemented
-bool OidentdConfigGenerator::removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
+bool OidentdConfigGenerator::removeSocket(const CoreIdentity *identity, UserId user, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
 {
-    Q_UNUSED(identity) Q_UNUSED(localAddress) Q_UNUSED(localPort) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
+    Q_UNUSED(identity) Q_UNUSED(user) Q_UNUSED(localAddress) Q_UNUSED(localPort) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
     return true;
 }
 
