@@ -81,8 +81,8 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 
     if (Quassel::isOptionSet("oidentd")) {
-        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Qt::BlockingQueuedConnection);
-        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)));
+        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QString, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*, QString, QHostAddress, quint16, QHostAddress, quint16)), Qt::BlockingQueuedConnection);
+        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QString, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(removeSocket(const CoreIdentity*, QString, QHostAddress, quint16, QHostAddress, quint16)));
     }
 }
 
@@ -157,6 +157,9 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 
     // cleaning up old quit reason
     _quitReason.clear();
+
+    // update username
+    _userName = _coreSession->userName();
 
     // use a random server?
     if (useRandomServer()) {
@@ -445,7 +448,7 @@ void CoreNetwork::socketInitialized()
         return;
     }
 
-    emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
+    emit socketInitialized(identity, _userName, localAddress(), localPort(), peerAddress(), peerPort());
 
     enablePingTimeout();
 
@@ -496,7 +499,7 @@ void CoreNetwork::socketDisconnected()
 
     setConnected(false);
     emit disconnected(networkId());
-    emit socketDisconnected(identityPtr(), localAddress(), localPort(), peerAddress(), peerPort());
+    emit socketDisconnected(identityPtr(), _userName, localAddress(), localPort(), peerAddress(), peerPort());
     if (_quitRequested) {
         _quitRequested = false;
         setConnectionState(Network::Disconnected);

@@ -115,6 +115,7 @@ int main(int argc, char **argv)
     cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
     cliParser->addSwitch("oidentd", 0, "Enable oidentd integration");
     cliParser->addOption("oidentd-conffile <file>", 0, "Set path to oidentd configuration file");
+    cliParser->addSwitch("oidentd-forceuser", 0, "Forces ident response to be the quassel username");
 #ifdef HAVE_SSL
     cliParser->addSwitch("require-ssl", 0, "Require SSL for client connections");
 #endif
