@@ -26,7 +26,7 @@
 
 #include "protocol.h"
 
-class QMetaObject;
+struct QMetaObject;
 
 class Peer;
 class SyncableObject;
@@ -125,7 +125,7 @@ private:
     void handle(Peer *peer, const Protocol::InitData &initData);
 
     template<class T>
-    void handle(Peer *peer, T) { Q_ASSERT(0); }
+    void handle(Peer *peer, T) { Q_UNUSED(peer); Q_ASSERT(0); }
 
     bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue);
     bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList());

@@ -24,6 +24,8 @@
 #include "iconloader.h"
 #include "networkmodel.h"
 #include "uisettings.h"
+#include "graphicalui.h"
+#include "uistyle.h"
 
 TopicWidget::TopicWidget(QWidget *parent)
     : AbstractItemView(parent)
@@ -191,7 +193,8 @@ void TopicWidget::updateResizeMode()
 void TopicWidget::clickableActivated(const Clickable &click)
 {
     NetworkId networkId = selectionModel()->currentIndex().data(NetworkModel::NetworkIdRole).value<NetworkId>();
-    click.activate(networkId, _topic);
+    UiStyle::StyledString sstr = GraphicalUi::uiStyle()->styleString(GraphicalUi::uiStyle()->mircToInternal(_topic), UiStyle::PlainMsg);
+    click.activate(networkId, sstr.plainText);
 }
 
 

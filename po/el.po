@@ -1,18 +1,22 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011.
-#   <differentreality@gmail.com>, 2012.
-# Stefanos Sofroniou <ssofroni@cytanet.com.cy>, 2010.
-#   <tampakrap@gmail.com>, 2012.
-# Theofilos Intzoglou <int.teo@gmail.com>, 2012.
-#   <warlordfff@gmail.com>, 2012.
+# Daniel Albers <daniel@lbers.com>, 2011
+# differentreality <differentreality@gmail.com>, 2012
+# differentreality <differentreality@gmail.com>, 2012
+# Stefanos Sofroniou <ssofroni@cytanet.com.cy>, 2010
+# tampakrap <tampakrap@gmail.com>, 2012
+# tampakrap <tampakrap@gmail.com>, 2012
+# Theofilos Intzoglou <int.teo@gmail.com>, 2012
+# warlordfff <warlordfff@gmail.com>, 2012
+# warlordfff <warlordfff@gmail.com>, 2012
+# Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-16 00:11+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2013-09-05 01:43+0000\n"
+"Last-Translator: Γιάννης Ανθυμίδης <yannanth@gmail.com>\n"
+"Language-Team: Greek (http://www.transifex.com/projects/p/quassel/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,7 +27,7 @@ msgstr ""
 #: ../src/qtui/ui/aboutdlg.ui:17
 msgctxt "AboutDlg|"
 msgid "About Quassel"
-msgstr "Περί του Quassel"
+msgstr "Σχετικά με το Quassel"
 
 #: ../src/qtui/ui/aboutdlg.ui:59
 msgctxt "AboutDlg|"
@@ -46,22 +50,22 @@ msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/
 #: ../src/qtui/ui/aboutdlg.ui:115
 msgctxt "AboutDlg|"
 msgid "&About"
-msgstr "Περί"
+msgstr "&Σχετικά"
 
 #: ../src/qtui/ui/aboutdlg.ui:135
 msgctxt "AboutDlg|"
 msgid "A&uthors"
-msgstr "Δημιουργοί"
+msgstr "&Δημιουργοί"
 
 #: ../src/qtui/ui/aboutdlg.ui:155
 msgctxt "AboutDlg|"
 msgid "&Contributors"
-msgstr "Συντελεστές"
+msgstr "&Συνεισφέροντες"
 
 #: ../src/qtui/ui/aboutdlg.ui:175
 msgctxt "AboutDlg|"
 msgid "&Thanks To"
-msgstr "Ευχαριστίες στους"
+msgstr "&Ευχαριστούμε"
 
 #: ../src/qtui/aboutdlg.cpp:33
 #, qt-format
@@ -303,12 +307,12 @@ msgstr "Αρχείο καταγραφής κατά την απουσία"
 #: ../src/qtui/awaylogview.cpp:46
 msgctxt "AwayLogView|"
 msgid "Show Network Name"
-msgstr "Εμφάνισε Όνομα Δικτύου"
+msgstr "Εμφάνιζε Όνομα Δικτύου"
 
 #: ../src/qtui/awaylogview.cpp:51
 msgctxt "AwayLogView|"
 msgid "Show Buffer Name"
-msgstr "Εμφάνισε Όνομα Προσωρινής Μνήμης"
+msgstr "Εμφάνιζε Όνομα Προσωρινής Μνήμης"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
 msgctxt "BacklogSettingsPage|"
@@ -873,7 +877,7 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:42
 msgctxt "ChatViewSettingsPage|"
 msgid "[hh:mm:ss]"
-msgstr "[ωω:λλ:δδ]"
+msgstr "[ώώ:λλ:δδ]"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:69
 msgctxt "ChatViewSettingsPage|"
@@ -1355,7 +1359,7 @@ msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
 "Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 "to work."
-msgstr "Το Quassel υποστηρίζει SQLite3 και PostgreSQL. Χρειάζεται να χτίσετε\nτη βιβλιοθήκη Qt με ενεργοποιημένο το πρόσθετο sqlite ή postgres\nώστε να δουλέψει το quasselcore"
+msgstr "Το Quassel υποστηρίζει SQLite3 και PostgreSQL. Χρειάζεται να χτίσετε\nτη βιβλιοθήκη Qt με ενεργοποιημένο το πρόσθετο sqlite ή postgres\nώστε να δουλέψει το quasselcore σας"
 
 #: ../src/core/core.cpp:249
 msgctxt "Core|"
@@ -2031,7 +2035,7 @@ msgstr "Μήνυμα"
 #: ../src/qtui/coreconnectionstatuswidget.cpp:66
 msgctxt "CoreConnectionStatusWidget|seconds"
 msgid "s"
-msgstr "s"
+msgstr "δ"
 
 #: ../src/qtui/coreconnectionstatuswidget.cpp:66
 msgctxt "CoreConnectionStatusWidget|milliseconds"
@@ -2574,7 +2578,7 @@ msgstr "[Whois] Ο %1 έχει πιστοποιηθεί ως %2"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was authed as %2"
-msgstr ""
+msgstr "[Whois] Ο %1 πιστοποιήθηκε ως %2"
 
 #: ../src/core/eventstringifier.cpp:596
 #, qt-format
@@ -3632,7 +3636,7 @@ msgstr "Γραφικό στοιχείο εισαγωγής"
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
 msgid "internal connection"
-msgstr ""
+msgstr "εσωτερική σύνδεση"
 
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
@@ -3831,7 +3835,7 @@ msgstr "Πατήστε το κουμπί και εισάγετε τη συντό
 #: ../src/qtui/settingspages/keysequencewidget.cpp:274
 msgctxt "KeySequenceWidget|Meta key"
 msgid "Meta"
-msgstr ""
+msgstr "Meta"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:275
 msgctxt "KeySequenceWidget|Ctrl key"
@@ -4748,7 +4752,7 @@ msgstr "Μη Έγκυρες Ρυθμίσεις Δικτύου"
 #: ../src/qtui/settingspages/networkssettingspage.cpp:650
 msgctxt "NetworksSettingsPage|"
 msgid "Delete Network?"
-msgstr "Διαγραφή Δικτύου;"
+msgstr "Να Γίνει Διαγραφή Δικτύου;"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:651
 #, qt-format
@@ -4843,7 +4847,7 @@ msgstr "Ζήτηση έως %1 μη αναγνωσμένων αποθηκευμ�
 #: ../src/qtui/ircconnectionwizard.cpp:56
 msgctxt "QObject|"
 msgid "Welcome to Quassel IRC"
-msgstr "Καλωσήρθατε στο Quassel IRC"
+msgstr "Καλωσορίσατε στο Quassel IRC"
 
 #: ../src/qtui/ircconnectionwizard.cpp:58
 msgctxt "QObject|"
@@ -5019,22 +5023,22 @@ msgstr "χρόνος"
 #: ../src/common/util.cpp:170
 msgctxt "Quassel::secondsToString()|"
 msgid "day"
-msgstr "μέρα"
+msgstr "ημέρα"
 
 #: ../src/common/util.cpp:171
 msgctxt "Quassel::secondsToString()|"
 msgid "h"
-msgstr "h"
+msgstr "ώ"
 
 #: ../src/common/util.cpp:172
 msgctxt "Quassel::secondsToString()|"
 msgid "min"
-msgstr "min"
+msgstr "λ"
 
 #: ../src/common/util.cpp:173
 msgctxt "Quassel::secondsToString()|"
 msgid "sec"
-msgstr "sec"
+msgstr "δ"
 
 #: ../src/client/networkmodel.cpp:482
 #, qt-format
@@ -5368,7 +5372,7 @@ msgstr "Αφαίρεση του εξυπηρετητή από τη λίστα"
 #: ../src/qtui/ui/simplenetworkeditor.ui:139
 msgctxt "SimpleNetworkEditor|"
 msgid "De&lete"
-msgstr "Διαγραφή"
+msgstr "&Διαγραφή"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgctxt "SimpleNetworkEditor|"
@@ -5892,7 +5896,7 @@ msgstr[1] "%n Ιδιοκτήτες"
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
 msgid_plural "%n Admin(s)"
-msgstr[0] "%n "
+msgstr[0] "%n Admin(s)"
 msgstr[1] "%n Admin(s)"
 
 #: ../src/client/networkmodel.cpp:787
@@ -5916,8 +5920,8 @@ msgstr[1] "%n Μισοί-Διαχειριστές"
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] "%n πήρε φωνή"
-msgstr[1] "%n πήραν φωνή"
+msgstr[0] "%n Πήρε Φωνή"
+msgstr[1] "%n Πήραν Φωνή"
 
 #: ../src/client/networkmodel.cpp:793
 #, qt-format

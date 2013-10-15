@@ -1,13 +1,13 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011.
-# Yuri Chornoivan <yurchor@gmail.com>, 2010.
-# Yuri Chornoivan <yurchor@ukr.net>, 2011-2012.
+# Daniel Albers <daniel@lbers.com>, 2011
+# Yuri Chornoivan <yurchor@gmail.com>, 2010
+# Yuri Chornoivan <yurchor@ukr.net>, 2011-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-15 23:58+0000\n"
+"PO-Revision-Date: 2013-04-29 08:28+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -1114,7 +1114,7 @@ msgstr "Мінімальна затримка між запитами:"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:250
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable standard-compliant CTCP behavior"
-msgstr ""
+msgstr "Увімкнути поведінку CTCP, яка відповідає стандартам"
 
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
@@ -2186,23 +2186,23 @@ msgstr "У списку псевдонімів не знайдено незай�
 #: ../src/core/coresessioneventprocessor.cpp:447
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange."
-msgstr ""
+msgstr "Не вдалося виконати обмін ключами."
 
 #: ../src/core/coresessioneventprocessor.cpp:458
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
-msgstr ""
+msgstr "Не вдалося обробити DH1080_INIT. Спроба обміну ключами зазнала невдачі."
 
 #: ../src/core/coresessioneventprocessor.cpp:462
 #: ../src/core/coresessioneventprocessor.cpp:470
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
-msgstr ""
+msgstr "Встановлено ваш ключ, повідомлення буде зашифровано."
 
 #: ../src/core/coresessioneventprocessor.cpp:472
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
-msgstr ""
+msgstr "Не вдалося обробити DH1080_FINISH. Спроба обміну ключами зазнала невдачі."
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2250,19 +2250,19 @@ msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
 "target."
-msgstr ""
+msgstr "[користування] /keyx [<псевдонім|канал>] Ініціює обмін ключами DH1080 з вказаним користувачем або каналом."
 
 #: ../src/core/coreuserinputhandler.cpp:379
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
-msgstr ""
+msgstr "Не вдалося розпочати обмін ключами з %1."
 
 #: ../src/core/coreuserinputhandler.cpp:384
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
-msgstr ""
+msgstr "Розпочато обмін ключами з %1."
 
 #: ../src/core/coreuserinputhandler.cpp:388
 #: ../src/core/coreuserinputhandler.cpp:616
@@ -2426,7 +2426,7 @@ msgstr "Закрити"
 #: ../src/qtui/dockmanagernotificationbackend.cpp:184
 msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
-msgstr ""
+msgstr "Позначити пункт dockmanager"
 
 #: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
 msgctxt "EventStringifier|"
@@ -2449,7 +2449,7 @@ msgstr "%1 змінює тему %2 на «%3»"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
-msgstr ""
+msgstr "[Operwall] %1: %2"
 
 #: ../src/core/eventstringifier.cpp:350
 msgctxt "EventStringifier|"
@@ -3630,7 +3630,7 @@ msgstr "Віджет введення"
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
 msgid "internal connection"
-msgstr ""
+msgstr "внутрішнє з’єднання"
 
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
@@ -4651,7 +4651,7 @@ msgid ""
 "<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> because"
 " the identity has an ssl certificate set, SASL EXTERNAL will be "
 "used.</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p><span style=\" font-weight:600;\">Зауваження:</span> оскільки для профілю визначено сертифікат ssl, буде використано SASL EXTERNAL.</p></body></html>"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:659
 msgctxt "NetworksSettingsPage|"

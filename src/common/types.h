@@ -26,6 +26,7 @@
 #include <QVariant>
 #include <QTextStream>
 #include <QHostAddress>
+#include <QDataStream>
 
 class SignedId
 {

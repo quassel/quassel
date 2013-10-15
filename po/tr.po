@@ -1,16 +1,16 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011.
-# H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2010.
-#  <sunder67@hotmail.com>, 2013.
-# Volkan Gezer <volkangezer@gmail.com>, 2013.
+# Daniel Albers <daniel@lbers.com>, 2011
+# H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2010
+# zeugma <sunder67@hotmail.com>, 2013
+# volkangezer <volkangezer@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-15 23:58+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2013-07-15 23:04+0000\n"
+"Last-Translator: volkangezer <volkangezer@gmail.com>\n"
+"Language-Team: Turkish (http://www.transifex.com/projects/p/quassel/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -190,7 +190,7 @@ msgstr "Form"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:22
 msgctxt "AppearanceSettingsPage|"
 msgid "Client style:"
-msgstr "İstemci stili:"
+msgstr "İstemci biçemi:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:29
 msgctxt "AppearanceSettingsPage|"
@@ -1115,7 +1115,7 @@ msgstr "İstemler arası en az bekleme süresi :"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:250
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable standard-compliant CTCP behavior"
-msgstr ""
+msgstr "Standart uyumlu CTCP davranışını etkinleştir"
 
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
@@ -1285,22 +1285,22 @@ msgstr "Kanaldan At"
 #: ../src/uisupport/contextmenuactionprovider.cpp:86
 msgctxt "ContextMenuActionProvider|"
 msgid "Ban From Channel"
-msgstr "Kanaldan Banla"
+msgstr "Kanaldan Yasakla"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:87
 msgctxt "ContextMenuActionProvider|"
 msgid "Kick && Ban"
-msgstr "Kick && Ban"
+msgstr "At ve Yasakla"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:89
 msgctxt "ContextMenuActionProvider|"
 msgid "Hide Chat(s) Temporarily"
-msgstr "Sohbeti(leri) Geçici Olarak Sakla"
+msgstr "Sohbet(ler)i Geçici Olarak Gizle"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:90
 msgctxt "ContextMenuActionProvider|"
 msgid "Hide Chat(s) Permanently"
-msgstr "Sohbeti(leri) Kalıcı Olarak Sakla"
+msgstr "Sohbet(ler)i Kalıcı Olarak Gizle"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:91
 msgctxt "ContextMenuActionProvider|"
@@ -2186,23 +2186,23 @@ msgstr "Takma ad listesinde geçerli ve kullanılmayan takma ad bulunamadı. /ni
 #: ../src/core/coresessioneventprocessor.cpp:447
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange."
-msgstr ""
+msgstr "Anahtar değişimi yapma başarısız"
 
 #: ../src/core/coresessioneventprocessor.cpp:458
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
-msgstr ""
+msgstr "DH1080_INIT ayıklanamadı. Anahtar değişimi başarısız."
 
 #: ../src/core/coresessioneventprocessor.cpp:462
 #: ../src/core/coresessioneventprocessor.cpp:470
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
-msgstr ""
+msgstr "Anahtarınız ayarlandı ve iletiler şifrelenecek."
 
 #: ../src/core/coresessioneventprocessor.cpp:472
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
-msgstr ""
+msgstr "DH1080_FINISH ayıklanamadı. Anahtar değişimi başarısız."
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2250,19 +2250,19 @@ msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
 "target."
-msgstr ""
+msgstr "[kullanım] /keyx [<takmaad|kanal>] Hedef ile DH1080 anahtar değişimi başlatır."
 
 #: ../src/core/coreuserinputhandler.cpp:379
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
-msgstr ""
+msgstr "%1 ile anahtar değişimi başlatma başarısız."
 
 #: ../src/core/coreuserinputhandler.cpp:384
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
-msgstr ""
+msgstr "%1 ile anahtar değişimi başlatıldı."
 
 #: ../src/core/coreuserinputhandler.cpp:388
 #: ../src/core/coreuserinputhandler.cpp:616
@@ -2426,7 +2426,7 @@ msgstr "Kapat"
 #: ../src/qtui/dockmanagernotificationbackend.cpp:184
 msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
-msgstr ""
+msgstr "Tutturma yönetici girdisini işaretle"
 
 #: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
 msgctxt "EventStringifier|"
@@ -2449,7 +2449,7 @@ msgstr "%1, %2 kanalının başlığını şu şekilde değiştirdi: \"%3\""
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
-msgstr ""
+msgstr "[Operwall] %1: %2"
 
 #: ../src/core/eventstringifier.cpp:350
 msgctxt "EventStringifier|"
@@ -2873,7 +2873,7 @@ msgstr "\"%1\" kimliğini gerçekten silmek istiyor musunuz?"
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Please enter a new name for the identity \"%1\"!"
-msgstr "\"%1\" kimliği için yeni bir ad girin lütfen!"
+msgstr "Lütfen \"%1\" kimliği için yeni bir ad girin!"
 
 #: ../src/common/identity.cpp:147
 msgctxt "Identity|"
@@ -3630,7 +3630,7 @@ msgstr "Girdi Satırı"
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
 msgid "internal connection"
-msgstr ""
+msgstr "dahili bağlantı"
 
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
@@ -4439,7 +4439,7 @@ msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
-msgstr "<b>Not:</b> Bu işlem tüm backlog verileri de dahil olmak üzere tüm ilgili verileri çekirdeğinizin veritabanından silecek ve geri dönüşü yok."
+msgstr "<b>Not:</b> Bu işlem tüm arka günlük verileri de dahil olmak üzere tüm ilgili verileri çekirdeğinizin veritabanından silecek ve bu işlem geri alınamaz."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:193
 msgctxt "NetworkModelController|"
@@ -4648,7 +4648,7 @@ msgid ""
 "<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> because"
 " the identity has an ssl certificate set, SASL EXTERNAL will be "
 "used.</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p><span style=\" font-weight:600;\">Not:</span> kimlik ssl sertifikası ayarladığından dolayı, SASL EXTERNAL kullanılacak.</p></body></html>"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:659
 msgctxt "NetworksSettingsPage|"
@@ -5688,7 +5688,7 @@ msgstr "Kullanıcıyı kanaldan yasakla"
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"
 msgid "Kick/Ban"
-msgstr "Kick/Ban"
+msgstr "At/Yasakla"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"

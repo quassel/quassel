@@ -1,16 +1,16 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbe.rs>, 2012.
-# Daniel Albers <daniel@lbers.com>, 2011.
-# redmar <redmar@ubuntu-nl.org>, 2010.
-#   <simon.philips@gmail.com>, 2012.
+# Daniel Albers <daniel@lbe.rs>, 2012
+# Daniel Albers <daniel@lbers.com>, 2011
+# redmar <redmar@ubuntu-nl.org>, 2010
+# simonphilips <simon.philips@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-16 00:19+0000\n"
+"PO-Revision-Date: 2013-04-29 08:28+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"Language-Team: Dutch (http://www.transifex.com/projects/p/quassel/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

@@ -187,7 +187,7 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
         return;
 
     if (!Cipher::neededFeaturesAvailable()) {
-        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
+        emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
     }
 
@@ -197,7 +197,7 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
         parms.prepend(bufferInfo.bufferName());
 
     if (parms.isEmpty()) {
-        emit displayMsg(Message::Info, bufname,
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname,
             tr("[usage] /delkey <nick|channel> deletes the encryption key for nick or channel or just /delkey when in a channel or query."));
         return;
     }
@@ -205,16 +205,16 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
     QString target = parms.at(0);
 
     if (network()->cipherKey(target).isEmpty()) {
-        emit displayMsg(Message::Info, bufname, tr("No key has been set for %1.").arg(target));
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("No key has been set for %1.").arg(target));
         return;
     }
 
     network()->setCipherKey(target, QByteArray());
-    emit displayMsg(Message::Info, bufname, tr("The key for %1 has been deleted.").arg(target));
+    emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("The key for %1 has been deleted.").arg(target));
 
 #else
     Q_UNUSED(msg)
-    emit displayMsg(Message::Error, bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
+    emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
                                                                     "with support for the Qt Cryptographic Architecture (QCA2) library. "
                                                                     "Contact your distributor about a Quassel package with QCA2 "
                                                                     "support, or rebuild Quassel with QCA2 present."));
@@ -358,7 +358,7 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo &bufferInfo, const QStrin
         return;
 
     if (!Cipher::neededFeaturesAvailable()) {
-        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
+        emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
     }
 
@@ -367,12 +367,17 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo &bufferInfo, const QStrin
     if (parms.count() == 0 && !bufferInfo.bufferName().isEmpty())
         parms.prepend(bufferInfo.bufferName());
     else if (parms.count() != 1) {
-        emit displayMsg(Message::Info, bufname,
-            tr("[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the target."));
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname,
+            tr("[usage] /keyx [<nick>] Initiates a DH1080 key exchange with the target."));
         return;
     }
 
     QString target = parms.at(0);
+
+    if (network()->isChannelName(target)) {
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("It is only possible to exchange keys in a query buffer."));
+        return;
+    }
 
     Cipher *cipher = network()->cipher(target);
     if (!cipher) // happens when there is no CoreIrcChannel for the target
@@ -380,16 +385,16 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo &bufferInfo, const QStrin
 
     QByteArray pubKey = cipher->initKeyExchange();
     if (pubKey.isEmpty())
-        emit displayMsg(Message::Error, bufname, tr("Failed to initiate key exchange with %1.").arg(target));
+        emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Failed to initiate key exchange with %1.").arg(target));
     else {
         QList<QByteArray> params;
         params << serverEncode(target) << serverEncode("DH1080_INIT ") + pubKey;
         emit putCmd("NOTICE", params);
-        emit displayMsg(Message::Info, bufname, tr("Initiated key exchange with %1.").arg(target));
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("Initiated key exchange with %1.").arg(target));
     }
 #else
     Q_UNUSED(msg)
-    emit displayMsg(Message::Error, bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
+    emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
                                                                 "with support for the Qt Cryptographic Architecture (QCA) library. "
                                                                 "Contact your distributor about a Quassel package with QCA "
                                                                 "support, or rebuild Quassel with QCA present."));
@@ -493,7 +498,7 @@ void CoreUserInputHandler::handleNotice(const BufferInfo &bufferInfo, const QStr
     QList<QByteArray> params;
     params << serverEncode(bufferName) << channelEncode(bufferInfo.bufferName(), payload);
     emit putCmd("NOTICE", params);
-    emit displayMsg(Message::Notice, bufferName, payload, network()->myNick(), Message::Self);
+    emit displayMsg(Message::Notice, typeByTarget(bufferName), bufferName, payload, network()->myNick(), Message::Self);
 }
 
 
@@ -597,7 +602,7 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QStr
         return;
 
     if (!Cipher::neededFeaturesAvailable()) {
-        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
+        emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
     }
 
@@ -606,7 +611,7 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QStr
     if (parms.count() == 1 && !bufferInfo.bufferName().isEmpty())
         parms.prepend(bufferInfo.bufferName());
     else if (parms.count() != 2) {
-        emit displayMsg(Message::Info, bufname,
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname,
             tr("[usage] /setkey <nick|channel> <key> sets the encryption key for nick or channel. "
                "/setkey <key> when in a channel or query buffer sets the key for it."));
         return;
@@ -616,10 +621,10 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QStr
     QByteArray key = parms.at(1).toLocal8Bit();
     network()->setCipherKey(target, key);
 
-    emit displayMsg(Message::Info, bufname, tr("The key for %1 has been set.").arg(target));
+    emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("The key for %1 has been set.").arg(target));
 #else
     Q_UNUSED(msg)
-    emit displayMsg(Message::Error, bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
+    emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
                                                                 "with support for the Qt Cryptographic Architecture (QCA) library. "
                                                                 "Contact your distributor about a Quassel package with QCA "
                                                                 "support, or rebuild Quassel with QCA present."));
@@ -635,7 +640,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
         return;
 
     if (!Cipher::neededFeaturesAvailable()) {
-        emit displayMsg(Message::Error, bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
+        emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: QCA provider plugin not found. It is usually provided by the qca-ossl plugin."));
         return;
     }
 
@@ -645,7 +650,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
         parms.prepend(bufferInfo.bufferName());
 
     if (parms.isEmpty()) {
-        emit displayMsg(Message::Info, bufname, tr("[usage] /showkey <nick|channel> shows the encryption key for nick or channel or just /showkey when in a channel or query."));
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("[usage] /showkey <nick|channel> shows the encryption key for nick or channel or just /showkey when in a channel or query."));
         return;
     }
 
@@ -653,15 +658,15 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
     QByteArray key = network()->cipherKey(target);
 
     if (key.isEmpty()) {
-        emit displayMsg(Message::Info, bufname, tr("No key has been set for %1.").arg(target));
+        emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("No key has been set for %1.").arg(target));
         return;
     }
 
-    emit displayMsg(Message::Info, bufname, tr("The key for %1 is %2").arg(target).arg(QString(key)));
+    emit displayMsg(Message::Info, typeByTarget(bufname), bufname, tr("The key for %1 is %2:%3").arg(target, network()->cipherUsesCBC(target) ? "CBC" : "ECB", QString(key)));
 
 #else
     Q_UNUSED(msg)
-    emit displayMsg(Message::Error, bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
+    emit displayMsg(Message::Error, typeByTarget(bufname), bufname, tr("Error: Setting an encryption key requires Quassel to have been built "
                                                                     "with support for the Qt Cryptographic Architecture (QCA2) library. "
                                                                     "Contact your distributor about a Quassel package with QCA2 "
                                                                     "support, or rebuild Quassel with QCA2 present."));

@@ -292,6 +292,13 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QLabel" name="encryptionIconLabel">
+      <property name="text">
+       <string>&lt;img src=&quot;:/icons/oxygen/16x16/actions/document-encrypt.png&quot;&gt;</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

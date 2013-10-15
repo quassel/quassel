@@ -1,17 +1,18 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011-2012.
-# Jiri Grönroos <jiri.gronroos@iki.fi>, 2012.
-#   <larso@gmx.com>, 2011-2012.
-# Lasse Liehu <lasse.liehu@gmail.com>, 2012-2013.
-# mikuu <pinaatti@gmail.com>, 2011.
+# Daniel Albers <daniel@lbers.com>, 2011-2012
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2012
+# Larso <larso@gmx.com>, 2011-2012
+# Larso <larso@gmx.com>, 2013
+# Lasse Liehu <lasse.liehu@gmail.com>, 2012-2013
+# mikuu <pinaatti@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-04-15 23:55+0000\n"
-"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2013-04-30 18:09+0000\n"
+"Last-Translator: Larso <larso@gmx.com>\n"
+"Language-Team: Finnish (http://www.transifex.com/projects/p/quassel/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1116,7 +1117,7 @@ msgstr "Vähimmäisviive pyyntöjen välillä:"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:250
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable standard-compliant CTCP behavior"
-msgstr ""
+msgstr "Käytä standardinmukaista CTCP-toimintaa"
 
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
@@ -1890,7 +1891,7 @@ msgstr "Ytimeltä vastaanotettiin virheellistä dataa"
 #: ../src/client/coreconnection.cpp:403
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
-msgstr "Yhteys ytimeen katkennut."
+msgstr "Yhteys ytimeen katkesi."
 
 #: ../src/client/coreconnection.cpp:496 ../src/client/coreconnection.cpp:590
 #: ../src/client/coreconnection.cpp:639
@@ -2187,23 +2188,23 @@ msgstr "Vapaita ja kelvollisia nimimerkkejä ei löytynyt. Jatka käyttämällä
 #: ../src/core/coresessioneventprocessor.cpp:447
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange."
-msgstr ""
+msgstr "Avainten vaihdon suorittaminen epäonnistui."
 
 #: ../src/core/coresessioneventprocessor.cpp:458
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
-msgstr ""
+msgstr "DH1080_INIT:n jäsennys epäonnistui. Avainten vaihto epäonnistui."
 
 #: ../src/core/coresessioneventprocessor.cpp:462
 #: ../src/core/coresessioneventprocessor.cpp:470
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
-msgstr ""
+msgstr "Avaimesi on asetettu ja viestit salataan."
 
 #: ../src/core/coresessioneventprocessor.cpp:472
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
-msgstr ""
+msgstr "DH1080_FINISH:n jäsennys epäonnistui. Avainten vaihto epäonnistui."
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2251,19 +2252,19 @@ msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /keyx [<nick|channel>] Initiates a DH1080 key exchange with the "
 "target."
-msgstr ""
+msgstr "[käyttö] /keyx [<nimimerkki|kanava>] Aloittaa DH1080-avaintenvaihdon kohteen kanssa."
 
 #: ../src/core/coreuserinputhandler.cpp:379
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
-msgstr ""
+msgstr "Avainten vaihdon aloittaminen kohteen %1 kanssa epäonnistui."
 
 #: ../src/core/coreuserinputhandler.cpp:384
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
-msgstr ""
+msgstr "Aloitettiin avainten vaihto kohteen %1 kanssa."
 
 #: ../src/core/coreuserinputhandler.cpp:388
 #: ../src/core/coreuserinputhandler.cpp:616
@@ -2427,7 +2428,7 @@ msgstr "Sulje"
 #: ../src/qtui/dockmanagernotificationbackend.cpp:184
 msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
-msgstr ""
+msgstr "Merkitse Dockmanagerin kohde"
 
 #: ../src/core/eventstringifier.cpp:219 ../src/core/eventstringifier.cpp:365
 msgctxt "EventStringifier|"
@@ -2450,7 +2451,7 @@ msgstr "%1 vaihtoi kanavan %2 aiheeksi: ”%3”"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
-msgstr ""
+msgstr "[Operwall] %1: %2"
 
 #: ../src/core/eventstringifier.cpp:350
 msgctxt "EventStringifier|"
@@ -3631,7 +3632,7 @@ msgstr "Syöttöelementti"
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
 msgid "internal connection"
-msgstr ""
+msgstr "Sisäinen yhteys"
 
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
@@ -4649,7 +4650,7 @@ msgid ""
 "<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> because"
 " the identity has an ssl certificate set, SASL EXTERNAL will be "
 "used.</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p><span style=\" font-weight:600;\">Huom:</span> koska henkilöllisyydelle on asetettu SSL-varmenne, käytetään SASL EXTERNALia.</p></body></html>"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:659
 msgctxt "NetworksSettingsPage|"
