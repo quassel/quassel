@@ -156,12 +156,12 @@ void TopicWidget::setTopic(const QModelIndex &index)
         }
     }
 
-    _topic = newtopic;
+    _topic = sanitizeTopic(newtopic);
     _readonly = readonly;
 
     ui.topicEditButton->setVisible(!_readonly);
-    ui.topicLabel->setText(newtopic);
-    ui.topicLineEdit->setPlainText(newtopic);
+    ui.topicLabel->setText(_topic);
+    ui.topicLineEdit->setPlainText(_topic);
     switchPlain();
 }
 
@@ -263,4 +263,17 @@ bool TopicWidget::eventFilter(QObject *obj, QEvent *event)
     }
 
     return false;
+}
+
+QString TopicWidget::sanitizeTopic(const QString& topic)
+{
+    // Normally, you don't have new lines in topic messages
+    // But the use of "plain text" functionnality from Qt replaces
+    // some unicode characters with a new line, which then triggers
+    // a stack overflow later
+    QString result(topic);
+    result.replace(QChar::ParagraphSeparator, " ");
+    result.replace(QChar::LineSeparator, " ");
+
+    return result;
 }
