@@ -57,6 +57,8 @@ private slots:
     void setUseCustomFont(const QVariant &);
 
 private:
+    QString sanitizeTopic(const QString& topic);
+
     Ui::TopicWidget ui;
 
     QString _topic;
