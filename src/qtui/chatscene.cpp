@@ -799,11 +799,6 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     chatView()->addActionsToMenu(&menu, pos);
     menu.addSeparator();
 
-    if (isPosOverSelection(pos))
-        menu.addAction(SmallIcon("edit-copy"), tr("Copy Selection"),
-            this, SLOT(selectionToClipboard()),
-            QKeySequence::Copy);
-
     // item-specific options (select link etc)
     ChatItem *item = chatItemAt(pos);
     if (item)
@@ -811,6 +806,13 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     else
         // no item -> default scene actions
         GraphicalUi::contextMenuActionProvider()->addActions(&menu, filter(), BufferId());
+
+    // If we have text selected, insert the Copy Selection as first item
+    if (isPosOverSelection(pos)) {
+        QAction *act = new Action(SmallIcon("edit-copy"), tr("Copy Selection"), &menu, this,
+            SLOT(selectionToClipboard()), QKeySequence::Copy);
+        menu.insertAction(menu.actions().at(0), act);
+    }
 
     if (QtUi::mainWindow()->menuBar()->isHidden())
         menu.addAction(QtUi::actionCollection("General")->action("ToggleMenuBar"));
