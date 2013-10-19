@@ -268,6 +268,20 @@ UserId PostgreSqlStorage::getUserId(const QString &user)
     }
 }
 
+QString PostgreSqlStorage::getUserName(const UserId userId)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_username"));
+    query.bindValue(":userid", userId.toInt());
+    safeExec(query);
+
+    if(query.first()) {
+        return query.value(0).toString();
+    }
+    else {
+        return QString();
+    }
+}
 
 UserId PostgreSqlStorage::internalUser()
 {
