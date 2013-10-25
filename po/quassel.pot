@@ -3505,11 +3505,6 @@ msgctxt "InputWidget|"
 msgid "Form"
 msgstr ""
 
-#: ../src/qtui/ui/inputwidget.ui:298
-msgctxt "InputWidget|"
-msgid "<img src=\":/icons/oxygen/16x16/actions/document-encrypt.png\">"
-msgstr ""
-
 #: ../src/qtui/inputwidget.cpp:74
 msgctxt "InputWidget|"
 msgid "White"
