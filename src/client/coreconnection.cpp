@@ -539,7 +539,11 @@ void CoreConnection::coreSocketConnected()
     clientInit["ClientVersion"] = Quassel::buildInfo().fancyVersionString;
     clientInit["ClientDate"] = Quassel::buildInfo().buildDate;
     clientInit["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
+#ifdef HAVE_SSL
     clientInit["UseSsl"] = _account.useSsl();
+#else
+    clientInit["UseSsl"] = false;
+#endif
 #ifndef QT_NO_COMPRESS
     clientInit["UseCompression"] = true;
 #else
