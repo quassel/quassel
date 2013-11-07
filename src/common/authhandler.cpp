@@ -23,7 +23,8 @@
 AuthHandler::AuthHandler(QObject *parent)
     : QObject(parent),
     _state(UnconnectedState),
-    _socket(0)
+    _socket(0),
+    _disconnectedSent(false)
 {
 
 }
@@ -54,14 +55,32 @@ void AuthHandler::setSocket(QTcpSocket *socket)
 {
     _socket = socket;
     connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SIGNAL(socketStateChanged(QAbstractSocket::SocketState)));
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(socketError(QAbstractSocket::SocketError)));
-    connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
+    connect(socket, SIGNAL(disconnected()), SLOT(onSocketDisconnected()));
 }
 
 
-void AuthHandler::socketError(QAbstractSocket::SocketError error)
+// Some errors (e.g. connection refused) don't trigger a disconnected() from the socket, so send this explicitly
+// (but make sure it's only sent once!)
+void AuthHandler::onSocketError(QAbstractSocket::SocketError error)
 {
     emit socketError(error, _socket->errorString());
+
+    if (!socket()->isOpen() || !socket()->isValid()) {
+        if (!_disconnectedSent) {
+            _disconnectedSent = true;
+            emit disconnected();
+        }
+    }
+}
+
+
+void AuthHandler::onSocketDisconnected()
+{
+    if (!_disconnectedSent) {
+        _disconnectedSent = true;
+        emit disconnected();
+    }
 }
 
 

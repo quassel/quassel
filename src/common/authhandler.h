@@ -78,13 +78,15 @@ protected:
     void setState(State state);
 
 private slots:
-    void socketError(QAbstractSocket::SocketError error);
+    void onSocketError(QAbstractSocket::SocketError error);
+    void onSocketDisconnected();
 
 private:
     void invalidMessage();
 
     State _state;
     QTcpSocket *_socket; // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
+    bool _disconnectedSent;
 };
 
 #endif
