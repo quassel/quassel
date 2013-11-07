@@ -141,6 +141,7 @@ struct LoginSuccess : public HandshakeMessage
 // TODO: more generic format
 struct SessionState : public HandshakeMessage
 {
+    inline SessionState() {} // needed for QMetaType (for the mono client)
     inline SessionState(const QVariantList &identities, const QVariantList &bufferInfos, const QVariantList &networkIds)
     : identities(identities), bufferInfos(bufferInfos), networkIds(networkIds) {}
 
@@ -148,7 +149,6 @@ struct SessionState : public HandshakeMessage
     QVariantList bufferInfos;
     QVariantList networkIds;
 };
-
 
 /*** handled by SignalProxy ***/
 
