@@ -27,8 +27,126 @@
 
 namespace Protocol {
 
+enum Type {
+    LegacyProtocol = 1
+};
+
 enum Handler {
-    SignalProxy
+    SignalProxy,
+    AuthHandler
+};
+
+/*** Handshake, handled by AuthHandler ***/
+
+
+struct HandshakeMessage {
+    inline Handler handler() const { return AuthHandler; }
+};
+
+
+struct RegisterClient : public HandshakeMessage
+{
+    inline RegisterClient(const QString &clientVersion, bool sslSupported = false)
+    : clientVersion(clientVersion)
+    , sslSupported(sslSupported) {}
+
+    QString clientVersion;
+
+    // this is only used by the LegacyProtocol in compat mode
+    bool sslSupported;
+};
+
+
+struct ClientDenied : public HandshakeMessage
+{
+    inline ClientDenied(const QString &errorString)
+    : errorString(errorString) {}
+
+    QString errorString;
+};
+
+
+struct ClientRegistered : public HandshakeMessage
+{
+    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, bool sslSupported, const QDateTime &coreStartTime)
+    : coreFeatures(coreFeatures)
+    , coreConfigured(coreConfigured)
+    , backendInfo(backendInfo)
+    , sslSupported(sslSupported)
+    , coreStartTime(coreStartTime)
+    {}
+
+    quint32 coreFeatures;
+    bool coreConfigured;
+    QVariantList backendInfo; // TODO: abstract this better
+
+    // this is only used by the LegacyProtocol in compat mode
+    bool sslSupported;
+    QDateTime coreStartTime;
+};
+
+
+struct SetupData : public HandshakeMessage
+{
+    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData)
+    : adminUser(adminUser), adminPassword(adminPassword), backend(backend), setupData(setupData) {}
+
+    QString adminUser;
+    QString adminPassword;
+    QString backend;
+    QVariantMap setupData;
+};
+
+
+struct SetupFailed : public HandshakeMessage
+{
+    inline SetupFailed(const QString &errorString)
+    : errorString(errorString) {}
+
+    QString errorString;
+};
+
+
+struct SetupDone : public HandshakeMessage
+{
+    inline SetupDone() {}
+};
+
+
+struct Login : public HandshakeMessage
+{
+    inline Login(const QString &user, const QString &password)
+    : user(user), password(password) {}
+
+    QString user;
+    QString password;
+};
+
+
+struct LoginFailed : public HandshakeMessage
+{
+    inline LoginFailed(const QString &errorString)
+    : errorString(errorString) {}
+
+    QString errorString;
+};
+
+
+struct LoginSuccess : public HandshakeMessage
+{
+    inline LoginSuccess() {}
+};
+
+
+// TODO: more generic format
+struct SessionState : public HandshakeMessage
+{
+    inline SessionState(const QVariantList &identities, const QVariantList &bufferInfos, const QVariantList &networkIds)
+    : identities(identities), bufferInfos(bufferInfos), networkIds(networkIds) {}
+
+    QVariantList identities;
+    QVariantList bufferInfos;
+    QVariantList networkIds;
 };
 
 
