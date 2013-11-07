@@ -18,58 +18,45 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "monoapplication.h"
-#include "coreapplication.h"
-#include "client.h"
-#include "core.h"
-#include "qtui.h"
+#ifndef COREAUTHHANDLER_H
+#define COREAUTHHANDLER_H
 
-class InternalPeer;
+#include "authhandler.h"
+#include "remotepeer.h"
+#include "types.h"
 
-MonolithicApplication::MonolithicApplication(int &argc, char **argv)
-    : QtUiApplication(argc, argv),
-    _internalInitDone(false)
+class CoreAuthHandler : public AuthHandler
 {
-    _internal = new CoreApplicationInternal(); // needed for parser options
-#if defined(HAVE_KDE) || defined(Q_OS_MAC)
-    disableCrashhandler();
-#endif /* HAVE_KDE || Q_OS_MAC */
-    setRunMode(Quassel::Monolithic);
-}
+    Q_OBJECT
 
+public:
+    CoreAuthHandler(QTcpSocket *socket, QObject *parent = 0);
 
-bool MonolithicApplication::init()
-{
-    if (!Quassel::init()) // parse args
-        return false;
+signals:
+    void handshakeComplete(RemotePeer *peer, UserId uid);
 
-    connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
+private:
+    using AuthHandler::handle;
 
-    // FIXME what's this for?
-    if (isOptionSet("port")) {
-        startInternalCore();
-    }
+    void handle(const Protocol::RegisterClient &msg);
+    void handle(const Protocol::SetupData &msg);
+    void handle(const Protocol::Login &msg);
 
-    return QtUiApplication::init();
-}
+    bool checkClientRegistered();
 
+private slots:
+    void startSsl();
+#ifdef HAVE_SSL
+    void onSslErrors();
+#endif
 
-MonolithicApplication::~MonolithicApplication()
-{
-    // Client needs to be destroyed first
-    Client::destroy();
-    delete _internal;
-}
+    // only in compat mode
+    void onProtocolVersionMismatch(int actual, int expected);
 
+private:
+    RemotePeer *_peer;
 
-void MonolithicApplication::startInternalCore()
-{
-    if (!_internalInitDone) {
-        _internal->init();
-        _internalInitDone = true;
-    }
-    Core *core = Core::instance();
-    CoreConnection *connection = Client::coreConnection();
-    connect(connection, SIGNAL(connectToInternalCore(InternalPeer*)), core, SLOT(setupInternalClientSession(InternalPeer*)));
-    connect(core, SIGNAL(sessionState(Protocol::SessionState)), connection, SLOT(internalSessionStateReceived(Protocol::SessionState)));
-}
+    bool _clientRegistered;
+};
+
+#endif

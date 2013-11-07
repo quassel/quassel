@@ -41,10 +41,21 @@ public:
         HeartBeatReply
     };
 
-    LegacyPeer(QTcpSocket *socket, QObject *parent = 0);
+    LegacyPeer(AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
     ~LegacyPeer() {}
 
     void setSignalProxy(SignalProxy *proxy);
+
+    void dispatch(const Protocol::RegisterClient &msg);
+    void dispatch(const Protocol::ClientDenied &msg);
+    void dispatch(const Protocol::ClientRegistered &msg);
+    void dispatch(const Protocol::SetupData &msg);
+    void dispatch(const Protocol::SetupFailed &msg);
+    void dispatch(const Protocol::SetupDone &msg);
+    void dispatch(const Protocol::Login &msg);
+    void dispatch(const Protocol::LoginFailed &msg);
+    void dispatch(const Protocol::LoginSuccess &msg);
+    void dispatch(const Protocol::SessionState &msg);
 
     void dispatch(const Protocol::SyncMessage &msg);
     void dispatch(const Protocol::RpcCall &msg);
@@ -57,11 +68,18 @@ public:
     // FIXME: this is only used for the auth phase and should be replaced by something more generic
     void writeSocketData(const QVariant &item);
 
+signals:
+    void protocolError(const QString &errorString);
+
+    // only used in compat mode
+    void protocolVersionMismatch(int actual, int expected);
+
 private slots:
     void socketDataAvailable();
 
 private:
     bool readSocketData(QVariant &item);
+    void handleHandshakeMessage(const QVariant &msg);
     void handlePackedFunc(const QVariant &packedFunc);
     void dispatchPackedFunc(const QVariantList &packedFunc);
 

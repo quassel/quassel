@@ -31,8 +31,8 @@
 
 using namespace Protocol;
 
-RemotePeer::RemotePeer(QTcpSocket *socket, QObject *parent)
-    : Peer(parent),
+RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
+    : Peer(authHandler, parent),
     _socket(socket),
     _signalProxy(0),
     _heartBeatTimer(new QTimer(this)),
@@ -41,7 +41,8 @@ RemotePeer::RemotePeer(QTcpSocket *socket, QObject *parent)
 {
     socket->setParent(this);
     connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SIGNAL(error(QAbstractSocket::SocketError)));
+    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SIGNAL(socketStateChanged(QAbstractSocket::SocketState)));
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
 
 #ifdef HAVE_SSL
     QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
@@ -50,6 +51,12 @@ RemotePeer::RemotePeer(QTcpSocket *socket, QObject *parent)
 #endif
 
     connect(_heartBeatTimer, SIGNAL(timeout()), SLOT(sendHeartBeat()));
+}
+
+
+void RemotePeer::onSocketError(QAbstractSocket::SocketError error)
+{
+    emit socketError(error, socket()->errorString());
 }
 
 
@@ -169,9 +176,9 @@ void RemotePeer::handle(const HeartBeatReply &heartBeatReply)
 {
     _heartBeatCount = 0;
 #if QT_VERSION >= 0x040900
-    emit lagUpdated(heartBeatReply.timestamp().msecsTo(QDateTime::currentDateTime().toUTC()) / 2);
+    emit lagUpdated(heartBeatReply.timestamp.msecsTo(QDateTime::currentDateTime().toUTC()) / 2);
 #else
-    emit lagUpdated(heartBeatReply.timestamp().time().msecsTo(QDateTime::currentDateTime().toUTC().time()) / 2);
+    emit lagUpdated(heartBeatReply.timestamp.time().msecsTo(QDateTime::currentDateTime().toUTC().time()) / 2);
 #endif
 }
 

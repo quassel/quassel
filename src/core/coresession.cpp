@@ -208,10 +208,7 @@ void CoreSession::restoreSessionState()
 
 void CoreSession::addClient(RemotePeer *peer)
 {
-    QVariantMap reply;
-    reply["MsgType"] = "SessionInit";
-    reply["SessionState"] = sessionState();
-    peer->writeSocketData(reply);
+    peer->dispatch(sessionState());
     signalProxy()->addPeer(peer);
 }
 
@@ -375,34 +372,20 @@ void CoreSession::processMessages()
 }
 
 
-QVariant CoreSession::sessionState()
+Protocol::SessionState CoreSession::sessionState() const
 {
-    QVariantMap v;
+    QVariantList bufferInfos;
+    QVariantList networkIds;
+    QVariantList identities;
 
-    v["CoreFeatures"] = (int)Quassel::features();
+    foreach(const BufferInfo &id, buffers())
+        bufferInfos << QVariant::fromValue(id);
+    foreach(const NetworkId &id, _networks.keys())
+        networkIds << QVariant::fromValue(id);
+    foreach(const Identity *i, _identities.values())
+        identities << QVariant::fromValue(*i);
 
-    QVariantList bufs;
-    foreach(BufferInfo id, buffers()) bufs << qVariantFromValue(id);
-    v["BufferInfos"] = bufs;
-    QVariantList networkids;
-    foreach(NetworkId id, _networks.keys()) networkids << qVariantFromValue(id);
-    v["NetworkIds"] = networkids;
-
-    quint32 ircusercount = 0;
-    quint32 ircchannelcount = 0;
-    foreach(Network *net, _networks.values()) {
-        ircusercount += net->ircUserCount();
-        ircchannelcount += net->ircChannelCount();
-    }
-    v["IrcUserCount"] = ircusercount;
-    v["IrcChannelCount"] = ircchannelcount;
-
-    QList<QVariant> idlist;
-    foreach(Identity *i, _identities.values()) idlist << qVariantFromValue(*i);
-    v["Identities"] = idlist;
-
-    //v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
-    return v;
+    return Protocol::SessionState(identities, bufferInfos, networkIds);
 }
 
 

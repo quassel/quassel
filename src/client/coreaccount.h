@@ -70,7 +70,7 @@ public:
     void setProxyHostName(const QString &);
     void setProxyPort(uint);
 
-    /* These might be overridden for KWallet support */
+    /* These might be overridden for KWallet/QtKeychain support */
     virtual inline QString password() const { return _password; }
     virtual void setPassword(const QString &password);
     virtual inline QString proxyPassword() const { return _proxyPassword; }

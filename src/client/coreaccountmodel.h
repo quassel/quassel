@@ -50,7 +50,7 @@ public:
 
     inline AccountId internalAccount() const;
 
-    AccountId createOrUpdateAccount(const CoreAccount &newAccountData = CoreAccount());
+    AccountId createOrUpdateAccount(const CoreAccount &newAccountData);
     CoreAccount takeAccount(AccountId);
     void removeAccount(AccountId);
 

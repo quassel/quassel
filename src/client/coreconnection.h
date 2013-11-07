@@ -21,8 +21,6 @@
 #ifndef CORECONNECTION_H_
 #define CORECONNECTION_H_
 
-// TODO: support system application proxy (new in Qt 4.6)
-
 #include "QPointer"
 #include "QTimer"
 
@@ -40,6 +38,7 @@
 #include "remotepeer.h"
 #include "types.h"
 
+class ClientAuthHandler;
 class CoreAccountModel;
 class InternalPeer;
 class Network;
@@ -59,7 +58,7 @@ public:
         Synchronized
     };
 
-    CoreConnection(CoreAccountModel *model, QObject *parent = 0);
+    CoreConnection(QObject *parent = 0);
 
     void init();
 
@@ -78,14 +77,12 @@ public:
     //! Check if we consider the last connect as reconnect
     bool wasReconnect() const { return _wasReconnect; }
 
-#ifdef HAVE_SSL
-    const QSslSocket *sslSocket() const;
-#endif
-
 public slots:
     bool connectToCore(AccountId = 0);
     void reconnectToCore();
     void disconnectFromCore();
+
+    void setupCore(const Protocol::SetupData &setupData);
 
 signals:
     void stateChanged(CoreConnection::ConnectionState);
@@ -95,7 +92,6 @@ signals:
 
     void connectionError(const QString &errorMsg);
     void connectionErrorPopup(const QString &errorMsg);
-    void connectionWarnings(const QStringList &warnings);
     void connectionMsg(const QString &msg);
     void disconnected();
 
@@ -103,7 +99,7 @@ signals:
     void progressValueChanged(int value);
     void progressTextChanged(const QString &);
 
-    void startCoreSetup(const QVariantList &);
+    void startCoreSetup(const QVariantList &backendInfo);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &error);
 
@@ -123,30 +119,22 @@ private slots:
     void disconnectFromCore(const QString &errorString, bool wantReconnect = true);
 
     void socketStateChanged(QAbstractSocket::SocketState);
-    void coreSocketError(QAbstractSocket::SocketError);
-    void coreHasData(const QVariant &item);
-    void coreSocketConnected();
+    void coreSocketError(QAbstractSocket::SocketError error, const QString &errorString);
     void coreSocketDisconnected();
-
-    void clientInitAck(const QVariantMap &msg);
 
     // for sync progress
     void networkInitDone();
     void checkSyncState();
 
-    void syncToCore(const QVariantMap &sessionState);
-    void internalSessionStateReceived(const QVariant &packedState);
-    void sessionStateReceived(const QVariantMap &state);
+    void loginToCore(const QString &user, const QString &password, bool remember); // for config wizard
+    void syncToCore(const Protocol::SessionState &sessionState);
+    void internalSessionStateReceived(const Protocol::SessionState &sessionState);
 
     void resetConnection(bool wantReconnect = false);
-    void connectionReady();
 
-    void loginToCore(const QString &user, const QString &password, bool remember); // for config wizard
-    void loginToCore(const QString &previousError = QString());
-    void loginSuccess();
-    void loginFailed(const QString &errorMessage);
-
-    void doCoreSetup(const QVariant &setupData);
+    void onConnectionReady();
+    void onLoginSuccessful(const CoreAccount &account);
+    void onHandshakeComplete(RemotePeer *peer, const Protocol::SessionState &sessionState);
 
     void updateProgress(int value, int maximum);
     void setProgressText(const QString &text);
@@ -156,11 +144,6 @@ private slots:
 
     void setState(QAbstractSocket::SocketState socketState);
     void setState(ConnectionState state);
-
-#ifdef HAVE_SSL
-    void sslSocketEncrypted();
-    void sslErrors();
-#endif
 
     void networkDetectionModeChanged(const QVariant &mode);
     void pingTimeoutIntervalChanged(const QVariant &interval);
@@ -172,11 +155,7 @@ private slots:
 #endif
 
 private:
-    CoreAccountModel *_model;
-    CoreAccount _account;
-    QVariantMap _coreMsgBuffer;
-
-    QPointer<QTcpSocket> _socket;
+    QPointer<ClientAuthHandler> _authHandler;
     QPointer<Peer> _peer;
     ConnectionState _state;
 
@@ -189,10 +168,10 @@ private:
     int _progressMinimum, _progressMaximum, _progressValue;
     QString _progressText;
 
-    QString _coreInfoString(const QVariantMap &);
     bool _resetting;
 
-    inline CoreAccountModel *accountModel() const;
+    CoreAccount _account;
+    CoreAccountModel *accountModel() const;
 
     friend class CoreConfigWizard;
 };
@@ -209,10 +188,5 @@ inline QString CoreConnection::progressText() const { return _progressText; }
 inline CoreConnection::ConnectionState CoreConnection::state() const { return _state; }
 inline bool CoreConnection::isConnected() const { return state() >= Connected; }
 inline CoreAccount CoreConnection::currentAccount() const { return _account; }
-inline CoreAccountModel *CoreConnection::accountModel() const { return _model; }
-
-#ifdef HAVE_SSL
-inline const QSslSocket *CoreConnection::sslSocket() const { return qobject_cast<QSslSocket *>(_socket); }
-#endif
 
 #endif

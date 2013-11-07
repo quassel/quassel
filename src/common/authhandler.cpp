@@ -18,58 +18,61 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "monoapplication.h"
-#include "coreapplication.h"
-#include "client.h"
-#include "core.h"
-#include "qtui.h"
+#include "authhandler.h"
 
-class InternalPeer;
-
-MonolithicApplication::MonolithicApplication(int &argc, char **argv)
-    : QtUiApplication(argc, argv),
-    _internalInitDone(false)
+AuthHandler::AuthHandler(QObject *parent)
+    : QObject(parent),
+    _state(UnconnectedState),
+    _socket(0)
 {
-    _internal = new CoreApplicationInternal(); // needed for parser options
-#if defined(HAVE_KDE) || defined(Q_OS_MAC)
-    disableCrashhandler();
-#endif /* HAVE_KDE || Q_OS_MAC */
-    setRunMode(Quassel::Monolithic);
+
 }
 
 
-bool MonolithicApplication::init()
+AuthHandler::State AuthHandler::state() const
 {
-    if (!Quassel::init()) // parse args
-        return false;
+    return _state;
+}
 
-    connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
 
-    // FIXME what's this for?
-    if (isOptionSet("port")) {
-        startInternalCore();
+void AuthHandler::setState(AuthHandler::State state)
+{
+    if (_state != state) {
+        _state = state;
+        emit stateChanged(state);
     }
-
-    return QtUiApplication::init();
 }
 
 
-MonolithicApplication::~MonolithicApplication()
+QTcpSocket *AuthHandler::socket() const
 {
-    // Client needs to be destroyed first
-    Client::destroy();
-    delete _internal;
+    return _socket;
 }
 
 
-void MonolithicApplication::startInternalCore()
+void AuthHandler::setSocket(QTcpSocket *socket)
 {
-    if (!_internalInitDone) {
-        _internal->init();
-        _internalInitDone = true;
-    }
-    Core *core = Core::instance();
-    CoreConnection *connection = Client::coreConnection();
-    connect(connection, SIGNAL(connectToInternalCore(InternalPeer*)), core, SLOT(setupInternalClientSession(InternalPeer*)));
-    connect(core, SIGNAL(sessionState(Protocol::SessionState)), connection, SLOT(internalSessionStateReceived(Protocol::SessionState)));
+    _socket = socket;
+    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SIGNAL(socketStateChanged(QAbstractSocket::SocketState)));
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(socketError(QAbstractSocket::SocketError)));
+    connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
+}
+
+
+void AuthHandler::socketError(QAbstractSocket::SocketError error)
+{
+    emit socketError(error, _socket->errorString());
+}
+
+
+void AuthHandler::invalidMessage()
+{
+    qWarning() << Q_FUNC_INFO << "No handler for message!";
+}
+
+
+void AuthHandler::close()
+{
+    if (_socket && _socket->isOpen())
+        _socket->close();
 }

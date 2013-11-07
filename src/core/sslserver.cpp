@@ -122,6 +122,7 @@ bool SslServer::setCertificate(const QString &path)
     }
     if (!_cert.isValid()) {
         quWarning() << "SslServer: Invalid certificate (most likely expired)";
+        // We allow the core to offer SSL anyway, so no "return false" here. Client will warn about the cert being invalid.
     }
     if (_key.isNull()) {
         quWarning() << "SslServer:" << qPrintable(path) << "contains no key data";

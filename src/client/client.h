@@ -25,6 +25,7 @@
 #include <QPointer>
 
 #include "bufferinfo.h"
+#include "coreaccount.h"
 #include "coreconnection.h"
 #include "quassel.h"
 #include "types.h"
@@ -122,6 +123,8 @@ public:
     static inline CoreAccount currentCoreAccount() { return coreConnection()->currentAccount(); }
     static inline Quassel::Features coreFeatures() { return _coreFeatures; }
 
+    static void setCoreFeatures(Quassel::Features features);
+
     static bool isConnected();
     static bool internalCore();
 
@@ -214,7 +217,6 @@ private:
     void init();
 
     static void addNetwork(Network *);
-    static void setCoreFeatures(Quassel::Features);
     static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
     static QPointer<Client> instanceptr;

@@ -22,7 +22,9 @@
 #define PEER_H
 
 #include <QAbstractSocket>
+#include <QPointer>
 
+#include "authhandler.h"
 #include "protocol.h"
 #include "signalproxy.h"
 
@@ -31,12 +33,14 @@ class Peer : public QObject
     Q_OBJECT
 
 public:
-    Peer(QObject *parent = 0) : QObject(parent) {}
+    Peer(AuthHandler *authHandler, QObject *parent = 0);
 
     virtual QString description() const = 0;
 
     virtual SignalProxy *signalProxy() const = 0;
     virtual void setSignalProxy(SignalProxy *proxy) = 0;
+
+    AuthHandler *authHandler() const;
 
     virtual bool isOpen() const = 0;
     virtual bool isSecure() const = 0;
@@ -45,27 +49,42 @@ public:
     virtual int lag() const = 0;
 
 public slots:
-    virtual void dispatch(const Protocol::SyncMessage &msg) = 0;
-    virtual void dispatch(const Protocol::RpcCall &msg) = 0;
-    virtual void dispatch(const Protocol::InitRequest &msg) = 0;
-    virtual void dispatch(const Protocol::InitData &msg) = 0;
+    /* Handshake messages */
+    virtual void dispatch(const Protocol::RegisterClient &) = 0;
+    virtual void dispatch(const Protocol::ClientDenied &) = 0;
+    virtual void dispatch(const Protocol::ClientRegistered &) = 0;
+    virtual void dispatch(const Protocol::SetupData &) = 0;
+    virtual void dispatch(const Protocol::SetupFailed &) = 0;
+    virtual void dispatch(const Protocol::SetupDone &) = 0;
+    virtual void dispatch(const Protocol::Login &) = 0;
+    virtual void dispatch(const Protocol::LoginFailed &) = 0;
+    virtual void dispatch(const Protocol::LoginSuccess &) = 0;
+    virtual void dispatch(const Protocol::SessionState &) = 0;
+
+    /* Sigproxy messages */
+    virtual void dispatch(const Protocol::SyncMessage &) = 0;
+    virtual void dispatch(const Protocol::RpcCall &) = 0;
+    virtual void dispatch(const Protocol::InitRequest &) = 0;
+    virtual void dispatch(const Protocol::InitData &) = 0;
 
     virtual void close(const QString &reason = QString()) = 0;
 
 signals:
     void disconnected();
-    void error(QAbstractSocket::SocketError);
     void secureStateChanged(bool secure = true);
     void lagUpdated(int msecs);
 
 protected:
-    template<class T>
+    template<typename T>
     void handle(const T &protoMessage);
+
+private:
+    QPointer<AuthHandler> _authHandler;
 };
 
 
 // Template method needed in the header
-template<class T> inline
+template<typename T> inline
 void Peer::handle(const T &protoMessage)
 {
     switch(protoMessage.handler()) {
@@ -75,6 +94,14 @@ void Peer::handle(const T &protoMessage)
                 return;
             }
             signalProxy()->handle(this, protoMessage);
+            break;
+
+        case Protocol::AuthHandler:
+            if (!authHandler()) {
+                qWarning() << Q_FUNC_INFO << "Cannot handle auth messages without an active AuthHandler!";
+                return;
+            }
+            authHandler()->handle(protoMessage);
             break;
 
         default:

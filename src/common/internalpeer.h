@@ -61,6 +61,18 @@ public:
     void dispatch(const Protocol::InitRequest &msg);
     void dispatch(const Protocol::InitData &msg);
 
+    /* These are not needed for InternalPeer */
+    void dispatch(const Protocol::RegisterClient &) {}
+    void dispatch(const Protocol::ClientDenied &) {}
+    void dispatch(const Protocol::ClientRegistered &) {}
+    void dispatch(const Protocol::SetupData &) {}
+    void dispatch(const Protocol::SetupFailed &) {}
+    void dispatch(const Protocol::SetupDone &) {}
+    void dispatch(const Protocol::Login &) {}
+    void dispatch(const Protocol::LoginFailed &) {}
+    void dispatch(const Protocol::LoginSuccess &) {}
+    void dispatch(const Protocol::SessionState &) {}
+
 public slots:
     void close(const QString &reason = QString());
 

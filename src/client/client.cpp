@@ -105,7 +105,7 @@ Client::Client(QObject *parent)
     _messageModel(0),
     _messageProcessor(0),
     _coreAccountModel(new CoreAccountModel(this)),
-    _coreConnection(new CoreConnection(_coreAccountModel, this)),
+    _coreConnection(new CoreConnection(this)),
     _connected(false),
     _debugLog(&_debugLogBuffer)
 {

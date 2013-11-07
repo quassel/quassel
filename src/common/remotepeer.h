@@ -30,12 +30,18 @@
 class QTcpSocket;
 class QTimer;
 
+class AuthHandler;
+
 class RemotePeer : public Peer
 {
     Q_OBJECT
 
 public:
-    RemotePeer(QTcpSocket *socket, QObject *parent = 0);
+    // import the virtuals from the baseclass
+    using Peer::handle;
+    using Peer::dispatch;
+
+    RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
     virtual ~RemotePeer() {};
 
     void setSignalProxy(SignalProxy *proxy);
@@ -53,23 +59,16 @@ public:
 
     QTcpSocket *socket() const;
 
-    // this is only used for the auth phase and should be replaced by something more generic
-    virtual void writeSocketData(const QVariant &item) = 0;
-
 public slots:
     void close(const QString &reason = QString());
 
 signals:
-    // this is only used for the auth phase and should be replaced by something more generic
-    void dataReceived(const QVariant &item);
-
     void transferProgress(int current, int max);
+    void socketStateChanged(QAbstractSocket::SocketState socketState);
+    void socketError(QAbstractSocket::SocketError error, const QString &errorString);
 
 protected:
     SignalProxy *signalProxy() const;
-
-    using Peer::handle;
-    using Peer::dispatch;
 
     // These protocol messages get handled internally and won't reach SignalProxy
     void handle(const Protocol::HeartBeat &heartBeat);
@@ -80,6 +79,7 @@ protected:
 private slots:
     void sendHeartBeat();
     void changeHeartBeatInterval(int secs);
+    void onSocketError(QAbstractSocket::SocketError error);
 
 private:
     QTcpSocket *_socket;

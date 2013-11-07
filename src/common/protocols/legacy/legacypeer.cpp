@@ -18,14 +18,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QHostAddress>
 #include <QTcpSocket>
 
 #include "legacypeer.h"
+#include "quassel.h"
+
+/* version.inc is no longer used for this */
+const int protocolVersion = 10;
+const int coreNeedsProtocol = protocolVersion;
+const int clientNeedsProtocol = protocolVersion;
 
 using namespace Protocol;
 
-LegacyPeer::LegacyPeer(QTcpSocket *socket, QObject *parent)
-    : RemotePeer(socket, parent),
+LegacyPeer::LegacyPeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
+    : RemotePeer(authHandler, socket, parent),
     _blockSize(0),
     _useCompression(false)
 {
@@ -40,9 +47,13 @@ void LegacyPeer::setSignalProxy(::SignalProxy *proxy)
 {
     RemotePeer::setSignalProxy(proxy);
 
+    // FIXME only in compat mode
+    socket()->flush();
     if (proxy) {
         // enable compression now if requested - the initial handshake is uncompressed in the legacy protocol!
         _useCompression = socket()->property("UseCompression").toBool();
+        if (_useCompression)
+            qDebug() << "Using compression for peer:" << qPrintable(socket()->peerAddress().toString());
     }
 
 }
@@ -54,7 +65,7 @@ void LegacyPeer::socketDataAvailable()
     while (readSocketData(item)) {
         // if no sigproxy is set, we're in handshake mode and let the data be handled elsewhere
         if (!signalProxy())
-            emit dataReceived(item);
+            handleHandshakeMessage(item);
         else
             handlePackedFunc(item);
     }
@@ -149,6 +160,237 @@ void LegacyPeer::writeSocketData(const QVariant &item)
 }
 
 
+/*** Handshake messages ***/
+
+/* These messages are transmitted during handshake phase, which in case of the legacy protocol means they have
+ * a structure different from those being used after the handshake.
+ * Also, the legacy handshake does not fully match the redesigned one, so we'll have to do various mappings here.
+ */
+
+void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
+{
+    QVariantMap m = msg.toMap();
+
+    QString msgType = m["MsgType"].toString();
+    if (msgType.isEmpty()) {
+        emit protocolError(tr("Invalid handshake message!"));
+        return;
+    }
+
+    if (msgType == "ClientInit") {
+        // FIXME only in compat mode
+        int ver = m["ProtocolVersion"].toInt();
+        if (ver < coreNeedsProtocol) {
+            emit protocolVersionMismatch(ver, coreNeedsProtocol);
+            return;
+        }
+
+#ifndef QT_NO_COMPRESS
+        // FIXME only in compat mode
+        if (m["UseCompression"].toBool()) {
+            socket()->setProperty("UseCompression", true);
+        }
+#endif
+        handle(RegisterClient(m["ClientVersion"].toString(), m["UseSsl"].toBool()));
+    }
+
+    else if (msgType == "ClientInitReject") {
+        handle(ClientDenied(m["Error"].toString()));
+    }
+
+    else if (msgType == "ClientInitAck") {
+        // FIXME only in compat mode
+        int ver = m["ProtocolVersion"].toInt();
+        if (ver < clientNeedsProtocol) {
+            emit protocolVersionMismatch(ver, clientNeedsProtocol);
+            return;
+        }
+#ifndef QT_NO_COMPRESS
+        if (m["SupportsCompression"].toBool())
+            socket()->setProperty("UseCompression", true);
+#endif
+
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool(), QDateTime()));
+    }
+
+    else if (msgType == "CoreSetupData") {
+        QVariantMap map = m["SetupData"].toMap();
+        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["ConnectionProperties"].toMap()));
+    }
+
+    else if (msgType == "CoreSetupReject") {
+        handle(SetupFailed(m["Error"].toString()));
+    }
+
+    else if (msgType == "CoreSetupAck") {
+        handle(SetupDone());
+    }
+
+    else if (msgType == "ClientLogin") {
+        handle(Login(m["User"].toString(), m["Password"].toString()));
+    }
+
+    else if (msgType == "ClientLoginReject") {
+        handle(LoginFailed(m["Error"].toString()));
+    }
+
+    else if (msgType == "ClientLoginAck") {
+        handle(LoginSuccess());
+    }
+
+    else if (msgType == "SessionInit") {
+        QVariantMap map = m["SessionState"].toMap();
+        handle(SessionState(map["Identities"].toList(), map["BufferInfos"].toList(), map["NetworkIds"].toList()));
+    }
+
+    else {
+        emit protocolError(tr("Unknown protocol message of type %1").arg(msgType));
+    }
+}
+
+
+void LegacyPeer::dispatch(const RegisterClient &msg) {
+    QVariantMap m;
+    m["MsgType"] = "ClientInit";
+    m["ClientVersion"] = msg.clientVersion;
+    m["ClientDate"] = Quassel::buildInfo().buildDate;
+
+    // FIXME only in compat mode
+    m["ProtocolVersion"] = protocolVersion;
+    m["UseSsl"] = msg.sslSupported;
+#ifndef QT_NO_COMPRESS
+    m["UseCompression"] = true;
+#else
+    m["UseCompression"] = false;
+#endif
+
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const ClientDenied &msg) {
+    QVariantMap m;
+    m["MsgType"] = "ClientInitReject";
+    m["Error"] = msg.errorString;
+
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const ClientRegistered &msg) {
+    QVariantMap m;
+    m["MsgType"] = "ClientInitAck";
+    m["CoreFeatures"] = msg.coreFeatures;
+    m["StorageBackends"] = msg.backendInfo;
+
+    // FIXME only in compat mode
+    m["ProtocolVersion"] = protocolVersion;
+    m["SupportSsl"] = msg.sslSupported;
+    m["SupportsCompression"] = socket()->property("UseCompression"); // this property gets already set in the ClientInit handler
+
+    // This is only used for old v10 clients (pre-0.5)
+    int uptime = msg.coreStartTime.secsTo(QDateTime::currentDateTime().toUTC());
+    int updays = uptime / 86400; uptime %= 86400;
+    int uphours = uptime / 3600; uptime %= 3600;
+    int upmins = uptime / 60;
+    m["CoreInfo"] = tr("<b>Quassel Core Version %1</b><br>"
+                       "Built: %2<br>"
+                       "Up %3d%4h%5m (since %6)").arg(Quassel::buildInfo().fancyVersionString)
+                       .arg(Quassel::buildInfo().buildDate)
+                       .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(msg.coreStartTime.toString(Qt::TextDate));
+
+    m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
+
+    writeSocketData(m);
+    socket()->flush(); // ensure that the write cache is flushed before we switch to ssl
+}
+
+
+void LegacyPeer::dispatch(const SetupData &msg)
+{
+    QVariantMap map;
+    map["AdminUser"] = msg.adminUser;
+    map["AdminPasswd"] = msg.adminPassword;
+    map["Backend"] = msg.backend;
+    map["ConnectionProperties"] = msg.setupData;
+
+    QVariantMap m;
+    m["MsgType"] = "CoreSetupData";
+    m["SetupData"] = map;
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const SetupFailed &msg)
+{
+    QVariantMap m;
+    m["MsgType"] = "CoreSetupReject";
+    m["Error"] = msg.errorString;
+
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const SetupDone &msg)
+{
+    Q_UNUSED(msg)
+
+    QVariantMap m;
+    m["MsgType"] = "CoreSetupAck";
+
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const Login &msg)
+{
+    QVariantMap m;
+    m["MsgType"] = "ClientLogin";
+    m["User"] = msg.user;
+    m["Password"] = msg.password;
+
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const LoginFailed &msg)
+{
+    QVariantMap m;
+    m["MsgType"] = "ClientLoginReject";
+    m["Error"] = msg.errorString;
+
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const LoginSuccess &msg)
+{
+    Q_UNUSED(msg)
+
+    QVariantMap m;
+    m["MsgType"] = "ClientLoginAck";
+
+    writeSocketData(m);
+}
+
+
+void LegacyPeer::dispatch(const SessionState &msg)
+{
+    QVariantMap m;
+    m["MsgType"] = "SessionInit";
+
+    QVariantMap map;
+    map["BufferInfos"] = msg.bufferInfos;
+    map["NetworkIds"] = msg.networkIds;
+    map["Identities"] = msg.identities;
+    m["SessionState"] = map;
+
+    writeSocketData(m);
+}
+
+
+/*** Standard messages ***/
+
 void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
 {
     QVariantList params(packedFunc.toList());
@@ -158,6 +400,7 @@ void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
         return;
     }
 
+    // TODO: make sure that this is a valid request type
     RequestType requestType = (RequestType)params.takeFirst().value<int>();
     switch (requestType) {
         case Sync: {

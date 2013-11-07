@@ -89,12 +89,7 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
     foreach(int idx, visitedPages())
     page(idx)->setEnabled(false);
 
-    QVariantMap foo;
-    foo["AdminUser"] = field("adminUser.user").toString();
-    foo["AdminPasswd"] = field("adminUser.password").toString();
-    foo["Backend"] = backend;
-    foo["ConnectionProperties"] = properties;
-    coreConnection()->doCoreSetup(foo);
+    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
 }
 
 

@@ -27,6 +27,7 @@
 #include "corecoreinfo.h"
 #include "corealiasmanager.h"
 #include "coreignorelistmanager.h"
+#include "protocol.h"
 #include "message.h"
 #include "storage.h"
 
@@ -68,7 +69,7 @@ public:
     inline CoreNetworkConfig *networkConfig() const { return _networkConfig; }
     NetworkConnection *networkConnection(NetworkId) const;
 
-    QVariant sessionState();
+    Protocol::SessionState sessionState() const;
 
     inline SignalProxy *signalProxy() const { return _signalProxy; }
 
@@ -130,7 +131,7 @@ public slots:
 
 signals:
     void initialized();
-    void sessionState(const QVariant &);
+    void sessionState(const Protocol::SessionState &sessionState);
 
     //void msgFromGui(uint netid, QString buf, QString message);
     void displayMsg(Message message);
