@@ -28,6 +28,11 @@
 #include <QHostAddress>
 #include <QDataStream>
 
+// We need to special-case Peer* in attached signals/slots, so typedef it for the meta type system
+class Peer;
+typedef Peer * PeerPtr;
+Q_DECLARE_METATYPE(PeerPtr)
+
 class SignedId
 {
 protected:

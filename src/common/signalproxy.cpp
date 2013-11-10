@@ -34,6 +34,7 @@
 #include "protocol.h"
 #include "syncableobject.h"
 #include "util.h"
+#include "types.h"
 
 using namespace Protocol;
 
@@ -147,7 +148,11 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
                 params << QVariant(argTypes[i], _a[i+1]);
             }
 
-            proxy()->dispatch(RpcCall(signal.signature, params));
+            if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxy()->proxyMode() == SignalProxy::Server) {
+                Peer *peer = params[0].value<PeerPtr>();
+                proxy()->dispatch(peer, RpcCall(signal.signature, params));
+            } else
+                proxy()->dispatch(RpcCall(signal.signature, params));
         }
         _id -= _slots.count();
     }
@@ -502,6 +507,15 @@ void SignalProxy::dispatch(const T &protoMessage)
 }
 
 
+void SignalProxy::dispatch(Peer *peer, const RpcCall &rpcCall)
+{
+    if (peer && peer->isOpen())
+        peer->dispatch(rpcCall);
+    else
+        QCoreApplication::postEvent(this, new ::RemovePeerEvent(peer));
+}
+
+
 void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
 {
     if (!_syncSlave.contains(syncMessage.className) || !_syncSlave[syncMessage.className].contains(syncMessage.objectName)) {
@@ -586,15 +600,13 @@ void SignalProxy::handle(Peer *peer, const InitData &initData)
 
 void SignalProxy::handle(Peer *peer, const RpcCall &rpcCall)
 {
-    Q_UNUSED(peer)
-
     QObject *receiver;
     int methodId;
     SlotHash::const_iterator slot = _attachedSlots.constFind(rpcCall.slotName);
     while (slot != _attachedSlots.constEnd() && slot.key() == rpcCall.slotName) {
         receiver = (*slot).first;
         methodId = (*slot).second;
-        if (!invokeSlot(receiver, methodId, rpcCall.params)) {
+        if (!invokeSlot(receiver, methodId, rpcCall.params, peer)) {
             ExtendedMetaObject *eMeta = extendedMetaObject(receiver);
             qWarning("SignalProxy::handleSignal(): invokeMethod for \"%s\" failed ", eMeta->methodName(methodId).constData());
         }
@@ -603,7 +615,7 @@ void SignalProxy::handle(Peer *peer, const RpcCall &rpcCall)
 }
 
 
-bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue)
+bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue, Peer *peer)
 {
     ExtendedMetaObject *eMeta = extendedMetaObject(receiver);
     const QList<int> args = eMeta->argTypes(methodId);
@@ -631,7 +643,12 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
             qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << eMeta->methodName(methodId);
             return false;
         }
-        _a[i+1] = const_cast<void *>(params[i].constData());
+        // if first arg is a PeerPtr, replace it by the address of the peer originally receiving the RpcCall
+        if (peer && i == 0 && args[0] == qMetaTypeId<PeerPtr>()) {
+            QVariant v = QVariant::fromValue<PeerPtr>(peer);
+            _a[1] = const_cast<void*>(v.constData());
+        } else
+            _a[i+1] = const_cast<void *>(params[i].constData());
     }
 
     if (returnValue.type() != QVariant::Invalid)
@@ -652,10 +669,10 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
 }
 
 
-bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList &params)
+bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList &params, Peer *peer)
 {
     QVariant ret;
-    return invokeSlot(receiver, methodId, params, ret);
+    return invokeSlot(receiver, methodId, params, ret, peer);
 }
 
 
