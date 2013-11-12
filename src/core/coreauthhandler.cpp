@@ -68,6 +68,7 @@ void CoreAuthHandler::startSsl()
 
     qDebug() << qPrintable(tr("Starting encryption for Client:"))  << _peer->description();
     connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), SLOT(onSslErrors()));
+    sslSocket->flush(); // ensure that the write cache is flushed before we switch to ssl (bug 682)
     sslSocket->startServerEncryption();
 #endif
 }
@@ -148,5 +149,6 @@ void CoreAuthHandler::handle(const Login &msg)
     disconnect(_peer, 0, this, 0);
     _peer->setParent(0); // Core needs to take care of this one now!
 
+    socket()->flush(); // Make sure all data is sent before handing over the peer (and socket) to the session thread (bug 682)
     emit handshakeComplete(_peer, uid);
 }

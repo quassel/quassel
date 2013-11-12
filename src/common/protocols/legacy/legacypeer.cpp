@@ -48,7 +48,6 @@ void LegacyPeer::setSignalProxy(::SignalProxy *proxy)
     RemotePeer::setSignalProxy(proxy);
 
     // FIXME only in compat mode
-    socket()->flush();
     if (proxy) {
         // enable compression now if requested - the initial handshake is uncompressed in the legacy protocol!
         _useCompression = socket()->property("UseCompression").toBool();
@@ -302,7 +301,6 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
 
     writeSocketData(m);
-    socket()->flush(); // ensure that the write cache is flushed before we switch to ssl
 }
 
 
