@@ -101,6 +101,11 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     // TODO: only in compat mode
     bool useSsl = false;
 #ifdef HAVE_SSL
+    if (Quassel::isOptionSet("require-ssl") && !msg.sslSupported) {
+        _peer->dispatch(ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
+        _peer->close();
+        return;
+    }
     if (Core::sslSupported() && msg.sslSupported)
         useSsl = true;
 #endif

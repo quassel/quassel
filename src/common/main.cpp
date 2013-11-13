@@ -115,6 +115,9 @@ int main(int argc, char **argv)
     cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
     cliParser->addSwitch("oidentd", 0, "Enable oidentd integration");
     cliParser->addOption("oidentd-conffile <file>", 0, "Set path to oidentd configuration file");
+#ifdef HAVE_SSL
+    cliParser->addSwitch("require-ssl", 0, "Require SSL for client connections");
+#endif
 #endif
 
 #ifdef HAVE_KDE
