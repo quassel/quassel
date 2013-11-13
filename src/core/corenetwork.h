@@ -226,6 +226,7 @@ private:
     QTimer _pingTimer;
     uint _lastPingTime;
     uint _pingCount;
+    bool _sendPings;
 
     QStringList _autoWhoQueue;
     QHash<QString, int> _autoWhoPending;
