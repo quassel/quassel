@@ -25,9 +25,9 @@
 #include "quassel.h"
 
 /* version.inc is no longer used for this */
-const int protocolVersion = 10;
-const int coreNeedsProtocol = protocolVersion;
-const int clientNeedsProtocol = protocolVersion;
+const uint protocolVersion = 10;
+const uint coreNeedsProtocol = protocolVersion;
+const uint clientNeedsProtocol = protocolVersion;
 
 using namespace Protocol;
 
@@ -178,9 +178,9 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
 
     if (msgType == "ClientInit") {
         // FIXME only in compat mode
-        int ver = m["ProtocolVersion"].toInt();
+        uint ver = m["ProtocolVersion"].toUInt();
         if (ver < coreNeedsProtocol) {
-            emit protocolVersionMismatch(ver, coreNeedsProtocol);
+            emit protocolVersionMismatch((int)ver, (int)coreNeedsProtocol);
             return;
         }
 
@@ -199,9 +199,9 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
 
     else if (msgType == "ClientInitAck") {
         // FIXME only in compat mode
-        int ver = m["ProtocolVersion"].toInt();
+        uint ver = m["ProtocolVersion"].toUInt(); // actually an UInt
         if (ver < clientNeedsProtocol) {
-            emit protocolVersionMismatch(ver, clientNeedsProtocol);
+            emit protocolVersionMismatch((int)ver, (int)clientNeedsProtocol);
             return;
         }
 #ifndef QT_NO_COMPRESS
@@ -285,7 +285,7 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     // FIXME only in compat mode
     m["ProtocolVersion"] = protocolVersion;
     m["SupportSsl"] = msg.sslSupported;
-    m["SupportsCompression"] = socket()->property("UseCompression"); // this property gets already set in the ClientInit handler
+    m["SupportsCompression"] = socket()->property("UseCompression").toBool(); // this property gets already set in the ClientInit handler
 
     // This is only used for old v10 clients (pre-0.5)
     int uptime = msg.coreStartTime.secsTo(QDateTime::currentDateTime().toUTC());
