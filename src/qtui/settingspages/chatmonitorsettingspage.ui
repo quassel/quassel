@@ -158,6 +158,16 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QCheckBox" name="showBacklog">
+     <property name="toolTip">
+      <string>Display messages from backlog on reconnect</string>
+     </property>
+     <property name="text">
+      <string>Show messages from backlog</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
