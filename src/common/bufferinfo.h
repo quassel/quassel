@@ -59,6 +59,7 @@ public:
     void setGroupId(uint gid) { _groupId = gid; }
 
     QString bufferName() const;
+    bool acceptsRegularMessages() const;
 
     inline bool operator==(const BufferInfo &other) const { return _bufferId == other._bufferId; }
 

@@ -62,6 +62,14 @@ QString BufferInfo::bufferName() const
 }
 
 
+bool BufferInfo::acceptsRegularMessages() const
+{
+    if(_type == StatusBuffer || _type == InvalidBuffer)
+        return false;
+    return true;
+}
+
+
 QDebug operator<<(QDebug dbg, const BufferInfo &b)
 {
     dbg.nospace() << "(bufId: " << b.bufferId() << ", netId: " << b.networkId() << ", groupId: " << b.groupId() << ", buf: " << b.bufferName() << ")";
