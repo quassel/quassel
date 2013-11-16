@@ -193,7 +193,7 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo &bufferInfo, const QStr
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
-    if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty())
+    if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
 
     if (parms.isEmpty()) {
@@ -364,7 +364,7 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo &bufferInfo, const QStrin
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
-    if (parms.count() == 0 && !bufferInfo.bufferName().isEmpty())
+    if (parms.count() == 0 && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
     else if (parms.count() != 1) {
         emit displayMsg(Message::Info, typeByTarget(bufname), bufname,
@@ -435,7 +435,8 @@ void CoreUserInputHandler::handleList(const BufferInfo &bufferInfo, const QStrin
 
 void CoreUserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg)
 {
-    if (bufferInfo.bufferName().isEmpty()) return;  // server buffer
+    if (bufferInfo.bufferName().isEmpty() || !bufferInfo.acceptsRegularMessages())
+        return;  // server buffer
     // FIXME make this a proper event
     coreNetwork()->coreSession()->ctcpParser()->query(coreNetwork(), bufferInfo.bufferName(), "ACTION", msg);
     emit displayMsg(Message::Action, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
@@ -581,7 +582,7 @@ void CoreUserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QStri
 
 void CoreUserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString &msg)
 {
-    if (bufferInfo.bufferName().isEmpty())
+    if (bufferInfo.bufferName().isEmpty() || !bufferInfo.acceptsRegularMessages())
         return;  // server buffer
 
     QByteArray encMsg = channelEncode(bufferInfo.bufferName(), msg);
@@ -608,7 +609,7 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo &bufferInfo, const QStr
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
-    if (parms.count() == 1 && !bufferInfo.bufferName().isEmpty())
+    if (parms.count() == 1 && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
     else if (parms.count() != 2) {
         emit displayMsg(Message::Info, typeByTarget(bufname), bufname,
@@ -646,7 +647,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
-    if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty())
+    if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
 
     if (parms.isEmpty()) {
@@ -676,7 +677,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo &bufferInfo, const QSt
 
 void CoreUserInputHandler::handleTopic(const BufferInfo &bufferInfo, const QString &msg)
 {
-    if (bufferInfo.bufferName().isEmpty())
+    if (bufferInfo.bufferName().isEmpty() || !bufferInfo.acceptsRegularMessages())
         return;
 
     QList<QByteArray> params;
