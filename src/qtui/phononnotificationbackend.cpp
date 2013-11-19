@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QFileDialog>
+#include <QUrl>
 
 #include <phonon/mediaobject.h>
 #include <phonon/backendcapabilities.h>
