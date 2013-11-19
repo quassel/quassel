@@ -192,7 +192,7 @@ foreach(FORM ${FORMS})
 endforeach(FORM ${FORMS})
 
 # handle settingspages
-include(settingspages/settingspages.inc)
+include(settingspages/settingspages.cmake)
 foreach(SP ${SETTINGSPAGES})
   set(SPSRC ${SPSRC} settingspages/${SP}settingspage.cpp)
   set(SPHDR ${SPHDR} settingspages/${SP}settingspage.h)
