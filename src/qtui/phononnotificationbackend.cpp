@@ -99,7 +99,7 @@ void PhononNotificationBackend::createMediaObject(const QString &file)
         return;
     }
 
-    _media = Phonon::createPlayer(Phonon::NotificationCategory, Phonon::MediaSource(file));
+    _media = Phonon::createPlayer(Phonon::NotificationCategory, Phonon::MediaSource(QUrl::fromLocalFile(file)));
 }
 
 
@@ -200,7 +200,7 @@ void PhononNotificationBackend::ConfigWidget::on_play_clicked()
             if (audioPreview)
                 delete audioPreview;
 
-            audioPreview = Phonon::createPlayer(Phonon::NotificationCategory, Phonon::MediaSource(ui.filename->text()));
+            audioPreview = Phonon::createPlayer(Phonon::NotificationCategory, Phonon::MediaSource(QUrl::fromLocalFile(ui.filename->text())));
             audioPreview->play();
         }
     }
