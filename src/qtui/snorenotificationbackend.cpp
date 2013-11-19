@@ -63,7 +63,7 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     m_snore->addApplication(a);
     m_snore->applicationIsInitialized (a);
 
-    m_snore->setPrimaryNotificationBackend(backend);
+    backendChanged(QVariant::fromValue(backend));
 }
 
 SnoreNotificationBackend::~SnoreNotificationBackend(){
