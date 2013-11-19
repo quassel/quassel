@@ -40,6 +40,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
 
     _lastPingTime(0),
     _pingCount(0),
+    _sendPings(false),
     _requestedUserModes('-')
 {
     _autoReconnectTimer.setSingleShot(true);
@@ -446,6 +447,8 @@ void CoreNetwork::socketInitialized()
 
     emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
 
+    enablePingTimeout();
+
     // TokenBucket to avoid sending too much at once
     _messageDelay = 2200;  // this seems to be a safe value (2.2 seconds delay)
     _burstSize = 5;
@@ -551,7 +554,7 @@ void CoreNetwork::networkInitialized()
 
     sendPerform();
 
-    enablePingTimeout();
+    _sendPings = true;
 
     if (networkConfig()->autoWhoEnabled()) {
         _autoWhoCycleTimer.start();
@@ -795,7 +798,8 @@ void CoreNetwork::sendPing()
     else {
         _lastPingTime = now;
         _pingCount++;
-        userInputHandler()->handlePing(BufferInfo(), QString());
+        if(_sendPings)
+            userInputHandler()->handlePing(BufferInfo(), QString());
     }
 }
 
@@ -815,6 +819,7 @@ void CoreNetwork::enablePingTimeout(bool enable)
 void CoreNetwork::disablePingTimeout()
 {
     _pingTimer.stop();
+    _sendPings = false;
     resetPingTimeout();
 }
 
