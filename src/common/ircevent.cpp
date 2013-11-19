@@ -22,7 +22,7 @@
 
 Event *IrcEvent::create(EventManager::EventType type, QVariantMap &map, Network *network)
 {
-    if ((type & EventManager::IrcEventNumericMask) == EventManager::IrcEventNumeric)
+    if ((type & ~EventManager::IrcEventNumericMask) == EventManager::IrcEventNumeric)
         return new IrcEventNumeric(type, map, network);
 
     if ((type & EventManager::EventGroupMask) != EventManager::IrcEvent)
