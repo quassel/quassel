@@ -34,13 +34,14 @@ PhononNotificationBackend::PhononNotificationBackend(QObject *parent)
     : AbstractNotificationBackend(parent),
     _media(0)
 {
-    _audioAvailable = !Phonon::BackendCapabilities::availableAudioOutputDevices().isEmpty();
     NotificationSettings notificationSettings;
-    _enabled = notificationSettings.value("Phonon/Enabled", true).toBool();
-    createMediaObject(notificationSettings.value("Phonon/AudioFile", QString()).toString());
-
     notificationSettings.notify("Phonon/Enabled", this, SLOT(enabledChanged(const QVariant &)));
     notificationSettings.notify("Phonon/AudioFile", this, SLOT(audioFileChanged(const QVariant &)));
+
+    createMediaObject(notificationSettings.value("Phonon/AudioFile", QString()).toString());
+
+    _enabled = notificationSettings.value("Phonon/Enabled", true).toBool();
+    _audioAvailable = !Phonon::BackendCapabilities::availableAudioOutputDevices().isEmpty();
 }
 
 
