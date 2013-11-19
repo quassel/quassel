@@ -29,18 +29,19 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QFileInfo>
+#include <QHostAddress>
 #include <QLibraryInfo>
 #include <QSettings>
 #include <QTranslator>
-#include <QHostAddress>
 
-#include "message.h"
-#include "identity.h"
-#include "network.h"
 #include "bufferinfo.h"
-#include "types.h"
-#include "syncableobject.h"
+#include "identity.h"
 #include "logger.h"
+#include "message.h"
+#include "network.h"
+#include "protocol.h"
+#include "syncableobject.h"
+#include "types.h"
 
 Quassel::BuildInfo Quassel::_buildInfo;
 AbstractCliParser *Quassel::_cliParser = 0;
@@ -193,6 +194,8 @@ void Quassel::registerMetaTypes()
     qRegisterMetaTypeStreamOperators<UserId>("UserId");
     qRegisterMetaTypeStreamOperators<AccountId>("AccountId");
     qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
+
+    qRegisterMetaType<Protocol::SessionState>("Protocol::SessionState");
 
     // Versions of Qt prior to 4.7 didn't define QVariant as a meta type
     if (!QMetaType::type("QVariant")) {

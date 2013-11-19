@@ -4,6 +4,7 @@ setup_qt_variables(Core Network)
 
 set(SOURCES
     aliasmanager.cpp
+    authhandler.cpp
     backlogmanager.cpp
     basichandler.cpp
     bufferinfo.cpp
@@ -41,6 +42,7 @@ set(SOURCES
 
 set(MOC_HDRS
     aliasmanager.h
+    authhandler.h
     backlogmanager.h
     basichandler.h
     buffersyncer.h
@@ -97,7 +99,7 @@ if(CMAKE_HOST_UNIX)
     set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
 endif(CMAKE_HOST_UNIX)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR} ${QUASSEL_QT_INCLUDES})  # for version.inc and version.gen
+include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${QUASSEL_QT_INCLUDES})  # for version.inc and version.gen
 
 if(NOT WITH_QT5)
   qt4_wrap_cpp(MOC ${MOC_HDRS})

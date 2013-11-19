@@ -24,6 +24,7 @@ set(SOURCES
     bufferviewoverlay.cpp
     client.cpp
     clientaliasmanager.cpp
+    clientauthhandler.cpp
     clientbacklogmanager.cpp
     clientbufferviewconfig.cpp
     clientbufferviewmanager.cpp
@@ -51,6 +52,7 @@ set(MOC_HDRS
     bufferviewoverlay.h
     client.h
     clientaliasmanager.h
+    clientauthhandler.h
     clientbacklogmanager.h
     clientbufferviewconfig.h
     clientbufferviewmanager.h

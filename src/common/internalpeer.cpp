@@ -37,7 +37,7 @@ public:
 
 
 InternalPeer::InternalPeer(QObject *parent)
-    : Peer(parent),
+    : Peer(0, parent),
     _proxy(0),
     _peer(0),
     _isOpen(true)

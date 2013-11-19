@@ -20,11 +20,8 @@
 
 #include "coreconnection.h"
 
-#ifndef QT_NO_NETWORKPROXY
-#  include <QNetworkProxy>
-#endif
-
 #include "client.h"
+#include "clientauthhandler.h"
 #include "clientsettings.h"
 #include "coreaccountmodel.h"
 #include "identity.h"
@@ -37,9 +34,9 @@
 
 #include "protocols/legacy/legacypeer.h"
 
-CoreConnection::CoreConnection(CoreAccountModel *model, QObject *parent)
+CoreConnection::CoreConnection(QObject *parent)
     : QObject(parent),
-    _model(model),
+    _authHandler(0),
     _state(Disconnected),
     _wantReconnect(false),
     _wasReconnect(false),
@@ -70,6 +67,12 @@ void CoreConnection::init()
     s.initAndNotify("ReconnectInterval", this, SLOT(reconnectIntervalChanged(QVariant)), 60);
     s.notify("NetworkDetectionMode", this, SLOT(networkDetectionModeChanged(QVariant)));
     networkDetectionModeChanged(s.networkDetectionMode());
+}
+
+
+CoreAccountModel *CoreConnection::accountModel() const
+{
+    return Client::coreAccountModel();
 }
 
 
@@ -194,7 +197,6 @@ void CoreConnection::solidNetworkStatusChanged(Solid::Networking::Status status)
     }
 }
 
-
 #endif
 
 bool CoreConnection::isEncrypted() const
@@ -268,6 +270,12 @@ void CoreConnection::setState(QAbstractSocket::SocketState socketState)
 }
 
 
+void CoreConnection::onConnectionReady()
+{
+    setState(Connected);
+}
+
+
 void CoreConnection::setState(ConnectionState state)
 {
     if (state != _state) {
@@ -279,9 +287,11 @@ void CoreConnection::setState(ConnectionState state)
 }
 
 
-void CoreConnection::coreSocketError(QAbstractSocket::SocketError)
+void CoreConnection::coreSocketError(QAbstractSocket::SocketError error, const QString &errorString)
 {
-    disconnectFromCore(_socket->errorString(), true);
+    Q_UNUSED(error)
+
+    disconnectFromCore(errorString, true);
 }
 
 
@@ -293,60 +303,9 @@ void CoreConnection::coreSocketDisconnected()
 }
 
 
-// note: this still expects the legacy protocol
-// note²: after cleaning this up, we can probably get rid of _socket altogether
-void CoreConnection::coreHasData(const QVariant &item)
-{
-    QVariantMap msg = item.toMap();
-    if (!msg.contains("MsgType")) {
-        // This core is way too old and does not even speak our init protocol...
-        emit connectionErrorPopup(tr("The Quassel Core you try to connect to is too old! Please consider upgrading."));
-        disconnectFromCore(QString(), false);
-        return;
-    }
-    if (msg["MsgType"] == "ClientInitAck") {
-        clientInitAck(msg);
-    }
-    else if (msg["MsgType"] == "ClientInitReject") {
-        emit connectionErrorPopup(msg["Error"].toString());
-        disconnectFromCore(QString(), false);
-        return;
-    }
-    else if (msg["MsgType"] == "CoreSetupAck") {
-        emit coreSetupSuccess();
-    }
-    else if (msg["MsgType"] == "CoreSetupReject") {
-        emit coreSetupFailed(msg["Error"].toString());
-    }
-    else if (msg["MsgType"] == "ClientLoginReject") {
-        loginFailed(msg["Error"].toString());
-    }
-    else if (msg["MsgType"] == "ClientLoginAck") {
-        loginSuccess();
-    }
-    else if (msg["MsgType"] == "SessionInit") {
-        // that's it, let's hand over to the signal proxy
-        // if the connection is an orphan, the signalProxy adopts it.
-        // -> we don't need to care about it anymore
-
-        disconnect(_peer, 0, this, 0);
-
-        _peer->setParent(0);
-        Client::signalProxy()->addPeer(_peer);
-
-        sessionStateReceived(msg["SessionState"].toMap());
-    }
-    else {
-        disconnectFromCore(tr("Invalid data received from core"), false);
-        return;
-    }
-}
-
-
 void CoreConnection::disconnectFromCore()
 {
-    if (_socket)
-        disconnectFromCore(QString(), false); // requested disconnect, so don't try to reconnect
+    disconnectFromCore(QString(), false); // requested disconnect, so don't try to reconnect
 }
 
 
@@ -360,8 +319,10 @@ void CoreConnection::disconnectFromCore(const QString &errorString, bool wantRec
     _wantReconnect = wantReconnect; // store if disconnect was requested
     _wasReconnect = false;
 
-    if (_socket)
-        _socket->close();
+    if (_authHandler)
+        _authHandler->close();
+    else if(_peer)
+        _peer->close();
 
     if (errorString.isEmpty())
         emit connectionError(tr("Disconnected"));
@@ -378,23 +339,20 @@ void CoreConnection::resetConnection(bool wantReconnect)
 
     _wantReconnect = wantReconnect;
 
-    if (_peer) {
-        disconnect(_socket, 0, this, 0);
-        disconnect(_peer, 0, this, 0);
-        _peer->close();
+    if (_authHandler) {
+        disconnect(_authHandler, 0, this, 0);
+        _authHandler->close();
+        _authHandler->deleteLater();
+        _authHandler = 0;
+    }
 
-        if (_peer->parent() == this)
-            _peer->deleteLater(); // if it's not us, it belongs to the sigproxy which will delete it
-        _socket = 0;      // socket is owned and will be deleted by RemoteConnection
+    if (_peer) {
+        disconnect(_peer, 0, this, 0);
+        // peer belongs to the sigproxy and thus gets deleted by it
+        _peer->close();
         _peer = 0;
     }
-    else if (_socket) {
-        disconnect(_socket, 0, this, 0);
-        _socket->deleteLater();
-        _socket = 0;
-    }
 
-    _coreMsgBuffer.clear();
     _netsToSync.clear();
     _numNetsToSync = 0;
 
@@ -466,6 +424,11 @@ bool CoreConnection::connectToCore(AccountId accId)
 
 void CoreConnection::connectToCurrentAccount()
 {
+    if (_authHandler) {
+        qWarning() << Q_FUNC_INFO << "Already connected!";
+        return;
+    }
+
     resetConnection(false);
 
     if (currentAccount().isInternal()) {
@@ -476,298 +439,125 @@ void CoreConnection::connectToCurrentAccount()
         emit startInternalCore();
 
         InternalPeer *peer = new InternalPeer();
+        _peer = peer;
         Client::instance()->signalProxy()->addPeer(peer); // sigproxy will take ownership
         emit connectToInternalCore(peer);
 
         return;
     }
 
-    CoreAccountSettings s;
+    _authHandler = new ClientAuthHandler(currentAccount(), this);
 
-    Q_ASSERT(!_socket);
+    connect(_authHandler, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
+    connect(_authHandler, SIGNAL(connectionReady()), SLOT(onConnectionReady()));
+    connect(_authHandler, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)), SLOT(socketStateChanged(QAbstractSocket::SocketState)));
+    connect(_authHandler, SIGNAL(socketError(QAbstractSocket::SocketError,QString)), SLOT(coreSocketError(QAbstractSocket::SocketError,QString)));
+    connect(_authHandler, SIGNAL(transferProgress(int,int)), SLOT(updateProgress(int,int)));
+    connect(_authHandler, SIGNAL(requestDisconnect(QString,bool)), SLOT(disconnectFromCore(QString,bool)));
+
+    connect(_authHandler, SIGNAL(errorMessage(QString)), SIGNAL(connectionError(QString)));
+    connect(_authHandler, SIGNAL(errorPopup(QString)), SIGNAL(connectionErrorPopup(QString)));
+    connect(_authHandler, SIGNAL(statusMessage(QString)), SIGNAL(connectionMsg(QString)));
+    connect(_authHandler, SIGNAL(encrypted(bool)), SIGNAL(encrypted(bool)));
+    connect(_authHandler, SIGNAL(startCoreSetup(QVariantList)), SIGNAL(startCoreSetup(QVariantList)));
+    connect(_authHandler, SIGNAL(coreSetupFailed(QString)), SIGNAL(coreSetupFailed(QString)));
+    connect(_authHandler, SIGNAL(coreSetupSuccessful()), SIGNAL(coreSetupSuccess()));
+    connect(_authHandler, SIGNAL(userAuthenticationRequired(CoreAccount*,bool*,QString)), SIGNAL(userAuthenticationRequired(CoreAccount*,bool*,QString)));
+    connect(_authHandler, SIGNAL(handleNoSslInClient(bool*)), SIGNAL(handleNoSslInClient(bool*)));
+    connect(_authHandler, SIGNAL(handleNoSslInCore(bool*)), SIGNAL(handleNoSslInCore(bool*)));
 #ifdef HAVE_SSL
-    QSslSocket *sock = new QSslSocket(this);
-    // make sure the warning is shown if we happen to connect without SSL support later
-    s.setAccountValue("ShowNoClientSslWarning", true);
-#else
-    if (_account.useSsl()) {
-        if (s.accountValue("ShowNoClientSslWarning", true).toBool()) {
-            bool accepted = false;
-            emit handleNoSslInClient(&accepted);
-            if (!accepted) {
-                emit connectionError(tr("Unencrypted connection canceled"));
-                return;
-            }
-            s.setAccountValue("ShowNoClientSslWarning", false);
-        }
-    }
-    QTcpSocket *sock = new QTcpSocket(this);
+    connect(_authHandler, SIGNAL(handleSslErrors(const QSslSocket*,bool*,bool*)), SIGNAL(handleSslErrors(const QSslSocket*,bool*,bool*)));
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
-    if (_account.useProxy()) {
-        QNetworkProxy proxy(_account.proxyType(), _account.proxyHostName(), _account.proxyPort(), _account.proxyUser(), _account.proxyPassword());
-        sock->setProxy(proxy);
-    }
-#endif
+    connect(_authHandler, SIGNAL(loginSuccessful(CoreAccount)), SLOT(onLoginSuccessful(CoreAccount)));
+    connect(_authHandler, SIGNAL(handshakeComplete(RemotePeer*,Protocol::SessionState)), SLOT(onHandshakeComplete(RemotePeer*,Protocol::SessionState)));
 
-    _socket = sock;
-    connect(sock, SIGNAL(connected()), SLOT(coreSocketConnected()));
-    connect(sock, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
-    connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(coreSocketError(QAbstractSocket::SocketError)));
-    connect(sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-
-    emit connectionMsg(tr("Connecting to %1...").arg(currentAccount().accountName()));
-    sock->connectToHost(_account.hostName(), _account.port());
+    _authHandler->connectToCore();
 }
 
 
-void CoreConnection::coreSocketConnected()
+void CoreConnection::setupCore(const Protocol::SetupData &setupData)
 {
-    // Create the connection which will handle the incoming data
-    Q_ASSERT(!_peer);
-    _peer = new LegacyPeer(_socket, this);
-    connect(_peer, SIGNAL(dataReceived(QVariant)), SLOT(coreHasData(QVariant)));
-    connect(_peer, SIGNAL(transferProgress(int,int)), SLOT(updateProgress(int,int)));
-
-    // Phase One: Send client info and wait for core info
-
-    emit connectionMsg(tr("Synchronizing to core..."));
-
-    QVariantMap clientInit;
-    clientInit["MsgType"] = "ClientInit";
-    clientInit["ClientVersion"] = Quassel::buildInfo().fancyVersionString;
-    clientInit["ClientDate"] = Quassel::buildInfo().buildDate;
-    clientInit["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
-    clientInit["UseSsl"] = _account.useSsl();
-#ifndef QT_NO_COMPRESS
-    clientInit["UseCompression"] = true;
-#else
-    clientInit["UseCompression"] = false;
-#endif
-
-    qobject_cast<RemotePeer *>(_peer)->writeSocketData(clientInit);
-}
-
-
-void CoreConnection::clientInitAck(const QVariantMap &msg)
-{
-    // Core has accepted our version info and sent its own. Let's see if we accept it as well...
-    uint ver = msg["ProtocolVersion"].toUInt();
-    if (ver < Quassel::buildInfo().clientNeedsProtocol) {
-        emit connectionErrorPopup(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
-                                     "Need at least core/client protocol v%1 to connect.").arg(Quassel::buildInfo().clientNeedsProtocol));
-        disconnectFromCore(QString(), false);
-        return;
-    }
-
-    Client::setCoreFeatures((Quassel::Features)msg["CoreFeatures"].toUInt());
-
-#ifndef QT_NO_COMPRESS
-    if (msg["SupportsCompression"].toBool()) {
-        _socket->setProperty("UseCompression", true);
-    }
-#endif
-
-    _coreMsgBuffer = msg;
-
-#ifdef HAVE_SSL
-    CoreAccountSettings s;
-    if (currentAccount().useSsl()) {
-        if (msg["SupportSsl"].toBool()) {
-            // Make sure the warning is shown next time we don't have SSL in the core
-            s.setAccountValue("ShowNoCoreSslWarning", true);
-
-            QSslSocket *sslSocket = qobject_cast<QSslSocket *>(_socket);
-            Q_ASSERT(sslSocket);
-            connect(sslSocket, SIGNAL(encrypted()), SLOT(sslSocketEncrypted()));
-            connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), SLOT(sslErrors()));
-            sslSocket->startClientEncryption();
-        }
-        else {
-            if (s.accountValue("ShowNoCoreSslWarning", true).toBool()) {
-                bool accepted = false;
-                emit handleNoSslInCore(&accepted);
-                if (!accepted) {
-                    disconnectFromCore(tr("Unencrypted connection canceled"), false);
-                    return;
-                }
-                s.setAccountValue("ShowNoCoreSslWarning", false);
-                s.setAccountValue("SslCert", QString());
-            }
-            connectionReady();
-        }
-        return;
-    }
-#endif
-    // if we use SSL we wait for the next step until every SSL warning has been cleared
-    connectionReady();
-}
-
-
-#ifdef HAVE_SSL
-
-void CoreConnection::sslSocketEncrypted()
-{
-    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
-    Q_ASSERT(socket);
-
-    if (!socket->sslErrors().count()) {
-        // Cert is valid, so we don't want to store it as known
-        // That way, a warning will appear in case it becomes invalid at some point
-        CoreAccountSettings s;
-        s.setAccountValue("SSLCert", QString());
-    }
-
-    emit encrypted(true);
-    connectionReady();
-}
-
-
-void CoreConnection::sslErrors()
-{
-    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
-    Q_ASSERT(socket);
-
-    CoreAccountSettings s;
-    QByteArray knownDigest = s.accountValue("SslCert").toByteArray();
-
-    if (knownDigest != socket->peerCertificate().digest()) {
-        bool accepted = false;
-        bool permanently = false;
-        emit handleSslErrors(socket, &accepted, &permanently);
-
-        if (!accepted) {
-            disconnectFromCore(tr("Unencrypted connection canceled"), false);
-            return;
-        }
-
-        if (permanently)
-            s.setAccountValue("SslCert", socket->peerCertificate().digest());
-        else
-            s.setAccountValue("SslCert", QString());
-    }
-
-    socket->ignoreSslErrors();
-}
-
-
-#endif /* HAVE_SSL */
-
-void CoreConnection::connectionReady()
-{
-    setState(Connected);
-    emit connectionMsg(tr("Connected to %1").arg(currentAccount().accountName()));
-
-    if (!_coreMsgBuffer["Configured"].toBool()) {
-        // start wizard
-        emit startCoreSetup(_coreMsgBuffer["StorageBackends"].toList());
-    }
-    else if (_coreMsgBuffer["LoginEnabled"].toBool()) {
-        loginToCore();
-    }
-    _coreMsgBuffer.clear();
+    _authHandler->setupCore(setupData);
 }
 
 
 void CoreConnection::loginToCore(const QString &user, const QString &password, bool remember)
 {
-    _account.setUser(user);
-    _account.setPassword(password);
-    _account.setStorePassword(remember);
-    loginToCore();
+    _authHandler->login(user, password, remember);
 }
 
 
-void CoreConnection::loginToCore(const QString &prevError)
-{
-    emit connectionMsg(tr("Logging in..."));
-    if (currentAccount().user().isEmpty() || currentAccount().password().isEmpty() || !prevError.isEmpty()) {
-        bool valid = false;
-        emit userAuthenticationRequired(&_account, &valid, prevError); // *must* be a synchronous call
-        if (!valid || currentAccount().user().isEmpty() || currentAccount().password().isEmpty()) {
-            disconnectFromCore(tr("Login canceled"), false);
-            return;
-        }
-    }
-
-    QVariantMap clientLogin;
-    clientLogin["MsgType"] = "ClientLogin";
-    clientLogin["User"] = currentAccount().user();
-    clientLogin["Password"] = currentAccount().password();
-    qobject_cast<RemotePeer*>(_peer)->writeSocketData(clientLogin);
-}
-
-
-void CoreConnection::loginFailed(const QString &error)
-{
-    loginToCore(error);
-}
-
-
-void CoreConnection::loginSuccess()
+void CoreConnection::onLoginSuccessful(const CoreAccount &account)
 {
     updateProgress(0, 0);
 
     // save current account data
-    _model->createOrUpdateAccount(currentAccount());
-    _model->save();
+    accountModel()->createOrUpdateAccount(account);
+    accountModel()->save();
 
     _reconnectTimer.stop();
 
     setProgressText(tr("Receiving session state"));
     setState(Synchronizing);
-    emit connectionMsg(tr("Synchronizing to %1...").arg(currentAccount().accountName()));
+    emit connectionMsg(tr("Synchronizing to %1...").arg(account.accountName()));
 }
 
 
-void CoreConnection::sessionStateReceived(const QVariantMap &state)
+void CoreConnection::onHandshakeComplete(RemotePeer *peer, const Protocol::SessionState &sessionState)
 {
     updateProgress(100, 100);
 
-    syncToCore(state);
+    disconnect(_authHandler, 0, this, 0);
+    _authHandler->deleteLater();
+    _authHandler = 0;
+
+    _peer = peer;
+    connect(peer, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
+    connect(peer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)), SLOT(socketStateChanged(QAbstractSocket::SocketState)));
+    connect(peer, SIGNAL(socketError(QAbstractSocket::SocketError,QString)), SLOT(coreSocketError(QAbstractSocket::SocketError,QString)));
+
+    Client::signalProxy()->addPeer(_peer);  // sigproxy takes ownership of the peer!
+
+    syncToCore(sessionState);
 }
 
 
-void CoreConnection::internalSessionStateReceived(const QVariant &packedState)
+void CoreConnection::internalSessionStateReceived(const Protocol::SessionState &sessionState)
 {
     updateProgress(100, 100);
+
+    Client::setCoreFeatures(Quassel::features()); // mono connection...
 
     setState(Synchronizing);
-    syncToCore(packedState.toMap());
+    syncToCore(sessionState);
 }
 
 
-void CoreConnection::syncToCore(const QVariantMap &sessionState)
+void CoreConnection::syncToCore(const Protocol::SessionState &sessionState)
 {
-    if (sessionState.contains("CoreFeatures"))
-        Client::setCoreFeatures((Quassel::Features)sessionState["CoreFeatures"].toUInt());
-
     setProgressText(tr("Receiving network states"));
     updateProgress(0, 100);
 
     // create identities
-    foreach(QVariant vid, sessionState["Identities"].toList()) {
+    foreach(const QVariant &vid, sessionState.identities) {
         Client::instance()->coreIdentityCreated(vid.value<Identity>());
     }
 
     // create buffers
     // FIXME: get rid of this crap -- why?
-    QVariantList bufferinfos = sessionState["BufferInfos"].toList();
     NetworkModel *networkModel = Client::networkModel();
     Q_ASSERT(networkModel);
-    foreach(QVariant vinfo, bufferinfos)
-    networkModel->bufferUpdated(vinfo.value<BufferInfo>());  // create BufferItems
-
-    QVariantList networkids = sessionState["NetworkIds"].toList();
+    foreach(const QVariant &vinfo, sessionState.bufferInfos)
+        networkModel->bufferUpdated(vinfo.value<BufferInfo>());  // create BufferItems
 
     // prepare sync progress thingys...
     // FIXME: Care about removal of networks
-    _numNetsToSync = networkids.count();
+    _numNetsToSync = sessionState.networkIds.count();
     updateProgress(0, _numNetsToSync);
 
     // create network objects
-    foreach(QVariant networkid, networkids) {
+    foreach(const QVariant &networkid, sessionState.networkIds) {
         NetworkId netid = networkid.value<NetworkId>();
         if (Client::network(netid))
             continue;
@@ -801,13 +591,4 @@ void CoreConnection::checkSyncState()
         setProgressMaximum(-1);
         emit synchronized();
     }
-}
-
-
-void CoreConnection::doCoreSetup(const QVariant &setupData)
-{
-    QVariantMap setup;
-    setup["MsgType"] = "CoreSetupData";
-    setup["SetupData"] = setupData;
-    qobject_cast<RemotePeer *>(_peer)->writeSocketData(setup);
 }

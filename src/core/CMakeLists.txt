@@ -7,6 +7,7 @@ set(SOURCES
     core.cpp
     corealiasmanager.cpp
     coreapplication.cpp
+    coreauthhandler.cpp
     corebacklogmanager.cpp
     corebasichandler.cpp
     corebuffersyncer.cpp
@@ -40,6 +41,7 @@ set(MOC_HDRS
     core.h
     corealiasmanager.h
     coreapplication.h
+    coreauthhandler.h
     corebacklogmanager.h
     corebasichandler.h
     corebuffersyncer.h

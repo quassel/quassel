@@ -18,75 +18,75 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef REMOTEPEER_H
-#define REMOTEPEER_H
+#ifndef AUTHHANDLER_H
+#define AUTHHANDLER_H
 
-#include <QDateTime>
+#include <QTcpSocket>
 
-#include "peer.h"
 #include "protocol.h"
-#include "signalproxy.h"
 
-class QTcpSocket;
-class QTimer;
+class Peer;
 
-class AuthHandler;
-
-class RemotePeer : public Peer
+class AuthHandler : public QObject
 {
     Q_OBJECT
 
 public:
-    // import the virtuals from the baseclass
-    using Peer::handle;
-    using Peer::dispatch;
+    enum State {
+        UnconnectedState,
+        HostLookupState,
+        ConnectingState,
+        ConnectedState,
+        RetryWithLegacyState,
+        AuthenticatingState,
+        AuthenticatedState,
+        ClosingState
+    };
 
-    RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
-    virtual ~RemotePeer() {};
+    AuthHandler(QObject *parent = 0);
 
-    void setSignalProxy(SignalProxy *proxy);
-
-    QString description() const;
-
-    bool isOpen() const;
-    bool isSecure() const;
-    bool isLocal() const;
-
-    int lag() const;
-
-    bool compressionEnabled() const;
-    void setCompressionEnabled(bool enabled);
-
+    State state() const;
     QTcpSocket *socket() const;
 
+    virtual void handle(const Protocol::RegisterClient &) { invalidMessage(); }
+    virtual void handle(const Protocol::ClientDenied &) { invalidMessage(); }
+    virtual void handle(const Protocol::ClientRegistered &) { invalidMessage(); }
+    virtual void handle(const Protocol::SetupData &) { invalidMessage(); }
+    virtual void handle(const Protocol::SetupFailed &) { invalidMessage(); }
+    virtual void handle(const Protocol::SetupDone &) { invalidMessage(); }
+    virtual void handle(const Protocol::Login &) { invalidMessage(); }
+    virtual void handle(const Protocol::LoginFailed &) { invalidMessage(); }
+    virtual void handle(const Protocol::LoginSuccess &) { invalidMessage(); }
+    virtual void handle(const Protocol::SessionState &) { invalidMessage(); }
+
+    // fallback for unknown types, will trigger an error
+    template<class T>
+    void handle(const T &) { invalidMessage(); }
+
 public slots:
-    void close(const QString &reason = QString());
+    void close();
 
 signals:
-    void transferProgress(int current, int max);
-    void socketStateChanged(QAbstractSocket::SocketState socketState);
+    void stateChanged(State state);
+    void disconnected();
+
+    void socketStateChanged(QAbstractSocket::SocketState state);
     void socketError(QAbstractSocket::SocketError error, const QString &errorString);
 
 protected:
-    SignalProxy *signalProxy() const;
-
-    // These protocol messages get handled internally and won't reach SignalProxy
-    void handle(const Protocol::HeartBeat &heartBeat);
-    void handle(const Protocol::HeartBeatReply &heartBeatReply);
-    virtual void dispatch(const Protocol::HeartBeat &msg) = 0;
-    virtual void dispatch(const Protocol::HeartBeatReply &msg) = 0;
+    void setSocket(QTcpSocket *socket);
+    void setState(State state);
 
 private slots:
-    void sendHeartBeat();
-    void changeHeartBeatInterval(int secs);
     void onSocketError(QAbstractSocket::SocketError error);
+    void onSocketDisconnected();
 
 private:
-    QTcpSocket *_socket;
-    SignalProxy *_signalProxy;
-    QTimer *_heartBeatTimer;
-    int _heartBeatCount;
-    int _lag;
+    void invalidMessage();
+
+    State _state;
+    QTcpSocket *_socket; // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
+    bool _disconnectedSent;
 };
 
 #endif

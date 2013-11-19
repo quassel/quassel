@@ -123,7 +123,7 @@ void SessionThread::run()
     _session = new CoreSession(user(), _restoreState);
     connect(this, SIGNAL(addRemoteClient(RemotePeer*)), _session, SLOT(addClient(RemotePeer*)));
     connect(this, SIGNAL(addInternalClient(InternalPeer*)), _session, SLOT(addClient(InternalPeer*)));
-    connect(_session, SIGNAL(sessionState(QVariant)), Core::instance(), SIGNAL(sessionState(QVariant)));
+    connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));
     emit initialized();
     exec();
     delete _session;

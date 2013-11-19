@@ -175,11 +175,12 @@ bool IdentitiesSettingsPage::testHasChanged()
         if (currentId != 0) {
             changedIdentities.removeAll(currentId);
             CertIdentity temp(currentId, this);
+#ifdef HAVE_SSL
             // we need to set the cert and key manually, as they aren't synced
             CertIdentity *old = identities[currentId];
             temp.setSslKey(old->sslKey());
             temp.setSslCert(old->sslCert());
-
+#endif
             ui.identityEditor->saveToIdentity(&temp);
             temp.setIdentityName(identities[currentId]->identityName());
             if (temp != *Client::identity(currentId) || temp.isDirty())
