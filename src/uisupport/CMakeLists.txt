@@ -31,6 +31,7 @@ set(SOURCES
     uistyle.cpp
     keysequencewidget.cpp
     shortcutsmodel.cpp
+    buffershortcutpopup.cpp
 
     # needed for automoc
     abstractnotificationbackend.h

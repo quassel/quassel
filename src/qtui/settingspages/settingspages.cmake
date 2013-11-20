@@ -17,7 +17,7 @@ set(SETTINGSPAGES
     inputwidget
     itemview
     networks
-	quickaccessors
+    quickaccessors
     topicwidget
 )
 
@@ -44,3 +44,7 @@ set(SP_FORMS
     saveidentitiesdlg.ui
     servereditdlg.ui
 )
+
+if(NOT KDE4_FOUND)
+    list(APPEND SETTINGSPAGES shortcuts)
+endif()

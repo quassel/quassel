@@ -50,6 +50,7 @@ public:
 
 public slots:
     void setKeySequence(const QKeySequence &seq);
+    void startRecording();
 
 signals:
     /**
@@ -64,7 +65,6 @@ signals:
 
 private slots:
     void updateShortcutDisplay();
-    void startRecording();
     void cancelRecording();
     void clear();
 
