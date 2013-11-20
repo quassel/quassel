@@ -91,6 +91,7 @@ public:
 
 public slots:
     void showStatusBarMessage(const QString &message);
+    void setBufferShortcut();
     void hideCurrentBuffer();
     void nextBufferView();     //!< Activate the next bufferview
     void previousBufferView(); //!< Activate the previous bufferview

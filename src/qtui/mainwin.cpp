@@ -57,6 +57,7 @@
 #include "bufferhotlistfilter.h"
 #include "buffermodel.h"
 #include "buffersettings.h"
+#include "buffershortcutpopup.h"
 #include "bufferview.h"
 #include "bufferviewoverlay.h"
 #include "bufferviewoverlayfilter.h"
@@ -486,6 +487,8 @@ void MainWin::setupActions()
 
     coll->addAction("JumpHotBuffer", new Action(tr("Jump to hot chat"), coll,
             this, SLOT(on_jumpHotBuffer_triggered()), QKeySequence(Qt::META + Qt::Key_A)));
+    coll->addAction("SetBufferShortcut", new Action(tr("Set Current Buffer's Shortcut"), coll,
+                    this, SLOT(setBufferShortcut()), QKeySequence(Qt::CTRL + Qt::Key_J)));
 
     coll->addAction("ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll,
             this, SLOT(on_bufferSearch_triggered()), QKeySequence(Qt::CTRL + Qt::Key_S)));
@@ -1734,6 +1737,15 @@ void MainWin::on_bufferSearch_triggered()
     }
 
     _bufferViews[_activeBufferViewIndex]->activateFilter();
+}
+
+
+void MainWin::setBufferShortcut()
+{
+    BufferInfo info = Client::bufferModel()->standardSelectionModel()->currentIndex().data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    BufferShortcutPopup *popup = new BufferShortcutPopup(info, this);
+    connect(popup, SIGNAL(keySequenceChanged(BufferId)), this, SLOT(updateQuickAccessor(BufferId)));
+    //NetworkModelController::handleBufferAction(NetworkModelController::BufferSetShortcut, (QAction *)0x0);
 }
 
 
