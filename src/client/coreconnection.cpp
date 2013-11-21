@@ -456,7 +456,7 @@ void CoreConnection::connectToCurrentAccount()
     connect(_authHandler, SIGNAL(requestDisconnect(QString,bool)), SLOT(disconnectFromCore(QString,bool)));
 
     connect(_authHandler, SIGNAL(errorMessage(QString)), SIGNAL(connectionError(QString)));
-    connect(_authHandler, SIGNAL(errorPopup(QString)), SIGNAL(connectionErrorPopup(QString)));
+    connect(_authHandler, SIGNAL(errorPopup(QString)), SIGNAL(connectionErrorPopup(QString)), Qt::QueuedConnection);
     connect(_authHandler, SIGNAL(statusMessage(QString)), SIGNAL(connectionMsg(QString)));
     connect(_authHandler, SIGNAL(encrypted(bool)), SIGNAL(encrypted(bool)));
     connect(_authHandler, SIGNAL(startCoreSetup(QVariantList)), SIGNAL(startCoreSetup(QVariantList)));
