@@ -1018,7 +1018,7 @@ msgstr "Панель балачки"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Щоб скористатися цією можливістю, вам слід встановити версію 0.6 quasselcore"
 
 #: ../src/client/client.cpp:318

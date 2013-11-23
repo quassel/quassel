@@ -1019,7 +1019,7 @@ msgstr "채팅 창"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "이 기능을 사용하려면 0.6 Quassel 코어가 필요합니다"
 
 #: ../src/client/client.cpp:318

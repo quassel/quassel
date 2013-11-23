@@ -1017,7 +1017,7 @@ msgstr "Prikaz klepeta"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Za uporabo te funkcije je potrebno jedro Quassel različice 0.6 ali novejše"
 
 #: ../src/client/client.cpp:318

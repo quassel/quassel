@@ -1019,7 +1019,7 @@ msgstr "Sohbet Görünümü"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Bu özellik için 0.6 quasselcore'a ihtiyacınız var"
 
 #: ../src/client/client.cpp:318

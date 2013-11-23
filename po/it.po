@@ -1018,7 +1018,7 @@ msgstr "Vista chat"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "È necessaria la versione 0.6 del core quassel per questa caratteristica"
 
 #: ../src/client/client.cpp:318

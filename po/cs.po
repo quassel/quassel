@@ -1019,7 +1019,7 @@ msgstr "Okno rozhovoru"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Pro tuto funkci potřebujete alespoň jádro quassel verze 0.6"
 
 #: ../src/client/client.cpp:318
