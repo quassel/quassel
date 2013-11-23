@@ -1021,7 +1021,7 @@ msgstr "Samtalevisning"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Du trenger versjon 0.6 av Quassel-kjernen for å benytte denne funksjonen"
 
 #: ../src/client/client.cpp:318

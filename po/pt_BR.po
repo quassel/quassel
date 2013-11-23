@@ -1019,7 +1019,7 @@ msgstr "Ver bate-papo"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Você precisa do quasselcore 0.6 para usar essa funcionalidade"
 
 #: ../src/client/client.cpp:318

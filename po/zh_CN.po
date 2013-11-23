@@ -1017,7 +1017,7 @@ msgstr "聊天视图"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "您至少需要有 0.6 版的 quasselcore 才能使用此功能"
 
 #: ../src/client/client.cpp:318

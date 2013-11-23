@@ -1021,7 +1021,7 @@ msgstr "Keskustelunäkymä"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
-msgid "You need at 0.6 quasselcore to use this feature"
+msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Tarvitset vähintään quasselcoren 0.6 tätä ominaisuutta varten"
 
 #: ../src/client/client.cpp:318
