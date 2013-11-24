@@ -1,3 +1,3 @@
 SELECT bufferid, networkid, buffertype, groupid, buffername
 FROM buffer
-WHERE bufferid = :bufferid
+WHERE bufferid = :bufferid AND userid = :userid
