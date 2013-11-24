@@ -805,9 +805,8 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos)
             break;
         case Clickable::Channel:
         {
-            // Hide existing menu actions, they confuse us when right-clicking on a clickable
-            foreach(QAction *action, menu->actions())
-            action->setVisible(false);
+            // Remove existing menu actions, they confuse us when right-clicking on a clickable
+            menu->clear();
             QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
             GraphicalUi::contextMenuActionProvider()->addActions(menu, chatScene()->filter(), data(MessageModel::BufferIdRole).value<BufferId>(), name);
             break;
