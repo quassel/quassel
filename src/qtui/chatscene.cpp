@@ -809,9 +809,10 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
     // If we have text selected, insert the Copy Selection as first item
     if (isPosOverSelection(pos)) {
+        QAction *sep = menu.insertSeparator(menu.actions().first());
         QAction *act = new Action(SmallIcon("edit-copy"), tr("Copy Selection"), &menu, this,
             SLOT(selectionToClipboard()), QKeySequence::Copy);
-        menu.insertAction(menu.actions().at(0), act);
+        menu.insertAction(sep, act);
     }
 
     if (QtUi::mainWindow()->menuBar()->isHidden())
