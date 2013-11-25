@@ -22,7 +22,6 @@
 
 #include <QtGui>
 #include <QtGlobal>
-#include <QDebug>
 
 #include "client.h"
 #include "iconloader.h"
@@ -195,7 +194,6 @@ void SnoreNotificationBackend::ConfigWidget::load()
     if(backend.isEmpty()){
         backend = "SystemTray";
     }
-    qDebug() << s.value("Snore/Timeout",10);
     int timeout = s.value("Snore/Timeout",10).toInt();
     ui.backends->setCurrentIndex(ui.backends->findText(backend));
     ui.timeout->setValue(timeout);
