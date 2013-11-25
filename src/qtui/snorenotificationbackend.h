@@ -52,10 +52,13 @@ signals:
 public slots:
     void actionInvoked(Snore::Notification);
 private slots:
-  void backendChanged(const QVariant &);
-  void timeoutChanged(const QVariant &);
+    void backendChanged(const QVariant &);
+    void timeoutChanged(const QVariant &);
 
 private:
+    void setTraybackend();
+    bool setSnoreBackend(const QString &backend);
+
     class ConfigWidget;
     SystrayNotificationBackend * m_systrayBackend;
     Snore::SnoreCore *m_snore;
