@@ -23,6 +23,13 @@ git add po/*.po po/LINGUAS && (
 
   git commit -em "Update translations from Transifex
 
+  $(for i in po/*.po; do
+      msgfmt --statistics $i
+    done |&
+    perl -ne '/([0-9]+) translated/ and $translated+=$1;
+              END { printf("%d translated messages", $translated); }'
+  )
+
 Many thanks to:
 ${translators}"
 )
