@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-11-20 11:02+0000\n"
+"PO-Revision-Date: 2013-11-28 00:20+0000\n"
 "Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/quassel/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -97,7 +97,7 @@ msgid ""
 "and everybody we forgot to mention here:"
 msgstr "Aşağıdaki katkıcılara (alfabetik sırayla) ve buraya yazmayı unuttuğumuz herkese teşekkür ederiz:"
 
-#: ../src/qtui/aboutdlg.cpp:194
+#: ../src/qtui/aboutdlg.cpp:201
 msgctxt "AboutDlg|"
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
@@ -810,7 +810,7 @@ msgctxt "ChatMonitorView|"
 msgid "Configure..."
 msgstr "Yapılandır..."
 
-#: ../src/qtui/chatscene.cpp:803
+#: ../src/qtui/chatscene.cpp:813
 msgctxt "ChatScene|"
 msgid "Copy Selection"
 msgstr "Seçimi Kopyala"
@@ -1028,6 +1028,62 @@ msgstr "Bu özelliği kullanabilmeniz için QuasselCore'un en az 0.6 sürümüne
 msgctxt "Client|"
 msgid "Identity already exists in client!"
 msgstr "İstemcide bu kimlik zaten mevcut!"
+
+#: ../src/client/clientauthhandler.cpp:61
+#: ../src/client/clientauthhandler.cpp:256
+msgctxt "ClientAuthHandler|"
+msgid "Unencrypted connection canceled"
+msgstr "Şifrelenmemiş bağlantı iptal edildi"
+
+#: ../src/client/clientauthhandler.cpp:84
+#, qt-format
+msgctxt "ClientAuthHandler|"
+msgid "Connecting to %1..."
+msgstr "%1 bağlantısı yapılıyor..."
+
+#: ../src/client/clientauthhandler.cpp:154
+msgctxt "ClientAuthHandler|"
+msgid "Synchronizing to core..."
+msgstr "Çekirdekle eşitleniyor..."
+
+#: ../src/client/clientauthhandler.cpp:167
+#, qt-format
+msgctxt "ClientAuthHandler|"
+msgid ""
+"<b>The Quassel Core you are trying to connect to is too old!</b><br>We need "
+"at least protocol v%1, but the core speaks v%2 only."
+msgstr "<b>Bağlanmaya çalıştırğınız Quassel İstemcisi çok eski!</b><br>Bağlanmak için en azından protokol v%1 gerekli ancak çekirdek sadece v%2 kullanıyor."
+
+#: ../src/client/clientauthhandler.cpp:169
+msgctxt "ClientAuthHandler|"
+msgid "Incompatible protocol version, connection to core refused"
+msgstr "Uyumsuz protokol sürümü, çekirdeğe bağlantı reddedildi"
+
+#: ../src/client/clientauthhandler.cpp:176
+msgctxt "ClientAuthHandler|"
+msgid "The core refused connection from this client"
+msgstr "Çekirdek bu istemciden bağlantıyı reddetti"
+
+#: ../src/client/clientauthhandler.cpp:207
+msgctxt "ClientAuthHandler|"
+msgid "Unencrypted connection cancelled"
+msgstr "Şifrelenmemiş bağlantı iptal edildi"
+
+#: ../src/client/clientauthhandler.cpp:275
+#, qt-format
+msgctxt "ClientAuthHandler|"
+msgid "Connected to %1"
+msgstr "%1 bağlantısı yapıldı"
+
+#: ../src/client/clientauthhandler.cpp:317
+msgctxt "ClientAuthHandler|"
+msgid "Logging in..."
+msgstr "Oturum açılıyor..."
+
+#: ../src/client/clientauthhandler.cpp:322
+msgctxt "ClientAuthHandler|"
+msgid "Login canceled"
+msgstr "Oturum iptal edildi"
 
 #: ../src/client/clientbacklogmanager.cpp:178
 #, qt-format
@@ -1344,12 +1400,12 @@ msgctxt "ContextMenuActionProvider|"
 msgid "Existing Rules"
 msgstr "Mevcut Kurallar"
 
-#: ../src/core/core.cpp:190
+#: ../src/core/core.cpp:193
 msgctxt "Core|"
 msgid "Could not initialize any storage backend! Exiting..."
 msgstr "Herhangi bir depolama arkaucu başlatılamıyor! Çıkıyorum..."
 
-#: ../src/core/core.cpp:191
+#: ../src/core/core.cpp:194
 msgctxt "Core|"
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
@@ -1357,147 +1413,93 @@ msgid ""
 "to work."
 msgstr "Şimdilik, Quaessel SQLite3 ve PostreSQL destekliyor. Quasselcore'un\nçalışabilmesi için Qt kütüphanenizi sqlite ve postgres eklentisi etkin\nolarak derlemeniz gereklidir."
 
-#: ../src/core/core.cpp:249
+#: ../src/core/core.cpp:253
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
 msgstr "Etkin oturum olduğu halde restoreState() çağırılıyor!"
 
-#: ../src/core/core.cpp:295
+#: ../src/core/core.cpp:287
+msgctxt "Core|"
+msgid "Core is already configured! Not configuring again..."
+msgstr "Çekirdek zaten yapılandırılmış! Yeniden yapılandırılmıyor.."
+
+#: ../src/core/core.cpp:290
 msgctxt "Core|"
 msgid "Admin user or password not set."
 msgstr "Admin kullanıcı ya da parolası ayarlanmamış."
 
-#: ../src/core/core.cpp:298
+#: ../src/core/core.cpp:293
 msgctxt "Core|"
 msgid "Could not setup storage!"
 msgstr "Depolama ayarlanamıyor!"
 
-#: ../src/core/core.cpp:302
+#: ../src/core/core.cpp:298
 msgctxt "Core|"
 msgid "Creating admin user..."
 msgstr "Admin kullanıcı oluşturuluyor..."
 
-#: ../src/core/core.cpp:434
+#: ../src/core/core.cpp:451
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
 msgstr "Geçersiz dinleme adresi %1"
 
-#: ../src/core/core.cpp:443
+#: ../src/core/core.cpp:460
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr "GUI istemcileri IPv6 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
 
-#: ../src/core/core.cpp:452
+#: ../src/core/core.cpp:469
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
 msgstr "IPv6 arayüzü açılamadı %1:%2: %3"
 
-#: ../src/core/core.cpp:460
+#: ../src/core/core.cpp:477
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr "GUI istemcileri IPv4 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor"
 
-#: ../src/core/core.cpp:471
+#: ../src/core/core.cpp:488
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
 msgstr "IPv4 arayüzü açılamadı %1:%2: %3"
 
-#: ../src/core/core.cpp:479
+#: ../src/core/core.cpp:496
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
 msgstr "Geçersiz dinleme adresi %1, bilinmeyen ağ protokolü"
 
-#: ../src/core/core.cpp:488
+#: ../src/core/core.cpp:505
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
 msgstr "Hiçbir dinlenecek ağ arayüzü açılamadı!"
 
-#: ../src/core/core.cpp:527
+#: ../src/core/core.cpp:545
 msgctxt "Core|"
 msgid "Client connected from"
 msgstr "İstemci şuradan bağlandı"
 
-#: ../src/core/core.cpp:530
+#: ../src/core/core.cpp:548
 msgctxt "Core|"
 msgid "Closing server for basic setup."
 msgstr "Temel kurulum için sunucu kapatılıyor."
 
-#: ../src/core/core.cpp:547
-msgctxt "Core|"
-msgid "Antique client trying to connect... refusing."
-msgstr "Antika istemci bağlanmaya çalışıyor... reddedildi."
-
 #: ../src/core/core.cpp:560
-#, qt-format
 msgctxt "Core|"
-msgid ""
-"<b>Your Quassel Client is too old!</b><br>This core needs at least "
-"client/core protocol version %1.<br>Please consider upgrading your client."
-msgstr "<b>Quassel İstemciniz çok eski!</b><br>Bu çekirdek en azından istemci/çekirdek protokol sürümü %1 istemektedir.<br>Lütfen istemcinizin sürümünü yükseltin."
+msgid "Non-authed client disconnected:"
+msgstr "Yetkisiz istemci bağlantıyı kesti:"
 
-#: ../src/core/core.cpp:564 ../src/core/core.cpp:656 ../src/core/core.cpp:682
-msgctxt "Core|"
-msgid "Client"
-msgstr "İstemci"
-
-#: ../src/core/core.cpp:564
-msgctxt "Core|"
-msgid "too old, rejecting."
-msgstr "çok eski, reddediliyor."
-
-#: ../src/core/core.cpp:582
-#, qt-format
-msgctxt "Core|"
-msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr "<b>Quassel Çekirdek Sürüm %1</b><br>İnşa: %2<br>Up %3g%4s%5d (%6'dan beri)"
-
-#: ../src/core/core.cpp:636
-msgctxt "Core|"
-msgid "Starting TLS for Client:"
-msgstr "İstemci için TLS Başlatılıyor:"
-
-#: ../src/core/core.cpp:654
-msgctxt "Core|"
-msgid ""
-"<b>Client not initialized!</b><br>You need to send an init message before "
-"trying to login."
-msgstr "<b>İstemci başlatılamadı!</b><br>Oturumu açmaya çalışmadan önce başlatma mesajı göndermeniz gerekmektedir."
-
-#: ../src/core/core.cpp:656
-msgctxt "Core|"
-msgid "did not send an init message before trying to login, rejecting."
-msgstr "oturumu açmaya çalışmadan önce başlatma mesajı gönderilmedi, reddediliyor."
-
-#: ../src/core/core.cpp:676
-msgctxt "Core|"
-msgid ""
-"<b>Invalid username or password!</b><br>The username/password combination "
-"you supplied could not be found in the database."
-msgstr "<b>Geçersiz kullanıcı adı ya da parolası!</b><br>Yazdığınız kullanıcı adı/parola kombinasyonu veritabanında bulunamadı."
-
-#: ../src/core/core.cpp:682
-#, qt-format
-msgctxt "Core|"
-msgid "initialized and authenticated successfully as \"%1\" (UserId: %2)."
-msgstr "Başlatıldı ve \"%1\" olarak başarıyla doğrulandı (UserId: %2)."
-
-#: ../src/core/core.cpp:695
-msgctxt "Core|"
-msgid "Non-authed client disconnected."
-msgstr "Yetkisiz istemci bağlantıyı kesti."
-
-#: ../src/core/core.cpp:724
+#: ../src/core/core.cpp:592
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
 msgstr "Şu istemci için oturum başlatılamadı:"
 
-#: ../src/core/core.cpp:750
+#: ../src/core/core.cpp:619
 msgctxt "Core|"
 msgid "Could not find a session for client:"
 msgstr "İstemci için bir oturum bulunamadı:"
@@ -1638,17 +1640,74 @@ msgctxt "CoreAccountSettingsPage|"
 msgid "Remote Cores"
 msgstr "Uzak Çekirdekler"
 
+#: ../src/core/coreauthhandler.cpp:54 ../src/core/coreauthhandler.cpp:90
+msgctxt "CoreAuthHandler|"
+msgid "Client"
+msgstr "İstemci"
+
+#: ../src/core/coreauthhandler.cpp:54
+msgctxt "CoreAuthHandler|"
+msgid "too old, rejecting."
+msgstr "çok eski, reddediliyor."
+
+#: ../src/core/coreauthhandler.cpp:55
+#, qt-format
+msgctxt "CoreAuthHandler|"
+msgid ""
+"<b>Your Quassel Client is too old!</b><br>This core needs at least "
+"client/core protocol version %1 (got: %2).<br>Please consider upgrading your"
+" client."
+msgstr "<b>Quassel İstemciniz çok eski!</b><br>Bu çekirdek en azından istemci/çekirdek protokol sürümü %1 istemektedir (sahip olunan: %2).<br>Lütfen istemcinizin sürümünü yükseltin."
+
+#: ../src/core/coreauthhandler.cpp:69
+msgctxt "CoreAuthHandler|"
+msgid "Starting encryption for Client:"
+msgstr "İstemci için şifreleme başlatılıyor:"
+
+#: ../src/core/coreauthhandler.cpp:90
+msgctxt "CoreAuthHandler|"
+msgid "did not send an init message before trying to login, rejecting."
+msgstr "oturumu açmaya çalışmadan önce başlatma mesajı gönderilmedi, reddediliyor."
+
+#: ../src/core/coreauthhandler.cpp:91
+msgctxt "CoreAuthHandler|"
+msgid ""
+"<b>Client not initialized!</b><br>You need to send an init message before "
+"trying to login."
+msgstr "<b>İstemci başlatılamadı!</b><br>Oturumu açmaya çalışmadan önce başlatma mesajı göndermeniz gerekmektedir."
+
+#: ../src/core/coreauthhandler.cpp:105
+msgctxt "CoreAuthHandler|"
+msgid ""
+"<b>SSL is required!</b><br>You need to use SSL in order to connect to this "
+"core."
+msgstr "<b>SSL gerekli!</b><br>Bu çekirdeğe bağlanabilmek için SSL kullanmanız gereklidir."
+
+#: ../src/core/coreauthhandler.cpp:146
+msgctxt "CoreAuthHandler|"
+msgid ""
+"<b>Invalid username or password!</b><br>The username/password combination "
+"you supplied could not be found in the database."
+msgstr "<b>Geçersiz kullanıcı adı veya parola!</b><br>Yazdığınız kullanıcı adı/parola kombinasyonu veritabanında bulunamadı."
+
+#: ../src/core/coreauthhandler.cpp:151
+#, qt-format
+msgctxt "CoreAuthHandler|"
+msgid ""
+"Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3)."
+msgstr "\"%1\" istemcisi başlatıldı ve \"%2\" olarak başarıyla doğrulandı (Kullanıcı Kimliğ: %3)."
+
 #: ../src/qtui/coreconfigwizard.cpp:69
 msgctxt "CoreConfigWizard|"
 msgid "Core Configuration Wizard"
 msgstr "Çekirdek Ayarlama Sihirbazı"
 
-#: ../src/qtui/coreconfigwizard.cpp:103
+#: ../src/qtui/coreconfigwizard.cpp:98
 msgctxt "CoreConfigWizard|"
 msgid "Your core has been successfully configured. Logging you in..."
 msgstr "Çekirdeğiniz başarılı bir şekilde yapılandırıldı. Oturumunuz açılıyor..."
 
-#: ../src/qtui/coreconfigwizard.cpp:112
+#: ../src/qtui/coreconfigwizard.cpp:107
 #, qt-format
 msgctxt "CoreConfigWizard|"
 msgid ""
@@ -1656,7 +1715,7 @@ msgid ""
 "over."
 msgstr "Çekirdek yapılandırması başarısız: <br><b>%1</b><br>Baştan başlamak için <em>İleri</em> düğmesine basın."
 
-#: ../src/qtui/coreconfigwizard.cpp:131
+#: ../src/qtui/coreconfigwizard.cpp:126
 msgctxt "CoreConfigWizard|"
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
@@ -1705,46 +1764,46 @@ msgctxt "CoreConfigWizardIntroPage|"
 msgid "This wizard will guide you through the setup of your Quassel Core."
 msgstr "Bu sihirbaz Quassel Çekirdeğinizi ayarlamanıza yardımcı olacak."
 
-#: ../src/qtui/coreconfigwizard.cpp:167
+#: ../src/qtui/coreconfigwizard.cpp:162
 msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid "Create Admin User"
 msgstr "Admin Kullanıcı Oluştur"
 
-#: ../src/qtui/coreconfigwizard.cpp:168
+#: ../src/qtui/coreconfigwizard.cpp:163
 msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
 msgstr "Öncelikle çekirdekte yeni bir kullanıcı oluşturacağız. Bu kullanıcı yönetici haklarına sahip olacak."
 
-#: ../src/qtui/coreconfigwizard.cpp:150
+#: ../src/qtui/coreconfigwizard.cpp:145
 msgctxt "CoreConfigWizardPages::IntroPage|"
 msgid "Introduction"
 msgstr "Giriş"
 
-#: ../src/qtui/coreconfigwizard.cpp:203
+#: ../src/qtui/coreconfigwizard.cpp:198
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Select Storage Backend"
 msgstr "Depolama Türünü Seç"
 
-#: ../src/qtui/coreconfigwizard.cpp:204
+#: ../src/qtui/coreconfigwizard.cpp:199
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
 msgstr "Lütfen Quassel Çekirdeğinin kayıt ve diğer verileri saklaması için bir veritabanı seçin."
 
-#: ../src/qtui/coreconfigwizard.cpp:305
+#: ../src/qtui/coreconfigwizard.cpp:300
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Connection Properties"
 msgstr "Bağlantı Özellikleri"
 
-#: ../src/qtui/coreconfigwizard.cpp:347
+#: ../src/qtui/coreconfigwizard.cpp:342
 msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid "Storing Your Settings"
 msgstr "Ayarlarınız Saklanıyor"
 
-#: ../src/qtui/coreconfigwizard.cpp:348
+#: ../src/qtui/coreconfigwizard.cpp:343
 msgctxt "CoreConfigWizardPages::SyncPage|"
 msgid ""
 "Your settings are now stored in the core, and you will be logged in "
@@ -1842,103 +1901,62 @@ msgctxt "CoreConnectDlg|"
 msgid "Connect to Core"
 msgstr "Çekirdeğe Bağlan"
 
-#: ../src/client/coreconnection.cpp:190
+#: ../src/client/coreconnection.cpp:193
 msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "Ağ etkin değil"
 
-#: ../src/client/coreconnection.cpp:225 ../src/client/coreconnection.cpp:367
+#: ../src/client/coreconnection.cpp:227 ../src/client/coreconnection.cpp:328
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "Bağlı değil"
 
-#: ../src/client/coreconnection.cpp:228
+#: ../src/client/coreconnection.cpp:230
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Looking up %1..."
 msgstr "%1 aranıyor..."
 
-#: ../src/client/coreconnection.cpp:231 ../src/client/coreconnection.cpp:520
+#: ../src/client/coreconnection.cpp:233
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connecting to %1..."
 msgstr "%1e bağlanılıyor..."
 
-#: ../src/client/coreconnection.cpp:234 ../src/client/coreconnection.cpp:660
+#: ../src/client/coreconnection.cpp:236
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connected to %1"
 msgstr "%1e bağlandı"
 
-#: ../src/client/coreconnection.cpp:237
+#: ../src/client/coreconnection.cpp:239
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Disconnecting from %1..."
 msgstr "%1e bağlanılıyor..."
 
-#: ../src/client/coreconnection.cpp:303
-msgctxt "CoreConnection|"
-msgid ""
-"The Quassel Core you try to connect to is too old! Please consider "
-"upgrading."
-msgstr "Bağlanmaya çalıştığınız Quassel Çekirdeği çok eski! Lütfen yeni sürüme yükseltin."
-
-#: ../src/client/coreconnection.cpp:340
-msgctxt "CoreConnection|"
-msgid "Invalid data received from core"
-msgstr "Çekirdekten geçersiz bilgi alındı."
-
-#: ../src/client/coreconnection.cpp:405
+#: ../src/client/coreconnection.cpp:363
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "Çekirdekle bağlantı kesildi."
 
-#: ../src/client/coreconnection.cpp:498 ../src/client/coreconnection.cpp:592
-#: ../src/client/coreconnection.cpp:641
-msgctxt "CoreConnection|"
-msgid "Unencrypted connection canceled"
-msgstr "Şifrelenmemiş bağlantı iptal edildi"
-
-#: ../src/client/coreconnection.cpp:535
-msgctxt "CoreConnection|"
-msgid "Synchronizing to core..."
-msgstr "Çekirdekle eşitleniyor..."
-
-#: ../src/client/coreconnection.cpp:558
-#, qt-format
-msgctxt "CoreConnection|"
-msgid ""
-"<b>The Quassel Core you are trying to connect to is too old!</b><br>Need at "
-"least core/client protocol v%1 to connect."
-msgstr "<b>Bağlanmaya çalıştırğınız Quassel İstemcisi çok eski!</b><br>Bağlanmak için en azından çekirdek/istemci protokolü v%1 gerekli."
-
-#: ../src/client/coreconnection.cpp:684
-msgctxt "CoreConnection|"
-msgid "Logging in..."
-msgstr "Oturum açılıyor..."
-
-#: ../src/client/coreconnection.cpp:689
-msgctxt "CoreConnection|"
-msgid "Login canceled"
-msgstr "Oturum iptal edildi"
-
-#: ../src/client/coreconnection.cpp:718
+#: ../src/client/coreconnection.cpp:501
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "Oturum durumu alınıyor"
 
-#: ../src/client/coreconnection.cpp:720
+#: ../src/client/coreconnection.cpp:503
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "%1 ile eşitleniyor..."
 
-#: ../src/client/coreconnection.cpp:746
+#: ../src/client/coreconnection.cpp:539
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "Ağ durumu alınıyor."
 
-#: ../src/client/coreconnection.cpp:800
+#: ../src/client/coreconnection.cpp:590
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2118,52 +2136,52 @@ msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (%4 den beri)"
 
-#: ../src/core/corenetwork.cpp:166
+#: ../src/core/corenetwork.cpp:167
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
 msgstr "Bağlantı başarısız. Sonraki sunucuya geçiliyor"
 
-#: ../src/core/corenetwork.cpp:174 ../src/core/corenetwork.cpp:175
+#: ../src/core/corenetwork.cpp:175 ../src/core/corenetwork.cpp:176
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
 msgstr "%1:%2 bağlantısı yapılıyor..."
 
-#: ../src/core/corenetwork.cpp:227
+#: ../src/core/corenetwork.cpp:228
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr "Bağlantı Kesiliyor. (%1)"
 
-#: ../src/core/corenetwork.cpp:227
+#: ../src/core/corenetwork.cpp:228
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr "Çekirdeği Kapat"
 
-#: ../src/core/corenetwork.cpp:422
+#: ../src/core/corenetwork.cpp:423
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "%1 (%2) bağlanılamadı"
 
-#: ../src/core/corenetwork.cpp:424
+#: ../src/core/corenetwork.cpp:425
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
 msgstr "Bağlantı hatası: %1"
 
-#: ../src/core/coresession.cpp:230
+#: ../src/core/coresession.cpp:227
 msgctxt "CoreSession|"
 msgid "Client"
 msgstr "İstemci"
 
-#: ../src/core/coresession.cpp:230
+#: ../src/core/coresession.cpp:227
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
 msgstr "bağlantı kesildi (Kullanıcı: %1)."
 
-#: ../src/core/coresession.cpp:491
+#: ../src/core/coresession.cpp:474
 #, qt-format
 msgctxt "CoreSession|"
 msgid ""
@@ -2171,7 +2189,7 @@ msgid ""
 " create network %1!"
 msgstr "CoreSession::createNetwork(): %1 ağı oluşturulmaya çalışılırken Çekirdekten geçersiz networkId alındı!"
 
-#: ../src/core/coresession.cpp:523
+#: ../src/core/coresession.cpp:506
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
@@ -2219,8 +2237,8 @@ msgstr "%2 ye CTCP-%1 isteği gönderiliyor"
 
 #: ../src/core/coreuserinputhandler.cpp:190
 #: ../src/core/coreuserinputhandler.cpp:361
-#: ../src/core/coreuserinputhandler.cpp:605
-#: ../src/core/coreuserinputhandler.cpp:643
+#: ../src/core/coreuserinputhandler.cpp:606
+#: ../src/core/coreuserinputhandler.cpp:644
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: QCA provider plugin not found. It is usually provided by the qca-ossl"
@@ -2235,7 +2253,7 @@ msgid ""
 msgstr "[kullanım] /delkey <takmaad|kanal> bir takma ad veya kanal için şifreleme anahtarını siler veya bir kanalda iken sadece /delkey."
 
 #: ../src/core/coreuserinputhandler.cpp:208
-#: ../src/core/coreuserinputhandler.cpp:661
+#: ../src/core/coreuserinputhandler.cpp:662
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
@@ -2248,7 +2266,7 @@ msgid "The key for %1 has been deleted."
 msgstr "%1 için anahtar silindi."
 
 #: ../src/core/coreuserinputhandler.cpp:217
-#: ../src/core/coreuserinputhandler.cpp:669
+#: ../src/core/coreuserinputhandler.cpp:670
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2281,7 +2299,7 @@ msgid "Initiated key exchange with %1."
 msgstr "%1 ile anahtar değişimi başlatıldı."
 
 #: ../src/core/coreuserinputhandler.cpp:397
-#: ../src/core/coreuserinputhandler.cpp:627
+#: ../src/core/coreuserinputhandler.cpp:628
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2290,13 +2308,13 @@ msgid ""
 "with QCA present."
 msgstr "Hata: Bir şifreleme anahtarı ayarlamak, Quassel'in Qt Kriptografik Mimari (QCA) kütüphanesi ile derlenmiş olmasını gerektirir. Quassel paketinin QCA desteği için dağıtıcınızla iletişime geçin veya Quassel'i QCA etkin olarak tekrar derleyin."
 
-#: ../src/core/coreuserinputhandler.cpp:555
+#: ../src/core/coreuserinputhandler.cpp:556
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Starting query with %1"
 msgstr "Sorguya %1 ile başlanıyor"
 
-#: ../src/core/coreuserinputhandler.cpp:615
+#: ../src/core/coreuserinputhandler.cpp:616
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
@@ -2304,26 +2322,26 @@ msgid ""
 "it."
 msgstr "[kullanım] /setkey <takmaad|kanal> <anahtar> takmaad veya kanal için şifreleme anahtarı belirler. /setkey <anahtar> ise bir kanalda veya sorgu tamponunda anahtarı ayarlar."
 
-#: ../src/core/coreuserinputhandler.cpp:624
+#: ../src/core/coreuserinputhandler.cpp:625
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been set."
 msgstr "%1 için anahtar belirlendi"
 
-#: ../src/core/coreuserinputhandler.cpp:653
+#: ../src/core/coreuserinputhandler.cpp:654
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
 msgstr "[kullanım] /delkey <takmaad|kanal> bir takma ad veya kanal için şifreleme anahtarını gösterir veya bir kanal veya sorguda iken sadece /showkey."
 
-#: ../src/core/coreuserinputhandler.cpp:665
+#: ../src/core/coreuserinputhandler.cpp:666
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 is %2:%3"
 msgstr "%1 için anahtar %2:%3"
 
-#: ../src/core/coreuserinputhandler.cpp:793
+#: ../src/core/coreuserinputhandler.cpp:794
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
@@ -2801,7 +2819,7 @@ msgid "highlight rule"
 msgstr "vurgulama kuralı"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:31
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:369
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:370
 msgctxt "IdentitiesSettingsPage|"
 msgid "Rename Identity"
 msgstr "Kimliği Yeniden Adlandır"
@@ -2837,55 +2855,55 @@ msgctxt "IdentitiesSettingsPage|"
 msgid "Identities"
 msgstr "Kimlikler"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:204
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:205
 msgctxt "IdentitiesSettingsPage|"
 msgid ""
 "<b>The following problems need to be corrected before your changes can be "
 "applied:</b><ul>"
 msgstr "<b>Değişiklikleriniz uygulanmadan önce aşağıdaki problemlerin çözülmesi gerekiyor:</b><ul>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:205
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:206
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>All identities need an identity name set</li>"
 msgstr "<li>Tüm kimliklere bir kimlik isim kümesi gerekli</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:206
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:207
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>Every identity needs at least one nickname defined</li>"
 msgstr "<li>Her kimliğe en az bir tanımlı takma ad gerekmektedir</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:207
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:208
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify a real name for every identity</li>"
 msgstr "<li>Her kimlik için gerçek ad belirtmeniz gerekiyor</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:208
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:209
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify an ident for every identity</li>"
 msgstr "<li>Her kimlik için bir ident belirtmeniz gerekiyor</li>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:209
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:210
 msgctxt "IdentitiesSettingsPage|"
 msgid "</ul>"
 msgstr "</ul>"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:210
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:211
 msgctxt "IdentitiesSettingsPage|"
 msgid "One or more identities are invalid"
 msgstr "Bir ya da daha fazla kimlik geçersiz"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:355
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:356
 msgctxt "IdentitiesSettingsPage|"
 msgid "Delete Identity?"
 msgstr "Kimliği Sil?"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:356
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:357
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Do you really want to delete identity \"%1\"?"
 msgstr "\"%1\" kimliğini gerçekten silmek istiyor musunuz?"
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:370
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:371
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Please enter a new name for the identity \"%1\"!"
@@ -3916,379 +3934,396 @@ msgctxt "KeySequenceWidget|"
 msgid "Reassign"
 msgstr "Tekrar Ata"
 
-#: ../src/qtui/mainwin.cpp:350
+#: ../src/common/protocols/legacy/legacypeer.cpp:175
+msgctxt "LegacyPeer|"
+msgid "Invalid handshake message!"
+msgstr "Geçersiz el sıkışma iletisi!"
+
+#: ../src/common/protocols/legacy/legacypeer.cpp:246
+#, qt-format
+msgctxt "LegacyPeer|"
+msgid "Unknown protocol message of type %1"
+msgstr "Bilinmeyen %1 protokol ileti türü"
+
+#: ../src/common/protocols/legacy/legacypeer.cpp:295
+#, qt-format
+msgctxt "LegacyPeer|"
+msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
+msgstr "<b>Quassel Çekirdek Sürüm %1</b><br>İnşa: %2<br>Up %3d%4h%5m (şu kadar zamandır: %6)"
+
+#: ../src/qtui/mainwin.cpp:355
 msgctxt "MainWin|"
 msgid "General"
 msgstr "Genel"
 
-#: ../src/qtui/mainwin.cpp:352
+#: ../src/qtui/mainwin.cpp:357
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
 msgstr "&Çekirdeğe Bağlan..."
 
-#: ../src/qtui/mainwin.cpp:354
+#: ../src/qtui/mainwin.cpp:359
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
 msgstr "&Çekirdekle Bağlantıyı Kes"
 
-#: ../src/qtui/mainwin.cpp:356
+#: ../src/qtui/mainwin.cpp:361
 msgctxt "MainWin|"
 msgid "Core &Info..."
 msgstr "Çekirdek &Bilgisi..."
 
-#: ../src/qtui/mainwin.cpp:358
+#: ../src/qtui/mainwin.cpp:363
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
 msgstr "A&ğları Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:366
 msgctxt "MainWin|"
 msgid "&Quit"
 msgstr "&Çık"
 
-#: ../src/qtui/mainwin.cpp:365
+#: ../src/qtui/mainwin.cpp:370
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
 msgstr "Sohbet Listelerini &Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:373
 msgctxt "MainWin|"
 msgid "&Lock Layout"
 msgstr "Arayüzü &Kilitle"
 
-#: ../src/qtui/mainwin.cpp:372
+#: ../src/qtui/mainwin.cpp:377
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
 msgstr "&Arama Çubuğunu Göster"
 
-#: ../src/qtui/mainwin.cpp:374
+#: ../src/qtui/mainwin.cpp:379
 msgctxt "MainWin|"
 msgid "Show Away Log"
 msgstr "Dışarıda Kayıtları"
 
-#: ../src/qtui/mainwin.cpp:376
+#: ../src/qtui/mainwin.cpp:381
 msgctxt "MainWin|"
 msgid "Show &Menubar"
 msgstr "&Menü Çubuğunu Göster"
 
-#: ../src/qtui/mainwin.cpp:379
+#: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
 msgstr "&Durum Çubuğunu Göster"
 
-#: ../src/qtui/mainwin.cpp:385
+#: ../src/qtui/mainwin.cpp:390
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
 msgstr "&Tam Ekran Kipi"
 
-#: ../src/qtui/mainwin.cpp:392
+#: ../src/qtui/mainwin.cpp:397
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
 msgstr "&Kısayolları Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:398 ../src/qtui/mainwin.cpp:402
+#: ../src/qtui/mainwin.cpp:403 ../src/qtui/mainwin.cpp:407
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
 msgstr "Quasseli &Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:408
+#: ../src/qtui/mainwin.cpp:413
 msgctxt "MainWin|"
 msgid "&About Quassel"
 msgstr "Quassel &Hakkında"
 
-#: ../src/qtui/mainwin.cpp:413
+#: ../src/qtui/mainwin.cpp:418
 msgctxt "MainWin|"
 msgid "About &Qt"
 msgstr "&Qt Hakkında"
 
-#: ../src/qtui/mainwin.cpp:417
+#: ../src/qtui/mainwin.cpp:422
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
 msgstr "&NetworkModel Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:419
+#: ../src/qtui/mainwin.cpp:424
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
 msgstr "Hata Ayıklama &TamponGörünümKaplaması"
 
-#: ../src/qtui/mainwin.cpp:421
+#: ../src/qtui/mainwin.cpp:426
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
 msgstr "&MessageModel Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:423
+#: ../src/qtui/mainwin.cpp:428
 msgctxt "MainWin|"
 msgid "Debug &HotList"
 msgstr "&Log Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:425
+#: ../src/qtui/mainwin.cpp:430
 msgctxt "MainWin|"
 msgid "Debug &Log"
 msgstr "&Log Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:427
+#: ../src/qtui/mainwin.cpp:432
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "Özel biçem deposunu kullan"
 
-#: ../src/qtui/mainwin.cpp:430
+#: ../src/qtui/mainwin.cpp:435
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
 msgstr "Geçerli Tamponu Gizle"
 
-#: ../src/qtui/mainwin.cpp:434
+#: ../src/qtui/mainwin.cpp:439
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "Organizasyon:"
 
-#: ../src/qtui/mainwin.cpp:436
+#: ../src/qtui/mainwin.cpp:441
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr "Canlı sohbete atla"
 
-#: ../src/qtui/mainwin.cpp:448
+#: ../src/qtui/mainwin.cpp:453
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr "Hızlı Erişim #0 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:450
+#: ../src/qtui/mainwin.cpp:455
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr "Hızlı Erişim #1 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:452
+#: ../src/qtui/mainwin.cpp:457
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr "Hızlı Erişim #2 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:454
+#: ../src/qtui/mainwin.cpp:459
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr "Hızlı Erişim #3 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:456
+#: ../src/qtui/mainwin.cpp:461
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr "Hızlı Erişim #4 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:458
+#: ../src/qtui/mainwin.cpp:463
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr "Hızlı Erişim #5 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:460
+#: ../src/qtui/mainwin.cpp:465
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr "Hızlı Erişim #6 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:462
+#: ../src/qtui/mainwin.cpp:467
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr "Hızlı Erişim #7 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:464
+#: ../src/qtui/mainwin.cpp:469
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr "Hızlı Erişim #8 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:466
+#: ../src/qtui/mainwin.cpp:471
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr "Hızlı Erişim #9 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:469
+#: ../src/qtui/mainwin.cpp:474
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr "Hızlı Erişim #0"
 
-#: ../src/qtui/mainwin.cpp:471
+#: ../src/qtui/mainwin.cpp:476
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr "Hızlı Erişim #1"
 
-#: ../src/qtui/mainwin.cpp:473
+#: ../src/qtui/mainwin.cpp:478
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr "Hızlı Erişim #2"
 
-#: ../src/qtui/mainwin.cpp:475
+#: ../src/qtui/mainwin.cpp:480
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr "Hızlı Erişim #3"
 
-#: ../src/qtui/mainwin.cpp:477
+#: ../src/qtui/mainwin.cpp:482
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr "Hızlı Erişim #4"
 
-#: ../src/qtui/mainwin.cpp:479
+#: ../src/qtui/mainwin.cpp:484
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr "Hızlı Erişim #5"
 
-#: ../src/qtui/mainwin.cpp:481
+#: ../src/qtui/mainwin.cpp:486
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr "Hızlı Erişim #6"
 
-#: ../src/qtui/mainwin.cpp:483
+#: ../src/qtui/mainwin.cpp:488
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr "Hızlı Erişim #"
 
-#: ../src/qtui/mainwin.cpp:485
+#: ../src/qtui/mainwin.cpp:490
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr "Hızlı Erişim #8"
 
-#: ../src/qtui/mainwin.cpp:487
+#: ../src/qtui/mainwin.cpp:492
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr "Hızlı Erişim #9"
 
-#: ../src/qtui/mainwin.cpp:491
+#: ../src/qtui/mainwin.cpp:496
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "Sohbet :Listesini Sil?"
 
-#: ../src/qtui/mainwin.cpp:493
+#: ../src/qtui/mainwin.cpp:498
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr "Önceki Sohbet Listesini Etkinleştir"
 
-#: ../src/qtui/mainwin.cpp:495
+#: ../src/qtui/mainwin.cpp:500
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr "Sohbete Git"
 
-#: ../src/qtui/mainwin.cpp:497
+#: ../src/qtui/mainwin.cpp:502
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr "Sohbete Git"
 
-#: ../src/qtui/mainwin.cpp:506
+#: ../src/qtui/mainwin.cpp:511
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "&Dosya"
 
-#: ../src/qtui/mainwin.cpp:519
+#: ../src/qtui/mainwin.cpp:524
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "&Ağ"
 
-#: ../src/qtui/mainwin.cpp:525
+#: ../src/qtui/mainwin.cpp:530
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "&Görünüm"
 
-#: ../src/qtui/mainwin.cpp:526
+#: ../src/qtui/mainwin.cpp:531
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "&Sohbet Listeleri"
 
-#: ../src/qtui/mainwin.cpp:528
+#: ../src/qtui/mainwin.cpp:533
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "&Araç Çubukları"
 
-#: ../src/qtui/mainwin.cpp:542
+#: ../src/qtui/mainwin.cpp:547
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "&Ayarlar"
 
-#: ../src/qtui/mainwin.cpp:551
+#: ../src/qtui/mainwin.cpp:556
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "&Yardım"
 
-#: ../src/qtui/mainwin.cpp:559
+#: ../src/qtui/mainwin.cpp:564
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:835
+#: ../src/qtui/mainwin.cpp:840
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "Takma Adlar"
 
-#: ../src/qtui/mainwin.cpp:844
+#: ../src/qtui/mainwin.cpp:849
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "Takma Ad Listesini Göster"
 
-#: ../src/qtui/mainwin.cpp:857
+#: ../src/qtui/mainwin.cpp:862
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "Sohbet Ekranı"
 
-#: ../src/qtui/mainwin.cpp:869
+#: ../src/qtui/mainwin.cpp:874
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "Sohbet Ekranını Göster"
 
-#: ../src/qtui/mainwin.cpp:875
+#: ../src/qtui/mainwin.cpp:880
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "Girdi Satırı"
 
-#: ../src/qtui/mainwin.cpp:884
+#: ../src/qtui/mainwin.cpp:889
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "Girdi Satırını Göster"
 
-#: ../src/qtui/mainwin.cpp:899
+#: ../src/qtui/mainwin.cpp:904
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "Konu"
 
-#: ../src/qtui/mainwin.cpp:911
+#: ../src/qtui/mainwin.cpp:916
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "Konu Satırını Göster"
 
-#: ../src/qtui/mainwin.cpp:1005
+#: ../src/qtui/mainwin.cpp:1010
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "Ana Araç Çubuğu"
 
-#: ../src/qtui/mainwin.cpp:1048
+#: ../src/qtui/mainwin.cpp:1053
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "Çekirdeğe bağlandı."
 
-#: ../src/qtui/mainwin.cpp:1147
+#: ../src/qtui/mainwin.cpp:1152
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Çekirdeğe bağlı değil."
 
-#: ../src/qtui/mainwin.cpp:1165 ../src/qtui/mainwin.cpp:1175
+#: ../src/qtui/mainwin.cpp:1170 ../src/qtui/mainwin.cpp:1180
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Şifrelenmemiş Bağlantı"
 
-#: ../src/qtui/mainwin.cpp:1165
+#: ../src/qtui/mainwin.cpp:1170
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>İstemciniz SSL şifrelemeyi desteklemiyor</b>"
 
-#: ../src/qtui/mainwin.cpp:1167 ../src/qtui/mainwin.cpp:1177
+#: ../src/qtui/mainwin.cpp:1172 ../src/qtui/mainwin.cpp:1182
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr "Şifre benzeri hassas bilgileriniz Quassel çekirdeğinize şifresiz gönderilecektir."
 
-#: ../src/qtui/mainwin.cpp:1175
+#: ../src/qtui/mainwin.cpp:1180
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Çekirdeğiniz SSL şifrelemeyi desteklemiyor</b>"
 
-#: ../src/qtui/mainwin.cpp:1193 ../src/qtui/mainwin.cpp:1214
+#: ../src/qtui/mainwin.cpp:1198 ../src/qtui/mainwin.cpp:1219
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "Güvenilmeyen Güvenlik Sertifikası"
 
-#: ../src/qtui/mainwin.cpp:1194
+#: ../src/qtui/mainwin.cpp:1199
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4296,33 +4331,33 @@ msgid ""
 "following reasons:</b>"
 msgstr "<b>%1 tarafından sağlanan SSL sertifikasına aşağıdaki sebeplerden dolayı güvenilemiyor:</b>"
 
-#: ../src/qtui/mainwin.cpp:1197
+#: ../src/qtui/mainwin.cpp:1202
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Devam Et"
 
-#: ../src/qtui/mainwin.cpp:1198
+#: ../src/qtui/mainwin.cpp:1203
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Sertifika Göster"
 
-#: ../src/qtui/mainwin.cpp:1215
+#: ../src/qtui/mainwin.cpp:1220
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Bu sertifikayı bir daha sorulmamak üzere sonsuza kadar kabul etmek ister misiniz?"
 
-#: ../src/qtui/mainwin.cpp:1217
+#: ../src/qtui/mainwin.cpp:1222
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Sadece Geçerli Oturum"
 
-#: ../src/qtui/mainwin.cpp:1218
+#: ../src/qtui/mainwin.cpp:1223
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "Daima"
 
-#: ../src/qtui/mainwin.cpp:1229
+#: ../src/qtui/mainwin.cpp:1234
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Çekirdek Bağlantı Hatası"
@@ -4801,7 +4836,7 @@ msgid ""
 "the special characters {, }, [, ], \\, |, `, ^, _ and -."
 msgstr "Geçerli bir takma ad İngiliz alfabesindeki harfleri, sayıları ve {, }, [, ], \\, |, `, ^, _ - özel karakterlerini içerebilir."
 
-#: ../src/qtui/settingspages/identitiessettingspage.cpp:479
+#: ../src/qtui/settingspages/identitiessettingspage.cpp:480
 msgctxt "NickEditDlg|"
 msgid "Add Nickname"
 msgstr "Takma Ad Ekle"
@@ -4816,7 +4851,7 @@ msgctxt "NotificationsSettingsPage|"
 msgid "Notifications"
 msgstr "Bildirimler"
 
-#: ../src/qtui/phononnotificationbackend.cpp:186
+#: ../src/qtui/phononnotificationbackend.cpp:188
 msgctxt "PhononNotificationBackend::ConfigWidget|"
 msgid "Select Audio File"
 msgstr "Ses Dosyası Seçin"
@@ -5424,6 +5459,42 @@ msgid ""
 "network"
 msgstr "Ağa bağlandıktan sonra otomatik olarak katılacağınız IRC kanallarının bir listesi"
 
+#: ../src/qtui/snorenotificationbackend.cpp:61
+#: ../src/qtui/snorenotificationbackend.cpp:100
+msgctxt "SnoreNotificationBackend|"
+msgid "Private Message"
+msgstr "Özel Mesaj"
+
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:20
+msgctxt "SnoreNotificationConfigWidget|"
+msgid "Form"
+msgstr "Form"
+
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:29
+msgctxt "SnoreNotificationConfigWidget|"
+msgid "Snore"
+msgstr "Horlama"
+
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:41
+msgctxt "SnoreNotificationConfigWidget|"
+msgid "Backend:"
+msgstr "Arka Uç:"
+
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:64
+msgctxt "SnoreNotificationConfigWidget|"
+msgid "Timeout:"
+msgstr "Zaman Aşımı:"
+
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:80
+msgctxt "SnoreNotificationConfigWidget|"
+msgid " s"
+msgstr " s"
+
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:96
+msgctxt "SnoreNotificationConfigWidget|"
+msgid "0 means infinite"
+msgstr "0, sonsuz"
+
 #: ../src/core/sqlitestorage.cpp:60
 msgctxt "SqliteStorage|"
 msgid ""
@@ -5472,7 +5543,7 @@ msgstr "Konu"
 #: ../src/qtui/ui/sslinfodlg.ui:126 ../src/qtui/ui/sslinfodlg.ui:248
 msgctxt "SslInfoDlg|"
 msgid "<b>Common name:</b>"
-msgstr "<b>Sunucu Adı:</b>"
+msgstr "<b>Ortak ad:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:143 ../src/qtui/ui/sslinfodlg.ui:265
 msgctxt "SslInfoDlg|"
