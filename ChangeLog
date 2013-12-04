@@ -13,6 +13,29 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.9.2 (2013-11-26)
+==========================
+
+* Don't crash if /topic contains newlines
+* Fix SSL-related issues
+* Fix Phonon notifications not playing sound
+* Pingout if connection drops during SASL auth phase
+* Prevent messages from being sent to status buffers
+* Make sure manipulated/buggy clients cannot access backlog of other core users
+* Fix context menu issues
+
+Version 0.9.1 (2013-10-11)
+==========================
+
+* Fix security issue with Qt 4.8.5 and PostgreSQL
+* Phonon notifications for Mac OS X
+* Convert tabs in messages into 8 spaces
+* Silence superfluous QCA warnings
+* Various key- and encryption-related fixes
+* Ignore formatting in clickables
+* Enable warnings when compiling with Clang
+* Updated translations
+* Various other small fixes and improvements
 
 Version 0.9.0 (2013-04-16)
 ==========================

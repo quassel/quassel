@@ -23,6 +23,8 @@
 #include <iostream>
 #include <signal.h>
 #if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+#  include <sys/types.h>
+#  include <sys/time.h>
 #  include <sys/resource.h>
 #endif
 

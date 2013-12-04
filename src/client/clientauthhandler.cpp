@@ -166,14 +166,14 @@ void ClientAuthHandler::onProtocolVersionMismatch(int actual, int expected)
 {
     emit errorPopup(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
            "We need at least protocol v%1, but the core speaks v%2 only.").arg(expected, actual));
-    requestDisconnect();
+    requestDisconnect(tr("Incompatible protocol version, connection to core refused"));
 }
 
 
 void ClientAuthHandler::handle(const ClientDenied &msg)
 {
     emit errorPopup(msg.errorString);
-    requestDisconnect();
+    requestDisconnect(tr("The core refused connection from this client"));
 }
 
 
