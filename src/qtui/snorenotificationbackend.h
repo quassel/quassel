@@ -62,7 +62,7 @@ private:
     class ConfigWidget;
     SystrayNotificationBackend * m_systrayBackend;
     Snore::SnoreCore *m_snore;
-    QHash<uint,uint> m_notificationIds;
+    QHash<uint, uint> m_notificationIds;
     Snore::Icon m_icon;
     int m_timeout;
 };
@@ -71,7 +71,7 @@ class SnoreNotificationBackend::ConfigWidget : public SettingsPage {
     Q_OBJECT
 
 public:
-    ConfigWidget(Snore::SnoreCore *snore,QWidget *parent = 0);
+    ConfigWidget(Snore::SnoreCore *snore, QWidget *parent = 0);
     void save();
     void load();
     bool hasDefaults() const;
