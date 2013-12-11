@@ -44,7 +44,6 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _requestedUserModes('-')
 {
     _autoReconnectTimer.setSingleShot(true);
-    _socketCloseTimer.setSingleShot(true);
     connect(&_socketCloseTimer, SIGNAL(timeout()), this, SLOT(socketCloseTimeout()));
 
     setPingInterval(networkConfig()->pingInterval());
@@ -182,6 +181,8 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     else {
         socket.setProxy(QNetworkProxy::NoProxy);
     }
+
+    enablePingTimeout();
 
 #ifdef HAVE_SSL
     socket.setProtocol((QSsl::SslProtocol)server.sslVersion);
@@ -446,8 +447,6 @@ void CoreNetwork::socketInitialized()
     }
 
     emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
-
-    enablePingTimeout();
 
     // TokenBucket to avoid sending too much at once
     _messageDelay = 2200;  // this seems to be a safe value (2.2 seconds delay)

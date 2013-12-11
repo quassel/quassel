@@ -174,7 +174,7 @@ private slots:
     void socketHasData();
     void socketError(QAbstractSocket::SocketError);
     void socketInitialized();
-    inline void socketCloseTimeout() { socket.disconnectFromHost(); }
+    inline void socketCloseTimeout() { socket.abort(); }
     void socketDisconnected();
     void socketStateChanged(QAbstractSocket::SocketState);
     void networkInitialized();
