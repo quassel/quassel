@@ -657,7 +657,7 @@ void MainWin::removeBufferView(int bufferViewConfigId)
 
 void MainWin::bufferViewToggled(bool enabled)
 {
-    if (!enabled && !isVisible()) {
+    if (!enabled && !isMinimized()) {
         // hiding the mainwindow triggers a toggle of the bufferview (which pretty much sucks big time)
         // since this isn't our fault and we can't do anything about it, we suppress the resulting calls
         return;
