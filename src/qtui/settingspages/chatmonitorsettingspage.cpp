@@ -64,6 +64,7 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
     connect(ui.showHighlights, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
     connect(ui.showOwnMessages, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
     connect(ui.showBacklog, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+    connect(ui.includeRead, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
 }
 
 
@@ -81,6 +82,7 @@ void ChatMonitorSettingsPage::defaults()
     settings["Buffers"] = QVariant();
     settings["Default"] = true;
     settings["ShowBacklog"] = true;
+    settings["IncludeRead"] = false;
     load();
     widgetHasChanged();
 }
@@ -98,6 +100,7 @@ void ChatMonitorSettingsPage::load()
     ui.showHighlights->setChecked(settings["ShowHighlights"].toBool());
     ui.showOwnMessages->setChecked(settings["ShowOwnMsgs"].toBool());
     ui.showBacklog->setChecked(settings["ShowBacklog"].toBool());
+    ui.includeRead->setChecked(settings["IncludeRead"].toBool());
 
     // get all available buffer Ids
     QList<BufferId> allBufferIds = Client::networkModel()->allBufferIds();
@@ -131,6 +134,7 @@ void ChatMonitorSettingsPage::loadSettings()
     settings["ShowOwnMsgs"] = chatViewSettings.value("ShowOwnMsgs", false);
     settings["Buffers"] = chatViewSettings.value("Buffers", QVariantList());
     settings["ShowBacklog"] = chatViewSettings.value("ShowBacklog", true);
+    settings["IncludeRead"] = chatViewSettings.value("IncludeRead", true);
 }
 
 
@@ -142,6 +146,7 @@ void ChatMonitorSettingsPage::save()
     chatViewSettings.setValue("ShowHighlights", ui.showHighlights->isChecked());
     chatViewSettings.setValue("ShowOwnMsgs", ui.showOwnMessages->isChecked());
     chatViewSettings.setValue("ShowBacklog", ui.showBacklog->isChecked());
+    chatViewSettings.setValue("IncludeRead", ui.includeRead->isChecked());
 
     // save list of active buffers
     QVariantList saveableBufferIdList;
@@ -169,6 +174,10 @@ bool ChatMonitorSettingsPage::testHasChanged()
     if (settings["ShowHighlights"].toBool() != ui.showHighlights->isChecked())
         return true;
     if (settings["ShowOwnMsgs"].toBool() != ui.showOwnMessages->isChecked())
+        return true;
+    if (settings["ShowBacklog"].toBool() != ui.showBacklog->isChecked())
+        return true;
+    if (settings["IncludeRead"].toBool() != ui.includeRead->isChecked())
         return true;
 
     if (_configActive->bufferList().count() != settings["Buffers"].toList().count())
