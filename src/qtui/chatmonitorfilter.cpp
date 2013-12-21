@@ -40,6 +40,7 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     QString operationModeSettingsId = "OperationMode";
     QString buffersSettingsId = "Buffers";
     QString showBacklogSettingsId = "ShowBacklog";
+    QString includeReadSettingsId = "IncludeRead";
 
     _showHighlights = viewSettings.value(showHighlightsSettingsId, false).toBool();
     _operationMode = viewSettings.value(operationModeSettingsId, 0).toInt();
@@ -47,11 +48,13 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     foreach(QVariant v, viewSettings.value(buffersSettingsId, QVariant()).toList())
     _bufferIds << v.value<BufferId>();
     _showBacklog = viewSettings.value(showBacklogSettingsId, true).toBool();
+    _includeRead = viewSettings.value(includeReadSettingsId, true).toBool();
 
     viewSettings.notify(showHighlightsSettingsId, this, SLOT(showHighlightsSettingChanged(const QVariant &)));
     viewSettings.notify(operationModeSettingsId, this, SLOT(operationModeSettingChanged(const QVariant &)));
     viewSettings.notify(buffersSettingsId, this, SLOT(buffersSettingChanged(const QVariant &)));
     viewSettings.notify(showBacklogSettingsId, this, SLOT(showBacklogSettingChanged(const QVariant &)));
+    viewSettings.notify(includeReadSettingsId, this, SLOT(includeReadSettingChanged(const QVariant &)));
 }
 
 
@@ -63,8 +66,8 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     BufferId bufferId = source_index.data(MessageModel::BufferIdRole).value<BufferId>();
 
     Message::Flags flags = (Message::Flags)source_index.data(MessageModel::FlagsRole).toInt();
-    if ((flags & Message::Backlog) && (!_showBacklog ||
-        (Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>())))
+    if ((flags & Message::Backlog) && (!_showBacklog || (!_includeRead &&
+        (Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>()))))
         return false;
 
     if (!_showOwnMessages && flags & Message::Self)
@@ -196,4 +199,8 @@ void ChatMonitorFilter::buffersSettingChanged(const QVariant &newValue)
 
 void ChatMonitorFilter::showBacklogSettingChanged(const QVariant &newValue) {
     _showBacklog = newValue.toBool();
+}
+
+void ChatMonitorFilter::includeReadSettingChanged(const QVariant &newValue) {
+    _includeRead = newValue.toBool();
 }

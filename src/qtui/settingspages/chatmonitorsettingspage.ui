@@ -168,6 +168,36 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>16</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="includeRead">
+       <property name="toolTip">
+        <string>Include read messages from backlog on reconnect</string>
+       </property>
+       <property name="text">
+        <string>Include read messages</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -185,7 +215,16 @@ p, li { white-space: pre-wrap; }
   <tabstop>activeBuffers</tabstop>
   <tabstop>showHighlights</tabstop>
   <tabstop>showOwnMessages</tabstop>
+  <tabstop>showBacklog</tabstop>
+  <tabstop>includeRead</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>showBacklog</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>includeRead</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+ </connections>
 </ui>
