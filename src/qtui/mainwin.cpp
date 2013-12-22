@@ -380,13 +380,13 @@ void MainWin::setupActions()
             0, 0))->setCheckable(true);
 
 #ifdef HAVE_KDE
-    QAction *fullScreenAct = KStandardAction::fullScreen(this, SLOT(toggleFullscreen()), this, coll);
+    QAction *fullScreenAct = KStandardAction::fullScreen(this, SLOT(onFullScreenToggled()), this, coll);
 #else
     QAction *fullScreenAct = new Action(SmallIcon("view-fullscreen"), tr("&Full Screen Mode"), coll,
-        this, SLOT(toggleFullscreen()), QKeySequence(Qt::Key_F11));
+        this, SLOT(onFullScreenToggled()), QKeySequence(Qt::Key_F11));
     fullScreenAct->setCheckable(true);
 #endif
-    coll->addAction("ToggleFullscreen", fullScreenAct);
+    coll->addAction("ToggleFullScreen", fullScreenAct);
 
     // Settings
     QAction *configureShortcutsAct = new Action(SmallIcon("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
@@ -915,7 +915,7 @@ void MainWin::setupTopicWidget()
 void MainWin::setupViewMenuTail()
 {
     _viewMenu->addSeparator();
-    _viewMenu->addAction(QtUi::actionCollection("General")->action("ToggleFullscreen"));
+    _viewMenu->addAction(QtUi::actionCollection("General")->action("ToggleFullScreen"));
 }
 
 
@@ -1353,12 +1353,24 @@ void MainWin::showShortcutsDlg()
 }
 
 
-void MainWin::toggleFullscreen()
+void MainWin::onFullScreenToggled()
 {
-    if (isFullScreen())
-        showNormal();
+    // Relying on QWidget::isFullScreen is discouraged, see the KToggleFullScreenAction docs
+    // Also, one should not use showFullScreen() or showNormal(), as those reset all other window flags
+
+    QAction *action = QtUi::actionCollection("General")->action("ToggleFullScreen");
+    if (!action)
+        return;
+
+#ifdef HAVE_KDE
+    KToggleFullScreenAction *kAct = static_cast<KToggleFullScreenAction *>(action);
+    kAct->setFullScreen(this, kAct->isChecked());
+#else
+    if (action->isChecked())
+        setWindowState(windowState() | Qt::WindowFullScreen);
     else
-        showFullScreen();
+        setWindowState(windowState() & ~Qt::WindowFullScreen);
+#endif
 }
 
 
