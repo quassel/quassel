@@ -42,6 +42,7 @@ public:
 
     inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
     void addActionsToMenu(QMenu *, const QPointF &pos);
+    virtual inline bool autoMarkerLineOnLostFocus() const { return _autoMarkerLineOnLostFocus; }
 
 public slots:
     virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
@@ -63,6 +64,7 @@ private slots:
     void zoomOriginal();
 
     void setAutoMarkerLine(const QVariant &);
+    void setAutoMarkerLineOnLostFocus(const QVariant &);
 
 private:
     Ui::BufferWidget ui;
@@ -71,6 +73,7 @@ private:
     ChatViewSearchController *_chatViewSearchController;
 
     bool _autoMarkerLine;
+    bool _autoMarkerLineOnLostFocus;
 };
 
 

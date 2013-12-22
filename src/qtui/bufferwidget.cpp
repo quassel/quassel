@@ -40,7 +40,8 @@
 BufferWidget::BufferWidget(QWidget *parent)
     : AbstractBufferContainer(parent),
     _chatViewSearchController(new ChatViewSearchController(this)),
-    _autoMarkerLine(true)
+    _autoMarkerLine(true),
+    _autoMarkerLineOnLostFocus(true)
 {
     ui.setupUi(this);
     layout()->setContentsMargins(0, 0, 0, 0);
@@ -99,6 +100,7 @@ BufferWidget::BufferWidget(QWidget *parent)
 
     ChatViewSettings s;
     s.initAndNotify("AutoMarkerLine", this, SLOT(setAutoMarkerLine(QVariant)), true);
+    s.initAndNotify("AutoMarkerLineOnLostFocus", this, SLOT(setAutoMarkerLineOnLostFocus(QVariant)), true);
 }
 
 
@@ -112,6 +114,11 @@ BufferWidget::~BufferWidget()
 void BufferWidget::setAutoMarkerLine(const QVariant &v)
 {
     _autoMarkerLine = v.toBool();
+}
+
+void BufferWidget::setAutoMarkerLineOnLostFocus(const QVariant &v)
+{
+    _autoMarkerLineOnLostFocus = v.toBool();
 }
 
 
@@ -270,14 +277,14 @@ void BufferWidget::setMarkerLine(ChatView *view, bool allowGoingBack)
     if (lastLine) {
         QModelIndex idx = lastLine->index();
         MsgId msgId = idx.data(MessageModel::MsgIdRole).value<MsgId>();
+        BufferId bufId = view->scene()->singleBufferId();
 
         if (!allowGoingBack) {
-            BufferId bufId = view->scene()->singleBufferId();
             MsgId oldMsgId = Client::markerLine(bufId);
             if (oldMsgId.isValid() && msgId <= oldMsgId)
                 return;
         }
-        view->setMarkerLine(msgId);
+        Client::setMarkerLine(bufId, msgId);
     }
 }
 
