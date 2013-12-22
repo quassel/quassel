@@ -122,7 +122,7 @@ private slots:
     void showNotificationsDlg();
     void showIgnoreList(QString newRule = QString());
     void showShortcutsDlg();
-    void toggleFullscreen();
+    void onFullScreenToggled();
 
     void handleCoreConnectionError(const QString &errorMsg);
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
