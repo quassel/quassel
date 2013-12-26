@@ -34,6 +34,7 @@
 #include "clientirclisthelper.h"
 #include "clientidentity.h"
 #include "clientignorelistmanager.h"
+#include "clienttransfermanager.h"
 #include "clientuserinputhandler.h"
 #include "coreaccountmodel.h"
 #include "coreconnection.h"
@@ -102,6 +103,7 @@ Client::Client(QObject *parent)
     _inputHandler(0),
     _networkConfig(0),
     _ignoreListManager(0),
+    _transferManager(0),
     _messageModel(0),
     _messageProcessor(0),
     _coreAccountModel(new CoreAccountModel(this)),
@@ -403,6 +405,10 @@ void Client::setSyncedToCore()
     Q_ASSERT(!_ignoreListManager);
     _ignoreListManager = new ClientIgnoreListManager(this);
     signalProxy()->synchronize(ignoreListManager());
+
+    Q_ASSERT(!_transferManager);
+    _transferManager = new ClientTransferManager(this);
+    signalProxy()->synchronize(transferManager());
 
     // trigger backlog request once all active bufferviews are initialized
     connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));

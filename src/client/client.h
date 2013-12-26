@@ -49,6 +49,7 @@ class ClientBacklogManager;
 class ClientBufferViewManager;
 class ClientIgnoreListManager;
 class ClientIrcListHelper;
+class ClientTransferManager;
 class ClientUserInputHandler;
 class CoreAccountModel;
 class CoreConnection;
@@ -56,6 +57,7 @@ class IrcUser;
 class IrcChannel;
 class NetworkConfig;
 class SignalProxy;
+
 struct NetworkInfo;
 
 class Client : public QObject
@@ -117,6 +119,7 @@ public:
     static inline ClientUserInputHandler *inputHandler() { return instance()->_inputHandler; }
     static inline NetworkConfig *networkConfig() { return instance()->_networkConfig; }
     static inline ClientIgnoreListManager *ignoreListManager() { return instance()->_ignoreListManager; }
+    static inline ClientTransferManager *transferManager() { return instance()->_transferManager; }
 
     static inline CoreAccountModel *coreAccountModel() { return instance()->_coreAccountModel; }
     static inline CoreConnection *coreConnection() { return instance()->_coreConnection; }
@@ -234,6 +237,7 @@ private:
     ClientUserInputHandler *_inputHandler;
     NetworkConfig *_networkConfig;
     ClientIgnoreListManager *_ignoreListManager;
+    ClientTransferManager *_transferManager;
 
     MessageModel *_messageModel;
     AbstractMessageProcessor *_messageProcessor;
