@@ -507,10 +507,11 @@ void SignalProxy::dispatch(const T &protoMessage)
 }
 
 
-void SignalProxy::dispatch(Peer *peer, const RpcCall &rpcCall)
+template<class T>
+void SignalProxy::dispatch(Peer *peer, const T &protoMessage)
 {
     if (peer && peer->isOpen())
-        peer->dispatch(rpcCall);
+        peer->dispatch(protoMessage);
     else
         QCoreApplication::postEvent(this, new ::RemovePeerEvent(peer));
 }
@@ -539,7 +540,7 @@ void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
     }
 
     QVariant returnValue((QVariant::Type)eMeta->returnType(slotId));
-    if (!invokeSlot(receiver, slotId, syncMessage.params, returnValue)) {
+    if (!invokeSlot(receiver, slotId, syncMessage.params, returnValue, peer)) {
         qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", eMeta->methodName(slotId).constData());
         return;
     }
@@ -740,7 +741,11 @@ void SignalProxy::sync_call__(const SyncableObject *obj, SignalProxy::ProxyMode 
         params << QVariant(argTypes[i], va_arg(ap, void *));
     }
 
-    dispatch(SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+    if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxyMode() == SignalProxy::Server) {
+        Peer *peer = params[0].value<PeerPtr>();
+        dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+    } else
+        dispatch(SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
 }
 
 

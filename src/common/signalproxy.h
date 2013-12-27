@@ -118,7 +118,8 @@ private:
 
     template<class T>
     void dispatch(const T &protoMessage);
-    void dispatch(Peer *peer, const Protocol::RpcCall &rpcCall);
+    template<class T>
+    void dispatch(Peer *peer, const T &protoMessage);
 
     void handle(Peer *peer, const Protocol::SyncMessage &syncMessage);
     void handle(Peer *peer, const Protocol::RpcCall &rpcCall);
