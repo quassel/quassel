@@ -37,6 +37,7 @@ public:
     inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     const Transfer *transfer(const QUuid &uuid) const;
+    QList<QUuid> transferIds() const;
 
 public slots:
     void addTransfer(Transfer *transfer);

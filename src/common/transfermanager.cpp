@@ -31,6 +31,18 @@ TransferManager::TransferManager(QObject *parent)
 }
 
 
+const Transfer *TransferManager::transfer(const QUuid &uuid) const
+{
+    return _transfers.value(uuid, 0);
+}
+
+
+QList<QUuid> TransferManager::transferIds() const
+{
+    return _transfers.keys();
+}
+
+
 void TransferManager::addTransfer(Transfer *transfer)
 {
     QUuid uuid = transfer->uuid();
