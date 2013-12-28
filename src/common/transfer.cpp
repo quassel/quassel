@@ -29,7 +29,7 @@ Transfer::Transfer(const QUuid &uuid, QObject *parent)
     _fileSize(0),
     _uuid(uuid)
 {
-    renameObject(QString("Transfer/%1").arg(_uuid.toString()));
+    init();
 }
 
 Transfer::Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
@@ -43,7 +43,14 @@ Transfer::Transfer(Direction direction, const QString &nick, const QString &file
     _nick(nick),
     _uuid(QUuid::createUuid())
 {
+    init();
+}
+
+
+void Transfer::init()
+{
     renameObject(QString("Transfer/%1").arg(_uuid.toString()));
+    setAllowClientUpdates(true);
 }
 
 
@@ -163,4 +170,38 @@ void Transfer::setNick(const QString &nick)
         SYNC(ARG(nick));
         emit nickChanged(nick);
     }
+}
+
+
+QString Transfer::savePath() const
+{
+    return _savePath;
+}
+
+
+void Transfer::accept(const QString &savePath) const
+{
+    _savePath = savePath;
+    PeerPtr ptr = 0;
+    REQUEST_OTHER(requestAccepted, ARG(ptr));
+    emit accepted();
+}
+
+
+void Transfer::reject() const
+{
+    REQUEST_OTHER(requestRejected, NO_ARG);
+    emit rejected();
+}
+
+
+void Transfer::requestAccepted(PeerPtr peer)
+{
+    emit accepted(peer);
+}
+
+
+void Transfer::requestRejected()
+{
+    emit rejected();
 }

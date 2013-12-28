@@ -43,7 +43,7 @@ public slots:
     void addTransfer(Transfer *transfer);
 
 signals:
-    void transferAdded(Transfer *transfer);
+    void transferAdded(const Transfer *transfer);
 
 protected slots:
     virtual void onCoreTransferAdded(const QUuid &uuid) { Q_UNUSED(uuid) };

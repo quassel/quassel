@@ -22,6 +22,7 @@
 #define CORETRANSFERMANAGER_H
 
 #include "transfermanager.h"
+#include "types.h"
 
 class CoreTransferManager : public TransferManager
 {
@@ -30,6 +31,11 @@ class CoreTransferManager : public TransferManager
 
 public:
     CoreTransferManager(QObject *parent = 0);
+
+private slots:
+    void onTransferAdded(const Transfer *transfer);
+    void onTransferAccepted(PeerPtr peer);
+    void onTransferRejected(PeerPtr peer);
 
 };
 

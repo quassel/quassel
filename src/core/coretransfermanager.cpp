@@ -27,5 +27,24 @@ INIT_SYNCABLE_OBJECT(CoreTransferManager)
 CoreTransferManager::CoreTransferManager(QObject *parent)
     : TransferManager(parent)
 {
+    connect(this, SIGNAL(transferAdded(const Transfer*)), SLOT(onTransferAdded(const Transfer*)));
+}
+
+
+void CoreTransferManager::onTransferAdded(const Transfer *transfer)
+{
+    connect(transfer, SIGNAL(accepted(PeerPtr)), SLOT(onTransferAccepted(PeerPtr)));
+    connect(transfer, SIGNAL(rejected(PeerPtr)), SLOT(onTransferRejected(PeerPtr)));
+}
+
+
+void CoreTransferManager::onTransferAccepted(PeerPtr peer)
+{
+
+}
+
+
+void CoreTransferManager::onTransferRejected(PeerPtr peer)
+{
 
 }

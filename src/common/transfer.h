@@ -25,6 +25,7 @@
 #include <QUuid>
 
 #include "syncableobject.h"
+#include "types.h"
 
 class Transfer : public SyncableObject
 {
@@ -70,6 +71,17 @@ public:
     quint64 fileSize() const;
     QString nick() const;
 
+    QString savePath() const;
+
+public slots:
+    // called on the client side
+    void accept(const QString &savePath) const;
+    void reject() const;
+
+    // called on the core side through sync calls
+    void requestAccepted(PeerPtr peer = 0);
+    void requestRejected();
+
 signals:
     void stateChanged(State state);
     void directionChanged(Direction direction);
@@ -79,10 +91,15 @@ signals:
     void fileSizeChanged(quint64 fileSize);
     void nickChanged(const QString &nick);
 
+    void accepted(PeerPtr peer = 0) const;
+    void rejected() const;
+
 protected:
     void setState(State state);
 
 private:
+    void init();
+
     void setDirection(Direction direction);
     void setAddress(const QHostAddress &address);
     void setPort(quint16 port);
@@ -99,6 +116,9 @@ private:
     quint64 _fileSize;
     QString _nick;
     QUuid _uuid;
+
+    // non-synced attributes
+    mutable QString _savePath;
 };
 
 #endif
