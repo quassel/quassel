@@ -38,6 +38,7 @@ class Transfer : public SyncableObject
     Q_PROPERTY(quint16 port READ port WRITE setPort NOTIFY portChanged);
     Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged);
     Q_PROPERTY(quint64 fileSize READ fileSize WRITE setFileSize NOTIFY fileSizeChanged);
+    Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickChanged);
 
 public:
     enum State {
@@ -58,7 +59,7 @@ public:
     Q_ENUMS(Direction)
 
     Transfer(const QUuid &uuid, QObject *parent = 0); // for creating a syncable object client-side
-    Transfer(Direction direction, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
+    Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
 
     QUuid uuid() const;
     State state() const;
@@ -67,6 +68,7 @@ public:
     QHostAddress address() const;
     quint16 port() const;
     quint64 fileSize() const;
+    QString nick() const;
 
 signals:
     void stateChanged(State state);
@@ -75,6 +77,7 @@ signals:
     void portChanged(quint16 port);
     void fileNameChanged(const QString &fileName);
     void fileSizeChanged(quint64 fileSize);
+    void nickChanged(const QString &nick);
 
 protected:
     void setState(State state);
@@ -85,6 +88,7 @@ private:
     void setPort(quint16 port);
     void setFileName(const QString &fileName);
     void setFileSize(quint64 fileSize);
+    void setNick(const QString &nick);
 
 
     State _state;
@@ -93,6 +97,7 @@ private:
     QHostAddress _address;
     quint16 _port;
     quint64 _fileSize;
+    QString _nick;
     QUuid _uuid;
 };
 

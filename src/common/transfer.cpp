@@ -32,7 +32,7 @@ Transfer::Transfer(const QUuid &uuid, QObject *parent)
     renameObject(QString("Transfer/%1").arg(_uuid.toString()));
 }
 
-Transfer::Transfer(Direction direction, const QString &fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
+Transfer::Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
     : SyncableObject(parent),
     _state(New),
     _direction(direction),
@@ -40,6 +40,7 @@ Transfer::Transfer(Direction direction, const QString &fileName, const QHostAddr
     _address(address),
     _port(port),
     _fileSize(fileSize),
+    _nick(nick),
     _uuid(QUuid::createUuid())
 {
     renameObject(QString("Transfer/%1").arg(_uuid.toString()));
@@ -145,5 +146,21 @@ void Transfer::setFileSize(quint64 fileSize)
         _fileSize = fileSize;
         SYNC(ARG(fileSize));
         emit fileSizeChanged(fileSize);
+    }
+}
+
+
+QString Transfer::nick() const
+{
+    return _nick;
+}
+
+
+void Transfer::setNick(const QString &nick)
+{
+    if (_nick != nick) {
+        _nick = nick;
+        SYNC(ARG(nick));
+        emit nickChanged(nick);
     }
 }
