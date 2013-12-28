@@ -18,35 +18,31 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORETRANSFERMANAGER_H
-#define CORETRANSFERMANAGER_H
+#ifndef CLIENTTRANSFER_H
+#define CLIENTTRANSFER_H
 
-#include "transfermanager.h"
-#include "types.h"
+#include <QUuid>
 
-class CoreTransfer;
+#include "transfer.h"
 
-class CoreTransferManager : public TransferManager
+class ClientTransfer : public Transfer
 {
     Q_OBJECT
     SYNCABLE_OBJECT
 
 public:
-    CoreTransferManager(QObject *parent = 0);
+    ClientTransfer(const QUuid &uuid, QObject *parent = 0);
 
-    CoreTransfer *transfer(const QUuid &uuid) const;
+    QString savePath() const;
 
 public slots:
-    void addTransfer(CoreTransfer *transfer);
+    // called on the client side
+    void accept(const QString &savePath) const;
+    void reject() const;
 
-signals:
-    void transferAdded(CoreTransfer *transfer);
-
-private slots:
-    void onTransferAdded(const Transfer *transfer);
-    void onTransferAccepted(PeerPtr peer);
-    void onTransferRejected(PeerPtr peer);
-
+private:
+    // non-synced attributes
+    mutable QString _savePath;
 };
 
 #endif

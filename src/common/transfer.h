@@ -61,6 +61,7 @@ public:
 
     Transfer(const QUuid &uuid, QObject *parent = 0); // for creating a syncable object client-side
     Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
+    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     QUuid uuid() const;
     State state() const;
@@ -71,16 +72,14 @@ public:
     quint64 fileSize() const;
     QString nick() const;
 
-    QString savePath() const;
-
 public slots:
     // called on the client side
-    void accept(const QString &savePath) const;
-    void reject() const;
+    virtual void accept(const QString &savePath) const { Q_UNUSED(savePath); }
+    virtual void reject() const {}
 
     // called on the core side through sync calls
-    void requestAccepted(PeerPtr peer = 0);
-    void requestRejected();
+    virtual void requestAccepted(PeerPtr peer) { Q_UNUSED(peer); }
+    virtual void requestRejected(PeerPtr peer) { Q_UNUSED(peer); }
 
 signals:
     void stateChanged(State state);
@@ -92,7 +91,7 @@ signals:
     void nickChanged(const QString &nick);
 
     void accepted(PeerPtr peer = 0) const;
-    void rejected() const;
+    void rejected(PeerPtr peer = 0) const;
 
 protected:
     void setState(State state);
@@ -116,9 +115,6 @@ private:
     quint64 _fileSize;
     QString _nick;
     QUuid _uuid;
-
-    // non-synced attributes
-    mutable QString _savePath;
 };
 
 #endif

@@ -18,34 +18,23 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORETRANSFERMANAGER_H
-#define CORETRANSFERMANAGER_H
+#ifndef CORETRANSFER_H
+#define CORETRANSFER_H
 
-#include "transfermanager.h"
-#include "types.h"
+#include "transfer.h"
 
-class CoreTransfer;
-
-class CoreTransferManager : public TransferManager
+class CoreTransfer : public Transfer
 {
     Q_OBJECT
     SYNCABLE_OBJECT
 
 public:
-    CoreTransferManager(QObject *parent = 0);
-
-    CoreTransfer *transfer(const QUuid &uuid) const;
+    CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
 
 public slots:
-    void addTransfer(CoreTransfer *transfer);
-
-signals:
-    void transferAdded(CoreTransfer *transfer);
-
-private slots:
-    void onTransferAdded(const Transfer *transfer);
-    void onTransferAccepted(PeerPtr peer);
-    void onTransferRejected(PeerPtr peer);
+    // called through sync calls
+    void requestAccepted(PeerPtr peer);
+    void requestRejected(PeerPtr peer);
 
 };
 

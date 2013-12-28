@@ -21,7 +21,7 @@
 #include "clienttransfermanager.h"
 
 #include "client.h"
-#include "transfer.h"
+#include "clienttransfer.h"
 
 
 INIT_SYNCABLE_OBJECT(ClientTransferManager)
@@ -32,6 +32,12 @@ ClientTransferManager::ClientTransferManager(QObject *parent)
 }
 
 
+const ClientTransfer *ClientTransferManager::transfer(const QUuid &uuid) const
+{
+    return qobject_cast<const ClientTransfer *>(transfer_(uuid));
+}
+
+
 void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
 {
     if (uuid.isNull()) {
@@ -39,7 +45,7 @@ void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
         return;
     }
 
-    Transfer *transfer = new Transfer(uuid, this);
+    ClientTransfer *transfer = new ClientTransfer(uuid, this);
     connect(transfer, SIGNAL(initDone()), SLOT(onTransferInitDone())); // we only want to add initialized transfers
     Client::signalProxy()->synchronize(transfer);
 }
@@ -55,6 +61,11 @@ void ClientTransferManager::onTransferInitDone()
 
 void ClientTransferManager::onTransferAdded(const Transfer *transfer)
 {
-    // FIXME just a temporary solution
-    emit newTransfer(transfer);
+    const ClientTransfer *t = qobject_cast<const ClientTransfer *>(transfer);
+    if (!t) {
+        qWarning() << "Invalid Transfer added to ClientTransferManager!";
+        return;
+    }
+
+    emit transferAdded(t);
 }

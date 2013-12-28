@@ -25,7 +25,7 @@
 
 #include <QUuid>
 
-class Transfer;
+class ClientTransfer;
 
 class ClientTransferManager : public TransferManager
 {
@@ -35,12 +35,14 @@ class ClientTransferManager : public TransferManager
 public:
     ClientTransferManager(QObject *parent = 0);
 
+    const ClientTransfer *transfer(const QUuid &uuid) const;
+
 public slots:
     void onCoreTransferAdded(const QUuid &uuid);
     void onTransferInitDone();
 
 signals:
-    void newTransfer(const Transfer *transfer);
+    void transferAdded(const ClientTransfer *transfer);
 
 private slots:
     void onTransferAdded(const Transfer *transfer);

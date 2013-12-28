@@ -171,37 +171,3 @@ void Transfer::setNick(const QString &nick)
         emit nickChanged(nick);
     }
 }
-
-
-QString Transfer::savePath() const
-{
-    return _savePath;
-}
-
-
-void Transfer::accept(const QString &savePath) const
-{
-    _savePath = savePath;
-    PeerPtr ptr = 0;
-    REQUEST_OTHER(requestAccepted, ARG(ptr));
-    emit accepted();
-}
-
-
-void Transfer::reject() const
-{
-    REQUEST_OTHER(requestRejected, NO_ARG);
-    emit rejected();
-}
-
-
-void Transfer::requestAccepted(PeerPtr peer)
-{
-    emit accepted(peer);
-}
-
-
-void Transfer::requestRejected()
-{
-    emit rejected();
-}

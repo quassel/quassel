@@ -23,6 +23,7 @@
 #include "coreirclisthelper.h"
 #include "corenetwork.h"
 #include "coresession.h"
+#include "coretransfer.h"
 #include "coretransfermanager.h"
 #include "ctcpevent.h"
 #include "ircevent.h"
@@ -30,7 +31,6 @@
 #include "messageevent.h"
 #include "netsplit.h"
 #include "quassel.h"
-#include "transfer.h"
 
 #ifdef HAVE_QCA2
 #  include "keyevent.h"
@@ -1059,7 +1059,7 @@ void CoreSessionEventProcessor::handleCtcpDcc(CtcpEvent *e)
             }
 
             // TODO: check if target is the right thing to use for the partner
-            Transfer *transfer = new Transfer(Transfer::Receive, e->target(), filename, address, port, size, this);
+            CoreTransfer *transfer = new CoreTransfer(Transfer::Receive, e->target(), filename, address, port, size, this);
             coreSession()->signalProxy()->synchronize(transfer);
             coreSession()->transferManager()->addTransfer(transfer);
         }
