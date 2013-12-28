@@ -55,6 +55,9 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
     setLineWrapEnabled(false);
     reset();
 
+    // Prevent QTextHtmlImporter::appendNodeText from eating whitespace
+    document()->setDefaultStyleSheet("span { white-space: pre-wrap; }");
+
     connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
 
     _mircColorMap["00"] = "#ffffff";
