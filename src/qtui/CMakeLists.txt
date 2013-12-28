@@ -55,6 +55,7 @@ set(SOURCES
     qtuimessageprocessor.cpp
     qtuisettings.cpp
     qtuistyle.cpp
+    receivefiledlg.cpp
     settingsdlg.cpp
     settingspagedlg.cpp
     simplenetworkeditor.cpp
@@ -101,6 +102,7 @@ set(MOC_HDRS
     qtuiapplication.h
     qtuimessageprocessor.h
     qtuistyle.h
+    receivefiledlg.h
     settingsdlg.h
     settingspagedlg.h
     simplenetworkeditor.h
@@ -140,6 +142,7 @@ set(FORMS
     settingsdlg.ui
     settingspagedlg.ui
     simplenetworkeditor.ui
+    receivefiledlg.ui
     topicwidget.ui)
 
 if(HAVE_KDE)

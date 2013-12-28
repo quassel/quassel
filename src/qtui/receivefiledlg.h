@@ -18,43 +18,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "clienttransfermanager.h"
+#ifndef RECEIVEFILEDLG_H
+#define RECEIVEFILEDLG_H
 
-#include "client.h"
-#include "transfer.h"
+#include "ui_receivefiledlg.h"
 
+class Transfer;
 
-INIT_SYNCABLE_OBJECT(ClientTransferManager)
-ClientTransferManager::ClientTransferManager(QObject *parent)
-    : TransferManager(parent)
+class ReceiveFileDlg : public QDialog
 {
-    connect(this, SIGNAL(transferAdded(const Transfer*)), SLOT(onTransferAdded(const Transfer*)));
-}
+    Q_OBJECT
 
+public:
+    ReceiveFileDlg(const Transfer *transfer, QWidget *parent = 0);
 
-void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
-{
-    if (uuid.isNull()) {
-        qWarning() << Q_FUNC_INFO << "Invalid transfer uuid" << uuid.toString();
-        return;
-    }
+private slots:
+    void on_buttonBox_clicked(QAbstractButton *button);
 
-    Transfer *transfer = new Transfer(uuid, this);
-    connect(transfer, SIGNAL(initDone()), SLOT(onTransferInitDone())); // we only want to add initialized transfers
-    Client::signalProxy()->synchronize(transfer);
-}
+private:
+    Ui::ReceiveFileDlg ui;
+    const Transfer *_transfer;
+};
 
-
-void ClientTransferManager::onTransferInitDone()
-{
-    Transfer *transfer = qobject_cast<Transfer *>(sender());
-    Q_ASSERT(transfer);
-    addTransfer(transfer);
-}
-
-
-void ClientTransferManager::onTransferAdded(const Transfer *transfer)
-{
-    // FIXME just a temporary solution
-    emit newTransfer(transfer);
-}
+#endif

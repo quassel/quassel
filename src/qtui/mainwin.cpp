@@ -62,6 +62,7 @@
 #include "clientbufferviewconfig.h"
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
+#include "clienttransfermanager.h"
 #include "coreconfigwizard.h"
 #include "coreconnectdlg.h"
 #include "coreconnection.h"
@@ -83,11 +84,13 @@
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
+#include "receivefiledlg.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "statusnotifieritem.h"
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
+#include "transfer.h"
 #include "verticaldock.h"
 
 #ifndef HAVE_KDE
@@ -1022,6 +1025,8 @@ void MainWin::connectedToCore()
     connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
     connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
 
+    connect(Client::transferManager(), SIGNAL(newTransfer(const Transfer*)), SLOT(showNewTransferDlg(const Transfer*)));
+
     setConnectedState();
 }
 
@@ -1355,6 +1360,13 @@ void MainWin::showShortcutsDlg()
     SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
     dlg.exec();
 #endif
+}
+
+
+void MainWin::showNewTransferDlg(const Transfer *transfer)
+{
+    ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
+    dlg->show();
 }
 
 

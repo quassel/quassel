@@ -18,43 +18,30 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "clienttransfermanager.h"
+#include <QDir>
+#include <QFileDialog>
 
-#include "client.h"
+#include "receivefiledlg.h"
+
 #include "transfer.h"
 
-
-INIT_SYNCABLE_OBJECT(ClientTransferManager)
-ClientTransferManager::ClientTransferManager(QObject *parent)
-    : TransferManager(parent)
+ReceiveFileDlg::ReceiveFileDlg(const Transfer *transfer, QWidget *parent)
+    : QDialog(parent),
+    _transfer(transfer)
 {
-    connect(this, SIGNAL(transferAdded(const Transfer*)), SLOT(onTransferAdded(const Transfer*)));
+    setAttribute(Qt::WA_DeleteOnClose);
+    ui.setupUi(this);
+
+    QString label = tr("<b>%1</b> wants to send you a file:<br>%2 (%3 bytes)").arg(transfer->nick(), transfer->fileName()).arg(transfer->fileSize());
+    ui.infoText->setText(label);
 }
 
 
-void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
+void ReceiveFileDlg::on_buttonBox_clicked(QAbstractButton *button)
 {
-    if (uuid.isNull()) {
-        qWarning() << Q_FUNC_INFO << "Invalid transfer uuid" << uuid.toString();
-        return;
+    if (ui.buttonBox->standardButton(button) == QDialogButtonBox::Save) {
+        QString name = QFileDialog::getSaveFileName(this, QString(), QDir::currentPath() + "/" + _transfer->fileName());
+        _transfer->accept(name);
     }
 
-    Transfer *transfer = new Transfer(uuid, this);
-    connect(transfer, SIGNAL(initDone()), SLOT(onTransferInitDone())); // we only want to add initialized transfers
-    Client::signalProxy()->synchronize(transfer);
-}
-
-
-void ClientTransferManager::onTransferInitDone()
-{
-    Transfer *transfer = qobject_cast<Transfer *>(sender());
-    Q_ASSERT(transfer);
-    addTransfer(transfer);
-}
-
-
-void ClientTransferManager::onTransferAdded(const Transfer *transfer)
-{
-    // FIXME just a temporary solution
-    emit newTransfer(transfer);
 }

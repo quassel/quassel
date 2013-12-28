@@ -46,6 +46,7 @@ class NickListWidget;
 class SystemTray;
 class ChatMonitorView;
 class TopicWidget;
+class Transfer;
 
 class QMenu;
 class QLabel;
@@ -122,6 +123,7 @@ private slots:
     void showNotificationsDlg();
     void showIgnoreList(QString newRule = QString());
     void showShortcutsDlg();
+    void showNewTransferDlg(const Transfer *transfer);
     void onFullScreenToggled();
 
     void handleCoreConnectionError(const QString &errorMsg);

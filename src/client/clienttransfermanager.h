@@ -39,6 +39,12 @@ public slots:
     void onCoreTransferAdded(const QUuid &uuid);
     void onTransferInitDone();
 
+signals:
+    void newTransfer(const Transfer *transfer);
+
+private slots:
+    void onTransferAdded(const Transfer *transfer);
+
 };
 
 #endif
