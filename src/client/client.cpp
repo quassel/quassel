@@ -479,6 +479,12 @@ void Client::setDisconnectedFromCore()
         _ignoreListManager->deleteLater();
         _ignoreListManager = 0;
     }
+
+    if (_transferManager) {
+        _transferManager->deleteLater();
+        _transferManager = 0;
+    }
+
     // we probably don't want to save pending input for reconnect
     _userInputBuffer.clear();
 
