@@ -97,6 +97,7 @@ public:
 
     Q_INVOKABLE void handleCtcpAction(CtcpEvent *event);
     Q_INVOKABLE void handleCtcpClientinfo(CtcpEvent *event);
+    Q_INVOKABLE void handleCtcpDcc(CtcpEvent *event);
     Q_INVOKABLE void handleCtcpPing(CtcpEvent *event);
     Q_INVOKABLE void handleCtcpTime(CtcpEvent *event);
     Q_INVOKABLE void handleCtcpVersion(CtcpEvent *event);
