@@ -21,7 +21,12 @@
 #ifndef CORETRANSFER_H
 #define CORETRANSFER_H
 
+#include <QPointer>
+
 #include "transfer.h"
+#include "peer.h"
+
+class QTcpSocket;
 
 class CoreTransfer : public Transfer
 {
@@ -32,10 +37,28 @@ public:
     CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
 
 public slots:
+    void start();
+
     // called through sync calls
     void requestAccepted(PeerPtr peer);
     void requestRejected(PeerPtr peer);
 
+private slots:
+    void startReceiving();
+    void onDataReceived();
+    void onSocketDisconnected();
+    void onSocketError(QAbstractSocket::SocketError error);
+
+private:
+    void setupConnectionForReceive();
+    bool relayData(const QByteArray &data, bool requireChunkSize);
+    virtual void cleanUp();
+
+    QPointer<Peer> _peer;
+    QTcpSocket *_socket;
+    quint64 _pos;
+    QByteArray _buffer;
+    bool _reading;
 };
 
 #endif

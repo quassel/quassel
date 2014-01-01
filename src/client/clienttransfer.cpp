@@ -18,13 +18,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QFile>
+
 #include "clienttransfer.h"
 
 INIT_SYNCABLE_OBJECT(ClientTransfer)
 ClientTransfer::ClientTransfer(const QUuid &uuid, QObject *parent)
-    : Transfer(uuid, parent)
+    : Transfer(uuid, parent),
+    _file(0)
 {
+    connect(this, SIGNAL(stateChanged(State)), SLOT(onStateChanged(State)));
+}
 
+
+void ClientTransfer::cleanUp()
+{
+    if (_file) {
+        _file->close();
+        _file->deleteLater();
+        _file = 0;
+    }
 }
 
 
@@ -48,4 +61,42 @@ void ClientTransfer::reject() const
     PeerPtr ptr = 0;
     REQUEST_OTHER(requestRejected, ARG(ptr));
     emit rejected();
+}
+
+
+void ClientTransfer::dataReceived(PeerPtr, const QByteArray &data)
+{
+    // TODO: proper error handling (relay to core)
+    if (!_file) {
+        _file = new QFile(_savePath, this);
+        if (!_file->open(QFile::WriteOnly|QFile::Truncate)) {
+            qWarning() << Q_FUNC_INFO << "Could not open file:" << _file->errorString();
+            return;
+        }
+    }
+
+    if (!_file->isOpen())
+        return;
+
+    if (_file->write(data) < 0) {
+        qWarning() << Q_FUNC_INFO << "Could not write to file:" << _file->errorString();
+        return;
+    }
+}
+
+
+void ClientTransfer::onStateChanged(Transfer::State state)
+{
+    switch(state) {
+        case Completed:
+            if (_file)
+                _file->close();
+            break;
+        case Failed:
+            if (_file)
+                _file->remove();
+            break;
+        default:
+            ;
+    }
 }

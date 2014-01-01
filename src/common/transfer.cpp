@@ -171,3 +171,12 @@ void Transfer::setNick(const QString &nick)
         emit nickChanged(nick);
     }
 }
+
+
+void Transfer::setError(const QString &errorString)
+{
+    qWarning() << Q_FUNC_INFO << errorString;
+    emit error(errorString);
+    setState(Failed);
+    cleanUp();
+}

@@ -25,6 +25,8 @@
 
 #include "transfer.h"
 
+class QFile;
+
 class ClientTransfer : public Transfer
 {
     Q_OBJECT
@@ -40,9 +42,16 @@ public slots:
     void accept(const QString &savePath) const;
     void reject() const;
 
+private slots:
+    void dataReceived(PeerPtr peer, const QByteArray &data);
+    void onStateChanged(State state);
+
 private:
-    // non-synced attributes
+    virtual void cleanUp();
+
     mutable QString _savePath;
+
+    QFile *_file;
 };
 
 #endif

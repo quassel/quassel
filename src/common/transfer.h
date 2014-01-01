@@ -45,6 +45,7 @@ public:
     enum State {
         New,
         Pending,
+        Connecting,
         Transferring,
         Paused,
         Completed,
@@ -90,11 +91,19 @@ signals:
     void fileSizeChanged(quint64 fileSize);
     void nickChanged(const QString &nick);
 
+    void error(const QString &errorString);
+
     void accepted(PeerPtr peer = 0) const;
     void rejected(PeerPtr peer = 0) const;
 
-protected:
+protected slots:
     void setState(State state);
+    void setError(const QString &errorString);
+
+    // called on the client side through sync calls
+    virtual void dataReceived(PeerPtr, const QByteArray &data) { Q_UNUSED(data); }
+
+    virtual void cleanUp() = 0;
 
 private:
     void init();
