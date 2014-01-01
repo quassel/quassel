@@ -44,8 +44,6 @@ signals:
 
 private slots:
     void onTransferAdded(const Transfer *transfer);
-    void onTransferAccepted(PeerPtr peer);
-    void onTransferRejected(PeerPtr peer);
 
 };
 

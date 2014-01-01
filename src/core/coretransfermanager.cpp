@@ -51,20 +51,5 @@ void CoreTransferManager::onTransferAdded(const Transfer *transfer)
         return;
     }
 
-    connect(transfer, SIGNAL(accepted(PeerPtr)), SLOT(onTransferAccepted(PeerPtr)));
-    connect(transfer, SIGNAL(rejected(PeerPtr)), SLOT(onTransferRejected(PeerPtr)));
-
     emit transferAdded(t);
-}
-
-
-void CoreTransferManager::onTransferAccepted(PeerPtr peer)
-{
-
-}
-
-
-void CoreTransferManager::onTransferRejected(PeerPtr peer)
-{
-
 }
