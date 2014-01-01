@@ -62,6 +62,7 @@
 #include "clientbufferviewconfig.h"
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
+#include "clienttransfer.h"
 #include "clienttransfermanager.h"
 #include "coreconfigwizard.h"
 #include "coreconnectdlg.h"
@@ -90,7 +91,6 @@
 #include "statusnotifieritem.h"
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
-#include "transfer.h"
 #include "verticaldock.h"
 
 #ifndef HAVE_KDE
@@ -1025,7 +1025,7 @@ void MainWin::connectedToCore()
     connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
     connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
 
-    connect(Client::transferManager(), SIGNAL(transferAdded(const Transfer*)), SLOT(showNewTransferDlg(const Transfer*)));
+    connect(Client::transferManager(), SIGNAL(transferAdded(const ClientTransfer*)), SLOT(showNewTransferDlg(const ClientTransfer*)));
 
     setConnectedState();
 }
@@ -1363,7 +1363,7 @@ void MainWin::showShortcutsDlg()
 }
 
 
-void MainWin::showNewTransferDlg(const Transfer *transfer)
+void MainWin::showNewTransferDlg(const ClientTransfer *transfer)
 {
     ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
     dlg->show();
