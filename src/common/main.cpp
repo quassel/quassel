@@ -118,6 +118,7 @@ int main(int argc, char **argv)
 #ifdef HAVE_SSL
     cliParser->addSwitch("require-ssl", 0, "Require SSL for client connections");
 #endif
+    cliParser->addSwitch("enable-experimental-dcc", 0, "Enable highly experimental and unfinished support for CTCP DCC (DANGEROUS)");
 #endif
 
 #ifdef HAVE_KDE
