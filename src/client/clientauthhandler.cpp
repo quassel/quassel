@@ -144,6 +144,8 @@ void ClientAuthHandler::onSocketConnected()
         return;
     }
 
+    socket()->setSocketOption(QAbstractSocket::KeepAliveOption, true);
+
     _peer = new LegacyPeer(this, socket(), this);
 
     connect(_peer, SIGNAL(transferProgress(int,int)), SIGNAL(transferProgress(int,int)));
