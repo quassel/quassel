@@ -439,6 +439,8 @@ void CoreNetwork::socketInitialized()
         return;
 #endif
 
+    socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
+
     CoreIdentity *identity = identityPtr();
     if (!identity) {
         qCritical() << "Identity invalid!";
