@@ -181,6 +181,8 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     else {
         socket.setProxy(QNetworkProxy::NoProxy);
     }
+    
+    enablePingTimeout();
 
     enablePingTimeout();
 
