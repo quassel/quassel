@@ -438,9 +438,9 @@ void CoreNetwork::socketInitialized()
     if (server.useSsl && !socket.isEncrypted())
         return;
 #endif
-
+#if QT_VERSION >= 0x040600
     socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
-
+#endif
     CoreIdentity *identity = identityPtr();
     if (!identity) {
         qCritical() << "Identity invalid!";
