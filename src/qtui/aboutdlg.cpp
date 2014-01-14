@@ -119,6 +119,7 @@ QString AboutDlg::contributors() const
                               "<dt><b>\"Gryllida\"</b></dt><dd>IRC parser improvements</dd>"
                               "<dt><b>H. İbrahim \"igungor\" Güngör</b></dt><dd>Turkish translation</dd>"
                               "<dt><b>Jiri Grönroos</b></dt><dd>Finnish translation</dd>"
+                              "<dt><b>Chris \"Zren\" H</b></dt><dd>Various improvements</dd>"
                               "<dt><b>Edward Hades</b></dt><dd>Russian translation</dd>"
                               "<dt><b>John \"nox\" Hand</b></dt><dd>Former All-Seeing Eye logo</dd>"
                               "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project founder, various improvements</dd>"
