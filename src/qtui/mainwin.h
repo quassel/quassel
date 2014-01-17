@@ -152,7 +152,7 @@ private slots:
 
     void saveMenuBarStatus(bool enabled);
     void saveStatusBarStatus(bool enabled);
-#ifndef HAVE_KDE
+#ifdef Q_WS_MAC
     void saveMainToolBarStatus(bool enabled);
 #endif
 

@@ -1008,7 +1008,7 @@ void MainWin::setupToolBars()
     QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
     _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
-#ifndef HAVE_KDE
+#ifdef Q_WS_MAC
     QtUiSettings uiSettings;
 
     bool visible = uiSettings.value("ShowMainToolBar", QVariant(true)).toBool();
@@ -1017,7 +1017,7 @@ void MainWin::setupToolBars()
 #endif
 }
 
-#ifndef HAVE_KDE
+#ifdef Q_WS_MAC
 void MainWin::saveMainToolBarStatus(bool enabled)
 {
     QtUiSettings uiSettings;
