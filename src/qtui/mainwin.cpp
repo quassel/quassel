@@ -1007,7 +1007,23 @@ void MainWin::setupToolBars()
 
     QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
     _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
+
+#ifndef HAVE_KDE
+    QtUiSettings uiSettings;
+
+    bool visible = uiSettings.value("ShowMainToolBar", QVariant(true)).toBool();
+    _mainToolBar->setVisible(visible);
+    connect(_mainToolBar, SIGNAL(visibilityChanged(bool)), this, SLOT(saveMainToolBarStatus(bool)));
+#endif
 }
+
+#ifndef HAVE_KDE
+void MainWin::saveMainToolBarStatus(bool enabled)
+{
+    QtUiSettings uiSettings;
+    uiSettings.setValue("ShowMainToolBar", enabled);
+}
+#endif
 
 
 void MainWin::connectedToCore()

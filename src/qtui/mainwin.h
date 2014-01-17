@@ -152,6 +152,9 @@ private slots:
 
     void saveMenuBarStatus(bool enabled);
     void saveStatusBarStatus(bool enabled);
+#ifndef HAVE_KDE
+    void saveMainToolBarStatus(bool enabled);
+#endif
 
     void loadLayout();
     void saveLayout();
