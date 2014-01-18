@@ -78,7 +78,7 @@ void ClientAuthHandler::connectToCore()
     setSocket(socket);
     // handled by the base class for now; may need to rethink for protocol detection
     //connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
-    //connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     connect(socket, SIGNAL(connected()), SLOT(onSocketConnected()));
 
     emit statusMessage(tr("Connecting to %1...").arg(_account.accountName()));
@@ -87,45 +87,37 @@ void ClientAuthHandler::connectToCore()
 
 
 // TODO: handle protocol detection
-// This method might go away anyway, unless we really need our own states...
-/*
 void ClientAuthHandler::onSocketStateChanged(QAbstractSocket::SocketState socketState)
 {
-    qDebug() << Q_FUNC_INFO << socketState;
     QString text;
-    AuthHandler::State state = UnconnectedState;
 
     switch(socketState) {
         case QAbstractSocket::UnconnectedState:
             text = tr("Disconnected");
-            state = UnconnectedState;
+            // Ensure the disconnected() signal is sent even if we haven't reached the Connected state yet.
+            // The baseclass implementation will make sure to only send the signal once.
+            onSocketDisconnected();
             break;
         case QAbstractSocket::HostLookupState:
             text = tr("Looking up %1...").arg(_account.hostName());
-            state = HostLookupState;
             break;
         case QAbstractSocket::ConnectingState:
             text = tr("Connecting to %1...").arg(_account.hostName());
-            state = ConnectingState;
             break;
         case QAbstractSocket::ConnectedState:
             text = tr("Connected to %1").arg(_account.hostName());
-            state = ConnectedState;
             break;
         case QAbstractSocket::ClosingState:
             text = tr("Disconnecting from %1...").arg(_account.hostName());
-            state = ClosingState;
             break;
         default:
             break;
     }
 
     if (!text.isEmpty()) {
-        setState(state);
         emit statusMessage(text);
     }
 }
-*/
 
 // TODO: handle protocol detection
 /*

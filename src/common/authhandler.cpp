@@ -22,26 +22,10 @@
 
 AuthHandler::AuthHandler(QObject *parent)
     : QObject(parent),
-    _state(UnconnectedState),
     _socket(0),
     _disconnectedSent(false)
 {
 
-}
-
-
-AuthHandler::State AuthHandler::state() const
-{
-    return _state;
-}
-
-
-void AuthHandler::setState(AuthHandler::State state)
-{
-    if (_state != state) {
-        _state = state;
-        emit stateChanged(state);
-    }
 }
 
 
@@ -54,7 +38,6 @@ QTcpSocket *AuthHandler::socket() const
 void AuthHandler::setSocket(QTcpSocket *socket)
 {
     _socket = socket;
-    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SIGNAL(socketStateChanged(QAbstractSocket::SocketState)));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(disconnected()), SLOT(onSocketDisconnected()));
 }

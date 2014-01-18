@@ -218,58 +218,6 @@ bool CoreConnection::isLocalConnection() const
 }
 
 
-void CoreConnection::socketStateChanged(QAbstractSocket::SocketState socketState)
-{
-    QString text;
-
-    switch (socketState) {
-    case QAbstractSocket::UnconnectedState:
-        text = tr("Disconnected");
-        break;
-    case QAbstractSocket::HostLookupState:
-        text = tr("Looking up %1...").arg(currentAccount().hostName());
-        break;
-    case QAbstractSocket::ConnectingState:
-        text = tr("Connecting to %1...").arg(currentAccount().hostName());
-        break;
-    case QAbstractSocket::ConnectedState:
-        text = tr("Connected to %1").arg(currentAccount().hostName());
-        break;
-    case QAbstractSocket::ClosingState:
-        text = tr("Disconnecting from %1...").arg(currentAccount().hostName());
-        break;
-    default:
-        break;
-    }
-
-    if (!text.isEmpty())
-        emit progressTextChanged(text);
-
-    setState(socketState);
-}
-
-
-void CoreConnection::setState(QAbstractSocket::SocketState socketState)
-{
-    ConnectionState state;
-
-    switch (socketState) {
-    case QAbstractSocket::UnconnectedState:
-        state = Disconnected;
-        break;
-    case QAbstractSocket::HostLookupState:
-    case QAbstractSocket::ConnectingState:
-    case QAbstractSocket::ConnectedState: // we'll set it to Connected in connectionReady()
-        state = Connecting;
-        break;
-    default:
-        state = Disconnected;
-    }
-
-    setState(state);
-}
-
-
 void CoreConnection::onConnectionReady()
 {
     setState(Connected);
@@ -297,9 +245,9 @@ void CoreConnection::coreSocketError(QAbstractSocket::SocketError error, const Q
 
 void CoreConnection::coreSocketDisconnected()
 {
+    setState(Disconnected);
     _wasReconnect = false;
     resetConnection(_wantReconnect);
-    // FIXME handle disconnects gracefully
 }
 
 
@@ -362,6 +310,7 @@ void CoreConnection::resetConnection(bool wantReconnect)
 
     emit connectionMsg(tr("Disconnected from core."));
     emit encrypted(false);
+    setState(Disconnected);
 
     // initiate if a reconnect if appropriate
     CoreConnectionSettings s;
@@ -442,6 +391,7 @@ void CoreConnection::connectToCurrentAccount()
         _peer = peer;
         Client::instance()->signalProxy()->addPeer(peer); // sigproxy will take ownership
         emit connectToInternalCore(peer);
+        setState(Connected);
 
         return;
     }
@@ -450,7 +400,6 @@ void CoreConnection::connectToCurrentAccount()
 
     connect(_authHandler, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
     connect(_authHandler, SIGNAL(connectionReady()), SLOT(onConnectionReady()));
-    connect(_authHandler, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)), SLOT(socketStateChanged(QAbstractSocket::SocketState)));
     connect(_authHandler, SIGNAL(socketError(QAbstractSocket::SocketError,QString)), SLOT(coreSocketError(QAbstractSocket::SocketError,QString)));
     connect(_authHandler, SIGNAL(transferProgress(int,int)), SLOT(updateProgress(int,int)));
     connect(_authHandler, SIGNAL(requestDisconnect(QString,bool)), SLOT(disconnectFromCore(QString,bool)));
@@ -472,6 +421,7 @@ void CoreConnection::connectToCurrentAccount()
     connect(_authHandler, SIGNAL(loginSuccessful(CoreAccount)), SLOT(onLoginSuccessful(CoreAccount)));
     connect(_authHandler, SIGNAL(handshakeComplete(RemotePeer*,Protocol::SessionState)), SLOT(onHandshakeComplete(RemotePeer*,Protocol::SessionState)));
 
+    setState(Connecting);
     _authHandler->connectToCore();
 }
 
@@ -514,7 +464,7 @@ void CoreConnection::onHandshakeComplete(RemotePeer *peer, const Protocol::Sessi
 
     _peer = peer;
     connect(peer, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
-    connect(peer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)), SLOT(socketStateChanged(QAbstractSocket::SocketState)));
+    connect(peer, SIGNAL(statusMessage(QString)), SIGNAL(connectionMsg(QString)));
     connect(peer, SIGNAL(socketError(QAbstractSocket::SocketError,QString)), SLOT(coreSocketError(QAbstractSocket::SocketError,QString)));
 
     Client::signalProxy()->addPeer(_peer);  // sigproxy takes ownership of the peer!

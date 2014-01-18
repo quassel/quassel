@@ -41,7 +41,6 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *
 {
     socket->setParent(this);
     connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
-    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SIGNAL(socketStateChanged(QAbstractSocket::SocketState)));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
 
 #ifdef HAVE_SSL
@@ -51,6 +50,14 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *
 #endif
 
     connect(_heartBeatTimer, SIGNAL(timeout()), SLOT(sendHeartBeat()));
+}
+
+
+void RemotePeer::onSocketStateChanged(QAbstractSocket::SocketState state)
+{
+    if (state == QAbstractSocket::ClosingState) {
+        emit statusMessage(tr("Disconnecting..."));
+    }
 }
 
 

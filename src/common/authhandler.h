@@ -32,20 +32,8 @@ class AuthHandler : public QObject
     Q_OBJECT
 
 public:
-    enum State {
-        UnconnectedState,
-        HostLookupState,
-        ConnectingState,
-        ConnectedState,
-        RetryWithLegacyState,
-        AuthenticatingState,
-        AuthenticatedState,
-        ClosingState
-    };
-
     AuthHandler(QObject *parent = 0);
 
-    State state() const;
     QTcpSocket *socket() const;
 
     virtual void handle(const Protocol::RegisterClient &) { invalidMessage(); }
@@ -67,24 +55,19 @@ public slots:
     void close();
 
 signals:
-    void stateChanged(State state);
     void disconnected();
-
-    void socketStateChanged(QAbstractSocket::SocketState state);
     void socketError(QAbstractSocket::SocketError error, const QString &errorString);
 
 protected:
     void setSocket(QTcpSocket *socket);
-    void setState(State state);
 
-private slots:
+protected slots:
     void onSocketError(QAbstractSocket::SocketError error);
     void onSocketDisconnected();
 
 private:
     void invalidMessage();
 
-    State _state;
     QTcpSocket *_socket; // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
     bool _disconnectedSent;
 };

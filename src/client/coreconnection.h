@@ -118,7 +118,6 @@ private slots:
     void connectToCurrentAccount();
     void disconnectFromCore(const QString &errorString, bool wantReconnect = true);
 
-    void socketStateChanged(QAbstractSocket::SocketState);
     void coreSocketError(QAbstractSocket::SocketError error, const QString &errorString);
     void coreSocketDisconnected();
 
@@ -142,7 +141,6 @@ private slots:
     void setProgressMinimum(int minimum);
     void setProgressMaximum(int maximum);
 
-    void setState(QAbstractSocket::SocketState socketState);
     void setState(ConnectionState state);
 
     void networkDetectionModeChanged(const QVariant &mode);

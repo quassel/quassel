@@ -80,7 +80,7 @@ private:
 
 private slots:
     void onSocketConnected();
-    //void onSocketStateChanged(QAbstractSocket::SocketState state);
+    void onSocketStateChanged(QAbstractSocket::SocketState state);
     //void onSocketError(QAbstractSocket::SocketError);
 #ifdef HAVE_SSL
     void onSslSocketEncrypted();

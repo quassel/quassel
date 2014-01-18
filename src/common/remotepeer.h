@@ -64,8 +64,8 @@ public slots:
 
 signals:
     void transferProgress(int current, int max);
-    void socketStateChanged(QAbstractSocket::SocketState socketState);
     void socketError(QAbstractSocket::SocketError error, const QString &errorString);
+    void statusMessage(const QString &msg);
 
 protected:
     SignalProxy *signalProxy() const;
@@ -79,6 +79,7 @@ protected:
 private slots:
     void sendHeartBeat();
     void changeHeartBeatInterval(int secs);
+    void onSocketStateChanged(QAbstractSocket::SocketState state);
     void onSocketError(QAbstractSocket::SocketError error);
 
 private:
