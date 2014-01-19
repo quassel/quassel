@@ -21,7 +21,6 @@
 #ifndef QTUIMESSAGEPROCESSOR_H_
 #define QTUIMESSAGEPROCESSOR_H_
 
-#include <QTime>
 #include <QTimer>
 
 #include "abstractmessageprocessor.h"
