@@ -26,8 +26,6 @@
 #include "messagemodel.h"
 #include "network.h"
 
-const int progressUpdateDelay = 100;  // ms between progress signal updates
-
 QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
     : AbstractMessageProcessor(parent),
     _processing(false),
