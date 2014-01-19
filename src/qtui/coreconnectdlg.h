@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #ifndef CORECONNECTDLG_H
-#define CORECONNECTDLG_H_
+#define CORECONNECTDLG_H
 
 #include <QDialog>
 
