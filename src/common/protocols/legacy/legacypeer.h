@@ -84,7 +84,7 @@ private:
     void dispatchPackedFunc(const QVariantList &packedFunc);
 
     QDataStream _stream;
-    qint32 _blockSize;
+    quint32 _blockSize;
     bool _useCompression;
 };
 
