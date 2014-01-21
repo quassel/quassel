@@ -27,13 +27,10 @@
 
 #include "ui_snorentificationconfigwidget.h"
 
-namespace Snore{
-class SnoreCore;
-class Icon;
-}
-class SystrayNotificationBackend;
-
+#include <snore/core/snore.h>
 #include <snore/core/notification/notification.h>
+
+class SystrayNotificationBackend;
 
 class SnoreNotificationBackend : public AbstractNotificationBackend {
     Q_OBJECT
@@ -64,6 +61,8 @@ private:
     Snore::SnoreCore *m_snore;
     QHash<uint, uint> m_notificationIds;
     Snore::Icon m_icon;
+    Snore::Application m_application;
+    Snore::Alert m_alert;
     int m_timeout;
 };
 

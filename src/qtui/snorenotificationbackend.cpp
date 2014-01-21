@@ -45,22 +45,22 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     m_timeout = notificationSettings.value("Snore/Timeout", 10).toInt();
 
     notificationSettings.notify("Snore/Backend", this, SLOT(backendChanged(const QVariant &)));
-    notificationSettings.notify("Snore/Backend", this, SLOT(timeoutChanged(const QVariant &)));
+    notificationSettings.notify("Snore/Timeout", this, SLOT(timeoutChanged(const QVariant &)));
 
     //TODO: try to get an instance of the tray icon to be able to show popups
     m_snore = new Snore::SnoreCore();
-    m_snore->hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
-    m_snore->loadPlugins(Snore::PluginContainer::BACKEND);
-    Snore::Application *a = new Snore::Application("Quassel", Snore::Icon(DesktopIcon("quassel").toImage()));
+    m_snore->loadPlugins(Snore::SnorePlugin::BACKEND);
+    m_application = Snore::Application("Quassel", Snore::Icon(DesktopIcon("quassel").toImage()));
+    m_application.hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
 
     connect(m_snore, SIGNAL(actionInvoked(Snore::Notification)), this, SLOT(actionInvoked(Snore::Notification)));
 
     m_icon = Snore::Icon(DesktopIcon("dialog-information").toImage());
 
-    a->addAlert(new Snore::Alert(tr("Private Message"), tr("Private Message")));
+    m_alert = Snore::Alert(tr("Private Message"), m_icon);
+    m_application.addAlert(m_alert);
 
-    m_snore->addApplication(a);
-    m_snore->applicationIsInitialized (a);
+    m_snore->registerApplication(m_application);
 
     backendChanged(QVariant::fromValue(backend));
 
@@ -69,7 +69,7 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
 
 SnoreNotificationBackend::~SnoreNotificationBackend()
 {
-    m_snore->removeApplication("Quassel");
+    m_snore->deregisterApplication(m_application);
     m_snore->deleteLater();
 }
 
@@ -101,7 +101,7 @@ void SnoreNotificationBackend::notify(const Notification &n)
     }
     QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
     QString message = QString("<%1> %2").arg(n.sender, n.message);
-    Snore::Notification noti("Quassel", tr("Private Message"), title, message, m_icon, m_timeout);
+    Snore::Notification noti(m_application, m_alert, title, message, m_icon, m_timeout);
     noti.hints().setValue("QUASSEL_ID", n.notificationId);
     m_notificationIds.insert(n.notificationId, noti.id());
     m_snore->broadcastNotification(noti);
@@ -113,7 +113,7 @@ void SnoreNotificationBackend::close(uint notificationId)
         return;
     }
     Snore::Notification n = m_snore->getActiveNotificationByID(m_notificationIds.take(notificationId));
-    m_snore->requestCloseNotification(n, Snore::NotificationEnums::CloseReasons::CLOSED);
+    m_snore->requestCloseNotification(n, Snore::Notification::CLOSED);
 }
 
 void SnoreNotificationBackend::actionInvoked(Snore::Notification n)
