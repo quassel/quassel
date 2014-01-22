@@ -126,6 +126,7 @@ QString AboutDlg::contributors() const
                               "<dt><b>Johannes \"j0hu\" Huber</b></dt><dd>Many fixes and features, bug triaging</dd>"
                               "<dt><b>Theofilos Intzoglou</b></dt><dd>Greek translation</dd>"
                               "<dt><b>Jovan Jojkić</b></dt><dd>Serbian translation</dd>"
+                              "<dt><b>Michael \"ycros\" Kedzierski</b></dt><dd>Mac fixes</dd>"
                               "<dt><b>Scott \"ScottK\" Kitterman<b></dt><dd>Kubuntu nightly packager, (packaging/build system) bughunter</dd>"
                               "<dt><b>Paul \"Haudrauf\" Klumpp</b></dt><dd>Initial design and mainwindow layout</dd>"
                               "<dt><b>Maia Kozheva</b></dt><dd>Russian translation</dd>"
