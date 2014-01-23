@@ -42,11 +42,12 @@ public:
     using Peer::dispatch;
 
     RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
-    virtual ~RemotePeer() {};
 
     void setSignalProxy(SignalProxy *proxy);
 
-    QString description() const;
+    virtual Protocol::Type protocol() const = 0;
+    virtual QString description() const;
+    virtual quint16 enabledFeatures() const { return 0; }
 
     bool isOpen() const;
     bool isSecure() const;
