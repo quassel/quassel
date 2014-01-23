@@ -22,6 +22,15 @@
 
 #include "protocols/legacy/legacypeer.h"
 
+
+PeerFactory::ProtoList PeerFactory::supportedProtocols()
+{
+    ProtoList result;
+    result.append(ProtoDescriptor(Protocol::LegacyProtocol, 0));
+    return result;
+}
+
+
 RemotePeer *PeerFactory::createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
 {
     return createPeer(ProtoList() << protocol, authHandler, socket, parent);

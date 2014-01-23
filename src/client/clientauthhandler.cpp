@@ -180,7 +180,14 @@ void ClientAuthHandler::onSocketConnected()
         stream << magic;
 
         // here goes the list of protocols we support, in order of preference
-        stream << ((quint32)Protocol::LegacyProtocol | 0x80000000); // end list
+        PeerFactory::ProtoList protos = PeerFactory::supportedProtocols();
+        for (int i = 0; i < protos.count(); ++i) {
+            quint32 reply = protos[i].first;
+            reply |= protos[i].second<<8;
+            if (i == protos.count() - 1)
+                reply |= 0x80000000; // end list
+            stream << reply;
+        }
 
         socket()->flush(); // make sure the probing data is sent immediately
         return;

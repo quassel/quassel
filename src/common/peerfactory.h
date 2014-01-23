@@ -39,6 +39,8 @@ public:
     typedef QPair<Protocol::Type, quint16> ProtoDescriptor;
     typedef QVector<ProtoDescriptor> ProtoList;
 
+    static ProtoList supportedProtocols();
+
     static RemotePeer *createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
     static RemotePeer *createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
 
