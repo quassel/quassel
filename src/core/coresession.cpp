@@ -44,10 +44,10 @@
 #include "ircuser.h"
 #include "logger.h"
 #include "messageevent.h"
+#include "remotepeer.h"
 #include "storage.h"
 #include "util.h"
 
-#include "protocols/legacy/legacypeer.h"
 
 class ProcessMessagesEvent : public QEvent
 {

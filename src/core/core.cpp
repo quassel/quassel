@@ -32,8 +32,6 @@
 #include "sqlitestorage.h"
 #include "util.h"
 
-#include "protocols/legacy/legacypeer.h"
-
 // migration related
 #include <QFile>
 #ifdef Q_OS_WIN32

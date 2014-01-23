@@ -27,8 +27,6 @@
 #include "core.h"
 #include "logger.h"
 
-#include "protocols/legacy/legacypeer.h"
-
 using namespace Protocol;
 
 CoreAuthHandler::CoreAuthHandler(QTcpSocket *socket, QObject *parent)
@@ -65,7 +63,7 @@ void CoreAuthHandler::onReadyRead()
             // no magic, assume legacy protocol
             qDebug() << "Legacy client detected, switching to compatibility mode";
             _legacy = true;
-            RemotePeer *peer = new LegacyPeer(this, socket(), this);
+            RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), this);
             connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
             setPeer(peer);
             return;

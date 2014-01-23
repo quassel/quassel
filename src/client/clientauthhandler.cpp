@@ -34,8 +34,6 @@
 #include "clientsettings.h"
 #include "peerfactory.h"
 
-#include "protocols/legacy/legacypeer.h"
-
 using namespace Protocol;
 
 ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject *parent)
@@ -197,7 +195,7 @@ void ClientAuthHandler::onSocketConnected()
 
     qDebug() << "Legacy core detected, switching to compatibility mode";
 
-    RemotePeer *peer = new LegacyPeer(this, socket(), this);
+    RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), this);
     // Only needed for the legacy peer, as all others check the protocol version before instantiation
     connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
 
