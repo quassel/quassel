@@ -76,11 +76,14 @@ protected:
     virtual void dispatch(const Protocol::HeartBeat &msg) = 0;
     virtual void dispatch(const Protocol::HeartBeatReply &msg) = 0;
 
+protected slots:
+    virtual void onSocketDataAvailable() = 0;
+    virtual void onSocketStateChanged(QAbstractSocket::SocketState state);
+    virtual void onSocketError(QAbstractSocket::SocketError error);
+
 private slots:
     void sendHeartBeat();
     void changeHeartBeatInterval(int secs);
-    void onSocketStateChanged(QAbstractSocket::SocketState state);
-    void onSocketError(QAbstractSocket::SocketError error);
 
 private:
     QTcpSocket *_socket;

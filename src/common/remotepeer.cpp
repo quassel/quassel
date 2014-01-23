@@ -40,8 +40,10 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *
     _lag(0)
 {
     socket->setParent(this);
-    connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
+    connect(socket, SIGNAL(readyRead()), SLOT(onSocketDataAvailable()));
+    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
+    connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
 
 #ifdef HAVE_SSL
     QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
@@ -50,6 +52,11 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *
 #endif
 
     connect(_heartBeatTimer, SIGNAL(timeout()), SLOT(sendHeartBeat()));
+
+    // It's possible that more data has already arrived during the handshake, so readyRead() wouldn't be triggered.
+    // However, we can't call a virtual function from the ctor, so let's do it asynchronously.
+    if (socket->bytesAvailable())
+        QTimer::singleShot(0, this, SLOT(onSocketDataAvailable()));
 }
 
 

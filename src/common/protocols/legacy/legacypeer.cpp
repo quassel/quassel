@@ -38,8 +38,6 @@ LegacyPeer::LegacyPeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *
 {
     _stream.setDevice(socket);
     _stream.setVersion(QDataStream::Qt_4_2);
-
-    connect(socket, SIGNAL(readyRead()), SLOT(socketDataAvailable()));
 }
 
 
@@ -58,7 +56,7 @@ void LegacyPeer::setSignalProxy(::SignalProxy *proxy)
 }
 
 
-void LegacyPeer::socketDataAvailable()
+void LegacyPeer::onSocketDataAvailable()
 {
     QVariant item;
     while (readSocketData(item)) {

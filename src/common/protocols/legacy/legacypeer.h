@@ -74,8 +74,8 @@ signals:
     // only used in compat mode
     void protocolVersionMismatch(int actual, int expected);
 
-private slots:
-    void socketDataAvailable();
+protected slots:
+    void onSocketDataAvailable();
 
 private:
     bool readSocketData(QVariant &item);
