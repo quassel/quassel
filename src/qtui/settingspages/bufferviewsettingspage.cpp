@@ -39,6 +39,10 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
     _bufferViewHint(0)
 {
     ui.setupUi(this);
+    //Hide the hide inactive networks feature on older cores (which won't save the setting)
+    if (!(Client::coreFeatures() & Quassel::HideInactiveNetworks))
+        ui.hideInactiveNetworks->hide();
+
     ui.renameBufferView->setIcon(SmallIcon("edit-rename"));
     ui.addBufferView->setIcon(SmallIcon("list-add"));
     ui.deleteBufferView->setIcon(SmallIcon("edit-delete"));

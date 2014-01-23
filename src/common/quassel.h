@@ -72,8 +72,9 @@ public:
         SynchronizedMarkerLine = 0x0001,
         SaslAuthentication = 0x0002,
         SaslExternal = 0x0004,
+        HideInactiveNetworks = 0x0008,
 
-        NumFeatures = 0x0004
+        NumFeatures = 0x0008
     };
     Q_DECLARE_FLAGS(Features, Feature);
 
