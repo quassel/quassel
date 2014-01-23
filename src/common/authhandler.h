@@ -62,8 +62,8 @@ protected:
     void setSocket(QTcpSocket *socket);
 
 protected slots:
-    void onSocketError(QAbstractSocket::SocketError error);
-    void onSocketDisconnected();
+    virtual void onSocketError(QAbstractSocket::SocketError error);
+    virtual void onSocketDisconnected();
 
 private:
     void invalidMessage();
