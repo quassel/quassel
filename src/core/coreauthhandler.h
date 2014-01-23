@@ -22,6 +22,7 @@
 #define COREAUTHHANDLER_H
 
 #include "authhandler.h"
+#include "peerfactory.h"
 #include "remotepeer.h"
 #include "types.h"
 
@@ -42,21 +43,29 @@ private:
     void handle(const Protocol::SetupData &msg);
     void handle(const Protocol::Login &msg);
 
+    void setPeer(RemotePeer *peer);
+    void startSsl();
+
     bool checkClientRegistered();
 
 private slots:
-    void startSsl();
+    void onReadyRead();
+
 #ifdef HAVE_SSL
     void onSslErrors();
 #endif
 
-    // only in compat mode
+    // only in legacy mode
     void onProtocolVersionMismatch(int actual, int expected);
 
 private:
     RemotePeer *_peer;
 
+    bool _magicReceived;
+    bool _legacy;
     bool _clientRegistered;
+    quint8 _connectionFeatures;
+    QVector<PeerFactory::ProtoDescriptor> _supportedProtos;
 };
 
 #endif

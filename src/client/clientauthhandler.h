@@ -78,10 +78,17 @@ private:
     void handle(const Protocol::LoginSuccess &msg);
     void handle(const Protocol::SessionState &msg);
 
+    void setPeer(RemotePeer *peer);
+    void checkAndEnableSsl(bool coreSupportsSsl);
+    void startRegistration();
+
 private slots:
     void onSocketConnected();
     void onSocketStateChanged(QAbstractSocket::SocketState state);
-    //void onSocketError(QAbstractSocket::SocketError);
+    void onSocketError(QAbstractSocket::SocketError);
+    void onSocketDisconnected();
+    void onReadyRead();
+
 #ifdef HAVE_SSL
     void onSslSocketEncrypted();
     void onSslErrors();
@@ -96,7 +103,9 @@ private:
     bool _coreConfigured;
     QVariantList _backendInfo;
     CoreAccount _account;
-
+    bool _probing;
+    bool _legacy;
+    quint8 _connectionFeatures;
 };
 
 #endif

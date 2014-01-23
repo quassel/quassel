@@ -32,21 +32,93 @@
 using namespace Protocol;
 
 CoreAuthHandler::CoreAuthHandler(QTcpSocket *socket, QObject *parent)
-    : AuthHandler(parent)
-    , _peer(0)
-    , _clientRegistered(false)
+    : AuthHandler(parent),
+    _peer(0),
+    _magicReceived(false),
+    _legacy(false),
+    _clientRegistered(false),
+    _connectionFeatures(0)
 {
     setSocket(socket);
+    connect(socket, SIGNAL(readyRead()), SLOT(onReadyRead()));
 
-    // TODO: protocol detection
+    // TODO: Timeout for the handshake phase
 
-    // FIXME: make sure _peer gets deleted
-    // TODO: socket ownership goes to the peer! (-> use shared ptr later...)
-    _peer = new LegacyPeer(this, socket, this);
-    // only in compat mode
-    connect(_peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
 }
 
+
+void CoreAuthHandler::onReadyRead()
+{
+    if (socket()->bytesAvailable() < 4)
+        return;
+
+    // once we have selected a peer, we certainly don't want to read more data!
+    if (_peer)
+        return;
+
+    if (!_magicReceived) {
+        quint32 magic;
+        socket()->peek((char*)&magic, 4);
+        magic = qFromBigEndian<quint32>(magic);
+
+        if ((magic & 0xffffff00) != Protocol::magic) {
+            // no magic, assume legacy protocol
+            qDebug() << "Legacy client detected, switching to compatibility mode";
+            _legacy = true;
+            RemotePeer *peer = new LegacyPeer(this, socket(), this);
+            connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+            setPeer(peer);
+            return;
+        }
+
+        _magicReceived = true;
+        quint8 features = magic & 0xff;
+        // figure out which connection features we'll use based on the client's support
+        if (Core::sslSupported() && (features & Protocol::Encryption))
+            _connectionFeatures |= Protocol::Encryption;
+        if (features & Protocol::Compression)
+            _connectionFeatures |= Protocol::Compression;
+
+        socket()->read((char*)&magic, 4); // read the 4 bytes we've just peeked at
+    }
+
+    // read the list of protocols supported by the client
+    while (socket()->bytesAvailable() >= 4) {
+        quint32 data;
+        socket()->read((char*)&data, 4);
+        data = qFromBigEndian<quint32>(data);
+
+        Protocol::Type type = static_cast<Protocol::Type>(data & 0xff);
+        quint16 protoFeatures = static_cast<quint16>(data>>8 & 0xffff);
+        _supportedProtos.append(PeerFactory::ProtoDescriptor(type, protoFeatures));
+
+        if (data >= 0x80000000) { // last protocol
+            RemotePeer *peer = PeerFactory::createPeer(_supportedProtos, this, socket(), this);
+            if (peer->protocol() == Protocol::LegacyProtocol) {
+                _legacy = true;
+                connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+            }
+            setPeer(peer);
+
+            // inform the client
+            quint32 reply = peer->protocol() | peer->enabledFeatures()<<8 | _connectionFeatures<<24;
+            reply = qToBigEndian<quint32>(reply);
+            socket()->write((char*)&reply, 4);
+            socket()->flush();
+
+            if (!_legacy && (_connectionFeatures & Protocol::Encryption))
+                startSsl(); // legacy peer enables it later
+            return;
+        }
+    }
+}
+
+
+void CoreAuthHandler::setPeer(RemotePeer *peer)
+{
+    _peer = peer;
+    disconnect(socket(), SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+}
 
 // only in compat mode
 void CoreAuthHandler::onProtocolVersionMismatch(int actual, int expected)
@@ -60,35 +132,11 @@ void CoreAuthHandler::onProtocolVersionMismatch(int actual, int expected)
 }
 
 
-void CoreAuthHandler::startSsl()
-{
-#ifdef HAVE_SSL
-    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
-    Q_ASSERT(sslSocket);
-
-    qDebug() << qPrintable(tr("Starting encryption for Client:"))  << _peer->description();
-    connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), SLOT(onSslErrors()));
-    sslSocket->flush(); // ensure that the write cache is flushed before we switch to ssl (bug 682)
-    sslSocket->startServerEncryption();
-#endif
-}
-
-
-#ifdef HAVE_SSL
-void CoreAuthHandler::onSslErrors()
-{
-    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
-    Q_ASSERT(sslSocket);
-    sslSocket->ignoreSslErrors();
-}
-#endif
-
-
 bool CoreAuthHandler::checkClientRegistered()
 {
     if (!_clientRegistered) {
-        qWarning() << qPrintable(tr("Client")) << qPrintable(socket()->peerAddress().toString()) << qPrintable(tr("did not send an init message before trying to login, rejecting."));
-        _peer->dispatch(ClientDenied(tr("<b>Client not initialized!</b><br>You need to send an init message before trying to login.")));
+        qWarning() << qPrintable(tr("Client")) << qPrintable(socket()->peerAddress().toString()) << qPrintable(tr("did not send a registration message before trying to login, rejecting."));
+        _peer->dispatch(ClientDenied(tr("<b>Client not initialized!</b><br>You need to send a registration message before trying to login.")));
         _peer->close();
         return false;
     }
@@ -98,25 +146,27 @@ bool CoreAuthHandler::checkClientRegistered()
 
 void CoreAuthHandler::handle(const RegisterClient &msg)
 {
-    // TODO: only in compat mode
-    bool useSsl = false;
-#ifdef HAVE_SSL
-    if (Quassel::isOptionSet("require-ssl") && !msg.sslSupported) {
+    bool useSsl;
+    if (_legacy)
+        useSsl = Core::sslSupported() && msg.sslSupported;
+    else
+        useSsl = _connectionFeatures & Protocol::Encryption;
+
+    if (Quassel::isOptionSet("require-ssl") && !useSsl) {
         _peer->dispatch(ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
         _peer->close();
         return;
     }
-    if (Core::sslSupported() && msg.sslSupported)
-        useSsl = true;
-#endif
+
     QVariantList backends;
     bool configured = Core::isConfigured();
     if (!configured)
         backends = Core::backendInfo();
 
+    // useSsl and startTime are only used for the legacy protocol
     _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, Core::instance()->startTime()));
-    // TODO: only in compat mode
-    if (useSsl)
+
+    if (_legacy && useSsl)
         startSsl();
 
     _clientRegistered = true;
@@ -157,3 +207,30 @@ void CoreAuthHandler::handle(const Login &msg)
     socket()->flush(); // Make sure all data is sent before handing over the peer (and socket) to the session thread (bug 682)
     emit handshakeComplete(_peer, uid);
 }
+
+
+/*** SSL Stuff ***/
+
+void CoreAuthHandler::startSsl()
+{
+    #ifdef HAVE_SSL
+    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
+    Q_ASSERT(sslSocket);
+
+    qDebug() << qPrintable(tr("Starting encryption for Client:"))  << _peer->description();
+    connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), SLOT(onSslErrors()));
+    sslSocket->flush(); // ensure that the write cache is flushed before we switch to ssl (bug 682)
+    sslSocket->startServerEncryption();
+    #endif /* HAVE_SSL */
+}
+
+
+#ifdef HAVE_SSL
+void CoreAuthHandler::onSslErrors()
+{
+    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
+    Q_ASSERT(sslSocket);
+    sslSocket->ignoreSslErrors();
+}
+#endif
+

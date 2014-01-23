@@ -22,6 +22,8 @@
 
 // TODO: support system application proxy (new in Qt 4.6)
 
+#include <QtEndian>
+
 #ifdef HAVE_SSL
     #include <QSslSocket>
 #else
@@ -30,6 +32,7 @@
 
 #include "client.h"
 #include "clientsettings.h"
+#include "peerfactory.h"
 
 #include "protocols/legacy/legacypeer.h"
 
@@ -38,7 +41,10 @@ using namespace Protocol;
 ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject *parent)
     : AuthHandler(parent),
     _peer(0),
-    _account(account)
+    _account(account),
+    _probing(false),
+    _legacy(false),
+    _connectionFeatures(0)
 {
 
 }
@@ -76,9 +82,8 @@ void ClientAuthHandler::connectToCore()
 #endif
 
     setSocket(socket);
-    // handled by the base class for now; may need to rethink for protocol detection
-    //connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    connect(socket, SIGNAL(readyRead()), SLOT(onReadyRead()));
     connect(socket, SIGNAL(connected()), SLOT(onSocketConnected()));
 
     emit statusMessage(tr("Connecting to %1...").arg(_account.accountName()));
@@ -86,29 +91,33 @@ void ClientAuthHandler::connectToCore()
 }
 
 
-// TODO: handle protocol detection
 void ClientAuthHandler::onSocketStateChanged(QAbstractSocket::SocketState socketState)
 {
     QString text;
 
     switch(socketState) {
-        case QAbstractSocket::UnconnectedState:
-            text = tr("Disconnected");
-            // Ensure the disconnected() signal is sent even if we haven't reached the Connected state yet.
-            // The baseclass implementation will make sure to only send the signal once.
-            onSocketDisconnected();
-            break;
         case QAbstractSocket::HostLookupState:
-            text = tr("Looking up %1...").arg(_account.hostName());
+            if (!_legacy)
+                text = tr("Looking up %1...").arg(_account.hostName());
             break;
         case QAbstractSocket::ConnectingState:
-            text = tr("Connecting to %1...").arg(_account.hostName());
+            if (!_legacy)
+                text = tr("Connecting to %1...").arg(_account.hostName());
             break;
         case QAbstractSocket::ConnectedState:
             text = tr("Connected to %1").arg(_account.hostName());
             break;
         case QAbstractSocket::ClosingState:
-            text = tr("Disconnecting from %1...").arg(_account.hostName());
+            if (!_probing)
+                text = tr("Disconnecting from %1...").arg(_account.hostName());
+            break;
+        case QAbstractSocket::UnconnectedState:
+            if (!_probing) {
+                text = tr("Disconnected");
+                // Ensure the disconnected() signal is sent even if we haven't reached the Connected state yet.
+                // The baseclass implementation will make sure to only send the signal once.
+                onSocketDisconnected();
+            }
             break;
         default:
             break;
@@ -119,18 +128,35 @@ void ClientAuthHandler::onSocketStateChanged(QAbstractSocket::SocketState socket
     }
 }
 
-// TODO: handle protocol detection
-/*
 void ClientAuthHandler::onSocketError(QAbstractSocket::SocketError error)
 {
-    emit socketError(error, socket()->errorString());
+    if (_probing && error == QAbstractSocket::RemoteHostClosedError) {
+        _legacy = true;
+        return;
+    }
+
+    _probing = false; // all other errors are unrelated to probing and should be handled
+    AuthHandler::onSocketError(error);
 }
-*/
+
+
+void ClientAuthHandler::onSocketDisconnected()
+{
+    if (_probing && _legacy) {
+        // Remote host has closed the connection while probing
+        _probing = false;
+        disconnect(socket(), SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+        emit statusMessage(tr("Reconnecting in compatibility mode..."));
+        socket()->connectToHost(_account.hostName(), _account.port());
+        return;
+    }
+
+    AuthHandler::onSocketDisconnected();
+}
+
 
 void ClientAuthHandler::onSocketConnected()
 {
-    // TODO: protocol detection
-
     if (_peer) {
         qWarning() << Q_FUNC_INFO << "Peer already exists!";
         return;
@@ -138,21 +164,75 @@ void ClientAuthHandler::onSocketConnected()
 
     socket()->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 
-    _peer = new LegacyPeer(this, socket(), this);
+    if (!_legacy) {
+        // First connection attempt, try probing for a capable core
+        _probing = true;
 
-    connect(_peer, SIGNAL(transferProgress(int,int)), SIGNAL(transferProgress(int,int)));
+        QDataStream stream(socket()); // stream handles the endianness for us
 
-    // compat only
-    connect(_peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
-
-    emit statusMessage(tr("Synchronizing to core..."));
-
-    bool useSsl = false;
+        quint32 magic = Protocol::magic;
 #ifdef HAVE_SSL
-    useSsl = _account.useSsl();
+        if (_account.useSsl())
+            magic |= Protocol::Encryption;
 #endif
+        //magic |= Protocol::Compression; // not implemented yet
 
-    _peer->dispatch(RegisterClient(Quassel::buildInfo().fancyVersionString, useSsl));
+        stream << magic;
+
+        // here goes the list of protocols we support, in order of preference
+        stream << ((quint32)Protocol::LegacyProtocol | 0x80000000); // end list
+
+        socket()->flush(); // make sure the probing data is sent immediately
+        return;
+    }
+
+    // If we arrive here, it's the second connection attempt, meaning probing was not successful -> enable legacy support
+
+    qDebug() << "Legacy core detected, switching to compatibility mode";
+
+    RemotePeer *peer = new LegacyPeer(this, socket(), this);
+    // Only needed for the legacy peer, as all others check the protocol version before instantiation
+    connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+
+    setPeer(peer);
+}
+
+
+void ClientAuthHandler::onReadyRead()
+{
+    if (socket()->bytesAvailable() < 4)
+        return;
+
+    if (!_probing)
+        return; // make sure to not read more data than needed
+
+    _probing = false;
+    disconnect(socket(), SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+
+    quint32 reply;
+    socket()->read((char *)&reply, 4);
+    reply = qFromBigEndian<quint32>(reply);
+
+    Protocol::Type type = static_cast<Protocol::Type>(reply & 0xff);
+    quint16 protoFeatures = static_cast<quint16>(reply>>8 & 0xffff);
+    _connectionFeatures = static_cast<quint8>(reply>>24);
+
+    RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(type, protoFeatures), this, socket(), this);
+    if (!peer) {
+        qWarning() << "No valid protocol supported for this core!";
+        emit errorPopup(tr("<b>Incompatible Quassel Core!</b><br>"
+                           "None of the protocols this client speaks are supported by the core you are trying to connect to."));
+
+        requestDisconnect(tr("Core speaks none of the protocols we support"));
+        return;
+    }
+
+    if (peer->protocol() == Protocol::LegacyProtocol) {
+        connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+        _legacy = true;
+    }
+
+    setPeer(peer);
 }
 
 
@@ -161,6 +241,34 @@ void ClientAuthHandler::onProtocolVersionMismatch(int actual, int expected)
     emit errorPopup(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
            "We need at least protocol v%1, but the core speaks v%2 only.").arg(expected, actual));
     requestDisconnect(tr("Incompatible protocol version, connection to core refused"));
+}
+
+
+void ClientAuthHandler::setPeer(RemotePeer *peer)
+{
+    _peer = peer;
+    connect(_peer, SIGNAL(transferProgress(int,int)), SIGNAL(transferProgress(int,int)));
+
+    // The legacy protocol enables SSL later, after registration
+    if (!_account.useSsl() || _legacy)
+        startRegistration();
+    // otherwise, do it now
+    else
+        checkAndEnableSsl(_connectionFeatures & Protocol::Encryption);
+}
+
+
+void ClientAuthHandler::startRegistration()
+{
+    emit statusMessage(tr("Synchronizing to core..."));
+
+    // useSsl will be ignored by non-legacy peers
+    bool useSsl = false;
+#ifdef HAVE_SSL
+    useSsl = _account.useSsl();
+#endif
+
+    _peer->dispatch(RegisterClient(Quassel::buildInfo().fancyVersionString, useSsl));
 }
 
 
@@ -178,89 +286,12 @@ void ClientAuthHandler::handle(const ClientRegistered &msg)
 
     Client::setCoreFeatures(static_cast<Quassel::Features>(msg.coreFeatures));
 
-#ifdef HAVE_SSL
-    CoreAccountSettings s;
-    if (_account.useSsl()) {
-        if (msg.sslSupported) {
-            // Make sure the warning is shown next time we don't have SSL in the core
-            s.setAccountValue("ShowNoCoreSslWarning", true);
-
-            QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
-            Q_ASSERT(sslSocket);
-            connect(sslSocket, SIGNAL(encrypted()), SLOT(onSslSocketEncrypted()));
-            connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)), SLOT(onSslErrors()));
-            qDebug() << "Starting encryption...";
-            sslSocket->flush();
-            sslSocket->startClientEncryption();
-        }
-        else {
-            if (s.accountValue("ShowNoCoreSslWarning", true).toBool()) {
-                bool accepted = false;
-                emit handleNoSslInCore(&accepted);
-                if (!accepted) {
-                    requestDisconnect(tr("Unencrypted connection cancelled"));
-                    return;
-                }
-                s.setAccountValue("ShowNoCoreSslWarning", false);
-                s.setAccountValue("SslCert", QString());
-            }
-            onConnectionReady();
-        }
-        return;
-    }
-#endif
-    // if we use SSL we wait for the next step until every SSL warning has been cleared
-    onConnectionReady();
+    // The legacy protocol enables SSL at this point
+    if(_legacy && _account.useSsl())
+        checkAndEnableSsl(msg.sslSupported);
+    else
+        onConnectionReady();
 }
-
-
-#ifdef HAVE_SSL
-
-void ClientAuthHandler::onSslSocketEncrypted()
-{
-    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
-    Q_ASSERT(socket);
-
-    if (!socket->sslErrors().count()) {
-        // Cert is valid, so we don't want to store it as known
-        // That way, a warning will appear in case it becomes invalid at some point
-        CoreAccountSettings s;
-        s.setAccountValue("SSLCert", QString());
-    }
-
-    emit encrypted(true);
-    onConnectionReady();
-}
-
-
-void ClientAuthHandler::onSslErrors()
-{
-    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
-    Q_ASSERT(socket);
-
-    CoreAccountSettings s;
-    QByteArray knownDigest = s.accountValue("SslCert").toByteArray();
-
-    if (knownDigest != socket->peerCertificate().digest()) {
-        bool accepted = false;
-        bool permanently = false;
-        emit handleSslErrors(socket, &accepted, &permanently);
-
-        if (!accepted) {
-            requestDisconnect(tr("Unencrypted connection canceled"));
-            return;
-        }
-
-        if (permanently)
-            s.setAccountValue("SslCert", socket->peerCertificate().digest());
-        else
-            s.setAccountValue("SslCert", QString());
-    }
-
-    socket->ignoreSslErrors();
-}
-
-#endif /* HAVE_SSL */
 
 
 void ClientAuthHandler::onConnectionReady()
@@ -344,3 +375,95 @@ void ClientAuthHandler::handle(const SessionState &msg)
     _peer->setParent(0);
     emit handshakeComplete(_peer, msg);
 }
+
+
+/*** SSL Stuff ***/
+
+void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
+{
+#ifndef HAVE_SSL
+    Q_UNUSED(coreSupportsSsl);
+#else
+    CoreAccountSettings s;
+    if (coreSupportsSsl && _account.useSsl()) {
+        // Make sure the warning is shown next time we don't have SSL in the core
+        s.setAccountValue("ShowNoCoreSslWarning", true);
+
+        QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
+        Q_ASSERT(sslSocket);
+        connect(sslSocket, SIGNAL(encrypted()), SLOT(onSslSocketEncrypted()));
+        connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)), SLOT(onSslErrors()));
+        qDebug() << "Starting encryption...";
+        sslSocket->flush();
+        sslSocket->startClientEncryption();
+    }
+    else {
+        if (s.accountValue("ShowNoCoreSslWarning", true).toBool()) {
+            bool accepted = false;
+            emit handleNoSslInCore(&accepted);
+            if (!accepted) {
+                requestDisconnect(tr("Unencrypted connection cancelled"));
+                return;
+            }
+            s.setAccountValue("ShowNoCoreSslWarning", false);
+            s.setAccountValue("SslCert", QString());
+        }
+        if (_legacy)
+            onConnectionReady();
+        else
+            startRegistration();
+    }
+#endif
+}
+
+#ifdef HAVE_SSL
+
+void ClientAuthHandler::onSslSocketEncrypted()
+{
+    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+    Q_ASSERT(socket);
+
+    if (!socket->sslErrors().count()) {
+        // Cert is valid, so we don't want to store it as known
+        // That way, a warning will appear in case it becomes invalid at some point
+        CoreAccountSettings s;
+        s.setAccountValue("SSLCert", QString());
+    }
+
+    emit encrypted(true);
+
+    if (_legacy)
+        onConnectionReady();
+    else
+        startRegistration();
+}
+
+
+void ClientAuthHandler::onSslErrors()
+{
+    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+    Q_ASSERT(socket);
+
+    CoreAccountSettings s;
+    QByteArray knownDigest = s.accountValue("SslCert").toByteArray();
+
+    if (knownDigest != socket->peerCertificate().digest()) {
+        bool accepted = false;
+        bool permanently = false;
+        emit handleSslErrors(socket, &accepted, &permanently);
+
+        if (!accepted) {
+            requestDisconnect(tr("Unencrypted connection canceled"));
+            return;
+        }
+
+        if (permanently)
+            s.setAccountValue("SslCert", socket->peerCertificate().digest());
+        else
+            s.setAccountValue("SslCert", QString());
+    }
+
+    socket->ignoreSslErrors();
+}
+
+#endif /* HAVE_SSL */

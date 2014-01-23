@@ -27,17 +27,26 @@
 
 namespace Protocol {
 
+const quint32 magic = 0x42b33f00;
+
 enum Type {
     LegacyProtocol = 1
 };
+
+
+enum Feature {
+    Encryption = 0x01,
+    Compression = 0x02
+};
+
 
 enum Handler {
     SignalProxy,
     AuthHandler
 };
 
-/*** Handshake, handled by AuthHandler ***/
 
+/*** Handshake, handled by AuthHandler ***/
 
 struct HandshakeMessage {
     inline Handler handler() const { return AuthHandler; }
