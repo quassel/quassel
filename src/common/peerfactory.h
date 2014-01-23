@@ -37,9 +37,11 @@ class PeerFactory
 public:
     // second value is the protocol-specific features
     typedef QPair<Protocol::Type, quint16> ProtoDescriptor;
+    typedef QVector<ProtoDescriptor> ProtoList;
 
     static RemotePeer *createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
-    static RemotePeer *createPeer(const QVector<ProtoDescriptor> &protocols, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
+    static RemotePeer *createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
+
 };
 
 #endif

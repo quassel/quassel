@@ -24,10 +24,11 @@
 
 RemotePeer *PeerFactory::createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
 {
-    return createPeer(QVector<ProtoDescriptor>() << protocol, authHandler, socket, parent);
+    return createPeer(ProtoList() << protocol, authHandler, socket, parent);
 }
 
-RemotePeer *PeerFactory::createPeer(const QVector<PeerFactory::ProtoDescriptor> &protocols, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
+
+RemotePeer *PeerFactory::createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
 {
     foreach(const ProtoDescriptor &protodesc, protocols) {
         Protocol::Type proto = protodesc.first;
