@@ -361,11 +361,8 @@ void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
                 qWarning() << Q_FUNC_INFO << "Received invalid HeartBeat:" << params;
                 return;
             }
-            // The legacy protocol would only send a QTime, no QDateTime
-            // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
-            QDateTime dateTime = QDateTime::currentDateTime().toUTC();
-            dateTime.setTime(params[0].toTime());
-            handle(Protocol::HeartBeat(dateTime));
+            // Note: QDateTime instead of QTime as in the legacy protocol!
+            handle(Protocol::HeartBeat(params[0].toDateTime()));
             break;
         }
         case HeartBeatReply: {
@@ -373,11 +370,8 @@ void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
                 qWarning() << Q_FUNC_INFO << "Received invalid HeartBeat:" << params;
                 return;
             }
-            // The legacy protocol would only send a QTime, no QDateTime
-            // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
-            QDateTime dateTime = QDateTime::currentDateTime().toUTC();
-            dateTime.setTime(params[0].toTime());
-            handle(Protocol::HeartBeatReply(dateTime));
+            // Note: QDateTime instead of QTime as in the legacy protocol!
+            handle(Protocol::HeartBeatReply(params[0].toDateTime()));
             break;
         }
 
@@ -411,13 +405,13 @@ void DataStreamPeer::dispatch(const Protocol::InitData &msg)
 
 void DataStreamPeer::dispatch(const Protocol::HeartBeat &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)HeartBeat << msg.timestamp.time());
+    dispatchPackedFunc(QVariantList() << (qint16)HeartBeat << msg.timestamp);
 }
 
 
 void DataStreamPeer::dispatch(const Protocol::HeartBeatReply &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)HeartBeatReply << msg.timestamp.time());
+    dispatchPackedFunc(QVariantList() << (qint16)HeartBeatReply << msg.timestamp);
 }
 
 
