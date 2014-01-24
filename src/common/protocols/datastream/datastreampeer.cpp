@@ -321,7 +321,7 @@ void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
                 return;
             }
             QByteArray className = params.takeFirst().toByteArray();
-            QString objectName = params.takeFirst().toString();
+            QString objectName = QString::fromUtf8(params.takeFirst().toByteArray());
             QByteArray slotName = params.takeFirst().toByteArray();
             handle(Protocol::SyncMessage(className, objectName, slotName, params));
             break;
@@ -341,7 +341,7 @@ void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
                 return;
             }
             QByteArray className = params[0].toByteArray();
-            QString objectName = params[1].toString();
+            QString objectName = QString::fromUtf8(params[1].toByteArray());
             handle(Protocol::InitRequest(className, objectName));
             break;
         }
@@ -351,7 +351,7 @@ void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
                 return;
             }
             QByteArray className = params[0].toByteArray();
-            QString objectName = params[1].toString();
+            QString objectName = QString::fromUtf8(params[1].toByteArray());
             QVariantMap initData = params[2].toMap();
             handle(Protocol::InitData(className, objectName, initData));
             break;
@@ -387,7 +387,7 @@ void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
 
 void DataStreamPeer::dispatch(const Protocol::SyncMessage &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)Sync << msg.className << msg.objectName << msg.slotName << msg.params);
+    dispatchPackedFunc(QVariantList() << (qint16)Sync << msg.className << msg.objectName.toUtf8() << msg.slotName << msg.params);
 }
 
 
@@ -399,13 +399,13 @@ void DataStreamPeer::dispatch(const Protocol::RpcCall &msg)
 
 void DataStreamPeer::dispatch(const Protocol::InitRequest &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)InitRequest << msg.className << msg.objectName);
+    dispatchPackedFunc(QVariantList() << (qint16)InitRequest << msg.className << msg.objectName.toUtf8());
 }
 
 
 void DataStreamPeer::dispatch(const Protocol::InitData &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName << msg.initData);
+    dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName.toUtf8() << msg.initData);
 }
 
 
