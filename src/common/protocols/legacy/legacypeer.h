@@ -66,9 +66,6 @@ public:
     void dispatch(const Protocol::HeartBeat &msg);
     void dispatch(const Protocol::HeartBeatReply &msg);
 
-    // FIXME: this is only used for the auth phase and should be replaced by something more generic
-    void writeSocketData(const QVariant &item);
-
 signals:
     void protocolError(const QString &errorString);
 
@@ -80,6 +77,7 @@ protected slots:
 
 private:
     bool readSocketData(QVariant &item);
+    void writeSocketData(const QVariant &item);
     void handleHandshakeMessage(const QVariant &msg);
     void handlePackedFunc(const QVariant &packedFunc);
     void dispatchPackedFunc(const QVariantList &packedFunc);
