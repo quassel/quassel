@@ -40,6 +40,7 @@ set(SOURCES
     transfermanager.cpp
     util.cpp
 
+    protocols/datastream/datastreampeer.cpp
     protocols/legacy/legacypeer.cpp
 )
 
@@ -70,6 +71,7 @@ set(MOC_HDRS
     transfer.h
     transfermanager.h
 
+    protocols/datastream/datastreampeer.h
     protocols/legacy/legacypeer.h
 )
 

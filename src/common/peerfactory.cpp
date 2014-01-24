@@ -20,12 +20,14 @@
 
 #include "peerfactory.h"
 
+#include "protocols/datastream/datastreampeer.h"
 #include "protocols/legacy/legacypeer.h"
 
 
 PeerFactory::ProtoList PeerFactory::supportedProtocols()
 {
     ProtoList result;
+    result.append(ProtoDescriptor(Protocol::DataStreamProtocol, DataStreamPeer::supportedFeatures()));
     result.append(ProtoDescriptor(Protocol::LegacyProtocol, 0));
     return result;
 }
@@ -45,6 +47,10 @@ RemotePeer *PeerFactory::createPeer(const ProtoList &protocols, AuthHandler *aut
         switch(proto) {
             case Protocol::LegacyProtocol:
                 return new LegacyPeer(authHandler, socket, parent);
+            case Protocol::DataStreamProtocol:
+                if (DataStreamPeer::acceptsFeatures(features))
+                    return new DataStreamPeer(authHandler, socket, features, parent);
+                break;
             default:
                 break;
         }
