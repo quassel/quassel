@@ -49,8 +49,6 @@ public:
     static bool acceptsFeatures(quint16 peerFeatures);
     quint16 enabledFeatures() const;
 
-    void setSignalProxy(SignalProxy *proxy);
-
     void dispatch(const Protocol::RegisterClient &msg);
     void dispatch(const Protocol::ClientDenied &msg);
     void dispatch(const Protocol::ClientRegistered &msg);
@@ -85,7 +83,6 @@ private:
 
     QDataStream _stream;
     quint32 _blockSize;
-    bool _useCompression;
 };
 
 #endif

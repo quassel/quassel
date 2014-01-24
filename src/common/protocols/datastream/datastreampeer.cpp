@@ -28,28 +28,12 @@ using namespace Protocol;
 
 DataStreamPeer::DataStreamPeer(::AuthHandler *authHandler, QTcpSocket *socket, quint16 features, QObject *parent)
     : RemotePeer(authHandler, socket, parent),
-    _blockSize(0),
-    _useCompression(false)
+    _blockSize(0)
 {
     Q_UNUSED(features);
 
     _stream.setDevice(socket);
     _stream.setVersion(QDataStream::Qt_4_2);
-}
-
-
-void DataStreamPeer::setSignalProxy(::SignalProxy *proxy)
-{
-    RemotePeer::setSignalProxy(proxy);
-
-    // FIXME only in compat mode
-    if (proxy) {
-        // enable compression now if requested - the initial handshake is uncompressed in the legacy protocol!
-        _useCompression = socket()->property("UseCompression").toBool();
-        if (_useCompression)
-            qDebug() << "Using compression for peer:" << qPrintable(socket()->peerAddress().toString());
-    }
-
 }
 
 
@@ -110,30 +94,8 @@ bool DataStreamPeer::readSocketData(QVariant &item)
 
     emit transferProgress(_blockSize, _blockSize);
 
+    _stream >> item;
     _blockSize = 0;
-
-    if (_useCompression) {
-        QByteArray rawItem;
-        _stream >> rawItem;
-
-        int nbytes = rawItem.size();
-        if (nbytes <= 4) {
-            const char *data = rawItem.constData();
-            if (nbytes < 4 || (data[0] != 0 || data[1] != 0 || data[2] != 0 || data[3] != 0)) {
-                close("Peer sent corrupted compressed data!");
-                return false;
-            }
-        }
-
-        rawItem = qUncompress(rawItem);
-
-        QDataStream itemStream(&rawItem, QIODevice::ReadOnly);
-        itemStream.setVersion(QDataStream::Qt_4_2);
-        itemStream >> item;
-    }
-    else {
-        _stream >> item;
-    }
 
     if (!item.isValid()) {
         close("Peer sent corrupt data: unable to load QVariant!");
@@ -155,19 +117,7 @@ void DataStreamPeer::writeSocketData(const QVariant &item)
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_2);
 
-    if (_useCompression) {
-        QByteArray rawItem;
-        QDataStream itemStream(&rawItem, QIODevice::WriteOnly);
-        itemStream.setVersion(QDataStream::Qt_4_2);
-        itemStream << item;
-
-        rawItem = qCompress(rawItem);
-
-        out << rawItem;
-    }
-    else {
-        out << item;
-    }
+    out << item;
 
     _stream << block;  // also writes the length as part of the serialization format
 }
@@ -191,12 +141,6 @@ void DataStreamPeer::handleHandshakeMessage(const QVariant &msg)
     }
 
     if (msgType == "ClientInit") {
-#ifndef QT_NO_COMPRESS
-        // FIXME only in compat mode
-        if (m["UseCompression"].toBool()) {
-            socket()->setProperty("UseCompression", true);
-        }
-#endif
         handle(RegisterClient(m["ClientVersion"].toString(), false)); // UseSsl obsolete
     }
 
@@ -205,10 +149,6 @@ void DataStreamPeer::handleHandshakeMessage(const QVariant &msg)
     }
 
     else if (msgType == "ClientInitAck") {
-#ifndef QT_NO_COMPRESS
-        if (m["SupportsCompression"].toBool())
-            socket()->setProperty("UseCompression", true);
-#endif
         handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), false, QDateTime())); // SupportsSsl and coreStartTime obsolete
     }
 
