@@ -24,11 +24,6 @@
 #include "datastreampeer.h"
 #include "quassel.h"
 
-/* version.inc is no longer used for this */
-const uint protocolVersion = 10;
-const uint coreNeedsProtocol = protocolVersion;
-const uint clientNeedsProtocol = protocolVersion;
-
 using namespace Protocol;
 
 DataStreamPeer::DataStreamPeer(::AuthHandler *authHandler, QTcpSocket *socket, quint16 features, QObject *parent)
@@ -196,20 +191,13 @@ void DataStreamPeer::handleHandshakeMessage(const QVariant &msg)
     }
 
     if (msgType == "ClientInit") {
-        // FIXME only in compat mode
-        uint ver = m["ProtocolVersion"].toUInt();
-        if (ver < coreNeedsProtocol) {
-            emit protocolVersionMismatch((int)ver, (int)coreNeedsProtocol);
-            return;
-        }
-
 #ifndef QT_NO_COMPRESS
         // FIXME only in compat mode
         if (m["UseCompression"].toBool()) {
             socket()->setProperty("UseCompression", true);
         }
 #endif
-        handle(RegisterClient(m["ClientVersion"].toString(), m["UseSsl"].toBool()));
+        handle(RegisterClient(m["ClientVersion"].toString(), false)); // UseSsl obsolete
     }
 
     else if (msgType == "ClientInitReject") {
@@ -217,18 +205,11 @@ void DataStreamPeer::handleHandshakeMessage(const QVariant &msg)
     }
 
     else if (msgType == "ClientInitAck") {
-        // FIXME only in compat mode
-        uint ver = m["ProtocolVersion"].toUInt(); // actually an UInt
-        if (ver < clientNeedsProtocol) {
-            emit protocolVersionMismatch((int)ver, (int)clientNeedsProtocol);
-            return;
-        }
 #ifndef QT_NO_COMPRESS
         if (m["SupportsCompression"].toBool())
             socket()->setProperty("UseCompression", true);
 #endif
-
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool(), QDateTime()));
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), false, QDateTime())); // SupportsSsl and coreStartTime obsolete
     }
 
     else if (msgType == "CoreSetupData") {
@@ -273,15 +254,6 @@ void DataStreamPeer::dispatch(const RegisterClient &msg) {
     m["ClientVersion"] = msg.clientVersion;
     m["ClientDate"] = Quassel::buildInfo().buildDate;
 
-    // FIXME only in compat mode
-    m["ProtocolVersion"] = protocolVersion;
-    m["UseSsl"] = msg.sslSupported;
-#ifndef QT_NO_COMPRESS
-    m["UseCompression"] = true;
-#else
-    m["UseCompression"] = false;
-#endif
-
     writeSocketData(m);
 }
 
@@ -300,23 +272,6 @@ void DataStreamPeer::dispatch(const ClientRegistered &msg) {
     m["MsgType"] = "ClientInitAck";
     m["CoreFeatures"] = msg.coreFeatures;
     m["StorageBackends"] = msg.backendInfo;
-
-    // FIXME only in compat mode
-    m["ProtocolVersion"] = protocolVersion;
-    m["SupportSsl"] = msg.sslSupported;
-    m["SupportsCompression"] = socket()->property("UseCompression").toBool(); // this property gets already set in the ClientInit handler
-
-    // This is only used for old v10 clients (pre-0.5)
-    int uptime = msg.coreStartTime.secsTo(QDateTime::currentDateTime().toUTC());
-    int updays = uptime / 86400; uptime %= 86400;
-    int uphours = uptime / 3600; uptime %= 3600;
-    int upmins = uptime / 60;
-    m["CoreInfo"] = tr("<b>Quassel Core Version %1</b><br>"
-                       "Built: %2<br>"
-                       "Up %3d%4h%5m (since %6)").arg(Quassel::buildInfo().fancyVersionString)
-                       .arg(Quassel::buildInfo().buildDate)
-                       .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(msg.coreStartTime.toString(Qt::TextDate));
-
     m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
 
     writeSocketData(m);
