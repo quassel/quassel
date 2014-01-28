@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QtEndian>
+
 #include <QHostAddress>
 #include <QTcpSocket>
 
@@ -56,25 +58,43 @@ quint16 DataStreamPeer::enabledFeatures() const
 }
 
 
+// Note that we're already preparing for readSocketData() moving into RemotePeer, thus the slightly
+// cumbersome type and stream handling here.
 void DataStreamPeer::onSocketDataAvailable()
 {
-    QVariant item;
-    while (readSocketData(item)) {
-        // if no sigproxy is set, we're in handshake mode and let the data be handled elsewhere
+    // don't try to read more data if we're already closing
+    if (socket()->state() !=  QAbstractSocket::ConnectedState)
+        return;
+
+    QByteArray data;
+    while (readSocketData(data)) {
+        // data contains always a serialized QVector<QVariant>
+        QDataStream stream(data);
+        stream.setVersion(QDataStream::Qt_4_2);
+        QVariantList list;
+        stream >> list;
+        if (stream.status() != QDataStream::Ok) {
+            close("Peer sent corrupt data, closing down!");
+            return;
+        }
+
+        // if no sigproxy is set, we're in handshake mode
         if (!signalProxy())
-            handleHandshakeMessage(item);
+            handleHandshakeMessage(list);
         else
-            handlePackedFunc(item);
+            handlePackedFunc(list);
     }
 }
 
 
-bool DataStreamPeer::readSocketData(QVariant &item)
+bool DataStreamPeer::readSocketData(QByteArray &data)
 {
     if (_blockSize == 0) {
         if (socket()->bytesAvailable() < 4)
             return false;
-        _stream >> _blockSize;
+        // the block size is part of QByteArray's serialization format, so we don't actually read it now...
+        socket()->peek((char*)&_blockSize, 4);
+        _blockSize = qFromBigEndian<quint32>(_blockSize) + 4; // ... but of course we have to add its size to the total size of the block
     }
 
     if (_blockSize > 1 << 22) {
@@ -94,11 +114,11 @@ bool DataStreamPeer::readSocketData(QVariant &item)
 
     emit transferProgress(_blockSize, _blockSize);
 
-    _stream >> item;
+    _stream >> data;
     _blockSize = 0;
 
-    if (!item.isValid()) {
-        close("Peer sent corrupt data: unable to load QVariant!");
+    if (_stream.status() != QDataStream::Ok) {
+        close("Peer sent corrupt data, closing down!");
         return false;
     }
 
@@ -106,21 +126,36 @@ bool DataStreamPeer::readSocketData(QVariant &item)
 }
 
 
-void DataStreamPeer::writeSocketData(const QVariant &item)
+void DataStreamPeer::writeSocketData(const QVariantList &list)
 {
     if (!socket()->isOpen()) {
         qWarning() << Q_FUNC_INFO << "Can't write to a closed socket!";
         return;
     }
 
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_2);
+    QByteArray data;
+    QDataStream msgStream(&data, QIODevice::WriteOnly);
+    msgStream.setVersion(QDataStream::Qt_4_2);
+    msgStream << list;
 
-    out << item;
-
-    _stream << block;  // also writes the length as part of the serialization format
+    _stream << data;  // also writes the block size as part of the serialization format
+    if (_stream.status() != QDataStream::Ok)
+        close("Could not serialize data for peer!");
 }
+
+
+void DataStreamPeer::writeSocketData(const QVariantMap &handshakeMsg)
+{
+    QVariantList list;
+    QVariantMap::const_iterator it = handshakeMsg.begin();
+    while (it != handshakeMsg.end()) {
+        list << it.key().toUtf8() << it.value();
+        ++it;
+    }
+
+    writeSocketData(list);
+}
+
 
 
 /*** Handshake messages ***/
@@ -130,9 +165,11 @@ void DataStreamPeer::writeSocketData(const QVariant &item)
  * Also, the legacy handshake does not fully match the redesigned one, so we'll have to do various mappings here.
  */
 
-void DataStreamPeer::handleHandshakeMessage(const QVariant &msg)
+void DataStreamPeer::handleHandshakeMessage(const QVariantList &mapData)
 {
-    QVariantMap m = msg.toMap();
+    QVariantMap m;
+    for (int i = 0; i < mapData.count()/2; ++i)
+        m[QString::fromUtf8(mapData[2*i].toByteArray())] = mapData[2*i+1];
 
     QString msgType = m["MsgType"].toString();
     if (msgType.isEmpty()) {
@@ -303,9 +340,9 @@ void DataStreamPeer::dispatch(const SessionState &msg)
 
 /*** Standard messages ***/
 
-void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
+void DataStreamPeer::handlePackedFunc(const QVariantList &packedFunc)
 {
-    QVariantList params(packedFunc.toList());
+    QVariantList params(packedFunc);
 
     if (params.isEmpty()) {
         qWarning() << Q_FUNC_INFO << "Received incompatible data:" << packedFunc;
@@ -313,7 +350,7 @@ void DataStreamPeer::handlePackedFunc(const QVariant &packedFunc)
     }
 
     // TODO: make sure that this is a valid request type
-    RequestType requestType = (RequestType)params.takeFirst().value<int>();
+    RequestType requestType = (RequestType)params.takeFirst().value<qint16>();
     switch (requestType) {
         case Sync: {
             if (params.count() < 3) {
@@ -417,5 +454,5 @@ void DataStreamPeer::dispatch(const Protocol::HeartBeatReply &msg)
 
 void DataStreamPeer::dispatchPackedFunc(const QVariantList &packedFunc)
 {
-    writeSocketData(QVariant(packedFunc));
+    writeSocketData(packedFunc);
 }

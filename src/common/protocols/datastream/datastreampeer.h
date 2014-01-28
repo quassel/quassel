@@ -75,10 +75,12 @@ protected slots:
     void onSocketDataAvailable();
 
 private:
-    bool readSocketData(QVariant &item);
-    void writeSocketData(const QVariant &item);
-    void handleHandshakeMessage(const QVariant &msg);
-    void handlePackedFunc(const QVariant &packedFunc);
+    bool readSocketData(QByteArray &data);
+    void writeSocketData(const QVariantList &list);
+    void writeSocketData(const QVariantMap &handshakeMsg);
+
+    void handleHandshakeMessage(const QVariantList &mapData);
+    void handlePackedFunc(const QVariantList &packedFunc);
     void dispatchPackedFunc(const QVariantList &packedFunc);
 
     QDataStream _stream;
