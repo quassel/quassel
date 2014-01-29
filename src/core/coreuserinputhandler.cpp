@@ -169,8 +169,11 @@ void CoreUserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QStrin
     QString verboseMessage = tr("sending CTCP-%1 request to %2").arg(ctcpTag).arg(nick);
 
     if (ctcpTag == "PING") {
-        uint now = QDateTime::currentDateTime().toTime_t();
-        message = QString::number(now);
+#if QT_VERSION >= 0x040700
+        message = QString::number(QDateTime::currentMSecsSinceEpoch());
+#else
+        message = QString::number(QDateTime::currentDateTime().toTime_t());
+#endif
     }
 
     // FIXME make this a proper event
