@@ -383,13 +383,15 @@ void DataStreamPeer::handlePackedFunc(const QVariantList &packedFunc)
             break;
         }
         case InitData: {
-            if (params.count() != 3) {
+            if (params.count() < 2) {
                 qWarning() << Q_FUNC_INFO << "Received invalid InitData:" << params;
                 return;
             }
-            QByteArray className = params[0].toByteArray();
-            QString objectName = QString::fromUtf8(params[1].toByteArray());
-            QVariantMap initData = params[2].toMap();
+            QByteArray className = params.takeFirst().toByteArray();
+            QString objectName = QString::fromUtf8(params.takeFirst().toByteArray());
+            QVariantMap initData;
+            for (int i = 0; i < params.count()/2; ++i)
+                initData[QString::fromUtf8(params[2*i].toByteArray())] = params[2*i+1];
             handle(Protocol::InitData(className, objectName, initData));
             break;
         }
@@ -436,7 +438,13 @@ void DataStreamPeer::dispatch(const Protocol::InitRequest &msg)
 
 void DataStreamPeer::dispatch(const Protocol::InitData &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName.toUtf8() << msg.initData);
+    QVariantList initData;
+    QVariantMap::const_iterator it = msg.initData.begin();
+    while (it != msg.initData.end()) {
+        initData << it.key().toUtf8() << it.value();
+        ++it;
+    }
+    dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName.toUtf8() << initData);
 }
 
 
