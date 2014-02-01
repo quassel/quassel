@@ -44,6 +44,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     registerAction(BufferRemove, tr("Delete Chat(s)..."));
     registerAction(BufferSwitchTo, tr("Go to Chat"));
 
+    registerAction(HideJoinPartQuit, tr("Joins/Parts/Quits"));
     registerAction(HideJoin, tr("Joins"), true);
     registerAction(HidePart, tr("Parts"), true);
     registerAction(HideQuit, tr("Quits"), true);
@@ -92,6 +93,8 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     registerAction(ShowIgnoreList, tr("Show Ignore List"));
 
     QMenu *hideEventsMenu = new QMenu();
+    hideEventsMenu->addAction(action(HideJoinPartQuit));
+    hideEventsMenu->addSeparator();
     hideEventsMenu->addAction(action(HideJoin));
     hideEventsMenu->addAction(action(HidePart));
     hideEventsMenu->addAction(action(HideQuit));
