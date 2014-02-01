@@ -307,6 +307,19 @@ void NetworkModelController::handleHideAction(ActionType type, QAction *action)
 {
     Q_UNUSED(action)
 
+    if (type == HideJoinPartQuit) {
+        bool anyChecked = NetworkModelController::action(HideJoin)->isChecked();
+        anyChecked |= NetworkModelController::action(HidePart)->isChecked();
+        anyChecked |= NetworkModelController::action(HideQuit)->isChecked();
+
+        // If any are checked, uncheck them all.
+        // If none are checked, check them all.
+        bool newCheckedState = !anyChecked;
+        NetworkModelController::action(HideJoin)->setChecked(newCheckedState);
+        NetworkModelController::action(HidePart)->setChecked(newCheckedState);
+        NetworkModelController::action(HideQuit)->setChecked(newCheckedState);
+    }
+
     int filter = 0;
     if (NetworkModelController::action(HideJoin)->isChecked())
         filter |= Message::Join | Message::NetsplitJoin;
@@ -324,6 +337,7 @@ void NetworkModelController::handleHideAction(ActionType type, QAction *action)
         filter |= Message::Topic;
 
     switch (type) {
+    case HideJoinPartQuit:
     case HideJoin:
     case HidePart:
     case HideQuit:

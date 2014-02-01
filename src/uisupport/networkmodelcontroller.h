@@ -64,6 +64,7 @@ public:
         HideMode = 0x0500,
         HideDayChange = 0x0600,
         HideTopic = 0x0700,
+        HideJoinPartQuit = 0xd00,
         HideUseDefaults = 0xe00,
         HideApplyToAll = 0xf00,
 
