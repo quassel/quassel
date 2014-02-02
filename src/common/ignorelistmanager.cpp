@@ -23,7 +23,6 @@
 #include <QtCore>
 #include <QDebug>
 #include <QStringList>
-#include <QRegExp>
 
 INIT_SYNCABLE_OBJECT(IgnoreListManager)
 IgnoreListManager &IgnoreListManager::operator=(const IgnoreListManager &other)
@@ -145,19 +144,13 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
             else
                 str = msgSender;
 
-            QRegExp ruleRx = QRegExp(item.ignoreRule);
-            ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
-            if (!item.isRegEx) {
-                ruleRx.setPatternSyntax(QRegExp::Wildcard);
-            }
-
 //      qDebug() << "IgnoreListManager::match: ";
 //      qDebug() << "string: " << str;
 //      qDebug() << "pattern: " << ruleRx.pattern();
 //      qDebug() << "scopeRule: " << item.scopeRule;
 //      qDebug() << "now testing";
-            if ((!item.isRegEx && ruleRx.exactMatch(str)) ||
-                (item.isRegEx && ruleRx.indexIn(str) != -1)) {
+            if ((!item.isRegEx && item.regEx.exactMatch(str)) ||
+                (item.isRegEx && item.regEx.indexIn(str) != -1)) {
 //        qDebug() << "MATCHED!";
                 return item.strictness;
             }
