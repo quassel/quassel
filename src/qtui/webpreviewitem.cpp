@@ -24,8 +24,8 @@
 
 #include <QGraphicsProxyWidget>
 #include <QPainter>
-#include <QWebView>
-#include <QWebSettings>
+#include <QtWebKitWidgets/QWebView>
+#include <QtWebKit/QWebSettings>
 
 WebPreviewItem::WebPreviewItem(const QUrl &url)
     : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
@@ -44,7 +44,7 @@ WebPreviewItem::WebPreviewItem(const QUrl &url)
 
     qreal xScale = (_boundingRect.width() - 2 * frameWidth) / webView->width();
     qreal yScale = (_boundingRect.height() - 2 * frameWidth) / webView->height();
-    proxyItem->scale(xScale, yScale);
+    proxyItem->setTransform(QTransform::fromScale(xScale, yScale), true);
     proxyItem->setPos(frameWidth, frameWidth);
 
     setZValue(30);
