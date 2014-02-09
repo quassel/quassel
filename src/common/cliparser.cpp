@@ -126,8 +126,8 @@ bool CliParser::init(const QStringList &args)
             // if next arg is a short/long option/switch the current arg is one too
             if (nextArg == argsRaw.constEnd() || nextArg->startsWith("-")) {
                 // switch
-                for (int i = 0; i < currentArg->mid(1).toAscii().size(); i++) {
-                    name = currentArg->mid(1).toAscii().at(i);
+                for (int i = 0; i < currentArg->mid(1).toLatin1().size(); i++) {
+                    name = currentArg->mid(1).toLatin1().at(i);
                     if (!addShortArg(CliParserArg::CliArgSwitch, name)) return false;
                 }
             }
@@ -135,7 +135,7 @@ bool CliParser::init(const QStringList &args)
             else {
                 // option
                 // short options are not freely mixable with other shortargs
-                if (currentArg->mid(1).toAscii().size() > 1) {
+                if (currentArg->mid(1).toLatin1().size() > 1) {
                     qWarning() << "Warning: Shortoptions may not be combined with other shortoptions or switches";
                     return false;
                 }
@@ -146,7 +146,7 @@ bool CliParser::init(const QStringList &args)
                     skipNext = true;
                 }
                 else value = currentArg->toLocal8Bit();
-                name = currentArg->mid(1).toAscii().at(0);
+                name = currentArg->mid(1).toLatin1().at(0);
                 // we took one argument as argument to an option so skip it next time
                 if (skipNext) currentArg++;
                 if (!addShortArg(CliParserArg::CliArgOption, name, value)) return false;

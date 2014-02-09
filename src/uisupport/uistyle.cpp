@@ -862,7 +862,7 @@ quint8 UiStyle::StyledMessage::senderHash() const
         if (chopCount < nick.size())
             nick.chop(chopCount);
     }
-    quint16 hash = qChecksum(nick.toAscii().data(), nick.toAscii().size());
+    quint16 hash = qChecksum(nick.toLatin1().data(), nick.toLatin1().size());
     return (_senderHash = (hash & 0xf) + 1);
 }
 

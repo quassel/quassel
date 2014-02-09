@@ -61,7 +61,7 @@ void CoreIrcChannel::setEncrypted(bool e)
         if (topic().isEmpty())
             return;
 
-        QByteArray decrypted = cipher()->decryptTopic(topic().toAscii());
+        QByteArray decrypted = cipher()->decryptTopic(topic().toLatin1());
         setTopic(decodeString(decrypted));
     }
 }

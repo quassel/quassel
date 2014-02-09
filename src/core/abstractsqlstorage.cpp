@@ -409,7 +409,7 @@ void AbstractSqlMigrator::dumpStatus()
     qWarning() << "  bound Values:";
     QList<QVariant> list = boundValues();
     for (int i = 0; i < list.size(); ++i)
-        qWarning() << i << ": " << list.at(i).toString().toAscii().data();
+        qWarning() << i << ": " << list.at(i).toString().toLatin1().data();
     qWarning() << "  Error Number:"   << lastError().number();
     qWarning() << "  Error Message:"   << lastError().text();
 }

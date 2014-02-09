@@ -127,7 +127,7 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
         construct.append(net->saslAccount());
         construct.append(QChar(QChar::Null));
         construct.append(net->saslPassword());
-        QByteArray saslData = QByteArray(construct.toAscii().toBase64());
+        QByteArray saslData = QByteArray(construct.toLatin1().toBase64());
         saslData.prepend("AUTHENTICATE ");
         net->putRawLine(saslData);
 #ifdef HAVE_SSL

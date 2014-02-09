@@ -124,7 +124,7 @@ QVariantMap SyncableObject::toVariantMap()
 
         QVariant value(variantType, (const void *)0);
         QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
-        QMetaObject::invokeMethod(this, methodname.toAscii(), genericvalue);
+        QMetaObject::invokeMethod(this, methodname.toLatin1(), genericvalue);
 
         properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
     }
@@ -145,12 +145,12 @@ void SyncableObject::fromVariantMap(const QVariantMap &properties)
             continue;
         }
 
-        int propertyIndex = meta->indexOfProperty(propName.toAscii());
+        int propertyIndex = meta->indexOfProperty(propName.toLatin1());
 
         if (propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
             setInitValue(propName, iterator.value());
         else
-            setProperty(propName.toAscii(), iterator.value());
+            setProperty(propName.toLatin1(), iterator.value());
         // qDebug() << "<<< SYNC:" << name << iterator.value();
         iterator++;
     }
@@ -163,9 +163,9 @@ bool SyncableObject::setInitValue(const QString &property, const QVariant &value
     handlername[7] = handlername[7].toUpper();
 
     QString methodSignature = QString("%1(%2)").arg(handlername).arg(value.typeName());
-    int methodIdx = metaObject()->indexOfMethod(methodSignature.toAscii().constData());
+    int methodIdx = metaObject()->indexOfMethod(methodSignature.toLatin1().constData());
     if (methodIdx <  0) {
-        QByteArray normedMethodName = QMetaObject::normalizedSignature(methodSignature.toAscii().constData());
+        QByteArray normedMethodName = QMetaObject::normalizedSignature(methodSignature.toLatin1().constData());
         methodIdx = metaObject()->indexOfMethod(normedMethodName.constData());
     }
     if (methodIdx < 0) {
@@ -173,7 +173,7 @@ bool SyncableObject::setInitValue(const QString &property, const QVariant &value
     }
 
     QGenericArgument param(value.typeName(), value.constData());
-    return QMetaObject::invokeMethod(this, handlername.toAscii(), param);
+    return QMetaObject::invokeMethod(this, handlername.toLatin1(), param);
 }
 
 

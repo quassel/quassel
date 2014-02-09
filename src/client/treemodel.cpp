@@ -304,7 +304,7 @@ QVariant PropertyMapItem::data(int column, int role) const
         return toolTip(column);
     case Qt::DisplayRole:
     case TreeModel::SortRole: // fallthrough, since SortRole should default to DisplayRole
-        return property(_propertyOrder[column].toAscii());
+        return property(_propertyOrder[column].toLatin1());
     default:
         return QVariant();
     }
@@ -317,7 +317,7 @@ bool PropertyMapItem::setData(int column, const QVariant &value, int role)
         return false;
 
     emit dataChanged(column);
-    return setProperty(_propertyOrder[column].toAscii(), value);
+    return setProperty(_propertyOrder[column].toLatin1(), value);
 }
 
 

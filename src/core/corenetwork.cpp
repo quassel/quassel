@@ -268,7 +268,7 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, co
 
     if (!prefix.isEmpty())
         msg += ":" + prefix + " ";
-    msg += cmd.toUpper().toAscii();
+    msg += cmd.toUpper().toLatin1();
 
     for (int i = 0; i < params.size(); i++) {
         msg += " ";

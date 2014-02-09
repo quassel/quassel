@@ -97,7 +97,7 @@ QString IrcChannel::userModes(const QString &nick) const
 
 void IrcChannel::setCodecForEncoding(const QString &name)
 {
-    setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
+    setCodecForEncoding(QTextCodec::codecForName(name.toLatin1()));
 }
 
 
@@ -109,7 +109,7 @@ void IrcChannel::setCodecForEncoding(QTextCodec *codec)
 
 void IrcChannel::setCodecForDecoding(const QString &name)
 {
-    setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
+    setCodecForDecoding(QTextCodec::codecForName(name.toLatin1()));
 }
 
 

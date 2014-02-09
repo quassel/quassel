@@ -1102,7 +1102,7 @@ QList<QPair<NetworkId, BufferId> > NetworkModel::mimeDataToBufferList(const QMim
     if (!mimeContainsBufferList(mimeData))
         return bufferList;
 
-    QStringList rawBufferList = QString::fromAscii(mimeData->data("application/Quassel/BufferItemList")).split(",");
+    QStringList rawBufferList = QString::fromLatin1(mimeData->data("application/Quassel/BufferItemList")).split(",");
     NetworkId networkId;
     BufferId bufferUid;
     foreach(QString rawBuffer, rawBufferList) {
@@ -1130,7 +1130,7 @@ QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const
             bufferlist << bufferid;
     }
 
-    mimeData->setData("application/Quassel/BufferItemList", bufferlist.join(",").toAscii());
+    mimeData->setData("application/Quassel/BufferItemList", bufferlist.join(",").toLatin1());
 
     return mimeData;
 }

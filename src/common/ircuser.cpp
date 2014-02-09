@@ -87,7 +87,7 @@ QStringList IrcUser::channels() const
 
 void IrcUser::setCodecForEncoding(const QString &name)
 {
-    setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
+    setCodecForEncoding(QTextCodec::codecForName(name.toLatin1()));
 }
 
 
@@ -99,7 +99,7 @@ void IrcUser::setCodecForEncoding(QTextCodec *codec)
 
 void IrcUser::setCodecForDecoding(const QString &name)
 {
-    setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
+    setCodecForDecoding(QTextCodec::codecForName(name.toLatin1()));
 }
 
 

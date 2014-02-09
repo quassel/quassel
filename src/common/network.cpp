@@ -455,7 +455,7 @@ QByteArray Network::encodeString(const QString &string) const
     if (_defaultCodecForEncoding) {
         return _defaultCodecForEncoding->fromUnicode(string);
     }
-    return string.toAscii();
+    return string.toLatin1();
 }
 
 
@@ -476,7 +476,7 @@ QByteArray Network::encodeServerString(const QString &string) const
     if (_defaultCodecForServer) {
         return _defaultCodecForServer->fromUnicode(string);
     }
-    return string.toAscii();
+    return string.toLatin1();
 }
 
 
