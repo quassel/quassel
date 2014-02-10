@@ -25,8 +25,6 @@
 #include "coresession.h"
 #include "eventmanager.h"
 
-class CoreSession;
-
 class CoreEventManager : public EventManager
 {
     Q_OBJECT
@@ -43,6 +41,5 @@ protected:
 private:
     CoreSession *_coreSession;
 };
-
 
 #endif
