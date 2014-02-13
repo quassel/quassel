@@ -36,6 +36,7 @@ WebPreviewItem::WebPreviewItem(const QUrl &url)
     QWebView *webView = new QWebView;
     webView->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
     webView->load(url);
+    webView->setDisabled(true);
     webView->resize(1000, 750);
     QGraphicsProxyWidget *proxyItem = new QGraphicsProxyWidget(this);
     proxyItem->setWidget(webView);
