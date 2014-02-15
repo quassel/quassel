@@ -27,8 +27,8 @@
 PeerFactory::ProtoList PeerFactory::supportedProtocols()
 {
     ProtoList result;
-    result.append(ProtoDescriptor(Protocol::DataStreamProtocol, DataStreamPeer::supportedFeatures()));
     result.append(ProtoDescriptor(Protocol::LegacyProtocol, 0));
+    result.append(ProtoDescriptor(Protocol::DataStreamProtocol, DataStreamPeer::supportedFeatures()));
     return result;
 }
 
