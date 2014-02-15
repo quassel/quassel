@@ -46,6 +46,7 @@ public:
     void setSignalProxy(SignalProxy *proxy);
 
     virtual Protocol::Type protocol() const = 0;
+    virtual QString protocolName() const = 0;
     virtual QString description() const;
     virtual quint16 enabledFeatures() const { return 0; }
 

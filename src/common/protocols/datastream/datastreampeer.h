@@ -44,6 +44,7 @@ public:
     DataStreamPeer(AuthHandler *authHandler, QTcpSocket *socket, quint16 features, QObject *parent = 0);
 
     Protocol::Type protocol() const { return Protocol::DataStreamProtocol; }
+    QString protocolName() const { return "the DataStream protocol"; }
 
     static quint16 supportedFeatures();
     static bool acceptsFeatures(quint16 peerFeatures);

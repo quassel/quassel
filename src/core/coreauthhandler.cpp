@@ -114,6 +114,8 @@ void CoreAuthHandler::onReadyRead()
 
 void CoreAuthHandler::setPeer(RemotePeer *peer)
 {
+    qDebug().nospace() << "Using " << qPrintable(peer->protocolName()) << "...";
+
     _peer = peer;
     disconnect(socket(), SIGNAL(readyRead()), this, SLOT(onReadyRead()));
 }

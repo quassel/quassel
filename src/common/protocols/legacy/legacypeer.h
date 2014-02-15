@@ -44,6 +44,7 @@ public:
     LegacyPeer(AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
 
     Protocol::Type protocol() const { return Protocol::LegacyProtocol; }
+    QString protocolName() const { return "the legacy protocol"; }
 
     void setSignalProxy(SignalProxy *proxy);
 

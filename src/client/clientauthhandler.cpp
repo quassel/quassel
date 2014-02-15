@@ -251,6 +251,8 @@ void ClientAuthHandler::onProtocolVersionMismatch(int actual, int expected)
 
 void ClientAuthHandler::setPeer(RemotePeer *peer)
 {
+    qDebug().nospace() << "Using " << qPrintable(peer->protocolName()) << "...";
+
     _peer = peer;
     connect(_peer, SIGNAL(transferProgress(int,int)), SIGNAL(transferProgress(int,int)));
 
