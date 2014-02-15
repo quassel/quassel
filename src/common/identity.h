@@ -35,25 +35,25 @@ class Identity : public SyncableObject
     SYNCABLE_OBJECT
     Q_OBJECT
 
-    Q_PROPERTY(IdentityId identityId READ id WRITE setId STORED false)
-    Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName STORED false)
-    Q_PROPERTY(QString realName READ realName WRITE setRealName STORED false)
-    Q_PROPERTY(QStringList nicks READ nicks WRITE setNicks STORED false)
-    Q_PROPERTY(QString awayNick READ awayNick WRITE setAwayNick STORED false)
-    Q_PROPERTY(bool awayNickEnabled READ awayNickEnabled WRITE setAwayNickEnabled STORED false)
-    Q_PROPERTY(QString awayReason READ awayReason WRITE setAwayReason STORED false)
-    Q_PROPERTY(bool awayReasonEnabled READ awayReasonEnabled WRITE setAwayReasonEnabled STORED false)
-    Q_PROPERTY(bool autoAwayEnabled READ autoAwayEnabled WRITE setAutoAwayEnabled STORED false)
-    Q_PROPERTY(int autoAwayTime READ autoAwayTime WRITE setAutoAwayTime STORED false)
-    Q_PROPERTY(QString autoAwayReason READ autoAwayReason WRITE setAutoAwayReason STORED false)
-    Q_PROPERTY(bool autoAwayReasonEnabled READ autoAwayReasonEnabled WRITE setAutoAwayReasonEnabled STORED false)
-    Q_PROPERTY(bool detachAwayEnabled READ detachAwayEnabled WRITE setDetachAwayEnabled STORED false)
-    Q_PROPERTY(QString detachAwayReason READ detachAwayReason WRITE setDetachAwayReason STORED false)
-    Q_PROPERTY(bool detachAwayReasonEnabled READ detachAwayReasonEnabled WRITE setDetachAwayReasonEnabled STORED false)
-    Q_PROPERTY(QString ident READ ident WRITE setIdent STORED false)
-    Q_PROPERTY(QString kickReason READ kickReason WRITE setKickReason STORED false)
-    Q_PROPERTY(QString partReason READ partReason WRITE setPartReason STORED false)
-    Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason STORED false)
+    Q_PROPERTY(IdentityId identityId READ id WRITE setId)
+    Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName)
+    Q_PROPERTY(QString realName READ realName WRITE setRealName)
+    Q_PROPERTY(QStringList nicks READ nicks WRITE setNicks)
+    Q_PROPERTY(QString awayNick READ awayNick WRITE setAwayNick)
+    Q_PROPERTY(bool awayNickEnabled READ awayNickEnabled WRITE setAwayNickEnabled)
+    Q_PROPERTY(QString awayReason READ awayReason WRITE setAwayReason)
+    Q_PROPERTY(bool awayReasonEnabled READ awayReasonEnabled WRITE setAwayReasonEnabled)
+    Q_PROPERTY(bool autoAwayEnabled READ autoAwayEnabled WRITE setAutoAwayEnabled)
+    Q_PROPERTY(int autoAwayTime READ autoAwayTime WRITE setAutoAwayTime)
+    Q_PROPERTY(QString autoAwayReason READ autoAwayReason WRITE setAutoAwayReason)
+    Q_PROPERTY(bool autoAwayReasonEnabled READ autoAwayReasonEnabled WRITE setAutoAwayReasonEnabled)
+    Q_PROPERTY(bool detachAwayEnabled READ detachAwayEnabled WRITE setDetachAwayEnabled)
+    Q_PROPERTY(QString detachAwayReason READ detachAwayReason WRITE setDetachAwayReason)
+    Q_PROPERTY(bool detachAwayReasonEnabled READ detachAwayReasonEnabled WRITE setDetachAwayReasonEnabled)
+    Q_PROPERTY(QString ident READ ident WRITE setIdent)
+    Q_PROPERTY(QString kickReason READ kickReason WRITE setKickReason)
+    Q_PROPERTY(QString partReason READ partReason WRITE setPartReason)
+    Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason)
 
 public :
         Identity(IdentityId id = 0, QObject *parent = 0);
@@ -169,8 +169,8 @@ class CertManager : public SyncableObject
 {
     SYNCABLE_OBJECT
     Q_OBJECT
-    Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey STORED false)
-    Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert STORED false)
+    Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey)
+    Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert)
 
 public :
         CertManager(IdentityId id, QObject *parent = 0) : SyncableObject(QString::number(id.toInt()), parent) {}

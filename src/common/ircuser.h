@@ -39,22 +39,22 @@ class IrcUser : public SyncableObject
     SYNCABLE_OBJECT
     Q_OBJECT
 
-    Q_PROPERTY(QString user READ user WRITE setUser STORED false)
-    Q_PROPERTY(QString host READ host WRITE setHost STORED false)
-    Q_PROPERTY(QString nick READ nick WRITE setNick STORED false)
-    Q_PROPERTY(QString realName READ realName WRITE setRealName STORED false)
-    Q_PROPERTY(bool away READ isAway WRITE setAway STORED false)
-    Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage STORED false)
-    Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime STORED false)
-    Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime STORED false)
-    Q_PROPERTY(QString server READ server WRITE setServer STORED false)
-    Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator STORED false)
-    Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage STORED false)
-    Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply STORED false)
-    Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost STORED false)
-    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted STORED false)
+    Q_PROPERTY(QString user READ user WRITE setUser)
+    Q_PROPERTY(QString host READ host WRITE setHost)
+    Q_PROPERTY(QString nick READ nick WRITE setNick)
+    Q_PROPERTY(QString realName READ realName WRITE setRealName)
+    Q_PROPERTY(bool away READ isAway WRITE setAway)
+    Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage)
+    Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime)
+    Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime)
+    Q_PROPERTY(QString server READ server WRITE setServer)
+    Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator)
+    Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage)
+    Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply)
+    Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost)
+    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
 
-    Q_PROPERTY(QStringList channels READ channels STORED false)
+    Q_PROPERTY(QStringList channels READ channels)
     Q_PROPERTY(QString userModes READ userModes WRITE setUserModes)
 
 public :

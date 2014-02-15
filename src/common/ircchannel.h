@@ -37,13 +37,13 @@ class IrcChannel : public SyncableObject
     SYNCABLE_OBJECT
     Q_OBJECT
 
-    Q_PROPERTY(QString name READ name STORED false)
-    Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
-    Q_PROPERTY(QString password READ password WRITE setPassword STORED false)
-    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted STORED false)
+    Q_PROPERTY(QString name READ name)
+    Q_PROPERTY(QString topic READ topic WRITE setTopic)
+    Q_PROPERTY(QString password READ password WRITE setPassword)
+    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
 
 public :
-        IrcChannel(const QString &channelname, Network *network);
+    IrcChannel(const QString &channelname, Network *network);
     ~IrcChannel();
 
     bool isKnownUser(IrcUser *ircuser) const;
