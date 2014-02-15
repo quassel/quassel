@@ -82,6 +82,9 @@ private:
     void handlePackedFunc(const QVariant &packedFunc);
     void dispatchPackedFunc(const QVariantList &packedFunc);
 
+    void toLegacyIrcUsersAndChannels(QVariantMap &initData);
+    void fromLegacyIrcUsersAndChannels(QVariantMap &initData);
+
     QDataStream _stream;
     quint32 _blockSize;
     bool _useCompression;

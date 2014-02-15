@@ -437,6 +437,10 @@ void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
             QByteArray className = params[0].toByteArray();
             QString objectName = params[1].toString();
             QVariantMap initData = params[2].toMap();
+
+            // we need to special-case IrcUsersAndChannels here, since the format changed
+            if (className == "Network")
+                fromLegacyIrcUsersAndChannels(initData);
             handle(Protocol::InitData(className, objectName, initData));
             break;
         }
@@ -489,7 +493,14 @@ void LegacyPeer::dispatch(const Protocol::InitRequest &msg)
 
 void LegacyPeer::dispatch(const Protocol::InitData &msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName << msg.initData);
+    // We need to special-case IrcUsersAndChannels, as the format changed
+    if (msg.className == "Network") {
+        QVariantMap initData = msg.initData;
+        toLegacyIrcUsersAndChannels(initData);
+        dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName << initData);
+    }
+    else
+        dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName << msg.initData);
 }
 
 
@@ -508,4 +519,73 @@ void LegacyPeer::dispatch(const Protocol::HeartBeatReply &msg)
 void LegacyPeer::dispatchPackedFunc(const QVariantList &packedFunc)
 {
     writeSocketData(QVariant(packedFunc));
+}
+
+
+// Handle the changed format for Network's initData
+// cf. Network::initIrcUsersAndChannels()
+void LegacyPeer::fromLegacyIrcUsersAndChannels(QVariantMap &initData)
+{
+    const QVariantMap &legacyMap = initData["IrcUsersAndChannels"].toMap();
+    QVariantMap newMap;
+
+    QHash<QString, QVariantList> users;
+    foreach(const QVariant &v, legacyMap["users"].toMap().values()) {
+        const QVariantMap &map = v.toMap();
+        foreach(const QString &key, map.keys())
+            users[key] << map[key];
+    }
+    QVariantMap userMap;
+    foreach(const QString &key, users.keys())
+        userMap[key] = users[key];
+    newMap["Users"] = userMap;
+
+    QHash<QString, QVariantList> channels;
+    foreach(const QVariant &v, legacyMap["channels"].toMap().values()) {
+        const QVariantMap &map = v.toMap();
+        foreach(const QString &key, map.keys())
+            channels[key] << map[key];
+    }
+    QVariantMap channelMap;
+    foreach(const QString &key, channels.keys())
+        channelMap[key] = channels[key];
+    newMap["Channels"] = channelMap;
+
+    initData["IrcUsersAndChannels"] = newMap;
+}
+
+
+void LegacyPeer::toLegacyIrcUsersAndChannels(QVariantMap &initData)
+{
+    const QVariantMap &usersAndChannels = initData["IrcUsersAndChannels"].toMap();
+    QVariantMap legacyMap;
+
+    // toMap() and toList() are cheap, so no need to copy to a hash
+
+    QVariantMap userMap;
+    const QVariantMap &users = usersAndChannels["Users"].toMap();
+
+    int size = users["nick"].toList().size(); // we know this key exists
+    for(int i = 0; i < size; i++) {
+        QVariantMap map;
+        foreach(const QString &key, users.keys())
+            map[key] = users[key].toList().at(i);
+        QString hostmask = QString("%1!%2@%3").arg(map["nick"].toString(), map["user"].toString(), map["host"].toString());
+        userMap[hostmask.toLower()] = map;
+    }
+    legacyMap["users"] = userMap;
+
+    QVariantMap channelMap;
+    const QVariantMap &channels = usersAndChannels["Channels"].toMap();
+
+    size = channels["name"].toList().size();
+    for(int i = 0; i < size; i++) {
+        QVariantMap map;
+        foreach(const QString &key, channels.keys())
+            map[key] = channels[key].toList().at(i);
+        channelMap[map["name"].toString().toLower()] = map;
+    }
+    legacyMap["channels"] = channelMap;
+
+    initData["IrcUsersAndChannels"] = legacyMap;
 }
