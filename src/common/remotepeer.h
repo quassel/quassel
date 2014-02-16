@@ -23,11 +23,11 @@
 
 #include <QDateTime>
 
+#include "compressor.h"
 #include "peer.h"
 #include "protocol.h"
 #include "signalproxy.h"
 
-class QTcpSocket;
 class QTimer;
 
 class AuthHandler;
@@ -41,7 +41,7 @@ public:
     using Peer::handle;
     using Peer::dispatch;
 
-    RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
+    RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = 0);
 
     void setSignalProxy(SignalProxy *proxy);
 
@@ -87,6 +87,7 @@ protected slots:
 
 private slots:
     void onReadyRead();
+    void onCompressionError(Compressor::Error error);
 
     void sendHeartBeat();
     void changeHeartBeatInterval(int secs);
@@ -96,6 +97,7 @@ private:
 
 private:
     QTcpSocket *_socket;
+    Compressor *_compressor;
     SignalProxy *_signalProxy;
     QTimer *_heartBeatTimer;
     int _heartBeatCount;

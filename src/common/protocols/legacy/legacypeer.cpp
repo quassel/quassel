@@ -32,7 +32,7 @@ const uint clientNeedsProtocol = protocolVersion;
 using namespace Protocol;
 
 LegacyPeer::LegacyPeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
-    : RemotePeer(authHandler, socket, parent),
+    : RemotePeer(authHandler, socket, Compressor::NoCompression, parent),
     _useCompression(false)
 {
 
