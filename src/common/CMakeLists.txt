@@ -12,6 +12,7 @@ set(SOURCES
     bufferviewconfig.cpp
     bufferviewmanager.cpp
     cliparser.cpp
+    compressor.cpp
     coreinfo.cpp
     ctcpevent.cpp
     event.cpp
@@ -52,6 +53,7 @@ set(MOC_HDRS
     buffersyncer.h
     bufferviewconfig.h
     bufferviewmanager.h
+    compressor.h
     coreinfo.h
     eventmanager.h
     identity.h
