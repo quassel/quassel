@@ -21,8 +21,6 @@
 #ifndef DATASTREAMPEER_H
 #define DATASTREAMPEER_H
 
-#include <QDataStream>
-
 #include "../../remotepeer.h"
 
 class QDataStream;
@@ -72,20 +70,15 @@ public:
 signals:
     void protocolError(const QString &errorString);
 
-protected slots:
-    void onSocketDataAvailable();
-
 private:
-    bool readSocketData(QByteArray &data);
-    void writeSocketData(const QVariantList &list);
-    void writeSocketData(const QVariantMap &handshakeMsg);
+    using RemotePeer::writeMessage;
+    void writeMessage(const QVariantMap &handshakeMsg);
+    void writeMessage(const QVariantList &sigProxyMsg);
+    void processMessage(const QByteArray &msg);
 
     void handleHandshakeMessage(const QVariantList &mapData);
     void handlePackedFunc(const QVariantList &packedFunc);
     void dispatchPackedFunc(const QVariantList &packedFunc);
-
-    QDataStream _stream;
-    quint32 _blockSize;
 };
 
 #endif

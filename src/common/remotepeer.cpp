@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QtEndian>
+
 #include <QHostAddress>
 #include <QTimer>
 
@@ -31,16 +33,19 @@
 
 using namespace Protocol;
 
+const quint32 maxMessageSize = 64 * 1024 * 1024; // This is uncompressed size. 64 MB should be enough for any sort of initData or backlog chunk
+
 RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
     : Peer(authHandler, parent),
     _socket(socket),
     _signalProxy(0),
     _heartBeatTimer(new QTimer(this)),
     _heartBeatCount(0),
-    _lag(0)
+    _lag(0),
+    _msgSize(0)
 {
     socket->setParent(this);
-    connect(socket, SIGNAL(readyRead()), SLOT(onSocketDataAvailable()));
+    connect(socket, SIGNAL(readyRead()), SLOT(onReadyRead()));
     connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
@@ -56,7 +61,7 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, QObject *
     // It's possible that more data has already arrived during the handshake, so readyRead() wouldn't be triggered.
     // However, we can't call a virtual function from the ctor, so let's do it asynchronously.
     if (socket->bytesAvailable())
-        QTimer::singleShot(0, this, SLOT(onSocketDataAvailable()));
+        QTimer::singleShot(0, this, SLOT(onReadyRead()));
 }
 
 
@@ -177,6 +182,64 @@ void RemotePeer::close(const QString &reason)
     if (socket() && socket()->state() != QTcpSocket::UnconnectedState) {
         socket()->disconnectFromHost();
     }
+}
+
+
+void RemotePeer::onReadyRead()
+{
+    // don't try to read more data if we're already closing
+    if (socket()->state() !=  QAbstractSocket::ConnectedState)
+        return;
+
+    QByteArray msg;
+    while (readMessage(msg))
+        processMessage(msg);
+}
+
+
+bool RemotePeer::readMessage(QByteArray &msg)
+{
+    if (_msgSize == 0) {
+        if (socket()->bytesAvailable() < 4)
+            return false;
+        socket()->read((char*)&_msgSize, 4);
+        _msgSize = qFromBigEndian<quint32>(_msgSize);
+
+        if (_msgSize > maxMessageSize) {
+            close("Peer tried to send package larger than max package size!");
+            return false;
+        }
+
+        if (_msgSize == 0) {
+            close("Peer tried to send an empty message!");
+            return false;
+        }
+    }
+
+    if (socket()->bytesAvailable() < _msgSize) {
+        emit transferProgress(socket()->bytesAvailable(), _msgSize);
+        return false;
+    }
+
+    emit transferProgress(_msgSize, _msgSize);
+
+    msg.resize(_msgSize);
+    qint64 bytesRead = socket()->read(msg.data(), _msgSize);
+    if (bytesRead != _msgSize) {
+        close("Premature end of data stream!");
+        return false;
+    }
+
+    _msgSize = 0;
+    return true;
+}
+
+
+void RemotePeer::writeMessage(const QByteArray &msg)
+{
+    quint32 size = qToBigEndian<quint32>(msg.size());
+    socket()->write((const char*)&size, 4);
+    socket()->write(msg.constData(), msg.size());
 }
 
 

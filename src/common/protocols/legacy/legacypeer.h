@@ -21,11 +21,7 @@
 #ifndef LEGACYPEER_H
 #define LEGACYPEER_H
 
-#include <QDataStream>
-
 #include "../../remotepeer.h"
-
-class QDataStream;
 
 class LegacyPeer : public RemotePeer
 {
@@ -73,12 +69,11 @@ signals:
     // only used in compat mode
     void protocolVersionMismatch(int actual, int expected);
 
-protected slots:
-    void onSocketDataAvailable();
-
 private:
-    bool readSocketData(QVariant &item);
-    void writeSocketData(const QVariant &item);
+    using RemotePeer::writeMessage;
+    void writeMessage(const QVariant &item);
+    void processMessage(const QByteArray &msg);
+
     void handleHandshakeMessage(const QVariant &msg);
     void handlePackedFunc(const QVariant &packedFunc);
     void dispatchPackedFunc(const QVariantList &packedFunc);
@@ -86,8 +81,6 @@ private:
     void toLegacyIrcUsersAndChannels(QVariantMap &initData);
     void fromLegacyIrcUsersAndChannels(QVariantMap &initData);
 
-    QDataStream _stream;
-    quint32 _blockSize;
     bool _useCompression;
 };
 

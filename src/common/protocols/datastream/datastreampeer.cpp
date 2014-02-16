@@ -29,13 +29,9 @@
 using namespace Protocol;
 
 DataStreamPeer::DataStreamPeer(::AuthHandler *authHandler, QTcpSocket *socket, quint16 features, QObject *parent)
-    : RemotePeer(authHandler, socket, parent),
-    _blockSize(0)
+    : RemotePeer(authHandler, socket, parent)
 {
     Q_UNUSED(features);
-
-    _stream.setDevice(socket);
-    _stream.setVersion(QDataStream::Qt_4_2);
 }
 
 
@@ -58,93 +54,26 @@ quint16 DataStreamPeer::enabledFeatures() const
 }
 
 
-// Note that we're already preparing for readSocketData() moving into RemotePeer, thus the slightly
-// cumbersome type and stream handling here.
-void DataStreamPeer::onSocketDataAvailable()
+void DataStreamPeer::processMessage(const QByteArray &msg)
 {
-    // don't try to read more data if we're already closing
-    if (socket()->state() !=  QAbstractSocket::ConnectedState)
-        return;
-
-    QByteArray data;
-    while (readSocketData(data)) {
-        // data contains always a serialized QVector<QVariant>
-        QDataStream stream(data);
-        stream.setVersion(QDataStream::Qt_4_2);
-        QVariantList list;
-        stream >> list;
-        if (stream.status() != QDataStream::Ok) {
-            close("Peer sent corrupt data, closing down!");
-            return;
-        }
-
-        // if no sigproxy is set, we're in handshake mode
-        if (!signalProxy())
-            handleHandshakeMessage(list);
-        else
-            handlePackedFunc(list);
-    }
-}
-
-
-bool DataStreamPeer::readSocketData(QByteArray &data)
-{
-    if (_blockSize == 0) {
-        if (socket()->bytesAvailable() < 4)
-            return false;
-        // the block size is part of QByteArray's serialization format, so we don't actually read it now...
-        socket()->peek((char*)&_blockSize, 4);
-        _blockSize = qFromBigEndian<quint32>(_blockSize) + 4; // ... but of course we have to add its size to the total size of the block
-    }
-
-    if (_blockSize > 1 << 22) {
-        close("Peer tried to send package larger than max package size!");
-        return false;
-    }
-
-    if (_blockSize == 0) {
-        close("Peer tried to send 0 byte package!");
-        return false;
-    }
-
-    if (socket()->bytesAvailable() < _blockSize) {
-        emit transferProgress(socket()->bytesAvailable(), _blockSize);
-        return false;
-    }
-
-    emit transferProgress(_blockSize, _blockSize);
-
-    _stream >> data;
-    _blockSize = 0;
-
-    if (_stream.status() != QDataStream::Ok) {
+    QDataStream stream(msg);
+    stream.setVersion(QDataStream::Qt_4_2);
+    QVariantList list;
+    stream >> list;
+    if (stream.status() != QDataStream::Ok) {
         close("Peer sent corrupt data, closing down!");
-        return false;
-    }
-
-    return true;
-}
-
-
-void DataStreamPeer::writeSocketData(const QVariantList &list)
-{
-    if (!socket()->isOpen()) {
-        qWarning() << Q_FUNC_INFO << "Can't write to a closed socket!";
         return;
     }
 
-    QByteArray data;
-    QDataStream msgStream(&data, QIODevice::WriteOnly);
-    msgStream.setVersion(QDataStream::Qt_4_2);
-    msgStream << list;
-
-    _stream << data;  // also writes the block size as part of the serialization format
-    if (_stream.status() != QDataStream::Ok)
-        close("Could not serialize data for peer!");
+    // if no sigproxy is set, we're in handshake mode
+    if (!signalProxy())
+        handleHandshakeMessage(list);
+    else
+        handlePackedFunc(list);
 }
 
 
-void DataStreamPeer::writeSocketData(const QVariantMap &handshakeMsg)
+void DataStreamPeer::writeMessage(const QVariantMap &handshakeMsg)
 {
     QVariantList list;
     QVariantMap::const_iterator it = handshakeMsg.begin();
@@ -153,9 +82,19 @@ void DataStreamPeer::writeSocketData(const QVariantMap &handshakeMsg)
         ++it;
     }
 
-    writeSocketData(list);
+    writeMessage(list);
 }
 
+
+void DataStreamPeer::writeMessage(const QVariantList &sigProxyMsg)
+{
+    QByteArray data;
+    QDataStream msgStream(&data, QIODevice::WriteOnly);
+    msgStream.setVersion(QDataStream::Qt_4_2);
+    msgStream << sigProxyMsg;
+
+    writeMessage(data);
+}
 
 
 /*** Handshake messages ***/
@@ -231,7 +170,7 @@ void DataStreamPeer::dispatch(const RegisterClient &msg) {
     m["ClientVersion"] = msg.clientVersion;
     m["ClientDate"] = Quassel::buildInfo().buildDate;
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -240,7 +179,7 @@ void DataStreamPeer::dispatch(const ClientDenied &msg) {
     m["MsgType"] = "ClientInitReject";
     m["Error"] = msg.errorString;
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -251,7 +190,7 @@ void DataStreamPeer::dispatch(const ClientRegistered &msg) {
     m["StorageBackends"] = msg.backendInfo;
     m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -266,7 +205,8 @@ void DataStreamPeer::dispatch(const SetupData &msg)
     QVariantMap m;
     m["MsgType"] = "CoreSetupData";
     m["SetupData"] = map;
-    writeSocketData(m);
+
+    writeMessage(m);
 }
 
 
@@ -276,7 +216,7 @@ void DataStreamPeer::dispatch(const SetupFailed &msg)
     m["MsgType"] = "CoreSetupReject";
     m["Error"] = msg.errorString;
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -287,7 +227,7 @@ void DataStreamPeer::dispatch(const SetupDone &msg)
     QVariantMap m;
     m["MsgType"] = "CoreSetupAck";
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -298,7 +238,7 @@ void DataStreamPeer::dispatch(const Login &msg)
     m["User"] = msg.user;
     m["Password"] = msg.password;
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -308,7 +248,7 @@ void DataStreamPeer::dispatch(const LoginFailed &msg)
     m["MsgType"] = "ClientLoginReject";
     m["Error"] = msg.errorString;
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -319,7 +259,7 @@ void DataStreamPeer::dispatch(const LoginSuccess &msg)
     QVariantMap m;
     m["MsgType"] = "ClientLoginAck";
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -334,7 +274,7 @@ void DataStreamPeer::dispatch(const SessionState &msg)
     map["Identities"] = msg.identities;
     m["SessionState"] = map;
 
-    writeSocketData(m);
+    writeMessage(m);
 }
 
 
@@ -462,5 +402,5 @@ void DataStreamPeer::dispatch(const Protocol::HeartBeatReply &msg)
 
 void DataStreamPeer::dispatchPackedFunc(const QVariantList &packedFunc)
 {
-    writeSocketData(packedFunc);
+    writeMessage(packedFunc);
 }
