@@ -818,7 +818,7 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
         QString searchSelectionText = selection();
         if (searchSelectionText.length() > _webSearchSelectionTextMaxVisible)
-            searchSelectionText = searchSelectionText.left(_webSearchSelectionTextMaxVisible).append(QString::fromUtf8("\u2026"));
+            searchSelectionText = searchSelectionText.left(_webSearchSelectionTextMaxVisible).append(QString::fromUtf8("…"));
         searchSelectionText = tr("Search '%1'").arg(searchSelectionText);
 
         menu.addAction(SmallIcon("edit-find"), searchSelectionText, this, SLOT(webSearchOnSelection()));
