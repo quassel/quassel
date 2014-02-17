@@ -25,6 +25,8 @@
 
 class QTcpSocket;
 
+typedef struct mz_stream_s *z_streamp;
+
 class Compressor : public QObject
 {
     Q_OBJECT
@@ -49,6 +51,7 @@ public:
     };
 
     Compressor(QTcpSocket *socket, CompressionLevel level, QObject *parent = 0);
+    ~Compressor();
 
     CompressionLevel compressionLevel() const { return _level; }
 
@@ -61,12 +64,13 @@ public:
 
 signals:
     void readyRead();
-    void error(Compressor::Error errorCode);
+    void error(Compressor::Error errorCode = StreamError);
 
 private slots:
     void readData();
 
 private:
+    bool initStreams();
     void writeData();
 
 private:
@@ -75,6 +79,12 @@ private:
 
     QByteArray _readBuffer;
     QByteArray _writeBuffer;
+
+    QByteArray _inputBuffer;
+    QByteArray _outputBuffer;
+
+    z_streamp _inflater;
+    z_streamp _deflater;
 };
 
 #endif
