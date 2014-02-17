@@ -67,7 +67,6 @@ set(MOC_HDRS
     network.h
     networkconfig.h
     peer.h
-    peerfactory.h
     remotepeer.h
     settings.h
     signalproxy.h
@@ -90,6 +89,7 @@ set(HEADERS ${MOC_HDRS}
     networkevent.h
     logger.h
     message.h
+    peerfactory.h
     protocol.h
     types.h
     util.h)
