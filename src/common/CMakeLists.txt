@@ -43,6 +43,8 @@ set(SOURCES
 
     protocols/datastream/datastreampeer.cpp
     protocols/legacy/legacypeer.cpp
+
+    ../../3rdparty/miniz/miniz.c
 )
 
 set(MOC_HDRS
