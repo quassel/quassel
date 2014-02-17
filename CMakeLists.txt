@@ -150,6 +150,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   if(CXX_W_OVERLOADED_VIRTUAL)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Woverloaded-virtual")
   endif()
+
+  # Just for miniz
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -fno-strict-aliasing")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 # ... and for Clang
@@ -160,6 +163,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -fno-inline")
   set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline")
   set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -fno-strict-aliasing")
 endif()
 
 # Mac build stuff
@@ -329,6 +334,8 @@ if(BUILD_GUI)
 
   # Setup KDE4 support
   if(WITH_KDE AND NOT WITH_QT5)
+    # KDE has overzealous CFLAGS making miniz not compile, so save our old flags
+    set(_cflags ${CMAKE_C_FLAGS})
     find_package(KDE4)
     if(KDE4_FOUND)
       message(STATUS "Enabling KDE4 integration")
@@ -338,6 +345,8 @@ if(BUILD_GUI)
       set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} ${KDE4_SOLID_LIBS} ${KDE4_KNOTIFYCONFIG_LIBRARY})
       # We always use external icons for KDE4 support, since we use its iconloader rather than our own
       set(EMBED_DATA OFF)
+      # Restore our old CFLAGS
+      set(CMAKE_C_FLAGS ${_cflags})
     else(KDE4_FOUND)
       message(STATUS "KDE4 not found, disabling KDE integration")
     endif(KDE4_FOUND)
