@@ -152,7 +152,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   endif()
 
   # Just for miniz
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -fno-strict-aliasing")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 # ... and for Clang
@@ -164,7 +164,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline")
   set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
 
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -fno-strict-aliasing")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
 endif()
 
 # Mac build stuff
