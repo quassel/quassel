@@ -4,13 +4,13 @@
 # H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2010
 # zeugma <sunder67@hotmail.com>, 2013
 # volkangezer <volkangezer@gmail.com>, 2013
-# volkangezer <volkangezer@gmail.com>, 2013
+# volkangezer <volkangezer@gmail.com>, 2013-2014
 # zeugma <sunder67@hotmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-11-28 00:20+0000\n"
+"PO-Revision-Date: 2014-02-22 15:00+0000\n"
 "Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/quassel/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -1024,7 +1024,7 @@ msgctxt "ChatViewSettingsPage|"
 msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Bu özelliği kullanabilmeniz için QuasselCore'un en az 0.6 sürümüne ihtiyacınız var"
 
-#: ../src/client/client.cpp:318
+#: ../src/client/client.cpp:320
 msgctxt "Client|"
 msgid "Identity already exists in client!"
 msgstr "İstemcide bu kimlik zaten mevcut!"
@@ -1921,13 +1921,13 @@ msgstr "%1 aranıyor..."
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connecting to %1..."
-msgstr "%1e bağlanılıyor..."
+msgstr "%1 bağlantısı yapılıyor..."
 
 #: ../src/client/coreconnection.cpp:236
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Connected to %1"
-msgstr "%1e bağlandı"
+msgstr "%1 bağlantısı yapıldı"
 
 #: ../src/client/coreconnection.cpp:239
 #, qt-format
@@ -2170,18 +2170,18 @@ msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
 msgstr "Bağlantı hatası: %1"
 
-#: ../src/core/coresession.cpp:227
+#: ../src/core/coresession.cpp:230
 msgctxt "CoreSession|"
 msgid "Client"
 msgstr "İstemci"
 
-#: ../src/core/coresession.cpp:227
+#: ../src/core/coresession.cpp:230
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
 msgstr "bağlantı kesildi (Kullanıcı: %1)."
 
-#: ../src/core/coresession.cpp:474
+#: ../src/core/coresession.cpp:477
 #, qt-format
 msgctxt "CoreSession|"
 msgid ""
@@ -2189,40 +2189,77 @@ msgid ""
 " create network %1!"
 msgstr "CoreSession::createNetwork(): %1 ağı oluşturulmaya çalışılırken Çekirdekten geçersiz networkId alındı!"
 
-#: ../src/core/coresession.cpp:506
+#: ../src/core/coresession.cpp:509
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
 msgstr "CoreSession::createNetwork(): Zaten varolan bir ağı oluşturmaya çalışıyor, güncelliyorum!"
 
-#: ../src/core/coresessioneventprocessor.cpp:75
+#: ../src/core/coresessioneventprocessor.cpp:78
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
 msgstr "Takma ad listesinde geçerli ve kullanılmayan takma ad bulunamadı. /nick <farklıtakmaad> ile farklı bir takma ad kullanın"
 
-#: ../src/core/coresessioneventprocessor.cpp:447
+#: ../src/core/coresessioneventprocessor.cpp:450
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange, missing qca-ossl plugin."
 msgstr "Anahtar değişimi yapılamadı, qca-ossl eklentisi eksik."
 
-#: ../src/core/coresessioneventprocessor.cpp:458
+#: ../src/core/coresessioneventprocessor.cpp:461
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
 msgstr "DH1080_INIT ayıklanamadı. Anahtar değişimi başarısız."
 
-#: ../src/core/coresessioneventprocessor.cpp:462
-#: ../src/core/coresessioneventprocessor.cpp:470
+#: ../src/core/coresessioneventprocessor.cpp:465
+#: ../src/core/coresessioneventprocessor.cpp:473
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
 msgstr "Anahtarınız ayarlandı ve iletiler şifrelenecek."
 
-#: ../src/core/coresessioneventprocessor.cpp:472
+#: ../src/core/coresessioneventprocessor.cpp:475
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
 msgstr "DH1080_FINISH ayıklanamadı. Anahtar değişimi başarısız."
+
+#: ../src/core/coresessioneventprocessor.cpp:1056
+msgctxt "CoreSessionEventProcessor|"
+msgid "Reverse DCC SEND not supported"
+msgstr "Ters DCC SEND desteklenmiyor"
+
+#: ../src/core/coresessioneventprocessor.cpp:1074
+#, qt-format
+msgctxt "CoreSessionEventProcessor|"
+msgid "DCC %1 not supported"
+msgstr "DCC %1 desteklenmiyor"
+
+#: ../src/core/coretransfer.cpp:58
+msgctxt "CoreTransfer|"
+msgid "Socket closed while still transferring!"
+msgstr "Aktarım sürerken soket kapatıldı!"
+
+#: ../src/core/coretransfer.cpp:70
+#, qt-format
+msgctxt "CoreTransfer|"
+msgid "DCC connection error: %1"
+msgstr "DCC bağlantı hatası: %1"
+
+#: ../src/core/coretransfer.cpp:114
+msgctxt "CoreTransfer|"
+msgid "Reverse DCC not supported yet!"
+msgstr "Ters DCC henüz desteklenmiyor!"
+
+#: ../src/core/coretransfer.cpp:160
+msgctxt "CoreTransfer|"
+msgid "DCC Receive: Got more data than expected!"
+msgstr "DCC Alım: Beklenenden fazla veri alındı!"
+
+#: ../src/core/coretransfer.cpp:176
+msgctxt "CoreTransfer|"
+msgid "DCC Receive: Quassel Client disconnected during transfer!"
+msgstr "DCC Alım: Aktarım sırasında Quassel İstemcisi bağlantısı kesildi!"
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2667,7 +2704,6 @@ msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "%2 ye CTCP-%1 isteği gönderiliyor"
 
-#. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
 #: ../src/core/eventstringifier.cpp:717
 msgctxt "EventStringifier|"
 msgid "unknown"
@@ -3951,379 +3987,379 @@ msgctxt "LegacyPeer|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr "<b>Quassel Çekirdek Sürüm %1</b><br>İnşa: %2<br>Up %3d%4h%5m (şu kadar zamandır: %6)"
 
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:358
 msgctxt "MainWin|"
 msgid "General"
 msgstr "Genel"
 
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:360
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
 msgstr "&Çekirdeğe Bağlan..."
 
-#: ../src/qtui/mainwin.cpp:359
+#: ../src/qtui/mainwin.cpp:362
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
 msgstr "&Çekirdekle Bağlantıyı Kes"
 
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:364
 msgctxt "MainWin|"
 msgid "Core &Info..."
 msgstr "Çekirdek &Bilgisi..."
 
-#: ../src/qtui/mainwin.cpp:363
+#: ../src/qtui/mainwin.cpp:366
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
 msgstr "A&ğları Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:366
+#: ../src/qtui/mainwin.cpp:369
 msgctxt "MainWin|"
 msgid "&Quit"
 msgstr "&Çık"
 
-#: ../src/qtui/mainwin.cpp:370
+#: ../src/qtui/mainwin.cpp:373
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
 msgstr "Sohbet Listelerini &Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:373
+#: ../src/qtui/mainwin.cpp:376
 msgctxt "MainWin|"
 msgid "&Lock Layout"
 msgstr "Arayüzü &Kilitle"
 
-#: ../src/qtui/mainwin.cpp:377
+#: ../src/qtui/mainwin.cpp:380
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
 msgstr "&Arama Çubuğunu Göster"
 
-#: ../src/qtui/mainwin.cpp:379
+#: ../src/qtui/mainwin.cpp:382
 msgctxt "MainWin|"
 msgid "Show Away Log"
 msgstr "Dışarıda Kayıtları"
 
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Show &Menubar"
 msgstr "&Menü Çubuğunu Göster"
 
-#: ../src/qtui/mainwin.cpp:384
+#: ../src/qtui/mainwin.cpp:387
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
 msgstr "&Durum Çubuğunu Göster"
 
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:393
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
 msgstr "&Tam Ekran Kipi"
 
-#: ../src/qtui/mainwin.cpp:397
+#: ../src/qtui/mainwin.cpp:400
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
 msgstr "&Kısayolları Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:403 ../src/qtui/mainwin.cpp:407
+#: ../src/qtui/mainwin.cpp:406 ../src/qtui/mainwin.cpp:410
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
 msgstr "Quasseli &Yapılandır..."
 
-#: ../src/qtui/mainwin.cpp:413
+#: ../src/qtui/mainwin.cpp:416
 msgctxt "MainWin|"
 msgid "&About Quassel"
 msgstr "Quassel &Hakkında"
 
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:421
 msgctxt "MainWin|"
 msgid "About &Qt"
 msgstr "&Qt Hakkında"
 
-#: ../src/qtui/mainwin.cpp:422
+#: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
 msgstr "&NetworkModel Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:424
+#: ../src/qtui/mainwin.cpp:427
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
 msgstr "Hata Ayıklama &TamponGörünümKaplaması"
 
-#: ../src/qtui/mainwin.cpp:426
+#: ../src/qtui/mainwin.cpp:429
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
 msgstr "&MessageModel Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:428
+#: ../src/qtui/mainwin.cpp:431
 msgctxt "MainWin|"
 msgid "Debug &HotList"
 msgstr "&Log Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:430
+#: ../src/qtui/mainwin.cpp:433
 msgctxt "MainWin|"
 msgid "Debug &Log"
 msgstr "&Log Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:432
+#: ../src/qtui/mainwin.cpp:435
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "Özel biçem deposunu kullan"
 
-#: ../src/qtui/mainwin.cpp:435
+#: ../src/qtui/mainwin.cpp:438
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
 msgstr "Geçerli Tamponu Gizle"
 
-#: ../src/qtui/mainwin.cpp:439
+#: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "Organizasyon:"
 
-#: ../src/qtui/mainwin.cpp:441
+#: ../src/qtui/mainwin.cpp:444
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr "Canlı sohbete atla"
 
-#: ../src/qtui/mainwin.cpp:453
+#: ../src/qtui/mainwin.cpp:456
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr "Hızlı Erişim #0 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:455
+#: ../src/qtui/mainwin.cpp:458
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr "Hızlı Erişim #1 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:457
+#: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr "Hızlı Erişim #2 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:459
+#: ../src/qtui/mainwin.cpp:462
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr "Hızlı Erişim #3 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:461
+#: ../src/qtui/mainwin.cpp:464
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr "Hızlı Erişim #4 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:463
+#: ../src/qtui/mainwin.cpp:466
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr "Hızlı Erişim #5 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:465
+#: ../src/qtui/mainwin.cpp:468
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr "Hızlı Erişim #6 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:467
+#: ../src/qtui/mainwin.cpp:470
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr "Hızlı Erişim #7 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:469
+#: ../src/qtui/mainwin.cpp:472
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr "Hızlı Erişim #8 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:471
+#: ../src/qtui/mainwin.cpp:474
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr "Hızlı Erişim #9 Ayarla"
 
-#: ../src/qtui/mainwin.cpp:474
+#: ../src/qtui/mainwin.cpp:477
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr "Hızlı Erişim #0"
 
-#: ../src/qtui/mainwin.cpp:476
+#: ../src/qtui/mainwin.cpp:479
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr "Hızlı Erişim #1"
 
-#: ../src/qtui/mainwin.cpp:478
+#: ../src/qtui/mainwin.cpp:481
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr "Hızlı Erişim #2"
 
-#: ../src/qtui/mainwin.cpp:480
+#: ../src/qtui/mainwin.cpp:483
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr "Hızlı Erişim #3"
 
-#: ../src/qtui/mainwin.cpp:482
+#: ../src/qtui/mainwin.cpp:485
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr "Hızlı Erişim #4"
 
-#: ../src/qtui/mainwin.cpp:484
+#: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr "Hızlı Erişim #5"
 
-#: ../src/qtui/mainwin.cpp:486
+#: ../src/qtui/mainwin.cpp:489
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr "Hızlı Erişim #6"
 
-#: ../src/qtui/mainwin.cpp:488
+#: ../src/qtui/mainwin.cpp:491
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr "Hızlı Erişim #"
 
-#: ../src/qtui/mainwin.cpp:490
+#: ../src/qtui/mainwin.cpp:493
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr "Hızlı Erişim #8"
 
-#: ../src/qtui/mainwin.cpp:492
+#: ../src/qtui/mainwin.cpp:495
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr "Hızlı Erişim #9"
 
-#: ../src/qtui/mainwin.cpp:496
+#: ../src/qtui/mainwin.cpp:499
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "Sohbet :Listesini Sil?"
 
-#: ../src/qtui/mainwin.cpp:498
+#: ../src/qtui/mainwin.cpp:501
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr "Önceki Sohbet Listesini Etkinleştir"
 
-#: ../src/qtui/mainwin.cpp:500
+#: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr "Sohbete Git"
 
-#: ../src/qtui/mainwin.cpp:502
+#: ../src/qtui/mainwin.cpp:505
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr "Sohbete Git"
 
-#: ../src/qtui/mainwin.cpp:511
+#: ../src/qtui/mainwin.cpp:514
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "&Dosya"
 
-#: ../src/qtui/mainwin.cpp:524
+#: ../src/qtui/mainwin.cpp:527
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "&Ağ"
 
-#: ../src/qtui/mainwin.cpp:530
+#: ../src/qtui/mainwin.cpp:533
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "&Görünüm"
 
-#: ../src/qtui/mainwin.cpp:531
+#: ../src/qtui/mainwin.cpp:534
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "&Sohbet Listeleri"
 
-#: ../src/qtui/mainwin.cpp:533
+#: ../src/qtui/mainwin.cpp:536
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "&Araç Çubukları"
 
-#: ../src/qtui/mainwin.cpp:547
+#: ../src/qtui/mainwin.cpp:550
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "&Ayarlar"
 
-#: ../src/qtui/mainwin.cpp:556
+#: ../src/qtui/mainwin.cpp:559
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "&Yardım"
 
-#: ../src/qtui/mainwin.cpp:564
+#: ../src/qtui/mainwin.cpp:567
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "Hata Ayıkla"
 
-#: ../src/qtui/mainwin.cpp:840
+#: ../src/qtui/mainwin.cpp:843
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "Takma Adlar"
 
-#: ../src/qtui/mainwin.cpp:849
+#: ../src/qtui/mainwin.cpp:852
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "Takma Ad Listesini Göster"
 
-#: ../src/qtui/mainwin.cpp:862
+#: ../src/qtui/mainwin.cpp:865
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "Sohbet Ekranı"
 
-#: ../src/qtui/mainwin.cpp:874
+#: ../src/qtui/mainwin.cpp:877
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "Sohbet Ekranını Göster"
 
-#: ../src/qtui/mainwin.cpp:880
+#: ../src/qtui/mainwin.cpp:883
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "Girdi Satırı"
 
-#: ../src/qtui/mainwin.cpp:889
+#: ../src/qtui/mainwin.cpp:892
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "Girdi Satırını Göster"
 
-#: ../src/qtui/mainwin.cpp:904
+#: ../src/qtui/mainwin.cpp:907
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "Konu"
 
-#: ../src/qtui/mainwin.cpp:916
+#: ../src/qtui/mainwin.cpp:919
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "Konu Satırını Göster"
 
-#: ../src/qtui/mainwin.cpp:1010
+#: ../src/qtui/mainwin.cpp:1013
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "Ana Araç Çubuğu"
 
-#: ../src/qtui/mainwin.cpp:1053
+#: ../src/qtui/mainwin.cpp:1058
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "Çekirdeğe bağlandı."
 
-#: ../src/qtui/mainwin.cpp:1152
+#: ../src/qtui/mainwin.cpp:1157
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Çekirdeğe bağlı değil."
 
-#: ../src/qtui/mainwin.cpp:1170 ../src/qtui/mainwin.cpp:1180
+#: ../src/qtui/mainwin.cpp:1175 ../src/qtui/mainwin.cpp:1185
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Şifrelenmemiş Bağlantı"
 
-#: ../src/qtui/mainwin.cpp:1170
+#: ../src/qtui/mainwin.cpp:1175
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>İstemciniz SSL şifrelemeyi desteklemiyor</b>"
 
-#: ../src/qtui/mainwin.cpp:1172 ../src/qtui/mainwin.cpp:1182
+#: ../src/qtui/mainwin.cpp:1177 ../src/qtui/mainwin.cpp:1187
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr "Şifre benzeri hassas bilgileriniz Quassel çekirdeğinize şifresiz gönderilecektir."
 
-#: ../src/qtui/mainwin.cpp:1180
+#: ../src/qtui/mainwin.cpp:1185
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Çekirdeğiniz SSL şifrelemeyi desteklemiyor</b>"
 
-#: ../src/qtui/mainwin.cpp:1198 ../src/qtui/mainwin.cpp:1219
+#: ../src/qtui/mainwin.cpp:1203 ../src/qtui/mainwin.cpp:1224
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "Güvenilmeyen Güvenlik Sertifikası"
 
-#: ../src/qtui/mainwin.cpp:1199
+#: ../src/qtui/mainwin.cpp:1204
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4331,33 +4367,33 @@ msgid ""
 "following reasons:</b>"
 msgstr "<b>%1 tarafından sağlanan SSL sertifikasına aşağıdaki sebeplerden dolayı güvenilemiyor:</b>"
 
-#: ../src/qtui/mainwin.cpp:1202
+#: ../src/qtui/mainwin.cpp:1207
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Devam Et"
 
-#: ../src/qtui/mainwin.cpp:1203
+#: ../src/qtui/mainwin.cpp:1208
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Sertifika Göster"
 
-#: ../src/qtui/mainwin.cpp:1220
+#: ../src/qtui/mainwin.cpp:1225
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Bu sertifikayı bir daha sorulmamak üzere sonsuza kadar kabul etmek ister misiniz?"
 
-#: ../src/qtui/mainwin.cpp:1222
+#: ../src/qtui/mainwin.cpp:1227
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Sadece Geçerli Oturum"
 
-#: ../src/qtui/mainwin.cpp:1223
+#: ../src/qtui/mainwin.cpp:1228
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "Daima"
 
-#: ../src/qtui/mainwin.cpp:1234
+#: ../src/qtui/mainwin.cpp:1239
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Çekirdek Bağlantı Hatası"
@@ -5121,6 +5157,17 @@ msgctxt "QueryBufferItem|"
 msgid "server: %1"
 msgstr "sunucu: %1"
 
+#: ../src/qtui/ui/receivefiledlg.ui:14
+msgctxt "ReceiveFileDlg|"
+msgid "Incoming File Transfer"
+msgstr "Gelen Dosya Aktarımı"
+
+#: ../src/qtui/receivefiledlg.cpp:35
+#, qt-format
+msgctxt "ReceiveFileDlg|"
+msgid "<b>%1</b> wants to send you a file:<br>%2 (%3 bytes)"
+msgstr "<b>%1</b> size bir dosya göndermek istiyor:<br>%2 (%3 bayt)"
+
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgctxt "SaveIdentitiesDlg|"
 msgid "Sync With Core"
@@ -5376,7 +5423,7 @@ msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
 msgstr "Kısayollar"
 
-#: ../src/common/signalproxy.cpp:736
+#: ../src/common/signalproxy.cpp:758
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
 msgstr "Bağlantı kesiliyor"
@@ -5459,8 +5506,8 @@ msgid ""
 "network"
 msgstr "Ağa bağlandıktan sonra otomatik olarak katılacağınız IRC kanallarının bir listesi"
 
-#: ../src/qtui/snorenotificationbackend.cpp:61
-#: ../src/qtui/snorenotificationbackend.cpp:100
+#: ../src/qtui/snorenotificationbackend.cpp:60
+#: ../src/qtui/snorenotificationbackend.cpp:104
 msgctxt "SnoreNotificationBackend|"
 msgid "Private Message"
 msgstr "Özel Mesaj"
