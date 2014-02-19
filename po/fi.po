@@ -4,14 +4,14 @@
 # Jiri Grönroos <jiri.gronroos@iki.fi>, 2012
 # Larso <larso@gmx.com>, 2011-2012
 # Larso <larso@gmx.com>, 2013
-# Larso <larso@gmx.com>, 2013
+# Larso <larso@gmx.com>, 2013-2014
 # Lasse Liehu <lasse.liehu@gmail.com>, 2012-2013
 # mikuu <pinaatti@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2013-12-22 15:21+0000\n"
+"PO-Revision-Date: 2014-02-24 11:20+0000\n"
 "Last-Translator: Larso <larso@gmx.com>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/quassel/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Moderni hajautettu IRC</b><br><br>&copy;2005–2012 Quassel-projekti<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> verkossa <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC on kaksoislisensoitu <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>:n ja <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>:n alaisuudessa.<br>Suurin osa kuvakkeista on &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> ja niitä käytetään <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a> -lisenssin mukaisesti.<br><br>Ilmoita bugeista osoitteessa <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
+msgstr "<b>Moderni hajautettu IRC</b><br><br>&copy;2005–2014 Quassel-projekti<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> verkossa <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC on kaksoislisensoitu <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>:n ja <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>:n alaisuudessa.<br>Suurin osa kuvakkeista on &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> ja niitä käytetään <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>-lisenssin mukaisesti.<br><br>Ilmoita bugeista osoitteessa <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"
@@ -1025,7 +1025,7 @@ msgctxt "ChatViewSettingsPage|"
 msgid "You need at least version 0.6 of quasselcore to use this feature"
 msgstr "Tarvitset vähintään quasselcore 0.6:n tätä ominaisuutta varten"
 
-#: ../src/client/client.cpp:318
+#: ../src/client/client.cpp:320
 msgctxt "Client|"
 msgid "Identity already exists in client!"
 msgstr "Henkilöllisyys on jo olemassa!"
@@ -2171,18 +2171,18 @@ msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
 msgstr "Yhteysvirhe: %1"
 
-#: ../src/core/coresession.cpp:227
+#: ../src/core/coresession.cpp:230
 msgctxt "CoreSession|"
 msgid "Client"
 msgstr "Ohjelma"
 
-#: ../src/core/coresession.cpp:227
+#: ../src/core/coresession.cpp:230
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
 msgstr "yhteys katkaistu (UserId: %1)."
 
-#: ../src/core/coresession.cpp:474
+#: ../src/core/coresession.cpp:477
 #, qt-format
 msgctxt "CoreSession|"
 msgid ""
@@ -2190,40 +2190,77 @@ msgid ""
 " create network %1!"
 msgstr "CoreSession::createNetwork(): Sai virheellisen networkId:n ytimeltä yrittäessään luoda verkkoa %1!"
 
-#: ../src/core/coresession.cpp:506
+#: ../src/core/coresession.cpp:509
 msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Trying to create a network that already "
 "exists, updating instead!"
 msgstr "CoreSession::createNetwork(): Yritetään luoda verkkoa, joka on jo olemassa; päivitetään luomisen sijaan!"
 
-#: ../src/core/coresessioneventprocessor.cpp:75
+#: ../src/core/coresessioneventprocessor.cpp:78
 msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
 msgstr "Vapaita ja kelvollisia nimimerkkejä ei löytynyt. Jatka käyttämällä /nick <nimimerkki>"
 
-#: ../src/core/coresessioneventprocessor.cpp:447
+#: ../src/core/coresessioneventprocessor.cpp:450
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange, missing qca-ossl plugin."
 msgstr "Avainten vaihdon suorittaminen epäonnistui. qca-ossl-liitännäinen puuttuu."
 
-#: ../src/core/coresessioneventprocessor.cpp:458
+#: ../src/core/coresessioneventprocessor.cpp:461
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
 msgstr "DH1080_INIT:n jäsennys epäonnistui. Avainten vaihto epäonnistui."
 
-#: ../src/core/coresessioneventprocessor.cpp:462
-#: ../src/core/coresessioneventprocessor.cpp:470
+#: ../src/core/coresessioneventprocessor.cpp:465
+#: ../src/core/coresessioneventprocessor.cpp:473
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
 msgstr "Avaimesi on asetettu ja viestit salataan."
 
-#: ../src/core/coresessioneventprocessor.cpp:472
+#: ../src/core/coresessioneventprocessor.cpp:475
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
 msgstr "DH1080_FINISH:n jäsennys epäonnistui. Avainten vaihto epäonnistui."
+
+#: ../src/core/coresessioneventprocessor.cpp:1056
+msgctxt "CoreSessionEventProcessor|"
+msgid "Reverse DCC SEND not supported"
+msgstr "Käänteis-DCC:n SEND-komentoa ei tueta"
+
+#: ../src/core/coresessioneventprocessor.cpp:1074
+#, qt-format
+msgctxt "CoreSessionEventProcessor|"
+msgid "DCC %1 not supported"
+msgstr "Komentoa DCC %1 ei tueta"
+
+#: ../src/core/coretransfer.cpp:58
+msgctxt "CoreTransfer|"
+msgid "Socket closed while still transferring!"
+msgstr "Soketti suljettiin siirron aikana!"
+
+#: ../src/core/coretransfer.cpp:70
+#, qt-format
+msgctxt "CoreTransfer|"
+msgid "DCC connection error: %1"
+msgstr "DCC-yhteysvirhe: %1"
+
+#: ../src/core/coretransfer.cpp:114
+msgctxt "CoreTransfer|"
+msgid "Reverse DCC not supported yet!"
+msgstr "Käänteis-DCC:tä ei vielä tueta!"
+
+#: ../src/core/coretransfer.cpp:160
+msgctxt "CoreTransfer|"
+msgid "DCC Receive: Got more data than expected!"
+msgstr "DCC-vastaanotto: Saatiin odotettua enemmän dataa!"
+
+#: ../src/core/coretransfer.cpp:176
+msgctxt "CoreTransfer|"
+msgid "DCC Receive: Quassel Client disconnected during transfer!"
+msgstr "DCC-vastaanotto: Quassel-asiakas katkaisi yhteyden siirron aikana!"
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2668,7 +2705,6 @@ msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "lähetetään CTCP-%1-pyyntö kohteeseen %2"
 
-#. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
 #: ../src/core/eventstringifier.cpp:717
 msgctxt "EventStringifier|"
 msgid "unknown"
@@ -3952,379 +3988,379 @@ msgctxt "LegacyPeer|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr "<b>Quassel-ydin versio:</b> %1<br>Käännetty: %2<br>Päällä %3 d %4 h %5 m (alkaen %6)"
 
-#: ../src/qtui/mainwin.cpp:355
+#: ../src/qtui/mainwin.cpp:358
 msgctxt "MainWin|"
 msgid "General"
 msgstr "Yleiset"
 
-#: ../src/qtui/mainwin.cpp:357
+#: ../src/qtui/mainwin.cpp:360
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
 msgstr "&Yhdistä ytimeen…"
 
-#: ../src/qtui/mainwin.cpp:359
+#: ../src/qtui/mainwin.cpp:362
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
 msgstr "&Katkaise yhteys ytimeen"
 
-#: ../src/qtui/mainwin.cpp:361
+#: ../src/qtui/mainwin.cpp:364
 msgctxt "MainWin|"
 msgid "Core &Info..."
 msgstr "Ytimen &tiedot…"
 
-#: ../src/qtui/mainwin.cpp:363
+#: ../src/qtui/mainwin.cpp:366
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
 msgstr "&Verkkojen asetukset…"
 
-#: ../src/qtui/mainwin.cpp:366
+#: ../src/qtui/mainwin.cpp:369
 msgctxt "MainWin|"
 msgid "&Quit"
 msgstr "&Lopeta"
 
-#: ../src/qtui/mainwin.cpp:370
+#: ../src/qtui/mainwin.cpp:373
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
 msgstr "&Keskustelulistojen asetukset…"
 
-#: ../src/qtui/mainwin.cpp:373
+#: ../src/qtui/mainwin.cpp:376
 msgctxt "MainWin|"
 msgid "&Lock Layout"
 msgstr "&Lukitse asettelu"
 
-#: ../src/qtui/mainwin.cpp:377
+#: ../src/qtui/mainwin.cpp:380
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
 msgstr "Näytä &hakurivi"
 
-#: ../src/qtui/mainwin.cpp:379
+#: ../src/qtui/mainwin.cpp:382
 msgctxt "MainWin|"
 msgid "Show Away Log"
 msgstr "Näytä poissa-loki"
 
-#: ../src/qtui/mainwin.cpp:381
+#: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Show &Menubar"
 msgstr "Näytä &valikkorivi"
 
-#: ../src/qtui/mainwin.cpp:384
+#: ../src/qtui/mainwin.cpp:387
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
 msgstr "Näytä &tilarivi"
 
-#: ../src/qtui/mainwin.cpp:390
+#: ../src/qtui/mainwin.cpp:393
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
 msgstr "Koko &näytön tila"
 
-#: ../src/qtui/mainwin.cpp:397
+#: ../src/qtui/mainwin.cpp:400
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
 msgstr "Muokkaa &pikanäppäimiä…"
 
-#: ../src/qtui/mainwin.cpp:403 ../src/qtui/mainwin.cpp:407
+#: ../src/qtui/mainwin.cpp:406 ../src/qtui/mainwin.cpp:410
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
 msgstr "&Quasselin asetukset…"
 
-#: ../src/qtui/mainwin.cpp:413
+#: ../src/qtui/mainwin.cpp:416
 msgctxt "MainWin|"
 msgid "&About Quassel"
 msgstr "&Tietoja Quasselista"
 
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:421
 msgctxt "MainWin|"
 msgid "About &Qt"
 msgstr "Tietoja &Qt:stä"
 
-#: ../src/qtui/mainwin.cpp:422
+#: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
 msgstr "Debuggaa &NetworkModel"
 
-#: ../src/qtui/mainwin.cpp:424
+#: ../src/qtui/mainwin.cpp:427
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
 msgstr "Debuggaa &BufferViewOverlay"
 
-#: ../src/qtui/mainwin.cpp:426
+#: ../src/qtui/mainwin.cpp:429
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
 msgstr "Debuggaa &MessageModel"
 
-#: ../src/qtui/mainwin.cpp:428
+#: ../src/qtui/mainwin.cpp:431
 msgctxt "MainWin|"
 msgid "Debug &HotList"
 msgstr "Debuggaa &HotList"
 
-#: ../src/qtui/mainwin.cpp:430
+#: ../src/qtui/mainwin.cpp:433
 msgctxt "MainWin|"
 msgid "Debug &Log"
 msgstr "Debuggaa &Log"
 
-#: ../src/qtui/mainwin.cpp:432
+#: ../src/qtui/mainwin.cpp:435
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "Lataa tyylisivu uudelleen"
 
-#: ../src/qtui/mainwin.cpp:435
+#: ../src/qtui/mainwin.cpp:438
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
 msgstr "Piilota nykyinen puskuri"
 
-#: ../src/qtui/mainwin.cpp:439
+#: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "Selaus"
 
-#: ../src/qtui/mainwin.cpp:441
+#: ../src/qtui/mainwin.cpp:444
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr "Hyppää aktiiviseen keskusteluun"
 
-#: ../src/qtui/mainwin.cpp:453
+#: ../src/qtui/mainwin.cpp:456
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr "Aseta pikavalinta #0"
 
-#: ../src/qtui/mainwin.cpp:455
+#: ../src/qtui/mainwin.cpp:458
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr "Aseta pikavalinta #1"
 
-#: ../src/qtui/mainwin.cpp:457
+#: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr "Aseta pikavalinta #2"
 
-#: ../src/qtui/mainwin.cpp:459
+#: ../src/qtui/mainwin.cpp:462
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr "Aseta pikavalinta #3"
 
-#: ../src/qtui/mainwin.cpp:461
+#: ../src/qtui/mainwin.cpp:464
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr "Aseta pikavalinta #4"
 
-#: ../src/qtui/mainwin.cpp:463
+#: ../src/qtui/mainwin.cpp:466
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr "Aseta pikavalinta #5"
 
-#: ../src/qtui/mainwin.cpp:465
+#: ../src/qtui/mainwin.cpp:468
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr "Aseta pikavalinta #6"
 
-#: ../src/qtui/mainwin.cpp:467
+#: ../src/qtui/mainwin.cpp:470
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr "Aseta pikavalinta #7"
 
-#: ../src/qtui/mainwin.cpp:469
+#: ../src/qtui/mainwin.cpp:472
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr "Aseta pikavalinta #8"
 
-#: ../src/qtui/mainwin.cpp:471
+#: ../src/qtui/mainwin.cpp:474
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr "Aseta pikavalinta #9"
 
-#: ../src/qtui/mainwin.cpp:474
+#: ../src/qtui/mainwin.cpp:477
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr "Pikavalinta #0"
 
-#: ../src/qtui/mainwin.cpp:476
+#: ../src/qtui/mainwin.cpp:479
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr "Pikavalinta #1"
 
-#: ../src/qtui/mainwin.cpp:478
+#: ../src/qtui/mainwin.cpp:481
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr "Pikavalinta #2"
 
-#: ../src/qtui/mainwin.cpp:480
+#: ../src/qtui/mainwin.cpp:483
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr "Pikavalinta #3"
 
-#: ../src/qtui/mainwin.cpp:482
+#: ../src/qtui/mainwin.cpp:485
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr "Pikavalinta #4"
 
-#: ../src/qtui/mainwin.cpp:484
+#: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr "Pikavalinta #5"
 
-#: ../src/qtui/mainwin.cpp:486
+#: ../src/qtui/mainwin.cpp:489
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr "Pikavalinta #6"
 
-#: ../src/qtui/mainwin.cpp:488
+#: ../src/qtui/mainwin.cpp:491
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr "Pikavalinta #7"
 
-#: ../src/qtui/mainwin.cpp:490
+#: ../src/qtui/mainwin.cpp:493
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr "Pikavalinta #8"
 
-#: ../src/qtui/mainwin.cpp:492
+#: ../src/qtui/mainwin.cpp:495
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr "Pikavalinta #9"
 
-#: ../src/qtui/mainwin.cpp:496
+#: ../src/qtui/mainwin.cpp:499
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "Aktivoi seuraava keskustelulista"
 
-#: ../src/qtui/mainwin.cpp:498
+#: ../src/qtui/mainwin.cpp:501
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr "Aktivoi edellinen keskustelulista"
 
-#: ../src/qtui/mainwin.cpp:500
+#: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr "Siirry seuraavaan keskusteluun"
 
-#: ../src/qtui/mainwin.cpp:502
+#: ../src/qtui/mainwin.cpp:505
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr "Siirry edelliseen keskusteluun"
 
-#: ../src/qtui/mainwin.cpp:511
+#: ../src/qtui/mainwin.cpp:514
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "&Tiedosto"
 
-#: ../src/qtui/mainwin.cpp:524
+#: ../src/qtui/mainwin.cpp:527
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "&Verkot"
 
-#: ../src/qtui/mainwin.cpp:530
+#: ../src/qtui/mainwin.cpp:533
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "&Näytä"
 
-#: ../src/qtui/mainwin.cpp:531
+#: ../src/qtui/mainwin.cpp:534
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "&Keskustelulistat"
 
-#: ../src/qtui/mainwin.cpp:533
+#: ../src/qtui/mainwin.cpp:536
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "&Työkalurivit"
 
-#: ../src/qtui/mainwin.cpp:547
+#: ../src/qtui/mainwin.cpp:550
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "&Asetukset"
 
-#: ../src/qtui/mainwin.cpp:556
+#: ../src/qtui/mainwin.cpp:559
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "O&hje"
 
-#: ../src/qtui/mainwin.cpp:564
+#: ../src/qtui/mainwin.cpp:567
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "Kehittäjille"
 
-#: ../src/qtui/mainwin.cpp:840
+#: ../src/qtui/mainwin.cpp:843
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "Nimimerkit"
 
-#: ../src/qtui/mainwin.cpp:849
+#: ../src/qtui/mainwin.cpp:852
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "Näytä nimimerkkilista"
 
-#: ../src/qtui/mainwin.cpp:862
+#: ../src/qtui/mainwin.cpp:865
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "Keskusteluvahti"
 
-#: ../src/qtui/mainwin.cpp:874
+#: ../src/qtui/mainwin.cpp:877
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "Näytä keskusteluvahti"
 
-#: ../src/qtui/mainwin.cpp:880
+#: ../src/qtui/mainwin.cpp:883
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "Syöterivi"
 
-#: ../src/qtui/mainwin.cpp:889
+#: ../src/qtui/mainwin.cpp:892
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "Näytä syöterivi"
 
-#: ../src/qtui/mainwin.cpp:904
+#: ../src/qtui/mainwin.cpp:907
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "Aihe"
 
-#: ../src/qtui/mainwin.cpp:916
+#: ../src/qtui/mainwin.cpp:919
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "Näytä aiherivi"
 
-#: ../src/qtui/mainwin.cpp:1010
+#: ../src/qtui/mainwin.cpp:1013
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "Päätyökalurivi"
 
-#: ../src/qtui/mainwin.cpp:1053
+#: ../src/qtui/mainwin.cpp:1058
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "Yhdistetty ytimeen."
 
-#: ../src/qtui/mainwin.cpp:1152
+#: ../src/qtui/mainwin.cpp:1157
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Ei yhteyttä ytimeen."
 
-#: ../src/qtui/mainwin.cpp:1170 ../src/qtui/mainwin.cpp:1180
+#: ../src/qtui/mainwin.cpp:1175 ../src/qtui/mainwin.cpp:1185
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Salaamaton yhteys"
 
-#: ../src/qtui/mainwin.cpp:1170
+#: ../src/qtui/mainwin.cpp:1175
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>Asiakasohjelmasi ei tue SSL-salausta</b>"
 
-#: ../src/qtui/mainwin.cpp:1172 ../src/qtui/mainwin.cpp:1182
+#: ../src/qtui/mainwin.cpp:1177 ../src/qtui/mainwin.cpp:1187
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr "Arkaluontoista dataa, kuten salasanoja, lähetetään Quassel-ytimelle salaamattomana."
 
-#: ../src/qtui/mainwin.cpp:1180
+#: ../src/qtui/mainwin.cpp:1185
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Ytimesi ei tue SSL-salausta</b>"
 
-#: ../src/qtui/mainwin.cpp:1198 ../src/qtui/mainwin.cpp:1219
+#: ../src/qtui/mainwin.cpp:1203 ../src/qtui/mainwin.cpp:1224
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "Varmenne ei luotettu"
 
-#: ../src/qtui/mainwin.cpp:1199
+#: ../src/qtui/mainwin.cpp:1204
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4332,33 +4368,33 @@ msgid ""
 "following reasons:</b>"
 msgstr "<b>Ytimen %1 tarjoama SSL-varmenne ei ole luotettu seuraavista syistä:</b>"
 
-#: ../src/qtui/mainwin.cpp:1202
+#: ../src/qtui/mainwin.cpp:1207
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Jatka"
 
-#: ../src/qtui/mainwin.cpp:1203
+#: ../src/qtui/mainwin.cpp:1208
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Näytä varmenne"
 
-#: ../src/qtui/mainwin.cpp:1220
+#: ../src/qtui/mainwin.cpp:1225
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Haluatko hyväksyä tämän varmenteen aina?"
 
-#: ../src/qtui/mainwin.cpp:1222
+#: ../src/qtui/mainwin.cpp:1227
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Vain nykyisen istunnon ajaksi"
 
-#: ../src/qtui/mainwin.cpp:1223
+#: ../src/qtui/mainwin.cpp:1228
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "Aina"
 
-#: ../src/qtui/mainwin.cpp:1234
+#: ../src/qtui/mainwin.cpp:1239
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Virhe yhteydessä ytimeen"
@@ -5122,6 +5158,17 @@ msgctxt "QueryBufferItem|"
 msgid "server: %1"
 msgstr "palvelin: %1"
 
+#: ../src/qtui/ui/receivefiledlg.ui:14
+msgctxt "ReceiveFileDlg|"
+msgid "Incoming File Transfer"
+msgstr "Saapuva tiedostosiirto"
+
+#: ../src/qtui/receivefiledlg.cpp:35
+#, qt-format
+msgctxt "ReceiveFileDlg|"
+msgid "<b>%1</b> wants to send you a file:<br>%2 (%3 bytes)"
+msgstr "<b>%1</b> haluaa lähettää sinulle tiedoston:<br>%2 (%3 tavua)"
+
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgctxt "SaveIdentitiesDlg|"
 msgid "Sync With Core"
@@ -5377,7 +5424,7 @@ msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
 msgstr "Pikanäppäimet"
 
-#: ../src/common/signalproxy.cpp:736
+#: ../src/common/signalproxy.cpp:758
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
 msgstr "Katkaistaan yhteys"
@@ -5460,8 +5507,8 @@ msgid ""
 "network"
 msgstr "Lista IRC-kanavista, joille liityt automaattisesti yhdistettyäsi verkkoon"
 
-#: ../src/qtui/snorenotificationbackend.cpp:61
-#: ../src/qtui/snorenotificationbackend.cpp:100
+#: ../src/qtui/snorenotificationbackend.cpp:60
+#: ../src/qtui/snorenotificationbackend.cpp:104
 msgctxt "SnoreNotificationBackend|"
 msgid "Private Message"
 msgstr "Yksityisviesti"
