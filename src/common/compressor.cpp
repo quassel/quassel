@@ -243,7 +243,7 @@ void Compressor::writeData()
             return;
         }
 
-        if (_deflater->avail_out == ioBufferSize)
+        if (_deflater->avail_out == static_cast<unsigned int>(ioBufferSize))
             continue; // nothing to write here
 
         if (!_socket->write(_outputBuffer.constData(), ioBufferSize - _deflater->avail_out)) {
