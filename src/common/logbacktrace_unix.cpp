@@ -54,7 +54,7 @@ void Quassel::logBacktrace(const QString &filename)
         //       void *dli_saddr;           /* Exact value of nearest symbol.  */
         //     } Dl_info;
 
-    #if __LP64__
+    #ifdef __LP64__
         int addrSize = 16;
     #else
         int addrSize = 8;
