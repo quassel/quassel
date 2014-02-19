@@ -43,8 +43,6 @@ set(SOURCES
 
     protocols/datastream/datastreampeer.cpp
     protocols/legacy/legacypeer.cpp
-
-    ../../3rdparty/miniz/miniz.c
 )
 
 set(MOC_HDRS
@@ -98,6 +96,10 @@ if (HAVE_QCA2)
     set(SOURCES ${SOURCES} keyevent.cpp)
     set(HEADERS ${HEADERS} keyevent.h)
 endif(HAVE_QCA2)
+
+if(NOT HAVE_ZLIB)
+    set(SOURCES ${SOURCES} ../../3rdparty/miniz/miniz.c)
+endif(NOT HAVE_ZLIB)
 
 if(APPLE)
   set(SOURCES ${SOURCES} mac_utils.cpp)

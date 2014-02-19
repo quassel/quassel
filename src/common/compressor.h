@@ -25,7 +25,11 @@
 
 class QTcpSocket;
 
-typedef struct mz_stream_s *z_streamp;
+#ifdef HAVE_ZLIB
+    typedef struct z_stream_s *z_streamp;
+#else
+    typedef struct mz_stream_s *z_streamp;
+#endif
 
 class Compressor : public QObject
 {

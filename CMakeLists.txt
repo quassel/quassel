@@ -242,6 +242,21 @@ if(QT_LRELEASE_EXECUTABLE)
 endif(QT_LRELEASE_EXECUTABLE)
 
 
+# zlib for compression, however we can always fall back to miniz
+find_package(ZLIB)
+if(ZLIB_FOUND)
+  message(STATUS "Using system zlib for compression")
+  add_definitions(-DHAVE_ZLIB)
+  include_directories(${ZLIB_INCLUDE_DIRS})
+  set(COMMON_LIBRARIES ${COMMON_LIBRARIES} ${ZLIB_LIBRARIES})
+else()
+  message(STATUS "zlib NOT found, using bundled miniz for compression")
+  if(${CMAKE_SIZEOF_VOID_P} EQUAL 4)
+    message(STATUS "WARNING: This may be slow on 32 bit systems!")
+  endif()
+endif()
+
+
 # Execinfo is needed for generating backtraces
 find_package(ExecInfo)
 if(EXECINFO_FOUND)

@@ -23,8 +23,12 @@
 #include <QTcpSocket>
 #include <QTimer>
 
-#define MINIZ_HEADER_FILE_ONLY
-#include "../../3rdparty/miniz/miniz.c"
+#ifdef HAVE_ZLIB
+#    include <zlib.h>
+#else
+#    define MINIZ_HEADER_FILE_ONLY
+#    include "../../3rdparty/miniz/miniz.c"
+#endif
 
 const int maxBufferSize = 64 * 1024 * 1024; // protect us from zip bombs
 const int ioBufferSize = 64 * 1024;         // chunk size for inflate/deflate; should not be too large as we preallocate that space!
@@ -176,7 +180,7 @@ void Compressor::readData()
         _readBuffer.resize(_readBuffer.size() + ioBufferSize);
         _inputBuffer.append(_socket->read(ioBufferSize - _inputBuffer.size()));
 
-        _inflater->next_in = reinterpret_cast<const unsigned char *>(_inputBuffer.constData());
+        _inflater->next_in = reinterpret_cast<unsigned char *>(_inputBuffer.data());
         _inflater->avail_in = _inputBuffer.size();
         _inflater->next_out = reinterpret_cast<unsigned char *>(_readBuffer.data() + _readBuffer.size() - ioBufferSize);
         _inflater->avail_out = ioBufferSize;
@@ -186,7 +190,7 @@ void Compressor::readData()
         int status = inflate(_inflater, Z_SYNC_FLUSH); // get as much data as possible
 
         // adjust input and output buffers
-        _readBuffer.resize(_inflater->next_out - reinterpret_cast<const unsigned char *>(_readBuffer.constData()));
+        _readBuffer.resize(_inflater->next_out - reinterpret_cast<unsigned char *>(_readBuffer.data()));
         if (_inflater->avail_in > 0)
             memmove(_inputBuffer.data(), _inflater->next_in, _inflater->avail_in);
         _inputBuffer.resize(_inflater->avail_in);
@@ -225,7 +229,7 @@ void Compressor::writeData()
         return;
     }
 
-    _deflater->next_in = reinterpret_cast<const unsigned char *>(_writeBuffer.constData());
+    _deflater->next_in = reinterpret_cast<unsigned char *>(_writeBuffer.data());
     _deflater->avail_in = _writeBuffer.size();
 
     int status;

@@ -16,7 +16,7 @@ if(BUILD_GUI)
 
   if(STATIC)
     link_directories(${QT_PLUGINS_DIR}/imageformats)
-    set(CLIENT_LIBS ${CLIENT_LIBS} qjpeg qgif)
+    set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} qjpeg qgif)
   endif(STATIC)
 endif(BUILD_GUI)
 
@@ -42,7 +42,7 @@ if(WANT_CORE)
   set_target_properties(quasselcore PROPERTIES
                                     COMPILE_FLAGS "-DBUILD_CORE ${QUASSEL_QT_COMPILEFLAGS}"
                                     OUTPUT_NAME ../quasselcore)
-  target_link_libraries(quasselcore mod_core mod_common
+  target_link_libraries(quasselcore mod_core mod_common ${COMMON_LIBRARIES}
                                     ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_CORE)
@@ -55,7 +55,7 @@ if(WANT_QTCLIENT)
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DBUILD_QTUI ${QUASSEL_QT_COMPILEFLAGS} ${CLIENT_COMPILE_FLAGS}"
                                       OUTPUT_NAME ../quasselclient)
-  target_link_libraries(quasselclient ${LINK_KDE} mod_qtui mod_uisupport mod_client mod_common ${CLIENT_LIBS}
+  target_link_libraries(quasselclient ${LINK_KDE} mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES}
                                       ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${CLIENT_LIBRARIES})
   install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_QTCLIENT)
@@ -71,7 +71,7 @@ if(WANT_MONO)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DBUILD_MONO ${QUASSEL_QT_COMPILEFLAGS} ${CLIENT_COMPILE_FLAGS}"
                                 OUTPUT_NAME ../quassel)
-  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${CLIENT_LIBS}
+  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES}
                                 ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${CLIENT_LIBRARIES})
   install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_MONO)
