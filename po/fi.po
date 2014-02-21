@@ -73,7 +73,7 @@ msgstr "<b>Versio:</b> %1<br><b>Protokollan versio:</b> %2<br><b>Käännetty:</b
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"

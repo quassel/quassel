@@ -72,7 +72,7 @@ msgstr "<b>Versjon<b> %1<br><b>Protokoll versjon:</b> %2<br>Bygget:</b> %3"
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -83,7 +83,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>En moderne, distribuert IRC-klient</b><br><br>&copy;2005-2010 Quassel-projektet<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> på <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC er dobbelt-lisensiert under<a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> og <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>De fleste ikonene er &copy; av <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> og brukes under <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Bruk <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> for å rapportere feil."
+msgstr "<b>En moderne, distribuert IRC-klient</b><br><br>&copy;%1 Quassel-projektet<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> på <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC er dobbelt-lisensiert under<a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> og <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>De fleste ikonene er &copy; av <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> og brukes under <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Bruk <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> for å rapportere feil."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"

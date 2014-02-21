@@ -73,7 +73,7 @@ msgstr "<b>Version :</b> %1<br><b>Version du protocole :</b> %2<br><b>Compilat
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -84,7 +84,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Un Client IRC distribué moderne</b><br><br>&copy;2005-2009 par le projet Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> sur <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC est sous double licence <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> et <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>La majorité des icônes proviennent de l'<a href=\"http://www.oxygen-icons.org\">équipe Oxygen</a> &copy; et sont utilisées sous licence <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Veuillez utiliser <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> pour signaler les bogues."
+msgstr "<b>Un Client IRC distribué moderne</b><br><br>&copy;%1 par le projet Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> sur <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC est sous double licence <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> et <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>La majorité des icônes proviennent de l'<a href=\"http://www.oxygen-icons.org\">équipe Oxygen</a> &copy; et sont utilisées sous licence <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Veuillez utiliser <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> pour signaler les bogues."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"

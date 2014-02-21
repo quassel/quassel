@@ -67,7 +67,7 @@ msgstr "<b>Versija:</b> %1<br><b>Protokolo versija:</b> %2<br><b>Sukompiliuota:<
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -78,7 +78,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Modernus, platinamas IRC klientas</b><br><br>&copy;2005-2012 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> serveryje <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC yra su dviguba licenzija pagal <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> ir <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Didžioji dalis ženkliukų yra &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> ir panaudotos pagal <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Prašome naudoti <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>, kad pranešti apie klaidas."
+msgstr "<b>Modernus, platinamas IRC klientas</b><br><br>&copy;%1 Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> serveryje <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC yra su dviguba licenzija pagal <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> ir <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Didžioji dalis ženkliukų yra &copy; <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> ir panaudotos pagal <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Prašome naudoti <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>, kad pranešti apie klaidas."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"

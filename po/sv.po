@@ -69,7 +69,7 @@ msgstr "<b>Version:</b> %1<br><b>Protokollversion:</b> %2<br><b>Byggd:</b> %3"
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -80,7 +80,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>En modern, distribuerad IRC-klient</b><br><br>&copy;2005-2012 Quassel-projektet<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> på <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC är dubbel-licensierad under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> och <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>De flesta ikoner är &copy; av <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> och används under <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Använd <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> för att rapportera fel."
+msgstr "<b>En modern, distribuerad IRC-klient</b><br><br>&copy;%1 Quassel-projektet<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> på <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC är dubbel-licensierad under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> och <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>De flesta ikoner är &copy; av <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> och används under <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Använd <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> för att rapportera fel."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"

@@ -76,7 +76,7 @@ msgstr "<b>Έκδοση:</b> %1<br><b>Έκδοση πρωτοκόλλου:</b> %
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -87,7 +87,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Μια μοντέρνα διανομή πελάτη IRC</b><br><br>&copy;2005-2012 απο την εργασία Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> στο <a href=\"http://www.freenode.net\">Freenode</a><br><br>Το Quassel IRC είναι διπλής άδειας κάτω από την <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> και την <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Οι περισσότερες εικόνες είναι &copy; από την  <a href=\"http://www.oxygen-icons.org\">Ομάδα Oxygen</a> και χρησιμοποιούνται κάτω από την <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Παρακαλώ χρησιμοποιείστε το <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> για την αναφορά βλαβών."
+msgstr "<b>Μια μοντέρνα διανομή πελάτη IRC</b><br><br>&copy;%1 απο την εργασία Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> στο <a href=\"http://www.freenode.net\">Freenode</a><br><br>Το Quassel IRC είναι διπλής άδειας κάτω από την <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> και την <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Οι περισσότερες εικόνες είναι &copy; από την  <a href=\"http://www.oxygen-icons.org\">Ομάδα Oxygen</a> και χρησιμοποιούνται κάτω από την <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Παρακαλώ χρησιμοποιείστε το <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> για την αναφορά βλαβών."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"

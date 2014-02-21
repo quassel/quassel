@@ -68,7 +68,7 @@ msgstr "<b>Različica:</b> %1<br><b>Različica protokola:</b> %2<br><b>Zgrajeno:
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -79,7 +79,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Moderen, porazdeljen odjemalec za IRC</b><br><br>&copy;2005-2012 projekt Quassel<br><a href=\"http://quassel-irc.org/\">quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je izdan pod pogoji licenc <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> in <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>.<br>Večina ikon je &copy; s strani <a href=\"http://www.oxygen-icons.org\">ekipe Oxygen</a> in uporabljenih pod pogoji <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Za poročanje o napakah obiščite stran <a href=\"http://bugs.quassel-irc.org\">bugs.quassel-irc.org</a>."
+msgstr "<b>Moderen, porazdeljen odjemalec za IRC</b><br><br>&copy;%1 projekt Quassel<br><a href=\"http://quassel-irc.org/\">quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je izdan pod pogoji licenc <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> in <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>.<br>Večina ikon je &copy; s strani <a href=\"http://www.oxygen-icons.org\">ekipe Oxygen</a> in uporabljenih pod pogoji <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Za poročanje o napakah obiščite stran <a href=\"http://bugs.quassel-irc.org\">bugs.quassel-irc.org</a>."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"

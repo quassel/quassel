@@ -69,7 +69,7 @@ msgstr "<b>Verzió:</b> %1<br><b>Protokollverzió:</b> %2<br><b>Összeállítva:
 #: ../src/qtui/aboutdlg.cpp:49
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;2005-2013 by the "
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
 "Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
@@ -80,7 +80,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Egy modern, elosztott IRC-kliens<b><br><br>&copy; A Quassel projekt, 2005-2012.<br><a href=\"http://quassel-irc.org\">#quassel</a> a <a href=\" http://www.freenode.net\">Freenode</a> hálózaton.</a><br><br>A Quassel IRC a <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> és <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> kettős licencek szerint érhető el.<br>A legtöbb ikon tulajdonosai az <a href=\" http://www.oxygen-icons.org\">Oxygen fejlesztői</a>, és a <a href=\"http:// www.gnu.org/licenses/lgpl.html\">LGPL</a> licenc alatt érhetők el.<br><br> Kérjük a hibákat a <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel- irc.org</a> oldalon jelentsék."
+msgstr "<b>Egy modern, elosztott IRC-kliens<b><br><br>&copy; A Quassel projekt, %1.<br><a href=\"http://quassel-irc.org\">#quassel</a> a <a href=\" http://www.freenode.net\">Freenode</a> hálózaton.</a><br><br>A Quassel IRC a <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> és <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> kettős licencek szerint érhető el.<br>A legtöbb ikon tulajdonosai az <a href=\" http://www.oxygen-icons.org\">Oxygen fejlesztői</a>, és a <a href=\"http:// www.gnu.org/licenses/lgpl.html\">LGPL</a> licenc alatt érhetők el.<br><br> Kérjük a hibákat a <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel- irc.org</a> oldalon jelentsék."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"
