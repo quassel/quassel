@@ -47,7 +47,7 @@ QString AboutDlg::about() const
 {
     QString res;
     res = tr("<b>A modern, distributed IRC Client</b><br><br>"
-             "&copy;2005-2014 by the Quassel Project<br>"
+             "&copy;%1 by the Quassel Project<br>"
              "<a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br>"
              "<a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>"
              "Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and "
@@ -55,7 +55,7 @@ QString AboutDlg::about() const
              "Most icons are &copy; by the <a href=\"http://www.oxygen-icons.org\">Oxygen Team</a> and used under the "
              "<a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>"
              "Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-        );
+        ).arg("2005-2014");
 
     return res;
 }
