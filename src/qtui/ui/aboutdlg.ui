@@ -72,10 +72,7 @@ p, li { white-space: pre-wrap; }
              <font/>
             </property>
             <property name="text">
-             <string>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Version 0.2.0-pre, Build &amp;gt;= 474 (2008-02-08)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string notr="true"/>
             </property>
             <property name="openExternalLinks">
              <bool>true</bool>
