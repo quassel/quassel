@@ -21,6 +21,7 @@
 #ifndef CLIENTAUTHHANDLER_H
 #define CLIENTAUTHHANDLER_H
 
+#include "compressor.h"
 #include "authhandler.h"
 #include "coreaccount.h"
 

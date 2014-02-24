@@ -173,7 +173,7 @@ void ClientAuthHandler::onSocketConnected()
         if (_account.useSsl())
             magic |= Protocol::Encryption;
 #endif
-        //magic |= Protocol::Compression; // not implemented yet
+        magic |= Protocol::Compression;
 
         stream << magic;
 
@@ -195,7 +195,7 @@ void ClientAuthHandler::onSocketConnected()
 
     qDebug() << "Legacy core detected, switching to compatibility mode";
 
-    RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), this);
+    RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), Compressor::NoCompression, this);
     // Only needed for the legacy peer, as all others check the protocol version before instantiation
     connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
 
@@ -222,7 +222,13 @@ void ClientAuthHandler::onReadyRead()
     quint16 protoFeatures = static_cast<quint16>(reply>>8 & 0xffff);
     _connectionFeatures = static_cast<quint8>(reply>>24);
 
-    RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(type, protoFeatures), this, socket(), this);
+    Compressor::CompressionLevel level;
+    if (_connectionFeatures & Protocol::Compression)
+        level = Compressor::BestCompression;
+    else
+        level = Compressor::NoCompression;
+
+    RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(type, protoFeatures), this, socket(), level, this);
     if (!peer) {
         qWarning() << "No valid protocol supported for this core!";
         emit errorPopup(tr("<b>Incompatible Quassel Core!</b><br>"
