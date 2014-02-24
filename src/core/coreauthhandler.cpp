@@ -63,7 +63,7 @@ void CoreAuthHandler::onReadyRead()
             // no magic, assume legacy protocol
             qDebug() << "Legacy client detected, switching to compatibility mode";
             _legacy = true;
-            RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), this);
+            RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), Compressor::NoCompression, this);
             connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
             setPeer(peer);
             return;
@@ -91,7 +91,13 @@ void CoreAuthHandler::onReadyRead()
         _supportedProtos.append(PeerFactory::ProtoDescriptor(type, protoFeatures));
 
         if (data >= 0x80000000) { // last protocol
-            RemotePeer *peer = PeerFactory::createPeer(_supportedProtos, this, socket(), this);
+            Compressor::CompressionLevel level;
+            if (_connectionFeatures & Protocol::Compression)
+                level = Compressor::BestCompression;
+            else
+                level = Compressor::NoCompression;
+
+            RemotePeer *peer = PeerFactory::createPeer(_supportedProtos, this, socket(), level, this);
             if (peer->protocol() == Protocol::LegacyProtocol) {
                 _legacy = true;
                 connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));

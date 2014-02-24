@@ -23,6 +23,7 @@
 
 #include <QPair>
 
+#include "compressor.h"
 #include "protocol.h"
 
 class QObject;
@@ -41,8 +42,8 @@ public:
 
     static ProtoList supportedProtocols();
 
-    static RemotePeer *createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
-    static RemotePeer *createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent = 0);
+    static RemotePeer *createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = 0);
+    static RemotePeer *createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = 0);
 
 };
 

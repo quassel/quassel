@@ -39,7 +39,7 @@ public:
         HeartBeatReply
     };
 
-    DataStreamPeer(AuthHandler *authHandler, QTcpSocket *socket, quint16 features, QObject *parent = 0);
+    DataStreamPeer(AuthHandler *authHandler, QTcpSocket *socket, quint16 features, Compressor::CompressionLevel level, QObject *parent = 0);
 
     Protocol::Type protocol() const { return Protocol::DataStreamProtocol; }
     QString protocolName() const { return "the DataStream protocol"; }

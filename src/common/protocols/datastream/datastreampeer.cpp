@@ -28,8 +28,8 @@
 
 using namespace Protocol;
 
-DataStreamPeer::DataStreamPeer(::AuthHandler *authHandler, QTcpSocket *socket, quint16 features, QObject *parent)
-    : RemotePeer(authHandler, socket, Compressor::BestCompression, parent)
+DataStreamPeer::DataStreamPeer(::AuthHandler *authHandler, QTcpSocket *socket, quint16 features, Compressor::CompressionLevel level, QObject *parent)
+    : RemotePeer(authHandler, socket, level, parent)
 {
     Q_UNUSED(features);
 }

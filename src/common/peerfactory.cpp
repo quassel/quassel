@@ -33,23 +33,23 @@ PeerFactory::ProtoList PeerFactory::supportedProtocols()
 }
 
 
-RemotePeer *PeerFactory::createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
+RemotePeer *PeerFactory::createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent)
 {
-    return createPeer(ProtoList() << protocol, authHandler, socket, parent);
+    return createPeer(ProtoList() << protocol, authHandler, socket, level, parent);
 }
 
 
-RemotePeer *PeerFactory::createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, QObject *parent)
+RemotePeer *PeerFactory::createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent)
 {
     foreach(const ProtoDescriptor &protodesc, protocols) {
         Protocol::Type proto = protodesc.first;
         quint16 features = protodesc.second;
         switch(proto) {
             case Protocol::LegacyProtocol:
-                return new LegacyPeer(authHandler, socket, parent);
+                return new LegacyPeer(authHandler, socket, level, parent);
             case Protocol::DataStreamProtocol:
                 if (DataStreamPeer::acceptsFeatures(features))
-                    return new DataStreamPeer(authHandler, socket, features, parent);
+                    return new DataStreamPeer(authHandler, socket, features, level, parent);
                 break;
             default:
                 break;
