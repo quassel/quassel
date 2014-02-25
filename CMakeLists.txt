@@ -397,6 +397,13 @@ if(BUILD_GUI)
     else(WITH_PHONON)
       message(STATUS "Not enabling Phonon support")
     endif(WITH_PHONON)
+
+    find_package(Libsnore)
+    if(LIBSNORE_FOUND)
+        add_definitions(-DHAVE_LIBSNORE)
+        set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${LIBSNORE_LIBRARIES})
+        set(HAVE_SNORENOTIFY true)
+    endif(LIBSNORE_FOUND)
   endif(NOT HAVE_KDE)
 
   # Setup libindicate-qt support
@@ -425,13 +432,6 @@ if(BUILD_GUI)
       /System/Library/Frameworks/Foundation.framework
     )
   endif()
-
-find_package(Libsnore)
-if(LIBSNORE_FOUND)
-    add_definitions(-DHAVE_LIBSNORE -DLIBSNORE_PLUGIN_PATH="${LIBSNORE_PLUGIN_PATH}")
-    set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${LIBSNORE_LIBRARIES})
-    set(HAVE_SNORENOTIFY true)
-endif(LIBSNORE_FOUND)
 endif(BUILD_GUI)
 
 # Core-only deps
