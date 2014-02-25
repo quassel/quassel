@@ -37,7 +37,7 @@
 
 
 SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
-    :AbstractNotificationBackend(parent),
+    : AbstractNotificationBackend(parent),
       m_systrayBackend(NULL)
 {
     NotificationSettings notificationSettings;
@@ -50,12 +50,12 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     //TODO: try to get an instance of the tray icon to be able to show popups
     m_snore = new Snore::SnoreCore();
     m_snore->loadPlugins(Snore::SnorePlugin::BACKEND);
-    m_application = Snore::Application("Quassel", Snore::Icon(DesktopIcon("quassel").toImage()));
+    m_icon = Snore::Icon(DesktopIcon("quassel").toImage());
+    m_application = Snore::Application("Quassel", m_icon);
     m_application.hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
 
     connect(m_snore, SIGNAL(actionInvoked(Snore::Notification)), this, SLOT(actionInvoked(Snore::Notification)));
 
-    m_icon = Snore::Icon(DesktopIcon("dialog-information").toImage());
 
     m_alert = Snore::Alert(tr("Private Message"), m_icon);
     m_application.addAlert(m_alert);
@@ -76,12 +76,7 @@ SnoreNotificationBackend::~SnoreNotificationBackend()
 void SnoreNotificationBackend::backendChanged(const QVariant &v)
 {
     QString backend = v.toString();
-    if (backend == "Default") {
-        if (m_snore->setPrimaryNotificationBackend()) {//try to find the default backend for the platform
-            return;
-        }
-    }
-    else if (backend != "SystemTray") {
+    if (backend != "Default") {
         if (setSnoreBackend(backend)) {
             return;
         }
@@ -154,8 +149,10 @@ SnoreNotificationBackend::ConfigWidget::ConfigWidget(Snore::SnoreCore *snore, QW
       m_snore(snore)
 {
     ui.setupUi(this);
-    ui.backends->insertItem(0, "Default");
-    ui.backends->insertItems(1, m_snore->notificationBackends());
+    QStringList backends = m_snore->notificationBackends();
+    backends.append("Default");
+    qSort(backends);
+    ui.backends->insertItems(0, backends);
 
     connect(ui.backends, SIGNAL(currentIndexChanged(QString)), SLOT(backendChanged(QString)));
     connect(ui.timeout, SIGNAL(valueChanged(int)), this, SLOT(timeoutChanged(int)));
@@ -188,10 +185,7 @@ void SnoreNotificationBackend::ConfigWidget::defaults()
 void SnoreNotificationBackend::ConfigWidget::load()
 {
     NotificationSettings s;
-    QString backend = m_snore->primaryNotificationBackend();
-    if (backend.isEmpty()) {
-        backend = "SystemTray";
-    }
+    QString backend = s.value("Snore/Backend", "Default").toString();
     int timeout = s.value("Snore/Timeout", 10).toInt();
     ui.backends->setCurrentIndex(ui.backends->findText(backend));
     ui.timeout->setValue(timeout);
