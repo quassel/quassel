@@ -120,52 +120,6 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>SSL Version:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="sslVersion">
-           <property name="toolTip">
-            <string>Do not change unless you're going to connect to a server not supporting SSLv3!</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>SSLv3 (default)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>SSLv2</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>TLSv1</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
         <widget class="QGroupBox" name="useProxy">
          <property name="title">
           <string>Use a Proxy</string>
@@ -309,7 +263,6 @@
   <tabstop>port</tabstop>
   <tabstop>password</tabstop>
   <tabstop>useSSL</tabstop>
-  <tabstop>sslVersion</tabstop>
   <tabstop>useProxy</tabstop>
   <tabstop>proxyType</tabstop>
   <tabstop>proxyHost</tabstop>
