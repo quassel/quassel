@@ -185,7 +185,6 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     enablePingTimeout();
 
 #ifdef HAVE_SSL
-    socket.setProtocol((QSsl::SslProtocol)server.sslVersion);
     if (server.useSsl) {
         CoreIdentity *identity = identityPtr();
         if (identity) {

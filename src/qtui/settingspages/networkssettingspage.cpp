@@ -867,7 +867,6 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
     ui.port->setValue(server.port);
     ui.password->setText(server.password);
     ui.useSSL->setChecked(server.useSsl);
-    ui.sslVersion->setCurrentIndex(server.sslVersion);
     ui.useProxy->setChecked(server.useProxy);
     ui.proxyType->setCurrentIndex(server.proxyType == QNetworkProxy::Socks5Proxy ? 0 : 1);
     ui.proxyHost->setText(server.proxyHost);
@@ -881,7 +880,6 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
 Network::Server ServerEditDlg::serverData() const
 {
     Network::Server server(ui.host->text().trimmed(), ui.port->value(), ui.password->text(), ui.useSSL->isChecked());
-    server.sslVersion = ui.sslVersion->currentIndex();
     server.useProxy = ui.useProxy->isChecked();
     server.proxyType = ui.proxyType->currentIndex() == 0 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
     server.proxyHost = ui.proxyHost->text();
