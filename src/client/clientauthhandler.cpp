@@ -114,7 +114,9 @@ void ClientAuthHandler::onSocketStateChanged(QAbstractSocket::SocketState socket
                 text = tr("Disconnected");
                 // Ensure the disconnected() signal is sent even if we haven't reached the Connected state yet.
                 // The baseclass implementation will make sure to only send the signal once.
-                onSocketDisconnected();
+                // However, we do want to prefer a potential socket error signal that may be on route already, so
+                // give this a chance to overtake us by spinning the loop...
+                QTimer::singleShot(0, this, SLOT(onSocketDisconnected()));
             }
             break;
         default:

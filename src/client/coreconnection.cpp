@@ -378,8 +378,6 @@ void CoreConnection::connectToCurrentAccount()
         return;
     }
 
-    resetConnection(false);
-
     if (currentAccount().isInternal()) {
         if (Quassel::runMode() != Quassel::Monolithic) {
             qWarning() << "Cannot connect to internal core in client-only mode!";
