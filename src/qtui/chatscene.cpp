@@ -89,12 +89,12 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     connect(this, SIGNAL(sceneRectChanged(const QRectF &)), _markerLine, SLOT(sceneRectChanged(const QRectF &)));
 
     ChatViewSettings defaultSettings;
-    int defaultFirstColHandlePos = defaultSettings.value("FirstColumnHandlePos", 80).toInt();
-    int defaultSecondColHandlePos = defaultSettings.value("SecondColumnHandlePos", 200).toInt();
+    _defaultFirstColHandlePos = defaultSettings.value("FirstColumnHandlePos", 80).toInt();
+    _defaultSecondColHandlePos = defaultSettings.value("SecondColumnHandlePos", 200).toInt();
 
     ChatViewSettings viewSettings(this);
-    _firstColHandlePos = viewSettings.value("FirstColumnHandlePos", defaultFirstColHandlePos).toInt();
-    _secondColHandlePos = viewSettings.value("SecondColumnHandlePos", defaultSecondColHandlePos).toInt();
+    _firstColHandlePos = viewSettings.value("FirstColumnHandlePos", _defaultFirstColHandlePos).toInt();
+    _secondColHandlePos = viewSettings.value("SecondColumnHandlePos", _defaultSecondColHandlePos).toInt();
 
     _firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator());
     addItem(_firstColHandle);
@@ -159,6 +159,17 @@ ColumnHandleItem *ChatScene::secondColumnHandle() const
     return _secondColHandle;
 }
 
+void ChatScene::resetColumnWidths()
+{
+    //make sure first column is at least 80 px wide, second 120 px
+    int firstColHandlePos = qMax(_defaultFirstColHandlePos,
+                                 80);
+    int secondColHandlePos = qMax(_defaultSecondColHandlePos,
+                                  firstColHandlePos + 120);
+
+    _firstColHandle->setXPos(firstColHandlePos);
+    _secondColHandle->setXPos(secondColHandlePos);
+}
 
 ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange) const
 {
@@ -826,6 +837,11 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
     if (QtUi::mainWindow()->menuBar()->isHidden())
         menu.addAction(QtUi::actionCollection("General")->action("ToggleMenuBar"));
+
+    // show column reset action if columns have been resized in this session or there is at least one very narrow column
+    if ((_firstColHandlePos != _defaultFirstColHandlePos) || (_secondColHandlePos != _defaultSecondColHandlePos) ||
+        (_firstColHandlePos <= 10) || (_secondColHandlePos - _firstColHandlePos <= 10))
+        menu.addAction(new Action(tr("Reset Column Widths"), &menu, this, SLOT(resetColumnWidths()), 0));
 
     menu.exec(event->screenPos());
 }

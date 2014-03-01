@@ -130,6 +130,8 @@ public slots:
     void setWidth(qreal width);
     void layout(int start, int end, qreal width);
 
+    void resetColumnWidths();
+
     void setMarkerLineVisible(bool visible = true);
     void setMarkerLine(MsgId msgId = MsgId());
     void jumpToMarkerLine(bool requestBacklog);
@@ -206,6 +208,7 @@ private:
 
     ColumnHandleItem *_firstColHandle, *_secondColHandle;
     qreal _firstColHandlePos, _secondColHandlePos;
+    int _defaultFirstColHandlePos, _defaultSecondColHandlePos;
     CutoffMode _cutoffMode;
 
     ChatItem *_selectingItem;

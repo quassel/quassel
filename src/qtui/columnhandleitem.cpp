@@ -58,6 +58,7 @@ void ColumnHandleItem::setXPos(qreal xpos)
     QRectF sceneBRect = _boundingRect.translated(x(), 0);
     _sceneLeft = sceneBRect.left();
     _sceneRight = sceneBRect.right();
+    emit positionChanged(xpos);
 }
 
 
