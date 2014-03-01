@@ -491,12 +491,16 @@ QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &form
 UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat)
 {
     QString s = s_;
-    if (s.length() > 65535) {
-        qWarning() << QString("String too long to be styled: %1").arg(s);
-        return StyledString();
-    }
     StyledString result;
     result.formatList.append(qMakePair((quint16)0, baseFormat));
+
+    if (s.length() > 65535) {
+        // We use quint16 for indexes
+        qWarning() << QString("String too long to be styled: %1").arg(s);
+        result.plainText = s;
+        return result;
+    }
+
     quint32 curfmt = baseFormat;
     int pos = 0; quint16 length = 0;
     for (;;) {
