@@ -72,6 +72,7 @@ signals:
 
 private slots:
     void onBeginRemoveChilds(int start, int end);
+    void onNetworkDestroyed();
 
 private:
     NetworkId _networkId;
@@ -211,6 +212,7 @@ public slots:
 
 private slots:
     void ircChannelParted();
+    void ircChannelDestroyed();
 
 private:
     IrcChannel *_ircChannel;
