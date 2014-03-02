@@ -153,7 +153,7 @@ void NetworkItem::attachNetwork(Network *network)
     connect(network, SIGNAL(connectedSet(bool)),
         this, SIGNAL(networkDataChanged()));
     connect(network, SIGNAL(destroyed()),
-        this, SIGNAL(networkDataChanged()));
+        this, SLOT(onNetworkDestroyed()));
 
     emit networkDataChanged();
 }
@@ -230,6 +230,14 @@ void NetworkItem::onBeginRemoveChilds(int start, int end)
             break;
         }
     }
+}
+
+
+void NetworkItem::onNetworkDestroyed()
+{
+    _network = 0;
+    emit networkDataChanged();
+    removeAllChilds();
 }
 
 
@@ -520,6 +528,7 @@ void QueryBufferItem::setIrcUser(IrcUser *ircUser)
     }
 
     if (ircUser) {
+        connect(ircUser, SIGNAL(destroyed(QObject*)), SLOT(removeIrcUser()));
         connect(ircUser, SIGNAL(quited()), this, SLOT(removeIrcUser()));
         connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
         connect(ircUser, SIGNAL(encryptedSet(bool)), this, SLOT(setEncrypted(bool)));
@@ -595,10 +604,15 @@ QString ChannelBufferItem::toolTip(int column) const
 
 void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel)
 {
-    Q_ASSERT(!_ircChannel && ircChannel);
+    if (_ircChannel) {
+        qWarning() << Q_FUNC_INFO << "IrcChannel already set; cleanup failed!?";
+        disconnect(_ircChannel, 0, this, 0);
+    }
 
     _ircChannel = ircChannel;
 
+    connect(ircChannel, SIGNAL(destroyed(QObject*)),
+        this, SLOT(ircChannelDestroyed()));
     connect(ircChannel, SIGNAL(topicSet(QString)),
         this, SLOT(setTopic(QString)));
     connect(ircChannel, SIGNAL(encryptedSet(bool)),
@@ -630,6 +644,16 @@ void ChannelBufferItem::ircChannelParted()
     _ircChannel = 0;
     emit dataChanged();
     removeAllChilds();
+}
+
+
+void ChannelBufferItem::ircChannelDestroyed()
+{
+    if (_ircChannel) {
+        _ircChannel = 0;
+        emit dataChanged();
+        removeAllChilds();
+    }
 }
 
 

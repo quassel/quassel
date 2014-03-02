@@ -288,20 +288,6 @@ void Network::removeChansAndUsers()
     QList<IrcChannel *> channels = ircChannels();
     _ircChannels.clear();
 
-    foreach(IrcChannel *channel, channels) {
-        proxy()->detachObject(channel);
-        disconnect(channel, 0, this, 0);
-    }
-    foreach(IrcUser *user, users) {
-        proxy()->detachObject(user);
-        disconnect(user, 0, this, 0);
-    }
-
-    // the second loop is needed because quit can have sideffects
-    foreach(IrcUser *user, users) {
-        user->quit();
-    }
-
     qDeleteAll(users);
     qDeleteAll(channels);
 }
