@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QHostInfo>
+
 #include "corenetwork.h"
 
 #include "core.h"
@@ -183,6 +185,10 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     }
 
     enablePingTimeout();
+
+    // Qt caches DNS entries for a minute, resulting in round-robin (e.g. for chat.freenode.net) not working if several users
+    // connect at a similar time. QHostInfo::fromName(), however, always performs a fresh lookup, overwriting the cache entry.
+    QHostInfo::fromName(server.host);
 
 #ifdef HAVE_SSL
     socket.setProtocol((QSsl::SslProtocol)server.sslVersion);
