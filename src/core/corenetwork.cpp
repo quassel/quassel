@@ -265,11 +265,14 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, co
         msg += ":" + prefix + " ";
     msg += cmd.toUpper().toAscii();
 
-    for (int i = 0; i < params.size() - 1; i++) {
-        msg += " " + params[i];
+    for (int i = 0; i < params.size(); i++) {
+        msg += " ";
+
+        if (i == params.size() - 1 && (params[i].contains(' ') || (!params[i].isEmpty() && params[i][0] == ':')))
+            msg += ":";
+
+        msg += params[i];
     }
-    if (!params.isEmpty())
-        msg += " :" + params.last();
 
     putRawLine(msg);
 }
