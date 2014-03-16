@@ -34,13 +34,13 @@ set(QUASSEL_MINOR 11)
 set(QUASSEL_PATCH  0)
 set(QUASSEL_VERSION_STRING "0.11-pre")
 
+# Tell CMake about or own stuff
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
 include(CheckFunctionExists)
 include(CheckIncludeFile)
 include(CheckCXXCompilerFlag)
 
-# Use our own (well, and KDE's) version of some modules
-# In particular cmake's own FindQt4 and FindOpenSSL are quite buggy
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 include(QuasselMacros)
 
 # Various options and variables that can be set on the command line
