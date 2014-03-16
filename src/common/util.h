@@ -25,6 +25,7 @@
 #include <QVariant>
 #include <QString>
 #include <QMetaMethod>
+#include <QDateTime>
 
 // TODO Use versions from Network instead
 QString nickFromMask(QString mask);
@@ -74,5 +75,7 @@ QList<T> fromVariantList(const QVariantList &variants)
 
 
 QByteArray prettyDigest(const QByteArray &digest);
+
+QString formatCurrentDateTimeInString(QString str);
 
 #endif
