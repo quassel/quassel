@@ -25,18 +25,12 @@
 # NOTE: You should remove CMakeCache.txt if you plan to change any of these values!
 
 
+cmake_minimum_required(VERSION 2.8.9)
 project(QuasselIRC)
 
 include(CheckFunctionExists)
 include(CheckIncludeFile)
 include(CheckCXXCompilerFlag)
-
-# For building against Qt5, we check for an even newer cmake version below!
-cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
-
-if(COMMAND cmake_policy)
-   cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
 
 # Use our own (well, and KDE's) version of some modules
 # In particular cmake's own FindQt4 and FindOpenSSL are quite buggy
