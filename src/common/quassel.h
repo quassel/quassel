@@ -49,10 +49,8 @@ public:
         QString commitHash;
         uint commitDate;
         QString buildDate;
-        bool isSourceDirty;
-        uint protocolVersion;
-        uint clientNeedsProtocol;
-        uint coreNeedsProtocol;
+
+        uint protocolVersion; // deprecated
 
         QString applicationName;
         QString coreApplicationName;
@@ -85,7 +83,7 @@ public:
 
     virtual ~Quassel();
 
-    static void setupBuildInfo(const QString &generated);
+    static void setupBuildInfo();
     static inline const BuildInfo &buildInfo();
     static inline RunMode runMode();
 

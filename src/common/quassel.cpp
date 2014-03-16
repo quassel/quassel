@@ -46,6 +46,8 @@
 #include "syncableobject.h"
 #include "types.h"
 
+#include "../../version.h"
+
 Quassel::BuildInfo Quassel::_buildInfo;
 AbstractCliParser *Quassel::_cliParser = 0;
 Quassel::RunMode Quassel::_runMode;
@@ -209,7 +211,7 @@ void Quassel::registerMetaTypes()
 }
 
 
-void Quassel::setupBuildInfo(const QString &generated)
+void Quassel::setupBuildInfo()
 {
     _buildInfo.applicationName = "Quassel IRC";
     _buildInfo.coreApplicationName = "quasselcore";
@@ -217,17 +219,22 @@ void Quassel::setupBuildInfo(const QString &generated)
     _buildInfo.organizationName = "Quassel Project";
     _buildInfo.organizationDomain = "quassel-irc.org";
 
-    QStringList gen = generated.split(',');
-    Q_ASSERT(gen.count() == 10);
-    _buildInfo.baseVersion = gen[0];
-    _buildInfo.generatedVersion = gen[1];
-    _buildInfo.isSourceDirty = !gen[2].isEmpty();
-    _buildInfo.commitHash = gen[3];
-    _buildInfo.commitDate = gen[4].toUInt();
-    _buildInfo.protocolVersion = gen[5].toUInt();
-    _buildInfo.clientNeedsProtocol = gen[6].toUInt();
-    _buildInfo.coreNeedsProtocol = gen[7].toUInt();
-    _buildInfo.buildDate = QString("%1 %2").arg(gen[8], gen[9]);
+    _buildInfo.protocolVersion = 10; // FIXME: deprecated, will be removed
+
+    _buildInfo.baseVersion = QUASSEL_VERSION_STRING;
+    _buildInfo.generatedVersion = GIT_DESCRIBE;
+
+    // This will be imprecise for incremental builds not touching this file, but we really don't want to always recompile
+    _buildInfo.buildDate = QString("%1 %2").arg(__DATE__, __TIME__);
+
+    // Check if we got a commit hash
+    if (!QString(GIT_HEAD).isEmpty())
+        _buildInfo.commitHash = GIT_HEAD;
+    else if (!QString(DIST_HASH).contains("Format")) {
+        _buildInfo.commitHash = DIST_HASH;
+        _buildInfo.commitDate = QString(DIST_DATE).toUInt();
+    }
+
     // create a nice version string
     if (_buildInfo.generatedVersion.isEmpty()) {
         if (!_buildInfo.commitHash.isEmpty()) {
@@ -242,26 +249,23 @@ void Quassel::setupBuildInfo(const QString &generated)
         }
         else {
             // we only have a base version :(
-            _buildInfo.plainVersionString = QString("v%1 (unknown rev)").arg(_buildInfo.baseVersion);
+            _buildInfo.plainVersionString = QString("v%1 (unknown revision)").arg(_buildInfo.baseVersion);
         }
     }
     else {
         // analyze what we got from git-describe
-        QRegExp rx("(.*)-(\\d+)-g([0-9a-f]+)$");
+        QRegExp rx("(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$");
         if (rx.exactMatch(_buildInfo.generatedVersion)) {
             QString distance = rx.cap(2) == "0" ? QString() : QString("%1+%2 ").arg(rx.cap(1), rx.cap(2));
             _buildInfo.plainVersionString = QString("v%1 (%2git-%3%4)")
-                                            .arg(_buildInfo.baseVersion, distance, rx.cap(3))
-                                            .arg(_buildInfo.isSourceDirty ? "*" : "");
+                                            .arg(_buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));
             if (!_buildInfo.commitHash.isEmpty()) {
                 _buildInfo.fancyVersionString = QString("v%1 (%2git-<a href=\"http://git.quassel-irc.org/?p=quassel.git;a=commit;h=%5\">%3</a>%4)")
-                                                .arg(_buildInfo.baseVersion, distance, rx.cap(3))
-                                                .arg(_buildInfo.isSourceDirty ? "*" : "")
-                                                .arg(_buildInfo.commitHash);
+                                                .arg(_buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4), _buildInfo.commitHash);
             }
         }
         else {
-            _buildInfo.plainVersionString = QString("v%1 (invalid rev)").arg(_buildInfo.baseVersion);
+            _buildInfo.plainVersionString = QString("v%1 (invalid revision)").arg(_buildInfo.baseVersion);
         }
     }
     if (_buildInfo.fancyVersionString.isEmpty())

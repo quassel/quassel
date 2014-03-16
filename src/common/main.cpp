@@ -52,10 +52,7 @@ Q_IMPORT_PLUGIN(qgif)
 
 int main(int argc, char **argv)
 {
-    // Setup build information and version string
-  # include "version.gen"
-    buildinfo.append(QString(",%1,%2").arg(__DATE__, __TIME__));
-    Quassel::setupBuildInfo(buildinfo);
+    Quassel::setupBuildInfo();
     QCoreApplication::setApplicationName(Quassel::buildInfo().applicationName);
     QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
     QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);

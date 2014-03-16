@@ -38,7 +38,7 @@ if(WANT_CORE)
   setup_qt_variables(Network Script Sql ${CORE_QT_MODULES})
   include_directories(${QUASSEL_QT_INCLUDES})
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
-  add_dependencies(quasselcore po genversion_run)
+  add_dependencies(quasselcore po)
   set_target_properties(quasselcore PROPERTIES
                                     COMPILE_FLAGS "-DBUILD_CORE ${QUASSEL_QT_COMPILEFLAGS}"
                                     OUTPUT_NAME ../quasselcore)
@@ -51,7 +51,7 @@ if(WANT_QTCLIENT)
   setup_qt_variables(Gui Network ${CLIENT_QT_MODULES})
   include_directories(${QUASSEL_QT_INCLUDES})
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
-  add_dependencies(quasselclient po genversion_run)
+  add_dependencies(quasselclient po)
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DBUILD_QTUI ${QUASSEL_QT_COMPILEFLAGS} ${CLIENT_COMPILE_FLAGS}"
                                       OUTPUT_NAME ../quasselclient)
@@ -67,7 +67,7 @@ if(WANT_MONO)
     qt4_wrap_cpp(MOC qtui/monoapplication.h)
   endif(NOT WITH_QT5)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${MOC} ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
-  add_dependencies(quassel po genversion_run)
+  add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DBUILD_MONO ${QUASSEL_QT_COMPILEFLAGS} ${CLIENT_COMPILE_FLAGS}"
                                 OUTPUT_NAME ../quassel)

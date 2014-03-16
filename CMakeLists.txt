@@ -28,6 +28,12 @@
 cmake_minimum_required(VERSION 2.8.9)
 project(QuasselIRC)
 
+# Versions
+set(QUASSEL_MAJOR  0)
+set(QUASSEL_MINOR 11)
+set(QUASSEL_PATCH  0)
+set(QUASSEL_VERSION_STRING "0.11-pre")
+
 include(CheckFunctionExists)
 include(CheckIncludeFile)
 include(CheckCXXCompilerFlag)
@@ -537,20 +543,18 @@ if(NOT WIN32)
   endif(HAVE_UMASK)
 endif(NOT WIN32)
 
-# We need to create a version.gen
-# For this, we create our genversion binary and make sure it is run every time.
+# Generate version information from Git
+include(GetGitRevisionDescription)
+get_git_head_revision(GIT_REFSPEC GIT_HEAD)
+git_describe(GIT_DESCRIBE --long)
 
-setup_qt_variables()
-include_directories(${QUASSEL_QT_INCLUDES})
+# Sanitize things if we're not in a Git repo
+if(NOT GIT_HEAD OR NOT GIT_DESCRIBE)
+    set(GIT_HEAD "")
+    set(GIT_DESCRIBE "")
+endif()
 
-add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
-target_link_libraries(genversion ${QUASSEL_QT_LIBRARIES})
-set_target_properties(genversion PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")
-
-get_target_property(GENVERSION_EXECUTABLE genversion LOCATION)
-add_custom_target(genversion_run ALL ${GENVERSION_EXECUTABLE}
-                  ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/version.gen)
-add_dependencies(genversion_run genversion)
+configure_file(version.h.in ${CMAKE_BINARY_DIR}/version.h @ONLY)
 
 # These variables will be added to the main targets (CORE, QTCLIENT, MONO)
 set(COMMON_DEPS ${RC_WIN32})

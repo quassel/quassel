@@ -1,0 +1,13 @@
+// Version information
+#define QUASSEL_MAJOR @QUASSEL_MAJOR@
+#define QUASSEL_MINOR @QUASSEL_MINOR@
+#define QUASSEL_PATCH @QUASSEL_PATCH@
+#define QUASSEL_VERSION_STRING "@QUASSEL_VERSION_STRING@"
+
+// Determined from Git
+#define GIT_HEAD "@GIT_HEAD@"
+#define GIT_DESCRIBE "@GIT_DESCRIBE@"
+
+// Will be substituted in official tarballs
+#define DIST_HASH "$Format:%H$"
+#define DIST_DATE "$Format:%at$"
