@@ -1,3 +1,7 @@
+This is the standard license for CMake scripts. Please note that some
+of the CMake scripts we bundle come with their own license as indicated
+in the file, in which case that one applies.
+
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
 are met:

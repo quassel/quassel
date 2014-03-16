@@ -1,17 +1,5 @@
-Most of these modules have been copied from KDE's repository.
-
-Files starting with Quassel* are solely created by us.
-
-Below is the contents of KDE's original README:
-
---------8<--------------------------------------------------------------
-these are additional cmake modules required for compiling KDE3 or KDE4
-applications with cmake. Some of them are enhanced versions of the files
-coming with cmake, some of them are NOT yet part of cmake.
-To use them, copy them into the cmake Module directory or
-run "cmake ."  followed by "make install"
-
-Alex <neundorf@kde.org>
--------->8--------------------------------------------------------------
-
-Thank you Alex!
+We bundle some CMake scripts that are not part of CMake itself, for convenience
+on platforms that do not have a standard location for packages to put their
+CMake support into. Most of those scripts originate from the KDE community;
+some are from other sources. Please see the files themselves for copyright
+and license statements.
