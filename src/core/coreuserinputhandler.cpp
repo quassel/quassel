@@ -89,7 +89,7 @@ void CoreUserInputHandler::issueAway(const QString &msg, bool autoCheck)
         if (me && !me->isAway()) {
             Identity *identity = network()->identityPtr();
             if (identity) {
-                awayMsg = identity->awayReason();
+                awayMsg = formatCurrentDateTimeInString(identity->awayReason());
             }
             if (awayMsg.isEmpty()) {
                 awayMsg = tr("away");
