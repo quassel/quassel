@@ -37,8 +37,6 @@ set(SOURCES
     settings.cpp
     signalproxy.cpp
     syncableobject.cpp
-    transfer.cpp
-    transfermanager.cpp
     util.cpp
 
     protocols/datastream/datastreampeer.cpp
@@ -69,8 +67,6 @@ set(MOC_HDRS
     settings.h
     signalproxy.h
     syncableobject.h
-    transfer.h
-    transfermanager.h
 
     protocols/datastream/datastreampeer.h
     protocols/legacy/legacypeer.h

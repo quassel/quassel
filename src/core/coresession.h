@@ -39,7 +39,6 @@ class CoreIrcListHelper;
 class CoreNetwork;
 class CoreNetworkConfig;
 class CoreSessionEventProcessor;
-class CoreTransferManager;
 class CtcpParser;
 class EventManager;
 class EventStringifier;
@@ -86,8 +85,6 @@ public:
     inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
 
     inline CoreIgnoreListManager *ignoreListManager() { return &_ignoreListManager; }
-    inline CoreTransferManager *transferManager() const { return _transferManager; }
-
 //   void attachNetworkConnection(NetworkConnection *conn);
 
     //! Return necessary data for restoring the session after restarting the core
@@ -202,7 +199,6 @@ private:
     CoreIrcListHelper *_ircListHelper;
     CoreNetworkConfig *_networkConfig;
     CoreCoreInfo _coreInfo;
-    CoreTransferManager *_transferManager;
 
     EventManager *_eventManager;
     EventStringifier *_eventStringifier; // should eventually move into client

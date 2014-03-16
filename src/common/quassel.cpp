@@ -35,7 +35,6 @@
 #include <QLibraryInfo>
 #include <QSettings>
 #include <QTranslator>
-#include <QUuid>
 
 #include "bufferinfo.h"
 #include "identity.h"
@@ -190,7 +189,6 @@ void Quassel::registerMetaTypes()
     qRegisterMetaType<MsgId>("MsgId");
 
     qRegisterMetaType<QHostAddress>("QHostAddress");
-    qRegisterMetaType<QUuid>("QUuid");
 
     qRegisterMetaTypeStreamOperators<IdentityId>("IdentityId");
     qRegisterMetaTypeStreamOperators<BufferId>("BufferId");

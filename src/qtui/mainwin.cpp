@@ -62,8 +62,6 @@
 #include "clientbufferviewconfig.h"
 #include "clientbufferviewmanager.h"
 #include "clientignorelistmanager.h"
-#include "clienttransfer.h"
-#include "clienttransfermanager.h"
 #include "coreconfigwizard.h"
 #include "coreconnectdlg.h"
 #include "coreconnection.h"
@@ -85,7 +83,6 @@
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
-#include "receivefiledlg.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "statusnotifieritem.h"
@@ -1041,8 +1038,6 @@ void MainWin::connectedToCore()
     connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
     connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
 
-    connect(Client::transferManager(), SIGNAL(transferAdded(const ClientTransfer*)), SLOT(showNewTransferDlg(const ClientTransfer*)));
-
     setConnectedState();
 }
 
@@ -1376,13 +1371,6 @@ void MainWin::showShortcutsDlg()
     SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
     dlg.exec();
 #endif
-}
-
-
-void MainWin::showNewTransferDlg(const ClientTransfer *transfer)
-{
-    ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
-    dlg->show();
 }
 
 

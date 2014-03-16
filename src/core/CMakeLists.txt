@@ -24,8 +24,6 @@ set(SOURCES
     coresession.cpp
     coresessioneventprocessor.cpp
     coresettings.cpp
-    coretransfer.cpp
-    coretransfermanager.cpp
     coreuserinputhandler.cpp
     coreusersettings.cpp
     ctcpparser.cpp
@@ -60,8 +58,6 @@ set(MOC_HDRS
     corenetworkconfig.h
     coresession.h
     coresessioneventprocessor.h
-    coretransfer.h
-    coretransfermanager.h
     coreuserinputhandler.h
     ctcpparser.h
     eventstringifier.h

@@ -33,8 +33,6 @@ set(SOURCES
     clientignorelistmanager.cpp
     clientirclisthelper.cpp
     clientsettings.cpp
-    clienttransfer.cpp
-    clienttransfermanager.cpp
     clientuserinputhandler.cpp
     coreaccount.cpp
     coreaccountmodel.cpp
@@ -62,8 +60,6 @@ set(MOC_HDRS
     clientidentity.h
     clientignorelistmanager.h
     clientirclisthelper.h
-    clienttransfer.h
-    clienttransfermanager.h
     clientuserinputhandler.h
     coreaccountmodel.h
     coreconnection.h

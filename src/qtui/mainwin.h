@@ -36,7 +36,6 @@ class BufferHotListFilter;
 class BufferView;
 class BufferViewConfig;
 class ClientBufferViewConfig;
-class ClientTransfer;
 class CoreAccount;
 class CoreConnectionStatusWidget;
 class BufferViewDock;
@@ -123,7 +122,6 @@ private slots:
     void showNotificationsDlg();
     void showIgnoreList(QString newRule = QString());
     void showShortcutsDlg();
-    void showNewTransferDlg(const ClientTransfer *transfer);
     void onFullScreenToggled();
 
     void handleCoreConnectionError(const QString &errorMsg);

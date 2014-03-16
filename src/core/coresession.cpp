@@ -34,7 +34,6 @@
 #include "corenetwork.h"
 #include "corenetworkconfig.h"
 #include "coresessioneventprocessor.h"
-#include "coretransfermanager.h"
 #include "coreusersettings.h"
 #include "ctcpparser.h"
 #include "eventstringifier.h"
@@ -67,7 +66,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _ircListHelper(new CoreIrcListHelper(this)),
     _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
     _coreInfo(this),
-    _transferManager(new CoreTransferManager(this)),
     _eventManager(new CoreEventManager(this)),
     _eventStringifier(new EventStringifier(this)),
     _sessionEventProcessor(new CoreSessionEventProcessor(this)),
@@ -122,7 +120,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->synchronize(networkConfig());
     p->synchronize(&_coreInfo);
     p->synchronize(&_ignoreListManager);
-    p->synchronize(transferManager());
     // Restore session state
     if (restoreState)
         restoreSessionState();
