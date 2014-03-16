@@ -200,3 +200,18 @@ QByteArray prettyDigest(const QByteArray &digest)
     }
     return prettyDigest;
 }
+
+QString formatCurrentDateTimeInString(QString str)
+{
+    /*
+     * Find %%<text>%% in string. Repleace inside text which is format to QDateTime
+     * with current timestamp.
+     */
+    QRegExp rx("\\%%(.*)\\%%");
+    rx.setMinimal(true);
+    int s = rx.indexIn(str);
+    if (s >= 0)
+        str.replace(s, rx.cap(0).length(), QDateTime::currentDateTime().toString(rx.cap(1)));
+
+    return str;
+}
