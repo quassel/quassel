@@ -30,31 +30,11 @@ else (QCA2_INCLUDE_DIR AND QCA2_LIBRARIES)
     set(QCA2_DEFINITIONS ${PC_QCA2_CFLAGS_OTHER})
   endif (NOT WIN32)
 
-  find_library(QCA2_LIBRARIES_DEBUG
-                  NAMES qcad qcad2
+  find_library_with_debug(QCA2_LIBRARIES
+                  WIN32_DEBUG_POSTFIX d
+                  NAMES qca
                   HINTS ${PC_QCA2_LIBDIR} ${PC_QCA2_LIBRARY_DIRS}
                   )
-  find_library(QCA2_LIBRARIES_RELEASE
-                  NAMES qca qca2
-                  HINTS ${PC_QCA2_LIBDIR} ${PC_QCA2_LIBRARY_DIRS}
-                  )
-  # if the release- as well as the debug-version of the library have been found:
-  IF (QCA2_LIBRARIES_DEBUG AND QCA2_LIBRARIES_RELEASE)
-    # if the generator supports configuration types then set
-    # optimized and debug libraries, or if the CMAKE_BUILD_TYPE has a value
-    IF (CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
-      SET(QCA2_LIBRARIES       optimized ${QCA2_LIBRARIES_RELEASE} debug ${QCA2_LIBRARIES_DEBUG})
-    ELSE(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
-      # if there are no configuration types and CMAKE_BUILD_TYPE has no value
-      # then just use the release libraries
-      SET(QCA2_LIBRARIES       ${QCA2_LIBRARIES_RELEASE} )
-    ENDIF(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
-  ELSE (QCA2_LIBRARIES_DEBUG AND QCA2_LIBRARIES_RELEASE)
-    IF (QCA2_LIBRARIES_RELEASE)
-       SET(QCA2_LIBRARIES ${QCA2_LIBRARIES_RELEASE})
-    ENDIF (QCA2_LIBRARIES_RELEASE)
-  ENDIF (QCA2_LIBRARIES_DEBUG AND QCA2_LIBRARIES_RELEASE)
-
 
   find_path(QCA2_INCLUDE_DIR QtCrypto
             HINTS ${PC_QCA2_INCLUDEDIR} ${PC_QCA2_INCLUDE_DIRS}
