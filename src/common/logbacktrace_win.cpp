@@ -38,6 +38,7 @@ void loadHelpStackFrame(IMAGEHLP_STACK_FRAME &ihsf, const STACKFRAME64 &stackFra
 
 BOOL CALLBACK EnumSymbolsCB(PSYMBOL_INFO symInfo, ULONG size, PVOID user)
 {
+    Q_UNUSED(size)
     QStringList *params = (QStringList *)user;
     if (symInfo->Flags & SYMFLAG_PARAMETER) {
         params->append(symInfo->Name);
@@ -54,6 +55,7 @@ struct EnumModulesContext {
 
 BOOL CALLBACK EnumModulesCB(LPCSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext)
 {
+    Q_UNUSED(ModuleName)
     IMAGEHLP_MODULE64 mod;
     EnumModulesContext *context = (EnumModulesContext *)UserContext;
     mod.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
@@ -124,7 +126,7 @@ Label:
     StackFrame.AddrFrame.Mode   = AddrModeFlat;
     StackFrame.AddrStack.Offset = Context.Esp;
     StackFrame.AddrStack.Mode   = AddrModeFlat;
-#elif _M_X64
+#elif defined(_M_X64)
     MachineType                 = IMAGE_FILE_MACHINE_AMD64;
     StackFrame.AddrPC.Offset    = Context.Rip;
     StackFrame.AddrPC.Mode      = AddrModeFlat;
@@ -132,7 +134,7 @@ Label:
     StackFrame.AddrFrame.Mode   = AddrModeFlat;
     StackFrame.AddrStack.Offset = Context.Rsp;
     StackFrame.AddrStack.Mode   = AddrModeFlat;
-#elif _M_IA64
+#elif defined(_M_IA64)
     MachineType                 = IMAGE_FILE_MACHINE_IA64;
     StackFrame.AddrPC.Offset    = Context.StIIP;
     StackFrame.AddrPC.Mode      = AddrModeFlat;
