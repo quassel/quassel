@@ -13,7 +13,6 @@ set(SOURCES
     bufferviewmanager.cpp
     cliparser.cpp
     compressor.cpp
-    coreinfo.cpp
     ctcpevent.cpp
     event.cpp
     eventmanager.cpp
@@ -43,58 +42,14 @@ set(SOURCES
 
     protocols/datastream/datastreampeer.cpp
     protocols/legacy/legacypeer.cpp
-)
 
-set(MOC_HDRS
-    aliasmanager.h
-    authhandler.h
-    backlogmanager.h
-    basichandler.h
-    buffersyncer.h
-    bufferviewconfig.h
-    bufferviewmanager.h
-    compressor.h
+    # needed for automoc
     coreinfo.h
-    eventmanager.h
-    identity.h
-    ignorelistmanager.h
-    internalpeer.h
-    ircchannel.h
-    irclisthelper.h
-    ircuser.h
-    network.h
-    networkconfig.h
-    peer.h
-    remotepeer.h
-    settings.h
-    signalproxy.h
-    syncableobject.h
-    transfer.h
-    transfermanager.h
-
-    protocols/datastream/datastreampeer.h
-    protocols/legacy/legacypeer.h
 )
 
-set(HEADERS ${MOC_HDRS}
-    abstractcliparser.h
-    bufferinfo.h
-    cliparser.h
-    ctcpevent.h
-    event.h
-    ircevent.h
-    messageevent.h
-    networkevent.h
-    logger.h
-    message.h
-    peerfactory.h
-    protocol.h
-    types.h
-    util.h)
 
 if (HAVE_QCA2)
     set(SOURCES ${SOURCES} keyevent.cpp)
-    set(HEADERS ${HEADERS} keyevent.h)
 endif(HAVE_QCA2)
 
 if(NOT HAVE_ZLIB)
@@ -103,7 +58,6 @@ endif(NOT HAVE_ZLIB)
 
 if(APPLE)
   set(SOURCES ${SOURCES} mac_utils.cpp)
-  set(HEADERS ${HEADERS} mac_utils.h)
 endif(APPLE)
 
 if(CMAKE_HOST_WIN32)
@@ -115,13 +69,7 @@ endif(CMAKE_HOST_UNIX)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${QUASSEL_QT_INCLUDES})  # for version.inc and version.gen
 
-if(NOT WITH_QT5)
-  qt4_wrap_cpp(MOC ${MOC_HDRS})
-endif(NOT WITH_QT5)
-
-set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES version.gen)
-
-add_library(mod_common STATIC ${SOURCES} ${HEADERS} ${MOC})
+add_library(mod_common STATIC ${SOURCES})
 set_target_properties(mod_common PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")
 
 if(APPLE)

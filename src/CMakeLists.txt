@@ -63,10 +63,7 @@ endif(WANT_QTCLIENT)
 if(WANT_MONO)
   setup_qt_variables(Gui Network Script Sql ${CLIENT_QT_MODULES} ${CORE_QT_MODULES})
   include_directories(${QUASSEL_QT_INCLUDES})
-  if(NOT WITH_QT5)
-    qt4_wrap_cpp(MOC qtui/monoapplication.h)
-  endif(NOT WITH_QT5)
-  add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${MOC} ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
+  add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
   add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DBUILD_MONO ${QUASSEL_QT_COMPILEFLAGS} ${CLIENT_COMPILE_FLAGS}"

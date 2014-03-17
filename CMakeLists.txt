@@ -37,6 +37,8 @@ set(QUASSEL_VERSION_STRING "0.11-pre")
 # Tell CMake about or own stuff
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+set(CMAKE_AUTOMOC ON)
+
 include(CheckFunctionExists)
 include(CheckIncludeFile)
 

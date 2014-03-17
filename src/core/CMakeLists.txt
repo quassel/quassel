@@ -36,68 +36,27 @@ set(SOURCES
     postgresqlstorage.cpp
     sessionthread.cpp
     sqlitestorage.cpp
-    storage.cpp)
+    storage.cpp
 
-set(MOC_HDRS
-    abstractsqlstorage.h
-    core.h
-    corealiasmanager.h
-    coreapplication.h
-    coreauthhandler.h
-    corebacklogmanager.h
-    corebasichandler.h
-    corebuffersyncer.h
-    corebufferviewconfig.h
-    corebufferviewmanager.h
-    corecoreinfo.h
+    # needed for automoc
     coreeventmanager.h
-    coreidentity.h
-    coreignorelistmanager.h
-    coreircchannel.h
-    coreirclisthelper.h
-    coreircuser.h
-    corenetwork.h
-    corenetworkconfig.h
-    coresession.h
-    coresessioneventprocessor.h
-    coretransfer.h
-    coretransfermanager.h
-    coreuserinputhandler.h
-    ctcpparser.h
-    eventstringifier.h
-    ircparser.h
-    netsplit.h
-    oidentdconfiggenerator.h
-    postgresqlstorage.h
-    sqlitestorage.h
-    storage.h
-    sessionthread.h)
-
-set(HEADERS
-    coresettings.h
-    coreusersettings.h)
+)
 
 if(HAVE_SSL)
   set(SOURCES ${SOURCES} sslserver.cpp)
-  set(MOC_HDRS ${MOC_HDRS} sslserver.h)
   include_directories(${OPENSSL_INCLUDE_DIR})
 endif(HAVE_SSL)
 
 if(HAVE_QCA2)
   set(SOURCES ${SOURCES} cipher.cpp)
-  set(HEADERS ${HEADERS} cipher.h)
   include_directories(${QCA2_INCLUDE_DIR})
 endif(HAVE_QCA2)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common ${QUASSEL_QT_INCLUDES})
 
-if(NOT WITH_QT5)
-  qt4_wrap_cpp(MOC ${MOC_HDRS})
-endif(NOT WITH_QT5)
-
 set(CORE_RCS ${CORE_RCS} core/sql.qrc PARENT_SCOPE)
 
-add_library(mod_core STATIC ${SOURCES} ${MOC} ${HEADERS})
+add_library(mod_core STATIC ${SOURCES})
 add_dependencies(mod_core mod_common)
 set_target_properties(mod_core PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")
 
