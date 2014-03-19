@@ -50,9 +50,9 @@ if (HAVE_QCA2)
     set(SOURCES ${SOURCES} keyevent.cpp)
 endif(HAVE_QCA2)
 
-if(NOT HAVE_ZLIB)
+if (NOT ZLIB_FOUND)
     set(SOURCES ${SOURCES} ../../3rdparty/miniz/miniz.c)
-endif(NOT HAVE_ZLIB)
+endif()
 
 if(APPLE)
   set(SOURCES ${SOURCES} mac_utils.cpp)
