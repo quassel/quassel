@@ -1,19 +1,7 @@
 # Builds the client module
 
-# In Qt4, we still have some minor deps to QtUi: QItemSelectionModel, QSortFilterProxyModel
+# In Qt4, we still have some minor deps to QtGui: QItemSelectionModel, QSortFilterProxyModel
 # Still in Qt5: QAbstractItemView in BufferModel
-
-set(_modules )
-
-if(WITH_QT5)
-  list(APPEND _modules Widgets)
-endif(WITH_QT5)
-
-if(HAVE_DBUS)
-  list(APPEND _modules DBus)
-endif(HAVE_DBUS)
-
-setup_qt_variables(Gui Network ${_modules})
 
 set(SOURCES
     abstractmessageprocessor.cpp
@@ -50,9 +38,14 @@ set(SOURCES
     clientcoreinfo.h
 )
 
-include_directories(${CMAKE_SOURCE_DIR}/src/common ${QUASSEL_QT_INCLUDES})
+if (WITH_QT5)
+    list(APPEND qt_modules Widgets)
+endif()
+
+if (HAVE_DBUS)
+    list(APPEND qt_modules DBus)
+endif()
 
 add_library(mod_client STATIC ${SOURCES})
+qt_use_modules(mod_client Network Core Gui ${qt_modules})
 add_dependencies(mod_client mod_common)
-
-set_target_properties(mod_client PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")

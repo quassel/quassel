@@ -1,7 +1,5 @@
 # Builds the common module
 
-setup_qt_variables(Core Network)
-
 set(SOURCES
     aliasmanager.cpp
     authhandler.cpp
@@ -67,10 +65,8 @@ if(CMAKE_HOST_UNIX)
     set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
 endif(CMAKE_HOST_UNIX)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${QUASSEL_QT_INCLUDES})  # for version.inc and version.gen
-
 add_library(mod_common STATIC ${SOURCES})
-set_target_properties(mod_common PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")
+qt_use_modules(mod_common Core Network)
 
 if(APPLE)
   target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")

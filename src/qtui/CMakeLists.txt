@@ -1,21 +1,5 @@
 # Builds the qtui module
 
-set(_modules )
-
-if(WITH_QT5)
-  list(APPEND _modules Widgets)
-endif(WITH_QT5)
-
-if(HAVE_DBUS)
-  list(APPEND _modules DBus)
-endif(HAVE_DBUS)
-
-if(HAVE_WEBKIT)
-  list(APPEND _modules Webkit XmlPatterns)
-endif(HAVE_WEBKIT)
-
-setup_qt_variables(Gui Network ${_modules})
-
 set(SOURCES
     aboutdlg.cpp
     awaylogfilter.cpp
@@ -107,18 +91,11 @@ else(HAVE_KDE)
   endif(HAVE_PHONON)
 endif(HAVE_KDE)
 
-if(HAVE_DBUS)
-  set(SOURCES ${SOURCES} statusnotifieritem.cpp statusnotifieritemdbus.cpp dockmanagernotificationbackend.cpp)
-  set(FORMS ${FORMS})
-  if(WITH_QT5)
-    qt5_add_dbus_interface(DBUS ../../interfaces/org.kde.StatusNotifierWatcher.xml statusnotifierwatcher)
-    qt5_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml notificationsclient)
-    qt5_add_dbus_adaptor(DBUS ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
-  else(WITH_QT5)
-    qt4_add_dbus_interface(DBUS ../../interfaces/org.kde.StatusNotifierWatcher.xml statusnotifierwatcher)
-    qt4_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml notificationsclient)
-    qt4_add_dbus_adaptor(DBUS ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
-  endif(WITH_QT5)
+if (HAVE_DBUS)
+    set(SOURCES ${SOURCES} statusnotifieritem.cpp statusnotifieritemdbus.cpp dockmanagernotificationbackend.cpp)
+    qt_add_dbus_interface(DBUS ../../interfaces/org.kde.StatusNotifierWatcher.xml statusnotifierwatcher)
+    qt_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml notificationsclient)
+    qt_add_dbus_adaptor(DBUS ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
 endif(HAVE_DBUS)
 
 if(HAVE_SSL)
@@ -158,15 +135,24 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/qtui
                     ${CMAKE_SOURCE_DIR}/src/qtui/settingspages
                     ${CMAKE_SOURCE_DIR}/src/uisupport
-                    ${CMAKE_CURRENT_BINARY_DIR}
-                    ${QUASSEL_QT_INCLUDES})
 
-if(WITH_QT5)
-  qt5_wrap_ui(UI ${FORMPATH} ${SPFRM})
-else(WITH_QT5)
-  qt4_wrap_ui(UI ${FORMPATH} ${SPFRM})
-endif(WITH_QT5)
+)
+
+qt_wrap_ui(UI ${FORMPATH} ${SPFRM})
+
+if (WITH_QT5)
+    list(APPEND qt_modules Widgets)
+endif()
+
+if (HAVE_DBUS)
+    list(APPEND qt_modules DBus)
+endif()
+
+if (HAVE_WEBKIT)
+    list(APPEND qt_modules Webkit XmlPatterns)
+endif()
 
 add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${DBUS} ${UI})
+qt_use_modules(mod_qtui Core Gui Network ${qt_modules})
+
 add_dependencies(mod_qtui mod_common mod_client mod_uisupport)
-set_target_properties(mod_qtui PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")

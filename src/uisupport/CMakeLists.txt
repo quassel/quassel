@@ -1,11 +1,5 @@
 # Builds the uisupport module
 
-if(WITH_QT5)
-  setup_qt_variables(Widgets Network)
-else(WITH_QT5)
-  setup_qt_variables(Gui Network)
-endif(WITH_QT5)
-
 set(SOURCES
     abstractbuffercontainer.cpp
     abstractitemview.cpp
@@ -48,12 +42,17 @@ endif(HAVE_KDE)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client
-                    ${QUASSEL_QT_INCLUDES})
+)
 
 if(HAVE_QCA2)
   include_directories(${QCA2_INCLUDE_DIR})
 endif(HAVE_QCA2)
 
+if (WITH_QT5)
+    list(APPEND qt_modules Widgets)
+endif()
+
 add_library(mod_uisupport STATIC ${SOURCES})
+qt_use_modules(mod_uisupport Core Gui Network ${qt_modules})
+
 add_dependencies(mod_uisupport mod_common mod_client)
-set_target_properties(mod_uisupport PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_COMPILEFLAGS}")

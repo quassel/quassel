@@ -34,11 +34,14 @@ set(QUASSEL_MINOR 11)
 set(QUASSEL_PATCH  0)
 set(QUASSEL_VERSION_STRING "0.11-pre")
 
-# Tell CMake about or own stuff
+# Tell CMake about or own modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+# General conveniences
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Moar stuff
 include(CheckFunctionExists)
 include(CheckIncludeFile)
 

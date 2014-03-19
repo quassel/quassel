@@ -1,41 +1,98 @@
-# This macro sets variables for the Qt modules we need.
+# This file contains various macros useful for building Quassel.
+#
+# (C) 2014 by the Quassel Project <devel@quassel-irc.org>
+#
+# The qt4_use_modules function was taken from CMake's Qt4Macros.cmake:
+# (C) 2005-2009 Kitware, Inc.
+#
+# Redistribution and use is allowed according to the terms of the BSD license.
+# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
-macro(setup_qt_variables)
-  set(QUASSEL_QT_LIBRARIES )
-  set(QUASSEL_QT_INCLUDES ${QT_INCLUDE_DIR})    # Qt4
-  set(QUASSEL_QT_DEFINITIONS ${QT_DEFINITIONS}) # Qt4
+############################
+# Macros for dealing with Qt
+############################
 
-  IF(WIN32)
-    set(MAIN Main)
-  ENDIF(WIN32)
-  foreach(qtmod Core ${ARGV} ${MAIN})
-    if(WITH_QT5)
-      find_package(Qt5${qtmod} ${QT_MIN_VERSION} REQUIRED)
-      list(APPEND QUASSEL_QT_LIBRARIES ${Qt5${qtmod}_LIBRARIES})
-      list(APPEND QUASSEL_QT_INCLUDES ${Qt5${qtmod}_INCLUDE_DIRS})
-      list(APPEND QUASSEL_QT_DEFINITIONS ${Qt5${qtmod}_DEFINITIONS} ${Qt5${qtmod}_EXECUTABLE_COMPILE_FLAGS})
-    else(WITH_QT5)
-      string(TOUPPER ${qtmod} QTMOD)
-      list(APPEND QUASSEL_QT_LIBRARIES ${QT_QT${QTMOD}_LIBRARY})
-      if(STATIC)
-        list(APPEND QUASSEL_QT_LIBRARIES ${QT_QT${QTMOD}_LIB_DEPENDENCIES})
-      endif(STATIC)
-      list(APPEND QUASSEL_QT_INCLUDES ${QT_QT${QTMOD}_INCLUDE_DIR})
-      list(APPEND QUASSEL_QT_DEFINITIONS -DQT_QT${QTMOD}_LIB)
-    endif(WITH_QT5)
-  endforeach(qtmod)
+# CMake gained this function in 2.8.10. To be able to use older versions, we've copied
+# this here. If present, the function from CMake will take precedence and our copy will be ignored.
+function(quassel_qt4_use_modules _target _link_type)
+    message("SPUT calling")
+    if ("${_link_type}" STREQUAL "LINK_PUBLIC" OR "${_link_type}" STREQUAL "LINK_PRIVATE")
+        set(modules ${ARGN})
+        set(link_type ${_link_type})
+    else()
+        set(modules ${_link_type} ${ARGN})
+    endif()
+    foreach(_module ${modules})
+        string(TOUPPER ${_module} _ucmodule)
+        set(_targetPrefix QT_QT${_ucmodule})
+        if (_ucmodule STREQUAL QAXCONTAINER OR _ucmodule STREQUAL QAXSERVER)
+            if (NOT QT_Q${_ucmodule}_FOUND)
+                message(FATAL_ERROR "Can not use \"${_module}\" module which has not yet been found.")
+            endif()
+            set(_targetPrefix QT_Q${_ucmodule})
+        else()
+            if (NOT QT_QT${_ucmodule}_FOUND)
+                message(FATAL_ERROR "Can not use \"${_module}\" module which has not yet been found.")
+            endif()
+            if ("${_ucmodule}" STREQUAL "MAIN")
+                message(FATAL_ERROR "Can not use \"${_module}\" module with qt4_use_modules.")
+            endif()
+        endif()
+        target_link_libraries(${_target} ${link_type} ${${_targetPrefix}_LIBRARIES})
+        set_property(TARGET ${_target} APPEND PROPERTY INCLUDE_DIRECTORIES ${${_targetPrefix}_INCLUDE_DIR} ${QT_HEADERS_DIR} ${QT_MKSPECS_DIR}/default)
+        set_property(TARGET ${_target} APPEND PROPERTY COMPILE_DEFINITIONS ${${_targetPrefix}_COMPILE_DEFINITIONS})
+    endforeach()
+endfunction()
 
-  list(REMOVE_DUPLICATES QUASSEL_QT_LIBRARIES)
-  list(REMOVE_DUPLICATES QUASSEL_QT_INCLUDES)
-  list(REMOVE_DUPLICATES QUASSEL_QT_DEFINITIONS)
+# Some wrappers for simplifying dual-Qt support
 
-  # The COMPILE_FLAGS property expects a string, not a list...
-  set(QUASSEL_QT_COMPILEFLAGS )
-  foreach(flag ${QUASSEL_QT_DEFINITIONS})
-    set(QUASSEL_QT_COMPILEFLAGS "${QUASSEL_QT_COMPILEFLAGS} ${flag}")
-  endforeach(flag)
+function(qt_use_modules)
+    if (WITH_QT5)
+        qt5_use_modules(${ARGN})
+    else()
+        qt4_use_modules(${ARGN})
+    endif()
+endfunction()
 
-endmacro(setup_qt_variables)
+function(qt_wrap_ui _var)
+    if (WITH_QT5)
+        qt5_wrap_ui(var ${ARGN})
+    else()
+        qt4_wrap_ui(var ${ARGN})
+    endif()
+    set(${_var} ${${_var}} ${var} PARENT_SCOPE)
+endfunction()
+
+function(qt_add_resources _var)
+    if (WITH_QT5)
+        qt5_add_resources(var ${ARGN})
+    else()
+        qt4_add_resources(var ${ARGN})
+    endif()
+    set(${_var} ${${_var}} ${var} PARENT_SCOPE)
+endfunction()
+
+function(qt_add_dbus_interface _var)
+    if (WITH_QT5)
+        qt5_add_dbus_interface(var ${ARGN})
+    else()
+        qt4_add_dbus_interface(var ${ARGN})
+    endif()
+    set(${_var} ${${_var}} ${var} PARENT_SCOPE)
+endfunction()
+
+function(qt_add_dbus_adaptor _var)
+    if (WITH_QT5)
+        qt5_add_dbus_adaptor(var ${ARGN})
+    else()
+        qt4_add_dbus_adaptor(var ${ARGN})
+    endif()
+    set(${_var} ${${_var}} ${var} PARENT_SCOPE)
+endfunction()
+
+######################################
+# Macros for dealing with translations
+######################################
 
 # This generates a .ts from a .po file
 macro(generate_ts outvar basename)
@@ -50,7 +107,7 @@ macro(generate_ts outvar basename)
 # This is a workaround to add (duplicate) strings that lconvert missed to the .ts
           COMMAND ${QT_LUPDATE_EXECUTABLE}
           ARGS -silent
-	       ${CMAKE_SOURCE_DIR}/src/
+               ${CMAKE_SOURCE_DIR}/src/
                -ts ${output}
           DEPENDS ${basename}.po)
   set(${outvar} ${output})

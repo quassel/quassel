@@ -24,52 +24,45 @@ include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
 
 # Add resources. Can't be done in other subdirs apparently.
 # Note that these variables need to contain paths relative to src/ (this dir)
-if(WITH_QT5)
-  qt5_add_resources(CLIENT_DEPS ${CLIENT_RCS})
-  qt5_add_resources(CORE_DEPS ${CORE_RCS})
-  qt5_add_resources(COMMON_DEPS ${COMMON_RCS})
-else(WITH_QT5)
-  qt4_add_resources(CLIENT_DEPS ${CLIENT_RCS})
-  qt4_add_resources(CORE_DEPS ${CORE_RCS})
-  qt4_add_resources(COMMON_DEPS ${COMMON_RCS})
-endif(WITH_QT5)
+qt_add_resources(CLIENT_DEPS ${CLIENT_RCS})
+qt_add_resources(CORE_DEPS ${CORE_RCS})
+qt_add_resources(COMMON_DEPS ${COMMON_RCS})
+
+# For Windows, Qt4 needs the QtMain module
+if (WIN32 AND NOT WITH_QT5)
+    set(MAIN Main)
+endif()
 
 if(WANT_CORE)
-  setup_qt_variables(Network Script Sql ${CORE_QT_MODULES})
-  include_directories(${QUASSEL_QT_INCLUDES})
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
+  qt_use_modules(quasselcore Core Network ${CORE_QT_MODULES} ${MAIN})
   add_dependencies(quasselcore po)
   set_target_properties(quasselcore PROPERTIES
-                                    COMPILE_FLAGS "-DBUILD_CORE ${QUASSEL_QT_COMPILEFLAGS}"
+                                    COMPILE_FLAGS "-DBUILD_CORE"
                                     OUTPUT_NAME ../quasselcore)
-  target_link_libraries(quasselcore mod_core mod_common ${COMMON_LIBRARIES}
-                                    ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  target_link_libraries(quasselcore mod_core mod_common ${COMMON_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_CORE)
 
 if(WANT_QTCLIENT)
-  setup_qt_variables(Gui Network ${CLIENT_QT_MODULES})
-  include_directories(${QUASSEL_QT_INCLUDES})
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
+  qt_use_modules(quasselclient Core Gui Network ${CLIENT_QT_MODULES} ${MAIN})
   add_dependencies(quasselclient po)
   set_target_properties(quasselclient PROPERTIES
-                                      COMPILE_FLAGS "-DBUILD_QTUI ${QUASSEL_QT_COMPILEFLAGS} ${CLIENT_COMPILE_FLAGS}"
+                                      COMPILE_FLAGS "-DBUILD_QTUI ${CLIENT_COMPILE_FLAGS}"
                                       OUTPUT_NAME ../quasselclient)
-  target_link_libraries(quasselclient ${LINK_KDE} mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES}
-                                      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${CLIENT_LIBRARIES})
+  target_link_libraries(quasselclient ${LINK_KDE} mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
-  setup_qt_variables(Gui Network Script Sql ${CLIENT_QT_MODULES} ${CORE_QT_MODULES})
-  include_directories(${QUASSEL_QT_INCLUDES})
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
+  qt_use_modules(quassel Core Gui Network ${CLIENT_QT_MODULES} ${CORE_QT_MODULES} ${MAIN})
   add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
-                                COMPILE_FLAGS "-DBUILD_MONO ${QUASSEL_QT_COMPILEFLAGS} ${CLIENT_COMPILE_FLAGS}"
+                                COMPILE_FLAGS "-DBUILD_MONO ${CLIENT_COMPILE_FLAGS}"
                                 OUTPUT_NAME ../quassel)
-  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES}
-                                ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${CLIENT_LIBRARIES})
+  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_MONO)
 
