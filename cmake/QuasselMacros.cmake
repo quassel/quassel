@@ -14,8 +14,7 @@
 
 # CMake gained this function in 2.8.10. To be able to use older versions, we've copied
 # this here. If present, the function from CMake will take precedence and our copy will be ignored.
-function(quassel_qt4_use_modules _target _link_type)
-    message("SPUT calling")
+function(qt4_use_modules _target _link_type)
     if ("${_link_type}" STREQUAL "LINK_PUBLIC" OR "${_link_type}" STREQUAL "LINK_PRIVATE")
         set(modules ${ARGN})
         set(link_type ${_link_type})
