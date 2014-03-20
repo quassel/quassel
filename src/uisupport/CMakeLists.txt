@@ -48,7 +48,7 @@ if(HAVE_QCA2)
   include_directories(${QCA2_INCLUDE_DIR})
 endif(HAVE_QCA2)
 
-if (WITH_QT5)
+if (USE_QT5)
     list(APPEND qt_modules Widgets)
 endif()
 

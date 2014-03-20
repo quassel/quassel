@@ -1,38 +1,21 @@
-# This is the cmake-based build system for Quassel IRC.
+# Main CMake file for building Quassel IRC
 #
-# You may pass various options to cmake:
-#
-# -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
-#                        : select binaries to build
-# -DWITH_OPENSSL=OFF     : Disable OpenSSL support
-# -DWITH_DBUS=OFF        : Disable D-Bus support (dbus notifications)
-# -DWITH_WEBKIT=OFF      : Disable WebKit support (link previews)
-# -DWITH_PHONON=OFF      : Disable Phonon support (audio notifications)
-# -DWITH_LIBINDICATE=OFF : Disable libindicate support (Ayatana notifications)
-# -DWITH_KDE=ON          : Enable KDE4 support
-# -DWITH_CRYPT=OFF       : Disable encryption support
-# -DWITH_OXYGEN=(ON|OFF) : Whether to install Oxygen icons (default: yes, unless KDE > 4.3.0 is present and enabled)
-# -DWITH_SYSLOG=OFF      : Disable syslog support
-#
-# -DEMBED_DATA=ON        : Embed all data files in icons the binary, rather than installing them separately
-#
-# -DQT=/path/to/qt       : Choose a Qt4 installation to use instead of the system Qt4
-# -DSTATIC=ON            : Enable static building of Quassel. Use with care.
-# -DDEPLOY=ON            : Mac OS X only. Use only for creating Quassel Packages!
-#
-# -DWITH_QT5=ON          : Enable (very) experimental support for Qt5 (see doc/README.Qt5!)
-#
-# NOTE: You should remove CMakeCache.txt if you plan to change any of these values!
+# See INSTALL for possible CMake options (or read the code, Luke)
+#####################################################################
 
+# General setup
+#####################################################################
 
 cmake_minimum_required(VERSION 2.8.9)
 project(QuasselIRC)
+
 
 # Versions
 set(QUASSEL_MAJOR  0)
 set(QUASSEL_MINOR 11)
 set(QUASSEL_PATCH  0)
 set(QUASSEL_VERSION_STRING "0.11-pre")
+
 
 # Tell CMake about or own modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -41,6 +24,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+
 # Moar stuff
 include(CheckFunctionExists)
 include(CheckIncludeFile)
@@ -48,138 +32,140 @@ include(CheckIncludeFile)
 include(QuasselCompileSettings)
 include(QuasselMacros)
 
-# Various options and variables that can be set on the command line
+include(CMakeDependentOption)
+
+
+# Options and variables that can be set on the command line
+#####################################################################
+
+
+# First, choose a Qt version. We support USE_QT4 and USE_QT5; if neither is set, prefer Qt4 for now
+option(USE_QT5 "Enable support for Qt5 (disables KDE integration)" OFF)
+if (USE_QT4) # takes precedence
+    set(USE_QT5 OFF)
+else()
+    if (NOT USE_QT5)
+        set(USE_QT4 ON)
+    endif()
+endif()
+
+# Select the binaries to build
 option(WANT_CORE     "Build the core (server) binary"           ON)
 option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
 option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
 
-option(WITH_OPENSSL  "Enable OpenSSL support if present on the system"	ON)
-option(WITH_DBUS     "Enable D-Bus support if present on the system"	ON)
-option(WITH_WEBKIT   "Enable WebKit support (for link previews)"	ON)
-option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
-option(WITH_LIBINDICATE "Enable Ayatana notification support"           ON)
-option(WITH_KDE      "Enable KDE4 integration"				OFF)
-option(WITH_CRYPT    "Enable encryption support if present on system"	ON)
-option(WITH_SYSLOG   "Use syslog for storing log data"			ON)
 
-# We use icon paths from KDE 4.3.x, which are partially invalid on older and possibly
-# even on newer KDE versions. Do not disable this unless you are sure that your Quassel will
-# run on a matching KDE version only.
-set(WITH_OXYGEN AUTO CACHE STRING "Install Oxygen icons (default is \"AUTO\" to install when KDE 4.3 or later is present")
+# Whether to enable KDE integration (pulls in kdelibs and friends as a dependency); requires Qt4 for now
+cmake_dependent_option(WITH_KDE      "KDE4 integration" OFF "USE_QT4" OFF)
 
-# Enable very experimental support for Qt5. Might break the compilation, or even more!
-option(WITH_QT5      "Enable (very) experimental support for Qt5"       OFF)
+# Some options don't make sense with KDE
+cmake_dependent_option(WITH_PHONON   "Phonon support (for audio notifications)"           ON "NOT WITH_KDE" OFF)
+cmake_dependent_option(WITH_SNORE    "Snore notification support"                        OFF "NOT WITH_KDE" OFF)
+cmake_dependent_option(WITH_OXYGEN   "Install Oxygen icon set (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
 
-option(STATIC        "Enable static building (might not be portable)" OFF)
+# Misc features
+option(WITH_OPENSSL     "OpenSSL support (secure networking)"             ON)
+option(WITH_DBUS        "Use D-Bus for the tray icon (StatusNotifier)"    ON)
+option(WITH_WEBKIT      "WebKit support (for link previews)"              ON)
+option(WITH_CRYPT       "Encryption support (QCA)"                        ON)
+option(WITH_LIBINDICATE "Ayatana (libindicate) notification support"      ON)
+cmake_dependent_option(WITH_SYSLOG   "Support logging to syslog"          ON "NOT WIN32" OFF)
 
-if(APPLE)
-  option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
-  # Notification Center is only available in > 10.8, which is Darwin v12
-  if(CMAKE_SYSTEM_VERSION VERSION_GREATER "11.9.9")
-    option(WITH_NOTIFICATION_CENTER "Enable OS X Notification Center support" ON)
-  endif(CMAKE_SYSTEM_VERSION VERSION_GREATER "11.9.9")
-endif(APPLE)
+if (APPLE)
+    # Notification Center is only available in > 10.8, which is Darwin v12
+    if (CMAKE_SYSTEM_VERSION VERSION_GREATER "11.9.9")
+        option(WITH_NOTIFICATION_CENTER "OS X Notification Center support" ON)
+    endif()
+endif()
 
-# Default to embedding data in the static case
-if(STATIC OR WIN32)
-  set(EMBED_DEFAULT ON)
-else(STATIC OR WIN32)
-  set(EMBED_DEFAULT ON) # should be OFF as soon as everything works
-endif(STATIC OR WIN32)
+# Always embed on Windows or for a static build; never embed when enabling KDE integration
+set(EMBED_DEFAULT OFF)
+if (STATIC OR WIN32)
+    set(EMBED_DEFAULT ON)
+endif()
+cmake_dependent_option(EMBED_DATA "Embed icons and translations in the binaries instead of installing them" ${EMBED_DEFAULT}
+                                   "NOT STATIC;NOT WIN32;NOT WITH_KDE" ${EMBED_DEFAULT})
 
-option(EMBED_DATA    "Embed all data files in the binary (rather than installing them separately)"   ${EMBED_DEFAULT})
+cmake_dependent_option(DEPLOY      "Add required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF "APPLE" OFF)
 
-set(QT "" CACHE STRING "Path to a Qt installation to use instead of the system Qt (e.g. for static builds)")
+# Handle with care
+set(QT_PATH "" CACHE PATH "Path to a Qt4 installation to use instead of the system Qt (e.g. for static builds)")
 
-# Some settings imply others
-if(STATIC)
-  add_definitions(-DSTATIC)
-  set(WITH_KDE OFF CACHE BOOL "Static building with KDE is not supported")
-endif(STATIC)
 
-if(WIN32)
-  # We don't support separately installed resources yet on Win32
-  set(EMBED_DATA ON)
-endif(WIN32)
+# Static builds are not supported and require some manual setup! Don't enable unless you know what you're doing (we don't know either)
+cmake_dependent_option(STATIC      "Enable static building (not supported)" OFF "NOT WITH_KDE" OFF)
 
 # For static builds, arbitrary extra libs might need to be linked
 # Define a comma-separated list here
 # e.g. for pgsql, we need -DLINK_EXTRA=pq;crypt
 set(LINK_EXTRA "" CACHE STRING "Semicolon-separated list of libraries to be linked")
-if(LINK_EXTRA)
-  string(REPLACE "," ";" LINK_EXTRA ${LINK_EXTRA})
-  link_libraries(${LINK_EXTRA})
-endif(LINK_EXTRA)
-
-# Build Types
+if (LINK_EXTRA)
+    string(REPLACE "," ";" LINK_EXTRA ${LINK_EXTRA})
+    link_libraries(${LINK_EXTRA})
+endif()
 
 
-# Simplify checks
-if(WANT_MONO OR WANT_QTCLIENT)
-  set(BUILD_GUI true)
-endif(WANT_MONO OR WANT_QTCLIENT)
-if(WANT_MONO OR WANT_CORE)
-  set(BUILD_CORE true)
-endif(WANT_MONO OR WANT_CORE)
+# Simplify later checks
+if (WANT_MONO OR WANT_QTCLIENT)
+    set(BUILD_GUI true)
+endif()
+if (WANT_MONO OR WANT_CORE)
+    set(BUILD_CORE true)
+endif()
 
 
-# Version checks
-################
-
-if(WITH_QT5)
-  set(QT_MIN_VERSION "5.0.0")
-  add_definitions(-DHAVE_QT5)
-
-  # Qt5 needs a new enough cmake...
-  cmake_minimum_required(VERSION 2.8.6 FATAL_ERROR)
-
-  # ... for automoc
-  set(CMAKE_AUTOMOC ON)
-else(WITH_QT5)
-
-  # GUI stuff needs some new features
-  if(BUILD_GUI)
-    set(QT_MIN_VERSION "4.6.0")
-  else(BUILD_GUI)
-    set(QT_MIN_VERSION "4.4.0")
-  endif(BUILD_GUI)
-endif(WITH_QT5)
+# Set up Qt
+#####################################################################
 
 
-# Dependencies
-##############
+if (USE_QT5)
+    message(STATUS "Building with the Qt5 libraries...")
+    set(QT_MIN_VERSION "5.2.0")
+    add_definitions(-DHAVE_QT5)
+else()
+    message(STATUS "Building with the Qt4 libraries...")
+    if (BUILD_GUI)
+        set(QT_MIN_VERSION "4.6.0")
+    else()
+        set(QT_MIN_VERSION "4.4.0")
+    endif()
+endif()
 
-if(WITH_QT5)
-  find_package(Qt5Core ${QT_MIN_VERSION} REQUIRED)
-  # We need QtWidgets
-  set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} Widgets)
 
-  # Setup the i18n-related variables
-  find_package(Qt5LinguistTools)
+if (USE_QT5)
+    find_package(Qt5Core ${QT_MIN_VERSION} REQUIRED)
+    # We need QtWidgets
+    set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} Widgets)
 
-else(WITH_QT5)
-  # Select a Qt installation here, if you don't want to use system Qt
-  if(QT)
-    # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
-    set(ENV{PATH} ${QT}/bin:$ENV{PATH})
-  endif(QT)
+    # Setup the i18n-related variables
+    find_package(Qt5LinguistTools)
 
-  # Now that we have the correct $PATH, lets find Qt!
-  find_package(Qt4 ${QT_MIN_VERSION} REQUIRED)
-endif(WITH_QT5)
+else()
+    # Select a Qt installation here, if you don't want to use system Qt
+    if(QT_PATH)
+        # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
+        set(ENV{PATH} ${QT}/bin:$ENV{PATH})
+    endif()
+
+    # Now that we have the correct $PATH, lets find Qt!
+    find_package(Qt4 ${QT_MIN_VERSION} REQUIRED)
+endif()
 
 
 # Neither Qt4 nor Qt5 consider lconvert relevant, so they don't support finding it...
 # Rather than shipping hacked buildsys files, let's just infer the path from lrelease
-if(QT_LRELEASE_EXECUTABLE)
-  get_filename_component(_lrelease_path ${QT_LRELEASE_EXECUTABLE} PATH)
-  if(WITH_QT5)
-    find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-  else(WITH_QT5)
-    find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt4 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-  endif(WITH_QT5)
-endif(QT_LRELEASE_EXECUTABLE)
+if (QT_LRELEASE_EXECUTABLE)
+    get_filename_component(_lrelease_path ${QT_LRELEASE_EXECUTABLE} PATH)
+    if (USE_QT5)
+        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+    else()
+        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt4 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+    endif()
+endif()
 
+
+# Dependencies
+#####################################################################
 
 # zlib for compression, however we can always fall back to miniz
 find_package(ZLIB)
@@ -237,10 +223,10 @@ if(BUILD_GUI)
 
   # Setup D-Bus support
   if(WITH_DBUS)
-    if(WITH_QT5)
+    if (USE_QT5)
       find_package(Qt5DBus ${QT_MIN_VERSION})
       find_package(Qt5DBusTools)
-    endif(WITH_QT5)
+    endif()
 
     if(QT_QTDBUS_FOUND OR (Qt5DBus_FOUND AND Qt5DBusTools_FOUND))
       message(STATUS "Found QtDBus, enabling D-Bus support")
@@ -249,7 +235,7 @@ if(BUILD_GUI)
       set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} DBus)
 
       # check if we have dbusmenu as well
-      if(NOT WITH_QT5)
+      if (NOT USE_QT5)
         find_package(DBusMenuQt)
         if(DBUSMENUQT_FOUND)
           message(STATUS "Enabling support for exporting the tray menu via D-Bus")
@@ -260,7 +246,7 @@ if(BUILD_GUI)
         else(DBUSMENUQT_FOUND)
           message(STATUS "Disabling support for exporting the tray menu via D-Bus")
         endif(DBUSMENUQT_FOUND)
-      endif(NOT WITH_QT5)
+      endif()
 
     else(QT_QTDBUS_FOUND OR (Qt5DBus_FOUND AND Qt5DBusTools_FOUND))
       message(STATUS "QtDBus not found, disabling D-Bus support")
@@ -271,9 +257,9 @@ if(BUILD_GUI)
 
   # Setup QtWebkit support
   if(WITH_WEBKIT)
-    if(WITH_QT5)
+    if (USE_QT5)
       find_package(Qt5Webkit ${QT_MIN_VERSION} QUIET)
-    endif(WITH_QT5)
+    endif()
     if(QT_QTWEBKIT_FOUND OR Qt5Webkit_FOUND)
       message(STATUS "Found QtWebKit, enabling WebKit support")
       add_definitions(-DHAVE_WEBKIT)
@@ -287,7 +273,7 @@ if(BUILD_GUI)
   endif(WITH_WEBKIT)
 
   # Setup KDE4 support
-  if(WITH_KDE AND NOT WITH_QT5)
+  if(WITH_KDE AND NOT USE_QT5)
     # KDE has overzealous CFLAGS making miniz not compile, so save our old flags
     set(_cflags ${CMAKE_C_FLAGS})
     find_package(KDE4)
@@ -304,14 +290,14 @@ if(BUILD_GUI)
     else(KDE4_FOUND)
       message(STATUS "KDE4 not found, disabling KDE integration")
     endif(KDE4_FOUND)
-  else(WITH_KDE AND NOT WITH_QT5)
+  else(WITH_KDE AND NOT USE_QT5)
     message(STATUS "Not enabling KDE4 integration")
-  endif(WITH_KDE AND NOT WITH_QT5)
+  endif(WITH_KDE AND NOT USE_QT5)
 
   # Setup Phonon support - we only need this if we don't have or want KDE4
   if(NOT HAVE_KDE)
     if(WITH_PHONON)
-      if(WITH_QT5)
+      if(USE_QT5)
         find_package(Qt5phonon)
         if(Qt5phonon_FOUND)
           message(STATUS "Enabling Phonon support")
@@ -321,7 +307,7 @@ if(BUILD_GUI)
         else(Qt5phonon_FOUND)
           message(STATUS "Phonon not found, disabling audio notifications")
         endif(Qt5phonon_FOUND)
-      else(WITH_QT5)
+      else(USE_QT5)
         find_package(Phonon)
         if(PHONON_FOUND)
           message(STATUS "Enabling Phonon support")
@@ -332,7 +318,7 @@ if(BUILD_GUI)
         else(PHONON_FOUND)
           message(STATUS "Phonon not found, disabling audio notifications")
         endif(PHONON_FOUND)
-      endif(WITH_QT5)
+      endif(USE_QT5)
     else(WITH_PHONON)
       message(STATUS "Not enabling Phonon support")
     endif(WITH_PHONON)
@@ -346,7 +332,7 @@ if(BUILD_GUI)
   endif(NOT HAVE_KDE)
 
   # Setup libindicate-qt support
-  if(WITH_LIBINDICATE AND NOT WITH_QT5)
+  if(WITH_LIBINDICATE AND NOT USE_QT5)
     pkg_check_modules(INDICATEQT QUIET indicate-qt>=0.2.1)
     if(INDICATEQT_FOUND)
       message(STATUS "Enabling Ayatana notification support")
@@ -357,11 +343,11 @@ if(BUILD_GUI)
     else(INDICATEQT_FOUND)
       message(STATUS "Disabling Ayatana notification support")
     endif(INDICATEQT_FOUND)
-  else(WITH_LIBINDICATE AND NOT WITH_QT5)
+  else(WITH_LIBINDICATE AND NOT USE_QT5)
     message(STATUS "Not enabling Ayatana notification support")
     # We don't want to link against it even if another package has found it
     set(INDICATEQT_LIBRARIES "")
-  endif(WITH_LIBINDICATE AND NOT WITH_QT5)
+  endif(WITH_LIBINDICATE AND NOT USE_QT5)
 
   # Setup OS X notification center support
   if(WITH_NOTIFICATION_CENTER AND APPLE)
@@ -377,7 +363,7 @@ endif(BUILD_GUI)
 if(BUILD_CORE)
 
   # Setup encryption support
-  if(WITH_CRYPT AND NOT WITH_QT5)
+  if(WITH_CRYPT AND NOT USE_QT5)
     find_package(QCA2)
     if(QCA2_FOUND)
       message(STATUS "Enabling encryption support")
@@ -388,9 +374,9 @@ if(BUILD_CORE)
     else(QCA2_FOUND)
       message(STATUS "Disabling encryption support")
     endif(QCA2_FOUND)
-  else(WITH_CRYPT AND NOT WITH_QT5)
+  else(WITH_CRYPT AND NOT USE_QT5)
     message(STATUS "Not enabling encryption support")
-  endif(WITH_CRYPT AND NOT WITH_QT5)
+  endif(WITH_CRYPT AND NOT USE_QT5)
 
   # Setup syslog support
   if(WITH_SYSLOG)

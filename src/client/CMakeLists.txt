@@ -38,7 +38,7 @@ set(SOURCES
     clientcoreinfo.h
 )
 
-if (WITH_QT5)
+if (USE_QT5)
     list(APPEND qt_modules Widgets)
 endif()
 

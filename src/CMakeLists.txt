@@ -29,7 +29,7 @@ qt_add_resources(CORE_DEPS ${CORE_RCS})
 qt_add_resources(COMMON_DEPS ${COMMON_RCS})
 
 # For Windows, Qt4 needs the QtMain module
-if (WIN32 AND NOT WITH_QT5)
+if (WIN32 AND NOT USE_QT5)
     set(MAIN Main)
 endif()
 

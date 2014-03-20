@@ -140,7 +140,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
 
 qt_wrap_ui(UI ${FORMPATH} ${SPFRM})
 
-if (WITH_QT5)
+if (USE_QT5)
     list(APPEND qt_modules Widgets)
 endif()
 
