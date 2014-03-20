@@ -22,6 +22,7 @@
 #define IGNORELISTMANAGER_H
 
 #include <QString>
+#include <QRegExp>
 
 #include "message.h"
 #include "syncableobject.h"
@@ -60,10 +61,16 @@ public:
         ScopeType scope;
         QString scopeRule;
         bool isActive;
+        QRegExp regEx;
         IgnoreListItem() {}
         IgnoreListItem(IgnoreType type_, const QString &ignoreRule_, bool isRegEx_, StrictnessType strictness_,
             ScopeType scope_, const QString &scopeRule_, bool isActive_)
-            : type(type_), ignoreRule(ignoreRule_), isRegEx(isRegEx_), strictness(strictness_), scope(scope_), scopeRule(scopeRule_), isActive(isActive_)  {}
+            : type(type_), ignoreRule(ignoreRule_), isRegEx(isRegEx_), strictness(strictness_), scope(scope_), scopeRule(scopeRule_), isActive(isActive_), regEx(ignoreRule_) {
+            regEx.setCaseSensitivity(Qt::CaseInsensitive);
+            if (!isRegEx_) {
+                regEx.setPatternSyntax(QRegExp::Wildcard);
+            }
+        }
         bool operator!=(const IgnoreListItem &other)
         {
             return (type != other.type ||
