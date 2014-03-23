@@ -48,30 +48,23 @@ endif()
 
 # Select the binaries to build
 option(WANT_CORE     "Build the core (server) binary"           ON)
-option(WANT_QTCLIENT "Build the Qt GUI client binary"           ON)
+option(WANT_QTCLIENT "Build the client-only binary"             ON)
 option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
-
 add_feature_info(WANT_CORE WANT_CORE "Build the core (server) binary")
-add_feature_info(WANT_QTCLIENT WANT_QTCLIENT "Build the Qt GUI client binary")
+add_feature_info(WANT_QTCLIENT WANT_QTCLIENT "Build the client-only binary (requires a core to connect to)")
 add_feature_info(WANT_MONO WANT_MONO "Build the monolithic (all-in-one) binary")
 
-
 # Whether to enable KDE integration (pulls in kdelibs and friends as a dependency); requires Qt4 for now
-cmake_dependent_option(WITH_KDE      "KDE4 integration" OFF "USE_QT4" OFF)
+cmake_dependent_option(WITH_KDE "KDE4 integration" OFF "USE_QT4" OFF)
 add_feature_info(WITH_KDE WITH_KDE "Enable KDE4 integration")
 
-# Some options don't make sense with KDE
-cmake_dependent_option(WITH_PHONON   "Phonon support (for audio notifications)"           ON "NOT WITH_KDE" OFF)
-cmake_dependent_option(WITH_SNORE    "Snore notification support"                        OFF "NOT WITH_KDE" OFF)
-cmake_dependent_option(WITH_OXYGEN   "Install Oxygen icon set (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
+cmake_dependent_option(WITH_OXYGEN "Install Oxygen icon set (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
+if (NOT WITH_KDE)
+    add_feature_info(WITH_OXYGEN WITH_OXYGEN "Install Oxygen icon set")
+endif()
 
-# Misc features
-option(WITH_OPENSSL     "OpenSSL support (secure networking)"             ON)
-option(WITH_DBUS        "Use D-Bus for the tray icon (StatusNotifier)"    ON)
-option(WITH_WEBKIT      "WebKit support (for link previews)"              ON)
-option(WITH_CRYPT       "Encryption support (QCA)"                        ON)
-option(WITH_LIBINDICATE "Ayatana (libindicate) notification support"      ON)
-cmake_dependent_option(WITH_SYSLOG   "Support logging to syslog"          ON "NOT WIN32" OFF)
+# For this, the feature info is added after we know if QtWebkit is installed
+option(WITH_WEBKIT "WebKit support (for link previews)" ON)
 
 if (APPLE)
     # Notification Center is only available in > 10.8, which is Darwin v12
@@ -81,19 +74,22 @@ if (APPLE)
     endif()
 endif()
 
-# Always embed on Windows or for a static build; never embed when enabling KDE integration
+# Always embed on Windows, OSX or for a static build; never embed when enabling KDE integration
 set(EMBED_DEFAULT OFF)
-if (STATIC OR WIN32)
+if (STATIC OR WIN32 OR APPLE)
     set(EMBED_DEFAULT ON)
 endif()
-cmake_dependent_option(EMBED_DATA "Embed icons and translations in the binaries instead of installing them" ${EMBED_DEFAULT}
+cmake_dependent_option(EMBED_DATA "Embed icons and translations into the binaries instead of installing them" ${EMBED_DEFAULT}
                                    "NOT STATIC;NOT WIN32;NOT WITH_KDE" ${EMBED_DEFAULT})
+if (NOT EMBED_DEFAULT)
+    add_feature_info(EMBED_DATA EMBED_DATA "Embed icons and translations in the binaries instead of installing them")
+endif()
 
-cmake_dependent_option(DEPLOY      "Add required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF "APPLE" OFF)
+# The following options are not for end-user consumption, so don't list them in the feature summary
+cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF "APPLE" OFF)
 
 # Handle with care
 set(QT_PATH "" CACHE PATH "Path to a Qt4 installation to use instead of the system Qt (e.g. for static builds)")
-
 
 # Static builds are not supported and require some manual setup! Don't enable unless you know what you're doing (we don't know either)
 cmake_dependent_option(STATIC      "Enable static building (not supported)" OFF "NOT WITH_KDE" OFF)
