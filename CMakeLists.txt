@@ -22,15 +22,17 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Moar stuff
+# Include various CMake modules...
+include(CMakePushCheckState)
 include(CheckFunctionExists)
 include(CheckIncludeFile)
-
-include(QuasselCompileSettings)
-include(QuasselMacros)
-
+include(CheckCXXSourceCompiles)
 include(CMakeDependentOption)
 include(FeatureSummary)
+
+# ... and our own stuff
+include(QuasselCompileSettings)
+include(QuasselMacros)
 
 
 # Options and variables that can be set on the command line
@@ -320,10 +322,24 @@ if (KDE4_FOUND)
     add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
 endif()
 
-# Check for SSL support in Qt (broken for Qt5 currently)
-# We don't link to the OpenSSL libraries ourselves.
-if (QT_QCONFIG MATCHES "openssl")
-    set(HAVE_SSL true)
+# Check for SSL support in Qt
+# As there's no easy way to get Qt's configuration in particular for Qt5, let's just compile
+# a small test program checking the defines. This works for both Qt4 and Qt5.
+cmake_push_check_state(RESET)
+if (Qt5_POSITION_INDEPENDENT_CODE)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+set(CMAKE_REQUIRED_INCLUDES ${QT_INCLUDES} ${Qt5Core_INCLUDE_DIRS})
+check_cxx_source_compiles("
+    #include \"qglobal.h\"
+    #if defined QT_NO_OPENSSL || defined QT_NO_SSL
+    #  error \"No SSL support\"
+    #endif
+    int main() {}"
+    HAVE_SSL)
+cmake_pop_check_state()
+
+if (HAVE_SSL)
     add_definitions(-DHAVE_SSL)
 endif()
 add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
