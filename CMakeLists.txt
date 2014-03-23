@@ -121,58 +121,51 @@ endif()
 #####################################################################
 
 if (USE_QT5)
-    message(STATUS "Building with the Qt5 libraries...")
+    message(STATUS "Building for Qt5...")
     set(QT_MIN_VERSION "5.2.0")
     add_definitions(-DHAVE_QT5)
 else()
-    message(STATUS "Building with the Qt4 libraries...")
+    message(STATUS "Building for Qt4...")
     if (BUILD_GUI)
         set(QT_MIN_VERSION "4.6.0")
     else()
         set(QT_MIN_VERSION "4.4.0")
     endif()
-endif()
 
-if (USE_QT5)
-    find_package(Qt5Core ${QT_MIN_VERSION} QUIET REQUIRED)
-
-    # Contains lconvert and friends
-    find_package(Qt5LinguistTools QUIET)
-    set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
-                           PURPOSE "Required for localization support"
-    )
-else()
     # Select a Qt installation here, if you don't want to use system Qt
     if(QT_PATH)
         # FindQt4 will look for the qmake binary in $PATH, so we just prepend QT_PATH
         set(ENV{PATH} ${QT_PATH}/bin:$ENV{PATH})
     endif()
-
-    # Now that we have the correct $PATH, lets find Qt!
-    find_package(Qt4 ${QT_MIN_VERSION} QUIET REQUIRED)
 endif()
 
-# Neither Qt4 nor Qt5 consider lconvert relevant, so they don't support finding it...
-# Rather than shipping hacked buildsys files, let's just infer the path from lrelease
-if (QT_LRELEASE_EXECUTABLE)
-    get_filename_component(_lrelease_path ${QT_LRELEASE_EXECUTABLE} PATH)
-    if (USE_QT5)
-        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-    else()
-        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt4 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-    endif()
-endif()
-
-add_feature_info("Qt Linguist Tools" QT_LRELEASE_EXECUTABLE "Translation support for Quassel")
-
-# Optional Dependencies
+# Find package dependencies
 #
 # Note that you can forcefully disable optional packages
 # using -DCMAKE_DISABLE_FIND_PACKAGE_<PkgName>=TRUE
 #####################################################################
 
 if(USE_QT5)
+    find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
+    set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED
+        URL "http://qt.digia.com"
+        DESCRIPTION "contains core functionality for Qt"
+    )
+    find_package(Qt5Network QUIET)
+    set_package_properties(Qt5Network PROPERTIES TYPE REQUIRED
+        DESCRIPTION "the network module for Qt5"
+    )
+
     if (BUILD_GUI)
+        find_package(Qt5Gui QUIET)
+        set_package_properties(Qt5Gui PROPERTIES TYPE REQUIRED
+            DESCRIPTION "the GUI module for Qt5"
+        )
+        find_package(Qt5Widgets QUIET)
+        set_package_properties(Qt5Widgets PROPERTIES TYPE REQUIRED
+            DESCRIPTION "the widgets module for Qt5"
+        )
+
         find_package(Qt5DBus QUIET)
         set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
             URL "http://qt.digia.com"
@@ -207,6 +200,15 @@ if(USE_QT5)
 
     endif(BUILD_GUI)
     if (BUILD_CORE)
+        find_package(Qt5Script QUIET)
+        set_package_properties(Qt5Script PROPERTIES TYPE REQUIRED
+            DESCRIPTION "provides scripting support for Qt5"
+        )
+        find_package(Qt5Sql QUIET)
+        set_package_properties(Qt5Sql PROPERTIES TYPE REQUIRED
+            DESCRIPTION "the database support module for Qt5"
+        )
+
         # While QCA2 seems to support Qt5, it is not actually co-installable or distinguishable from the Qt4 version...
         # In order to avoid linking against the Qt4 version (which is probably the one installed), disable this for now
         #find_package(QCA2 QUIET)
@@ -218,7 +220,26 @@ if(USE_QT5)
 
     endif(BUILD_CORE)
 
+    find_package(Qt5LinguistTools QUIET)
+    set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
+                           DESCRIPTION "contains tools for handling translation files"
+                           PURPOSE "Required for having translations"
+    )
+    # Qt5 does not define a target for lconvert, so we need to find it ourselves
+    if (Qt5LinguistTools_FOUND)
+        if (NOT TARGET Qt5::lconvert AND TARGET Qt5::lrelease)
+            get_target_property(_lrelease_location Qt5::lrelease LOCATION)
+            get_filename_component(_lrelease_path ${_lrelease_location} PATH)
+            find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+        endif()
+        # Compatibility with the Qt4 variables
+        set (QT_LRELEASE_EXECUTABLE ${Qt5_LRELEASE_EXECUTABLE})
+        set (QT_LUPDATE_EXECUTABLE ${Qt5_LUPDATE_EXECUTABLE})
+    endif()
+
 else(USE_QT5)
+    find_package(Qt4 ${QT_MIN_VERSION} QUIET REQUIRED)
+
     if (BUILD_GUI)
         add_feature_info("QtDBus module" QT_QTDBUS_FOUND "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments")
         if (QT_QTDBUS_FOUND)
@@ -281,7 +302,15 @@ else(USE_QT5)
 
 
     endif()
+
+    # Qt4 does not consider lconvert relevant, so they don't support finding it...
+    # Rather than shipping hacked buildsys files, let's just infer the path from lrelease
+    if (QT_LRELEASE_EXECUTABLE)
+        get_filename_component(_lrelease_path ${QT_LRELEASE_EXECUTABLE} PATH)
+        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt4 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+    endif()
 endif()
+
 
 # Non-Qt-based packages
 
@@ -350,6 +379,7 @@ if (NOT WIN32)
     add_feature_info("syslog.h" HAVE_SYSLOG "Provide support for logging to the syslog")
 endif()
 
+add_feature_info("Qt Linguist Tools" QT_LCONVERT_EXECUTABLE "Translation support for Quassel")
 
 # Various settings
 ##################
@@ -447,7 +477,6 @@ add_subdirectory(data)
 add_subdirectory(icons)
 add_subdirectory(pics)
 add_subdirectory(po)
-add_subdirectory(src)
 
 # Set up and display feature summary
 #####################################################################
@@ -456,3 +485,10 @@ feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
                 FATAL_ON_MISSING_REQUIRED_PACKAGES
 )
+
+# Finally, compile the sources
+# We want this after displaying the feature summary to avoid ugly
+# CMake backtraces in case a required Qt5 modules misses
+#####################################################################
+
+add_subdirectory(src)
