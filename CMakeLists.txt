@@ -143,8 +143,8 @@ if (USE_QT5)
 else()
     # Select a Qt installation here, if you don't want to use system Qt
     if(QT_PATH)
-        # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
-        set(ENV{PATH} ${QT}/bin:$ENV{PATH})
+        # FindQt4 will look for the qmake binary in $PATH, so we just prepend QT_PATH
+        set(ENV{PATH} ${QT_PATH}/bin:$ENV{PATH})
     endif()
 
     # Now that we have the correct $PATH, lets find Qt!
