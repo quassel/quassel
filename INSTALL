@@ -1,104 +1,119 @@
 Quassel IRC - Installation Notes
 ================================
 
-These should help you to install Quassel IRC from source. Please also have a
-look at the README file!
+These should help you to install Quassel IRC from source. Note that this focuses
+mostly on building on Linux; please feel free to send patches for build
+instructions on other platforms. We are not familiar with them.
 
-Quassel IRC provides three binaries: quasselcore, quasselclient, and
-quassel. While quasselcore and quasselclient obviously provide the
-separated core and client functionality, the latter one (quassel) is a
-monolithic version containing both of them for convenience.
+There are three versions of Quassel that can be built:
 
-Note that quasselcore is no longer being built by default, since it tends to
-confuse users more than it helped. It will be back as soon as we have simple mode
-implemented.
+* quasselcore   - The server daemon. Typically runs on a headless server and
+                  is permanently online. The core connects to IRC and stores
+                  both settings and backlog.
+* quasselclient - The GUI client. Requires a running quasselcore to connect to.
+                  Upon connection, the client will fetch all session data and
+                  a certain amount of backlog from the core and restore its
+                  session almost as if you were never gone.
+* quassel       - This standalone version, often called "monolithic" or
+                  "mono client", contains both a client and a core and can be
+                  used like a "normal" IRC client, without having to setup
+                  a server daemon.
 
-We now use CMake as our build system. CMake supports and encourages out-of-source
-builds, which do not clutter the source directory. You can (and should) thus use
-an arbitrary directory for building.
+Prerequisites
+-------------
 
-There is no "make distclean"; "make clean" should usually be enough since CMake
-actually cleans up properly (qmake often didn't). If you really want to get rid
-of all build files, just remove the build directory.
+Of course, for building Quassel you need the usual set of build tools, for
+example a compiler. As we use a subset of the C++11 standard, we require a
+fairly recent compiler:
 
-Usually, you will build Quassel as follows:
+- gcc 4.7+ (available for most platforms), or
+- Clang 3.2+ (available for most platforms, or
+- XCode 4.6+ (available for Max OS X and based on Clang), or
+- Visual C++ 2013 (available for Windows™), or
+- any other compiler with decent C++11 support
 
-cd /path/to/build/dir
-cmake /path/to/quassel
+Furthermore, CMake 2.8.9 or later is required.
+
+As Quassel is a Qt application, you need the Qt SDK, either Qt 4.6+ or Qt 5.2+.
+
+There are several optional dependencies; we will talk about that later.
+
+Compiling Quassel - short version
+---------------------------------
+
+Quassel uses CMake as its build system. The canonical way to build any CMake-
+based project is as follows:
+
+cd /path/to/source
+mkdir build
+cd build
+cmake ..
 make
+make install
 
-Additionally, you may add some options to the cmake call, prefixed by -D. These need
-to follow the source directory PATH:
+Compiling Quassel - long version
+--------------------------------
 
-cmake /path/to/quassel -D<option1> -D<option2>
+First of all, it is highly recommended for any CMake-based project to be built
+in a separate build directory rather than in-source. That way, your source
+checkout remains pristine, and you can easily remove any build artifacts by just
+deleting the build directory. This directory can be located anywhere; in the
+short example above, we just created a directory called "build" inside the
+source checkout.
 
-NOTE: In order to reconfigure, you need to remove CMakeCache.txt (or empty
-      the build directory), otherwise cmake will ignore modified -D options!
+From inside the build directory, you can then run the "cmake" command, followed
+by the path to the source. Additionally, you can append various options. Note
+that CMake caches the options you provide on the command line, so if you rerun
+it later in the same build directory, you don't need to specify them again.
 
-Quassel recognizes the following options:
-
-LINGUAS="<languages">
-    Allow to choose which languages should be compiled into the binary.
-    <languages> is a space- or comma-separated list of language codes.
-    Note that this is not a cmake variable, but an environment variable.
-    Example: LINGUAS="de en_US"
+Quassel supports several options to enable or disable features, and can make
+use of several optional dependencies if installed. CMake will give a nice
+summary of all that after its run, so we'll just mention the most important
+options here:
 
 -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
     Allow to choose which Quassel binaries to build.
 
+-DUSE_QT5=ON
+    Build against Qt5 instead of the default Qt4. Note that you should empty
+    your build directory when switching between Qt versions, otherwise weird
+    things may happen.
+
 -DWITH_KDE=ON
-    Enable integration into KDE4
+    Enable integration into KDE4; only available if -DUSE_QT5=OFF
 
--DWITH_OXYGEN=(ON|OFF|AUTO)
-    Whether to install Oxygen icons used by Quassel. By default (AUTO) we don't install them if
-    KDE integration is enabled and KDE > 4.3.0 is present, as all needed icons are part of the
-    system Oxygen iconset in this case. Using ON or OFF you can override automatic detection.
-
--DWITH_OPENSSL=OFF
-    Disable OpenSSL support
-
--DWITH_DBUS=OFF
-    Disable D-Bus support. This will disable support for notification-daemon.
+-DWITH_OXYGEN=(ON|OFF)
+    Install the parts of the Oxygen icon set Quassel uses. Oxygen is the default
+    icon set for KDE4, and thus already available on systems where KDE4 is
+    installed. By default, WITH_OXYGEN is ON iff WITH_KDE is OFF. If you are
+    sure that you have the icon set already installed on your system regardless,
+    use this option to disable installing the bundled icons.
 
 -DWITH_WEBKIT=OFF
-    Disable WebKit support. You will not have webpage previews on hovering URLs.
+    Use Webkit for showing previews of webpages linked in the chat. Requires
+    the QtWebkit module to be available, and increases the client's RAM usage
+    by *a lot* if enabled at runtime.
 
--DWITH_PHONON=OFF
-    Disable support for audio notifications via Phonon.
+-DEMBED_DATA=(ON|OFF)
+    Specifies whether Quassel's data files (icons, translations and so on)
+    should be installed normally, or embedded into the binaries. The latter is
+    useful if you want to run Quassel from the build directory, or don't want
+    to use a standard installation. In particular, EMBED_DATA defaults to ON
+    on Windows and OS X, and to OFF on Linux.
 
--DWITH_LIBINDICATE=OFF
-    Disable support for Ayatana notifications (libindicate-qt)
+You can find the list of optional packages for additional features in CMake's
+feature summary; install missing packages for enabling the functionality listed
+in the explanation. If you want to forcefully disable an optional feature, use
+-DCMAKE_DISABLE_FIND_PACKAGE_Foo=TRUE, where "Foo" is the package name listed.
 
--DWITH_CRYPT=OFF
-    Disable crypt support
+Quassel also supports the usual CMake options, most importantly
 
--DEMBED_DATA=ON
-    Embed all external data files (e.g. icons) into the binary. This will give you a
-    standalone binary that does not require installation. Will be ignored if KDE support
-    is enabled.
+-DCMAKE_INSTALL_PREFIX=/prefix/path - specify the installation prefix
+-DCMAKE_BUILD_TYPE=(Debug|Release|RelWithDebug) - specify the build type
 
--DQT=/path/to/qt
-    Use a non-system Qt installation. This is for example useful if you have a static
-    Qt installed in some local dir.
+If you want to narrow down the languages to be installed, you can set the
+LINGUAS environment variable with a space-separated list of language codes,
+for example LINGUAS="de en_US".
 
--DSTATIC=ON
-    Enable static building of Quassel. On Linux, you should link the static versions of some libs
-    (in particular libstdc++.a) into /path/to/build/dir/staticlibs in oder to create
-    a portable binary! Be aware of the fact that some things we do in STATIC mode might not be portable
-    or require a particular setup; it's mainly meant for the devel team. See also doc/.
-
-BUILDING ON WINDOWS:
---------------------
-We have tested building on Windows with a statically built Qt (with its /bin directory in %PATH%)
-and MSVC 2005/2008. Make sure that you use a "shell" that has all needed env variables setup,
-such as the "Visual Studio Command Prompt". You will also need the /bin of the Microsoft SDK in
-your %PATH% at least for VS 2008, otherwise rc.exe is not found.
-Currently, only building in the shell using nmake seems to work; CMake can also create MSVC project
-files, but they seem to be problematic. However, YMMV. Software development on Windows is a real
-PITA.
-
-After you have everything setup:
-
-cd C:\path\to\quassel-build
-cmake -G"NMake Makefiles" C:\path\to\quassel\source -DSTATIC=1
-nmake
+After running CMake, you can just run "make" in the build directory, and
+"make install" for installing the result into the installation prefix.
