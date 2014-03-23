@@ -21,11 +21,7 @@
 #ifndef COREAPPLICATION_H_
 #define COREAPPLICATION_H_
 
-#ifdef HAVE_KDE
-#  include <KApplication>
-#else
-#  include <QCoreApplication>
-#endif
+#include <QCoreApplication>
 
 #include "quassel.h"
 
