@@ -40,15 +40,19 @@ set(SOURCES
     coreeventmanager.h
 )
 
+set(LIBS )
+
 if(HAVE_SSL)
   set(SOURCES ${SOURCES} sslserver.cpp)
   include_directories(${OPENSSL_INCLUDE_DIR})
 endif(HAVE_SSL)
 
-if(HAVE_QCA2)
-  set(SOURCES ${SOURCES} cipher.cpp)
-  include_directories(${QCA2_INCLUDE_DIR})
-endif(HAVE_QCA2)
+if (QCA2_FOUND)
+    add_definitions(-DHAVE_QCA2)
+    include_directories(${QCA2_INCLUDE_DIR})
+    list(APPEND SOURCES cipher.cpp)
+    list(APPEND LIBS ${QCA2_LIBRARIES})
+endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
@@ -59,6 +63,6 @@ qt_use_modules(mod_core Core Network Script Sql)
 
 add_dependencies(mod_core mod_common)
 
-if(HAVE_QCA2)
-  target_link_libraries(mod_core ${QCA2_LIBRARIES})
-endif(HAVE_QCA2)
+if (LIBS)
+    target_link_libraries(mod_core ${LIBS})
+endif()

@@ -9,13 +9,11 @@
 cmake_minimum_required(VERSION 2.8.9)
 project(QuasselIRC)
 
-
 # Versions
 set(QUASSEL_MAJOR  0)
 set(QUASSEL_MINOR 11)
 set(QUASSEL_PATCH  0)
 set(QUASSEL_VERSION_STRING "0.11-pre")
-
 
 # Tell CMake about or own modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -23,7 +21,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 # General conveniences
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 
 # Moar stuff
 include(CheckFunctionExists)
@@ -33,11 +30,11 @@ include(QuasselCompileSettings)
 include(QuasselMacros)
 
 include(CMakeDependentOption)
+include(FeatureSummary)
 
 
 # Options and variables that can be set on the command line
 #####################################################################
-
 
 # First, choose a Qt version. We support USE_QT4 and USE_QT5; if neither is set, prefer Qt4 for now
 option(USE_QT5 "Enable support for Qt5 (disables KDE integration)" OFF)
@@ -51,12 +48,17 @@ endif()
 
 # Select the binaries to build
 option(WANT_CORE     "Build the core (server) binary"           ON)
-option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
+option(WANT_QTCLIENT "Build the Qt GUI client binary"           ON)
 option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
+
+add_feature_info(WANT_CORE WANT_CORE "Build the core (server) binary")
+add_feature_info(WANT_QTCLIENT WANT_QTCLIENT "Build the Qt GUI client binary")
+add_feature_info(WANT_MONO WANT_MONO "Build the monolithic (all-in-one) binary")
 
 
 # Whether to enable KDE integration (pulls in kdelibs and friends as a dependency); requires Qt4 for now
 cmake_dependent_option(WITH_KDE      "KDE4 integration" OFF "USE_QT4" OFF)
+add_feature_info(WITH_KDE WITH_KDE "Enable KDE4 integration")
 
 # Some options don't make sense with KDE
 cmake_dependent_option(WITH_PHONON   "Phonon support (for audio notifications)"           ON "NOT WITH_KDE" OFF)
@@ -75,6 +77,7 @@ if (APPLE)
     # Notification Center is only available in > 10.8, which is Darwin v12
     if (CMAKE_SYSTEM_VERSION VERSION_GREATER "11.9.9")
         option(WITH_NOTIFICATION_CENTER "OS X Notification Center support" ON)
+        add_feature_info(WITH_NOTIFICATION_CENTER WITH_NOTIFICATION_CENTER "Use the OS X Notification Center")
     endif()
 endif()
 
@@ -106,6 +109,8 @@ endif()
 
 
 # Simplify later checks
+#####################################################################
+
 if (WANT_MONO OR WANT_QTCLIENT)
     set(BUILD_GUI true)
 endif()
@@ -116,7 +121,6 @@ endif()
 
 # Set up Qt
 #####################################################################
-
 
 if (USE_QT5)
     message(STATUS "Building with the Qt5 libraries...")
@@ -131,15 +135,14 @@ else()
     endif()
 endif()
 
-
 if (USE_QT5)
-    find_package(Qt5Core ${QT_MIN_VERSION} REQUIRED)
-    # We need QtWidgets
-    set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} Widgets)
+    find_package(Qt5Core ${QT_MIN_VERSION} QUIET REQUIRED)
 
-    # Setup the i18n-related variables
-    find_package(Qt5LinguistTools)
-
+    # Contains lconvert and friends
+    find_package(Qt5LinguistTools QUIET)
+    set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
+                           PURPOSE "Required for localization support"
+    )
 else()
     # Select a Qt installation here, if you don't want to use system Qt
     if(QT_PATH)
@@ -148,9 +151,8 @@ else()
     endif()
 
     # Now that we have the correct $PATH, lets find Qt!
-    find_package(Qt4 ${QT_MIN_VERSION} REQUIRED)
+    find_package(Qt4 ${QT_MIN_VERSION} QUIET REQUIRED)
 endif()
-
 
 # Neither Qt4 nor Qt5 consider lconvert relevant, so they don't support finding it...
 # Rather than shipping hacked buildsys files, let's just infer the path from lrelease
@@ -163,42 +165,145 @@ if (QT_LRELEASE_EXECUTABLE)
     endif()
 endif()
 
+add_feature_info("Qt Linguist Tools" QT_LRELEASE_EXECUTABLE "Translation support for Quassel")
 
-# Dependencies
+# Optional Dependencies
+#
+# Note that you can forcefully disable optional packages
+# using -DCMAKE_DISABLE_FIND_PACKAGE_<PkgName>=TRUE
 #####################################################################
 
-# zlib for compression, however we can always fall back to miniz
-find_package(ZLIB)
-if(ZLIB_FOUND)
-  message(STATUS "Using system zlib for compression")
-  add_definitions(-DHAVE_ZLIB)
-  include_directories(${ZLIB_INCLUDE_DIRS})
-  set(COMMON_LIBRARIES ${COMMON_LIBRARIES} ${ZLIB_LIBRARIES})
-else()
-  message(STATUS "zlib NOT found, using bundled miniz for compression")
-  if(${CMAKE_SIZEOF_VOID_P} EQUAL 4)
-    message(STATUS "WARNING: This may be slow on 32 bit systems!")
-  endif()
+if(USE_QT5)
+    if (BUILD_GUI)
+        find_package(Qt5DBus QUIET)
+        set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
+            URL "http://qt.digia.com"
+            DESCRIPTION "D-Bus support for Qt5"
+            PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
+        )
+        if (Qt5DBus_FOUND)
+            find_package(dbusmenu-qt5 QUIET)
+            set_package_properties(dbusmenu-qt5 PROPERTIES TYPE RECOMMENDED
+                URL "https://launchpad.net/libdbusmenu-qt"
+                DESCRIPTION "a library implementing the DBusMenu specification"
+                PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
+            )
+        endif()
+
+        find_package(Phonon4Qt5 QUIET)
+        set_package_properties(Phonon4Qt5 PROPERTIES TYPE RECOMMENDED
+            URL "https://projects.kde.org/projects/kdesupport/phonon"
+            DESCRIPTION "a multimedia abstraction library"
+            PURPOSE     "Required for audio notifications"
+        )
+
+        if (WITH_WEBKIT)
+            find_package(Qt5Webkit QUIET)
+            set_package_properties(Qt5Webkit PROPERTIES TYPE RECOMMENDED
+                URL "http://qt.digia.com"
+                DESCRIPTION "a Webkit implementation for Qt"
+                PURPOSE     "Needed for displaying previews for URLs in chat"
+            )
+        endif()
+        add_feature_info("WITH_WEBKIT and QtWebkit module" Qt5Webkit_FOUND "Support showing previews for URLs in chat")
+
+    endif(BUILD_GUI)
+    if (BUILD_CORE)
+        # While QCA2 seems to support Qt5, it is not actually co-installable or distinguishable from the Qt4 version...
+        # In order to avoid linking against the Qt4 version (which is probably the one installed), disable this for now
+        #find_package(QCA2 QUIET)
+        #set_package_properties(QCA2 PROPERTIES TYPE RECOMMENDED
+        #    URL "https://projects.kde.org/projects/kdesupport/qca"
+        #    DESCRIPTION "Qt Cryptographic Architecture"
+        #    PURPOSE "Required for encryption support"
+        #)
+
+    endif(BUILD_CORE)
+
+else(USE_QT5)
+    if (BUILD_GUI)
+        add_feature_info("QtDBus module" QT_QTDBUS_FOUND "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments")
+        if (QT_QTDBUS_FOUND)
+            find_package(libdbusmenu-qt QUIET)
+            set_package_properties(dbusmenu-qt PROPERTIES TYPE RECOMMENDED
+                URL "https://launchpad.net/libdbusmenu-qt"
+                DESCRIPTION "a library implementing the DBusMenu specification"
+                PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
+            )
+        endif()
+
+        if (WITH_WEBKIT AND QT_QTWEBKIT_FOUND)
+            set(HAVE_WEBKIT true)
+        endif()
+        add_feature_info("WITH_WEBKIT and QtWebkit module" HAVE_WEBKIT "Support showing previews for URLs in chat")
+
+        if (WITH_KDE)
+            # KDE has overzealous CFLAGS making miniz not compile, so save our old flags
+            set(_cflags ${CMAKE_C_FLAGS})
+            find_package(KDE4 4.4 QUIET)
+            set_package_properties(KDE4 PROPERTIES TYPE REQUIRED
+                URL "http://www.kde.org"
+                DESCRIPTION "a world-class desktop environment"
+                PURPOSE "Enables various bits for improving integration with KDE"
+            )
+            set(CMAKE_C_FLAGS ${_cflags})
+
+        else(WITH_KDE)
+            find_package(Phonon QUIET)
+            set_package_properties(Phonon PROPERTIES TYPE RECOMMENDED
+                URL "https://projects.kde.org/projects/kdesupport/phonon"
+                DESCRIPTION "a multimedia abstraction library"
+                PURPOSE     "Required for audio notifications"
+            )
+
+            find_package(Libsnore QUIET)
+            set_package_properties(Libsnore PROPERTIES TYPE OPTIONAL
+                URL "https://github.com/TheOneRing/Snorenotify"
+                DESCRIPTION "a cross-platform notification framework"
+                PURPOSE     "Enable support for the snorenotify framework"
+            )
+        endif(WITH_KDE)
+
+        find_package(IndicateQt QUIET)
+        set_package_properties(IndicateQt PROPERTIES TYPE OPTIONAL
+            URL "https://launchpad.net/libindicate-qt/"
+            DESCRIPTION "a library to raise flags on DBus for other components of the desktop to pick up and visualize"
+            PURPOSE     "Provides integration into the Ayatana notification system used by e.g. Ubuntu"
+        )
+
+    endif(BUILD_GUI)
+    if (BUILD_CORE)
+
+        find_package(QCA2 QUIET)
+        set_package_properties(QCA2 PROPERTIES TYPE RECOMMENDED
+            URL "https://projects.kde.org/projects/kdesupport/qca"
+            DESCRIPTION "Qt Cryptographic Architecture"
+            PURPOSE     "Required for encryption support"
+        )
+
+
+    endif()
 endif()
 
+# Non-Qt-based packages
 
-# Execinfo is needed for generating backtraces
-find_package(ExecInfo)
-if(EXECINFO_FOUND)
-  add_definitions(-DHAVE_EXECINFO)
-  include_directories(${EXECINFO_INCLUDES})
-  link_libraries(${EXECINFO_LIBRARIES})
-endif(EXECINFO_FOUND)
+# zlib for compression, however we can always fall back to miniz
+find_package(ZLIB QUIET)
+set_package_properties(ZLIB PROPERTIES TYPE RECOMMENDED
+    URL "http://www.zlib.net"
+    DESCRIPTION "a popular compression library"
+    PURPOSE     "Use the most common library for protocol compression, instead of the bundled miniz implementation"
+)
 
 
-# PkgConfig isn't strictly required.
-# However, some optional deps might not be found if it's not present, so warn!
-find_package(PkgConfig)
-if(NOT PKG_CONFIG_FOUND)
-  message(STATUS "WARNING: PkgConfig not available! Some dependencies for optional features might not be found.")
-  message(STATUS "         Affected features might include encryption support, DBus menus and Ayatana notifications.")
-endif(NOT PKG_CONFIG_FOUND)
-
+if (NOT WIN32)
+    # Execinfo is needed for generating backtraces
+    find_package(ExecInfo QUIET)
+    set_package_properties(ExecInfo PROPERTIES TYPE OPTIONAL
+        DESCRIPTION "a library for inspecting backtraces"
+        PURPOSE "Used for generating backtraces in case of a crash"
+    )
+endif()
 
 # Setup OpenSSL
 # We don't link to or include OpenSSL ourselves, but use exclusively the Qt API.
@@ -217,166 +322,8 @@ else(WITH_OPENSSL)
   message(STATUS "Not enabling OpenSSL support")
 endif(WITH_OPENSSL)
 
-
-# Check for GUI specific stuff
-if(BUILD_GUI)
-
-  # Setup D-Bus support
-  if(WITH_DBUS)
-    if (USE_QT5)
-      find_package(Qt5DBus ${QT_MIN_VERSION})
-      find_package(Qt5DBusTools)
-    endif()
-
-    if(QT_QTDBUS_FOUND OR (Qt5DBus_FOUND AND Qt5DBusTools_FOUND))
-      message(STATUS "Found QtDBus, enabling D-Bus support")
-      add_definitions(-DHAVE_DBUS)
-      set(HAVE_DBUS true)
-      set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} DBus)
-
-      # check if we have dbusmenu as well
-      if (NOT USE_QT5)
-        find_package(DBusMenuQt)
-        if(DBUSMENUQT_FOUND)
-          message(STATUS "Enabling support for exporting the tray menu via D-Bus")
-          add_definitions(-DHAVE_DBUSMENU)
-          include_directories(${DBUSMENUQT_INCLUDE_DIR})
-          set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${DBUSMENUQT_LIBRARIES})
-          set(CLIENT_COMPILE_FLAGS "${CLIENT_COMPILE_FLAGS} ${DBUSMENUQT_DEFINITIONS}")
-        else(DBUSMENUQT_FOUND)
-          message(STATUS "Disabling support for exporting the tray menu via D-Bus")
-        endif(DBUSMENUQT_FOUND)
-      endif()
-
-    else(QT_QTDBUS_FOUND OR (Qt5DBus_FOUND AND Qt5DBusTools_FOUND))
-      message(STATUS "QtDBus not found, disabling D-Bus support")
-    endif(QT_QTDBUS_FOUND OR (Qt5DBus_FOUND AND Qt5DBusTools_FOUND))
-  else(WITH_DBUS)
-    message(STATUS "Not enabling D-Bus support")
-  endif(WITH_DBUS)
-
-  # Setup QtWebkit support
-  if(WITH_WEBKIT)
-    if (USE_QT5)
-      find_package(Qt5Webkit ${QT_MIN_VERSION} QUIET)
-    endif()
-    if(QT_QTWEBKIT_FOUND OR Qt5Webkit_FOUND)
-      message(STATUS "Found QtWebKit, enabling WebKit support")
-      add_definitions(-DHAVE_WEBKIT)
-      set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} Webkit XmlPatterns)
-      set(HAVE_WEBKIT true)
-    else(QT_QTWEBKIT_FOUND OR Qt5Webkit_FOUND)
-      message(STATUS "QtWebkit not found, disabling Webkit support")
-    endif(QT_QTWEBKIT_FOUND OR Qt5Webkit_FOUND)
-  else(WITH_WEBKIT)
-    message(STATUS "Not enabling Webkit support")
-  endif(WITH_WEBKIT)
-
-  # Setup KDE4 support
-  if(WITH_KDE AND NOT USE_QT5)
-    # KDE has overzealous CFLAGS making miniz not compile, so save our old flags
-    set(_cflags ${CMAKE_C_FLAGS})
-    find_package(KDE4)
-    if(KDE4_FOUND)
-      message(STATUS "Enabling KDE4 integration")
-      include_directories(${KDE4_INCLUDES})
-      add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
-      set(HAVE_KDE 1)
-      set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} ${KDE4_SOLID_LIBS} ${KDE4_KNOTIFYCONFIG_LIBRARY})
-      # We always use external icons for KDE4 support, since we use its iconloader rather than our own
-      set(EMBED_DATA OFF)
-      # Restore our old CFLAGS
-      set(CMAKE_C_FLAGS ${_cflags})
-    else(KDE4_FOUND)
-      message(STATUS "KDE4 not found, disabling KDE integration")
-    endif(KDE4_FOUND)
-  else(WITH_KDE AND NOT USE_QT5)
-    message(STATUS "Not enabling KDE4 integration")
-  endif(WITH_KDE AND NOT USE_QT5)
-
-  # Setup Phonon support - we only need this if we don't have or want KDE4
-  if(NOT HAVE_KDE)
-    if(WITH_PHONON)
-      if(USE_QT5)
-        find_package(Qt5phonon)
-        if(Qt5phonon_FOUND)
-          message(STATUS "Enabling Phonon support")
-          add_definitions(-DHAVE_PHONON)
-          set(HAVE_PHONON true)
-          set(CLIENT_QT_MODULES ${CLIENT_QT_MODULES} phonon)
-        else(Qt5phonon_FOUND)
-          message(STATUS "Phonon not found, disabling audio notifications")
-        endif(Qt5phonon_FOUND)
-      else(USE_QT5)
-        find_package(Phonon)
-        if(PHONON_FOUND)
-          message(STATUS "Enabling Phonon support")
-          add_definitions(-DHAVE_PHONON)
-          include_directories(${PHONON_INCLUDES})
-          set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${PHONON_LIBS})
-          set(HAVE_PHONON true)
-        else(PHONON_FOUND)
-          message(STATUS "Phonon not found, disabling audio notifications")
-        endif(PHONON_FOUND)
-      endif(USE_QT5)
-    else(WITH_PHONON)
-      message(STATUS "Not enabling Phonon support")
-    endif(WITH_PHONON)
-
-    find_package(Libsnore)
-    if(LIBSNORE_FOUND)
-        add_definitions(-DHAVE_LIBSNORE)
-        set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${LIBSNORE_LIBRARIES})
-        set(HAVE_SNORENOTIFY true)
-    endif(LIBSNORE_FOUND)
-  endif(NOT HAVE_KDE)
-
-  # Setup libindicate-qt support
-  if(WITH_LIBINDICATE AND NOT USE_QT5)
-    pkg_check_modules(INDICATEQT QUIET indicate-qt>=0.2.1)
-    if(INDICATEQT_FOUND)
-      message(STATUS "Enabling Ayatana notification support")
-      set(HAVE_INDICATEQT true)
-      add_definitions(-DHAVE_INDICATEQT)
-      link_directories(${INDICATEQT_LIBRARY_DIRS})
-      set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} ${INDICATEQT_LIBRARIES})
-    else(INDICATEQT_FOUND)
-      message(STATUS "Disabling Ayatana notification support")
-    endif(INDICATEQT_FOUND)
-  else(WITH_LIBINDICATE AND NOT USE_QT5)
-    message(STATUS "Not enabling Ayatana notification support")
-    # We don't want to link against it even if another package has found it
-    set(INDICATEQT_LIBRARIES "")
-  endif(WITH_LIBINDICATE AND NOT USE_QT5)
-
-  # Setup OS X notification center support
-  if(WITH_NOTIFICATION_CENTER AND APPLE)
-    set(HAVE_NOTIFICATION_CENTER true)
-    add_definitions(-DHAVE_NOTIFICATION_CENTER)
-    set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES}
-      /System/Library/Frameworks/Foundation.framework
-    )
-  endif()
-endif(BUILD_GUI)
-
 # Core-only deps
 if(BUILD_CORE)
-
-  # Setup encryption support
-  if(WITH_CRYPT AND NOT USE_QT5)
-    find_package(QCA2)
-    if(QCA2_FOUND)
-      message(STATUS "Enabling encryption support")
-      add_definitions(-DHAVE_QCA2)
-      set(LINK_QCA2 QCA2)
-      set(HAVE_QCA2 true)
-      set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_QCA2)
-    else(QCA2_FOUND)
-      message(STATUS "Disabling encryption support")
-    endif(QCA2_FOUND)
-  else(WITH_CRYPT AND NOT USE_QT5)
-    message(STATUS "Not enabling encryption support")
-  endif(WITH_CRYPT AND NOT USE_QT5)
 
   # Setup syslog support
   if(WITH_SYSLOG)
@@ -395,19 +342,38 @@ if(BUILD_CORE)
 endif(BUILD_CORE)
 
 
+#
+#####################################################################
+
+if (NOT ZLIB_FOUND)
+    message(STATUS "zlib NOT found, using bundled miniz for compression")
+    if (${CMAKE_SIZEOF_VOID_P} EQUAL 4)
+        message(STATUS "WARNING: This may be slow on 32 bit systems!")
+    endif()
+endif()
+
+if (KDE4_FOUND)
+    # We always use external icons for KDE4 support, since we use its iconloader rather than our own
+    set(EMBED_DATA OFF)
+
+    # Better have the compile flags global, even for the core, to avoid problems with linking the mono client
+    add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
+endif()
+
+
 # Various settings
 ##################
 
 # needed to compile with mingw without kde
-if(MINGW AND NOT HAVE_KDE)
+if (MINGW AND NOT KDE4_FOUND)
     add_definitions(-D_WIN32_WINNT=0x0500)
     message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
 # workaround for bug in mingw gcc 4.0
     add_definitions(-U__STRICT_ANSI__)
-endif(MINGW AND NOT HAVE_KDE)
+endif()
 
 # Now set up install locations; those are set by KDE if integration is enabled
-if(NOT HAVE_KDE)
+if(NOT KDE4_FOUND)
   if(WIN32)
     set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX} CACHE FILEPATH "Install path for binaries")
     set(DATA_INSTALL_DIR $ENV{APPDATA}/quassel-irc.org/share/apps CACHE FILEPATH "Install path for data files")
@@ -419,7 +385,7 @@ if(NOT HAVE_KDE)
     set(ICON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/icons CACHE FILEPATH "Global icon install path")
     set(XDG_APPS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/applications CACHE FILEPATH "Install path for .desktop files")
   endif(WIN32)
-endif(NOT HAVE_KDE)
+endif()
 
 if(EMBED_DATA)
   message(STATUS "Embedding data files into the binary")
@@ -457,9 +423,9 @@ if(WIN32)
   endif(HAVE_SSL AND STATIC)
 endif(WIN32)
 
-if(HAVE_INDICATEQT)
+if(INDICATEQT_FOUND)
   add_definitions(-DXDG_APPS_INSTALL_DIR=${XDG_APPS_INSTALL_DIR})
-endif(HAVE_INDICATEQT)
+endif()
 
 if(NOT WIN32)
   check_function_exists(umask HAVE_UMASK)
@@ -492,3 +458,11 @@ add_subdirectory(icons)
 add_subdirectory(pics)
 add_subdirectory(po)
 add_subdirectory(src)
+
+# Set up and display feature summary
+#####################################################################
+
+feature_summary(WHAT ALL
+                INCLUDE_QUIET_PACKAGES
+                FATAL_ON_MISSING_REQUIRED_PACKAGES
+)

@@ -46,11 +46,14 @@ set(SOURCES
 )
 
 
-if (HAVE_QCA2)
+if (QCA2_FOUND)
     set(SOURCES ${SOURCES} keyevent.cpp)
-endif(HAVE_QCA2)
+endif()
 
-if (NOT ZLIB_FOUND)
+if (ZLIB_FOUND)
+    add_definitions(-DHAVE_ZLIB)
+    include_directories(${ZLIB_INCLUDE_DIRS})
+else()
     set(SOURCES ${SOURCES} ../../3rdparty/miniz/miniz.c)
 endif()
 
@@ -60,7 +63,11 @@ endif(APPLE)
 
 if (WIN32)
     set(SOURCES ${SOURCES} logbacktrace_win.cpp)
-elseif (UNIX)
+else()
+    if (EXECINFO_FOUND)
+        add_definitions(-DHAVE_EXECINFO)
+        include_directories(${EXECINFO_INCLUDES})
+    endif()
     set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
 endif()
 
@@ -71,4 +78,4 @@ if(APPLE)
   target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
 endif(APPLE)
 
-target_link_libraries(mod_common ${CMAKE_DL_LIBS})
+target_link_libraries(mod_common ${CMAKE_DL_LIBS} ${EXECINFO_LIBRARIES} ${ZLIB_LIBRARIES})

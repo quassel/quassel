@@ -44,14 +44,18 @@ if(WANT_CORE)
   install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_CORE)
 
+if (KDE4_FOUND)
+    include_directories(${KDE4_INCLUDES})
+endif()
+
 if(WANT_QTCLIENT)
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
   qt_use_modules(quasselclient Core Gui Network ${CLIENT_QT_MODULES} ${MAIN})
   add_dependencies(quasselclient po)
   set_target_properties(quasselclient PROPERTIES
-                                      COMPILE_FLAGS "-DBUILD_QTUI ${CLIENT_COMPILE_FLAGS}"
+                                      COMPILE_FLAGS "-DBUILD_QTUI"
                                       OUTPUT_NAME ../quasselclient)
-  target_link_libraries(quasselclient ${LINK_KDE} mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_QTCLIENT)
 
@@ -60,7 +64,7 @@ if(WANT_MONO)
   qt_use_modules(quassel Core Gui Network ${CLIENT_QT_MODULES} ${CORE_QT_MODULES} ${MAIN})
   add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
-                                COMPILE_FLAGS "-DBUILD_MONO ${CLIENT_COMPILE_FLAGS}"
+                                COMPILE_FLAGS "-DBUILD_MONO"
                                 OUTPUT_NAME ../quassel)
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
