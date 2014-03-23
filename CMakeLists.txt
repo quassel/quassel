@@ -305,44 +305,8 @@ if (NOT WIN32)
     )
 endif()
 
-# Setup OpenSSL
-# We don't link to or include OpenSSL ourselves, but use exclusively the Qt API.
-# Thus, we simply check if OpenSSL support is present in Qt's config and enable our
-# own SSL stuff in this case. Qt should care for adding what it needs itself.
-if(WITH_OPENSSL)
-  if(QT_QCONFIG MATCHES "openssl")
-    message(STATUS "Found OpenSSL support in Qt, enabling SSL")
-    add_definitions(-DHAVE_SSL)
-    set(HAVE_SSL true)
-  else(QT_QCONFIG MATCHES "openssl")
-    message(STATUS "No OpenSSL support found in Qt, disabling SSL")
-    add_definitions(-DQT_NO_OPENSSL)
-  endif(QT_QCONFIG MATCHES "openssl")
-else(WITH_OPENSSL)
-  message(STATUS "Not enabling OpenSSL support")
-endif(WITH_OPENSSL)
 
-# Core-only deps
-if(BUILD_CORE)
-
-  # Setup syslog support
-  if(WITH_SYSLOG)
-    check_include_file(syslog.h HAVE_SYSLOG_H)
-    if(HAVE_SYSLOG_H)
-      message(STATUS "Enabling syslog support")
-      set(HAVE_SYSLOG true)
-      add_definitions(-DHAVE_SYSLOG)
-    else(HAVE_SYSLOG_H)
-      message(STATUS "Disabling syslog support")
-    endif(HAVE_SYSLOG_H)
-  else(WITH_SYSLOG)
-    message(STATUS "Not enabling syslog support")
-  endif(WITH_SYSLOG)
-
-endif(BUILD_CORE)
-
-
-#
+# Various checks
 #####################################################################
 
 if (NOT ZLIB_FOUND)
@@ -358,6 +322,20 @@ if (KDE4_FOUND)
 
     # Better have the compile flags global, even for the core, to avoid problems with linking the mono client
     add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
+endif()
+
+# Check for SSL support in Qt (broken for Qt5 currently)
+# We don't link to the OpenSSL libraries ourselves.
+if (QT_QCONFIG MATCHES "openssl")
+    set(HAVE_SSL true)
+    add_definitions(-DHAVE_SSL)
+endif()
+add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
+
+# Check for syslog support
+if (NOT WIN32)
+    check_include_file(syslog.h HAVE_SYSLOG)
+    add_feature_info("syslog.h" HAVE_SYSLOG "Provide support for logging to the syslog")
 endif()
 
 

@@ -57,6 +57,10 @@ else()
     set(SOURCES ${SOURCES} ../../3rdparty/miniz/miniz.c)
 endif()
 
+if (HAVE_SYSLOG)
+    add_definitions(-DHAVE_SYSLOG)
+endif()
+
 if(APPLE)
   set(SOURCES ${SOURCES} mac_utils.cpp)
 endif(APPLE)
