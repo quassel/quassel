@@ -28,19 +28,14 @@ qt_add_resources(CLIENT_DEPS ${CLIENT_RCS})
 qt_add_resources(CORE_DEPS ${CORE_RCS})
 qt_add_resources(COMMON_DEPS ${COMMON_RCS})
 
-# For Windows, Qt4 needs the QtMain module
-if (WIN32 AND NOT USE_QT5)
-    set(MAIN Main)
-endif()
-
 if(WANT_CORE)
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
-  qt_use_modules(quasselcore Core Network ${CORE_QT_MODULES} ${MAIN})
+  qt_use_modules(quasselcore Core Network ${CORE_QT_MODULES})
   add_dependencies(quasselcore po)
   set_target_properties(quasselcore PROPERTIES
                                     COMPILE_FLAGS "-DBUILD_CORE"
                                     OUTPUT_NAME ../quasselcore)
-  target_link_libraries(quasselcore mod_core mod_common ${COMMON_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  target_link_libraries(quasselcore mod_core mod_common ${COMMON_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
   install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_CORE)
 
@@ -50,23 +45,23 @@ endif()
 
 if(WANT_QTCLIENT)
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
-  qt_use_modules(quasselclient Core Gui Network ${CLIENT_QT_MODULES} ${MAIN})
+  qt_use_modules(quasselclient Core Gui Network ${CLIENT_QT_MODULES})
   add_dependencies(quasselclient po)
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DBUILD_QTUI"
                                       OUTPUT_NAME ../quasselclient)
-  target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
   install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
-  qt_use_modules(quassel Core Gui Network ${CLIENT_QT_MODULES} ${CORE_QT_MODULES} ${MAIN})
+  qt_use_modules(quassel Core Gui Network ${CLIENT_QT_MODULES} ${CORE_QT_MODULES})
   add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DBUILD_MONO"
                                 OUTPUT_NAME ../quassel)
-  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
   install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_MONO)
 
