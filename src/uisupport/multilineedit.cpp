@@ -301,7 +301,7 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event)
     if (event == QKeySequence::InsertLineSeparator) {
 #else
 
-# ifdef Q_WS_MAC
+# ifdef Q_OS_MAC
     if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && event->modifiers() & Qt::META) {
 # else
     if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && event->modifiers() & Qt::SHIFT) {
@@ -726,7 +726,7 @@ void MultiLineEdit::on_textChanged()
                 msg += "...</p>";
                 QMessageBox question(QMessageBox::NoIcon, tr("Paste Protection"), msg, QMessageBox::Yes|QMessageBox::No);
                 question.setDefaultButton(QMessageBox::No);
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
                 question.setWindowFlags(question.windowFlags() | Qt::Sheet);
 #endif
                 if (question.exec() != QMessageBox::Yes)

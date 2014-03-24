@@ -36,7 +36,7 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
 {
     ui.setupUi(this);
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     ui.minimizeOnClose->hide();
 #endif
 #ifdef QT_NO_SYSTEMTRAYICON

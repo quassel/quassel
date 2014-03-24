@@ -22,7 +22,7 @@
 
 #include <iostream>
 #include <signal.h>
-#if !defined Q_OS_WIN32 && !defined Q_OS_MAC
+#if !defined Q_OS_WIN && !defined Q_OS_MAC
 #  include <sys/types.h>
 #  include <sys/time.h>
 #  include <sys/resource.h>
@@ -91,22 +91,22 @@ bool Quassel::init()
 
     if (_handleCrashes) {
         // we have crashhandler for win32 and unix (based on execinfo).
-#if defined(Q_OS_WIN32) || defined(HAVE_EXECINFO)
-# ifndef Q_OS_WIN32
+#if defined(Q_OS_WIN) || defined(HAVE_EXECINFO)
+# ifndef Q_OS_WIN
         // we only handle crashes ourselves if coredumps are disabled
         struct rlimit *limit = (rlimit *)malloc(sizeof(struct rlimit));
         int rc = getrlimit(RLIMIT_CORE, limit);
 
         if (rc == -1 || !((long)limit->rlim_cur > 0 || limit->rlim_cur == RLIM_INFINITY)) {
-# endif /* Q_OS_WIN32 */
+# endif /* Q_OS_WIN */
         signal(SIGABRT, handleSignal);
         signal(SIGSEGV, handleSignal);
-# ifndef Q_OS_WIN32
+# ifndef Q_OS_WIN
         signal(SIGBUS, handleSignal);
     }
     free(limit);
-# endif /* Q_OS_WIN32 */
-#endif /* Q_OS_WIN32 || HAVE_EXECINFO */
+# endif /* Q_OS_WIN */
+#endif /* Q_OS_WIN || HAVE_EXECINFO */
     }
 
     _initialized = true;
@@ -287,7 +287,7 @@ void Quassel::handleSignal(int sig)
         break;
     case SIGABRT:
     case SIGSEGV:
-#ifndef Q_OS_WIN32
+#ifndef Q_OS_WIN
     case SIGBUS:
 #endif
         logBacktrace(coreDumpFileName());
@@ -355,12 +355,12 @@ QString Quassel::configDirPath()
         _configDirPath = Quassel::optionValue("configdir");
     }
     else {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         // On Mac, the path is always the same
         _configDirPath = QDir::homePath() + "/Library/Application Support/Quassel/";
 #else
         // We abuse QSettings to find us a sensible path on the other platforms
-#  ifdef Q_WS_WIN
+#  ifdef Q_OS_WIN
         // don't use the registry
         QSettings::Format format = QSettings::IniFormat;
 #  else
@@ -369,7 +369,7 @@ QString Quassel::configDirPath()
         QSettings s(format, QSettings::UserScope, QCoreApplication::organizationDomain(), buildInfo().applicationName);
         QFileInfo fileInfo(s.fileName());
         _configDirPath = fileInfo.dir().absolutePath();
-#endif /* Q_WS_MAC */
+#endif /* Q_OS_MAC */
     }
 
     if (!_configDirPath.endsWith(QDir::separator()) && !_configDirPath.endsWith('/'))
@@ -403,12 +403,12 @@ QStringList Quassel::findDataDirPaths() const
     }
     else {
         // Provide a fallback
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
         dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain() + "/share/apps/quassel/"
                      << qgetenv("APPDATA") + QCoreApplication::organizationDomain()
                      << QCoreApplication::applicationDirPath();
     }
-#elif defined Q_WS_MAC
+#elif defined Q_OS_MAC
         dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/"
                      << QCoreApplication::applicationDirPath();
     }

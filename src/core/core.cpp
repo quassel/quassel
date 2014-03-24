@@ -34,12 +34,12 @@
 
 // migration related
 #include <QFile>
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #  include <windows.h>
 #else
 #  include <unistd.h>
 #  include <termios.h>
-#endif /* Q_OS_WIN32 */
+#endif /* Q_OS_WIN */
 
 #ifdef HAVE_UMASK
 #  include <sys/types.h>
@@ -94,11 +94,11 @@ Core::Core()
 
     // FIXME: MIGRATION 0.3 -> 0.4: Move database and core config to new location
     // Move settings, note this does not delete the old files
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     QSettings newSettings("quassel-irc.org", "quasselcore");
 #else
 
-# ifdef Q_WS_WIN
+# ifdef Q_OS_WIN
     QSettings::Format format = QSettings::IniFormat;
 # else
     QSettings::Format format = QSettings::NativeFormat;
@@ -106,10 +106,10 @@ Core::Core()
     QString newFilePath = Quassel::configDirPath() + "quasselcore"
                           + ((format == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
     QSettings newSettings(newFilePath, format);
-#endif /* Q_WS_MAC */
+#endif /* Q_OS_MAC */
 
     if (newSettings.value("Config/Version").toUInt() == 0) {
-#   ifdef Q_WS_MAC
+#   ifdef Q_OS_MAC
         QString org = "quassel-irc.org";
 #   else
         QString org = "Quassel Project";
@@ -122,10 +122,10 @@ Core::Core()
             newSettings.setValue("Config/Version", 1);
             qWarning() << "*   Your core settings have been migrated to" << newSettings.fileName();
 
-#ifndef Q_WS_MAC /* we don't need to move the db and cert for mac */
-#ifdef Q_OS_WIN32
+#ifndef Q_OS_MAC /* we don't need to move the db and cert for mac */
+#ifdef Q_OS_WIN
             QString quasselDir = qgetenv("APPDATA") + "/quassel/";
-#elif defined Q_WS_MAC
+#elif defined Q_OS_MAC
             QString quasselDir = QDir::homePath() + "/Library/Application Support/Quassel/";
 #else
             QString quasselDir = QDir::homePath() + "/.quassel/";
@@ -153,7 +153,7 @@ Core::Core()
                 else
                     qWarning() << "!!! Moving your certificate has failed. Please move it manually into" << Quassel::configDirPath();
             }
-#endif /* !Q_WS_MAC */
+#endif /* !Q_OS_MAC */
             qWarning() << "*** Migration completed.\n\n";
         }
     }
@@ -935,7 +935,7 @@ QVariantMap Core::promptForSettings(const Storage *storage)
 }
 
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 void Core::stdInEcho(bool on)
 {
     HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
@@ -962,4 +962,4 @@ void Core::stdInEcho(bool on)
 }
 
 
-#endif /* Q_OS_WIN32 */
+#endif /* Q_OS_WIN */

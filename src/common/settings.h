@@ -76,7 +76,7 @@ protected:
 private:
     inline QSettings::Format format()
     {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         return QSettings::IniFormat;
 #else
         return QSettings::NativeFormat;

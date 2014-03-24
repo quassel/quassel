@@ -37,7 +37,7 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
     disconnect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
         _trayIcon, SLOT(activateOrHide(QSystemTrayIcon::ActivationReason)));
 #endif
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     connect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
         SLOT(on_activated(QSystemTrayIcon::ActivationReason)));
 #endif
@@ -67,7 +67,7 @@ void LegacySystemTray::syncLegacyIcon()
 {
     _trayIcon->setIcon(stateIcon());
 
-#if defined Q_WS_MAC || defined Q_WS_WIN
+#if defined Q_OS_MAC || defined Q_OS_WIN
     QString tooltip = QString("%1").arg(toolTipTitle());
     if (!toolTipSubTitle().isEmpty())
         tooltip += QString("\n%1").arg(toolTipSubTitle());

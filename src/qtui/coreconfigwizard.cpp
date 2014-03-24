@@ -52,7 +52,7 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
     setStartId(IntroPage);
     //setStartId(StorageSelectionPage);
 
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     setWizardStyle(ModernStyle);
 #endif
 

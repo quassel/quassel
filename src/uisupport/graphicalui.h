@@ -28,7 +28,7 @@ class ContextMenuActionProvider;
 class ToolBarActionProvider;
 class UiStyle;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #  include <windows.h>
 #endif
 
@@ -116,7 +116,7 @@ private:
     static UiStyle *_uiStyle;
     static bool _onAllDesktops;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     DWORD _dwTickCount;
 #endif
 };

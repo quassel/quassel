@@ -337,7 +337,7 @@ void MainWin::restoreStateFromSettings(UiSettings &s)
 
 void MainWin::updateIcon()
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     const int size = 128;
 #else
     const int size = 48;
@@ -402,7 +402,7 @@ void MainWin::setupActions()
     configureShortcutsAct->setMenuRole(QAction::NoRole);
     coll->addAction("ConfigureShortcuts", configureShortcutsAct);
 
-  #ifdef Q_WS_MAC
+  #ifdef Q_OS_MAC
     QAction *configureQuasselAct = new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
         this, SLOT(showSettingsDlg()));
     configureQuasselAct->setMenuRole(QAction::PreferencesRole);
@@ -445,7 +445,7 @@ void MainWin::setupActions()
             this, SLOT(on_jumpHotBuffer_triggered()), QKeySequence(Qt::META + Qt::Key_A)));
 
     // Jump keys
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     const int bindModifier = Qt::ControlModifier | Qt::AltModifier;
     const int jumpModifier = Qt::ControlModifier;
 #else
@@ -1000,7 +1000,7 @@ void MainWin::setupToolBars()
     connect(_nickListWidget, SIGNAL(nickSelectionChanged(QModelIndexList)),
         QtUi::toolBarActionProvider(), SLOT(nickSelectionChanged(QModelIndexList)));
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
 #endif
 
@@ -1016,7 +1016,7 @@ void MainWin::setupToolBars()
     QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
     _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     QtUiSettings uiSettings;
 
     bool visible = uiSettings.value("ShowMainToolBar", QVariant(true)).toBool();
@@ -1025,7 +1025,7 @@ void MainWin::setupToolBars()
 #endif
 }
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 void MainWin::saveMainToolBarStatus(bool enabled)
 {
     QtUiSettings uiSettings;

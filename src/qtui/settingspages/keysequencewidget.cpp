@@ -33,7 +33,7 @@
 #include <QToolButton>
 
 // This defines the unicode symbols for special keys (kCommandUnicode and friends)
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #  include <Carbon/Carbon.h>
 #endif
 
@@ -265,7 +265,7 @@ void KeySequenceWidget::updateShortcutDisplay()
 
     if (_isRecording) {
         if (_modifierKeys) {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
             if (_modifierKeys & Qt::META) s += QChar(kControlUnicode);
             if (_modifierKeys & Qt::ALT) s += QChar(kOptionUnicode);
             if (_modifierKeys & Qt::SHIFT) s += QChar(kShiftUnicode);

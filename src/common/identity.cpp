@@ -35,7 +35,7 @@
 #  include <unistd.h>
 #endif
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #  include <windows.h>
 #  include <Winbase.h>
 #  define SECURITY_WIN32
@@ -78,7 +78,7 @@ Identity::Identity(const Identity &other, QObject *parent)
 }
 
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #ifdef UNICODE
 QString tcharToQString(TCHAR *tchar)
 {
@@ -120,7 +120,7 @@ QString Identity::defaultNick()
     if (!userName.isEmpty())
         nick = userName;
 
-#elif defined(Q_OS_WIN32)
+#elif defined(Q_OS_WIN)
     TCHAR infoBuf[128];
     DWORD bufCharCount = 128;
     //if(GetUserNameEx(/* NameSamCompatible */ 1, infoBuf, &bufCharCount))
@@ -159,7 +159,7 @@ QString Identity::defaultRealName()
     else
         return generalDefault;
 
-#elif defined(Q_OS_WIN32)
+#elif defined(Q_OS_WIN)
     TCHAR infoBuf[128];
     DWORD bufCharCount = 128;
     if (GetUserName(infoBuf, &bufCharCount))

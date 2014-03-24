@@ -27,7 +27,7 @@ const int VERSION = 1;
 QHash<QString, QVariant> Settings::settingsCache;
 QHash<QString, SettingsChangeNotifier *> Settings::settingsChangeNotifier;
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #  define create_qsettings QSettings s(QCoreApplication::organizationDomain(), appName)
 #else
 #  define create_qsettings QSettings s(fileName(), format())
