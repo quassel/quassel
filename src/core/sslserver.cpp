@@ -123,9 +123,22 @@ bool SslServer::setCertificate(const QString &path)
         quWarning() << "SslServer:" << qPrintable(path) << "contains no certificate data";
         return false;
     }
-    if (!_cert.isValid()) {
-        quWarning() << "SslServer: Invalid certificate (most likely expired)";
-        // We allow the core to offer SSL anyway, so no "return false" here. Client will warn about the cert being invalid.
+
+    // We allow the core to offer SSL anyway, so no "return false" here. Client will warn about the cert being invalid.
+    const QDateTime now = QDateTime::currentDateTime();
+    if (now < _cert.effectiveDate())
+        quWarning() << "SslServer: Certificate won't be valid before" << _cert.effectiveDate().toString();
+
+    else if (now > _cert.expiryDate())
+        quWarning() << "SslServer: Certificate expired on" << _cert.expiryDate().toString();
+
+    else { // Qt4's isValid() checks for time range and blacklist; avoid a double warning, hence the else block
+#if QT_VERSION < 0x050000
+        if (!_cert.isValid())
+#else
+        if (_cert.isBlacklisted())
+#endif
+            quWarning() << "SslServer: Certificate blacklisted";
     }
     if (_key.isNull()) {
         quWarning() << "SslServer:" << qPrintable(path) << "contains no key data";
