@@ -20,12 +20,17 @@
 
 #include "identityeditwidget.h"
 
-#include <QDesktopServices>
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
 #include <QUrl>
 #include <QMessageBox>
+
+#if QT_VERSION < 0x050000
+#  include <QDesktopServices>
+#else
+#  include <QStandardPaths>
+#endif
 
 #include "client.h"
 #include "iconloader.h"
@@ -318,7 +323,12 @@ void IdentityEditWidget::on_clearOrLoadKeyButton_clicked()
     QSslKey key;
 
     if (ui.keyTypeLabel->property("sslKey").toByteArray().isEmpty())
-        key = keyByFilename(QFileDialog::getOpenFileName(this, tr("Load a Key"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
+        key = keyByFilename(QFileDialog::getOpenFileName(this, tr("Load a Key"),
+#if QT_VERSION < 0x050000
+                                                         QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
+#else
+                                                         QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
+#endif
 
     showKeyState(key);
     emit widgetHasChanged();
@@ -376,8 +386,12 @@ void IdentityEditWidget::on_clearOrLoadCertButton_clicked()
     QSslCertificate cert;
 
     if (ui.certOrgLabel->property("sslCert").toByteArray().isEmpty())
-        cert = certByFilename(QFileDialog::getOpenFileName(this, tr("Load a Certificate"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
-
+        cert = certByFilename(QFileDialog::getOpenFileName(this, tr("Load a Certificate"),
+#if QT_VERSION < 0x050000
+                                                           QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
+#else
+                                                           QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
+#endif
     showCertState(cert);
     emit widgetHasChanged();
 }
