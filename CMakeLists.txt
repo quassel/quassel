@@ -173,7 +173,7 @@ if(USE_QT5)
             PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
         )
         if (Qt5DBus_FOUND)
-            find_package(dbusmenu-qt5 QUIET)
+            find_package(dbusmenu-qt5 QUIET CONFIG)
             set_package_properties(dbusmenu-qt5 PROPERTIES TYPE RECOMMENDED
                 URL "https://launchpad.net/libdbusmenu-qt"
                 DESCRIPTION "a library implementing the DBusMenu specification"
@@ -243,7 +243,7 @@ else(USE_QT5)
     if (BUILD_GUI)
         add_feature_info("QtDBus module" QT_QTDBUS_FOUND "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments")
         if (QT_QTDBUS_FOUND)
-            find_package(libdbusmenu-qt QUIET)
+            find_package(dbusmenu-qt QUIET CONFIG)
             set_package_properties(dbusmenu-qt PROPERTIES TYPE RECOMMENDED
                 URL "https://launchpad.net/libdbusmenu-qt"
                 DESCRIPTION "a library implementing the DBusMenu specification"
