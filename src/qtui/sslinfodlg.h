@@ -22,6 +22,7 @@
 #define SSLINFODLG_H
 
 #include <QDialog>
+#include <QSslCertificate>
 
 #include "ui_sslinfodlg.h"
 
@@ -30,8 +31,6 @@ class QSslSocket;
 // ========================================
 //  SslInfoDialog
 // ========================================
-
-class QSslCertificate;
 
 class SslInfoDlg : public QDialog
 {
@@ -43,6 +42,11 @@ public:
 
 private slots:
     void setCurrentCert(int index);
+
+private:
+    // simplify handling the API changes between Qt4 and Qt5 (QString -> QStringList)
+    QString subjectInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const;
+    QString issuerInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const;
 
 private:
     Ui::SslInfoDlg ui;

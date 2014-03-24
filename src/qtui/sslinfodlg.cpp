@@ -45,7 +45,7 @@ SslInfoDlg::SslInfoDlg(const QSslSocket *socket, QWidget *parent)
 
     connect(ui.certificateChain, SIGNAL(currentIndexChanged(int)), SLOT(setCurrentCert(int)));
     foreach(const QSslCertificate &cert, socket->peerCertificateChain()) {
-        ui.certificateChain->addItem(cert.subjectInfo(QSslCertificate::CommonName));
+        ui.certificateChain->addItem(subjectInfo(cert, QSslCertificate::CommonName));
     }
 }
 
@@ -53,19 +53,19 @@ SslInfoDlg::SslInfoDlg(const QSslSocket *socket, QWidget *parent)
 void SslInfoDlg::setCurrentCert(int index)
 {
     QSslCertificate cert = socket()->peerCertificateChain().at(index);
-    ui.subjectCommonName->setText(cert.subjectInfo(QSslCertificate::CommonName));
-    ui.subjectOrganization->setText(cert.subjectInfo(QSslCertificate::Organization));
-    ui.subjectOrganizationalUnit->setText(cert.subjectInfo(QSslCertificate::OrganizationalUnitName));
-    ui.subjectCountry->setText(cert.subjectInfo(QSslCertificate::CountryName));
-    ui.subjectState->setText(cert.subjectInfo(QSslCertificate::StateOrProvinceName));
-    ui.subjectCity->setText(cert.subjectInfo(QSslCertificate::LocalityName));
+    ui.subjectCommonName->setText(subjectInfo(cert, QSslCertificate::CommonName));
+    ui.subjectOrganization->setText(subjectInfo(cert, QSslCertificate::Organization));
+    ui.subjectOrganizationalUnit->setText(subjectInfo(cert, QSslCertificate::OrganizationalUnitName));
+    ui.subjectCountry->setText(subjectInfo(cert, QSslCertificate::CountryName));
+    ui.subjectState->setText(subjectInfo(cert, QSslCertificate::StateOrProvinceName));
+    ui.subjectCity->setText(subjectInfo(cert, QSslCertificate::LocalityName));
 
-    ui.issuerCommonName->setText(cert.issuerInfo(QSslCertificate::CommonName));
-    ui.issuerOrganization->setText(cert.issuerInfo(QSslCertificate::Organization));
-    ui.issuerOrganizationalUnit->setText(cert.issuerInfo(QSslCertificate::OrganizationalUnitName));
-    ui.issuerCountry->setText(cert.issuerInfo(QSslCertificate::CountryName));
-    ui.issuerState->setText(cert.issuerInfo(QSslCertificate::StateOrProvinceName));
-    ui.issuerCity->setText(cert.issuerInfo(QSslCertificate::LocalityName));
+    ui.issuerCommonName->setText(issuerInfo(cert, QSslCertificate::CommonName));
+    ui.issuerOrganization->setText(issuerInfo(cert, QSslCertificate::Organization));
+    ui.issuerOrganizationalUnit->setText(issuerInfo(cert, QSslCertificate::OrganizationalUnitName));
+    ui.issuerCountry->setText(issuerInfo(cert, QSslCertificate::CountryName));
+    ui.issuerState->setText(issuerInfo(cert, QSslCertificate::StateOrProvinceName));
+    ui.issuerCity->setText(issuerInfo(cert, QSslCertificate::LocalityName));
 
     if (socket()->sslErrors().isEmpty())
         ui.trusted->setText(tr("Yes"));
@@ -80,4 +80,25 @@ void SslInfoDlg::setCurrentCert(int index)
     ui.validity->setText(tr("%1 to %2").arg(cert.effectiveDate().date().toString(Qt::ISODate), cert.expiryDate().date().toString(Qt::ISODate)));
     ui.md5Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Md5)));
     ui.sha1Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Sha1)));
+}
+
+// in Qt5, subjectInfo returns a QStringList(); turn this into a comma-separated string instead
+QString SslInfoDlg::subjectInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const
+{
+#if QT_VERSION < 0x050000
+    return cert.subjectInfo(subjectInfo);
+#else
+    return cert.subjectInfo(subjectInfo).join(", ");
+#endif
+}
+
+
+// same here
+QString SslInfoDlg::issuerInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const
+{
+#if QT_VERSION < 0x050000
+    return cert.issuerInfo(subjectInfo);
+#else
+    return cert.issuerInfo(subjectInfo).join(", ");
+#endif
 }
