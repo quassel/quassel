@@ -23,6 +23,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
+#include <QMimeData>
 #include <QUrl>
 #include <QMessageBox>
 
