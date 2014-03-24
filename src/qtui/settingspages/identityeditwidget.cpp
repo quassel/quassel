@@ -408,8 +408,13 @@ void IdentityEditWidget::showCertState(const QSslCertificate &cert)
         ui.clearOrLoadCertButton->setText(tr("Load"));
     }
     else {
+#if QT_VERSION < 0x050000
         ui.certOrgLabel->setText(cert.subjectInfo(QSslCertificate::Organization));
         ui.certCNameLabel->setText(cert.subjectInfo(QSslCertificate::CommonName));
+#else
+        ui.certOrgLabel->setText(cert.subjectInfo(QSslCertificate::Organization).join(", "));
+        ui.certCNameLabel->setText(cert.subjectInfo(QSslCertificate::CommonName).join(", "));
+#endif
         ui.clearOrLoadCertButton->setText(tr("Clear"));
     }
     ui.certOrgLabel->setProperty("sslCert", cert.toPem());
