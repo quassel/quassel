@@ -300,7 +300,7 @@ void IdentityEditWidget::sslDropEvent(QDropEvent *event, bool isCert)
 
     if (isCert) {
         QSslCertificate cert = certByFilename(filename);
-        if (cert.isValid())
+        if (!cert.isNull())
             showCertState(cert);
     }
     else {
@@ -393,7 +393,7 @@ QSslCertificate IdentityEditWidget::certByFilename(const QString &filename)
 
     for (int i = 0; i < 2; i++) {
         cert = QSslCertificate(certRaw, (QSsl::EncodingFormat)i);
-        if (cert.isValid())
+        if (!cert.isNull())
             break;
     }
     return cert;
@@ -402,7 +402,7 @@ QSslCertificate IdentityEditWidget::certByFilename(const QString &filename)
 
 void IdentityEditWidget::showCertState(const QSslCertificate &cert)
 {
-    if (!cert.isValid()) {
+    if (cert.isNull()) {
         ui.certOrgLabel->setText(tr("No Certificate loaded"));
         ui.certCNameLabel->setText(tr("No Certificate loaded"));
         ui.clearOrLoadCertButton->setText(tr("Load"));
