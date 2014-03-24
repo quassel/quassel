@@ -392,10 +392,15 @@ void BufferView::setExpandedState(const QModelIndex &networkIdx)
     storeExpandedState(networkIdx); // this call is needed to keep track of the isActive state
 }
 
-
+#if QT_VERSION < 0x050000
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
     QTreeView::dataChanged(topLeft, bottomRight);
+#else
+void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+{
+    QTreeView::dataChanged(topLeft, bottomRight, roles);
+#endif
 
     // determine how many items have been changed and if any of them is a networkitem
     // which just swichted from active to inactive or vice versa
