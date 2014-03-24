@@ -43,7 +43,12 @@ public:
     virtual inline bool isCertValid() const { return _isCertValid; }
 
 protected:
+#if QT_VERSION >= 0x050000
+    virtual void incomingConnection(qintptr socketDescriptor);
+#else
     virtual void incomingConnection(int socketDescriptor);
+#endif
+
     virtual bool setCertificate(const QString &path);
 
 private:

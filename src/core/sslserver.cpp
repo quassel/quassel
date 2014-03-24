@@ -56,8 +56,11 @@ QTcpSocket *SslServer::nextPendingConnection()
         return _pendingConnections.takeFirst();
 }
 
-
+#if QT_VERSION >= 0x050000
+void SslServer::incomingConnection(qintptr socketDescriptor)
+#else
 void SslServer::incomingConnection(int socketDescriptor)
+#endif
 {
     QSslSocket *serverSocket = new QSslSocket(this);
     if (serverSocket->setSocketDescriptor(socketDescriptor)) {
