@@ -13,6 +13,18 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.9.3 (2014-03-25)
+==========================
+
+* Notification fixes
+* Improve reliability of SSL connections
+* Save toolbar state properly on Mac
+* Prevent user interaction with the web preview
+* Fix fullscreen mode
+* Fix spurious crash caused by shaky ircd connections
+* Fix adding an unneeded colon to custom commands
+* Avoid Qt's DNS cache to properly handle round-robin DNS records
+
 Version 0.9.2 (2013-11-26)
 ==========================
 
