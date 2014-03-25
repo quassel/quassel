@@ -165,7 +165,7 @@
       <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>AutoMarkerLineOnLostFocus</string>
+      <string notr="true">AutoMarkerLineOnLostFocus</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>true</bool>
@@ -187,7 +187,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The URL to open with the selected text as the parameter. Place &lt;span style=&quot; font-weight:600;&quot;&gt;%s&lt;/span&gt; where selected text should go.&lt;/p&gt;&lt;p&gt;Eg:&lt;/p&gt;&lt;p&gt;https://www.google.com/search?q=&lt;span style=&quot; font-weight:600;&quot;&gt;%s&lt;br/&gt;&lt;/span&gt;https://duckduckgo.com/?q=&lt;span style=&quot; font-weight:600;&quot;&gt;%s&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="settingsKey" stdset="0">
-        <string>WebSearchUrlFormat</string>
+        <string notr="true">WebSearchUrlFormat</string>
        </property>
        <property name="defaultValue" stdset="0">
         <string>https://www.google.com/search?q=%s</string>
