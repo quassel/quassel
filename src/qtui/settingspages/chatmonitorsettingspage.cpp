@@ -81,7 +81,7 @@ void ChatMonitorSettingsPage::defaults()
     settings["ShowOwnMsgs"] = false;
     settings["Buffers"] = QVariant();
     settings["Default"] = true;
-    settings["ShowBacklog"] = true;
+    settings["ShowBacklog"] = false;
     settings["IncludeRead"] = false;
     load();
     widgetHasChanged();
@@ -133,8 +133,8 @@ void ChatMonitorSettingsPage::loadSettings()
     settings["ShowHighlights"] = chatViewSettings.value("ShowHighlights", false);
     settings["ShowOwnMsgs"] = chatViewSettings.value("ShowOwnMsgs", false);
     settings["Buffers"] = chatViewSettings.value("Buffers", QVariantList());
-    settings["ShowBacklog"] = chatViewSettings.value("ShowBacklog", true);
-    settings["IncludeRead"] = chatViewSettings.value("IncludeRead", true);
+    settings["ShowBacklog"] = chatViewSettings.value("ShowBacklog", false);
+    settings["IncludeRead"] = chatViewSettings.value("IncludeRead", false);
 }
 
 
