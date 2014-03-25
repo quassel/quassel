@@ -57,6 +57,11 @@ int main(int argc, char **argv)
     QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
     QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
 
+    // on OSX with Qt4, raster seems to fix performance issues
+#if QT_VERSION < 0x050000 && defined Q_OS_MAC && !defined BUILD_CORE
+    QApplication::setGraphicsSystem("raster");
+#endif
+
     AbstractCliParser *cliParser;
 
 #ifdef HAVE_KDE
