@@ -24,8 +24,8 @@
 
 #include <QGraphicsProxyWidget>
 #include <QPainter>
-#include <QtWebKitWidgets/QWebView>
-#include <QtWebKit/QWebSettings>
+#include <QWebView>
+#include <QWebSettings>
 
 WebPreviewItem::WebPreviewItem(const QUrl &url)
     : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
