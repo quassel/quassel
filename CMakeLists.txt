@@ -189,14 +189,22 @@ if(USE_QT5)
         )
 
         if (WITH_WEBKIT)
-            find_package(Qt5Webkit QUIET)
-            set_package_properties(Qt5Webkit PROPERTIES TYPE RECOMMENDED
+            find_package(Qt5WebKit QUIET)
+            set_package_properties(Qt5WebKit PROPERTIES TYPE RECOMMENDED
                 URL "http://qt.digia.com"
-                DESCRIPTION "a Webkit implementation for Qt"
+                DESCRIPTION "a WebKit implementation for Qt"
                 PURPOSE     "Needed for displaying previews for URLs in chat"
             )
+            if (Qt5WebKit_FOUND)
+                find_package(Qt5WebKitWidgets QUIET)
+                set_package_properties(Qt5WebKitWidgets PROPERTIES TYPE RECOMMENDED
+                    URL "http://qt.digia.com"
+                    DESCRIPTION "widgets for Qt's WebKit implementation"
+                    PURPOSE     "Needed for displaying previews for URLs in chat"
+                )
+            endif()
         endif()
-        add_feature_info("WITH_WEBKIT and QtWebkit module" Qt5Webkit_FOUND "Support showing previews for URLs in chat")
+        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" Qt5WebKitWidgets_FOUND "Support showing previews for URLs in chat")
 
     endif(BUILD_GUI)
     if (BUILD_CORE)
@@ -254,7 +262,7 @@ else(USE_QT5)
         if (WITH_WEBKIT AND QT_QTWEBKIT_FOUND)
             set(HAVE_WEBKIT true)
         endif()
-        add_feature_info("WITH_WEBKIT and QtWebkit module" HAVE_WEBKIT "Support showing previews for URLs in chat")
+        add_feature_info("WITH_WEBKIT and QtWebKit module" HAVE_WEBKIT "Support showing previews for URLs in chat")
 
         if (WITH_KDE)
             # KDE has overzealous CFLAGS making miniz not compile, so save our old flags
