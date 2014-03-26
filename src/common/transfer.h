@@ -24,8 +24,8 @@
 #include <QHostAddress>
 #include <QUuid>
 
+#include "peer.h"
 #include "syncableobject.h"
-#include "types.h"
 
 class Transfer : public SyncableObject
 {

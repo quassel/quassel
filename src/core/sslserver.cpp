@@ -24,6 +24,7 @@
 #  include <QSslSocket>
 #endif
 
+#include <QDateTime>
 #include <QFile>
 
 #include "logger.h"

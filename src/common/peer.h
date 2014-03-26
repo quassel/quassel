@@ -82,6 +82,10 @@ private:
     QPointer<AuthHandler> _authHandler;
 };
 
+// We need to special-case Peer* in attached signals/slots, so typedef it for the meta type system
+typedef Peer * PeerPtr;
+Q_DECLARE_METATYPE(PeerPtr)
+
 
 // Template method needed in the header
 template<typename T> inline
