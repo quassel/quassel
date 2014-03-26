@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2014-02-19 09:00+0000\n"
+"PO-Revision-Date: 2015-02-11 21:11+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/quassel/language/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -31,31 +31,22 @@ msgid ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Клієнт IRC Quassel</p></body></html>"
 
-#: ../src/qtui/ui/aboutdlg.ui:75
-msgctxt "AboutDlg|"
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Версія 0.2.0-pre, Випуск &gt;= 474 (8 лютого 2008 року)</p></body></html>"
-
-#: ../src/qtui/ui/aboutdlg.ui:115
+#: ../src/qtui/ui/aboutdlg.ui:112
 msgctxt "AboutDlg|"
 msgid "&About"
 msgstr "Пр&о програму"
 
-#: ../src/qtui/ui/aboutdlg.ui:135
+#: ../src/qtui/ui/aboutdlg.ui:132
 msgctxt "AboutDlg|"
 msgid "A&uthors"
 msgstr "А&втори"
 
-#: ../src/qtui/ui/aboutdlg.ui:155
+#: ../src/qtui/ui/aboutdlg.ui:152
 msgctxt "AboutDlg|"
 msgid "&Contributors"
 msgstr "У&часники розробки"
 
-#: ../src/qtui/ui/aboutdlg.ui:175
+#: ../src/qtui/ui/aboutdlg.ui:172
 msgctxt "AboutDlg|"
 msgid "&Thanks To"
 msgstr "&Подяки"
@@ -67,10 +58,11 @@ msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
 msgstr "<b>Версія:</b> %1<br><b>Версія протоколу:</b> %2<br><b>Зібрано:</b> %3"
 
 #: ../src/qtui/aboutdlg.cpp:49
+#, qt-format
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
-"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the Quassel "
+"Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
 "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>"
@@ -80,7 +72,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Сучасний розподілений клієнт IRC</b><br><br>&copy; Проект Quassel, %1<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> на <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC випущено за подвійного ліцензування <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> та <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Авторські права на піктограми належать <a href=\"http://www.oxygen-icons.org\">Команді Oxygen</a> і використовуються за умов ліцензування <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Будь ласка, скористайтеся для звітування щодо вад сторінкою <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
+msgstr "<b>Сучасна клієнтська програма IRC з розподіленими можливостями</b><br><br>&copy; Quassel Project, 2005–2010<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC випущено за подвійного ліцензування згідно <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> і <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Авторські права на більшість піктограм належать <a href=\"http://www.oxygen-icons.org\">Команді Oxygen</a>, піктограми розповсюджуються згідно <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Для повідомлень про вади скористайтеся <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"
@@ -94,7 +86,7 @@ msgid ""
 "and everybody we forgot to mention here:"
 msgstr "Ми дуже вдячні переліченим нижче учасникам розробки (у порядку абетки), а також всім, кого ми забули згадати у цьому списку:"
 
-#: ../src/qtui/aboutdlg.cpp:201
+#: ../src/qtui/aboutdlg.cpp:206
 msgctxt "AboutDlg|"
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
@@ -432,7 +424,7 @@ msgctxt "BacklogSettingsPage|"
 msgid "Backlog Fetching"
 msgstr "Отримання журналу"
 
-#: ../src/client/networkmodel.cpp:386
+#: ../src/client/networkmodel.cpp:401
 #, qt-format
 msgctxt "BufferItem|"
 msgid "<p> %1 - %2 </p>"
@@ -461,7 +453,7 @@ msgctxt "BufferViewEditDlg|"
 msgid "Please enter a name for the chat list:"
 msgstr "Будь ласка, введіть назву списку балачки:"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:575
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:582
 msgctxt "BufferViewEditDlg|"
 msgid "Add Chat List"
 msgstr "Додати список балачки"
@@ -502,7 +494,7 @@ msgid "Network:"
 msgstr "Мережа:"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:100
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:123
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:128
 msgctxt "BufferViewSettingsPage|"
 msgid "All"
 msgstr "Всі"
@@ -536,40 +528,45 @@ msgstr "Ховати неактивні балачки"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:142
 msgctxt "BufferViewSettingsPage|"
+msgid "Hide inactive networks"
+msgstr "Ховати неактивні мережі"
+
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
+msgctxt "BufferViewSettingsPage|"
 msgid "Add new chats automatically"
 msgstr "Додавати нові балачки автоматично"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
 msgctxt "BufferViewSettingsPage|"
 msgid "Sort alphabetically"
 msgstr "Впорядкувати за алфавітом"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:163
 msgctxt "BufferViewSettingsPage|"
 msgid "Minimum Activity:"
 msgstr "Мінімальна активність:"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:164
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:171
 msgctxt "BufferViewSettingsPage|"
 msgid "No Activity"
 msgstr "Активності не виявлено"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:169
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:176
 msgctxt "BufferViewSettingsPage|"
 msgid "Other Activity"
 msgstr "Інші дії"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:174
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:181
 msgctxt "BufferViewSettingsPage|"
 msgid "New Message"
 msgstr "Нове повідомлення"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:186
 msgctxt "BufferViewSettingsPage|"
 msgid "Highlight"
 msgstr "Підсвічування"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:205
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:212
 msgctxt "BufferViewSettingsPage|"
 msgid "Preview:"
 msgstr "Перегляд:"
@@ -584,12 +581,12 @@ msgctxt "BufferViewSettingsPage|"
 msgid "Custom Chat Lists"
 msgstr "Нетипові списки балачки"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:378
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:383
 msgctxt "BufferViewSettingsPage|"
 msgid "Delete Chat List?"
 msgstr "Вилучити список балачки?"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:379
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:384
 #, qt-format
 msgctxt "BufferViewSettingsPage|"
 msgid "Do you really want to delete the chat list \"%1\"?"
@@ -600,61 +597,61 @@ msgctxt "BufferViewWidget|"
 msgid "BufferView"
 msgstr "Перегляд буфера"
 
-#: ../src/qtui/bufferwidget.cpp:78
+#: ../src/qtui/bufferwidget.cpp:79
 msgctxt "BufferWidget|"
 msgid "Zoom In"
 msgstr "Збільшити"
 
-#: ../src/qtui/bufferwidget.cpp:84
+#: ../src/qtui/bufferwidget.cpp:85
 msgctxt "BufferWidget|"
 msgid "Zoom Out"
 msgstr "Зменшити"
 
-#: ../src/qtui/bufferwidget.cpp:89
+#: ../src/qtui/bufferwidget.cpp:90
 msgctxt "BufferWidget|"
 msgid "Actual Size"
 msgstr "Фактичний розмір"
 
-#: ../src/qtui/bufferwidget.cpp:93
+#: ../src/qtui/bufferwidget.cpp:94
 msgctxt "BufferWidget|"
 msgid "Set Marker Line"
 msgstr "Встановити лінію позначки"
 
-#: ../src/qtui/bufferwidget.cpp:97
+#: ../src/qtui/bufferwidget.cpp:98
 msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
 msgstr "Перейти до лінії позначки"
 
-#: ../src/client/networkmodel.cpp:566
+#: ../src/client/networkmodel.cpp:583 ../src/client/networkmodel.cpp:585
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Channel %1</b>"
 msgstr "<b>Канал %1</b>"
 
-#: ../src/client/networkmodel.cpp:569
+#: ../src/client/networkmodel.cpp:589
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
 msgstr "<b>Користувачі:</b> %1"
 
-#: ../src/client/networkmodel.cpp:573
+#: ../src/client/networkmodel.cpp:593
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Режим:</b> %1"
 
-#: ../src/client/networkmodel.cpp:584
+#: ../src/client/networkmodel.cpp:608
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Тема:</b> %1"
 
-#: ../src/client/networkmodel.cpp:589
+#: ../src/client/networkmodel.cpp:613
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
 msgstr "Не активовано <br /> Двічі клацніть, щоб приєднатися"
 
-#: ../src/client/networkmodel.cpp:592
+#: ../src/client/networkmodel.cpp:616
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
@@ -741,7 +738,7 @@ msgid "Move selected buffers to the right"
 msgstr "Пересунути позначені буфери праворуч"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:258
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:272
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show:"
 msgstr "Показувати:"
@@ -761,6 +758,26 @@ msgstr "Завжди показувати підсвічені повідомл�
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show own messages"
 msgstr "Показувати власні повідомлення"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:164
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Display messages from backlog on reconnect"
+msgstr "Показувати повідомлення з журналу після повторного з’єднання"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:167
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Show messages from backlog"
+msgstr "Показувати повідомлення з журналу"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:192
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Include read messages from backlog on reconnect"
+msgstr "Включати прочитані повідомлення з журналу під час повторного з’єднання"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:195
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Include read messages"
+msgstr "Включати прочитані повідомлення"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
@@ -782,7 +799,7 @@ msgctxt "ChatMonitorSettingsPage|"
 msgid "Opt Out"
 msgstr "Відсторонення"
 
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:261
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:275
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Ignore:"
 msgstr "Ігнорувати:"
@@ -807,10 +824,21 @@ msgctxt "ChatMonitorView|"
 msgid "Configure..."
 msgstr "Налаштувати…"
 
-#: ../src/qtui/chatscene.cpp:813
+#: ../src/qtui/chatscene.cpp:826
 msgctxt "ChatScene|"
 msgid "Copy Selection"
 msgstr "Копіювати позначене"
+
+#: ../src/qtui/chatscene.cpp:833
+#, qt-format
+msgctxt "ChatScene|"
+msgid "Search '%1'"
+msgstr "Шукати «%1»"
+
+#: ../src/qtui/chatscene.cpp:844
+msgctxt "ChatScene|"
+msgid "Reset Column Widths"
+msgstr "Відновити початкову ширину стовпчиків"
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:13
 msgctxt "ChatViewSearchBar|"
@@ -912,96 +940,128 @@ msgstr "Встановлювати лінію позначки автомати�
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:159
 msgctxt "ChatViewSettingsPage|"
+msgid ""
+"Set the marker line to the bottom of the current chat window when Quassel "
+"loses focus."
+msgstr "Встановити лінію позначки у нижній частині вікна поточного спілкування, якщо вікно Quassel втрачає фокус."
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:162
+msgctxt "ChatViewSettingsPage|"
+msgid "Set marker line automatically when Quassel loses focus"
+msgstr "Автоматично додавати лінію позначки, якщо вікно Quassel втрачає фокус"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:180
+msgctxt "ChatViewSettingsPage|"
+msgid "Web Search Url:"
+msgstr "Адреса пошуку:"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:187
+msgctxt "ChatViewSettingsPage|"
+msgid ""
+"<html><head/><body><p>The URL to open with the selected text as the "
+"parameter. Place <span style=\" font-weight:600;\">%s</span> where selected "
+"text should go.</p><p>Eg:</p><p>https://www.google.com/search?q=<span "
+"style=\" font-weight:600;\">%s<br/></span>https://duckduckgo.com/?q=<span "
+"style=\" font-weight:600;\">%s</span></p></body></html>"
+msgstr "<html><head/><body><p>Адреса, яку слід відкрити з параметром позначеного тексту. Замінник <span style=\" font-weight:600;\">%s</span> визначає місце, куди слід вставити текст.</p><p>Приклади:</p><p>https://www.google.com/search?q=<span style=\" font-weight:600;\">%s<br/></span>https://duckduckgo.com/?q=<span style=\" font-weight:600;\">%s</span></p></body></html>"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:193
+msgctxt "ChatViewSettingsPage|"
+msgid "https://www.google.com/search?q=%s"
+msgstr "https://www.google.com/search?q=%s"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:202
+msgctxt "ChatViewSettingsPage|"
 msgid "Custom Colors"
 msgstr "Нетипові кольори"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:177
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:220
 msgctxt "ChatViewSettingsPage|"
 msgid "Action:"
 msgstr "Дія:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:184
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:208
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:232
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:269
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:293
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:324
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:348
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:372
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:396
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:413
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:453
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:470
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:487
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:504
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:521
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:538
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:555
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:572
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:589
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:606
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:623
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:640
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:657
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:674
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:691
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:708
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:736
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:227
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:251
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:275
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:312
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:336
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:367
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:391
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:415
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:439
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:456
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:496
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:513
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:530
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:547
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:564
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:581
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:598
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:615
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:632
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:649
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:666
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:683
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:700
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:717
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:734
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:751
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:779
 msgctxt "ChatViewSettingsPage|"
 msgid "..."
 msgstr "..."
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:201
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:244
 msgctxt "ChatViewSettingsPage|"
 msgid "Timestamp:"
 msgstr "Позначка часу:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:225
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:268
 msgctxt "ChatViewSettingsPage|"
 msgid "Channel message:"
 msgstr "Повідомлення каналу:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:262
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:305
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight foreground:"
 msgstr "Підсвічування тексту:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:286
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:329
 msgctxt "ChatViewSettingsPage|"
 msgid "Command message:"
 msgstr "Повідомлення команди:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:310
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:353
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight background:"
 msgstr "Підсвічування тла:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:317
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:360
 msgctxt "ChatViewSettingsPage|"
 msgid "Server message:"
 msgstr "Повідомлення сервера:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:341
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:384
 msgctxt "ChatViewSettingsPage|"
 msgid "Marker line:"
 msgstr "Лінія позначки"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:365
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:408
 msgctxt "ChatViewSettingsPage|"
 msgid "Error message:"
 msgstr "Повідомлення про помилку:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:389
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:432
 msgctxt "ChatViewSettingsPage|"
 msgid "Background:"
 msgstr "Тло:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:433
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:476
 msgctxt "ChatViewSettingsPage|"
 msgid "Use Sender Coloring"
 msgstr "Розфарбування, визначене відправником"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:729
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:772
 msgctxt "ChatViewSettingsPage|"
 msgid "Own messages:"
 msgstr "Власні повідомлення:"
@@ -1026,24 +1086,61 @@ msgctxt "Client|"
 msgid "Identity already exists in client!"
 msgstr "Такий профіль вже існує!"
 
-#: ../src/client/clientauthhandler.cpp:61
-#: ../src/client/clientauthhandler.cpp:256
+#: ../src/client/clientauthhandler.cpp:65
+#: ../src/client/clientauthhandler.cpp:471
 msgctxt "ClientAuthHandler|"
 msgid "Unencrypted connection canceled"
 msgstr "Скасовано нешифроване з’єднання"
 
-#: ../src/client/clientauthhandler.cpp:84
+#: ../src/client/clientauthhandler.cpp:87
+#: ../src/client/clientauthhandler.cpp:103
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Connecting to %1..."
 msgstr "З'єднання з %1…"
 
-#: ../src/client/clientauthhandler.cpp:154
+#: ../src/client/clientauthhandler.cpp:99
+#, qt-format
 msgctxt "ClientAuthHandler|"
-msgid "Synchronizing to core..."
-msgstr "Синхронізація з ядром…"
+msgid "Looking up %1..."
+msgstr "Пошук %1…"
 
-#: ../src/client/clientauthhandler.cpp:167
+#: ../src/client/clientauthhandler.cpp:106
+#: ../src/client/clientauthhandler.cpp:315
+#, qt-format
+msgctxt "ClientAuthHandler|"
+msgid "Connected to %1"
+msgstr "З'єднано з %1"
+
+#: ../src/client/clientauthhandler.cpp:110
+#, qt-format
+msgctxt "ClientAuthHandler|"
+msgid "Disconnecting from %1..."
+msgstr "Розірвання з’єднання з %1…"
+
+#: ../src/client/clientauthhandler.cpp:114
+msgctxt "ClientAuthHandler|"
+msgid "Disconnected"
+msgstr "Роз'єднано"
+
+#: ../src/client/clientauthhandler.cpp:149
+msgctxt "ClientAuthHandler|"
+msgid "Reconnecting in compatibility mode..."
+msgstr "Виконуємо повторну спробу з’єднання у режимі сумісності…"
+
+#: ../src/client/clientauthhandler.cpp:236
+msgctxt "ClientAuthHandler|"
+msgid ""
+"<b>Incompatible Quassel Core!</b><br>None of the protocols this client "
+"speaks are supported by the core you are trying to connect to."
+msgstr "<b>Несумісне ядро Quassel!</b><br>У ядрі, з яким виконується спроба встановлення з’єднання, не передбачено підтримки жодного з протоколів, якими може обмінюватися даними клієнтська частина."
+
+#: ../src/client/clientauthhandler.cpp:239
+msgctxt "ClientAuthHandler|"
+msgid "Core speaks none of the protocols we support"
+msgstr "Ядро не може обмінюватися даними жодним з підтримуваних протоколів"
+
+#: ../src/client/clientauthhandler.cpp:254
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid ""
@@ -1051,36 +1148,35 @@ msgid ""
 "at least protocol v%1, but the core speaks v%2 only."
 msgstr "<b>Ядро Quassel, з яким ви намагаєтеся встановити з’єднання, є занадто старим!</b><br>Для встановлення з’єднання потрібна принаймні версія протоколу %1, але ядро може працювати лише з версією %2."
 
-#: ../src/client/clientauthhandler.cpp:169
+#: ../src/client/clientauthhandler.cpp:256
 msgctxt "ClientAuthHandler|"
 msgid "Incompatible protocol version, connection to core refused"
 msgstr "Несумісна версія протоколу, у з’єднанні з ядром відмовлено"
 
-#: ../src/client/clientauthhandler.cpp:176
+#: ../src/client/clientauthhandler.cpp:278
+msgctxt "ClientAuthHandler|"
+msgid "Synchronizing to core..."
+msgstr "Синхронізація з ядром…"
+
+#: ../src/client/clientauthhandler.cpp:293
 msgctxt "ClientAuthHandler|"
 msgid "The core refused connection from this client"
 msgstr "Ядром відмовлено у з’єднанні цьому клієнту"
 
-#: ../src/client/clientauthhandler.cpp:207
-msgctxt "ClientAuthHandler|"
-msgid "Unencrypted connection cancelled"
-msgstr "Скасовано нешифроване з’єднання"
-
-#: ../src/client/clientauthhandler.cpp:275
-#, qt-format
-msgctxt "ClientAuthHandler|"
-msgid "Connected to %1"
-msgstr "З'єднано з %1"
-
-#: ../src/client/clientauthhandler.cpp:317
+#: ../src/client/clientauthhandler.cpp:357
 msgctxt "ClientAuthHandler|"
 msgid "Logging in..."
 msgstr "Вхід до системи…"
 
-#: ../src/client/clientauthhandler.cpp:322
+#: ../src/client/clientauthhandler.cpp:362
 msgctxt "ClientAuthHandler|"
 msgid "Login canceled"
 msgstr "Вхід скасовано"
+
+#: ../src/client/clientauthhandler.cpp:420
+msgctxt "ClientAuthHandler|"
+msgid "Unencrypted connection cancelled"
+msgstr "Скасовано нешифроване з’єднання"
 
 #: ../src/client/clientbacklogmanager.cpp:178
 #, qt-format
@@ -1177,7 +1273,7 @@ msgctxt "ConnectionSettingsPage|"
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/qtui/chatitem.cpp:803
+#: ../src/qtui/chatitem.cpp:800
 msgctxt "ContentsChatItem|"
 msgid "Copy Link Address"
 msgstr "Скопіювати адресу посилання"
@@ -1397,12 +1493,12 @@ msgctxt "ContextMenuActionProvider|"
 msgid "Existing Rules"
 msgstr "Поточні правила"
 
-#: ../src/core/core.cpp:193
+#: ../src/core/core.cpp:191
 msgctxt "Core|"
 msgid "Could not initialize any storage backend! Exiting..."
 msgstr "Не вдалося ініціалізувати жоден сервер зберігання даних! Вихід…"
 
-#: ../src/core/core.cpp:194
+#: ../src/core/core.cpp:192
 msgctxt "Core|"
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
@@ -1410,93 +1506,93 @@ msgid ""
 "to work."
 msgstr "У поточній версії Quassel передбачено підтримку SQLite3 і PostgreSQL. Вашу бібліотеку\nQt має бути зібрано з підтримкою додатків sqlite або postgres, інакше quasselcore\nне працюватиме."
 
-#: ../src/core/core.cpp:253
+#: ../src/core/core.cpp:251
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
 msgstr "Виклик restoreState(), хоча вже існує активний сеанс!"
 
-#: ../src/core/core.cpp:287
+#: ../src/core/core.cpp:285
 msgctxt "Core|"
 msgid "Core is already configured! Not configuring again..."
 msgstr "Ядро вже налаштовано! Повторне налаштовування скасовано…"
 
-#: ../src/core/core.cpp:290
+#: ../src/core/core.cpp:288
 msgctxt "Core|"
 msgid "Admin user or password not set."
 msgstr "Не встановлено адміністративного користувача або пароля."
 
-#: ../src/core/core.cpp:293
+#: ../src/core/core.cpp:291
 msgctxt "Core|"
 msgid "Could not setup storage!"
 msgstr "Не вдалося налаштувати сховище даних!"
 
-#: ../src/core/core.cpp:298
+#: ../src/core/core.cpp:296
 msgctxt "Core|"
 msgid "Creating admin user..."
 msgstr "Створення адміністративного користувача…"
 
-#: ../src/core/core.cpp:451
+#: ../src/core/core.cpp:449
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
 msgstr "Некоректна адреса очікування даних %1"
 
-#: ../src/core/core.cpp:460
+#: ../src/core/core.cpp:458
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
 msgstr "Очікування за встановлення з’єднання з графічними клієнтами за адресою IPv6 %1, порт %2. Використано версію протоколу %3"
 
-#: ../src/core/core.cpp:469
+#: ../src/core/core.cpp:467
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
 msgstr "Не вдалося відкрити інтерфейс IPv6 %1:%2: %3"
 
-#: ../src/core/core.cpp:477
+#: ../src/core/core.cpp:475
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
 msgstr "Очікування за встановлення з’єднання з графічними клієнтами за адресою IPv4 %1, порт %2. Використано версію протоколу %3"
 
-#: ../src/core/core.cpp:488
+#: ../src/core/core.cpp:486
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
 msgstr "Не вдалося відкрити інтерфейс IPv4 %1:%2: %3"
 
-#: ../src/core/core.cpp:496
+#: ../src/core/core.cpp:494
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
 msgstr "Некоректна адреса очікування даних %1, невідомий мережевий протокол"
 
-#: ../src/core/core.cpp:505
+#: ../src/core/core.cpp:503
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
 msgstr "Не вдалося відкрити жодного мережевого інтерфейсу для очікування на з’єднання!"
 
-#: ../src/core/core.cpp:545
+#: ../src/core/core.cpp:543
 msgctxt "Core|"
 msgid "Client connected from"
 msgstr "Клієнтське з’єднання з"
 
-#: ../src/core/core.cpp:548
+#: ../src/core/core.cpp:546
 msgctxt "Core|"
 msgid "Closing server for basic setup."
 msgstr "Завершення роботи сервера для базового налаштування."
 
-#: ../src/core/core.cpp:560
+#: ../src/core/core.cpp:558
 msgctxt "Core|"
 msgid "Non-authed client disconnected:"
 msgstr "З’єднання з нерозпізнаним клієнтом розірвано:"
 
-#: ../src/core/core.cpp:592
+#: ../src/core/core.cpp:590
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
 msgstr "Не вдалося ініціалізувати сеанс для клієнта:"
 
-#: ../src/core/core.cpp:619
+#: ../src/core/core.cpp:617
 msgctxt "Core|"
 msgid "Could not find a session for client:"
 msgstr "Не вдалося знайти сеансу клієнта:"
@@ -1637,17 +1733,17 @@ msgctxt "CoreAccountSettingsPage|"
 msgid "Remote Cores"
 msgstr "Віддалені ядра"
 
-#: ../src/core/coreauthhandler.cpp:54 ../src/core/coreauthhandler.cpp:90
+#: ../src/core/coreauthhandler.cpp:132 ../src/core/coreauthhandler.cpp:144
 msgctxt "CoreAuthHandler|"
 msgid "Client"
 msgstr "Клієнт"
 
-#: ../src/core/coreauthhandler.cpp:54
+#: ../src/core/coreauthhandler.cpp:132
 msgctxt "CoreAuthHandler|"
 msgid "too old, rejecting."
 msgstr "застарілий, відмовлено."
 
-#: ../src/core/coreauthhandler.cpp:55
+#: ../src/core/coreauthhandler.cpp:133
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid ""
@@ -1656,43 +1752,43 @@ msgid ""
 " client."
 msgstr "<b>Ваша версія клієнтської частини Quassel є застарілою!</b><br>Для роботи з цим ядром потрібно користуватися клієнтською частиною/протоколом ядра версії %1 (маємо %2).<br>Будь ласка, оновіть вашу клієнтську частину."
 
-#: ../src/core/coreauthhandler.cpp:69
+#: ../src/core/coreauthhandler.cpp:144
 msgctxt "CoreAuthHandler|"
-msgid "Starting encryption for Client:"
-msgstr "Розпочинаємо шифрування для клієнта:"
+msgid "did not send a registration message before trying to login, rejecting."
+msgstr "не надіслано повідомлення щодо реєстрації до спроби входу, відмовляємо."
 
-#: ../src/core/coreauthhandler.cpp:90
-msgctxt "CoreAuthHandler|"
-msgid "did not send an init message before trying to login, rejecting."
-msgstr "не надіслано повідомлення ініціалізації перед спробою входу, відмовлено."
-
-#: ../src/core/coreauthhandler.cpp:91
+#: ../src/core/coreauthhandler.cpp:145
 msgctxt "CoreAuthHandler|"
 msgid ""
-"<b>Client not initialized!</b><br>You need to send an init message before "
-"trying to login."
-msgstr "<b>Клієнт не ініціалізовано!</b><br>Вам слід надіслати початкове повідомлення, перш ніж намагатися увійти до системи."
+"<b>Client not initialized!</b><br>You need to send a registration message "
+"before trying to login."
+msgstr "<b>Клієнт не ініціалізовано!</b><br>До спроби увійти має бути надіслано повідомлення щодо реєстрації."
 
-#: ../src/core/coreauthhandler.cpp:105
+#: ../src/core/coreauthhandler.cpp:162
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>SSL is required!</b><br>You need to use SSL in order to connect to this "
 "core."
 msgstr "<b>Потрібне шифрування SSL!</b><br>Для встановлення з’єднання з цим ядром вам потрібно скористатися SSL."
 
-#: ../src/core/coreauthhandler.cpp:146
+#: ../src/core/coreauthhandler.cpp:202
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr "<b>Некоректні ім’я користувача і пароль!</b><br>Вказаної вами комбінації імені користувача і пароля у базі даних не виявлено."
 
-#: ../src/core/coreauthhandler.cpp:151
+#: ../src/core/coreauthhandler.cpp:207
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid ""
 "Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3)."
 msgstr "Клієнтську частину %1 ініціалізовано і успішно розпізнано як «%2» (Користувач: %3)."
+
+#: ../src/core/coreauthhandler.cpp:226
+msgctxt "CoreAuthHandler|"
+msgid "Starting encryption for Client:"
+msgstr "Розпочинаємо шифрування для клієнта:"
 
 #: ../src/qtui/coreconfigwizard.cpp:69
 msgctxt "CoreConfigWizard|"
@@ -1903,57 +1999,33 @@ msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "Мережу вимкнено"
 
-#: ../src/client/coreconnection.cpp:227 ../src/client/coreconnection.cpp:328
+#: ../src/client/coreconnection.cpp:276
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "Роз'єднано"
 
-#: ../src/client/coreconnection.cpp:230
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Looking up %1..."
-msgstr "Пошук %1…"
-
-#: ../src/client/coreconnection.cpp:233
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Connecting to %1..."
-msgstr "З'єднання з %1…"
-
-#: ../src/client/coreconnection.cpp:236
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Connected to %1"
-msgstr "З'єднано з %1"
-
-#: ../src/client/coreconnection.cpp:239
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Disconnecting from %1..."
-msgstr "Розірвання з’єднання з %1…"
-
-#: ../src/client/coreconnection.cpp:363
+#: ../src/client/coreconnection.cpp:311
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "Від’єднано від ядра."
 
-#: ../src/client/coreconnection.cpp:501
+#: ../src/client/coreconnection.cpp:449
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "Отримання стану сеансу"
 
-#: ../src/client/coreconnection.cpp:503
+#: ../src/client/coreconnection.cpp:451
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "Синхронізація з %1…"
 
-#: ../src/client/coreconnection.cpp:539
+#: ../src/client/coreconnection.cpp:487
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "Отримання мережевих станів"
 
-#: ../src/client/coreconnection.cpp:590
+#: ../src/client/coreconnection.cpp:538
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2134,35 +2206,35 @@ msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (з %4)"
 
-#: ../src/core/corenetwork.cpp:167
+#: ../src/core/corenetwork.cpp:168
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
 msgstr "Спроба встановлення з’єднання зазнала невдачі. Циклічний перехід до іншого сервера"
 
-#: ../src/core/corenetwork.cpp:175 ../src/core/corenetwork.cpp:176
+#: ../src/core/corenetwork.cpp:176 ../src/core/corenetwork.cpp:177
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
 msgstr "З’єднання з %1:%2…"
 
-#: ../src/core/corenetwork.cpp:228
+#: ../src/core/corenetwork.cpp:234
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr "Роз'єднання. (%1)"
 
-#: ../src/core/corenetwork.cpp:228
+#: ../src/core/corenetwork.cpp:234
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr "Завершення роботи ядра"
 
-#: ../src/core/corenetwork.cpp:423
+#: ../src/core/corenetwork.cpp:432
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "Не вдалося встановити з’єднання з %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:425
+#: ../src/core/corenetwork.cpp:434
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
@@ -2270,38 +2342,38 @@ msgctxt "CoreUserInputHandler|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "надсилання запиту CTCP-%1 до %2"
 
-#: ../src/core/coreuserinputhandler.cpp:190
-#: ../src/core/coreuserinputhandler.cpp:361
-#: ../src/core/coreuserinputhandler.cpp:606
-#: ../src/core/coreuserinputhandler.cpp:644
+#: ../src/core/coreuserinputhandler.cpp:193
+#: ../src/core/coreuserinputhandler.cpp:364
+#: ../src/core/coreuserinputhandler.cpp:609
+#: ../src/core/coreuserinputhandler.cpp:647
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: QCA provider plugin not found. It is usually provided by the qca-ossl"
 " plugin."
 msgstr "Помилка: не знайдено додатка забезпечення роботи QCA. Зазвичай, таку роботу забезпечує додаток qca-ossl."
 
-#: ../src/core/coreuserinputhandler.cpp:201
+#: ../src/core/coreuserinputhandler.cpp:204
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /delkey <nick|channel> deletes the encryption key for nick or "
 "channel or just /delkey when in a channel or query."
 msgstr "[використання] /delkey <псевдонім|канал> — вилучає ключ шифрування псевдоніма або каналу; простішою формою, /delkey, можна скористатися на певному каналі або під час діалогу."
 
-#: ../src/core/coreuserinputhandler.cpp:208
-#: ../src/core/coreuserinputhandler.cpp:662
+#: ../src/core/coreuserinputhandler.cpp:211
+#: ../src/core/coreuserinputhandler.cpp:665
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
 msgstr "Для %1 не було встановлено жодного ключа."
 
-#: ../src/core/coreuserinputhandler.cpp:213
+#: ../src/core/coreuserinputhandler.cpp:216
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been deleted."
 msgstr "Було вилучено ключ для %1."
 
-#: ../src/core/coreuserinputhandler.cpp:217
-#: ../src/core/coreuserinputhandler.cpp:670
+#: ../src/core/coreuserinputhandler.cpp:220
+#: ../src/core/coreuserinputhandler.cpp:673
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2310,31 +2382,31 @@ msgid ""
 "with QCA2 present."
 msgstr "Помилка: для встановлення ключа шифрування Quassel має бути зібрано з підтримкою бібліотеки Qt Cryptographic Architecture (QCA2). Попросіть авторів вашого дистрибутива зібрати пакунок Quassel з підтримкою QCA2 або самі зберіть Quassel з підтримкою QCA2."
 
-#: ../src/core/coreuserinputhandler.cpp:371
+#: ../src/core/coreuserinputhandler.cpp:374
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /keyx [<nick>] Initiates a DH1080 key exchange with the target."
 msgstr "[користування] /keyx [<псевдонім>] Ініціює обмін ключами DH1080 з вказаним користувачем."
 
-#: ../src/core/coreuserinputhandler.cpp:378
+#: ../src/core/coreuserinputhandler.cpp:381
 msgctxt "CoreUserInputHandler|"
 msgid "It is only possible to exchange keys in a query buffer."
 msgstr "Обмінюватися ключами можна лише у буфері діалогу."
 
-#: ../src/core/coreuserinputhandler.cpp:388
+#: ../src/core/coreuserinputhandler.cpp:391
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
 msgstr "Не вдалося розпочати обмін ключами з %1."
 
-#: ../src/core/coreuserinputhandler.cpp:393
+#: ../src/core/coreuserinputhandler.cpp:396
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
 msgstr "Розпочато обмін ключами з %1."
 
-#: ../src/core/coreuserinputhandler.cpp:397
-#: ../src/core/coreuserinputhandler.cpp:628
+#: ../src/core/coreuserinputhandler.cpp:400
+#: ../src/core/coreuserinputhandler.cpp:631
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
@@ -2343,13 +2415,13 @@ msgid ""
 "with QCA present."
 msgstr "Помилка: для встановлення ключа шифрування Quassel має бути зібрано з підтримкою бібліотеки Qt Cryptographic Architecture (QCA). Попросіть авторів вашого дистрибутива зібрати пакунок Quassel з підтримкою QCA або самі зберіть Quassel з підтримкою QCA."
 
-#: ../src/core/coreuserinputhandler.cpp:556
+#: ../src/core/coreuserinputhandler.cpp:559
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Starting query with %1"
 msgstr "Розпочинаємо діалог з %1"
 
-#: ../src/core/coreuserinputhandler.cpp:616
+#: ../src/core/coreuserinputhandler.cpp:619
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
@@ -2357,26 +2429,26 @@ msgid ""
 "it."
 msgstr "[використання] /setkey <псевдонім|канал> <ключ> — встановлює ключ шифрування для псевдоніма або каналу. Простіша форма /setkey <ключ> призначена для використання у окремому буфері каналу або діалогу, вона встановлює ключ для відповідного каналу або співрозмовника."
 
-#: ../src/core/coreuserinputhandler.cpp:625
+#: ../src/core/coreuserinputhandler.cpp:628
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been set."
 msgstr "Було встановлено ключ для %1."
 
-#: ../src/core/coreuserinputhandler.cpp:654
+#: ../src/core/coreuserinputhandler.cpp:657
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
 msgstr "[використання] /delkey <псевдонім|канал> — вилучає ключ шифрування псевдоніма або каналу; простішою формою, /delkey, можна скористатися на певному каналі або під час діалогу."
 
-#: ../src/core/coreuserinputhandler.cpp:666
+#: ../src/core/coreuserinputhandler.cpp:669
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 is %2:%3"
 msgstr "Ключем %1 є %2:%3"
 
-#: ../src/core/coreuserinputhandler.cpp:794
+#: ../src/core/coreuserinputhandler.cpp:797
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
@@ -2401,6 +2473,17 @@ msgstr "Створити порожній профіль"
 msgctxt "CreateIdentityDlg|"
 msgid "Duplicate:"
 msgstr "Дублікат:"
+
+#: ../src/common/protocols/datastream/datastreampeer.cpp:115
+msgctxt "DataStreamPeer|"
+msgid "Invalid handshake message!"
+msgstr "Некоректне повідомлення щодо встановлення з’єднання!"
+
+#: ../src/common/protocols/datastream/datastreampeer.cpp:162
+#, qt-format
+msgctxt "DataStreamPeer|"
+msgid "Unknown protocol message of type %1"
+msgstr "Невідоме повідомлення протоколу типу %1"
 
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:13
 msgctxt "DebugBufferViewOverlay|"
@@ -2719,7 +2802,13 @@ msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
 msgstr "Отримано відповідь CTCP-%1 від %2: %3"
 
-#: ../src/core/eventstringifier.cpp:736
+#: ../src/core/eventstringifier.cpp:737
+#, qt-format
+msgctxt "EventStringifier|"
+msgid "Received CTCP-PING answer from %1 with %2 milliseconds round trip time"
+msgstr "Отримано відповідь PING CTCP від %1. Загальний час обробки — %2 мілісекунд."
+
+#: ../src/core/eventstringifier.cpp:740
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
@@ -2842,7 +2931,7 @@ msgctxt "HighlightSettingsPage|"
 msgid "Interface"
 msgstr "Інтерфейс"
 
-#: ../src/qtui/settingspages/highlightsettingspage.cpp:184
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:192
 msgctxt "HighlightSettingsPage|"
 msgid "this shouldn't be empty"
 msgstr "слід заповнити"
@@ -3107,7 +3196,7 @@ msgid "minutes of being idle"
 msgstr "хвилин без активності"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
-#: ../src/qtui/settingspages/identityeditwidget.cpp:238
+#: ../src/qtui/settingspages/identityeditwidget.cpp:244
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
 msgstr "Додатково"
@@ -3173,16 +3262,16 @@ msgid "Key Type:"
 msgstr "Тип ключа:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
-#: ../src/qtui/settingspages/identityeditwidget.cpp:353
-#: ../src/qtui/settingspages/identityeditwidget.cpp:365
+#: ../src/qtui/settingspages/identityeditwidget.cpp:364
+#: ../src/qtui/settingspages/identityeditwidget.cpp:376
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
 msgstr "Не завантажено жодного ключа"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
-#: ../src/qtui/settingspages/identityeditwidget.cpp:354
-#: ../src/qtui/settingspages/identityeditwidget.cpp:408
+#: ../src/qtui/settingspages/identityeditwidget.cpp:365
+#: ../src/qtui/settingspages/identityeditwidget.cpp:423
 msgctxt "IdentityEditWidget|"
 msgid "Load"
 msgstr "Завантажити"
@@ -3199,8 +3288,8 @@ msgstr "Установа:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
-#: ../src/qtui/settingspages/identityeditwidget.cpp:406
-#: ../src/qtui/settingspages/identityeditwidget.cpp:407
+#: ../src/qtui/settingspages/identityeditwidget.cpp:421
+#: ../src/qtui/settingspages/identityeditwidget.cpp:422
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
 msgstr "Не завантажено жодного сертифіката"
@@ -3210,40 +3299,40 @@ msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
 msgstr "CommonName:"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:321
+#: ../src/qtui/settingspages/identityeditwidget.cpp:327
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
 msgstr "Завантажити ключ"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+#: ../src/qtui/settingspages/identityeditwidget.cpp:355
 msgctxt "IdentityEditWidget|"
 msgid "Failed to read key"
 msgstr "Не вдалося прочитати ключ"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+#: ../src/qtui/settingspages/identityeditwidget.cpp:355
 msgctxt "IdentityEditWidget|"
 msgid ""
 "Failed to read the key file. It is either incompatible or invalid. Note that"
 " the key file must not have a passphrase."
 msgstr "Не вдалося прочитати файл ключа. Файл ключа є несумісним з програмою або некоректним. Зауважте, що ключ не має бути захищено паролем."
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:359
+#: ../src/qtui/settingspages/identityeditwidget.cpp:370
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
 msgstr "RSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:362
+#: ../src/qtui/settingspages/identityeditwidget.cpp:373
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
 msgstr "DSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:367
-#: ../src/qtui/settingspages/identityeditwidget.cpp:413
+#: ../src/qtui/settingspages/identityeditwidget.cpp:378
+#: ../src/qtui/settingspages/identityeditwidget.cpp:433
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
 msgstr "Спорожнити"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:379
+#: ../src/qtui/settingspages/identityeditwidget.cpp:390
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
 msgstr "Завантажити сертифікат"
@@ -3612,7 +3701,7 @@ msgctxt "InputWidget|"
 msgid "Clear Color"
 msgstr "Зняти колір"
 
-#: ../src/qtui/inputwidget.cpp:133
+#: ../src/qtui/inputwidget.cpp:136
 msgctxt "InputWidget|"
 msgid "Focus Input Line"
 msgstr "Фокусувати рядок введення"
@@ -3659,40 +3748,50 @@ msgstr "Клавіатурні скорочення Emacs"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:127
 msgctxt "InputWidgetSettingsPage|"
+msgid "Enables line wrapping for input."
+msgstr "Вмикає перенесення рядків для вхідних даних."
+
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:130
+msgctxt "InputWidgetSettingsPage|"
+msgid "Line wrapping"
+msgstr "Перенесення рядків"
+
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:143
+msgctxt "InputWidgetSettingsPage|"
 msgid "Multi-Line Editing"
 msgstr "Багаторядкове редагування"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:160
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show at most"
 msgstr "Показувати не більше"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:186
 msgctxt "InputWidgetSettingsPage|"
 msgid "lines"
 msgstr "рядків"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:208
 msgctxt "InputWidgetSettingsPage|"
 msgid "Enable scrollbars"
 msgstr "Увімкнути смужки гортання"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:227
 msgctxt "InputWidgetSettingsPage|"
 msgid "Tab Completion"
 msgstr "Доповнення за Tab"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
 msgctxt "InputWidgetSettingsPage|"
 msgid "Completion suffix:"
 msgstr "Суфікс завершення:"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:251
 msgctxt "InputWidgetSettingsPage|"
 msgid ": "
 msgstr ": "
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:278
 msgctxt "InputWidgetSettingsPage|"
 msgid "Add space after nick when completing mid-sentence"
 msgstr "Додавати пробіл після псевдоніма під час доповнення у реченні"
@@ -3732,24 +3831,24 @@ msgctxt "IrcListModel|"
 msgid "Topic"
 msgstr "Тема"
 
-#: ../src/client/networkmodel.cpp:914
+#: ../src/client/networkmodel.cpp:953
 msgctxt "IrcUserItem|"
 msgid " is away"
 msgstr " немає на місці"
 
-#: ../src/client/networkmodel.cpp:929
+#: ../src/client/networkmodel.cpp:968
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "idling since %1"
 msgstr "бездіяльність з %1"
 
-#: ../src/client/networkmodel.cpp:932
+#: ../src/client/networkmodel.cpp:971
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "login time: %1"
 msgstr "час входу до системи: %1"
 
-#: ../src/client/networkmodel.cpp:935
+#: ../src/client/networkmodel.cpp:974
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "server: %1"
@@ -3881,7 +3980,7 @@ msgctxt "ItemViewSettingsPage|"
 msgid "Other activity"
 msgstr "Інші дії"
 
-#: ../src/qtui/knotificationbackend.cpp:130
+#: ../src/qtui/knotificationbackend.cpp:134
 #, qt-format
 msgctxt "KNotificationBackend|"
 msgid "%n pending highlight(s)"
@@ -3969,18 +4068,18 @@ msgctxt "KeySequenceWidget|"
 msgid "Reassign"
 msgstr "Перепризначити"
 
-#: ../src/common/protocols/legacy/legacypeer.cpp:175
+#: ../src/common/protocols/legacy/legacypeer.cpp:136
 msgctxt "LegacyPeer|"
 msgid "Invalid handshake message!"
 msgstr "Некоректне повідомлення щодо встановлення з’єднання!"
 
-#: ../src/common/protocols/legacy/legacypeer.cpp:246
+#: ../src/common/protocols/legacy/legacypeer.cpp:207
 #, qt-format
 msgctxt "LegacyPeer|"
 msgid "Unknown protocol message of type %1"
 msgstr "Невідоме повідомлення протоколу типу %1"
 
-#: ../src/common/protocols/legacy/legacypeer.cpp:295
+#: ../src/common/protocols/legacy/legacypeer.cpp:256
 #, qt-format
 msgctxt "LegacyPeer|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
@@ -4321,44 +4420,44 @@ msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "Головна панель"
 
-#: ../src/qtui/mainwin.cpp:1058
+#: ../src/qtui/mainwin.cpp:1074
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "З’єднано з ядром."
 
-#: ../src/qtui/mainwin.cpp:1157
+#: ../src/qtui/mainwin.cpp:1173
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Не з’єднано з ядром."
 
-#: ../src/qtui/mainwin.cpp:1175 ../src/qtui/mainwin.cpp:1185
+#: ../src/qtui/mainwin.cpp:1191 ../src/qtui/mainwin.cpp:1201
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Нешифроване з’єднання"
 
-#: ../src/qtui/mainwin.cpp:1175
+#: ../src/qtui/mainwin.cpp:1191
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>У вашій клієнтській програмі не передбачено підтримки шифрування SSL</b>"
 
-#: ../src/qtui/mainwin.cpp:1177 ../src/qtui/mainwin.cpp:1187
+#: ../src/qtui/mainwin.cpp:1193 ../src/qtui/mainwin.cpp:1203
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr "Конфіденційні дані, зокрема паролі, буде передано незашифрованими вашому ядру Quassel."
 
-#: ../src/qtui/mainwin.cpp:1185
+#: ../src/qtui/mainwin.cpp:1201
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>У вашому ядрі не передбачено підтримки шифрування SSL</b>"
 
-#: ../src/qtui/mainwin.cpp:1203 ../src/qtui/mainwin.cpp:1224
+#: ../src/qtui/mainwin.cpp:1219 ../src/qtui/mainwin.cpp:1240
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "Ненадійний сертифікат безпеки"
 
-#: ../src/qtui/mainwin.cpp:1204
+#: ../src/qtui/mainwin.cpp:1220
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4366,33 +4465,33 @@ msgid ""
 "following reasons:</b>"
 msgstr "<b>Сертифікат SSL наданий ядром %1 є ненадійним з таких причин:</b>"
 
-#: ../src/qtui/mainwin.cpp:1207
+#: ../src/qtui/mainwin.cpp:1223
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Продовжити"
 
-#: ../src/qtui/mainwin.cpp:1208
+#: ../src/qtui/mainwin.cpp:1224
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Показати сертифікат"
 
-#: ../src/qtui/mainwin.cpp:1225
+#: ../src/qtui/mainwin.cpp:1241
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Хочете прийняти сертифікат назавжди без попереджень?"
 
-#: ../src/qtui/mainwin.cpp:1227
+#: ../src/qtui/mainwin.cpp:1243
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Тільки на поточний сеанс"
 
-#: ../src/qtui/mainwin.cpp:1228
+#: ../src/qtui/mainwin.cpp:1244
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "Завжди"
 
-#: ../src/qtui/mainwin.cpp:1239
+#: ../src/qtui/mainwin.cpp:1255
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Помилка з’єднання з ядром"
@@ -4422,7 +4521,7 @@ msgstr[0] "Справді бажаєте вставити %n рядок?"
 msgstr[1] "Справді бажаєте вставити %n рядки?"
 msgstr[2] "Справді бажаєте вставити %n рядків?"
 
-#: ../src/uisupport/multilineedit.cpp:727
+#: ../src/uisupport/multilineedit.cpp:731
 msgctxt "MultiLineEdit|"
 msgid "Paste Protection"
 msgstr "Захист від вставки"
@@ -4487,35 +4586,35 @@ msgctxt "NetworkEditDlg|"
 msgid "Add Network"
 msgstr "Додавання мережі"
 
-#: ../src/client/networkmodel.cpp:213
+#: ../src/client/networkmodel.cpp:216 ../src/client/networkmodel.cpp:219
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Server: %1"
 msgstr "Сервер: %1"
 
-#: ../src/client/networkmodel.cpp:214
+#: ../src/client/networkmodel.cpp:221
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Users: %1"
 msgstr "Користувачі: %1"
 
-#: ../src/client/networkmodel.cpp:217
+#: ../src/client/networkmodel.cpp:224
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
 msgstr "Затримка: %1 мс"
 
-#: ../src/client/networkmodel.cpp:963
+#: ../src/client/networkmodel.cpp:1002
 msgctxt "NetworkModel|"
 msgid "Chat"
 msgstr "Балачка"
 
-#: ../src/client/networkmodel.cpp:963
+#: ../src/client/networkmodel.cpp:1002
 msgctxt "NetworkModel|"
 msgid "Topic"
 msgstr "Тема"
 
-#: ../src/client/networkmodel.cpp:963
+#: ../src/client/networkmodel.cpp:1002
 msgctxt "NetworkModel|"
 msgid "Nick Count"
 msgstr "Кількість псевдонімів"
@@ -5134,25 +5233,25 @@ msgctxt "Quassel::secondsToString()|"
 msgid "sec"
 msgstr "с"
 
-#: ../src/client/networkmodel.cpp:482
+#: ../src/client/networkmodel.cpp:497
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
 msgstr "<b>Діалог з %1</b>"
 
-#: ../src/client/networkmodel.cpp:500
+#: ../src/client/networkmodel.cpp:515
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "idling since %1"
 msgstr "бездіяльність з %1"
 
-#: ../src/client/networkmodel.cpp:503
+#: ../src/client/networkmodel.cpp:518
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "login time: %1"
 msgstr "час входу до системи: %1"
 
-#: ../src/client/networkmodel.cpp:506
+#: ../src/client/networkmodel.cpp:521
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "server: %1"
@@ -5168,6 +5267,11 @@ msgstr "Вхідне передавання даних"
 msgctxt "ReceiveFileDlg|"
 msgid "<b>%1</b> wants to send you a file:<br>%2 (%3 bytes)"
 msgstr "<b>%1</b> хоче надіслати вам файл:<br>%2 (%3 байтів)"
+
+#: ../src/common/remotepeer.cpp:69
+msgctxt "RemotePeer|"
+msgid "Disconnecting..."
+msgstr "Розриваємо з’єднання…"
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgctxt "SaveIdentitiesDlg|"
@@ -5200,7 +5304,7 @@ msgid "Server address:"
 msgstr "Адреса сервера:"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:45
-#: ../src/qtui/settingspages/servereditdlg.ui:227
+#: ../src/qtui/settingspages/servereditdlg.ui:181
 msgctxt "ServerEditDlg|"
 msgid "Port:"
 msgstr "Порт:"
@@ -5220,69 +5324,42 @@ msgctxt "ServerEditDlg|"
 msgid "Advanced"
 msgstr "Додатково"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:140
-msgctxt "ServerEditDlg|"
-msgid "SSL Version:"
-msgstr "Версія SSL:"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:147
-msgctxt "ServerEditDlg|"
-msgid ""
-"Do not change unless you're going to connect to a server not supporting "
-"SSLv3!"
-msgstr "Не змінюйте значення, якщо ви не маєте наміру встановлювати з’єднання з сервером, який не підтримує SSLv3!"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:151
-msgctxt "ServerEditDlg|"
-msgid "SSLv3 (default)"
-msgstr "SSLv3 (типова)"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:156
-msgctxt "ServerEditDlg|"
-msgid "SSLv2"
-msgstr "SSLv2"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:161
-msgctxt "ServerEditDlg|"
-msgid "TLSv1"
-msgstr "TLSv1"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:171
+#: ../src/qtui/settingspages/servereditdlg.ui:125
 msgctxt "ServerEditDlg|"
 msgid "Use a Proxy"
 msgstr "Використовувати проксі"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:188
+#: ../src/qtui/settingspages/servereditdlg.ui:142
 msgctxt "ServerEditDlg|"
 msgid "Proxy Type:"
 msgstr "Тип проксі:"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:196
+#: ../src/qtui/settingspages/servereditdlg.ui:150
 msgctxt "ServerEditDlg|"
 msgid "Socks 5"
 msgstr "Socks 5"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:201
+#: ../src/qtui/settingspages/servereditdlg.ui:155
 msgctxt "ServerEditDlg|"
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:213
+#: ../src/qtui/settingspages/servereditdlg.ui:167
 msgctxt "ServerEditDlg|"
 msgid "Proxy Host:"
 msgstr "Вузол проксі:"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:220
+#: ../src/qtui/settingspages/servereditdlg.ui:174
 msgctxt "ServerEditDlg|"
 msgid "localhost"
 msgstr "localhost"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:251
+#: ../src/qtui/settingspages/servereditdlg.ui:205
 msgctxt "ServerEditDlg|"
 msgid "Proxy Username:"
 msgstr "Користувач проксі:"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:261
+#: ../src/qtui/settingspages/servereditdlg.ui:215
 msgctxt "ServerEditDlg|"
 msgid "Proxy Password:"
 msgstr "Пароль до проксі:"
@@ -5424,7 +5501,7 @@ msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
 msgstr "Скорочення"
 
-#: ../src/common/signalproxy.cpp:758
+#: ../src/common/signalproxy.cpp:770
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
 msgstr "Роз'єднання"
@@ -5508,7 +5585,6 @@ msgid ""
 msgstr "Список каналів IRC, до яких ви автоматично приєднуєтеся після встановлення з’єднання з мережею"
 
 #: ../src/qtui/snorenotificationbackend.cpp:60
-#: ../src/qtui/snorenotificationbackend.cpp:104
 msgctxt "SnoreNotificationBackend|"
 msgid "Private Message"
 msgstr "Конфіденційне повідомлення"
@@ -5659,7 +5735,7 @@ msgctxt "SslInfoDlg|"
 msgid "%1 to %2"
 msgstr "з %1 до %2"
 
-#: ../src/client/networkmodel.h:150
+#: ../src/client/networkmodel.h:151
 msgctxt "StatusBufferItem|"
 msgid "Status Buffer"
 msgstr "Буфер станів"
@@ -5863,13 +5939,13 @@ msgctxt "TopicWidget|"
 msgid "..."
 msgstr "..."
 
-#: ../src/qtui/topicwidget.cpp:120
+#: ../src/qtui/topicwidget.cpp:121 ../src/qtui/topicwidget.cpp:127
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
 msgstr "Користувачі: %1"
 
-#: ../src/qtui/topicwidget.cpp:121
+#: ../src/qtui/topicwidget.cpp:122 ../src/qtui/topicwidget.cpp:128
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Lag: %1 msecs"
@@ -5918,114 +5994,114 @@ msgstr "Віджет теми"
 #. Topic Message
 #. ----------
 #. Invite Message
-#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:668
-#: ../src/uisupport/uistyle.cpp:709 ../src/uisupport/uistyle.cpp:712
-#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:724
-#: ../src/uisupport/uistyle.cpp:758
+#: ../src/uisupport/uistyle.cpp:669 ../src/uisupport/uistyle.cpp:672
+#: ../src/uisupport/uistyle.cpp:713 ../src/uisupport/uistyle.cpp:716
+#: ../src/uisupport/uistyle.cpp:719 ../src/uisupport/uistyle.cpp:728
+#: ../src/uisupport/uistyle.cpp:762
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
 msgstr "%1"
 
 #. Action Message
-#: ../src/uisupport/uistyle.cpp:671
+#: ../src/uisupport/uistyle.cpp:675
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
-#: ../src/uisupport/uistyle.cpp:675
+#: ../src/uisupport/uistyle.cpp:679
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "You are now known as %DN%1%DN"
 msgstr "Тепер вас показано як %DN%1%DN"
 
-#: ../src/uisupport/uistyle.cpp:676
+#: ../src/uisupport/uistyle.cpp:680
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN тепер показано як %DN%2%DN"
 
 #. Mode Message
-#: ../src/uisupport/uistyle.cpp:680
+#: ../src/uisupport/uistyle.cpp:684
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "User mode: %DM%1%DM"
 msgstr "Режим користувача: %DM%1%DM"
 
-#: ../src/uisupport/uistyle.cpp:681
+#: ../src/uisupport/uistyle.cpp:685
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "Режим %DM%1%DM, встановлено %DN%2%DN"
 
 #. Join Message
-#: ../src/uisupport/uistyle.cpp:685
+#: ../src/uisupport/uistyle.cpp:689
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH приєднується до %DC%4%DC"
 
 #. Part Message
-#: ../src/uisupport/uistyle.cpp:688
+#: ../src/uisupport/uistyle.cpp:692
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH полишає %DC%4%DC"
 
 #. Quit Message
-#: ../src/uisupport/uistyle.cpp:693
+#: ../src/uisupport/uistyle.cpp:697
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH виходить"
 
 #. Kick Message
-#: ../src/uisupport/uistyle.cpp:701
+#: ../src/uisupport/uistyle.cpp:705
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN викинуто %DN%2%DN з %DC%3%DC"
 
 #. Day Change Message
-#: ../src/uisupport/uistyle.cpp:719
+#: ../src/uisupport/uistyle.cpp:723
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
 msgstr "{День змінено на %1}"
 
-#: ../src/uisupport/uistyle.cpp:733
+#: ../src/uisupport/uistyle.cpp:737
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
 msgstr "Розділення між %DH%1%DH і %DH%2%DH завершено. Приєдналися користувачі: "
 
-#: ../src/uisupport/uistyle.cpp:737 ../src/uisupport/uistyle.cpp:753
+#: ../src/uisupport/uistyle.cpp:741 ../src/uisupport/uistyle.cpp:757
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN (додалося %2)"
 
-#: ../src/uisupport/uistyle.cpp:748
+#: ../src/uisupport/uistyle.cpp:752
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "Розділення між %DH%1%DH і %DH%2%DH. Вийшло користувачів: "
 
-#: ../src/uisupport/uistyle.cpp:760 ../src/uisupport/uistyle.cpp:808
+#: ../src/uisupport/uistyle.cpp:764 ../src/uisupport/uistyle.cpp:812
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
 msgstr "[%1]"
 
-#: ../src/uisupport/uistyle.cpp:806
+#: ../src/uisupport/uistyle.cpp:810
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
 msgstr "<%1>"
 
-#: ../src/client/networkmodel.cpp:786
+#: ../src/client/networkmodel.cpp:825
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
@@ -6034,7 +6110,7 @@ msgstr[0] "%n власник"
 msgstr[1] "%n власники"
 msgstr[2] "%n власників"
 
-#: ../src/client/networkmodel.cpp:788
+#: ../src/client/networkmodel.cpp:827
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
@@ -6043,7 +6119,7 @@ msgstr[0] "%n адміністратор"
 msgstr[1] "%n адміністратора"
 msgstr[2] "%n адміністраторів"
 
-#: ../src/client/networkmodel.cpp:790
+#: ../src/client/networkmodel.cpp:829
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
@@ -6052,7 +6128,7 @@ msgstr[0] "%n оператор"
 msgstr[1] "%n оператора"
 msgstr[2] "%n операторів"
 
-#: ../src/client/networkmodel.cpp:792
+#: ../src/client/networkmodel.cpp:831
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
@@ -6061,7 +6137,7 @@ msgstr[0] "%n напівоператор"
 msgstr[1] "%n напівоператора"
 msgstr[2] "%n напівоператорів"
 
-#: ../src/client/networkmodel.cpp:794
+#: ../src/client/networkmodel.cpp:833
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
@@ -6070,7 +6146,7 @@ msgstr[0] "%n з правом допису"
 msgstr[1] "%n з правом допису"
 msgstr[2] "%n з правом допису"
 
-#: ../src/client/networkmodel.cpp:796
+#: ../src/client/networkmodel.cpp:835
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"

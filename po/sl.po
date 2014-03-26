@@ -1,12 +1,13 @@
 # 
 # Translators:
+# Andrej Mernik <andrejm@ubuntu.si>, 2014
 # Daniel Albers <daniel@lbers.com>, 2011
 # Jure Repinc <jlp@holodeck1.com>, 2009-2010
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2014-02-22 09:00+0000\n"
+"PO-Revision-Date: 2015-02-11 21:10+0000\n"
 "Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: Slovenian (http://www.transifex.com/projects/p/quassel/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -30,31 +31,22 @@ msgid ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:15pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Quassel IRC</p></body></html>"
 
-#: ../src/qtui/ui/aboutdlg.ui:75
-msgctxt "AboutDlg|"
-msgid ""
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Version 0.2.0-pre, Build &gt;= 474 (2008-02-08)</p></body></html>"
-msgstr "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:10pt; font-weight:600; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Različica 0.2.0-pre, gradnja &gt;= 474 (2008-02-08)</p></body></html>"
-
-#: ../src/qtui/ui/aboutdlg.ui:115
+#: ../src/qtui/ui/aboutdlg.ui:112
 msgctxt "AboutDlg|"
 msgid "&About"
-msgstr "&O"
+msgstr "&O programu"
 
-#: ../src/qtui/ui/aboutdlg.ui:135
+#: ../src/qtui/ui/aboutdlg.ui:132
 msgctxt "AboutDlg|"
 msgid "A&uthors"
 msgstr "A&vtorji"
 
-#: ../src/qtui/ui/aboutdlg.ui:155
+#: ../src/qtui/ui/aboutdlg.ui:152
 msgctxt "AboutDlg|"
 msgid "&Contributors"
-msgstr "&Sodelavci"
+msgstr "Pri&spevkarji"
 
-#: ../src/qtui/ui/aboutdlg.ui:175
+#: ../src/qtui/ui/aboutdlg.ui:172
 msgctxt "AboutDlg|"
 msgid "&Thanks To"
 msgstr "&Zahvale"
@@ -63,13 +55,14 @@ msgstr "&Zahvale"
 #, qt-format
 msgctxt "AboutDlg|"
 msgid "<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"
-msgstr "<b>Različica:</b> %1<br><b>Različica protokola:</b> %2<br><b>Zgrajeno:</b> %3"
+msgstr "<b>Različica:</b> %1<br><b>Različica protokola:</b> %2<br><b>Izgrajeno:</b> %3"
 
 #: ../src/qtui/aboutdlg.cpp:49
+#, qt-format
 msgctxt "AboutDlg|"
 msgid ""
-"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the "
-"Quassel Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
+"<b>A modern, distributed IRC Client</b><br><br>&copy;%1 by the Quassel "
+"Project<br><a href=\"http://quassel-irc.org\">http://quassel-"
 "irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a"
 " href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC is dual-"
 "licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>"
@@ -79,7 +72,7 @@ msgid ""
 "href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Please use "
 "<a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to "
 "report bugs."
-msgstr "<b>Moderen, porazdeljen odjemalec za IRC</b><br><br>&copy;%1 projekt Quassel<br><a href=\"http://quassel-irc.org/\">quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je izdan pod pogoji licenc <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a> in <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a>.<br>Večina ikon je &copy; s strani <a href=\"http://www.oxygen-icons.org\">ekipe Oxygen</a> in uporabljenih pod pogoji <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Za poročanje o napakah obiščite stran <a href=\"http://bugs.quassel-irc.org\">bugs.quassel-irc.org</a>."
+msgstr "<b>Moderen, porazdeljen odjemalec za IRC</b><br><br>&copy;%1 projekt Quassel<br><a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br><a href=\"irc://irc.freenode.net/quassel\">#quassel</a> na <a href=\"http://www.freenode.net\">Freenode</a><br><br>Quassel IRC je izdan pod pogoji licenc <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> in <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>Večina ikon je &copy; s strani <a href=\"http://www.oxygen-icons.org\">ekipe Oxygen</a> in uporabljenih pod pogoji <a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>Za poročanje o napakah obiščite stran <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a>."
 
 #: ../src/qtui/aboutdlg.cpp:67
 msgctxt "AboutDlg|"
@@ -91,9 +84,9 @@ msgctxt "AboutDlg|"
 msgid ""
 "We would like to thank the following contributors (in alphabetical order) "
 "and everybody we forgot to mention here:"
-msgstr "Radi bi se zahvalili sledečim sodelavcem (v abecednem vrstnem redu) in vsem, ki smo jih pozabili omeniti tu:"
+msgstr "Radi bi se zahvalili naslednjim sodelavcem (po abecednem vrstnem redu) in vsem, ki smo jih pozabili omeniti tu:"
 
-#: ../src/qtui/aboutdlg.cpp:201
+#: ../src/qtui/aboutdlg.cpp:206
 msgctxt "AboutDlg|"
 msgid ""
 "Special thanks goes to:<br><dl><dt><img src=\":/pics/quassel-"
@@ -108,26 +101,26 @@ msgid ""
 "href=\"http://www.nokia.com\"><img "
 "src=\":/pics/nokia.png\"></a></b></dt><dd>for keeping Qt alive, and for "
 "sponsoring development of Quassel Mobile with N810s</dd>"
-msgstr "Posebno zahvalo si zaslužijo:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>za originalno ikono za Quassel - Vse-vidno oko</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Ekipa Oxygen</a></b></dt><dd>za izdelavo vse grafike, ki jo vidite v Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software, nekdaj znani kot Trolltech</a></b></dt><dd>za izdelavo Qt in Qtopia ter sponzoriranje razvoja QuasselTopia z Greenphone in ostalim</dd><dt><img src=\":/pics/nokia.png\">&nbsp;<b><a href=\"http://www.nokia.com\">Nokia</a></b></dt><dd>za nadaljnji razvoj Qt in za sponzoriranje razvoja Quassel Mobile z večimi N810</dd>"
+msgstr "Posebno zahvalo si zaslužijo:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd>za izvorno ikono za Quassel - vsevidno oko</dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Ekipa Oxygen</a></b></dt><dd>za izdelavo vse grafične podobe, ki jo vidite v programu Quassel</dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software, nekdaj znanim kot Trolltech</a></b></dt><dd>za izdelavo Qt in Qtopia ter sponzoriranje razvoja QuasselTopia z Greenphone in več</dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd>za nadaljnji razvoj Qt in za sponzoriranje razvoja Quassel Mobile z več N810</dd>"
 
 #: ../src/core/abstractsqlstorage.cpp:127
 #, qt-format
 msgctxt "AbstractSqlStorage|"
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
-msgstr "Nameščena shema (različica %1) ni ažurna. Nadgradnja na različico %2 ..."
+msgstr "Nameščena shema (različica %1) ni posodobljena. Nadgradnja na različico %2 ..."
 
 #: ../src/core/abstractsqlstorage.cpp:129
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
-msgstr "Nadgradnja ni uspela."
+msgstr "Nadgradnja ni uspela ..."
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:57
 msgctxt "AliasesModel|"
 msgid ""
 "<b>The shortcut for the alias</b><br />It can be used as a regular slash "
 "command.<br /><br /><b>Example:</b> \"foo\" can be used per /foo"
-msgstr "<b>Bližnjica za to okrajšavo</b><br />Uporabite jo lahko kot običajen ukaz s poševnico.<br /><br /><b>Primer:</b> »foo« lahko uporabite kot /foo"
+msgstr "<b>Bližnjica za vzdevek</b><br />Uporabite jo lahko kot običajen ukaz s poševnico.<br /><br /><b>Primer:</b> »foo« lahko uporabite kot /foo"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:61
 msgctxt "AliasesModel|"
@@ -143,12 +136,12 @@ msgid ""
 "semicolons<br /><br /><b>Example:</b> \"Test $1; Test $2; Test All $0\" will"
 " be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test "
 "All 1 2 3\" when called like /test 1 2 3"
-msgstr "<b>Niz v katerega se bo razširila bližnjica</b><br /><b>posebne spremenljivke:</b><br /> - <b>$i</b> predstavlja i-ti parameter.<br /> - <b>$i..j</b> predstavlja s presledkom ločene parametre od i-tega do j-tega.<br /> - <b>$i..</b> predstavlja vse s presledkom ločene parametre od i-tega dalje.<br /> - <b>$i:hostname</b> predstavlja ime gostitelja uporabnika, ki je določen z i-tim parametrom, oz. z *, če je neznan.<br /> - <b>$0</b> celoten niz<br /> - <b>$nick</b> vaš trenutni vzdevek<br /> - <b>$channel</b> ime izbranega kanala<br /><br />Več ukazov lahko ločite s podpičji<br /><br /><b>Primer:</b> »Test $1; Test $2; Test Vse $0« bo razširjeno v tri ločena sporočila »Test 1«, »Test 2« in »Test Vse 1 2 3«, če uporabite /test 1 2 3"
+msgstr "<b>Niz, v katerega se bo razširila bližnjica</b><br /><b>posebne spremenljivke:</b><br /> - <b>$i</b> predstavlja i-ti parameter.<br /> - <b>$i..j</b> predstavlja s presledkom ločene parametre od i-tega do j-tega.<br /> - <b>$i..</b> predstavlja vse s presledkom ločene parametre od i-tega dalje.<br /> - <b>$i:hostname</b> predstavlja ime gostitelja uporabnika, ki je določen z i-tim parametrom, oz. z *, če je neznan.<br /> - <b>$0</b> celoten niz<br /> - <b>$nick</b> vaš trenutni vzdevek<br /> - <b>$channel</b> ime izbranega kanala<br /><br />Več ukazov lahko ločite s podpičji<br /><br /><b>Primer:</b> »Test $1; Test $2; Test Vse $0« bo razširjeno v tri ločena sporočila »Test 1«, »Test 2« in »Test Vse 1 2 3«, če uporabite /test 1 2 3"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:185
 msgctxt "AliasesModel|"
 msgid "Alias"
-msgstr "Okrajšava"
+msgstr "Vzdevek"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:186
 msgctxt "AliasesModel|"
@@ -178,7 +171,7 @@ msgstr "IRC"
 #: ../src/qtui/settingspages/aliasessettingspage.cpp:29
 msgctxt "AliasesSettingsPage|"
 msgid "Aliases"
-msgstr "Okrajšave"
+msgstr "Vzdevki"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:14
 msgctxt "AppearanceSettingsPage|"
@@ -203,12 +196,12 @@ msgstr "Jezik:"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:43
 msgctxt "AppearanceSettingsPage|"
 msgid "Set the application language. Requires restart!"
-msgstr "Nastavite jezik programa. Potreben je ponovni zagon programa."
+msgstr "Nastavite jezik programa. Zahteva ponovni zagon."
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:47
 msgctxt "AppearanceSettingsPage|"
 msgid "<Untranslated>"
-msgstr "<neprevedeno>"
+msgstr "<ni prevedeno>"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:52
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:76
@@ -234,7 +227,7 @@ msgstr "…"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:150
 msgctxt "AppearanceSettingsPage|"
 msgid "Show system tray icon"
-msgstr "Prikaži ikono v sistemski vrstici"
+msgstr "Pokaži ikono v sistemski vrstici"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:184
 msgctxt "AppearanceSettingsPage|"
@@ -249,17 +242,17 @@ msgstr "Omogoči animacije"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:231
 msgctxt "AppearanceSettingsPage|"
 msgid "Message Redirection"
-msgstr "Preusmerjanje sporočil"
+msgstr "Preusmeritev sporočil"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:237
 msgctxt "AppearanceSettingsPage|"
 msgid "User Notices:"
-msgstr "Uporabniške opombe:"
+msgstr "Obvestila uporabnika:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:280
 msgctxt "AppearanceSettingsPage|"
 msgid "Server Notices:"
-msgstr "Strežniške opombe:"
+msgstr "Obvestila strežnika:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:294
 msgctxt "AppearanceSettingsPage|"
@@ -299,12 +292,12 @@ msgstr "Dnevnik odsotnosti"
 #: ../src/qtui/awaylogview.cpp:46
 msgctxt "AwayLogView|"
 msgid "Show Network Name"
-msgstr "Prikaži ime omrežja"
+msgstr "Pokaži ime omrežja"
 
 #: ../src/qtui/awaylogview.cpp:51
 msgctxt "AwayLogView|"
 msgid "Show Buffer Name"
-msgstr "Prikaži ime prikaza"
+msgstr "Pokaži ime prikaza"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:14
 msgctxt "BacklogSettingsPage|"
@@ -316,17 +309,17 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Number of messages to be requested from the core when using scrolling up in "
 "the buffer view."
-msgstr "Število sporočil, ki se jih zahteva od jedra ob pomiku proti vrhu prikazu prikaza."
+msgstr "Število sporočil, ki se jih zahteva od jedra ob pomiku proti vrhu pogleda prikaza."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:25
 msgctxt "BacklogSettingsPage|"
 msgid "Dynamic backlog amount:"
-msgstr "Dinamično število starih sporočil:"
+msgstr "Dinamično število sporočil v dnevniku:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:75
 msgctxt "BacklogSettingsPage|"
 msgid "Backlog request method:"
-msgstr "Način zahtevanja starih sporočil:"
+msgstr "Način zahtevanja sporočil iz dnevnika:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:83
 msgctxt "BacklogSettingsPage|"
@@ -348,7 +341,7 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "The simplest requester. It fetches a fixed amount of lines for each chat "
 "window from the backlog."
-msgstr "Najpreprostejše zahtevanje. Pridobi določeno število vrstic za vsak prikaz klepeta."
+msgstr "Najpreprostejše zahtevanje. Iz dnevnika pridobi določeno število vrstic za vsako okno za klepet."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:138
 msgctxt "BacklogSettingsPage|"
@@ -360,7 +353,7 @@ msgstr "Število sporočil na prikaz, ki so zahtevana po vzpostavljeni povezavi 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
 msgctxt "BacklogSettingsPage|"
 msgid "Initial backlog amount:"
-msgstr "Začetno število starih sporočil:"
+msgstr "Začetno število sporočil dnevnika:"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:205
 msgctxt "BacklogSettingsPage|"
@@ -368,7 +361,7 @@ msgid ""
 "This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.\n"
 "\n"
 "You can also choose to fetch additional older chatlines to provide a better context."
-msgstr "Zahteva se pridobivanje neprebranih sporočil za vsako okno s klepetom posebej. Lahko omejite število vrstic na klepet.\n\nZa boljši kontekst lahko omogočite tudi pridobivanje dodatnih starejših vrstic klepeta."
+msgstr "Zahteva se pridobivanje neprebranih sporočil za vsako okno za klepet posebej. Število vrstic je mogoče omejiti na klepet.\n\nZa boljši kontekst lahko omogočite tudi pridobivanje dodatnih starejših vrstic klepeta."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:222
 #: ../src/qtui/settingspages/backlogsettingspage.ui:232
@@ -414,7 +407,7 @@ msgid ""
 "It is useful to limit the total amount of the backlog and is probably the fastest.\n"
 "\n"
 "You can also chose to fetch additional older chatlines to provide a better context."
-msgstr "Zahteva se pridobitev vseh sporočil, ki so novejša od najstarejšega neprebranega sporočila iz kateregakoli klepeta.\n\nVedite: Ta način ni priporočljiv, če uporabljate skrite prikaze klepetov ali pa imate neaktivne klepete.\nUporaben je za omejitev skupnega števila starih sporočil in je verjetno najhitrejši.\n\nZa boljši kontekst lahko omogočite tudi pridobivanje dodatnih starejših vrstic klepeta."
+msgstr "Zahteva se pridobivanje vseh sporočil, ki so novejša od najstarejšega neprebranega sporočila iz kateregakoli klepeta.\n\nOpomba: ta način ni priporočljiv, če uporabljate skrita okna za klepet ali pa imate nedejavne klepete (t.j. stare poizvedbe in kanale).\nUporaben je za omejitev skupnega števila sporočil dnevnika in je verjetno najhitrejši.\n\nZa boljši kontekst lahko omogočite tudi pridobivanje dodatnih starejših vrstic klepeta."
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:344
 msgctxt "BacklogSettingsPage|"
@@ -429,9 +422,9 @@ msgstr "Vmesnik"
 #: ../src/qtui/settingspages/backlogsettingspage.cpp:27
 msgctxt "BacklogSettingsPage|"
 msgid "Backlog Fetching"
-msgstr "Stara sporočila"
+msgstr "Pridobivanje sporočil iz dnevnika"
 
-#: ../src/client/networkmodel.cpp:386
+#: ../src/client/networkmodel.cpp:401
 #, qt-format
 msgctxt "BufferItem|"
 msgid "<p> %1 - %2 </p>"
@@ -448,7 +441,7 @@ msgctxt "BufferView|"
 msgid ""
 "Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n"
 " This cannot be reversed!"
-msgstr "Ali želite trajno združiti prikaz »%1« v prikaz »%2«?\nTega kasneje ni moč razveljaviti!"
+msgstr "Ali želite trajno združiti prikaz »%1« v prikaz »%2«?\nTega kasneje ni mogoče razveljaviti!"
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 msgctxt "BufferViewEditDlg|"
@@ -460,7 +453,7 @@ msgctxt "BufferViewEditDlg|"
 msgid "Please enter a name for the chat list:"
 msgstr "Vnesite ime za seznam klepetov:"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:575
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:582
 msgctxt "BufferViewEditDlg|"
 msgid "Add Chat List"
 msgstr "Dodaj seznam klepetov"
@@ -468,7 +461,7 @@ msgstr "Dodaj seznam klepetov"
 #: ../src/uisupport/bufferviewfilter.cpp:54
 msgctxt "BufferViewFilter|"
 msgid "Show / Hide Chats"
-msgstr "Prikaži/skrij klepete"
+msgstr "Pokaži/skrij klepete"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:14
 msgctxt "BufferViewSettingsPage|"
@@ -478,12 +471,12 @@ msgstr "Obrazec"
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:31
 msgctxt "BufferViewSettingsPage|"
 msgid "Re&name..."
-msgstr "Pre&imenuj ..."
+msgstr "Preime&nuj ..."
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:48
 msgctxt "BufferViewSettingsPage|"
 msgid "&Add..."
-msgstr "&Dodaj ..."
+msgstr "Dod&aj ..."
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:71
 msgctxt "BufferViewSettingsPage|"
@@ -501,7 +494,7 @@ msgid "Network:"
 msgstr "Omrežje:"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:100
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:123
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:128
 msgctxt "BufferViewSettingsPage|"
 msgid "All"
 msgstr "Vsa"
@@ -516,62 +509,67 @@ msgstr "Ta možnost ni na voljo, ko so vidna vsa omrežja.\nV tem načinu ni lo�
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:114
 msgctxt "BufferViewSettingsPage|"
 msgid "Show status window"
-msgstr "Prikaži okno s stanjem"
+msgstr "Pokaži okno s stanjem"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:121
 msgctxt "BufferViewSettingsPage|"
 msgid "Show channels"
-msgstr "Prikaži kanale"
+msgstr "Pokaži kanale"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:128
 msgctxt "BufferViewSettingsPage|"
 msgid "Show queries"
-msgstr "Prikaži poizvedbe"
+msgstr "Pokaži poizvedbe"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:135
 msgctxt "BufferViewSettingsPage|"
 msgid "Hide inactive chats"
-msgstr "Skrij neaktivne klepete"
+msgstr "Skrij nedejavne klepete"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:142
+msgctxt "BufferViewSettingsPage|"
+msgid "Hide inactive networks"
+msgstr "Skrij nedejavna omrežja"
+
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
 msgctxt "BufferViewSettingsPage|"
 msgid "Add new chats automatically"
 msgstr "Samodejno dodaj nove klepete"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:149
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
 msgctxt "BufferViewSettingsPage|"
 msgid "Sort alphabetically"
 msgstr "Razvrsti po abecedi"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:156
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:163
 msgctxt "BufferViewSettingsPage|"
 msgid "Minimum Activity:"
-msgstr "Najmanjša aktivnost:"
+msgstr "Najmanjša dejavnost:"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:164
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:171
 msgctxt "BufferViewSettingsPage|"
 msgid "No Activity"
-msgstr "Brez aktivnosti"
+msgstr "Brez dejavnosti"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:169
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:176
 msgctxt "BufferViewSettingsPage|"
 msgid "Other Activity"
-msgstr "Druga aktivnost"
+msgstr "Druga dejavnost"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:174
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:181
 msgctxt "BufferViewSettingsPage|"
 msgid "New Message"
 msgstr "Novo sporočilo"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:179
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:186
 msgctxt "BufferViewSettingsPage|"
 msgid "Highlight"
-msgstr "Poudarek"
+msgstr "Poudari"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.ui:205
+#: ../src/qtui/settingspages/bufferviewsettingspage.ui:212
 msgctxt "BufferViewSettingsPage|"
 msgid "Preview:"
-msgstr "Ogled:"
+msgstr "Predogled:"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.cpp:36
 msgctxt "BufferViewSettingsPage|"
@@ -583,77 +581,77 @@ msgctxt "BufferViewSettingsPage|"
 msgid "Custom Chat Lists"
 msgstr "Seznami klepetov po meri"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:378
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:383
 msgctxt "BufferViewSettingsPage|"
 msgid "Delete Chat List?"
 msgstr "Izbrišem seznam klepetov?"
 
-#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:379
+#: ../src/qtui/settingspages/bufferviewsettingspage.cpp:384
 #, qt-format
 msgctxt "BufferViewSettingsPage|"
 msgid "Do you really want to delete the chat list \"%1\"?"
-msgstr "Ali res želite izbrisati seznam klepetov »%1«?"
+msgstr "Ali resnično želite izbrisati seznam klepetov »%1«?"
 
 #: ../src/qtui/ui/bufferviewwidget.ui:26
 msgctxt "BufferViewWidget|"
 msgid "BufferView"
 msgstr "BufferView"
 
-#: ../src/qtui/bufferwidget.cpp:78
+#: ../src/qtui/bufferwidget.cpp:79
 msgctxt "BufferWidget|"
 msgid "Zoom In"
-msgstr "Povečaj"
+msgstr "Približaj"
 
-#: ../src/qtui/bufferwidget.cpp:84
+#: ../src/qtui/bufferwidget.cpp:85
 msgctxt "BufferWidget|"
 msgid "Zoom Out"
-msgstr "Zmanjšaj"
+msgstr "Oddalji"
 
-#: ../src/qtui/bufferwidget.cpp:89
+#: ../src/qtui/bufferwidget.cpp:90
 msgctxt "BufferWidget|"
 msgid "Actual Size"
 msgstr "Dejanska velikost"
 
-#: ../src/qtui/bufferwidget.cpp:93
+#: ../src/qtui/bufferwidget.cpp:94
 msgctxt "BufferWidget|"
 msgid "Set Marker Line"
-msgstr "Postavi označevalno črto"
+msgstr "Postavi črto označevalnika"
 
-#: ../src/qtui/bufferwidget.cpp:97
+#: ../src/qtui/bufferwidget.cpp:98
 msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
-msgstr "Pojdi do označevalne črte"
+msgstr "Pojdi do črte označevalnika"
 
-#: ../src/client/networkmodel.cpp:566
+#: ../src/client/networkmodel.cpp:583 ../src/client/networkmodel.cpp:585
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Channel %1</b>"
 msgstr "<b>Kanal %1</b>"
 
-#: ../src/client/networkmodel.cpp:569
+#: ../src/client/networkmodel.cpp:589
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
 msgstr "<b>Uporabniki:</b> %1"
 
-#: ../src/client/networkmodel.cpp:573
+#: ../src/client/networkmodel.cpp:593
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Način:</b> %1"
 
-#: ../src/client/networkmodel.cpp:584
+#: ../src/client/networkmodel.cpp:608
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Tema:</b> %1"
 
-#: ../src/client/networkmodel.cpp:589
+#: ../src/client/networkmodel.cpp:613
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
-msgstr "Ni aktiven <br /> Za pridružitev dvo-kliknite"
+msgstr "Ni dejaven <br /> Dvokliknite za pridružitev"
 
-#: ../src/client/networkmodel.cpp:592
+#: ../src/client/networkmodel.cpp:616
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
@@ -679,7 +677,7 @@ msgstr "Preklopi med preprostim in naprednim načinom.\nNapredni način omogoča
 #: ../src/qtui/ui/channellistdlg.ui:62
 msgctxt "ChannelListDlg|"
 msgid "Show Channels"
-msgstr "Prikaži kanale"
+msgstr "Pokaži kanale"
 
 #: ../src/qtui/ui/channellistdlg.ui:86
 msgctxt "ChannelListDlg|"
@@ -689,7 +687,7 @@ msgstr "Filter:"
 #: ../src/qtui/ui/channellistdlg.ui:98
 msgctxt "ChannelListDlg|"
 msgid "Errors Occurred:"
-msgstr "Prišlo je do napake:"
+msgstr "Prišlo je do napak:"
 
 #: ../src/qtui/ui/channellistdlg.ui:132
 msgctxt "ChannelListDlg|"
@@ -722,7 +720,7 @@ msgid ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Operation modes:</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Opt-In:</span> <span style=\" font-weight:400;\">Only buffers on the right side are shown in chatmonitor</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Opt-Out:</span> Buffers on the right side will be ignored in chatmonitor</p></body></html>"
-msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Način delovanja:</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Vključi:</span> <span style=\" font-weight:400;\">V nadzorovalniku klepeta so prikazani samo prikazi, ki so na desni strani</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Izvzemi:</span> Prikazi, ki so na desni strani, niso prikazani v nadzorovalniku klepeta</p></body></html>"
+msgstr "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\n</style></head><body style=\" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Načini delovanja:</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;\"><span style=\" font-weight:400; text-decoration: underline;\">Vključi:</span> <span style=\" font-weight:400;\">V nadzorniku klepeta so prikazani samo prikazi, ki so na desni strani</span></p>\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Izvzemi:</span> Prikazi, ki so na desni strani, niso prikazani v nadzorniku klepeta</p></body></html>"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:61
 msgctxt "ChatMonitorSettingsPage|"
@@ -740,26 +738,46 @@ msgid "Move selected buffers to the right"
 msgstr "Premakni izbrane prikaze na desno"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:133
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:258
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:272
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show:"
-msgstr "Prikaži:"
+msgstr "Pokaži:"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:147
 msgctxt "ChatMonitorSettingsPage|"
 msgid ""
 "Show highlights in chatmonitor even if the originating buffer is ignored"
-msgstr "V nadzorovalniku klepeta prikaži poudarke, četudi je izvorni prikaz prezrt"
+msgstr "V nadzorniku klepeta prikaži poudarke, četudi je izvorni prikaz prezrt"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:150
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Always show highlighted messages"
-msgstr "Vedno prikaži poudarjena sporočila"
+msgstr "Vedno pokaži poudarjena sporočila"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:157
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show own messages"
-msgstr "Prikaži lastna sporočila"
+msgstr "Pokaži lastna sporočila"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:164
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Display messages from backlog on reconnect"
+msgstr "Ob ponovni povezavi pokaži sporočila iz dnevnika"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:167
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Show messages from backlog"
+msgstr "Pokaži sporočila iz dnevnika"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:192
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Include read messages from backlog on reconnect"
+msgstr "Ob ponovni povezavi vključi prebrana sporočila iz dnevnika"
+
+#: ../src/qtui/settingspages/chatmonitorsettingspage.ui:195
+msgctxt "ChatMonitorSettingsPage|"
+msgid "Include read messages"
+msgstr "Vključi prebrana sporočila"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
@@ -769,7 +787,7 @@ msgstr "Vmesnik"
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Chat Monitor"
-msgstr "Nadzorovalnik klepeta"
+msgstr "Nadzornik klepeta"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:59
 msgctxt "ChatMonitorSettingsPage|"
@@ -781,7 +799,7 @@ msgctxt "ChatMonitorSettingsPage|"
 msgid "Opt Out"
 msgstr "Izvzemi"
 
-#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:261
+#: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:275
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Ignore:"
 msgstr "Prezri:"
@@ -789,27 +807,38 @@ msgstr "Prezri:"
 #: ../src/qtui/chatmonitorview.cpp:54
 msgctxt "ChatMonitorView|"
 msgid "Show Own Messages"
-msgstr "Prikaži lastna sporočila"
+msgstr "Pokaži lastna sporočila"
 
 #: ../src/qtui/chatmonitorview.cpp:61
 msgctxt "ChatMonitorView|"
 msgid "Show Network Name"
-msgstr "Prikaži ime omrežja"
+msgstr "Pokaži ime omrežja"
 
 #: ../src/qtui/chatmonitorview.cpp:66
 msgctxt "ChatMonitorView|"
 msgid "Show Buffer Name"
-msgstr "Prikaži ime prikaza"
+msgstr "Pokaži ime prikaza"
 
 #: ../src/qtui/chatmonitorview.cpp:73
 msgctxt "ChatMonitorView|"
 msgid "Configure..."
 msgstr "Nastavi ..."
 
-#: ../src/qtui/chatscene.cpp:813
+#: ../src/qtui/chatscene.cpp:826
 msgctxt "ChatScene|"
 msgid "Copy Selection"
-msgstr "Skopiraj izbor"
+msgstr "Kopiraj izbor"
+
+#: ../src/qtui/chatscene.cpp:833
+#, qt-format
+msgctxt "ChatScene|"
+msgid "Search '%1'"
+msgstr "Poišči »%1«"
+
+#: ../src/qtui/chatscene.cpp:844
+msgctxt "ChatScene|"
+msgid "Reset Column Widths"
+msgstr "Ponastavi širino stolpcev"
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:13
 msgctxt "ChatViewSearchBar|"
@@ -826,7 +855,7 @@ msgstr "…"
 #: ../src/qtui/ui/chatviewsearchbar.ui:55
 msgctxt "ChatViewSearchBar|"
 msgid "case sensitive"
-msgstr "občutljivo na velikost črk"
+msgstr "Ločevanje velikosti črk"
 
 #: ../src/qtui/ui/chatviewsearchbar.ui:62
 msgctxt "ChatViewSearchBar|"
@@ -864,7 +893,7 @@ msgid ""
 "<tr><td>h:m:s ap</td><td>2:13:9 pm</td></tr>\n"
 "</table>\n"
 "</body></html>"
-msgstr ""
+msgstr "<html><head/><body><p>Primeri uporabe:</p>\n<table cellpadding=\"2\">\n<tr><td>dd.MM.yyyy</td><td>21.05.2001</td></tr>\n<tr><td>ddd MMMM d yy</td><td>tor maj 21 01</td></tr>\n<tr><td>hh:mm:ss.zzz</td><td>14:13:09.042</td></tr>\n<tr><td>h:m:s ap</td><td>2:13:9 pop</td></tr>\n</table>\n</body></html>"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:42
 msgctxt "ChatViewSettingsPage|"
@@ -874,7 +903,7 @@ msgstr "[hh:mm:ss]"
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:69
 msgctxt "ChatViewSettingsPage|"
 msgid "Custom chat window font:"
-msgstr "Pisava za okno s klepetom:"
+msgstr "Pisava okna za klepet:"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:102
 msgctxt "ChatViewSettingsPage|"
@@ -884,123 +913,155 @@ msgstr "V oknu za klepet prikaži obarvano besedilo"
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:105
 msgctxt "ChatViewSettingsPage|"
 msgid "Allow colored text (mIRC color codes)"
-msgstr "Omogoči obarvano besedilo (barvne kode mIRC-a)"
+msgstr "Dovoli obarvano besedilo (barvne kode mIRC-a)"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:121
 msgctxt "ChatViewSettingsPage|"
 msgid ""
 "Show a website preview window when hovering the mouse over a web address"
-msgstr "Prikaži namig z ogledom spletne strani, ko miška lebdi nad spletno povezavo"
+msgstr "Prikaži okno s predogledom spletišča ob prehodu miške čez spletni naslov"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:124
 msgctxt "ChatViewSettingsPage|"
 msgid "Show previews of webpages on URL hover"
-msgstr "Ob lebdenju nad povezavo prikaži ogled strani"
+msgstr "Ob prehodu miške čez URL prikaži predoglede spletišč"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:140
 msgctxt "ChatViewSettingsPage|"
 msgid ""
 "Set the marker line to the bottom of the current chat window when selecting "
 "another channel"
-msgstr "Pri izboru drugega kanala postavi označevalno črto na dno trenutnega okna za klepet"
+msgstr "Ob izboru drugega kanala postavi črto označevalnika na dno trenutnega okna za klepet"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:143
 msgctxt "ChatViewSettingsPage|"
 msgid "Set marker line automatically when switching chats"
-msgstr "Ob preklopu med klepeti samodejno postavi označevalno črto"
+msgstr "Ob preklopu med klepeti samodejno postavi črto označevalnika"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.ui:159
+msgctxt "ChatViewSettingsPage|"
+msgid ""
+"Set the marker line to the bottom of the current chat window when Quassel "
+"loses focus."
+msgstr "Če Quassel izgubi žarišče, postavi črto označevalnika na dno trenutnega okna za klepet."
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:162
+msgctxt "ChatViewSettingsPage|"
+msgid "Set marker line automatically when Quassel loses focus"
+msgstr "Ob izgubi žarišča programa samodejno postavi črto označevalnika"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:180
+msgctxt "ChatViewSettingsPage|"
+msgid "Web Search Url:"
+msgstr "URL za spletno iskanje:"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:187
+msgctxt "ChatViewSettingsPage|"
+msgid ""
+"<html><head/><body><p>The URL to open with the selected text as the "
+"parameter. Place <span style=\" font-weight:600;\">%s</span> where selected "
+"text should go.</p><p>Eg:</p><p>https://www.google.com/search?q=<span "
+"style=\" font-weight:600;\">%s<br/></span>https://duckduckgo.com/?q=<span "
+"style=\" font-weight:600;\">%s</span></p></body></html>"
+msgstr "<html><head/><body><p>URL, ki bo odprt z izbranim besedilom kot parametrom. Postavite <span style=\" font-weight:600;\">%s</span> na mesto, kamor naj bo postavljeno izbrano besedilo.</p><p>Na primer:</p><p>https://www.google.com/search?q=<span style=\" font-weight:600;\">%s<br/></span>https://duckduckgo.com/?q=<span style=\" font-weight:600;\">%s</span></p></body></html>"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:193
+msgctxt "ChatViewSettingsPage|"
+msgid "https://www.google.com/search?q=%s"
+msgstr "https://www.google.com/search?q=%s"
+
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:202
 msgctxt "ChatViewSettingsPage|"
 msgid "Custom Colors"
 msgstr "Barve po meri"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:177
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:220
 msgctxt "ChatViewSettingsPage|"
 msgid "Action:"
 msgstr "Dejanje:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:184
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:208
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:232
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:269
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:293
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:324
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:348
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:372
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:396
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:413
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:453
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:470
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:487
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:504
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:521
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:538
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:555
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:572
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:589
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:606
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:623
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:640
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:657
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:674
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:691
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:708
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:736
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:227
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:251
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:275
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:312
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:336
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:367
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:391
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:415
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:439
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:456
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:496
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:513
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:530
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:547
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:564
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:581
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:598
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:615
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:632
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:649
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:666
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:683
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:700
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:717
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:734
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:751
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:779
 msgctxt "ChatViewSettingsPage|"
 msgid "..."
 msgstr "…"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:201
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:244
 msgctxt "ChatViewSettingsPage|"
 msgid "Timestamp:"
 msgstr "Časovni žig:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:225
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:268
 msgctxt "ChatViewSettingsPage|"
 msgid "Channel message:"
 msgstr "Sporočilo kanala:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:262
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:305
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight foreground:"
 msgstr "Ospredje poudarka:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:286
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:329
 msgctxt "ChatViewSettingsPage|"
 msgid "Command message:"
-msgstr "Sporočilo ukaza:"
+msgstr "Ukazno sporočilo:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:310
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:353
 msgctxt "ChatViewSettingsPage|"
 msgid "Highlight background:"
 msgstr "Ozadje poudarka:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:317
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:360
 msgctxt "ChatViewSettingsPage|"
 msgid "Server message:"
 msgstr "Sporočilo strežnika:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:341
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:384
 msgctxt "ChatViewSettingsPage|"
 msgid "Marker line:"
-msgstr "Označevalna črta:"
+msgstr "Črta označevalnika:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:365
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:408
 msgctxt "ChatViewSettingsPage|"
 msgid "Error message:"
 msgstr "Sporočilo napake:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:389
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:432
 msgctxt "ChatViewSettingsPage|"
 msgid "Background:"
 msgstr "Ozadje:"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:433
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:476
 msgctxt "ChatViewSettingsPage|"
 msgid "Use Sender Coloring"
-msgstr "Barvanje pošiljateljev"
+msgstr "Obarvaj pošiljatelje"
 
-#: ../src/qtui/settingspages/chatviewsettingspage.ui:729
+#: ../src/qtui/settingspages/chatviewsettingspage.ui:772
 msgctxt "ChatViewSettingsPage|"
 msgid "Own messages:"
 msgstr "Lastna sporočila:"
@@ -1018,68 +1079,104 @@ msgstr "Prikaz klepeta"
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:41
 msgctxt "ChatViewSettingsPage|"
 msgid "You need at least version 0.6 of quasselcore to use this feature"
-msgstr "Za uporabo te funkcije je potrebno jedro Quassel različice 0.6 ali novejše"
+msgstr "Za uporabo te zmožnosti je zahtevano jedro za Quassel različice 0.6 ali novejše"
 
 #: ../src/client/client.cpp:320
 msgctxt "Client|"
 msgid "Identity already exists in client!"
-msgstr "Identiteta v odjemalcu že obstaja!"
+msgstr "Istovetnost že obstaja v odjemalcu!"
 
-#: ../src/client/clientauthhandler.cpp:61
-#: ../src/client/clientauthhandler.cpp:256
+#: ../src/client/clientauthhandler.cpp:65
+#: ../src/client/clientauthhandler.cpp:471
 msgctxt "ClientAuthHandler|"
 msgid "Unencrypted connection canceled"
 msgstr "Nešifrirana povezava preklicana"
 
-#: ../src/client/clientauthhandler.cpp:84
+#: ../src/client/clientauthhandler.cpp:87
+#: ../src/client/clientauthhandler.cpp:103
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Connecting to %1..."
-msgstr "Povezovanje s %1 ..."
+msgstr "Povezovanje z %1 ..."
 
-#: ../src/client/clientauthhandler.cpp:154
+#: ../src/client/clientauthhandler.cpp:99
+#, qt-format
 msgctxt "ClientAuthHandler|"
-msgid "Synchronizing to core..."
-msgstr "Usklajevanje z jedrom ..."
+msgid "Looking up %1..."
+msgstr "Iskanje %1 ..."
 
-#: ../src/client/clientauthhandler.cpp:167
+#: ../src/client/clientauthhandler.cpp:106
+#: ../src/client/clientauthhandler.cpp:315
+#, qt-format
+msgctxt "ClientAuthHandler|"
+msgid "Connected to %1"
+msgstr "Povezan z %1"
+
+#: ../src/client/clientauthhandler.cpp:110
+#, qt-format
+msgctxt "ClientAuthHandler|"
+msgid "Disconnecting from %1..."
+msgstr "Prekinjanje povezave z %1 ..."
+
+#: ../src/client/clientauthhandler.cpp:114
+msgctxt "ClientAuthHandler|"
+msgid "Disconnected"
+msgstr "Povezava prekinjena"
+
+#: ../src/client/clientauthhandler.cpp:149
+msgctxt "ClientAuthHandler|"
+msgid "Reconnecting in compatibility mode..."
+msgstr "Ponovno povezovanje v združljivostnem načinu ..."
+
+#: ../src/client/clientauthhandler.cpp:236
+msgctxt "ClientAuthHandler|"
+msgid ""
+"<b>Incompatible Quassel Core!</b><br>None of the protocols this client "
+"speaks are supported by the core you are trying to connect to."
+msgstr "<b>Nezdružljivo jedro za Quassel!</b><br>Nobeden izmed protokolov, ki ga uporablja ta odjemalec, ni podprt s strani jedra, na katerega se poskušate povezati."
+
+#: ../src/client/clientauthhandler.cpp:239
+msgctxt "ClientAuthHandler|"
+msgid "Core speaks none of the protocols we support"
+msgstr "Jedro ne podpira nobenega izmed protokolov, ki ga uporabljamo mi"
+
+#: ../src/client/clientauthhandler.cpp:254
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid ""
 "<b>The Quassel Core you are trying to connect to is too old!</b><br>We need "
 "at least protocol v%1, but the core speaks v%2 only."
-msgstr ""
+msgstr "<b>Jedro za Quassel, s katerim se želite povezati, je prestaro!</b><br>Zahtevan je protokol r%1, jedro pa podpira samo protokol r%2."
 
-#: ../src/client/clientauthhandler.cpp:169
+#: ../src/client/clientauthhandler.cpp:256
 msgctxt "ClientAuthHandler|"
 msgid "Incompatible protocol version, connection to core refused"
-msgstr ""
+msgstr "Nezdružljiva različica protokola, povezava z jedrom je bila zavrnjena"
 
-#: ../src/client/clientauthhandler.cpp:176
+#: ../src/client/clientauthhandler.cpp:278
+msgctxt "ClientAuthHandler|"
+msgid "Synchronizing to core..."
+msgstr "Usklajevanje z jedrom ..."
+
+#: ../src/client/clientauthhandler.cpp:293
 msgctxt "ClientAuthHandler|"
 msgid "The core refused connection from this client"
-msgstr ""
+msgstr "Jedro je zavrnilo povezavo s tem odjemalcem"
 
-#: ../src/client/clientauthhandler.cpp:207
-msgctxt "ClientAuthHandler|"
-msgid "Unencrypted connection cancelled"
-msgstr ""
-
-#: ../src/client/clientauthhandler.cpp:275
-#, qt-format
-msgctxt "ClientAuthHandler|"
-msgid "Connected to %1"
-msgstr "Povezan na %1"
-
-#: ../src/client/clientauthhandler.cpp:317
+#: ../src/client/clientauthhandler.cpp:357
 msgctxt "ClientAuthHandler|"
 msgid "Logging in..."
 msgstr "Prijavljanje ..."
 
-#: ../src/client/clientauthhandler.cpp:322
+#: ../src/client/clientauthhandler.cpp:362
 msgctxt "ClientAuthHandler|"
 msgid "Login canceled"
 msgstr "Prijava preklicana"
+
+#: ../src/client/clientauthhandler.cpp:420
+msgctxt "ClientAuthHandler|"
+msgid "Unencrypted connection cancelled"
+msgstr "Nešifrirana povezava preklicana"
 
 #: ../src/client/clientbacklogmanager.cpp:178
 #, qt-format
@@ -1110,12 +1207,12 @@ msgstr "Nastavitev povezave IRC"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:20
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable Ping Timeout Detection"
-msgstr "Omogoči zaznavanje preteka časa za odziv"
+msgstr "Omogoči zaznavanje preteka časa za ping"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:37
 msgctxt "ConnectionSettingsPage|"
 msgid "Ping interval:"
-msgstr "Čas med preverjanji:"
+msgstr "Čas med pingi:"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:44
 #: ../src/qtui/settingspages/connectionsettingspage.ui:155
@@ -1132,7 +1229,7 @@ msgstr "Prekini povezavo po"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:103
 msgctxt "ConnectionSettingsPage|"
 msgid "missed pings"
-msgstr "preverjanjih brez odziva"
+msgstr "zgrešenih pingih"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:128
 msgctxt "ConnectionSettingsPage|"
@@ -1144,12 +1241,12 @@ msgstr "To omogoči redno posodabljanje podatkov o uporabnikih z uporabo ukaza /
 #: ../src/qtui/settingspages/connectionsettingspage.ui:131
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable Automatic User Information Lookup (/WHO)"
-msgstr "Omogoči samodejno pridobivanje uporabniških podatkov"
+msgstr "Omogoči samodejno pridobivanje uporabniških podatkov (/WHO)"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:148
 msgctxt "ConnectionSettingsPage|"
 msgid "Update interval:"
-msgstr "Čas med posodobitvami:"
+msgstr "Razmik med posodobitvami:"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:177
 msgctxt "ConnectionSettingsPage|"
@@ -1164,22 +1261,22 @@ msgstr " uporabniki"
 #: ../src/qtui/settingspages/connectionsettingspage.ui:206
 msgctxt "ConnectionSettingsPage|"
 msgid "Minimum delay between requests:"
-msgstr "Najkrajši čas med poizvedbami:"
+msgstr "Najmanjša zakasnitev med zahtevami:"
 
 #: ../src/qtui/settingspages/connectionsettingspage.ui:250
 msgctxt "ConnectionSettingsPage|"
 msgid "Enable standard-compliant CTCP behavior"
-msgstr ""
+msgstr "Omogoči s standardi združljivo obnašanje CTCP"
 
 #: ../src/qtui/settingspages/connectionsettingspage.cpp:27
 msgctxt "ConnectionSettingsPage|"
 msgid "IRC"
 msgstr "IRC"
 
-#: ../src/qtui/chatitem.cpp:803
+#: ../src/qtui/chatitem.cpp:800
 msgctxt "ContentsChatItem|"
 msgid "Copy Link Address"
-msgstr "Skopiraj naslov povezave"
+msgstr "Kopiraj naslov povezave"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:39
 msgctxt "ContextMenuActionProvider|"
@@ -1254,7 +1351,7 @@ msgstr "Nastavi kot privzeto ..."
 #: ../src/uisupport/contextmenuactionprovider.cpp:55
 msgctxt "ContextMenuActionProvider|"
 msgid "Use Defaults..."
-msgstr "Uporabi privzeto ..."
+msgstr "Uporabi privzete vrednosti ..."
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:57
 msgctxt "ContextMenuActionProvider|"
@@ -1264,17 +1361,17 @@ msgstr "Pridruži se kanalu ..."
 #: ../src/uisupport/contextmenuactionprovider.cpp:59
 msgctxt "ContextMenuActionProvider|"
 msgid "Start Query"
-msgstr "Zaženi poizvedbo"
+msgstr "Začni poizvedbo"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:60
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Query"
-msgstr "Prikaži poizvedbo"
+msgstr "Pokaži poizvedbo"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:61
 msgctxt "ContextMenuActionProvider|"
 msgid "Whois"
-msgstr "Kdoje"
+msgstr "Whois"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:63
 msgctxt "ContextMenuActionProvider|"
@@ -1304,32 +1401,32 @@ msgstr "Po meri ..."
 #: ../src/uisupport/contextmenuactionprovider.cpp:79
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Operator Status"
-msgstr "Podeli status operaterja"
+msgstr "Dodeli stanje operaterja"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:80
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Operator Status"
-msgstr "Odvzemi status operaterja"
+msgstr "Odvzemi stanje operaterja"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:81
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Half-Operator Status"
-msgstr ""
+msgstr "Dodeli stanje pol-operaterja"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:82
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Half-Operator Status"
-msgstr ""
+msgstr "Odvzemi stanje pol-operaterja"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:83
 msgctxt "ContextMenuActionProvider|"
 msgid "Give Voice"
-msgstr "Daj besedo"
+msgstr "Dodeli glasovno pravico"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:84
 msgctxt "ContextMenuActionProvider|"
 msgid "Take Voice"
-msgstr "Odvzemi besedo"
+msgstr "Odvzemi glasovno pravico"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:85
 msgctxt "ContextMenuActionProvider|"
@@ -1339,12 +1436,12 @@ msgstr "Brcni s kanala"
 #: ../src/uisupport/contextmenuactionprovider.cpp:86
 msgctxt "ContextMenuActionProvider|"
 msgid "Ban From Channel"
-msgstr "Izloči s kanala"
+msgstr "Izobči s kanala"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:87
 msgctxt "ContextMenuActionProvider|"
 msgid "Kick && Ban"
-msgstr "Brcni in izloči"
+msgstr "Brcni in izobči"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:89
 msgctxt "ContextMenuActionProvider|"
@@ -1359,12 +1456,12 @@ msgstr "Trajno skrij klepete"
 #: ../src/uisupport/contextmenuactionprovider.cpp:91
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Channel List"
-msgstr "Prikaži seznam kanalov"
+msgstr "Pokaži seznam kanalov"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:92
 msgctxt "ContextMenuActionProvider|"
 msgid "Show Ignore List"
-msgstr "Prikaži seznam spregledanih"
+msgstr "Pokaži seznam prezrtih"
 
 #: ../src/uisupport/contextmenuactionprovider.cpp:105
 msgctxt "ContextMenuActionProvider|"
@@ -1396,114 +1493,114 @@ msgctxt "ContextMenuActionProvider|"
 msgid "Existing Rules"
 msgstr "Obstoječa pravila"
 
-#: ../src/core/core.cpp:193
+#: ../src/core/core.cpp:191
 msgctxt "Core|"
 msgid "Could not initialize any storage backend! Exiting..."
-msgstr "Ni bilo moč inicializirati nobene hrbtenice za shranjevanje. Končujem ..."
+msgstr "Ni bilo mogoče začeti nobenega zaledja za shranjevanje. Končujem ..."
 
-#: ../src/core/core.cpp:194
+#: ../src/core/core.cpp:192
 msgctxt "Core|"
 msgid ""
 "Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
 "Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 "to work."
-msgstr "Trenutno Quassel podpira SQLite3 in PostgreSQL. Za pravilno delovanje morate\nknjižnico Qt zgraditi z omogočenim vstavkom sqlite ali postgres."
+msgstr "Trenutno Quassel podpira SQLite3 in PostgreSQL. Za pravilno delovanje morate\nknjižnico Qt izgraditi z omogočenim vstavkom sqlite ali postgres."
 
-#: ../src/core/core.cpp:253
+#: ../src/core/core.cpp:251
 msgctxt "Core|"
 msgid "Calling restoreState() even though active sessions exist!"
-msgstr "Kličem restoreState(), čeprav obstajajo aktivne seje!"
+msgstr "Klicanje restoreState(), čeprav obstajajo dejavne seje!"
 
-#: ../src/core/core.cpp:287
+#: ../src/core/core.cpp:285
 msgctxt "Core|"
 msgid "Core is already configured! Not configuring again..."
-msgstr ""
+msgstr "Jedro je že nastavljeno! Novega nastavljanja ne bo ..."
 
-#: ../src/core/core.cpp:290
+#: ../src/core/core.cpp:288
 msgctxt "Core|"
 msgid "Admin user or password not set."
-msgstr "Skrbniški uporabnik, ali geslo zanj, ni nastavljen."
+msgstr "Skrbniški uporabnik, ali njegovo geslo, ni nastavljen."
 
-#: ../src/core/core.cpp:293
+#: ../src/core/core.cpp:291
 msgctxt "Core|"
 msgid "Could not setup storage!"
-msgstr "Ni moč nastaviti shranjevanja!"
+msgstr "Ni mogoče nastaviti shrambe!"
 
-#: ../src/core/core.cpp:298
+#: ../src/core/core.cpp:296
 msgctxt "Core|"
 msgid "Creating admin user..."
 msgstr "Ustvarjanje skrbniškega uporabnika ..."
 
-#: ../src/core/core.cpp:451
+#: ../src/core/core.cpp:449
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1"
 msgstr "Neveljaven naslov za poslušanje (%1)"
 
-#: ../src/core/core.cpp:460
+#: ../src/core/core.cpp:458
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv6 %1 port %2 using protocol version %3"
-msgstr "Odjemalce poslušam na IPv6 %1, vratih %2, z uporabo protokola različice %3"
+msgstr "Poslušanje za odjemalci na IPv6 %1, vratih %2, z uporabo protokola različice %3"
 
-#: ../src/core/core.cpp:469
+#: ../src/core/core.cpp:467
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv6 interface %1:%2: %3"
-msgstr "Ni moč odpreti vmesnika IPv6 %1:%2: %3"
+msgstr "Ni mogoče odpreti vmesnika IPv6 %1:%2: %3"
 
-#: ../src/core/core.cpp:477
+#: ../src/core/core.cpp:475
 #, qt-format
 msgctxt "Core|"
 msgid "Listening for GUI clients on IPv4 %1 port %2 using protocol version %3"
-msgstr "Odjemalce poslušam na IPv4 %1, vratih %2, z uporabo protokola različice %3"
+msgstr "Poslušanje za odjemalci na IPv4 %1, vratih %2, z uporabo protokola različice %3"
 
-#: ../src/core/core.cpp:488
+#: ../src/core/core.cpp:486
 #, qt-format
 msgctxt "Core|"
 msgid "Could not open IPv4 interface %1:%2: %3"
-msgstr "Ni moč odpreti vmesnika IPv4 %1:%2: %3"
+msgstr "Ni mogoče odpreti vmesnika IPv4 %1:%2: %3"
 
-#: ../src/core/core.cpp:496
+#: ../src/core/core.cpp:494
 #, qt-format
 msgctxt "Core|"
 msgid "Invalid listen address %1, unknown network protocol"
 msgstr "Neveljaven naslov za poslušanje (%1), neznan omrežni protokol"
 
-#: ../src/core/core.cpp:505
+#: ../src/core/core.cpp:503
 msgctxt "Core|"
 msgid "Could not open any network interfaces to listen on!"
-msgstr "Ni moč odpreti nobenega omrežnega vmesnika za poslušanje!"
+msgstr "Ni mogoče odpreti nobenega omrežnega vmesnika za poslušanje!"
 
-#: ../src/core/core.cpp:545
+#: ../src/core/core.cpp:543
 msgctxt "Core|"
 msgid "Client connected from"
 msgstr "Odjemalec se je povezal z"
 
-#: ../src/core/core.cpp:548
+#: ../src/core/core.cpp:546
 msgctxt "Core|"
 msgid "Closing server for basic setup."
-msgstr "Zapiram strežnik za osnovno nastavitev."
+msgstr "Zapiranje strežnika za osnovno nastavitev."
 
-#: ../src/core/core.cpp:560
+#: ../src/core/core.cpp:558
 msgctxt "Core|"
 msgid "Non-authed client disconnected:"
-msgstr ""
+msgstr "Nepooblaščen odjemalec je prekinil povezavo:"
 
-#: ../src/core/core.cpp:592
+#: ../src/core/core.cpp:590
 msgctxt "Core|"
 msgid "Could not initialize session for client:"
-msgstr "Ni bilo moč inicializirati seje za odjemalca:"
+msgstr "Ni bilo mogoče začeti seje za odjemalca:"
 
-#: ../src/core/core.cpp:619
+#: ../src/core/core.cpp:617
 msgctxt "Core|"
 msgid "Could not find a session for client:"
-msgstr "Ni bilo moč najti seje za odjemalca:"
+msgstr "Ni bilo mogoče najti seje za odjemalca:"
 
 #: ../src/client/coreaccount.h:40
 msgctxt "CoreAccount|"
 msgid "Internal Core"
-msgstr "Vgrajeno jedro"
+msgstr "Notranje jedro"
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:14
 #: ../src/qtui/settingspages/coreaccountsettingspage.cpp:260
@@ -1559,22 +1656,22 @@ msgstr "Geslo:"
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:117
 msgctxt "CoreAccountEditDlg|"
 msgid "Remember"
-msgstr "Pomni"
+msgstr "Zapomni si"
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:127
 msgctxt "CoreAccountEditDlg|"
 msgid "Use a Proxy"
-msgstr "Uporabi posrednika"
+msgstr "Uporabi pos. strž."
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:139
 msgctxt "CoreAccountEditDlg|"
 msgid "Proxy Type:"
-msgstr "Vrsta posrednika:"
+msgstr "Vrsta pos. strž.:"
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:147
 msgctxt "CoreAccountEditDlg|"
 msgid "Socks 5"
-msgstr "SOCKS5"
+msgstr "Socks 5"
 
 #: ../src/qtui/settingspages/coreaccounteditdlg.ui:152
 msgctxt "CoreAccountEditDlg|"
@@ -1589,7 +1686,7 @@ msgstr "Dodaj račun pri jedru"
 #: ../src/client/coreaccountmodel.cpp:68
 msgctxt "CoreAccountModel|"
 msgid "Internal Core"
-msgstr "Vgrajeno jedro"
+msgstr "Notranje jedro"
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:20
 msgctxt "CoreAccountSettingsPage|"
@@ -1604,7 +1701,7 @@ msgstr "Računi pri jedru"
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:45
 msgctxt "CoreAccountSettingsPage|"
 msgid "Edit..."
-msgstr "Urejanje ..."
+msgstr "Uredi ..."
 
 #: ../src/qtui/settingspages/coreaccountsettingspage.ui:56
 msgctxt "CoreAccountSettingsPage|"
@@ -1636,62 +1733,62 @@ msgctxt "CoreAccountSettingsPage|"
 msgid "Remote Cores"
 msgstr "Oddaljena jedra"
 
-#: ../src/core/coreauthhandler.cpp:54 ../src/core/coreauthhandler.cpp:90
+#: ../src/core/coreauthhandler.cpp:132 ../src/core/coreauthhandler.cpp:144
 msgctxt "CoreAuthHandler|"
 msgid "Client"
 msgstr "Odjemalec"
 
-#: ../src/core/coreauthhandler.cpp:54
+#: ../src/core/coreauthhandler.cpp:132
 msgctxt "CoreAuthHandler|"
 msgid "too old, rejecting."
-msgstr "je prestar, zavračam ga."
+msgstr "je prestar, zavračanje."
 
-#: ../src/core/coreauthhandler.cpp:55
+#: ../src/core/coreauthhandler.cpp:133
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>Your Quassel Client is too old!</b><br>This core needs at least "
 "client/core protocol version %1 (got: %2).<br>Please consider upgrading your"
 " client."
-msgstr ""
+msgstr "<b>Vaš odjemalec Quassel je prestar!</b><br>To jedro zahteva vsaj različico odjemalca/jedra %1 (dobljena: %2).<br>Razmislite o nadgradnji odjemalca."
 
-#: ../src/core/coreauthhandler.cpp:69
+#: ../src/core/coreauthhandler.cpp:144
 msgctxt "CoreAuthHandler|"
-msgid "Starting encryption for Client:"
-msgstr ""
+msgid "did not send a registration message before trying to login, rejecting."
+msgstr "ni poslal registracijskega sporočila pred poskusom prijave, zavračanje."
 
-#: ../src/core/coreauthhandler.cpp:90
-msgctxt "CoreAuthHandler|"
-msgid "did not send an init message before trying to login, rejecting."
-msgstr "pred prijavo ni poslal inicializacijskega sporočila, zavračam ga."
-
-#: ../src/core/coreauthhandler.cpp:91
+#: ../src/core/coreauthhandler.cpp:145
 msgctxt "CoreAuthHandler|"
 msgid ""
-"<b>Client not initialized!</b><br>You need to send an init message before "
-"trying to login."
-msgstr "<b>Odjemalec ni inicializiran.</b><br>Preden se poskusi prijaviti mora poslati inicializacijsko sporočilo."
+"<b>Client not initialized!</b><br>You need to send a registration message "
+"before trying to login."
+msgstr "<b>Odjemalec ni začet!</b><br>Pred poskusom prijave morate poslati registracijsko sporočilo."
 
-#: ../src/core/coreauthhandler.cpp:105
+#: ../src/core/coreauthhandler.cpp:162
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>SSL is required!</b><br>You need to use SSL in order to connect to this "
 "core."
-msgstr ""
+msgstr "<b>Zahtevan je SSL!</b><br>Za povezavo s tem jedrom morate uporabiti SSL."
 
-#: ../src/core/coreauthhandler.cpp:146
+#: ../src/core/coreauthhandler.cpp:202
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
-msgstr "<b>Neveljavno uporabniško ime ali geslo.</b><br>Podane kombinacije uporabniškega imena in gesla ni moč najti v podatkovni zbirki."
+msgstr "<b>Neveljavno uporabniško ime ali geslo.</b><br>Podane kombinacije uporabniškega imena in gesla ni mogoče najti v podatkovni zbirki."
 
-#: ../src/core/coreauthhandler.cpp:151
+#: ../src/core/coreauthhandler.cpp:207
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid ""
 "Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3)."
-msgstr ""
+msgstr "Odjemalec %1 je bil uspešno začet in pooblaščen kot »%2« (ID uporabnika: %3)."
+
+#: ../src/core/coreauthhandler.cpp:226
+msgctxt "CoreAuthHandler|"
+msgid "Starting encryption for Client:"
+msgstr "Začenjanje šifriranja za odjemalec:"
 
 #: ../src/qtui/coreconfigwizard.cpp:69
 msgctxt "CoreConfigWizard|"
@@ -1716,7 +1813,7 @@ msgctxt "CoreConfigWizard|"
 msgid ""
 "Your are now logged into your freshly configured Quassel Core!<br>Please "
 "remember to configure your identities and networks now."
-msgstr "Prijavljeni ste v sveže nastavljeno jedro Quassel.<br>Ne pozabite sedaj nastaviti svojih identitet in omrežij."
+msgstr "Prijavljeni ste v sveže nastavljeno jedro za Quassel.<br>Ne pozabite sedaj nastaviti svojih istovetnosti in omrežij."
 
 #: ../src/qtui/ui/coreconfigwizardadminuserpage.ui:14
 msgctxt "CoreConfigWizardAdminUserPage|"
@@ -1748,7 +1845,7 @@ msgctxt "CoreConfigWizardAdminUserPage|"
 msgid ""
 "<b>Note:</b> Adding more users and changing your username/password is not possible via Quassel's client interface yet.\n"
 "If you need to do these things, please run \"<tt><nobr>quasselcore --help</nobr></tt>\"."
-msgstr "<b>Opomba:</b> Dodajanje uporabnikov in spreminjanje uporabniškega imena ter gesla iz odjemalca Quassel še ni možno.\nČe želite to storiti, zaženite »<tt><nobr>quasselcore --help</nobr></tt>«."
+msgstr "<b>Opomba:</b> dodajanje uporabnikov in spreminjanje uporabniškega imena ter gesla iz odjemalca Quassel še ni mogoče.\nČe želite to storiti, zaženite »<tt><nobr>quasselcore --help</nobr></tt>«."
 
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:13
 msgctxt "CoreConfigWizardIntroPage|"
@@ -1758,7 +1855,7 @@ msgstr "Obrazec"
 #: ../src/qtui/ui/coreconfigwizardintropage.ui:19
 msgctxt "CoreConfigWizardIntroPage|"
 msgid "This wizard will guide you through the setup of your Quassel Core."
-msgstr "Ta čarovnik vas bo vodil skozi namestitev jedra Quassel."
+msgstr "Ta čarovnik vas bo vodil skozi namestitev jedra za Quassel."
 
 #: ../src/qtui/coreconfigwizard.cpp:162
 msgctxt "CoreConfigWizardPages::AdminUserPage|"
@@ -1770,7 +1867,7 @@ msgctxt "CoreConfigWizardPages::AdminUserPage|"
 msgid ""
 "First, we will create a user on the core. This first user will have "
 "administrator privileges."
-msgstr "Najprej bomo ustvarili uporabnika pri jedru. Prvi uporabnik bo imel skrbniške pravice."
+msgstr "Najprej bomo ustvarili uporabnika pri jedru. Prvi uporabnik bo imel skrbniška dovoljenja."
 
 #: ../src/qtui/coreconfigwizard.cpp:145
 msgctxt "CoreConfigWizardPages::IntroPage|"
@@ -1780,14 +1877,14 @@ msgstr "Uvod"
 #: ../src/qtui/coreconfigwizard.cpp:198
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid "Select Storage Backend"
-msgstr "Izberite hrbtenico za shranjevanje"
+msgstr "Izberite zaledje za shranjevanje"
 
 #: ../src/qtui/coreconfigwizard.cpp:199
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
 msgid ""
 "Please select a database backend for the Quassel Core storage to store the "
 "backlog and other data in."
-msgstr "Izberite hrbtenico za podatkovno zbirko, v kateri se bo shranjevala zgodovina sporočil in drugi podatki."
+msgstr "Izberite zaledje za podatkovno zbirko, v katero se bo shranjeval dnevnik sporočil in drugi podatki."
 
 #: ../src/qtui/coreconfigwizard.cpp:300
 msgctxt "CoreConfigWizardPages::StorageSelectionPage|"
@@ -1814,7 +1911,7 @@ msgstr "Obrazec"
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:21
 msgctxt "CoreConfigWizardStorageSelectionPage|"
 msgid "Storage Backend:"
-msgstr "Hrbtenica za shranjevanje:"
+msgstr "Zaledje za shranjevanje:"
 
 #: ../src/qtui/ui/coreconfigwizardstorageselectionpage.ui:56
 msgctxt "CoreConfigWizardStorageSelectionPage|"
@@ -1849,7 +1946,7 @@ msgstr "foo"
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:55
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Storage Backend:"
-msgstr "Hrbtenica za shranjevanje:"
+msgstr "Zaledje za shranjevanje:"
 
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:62
 msgctxt "CoreConfigWizardSyncPage|"
@@ -1859,12 +1956,12 @@ msgstr "bar"
 #: ../src/qtui/ui/coreconfigwizardsyncpage.ui:102
 msgctxt "CoreConfigWizardSyncPage|"
 msgid "Please wait while your settings are being transmitted to the core..."
-msgstr "Prosimo počakajte, da se vaše nastavitve prenesejo do jedra ..."
+msgstr "Počakajte med prenašanjem vaših nastavitev do jedra ..."
 
 #: ../src/qtui/ui/coreconnectauthdlg.ui:14
 msgctxt "CoreConnectAuthDlg|"
 msgid "Authentication Required"
-msgstr "Potrebna je overitev"
+msgstr "Zahtevana je overitev"
 
 #: ../src/qtui/ui/coreconnectauthdlg.ui:20
 msgctxt "CoreConnectAuthDlg|"
@@ -1900,59 +1997,35 @@ msgstr "Poveži se z jedrom"
 #: ../src/client/coreconnection.cpp:193
 msgctxt "CoreConnection|"
 msgid "Network is down"
-msgstr "Omrežje ne deluje"
+msgstr "Omrežje ni vzpostavljeno"
 
-#: ../src/client/coreconnection.cpp:227 ../src/client/coreconnection.cpp:328
+#: ../src/client/coreconnection.cpp:276
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "Povezava prekinjena"
 
-#: ../src/client/coreconnection.cpp:230
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Looking up %1..."
-msgstr "Iskanje %1 ..."
-
-#: ../src/client/coreconnection.cpp:233
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Connecting to %1..."
-msgstr "Povezovanje s %1 ..."
-
-#: ../src/client/coreconnection.cpp:236
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Connected to %1"
-msgstr "Povezan na %1"
-
-#: ../src/client/coreconnection.cpp:239
-#, qt-format
-msgctxt "CoreConnection|"
-msgid "Disconnecting from %1..."
-msgstr "Prekinjanje povezave z %1 ..."
-
-#: ../src/client/coreconnection.cpp:363
+#: ../src/client/coreconnection.cpp:311
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "Povezava z jedrom prekinjena."
 
-#: ../src/client/coreconnection.cpp:501
+#: ../src/client/coreconnection.cpp:449
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "Prejemanje stanja seje"
 
-#: ../src/client/coreconnection.cpp:503
+#: ../src/client/coreconnection.cpp:451
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "Usklajevanje z %1 ..."
 
-#: ../src/client/coreconnection.cpp:539
+#: ../src/client/coreconnection.cpp:487
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "Prejemanje stanj omrežij"
 
-#: ../src/client/coreconnection.cpp:590
+#: ../src/client/coreconnection.cpp:538
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -1973,7 +2046,7 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Rely on KDE's hardware layer to detect if we're online. Recommended for most"
 " KDE users"
-msgstr "Za zaznavanja stanje povezave se zanašaj na KDE-jevo storitev za delo s strojno opremo."
+msgstr "Za zaznavanja stanja povezave se zanašaj na KDE-jevo storitev za delo s strojno opremo."
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:29
 msgctxt "CoreConnectionSettingsPage|"
@@ -2005,12 +2078,12 @@ msgctxt "CoreConnectionSettingsPage|"
 msgid ""
 "Only disconnect if the network socket gets closed by the operating system. "
 "This may take a long time after actually losing connectivity"
-msgstr "Prekini povezavo, samo če operacijski sistem zapre omrežno vtičnico. To se lahko zgodi dolgo po tem, ko se povezava dejansko prekine."
+msgstr "Prekini povezavo samo, če operacijski sistem zapre omrežni vtič. To se lahko zgodi dolgo po tem, ko se povezava dejansko prekine."
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:103
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Never time out actively"
-msgstr "Nikoli aktivno ne prekini povezave"
+msgstr "Ne prekini povezave dejavno"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:113
 msgctxt "CoreConnectionSettingsPage|"
@@ -2020,7 +2093,7 @@ msgstr "Po omrežnih napakah se samodejno znova poveži"
 #: ../src/qtui/settingspages/coreconnectionsettingspage.ui:147
 msgctxt "CoreConnectionSettingsPage|"
 msgid "Retry every"
-msgstr "Poskusi vsakih"
+msgstr "Poskusi znova vsakih"
 
 #: ../src/qtui/settingspages/coreconnectionsettingspage.cpp:24
 msgctxt "CoreConnectionSettingsPage|"
@@ -2061,7 +2134,7 @@ msgstr "(zakasnitev: %1 %2)"
 #: ../src/qtui/coreconnectionstatuswidget.cpp:83
 msgctxt "CoreConnectionStatusWidget|"
 msgid "The connection to your core is encrypted with SSL."
-msgstr "Povezava z jedrom je šifrirana z SSL."
+msgstr "Povezava z jedrom je šifrirana s SSL."
 
 #: ../src/qtui/coreconnectionstatuswidget.cpp:87
 msgctxt "CoreConnectionStatusWidget|"
@@ -2086,7 +2159,7 @@ msgstr "<različica jedra>"
 #: ../src/qtui/ui/coreinfodlg.ui:35
 msgctxt "CoreInfoDlg|"
 msgid "Uptime:"
-msgstr "Teče:"
+msgstr "Čas delovanja:"
 
 #: ../src/qtui/ui/coreinfodlg.ui:42
 msgctxt "CoreInfoDlg|"
@@ -2101,17 +2174,17 @@ msgstr "<povezanih odjemalcev>"
 #: ../src/qtui/ui/coreinfodlg.ui:56
 msgctxt "CoreInfoDlg|"
 msgid "<core uptime>"
-msgstr "<koliko časa teče jedro>"
+msgstr "<čas delovanja jedra>"
 
 #: ../src/qtui/ui/coreinfodlg.ui:63
 msgctxt "CoreInfoDlg|"
 msgid "Build date:"
-msgstr "Datum gradnje:"
+msgstr "Datum izgradnje:"
 
 #: ../src/qtui/ui/coreinfodlg.ui:70
 msgctxt "CoreInfoDlg|"
 msgid "<build date>"
-msgstr "<datum gradnje>"
+msgstr "<datum izgradnje>"
 
 #: ../src/qtui/ui/coreinfodlg.ui:81
 msgctxt "CoreInfoDlg|"
@@ -2134,39 +2207,39 @@ msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (od %4)"
 
-#: ../src/core/corenetwork.cpp:167
+#: ../src/core/corenetwork.cpp:168
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
-msgstr "Povezovanje ni uspelo. Prehajam na naslednji strežnik"
+msgstr "Povezava ni uspela. Prehajanje na naslednji strežnik"
 
-#: ../src/core/corenetwork.cpp:175 ../src/core/corenetwork.cpp:176
+#: ../src/core/corenetwork.cpp:176 ../src/core/corenetwork.cpp:177
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
-msgstr "Povezujem se z %1:%2 ..."
+msgstr "Povezovanje z %1:%2 ..."
 
-#: ../src/core/corenetwork.cpp:228
+#: ../src/core/corenetwork.cpp:234
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr "Prekinjanje povezave ... (%1)"
 
-#: ../src/core/corenetwork.cpp:228
+#: ../src/core/corenetwork.cpp:234
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
-msgstr "Zaustavitev jedra"
+msgstr "Izklop jedra"
 
-#: ../src/core/corenetwork.cpp:423
+#: ../src/core/corenetwork.cpp:432
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
-msgstr "Ni se moč povezati z %1 (%2)"
+msgstr "Ni se bilo mogoče povezati z %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:425
+#: ../src/core/corenetwork.cpp:434
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
-msgstr "Neuspeh pri povezovanju: %1"
+msgstr "Napaka povezave: %1"
 
 #: ../src/core/coresession.cpp:230
 msgctxt "CoreSession|"
@@ -2177,7 +2250,7 @@ msgstr "Odjemalec"
 #, qt-format
 msgctxt "CoreSession|"
 msgid "disconnected (UserId: %1)."
-msgstr "je prekinil povezavo (uporabniški ID: %1)."
+msgstr "je prekinil povezavo (ID uporabnika: %1)."
 
 #: ../src/core/coresession.cpp:477
 #, qt-format
@@ -2185,7 +2258,7 @@ msgctxt "CoreSession|"
 msgid ""
 "CoreSession::createNetwork(): Got invalid networkId from Core when trying to"
 " create network %1!"
-msgstr "CoreSession::createNetwork(): med poskusom ustvarjanja omrežja %1 je bil prejet napačen networkId!"
+msgstr "CoreSession::createNetwork(): med poskusom ustvarjanja omrežja %1 je bil od jedra prejet neveljaven networkId!"
 
 #: ../src/core/coresession.cpp:509
 msgctxt "CoreSession|"
@@ -2199,65 +2272,65 @@ msgctxt "CoreSessionEventProcessor|"
 msgid ""
 "No free and valid nicks in nicklist found. use: /nick <othernick> to "
 "continue"
-msgstr "Na seznamu vzdevkov ni moč najti nobenega prostega ali veljavnega vzdevka. Za nadaljevanje uporabite »/nick <drug_vzdevek>«"
+msgstr "Na seznamu vzdevkov ni mogoče najti nobenega prostega ali veljavnega vzdevka. Za nadaljevanje uporabite »/nick <drug_vzdevek>«"
 
 #: ../src/core/coresessioneventprocessor.cpp:450
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to perform key exchange, missing qca-ossl plugin."
-msgstr ""
+msgstr "Ni mogoče izvesti izmenjave ključa, manjka vstavek qca-ossl."
 
 #: ../src/core/coresessioneventprocessor.cpp:461
 msgctxt "CoreSessionEventProcessor|"
 msgid "Unable to parse the DH1080_INIT. Key exchange failed."
-msgstr ""
+msgstr "Ni mogoče razčleniti DH1080_INIT. Izmenjava ključa je spodletela."
 
 #: ../src/core/coresessioneventprocessor.cpp:465
 #: ../src/core/coresessioneventprocessor.cpp:473
 msgctxt "CoreSessionEventProcessor|"
 msgid "Your key is set and messages will be encrypted."
-msgstr ""
+msgstr "Vaš ključ je nastavljen in sporočila bodo šifrirana."
 
 #: ../src/core/coresessioneventprocessor.cpp:475
 msgctxt "CoreSessionEventProcessor|"
 msgid "Failed to parse DH1080_FINISH. Key exchange failed."
-msgstr ""
+msgstr "Ni bilo mogoče razčleniti DH1080_FINISH. Izmenjava ključa je spodletela."
 
 #: ../src/core/coresessioneventprocessor.cpp:1056
 msgctxt "CoreSessionEventProcessor|"
 msgid "Reverse DCC SEND not supported"
-msgstr ""
+msgstr "Obratni DCC SEND ni podprt"
 
 #: ../src/core/coresessioneventprocessor.cpp:1074
 #, qt-format
 msgctxt "CoreSessionEventProcessor|"
 msgid "DCC %1 not supported"
-msgstr ""
+msgstr "DCC %1 ni podprt"
 
 #: ../src/core/coretransfer.cpp:58
 msgctxt "CoreTransfer|"
 msgid "Socket closed while still transferring!"
-msgstr ""
+msgstr "Vtič je bil zaprt med prenosom!"
 
 #: ../src/core/coretransfer.cpp:70
 #, qt-format
 msgctxt "CoreTransfer|"
 msgid "DCC connection error: %1"
-msgstr ""
+msgstr "Napaka povezave DCC: %1"
 
 #: ../src/core/coretransfer.cpp:114
 msgctxt "CoreTransfer|"
 msgid "Reverse DCC not supported yet!"
-msgstr ""
+msgstr "Obratni DCC še ni podprt!"
 
 #: ../src/core/coretransfer.cpp:160
 msgctxt "CoreTransfer|"
 msgid "DCC Receive: Got more data than expected!"
-msgstr ""
+msgstr "Prejetje DCC: dobljenih je bilo več podatkov kot pričakovano!"
 
 #: ../src/core/coretransfer.cpp:176
 msgctxt "CoreTransfer|"
 msgid "DCC Receive: Quassel Client disconnected during transfer!"
-msgstr ""
+msgstr "Prejetje DCC: odjemalec Quassel je prekinil povezavo med prenosom!"
 
 #: ../src/core/coreuserinputhandler.cpp:88
 msgctxt "CoreUserInputHandler|"
@@ -2268,159 +2341,170 @@ msgstr "odsoten"
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "sending CTCP-%1 request to %2"
-msgstr "pošiljanje zahtevka CTCP-%1 do %2"
+msgstr "pošiljanje zahteve CTCP-%1 do %2"
 
-#: ../src/core/coreuserinputhandler.cpp:190
-#: ../src/core/coreuserinputhandler.cpp:361
-#: ../src/core/coreuserinputhandler.cpp:606
-#: ../src/core/coreuserinputhandler.cpp:644
+#: ../src/core/coreuserinputhandler.cpp:193
+#: ../src/core/coreuserinputhandler.cpp:364
+#: ../src/core/coreuserinputhandler.cpp:609
+#: ../src/core/coreuserinputhandler.cpp:647
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: QCA provider plugin not found. It is usually provided by the qca-ossl"
 " plugin."
-msgstr ""
+msgstr "Napaka: ponudnik za vstavek QCA ni bil najden. Običajno ga vsebuje vstavek qca-ossl."
 
-#: ../src/core/coreuserinputhandler.cpp:201
+#: ../src/core/coreuserinputhandler.cpp:204
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /delkey <nick|channel> deletes the encryption key for nick or "
 "channel or just /delkey when in a channel or query."
-msgstr "[uporaba] /delkey <vzdevek|kanal> izbriše šifrirni ključ za vzdevek ali kanal, v kanalu ali poizvedovanju lahko samo /delkey."
+msgstr "[uporaba] /delkey <vzdevek|kanal> izbriše šifrirni ključ za vzdevek ali kanal, v kanalu ali poizvedbi lahko uporabite samo /delkey."
 
-#: ../src/core/coreuserinputhandler.cpp:208
-#: ../src/core/coreuserinputhandler.cpp:662
+#: ../src/core/coreuserinputhandler.cpp:211
+#: ../src/core/coreuserinputhandler.cpp:665
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "No key has been set for %1."
 msgstr "Za %1 ni bil nastavljen noben ključ."
 
-#: ../src/core/coreuserinputhandler.cpp:213
+#: ../src/core/coreuserinputhandler.cpp:216
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been deleted."
 msgstr "Ključ za %1 je bil izbrisan."
 
-#: ../src/core/coreuserinputhandler.cpp:217
-#: ../src/core/coreuserinputhandler.cpp:670
+#: ../src/core/coreuserinputhandler.cpp:220
+#: ../src/core/coreuserinputhandler.cpp:673
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
 "support for the Qt Cryptographic Architecture (QCA2) library. Contact your "
 "distributor about a Quassel package with QCA2 support, or rebuild Quassel "
 "with QCA2 present."
-msgstr "Napaka: za nastavljanje šifrirnega ključa mora biti Quassel zgrajen s podporo za šifrirno arhitekturo Qt Cryptographic Architecture (QCA2). O paketu s podporo za QCA2 povprašajte svojega distributerja, ali pa sami zgradite Quassel s podporo za QCA2."
+msgstr "Napaka: nastavljanje šifrirnega ključa zahteva vgrajeno podporo knjižnici Šifrirna arhitektura Qt (QCA2). Stopite v stik z avtorjem vaše distribucije za to podporo ali pa Quassel izgradite sami s prisotnim QCA2."
 
-#: ../src/core/coreuserinputhandler.cpp:371
+#: ../src/core/coreuserinputhandler.cpp:374
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /keyx [<nick>] Initiates a DH1080 key exchange with the target."
-msgstr ""
+msgstr "[usage] /keyx [<vzdevek>] začne izmenjavo ključev DH1080 s ciljem."
 
-#: ../src/core/coreuserinputhandler.cpp:378
+#: ../src/core/coreuserinputhandler.cpp:381
 msgctxt "CoreUserInputHandler|"
 msgid "It is only possible to exchange keys in a query buffer."
-msgstr ""
+msgstr "Ključe je mogoče izmenjati le v prikazu poizvedbe."
 
-#: ../src/core/coreuserinputhandler.cpp:388
+#: ../src/core/coreuserinputhandler.cpp:391
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Failed to initiate key exchange with %1."
-msgstr ""
+msgstr "Ni bilo mogoče začeti izmenjave ključa z %1."
 
-#: ../src/core/coreuserinputhandler.cpp:393
+#: ../src/core/coreuserinputhandler.cpp:396
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Initiated key exchange with %1."
-msgstr ""
+msgstr "Začeta izmenjava ključa z %1."
 
-#: ../src/core/coreuserinputhandler.cpp:397
-#: ../src/core/coreuserinputhandler.cpp:628
+#: ../src/core/coreuserinputhandler.cpp:400
+#: ../src/core/coreuserinputhandler.cpp:631
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "Error: Setting an encryption key requires Quassel to have been built with "
 "support for the Qt Cryptographic Architecture (QCA) library. Contact your "
 "distributor about a Quassel package with QCA support, or rebuild Quassel "
 "with QCA present."
-msgstr "Napaka: za nastavljanje šifrirnega ključa mora biti Quassel zgrajen s podporo za šifrirno arhitekturo Qt Cryptographic Architecture (QCA). O paketu s podporo za QCA povprašajte svojega distributerja, ali pa sami zgradite Quassel s podporo za QCA."
+msgstr "Napaka: nastavljanje šifrirnega ključa zahteva vgrajeno podporo knjižnici Šifrirna arhitektura Qt (QCA). Stopite v stik z avtorjem vaše distribucije za to podporo ali pa Quassel izgradite sami s prisotnim QCA."
 
-#: ../src/core/coreuserinputhandler.cpp:556
+#: ../src/core/coreuserinputhandler.cpp:559
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "Starting query with %1"
-msgstr ""
+msgstr "Začenjanje poizvedbe z %1"
 
-#: ../src/core/coreuserinputhandler.cpp:616
+#: ../src/core/coreuserinputhandler.cpp:619
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /setkey <nick|channel> <key> sets the encryption key for nick or "
 "channel. /setkey <key> when in a channel or query buffer sets the key for "
 "it."
-msgstr "[uporaba] /setkey <vzdevek|kanal> <ključ> nastavi ključ za vzdevek ali kanal, v kanalu ali poizvedovanju lahko tudi /setkey <ključ>"
+msgstr "[uporaba] /setkey <vzdevek|kanal> <ključ> nastavi šifrirni ključ za vzdevek ali kanal, v kanalu ali poizvedbi lahko uporabite samo /setkey <ključ>"
 
-#: ../src/core/coreuserinputhandler.cpp:625
+#: ../src/core/coreuserinputhandler.cpp:628
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 has been set."
 msgstr "Ključ za %1 je bil nastavljen."
 
-#: ../src/core/coreuserinputhandler.cpp:654
+#: ../src/core/coreuserinputhandler.cpp:657
 msgctxt "CoreUserInputHandler|"
 msgid ""
 "[usage] /showkey <nick|channel> shows the encryption key for nick or channel"
 " or just /showkey when in a channel or query."
-msgstr "[uporaba] /delkey <vzdevek|kanal> izbriše šifrirni ključ za vzdevek ali kanal, v kanalu ali poizvedovanju lahko samo /delkey."
+msgstr "[uporaba] /showkey <vzdevek|kanal> pokaže šifrirni ključ za vzdevek ali kanal, v kanalu ali poizvedbi lahko uporabite samo /showkey."
 
-#: ../src/core/coreuserinputhandler.cpp:666
+#: ../src/core/coreuserinputhandler.cpp:669
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "The key for %1 is %2:%3"
-msgstr ""
+msgstr "Ključ za %1 je %2:%3"
 
-#: ../src/core/coreuserinputhandler.cpp:794
+#: ../src/core/coreuserinputhandler.cpp:797
 #, qt-format
 msgctxt "CoreUserInputHandler|"
 msgid "[Error] Could not encrypt your message: %1"
-msgstr "[Napaka] Vašega sporočila ni bilo moč šifrirati: %1"
+msgstr "[Napaka] Vašega sporočila ni bilo mogoče šifrirati: %1"
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:17
 msgctxt "CreateIdentityDlg|"
 msgid "Create New Identity"
-msgstr "Ustvari novo identiteto"
+msgstr "Ustvari novo istovetnost"
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:25
 msgctxt "CreateIdentityDlg|"
 msgid "Identity name:"
-msgstr "Ime identitete:"
+msgstr "Ime istovetnosti:"
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:37
 msgctxt "CreateIdentityDlg|"
 msgid "Create blank identity"
-msgstr "Ustvari prazno identiteto"
+msgstr "Ustvari prazno istovetnost"
 
 #: ../src/qtui/settingspages/createidentitydlg.ui:49
 msgctxt "CreateIdentityDlg|"
 msgid "Duplicate:"
 msgstr "Podvoji:"
 
+#: ../src/common/protocols/datastream/datastreampeer.cpp:115
+msgctxt "DataStreamPeer|"
+msgid "Invalid handshake message!"
+msgstr "Neveljavno sporočilo rokovanja!"
+
+#: ../src/common/protocols/datastream/datastreampeer.cpp:162
+#, qt-format
+msgctxt "DataStreamPeer|"
+msgid "Unknown protocol message of type %1"
+msgstr "Neznano sporočilo protokola vrste %1"
+
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:13
 msgctxt "DebugBufferViewOverlay|"
 msgid "Debug BufferView Overlay"
-msgstr ""
+msgstr "Razhroščevanje BufferViewOverlay"
 
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:26
 msgctxt "DebugBufferViewOverlay|"
 msgid "Overlay View"
-msgstr ""
+msgstr "Prekrivni prikaz"
 
 #: ../src/qtui/ui/debugbufferviewoverlay.ui:39
 msgctxt "DebugBufferViewOverlay|"
 msgid "Overlay Properties"
-msgstr "Lastnosti povezave"
+msgstr "Lastnosti prekritja"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:50
 msgctxt "DebugBufferViewOverlay|"
 msgid "BufferViews:"
-msgstr "Prikazi:"
+msgstr "BufferViews:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:51
 msgctxt "DebugBufferViewOverlay|"
@@ -2455,12 +2539,12 @@ msgstr "Dovoljene vrste prikazov:"
 #: ../src/qtui/debugbufferviewoverlay.cpp:58
 msgctxt "DebugBufferViewOverlay|"
 msgid "Minimum activity:"
-msgstr "Najmanjša aktivnost:"
+msgstr "Najmanjša dejavnost:"
 
 #: ../src/qtui/debugbufferviewoverlay.cpp:60
 msgctxt "DebugBufferViewOverlay|"
 msgid "Is initialized:"
-msgstr "Je inicializiran:"
+msgstr "Je začet:"
 
 #: ../src/qtui/ui/debugconsole.ui:14
 msgctxt "DebugConsole|"
@@ -2495,12 +2579,12 @@ msgstr "Zapri"
 #: ../src/qtui/dockmanagernotificationbackend.cpp:184
 msgctxt "DockManagerNotificationBackend::ConfigWidget|"
 msgid "Mark dockmanager entry"
-msgstr ""
+msgstr "Označi vnos upravljalnika sidrišča"
 
 #: ../src/core/eventstringifier.cpp:224 ../src/core/eventstringifier.cpp:370
 msgctxt "EventStringifier|"
 msgid "[Whois] "
-msgstr "[Kdoje] %1"
+msgstr "[Whois] "
 
 #: ../src/core/eventstringifier.cpp:239
 #, qt-format
@@ -2512,13 +2596,13 @@ msgstr "%1 vas je povabil v kanal %2"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
-msgstr "%1 je spremenil temo za %2 na: »%3«"
+msgstr "%1 je spremenil temo za %2 v: »%3«"
 
 #: ../src/core/eventstringifier.cpp:347
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Operwall] %1: %2"
-msgstr ""
+msgstr "[Operwall] %1: %2"
 
 #: ../src/core/eventstringifier.cpp:355
 msgctxt "EventStringifier|"
@@ -2536,36 +2620,36 @@ msgstr "%1 je odsoten: »%2«"
 #: ../src/core/eventstringifier.cpp:391
 msgctxt "EventStringifier|"
 msgid "You are no longer marked as being away"
-msgstr ""
+msgstr "Niste več označeni kot odsotni"
 
 #: ../src/core/eventstringifier.cpp:399
 msgctxt "EventStringifier|"
 msgid "You have been marked as being away"
-msgstr ""
+msgstr "Sedaj ste označeni kot odsotni"
 
 #: ../src/core/eventstringifier.cpp:421
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is %2 (%3)"
-msgstr "[Kdoje] %1 je %2 (%3)"
+msgstr "[Whois] %1 je %2 (%3)"
 
 #: ../src/core/eventstringifier.cpp:437
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is online via %2 (%3)"
-msgstr "%1 je povezan prek %2 (%3)"
+msgstr "[Whois] %1 je povezan prek %2 (%3)"
 
 #: ../src/core/eventstringifier.cpp:439
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was online via %2 (%3)"
-msgstr "[Kdojebil] %1 je bil %2 (%3)"
+msgstr "[Whowas] %1 je bil povezan prek %2 (%3)"
 
 #: ../src/core/eventstringifier.cpp:449
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was %2@%3 (%4)"
-msgstr ""
+msgstr "[Whowas] %1 je bil %2@%3 (%4)"
 
 #: ../src/core/eventstringifier.cpp:458
 #, qt-format
@@ -2577,36 +2661,36 @@ msgstr "[Who] Konec seznama /WHO za %1"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is logged in since %2"
-msgstr "[Kdoje] %1 je prijavljen od %2"
+msgstr "[Whois] %1 je prijavljen od %2"
 
 #: ../src/core/eventstringifier.cpp:474
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is idling for %2 (since %3)"
-msgstr "[Kdoje] %1 je nedejaven %2 (%3)"
+msgstr "[Whois] %1 je nedejaven od %2 (%3)"
 
 #: ../src/core/eventstringifier.cpp:484
 msgctxt "EventStringifier|"
 msgid "[Whois] End of /WHOIS list"
-msgstr "[Who] Konec seznama /WHO za %1"
+msgstr "[Whois] Konec seznama /WHOIS"
 
 #: ../src/core/eventstringifier.cpp:507
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is a user on channels: %2"
-msgstr "[Kdoje] %1 je uporabnik na kanalih: %2"
+msgstr "[Whois] %1 je uporabnik na kanalih: %2"
 
 #: ../src/core/eventstringifier.cpp:509
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 has voice on channels: %2"
-msgstr "[Kdoje] %1 ima glas na kanalih: %2"
+msgstr "[Whois] %1 ima glas na kanalih: %2"
 
 #: ../src/core/eventstringifier.cpp:511
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is an operator on channels: %2"
-msgstr "[Kdoje] %1 je operater na kanalih: %2"
+msgstr "[Whois] %1 je operater na kanalih: %2"
 
 #: ../src/core/eventstringifier.cpp:532
 #, qt-format
@@ -2635,13 +2719,13 @@ msgstr "Kanal %1 je bil ustvarjen %2"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whois] %1 is authed as %2"
-msgstr "[Kdoje] %1 je odsoten: »%2«"
+msgstr "[Whois] %1 je pooblaščen kot %2"
 
 #: ../src/core/eventstringifier.cpp:592
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "[Whowas] %1 was authed as %2"
-msgstr ""
+msgstr "[Whowas] %1 je bil pooblaščen kot %2"
 
 #: ../src/core/eventstringifier.cpp:601
 #, qt-format
@@ -2659,7 +2743,7 @@ msgstr "Tema za %1 je »%2«"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Topic set by %1 on %2"
-msgstr "Temo je %2 nastavil %1"
+msgstr "Temo za %2 je nastavil %1"
 
 #: ../src/core/eventstringifier.cpp:634
 #, qt-format
@@ -2676,7 +2760,7 @@ msgstr "[Who] %1"
 #: ../src/core/eventstringifier.cpp:649
 msgctxt "EventStringifier|"
 msgid "End of /WHOWAS"
-msgstr ""
+msgstr "Konec /WHOWAS"
 
 #: ../src/core/eventstringifier.cpp:659
 #, qt-format
@@ -2700,30 +2784,36 @@ msgstr "Vzdevek ali kanal začasno ni dosegljiv: %1"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
-msgstr "pošiljanje zahtevka CTCP-%1 do %2"
+msgstr "pošiljanje zahteve CTCP-%1 na %2"
 
 #: ../src/core/eventstringifier.cpp:717
 msgctxt "EventStringifier|"
 msgid "unknown"
-msgstr ""
+msgstr "neznano"
 
 #: ../src/core/eventstringifier.cpp:718
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received %1CTCP-%2 request by %3"
-msgstr ""
+msgstr "Prejeta zahteva %1CTCP-%2 od %3"
 
 #: ../src/core/eventstringifier.cpp:721
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-%1 answer from %2: %3"
-msgstr ""
+msgstr "Prejet odgovor CTCP-%1 od %2: %3"
 
-#: ../src/core/eventstringifier.cpp:736
+#: ../src/core/eventstringifier.cpp:737
+#, qt-format
+msgctxt "EventStringifier|"
+msgid "Received CTCP-PING answer from %1 with %2 milliseconds round trip time"
+msgstr "Prejet odgovor CTCP-PING od %1 z zamikom %2 milisekund"
+
+#: ../src/core/eventstringifier.cpp:740
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "Received CTCP-PING answer from %1 with %2 seconds round trip time"
-msgstr "Od %1 je bil z %2 sekundnim zamikom prejet odgovor na CTCP PING"
+msgstr "Prejet odgovor CTCP-PING od %1 z zamikom %2 sekund"
 
 #: ../src/client/execwrapper.cpp:49
 #, qt-format
@@ -2735,13 +2825,13 @@ msgstr "Neveljaven ukazni niz za /exec: %1"
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Name \"%1\" is invalid: ../ or ..\\ are not allowed!"
-msgstr "Ime »%1« ni veljavno: ../ in ..\\ nista dovoljena."
+msgstr "Ime »%1« ni veljavno: ../ in ..\\ nista dovoljena!"
 
 #: ../src/client/execwrapper.cpp:69
 #, qt-format
 msgctxt "ExecWrapper|"
 msgid "Could not find script \"%1\""
-msgstr "Ni bilo moč najti skripta »%1«"
+msgstr "Ni bilo mogoče najti skripta »%1«"
 
 #: ../src/client/execwrapper.cpp:93
 #, qt-format
@@ -2764,7 +2854,7 @@ msgstr "Skript »%1« je povzročil napako %2."
 #: ../src/uisupport/fontselector.cpp:32
 msgctxt "FontSelector|"
 msgid "Choose..."
-msgstr "Izbor ..."
+msgstr "Izberite ..."
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:14
 msgctxt "HighlightSettingsPage|"
@@ -2820,7 +2910,7 @@ msgstr "Poudari vzdevke"
 #: ../src/qtui/settingspages/highlightsettingspage.ui:107
 msgctxt "HighlightSettingsPage|"
 msgid "All nicks from identity"
-msgstr "Vse vzdevke iz identitete"
+msgstr "Vse vzdevke iz istovetnosti"
 
 #: ../src/qtui/settingspages/highlightsettingspage.ui:114
 msgctxt "HighlightSettingsPage|"
@@ -2835,14 +2925,14 @@ msgstr "Nobenega"
 #: ../src/qtui/settingspages/highlightsettingspage.ui:131
 msgctxt "HighlightSettingsPage|"
 msgid "Case sensitive"
-msgstr "Občutljivo na velikost črk"
+msgstr "Ločevanje velikosti črk"
 
 #: ../src/qtui/settingspages/highlightsettingspage.cpp:29
 msgctxt "HighlightSettingsPage|"
 msgid "Interface"
 msgstr "Vmesnik"
 
-#: ../src/qtui/settingspages/highlightsettingspage.cpp:184
+#: ../src/qtui/settingspages/highlightsettingspage.cpp:192
 msgctxt "HighlightSettingsPage|"
 msgid "this shouldn't be empty"
 msgstr "to ne sme biti prazno"
@@ -2856,7 +2946,7 @@ msgstr "pravilo poudarjanja"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:370
 msgctxt "IdentitiesSettingsPage|"
 msgid "Rename Identity"
-msgstr "Preimenuj identiteto"
+msgstr "Preimenuj istovetnost"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:34
 #: ../src/qtui/settingspages/identitiessettingspage.ui:77
@@ -2867,7 +2957,7 @@ msgstr "…"
 #: ../src/qtui/settingspages/identitiessettingspage.ui:51
 msgctxt "IdentitiesSettingsPage|"
 msgid "Add Identity"
-msgstr "Dodaj identiteto"
+msgstr "Dodaj istovetnost"
 
 #: ../src/qtui/settingspages/identitiessettingspage.ui:54
 msgctxt "IdentitiesSettingsPage|"
@@ -2877,7 +2967,7 @@ msgstr "Dodaj ..."
 #: ../src/qtui/settingspages/identitiessettingspage.ui:74
 msgctxt "IdentitiesSettingsPage|"
 msgid "Remove Identity"
-msgstr "Odstrani identiteto"
+msgstr "Odstrani istovetnost"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 msgctxt "IdentitiesSettingsPage|"
@@ -2887,7 +2977,7 @@ msgstr "IRC"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:31
 msgctxt "IdentitiesSettingsPage|"
 msgid "Identities"
-msgstr "Identitete"
+msgstr "Istovetnosti"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:205
 msgctxt "IdentitiesSettingsPage|"
@@ -2899,22 +2989,22 @@ msgstr "<b>Preden se uveljavijo spremembe, je potrebno odpraviti naslednje teža
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:206
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>All identities need an identity name set</li>"
-msgstr "<li>Vse identitete morajo imeti nastavljeno ime</li>"
+msgstr "<li>Vse istovetnosti morajo imeti nastavljeno ime</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:207
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>Every identity needs at least one nickname defined</li>"
-msgstr "<li>Vsaka identiteta mora imeti določen vsaj en vzdevek</li>"
+msgstr "<li>Vsaka istovetnost mora imeti določen vsaj en vzdevek</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:208
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify a real name for every identity</li>"
-msgstr "<li>Za vsako identiteto morate nastaviti pravo ime</li>"
+msgstr "<li>Za vsako istovetnost morate podati pravo ime</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:209
 msgctxt "IdentitiesSettingsPage|"
 msgid "<li>You need to specify an ident for every identity</li>"
-msgstr "<li>Za vsako identiteto morate nastaviti ident</li>"
+msgstr "<li>Za vsako istovetnost morate podati ident</li>"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:210
 msgctxt "IdentitiesSettingsPage|"
@@ -2924,24 +3014,24 @@ msgstr "</ul>"
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:211
 msgctxt "IdentitiesSettingsPage|"
 msgid "One or more identities are invalid"
-msgstr "Vsaj ena identiteta ni veljavna"
+msgstr "Vsaj ena istovetnost ni veljavna"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:356
 msgctxt "IdentitiesSettingsPage|"
 msgid "Delete Identity?"
-msgstr "Zbrišem identiteto?"
+msgstr "Izbrišem istovetnost?"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:357
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Do you really want to delete identity \"%1\"?"
-msgstr "Ali res želite zbrisati identiteto »%1«?"
+msgstr "Ali resnično želite zbrisati istovetnost »%1«?"
 
 #: ../src/qtui/settingspages/identitiessettingspage.cpp:371
 #, qt-format
 msgctxt "IdentitiesSettingsPage|"
 msgid "Please enter a new name for the identity \"%1\"!"
-msgstr "Vnesite novo ime identitete »%1«!"
+msgstr "Vnesite novo ime istovetnosti »%1«!"
 
 #: ../src/common/identity.cpp:147
 msgctxt "Identity|"
@@ -2991,7 +3081,7 @@ msgstr "Pravo ime:"
 #: ../src/qtui/settingspages/identityeditwidget.ui:45
 msgctxt "IdentityEditWidget|"
 msgid "The \"Real Name\" is shown in /whois."
-msgstr "Pravo ime je prikazano v izpisu /whois (kdoje)."
+msgstr "Pravo ime je prikazano v izpisu /whois."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:54
 msgctxt "IdentityEditWidget|"
@@ -3006,7 +3096,7 @@ msgstr "Dodaj vzdevek"
 #: ../src/qtui/settingspages/identityeditwidget.ui:93
 msgctxt "IdentityEditWidget|"
 msgid "&Add..."
-msgstr "&Dodaj ..."
+msgstr "Dod&aj ..."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:116
 msgctxt "IdentityEditWidget|"
@@ -3021,12 +3111,12 @@ msgstr "Odstrani"
 #: ../src/qtui/settingspages/identityeditwidget.ui:136
 msgctxt "IdentityEditWidget|"
 msgid "Rename Identity"
-msgstr "Preimenuj identiteto"
+msgstr "Preimenuj istovetnost"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:139
 msgctxt "IdentityEditWidget|"
 msgid "Re&name..."
-msgstr "Pre&imenuj ..."
+msgstr "Preime&nuj ..."
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:165
 msgctxt "IdentityEditWidget|"
@@ -3047,7 +3137,7 @@ msgstr "Premakni dol po seznamu"
 #: ../src/qtui/settingspages/identityeditwidget.ui:227
 msgctxt "IdentityEditWidget|"
 msgid "A&way"
-msgstr "&Odsotnost"
+msgstr "&Odsoten"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:233
 msgctxt "IdentityEditWidget|"
@@ -3057,7 +3147,7 @@ msgstr "Privzete nastavitve za odsotnost"
 #: ../src/qtui/settingspages/identityeditwidget.ui:244
 msgctxt "IdentityEditWidget|"
 msgid "Nick to be used when being away"
-msgstr "Vzdevek, ki bo prikazan, ko ste odsotni"
+msgstr "Vzdevek, ki bo uporabljen ob odsotnosti"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:254
 msgctxt "IdentityEditWidget|"
@@ -3089,12 +3179,12 @@ msgstr "Odsotnost ob prekinitvi"
 #: ../src/qtui/settingspages/identityeditwidget.ui:315
 msgctxt "IdentityEditWidget|"
 msgid "Not implemented yet"
-msgstr "Še ni izdelano"
+msgstr "Še ni podprto"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:318
 msgctxt "IdentityEditWidget|"
 msgid "Away On Idle"
-msgstr "Odsotnost ob neaktivnosti"
+msgstr "Odsotnost ob nedejavnosti"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:332
 msgctxt "IdentityEditWidget|"
@@ -3104,10 +3194,10 @@ msgstr "Odsoten po"
 #: ../src/qtui/settingspages/identityeditwidget.ui:342
 msgctxt "IdentityEditWidget|"
 msgid "minutes of being idle"
-msgstr "minutah neaktivnosti"
+msgstr "minutah nedejavnosti"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:399
-#: ../src/qtui/settingspages/identityeditwidget.cpp:238
+#: ../src/qtui/settingspages/identityeditwidget.cpp:244
 msgctxt "IdentityEditWidget|"
 msgid "Advanced"
 msgstr "Napredno"
@@ -3137,7 +3227,7 @@ msgstr "Razlog zapustitve:"
 #: ../src/qtui/settingspages/identityeditwidget.ui:444
 msgctxt "IdentityEditWidget|"
 msgid "Quit Reason:"
-msgstr "Razlog končanja:"
+msgstr "Razlog za končanje:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:454
 msgctxt "IdentityEditWidget|"
@@ -3173,16 +3263,16 @@ msgid "Key Type:"
 msgstr "Vrsta ključa:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:605
-#: ../src/qtui/settingspages/identityeditwidget.cpp:353
-#: ../src/qtui/settingspages/identityeditwidget.cpp:365
+#: ../src/qtui/settingspages/identityeditwidget.cpp:364
+#: ../src/qtui/settingspages/identityeditwidget.cpp:376
 msgctxt "IdentityEditWidget|"
 msgid "No Key loaded"
 msgstr "Naložen ni noben ključ"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:625
 #: ../src/qtui/settingspages/identityeditwidget.ui:723
-#: ../src/qtui/settingspages/identityeditwidget.cpp:354
-#: ../src/qtui/settingspages/identityeditwidget.cpp:408
+#: ../src/qtui/settingspages/identityeditwidget.cpp:365
+#: ../src/qtui/settingspages/identityeditwidget.cpp:423
 msgctxt "IdentityEditWidget|"
 msgid "Load"
 msgstr "Naloži"
@@ -3199,8 +3289,8 @@ msgstr "Organizacija:"
 
 #: ../src/qtui/settingspages/identityeditwidget.ui:663
 #: ../src/qtui/settingspages/identityeditwidget.ui:697
-#: ../src/qtui/settingspages/identityeditwidget.cpp:406
-#: ../src/qtui/settingspages/identityeditwidget.cpp:407
+#: ../src/qtui/settingspages/identityeditwidget.cpp:421
+#: ../src/qtui/settingspages/identityeditwidget.cpp:422
 msgctxt "IdentityEditWidget|"
 msgid "No Certificate loaded"
 msgstr "Naloženo ni nobeno potrdilo"
@@ -3210,40 +3300,40 @@ msgctxt "IdentityEditWidget|"
 msgid "CommonName:"
 msgstr "Skupno ime:"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:321
+#: ../src/qtui/settingspages/identityeditwidget.cpp:327
 msgctxt "IdentityEditWidget|"
 msgid "Load a Key"
 msgstr "Naloži ključ"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+#: ../src/qtui/settingspages/identityeditwidget.cpp:355
 msgctxt "IdentityEditWidget|"
 msgid "Failed to read key"
-msgstr ""
+msgstr "Ključa ni bilo mogoče prebrati"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:344
+#: ../src/qtui/settingspages/identityeditwidget.cpp:355
 msgctxt "IdentityEditWidget|"
 msgid ""
 "Failed to read the key file. It is either incompatible or invalid. Note that"
 " the key file must not have a passphrase."
-msgstr ""
+msgstr "Datoteke ključa ni bilo mogoče prebrati, saj je ali nezdružljiva ali pa neveljavna. Zapomnite si, da datoteka s ključem ne sme imeti šifrirne fraze."
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:359
+#: ../src/qtui/settingspages/identityeditwidget.cpp:370
 msgctxt "IdentityEditWidget|"
 msgid "RSA"
 msgstr "RSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:362
+#: ../src/qtui/settingspages/identityeditwidget.cpp:373
 msgctxt "IdentityEditWidget|"
 msgid "DSA"
 msgstr "DSA"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:367
-#: ../src/qtui/settingspages/identityeditwidget.cpp:413
+#: ../src/qtui/settingspages/identityeditwidget.cpp:378
+#: ../src/qtui/settingspages/identityeditwidget.cpp:433
 msgctxt "IdentityEditWidget|"
 msgid "Clear"
 msgstr "Počisti"
 
-#: ../src/qtui/settingspages/identityeditwidget.cpp:379
+#: ../src/qtui/settingspages/identityeditwidget.cpp:390
 msgctxt "IdentityEditWidget|"
 msgid "Load a Certificate"
 msgstr "Naloži potrdilo"
@@ -3251,12 +3341,12 @@ msgstr "Naloži potrdilo"
 #: ../src/qtui/ircconnectionwizard.cpp:115
 msgctxt "IdentityPage|"
 msgid "Setup Identity"
-msgstr "Nastavitev identitete"
+msgstr "Nastavitev istovetnosti"
 
 #: ../src/qtui/ircconnectionwizard.cpp:120
 msgctxt "IdentityPage|"
 msgid "Default Identity"
-msgstr "Privzeta identiteta"
+msgstr "Privzeta istovetnost"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:15
 msgctxt "IgnoreListEditDlg|"
@@ -3272,7 +3362,7 @@ msgid ""
 "Whenever you disable/delete the ignore rule, the messages are shown again.</p>\n"
 "<p><u>Permanent:</u></p>\n"
 "<p>Messages are filtered before they get stored in the database.</p>"
-msgstr "<p><b>Strogost:</b></p>\n<p><u>Dinamično:</u></p>\n<p>Sporočila so filtrirana v živo.\nKo onemogočite ali izbrišete pravilo, bodo sporočila spet prikazana.</p>\n<p><u>Trajno:</u></p>\n<p>Sporočila so filtrirana še preden se shranijo v podatkovno zbirko</p>"
+msgstr "<p><b>Strogost:</b></p>\n<p><u>Dinamično:</u></p>\n<p>Sporočila so filtrirana sproti.\nKo onemogočite ali izbrišete pravilo preziranja, bodo sporočila spet prikazana.</p>\n<p><u>Trajno:</u></p>\n<p>Sporočila so filtrirana še preden se shranijo v podatkovno zbirko.</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:35
 msgctxt "IgnoreListEditDlg|"
@@ -3351,7 +3441,7 @@ msgid ""
 "<p> *: representing \"any amount of any character\"\n"
 "<br />\n"
 "?: representing \"exactly one character\"</p>"
-msgstr "<p><b>Uporabi regularne izraze:</b></p>\n<p>Če je omogočeno, se za pravila uporabi skladnja za regularne izraze.</p>\n<p>V nasprotnem pravila omogočajo uporabo naslednjih nadomestnih znakov:</p>\n<p> *: predstavlja kakršnokoli število katerihkoli znakov\n<br />\n?: predstavlja natančno en znak</p>"
+msgstr "<p><b>Uporabi regularne izraze:</b></p>\n<p>Če je omogočeno, se za pravila uporabi skladnja za regularne izraze.</p>\n<p>V nasprotnem primeru pravila omogočajo uporabo naslednjih nadomestnih znakov:</p>\n<p> *: predstavlja kakršnokoli število katerihkoli znakov\n<br />\n?: predstavlja natančno en znak</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:131
 msgctxt "IgnoreListEditDlg|"
@@ -3368,12 +3458,12 @@ msgid ""
 "<p>The list below is interpreted as a list of networks for which the rule should match</p>\n"
 "<p><u>Channel:</u></p>\n"
 "<p>The list below is interpreted as a list of channels for which the rule should match</p>"
-msgstr "<p><b>Doseg:</b></p>\n<p><u>Globalno:</u></p>\n<p>Pravilo velja za katerikoli kanal v kateremkoli omrežju</p>\n<p><u>Omrežje:</u></p>\n<p>Polje na desni določa seznam omrežij, za katera velja pravilo</p>\n<p><u>Kanal:</u></p>\n<p>Polje na desni določa seznam kanalov, za katera velja pravilo</p>"
+msgstr "<p><b>Obseg:</b></p>\n<p><u>Globalno:</u></p>\n<p>Pravilo velja za katerikoli kanal v kateremkoli omrežju</p>\n<p><u>Omrežje:</u></p>\n<p>Spodnje polje določa seznam omrežij, za katera velja pravilo</p>\n<p><u>Kanal:</u></p>\n<p>Spodnje polje določa seznam kanalov, za katere velja pravilo</p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:152
 msgctxt "IgnoreListEditDlg|"
 msgid "Scope"
-msgstr "Doseg"
+msgstr "Obseg"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:160
 msgctxt "IgnoreListEditDlg|"
@@ -3400,7 +3490,7 @@ msgid ""
 "<i>#quassel*; #foobar</i>\n"
 "<br />\n"
 "would match on #foobar and on any channel starting with <i>#quassel</i></p>"
-msgstr "<p><b>Doseg pravila:</b></p>\n<p>Doseg pravila je s podpičji ločen seznam imen <i>omrežij</i> ali <i>kanalov</i>.</p>\n<p><i>Primer:</i>\n<br />\n<i>#quassel*; #foobar</i>\n<br />\npravilo bo delovalo na #foobar in na kateremkoli kanalu, ki s začne z <i>#quassel</i></p>"
+msgstr "<p><b>Obseg pravila:</b></p>\n<p>Obseg pravila je s podpičji ločen seznam imen <i>omrežij</i> ali <i>kanalov</i>.</p>\n<p><i>Primer:</i>\n<br />\n<i>#quassel*; #foobar</i>\n<br />\npravilo bo delovalo na #foobar in na kateremkoli kanalu, ki se začne z <i>#quassel</i></p>"
 
 #: ../src/qtui/settingspages/ignorelisteditdlg.ui:214
 msgctxt "IgnoreListEditDlg|"
@@ -3479,7 +3569,7 @@ msgstr "Izbriši"
 #: ../src/qtui/settingspages/ignorelistsettingspage.ui:56
 msgctxt "IgnoreListSettingsPage|"
 msgid "&Edit"
-msgstr "&Urejanje"
+msgstr "Ur&edi"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgctxt "IgnoreListSettingsPage|"
@@ -3489,7 +3579,7 @@ msgstr "IRC"
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:34
 msgctxt "IgnoreListSettingsPage|"
 msgid "Ignore List"
-msgstr "Seznam preziranj"
+msgstr "Seznam prezrtih"
 
 #: ../src/qtui/settingspages/ignorelistsettingspage.cpp:144
 msgctxt "IgnoreListSettingsPage|"
@@ -3515,12 +3605,12 @@ msgctxt "IndicatorNotificationConfigWidget|"
 msgid ""
 "This enables support for the Ayatana Project's application indicator "
 "(libindicate)."
-msgstr "To omogoči podporo za programski indikator projekta Ayatana (libindicate)."
+msgstr "To omogoči podporo za programski kazalnik projekta Ayatana (libindicate)."
 
 #: ../src/qtui/ui/indicatornotificationconfigwidget.ui:23
 msgctxt "IndicatorNotificationConfigWidget|"
 msgid "Show messages in application indicator"
-msgstr "Prikaži sporočila v programskem indikatorju"
+msgstr "Pokaži sporočila v programskem kazalniku"
 
 #: ../src/qtui/ui/inputwidget.ui:26
 msgctxt "InputWidget|"
@@ -3612,10 +3702,10 @@ msgctxt "InputWidget|"
 msgid "Clear Color"
 msgstr "Počisti barvo"
 
-#: ../src/qtui/inputwidget.cpp:133
+#: ../src/qtui/inputwidget.cpp:136
 msgctxt "InputWidget|"
 msgid "Focus Input Line"
-msgstr "Fokusiraj vnosno vrstico"
+msgstr "Postavi vnosno vrstico v žarišče"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:14
 msgctxt "InputWidgetSettingsPage|"
@@ -3640,12 +3730,12 @@ msgstr "Omogoči zgodovine, ločene po klepetih"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:79
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show nick selector"
-msgstr "Prikaži izbiralnik vzdevka"
+msgstr "Pokaži izbiralnik vzdevka"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:95
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show style buttons"
-msgstr "Prikaži gumbe za slog"
+msgstr "Pokaži gumbe za slog"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:111
 msgctxt "InputWidgetSettingsPage|"
@@ -3655,47 +3745,57 @@ msgstr "V vnosnem polju omogoči nekatere tipkovne bližnjice Emacsa"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:114
 msgctxt "InputWidgetSettingsPage|"
 msgid "Emacs key bindings"
-msgstr "Emacsove tipkovne bližnjice"
+msgstr "Tipkovne bližnjice Emacsa"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:127
 msgctxt "InputWidgetSettingsPage|"
-msgid "Multi-Line Editing"
-msgstr "Urejanje z več vrsticami"
+msgid "Enables line wrapping for input."
+msgstr "Omogoča prelom vrstic za vnos."
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:144
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:130
+msgctxt "InputWidgetSettingsPage|"
+msgid "Line wrapping"
+msgstr "Prelom vrstic"
+
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:143
+msgctxt "InputWidgetSettingsPage|"
+msgid "Multi-Line Editing"
+msgstr "Večvrstično urejanje"
+
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:160
 msgctxt "InputWidgetSettingsPage|"
 msgid "Show at most"
-msgstr "Prikaži največ"
+msgstr "Pokaži največ"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:170
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:186
 msgctxt "InputWidgetSettingsPage|"
 msgid "lines"
 msgstr "vrstic"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:192
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:208
 msgctxt "InputWidgetSettingsPage|"
 msgid "Enable scrollbars"
 msgstr "Omogoči drsnike"
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:211
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:227
 msgctxt "InputWidgetSettingsPage|"
 msgid "Tab Completion"
-msgstr "Dokončevanje s tabulatorjem"
-
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:219
-msgctxt "InputWidgetSettingsPage|"
-msgid "Completion suffix:"
-msgstr "Pripona dokončevanja:"
+msgstr "Dopolnjevanje s tabulatorjem"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:235
+msgctxt "InputWidgetSettingsPage|"
+msgid "Completion suffix:"
+msgstr "Pripona dopolnjevanja:"
+
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:251
 msgctxt "InputWidgetSettingsPage|"
 msgid ": "
 msgstr ": "
 
-#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:262
+#: ../src/qtui/settingspages/inputwidgetsettingspage.ui:278
 msgctxt "InputWidgetSettingsPage|"
 msgid "Add space after nick when completing mid-sentence"
-msgstr ""
+msgstr "Dodaj presledek za vzdevkom, če je dopolnjen sredi stavka"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:24
 msgctxt "InputWidgetSettingsPage|"
@@ -3705,17 +3805,17 @@ msgstr "Vmesnik"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:24
 msgctxt "InputWidgetSettingsPage|"
 msgid "Input Widget"
-msgstr "Vnosna vrstica"
+msgstr "Vnosni gradnik"
 
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
 msgid "internal connection"
-msgstr ""
+msgstr "notranja povezava"
 
 #: ../src/qtui/ircconnectionwizard.cpp:49
 msgctxt "IrcConnectionWizard|"
 msgid "Save && Connect"
-msgstr "Shrani in se poveži"
+msgstr "Shrani in poveži"
 
 #: ../src/client/irclistmodel.cpp:65
 msgctxt "IrcListModel|"
@@ -3732,24 +3832,24 @@ msgctxt "IrcListModel|"
 msgid "Topic"
 msgstr "Tema"
 
-#: ../src/client/networkmodel.cpp:914
+#: ../src/client/networkmodel.cpp:953
 msgctxt "IrcUserItem|"
 msgid " is away"
 msgstr " je odsoten"
 
-#: ../src/client/networkmodel.cpp:929
+#: ../src/client/networkmodel.cpp:968
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "idling since %1"
 msgstr "nedejaven od %1"
 
-#: ../src/client/networkmodel.cpp:932
+#: ../src/client/networkmodel.cpp:971
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "login time: %1"
 msgstr "čas prijave: %1"
 
-#: ../src/client/networkmodel.cpp:935
+#: ../src/client/networkmodel.cpp:974
 #, qt-format
 msgctxt "IrcUserItem|"
 msgid "server: %1"
@@ -3768,7 +3868,7 @@ msgstr "Pisava po meri:"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:50
 msgctxt "ItemViewSettingsPage|"
 msgid "Show icons"
-msgstr "Prikaži ikone"
+msgstr "Pokaži ikone"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:66
 msgctxt "ItemViewSettingsPage|"
@@ -3778,7 +3878,7 @@ msgstr "Seznam klepetov"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:72
 msgctxt "ItemViewSettingsPage|"
 msgid "Display topic in tooltip"
-msgstr "Prikaži temo v namigu"
+msgstr "Prikaži temo v orodnem namigu"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:85
 msgctxt "ItemViewSettingsPage|"
@@ -3809,7 +3909,7 @@ msgstr "…"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:142
 msgctxt "ItemViewSettingsPage|"
 msgid "Inactive:"
-msgstr "Neaktivno:"
+msgstr "Nedejavno:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:166
 msgctxt "ItemViewSettingsPage|"
@@ -3824,7 +3924,7 @@ msgstr "Poudarek:"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:214
 msgctxt "ItemViewSettingsPage|"
 msgid "Other activity:"
-msgstr "Druga aktivnost:"
+msgstr "Druga dejavnost:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:286
 msgctxt "ItemViewSettingsPage|"
@@ -3834,7 +3934,7 @@ msgstr "Barve po meri za seznam vzdevkov"
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:301
 msgctxt "ItemViewSettingsPage|"
 msgid "Online:"
-msgstr "Na zvezi:"
+msgstr "Povezan:"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:338
 msgctxt "ItemViewSettingsPage|"
@@ -3859,7 +3959,7 @@ msgstr "Omrežje"
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:37
 msgctxt "ItemViewSettingsPage|"
 msgid "Inactive"
-msgstr "Neaktivno"
+msgstr "Nedejavno"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:38
 msgctxt "ItemViewSettingsPage|"
@@ -3879,9 +3979,9 @@ msgstr "Poudarek"
 #: ../src/qtui/settingspages/itemviewsettingspage.cpp:41
 msgctxt "ItemViewSettingsPage|"
 msgid "Other activity"
-msgstr "Druga aktivnost"
+msgstr "Druga dejavnost"
 
-#: ../src/qtui/knotificationbackend.cpp:130
+#: ../src/qtui/knotificationbackend.cpp:134
 #, qt-format
 msgctxt "KNotificationBackend|"
 msgid "%n pending highlight(s)"
@@ -3906,7 +4006,7 @@ msgctxt "KeySequenceWidget|"
 msgid ""
 "Click on the button, then enter the shortcut like you would in the program.\n"
 "Example for Ctrl+a: hold the Ctrl key and press a."
-msgstr "Kliknite gumb in nato vnesite bližnjico, kot bi jo v programu.\nPrimer za Ctrl+a: držite pritisnjeno tipko Ctrl in pritisnite tipko a."
+msgstr "Kliknite gumb in nato vnesite bližnjico, kot bi jo v programu.\nPrimer za Ctrl+A: držite pritisnjeno tipko Ctrl in pritisnite tipko A."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:274
 msgctxt "KeySequenceWidget|Meta key"
@@ -3943,7 +4043,7 @@ msgstr "Nobenega"
 #: ../src/qtui/settingspages/keysequencewidget.cpp:389
 msgctxt "KeySequenceWidget|"
 msgid "Shortcut Conflict"
-msgstr "Konflikt med bližnjicami"
+msgstr "Spor med bližnjicami"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:384
 #, qt-format
@@ -3951,7 +4051,7 @@ msgctxt "KeySequenceWidget|"
 msgid ""
 "The \"%1\" shortcut is already in use, and cannot be configured.\n"
 "Please choose another one."
-msgstr "Bližnjica »%1« je že v uporabi in je ni moč nastaviti.\nProsimo, izberite drugo."
+msgstr "Bližnjica »%1« je že v uporabi in je ni mogoče nastaviti.\nIzberite drugo."
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:390
 #, qt-format
@@ -3970,22 +4070,22 @@ msgctxt "KeySequenceWidget|"
 msgid "Reassign"
 msgstr "Prestavi"
 
-#: ../src/common/protocols/legacy/legacypeer.cpp:175
+#: ../src/common/protocols/legacy/legacypeer.cpp:136
 msgctxt "LegacyPeer|"
 msgid "Invalid handshake message!"
-msgstr ""
+msgstr "Neveljavno sporočilo rokovanja!"
 
-#: ../src/common/protocols/legacy/legacypeer.cpp:246
+#: ../src/common/protocols/legacy/legacypeer.cpp:207
 #, qt-format
 msgctxt "LegacyPeer|"
 msgid "Unknown protocol message of type %1"
-msgstr ""
+msgstr "Neznano sporočilo protokola vrste %1"
 
-#: ../src/common/protocols/legacy/legacypeer.cpp:295
+#: ../src/common/protocols/legacy/legacypeer.cpp:256
 #, qt-format
 msgctxt "LegacyPeer|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
-msgstr "<b>Jedro Quassel različice %1</b><br>Zgrajeno: %2<br>Teče %3 d %4 u %5 m (od %6)"
+msgstr "<b>Jedro za Quassel različice %1</b><br>Izgrajeno: %2<br>Teče %3 d %4 u %5 m (od %6)"
 
 #: ../src/qtui/mainwin.cpp:358
 msgctxt "MainWin|"
@@ -4005,7 +4105,7 @@ msgstr "P&rekini povezavo z jedrom"
 #: ../src/qtui/mainwin.cpp:364
 msgctxt "MainWin|"
 msgid "Core &Info..."
-msgstr "P&odatki o jedru ..."
+msgstr "Podatk&i o jedru ..."
 
 #: ../src/qtui/mainwin.cpp:366
 msgctxt "MainWin|"
@@ -4025,27 +4125,27 @@ msgstr "&Nastavi sezname klepetov ..."
 #: ../src/qtui/mainwin.cpp:376
 msgctxt "MainWin|"
 msgid "&Lock Layout"
-msgstr "&Zakleni razpored"
+msgstr "Zak&leni razpored"
 
 #: ../src/qtui/mainwin.cpp:380
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
-msgstr "Pr&ikaži iskalno vrstico"
+msgstr "Pokaži i&skalno vrstico"
 
 #: ../src/qtui/mainwin.cpp:382
 msgctxt "MainWin|"
 msgid "Show Away Log"
-msgstr "Prikaži dnevnik odsotnosti"
+msgstr "Pokaži dnevnik odsotnosti"
 
 #: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Show &Menubar"
-msgstr "Prikaži &menijsko vrstico"
+msgstr "Pokaži &menijsko vrstico"
 
 #: ../src/qtui/mainwin.cpp:387
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
-msgstr "Pri&kaži vrstico stanja"
+msgstr "Po&kaži vrstico stanja"
 
 #: ../src/qtui/mainwin.cpp:393
 msgctxt "MainWin|"
@@ -4055,7 +4155,7 @@ msgstr "&Celozaslonski način"
 #: ../src/qtui/mainwin.cpp:400
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
-msgstr "Nastavi &bližnjice ..."
+msgstr "Na&stavi bližnjice ..."
 
 #: ../src/qtui/mainwin.cpp:406 ../src/qtui/mainwin.cpp:410
 msgctxt "MainWin|"
@@ -4065,7 +4165,7 @@ msgstr "&Nastavi Quassel ..."
 #: ../src/qtui/mainwin.cpp:416
 msgctxt "MainWin|"
 msgid "&About Quassel"
-msgstr "&O Quassel"
+msgstr "&O programu Quassel"
 
 #: ../src/qtui/mainwin.cpp:421
 msgctxt "MainWin|"
@@ -4075,12 +4175,12 @@ msgstr "O &Qt"
 #: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
-msgstr "Raz&hroščevanje modela omrežja"
+msgstr "Razhroščevanje &modela omrežja"
 
 #: ../src/qtui/mainwin.cpp:427
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
-msgstr ""
+msgstr "Razhroščevanje &BufferViewOverlay"
 
 #: ../src/qtui/mainwin.cpp:429
 msgctxt "MainWin|"
@@ -4090,7 +4190,7 @@ msgstr "Ra&zhroščevanje modela sporočil"
 #: ../src/qtui/mainwin.cpp:431
 msgctxt "MainWin|"
 msgid "Debug &HotList"
-msgstr "Razhroščevalni &dnevnik"
+msgstr "Razhroščevanje &HotList"
 
 #: ../src/qtui/mainwin.cpp:433
 msgctxt "MainWin|"
@@ -4105,7 +4205,7 @@ msgstr "Znova naloži slogovno predlogo"
 #: ../src/qtui/mainwin.cpp:438
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
-msgstr ""
+msgstr "Skrij trenuten prikaz"
 
 #: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
@@ -4220,12 +4320,12 @@ msgstr "Hitri dostop #9"
 #: ../src/qtui/mainwin.cpp:499
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
-msgstr "Aktiviraj naslednji seznam klepetov"
+msgstr "Omogoči naslednji seznam klepetov"
 
 #: ../src/qtui/mainwin.cpp:501
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
-msgstr "Aktiviraj predhodni seznam klepetov"
+msgstr "Omogoči predhodni seznam klepetov"
 
 #: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
@@ -4245,27 +4345,27 @@ msgstr "&Datoteka"
 #: ../src/qtui/mainwin.cpp:527
 msgctxt "MainWin|"
 msgid "&Networks"
-msgstr "&Omrežja"
+msgstr "O&mrežja"
 
 #: ../src/qtui/mainwin.cpp:533
 msgctxt "MainWin|"
 msgid "&View"
-msgstr "&Videz"
+msgstr "Po&gled"
 
 #: ../src/qtui/mainwin.cpp:534
 msgctxt "MainWin|"
 msgid "&Chat Lists"
-msgstr "&Seznami klepetov"
+msgstr "Seznami &klepetov"
 
 #: ../src/qtui/mainwin.cpp:536
 msgctxt "MainWin|"
 msgid "&Toolbars"
-msgstr "&Orodjarne"
+msgstr "Orodne vrs&tice"
 
 #: ../src/qtui/mainwin.cpp:550
 msgctxt "MainWin|"
 msgid "&Settings"
-msgstr "&Nastavitve"
+msgstr "Na&stavitve"
 
 #: ../src/qtui/mainwin.cpp:559
 msgctxt "MainWin|"
@@ -4275,7 +4375,7 @@ msgstr "&Pomoč"
 #: ../src/qtui/mainwin.cpp:567
 msgctxt "MainWin|"
 msgid "Debug"
-msgstr "Razhroščevanje"
+msgstr "Razhrošči"
 
 #: ../src/qtui/mainwin.cpp:843
 msgctxt "MainWin|"
@@ -4285,17 +4385,17 @@ msgstr "Vzdevki"
 #: ../src/qtui/mainwin.cpp:852
 msgctxt "MainWin|"
 msgid "Show Nick List"
-msgstr "Prikaži seznam vzdevkov"
+msgstr "Pokaži seznam vzdevkov"
 
 #: ../src/qtui/mainwin.cpp:865
 msgctxt "MainWin|"
 msgid "Chat Monitor"
-msgstr "Nadzorovalnik klepeta"
+msgstr "Nadzornik klepeta"
 
 #: ../src/qtui/mainwin.cpp:877
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
-msgstr "Prikaži nadzorovalnik klepeta"
+msgstr "Pokaži nadzornik klepeta"
 
 #: ../src/qtui/mainwin.cpp:883
 msgctxt "MainWin|"
@@ -4305,7 +4405,7 @@ msgstr "Vnosna vrstica"
 #: ../src/qtui/mainwin.cpp:892
 msgctxt "MainWin|"
 msgid "Show Input Line"
-msgstr "Prikaži vnosno vrstico"
+msgstr "Pokaži vnosno vrstico"
 
 #: ../src/qtui/mainwin.cpp:907
 msgctxt "MainWin|"
@@ -4315,85 +4415,85 @@ msgstr "Tema"
 #: ../src/qtui/mainwin.cpp:919
 msgctxt "MainWin|"
 msgid "Show Topic Line"
-msgstr "Prikaži vrstico s temo"
+msgstr "Pokaži vrstico s temo"
 
 #: ../src/qtui/mainwin.cpp:1013
 msgctxt "MainWin|"
 msgid "Main Toolbar"
-msgstr "Glavna orodjarna"
+msgstr "Glavna orodna vrstica"
 
-#: ../src/qtui/mainwin.cpp:1058
+#: ../src/qtui/mainwin.cpp:1074
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "Povezan z jedrom."
 
-#: ../src/qtui/mainwin.cpp:1157
+#: ../src/qtui/mainwin.cpp:1173
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Brez povezave z jedrom."
 
-#: ../src/qtui/mainwin.cpp:1175 ../src/qtui/mainwin.cpp:1185
+#: ../src/qtui/mainwin.cpp:1191 ../src/qtui/mainwin.cpp:1201
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Nešifrirana povezava"
 
-#: ../src/qtui/mainwin.cpp:1175
+#: ../src/qtui/mainwin.cpp:1191
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>Vaš odjemalec ne podpira šifriranja SSL.</b>"
 
-#: ../src/qtui/mainwin.cpp:1177 ../src/qtui/mainwin.cpp:1187
+#: ../src/qtui/mainwin.cpp:1193 ../src/qtui/mainwin.cpp:1203
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
-msgstr "Zaupni podatki, kot so gesla, bodo do jedra Quassel poslani nešifrirani."
+msgstr "Zaupni podatki, kot so gesla, bodo do jedra za Quassel poslani nešifrirani."
 
-#: ../src/qtui/mainwin.cpp:1185
+#: ../src/qtui/mainwin.cpp:1201
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Vaše jedro ne podpira šifriranja SSL.</b>"
 
-#: ../src/qtui/mainwin.cpp:1203 ../src/qtui/mainwin.cpp:1224
+#: ../src/qtui/mainwin.cpp:1219 ../src/qtui/mainwin.cpp:1240
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
-msgstr "Nezaupano varnostno potrdilo"
+msgstr "Varnostno potrdilo, ki ni zaupanja vredno"
 
-#: ../src/qtui/mainwin.cpp:1204
+#: ../src/qtui/mainwin.cpp:1220
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
 "<b>The SSL certificate provided by the core at %1 is untrusted for the "
 "following reasons:</b>"
-msgstr "<b>Potrdilo SSL, ki ga je ponudilo jedro na %1, ni zaupano zaradi naslednjih razlogov:</b>"
+msgstr "<b>Potrdilo SSL, ki ga je ponudilo jedro na %1, ni zaupanja vredno zaradi naslednjih razlogov:</b>"
 
-#: ../src/qtui/mainwin.cpp:1207
+#: ../src/qtui/mainwin.cpp:1223
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Nadaljuj"
 
-#: ../src/qtui/mainwin.cpp:1208
+#: ../src/qtui/mainwin.cpp:1224
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Prikaži potrdilo"
 
-#: ../src/qtui/mainwin.cpp:1225
+#: ../src/qtui/mainwin.cpp:1241
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Ali bi radi trajno sprejeli to potrdilo brez nadaljnjih vprašanj?"
 
-#: ../src/qtui/mainwin.cpp:1227
+#: ../src/qtui/mainwin.cpp:1243
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Samo za trenutno sejo"
 
-#: ../src/qtui/mainwin.cpp:1228
+#: ../src/qtui/mainwin.cpp:1244
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "Trajno"
 
-#: ../src/qtui/mainwin.cpp:1239
+#: ../src/qtui/mainwin.cpp:1255
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Napaka povezave z jedrom"
@@ -4402,7 +4502,7 @@ msgstr "Napaka povezave z jedrom"
 #, qt-format
 msgctxt "MessageModel|"
 msgid "Requesting %1 messages from backlog for buffer %2:%3"
-msgstr "Zahtevam %1 starih sporočil za prikaz %2:%3"
+msgstr "Zahtevanje %1 sporočil iz dnevnika za prikaz %2:%3"
 
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:19
 msgctxt "MsgProcessorStatusWidget|"
@@ -4412,19 +4512,19 @@ msgstr "Obrazec"
 #: ../src/qtui/ui/msgprocessorstatuswidget.ui:34
 msgctxt "MsgProcessorStatusWidget|"
 msgid "Receiving Backlog"
-msgstr "Prejemanje starih sporočil"
+msgstr "Prejemanje sporočil iz dnevnika"
 
 #: ../src/uisupport/multilineedit.cpp:718
 #, qt-format
 msgctxt "MultiLineEdit|"
 msgid "Do you really want to paste %n line(s)?"
 msgid_plural "Do you really want to paste %n line(s)?"
-msgstr[0] "Ali res želite prilepiti %n vrstico?"
-msgstr[1] "Ali res želite prilepiti %n vrstici?"
-msgstr[2] "Ali res želite prilepiti %n vrstice?"
-msgstr[3] "Ali res želite prilepiti %n vrstic?"
+msgstr[0] "Ali resnično želite prilepiti %n vrstico?"
+msgstr[1] "Ali resnično želite prilepiti %n vrstici?"
+msgstr[2] "Ali resnično želite prilepiti %n vrstice?"
+msgstr[3] "Ali resnično želite prilepiti %n vrstic?"
 
-#: ../src/uisupport/multilineedit.cpp:727
+#: ../src/uisupport/multilineedit.cpp:731
 msgctxt "MultiLineEdit|"
 msgid "Paste Protection"
 msgstr "Zaščita pri lepljenju"
@@ -4437,7 +4537,7 @@ msgstr "Dodaj omrežje"
 #: ../src/qtui/settingspages/networkadddlg.ui:22
 msgctxt "NetworkAddDlg|"
 msgid "Use preset:"
-msgstr "Uporabi že pripravljeno:"
+msgstr "Uporabi predlogo nastavitev:"
 
 #: ../src/qtui/settingspages/networkadddlg.ui:57
 msgctxt "NetworkAddDlg|"
@@ -4489,35 +4589,35 @@ msgctxt "NetworkEditDlg|"
 msgid "Add Network"
 msgstr "Dodaj omrežje"
 
-#: ../src/client/networkmodel.cpp:213
+#: ../src/client/networkmodel.cpp:216 ../src/client/networkmodel.cpp:219
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Server: %1"
 msgstr "Strežnik: %1"
 
-#: ../src/client/networkmodel.cpp:214
+#: ../src/client/networkmodel.cpp:221
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Users: %1"
 msgstr "Uporabniki: %1"
 
-#: ../src/client/networkmodel.cpp:217
+#: ../src/client/networkmodel.cpp:224
 #, qt-format
 msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
 msgstr "Zakasnitev: %1 ms"
 
-#: ../src/client/networkmodel.cpp:963
+#: ../src/client/networkmodel.cpp:1002
 msgctxt "NetworkModel|"
 msgid "Chat"
 msgstr "Klepet"
 
-#: ../src/client/networkmodel.cpp:963
+#: ../src/client/networkmodel.cpp:1002
 msgctxt "NetworkModel|"
 msgid "Topic"
 msgstr "Tema"
 
-#: ../src/client/networkmodel.cpp:963
+#: ../src/client/networkmodel.cpp:1002
 msgctxt "NetworkModel|"
 msgid "Nick Count"
 msgstr "Št. vzdevkov"
@@ -4535,25 +4635,25 @@ msgstr[3] "Ali želite trajno izbrisati naslednjih %n prikazov?"
 #, qt-format
 msgctxt "NetworkModelController|"
 msgid "...and <b>%1</b> more<br><br>"
-msgstr "... in še <b>%1</b><br><br>"
+msgstr "... in še <b>%1</b> več<br><br>"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:191
 msgctxt "NetworkModelController|"
 msgid ""
 "<b>Note:</b> This will delete all related data, including all backlog data, "
 "from the core's database and cannot be undone."
-msgstr "<b>Pomnite:</b> S tem iz podatkovne zbirke jedra zbrišete vse povezane podatke, vključno z zgodovino sporočil. Tega kasneje ni moč razveljaviti."
+msgstr "<b>Opomba:</b> s tem iz podatkovne zbirke jedra izbrišete vse povezane podatke, vključno z dnevnikom sporočil. Tega kasneje ni mogoče razveljaviti."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:193
 msgctxt "NetworkModelController|"
 msgid ""
 "<br>Active channel buffers cannot be deleted, please part the channel first."
-msgstr "<br>Aktivnih prikazov kanalov ni moč zbrisati. Najprej zapustite kanale."
+msgstr "<br>Dejavnih prikazov kanalov ni mogoče izbrisati. Najprej zapustite kanale."
 
 #: ../src/uisupport/networkmodelcontroller.cpp:195
 msgctxt "NetworkModelController|"
 msgid "Remove buffers permanently?"
-msgstr "Ali trajno zbrišem prikaze?"
+msgstr "Ali trajno izbrišem prikaze?"
 
 #: ../src/uisupport/networkmodelcontroller.cpp:530
 msgctxt "NetworkModelController::JoinDlg|"
@@ -4588,19 +4688,19 @@ msgstr "Obrazec"
 #: ../src/qtui/settingspages/networkssettingspage.ui:48
 msgctxt "NetworksSettingsPage|"
 msgid "Re&name..."
-msgstr "Pre&imenuj ..."
+msgstr "Preime&nuj ..."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:65
 #: ../src/qtui/settingspages/networkssettingspage.ui:235
 msgctxt "NetworksSettingsPage|"
 msgid "&Add..."
-msgstr "&Dodaj ..."
+msgstr "Dod&aj ..."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:88
 #: ../src/qtui/settingspages/networkssettingspage.ui:252
 msgctxt "NetworksSettingsPage|"
 msgid "De&lete"
-msgstr "&Izbriši"
+msgstr "Iz&briši"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:124
 msgctxt "NetworksSettingsPage|"
@@ -4610,7 +4710,7 @@ msgstr "Podrobnosti omrežja"
 #: ../src/qtui/settingspages/networkssettingspage.ui:132
 msgctxt "NetworksSettingsPage|"
 msgid "Identity:"
-msgstr "Identiteta:"
+msgstr "Istovetnost:"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:149
 #: ../src/qtui/settingspages/networkssettingspage.ui:281
@@ -4627,12 +4727,12 @@ msgstr "Strežniki"
 #: ../src/qtui/settingspages/networkssettingspage.ui:193
 msgctxt "NetworksSettingsPage|"
 msgid "Manage servers for this network"
-msgstr "Upravljanje s strežniki za to omrežje"
+msgstr "Upravljanje strežnikov za to omrežje"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:217
 msgctxt "NetworksSettingsPage|"
 msgid "&Edit..."
-msgstr "&Urejanje ..."
+msgstr "Ur&edi ..."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:278
 msgctxt "NetworksSettingsPage|"
@@ -4666,7 +4766,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify a list of IRC commands to be executed upon connect.\n"
 "Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!"
-msgstr "Podajte seznam ukazov IRC, ki naj se izvedejo po povezavi.\nPomnite, da se Quassel samodejno znova pridruži kanalom, zato /join tu verjetno ne bo potreben!"
+msgstr "Podajte seznam ukazov IRC, ki naj se izvedejo po povezavi.\nZapomnite si, da se Quassel samodejno znova pridruži kanalom, zato /join tu verjetno ne bo potreben!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:374
 msgctxt "NetworksSettingsPage|"
@@ -4681,7 +4781,7 @@ msgstr "Po omrežnih težavah se samodejno znova poveži v omrežje IRC"
 #: ../src/qtui/settingspages/networkssettingspage.ui:386
 msgctxt "NetworksSettingsPage|"
 msgid "Automatic Reconnect"
-msgstr "Samodejno vnovično povezovanje"
+msgstr "Samodejno ponovno povezovanje"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:397
 msgctxt "NetworksSettingsPage|"
@@ -4751,29 +4851,29 @@ msgid ""
 "<html><head/><body><p><span style=\" font-weight:600;\">Note:</span> because"
 " the identity has an ssl certificate set, SASL EXTERNAL will be "
 "used.</p></body></html>"
-msgstr ""
+msgstr "<html><head/><body><p><span style=\" font-weight:600;\">Opomba:</span> ker ima ta istovetnost nastavljeno potrdilo SSL, bo uporabljen SASL EXTERNAL.</p></body></html>"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:659
 msgctxt "NetworksSettingsPage|"
 msgid "Encodings"
-msgstr "Nabori znakov"
+msgstr "Kodiranja"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:662
 msgctxt "NetworksSettingsPage|"
 msgid ""
 "Configure advanced settings such as message encodings and automatic "
 "reconnect"
-msgstr "Nastavite napredne nastavitve, kot so nabori znakov za sporočila in samodejno vnovično povezovanje"
+msgstr "Nastavite napredne nastavitve, kot so kodiranja za sporočila in samodejno ponovno povezovanje"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:671
 msgctxt "NetworksSettingsPage|"
 msgid "Control encodings for in- and outgoing messages"
-msgstr "Nadzorujte nabore znakov za prejeta in poslana sporočila"
+msgstr "Nadzor nad kodiranjem prejetih in poslanih sporočil"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:674
 msgctxt "NetworksSettingsPage|"
 msgid "Use Custom Encodings"
-msgstr "Uporabi nabor znakov po meri"
+msgstr "Uporabi kodiranja po meri"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:685
 #: ../src/qtui/settingspages/networkssettingspage.ui:705
@@ -4781,7 +4881,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Specify which encoding your messages will be sent in.\n"
 "UTF-8 should be a sane choice for most networks."
-msgstr "Določite, s katerim naborom znakov bodo poslana vaša sporočila.\nZa večino omrežij bi morala biti UTF-8 razumna izbira."
+msgstr "Določite, s katerim kodiranjem bodo poslana vaša sporočila.\nZa večino omrežij bi morala biti UTF-8 razumna izbira."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:689
 msgctxt "NetworksSettingsPage|"
@@ -4794,7 +4894,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Incoming messages encoded in Utf8 will always be treated as such.\n"
 "This setting defines the encoding for messages that are not Utf8."
-msgstr "Prejeta sporočila, z naborom znakov UTF-8, bodo vedno obravnavana kot taka.\nTa nastavitev določa nabor znakov za sporočila, ki niso UTF-8."
+msgstr "Prejeta sporočila, kodirana v UTF-8, bodo vedno obravnavana kot taka.\nTa nastavitev določa kodiranje za sporočila, ki niso UTF-8."
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:720
 msgctxt "NetworksSettingsPage|"
@@ -4807,12 +4907,12 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "This specifies how control messages, nicks and servernames are encoded.\n"
 "Unless you *really* know what you do, leave this as ISO-8859-1!"
-msgstr "To določa, kakšen nabor znakov imajo nadzorna sporočila, vzdevki in imena strežnikov.\nPustite na ISO-8859-1, razen če ste prepričani, kaj počnete!"
+msgstr "To določa, kakšno kodiranje imajo nadzorna sporočila, vzdevki in imena strežnikov.\nPustite na ISO-8859-1, razen če resnično veste kaj počnete!"
 
 #: ../src/qtui/settingspages/networkssettingspage.ui:751
 msgctxt "NetworksSettingsPage|"
 msgid "Server encoding:"
-msgstr "Nabor znakov za strežnike:"
+msgstr "Kodiranje strežnika:"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:37
 msgctxt "NetworksSettingsPage|"
@@ -4849,7 +4949,7 @@ msgstr "Neveljavne nastavitve omrežja"
 #: ../src/qtui/settingspages/networkssettingspage.cpp:650
 msgctxt "NetworksSettingsPage|"
 msgid "Delete Network?"
-msgstr "Zbrišem omrežje?"
+msgstr "Izbrišem omrežje?"
 
 #: ../src/qtui/settingspages/networkssettingspage.cpp:651
 #, qt-format
@@ -4857,7 +4957,7 @@ msgctxt "NetworksSettingsPage|"
 msgid ""
 "Do you really want to delete the network \"%1\" and all related settings, "
 "including the backlog?"
-msgstr "Ali res želite zbrisati omrežje »%1« in vse z njim povezane nastavitve, vključno z zgodovino sporočil?"
+msgstr "Ali resnično želite izbrisati omrežje »%1« in vse z njim povezane nastavitve, vključno z dnevnikom sporočil?"
 
 #: ../src/qtui/settingspages/nickeditdlg.ui:13
 msgctxt "NickEditDlg|"
@@ -4926,20 +5026,20 @@ msgstr "PostgreSQL Turbo Bomber HD!"
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 backlog messages for %2 buffers"
-msgstr "Zahtevam največ %1 starih sporočil za %2 prikazov"
+msgstr "Zahtevanje največ %1 sporočil iz dnevnika za %2 prikazov"
 
 #: ../src/client/backlogrequester.cpp:122
 #, qt-format
 msgctxt "QObject|"
 msgid ""
 "Requesting up to %1 of all unread backlog messages (plus additional %2)"
-msgstr "Zahtevam največ %1 neprebranih starih sporočil (in dodatnih %2)"
+msgstr "Zahtevanje največ %1 neprebranih sporočil iz dnevnika (in dodatnih %2)"
 
 #: ../src/client/backlogrequester.cpp:142
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr "Zahtevam največ %1 neprebranih starih sporočil za %2 prikazov"
+msgstr "Zahtevanje največ %1 neprebranih sporočil iz dnevnika za %2 prikazov"
 
 #: ../src/qtui/ircconnectionwizard.cpp:56
 msgctxt "QObject|"
@@ -4952,7 +5052,7 @@ msgid ""
 "This wizard will help you to set up your default identity and your IRC "
 "network connection.<br>This only covers basic settings. You can cancel this "
 "wizard any time and use the settings dialog for more detailed changes."
-msgstr "Ta čarovnik vam bo pomagal pri nastavitvi privzete identitete in povezave v omrežje IRC.<br>Zaobjete so le osnovne nastavitve. Tega čarovnika lahko prekličete kadarkoli in za podrobnejše spremembe uporabite nastavitveno okno."
+msgstr "Ta čarovnik vam bo pomagal pri nastavitvi privzete istovetnosti in povezave v omrežje IRC.<br>Zaobjete so le osnovne nastavitve. Tega čarovnika lahko prekličete kadarkoli in za podrobnejše spremembe uporabite nastavitveno okno."
 
 #: ../src/uisupport/qssparser.cpp:128 ../src/uisupport/qssparser.cpp:178
 #: ../src/uisupport/qssparser.cpp:334
@@ -4965,19 +5065,19 @@ msgstr "Neveljavna deklaracija bloka: %1"
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette role assignment: %1"
-msgstr "Neveljavna prireditev vloge palete: %1"
+msgstr "Neveljavna dodelitev vloge barvnega nabora: %1"
 
 #: ../src/uisupport/qssparser.cpp:166
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette role name: %1"
-msgstr "Neznano ime vloge palete: %1"
+msgstr "Neznano ime vloge barvnega nabora: %1"
 
 #: ../src/uisupport/qssparser.cpp:204
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid subelement name in %1"
-msgstr "Neveljavno ime podelementa v %1"
+msgstr "Neveljavno ime podpredmeta v %1"
 
 #: ../src/uisupport/qssparser.cpp:248
 #, qt-format
@@ -5001,30 +5101,30 @@ msgstr "Neveljavna oznaka sporočila: %1"
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid senderhash specification: %1"
-msgstr "Neveljavna specifikacija pisave: %1"
+msgstr "Neveljavno določilo razpršila vzdevka: %1"
 
 #: ../src/uisupport/qssparser.cpp:285
 msgctxt "QssParser|"
 msgid "Senderhash can be at most \"0x0f\"!"
-msgstr ""
+msgstr "Razpršilo vzdevka je lahko največ »0x0f«!"
 
 #: ../src/uisupport/qssparser.cpp:301
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid format name: %1"
-msgstr "Neveljavno ime formata: %1"
+msgstr "Neveljavno ime oblike: %1"
 
 #: ../src/uisupport/qssparser.cpp:309
 #, qt-format
 msgctxt "QssParser|"
 msgid "Illegal IRC color specification (must be between 00 and 0f): %1"
-msgstr "Neveljavna specifikacija barve za IRC (mora biti med 00 in 0F): %1"
+msgstr "Neveljavno določilo barve za IRC (mora biti med 00 in 0F): %1"
 
 #: ../src/uisupport/qssparser.cpp:318
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unhandled condition: %1"
-msgstr "Ne-obravnavan pogoj: %1"
+msgstr "Neobravnavan pogoj: %1"
 
 #: ../src/uisupport/qssparser.cpp:349
 #, qt-format
@@ -5036,7 +5136,7 @@ msgstr "Neveljaven seznam lastnosti: %1"
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid chatlist item type %1"
-msgstr "Neveljavna vrsta postavke na seznamu klepetov: %1"
+msgstr "Neveljavna vrsta predmeta na seznamu klepetov: %1"
 
 #: ../src/uisupport/qssparser.cpp:384
 #, qt-format
@@ -5048,7 +5148,7 @@ msgstr "Neveljavno stanje seznama klepetov: %1"
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid property declaration: %1"
-msgstr "Neveljavna deklaracija lastnosti: %1"
+msgstr "Neveljavno določilo lastnosti: %1"
 
 #: ../src/uisupport/qssparser.cpp:438
 #, qt-format
@@ -5060,26 +5160,26 @@ msgstr "Neveljavna lastnost pisave: %1"
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown ChatLine property: %1"
-msgstr "Neznana lastnost za ChatLine: %1"
+msgstr "Neznana lastnost za vrstico klepeta: %1"
 
 #: ../src/uisupport/qssparser.cpp:468
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid palette color role specification: %1"
-msgstr "Neveljavna specifikacija vloge barve palete: %1"
+msgstr "Neveljavno določilo vloge barve barvnega nabora: %1"
 
 #: ../src/uisupport/qssparser.cpp:475
 #, qt-format
 msgctxt "QssParser|"
 msgid "Unknown palette color role: %1"
-msgstr "Neznana vloga barve palete: %1"
+msgstr "Neznana vloga barve barvnega nabora: %1"
 
 #: ../src/uisupport/qssparser.cpp:482 ../src/uisupport/qssparser.cpp:505
 #: ../src/uisupport/qssparser.cpp:527
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid gradient declaration: %1"
-msgstr "Neveljavna deklaracija preliva: %1"
+msgstr "Neveljavno določilo preliva: %1"
 
 #: ../src/uisupport/qssparser.cpp:491 ../src/uisupport/qssparser.cpp:513
 #: ../src/uisupport/qssparser.cpp:537
@@ -5092,25 +5192,25 @@ msgstr "Neveljaven seznam postankov preliva: %1"
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font specification: %1"
-msgstr "Neveljavna specifikacija pisave: %1"
+msgstr "Neveljavno določilo pisave: %1"
 
 #: ../src/uisupport/qssparser.cpp:687
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font style specification: %1"
-msgstr "Neveljavna specifikacija sloga pisave: %1"
+msgstr "Neveljavno določilo sloga pisave: %1"
 
 #: ../src/uisupport/qssparser.cpp:702
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font weight specification: %1"
-msgstr "Neveljavna specifikacija debeline pisave: %1"
+msgstr "Neveljavno določilo debeline pisave: %1"
 
 #: ../src/uisupport/qssparser.cpp:714
 #, qt-format
 msgctxt "QssParser|"
 msgid "Invalid font size specification: %1"
-msgstr "Neveljavna specifikacija velikosti pisave: %1"
+msgstr "Neveljavno določilo velikosti pisave: %1"
 
 #: ../src/common/util.cpp:169
 msgctxt "Quassel::secondsToString()|"
@@ -5137,25 +5237,25 @@ msgctxt "Quassel::secondsToString()|"
 msgid "sec"
 msgstr "sek"
 
-#: ../src/client/networkmodel.cpp:482
+#: ../src/client/networkmodel.cpp:497
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
 msgstr "<b>Poizvedba z %1</b>"
 
-#: ../src/client/networkmodel.cpp:500
+#: ../src/client/networkmodel.cpp:515
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "idling since %1"
 msgstr "nedejaven od %1"
 
-#: ../src/client/networkmodel.cpp:503
+#: ../src/client/networkmodel.cpp:518
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "login time: %1"
 msgstr "čas prijave: %1"
 
-#: ../src/client/networkmodel.cpp:506
+#: ../src/client/networkmodel.cpp:521
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "server: %1"
@@ -5164,13 +5264,18 @@ msgstr "strežnik: %1"
 #: ../src/qtui/ui/receivefiledlg.ui:14
 msgctxt "ReceiveFileDlg|"
 msgid "Incoming File Transfer"
-msgstr ""
+msgstr "Dohodni prenos datoteke"
 
 #: ../src/qtui/receivefiledlg.cpp:35
 #, qt-format
 msgctxt "ReceiveFileDlg|"
 msgid "<b>%1</b> wants to send you a file:<br>%2 (%3 bytes)"
-msgstr ""
+msgstr "<b>%1</b> vam želi poslati datoteko:<br>%2 (%3 bajtov)"
+
+#: ../src/common/remotepeer.cpp:69
+msgctxt "RemotePeer|"
+msgid "Disconnecting..."
+msgstr "Prekinjanje povezave ..."
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:13
 msgctxt "SaveIdentitiesDlg|"
@@ -5180,7 +5285,7 @@ msgstr "Uskladi z jedrom"
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:21
 msgctxt "SaveIdentitiesDlg|"
 msgid "Syncing data with core, please wait..."
-msgstr "Usklajujem podatke z jedrom, prosimo počakajte ..."
+msgstr "Usklajevanje podatkov z jedrom, počakajte ..."
 
 #: ../src/qtui/settingspages/saveidentitiesdlg.ui:81
 msgctxt "SaveIdentitiesDlg|"
@@ -5203,7 +5308,7 @@ msgid "Server address:"
 msgstr "Naslov strežnika:"
 
 #: ../src/qtui/settingspages/servereditdlg.ui:45
-#: ../src/qtui/settingspages/servereditdlg.ui:227
+#: ../src/qtui/settingspages/servereditdlg.ui:181
 msgctxt "ServerEditDlg|"
 msgid "Port:"
 msgstr "Vrata:"
@@ -5223,72 +5328,45 @@ msgctxt "ServerEditDlg|"
 msgid "Advanced"
 msgstr "Napredno"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:140
-msgctxt "ServerEditDlg|"
-msgid "SSL Version:"
-msgstr "Različica SSL:"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:147
-msgctxt "ServerEditDlg|"
-msgid ""
-"Do not change unless you're going to connect to a server not supporting "
-"SSLv3!"
-msgstr "Ne spreminjajte, razen če se boste povezali s strežnikom, ki ne podpira SSLv3!"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:151
-msgctxt "ServerEditDlg|"
-msgid "SSLv3 (default)"
-msgstr "SSLv3 (privzeto)"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:156
-msgctxt "ServerEditDlg|"
-msgid "SSLv2"
-msgstr "SSLv2"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:161
-msgctxt "ServerEditDlg|"
-msgid "TLSv1"
-msgstr "TLSv1"
-
-#: ../src/qtui/settingspages/servereditdlg.ui:171
+#: ../src/qtui/settingspages/servereditdlg.ui:125
 msgctxt "ServerEditDlg|"
 msgid "Use a Proxy"
-msgstr "Uporabi posrednika"
+msgstr "Uporabi pos. strž."
 
-#: ../src/qtui/settingspages/servereditdlg.ui:188
+#: ../src/qtui/settingspages/servereditdlg.ui:142
 msgctxt "ServerEditDlg|"
 msgid "Proxy Type:"
-msgstr "Vrsta posrednika:"
+msgstr "Vrsta pos. strž.:"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:196
+#: ../src/qtui/settingspages/servereditdlg.ui:150
 msgctxt "ServerEditDlg|"
 msgid "Socks 5"
-msgstr "SOCKS5"
+msgstr "Socks 5"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:201
+#: ../src/qtui/settingspages/servereditdlg.ui:155
 msgctxt "ServerEditDlg|"
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:213
+#: ../src/qtui/settingspages/servereditdlg.ui:167
 msgctxt "ServerEditDlg|"
 msgid "Proxy Host:"
-msgstr "Gostitelj posrednika:"
+msgstr "Gostitelj pos. strž.:"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:220
+#: ../src/qtui/settingspages/servereditdlg.ui:174
 msgctxt "ServerEditDlg|"
 msgid "localhost"
 msgstr "localhost"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:251
+#: ../src/qtui/settingspages/servereditdlg.ui:205
 msgctxt "ServerEditDlg|"
 msgid "Proxy Username:"
-msgstr "Uporabniško ime posrednika:"
+msgstr "Uporabniško ime pos. strž.:"
 
-#: ../src/qtui/settingspages/servereditdlg.ui:261
+#: ../src/qtui/settingspages/servereditdlg.ui:215
 msgctxt "ServerEditDlg|"
 msgid "Proxy Password:"
-msgstr "Geslo posrednika:"
+msgstr "Geslo pos. strž.:"
 
 #: ../src/qtui/ui/settingsdlg.ui:14
 msgctxt "SettingsDlg|"
@@ -5393,7 +5471,7 @@ msgstr "Obrazec"
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:22
 msgctxt "ShortcutsSettingsPage|"
 msgid "Search:"
-msgstr "Iskanje:"
+msgstr "Poišči:"
 
 #: ../src/qtui/settingspages/shortcutssettingspage.ui:62
 msgctxt "ShortcutsSettingsPage|"
@@ -5427,10 +5505,10 @@ msgctxt "ShortcutsSettingsPage|"
 msgid "Shortcuts"
 msgstr "Bližnjice"
 
-#: ../src/common/signalproxy.cpp:758
+#: ../src/common/signalproxy.cpp:770
 msgctxt "SignalProxy|"
 msgid "Disconnecting"
-msgstr "Prekinjam povezavo"
+msgstr "Prekinjanje povezave"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:28
 msgctxt "SimpleNetworkEditor|"
@@ -5455,12 +5533,12 @@ msgstr "Seznam strežnikov, ki spadajo v to omrežje"
 #: ../src/qtui/ui/simplenetworkeditor.ui:96
 msgctxt "SimpleNetworkEditor|"
 msgid "Edit this server entry"
-msgstr "Urejanje izbranega strežnika"
+msgstr "Uredi izbran vnos strežnika"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:99
 msgctxt "SimpleNetworkEditor|"
 msgid "&Edit..."
-msgstr "&Urejanje ..."
+msgstr "Ur&edi ..."
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:116
 msgctxt "SimpleNetworkEditor|"
@@ -5470,17 +5548,17 @@ msgstr "Doda nov strežnik za IRC"
 #: ../src/qtui/ui/simplenetworkeditor.ui:119
 msgctxt "SimpleNetworkEditor|"
 msgid "&Add..."
-msgstr "&Dodaj ..."
+msgstr "Dod&aj ..."
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:136
 msgctxt "SimpleNetworkEditor|"
 msgid "Remove this server entry from the list"
-msgstr "Odstrani izbrani strežnik s seznama"
+msgstr "Odstrani ta vnos strežnika s seznama"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:139
 msgctxt "SimpleNetworkEditor|"
 msgid "De&lete"
-msgstr "&Izbriši"
+msgstr "Iz&briši"
 
 #: ../src/qtui/ui/simplenetworkeditor.ui:165
 msgctxt "SimpleNetworkEditor|"
@@ -5511,10 +5589,9 @@ msgid ""
 msgstr "Seznam kanalov IRC, katerim se boste po vzpostavljeni povezavi v omrežje pridružili samodejno"
 
 #: ../src/qtui/snorenotificationbackend.cpp:60
-#: ../src/qtui/snorenotificationbackend.cpp:104
 msgctxt "SnoreNotificationBackend|"
 msgid "Private Message"
-msgstr ""
+msgstr "Zasebno sporočilo"
 
 #: ../src/qtui/ui/snorentificationconfigwidget.ui:20
 msgctxt "SnoreNotificationConfigWidget|"
@@ -5524,17 +5601,17 @@ msgstr "Obrazec"
 #: ../src/qtui/ui/snorentificationconfigwidget.ui:29
 msgctxt "SnoreNotificationConfigWidget|"
 msgid "Snore"
-msgstr ""
+msgstr "Snore"
 
 #: ../src/qtui/ui/snorentificationconfigwidget.ui:41
 msgctxt "SnoreNotificationConfigWidget|"
 msgid "Backend:"
-msgstr ""
+msgstr "Zaledje:"
 
 #: ../src/qtui/ui/snorentificationconfigwidget.ui:64
 msgctxt "SnoreNotificationConfigWidget|"
 msgid "Timeout:"
-msgstr ""
+msgstr "Časovna omejitev:"
 
 #: ../src/qtui/ui/snorentificationconfigwidget.ui:80
 msgctxt "SnoreNotificationConfigWidget|"
@@ -5544,7 +5621,7 @@ msgstr " s"
 #: ../src/qtui/ui/snorentificationconfigwidget.ui:96
 msgctxt "SnoreNotificationConfigWidget|"
 msgid "0 means infinite"
-msgstr ""
+msgstr "0 pomeni neskončno"
 
 #: ../src/core/sqlitestorage.cpp:60
 msgctxt "SqliteStorage|"
@@ -5559,7 +5636,7 @@ msgstr "SQLite je pogon za zbirko podatkov, ki temelji na datotekah in ne potreb
 #: ../src/qtui/ui/sslinfodlg.ui:14
 msgctxt "SslInfoDlg|"
 msgid "Security Information"
-msgstr "Varnostni podatki"
+msgstr "Podrobnosti o varnosti"
 
 #: ../src/qtui/ui/sslinfodlg.ui:22
 msgctxt "SslInfoDlg|"
@@ -5594,7 +5671,7 @@ msgstr "Zadeva"
 #: ../src/qtui/ui/sslinfodlg.ui:126 ../src/qtui/ui/sslinfodlg.ui:248
 msgctxt "SslInfoDlg|"
 msgid "<b>Common name:</b>"
-msgstr "<b>Skupno ime:</b>"
+msgstr "<b>Splošno ime:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:143 ../src/qtui/ui/sslinfodlg.ui:265
 msgctxt "SslInfoDlg|"
@@ -5634,12 +5711,12 @@ msgstr "<b>Obdobje veljavnosti:</b>"
 #: ../src/qtui/ui/sslinfodlg.ui:384
 msgctxt "SslInfoDlg|"
 msgid "<b>MD5 digest:</b>"
-msgstr "<b>Povzetek MD5:</b>"
+msgstr "<b>Izvleček MD5:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:401
 msgctxt "SslInfoDlg|"
 msgid "<b>SHA1 digest:</b>"
-msgstr "<b>Povzetek SHA1:</b>"
+msgstr "<b>Izvleček SHA1:</b>"
 
 #: ../src/qtui/ui/sslinfodlg.ui:431
 msgctxt "SslInfoDlg|"
@@ -5662,7 +5739,7 @@ msgctxt "SslInfoDlg|"
 msgid "%1 to %2"
 msgstr "%1 do %2"
 
-#: ../src/client/networkmodel.h:150
+#: ../src/client/networkmodel.h:151
 msgctxt "StatusBufferItem|"
 msgid "Status Buffer"
 msgstr "Prikaz stanja"
@@ -5670,7 +5747,7 @@ msgstr "Prikaz stanja"
 #: ../src/qtui/systemtray.cpp:68 ../src/qtui/systemtray.cpp:101
 msgctxt "SystemTray|"
 msgid "&Minimize"
-msgstr "Po&manjšaj"
+msgstr "S&krči"
 
 #: ../src/qtui/systemtray.cpp:103
 msgctxt "SystemTray|"
@@ -5690,22 +5767,22 @@ msgstr[3] "%n čakajočih poudarkov"
 #: ../src/qtui/systraynotificationbackend.cpp:156
 msgctxt "SystrayNotificationBackend::ConfigWidget|"
 msgid "Show a message in a popup"
-msgstr "Prikaži sporočilo v pojavnem okencu"
+msgstr "Prikaži sporočilo v pojavnem oknu"
 
 #: ../src/uisupport/tabcompleter.cpp:52
 msgctxt "TabCompleter|"
 msgid "Tab completion"
-msgstr "Dokončevanje s tabulatorjem"
+msgstr "Dopolnjevanje s tabulatorjem"
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:83
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Activate dock entry, timeout:"
-msgstr "Aktiviraj ikono v docku:"
+msgstr "Omogoči vnos sidrišča, časovna omejitev:"
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:85
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
 msgid "Mark taskbar entry, timeout:"
-msgstr "Označi gumb v opravilni vrstici:"
+msgstr "Označi vnos v opravilni vrstici, časovna omejitev:"
 
 #: ../src/qtui/taskbarnotificationbackend.cpp:93
 msgctxt "TaskbarNotificationBackend::ConfigWidget|"
@@ -5745,7 +5822,7 @@ msgstr "Zapusti"
 #: ../src/uisupport/toolbaractionprovider.cpp:34
 msgctxt "ToolBarActionProvider|"
 msgid "Leave currently selected channel"
-msgstr "Zapusti trnutno izbrani kanal"
+msgstr "Zapusti trenutno izbrani kanal"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:35
 msgctxt "ToolBarActionProvider|"
@@ -5765,17 +5842,17 @@ msgstr "Poizvedba"
 #: ../src/uisupport/toolbaractionprovider.cpp:37
 msgctxt "ToolBarActionProvider|"
 msgid "Start a private conversation"
-msgstr "Zaćni zaseben pogovor"
+msgstr "Začni zaseben pogovor"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgctxt "ToolBarActionProvider|"
 msgid "Whois"
-msgstr "Kdoje"
+msgstr "Whois"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:38
 msgctxt "ToolBarActionProvider|"
 msgid "Request user information"
-msgstr "Zahtevaj podatke o uporabniku"
+msgstr "Zahtevaj podrobnosti o uporabniku"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 msgctxt "ToolBarActionProvider|"
@@ -5785,7 +5862,7 @@ msgstr "Op"
 #: ../src/uisupport/toolbaractionprovider.cpp:40
 msgctxt "ToolBarActionProvider|"
 msgid "Give operator privileges to user"
-msgstr "Uporabniku podeli pravice operaterja"
+msgstr "Uporabniku dodeli dovoljenja operaterja"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgctxt "ToolBarActionProvider|"
@@ -5795,27 +5872,27 @@ msgstr "Razop"
 #: ../src/uisupport/toolbaractionprovider.cpp:41
 msgctxt "ToolBarActionProvider|"
 msgid "Take operator privileges from user"
-msgstr "Uporabniku odvzemi pravice operaterja"
+msgstr "Uporabniku odvzemi dovoljenja operaterja"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgctxt "ToolBarActionProvider|"
 msgid "Voice"
-msgstr "Glas"
+msgstr "Glasovna pravica"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:42
 msgctxt "ToolBarActionProvider|"
 msgid "Give voice to user"
-msgstr "Uporabniku daj glas"
+msgstr "Uporabniku dodeli glasovno pravico"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgctxt "ToolBarActionProvider|"
 msgid "Devoice"
-msgstr "Razglas"
+msgstr "Odvzemi glasovno pravico"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:43
 msgctxt "ToolBarActionProvider|"
 msgid "Take voice from user"
-msgstr "Uporabniku odvzemi glas"
+msgstr "Uporabniku odvzemi glasovno pravico"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:44
 msgctxt "ToolBarActionProvider|"
@@ -5830,27 +5907,27 @@ msgstr "Uporabnika odstrani iz kanala"
 #: ../src/uisupport/toolbaractionprovider.cpp:45
 msgctxt "ToolBarActionProvider|"
 msgid "Ban"
-msgstr "Izloči"
+msgstr "Izobči"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:45
 msgctxt "ToolBarActionProvider|"
 msgid "Ban user from channel"
-msgstr "Uporabnika izloči iz kanala"
+msgstr "Uporabnika izobči iz kanala"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"
 msgid "Kick/Ban"
-msgstr "Brcni/izloči"
+msgstr "Brcni/izobči"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:46
 msgctxt "ToolBarActionProvider|"
 msgid "Remove and ban user from channel"
-msgstr "Uporabnika odstrani in izloči iz kanala"
+msgstr "Uporabnika odstrani in izobči iz kanala"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:51
 msgctxt "ToolBarActionProvider|"
 msgid "Connect to all"
-msgstr "Poveži se na vse"
+msgstr "Poveži se z vsemi"
 
 #: ../src/uisupport/toolbaractionprovider.cpp:58
 msgctxt "ToolBarActionProvider|"
@@ -5867,13 +5944,13 @@ msgctxt "TopicWidget|"
 msgid "..."
 msgstr "…"
 
-#: ../src/qtui/topicwidget.cpp:120
+#: ../src/qtui/topicwidget.cpp:121 ../src/qtui/topicwidget.cpp:127
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Users: %1"
 msgstr "Uporabniki: %1"
 
-#: ../src/qtui/topicwidget.cpp:121
+#: ../src/qtui/topicwidget.cpp:122 ../src/qtui/topicwidget.cpp:128
 #, qt-format
 msgctxt "TopicWidget|"
 msgid "Lag: %1 msecs"
@@ -5897,7 +5974,7 @@ msgstr "Dinamično spremeni velikost glede na vsebino"
 #: ../src/qtui/settingspages/topicwidgetsettingspage.ui:84
 msgctxt "TopicWidgetSettingsPage|"
 msgid "On hover only"
-msgstr "Samo ob lebdenju nad temo"
+msgstr "Samo ob prehodu nad"
 
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:24
 msgctxt "TopicWidgetSettingsPage|"
@@ -5907,7 +5984,7 @@ msgstr "Vmesnik"
 #: ../src/qtui/settingspages/topicwidgetsettingspage.cpp:24
 msgctxt "TopicWidgetSettingsPage|"
 msgid "Topic Widget"
-msgstr "Vrstica s temo"
+msgstr "Gradnik s temo"
 
 #. Plain Message
 #. ----------
@@ -5922,114 +5999,114 @@ msgstr "Vrstica s temo"
 #. Topic Message
 #. ----------
 #. Invite Message
-#: ../src/uisupport/uistyle.cpp:665 ../src/uisupport/uistyle.cpp:668
-#: ../src/uisupport/uistyle.cpp:709 ../src/uisupport/uistyle.cpp:712
-#: ../src/uisupport/uistyle.cpp:715 ../src/uisupport/uistyle.cpp:724
-#: ../src/uisupport/uistyle.cpp:758
+#: ../src/uisupport/uistyle.cpp:669 ../src/uisupport/uistyle.cpp:672
+#: ../src/uisupport/uistyle.cpp:713 ../src/uisupport/uistyle.cpp:716
+#: ../src/uisupport/uistyle.cpp:719 ../src/uisupport/uistyle.cpp:728
+#: ../src/uisupport/uistyle.cpp:762
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%1"
 msgstr "%1"
 
 #. Action Message
-#: ../src/uisupport/uistyle.cpp:671
+#: ../src/uisupport/uistyle.cpp:675
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %2"
 msgstr "%DN%1%DN %2"
 
 #. Nick Message
-#: ../src/uisupport/uistyle.cpp:675
+#: ../src/uisupport/uistyle.cpp:679
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "You are now known as %DN%1%DN"
 msgstr "Sedaj ste znani kot %DN%1%DN"
 
-#: ../src/uisupport/uistyle.cpp:676
+#: ../src/uisupport/uistyle.cpp:680
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN is now known as %DN%2%DN"
 msgstr "%DN%1%DN je sedaj znan kot %DN%2%DN"
 
 #. Mode Message
-#: ../src/uisupport/uistyle.cpp:680
+#: ../src/uisupport/uistyle.cpp:684
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "User mode: %DM%1%DM"
 msgstr "Uporabniški način: %DM%1%DM"
 
-#: ../src/uisupport/uistyle.cpp:681
+#: ../src/uisupport/uistyle.cpp:685
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Mode %DM%1%DM by %DN%2%DN"
 msgstr "Način %DM%1%DM od %DN%2%DN"
 
 #. Join Message
-#: ../src/uisupport/uistyle.cpp:685
+#: ../src/uisupport/uistyle.cpp:689
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH se je pridružil %DC%4%DC"
 
 #. Part Message
-#: ../src/uisupport/uistyle.cpp:688
+#: ../src/uisupport/uistyle.cpp:692
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC"
 msgstr "%DN%1%DN %DH(%2@%3)%DH je zapustil %DC%4%DC"
 
 #. Quit Message
-#: ../src/uisupport/uistyle.cpp:693
+#: ../src/uisupport/uistyle.cpp:697
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN %DH(%2@%3)%DH has quit"
 msgstr "%DN%1%DN %DH(%2@%3)%DH je končal"
 
 #. Kick Message
-#: ../src/uisupport/uistyle.cpp:701
+#: ../src/uisupport/uistyle.cpp:705
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
 msgstr "%DN%1%DN je brcnil %DN%2%DN iz %DC%3%DC"
 
 #. Day Change Message
-#: ../src/uisupport/uistyle.cpp:719
+#: ../src/uisupport/uistyle.cpp:723
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "{Day changed to %1}"
 msgstr "{dan se je spremenil na %1}"
 
-#: ../src/uisupport/uistyle.cpp:733
+#: ../src/uisupport/uistyle.cpp:737
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: "
-msgstr "Združitev omrežij %DH%1%DH in %DH%2%DH Uporabniki, ki so prišli: "
+msgstr "Združitev omrežij %DH%1%DH in %DH%2%DH Uporabniki, ki so se pridružili: "
 
-#: ../src/uisupport/uistyle.cpp:737 ../src/uisupport/uistyle.cpp:753
+#: ../src/uisupport/uistyle.cpp:741 ../src/uisupport/uistyle.cpp:757
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN (%2 more)"
 msgstr "%DN%1%DN (še %2)"
 
-#: ../src/uisupport/uistyle.cpp:748
+#: ../src/uisupport/uistyle.cpp:752
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
-msgstr "Ločitev omrežij %DH%1%DH in %DH%2%DH. Uporabniki, ki so odšli: "
+msgstr "Ločitev omrežij %DH%1%DH in %DH%2%DH. Uporabniki, ki so končali: "
 
-#: ../src/uisupport/uistyle.cpp:760 ../src/uisupport/uistyle.cpp:808
+#: ../src/uisupport/uistyle.cpp:764 ../src/uisupport/uistyle.cpp:812
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "[%1]"
 msgstr "[%1]"
 
-#: ../src/uisupport/uistyle.cpp:806
+#: ../src/uisupport/uistyle.cpp:810
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "<%1>"
 msgstr "<%1>"
 
-#: ../src/client/networkmodel.cpp:786
+#: ../src/client/networkmodel.cpp:825
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
@@ -6039,7 +6116,7 @@ msgstr[1] "%n lastnika"
 msgstr[2] "%n lastniki"
 msgstr[3] "%n lastnikov"
 
-#: ../src/client/networkmodel.cpp:788
+#: ../src/client/networkmodel.cpp:827
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
@@ -6049,7 +6126,7 @@ msgstr[1] "%n skrbnika"
 msgstr[2] "%n skrbniki"
 msgstr[3] "%n skrbnikov"
 
-#: ../src/client/networkmodel.cpp:790
+#: ../src/client/networkmodel.cpp:829
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
@@ -6059,7 +6136,7 @@ msgstr[1] "%n operaterja"
 msgstr[2] "%n operaterji"
 msgstr[3] "%n operaterjev"
 
-#: ../src/client/networkmodel.cpp:792
+#: ../src/client/networkmodel.cpp:831
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
@@ -6069,17 +6146,17 @@ msgstr[1] "%n pol-operaterja"
 msgstr[2] "%n pol-operaterji"
 msgstr[3] "%n pol-operaterjev"
 
-#: ../src/client/networkmodel.cpp:794
+#: ../src/client/networkmodel.cpp:833
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
 msgid_plural "%n Voiced"
-msgstr[0] "%n z besedo"
-msgstr[1] "%n z besedo"
-msgstr[2] "%n z besedo"
-msgstr[3] "%n z besedo"
+msgstr[0] "%n z glasovno pravico"
+msgstr[1] "%n z glasovno pravico"
+msgstr[2] "%n z glasovno pravico"
+msgstr[3] "%n z glasovno pravico"
 
-#: ../src/client/networkmodel.cpp:796
+#: ../src/client/networkmodel.cpp:835
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
