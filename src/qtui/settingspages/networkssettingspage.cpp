@@ -28,6 +28,7 @@
 #include "iconloader.h"
 #include "identity.h"
 #include "network.h"
+#include "presetnetworks.h"
 #include "settingspagedlg.h"
 #include "util.h"
 
@@ -786,7 +787,7 @@ NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialo
     ui.useSSL->setIcon(SmallIcon("document-encrypt"));
 
     // read preset networks
-    QStringList networks = Network::presetNetworks();
+    QStringList networks = PresetNetworks::names();
     foreach(QString s, existing)
     networks.removeAll(s);
     if (networks.count())
@@ -810,7 +811,7 @@ NetworkInfo NetworkAddDlg::networkInfo() const
         return info;
     }
     else
-        return Network::networkInfoFromPreset(ui.presetList->currentText());
+        return PresetNetworks::networkInfo(ui.presetList->currentText());
 }
 
 

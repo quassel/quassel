@@ -29,6 +29,7 @@ set(SOURCES
     networkevent.cpp
     peer.cpp
     peerfactory.cpp
+    presetnetworks.cpp
     quassel.cpp
     remotepeer.cpp
     settings.cpp
