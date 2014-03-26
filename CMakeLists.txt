@@ -187,6 +187,13 @@ if(USE_QT5)
             DESCRIPTION "a multimedia abstraction library"
             PURPOSE     "Required for audio notifications"
         )
+        
+        find_package(LibsnoreQt5 QUIET)
+        set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
+            URL "https://github.com/TheOneRing/Snorenotify"
+            DESCRIPTION "a cross-platform notification framework"
+            PURPOSE     "Enable support for the snorenotify framework"
+        )
 
         if (WITH_WEBKIT)
             find_package(Qt5WebKit QUIET)

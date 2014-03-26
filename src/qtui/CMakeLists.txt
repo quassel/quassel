@@ -89,7 +89,7 @@ if (KDE4_FOUND)
 endif()
 
 if (LIBSNORE_FOUND)
-    add_definitions(-DHAVE_SNORENOTIFY)
+    add_definitions(-DHAVE_LIBSNORE)
     include_directories(${LIBSNORE_INCLUDE_DIRS})
     list(APPEND SOURCES snorenotificationbackend.cpp)
     list(APPEND FORMS   snorentificationconfigwidget.ui)
