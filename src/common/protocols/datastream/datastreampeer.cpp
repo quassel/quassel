@@ -24,7 +24,6 @@
 #include <QTcpSocket>
 
 #include "datastreampeer.h"
-#include "quassel.h"
 
 using namespace Protocol;
 
@@ -117,7 +116,7 @@ void DataStreamPeer::handleHandshakeMessage(const QVariantList &mapData)
     }
 
     if (msgType == "ClientInit") {
-        handle(RegisterClient(m["ClientVersion"].toString(), false)); // UseSsl obsolete
+        handle(RegisterClient(m["ClientVersion"].toString(), m["ClientDate"].toString(), false)); // UseSsl obsolete
     }
 
     else if (msgType == "ClientInitReject") {
@@ -168,7 +167,7 @@ void DataStreamPeer::dispatch(const RegisterClient &msg) {
     QVariantMap m;
     m["MsgType"] = "ClientInit";
     m["ClientVersion"] = msg.clientVersion;
-    m["ClientDate"] = Quassel::buildInfo().buildDate;
+    m["ClientDate"] = msg.buildDate;
 
     writeMessage(m);
 }
