@@ -56,11 +56,13 @@ struct HandshakeMessage {
 
 struct RegisterClient : public HandshakeMessage
 {
-    inline RegisterClient(const QString &clientVersion, bool sslSupported = false)
+    inline RegisterClient(const QString &clientVersion, const QString &buildDate, bool sslSupported = false)
     : clientVersion(clientVersion)
+    , buildDate(buildDate)
     , sslSupported(sslSupported) {}
 
     QString clientVersion;
+    QString buildDate;
 
     // this is only used by the LegacyProtocol in compat mode
     bool sslSupported;
