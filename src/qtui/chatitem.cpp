@@ -504,9 +504,10 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     if (layoutWidth > width()) {
         // Draw a nice gradient for longer items
-        // Qt's text drawing with a gradient brush sucks, so we use an alpha-channeled pixmap instead
+        // Qt's text drawing with a gradient brush sucks, so we use compositing instead
         QPixmap pixmap(layout()->boundingRect().toRect().size());
         pixmap.fill(Qt::transparent);
+
         QPainter pixPainter(&pixmap);
         layout()->draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), additionalFormats());
 
@@ -515,17 +516,17 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
         if (offset < 0) {
             gradient.setStart(0, 0);
             gradient.setFinalStop(12, 0);
-            gradient.setColorAt(0, Qt::black);
+            gradient.setColorAt(0, Qt::transparent);
             gradient.setColorAt(1, Qt::white);
         }
         else {
             gradient.setStart(width()-10, 0);
             gradient.setFinalStop(width(), 0);
             gradient.setColorAt(0, Qt::white);
-            gradient.setColorAt(1, Qt::black);
+            gradient.setColorAt(1, Qt::transparent);
         }
-        pixPainter.fillRect(0, 0, pixmap.width(), pixmap.height(), gradient);
-        pixPainter.end();
+        pixPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn); // gradient's alpha gets applied to the pixmap
+        pixPainter.fillRect(pixmap.rect(), gradient);
         painter->drawPixmap(pos(), pixmap);
     }
     else {
