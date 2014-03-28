@@ -547,7 +547,12 @@ void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
         return;
     }
 
-    QVariant returnValue((QVariant::Type)eMeta->returnType(slotId));
+    // We can no longer construct a QVariant from QMetaType::Void
+    QVariant returnValue;
+    int returnType = eMeta->returnType(slotId);
+    if (returnType != QMetaType::Void)
+        returnValue = QVariant(static_cast<QVariant::Type>(returnType));
+
     if (!invokeSlot(receiver, slotId, syncMessage.params, returnValue, peer)) {
         qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", eMeta->methodName(slotId).constData());
         return;
