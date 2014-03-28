@@ -47,6 +47,8 @@ if (USE_QT5)
     list(APPEND qt_modules Widgets)
 endif()
 
+qt_add_resources(SOURCES ${CLIENT_RCS})
+
 add_library(mod_client STATIC ${SOURCES})
 qt_use_modules(mod_client Network Core Gui ${qt_modules})
 

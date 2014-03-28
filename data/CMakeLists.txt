@@ -14,7 +14,7 @@ if (BUILD_GUI)
     endif()
 
     if (EMBED_DATA)
-        set(CLIENT_RCS ${CLIENT_RCS} ../data/data.qrc PARENT_SCOPE)
+        set(CLIENT_RCS ${CLIENT_RCS} ../../data/data.qrc PARENT_SCOPE)
     else()
         install(FILES networks.ini DESTINATION ${DATA_INSTALL_DIR}/quassel)
         install(DIRECTORY stylesheets DESTINATION ${DATA_INSTALL_DIR}/quassel)

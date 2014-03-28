@@ -68,3 +68,5 @@ else(EMBED_DATA)
 endif(EMBED_DATA)
 
 add_custom_target(po DEPENDS ${qm_files})
+
+

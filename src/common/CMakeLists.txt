@@ -76,6 +76,8 @@ else()
     set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
 endif()
 
+qt_add_resources(SOURCES ${COMMON_RCS})
+
 add_library(mod_common STATIC ${SOURCES})
 qt_use_modules(mod_common Core Network)
 
@@ -84,3 +86,7 @@ if(APPLE)
 endif(APPLE)
 
 target_link_libraries(mod_common ${CMAKE_DL_LIBS} ${EXECINFO_LIBRARIES} ${ZLIB_LIBRARIES})
+
+# This is needed so translations are generated before trying to build the qrc.
+# Should probably find a nicer solution with proper dependencies between the involved files, though...
+add_dependencies(mod_common po)

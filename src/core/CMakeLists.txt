@@ -58,6 +58,8 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
 set(CORE_RCS ${CORE_RCS} core/sql.qrc PARENT_SCOPE)
 
+qt_add_resources(SOURCES ${CORE_RCS})
+
 add_library(mod_core STATIC ${SOURCES})
 qt_use_modules(mod_core Core Network Script Sql)
 

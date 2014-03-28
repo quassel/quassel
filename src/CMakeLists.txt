@@ -22,14 +22,9 @@ endif(BUILD_GUI)
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
 
-# Add resources. Can't be done in other subdirs apparently.
-# Note that these variables need to contain paths relative to src/ (this dir)
-qt_add_resources(CLIENT_DEPS ${CLIENT_RCS})
-qt_add_resources(CORE_DEPS ${CORE_RCS})
-qt_add_resources(COMMON_DEPS ${COMMON_RCS})
 
 if(WANT_CORE)
-  add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
+  add_executable(quasselcore common/main.cpp)
   qt_use_modules(quasselcore Core Network ${CORE_QT_MODULES})
   add_dependencies(quasselcore po)
   set_target_properties(quasselcore PROPERTIES
@@ -44,7 +39,7 @@ if (KDE4_FOUND)
 endif()
 
 if(WANT_QTCLIENT)
-  add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
+  add_executable(quasselclient WIN32 common/main.cpp)
   qt_use_modules(quasselclient Core Gui Network ${CLIENT_QT_MODULES})
   add_dependencies(quasselclient po)
   set_target_properties(quasselclient PROPERTIES
@@ -55,7 +50,7 @@ if(WANT_QTCLIENT)
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
-  add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
+  add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp)
   qt_use_modules(quassel Core Gui Network ${CLIENT_QT_MODULES} ${CORE_QT_MODULES})
   add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
