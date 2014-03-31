@@ -125,7 +125,7 @@ endif()
 
 if (QT_QTWEBKIT_FOUND OR Qt5WebKitWidgets_FOUND)
     add_definitions(-DHAVE_WEBKIT)
-    list(APPEND QT_MODULES WebKit XmlPatterns)
+    list(APPEND QT_MODULES WebKit)
     if (USE_QT5)
         list(APPEND QT_MODULES WebKitWidgets)
     endif()
