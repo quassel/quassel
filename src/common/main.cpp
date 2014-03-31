@@ -62,6 +62,26 @@ int main(int argc, char **argv)
     QApplication::setGraphicsSystem("raster");
 #endif
 
+    // We need to explicitly initialize the required resources when linking statically
+#ifndef BUILD_QTUI
+    Q_INIT_RESOURCE(sql);
+#endif
+#ifndef BUILD_CORE
+    Q_INIT_RESOURCE(pics); // always in a resource, for now
+#endif
+
+#ifdef EMBED_DATA
+    Q_INIT_RESOURCE(i18n);
+# ifndef BUILD_CORE
+    Q_INIT_RESOURCE(data);
+    Q_INIT_RESOURCE(hicolor);
+    Q_INIT_RESOURCE(oxygen);
+#   ifdef WITH_OXYGEN
+    Q_INIT_RESOURCE(oxygen_kde);
+#   endif
+# endif
+#endif
+
     AbstractCliParser *cliParser;
 
 #ifdef HAVE_KDE

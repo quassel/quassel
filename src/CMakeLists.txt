@@ -22,6 +22,13 @@ endif(BUILD_GUI)
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
 
+# We need to initialize the appropriate resources, so let's give our main.cpp some hints
+if (EMBED_DATA)
+    add_definitions(-DEMBED_DATA)
+endif()
+if (WITH_OXYGEN)
+    add_definitions(-DWITH_OXYGEN)
+endif()
 
 if(WANT_CORE)
   add_executable(quasselcore common/main.cpp)

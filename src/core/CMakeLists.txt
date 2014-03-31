@@ -56,8 +56,7 @@ endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
-set(CORE_RCS ${CORE_RCS} core/sql.qrc PARENT_SCOPE)
-
+set(CORE_RCS ${CORE_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/sql.qrc)
 qt_add_resources(SOURCES ${CORE_RCS})
 
 add_library(mod_core STATIC ${SOURCES})
