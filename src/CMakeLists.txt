@@ -30,6 +30,11 @@ if (WITH_OXYGEN)
     add_definitions(-DWITH_OXYGEN)
 endif()
 
+# Needed for showing the cli option if appropriate
+if (HAVE_SYSLOG)
+    add_definitions(-DHAVE_SYSLOG)
+endif()
+
 if(WANT_CORE)
   add_executable(quasselcore common/main.cpp ${CORE_DEPS} ${COMMON_DEPS})
   qt_use_modules(quasselcore Core Network ${CORE_QT_MODULES})
