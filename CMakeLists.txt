@@ -145,12 +145,18 @@ endif()
 # using -DCMAKE_DISABLE_FIND_PACKAGE_<PkgName>=TRUE
 #####################################################################
 
-if(USE_QT5)
+if (USE_QT5)
     find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
     set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED
         URL "http://qt.digia.com"
         DESCRIPTION "contains core functionality for Qt"
     )
+    # find_package without REQUIRED won't check for the version properly; also, older Qt5 versions
+    # used Qt5Core_VERSION_STRING... let's just make sure here that we bail out here if our Qt5 is not new enough.
+    if (NOT Qt5Core_VERSION OR Qt5Core_VERSION VERSION_LESS ${QT_MIN_VERSION})
+        message(FATAL_ERROR "Could NOT find Qt5 >= version ${QT_MIN_VERSION}!")
+    endif()
+
     find_package(Qt5Network QUIET)
     set_package_properties(Qt5Network PROPERTIES TYPE REQUIRED
         DESCRIPTION "the network module for Qt5"
@@ -187,7 +193,7 @@ if(USE_QT5)
             DESCRIPTION "a multimedia abstraction library"
             PURPOSE     "Required for audio notifications"
         )
-        
+
         find_package(LibsnoreQt5 QUIET)
         set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
             URL "https://github.com/TheOneRing/Snorenotify"
