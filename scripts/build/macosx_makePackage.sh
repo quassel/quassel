@@ -51,19 +51,27 @@ if [[ ! -n $2 ]]; then
 fi
 WORKINGDIR="${WORKINGDIR}/"
 PACKAGETMPDIR="${WORKINGDIR}PACKAGE_TMP_DIR_${BUILDTYPE}"
-if [[ $BUILDTYPE = "Core" ]] || [[ $BUILDTYPE = "Client" ]]; then
-    QUASSEL_DMG="Quassel${BUILDTYPE}_MacOSX-x86_64_${QUASSEL_VERSION}.dmg"
-    mkdir $PACKAGETMPDIR
-    if [[ $BUILDTYPE = "Client" ]]; then
+QUASSEL_DMG="Quassel${BUILDTYPE}_MacOSX-x86_64_${QUASSEL_VERSION}.dmg"
+
+mkdir $PACKAGETMPDIR
+case $BUILDTYPE in
+"Client")
 	cp -r ${WORKINGDIR}Quassel\ Client.app ${PACKAGETMPDIR}/
 	${SCRIPTDIR}/macosx_DeployApp.py "${PACKAGETMPDIR}/Quassel Client.app"
-    else
+	;;
+"Core")
 	cp ${WORKINGDIR}quasselcore ${PACKAGETMPDIR}/
 	${SCRIPTDIR}/macosx_DeployApp.py --nobundle ${PACKAGETMPDIR}
-    fi
-    #hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}Quassel${BUILDTYPE}_MacOSX-universal_${QUASSEL_VERSION}.dmg" >/dev/null
-    hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
-    rm -rf ${PACKAGETMPDIR}
-else
-    echo >&2 "Valid parameters are \"Client\" or \"Core\""
-fi
+	;;
+"Mono")
+	cp -r ${WORKINGDIR}Quassel.app ${PACKAGETMPDIR}/
+	${SCRIPTDIR}/macosx_DeployApp.py "${PACKAGETMPDIR}/Quassel.app"
+	;;
+*)
+	echo >&2 "Valid parameters are \"Client\", \"Core\", or \"Mono\"."
+	rmdir ${PACKAGETMPDIR}
+	exit 1
+	;;
+esac
+hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
+rm -rf ${PACKAGETMPDIR}

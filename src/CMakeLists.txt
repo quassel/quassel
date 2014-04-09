@@ -85,5 +85,7 @@ if(APPLE)
                        COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client ..)
     add_custom_command(TARGET quasselcore POST_BUILD
                        COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core ..)
+    add_custom_command(TARGET quasselcore POST_BUILD
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Mono ..)
   endif(DEPLOY)
 endif(APPLE)
