@@ -211,8 +211,10 @@ bool CoreConnection::isLocalConnection() const
         return false;
     if (currentAccount().isInternal())
         return true;
-    if (_peer->isLocal())
-        return true;
+    if (_authHandler)
+        return _authHandler->isLocal();
+    if (_peer)
+        return _peer->isLocal();
 
     return false;
 }
