@@ -13,8 +13,14 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.10-rc1 (2014-03-16)
-=============================
+Version 0.11.x (TBD)
+====================
+
+* Full support for Qt 5.2+ in addition to Qt 4.6+
+* Completely revamp the build system, making use of "new" CMake features
+
+Version 0.10.0 (2014-03-25)
+===========================
 
 * Refactor lots of the protocol and connection code
 * Introduce connection probing for reliably negotiating protocol features
@@ -28,11 +34,12 @@ Version 0.10-rc1 (2014-03-16)
 * Show backlog messages in the Chat Monitor
 * Remove SSL protocol selection, always use auto-negotiation for best results
 * Highlight rules are now case-insensitive by default
-* New translations
+* New and updated translations
 * Bump inxi version (for /sysinfo)
+* Use the raster rendering engine by default on OSX (should improve performance)
 
-Version 0.9.3 (TBD)
-===================
+Version 0.9.3 (2014-03-25)
+==========================
 
 * Notification fixes
 * Improve reliability of SSL connections
