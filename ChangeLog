@@ -13,6 +13,11 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.10.1 (TBD)
+====================
+
+* Fix a crash with KDE's network detection
+
 Version 0.10.0 (2014-03-25)
 ===========================
 
