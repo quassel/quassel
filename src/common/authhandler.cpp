@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QHostAddress>
+
 #include "authhandler.h"
 
 AuthHandler::AuthHandler(QObject *parent)
@@ -40,6 +42,16 @@ void AuthHandler::setSocket(QTcpSocket *socket)
     _socket = socket;
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(disconnected()), SLOT(onSocketDisconnected()));
+}
+
+
+bool AuthHandler::isLocal() const
+{
+    if (socket()) {
+        if (socket()->peerAddress() == QHostAddress::LocalHost || socket()->peerAddress() == QHostAddress::LocalHostIPv6)
+            return true;
+    }
+    return false;
 }
 
 
