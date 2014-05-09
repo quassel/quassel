@@ -49,7 +49,7 @@ TabCompleter::TabCompleter(MultiLineEdit *_lineEdit)
     // apparently, using tab as an Action shortcut  in an input widget is unreliable on some platforms (e.g. OS/2)
     _lineEdit->installEventFilter(this);
     ActionCollection *coll = GraphicalUi::actionCollection("General");
-    Action *a = coll->addAction("TabCompletionKey", new Action(tr("Tab completion"), coll,
+    QAction *a = coll->addAction("TabCompletionKey", new Action(tr("Tab completion"), coll,
             this, SLOT(onTabCompletionKey()), QKeySequence(Qt::Key_Tab)));
     a->setEnabled(false); // avoid catching the shortcut
 }
