@@ -1264,7 +1264,8 @@ void NetworkModel::updateBufferActivity(Message &msg)
         }
     }
     else {
-        updateBufferActivity(bufferItem(msg.bufferInfo()), msg);
+        if ((BufferSettings(msg.bufferId()).messageFilter() & msg.type()) != msg.type())
+            updateBufferActivity(bufferItem(msg.bufferInfo()), msg);
     }
 }
 
