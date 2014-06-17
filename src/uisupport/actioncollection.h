@@ -97,7 +97,7 @@ signals:
 
 protected slots:
 #if QT_VERSION >= 0x050000
-    virtual void connectNotify(const QMetaMethod &method);
+    virtual void connectNotify(const QMetaMethod &signal);
 #else
     virtual void connectNotify(const char *signal);
 #endif
