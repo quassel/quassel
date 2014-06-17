@@ -126,11 +126,26 @@ bool ChatView::event(QEvent *event)
 
 void ChatView::resizeEvent(QResizeEvent *event)
 {
+    // if view is currently scrolled to bottom, we want it that way after resizing
+    bool atBottom = (_lastScrollbarPos == verticalScrollBar()->maximum());
+
     QGraphicsView::resizeEvent(event);
+
+    // if scrolling to bottom, do it immediately.
+    if(atBottom)
+    {
+        // we can reduce viewport updates if we scroll to the bottom allready at the beginning
+        verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+    }
 
     scene()->updateForViewport(viewport()->width(), viewport()->height());
     adjustSceneRect();
 
+    if(atBottom)
+    {
+        _lastScrollbarPos = verticalScrollBar()->maximum();
+        verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+    }
     checkChatLineCaches();
 }
 
