@@ -128,15 +128,8 @@ void ChatView::resizeEvent(QResizeEvent *event)
 {
     QGraphicsView::resizeEvent(event);
 
-    // FIXME: do we really need to scroll down on resize?
-
-    // we can reduce viewport updates if we scroll to the bottom allready at the beginning
-    verticalScrollBar()->setValue(verticalScrollBar()->maximum());
     scene()->updateForViewport(viewport()->width(), viewport()->height());
     adjustSceneRect();
-
-    _lastScrollbarPos = verticalScrollBar()->maximum();
-    verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 
     checkChatLineCaches();
 }
