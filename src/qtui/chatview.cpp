@@ -80,7 +80,7 @@ void ChatView::init(MessageFilter *filter)
     setScene(_scene);
 
     connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
-    _lastScrollbarPos = verticalScrollBar()->value();
+    _lastScrollbarPos = verticalScrollBar()->maximum();
 
     connect(Client::networkModel(), SIGNAL(markerLineSet(BufferId, MsgId)), SLOT(markerLineSet(BufferId, MsgId)));
 
