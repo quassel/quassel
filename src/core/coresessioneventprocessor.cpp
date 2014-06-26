@@ -480,14 +480,10 @@ void CoreSessionEventProcessor::processKeyEvent(KeyEvent *e)
 
 
 /* RPL_WELCOME */
-void CoreSessionEventProcessor::processIrcEvent001(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent001(IrcEventNumeric *e)
 {
-    if (!checkParamCount(e, 1))
-        return;
-
-    QString myhostmask = e->params().at(0).section(' ', -1, -1);
     e->network()->setCurrentServer(e->prefix());
-    e->network()->setMyNick(nickFromMask(myhostmask));
+    e->network()->setMyNick(e->target());
 }
 
 

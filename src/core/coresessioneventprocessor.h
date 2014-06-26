@@ -63,7 +63,7 @@ public:
     Q_INVOKABLE void processKeyEvent(KeyEvent *event);
 #endif
 
-    Q_INVOKABLE void processIrcEvent001(IrcEvent *event);          // RPL_WELCOME
+    Q_INVOKABLE void processIrcEvent001(IrcEventNumeric *event);   // RPL_WELCOME
     Q_INVOKABLE void processIrcEvent005(IrcEvent *event);          // RPL_ISUPPORT
     Q_INVOKABLE void processIrcEvent221(IrcEvent *event);          // RPL_UMODEIS
     Q_INVOKABLE void processIrcEvent250(IrcEvent *event);          // RPL_STATSCONN
