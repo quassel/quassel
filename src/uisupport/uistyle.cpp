@@ -807,7 +807,7 @@ QString UiStyle::StyledMessage::decoratedSender() const
 {
     switch (type()) {
     case Message::Plain:
-        return tr("<%1>").arg(plainSender()); break;
+        return tr("%1").arg(plainSender()); break;
     case Message::Notice:
         return tr("[%1]").arg(plainSender()); break;
     case Message::Action:
