@@ -1023,8 +1023,13 @@ QString ChatScene::selection() const
         for (int l = start; l <= end; l++) {
             if (_selectionMinCol == ChatLineModel::TimestampColumn)
                 result += _lines[l]->item(ChatLineModel::TimestampColumn)->data(MessageModel::DisplayRole).toString() + " ";
-            if (_selectionMinCol <= ChatLineModel::SenderColumn)
-                result += _lines[l]->item(ChatLineModel::SenderColumn)->data(MessageModel::DisplayRole).toString() + " ";
+            if (_selectionMinCol <= ChatLineModel::SenderColumn) {
+		ChatItem *item = _lines[l]->item(ChatLineModel::SenderColumn);
+                if (item->chatLine()->msgType() == Message::Plain)
+                  result += QString("<%1> ").arg(item->data(MessageModel::DisplayRole).toString());
+		else
+                  result += item->data(MessageModel::DisplayRole).toString() + " ";
+            }
             result += _lines[l]->item(ChatLineModel::ContentsColumn)->data(MessageModel::DisplayRole).toString() + "\n";
         }
         return result;
