@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <QtEndian>
-
+#include <QDataStream>
 #include <QHostAddress>
 #include <QTcpSocket>
 
