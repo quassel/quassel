@@ -27,6 +27,7 @@
 #include "protocol.h"
 
 struct QMetaObject;
+class QIODevice;
 
 class Peer;
 class SyncableObject;
