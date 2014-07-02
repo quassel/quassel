@@ -665,14 +665,11 @@ void UiStyle::StyledMessage::style() const
     QString t;
     switch (type()) {
     case Message::Plain:
-        //: Plain Message
-        t = tr("%1").arg(txt); break;
+        t = QString("%1").arg(txt); break;
     case Message::Notice:
-        //: Notice Message
-        t = tr("%1").arg(txt); break;
+        t = QString("%1").arg(txt); break;
     case Message::Action:
-        //: Action Message
-        t = tr("%DN%1%DN %2").arg(nick).arg(txt);
+        t = QString("%DN%1%DN %2").arg(nick).arg(txt);
         break;
     case Message::Nick:
         //: Nick Message
@@ -709,14 +706,11 @@ void UiStyle::StyledMessage::style() const
     //case Message::Kill: FIXME
 
     case Message::Server:
-        //: Server Message
-        t = tr("%1").arg(txt); break;
+        t = QString("%1").arg(txt); break;
     case Message::Info:
-        //: Info Message
-        t = tr("%1").arg(txt); break;
+        t = QString("%1").arg(txt); break;
     case Message::Error:
-        //: Error Message
-        t = tr("%1").arg(txt); break;
+        t = QString("%1").arg(txt); break;
     case Message::DayChange:
     {
         //: Day Change Message
@@ -724,8 +718,7 @@ void UiStyle::StyledMessage::style() const
     }
         break;
     case Message::Topic:
-        //: Topic Message
-        t = tr("%1").arg(txt); break;
+        t = QString("%1").arg(txt); break;
     case Message::NetsplitJoin:
     {
         QStringList users = txt.split("#:#");
@@ -758,10 +751,9 @@ void UiStyle::StyledMessage::style() const
     }
     break;
     case Message::Invite:
-        //: Invite Message
-        t = tr("%1").arg(txt); break;
+        t = QString("%1").arg(txt); break;
     default:
-        t = tr("[%1]").arg(txt);
+        t = QString("[%1]").arg(txt);
     }
     _contents = UiStyle::styleString(t, UiStyle::formatType(type()));
 }
@@ -807,9 +799,9 @@ QString UiStyle::StyledMessage::decoratedSender() const
 {
     switch (type()) {
     case Message::Plain:
-        return tr("<%1>").arg(plainSender()); break;
+        return QString("<%1>").arg(plainSender()); break;
     case Message::Notice:
-        return tr("[%1]").arg(plainSender()); break;
+        return QString("[%1]").arg(plainSender()); break;
     case Message::Action:
         return "-*-"; break;
     case Message::Nick:
