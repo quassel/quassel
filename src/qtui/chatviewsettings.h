@@ -45,7 +45,7 @@ public:
     inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
     inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 
-    inline QString timestampFormatString() { return localValue("TimestampFormat", "[hh:mm:ss]").toString(); }
+    inline QString timestampFormatString() { return localValue("TimestampFormat", " hh:mm:ss").toString(); }
     inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
 
     inline QString webSearchUrlFormatString() { return localValue("WebSearchUrlFormat", "https://www.google.com/search?q=%s").toString(); }
