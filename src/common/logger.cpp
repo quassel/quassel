@@ -77,7 +77,7 @@ void Logger::log()
             prio = LOG_INFO;
             break;
         }
-        syslog(LOG_USER & prio, "%s", qPrintable(_buffer));
+        syslog(prio|LOG_LOCAL0, "%s", qPrintable(_buffer));
     }
 #endif
 
