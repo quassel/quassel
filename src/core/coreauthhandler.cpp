@@ -169,8 +169,18 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     if (!configured)
         backends = Core::backendInfo();
 
-    // useSsl and startTime are only used for the legacy protocol
-    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, Core::instance()->startTime()));
+    int uptime = Core::instance()->startTime().secsTo(QDateTime::currentDateTime().toUTC());
+    int updays = uptime / 86400; uptime %= 86400;
+    int uphours = uptime / 3600; uptime %= 3600;
+    int upmins = uptime / 60;
+    QString coreInfo = tr("<b>Quassel Core Version %1</b><br>"
+                          "Built: %2<br>"
+                          "Up %3d%4h%5m (since %6)").arg(Quassel::buildInfo().fancyVersionString)
+                          .arg(Quassel::buildInfo().buildDate)
+                          .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(Core::instance()->startTime().toString(Qt::TextDate));
+
+    // useSsl and coreInfo are only used for the legacy protocol
+    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, coreInfo));
 
     if (_legacy && useSsl)
         startSsl();

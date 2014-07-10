@@ -19,10 +19,10 @@
  ***************************************************************************/
 
 #include <QHostAddress>
+#include <QDataStream>
 #include <QTcpSocket>
 
 #include "legacypeer.h"
-#include "quassel.h"
 
 /* version.inc is no longer used for this */
 const uint protocolVersion = 10;
@@ -170,7 +170,7 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
             socket()->setProperty("UseCompression", true);
 #endif
 
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool(), QDateTime()));
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool(), QString()));
     }
 
     else if (msgType == "CoreSetupData") {
@@ -249,15 +249,7 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     m["SupportsCompression"] = socket()->property("UseCompression").toBool(); // this property gets already set in the ClientInit handler
 
     // This is only used for old v10 clients (pre-0.5)
-    int uptime = msg.coreStartTime.secsTo(QDateTime::currentDateTime().toUTC());
-    int updays = uptime / 86400; uptime %= 86400;
-    int uphours = uptime / 3600; uptime %= 3600;
-    int upmins = uptime / 60;
-    m["CoreInfo"] = tr("<b>Quassel Core Version %1</b><br>"
-                       "Built: %2<br>"
-                       "Up %3d%4h%5m (since %6)").arg(Quassel::buildInfo().fancyVersionString)
-                       .arg(Quassel::buildInfo().buildDate)
-                       .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(msg.coreStartTime.toString(Qt::TextDate));
+    m["CoreInfo"] = msg.coreInfo;
 
     m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
 
