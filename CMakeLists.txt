@@ -35,7 +35,8 @@ include(CheckCXXCompilerFlag)
 cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
 
 if(COMMAND cmake_policy)
-   cmake_policy(SET CMP0003 NEW)
+   cmake_policy(SET CMP0026 OLD)
+   cmake_policy(SET CMP0043 OLD)
 endif(COMMAND cmake_policy)
 
 # Use our own (well, and KDE's) version of some modules
