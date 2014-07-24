@@ -34,6 +34,10 @@ include(FeatureSummary)
 include(QuasselCompileSettings)
 include(QuasselMacros)
 
+# Setting COMPILE_DEFINITIONS_<CONFIG> is deprecated since CMake 3.0 in favor of generator expressions.
+# These have existed since CMake 2.8.10; until we depend on that, we have to explicitly enable the old policy.
+cmake_policy(SET CMP0043 OLD)
+
 
 # Options and variables that can be set on the command line
 #####################################################################
