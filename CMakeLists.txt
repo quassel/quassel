@@ -34,10 +34,10 @@ include(CheckCXXCompilerFlag)
 # For building against Qt5, we check for an even newer cmake version below!
 cmake_minimum_required(VERSION 2.8.1 FATAL_ERROR)
 
-if(COMMAND cmake_policy)
+if(CMAKE_MAJOR_VERSION GREATER 2)
    cmake_policy(SET CMP0026 OLD)
    cmake_policy(SET CMP0043 OLD)
-endif(COMMAND cmake_policy)
+endif()
 
 # Use our own (well, and KDE's) version of some modules
 # In particular cmake's own FindQt4 and FindOpenSSL are quite buggy
