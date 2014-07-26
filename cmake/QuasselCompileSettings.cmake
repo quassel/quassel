@@ -7,7 +7,7 @@
 
 include(CheckCXXCompilerFlag)
 
-if(CMAKE_CONFIGURATION_TYPES)
+if (CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_CONFIGURATION_TYPES Release RelWithDebInfo Debug Debugfull Profile)
     set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING "These are the configuration types we support" FORCE)
 endif()
@@ -24,15 +24,19 @@ set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_RELWITHDEBINFO QT_NO_
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_PROFILE QT_NO_DEBUG NDEBUG)
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_MINSIZEREL QT_NO_DEBUG NDEBUG)
 
-if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS QT_NO_DEBUG NDEBUG)
 endif()
 
 # Enable various flags on gcc
-if(CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_COMPILER_IS_GNUCXX)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.7")
+        message(WARNING "Your compiler is too old; we expect at least GCC 4.7. Your build will likely fail.")
+    endif()
+
     # Let's just hope that all gccs support these options and skip the tests...
     # -fno-strict-aliasing is needed apparently for Qt < 4.6
-    set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -ansi -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing")
+    set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing")
     #  set(CMAKE_CXX_FLAGS_RELEASE          "-O2")   # use CMake default
     #  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O2")  # use CMake default
     set(CMAKE_CXX_FLAGS_DEBUG             "-g -ggdb -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
@@ -48,11 +52,14 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
     # Just for miniz
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
-endif()
 
 # ... and for Clang
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnon-virtual-dtor -Wno-long-long -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wextra -Wpointer-arith -Wformat-security -Woverloaded-virtual -fno-common -Werror=return-type")
+elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.1")
+        message(WARNING "Your compiler is too old; we expect at least Clang 3.1. Your build will likely fail.")
+    endif()
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wnon-virtual-dtor -Wno-long-long -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wextra -Wpointer-arith -Wformat-security -Woverloaded-virtual -fno-common -Wno-deprecated-register")
     #  set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -DNDEBUG -DQT_NO_DEBUG")     # Use CMake default
     #  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG -DQT_NO_DEBUG")  # Use CMake default
     set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -fno-inline")
@@ -60,10 +67,20 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
+
+# For MSVC, at least do a version sanity check
+elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "18.0")
+        message(WARNING "Your compiler is too old; we expect at least Visual Studio Nov 2013 CTP (MSVC 18). Your build will likely fail.")
+    endif()
+
+# Unknown/unsupported compiler
+else()
+    message(WARNING "Unknown or unsupported compiler. Make sure to enable C++11 support. Good luck.")
 endif()
 
 # Mac build stuff
-if(APPLE AND DEPLOY)
+if (APPLE AND DEPLOY)
     set(CMAKE_OSX_ARCHITECTURES "x86_64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8")
     set(CMAKE_OSX_SYSROOT "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk")
