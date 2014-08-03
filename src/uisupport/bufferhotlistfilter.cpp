@@ -22,6 +22,7 @@
 
 #include "networkmodel.h"
 
+
 BufferHotListFilter::BufferHotListFilter(QAbstractItemModel *source, QObject *parent)
     : QSortFilterProxyModel(parent)
 {
@@ -30,6 +31,13 @@ BufferHotListFilter::BufferHotListFilter(QAbstractItemModel *source, QObject *pa
     sort(0, Qt::DescendingOrder); // enable sorting... this is "usually" triggered by a enabling setSortingEnabled(true) on a view;
 }
 
+BufferId BufferHotListFilter::hottestBuffer()
+{
+  invalidate();
+  sort(0, Qt::DescendingOrder);
+  QModelIndex topIndex = index(0,0);
+  return data(topIndex, NetworkModel::BufferIdRole).value<BufferId>();
+}
 
 bool BufferHotListFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
