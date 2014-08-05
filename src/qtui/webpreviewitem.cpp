@@ -19,10 +19,17 @@
  ***************************************************************************/
 
 #include "webpreviewitem.h"
+#ifndef QT_NO_NETWORKPROXY
+#  include "coreaccount.h"
+#  include "clientsettings.h"
+#endif
 
 #ifdef HAVE_WEBKIT
 
 #include <QGraphicsProxyWidget>
+#ifndef QT_NO_NETWORKPROXY
+#  include <QNetworkProxy>
+#endif
 #include <QPainter>
 #include <QWebView>
 #include <QWebSettings>
@@ -32,6 +39,28 @@ WebPreviewItem::WebPreviewItem(const QUrl &url)
     _boundingRect(0, 0, 400, 300)
 {
     qreal frameWidth = 5;
+
+#ifndef QT_NO_NETWORKPROXY
+    CoreAccountSettings s;
+    AccountId accId;
+    if (s.autoConnectToFixedAccount())
+        accId = s.autoConnectAccount();
+    else
+        accId = s.lastAccount();
+    CoreAccount _account;
+    foreach(AccountId accId2, s.knownAccounts()) {
+        if (accId == accId2) {
+            QVariantMap map = s.retrieveAccountData(accId2);
+            _account.fromVariantMap(map); // TODO Hook into kwallet/password saving stuff
+            break;
+        }
+    }
+
+    if (_account.useProxy()) {
+        QNetworkProxy proxy(_account.proxyType(), _account.proxyHostName(), _account.proxyPort(), _account.proxyUser(), _account.proxyPassword());
+        QNetworkProxy::setApplicationProxy(proxy);
+    }
+#endif
 
     QWebView *webView = new QWebView;
     webView->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
