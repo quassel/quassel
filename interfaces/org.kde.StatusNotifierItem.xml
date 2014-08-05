@@ -8,6 +8,10 @@
     <property name="Status" type="s" access="read"/>
     <property name="WindowId" type="i" access="read"/>
 
+    <!-- An additional path to add to the theme search path to find the icons specified above. -->
+    <property name="IconThemePath" type="s" access="read"/>
+    <property name="Menu" type="o" access="read"/>
+    <property name="ItemIsMenu" type="b" access="read"/>
 
     <!-- main icon -->
     <!-- names are preferred over pixmaps -->
