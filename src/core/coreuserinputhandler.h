@@ -36,6 +36,7 @@ public:
     inline CoreNetwork *coreNetwork() const { return qobject_cast<CoreNetwork *>(parent()); }
 
     void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
+    int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
 
 public slots:
     void handleAway(const BufferInfo &bufferInfo, const QString &text);
@@ -87,7 +88,6 @@ private:
     void doMode(const BufferInfo& bufferInfo, const QChar &addOrRemove, const QChar &mode, const QString &nickList);
     void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
     void putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher = 0);
-    int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
 
 #ifdef HAVE_QCA2
     QByteArray encrypt(const QString &target, const QByteArray &message, bool *didEncrypt = 0) const;
