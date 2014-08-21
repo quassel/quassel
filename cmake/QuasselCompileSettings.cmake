@@ -36,14 +36,12 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 
     # Let's just hope that all gccs support these options and skip the tests...
     # -fno-strict-aliasing is needed apparently for Qt < 4.6
-    set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing")
+    set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing -Wundef -Wcast-align -Wpointer-arith -Wformat-security -fno-check-new -fno-common")
     #  set(CMAKE_CXX_FLAGS_RELEASE          "-O2")   # use CMake default
     #  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O2")  # use CMake default
     set(CMAKE_CXX_FLAGS_DEBUG             "-g -ggdb -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
     set(CMAKE_CXX_FLAGS_DEBUGFULL         "-g3 -ggdb -fno-inline")
     set(CMAKE_CXX_FLAGS_PROFILE           "-g3 -ggdb -fno-inline -ftest-coverage -fprofile-arcs")
-
-    set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -ansi -W -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing -Wundef -Wcast-align -Wpointer-arith -Wformat-security -fno-check-new -fno-common")
 
     check_cxx_compiler_flag(-Woverloaded-virtual CXX_W_OVERLOADED_VIRTUAL)
     if(CXX_W_OVERLOADED_VIRTUAL)
