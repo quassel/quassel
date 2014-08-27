@@ -1022,13 +1022,15 @@ void MainWin::setupToolBars()
 #endif
 }
 
-#ifdef Q_WS_MAC
 void MainWin::saveMainToolBarStatus(bool enabled)
 {
+#ifdef Q_OS_MAC
     QtUiSettings uiSettings;
     uiSettings.setValue("ShowMainToolBar", enabled);
-}
+#else
+    Q_UNUSED(enabled);
 #endif
+}
 
 
 void MainWin::connectedToCore()
