@@ -154,9 +154,7 @@ private slots:
 
     void saveMenuBarStatus(bool enabled);
     void saveStatusBarStatus(bool enabled);
-#ifdef Q_OS_MAC
     void saveMainToolBarStatus(bool enabled);
-#endif
 
     void loadLayout();
     void saveLayout();
