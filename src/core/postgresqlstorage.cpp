@@ -1516,7 +1516,7 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
     if (limit != -1)
         params << limit;
     else
-        params << "ALL";
+        params << QVariant(QVariant::Int);
 
     QSqlQuery query = executePreparedQuery(queryName, params, db);
 
