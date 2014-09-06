@@ -81,12 +81,22 @@ protected:
      *  this would cause as we're just about to initialize that DB connection.
      */
     inline virtual bool initDbSession(QSqlDatabase & /* db */) { return true; }
+    
+    //! Check to see if the database connection is still open
+    /** The isOpen() function doesn't actually check if we are still
+     *  connected to the server, so we must send a query first to
+     *  ensure that the connection is still up
+     *
+     *  When reimplementing this method, don't use logDB() inside this function as
+     *  this would cause as we're just about to initialize that DB connection.
+     */
+    inline virtual bool isConnected(QSqlDatabase & /* db */) { return true; }
 
 private slots:
     void connectionDestroyed();
 
 private:
-    void addConnectionToPool();
+    QSqlDatabase addConnectionToPool();
 
     int _schemaVersion;
     bool _debug;

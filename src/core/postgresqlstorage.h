@@ -104,6 +104,7 @@ public slots:
 
 protected:
     virtual bool initDbSession(QSqlDatabase &db);
+    virtual bool isConnected(QSqlDatabase &db);
     virtual void setConnectionProperties(const QVariantMap &properties);
     inline virtual QString driverName() { return "QPSQL"; }
     inline virtual QString hostName() { return _hostName; }

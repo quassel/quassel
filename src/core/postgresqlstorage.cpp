@@ -140,6 +140,12 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase &db)
 }
 
 
+bool PostgreSqlStorage::isConnected(QSqlDatabase &db) {
+    db.exec("SELECT 1;");
+    return db.isOpen();
+}
+
+
 void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties)
 {
     _userName = properties["Username"].toString();
