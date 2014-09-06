@@ -321,8 +321,8 @@ void CoreSession::processMessages()
             bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, BufferInfo::StatusBuffer, "");
         }
         Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
-        Core::storeMessage(msg);
-        emit displayMsg(msg);
+        if(Core::storeMessage(msg))
+            emit displayMsg(msg);
     }
     else {
         QHash<NetworkId, QHash<QString, BufferInfo> > bufferInfoCache;
@@ -364,10 +364,11 @@ void CoreSession::processMessages()
             messages << msg;
         }
 
-        Core::storeMessages(messages);
-        // FIXME: extend protocol to a displayMessages(MessageList)
-        for (int i = 0; i < messages.count(); i++) {
-            emit displayMsg(messages[i]);
+        if(Core::storeMessages(messages)) {
+            // FIXME: extend protocol to a displayMessages(MessageList)
+            for (int i = 0; i < messages.count(); i++) {
+                emit displayMsg(messages[i]);
+            }
         }
     }
     _processMessages = false;
