@@ -16,7 +16,10 @@ Without further ado, let's start:
 Version 0.10.1 (TBD)
 ====================
 
+* Fix backlog loading for QuasselDroid
+* Properly save the toolbar state on Mac OSX
 * Fix a crash with KDE's network detection
+* Various other fixes
 
 Version 0.10.0 (2014-03-25)
 ===========================
