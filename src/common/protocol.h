@@ -80,12 +80,12 @@ struct ClientDenied : public HandshakeMessage
 
 struct ClientRegistered : public HandshakeMessage
 {
-    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, bool sslSupported, const QDateTime &coreStartTime)
+    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, bool sslSupported, const QString &coreInfo)
     : coreFeatures(coreFeatures)
     , coreConfigured(coreConfigured)
     , backendInfo(backendInfo)
     , sslSupported(sslSupported)
-    , coreStartTime(coreStartTime)
+    , coreInfo(coreInfo)
     {}
 
     quint32 coreFeatures;
@@ -94,7 +94,7 @@ struct ClientRegistered : public HandshakeMessage
 
     // this is only used by the LegacyProtocol in compat mode
     bool sslSupported;
-    QDateTime coreStartTime;
+    QString coreInfo;
 };
 
 
