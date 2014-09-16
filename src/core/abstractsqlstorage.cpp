@@ -50,20 +50,28 @@ AbstractSqlStorage::~AbstractSqlStorage()
 
 QSqlDatabase AbstractSqlStorage::logDb()
 {
+    QSqlDatabase db;
+    
     if (!_connectionPool.contains(QThread::currentThread()))
-        addConnectionToPool();
+        db = addConnectionToPool();
+    else
+        db = QSqlDatabase::database(_connectionPool[QThread::currentThread()]->name());
+    
+    if (!isConnected(db)) {
+        db = addConnectionToPool();
+    }
 
-    return QSqlDatabase::database(_connectionPool[QThread::currentThread()]->name());
+    return db;
 }
 
 
-void AbstractSqlStorage::addConnectionToPool()
+QSqlDatabase AbstractSqlStorage::addConnectionToPool()
 {
     QMutexLocker locker(&_connectionPoolMutex);
     // we have to recheck if the connection pool already contains a connection for
     // this thread. Since now (after the lock) we can only tell for sure
     if (_connectionPool.contains(QThread::currentThread()))
-        return;
+        return QSqlDatabase::database(_connectionPool[QThread::currentThread()]->name());
 
     QThread *currentThread = QThread::currentThread();
 
@@ -100,6 +108,8 @@ void AbstractSqlStorage::addConnectionToPool()
             db.close();
         }
     }
+    
+    return db;
 }
 
 
