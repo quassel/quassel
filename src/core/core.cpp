@@ -380,13 +380,10 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings, bool
             return false;  // trigger setup process
         if (storage->setup(settings))
             return initStorage(backend, settings, false);
-    // if setup wasn't successfull we mark the backend as unavailable
+    // if initialization wasn't successful, we quit to keep from coming up unconfigured
     case Storage::NotAvailable:
-        qCritical() << "Selected storage backend is not available:" << backend;
-        storage->deleteLater();
-        _storageBackends.remove(backend);
-        storage = 0;
-        return false;
+        qCritical() << "FATAL: Selected storage backend is not available:" << backend;
+        exit(EXIT_FAILURE);
     case Storage::IsReady:
         // delete all other backends
         _storageBackends.remove(backend);
