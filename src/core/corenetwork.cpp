@@ -82,7 +82,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 
     if (Quassel::isOptionSet("oidentd")) {
-        connect(this, SIGNAL(socketConnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Qt::BlockingQueuedConnection);
+        connect(this, SIGNAL(socketOpen(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Qt::BlockingQueuedConnection);
         connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)));
     }
 }
@@ -451,7 +451,7 @@ void CoreNetwork::socketInitialized()
         return;
     }
     
-    emit socketConnected(identity, localAddress(), localPort(), peerAddress(), peerPort());
+    emit socketOpen(identity, localAddress(), localPort(), peerAddress(), peerPort());
     
     Server server = usedServer();
 #ifdef HAVE_SSL
