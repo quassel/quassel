@@ -329,9 +329,10 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
         }
         if (splitPos <= 0 || splitPos > maxSplitPos)
             splitPos = maxSplitPos;
+    	newparams << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message.left(splitPos))));
+        params = newparams;
     }
-    newparams << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message.left(splitPos))));
-    net->putCmd("PRIVMSG", newparams);
+    net->putCmd("PRIVMSG", params);
 
     if (splitPos < message.count())
         query(net, bufname, ctcpTag, message.mid(splitPos));
