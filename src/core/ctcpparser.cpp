@@ -313,7 +313,6 @@ QByteArray CtcpParser::pack(const QByteArray &ctcpTag, const QByteArray &message
 void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QString &message)
 {
     QList<QByteArray> params;
-    QList<QByteArray> newparams;
     params << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message)));
 
     static const char *splitter = " .,-!?";
@@ -329,8 +328,8 @@ void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &
         }
         if (splitPos <= 0 || splitPos > maxSplitPos)
             splitPos = maxSplitPos;
-    	newparams << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message.left(splitPos))));
-        params = newparams;
+
+        params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message.left(splitPos))));
     }
     net->putCmd("PRIVMSG", params);
 
