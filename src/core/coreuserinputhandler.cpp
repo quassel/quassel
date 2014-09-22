@@ -767,7 +767,7 @@ void CoreUserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray
     //       For example, blowfish-ebc seems to create 8-char chunks.
 
     static const char *cmd = "PRIVMSG";
-    static const char *splitter = " .,-";
+    static const char *splitter = " .,-!?";
 
     int maxSplitPos = message.count();
     int splitPos = maxSplitPos;
