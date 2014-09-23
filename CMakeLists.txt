@@ -11,9 +11,9 @@ project(QuasselIRC)
 
 # Versions
 set(QUASSEL_MAJOR  0)
-set(QUASSEL_MINOR 11)
+set(QUASSEL_MINOR 12)
 set(QUASSEL_PATCH  0)
-set(QUASSEL_VERSION_STRING "0.11.0")
+set(QUASSEL_VERSION_STRING "0.12-pre")
 
 # Tell CMake about or own modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
