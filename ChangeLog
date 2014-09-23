@@ -13,11 +13,25 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.11.x (TBD)
-====================
+Version 0.11.0 (2014-09-23)
+===========================
 
+* New build requirements:
+  - C++11 capable compiler (gcc 4.7+, clang 3.3+, MSVC 2013+)
+  - cmake 2.8.9+
 * Full support for Qt 5.2+ in addition to Qt 4.6+
 * Completely revamp the build system, making use of "new" CMake features
+
+Version 0.10.1 (2014-09-23)
+===========================
+
+* Fix buffer hotlist sorting
+* Split CTCP messages if they're too long
+* Make database problems more obvious
+* Fix backlog loading for QuasselDroid
+* Properly save the toolbar state on Mac OSX
+* Fix a crash with KDE's network detection
+* Various other fixes
 
 Version 0.10.0 (2014-03-25)
 ===========================
