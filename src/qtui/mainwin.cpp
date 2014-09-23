@@ -1609,9 +1609,7 @@ void MainWin::on_jumpHotBuffer_triggered()
     if (!_bufferHotList->rowCount())
         return;
 
-    QModelIndex topIndex = _bufferHotList->index(0, 0);
-    BufferId bufferId = _bufferHotList->data(topIndex, NetworkModel::BufferIdRole).value<BufferId>();
-    Client::bufferModel()->switchToBuffer(bufferId);
+    Client::bufferModel()->switchToBuffer(_bufferHotList->hottestBuffer());
 }
 
 
@@ -1662,6 +1660,9 @@ void MainWin::on_actionDebugNetworkModel_triggered()
 
 void MainWin::on_actionDebugHotList_triggered()
 {
+    _bufferHotList->invalidate();
+    _bufferHotList->sort(0, Qt::DescendingOrder);
+
     QTreeView *view = new QTreeView;
     view->setAttribute(Qt::WA_DeleteOnClose);
     view->setModel(_bufferHotList);
