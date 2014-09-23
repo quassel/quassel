@@ -13,9 +13,13 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.10.1 (TBD)
-====================
 
+Version 0.10.1 (2014-09-23)
+===========================
+
+* Fix buffer hotlist sorting
+* Split CTCP messages if they're too long
+* Make database problems more obvious
 * Fix backlog loading for QuasselDroid
 * Properly save the toolbar state on Mac OSX
 * Fix a crash with KDE's network detection
