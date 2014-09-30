@@ -13,7 +13,7 @@ else
         # care to interpret leading and trailing ":" as meaning
         # the current directory; the same is true for "::" within
         # the PATH.
-    
+
         # Replace leading : with . in PATH, store in p
         p=${PATH/#:/.:}
         # Replace trailing : with .
@@ -57,15 +57,15 @@ mkdir $PACKAGETMPDIR
 case $BUILDTYPE in
 "Client")
 	cp -r ${WORKINGDIR}Quassel\ Client.app ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py "${PACKAGETMPDIR}/Quassel Client.app"
+	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qcocoa "${PACKAGETMPDIR}/Quassel Client.app"
 	;;
 "Core")
 	cp ${WORKINGDIR}quasselcore ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py --nobundle ${PACKAGETMPDIR}
+	${SCRIPTDIR}/macosx_DeployApp.py --nobundle --plugins=qsqlite,qsqlpsql ${PACKAGETMPDIR}
 	;;
 "Mono")
 	cp -r ${WORKINGDIR}Quassel.app ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py "${PACKAGETMPDIR}/Quassel.app"
+	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qsqlite,qsqlpsql,qcocoa "${PACKAGETMPDIR}/Quassel.app"
 	;;
 *)
 	echo >&2 "Valid parameters are \"Client\", \"Core\", or \"Mono\"."
