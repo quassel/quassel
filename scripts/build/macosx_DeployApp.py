@@ -15,21 +15,34 @@
 # ==============================
 import sys
 import os
+import os.path
 
 from subprocess import Popen, PIPE
 
+# ==============================
+#  Constants
+# ==============================
+QT_CONFIG = """[Paths]
+ Plugins = plugins
+"""
+
+QT_CONFIG_NOBUNDLE = """[Paths]
+ Prefix = ../
+ Plugins = plugins
+"""
+
+
+
+
 class InstallQt(object):
-    def __init__(self, appdir, bundle = True):
+    def __init__(self, appdir, bundle = True, requestedPlugins=[]):
         self.appDir = appdir
         self.bundle = bundle
+        self.frameworkDir = self.appDir + "/Frameworks"
+        self.pluginDir = self.appDir + "/plugins"
         self.executableDir = self.appDir
         if bundle:
             self.executableDir += "/MacOS"
-
-        if bundle:
-            self.frameworkDir = self.appDir + "/Frameworks"
-        else:
-            self.frameworkDir = self.executableDir + "/Frameworks"
 
         self.installedFrameworks = set()
 
@@ -39,17 +52,103 @@ class InstallQt(object):
         for executable in executables:
             self.resolveDependancies(executable)
 
-    def findFrameworkPath(self):
-        qmakeProcess = Popen('qmake -query QT_INSTALL_LIBS', shell=True, stdout=PIPE, stderr=PIPE)
-        self.sourceFrameworkPath = qmakeProcess.stdout.read().strip()
+
+        self.findPluginsPath()
+        self.installPlugins(requestedPlugins)
+        self.installQtConf()
+
+    def qtProperty(self, qtProperty):
+        """
+        Query persistent property of Qt via qmake
+        """
+        VALID_PROPERTIES = ['QT_INSTALL_PREFIX',
+                            'QT_INSTALL_DATA',
+                            'QT_INSTALL_DOCS',
+                            'QT_INSTALL_HEADERS',
+                            'QT_INSTALL_LIBS',
+                            'QT_INSTALL_BINS',
+                            'QT_INSTALL_PLUGINS',
+                            'QT_INSTALL_IMPORTS',
+                            'QT_INSTALL_TRANSLATIONS',
+                            'QT_INSTALL_CONFIGURATION',
+                            'QT_INSTALL_EXAMPLES',
+                            'QT_INSTALL_DEMOS',
+                            'QMAKE_MKSPECS',
+                            'QMAKE_VERSION',
+                            'QT_VERSION'
+                            ]
+        if qtProperty not in VALID_PROPERTIES:
+            return None
+
+        qmakeProcess = Popen('qmake -query %s' % qtProperty, shell=True, stdout=PIPE, stderr=PIPE)
+        result = qmakeProcess.stdout.read().strip()
         qmakeProcess.stdout.close()
         qmakeProcess.wait()
+        return result
+
+    def findFrameworkPath(self):
+        self.sourceFrameworkPath = self.qtProperty('QT_INSTALL_LIBS')
+
+    def findPluginsPath(self):
+        self.sourcePluginsPath = self.qtProperty('QT_INSTALL_PLUGINS')
+
+    def findPlugin(self, pluginname):
+        qmakeProcess = Popen('find %s -name %s' % (self.sourcePluginsPath, pluginname), shell=True, stdout=PIPE, stderr=PIPE)
+        result = qmakeProcess.stdout.read().strip()
+        qmakeProcess.stdout.close()
+        qmakeProcess.wait()
+        if not result:
+            raise OSError
+        return result
+
+
+    def installPlugins(self, requestedPlugins):
+        try:
+            os.mkdir(self.pluginDir)
+        except:
+            pass
+
+        for plugin in requestedPlugins:
+            if not plugin.isalnum():
+                print "Skipping library '%s'..." % plugin
+                continue
+
+            pluginName = "lib%s.dylib" % plugin
+            pluginSource = ''
+            try:
+                pluginSource = self.findPlugin(pluginName)
+            except OSError:
+                print "WARNING: Requested library does not exist: '%s'" % plugin
+                continue
+
+            pluginSubDir = os.path.dirname(pluginSource)
+            pluginSubDir = pluginSubDir.replace(self.sourcePluginsPath, '').strip('/')
+            try:
+                os.mkdir("%s/%s" % (self.pluginDir, pluginSubDir))
+            except OSError:
+                pass
+
+            os.system('cp "%s" "%s/%s"' % (pluginSource, self.pluginDir, pluginSubDir))
+
+            self.resolveDependancies("%s/%s/%s" % (self.pluginDir, pluginSubDir, pluginName))
+
+    def installQtConf(self):
+        qtConfName = self.appDir + "/qt.conf"
+        qtConfContent = QT_CONFIG_NOBUNDLE
+        if self.bundle:
+            qtConfContent = QT_CONFIG
+            qtConfName = self.appDir + "/Resources/qt.conf"
+
+        qtConf = open(qtConfName, 'w')
+        qtConf.write(qtConfContent)
+        qtConf.close()
 
     def resolveDependancies(self, obj):
         # obj must be either an application binary or a framework library
+        #print "resolving deps for:", obj
         for framework, lib in self.determineDependancies(obj):
             self.installFramework(framework)
-            self.changeDylPath(obj, lib)
+            self.changeDylPath(obj, framework, lib)
 
     def installFramework(self, framework):
         # skip if framework is already installed.
@@ -106,33 +205,40 @@ class InstallQt(object):
                                                                or "phonon" in line)
                                                                and not "@executable_path" in line]
         frameworks = [lib[:lib.find(".framework")+len(".framework")] for lib in libs]
+        frameworks = [framework[framework.rfind('/')+1:] for framework in frameworks]
         return zip(frameworks, libs)
 
 
-    def changeDylPath(self, obj, lib):
+    def changeDylPath(self, obj, framework, lib):
+        newlibname = framework + lib.split(framework)[1]
         if self.bundle:
-            newlibname = "@executable_path/../Frameworks/%s" % lib
+            newlibname = "@executable_path/../Frameworks/%s" % newlibname
         else:
-            newlibname = "@executable_path/Frameworks/%s" % lib
+            newlibname = "@executable_path/Frameworks/%s" % newlibname
 
         #print 'install_name_tool -change "%s" "%s" "%s"' % (lib, newlibname, obj)
         os.system('install_name_tool -change "%s" "%s" "%s"' % (lib, newlibname, obj))
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print "Wrong Argument Count (Syntax: %s [--nobundle] $TARGET_APP)" % sys.argv[0]
+        print "Wrong Argument Count (Syntax: %s [--nobundle] [--plugins=plugin1,plugin2,...] $TARGET_APP)" % sys.argv[0]
         sys.exit(1)
     else:
         bundle = True
+        plugins = []
         offset = 1
 
-        if sys.argv[1].startswith("--"):
-            offset = 2
-            if sys.argv[1] == "--nobundle":
+        while offset < len(sys.argv) and sys.argv[offset].startswith("--"):
+            if sys.argv[offset] == "--nobundle":
                 bundle = False
+
+            if sys.argv[offset].startswith("--plugins="):
+                plugins = sys.argv[offset].split('=')[1].split(',')
+
+            offset += 1
 
         targetDir = sys.argv[offset]
         if bundle:
             targetDir += "/Contents"
 
-        InstallQt(targetDir, bundle)
+        InstallQt(targetDir, bundle, plugins)
