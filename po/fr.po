@@ -2515,7 +2515,7 @@ msgstr "%1 vous a invité sur le canal %2"
 #, qt-format
 msgctxt "EventStringifier|"
 msgid "%1 has changed topic for %2 to: \"%3\""
-msgstr "%1 à changé le sujet de %2 en : « %3 »"
+msgstr "%1 a changé le sujet de %2 en : « %3 »"
 
 #: ../src/core/eventstringifier.cpp:347
 #, qt-format
