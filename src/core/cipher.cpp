@@ -364,6 +364,10 @@ QByteArray Cipher::blowfishECB(QByteArray cipherText, bool direction)
     }
     else
     {
+        // ECB Blowfish encodes in blocks of 12 chars, so anything else is malformed input
+        if ((temp.length() % 12) != 0)
+            return cipherText;
+
         temp = b64ToByte(temp);
         while ((temp.length() % 8) != 0) temp.append('\0');
     }
@@ -376,8 +380,13 @@ QByteArray Cipher::blowfishECB(QByteArray cipherText, bool direction)
     if (!cipher.ok())
         return cipherText;
 
-    if (direction)
+    if (direction) {
+        // Sanity check
+        if ((temp2.length() % 8) != 0)
+            return cipherText;
+
         temp2 = byteToB64(temp2);
+    }
 
     return temp2;
 }
