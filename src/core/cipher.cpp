@@ -429,13 +429,13 @@ QByteArray Cipher::byteToB64(QByteArray text)
         right += v;
 
         for (int i = 0; i < 6; i++) {
-            encoded.append(base64.at(right & 0x3F).toAscii());
+            encoded.append(base64.at(right & 0x3F).toLatin1());
             right = right >> 6;
         }
 
-        //TODO make sure the .toascii doesn't break anything
+        //TODO make sure the .toLatin1 doesn't break anything
         for (int i = 0; i < 6; i++) {
-            encoded.append(base64.at(left & 0x3F).toAscii());
+            encoded.append(base64.at(left & 0x3F).toLatin1());
             left = left >> 6;
         }
     }
