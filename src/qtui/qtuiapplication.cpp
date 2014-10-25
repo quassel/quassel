@@ -68,10 +68,6 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 #else
     qInstallMessageHandler(Client::logMessage);
 #endif
-
-    // Some platforms don't set a default icon theme; chances are we can find our bundled Oxygen theme though
-    if (QIcon::themeName().isEmpty())
-        QIcon::setThemeName("oxygen");
 }
 
 
@@ -121,6 +117,13 @@ bool QtUiApplication::init()
             qCritical() << "Invalid client settings version, terminating!";
             return false;
         }
+
+        // Set the icon theme
+        if (Quassel::isOptionSet("icontheme"))
+            QIcon::setThemeName(Quassel::optionValue("icontheme"));
+        else if (QIcon::themeName().isEmpty())
+            // Some platforms don't set a default icon theme; chances are we can find our bundled Oxygen theme though
+            QIcon::setThemeName("oxygen");
 
         // session resume
         QtUi *gui = new QtUi();
