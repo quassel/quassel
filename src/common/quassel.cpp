@@ -112,6 +112,7 @@ bool Quassel::init()
     _initialized = true;
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
+    setupEnvironment();
     registerMetaTypes();
 
     Network::setDefaultCodecForServer("ISO-8859-1");
@@ -208,6 +209,37 @@ void Quassel::registerMetaTypes()
         qRegisterMetaType<QVariant>("QVariant");
         qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
     }
+}
+
+
+void Quassel::setupEnvironment()
+{
+    // On modern Linux systems, XDG_DATA_DIRS contains a list of directories containing application data. This
+    // is, for example, used by Qt for finding icons and other things. In case Quassel is installed in a non-standard
+    // prefix (or run from the build directory), it makes sense to add this to XDG_DATA_DIRS so we don't have to
+    // hack extra search paths into various places.
+#ifdef Q_OS_UNIX
+    QString xdgDataVar = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
+    if (xdgDataVar.isEmpty())
+        xdgDataVar = QLatin1String("/usr/local/share:/usr/share"); // sane defaults
+
+    QStringList xdgDirs = xdgDataVar.split(QLatin1Char(':'), QString::SkipEmptyParts);
+
+    // Add our install prefix (if we're not in a bindir, this just adds the current workdir)
+    QString appDir = QCoreApplication::applicationDirPath();
+    int binpos = appDir.lastIndexOf("/bin");
+    if (binpos >= 0) {
+        appDir.replace(binpos, 4, "/share");
+        xdgDirs.append(appDir);
+        // Also append apps/quassel, this is only for QIconLoader to find icons there
+        xdgDirs.append(appDir + "/apps/quassel");
+    } else
+        xdgDirs.append(appDir);  // build directory is always the last fallback
+
+    xdgDirs.removeDuplicates();
+
+    qputenv("XDG_DATA_DIRS", QFile::encodeName(xdgDirs.join(":")));
+#endif
 }
 
 

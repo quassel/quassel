@@ -148,6 +148,7 @@ protected:
     inline void disableCrashhandler();
 
 private:
+    void setupEnvironment();
     void registerMetaTypes();
 
     static void handleSignal(int signal);
