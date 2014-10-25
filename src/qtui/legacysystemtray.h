@@ -29,6 +29,7 @@
 #  include <QSystemTrayIcon>
 #endif
 
+#include <QIcon>
 #include <QTimer>
 
 #include "systemtray.h"
@@ -44,7 +45,7 @@ public:
 
     virtual bool isVisible() const;
     virtual inline bool isSystemTrayAvailable() const;
-    virtual Icon stateIcon() const; // overriden to care about blinkState
+    virtual QIcon stateIcon() const; // overriden to care about blinkState
 
 public slots:
     virtual void setState(State state);

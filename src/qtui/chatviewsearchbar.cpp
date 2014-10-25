@@ -20,9 +20,10 @@
 
 #include "chatviewsearchbar.h"
 
+#include <QIcon>
+
 #include "action.h"
 #include "actioncollection.h"
-#include "iconloader.h"
 #include "qtui.h"
 
 ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)

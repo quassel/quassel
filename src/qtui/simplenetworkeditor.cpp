@@ -20,7 +20,7 @@
 
 #include "simplenetworkeditor.h"
 
-#include "iconloader.h"
+#include <QIcon>
 
 #include "networkssettingspage.h"
 

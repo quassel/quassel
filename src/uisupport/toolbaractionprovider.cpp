@@ -18,12 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QIcon>
 #include <QMenu>
 #include <QToolBar>
 
 #include "toolbaractionprovider.h"
-
-#include "iconloader.h"
 
 ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
     : NetworkModelController(parent)

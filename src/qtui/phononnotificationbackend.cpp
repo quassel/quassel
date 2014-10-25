@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QFileDialog>
+#include <QIcon>
 #include <QUrl>
 
 #include <phonon/mediaobject.h>
@@ -27,7 +28,6 @@
 #include "phononnotificationbackend.h"
 
 #include "clientsettings.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "qtui.h"
 

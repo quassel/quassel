@@ -18,13 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QIcon>
 #include <QMessageBox>
 #include <QPushButton>
 
 #include "settingsdlg.h"
 
 #include "client.h"
-#include "iconloader.h"
 
 SettingsDlg::SettingsDlg(QWidget *parent)
     : QDialog(parent),

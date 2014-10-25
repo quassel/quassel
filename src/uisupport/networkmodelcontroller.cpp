@@ -21,6 +21,7 @@
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QGridLayout>
+#include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
 #include <QInputDialog>
@@ -31,7 +32,6 @@
 
 #include "buffermodel.h"
 #include "buffersettings.h"
-#include "iconloader.h"
 #include "clientidentity.h"
 #include "network.h"
 #include "util.h"

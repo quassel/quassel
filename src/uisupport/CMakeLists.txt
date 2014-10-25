@@ -17,8 +17,6 @@ set(SOURCES
     flatproxymodel.cpp
     fontselector.cpp
     graphicalui.cpp
-    icon.cpp
-    iconloader.cpp
     multilineedit.cpp
     networkmodelcontroller.cpp
     nickview.cpp

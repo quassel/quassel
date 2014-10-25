@@ -23,6 +23,7 @@
 #include <QDesktopServices>
 #include <QDrag>
 #include <QGraphicsSceneMouseEvent>
+#include <QIcon>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMimeData>
@@ -48,7 +49,6 @@
 #include "clientbacklogmanager.h"
 #include "columnhandleitem.h"
 #include "contextmenuactionprovider.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "markerlineitem.h"
 #include "messagefilter.h"

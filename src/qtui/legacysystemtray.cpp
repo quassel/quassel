@@ -142,7 +142,7 @@ void LegacySystemTray::setState(State state_)
 }
 
 
-Icon LegacySystemTray::stateIcon() const
+QIcon LegacySystemTray::stateIcon() const
 {
     if (mode() == Legacy && state() == NeedsAttention && !_blinkState)
         return SystemTray::stateIcon(Active);

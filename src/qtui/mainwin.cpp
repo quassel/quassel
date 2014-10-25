@@ -20,6 +20,7 @@
 
 #include "mainwin.h"
 
+#include <QIcon>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QStatusBar>
@@ -74,7 +75,6 @@
 #include "debuglogwidget.h"
 #include "debugmessagemodelfilter.h"
 #include "flatproxymodel.h"
-#include "iconloader.h"
 #include "inputwidget.h"
 #include "irclistmodel.h"
 #include "ircconnectionwizard.h"

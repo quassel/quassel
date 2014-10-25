@@ -21,11 +21,11 @@
 #include <QDebug>
 #include <QAbstractButton>
 #include <QFormLayout>
+#include <QIcon>
 #include <QSpinBox>
 
 #include "coreconfigwizard.h"
 #include "coreconnection.h"
-#include "iconloader.h"
 
 CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent)
     : QWizard(parent),

@@ -22,7 +22,6 @@
 
 #include "buffersettings.h"
 #include "graphicalui.h"
-#include "iconloader.h"
 #include "networkmodel.h"
 #include "uistyle.h"
 

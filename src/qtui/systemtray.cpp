@@ -26,7 +26,6 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "client.h"
-#include "iconloader.h"
 #include "qtui.h"
 
 #ifdef HAVE_KDE
@@ -40,9 +39,9 @@ SystemTray::SystemTray(QWidget *parent)
     _mode(Invalid),
     _state(Passive),
     _shouldBeVisible(true),
-    _passiveIcon(QIcon::fromTheme("quassel-inactive")),
-    _activeIcon(QIcon::fromTheme("quassel")),
-    _needsAttentionIcon(QIcon::fromTheme("quassel-message")),
+    _passiveIcon(QIcon::fromTheme("quassel-inactive", QIcon(":/icons/quassel-inactive.png"))),
+    _activeIcon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png"))),
+    _needsAttentionIcon(QIcon::fromTheme("quassel-message", QIcon(":/icons/quassel-message.png"))),
     _trayMenu(0),
     _associatedWidget(parent)
 {
@@ -122,13 +121,13 @@ void SystemTray::setMode(Mode mode_)
 }
 
 
-Icon SystemTray::stateIcon() const
+QIcon SystemTray::stateIcon() const
 {
     return stateIcon(state());
 }
 
 
-Icon SystemTray::stateIcon(State state) const
+QIcon SystemTray::stateIcon(State state) const
 {
     switch (state) {
     case Passive:
@@ -138,7 +137,7 @@ Icon SystemTray::stateIcon(State state) const
     case NeedsAttention:
         return _needsAttentionIcon;
     }
-    return Icon();
+    return QIcon();
 }
 
 

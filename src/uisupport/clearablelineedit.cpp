@@ -20,10 +20,9 @@
 
 #include "clearablelineedit.h"
 
+#include <QIcon>
 #include <QToolButton>
 #include <QStyle>
-
-#include "iconloader.h"
 
 ClearableLineEdit::ClearableLineEdit(QWidget *parent)
     : QLineEdit(parent)

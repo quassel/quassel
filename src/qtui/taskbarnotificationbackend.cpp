@@ -21,12 +21,12 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QHBoxLayout>
+#include <QIcon>
 #include <QSpinBox>
 
 #include "taskbarnotificationbackend.h"
 
 #include "clientsettings.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "qtui.h"
 

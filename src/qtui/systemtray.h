@@ -21,7 +21,7 @@
 #ifndef SYSTEMTRAY_H_
 #define SYSTEMTRAY_H_
 
-#include "icon.h"
+#include <QIcon>
 
 class Action;
 class QMenu;
@@ -84,7 +84,7 @@ public slots:
 
 signals:
     void activated(SystemTray::ActivationReason);
-    void iconChanged(const Icon &);
+    void iconChanged(const QIcon &icon);
     void animationEnabledChanged(bool);
     void toolTipChanged(const QString &title, const QString &subtitle);
     void messageClicked(uint notificationId);
@@ -97,8 +97,8 @@ protected:
     virtual void setMode(Mode mode);
     inline bool shouldBeVisible() const;
 
-    virtual Icon stateIcon() const;
-    Icon stateIcon(State state) const;
+    virtual QIcon stateIcon() const;
+    QIcon stateIcon(State state) const;
     inline QString toolTipTitle() const;
     inline QString toolTipSubTitle() const;
     inline QMenu *trayMenu() const;
@@ -116,7 +116,7 @@ private:
     bool _shouldBeVisible;
 
     QString _toolTipTitle, _toolTipSubTitle;
-    Icon _passiveIcon, _activeIcon, _needsAttentionIcon;
+    QIcon _passiveIcon, _activeIcon, _needsAttentionIcon;
     bool _animationEnabled;
 
     QMenu *_trayMenu;

@@ -20,8 +20,9 @@
 
 #include "topicwidget.h"
 
+#include <QIcon>
+
 #include "client.h"
-#include "iconloader.h"
 #include "networkmodel.h"
 #include "uisettings.h"
 #include "graphicalui.h"

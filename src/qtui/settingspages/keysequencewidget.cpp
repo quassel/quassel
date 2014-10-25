@@ -29,6 +29,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QHBoxLayout>
+#include <QIcon>
 #include <QMessageBox>
 #include <QToolButton>
 
@@ -39,7 +40,6 @@
 
 #include "action.h"
 #include "actioncollection.h"
-#include "iconloader.h"
 #include "keysequencewidget.h"
 
 KeySequenceButton::KeySequenceButton(KeySequenceWidget *d_, QWidget *parent)

@@ -21,14 +21,13 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QGroupBox>
+#include <QIcon>
 #include <QHBoxLayout>
 
 #include "systraynotificationbackend.h"
 
 #include "client.h"
 #include "clientsettings.h"
-#include "icon.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"

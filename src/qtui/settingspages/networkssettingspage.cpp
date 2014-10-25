@@ -19,13 +19,13 @@
  ***************************************************************************/
 
 #include <QHeaderView>
+#include <QIcon>
 #include <QMessageBox>
 #include <QTextCodec>
 
 #include "networkssettingspage.h"
 
 #include "client.h"
-#include "iconloader.h"
 #include "identity.h"
 #include "network.h"
 #include "presetnetworks.h"

@@ -18,6 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QIcon>
 #include <QLayout>
 #include <QKeyEvent>
 #include <QMenu>
@@ -32,7 +33,6 @@
 #include "chatviewsearchcontroller.h"
 #include "chatviewsettings.h"
 #include "client.h"
-#include "iconloader.h"
 #include "multilineedit.h"
 #include "qtui.h"
 #include "settings.h"

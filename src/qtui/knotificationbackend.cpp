@@ -20,14 +20,13 @@
 
 #include <KNotification>
 #include <KNotifyConfigWidget>
+#include <QIcon>
 #include <QTextDocument>
 #include <QVBoxLayout>
 
 #include "knotificationbackend.h"
 
 #include "client.h"
-#include "icon.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"

@@ -20,8 +20,9 @@
 
 #include "coreconnectionstatuswidget.h"
 
+#include <QIcon>
+
 #include "client.h"
-#include "iconloader.h"
 #include "signalproxy.h"
 
 CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent)

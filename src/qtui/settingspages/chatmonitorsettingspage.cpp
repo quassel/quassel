@@ -20,13 +20,14 @@
 
 #include "chatmonitorsettingspage.h"
 
+#include <QIcon>
+
 #include "client.h"
 #include "networkmodel.h"
 #include "bufferviewconfig.h"
 #include "buffermodel.h"
 #include "bufferview.h"
 #include "bufferviewfilter.h"
-#include "iconloader.h"
 #include "chatviewsettings.h"
 
 #include <QVariant>

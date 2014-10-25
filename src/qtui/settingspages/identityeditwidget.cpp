@@ -23,6 +23,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
+#include <QIcon>
 #include <QMimeData>
 #include <QUrl>
 #include <QMessageBox>
@@ -34,7 +35,6 @@
 #endif
 
 #include "client.h"
-#include "iconloader.h"
 
 IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     : QWidget(parent)

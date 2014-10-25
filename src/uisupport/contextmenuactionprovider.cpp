@@ -18,6 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QIcon>
 #include <QInputDialog>
 #include <QMenu>
 #include <QMessageBox>
@@ -27,7 +28,6 @@
 
 #include "buffermodel.h"
 #include "buffersettings.h"
-#include "iconloader.h"
 #include "clientidentity.h"
 #include "network.h"
 #include "util.h"

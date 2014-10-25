@@ -21,6 +21,7 @@
 #include "chatmonitorview.h"
 
 #include <QAction>
+#include <QIcon>
 #include <QMenu>
 #include <QContextMenuEvent>
 
@@ -29,7 +30,6 @@
 #include "chatitem.h"
 #include "chatscene.h"
 #include "client.h"
-#include "iconloader.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "messagemodel.h"

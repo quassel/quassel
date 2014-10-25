@@ -20,12 +20,14 @@
 
 #include "indicatornotificationbackend.h"
 
+#include <QIcon>
+#include <QImage>
+
 #include <qindicateserver.h>
 #include <qindicateindicator.h>
 
 #include "client.h"
 #include "clientsettings.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"
@@ -108,8 +110,8 @@ void IndicatorNotificationBackend::notify(const Notification &notification)
 
     QModelIndex index = Client::networkModel()->bufferIndex(bufferId);
     QVariant icon = QtUi::style()->bufferViewItemData(index, Qt::DecorationRole);
-    if (icon.canConvert<QPixmap>()) {
-        QImage image = icon.value<QPixmap>().toImage();
+    if (icon.canConvert<QIcon>()) {
+        QImage image = icon.value<QIcon>().pixmap(16).toImage();
         indicator->setIconProperty(image);
     }
 

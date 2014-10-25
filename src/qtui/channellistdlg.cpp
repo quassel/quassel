@@ -22,12 +22,11 @@
 
 #include <QHeaderView>
 #include <QHBoxLayout>
+#include <QIcon>
 #include <QSpacerItem>
 
 #include "client.h"
 #include "clientirclisthelper.h"
-#include "icon.h"
-#include "iconloader.h"
 
 ChannelListDlg::ChannelListDlg(QWidget *parent)
     : QDialog(parent),
@@ -55,7 +54,7 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
 
     ui.searchChannelsButton->setAutoDefault(false);
 
-    setWindowIcon(Icon("format-list-unordered"));
+    setWindowIcon(QIcon::fromTheme("format-list-unordered"));
 
     connect(ui.advancedModeLabel, SIGNAL(clicked()), this, SLOT(toggleMode()));
     connect(ui.searchChannelsButton, SIGNAL(clicked()), this, SLOT(requestSearch()));

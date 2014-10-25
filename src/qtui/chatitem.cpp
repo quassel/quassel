@@ -23,6 +23,7 @@
 #include <QDesktopServices>
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
+#include <QIcon>
 #include <QPainter>
 #include <QPalette>
 #include <QTextLayout>
@@ -35,7 +36,6 @@
 #include "chatlinemodel.h"
 #include "chatview.h"
 #include "contextmenuactionprovider.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "qtui.h"
 #include "qtuistyle.h"

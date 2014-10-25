@@ -21,9 +21,8 @@
 #include "aliasessettingspage.h"
 
 #include <QHeaderView>
+#include <QIcon>
 #include <QItemSelectionModel>
-
-#include "iconloader.h"
 
 AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("Aliases"), parent)

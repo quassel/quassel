@@ -20,10 +20,11 @@
 
 #include "coreaccountsettingspage.h"
 
+#include <QIcon>
+
 #include "client.h"
 #include "clientsettings.h"
 #include "coreaccountmodel.h"
-#include "iconloader.h"
 
 CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
     : SettingsPage(tr("Remote Cores"), QString(), parent),

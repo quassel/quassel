@@ -21,6 +21,7 @@
 #include "ignorelistsettingspage.h"
 
 #include <QHeaderView>
+#include <QIcon>
 #include <QItemSelectionModel>
 #include <QModelIndex>
 #include <QPainter>
@@ -28,7 +29,6 @@
 #include <QString>
 #include <QEvent>
 #include <QDebug>
-#include "iconloader.h"
 
 IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("Ignore List"), parent)

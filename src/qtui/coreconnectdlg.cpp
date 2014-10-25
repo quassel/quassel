@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include <QDialogButtonBox>
+#include <QIcon>
 #include <QVBoxLayout>
 
 #include "coreconnectdlg.h"
 
-#include "iconloader.h"
 #include "clientsettings.h"
 #include "coreaccountsettingspage.h"
 

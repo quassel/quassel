@@ -20,11 +20,11 @@
 
 #include "identitiessettingspage.h"
 
+#include <QIcon>
 #include <QInputDialog>
 #include <QMessageBox>
 
 #include "client.h"
-#include "iconloader.h"
 #include "signalproxy.h"
 
 IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)

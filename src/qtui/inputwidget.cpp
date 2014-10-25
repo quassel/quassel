@@ -20,11 +20,12 @@
 
 #include "inputwidget.h"
 
+#include <QIcon>
+
 #include "action.h"
 #include "actioncollection.h"
 #include "bufferview.h"
 #include "client.h"
-#include "iconloader.h"
 #include "ircuser.h"
 #include "networkmodel.h"
 #include "qtui.h"

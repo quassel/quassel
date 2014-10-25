@@ -20,10 +20,10 @@
 
 #include "bufferviewsettingspage.h"
 
+#include <QIcon>
 #include <QMessageBox>
 
 #include "client.h"
-#include "iconloader.h"
 #include "network.h"
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"

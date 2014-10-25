@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QIcon>
 
 #include "buffersettings.h"
-#include "iconloader.h"
 #include "qssparser.h"
 #include "quassel.h"
 #include "uistyle.h"
