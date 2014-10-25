@@ -20,34 +20,23 @@ use File::Find;
 my $oxygen = shift;
 
 my $source = "../src";
-my $quassel_icons = "oxygen";
-my $output = "oxygen_kde";
-my $qrcfile_quassel = "oxygen.qrc";
-my $qrcfile_kde = "oxygen_kde.qrc";
+my $output = "oxygen";
+my $qrcfile_kde = "oxygen.qrc";
 
 my $extrafile = "import/extra-icons";
 my $blacklistfile = "import/blacklisted-icons";
 
-my %sizes = (
-        Desktop => 48,
-        Bar => 22,
-        MainBar => 22,
-        Small => 16,
-        Panel => 32,
-        Dialog => 22
-);
-
 my %req_icons;
+my %found_icons;
 my %blacklist;
 my %extra;
 
 # First, load the icon blacklist
-# Format: icon-name 16 22 32
 open BLACKLIST, "<$blacklistfile" or die "Could not open $blacklistfile\n";
 while(<BLACKLIST>) {
   s/#.*//;
-  next unless my ($name, $sizes) = /([-\w]+)\s+(\d+(?:\s+\d+)*)?/;
-  $blacklist{$name} = $sizes;
+  next unless my ($name) = /([-\w]+)\s*/;
+  $blacklist{$name} = 1;
 }
 close BLACKLIST;
 
@@ -57,19 +46,16 @@ my @results = `grep -r Icon\\(\\" $source`;
 foreach(@results) {
   next unless my ($type, $name) = /\W+(\s|Desktop|Bar|MainBar|Small|Panel|Dialog)Icon\("([-\w]+)/;
   $type = "Desktop" if $type =~ /\s+/;
-  my $size = $sizes{$type};
-  $req_icons{$size}{$name} = 1
-    unless exists $blacklist{$name} and ($blacklist{$name} == undef or $blacklist{$name} =~ /$size/);
+  $req_icons{$name} = 1
+    unless exists $blacklist{$name};
 }
 
 # Add extra icons
 open EXTRA, "<$extrafile" or die "Could not open $extrafile\n";
 while(<EXTRA>) {
   s/#.*//;
-  next unless my ($name, $sizes) = /([-\w]+)\s+(\d+(?:\s+\d+)*)/;
-  foreach(split /\s+/, $sizes) {
-    $req_icons{$_}{$name} = 1;
-  }
+  next unless my ($name) = /([-\w]+)\s*/;
+  $req_icons{$name} = 1;
 }
 close EXTRA;
 
@@ -81,44 +67,51 @@ system("rm -rf $output");
 my %scalables;
 
 print "Copying icons from $oxygen...\n";
-foreach my $size (keys %req_icons) {
-  my $sizestr = $size.'x'.$size;
-  opendir (BASEDIR, "$oxygen/$sizestr") or die "Could not open dir for size $size\n";
-  foreach my $cat (readdir BASEDIR) {
+opendir (BASEDIR, "$oxygen") or die "Could not open oxygen basedir\n";
+foreach my $sizestr (readdir BASEDIR) {
+  next unless $sizestr =~ /\d+x\d+/;
+  opendir (SIZEDIR, "$oxygen/$sizestr") or die "Could not open dir $sizestr\n";
+  foreach my $cat (readdir SIZEDIR) {
     next if $cat eq '.' or $cat eq '..';
-    system "mkdir -p $output/$sizestr/$cat" and die "Could not create category dir\n";
+    #system "mkdir -p $output/$sizestr/$cat" and die "Could not create category dir\n";
     system "mkdir -p $output/scalable/$cat" and die "Could not create category dir\n";
     opendir (CATDIR, "$oxygen/$sizestr/$cat") or die "Could not open category dir\n";
     foreach my $icon (readdir CATDIR) {
       $icon =~ s/\.png$//;
-      next unless exists $req_icons{$size}{$icon};
-      $scalables{"$cat/$icon"} = 1;
+      next unless exists $req_icons{$icon};
+      $scalables{$cat}{$icon} = 1;
+      system "mkdir -p $output/$sizestr/$cat" and die "Could not create category dir\n";
       system "cp -a $oxygen/$sizestr/$cat/$icon.png $output/$sizestr/$cat"
         and die "Error while copying file $sizestr/$cat/$icon.png\n";
-      # print "Copy: $oxygen/$sizestr/$cat/$icon.png\n";
-      delete $req_icons{$size}{$icon};
+      #print "Copy: $oxygen/$sizestr/$cat/$icon.png\n";
+      $found_icons{$icon} = 1;
     }
     closedir CATDIR;
   }
-  closedir BASEDIR;
+  closedir SIZEDIR;
 }
+closedir BASEDIR;
 
 # Copy scalables
-foreach my $scalable (keys %scalables) {
-  system "cp -a $oxygen/scalable/$scalable.svgz $output/scalable/$scalable.svgz";
+foreach my $cat (keys %scalables) {
+  system "mkdir -p $output/scalable/$cat" and die "Could not create category dir\n";
+  foreach my $scalable (keys %scalables{$cat}) {
+    system "cp -a $oxygen/scalable/$cat/$scalable.svgz $output/scalable/$cat/$scalable.svgz";
+  }
 }
 
 # Warn if we have still icons left
-foreach my $size (keys %req_icons) {
-  foreach my $missing (keys %{ $req_icons{$size} }) {
-    print "Warning: Missing icon $missing (size $size)\n";
-  }
+foreach my $icon (keys %req_icons) {
+  next if defined $found_icons{$icon};
+  print "Warning: Missing icon $icon\n";
 }
 
 # Generate .qrc
 my @file_list;
-generate_qrc($quassel_icons, $qrcfile_quassel);
 generate_qrc($output, $qrcfile_kde);
+
+# Copy license etc.
+system "cp $oxygen/AUTHORS $oxygen/CONTRIBUTING $oxygen/COPYING $oxygen/index.theme $output/";
 
 print "Done.\n";
 
@@ -144,8 +137,6 @@ sub generate_qrc {
 
 sub push_icon_path {
   return unless /\.png$/;
-  my $alias = $File::Find::name;
-  $alias =~ s,^[^/]*(.*),$1,;
 
-  push @file_list, "    <file alias=\"oxygen$alias\">$File::Find::name</file>";
+  push @file_list, "    <file>$File::Find::name</file>";
 }

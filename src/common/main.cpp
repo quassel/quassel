@@ -67,17 +67,16 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(sql);
 #endif
 #ifndef BUILD_CORE
-    Q_INIT_RESOURCE(pics); // always in a resource, for now
+    Q_INIT_RESOURCE(pics);
+    Q_INIT_RESOURCE(hicolor);
 #endif
 
 #ifdef EMBED_DATA
     Q_INIT_RESOURCE(i18n);
 # ifndef BUILD_CORE
     Q_INIT_RESOURCE(data);
-    Q_INIT_RESOURCE(hicolor);
-    Q_INIT_RESOURCE(oxygen);
 #   ifdef WITH_OXYGEN
-    Q_INIT_RESOURCE(oxygen_kde);
+    Q_INIT_RESOURCE(oxygen);
 #   endif
 # endif
 #endif
