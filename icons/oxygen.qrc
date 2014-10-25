@@ -29,6 +29,7 @@
     <file>oxygen/22x22/actions/im-kick-user.png</file>
     <file>oxygen/22x22/actions/irc-operator.png</file>
     <file>oxygen/22x22/actions/configure-shortcuts.png</file>
+    <file>oxygen/22x22/actions/format-list-unordered.png</file>
     <file>oxygen/22x22/actions/irc-join-channel.png</file>
     <file>oxygen/22x22/actions/format-fill-color.png</file>
     <file>oxygen/22x22/actions/help-about.png</file>
@@ -82,6 +83,7 @@
     <file>oxygen/32x32/actions/document-edit.png</file>
     <file>oxygen/32x32/actions/im-ban-user.png</file>
     <file>oxygen/32x32/actions/document-open.png</file>
+    <file>oxygen/32x32/actions/format-list-unordered.png</file>
     <file>oxygen/32x32/actions/dialog-cancel.png</file>
     <file>oxygen/32x32/actions/format-text-italic.png</file>
     <file>oxygen/32x32/actions/list-add-user.png</file>
@@ -133,6 +135,7 @@
     <file>oxygen/16x16/actions/irc-close-channel.png</file>
     <file>oxygen/16x16/actions/zoom-out.png</file>
     <file>oxygen/16x16/actions/irc-join-channel.png</file>
+    <file>oxygen/16x16/actions/format-list-unordered.png</file>
     <file>oxygen/16x16/actions/zoom-original.png</file>
     <file>oxygen/16x16/actions/go-next-view.png</file>
     <file>oxygen/16x16/actions/irc-remove-operator.png</file>
@@ -236,6 +239,7 @@
     <file>oxygen/48x48/actions/network-disconnect.png</file>
     <file>oxygen/48x48/actions/list-add.png</file>
     <file>oxygen/48x48/actions/irc-voice.png</file>
+    <file>oxygen/48x48/actions/format-list-unordered.png</file>
     <file>oxygen/48x48/actions/media-playback-start.png</file>
     <file>oxygen/48x48/actions/tools-report-bug.png</file>
     <file>oxygen/48x48/actions/go-next-view.png</file>

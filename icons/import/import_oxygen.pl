@@ -42,10 +42,9 @@ close BLACKLIST;
 
 # We now grep the source for things like SmallIcon("fubar") and generate size and name from that
 print "Grepping $source for requested icons...\n";
-my @results = `grep -r Icon\\(\\" $source`;
+my @results = `grep -r QIcon::fromTheme\\(\\" $source`;
 foreach(@results) {
-  next unless my ($type, $name) = /\W+(\s|Desktop|Bar|MainBar|Small|Panel|Dialog)Icon\("([-\w]+)/;
-  $type = "Desktop" if $type =~ /\s+/;
+  next unless my ($name) = /\W+QIcon::fromTheme\(\"([-\w]+)/;
   $req_icons{$name} = 1
     unless exists $blacklist{$name};
 }
