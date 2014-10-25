@@ -31,7 +31,7 @@ TopicWidget::TopicWidget(QWidget *parent)
     : AbstractItemView(parent)
 {
     ui.setupUi(this);
-    ui.topicEditButton->setIcon(SmallIcon("edit-rename"));
+    ui.topicEditButton->setIcon(QIcon::fromTheme("edit-rename"));
     ui.topicLineEdit->setLineWrapEnabled(true);
     ui.topicLineEdit->installEventFilter(this);
 

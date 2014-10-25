@@ -29,7 +29,7 @@ ClearableLineEdit::ClearableLineEdit(QWidget *parent)
     : QLineEdit(parent)
 {
     clearButton = new QToolButton(this);
-    clearButton->setIcon(SmallIcon("edit-clear-locationbar-rtl"));
+    clearButton->setIcon(QIcon::fromTheme("edit-clear-locationbar-rtl", QIcon::fromTheme("edit-clear")));
 #ifndef Q_WS_QWS
     clearButton->setCursor(Qt::ArrowCursor);
 #endif

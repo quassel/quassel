@@ -67,7 +67,7 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
     setModal(true);
 
     setWindowTitle(tr("Core Configuration Wizard"));
-    setPixmap(QWizard::LogoPixmap, DesktopIcon("quassel"));
+    setPixmap(QWizard::LogoPixmap, QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")).pixmap(48));
 
     connect(connection, SIGNAL(coreSetupSuccess()), SLOT(coreSetupSuccess()));
     connect(connection, SIGNAL(coreSetupFailed(QString)), SLOT(coreSetupFailed(QString)));

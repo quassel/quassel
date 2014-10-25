@@ -50,7 +50,7 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     //TODO: try to get an instance of the tray icon to be able to show popups
     m_snore = new Snore::SnoreCore();
     m_snore->loadPlugins(Snore::SnorePlugin::BACKEND);
-    m_icon = Snore::Icon(DesktopIcon("quassel").toImage());
+    m_icon = Snore::Icon(QIcon::fromTheme("quassel").toImage());
     m_application = Snore::Application("Quassel", m_icon);
     m_application.hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
 

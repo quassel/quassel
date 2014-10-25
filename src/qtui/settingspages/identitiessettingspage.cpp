@@ -32,9 +32,9 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
     _editSsl(false)
 {
     ui.setupUi(this);
-    ui.renameIdentity->setIcon(BarIcon("edit-rename"));
-    ui.addIdentity->setIcon(BarIcon("list-add-user"));
-    ui.deleteIdentity->setIcon(BarIcon("list-remove-user"));
+    ui.renameIdentity->setIcon(QIcon::fromTheme("edit-rename"));
+    ui.addIdentity->setIcon(QIcon::fromTheme("list-add-user"));
+    ui.deleteIdentity->setIcon(QIcon::fromTheme("list-remove-user"));
 
     coreConnectionStateChanged(Client::isConnected()); // need a core connection!
     connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
@@ -417,7 +417,7 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, cons
     : QDialog(parent)
 {
     ui.setupUi(this);
-    ui.abort->setIcon(SmallIcon("dialog-cancel"));
+    ui.abort->setIcon(QIcon::fromTheme("dialog-cancel"));
 
     numevents = toCreate.count() + toUpdate.count() + toRemove.count();
     rcvevents = 0;

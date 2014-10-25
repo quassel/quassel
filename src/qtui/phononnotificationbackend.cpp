@@ -112,9 +112,9 @@ PhononNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
 {
     ui.setupUi(this);
     _audioAvailable = !Phonon::BackendCapabilities::availableAudioOutputDevices().isEmpty();
-    ui.enabled->setIcon(SmallIcon("media-playback-start"));
-    ui.play->setIcon(SmallIcon("media-playback-start"));
-    ui.open->setIcon(SmallIcon("document-open"));
+    ui.enabled->setIcon(QIcon::fromTheme("media-playback-start"));
+    ui.play->setIcon(QIcon::fromTheme("media-playback-start"));
+    ui.open->setIcon(QIcon::fromTheme("document-open"));
 
     connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
     connect(ui.filename, SIGNAL(textChanged(const QString &)), SLOT(widgetChanged()));

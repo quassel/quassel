@@ -20,6 +20,7 @@
 
 #include "qtuiapplication.h"
 
+#include <QIcon>
 #include <QStringList>
 
 #ifdef HAVE_KDE
@@ -67,6 +68,10 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 #else
     qInstallMessageHandler(Client::logMessage);
 #endif
+
+    // Some platforms don't set a default icon theme; chances are we can find our bundled Oxygen theme though
+    if (QIcon::themeName().isEmpty())
+        QIcon::setThemeName("oxygen");
 }
 
 

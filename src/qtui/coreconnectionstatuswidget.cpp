@@ -79,11 +79,11 @@ void CoreConnectionStatusWidget::connectionStateChanged(CoreConnection::Connecti
 {
     if (state >= CoreConnection::Connected) {
         if (coreConnection()->isEncrypted()) {
-            ui.sslLabel->setPixmap(SmallIcon("security-high"));
+            ui.sslLabel->setPixmap(QIcon::fromTheme("security-high").pixmap(16));
             ui.sslLabel->setToolTip(tr("The connection to your core is encrypted with SSL."));
         }
         else {
-            ui.sslLabel->setPixmap(SmallIcon("security-low"));
+            ui.sslLabel->setPixmap(QIcon::fromTheme("security-low").pixmap(16));
             ui.sslLabel->setToolTip(tr("The connection to your core is not encrypted."));
         }
         ui.sslLabel->show();

@@ -138,7 +138,7 @@ protected:
     void setSlot(QObject *receiver, const char *method);
 
     Action *registerAction(ActionType type, const QString &text, bool checkable = false);
-    Action *registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable = false);
+    Action *registerAction(NetworkModelController::ActionType type, const QIcon &icon, const QString &text, bool checkable = false);
     bool checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
 
     QString nickName(const QModelIndex &index) const;

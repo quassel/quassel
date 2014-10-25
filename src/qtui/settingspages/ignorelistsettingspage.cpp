@@ -35,9 +35,9 @@ IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
 {
     ui.setupUi(this);
     _delegate = new IgnoreListDelegate(ui.ignoreListView);
-    ui.newIgnoreRuleButton->setIcon(SmallIcon("list-add"));
-    ui.deleteIgnoreRuleButton->setIcon(SmallIcon("edit-delete"));
-    ui.editIgnoreRuleButton->setIcon(SmallIcon("configure"));
+    ui.newIgnoreRuleButton->setIcon(QIcon::fromTheme("list-add"));
+    ui.deleteIgnoreRuleButton->setIcon(QIcon::fromTheme("edit-delete"));
+    ui.editIgnoreRuleButton->setIcon(QIcon::fromTheme("configure"));
 
     ui.ignoreListView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.ignoreListView->setSelectionMode(QAbstractItemView::SingleSelection);

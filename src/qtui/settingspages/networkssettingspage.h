@@ -21,7 +21,7 @@
 #ifndef NETWORKSSETTINGSPAGE_H
 #define NETWORKSSETTINGSPAGE_H
 
-#include <QPixmap>
+#include <QIcon>
 
 #include "network.h"
 #include "settingspage.h"
@@ -95,7 +95,7 @@ private:
     CertIdentity *_cid;
 #endif
 
-    QPixmap connectedIcon, connectingIcon, disconnectedIcon;
+    QIcon connectedIcon, connectingIcon, disconnectedIcon;
 
     void reset();
     bool testHasChanged();

@@ -33,9 +33,9 @@ CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
 {
     ui.setupUi(this);
     initAutoWidgets();
-    ui.addAccountButton->setIcon(SmallIcon("list-add"));
-    ui.editAccountButton->setIcon(SmallIcon("document-edit"));
-    ui.deleteAccountButton->setIcon(SmallIcon("edit-delete"));
+    ui.addAccountButton->setIcon(QIcon::fromTheme("list-add"));
+    ui.editAccountButton->setIcon(QIcon::fromTheme("document-edit"));
+    ui.deleteAccountButton->setIcon(QIcon::fromTheme("edit-delete"));
 
     _model = new CoreAccountModel(Client::coreAccountModel(), this);
     _filteredModel = new FilteredCoreAccountModel(_model, this);

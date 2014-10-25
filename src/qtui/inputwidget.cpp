@@ -60,11 +60,11 @@ InputWidget::InputWidget(QWidget *parent)
     ui.inputEdit->setMode(MultiLineEdit::MultiLine);
     ui.inputEdit->setPasteProtectionEnabled(true);
 
-    ui.boldButton->setIcon(SmallIcon("format-text-bold"));
-    ui.italicButton->setIcon(SmallIcon("format-text-italic"));
-    ui.underlineButton->setIcon(SmallIcon("format-text-underline"));
-    ui.textcolorButton->setIcon(SmallIcon("format-text-color"));
-    ui.highlightcolorButton->setIcon(SmallIcon("format-fill-color"));
+    ui.boldButton->setIcon(QIcon::fromTheme("format-text-bold"));
+    ui.italicButton->setIcon(QIcon::fromTheme("format-text-italic"));
+    ui.underlineButton->setIcon(QIcon::fromTheme("format-text-underline"));
+    ui.textcolorButton->setIcon(QIcon::fromTheme("format-text-color"));
+    ui.highlightcolorButton->setIcon(QIcon::fromTheme("format-fill-color"));
     ui.encryptionIconLabel->hide();
 
     _colorMenu = new QMenu();
@@ -470,7 +470,7 @@ void InputWidget::updateNickSelector() const
     ui.ownNick->addItems(nicks);
 
     if (me && me->isAway())
-        ui.ownNick->setItemData(nickIdx, SmallIcon("user-away"), Qt::DecorationRole);
+        ui.ownNick->setItemData(nickIdx, QIcon::fromTheme("user-away"), Qt::DecorationRole);
 
     ui.ownNick->setCurrentIndex(nickIdx);
 }
@@ -589,7 +589,7 @@ void InputWidget::colorChosen(QAction *action)
         mergeFormatOnSelection(fmt);
     }
     ui.textcolorButton->setDefaultAction(action);
-    ui.textcolorButton->setIcon(createColorToolButtonIcon(SmallIcon("format-text-color"), color));
+    ui.textcolorButton->setIcon(createColorToolButtonIcon(QIcon::fromTheme("format-text-color"), color));
 }
 
 
@@ -609,7 +609,7 @@ void InputWidget::colorHighlightChosen(QAction *action)
         mergeFormatOnSelection(fmt);
     }
     ui.highlightcolorButton->setDefaultAction(action);
-    ui.highlightcolorButton->setIcon(createColorToolButtonIcon(SmallIcon("format-fill-color"), color));
+    ui.highlightcolorButton->setIcon(createColorToolButtonIcon(QIcon::fromTheme("format-fill-color"), color));
 }
 
 

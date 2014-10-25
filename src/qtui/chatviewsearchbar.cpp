@@ -29,9 +29,9 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    ui.hideButton->setIcon(BarIcon("dialog-close"));
-    ui.searchUpButton->setIcon(SmallIcon("go-up"));
-    ui.searchDownButton->setIcon(SmallIcon("go-down"));
+    ui.hideButton->setIcon(QIcon::fromTheme("dialog-close"));
+    ui.searchUpButton->setIcon(QIcon::fromTheme("go-up"));
+    ui.searchDownButton->setIcon(QIcon::fromTheme("go-down"));
     _searchDelayTimer.setSingleShot(true);
 
     layout()->setContentsMargins(0, 0, 0, 0);

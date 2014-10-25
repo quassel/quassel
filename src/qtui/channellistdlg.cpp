@@ -42,7 +42,7 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
     _sortFilter.setFilterKeyColumn(-1);
 
     ui.setupUi(this);
-    ui.advancedModeLabel->setPixmap(BarIcon("edit-rename"));
+    ui.advancedModeLabel->setPixmap(QIcon::fromTheme("edit-rename").pixmap(22));
 
     ui.channelListView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.channelListView->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -133,14 +133,14 @@ void ChannelListDlg::setAdvancedMode(bool advanced)
             delete _simpleModeSpacer;
             _simpleModeSpacer = 0;
         }
-        ui.advancedModeLabel->setPixmap(BarIcon("edit-clear-locationbar-rtl"));
+        ui.advancedModeLabel->setPixmap(QIcon::fromTheme("edit-clear-locationbar-rtl", QIcon::fromTheme("edit-clear")).pixmap(16));
     }
     else {
         if (!_simpleModeSpacer) {
             _simpleModeSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
             ui.searchLayout->insertSpacerItem(0, _simpleModeSpacer);
         }
-        ui.advancedModeLabel->setPixmap(BarIcon("edit-rename"));
+        ui.advancedModeLabel->setPixmap(QIcon::fromTheme("edit-rename").pixmap(16));
     }
 
     ui.channelNameLineEdit->clear();

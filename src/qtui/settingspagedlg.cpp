@@ -37,7 +37,7 @@ SettingsPageDlg::SettingsPageDlg(SettingsPage *page, QWidget *parent)
 
     ui.pageTitle->setText(page->title());
     setWindowTitle(tr("Configure %1").arg(page->title()));
-    setWindowIcon(SmallIcon("configure"));
+    setWindowIcon(QIcon::fromTheme("configure"));
 
     // make the scrollarea behave sanely
     ui.settingsFrame->setWidgetResizable(true);

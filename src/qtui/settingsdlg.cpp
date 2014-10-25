@@ -33,7 +33,7 @@ SettingsDlg::SettingsDlg(QWidget *parent)
     ui.setupUi(this);
     setModal(true);
     setAttribute(Qt::WA_DeleteOnClose, true);
-    setWindowIcon(SmallIcon("configure"));
+    setWindowIcon(QIcon::fromTheme("configure"));
 
     updateGeometry();
 

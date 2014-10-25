@@ -43,9 +43,9 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
     if (!(Client::coreFeatures() & Quassel::HideInactiveNetworks))
         ui.hideInactiveNetworks->hide();
 
-    ui.renameBufferView->setIcon(SmallIcon("edit-rename"));
-    ui.addBufferView->setIcon(SmallIcon("list-add"));
-    ui.deleteBufferView->setIcon(SmallIcon("edit-delete"));
+    ui.renameBufferView->setIcon(QIcon::fromTheme("edit-rename"));
+    ui.addBufferView->setIcon(QIcon::fromTheme("list-add"));
+    ui.deleteBufferView->setIcon(QIcon::fromTheme("edit-delete"));
 
     reset();
 

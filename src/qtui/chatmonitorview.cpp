@@ -70,7 +70,7 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     }
 
     menu->addSeparator();
-    menu->addAction(SmallIcon("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
+    menu->addAction(QIcon::fromTheme("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
 }
 
 

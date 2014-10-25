@@ -36,8 +36,8 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
 {
     ui.setupUi(this);
 
-    ui.activateBuffer->setIcon(SmallIcon("go-next"));
-    ui.deactivateBuffer->setIcon(SmallIcon("go-previous"));
+    ui.activateBuffer->setIcon(QIcon::fromTheme("go-next"));
+    ui.deactivateBuffer->setIcon(QIcon::fromTheme("go-previous"));
 
     // setup available buffers config (for the bufferview on the left)
     _configAvailable = new BufferViewConfig(-667, this);

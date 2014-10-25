@@ -59,7 +59,7 @@ Action *NetworkModelController::registerAction(ActionType type, const QString &t
 }
 
 
-Action *NetworkModelController::registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable)
+Action *NetworkModelController::registerAction(ActionType type, const QIcon &icon, const QString &text, bool checkable)
 {
     Action *act;
     if (icon.isNull())
@@ -526,7 +526,7 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action)
 
 NetworkModelController::JoinDlg::JoinDlg(const QModelIndex &index, QWidget *parent) : QDialog(parent)
 {
-    setWindowIcon(SmallIcon("irc-join-channel"));
+    setWindowIcon(QIcon::fromTheme("irc-join-channel"));
     setWindowTitle(tr("Join Channel"));
 
     QGridLayout *layout = new QGridLayout(this);

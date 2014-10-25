@@ -40,9 +40,9 @@ SystemTray::SystemTray(QWidget *parent)
     _mode(Invalid),
     _state(Passive),
     _shouldBeVisible(true),
-    _passiveIcon(DesktopIcon("quassel-inactive")),
-    _activeIcon(DesktopIcon("quassel")),
-    _needsAttentionIcon(DesktopIcon("quassel-message")),
+    _passiveIcon(QIcon::fromTheme("quassel-inactive")),
+    _activeIcon(QIcon::fromTheme("quassel")),
+    _needsAttentionIcon(QIcon::fromTheme("quassel-message")),
     _trayMenu(0),
     _associatedWidget(parent)
 {

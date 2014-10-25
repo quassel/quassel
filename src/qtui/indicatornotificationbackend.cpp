@@ -175,7 +175,7 @@ IndicatorNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
 {
     ui.setupUi(this);
     // FIXME find proper icon (this one is used by the plasmoid as well)
-    ui.enabled->setIcon(SmallIcon("mail-message-new"));
+    ui.enabled->setIcon(QIcon::fromTheme("mail-message-new"));
 
     connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
 }

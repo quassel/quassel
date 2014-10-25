@@ -28,7 +28,7 @@
 AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent)
 {
     ui.setupUi(this);
-    ui.quasselLogo->setPixmap(DesktopIcon("quassel", IconLoader::SizeHuge));
+    ui.quasselLogo->setPixmap(QIcon(":/icons/quassel-64.png").pixmap(64)); // don't let the icon theme affect our logo here
 
     ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"))
         .arg(Quassel::buildInfo().fancyVersionString)
