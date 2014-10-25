@@ -213,7 +213,7 @@ void Quassel::registerMetaTypes()
 
 void Quassel::setupBuildInfo()
 {
-    _buildInfo.applicationName = "Quassel IRC";
+    _buildInfo.applicationName = "quassel";
     _buildInfo.coreApplicationName = "quasselcore";
     _buildInfo.clientApplicationName = "quasselclient";
     _buildInfo.organizationName = "Quassel Project";
