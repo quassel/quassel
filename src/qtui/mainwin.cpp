@@ -96,6 +96,7 @@
 #ifndef HAVE_KDE
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
+#    include "phononactivitynotificationbackend.h"
 #  endif
 #  ifdef HAVE_LIBSNORE
 #    include "snorenotificationbackend.h"
@@ -217,6 +218,7 @@ void MainWin::init()
 #ifndef HAVE_KDE
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
+	QtUi::registerNotificationBackend(new PhononActivityNotificationBackend(this));
 #  endif
 #  ifdef HAVE_LIBSNORE
     QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
