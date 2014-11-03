@@ -1470,6 +1470,7 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end)
     Q_UNUSED(parent);
 
     bool hasFocus = QApplication::activeWindow() != 0;
+    bool unclassified = false;
 
     for (int i = start; i <= end; i++) {
         QModelIndex idx = Client::messageModel()->index(i, ChatLineModel::ContentsColumn);
@@ -1477,7 +1478,9 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end)
             qDebug() << "MainWin::messagesInserted(): Invalid model index!";
             continue;
         }
+
         Message::Flags flags = (Message::Flags)idx.data(ChatLineModel::FlagsRole).toInt();
+
         if (flags.testFlag(Message::Backlog) || flags.testFlag(Message::Self))
             continue;
 
@@ -1494,8 +1497,9 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end)
             continue;
 
         // only show notifications for higlights or queries
-        if (bufType != BufferInfo::QueryBuffer && !(flags & Message::Highlight))
-            continue;
+        if (bufType != BufferInfo::QueryBuffer && !(flags & Message::Highlight)) {
+            unclassified = true;
+        }
 
         // and of course: don't notify for ignored messages
         if (Client::ignoreListManager() && Client::ignoreListManager()->match(idx.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufId)))
@@ -1513,8 +1517,10 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end)
             type = AbstractNotificationBackend::PrivMsgFocused;
         else if (flags & Message::Highlight && !hasFocus)
             type = AbstractNotificationBackend::Highlight;
-        else
-            type = AbstractNotificationBackend::HighlightFocused;
+        else if (unclassified) {
+            type = hasFocus ? AbstractNotificationBackend::UnclassifiedActivityFocused : AbstractNotificationBackend::UnclassifiedActivity;
+        } 
+        else type = AbstractNotificationBackend::HighlightFocused;
 
         QtUi::instance()->invokeNotification(bufId, type, sender, contents);
     }

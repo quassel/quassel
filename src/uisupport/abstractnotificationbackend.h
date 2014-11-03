@@ -36,8 +36,10 @@ public:
     enum NotificationType {
         Highlight = 0x01,
         PrivMsg = 0x02,
+        UnclassifiedActivity = 0x03,
         HighlightFocused = 0x11,
-        PrivMsgFocused = 0x12
+        PrivMsgFocused = 0x12,
+        UnclassifiedActivityFocused = 0x13
     };
 
     struct Notification {

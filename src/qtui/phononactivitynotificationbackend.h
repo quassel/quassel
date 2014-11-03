@@ -26,7 +26,7 @@
 #include "abstractnotificationbackend.h"
 #include "settingspage.h"
 
-#include "ui_phononnotificationconfigwidget.h"
+#include "ui_phononactivitynotificationconfigwidget.h"
 
 class PhononActivityNotificationBackend : public AbstractNotificationBackend
 {
@@ -73,7 +73,7 @@ public:
 	void on_play_clicked();
 
 private:
-	Ui::PhononNotificationConfigWidget ui;
+	Ui::PhononActivityNotificationConfigWidget ui;
 
 	bool enabled;
 	bool _audioAvailable;
