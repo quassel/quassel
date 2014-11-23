@@ -1,3 +1,3 @@
 UPDATE quasseluser
-SET password = :password
-WHERE userid = :userid
+SET password = $1
+WHERE userid = $2

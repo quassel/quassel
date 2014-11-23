@@ -1,3 +1,3 @@
 SELECT networkid
 FROM network
-WHERE userid = :userid AND connected = true
+WHERE userid = $1 AND connected = true

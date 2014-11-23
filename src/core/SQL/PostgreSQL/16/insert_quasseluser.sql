@@ -1,3 +1,3 @@
 INSERT INTO quasseluser (username, password)
-VALUES (:username, :password)
+VALUES ($1, $2)
 RETURNING userid

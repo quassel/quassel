@@ -1,2 +1,2 @@
 DELETE FROM identity
-WHERE identityid = :identityid AND userid = :userid
+WHERE identityid = $1 AND userid = $2

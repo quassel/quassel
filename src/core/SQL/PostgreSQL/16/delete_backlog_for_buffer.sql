@@ -1,2 +1,2 @@
 DELETE FROM backlog
-WHERE bufferid = :bufferid
+WHERE bufferid = $1

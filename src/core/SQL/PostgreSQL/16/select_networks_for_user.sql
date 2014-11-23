@@ -3,4 +3,4 @@ SELECT networkid, networkname, identityid, servercodec, encodingcodec, decodingc
        useautoreconnect, autoreconnectinterval, autoreconnectretries, unlimitedconnectretries, rejoinchannels,
        usesasl, saslaccount, saslpassword
 FROM network
-WHERE userid = :userid
+WHERE userid = $1

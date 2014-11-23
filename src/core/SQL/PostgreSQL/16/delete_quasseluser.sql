@@ -1,2 +1,2 @@
 DELETE FROM quasseluser
-WHERE userid = :userid
+WHERE userid = $1

@@ -1,2 +1,2 @@
 DELETE FROM buffer
-WHERE userid = :userid AND bufferid = :bufferid
+WHERE userid = $1 AND bufferid = $2

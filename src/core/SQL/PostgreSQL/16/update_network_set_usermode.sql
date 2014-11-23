@@ -1,3 +1,3 @@
 UPDATE network
-SET usermode = :usermode
-WHERE userid = :userid AND networkid = :networkid
+SET usermode = $1
+WHERE userid = $2 AND networkid = $3

@@ -1,3 +1,3 @@
 UPDATE backlog
-SET bufferid = :newbufferid
-WHERE bufferid = :oldbufferid
+SET bufferid = $1
+WHERE bufferid = $2
