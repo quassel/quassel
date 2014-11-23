@@ -1,3 +1,3 @@
 UPDATE user_setting
-SET settingvalue = :settingvalue
-WHERE userid = :userid AND settingname = :settingname
+SET settingvalue = $1
+WHERE userid = $2 AND settingname = $3

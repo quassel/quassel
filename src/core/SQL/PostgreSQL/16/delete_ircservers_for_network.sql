@@ -1,2 +1,2 @@
 DELETE FROM ircserver
-WHERE networkid = :networkid
+WHERE networkid = $1

@@ -1,3 +1,3 @@
 UPDATE network
-SET awaymessage = :awaymsg
-WHERE userid = :userid AND networkid = :networkid
+SET awaymessage = $1
+WHERE userid = $2 AND networkid = $3

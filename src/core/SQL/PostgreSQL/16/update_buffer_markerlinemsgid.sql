@@ -1,3 +1,3 @@
 UPDATE buffer
-SET markerlinemsgid = :markerlinemsgid
-WHERE userid = :userid AND bufferid = :bufferid
+SET markerlinemsgid = $1
+WHERE userid = $2 AND bufferid = $3

@@ -1,3 +1,3 @@
 UPDATE quasseluser
-SET username = :username
-WHERE userid = :userid
+SET username = $1
+WHERE userid = $2

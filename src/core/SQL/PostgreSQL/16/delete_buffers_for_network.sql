@@ -1,2 +1,2 @@
 DELETE FROM buffer
-WHERE networkid = :networkid
+WHERE networkid = $1

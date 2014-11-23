@@ -1,2 +1,2 @@
 DELETE FROM identity_nick
-WHERE identityid = :identityid;
+WHERE identityid = $1;

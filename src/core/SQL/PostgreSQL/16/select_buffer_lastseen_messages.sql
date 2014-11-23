@@ -1,3 +1,3 @@
 SELECT bufferid, lastseenmsgid
 FROM buffer
-WHERE userid = :userid
+WHERE userid = $1

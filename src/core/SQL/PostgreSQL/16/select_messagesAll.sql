@@ -1,7 +1,7 @@
 SELECT messageid, bufferid, time,  type, flags, sender, message
 FROM backlog
 JOIN sender ON backlog.senderid = sender.senderid
-WHERE backlog.bufferid IN (SELECT bufferid FROM buffer WHERE userid = :userid)
-    AND backlog.messageid >= :firstmsg
-    AND backlog.messageid < :lastmsg
+WHERE backlog.bufferid IN (SELECT bufferid FROM buffer WHERE userid = $1)
+    AND backlog.messageid >= $2
+    AND backlog.messageid < $3
 ORDER BY messageid DESC

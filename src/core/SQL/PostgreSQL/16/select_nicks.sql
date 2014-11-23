@@ -1,4 +1,4 @@
 SELECT nick
 FROM identity_nick
-WHERE identityid = :identityid
+WHERE identityid = $1
 ORDER BY nickid ASC

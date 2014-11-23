@@ -3,4 +3,4 @@ SELECT identityid, identityname, realname, awaynick, awaynickenabled,
        detachawayenabled, detachawayreason, detachawayreasonenabled, ident, kickreason, partreason, quitreason,
        sslcert, sslkey
 FROM identity
-WHERE userid = :userid
+WHERE userid = $1
