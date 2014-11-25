@@ -57,6 +57,8 @@ signals:
     void addRemoteClient(RemotePeer *peer);
     void addInternalClient(InternalPeer *peer);
 
+    void passwordChangeRequested(UserId user, QString newPassword);
+
 private:
     CoreSession *_session;
     UserId _user;
