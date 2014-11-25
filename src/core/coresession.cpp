@@ -100,6 +100,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->attachSlot(SIGNAL(createNetwork(const NetworkInfo &, const QStringList &)), this, SLOT(createNetwork(const NetworkInfo &, const QStringList &)));
     p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, SLOT(removeNetwork(NetworkId)));
 
+    p->attachSlot(SIGNAL(clientChangePassword(QString)), this, SLOT(changePassword(QString)));
+
     loadSettings();
     initScriptEngine();
 
@@ -637,4 +639,9 @@ void CoreSession::globalAway(const QString &msg)
 
         net->userInputHandler()->issueAway(msg, false /* no force away */);
     }
+}
+
+void CoreSession::changePassword(QString password)
+{
+    emit passwordChangeRequested(_user, password);
 }

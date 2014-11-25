@@ -48,6 +48,7 @@
 #include "quassel.h"
 #include "signalproxy.h"
 #include "util.h"
+#include "clientauthhandler.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -151,6 +152,8 @@ void Client::init()
     p->attachSignal(this, SIGNAL(requestRemoveNetwork(NetworkId)), SIGNAL(removeNetwork(NetworkId)));
     p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, SLOT(coreNetworkCreated(NetworkId)));
     p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
+
+    p->attachSignal(this, SIGNAL(clientChangePassword(QString)));
 
     //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
     connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
@@ -643,6 +646,13 @@ void Client::markBufferAsRead(BufferId id)
 {
     if (bufferSyncer() && id.isValid())
         bufferSyncer()->requestMarkBufferAsRead(id);
+}
+
+void Client::changePassword(QString newPassword) {
+    CoreAccount account = currentCoreAccount();
+    account.setPassword(newPassword);
+    coreAccountModel()->createOrUpdateAccount(account);
+    emit clientChangePassword(newPassword);
 }
 
 

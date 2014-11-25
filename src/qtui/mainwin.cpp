@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QToolBar>
+#include <QInputDialog>
 
 #ifdef HAVE_KDE4
 #  include <KHelpMenu>
@@ -195,6 +196,8 @@ void MainWin::init()
 #ifdef HAVE_SSL
     connect(Client::coreConnection(), SIGNAL(handleSslErrors(const QSslSocket *, bool *, bool *)), SLOT(handleSslErrors(const QSslSocket *, bool *, bool *)));
 #endif
+
+    connect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
 
     // Setup Dock Areas
     setDockNestingEnabled(true);
@@ -410,6 +413,10 @@ void MainWin::setupActions()
 #endif
     coll->addAction("ConfigureQuassel", configureQuasselAct);
 
+    QAction *changePasswordAct = new Action(QIcon::fromTheme("dialog-password"), tr("&Change password..."), coll,
+        this, SLOT(showChangePasswordDialog()));
+    coll->addAction("ChangePassword", changePasswordAct);
+
     // Help
     QAction *aboutQuasselAct = new Action(QIcon(":/icons/quassel.png"), tr("&About Quassel"), coll,
         this, SLOT(showAboutDlg()));
@@ -552,7 +559,9 @@ void MainWin::setupMenus()
 #else
     _settingsMenu->addAction(coll->action("ConfigureShortcuts"));
 #endif
+    _settingsMenu->addAction(coll->action("ChangePassword"));
     _settingsMenu->addAction(coll->action("ConfigureQuassel"));
+
 
     _helpMenu = menuBar()->addMenu(tr("&Help"));
 
@@ -729,6 +738,15 @@ void MainWin::changeActiveBufferView(int bufferViewId)
     }
 
     nextBufferView(); // fallback
+}
+
+void MainWin::showChangePasswordDialog()
+{
+    bool ok;
+    QString newPassword = QInputDialog::getText(this, tr("Set new password"), tr("New password:"), QLineEdit::Password, QString(), &ok);
+    if (ok && !newPassword.isEmpty()) {
+        emit changePassword(newPassword);
+    }
 }
 
 
