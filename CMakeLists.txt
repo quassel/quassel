@@ -235,14 +235,12 @@ if (USE_QT5)
             DESCRIPTION "the database support module for Qt5"
         )
 
-        # While QCA2 seems to support Qt5, it is not actually co-installable or distinguishable from the Qt4 version...
-        # In order to avoid linking against the Qt4 version (which is probably the one installed), disable this for now
-        #find_package(QCA2 QUIET)
-        #set_package_properties(QCA2 PROPERTIES TYPE RECOMMENDED
-        #    URL "https://projects.kde.org/projects/kdesupport/qca"
-        #    DESCRIPTION "Qt Cryptographic Architecture"
-        #    PURPOSE "Required for encryption support"
-        #)
+        find_package(QCA2-QT5)
+        set_package_properties(QCA2-QT5 PROPERTIES TYPE RECOMMENDED
+            URL "https://projects.kde.org/projects/kdesupport/qca"
+            DESCRIPTION "Qt Cryptographic Architecture"
+            PURPOSE "Required for encryption support"
+        )
 
     endif(BUILD_CORE)
 
