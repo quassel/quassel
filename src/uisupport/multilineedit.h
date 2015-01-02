@@ -24,7 +24,7 @@
 #include <QKeyEvent>
 #include <QHash>
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KDE/KTextEdit>
 #  define MultiLineEditParent KTextEdit
 #else

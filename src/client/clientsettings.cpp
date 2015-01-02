@@ -249,7 +249,7 @@ void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
 
 CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode()
 {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     NetworkDetectionMode def = UseSolid;
 #else
     NetworkDetectionMode def = UsePingTimeout;

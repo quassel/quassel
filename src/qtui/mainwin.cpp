@@ -26,7 +26,7 @@
 #include <QStatusBar>
 #include <QToolBar>
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KAction>
 #  include <KActionCollection>
 #  include <KHelpMenu>
@@ -93,7 +93,7 @@
 #include "topicwidget.h"
 #include "verticaldock.h"
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
 #  endif
@@ -102,9 +102,9 @@
 #  endif
 #  include "systraynotificationbackend.h"
 #  include "taskbarnotificationbackend.h"
-#else /* HAVE_KDE */
+#else /* HAVE_KDE4 */
 #  include "knotificationbackend.h"
-#endif /* HAVE_KDE */
+#endif /* HAVE_KDE4 */
 
 #ifdef HAVE_SSL
 #  include "sslinfodlg.h"
@@ -140,12 +140,12 @@
 #include "settingspages/notificationssettingspage.h"
 #include "settingspages/topicwidgetsettingspage.h"
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
 #  include "settingspages/shortcutssettingspage.h"
 #endif
 
 MainWin::MainWin(QWidget *parent)
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     : KMainWindow(parent),
     _kHelpMenu(new KHelpMenu(this, KGlobal::mainComponent().aboutData())),
 #else
@@ -214,7 +214,7 @@ void MainWin::init()
     setupTitleSetter();
     setupHotList();
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
@@ -226,9 +226,9 @@ void MainWin::init()
 
     QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
 
-#else /* HAVE_KDE */
+#else /* HAVE_KDE4 */
     QtUi::registerNotificationBackend(new KNotificationBackend(this));
-#endif /* HAVE_KDE */
+#endif /* HAVE_KDE4 */
 
 #ifdef HAVE_INDICATEQT
     QtUi::registerNotificationBackend(new IndicatorNotificationBackend(this));
@@ -249,7 +249,7 @@ void MainWin::init()
 
     setDisconnectedState(); // Disable menus and stuff
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     setAutoSaveSettings();
 #endif
 
@@ -295,7 +295,7 @@ void MainWin::saveStateToSettings(UiSettings &s)
     if (lastBufId.isValid())
         s.setValue("LastUsedBufferId", lastBufId.toInt());
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     saveAutoSaveSettings();
 #endif
 }
@@ -307,7 +307,7 @@ void MainWin::restoreStateFromSettings(UiSettings &s)
     _normalPos = s.value("MainWinPos", pos()).toPoint();
     bool maximized = s.value("MainWinMaximized", false).toBool();
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
     restoreGeometry(s.value("MainWinGeometry").toByteArray());
 
     if (maximized) {
@@ -381,7 +381,7 @@ void MainWin::setupActions()
     coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
             0, 0))->setCheckable(true);
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     QAction *fullScreenAct = KStandardAction::fullScreen(this, SLOT(onFullScreenToggled()), this, coll);
 #else
     QAction *fullScreenAct = new Action(QIcon::fromTheme("view-fullscreen"), tr("&Full Screen Mode"), coll,
@@ -542,7 +542,7 @@ void MainWin::setupMenus()
     _viewMenu->addAction(coll->action("LockLayout"));
 
     _settingsMenu = menuBar()->addMenu(tr("&Settings"));
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
     _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
 #else
@@ -552,7 +552,7 @@ void MainWin::setupMenus()
 
     _helpMenu = menuBar()->addMenu(tr("&Help"));
     _helpMenu->addAction(coll->action("AboutQuassel"));
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
     _helpMenu->addAction(coll->action("AboutQt"));
 #else
     _helpMenu->addAction(KStandardAction::aboutKDE(_kHelpMenu, SLOT(aboutKDE()), this));
@@ -998,7 +998,7 @@ void MainWin::setupToolBars()
     setUnifiedTitleAndToolBarOnMac(true);
 #endif
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     _mainToolBar = new KToolBar("MainToolBar", this, Qt::TopToolBarArea, false, true, true);
 #else
     _mainToolBar = new QToolBar(this);
@@ -1363,7 +1363,7 @@ void MainWin::showAboutDlg()
 
 void MainWin::showShortcutsDlg()
 {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed, this);
     foreach(KActionCollection *coll, QtUi::actionCollections())
     dlg.addCollection(coll, coll->property("Category").toString());
@@ -1391,7 +1391,7 @@ void MainWin::onFullScreenToggled()
     if (!action)
         return;
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     KToggleFullScreenAction *kAct = static_cast<KToggleFullScreenAction *>(action);
     kAct->setFullScreen(this, kAct->isChecked());
 #else

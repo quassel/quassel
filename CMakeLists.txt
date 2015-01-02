@@ -430,8 +430,8 @@ if (KDE4_FOUND)
     set(EMBED_DATA OFF)
 
     # Better have the compile flags global, even for the core, to avoid problems with linking the mono client
-    add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
-    set(HAVE_KDE4 TRUE)
+    add_definitions(-DHAVE_KDE -DHAVE_KDE4 ${KDE4_DEFINITIONS})
+    set(WITH_KDE4 TRUE)
 endif()
 
 if (USE_QT5 AND WITH_KDE)
@@ -442,8 +442,8 @@ if (USE_QT5 AND WITH_KDE)
     include(KDECompilerSettings)
     include(KDECMakeSettings)
 
-    add_definitions(-DHAVE_KF5)
-    set(HAVE_KF5 TRUE)
+    add_definitions(-DHAVE_KDE -DHAVE_KF5)
+    set(WITH_KF5 TRUE)
 endif()
 
 # This needs to come after setting up KDE integration, so we can use KDE-specific paths

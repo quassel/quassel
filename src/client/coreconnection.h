@@ -30,7 +30,7 @@
 #  include <QTcpSocket>
 #endif
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <Solid/Networking>
 #endif
 
@@ -148,7 +148,7 @@ private slots:
     void reconnectIntervalChanged(const QVariant &interval);
     void reconnectTimeout();
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     void solidNetworkStatusChanged(Solid::Networking::Status status);
 #endif
 

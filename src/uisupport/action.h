@@ -23,7 +23,7 @@
 #ifndef ACTION_H_
 #define ACTION_H_
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
 
 #include <QShortcut>
 #include <QWidgetAction>
@@ -71,7 +71,7 @@ private slots:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Action::ShortcutTypes)
 
-#else /* HAVE_KDE */
+#else /* HAVE_KDE4 */
 #include <KAction>
 
 class Action : public KAction

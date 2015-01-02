@@ -293,7 +293,7 @@ bool StatusNotifierItem::eventFilter(QObject *watched, QEvent *event)
 {
     if (mode() == StatusNotifier) {
         //FIXME: ugly ugly workaround to weird QMenu's focus problems
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
         if (watched == trayMenu() &&
             (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton))) {
             // put at the back of event queue to let the action activate anyways

@@ -25,7 +25,7 @@
 #include <QApplication>
 
 Action::Action(QObject *parent)
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     : KAction(parent)
 #else
     : QWidgetAction(parent)
@@ -36,7 +36,7 @@ Action::Action(QObject *parent)
 
 
 Action::Action(const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     : KAction(parent)
 #else
     : QWidgetAction(parent)
@@ -51,7 +51,7 @@ Action::Action(const QString &text, QObject *parent, const QObject *receiver, co
 
 
 Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     : KAction(parent)
 #else
     : QWidgetAction(parent)
@@ -66,7 +66,7 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
 }
 
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 void Action::init() {}
 #else
 void Action::init()
@@ -124,4 +124,4 @@ void Action::setShortcut(const QKeySequence &key, ShortcutTypes type)
 }
 
 
-#endif /* HAVE_KDE */
+#endif /* HAVE_KDE4 */

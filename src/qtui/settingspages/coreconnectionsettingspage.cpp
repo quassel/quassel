@@ -24,7 +24,7 @@ CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget *parent)
     : SettingsPage(tr("Remote Cores"), tr("Connection"), parent)
 {
     ui.setupUi(this);
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
     ui.useSolid->hide();
 #endif
 
@@ -49,7 +49,7 @@ void CoreConnectionSettingsPage::widgetHasChanged()
 
 void CoreConnectionSettingsPage::defaults()
 {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     setRadioButtons(CoreConnectionSettings::UseSolid);
 #else
     setRadioButtons(CoreConnectionSettings::UsePingTimeout);
@@ -80,7 +80,7 @@ void CoreConnectionSettingsPage::save()
 void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::NetworkDetectionMode mode)
 {
     switch (mode) {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     case CoreConnectionSettings::UseSolid:
         ui.useSolid->setChecked(true);
         break;
@@ -96,7 +96,7 @@ void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::Network
 
 CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettingsPage::modeFromRadioButtons() const
 {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     if (ui.useSolid->isChecked())
         return CoreConnectionSettings::UseSolid;
 #endif

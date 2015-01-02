@@ -32,11 +32,11 @@
 #endif
 
 // We don't want quasselcore to depend on KDE
-#if defined HAVE_KDE && defined BUILD_CORE
-#  undef HAVE_KDE
+#if defined HAVE_KDE4 && defined BUILD_CORE
+#  undef HAVE_KDE4
 #endif
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KAboutData>
 #  include "kcmdlinewrapper.h"
 #endif
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
     AbstractCliParser *cliParser;
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     // We need to init KCmdLineArgs first
     // TODO: build an AboutData compat class to replace our aboutDlg strings
     KAboutData aboutData("quassel", "kdelibs4", ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8(),
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     cliParser->addSwitch("enable-experimental-dcc", 0, "Enable highly experimental and unfinished support for CTCP DCC (DANGEROUS)");
 #endif
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     // the KDE version needs this extra call to parse argc/argv before app is instantiated
     if (!cliParser->init()) {
         cliParser->usage();
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
     MonolithicApplication app(argc, argv);
 #  endif
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
     // the non-KDE version parses after app has been instantiated
     if (!cliParser->init(app.arguments())) {
         cliParser->usage();

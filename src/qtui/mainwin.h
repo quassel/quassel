@@ -21,7 +21,7 @@
 #ifndef MAINWIN_H_
 #define MAINWIN_H_
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KMainWindow>
 #else
 #  include <QMainWindow>
@@ -56,7 +56,7 @@ class KHelpMenu;
 
 //!\brief The main window of Quassel's QtUi.
 class MainWin
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     : public KMainWindow
 {
 #else
@@ -169,7 +169,7 @@ signals:
     void disconnectFromCore();
 
 private:
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     KHelpMenu *_kHelpMenu;
 #endif
 

@@ -48,7 +48,7 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
 #endif
 
     setAcceptRichText(false);
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     enableFindReplace(false);
 #endif
 
@@ -206,7 +206,7 @@ void MultiLineEdit::setEmacsMode(bool enable)
 
 void MultiLineEdit::setSpellCheckEnabled(bool enable)
 {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     setCheckSpellingEnabled(enable);
 #else
     Q_UNUSED(enable)
@@ -470,7 +470,7 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event)
         }
     }
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     KTextEdit::keyPressEvent(event);
 #else
     QTextEdit::keyPressEvent(event);

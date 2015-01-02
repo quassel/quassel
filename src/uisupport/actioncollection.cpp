@@ -20,7 +20,7 @@
  * Parts of this implementation are based on KDE's KActionCollection.      *
  ***************************************************************************/
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
 
 #include <QAction>
 #include <QDebug>
@@ -305,4 +305,4 @@ bool ActionCollection::unlistAction(QAction *action)
 }
 
 
-#endif /* HAVE_KDE */
+#endif /* HAVE_KDE4 */

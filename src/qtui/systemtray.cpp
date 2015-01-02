@@ -28,7 +28,7 @@
 #include "client.h"
 #include "qtui.h"
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KMenu>
 #  include <KWindowInfo>
 #  include <KWindowSystem>
@@ -66,7 +66,7 @@ void SystemTray::init()
     ActionCollection *coll = QtUi::actionCollection("General");
     _minimizeRestoreAction = new Action(tr("&Minimize"), this, this, SLOT(minimizeRestore()));
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     KMenu *kmenu;
     _trayMenu = kmenu = new KMenu();
     kmenu->addTitle(_activeIcon, "Quassel IRC");
@@ -76,7 +76,7 @@ void SystemTray::init()
 
     _trayMenu->setTitle("Quassel IRC");
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
     _trayMenu->setAttribute(Qt::WA_Hover);
 #endif
 
@@ -107,7 +107,7 @@ void SystemTray::setMode(Mode mode_)
 {
     if (mode_ != _mode) {
         _mode = mode_;
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
         if (_trayMenu) {
             if (_mode == Legacy) {
                 _trayMenu->setWindowFlags(Qt::Popup);

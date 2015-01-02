@@ -30,7 +30,7 @@
 #include <QPersistentModelIndex>
 #include <QUrl>
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KMenuBar>
 #else
 #  include <QMenuBar>

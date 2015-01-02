@@ -57,7 +57,7 @@ void CoreConnection::init()
     _reconnectTimer.setSingleShot(true);
     connect(&_reconnectTimer, SIGNAL(timeout()), SLOT(reconnectTimeout()));
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     connect(Solid::Networking::notifier(), SIGNAL(statusChanged(Solid::Networking::Status)),
         SLOT(solidNetworkStatusChanged(Solid::Networking::Status)));
 #endif
@@ -127,7 +127,7 @@ void CoreConnection::reconnectTimeout()
     if (!_peer) {
         CoreConnectionSettings s;
         if (_wantReconnect && s.autoReconnect()) {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
             // If using Solid, we don't want to reconnect if we're offline
             if (s.networkDetectionMode() == CoreConnectionSettings::UseSolid) {
                 if (Solid::Networking::status() != Solid::Networking::Connected
@@ -135,7 +135,7 @@ void CoreConnection::reconnectTimeout()
                     return;
                 }
             }
-#endif /* HAVE_KDE */
+#endif /* HAVE_KDE4 */
 
             reconnectToCore();
         }
@@ -169,7 +169,7 @@ void CoreConnection::reconnectIntervalChanged(const QVariant &interval)
 }
 
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 
 void CoreConnection::solidNetworkStatusChanged(Solid::Networking::Status status)
 {

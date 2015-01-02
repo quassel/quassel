@@ -23,7 +23,7 @@
 #ifndef ACTIONCOLLECTION_H_
 #define ACTIONCOLLECTION_H_
 
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
 
 #include <QDebug>
 #include <QList>
@@ -123,7 +123,7 @@ private:
 int ActionCollection::count() const { return actions().count(); }
 bool ActionCollection::isEmpty() const { return actions().count(); }
 
-#else /* HAVE_KDE */
+#else /* HAVE_KDE4 */
 
 #include <KActionCollection>
 

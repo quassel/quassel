@@ -21,7 +21,7 @@
 #ifndef QTUIAPPLICATION_H_
 #define QTUIAPPLICATION_H_
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KApplication>
 #else
 #  include <QApplication>
@@ -34,7 +34,7 @@
 
 class QtUi;
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 class QtUiApplication : public KApplication, public Quassel
 {
 #else

@@ -31,7 +31,7 @@
 #include <QMenu>
 #include <QMovie>
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KWindowInfo>
 #  include <KWindowSystem>
 #endif
@@ -328,11 +328,11 @@ void StatusNotifierItemDBus::ContextMenu(int x, int y)
 
     //TODO: nicer placement, possible?
     if (!m_statusNotifierItem->trayMenu()->isVisible()) {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
         m_statusNotifierItem->trayMenu()->setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
 #endif
         m_statusNotifierItem->trayMenu()->popup(QPoint(x, y));
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
         KWindowSystem::setState(m_statusNotifierItem->trayMenu()->winId(), NET::SkipTaskbar|NET::SkipPager|NET::KeepAbove);
         KWindowSystem::setType(m_statusNotifierItem->trayMenu()->winId(), NET::PopupMenu);
         KWindowSystem::forceActiveWindow(m_statusNotifierItem->trayMenu()->winId());

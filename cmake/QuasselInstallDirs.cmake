@@ -44,7 +44,7 @@ if (NOT WITH_KDE)
         endif()
     endif()
 else()
-    if (HAVE_KDE4)
+    if (WITH_KDE4)
         # FindKDE4Internal.cmake sets its own set of variables, however with deprecated names
         if (NOT DEFINED CMAKE_INSTALL_BINDIR)
             set(CMAKE_INSTALL_BINDIR "${BIN_INSTALL_DIR}" CACHE PATH "Install path for binaries")

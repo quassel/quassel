@@ -23,7 +23,7 @@
 #include <QIcon>
 #include <QStringList>
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KStandardDirs>
 #endif
 
@@ -34,7 +34,7 @@
 #include "qtuisettings.h"
 
 QtUiApplication::QtUiApplication(int &argc, char **argv)
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     : KApplication(),
 #else
     : QApplication(argc, argv),
@@ -42,7 +42,7 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
     Quassel(),
     _aboutToQuit(false)
 {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     Q_UNUSED(argc); Q_UNUSED(argv);
 
     // We need to setup KDE's data dirs
@@ -52,15 +52,15 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
     dataDirs.append(":/data/");
     setDataDirPaths(dataDirs);
 
-#else /* HAVE_KDE */
+#else /* HAVE_KDE4 */
 
     setDataDirPaths(findDataDirPaths());
 
-#endif /* HAVE_KDE */
+#endif /* HAVE_KDE4 */
 
-#if defined(HAVE_KDE) || defined(Q_OS_MAC)
+#if defined(HAVE_KDE4) || defined(Q_OS_MAC)
     disableCrashhandler();
-#endif /* HAVE_KDE || Q_OS_MAC */
+#endif /* HAVE_KDE4 || Q_OS_MAC */
     setRunMode(Quassel::ClientOnly);
 
 #if QT_VERSION < 0x050000

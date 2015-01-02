@@ -31,9 +31,9 @@ MonolithicApplication::MonolithicApplication(int &argc, char **argv)
     _internalInitDone(false)
 {
     _internal = new CoreApplicationInternal(); // needed for parser options
-#if defined(HAVE_KDE) || defined(Q_OS_MAC)
+#if defined(HAVE_KDE4) || defined(Q_OS_MAC)
     disableCrashhandler();
-#endif /* HAVE_KDE || Q_OS_MAC */
+#endif /* HAVE_KDE4 || Q_OS_MAC */
     setRunMode(Quassel::Monolithic);
 }
 

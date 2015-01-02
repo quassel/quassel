@@ -24,7 +24,7 @@
 #include <QStyle>
 #include <QStyleOptionFrame>
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
 #  include <KColorDialog>
 #else
 #  include <QColorDialog>
@@ -56,7 +56,7 @@ QColor ColorButton::color() const
 
 void ColorButton::chooseColor()
 {
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     QColor c = color();
     KColorDialog::getColor(c, this);
 #else

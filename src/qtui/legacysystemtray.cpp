@@ -29,7 +29,7 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
     _blinkState(false),
     _lastMessageId(0)
 {
-#ifndef HAVE_KDE
+#ifndef HAVE_KDE4
     _trayIcon = new QSystemTrayIcon(associatedWidget());
 #else
     _trayIcon = new KSystemTrayIcon(associatedWidget());
