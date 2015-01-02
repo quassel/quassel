@@ -64,7 +64,7 @@ set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${qm_files};i18
 if(EMBED_DATA)
   set(COMMON_RCS ${COMMON_RCS} ${resfile} PARENT_SCOPE)
 else(EMBED_DATA)
-  install(FILES ${qm_files} DESTINATION ${DATA_INSTALL_DIR}/quassel/translations)
+  install(FILES ${qm_files} DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/translations)
 endif(EMBED_DATA)
 
 add_custom_target(po DEPENDS ${qm_files})

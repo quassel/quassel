@@ -6,7 +6,7 @@
 # General setup
 #####################################################################
 
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 2.8.9)  # You'll need at least 2.8.12 for KDE Frameworks integration
 project(QuasselIRC)
 
 # Versions
@@ -61,9 +61,17 @@ add_feature_info(WANT_CORE WANT_CORE "Build the core (server) binary")
 add_feature_info(WANT_QTCLIENT WANT_QTCLIENT "Build the client-only binary (requires a core to connect to)")
 add_feature_info(WANT_MONO WANT_MONO "Build the monolithic (all-in-one) binary")
 
-# Whether to enable KDE integration (pulls in kdelibs and friends as a dependency); requires Qt4 for now
-cmake_dependent_option(WITH_KDE "KDE4 integration" OFF "USE_QT4" OFF)
-add_feature_info(WITH_KDE WITH_KDE "Enable KDE4 integration")
+# Whether to enable KDE integration (work in progress for Qt5 / KDE Frameworks)
+# Note that when building with Qt5, WITH_KDE enables integration with higher-tier KDE frameworks that
+# require runtime support. We still optionally make use of certain Tier 1 frameworks even if WITH_KDE
+# is disabled.
+if (USE_QT4)
+    option(WITH_KDE "KDE4 integration" OFF)
+    add_feature_info(WITH_KDE WITH_KDE "Enable KDE4 integration")
+else()
+    option(WITH_KDE "Integration with the KDE Frameworks runtime environment")
+    add_feature_info(WITH_KDE WITH_KDE "Integrate with the KDE Frameworks runtime environment")
+endif()
 
 cmake_dependent_option(WITH_OXYGEN "Install Oxygen icon set (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
 if (NOT WITH_KDE)
@@ -144,6 +152,7 @@ else()
     endif()
 endif()
 
+
 # Find package dependencies
 #
 # Note that you can forcefully disable optional packages
@@ -223,6 +232,32 @@ if (USE_QT5)
             endif()
         endif()
         add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" Qt5WebKitWidgets_FOUND "Support showing previews for URLs in chat")
+
+        # KDE Frameworks
+        ################
+
+        if (WITH_KDE)
+            set(ecm_find_type "REQUIRED")
+        else()
+            # Even with KDE integration disabled, we optionally use tier1 frameworks if we find them
+            set(ecm_find_type "RECOMMENDED")
+        endif()
+
+        # extra-cmake-modules
+        find_package(ECM NO_MODULE QUIET)
+        set_package_properties(ECM PROPERTIES TYPE ${ecm_find_type}
+            URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules"
+            DESCRIPTION "extra modules for CMake, maintained by the KDE project"
+            PURPOSE     "Required to find KDE Frameworks components"
+        )
+
+        if (ECM_FOUND)
+            list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+        endif()
+
+        if (WITH_KDE)
+
+        endif()
 
     endif(BUILD_GUI)
     if (BUILD_CORE)
@@ -324,6 +359,7 @@ else(USE_QT5)
         )
 
     endif(BUILD_GUI)
+
     if (BUILD_CORE)
 
         find_package(QCA2 QUIET)
@@ -366,7 +402,54 @@ if (NOT WIN32)
 endif()
 
 
-# Various checks
+# Additional compile settings
+#####################################################################
+
+# This sets -fPIC and friends if required by the installed Qt5 library
+if (USE_QT5 AND Qt5_POSITION_INDEPENDENT_CODE)
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+endif()
+
+# Needed to compile with mingw without kde
+if (MINGW AND NOT KDE4_FOUND)
+    add_definitions(-D_WIN32_WINNT=0x0500)
+    message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
+    # workaround for bug in mingw gcc 4.0
+    add_definitions(-U__STRICT_ANSI__)
+endif()
+
+
+# Setup KDE / KDE Frameworks
+#####################################################################
+
+# We want to do this up here, so we have the necessary variables and defines set before
+# compiling anything
+
+if (KDE4_FOUND)
+    # We always use external icons for KDE4 support, since we use its iconloader rather than Qt's
+    set(EMBED_DATA OFF)
+
+    # Better have the compile flags global, even for the core, to avoid problems with linking the mono client
+    add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
+    set(HAVE_KDE4 TRUE)
+endif()
+
+if (USE_QT5 AND WITH_KDE)
+    # If KDE Frameworks are present, they're most probably providing Qt5 integration including icon loading
+    set(EMBED_DATA OFF)
+
+    include(KDEInstallDirs)
+    include(KDECompilerSettings)
+    include(KDECMakeSettings)
+
+    add_definitions(-DHAVE_KF5)
+    set(HAVE_KF5 TRUE)
+endif()
+
+# This needs to come after setting up KDE integration, so we can use KDE-specific paths
+include(QuasselInstallDirs)
+
+# Various config-dependent checks and settings
 #####################################################################
 
 if (NOT ZLIB_FOUND)
@@ -376,21 +459,10 @@ if (NOT ZLIB_FOUND)
     endif()
 endif()
 
-if (KDE4_FOUND)
-    # We always use external icons for KDE4 support, since we use its iconloader rather than our own
-    set(EMBED_DATA OFF)
-
-    # Better have the compile flags global, even for the core, to avoid problems with linking the mono client
-    add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
-endif()
-
 # Check for SSL support in Qt
 # As there's no easy way to get Qt's configuration in particular for Qt5, let's just compile
 # a small test program checking the defines. This works for both Qt4 and Qt5.
 cmake_push_check_state(RESET)
-if (Qt5_POSITION_INDEPENDENT_CODE)
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-endif()
 set(CMAKE_REQUIRED_INCLUDES ${QT_INCLUDES} ${Qt5Core_INCLUDE_DIRS})
 check_cxx_source_compiles("
     #include \"qglobal.h\"
@@ -414,95 +486,76 @@ endif()
 
 add_feature_info("Qt Linguist Tools" QT_LCONVERT_EXECUTABLE "Translation support for Quassel")
 
-# Various settings
-##################
-
-# needed to compile with mingw without kde
-if (MINGW AND NOT KDE4_FOUND)
-    add_definitions(-D_WIN32_WINNT=0x0500)
-    message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
-# workaround for bug in mingw gcc 4.0
-    add_definitions(-U__STRICT_ANSI__)
+if (EMBED_DATA)
+    message(STATUS "Embedding data files into the binary")
+else()
+    message(STATUS "Installing data files separately")
 endif()
 
-# Now set up install locations; those are set by KDE if integration is enabled
-if(NOT KDE4_FOUND)
-  if(WIN32)
-    set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX} CACHE FILEPATH "Install path for binaries")
-    set(DATA_INSTALL_DIR $ENV{APPDATA}/quassel-irc.org/share/apps CACHE FILEPATH "Install path for data files")
-    set(ICON_INSTALL_DIR $ENV{APPDATA}/quassel-irc.org/share/icons CACHE FILEPATH "Global icon install path")
-    set(XDG_APPS_INSTALL_DIR $ENV{APPDATA}/quassel-irc.org/share/applications CACHE FILEPATH "Install path for .desktop files")
-  else(WIN32)
-    set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/bin CACHE FILEPATH "Install path for binaries")
-    set(DATA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/apps CACHE FILEPATH "Install path for data files")
-    set(ICON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/icons CACHE FILEPATH "Global icon install path")
-    set(XDG_APPS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/applications CACHE FILEPATH "Install path for .desktop files")
-  endif(WIN32)
+if (INDICATEQT_FOUND)
+    add_definitions(-DXDG_APPS_INSTALL_DIR=${CMAKE_INSTALL_APPDIR})
 endif()
 
-if(EMBED_DATA)
-  message(STATUS "Embedding data files into the binary")
-else(EMBED_DATA)
-  message(STATUS "Installing data files separately")
-endif(EMBED_DATA)
+if (NOT WIN32)
+    check_function_exists(umask HAVE_UMASK)
+    if(HAVE_UMASK)
+        add_definitions(-DHAVE_UMASK)
+    endif(HAVE_UMASK)
+endif()
 
-# RPATH needs to be set correctly
-# Do this down here, since otherwise KDE wants to handle it itself, and fails
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH 1)
 
-# Set global buildflags
-# This is very much non-portable, so don't use -DSTATIC until you know what
-# you do.
+# Windows-specific stuff
+#####################################################################
+
+if (WIN32)
+    link_libraries(imm32 winmm dbghelp Secur32)  # missing by default :/
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DNOMINMAX")
+        set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBUGINFO "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt")
+        set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt")
+        set(CMAKE_EXE_LINKER_FLAGS_DEBUGFULL "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+        link_libraries(Version dwmapi shlwapi)
+        if (USE_QT5)
+            set(QT_QTMAIN_LIBRARY Qt5::WinMain)
+        endif()
+    endif()
+    if(HAVE_SSL AND STATIC)
+        find_package(OpenSSL REQUIRED)
+        link_libraries(${OPENSSL_LIBRARIES} ${OPENSSL_EAY_LIBRARIES})
+    endif()
+endif()
+
+
+# Static builds (very much non-portable, so don't use -DSTATIC
+# unless you know what you do!)
+#####################################################################
+
 if(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "-static-libgcc ${CMAKE_CXX_FLAGS}")
-  link_directories(${CMAKE_BINARY_DIR}/staticlibs) # override dynamic libs
-  if(HAVE_SSL)
-    set(QUASSEL_SSL_LIBRARIES ssl crypto)  # these miss in static builds
-  endif(HAVE_SSL)
-endif(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
-
-if(WIN32)
-  link_libraries(imm32 winmm dbghelp Secur32)  # missing by default :/
-  if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DNOMINMAX")
-    set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBUGINFO "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUGFULL "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
-    link_libraries(Version dwmapi shlwapi)
-    if(USE_QT5)
-      set(QT_QTMAIN_LIBRARY Qt5::WinMain)
-    endif(USE_QT5)
-  endif(MSVC)
-  if(HAVE_SSL AND STATIC)
-     find_package(OpenSSL REQUIRED)
-     link_libraries(${OPENSSL_LIBRARIES} ${OPENSSL_EAY_LIBRARIES})
-  endif(HAVE_SSL AND STATIC)
-endif(WIN32)
-
-if(INDICATEQT_FOUND)
-  add_definitions(-DXDG_APPS_INSTALL_DIR=${XDG_APPS_INSTALL_DIR})
+    set(CMAKE_CXX_FLAGS "-static-libgcc ${CMAKE_CXX_FLAGS}")
+    link_directories(${CMAKE_BINARY_DIR}/staticlibs) # override dynamic libs
+    if (HAVE_SSL)
+        set(QUASSEL_SSL_LIBRARIES ssl crypto)  # these miss in static builds
+    endif()
 endif()
 
-if(NOT WIN32)
-  check_function_exists(umask HAVE_UMASK)
-  if(HAVE_UMASK)
-    add_definitions(-DHAVE_UMASK)
-  endif(HAVE_UMASK)
-endif(NOT WIN32)
 
 # Generate version information from Git
+#####################################################################
+
 include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_HEAD)
 git_describe(GIT_DESCRIBE --long)
 
 # Sanitize things if we're not in a Git repo
-if(NOT GIT_HEAD OR NOT GIT_DESCRIBE)
+if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
     set(GIT_HEAD "")
     set(GIT_DESCRIBE "")
 endif()
 
 configure_file(version.h.in ${CMAKE_BINARY_DIR}/version.h @ONLY)
+
+# Prepare the build
+#####################################################################
 
 # These variables will be added to the main targets (CORE, QTCLIENT, MONO)
 set(COMMON_DEPS ${RC_WIN32})
@@ -515,6 +568,7 @@ add_subdirectory(icons)
 add_subdirectory(pics)
 add_subdirectory(po)
 
+
 # Set up and display feature summary
 #####################################################################
 
@@ -525,7 +579,7 @@ feature_summary(WHAT ALL
 
 # Finally, compile the sources
 # We want this after displaying the feature summary to avoid ugly
-# CMake backtraces in case a required Qt5 modules misses
+# CMake backtraces in case a required Qt5 module is missing
 #####################################################################
 
 add_subdirectory(src)

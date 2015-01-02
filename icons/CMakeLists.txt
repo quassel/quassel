@@ -1,6 +1,6 @@
 # Install icons
 #
-# We put the bundled oxygen icon theme in DATA_INSTALL_DIR rather than ICON_INSTALL_DIR,
+# We put the bundled oxygen icon theme in DATADIR rather than ICONDIR,
 # in order to avoid conflicts. As we add this directory to XDG_DATA_DIRS at runtime,
 # the bundled theme will be found by Qt only if there is no oxygen theme installed
 # in system directories.
@@ -18,10 +18,10 @@ if (WANT_MONO OR WANT_QTCLIENT)
             set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/oxygen.qrc)
         endif()
     else()
-        install(DIRECTORY hicolor DESTINATION ${ICON_INSTALL_DIR})
+        install(DIRECTORY hicolor DESTINATION ${CMAKE_INSTALL_ICONDIR})
         if (WITH_OXYGEN)
             message(STATUS "Installing bundled Oxygen icons")
-            install(DIRECTORY oxygen DESTINATION ${DATA_INSTALL_DIR}/quassel/icons)
+            install(DIRECTORY oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
         endif()
     endif()
 
@@ -35,7 +35,7 @@ endif()
 # Application icon
 
 if (HAVE_KDE OR (UNIX AND NOT APPLE))
-    install(FILES hicolor/48x48/apps/quassel.png DESTINATION ${ICON_INSTALL_DIR}/hicolor/48x48/apps)
+    install(FILES hicolor/48x48/apps/quassel.png DESTINATION ${CMAKE_INSTALL_ICONDIR}/hicolor/48x48/apps)
     if (CMAKE_INSTALL_PREFIX STREQUAL "/usr")
         install(FILES hicolor/48x48/apps/quassel.png DESTINATION /usr/share/pixmaps)
     endif()

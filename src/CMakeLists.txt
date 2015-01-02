@@ -43,7 +43,7 @@ if(WANT_CORE)
                                     COMPILE_FLAGS "-DBUILD_CORE"
                                     OUTPUT_NAME ../quasselcore)
   target_link_libraries(quasselcore mod_core mod_common ${COMMON_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
-  install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+  install(TARGETS quasselcore RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif(WANT_CORE)
 
 if (KDE4_FOUND)
@@ -58,7 +58,7 @@ if(WANT_QTCLIENT)
                                       COMPILE_FLAGS "-DBUILD_QTUI"
                                       OUTPUT_NAME ../quasselclient)
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
-  install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+  install(TARGETS quasselclient RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
@@ -69,7 +69,7 @@ if(WANT_MONO)
                                 COMPILE_FLAGS "-DBUILD_MONO"
                                 OUTPUT_NAME ../quassel)
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
-  install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+  install(TARGETS quassel RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif(WANT_MONO)
 
 # Build bundles for MacOSX
