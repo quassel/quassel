@@ -256,6 +256,12 @@ if (USE_QT5)
         endif()
 
         if (WITH_KDE)
+            find_package(KF5TextWidgets QUIET)
+            set_package_properties(KF5TextWidgets PROPERTIES TYPE REQUIRED
+                URL "http://inqlude.org/libraries/ktextwidgets.html"
+                DESCRIPTION "framework providing an assortment of widgets for displaying and editing text"
+                PURPOSE     "Allows to use extra features provided by KDE Frameworks in input widgets"
+            )
 
         endif()
 

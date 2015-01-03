@@ -57,3 +57,6 @@ if (WITH_KDE4)
     target_link_libraries(mod_uisupport ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY})
 endif()
 
+if (WITH_KF5)
+    target_link_libraries(mod_uisupport KF5::TextWidgets)
+endif()

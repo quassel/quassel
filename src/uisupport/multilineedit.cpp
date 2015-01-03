@@ -43,12 +43,10 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
     _emacsMode(false),
     _lastDocumentHeight(-1)
 {
-#if QT_VERSION >= 0x040500
-    document()->setDocumentMargin(0); // new in Qt 4.5 and we really don't want it here
-#endif
+    document()->setDocumentMargin(0);
 
     setAcceptRichText(false);
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     enableFindReplace(false);
 #endif
 
@@ -206,7 +204,7 @@ void MultiLineEdit::setEmacsMode(bool enable)
 
 void MultiLineEdit::setSpellCheckEnabled(bool enable)
 {
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     setCheckSpellingEnabled(enable);
 #else
     Q_UNUSED(enable)
@@ -296,18 +294,7 @@ bool MultiLineEdit::event(QEvent *e)
 
 void MultiLineEdit::keyPressEvent(QKeyEvent *event)
 {
-    // Workaround the fact that Qt < 4.5 doesn't know InsertLineSeparator yet
-#if QT_VERSION >= 0x040500
     if (event == QKeySequence::InsertLineSeparator) {
-#else
-
-# ifdef Q_OS_MAC
-    if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && event->modifiers() & Qt::META) {
-# else
-    if ((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && event->modifiers() & Qt::SHIFT) {
-# endif
-#endif
-
         if (_mode == SingleLine) {
             event->accept();
             on_returnPressed();
@@ -470,7 +457,7 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event)
         }
     }
 
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     KTextEdit::keyPressEvent(event);
 #else
     QTextEdit::keyPressEvent(event);
