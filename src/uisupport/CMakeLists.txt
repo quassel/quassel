@@ -34,7 +34,7 @@ set(SOURCES
     abstractnotificationbackend.h
 )
 
-if (KDE4_FOUND)
+if (WITH_KDE4)
     include_directories(${KDE4_INCLUDES})
     add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
     set(SOURCES ${SOURCES} kcmdlinewrapper.cpp)
@@ -51,8 +51,9 @@ endif()
 add_library(mod_uisupport STATIC ${SOURCES})
 qt_use_modules(mod_uisupport Core Gui Network ${qt_modules})
 
-if (KDE4_FOUND)
+target_link_libraries(mod_uisupport mod_client mod_common)
+
+if (WITH_KDE4)
     target_link_libraries(mod_uisupport ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY})
 endif()
 
-add_dependencies(mod_uisupport mod_common mod_client)

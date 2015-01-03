@@ -62,8 +62,8 @@ if (HAVE_SYSLOG)
     add_definitions(-DHAVE_SYSLOG)
 endif()
 
-if(APPLE)
-  set(SOURCES ${SOURCES} mac_utils.cpp)
+if (APPLE)
+    set(SOURCES ${SOURCES} mac_utils.cpp)
 endif(APPLE)
 
 if (WIN32)
@@ -81,8 +81,8 @@ qt_add_resources(SOURCES ${COMMON_RCS})
 add_library(mod_common STATIC ${SOURCES})
 qt_use_modules(mod_common Core Network)
 
-if(APPLE)
-  target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
+if (APPLE)
+    target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
 endif(APPLE)
 
 target_link_libraries(mod_common ${CMAKE_DL_LIBS} ${EXECINFO_LIBRARIES} ${ZLIB_LIBRARIES})

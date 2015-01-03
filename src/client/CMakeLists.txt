@@ -52,8 +52,8 @@ qt_add_resources(SOURCES ${CLIENT_RCS})
 add_library(mod_client STATIC ${SOURCES})
 qt_use_modules(mod_client Network Core Gui ${qt_modules})
 
+target_link_libraries(mod_client mod_common)
+
 if (KDE4_FOUND)
     target_link_libraries(mod_client ${KDE4_SOLID_LIBS})
 endif()
-
-add_dependencies(mod_client mod_common)

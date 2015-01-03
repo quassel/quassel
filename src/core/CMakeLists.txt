@@ -62,8 +62,4 @@ qt_add_resources(SOURCES ${CORE_RCS})
 add_library(mod_core STATIC ${SOURCES})
 qt_use_modules(mod_core Core Network Script Sql)
 
-add_dependencies(mod_core mod_common)
-
-if (LIBS)
-    target_link_libraries(mod_core ${LIBS})
-endif()
+target_link_libraries(mod_core mod_common ${LIBS})
