@@ -20,13 +20,13 @@
 
 #include <QFileDialog>
 #include <QUrl>
+#include <QIcon>
 
 #include <QAudioDeviceInfo>
 
 #include "audionotificationbackend.h"
 
 #include "clientsettings.h"
-#include "iconloader.h"
 #include "mainwin.h"
 #include "qtui.h"
 
@@ -116,9 +116,9 @@ AudioNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
     
     _audioAvailable = !QAudioDeviceInfo::availableDevices(QAudio::AudioOutput).isEmpty();
 
-    ui.enabled->setIcon(SmallIcon("media-playback-start"));
-    ui.play->setIcon(SmallIcon("media-playback-start"));
-    ui.open->setIcon(SmallIcon("document-open"));
+    ui.enabled->setIcon(QIcon::fromTheme("media-playback-start"));
+    ui.play->setIcon(QIcon::fromTheme("media-playback-start"));
+    ui.open->setIcon(QIcon::fromTheme("document-open"));
 
     connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
     connect(ui.filename, SIGNAL(textChanged(const QString &)), SLOT(widgetChanged()));
