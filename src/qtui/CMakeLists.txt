@@ -2,6 +2,7 @@
 
 set(SOURCES
     aboutdlg.cpp
+    audionotificationbackend.cpp
     awaylogfilter.cpp
     awaylogview.cpp
     bufferwidget.cpp
@@ -54,6 +55,7 @@ set(SOURCES
 
 set(FORMS
     aboutdlg.ui
+    audionotificationconfigwidget.ui
     bufferviewwidget.ui
     bufferwidget.ui
     channellistdlg.ui
@@ -172,16 +174,21 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/qtui
                     ${CMAKE_SOURCE_DIR}/src/qtui/settingspages
                     ${CMAKE_SOURCE_DIR}/src/uisupport
+
 )
 
 qt_wrap_ui(UI ${FORMPATH} ${SPFRM})
 
 if (USE_QT5)
-    list(APPEND QT_MODULES Widgets)
+    list(APPEND QT_MODULES Widgets Multimedia)
 endif()
 
 
 add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${UI})
 qt_use_modules(mod_qtui Core Gui Network ${QT_MODULES})
 
-target_link_libraries(mod_qtui mod_client mod_common mod_uisupport ${LIBS})
+if (LIBS)
+    target_link_libraries(mod_qtui ${LIBS})
+endif()
+
+add_dependencies(mod_qtui mod_common mod_client mod_uisupport)
