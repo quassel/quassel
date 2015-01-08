@@ -2,7 +2,6 @@
 
 set(SOURCES
     aboutdlg.cpp
-    audionotificationbackend.cpp
     awaylogfilter.cpp
     awaylogview.cpp
     bufferwidget.cpp
@@ -98,7 +97,7 @@ if (LIBSNORE_FOUND)
     list(APPEND LIBS ${LIBSNORE_LIBRARIES})
 endif()
 
-if (PHONON_FOUND OR Phonon4Qt5_FOUND)
+if (PHONON_FOUND)
     add_definitions(-DHAVE_PHONON)
     include_directories(${PHONON_INCLUDES})
     set(SOURCES ${SOURCES} phononnotificationbackend.cpp)
@@ -180,6 +179,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
 qt_wrap_ui(UI ${FORMPATH} ${SPFRM})
 
 if (USE_QT5)
+    list(APPEND SOURCES audionotificationbackend.cpp)
     list(APPEND QT_MODULES Widgets Multimedia)
 endif()
 
