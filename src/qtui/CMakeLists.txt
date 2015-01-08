@@ -181,6 +181,7 @@ qt_wrap_ui(UI ${FORMPATH} ${SPFRM})
 if (USE_QT5)
     list(APPEND SOURCES audionotificationbackend.cpp)
     list(APPEND QT_MODULES Widgets Multimedia)
+    add_definitions(-DHAVE_MULTIMEDIA)
 endif()
 
 

@@ -47,7 +47,6 @@
 #include "awaylogview.h"
 #include "action.h"
 #include "actioncollection.h"
-#include "audionotificationbackend.h"
 #include "bufferhotlistfilter.h"
 #include "buffermodel.h"
 #include "bufferview.h"
@@ -93,6 +92,10 @@
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
 #include "verticaldock.h"
+
+#ifdef HAVE_MULTIMEDIA
+#   include "audionotificationbackend.h"
+#endif
 
 #ifndef HAVE_KDE4
 #  ifdef HAVE_PHONON
@@ -215,12 +218,14 @@ void MainWin::init()
     setupTitleSetter();
     setupHotList();
 
+#ifdef HAVE_MULTIMEDIA
+    QtUi::registerNotificationBackend(new AudioNotificationBackend(this));
+#endif    
+    
 #ifndef HAVE_KDE4
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
-
-    QtUi::registerNotificationBackend(new AudioNotificationBackend(this));
 
 #  ifdef HAVE_LIBSNORE
     QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
