@@ -93,6 +93,10 @@
 #include "topicwidget.h"
 #include "verticaldock.h"
 
+#ifdef HAVE_MULTIMEDIA
+#   include "audionotificationbackend.h"
+#endif
+
 #ifndef HAVE_KDE4
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
@@ -214,10 +218,15 @@ void MainWin::init()
     setupTitleSetter();
     setupHotList();
 
+#ifdef HAVE_MULTIMEDIA
+    QtUi::registerNotificationBackend(new AudioNotificationBackend(this));
+#endif    
+    
 #ifndef HAVE_KDE4
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
+
 #  ifdef HAVE_LIBSNORE
     QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
 #  elif !defined(QT_NO_SYSTEMTRAYICON)

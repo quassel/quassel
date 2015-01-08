@@ -54,6 +54,7 @@ set(SOURCES
 
 set(FORMS
     aboutdlg.ui
+    audionotificationconfigwidget.ui
     bufferviewwidget.ui
     bufferwidget.ui
     channellistdlg.ui
@@ -96,7 +97,7 @@ if (LIBSNORE_FOUND)
     list(APPEND LIBS ${LIBSNORE_LIBRARIES})
 endif()
 
-if (PHONON_FOUND OR Phonon4Qt5_FOUND)
+if (PHONON_FOUND)
     add_definitions(-DHAVE_PHONON)
     include_directories(${PHONON_INCLUDES})
     set(SOURCES ${SOURCES} phononnotificationbackend.cpp)
@@ -172,16 +173,23 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/qtui
                     ${CMAKE_SOURCE_DIR}/src/qtui/settingspages
                     ${CMAKE_SOURCE_DIR}/src/uisupport
+
 )
 
 qt_wrap_ui(UI ${FORMPATH} ${SPFRM})
 
 if (USE_QT5)
-    list(APPEND QT_MODULES Widgets)
+    list(APPEND SOURCES audionotificationbackend.cpp)
+    list(APPEND QT_MODULES Widgets Multimedia)
+    add_definitions(-DHAVE_MULTIMEDIA)
 endif()
 
 
 add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${UI})
 qt_use_modules(mod_qtui Core Gui Network ${QT_MODULES})
 
-target_link_libraries(mod_qtui mod_client mod_common mod_uisupport ${LIBS})
+if (LIBS)
+    target_link_libraries(mod_qtui ${LIBS})
+endif()
+
+add_dependencies(mod_qtui mod_common mod_client mod_uisupport)
