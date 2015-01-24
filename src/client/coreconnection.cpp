@@ -43,7 +43,8 @@ CoreConnection::CoreConnection(QObject *parent)
     _progressMinimum(0),
     _progressMaximum(-1),
     _progressValue(-1),
-    _resetting(false)
+    _resetting(false),
+    _qNetworkConfigurationManager(0)
 {
     qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
 }
@@ -61,6 +62,8 @@ void CoreConnection::init()
     connect(Solid::Networking::notifier(), SIGNAL(statusChanged(Solid::Networking::Status)),
         SLOT(solidNetworkStatusChanged(Solid::Networking::Status)));
 #endif
+    _qNetworkConfigurationManager = new QNetworkConfigurationManager(this);
+    connect(_qNetworkConfigurationManager, SIGNAL(onlineStateChanged(bool)), SLOT(onlineStateChanged(bool)));
 
     CoreConnectionSettings s;
     s.initAndNotify("PingTimeoutInterval", this, SLOT(pingTimeoutIntervalChanged(QVariant)), 60);
@@ -136,6 +139,12 @@ void CoreConnection::reconnectTimeout()
                 }
             }
 #endif /* HAVE_KDE4 */
+            // If using QNetworkConfigurationManager, ditto
+            if (s.networkDetectionMode() == CoreConnectionSettings::UseQNetworkConfigurationManager) {
+               if (!_qNetworkConfigurationManager->isOnline()) {
+                    return;
+               }
+            }
 
             reconnectToCore();
         }
@@ -198,6 +207,26 @@ void CoreConnection::solidNetworkStatusChanged(Solid::Networking::Status status)
 }
 
 #endif
+
+void CoreConnection::onlineStateChanged(bool isOnline)
+{
+    CoreConnectionSettings s;
+    if (s.networkDetectionMode() != CoreConnectionSettings::UseQNetworkConfigurationManager)
+        return;
+
+    if(isOnline) {
+        // qDebug() << "QNetworkConfigurationManager reports Online";
+        if (state() == Disconnected) {
+            if (_wantReconnect && s.autoReconnect()) {
+                reconnectToCore();
+            }
+        }
+    } else {
+        // qDebug() << "QNetworkConfigurationManager reports Offline";
+        if (state() != Disconnected && !isLocalConnection())
+            disconnectFromCore(tr("Network is down"), true);
+    }
+}
 
 bool CoreConnection::isEncrypted() const
 {
