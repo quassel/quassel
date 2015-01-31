@@ -9,7 +9,6 @@ set(SOURCES
     buffersyncer.cpp
     bufferviewconfig.cpp
     bufferviewmanager.cpp
-    cliparser.cpp
     compressor.cpp
     ctcpevent.cpp
     event.cpp
@@ -46,6 +45,11 @@ set(SOURCES
     coreinfo.h
 )
 
+if (USE_QT5)
+    list(APPEND SOURCES qt5cliparser.cpp)
+else()
+    list(APPEND SOURCES cliparser.cpp)
+endif()
 
 if (QCA2_FOUND)
     set(SOURCES ${SOURCES} keyevent.cpp)

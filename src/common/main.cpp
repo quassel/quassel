@@ -39,6 +39,10 @@
 #ifdef HAVE_KDE4
 #  include <KAboutData>
 #  include "kcmdlinewrapper.h"
+#elif defined HAVE_QT5
+#  include "qt5cliparser.h"
+#else
+#  include "cliparser.h"
 #endif
 
 #if !defined(BUILD_CORE) && defined(STATIC)
@@ -47,13 +51,13 @@ Q_IMPORT_PLUGIN(qjpeg)
 Q_IMPORT_PLUGIN(qgif)
 #endif
 
-#include "cliparser.h"
 #include "quassel.h"
 
 int main(int argc, char **argv)
 {
     Quassel::setupBuildInfo();
     QCoreApplication::setApplicationName(Quassel::buildInfo().applicationName);
+    QCoreApplication::setApplicationVersion(Quassel::buildInfo().plainVersionString);
     QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
     QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
 
@@ -95,6 +99,8 @@ int main(int argc, char **argv)
     KCmdLineArgs::init(argc, argv, &aboutData);
 
     cliParser = new KCmdLineWrapper();
+#elif defined HAVE_QT5
+    cliParser = new Qt5CliParser();
 #else
     cliParser = new CliParser();
 #endif
@@ -108,35 +114,35 @@ int main(int argc, char **argv)
     cliParser->addSwitch("help", 'h', "Display this help and exit");
     cliParser->addSwitch("version", 'v', "Display version information");
 #ifdef BUILD_QTUI
-    cliParser->addOption("configdir <path>", 'c', "Specify the directory holding the client configuration");
+    cliParser->addOption("configdir", 'c', "Specify the directory holding the client configuration", "path");
 #else
-    cliParser->addOption("configdir <path>", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL certificate");
+    cliParser->addOption("configdir", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL certificate", "path");
 #endif
-    cliParser->addOption("datadir <path>", 0, "DEPRECATED - Use --configdir instead");
+    cliParser->addOption("datadir", 0, "DEPRECATED - Use --configdir instead", "path");
 
 #ifndef BUILD_CORE
     // put client-only arguments here
-    cliParser->addOption("icontheme <theme>", 0, "Override the system icon theme ('oxygen' is recommended)");
-    cliParser->addOption("qss <file.qss>", 0, "Load a custom application stylesheet");
+    cliParser->addOption("icontheme", 0, "Override the system icon theme ('oxygen' is recommended)", "theme");
+    cliParser->addOption("qss", 0, "Load a custom application stylesheet", "file.qss");
     cliParser->addSwitch("debugbufferswitches", 0, "Enables debugging for bufferswitches");
     cliParser->addSwitch("debugmodel", 0, "Enables debugging for models");
     cliParser->addSwitch("hidewindow", 0, "Start the client minimized to the system tray");
 #endif
 #ifndef BUILD_QTUI
     // put core-only arguments here
-    cliParser->addOption("listen <address>[,<address[,...]]>", 0, "The address(es) quasselcore will listen on", "::,0.0.0.0");
-    cliParser->addOption("port <port>", 'p', "The port quasselcore will listen at", QString("4242"));
+    cliParser->addOption("listen", 0, "The address(es) quasselcore will listen on", "<address>[,<address>[,...]]", "::,0.0.0.0");
+    cliParser->addOption("port", 'p', "The port quasselcore will listen at", "port", "4242");
     cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
-    cliParser->addOption("loglevel <level>", 'L', "Loglevel Debug|Info|Warning|Error", "Info");
+    cliParser->addOption("loglevel", 'L', "Loglevel Debug|Info|Warning|Error", "level", "Info");
 #ifdef HAVE_SYSLOG
     cliParser->addSwitch("syslog", 0, "Log to syslog");
 #endif
-    cliParser->addOption("logfile <path>", 'l', "Log to a file");
-    cliParser->addOption("select-backend <backendidentifier>", 0, "Switch storage backend (migrating data if possible)");
+    cliParser->addOption("logfile", 'l', "Log to a file", "path");
+    cliParser->addOption("select-backend", 0, "Switch storage backend (migrating data if possible)", "backendidentifier");
     cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
-    cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
+    cliParser->addOption("change-userpass", 0, "Starts an interactive session to change the password of the user identified by <username>", "username");
     cliParser->addSwitch("oidentd", 0, "Enable oidentd integration");
-    cliParser->addOption("oidentd-conffile <file>", 0, "Set path to oidentd configuration file");
+    cliParser->addOption("oidentd-conffile", 0, "Set path to oidentd configuration file", "file");
 #ifdef HAVE_SSL
     cliParser->addSwitch("require-ssl", 0, "Require SSL for client connections");
 #endif

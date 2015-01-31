@@ -32,10 +32,8 @@ CliParser::CliParser() : AbstractCliParser()
 }
 
 
-void CliParser::addArgument(const QString &longName_, const CliParserArg &arg)
+void CliParser::addArgument(const QString &longName, const CliParserArg &arg)
 {
-    QString longName = longName_;
-    longName.remove(QRegExp("\\s*<.*>\\s*")); // KCmdLineArgs takes args of the form "arg <defval>"
     if (argsMap.contains(longName)) qWarning() << "Warning: Multiple definition of argument" << longName;
     if (arg.shortName != 0 && !lnameOfShortArg(arg.shortName).isNull())
         qWarning().nospace() << "Warning: Redefining shortName '" << arg.shortName << "' for " << longName << " previously defined for " << lnameOfShortArg(arg.shortName);
@@ -189,8 +187,8 @@ void CliParser::usage()
         }
         else output.append("    ");
         lnameField.append(" --").append(arg.key());
-        if (arg.value().type == CliParserArg::CliArgOption) {
-            lnameField.append("=[").append(arg.key().toUpper()).append("]");
+        if (arg.value().type == CliParserArg::CliArgOption && !arg.value().valueName.isEmpty()) {
+            lnameField.append("=<").append(arg.value().valueName).append(">");
         }
         output.append(lnameField.leftJustified(lnameFieldSize));
         if (!arg.value().help.isEmpty()) {

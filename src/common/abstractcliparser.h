@@ -36,9 +36,9 @@ public:
     }
 
 
-    inline void addOption(const QString &longName, const char shortName = 0, const QString &help = QString(), const QString &def = QString())
+    inline void addOption(const QString &longName, const char shortName = 0, const QString &help = QString(), const QString &valueName = QString(), const QString &def = QString())
     {
-        addArgument(longName, CliParserArg(CliParserArg::CliArgOption, shortName, help, def));
+        addArgument(longName, CliParserArg(CliParserArg::CliArgOption, shortName, help, valueName, def));
     }
 
 
@@ -54,20 +54,21 @@ protected:
             CliArgOption
         };
 
-        CliParserArg(const CliArgType _type = CliArgInvalid, const char _shortName = 0, const QString _help = QString(), const QString _def = QString())
-            : type(_type),
-            shortName(_shortName),
-            help(_help),
-            def(_def),
-            value(QString()),
-            boolValue(false) {};
+        CliParserArg(const CliArgType type = CliArgInvalid, const char shortName = 0, const QString &help = QString(), const QString &valueName = QString(), const QString def = QString())
+            : type(type)
+            , shortName(shortName)
+            , help(help)
+            , valueName(valueName)
+            , def(def)
+            {};
 
         CliArgType type;
         char shortName;
         QString help;
+        QString valueName;
         QString def;
         QString value;
-        bool boolValue;
+        bool boolValue = false;
     };
 
     virtual void addArgument(const QString &longName, const CliParserArg &arg) = 0;

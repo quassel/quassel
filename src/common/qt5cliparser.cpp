@@ -18,52 +18,55 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "kcmdlinewrapper.h"
+#include "qt5cliparser.h"
 
-#include <KCmdLineArgs>
+#include <QCoreApplication>
+#include <QDebug>
 
-KCmdLineWrapper::KCmdLineWrapper()
+bool Qt5CliParser::init(const QStringList &arguments)
 {
+    _qCliParser.addHelpOption();
+    _qCliParser.addVersionOption();
+    _qCliParser.setApplicationDescription(QCoreApplication::translate("CliParser", "Quassel IRC is a modern, distributed IRC client."));
+
+    _qCliParser.process(arguments);
+    return true; // process() does error handling by itself
 }
 
 
-void KCmdLineWrapper::addArgument(const QString &longName_, const CliParserArg &arg)
+bool Qt5CliParser::isSet(const QString &longName)
 {
-    QString longName = longName_;
-    if (arg.type == CliParserArg::CliArgOption && !arg.valueName.isEmpty())
-        longName += " <" + arg.valueName + ">";
 
-    if (arg.shortName != 0) {
-        _cmdLineOptions.add(QByteArray(1, arg.shortName));
+    return _qCliParser.isSet(longName);
+}
+
+
+QString Qt5CliParser::value(const QString &longName)
+{
+    return _qCliParser.value(longName);
+}
+
+
+void Qt5CliParser::usage()
+{
+    _qCliParser.showHelp();
+}
+
+
+void Qt5CliParser::addArgument(const QString &longName, const AbstractCliParser::CliParserArg &arg)
+{
+    QStringList names(longName);
+    if (arg.shortName != 0)
+        names << QString(arg.shortName);
+
+    switch(arg.type) {
+    case CliParserArg::CliArgSwitch:
+        _qCliParser.addOption(QCommandLineOption(names, arg.help));
+        break;
+    case CliParserArg::CliArgOption:
+        _qCliParser.addOption(QCommandLineOption(names, arg.help, arg.valueName, arg.def));
+        break;
+    default:
+        qWarning() << "Warning: Unrecognized argument:" << longName;
     }
-
-    _cmdLineOptions.add(longName.toUtf8(), ki18n(arg.help.toUtf8()), arg.def.toUtf8());
-}
-
-
-bool KCmdLineWrapper::init(const QStringList &)
-{
-    KCmdLineArgs::addCmdLineOptions(_cmdLineOptions);
-    return true;
-}
-
-
-QString KCmdLineWrapper::value(const QString &longName)
-{
-    return KCmdLineArgs::parsedArgs()->getOption(longName.toUtf8());
-}
-
-
-bool KCmdLineWrapper::isSet(const QString &longName)
-{
-    // KCmdLineArgs handles --nooption like NOT --option
-    if (longName.startsWith("no"))
-        return !KCmdLineArgs::parsedArgs()->isSet(longName.mid(2).toUtf8());
-    return KCmdLineArgs::parsedArgs()->isSet(longName.toUtf8());
-}
-
-
-void KCmdLineWrapper::usage()
-{
-    KCmdLineArgs::usage();
 }

@@ -18,52 +18,25 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "kcmdlinewrapper.h"
+#pragma once
 
-#include <KCmdLineArgs>
+#include <QCommandLineParser>
 
-KCmdLineWrapper::KCmdLineWrapper()
+#include "abstractcliparser.h"
+
+
+class Qt5CliParser : public AbstractCliParser
 {
-}
+public:
+    bool init(const QStringList &arguments = QStringList());
 
+    QString value(const QString &longName);
+    bool isSet(const QString &longName);
+    void usage();
 
-void KCmdLineWrapper::addArgument(const QString &longName_, const CliParserArg &arg)
-{
-    QString longName = longName_;
-    if (arg.type == CliParserArg::CliArgOption && !arg.valueName.isEmpty())
-        longName += " <" + arg.valueName + ">";
+private:
+    void addArgument(const QString &longName, const CliParserArg &arg);
 
-    if (arg.shortName != 0) {
-        _cmdLineOptions.add(QByteArray(1, arg.shortName));
-    }
+    QCommandLineParser _qCliParser;
 
-    _cmdLineOptions.add(longName.toUtf8(), ki18n(arg.help.toUtf8()), arg.def.toUtf8());
-}
-
-
-bool KCmdLineWrapper::init(const QStringList &)
-{
-    KCmdLineArgs::addCmdLineOptions(_cmdLineOptions);
-    return true;
-}
-
-
-QString KCmdLineWrapper::value(const QString &longName)
-{
-    return KCmdLineArgs::parsedArgs()->getOption(longName.toUtf8());
-}
-
-
-bool KCmdLineWrapper::isSet(const QString &longName)
-{
-    // KCmdLineArgs handles --nooption like NOT --option
-    if (longName.startsWith("no"))
-        return !KCmdLineArgs::parsedArgs()->isSet(longName.mid(2).toUtf8());
-    return KCmdLineArgs::parsedArgs()->isSet(longName.toUtf8());
-}
-
-
-void KCmdLineWrapper::usage()
-{
-    KCmdLineArgs::usage();
-}
+};
