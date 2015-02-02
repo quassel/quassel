@@ -139,11 +139,7 @@ if (USE_QT5)
     add_definitions(-DHAVE_QT5)
 else()
     message(STATUS "Building for Qt4...")
-    if (BUILD_GUI)
-        set(QT_MIN_VERSION "4.6.0")
-    else()
-        set(QT_MIN_VERSION "4.4.0")
-    endif()
+    set(QT_MIN_VERSION "4.8.0")
 
     # Select a Qt installation here, if you don't want to use system Qt
     if(QT_PATH)
