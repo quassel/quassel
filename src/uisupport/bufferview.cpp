@@ -253,16 +253,12 @@ void BufferView::dropEvent(QDropEvent *event)
     if (bufferList.count() != 1)
         return QTreeView::dropEvent(event);
 
-    NetworkId networkId = bufferList[0].first;
     BufferId bufferId2 = bufferList[0].second;
 
     if (index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
         return QTreeView::dropEvent(event);
 
     if (index.data(NetworkModel::BufferTypeRole) != BufferInfo::QueryBuffer)
-        return QTreeView::dropEvent(event);
-
-    if (index.data(NetworkModel::NetworkIdRole).value<NetworkId>() != networkId)
         return QTreeView::dropEvent(event);
 
     BufferId bufferId1 = index.data(NetworkModel::BufferIdRole).value<BufferId>();
