@@ -20,6 +20,8 @@
 
 #include <cstdlib>
 
+#include <QTextCodec>
+
 #ifdef BUILD_CORE
 #  include "coreapplication.h"
 #elif defined BUILD_QTUI
@@ -55,6 +57,12 @@ Q_IMPORT_PLUGIN(qgif)
 
 int main(int argc, char **argv)
 {
+#if QT_VERSION < 0x050000
+    // All our source files are in UTF-8, and Qt5 even requires that
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+#endif
+
     Quassel::setupBuildInfo();
     QCoreApplication::setApplicationName(Quassel::buildInfo().applicationName);
     QCoreApplication::setApplicationVersion(Quassel::buildInfo().plainVersionString);
