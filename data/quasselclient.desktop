@@ -72,3 +72,4 @@ Icon=quassel
 TryExec=quasselclient
 Exec=quasselclient
 Categories=Qt;Network;Chat;IRCClient;
+X-DBUS-ServiceName=org.quassel-irc.quasselclient
