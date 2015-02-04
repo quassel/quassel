@@ -30,6 +30,11 @@ if (WITH_OXYGEN)
     add_definitions(-DWITH_OXYGEN)
 endif()
 
+# For KAboutData
+if (WITH_KF5)
+    set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} KF5::CoreAddons)
+endif()
+
 # Needed for showing the cli option if appropriate
 if (HAVE_SYSLOG)
     add_definitions(-DHAVE_SYSLOG)

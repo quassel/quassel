@@ -25,6 +25,8 @@
 
 #include "ui_aboutdlg.h"
 
+class AboutData;
+
 class AboutDlg : public QDialog
 {
     Q_OBJECT
@@ -39,6 +41,8 @@ private:
     QString authors() const;
     QString contributors() const;
     QString thanksTo() const;
+
+    AboutData *_aboutData;
 };
 
 

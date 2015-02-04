@@ -25,8 +25,10 @@
 #ifdef BUILD_CORE
 #  include "coreapplication.h"
 #elif defined BUILD_QTUI
+#  include "aboutdata.h"
 #  include "qtuiapplication.h"
 #elif defined BUILD_MONO
+#  include "aboutdata.h"
 #  include "monoapplication.h"
 
 #else
@@ -37,10 +39,17 @@
 #if defined HAVE_KDE4 && defined BUILD_CORE
 #  undef HAVE_KDE4
 #endif
+// We don't want quasselcore to depend on KDE
+#if defined HAVE_KF5 && defined BUILD_CORE
+#  undef HAVE_KF5
+#endif
 
 #ifdef HAVE_KDE4
 #  include <KAboutData>
 #  include "kcmdlinewrapper.h"
+#elif defined HAVE_KF5
+#  include <KCoreAddons/KAboutData>
+#  include "qt5cliparser.h"
 #elif defined HAVE_QT5
 #  include "qt5cliparser.h"
 #else
@@ -97,7 +106,6 @@ int main(int argc, char **argv)
 
 #ifdef HAVE_KDE4
     // We need to init KCmdLineArgs first
-    // TODO: build an AboutData compat class to replace our aboutDlg strings
     KAboutData aboutData("quassel", "kdelibs4", ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8(),
         ki18n("A modern, distributed IRC client"));
     aboutData.addLicense(KAboutData::License_GPL_V2);
@@ -116,6 +124,7 @@ int main(int argc, char **argv)
 
     // Initialize CLI arguments
     // NOTE: We can't use tr() at this point, since app is not yet created
+    // TODO: Change this once we get rid of KDE4 and can initialize the parser after creating the app
 
     // put shared client&core arguments here
     cliParser->addSwitch("debug", 'd', "Enable debug output");
@@ -181,6 +190,15 @@ int main(int argc, char **argv)
     }
 #endif
 
-    if (!app.init()) return EXIT_FAILURE;
+    if (!app.init())
+        return EXIT_FAILURE;
+
+#ifdef HAVE_KF5
+    // FIXME: This should be done after loading the translation catalogue, but still in main()
+    AboutData aboutData;
+    AboutData::setQuasselPersons(&aboutData);
+    KAboutData::setApplicationData(aboutData.kAboutData());
+#endif
+
     return app.exec();
 }

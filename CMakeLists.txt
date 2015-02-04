@@ -252,6 +252,13 @@ if (USE_QT5)
         endif()
 
         if (WITH_KDE)
+            find_package(KF5CoreAddons QUIET)
+            set_package_properties(KF5CoreAddons PROPERTIES TYPE REQUIRED
+                URL "http://inqlude.org/libraries/kcoreaddons.html"
+                DESCRIPTION "framework for solving common problems such as caching, randomization, and more"
+                PURPOSE     "Required for KDE Frameworks integration"
+            )
+
             find_package(KF5TextWidgets QUIET)
             set_package_properties(KF5TextWidgets PROPERTIES TYPE REQUIRED
                 URL "http://inqlude.org/libraries/ktextwidgets.html"

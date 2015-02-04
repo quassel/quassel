@@ -1,6 +1,7 @@
 # Builds the uisupport module
 
 set(SOURCES
+    aboutdata.cpp
     abstractbuffercontainer.cpp
     abstractitemview.cpp
     action.cpp
@@ -58,5 +59,5 @@ if (WITH_KDE4)
 endif()
 
 if (WITH_KF5)
-    target_link_libraries(mod_uisupport KF5::TextWidgets)
+    target_link_libraries(mod_uisupport KF5::CoreAddons KF5::TextWidgets)
 endif()
