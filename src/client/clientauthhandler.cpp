@@ -169,6 +169,7 @@ void ClientAuthHandler::onSocketConnected()
         _probing = true;
 
         QDataStream stream(socket()); // stream handles the endianness for us
+        stream.setVersion(QDataStream::Qt_4_2);
 
         quint32 magic = Protocol::magic;
 #ifdef HAVE_SSL
