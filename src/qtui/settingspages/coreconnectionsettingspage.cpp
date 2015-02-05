@@ -31,6 +31,7 @@ CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget *parent)
     initAutoWidgets();
 
     connect(ui.useSolid, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+    connect(ui.useQNetworkConfigurationManager, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
     connect(ui.usePingTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
     connect(ui.useNoTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
 }
@@ -52,7 +53,7 @@ void CoreConnectionSettingsPage::defaults()
 #ifdef HAVE_KDE4
     setRadioButtons(CoreConnectionSettings::UseSolid);
 #else
-    setRadioButtons(CoreConnectionSettings::UsePingTimeout);
+    setRadioButtons(CoreConnectionSettings::UseQNetworkConfigurationManager);
 #endif
 
     SettingsPage::defaults();
@@ -85,6 +86,9 @@ void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::Network
         ui.useSolid->setChecked(true);
         break;
 #endif
+    case CoreConnectionSettings::UseQNetworkConfigurationManager:
+        ui.useQNetworkConfigurationManager->setChecked(true);
+        break;
     case CoreConnectionSettings::UsePingTimeout:
         ui.usePingTimeout->setChecked(true);
         break;
@@ -100,6 +104,8 @@ CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettingsPage::modeFro
     if (ui.useSolid->isChecked())
         return CoreConnectionSettings::UseSolid;
 #endif
+    if (ui.useQNetworkConfigurationManager->isChecked())
+        return CoreConnectionSettings::UseQNetworkConfigurationManager;
     if (ui.usePingTimeout->isChecked())
         return CoreConnectionSettings::UsePingTimeout;
 

@@ -34,6 +34,8 @@
 #  include <Solid/Networking>
 #endif
 
+#include <QNetworkConfigurationManager>
+
 #include "coreaccount.h"
 #include "remotepeer.h"
 #include "types.h"
@@ -151,6 +153,7 @@ private slots:
 #ifdef HAVE_KDE4
     void solidNetworkStatusChanged(Solid::Networking::Status status);
 #endif
+    void onlineStateChanged(bool isOnline);
 
 private:
     QPointer<ClientAuthHandler> _authHandler;
@@ -170,6 +173,8 @@ private:
 
     CoreAccount _account;
     CoreAccountModel *accountModel() const;
+
+    QPointer<QNetworkConfigurationManager> _qNetworkConfigurationManager;
 
     friend class CoreConfigWizard;
 };

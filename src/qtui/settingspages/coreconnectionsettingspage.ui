@@ -34,6 +34,19 @@
        </widget>
       </item>
       <item>
+       <widget class="QRadioButton" name="useQNetworkConfigurationManager">
+        <property name="toolTip">
+         <string>Rely on Qt's network configuration manager to detect if we're online.</string>
+        </property>
+        <property name="text">
+         <string>Use Qt's network status detection (via QNetworkConfigurationManager)</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QRadioButton" name="usePingTimeout">

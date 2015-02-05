@@ -252,7 +252,7 @@ CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDete
 #ifdef HAVE_KDE4
     NetworkDetectionMode def = UseSolid;
 #else
-    NetworkDetectionMode def = UsePingTimeout;
+    NetworkDetectionMode def = UseQNetworkConfigurationManager;
 #endif
     return (NetworkDetectionMode)localValue("NetworkDetectionMode", def).toInt();
 }
