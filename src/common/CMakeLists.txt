@@ -51,7 +51,7 @@ else()
     list(APPEND SOURCES cliparser.cpp)
 endif()
 
-if (QCA2_FOUND)
+if (QCA2_FOUND OR QCA2-QT5_FOUND)
     set(SOURCES ${SOURCES} keyevent.cpp)
 endif()
 
