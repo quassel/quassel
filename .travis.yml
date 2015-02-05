@@ -27,3 +27,8 @@ script:
   - if [ "$QT_VERSION" = "qt4" ]; then cmake ..; fi
   - if [ "$QT_VERSION" = "qt5" ]; then source /opt/qt52/bin/qt52-env.sh && cmake  -DUSE_QT5=ON ..; fi
   - make
+
+matrix:
+  exclude:
+    - compiler: clang
+      env: QT_VERSION=qt4
