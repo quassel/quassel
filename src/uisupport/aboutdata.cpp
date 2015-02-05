@@ -292,6 +292,7 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Tomáš Chvátal", "scarabeus", tr("Czech translation"), "", QLocale::Czech },
         { "Vit Pelcak", "", tr("Czech translation"), "", QLocale::Czech },
         { "Volkan Gezer", "", tr("Turkish translation"), "", QLocale::Turkish },
+        { "Yaohan Chen", "hagabaka", tr("Network detection improvements") },
         { "Yuri Chornoivan", "", tr("Ukrainian translation"), "", QLocale::Ukrainian },
         { "Zé", "", tr("Portuguese translation"), "", QLocale::Portuguese },
         { "", "zeugma", tr("Turkish translation"), "", QLocale::Turkish }
