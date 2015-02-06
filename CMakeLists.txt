@@ -425,6 +425,11 @@ if (MINGW AND NOT KDE4_FOUND)
     add_definitions(-U__STRICT_ANSI__)
 endif()
 
+# Sanitize compiler flags - old versions of KDE set -ansi, which breaks -std=c++11
+if (CMAKE_COMPILER_IS_GNUCXX)
+    string(REPLACE "-ansi" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+endif()
+
 
 # Setup KDE / KDE Frameworks
 #####################################################################
