@@ -124,8 +124,7 @@ class CoreConnectionSettings : public ClientSettings
 {
 public:
     enum NetworkDetectionMode {
-        UseSolid,
-        UseQNetworkConfigurationManager,
+        UseQNetworkConfigurationManager = 1, // UseSolid is gone
         UsePingTimeout,
         NoActiveDetection
     };

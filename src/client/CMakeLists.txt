@@ -38,11 +38,6 @@ set(SOURCES
     clientcoreinfo.h
 )
 
-if (KDE4_FOUND)
-    include_directories(${KDE4_INCLUDES})
-    add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
-endif()
-
 if (USE_QT5)
     list(APPEND qt_modules Widgets)
 endif()
@@ -53,7 +48,3 @@ add_library(mod_client STATIC ${SOURCES})
 qt_use_modules(mod_client Network Core Gui ${qt_modules})
 
 target_link_libraries(mod_client mod_common)
-
-if (KDE4_FOUND)
-    target_link_libraries(mod_client ${KDE4_SOLID_LIBS})
-endif()

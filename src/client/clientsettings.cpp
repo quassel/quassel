@@ -249,12 +249,10 @@ void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
 
 CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode()
 {
-#ifdef HAVE_KDE4
-    NetworkDetectionMode def = UseSolid;
-#else
-    NetworkDetectionMode def = UseQNetworkConfigurationManager;
-#endif
-    return (NetworkDetectionMode)localValue("NetworkDetectionMode", def).toInt();
+    auto mode = localValue("NetworkDetectionMode", UseQNetworkConfigurationManager).toInt();
+    if (mode == 0)
+        mode = UseQNetworkConfigurationManager; // UseSolid is gone, map that to the new default
+    return static_cast<NetworkDetectionMode>(mode);
 }
 
 

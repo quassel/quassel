@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>446</width>
+    <width>476</width>
     <height>465</height>
    </rect>
   </property>
@@ -21,25 +21,12 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QRadioButton" name="useSolid">
-        <property name="toolTip">
-         <string>Rely on KDE's hardware layer to detect if we're online. Recommended for most KDE users</string>
-        </property>
-        <property name="text">
-         <string>Use KDE's network status detection (via Solid)</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QRadioButton" name="useQNetworkConfigurationManager">
         <property name="toolTip">
-         <string>Rely on Qt's network configuration manager to detect if we're online.</string>
+         <string>Rely on Qt's network configuration manager to detect if we're online</string>
         </property>
         <property name="text">
-         <string>Use Qt's network status detection (via QNetworkConfigurationManager)</string>
+         <string>Automatic</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -164,7 +151,7 @@
      <item>
       <widget class="QSpinBox" name="reconnectInterval">
        <property name="toolTip">
-        <string>Actively ping the remote core and disconnect if we didn't get a reply after a certain time</string>
+        <string>Interval between consecutive connection attempts</string>
        </property>
        <property name="suffix">
         <string> seconds</string>
@@ -219,6 +206,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>useQNetworkConfigurationManager</tabstop>
+  <tabstop>usePingTimeout</tabstop>
+  <tabstop>pingTimeout</tabstop>
+  <tabstop>useNoTimeout</tabstop>
+  <tabstop>autoReconnect</tabstop>
+  <tabstop>reconnectInterval</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
