@@ -52,14 +52,7 @@ protected:
     virtual QString iconNameForAction(QAction *action) // TODO Qt 4.7: fixme when we have converted our iconloader
     {
         QIcon icon(action->icon());
-#if QT_VERSION >= 0x040701
-        // QIcon::name() is in the 4.7 git branch, but it is not in 4.7 TP.
-        // If you get a build error here, you need to update your pre-release
-        // of Qt 4.7.
         return icon.isNull() ? QString() : icon.name();
-#else
-        return QString();
-#endif
     }
 };
 

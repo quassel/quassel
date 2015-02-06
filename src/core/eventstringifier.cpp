@@ -733,12 +733,7 @@ void EventStringifier::handleCtcpPing(CtcpEvent *e)
     if (e->ctcpType() == CtcpEvent::Query)
         defaultHandler(e->ctcpCmd(), e);
     else {
-#if QT_VERSION >= 0x040700
         displayMsg(e, Message::Server, tr("Received CTCP-PING answer from %1 with %2 milliseconds round trip time")
             .arg(nickFromMask(e->prefix())).arg(QDateTime::fromMSecsSinceEpoch(e->param().toULongLong()).msecsTo(e->timestamp())));
-#else
-        displayMsg(e, Message::Server, tr("Received CTCP-PING answer from %1 with %2 seconds round trip time")
-            .arg(nickFromMask(e->prefix())).arg(QDateTime::fromTime_t(e->param().toInt()).secsTo(e->timestamp())));
-#endif
     }
 }

@@ -21,7 +21,7 @@
 #ifndef CHATVIEWSEARCHCONTROLLER_H
 #define CHATVIEWSEARCHCONTROLLER_H
 
-#include <QObject>
+#include <QGraphicsItem>
 #include <QHash>
 #include <QPointer>
 #include <QString>
@@ -87,14 +87,10 @@ private:
 
 
 // Highlight Items
-#include <QGraphicsItem>
-
 class SearchHighlightItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
-#if QT_VERSION >= 0x040600
     Q_INTERFACES(QGraphicsItem)
-#endif
 
 public :
         SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = 0);
