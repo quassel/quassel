@@ -551,22 +551,18 @@ QString MultiLineEdit::convertRichtextToMircCodes()
 
         cursor.clearSelection();
     }
-    if (color) {
-        color = false;
+
+    if (color)
         mircText.append('\x03');
-    }
-    if (underline) {
-        underline = false;
+
+    if (underline)
         mircText.append('\x1f');
-    }
-    if (italic) {
-        italic = false;
+
+    if (italic)
         mircText.append('\x1d');
-    }
-    if (bold) {
-        bold = false;
+
+    if (bold)
         mircText.append('\x02');
-    }
 
     return mircText;
 }
