@@ -191,6 +191,8 @@ signals:
      */
     void bufferMarkedAsRead(BufferId id);
 
+    void clientChangePassword(QString password);
+
 public slots:
     void disconnectFromCore();
 
@@ -199,6 +201,8 @@ public slots:
     void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
 
     void markBufferAsRead(BufferId id);
+
+    void changePassword(QString newPassword);
 
 private slots:
     void setSyncedToCore();

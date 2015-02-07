@@ -132,6 +132,8 @@ public slots:
     //! Marks us away (or unaway) on all networks
     void globalAway(const QString &msg = QString());
 
+    void changePassword(QString password);
+
 signals:
     void initialized();
     void sessionState(const Protocol::SessionState &sessionState);
@@ -157,6 +159,8 @@ signals:
     void networkCreated(NetworkId);
     void networkRemoved(NetworkId);
     void networkDisconnected(NetworkId);
+
+    void passwordChangeRequested(UserId user, QString password);
 
 protected:
     virtual void customEvent(QEvent *event);

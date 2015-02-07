@@ -662,6 +662,7 @@ SessionThread *Core::createSession(UserId uid, bool restore)
     SessionThread *sess = new SessionThread(uid, restore, this);
     sessions[uid] = sess;
     sess->start();
+    connect(sess, SIGNAL(passwordChangeRequested(UserId, QString)), _storage, SLOT(updateUser(UserId, QString)));
     return sess;
 }
 
