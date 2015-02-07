@@ -222,7 +222,7 @@ Core::~Core()
     foreach(CoreAuthHandler *handler, _connectingClients) {
         handler->deleteLater(); // disconnect non authed clients
     }
-    qDeleteAll(sessions);
+    qDeleteAll(_sessions);
     qDeleteAll(_storageBackends);
 }
 
@@ -234,7 +234,8 @@ void Core::saveState()
     CoreSettings s;
     QVariantMap state;
     QVariantList activeSessions;
-    foreach(UserId user, instance()->sessions.keys()) activeSessions << QVariant::fromValue<UserId>(user);
+    foreach(UserId user, instance()->_sessions.keys())
+        activeSessions << QVariant::fromValue<UserId>(user);
     state["CoreStateVersion"] = 1;
     state["ActiveSessions"] = activeSessions;
     s.setCoreState(state);
@@ -247,7 +248,7 @@ void Core::restoreState()
         // qWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
         return;
     }
-    if (instance()->sessions.count()) {
+    if (instance()->_sessions.count()) {
         qWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
         return;
     }
@@ -265,7 +266,7 @@ void Core::restoreState()
         quInfo() << "Restoring previous core state...";
         foreach(QVariant v, activeSessions) {
             UserId user = v.value<UserId>();
-            instance()->createSession(user, true);
+            instance()->sessionForUser(user, true);
         }
     }
 }
@@ -577,19 +578,7 @@ void Core::setupClientSession(RemotePeer *peer, UserId uid)
     handler->deleteLater();
 
     // Find or create session for validated user
-    SessionThread *session;
-    if (sessions.contains(uid)) {
-        session = sessions[uid];
-    }
-    else {
-        session = createSession(uid);
-        if (!session) {
-            qWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(peer->description());
-            peer->close();
-            peer->deleteLater();
-            return;
-        }
-    }
+    sessionForUser(uid);
 
     // as we are currently handling an event triggered by incoming data on this socket
     // it is unsafe to directly move the socket to the client thread.
@@ -610,14 +599,7 @@ void Core::customEvent(QEvent *event)
 void Core::addClientHelper(RemotePeer *peer, UserId uid)
 {
     // Find or create session for validated user
-    if (!sessions.contains(uid)) {
-        qWarning() << qPrintable(tr("Could not find a session for client:")) << qPrintable(peer->description());
-        peer->close();
-        peer->deleteLater();
-        return;
-    }
-
-    SessionThread *session = sessions[uid];
+    SessionThread *session = sessionForUser(uid);
     session->addClient(peer);
 }
 
@@ -643,26 +625,20 @@ void Core::setupInternalClientSession(InternalPeer *clientPeer)
     clientPeer->setPeer(corePeer);
 
     // Find or create session for validated user
-    SessionThread *sessionThread;
-    if (sessions.contains(uid))
-        sessionThread = sessions[uid];
-    else
-        sessionThread = createSession(uid);
-
+    SessionThread *sessionThread = sessionForUser(uid);
     sessionThread->addClient(corePeer);
 }
 
 
-SessionThread *Core::createSession(UserId uid, bool restore)
+SessionThread *Core::sessionForUser(UserId uid, bool restore)
 {
-    if (sessions.contains(uid)) {
-        qWarning() << "Calling createSession() when a session for the user already exists!";
-        return 0;
-    }
-    SessionThread *sess = new SessionThread(uid, restore, this);
-    sessions[uid] = sess;
-    sess->start();
-    return sess;
+    if (_sessions.contains(uid))
+        return _sessions[uid];
+
+    SessionThread *session = new SessionThread(uid, restore, this);
+    _sessions[uid] = session;
+    session->start();
+    return session;
 }
 
 

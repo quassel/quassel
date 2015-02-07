@@ -530,7 +530,7 @@ private:
     void init();
     static Core *instanceptr;
 
-    SessionThread *createSession(UserId userId, bool restoreState = false);
+    SessionThread *sessionForUser(UserId userId, bool restoreState = false);
     void addClientHelper(RemotePeer *peer, UserId uid);
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
     QString setupCoreForInternalUsage();
@@ -547,7 +547,7 @@ private:
 
 private:
     QSet<CoreAuthHandler *> _connectingClients;
-    QHash<UserId, SessionThread *> sessions;
+    QHash<UserId, SessionThread *> _sessions;
     Storage *_storage;
     QTimer _storageSyncTimer;
 
