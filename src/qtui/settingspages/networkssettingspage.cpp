@@ -865,6 +865,7 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
     ui.setupUi(this);
     ui.useSSL->setIcon(QIcon::fromTheme("document-encrypt"));
     ui.host->setText(server.host);
+    ui.host->setFocus();
     ui.port->setValue(server.port);
     ui.password->setText(server.password);
     ui.useSSL->setChecked(server.useSsl);
