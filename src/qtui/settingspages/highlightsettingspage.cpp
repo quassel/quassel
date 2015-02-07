@@ -252,9 +252,7 @@ void HighlightSettingsPage::save()
     NotificationSettings notificationSettings;
     notificationSettings.setHighlightList(highlightList);
 
-    NotificationSettings::HighlightNickType highlightNickType;
-    if (ui.highlightNoNick->isChecked())
-        highlightNickType = NotificationSettings::NoNick;
+    NotificationSettings::HighlightNickType highlightNickType = NotificationSettings::NoNick;
     if (ui.highlightCurrentNick->isChecked())
         highlightNickType = NotificationSettings::CurrentNick;
     if (ui.highlightAllNicks->isChecked())
@@ -279,18 +277,18 @@ bool HighlightSettingsPage::testHasChanged()
 {
     NotificationSettings notificationSettings;
 
-    NotificationSettings::HighlightNickType highlightNickType;
-    if (ui.highlightNoNick->isChecked())
-        highlightNickType = NotificationSettings::NoNick;
+    NotificationSettings::HighlightNickType highlightNickType = NotificationSettings::NoNick;
     if (ui.highlightCurrentNick->isChecked())
         highlightNickType = NotificationSettings::CurrentNick;
     if (ui.highlightAllNicks->isChecked())
         highlightNickType = NotificationSettings::AllNicks;
 
-    if (notificationSettings.highlightNick() != highlightNickType) return true;
-    if (notificationSettings.nicksCaseSensitive() != ui.nicksCaseSensitive->isChecked()) return true;
-
-    if (notificationSettings.highlightList() != highlightList) return true;
+    if (notificationSettings.highlightNick() != highlightNickType)
+        return true;
+    if (notificationSettings.nicksCaseSensitive() != ui.nicksCaseSensitive->isChecked())
+        return true;
+    if (notificationSettings.highlightList() != highlightList)
+        return true;
 
     return false;
 }
