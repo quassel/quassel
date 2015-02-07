@@ -232,17 +232,18 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
         _quitReason = reason;
 
     displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason));
-    switch (socket.state()) {
-    case QAbstractSocket::ConnectedState:
-        userInputHandler()->issueQuit(_quitReason);
+    if (socket.state() == QAbstractSocket::UnconnectedState) {
+        socketDisconnected();
+    } else {
+        if (socket.state() == QAbstractSocket::ConnectedState) {
+            userInputHandler()->issueQuit(_quitReason);
+        } else {
+            socket.close();
+        }
         if (requested || withReconnect) {
             // the irc server has 10 seconds to close the socket
             _socketCloseTimer.start(10000);
-            break;
         }
-    default:
-        socket.close();
-        socketDisconnected();
     }
 }
 
