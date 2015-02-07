@@ -204,8 +204,9 @@ QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxyS
             row++;
         }
 
-        Q_ASSERT(topLeftItem && bottomRightItem); // there should be one range left.
-        sourceSelection << QItemSelectionRange(mapToSource(createIndex(topLeftItem->pos(), left, topLeftItem)), mapToSource(createIndex(bottomRightItem->pos(), right, bottomRightItem)));
+        if (topLeftItem && bottomRightItem) { // there should be one range left.
+            sourceSelection << QItemSelectionRange(mapToSource(createIndex(topLeftItem->pos(), left, topLeftItem)), mapToSource(createIndex(bottomRightItem->pos(), right, bottomRightItem)));
+        }
     }
 
     return sourceSelection;
