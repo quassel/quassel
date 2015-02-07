@@ -27,8 +27,37 @@ Storage::Storage(QObject *parent)
 {
 }
 
+QString Storage::hashPassword(const QString &password)
+{
+    return hashPasswordSha1(password);
+}
 
-QString Storage::cryptedPassword(const QString &password)
+bool Storage::checkHashedPassword(const UserId user, const QString &password, const QString &hashedPassword, const Storage::HashVersion version)
+{
+    bool passwordCorrect = false;
+    
+    switch (version) {
+    case Storage::HashVersion::sha1:
+        passwordCorrect = checkHashedPasswordSha1(password, hashedPassword);
+        break;
+
+    default:
+        qWarning() << "Password hash version" << QString(version) << "is not supported, please reset password";
+    }
+    
+    if (passwordCorrect && version < Storage::HashVersion::latest) {
+        updateUser(user, password);
+    }
+    
+    return passwordCorrect;
+}
+
+QString Storage::hashPasswordSha1(const QString &password)
 {
     return QString(QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1).toHex());
+}
+
+bool Storage::checkHashedPasswordSha1(const QString &password, const QString &hashedPassword)
+{
+    return hashPasswordSha1(password) == hashedPassword;
 }

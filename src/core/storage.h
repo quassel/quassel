@@ -42,6 +42,11 @@ public:
         NotAvailable // remove the storage backend from the list of avaliable backends
     };
 
+    enum HashVersion {
+        sha1,
+        latest=sha1
+    };
+
 public slots:
     /* General */
 
@@ -408,10 +413,12 @@ signals:
     void userRemoved(UserId);
 
 protected:
-    //! when implementing a storage handler, use this method to crypt user passwords.
-    /**  This guarantees compatibility with other storage handlers and allows easy migration
-     */
-    QString cryptedPassword(const QString &password);
+    QString hashPassword(const QString &password);
+    bool checkHashedPassword(const UserId user, const QString &password, const QString &hashedPassword, const Storage::HashVersion version);
+
+private:
+    QString hashPasswordSha1(const QString &password);
+    bool checkHashedPasswordSha1(const QString &password, const QString &hashedPassword);
 };
 
 
