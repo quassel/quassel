@@ -190,15 +190,15 @@ int main(int argc, char **argv)
     }
 #endif
 
-    if (!app.init())
-        return EXIT_FAILURE;
-
 #ifdef HAVE_KF5
     // FIXME: This should be done after loading the translation catalogue, but still in main()
     AboutData aboutData;
     AboutData::setQuasselPersons(&aboutData);
     KAboutData::setApplicationData(aboutData.kAboutData());
 #endif
+
+    if (!app.init())
+        return EXIT_FAILURE;
 
     return app.exec();
 }
