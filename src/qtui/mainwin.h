@@ -18,11 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef MAINWIN_H_
-#define MAINWIN_H_
+#pragma once
 
 #ifdef HAVE_KDE4
 #  include <KMainWindow>
+#elif defined HAVE_KF5
+#  include <KXmlGui/KMainWindow>
 #else
 #  include <QMainWindow>
 #endif
@@ -56,11 +57,10 @@ class KHelpMenu;
 
 //!\brief The main window of Quassel's QtUi.
 class MainWin
-#ifdef HAVE_KDE4
-    : public KMainWindow
-{
+#ifdef HAVE_KDE
+    : public KMainWindow {
 #else
-: public QMainWindow {
+    : public QMainWindow {
 #endif
     Q_OBJECT
 
@@ -169,7 +169,7 @@ signals:
     void disconnectFromCore();
 
 private:
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     KHelpMenu *_kHelpMenu;
 #endif
 
@@ -220,6 +220,3 @@ private:
 
     friend class QtUi;
 };
-
-
-#endif

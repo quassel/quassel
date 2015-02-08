@@ -38,6 +38,11 @@
 #  include <KWindowSystem>
 #endif
 
+#ifdef HAVE_KF5
+#  include <KConfigWidgets/KStandardAction>
+#  include <KXmlGui/KHelpMenu>
+#endif
+
 #ifdef Q_WS_X11
 #  include <QX11Info>
 #endif
@@ -145,9 +150,8 @@
 #endif
 
 MainWin::MainWin(QWidget *parent)
-#ifdef HAVE_KDE4
-    : KMainWindow(parent),
-    _kHelpMenu(new KHelpMenu(this, KGlobal::mainComponent().aboutData())),
+#ifdef HAVE_KDE
+    : KMainWindow(parent), _kHelpMenu(new KHelpMenu(this)),
 #else
     : QMainWindow(parent),
 #endif
@@ -249,7 +253,7 @@ void MainWin::init()
 
     setDisconnectedState(); // Disable menus and stuff
 
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     setAutoSaveSettings();
 #endif
 
@@ -295,7 +299,7 @@ void MainWin::saveStateToSettings(UiSettings &s)
     if (lastBufId.isValid())
         s.setValue("LastUsedBufferId", lastBufId.toInt());
 
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     saveAutoSaveSettings();
 #endif
 }
@@ -307,7 +311,7 @@ void MainWin::restoreStateFromSettings(UiSettings &s)
     _normalPos = s.value("MainWinPos", pos()).toPoint();
     bool maximized = s.value("MainWinMaximized", false).toBool();
 
-#ifndef HAVE_KDE4
+#ifndef HAVE_KDE
     restoreGeometry(s.value("MainWinGeometry").toByteArray());
 
     if (maximized) {
@@ -396,14 +400,14 @@ void MainWin::setupActions()
     configureShortcutsAct->setMenuRole(QAction::NoRole);
     coll->addAction("ConfigureShortcuts", configureShortcutsAct);
 
-  #ifdef Q_OS_MAC
+#ifdef Q_OS_MAC
     QAction *configureQuasselAct = new Action(QIcon::fromTheme("configure"), tr("&Configure Quassel..."), coll,
         this, SLOT(showSettingsDlg()));
     configureQuasselAct->setMenuRole(QAction::PreferencesRole);
-  #else
+#else
     QAction *configureQuasselAct = new Action(QIcon::fromTheme("configure"), tr("&Configure Quassel..."), coll,
         this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7));
-  #endif
+#endif
     coll->addAction("ConfigureQuassel", configureQuasselAct);
 
     // Help
@@ -551,8 +555,9 @@ void MainWin::setupMenus()
     _settingsMenu->addAction(coll->action("ConfigureQuassel"));
 
     _helpMenu = menuBar()->addMenu(tr("&Help"));
+
     _helpMenu->addAction(coll->action("AboutQuassel"));
-#ifndef HAVE_KDE4
+#ifndef HAVE_KDE
     _helpMenu->addAction(coll->action("AboutQt"));
 #else
     _helpMenu->addAction(KStandardAction::aboutKDE(_kHelpMenu, SLOT(aboutKDE()), this));

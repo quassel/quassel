@@ -81,11 +81,15 @@ set(FORMS
 set(LIBS )
 set(QT_MODULES )
 
-if (KDE4_FOUND)
+if (WITH_KDE4)
     add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
     include_directories(${KDE4_INCLUDES})
     list(APPEND SOURCES knotificationbackend.cpp)
     list(APPEND LIBS ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} ${KDE4_KNOTIFYCONFIG_LIBRARY})
+endif()
+
+if (WITH_KF5)
+    list(APPEND LIBS KF5::ConfigWidgets KF5::XmlGui)
 endif()
 
 if (LIBSNORE_FOUND)

@@ -262,23 +262,17 @@ if (USE_QT5)
         endif()
 
         if (WITH_KDE)
-            find_package(KF5CoreAddons QUIET)
-            set_package_properties(KF5CoreAddons PROPERTIES TYPE REQUIRED
-                URL "http://inqlude.org/libraries/kcoreaddons.html"
-                DESCRIPTION "framework for solving common problems such as caching, randomization, and more"
-                PURPOSE     "Required for KDE Frameworks integration"
-            )
-
-            find_package(KF5TextWidgets QUIET)
-            set_package_properties(KF5TextWidgets PROPERTIES TYPE REQUIRED
-                URL "http://inqlude.org/libraries/ktextwidgets.html"
-                DESCRIPTION "framework providing an assortment of widgets for displaying and editing text"
-                PURPOSE     "Allows to use extra features provided by KDE Frameworks in input widgets"
+            find_package(KF5 COMPONENTS ConfigWidgets CoreAddons TextWidgets XmlGui QUIET)
+            set_package_properties(KF5 PROPERTIES TYPE REQUIRED
+                URL "http://www.kde.org"
+                DESCRIPTION "KDE Frameworks"
+                PURPOSE     "Required for integration into the Plasma desktop"
             )
 
         endif()
 
     endif(BUILD_GUI)
+
     if (BUILD_CORE)
         find_package(Qt5Script QUIET)
         set_package_properties(Qt5Script PROPERTIES TYPE REQUIRED
@@ -303,6 +297,7 @@ if (USE_QT5)
                            DESCRIPTION "contains tools for handling translation files"
                            PURPOSE "Required for having translations"
     )
+
     # Some Qt5 versions do not define a target for lconvert, so we need to find it ourselves
     if (Qt5LinguistTools_FOUND)
         if (NOT TARGET Qt5::lconvert AND TARGET Qt5::lrelease)
