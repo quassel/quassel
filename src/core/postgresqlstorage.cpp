@@ -208,7 +208,7 @@ UserId PostgreSqlStorage::addUser(const QString &user, const QString &password)
     query.prepare(queryString("insert_quasseluser"));
     query.bindValue(":username", user);
     query.bindValue(":password", hashPassword(password));
-    query.bindValue(":hashversion", Storage::HashVersion::latest);
+    query.bindValue(":hashversion", Storage::HashVersion::Latest);
     safeExec(query);
     if (!watchQuery(query))
         return 0;
@@ -226,7 +226,7 @@ bool PostgreSqlStorage::updateUser(UserId user, const QString &password)
     query.prepare(queryString("update_userpassword"));
     query.bindValue(":userid", user.toInt());
     query.bindValue(":password", hashPassword(password));
-    query.bindValue(":hashversion", Storage::HashVersion::latest);
+    query.bindValue(":hashversion", Storage::HashVersion::Latest);
     safeExec(query);
     watchQuery(query);
     return query.numRowsAffected() != 0;

@@ -41,12 +41,12 @@ bool Storage::checkHashedPassword(const UserId user, const QString &password, co
     bool passwordCorrect = false;
     
     switch (version) {
-    case Storage::HashVersion::sha1:
+    case Storage::HashVersion::Sha1:
         passwordCorrect = checkHashedPasswordSha1(password, hashedPassword);
         break;
 
 #if QT_VERSION >= 0x050000
-    case Storage::HashVersion::sha2_512:
+    case Storage::HashVersion::Sha2_512:
         passwordCorrect = checkHashedPasswordSha2_512(password, hashedPassword);
         break;
 #endif
@@ -55,7 +55,7 @@ bool Storage::checkHashedPassword(const UserId user, const QString &password, co
         qWarning() << "Password hash version" << QString(version) << "is not supported, please reset password";
     }
     
-    if (passwordCorrect && version < Storage::HashVersion::latest) {
+    if (passwordCorrect && version < Storage::HashVersion::Latest) {
         updateUser(user, password);
     }
     

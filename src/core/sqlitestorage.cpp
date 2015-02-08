@@ -130,7 +130,7 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password)
         query.prepare(queryString("insert_quasseluser"));
         query.bindValue(":username", user);
         query.bindValue(":password", hashPassword(password));
-        query.bindValue(":hashversion", Storage::HashVersion::latest);
+        query.bindValue(":hashversion", Storage::HashVersion::Latest);
         lockForWrite();
         safeExec(query);
         if (query.lastError().isValid() && query.lastError().number() == 19) { // user already exists - sadly 19 seems to be the general constraint violation error...
@@ -160,7 +160,7 @@ bool SqliteStorage::updateUser(UserId user, const QString &password)
         query.prepare(queryString("update_userpassword"));
         query.bindValue(":userid", user.toInt());
         query.bindValue(":password", hashPassword(password));
-        query.bindValue(":hashversion", Storage::HashVersion::latest);
+        query.bindValue(":hashversion", Storage::HashVersion::Latest);
         lockForWrite();
         safeExec(query);
         success = query.numRowsAffected() != 0;

@@ -43,12 +43,12 @@ public:
     };
 
     enum HashVersion {
-        sha1,
+        Sha1,
 #if QT_VERSION >= 0x050000
-        sha2_512,
-        latest=sha2_512
+        Sha2_512,
+        Latest=Sha2_512
 #else
-        latest=sha1
+        Latest=Sha1
 #endif
     };
 
