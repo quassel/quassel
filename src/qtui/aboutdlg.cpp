@@ -74,7 +74,7 @@ QString AboutDlg::authors() const
         res.append("<dt><b>" + person.prettyName() + "</b></dt><dd>");
         if (!person.emailAddress().isEmpty())
             res.append("<a href=\"mailto:" + person.emailAddress() + "\">" + person.emailAddress() + "</a><br>");
-        res.append(person.task() + "</dd>");
+        res.append("<i>" + person.task() + "</i><br></dd>");
     }
     res.append("</dl>");
     return res;
@@ -86,9 +86,9 @@ QString AboutDlg::contributors() const
     QString res;
     res = tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:") + "<br><dl>";
     for (const auto &person : _aboutData->credits()) {
-        res.append("<dt><b>" + person.prettyName() + "</b></dt><dd>" + person.task() + "</dd>");
+        res.append("<dt><b>" + person.prettyName() + "</b></dt><dd><i>" + person.task() + "</i><br></dd>");
     }
-    res.append("</dl><br>" + tr("...and anybody else finding and reporting bugs, giving feedback, helping others and being part of the community!"));
+    res.append("</dl>" + tr("...and anybody else finding and reporting bugs, giving feedback, helping others and being part of the community!"));
 
     return res;
 }
@@ -100,13 +100,13 @@ QString AboutDlg::thanksTo() const
     res = tr("Special thanks goes to:<br>"
              "<dl>"
              "<dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt>"
-             "<dd>for the original Quassel icon - The All-Seeing Eye</dt>"
+             "<dd><i>for the original Quassel icon - The All-Seeing Eye</i><br></dt>"
              "<dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt>"
-             "<dd>for creating all the artwork you see throughout Quassel</dd>"
+             "<dd><i>for creating all the artwork you see throughout Quassel</i><br></dd>"
              "<dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt>"
-             "<dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd>"
+             "<dd><i>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</i><br></dd>"
              "<dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt>"
-             "<dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
+             "<dd><i>for sponsoring development of Quassel Mobile with N810s</i></dd>"
         );
 
     return res;
