@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/icons">
+    <file>oxygen/index.theme</file>
     <file>oxygen/22x22/actions/irc-voice.png</file>
     <file>oxygen/22x22/actions/go-next.png</file>
     <file>oxygen/22x22/actions/im-user.png</file>

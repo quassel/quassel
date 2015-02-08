@@ -72,8 +72,6 @@ foreach my $sizestr (readdir BASEDIR) {
   opendir (SIZEDIR, "$oxygen/$sizestr") or die "Could not open dir $sizestr\n";
   foreach my $cat (readdir SIZEDIR) {
     next if $cat eq '.' or $cat eq '..';
-    #system "mkdir -p $output/$sizestr/$cat" and die "Could not create category dir\n";
-    system "mkdir -p $output/scalable/$cat" and die "Could not create category dir\n";
     opendir (CATDIR, "$oxygen/$sizestr/$cat") or die "Could not open category dir\n";
     foreach my $icon (readdir CATDIR) {
       $icon =~ s/\.png$//;
@@ -105,12 +103,12 @@ foreach my $icon (keys %req_icons) {
   print "Warning: Missing icon $icon\n";
 }
 
+# Copy license etc.
+system "cp $oxygen/AUTHORS $oxygen/CONTRIBUTING $oxygen/COPYING $oxygen/index.theme $output/";
+
 # Generate .qrc
 my @file_list;
 generate_qrc($output, $qrcfile_kde);
-
-# Copy license etc.
-system "cp $oxygen/AUTHORS $oxygen/CONTRIBUTING $oxygen/COPYING $oxygen/index.theme $output/";
 
 print "Done.\n";
 
@@ -135,7 +133,7 @@ sub generate_qrc {
 }
 
 sub push_icon_path {
-  return unless /\.png$/;
+  return unless /\.png$/ or /^index.theme$/;
 
   push @file_list, "    <file>$File::Find::name</file>";
 }
