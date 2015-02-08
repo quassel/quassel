@@ -427,43 +427,50 @@ QStringList Quassel::dataDirPaths()
 
 QStringList Quassel::findDataDirPaths() const
 {
-    QStringList dataDirNames = QString(qgetenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
+    // We don't use QStandardPaths for now, as we still need to provide fallbacks for Qt4 and
+    // want to stay consistent.
 
-    if (!dataDirNames.isEmpty()) {
-        for (int i = 0; i < dataDirNames.count(); i++)
-            dataDirNames[i].append("/apps/quassel/");
-    }
-    else {
-        // Provide a fallback
+    QStringList dataDirNames;
 #ifdef Q_OS_WIN
-        dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain() + "/share/apps/quassel/"
-                     << qgetenv("APPDATA") + QCoreApplication::organizationDomain()
-                     << QCoreApplication::applicationDirPath();
-    }
+    dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain() + "/share/apps/quassel/"
+                 << qgetenv("APPDATA") + QCoreApplication::organizationDomain()
+                 << QCoreApplication::applicationDirPath();
 #elif defined Q_OS_MAC
-        dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/"
-                     << QCoreApplication::applicationDirPath();
-    }
+    dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/"
+                 << QCoreApplication::applicationDirPath();
 #else
-        dataDirNames.append("/usr/share/apps/quassel/");
-    }
-    // on UNIX, we always check our install prefix
-    QString appDir = QCoreApplication::applicationDirPath();
-    int binpos = appDir.lastIndexOf("/bin");
-    if (binpos >= 0) {
-        appDir.replace(binpos, 4, "/share");
-        appDir.append("/apps/quassel/");
-        if (!dataDirNames.contains(appDir))
-            dataDirNames.append(appDir);
-    }
+    // Linux et al
+
+    // XDG_DATA_HOME is the location for users to override system-installed files, usually in .local/share
+    // This should thus come first.
+    QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
+    if (xdgDataHome.isEmpty())
+        xdgDataHome = QDir::homePath() + QLatin1String("/.local/share");
+    dataDirNames << xdgDataHome;
+
+    // Now whatever is configured through XDG_DATA_DIRS
+    QString xdgDataDirs = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
+    if (xdgDataDirs.isEmpty())
+        dataDirNames << "/usr/local/share" << "/usr/share";
+    else
+        dataDirNames << xdgDataDirs.split(':', QString::SkipEmptyParts);
+
+    // Just in case, also check our install prefix
+    dataDirNames << QCoreApplication::applicationDirPath() + "/../share";
+
+    // Normalize and append our application name
+    for (int i = 0; i < dataDirNames.count(); i++)
+        dataDirNames[i] = QDir::cleanPath(dataDirNames.at(i)) + "/quassel/";
+
 #endif
 
-    // add resource path and workdir just in case
-    dataDirNames << QCoreApplication::applicationDirPath() + "/data/"
-                 << ":/data/";
+    // Add resource path and workdir just in case.
+    // Workdir should have precedence
+    dataDirNames.prepend(QCoreApplication::applicationDirPath() + "/data/");
+    dataDirNames.append(":/data/");
 
-    // append trailing '/' and check for existence
-    QStringList::Iterator iter = dataDirNames.begin();
+    // Append trailing '/' and check for existence
+    auto iter = dataDirNames.begin();
     while (iter != dataDirNames.end()) {
         if (!iter->endsWith(QDir::separator()) && !iter->endsWith('/'))
             iter->append(QDir::separator());
@@ -472,6 +479,8 @@ QStringList Quassel::findDataDirPaths() const
         else
             ++iter;
     }
+
+    dataDirNames.removeDuplicates();
 
     return dataDirNames;
 }

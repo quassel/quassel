@@ -33,9 +33,10 @@
 #include "qtui.h"
 #include "qtuisettings.h"
 
+
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE4
-    : KApplication(),
+    : KApplication(),  // KApplication is deprecated in KF5
 #else
     : QApplication(argc, argv),
 #endif
@@ -45,11 +46,34 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE4
     Q_UNUSED(argc); Q_UNUSED(argv);
 
-    // We need to setup KDE's data dirs
+    // Setup KDE's data dirs
+    // Because we can't use KDE stuff in (the class) Quassel directly, we need to do this here...
     QStringList dataDirs = KGlobal::dirs()->findDirs("data", "");
+
+    // Just in case, also check our install prefix
+    dataDirs << QCoreApplication::applicationDirPath() + "/../share/apps/";
+
+    // Normalize and append our application name
     for (int i = 0; i < dataDirs.count(); i++)
-        dataDirs[i].append("quassel/");
+        dataDirs[i] = QDir::cleanPath(dataDirs.at(i)) + "/quassel/";
+
+    // Add resource path and just in case.
+    // Workdir should have precedence
+    dataDirs.prepend(QCoreApplication::applicationDirPath() + "/data/");
     dataDirs.append(":/data/");
+
+    // Append trailing '/' and check for existence
+    auto iter = dataDirs.begin();
+    while (iter != dataDirs.end()) {
+        if (!iter->endsWith(QDir::separator()) && !iter->endsWith('/'))
+            iter->append(QDir::separator());
+        if (!QFile::exists(*iter))
+            iter = dataDirs.erase(iter);
+        else
+            ++iter;
+    }
+
+    dataDirs.removeDuplicates();
     setDataDirPaths(dataDirs);
 
 #else /* HAVE_KDE4 */
