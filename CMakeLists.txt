@@ -6,7 +6,6 @@
 # General setup
 #####################################################################
 
-cmake_minimum_required(VERSION 2.8.9)  # You'll need at least 2.8.12 for KDE Frameworks integration
 project(QuasselIRC)
 
 # Versions
@@ -34,11 +33,6 @@ include(FeatureSummary)
 include(QuasselCompileSettings)
 include(QuasselMacros)
 
-# Setting COMPILE_DEFINITIONS_<CONFIG> is deprecated since CMake 3.0 in favor of generator expressions.
-# These have existed since CMake 2.8.10; until we depend on that, we have to explicitly enable the old policy.
-if (CMAKE_MAJOR_VERSION GREATER 2)
-    cmake_policy(SET CMP0043 OLD)
-endif()
 
 # Options and variables that can be set on the command line
 #####################################################################
@@ -116,6 +110,22 @@ set(LINK_EXTRA "" CACHE STRING "Semicolon-separated list of libraries to be link
 if (LINK_EXTRA)
     string(REPLACE "," ";" LINK_EXTRA ${LINK_EXTRA})
     link_libraries(${LINK_EXTRA})
+endif()
+
+
+# Setup CMake
+#####################################################################
+
+if (USE_QT5 AND WITH_KDE)
+    cmake_minimum_required(VERSION 2.8.12)
+else()
+    cmake_minimum_required(VERSION 2.8.9)
+endif()
+
+# Setting COMPILE_DEFINITIONS_<CONFIG> is deprecated since CMake 3.0 in favor of generator expressions.
+# These have existed since CMake 2.8.10; until we depend on that, we have to explicitly enable the old policy.
+if (CMAKE_MAJOR_VERSION GREATER 2)
+    cmake_policy(SET CMP0043 OLD)
 endif()
 
 
