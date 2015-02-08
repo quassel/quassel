@@ -146,6 +146,9 @@ bool GraphicalUi::eventFilter(QObject *obj, QEvent *event)
 }
 
 
+// NOTE: Window activation stuff seems to work just fine in Plasma 5 without requiring X11 hacks.
+// TODO: Evaluate cleaning all this up once we can get rid of Qt4/KDE4
+
 // Code taken from KStatusNotifierItem for handling minimize/restore
 
 bool GraphicalUi::checkMainWidgetVisibility(bool perform)
