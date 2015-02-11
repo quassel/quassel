@@ -90,7 +90,11 @@ private:
 class SearchHighlightItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
+
+// Apparently, there are broken Qt 4.8.2 mocs around that will fail without this (otherwise useless) #if... looking at you, Wheezy!
+#if QT_VERSION >= 0x040600
     Q_INTERFACES(QGraphicsItem)
+#endif
 
 public :
         SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = 0);
