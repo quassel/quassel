@@ -104,8 +104,22 @@ void UiStyle::loadStyleSheet()
     QString styleSheet;
     styleSheet += loadStyleSheet("file:///" + Quassel::findDataFilePath("stylesheets/default.qss"));
     styleSheet += loadStyleSheet("file:///" + Quassel::configDirPath() + "settings.qss");
-    if (s.value("UseCustomStyleSheet", false).toBool())
-        styleSheet += loadStyleSheet("file:///" + s.value("CustomStyleSheetPath").toString(), true);
+    if (s.value("UseCustomStyleSheet", false).toBool()) {
+        QString customSheetPath(s.value("CustomStyleSheetPath").toString());
+        QString customSheet = loadStyleSheet("file:///" + customSheetPath, true);
+        if (customSheet.isEmpty()) {
+            // MIGRATION: changed default install path for data from /usr/share/apps to /usr/share
+            if (customSheetPath.startsWith("/usr/share/apps/quassel")) {
+                customSheetPath.replace(QRegExp("^/usr/share/apps"), "/usr/share");
+                customSheet = loadStyleSheet("file:///" + customSheetPath, true);
+                if (!customSheet.isEmpty()) {
+                    s.setValue("CustomStyleSheetPath", customSheetPath);
+                    qDebug() << "Custom stylesheet path migrated to" << customSheetPath;
+                }
+            }
+        }
+        styleSheet += customSheet;
+    }
     styleSheet += loadStyleSheet("file:///" + Quassel::optionValue("qss"), true);
 
     if (!styleSheet.isEmpty()) {
