@@ -193,8 +193,6 @@ void MainWin::init()
     connect(Client::coreConnection(), SIGNAL(handleSslErrors(const QSslSocket *, bool *, bool *)), SLOT(handleSslErrors(const QSslSocket *, bool *, bool *)));
 #endif
 
-    connect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
-
     // Setup Dock Areas
     setDockNestingEnabled(true);
     setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -1083,6 +1081,18 @@ void MainWin::setConnectedState()
         connect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
     }
 
+    disconnect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
+    if (Client::internalCore()) {
+        coll->action("ChangePassword")->setVisible(false);
+    }
+    else if((Client::coreFeatures() & Quassel::PasswordChange)) {
+        connect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
+        coll->action("ChangePassword")->setEnabled(true);
+    }
+    else {
+        coll->action("ChangePassword")->setEnabled(false);
+    }
+
     // _viewMenu->setEnabled(true);
     if (!Client::internalCore())
         statusBar()->showMessage(tr("Connected to core."));
@@ -1183,6 +1193,7 @@ void MainWin::setDisconnectedState()
     coll->action("ConnectCore")->setEnabled(true);
     coll->action("DisconnectCore")->setEnabled(false);
     coll->action("CoreInfo")->setEnabled(false);
+    coll->action("ChangePassword")->setEnabled(false);
     //_viewMenu->setEnabled(false);
     statusBar()->showMessage(tr("Not connected to core."));
     if (_msgProcessorStatusWidget)
