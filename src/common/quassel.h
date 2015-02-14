@@ -71,8 +71,9 @@ public:
         SaslAuthentication = 0x0002,
         SaslExternal = 0x0004,
         HideInactiveNetworks = 0x0008,
+        PasswordChange = 0x0010,
 
-        NumFeatures = 0x0008
+        NumFeatures = 0x0010
     };
     Q_DECLARE_FLAGS(Features, Feature);
 
