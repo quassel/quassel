@@ -18,13 +18,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <KNotification>
-#include <KNotifyConfigWidget>
+#include "knotificationbackend.h"
+
 #include <QIcon>
 #include <QTextDocument>
 #include <QVBoxLayout>
 
-#include "knotificationbackend.h"
+#ifdef HAVE_KDE4
+#  include <KNotification>
+#  include <KNotifyConfigWidget>
+#else
+#  include <KNotifications/KNotification>
+#  include <KNotifyConfig/KNotifyConfigWidget>
+#endif
 
 #include "client.h"
 #include "mainwin.h"

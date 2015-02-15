@@ -8,8 +8,12 @@ if (BUILD_GUI)
             install(FILES quassel.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
         endif()
 
-        if (KDE4_FOUND)
+        if (WITH_KDE4)
             install(FILES quassel.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel)
+        endif()
+
+        if (WITH_KF5)
+            install(FILES quassel.notifyrc DESTINATION ${CMAKE_INSTALL_KNOTIFY5RCDIR})
         endif()
     endif()
 

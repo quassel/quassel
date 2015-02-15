@@ -98,7 +98,7 @@
 #include "topicwidget.h"
 #include "verticaldock.h"
 
-#ifndef HAVE_KDE4
+#ifndef HAVE_KDE
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
 #  endif
@@ -107,9 +107,9 @@
 #  endif
 #  include "systraynotificationbackend.h"
 #  include "taskbarnotificationbackend.h"
-#else /* HAVE_KDE4 */
+#else /* HAVE_KDE */
 #  include "knotificationbackend.h"
-#endif /* HAVE_KDE4 */
+#endif /* HAVE_KDE */
 
 #ifdef HAVE_SSL
 #  include "sslinfodlg.h"
@@ -218,7 +218,7 @@ void MainWin::init()
     setupTitleSetter();
     setupHotList();
 
-#ifndef HAVE_KDE4
+#ifndef HAVE_KDE
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
@@ -230,9 +230,9 @@ void MainWin::init()
 
     QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
 
-#else /* HAVE_KDE4 */
+#else /* HAVE_KDE */
     QtUi::registerNotificationBackend(new KNotificationBackend(this));
-#endif /* HAVE_KDE4 */
+#endif /* HAVE_KDE */
 
 #ifdef HAVE_INDICATEQT
     QtUi::registerNotificationBackend(new IndicatorNotificationBackend(this));
@@ -546,7 +546,7 @@ void MainWin::setupMenus()
     _viewMenu->addAction(coll->action("LockLayout"));
 
     _settingsMenu = menuBar()->addMenu(tr("&Settings"));
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
     _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
 #else

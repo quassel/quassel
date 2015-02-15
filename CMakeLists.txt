@@ -262,7 +262,7 @@ if (USE_QT5)
         endif()
 
         if (WITH_KDE)
-            find_package(KF5 COMPONENTS ConfigWidgets CoreAddons TextWidgets XmlGui QUIET)
+            find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig TextWidgets XmlGui QUIET)
             set_package_properties(KF5 PROPERTIES TYPE REQUIRED
                 URL "http://www.kde.org"
                 DESCRIPTION "KDE Frameworks"
