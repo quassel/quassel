@@ -20,10 +20,9 @@
  * This is a subset of the API of KDE's KActionCollection.                 *
  ***************************************************************************/
 
-#ifndef ACTIONCOLLECTION_H_
-#define ACTIONCOLLECTION_H_
+#pragma once
 
-#ifndef HAVE_KDE4
+#ifndef HAVE_KDE
 
 #include <QDebug>
 #include <QList>
@@ -123,9 +122,12 @@ private:
 int ActionCollection::count() const { return actions().count(); }
 bool ActionCollection::isEmpty() const { return actions().count(); }
 
-#else /* HAVE_KDE4 */
-
-#include <KActionCollection>
+#else /* HAVE_KDE */
+#  ifdef HAVE_KDE4
+#    include <KActionCollection>
+#  else
+#    include <KXmlGui/KActionCollection>
+#  endif
 
 class ActionCollection : public KActionCollection
 {
@@ -135,7 +137,4 @@ public:
     explicit ActionCollection(QObject *parent) : KActionCollection(parent) {};
 };
 
-
-#endif
-
-#endif
+#endif /* HAVE_KDE */

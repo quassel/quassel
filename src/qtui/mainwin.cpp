@@ -41,6 +41,7 @@
 #ifdef HAVE_KF5
 #  include <KConfigWidgets/KStandardAction>
 #  include <KXmlGui/KHelpMenu>
+#  include <KXmlGui/KShortcutsDialog>
 #endif
 
 #ifdef Q_WS_X11
@@ -145,7 +146,7 @@
 #include "settingspages/notificationssettingspage.h"
 #include "settingspages/topicwidgetsettingspage.h"
 
-#ifndef HAVE_KDE4
+#ifndef HAVE_KDE
 #  include "settingspages/shortcutssettingspage.h"
 #endif
 
@@ -1368,11 +1369,11 @@ void MainWin::showAboutDlg()
 
 void MainWin::showShortcutsDlg()
 {
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed, this);
     foreach(KActionCollection *coll, QtUi::actionCollections())
     dlg.addCollection(coll, coll->property("Category").toString());
-    dlg.exec();
+    dlg.configure(true);
 #else
     SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
     dlg.exec();
