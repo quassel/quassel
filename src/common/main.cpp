@@ -49,6 +49,7 @@
 #  include "kcmdlinewrapper.h"
 #elif defined HAVE_KF5
 #  include <KCoreAddons/KAboutData>
+#  include <KCoreAddons/Kdelibs4ConfigMigrator>
 #  include "qt5cliparser.h"
 #elif defined HAVE_QT5
 #  include "qt5cliparser.h"
@@ -100,6 +101,13 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(oxygen);
 #   endif
 # endif
+#endif
+
+    // Migrate settings from KDE4 to KF5 if appropriate
+#ifdef HAVE_KF5
+    Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
+    migrator.setConfigFiles(QStringList() << "quasselrc" << "quassel.notifyrc");
+    migrator.migrate();
 #endif
 
     AbstractCliParser *cliParser;
