@@ -27,21 +27,20 @@
 #include <QToolBar>
 
 #ifdef HAVE_KDE4
-#  include <KAction>
-#  include <KActionCollection>
 #  include <KHelpMenu>
 #  include <KMenuBar>
 #  include <KShortcutsDialog>
 #  include <KStatusBar>
 #  include <KToggleFullScreenAction>
 #  include <KToolBar>
-#  include <KWindowSystem>
 #endif
 
 #ifdef HAVE_KF5
 #  include <KConfigWidgets/KStandardAction>
 #  include <KXmlGui/KHelpMenu>
 #  include <KXmlGui/KShortcutsDialog>
+#  include <KXmlGui/KToolBar>
+#  include <KWidgetsAddons/KToggleFullScreenAction>
 #endif
 
 #ifdef Q_WS_X11
@@ -386,14 +385,14 @@ void MainWin::setupActions()
     coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
             0, 0))->setCheckable(true);
 
-#ifdef HAVE_KDE4
-    QAction *fullScreenAct = KStandardAction::fullScreen(this, SLOT(onFullScreenToggled()), this, coll);
+#ifdef HAVE_KDE
+    _fullScreenAction = KStandardAction::fullScreen(this, SLOT(onFullScreenToggled()), this, coll);
 #else
-    QAction *fullScreenAct = new Action(QIcon::fromTheme("view-fullscreen"), tr("&Full Screen Mode"), coll,
+    _fullScreenAction = new Action(QIcon::fromTheme("view-fullscreen"), tr("&Full Screen Mode"), coll,
         this, SLOT(onFullScreenToggled()), QKeySequence(Qt::Key_F11));
-    fullScreenAct->setCheckable(true);
+    _fullScreenAction->setCheckable(true);
+    coll->addAction("ToggleFullScreen", _fullScreenAction);
 #endif
-    coll->addAction("ToggleFullScreen", fullScreenAct);
 
     // Settings
     QAction *configureShortcutsAct = new Action(QIcon::fromTheme("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
@@ -923,7 +922,7 @@ void MainWin::setupTopicWidget()
 void MainWin::setupViewMenuTail()
 {
     _viewMenu->addSeparator();
-    _viewMenu->addAction(QtUi::actionCollection("General")->action("ToggleFullScreen"));
+    _viewMenu->addAction(_fullScreenAction);
 }
 
 
@@ -1004,7 +1003,7 @@ void MainWin::setupToolBars()
     setUnifiedTitleAndToolBarOnMac(true);
 #endif
 
-#ifdef HAVE_KDE4
+#ifdef HAVE_KDE
     _mainToolBar = new KToolBar("MainToolBar", this, Qt::TopToolBarArea, false, true, true);
 #else
     _mainToolBar = new QToolBar(this);
@@ -1393,15 +1392,10 @@ void MainWin::onFullScreenToggled()
     // Relying on QWidget::isFullScreen is discouraged, see the KToggleFullScreenAction docs
     // Also, one should not use showFullScreen() or showNormal(), as those reset all other window flags
 
-    QAction *action = QtUi::actionCollection("General")->action("ToggleFullScreen");
-    if (!action)
-        return;
-
-#ifdef HAVE_KDE4
-    KToggleFullScreenAction *kAct = static_cast<KToggleFullScreenAction *>(action);
-    kAct->setFullScreen(this, kAct->isChecked());
+#ifdef HAVE_KDE
+    static_cast<KToggleFullScreenAction*>(_fullScreenAction)->setFullScreen(this, _fullScreenAction->isChecked());
 #else
-    if (action->isChecked())
+    if (_fullScreenAction->isChecked())
         setWindowState(windowState() | Qt::WindowFullScreen);
     else
         setWindowState(windowState() & ~Qt::WindowFullScreen);

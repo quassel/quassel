@@ -90,7 +90,7 @@ endif()
 
 if (WITH_KF5)
     list(APPEND SOURCES knotificationbackend.cpp)
-    list(APPEND LIBS KF5::ConfigWidgets KF5::Notifications KF5::NotifyConfig KF5::XmlGui)
+    list(APPEND LIBS KF5::ConfigWidgets KF5::Notifications KF5::NotifyConfig KF5::WidgetsAddons KF5::XmlGui)
 endif()
 
 if (LIBSNORE_FOUND)
