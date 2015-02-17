@@ -657,6 +657,7 @@ void Client::changePassword(QString newPassword) {
     CoreAccount account = currentCoreAccount();
     account.setPassword(newPassword);
     coreAccountModel()->createOrUpdateAccount(account);
+    coreAccountModel()->save();
     emit clientChangePassword(newPassword);
 }
 

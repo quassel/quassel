@@ -197,6 +197,8 @@ void MainWin::init()
     connect(Client::coreConnection(), SIGNAL(handleSslErrors(const QSslSocket *, bool *, bool *)), SLOT(handleSslErrors(const QSslSocket *, bool *, bool *)));
 #endif
 
+    connect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
+
     // Setup Dock Areas
     setDockNestingEnabled(true);
     setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -360,6 +362,8 @@ void MainWin::setupActions()
             this, SLOT(showCoreConnectionDlg())));
     coll->addAction("DisconnectCore", new Action(QIcon::fromTheme("network-disconnect"), tr("&Disconnect from Core"), coll,
             Client::instance(), SLOT(disconnectFromCore())));
+    coll->addAction("ChangePassword", new Action(QIcon::fromTheme("dialog-password"), tr("Change &Password..."), coll,
+            this, SLOT(showChangePasswordDialog())));
     coll->addAction("CoreInfo", new Action(QIcon::fromTheme("help-about"), tr("Core &Info..."), coll,
             this, SLOT(showCoreInfoDlg())));
     coll->addAction("ConfigureNetworks", new Action(QIcon::fromTheme("configure"), tr("Configure &Networks..."), coll,
@@ -410,10 +414,6 @@ void MainWin::setupActions()
         this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7));
 #endif
     coll->addAction("ConfigureQuassel", configureQuasselAct);
-
-    QAction *changePasswordAct = new Action(QIcon::fromTheme("dialog-password"), tr("&Change password..."), coll,
-        this, SLOT(showChangePasswordDialog()));
-    coll->addAction("ChangePassword", changePasswordAct);
 
     // Help
     QAction *aboutQuasselAct = new Action(QIcon(":/icons/quassel.png"), tr("&About Quassel"), coll,
@@ -517,7 +517,7 @@ void MainWin::setupMenus()
     _fileMenu = menuBar()->addMenu(tr("&File"));
 
     static const QStringList coreActions = QStringList()
-                                           << "ConnectCore" << "DisconnectCore" << "CoreInfo";
+        << "ConnectCore" << "DisconnectCore" << "ChangePassword" << "CoreInfo";
 
     QAction *coreAction;
     foreach(QString actionName, coreActions) {
@@ -557,7 +557,6 @@ void MainWin::setupMenus()
 #else
     _settingsMenu->addAction(coll->action("ConfigureShortcuts"));
 #endif
-    _settingsMenu->addAction(coll->action("ChangePassword"));
     _settingsMenu->addAction(coll->action("ConfigureQuassel"));
 
 
@@ -738,12 +737,22 @@ void MainWin::changeActiveBufferView(int bufferViewId)
     nextBufferView(); // fallback
 }
 
+
 void MainWin::showChangePasswordDialog()
 {
-    bool ok;
-    QString newPassword = QInputDialog::getText(this, tr("Set new password"), tr("New password:"), QLineEdit::Password, QString(), &ok);
-    if (ok && !newPassword.isEmpty()) {
-        emit changePassword(newPassword);
+    if((Client::coreFeatures() & Quassel::PasswordChange)) {
+        bool ok;
+        QString newPassword = QInputDialog::getText(this, tr("Set Core Password"), tr("New password for your Quassel Core:"), QLineEdit::Password, QString(), &ok);
+        if (ok && !newPassword.isEmpty()) {
+            emit changePassword(newPassword);
+        }
+    }
+    else {
+        QMessageBox box(QMessageBox::Warning, tr("Feature Not Supported"),
+                        tr("<b>Your Quassel Core does not support this feature</b>"),
+                        QMessageBox::Ok, this);
+        box.setInformativeText(tr("You need a Quassel Core v0.12.0 or newer in order to be able to remotely change your password."));
+        box.exec();
     }
 }
 
@@ -1070,6 +1079,7 @@ void MainWin::setConnectedState()
 
     coll->action("ConnectCore")->setEnabled(false);
     coll->action("DisconnectCore")->setEnabled(true);
+    coll->action("ChangePassword")->setEnabled(true);
     coll->action("CoreInfo")->setEnabled(true);
 
     foreach(QAction *action, _fileMenu->actions()) {
@@ -1084,18 +1094,6 @@ void MainWin::setConnectedState()
         connect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), _msgProcessorStatusWidget, SLOT(setProgress(int, int)));
         connect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
         connect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
-    }
-
-    disconnect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
-    if (Client::internalCore()) {
-        coll->action("ChangePassword")->setVisible(false);
-    }
-    else if((Client::coreFeatures() & Quassel::PasswordChange)) {
-        connect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
-        coll->action("ChangePassword")->setEnabled(true);
-    }
-    else {
-        coll->action("ChangePassword")->setEnabled(false);
     }
 
     // _viewMenu->setEnabled(true);
