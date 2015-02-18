@@ -563,6 +563,17 @@ include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_HEAD)
 git_describe(GIT_DESCRIBE --long)
 
+# If not in a Git repo try to read GIT_HEAD and GIT_DESCRIBE from
+# enviroment
+if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
+  if (DEFINED ENV{GIT_HEAD})
+      set(GIT_HEAD ${GIT_HEAD}) 
+  endif ()
+  if (DEFINED ENV{GIT_DESCRIBE})
+     set(GIT_DESCRIBE ${GIT_DESCRIBE})
+  endif()
+endif()
+
 # Sanitize things if we're not in a Git repo
 if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
     set(GIT_HEAD "")
