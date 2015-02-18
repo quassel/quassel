@@ -13,6 +13,18 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.12.0 (TBA)
+====================
+
+* Full support for KDE Frameworks
+* Remote password change
+* Core connection improvements
+* Build system improvements
+* PostgreSQL connection improvements
+* Improve Qt5 support
+* Qt 4.8+ or Qt 5.2+ now required
+* Several tweaks and fixes
+
 Version 0.11.0 (2014-09-23)
 ===========================
 
