@@ -27,14 +27,14 @@ example a compiler. As we use a subset of the C++11 standard, we require a
 fairly recent compiler:
 
 - gcc 4.7+ (available for most platforms), or
-- Clang 3.2+ (available for most platforms, or
+- Clang 3.2+ (available for most platforms), or
 - XCode 4.6+ (available for Max OS X and based on Clang), or
-- Visual C++ 2013 (available for Windows™), or
+- Visual C++ Nov 2013 CTP (available for Windows™), or
 - any other compiler with decent C++11 support
 
-Furthermore, CMake 2.8.9 or later is required.
+Furthermore, CMake 2.8.9 or later is required (2.8.12 for KDE Frameworks).
 
-As Quassel is a Qt application, you need the Qt SDK, either Qt 4.6+ or Qt 5.2+.
+As Quassel is a Qt application, you need the Qt SDK, either Qt 4.8+ or Qt 5.2+.
 
 There are several optional dependencies; we will talk about that later.
 
@@ -58,7 +58,7 @@ First of all, it is highly recommended for any CMake-based project to be built
 in a separate build directory rather than in-source. That way, your source
 checkout remains pristine, and you can easily remove any build artifacts by just
 deleting the build directory. This directory can be located anywhere; in the
-short example above, we just created a directory called "build" inside the
+short example above, we've just created a directory called "build" inside the
 source checkout.
 
 From inside the build directory, you can then run the "cmake" command, followed
@@ -80,7 +80,7 @@ options here:
     things may happen.
 
 -DWITH_KDE=ON
-    Enable integration into KDE4; only available if -DUSE_QT5=OFF
+    Enable integration into KDE4 (with Qt4) or KDE Frameworks (with Qt5).
 
 -DWITH_OXYGEN=(ON|OFF)
     Install the parts of the Oxygen icon set Quassel uses. Oxygen is the default
@@ -92,7 +92,8 @@ options here:
 -DWITH_WEBKIT=OFF
     Use Webkit for showing previews of webpages linked in the chat. Requires
     the QtWebkit module to be available, and increases the client's RAM usage
-    by *a lot* if enabled at runtime.
+    by *a lot* if enabled at runtime. Note also that Webkit frequently crashes
+    especially on Windows.
 
 -DEMBED_DATA=(ON|OFF)
     Specifies whether Quassel's data files (icons, translations and so on)
