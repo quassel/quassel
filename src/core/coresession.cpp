@@ -265,8 +265,6 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
     text.remove(QChar(0xfdd0)).remove(QChar(0xfdd1));
     
  
-     //terabit no like unicode 
-     text=QString(text.toAscii());
      if(Quassel::isOptionSet("syslog-irc")){
        // log to the local syslog facility, wanted to do remote here but it's simpler to simply have
        //local logs sent to the log collector instead of adding network code for remote logging here
