@@ -30,6 +30,7 @@
 #include "protocol.h"
 #include "message.h"
 #include "storage.h"
+#include "quassel.h"
 
 class CoreBacklogManager;
 class CoreBufferSyncer;

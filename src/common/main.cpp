@@ -161,6 +161,7 @@ int main(int argc, char **argv)
     cliParser->addOption("loglevel", 'L', "Loglevel Debug|Info|Warning|Error", "level", "Info");
 #ifdef HAVE_SYSLOG
     cliParser->addSwitch("syslog", 0, "Log to syslog");
+    cliParser->addSwitch("syslog-irc", 0 , "Log irc chat to syslog");
 #endif
     cliParser->addOption("logfile", 'l', "Log to a file", "path");
     cliParser->addOption("select-backend", 0, "Switch storage backend (migrating data if possible)", "backendidentifier");
