@@ -312,29 +312,57 @@ QByteArray CtcpParser::pack(const QByteArray &ctcpTag, const QByteArray &message
 
 void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QString &message)
 {
-    QList<QByteArray> params;
-    params << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message)));
-
-    static const char *splitter = " .,-!?";
-    int maxSplitPos = message.count();
-    int splitPos = maxSplitPos;
-
-    int overrun = net->userInputHandler()->lastParamOverrun("PRIVMSG", params);
-    if (overrun) {
-        maxSplitPos = message.count() - overrun -2;
-        splitPos = -1;
-        for (const char *splitChar = splitter; *splitChar != 0; splitChar++) {
-            splitPos = qMax(splitPos, message.lastIndexOf(*splitChar, maxSplitPos) + 1); // keep split char on old line
+    static const char *cmd = "PRIVMSG";
+    QByteArray bufnameEnc = net->serverEncode(bufname);
+    QByteArray ctcpTagEnc = net->serverEncode(ctcpTag);
+    
+    QString wrkMsg(message);
+    int splitPos = wrkMsg.size();
+    int prevSplitPos = 0;
+    QTextBoundaryFinder::BoundaryType boundaryType = QTextBoundaryFinder::Word;
+    while (wrkMsg.size() > 0) {
+        // Detect if we aren't making any progress and stop to a avoid an infinite loop.
+        if (splitPos == prevSplitPos) {
+            qWarning() << "Failed to split message";
+            break;
         }
-        if (splitPos <= 0 || splitPos > maxSplitPos)
-            splitPos = maxSplitPos;
-
-        params = params.mid(0, 1) <<  lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message.left(splitPos))));
+        prevSplitPos = splitPos;
+        
+        QString splitMsg(wrkMsg.left(splitPos));
+        QByteArray splitMsgEnc = net->userEncode(bufname, splitMsg);
+        
+        int overrun = net->userInputHandler()->lastParamOverrun(cmd, QList<QByteArray>() << bufnameEnc << lowLevelQuote(pack(ctcpTagEnc, splitMsgEnc)));
+        if (overrun) {
+            // If the message was too long to be sent, use QTextBoundaryFinder to
+            // locate a logical boundary for splitting the message.  We start at 
+            // splitMsgEnc.size()-overrun (which is the maximum byte length for
+            // messages to be sent) because it is known that that will be somewhere
+            // at or after the point where we need to split, so we can start there
+            // and work backwards until a usable split point is found.
+            QTextBoundaryFinder qtbf(boundaryType, splitMsg);
+            qtbf.setPosition(splitMsgEnc.size() - overrun);
+            splitPos = qtbf.toPreviousBoundary();
+            if (splitPos < 1) {
+                // If a valid split point could not be found. then switch to Grapheme mode
+                // and start working backwards from the end of the message again.  It is
+                // necessary to set prevSplitPos to 0 to avoid erroneously activating the
+                // code that halts the splitting due to lack of progress.
+                boundaryType = QTextBoundaryFinder::Grapheme;
+                splitPos = wrkMsg.size();
+                prevSplitPos = 0;
+            }
+        }
+        else {
+            // If the message fits within the byte limit, switch back to Word mode
+            // (in case we had to fall back to Grapheme mode), chop the message to
+            // be sent off of the message remaining to be sent, reset splitPos to
+            // the length of the new message remaining to be sent, and send the message.
+            boundaryType = QTextBoundaryFinder::Word;
+            wrkMsg.remove(0, splitPos);
+            splitPos = wrkMsg.size();
+            net->putCmd(cmd, QList<QByteArray>() << bufnameEnc << lowLevelQuote(pack(ctcpTagEnc, splitMsgEnc)));
+        }
     }
-    net->putCmd("PRIVMSG", params);
-
-    if (splitPos < message.count())
-        query(net, bufname, ctcpTag, message.mid(splitPos));
 }
 
 

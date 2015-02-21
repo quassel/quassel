@@ -473,12 +473,12 @@ void CoreUserInputHandler::handleMsg(const BufferInfo &bufferInfo, const QString
         return;
 
     QString target = msg.section(' ', 0, 0);
-    QByteArray encMsg = userEncode(target, msg.section(' ', 1));
+    QString msgSection = msg.section(' ', 1);
 
 #ifdef HAVE_QCA2
-    putPrivmsg(serverEncode(target), encMsg, network()->cipher(target));
+    putPrivmsg(target, msgSection, CoreNetwork::EncodingType::UserEncoding, network()->cipher(target));
 #else
-    putPrivmsg(serverEncode(target), encMsg);
+    putPrivmsg(target, msgSection, CoreNetwork::EncodingType::UserEncoding);
 #endif
 }
 
@@ -594,11 +594,10 @@ void CoreUserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString
     if (bufferInfo.bufferName().isEmpty() || !bufferInfo.acceptsRegularMessages())
         return;  // server buffer
 
-    QByteArray encMsg = channelEncode(bufferInfo.bufferName(), msg);
 #ifdef HAVE_QCA2
-    putPrivmsg(serverEncode(bufferInfo.bufferName()), encMsg, network()->cipher(bufferInfo.bufferName()));
+    putPrivmsg(bufferInfo.bufferName(), msg, CoreNetwork::EncodingType::ChannelEncoding, network()->cipher(bufferInfo.bufferName()));
 #else
-    putPrivmsg(serverEncode(bufferInfo.bufferName()), encMsg);
+    putPrivmsg(bufferInfo.bufferName(), msg, CoreNetwork::EncodingType::ChannelEncoding);
 #endif
     emit displayMsg(Message::Plain, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
 }
@@ -763,55 +762,74 @@ void CoreUserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferI
 }
 
 
-void CoreUserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher)
+void CoreUserInputHandler::putPrivmsg(const QString &target, const QString &message, CoreNetwork::EncodingType encodingType, Cipher *cipher)
 {
-    // Encrypted messages need special care. There's no clear relation between cleartext and encrypted message length,
-    // so we can't just compute the maxSplitPos. Instead, we need to loop through the splitpoints until the crypted
-    // version is short enough...
-    // TODO: check out how the various possible encryption methods behave length-wise and make
-    //       this clean by predicting the length of the crypted msg.
-    //       For example, blowfish-ebc seems to create 8-char chunks.
-
     static const char *cmd = "PRIVMSG";
-    static const char *splitter = " .,-!?";
-
-    int maxSplitPos = message.count();
-    int splitPos = maxSplitPos;
-    forever {
-        QByteArray crypted = message.left(splitPos);
-        bool isEncrypted = false;
+    QByteArray targetEnc = serverEncode(target);
+    
+    QString wrkMsg(message);
+    int splitPos = wrkMsg.size();
+    int prevSplitPos = 0;
+    QTextBoundaryFinder::BoundaryType boundaryType = QTextBoundaryFinder::Word;
+    while (wrkMsg.size() > 0) {
+        // Detect if we aren't making any progress and stop to a avoid an infinite loop.
+        if (splitPos == prevSplitPos) {
+            qWarning() << "Failed to split message";
+            break;
+        }
+        prevSplitPos = splitPos;
+        
+        QString splitMsg(wrkMsg.left(splitPos));
+        QByteArray splitMsgEnc;
+        switch (encodingType) {
+        case CoreNetwork::EncodingType::UserEncoding:
+            splitMsgEnc = userEncode(target, splitMsg);
+            break;
+        case CoreNetwork::EncodingType::ChannelEncoding:
+            splitMsgEnc = channelEncode(target, splitMsg);
+            break;
+        default:
+            // This should definitely never happen
+            qWarning() << "Invalid encodingType passed to putPrivmsg().  This indicates a bug.";
+            return;
+        }
+        
 #ifdef HAVE_QCA2
         if (cipher && !cipher->key().isEmpty() && !message.isEmpty()) {
-            isEncrypted = cipher->encrypt(crypted);
+            cipher->encrypt(splitMsgEnc);
         }
 #endif
-        int overrun = lastParamOverrun(cmd, QList<QByteArray>() << target << crypted);
+        int overrun = lastParamOverrun(cmd, QList<QByteArray>() << targetEnc << splitMsgEnc);
         if (overrun) {
-            // In case this is not an encrypted msg, we can just cut off at the end
-            if (!isEncrypted)
-                maxSplitPos = message.count() - overrun;
-
-            splitPos = -1;
-            for (const char *splitChar = splitter; *splitChar != 0; splitChar++) {
-                splitPos = qMax(splitPos, message.lastIndexOf(*splitChar, maxSplitPos) + 1); // keep split char on old line
+            // If the message was too long to be sent, use QTextBoundaryFinder to
+            // locate a logical boundary for splitting the message.  We start at 
+            // splitMsgEnc.size()-overrun (which is the maximum byte length for
+            // messages to be sent) because it is known that that will be somewhere
+            // at or after the point where we need to split, so we can start there
+            // and work backwards until a usable split point is found.
+            QTextBoundaryFinder qtbf(boundaryType, splitMsg);
+            qtbf.setPosition(splitMsgEnc.size() - overrun);
+            splitPos = qtbf.toPreviousBoundary();
+            if (splitPos < 1) {
+                // If a valid split point could not be found. then switch to Grapheme mode
+                // and start working backwards from the end of the message again.  It is
+                // necessary to set prevSplitPos to 0 to avoid erroneously activating the
+                // code that halts the splitting due to lack of progress.
+                boundaryType = QTextBoundaryFinder::Grapheme;
+                splitPos = wrkMsg.size();
+                prevSplitPos = 0;
             }
-            if (splitPos <= 0 || splitPos > maxSplitPos)
-                splitPos = maxSplitPos;
-
-            maxSplitPos = splitPos - 1;
-            if (maxSplitPos <= 0) { // this should never happen, but who knows...
-                qWarning() << tr("[Error] Could not encrypt your message: %1").arg(message.data());
-                return;
-            }
-            continue; // we never come back here for !encrypted!
         }
-
-        // now we have found a valid splitpos (or didn't need to split to begin with)
-        putCmd(cmd, QList<QByteArray>() << target << crypted);
-        if (splitPos < message.count())
-            putPrivmsg(target, message.mid(splitPos), cipher);
-
-        return;
+        else {
+            // If the message fits within the byte limit, switch back to Word mode
+            // (in case we had to fall back to Grapheme mode), chop the message to
+            // be sent off of the message remaining to be sent, reset splitPos to
+            // the length of the new message remaining to be sent, and send the message.
+            boundaryType = QTextBoundaryFinder::Word;
+            wrkMsg.remove(0, splitPos);
+            splitPos = wrkMsg.size();
+            putCmd(cmd, QList<QByteArray>() << targetEnc << splitMsgEnc);
+        }
     }
 }
 
