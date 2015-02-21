@@ -33,6 +33,9 @@ CoreBasicHandler::CoreBasicHandler(CoreNetwork *parent)
     connect(this, SIGNAL(putCmd(QString, const QList<QByteArray> &, const QByteArray &)),
         network(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &)));
 
+    connect(this, SIGNAL(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &)),
+        network(), SLOT(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &)));
+
     connect(this, SIGNAL(putRawLine(const QByteArray &)),
         network(), SLOT(putRawLine(const QByteArray &)));
 }
