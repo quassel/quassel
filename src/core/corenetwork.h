@@ -92,6 +92,12 @@ public:
     inline QHostAddress peerAddress() const { return socket.peerAddress(); }
     inline quint16 localPort() const { return socket.localPort(); }
     inline quint16 peerPort() const { return socket.peerPort(); }
+    
+    enum EncodingType {
+        ServerEncoding,
+        ChannelEncoding,
+        UserEncoding
+    };
 
 public slots:
     virtual void setMyNick(const QString &mynick);
