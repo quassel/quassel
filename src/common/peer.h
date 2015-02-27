@@ -35,6 +35,7 @@ class Peer : public QObject
 public:
     Peer(AuthHandler *authHandler, QObject *parent = 0);
 
+    virtual Protocol::Type protocol() const = 0;
     virtual QString description() const = 0;
 
     virtual SignalProxy *signalProxy() const = 0;

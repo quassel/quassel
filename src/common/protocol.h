@@ -30,6 +30,7 @@ namespace Protocol {
 const quint32 magic = 0x42b33f00;
 
 enum Type {
+    InternalProtocol = 0x00,
     LegacyProtocol = 0x01,
     DataStreamProtocol = 0x02
 };
