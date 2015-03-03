@@ -22,6 +22,10 @@
 
 #include <QCryptographicHash>
 
+#if QT_VERSION < 0x050000
+#    include "../../3rdparty/sha512/sha512.h"
+#endif
+
 Storage::Storage(QObject *parent)
     : QObject(parent)
 {
@@ -29,11 +33,7 @@ Storage::Storage(QObject *parent)
 
 QString Storage::hashPassword(const QString &password)
 {
-#if QT_VERSION >= 0x050000
     return hashPasswordSha2_512(password);
-#else
-    return hashPasswordSha1(password);
-#endif
 }
 
 bool Storage::checkHashedPassword(const UserId user, const QString &password, const QString &hashedPassword, const Storage::HashVersion version)
@@ -45,11 +45,9 @@ bool Storage::checkHashedPassword(const UserId user, const QString &password, co
         passwordCorrect = checkHashedPasswordSha1(password, hashedPassword);
         break;
 
-#if QT_VERSION >= 0x050000
     case Storage::HashVersion::Sha2_512:
         passwordCorrect = checkHashedPasswordSha2_512(password, hashedPassword);
         break;
-#endif
 
     default:
         qWarning() << "Password hash version" << QString(version) << "is not supported, please reset password";
@@ -72,7 +70,6 @@ bool Storage::checkHashedPasswordSha1(const QString &password, const QString &ha
     return hashPasswordSha1(password) == hashedPassword;
 }
 
-#if QT_VERSION >= 0x050000
 QString Storage::hashPasswordSha2_512(const QString &password)
 {
     // Generate a salt of 512 bits (64 bytes) using the Mersenne Twister
@@ -86,11 +83,8 @@ QString Storage::hashPasswordSha2_512(const QString &password)
     }
     QString salt(saltBytes.toHex());
 
-    // Append the salt to the password and hash it
-    QString passwordAndSalt(password + salt);
-    QString hash(QCryptographicHash::hash(passwordAndSalt.toUtf8(), QCryptographicHash::Sha512).toHex());
-
-    return hash + ":" + salt;
+    // Append the salt to the password, hash the result, and append the salt value
+    return sha2_512(password + salt) + ":" + salt;
 }
 
 bool Storage::checkHashedPasswordSha2_512(const QString &password, const QString &hashedPassword)
@@ -99,12 +93,22 @@ bool Storage::checkHashedPasswordSha2_512(const QString &password, const QString
     QStringList hashedPasswordAndSalt = hashedPassword.split(colonSplitter);
 
     if (hashedPasswordAndSalt.size() == 2){
-        QString passwordAndSalt(password + hashedPasswordAndSalt[1]);
-        return QString(QCryptographicHash::hash(passwordAndSalt.toUtf8(), QCryptographicHash::Sha512).toHex()) == hashedPasswordAndSalt[0];
+        return sha2_512(password + hashedPasswordAndSalt[1]) == hashedPasswordAndSalt[0];
     }
     else {
         qWarning() << "Password hash and salt were not in the correct format";
         return false;
     }
 }
+
+QString Storage::sha2_512(const QString &input)
+{
+#if QT_VERSION >= 0x050000
+    return QString(QCryptographicHash::hash(input.toUtf8(), QCryptographicHash::Sha512).toHex());
+#else
+    QByteArray inputBytes = input.toUtf8();
+    unsigned char output[64];
+    sha512((unsigned char*) inputBytes.constData(), inputBytes.size(), output, false);
+    return QString(QByteArray::fromRawData((char*) output, 64).toHex());
 #endif
+}

@@ -44,12 +44,9 @@ public:
 
     enum HashVersion {
         Sha1,
-#if QT_VERSION >= 0x050000
         Sha2_512,
         Latest=Sha2_512
-#else
-        Latest=Sha1
-#endif
+        
     };
 
 public slots:
@@ -425,10 +422,9 @@ private:
     QString hashPasswordSha1(const QString &password);
     bool checkHashedPasswordSha1(const QString &password, const QString &hashedPassword);
 
-#if QT_VERSION >= 0x050000
     QString hashPasswordSha2_512(const QString &password);
     bool checkHashedPasswordSha2_512(const QString &password, const QString &hashedPassword);
-#endif
+    QString sha2_512(const QString &input);
 };
 
 
