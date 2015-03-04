@@ -48,17 +48,14 @@ signals:
 
 public slots:
     void actionInvoked(Snore::Notification);
+
 private slots:
-    void backendChanged(const QVariant &);
-    void timeoutChanged(const QVariant &);
+    void setTraybackend(const QVariant &b);
 
 private:
-    void setTraybackend();
-    bool setSnoreBackend(const QString &backend);
 
     class ConfigWidget;
     SystrayNotificationBackend * m_systrayBackend;
-    Snore::SnoreCore *m_snore;
     QHash<uint, uint> m_notificationIds;
     Snore::Icon m_icon;
     Snore::Application m_application;
@@ -70,24 +67,17 @@ class SnoreNotificationBackend::ConfigWidget : public SettingsPage {
     Q_OBJECT
 
 public:
-    ConfigWidget(Snore::SnoreCore *snore, QWidget *parent = 0);
-    void save();
-    void load();
+    ConfigWidget(QWidget *parent = 0);
+
     bool hasDefaults() const;
     void defaults();
-
+    void load();
+    void save();
 private slots:
-    void backendChanged(const QString&);
-    void timeoutChanged(int);
+    void useSnnoreChanged(bool);
 
 private:
     Ui::SnoreNotificationConfigWidget ui;
-    Snore::SnoreCore *m_snore;
-
-    //  QSpinBox *timeoutBox;
-
-    //  bool enabled;
-    //  int timeout;
 };
 
 #endif
