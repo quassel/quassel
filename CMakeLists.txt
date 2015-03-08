@@ -217,9 +217,9 @@ if (USE_QT5)
             PURPOSE     "Required for audio notifications"
         )
 
-        find_package(LibsnoreQt5 QUIET)
+        find_package(LibsnoreQt5 0.5.90 QUIET)
         set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
-            URL "https://github.com/TheOneRing/Snorenotify"
+            URL "https://github.com/Snorenotify/Snorenotify"
             DESCRIPTION "a cross-platform notification framework"
             PURPOSE     "Enable support for the snorenotify framework"
         )
