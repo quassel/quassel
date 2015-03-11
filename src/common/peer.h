@@ -86,6 +86,9 @@ private:
 typedef Peer * PeerPtr;
 Q_DECLARE_METATYPE(PeerPtr)
 
+QDataStream &operator<<(QDataStream &out, PeerPtr ptr);
+QDataStream &operator>>(QDataStream &in, PeerPtr &ptr);
+
 
 // Template method needed in the header
 template<typename T> inline

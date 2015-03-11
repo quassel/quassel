@@ -32,3 +32,22 @@ AuthHandler *Peer::authHandler() const
 {
     return _authHandler;
 }
+
+
+// Note that we need to use a fixed-size integer instead of uintptr_t, in order
+// to avoid issues with different architectures for client and core.
+// In practice, we'll never really have to restore the real value of a PeerPtr from
+// a QVariant.
+QDataStream &operator<<(QDataStream &out, PeerPtr ptr)
+{
+    out << reinterpret_cast<quint64>(ptr);
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, PeerPtr &ptr)
+{
+    quint64 value;
+    in >> value;
+    ptr = reinterpret_cast<PeerPtr>(value);
+    return in;
+}

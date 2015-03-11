@@ -42,6 +42,7 @@
 #include "logger.h"
 #include "message.h"
 #include "network.h"
+#include "peer.h"
 #include "protocol.h"
 #include "syncableobject.h"
 #include "types.h"
@@ -203,6 +204,8 @@ void Quassel::registerMetaTypes()
     qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
 
     qRegisterMetaType<Protocol::SessionState>("Protocol::SessionState");
+    qRegisterMetaType<PeerPtr>("PeerPtr");
+    qRegisterMetaTypeStreamOperators<PeerPtr>("PeerPtr");
 
     // Versions of Qt prior to 4.7 didn't define QVariant as a meta type
     if (!QMetaType::type("QVariant")) {
