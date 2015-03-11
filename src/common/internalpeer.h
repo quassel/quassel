@@ -42,6 +42,7 @@ public:
     InternalPeer(QObject *parent = 0);
     virtual ~InternalPeer();
 
+    Protocol::Type protocol() const { return Protocol::InternalProtocol; }
     QString description() const;
 
     SignalProxy *signalProxy() const;
