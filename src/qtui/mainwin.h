@@ -123,6 +123,7 @@ private slots:
     void showNotificationsDlg();
     void showIgnoreList(QString newRule = QString());
     void showShortcutsDlg();
+    void showPasswordChangeDlg();
     void showNewTransferDlg(const ClientTransfer *transfer);
     void onFullScreenToggled();
 
@@ -164,12 +165,9 @@ private slots:
     void changeActiveBufferView(bool backwards);
     void changeActiveBufferView(int bufferViewId);
 
-    void showChangePasswordDialog();
-
 signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
-    void changePassword(QString newPassword);
 
 private:
 #ifdef HAVE_KDE

@@ -638,7 +638,6 @@ SessionThread *Core::sessionForUser(UserId uid, bool restore)
     SessionThread *session = new SessionThread(uid, restore, this);
     _sessions[uid] = session;
     session->start();
-    connect(session, SIGNAL(passwordChangeRequested(UserId, QString)), _storage, SLOT(updateUser(UserId, QString)));
     return session;
 }
 
@@ -816,6 +815,15 @@ void Core::changeUserPass(const QString &username)
     else {
         qWarning() << "Failed to change password!";
     }
+}
+
+
+bool Core::changeUserPassword(UserId userId, const QString &password)
+{
+    if (!isConfigured() || !userId.isValid())
+        return false;
+
+    return instance()->_storage->updateUser(userId, password);
 }
 
 

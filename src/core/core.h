@@ -74,6 +74,15 @@ public:
         return instance()->_storage->validateUser(userName, password);
     }
 
+
+    //! Change a user's password
+    /**
+     * \param userId     The user's ID
+     * \param password   The user's unencrypted new password
+     * \return true, if the password change was successful
+     */
+    static bool changeUserPassword(UserId userId, const QString &password);
+
     //! Store a user setting persistently
     /**
      * \param userId       The users Id

@@ -142,6 +142,8 @@ public:
     static void mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2);
     static void purgeKnownBufferIds();
 
+    static void changePassword(const QString &oldPassword, const QString &newPassword);
+
 #if QT_VERSION < 0x050000
     static void logMessage(QtMsgType type, const char *msg);
 #else
@@ -191,7 +193,9 @@ signals:
      */
     void bufferMarkedAsRead(BufferId id);
 
-    void clientChangePassword(QString password);
+    //! Requests a password change (user name must match the currently logged in user)
+    void requestPasswordChange(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword);
+    void passwordChanged(bool success);
 
 public slots:
     void disconnectFromCore();
@@ -201,8 +205,6 @@ public slots:
     void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
 
     void markBufferAsRead(BufferId id);
-
-    void changePassword(QString newPassword);
 
 private slots:
     void setSyncedToCore();
@@ -217,6 +219,8 @@ private slots:
     void coreIdentityRemoved(IdentityId);
     void coreNetworkCreated(NetworkId);
     void coreNetworkRemoved(NetworkId);
+
+    void corePasswordChanged(PeerPtr, bool success);
 
     void requestInitialBacklog();
 

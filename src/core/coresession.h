@@ -27,6 +27,7 @@
 #include "corecoreinfo.h"
 #include "corealiasmanager.h"
 #include "coreignorelistmanager.h"
+#include "peer.h"
 #include "protocol.h"
 #include "message.h"
 #include "storage.h"
@@ -45,7 +46,6 @@ class EventManager;
 class EventStringifier;
 class InternalPeer;
 class IrcParser;
-class Peer;
 class MessageEvent;
 class NetworkConnection;
 class RemotePeer;
@@ -127,12 +127,12 @@ public slots:
      */
     void renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName);
 
+    void changePassword(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword);
+
     QHash<QString, QString> persistentChannels(NetworkId) const;
 
     //! Marks us away (or unaway) on all networks
     void globalAway(const QString &msg = QString());
-
-    void changePassword(QString password);
 
 signals:
     void initialized();
@@ -160,7 +160,7 @@ signals:
     void networkRemoved(NetworkId);
     void networkDisconnected(NetworkId);
 
-    void passwordChangeRequested(UserId user, QString password);
+    void passwordChanged(PeerPtr peer, bool success);
 
 protected:
     virtual void customEvent(QEvent *event);

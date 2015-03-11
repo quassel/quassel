@@ -87,6 +87,7 @@
 #include "legacysystemtray.h"
 #include "msgprocessorstatuswidget.h"
 #include "nicklistwidget.h"
+#include "passwordchangedlg.h"
 #include "qtuiapplication.h"
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
@@ -196,8 +197,6 @@ void MainWin::init()
 #ifdef HAVE_SSL
     connect(Client::coreConnection(), SIGNAL(handleSslErrors(const QSslSocket *, bool *, bool *)), SLOT(handleSslErrors(const QSslSocket *, bool *, bool *)));
 #endif
-
-    connect(this, SIGNAL(changePassword(QString)), Client::instance(), SLOT(changePassword(QString)));
 
     // Setup Dock Areas
     setDockNestingEnabled(true);
@@ -363,7 +362,7 @@ void MainWin::setupActions()
     coll->addAction("DisconnectCore", new Action(QIcon::fromTheme("network-disconnect"), tr("&Disconnect from Core"), coll,
             Client::instance(), SLOT(disconnectFromCore())));
     coll->addAction("ChangePassword", new Action(QIcon::fromTheme("dialog-password"), tr("Change &Password..."), coll,
-            this, SLOT(showChangePasswordDialog())));
+            this, SLOT(showPasswordChangeDlg())));
     coll->addAction("CoreInfo", new Action(QIcon::fromTheme("help-about"), tr("Core &Info..."), coll,
             this, SLOT(showCoreInfoDlg())));
     coll->addAction("ConfigureNetworks", new Action(QIcon::fromTheme("configure"), tr("Configure &Networks..."), coll,
@@ -738,14 +737,11 @@ void MainWin::changeActiveBufferView(int bufferViewId)
 }
 
 
-void MainWin::showChangePasswordDialog()
+void MainWin::showPasswordChangeDlg()
 {
     if((Client::coreFeatures() & Quassel::PasswordChange)) {
-        bool ok;
-        QString newPassword = QInputDialog::getText(this, tr("Set Core Password"), tr("New password for your Quassel Core:"), QLineEdit::Password, QString(), &ok);
-        if (ok && !newPassword.isEmpty()) {
-            emit changePassword(newPassword);
-        }
+        PasswordChangeDlg dlg(this);
+        dlg.exec();
     }
     else {
         QMessageBox box(QMessageBox::Warning, tr("Feature Not Supported"),

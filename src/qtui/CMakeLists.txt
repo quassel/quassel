@@ -34,6 +34,7 @@ set(SOURCES
     markerlineitem.cpp
     msgprocessorstatuswidget.cpp
     nicklistwidget.cpp
+    passwordchangedlg.cpp
     qtui.cpp
     qtuiapplication.cpp
     qtuimessageprocessor.cpp
@@ -71,6 +72,7 @@ set(FORMS
     inputwidget.ui
     msgprocessorstatuswidget.ui
     nicklistwidget.ui
+    passwordchangedlg.ui
     settingsdlg.ui
     settingspagedlg.ui
     simplenetworkeditor.ui

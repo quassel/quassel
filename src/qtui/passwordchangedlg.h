@@ -18,57 +18,25 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SESSIONTHREAD_H
-#define SESSIONTHREAD_H
+#pragma once
 
-#include <QMutex>
-#include <QThread>
+#include <QDialog>
 
-#include "types.h"
+#include "ui_passwordchangedlg.h"
 
-class CoreSession;
-class InternalPeer;
-class RemotePeer;
-class QIODevice;
-
-class SessionThread : public QThread
+class PasswordChangeDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    SessionThread(UserId user, bool restoreState, QObject *parent = 0);
-    ~SessionThread();
-
-    void run();
-
-    CoreSession *session();
-    UserId user();
-
-public slots:
-    void addClient(QObject *peer);
+    PasswordChangeDlg(QWidget *parent = nullptr);
 
 private slots:
-    void setSessionInitialized();
-
-signals:
-    void initialized();
-    void shutdown();
-
-    void addRemoteClient(RemotePeer *peer);
-    void addInternalClient(InternalPeer *peer);
+    void inputChanged();
+    void changePassword();
+    void passwordChanged(bool success);
 
 private:
-    CoreSession *_session;
-    UserId _user;
-    QList<QObject *> clientQueue;
-    bool _sessionInitialized;
-    bool _restoreState;
-
-    bool isSessionInitialized();
-    void addClientToSession(QObject *peer);
-    void addRemoteClientToSession(RemotePeer *remotePeer);
-    void addInternalClientToSession(InternalPeer *internalPeer);
+    Ui::PasswordChangeDlg ui;
+    QString _newPassword;
 };
-
-
-#endif

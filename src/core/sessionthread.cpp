@@ -121,7 +121,6 @@ void SessionThread::addInternalClientToSession(InternalPeer *internalPeer)
 void SessionThread::run()
 {
     _session = new CoreSession(user(), _restoreState);
-    connect(_session, SIGNAL(passwordChangeRequested(UserId, QString)), SIGNAL(passwordChangeRequested(UserId, QString)));
     connect(this, SIGNAL(addRemoteClient(RemotePeer*)), _session, SLOT(addClient(RemotePeer*)));
     connect(this, SIGNAL(addInternalClient(InternalPeer*)), _session, SLOT(addClient(InternalPeer*)));
     connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));

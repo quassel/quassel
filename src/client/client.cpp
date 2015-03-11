@@ -153,6 +153,9 @@ void Client::init()
     p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, SLOT(coreNetworkCreated(NetworkId)));
     p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
 
+    p->attachSignal(this, SIGNAL(requestPasswordChange(PeerPtr,QString,QString,QString)), SIGNAL(changePassword(PeerPtr,QString,QString,QString)));
+    p->attachSlot(SIGNAL(passwordChanged(PeerPtr,bool)), this, SLOT(corePasswordChanged(PeerPtr,bool)));
+
     //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
     connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
     connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
@@ -386,11 +389,6 @@ void Client::setSyncedToCore()
     connect(networkModel(), SIGNAL(requestSetLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
 
     SignalProxy *p = signalProxy();
-
-    if ((Client::coreFeatures() & Quassel::PasswordChange)) {
-        p->attachSignal(this, SIGNAL(clientChangePassword(QString)));
-    }
-
     p->synchronize(bufferSyncer());
 
     // create a new BufferViewManager
@@ -653,12 +651,20 @@ void Client::markBufferAsRead(BufferId id)
         bufferSyncer()->requestMarkBufferAsRead(id);
 }
 
-void Client::changePassword(QString newPassword) {
+
+void Client::changePassword(const QString &oldPassword, const QString &newPassword) {
     CoreAccount account = currentCoreAccount();
     account.setPassword(newPassword);
     coreAccountModel()->createOrUpdateAccount(account);
-    coreAccountModel()->save();
-    emit clientChangePassword(newPassword);
+    emit instance()->requestPasswordChange(nullptr, account.user(), oldPassword, newPassword);
+}
+
+
+void Client::corePasswordChanged(PeerPtr, bool success)
+{
+    if (success)
+        coreAccountModel()->save();
+    emit passwordChanged(success);
 }
 
 

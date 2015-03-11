@@ -100,7 +100,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->attachSlot(SIGNAL(createNetwork(const NetworkInfo &, const QStringList &)), this, SLOT(createNetwork(const NetworkInfo &, const QStringList &)));
     p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, SLOT(removeNetwork(NetworkId)));
 
-    p->attachSlot(SIGNAL(clientChangePassword(QString)), this, SLOT(changePassword(QString)));
+    p->attachSlot(SIGNAL(changePassword(PeerPtr,QString,QString,QString)), this, SLOT(changePassword(PeerPtr,QString,QString,QString)));
+    p->attachSignal(this, SIGNAL(passwordChanged(PeerPtr,bool)));
 
     loadSettings();
     initScriptEngine();
@@ -641,7 +642,12 @@ void CoreSession::globalAway(const QString &msg)
     }
 }
 
-void CoreSession::changePassword(QString password)
+void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword)
 {
-    emit passwordChangeRequested(_user, password);
+    bool success = false;
+    UserId uid = Core::validateUser(userName, oldPassword);
+    if (uid.isValid() && uid == user())
+        success = Core::changeUserPassword(uid, newPassword);
+
+    emit passwordChanged(peer, success);
 }
