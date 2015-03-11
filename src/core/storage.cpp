@@ -21,6 +21,7 @@
 #include "storage.h"
 
 #include <QCryptographicHash>
+#include <random>
 
 #if QT_VERSION < 0x050000
 #    include "../../3rdparty/sha512/sha512.h"
