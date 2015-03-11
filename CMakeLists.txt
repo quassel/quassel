@@ -357,13 +357,6 @@ else(USE_QT5)
                 DESCRIPTION "a multimedia abstraction library"
                 PURPOSE     "Required for audio notifications"
             )
-
-            find_package(Libsnore QUIET)
-            set_package_properties(Libsnore PROPERTIES TYPE OPTIONAL
-                URL "https://github.com/TheOneRing/Snorenotify"
-                DESCRIPTION "a cross-platform notification framework"
-                PURPOSE     "Enable support for the snorenotify framework"
-            )
         endif(WITH_KDE)
 
         find_package(IndicateQt QUIET)
