@@ -40,6 +40,8 @@
 
 #include "coresession.h"
 
+#include <functional>
+
 class CoreIdentity;
 class CoreUserInputHandler;
 class CoreIgnoreListManager;
@@ -93,6 +95,8 @@ public:
     inline quint16 localPort() const { return socket.localPort(); }
     inline quint16 peerPort() const { return socket.peerPort(); }
 
+    QList<QList<QByteArray>> splitMessage(const QString &cmd, const QString &message, std::function<QList<QByteArray>(QString &)> cmdGenerator);
+
 public slots:
     virtual void setMyNick(const QString &mynick);
 
@@ -112,6 +116,7 @@ public slots:
     void userInput(BufferInfo bufferInfo, QString msg);
     void putRawLine(QByteArray input);
     void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
+    void putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray());
 
     void setChannelJoined(const QString &channel);
     void setChannelParted(const QString &channel);

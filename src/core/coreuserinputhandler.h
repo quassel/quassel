@@ -88,7 +88,7 @@ protected:
 private:
     void doMode(const BufferInfo& bufferInfo, const QChar &addOrRemove, const QChar &mode, const QString &nickList);
     void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
-    void putPrivmsg(const QByteArray &target, const QByteArray &message, Cipher *cipher = 0);
+    void putPrivmsg(const QString &target, const QString &message, std::function<QByteArray(const QString &, const QString &)> encodeFunc, Cipher *cipher = 0);
 
 #ifdef HAVE_QCA2
     QByteArray encrypt(const QString &target, const QByteArray &message, bool *didEncrypt = 0) const;
