@@ -169,7 +169,7 @@ int main(int argc, char **argv)
     cliParser->addSwitch("oidentd", 0, "Enable oidentd integration");
     cliParser->addOption("oidentd-conffile", 0, "Set path to oidentd configuration file", "file");
 #ifdef HAVE_SSL
-    cliParser->addSwitch("require-ssl", 0, "Require SSL for client connections");
+    cliParser->addSwitch("require-ssl", 0, "Require SSL for remote (non-loopback) client connections");
 #endif
     cliParser->addSwitch("enable-experimental-dcc", 0, "Enable highly experimental and unfinished support for CTCP DCC (DANGEROUS)");
 #endif

@@ -158,7 +158,7 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     else
         useSsl = _connectionFeatures & Protocol::Encryption;
 
-    if (Quassel::isOptionSet("require-ssl") && !useSsl) {
+    if (Quassel::isOptionSet("require-ssl") && !useSsl && !_peer->isLocal()) {
         _peer->dispatch(ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
         _peer->close();
         return;
