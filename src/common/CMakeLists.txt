@@ -62,6 +62,10 @@ else()
     set(SOURCES ${SOURCES} ../../3rdparty/miniz/miniz.c)
 endif()
 
+if (USE_QT4)
+    set(SOURCES ${SOURCES} ../../3rdparty/sha512/sha512.c)
+endif()
+
 if (HAVE_SYSLOG)
     add_definitions(-DHAVE_SYSLOG)
 endif()

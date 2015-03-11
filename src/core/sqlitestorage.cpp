@@ -129,7 +129,8 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password)
         QSqlQuery query(db);
         query.prepare(queryString("insert_quasseluser"));
         query.bindValue(":username", user);
-        query.bindValue(":password", cryptedPassword(password));
+        query.bindValue(":password", hashPassword(password));
+        query.bindValue(":hashversion", Storage::HashVersion::Latest);
         lockForWrite();
         safeExec(query);
         if (query.lastError().isValid() && query.lastError().number() == 19) { // user already exists - sadly 19 seems to be the general constraint violation error...
@@ -158,7 +159,8 @@ bool SqliteStorage::updateUser(UserId user, const QString &password)
         QSqlQuery query(db);
         query.prepare(queryString("update_userpassword"));
         query.bindValue(":userid", user.toInt());
-        query.bindValue(":password", cryptedPassword(password));
+        query.bindValue(":password", hashPassword(password));
+        query.bindValue(":hashversion", Storage::HashVersion::Latest);
         lockForWrite();
         safeExec(query);
         success = query.numRowsAffected() != 0;
@@ -190,23 +192,30 @@ void SqliteStorage::renameUser(UserId user, const QString &newName)
 UserId SqliteStorage::validateUser(const QString &user, const QString &password)
 {
     UserId userId;
+    QString hashedPassword;
+    Storage::HashVersion hashVersion;
 
     {
         QSqlQuery query(logDb());
         query.prepare(queryString("select_authuser"));
         query.bindValue(":username", user);
-        query.bindValue(":password", cryptedPassword(password));
 
         lockForRead();
         safeExec(query);
 
         if (query.first()) {
             userId = query.value(0).toInt();
+            hashedPassword = query.value(1).toString();
+            hashVersion = static_cast<Storage::HashVersion>(query.value(2).toInt());
         }
     }
     unlock();
 
-    return userId;
+    UserId returnUserId;
+    if (userId != 0 && checkHashedPassword(userId, password, hashedPassword, hashVersion)) {
+        returnUserId = userId;
+    }
+    return returnUserId;
 }
 
 

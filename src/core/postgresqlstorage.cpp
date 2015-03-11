@@ -207,7 +207,8 @@ UserId PostgreSqlStorage::addUser(const QString &user, const QString &password)
     QSqlQuery query(logDb());
     query.prepare(queryString("insert_quasseluser"));
     query.bindValue(":username", user);
-    query.bindValue(":password", cryptedPassword(password));
+    query.bindValue(":password", hashPassword(password));
+    query.bindValue(":hashversion", Storage::HashVersion::Latest);
     safeExec(query);
     if (!watchQuery(query))
         return 0;
@@ -224,7 +225,8 @@ bool PostgreSqlStorage::updateUser(UserId user, const QString &password)
     QSqlQuery query(logDb());
     query.prepare(queryString("update_userpassword"));
     query.bindValue(":userid", user.toInt());
-    query.bindValue(":password", cryptedPassword(password));
+    query.bindValue(":password", hashPassword(password));
+    query.bindValue(":hashversion", Storage::HashVersion::Latest);
     safeExec(query);
     watchQuery(query);
     return query.numRowsAffected() != 0;
@@ -248,11 +250,10 @@ UserId PostgreSqlStorage::validateUser(const QString &user, const QString &passw
     QSqlQuery query(logDb());
     query.prepare(queryString("select_authuser"));
     query.bindValue(":username", user);
-    query.bindValue(":password", cryptedPassword(password));
     safeExec(query);
     watchQuery(query);
 
-    if (query.first()) {
+    if (query.first() && checkHashedPassword(query.value(0).toInt(), password, query.value(1).toString(), static_cast<Storage::HashVersion>(query.value(2).toInt()))) {
         return query.value(0).toInt();
     }
     else {
