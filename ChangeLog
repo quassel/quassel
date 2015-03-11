@@ -17,6 +17,9 @@ Version 0.12.0 (TBA)
 ====================
 
 * Full support for KDE Frameworks
+* Properly split messages with multi-byte encodings and/or encryption
+* Improve core password hashing algorithm
+  NOTE: This upgrades the database schema, so no downgrades are possible!
 * Remote password change
 * Core connection improvements
 * Build system improvements
