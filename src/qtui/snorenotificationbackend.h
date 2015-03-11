@@ -60,7 +60,6 @@ private:
     Snore::Icon m_icon;
     Snore::Application m_application;
     Snore::Alert m_alert;
-    int m_timeout;
 };
 
 class SnoreNotificationBackend::ConfigWidget : public SettingsPage {

@@ -71,7 +71,7 @@ void SnoreNotificationBackend::notify(const Notification &n)
     }
     QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
     QString message = QString("<%1> %2").arg(n.sender, n.message);
-    Snore::Notification noti(m_application, m_alert, title, message, m_icon, m_timeout);
+    Snore::Notification noti(m_application, m_alert, title, message, m_icon);
     noti.hints().setValue("QUASSEL_ID", n.notificationId);
     m_notificationIds.insert(n.notificationId, noti.id());
     Snore::SnoreCore::instance().broadcastNotification(noti);
