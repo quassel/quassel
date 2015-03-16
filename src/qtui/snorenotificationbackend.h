@@ -27,8 +27,8 @@
 
 #include "ui_snorentificationconfigwidget.h"
 
-#include <snore/core/snore.h>
-#include <snore/core/notification/notification.h>
+#include <libsnore/snore.h>
+#include <libsnore/notification/notification.h>
 
 class SystrayNotificationBackend;
 
