@@ -5539,7 +5539,7 @@ msgstr ""
 
 #: ../src/qtui/passwordchangedlg.cpp:67
 msgctxt "PasswordChangeDlg|"
-msgid "<b>Password change failed<b>"
+msgid "<b>Password change failed</b>"
 msgstr ""
 
 #: ../src/qtui/passwordchangedlg.cpp:69

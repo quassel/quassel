@@ -64,7 +64,7 @@ void PasswordChangeDlg::passwordChanged(bool success)
 {
     if (!success) {
         QMessageBox box(QMessageBox::Warning, tr("Password Not Changed"),
-                        tr("<b>Password change failed<b>"),
+                        tr("<b>Password change failed</b>"),
                         QMessageBox::Ok, this);
         box.setInformativeText(tr("The core reported an error when trying to change your password. Make sure you entered your old password correctly!"));
         box.exec();
