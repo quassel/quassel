@@ -21,7 +21,7 @@ git add po/*.po po/LINGUAS && (
     echo " - ${lang}: ${translator}"
   done < <(git status --porcelain po/*.po | egrep '^[AM]  '))
 
-  git commit -em "Update translations from Transifex
+  git commit -m "Update translations from Transifex
 
   $(for i in po/*.po; do
       msgfmt --statistics $i
