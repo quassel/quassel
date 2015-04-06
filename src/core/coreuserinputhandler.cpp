@@ -772,6 +772,7 @@ void CoreUserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferI
 
 void CoreUserInputHandler::putPrivmsg(const QString &target, const QString &message, std::function<QByteArray(const QString &, const QString &)> encodeFunc, Cipher *cipher)
 {
+    Q_UNUSED(cipher);
     QString cmd("PRIVMSG");
     QByteArray targetEnc = serverEncode(target);
 
