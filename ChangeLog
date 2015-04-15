@@ -13,8 +13,8 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.12.0 (TBA)
-====================
+Version 0.12.0 (2015-04-15)
+===========================
 
 * Full support for KDE Frameworks
 * Properly split messages with multi-byte encodings and/or encryption
@@ -27,6 +27,7 @@ Version 0.12.0 (TBA)
 * Improve Qt5 support
 * Qt 4.8+ or Qt 5.2+ now required
 * Several tweaks and fixes
+* Translation updates
 
 Version 0.11.0 (2014-09-23)
 ===========================
