@@ -14,6 +14,19 @@
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
+include(FindPackageHandleStandardArgs)
+
+find_package(Qca-qt5 QUIET)
+if(Qca-qt5_FOUND)
+
+  set(QCA2-QT5_INCLUDE_DIR ${CMAKE_PREFIX_PATH}/include)#just to have any value as the real include dir is imported by linking to qca-qt5
+  set(QCA2-QT5_LIBRARIES qca-qt5)
+
+  find_package_handle_standard_args(QCA2-QT5 DEFAULT_MSG QCA2-QT5_LIBRARIES QCA2-QT5_INCLUDE_DIR)
+
+  mark_as_advanced(QCA2-QT5_INCLUDE_DIR QCA2-QT5_LIBRARIES)
+else()
+
 include(FindLibraryWithDebug)
 
 if (QCA2-QT5_INCLUDE_DIR AND QCA2-QT5_LIBRARIES)
@@ -40,9 +53,9 @@ else (QCA2-QT5_INCLUDE_DIR AND QCA2-QT5_LIBRARIES)
             HINTS ${PC_QCA2-QT5_INCLUDEDIR} ${PC_QCA2-QT5_INCLUDE_DIRS}
             PATH_SUFFIXES QtCrypto)
 
-  include(FindPackageHandleStandardArgs)
   find_package_handle_standard_args(QCA2-QT5 DEFAULT_MSG QCA2-QT5_LIBRARIES QCA2-QT5_INCLUDE_DIR)
 
   mark_as_advanced(QCA2-QT5_INCLUDE_DIR QCA2-QT5_LIBRARIES)
 
 endif (QCA2-QT5_INCLUDE_DIR AND QCA2-QT5_LIBRARIES)
+endif()
