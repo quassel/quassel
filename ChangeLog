@@ -13,6 +13,11 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.12.1 (2015-04-21)
+===========================
+
+* Emergency fix for behavior change in Qt5's psql driver regarding timezones
+
 Version 0.12.0 (2015-04-15)
 ===========================
 
