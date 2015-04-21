@@ -136,6 +136,14 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase &db)
         return false;
         break;
     }
+
+    // Set the PostgreSQL session timezone to UTC, since we want timestamps stored in UTC
+    QSqlQuery tzQuery = db.exec("SET timezone = 'UTC'");
+    if (tzQuery.lastError().isValid()) {
+        quError() << "Failed to set timezone to UTC!";
+        return false;
+    }
+
     return true;
 }
 
