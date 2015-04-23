@@ -13,6 +13,12 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.12.2 (2015-04-23)
+===========================
+
+* Fix PostgreSQL not re-initializing after reconnect (raising CVE-2013-4422 from the dead)
+* Remove warning on startup due to a change in Kdelibs4ConfigMigrator
+
 Version 0.12.1 (2015-04-21)
 ===========================
 
