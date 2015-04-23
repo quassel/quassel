@@ -71,7 +71,6 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(fillBucketAndProcessQueue()));
 
     connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
-    connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
     connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
     connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
     connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
@@ -538,6 +537,7 @@ void CoreNetwork::socketStateChanged(QAbstractSocket::SocketState socketState)
     switch (socketState) {
     case QAbstractSocket::UnconnectedState:
         state = Network::Disconnected;
+        socketDisconnected();
         break;
     case QAbstractSocket::HostLookupState:
     case QAbstractSocket::ConnectingState:
