@@ -87,6 +87,7 @@ private slots:
 
 private:
     void addConnectionToPool();
+    void dbConnect(QSqlDatabase &db);
 
     int _schemaVersion;
     bool _debug;
