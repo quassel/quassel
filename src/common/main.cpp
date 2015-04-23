@@ -103,13 +103,6 @@ int main(int argc, char **argv)
 # endif
 #endif
 
-    // Migrate settings from KDE4 to KF5 if appropriate
-#ifdef HAVE_KF5
-    Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
-    migrator.setConfigFiles(QStringList() << "quasselrc" << "quassel.notifyrc");
-    migrator.migrate();
-#endif
-
     AbstractCliParser *cliParser;
 
 #ifdef HAVE_KDE4
@@ -196,6 +189,13 @@ int main(int argc, char **argv)
         cliParser->usage();
         return false;
     }
+#endif
+
+// Migrate settings from KDE4 to KF5 if appropriate
+#ifdef HAVE_KF5
+    Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
+    migrator.setConfigFiles(QStringList() << "quasselrc" << "quassel.notifyrc");
+    migrator.migrate();
 #endif
 
 #ifdef HAVE_KF5
