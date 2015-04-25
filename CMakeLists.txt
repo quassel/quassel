@@ -570,10 +570,10 @@ git_describe(GIT_DESCRIBE --long)
 # enviroment
 if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
   if (DEFINED ENV{GIT_HEAD})
-      set(GIT_HEAD ${GIT_HEAD})
+      set(GIT_HEAD $ENV{GIT_HEAD})
   endif ()
   if (DEFINED ENV{GIT_DESCRIBE})
-     set(GIT_DESCRIBE ${GIT_DESCRIBE})
+     set(GIT_DESCRIBE $ENV{GIT_DESCRIBE})
   endif()
 endif()
 
