@@ -556,10 +556,9 @@ void TreeModel::endAppendChilds()
     ChildStatus cs = _childStatus;
 #ifndef QT_NO_DEBUG
     QModelIndex parent = indexByItem(parentItem);
-#endif
     Q_ASSERT(cs.parent == parent);
     Q_ASSERT(rowCount(parent) == cs.childCount + cs.end - cs.start + 1);
-
+#endif
     _aboutToRemoveOrInsert = false;
     for (int i = cs.start; i <= cs.end; i++) {
         connectItem(parentItem->child(i));
@@ -605,9 +604,9 @@ void TreeModel::endRemoveChilds()
 #ifndef QT_NO_DEBUG
     ChildStatus cs = _childStatus;
     QModelIndex parent = indexByItem(parentItem);
-#endif
     Q_ASSERT(cs.parent == parent);
     Q_ASSERT(rowCount(parent) == cs.childCount - cs.end + cs.start - 1);
+#endif
     _aboutToRemoveOrInsert = false;
 
     endRemoveRows();
