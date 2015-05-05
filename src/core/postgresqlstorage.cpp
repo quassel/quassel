@@ -1381,8 +1381,7 @@ bool PostgreSqlStorage::logMessage(Message &msg)
 
         if (addSenderQuery.lastError().isValid()) {
             rollbackSavePoint("sender_sp1", db);
-            getSenderIdQuery.prepare(getSenderIdQuery.lastQuery());
-            safeExec(getSenderIdQuery);
+            getSenderIdQuery = executePreparedQuery("select_senderid", msg.sender(), db);
             watchQuery(getSenderIdQuery);
             getSenderIdQuery.first();
             senderId = getSenderIdQuery.value(0).toInt();
@@ -1452,8 +1451,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
             if (addSenderQuery.lastError().isValid()) {
                 // seems it was inserted meanwhile... by a different thread
                 rollbackSavePoint("sender_sp", db);
-                selectSenderQuery.prepare(selectSenderQuery.lastQuery());
-                safeExec(selectSenderQuery);
+                selectSenderQuery = executePreparedQuery("select_senderid", sender, db);
                 watchQuery(selectSenderQuery);
                 selectSenderQuery.first();
                 senderIdList << selectSenderQuery.value(0).toInt();
