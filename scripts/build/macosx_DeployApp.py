@@ -32,10 +32,8 @@ QT_CONFIG_NOBUNDLE = """[Paths]
 """
 
 
-
-
 class InstallQt(object):
-    def __init__(self, appdir, bundle = True, requestedPlugins=[]):
+    def __init__(self, appdir, bundle=True, requestedPlugins=[]):
         self.appDir = appdir
         self.bundle = bundle
         self.frameworkDir = self.appDir + "/Frameworks"
@@ -51,7 +49,6 @@ class InstallQt(object):
         executables = [self.executableDir + "/" + executable for executable in os.listdir(self.executableDir)]
         for executable in executables:
             self.resolveDependancies(executable)
-
 
         self.findPluginsPath()
         self.installPlugins(requestedPlugins)
@@ -101,7 +98,6 @@ class InstallQt(object):
             raise OSError
         return result
 
-
     def installPlugins(self, requestedPlugins):
         try:
             os.mkdir(self.pluginDir)
@@ -145,7 +141,7 @@ class InstallQt(object):
 
     def resolveDependancies(self, obj):
         # obj must be either an application binary or a framework library
-        #print "resolving deps for:", obj
+        # print "resolving deps for:", obj
         for framework, lib in self.determineDependancies(obj):
             self.installFramework(framework)
             self.changeDylPath(obj, framework, lib)
@@ -185,14 +181,14 @@ class InstallQt(object):
             except:
                 libname = ''
             otoolProcess.stdout.close()
-            if otoolProcess.wait() == 1: # we found some Resource dir or similar -> skip
+            if otoolProcess.wait() == 1:  # we found some Resource dir or similar -> skip
                 continue
             frameworkpath, libpath = libname.split(frameworkname)
             if self.bundle:
                 newlibname = "@executable_path/../%s%s" % (frameworkname, libpath)
             else:
                 newlibname = "@executable_path/%s%s" % (frameworkname, libpath)
-            #print 'install_name_tool -id "%s" "%s"' % (newlibname, lib)
+            # print 'install_name_tool -id "%s" "%s"' % (newlibname, lib)
             os.system('install_name_tool -id "%s" "%s"' % (newlibname, lib))
 
             self.resolveDependancies(lib)
@@ -201,13 +197,10 @@ class InstallQt(object):
         otoolPipe = Popen('otool -L "%s"' % app, shell=True, stdout=PIPE).stdout
         otoolOutput = [line for line in otoolPipe]
         otoolPipe.close()
-        libs = [line.split()[0] for line in otoolOutput[1:] if ("Qt" in line
-                                                               or "phonon" in line)
-                                                               and not "@executable_path" in line]
-        frameworks = [lib[:lib.find(".framework")+len(".framework")] for lib in libs]
-        frameworks = [framework[framework.rfind('/')+1:] for framework in frameworks]
+        libs = [line.split()[0] for line in otoolOutput[1:] if ("Qt" in line or "phonon" in line) and "@executable_path" not in line]
+        frameworks = [lib[:lib.find(".framework") + len(".framework")] for lib in libs]
+        frameworks = [framework[framework.rfind('/') + 1:] for framework in frameworks]
         return zip(frameworks, libs)
-
 
     def changeDylPath(self, obj, framework, lib):
         newlibname = framework + lib.split(framework)[1]
@@ -216,7 +209,7 @@ class InstallQt(object):
         else:
             newlibname = "@executable_path/Frameworks/%s" % newlibname
 
-        #print 'install_name_tool -change "%s" "%s" "%s"' % (lib, newlibname, obj)
+        # print 'install_name_tool -change "%s" "%s" "%s"' % (lib, newlibname, obj)
         os.system('install_name_tool -change "%s" "%s" "%s"' % (lib, newlibname, obj))
 
 if __name__ == "__main__":
