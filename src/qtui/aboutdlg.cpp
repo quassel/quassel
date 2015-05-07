@@ -35,10 +35,9 @@ AboutDlg::AboutDlg(QWidget *parent)
     ui.setupUi(this);
     ui.quasselLogo->setPixmap(QIcon(":/icons/quassel-64.png").pixmap(64)); // don't let the icon theme affect our logo here
 
-    ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"))
+    ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br><b>Protocol version:</b> %2"))
         .arg(Quassel::buildInfo().fancyVersionString)
-        .arg(Quassel::buildInfo().protocolVersion)
-        .arg(Quassel::buildInfo().buildDate));
+        .arg(Quassel::buildInfo().protocolVersion));
     ui.aboutTextBrowser->setHtml(about());
     ui.authorTextBrowser->setHtml(authors());
     ui.contributorTextBrowser->setHtml(contributors());

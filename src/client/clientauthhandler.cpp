@@ -284,7 +284,8 @@ void ClientAuthHandler::startRegistration()
     useSsl = _account.useSsl();
 #endif
 
-    _peer->dispatch(RegisterClient(Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().buildDate, useSsl));
+    // dummy build date for compatibility
+    _peer->dispatch(RegisterClient(Quassel::buildInfo().fancyVersionString, "Jan  1 1970 00:00:00", useSsl));
 }
 
 
