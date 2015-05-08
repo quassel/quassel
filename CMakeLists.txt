@@ -240,7 +240,11 @@ if (USE_QT5)
                 )
             endif()
         endif()
-        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" Qt5WebKitWidgets_FOUND "Support showing previews for URLs in chat")
+
+        if (WITH_WEBKIT AND Qt5WebKitWidgets_FOUND)
+            set(HAVE_WEBKIT true)
+        endif()
+        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat")
 
         # KDE Frameworks
         ################
