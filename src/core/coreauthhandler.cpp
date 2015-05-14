@@ -159,6 +159,7 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
         useSsl = _connectionFeatures & Protocol::Encryption;
 
     if (Quassel::isOptionSet("require-ssl") && !useSsl && !_peer->isLocal()) {
+        quInfo() << qPrintable(tr("SSL required but non-SSL connection attempt from %1").arg(socket()->peerAddress().toString()));
         _peer->dispatch(ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
         _peer->close();
         return;
@@ -209,6 +210,7 @@ void CoreAuthHandler::handle(const Login &msg)
 
     UserId uid = Core::validateUser(msg.user, msg.password);
     if (uid == 0) {
+        quInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
         _peer->dispatch(LoginFailed(tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.")));
         return;
     }
