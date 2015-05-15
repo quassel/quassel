@@ -41,7 +41,11 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
       m_systrayBackend(NULL)
 {
 
-    Snore::SnoreCore::instance().loadPlugins(Snore::SnorePlugin::BACKEND | Snore::SnorePlugin::SECONDARY_BACKEND);
+    Snore::SnoreCore::instance().loadPlugins(
+#ifndef HAVE_KDE
+                Snore::SnorePlugin::BACKEND |
+#endif
+                Snore::SnorePlugin::SECONDARY_BACKEND);
     m_icon = Snore::Icon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")).pixmap(48).toImage());
     m_application = Snore::Application("Quassel", m_icon);
     m_application.hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
@@ -99,16 +103,24 @@ SettingsPage *SnoreNotificationBackend::createConfigWidget()const
 
 void SnoreNotificationBackend::setTraybackend(const QVariant &b)
 {
-    if (!b.toBool() && m_systrayBackend == NULL) {
-        m_systrayBackend = new SystrayNotificationBackend(this);
-        QtUi::registerNotificationBackend(m_systrayBackend);
+#ifndef HAVE_KDE
+    if (!b.toBool()) {
+        if (m_systrayBackend == NULL) {
+            m_systrayBackend = new SystrayNotificationBackend(this);
+            QtUi::registerNotificationBackend(m_systrayBackend);
+        }
     } else {
-        Snore::SnoreCore::instance().registerApplication(m_application);
-        if(m_systrayBackend != NULL) {
+        if (m_systrayBackend != NULL) {
             QtUi::unregisterNotificationBackend(m_systrayBackend);
             m_systrayBackend->deleteLater();
             m_systrayBackend = NULL;
         }
+    }
+#endif
+    if (b.toBool()) {
+        Snore::SnoreCore::instance().registerApplication(m_application);
+    } else {
+        Snore::SnoreCore::instance().deregisterApplication(m_application);
     }
 }
 
