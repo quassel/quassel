@@ -37,8 +37,7 @@
 
 
 SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
-    : AbstractNotificationBackend(parent),
-      m_systrayBackend(NULL)
+    : AbstractNotificationBackend(parent)
 {
 
     Snore::SnoreCore::instance().loadPlugins(
@@ -70,9 +69,11 @@ SnoreNotificationBackend::~SnoreNotificationBackend()
 
 void SnoreNotificationBackend::notify(const Notification &n)
 {
-    if (m_systrayBackend != NULL) {
+#ifndef HAVE_KDE
+    if (m_systrayBackend != nullptr) {
         return;
     }
+#endif
     QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
     QString message = QString("<%1> %2").arg(n.sender, n.message);
     Snore::Notification noti(m_application, m_alert, title, message, m_icon);
@@ -83,9 +84,11 @@ void SnoreNotificationBackend::notify(const Notification &n)
 
 void SnoreNotificationBackend::close(uint notificationId)
 {
-    if (m_systrayBackend != NULL) {
+#ifndef HAVE_KDE
+    if (m_systrayBackend != nullptr) {
         return;
     }
+#endif
     Snore::Notification n = Snore::SnoreCore::instance().getActiveNotificationByID(m_notificationIds.take(notificationId));
     Snore::SnoreCore::instance().requestCloseNotification(n, Snore::Notification::CLOSED);
 }
@@ -105,15 +108,15 @@ void SnoreNotificationBackend::setTraybackend(const QVariant &b)
 {
 #ifndef HAVE_KDE
     if (!b.toBool()) {
-        if (m_systrayBackend == NULL) {
+        if (m_systrayBackend == nullptr) {
             m_systrayBackend = new SystrayNotificationBackend(this);
             QtUi::registerNotificationBackend(m_systrayBackend);
         }
     } else {
-        if (m_systrayBackend != NULL) {
+        if (m_systrayBackend != nullptr) {
             QtUi::unregisterNotificationBackend(m_systrayBackend);
             m_systrayBackend->deleteLater();
-            m_systrayBackend = NULL;
+            m_systrayBackend = nullptr;
         }
     }
 #endif

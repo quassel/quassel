@@ -41,7 +41,7 @@ public:
     void notify(const Notification &);
     void close(uint notificationId);
 
-    virtual SettingsPage *createConfigWidget()const;
+    virtual SettingsPage *createConfigWidget() const;
 
 signals:
     void activated(uint notificationId = 0);
@@ -55,7 +55,9 @@ private slots:
 private:
 
     class ConfigWidget;
-    SystrayNotificationBackend * m_systrayBackend;
+#ifndef HAVE_KDE
+    SystrayNotificationBackend * m_systrayBackend = nullptr;
+#endif
     QHash<uint, uint> m_notificationIds;
     Snore::Icon m_icon;
     Snore::Application m_application;
