@@ -107,9 +107,13 @@ AboutData &AboutData::addAuthor(const AboutPerson &author)
 }
 
 
-AboutData &AboutData::addAuthors(std::initializer_list<AboutPerson> authors)
+AboutData &AboutData::addAuthors(const std::initializer_list<AboutPerson> authors)
 {
-    _authors.append(authors);
+    std::initializer_list<AboutPerson>::const_iterator iter;
+    for (iter = authors.begin(); iter != authors.end(); ++iter)
+    {
+        _authors.append(*iter);
+    }
     return *this;
 }
 
@@ -121,9 +125,13 @@ AboutData &AboutData::addCredit(const AboutPerson &credit)
 }
 
 
-AboutData &AboutData::addCredits(std::initializer_list<AboutPerson> credits)
+AboutData &AboutData::addCredits(const std::initializer_list<AboutPerson> credits)
 {
-    _credits.append(credits);
+    std::initializer_list<AboutPerson>::const_iterator iter;
+    for (iter = credits.begin(); iter != credits.end(); ++iter)
+    {
+	_credits.append(*iter);
+    }
     return *this;
 }
 
