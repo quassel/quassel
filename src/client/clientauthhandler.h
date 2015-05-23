@@ -36,6 +36,12 @@ class ClientAuthHandler : public AuthHandler
 public:
     ClientAuthHandler(CoreAccount account, QObject *parent = 0);
 
+    enum DigestVersion {
+        Md5,
+        Sha2_512,
+        Latest=Sha2_512
+    };
+
 public slots:
     void connectToCore();
 
@@ -82,6 +88,10 @@ private:
     void setPeer(RemotePeer *peer);
     void checkAndEnableSsl(bool coreSupportsSsl);
     void startRegistration();
+
+#if QT_VERSION < 0x050000
+    QByteArray sha2_512(const QByteArray &input);
+#endif
 
 private slots:
     void onSocketConnected();

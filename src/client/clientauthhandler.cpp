@@ -34,6 +34,10 @@
 #include "clientsettings.h"
 #include "peerfactory.h"
 
+#if QT_VERSION < 0x050000
+#    include "../../3rdparty/sha512/sha512.h"
+#endif
+
 using namespace Protocol;
 
 ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject *parent)
@@ -423,6 +427,7 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
             }
             s.setAccountValue("ShowNoCoreSslWarning", false);
             s.setAccountValue("SslCert", QString());
+            s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
         }
         if (_legacy)
             onConnectionReady();
@@ -444,6 +449,7 @@ void ClientAuthHandler::onSslSocketEncrypted()
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;
         s.setAccountValue("SSLCert", QString());
+        s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
     }
 
     emit encrypted(true);
@@ -462,8 +468,27 @@ void ClientAuthHandler::onSslErrors()
 
     CoreAccountSettings s;
     QByteArray knownDigest = s.accountValue("SslCert").toByteArray();
+    ClientAuthHandler::DigestVersion knownDigestVersion = static_cast<ClientAuthHandler::DigestVersion>(s.accountValue("SslCertDigestVersion").toInt());
 
-    if (knownDigest != socket->peerCertificate().digest()) {
+    QByteArray calculatedDigest;
+    switch (knownDigestVersion) {
+    case ClientAuthHandler::DigestVersion::Md5:
+        calculatedDigest = socket->peerCertificate().digest(QCryptographicHash::Md5);
+        break;
+
+    case ClientAuthHandler::DigestVersion::Sha2_512:
+#if QT_VERSION >= 0x050000
+        calculatedDigest = socket->peerCertificate().digest(QCryptographicHash::Sha512);
+#else
+        calculatedDigest = sha2_512(socket->peerCertificate().toDer());
+#endif
+        break;
+
+    default:
+        qWarning() << "Certificate digest version" << QString(knownDigestVersion) << "is not supported";
+    }
+    
+    if (knownDigest != calculatedDigest) {
         bool accepted = false;
         bool permanently = false;
         emit handleSslErrors(socket, &accepted, &permanently);
@@ -473,13 +498,42 @@ void ClientAuthHandler::onSslErrors()
             return;
         }
 
-        if (permanently)
-            s.setAccountValue("SslCert", socket->peerCertificate().digest());
-        else
+        if (permanently) {
+#if QT_VERSION >= 0x050000
+            s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
+#else
+            s.setAccountValue("SslCert", sha2_512(socket->peerCertificate().toDer()));
+#endif
+            s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
+        }
+        else {
             s.setAccountValue("SslCert", QString());
+            s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+        }
+    }
+    else if (knownDigestVersion != ClientAuthHandler::DigestVersion::Latest) {
+#if QT_VERSION >= 0x050000
+        s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
+#else
+        s.setAccountValue("SslCert", sha2_512(socket->peerCertificate().toDer()));
+#endif
+        s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
     }
 
     socket->ignoreSslErrors();
 }
+
+#if QT_VERSION < 0x050000
+QByteArray ClientAuthHandler::sha2_512(const QByteArray &input) {
+    unsigned char output[64];
+    sha512((unsigned char*) input.constData(), input.size(), output, false);
+    // QByteArray::fromRawData() cannot be used here because that constructor
+    // does not copy "output" and the data is clobbered when the variable goes
+    // out of scope.
+    QByteArray result;
+    result.append((char*) output, 64);
+    return result;
+}
+#endif
 
 #endif /* HAVE_SSL */
