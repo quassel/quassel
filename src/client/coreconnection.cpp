@@ -216,6 +216,8 @@ void CoreConnection::setState(ConnectionState state)
     if (state != _state) {
         _state = state;
         emit stateChanged(state);
+        if (state == Connected)
+            _wantReconnect = true;
         if (state == Disconnected)
             emit disconnected();
     }
