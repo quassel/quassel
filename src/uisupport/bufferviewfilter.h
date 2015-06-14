@@ -69,6 +69,8 @@ public:
 
     QList<QAction *> actions(const QModelIndex &index);
 
+    void setFilterString(const QString string);
+
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
     bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
@@ -93,6 +95,7 @@ private:
     QSet<BufferId> _toAdd;
     QSet<BufferId> _toTempRemove;
     QSet<BufferId> _toRemove;
+    QString _filterString;
 
     bool filterAcceptBuffer(const QModelIndex &) const;
     bool filterAcceptNetwork(const QModelIndex &) const;

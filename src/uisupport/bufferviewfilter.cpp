@@ -137,6 +137,14 @@ QList<QAction *> BufferViewFilter::actions(const QModelIndex &index)
     return actionList;
 }
 
+void BufferViewFilter::setFilterString(const QString string)
+{
+    beginResetModel();
+    _filterString = string;
+    endResetModel();
+    enableEditMode(!string.isEmpty());
+}
+
 
 void BufferViewFilter::enableEditMode(bool enable)
 {
@@ -344,6 +352,16 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 
     if (bufferType & BufferInfo::QueryBuffer && !_showServerQueries && sourceModel()->data(source_bufferIndex, Qt::DisplayRole).toString().contains('.')) {
         return false;
+    }
+
+    if (!_filterString.isEmpty()) {
+        const BufferInfo info = qvariant_cast<BufferInfo>(Client::bufferModel()->data(source_bufferIndex, NetworkModel::BufferInfoRole));
+        QString name = info.bufferName();
+        if (name.contains(_filterString)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // the following dynamic filters may not trigger if the buffer is currently selected.
