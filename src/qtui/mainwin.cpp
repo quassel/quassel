@@ -722,7 +722,7 @@ BufferView *MainWin::activeBufferView() const
     if (_activeBufferViewIndex < 0 || _activeBufferViewIndex >= _bufferViews.count())
         return 0;
     BufferViewDock *dock = _bufferViews.at(_activeBufferViewIndex);
-    return dock->isActive() ? qobject_cast<BufferView *>(dock->widget()) : 0;
+    return dock->isActive() ? dock->bufferView() : 0;
 }
 
 
@@ -731,9 +731,8 @@ void MainWin::changeActiveBufferView(int bufferViewId)
     if (bufferViewId < 0)
         return;
 
-    BufferView *current = activeBufferView();
-    if (current) {
-        qobject_cast<BufferViewDock *>(current->parent())->setActive(false);
+    if (_activeBufferViewIndex >= 0 && _activeBufferViewIndex < _bufferViews.count()) {
+        _bufferViews[_activeBufferViewIndex]->setActive(false);
         _activeBufferViewIndex = -1;
     }
 
@@ -768,9 +767,9 @@ void MainWin::showPasswordChangeDlg()
 
 void MainWin::changeActiveBufferView(bool backwards)
 {
-    BufferView *current = activeBufferView();
-    if (current)
-        qobject_cast<BufferViewDock *>(current->parent())->setActive(false);
+    if (_activeBufferViewIndex >= 0 && _activeBufferViewIndex < _bufferViews.count()) {
+        _bufferViews[_activeBufferViewIndex]->setActive(false);
+    }
 
     if (!_bufferViews.count())
         return;
