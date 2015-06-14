@@ -151,6 +151,7 @@ public slots:
 private slots:
     void bufferViewRenamed(const QString &newName);
     void updateTitle();
+    void configChanged();
 
 private:
     QWidget *_childWidget;

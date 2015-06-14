@@ -652,6 +652,7 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     toggleViewAction()->setData(config->bufferViewId());
     setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
     connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(bufferViewRenamed(const QString &)));
+    connect(config, SIGNAL(configChanged()), SLOT(configChanged()));
     updateTitle();
 
     _widget->setLayout(new QVBoxLayout);
