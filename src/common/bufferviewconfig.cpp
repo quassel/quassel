@@ -32,7 +32,8 @@ BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
     _hideInactiveNetworks(false),
     _disableDecoration(false),
     _allowedBufferTypes(BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer),
-    _minimumActivity(0)
+    _minimumActivity(0),
+    _showSearch(false)
 {
     setObjectName(QString::number(bufferViewId));
 }
@@ -141,6 +142,16 @@ void BufferViewConfig::setHideInactiveNetworks(bool hideInactiveNetworks)
 
     _hideInactiveNetworks = hideInactiveNetworks;
     SYNC(ARG(hideInactiveNetworks))
+    emit configChanged();
+}
+
+void BufferViewConfig::setShowSearch(bool showSearch) {
+    if (_showSearch == showSearch) {
+        return;
+    }
+
+    _showSearch = showSearch;
+    SYNC(ARG(showSearch))
     emit configChanged();
 }
 

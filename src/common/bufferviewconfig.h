@@ -39,6 +39,7 @@ class BufferViewConfig : public SyncableObject
     Q_PROPERTY(bool disableDecoration READ disableDecoration WRITE setDisableDecoration)
     Q_PROPERTY(int allowedBufferTypes READ allowedBufferTypes WRITE setAllowedBufferTypes)
     Q_PROPERTY(int minimumActivity READ minimumActivity WRITE setMinimumActivity)
+    Q_PROPERTY(bool showSearch READ showSearch WRITE setShowSearch)
 
 public :
         BufferViewConfig(int bufferViewId, QObject *parent = 0);
@@ -75,6 +76,9 @@ public slots:
 
     inline bool hideInactiveNetworks() const { return _hideInactiveNetworks; }
     void setHideInactiveNetworks(bool hideInactiveNetworks);
+
+    inline bool showSearch() const { return _showSearch; }
+    void setShowSearch(bool showSearch);
 
     virtual inline void requestSetBufferViewName(const QString &bufferViewName) { REQUEST(ARG(bufferViewName)) }
 
@@ -135,6 +139,7 @@ private:
     bool _disableDecoration;
     int _allowedBufferTypes;
     int _minimumActivity;
+    bool _showSearch;
     QList<BufferId> _buffers;
     QSet<BufferId> _removedBuffers;
     QSet<BufferId> _temporarilyRemovedBuffers;

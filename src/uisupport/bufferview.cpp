@@ -667,10 +667,12 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     toggleViewAction()->setData(config->bufferViewId());
     setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
     connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(bufferViewRenamed(const QString &)));
+    connect(config, SIGNAL(configChanged()), SLOT(configChanged()));
     updateTitle();
 
     _widget->setLayout(new QVBoxLayout);
-    _filterEdit->setPlaceholderText(tr("Filter..."));
+    _filterEdit->setVisible(config->showSearch()); // hide it here, so we don't flicker or somesuch
+    _filterEdit->setPlaceholderText(tr("Search..."));
     _widget->layout()->addWidget(_filterEdit);
     QDockWidget::setWidget(_widget);
 }
@@ -682,6 +684,15 @@ void BufferViewDock::updateTitle()
     if (isActive())
         title.prepend(QString::fromUtf8("• "));
     setWindowTitle(title);
+}
+
+void BufferViewDock::configChanged()
+{
+    _filterEdit->setVisible(config()->showSearch());
+
+    if (!_filterEdit->isVisible()) {
+        _filterEdit->setText(QStringLiteral(""));
+    }
 }
 
 

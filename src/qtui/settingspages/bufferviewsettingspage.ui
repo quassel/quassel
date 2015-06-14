@@ -158,6 +158,13 @@ In this mode no separate status buffer is displayed.</string>
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="showSearch">
+        <property name="text">
+         <string>Show search</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Minimum Activity:</string>
