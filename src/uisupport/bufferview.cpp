@@ -691,7 +691,7 @@ void BufferViewDock::configChanged()
     _filterEdit->setVisible(config()->showSearch());
 
     if (!_filterEdit->isVisible()) {
-        _filterEdit->setText(QStringLiteral(""));
+        _filterEdit->setText(QLatin1String(""));
     }
 }
 
