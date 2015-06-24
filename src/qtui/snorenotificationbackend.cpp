@@ -47,7 +47,8 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
                 Snore::SnorePlugin::SECONDARY_BACKEND);
     m_icon = Snore::Icon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")).pixmap(48).toImage());
     m_application = Snore::Application("Quassel", m_icon);
-    m_application.hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
+    m_application.hints().setValue("windows-app-id","QuasselProject.QuasselIRC");
+    m_application.hints().setValue("pushover-token", "arNtsi983QSZUqU3KAZrFLKHGFPkdL");
 
     connect(&Snore::SnoreCore::instance(), SIGNAL(actionInvoked(Snore::Notification)), this, SLOT(actionInvoked(Snore::Notification)));
 
