@@ -130,7 +130,7 @@ if (QT_QTDBUS_FOUND OR Qt5DBus_FOUND)
     qt_add_dbus_adaptor  (SOURCES ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
 endif()
 
-if (QT_QTWEBKIT_FOUND OR Qt5WebKitWidgets_FOUND)
+if (HAVE_WEBKIT)
     add_definitions(-DHAVE_WEBKIT)
     list(APPEND QT_MODULES WebKit)
     if (USE_QT5)
