@@ -37,7 +37,23 @@ SslServer::SslServer(QObject *parent)
     _isCertValid(false)
 {
     static bool sslWarningShown = false;
-    if (!setCertificate(Quassel::configDirPath() + "quasselCert.pem")) {
+
+    QString ssl_cert;
+    QString ssl_key;
+
+    if(Quassel::isOptionSet("ssl-cert")) {
+        ssl_cert = Quassel::optionValue("ssl-cert");
+    } else {
+        ssl_cert = Quassel::configDirPath() + "quasselCert.pem";
+    }
+
+    if(Quassel::isOptionSet("ssl-key")) {
+        ssl_key = Quassel::optionValue("ssl-key");
+    } else {
+        ssl_key = ssl_cert;
+    }
+
+    if (!setCertificate(ssl_cert, ssl_key)) {
         if (!sslWarningShown) {
             quWarning()
             << "SslServer: Unable to set certificate file\n"
@@ -79,7 +95,7 @@ void SslServer::incomingConnection(int socketDescriptor)
 }
 
 
-bool SslServer::setCertificate(const QString &path)
+bool SslServer::setCertificate(const QString &path, const QString &keyPath)
 {
     _isCertValid = false;
 
@@ -117,7 +133,27 @@ bool SslServer::setCertificate(const QString &path)
         return false;
     }
 
-    _key = QSslKey(&certFile, QSsl::Rsa);
+    // load key from keyPath if it differs from path, otherwise load key from path
+    if(path != keyPath) {
+        QFile keyFile(keyPath);
+        if(!keyFile.exists()) {
+            quWarning() << "SslServer: Key file" << qPrintable(keyPath) << "does not exist";
+            return false;
+        }
+
+        if (!keyFile.open(QIODevice::ReadOnly)) {
+            quWarning()
+            << "SslServer: Failed to open key file" << qPrintable(keyPath)
+            << "error:" << keyFile.error();
+            return false;
+        }
+
+        _key = QSslKey(&keyFile, QSsl::Rsa);
+        keyFile.close();
+    } else {
+        _key = QSslKey(&certFile, QSsl::Rsa);
+    }
+
     certFile.close();
 
     if (_cert.isNull()) {
@@ -142,7 +178,7 @@ bool SslServer::setCertificate(const QString &path)
             quWarning() << "SslServer: Certificate blacklisted";
     }
     if (_key.isNull()) {
-        quWarning() << "SslServer:" << qPrintable(path) << "contains no key data";
+        quWarning() << "SslServer:" << qPrintable(keyPath) << "contains no key data";
         return false;
     }
 
