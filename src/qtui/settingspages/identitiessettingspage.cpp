@@ -84,7 +84,7 @@ void IdentitiesSettingsPage::continueUnsecured()
     _editSsl = true;
 
     QHash<IdentityId, CertIdentity *>::iterator idIter;
-    for (idIter = identities.begin(); idIter != identities.end(); idIter++) {
+    for (idIter = identities.begin(); idIter != identities.end(); ++idIter) {
         idIter.value()->enableEditSsl();
     }
 

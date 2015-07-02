@@ -651,7 +651,7 @@ void ChatScene::firstHandlePositionChanged(qreal xpos)
     QPointF senderPos(firstColumnHandle()->sceneRight(), 0);
 
     while (lineIter != lineIterBegin) {
-        lineIter--;
+        --lineIter;
         (*lineIter)->setFirstColumn(timestampWidth, senderWidth, senderPos);
     }
     //setItemIndexMethod(QGraphicsScene::BspTreeIndex);
@@ -687,7 +687,7 @@ void ChatScene::secondHandlePositionChanged(qreal xpos)
     qreal contentsWidth = _sceneRect.width() - secondColumnHandle()->sceneRight();
     QPointF contentsPos(secondColumnHandle()->sceneRight(), 0);
     while (lineIter != lineIterBegin) {
-        lineIter--;
+        --lineIter;
         (*lineIter)->setSecondColumn(senderWidth, contentsWidth, contentsPos, linePos);
     }
     //setItemIndexMethod(QGraphicsScene::BspTreeIndex);

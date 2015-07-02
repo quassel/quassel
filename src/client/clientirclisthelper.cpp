@@ -43,7 +43,7 @@ void ClientIrcListHelper::receiveChannelList(const NetworkId &netId, const QStri
         QVariantList channelVar = iter->toList();
         ChannelDescription channelDescription(channelVar[0].toString(), channelVar[1].toUInt(), channelVar[2].toString());
         channelList << channelDescription;
-        iter++;
+        ++iter;
     }
 
     emit channelListReceived(netId, channelFilters, channelList);

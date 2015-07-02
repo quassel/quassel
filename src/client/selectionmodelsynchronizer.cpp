@@ -96,7 +96,7 @@ void SelectionModelSynchronizer::selectionModelDestroyed(QObject *object)
             iter = _selectionModels.erase(iter);
         }
         else {
-            iter++;
+            ++iter;
         }
     }
 }
@@ -252,7 +252,7 @@ void SelectionModelSynchronizer::currentChanged(const QModelIndex &current, cons
     QSet<QItemSelectionModel *>::iterator iter = _selectionModels.begin();
     while (iter != _selectionModels.end()) {
         (*iter)->setCurrentIndex(mapFromSource(current, (*iter)), QItemSelectionModel::Current);
-        iter++;
+        ++iter;
     }
     _changeCurrentEnabled = true;
 }
@@ -267,7 +267,7 @@ void SelectionModelSynchronizer::selectionChanged(const QItemSelection &selected
     QSet<QItemSelectionModel *>::iterator iter = _selectionModels.begin();
     while (iter != _selectionModels.end()) {
         (*iter)->select(mapSelectionFromSource(currentSelection(), (*iter)), QItemSelectionModel::ClearAndSelect);
-        iter++;
+        ++iter;
     }
     _changeSelectionEnabled = true;
 }

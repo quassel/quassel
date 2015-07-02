@@ -206,7 +206,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist)
     QList<Message>::const_iterator iter;
     if (inOrder) {
         iter = msglist.constEnd();
-        iter--; // this op is safe as we've allready passed an empty check
+        --iter; // this op is safe as we've allready passed an empty check
     }
     else {
         iter = msglist.constBegin();
@@ -229,11 +229,11 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist)
     }
 
     if (!inOrder)
-        iter++;
+        ++iter;
 
     if (inOrder) {
         while (iter != msglist.constBegin()) {
-            iter--;
+            --iter;
 
             if (!fastForward && (*iter).msgId() <= minId)
                 break;
@@ -295,7 +295,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist)
                 dupeId = (*iter).msgId();
                 grouplist.prepend(*iter);
             }
-            iter++;
+            ++iter;
         }
     }
 

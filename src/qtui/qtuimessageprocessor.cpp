@@ -70,7 +70,7 @@ void QtUiMessageProcessor::process(QList<Message> &msgs)
     while (msgIter != msgIterEnd) {
         checkForHighlight(*msgIter);
         preProcess(*msgIter);
-        msgIter++;
+        ++msgIter;
     }
     Client::messageModel()->insertMessages(msgs);
     return;
@@ -190,7 +190,7 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant)
             rule["CS"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
             rule["RegEx"].toBool(),
             rule["Channel"].toString());
-        iter++;
+        ++iter;
     }
 }
 
