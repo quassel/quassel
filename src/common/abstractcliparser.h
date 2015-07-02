@@ -54,7 +54,7 @@ protected:
             CliArgOption
         };
 
-        CliParserArg(const CliArgType type = CliArgInvalid, const char shortName = 0, const QString &help = QString(), const QString &valueName = QString(), const QString def = QString())
+        CliParserArg(const CliArgType type = CliArgInvalid, const char shortName = 0, const QString &help = QString(), const QString &valueName = QString(), const QString &def = QString())
             : type(type)
             , shortName(shortName)
             , help(help)
