@@ -185,7 +185,7 @@ void CtcpParser::parseSimple(IrcEventRawMessage *e, Message::Type messagetype, Q
     if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.count() -1] != '\001') {
         displayMsg(e, messagetype, targetDecode(e, dequotedMessage), e->prefix(), e->target(), flags);
     } else {
-        int spacePos = -1;
+        int spacePos;
         QString ctcpcmd, ctcpparam;
 
         QByteArray ctcp = xdelimDequote(dequotedMessage.mid(1, dequotedMessage.count() - 2));
