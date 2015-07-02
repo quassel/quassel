@@ -535,7 +535,7 @@ void Client::networkDestroyed()
             break;
         }
         else {
-            netIter++;
+            ++netIter;
         }
     }
 }

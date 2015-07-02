@@ -321,7 +321,7 @@ QVariantMap IrcChannel::initUserModes() const
     QHash<IrcUser *, QString>::const_iterator iter = _userModes.constBegin();
     while (iter != _userModes.constEnd()) {
         usermodes[iter.key()->nick()] = iter.value();
-        iter++;
+        ++iter;
     }
     return usermodes;
 }
@@ -335,7 +335,7 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes)
     while (iter != usermodes.constEnd()) {
         users << network()->newIrcUser(iter.key());
         modes << iter.value().toString();
-        iter++;
+        ++iter;
     }
     joinIrcUsers(users, modes);
 }
@@ -349,7 +349,7 @@ QVariantMap IrcChannel::initChanModes() const
     QHash<QChar, QStringList>::const_iterator A_iter = _A_channelModes.constBegin();
     while (A_iter != _A_channelModes.constEnd()) {
         A_modes[A_iter.key()] = A_iter.value();
-        A_iter++;
+        ++A_iter;
     }
     channelModes["A"] = A_modes;
 
@@ -357,7 +357,7 @@ QVariantMap IrcChannel::initChanModes() const
     QHash<QChar, QString>::const_iterator B_iter = _B_channelModes.constBegin();
     while (B_iter != _B_channelModes.constEnd()) {
         B_modes[B_iter.key()] = B_iter.value();
-        B_iter++;
+        ++B_iter;
     }
     channelModes["B"] = B_modes;
 
@@ -365,7 +365,7 @@ QVariantMap IrcChannel::initChanModes() const
     QHash<QChar, QString>::const_iterator C_iter = _C_channelModes.constBegin();
     while (C_iter != _C_channelModes.constEnd()) {
         C_modes[C_iter.key()] = C_iter.value();
-        C_iter++;
+        ++C_iter;
     }
     channelModes["C"] = C_modes;
 
@@ -373,7 +373,7 @@ QVariantMap IrcChannel::initChanModes() const
     QSet<QChar>::const_iterator D_iter = _D_channelModes.constBegin();
     while (D_iter != _D_channelModes.constEnd()) {
         D_modes += *D_iter;
-        D_iter++;
+        ++D_iter;
     }
     channelModes["D"] = D_modes;
 
@@ -387,21 +387,21 @@ void IrcChannel::initSetChanModes(const QVariantMap &channelModes)
     QVariantMap::const_iterator iterEnd = channelModes["A"].toMap().constEnd();
     while (iter != iterEnd) {
         _A_channelModes[iter.key()[0]] = iter.value().toStringList();
-        iter++;
+        ++iter;
     }
 
     iter = channelModes["B"].toMap().constBegin();
     iterEnd = channelModes["B"].toMap().constEnd();
     while (iter != iterEnd) {
         _B_channelModes[iter.key()[0]] = iter.value().toString();
-        iter++;
+        ++iter;
     }
 
     iter = channelModes["C"].toMap().constBegin();
     iterEnd = channelModes["C"].toMap().constEnd();
     while (iter != iterEnd) {
         _C_channelModes[iter.key()[0]] = iter.value().toString();
-        iter++;
+        ++iter;
     }
 
     QString D_modes = channelModes["D"].toString();
@@ -596,21 +596,21 @@ QString IrcChannel::channelModeString() const
     QSet<QChar>::const_iterator D_iter = _D_channelModes.constBegin();
     while (D_iter != _D_channelModes.constEnd()) {
         modeString += *D_iter;
-        D_iter++;
+        ++D_iter;
     }
 
     QHash<QChar, QString>::const_iterator BC_iter = _C_channelModes.constBegin();
     while (BC_iter != _C_channelModes.constEnd()) {
         modeString += BC_iter.key();
         params << BC_iter.value();
-        BC_iter++;
+        ++BC_iter;
     }
 
     BC_iter = _B_channelModes.constBegin();
     while (BC_iter != _B_channelModes.constEnd()) {
         modeString += BC_iter.key();
         params << BC_iter.value();
-        BC_iter++;
+        ++BC_iter;
     }
     if (modeString.isEmpty())
         return modeString;

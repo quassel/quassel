@@ -42,7 +42,7 @@ QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, 
     QList<Message>::const_iterator msgListEnd = msgList.constEnd();
     while (msgIter != msgListEnd) {
         backlog << qVariantFromValue(*msgIter);
-        msgIter++;
+        ++msgIter;
     }
 
     if (additional && limit != 0) {
@@ -69,7 +69,7 @@ QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, 
             msgListEnd = msgList.constEnd();
             while (msgIter != msgListEnd) {
                 backlog << qVariantFromValue(*msgIter);
-                msgIter++;
+                ++msgIter;
             }
         }
     }
@@ -88,7 +88,7 @@ QVariantList CoreBacklogManager::requestBacklogAll(MsgId first, MsgId last, int 
     QList<Message>::const_iterator msgListEnd = msgList.constEnd();
     while (msgIter != msgListEnd) {
         backlog << qVariantFromValue(*msgIter);
-        msgIter++;
+        ++msgIter;
     }
 
     if (additional) {
@@ -109,7 +109,7 @@ QVariantList CoreBacklogManager::requestBacklogAll(MsgId first, MsgId last, int 
         msgListEnd = msgList.constEnd();
         while (msgIter != msgListEnd) {
             backlog << qVariantFromValue(*msgIter);
-            msgIter++;
+            ++msgIter;
         }
     }
 

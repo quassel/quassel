@@ -2004,7 +2004,7 @@ bool PostgreSqlMigrationWriter::postProcess()
               << Sequence("quasseluser", "userid")
               << Sequence("sender", "senderid");
     QList<Sequence>::const_iterator iter;
-    for (iter = sequences.constBegin(); iter != sequences.constEnd(); iter++) {
+    for (iter = sequences.constBegin(); iter != sequences.constEnd(); ++iter) {
         resetQuery();
         newQuery(QString("SELECT setval('%1_%2_seq', max(%2)) FROM %1").arg(iter->table, iter->field), db);
         if (!exec())

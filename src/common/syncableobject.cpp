@@ -141,7 +141,7 @@ void SyncableObject::fromVariantMap(const QVariantMap &properties)
     while (iterator != properties.constEnd()) {
         propName = iterator.key();
         if (propName == "objectName") {
-            iterator++;
+            ++iterator;
             continue;
         }
 
@@ -152,7 +152,7 @@ void SyncableObject::fromVariantMap(const QVariantMap &properties)
         else
             setProperty(propName.toLatin1(), iterator.value());
         // qDebug() << "<<< SYNC:" << name << iterator.value();
-        iterator++;
+        ++iterator;
     }
 }
 

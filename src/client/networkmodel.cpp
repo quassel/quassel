@@ -723,7 +723,7 @@ void ChannelBufferItem::addUsersToCategory(const QList<IrcUser *> &ircUsers)
     QHash<UserCategoryItem *, QList<IrcUser *> >::const_iterator catIter = categories.constBegin();
     while (catIter != categories.constEnd()) {
         catIter.key()->addUsers(catIter.value());
-        catIter++;
+        ++catIter;
     }
 }
 

@@ -400,7 +400,7 @@ void BufferViewSettingsPage::on_deleteBufferView_clicked()
                     break;
                 }
                 else {
-                    iter++;
+                    ++iter;
                 }
             }
             delete config;
@@ -524,7 +524,7 @@ bool BufferViewSettingsPage::testHasChanged()
         }
         else {
             changed = true;
-            iter++;
+            ++iter;
         }
     }
     return changed;

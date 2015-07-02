@@ -161,12 +161,12 @@ void BufferViewFilter::enableEditMode(bool enable)
     if (enable == false) {
         addBuffers(QList<BufferId>::fromSet(_toAdd));
         QSet<BufferId>::const_iterator iter;
-        for (iter = _toTempRemove.constBegin(); iter != _toTempRemove.constEnd(); iter++) {
+        for (iter = _toTempRemove.constBegin(); iter != _toTempRemove.constEnd(); ++iter) {
             if (config()->temporarilyRemovedBuffers().contains(*iter))
                 continue;
             config()->requestRemoveBuffer(*iter);
         }
-        for (iter = _toRemove.constBegin(); iter != _toRemove.constEnd(); iter++) {
+        for (iter = _toRemove.constBegin(); iter != _toRemove.constEnd(); ++iter) {
             if (config()->removedBuffers().contains(*iter))
                 continue;
             config()->requestRemoveBufferPermanently(*iter);

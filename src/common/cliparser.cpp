@@ -146,7 +146,7 @@ bool CliParser::init(const QStringList &args)
                 else value = currentArg->toLocal8Bit();
                 name = currentArg->mid(1).toLatin1().at(0);
                 // we took one argument as argument to an option so skip it next time
-                if (skipNext) currentArg++;
+                if (skipNext) ++currentArg;
                 if (!addShortArg(CliParserArg::CliArgOption, name, value)) return false;
             }
         }

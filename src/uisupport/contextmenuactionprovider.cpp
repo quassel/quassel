@@ -514,7 +514,7 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
                 ignoreMenu->addAction(act);
             }
             counter++;
-            ruleIter++;
+            ++ruleIter;
         }
         if (counter)
             ignoreMenu->addSeparator();
