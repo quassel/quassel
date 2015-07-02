@@ -658,8 +658,8 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
 BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     : QDockWidget(parent),
     _childWidget(0),
-    _widget(new QWidget),
-    _filterEdit(new QLineEdit),
+    _widget(new QWidget(parent)),
+    _filterEdit(new QLineEdit(parent)),
     _active(false),
     _title(config->bufferViewName())
 {
