@@ -119,7 +119,7 @@ void SignalProxy::SignalRelay::detachSignal(QObject *sender, int signalId)
                 break;
         }
         else {
-            slotIter++;
+            ++slotIter;
         }
     }
 }
@@ -197,7 +197,7 @@ SignalProxy::~SignalProxy()
             objIter = classIter->erase(objIter);
             obj->stopSynchronize(this);
         }
-        classIter++;
+        ++classIter;
     }
     _syncSlave.clear();
 
@@ -482,7 +482,7 @@ void SignalProxy::detachSlots(QObject *receiver)
             slotIter = _attachedSlots.erase(slotIter);
         }
         else
-            slotIter++;
+            ++slotIter;
     }
 }
 
@@ -497,7 +497,7 @@ void SignalProxy::stopSynchronize(SyncableObject *obj)
             classIter->remove(obj->objectName());
             break;
         }
-        classIter++;
+        ++classIter;
     }
     obj->stopSynchronize(this);
 }

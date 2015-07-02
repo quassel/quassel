@@ -175,7 +175,7 @@ void CoreSession::loadSettings()
                 networkIter = networkInfos.erase(networkIter);
             }
             else {
-                networkIter++;
+                ++networkIter;
             }
         }
         s.removeIdentity(id);
@@ -548,7 +548,7 @@ void CoreSession::destroyNetwork(NetworkId id)
                 messageIter = _messageQueue.erase(messageIter);
             }
             else {
-                messageIter++;
+                ++messageIter;
             }
         }
         // remove buffers from syncer
@@ -578,7 +578,7 @@ void CoreSession::clientsConnected()
     IrcUser *me = 0;
     while (netIter != _networks.end()) {
         net = *netIter;
-        netIter++;
+        ++netIter;
 
         if (!net->isConnected())
             continue;
@@ -605,7 +605,7 @@ void CoreSession::clientsDisconnected()
     QString awayReason;
     while (netIter != _networks.end()) {
         net = *netIter;
-        netIter++;
+        ++netIter;
 
         if (!net->isConnected())
             continue;
@@ -633,7 +633,7 @@ void CoreSession::globalAway(const QString &msg)
     CoreNetwork *net = 0;
     while (netIter != _networks.end()) {
         net = *netIter;
-        netIter++;
+        ++netIter;
 
         if (!net->isConnected())
             continue;

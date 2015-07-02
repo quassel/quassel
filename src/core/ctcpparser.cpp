@@ -81,7 +81,7 @@ QByteArray CtcpParser::lowLevelQuote(const QByteArray &message)
     QHash<QByteArray, QByteArray>::const_iterator quoteIter = quoteHash.constBegin();
     while (quoteIter != quoteHash.constEnd()) {
         quotedMessage.replace(quoteIter.value(), quoteIter.key());
-        quoteIter++;
+        ++quoteIter;
     }
     return quotedMessage;
 }
@@ -117,7 +117,7 @@ QByteArray CtcpParser::xdelimQuote(const QByteArray &message)
     QHash<QByteArray, QByteArray>::const_iterator quoteIter = _ctcpXDelimDequoteHash.constBegin();
     while (quoteIter != _ctcpXDelimDequoteHash.constEnd()) {
         quotedMessage.replace(quoteIter.value(), quoteIter.key());
-        quoteIter++;
+        ++quoteIter;
     }
     return quotedMessage;
 }

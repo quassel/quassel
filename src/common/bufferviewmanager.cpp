@@ -88,7 +88,7 @@ QVariantList BufferViewManager::initBufferViewIds() const
     BufferViewConfigHash::const_iterator iterEnd = _bufferViewConfigs.constEnd();
     while (iter != iterEnd) {
         bufferViewIds << (*iter)->bufferViewId();
-        iter++;
+        ++iter;
     }
     return bufferViewIds;
 }
@@ -100,6 +100,6 @@ void BufferViewManager::initSetBufferViewIds(const QVariantList bufferViewIds)
     QVariantList::const_iterator iterEnd = bufferViewIds.constEnd();
     while (iter != iterEnd) {
         newBufferViewConfig((*iter).value<int>());
-        iter++;
+        ++iter;
     }
 }
