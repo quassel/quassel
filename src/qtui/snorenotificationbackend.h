@@ -27,8 +27,8 @@
 
 #include "ui_snorentificationconfigwidget.h"
 
-#include <snore/core/snore.h>
-#include <snore/core/notification/notification.h>
+#include <libsnore/snore.h>
+#include <libsnore/notification/notification.h>
 
 class SystrayNotificationBackend;
 
@@ -41,53 +41,44 @@ public:
     void notify(const Notification &);
     void close(uint notificationId);
 
-    virtual SettingsPage *createConfigWidget()const;
+    virtual SettingsPage *createConfigWidget() const;
 
 signals:
     void activated(uint notificationId = 0);
 
 public slots:
     void actionInvoked(Snore::Notification);
+
 private slots:
-    void backendChanged(const QVariant &);
-    void timeoutChanged(const QVariant &);
+    void setTraybackend(const QVariant &b);
 
 private:
-    void setTraybackend();
-    bool setSnoreBackend(const QString &backend);
 
     class ConfigWidget;
-    SystrayNotificationBackend * m_systrayBackend;
-    Snore::SnoreCore *m_snore;
+#ifndef HAVE_KDE
+    SystrayNotificationBackend * m_systrayBackend = nullptr;
+#endif
     QHash<uint, uint> m_notificationIds;
     Snore::Icon m_icon;
     Snore::Application m_application;
     Snore::Alert m_alert;
-    int m_timeout;
 };
 
 class SnoreNotificationBackend::ConfigWidget : public SettingsPage {
     Q_OBJECT
 
 public:
-    ConfigWidget(Snore::SnoreCore *snore, QWidget *parent = 0);
-    void save();
-    void load();
+    ConfigWidget(QWidget *parent = 0);
+
     bool hasDefaults() const;
     void defaults();
-
+    void load();
+    void save();
 private slots:
-    void backendChanged(const QString&);
-    void timeoutChanged(int);
+    void useSnnoreChanged(bool);
 
 private:
     Ui::SnoreNotificationConfigWidget ui;
-    Snore::SnoreCore *m_snore;
-
-    //  QSpinBox *timeoutBox;
-
-    //  bool enabled;
-    //  int timeout;
 };
 
 #endif
