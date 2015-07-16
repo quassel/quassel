@@ -28,78 +28,37 @@
      <property name="title">
       <string>Snore</string>
      </property>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>25</y>
-        <width>46</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Backend:</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="backends">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>20</y>
-        <width>331</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>65</y>
-        <width>46</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Timeout:</string>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="timeout">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>60</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="specialValueText">
-       <string/>
-      </property>
-      <property name="suffix">
-       <string> s</string>
-      </property>
-      <property name="minimum">
-       <number>0</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>65</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>0 means infinite</string>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="Snore::SettingsDialog" name="widget" native="true"/>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="useSnoreLabel">
+          <property name="text">
+           <string>Enable Snore</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="useSnoreCheckBox"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Snore::SettingsDialog</class>
+   <extends>QWidget</extends>
+   <header location="global">libsnore/settingsdialog.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
