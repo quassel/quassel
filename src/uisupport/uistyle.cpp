@@ -21,6 +21,7 @@
 #include <QApplication>
 #include <QIcon>
 
+#include "client.h"
 #include "buffersettings.h"
 #include "qssparser.h"
 #include "quassel.h"
@@ -796,6 +797,24 @@ QString UiStyle::StyledMessage::decoratedTimestamp() const
     return timestamp().toLocalTime().toString(UiStyle::timestampFormatString());
 }
 
+static QString getNickFlag(const QChar mode) {
+    switch(mode.toLatin1()) {
+    case 'y':  // IRCOper
+        return "!";
+    case 'q':  // Founder
+        return "~";
+    case 'a':  // Protected
+        return "&";
+    case 'o':  // Operator
+        return "@";
+    case 'h':  // Halfop
+        return "%";
+    case 'v':  // Voice
+        return "+";
+    default:
+        return "";
+    }
+}
 
 QString UiStyle::StyledMessage::plainSender() const
 {
@@ -811,11 +830,25 @@ QString UiStyle::StyledMessage::plainSender() const
 
 QString UiStyle::StyledMessage::decoratedSender() const
 {
+    // If the user has some special mode, let's add their "flair".
+    QString sender = plainSender();
+    if (sender.length() && (bufferInfo().type() & BufferInfo::ChannelBuffer)) {
+        const Network *net = Client::network(bufferInfo().networkId());
+        if (net) {
+            IrcChannel *channel = net->ircChannel(bufferInfo().bufferName());
+            if (channel) {
+                QString modes = channel->userModes(sender);
+                if (modes.length() > 0) {
+                    sender.prepend(getNickFlag(modes.at(0)));
+                }
+            }
+        }
+    }
     switch (type()) {
     case Message::Plain:
-        return QString("<%1>").arg(plainSender()); break;
+        return QString("<%1>").arg(sender); break;
     case Message::Notice:
-        return QString("[%1]").arg(plainSender()); break;
+        return QString("[%1]").arg(sender); break;
     case Message::Action:
         return "-*-"; break;
     case Message::Nick:
@@ -849,7 +882,7 @@ QString UiStyle::StyledMessage::decoratedSender() const
     case Message::Invite:
         return "->"; break;
     default:
-        return QString("%1").arg(plainSender());
+        return QString("%1").arg(sender);
     }
 }
 
