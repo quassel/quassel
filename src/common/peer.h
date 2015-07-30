@@ -22,6 +22,7 @@
 #define PEER_H
 
 #include <QAbstractSocket>
+#include <QDataStream>
 #include <QPointer>
 
 #include "authhandler.h"
