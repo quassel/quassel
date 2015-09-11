@@ -407,9 +407,6 @@ void MainWin::setupActions()
 #ifndef Q_OS_MAC
     coll->addAction("ToggleMenuBar", new Action(QIcon::fromTheme("show-menu"), tr("Show &Menubar"), coll,
             0, 0, QKeySequence(Qt::CTRL + Qt::Key_M)))->setCheckable(true);
-#else
-    coll->addAction("ToggleMenuBar", new Action(tr("Show &Menubar"), coll,
-            0, 0, QKeySequence(Qt::CTRL + Qt::Key_M)))->setCheckable(true);
 #endif
                  
     coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
