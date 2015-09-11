@@ -357,6 +357,7 @@ void MainWin::setupActions()
 {
     ActionCollection *coll = QtUi::actionCollection("General", tr("General"));
     // File
+#ifndef Q_OS_MAC
     coll->addAction("ConnectCore", new Action(QIcon::fromTheme("network-connect"), tr("&Connect to Core..."), coll,
             this, SLOT(showCoreConnectionDlg())));
     coll->addAction("DisconnectCore", new Action(QIcon::fromTheme("network-disconnect"), tr("&Disconnect from Core"), coll,
@@ -367,10 +368,23 @@ void MainWin::setupActions()
             this, SLOT(showCoreInfoDlg())));
     coll->addAction("ConfigureNetworks", new Action(QIcon::fromTheme("configure"), tr("Configure &Networks..."), coll,
             this, SLOT(on_actionConfigureNetworks_triggered())));
-    // FIXME: use QKeySequence::Quit once we depend on Qt 4.6
     coll->addAction("Quit", new Action(QIcon::fromTheme("application-exit"), tr("&Quit"), coll,
-            this, SLOT(quit()), Qt::CTRL + Qt::Key_Q));
-
+            this, SLOT(quit()), QKeySequence::Quit));
+#else
+    coll->addAction("ConnectCore", new Action(tr("&Connect to Core..."), coll,
+            this, SLOT(showCoreConnectionDlg())));
+    coll->addAction("DisconnectCore", new Action(tr("&Disconnect from Core"), coll,
+            Client::instance(), SLOT(disconnectFromCore())));
+    coll->addAction("ChangePassword", new Action(tr("Change &Password..."), coll,
+            this, SLOT(showPasswordChangeDlg())));
+    coll->addAction("CoreInfo", new Action(tr("Core &Info..."), coll,
+            this, SLOT(showCoreInfoDlg())));
+    coll->addAction("ConfigureNetworks", new Action(tr("Configure &Networks..."), coll,
+            this, SLOT(on_actionConfigureNetworks_triggered())));
+    coll->addAction("Quit", new Action(tr("&Quit"), coll,
+            this, SLOT(quit()), QKeySequence::Quit));
+#endif
+            
     // View
     coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll,
             this, SLOT(on_actionConfigureViews_triggered())));
@@ -379,33 +393,50 @@ void MainWin::setupActions()
     lockAct->setCheckable(true);
     connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockLayout_toggled(bool)));
 
+#ifndef Q_OS_MAC
     coll->addAction("ToggleSearchBar", new Action(QIcon::fromTheme("edit-find"), tr("Show &Search Bar"), coll,
             0, 0, QKeySequence::Find))->setCheckable(true);
+#else
+    coll->addAction("ToggleSearchBar", new Action(tr("Show &Search Bar"), coll,
+            0, 0, QKeySequence::Find))->setCheckable(true);
+#endif
+            
     coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
             this, SLOT(showAwayLog())));
+
+#ifndef Q_OS_MAC
     coll->addAction("ToggleMenuBar", new Action(QIcon::fromTheme("show-menu"), tr("Show &Menubar"), coll,
             0, 0, QKeySequence(Qt::CTRL + Qt::Key_M)))->setCheckable(true);
-
+#else
+    coll->addAction("ToggleMenuBar", new Action(tr("Show &Menubar"), coll,
+            0, 0, QKeySequence(Qt::CTRL + Qt::Key_M)))->setCheckable(true);
+#endif
+                 
     coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
             0, 0))->setCheckable(true);
 
 #ifdef HAVE_KDE
     _fullScreenAction = KStandardAction::fullScreen(this, SLOT(onFullScreenToggled()), this, coll);
 #else
-    _fullScreenAction = new Action(QIcon::fromTheme("view-fullscreen"), tr("&Full Screen Mode"), coll,
+    _fullScreenAction = new Action(tr("&Full Screen Mode"), coll,
         this, SLOT(onFullScreenToggled()), QKeySequence(Qt::Key_F11));
     _fullScreenAction->setCheckable(true);
     coll->addAction("ToggleFullScreen", _fullScreenAction);
 #endif
 
     // Settings
+#ifndef Q_OS_MAC
     QAction *configureShortcutsAct = new Action(QIcon::fromTheme("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
         this, SLOT(showShortcutsDlg()));
+#else
+    QAction *configureShortcutsAct = new Action(tr("Configure &Shortcuts..."), coll,
+        this, SLOT(showShortcutsDlg()));
+#endif
     configureShortcutsAct->setMenuRole(QAction::NoRole);
     coll->addAction("ConfigureShortcuts", configureShortcutsAct);
-
+    
 #ifdef Q_OS_MAC
-    QAction *configureQuasselAct = new Action(QIcon::fromTheme("configure"), tr("&Configure Quassel..."), coll,
+    QAction *configureQuasselAct = new Action(tr("&Configure Quassel..."), coll,
         this, SLOT(showSettingsDlg()));
     configureQuasselAct->setMenuRole(QAction::PreferencesRole);
 #else
@@ -415,15 +446,28 @@ void MainWin::setupActions()
     coll->addAction("ConfigureQuassel", configureQuasselAct);
 
     // Help
+#ifndef Q_OS_MAC
     QAction *aboutQuasselAct = new Action(QIcon(":/icons/quassel.png"), tr("&About Quassel"), coll,
         this, SLOT(showAboutDlg()));
+#else
+    QAction *aboutQuasselAct = new Action(tr("&About Quassel"), coll,
+        this, SLOT(showAboutDlg()));
+#endif
     aboutQuasselAct->setMenuRole(QAction::AboutRole);
     coll->addAction("AboutQuassel", aboutQuasselAct);
 
+#ifndef Q_OS_MAC
     QAction *aboutQtAct = new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll,
         qApp, SLOT(aboutQt()));
+#else
+    QAction *aboutQtAct = new Action(tr("About &Qt"), coll,
+        qApp, SLOT(aboutQt()));
+#endif
     aboutQtAct->setMenuRole(QAction::AboutQtRole);
     coll->addAction("AboutQt", aboutQtAct);
+
+    
+#ifndef Q_OS_MAC
     coll->addAction("DebugNetworkModel", new Action(QIcon::fromTheme("tools-report-bug"), tr("Debug &NetworkModel"), coll,
             this, SLOT(on_actionDebugNetworkModel_triggered())));
     coll->addAction("DebugBufferViewOverlay", new Action(QIcon::fromTheme("tools-report-bug"), tr("Debug &BufferViewOverlay"), coll,
@@ -436,7 +480,21 @@ void MainWin::setupActions()
             this, SLOT(on_actionDebugLog_triggered())));
     coll->addAction("ReloadStyle", new Action(QIcon::fromTheme("view-refresh"), tr("Reload Stylesheet"), coll,
             QtUi::style(), SLOT(reload()), QKeySequence::Refresh));
-
+#else
+    coll->addAction("DebugNetworkModel", new Action(tr("Debug &NetworkModel"), coll,
+            this, SLOT(on_actionDebugNetworkModel_triggered())));
+    coll->addAction("DebugBufferViewOverlay", new Action(tr("Debug &BufferViewOverlay"), coll,
+            this, SLOT(on_actionDebugBufferViewOverlay_triggered())));
+    coll->addAction("DebugMessageModel", new Action(tr("Debug &MessageModel"), coll,
+            this, SLOT(on_actionDebugMessageModel_triggered())));
+    coll->addAction("DebugHotList", new Action(tr("Debug &HotList"), coll,
+            this, SLOT(on_actionDebugHotList_triggered())));
+    coll->addAction("DebugLog", new Action(tr("Debug &Log"), coll,
+            this, SLOT(on_actionDebugLog_triggered())));
+    coll->addAction("ReloadStyle", new Action(tr("Reload Stylesheet"), coll,
+            QtUi::style(), SLOT(reload()), QKeySequence::Refresh));
+#endif
+                                
     coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll,
             this, SLOT(hideCurrentBuffer()), QKeySequence::Close));
 
@@ -568,7 +626,11 @@ void MainWin::setupMenus()
     _helpMenu->addAction(KStandardAction::aboutKDE(_kHelpMenu, SLOT(aboutKDE()), this));
 #endif
     _helpMenu->addSeparator();
+#ifndef Q_OS_MAC
     _helpDebugMenu = _helpMenu->addMenu(QIcon::fromTheme("tools-report-bug"), tr("Debug"));
+#else
+    _helpDebugMenu = _helpMenu->addMenu(tr("Debug"));
+#endif    
     _helpDebugMenu->addAction(coll->action("DebugNetworkModel"));
     _helpDebugMenu->addAction(coll->action("DebugBufferViewOverlay"));
     _helpDebugMenu->addAction(coll->action("DebugMessageModel"));
