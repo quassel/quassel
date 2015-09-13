@@ -593,7 +593,9 @@ void MainWin::setupMenus()
     _toolbarMenu = _viewMenu->addMenu(tr("&Toolbars"));
     _viewMenu->addSeparator();
 
+#ifndef Q_OS_MAC
     _viewMenu->addAction(coll->action("ToggleMenuBar"));
+#endif
     _viewMenu->addAction(coll->action("ToggleStatusBar"));
     _viewMenu->addAction(coll->action("ToggleSearchBar"));
 
@@ -636,6 +638,7 @@ void MainWin::setupMenus()
     _helpDebugMenu->addSeparator();
     _helpDebugMenu->addAction(coll->action("ReloadStyle"));
 
+#ifndef Q_OS_MAC
     // Toggle visibility
     QAction *showMenuBar = QtUi::actionCollection("General")->action("ToggleMenuBar");
 
@@ -646,6 +649,7 @@ void MainWin::setupMenus()
 
     connect(showMenuBar, SIGNAL(toggled(bool)), menuBar(), SLOT(setVisible(bool)));
     connect(showMenuBar, SIGNAL(toggled(bool)), this, SLOT(saveMenuBarStatus(bool)));
+#endif
 }
 
 
