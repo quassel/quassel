@@ -56,12 +56,6 @@ InputWidget::InputWidget(QWidget *parent)
     ui.ownNick->installEventFilter(new MouseWheelFilter(this));
     ui.inputEdit->installEventFilter(this);
 
-#ifdef Q_OS_MAC //On OSX the font size needs to be at least 14 for Multi-Line Edit to work
-    QFont font = ui.inputEdit->font();
-    font.setPointSize(14);
-    ui.inputEdit->setFont(font);
-#endif
-
     ui.inputEdit->setMinHeight(1);
     ui.inputEdit->setMaxHeight(5);
     ui.inputEdit->setMode(MultiLineEdit::MultiLine);
