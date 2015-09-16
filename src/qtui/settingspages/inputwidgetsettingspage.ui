@@ -153,6 +153,23 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QLabel" name="hintOSX">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="text">
+         <string>Custom font size must not be smaller than 14pt for this to work.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label">
@@ -281,10 +298,10 @@
            <bool>false</bool>
           </property>
           <property name="settingsKey" stdset="0">
-            <string notr="true">/TabCompletion/AddSpaceMidSentence</string>
+           <string notr="true">/TabCompletion/AddSpaceMidSentence</string>
           </property>
           <property name="defaultValue" stdset="0">
-            <bool>false</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>

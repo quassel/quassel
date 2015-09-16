@@ -29,5 +29,9 @@ InputWidgetSettingsPage::InputWidgetSettingsPage(QWidget *parent)
     ui.enableSpellCheck->hide();
 #endif
 
+#ifndef Q_OS_MAC
+    ui.hintOSX->hide();
+#endif
+
     initAutoWidgets();
 }
