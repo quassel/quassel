@@ -38,7 +38,7 @@
 
 SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     : AbstractNotificationBackend(parent),
-      m_icon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")).pixmap(48).toImage())
+      m_icon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")))
 {
 
     Snore::SnoreCore::instance().loadPlugins(
