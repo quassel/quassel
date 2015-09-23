@@ -118,7 +118,12 @@ public slots:
 
     void setUserModes(const QString &modes);
 
-    void joinChannel(IrcChannel *channel);
+    /*!
+     * \brief joinChannel Called when user joins some channel, this function inserts the channel to internal list of channels this user is in.
+     * \param channel Pointer to a channel this user just joined
+     * \param skip_channel_join If this is false, this function will also call IrcChannel::joinIrcUser, can be set to true as a performance tweak.
+     */
+    void joinChannel(IrcChannel *channel, bool skip_channel_join = false);
     void joinChannel(const QString &channelname);
     void partChannel(IrcChannel *channel);
     void partChannel(const QString &channelname);
