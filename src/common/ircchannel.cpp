@@ -183,7 +183,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
         }
 
         _userModes[ircuser] = modes[i];
-        ircuser->joinChannel(this);
+        ircuser->joinChannel(this, true);
         connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
 
         // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
