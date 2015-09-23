@@ -275,12 +275,13 @@ void IrcUser::updateHostmask(const QString &mask)
 }
 
 
-void IrcUser::joinChannel(IrcChannel *channel)
+void IrcUser::joinChannel(IrcChannel *channel, bool skip_channel_join)
 {
     Q_ASSERT(channel);
     if (!_channels.contains(channel)) {
         _channels.insert(channel);
-        channel->joinIrcUser(this);
+        if (!skip_channel_join)
+            channel->joinIrcUser(this);
     }
 }
 
