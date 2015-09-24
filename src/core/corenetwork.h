@@ -84,6 +84,9 @@ public:
 
     inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
 
+    inline QByteArray readChannelCipherKey(const QString &channel) const { return _cipherKeys.value(channel.toLower()); }
+    inline void storeChannelCipherKey(const QString &channel, const QByteArray &key) { _cipherKeys[channel.toLower()] = key; }
+
     inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoPending.value(channel.toLower(), 0); }
 
     inline UserId userId() const { return _coreSession->user(); }
@@ -245,6 +248,9 @@ private:
     QList<QByteArray> _msgQueue;
 
     QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
+
+    // List of blowfish keys for channels
+    QHash<QString, QByteArray> _cipherKeys;
 };
 
 
