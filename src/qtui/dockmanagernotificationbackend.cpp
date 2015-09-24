@@ -46,11 +46,11 @@ DockManagerNotificationBackend::DockManagerNotificationBackend(QObject *parent)
         if (_dock->isValid()) {
             _bus.connect("org.freedesktop.DockManager", "/org/freedesktop/DockManager", "org.freedesktop.DockManager", "ItemAdded", this, SLOT(itemAdded(QDBusObjectPath)));
         } else {
-            qDebug() << "No DockManager available";
-            _enabled = false;
+            _available = _enabled = false;
             return;
         }
     }
+    _available = true;
 
     itemAdded(QDBusObjectPath());
 
@@ -171,18 +171,18 @@ void DockManagerNotificationBackend::enabledChanged(const QVariant &v)
 
 SettingsPage *DockManagerNotificationBackend::createConfigWidget() const
 {
-    return new ConfigWidget();
+    return new ConfigWidget(_available);
 }
 
 
 /***************************************************************************/
 
-DockManagerNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
+DockManagerNotificationBackend::ConfigWidget::ConfigWidget(bool enabled, QWidget *parent)
     : SettingsPage("Internal", "DockManagerNotification", parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(enabledBox = new QCheckBox(tr("Mark dockmanager entry"), this));
-    enabledBox->setEnabled(true);
+    enabledBox->setEnabled(enabled);
 
     connect(enabledBox, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
 }

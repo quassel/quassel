@@ -50,6 +50,7 @@ private slots:
 private:
     class ConfigWidget;
     bool _enabled;
+    bool _available;
     QDBusConnection _bus;
     QDBusInterface *_dock;
     QDBusInterface *_item;
@@ -62,7 +63,7 @@ class DockManagerNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(bool enabled, QWidget *parent = 0);
 
     void save();
     void load();
