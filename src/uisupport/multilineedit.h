@@ -35,9 +35,6 @@
 #  define MultiLineEditParent QTextEdit
 #endif
 
-class QKeyEvent;
-class TabCompleter;
-
 class MultiLineEdit : public MultiLineEditParent
 {
     Q_OBJECT
