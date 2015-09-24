@@ -41,6 +41,7 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
     _scrollBarsEnabled(true),
     _pasteProtectionEnabled(true),
     _emacsMode(false),
+    _completionSpace(0),
     _lastDocumentHeight(-1)
 {
     document()->setDocumentMargin(0);
@@ -667,8 +668,12 @@ void MultiLineEdit::on_returnPressed()
 }
 
 
-void MultiLineEdit::on_returnPressed(const QString &text)
+void MultiLineEdit::on_returnPressed(QString text)
 {
+    if (_completionSpace && text.endsWith(" ")) {
+        text.chop(1);
+    }
+
     if (!text.isEmpty()) {
         foreach(const QString &line, text.split('\n', QString::SkipEmptyParts)) {
             if (line.isEmpty())
@@ -687,6 +692,8 @@ void MultiLineEdit::on_returnPressed(const QString &text)
 
 void MultiLineEdit::on_textChanged()
 {
+    _completionSpace = qMax(_completionSpace - 1, 0);
+
     QString newText = text();
     newText.replace("\r\n", "\n");
     newText.replace('\r', '\n');
@@ -769,3 +776,12 @@ void MultiLineEdit::showHistoryEntry()
     setTextCursor(cursor);
     updateScrollBars();
 }
+
+
+void MultiLineEdit::addCompletionSpace()
+{
+    // Inserting the space emits textChanged, which should not disable removal
+    _completionSpace = 2;
+    insertPlainText(" ");
+}
+

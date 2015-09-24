@@ -76,6 +76,8 @@ public:
     inline qint32 idx() const { return _idx; }
     inline bool emacsMode() const { return _emacsMode; }
 
+    void addCompletionSpace();
+
 public slots:
     void setMode(Mode mode);
     void setMinHeight(int numLines);
@@ -101,7 +103,7 @@ protected:
 
 private slots:
     void on_returnPressed();
-    void on_returnPressed(const QString &text);
+    void on_returnPressed(QString text);
     void on_textChanged();
     void on_documentHeightChanged(qreal height);
 
@@ -124,6 +126,7 @@ private:
     bool _scrollBarsEnabled;
     bool _pasteProtectionEnabled;
     bool _emacsMode;
+    int _completionSpace;
 
     QSize _sizeHint;
     qreal _lastDocumentHeight;
