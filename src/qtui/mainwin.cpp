@@ -104,14 +104,16 @@
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
 #  endif
-#  ifdef HAVE_LIBSNORE
-#    include "snorenotificationbackend.h"
-#  endif
 #  include "systraynotificationbackend.h"
 #  include "taskbarnotificationbackend.h"
 #else /* HAVE_KDE */
 #  include "knotificationbackend.h"
 #endif /* HAVE_KDE */
+
+
+#ifdef HAVE_LIBSNORE
+#  include "snorenotificationbackend.h"
+#endif
 
 #ifdef HAVE_SSL
 #  include "sslinfodlg.h"
@@ -224,17 +226,17 @@ void MainWin::init()
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
-#  ifdef HAVE_LIBSNORE
-    QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
-#  elif !defined(QT_NO_SYSTEMTRAYICON)
-    QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
-#  endif
-
     QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
-
 #else /* HAVE_KDE */
     QtUi::registerNotificationBackend(new KNotificationBackend(this));
 #endif /* HAVE_KDE */
+
+
+#ifdef HAVE_LIBSNORE
+    QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
+#elif !defined(QT_NO_SYSTEMTRAYICON) && !defined(HAVE_KDE)
+    QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
+#endif
 
 #ifdef HAVE_INDICATEQT
     QtUi::registerNotificationBackend(new IndicatorNotificationBackend(this));

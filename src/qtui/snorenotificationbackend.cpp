@@ -22,6 +22,7 @@
 
 #include <QtGui>
 #include <QtGlobal>
+#include <QMetaObject>
 
 #include "client.h"
 #include "networkmodel.h"
@@ -31,83 +32,66 @@
 #include <iostream>
 
 
-#include <snore/core/snore.h>
-#include <snore/core/notification/notification.h>
+#include <libsnore/snore.h>
+#include <libsnore/notification/notification.h>
 
 
 SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     : AbstractNotificationBackend(parent),
-      m_systrayBackend(NULL)
+      m_icon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")))
 {
-    NotificationSettings notificationSettings;
-    QString backend = notificationSettings.value("Snore/Backend", "Default").toString();
-    m_timeout = notificationSettings.value("Snore/Timeout", 10).toInt();
 
-    notificationSettings.notify("Snore/Backend", this, SLOT(backendChanged(const QVariant &)));
-    notificationSettings.notify("Snore/Timeout", this, SLOT(timeoutChanged(const QVariant &)));
-
-    //TODO: try to get an instance of the tray icon to be able to show popups
-    m_snore = new Snore::SnoreCore();
-    m_snore->loadPlugins(Snore::SnorePlugin::BACKEND);
-    m_icon = Snore::Icon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")).pixmap(48).toImage());
+    Snore::SnoreCore::instance().loadPlugins(
+#ifndef HAVE_KDE
+                Snore::SnorePlugin::BACKEND |
+#endif
+                Snore::SnorePlugin::SECONDARY_BACKEND);
     m_application = Snore::Application("Quassel", m_icon);
-    m_application.hints().setValue("WINDOWS_APP_ID","QuasselProject.QuasselIRC");
+    m_application.hints().setValue("windows-app-id","QuasselProject.QuasselIRC");
+    m_application.hints().setValue("pushover-token", "arNtsi983QSZUqU3KAZrFLKHGFPkdL");
 
-    connect(m_snore, SIGNAL(actionInvoked(Snore::Notification)), this, SLOT(actionInvoked(Snore::Notification)));
+    connect(&Snore::SnoreCore::instance(), SIGNAL(actionInvoked(Snore::Notification)), this, SLOT(actionInvoked(Snore::Notification)));
 
 
     m_alert = Snore::Alert(tr("Private Message"), m_icon);
     m_application.addAlert(m_alert);
+    Snore::SnoreCore::instance().setDefaultApplication(m_application);
 
-    m_snore->registerApplication(m_application);
-
-    backendChanged(QVariant::fromValue(backend));
-
-
+    NotificationSettings notificationSettings;
+    bool enabled = notificationSettings.value("Snore/Enabled", false).toBool();
+    setTraybackend(enabled);
+    notificationSettings.notify("Snore/Enabled", this, SLOT(setTraybackend(const QVariant &)));
 }
 
 SnoreNotificationBackend::~SnoreNotificationBackend()
 {
-    m_snore->deregisterApplication(m_application);
-    m_snore->deleteLater();
-}
-
-void SnoreNotificationBackend::backendChanged(const QVariant &v)
-{
-    QString backend = v.toString();
-    if (backend != "Default") {
-        if (setSnoreBackend(backend)) {
-            return;
-        }
-    }
-    setTraybackend();
-}
-
-void SnoreNotificationBackend::timeoutChanged(const QVariant &v)
-{
-    m_timeout = v.toInt();
+    Snore::SnoreCore::instance().deregisterApplication(m_application);
 }
 
 void SnoreNotificationBackend::notify(const Notification &n)
 {
-    if (m_systrayBackend != NULL) {
+#ifndef HAVE_KDE
+    if (m_systrayBackend != nullptr) {
         return;
     }
-    QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
+#endif
+    QString title =  QString("%1 - %2").arg(Client::networkModel()->networkName(n.bufferId), Client::networkModel()->bufferName(n.bufferId));
     QString message = QString("<%1> %2").arg(n.sender, n.message);
-    Snore::Notification noti(m_application, m_alert, title, message, m_icon, m_timeout);
+    Snore::Notification noti(m_application, m_alert, title, message, m_icon);
     noti.hints().setValue("QUASSEL_ID", n.notificationId);
     m_notificationIds.insert(n.notificationId, noti.id());
-    m_snore->broadcastNotification(noti);
+    Snore::SnoreCore::instance().broadcastNotification(noti);
 }
 
 void SnoreNotificationBackend::close(uint notificationId)
 {
-    if (m_systrayBackend != NULL) {
+#ifndef HAVE_KDE
+    if (m_systrayBackend != nullptr) {
         return;
     }
-    Snore::Notification n = m_snore->getActiveNotificationByID(m_notificationIds.take(notificationId));
-    m_snore->requestCloseNotification(n, Snore::Notification::CLOSED);
+#endif
+    Snore::Notification n = Snore::SnoreCore::instance().getActiveNotificationByID(m_notificationIds.take(notificationId));
+    Snore::SnoreCore::instance().requestCloseNotification(n, Snore::Notification::CLOSED);
 }
 
 void SnoreNotificationBackend::actionInvoked(Snore::Notification n)
@@ -117,57 +101,40 @@ void SnoreNotificationBackend::actionInvoked(Snore::Notification n)
 
 SettingsPage *SnoreNotificationBackend::createConfigWidget()const
 {
-    return new ConfigWidget(m_snore);
+    return new ConfigWidget();
 }
 
-void SnoreNotificationBackend::setTraybackend()
+
+void SnoreNotificationBackend::setTraybackend(const QVariant &b)
 {
-    if (m_systrayBackend == NULL) {
-        m_systrayBackend = new SystrayNotificationBackend(this);
-        QtUi::registerNotificationBackend(m_systrayBackend);
+#ifndef HAVE_KDE
+    if (!b.toBool()) {
+        if (m_systrayBackend == nullptr) {
+            m_systrayBackend = new SystrayNotificationBackend(this);
+            QtUi::registerNotificationBackend(m_systrayBackend);
+        }
+    } else {
+        if (m_systrayBackend != nullptr) {
+            QtUi::unregisterNotificationBackend(m_systrayBackend);
+            m_systrayBackend->deleteLater();
+            m_systrayBackend = nullptr;
+        }
+    }
+#endif
+    if (b.toBool()) {
+        Snore::SnoreCore::instance().registerApplication(m_application);
+    } else {
+        Snore::SnoreCore::instance().deregisterApplication(m_application);
     }
 }
-
-bool SnoreNotificationBackend::setSnoreBackend(const QString &backend)
-{
-    if (m_systrayBackend != NULL) {
-        QtUi::unregisterNotificationBackend(m_systrayBackend);
-        delete m_systrayBackend;
-        m_systrayBackend = NULL;
-    }
-    return m_snore->setPrimaryNotificationBackend(backend);
-}
-
-
-
 
 /***************************************************************************/
 
-SnoreNotificationBackend::ConfigWidget::ConfigWidget(Snore::SnoreCore *snore, QWidget *parent)
-    :SettingsPage("Internal", "SnoreNotification", parent),
-      m_snore(snore)
+SnoreNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
+    :SettingsPage("Internal", "SnoreNotification", parent)
 {
     ui.setupUi(this);
-    QStringList backends = m_snore->notificationBackends();
-    backends.append("Default");
-    qSort(backends);
-    ui.backends->insertItems(0, backends);
-
-    connect(ui.backends, SIGNAL(currentIndexChanged(QString)), SLOT(backendChanged(QString)));
-    connect(ui.timeout, SIGNAL(valueChanged(int)), this, SLOT(timeoutChanged(int)));
-}
-
-void SnoreNotificationBackend::ConfigWidget::backendChanged(const QString &b)
-{
-    ui.backends->setCurrentIndex(ui.backends->findText(b));
-    setChangedState(true);
-}
-
-void SnoreNotificationBackend::ConfigWidget::timeoutChanged(int i)
-{
-    ui.timeout->setValue(i);
-    setChangedState(true);
-
+    connect(ui.useSnoreCheckBox, SIGNAL(toggled(bool)), this, SLOT(useSnnoreChanged(bool)));
 }
 
 bool SnoreNotificationBackend::ConfigWidget::hasDefaults() const
@@ -177,24 +144,33 @@ bool SnoreNotificationBackend::ConfigWidget::hasDefaults() const
 
 void SnoreNotificationBackend::ConfigWidget::defaults()
 {
-    backendChanged("Default");
-    timeoutChanged(10);
+    useSnnoreChanged(false);
+    ui.widget->reset();
 }
 
 void SnoreNotificationBackend::ConfigWidget::load()
 {
     NotificationSettings s;
-    QString backend = s.value("Snore/Backend", "Default").toString();
-    int timeout = s.value("Snore/Timeout", 10).toInt();
-    ui.backends->setCurrentIndex(ui.backends->findText(backend));
-    ui.timeout->setValue(timeout);
+    bool enabled = s.value("Snore/Enabled", false).toBool();
+    ui.useSnoreCheckBox->setChecked(enabled);
+    ui.widget->setEnabled(enabled);
     setChangedState(false);
+    QMetaObject::invokeMethod(this, "changed", Qt::QueuedConnection);//hack to make apply and accept button work for snore settings widget
 }
 
 void SnoreNotificationBackend::ConfigWidget::save()
 {
     NotificationSettings s;
-    s.setValue("Snore/Backend", ui.backends->currentText());
-    s.setValue("Snore/Timeout", ui.timeout->value());
+    s.setValue("Snore/Enabled", ui.useSnoreCheckBox->isChecked());
+    ui.widget->accept();
     load();
 }
+
+void SnoreNotificationBackend::ConfigWidget::useSnnoreChanged(bool b)
+{
+    ui.useSnoreCheckBox->setChecked(b);
+    ui.widget->setEnabled(b);
+    setChangedState(true);
+}
+
+
