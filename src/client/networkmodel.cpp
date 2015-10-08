@@ -947,33 +947,54 @@ QVariant IrcUserItem::data(int column, int role) const
 QString IrcUserItem::toolTip(int column) const
 {
     Q_UNUSED(column);
-    QStringList toolTip(QString("<b>%1</b>").arg(nickName()));
-    if (_ircUser->userModes() != "") toolTip[0].append(QString(" (%1)").arg(_ircUser->userModes()));
-    if (_ircUser->isAway()) {
-        toolTip[0].append(tr(" is away"));
-        if (!_ircUser->awayMessage().isEmpty())
-            toolTip[0].append(QString(" (%1)").arg(_ircUser->awayMessage()));
-    }
-    if (!_ircUser->realName().isEmpty()) toolTip.append(_ircUser->realName());
-    if (!_ircUser->ircOperator().isEmpty()) toolTip.append(QString("%1 %2").arg(nickName()).arg(_ircUser->ircOperator()));
-    if (!_ircUser->suserHost().isEmpty()) toolTip.append(_ircUser->suserHost());
-    if (!_ircUser->whoisServiceReply().isEmpty()) toolTip.append(_ircUser->whoisServiceReply());
+    QString strTooltip;
+    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    tooltip << "<qt><style>.bold { font-weight: bold; }</style>";
 
-    toolTip.append(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1));
+    tooltip << "<p class='bold' align='center'>" << nickName();
+    if (_ircUser->userModes() != "") {
+        //TODO: Translate user Modes and add them to the table below
+        tooltip << " (" << _ircUser->userModes() << ")";
+    }
+    tooltip << "</p>";
+
+    auto addRow = [&](const QString& key, const QString& value, bool condition = true) {
+        if (condition)
+        {
+            tooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
+        }
+    };
+
+    tooltip << "<table cellspacing='5' cellpadding='0'>";
+    if (_ircUser->isAway()) {
+        QString awayMessage(tr("(unknown)"));
+        if(!_ircUser->awayMessage().isEmpty()) {
+            awayMessage = _ircUser->awayMessage();
+        }
+        addRow(tr("Away&nbsp;Message"), awayMessage);
+    }
+    addRow(tr("Realname"), _ircUser->realName(), !_ircUser->realName().isEmpty());
+    addRow(tr("Operator"), _ircUser->ircOperator(), !_ircUser->ircOperator().isEmpty());
+    addRow(tr("Suser&nbsp;Host"), _ircUser->suserHost(),!_ircUser->suserHost().isEmpty());
+    addRow(tr("Whois&nbsp;Service&nbsp;Reply"), _ircUser->whoisServiceReply(), !_ircUser->whoisServiceReply().isEmpty());
+    addRow(tr("Hostmask"), _ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1));
+    addRow(tr("Operator"), _ircUser->ircOperator(), !_ircUser->ircOperator().isEmpty());
 
     if (_ircUser->idleTime().isValid()) {
         QDateTime now = QDateTime::currentDateTime();
         QDateTime idle = _ircUser->idleTime();
         int idleTime = idle.secsTo(now);
-        toolTip.append(tr("idling since %1").arg(secondsToString(idleTime)));
+        addRow(tr("Idling&nbsp;since"), secondsToString(idleTime));
     }
+
     if (_ircUser->loginTime().isValid()) {
-        toolTip.append(tr("login time: %1").arg(_ircUser->loginTime().toString()));
+        addRow(tr("Login&nbsp;time"), _ircUser->loginTime().toString());
     }
 
-    if (!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
+    addRow(tr("Server"), _ircUser->server(), !_ircUser->server().isEmpty());
 
-    return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+    tooltip << "</table></qt>";
+    return strTooltip;
 }
 
 
