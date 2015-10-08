@@ -30,19 +30,6 @@
 	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>IRC Service URL</string>
-			<key>CFBundleURLIconFile</key>
-			<string>%(ICON_FILE)s</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>irc</string>
-			</array>
-		</dict>
-	</array>
 	<key>NSHumanReadableCopyright</key>
 	<string>© 2005-2012, Quassel IRC Team</string>
 </dict>
