@@ -76,7 +76,7 @@ public:
 
     virtual bool isInitialized() const;
 
-    virtual const QMetaObject *syncMetaObject() const { return metaObject(); };
+    virtual const QMetaObject *syncMetaObject() const { return metaObject(); }
 
     inline void setAllowClientUpdates(bool allow) { _allowClientUpdates = allow; }
     inline bool allowClientUpdates() const { return _allowClientUpdates; }

@@ -73,7 +73,7 @@ bool IrcChannel::isValidChannelUserMode(const QString &mode) const
 {
     bool isvalid = true;
     if (mode.size() > 1) {
-        qWarning() << "Channel" << name() << "received Channel User Mode which is longer then 1 Char:" << mode;
+        qWarning() << "Channel" << name() << "received Channel User Mode which is longer than 1 Char:" << mode;
         isvalid = false;
     }
     return isvalid;
@@ -187,8 +187,8 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
         connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
 
         // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
-        // if you wonder why there is no counterpart to ircUserJoined:
-        // the joines are propagted by the ircuser. the signal ircUserJoined is only for convenience
+        // If you wonder why there is no counterpart to ircUserJoined:
+        // the joins are propagated by the ircuser. The signal ircUserJoined is only for convenience
 
         newNicks << ircuser->nick();
         newModes << modes[i];
@@ -227,8 +227,8 @@ void IrcChannel::part(IrcUser *ircuser)
     if (isKnownUser(ircuser)) {
         _userModes.remove(ircuser);
         ircuser->partChannel(this);
-        // if you wonder why there is no counterpart to ircUserParted:
-        // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
+        // If you wonder why there is no counterpart to ircUserParted:
+        // the joins are propagted by the ircuser. The signal ircUserParted is only for convenience
         disconnect(ircuser, 0, this, 0);
         emit ircUserParted(ircuser);
 
@@ -468,7 +468,7 @@ void IrcChannel::ircUserNickSet(QString nick)
  * C --> set value or remove
  * D --> on/off
  *
- * B and C behave very similar... we store the data in different datastructes
+ * B and C behave very similar... we store the data in different datastructures
  * for future compatibility
  ******************************************************************************/
 
