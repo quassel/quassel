@@ -944,7 +944,7 @@ void PostgreSqlStorage::setChannelPersistent(UserId user, const NetworkId &netwo
     QSqlQuery query(logDb());
     query.prepare(queryString("update_buffer_persistent_channel"));
     query.bindValue(":userid", user.toInt());
-    query.bindValue(":networkId", networkId.toInt());
+    query.bindValue(":networkid", networkId.toInt());
     query.bindValue(":buffercname", channel.toLower());
     query.bindValue(":joined", isJoined);
     safeExec(query);
@@ -957,7 +957,7 @@ void PostgreSqlStorage::setPersistentChannelKey(UserId user, const NetworkId &ne
     QSqlQuery query(logDb());
     query.prepare(queryString("update_buffer_set_channel_key"));
     query.bindValue(":userid", user.toInt());
-    query.bindValue(":networkId", networkId.toInt());
+    query.bindValue(":networkid", networkId.toInt());
     query.bindValue(":buffercname", channel.toLower());
     query.bindValue(":key", key);
     safeExec(query);
