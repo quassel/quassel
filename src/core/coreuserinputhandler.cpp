@@ -228,7 +228,7 @@ void CoreUserInputHandler::doMode(const BufferInfo &bufferInfo, const QChar& add
     if (!isNumber || maxModes == 0) maxModes = 1;
 
     QStringList nickList;
-    if (nicks == "*") { // All users in channel
+    if (nicks == "*" && bufferInfo.type() == BufferInfo::ChannelBuffer) { // All users in channel
         const QList<IrcUser*> users = network()->ircChannel(bufferInfo.bufferName())->ircUsers();
         foreach(IrcUser *user, users) {
             if ((addOrRemove == '+' && !network()->ircChannel(bufferInfo.bufferName())->userModes(user).contains(mode))
