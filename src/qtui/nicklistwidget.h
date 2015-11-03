@@ -43,6 +43,7 @@ public:
 
 public slots:
     void showWidget(bool visible);
+    void setVisible(bool visible) override;
 
 signals:
     void nickSelectionChanged(const QModelIndexList &);

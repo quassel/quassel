@@ -30,8 +30,6 @@ class MainPage : public QWidget
 public:
     MainPage(QWidget *parent = 0);
 
-protected:
-    void paintEvent(QPaintEvent *event);
 };
 
 

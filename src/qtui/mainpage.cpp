@@ -18,28 +18,34 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QPushButton>
 #include <QImage>
+#include <QLabel>
+#include <QLayout>
 #include <QPainter>
 
 #include "mainpage.h"
+#include "coreconnectdlg.h"
+#include "client.h"
 
 MainPage::MainPage(QWidget *parent) : QWidget(parent)
 {
-}
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignCenter);
+    QLabel *label = new QLabel(this);
+    label->setPixmap(QPixmap(":/pics/quassel-logo.png"));
+    layout->addWidget(label);
 
-
-void MainPage::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-
-    QPainter painter(this);
-    QImage img(":/pics/quassel-logo.png"); // FIXME load externally
-
-    if (img.height() > height() || img.width() > width())
-        img = img.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-    int xmargin = (width() - img.width()) / 2;
-    int ymargin = (height() - img.height()) / 2;
-
-    painter.drawImage(xmargin, ymargin, img);
+    if (Quassel::runMode() != Quassel::Monolithic) {
+        QPushButton *connectButton = new QPushButton(QIcon::fromTheme("network-connect"), tr("Connect to Core..."));
+        connect(connectButton, &QPushButton::clicked, [this](){
+            CoreConnectDlg dlg(this);
+            if (dlg.exec() == QDialog::Accepted) {
+                AccountId accId = dlg.selectedAccount();
+                if (accId.isValid())
+                    Client::coreConnection()->connectToCore(accId);
+            }
+        });
+        layout->addWidget(connectButton);
+    }
 }
