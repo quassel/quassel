@@ -38,6 +38,15 @@ MainPage::MainPage(QWidget *parent) : QWidget(parent)
 
     if (Quassel::runMode() != Quassel::Monolithic) {
         QPushButton *connectButton = new QPushButton(QIcon::fromTheme("network-connect"), tr("Connect to Core..."));
+        connectButton->setEnabled(Client::coreConnection()->state() == CoreConnection::Disconnected);
+
+        connect(Client::coreConnection(), &CoreConnection::stateChanged, [connectButton](CoreConnection::ConnectionState state){
+             if (state == CoreConnection::Disconnected) {
+                 connectButton->setEnabled(true);
+             } else {
+                 connectButton->setDisabled(true);
+             }
+        });
         connect(connectButton, &QPushButton::clicked, [this](){
             CoreConnectDlg dlg(this);
             if (dlg.exec() == QDialog::Accepted) {
