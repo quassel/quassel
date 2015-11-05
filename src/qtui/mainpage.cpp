@@ -37,24 +37,30 @@ MainPage::MainPage(QWidget *parent) : QWidget(parent)
     layout->addWidget(label);
 
     if (Quassel::runMode() != Quassel::Monolithic) {
-        QPushButton *connectButton = new QPushButton(QIcon::fromTheme("network-connect"), tr("Connect to Core..."));
-        connectButton->setEnabled(Client::coreConnection()->state() == CoreConnection::Disconnected);
+        _connectButton = new QPushButton(QIcon::fromTheme("network-connect"), tr("Connect to Core..."));
+        _connectButton->setEnabled(Client::coreConnection()->state() == CoreConnection::Disconnected);
 
-        connect(Client::coreConnection(), &CoreConnection::stateChanged, [connectButton](CoreConnection::ConnectionState state){
-             if (state == CoreConnection::Disconnected) {
-                 connectButton->setEnabled(true);
-             } else {
-                 connectButton->setDisabled(true);
-             }
-        });
-        connect(connectButton, &QPushButton::clicked, [this](){
-            CoreConnectDlg dlg(this);
-            if (dlg.exec() == QDialog::Accepted) {
-                AccountId accId = dlg.selectedAccount();
-                if (accId.isValid())
-                    Client::coreConnection()->connectToCore(accId);
-            }
-        });
-        layout->addWidget(connectButton);
+        connect(Client::coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), this, SLOT(coreConnectionStateChanged()));
+        connect(_connectButton, SIGNAL(clicked(bool)), this, SLOT(showCoreConnectionDlg()));
+        layout->addWidget(_connectButton);
+    }
+}
+
+void MainPage::showCoreConnectionDlg()
+{
+    CoreConnectDlg dlg(this);
+    if (dlg.exec() == QDialog::Accepted) {
+        AccountId accId = dlg.selectedAccount();
+        if (accId.isValid())
+            Client::coreConnection()->connectToCore(accId);
+    }
+}
+
+void MainPage::coreConnectionStateChanged()
+{
+    if (Client::coreConnection()->state() == CoreConnection::Disconnected) {
+        _connectButton->setEnabled(true);
+    } else {
+        _connectButton->setDisabled(true);
     }
 }
