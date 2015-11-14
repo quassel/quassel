@@ -27,6 +27,7 @@
 
 #include "ui_coreconfigwizardintropage.h"
 #include "ui_coreconfigwizardadminuserpage.h"
+#include "ui_coreconfigwizardauthenticationselectionpage.h"
 #include "ui_coreconfigwizardstorageselectionpage.h"
 #include "ui_coreconfigwizardsyncpage.h"
 
@@ -45,6 +46,7 @@ public:
     enum {
         IntroPage,
         AdminUserPage,
+        AuthenticationSelectionPage,
         StorageSelectionPage,
         SyncPage,
         SyncRelayPage,
@@ -52,8 +54,9 @@ public:
         ConclusionPage
     };
 
-    CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent = 0);
+    CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, const QList<QVariant> &authenticators, QWidget *parent = 0);
     QHash<QString, QVariant> backends() const;
+    QHash<QString, QVariant> authenticators() const;
 
     inline CoreConnection *coreConnection() const { return _connection; }
 
@@ -66,13 +69,15 @@ public slots:
     void syncFinished();
 
 private slots:
-    void prepareCoreSetup(const QString &backend, const QVariantMap &connectionProperties);
+    void prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authBackend, const QVariantMap &authProperties);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &);
     void startOver();
 
 private:
     QHash<QString, QVariant> _backends;
+    QHash<QString, QVariant> _authenticators;
+
     CoreConfigWizardPages::SyncPage *syncPage;
     CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
 
@@ -105,6 +110,24 @@ private:
     Ui::CoreConfigWizardAdminUserPage ui;
 };
 
+// Authentication selection before storage selection.
+class AuthenticationSelectionPage : public QWizardPage
+{
+    Q_OBJECT
+
+public:
+    AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
+    int nextId() const;
+    QString selectedBackend() const;
+    QVariantMap connectionProperties() const;
+    
+private slots:
+    void on_backendList_currentIndexChanged();
+private:
+    Ui::CoreConfigWizardAuthenticationSelectionPage ui;
+    QGroupBox *_connectionBox;
+    QHash<QString, QVariant> _backends;
+};
 
 class StorageSelectionPage : public QWizardPage
 {
@@ -124,7 +147,6 @@ private:
     QHash<QString, QVariant> _backends;
 };
 
-
 class SyncPage : public QWizardPage
 {
     Q_OBJECT
@@ -141,7 +163,7 @@ public slots:
     void setComplete(bool);
 
 signals:
-    void setupCore(const QString &backend, const QVariantMap &);
+    void setupCore(const QString &backend, const QVariantMap &, const QString &authenticator, const QVariantMap &);
 
 private:
     Ui::CoreConfigWizardSyncPage ui;

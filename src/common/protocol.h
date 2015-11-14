@@ -81,17 +81,21 @@ struct ClientDenied : public HandshakeMessage
 
 struct ClientRegistered : public HandshakeMessage
 {
-    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, bool sslSupported)
+    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, const QVariantList &authBackendInfo, bool sslSupported)
     : coreFeatures(coreFeatures)
     , coreConfigured(coreConfigured)
     , backendInfo(backendInfo)
+    , authBackendInfo(authBackendInfo)
     , sslSupported(sslSupported)
     {}
 
     quint32 coreFeatures;
     bool coreConfigured;
+    
+    // The authBackendInfo should be optional!
     QVariantList backendInfo; // TODO: abstract this better
-
+    QVariantList authBackendInfo;
+    
     // this is only used by the LegacyProtocol in compat mode
     bool sslSupported;
 };
@@ -99,13 +103,15 @@ struct ClientRegistered : public HandshakeMessage
 
 struct SetupData : public HandshakeMessage
 {
-    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData)
-    : adminUser(adminUser), adminPassword(adminPassword), backend(backend), setupData(setupData) {}
+    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend, const QString &authenticator, const QVariantMap &setupData, const QVariantMap &authSetupData)
+    : adminUser(adminUser), adminPassword(adminPassword), backend(backend), authenticator(authenticator), setupData(setupData), authSetupData(authSetupData) {}
 
     QString adminUser;
     QString adminPassword;
     QString backend;
+	QString authenticator;
     QVariantMap setupData;
+	QVariantMap authSetupData;
 };
 
 

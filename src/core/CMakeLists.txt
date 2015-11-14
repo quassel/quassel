@@ -2,6 +2,7 @@
 
 set(SOURCES
     abstractsqlstorage.cpp
+	authenticator.cpp
     core.cpp
     corealiasmanager.cpp
     coreapplication.cpp
@@ -34,6 +35,7 @@ set(SOURCES
     oidentdconfiggenerator.cpp
     postgresqlstorage.cpp
     sessionthread.cpp
+    sqlauthenticator.cpp
     sqlitestorage.cpp
     storage.cpp
 

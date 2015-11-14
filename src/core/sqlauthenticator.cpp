@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2015 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,55 +18,59 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coresettings.h"
+#include "sqlauthenticator.h"
 
+#include "logger.h"
+#include "network.h"
 #include "quassel.h"
 
-CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName)
+#include "core.h"
+
+SqlAuthenticator::SqlAuthenticator(QObject *parent)
+    : Authenticator(parent)
 {
 }
 
 
-CoreSettings::~CoreSettings()
+SqlAuthenticator::~SqlAuthenticator()
 {
 }
 
-
-void CoreSettings::setStorageSettings(const QVariant &data)
+bool SqlAuthenticator::isAvailable() const
 {
-    setLocalValue("StorageSettings", data);
+    // XXX: probably this should query the current storage (see the ::init routine too).
+    return true;
 }
 
-
-QVariant CoreSettings::storageSettings(const QVariant &def)
+QString SqlAuthenticator::displayName() const
 {
-    return localValue("StorageSettings", def);
+    // We identify the backend to use for the monolithic core by its displayname.
+    // so only change this string if you _really_ have to and make sure the core
+    // setup for the mono client still works ;)
+    return QString("Database");
 }
 
-QVariant CoreSettings::authSettings(const QVariant &def)
+QString SqlAuthenticator::description() const
 {
-	return localValue("AuthSettings", def);
+    return tr("Do not auth against any remote authentication service, but instead save a hashed and salted password "
+              "in the selected database.");
 }
 
-void CoreSettings::setAuthSettings(const QVariant &data)
+UserId SqlAuthenticator::validateUser(const QString &user, const QString &password)
 {
-	setLocalValue("AuthSettings", data);
-}	
-
-// FIXME remove
-QVariant CoreSettings::oldDbSettings()
-{
-    return localValue("DatabaseSettings");
+    return Core::validateUser(user, password);
 }
 
-
-void CoreSettings::setCoreState(const QVariant &data)
+bool SqlAuthenticator::setup(const QVariantMap &settings)
 {
-    setLocalValue("CoreState", data);
+	return true;
 }
 
-
-QVariant CoreSettings::coreState(const QVariant &def)
+Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
 {
-    return localValue("CoreState", def);
+	// TODO: FIXME: this should check if the storage provider is ready, but I don't
+	// know if there's an exposed way to do that at the moment.
+	
+	quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
+	return IsReady;
 }

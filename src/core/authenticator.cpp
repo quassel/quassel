@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2015 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,55 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coresettings.h"
+#include "authenticator.h"
 
-#include "quassel.h"
-
-CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName)
+Authenticator::Authenticator(QObject *parent)
+    : QObject(parent)
 {
-}
-
-
-CoreSettings::~CoreSettings()
-{
-}
-
-
-void CoreSettings::setStorageSettings(const QVariant &data)
-{
-    setLocalValue("StorageSettings", data);
-}
-
-
-QVariant CoreSettings::storageSettings(const QVariant &def)
-{
-    return localValue("StorageSettings", def);
-}
-
-QVariant CoreSettings::authSettings(const QVariant &def)
-{
-	return localValue("AuthSettings", def);
-}
-
-void CoreSettings::setAuthSettings(const QVariant &data)
-{
-	setLocalValue("AuthSettings", data);
-}	
-
-// FIXME remove
-QVariant CoreSettings::oldDbSettings()
-{
-    return localValue("DatabaseSettings");
-}
-
-
-void CoreSettings::setCoreState(const QVariant &data)
-{
-    setLocalValue("CoreState", data);
-}
-
-
-QVariant CoreSettings::coreState(const QVariant &def)
-{
-    return localValue("CoreState", def);
 }

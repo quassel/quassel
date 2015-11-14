@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2015 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,55 +18,43 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coresettings.h"
+#ifndef LDAPAUTHENTICATOR_H
+#define LDAPAUTHENTICATOR_H
 
-#include "quassel.h"
+#include "authenticator.h"
 
-CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName)
+class LdapAuthenticator : public Authenticator
 {
-}
+    Q_OBJECT
+
+public:
+    LdapAuthenticator(QObject *parent = 0);
+    virtual ~LdapAuthenticator();
+
+public slots:
+    /* General */
+    virtual bool isAvailable() const;
+    virtual QString displayName() const;
+    virtual QString description() const;
+    virtual QStringList setupKeys() const;
+    virtual QVariantMap setupDefaults() const;
+
+    /* User handling */
+    virtual UserId getUserId(const QString &username);
+ 
+protected:
+	// Protecte methods for retrieving info about the LDAP connection.
+	inline virtual QString hostName() { return _hostName; }
+	inline virtual int port() { return _port; }
+	inline virtual QString bindDN() { return _bindDN; }
+	inline virtual QString baseDN() { return _baseDN; }
+	
+private:
+    QString _hostName;
+    int _port;
+	QString _bindDN;
+	QString _baseDN;
+};
 
 
-CoreSettings::~CoreSettings()
-{
-}
-
-
-void CoreSettings::setStorageSettings(const QVariant &data)
-{
-    setLocalValue("StorageSettings", data);
-}
-
-
-QVariant CoreSettings::storageSettings(const QVariant &def)
-{
-    return localValue("StorageSettings", def);
-}
-
-QVariant CoreSettings::authSettings(const QVariant &def)
-{
-	return localValue("AuthSettings", def);
-}
-
-void CoreSettings::setAuthSettings(const QVariant &data)
-{
-	setLocalValue("AuthSettings", data);
-}	
-
-// FIXME remove
-QVariant CoreSettings::oldDbSettings()
-{
-    return localValue("DatabaseSettings");
-}
-
-
-void CoreSettings::setCoreState(const QVariant &data)
-{
-    setLocalValue("CoreState", data);
-}
-
-
-QVariant CoreSettings::coreState(const QVariant &def)
-{
-    return localValue("CoreState", def);
-}
+#endif

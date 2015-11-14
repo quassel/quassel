@@ -27,7 +27,7 @@
 #include "coreconfigwizard.h"
 #include "coreconnection.h"
 
-CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent)
+CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, const QList<QVariant> &authenticators, QWidget *parent)
     : QWizard(parent),
     _connection(connection)
 {
@@ -36,12 +36,17 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
 
     foreach(const QVariant &v, backends)
     _backends[v.toMap()["DisplayName"].toString()] = v;
+    
+    foreach(const QVariant &v, authenticators)
+    _authenticators[v.toMap()["DisplayName"].toString()] = v;
 
     setPage(IntroPage, new CoreConfigWizardPages::IntroPage(this));
     setPage(AdminUserPage, new CoreConfigWizardPages::AdminUserPage(this));
+    setPage(AuthenticationSelectionPage, new CoreConfigWizardPages::AuthenticationSelectionPage(_authenticators, this));
     setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(_backends, this));
     syncPage = new CoreConfigWizardPages::SyncPage(this);
-    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &)), SLOT(prepareCoreSetup(const QString &, const QVariantMap &)));
+    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap &)), 
+			SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap &)));
     setPage(SyncPage, syncPage);
     syncRelayPage = new CoreConfigWizardPages::SyncRelayPage(this);
     connect(syncRelayPage, SIGNAL(startOver()), this, SLOT(startOver()));
@@ -82,14 +87,18 @@ QHash<QString, QVariant> CoreConfigWizard::backends() const
     return _backends;
 }
 
+QHash<QString, QVariant> CoreConfigWizard::authenticators() const
+{
+	return _authenticators;
+}
 
-void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties)
+void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authBackend, const QVariantMap &authProperties)
 {
     // Prevent the user from changing any settings he already specified...
     foreach(int idx, visitedPages())
     page(idx)->setEnabled(false);
 
-    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
+    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, authBackend, properties, authProperties));
 }
 
 
@@ -175,7 +184,7 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
 
 int AdminUserPage::nextId() const
 {
-    return CoreConfigWizard::StorageSelectionPage;
+    return CoreConfigWizard::AuthenticationSelectionPage;
 }
 
 
@@ -185,6 +194,152 @@ bool AdminUserPage::isComplete() const
     return ok;
 }
 
+/*** Authentication Selection Page ***/
+
+AuthenticationSelectionPage::AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent)
+    : QWizardPage(parent),
+    _connectionBox(0),
+    _backends(backends)
+{
+    ui.setupUi(this);
+
+    setTitle(tr("Select Authentication Backend"));
+    setSubTitle(tr("Please select a backend for Quassel Core to use for authenticating users."));
+    setCommitPage(true);
+
+    registerField("authentication.backend", ui.backendList);
+
+    foreach(QString key, _backends.keys()) {
+        ui.backendList->addItem(_backends[key].toMap()["DisplayName"].toString(), key);
+    }
+
+    on_backendList_currentIndexChanged();
+}
+
+
+int AuthenticationSelectionPage::nextId() const
+{
+    return CoreConfigWizard::StorageSelectionPage;
+}
+
+
+QString AuthenticationSelectionPage::selectedBackend() const
+{
+    return ui.backendList->currentText();
+}
+
+
+QVariantMap AuthenticationSelectionPage::connectionProperties() const
+{
+    QString backend = ui.backendList->itemData(ui.backendList->currentIndex()).toString();
+
+    QVariantMap properties;
+    QStringList setupKeys = _backends[backend].toMap()["SetupKeys"].toStringList();
+    if (!setupKeys.isEmpty()) {
+        QVariantMap defaults = _backends[backend].toMap()["SetupDefaults"].toMap();
+        foreach(QString key, setupKeys) {
+            QWidget *widget = _connectionBox->findChild<QWidget *>(key);
+            QVariant def;
+            if (defaults.contains(key)) {
+                def = defaults[key];
+            }
+            switch (def.type()) {
+            case QVariant::Int:
+            {
+                QSpinBox *spinbox = qobject_cast<QSpinBox *>(widget);
+                Q_ASSERT(spinbox);
+                def = QVariant(spinbox->value());
+            }
+            break;
+            default:
+            {
+                QLineEdit *lineEdit = qobject_cast<QLineEdit *>(widget);
+                Q_ASSERT(lineEdit);
+                def = QVariant(lineEdit->text());
+            }
+            }
+            properties[key] = def;
+        }
+    }
+    qDebug() << properties;
+
+//   QVariantMap properties = _backends[backend].toMap()["ConnectionProperties"].toMap();
+//   if(!properties.isEmpty() && _connectionBox) {
+//     QVariantMap::iterator propertyIter = properties.begin();
+//     while(propertyIter != properties.constEnd()) {
+//       QWidget *widget = _connectionBox->findChild<QWidget *>(propertyIter.key());
+//       switch(propertyIter.value().type()) {
+//       case QVariant::Int:
+//      {
+//        QSpinBox *spinbox = qobject_cast<QSpinBox *>(widget);
+//        Q_ASSERT(spinbox);
+//        propertyIter.value() = QVariant(spinbox->value());
+//      }
+//      break;
+//       default:
+//      {
+//        QLineEdit *lineEdit = qobject_cast<QLineEdit *>(widget);
+//        Q_ASSERT(lineEdit);
+//        propertyIter.value() = QVariant(lineEdit->text());
+//      }
+//       }
+//       propertyIter++;
+//     }
+//   }
+    return properties;
+}
+
+
+void AuthenticationSelectionPage::on_backendList_currentIndexChanged()
+{
+    QString backend = ui.backendList->itemData(ui.backendList->currentIndex()).toString();
+    ui.description->setText(_backends[backend].toMap()["Description"].toString());
+
+    if (_connectionBox) {
+        layout()->removeWidget(_connectionBox);
+        _connectionBox->deleteLater();
+        _connectionBox = 0;
+    }
+
+    QStringList setupKeys = _backends[backend].toMap()["SetupKeys"].toStringList();
+    if (!setupKeys.isEmpty()) {
+        QVariantMap defaults = _backends[backend].toMap()["SetupDefaults"].toMap();
+        QGroupBox *propertyBox = new QGroupBox(this);
+        propertyBox->setTitle(tr("Connection Properties"));
+        QFormLayout *formlayout = new QFormLayout;
+
+        foreach(QString key, setupKeys) {
+            QWidget *widget = 0;
+            QVariant def;
+            if (defaults.contains(key)) {
+                def = defaults[key];
+            }
+            switch (def.type()) {
+            case QVariant::Int:
+            {
+                QSpinBox *spinbox = new QSpinBox(propertyBox);
+                spinbox->setMaximum(64000);
+                spinbox->setValue(def.toInt());
+                widget = spinbox;
+            }
+            break;
+            default:
+            {
+                QLineEdit *lineEdit = new QLineEdit(def.toString(), propertyBox);
+                if (key.toLower().contains("password")) {
+                    lineEdit->setEchoMode(QLineEdit::Password);
+                }
+                widget = lineEdit;
+            }
+            }
+            widget->setObjectName(key);
+            formlayout->addRow(key + ":", widget);
+        }
+        propertyBox->setLayout(formlayout);
+        static_cast<QVBoxLayout *>(layout())->insertWidget(layout()->indexOf(ui.descriptionBox) + 1, propertyBox);
+        _connectionBox = propertyBox;
+    }
+}
 
 /*** Storage Selection Page ***/
 
@@ -355,13 +510,23 @@ void SyncPage::initializePage()
     complete = false;
     hasError = false;
 
+	// Fill in sync info about the storage layer. 
     StorageSelectionPage *storagePage = qobject_cast<StorageSelectionPage *>(wizard()->page(CoreConfigWizard::StorageSelectionPage));
     QString backend = storagePage->selectedBackend();
     QVariantMap properties = storagePage->connectionProperties();
-    Q_ASSERT(!backend.isEmpty());
-    ui.user->setText(wizard()->field("adminUser.user").toString());
+	Q_ASSERT(!backend.isEmpty());
     ui.backend->setText(backend);
-    emit setupCore(backend, properties);
+    
+	// Fill in synci nfo about the authentication layer.
+	AuthenticationSelectionPage *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
+	QString authBackend = authPage->selectedBackend();
+    QVariantMap authProperties = authPage->connectionProperties();
+	Q_ASSERT(!authBackend.isEmpty());
+    ui.authBackend->setText(authBackend);
+
+    ui.user->setText(wizard()->field("adminUser.user").toString());
+
+	emit setupCore(backend, properties, authBackend, authProperties);
 }
 
 

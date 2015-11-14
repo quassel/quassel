@@ -204,7 +204,7 @@ void MainWin::init()
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
 
-    connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList)), SLOT(showCoreConfigWizard(QVariantList)));
+    connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList, QVariantList)), SLOT(showCoreConfigWizard(QVariantList, QVariantList)));
     connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
     connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount *, bool *, QString)), SLOT(userAuthenticationRequired(CoreAccount *, bool *, QString)));
     connect(Client::coreConnection(), SIGNAL(handleNoSslInClient(bool *)), SLOT(handleNoSslInClient(bool *)));
@@ -1366,9 +1366,9 @@ void MainWin::showCoreConnectionDlg()
 }
 
 
-void MainWin::showCoreConfigWizard(const QVariantList &backends)
+void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantList &authBackends)
 {
-    CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, this);
+    CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, authBackends, this);
 
     wizard->show();
 }

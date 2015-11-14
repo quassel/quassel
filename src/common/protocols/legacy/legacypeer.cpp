@@ -170,12 +170,12 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
             socket()->setProperty("UseCompression", true);
 #endif
 
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool()));
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["AuthBackends"].toList(), m["SupportSsl"].toBool()));
     }
 
     else if (msgType == "CoreSetupData") {
         QVariantMap map = m["SetupData"].toMap();
-        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["ConnectionProperties"].toMap()));
+        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["AuthBackend"].toString(), map["ConnectionProperties"].toMap(), map["AuthProperties"].toMap()));
     }
 
     else if (msgType == "CoreSetupReject") {
@@ -242,6 +242,7 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     m["MsgType"] = "ClientInitAck";
     m["CoreFeatures"] = msg.coreFeatures;
     m["StorageBackends"] = msg.backendInfo;
+    m["AuthBackends"] = msg.authBackendInfo;
 
     // FIXME only in compat mode
     m["ProtocolVersion"] = protocolVersion;
@@ -264,6 +265,11 @@ void LegacyPeer::dispatch(const SetupData &msg)
     map["AdminPasswd"] = msg.adminPassword;
     map["Backend"] = msg.backend;
     map["ConnectionProperties"] = msg.setupData;
+    
+    // Auth backend properties.
+    // XXX: make these optional using core features.
+    map["AuthBackend"] = msg.authenticator;
+    map["AuthProperties"] = msg.authSetupData;
 
     QVariantMap m;
     m["MsgType"] = "CoreSetupData";
