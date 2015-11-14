@@ -116,6 +116,10 @@ if (LINK_EXTRA)
 endif()
 
 
+# LDAP Authentication (and other authentication backends).
+####################################################################
+option(WITH_LDAP     "Enable LDAP authentication support if present on system"	ON)
+
 # Setup CMake
 #####################################################################
 
@@ -449,6 +453,19 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     string(REPLACE "-ansi" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif()
 
+# Setup LDAP Authentication support.
+#####################################################################
+if(WITH_LDAP)
+	find_package(Ldap)
+	if(LDAP_FOUND)
+		message(STATUS "Enabling LDAP authentication support")
+		set(HAVE_LDAP true)
+	else(LDAP_FOUND)
+		message(STATUS "Disabling LDAP authentication support")
+	endif(LDAP_FOUND)
+else(WITH_LDAP)
+	message(STATUS "Not enabling LDAP authentication support")
+endif(WITH_LDAP)
 
 # Setup KDE / KDE Frameworks
 #####################################################################
