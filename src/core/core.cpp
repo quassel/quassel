@@ -274,13 +274,13 @@ void Core::restoreState()
 
 /*** Core Setup ***/
 
-QString Core::setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData)
+QString Core::setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupData)
 {
     return instance()->setupCore(adminUser, adminPassword, backend, setupData);
 }
 
 
-QString Core::setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData)
+QString Core::setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupData)
 {
     if (_configured)
         return tr("Core is already configured! Not configuring again...");
@@ -293,6 +293,7 @@ QString Core::setupCore(const QString &adminUser, const QString &adminPassword, 
     }
 
     saveBackendSettings(backend, setupData);
+	saveAuthBackendSettings(authBackend, authSetupData);
 
     quInfo() << qPrintable(tr("Creating admin user..."));
     _storage->addUser(adminUser, adminPassword);
@@ -903,6 +904,14 @@ void Core::saveBackendSettings(const QString &backend, const QVariantMap &settin
     dbsettings["Backend"] = backend;
     dbsettings["ConnectionProperties"] = settings;
     CoreSettings().setStorageSettings(dbsettings);
+}
+
+void Core::saveAuthBackendSettings(const QString &backend, const QVariantMap &settings)
+{
+    QVariantMap dbsettings;
+    dbsettings["AuthBackend"] = backend;
+    dbsettings["ConnectionProperties"] = settings;
+    CoreSettings().setAuthSettings(dbsettings);
 }
 
 

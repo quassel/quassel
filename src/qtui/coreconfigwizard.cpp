@@ -43,7 +43,8 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
 	setPage(AuthenticationSelectionPage, new CoreConfigWizard::AuthenticationSelectionPage(_authenticators, this));
     setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(_backends, this));
     syncPage = new CoreConfigWizardPages::SyncPage(this);
-    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &)), SLOT(prepareCoreSetup(const QString &, const QVariantMap &)));
+    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap)), 
+			SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap)));
     setPage(SyncPage, syncPage);
     syncRelayPage = new CoreConfigWizardPages::SyncRelayPage(this);
     connect(syncRelayPage, SIGNAL(startOver()), this, SLOT(startOver()));
