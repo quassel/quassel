@@ -63,6 +63,26 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_2" >
+            <property name="font" >
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text" >
+             <string>Authentication Backend:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLabel" name="authBackend" >
+            <property name="text" >
+             <string>bar</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>

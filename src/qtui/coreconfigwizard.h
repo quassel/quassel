@@ -123,7 +123,7 @@ private slots:
 	void on_backendlist_currentIndexChanged();
 
 private:
-	Ui::CoreCOnfigWizardAuthenticationSelectionPage ui;
+	Ui::CoreConfigWizardAuthenticationSelectionPage ui;
 	QGroupBox *_connectionBox;
 	QHash<QString, QVariant> _backends;
 }
@@ -162,7 +162,7 @@ public slots:
     void setComplete(bool);
 
 signals:
-    void setupCore(const QString &backend, const QVariantMap &);
+    void setupCore(const QString &backend, const QVariantMap &, const QString &authenticator, const QVariantMap &);
 
 private:
     Ui::CoreConfigWizardSyncPage ui;
