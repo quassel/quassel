@@ -496,7 +496,7 @@ public:
     static bool sslSupported();
     static QVariantList backendInfo();
 
-    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData);
+    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &autuhBackend, const QVariantMap &authSetupMap);
 
     static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
@@ -510,7 +510,7 @@ public slots:
      */
     void syncStorage();
     void setupInternalClientSession(InternalPeer *clientConnection);
-    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData);
+    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &autuhBackend, const QVariantMap &authSetupMap);
 
 signals:
     //! Sent when a BufferInfo is updated in storage.

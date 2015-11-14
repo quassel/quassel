@@ -101,14 +101,15 @@ struct ClientRegistered : public HandshakeMessage
 
 struct SetupData : public HandshakeMessage
 {
-    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend, const QString &authenticator, const QVariantMap &setupData)
-    : adminUser(adminUser), adminPassword(adminPassword), backend(backend), authenticator(authenticator), setupData(setupData) {}
+    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend, const QString &authenticator, const QVariantMap &setupData, const QVariantMap &authSetupData)
+    : adminUser(adminUser), adminPassword(adminPassword), backend(backend), authenticator(authenticator), setupData(setupData), authSetupData(authSetupData) {}
 
     QString adminUser;
     QString adminPassword;
     QString backend;
 	QString authenticator;
     QVariantMap setupData;
+	QVariantMap authSetupData;
 };
 
 
