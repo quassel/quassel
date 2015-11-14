@@ -27,7 +27,7 @@
 #include "coreconfigwizard.h"
 #include "coreconnection.h"
 
-CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent)
+CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, const QList<QVariant> &authenticators, QWidget *parent)
     : QWizard(parent),
     _connection(connection)
 {
@@ -36,9 +36,11 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
 
     foreach(const QVariant &v, backends)
     _backends[v.toMap()["DisplayName"].toString()] = v;
+	_authenticators[v.toMap()["DisplayName"].toString()] = v;
 
     setPage(IntroPage, new CoreConfigWizardPages::IntroPage(this));
     setPage(AdminUserPage, new CoreConfigWizardPages::AdminUserPage(this));
+	setPage(AuthenticationSelectionPage, new CoreConfigWizard::AuthenticationSelectionPage(_authenticators, this));
     setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(_backends, this));
     syncPage = new CoreConfigWizardPages::SyncPage(this);
     connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &)), SLOT(prepareCoreSetup(const QString &, const QVariantMap &)));
@@ -82,6 +84,10 @@ QHash<QString, QVariant> CoreConfigWizard::backends() const
     return _backends;
 }
 
+QHash<QString, QVariant> CoreConfigWizard::authenticators() const
+{
+	return _authenticators;
+}
 
 void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties)
 {
