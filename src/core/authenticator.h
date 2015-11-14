@@ -30,7 +30,7 @@ class Authenticator : public QObject {
 public:
     Authenticator(QObject *parent = 0);
     virtual ~Authenticator() {};
-rovider was initialized successfully.
+
      */
     virtual bool setup(const QVariantMap &settings = QVariantMap()) = 0;
 
