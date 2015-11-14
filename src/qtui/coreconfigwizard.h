@@ -67,7 +67,7 @@ public slots:
     void syncFinished();
 
 private slots:
-    void prepareCoreSetup(const QString &backend, const QVariantMap &connectionProperties);
+    void prepareCoreSetup(const QString &backend, const QVariantMap &connectionProperties, const QString &authBackend, const QVariant &authProperties);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &);
     void startOver();

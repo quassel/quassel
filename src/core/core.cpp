@@ -83,7 +83,8 @@ void Core::destroy()
 
 Core::Core()
     : QObject(),
-      _storage(0)
+      _storage(0),
+      _authenticator(0)
 {
 #ifdef HAVE_UMASK
     umask(S_IRWXG | S_IRWXO);
@@ -168,7 +169,8 @@ Core::Core()
     }
 
     registerStorageBackends();
-
+	registerAuthenticatorBackends();
+	
     connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
     _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
 }
@@ -181,10 +183,16 @@ void Core::init()
     QVariantMap dbsettings = cs.storageSettings().toMap();
     _configured = initStorage(dbsettings.value("Backend").toString(), dbsettings.value("ConnectionProperties").toMap());
 
+	// Not entirely sure what is 'legacy' about the above, but it seems to be the way things work!
+	QVariantMap authSettings = cs.authSettings().toMap();
+	initAuthenticator(authSettings.value("AuthBackend").toString(), authSettings.value("ConnectionProperties").toMap());
+	
     if (Quassel::isOptionSet("select-backend")) {
         selectBackend(Quassel::optionValue("select-backend"));
         exit(0);
     }
+    
+    // TODO: add --select-authenticator command line option and code.
 
     if (!_configured) {
         if (!_storageBackends.count()) {
@@ -276,7 +284,7 @@ void Core::restoreState()
 
 QString Core::setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupData)
 {
-    return instance()->setupCore(adminUser, adminPassword, backend, setupData);
+    return instance()->setupCore(adminUser, adminPassword, backend, setupData, authBackend, authSetupData);
 }
 
 
@@ -360,8 +368,8 @@ void Core::unregisterStorageBackend(Storage *backend)
 void Core::registerAuthenticatorBackends()
 {
 	// Register new authentication backends here!
-	registerAuthenticationBackend(new LdapAuthenticator(this));
-	registerAuthenticationBackend(new SqlAuthenticator(this));
+	registerAuthenticatorBackend(new LdapAuthenticator(this));
+	registerAuthenticatorBackend(new SqlAuthenticator(this));
 	
 }
 
@@ -379,7 +387,7 @@ void Core::registerAuthenticatorBackend(Authenticator *authenticator)
 
 void Core::unregisterAuthenticatorBackends()
 {
-	foreach(Authenticator* a, _authenticatorBacckends.values())
+	foreach(Authenticator* a, _authenticatorBackends.values())
 	{
 		a->deleteLater();
 	}
@@ -432,6 +440,43 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings, bool
     return true;
 }
 
+// XXX: TODO: Apparently, this is legacy?
+bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings, bool setup)
+{
+	_authenticator = 0;
+	
+	if (backend.isEmpty()) {
+		return false
+	}
+	
+	Authenticator *authenticator = 0;
+    if (_authenticatorBackends.contains(backend)) {
+        authenticator = _authenticatorBackends[backend];
+    }
+    else {
+        qCritical() << "Selected auth backend is not available:" << backend;
+        return false;
+    }
+	
+	Authenticator::State authState = authenticator->init(settings);
+    switch (authState) {
+    case Authenticator::NeedsSetup:
+        if (!setup)
+            return false;  // trigger setup process
+        if (authenticator->setup(settings))
+            return initAuthenticator(backend, settings, false);
+    // if initialization wasn't successful, we quit to keep from coming up unconfigured
+    case Authenticator::NotAvailable:
+        qCritical() << "FATAL: Selected auth backend is not available:" << backend;
+        exit(EXIT_FAILURE);
+    case Authenticator::IsReady:
+        // delete all other backends
+        _authenticatorBackends.remove(backend);
+        unregisterAuthenticatorBackends();
+    }
+    _authenticator = authenticator;
+    return true;	
+}
 
 void Core::syncStorage()
 {

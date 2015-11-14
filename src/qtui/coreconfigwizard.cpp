@@ -90,13 +90,13 @@ QHash<QString, QVariant> CoreConfigWizard::authenticators() const
 	return _authenticators;
 }
 
-void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties)
+void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authBackend, const QVariantMap &authProperties)
 {
     // Prevent the user from changing any settings he already specified...
     foreach(int idx, visitedPages())
     page(idx)->setEnabled(false);
 
-    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, authenticator, properties));
+    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, authenticator, properties, authProperties));
 }
 
 
