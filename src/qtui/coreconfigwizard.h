@@ -45,6 +45,7 @@ public:
     enum {
         IntroPage,
         AdminUserPage,
+		AuthenticationSelectionPage
         StorageSelectionPage,
         SyncPage,
         SyncRelayPage,
@@ -73,6 +74,8 @@ private slots:
 
 private:
     QHash<QString, QVariant> _backends;
+	QHash<QString, QVariant> _authenticators;
+	
     CoreConfigWizardPages::SyncPage *syncPage;
     CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
 
@@ -105,6 +108,25 @@ private:
     Ui::CoreConfigWizardAdminUserPage ui;
 };
 
+// Authentication selection before storage selection.
+class AuthenticationSelectionPage : public QWizardPage
+{
+	Q_OBJECT
+
+public:
+	AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
+	int nextId() const;
+	QString selectedAuthenticator() const;
+	QVariantMap connectionProperties() const;
+	
+private slots:
+	void on_backendlist_currentIndexChanged();
+
+private:
+	Ui::CoreCOnfigWizardAuthenticationSelectionPage ui;
+	QGroupBox *_connectionBox;
+	QHash<QString, QVariant> _backends;
+}
 
 class StorageSelectionPage : public QWizardPage
 {
@@ -123,7 +145,6 @@ private:
     QGroupBox *_connectionBox;
     QHash<QString, QVariant> _backends;
 };
-
 
 class SyncPage : public QWizardPage
 {

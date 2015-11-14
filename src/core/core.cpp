@@ -338,7 +338,6 @@ bool Core::registerStorageBackend(Storage *backend)
     }
 }
 
-
 void Core::unregisterStorageBackends()
 {
     foreach(Storage *s, _storageBackends.values()) {
@@ -354,6 +353,43 @@ void Core::unregisterStorageBackend(Storage *backend)
     backend->deleteLater();
 }
 
+// Authentication handling, now independent from storage.
+// Register and unregister authenticators.
+
+void Core::registerAuthenticatorBackends()
+{
+	// Register new authentication backends here!
+	registerAuthenticationBackend(new LdapAuthenticator(this));
+	registerAuthenticationBackend(new SqlAuthenticator(this));
+	
+}
+
+void Core::registerAuthenticatorBackend(Authenticator *authenticator)
+{
+	if (authenticator->isAvailable())
+	{
+		_authenticatorBackends[authenticator->displayName()] = authenticator;
+		return true;
+	} else {
+		authenticator->deleteLater();
+		return false;
+	]
+}
+
+void Core::unregisterAuthenticatorBackends()
+{
+	foreach(Authenticator* a, _authenticatorBacckends.values())
+	{
+		a->deleteLater();
+	}
+	_authenticatorBackends.clear();
+}
+
+void unregisterAuthenticatorBackend(Authenticator *backend)
+{
+	_authenticatorBackends.remove(backend->displayName());
+	backend->deleteLater();
+}
 
 // old db settings:
 // "Type" => "sqlite"

@@ -558,7 +558,9 @@ private:
 private:
     QSet<CoreAuthHandler *> _connectingClients;
     QHash<UserId, SessionThread *> _sessions;
-    Storage *_storage;
+	// Have both a storage backend and an authenticator backend.
+	Storage *_storage;
+	Authenticator *_authenticator;
     QTimer _storageSyncTimer;
 
 #ifdef HAVE_SSL
@@ -570,7 +572,8 @@ private:
     OidentdConfigGenerator *_oidentdConfigGenerator;
 
     QHash<QString, Storage *> _storageBackends;
-
+	QHash<QString, Authenticator *> _authenticatorBackends;
+	
     QDateTime _startTime;
 
     bool _configured;
