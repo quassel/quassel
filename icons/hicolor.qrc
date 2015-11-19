@@ -14,6 +14,12 @@
     <file>hicolor/16x16/status/quassel-inactive.png</file>
     <file>hicolor/22x22/status/quassel-inactive.png</file>
     <file>hicolor/32x32/status/quassel-inactive.png</file>
+    <file>hicolor/16x16/actions/quassel-disconnect.png</file>
+    <file>hicolor/22x22/actions/quassel-disconnect.png</file>
+    <file>hicolor/32x32/actions/quassel-disconnect.png</file>
+    <file alias="quassel-disconnect.png">hicolor/48x48/actions/quassel-disconnect.png</file>
+    <file>hicolor/64x64/actions/quassel-disconnect.png</file>
+    <file>hicolor/128x128/actions/quassel-disconnect.png</file>
     <file alias="quassel-inactive.png">hicolor/48x48/status/quassel-inactive.png</file>
     <file alias="quassel-inactive-64.png">hicolor/64x64/status/quassel-inactive.png</file>
     <file alias="quassel-inactive-128.png">hicolor/128x128/status/quassel-inactive.png</file>
