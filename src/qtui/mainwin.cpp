@@ -1042,6 +1042,12 @@ void MainWin::setupToolBars()
     _mainToolBar->setWindowTitle(tr("Main Toolbar"));
     addToolBar(_mainToolBar);
 
+    if (Quassel::runMode() != Quassel::Monolithic) {
+        ActionCollection *coll = QtUi::actionCollection("General");
+        _mainToolBar->addAction(coll->action("ConnectCore"));
+        _mainToolBar->addAction(coll->action("DisconnectCore"));
+    }
+
     QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
     _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
