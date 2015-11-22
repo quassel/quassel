@@ -879,6 +879,8 @@ void MainWin::setupNickWidget()
     // attach the NickListWidget to the BufferModel and the default selection
     _nickListWidget->setModel(Client::bufferModel());
     _nickListWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
+
+    _nickListWidget->setVisible(false);
 }
 
 
@@ -1131,7 +1133,7 @@ void MainWin::loadLayout()
         _layoutLoaded = true;
         return;
     }
-
+    _nickListWidget->setVisible(true);
     restoreState(state, accountId);
     int bufferViewId = s.value(QString("ActiveBufferView-%1").arg(accountId), -1).toInt();
     if (bufferViewId >= 0)
@@ -1201,6 +1203,7 @@ void MainWin::setDisconnectedState()
         _msgProcessorStatusWidget->setProgress(0, 0);
     updateIcon();
     systemTray()->setState(SystemTray::Passive);
+    _nickListWidget->setVisible(false);
 }
 
 

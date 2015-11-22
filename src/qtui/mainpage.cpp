@@ -18,28 +18,49 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QPushButton>
 #include <QImage>
+#include <QLabel>
+#include <QLayout>
 #include <QPainter>
 
 #include "mainpage.h"
+#include "coreconnectdlg.h"
+#include "client.h"
 
 MainPage::MainPage(QWidget *parent) : QWidget(parent)
 {
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignCenter);
+    QLabel *label = new QLabel(this);
+    label->setPixmap(QPixmap(":/pics/quassel-logo.png"));
+    layout->addWidget(label);
+
+    if (Quassel::runMode() != Quassel::Monolithic) {
+        _connectButton = new QPushButton(QIcon::fromTheme("network-connect"), tr("Connect to Core..."));
+        _connectButton->setEnabled(Client::coreConnection()->state() == CoreConnection::Disconnected);
+
+        connect(Client::coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), this, SLOT(coreConnectionStateChanged()));
+        connect(_connectButton, SIGNAL(clicked(bool)), this, SLOT(showCoreConnectionDlg()));
+        layout->addWidget(_connectButton);
+    }
 }
 
-
-void MainPage::paintEvent(QPaintEvent *event)
+void MainPage::showCoreConnectionDlg()
 {
-    Q_UNUSED(event);
+    CoreConnectDlg dlg(this);
+    if (dlg.exec() == QDialog::Accepted) {
+        AccountId accId = dlg.selectedAccount();
+        if (accId.isValid())
+            Client::coreConnection()->connectToCore(accId);
+    }
+}
 
-    QPainter painter(this);
-    QImage img(":/pics/quassel-logo.png"); // FIXME load externally
-
-    if (img.height() > height() || img.width() > width())
-        img = img.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-    int xmargin = (width() - img.width()) / 2;
-    int ymargin = (height() - img.height()) / 2;
-
-    painter.drawImage(xmargin, ymargin, img);
+void MainPage::coreConnectionStateChanged()
+{
+    if (Client::coreConnection()->state() == CoreConnection::Disconnected) {
+        _connectButton->setEnabled(true);
+    } else {
+        _connectButton->setDisabled(true);
+    }
 }

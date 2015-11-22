@@ -84,6 +84,19 @@ void NickListWidget::showWidget(bool visible)
     }
 }
 
+void NickListWidget::setVisible(bool visible)
+{
+    QWidget::setVisible(visible);
+    QDockWidget *dock_ = dock();
+    if (!dock_)
+        return;
+
+    if (visible)
+        dock_->show();
+    else
+        dock_->close();
+}
+
 
 void NickListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
