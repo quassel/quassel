@@ -533,7 +533,7 @@ private slots:
     void socketError(QAbstractSocket::SocketError err, const QString &errorString);
     void setupClientSession(RemotePeer *, UserId);
 
-    void changeUserPass(const QString &username);
+    bool changeUserPass(const QString &username);
 
 private:
     Core();
@@ -551,7 +551,7 @@ private:
     void unregisterStorageBackends();
     void unregisterStorageBackend(Storage *);
     bool selectBackend(const QString &backend);
-    void createUser();
+    bool createUser();
     void saveBackendSettings(const QString &backend, const QVariantMap &settings);
     QVariantMap promptForSettings(const Storage *storage);
 
