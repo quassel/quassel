@@ -958,7 +958,7 @@ QString IrcUserItem::toolTip(int column) const
     }
     tooltip << "</p>";
 
-    auto addRow = [&](const QString& key, const QString& value, bool condition = true) {
+    auto addRow = [&](const QString& key, const QString& value, bool condition) {
         if (condition)
         {
             tooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
@@ -971,24 +971,24 @@ QString IrcUserItem::toolTip(int column) const
         if(!_ircUser->awayMessage().isEmpty()) {
             awayMessage = _ircUser->awayMessage();
         }
-        addRow(tr("Away&nbsp;Message"), awayMessage);
+        addRow(tr("Away&nbsp;Message"), awayMessage, true);
     }
     addRow(tr("Realname"), _ircUser->realName(), !_ircUser->realName().isEmpty());
     addRow(tr("Operator"), _ircUser->ircOperator(), !_ircUser->ircOperator().isEmpty());
     addRow(tr("Suser&nbsp;Host"), _ircUser->suserHost(),!_ircUser->suserHost().isEmpty());
     addRow(tr("Whois&nbsp;Service&nbsp;Reply"), _ircUser->whoisServiceReply(), !_ircUser->whoisServiceReply().isEmpty());
-    addRow(tr("Hostmask"), _ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1));
+    addRow(tr("Hostmask"), _ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1), true);
     addRow(tr("Operator"), _ircUser->ircOperator(), !_ircUser->ircOperator().isEmpty());
 
     if (_ircUser->idleTime().isValid()) {
         QDateTime now = QDateTime::currentDateTime();
         QDateTime idle = _ircUser->idleTime();
         int idleTime = idle.secsTo(now);
-        addRow(tr("Idling&nbsp;since"), secondsToString(idleTime));
+        addRow(tr("Idling&nbsp;since"), secondsToString(idleTime), true);
     }
 
     if (_ircUser->loginTime().isValid()) {
-        addRow(tr("Login&nbsp;time"), _ircUser->loginTime().toString());
+        addRow(tr("Login&nbsp;time"), _ircUser->loginTime().toString(), true);
     }
 
     addRow(tr("Server"), _ircUser->server(), !_ircUser->server().isEmpty());
