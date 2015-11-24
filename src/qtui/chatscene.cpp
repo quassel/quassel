@@ -128,6 +128,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
 #endif
     _showWebPreview = defaultSettings.showWebPreview();
     defaultSettings.notify("ShowWebPreview", this, SLOT(showWebPreviewChanged()));
+    defaultSettings.notify("ShowUsernamePrefix", this, SLOT(showUsernamePrefixChanged()));
 
     _clickTimer.setInterval(QApplication::doubleClickInterval());
     _clickTimer.setSingleShot(true);
@@ -1306,4 +1307,10 @@ void ChatScene::showWebPreviewChanged()
 {
     ChatViewSettings settings;
     _showWebPreview = settings.showWebPreview();
+}
+
+void ChatScene::showUsernamePrefixChanged()
+{
+    ChatViewSettings settings;
+    _showUsernamePrefix = settings.showUsernamePrefix();
 }

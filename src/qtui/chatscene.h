@@ -179,6 +179,7 @@ private slots:
     void webPreviewNextStep();
 #endif
     void showWebPreviewChanged();
+    void showUsernamePrefixChanged();
 
     void rowsRemoved();
 
@@ -225,6 +226,7 @@ private:
     bool _leftButtonPressed;
 
     bool _showWebPreview;
+    bool _showUsernamePrefix;
 
     static const int _webSearchSelectionTextMaxVisible = 24;
 

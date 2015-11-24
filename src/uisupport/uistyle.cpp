@@ -29,6 +29,9 @@
 #include "uisettings.h"
 #include "util.h"
 
+// XXX is there a less coupled approach?
+#include "../qtui/chatviewsettings.h"
+
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
 QString UiStyle::_timestampFormatString;
 
@@ -800,8 +803,8 @@ QString UiStyle::StyledMessage::decoratedTimestamp() const
 
 QString UiStyle::StyledMessage::flairForSender() const
 {
-    // TODO: If flair is disabled, don't add anything.
-    if (false)
+    ChatViewSettings settings;
+    if (!settings.showUsernamePrefix())
         return "";
     // If the user has some special mode, let's add their "flair".
     QString sender = plainSender();
