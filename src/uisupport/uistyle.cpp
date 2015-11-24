@@ -797,23 +797,44 @@ QString UiStyle::StyledMessage::decoratedTimestamp() const
     return timestamp().toLocalTime().toString(UiStyle::timestampFormatString());
 }
 
-static QString getNickFlag(const QChar mode) {
-    switch(mode.toLatin1()) {
-    case 'y':  // IRCOper
-        return "!";
-    case 'q':  // Founder
-        return "~";
-    case 'a':  // Protected
-        return "&";
-    case 'o':  // Operator
-        return "@";
-    case 'h':  // Halfop
-        return "%";
-    case 'v':  // Voice
-        return "+";
-    default:
+
+QString UiStyle::StyledMessage::flairForSender() const
+{
+    // TODO: If flair is disabled, don't add anything.
+    if (false)
         return "";
+    // If the user has some special mode, let's add their "flair".
+    QString sender = plainSender();
+    if (!sender.length() || !(bufferInfo().type() & BufferInfo::ChannelBuffer))
+        return " ";
+    const Network *net = Client::network(bufferInfo().networkId());
+    if (!net)
+        return " ";
+    const IrcChannel *channel = net->ircChannel(bufferInfo().bufferName());
+    if (!channel)
+        return " ";
+    QString channelModesForUser = channel->userModes(sender);
+    if (!channelModesForUser.length())
+        return " ";
+    // PREFIX= eg. "(qaohv)~&@%+"
+    QString prefix = net->support("PREFIX");
+    if (prefix.isEmpty())
+        return " ";
+    QStringList s = prefix.split(")");
+    if (s.length() < 2) {
+        qDebug("Invalid network PREFIX capability");
+        return " ";
     }
+    QString prefixModes = s.at(0);
+    int pos = prefixModes.indexOf(channelModesForUser.at(0));
+    if (pos == -1)
+        return " ";
+    QString prefixFlairs = s.at(1);
+    if (prefixFlairs.size() != prefixModes.size() - 1) {  // Adjust -1 for the preceding ( in the modes string
+        qDebug("Invalid network PREFIX capability");
+        return " ";
+    }
+    return prefixFlairs.at(--pos);
 }
 
 QString UiStyle::StyledMessage::plainSender() const
@@ -827,28 +848,13 @@ QString UiStyle::StyledMessage::plainSender() const
     }
 }
 
-
 QString UiStyle::StyledMessage::decoratedSender() const
 {
-    // If the user has some special mode, let's add their "flair".
-    QString sender = plainSender();
-    if (sender.length() && (bufferInfo().type() & BufferInfo::ChannelBuffer)) {
-        const Network *net = Client::network(bufferInfo().networkId());
-        if (net) {
-            IrcChannel *channel = net->ircChannel(bufferInfo().bufferName());
-            if (channel) {
-                QString modes = channel->userModes(sender);
-                if (modes.length() > 0) {
-                    sender.prepend(getNickFlag(modes.at(0)));
-                }
-            }
-        }
-    }
     switch (type()) {
     case Message::Plain:
-        return QString("<%1>").arg(sender); break;
+        return QString("<%1%2>").arg(flairForSender(), plainSender()); break;
     case Message::Notice:
-        return QString("[%1]").arg(sender); break;
+        return QString("[%1%2]").arg(flairForSender(), plainSender()); break;
     case Message::Action:
         return "-*-"; break;
     case Message::Nick:
@@ -882,7 +888,7 @@ QString UiStyle::StyledMessage::decoratedSender() const
     case Message::Invite:
         return "->"; break;
     default:
-        return QString("%1").arg(sender);
+        return QString("%1%2").arg(flairForSender(), plainSender());
     }
 }
 
