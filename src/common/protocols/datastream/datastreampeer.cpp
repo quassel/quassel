@@ -129,7 +129,7 @@ void DataStreamPeer::handleHandshakeMessage(const QVariantList &mapData)
 
     else if (msgType == "CoreSetupData") {
         QVariantMap map = m["SetupData"].toMap();
-        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["ConnectionProperties"].toMap()));
+        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["AuthBackend"].toString(), map["ConnectionProperties"].toMap(), map["AuthProperties"].toMap()));
     }
 
     else if (msgType == "CoreSetupReject") {
@@ -201,6 +201,11 @@ void DataStreamPeer::dispatch(const SetupData &msg)
     map["Backend"] = msg.backend;
     map["ConnectionProperties"] = msg.setupData;
 
+    // Auth backend properties.
+    // XXX: make these optional using core features.
+    map["AuthBackend"] = msg.authenticator;
+    map["AuthProperties"] = msg.authSetupData;
+    
     QVariantMap m;
     m["MsgType"] = "CoreSetupData";
     m["SetupData"] = map;
