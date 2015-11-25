@@ -27,6 +27,7 @@
 
 #include "ui_coreconfigwizardintropage.h"
 #include "ui_coreconfigwizardadminuserpage.h"
+#include "ui_coreconfigwizardauthenticationselectionpage.h"
 #include "ui_coreconfigwizardstorageselectionpage.h"
 #include "ui_coreconfigwizardsyncpage.h"
 
@@ -53,8 +54,9 @@ public:
         ConclusionPage
     };
 
-    CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent = 0);
+    CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, const QList<QVariant> &authenticators, QWidget *parent = 0);
     QHash<QString, QVariant> backends() const;
+    QHash<QString, QVariant> authenticators() const;
 
     inline CoreConnection *coreConnection() const { return _connection; }
 
@@ -67,7 +69,7 @@ public slots:
     void syncFinished();
 
 private slots:
-    void prepareCoreSetup(const QString &backend, const QVariantMap &connectionProperties, const QString &authBackend, const QVariant &authProperties);
+    void prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authBackend, const QVariantMap &authProperties);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &);
     void startOver();
@@ -111,22 +113,21 @@ private:
 // Authentication selection before storage selection.
 class AuthenticationSelectionPage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
-	int nextId() const;
-	QString selectedAuthenticator() const;
-	QVariantMap connectionProperties() const;
-	
+    AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
+    int nextId() const;
+    QString selectedBackend() const;
+    QVariantMap connectionProperties() const;
+    
 private slots:
-	void on_backendlist_currentIndexChanged();
-
+    void on_backendList_currentIndexChanged();
 private:
-	Ui::CoreConfigWizardAuthenticationSelectionPage ui;
-	QGroupBox *_connectionBox;
-	QHash<QString, QVariant> _backends;
-}
+    Ui::CoreConfigWizardAuthenticationSelectionPage ui;
+    QGroupBox *_connectionBox;
+    QHash<QString, QVariant> _backends;
+};
 
 class StorageSelectionPage : public QWizardPage
 {
