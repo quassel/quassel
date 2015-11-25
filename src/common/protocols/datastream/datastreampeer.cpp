@@ -124,7 +124,7 @@ void DataStreamPeer::handleHandshakeMessage(const QVariantList &mapData)
     }
 
     else if (msgType == "ClientInitAck") {
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), false, QString())); // SupportsSsl and coreInfo obsolete
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["AuthBackends"].toList(), false, QString())); // SupportsSsl and coreInfo obsolete
     }
 
     else if (msgType == "CoreSetupData") {
@@ -187,6 +187,7 @@ void DataStreamPeer::dispatch(const ClientRegistered &msg) {
     m["MsgType"] = "ClientInitAck";
     m["CoreFeatures"] = msg.coreFeatures;
     m["StorageBackends"] = msg.backendInfo;
+    m["AuthBackends"] = msg.authBackendInfo;
     m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
 
     writeMessage(m);
