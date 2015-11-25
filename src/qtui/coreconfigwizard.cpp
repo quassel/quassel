@@ -36,15 +36,17 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
 
     foreach(const QVariant &v, backends)
     _backends[v.toMap()["DisplayName"].toString()] = v;
-	_authenticators[v.toMap()["DisplayName"].toString()] = v;
+    
+    foreach(const QVariant &v, authenticators)
+    _authenticators[v.toMap()["DisplayName"].toString()] = v;
 
     setPage(IntroPage, new CoreConfigWizardPages::IntroPage(this));
     setPage(AdminUserPage, new CoreConfigWizardPages::AdminUserPage(this));
-	setPage(AuthenticationSelectionPage, new CoreConfigWizard::AuthenticationSelectionPage(_authenticators, this));
+    setPage(AuthenticationSelectionPage, new CoreConfigWizardPages::AuthenticationSelectionPage(_authenticators, this));
     setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(_backends, this));
     syncPage = new CoreConfigWizardPages::SyncPage(this);
-    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap)), 
-			SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap)));
+    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap &)), 
+			SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap &)));
     setPage(SyncPage, syncPage);
     syncRelayPage = new CoreConfigWizardPages::SyncRelayPage(this);
     connect(syncRelayPage, SIGNAL(startOver()), this, SLOT(startOver()));
@@ -96,7 +98,7 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
     foreach(int idx, visitedPages())
     page(idx)->setEnabled(false);
 
-    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, authenticator, properties, authProperties));
+    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, authBackend, properties, authProperties));
 }
 
 
