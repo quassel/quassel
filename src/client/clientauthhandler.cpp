@@ -303,6 +303,7 @@ void ClientAuthHandler::handle(const ClientRegistered &msg)
 {
     _coreConfigured = msg.coreConfigured;
     _backendInfo = msg.backendInfo;
+    _authBackendInfo = msg.authBackendInfo;
 
     Client::setCoreFeatures(static_cast<Quassel::Features>(msg.coreFeatures));
 
@@ -321,7 +322,7 @@ void ClientAuthHandler::onConnectionReady()
 
     if (!_coreConfigured) {
         // start wizard
-        emit startCoreSetup(_backendInfo);
+        emit startCoreSetup(_backendInfo, _authBackendInfo);
     }
     else // TODO: check if we need LoginEnabled
         login();
