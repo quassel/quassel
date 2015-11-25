@@ -1,6 +1,6 @@
 <ui version="4.0" >
  <class>CoreConfigWizardAuthenticationSelectionPage</class>
- <widget class="QWidget" name="CoreConfigWizardStorageSelectionPage" >
+ <widget class="QWidget" name="CoreConfigWizardAuthenticationSelectionPage" >
   <property name="geometry" >
    <rect>
     <x>0</x>
