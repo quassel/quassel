@@ -170,7 +170,7 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
             socket()->setProperty("UseCompression", true);
 #endif
 
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool(), QString()));
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["AuthBackends"].toList(), m["SupportSsl"].toBool(), QString()));
     }
 
     else if (msgType == "CoreSetupData") {
@@ -242,6 +242,7 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     m["MsgType"] = "ClientInitAck";
     m["CoreFeatures"] = msg.coreFeatures;
     m["StorageBackends"] = msg.backendInfo;
+    m["AuthBackends"] = msg.authBackendInfo;
 
     // FIXME only in compat mode
     m["ProtocolVersion"] = protocolVersion;
