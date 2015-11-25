@@ -382,7 +382,7 @@ void Core::registerAuthenticatorBackend(Authenticator *authenticator)
 	} else {
 		authenticator->deleteLater();
 		return false;
-	]
+        }
 }
 
 void Core::unregisterAuthenticatorBackends()

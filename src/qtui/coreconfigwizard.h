@@ -45,7 +45,7 @@ public:
     enum {
         IntroPage,
         AdminUserPage,
-		AuthenticationSelectionPage
+        AuthenticationSelectionPage,
         StorageSelectionPage,
         SyncPage,
         SyncRelayPage,
@@ -74,8 +74,8 @@ private slots:
 
 private:
     QHash<QString, QVariant> _backends;
-	QHash<QString, QVariant> _authenticators;
-	
+    QHash<QString, QVariant> _authenticators;
+
     CoreConfigWizardPages::SyncPage *syncPage;
     CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
 

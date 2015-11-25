@@ -194,7 +194,7 @@ bool AdminUserPage::isComplete() const
 
 /*** Authentication Selection Page ***/
 
-AuthenticationSelection::AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent)
+AuthenticationSelectionPage::AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent)
     : QWizardPage(parent),
     _connectionBox(0),
     _backends(backends)
