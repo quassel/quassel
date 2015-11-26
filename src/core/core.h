@@ -34,6 +34,7 @@
 #  include <QTcpServer>
 #endif
 
+#include "authenticator.h"
 #include "bufferinfo.h"
 #include "message.h"
 #include "oidentdconfiggenerator.h"
@@ -510,7 +511,7 @@ public slots:
      */
     void syncStorage();
     void setupInternalClientSession(InternalPeer *clientConnection);
-    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &autuhBackend, const QVariantMap &authSetupMap);
+    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupMap);
 
 signals:
     //! Sent when a BufferInfo is updated in storage.
@@ -529,7 +530,8 @@ private slots:
     void clientDisconnected();
 
     bool initStorage(const QString &backend, const QVariantMap &settings, bool setup = false);
-
+    bool initAuthenticator(const QString &backend, const QVariantMap &settings, bool setup = false);
+    
     void socketError(QAbstractSocket::SocketError err, const QString &errorString);
     void setupClientSession(RemotePeer *, UserId);
 
@@ -550,17 +552,25 @@ private:
     bool registerStorageBackend(Storage *);
     void unregisterStorageBackends();
     void unregisterStorageBackend(Storage *);
+    
+    void registerAuthenticatorBackends();
+    bool registerAuthenticatorBackend(Authenticator *);
+    void unregisterAuthenticatorBackends();
+    void unregisterAuthenticatorBackend(Authenticator *);
+    
     bool selectBackend(const QString &backend);
     bool createUser();
     void saveBackendSettings(const QString &backend, const QVariantMap &settings);
+    void saveAuthBackendSettings(const QString &backend, const QVariantMap &settings);
     QVariantMap promptForSettings(const Storage *storage);
 
 private:
     QSet<CoreAuthHandler *> _connectingClients;
     QHash<UserId, SessionThread *> _sessions;
-	// Have both a storage backend and an authenticator backend.
-	Storage *_storage;
-	Authenticator *_authenticator;
+
+    // Have both a storage backend and an authenticator backend.
+    Storage *_storage;
+    Authenticator *_authenticator;
     QTimer _storageSyncTimer;
 
 #ifdef HAVE_SSL
@@ -572,8 +582,8 @@ private:
     OidentdConfigGenerator *_oidentdConfigGenerator;
 
     QHash<QString, Storage *> _storageBackends;
-	QHash<QString, Authenticator *> _authenticatorBackends;
-	
+    QHash<QString, Authenticator *> _authenticatorBackends;
+
     QDateTime _startTime;
 
     bool _configured;

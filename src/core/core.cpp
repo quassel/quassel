@@ -322,7 +322,7 @@ QString Core::setupCoreForInternalUsage()
     }
 
     // mono client currently needs sqlite
-    return setupCore("AdminUser", QString::number(pass), "SQLite", QVariantMap());
+    return setupCore("AdminUser", QString::number(pass), "SQLite", QVariantMap(), "StorageAuth", QVariantMap());
 }
 
 
@@ -367,13 +367,13 @@ void Core::unregisterStorageBackend(Storage *backend)
 
 void Core::registerAuthenticatorBackends()
 {
-	// Register new authentication backends here!
-	registerAuthenticatorBackend(new LdapAuthenticator(this));
-	registerAuthenticatorBackend(new SqlAuthenticator(this));
-	
+    // Register new authentication backends here!
+    //registerAuthenticatorBackend(new LdapAuthenticator(this));
+    registerAuthenticatorBackend(new StorageAuthenticator(this));
+    
 }
 
-void Core::registerAuthenticatorBackend(Authenticator *authenticator)
+bool Core::registerAuthenticatorBackend(Authenticator *authenticator)
 {
 	if (authenticator->isAvailable())
 	{
@@ -394,7 +394,7 @@ void Core::unregisterAuthenticatorBackends()
 	_authenticatorBackends.clear();
 }
 
-void unregisterAuthenticatorBackend(Authenticator *backend)
+void Core::unregisterAuthenticatorBackend(Authenticator *backend)
 {
 	_authenticatorBackends.remove(backend->displayName());
 	backend->deleteLater();
@@ -443,13 +443,13 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings, bool
 // XXX: TODO: Apparently, this is legacy?
 bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings, bool setup)
 {
-	_authenticator = 0;
-	
-	if (backend.isEmpty()) {
-		return false
-	}
-	
-	Authenticator *authenticator = 0;
+    _authenticator = 0;
+    
+    if (backend.isEmpty()) {
+            return false;
+    }
+    
+    Authenticator *authenticator = 0;
     if (_authenticatorBackends.contains(backend)) {
         authenticator = _authenticatorBackends[backend];
     }
@@ -457,8 +457,8 @@ bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings
         qCritical() << "Selected auth backend is not available:" << backend;
         return false;
     }
-	
-	Authenticator::State authState = authenticator->init(settings);
+
+    Authenticator::State authState = authenticator->init(settings);
     switch (authState) {
     case Authenticator::NeedsSetup:
         if (!setup)
