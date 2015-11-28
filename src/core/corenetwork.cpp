@@ -457,16 +457,24 @@ void CoreNetwork::socketInitialized()
         return;
     }
 
-    emit socketOpen(identity, localAddress(), localPort(), peerAddress(), peerPort());
-
     Server server = usedServer();
-#ifdef HAVE_SSL
-    if (server.useSsl && !socket.isEncrypted())
-        return;
-#endif
-    socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
 
+#ifdef HAVE_SSL
+    // Non-SSL connections enter here only once, always emit socketInitialized(...) in these cases
+    // SSL connections call socketInitialized() twice, only emit socketInitialized(...) on the first (not yet encrypted) run
+    if (!server.useSsl || !socket.isEncrypted()) {
+        emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
+    }
+
+    if (server.useSsl && !socket.isEncrypted()) {
+        // We'll finish setup once we're encrypted, and called again
+        return;
+    }
+#else
     emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
+#endif
+
+    socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
 
     // TokenBucket to avoid sending too much at once
     _messageDelay = 2200;  // this seems to be a safe value (2.2 seconds delay)
