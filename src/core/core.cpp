@@ -212,7 +212,7 @@ void Core::init()
     if (!startListening()) exit(1);  // TODO make this less brutal
 
     if (Quassel::isOptionSet("oidentd"))
-        _oidentdConfigGenerator = new OidentdConfigGenerator(this);
+        _oidentdConfigGenerator = new OidentdConfigGenerator(Quassel::isOptionSet("strict-oidentd"), this);
 }
 
 

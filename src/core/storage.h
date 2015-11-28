@@ -402,6 +402,25 @@ public slots:
      */
     virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) = 0;
 
+    //! Check for a user -> sysident mapping
+    /** \param user      The user for the sysident
+     *  \param sysident  The sysident the user wishes to use
+     *  \return          true if the mapping is permitted
+     */
+    virtual bool checkSysident(UserId user, QString sysident) = 0;
+
+    //! Insert a new sysident
+    /** \param user      The user to create a new sysident for
+     *  \param sysident  The sysident to allow the user access to
+     */
+    virtual void insertSysident(UserId user, QString sysident) = 0;
+
+    //! Get the auth username associated with a userId
+    /** \param user  The user to retrieve the username for
+     *  \return      The username for the user
+     */
+    virtual const QString getAuthusername(UserId user) = 0;
+
 signals:
     //! Sent when a new BufferInfo is created, or an existing one changed somehow.
     void bufferInfoUpdated(UserId user, const BufferInfo &);

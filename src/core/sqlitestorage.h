@@ -103,6 +103,11 @@ public slots:
     virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
     virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1);
 
+    /* Sysident handling */
+    virtual bool checkSysident(UserId user, QString sysident);
+    virtual void insertSysident(UserId user, QString sysident);
+    virtual const QString getAuthusername(UserId user);
+
 protected:
     inline virtual void setConnectionProperties(const QVariantMap & /* properties */) {}
     inline virtual QString driverName() { return "QSQLITE"; }

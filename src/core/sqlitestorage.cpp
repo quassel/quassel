@@ -1704,6 +1704,51 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
     return messagelist;
 }
 
+bool SqliteStorage::checkSysident(UserId user, QString sysident) {
+    UserId userId;
+
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_checksysident"));
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":sysident", sysident);
+
+    lockForRead();
+    safeExec(query);
+    watchQuery(query);
+    unlock();
+
+    return query.first() && query.value(0).toInt() == 1;
+}
+
+void SqliteStorage::insertSysident(UserId user, QString sysident) {
+    QSqlQuery createQuery(logDb());
+    createQuery.prepare(queryString("insert_sysident"));
+    createQuery.bindValue(":userid", user.toInt());
+    createQuery.bindValue(":sysident", sysident);
+
+    lockForWrite();
+    safeExec(createQuery);
+    watchQuery(createQuery);
+    unlock();
+}
+
+const QString SqliteStorage::getAuthusername(UserId user) {
+    QString authusername;
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authusername"));
+    query.bindValue(":userid", user.toInt());
+
+    lockForRead();
+    safeExec(query);
+    watchQuery(query);
+    unlock();
+
+    if (query.first()) {
+        authusername = query.value(0).toString();
+    }
+
+    return authusername;
+}
 
 QString SqliteStorage::backlogFile()
 {
