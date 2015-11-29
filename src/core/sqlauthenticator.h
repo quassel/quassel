@@ -18,42 +18,30 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef LDAPAUTHENTICATOR_H
-#define LDAPAUTHENTICATOR_H
+#ifndef SQLAUTHENTICATOR_H
+#define SQLAUTHENTICATOR_H
 
 #include "authenticator.h"
 
-class LdapAuthenticator : public Authenticator
+class SqlAuthenticator : public Authenticator
 {
     Q_OBJECT
 
 public:
-    LdapAuthenticator(QObject *parent = 0);
-    virtual ~LdapAuthenticator();
+    SqlAuthenticator(QObject *parent = 0);
+    virtual ~SqlAuthenticator();
 
 public slots:
     /* General */
     virtual bool isAvailable() const;
     virtual QString displayName() const;
     virtual QString description() const;
-    virtual QStringList setupKeys() const;
-    virtual QVariantMap setupDefaults() const;
+    virtual inline QStringList setupKeys() const { return QStringList(); }
+    virtual inline QVariantMap setupDefaults() const { return QVariantMap(); }
 
     /* User handling */
-    virtual UserId getUserId(const QString &username);
- 
-protected:
-	// Protecte methods for retrieving info about the LDAP connection.
-	inline virtual QString hostName() { return _hostName; }
-	inline virtual int port() { return _port; }
-	inline virtual QString bindDN() { return _bindDN; }
-	inline virtual QString baseDN() { return _baseDN; }
-	
-private:
-    QString _hostName;
-    int _port;
-	QString _bindDN;
-	QString _baseDN;
+    //virtual UserId getUserId(const QString &username);
+
 };
 
 

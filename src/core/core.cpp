@@ -29,6 +29,7 @@
 #include "network.h"
 #include "postgresqlstorage.h"
 #include "quassel.h"
+#include "sqlauthenticator.h"
 #include "sqlitestorage.h"
 #include "util.h"
 
@@ -369,7 +370,7 @@ void Core::registerAuthenticatorBackends()
 {
     // Register new authentication backends here!
     //registerAuthenticatorBackend(new LdapAuthenticator(this));
-    registerAuthenticatorBackend(new StorageAuthenticator(this));
+    registerAuthenticatorBackend(new SqlAuthenticator(this));
     
 }
 
@@ -744,6 +745,19 @@ QVariantList Core::backendInfo()
     return backends;
 }
 
+QVariantList Core::authenticatorInfo()
+{
+    QVariantList backends;
+    foreach(const Authenticator *backend, instance()->_authenticatorBackends.values()) {
+        QVariantMap v;
+        v["DisplayName"] = backend->displayName();
+        v["Description"] = backend->description();
+        v["SetupKeys"] = backend->setupKeys();
+        v["SetupDefaults"] = backend->setupDefaults();
+        backends.append(v);
+    }
+    return backends;
+}
 
 // migration / backend selection
 bool Core::selectBackend(const QString &backend)
