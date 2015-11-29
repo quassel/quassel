@@ -75,6 +75,15 @@ public:
         return instance()->_storage->validateUser(userName, password);
     }
 
+    //! Authenticate user against auth backend
+    /**
+     * \param userName The user's login name
+     * \param password The user's uncrypted password
+     * \return The user's ID if valid; 0 otherwise
+     */
+    static inline UserId authenticateUser(const QString &userName, const QString &password) {
+        return instance()->_authenticator->validateUser(userName, password);
+    }
 
     //! Change a user's password
     /**
@@ -496,6 +505,7 @@ public:
     static inline bool isConfigured() { return instance()->_configured; }
     static bool sslSupported();
     static QVariantList backendInfo();
+    static QVariantList authenticatorInfo();
 
     static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &autuhBackend, const QVariantMap &authSetupMap);
 

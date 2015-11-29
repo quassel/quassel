@@ -18,43 +18,44 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef LDAPAUTHENTICATOR_H
-#define LDAPAUTHENTICATOR_H
+#include "sqlauthenticator.h"
 
-#include "authenticator.h"
+#include "network.h"
+#include "quassel.h"
 
-class LdapAuthenticator : public Authenticator
+#include "core.h"
+
+SqlAuthenticator::SqlAuthenticator(QObject *parent)
+    : SqlAuthenticator(parent)
 {
-    Q_OBJECT
-
-public:
-    LdapAuthenticator(QObject *parent = 0);
-    virtual ~LdapAuthenticator();
-
-public slots:
-    /* General */
-    virtual bool isAvailable() const;
-    virtual QString displayName() const;
-    virtual QString description() const;
-    virtual QStringList setupKeys() const;
-    virtual QVariantMap setupDefaults() const;
-
-    /* User handling */
-    virtual UserId getUserId(const QString &username);
- 
-protected:
-	// Protecte methods for retrieving info about the LDAP connection.
-	inline virtual QString hostName() { return _hostName; }
-	inline virtual int port() { return _port; }
-	inline virtual QString bindDN() { return _bindDN; }
-	inline virtual QString baseDN() { return _baseDN; }
-	
-private:
-    QString _hostName;
-    int _port;
-	QString _bindDN;
-	QString _baseDN;
-};
+}
 
 
-#endif
+SqlAuthenticator::~SqlAuthenticator()
+{
+}
+
+bool SqlAuthenticator::isAvailable() const
+{
+    // XXX: probably this should query the current storage.
+    return true;
+}
+
+QString SqlAuthenticator::displayName() const
+{
+    // We identify the backend to use for the monolithic core by its displayname.
+    // so only change this string if you _really_ have to and make sure the core
+    // setup for the mono client still works ;)
+    return QString("Database");
+}
+
+QString SqlAuthenticator::description() const
+{
+    return tr("Do not auth against any remote authentication service, but instead save a hashed and salted password "
+              "in the selected database.");
+}
+
+UserId SqliteStorage::validateUser(const QString &user, const QString &password)
+{
+    return Core::validateUser(user, password);
+}
