@@ -561,7 +561,7 @@ endif()
 
 include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_HEAD)
-git_describe(GIT_DESCRIBE --long)
+git_describe(GIT_DESCRIBE --long --dirty)
 
 # If not in a Git repo try to read GIT_HEAD and GIT_DESCRIBE from
 # enviroment
