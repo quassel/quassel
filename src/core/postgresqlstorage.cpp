@@ -1857,6 +1857,7 @@ bool PostgreSqlMigrationWriter::writeMo(const QuasselUserMO &user)
     bindValue(0, user.id.toInt());
     bindValue(1, user.username);
     bindValue(2, user.password);
+    bindValue(3, user.hashversion);
     return exec();
 }
 
