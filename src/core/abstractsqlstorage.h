@@ -131,6 +131,7 @@ public:
         UserId id;
         QString username;
         QString password;
+        int hashversion;
     };
 
     struct SenderMO {
