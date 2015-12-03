@@ -217,12 +217,21 @@ if (USE_QT5)
             PURPOSE     "Required for audio notifications"
         )
 
-        find_package(LibsnoreQt5 0.5.70 QUIET)
+        find_package(LibsnoreQt5 0.7.0 QUIET)
         set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
             URL "https://projects.kde.org/projects/playground/libs/snorenotify"
             DESCRIPTION "a cross-platform notification framework"
             PURPOSE     "Enable support for the snorenotify framework"
         )
+        if(LibsnoreQt5_FOUND)
+            find_package(LibsnoreSettingsQt5)
+            set_package_properties(LibsnoreSettingsQt5 PROPERTIES TYPE REQUIRED
+                URL "https://projects.kde.org/projects/playground/libs/snorenotify"
+                DESCRIPTION "a cross-platform notification framework"
+                PURPOSE     "Enable support for the snorenotify framework"
+            )
+        endif()
+        
 
         if (WITH_WEBKIT)
             find_package(Qt5WebKit QUIET)

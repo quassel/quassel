@@ -99,7 +99,7 @@ if (LibsnoreQt5_FOUND)
     add_definitions(-DHAVE_LIBSNORE)
     list(APPEND SOURCES snorenotificationbackend.cpp)
     list(APPEND FORMS   snorentificationconfigwidget.ui)
-    list(APPEND LIBS    Snore::Libsnore)
+    list(APPEND LIBS    Snore::Libsnore Snore::LibsnoreSettings)
 endif()
 
 if (PHONON_FOUND OR Phonon4Qt5_FOUND)
