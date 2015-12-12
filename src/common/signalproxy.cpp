@@ -146,9 +146,9 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
             for (int i = 0; i < argTypes.size(); i++) {
                 if (argTypes[i] == 0) {
 #if QT_VERSION >= 0x050000
-                    qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(_id).methodSignature().constData());
+                    qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(signal.signalId).methodSignature().constData());
 #else
-                    qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(_id).signature());
+                    qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(signal.signalId).signature());
 #endif
                     qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
                     return _id;
