@@ -1617,6 +1617,39 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
     return messagelist;
 }
 
+bool PostgreSqlStorage::checkSysident(UserId user, QString sysident) {
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_checksysident"));
+    query.bindValue(":sysident", sysident);
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    watchQuery(query);
+
+    return query.first() && query.value(0).toInt() == 1;
+}
+
+void PostgreSqlStorage::insertSysident(UserId user, QString sysident) {
+    QSqlQuery query(logDb());
+    query.prepare(queryString("insert_sysident"));
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":sysident", sysident);
+    safeExec(query);
+    watchQuery(query);
+}
+
+const QString PostgreSqlStorage::getAuthusername(UserId user) {
+    QString authusername;
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authusername"));
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    watchQuery(query);
+
+    if (query.first()) {
+         authusername = query.value(0).toString();
+    }
+    return authusername;
+}
 
 // void PostgreSqlStorage::safeExec(QSqlQuery &query) {
 //   qDebug() << "PostgreSqlStorage::safeExec";

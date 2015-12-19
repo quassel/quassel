@@ -67,6 +67,7 @@ public:
     inline UserId user() const { return _user; }
     CoreNetwork *network(NetworkId) const;
     CoreIdentity *identity(IdentityId) const;
+    const QString strictSysident(const QString &desired);
     inline CoreNetworkConfig *networkConfig() const { return _networkConfig; }
     NetworkConnection *networkConnection(NetworkId) const;
 

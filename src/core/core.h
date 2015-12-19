@@ -490,6 +490,31 @@ public:
         return instance()->_storage->bufferMarkerLineMsgIds(user);
     }
 
+    //! Check for a user -> sysident mapping
+    /** \param user      The user for the sysident
+     *  \param sysident  The sysident the user wishes to use
+     *  \return          true if the mapping is permitted
+     */
+    static inline bool checkSysident(UserId user, QString sysident) {
+        return instance()->_storage->checkSysident(user, sysident);
+    }
+
+    //! Insert a new sysident
+    /** \param user      The user to create a new sysident for
+     *  \param sysident  The sysident to allow the user access to
+     */
+    static inline void insertSysident(UserId user, QString sysident) {
+        return instance()->_storage->insertSysident(user, sysident);
+    }
+
+    //! Get the auth username associated with a userId
+    /** \param user  The user to retrieve the username for
+     *  \return      The username for the user
+     */
+    static inline const QString getAuthusername(UserId user) {
+        return instance()->_storage->getAuthusername(user);
+    }
+
 
     static inline QDateTime startTime() { return instance()->_startTime; }
     static inline bool isConfigured() { return instance()->_configured; }
