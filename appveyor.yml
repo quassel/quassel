@@ -1,0 +1,134 @@
+version: '{build}'
+build_script:
+- ps: |
+    if ( !(Test-Path "$env:APPVEYOR_BUILD_FOLDER\work\appveyorHelp.psm1"))
+    {
+        mkdir $env:APPVEYOR_BUILD_FOLDER\work\
+        Start-FileDownload https://raw.githubusercontent.com/TheOneRing/appVeyorHelp/master/appveyorHelp.psm1 -FileName $env:APPVEYOR_BUILD_FOLDER\work\appveyorHelp.psm1
+    }
+    $ErrorActionPreference="Stop"
+
+    Import-Module $env:APPVEYOR_BUILD_FOLDER\work\appveyorHelp.psm1
+
+    Init @("ninja", "png2ico", "nsis") ([ordered]@{"git://anongit.kde.org/extra-cmake-modules.git" = @{"branch" = "master"};
+                                 "https://github.com/Snorenotify/SnoreGrowl.git" = @{"branch" = "v0.4.0"; "buildType" = "Release"};
+                                 "git://anongit.kde.org/snorenotify.git" = @{"branch" = "v0.6.0"; "buildType" = "Release"}})
+
+
+    mkdir -Force $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
+    cd $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
+    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON -DWITH_WEBKIT=OFF
+    CmakeImageInstall
+
+    $imageDir = CreateDeployImage @(
+                            # whitelist
+                            #quassel
+                            "quassel.*",
+                            #
+                            #gccruntime",
+                            "bin\\libgomp.*\.dll",
+                            "bin\\libgcc_s_.*\.dll",
+                            "bin\\libwinpthread.*\.dll",
+                            "bin\\libstdc.*\.dll",
+                            #
+                            #snore
+                            "bin\\.*snore.*\.dll",
+                            "lib\\plugins\\libsnore.*\\libsnore_backend.*\.dll",
+                            "lib\\plugins\\libsnore.*\\libsnore_secondary_backend.*\.dll",
+                            #snorenotify 0.5
+                            "lib\\libsnore.*\\libsnore_backend.*\.dll",
+                            #
+                            "bin\\SnoreToast\.exe",
+                            #
+                            #Growl
+                            "bin\\.*snoregrowl.*\.dll",
+                            #
+                            #ssl
+                            "bin\\libeay32\.dll",
+                            "bin\\ssleay32\.dll",
+                            #
+                            #icu
+                            "bin\\icuin\d+\.dll",
+                            "bin\\icuuc\d+\.dll",
+                            "bin\\icudt\d+\.dll",
+                            #
+                            #qt
+                            "bin\\Qt5Core\.dll",
+                            "bin\\Qt5Declarative\.dll",
+                            "bin\\Qt5Gui\.dll",
+                            "bin\\Qt5Network\.dll",
+                            "bin\\Qt5Opengl\.dll",
+                            "bin\\Qt5Multimedia\.dll",
+                            "bin\\Qt5MultimediaWidgets\.dll",
+                            "bin\\Qt5Qml\.dll",
+                            "bin\\Qt5Quick\.dll",
+                            "bin\\Qt5Script\.dll",
+                            "bin\\Qt5Sql\.dll",
+                            "bin\\Qt5Widgets\.dll",
+                            "bin\\Qt5XmlPatterns\.dll",
+                            "bin\\.*libglesv2\.dll",
+                            "bin\\.*libEGL\.dll",
+                            "qml\\.*",
+                            #bin\\QtXml\.dll
+                            #
+                            "plugins\\imageformats\\(?!.*d\.dll).*\.dll$",
+                            "plugins\\sqldrivers\\qsqlite(?!.*d\.dll).*\.dll$",
+                            "plugins\\codecs\\(?!.*d\.dll).*\.dll$",
+                            "plugins\\platforms\\qwindows(?!.*d\.dll).*\.dll$",
+                            #
+                            #
+                            #zlib
+                            "bin\\libz.dll",
+                            #
+                            #qca
+                            "bin\\libqca.*\.dll",
+                            "lib\\qca-qt5\\crypto\\.*",
+                            "certs\\.*",
+                            #
+                            #phonon
+                            "bin\\libphonon.*\.dll",
+                            "bin\\phonon.*\.dll",
+                            "bin\\libphononexperimental.*\.dll",
+                            "bin\\phonon_backend\\.*",
+                            "plugins\\phonon_backend\\.*",
+                            "plugins\\phonon4qt5_backend\\.*") @(
+                            #blacklist
+                            ".*\.h",
+                            "lib\\plugins\\libsnore.*\\libsnore_backend_freedesktop\.dll"
+                            )
+
+    mv "$imageDir\bin\*" "$imageDir\"
+    #mv "$imageDir\lib\qca-qt5\crypto" "$imageDir\crypto"
+    mv "$imageDir\plugins\*" "$imageDir"
+    if(Test-Path "$imageDir\lib\plugins")
+    {
+        mv "$imageDir\lib\plugins\*" "$imageDir"
+    }
+    #snorenotify 0.5 plugins
+    if(Test-Path "$imageDir\lib\libsnore-qt5")
+    {
+        mv "$imageDir\lib\libsnore-qt5\*" "$imageDir"
+    }
+    rm -Recurse "$imageDir\plugins\*"
+    rm -Recurse "$imageDir\lib"
+    rm -Recurse "$imageDir\bin"
+    7ZipDeployImage
+    NsisDeployImage $env:APPVEYOR_BUILD_FOLDER\scripts\build\NullsoftInstaller.nsi
+
+environment:
+    QT_VER: 5.5
+
+    matrix:
+    #mingw
+    - COMPILER: mingw492_32
+    #msvc
+    - COMPILER: msvc2013
+    - COMPILER: msvc2013_64
+
+test: off
+
+cache:
+    - work\install -> appveyor.yml
+    - C:\ProgramData\chocolatey\bin -> appveyor.yml
+    - C:\ProgramData\chocolatey\lib -> appveyor.yml
+    - work\appveyorHelp.psm1 -> appveyor.yml
