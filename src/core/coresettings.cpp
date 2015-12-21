@@ -48,7 +48,7 @@ QVariant CoreSettings::authSettings(const QVariant &def)
 	return localValue("AuthSettings", def);
 }
 
-QVariant CoreSettings:setAuthSettings(const QVariant &data)
+void CoreSettings::setAuthSettings(const QVariant &data)
 {
 	setLocalValue("AuthSettings", data);
 }	

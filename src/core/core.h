@@ -507,7 +507,7 @@ public:
     static QVariantList backendInfo();
     static QVariantList authenticatorInfo();
 
-    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &autuhBackend, const QVariantMap &authSetupMap);
+    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupMap);
 
     static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
