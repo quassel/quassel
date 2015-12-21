@@ -184,7 +184,7 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
 
 int AdminUserPage::nextId() const
 {
-    return CoreConfigWizard::StorageSelectionPage;
+    return CoreConfigWizard::AuthenticationSelectionPage;
 }
 
 
@@ -219,7 +219,7 @@ AuthenticationSelectionPage::AuthenticationSelectionPage(const QHash<QString, QV
 
 int AuthenticationSelectionPage::nextId() const
 {
-    return CoreConfigWizard::SyncPage;
+    return CoreConfigWizard::StorageSelectionPage;
 }
 
 
