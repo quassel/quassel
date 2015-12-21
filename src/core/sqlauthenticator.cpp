@@ -20,6 +20,7 @@
 
 #include "sqlauthenticator.h"
 
+#include "logger.h"
 #include "network.h"
 #include "quassel.h"
 
@@ -67,5 +68,6 @@ bool SqlAuthenticator::setup(const QVariantMap &settings)
 
 Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
 {
+	quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
 	return IsReady;
 }
