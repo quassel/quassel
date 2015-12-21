@@ -38,7 +38,7 @@ SqlAuthenticator::~SqlAuthenticator()
 
 bool SqlAuthenticator::isAvailable() const
 {
-    // XXX: probably this should query the current storage.
+    // XXX: probably this should query the current storage (see the ::init routine too).
     return true;
 }
 
@@ -68,6 +68,9 @@ bool SqlAuthenticator::setup(const QVariantMap &settings)
 
 Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
 {
+	// TODO: FIXME: this should check if the storage provider is ready, but I don't
+	// know if there's an exposed way to do that at the moment.
+	
 	quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
 	return IsReady;
 }

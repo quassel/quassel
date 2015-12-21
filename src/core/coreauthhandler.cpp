@@ -214,6 +214,11 @@ void CoreAuthHandler::handle(const Login &msg)
 
     //UserId uid = Core::validateUser(msg.user, msg.password);
     UserId uid = Core::authenticateUser(msg.user, msg.password);
+	
+	// Try doing direct database auth if the provider failed, first.
+	if (uid == 0) {
+		uid = Core::validateUser(msg.user, msg.password);
+	}
     
     if (uid == 0) {
         quInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
