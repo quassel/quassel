@@ -166,9 +166,13 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     }
 
     QVariantList backends;
+	QVariantList authenticators;
     bool configured = Core::isConfigured();
     if (!configured)
+	{
         backends = Core::backendInfo();
+		authenticators = Core::authenticatorInfo();
+	}
 
     int uptime = Core::instance()->startTime().secsTo(QDateTime::currentDateTime().toUTC());
     int updays = uptime / 86400; uptime %= 86400;
@@ -181,7 +185,7 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
                           .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(Core::instance()->startTime().toString(Qt::TextDate));
 
     // useSsl and coreInfo are only used for the legacy protocol
-    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, coreInfo));
+    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, authenticators, useSsl, coreInfo));
 
     if (_legacy && useSsl)
         startSsl();
@@ -195,7 +199,7 @@ void CoreAuthHandler::handle(const SetupData &msg)
     if (!checkClientRegistered())
         return;
 
-    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData);
+    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, msg.authenticator, msg.authSetupData);
     if (!result.isEmpty())
         _peer->dispatch(SetupFailed(result));
     else

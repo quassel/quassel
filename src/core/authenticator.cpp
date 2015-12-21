@@ -18,54 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "sqlauthenticator.h"
+#include "authenticator.h"
 
-#include "network.h"
-#include "quassel.h"
-
-#include "core.h"
-
-SqlAuthenticator::SqlAuthenticator(QObject *parent)
-    : Authenticator(parent)
+Authenticator::Authenticator(QObject *parent)
+    : QObject(parent)
 {
-}
-
-
-SqlAuthenticator::~SqlAuthenticator()
-{
-}
-
-bool SqlAuthenticator::isAvailable() const
-{
-    // XXX: probably this should query the current storage.
-    return true;
-}
-
-QString SqlAuthenticator::displayName() const
-{
-    // We identify the backend to use for the monolithic core by its displayname.
-    // so only change this string if you _really_ have to and make sure the core
-    // setup for the mono client still works ;)
-    return QString("Database");
-}
-
-QString SqlAuthenticator::description() const
-{
-    return tr("Do not auth against any remote authentication service, but instead save a hashed and salted password "
-              "in the selected database.");
-}
-
-UserId SqlAuthenticator::validateUser(const QString &user, const QString &password)
-{
-    return Core::validateUser(user, password);
-}
-
-bool SqlAuthenticator::setup(const QVariantMap &settings)
-{
-	return true;
-}
-
-Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
-{
-	return IsReady;
 }

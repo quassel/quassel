@@ -33,12 +33,16 @@ public:
 
 public slots:
     /* General */
-    virtual bool isAvailable() const;
-    virtual QString displayName() const;
-    virtual QString description() const;
+    bool isAvailable() const;
+    QString displayName() const;
+    QString description() const;
     virtual inline QStringList setupKeys() const { return QStringList(); }
     virtual inline QVariantMap setupDefaults() const { return QVariantMap(); }
 
+    bool setup(const QVariantMap &settings = QVariantMap());
+    State init(const QVariantMap &settings = QVariantMap());
+    UserId validateUser(const QString &user, const QString &password);
+    
     /* User handling */
     //virtual UserId getUserId(const QString &username);
 
