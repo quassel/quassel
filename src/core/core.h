@@ -84,6 +84,16 @@ public:
     static inline UserId authenticateUser(const QString &userName, const QString &password) {
         return instance()->_authenticator->validateUser(userName, password);
     }
+    
+    //! Add a new user, exposed so auth providers can call this without being the storage.
+    /**
+     * \param userName The user's login name
+     * \param password The user's uncrypted password
+     * \return The user's ID if valid; 0 otherwise
+     */
+    static inline UserId addUser(const QString &userName, const QString &password) {
+        return instance()->_storage->addUser(userName, password);
+    }
 
     //! Change a user's password
     /**

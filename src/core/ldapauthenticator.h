@@ -18,10 +18,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+/* This file contains an implementation of an LDAP Authenticator, as an example
+ * of what a custom external auth provider could do.
+ * 
+ * It's based off of this pull request for quassel by abustany:
+ * https://github.com/quassel/quassel/pull/4/
+ * 
+ */
+
 #ifndef LDAPAUTHENTICATOR_H
 #define LDAPAUTHENTICATOR_H
 
 #include "authenticator.h"
+
+#include "core.h"
+
+// Link against LDAP.
+#include <ldap.h>
+
+// Default LDAP server port.
+#define DEFAULT_LDAP_PORT 389
 
 class LdapAuthenticator : public Authenticator
 {
@@ -33,27 +49,40 @@ public:
 
 public slots:
     /* General */
-    virtual bool isAvailable() const;
-    virtual QString displayName() const;
-    virtual QString description() const;
+    bool isAvailable() const;
+    QString displayName() const;
+    QString description() const;
     virtual QStringList setupKeys() const;
     virtual QVariantMap setupDefaults() const;
-
-    /* User handling */
-    virtual UserId getUserId(const QString &username);
  
-protected:
-	// Protecte methods for retrieving info about the LDAP connection.
-	inline virtual QString hostName() { return _hostName; }
-	inline virtual int port() { return _port; }
-	inline virtual QString bindDN() { return _bindDN; }
-	inline virtual QString baseDN() { return _baseDN; }
+    bool setup(const QVariantMap &settings = QVariantMap());
+    State init(const QVariantMap &settings = QVariantMap());
+    UserId validateUser(const QString &user, const QString &password);
 	
+protected:
+    virtual void setConnectionProperties(const QVariantMap &properties);
+    bool ldapConnect();
+    void ldapDisconnect();
+    bool ldapAuth(const QString &username, const QString &password);
+
+    // Protected methods for retrieving info about the LDAP connection.
+    inline virtual QString hostName() { return _hostName; }
+    inline virtual int port() { return _port; }
+    inline virtual QString bindDN() { return _bindDN; }
+    inline virtual QString baseDN() { return _baseDN; }
+
 private:
     QString _hostName;
     int _port;
-	QString _bindDN;
-	QString _baseDN;
+    QString _bindDN;
+    QString _baseDN;
+	QString _filter;
+    QString _bindPassword;
+    QString _uidAttribute;
+
+	// The actual connection object.
+	LDAP *_connection;
+	
 };
 
 

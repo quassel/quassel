@@ -135,7 +135,7 @@ endif()
 
 # LDAP Authentication (and other authentication backends).
 ####################################################################
-option(WITH_LDAP     "Enable LDAP authentication support if present on system"	ON)
+option(WITH_LDAP     "Enable LDAP authentication support if present on system"  ON)
 
 # Setup CMake
 #####################################################################
@@ -525,6 +525,9 @@ if(WITH_LDAP)
 	if(LDAP_FOUND)
 		message(STATUS "Enabling LDAP authentication support")
 		set(HAVE_LDAP true)
+		if(HAVE_LDAP)
+			add_definitions(-DHAVE_LDAP)
+		endif(HAVE_LDAP)
 	else(LDAP_FOUND)
 		message(STATUS "Disabling LDAP authentication support")
 	endif(LDAP_FOUND)

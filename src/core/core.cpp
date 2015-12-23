@@ -33,6 +33,11 @@
 #include "sqlitestorage.h"
 #include "util.h"
 
+// Currently building with LDAP bindings is optional.
+#ifdef HAVE_LDAP
+#include "ldapauthenticator.h"
+#endif
+
 // migration related
 #include <QFile>
 #ifdef Q_OS_WIN
@@ -378,8 +383,10 @@ void Core::unregisterStorageBackend(Storage *backend)
 void Core::registerAuthenticatorBackends()
 {
     // Register new authentication backends here!
-    //registerAuthenticatorBackend(new LdapAuthenticator(this));
-    registerAuthenticatorBackend(new SqlAuthenticator(this));
+	registerAuthenticatorBackend(new SqlAuthenticator(this));
+#ifdef HAVE_LDAP
+    registerAuthenticatorBackend(new LdapAuthenticator(this));
+#endif
     
 }
 
@@ -392,7 +399,7 @@ bool Core::registerAuthenticatorBackend(Authenticator *authenticator)
 	} else {
 		authenticator->deleteLater();
 		return false;
-        }
+	}
 }
 
 void Core::unregisterAuthenticatorBackends()
