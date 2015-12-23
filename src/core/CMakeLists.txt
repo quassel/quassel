@@ -34,7 +34,6 @@ set(SOURCES
     oidentdconfiggenerator.cpp
     postgresqlstorage.cpp
     sessionthread.cpp
-    ldapauthenticator.cpp
     sqlauthenticator.cpp
     sqlitestorage.cpp
     storage.cpp
@@ -63,6 +62,13 @@ if (QCA2-QT5_FOUND)
     list(APPEND SOURCES cipher.cpp)
     list(APPEND LIBS ${QCA2-QT5_LIBRARIES})
 endif()
+
+# Build with LDAP if told to do so.
+if(HAVE_LDAP)
+    set(SOURCES ${SOURCES} ldapauthenticator.cpp)
+    set(MOC_HDRS ${MOC_HDRS} ldapauthenticator.h)
+    include_directories(${LDAP_INCLUDE_DIR})
+endif(HAVE_LDAP)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common)
 

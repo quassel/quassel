@@ -18,10 +18,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+/* This file contains an implementation of an LDAP Authenticator, as an example
+ * of what a custom external auth provider could do.
+ * 
+ * It's based off of this pull request for quassel by abustany:
+ * https://github.com/quassel/quassel/pull/4/
+ * 
+ */
+
 #include "ldapauthenticator.h"
 
 #include "network.h"
 #include "quassel.h"
+
+// Link against LDAP.
+#include <ldap.h>
 
 LdapAuthenticator::LdapAuthenticator(QObject *parent)
     : LdapAuthenticator(parent),
