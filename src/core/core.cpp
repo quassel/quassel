@@ -26,13 +26,17 @@
 #include "coresettings.h"
 #include "logger.h"
 #include "internalpeer.h"
-#include "ldapauthenticator.h"
 #include "network.h"
 #include "postgresqlstorage.h"
 #include "quassel.h"
 #include "sqlauthenticator.h"
 #include "sqlitestorage.h"
 #include "util.h"
+
+// Currently building with LDAP bindings is optional.
+#ifdef WITH_LDAP
+#include "ldapauthenticator.h"
+#endif
 
 // migration related
 #include <QFile>
@@ -370,8 +374,10 @@ void Core::unregisterStorageBackend(Storage *backend)
 void Core::registerAuthenticatorBackends()
 {
     // Register new authentication backends here!
+	registerAuthenticatorBackend(new SqlAuthenticator(this));
+#ifdef WITH_LDAP
     registerAuthenticatorBackend(new LdapAuthenticator(this));
-    registerAuthenticatorBackend(new SqlAuthenticator(this));
+#endif
     
 }
 
@@ -384,7 +390,7 @@ bool Core::registerAuthenticatorBackend(Authenticator *authenticator)
 	} else {
 		authenticator->deleteLater();
 		return false;
-        }
+	}
 }
 
 void Core::unregisterAuthenticatorBackends()
