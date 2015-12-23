@@ -26,6 +26,7 @@
 #include "coresettings.h"
 #include "logger.h"
 #include "internalpeer.h"
+#include "ldapauthenticator.h"
 #include "network.h"
 #include "postgresqlstorage.h"
 #include "quassel.h"
@@ -369,7 +370,7 @@ void Core::unregisterStorageBackend(Storage *backend)
 void Core::registerAuthenticatorBackends()
 {
     // Register new authentication backends here!
-    //registerAuthenticatorBackend(new LdapAuthenticator(this));
+    registerAuthenticatorBackend(new LdapAuthenticator(this));
     registerAuthenticatorBackend(new SqlAuthenticator(this));
     
 }
