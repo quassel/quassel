@@ -33,27 +33,24 @@ public:
 
 public slots:
     /* General */
-    virtual bool isAvailable() const;
-    virtual QString displayName() const;
-    virtual QString description() const;
+    bool isAvailable() const;
+    QString displayName() const;
+    QString description() const;
     virtual QStringList setupKeys() const;
     virtual QVariantMap setupDefaults() const;
-
-    /* User handling */
-    virtual UserId getUserId(const QString &username);
  
 protected:
-	// Protecte methods for retrieving info about the LDAP connection.
-	inline virtual QString hostName() { return _hostName; }
-	inline virtual int port() { return _port; }
-	inline virtual QString bindDN() { return _bindDN; }
-	inline virtual QString baseDN() { return _baseDN; }
-	
+    // Protected methods for retrieving info about the LDAP connection.
+    inline virtual QString hostName() { return _hostName; }
+    inline virtual int port() { return _port; }
+    inline virtual QString bindDN() { return _bindDN; }
+    inline virtual QString baseDN() { return _baseDN; }
+
 private:
     QString _hostName;
     int _port;
-	QString _bindDN;
-	QString _baseDN;
+    QString _bindDN;
+    QString _baseDN;
 };
 
 

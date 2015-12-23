@@ -34,6 +34,7 @@ set(SOURCES
     oidentdconfiggenerator.cpp
     postgresqlstorage.cpp
     sessionthread.cpp
+    ldapauthenticator.cpp
     sqlauthenticator.cpp
     sqlitestorage.cpp
     storage.cpp
