@@ -23,6 +23,8 @@
 
 #include <QWidget>
 
+class QPushButton;
+
 class MainPage : public QWidget
 {
     Q_OBJECT
@@ -30,8 +32,12 @@ class MainPage : public QWidget
 public:
     MainPage(QWidget *parent = 0);
 
-protected:
-    void paintEvent(QPaintEvent *event);
+private slots:
+    void showCoreConnectionDlg();
+    void coreConnectionStateChanged();
+
+private:
+    QPushButton *_connectButton;
 };
 
 

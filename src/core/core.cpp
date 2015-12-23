@@ -207,13 +207,13 @@ void Core::init()
     }
 
     if (Quassel::isOptionSet("add-user")) {
-        createUser();
-        exit(0);
+        exit(createUser() ? EXIT_SUCCESS : EXIT_FAILURE);
+
     }
 
     if (Quassel::isOptionSet("change-userpass")) {
-        changeUserPass(Quassel::optionValue("change-userpass"));
-        exit(0);
+        exit(changeUserPass(Quassel::optionValue("change-userpass")) ?
+                       EXIT_SUCCESS : EXIT_FAILURE);
     }
 
     connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
@@ -835,7 +835,7 @@ bool Core::selectBackend(const QString &backend)
 }
 
 
-void Core::createUser()
+bool Core::createUser()
 {
     QTextStream out(stdout);
     QTextStream in(stdin);
@@ -857,30 +857,32 @@ void Core::createUser()
 
     if (password != password2) {
         qWarning() << "Passwords don't match!";
-        return;
+        return false;
     }
     if (password.isEmpty()) {
         qWarning() << "Password is empty!";
-        return;
+        return false;
     }
 
     if (_configured && _storage->addUser(username, password).isValid()) {
         out << "Added user " << username << " successfully!" << endl;
+        return true;
     }
     else {
         qWarning() << "Unable to add user:" << qPrintable(username);
+        return false;
     }
 }
 
 
-void Core::changeUserPass(const QString &username)
+bool Core::changeUserPass(const QString &username)
 {
     QTextStream out(stdout);
     QTextStream in(stdin);
     UserId userId = _storage->getUserId(username);
     if (!userId.isValid()) {
         out << "User " << username << " does not exist." << endl;
-        return;
+        return false;
     }
 
     out << "Change password for user: " << username << endl;
@@ -898,18 +900,20 @@ void Core::changeUserPass(const QString &username)
 
     if (password != password2) {
         qWarning() << "Passwords don't match!";
-        return;
+        return false;
     }
     if (password.isEmpty()) {
         qWarning() << "Password is empty!";
-        return;
+        return false;
     }
 
     if (_configured && _storage->updateUser(userId, password)) {
         out << "Password changed successfully!" << endl;
+        return true;
     }
     else {
         qWarning() << "Failed to change password!";
+        return false;
     }
 }
 
