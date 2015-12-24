@@ -185,7 +185,8 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
                           .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(Core::instance()->startTime().toString(Qt::TextDate));
 
     // useSsl and coreInfo are only used for the legacy protocol
-    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, authenticators, useSsl, coreInfo));
+	// XXX: FIXME: use client features here: we cannot pass authenticators if the client is too old!
+    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, coreInfo, authenticators));
 
     if (_legacy && useSsl)
         startSsl();

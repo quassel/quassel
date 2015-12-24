@@ -72,8 +72,10 @@ public:
         SaslExternal = 0x0004,
         HideInactiveNetworks = 0x0008,
         PasswordChange = 0x0010,
+        // Whether or not the core supports auth backends.
+        AuthBackends = 0x0020,
 
-        NumFeatures = 0x0010
+        NumFeatures = 0x0020
     };
     Q_DECLARE_FLAGS(Features, Feature);
 
