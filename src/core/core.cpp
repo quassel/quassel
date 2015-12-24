@@ -306,6 +306,12 @@ QString Core::setupCore(const QString &adminUser, const QString &adminPassword, 
         return tr("Could not setup storage!");
     }
 
+    quInfo() << "Selected authenticator: " << authBackend;
+    if (!(_configured = initAuthenticator(authBackend, authSetupData, true)))
+	{
+		return tr("Could not setup authenticator!");
+	}
+
     saveBackendSettings(backend, setupData);
 	saveAuthBackendSettings(authBackend, authSetupData);
 
