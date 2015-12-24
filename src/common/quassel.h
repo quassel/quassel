@@ -76,8 +76,10 @@ public:
         CustomRateLimits = 0x0080,         /// IRC server custom message rate limits
         DccFileTransfer = 0x0100,
         AwayFormatTimestamp = 0x0200,      /// Timestamp formatting in away (e.g. %%hh:mm%%)
+        // Whether or not the core supports auth backends.
+        AuthBackends = 0x0400,
 
-        NumFeatures = 0x0200
+        NumFeatures = 0x0400
     };
     Q_DECLARE_FLAGS(Features, Feature)
 

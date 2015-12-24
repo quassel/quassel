@@ -27,6 +27,8 @@
 #include "coreconfigwizard.h"
 #include "coreconnection.h"
 
+#include "client.h"
+
 CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, const QList<QVariant> &authenticators, QWidget *parent)
     : QWizard(parent),
     _connection(connection)
@@ -36,7 +38,7 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
 
     foreach(const QVariant &v, backends)
     _backends[v.toMap()["DisplayName"].toString()] = v;
-    
+
     foreach(const QVariant &v, authenticators)
     _authenticators[v.toMap()["DisplayName"].toString()] = v;
 
@@ -45,8 +47,8 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
     setPage(AuthenticationSelectionPage, new CoreConfigWizardPages::AuthenticationSelectionPage(_authenticators, this));
     setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(_backends, this));
     syncPage = new CoreConfigWizardPages::SyncPage(this);
-    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap &)), 
-			SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap &)));
+    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap &)),
+            SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap &)));
     setPage(SyncPage, syncPage);
     syncRelayPage = new CoreConfigWizardPages::SyncRelayPage(this);
     connect(syncRelayPage, SIGNAL(startOver()), this, SLOT(startOver()));
@@ -89,7 +91,7 @@ QHash<QString, QVariant> CoreConfigWizard::backends() const
 
 QHash<QString, QVariant> CoreConfigWizard::authenticators() const
 {
-	return _authenticators;
+    return _authenticators;
 }
 
 void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authBackend, const QVariantMap &authProperties)
@@ -98,7 +100,14 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
     foreach(int idx, visitedPages())
     page(idx)->setEnabled(false);
 
-    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, authBackend, properties, authProperties));
+    // FIXME? We need to be able to set up older cores that don't have auth backend support.
+    // So if the core doesn't support that feature, don't pass those parameters.
+    if (!(Client::coreFeatures() & Quassel::AuthBackends))
+    {
+        coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
+    } else {
+        coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties, authBackend, authProperties));
+    }
 }
 
 
@@ -184,7 +193,13 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
 
 int AdminUserPage::nextId() const
 {
-    return CoreConfigWizard::AuthenticationSelectionPage;
+    // If the core doesn't support auth backends, skip that page!
+    if (!(Client::coreFeatures() & Quassel::AuthBackends))
+    {
+        return CoreConfigWizard::StorageSelectionPage;
+    } else {
+        return CoreConfigWizard::AuthenticationSelectionPage;
+    }
 }
 
 
@@ -510,23 +525,23 @@ void SyncPage::initializePage()
     complete = false;
     hasError = false;
 
-	// Fill in sync info about the storage layer. 
+    // Fill in sync info about the storage layer.
     StorageSelectionPage *storagePage = qobject_cast<StorageSelectionPage *>(wizard()->page(CoreConfigWizard::StorageSelectionPage));
     QString backend = storagePage->selectedBackend();
     QVariantMap properties = storagePage->connectionProperties();
-	Q_ASSERT(!backend.isEmpty());
+    Q_ASSERT(!backend.isEmpty());
     ui.backend->setText(backend);
-    
-	// Fill in synci nfo about the authentication layer.
-	AuthenticationSelectionPage *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
-	QString authBackend = authPage->selectedBackend();
+
+    // Fill in sync info about the authentication layer.
+    AuthenticationSelectionPage *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
+    QString authBackend = authPage->selectedBackend();
     QVariantMap authProperties = authPage->connectionProperties();
-	Q_ASSERT(!authBackend.isEmpty());
+    Q_ASSERT(!authBackend.isEmpty());
     ui.authBackend->setText(authBackend);
 
     ui.user->setText(wizard()->field("adminUser.user").toString());
 
-	emit setupCore(backend, properties, authBackend, authProperties);
+    emit setupCore(backend, properties, authBackend, authProperties);
 }
 
 

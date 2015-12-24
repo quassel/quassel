@@ -26,23 +26,23 @@
 #include "types.h"
 
 class Authenticator : public QObject {
-  
-	Q_OBJECT
-	
+
+    Q_OBJECT
+
 public:
     Authenticator(QObject *parent = 0);
     virtual ~Authenticator() {};
 
     enum State {
-        IsReady,		// ready to go
-        NeedsSetup,		// need basic setup (ask the user for input)
-        NotAvailable 	// remove the authenticator backend from the list of avaliable authenticators.
+        IsReady,        // ready to go
+        NeedsSetup,        // need basic setup (ask the user for input)
+        NotAvailable     // remove the authenticator backend from the list of avaliable authenticators.
     };
 
 
 public slots:
-	// General
-	
+    // General
+
     //! Check if the authenticator type is available.
     /** An authenticator subclass should return true if it can be successfully used, i.e. if all
      *  prerequisites are in place.
@@ -53,7 +53,7 @@ public slots:
     //! Returns the display name of the authenticator backend
     /** \return A string that can be used by the client to name the authenticator backend */
     virtual QString displayName() const = 0;
-	
+
     //! Returns a description of this authenticator backend
     /** \return A string that can be displayed by the client to describe the authenticator */
     virtual QString description() const = 0;
@@ -84,9 +84,9 @@ public slots:
      *  \return A valid UserId if the password matches the username; 0 else
      */
     virtual UserId validateUser(const QString &user, const QString &password) = 0;
-	
+
 private:
-	
+
 };
-  
+
 #endif

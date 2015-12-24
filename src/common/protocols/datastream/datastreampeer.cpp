@@ -124,12 +124,12 @@ void DataStreamPeer::handleHandshakeMessage(const QVariantList &mapData)
     }
 
     else if (msgType == "ClientInitAck") {
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["AuthBackends"].toList(), false)); // SupportsSsl is obsolete
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), false, m["AuthBackends"].toList())); // SupportsSsl  obsolete
     }
 
     else if (msgType == "CoreSetupData") {
         QVariantMap map = m["SetupData"].toMap();
-        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["AuthBackend"].toString(), map["ConnectionProperties"].toMap(), map["AuthProperties"].toMap()));
+        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["ConnectionProperties"].toMap(), map["AuthBackend"].toString(), map["AuthProperties"].toMap()));
     }
 
     else if (msgType == "CoreSetupReject") {
@@ -206,7 +206,7 @@ void DataStreamPeer::dispatch(const SetupData &msg)
     // XXX: make these optional using core features.
     map["AuthBackend"] = msg.authenticator;
     map["AuthProperties"] = msg.authSetupData;
-    
+
     QVariantMap m;
     m["MsgType"] = "CoreSetupData";
     m["SetupData"] = map;

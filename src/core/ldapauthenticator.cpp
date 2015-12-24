@@ -20,10 +20,10 @@
 
 /* This file contains an implementation of an LDAP Authenticator, as an example
  * of what a custom external auth provider could do.
- * 
+ *
  * It's based off of this pull request for quassel by abustany:
  * https://github.com/quassel/quassel/pull/4/
- * 
+ *
  */
 
 #include "ldapauthenticator.h"
@@ -37,16 +37,16 @@
 
 LdapAuthenticator::LdapAuthenticator(QObject *parent)
     : Authenticator(parent),
-	_connection(0)
+    _connection(0)
 {
 }
 
 
 LdapAuthenticator::~LdapAuthenticator()
 {
-	if (_connection != 0)
-	{
-		ldap_unbind_ext(_connection, 0, 0);
+    if (_connection != 0)
+    {
+        ldap_unbind_ext(_connection, 0, 0);
     }
 }
 
@@ -98,7 +98,7 @@ void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
     _hostName = properties["Hostname"].toString();
     _port = properties["Port"].toInt();
     _baseDN = properties["Base DN"].toString();
-	_filter = properties["Filter"].toString();
+    _filter = properties["Filter"].toString();
     _bindDN = properties["Bind DN"].toString();
     _bindPassword = properties["Bind Password"].toString();
     _uidAttribute = properties["UID Attribute"].toString();
@@ -110,43 +110,43 @@ void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
 // through the default core method.
 UserId LdapAuthenticator::validateUser(const QString &username, const QString &password)
 {
-	bool result = ldapAuth(username, password);
-	if (!result)
-	{
-		return UserId();
-	}
+    bool result = ldapAuth(username, password);
+    if (!result)
+    {
+        return UserId();
+    }
 
-	// If auth succeeds, but the user has not logged into quassel previously, make
-	// a new user for them and return that ID.
-	// Users created via LDAP have empty usernames.
-	UserId quasselID = Core::validateUser(username, QString());
-	if (!quasselID.isValid())
-	{
-		return Core::addUser(username, QString());
-	}
-	return quasselID;
+    // If auth succeeds, but the user has not logged into quassel previously, make
+    // a new user for them and return that ID.
+    // Users created via LDAP have empty usernames.
+    UserId quasselID = Core::validateUser(username, QString());
+    if (!quasselID.isValid())
+    {
+        return Core::addUser(username, QString());
+    }
+    return quasselID;
 }
 
 bool LdapAuthenticator::setup(const QVariantMap &settings)
 {
-	setConnectionProperties(settings);
-	bool status = ldapConnect();
-	return status;
+    setConnectionProperties(settings);
+    bool status = ldapConnect();
+    return status;
 }
 
 Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
 {
-	setConnectionProperties(settings);
-	
-	bool status = ldapConnect();
-	if (!status)
-	{
-		quInfo() << qPrintable(displayName()) << "Authenticator cannot connect.";
-		return NotAvailable;
-	}
-	
-	quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
-	return IsReady;
+    setConnectionProperties(settings);
+
+    bool status = ldapConnect();
+    if (!status)
+    {
+        quInfo() << qPrintable(displayName()) << "Authenticator cannot connect.";
+        return NotAvailable;
+    }
+
+    quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
+    return IsReady;
 }
 
 // Method based on abustany LDAP quassel patch.
@@ -158,12 +158,12 @@ bool LdapAuthenticator::ldapConnect()
 
     int res, v = LDAP_VERSION3;
 
-	QString serverURI;
-	QByteArray serverURIArray;
-	
-	// Convert info to hostname:port.
-	serverURI = _hostName + ":" + QString::number(_port);
-	serverURIArray = serverURI.toLocal8Bit();
+    QString serverURI;
+    QByteArray serverURIArray;
+
+    // Convert info to hostname:port.
+    serverURI = _hostName + ":" + QString::number(_port);
+    serverURIArray = serverURI.toLocal8Bit();
     res = ldap_initialize(&_connection, serverURIArray);
 
     if (res != LDAP_SUCCESS) {
@@ -201,7 +201,7 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
 
     int res;
 
-	// Attempt to establish a connection.
+    // Attempt to establish a connection.
     if (_connection == 0) {
         if (not ldapConnect()) {
             return false;
@@ -209,12 +209,12 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
     }
 
     struct berval cred;
-	
-	// Convert some things to byte arrays as needed.
-	QByteArray bindPassword = _bindPassword.toLocal8Bit();
-	QByteArray bindDN = _bindDN.toLocal8Bit();
-	QByteArray baseDN = _baseDN.toLocal8Bit();
-	QByteArray uidAttribute = _uidAttribute.toLocal8Bit();
+
+    // Convert some things to byte arrays as needed.
+    QByteArray bindPassword = _bindPassword.toLocal8Bit();
+    QByteArray bindDN = _bindDN.toLocal8Bit();
+    QByteArray baseDN = _baseDN.toLocal8Bit();
+    QByteArray uidAttribute = _uidAttribute.toLocal8Bit();
 
     cred.bv_val = const_cast<char*>(bindPassword.size() > 0 ? bindPassword.constData() : NULL);
     cred.bv_len = bindPassword.size();
@@ -268,10 +268,10 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
     }
 
     // The original implementation had requiredAttributes. I have not included this code
-    // but it would be easy to re-add if someone wants this feature. 
+    // but it would be easy to re-add if someone wants this feature.
     // Ben Rosser <bjr@acm.jhu.edu> (12/23/15).
-    
+
     ldap_memfree(userDN);
     ldap_msgfree(msg);
-    return true; 	
+    return true;
 }

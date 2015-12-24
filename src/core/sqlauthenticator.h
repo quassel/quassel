@@ -42,7 +42,7 @@ public slots:
     bool setup(const QVariantMap &settings = QVariantMap());
     State init(const QVariantMap &settings = QVariantMap());
     UserId validateUser(const QString &user, const QString &password);
-    
+
     /* User handling */
     //virtual UserId getUserId(const QString &username);
 

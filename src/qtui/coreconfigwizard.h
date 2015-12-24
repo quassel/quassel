@@ -120,7 +120,7 @@ public:
     int nextId() const;
     QString selectedBackend() const;
     QVariantMap connectionProperties() const;
-    
+
 private slots:
     void on_backendList_currentIndexChanged();
 private:

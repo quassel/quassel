@@ -2,7 +2,7 @@
 
 set(SOURCES
     abstractsqlstorage.cpp
-	authenticator.cpp
+    authenticator.cpp
     core.cpp
     corealiasmanager.cpp
     coreapplication.cpp
