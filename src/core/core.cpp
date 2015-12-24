@@ -238,6 +238,7 @@ Core::~Core()
     }
     qDeleteAll(_sessions);
     qDeleteAll(_storageBackends);
+    qDeleteAll(_authenticatorBackends);
 }
 
 
