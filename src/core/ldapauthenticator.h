@@ -20,10 +20,10 @@
 
 /* This file contains an implementation of an LDAP Authenticator, as an example
  * of what a custom external auth provider could do.
- * 
+ *
  * It's based off of this pull request for quassel by abustany:
  * https://github.com/quassel/quassel/pull/4/
- * 
+ *
  */
 
 #ifndef LDAPAUTHENTICATOR_H
@@ -54,11 +54,11 @@ public slots:
     QString description() const;
     virtual QStringList setupKeys() const;
     virtual QVariantMap setupDefaults() const;
- 
+
     bool setup(const QVariantMap &settings = QVariantMap());
     State init(const QVariantMap &settings = QVariantMap());
     UserId validateUser(const QString &user, const QString &password);
-	
+
 protected:
     virtual void setConnectionProperties(const QVariantMap &properties);
     bool ldapConnect();
@@ -76,13 +76,13 @@ private:
     int _port;
     QString _bindDN;
     QString _baseDN;
-	QString _filter;
+    QString _filter;
     QString _bindPassword;
     QString _uidAttribute;
 
-	// The actual connection object.
-	LDAP *_connection;
-	
+    // The actual connection object.
+    LDAP *_connection;
+
 };
 
 

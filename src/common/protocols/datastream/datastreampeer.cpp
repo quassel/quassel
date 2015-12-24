@@ -206,7 +206,7 @@ void DataStreamPeer::dispatch(const SetupData &msg)
     // XXX: make these optional using core features.
     map["AuthBackend"] = msg.authenticator;
     map["AuthProperties"] = msg.authSetupData;
-    
+
     QVariantMap m;
     m["MsgType"] = "CoreSetupData";
     m["SetupData"] = map;
