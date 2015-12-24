@@ -27,6 +27,8 @@
 #include "coreconfigwizard.h"
 #include "coreconnection.h"
 
+#include "client.h"
+
 CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, const QList<QVariant> &authenticators, QWidget *parent)
     : QWizard(parent),
     _connection(connection)
@@ -98,7 +100,14 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
     foreach(int idx, visitedPages())
     page(idx)->setEnabled(false);
 
-    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, authBackend, properties, authProperties));
+	// FIXME? We need to be able to set up older cores that don't have auth backend support.
+	// So if the core doesn't support that feature, don't pass those parameters.
+	if (!(Client::coreFeatures() & Quassel::AuthBackends))
+	{
+		coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));	
+	} else {
+		coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties, authBackend, authProperties));	
+	}
 }
 
 
@@ -184,7 +193,13 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
 
 int AdminUserPage::nextId() const
 {
-    return CoreConfigWizard::AuthenticationSelectionPage;
+	// If the core doesn't support auth backends, skip that page!
+	if (!(Client::coreFeatures() & Quassel::AuthBackends))
+	{
+		return CoreConfigWizard::StorageSelectionPage;
+	} else {
+		return CoreConfigWizard::AuthenticationSelectionPage;
+	}
 }
 
 

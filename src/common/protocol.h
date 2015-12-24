@@ -81,7 +81,7 @@ struct ClientDenied : public HandshakeMessage
 
 struct ClientRegistered : public HandshakeMessage
 {
-    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, const QVariantList &authBackendInfo, bool sslSupported, const QString &coreInfo)
+    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, bool sslSupported, const QString &coreInfo, const QVariantList &authBackendInfo = QVariantList())
     : coreFeatures(coreFeatures)
     , coreConfigured(coreConfigured)
     , backendInfo(backendInfo)
@@ -105,14 +105,22 @@ struct ClientRegistered : public HandshakeMessage
 
 struct SetupData : public HandshakeMessage
 {
-    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend, const QString &authenticator, const QVariantMap &setupData, const QVariantMap &authSetupData)
-    : adminUser(adminUser), adminPassword(adminPassword), backend(backend), authenticator(authenticator), setupData(setupData), authSetupData(authSetupData) {}
+    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend,
+                     const QVariantMap &setupData, const QString &authenticator = QString(), 
+                     const QVariantMap &authSetupData = QVariantMap())
+    : adminUser(adminUser)
+    , adminPassword(adminPassword)
+	, backend(backend)
+	, setupData(setupData)
+	, authenticator(authenticator)
+	, authSetupData(authSetupData)
+    {}
 
     QString adminUser;
     QString adminPassword;
     QString backend;
-	QString authenticator;
     QVariantMap setupData;
+	QString authenticator;
 	QVariantMap authSetupData;
 };
 
