@@ -28,6 +28,7 @@
 
 #include "ldapauthenticator.h"
 
+#include "logger.h"
 #include "network.h"
 #include "quassel.h"
 
@@ -35,8 +36,8 @@
 #include <ldap.h>
 
 LdapAuthenticator::LdapAuthenticator(QObject *parent)
-    : LdapAuthenticator(parent),
-	: _connection(0)
+    : Authenticator(parent),
+	_connection(0)
 {
 }
 
@@ -105,9 +106,9 @@ void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
 // class should be created implementing it.
 // i.e. a provider that does its own thing and then pokes at the current storage
 // through the default core method.
-UserId LdapAuthenticator::validateUser(const QString &user, const QString &password)
+UserId LdapAuthenticator::validateUser(const QString &username, const QString &password)
 {
-	bool result = ldapAuth(user, password);
+	bool result = ldapAuth(username, password);
 	if (!result)
 	{
 		return UserId();
@@ -116,7 +117,7 @@ UserId LdapAuthenticator::validateUser(const QString &user, const QString &passw
 	// If auth succeeds, but the user has not logged into quassel previously, make
 	// a new user for them and return that ID.
 	// Users created via LDAP have empty usernames.
-	UserID quasselID = Core::validateUser(username, QString());
+	UserId quasselID = Core::validateUser(username, QString());
 	if (!quasselID.isValid())
 	{
 		return Core::addUser(username, QString());
@@ -147,7 +148,7 @@ Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
 }
 
 // Method based on abustany LDAP quassel patch.
-bool LdapStorage::ldapConnect()
+bool LdapAuthenticator::ldapConnect()
 {
     if (_connection != 0) {
         ldapDisconnect();
@@ -159,8 +160,8 @@ bool LdapStorage::ldapConnect()
 	QByteArray serverURIArray;
 	
 	// Convert info to hostname:port.
-	serverURI = _server + ":" + QString::number(port);
-	serverURIArray = serverURI.toByteArray();
+	serverURI = _hostName + ":" + QString::number(_port);
+	serverURIArray = serverURI.toLocal8Bit();
     res = ldap_initialize(&_connection, serverURIArray);
 
     if (res != LDAP_SUCCESS) {
@@ -172,15 +173,15 @@ bool LdapStorage::ldapConnect()
 
     if (res != LDAP_SUCCESS) {
         qWarning() << "Could not set LDAP protocol version to v3:" << ldap_err2string(res);
-        ldap_unbind_ext(m_ldapConnection, 0, 0);
-        m_ldapConnection = 0;
+        ldap_unbind_ext(_connection, 0, 0);
+        _connection = 0;
         return false;
     }
 
     return true;
 }
 
-void LdapStorage::ldapDisconnect()
+void LdapAuthenticator::ldapDisconnect()
 {
     if (_connection == 0) {
         return;
@@ -190,7 +191,7 @@ void LdapStorage::ldapDisconnect()
     _connection = 0;
 }
 
-bool LdapAuthenticator::ldapAuth(QString &username, QString &password)
+bool LdapAuthenticator::ldapAuth(const QString &username, const QString &password)
 {
     if (password.isEmpty()) {
         return false;
@@ -208,13 +209,13 @@ bool LdapAuthenticator::ldapAuth(QString &username, QString &password)
     struct berval cred;
 	
 	// Convert some things to byte arrays as needed.
-	QByteArray bindPassword = _bindPassword.toByteArray();
-	QByteArray bindDN = _bindDN.toByteArray();
-	QByteArray baseDN = _baseDN.toByteArray();
-	QByteArray uidAttribute = _uidAttribute.toByteArray();
+	QByteArray bindPassword = _bindPassword.toLocal8Bit();
+	QByteArray bindDN = _bindDN.toLocal8Bit();
+	QByteArray baseDN = _baseDN.toLocal8Bit();
+	QByteArray uidAttribute = _uidAttribute.toLocal8Bit();
 
-    cred.bv_val = const_cast<char*>(bindPassword.size() > 0 ? bindPasword.constData() : NULL);
-    cred.bv_len = bindPasword.size();
+    cred.bv_val = const_cast<char*>(bindPassword.size() > 0 ? bindPassword.constData() : NULL);
+    cred.bv_len = bindPassword.size();
 
     res = ldap_sasl_bind_s(_connection, bindDN.size() > 0 ? bindDN.constData() : 0, LDAP_SASL_SIMPLE, &cred, 0, 0, 0);
 
