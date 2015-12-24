@@ -18,10 +18,24 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+/* This file contains an implementation of an LDAP Authenticator, as an example
+ * of what a custom external auth provider could do.
+ * 
+ * It's based off of this pull request for quassel by abustany:
+ * https://github.com/quassel/quassel/pull/4/
+ * 
+ */
+
 #ifndef LDAPAUTHENTICATOR_H
 #define LDAPAUTHENTICATOR_H
 
 #include "authenticator.h"
+
+// Link against LDAP.
+#include <ldap.h>
+
+// Default LDAP server port.
+#define DEFAULT_LDAP_PORT 389
 
 class LdapAuthenticator : public Authenticator
 {
@@ -40,6 +54,8 @@ public slots:
     virtual QVariantMap setupDefaults() const;
  
 protected:
+    virtual void setConnectionProperties(const QVariantMap &properties);
+
     // Protected methods for retrieving info about the LDAP connection.
     inline virtual QString hostName() { return _hostName; }
     inline virtual int port() { return _port; }
@@ -51,6 +67,12 @@ private:
     int _port;
     QString _bindDN;
     QString _baseDN;
+    QString _bindPassword;
+    QString _uidAttribute;
+
+	// The actual connection object.
+	LDAP *_connection;
+	
 };
 
 
