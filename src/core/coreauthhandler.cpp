@@ -185,7 +185,8 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
                           .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(Core::instance()->startTime().toString(Qt::TextDate));
 
     // useSsl and coreInfo are only used for the legacy protocol
-    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, authenticators, useSsl, coreInfo));
+	// XXX: FIXME: use client features here: we cannot pass authenticators if the client is too old!
+    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, coreInfo, authenticators));
 
     if (_legacy && useSsl)
         startSsl();
@@ -199,7 +200,16 @@ void CoreAuthHandler::handle(const SetupData &msg)
     if (!checkClientRegistered())
         return;
 
-    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, msg.authenticator, msg.authSetupData);
+	// The default parameter to authBackend is Database.
+	// Maybe this should be hardcoded elsewhere, i.e. as a define.
+	QString authBackend = msg.authenticator;
+	quInfo() << "[" << authBackend << "]";
+	if (authBackend.trimmed().isEmpty() || authBackend == 0)
+	{
+		authBackend = QString("Database");
+	}
+	
+    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, authBackend, msg.authSetupData);
     if (!result.isEmpty())
         _peer->dispatch(SetupFailed(result));
     else
