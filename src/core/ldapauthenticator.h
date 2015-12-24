@@ -31,6 +31,8 @@
 
 #include "authenticator.h"
 
+#include "core.h"
+
 // Link against LDAP.
 #include <ldap.h>
 
@@ -53,8 +55,15 @@ public slots:
     virtual QStringList setupKeys() const;
     virtual QVariantMap setupDefaults() const;
  
+    bool setup(const QVariantMap &settings = QVariantMap());
+    State init(const QVariantMap &settings = QVariantMap());
+    UserId validateUser(const QString &user, const QString &password);
+	
 protected:
     virtual void setConnectionProperties(const QVariantMap &properties);
+    bool ldapConnect();
+    void ldapDisconnect();
+    bool ldapAuth(const QString &username, const QString &password);
 
     // Protected methods for retrieving info about the LDAP connection.
     inline virtual QString hostName() { return _hostName; }
