@@ -76,9 +76,10 @@ QStringList LdapAuthenticator::setupKeys() const
     QStringList keys;
     keys << "Hostname"
          << "Port"
-         << "Base DN"
          << "Bind DN"
          << "Bind Password"
+         << "Base DN"
+         << "Filter"
          << "UID Attribute";
     return keys;
 }
@@ -97,6 +98,7 @@ void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
     _hostName = properties["Hostname"].toString();
     _port = properties["Port"].toInt();
     _baseDN = properties["Base DN"].toString();
+	_filter = properties["Filter"].toString();
     _bindDN = properties["Bind DN"].toString();
     _bindPassword = properties["Bind Password"].toString();
     _uidAttribute = properties["UID Attribute"].toString();
@@ -227,7 +229,7 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
 
     LDAPMessage *msg = NULL, *entry = NULL;
 
-    const QByteArray ldapQuery = uidAttribute + '=' + username.toLocal8Bit();
+    const QByteArray ldapQuery = "(&(" + uidAttribute + '=' + username.toLocal8Bit() + ")" + _filter.toLocal8Bit() + ")";
 
     res = ldap_search_ext_s(_connection, baseDN.constData(), LDAP_SCOPE_SUBTREE, ldapQuery.constData(), 0, 0, 0, 0, 0, 0, &msg);
 
@@ -251,7 +253,6 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
     }
 
     const QByteArray passwordArray = password.toLocal8Bit();
-
     cred.bv_val = const_cast<char*>(passwordArray.constData());
     cred.bv_len = password.size();
 
