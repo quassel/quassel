@@ -101,7 +101,96 @@ void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
     _uidAttribute = properties["UID Attribute"].toString();
 }
 
+// XXX: this code is sufficiently general that in the future, perhaps an abstract
+// class should be created implementing it.
+// i.e. a provider that does its own thing and then pokes at the current storage
+// through the default core method.
 UserId LdapAuthenticator::validateUser(const QString &user, const QString &password)
+{
+	bool result = ldapAuth(user, password);
+	if (!result)
+	{
+		return UserId();
+	}
+
+	// If auth succeeds, but the user has not logged into quassel previously, make
+	// a new user for them and return that ID.
+	// Users created via LDAP have empty usernames.
+	UserID quasselID = Core::validateUser(username, QString());
+	if (!quasselID.isValid())
+	{
+		return Core::addUser(username, QString());
+	}
+	return quasselID;
+}
+
+bool LdapAuthenticator::setup(const QVariantMap &settings)
+{
+	setConnectionProperties(settings);
+	bool status = ldapConnect();
+	return status;
+}
+
+Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
+{
+	setConnectionProperties(settings);
+	
+	bool status = ldapConnect();
+	if (!status)
+	{
+		quInfo() << qPrintable(displayName()) << "Authenticator cannot connect.";
+		return NotAvailable;
+	}
+	
+	quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
+	return IsReady;
+}
+
+// Method based on abustany LDAP quassel patch.
+bool LdapStorage::ldapConnect()
+{
+    if (_connection != 0) {
+        ldapDisconnect();
+    }
+
+    int res, v = LDAP_VERSION3;
+
+	QString serverURI;
+	QByteArray serverURIArray;
+	
+	// Convert info to hostname:port.
+	serverURI = _server + ":" + QString::number(port);
+	serverURIArray = serverURI.toByteArray();
+    res = ldap_initialize(&_connection, serverURIArray);
+
+    if (res != LDAP_SUCCESS) {
+        qWarning() << "Could not connect to LDAP server:" << ldap_err2string(res);
+        return false;
+    }
+
+    res = ldap_set_option(_connection, LDAP_OPT_PROTOCOL_VERSION, (void*)&v);
+
+    if (res != LDAP_SUCCESS) {
+        qWarning() << "Could not set LDAP protocol version to v3:" << ldap_err2string(res);
+        ldap_unbind_ext(m_ldapConnection, 0, 0);
+        m_ldapConnection = 0;
+        return false;
+    }
+
+    return true;
+}
+
+void LdapStorage::ldapDisconnect()
+{
+    if (_connection == 0) {
+        return;
+    }
+
+    ldap_unbind_ext(_connection, 0, 0);
+    _connection = 0;
+}
+
+bool LdapAuthenticator::ldapAuth(QString &username, QString &password)
 {
     if (password.isEmpty()) {
         return false;
@@ -176,106 +265,11 @@ UserId LdapAuthenticator::validateUser(const QString &user, const QString &passw
         return false;
     }
 
-    if (m_requiredAttributes.isEmpty()) {
-        ldap_memfree(userDN);
-        ldap_msgfree(msg);
-        return true;
-    }
-
-    bool authenticated = false;
-
-    // Needed to use foreach
-    typedef QPair<QByteArray, QByteArray> QByteArrayPair;
-
-    foreach (const QByteArrayPair &pair, m_requiredAttributes) {
-        const QByteArray &attribute = pair.first;
-        const QByteArray &value = pair.second;
-
-        struct berval attr_value;
-        attr_value.bv_val = const_cast<char*>(value.constData());
-        attr_value.bv_len = value.size();
-
-        authenticated = (ldap_compare_ext_s(m_ldapConnection,
-                                            userDN,
-                                            attribute.constData(),
-                                            &attr_value,
-                                            0,
-                                            0) == LDAP_COMPARE_TRUE);
-
-        if (authenticated) {
-            break;
-        }
-    }
-
+    // The original implementation had requiredAttributes. I have not included this code
+    // but it would be easy to re-add if someone wants this feature. 
+    // Ben Rosser <bjr@acm.jhu.edu> (12/23/15).
+    
     ldap_memfree(userDN);
     ldap_msgfree(msg);
-
-    return authenticated;
-}
-
-bool LdapAuthenticator::setup(const QVariantMap &settings)
-{
-	setConnectionProperties(settings);
-	bool status = ldapConnect();
-	return status;
-}
-
-Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
-{
-	setConnectionProperties(settings);
-	
-	bool status = ldapConnect();
-	if (!status)
-	{
-		quInfo() << qPrintable(displayName()) << "Authenticator cannot connect.";
-		return NotAvailable;
-	}
-	
-	quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
-	return IsReady;
-}
-
-// Method based on abustany LDAP quassel patch.
-bool LdapStorage::ldapConnect()
-{
-    if (_connection != 0) {
-        ldapDisconnect();
-    }
-
-    int res, v = LDAP_VERSION3;
-
-	QString serverURI;
-	QByteArray serverURIArray;
-	
-	// Convert info to hostname:port.
-	serverURI = _server + ":" + QString::number(port);
-	serverURIArray = serverURI.toByteArray();
-    res = ldap_initialize(&_connection, serverURIArray);
-
-    if (res != LDAP_SUCCESS) {
-        qWarning() << "Could not connect to LDAP server:" << ldap_err2string(res);
-        return false;
-    }
-
-    res = ldap_set_option(_connection, LDAP_OPT_PROTOCOL_VERSION, (void*)&v);
-
-    if (res != LDAP_SUCCESS) {
-        qWarning() << "Could not set LDAP protocol version to v3:" << ldap_err2string(res);
-        ldap_unbind_ext(m_ldapConnection, 0, 0);
-        m_ldapConnection = 0;
-        return false;
-    }
-
-    return true;
-}
-
-
-void LdapStorage::ldapDisconnect()
-{
-    if (_connection == 0) {
-        return;
-    }
-
-    ldap_unbind_ext(_connection, 0, 0);
-    _connection = 0;
+    return true; 	
 }
