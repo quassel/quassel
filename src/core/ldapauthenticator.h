@@ -76,6 +76,7 @@ private:
     int _port;
     QString _bindDN;
     QString _baseDN;
+	QString _filter;
     QString _bindPassword;
     QString _uidAttribute;
 

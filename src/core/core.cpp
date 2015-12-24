@@ -34,7 +34,7 @@
 #include "util.h"
 
 // Currently building with LDAP bindings is optional.
-#ifdef WITH_LDAP
+#ifdef HAVE_LDAP
 #include "ldapauthenticator.h"
 #endif
 
@@ -375,7 +375,7 @@ void Core::registerAuthenticatorBackends()
 {
     // Register new authentication backends here!
 	registerAuthenticatorBackend(new SqlAuthenticator(this));
-#ifdef WITH_LDAP
+#ifdef HAVE_LDAP
     registerAuthenticatorBackend(new LdapAuthenticator(this));
 #endif
     
