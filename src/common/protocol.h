@@ -92,11 +92,11 @@ struct ClientRegistered : public HandshakeMessage
 
     quint32 coreFeatures;
     bool coreConfigured;
-    
+
     // The authBackendInfo should be optional!
     QVariantList backendInfo; // TODO: abstract this better
     QVariantList authBackendInfo;
-    
+
     // this is only used by the LegacyProtocol in compat mode
     bool sslSupported;
     QString coreInfo;
@@ -106,22 +106,22 @@ struct ClientRegistered : public HandshakeMessage
 struct SetupData : public HandshakeMessage
 {
     inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend,
-                     const QVariantMap &setupData, const QString &authenticator = QString(), 
+                     const QVariantMap &setupData, const QString &authenticator = QString(),
                      const QVariantMap &authSetupData = QVariantMap())
     : adminUser(adminUser)
     , adminPassword(adminPassword)
-	, backend(backend)
-	, setupData(setupData)
-	, authenticator(authenticator)
-	, authSetupData(authSetupData)
+    , backend(backend)
+    , setupData(setupData)
+    , authenticator(authenticator)
+    , authSetupData(authSetupData)
     {}
 
     QString adminUser;
     QString adminPassword;
     QString backend;
     QVariantMap setupData;
-	QString authenticator;
-	QVariantMap authSetupData;
+    QString authenticator;
+    QVariantMap authSetupData;
 };
 
 

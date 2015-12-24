@@ -84,7 +84,7 @@ public:
     static inline UserId authenticateUser(const QString &userName, const QString &password) {
         return instance()->_authenticator->validateUser(userName, password);
     }
-    
+
     //! Add a new user, exposed so auth providers can call this without being the storage.
     /**
      * \param userName The user's login name
@@ -551,7 +551,7 @@ private slots:
 
     bool initStorage(const QString &backend, const QVariantMap &settings, bool setup = false);
     bool initAuthenticator(const QString &backend, const QVariantMap &settings, bool setup = false);
-    
+
     void socketError(QAbstractSocket::SocketError err, const QString &errorString);
     void setupClientSession(RemotePeer *, UserId);
 
@@ -572,12 +572,12 @@ private:
     bool registerStorageBackend(Storage *);
     void unregisterStorageBackends();
     void unregisterStorageBackend(Storage *);
-    
+
     void registerAuthenticatorBackends();
     bool registerAuthenticatorBackend(Authenticator *);
     void unregisterAuthenticatorBackends();
     void unregisterAuthenticatorBackend(Authenticator *);
-    
+
     bool selectBackend(const QString &backend);
     bool createUser();
     void saveBackendSettings(const QString &backend, const QVariantMap &settings);

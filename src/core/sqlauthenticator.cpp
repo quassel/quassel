@@ -63,14 +63,14 @@ UserId SqlAuthenticator::validateUser(const QString &user, const QString &passwo
 
 bool SqlAuthenticator::setup(const QVariantMap &settings)
 {
-	return true;
+    return true;
 }
 
 Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
 {
-	// TODO: FIXME: this should check if the storage provider is ready, but I don't
-	// know if there's an exposed way to do that at the moment.
-	
-	quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
-	return IsReady;
+    // TODO: FIXME: this should check if the storage provider is ready, but I don't
+    // know if there's an exposed way to do that at the moment.
+
+    quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
+    return IsReady;
 }

@@ -488,7 +488,7 @@ void ClientAuthHandler::onSslErrors()
     default:
         qWarning() << "Certificate digest version" << QString(knownDigestVersion) << "is not supported";
     }
-    
+
     if (knownDigest != calculatedDigest) {
         bool accepted = false;
         bool permanently = false;

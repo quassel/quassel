@@ -166,13 +166,13 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     }
 
     QVariantList backends;
-	QVariantList authenticators;
+    QVariantList authenticators;
     bool configured = Core::isConfigured();
     if (!configured)
-	{
+    {
         backends = Core::backendInfo();
-		authenticators = Core::authenticatorInfo();
-	}
+        authenticators = Core::authenticatorInfo();
+    }
 
     int uptime = Core::instance()->startTime().secsTo(QDateTime::currentDateTime().toUTC());
     int updays = uptime / 86400; uptime %= 86400;
@@ -185,7 +185,7 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
                           .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(Core::instance()->startTime().toString(Qt::TextDate));
 
     // useSsl and coreInfo are only used for the legacy protocol
-	// XXX: FIXME: use client features here: we cannot pass authenticators if the client is too old!
+    // XXX: FIXME: use client features here: we cannot pass authenticators if the client is too old!
     _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, coreInfo, authenticators));
 
     if (_legacy && useSsl)
@@ -200,15 +200,15 @@ void CoreAuthHandler::handle(const SetupData &msg)
     if (!checkClientRegistered())
         return;
 
-	// The default parameter to authBackend is Database.
-	// Maybe this should be hardcoded elsewhere, i.e. as a define.
-	QString authBackend = msg.authenticator;
-	quInfo() << "[" << authBackend << "]";
-	if (authBackend.trimmed().isEmpty() || authBackend == 0)
-	{
-		authBackend = QString("Database");
-	}
-	
+    // The default parameter to authBackend is Database.
+    // Maybe this should be hardcoded elsewhere, i.e. as a define.
+    QString authBackend = msg.authenticator;
+    quInfo() << "[" << authBackend << "]";
+    if (authBackend.trimmed().isEmpty() || authBackend == 0)
+    {
+        authBackend = QString("Database");
+    }
+
     QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, authBackend, msg.authSetupData);
     if (!result.isEmpty())
         _peer->dispatch(SetupFailed(result));
@@ -224,12 +224,12 @@ void CoreAuthHandler::handle(const Login &msg)
 
     //UserId uid = Core::validateUser(msg.user, msg.password);
     UserId uid = Core::authenticateUser(msg.user, msg.password);
-	
-	// Try doing direct database auth if the provider failed, first.
-	if (uid == 0) {
-		uid = Core::validateUser(msg.user, msg.password);
-	}
-    
+
+    // Try doing direct database auth if the provider failed, first.
+    if (uid == 0) {
+        uid = Core::validateUser(msg.user, msg.password);
+    }
+
     if (uid == 0) {
         quInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
         _peer->dispatch(LoginFailed(tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.")));
