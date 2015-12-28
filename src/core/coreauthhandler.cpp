@@ -218,12 +218,12 @@ void CoreAuthHandler::handle(const Login &msg)
     if (!checkClientRegistered())
         return;
 
-    //UserId uid = Core::validateUser(msg.user, msg.password);
-    UserId uid = Core::authenticateUser(msg.user, msg.password);
-
-    // Try doing direct database auth if the provider failed, first.
-    if (uid == 0) {
-        uid = Core::validateUser(msg.user, msg.password);
+    // First attempt local auth using the real username and password.
+    // If that fails, move onto the auth provider.
+    UserId uid = Core::validateUser(msg.user, msg.password);
+    if (uid == 0)
+    {
+        uid = Core::authenticateUser(msg.user, msg.password);
     }
 
     if (uid == 0) {
