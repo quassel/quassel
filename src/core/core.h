@@ -89,10 +89,21 @@ public:
     /**
      * \param userName The user's login name
      * \param password The user's uncrypted password
+     * \param authenticator The name of the auth provider service used to log the user in, defaults to "Database".
      * \return The user's ID if valid; 0 otherwise
      */
-    static inline UserId addUser(const QString &userName, const QString &password) {
-        return instance()->_storage->addUser(userName, password);
+    static inline UserId addUser(const QString &userName, const QString &password, const QString &authenticator = "Database") {
+        return instance()->_storage->addUser(userName, password, authenticator);
+    }
+    
+    //! Does a comparison test against the authenticator in the database and the authenticator currently in use for a UserID.
+    /**
+     * \param userid The user's ID (note: not login name).
+     * \param authenticator The name of the auth provider service used to log the user in, defaults to "Database".
+     * \return True if the userid was configured with the passed authenticator, false otherwise.
+     */
+    static inline bool checkAuthProvider(const UserId userid, const QString &authenticator) {
+        return instance()->_storage->getUserAuthenticator(userid) == authenticator;
     }
 
     //! Change a user's password

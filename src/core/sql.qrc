@@ -30,6 +30,7 @@
     <file>./SQL/PostgreSQL/migrate_write_quasseluser.sql</file>
     <file>./SQL/PostgreSQL/migrate_write_sender.sql</file>
     <file>./SQL/PostgreSQL/migrate_write_usersetting.sql</file>
+    <file>./SQL/PostgreSQL/select_authenticator.sql</file>
     <file>./SQL/PostgreSQL/select_authuser.sql</file>
     <file>./SQL/PostgreSQL/select_bufferByName.sql</file>
     <file>./SQL/PostgreSQL/select_bufferExists.sql</file>
@@ -102,6 +103,7 @@
     <file>./SQL/PostgreSQL/version/20/upgrade_004_add_lastseenmsgid_constraint.sql</file>
     <file>./SQL/PostgreSQL/version/21/upgrade_000_add_function_backlog_lastmsgid_update.sql</file>
     <file>./SQL/PostgreSQL/version/21/upgrade_001_add_trigger_backlog_lastmsgid_update.sql</file>
+    <file>./SQL/PostgreSQL/version/22/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>
@@ -132,6 +134,7 @@
     <file>./SQL/SQLite/migrate_read_quasseluser.sql</file>
     <file>./SQL/SQLite/migrate_read_sender.sql</file>
     <file>./SQL/SQLite/migrate_read_usersetting.sql</file>
+    <file>./SQL/SQLite/select_authenticator.sql</file>
     <file>./SQL/SQLite/select_authuser.sql</file>
     <file>./SQL/SQLite/select_bufferByName.sql</file>
     <file>./SQL/SQLite/select_bufferExists.sql</file>
@@ -277,5 +280,6 @@
     <file>./SQL/SQLite/version/21/upgrade_006_alter_table_buffer_new_rename_to_buffer.sql</file>
     <file>./SQL/SQLite/version/22/upgrade_000_add_trigger_backlog_lastmsgid_update_direct_insert.sql</file>
     <file>./SQL/SQLite/version/22/upgrade_001_add_trigger_backlog_lastmsgid_update_direct_update.sql</file>
+    <file>./SQL/SQLite/version/23/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
 </qresource>
 </RCC>
