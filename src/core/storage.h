@@ -103,7 +103,7 @@ public slots:
      *  \param password The cleartext password for the new user
      *  \return The new user's UserId
      */
-    virtual UserId addUser(const QString &user, const QString &password) = 0;
+    virtual UserId addUser(const QString &user, const QString &password, const QString &authenticator = "Database") = 0;
 
     //! Update a core user's password.
     /** \param user     The user's id

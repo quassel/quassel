@@ -210,13 +210,14 @@ bool PostgreSqlStorage::setupSchemaVersion(int version)
 }
 
 
-UserId PostgreSqlStorage::addUser(const QString &user, const QString &password)
+UserId PostgreSqlStorage::addUser(const QString &user, const QString &password, const QString &authenticator)
 {
     QSqlQuery query(logDb());
     query.prepare(queryString("insert_quasseluser"));
     query.bindValue(":username", user);
     query.bindValue(":password", hashPassword(password));
     query.bindValue(":hashversion", Storage::HashVersion::Latest);
+    query.bindValue(":authenticator", authenticator);
     safeExec(query);
     if (!watchQuery(query))
         return 0;

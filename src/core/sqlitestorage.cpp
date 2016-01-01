@@ -116,7 +116,7 @@ bool SqliteStorage::setupSchemaVersion(int version)
 }
 
 
-UserId SqliteStorage::addUser(const QString &user, const QString &password)
+UserId SqliteStorage::addUser(const QString &user, const QString &password, const QString &authenticator)
 {
     QSqlDatabase db = logDb();
     UserId uid;
@@ -131,6 +131,7 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password)
         query.bindValue(":username", user);
         query.bindValue(":password", hashPassword(password));
         query.bindValue(":hashversion", Storage::HashVersion::Latest);
+        query.bindValue(":authenticator", authenticator);
         lockForWrite();
         safeExec(query);
         if (query.lastError().isValid() && query.lastError().number() == 19) { // user already exists - sadly 19 seems to be the general constraint violation error...
