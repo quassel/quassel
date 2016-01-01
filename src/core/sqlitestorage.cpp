@@ -240,6 +240,26 @@ UserId SqliteStorage::getUserId(const QString &username)
     return userId;
 }
 
+QString SqliteStorage::getUserAuthenticator(const UserId userid)
+{
+    QString authenticator = QString("");
+
+    {
+        QSqlQuery query(logDb());
+        query.prepare(queryString("select_authenticator"));
+        query.bindValue(":userid", userid.toInt());
+
+        lockForRead();
+        safeExec(query);
+
+        if (query.first()) {
+            authenticator = query.value(0).toString();
+        }
+    }
+    unlock();
+
+    return authenticator;
+}
 
 UserId SqliteStorage::internalUser()
 {

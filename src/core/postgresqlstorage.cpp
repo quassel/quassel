@@ -286,6 +286,21 @@ UserId PostgreSqlStorage::getUserId(const QString &user)
     }
 }
 
+QString PostgreSqlStorage::getUserAuthenticator(const UserId userid)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authenticator"));
+    query.bindValue(":userid", userid.toInt());
+    safeExec(query);
+    watchQuery(query);
+
+    if (query.first()) {
+        return query.value(0).toString();
+    }
+    else {
+        return QString("");
+    }
+}
 
 UserId PostgreSqlStorage::internalUser()
 {
