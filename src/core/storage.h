@@ -131,6 +131,13 @@ public slots:
      */
     virtual UserId getUserId(const QString &username) = 0;
 
+    //! Get the authentication provider for a given user.
+    /** \param username  The username to validate
+     *  \return The name of the auth provider if the UserId exists, "" otherwise.
+     */
+    virtual QString getUserAuthenticator(const UserId userid) = 0;
+
+
     //! Determine the UserId of the internal user
     /** \return A valid UserId if the password matches the username; 0 else
      */
