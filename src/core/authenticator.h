@@ -61,6 +61,9 @@ public slots:
     //! Returns a list of properties required to use the authenticator backend
     virtual QStringList setupKeys() const = 0;
 
+    //! Checks if the authenticator allows manual password changes from inside quassel.
+    virtual bool canChangePassword() const = 0;
+
     //! Returns a map where the keys are are properties to use the authenticator backend
     /*  the values are QVariants with default values */
     virtual QVariantMap setupDefaults() const = 0;
