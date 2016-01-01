@@ -55,6 +55,8 @@ public slots:
     virtual QStringList setupKeys() const;
     virtual QVariantMap setupDefaults() const;
 
+    virtual inline bool canChangePassword() const { return false; }
+
     bool setup(const QVariantMap &settings = QVariantMap());
     State init(const QVariantMap &settings = QVariantMap());
     UserId validateUser(const QString &user, const QString &password);

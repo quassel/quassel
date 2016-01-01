@@ -114,6 +114,13 @@ public:
      */
     static bool changeUserPassword(UserId userId, const QString &password);
 
+    //! Check if we can change a user password.
+    /**
+     * \param userID     The user's ID
+     * \return true, if we can change their password, false otherwise
+     */
+    static bool canChangeUserPassword(UserId userId);
+
     //! Store a user setting persistently
     /**
      * \param userId       The users Id

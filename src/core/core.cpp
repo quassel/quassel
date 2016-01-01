@@ -933,6 +933,12 @@ bool Core::changeUserPass(const QString &username)
         return false;
     }
 
+    if (!canChangeUserPassword(userId))
+    {
+        out << "User " << username << " is configured through an auth provider that has forbidden manual password changing." << endl;
+        return false;
+    }
+    
     out << "Change password for user: " << username << endl;
 
     disableStdInEcho();
@@ -971,9 +977,29 @@ bool Core::changeUserPassword(UserId userId, const QString &password)
     if (!isConfigured() || !userId.isValid())
         return false;
 
+    if (!canChangeUserPassword(userId))
+        return false;
+
     return instance()->_storage->updateUser(userId, password);
 }
 
+// XXX: this code isn't currently 100% optimal because the core
+// doesn't know it can have multiple auth providers configured (there aren't
+// multiple auth providers at the moment anyway) and we have hardcoded the
+// Database provider to be always allowed.
+bool Core::canChangeUserPassword(UserId userId)
+{
+    QString authProvider = instance()->_storage->getUserAuthenticator(userId);
+    if (authProvider != "Database")
+    {
+        if (authProvider != instance()->_authenticator->displayName()) {
+            return false;
+        } else if (instance()->_authenticator->canChangePassword()) {
+            return false;
+        }
+    }
+    return true;
+}
 
 AbstractSqlMigrationReader *Core::getMigrationReader(Storage *storage)
 {
