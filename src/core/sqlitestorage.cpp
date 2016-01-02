@@ -1841,6 +1841,7 @@ bool SqliteMigrationReader::readMo(QuasselUserMO &user)
     user.username = value(1).toString();
     user.password = value(2).toString();
     user.hashversion = value(3).toInt();
+    user.authenticator = value(4).toString();
     return true;
 }
 

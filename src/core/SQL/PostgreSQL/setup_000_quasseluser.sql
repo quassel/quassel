@@ -3,5 +3,5 @@ CREATE TABLE quasseluser (
        username varchar(64) UNIQUE NOT NULL,
        password TEXT NOT NULL,
        hashversion integer NOT NULL DEFAULT 0,
-       authenticator varchar(64) UNIQUE NOT NULL
+       authenticator varchar(64) NOT NULL DEFAULT "Database"
 )
