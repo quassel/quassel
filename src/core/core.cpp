@@ -29,8 +29,14 @@
 #include "network.h"
 #include "postgresqlstorage.h"
 #include "quassel.h"
+#include "sqlauthenticator.h"
 #include "sqlitestorage.h"
 #include "util.h"
+
+// Currently building with LDAP bindings is optional.
+#ifdef HAVE_LDAP
+#include "ldapauthenticator.h"
+#endif
 
 // migration related
 #include <QFile>
@@ -83,7 +89,8 @@ void Core::destroy()
 
 Core::Core()
     : QObject(),
-      _storage(0)
+      _storage(0),
+      _authenticator(0)
 {
 #ifdef HAVE_UMASK
     umask(S_IRWXG | S_IRWXO);
@@ -168,6 +175,7 @@ Core::Core()
     }
 
     registerStorageBackends();
+    registerAuthenticatorBackends();
 
     connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
     _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
@@ -181,10 +189,16 @@ void Core::init()
     QVariantMap dbsettings = cs.storageSettings().toMap();
     _configured = initStorage(dbsettings.value("Backend").toString(), dbsettings.value("ConnectionProperties").toMap());
 
+    // Not entirely sure what is 'legacy' about the above, but it seems to be the way things work!
+    QVariantMap authSettings = cs.authSettings().toMap();
+    initAuthenticator(authSettings.value("AuthBackend").toString(), authSettings.value("ConnectionProperties").toMap());
+
     if (Quassel::isOptionSet("select-backend")) {
         selectBackend(Quassel::optionValue("select-backend"));
         exit(0);
     }
+
+    // TODO: add --select-authenticator command line option and code.
 
     if (!_configured) {
         if (!_storageBackends.count()) {
@@ -224,6 +238,7 @@ Core::~Core()
     }
     qDeleteAll(_sessions);
     qDeleteAll(_storageBackends);
+    qDeleteAll(_authenticatorBackends);
 }
 
 
@@ -274,13 +289,13 @@ void Core::restoreState()
 
 /*** Core Setup ***/
 
-QString Core::setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData)
+QString Core::setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupData)
 {
-    return instance()->setupCore(adminUser, adminPassword, backend, setupData);
+    return instance()->setupCore(adminUser, adminPassword, backend, setupData, authBackend, authSetupData);
 }
 
 
-QString Core::setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData)
+QString Core::setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupData)
 {
     if (_configured)
         return tr("Core is already configured! Not configuring again...");
@@ -292,7 +307,14 @@ QString Core::setupCore(const QString &adminUser, const QString &adminPassword, 
         return tr("Could not setup storage!");
     }
 
+    quInfo() << "Selected authenticator: " << authBackend;
+    if (!(_configured = initAuthenticator(authBackend, authSetupData, true)))
+    {
+        return tr("Could not setup authenticator!");
+    }
+
     saveBackendSettings(backend, setupData);
+    saveAuthBackendSettings(authBackend, authSetupData);
 
     quInfo() << qPrintable(tr("Creating admin user..."));
     _storage->addUser(adminUser, adminPassword);
@@ -313,7 +335,7 @@ QString Core::setupCoreForInternalUsage()
     }
 
     // mono client currently needs sqlite
-    return setupCore("AdminUser", QString::number(pass), "SQLite", QVariantMap());
+    return setupCore("AdminUser", QString::number(pass), "SQLite", QVariantMap(), "StorageAuth", QVariantMap());
 }
 
 
@@ -338,7 +360,6 @@ bool Core::registerStorageBackend(Storage *backend)
     }
 }
 
-
 void Core::unregisterStorageBackends()
 {
     foreach(Storage *s, _storageBackends.values()) {
@@ -354,6 +375,45 @@ void Core::unregisterStorageBackend(Storage *backend)
     backend->deleteLater();
 }
 
+// Authentication handling, now independent from storage.
+// Register and unregister authenticators.
+
+void Core::registerAuthenticatorBackends()
+{
+    // Register new authentication backends here!
+    registerAuthenticatorBackend(new SqlAuthenticator(this));
+#ifdef HAVE_LDAP
+    registerAuthenticatorBackend(new LdapAuthenticator(this));
+#endif
+
+}
+
+bool Core::registerAuthenticatorBackend(Authenticator *authenticator)
+{
+    if (authenticator->isAvailable())
+    {
+        _authenticatorBackends[authenticator->displayName()] = authenticator;
+        return true;
+    } else {
+        authenticator->deleteLater();
+        return false;
+    }
+}
+
+void Core::unregisterAuthenticatorBackends()
+{
+    foreach(Authenticator* a, _authenticatorBackends.values())
+    {
+        a->deleteLater();
+    }
+    _authenticatorBackends.clear();
+}
+
+void Core::unregisterAuthenticatorBackend(Authenticator *backend)
+{
+    _authenticatorBackends.remove(backend->displayName());
+    backend->deleteLater();
+}
 
 // old db settings:
 // "Type" => "sqlite"
@@ -395,6 +455,43 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings, bool
     return true;
 }
 
+// XXX: TODO: Apparently, this is legacy?
+bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings, bool setup)
+{
+    _authenticator = 0;
+
+    if (backend.isEmpty()) {
+            return false;
+    }
+
+    Authenticator *authenticator = 0;
+    if (_authenticatorBackends.contains(backend)) {
+        authenticator = _authenticatorBackends[backend];
+    }
+    else {
+        qCritical() << "Selected auth backend is not available:" << backend;
+        return false;
+    }
+
+    Authenticator::State authState = authenticator->init(settings);
+    switch (authState) {
+    case Authenticator::NeedsSetup:
+        if (!setup)
+            return false;  // trigger setup process
+        if (authenticator->setup(settings))
+            return initAuthenticator(backend, settings, false);
+    // if initialization wasn't successful, we quit to keep from coming up unconfigured
+    case Authenticator::NotAvailable:
+        qCritical() << "FATAL: Selected auth backend is not available:" << backend;
+        exit(EXIT_FAILURE);
+    case Authenticator::IsReady:
+        // delete all other backends
+        _authenticatorBackends.remove(backend);
+        unregisterAuthenticatorBackends();
+    }
+    _authenticator = authenticator;
+    return true;
+}
 
 void Core::syncStorage()
 {
@@ -662,6 +759,19 @@ QVariantList Core::backendInfo()
     return backends;
 }
 
+QVariantList Core::authenticatorInfo()
+{
+    QVariantList backends;
+    foreach(const Authenticator *backend, instance()->_authenticatorBackends.values()) {
+        QVariantMap v;
+        v["DisplayName"] = backend->displayName();
+        v["Description"] = backend->description();
+        v["SetupKeys"] = backend->setupKeys();
+        v["SetupDefaults"] = backend->setupDefaults();
+        backends.append(v);
+    }
+    return backends;
+}
 
 // migration / backend selection
 bool Core::selectBackend(const QString &backend)
@@ -789,6 +899,12 @@ bool Core::changeUserPass(const QString &username)
         return false;
     }
 
+    if (!canChangeUserPassword(userId))
+    {
+        out << "User " << username << " is configured through an auth provider that has forbidden manual password changing." << endl;
+        return false;
+    }
+    
     out << "Change password for user: " << username << endl;
 
     disableStdInEcho();
@@ -827,9 +943,29 @@ bool Core::changeUserPassword(UserId userId, const QString &password)
     if (!isConfigured() || !userId.isValid())
         return false;
 
+    if (!canChangeUserPassword(userId))
+        return false;
+
     return instance()->_storage->updateUser(userId, password);
 }
 
+// XXX: this code isn't currently 100% optimal because the core
+// doesn't know it can have multiple auth providers configured (there aren't
+// multiple auth providers at the moment anyway) and we have hardcoded the
+// Database provider to be always allowed.
+bool Core::canChangeUserPassword(UserId userId)
+{
+    QString authProvider = instance()->_storage->getUserAuthenticator(userId);
+    if (authProvider != "Database")
+    {
+        if (authProvider != instance()->_authenticator->displayName()) {
+            return false;
+        } else if (instance()->_authenticator->canChangePassword()) {
+            return false;
+        }
+    }
+    return true;
+}
 
 AbstractSqlMigrationReader *Core::getMigrationReader(Storage *storage)
 {
@@ -867,6 +1003,14 @@ void Core::saveBackendSettings(const QString &backend, const QVariantMap &settin
     dbsettings["Backend"] = backend;
     dbsettings["ConnectionProperties"] = settings;
     CoreSettings().setStorageSettings(dbsettings);
+}
+
+void Core::saveAuthBackendSettings(const QString &backend, const QVariantMap &settings)
+{
+    QVariantMap dbsettings;
+    dbsettings["AuthBackend"] = backend;
+    dbsettings["ConnectionProperties"] = settings;
+    CoreSettings().setAuthSettings(dbsettings);
 }
 
 

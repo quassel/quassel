@@ -48,11 +48,12 @@ public slots:
 
     /* User handling */
 
-    virtual UserId addUser(const QString &user, const QString &password);
+    virtual UserId addUser(const QString &user, const QString &password, const QString &authenticator = "Database");
     virtual bool updateUser(UserId user, const QString &password);
     virtual void renameUser(UserId user, const QString &newName);
     virtual UserId validateUser(const QString &user, const QString &password);
     virtual UserId getUserId(const QString &username);
+    virtual QString getUserAuthenticator(const UserId userid);
     virtual UserId internalUser();
     virtual void delUser(UserId user);
     virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data);
