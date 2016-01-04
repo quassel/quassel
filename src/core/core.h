@@ -95,7 +95,7 @@ public:
     static inline UserId addUser(const QString &userName, const QString &password, const QString &authenticator = "Database") {
         return instance()->_storage->addUser(userName, password, authenticator);
     }
-    
+
     //! Does a comparison test against the authenticator in the database and the authenticator currently in use for a UserID.
     /**
      * \param userid The user's ID (note: not login name).

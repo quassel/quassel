@@ -938,7 +938,7 @@ bool Core::changeUserPass(const QString &username)
         out << "User " << username << " is configured through an auth provider that has forbidden manual password changing." << endl;
         return false;
     }
-    
+
     out << "Change password for user: " << username << endl;
 
     disableStdInEcho();
