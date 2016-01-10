@@ -55,7 +55,7 @@
   <customwidget>
    <class>Snore::SettingsDialog</class>
    <extends>QWidget</extends>
-   <header location="global">libsnore/settingsdialog.h</header>
+   <header location="global">libsnore/settings/settingsdialog.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
