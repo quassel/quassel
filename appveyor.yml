@@ -10,7 +10,7 @@ build_script:
 
     Import-Module $env:APPVEYOR_BUILD_FOLDER\work\appveyorHelp.psm1
 
-    Init @("ninja", "png2ico", "nsis") ([ordered]@{"git://anongit.kde.org/extra-cmake-modules.git" = @{"branch" = "master"};
+    Init @("ninja", "png2ico", "nsis", "7zip.commandline") ([ordered]@{"git://anongit.kde.org/extra-cmake-modules.git" = @{"branch" = "master"};
                                  "https://github.com/Snorenotify/SnoreGrowl.git" = @{"branch" = "v0.4.0"; "buildType" = "Release"};
                                  "git://anongit.kde.org/snorenotify.git" = @{"branch" = "v0.6.0"; "buildType" = "Release"}})
 
@@ -44,8 +44,8 @@ build_script:
                             "bin\\.*snoregrowl.*\.dll",
                             #
                             #ssl
-                            "bin\\libeay32\.dll",
-                            "bin\\ssleay32\.dll",
+                            ".*\\libeay32\.dll",
+                            ".*\\ssleay32\.dll",
                             #
                             #icu
                             "bin\\icuin\d+\.dll",
@@ -93,25 +93,22 @@ build_script:
                             "plugins\\phonon_backend\\.*",
                             "plugins\\phonon4qt5_backend\\.*") @(
                             #blacklist
+                            "include",
                             ".*\.h",
-                            "lib\\plugins\\libsnore.*\\libsnore_backend_freedesktop\.dll"
+                            "lib\\plugins\\libsnore.*\\libsnore_backend_freedesktop\.dll",
+                            ".*\.pdb",
+                            ".*plugind\.dll"
                             )
 
     mv "$imageDir\bin\*" "$imageDir\"
     #mv "$imageDir\lib\qca-qt5\crypto" "$imageDir\crypto"
+    mv "$imageDir\qml\*" "$imageDir"
     mv "$imageDir\plugins\*" "$imageDir"
     if(Test-Path "$imageDir\lib\plugins")
     {
         mv "$imageDir\lib\plugins\*" "$imageDir"
     }
-    #snorenotify 0.5 plugins
-    if(Test-Path "$imageDir\lib\libsnore-qt5")
-    {
-        mv "$imageDir\lib\libsnore-qt5\*" "$imageDir"
-    }
-    rm -Recurse "$imageDir\plugins\*"
-    rm -Recurse "$imageDir\lib"
-    rm -Recurse "$imageDir\bin"
+    DeleteEmptyFodlers $imageDir
     7ZipDeployImage
     NsisDeployImage $env:APPVEYOR_BUILD_FOLDER\scripts\build\NullsoftInstaller.nsi
 
@@ -119,11 +116,11 @@ environment:
     QT_VER: 5.5
 
     matrix:
+    #msvc
+    - COMPILER: msvc2013_64
+    - COMPILER: msvc2013
     #mingw
     - COMPILER: mingw492_32
-    #msvc
-    - COMPILER: msvc2013
-    - COMPILER: msvc2013_64
 
 test: off
 
