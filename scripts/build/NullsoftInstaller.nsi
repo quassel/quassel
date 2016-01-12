@@ -86,7 +86,7 @@ SetDatablockOptimize on
 CRCCheck on
 SilentInstall normal
 
-InstallDir "$PROGRAMFILES\${productname}"
+InstallDir "${defaultinstdir}\${productname}"
 InstallDirRegKey HKLM "${regkey}" ""
 
 
