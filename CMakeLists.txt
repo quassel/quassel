@@ -430,7 +430,7 @@ set(CMAKE_REQUIRED_INCLUDES ${QT_INCLUDES} ${Qt5Core_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
 check_cxx_source_compiles("
     #include \"qglobal.h\"
-    #if defined QT_NO_OPENSSL || defined QT_NO_SSL
+    #if defined QT_NO_SSL
     #  error \"No SSL support\"
     #endif
     int main() {}"
