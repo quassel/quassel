@@ -534,6 +534,11 @@ void MainWin::setupMenus()
     _fileMenu->addSeparator();
     _fileMenu->addAction(coll->action("Quit"));
 
+#ifdef Q_OS_MAC
+    _editMenu = menuBar()->addMenu(tr("&Edit"));
+    _editMenu->addAction("")->setEnabled(false);
+#endif
+
     _viewMenu = menuBar()->addMenu(tr("&View"));
     _bufferViewsMenu = _viewMenu->addMenu(tr("&Chat Lists"));
     _bufferViewsMenu->addAction(coll->action("ConfigureBufferViews"));
