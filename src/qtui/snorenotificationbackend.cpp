@@ -43,9 +43,9 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
 
     Snore::SnoreCore::instance().loadPlugins(
 #ifndef HAVE_KDE
-                Snore::SnorePlugin::BACKEND |
+                Snore::SnorePlugin::Backend |
 #endif
-                Snore::SnorePlugin::SECONDARY_BACKEND);
+                Snore::SnorePlugin::SecondaryBackend | Snore::SnorePlugin::Settings);
     m_application = Snore::Application("Quassel", m_icon);
     m_application.hints().setValue("windows-app-id","QuasselProject.QuasselIRC");
     m_application.hints().setValue("pushover-token", "arNtsi983QSZUqU3KAZrFLKHGFPkdL");
@@ -91,7 +91,7 @@ void SnoreNotificationBackend::close(uint notificationId)
     }
 #endif
     Snore::Notification n = Snore::SnoreCore::instance().getActiveNotificationByID(m_notificationIds.take(notificationId));
-    Snore::SnoreCore::instance().requestCloseNotification(n, Snore::Notification::CLOSED);
+    Snore::SnoreCore::instance().requestCloseNotification(n, Snore::Notification::Closed);
 }
 
 void SnoreNotificationBackend::actionInvoked(Snore::Notification n)
