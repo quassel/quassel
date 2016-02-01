@@ -618,10 +618,14 @@ private:
     void unregisterAuthenticatorBackend(Authenticator *);
 
     bool selectBackend(const QString &backend);
+    bool selectAuthenticator(const QString &backend);
     bool createUser();
     bool saveBackendSettings(const QString &backend, const QVariantMap &settings);
     void saveAuthBackendSettings(const QString &backend, const QVariantMap &settings);
+
     QVariantMap promptForSettings(const Storage *storage);
+    QVariantMap promptForSettings(const Authenticator *authenticator);
+    QVariantMap promptForSettings(QStringList keys, QVariantMap defaults);
 
 private:
     QSet<CoreAuthHandler *> _connectingClients;

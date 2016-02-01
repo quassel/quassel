@@ -193,12 +193,15 @@ void Core::init()
     QVariantMap authSettings = cs.authSettings().toMap();
     initAuthenticator(authSettings.value("AuthBackend").toString(), authSettings.value("ConnectionProperties").toMap());
 
-    if (Quassel::isOptionSet("select-backend")) {
-        selectBackend(Quassel::optionValue("select-backend"));
+    if (Quassel::isOptionSet("select-backend") || Quassel::isOptionSet("select-authenticator")) {
+        if (Quassel::isOptionSet("select-backend")) {
+            selectBackend(Quassel::optionValue("select-backend"));
+        }
+        if (Quassel::isOptionSet("select-authenticator")) {
+            selectAuthenticator(Quassel::optionValue("select-authenticator"));
+        }
         exit(0);
     }
-
-    // TODO: add --select-authenticator command line option and code.
 
     if (!_configured) {
         if (!_storageBackends.count()) {
@@ -882,6 +885,50 @@ bool Core::selectBackend(const QString &backend)
     return true;
 }
 
+// XXX: I am not sure if this function is implemented correctly.
+// There is currently no concept of migraiton between auth backends.
+bool Core::selectAuthenticator(const QString &backend)
+{
+    // Register all authentication backends.
+    registerAuthenticatorBackends();
+    if (!_authenticatorBackends.contains(backend)) {
+        qWarning() << qPrintable(QString("Core::selectAuthenticator(): unsupported backend: %1").arg(backend));
+        qWarning() << "    supported backends are:" << qPrintable(QStringList(_authenticatorBackends.keys()).join(", "));
+        return false;
+    }
+
+    Authenticator *authenticator = _authenticatorBackends[backend];
+    QVariantMap settings = promptForSettings(authenticator);
+
+    Authenticator::State state = authenticator->init(settings);
+    switch (state) {
+    case Authenticator::IsReady:
+        saveAuthBackendSettings(backend, settings);
+        qWarning() << "Switched auth backend to:" << qPrintable(backend);
+//        qWarning() << "Auth backend already initialized. Skipping Migration";
+        return true;
+    case Authenticator::NotAvailable:
+        qCritical() << "Auth backend is not available:" << qPrintable(backend);
+        return false;
+    case Authenticator::NeedsSetup:
+        if (!authenticator->setup(settings)) {
+            qWarning() << qPrintable(QString("Core::selectAuthenticator(): unable to setup authenticator: %1").arg(backend));
+            return false;
+        }
+
+        if (authenticator->init(settings) != Authenticator::IsReady) {
+            qWarning() << qPrintable(QString("Core::migrateBackend(): unable to initialize authenticator: %1").arg(backend));
+            return false;
+        }
+
+        saveAuthBackendSettings(backend, settings);
+        qWarning() << "Switched auth backend to:" << qPrintable(backend);
+    }
+    
+    _authenticator = authenticator;
+	return true;
+}
+
 
 bool Core::createUser()
 {
@@ -1049,12 +1096,12 @@ void Core::saveAuthBackendSettings(const QString &backend, const QVariantMap &se
     CoreSettings().setAuthSettings(dbsettings);
 }
 
-
-QVariantMap Core::promptForSettings(const Storage *storage)
+// Generic version of promptForSettings that doesn't care what *type* of
+// backend it runs over.
+QVariantMap Core::promptForSettings(QStringList keys, QVariantMap defaults)
 {
     QVariantMap settings;
 
-    QStringList keys = storage->setupKeys();
     if (keys.isEmpty())
         return settings;
 
@@ -1062,7 +1109,6 @@ QVariantMap Core::promptForSettings(const Storage *storage)
     QTextStream in(stdin);
     out << "Default values are in brackets" << endl;
 
-    QVariantMap defaults = storage->setupDefaults();
     QString value;
     foreach(QString key, keys) {
         QVariant val;
@@ -1098,6 +1144,23 @@ QVariantMap Core::promptForSettings(const Storage *storage)
         settings[key] = val;
     }
     return settings;
+}
+
+// Since an auth and storage backend work basically the same way,
+// use polymorphism here on this routine.
+QVariantMap Core::promptForSettings(const Storage *storage)
+{
+    QStringList keys = storage->setupKeys();
+    QVariantMap defaults = storage->setupDefaults();
+    return Core::promptForSettings(keys, defaults);
+    
+}
+
+QVariantMap Core::promptForSettings(const Authenticator *authenticator)
+{
+    QStringList keys = authenticator->setupKeys();
+    QVariantMap defaults = authenticator->setupDefaults();
+    return Core::promptForSettings(keys, defaults);
 }
 
 
