@@ -34,7 +34,14 @@
 #include "core.h"
 
 // Link against LDAP.
+/* We should use openldap on windows if at all possible, rather than trying to
+ * write some kind of compatiblity routine.
+#ifdef Q_CC_MSVC
+#include <windows.h>
+#include <winldap.h>
+#else*/
 #include <ldap.h>
+//#endif
 
 // Default LDAP server port.
 #define DEFAULT_LDAP_PORT 389
