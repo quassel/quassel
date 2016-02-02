@@ -198,7 +198,7 @@ void AliasManager::expand(const QString &alias, const BufferInfo &bufferInfo, co
 
     while (!expandedCommands.isEmpty()) {
         QString command;
-        if (expandedCommands[0].trimmed().toLower().startsWith("/wait")) {
+        if (expandedCommands[0].trimmed().toLower().startsWith("/wait ")) {
             command = expandedCommands.join("; ");
             expandedCommands.clear();
         }
