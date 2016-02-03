@@ -98,11 +98,12 @@ void Action::setShortcutConfigurable(bool b)
 QKeySequence Action::shortcut(ShortcutTypes type) const
 {
     Q_ASSERT(type);
-    if (type == DefaultShortcut)
-        return property("defaultShortcut").value<QKeySequence>();
+    if (type == DefaultShortcut) {
+        auto sequence = property("defaultShortcuts").value<QList<QKeySequence>>();
+        return sequence.isEmpty() ? QKeySequence() : sequence.first();
+    }
 
-    if (shortcuts().count()) return shortcuts().value(0);
-    return QKeySequence();
+    return shortcuts().isEmpty() ? QKeySequence() : shortcuts().first();
 }
 
 
@@ -117,7 +118,7 @@ void Action::setShortcut(const QKeySequence &key, ShortcutTypes type)
     Q_ASSERT(type);
 
     if (type & DefaultShortcut)
-        setProperty("defaultShortcut", key);
+        setProperty("defaultShortcuts", QVariant::fromValue(QList<QKeySequence>() << key));
 
     if (type & ActiveShortcut)
         QAction::setShortcut(key);
