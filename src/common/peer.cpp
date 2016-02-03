@@ -34,20 +34,23 @@ AuthHandler *Peer::authHandler() const
 }
 
 
-// Note that we need to use a fixed-size integer instead of uintptr_t, in order
-// to avoid issues with different architectures for client and core.
-// In practice, we'll never really have to restore the real value of a PeerPtr from
-// a QVariant.
+// PeerPtr is used in RPC signatures for enabling receivers to send replies
+// to a particular peer rather than broadcast to all connected ones.
+// To enable this, the SignalProxy transparently replaces the bogus value
+// received over the network with the actual address of the local Peer
+// instance. Because the actual value isn't needed on the wire, it is
+// serialized as null.
 QDataStream &operator<<(QDataStream &out, PeerPtr ptr)
 {
-    out << reinterpret_cast<quint64>(ptr);
+    Q_UNUSED(ptr);
+    out << static_cast<quint64>(0);  // 64 bit for historic reasons
     return out;
 }
 
 QDataStream &operator>>(QDataStream &in, PeerPtr &ptr)
 {
+    ptr = nullptr;
     quint64 value;
     in >> value;
-    ptr = reinterpret_cast<PeerPtr>(value);
     return in;
 }
