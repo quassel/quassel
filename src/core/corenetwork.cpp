@@ -298,11 +298,7 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &par
 
 void CoreNetwork::setChannelJoined(const QString &channel)
 {
-    _autoWhoQueue.prepend(channel.toLower()); // prepend so this new chan is the first to be checked
-    if (_useCapAwayNotify) {
-        // When away-notify is active, the timer's stopped.  Start a new cycle to who this channel.
-        setAutoWhoEnabled(true);
-    }
+    queueAutoWhoOneshot(channel); // check this new channel first
 
     Core::setChannelPersistent(userId(), networkId(), channel, true);
     Core::setPersistentChannelKey(userId(), networkId(), channel, _channelKeys[channel.toLower()]);
@@ -878,6 +874,29 @@ void CoreNetwork::startAutoWhoCycle()
     _autoWhoQueue = channels();
 }
 
+void CoreNetwork::queueAutoWhoOneshot(const QStringList &channelsOrNicks)
+{
+    foreach(QString channelOrNick, channelsOrNicks) {
+        // Prepend so these new channels/nicks are the first to be checked
+        // Don't allow duplicates
+        if (!_autoWhoQueue.contains(channelOrNick.toLower())) {
+            _autoWhoQueue.prepend(channelOrNick.toLower());
+        }
+    }
+    if (_useCapAwayNotify) {
+        // When away-notify is active, the timer's stopped.  Start a new cycle to who this channel.
+        setAutoWhoEnabled(true);
+    }
+}
+
+void CoreNetwork::queueAutoWhoOneshot(const QString &channelOrNick)
+{
+    // Convert to a list of one, call the main queue
+    QStringList channelsAndNicks;
+    channelsAndNicks << channelOrNick;
+    queueAutoWhoOneshot(channelsAndNicks);
+}
+
 
 void CoreNetwork::setAutoWhoDelay(int delay)
 {
@@ -919,15 +938,27 @@ void CoreNetwork::sendAutoWho()
         return;
 
     while (!_autoWhoQueue.isEmpty()) {
-        QString chan = _autoWhoQueue.takeFirst();
-        IrcChannel *ircchan = ircChannel(chan);
-        if (!ircchan) continue;
-        // If using away-notify, don't impose channel size limits.  Who will only run once.
-        if (networkConfig()->autoWhoNickLimit() > 0 && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
-            && !_useCapAwayNotify)
+        QString chanOrNick = _autoWhoQueue.takeFirst();
+        // Check if it's a known channel or nick
+        IrcChannel *ircchan = ircChannel(chanOrNick);
+        IrcUser *ircuser = ircUser(chanOrNick);
+        if (ircchan) {
+            // Apply channel limiting rules
+            // If using away-notify, don't impose channel size limits.  Who will only run once.
+            if (networkConfig()->autoWhoNickLimit() > 0
+                && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
+                && !_useCapAwayNotify)
+                continue;
+            _autoWhoPending[chanOrNick.toLower()]++;
+        } else if (ircuser) {
+            // Checking a nick, add it to the pending list
+            _autoWhoPending[ircuser->nick().toLower()]++;
+        } else {
+            // Not a channel or a nick, skip it
+            qDebug() << "Skipping who polling of unknown channel or nick" << chanOrNick;
             continue;
-        _autoWhoPending[chan]++;
-        putRawLine("WHO " + serverEncode(chan));
+        }
+        putRawLine("WHO " + serverEncode(chanOrNick));
         break;
     }
 

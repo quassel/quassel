@@ -243,6 +243,12 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
             break;
     }
 
+    // If using away-notify, check new users.  Works around buggy IRC servers
+    // forgetting to send :away messages for users who join channels when away.
+    if (coreNetwork(e)->useCapAwayNotify()) {
+        coreNetwork(e)->queueAutoWhoOneshot(ircuser->nick());
+    }
+
     if (!handledByNetsplit)
         ircuser->joinChannel(channel);
     else
@@ -823,8 +829,12 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
         ircuser->setRealName(e->params().last().section(" ", 1));
     }
 
-    if (coreNetwork(e)->isAutoWhoInProgress(channel))
+    // Check if channel name has a who in progress.
+    // If not, then check if user nick exists and has a who in progress.
+    if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
+        (ircuser && coreNetwork(e)->isAutoWhoInProgress(ircuser->nick()))) {
         e->setFlag(EventManager::Silent);
+    }
 }
 
 

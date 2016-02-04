@@ -139,6 +139,9 @@ public slots:
     void setAutoWhoInterval(int interval);
     void setAutoWhoDelay(int delay);
 
+    void queueAutoWhoOneshot(const QStringList &channelsOrNicks);
+    void queueAutoWhoOneshot(const QString &channelOrNick);
+
     void setCapAwayNotifyEnabled(bool enabled);
 
     bool setAutoWhoDone(const QString &channel);
