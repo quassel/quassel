@@ -158,6 +158,9 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     // cleaning up old quit reason
     _quitReason.clear();
 
+    // reset capability negotiation in case server changes during a reconnect
+    _useCapAwayNotify = false;
+
     // use a random server?
     if (useRandomServer()) {
         _lastUsedServerIndex = qrand() % serverList().size();
@@ -296,6 +299,10 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &par
 void CoreNetwork::setChannelJoined(const QString &channel)
 {
     _autoWhoQueue.prepend(channel.toLower()); // prepend so this new chan is the first to be checked
+    if (_useCapAwayNotify) {
+        // When away-notify is active, the timer's stopped.  Start a new cycle to who this channel.
+        setAutoWhoEnabled(true);
+    }
 
     Core::setChannelPersistent(userId(), networkId(), channel, true);
     Core::setPersistentChannelKey(userId(), networkId(), channel, _channelKeys[channel.toLower()]);
@@ -482,9 +489,10 @@ void CoreNetwork::socketInitialized()
     _tokenBucket = _burstSize; // init with a full bucket
     _tokenBucketTimer.start(_messageDelay);
 
-    if (networkInfo().useSasl) {
-        putRawLine(serverEncode(QString("CAP REQ :sasl")));
-    }
+    // Request capabilities as per IRCv3 specifications
+    // Older servers should ignore this; newer servers won't downgrade to RFC1459
+    putRawLine(serverEncode(QString("CAP LS")));
+
     if (!server.password.isEmpty()) {
         putRawLine(serverEncode(QString("PASS %1").arg(server.password)));
     }
@@ -893,6 +901,16 @@ void CoreNetwork::setAutoWhoEnabled(bool enabled)
     }
 }
 
+void CoreNetwork::setCapAwayNotifyEnabled(bool enabled)
+{
+    _useCapAwayNotify = enabled;
+    if (enabled) {
+        // Stop the automatic timers, handle manually
+        setAutoWhoEnabled(false);
+    } else {
+        setAutoWhoEnabled(networkConfig()->autoWhoEnabled());
+    }
+}
 
 void CoreNetwork::sendAutoWho()
 {
@@ -904,16 +922,24 @@ void CoreNetwork::sendAutoWho()
         QString chan = _autoWhoQueue.takeFirst();
         IrcChannel *ircchan = ircChannel(chan);
         if (!ircchan) continue;
-        if (networkConfig()->autoWhoNickLimit() > 0 && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit())
+        // If using away-notify, don't impose channel size limits.  Who will only run once.
+        if (networkConfig()->autoWhoNickLimit() > 0 && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
+            && !_useCapAwayNotify)
             continue;
         _autoWhoPending[chan]++;
         putRawLine("WHO " + serverEncode(chan));
         break;
     }
-    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()) {
+
+    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()
+        && !_useCapAwayNotify) {
         // Timer was stopped, means a new cycle is due immediately
+        // Don't run a new cycle if using away-notify; server will notify as appropriate
         _autoWhoCycleTimer.start();
         startAutoWhoCycle();
+    } else if (_useCapAwayNotify && _autoWhoCycleTimer.isActive()) {
+        // Don't run another who cycle if away-notify is enabled
+        _autoWhoCycleTimer.stop();
     }
 }
 

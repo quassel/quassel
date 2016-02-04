@@ -137,26 +137,80 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
 #endif
 }
 
+/* IRCv3.1 away-notify - ":nick!user@host AWAY [:message]" */
+void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
+{
+    if (!checkParamCount(e, 2))
+        return;
+
+    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    if (ircuser) {
+        if (!e->params().at(1).isEmpty()) {
+            ircuser->setAway(true);
+            ircuser->setAwayMessage(e->params().at(1));
+        } else {
+            ircuser->setAway(false);
+        }
+    } else {
+        qDebug() << "Received away-notify data for unknown user" << e->params().at(0);
+    }
+}
 
 void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
 {
     // for SASL, there will only be a single param of 'sasl', however you can check here for
     // additional CAP messages (ls, multi-prefix, et cetera).
-
     if (e->params().count() == 3) {
-        if (e->params().at(2).startsWith("sasl")) { // Freenode (at least) sends "sasl " with a trailing space for some reason!
-            // FIXME use event
-            // if the current identity has a cert set, use SASL EXTERNAL
-#ifdef HAVE_SSL
-            if (!coreNetwork(e)->identityPtr()->sslCert().isNull()) {
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE EXTERNAL"));
-            } else {
-#endif
-                // Only working with PLAIN atm, blowfish later
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN"));
-#ifdef HAVE_SSL
+        if (e->params().at(1).compare("LS", Qt::CaseInsensitive) == 0) {
+            // We know what capabilities are available, request what we want.
+            QString cap_request = "";
+            QStringList caps_available = e->params().at(2).split(' ');
+            for (int i = 0; i < caps_available.count(); ++i) {
+                if (caps_available[i].startsWith("sasl")) {
+                    // Only request SASL if it's enabled
+                    if (coreNetwork(e)->networkInfo().useSasl)
+                        cap_request.append(QString("%1 ").arg(caps_available[i]));
+                } else if (caps_available[i].startsWith("away-notify")) {
+                    cap_request.append(QString("%1 ").arg(caps_available[i]));
+                }
             }
+            if (!cap_request.trimmed().isEmpty()) {
+                // We've got at least one to request that we want
+                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode(QString("CAP REQ :%1").arg(cap_request)));
+            } else {
+                // No available desired capabilities, end negotiation
+                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode(QString("CAP END")));
+            }
+        } else if (e->params().at(1).compare("ACK", Qt::CaseInsensitive) == 0) {
+            // Got the capabilities we want, proceed as needed.
+            QStringList caps_available = e->params().at(2).split(' ');
+            // Some capabilities (e.g. SASL) require additional configuration
+            // If so, don't end negotiation right after processing capabilities
+            bool _canEndCap = true;
+            for (int i = 0; i < caps_available.count(); ++i) {
+                if (caps_available[i].startsWith("sasl")) {
+                    _canEndCap = false;
+                    // Freenode (at least) sends "sasl " with a trailing space for some reason!
+                    // FIXME use event
+                    // if the current identity has a cert set, use SASL EXTERNAL
+#ifdef HAVE_SSL
+                    if (!coreNetwork(e)->identityPtr()->sslCert().isNull()) {
+                        coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE EXTERNAL"));
+                    } else {
 #endif
+                        // Only working with PLAIN atm, blowfish later
+                        coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN"));
+#ifdef HAVE_SSL
+                    }
+#endif
+                } else if (caps_available[i].startsWith("away-notify")) {
+                    coreNetwork(e)->setCapAwayNotifyEnabled(true);
+                }
+            }
+            if (_canEndCap) {
+                // Safe to end capability negotiation, do so here
+                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode(QString("CAP END")));
+            }
         }
     }
 }
