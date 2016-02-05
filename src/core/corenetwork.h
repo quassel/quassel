@@ -88,6 +88,7 @@ public:
     inline void storeChannelCipherKey(const QString &channel, const QByteArray &key) { _cipherKeys[channel.toLower()] = key; }
 
     inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoPending.value(channel.toLower(), 0); }
+    inline bool useCapAwayNotify() const { return _useCapAwayNotify; }
 
     inline UserId userId() const { return _coreSession->user(); }
 
@@ -137,6 +138,11 @@ public slots:
     void setAutoWhoEnabled(bool enabled);
     void setAutoWhoInterval(int interval);
     void setAutoWhoDelay(int delay);
+
+    void queueAutoWhoOneshot(const QStringList &channelsOrNicks);
+    void queueAutoWhoOneshot(const QString &channelOrNick);
+
+    void setCapAwayNotifyEnabled(bool enabled);
 
     bool setAutoWhoDone(const QString &channel);
 
@@ -239,6 +245,9 @@ private:
     QStringList _autoWhoQueue;
     QHash<QString, int> _autoWhoPending;
     QTimer _autoWhoTimer, _autoWhoCycleTimer;
+    /* Keep track of IRCv3 away-notify state.  With away-notify enabled,
+     * poll every channel once regardless of size, then disable polling. */
+    bool _useCapAwayNotify;
 
     QTimer _tokenBucketTimer;
     int _messageDelay;      // token refill speed in ms
