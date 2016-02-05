@@ -69,6 +69,8 @@ public:
 
     QList<QAction *> actions(const QModelIndex &index);
 
+    void setFilterString(const QString string);
+
 public slots:
     void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
     void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
@@ -100,6 +102,7 @@ private:
     QSet<BufferId> _toAdd;
     QSet<BufferId> _toTempRemove;
     QSet<BufferId> _toRemove;
+    QString _filterString;
 
     bool filterAcceptBuffer(const QModelIndex &) const;
     bool filterAcceptNetwork(const QModelIndex &) const;

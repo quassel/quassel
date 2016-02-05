@@ -28,6 +28,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSet>
+#include <QVBoxLayout>
 
 #include "action.h"
 #include "buffermodel.h"
@@ -563,6 +564,16 @@ void BufferView::hideCurrentBuffer()
     config()->requestRemoveBuffer(bufferId);
 }
 
+void BufferView::filterTextChanged(QString filterString)
+{
+    BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+    if (!filter) {
+        return;
+    }
+    filter->setFilterString(filterString);
+    on_configChanged(); // make sure collapsation is correct
+}
+
 
 QSize BufferView::sizeHint() const
 {
@@ -646,6 +657,9 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
 // ==============================
 BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     : QDockWidget(parent),
+    _childWidget(0),
+    _widget(new QWidget(parent)),
+    _filterEdit(new QLineEdit(parent)),
     _active(false),
     _title(config->bufferViewName())
 {
@@ -653,7 +667,14 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     toggleViewAction()->setData(config->bufferViewId());
     setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
     connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(bufferViewRenamed(const QString &)));
+    connect(config, SIGNAL(configChanged()), SLOT(configChanged()));
     updateTitle();
+
+    _widget->setLayout(new QVBoxLayout);
+    _filterEdit->setVisible(config->showSearch()); // hide it here, so we don't flicker or somesuch
+    _filterEdit->setPlaceholderText(tr("Search..."));
+    _widget->layout()->addWidget(_filterEdit);
+    QDockWidget::setWidget(_widget);
 }
 
 
@@ -663,6 +684,15 @@ void BufferViewDock::updateTitle()
     if (isActive())
         title.prepend(QString::fromUtf8("• "));
     setWindowTitle(title);
+}
+
+void BufferViewDock::configChanged()
+{
+    _filterEdit->setVisible(config()->showSearch());
+
+    if (!_filterEdit->isVisible()) {
+        _filterEdit->setText(QLatin1String(""));
+    }
 }
 
 
@@ -705,4 +735,12 @@ BufferViewConfig *BufferViewDock::config() const
         return 0;
     else
         return view->config();
+}
+
+void BufferViewDock::setWidget(QWidget *newWidget)
+{
+    _widget->layout()->addWidget(newWidget);
+    _childWidget = newWidget;
+
+    connect(_filterEdit, SIGNAL(textChanged(QString)), bufferView(), SLOT(filterTextChanged(QString)));
 }

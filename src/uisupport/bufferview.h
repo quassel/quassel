@@ -67,6 +67,7 @@ public slots:
     void nextBuffer();
     void previousBuffer();
     void hideCurrentBuffer();
+    void filterTextChanged(QString filterString);
 
 signals:
     void removeBuffer(const QModelIndex &);
@@ -142,6 +143,8 @@ public :
     BufferViewConfig *config() const;
     inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
     inline bool isActive() const { return _active; }
+    void setWidget(QWidget *newWidget);
+    QWidget *widget() const { return _childWidget; }
 
 public slots:
     void setActive(bool active = true);
@@ -149,9 +152,12 @@ public slots:
 private slots:
     void bufferViewRenamed(const QString &newName);
     void updateTitle();
+    void configChanged();
 
 private:
-
+    QWidget *_childWidget;
+    QWidget *_widget;
+    QLineEdit *_filterEdit;
     bool _active;
     QString _title;
 };
