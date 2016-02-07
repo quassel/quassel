@@ -47,7 +47,6 @@ public:
     inline uint port() const { return _port; }
     inline bool useSsl() const { return _useSsl; }
 
-    inline bool useProxy() const { return _useProxy; }
     inline QNetworkProxy::ProxyType proxyType() const { return _proxyType; }
     inline QString proxyUser() const { return _proxyUser; }
     inline QString proxyHostName() const { return _proxyHostName; }
@@ -64,7 +63,6 @@ public:
     void setPort(uint port);
     void setUseSsl(bool);
 
-    void setUseProxy(bool);
     void setProxyType(QNetworkProxy::ProxyType);
     void setProxyUser(const QString &);
     void setProxyHostName(const QString &);
