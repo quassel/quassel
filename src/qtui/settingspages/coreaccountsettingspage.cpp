@@ -250,12 +250,40 @@ CoreAccountEditDlg::CoreAccountEditDlg(const CoreAccount &acct, QWidget *parent)
     ui.user->setText(acct.user());
     ui.password->setText(acct.password());
     ui.rememberPassword->setChecked(acct.storePassword());
-    ui.useProxy->setChecked(acct.useProxy());
-    ui.proxyHostName->setText(acct.proxyHostName());
-    ui.proxyPort->setValue(acct.proxyPort());
-    ui.proxyType->setCurrentIndex(acct.proxyType() == QNetworkProxy::Socks5Proxy ? 0 : 1);
-    ui.proxyUser->setText(acct.proxyUser());
-    ui.proxyPassword->setText(acct.proxyPassword());
+
+    ui.buttonGroupProxyType->setId(ui.radioButtonNoProxy, 0);
+    ui.buttonGroupProxyType->setId(ui.radioButtonSystemProxy, 1);
+    ui.buttonGroupProxyType->setId(ui.radioButtonManualProxy, 2);
+
+    bool manualProxy = false;
+    switch (acct.proxyType()) {
+    case QNetworkProxy::NoProxy:
+        ui.buttonGroupProxyType->button(0)->setChecked(true);
+        break;
+    case QNetworkProxy::DefaultProxy:
+        ui.buttonGroupProxyType->button(1)->setChecked(true);
+        break;
+    case QNetworkProxy::Socks5Proxy:
+        ui.buttonGroupProxyType->button(2)->setChecked(true);
+        ui.proxyType->setCurrentIndex(0);
+        manualProxy = true;
+        break;
+    case QNetworkProxy::HttpProxy:
+        ui.buttonGroupProxyType->button(2)->setChecked(true);
+        ui.proxyType->setCurrentIndex(1);
+        manualProxy = true;
+        break;
+    default:
+        break;
+    }
+
+    if (manualProxy) {
+        ui.proxyHostName->setText(acct.proxyHostName());
+        ui.proxyPort->setValue(acct.proxyPort());
+        ui.proxyType->setEnabled(true);
+        ui.proxyUser->setText(acct.proxyUser());
+        ui.proxyPassword->setText(acct.proxyPassword());
+    }
 
     if (acct.accountId().isValid())
         setWindowTitle(tr("Edit Core Account"));
@@ -266,18 +294,37 @@ CoreAccountEditDlg::CoreAccountEditDlg(const CoreAccount &acct, QWidget *parent)
 
 CoreAccount CoreAccountEditDlg::account()
 {
-    _account.setAccountName(ui.accountName->text().trimmed());
-    _account.setHostName(ui.hostName->text().trimmed());
-    _account.setPort(ui.port->value());
-    _account.setUser(ui.user->text().trimmed());
-    _account.setPassword(ui.password->text());
-    _account.setStorePassword(ui.rememberPassword->isChecked());
-    _account.setUseProxy(ui.useProxy->isChecked());
-    _account.setProxyHostName(ui.proxyHostName->text().trimmed());
-    _account.setProxyPort(ui.proxyPort->value());
-    _account.setProxyType(ui.proxyType->currentIndex() == 0 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy);
-    _account.setProxyUser(ui.proxyUser->text().trimmed());
-    _account.setProxyPassword(ui.proxyPassword->text());
+    QNetworkProxy::ProxyType proxyType = QNetworkProxy::NoProxy;
+    int checkedId = ui.buttonGroupProxyType->checkedId();
+
+    switch (checkedId) {
+    case NoProxy: // QNetworkProxy::NoProxy
+        QNetworkProxyFactory::setUseSystemConfiguration(false);
+        _account.setProxyType(proxyType);
+        break;
+    case SystemProxy: // QNetworkProxy::DefaultProxy:
+        QNetworkProxyFactory::setUseSystemConfiguration(true);
+        _account.setProxyType(QNetworkProxy::DefaultProxy);
+        break;
+    case ManualProxy: // QNetworkProxy::Socks5Proxy || QNetworkProxy::HttpProxy
+        proxyType = ui.proxyType->currentIndex() == 0 ?
+                    QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
+        QNetworkProxyFactory::setUseSystemConfiguration(false);
+        _account.setAccountName(ui.accountName->text().trimmed());
+        _account.setHostName(ui.hostName->text().trimmed());
+        _account.setPort(ui.port->value());
+        _account.setUser(ui.user->text().trimmed());
+        _account.setPassword(ui.password->text());
+        _account.setStorePassword(ui.rememberPassword->isChecked());
+        _account.setProxyHostName(ui.proxyHostName->text().trimmed());
+        _account.setProxyPort(ui.proxyPort->value());
+        _account.setProxyType(proxyType);
+        _account.setProxyUser(ui.proxyUser->text().trimmed());
+        _account.setProxyPassword(ui.proxyPassword->text());
+        break;
+    default:
+        break;
+    }
     return _account;
 }
 
@@ -309,6 +356,15 @@ void CoreAccountEditDlg::on_user_textChanged(const QString &text)
 {
     Q_UNUSED(text)
     setWidgetStates();
+}
+
+void CoreAccountEditDlg::on_radioButtonManualProxy_toggled(bool checked)
+{
+    ui.proxyType->setEnabled(checked);
+    ui.proxyHostName->setEnabled(checked);
+    ui.proxyPort->setEnabled(checked);
+    ui.proxyUser->setEnabled(checked);
+    ui.proxyPassword->setEnabled(checked);
 }
 
 

@@ -75,10 +75,21 @@ void ClientAuthHandler::connectToCore()
     QTcpSocket *socket = new QTcpSocket(this);
 #endif
 
-// TODO: Handle system proxy
 #ifndef QT_NO_NETWORKPROXY
-    if (_account.useProxy()) {
-        QNetworkProxy proxy(_account.proxyType(), _account.proxyHostName(), _account.proxyPort(), _account.proxyUser(), _account.proxyPassword());
+    QNetworkProxy proxy;
+    proxy.setType(_account.proxyType());
+    if (_account.proxyType() == QNetworkProxy::Socks5Proxy ||
+            _account.proxyType() == QNetworkProxy::HttpProxy) {
+        proxy.setHostName(_account.proxyHostName());
+        proxy.setPort(_account.proxyPort());
+        proxy.setUser(_account.proxyUser());
+        proxy.setPassword(_account.proxyPassword());
+    }
+
+    if (_account.proxyType() == QNetworkProxy::DefaultProxy) {
+        QNetworkProxyFactory::setUseSystemConfiguration(true);
+    } else {
+        QNetworkProxyFactory::setUseSystemConfiguration(false);
         socket->setProxy(proxy);
     }
 #endif
