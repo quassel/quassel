@@ -52,7 +52,6 @@ public:
 
     void setModel(QAbstractItemModel *model);
     void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
-    virtual void setSelectionModel(QItemSelectionModel *selectionModel);
 
     void setConfig(BufferViewConfig *config);
     inline BufferViewConfig *config() { return _config; }
