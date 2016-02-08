@@ -91,7 +91,9 @@ void SnoreNotificationBackend::close(uint notificationId)
     }
 #endif
     Snore::Notification n = Snore::SnoreCore::instance().getActiveNotificationByID(m_notificationIds.take(notificationId));
-    Snore::SnoreCore::instance().requestCloseNotification(n, Snore::Notification::Closed);
+    if (n.isValid()) { // Don't close the notification if it no longer exists.
+        Snore::SnoreCore::instance().requestCloseNotification(n, Snore::Notification::Closed);
+    }
 }
 
 void SnoreNotificationBackend::actionInvoked(Snore::Notification n)
