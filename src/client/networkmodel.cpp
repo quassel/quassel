@@ -463,6 +463,12 @@ bool QueryBufferItem::setData(int column, const QVariant &value, int role)
     case Qt::EditRole:
     {
         QString newName = value.toString();
+
+        // Sanity check - buffer names must not contain newlines!
+        int nlpos = newName.indexOf('\n');
+        if (nlpos >= 0)
+            newName = newName.left(nlpos);
+
         if (!newName.isEmpty()) {
             Client::renameBuffer(bufferId(), newName);
             return true;
