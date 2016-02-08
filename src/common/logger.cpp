@@ -125,6 +125,11 @@ void Logger::logMessage(QtMsgType type, const QMessageLogContext &context, const
     case QtDebugMsg:
         Logger(Quassel::DebugLevel) << msg.toLocal8Bit().constData();
         break;
+#if QT_VERSION >= 0x050500
+    case QtInfoMsg:
+        Logger(Quassel::InfoLevel) << msg.toLocal8Bit().constData();
+        break;
+#endif
     case QtWarningMsg:
         Logger(Quassel::WarningLevel) << msg.toLocal8Bit().constData();
         break;
