@@ -13,6 +13,34 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+
+Version 0.12.3 (2016-02-09)
+===========================
+
+* Fix activity filters when selecting buffers in custom ChatViews
+* Fix default shortcuts when integrated with KDE Frameworks
+* Introduce support for Appveyor CI (automated Windows builds)
+* Support SnoreNotify 0.7
+* Various cleanups and performance improvements
+* Various build system fixes
+* Channel keys are again remembered between syncs
+* Support for Qt 5.5
+* Network (re)connection fixes
+* Fix possible message loss when running multiple core users on a psql database
+* Command line option for specifying SSL certificates and keys
+* Many smaller fixes
+
+Version 0.12.2 (2015-04-23)
+===========================
+
+* Fix PostgreSQL not re-initializing after reconnect (raising CVE-2013-4422 from the dead)
+* Remove warning on startup due to a change in Kdelibs4ConfigMigrator
+
+Version 0.12.1 (2015-04-21)
+===========================
+
+* Emergency fix for behavior change in Qt5's psql driver regarding timezones
+
 Version 0.12.0 (2015-04-15)
 ===========================
 
