@@ -101,6 +101,9 @@
 #include "verticaldock.h"
 
 #ifndef HAVE_KDE
+#  ifdef HAVE_QTMULTIMEDIA
+#    include "qtmultimedianotificationbackend.h"
+#  endif
 #  ifdef HAVE_PHONON
 #    include "phononnotificationbackend.h"
 #  endif
@@ -228,6 +231,9 @@ void MainWin::init()
     setupHotList();
 
 #ifndef HAVE_KDE
+#  ifdef HAVE_QTMULTIMEDIA
+    QtUi::registerNotificationBackend(new QtMultimediaNotificationBackend(this));
+#  endif
 #  ifdef HAVE_PHONON
     QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
