@@ -102,6 +102,13 @@ if (LibsnoreQt5_FOUND)
     list(APPEND LIBS    Snore::Libsnore Snore::LibsnoreSettings)
 endif()
 
+if (Qt5Multimedia_FOUND)
+    add_definitions(-DHAVE_QTMULTIMEDIA)
+    list(APPEND QT_MODULES Multimedia)
+    set(SOURCES ${SOURCES} qtmultimedianotificationbackend.cpp)
+    set(FORMS ${FORMS}     qtmultimedianotificationconfigwidget.ui)
+endif()
+
 if (PHONON_FOUND OR Phonon4Qt5_FOUND)
     add_definitions(-DHAVE_PHONON)
     include_directories(${PHONON_INCLUDES})
