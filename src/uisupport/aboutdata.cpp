@@ -191,7 +191,7 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Atte Virtanen", "", tr("Finnish translation"), "", QLocale::Finnish },
         { "Aurélien Gâteau", "agateau", tr("Message indicator support") },
         { "Awad Mackie", "firesock", tr("Chatview improvements") },
-        { "Armin K", "", tr("Build sytem fix") },
+        { "Armin K", "", tr("Build system fix") },
         { "", "Ayonix", tr("Build system fix") },
         { "Benjamin Zeller", "zbenjamin", tr("Windows build system fixes") },
         { "Bernhard Scheirle", "", tr("Nicer tooltips") },
