@@ -32,5 +32,12 @@ NOTE: You'll need lupdate, lconvert, lrelease installed with your Qt in
       order to generate translation files. Some distributions don't
       package that tool; in that case you won't get translations.
 
-
-The .pot file can be regenerated with `./update-pot.sh`
+The .pot file is regenerated using `./update-pot.sh` and can be pushed
+to Transifex via `tx push -s`.
+Note that as of Feb 2016 this is done automatically by nightly runs of
+scripts/tx-sync.sh which pushes an updated quassel.pot to a location
+that is fetched by Transifex on regular intervals. This location is
+currently configured as
+<https://github.com/quassel/quassel-i18n/raw/tx-sync/po/quassel.pot> and
+can be updated at https://www.transifex.com/ald/quassel/content/ → "Auto
+update resources".
