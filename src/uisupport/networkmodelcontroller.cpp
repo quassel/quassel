@@ -236,12 +236,12 @@ void NetworkModelController::actionTriggered(QAction *action)
 
 void NetworkModelController::handleNetworkAction(ActionType type, QAction *)
 {
-    if (type == NetworkConnectAll || type == NetworkDisconnectAll) {
+    if (type == NetworkConnectAllWithDropdown || type == NetworkDisconnectAllWithDropdown || type == NetworkConnectAll || type == NetworkDisconnectAll) {
         foreach(NetworkId id, Client::networkIds()) {
             const Network *net = Client::network(id);
-            if (type == NetworkConnectAll && net->connectionState() == Network::Disconnected)
+            if ((type == NetworkConnectAllWithDropdown || type == NetworkConnectAll) && net->connectionState() == Network::Disconnected)
                 net->requestConnect();
-            if (type == NetworkDisconnectAll && net->connectionState() != Network::Disconnected)
+            if ((type == NetworkDisconnectAllWithDropdown || type == NetworkDisconnectAll) && net->connectionState() != Network::Disconnected)
                 net->requestDisconnect();
         }
         return;

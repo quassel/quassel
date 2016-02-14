@@ -45,8 +45,10 @@ public:
         NetworkMask = 0x0f,
         NetworkConnect = 0x01,
         NetworkDisconnect = 0x02,
-        NetworkConnectAll = 0x03,
-        NetworkDisconnectAll = 0x04,
+        NetworkConnectAllWithDropdown = 0x03,
+        NetworkDisconnectAllWithDropdown = 0x04,
+        NetworkConnectAll = 0x05,
+        NetworkDisconnectAll = 0x06,
 
         // Buffer actions
         BufferMask = 0xf0,

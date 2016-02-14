@@ -27,8 +27,10 @@
 ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
     : NetworkModelController(parent)
 {
-    registerAction(NetworkConnectAll, QIcon::fromTheme("network-connect"), tr("Connect"))->setToolTip(tr("Connect to IRC"));
-    registerAction(NetworkDisconnectAll, QIcon::fromTheme("network-disconnect"), tr("Disconnect"))->setToolTip(tr("Disconnect from IRC"));
+    registerAction(NetworkConnectAllWithDropdown, QIcon::fromTheme("network-connect"), tr("Connect"))->setToolTip(tr("Connect to IRC"));
+    registerAction(NetworkDisconnectAllWithDropdown, QIcon::fromTheme("network-disconnect"), tr("Disconnect"))->setToolTip(tr("Disconnect from IRC"));
+    registerAction(NetworkConnectAll, tr("Connect to all"));
+    registerAction(NetworkDisconnectAll, tr("Disconnect from all"));
 
     registerAction(BufferPart, QIcon::fromTheme("irc-close-channel"), tr("Part"))->setToolTip(tr("Leave currently selected channel"));
     registerAction(JoinChannel, QIcon::fromTheme("irc-join-channel"), tr("Join"))->setToolTip(tr("Join a channel"));
@@ -47,16 +49,16 @@ ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
     _networksConnectMenu = new QMenu();
     _networksConnectMenu->setSeparatorsCollapsible(false);
     _networksConnectMenu->addSeparator();
-    _networksConnectMenu->addAction(tr("Connect to all"));
-    action(NetworkConnectAll)->setMenu(_networksConnectMenu);
-    action(NetworkConnectAll)->setEnabled(false);
+    _networksConnectMenu->addAction(action(NetworkConnectAll));
+    action(NetworkConnectAllWithDropdown)->setMenu(_networksConnectMenu);
+    action(NetworkConnectAllWithDropdown)->setEnabled(false);
 
     _networksDisconnectMenu = new QMenu();
     _networksDisconnectMenu->setSeparatorsCollapsible(false);
     _networksDisconnectMenu->addSeparator();
-    _networksDisconnectMenu->addAction(tr("Disconnect from all"));
-    action(NetworkDisconnectAll)->setMenu(_networksDisconnectMenu);
-    action(NetworkDisconnectAll)->setEnabled(false);
+    _networksDisconnectMenu->addAction(action(NetworkDisconnectAll));
+    action(NetworkDisconnectAllWithDropdown)->setMenu(_networksDisconnectMenu);
+    action(NetworkDisconnectAllWithDropdown)->setEnabled(false);
 
     connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(networkCreated(NetworkId)));
     connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(networkRemoved(NetworkId)));
@@ -90,8 +92,8 @@ void ToolBarActionProvider::addActions(QToolBar *bar, ToolBarType type)
 {
     switch (type) {
     case MainToolBar:
-        bar->addAction(action(NetworkConnectAll));
-        bar->addAction(action(NetworkDisconnectAll));
+        bar->addAction(action(NetworkConnectAllWithDropdown));
+        bar->addAction(action(NetworkDisconnectAllWithDropdown));
         bar->addAction(action(JoinChannel));
         bar->addAction(action(BufferPart));
         break;
@@ -204,8 +206,8 @@ void ToolBarActionProvider::networkUpdated(const Network *net)
     }
     newMenu->insertAction(beforeAction, act);
 
-    action(NetworkConnectAll)->setEnabled(_networksConnectMenu->actions().count() > 2);
-    action(NetworkDisconnectAll)->setEnabled(_networksDisconnectMenu->actions().count() > 2);
+    action(NetworkConnectAllWithDropdown)->setEnabled(_networksConnectMenu->actions().count() > 2);
+    action(NetworkDisconnectAllWithDropdown)->setEnabled(_networksDisconnectMenu->actions().count() > 2);
     action(JoinChannel)->setEnabled(_networksDisconnectMenu->actions().count() > 2);
 }
 
