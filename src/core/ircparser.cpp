@@ -273,6 +273,15 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
         }
         break;
 
+    case EventManager::IrcEventAway:
+        {
+            QString nick = nickFromMask(prefix);
+            decParams << nick;
+            decParams << (params.count() >= 1 ? net->userDecode(nick, params.at(0)) : QString());
+            net->updateNickFromMask(prefix);
+        }
+        break;
+
     case EventManager::IrcEventNumeric:
         switch (num) {
         case 301: /* RPL_AWAY */

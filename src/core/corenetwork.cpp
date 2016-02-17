@@ -300,7 +300,7 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &par
 
 void CoreNetwork::setChannelJoined(const QString &channel)
 {
-    _autoWhoQueue.prepend(channel.toLower()); // prepend so this new chan is the first to be checked
+    queueAutoWhoOneshot(channel); // check this new channel first
 
     Core::setChannelPersistent(userId(), networkId(), channel, true);
     Core::setPersistentChannelKey(userId(), networkId(), channel, _channelKeys[channel.toLower()]);
@@ -889,6 +889,10 @@ void CoreNetwork::addCap(const QString &capability, const QString &value)
 
     // Handle special cases here
     // TODO Use events if it makes sense
+    if (capability == "away-notify") {
+        // away-notify enabled, stop the automatic timers, handle manually
+        setAutoWhoEnabled(false);
+    }
 }
 
 void CoreNetwork::removeCap(const QString &capability)
@@ -901,6 +905,10 @@ void CoreNetwork::removeCap(const QString &capability)
 
     // Handle special cases here
     // TODO Use events if it makes sense
+    if (capability == "away-notify") {
+        // away-notify disabled, enable autowho according to configuration
+        setAutoWhoEnabled(networkConfig()->autoWhoEnabled());
+    }
 }
 
 QString CoreNetwork::capValue(const QString &capability) const
@@ -944,6 +952,19 @@ void CoreNetwork::startAutoWhoCycle()
     _autoWhoQueue = channels();
 }
 
+void CoreNetwork::queueAutoWhoOneshot(const QString &channelOrNick)
+{
+    // Prepend so these new channels/nicks are the first to be checked
+    // Don't allow duplicates
+    if (!_autoWhoQueue.contains(channelOrNick.toLower())) {
+        _autoWhoQueue.prepend(channelOrNick.toLower());
+    }
+    if (useCapAwayNotify()) {
+        // When away-notify is active, the timer's stopped.  Start a new cycle to who this channel.
+        setAutoWhoEnabled(true);
+    }
+}
+
 
 void CoreNetwork::setAutoWhoDelay(int delay)
 {
@@ -975,19 +996,43 @@ void CoreNetwork::sendAutoWho()
         return;
 
     while (!_autoWhoQueue.isEmpty()) {
-        QString chan = _autoWhoQueue.takeFirst();
-        IrcChannel *ircchan = ircChannel(chan);
-        if (!ircchan) continue;
-        if (networkConfig()->autoWhoNickLimit() > 0 && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit())
+        QString chanOrNick = _autoWhoQueue.takeFirst();
+        // Check if it's a known channel or nick
+        IrcChannel *ircchan = ircChannel(chanOrNick);
+        IrcUser *ircuser = ircUser(chanOrNick);
+        if (ircchan) {
+            // Apply channel limiting rules
+            // If using away-notify, don't impose channel size limits in order to capture away
+            // state of everyone.  Auto-who won't run on a timer so network impact is minimal.
+            if (networkConfig()->autoWhoNickLimit() > 0
+                && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
+                && !useCapAwayNotify())
+                continue;
+            _autoWhoPending[chanOrNick.toLower()]++;
+        } else if (ircuser) {
+            // Checking a nick, add it to the pending list
+            _autoWhoPending[ircuser->nick().toLower()]++;
+        } else {
+            // Not a channel or a nick, skip it
+            qDebug() << "Skipping who polling of unknown channel or nick" << chanOrNick;
             continue;
-        _autoWhoPending[chan]++;
-        putRawLine("WHO " + serverEncode(chan));
+        }
+        // TODO Use WHO extended to poll away users and/or user accounts
+        // If a server supports it, supports("WHOX") will be true
+        // See: http://faerion.sourceforge.net/doc/irc/whox.var and HexChat
+        putRawLine("WHO " + serverEncode(chanOrNick));
         break;
     }
-    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()) {
+
+    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()
+        && !useCapAwayNotify()) {
         // Timer was stopped, means a new cycle is due immediately
+        // Don't run a new cycle if using away-notify; server will notify as appropriate
         _autoWhoCycleTimer.start();
         startAutoWhoCycle();
+    } else if (useCapAwayNotify() && _autoWhoCycleTimer.isActive()) {
+        // Don't run another who cycle if away-notify is enabled
+        _autoWhoCycleTimer.stop();
     }
 }
 

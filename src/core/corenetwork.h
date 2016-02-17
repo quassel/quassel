@@ -141,6 +141,15 @@ public:
      */
     inline bool useCapSASL() const { return capEnabled("sasl"); }
 
+    /**
+     * Gets the status of the away-notify capability.
+     *
+     * http://ircv3.net/specs/extensions/away-notify-3.1.html
+     *
+     * @returns True if away-notify is enabled, otherwise false
+     */
+    inline bool useCapAwayNotify() const { return capEnabled("away-notify"); }
+
 public slots:
     virtual void setMyNick(const QString &mynick);
 
@@ -216,6 +225,16 @@ public slots:
     void setAutoWhoEnabled(bool enabled);
     void setAutoWhoInterval(int interval);
     void setAutoWhoDelay(int delay);
+
+    /**
+     * Appends the given channel/nick to the front of the AutoWho queue.
+     *
+     * When 'away-notify' is enabled, this will trigger an immediate AutoWho since regular
+     * who-cycles are disabled as per IRCv3 specifications.
+     *
+     * @param[in] channelOrNick Channel or nickname to WHO
+     */
+    void queueAutoWhoOneshot(const QString &channelOrNick);
 
     bool setAutoWhoDone(const QString &channel);
 

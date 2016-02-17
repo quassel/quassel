@@ -191,6 +191,9 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                     // Only request SASL if it's enabled
                     if (coreNet->networkInfo().useSasl)
                         queueCurrentCap = true;
+                } else if (availableCapPair.at(0).startsWith("away-notify")) {
+                    // Always request these capabilities if available
+                    queueCurrentCap = true;
                 }
                 if (queueCurrentCap) {
                     if(availableCapPair.count() >= 2)
@@ -250,6 +253,26 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
 }
 
 
+/* IRCv3 away-notify - ":nick!user@host AWAY [:message]" */
+void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
+{
+    if (!checkParamCount(e, 2))
+        return;
+
+    // Nick is sent as part of parameters in order to split user/server decoding
+    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    if (ircuser) {
+        if (!e->params().at(1).isEmpty()) {
+            ircuser->setAway(true);
+            ircuser->setAwayMessage(e->params().at(1));
+        } else {
+            ircuser->setAway(false);
+        }
+    } else {
+        qDebug() << "Received away-notify data for unknown user" << e->params().at(0);
+    }
+}
+
 void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent *e)
 {
     if (checkParamCount(e, 2)) {
@@ -275,6 +298,12 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
         handledByNetsplit = n->userJoined(e->prefix(), channel);
         if (handledByNetsplit)
             break;
+    }
+
+    // If using away-notify, check new users.  Works around buggy IRC servers
+    // forgetting to send :away messages for users who join channels when away.
+    if (coreNetwork(e)->useCapAwayNotify()) {
+        coreNetwork(e)->queueAutoWhoOneshot(ircuser->nick());
     }
 
     if (!handledByNetsplit)
@@ -857,8 +886,12 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
         ircuser->setRealName(e->params().last().section(" ", 1));
     }
 
-    if (coreNetwork(e)->isAutoWhoInProgress(channel))
+    // Check if channel name has a who in progress.
+    // If not, then check if user nick exists and has a who in progress.
+    if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
+        (ircuser && coreNetwork(e)->isAutoWhoInProgress(ircuser->nick()))) {
         e->setFlag(EventManager::Silent);
+    }
 }
 
 
