@@ -150,6 +150,24 @@ public:
      */
     inline bool useCapAwayNotify() const { return capEnabled("away-notify"); }
 
+    /**
+     * Gets the status of the account-notify capability.
+     *
+     * http://ircv3.net/specs/extensions/account-notify-3.1.html
+     *
+     * @returns True if account-notify is enabled, otherwise false
+     */
+    inline bool useCapAccountNotify() const { return capEnabled("account-notify"); }
+
+    /**
+     * Gets the status of the extended-join capability.
+     *
+     * http://ircv3.net/specs/extensions/extended-join-3.1.html
+     *
+     * @returns True if extended-join is enabled, otherwise false
+     */
+    inline bool useCapExtendedJoin() const { return capEnabled("extended-join"); }
+
 public slots:
     virtual void setMyNick(const QString &mynick);
 

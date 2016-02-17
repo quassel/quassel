@@ -191,7 +191,9 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                     // Only request SASL if it's enabled
                     if (coreNet->networkInfo().useSasl)
                         queueCurrentCap = true;
-                } else if (availableCapPair.at(0).startsWith("away-notify")) {
+                } else if (availableCapPair.at(0).startsWith("away-notify") ||
+                           availableCapPair.at(0).startsWith("account-notify") ||
+                           availableCapPair.at(0).startsWith("extended-join")) {
                     // Always request these capabilities if available
                     queueCurrentCap = true;
                 }
@@ -252,6 +254,30 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     }
 }
 
+/* IRCv3 account-notify
+ * Log in:  ":nick!user@host ACCOUNT accountname"
+ * Log out: ":nick!user@host ACCOUNT *" */
+void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent *e)
+{
+    if (!checkParamCount(e, 1))
+        return;
+
+    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    if (ircuser) {
+        // FIXME Keep track of authed user account, requires adding support to ircuser.h/cpp
+        /*
+        if (e->params().at(0) != "*") {
+            // Account logged in
+            qDebug() << "account-notify:" << ircuser->nick() << "logged in to" << e->params().at(0);
+        } else {
+            // Account logged out
+            qDebug() << "account-notify:" << ircuser->nick() << "logged out";
+        }
+        */
+    } else {
+        qDebug() << "Received account-notify data for unknown user" << e->prefix();
+    }
+}
 
 /* IRCv3 away-notify - ":nick!user@host AWAY [:message]" */
 void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
@@ -292,6 +318,17 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
     CoreNetwork *net = coreNetwork(e);
     QString channel = e->params()[0];
     IrcUser *ircuser = net->updateNickFromMask(e->prefix());
+
+    if (net->useCapExtendedJoin()) {
+        if (!checkParamCount(e, 3))
+            return;
+        // If logged in, :nick!user@host JOIN #channelname accountname :Real Name
+        // If logged out, :nick!user@host JOIN #channelname * :Real Name
+        // See:  http://ircv3.net/specs/extensions/extended-join-3.1.html
+        // FIXME Keep track of authed user account, requires adding support to ircuser.h/cpp
+        ircuser->setRealName(e->params()[2]);
+    }
+    // Else :nick!user@host JOIN #channelname
 
     bool handledByNetsplit = false;
     foreach(Netsplit* n, _netsplits.value(e->network())) {

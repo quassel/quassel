@@ -48,6 +48,7 @@ public:
 
     Q_INVOKABLE void processIrcEventAuthenticate(IrcEvent *event); /// SASL authentication
     Q_INVOKABLE void processIrcEventCap(IrcEvent *event);          /// CAP framework negotiation
+    Q_INVOKABLE void processIrcEventAccount(IrcEvent *event);      /// account-notify received
     Q_INVOKABLE void processIrcEventAway(IrcEvent *event);         /// away-notify received
     Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
     Q_INVOKABLE void processIrcEventJoin(IrcEvent *event);
