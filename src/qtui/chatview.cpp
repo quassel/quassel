@@ -59,6 +59,7 @@ void ChatView::init(MessageFilter *filter)
     _currentScaleFactor = 1;
     _invalidateFilter = false;
 
+    setAttribute(Qt::WA_AcceptTouchEvents);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setAlignment(Qt::AlignLeft|Qt::AlignBottom);
@@ -108,7 +109,24 @@ bool ChatView::event(QEvent *event)
         }
     }
 
-    if (event->type() == QEvent::Wheel) {
+    if (event->type() == QEvent::TouchBegin && _lastTouchStart < QDateTime::currentMSecsSinceEpoch() - 1000) { //(slow) double tab = normal behaviour = select text. 1000 ok?
+        setDragMode(QGraphicsView::ScrollHandDrag);
+        setInteractive(false);
+        _lastTouchStart = QDateTime::currentMSecsSinceEpoch();
+        if (verticalScrollBar()->isVisible()) return true; //if scrollbar is not visible we need to request backlog below
+    }
+
+#if QT_VERSION >= 0x050000
+    if (event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
+#else
+    if (event->type() == QEvent::TouchEnd) {
+#endif
+        setDragMode(QGraphicsView::NoDrag);
+        setInteractive(true);
+        return true;
+    }
+
+    if (event->type() == QEvent::Wheel || event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchUpdate) {
         if (!verticalScrollBar()->isVisible()) {
             scene()->requestBacklog();
             return true;
