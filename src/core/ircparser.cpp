@@ -298,6 +298,17 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
                 decParams << net->channelDecode(channel, params.at(2));
             }
             break;
+        case 451: /* You have not registered... */
+            if (target.compare("CAP", Qt::CaseInsensitive) == 0) {
+                // :irc.server.com 451 CAP :You have not registered
+                // If server doesn't support capabilities, it will report this message.  Turn it
+                // into a nicer message since it's not a real error.
+                defaultHandling = false;
+                events << new MessageEvent(Message::Server, e->network(),
+                                           tr("Capability negotiation not supported"),
+                                           QString(), QString(), Message::None, e->timestamp());
+            }
+            break;
         }
 
     default:

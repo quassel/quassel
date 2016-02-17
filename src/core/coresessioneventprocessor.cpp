@@ -92,13 +92,16 @@ void CoreSessionEventProcessor::tryNextNick(NetworkEvent *e, const QString &errn
 void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e)
 {
     switch (e->number()) {
-    // CAP stuff
-    case 903:
-    case 904:
-    case 905:
-    case 906:
-    case 907:
-        qobject_cast<CoreNetwork *>(e->network())->putRawLine("CAP END");
+    // SASL authentication replies
+    // See: http://ircv3.net/specs/extensions/sasl-3.1.html
+    // TODO Handle errors to stop connection if appropriate
+    case 903:  // RPL_SASLSUCCESS
+    case 904:  // ERR_SASLFAIL
+    case 905:  // ERR_SASLTOOLONG
+    case 906:  // ERR_SASLABORTED
+    case 907:  // ERR_SASLALREADY
+        // Move on to the next capability
+        sendNextCap(e->network());
         break;
 
     default:
@@ -137,26 +140,111 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
 #endif
 }
 
+void CoreSessionEventProcessor::sendNextCap(Network *net)
+{
+    CoreNetwork *coreNet = qobject_cast<CoreNetwork *>(net);
+    if (coreNet->capNegotiationInProgress()) {
+        // Request the next capability and remove it from the list
+        // Handle one at a time so one capability failing won't NAK all of 'em
+        coreNet->putRawLine(coreNet->serverEncode(QString("CAP REQ :%1").arg(coreNet->takeQueuedCap())));
+    } else {
+        // If SASL requested but not available, print a warning
+        if (coreNet->networkInfo().useSasl && !coreNet->useCapSASL())
+            emit newEvent(new MessageEvent(Message::Error, net, tr("SASL authentication not supported by server, continuing without"), QString(), QString(), Message::None, QDateTime::currentDateTimeUtc()));
+
+        // No pending desired capabilities, end negotiation
+        coreNet->putRawLine(coreNet->serverEncode(QString("CAP END")));
+        emit newEvent(new MessageEvent(Message::Server, net, tr("Capability negotiation finished"), QString(), QString(), Message::None, QDateTime::currentDateTimeUtc()));
+    }
+}
 
 void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
 {
-    // for SASL, there will only be a single param of 'sasl', however you can check here for
-    // additional CAP messages (ls, multi-prefix, et cetera).
-
-    if (e->params().count() == 3) {
-        if (e->params().at(2).startsWith("sasl")) { // Freenode (at least) sends "sasl " with a trailing space for some reason!
-            // FIXME use event
-            // if the current identity has a cert set, use SASL EXTERNAL
-#ifdef HAVE_SSL
-            if (!coreNetwork(e)->identityPtr()->sslCert().isNull()) {
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE EXTERNAL"));
+    // Handle capability negotiation
+    // See: http://ircv3.net/specs/core/capability-negotiation-3.2.html
+    // And: http://ircv3.net/specs/core/capability-negotiation-3.1.html
+    if (e->params().count() >= 3) {
+        CoreNetwork *coreNet = coreNetwork(e);
+        if (e->params().at(1).compare("LS", Qt::CaseInsensitive) == 0) {
+            // Server: CAP * LS * :multi-prefix extended-join account-notify batch invite-notify tls
+            // Server: CAP * LS * :cap-notify server-time example.org/dummy-cap=dummyvalue example.org/second-dummy-cap
+            // Server: CAP * LS :userhost-in-names sasl=EXTERNAL,DH-AES,DH-BLOWFISH,ECDSA-NIST256P-CHALLENGE,PLAIN
+            bool capListFinished;
+            QStringList availableCaps;
+            if (e->params().count() == 4) {
+                // Middle of multi-line reply, ignore the asterisk
+                capListFinished = false;
+                availableCaps = e->params().at(3).split(' ');
             } else {
-#endif
-                // Only working with PLAIN atm, blowfish later
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN"));
-#ifdef HAVE_SSL
+                // Single line reply
+                capListFinished = true;
+                availableCaps = e->params().at(2).split(' ');
             }
+            // We know what capabilities are available, request what we want.
+            QStringList availableCapPair;
+            bool queueCurrentCap;
+            for (int i = 0; i < availableCaps.count(); ++i) {
+                // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
+                availableCapPair = availableCaps[i].trimmed().split('=');
+                queueCurrentCap = false;
+                if (availableCapPair.at(0).startsWith("sasl")) {
+                    // Only request SASL if it's enabled
+                    if (coreNet->networkInfo().useSasl)
+                        queueCurrentCap = true;
+                }
+                if (queueCurrentCap) {
+                    if(availableCapPair.count() >= 2)
+                        coreNet->queuePendingCap(availableCapPair.at(0).trimmed(), availableCapPair.at(1).trimmed());
+                    else
+                        coreNet->queuePendingCap(availableCapPair.at(0).trimmed());
+                }
+            }
+            // Begin capability requests when capability listing complete
+            if (capListFinished) {
+                emit newEvent(new MessageEvent(Message::Server, e->network(), tr("Negotiating capabilities..."), QString(), QString(), Message::None, e->timestamp()));
+                sendNextCap(coreNet);
+            }
+        } else if (e->params().at(1).compare("ACK", Qt::CaseInsensitive) == 0) {
+            // Server: CAP * ACK :multi-prefix sasl
+            // Got the capability we want, enable, handle as needed.
+            // As only one capability is requested at a time, no need to split
+            // Lower-case the list to make later comparisons easier
+            // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
+            QStringList acceptedCap = e->params().at(2).trimmed().split('=');
+
+            // Mark this cap as accepted
+            if(acceptedCap.count() >= 2)
+                coreNet->addCap(acceptedCap.at(0), acceptedCap.at(1));
+            else
+                coreNet->addCap(acceptedCap.at(0));
+
+            // Handle special cases
+            if (acceptedCap.at(0).startsWith("sasl")) {
+                // Freenode (at least) sends "sasl " with a trailing space for some reason!
+                // if the current identity has a cert set, use SASL EXTERNAL
+                // FIXME use event
+                // TODO If value of sasl capability is not empty, limit to accepted
+#ifdef HAVE_SSL
+                if (!coreNet->identityPtr()->sslCert().isNull()) {
+                    coreNet->putRawLine(coreNet->serverEncode("AUTHENTICATE EXTERNAL"));
+                } else {
 #endif
+                    // Only working with PLAIN atm, blowfish later
+                    coreNet->putRawLine(coreNet->serverEncode("AUTHENTICATE PLAIN"));
+#ifdef HAVE_SSL
+                }
+#endif
+            } else {
+                // Special handling not needed, move on to next cap
+                sendNextCap(coreNet);
+            }
+        } else if (e->params().at(1).compare("NAK", Qt::CaseInsensitive) == 0) {
+            // Something went wrong with this capability, disable, go to next cap
+            // As only one capability is requested at a time, no need to split
+            // Lower-case the list to make later comparisons easier
+            QString deniedCap = e->params().at(2).trimmed();
+            coreNet->removeCap(deniedCap);
+            sendNextCap(coreNet);
         }
     }
 }

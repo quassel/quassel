@@ -100,6 +100,47 @@ public:
 
     QList<QList<QByteArray>> splitMessage(const QString &cmd, const QString &message, std::function<QList<QByteArray>(QString &)> cmdGenerator);
 
+    // IRCv3 capability negotiation
+
+    /**
+     * Checks if a given capability is enabled.
+     *
+     * @returns True if enabled, otherwise false
+     */
+    inline bool capEnabled(const QString &capability) const { return _capsSupported.contains(capability); }
+
+    /**
+     * Checks if capability negotiation is currently ongoing.
+     *
+     * @returns True if in progress, otherwise false
+     */
+    inline bool capNegotiationInProgress() const { return !_capsQueued.empty(); }
+
+    /**
+     * Gets the value of an enabled or pending capability, e.g. sasl=plain.
+     *
+     * @returns Value of capability if one was specified, otherwise empty string
+     */
+    QString capValue(const QString &capability) const;
+
+    /**
+     * Gets the next capability to request, removing it from the queue.
+     *
+     * @returns Name of capability to request
+     */
+    QString takeQueuedCap();
+
+    // Specific capabilities for easy reference
+
+    /**
+     * Gets the status of the sasl authentication capability.
+     *
+     * http://ircv3.net/specs/extensions/sasl-3.2.html
+     *
+     * @returns True if SASL authentication is enabled, otherwise false
+     */
+    inline bool useCapSASL() const { return capEnabled("sasl"); }
+
 public slots:
     virtual void setMyNick(const QString &mynick);
 
@@ -133,6 +174,44 @@ public slots:
     void setCipherKey(const QString &recipient, const QByteArray &key);
     bool cipherUsesCBC(const QString &target);
 #endif
+
+    // IRCv3 capability negotiation (can be connected to signals)
+
+    /**
+     * Marks a capability as accepted, providing an optional value.
+     *
+     * Removes it from queue of pending capabilities and triggers any capability-specific
+     * activation.
+     *
+     * @param[in] capability Name of the capability
+     * @param[in] value
+     * @parblock
+     * Optional value of the capability, e.g. sasl=plain.  If left empty, will be copied from the
+     * pending capability.
+     * @endparblock
+     */
+    void addCap(const QString &capability, const QString &value = QString());
+
+    /**
+     * Marks a capability as denied.
+     *
+     * Removes it from the queue of pending capabilities and triggers any capability-specific
+     * deactivation.
+     *
+     * @param[in] capability Name of the capability
+     */
+    void removeCap(const QString &capability);
+
+    /**
+     * Queues a capability as available but not yet accepted or denied.
+     *
+     * Capabilities should be queued when registration pauses for CAP LS for capabilities are only
+     * requested during login.
+     *
+     * @param[in] capability Name of the capability
+     * @param[in] value      Optional value of the capability, e.g. sasl=plain
+     */
+    void queuePendingCap(const QString &capability, const QString &value = QString());
 
     void setAutoWhoEnabled(bool enabled);
     void setAutoWhoInterval(int interval);
@@ -239,6 +318,12 @@ private:
     QStringList _autoWhoQueue;
     QHash<QString, int> _autoWhoPending;
     QTimer _autoWhoTimer, _autoWhoCycleTimer;
+
+    // CAPs may have parameter values
+    // See http://ircv3.net/specs/core/capability-negotiation-3.2.html
+    QStringList _capsQueued;                /// Capabilities to be checked
+    QHash<QString, QString> _capsPending;   /// Capabilities pending 'CAP ACK' from server
+    QHash<QString, QString> _capsSupported; /// Enabled capabilities that received 'CAP ACK'
 
     QTimer _tokenBucketTimer;
     int _messageDelay;      // token refill speed in ms

@@ -158,6 +158,11 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     // cleaning up old quit reason
     _quitReason.clear();
 
+    // reset capability negotiation in case server changes during a reconnect
+    _capsQueued.clear();
+    _capsPending.clear();
+    _capsSupported.clear();
+
     // use a random server?
     if (useRandomServer()) {
         _lastUsedServerIndex = qrand() % serverList().size();
@@ -482,9 +487,11 @@ void CoreNetwork::socketInitialized()
     _tokenBucket = _burstSize; // init with a full bucket
     _tokenBucketTimer.start(_messageDelay);
 
-    if (networkInfo().useSasl) {
-        putRawLine(serverEncode(QString("CAP REQ :sasl")));
-    }
+    // Request capabilities as per IRCv3.2 specifications
+    // Older servers should ignore this; newer servers won't downgrade to RFC1459
+    displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Requesting capability list..."));
+    putRawLine(serverEncode(QString("CAP LS 302")));
+
     if (!server.password.isEmpty()) {
         putRawLine(serverEncode(QString("PASS %1").arg(server.password)));
     }
@@ -858,6 +865,73 @@ void CoreNetwork::setPingInterval(int interval)
     _pingTimer.setInterval(interval * 1000);
 }
 
+/******** IRCv3 Capability Negotiation ********/
+
+void CoreNetwork::addCap(const QString &capability, const QString &value)
+{
+    // Clear from pending list, add to supported list
+    if (!_capsSupported.contains(capability)) {
+        if (value != "") {
+            // Value defined, just use it
+            _capsSupported[capability] = value;
+        } else if (_capsPending.contains(capability)) {
+            // Value not defined, but a pending capability had a value.
+            // E.g. CAP * LS :sasl=PLAIN multi-prefix
+            // Preserve the capability value for later use.
+            _capsSupported[capability] = _capsPending[capability];
+        } else {
+            // No value ever given, assign to blank
+            _capsSupported[capability] = QString();
+        }
+    }
+    if (_capsPending.contains(capability))
+        _capsPending.remove(capability);
+
+    // Handle special cases here
+    // TODO Use events if it makes sense
+}
+
+void CoreNetwork::removeCap(const QString &capability)
+{
+    // Clear from pending list, remove from supported list
+    if (_capsPending.contains(capability))
+        _capsPending.remove(capability);
+    if (_capsSupported.contains(capability))
+        _capsSupported.remove(capability);
+
+    // Handle special cases here
+    // TODO Use events if it makes sense
+}
+
+QString CoreNetwork::capValue(const QString &capability) const
+{
+    // If a supported capability exists, good; if not, return pending value.
+    // If capability isn't supported after all, the pending entry will be removed.
+    if (_capsSupported.contains(capability))
+        return _capsSupported[capability];
+    else if (_capsPending.contains(capability))
+        return _capsPending[capability];
+    else
+        return QString();
+}
+
+void CoreNetwork::queuePendingCap(const QString &capability, const QString &value)
+{
+    if (!_capsQueued.contains(capability)) {
+        _capsQueued.append(capability);
+        // Some capabilities may have values attached, preserve them as pending
+        _capsPending[capability] = value;
+    }
+}
+
+QString CoreNetwork::takeQueuedCap()
+{
+    if (!_capsQueued.empty()) {
+        return _capsQueued.takeFirst();
+    } else {
+        return QString();
+    }
+}
 
 /******** AutoWHO ********/
 
