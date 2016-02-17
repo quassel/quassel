@@ -193,7 +193,8 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                         queueCurrentCap = true;
                 } else if (availableCapPair.at(0).startsWith("away-notify") ||
                            availableCapPair.at(0).startsWith("account-notify") ||
-                           availableCapPair.at(0).startsWith("extended-join")) {
+                           availableCapPair.at(0).startsWith("extended-join") ||
+                           availableCapPair.at(0).startsWith("userhost-in-names")) {
                     // Always request these capabilities if available
                     queueCurrentCap = true;
                 }
@@ -958,6 +959,11 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
             mode = e->network()->prefixToMode(nick[0]);
             nick = nick.mid(1);
         }
+
+        // If userhost-in-names capability is enabled, the following will be
+        // in the form "nick!user@host" rather than "nick".  This works without
+        // special handling as the following use nickFromHost() as needed.
+        // See: http://ircv3.net/specs/extensions/userhost-in-names-3.2.html
 
         nicks << nick;
         modes << mode;

@@ -168,6 +168,15 @@ public:
      */
     inline bool useCapExtendedJoin() const { return capEnabled("extended-join"); }
 
+    /**
+     * Gets the status of the userhost-in-names capability.
+     *
+     * http://ircv3.net/specs/extensions/userhost-in-names-3.2.html
+     *
+     * @returns True if userhost-in-names is enabled, otherwise false
+     */
+    inline bool useCapUserhostInNames() const { return capEnabled("userhost-in-names"); }
+
 public slots:
     virtual void setMyNick(const QString &mynick);
 
