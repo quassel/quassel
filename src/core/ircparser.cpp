@@ -180,6 +180,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
 
         if (checkParamCount(cmd, params, 1)) {
             QString senderNick = nickFromMask(prefix);
+            net->updateNickFromMask(prefix);
             QByteArray msg = params.count() < 2 ? QByteArray() : params.at(1);
 
             QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
@@ -226,8 +227,10 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
                 else {
                     if (!target.isEmpty() && net->prefixes().contains(target.at(0)))
                         target = target.mid(1);
-                    if (!net->isChannelName(target))
+                    if (!net->isChannelName(target)) {
                         target = nickFromMask(prefix);
+                        net->updateNickFromMask(prefix);
+                    }
                 }
 
 #ifdef HAVE_QCA2
@@ -256,12 +259,14 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
             QString channel = net->serverDecode(params.at(0));
             decParams << channel;
             decParams << net->userDecode(nickFromMask(prefix), params.at(1));
+            net->updateNickFromMask(prefix);
         }
         break;
 
     case EventManager::IrcEventQuit:
         if (params.count() >= 1) {
             decParams << net->userDecode(nickFromMask(prefix), params.at(0));
+            net->updateNickFromMask(prefix);
         }
         break;
 
