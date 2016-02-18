@@ -74,6 +74,18 @@ QVariant NetworkItem::data(int column, int role) const
     }
 }
 
+QString NetworkItem::escapeHTML(const QString &string, bool useNonbreakingSpaces)
+{
+    // QString.replace() doesn't guarentee the source string will remain constant.
+    // Use a local variable to avoid compiler errors.
+#if QT_VERSION < 0x050000
+    QString formattedString = Qt::escape(string);
+#else
+    QString formattedString = string.toHtmlEscaped();
+#endif
+    return (useNonbreakingSpaces ? formattedString.replace(" ", "&nbsp;") : formattedString);
+}
+
 
 // FIXME shouldn't we check the bufferItemCache here?
 BufferItem *NetworkItem::findBufferItem(BufferId bufferId)
@@ -210,21 +222,28 @@ void NetworkItem::setCurrentServer(const QString &serverName)
 QString NetworkItem::toolTip(int column) const
 {
     Q_UNUSED(column);
+    QString strTooltip;
+    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    tooltip << "<qt><style>.bold { font-weight: bold; }</style>";
 
-#if QT_VERSION < 0x050000
-    QStringList toolTip(QString("<b>%1</b>").arg(Qt::escape(networkName())));
-    toolTip.append(tr("Server: %1").arg(Qt::escape(currentServer())));
-#else
-    QStringList toolTip(QString("<b>%1</b>").arg(networkName().toHtmlEscaped()));
-    toolTip.append(tr("Server: %1").arg(currentServer().toHtmlEscaped()));
-#endif
-    toolTip.append(tr("Users: %1").arg(nickCount()));
+    // Function to add a row to the tooltip table
+    auto addRow = [&](const QString& key, const QString& value, bool condition) {
+        if (condition) {
+            tooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
+        }
+    };
 
-    if (_network) {
-        toolTip.append(tr("Lag: %1 msecs").arg(_network->latency()));
-    }
+    tooltip << "<p class='bold' align='center'>" << NetworkItem::escapeHTML(networkName(), true) << "</p>";
+    tooltip << "<table cellspacing='5' cellpadding='0'>";
+    addRow(tr("Server"), NetworkItem::escapeHTML(currentServer(), true), true);
 
-    return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+    addRow(tr("Users"), QString::number(nickCount()), true);
+
+    if (_network)
+        addRow(tr("Lag"), NetworkItem::escapeHTML(tr("%1 msecs").arg(_network->latency()), true), true);
+
+    tooltip << "</table></qt>";
+    return strTooltip;
 }
 
 
@@ -498,36 +517,81 @@ QString QueryBufferItem::toolTip(int column) const
 {
     // pretty much code duplication of IrcUserItem::toolTip() but inheritance won't solve this...
     Q_UNUSED(column);
-    QStringList toolTip;
+    QString strTooltip;
+    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    tooltip << "<qt><style>.bold { font-weight: bold; }</style>"
+            << "<style>.italic { font-style: italic; }</style>";
 
-    toolTip.append(tr("<b>Query with %1</b>").arg(bufferName()));
+    // Keep track of whether or not information has been added
+    bool infoAdded = false;
 
-    if (_ircUser) {
-        if (_ircUser->userModes() != "") toolTip[0].append(QString(" (+%1)").arg(_ircUser->userModes()));
-        if (_ircUser->isAway()) {
-            toolTip[0].append(QString(" (away%1)").arg(!_ircUser->awayMessage().isEmpty() ? (QString(" ") + _ircUser->awayMessage()) : QString()));
+    // Use bufferName() for QueryBufferItem, nickName() for IrcUserItem
+    tooltip << "<p class='bold' align='center'>";
+    tooltip << tr("Query with %1").arg(NetworkItem::escapeHTML(bufferName(), true));
+    if (!_ircUser) {
+        // User seems to be offline, let the no information message be added below
+        tooltip << "</p>";
+    } else {
+        // Function to add a row to the tooltip table
+        auto addRow = [&](const QString& key, const QString& value, bool condition) {
+            if (condition) {
+                tooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
+                infoAdded = true;
+            }
+        };
+
+        // User information is available
+        if (_ircUser->userModes() != "") {
+            //TODO Translate user Modes and add them to the table below and in IrcUserItem::toolTip
+            tooltip << " (" << _ircUser->userModes() << ")";
         }
-        if (!_ircUser->realName().isEmpty()) toolTip.append(_ircUser->realName());
-        if (!_ircUser->ircOperator().isEmpty()) toolTip.append(QString("%1 %2").arg(_ircUser->nick()).arg(_ircUser->ircOperator()));
-        if (!_ircUser->suserHost().isEmpty()) toolTip.append(_ircUser->suserHost());
-        if (!_ircUser->whoisServiceReply().isEmpty()) toolTip.append(_ircUser->whoisServiceReply());
+        tooltip << "</p>";
 
-        toolTip.append(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1));
+        tooltip << "<table cellspacing='5' cellpadding='0'>";
+        if (_ircUser->isAway()) {
+            QString awayMessage(tr("(unknown)"));
+            if(!_ircUser->awayMessage().isEmpty()) {
+                awayMessage = _ircUser->awayMessage();
+            }
+            addRow(NetworkItem::escapeHTML(tr("Away message"), true), NetworkItem::escapeHTML(awayMessage), true);
+        }
+        addRow(tr("Realname"),
+               NetworkItem::escapeHTML(_ircUser->realName()),
+               !_ircUser->realName().isEmpty());
+        addRow(NetworkItem::escapeHTML(tr("Suser Host"), true),
+               NetworkItem::escapeHTML(_ircUser->suserHost()),
+               !_ircUser->suserHost().isEmpty());
+        addRow(NetworkItem::escapeHTML(tr("Whois Service Reply"), true),
+               NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
+               !_ircUser->whoisServiceReply().isEmpty());
+        addRow(tr("Hostmask"),
+               NetworkItem::escapeHTML(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1)),
+               !(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1) == "@"));
+        addRow(tr("Operator"),
+               NetworkItem::escapeHTML(_ircUser->ircOperator()),
+               !_ircUser->ircOperator().isEmpty());
 
         if (_ircUser->idleTime().isValid()) {
             QDateTime now = QDateTime::currentDateTime();
             QDateTime idle = _ircUser->idleTime();
             int idleTime = idle.secsTo(now);
-            toolTip.append(tr("idling since %1").arg(secondsToString(idleTime)));
-        }
-        if (_ircUser->loginTime().isValid()) {
-            toolTip.append(tr("login time: %1").arg(_ircUser->loginTime().toString()));
+            addRow(NetworkItem::escapeHTML(tr("Idling since"), true), secondsToString(idleTime), true);
         }
 
-        if (!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
+        if (_ircUser->loginTime().isValid()) {
+            addRow(NetworkItem::escapeHTML(tr("Login time"), true), _ircUser->loginTime().toString(), true);
+        }
+
+        addRow(tr("Server"), NetworkItem::escapeHTML(_ircUser->server()), !_ircUser->server().isEmpty());
+        tooltip << "</table>";
     }
 
-    return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+    // If no further information found, offer an explanatory message
+    if (!infoAdded)
+        tooltip << "<p class='italic'>" << tr("No information available") << "</p>";
+
+    tooltip << "</qt>";
+    return strTooltip;
 }
 
 
@@ -583,20 +647,29 @@ QVariant ChannelBufferItem::data(int column, int role) const
 QString ChannelBufferItem::toolTip(int column) const
 {
     Q_UNUSED(column);
-    QStringList toolTip;
+    QString strTooltip;
+    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    tooltip << "<qt><style>.bold { font-weight: bold; }</style>"
+            << "<qt><style>.italic { font-style: italic; }</style>";
 
-#if QT_VERSION < 0x050000
-    toolTip.append(tr("<b>Channel %1</b>").arg(Qt::escape(bufferName())));
-#else
-    toolTip.append(tr("<b>Channel %1</b>").arg(bufferName().toHtmlEscaped()));
-#endif
+    // Function to add a row to the tooltip table
+    auto addRow = [&](const QString& key, const QString& value, bool condition) {
+        if (condition) {
+            tooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
+        }
+    };
+
+    tooltip << "<p class='bold' align='center'>";
+    tooltip << NetworkItem::escapeHTML(tr("Channel %1").arg(bufferName()), true) << "</p>";
+
     if (isActive()) {
-        //TODO: add channel modes
-        toolTip.append(tr("<b>Users:</b> %1").arg(nickCount()));
+        tooltip << "<table cellspacing='5' cellpadding='0'>";
+        addRow(tr("Users"), QString::number(nickCount()), true);
+
         if (_ircChannel) {
             QString channelMode = _ircChannel->channelModeString(); // channelModeString is compiled on the fly -> thus cache the result
             if (!channelMode.isEmpty())
-                toolTip.append(tr("<b>Mode:</b> %1").arg(channelMode));
+                addRow(tr("Mode"), channelMode, true);
         }
 
         ItemViewSettings s;
@@ -605,21 +678,18 @@ QString ChannelBufferItem::toolTip(int column) const
             QString _topic = topic();
             if (_topic != "") {
                 _topic = stripFormatCodes(_topic);
-#if QT_VERSION < 0x050000
-                _topic = Qt::escape(_topic);
-#else
-                _topic = _topic.toHtmlEscaped();
-#endif
-                toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
-                toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
+                _topic = NetworkItem::escapeHTML(_topic);
+                addRow(tr("Topic"), _topic, true);
             }
         }
-    }
-    else {
-        toolTip.append(tr("Not active <br /> Double-click to join"));
+
+        tooltip << "</table>";
+    } else {
+        tooltip << "<p class='italic'>" << tr("Not active, double-click to join") << "</p>";
     }
 
-    return tr("<p> %1 </p>").arg(toolTip.join("<br />"));
+    tooltip << "</qt>";
+    return strTooltip;
 }
 
 
@@ -955,11 +1025,16 @@ QString IrcUserItem::toolTip(int column) const
     Q_UNUSED(column);
     QString strTooltip;
     QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
-    tooltip << "<qt><style>.bold { font-weight: bold; }</style>";
+    tooltip << "<qt><style>.bold { font-weight: bold; }</style>"
+            << "<style>.italic { font-style: italic; }</style>";
 
-    tooltip << "<p class='bold' align='center'>" << nickName();
+    // Keep track of whether or not information has been added
+    bool infoAdded = false;
+
+    // Use bufferName() for QueryBufferItem, nickName() for IrcUserItem
+    tooltip << "<p class='bold' align='center'>" << NetworkItem::escapeHTML(nickName(), true);
     if (_ircUser->userModes() != "") {
-        //TODO: Translate user Modes and add them to the table below
+        //TODO: Translate user Modes and add them to the table below and in QueryBufferItem::toolTip
         tooltip << " (" << _ircUser->userModes() << ")";
     }
     tooltip << "</p>";
@@ -968,6 +1043,7 @@ QString IrcUserItem::toolTip(int column) const
         if (condition)
         {
             tooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
+            infoAdded = true;
         }
     };
 
@@ -977,29 +1053,43 @@ QString IrcUserItem::toolTip(int column) const
         if(!_ircUser->awayMessage().isEmpty()) {
             awayMessage = _ircUser->awayMessage();
         }
-        addRow(tr("Away&nbsp;Message"), awayMessage, true);
+        addRow(NetworkItem::escapeHTML(tr("Away message"), true), NetworkItem::escapeHTML(awayMessage), true);
     }
-    addRow(tr("Realname"), _ircUser->realName(), !_ircUser->realName().isEmpty());
-    addRow(tr("Operator"), _ircUser->ircOperator(), !_ircUser->ircOperator().isEmpty());
-    addRow(tr("Suser&nbsp;Host"), _ircUser->suserHost(),!_ircUser->suserHost().isEmpty());
-    addRow(tr("Whois&nbsp;Service&nbsp;Reply"), _ircUser->whoisServiceReply(), !_ircUser->whoisServiceReply().isEmpty());
-    addRow(tr("Hostmask"), _ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1), true);
-    addRow(tr("Operator"), _ircUser->ircOperator(), !_ircUser->ircOperator().isEmpty());
+    addRow(tr("Realname"),
+           NetworkItem::escapeHTML(_ircUser->realName()),
+           !_ircUser->realName().isEmpty());
+    addRow(NetworkItem::escapeHTML(tr("Suser Host"), true),
+           NetworkItem::escapeHTML(_ircUser->suserHost()),
+           !_ircUser->suserHost().isEmpty());
+    addRow(NetworkItem::escapeHTML(tr("Whois Service Reply"), true),
+           NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
+           !_ircUser->whoisServiceReply().isEmpty());
+    addRow(tr("Hostmask"),
+           NetworkItem::escapeHTML(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1)),
+           !(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1) == "@"));
+    addRow(tr("Operator"),
+           NetworkItem::escapeHTML(_ircUser->ircOperator()),
+           !_ircUser->ircOperator().isEmpty());
 
     if (_ircUser->idleTime().isValid()) {
         QDateTime now = QDateTime::currentDateTime();
         QDateTime idle = _ircUser->idleTime();
         int idleTime = idle.secsTo(now);
-        addRow(tr("Idling&nbsp;since"), secondsToString(idleTime), true);
+        addRow(NetworkItem::escapeHTML(tr("Idling since"), true), secondsToString(idleTime), true);
     }
 
     if (_ircUser->loginTime().isValid()) {
-        addRow(tr("Login&nbsp;time"), _ircUser->loginTime().toString(), true);
+        addRow(NetworkItem::escapeHTML(tr("Login time"), true), _ircUser->loginTime().toString(), true);
     }
 
-    addRow(tr("Server"), _ircUser->server(), !_ircUser->server().isEmpty());
+    addRow(tr("Server"), NetworkItem::escapeHTML(_ircUser->server()), !_ircUser->server().isEmpty());
+    tooltip << "</table>";
 
-    tooltip << "</table></qt>";
+    // If no further information found, offer an explanatory message
+    if (!infoAdded)
+        tooltip << "<p class='italic'>" << tr("No information available") << "</p>";
+
+    tooltip << "</qt>";
     return strTooltip;
 }
 

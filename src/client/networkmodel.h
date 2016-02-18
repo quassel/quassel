@@ -45,6 +45,19 @@ public :
 
     virtual QVariant data(int column, int row) const;
 
+    /**
+     * Escapes a string as HTML, ready for Qt markup.
+     *
+     * Implementation depends on Qt version - Qt4 uses Qt::escape, while Qt5 uses .toHtmlEscaped().
+     *
+     * @param[in] string               QString to escape
+     * @param[in] useNonbreakingSpaces
+     * @parblock
+     * If true, replace spaces with non-breaking spaces (i.e. '&nbsp;'), otherwise only HTML escape.
+     * @endparblock
+     */
+    static QString escapeHTML(const QString &string, bool useNonbreakingSpaces = false);
+
     inline bool isActive() const { return (bool)_network ? _network->isConnected() : false; }
 
     inline const NetworkId &networkId() const { return _networkId; }
