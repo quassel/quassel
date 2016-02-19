@@ -194,7 +194,8 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                 } else if (availableCapPair.at(0).startsWith("away-notify") ||
                            availableCapPair.at(0).startsWith("account-notify") ||
                            availableCapPair.at(0).startsWith("extended-join") ||
-                           availableCapPair.at(0).startsWith("userhost-in-names")) {
+                           availableCapPair.at(0).startsWith("userhost-in-names") ||
+                           availableCapPair.at(0).startsWith("multi-prefix")) {
                     // Always request these capabilities if available
                     queueCurrentCap = true;
                 }
@@ -918,10 +919,32 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
         ircuser->setUser(e->params()[1]);
         ircuser->setHost(e->params()[2]);
 
-        bool away = e->params()[5].startsWith("G");
+        bool away = e->params()[5].contains("G", Qt::CaseInsensitive);
         ircuser->setAway(away);
         ircuser->setServer(e->params()[3]);
         ircuser->setRealName(e->params().last().section(" ", 1));
+
+        if (coreNetwork(e)->useCapMultiPrefix()) {
+            // If multi-prefix is enabled, all modes will be sent in WHO replies.
+            // :kenny.chatspike.net 352 guest #test grawity broken.symlink *.chatspike.net grawity H@%+ :0 Mantas M.
+            // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
+            QString uncheckedModes = e->params()[5];
+            QString validModes = QString();
+            while (!uncheckedModes.isEmpty()) {
+                // Mode found in 1 left-most character, add it to the list
+                if (e->network()->prefixes().contains(uncheckedModes[0])) {
+                    validModes.append(e->network()->prefixToMode(uncheckedModes[0]));
+                }
+                // Remove this mode from the list of unchecked modes
+                uncheckedModes = uncheckedModes.remove(0, 1);
+            }
+
+            // Some IRC servers decide to not follow the spec, returning only -some- of the user
+            // modes in WHO despite listing them all in NAMES.  For now, assume it can only add
+            // and not take away.  *sigh*
+            if (!validModes.isEmpty())
+                ircuser->addUserModes(validModes);
+        }
     }
 
     // Check if channel name has a who in progress.
@@ -952,10 +975,27 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     QStringList nicks;
     QStringList modes;
 
+    // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
+    bool _useCapMultiPrefix = coreNetwork(e)->useCapMultiPrefix();
+
     foreach(QString nick, e->params()[2].split(' ', QString::SkipEmptyParts)) {
         QString mode;
 
-        if (e->network()->prefixes().contains(nick[0])) {
+        if (_useCapMultiPrefix) {
+            // If multi-prefix is enabled, all modes will be sent in NAMES replies.
+            // :hades.arpa 353 guest = #tethys :~&@%+aji &@Attila @+alyx +KindOne Argure
+            // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
+            while (e->network()->prefixes().contains(nick[0])) {
+                // Mode found in 1 left-most character, add it to the list.
+                // FIXME Only allow one possible mode to avoid a warning in older clients
+                if (mode.isEmpty())
+                    mode.append(e->network()->prefixToMode(nick[0]));
+                //mode.append(e->network()->prefixToMode(nick[0]));
+                // Remove this mode from the nick
+                nick = nick.remove(0, 1);
+            }
+        } else if (e->network()->prefixes().contains(nick[0])) {
+            // Multi-prefix is disabled and a mode prefix was found.
             mode = e->network()->prefixToMode(nick[0]);
             nick = nick.mid(1);
         }

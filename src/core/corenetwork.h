@@ -177,6 +177,15 @@ public:
      */
     inline bool useCapUserhostInNames() const { return capEnabled("userhost-in-names"); }
 
+    /**
+     * Gets the status of the multi-prefix capability.
+     *
+     * http://ircv3.net/specs/extensions/multi-prefix-3.1.html
+     *
+     * @returns True if multi-prefix is enabled, otherwise false
+     */
+    inline bool useCapMultiPrefix() const { return capEnabled("multi-prefix"); }
+
 public slots:
     virtual void setMyNick(const QString &mynick);
 
