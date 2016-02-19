@@ -987,10 +987,9 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
             // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
             while (e->network()->prefixes().contains(nick[0])) {
                 // Mode found in 1 left-most character, add it to the list.
-                // FIXME Only allow one possible mode to avoid a warning in older clients
-                if (mode.isEmpty())
-                    mode.append(e->network()->prefixToMode(nick[0]));
-                //mode.append(e->network()->prefixToMode(nick[0]));
+                // Note: sending multiple modes may cause a warning in older clients.
+                // In testing, the clients still seemed to function fine.
+                mode.append(e->network()->prefixToMode(nick[0]));
                 // Remove this mode from the nick
                 nick = nick.remove(0, 1);
             }
