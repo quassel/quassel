@@ -36,8 +36,8 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 
 private:
-	qint64 _lastTouchStart = 0;
 	bool _touchScrollInProgress = false;
+	bool _firstTouchUpdateHappened = false;
 };
 
 #endif
