@@ -31,15 +31,22 @@ TreeViewTouch::TreeViewTouch(QWidget *parent)
 
 
 bool TreeViewTouch::event(QEvent *event) {
-	if (event->type() == QEvent::TouchBegin && _lastTouchStart < QDateTime::currentMSecsSinceEpoch() - 1000) { //(slow) double tab = normal behaviour = select multiple. 1000 ok?
+	if (event->type() == QEvent::TouchBegin) {
 		_touchScrollInProgress = true;
-		_lastTouchStart = QDateTime::currentMSecsSinceEpoch();
 		setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 		return true;
 	}
 
 	if (event->type() == QEvent::TouchUpdate && _touchScrollInProgress) {
 		QTouchEvent::TouchPoint p = ((QTouchEvent*)event)->touchPoints().at(0);
+		if (!_firstTouchUpdateHappened) {
+			double dx = abs(p.lastPos().x() - p.pos().x());
+			double dy = abs(p.lastPos().y() - p.pos().y());
+			if (dx > dy) {
+				_touchScrollInProgress = false;
+			}
+			_firstTouchUpdateHappened = true;
+		}
 		verticalScrollBar()->setValue(verticalScrollBar()->value() - (p.pos().y() - p.lastPos().y()));
 		return true;
 	}
@@ -50,6 +57,7 @@ bool TreeViewTouch::event(QEvent *event) {
     if (event->type() == QEvent::TouchEnd) {
 #endif
 		_touchScrollInProgress = false;
+		_firstTouchUpdateHappened = false;
 		return true;
 	}
 
