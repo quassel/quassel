@@ -35,8 +35,6 @@ class ClientTransferManager : public TransferManager
 public:
     ClientTransferManager(QObject *parent = 0);
 
-    const ClientTransfer *transfer(const QUuid &uuid) const;
-
 public slots:
     void onCoreTransferAdded(const QUuid &uuid);
     void onTransferInitDone();

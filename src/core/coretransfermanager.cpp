@@ -30,12 +30,6 @@ CoreTransferManager::CoreTransferManager(QObject *parent)
 }
 
 
-CoreTransfer *CoreTransferManager::transfer(const QUuid &uuid) const
-{
-    return qobject_cast<CoreTransfer *>(transfer_(uuid));
-}
-
-
 void CoreTransferManager::addTransfer(CoreTransfer *transfer)
 {
     TransferManager::addTransfer(transfer);

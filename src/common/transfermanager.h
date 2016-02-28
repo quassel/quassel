@@ -36,13 +36,13 @@ public:
     TransferManager(QObject *parent = 0);
     inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
+    Transfer *transfer(const QUuid &uuid) const;
     QList<QUuid> transferIds() const;
 
 signals:
     void transferAdded(const Transfer *transfer);
 
 protected:
-    Transfer *transfer_(const QUuid &uuid) const;
     void addTransfer(Transfer *transfer);
 
 protected slots:

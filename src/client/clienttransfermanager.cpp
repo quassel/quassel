@@ -32,12 +32,6 @@ ClientTransferManager::ClientTransferManager(QObject *parent)
 }
 
 
-const ClientTransfer *ClientTransferManager::transfer(const QUuid &uuid) const
-{
-    return qobject_cast<const ClientTransfer *>(transfer_(uuid));
-}
-
-
 void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
 {
     if (uuid.isNull()) {

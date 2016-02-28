@@ -31,9 +31,9 @@ TransferManager::TransferManager(QObject *parent)
 }
 
 
-Transfer *TransferManager::transfer_(const QUuid &uuid) const
+Transfer *TransferManager::transfer(const QUuid &uuid) const
 {
-    return _transfers.value(uuid, 0);
+    return _transfers.value(uuid, nullptr);
 }
 
 

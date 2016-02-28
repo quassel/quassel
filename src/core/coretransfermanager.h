@@ -34,8 +34,6 @@ class CoreTransferManager : public TransferManager
 public:
     CoreTransferManager(QObject *parent = 0);
 
-    CoreTransfer *transfer(const QUuid &uuid) const;
-
 public slots:
     void addTransfer(CoreTransfer *transfer);
 
