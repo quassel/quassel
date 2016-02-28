@@ -1265,7 +1265,7 @@ void CoreSessionEventProcessor::handleCtcpDcc(CtcpEvent *e)
             }
 
             // TODO: check if target is the right thing to use for the partner
-            CoreTransfer *transfer = new CoreTransfer(Transfer::Receive, e->target(), filename, address, port, size, this);
+            CoreTransfer *transfer = new CoreTransfer(Transfer::Direction::Receive, e->target(), filename, address, port, size, this);
             coreSession()->signalProxy()->synchronize(transfer);
             coreSession()->transferManager()->addTransfer(transfer);
         }

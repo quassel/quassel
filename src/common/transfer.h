@@ -33,8 +33,8 @@ class Transfer : public SyncableObject
     SYNCABLE_OBJECT
 
     Q_PROPERTY(QUuid uuid READ uuid);
-    Q_PROPERTY(State state READ state WRITE setState NOTIFY stateChanged);
-    Q_PROPERTY(Direction direction READ direction WRITE setDirection NOTIFY directionChanged);
+    Q_PROPERTY(Transfer::State state READ state WRITE setState NOTIFY stateChanged);
+    Q_PROPERTY(Transfer::Direction direction READ direction WRITE setDirection NOTIFY directionChanged);
     Q_PROPERTY(QHostAddress address READ address WRITE setAddress NOTIFY addressChanged);
     Q_PROPERTY(quint16 port READ port WRITE setPort NOTIFY portChanged);
     Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged);
@@ -42,7 +42,7 @@ class Transfer : public SyncableObject
     Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickChanged);
 
 public:
-    enum State {
+    enum class State {
         New,
         Pending,
         Connecting,
@@ -54,7 +54,7 @@ public:
     };
     Q_ENUMS(State)
 
-    enum Direction {
+    enum class Direction {
         Send,
         Receive
     };
@@ -83,8 +83,8 @@ public slots:
     virtual void requestRejected(PeerPtr peer) { Q_UNUSED(peer); }
 
 signals:
-    void stateChanged(State state);
-    void directionChanged(Direction direction);
+    void stateChanged(Transfer::State state);
+    void directionChanged(Transfer::Direction direction);
     void addressChanged(const QHostAddress &address);
     void portChanged(quint16 port);
     void fileNameChanged(const QString &fileName);
@@ -97,7 +97,7 @@ signals:
     void rejected(PeerPtr peer = 0) const;
 
 protected slots:
-    void setState(State state);
+    void setState(Transfer::State state);
     void setError(const QString &errorString);
 
     // called on the client side through sync calls
@@ -125,5 +125,13 @@ private:
     QString _nick;
     QUuid _uuid;
 };
+
+Q_DECLARE_METATYPE(Transfer::State)
+Q_DECLARE_METATYPE(Transfer::Direction)
+
+QDataStream &operator<<(QDataStream &out, Transfer::State state);
+QDataStream &operator>>(QDataStream &in, Transfer::State &state);
+QDataStream &operator<<(QDataStream &out, Transfer::Direction direction);
+QDataStream &operator>>(QDataStream &in, Transfer::Direction &direction);
 
 #endif

@@ -23,8 +23,8 @@
 INIT_SYNCABLE_OBJECT(Transfer)
 Transfer::Transfer(const QUuid &uuid, QObject *parent)
     : SyncableObject(parent),
-    _state(New),
-    _direction(Receive),
+    _state(State::New),
+    _direction(Direction::Receive),
     _port(0),
     _fileSize(0),
     _uuid(uuid)
@@ -34,7 +34,7 @@ Transfer::Transfer(const QUuid &uuid, QObject *parent)
 
 Transfer::Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
     : SyncableObject(parent),
-    _state(New),
+    _state(State::New),
     _direction(direction),
     _fileName(fileName),
     _address(address),
@@ -49,6 +49,15 @@ Transfer::Transfer(Direction direction, const QString &nick, const QString &file
 
 void Transfer::init()
 {
+    static auto regTypes = []() -> bool {
+        qRegisterMetaType<State>("Transfer::State");
+        qRegisterMetaType<Direction>("Transfer::Direction");
+        qRegisterMetaTypeStreamOperators<State>("Transfer::State");
+        qRegisterMetaTypeStreamOperators<Direction>("Transfer::Direction");
+        return true;
+    }();
+    Q_UNUSED(regTypes);
+
     renameObject(QString("Transfer/%1").arg(_uuid.toString()));
     setAllowClientUpdates(true);
 }
@@ -177,6 +186,31 @@ void Transfer::setError(const QString &errorString)
 {
     qWarning() << Q_FUNC_INFO << errorString;
     emit error(errorString);
-    setState(Failed);
+    setState(State::Failed);
     cleanUp();
+}
+
+
+QDataStream &operator<<(QDataStream &out, Transfer::State state) {
+    out << static_cast<qint8>(state);
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, Transfer::State &state) {
+    qint8 s;
+    in >> s;
+    state = static_cast<Transfer::State>(s);
+    return in;
+}
+
+QDataStream &operator<<(QDataStream &out, Transfer::Direction direction) {
+    out << static_cast<qint8>(direction);
+    return out;
+}
+
+QDataStream &operator>>(QDataStream &in, Transfer::Direction &direction) {
+    qint8 d;
+    in >> d;
+    direction = static_cast<Transfer::Direction>(d);
+    return in;
 }

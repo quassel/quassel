@@ -44,7 +44,7 @@ public slots:
 
 private slots:
     void dataReceived(PeerPtr peer, const QByteArray &data);
-    void onStateChanged(State state);
+    void onStateChanged(Transfer::State state);
 
 private:
     virtual void cleanUp();

@@ -54,7 +54,7 @@ void CoreTransfer::cleanUp()
 
 void CoreTransfer::onSocketDisconnected()
 {
-    if (state() == Connecting || state() == Transferring) {
+    if (state() == State::Connecting || state() == State::Transferring) {
         setError(tr("Socket closed while still transferring!"));
     }
     else
@@ -66,7 +66,7 @@ void CoreTransfer::onSocketError(QAbstractSocket::SocketError error)
 {
     Q_UNUSED(error)
 
-    if (state() == Connecting || state() == Transferring) {
+    if (state() == State::Connecting || state() == State::Transferring) {
         setError(tr("DCC connection error: %1").arg(_socket->errorString()));
     }
 }
@@ -74,11 +74,11 @@ void CoreTransfer::onSocketError(QAbstractSocket::SocketError error)
 
 void CoreTransfer::requestAccepted(PeerPtr peer)
 {
-    if (_peer || !peer || state() != New)
+    if (_peer || !peer || state() != State::New)
         return; // transfer was already accepted
 
     _peer = peer;
-    setState(Pending);
+    setState(State::Pending);
 
     emit accepted(peer);
 
@@ -89,11 +89,11 @@ void CoreTransfer::requestAccepted(PeerPtr peer)
 
 void CoreTransfer::requestRejected(PeerPtr peer)
 {
-    if (_peer || state() != New)
+    if (_peer || state() != State::New)
         return;
 
     _peer = peer;
-    setState(Rejected);
+    setState(State::Rejected);
 
     emit rejected(peer);
 }
@@ -101,7 +101,7 @@ void CoreTransfer::requestRejected(PeerPtr peer)
 
 void CoreTransfer::start()
 {
-    if (!_peer || state() != Pending || direction() != Receive)
+    if (!_peer || state() != State::Pending || direction() != Direction::Receive)
         return;
 
     setupConnectionForReceive();
@@ -115,7 +115,7 @@ void CoreTransfer::setupConnectionForReceive()
         return;
     }
 
-    setState(Connecting);
+    setState(State::Connecting);
 
     _socket = new QTcpSocket(this);
     connect(_socket, SIGNAL(connected()), SLOT(startReceiving()));
@@ -129,7 +129,7 @@ void CoreTransfer::setupConnectionForReceive()
 
 void CoreTransfer::startReceiving()
 {
-    setState(Transferring);
+    setState(State::Transferring);
 }
 
 
@@ -162,7 +162,7 @@ void CoreTransfer::onDataReceived()
     else if (_pos == fileSize()) {
         qDebug() << "DCC Receive: Transfer finished";
         if (relayData(QByteArray(), false)) // empty buffer
-            setState(Completed);
+            setState(State::Completed);
     }
 
     _reading = false;
@@ -180,7 +180,8 @@ bool CoreTransfer::relayData(const QByteArray &data, bool requireChunkSize)
 
     // we only want to send data to the client once we have reached the chunksize
     if (_buffer.size() > 0 && (_buffer.size() >= chunkSize || !requireChunkSize)) {
-        SYNC_OTHER(dataReceived, ARG(_peer), ARG(_buffer));
+        Peer *p = _peer.data();
+        SYNC_OTHER(dataReceived, ARG(p), ARG(_buffer));
         _buffer.clear();
     }
 

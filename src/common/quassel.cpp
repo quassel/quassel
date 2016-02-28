@@ -194,7 +194,9 @@ void Quassel::registerMetaTypes()
     qRegisterMetaType<MsgId>("MsgId");
 
     qRegisterMetaType<QHostAddress>("QHostAddress");
+    qRegisterMetaTypeStreamOperators<QHostAddress>("QHostAddress");
     qRegisterMetaType<QUuid>("QUuid");
+    qRegisterMetaTypeStreamOperators<QUuid>("QUuid");
 
     qRegisterMetaTypeStreamOperators<IdentityId>("IdentityId");
     qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
