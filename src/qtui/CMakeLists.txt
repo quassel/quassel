@@ -156,6 +156,12 @@ if (WITH_NOTIFICATION_CENTER)
     list(APPEND LIBS "/System/Library/Frameworks/Foundation.framework")
 endif()
 
+if (KF5Sonnet_FOUND)
+    add_definitions(-DHAVE_SONNET)
+    list(APPEND SOURCES settingspages/sonnetsettingspage.cpp)
+    list(APPEND LIBS KF5::SonnetUi)
+endif()
+
 foreach(FORM ${FORMS})
   set(FORMPATH ${FORMPATH} ui/${FORM})
 endforeach(FORM ${FORMS})

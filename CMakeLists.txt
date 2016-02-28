@@ -275,17 +275,22 @@ if (USE_QT5)
 
         if (ECM_FOUND)
             list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-        endif()
-
-        if (WITH_KDE)
-            find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig TextWidgets WidgetsAddons XmlGui QUIET)
-            set_package_properties(KF5 PROPERTIES TYPE REQUIRED
-                URL "http://www.kde.org"
-                DESCRIPTION "KDE Frameworks"
-                PURPOSE     "Required for integration into the Plasma desktop"
-            )
-
-        endif()
+            if (WITH_KDE)
+                find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig TextWidgets WidgetsAddons XmlGui QUIET)
+                set_package_properties(KF5 PROPERTIES TYPE REQUIRED
+                    URL "http://www.kde.org"
+                    DESCRIPTION "KDE Frameworks"
+                    PURPOSE     "Required for integration into the Plasma desktop"
+                )
+            else(WITH_KDE)
+                find_package(KF5Sonnet QUIET)
+                set_package_properties(KF5Sonnet PROPERTIES TYPE RECOMMENDED
+                    URL "http://api.kde.org/frameworks-api/frameworks5-apidocs/sonnet/html"
+                    DESCRIPTION "framework for providing spell-checking capabilities"
+                    PURPOSE "Enables spell-checking support in input widgets"
+                )
+            endif(WITH_KDE)
+        endif(ECM_FOUND)
 
     endif(BUILD_GUI)
 

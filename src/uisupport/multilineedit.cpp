@@ -19,9 +19,12 @@
  ***************************************************************************/
 
 #include <QApplication>
-#include <QMenu>
 #include <QMessageBox>
 #include <QScrollBar>
+
+#ifdef HAVE_SONNET
+#  include <Sonnet/SpellCheckDecorator>
+#endif
 
 #include "actioncollection.h"
 #include "bufferview.h"
@@ -49,6 +52,10 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
     setAcceptRichText(false);
 #ifdef HAVE_KDE
     enableFindReplace(false);
+#endif
+
+#ifdef HAVE_SONNET
+    new Sonnet::SpellCheckDecorator(this);
 #endif
 
     setMode(SingleLine);
