@@ -158,6 +158,11 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     // cleaning up old quit reason
     _quitReason.clear();
 
+    // reset capability negotiation in case server changes during a reconnect
+    _capsQueued.clear();
+    _capsPending.clear();
+    _capsSupported.clear();
+
     // use a random server?
     if (useRandomServer()) {
         _lastUsedServerIndex = qrand() % serverList().size();
@@ -295,7 +300,7 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &par
 
 void CoreNetwork::setChannelJoined(const QString &channel)
 {
-    _autoWhoQueue.prepend(channel.toLower()); // prepend so this new chan is the first to be checked
+    queueAutoWhoOneshot(channel); // check this new channel first
 
     Core::setChannelPersistent(userId(), networkId(), channel, true);
     Core::setPersistentChannelKey(userId(), networkId(), channel, _channelKeys[channel.toLower()]);
@@ -482,9 +487,11 @@ void CoreNetwork::socketInitialized()
     _tokenBucket = _burstSize; // init with a full bucket
     _tokenBucketTimer.start(_messageDelay);
 
-    if (networkInfo().useSasl) {
-        putRawLine(serverEncode(QString("CAP REQ :sasl")));
-    }
+    // Request capabilities as per IRCv3.2 specifications
+    // Older servers should ignore this; newer servers won't downgrade to RFC1459
+    displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Requesting capability list..."));
+    putRawLine(serverEncode(QString("CAP LS 302")));
+
     if (!server.password.isEmpty()) {
         putRawLine(serverEncode(QString("PASS %1").arg(server.password)));
     }
@@ -858,6 +865,81 @@ void CoreNetwork::setPingInterval(int interval)
     _pingTimer.setInterval(interval * 1000);
 }
 
+/******** IRCv3 Capability Negotiation ********/
+
+void CoreNetwork::addCap(const QString &capability, const QString &value)
+{
+    // Clear from pending list, add to supported list
+    if (!_capsSupported.contains(capability)) {
+        if (value != "") {
+            // Value defined, just use it
+            _capsSupported[capability] = value;
+        } else if (_capsPending.contains(capability)) {
+            // Value not defined, but a pending capability had a value.
+            // E.g. CAP * LS :sasl=PLAIN multi-prefix
+            // Preserve the capability value for later use.
+            _capsSupported[capability] = _capsPending[capability];
+        } else {
+            // No value ever given, assign to blank
+            _capsSupported[capability] = QString();
+        }
+    }
+    if (_capsPending.contains(capability))
+        _capsPending.remove(capability);
+
+    // Handle special cases here
+    // TODO Use events if it makes sense
+    if (capability == "away-notify") {
+        // away-notify enabled, stop the automatic timers, handle manually
+        setAutoWhoEnabled(false);
+    }
+}
+
+void CoreNetwork::removeCap(const QString &capability)
+{
+    // Clear from pending list, remove from supported list
+    if (_capsPending.contains(capability))
+        _capsPending.remove(capability);
+    if (_capsSupported.contains(capability))
+        _capsSupported.remove(capability);
+
+    // Handle special cases here
+    // TODO Use events if it makes sense
+    if (capability == "away-notify") {
+        // away-notify disabled, enable autowho according to configuration
+        setAutoWhoEnabled(networkConfig()->autoWhoEnabled());
+    }
+}
+
+QString CoreNetwork::capValue(const QString &capability) const
+{
+    // If a supported capability exists, good; if not, return pending value.
+    // If capability isn't supported after all, the pending entry will be removed.
+    if (_capsSupported.contains(capability))
+        return _capsSupported[capability];
+    else if (_capsPending.contains(capability))
+        return _capsPending[capability];
+    else
+        return QString();
+}
+
+void CoreNetwork::queuePendingCap(const QString &capability, const QString &value)
+{
+    if (!_capsQueued.contains(capability)) {
+        _capsQueued.append(capability);
+        // Some capabilities may have values attached, preserve them as pending
+        _capsPending[capability] = value;
+    }
+}
+
+QString CoreNetwork::takeQueuedCap()
+{
+    if (!_capsQueued.empty()) {
+        return _capsQueued.takeFirst();
+    } else {
+        return QString();
+    }
+}
 
 /******** AutoWHO ********/
 
@@ -868,6 +950,19 @@ void CoreNetwork::startAutoWhoCycle()
         return;
     }
     _autoWhoQueue = channels();
+}
+
+void CoreNetwork::queueAutoWhoOneshot(const QString &channelOrNick)
+{
+    // Prepend so these new channels/nicks are the first to be checked
+    // Don't allow duplicates
+    if (!_autoWhoQueue.contains(channelOrNick.toLower())) {
+        _autoWhoQueue.prepend(channelOrNick.toLower());
+    }
+    if (useCapAwayNotify()) {
+        // When away-notify is active, the timer's stopped.  Start a new cycle to who this channel.
+        setAutoWhoEnabled(true);
+    }
 }
 
 
@@ -901,19 +996,43 @@ void CoreNetwork::sendAutoWho()
         return;
 
     while (!_autoWhoQueue.isEmpty()) {
-        QString chan = _autoWhoQueue.takeFirst();
-        IrcChannel *ircchan = ircChannel(chan);
-        if (!ircchan) continue;
-        if (networkConfig()->autoWhoNickLimit() > 0 && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit())
+        QString chanOrNick = _autoWhoQueue.takeFirst();
+        // Check if it's a known channel or nick
+        IrcChannel *ircchan = ircChannel(chanOrNick);
+        IrcUser *ircuser = ircUser(chanOrNick);
+        if (ircchan) {
+            // Apply channel limiting rules
+            // If using away-notify, don't impose channel size limits in order to capture away
+            // state of everyone.  Auto-who won't run on a timer so network impact is minimal.
+            if (networkConfig()->autoWhoNickLimit() > 0
+                && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
+                && !useCapAwayNotify())
+                continue;
+            _autoWhoPending[chanOrNick.toLower()]++;
+        } else if (ircuser) {
+            // Checking a nick, add it to the pending list
+            _autoWhoPending[ircuser->nick().toLower()]++;
+        } else {
+            // Not a channel or a nick, skip it
+            qDebug() << "Skipping who polling of unknown channel or nick" << chanOrNick;
             continue;
-        _autoWhoPending[chan]++;
-        putRawLine("WHO " + serverEncode(chan));
+        }
+        // TODO Use WHO extended to poll away users and/or user accounts
+        // If a server supports it, supports("WHOX") will be true
+        // See: http://faerion.sourceforge.net/doc/irc/whox.var and HexChat
+        putRawLine("WHO " + serverEncode(chanOrNick));
         break;
     }
-    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()) {
+
+    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()
+        && !useCapAwayNotify()) {
         // Timer was stopped, means a new cycle is due immediately
+        // Don't run a new cycle if using away-notify; server will notify as appropriate
         _autoWhoCycleTimer.start();
         startAutoWhoCycle();
+    } else if (useCapAwayNotify() && _autoWhoCycleTimer.isActive()) {
+        // Don't run another who cycle if away-notify is enabled
+        _autoWhoCycleTimer.stop();
     }
 }
 

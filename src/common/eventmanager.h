@@ -88,6 +88,8 @@ public :
 
         IrcEvent                    = 0x00030000,
         IrcEventAuthenticate,
+        IrcEventAccount,
+        IrcEventAway,
         IrcEventCap,
         IrcEventInvite,
         IrcEventJoin,

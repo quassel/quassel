@@ -180,6 +180,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
 
         if (checkParamCount(cmd, params, 1)) {
             QString senderNick = nickFromMask(prefix);
+            net->updateNickFromMask(prefix);
             QByteArray msg = params.count() < 2 ? QByteArray() : params.at(1);
 
             QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
@@ -226,8 +227,10 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
                 else {
                     if (!target.isEmpty() && net->prefixes().contains(target.at(0)))
                         target = target.mid(1);
-                    if (!net->isChannelName(target))
+                    if (!net->isChannelName(target)) {
                         target = nickFromMask(prefix);
+                        net->updateNickFromMask(prefix);
+                    }
                 }
 
 #ifdef HAVE_QCA2
@@ -256,12 +259,14 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
             QString channel = net->serverDecode(params.at(0));
             decParams << channel;
             decParams << net->userDecode(nickFromMask(prefix), params.at(1));
+            net->updateNickFromMask(prefix);
         }
         break;
 
     case EventManager::IrcEventQuit:
         if (params.count() >= 1) {
             decParams << net->userDecode(nickFromMask(prefix), params.at(0));
+            net->updateNickFromMask(prefix);
         }
         break;
 
@@ -270,6 +275,15 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
             QString channel = net->serverDecode(params.at(0));
             decParams << channel;
             decParams << (params.count() >= 2 ? net->channelDecode(channel, decrypt(net, channel, params.at(1), true)) : QString());
+        }
+        break;
+
+    case EventManager::IrcEventAway:
+        {
+            QString nick = nickFromMask(prefix);
+            decParams << nick;
+            decParams << (params.count() >= 1 ? net->userDecode(nick, params.at(0)) : QString());
+            net->updateNickFromMask(prefix);
         }
         break;
 
@@ -296,6 +310,17 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
                 QString channel = net->serverDecode(params.at(0));
                 decParams << channel << net->serverDecode(params.at(1));
                 decParams << net->channelDecode(channel, params.at(2));
+            }
+            break;
+        case 451: /* You have not registered... */
+            if (target.compare("CAP", Qt::CaseInsensitive) == 0) {
+                // :irc.server.com 451 CAP :You have not registered
+                // If server doesn't support capabilities, it will report this message.  Turn it
+                // into a nicer message since it's not a real error.
+                defaultHandling = false;
+                events << new MessageEvent(Message::Server, e->network(),
+                                           tr("Capability negotiation not supported"),
+                                           QString(), QString(), Message::None, e->timestamp());
             }
             break;
         }

@@ -92,13 +92,16 @@ void CoreSessionEventProcessor::tryNextNick(NetworkEvent *e, const QString &errn
 void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e)
 {
     switch (e->number()) {
-    // CAP stuff
-    case 903:
-    case 904:
-    case 905:
-    case 906:
-    case 907:
-        qobject_cast<CoreNetwork *>(e->network())->putRawLine("CAP END");
+    // SASL authentication replies
+    // See: http://ircv3.net/specs/extensions/sasl-3.1.html
+    // TODO Handle errors to stop connection if appropriate
+    case 903:  // RPL_SASLSUCCESS
+    case 904:  // ERR_SASLFAIL
+    case 905:  // ERR_SASLTOOLONG
+    case 906:  // ERR_SASLABORTED
+    case 907:  // ERR_SASLALREADY
+        // Move on to the next capability
+        sendNextCap(e->network());
         break;
 
     default:
@@ -137,30 +140,166 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
 #endif
 }
 
+void CoreSessionEventProcessor::sendNextCap(Network *net)
+{
+    CoreNetwork *coreNet = qobject_cast<CoreNetwork *>(net);
+    if (coreNet->capNegotiationInProgress()) {
+        // Request the next capability and remove it from the list
+        // Handle one at a time so one capability failing won't NAK all of 'em
+        coreNet->putRawLine(coreNet->serverEncode(QString("CAP REQ :%1").arg(coreNet->takeQueuedCap())));
+    } else {
+        // If SASL requested but not available, print a warning
+        if (coreNet->networkInfo().useSasl && !coreNet->useCapSASL())
+            emit newEvent(new MessageEvent(Message::Error, net, tr("SASL authentication not supported by server, continuing without"), QString(), QString(), Message::None, QDateTime::currentDateTimeUtc()));
+
+        // No pending desired capabilities, end negotiation
+        coreNet->putRawLine(coreNet->serverEncode(QString("CAP END")));
+        emit newEvent(new MessageEvent(Message::Server, net, tr("Capability negotiation finished"), QString(), QString(), Message::None, QDateTime::currentDateTimeUtc()));
+    }
+}
 
 void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
 {
-    // for SASL, there will only be a single param of 'sasl', however you can check here for
-    // additional CAP messages (ls, multi-prefix, et cetera).
-
-    if (e->params().count() == 3) {
-        if (e->params().at(2).startsWith("sasl")) { // Freenode (at least) sends "sasl " with a trailing space for some reason!
-            // FIXME use event
-            // if the current identity has a cert set, use SASL EXTERNAL
-#ifdef HAVE_SSL
-            if (!coreNetwork(e)->identityPtr()->sslCert().isNull()) {
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE EXTERNAL"));
+    // Handle capability negotiation
+    // See: http://ircv3.net/specs/core/capability-negotiation-3.2.html
+    // And: http://ircv3.net/specs/core/capability-negotiation-3.1.html
+    if (e->params().count() >= 3) {
+        CoreNetwork *coreNet = coreNetwork(e);
+        if (e->params().at(1).compare("LS", Qt::CaseInsensitive) == 0) {
+            // Server: CAP * LS * :multi-prefix extended-join account-notify batch invite-notify tls
+            // Server: CAP * LS * :cap-notify server-time example.org/dummy-cap=dummyvalue example.org/second-dummy-cap
+            // Server: CAP * LS :userhost-in-names sasl=EXTERNAL,DH-AES,DH-BLOWFISH,ECDSA-NIST256P-CHALLENGE,PLAIN
+            bool capListFinished;
+            QStringList availableCaps;
+            if (e->params().count() == 4) {
+                // Middle of multi-line reply, ignore the asterisk
+                capListFinished = false;
+                availableCaps = e->params().at(3).split(' ');
             } else {
-#endif
-                // Only working with PLAIN atm, blowfish later
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN"));
-#ifdef HAVE_SSL
+                // Single line reply
+                capListFinished = true;
+                availableCaps = e->params().at(2).split(' ');
             }
+            // We know what capabilities are available, request what we want.
+            QStringList availableCapPair;
+            bool queueCurrentCap;
+            for (int i = 0; i < availableCaps.count(); ++i) {
+                // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
+                availableCapPair = availableCaps[i].trimmed().split('=');
+                queueCurrentCap = false;
+                if (availableCapPair.at(0).startsWith("sasl")) {
+                    // Only request SASL if it's enabled
+                    if (coreNet->networkInfo().useSasl)
+                        queueCurrentCap = true;
+                } else if (availableCapPair.at(0).startsWith("away-notify") ||
+                           availableCapPair.at(0).startsWith("account-notify") ||
+                           availableCapPair.at(0).startsWith("extended-join") ||
+                           availableCapPair.at(0).startsWith("userhost-in-names") ||
+                           availableCapPair.at(0).startsWith("multi-prefix")) {
+                    // Always request these capabilities if available
+                    queueCurrentCap = true;
+                }
+                if (queueCurrentCap) {
+                    if(availableCapPair.count() >= 2)
+                        coreNet->queuePendingCap(availableCapPair.at(0).trimmed(), availableCapPair.at(1).trimmed());
+                    else
+                        coreNet->queuePendingCap(availableCapPair.at(0).trimmed());
+                }
+            }
+            // Begin capability requests when capability listing complete
+            if (capListFinished) {
+                emit newEvent(new MessageEvent(Message::Server, e->network(), tr("Negotiating capabilities..."), QString(), QString(), Message::None, e->timestamp()));
+                sendNextCap(coreNet);
+            }
+        } else if (e->params().at(1).compare("ACK", Qt::CaseInsensitive) == 0) {
+            // Server: CAP * ACK :multi-prefix sasl
+            // Got the capability we want, enable, handle as needed.
+            // As only one capability is requested at a time, no need to split
+            // Lower-case the list to make later comparisons easier
+            // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
+            QStringList acceptedCap = e->params().at(2).trimmed().split('=');
+
+            // Mark this cap as accepted
+            if(acceptedCap.count() >= 2)
+                coreNet->addCap(acceptedCap.at(0), acceptedCap.at(1));
+            else
+                coreNet->addCap(acceptedCap.at(0));
+
+            // Handle special cases
+            if (acceptedCap.at(0).startsWith("sasl")) {
+                // Freenode (at least) sends "sasl " with a trailing space for some reason!
+                // if the current identity has a cert set, use SASL EXTERNAL
+                // FIXME use event
+                // TODO If value of sasl capability is not empty, limit to accepted
+#ifdef HAVE_SSL
+                if (!coreNet->identityPtr()->sslCert().isNull()) {
+                    coreNet->putRawLine(coreNet->serverEncode("AUTHENTICATE EXTERNAL"));
+                } else {
 #endif
+                    // Only working with PLAIN atm, blowfish later
+                    coreNet->putRawLine(coreNet->serverEncode("AUTHENTICATE PLAIN"));
+#ifdef HAVE_SSL
+                }
+#endif
+            } else {
+                // Special handling not needed, move on to next cap
+                sendNextCap(coreNet);
+            }
+        } else if (e->params().at(1).compare("NAK", Qt::CaseInsensitive) == 0) {
+            // Something went wrong with this capability, disable, go to next cap
+            // As only one capability is requested at a time, no need to split
+            // Lower-case the list to make later comparisons easier
+            QString deniedCap = e->params().at(2).trimmed();
+            coreNet->removeCap(deniedCap);
+            sendNextCap(coreNet);
         }
     }
 }
 
+/* IRCv3 account-notify
+ * Log in:  ":nick!user@host ACCOUNT accountname"
+ * Log out: ":nick!user@host ACCOUNT *" */
+void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent *e)
+{
+    if (!checkParamCount(e, 1))
+        return;
+
+    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    if (ircuser) {
+        // FIXME Keep track of authed user account, requires adding support to ircuser.h/cpp
+        /*
+        if (e->params().at(0) != "*") {
+            // Account logged in
+            qDebug() << "account-notify:" << ircuser->nick() << "logged in to" << e->params().at(0);
+        } else {
+            // Account logged out
+            qDebug() << "account-notify:" << ircuser->nick() << "logged out";
+        }
+        */
+    } else {
+        qDebug() << "Received account-notify data for unknown user" << e->prefix();
+    }
+}
+
+/* IRCv3 away-notify - ":nick!user@host AWAY [:message]" */
+void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
+{
+    if (!checkParamCount(e, 2))
+        return;
+
+    // Nick is sent as part of parameters in order to split user/server decoding
+    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    if (ircuser) {
+        if (!e->params().at(1).isEmpty()) {
+            ircuser->setAway(true);
+            ircuser->setAwayMessage(e->params().at(1));
+        } else {
+            ircuser->setAway(false);
+        }
+    } else {
+        qDebug() << "Received away-notify data for unknown user" << e->params().at(0);
+    }
+}
 
 void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent *e)
 {
@@ -182,11 +321,28 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
     QString channel = e->params()[0];
     IrcUser *ircuser = net->updateNickFromMask(e->prefix());
 
+    if (net->useCapExtendedJoin()) {
+        if (!checkParamCount(e, 3))
+            return;
+        // If logged in, :nick!user@host JOIN #channelname accountname :Real Name
+        // If logged out, :nick!user@host JOIN #channelname * :Real Name
+        // See:  http://ircv3.net/specs/extensions/extended-join-3.1.html
+        // FIXME Keep track of authed user account, requires adding support to ircuser.h/cpp
+        ircuser->setRealName(e->params()[2]);
+    }
+    // Else :nick!user@host JOIN #channelname
+
     bool handledByNetsplit = false;
     foreach(Netsplit* n, _netsplits.value(e->network())) {
         handledByNetsplit = n->userJoined(e->prefix(), channel);
         if (handledByNetsplit)
             break;
+    }
+
+    // If using away-notify, check new users.  Works around buggy IRC servers
+    // forgetting to send :away messages for users who join channels when away.
+    if (coreNetwork(e)->useCapAwayNotify()) {
+        coreNetwork(e)->queueAutoWhoOneshot(ircuser->nick());
     }
 
     if (!handledByNetsplit)
@@ -763,14 +919,40 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
         ircuser->setUser(e->params()[1]);
         ircuser->setHost(e->params()[2]);
 
-        bool away = e->params()[5].startsWith("G");
+        bool away = e->params()[5].contains("G", Qt::CaseInsensitive);
         ircuser->setAway(away);
         ircuser->setServer(e->params()[3]);
         ircuser->setRealName(e->params().last().section(" ", 1));
+
+        if (coreNetwork(e)->useCapMultiPrefix()) {
+            // If multi-prefix is enabled, all modes will be sent in WHO replies.
+            // :kenny.chatspike.net 352 guest #test grawity broken.symlink *.chatspike.net grawity H@%+ :0 Mantas M.
+            // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
+            QString uncheckedModes = e->params()[5];
+            QString validModes = QString();
+            while (!uncheckedModes.isEmpty()) {
+                // Mode found in 1 left-most character, add it to the list
+                if (e->network()->prefixes().contains(uncheckedModes[0])) {
+                    validModes.append(e->network()->prefixToMode(uncheckedModes[0]));
+                }
+                // Remove this mode from the list of unchecked modes
+                uncheckedModes = uncheckedModes.remove(0, 1);
+            }
+
+            // Some IRC servers decide to not follow the spec, returning only -some- of the user
+            // modes in WHO despite listing them all in NAMES.  For now, assume it can only add
+            // and not take away.  *sigh*
+            if (!validModes.isEmpty())
+                ircuser->addUserModes(validModes);
+        }
     }
 
-    if (coreNetwork(e)->isAutoWhoInProgress(channel))
+    // Check if channel name has a who in progress.
+    // If not, then check if user nick exists and has a who in progress.
+    if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
+        (ircuser && coreNetwork(e)->isAutoWhoInProgress(ircuser->nick()))) {
         e->setFlag(EventManager::Silent);
+    }
 }
 
 
@@ -793,13 +975,34 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     QStringList nicks;
     QStringList modes;
 
+    // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
+    bool _useCapMultiPrefix = coreNetwork(e)->useCapMultiPrefix();
+
     foreach(QString nick, e->params()[2].split(' ', QString::SkipEmptyParts)) {
         QString mode;
 
-        if (e->network()->prefixes().contains(nick[0])) {
+        if (_useCapMultiPrefix) {
+            // If multi-prefix is enabled, all modes will be sent in NAMES replies.
+            // :hades.arpa 353 guest = #tethys :~&@%+aji &@Attila @+alyx +KindOne Argure
+            // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
+            while (e->network()->prefixes().contains(nick[0])) {
+                // Mode found in 1 left-most character, add it to the list.
+                // Note: sending multiple modes may cause a warning in older clients.
+                // In testing, the clients still seemed to function fine.
+                mode.append(e->network()->prefixToMode(nick[0]));
+                // Remove this mode from the nick
+                nick = nick.remove(0, 1);
+            }
+        } else if (e->network()->prefixes().contains(nick[0])) {
+            // Multi-prefix is disabled and a mode prefix was found.
             mode = e->network()->prefixToMode(nick[0]);
             nick = nick.mid(1);
         }
+
+        // If userhost-in-names capability is enabled, the following will be
+        // in the form "nick!user@host" rather than "nick".  This works without
+        // special handling as the following use nickFromHost() as needed.
+        // See: http://ircv3.net/specs/extensions/userhost-in-names-3.2.html
 
         nicks << nick;
         modes << mode;
