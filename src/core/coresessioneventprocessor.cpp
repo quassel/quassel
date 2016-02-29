@@ -942,8 +942,22 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
             // Some IRC servers decide to not follow the spec, returning only -some- of the user
             // modes in WHO despite listing them all in NAMES.  For now, assume it can only add
             // and not take away.  *sigh*
-            if (!validModes.isEmpty())
-                ircuser->addUserModes(validModes);
+            if (!validModes.isEmpty()) {
+                if (channel != "*") {
+                    // Channel-specific modes received, apply to given channel only
+                    IrcChannel *ircChan = e->network()->ircChannel(channel);
+                    if (ircChan) {
+                        // Do one mode at a time
+                        // TODO Better way of syncing this without breaking protocol?
+                        for (int i = 0; i < validModes.count(); ++i) {
+                            ircChan->addUserMode(ircuser, validModes.at(i));
+                        }
+                    }
+                } else {
+                    // Modes apply to the user everywhere
+                    ircuser->addUserModes(validModes);
+                }
+            }
         }
     }
 
