@@ -198,9 +198,6 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
         // If you wonder why there is no counterpart to ircUserJoined:
         // the joins are propagated by the ircuser. The signal ircUserJoined is only for convenience
 
-        // Also update the IRC user's record of modes; this allows easier tracking
-        ircuser->addUserModes(modes[i]);
-
         newNicks << ircuser->nick();
         newModes << modes[i];
         newUsers << ircuser;
@@ -291,8 +288,6 @@ void IrcChannel::addUserMode(IrcUser *ircuser, const QString &mode)
 
     if (!_userModes[ircuser].contains(mode)) {
         _userModes[ircuser] += mode;
-        // Also update the IRC user's record of modes; this allows easier tracking
-        ircuser->addUserModes(mode);
         QString nick = ircuser->nick();
         SYNC_OTHER(addUserMode, ARG(nick), ARG(mode))
         emit ircUserModeAdded(ircuser, mode);
@@ -314,8 +309,6 @@ void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode)
 
     if (_userModes[ircuser].contains(mode)) {
         _userModes[ircuser].remove(mode);
-        // Also update the IRC user's record of modes; this allows easier tracking
-        ircuser->removeUserModes(mode);
         QString nick = ircuser->nick();
         SYNC_OTHER(removeUserMode, ARG(nick), ARG(mode));
         emit ircUserModeRemoved(ircuser, mode);
