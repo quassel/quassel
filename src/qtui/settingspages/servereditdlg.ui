@@ -193,7 +193,7 @@
              <widget class="QComboBox" name="proxyType">
               <item>
                <property name="text">
-                <string>Socks 5</string>
+                <string>SOCKS 5</string>
                </property>
               </item>
               <item>

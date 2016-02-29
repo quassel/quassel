@@ -713,8 +713,8 @@ UTF-8 should be a sane choice for most networks.</string>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_5">
                  <property name="toolTip">
-                  <string>Incoming messages encoded in Utf8 will always be treated as such.
-This setting defines the encoding for messages that are not Utf8.</string>
+                  <string>Incoming messages encoded in UTF-8 will always be treated as such.
+This setting defines the encoding for messages that are not UTF-8.</string>
                  </property>
                  <property name="text">
                   <string>Receive fallback:</string>
@@ -733,8 +733,8 @@ This setting defines the encoding for messages that are not Utf8.</string>
                   </sizepolicy>
                  </property>
                  <property name="toolTip">
-                  <string>Incoming messages encoded in Utf8 will always be treated as such.
-This setting defines the encoding for messages that are not Utf8.</string>
+                  <string>Incoming messages encoded in UTF-8 will always be treated as such.
+This setting defines the encoding for messages that are not UTF-8.</string>
                  </property>
                  <property name="insertPolicy">
                   <enum>QComboBox::InsertAlphabetically</enum>

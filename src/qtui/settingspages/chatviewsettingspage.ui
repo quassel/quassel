@@ -177,7 +177,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Web Search Url:</string>
+        <string>Web Search URL:</string>
        </property>
       </widget>
      </item>
