@@ -135,7 +135,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="toolTip">
-            <string>amount of messages per buffer that are requested after the core connection has been established.</string>
+            <string>Amount of messages per buffer that are requested after the core connection has been established.</string>
            </property>
            <property name="text">
             <string>Initial backlog amount:</string>
