@@ -715,7 +715,7 @@ void BufferViewDock::onFilterReturnPressed()
 {
     if (_oldFocusItem) {
         _oldFocusItem->setFocus();
-        _oldFocusItem.clear();
+        _oldFocusItem = 0;
     }
 
     if (!config()->showSearch()) {
@@ -763,7 +763,7 @@ bool BufferViewDock::eventFilter(QObject *object, QEvent *event)
 
        if (_oldFocusItem) {
            _oldFocusItem->setFocus();
-           _oldFocusItem.clear();
+           _oldFocusItem = 0;
        }
 
        return true;
