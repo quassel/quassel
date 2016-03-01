@@ -59,6 +59,8 @@ public:
     void addActionsToMenu(QMenu *menu, const QModelIndex &index);
     void addFilterActions(QMenu *contextMenu, const QModelIndex &index);
 
+    void selectFirstBuffer();
+
 public slots:
     void setRootIndexForNetworkId(const NetworkId &networkId);
     void removeSelectedBuffers(bool permanently = false);
@@ -145,17 +147,25 @@ public :
     void setWidget(QWidget *newWidget);
     QWidget *widget() const { return _childWidget; }
 
+    void activateFilter();
+
 public slots:
     void setActive(bool active = true);
+
+protected slots:
+    virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual void focusInEvent(QFocusEvent*event) { qDebug() << event; }
 
 private slots:
     void bufferViewRenamed(const QString &newName);
     void updateTitle();
     void configChanged();
+    void onFilterReturnPressed();
 
 private:
     QWidget *_childWidget;
     QWidget *_widget;
+    QPointer<QWidget> _oldFocusItem; // QPointer in case the old item gets deleted
     QLineEdit *_filterEdit;
     bool _active;
     QString _title;

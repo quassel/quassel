@@ -33,7 +33,7 @@ BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
     _disableDecoration(false),
     _allowedBufferTypes(BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer),
     _minimumActivity(0),
-    _showSearch(true)
+    _showSearch(false)
 {
     setObjectName(QString::number(bufferViewId));
 }

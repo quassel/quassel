@@ -453,6 +453,9 @@ void MainWin::setupActions()
     coll->addAction("JumpHotBuffer", new Action(tr("Jump to hot chat"), coll,
             this, SLOT(on_jumpHotBuffer_triggered()), QKeySequence(Qt::META + Qt::Key_A)));
 
+    coll->addAction("ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll,
+            this, SLOT(on_bufferSearch_triggered()), QKeySequence(Qt::CTRL + Qt::Key_S)));
+
     // Jump keys
 #ifdef Q_OS_MAC
     const int bindModifier = Qt::ControlModifier | Qt::AltModifier;
@@ -1639,6 +1642,16 @@ void MainWin::on_jumpHotBuffer_triggered()
         return;
 
     Client::bufferModel()->switchToBuffer(_bufferHotList->hottestBuffer());
+}
+
+void MainWin::on_bufferSearch_triggered()
+{
+    if (_activeBufferViewIndex < 0 || _activeBufferViewIndex >= _bufferViews.count()) {
+        qWarning() << "Tried to activate filter on invalid bufferview:" << _activeBufferViewIndex;
+        return;
+    }
+
+    _bufferViews[_activeBufferViewIndex]->activateFilter();
 }
 
 
