@@ -353,6 +353,15 @@ void MainWin::restoreStateFromSettings(UiSettings &s)
         show();
 }
 
+QMenu *MainWin::createPopupMenu()
+{
+    QMenu *popupMenu = QMainWindow::createPopupMenu();
+    popupMenu->addSeparator();
+    ActionCollection *coll = QtUi::actionCollection("General");
+    popupMenu->addAction(coll->action("ToggleMenuBar"));
+    return popupMenu;
+}
+
 
 void MainWin::updateIcon()
 {
