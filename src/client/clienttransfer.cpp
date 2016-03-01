@@ -27,7 +27,7 @@ ClientTransfer::ClientTransfer(const QUuid &uuid, QObject *parent)
     : Transfer(uuid, parent),
     _file(0)
 {
-    connect(this, SIGNAL(stateChanged(Transfer::State)), SLOT(onStateChanged(Transfer::State)));
+    connect(this, SIGNAL(statusChanged(Transfer::Status)), SLOT(onStatusChanged(Transfer::Status)));
 }
 
 
@@ -85,14 +85,14 @@ void ClientTransfer::dataReceived(PeerPtr, const QByteArray &data)
 }
 
 
-void ClientTransfer::onStateChanged(Transfer::State state)
+void ClientTransfer::onStatusChanged(Transfer::Status status)
 {
-    switch(state) {
-        case State::Completed:
+    switch(status) {
+        case Status::Completed:
             if (_file)
                 _file->close();
             break;
-        case State::Failed:
+        case Status::Failed:
             if (_file)
                 _file->remove();
             break;

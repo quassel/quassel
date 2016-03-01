@@ -54,7 +54,7 @@ void CoreTransfer::cleanUp()
 
 void CoreTransfer::onSocketDisconnected()
 {
-    if (state() == State::Connecting || state() == State::Transferring) {
+    if (status() == Status::Connecting || status() == Status::Transferring) {
         setError(tr("Socket closed while still transferring!"));
     }
     else
@@ -66,7 +66,7 @@ void CoreTransfer::onSocketError(QAbstractSocket::SocketError error)
 {
     Q_UNUSED(error)
 
-    if (state() == State::Connecting || state() == State::Transferring) {
+    if (status() == Status::Connecting || status() == Status::Transferring) {
         setError(tr("DCC connection error: %1").arg(_socket->errorString()));
     }
 }
@@ -74,11 +74,11 @@ void CoreTransfer::onSocketError(QAbstractSocket::SocketError error)
 
 void CoreTransfer::requestAccepted(PeerPtr peer)
 {
-    if (_peer || !peer || state() != State::New)
+    if (_peer || !peer || status() != Status::New)
         return; // transfer was already accepted
 
     _peer = peer;
-    setState(State::Pending);
+    setStatus(Status::Pending);
 
     emit accepted(peer);
 
@@ -89,11 +89,11 @@ void CoreTransfer::requestAccepted(PeerPtr peer)
 
 void CoreTransfer::requestRejected(PeerPtr peer)
 {
-    if (_peer || state() != State::New)
+    if (_peer || status() != Status::New)
         return;
 
     _peer = peer;
-    setState(State::Rejected);
+    setStatus(Status::Rejected);
 
     emit rejected(peer);
 }
@@ -101,7 +101,7 @@ void CoreTransfer::requestRejected(PeerPtr peer)
 
 void CoreTransfer::start()
 {
-    if (!_peer || state() != State::Pending || direction() != Direction::Receive)
+    if (!_peer || status() != Status::Pending || direction() != Direction::Receive)
         return;
 
     setupConnectionForReceive();
@@ -115,7 +115,7 @@ void CoreTransfer::setupConnectionForReceive()
         return;
     }
 
-    setState(State::Connecting);
+    setStatus(Status::Connecting);
 
     _socket = new QTcpSocket(this);
     connect(_socket, SIGNAL(connected()), SLOT(startReceiving()));
@@ -129,7 +129,7 @@ void CoreTransfer::setupConnectionForReceive()
 
 void CoreTransfer::startReceiving()
 {
-    setState(State::Transferring);
+    setStatus(Status::Transferring);
 }
 
 
@@ -162,7 +162,7 @@ void CoreTransfer::onDataReceived()
     else if (_pos == fileSize()) {
         qDebug() << "DCC Receive: Transfer finished";
         if (relayData(QByteArray(), false)) // empty buffer
-            setState(State::Completed);
+            setStatus(Status::Completed);
     }
 
     _reading = false;

@@ -33,7 +33,7 @@ class Transfer : public SyncableObject
     SYNCABLE_OBJECT
 
     Q_PROPERTY(QUuid uuid READ uuid);
-    Q_PROPERTY(Transfer::State state READ state WRITE setState NOTIFY stateChanged);
+    Q_PROPERTY(Transfer::Status status READ status WRITE setStatus NOTIFY statusChanged);
     Q_PROPERTY(Transfer::Direction direction READ direction WRITE setDirection NOTIFY directionChanged);
     Q_PROPERTY(QHostAddress address READ address WRITE setAddress NOTIFY addressChanged);
     Q_PROPERTY(quint16 port READ port WRITE setPort NOTIFY portChanged);
@@ -42,7 +42,7 @@ class Transfer : public SyncableObject
     Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickChanged);
 
 public:
-    enum class State {
+    enum class Status {
         New,
         Pending,
         Connecting,
@@ -65,7 +65,7 @@ public:
     inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     QUuid uuid() const;
-    State state() const;
+    Status status() const;
     Direction direction() const;
     QString fileName() const;
     QHostAddress address() const;
@@ -83,7 +83,7 @@ public slots:
     virtual void requestRejected(PeerPtr peer) { Q_UNUSED(peer); }
 
 signals:
-    void stateChanged(Transfer::State state);
+    void statusChanged (Transfer::Status state);
     void directionChanged(Transfer::Direction direction);
     void addressChanged(const QHostAddress &address);
     void portChanged(quint16 port);
@@ -97,7 +97,7 @@ signals:
     void rejected(PeerPtr peer = 0) const;
 
 protected slots:
-    void setState(Transfer::State state);
+    void setStatus(Transfer::Status status);
     void setError(const QString &errorString);
 
     // called on the client side through sync calls
@@ -116,7 +116,7 @@ private:
     void setNick(const QString &nick);
 
 
-    State _state;
+    Status _status;
     Direction _direction;
     QString _fileName;
     QHostAddress _address;
@@ -126,11 +126,11 @@ private:
     QUuid _uuid;
 };
 
-Q_DECLARE_METATYPE(Transfer::State)
+Q_DECLARE_METATYPE(Transfer::Status)
 Q_DECLARE_METATYPE(Transfer::Direction)
 
-QDataStream &operator<<(QDataStream &out, Transfer::State state);
-QDataStream &operator>>(QDataStream &in, Transfer::State &state);
+QDataStream &operator<<(QDataStream &out, Transfer::Status state);
+QDataStream &operator>>(QDataStream &in, Transfer::Status &state);
 QDataStream &operator<<(QDataStream &out, Transfer::Direction direction);
 QDataStream &operator>>(QDataStream &in, Transfer::Direction &direction);
 

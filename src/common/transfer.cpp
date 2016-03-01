@@ -23,7 +23,7 @@
 INIT_SYNCABLE_OBJECT(Transfer)
 Transfer::Transfer(const QUuid &uuid, QObject *parent)
     : SyncableObject(parent),
-    _state(State::New),
+    _status(Status::New),
     _direction(Direction::Receive),
     _port(0),
     _fileSize(0),
@@ -34,7 +34,7 @@ Transfer::Transfer(const QUuid &uuid, QObject *parent)
 
 Transfer::Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
     : SyncableObject(parent),
-    _state(State::New),
+    _status(Status::New),
     _direction(direction),
     _fileName(fileName),
     _address(address),
@@ -50,9 +50,9 @@ Transfer::Transfer(Direction direction, const QString &nick, const QString &file
 void Transfer::init()
 {
     static auto regTypes = []() -> bool {
-        qRegisterMetaType<State>("Transfer::State");
+        qRegisterMetaType<Status>("Transfer::Status");
         qRegisterMetaType<Direction>("Transfer::Direction");
-        qRegisterMetaTypeStreamOperators<State>("Transfer::State");
+        qRegisterMetaTypeStreamOperators<Status>("Transfer::Status");
         qRegisterMetaTypeStreamOperators<Direction>("Transfer::Direction");
         return true;
     }();
@@ -69,18 +69,18 @@ QUuid Transfer::uuid() const
 }
 
 
-Transfer::State Transfer::state() const
+Transfer::Status Transfer::status() const
 {
-    return _state;
+    return _status;
 }
 
 
-void Transfer::setState(Transfer::State state)
+void Transfer::setStatus(Transfer::Status status)
 {
-    if (_state != state) {
-        _state = state;
-        SYNC(ARG(state));
-        emit stateChanged(state);
+    if (_status != status) {
+        _status = status;
+        SYNC(ARG(status));
+        emit statusChanged(status);
     }
 }
 
@@ -186,20 +186,20 @@ void Transfer::setError(const QString &errorString)
 {
     qWarning() << Q_FUNC_INFO << errorString;
     emit error(errorString);
-    setState(State::Failed);
+    setStatus(Status::Failed);
     cleanUp();
 }
 
 
-QDataStream &operator<<(QDataStream &out, Transfer::State state) {
+QDataStream &operator<<(QDataStream &out, Transfer::Status state) {
     out << static_cast<qint8>(state);
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, Transfer::State &state) {
+QDataStream &operator>>(QDataStream &in, Transfer::Status &state) {
     qint8 s;
     in >> s;
-    state = static_cast<Transfer::State>(s);
+    state = static_cast<Transfer::Status>(s);
     return in;
 }
 
