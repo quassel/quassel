@@ -406,7 +406,7 @@ void MainWin::setupActions()
     coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
             this, SLOT(showAwayLog())));
     coll->addAction("ToggleMenuBar", new Action(QIcon::fromTheme("show-menu"), tr("Show &Menubar"), coll,
-            0, 0, QKeySequence(Qt::CTRL + Qt::Key_M)))->setCheckable(true);
+            0, 0))->setCheckable(true);
 
     coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
             0, 0))->setCheckable(true);
