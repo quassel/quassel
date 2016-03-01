@@ -39,15 +39,15 @@ public:
 
 public slots:
     // called on the client side
-    void accept(const QString &savePath) const;
-    void reject() const;
+    void accept(const QString &savePath) const override;
+    void reject() const override;
 
 private slots:
-    void dataReceived(PeerPtr peer, const QByteArray &data);
-    void onStateChanged(Transfer::State state);
+    void dataReceived(PeerPtr peer, const QByteArray &data) override;
+    void onStatusChanged(Transfer::Status status);
 
 private:
-    virtual void cleanUp();
+    void cleanUp() override;
 
     mutable QString _savePath;
 
