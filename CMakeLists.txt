@@ -131,6 +131,11 @@ if (CMAKE_MAJOR_VERSION GREATER 2)
     cmake_policy(SET CMP0043 OLD)
 endif()
 
+# Honor visibility settings for all target types
+if (CMAKE_VERSION VERSION_GREATER 3.3)
+    cmake_policy(SET CMP0063 NEW)
+endif()
+
 
 # Simplify later checks
 #####################################################################
@@ -231,7 +236,7 @@ if (USE_QT5)
                 PURPOSE     "Enable support for the snorenotify framework"
             )
         endif()
-        
+
 
         if (WITH_WEBKIT)
             find_package(Qt5WebKit QUIET)
