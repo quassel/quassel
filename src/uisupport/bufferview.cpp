@@ -671,6 +671,8 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     updateTitle();
 
     _widget->setLayout(new QVBoxLayout);
+    _widget->layout()->setSpacing(0);
+    _widget->layout()->setContentsMargins(0, 0, 0, 0);
     _filterEdit->setVisible(config->showSearch()); // hide it here, so we don't flicker or somesuch
     _filterEdit->setPlaceholderText(tr("Search..."));
     _widget->layout()->addWidget(_filterEdit);
