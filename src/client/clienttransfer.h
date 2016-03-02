@@ -37,6 +37,8 @@ public:
 
     QString savePath() const;
 
+    quint64 transferred() const override;
+
 public slots:
     // called on the client side
     void accept(const QString &savePath) const override;

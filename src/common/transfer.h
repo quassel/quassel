@@ -62,7 +62,7 @@ public:
 
     Transfer(const QUuid &uuid, QObject *parent = 0); // for creating a syncable object client-side
     Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+    inline const QMetaObject *syncMetaObject() const override { return &staticMetaObject; }
 
     QUuid uuid() const;
     Status status() const;
@@ -73,6 +73,8 @@ public:
     quint16 port() const;
     quint64 fileSize() const;
     QString nick() const;
+
+    virtual quint64 transferred() const = 0;
 
 public slots:
     // called on the client side

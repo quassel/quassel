@@ -31,6 +31,15 @@ ClientTransfer::ClientTransfer(const QUuid &uuid, QObject *parent)
 }
 
 
+quint64 ClientTransfer::transferred() const
+{
+    if (status() == Status::Completed)
+        return fileSize();
+
+    return _file ? _file->size() : 0;
+}
+
+
 void ClientTransfer::cleanUp()
 {
     if (_file) {

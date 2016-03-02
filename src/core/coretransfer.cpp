@@ -39,6 +39,12 @@ CoreTransfer::CoreTransfer(Direction direction, const QString &nick, const QStri
 }
 
 
+quint64 CoreTransfer::transferred() const
+{
+    return _pos;
+}
+
+
 void CoreTransfer::cleanUp()
 {
     if (_socket) {

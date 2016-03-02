@@ -36,12 +36,14 @@ class CoreTransfer : public Transfer
 public:
     CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
 
+    quint64 transferred() const override;
+
 public slots:
     void start();
 
     // called through sync calls
-    void requestAccepted(PeerPtr peer);
-    void requestRejected(PeerPtr peer);
+    void requestAccepted(PeerPtr peer) override;
+    void requestRejected(PeerPtr peer) override;
 
 private slots:
     void startReceiving();
@@ -52,7 +54,7 @@ private slots:
 private:
     void setupConnectionForReceive();
     bool relayData(const QByteArray &data, bool requireChunkSize);
-    virtual void cleanUp();
+    void cleanUp() override;
 
     QPointer<Peer> _peer;
     QTcpSocket *_socket;
