@@ -85,6 +85,31 @@ void Transfer::setStatus(Transfer::Status status)
 }
 
 
+QString Transfer::prettyStatus() const
+{
+    switch(status()) {
+        case Status::New:
+            return tr("New");
+        case Status::Pending:
+            return tr("Pending");
+        case Status::Connecting:
+            return tr("Connecting");
+        case Status::Transferring:
+            return tr("Transferring");
+        case Status::Paused:
+            return tr("Paused");
+        case Status::Completed:
+            return tr("Completed");
+        case Status::Failed:
+            return tr("Failed");
+        case Status::Rejected:
+            return tr("Rejected");
+    }
+
+    return QString();
+}
+
+
 
 Transfer::Direction Transfer::direction() const
 {

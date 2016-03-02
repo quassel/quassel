@@ -66,6 +66,7 @@ public:
 
     QUuid uuid() const;
     Status status() const;
+    QString prettyStatus() const;
     Direction direction() const;
     QString fileName() const;
     QHostAddress address() const;
