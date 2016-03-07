@@ -148,6 +148,7 @@ void CoreTransfer::onDataReceived()
     while (_socket->bytesAvailable()) {
         QByteArray data = _socket->read(chunkSize);
         _pos += data.size();
+        emit transferredChanged(transferred());
         if (!relayData(data, true))
             return;
 

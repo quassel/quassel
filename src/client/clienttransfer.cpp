@@ -91,6 +91,8 @@ void ClientTransfer::dataReceived(PeerPtr, const QByteArray &data)
         qWarning() << Q_FUNC_INFO << "Could not write to file:" << _file->errorString();
         return;
     }
+
+    emit transferredChanged(transferred());
 }
 
 

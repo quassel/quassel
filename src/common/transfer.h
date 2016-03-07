@@ -86,12 +86,13 @@ public slots:
     virtual void requestRejected(PeerPtr peer) { Q_UNUSED(peer); }
 
 signals:
-    void statusChanged (Transfer::Status state);
+    void statusChanged(Transfer::Status state);
     void directionChanged(Transfer::Direction direction);
     void addressChanged(const QHostAddress &address);
     void portChanged(quint16 port);
     void fileNameChanged(const QString &fileName);
     void fileSizeChanged(quint64 fileSize);
+    void transferredChanged(quint64 transferred);
     void nickChanged(const QString &nick);
 
     void error(const QString &errorString);
