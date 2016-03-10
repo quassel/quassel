@@ -558,17 +558,34 @@ QString QueryBufferItem::toolTip(int column) const
         addRow(tr("Realname"),
                NetworkItem::escapeHTML(_ircUser->realName()),
                !_ircUser->realName().isEmpty());
-        addRow(NetworkItem::escapeHTML(tr("Suser Host"), true),
-               NetworkItem::escapeHTML(_ircUser->suserHost()),
-               !_ircUser->suserHost().isEmpty());
-        addRow(NetworkItem::escapeHTML(tr("Whois Service Reply"), true),
-               NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
-               !_ircUser->whoisServiceReply().isEmpty());
+        // suserHost may return "<nick> is available for help", which should be translated.
+        // See https://www.alien.net.au/irc/irc2numerics.html
+        if(_ircUser->suserHost().endsWith("available for help")) {
+            addRow(NetworkItem::escapeHTML(tr("Help status"), true),
+                   NetworkItem::escapeHTML(tr("Available for help")),
+                   true);
+        } else {
+            addRow(NetworkItem::escapeHTML(tr("Service status"), true),
+                   NetworkItem::escapeHTML(_ircUser->suserHost()),
+                   !_ircUser->suserHost().isEmpty());
+        }
+        // whoisServiceReply may return "<nick> is identified for this nick", which should be translated.
+        // See https://www.alien.net.au/irc/irc2numerics.html
+        if(_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
+            addRow(NetworkItem::escapeHTML(tr("Account"), true),
+                   NetworkItem::escapeHTML(tr("Identified for this nick")),
+                   true);
+        } else {
+            addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
+                   NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
+                   !_ircUser->whoisServiceReply().isEmpty());
+        }
         addRow(tr("Hostmask"),
                NetworkItem::escapeHTML(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1)),
                !(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1) == "@"));
+        // ircOperator may contain "is an" or "is a", which should be removed.
         addRow(tr("Operator"),
-               NetworkItem::escapeHTML(_ircUser->ircOperator()),
+               NetworkItem::escapeHTML(_ircUser->ircOperator().replace("is an ", "").replace("is a ", "")),
                !_ircUser->ircOperator().isEmpty());
 
         if (_ircUser->idleTime().isValid()) {
@@ -1058,17 +1075,35 @@ QString IrcUserItem::toolTip(int column) const
     addRow(tr("Realname"),
            NetworkItem::escapeHTML(_ircUser->realName()),
            !_ircUser->realName().isEmpty());
-    addRow(NetworkItem::escapeHTML(tr("Suser Host"), true),
-           NetworkItem::escapeHTML(_ircUser->suserHost()),
-           !_ircUser->suserHost().isEmpty());
-    addRow(NetworkItem::escapeHTML(tr("Whois Service Reply"), true),
-           NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
-           !_ircUser->whoisServiceReply().isEmpty());
+
+    // suserHost may return "<nick> is available for help", which should be translated.
+    // See https://www.alien.net.au/irc/irc2numerics.html
+    if(_ircUser->suserHost().endsWith("available for help")) {
+        addRow(NetworkItem::escapeHTML(tr("Help status"), true),
+               NetworkItem::escapeHTML(tr("Available for help")),
+               true);
+    } else {
+        addRow(NetworkItem::escapeHTML(tr("Service status"), true),
+               NetworkItem::escapeHTML(_ircUser->suserHost()),
+               !_ircUser->suserHost().isEmpty());
+    }
+    // whoisServiceReply may return "<nick> is identified for this nick", which should be translated.
+    // See https://www.alien.net.au/irc/irc2numerics.html
+    if(_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
+        addRow(NetworkItem::escapeHTML(tr("Account"), true),
+               NetworkItem::escapeHTML(tr("Identified for this nick")),
+               true);
+    } else {
+        addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
+               NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
+               !_ircUser->whoisServiceReply().isEmpty());
+    }
     addRow(tr("Hostmask"),
            NetworkItem::escapeHTML(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1)),
            !(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!") + 1) == "@"));
+    // ircOperator may contain "is an" or "is a", which should be removed.
     addRow(tr("Operator"),
-           NetworkItem::escapeHTML(_ircUser->ircOperator()),
+           NetworkItem::escapeHTML(_ircUser->ircOperator().replace("is an ", "").replace("is a ", "")),
            !_ircUser->ircOperator().isEmpty());
 
     if (_ircUser->idleTime().isValid()) {
