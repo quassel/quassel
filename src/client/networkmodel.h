@@ -213,6 +213,14 @@ public:
 
     void attachIrcChannel(IrcChannel *ircChannel);
 
+    /**
+     * Gets the list of channel modes for a given nick.
+     *
+     * @param[in] nick IrcUser nickname to check
+     * @returns Channel modes as a string if any, otherwise empty string
+     */
+    QString nickChannelModes(const QString &nick) const;
+
 public slots:
     void join(const QList<IrcUser *> &ircUsers);
     void part(IrcUser *ircUser);
@@ -278,6 +286,13 @@ public :
     inline IrcUser *ircUser() { return _ircUser; }
     virtual QVariant data(int column, int role) const;
     virtual QString toolTip(int column) const;
+
+    /**
+     * Gets the list of channel modes for this nick if parented to channel.
+     *
+     * @returns Channel modes as a string if any, otherwise empty string
+     */
+    QString channelModes() const;
 
 private slots:
     inline void ircUserQuited() { parent()->removeChild(this); }
