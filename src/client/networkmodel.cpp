@@ -744,6 +744,16 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel)
     emit dataChanged();
 }
 
+QString ChannelBufferItem::nickChannelModes(const QString &nick) const
+{
+    if (!_ircChannel) {
+        qDebug() << Q_FUNC_INFO << "IrcChannel not set, can't get user modes";
+        return QString();
+    }
+
+    return _ircChannel->userModes(nick);
+}
+
 
 void ChannelBufferItem::ircChannelParted()
 {
@@ -1065,6 +1075,9 @@ QString IrcUserItem::toolTip(int column) const
     };
 
     tooltip << "<table cellspacing='5' cellpadding='0'>";
+    addRow(tr("Modes"),
+           NetworkItem::escapeHTML(channelModes()),
+           !channelModes().isEmpty());
     if (_ircUser->isAway()) {
         QString awayMessage(tr("(unknown)"));
         if(!_ircUser->awayMessage().isEmpty()) {
@@ -1126,6 +1139,21 @@ QString IrcUserItem::toolTip(int column) const
 
     tooltip << "</qt>";
     return strTooltip;
+}
+
+QString IrcUserItem::channelModes() const
+{
+    // IrcUserItems are parented to UserCategoryItem, which are parented to ChannelBufferItem.
+    // We want the channel buffer item in order to get the channel-specific user modes.
+    UserCategoryItem *category = qobject_cast<UserCategoryItem *>(parent());
+    if (!category)
+        return QString();
+
+    ChannelBufferItem *channel = qobject_cast<ChannelBufferItem *>(category->parent());
+    if (!channel)
+        return QString();
+
+    return channel->nickChannelModes(nickName());
 }
 
 
