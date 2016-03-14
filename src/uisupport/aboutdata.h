@@ -134,7 +134,7 @@ public:
      * @param[in] authors A list of authors to add
      * @returns A reference to this AboutData instance
      */
-    AboutData &addAuthors(std::initializer_list<AboutPerson> authors);
+    AboutData &addAuthors(const std::initializer_list<AboutPerson> authors);
 
     /**
      * Adds a contributor.
@@ -153,7 +153,7 @@ public:
      * @param[in] authors A list of contributors to add
      * @returns A reference to this AboutData instance
      */
-    AboutData &addCredits(std::initializer_list<AboutPerson> credits);
+    AboutData &addCredits(const std::initializer_list<AboutPerson> credits);
 
     /**
      * Gets the list of authors stored in this AboutData instance.
