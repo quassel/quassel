@@ -209,6 +209,7 @@ public:
     explicit StyledMessage(const Message &message);
 
     QString decoratedTimestamp() const;
+    QString flairForSender() const;        //!< Returns a basic flair for the nickname if applicable, eg. +operator, otherwise a single space
     QString plainSender() const;           //!< Nickname (no decorations) for Plain and Notice, empty else
     QString decoratedSender() const;
     const QString &plainContents() const;

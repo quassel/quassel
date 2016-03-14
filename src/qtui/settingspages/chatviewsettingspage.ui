@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>492</height>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -169,6 +169,22 @@
      </property>
      <property name="defaultValue" stdset="0">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showUsernamePrefix">
+     <property name="toolTip">
+      <string>Add flairs in front of nicknames in channels, such as &lt;@nickname&gt; for an operator</string>
+     </property>
+     <property name="text">
+      <string>Show username prefixes</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">ShowUsernamePrefix</string>
      </property>
     </widget>
    </item>
@@ -825,15 +841,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ColorButton</class>
-   <extends>QToolButton</extends>
-   <header>colorbutton.h</header>
-  </customwidget>
-  <customwidget>
    <class>FontSelector</class>
    <extends>QWidget</extends>
    <header>fontselector.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ColorButton</class>
+   <extends>QToolButton</extends>
+   <header>colorbutton.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
