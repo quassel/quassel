@@ -70,7 +70,11 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     }
 
     menu->addSeparator();
+#ifndef Q_OS_MAC
     menu->addAction(QIcon::fromTheme("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
+#else
+    menu->addAction(tr("Configure..."), this, SLOT(showSettingsPage()));
+#endif
 }
 
 

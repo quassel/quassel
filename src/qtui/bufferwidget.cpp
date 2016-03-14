@@ -77,16 +77,22 @@ BufferWidget::BufferWidget(QWidget *parent)
 
     Action *zoomInChatview = coll->add<Action>("ZoomInChatView", this, SLOT(zoomIn()));
     zoomInChatview->setText(tr("Zoom In"));
+#ifndef Q_OS_MAC
     zoomInChatview->setIcon(QIcon::fromTheme("zoom-in"));
+#endif
     zoomInChatview->setShortcut(QKeySequence::ZoomIn);
 
     Action *zoomOutChatview = coll->add<Action>("ZoomOutChatView", this, SLOT(zoomOut()));
+#ifndef Q_OS_MAC
     zoomOutChatview->setIcon(QIcon::fromTheme("zoom-out"));
+#endif
     zoomOutChatview->setText(tr("Zoom Out"));
     zoomOutChatview->setShortcut(QKeySequence::ZoomOut);
 
     Action *zoomOriginalChatview = coll->add<Action>("ZoomOriginalChatView", this, SLOT(zoomOriginal()));
+#ifndef Q_OS_MAC
     zoomOriginalChatview->setIcon(QIcon::fromTheme("zoom-original"));
+#endif
     zoomOriginalChatview->setText(tr("Actual Size"));
     //zoomOriginalChatview->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0)); // used for RTS switching
 

@@ -823,17 +823,26 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     // If we have text selected, insert the Copy Selection as first item
     if (isPosOverSelection(pos)) {
         QAction *sep = menu.insertSeparator(menu.actions().first());
+#ifndef Q_OS_MAC
         QAction *act = new Action(QIcon::fromTheme("edit-copy"), tr("Copy Selection"), &menu, this,
             SLOT(selectionToClipboard()), QKeySequence::Copy);
+#else
+        QAction *act = new Action(tr("Copy Selection"), &menu, this,
+            SLOT(selectionToClipboard()), QKeySequence::Copy);
+#endif
         menu.insertAction(sep, act);
 
         QString searchSelectionText = selection();
         if (searchSelectionText.length() > _webSearchSelectionTextMaxVisible)
             searchSelectionText = searchSelectionText.left(_webSearchSelectionTextMaxVisible).append(QString::fromUtf8("…"));
         searchSelectionText = tr("Search '%1'").arg(searchSelectionText);
-
+#ifndef Q_OS_MAC
         QAction *webSearchAction = new Action(QIcon::fromTheme("edit-find"), searchSelectionText, &menu, this, SLOT(webSearchOnSelection()));
         menu.insertAction(sep, webSearchAction);
+#else
+        QAction *webSearchAction = new Action(searchSelectionText, &menu, this, SLOT(webSearchOnSelection()));
+        menu.insertAction(sep, webSearchAction);
+#endif
     }
 
     if (QtUi::mainWindow()->menuBar()->isHidden())
