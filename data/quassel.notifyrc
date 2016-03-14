@@ -141,7 +141,7 @@ Comment[ru]=Получено личное сообщение (запрос)
 Comment[sq]=një mesazh privat (kërkesë) ka mbërritur
 Comment[tr]=Bir özel mesaj (sorgusu) ulaştı
 Comment[uk]=Надійшло особисте повідомлення (повідомлення діалогу)
-Comment[zh_CN]=收到一条死人短信息（疑问）
+Comment[zh_CN]=收到一条私人短信息（询问）
 Sound=KDE-Im-Message-In.ogg
 Action=Sound|Popup|Taskbar
 
@@ -172,6 +172,6 @@ Comment[nl]=Een privé-bericht (query) is ontvangen terwijl het Quassel-venster 
 Comment[pt_BR]=Uma mensagem privada (consulta) chegou enquanto o Quassel está focado
 Comment[sq]=Një masazh privat (kërkesë) ka mbërritur kur Quassel ishte i fokusuar
 Comment[uk]=Під час перебування Quassel у фокусі надійшло особисте повідомлення (повідомлення з діалогу)
-Comment[zh_CN]=当Quassel被聚焦时，收到一条私人短信息（疑问）
+Comment[zh_CN]=当Quassel被聚焦时，收到一条私人短信息（询问）
 Sound=KDE-Im-Message-In.ogg
 Action=Taskbar
