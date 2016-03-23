@@ -131,6 +131,7 @@ public :
     inline bool isMe(IrcUser *ircuser) const { return (ircuser->nick().toLower() == myNick().toLower()); }
 
     bool isChannelName(const QString &channelname) const;
+    bool isStatusMsg(const QString &target) const;
 
     inline bool isConnected() const { return _connected; }
     //Network::ConnectionState connectionState() const;

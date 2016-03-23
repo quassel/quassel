@@ -77,6 +77,18 @@ bool Network::isChannelName(const QString &channelname) const
 }
 
 
+bool Network::isStatusMsg(const QString &target) const
+{
+    if (target.isEmpty())
+        return false;
+
+    if (supports("STATUSMSG"))
+        return support("STATUSMSG").contains(target[0]);
+    else
+        return QString("@+").contains(target[0]);
+}
+
+
 NetworkInfo Network::networkInfo() const
 {
     NetworkInfo info;
