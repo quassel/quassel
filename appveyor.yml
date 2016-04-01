@@ -17,7 +17,7 @@ build_script:
 
     mkdir -Force $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
     cd $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
-    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON -DWITH_WEBKIT=OFF
+    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON -DWITH_WEBKIT=ON
     CmakeImageInstall
 
     $imageDir = CreateDeployImage @(
@@ -57,10 +57,16 @@ build_script:
                             "bin\\Qt5Opengl\.dll",
                             "bin\\Qt5Multimedia\.dll",
                             "bin\\Qt5MultimediaWidgets\.dll",
+                            "bin\\Qt5Positioning\.dll",
+                            "bin\\Qt5PrintSupport\.dll",
                             "bin\\Qt5Qml\.dll",
                             "bin\\Qt5Quick\.dll",
                             "bin\\Qt5Script\.dll",
+                            "bin\\Qt5Sensors\.dll",
                             "bin\\Qt5Sql\.dll",
+                            "bin\\Qt5WebChannel\.dll",
+                            "bin\\Qt5WebKit\.dll",
+                            "bin\\Qt5WebKitWidgets\.dll",
                             "bin\\Qt5Widgets\.dll",
                             "bin\\Qt5XmlPatterns\.dll",
                             "bin\\.*libglesv2\.dll",
