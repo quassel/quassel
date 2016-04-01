@@ -186,7 +186,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
             QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
-                QString target = net->isChannelName(*targetIter) ? *targetIter : senderNick;
+                QString target = net->isChannelName(*targetIter) || net->isStatusMsg(*targetIter) ? *targetIter : senderNick;
 
                 msg = decrypt(net, target, msg);
 
