@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
-    <height>368</height>
+    <width>390</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,8 @@
       <widget class="QGroupBox" name="strictnessGroupBox">
        <property name="toolTip">
         <string>&lt;p&gt;&lt;b&gt;Strictness:&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Highlight only:&lt;/u&gt;&lt;/p&gt;
+&lt;p&gt;Do not ignore messages, simply ignore highlights caused by them.&lt;/p&gt;
 &lt;p&gt;&lt;u&gt;Dynamic:&lt;/u&gt;&lt;/p&gt;
 &lt;p&gt;Messages are filtered &quot;on the fly&quot;.
 Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p&gt;
@@ -35,6 +37,13 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
         <string>Strictness</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QRadioButton" name="highlightOnlyButton">
+          <property name="text">
+           <string>Highlight only</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QRadioButton" name="dynamicStrictnessButton">
           <property name="text">

@@ -21,6 +21,7 @@
 #include "qtuimessageprocessor.h"
 
 #include "client.h"
+#include "clientignorelistmanager.h"
 #include "clientsettings.h"
 #include "identity.h"
 #include "messagemodel.h"
@@ -112,6 +113,8 @@ void QtUiMessageProcessor::processNextMessage()
 void QtUiMessageProcessor::checkForHighlight(Message &msg)
 {
     if (!((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && !(msg.flags() & Message::Self)))
+        return;
+    if (Client::ignoreListManager()->match(msg, Client::networkModel()->networkName(msg.bufferId())) == IgnoreListManager::HighlightOnlyStrictness)
         return;
 
     // TODO: Cache this (per network)

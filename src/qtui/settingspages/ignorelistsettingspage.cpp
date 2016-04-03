@@ -241,8 +241,9 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
     _typeButtonGroup.addButton(ui.senderTypeButton, 0);
     _typeButtonGroup.addButton(ui.messageTypeButton, 1);
     _typeButtonGroup.addButton(ui.ctcpTypeButton, 2);
-    _strictnessButtonGroup.addButton(ui.dynamicStrictnessButton, 0);
-    _strictnessButtonGroup.addButton(ui.permanentStrictnessButton, 1);
+    _strictnessButtonGroup.addButton(ui.highlightOnlyButton, 0);
+    _strictnessButtonGroup.addButton(ui.dynamicStrictnessButton, 1);
+    _strictnessButtonGroup.addButton(ui.permanentStrictnessButton, 2);
     _scopeButtonGroup.addButton(ui.globalScopeButton, 0);
     _scopeButtonGroup.addButton(ui.networkScopeButton, 1);
     _scopeButtonGroup.addButton(ui.channelScopeButton, 2);
@@ -263,6 +264,8 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
 
     if (item.strictness == IgnoreListManager::HardStrictness)
         ui.permanentStrictnessButton->setChecked(true);
+    else if (item.strictness == IgnoreListManager::HighlightOnlyStrictness)
+        ui.highlightOnlyButton->setChecked(true);
     else
         ui.dynamicStrictnessButton->setChecked(true);
 
@@ -309,6 +312,8 @@ void IgnoreListEditDlg::widgetHasChanged()
 
     if (ui.permanentStrictnessButton->isChecked())
         _clonedIgnoreListItem.strictness = IgnoreListManager::HardStrictness;
+    else if (ui.highlightOnlyButton->isChecked())
+        _clonedIgnoreListItem.strictness = IgnoreListManager::HighlightOnlyStrictness;
     else
         _clonedIgnoreListItem.strictness = IgnoreListManager::SoftStrictness;
 

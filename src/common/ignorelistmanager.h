@@ -44,7 +44,8 @@ public:
     enum StrictnessType {
         UnmatchedStrictness = 0,
         SoftStrictness = 1,
-        HardStrictness = 2
+        HardStrictness = 2,
+        HighlightOnlyStrictness = 3
     };
 
     enum ScopeType {
@@ -97,7 +98,7 @@ public:
     /** This method checks if a message matches the users ignorelist.
       * \param msg The Message that should be checked
       * \param network The networkname the message belongs to
-      * \return UnmatchedStrictness, HardStrictness or SoftStrictness representing the match type
+      * \return UnmatchedStrictness, HardStrictness, SoftStrictness or IgnoreOnlyStrictness representing the match type
       */
     inline StrictnessType match(const Message &msg, const QString &network = QString()) { return _match(msg.contents(), msg.sender(), msg.type(), network, msg.bufferInfo().bufferName()); }
 

@@ -156,9 +156,12 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
 
     // ignorelist handling
     // only match if message is not flagged as server msg
-    if (!(flags & Message::ServerMsg) && Client::ignoreListManager()
-        && Client::ignoreListManager()->match(sourceIdx.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
-        return false;
+    if (!(flags & Message::ServerMsg) && Client::ignoreListManager()) {
+        IgnoreListManager::StrictnessType strictness;
+        strictness = Client::ignoreListManager()->match(sourceIdx.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId));
+        if (strictness != IgnoreListManager::UnmatchedStrictness && strictness != IgnoreListManager::HighlightOnlyStrictness)
+            return false;
+    }
 
     if (flags & Message::Redirected) {
         int redirectionTarget = 0;
