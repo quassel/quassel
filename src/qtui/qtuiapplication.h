@@ -50,10 +50,15 @@ public:
     virtual bool init();
 
     void resumeSessionIfPossible();
-    virtual void commitData(QSessionManager &manager);
-    virtual void saveState(QSessionManager &manager);
-
     inline bool isAboutToQuit() const { return _aboutToQuit; }
+
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+    void commitData(QSessionManager &manager) override;
+    void saveState(QSessionManager &manager) override;
+#else
+    void commitData(QSessionManager &manager);
+    void saveState(QSessionManager &manager);
+#endif
 
 protected:
     virtual void quit();
