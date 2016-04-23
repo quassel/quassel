@@ -33,7 +33,6 @@
 #include "qtui.h"
 #include "qtuisettings.h"
 
-
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE4
     : KApplication(),  // KApplication is deprecated in KF5
@@ -91,6 +90,12 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
     qInstallMsgHandler(Client::logMessage);
 #else
     qInstallMessageHandler(Client::logMessage);
+    connect(this, &QGuiApplication::commitDataRequest, this, &QtUiApplication::commitData, Qt::DirectConnection);
+    connect(this, &QGuiApplication::saveStateRequest, this, &QtUiApplication::saveState, Qt::DirectConnection);
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+    QGuiApplication::setFallbackSessionManagementEnabled(false);
 #endif
 }
 
