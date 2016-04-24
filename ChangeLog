@@ -13,6 +13,16 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.12.4 (2016-04-24)
+===========================
+
+* Handle STATUSMSG messages (recently abused for query spam)
+* Link previews are enabled again in Windows builds
+* Fix core crash caused by clients sending invalid handshake data
+* Fix session management with Qt5
+* Fix connection issues with non-compliant ircds
+* Translation updates
+
 Version 0.12.3 (2016-02-09)
 ===========================
 
