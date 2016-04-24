@@ -56,5 +56,5 @@ RemotePeer *PeerFactory::createPeer(const ProtoList &protocols, AuthHandler *aut
         }
     }
 
-    return 0;
+    return nullptr;
 }

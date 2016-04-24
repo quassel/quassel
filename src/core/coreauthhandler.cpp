@@ -81,7 +81,7 @@ void CoreAuthHandler::onReadyRead()
     }
 
     // read the list of protocols supported by the client
-    while (socket()->bytesAvailable() >= 4) {
+    while (socket()->bytesAvailable() >= 4 && _supportedProtos.size() < 16) { // sanity check
         quint32 data;
         socket()->read((char*)&data, 4);
         data = qFromBigEndian<quint32>(data);
@@ -98,6 +98,12 @@ void CoreAuthHandler::onReadyRead()
                 level = Compressor::NoCompression;
 
             RemotePeer *peer = PeerFactory::createPeer(_supportedProtos, this, socket(), level, this);
+            if (!peer) {
+                qWarning() << "Received invalid handshake data from client" << socket()->peerAddress().toString();
+                close();
+                return;
+            }
+
             if (peer->protocol() == Protocol::LegacyProtocol) {
                 _legacy = true;
                 connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
