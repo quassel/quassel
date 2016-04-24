@@ -11,8 +11,8 @@ project(QuasselIRC)
 # Versions
 set(QUASSEL_MAJOR  0)
 set(QUASSEL_MINOR 12)
-set(QUASSEL_PATCH  3)
-set(QUASSEL_VERSION_STRING "0.12.3")
+set(QUASSEL_PATCH  4)
+set(QUASSEL_VERSION_STRING "0.12.4")
 
 # We want to know CMake's version for debug reasons
 message(STATUS "Using CMake ${CMAKE_VERSION}")
