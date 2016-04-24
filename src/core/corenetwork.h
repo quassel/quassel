@@ -105,6 +105,7 @@ public:
     /**
      * Checks if a given capability is enabled.
      *
+     * @param[in] capability Name of capability
      * @returns True if enabled, otherwise false
      */
     inline bool capEnabled(const QString &capability) const { return _capsSupported.contains(capability); }
@@ -119,6 +120,7 @@ public:
     /**
      * Gets the value of an enabled or pending capability, e.g. sasl=plain.
      *
+     * @param[in] capability Name of capability
      * @returns Value of capability if one was specified, otherwise empty string
      */
     QString capValue(const QString &capability) const;
