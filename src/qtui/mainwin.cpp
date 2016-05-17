@@ -536,7 +536,35 @@ void MainWin::setupMenus()
 
 #ifdef Q_OS_MAC
     _editMenu = menuBar()->addMenu(tr("&Edit"));
-    _editMenu->addAction("")->setEnabled(false);
+
+    QAction *undoAct = new QAction(tr("&Undo"), this);
+    undoAct->setShortcuts(QKeySequence::Undo);
+
+    QAction *redoAct = new QAction(tr("&Redo"), this);
+    redoAct->setShortcuts(QKeySequence::Redo);
+
+    QAction *cutAct = new QAction(tr("Cu&t"), this);
+    cutAct->setShortcuts(QKeySequence::Cut);
+    cutAct->setStatusTip(tr("Cut the current selection's contents to the "
+                            "clipboard"));
+
+    QAction *copyAct = new QAction(tr("&Copy"), this);
+    copyAct->setShortcuts(QKeySequence::Copy);
+    copyAct->setStatusTip(tr("Copy the current selection's contents to the "
+                             "clipboard"));
+
+    QAction *pasteAct = new QAction(tr("&Paste"), this);
+    pasteAct->setShortcuts(QKeySequence::Paste);
+    pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
+                              "selection"));
+
+    _editMenu->addAction(undoAct);
+    _editMenu->addAction(redoAct);
+    _editMenu->addSeparator();
+    _editMenu->addAction(cutAct);
+    _editMenu->addAction(copyAct);
+    _editMenu->addAction(pasteAct);
+
 #endif
 
     _viewMenu = menuBar()->addMenu(tr("&View"));
