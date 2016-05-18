@@ -127,12 +127,12 @@ endif()
 
 # Setting COMPILE_DEFINITIONS_<CONFIG> is deprecated since CMake 3.0 in favor of generator expressions.
 # These have existed since CMake 2.8.10; until we depend on that, we have to explicitly enable the old policy.
-if (CMAKE_MAJOR_VERSION GREATER 2)
+if (POLICY CMP0043)
     cmake_policy(SET CMP0043 OLD)
 endif()
 
 # Honor visibility settings for all target types
-if (CMAKE_VERSION VERSION_GREATER 3.3)
+if (POLICY CMP0063)
     cmake_policy(SET CMP0063 NEW)
 endif()
 
