@@ -59,6 +59,13 @@ namespace IrcCap {
     const QString CAP_NOTIFY = "cap-notify";
 
     /**
+     * Hostname/user changed notification.
+     *
+     * http://ircv3.net/specs/extensions/chghost-3.2.html
+     */
+    const QString CHGHOST = "chghost";
+
+    /**
      * Extended join information.
      *
      * http://ircv3.net/specs/extensions/extended-join-3.1.html
@@ -93,6 +100,7 @@ namespace IrcCap {
             ACCOUNT_NOTIFY,
             AWAY_NOTIFY,
             CAP_NOTIFY,
+            CHGHOST,
             EXTENDED_JOIN,
             MULTI_PREFIX,
             SASL,

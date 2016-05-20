@@ -50,6 +50,7 @@ public:
     Q_INVOKABLE void processIrcEventCap(IrcEvent *event);          /// CAP framework negotiation
     Q_INVOKABLE void processIrcEventAccount(IrcEvent *event);      /// account-notify received
     Q_INVOKABLE void processIrcEventAway(IrcEvent *event);         /// away-notify received
+    Q_INVOKABLE void processIrcEventChghost(IrcEvent *event);      /// chghost received
     Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
     Q_INVOKABLE void processIrcEventJoin(IrcEvent *event);
     Q_INVOKABLE void lateProcessIrcEventKick(IrcEvent *event);

@@ -277,6 +277,23 @@ void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
     }
 }
 
+/* IRCv3 chghost - ":nick!user@host CHGHOST newuser new.host.goes.here" */
+void CoreSessionEventProcessor::processIrcEventChghost(IrcEvent *e)
+{
+    if (!checkParamCount(e, 2))
+        return;
+
+    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    if (ircuser) {
+        // Update with new user/hostname information.  setUser/setHost handles checking what
+        // actually changed.
+        ircuser->setUser(e->params().at(0));
+        ircuser->setHost(e->params().at(1));
+    } else {
+        qDebug() << "Received chghost data for unknown user" << e->prefix();
+    }
+}
+
 void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent *e)
 {
     if (checkParamCount(e, 2)) {
