@@ -91,6 +91,7 @@ public:
     Q_INVOKABLE void processIrcEvent352(IrcEvent *event);          // RPL_WHOREPLY
     Q_INVOKABLE void processIrcEvent353(IrcEvent *event);          // RPL_NAMREPLY
     Q_INVOKABLE void processIrcEvent354(IrcEvent *event);          // RPL_WHOSPCRPL
+    Q_INVOKABLE void processIrcEvent403(IrcEventNumeric *event);   // ERR_NOSUCHCHANNEL
     Q_INVOKABLE void processIrcEvent432(IrcEventNumeric *event);   // ERR_ERRONEUSNICKNAME
     Q_INVOKABLE void processIrcEvent433(IrcEventNumeric *event);   // ERR_NICKNAMEINUSE
     Q_INVOKABLE void processIrcEvent437(IrcEventNumeric *event);   // ERR_UNAVAILRESOURCE

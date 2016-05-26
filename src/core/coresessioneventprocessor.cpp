@@ -1092,6 +1092,22 @@ void CoreSessionEventProcessor::processWhoInformation (Network *net, const QStri
 }
 
 
+/* ERR_NOSUCHCHANNEL - "<channel name> :No such channel" */
+void CoreSessionEventProcessor::processIrcEvent403(IrcEventNumeric *e)
+{
+    // If this is the result of an AutoWho, hide it.  It's confusing to show to the user.
+    if (!checkParamCount(e, 2))
+        return;
+
+    QString channelOrNick = e->params()[0];
+    // Check if channel name has a who in progress.
+    // If not, then check if user nick exists and has a who in progress.
+    if (coreNetwork(e)->isAutoWhoInProgress(channelOrNick)) {
+        qDebug() << "Channel/nick" << channelOrNick << "no longer exists during AutoWho, ignoring";
+        e->setFlag(EventManager::Silent);
+    }
+}
+
 /* ERR_ERRONEUSNICKNAME */
 void CoreSessionEventProcessor::processIrcEvent432(IrcEventNumeric *e)
 {
