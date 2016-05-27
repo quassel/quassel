@@ -44,6 +44,7 @@ set(SOURCES
     # needed for automoc
     coreinfo.h
     irccap.h
+    protocol.h
 )
 
 if (USE_QT5)
