@@ -269,6 +269,12 @@ public slots:
     inline void initSetServerList(const QVariantList &serverList) { _serverList = fromVariantList<Server>(serverList); }
     virtual void initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels);
 
+    /**
+     * Update IrcUser hostmask and username from mask, creating an IrcUser if one does not exist.
+     *
+     * @param[in] mask   Full nick!user@hostmask string
+     * @return IrcUser of the matching nick if exists, otherwise a new IrcUser
+     */
     IrcUser *updateNickFromMask(const QString &mask);
 
     // these slots are to keep the hashlists of all users and the
