@@ -242,16 +242,15 @@ void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent *e)
 
     IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
     if (ircuser) {
-        // FIXME Keep track of authed user account, requires adding support to ircuser.h/cpp
-        /*
-        if (e->params().at(0) != "*") {
-            // Account logged in
-            qDebug() << "account-notify:" << ircuser->nick() << "logged in to" << e->params().at(0);
+        QString newAccount = e->params().at(0);
+        // WHOX uses '0' to indicate logged-out, account-notify uses '*'
+        if (newAccount != "*") {
+            // Account logged in, set account name
+            ircuser->setAccount(newAccount);
         } else {
-            // Account logged out
-            qDebug() << "account-notify:" << ircuser->nick() << "logged out";
+            // Account logged out, set account name to logged-out
+            ircuser->setAccount("*");
         }
-        */
     } else {
         qDebug() << "Received account-notify data for unknown user" << e->prefix();
     }
@@ -875,6 +874,19 @@ void CoreSessionEventProcessor::processIrcEvent324(IrcEvent *e)
 }
 
 
+/*  RPL_WHOISACCOUNT: "<nick> <account> :is authed as */
+void CoreSessionEventProcessor::processIrcEvent330(IrcEvent *e)
+{
+    if (!checkParamCount(e, 3))
+        return;
+
+    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    if (ircuser) {
+        ircuser->setAccount(e->params().at(1));
+    }
+}
+
+
 /* RPL_NOTOPIC */
 void CoreSessionEventProcessor::processIrcEvent331(IrcEvent *e)
 {
@@ -909,49 +921,8 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
     QString channel = e->params()[0];
     IrcUser *ircuser = e->network()->ircUser(e->params()[4]);
     if (ircuser) {
-        ircuser->setUser(e->params()[1]);
-        ircuser->setHost(e->params()[2]);
-
-        bool away = e->params()[5].contains("G", Qt::CaseInsensitive);
-        ircuser->setAway(away);
-        ircuser->setServer(e->params()[3]);
-        ircuser->setRealName(e->params().last().section(" ", 1));
-
-        if (coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX)) {
-            // If multi-prefix is enabled, all modes will be sent in WHO replies.
-            // :kenny.chatspike.net 352 guest #test grawity broken.symlink *.chatspike.net grawity H@%+ :0 Mantas M.
-            // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
-            QString uncheckedModes = e->params()[5];
-            QString validModes = QString();
-            while (!uncheckedModes.isEmpty()) {
-                // Mode found in 1 left-most character, add it to the list
-                if (e->network()->prefixes().contains(uncheckedModes[0])) {
-                    validModes.append(e->network()->prefixToMode(uncheckedModes[0]));
-                }
-                // Remove this mode from the list of unchecked modes
-                uncheckedModes = uncheckedModes.remove(0, 1);
-            }
-
-            // Some IRC servers decide to not follow the spec, returning only -some- of the user
-            // modes in WHO despite listing them all in NAMES.  For now, assume it can only add
-            // and not take away.  *sigh*
-            if (!validModes.isEmpty()) {
-                if (channel != "*") {
-                    // Channel-specific modes received, apply to given channel only
-                    IrcChannel *ircChan = e->network()->ircChannel(channel);
-                    if (ircChan) {
-                        // Do one mode at a time
-                        // TODO Better way of syncing this without breaking protocol?
-                        for (int i = 0; i < validModes.count(); ++i) {
-                            ircChan->addUserMode(ircuser, validModes.at(i));
-                        }
-                    }
-                } else {
-                    // Modes apply to the user everywhere
-                    ircuser->addUserModes(validModes);
-                }
-            }
-        }
+        processWhoInformation(e->network(), channel, ircuser, e->params()[3], e->params()[1],
+                e->params()[2], e->params()[5], e->params().last().section(" ", 1));
     }
 
     // Check if channel name has a who in progress.
@@ -1016,6 +987,108 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     }
 
     channel->joinIrcUsers(nicks, modes);
+}
+
+
+/*  RPL_WHOSPCRPL: "<yournick> 152 #<channel> ~<ident> <host> <servname> <nick>
+                    ("H"/ "G") <account> :<realname>"
+<channel> is * if not specific to any channel
+<account> is * if not logged in
+Follows HexChat's usage of 'whox'
+See https://github.com/hexchat/hexchat/blob/c874a9525c9b66f1d5ddcf6c4107d046eba7e2c5/src/common/proto-irc.c#L750
+And http://faerion.sourceforge.net/doc/irc/whox.var*/
+void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
+{
+    // First only check if at least one parameter exists.  Otherwise, it'll stop the result from
+    // being shown if the user chooses different parameters.
+    if (!checkParamCount(e, 1))
+        return;
+
+    if (e->params()[0].toUInt() != IrcCap::ACCOUNT_NOTIFY_WHOX_NUM) {
+        // Ignore WHOX replies without expected number for we have no idea what fields are specified
+        return;
+    }
+
+    // Now we're fairly certain this is supposed to be an automated WHOX.  Bail out if it doesn't
+    // match what we require - 9 parameters.
+    if (!checkParamCount(e, 9))
+        return;
+
+    QString channel = e->params()[1];
+    IrcUser *ircuser = e->network()->ircUser(e->params()[5]);
+    if (ircuser) {
+        processWhoInformation(e->network(), channel, ircuser, e->params()[4], e->params()[2],
+                e->params()[3], e->params()[6], e->params().last());
+        // Don't use .section(" ", 1) with WHOX replies, for there's no hopcount to trim out
+
+        // As part of IRCv3 account-notify, check account name
+        // WHOX uses '0' to indicate logged-out, account-notify uses '*'
+        QString newAccount = e->params()[7];
+        if (newAccount != "0") {
+            // Account logged in, set account name
+            ircuser->setAccount(newAccount);
+        } else {
+            // Account logged out, set account name to logged-out
+            ircuser->setAccount("*");
+        }
+    }
+
+    // Check if channel name has a who in progress.
+    // If not, then check if user nick exists and has a who in progress.
+    if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
+        (ircuser && coreNetwork(e)->isAutoWhoInProgress(ircuser->nick()))) {
+        e->setFlag(EventManager::Silent);
+    }
+}
+
+
+void CoreSessionEventProcessor::processWhoInformation (Network *net, const QString &targetChannel, IrcUser *ircUser,
+                            const QString &server, const QString &user, const QString &host,
+                            const QString &awayStateAndModes, const QString &realname)
+{
+    ircUser->setUser(user);
+    ircUser->setHost(host);
+    ircUser->setServer(server);
+    ircUser->setRealName(realname);
+
+    bool away = awayStateAndModes.contains("G", Qt::CaseInsensitive);
+    ircUser->setAway(away);
+
+    if (net->capEnabled(IrcCap::MULTI_PREFIX)) {
+        // If multi-prefix is enabled, all modes will be sent in WHO replies.
+        // :kenny.chatspike.net 352 guest #test grawity broken.symlink *.chatspike.net grawity H@%+ :0 Mantas M.
+        // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
+        QString uncheckedModes = awayStateAndModes;
+        QString validModes = QString();
+        while (!uncheckedModes.isEmpty()) {
+            // Mode found in 1 left-most character, add it to the list
+            if (net->prefixes().contains(uncheckedModes[0])) {
+                validModes.append(net->prefixToMode(uncheckedModes[0]));
+            }
+            // Remove this mode from the list of unchecked modes
+            uncheckedModes = uncheckedModes.remove(0, 1);
+        }
+
+        // Some IRC servers decide to not follow the spec, returning only -some- of the user
+        // modes in WHO despite listing them all in NAMES.  For now, assume it can only add
+        // and not take away.  *sigh*
+        if (!validModes.isEmpty()) {
+            if (targetChannel != "*") {
+                // Channel-specific modes received, apply to given channel only
+                IrcChannel *ircChan = net->ircChannel(targetChannel);
+                if (ircChan) {
+                    // Do one mode at a time
+                    // TODO Better way of syncing this without breaking protocol?
+                    for (int i = 0; i < validModes.count(); ++i) {
+                        ircChan->addUserMode(ircUser, validModes.at(i));
+                    }
+                }
+            } else {
+                // Modes apply to the user everywhere
+                ircUser->addUserModes(validModes);
+            }
+        }
+    }
 }
 
 

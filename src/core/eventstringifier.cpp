@@ -657,6 +657,16 @@ void EventStringifier::processIrcEvent352(IrcEvent *e)
 }
 
 
+/*  RPL_WHOSPCRPL: "<yournick> <num> #<channel> ~<ident> <host> <servname> <nick>
+                    ("H"/ "G") <account> :<realname>"
+Could be anything else, though.  User-specified fields.
+See http://faerion.sourceforge.net/doc/irc/whox.var */
+void EventStringifier::processIrcEvent354(IrcEvent *e)
+{
+    displayMsg(e, Message::Server, tr("[WhoX] %1").arg(e->params().join(" ")));
+}
+
+
 /*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */
 void EventStringifier::processIrcEvent369(IrcEvent *e)
 {

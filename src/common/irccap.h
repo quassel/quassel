@@ -42,6 +42,14 @@ namespace IrcCap {
     const QString ACCOUNT_NOTIFY = "account-notify";
 
     /**
+     * Magic number for WHOX, used to ignore user-requested WHOX replies from servers
+     *
+     * If a user initiates a WHOX, there's no easy way to tell what fields were requested.  It's
+     * simpler to not attempt to parse data from user-requested WHOX replies.
+     */
+    const uint ACCOUNT_NOTIFY_WHOX_NUM = 369;
+
+    /**
      * Away change notification.
      *
      * http://ircv3.net/specs/extensions/away-notify-3.1.html

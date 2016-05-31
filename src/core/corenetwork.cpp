@@ -1080,10 +1080,15 @@ void CoreNetwork::sendAutoWho()
             qDebug() << "Skipping who polling of unknown channel or nick" << chanOrNick;
             continue;
         }
-        // TODO Use WHO extended to poll away users and/or user accounts
-        // If a server supports it, supports("WHOX") will be true
-        // See: http://faerion.sourceforge.net/doc/irc/whox.var and HexChat
-        putRawLine("WHO " + serverEncode(chanOrNick));
+        if (supports("WHOX")) {
+            // Use WHO extended to poll away users and/or user accounts
+            // See http://faerion.sourceforge.net/doc/irc/whox.var
+            // And https://github.com/hexchat/hexchat/blob/c874a9525c9b66f1d5ddcf6c4107d046eba7e2c5/src/common/proto-irc.c#L750
+            putRawLine(serverEncode(QString("WHO %1 %%chtsunfra,%2")
+                                    .arg(serverEncode(chanOrNick), QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))));
+        } else {
+            putRawLine(serverEncode(QString("WHO %1").arg(chanOrNick)));
+        }
         break;
     }
 

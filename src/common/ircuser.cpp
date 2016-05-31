@@ -146,6 +146,15 @@ void IrcUser::setRealName(const QString &realName)
 }
 
 
+void IrcUser::setAccount(const QString &account)
+{
+    if (_account != account) {
+        _account = account;
+        SYNC(ARG(account))
+    }
+}
+
+
 void IrcUser::setAway(const bool &away)
 {
     if (away != _away) {
