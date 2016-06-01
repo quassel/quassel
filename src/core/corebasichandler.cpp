@@ -30,14 +30,14 @@ CoreBasicHandler::CoreBasicHandler(CoreNetwork *parent)
     connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
         network(), SLOT(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
 
-    connect(this, SIGNAL(putCmd(QString, const QList<QByteArray> &, const QByteArray &)),
-        network(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &)));
+    connect(this, SIGNAL(putCmd(QString, const QList<QByteArray> &, const QByteArray &, const bool)),
+        network(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &, const bool)));
 
-    connect(this, SIGNAL(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &)),
-        network(), SLOT(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &)));
+    connect(this, SIGNAL(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &, const bool)),
+        network(), SLOT(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &, const bool)));
 
-    connect(this, SIGNAL(putRawLine(const QByteArray &)),
-        network(), SLOT(putRawLine(const QByteArray &)));
+    connect(this, SIGNAL(putRawLine(const QByteArray &, const bool)),
+        network(), SLOT(putRawLine(const QByteArray &, const bool)));
 }
 
 
@@ -142,9 +142,9 @@ BufferInfo::Type CoreBasicHandler::typeByTarget(const QString &target) const
 }
 
 
-void CoreBasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix)
+void CoreBasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix, const bool prepend)
 {
     QList<QByteArray> list;
     list << param;
-    emit putCmd(cmd, list, prefix);
+    emit putCmd(cmd, list, prefix, prepend);
 }

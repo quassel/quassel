@@ -545,7 +545,8 @@ void CoreUserInputHandler::handlePing(const BufferInfo &bufferInfo, const QStrin
     if (param.isEmpty())
         param = QTime::currentTime().toString("hh:mm:ss.zzz");
 
-    putCmd("PING", serverEncode(param));
+    // Take priority so this won't get stuck behind other queued messages.
+    putCmd("PING", serverEncode(param), QByteArray(), true);
 }
 
 
