@@ -515,7 +515,8 @@ void CoreSessionEventProcessor::processIrcEventPing(IrcEvent *e)
 {
     QString param = e->params().count() ? e->params().first() : QString();
     // FIXME use events
-    coreNetwork(e)->putRawLine("PONG " + coreNetwork(e)->serverEncode(param));
+    // Take priority so this won't get stuck behind other queued messages.
+    coreNetwork(e)->putRawLine("PONG " + coreNetwork(e)->serverEncode(param), true);
 }
 
 
