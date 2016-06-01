@@ -253,16 +253,21 @@ void CoreNetwork::userInput(BufferInfo buf, QString msg)
 }
 
 
-void CoreNetwork::putRawLine(QByteArray s)
+void CoreNetwork::putRawLine(const QByteArray s, const bool prepend)
 {
-    if (_tokenBucket > 0)
+    if (_tokenBucket > 0) {
         writeToSocket(s);
-    else
-        _msgQueue.append(s);
+    } else {
+        if (prepend) {
+            _msgQueue.prepend(s);
+        } else {
+            _msgQueue.append(s);
+        }
+    }
 }
 
 
-void CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix)
+void CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix, const bool prepend)
 {
     QByteArray msg;
 
@@ -279,16 +284,16 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, co
         msg += params[i];
     }
 
-    putRawLine(msg);
+    putRawLine(msg, prepend);
 }
 
 
-void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix)
+void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix, const bool prependAll)
 {
     QListIterator<QList<QByteArray>> i(params);
     while (i.hasNext()) {
         QList<QByteArray> msg = i.next();
-        putCmd(cmd, msg, prefix);
+        putCmd(cmd, msg, prefix, prependAll);
     }
 }
 

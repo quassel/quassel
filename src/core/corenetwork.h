@@ -117,9 +117,53 @@ public slots:
     void disconnectFromIrc(bool requested = true, const QString &reason = QString(), bool withReconnect = false);
 
     void userInput(BufferInfo bufferInfo, QString msg);
-    void putRawLine(QByteArray input);
-    void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
-    void putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray());
+
+    /**
+     * Sends the raw (encoded) line, adding to the queue if needed, optionally with higher priority.
+     *
+     * @param[in] input   QByteArray of encoded characters
+     * @param[in] prepend
+     * @parmblock
+     * If true, the line is prepended into the start of the queue, otherwise, it's appended to the
+     * end.  This should be used sparingly, for if either the core or the IRC server cannot maintain
+     * PING/PONG replies, the other side will close the connection.
+     * @endparmblock
+     */
+    void putRawLine(const QByteArray input, const bool prepend = false);
+
+    /**
+     * Sends the command with encoded parameters, with optional prefix or high priority.
+     *
+     * @param[in] cmd      Command to send, ignoring capitalization
+     * @param[in] params   Parameters for the command, encoded within a QByteArray
+     * @param[in] prefix   Optional command prefix
+     * @param[in] prepend
+     * @parmblock
+     * If true, the command is prepended into the start of the queue, otherwise, it's appended to
+     * the end.  This should be used sparingly, for if either the core or the IRC server cannot
+     * maintain PING/PONG replies, the other side will close the connection.
+     * @endparmblock
+     */
+    void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray(), const bool prepend = false);
+
+    /**
+     * Sends the command for each set of encoded parameters, with optional prefix or high priority.
+     *
+     * @param[in] cmd         Command to send, ignoring capitalization
+     * @param[in] params
+     * @parmblock
+     * List of parameter lists for the command, encoded within a QByteArray.  The command will be
+     * sent multiple times, once for each set of params stored within the outer list.
+     * @endparmblock
+     * @param[in] prefix      Optional command prefix
+     * @param[in] prependAll
+     * @parmblock
+     * If true, ALL of the commands are prepended into the start of the queue, otherwise, they're
+     * appended to the end.  This should be used sparingly, for if either the core or the IRC server
+     * cannot maintain PING/PONG replies, the other side will close the connection.
+     * @endparmblock
+     */
+    void putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray(), const bool prependAll = false);
 
     void setChannelJoined(const QString &channel);
     void setChannelParted(const QString &channel);
