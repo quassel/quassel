@@ -97,7 +97,7 @@ bool Compressor::initStreams()
     _deflater = new z_stream;
     memset(_deflater, 0, sizeof(z_stream));
     if (Z_OK != deflateInit(_deflater, zlevel)) {
-        qWarning() << "Could not intialize the deflate stream!";
+        qWarning() << "Could not initialize the deflate stream!";
         return false;
     }
 
