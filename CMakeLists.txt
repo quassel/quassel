@@ -433,6 +433,11 @@ endif()
 cmake_push_check_state(RESET)
 set(CMAKE_REQUIRED_INCLUDES ${QT_INCLUDES} ${Qt5Core_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+
+if (USE_QT5 AND Qt5_POSITION_INDEPENDENT_CODE)
+    set(CMAKE_REQUIRED_FLAGS "-fPIC -DQT_NO_VERSION_TAGGING")
+endif()
+
 check_cxx_source_compiles("
     #include \"qglobal.h\"
     #if defined QT_NO_SSL
