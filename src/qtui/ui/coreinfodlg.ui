@@ -60,14 +60,14 @@
      <item row="1" column="0" >
       <widget class="QLabel" name="label" >
        <property name="text" >
-        <string>Build date:</string>
+        <string>Version date:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1" >
-      <widget class="QLabel" name="labelCoreBuildDate" >
+      <widget class="QLabel" name="labelCoreVersionDate" >
        <property name="text" >
-        <string>&lt;build date></string>
+        <string>&lt;version date></string>
        </property>
       </widget>
      </item>

@@ -259,15 +259,16 @@ void Quassel::setupBuildInfo()
     _buildInfo.baseVersion = QUASSEL_VERSION_STRING;
     _buildInfo.generatedVersion = GIT_DESCRIBE;
 
-    // This will be imprecise for incremental builds not touching this file, but we really don't want to always recompile
-    _buildInfo.buildDate = QString("%1 %2").arg(__DATE__, __TIME__);
-
     // Check if we got a commit hash
-    if (!QString(GIT_HEAD).isEmpty())
+    if (!QString(GIT_HEAD).isEmpty()) {
         _buildInfo.commitHash = GIT_HEAD;
+        QDateTime date;
+        date.setTime_t(GIT_COMMIT_DATE);
+        _buildInfo.commitDate = date.toString();
+    }
     else if (!QString(DIST_HASH).contains("Format")) {
         _buildInfo.commitHash = DIST_HASH;
-        _buildInfo.commitDate = QString(DIST_DATE).toUInt();
+        _buildInfo.commitDate = QString(DIST_DATE);
     }
 
     // create a nice version string

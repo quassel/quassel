@@ -577,6 +577,16 @@ include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_HEAD)
 git_describe(GIT_DESCRIBE --long)
 
+# If in a Git repo we can get the commit-date from a git command
+if (GIT_HEAD)
+    execute_process(
+        COMMAND git show -s --format=%ct
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE GIT_COMMIT_DATE
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
+
 # If not in a Git repo try to read GIT_HEAD and GIT_DESCRIBE from
 # enviroment
 if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
@@ -592,6 +602,7 @@ endif()
 if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
     set(GIT_HEAD "")
     set(GIT_DESCRIBE "")
+    set(GIT_COMMIT_DATE 0)
 endif()
 
 configure_file(version.h.in ${CMAKE_BINARY_DIR}/version.h @ONLY)

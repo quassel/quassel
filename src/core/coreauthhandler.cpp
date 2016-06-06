@@ -181,9 +181,9 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     int uphours = uptime / 3600; uptime %= 3600;
     int upmins = uptime / 60;
     QString coreInfo = tr("<b>Quassel Core Version %1</b><br>"
-                          "Built: %2<br>"
+                          "Version date: %2<br>"
                           "Up %3d%4h%5m (since %6)").arg(Quassel::buildInfo().fancyVersionString)
-                          .arg(Quassel::buildInfo().buildDate)
+                          .arg(Quassel::buildInfo().commitDate)
                           .arg(updays).arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(Core::instance()->startTime().toString(Qt::TextDate));
 
     // useSsl and coreInfo are only used for the legacy protocol

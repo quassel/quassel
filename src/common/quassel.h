@@ -47,8 +47,7 @@ public:
         QString baseVersion;
         QString generatedVersion;
         QString commitHash;
-        uint commitDate;
-        QString buildDate;
+        QString commitDate;
 
         uint protocolVersion; // deprecated
 

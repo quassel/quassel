@@ -1095,5 +1095,5 @@ void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent *e)
 void CoreSessionEventProcessor::handleCtcpVersion(CtcpEvent *e)
 {
     e->setReply(QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
-        .arg(Quassel::buildInfo().plainVersionString).arg(Quassel::buildInfo().buildDate));
+        .arg(Quassel::buildInfo().plainVersionString).arg(Quassel::buildInfo().commitDate));
 }
