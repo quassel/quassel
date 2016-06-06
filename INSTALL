@@ -26,10 +26,10 @@ Of course, for building Quassel you need the usual set of build tools, for
 example a compiler. As we use a subset of the C++11 standard, we require a
 fairly recent compiler:
 
-- gcc 4.7+ (available for most platforms), or
-- Clang 3.2+ (available for most platforms), or
-- XCode 4.6+ (available for Max OS X and based on Clang), or
-- Visual C++ Nov 2013 CTP (available for Windows™), or
+- gcc 4.8+ (available for most platforms), or
+- Clang 3.3+ (available for most platforms), or
+- XCode 5.0+ (available for Max OS X and based on Clang), or
+- Visual C++ 2015 (available for Windows™), or
 - any other compiler with decent C++11 support
 
 Furthermore, CMake 2.8.9 or later is required (2.8.12 for KDE Frameworks).
