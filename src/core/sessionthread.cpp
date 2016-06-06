@@ -118,11 +118,29 @@ void SessionThread::addInternalClientToSession(InternalPeer *internalPeer)
 }
 
 
+void SessionThread::finishThreadedSession()
+{
+    // Cross the thread boundary via events (might not be necessary, but is more convenient)
+    emit finishSession();
+}
+
+
+void SessionThread::sessionFinished()
+{
+    // Send the UserId as part of the event
+    emit threadedSessionFinished(user());
+}
+
+
 void SessionThread::run()
 {
     _session = new CoreSession(user(), _restoreState);
     connect(this, SIGNAL(addRemoteClient(RemotePeer*)), _session, SLOT(addClient(RemotePeer*)));
     connect(this, SIGNAL(addInternalClient(InternalPeer*)), _session, SLOT(addClient(InternalPeer*)));
+    // Send the clean-up signal to the CoreSession
+    connect(this, SIGNAL(finishSession()), _session, SLOT(globalDisconnect()));
+    // Receive notice from the CoreSession when clean-up is finished
+    connect(_session, SIGNAL(globalDisconnected()), this, SLOT(sessionFinished()));
     connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));
     emit initialized();
     exec();

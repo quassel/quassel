@@ -169,6 +169,13 @@ signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
 
+    /**
+     * Signifies the internal core should be shutdown as the application is quitting.
+     *
+     * This signal is not raised if QtUiApplication::runMode() != RunMode::Monolithic
+     */
+    void coreQuitRequested();
+
 private:
 #ifdef HAVE_KDE
     KHelpMenu *_kHelpMenu;

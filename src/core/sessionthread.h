@@ -44,11 +44,26 @@ public:
     CoreSession *session();
     UserId user();
 
+    /**
+     * Request the session disconnect and clean-up.
+     *
+     * This handles any tasks that require the event-loop.  Non-blocking call; connect to the
+     * SessionThread::threadedSessionFinished() signal to receive notice when cleanup is finished.
+     */
+    void finishThreadedSession();
+
 public slots:
     void addClient(QObject *peer);
 
 private slots:
     void setSessionInitialized();
+
+    /**
+     * Signifies that the session hosted by this thread instance has finished cleaning up.
+     *
+     * Generic event used internally to be able to include UserId in the public signal.
+     */
+    void sessionFinished();
 
 signals:
     void initialized();
@@ -56,6 +71,20 @@ signals:
 
     void addRemoteClient(RemotePeer *peer);
     void addInternalClient(InternalPeer *peer);
+
+    /**
+     * Request the session disconnect and clean-up.
+     *
+     * Generic event used internally for easier cross-thread safety.
+     */
+    void finishSession();
+
+    /**
+     * Signifies that the session hosted by this thread instance has finished cleaning up.
+     *
+     * @param[out] user UserId of the finished session
+     */
+    void threadedSessionFinished(const UserId user);
 
 private:
     CoreSession *_session;

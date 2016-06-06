@@ -23,6 +23,9 @@
 
 #include "qtuiapplication.h"
 
+// Timeout for core session cleanup
+#include <QTimer>
+
 class CoreApplicationInternal;
 
 class MonolithicApplication : public QtUiApplication
@@ -34,8 +37,30 @@ public:
 
     bool init();
 
+protected:
+    /**
+     * Requests an orderly shutdown of the application, cleaning up active sessions as needed.
+     *
+     * @see Quassel::beginQuittingApp()
+     */
+    virtual void beginQuittingApp();
+
 private slots:
     void startInternalCore();
+
+    /**
+     * Requests an orderly shutdown of the application, cleaning up active sessions as needed.
+     *
+     * Implementation as a slot allows connecting signals from QtUiApplication.
+     *
+     * @see MonolithicApplication::beginQuittingApp()
+     */
+    void shutdownInternalCore();
+
+    /**
+     * Signifies all sessions have been disconnected and cleaned up, or timeout has reached.
+     */
+    void coreSessionsFinish();
 
 private:
     CoreApplicationInternal *_internal;

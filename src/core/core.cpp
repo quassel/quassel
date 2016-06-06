@@ -227,6 +227,44 @@ Core::~Core()
 }
 
 
+void Core::quitSessions()
+{
+    Core *_localCore = instance();
+    _localCore->_globalFinishingActive = true;
+    foreach(SessionThread *activeSession, _localCore->_sessions.values()) {
+        // Mark each active session as pending quit
+        _localCore->_finishingSessions.append(activeSession->user());
+        // Tell it to clean up
+        activeSession->finishThreadedSession();
+    }
+    if (_localCore->_finishingSessions.empty()) {
+        // No sessions active, finish immediately
+        _localCore->_globalFinishingActive = false;
+        emit _localCore->sessionsFinished();
+    }
+}
+
+
+void Core::markSessionFinished(const UserId &userId)
+{
+    Core *_localCore = instance();
+    if (!_localCore->_globalFinishingActive) {
+        return;
+    }
+    // Note: Qt automatically handles concurrency via slots and signals
+    // See https://doc.qt.io/qt-4.8/threads-qobject.html#signals-and-slots-across-threads
+    if (_localCore->_finishingSessions.contains(userId)) {
+        // Session was finished, remove it from the pending list
+        _localCore->_finishingSessions.removeAll(userId);
+    }
+    if (_localCore->_finishingSessions.empty()) {
+        // No more sessions to clean up, mark everything as done
+        _localCore->_globalFinishingActive = false;
+        emit _localCore->sessionsFinished();
+    }
+}
+
+
 /*** Session Restore ***/
 
 void Core::saveState()
@@ -637,6 +675,9 @@ SessionThread *Core::sessionForUser(UserId uid, bool restore)
 
     SessionThread *session = new SessionThread(uid, restore, this);
     _sessions[uid] = session;
+    // Keep track of session disconnect and clean-up
+    connect(session, SIGNAL(threadedSessionFinished(UserId)), this, SLOT(markSessionFinished(UserId)));
+
     session->start();
     return session;
 }

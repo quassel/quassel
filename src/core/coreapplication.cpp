@@ -62,6 +62,15 @@ bool CoreApplicationInternal::init()
 }
 
 
+void CoreApplicationInternal::quitCoreSessions()
+{
+    if (_coreCreated) {
+        // If core exists, request it to quit all sessions
+        Core::quitSessions();
+    }
+}
+
+
 /*****************************************************************************/
 
 CoreApplication::CoreApplication(int &argc, char **argv)
@@ -90,7 +99,31 @@ bool CoreApplication::init()
 #else
         qInstallMessageHandler(Logger::logMessage);
 #endif
+        // When all session networks are finished (disconnected and cleaned up), finish quitting the
+        // application.
+        connect(Core::instance(), SIGNAL(sessionsFinished()), this, SLOT(coreSessionsFinish()));
         return true;
     }
     return false;
+}
+
+
+void CoreApplication::beginQuittingApp()
+{
+    if (_internal) {
+        // Request all session networks to quit
+        _internal->quitCoreSessions();
+        // Add a fail-safe timer in case something goes wrong
+        QTimer::singleShot(quitSessionsTimeout * 1000, this, SLOT(coreSessionsFinish()));
+    } else {
+        // Not set up, so nothing to clean up
+        coreSessionsFinish();
+    }
+}
+
+
+void CoreApplication::coreSessionsFinish()
+{
+    // No more cleanup needed, just quit.
+    QCoreApplication::quit();
 }

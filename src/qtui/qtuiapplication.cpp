@@ -161,6 +161,8 @@ bool QtUiApplication::init()
         // QTimer::singleShot(0, gui, SLOT(init()));
         gui->init();
         resumeSessionIfPossible();
+        // Pass along the main window's request for shutdown to the backend __Application instance
+        connect(QtUi::mainWindow(), SIGNAL(coreQuitRequested()), this, SIGNAL(quitRequested()));
         return true;
     }
     return false;

@@ -50,6 +50,12 @@ bool MonolithicApplication::init()
         startInternalCore();
     }
 
+    // When all session networks are finished (disconnected and cleaned up), finish quitting the
+    // application.
+    connect(Core::instance(), SIGNAL(sessionsFinished()), this, SLOT(coreSessionsFinish()));
+
+    // Also hook into QtUiApplication so MainWin can request a shutdown.
+    connect(this, SIGNAL(quitRequested()), this, SLOT(shutdownInternalCore()));
     return QtUiApplication::init();
 }
 
@@ -72,4 +78,33 @@ void MonolithicApplication::startInternalCore()
     CoreConnection *connection = Client::coreConnection();
     connect(connection, SIGNAL(connectToInternalCore(InternalPeer*)), core, SLOT(setupInternalClientSession(InternalPeer*)));
     connect(core, SIGNAL(sessionState(Protocol::SessionState)), connection, SLOT(internalSessionStateReceived(Protocol::SessionState)));
+}
+
+
+void MonolithicApplication::shutdownInternalCore()
+{
+    // Begin shutting down the rest of the system
+    beginQuittingApp();
+}
+
+
+void MonolithicApplication::beginQuittingApp()
+{
+    if (_internalInitDone) {
+        // Request all session networks to quit
+        _internal->quitCoreSessions();
+        // Add a fail-safe timer in case something goes wrong
+        QTimer::singleShot(quitSessionsTimeout * 1000, this, SLOT(coreSessionsFinish()));
+    } else {
+        // Not set up, so nothing to clean up
+        coreSessionsFinish();
+    }
+}
+
+
+void MonolithicApplication::coreSessionsFinish()
+{
+    // No more cleanup needed, just quit.
+    // Use QApplication for the UI side of matters, instead of QCoreApplication.
+    QApplication::quit();
 }

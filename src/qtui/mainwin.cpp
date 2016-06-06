@@ -291,7 +291,13 @@ void MainWin::quit()
     QtUiSettings s;
     saveStateToSettings(s);
     saveLayout();
-    QApplication::quit();
+    if (QtUiApplication::runMode() == QtUiApplication::RunMode::Monolithic) {
+        // For monolithic with built-in core, attempt to clean up in the background before quitting
+        emit coreQuitRequested();
+    } else {
+        // Not monolithic, just shutdown the UI immediately
+        QApplication::quit();
+    }
 }
 
 

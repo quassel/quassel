@@ -134,6 +134,14 @@ public slots:
     //! Marks us away (or unaway) on all networks
     void globalAway(const QString &msg = QString());
 
+    /**
+     * Disconnect and clean up all active networks.
+     *
+     * This includes sending a 'QUIT' to all connected networks.  Non-blocking call; connect to the
+     * CoreSession::globalDisconnected() signal to receive notice when cleanup is finished.
+     */
+    void globalDisconnect();
+
 signals:
     void initialized();
     void sessionState(const Protocol::SessionState &sessionState);
@@ -162,6 +170,11 @@ signals:
 
     void passwordChanged(PeerPtr peer, bool success);
 
+    /**
+     * Signifies that all active networks have finished disconnecting.
+     */
+    void globalDisconnected();
+
 protected:
     virtual void customEvent(QEvent *event);
 
@@ -181,6 +194,15 @@ private slots:
     void updateIdentityBySender();
 
     void saveSessionState() const;
+
+    /**
+     * Mark the network for the given NetworkId as disconnected.
+     *
+     * Disconnected networks have 'QUIT' and received the socket closed event.
+     *
+     * @param[in] networkId NetworkId for the disconnected CoreNetwork
+     */
+    void markNetworkDisconnected(const NetworkId &networkId);
 
 private:
     void processMessages();
@@ -219,6 +241,10 @@ private:
     QList<RawMessage> _messageQueue;
     bool _processMessages;
     CoreIgnoreListManager _ignoreListManager;
+
+    // Network disconnect and clean-up
+    bool _globalDisconnectActive;             /// If true, networks are being disconnected
+    QList<NetworkId> _disconnectingNetworks;  /// Networks still pending disconnect
 };
 
 

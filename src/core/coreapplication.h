@@ -23,6 +23,9 @@
 
 #include <QCoreApplication>
 
+// Timeout for core session cleanup
+#include <QTimer>
+
 #include "quassel.h"
 
 /// Encapsulates CoreApplication's logic.
@@ -38,6 +41,15 @@ public:
 
     bool init();
 
+    /**
+     * Request all sessions disconnect from their active networks, and perform other cleanup.
+     *
+     * Returns immediately, raising a signal in Core when complete.
+     *
+     * @see Core::sessionsFinished()
+     */
+    void quitCoreSessions();
+
 private:
     bool _coreCreated;
 };
@@ -51,6 +63,20 @@ public:
     ~CoreApplication();
 
     bool init();
+
+protected:
+    /**
+     * Requests an orderly shutdown of the application, cleaning up active sessions as needed.
+     *
+     * @see Quassel::beginQuittingApp()
+     */
+    void beginQuittingApp();
+
+private slots:
+    /**
+     * Signifies all sessions have been disconnected and cleaned up, or timeout has reached.
+     */
+    void coreSessionsFinish();
 
 private:
     CoreApplicationInternal *_internal;

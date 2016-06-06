@@ -75,7 +75,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _ircParser(new IrcParser(this)),
     scriptEngine(new QScriptEngine(this)),
     _processMessages(false),
-    _ignoreListManager(this)
+    _ignoreListManager(this),
+    _globalDisconnectActive(false)
 {
     SignalProxy *p = signalProxy();
     p->setHeartBeatInterval(30);
@@ -502,6 +503,8 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
             SLOT(recvMessageFromServer(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
         connect(net, SIGNAL(displayStatusMsg(QString)), SLOT(recvStatusMsgFromServer(QString)));
         connect(net, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
+        // Keep track of network disconnect and clean-up
+        connect(this, SIGNAL(networkDisconnected(NetworkId)), this, SLOT(markNetworkDisconnected(NetworkId)));
 
         net->setNetworkInfo(info);
         net->setProxy(signalProxy());
@@ -641,6 +644,47 @@ void CoreSession::globalAway(const QString &msg)
         net->userInputHandler()->issueAway(msg, false /* no force away */);
     }
 }
+
+
+void CoreSession::globalDisconnect()
+{
+    _globalDisconnectActive = true;
+    foreach(CoreNetwork *net, _networks.values()) {
+        if (!net->isConnected()) {
+            // Skip networks not fully connected
+            continue;
+        }
+        // Mark each connected network as pending quit
+        _disconnectingNetworks.append(net->networkId());
+        // Tell it to disconnect (treating it as a temporary disconnect -not- requested by user)
+        net->disconnectFromIrc(false);
+    }
+    if (_disconnectingNetworks.empty()) {
+        // No networks active, finish immediately
+        _globalDisconnectActive = false;
+        emit globalDisconnected();
+    }
+}
+
+
+void CoreSession::markNetworkDisconnected(const NetworkId &networkId)
+{
+    if (!_globalDisconnectActive) {
+        return;
+    }
+    // Note: Qt automatically handles concurrency via slots and signals
+    // See https://doc.qt.io/qt-4.8/threads-qobject.html#signals-and-slots-across-threads
+    if (_disconnectingNetworks.contains(networkId)) {
+        // Network was disconnected, remove it from the pending list
+        _disconnectingNetworks.removeAll(networkId);
+    }
+    if (_disconnectingNetworks.empty()) {
+        // No more networks to clean up, mark everything as done
+        _globalDisconnectActive = false;
+        emit globalDisconnected();
+    }
+}
+
 
 void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword)
 {

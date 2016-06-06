@@ -58,6 +58,14 @@ public:
     static Core *instance();
     static void destroy();
 
+    /**
+     * Disconnect and clean up all active sessions.
+     *
+     * This includes sending a 'QUIT' to all connected networks.  Non-blocking call; connect to the
+     * Core::sessionsFinished() signal to receive notice when cleanup is finished.
+     */
+    static void quitSessions();
+
     static void saveState();
     static void restoreState();
 
@@ -519,6 +527,11 @@ signals:
     //! Relay from CoreSession::sessionState(). Used for internal connection only
     void sessionState(const Protocol::SessionState &sessionState);
 
+    /**
+     * Signifies that all active sessions have finished disconnecting and cleaning up.
+     */
+    void sessionsFinished();
+
 protected:
     virtual void customEvent(QEvent *event);
 
@@ -534,6 +547,16 @@ private slots:
     void setupClientSession(RemotePeer *, UserId);
 
     bool changeUserPass(const QString &username);
+
+    /**
+     * Mark the session for the given UserId as finished.
+     *
+     * Finished sessions have all networks disconnected and any other event-loop requiring cleanup
+     * performed.
+     *
+     * @param[in] userId UserId for the cleaned-up and disconnected CoreSession
+     */
+    void markSessionFinished(const UserId &userId);
 
 private:
     Core();
@@ -580,6 +603,10 @@ private:
     static void stdInEcho(bool on);
     static inline void enableStdInEcho() { stdInEcho(true); }
     static inline void disableStdInEcho() { stdInEcho(false); }
+
+    // Session disconnect and clean-up
+    bool _globalFinishingActive;       /// If true, sessions are being closed down
+    QList<UserId> _finishingSessions;  /// Sessions still pending clean-up and disconnect
 };
 
 
