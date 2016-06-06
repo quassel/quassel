@@ -37,7 +37,7 @@ QVariantMap CoreCoreInfo::coreData() const
 {
     QVariantMap data;
     data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
-    data["quasselBuildDate"] = Quassel::buildInfo().buildDate;
+    data["quasselBuildDate"] = Quassel::buildInfo().commitDate; // "BuildDate" for compatibility
     data["startTime"] = Core::instance()->startTime();
     data["sessionConnectedClients"] = _coreSession->signalProxy()->peerCount();
     return data;
