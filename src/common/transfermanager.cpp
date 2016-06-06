@@ -24,12 +24,6 @@
 
 
 INIT_SYNCABLE_OBJECT(TransferManager)
-TransferManager::TransferManager(QObject *parent)
-    : SyncableObject(parent)
-{
-
-}
-
 
 Transfer *TransferManager::transfer(const QUuid &uuid) const
 {
@@ -55,5 +49,17 @@ void TransferManager::addTransfer(Transfer *transfer)
     _transfers[uuid] = transfer;
 
     SYNC_OTHER(onCoreTransferAdded, ARG(uuid));
-    emit transferAdded(transfer);
+    emit transferAdded(uuid);
+}
+
+
+void TransferManager::removeTransfer(const QUuid& uuid)
+{
+    if (!_transfers.contains(uuid)) {
+        qWarning() << "Can not find transfer" << uuid << "to remove!";
+        return;
+    }
+    emit transferRemoved(uuid);
+    auto transfer = _transfers.take(uuid);
+    transfer->deleteLater();
 }

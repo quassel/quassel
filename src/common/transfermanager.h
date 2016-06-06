@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef TRANSFERMANAGER_H
-#define TRANSFERMANAGER_H
+#pragma once
 
 #include "syncableobject.h"
 
@@ -33,17 +32,19 @@ class TransferManager : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    TransferManager(QObject *parent = 0);
+    using SyncableObject::SyncableObject;
     inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     Transfer *transfer(const QUuid &uuid) const;
     QList<QUuid> transferIds() const;
 
 signals:
-    void transferAdded(const Transfer *transfer);
+    void transferAdded(const QUuid &uuid);
+    void transferRemoved(const QUuid &uuid);
 
 protected:
     void addTransfer(Transfer *transfer);
+    void removeTransfer(const QUuid &uuid);
 
 protected slots:
     virtual void onCoreTransferAdded(const QUuid &uuid) { Q_UNUSED(uuid) };
@@ -52,5 +53,3 @@ private:
     QHash<QUuid, Transfer *> _transfers;
 
 };
-
-#endif

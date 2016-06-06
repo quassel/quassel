@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QUuid>
+
 #ifdef HAVE_KDE4
 #  include <KMainWindow>
 #elif defined HAVE_KF5
@@ -36,8 +38,8 @@ class ActionCollection;
 class BufferHotListFilter;
 class BufferView;
 class BufferViewConfig;
+class ChatMonitorView;
 class ClientBufferViewConfig;
-class ClientTransfer;
 class CoreAccount;
 class CoreConnectionStatusWidget;
 class BufferViewDock;
@@ -46,7 +48,6 @@ class InputWidget;
 class MsgProcessorStatusWidget;
 class NickListWidget;
 class SystemTray;
-class ChatMonitorView;
 class TopicWidget;
 
 class QMenu;
@@ -124,7 +125,7 @@ private slots:
     void showIgnoreList(QString newRule = QString());
     void showShortcutsDlg();
     void showPasswordChangeDlg();
-    void showNewTransferDlg(const ClientTransfer *transfer);
+    void showNewTransferDlg(const QUuid &transferId);
     void onFullScreenToggled();
 
     void handleCoreConnectionError(const QString &errorMsg);

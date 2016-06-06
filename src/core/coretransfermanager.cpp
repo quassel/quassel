@@ -20,30 +20,4 @@
 
 #include "coretransfermanager.h"
 
-#include "coretransfer.h"
-
 INIT_SYNCABLE_OBJECT(CoreTransferManager)
-CoreTransferManager::CoreTransferManager(QObject *parent)
-    : TransferManager(parent)
-{
-    connect(this, SIGNAL(transferAdded(const Transfer*)), SLOT(onTransferAdded(const Transfer*)));
-}
-
-
-void CoreTransferManager::addTransfer(CoreTransfer *transfer)
-{
-    TransferManager::addTransfer(transfer);
-}
-
-
-void CoreTransferManager::onTransferAdded(const Transfer *transfer)
-{
-    // for core-side use, publishing a non-const pointer is ok
-    CoreTransfer *t = const_cast<CoreTransfer *>(qobject_cast<const CoreTransfer *>(transfer));
-    if (!t) {
-        qWarning() << "Invalid Transfer added to CoreTransferManager!";
-        return;
-    }
-
-    emit transferAdded(t);
-}

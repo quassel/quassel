@@ -18,11 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORETRANSFERMANAGER_H
-#define CORETRANSFERMANAGER_H
+#pragma once
 
 #include "transfermanager.h"
-#include "types.h"
 
 class CoreTransfer;
 
@@ -32,17 +30,8 @@ class CoreTransferManager : public TransferManager
     SYNCABLE_OBJECT
 
 public:
-    CoreTransferManager(QObject *parent = 0);
+    using TransferManager::TransferManager;
 
-public slots:
-    void addTransfer(CoreTransfer *transfer);
-
-signals:
-    void transferAdded(CoreTransfer *transfer);
-
-private slots:
-    void onTransferAdded(const Transfer *transfer);
-
+    // make available unprotected
+    using TransferManager::addTransfer;
 };
-
-#endif

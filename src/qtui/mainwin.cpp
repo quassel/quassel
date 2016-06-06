@@ -1072,7 +1072,7 @@ void MainWin::connectedToCore()
     connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
     connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
 
-    connect(Client::transferManager(), SIGNAL(transferAdded(const ClientTransfer*)), SLOT(showNewTransferDlg(const ClientTransfer*)));
+    connect(Client::transferManager(), SIGNAL(transferAdded(QUuid)), SLOT(showNewTransferDlg(QUuid)));
 
     setConnectedState();
 }
@@ -1416,10 +1416,16 @@ void MainWin::showShortcutsDlg()
 }
 
 
-void MainWin::showNewTransferDlg(const ClientTransfer *transfer)
+void MainWin::showNewTransferDlg(const QUuid &transferId)
 {
-    ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
-    dlg->show();
+    auto transfer = Client::transferManager()->transfer(transferId);
+    if (transfer) {
+        ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
+        dlg->show();
+    }
+    else {
+        qWarning() << "Unknown transfer ID" << transferId;
+    }
 }
 
 

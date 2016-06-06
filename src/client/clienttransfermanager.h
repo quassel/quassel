@@ -18,14 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTTRANSFERMANAGER_H
-#define CLIENTTRANSFERMANAGER_H
-
-#include "transfermanager.h"
+#pragma once
 
 #include <QUuid>
 
-class ClientTransfer;
+#include "transfermanager.h"
 
 class ClientTransferManager : public TransferManager
 {
@@ -33,18 +30,9 @@ class ClientTransferManager : public TransferManager
     SYNCABLE_OBJECT
 
 public:
-    ClientTransferManager(QObject *parent = 0);
-
-public slots:
-    void onCoreTransferAdded(const QUuid &uuid);
-    void onTransferInitDone();
-
-signals:
-    void transferAdded(const ClientTransfer *transfer);
+    using TransferManager::TransferManager;
 
 private slots:
-    void onTransferAdded(const Transfer *transfer);
-
+    void onCoreTransferAdded(const QUuid &uuid) override;
+    void onTransferInitDone();
 };
-
-#endif
