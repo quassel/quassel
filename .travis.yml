@@ -10,6 +10,7 @@ install:
   - sudo apt-get -qy install libphonon4qt5experimental4 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805096
 
 language: cpp
+cache: ccache
 
 compiler:
   - gcc
