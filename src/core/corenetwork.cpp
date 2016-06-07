@@ -36,6 +36,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _userInputHandler(new CoreUserInputHandler(this)),
     _autoReconnectCount(0),
     _quitRequested(false),
+    _disconnectExpected(false),
 
     _previousConnectionAttemptFailed(false),
     _lastUsedServerIndex(0),
@@ -210,6 +211,8 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool withReconnect,
                                     bool forceImmediate)
 {
+    // Disconnecting from the network, should expect a socket close or error
+    _disconnectExpected = true;
     _quitRequested = requested; // see socketDisconnected();
     if (!withReconnect) {
         _autoReconnectTimer.stop();
@@ -440,8 +443,10 @@ void CoreNetwork::socketHasData()
 
 void CoreNetwork::socketError(QAbstractSocket::SocketError error)
 {
-    if (_quitRequested && error == QAbstractSocket::RemoteHostClosedError)
+    // Ignore socket closed errors if expected
+    if (_disconnectExpected && error == QAbstractSocket::RemoteHostClosedError) {
         return;
+    }
 
     _previousConnectionAttemptFailed = true;
     qWarning() << qPrintable(tr("Could not connect to %1 (%2)").arg(networkName(), socket.errorString()));
@@ -530,6 +535,8 @@ void CoreNetwork::socketDisconnected()
     setConnected(false);
     emit disconnected(networkId());
     emit socketDisconnected(identityPtr(), localAddress(), localPort(), peerAddress(), peerPort());
+    // Reset disconnect expectations
+    _disconnectExpected = false;
     if (_quitRequested) {
         _quitRequested = false;
         setConnectionState(Network::Disconnected);
@@ -574,6 +581,7 @@ void CoreNetwork::networkInitialized()
 {
     setConnectionState(Network::Initialized);
     setConnected(true);
+    _disconnectExpected = false;
     _quitRequested = false;
 
     if (useAutoReconnect()) {
