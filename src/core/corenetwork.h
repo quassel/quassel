@@ -25,6 +25,9 @@
 #include "coreircchannel.h"
 #include "coreircuser.h"
 
+// IRCv3 capabilities
+#include "irccap.h"
+
 #include <QTimer>
 
 #ifdef HAVE_SSL
@@ -103,14 +106,6 @@ public:
     // IRCv3 capability negotiation
 
     /**
-     * Checks if a given capability is enabled.
-     *
-     * @param[in] capability Name of capability
-     * @returns True if enabled, otherwise false
-     */
-    inline bool capEnabled(const QString &capability) const { return _capsSupported.contains(capability); }
-
-    /**
      * Checks if capability negotiation is currently ongoing.
      *
      * @returns True if in progress, otherwise false
@@ -118,75 +113,34 @@ public:
     inline bool capNegotiationInProgress() const { return !_capsQueued.empty(); }
 
     /**
-     * Gets the value of an enabled or pending capability, e.g. sasl=plain.
+     * Queues a capability to be requested.
      *
-     * @param[in] capability Name of capability
-     * @returns Value of capability if one was specified, otherwise empty string
+     * Adds to the list of capabilities being requested.  If non-empty, CAP REQ messages are sent
+     * to the IRC server.  This may happen at login or if capabilities are announced via CAP NEW.
+     *
+     * @param[in] capability Name of the capability
      */
-    QString capValue(const QString &capability) const;
+    void queueCap(const QString &capability);
 
     /**
-     * Gets the next capability to request, removing it from the queue.
+     * Begins capability negotiation if capabilities are queued, otherwise returns.
      *
-     * @returns Name of capability to request
+     * If any capabilities are queued, this will begin the cycle of taking each capability and
+     * requesting it.  When no capabilities remain, capability negotiation is suitably ended.
      */
-    QString takeQueuedCap();
-
-    // Specific capabilities for easy reference
-
-    /**
-     * Gets the status of the sasl authentication capability.
-     *
-     * http://ircv3.net/specs/extensions/sasl-3.2.html
-     *
-     * @returns True if SASL authentication is enabled, otherwise false
-     */
-    inline bool useCapSASL() const { return capEnabled("sasl"); }
+    void beginCapNegotiation();
 
     /**
-     * Gets the status of the away-notify capability.
+     * List of capabilities requiring further core<->server messages to configure.
      *
-     * http://ircv3.net/specs/extensions/away-notify-3.1.html
+     * For example, SASL requires the back-and-forth of AUTHENTICATE, so the next capability cannot
+     * be immediately sent.
      *
-     * @returns True if away-notify is enabled, otherwise false
+     * See: http://ircv3.net/specs/extensions/sasl-3.2.html
      */
-    inline bool useCapAwayNotify() const { return capEnabled("away-notify"); }
-
-    /**
-     * Gets the status of the account-notify capability.
-     *
-     * http://ircv3.net/specs/extensions/account-notify-3.1.html
-     *
-     * @returns True if account-notify is enabled, otherwise false
-     */
-    inline bool useCapAccountNotify() const { return capEnabled("account-notify"); }
-
-    /**
-     * Gets the status of the extended-join capability.
-     *
-     * http://ircv3.net/specs/extensions/extended-join-3.1.html
-     *
-     * @returns True if extended-join is enabled, otherwise false
-     */
-    inline bool useCapExtendedJoin() const { return capEnabled("extended-join"); }
-
-    /**
-     * Gets the status of the userhost-in-names capability.
-     *
-     * http://ircv3.net/specs/extensions/userhost-in-names-3.2.html
-     *
-     * @returns True if userhost-in-names is enabled, otherwise false
-     */
-    inline bool useCapUserhostInNames() const { return capEnabled("userhost-in-names"); }
-
-    /**
-     * Gets the status of the multi-prefix capability.
-     *
-     * http://ircv3.net/specs/extensions/multi-prefix-3.1.html
-     *
-     * @returns True if multi-prefix is enabled, otherwise false
-     */
-    inline bool useCapMultiPrefix() const { return capEnabled("multi-prefix"); }
+    const QStringList capsRequiringConfiguration = QStringList {
+        IrcCap::SASL
+    };
 
 public slots:
     virtual void setMyNick(const QString &mynick);
@@ -225,40 +179,39 @@ public slots:
     // IRCv3 capability negotiation (can be connected to signals)
 
     /**
-     * Marks a capability as accepted, providing an optional value.
+     * Indicates a capability is now available, with optional value in Network::capValue().
      *
-     * Removes it from queue of pending capabilities and triggers any capability-specific
-     * activation.
+     * @see Network::addCap()
      *
      * @param[in] capability Name of the capability
-     * @param[in] value
-     * @parblock
-     * Optional value of the capability, e.g. sasl=plain.  If left empty, will be copied from the
-     * pending capability.
-     * @endparblock
      */
-    void addCap(const QString &capability, const QString &value = QString());
+    void serverCapAdded(const QString &capability);
 
     /**
-     * Marks a capability as denied.
+     * Indicates a capability was acknowledged (enabled by the IRC server).
      *
-     * Removes it from the queue of pending capabilities and triggers any capability-specific
-     * deactivation.
+     * @see Network::acknowledgeCap()
      *
      * @param[in] capability Name of the capability
      */
-    void removeCap(const QString &capability);
+    void serverCapAcknowledged(const QString &capability);
 
     /**
-     * Queues a capability as available but not yet accepted or denied.
+     * Indicates a capability was removed from the list of available capabilities.
      *
-     * Capabilities should be queued when registration pauses for CAP LS for capabilities are only
-     * requested during login.
+     * @see Network::removeCap()
      *
      * @param[in] capability Name of the capability
-     * @param[in] value      Optional value of the capability, e.g. sasl=plain
      */
-    void queuePendingCap(const QString &capability, const QString &value = QString());
+    void serverCapRemoved(const QString &capability);
+
+    /**
+     * Sends the next capability from the queue.
+     *
+     * During nick registration if any capabilities remain queued, this will take the next and
+     * request it.  When no capabilities remain, capability negotiation is ended.
+     */
+    void sendNextCap();
 
     void setAutoWhoEnabled(bool enabled);
     void setAutoWhoInterval(int interval);
@@ -376,11 +329,20 @@ private:
     QHash<QString, int> _autoWhoPending;
     QTimer _autoWhoTimer, _autoWhoCycleTimer;
 
-    // CAPs may have parameter values
+    // Maintain a list of CAPs that are being checked; if empty, negotiation finished
     // See http://ircv3.net/specs/core/capability-negotiation-3.2.html
-    QStringList _capsQueued;                /// Capabilities to be checked
-    QHash<QString, QString> _capsPending;   /// Capabilities pending 'CAP ACK' from server
-    QHash<QString, QString> _capsSupported; /// Enabled capabilities that received 'CAP ACK'
+    QStringList _capsQueued;           /// Capabilities to be checked
+    bool _capNegotiationActive;        /// Whether or not full capability negotiation was started
+    // Avoid displaying repeat "negotiation finished" messages
+    bool _capInitialNegotiationEnded;  /// Whether or not initial capability negotiation finished
+    // Avoid sending repeat "CAP END" replies when registration is already ended
+
+    /**
+     * Gets the next capability to request, removing it from the queue.
+     *
+     * @returns Name of capability to request
+     */
+    QString takeQueuedCap();
 
     QTimer _tokenBucketTimer;
     int _messageDelay;      // token refill speed in ms

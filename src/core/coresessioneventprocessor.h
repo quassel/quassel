@@ -154,17 +154,6 @@ private:
     // key: quit message
     // value: the corresponding netsplit object
     QHash<Network *, QHash<QString, Netsplit *> > _netsplits;
-
-    // IRCv3 capability negotiation
-    /**
-     * Sends the next capability from the queue.
-     *
-     * During nick registration if any capabilities remain queued, this will take the next and
-     * request it.  When no capabilities remain, capability negotiation is ended.
-     *
-     * @param[in,out] A network currently undergoing capability negotiation
-     */
-    void sendNextCap(Network *net);
 };
 
 

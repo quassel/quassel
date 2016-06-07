@@ -37,6 +37,9 @@
 #  include "keyevent.h"
 #endif
 
+// IRCv3 capabilities
+#include "irccap.h"
+
 CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
     : BasicHandler("handleCtcp", session),
     _coreSession(session)
@@ -94,14 +97,21 @@ void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e)
     switch (e->number()) {
     // SASL authentication replies
     // See: http://ircv3.net/specs/extensions/sasl-3.1.html
+
+    //case 900:  // RPL_LOGGEDIN
+    //case 901:  // RPL_LOGGEDOUT
+    // Don't use 900 or 901 for updating the local hostmask.  Unreal 3.2 gives it as the IP address
+    // even when cloaked.
+    // Every other reply should result in moving on
     // TODO Handle errors to stop connection if appropriate
+    case 902:  // ERR_NICKLOCKED
     case 903:  // RPL_SASLSUCCESS
     case 904:  // ERR_SASLFAIL
     case 905:  // ERR_SASLTOOLONG
     case 906:  // ERR_SASLABORTED
     case 907:  // ERR_SASLALREADY
         // Move on to the next capability
-        sendNextCap(e->network());
+        coreNetwork(e)->sendNextCap();
         break;
 
     default:
@@ -140,24 +150,6 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
 #endif
 }
 
-void CoreSessionEventProcessor::sendNextCap(Network *net)
-{
-    CoreNetwork *coreNet = qobject_cast<CoreNetwork *>(net);
-    if (coreNet->capNegotiationInProgress()) {
-        // Request the next capability and remove it from the list
-        // Handle one at a time so one capability failing won't NAK all of 'em
-        coreNet->putRawLine(coreNet->serverEncode(QString("CAP REQ :%1").arg(coreNet->takeQueuedCap())));
-    } else {
-        // If SASL requested but not available, print a warning
-        if (coreNet->networkInfo().useSasl && !coreNet->useCapSASL())
-            emit newEvent(new MessageEvent(Message::Error, net, tr("SASL authentication not supported by server, continuing without"), QString(), QString(), Message::None, QDateTime::currentDateTimeUtc()));
-
-        // No pending desired capabilities, end negotiation
-        coreNet->putRawLine(coreNet->serverEncode(QString("CAP END")));
-        emit newEvent(new MessageEvent(Message::Server, net, tr("Capability negotiation finished"), QString(), QString(), Message::None, QDateTime::currentDateTimeUtc()));
-    }
-}
-
 void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
 {
     // Handle capability negotiation
@@ -165,7 +157,9 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     // And: http://ircv3.net/specs/core/capability-negotiation-3.1.html
     if (e->params().count() >= 3) {
         CoreNetwork *coreNet = coreNetwork(e);
-        if (e->params().at(1).compare("LS", Qt::CaseInsensitive) == 0) {
+        QString capCommand = e->params().at(1).trimmed().toUpper();
+        if (capCommand == "LS" || capCommand == "NEW") {
+            // Either we've gotten a list of capabilities, or new capabilities we may want
             // Server: CAP * LS * :multi-prefix extended-join account-notify batch invite-notify tls
             // Server: CAP * LS * :cap-notify server-time example.org/dummy-cap=dummyvalue example.org/second-dummy-cap
             // Server: CAP * LS :userhost-in-names sasl=EXTERNAL,DH-AES,DH-BLOWFISH,ECDSA-NIST256P-CHALLENGE,PLAIN
@@ -180,78 +174,60 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                 capListFinished = true;
                 availableCaps = e->params().at(2).split(' ');
             }
-            // We know what capabilities are available, request what we want.
+            // Store what capabilities are available
             QStringList availableCapPair;
-            bool queueCurrentCap;
             for (int i = 0; i < availableCaps.count(); ++i) {
                 // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
                 availableCapPair = availableCaps[i].trimmed().split('=');
-                queueCurrentCap = false;
-                if (availableCapPair.at(0).startsWith("sasl")) {
-                    // Only request SASL if it's enabled
-                    if (coreNet->networkInfo().useSasl)
-                        queueCurrentCap = true;
-                } else if (availableCapPair.at(0).startsWith("away-notify") ||
-                           availableCapPair.at(0).startsWith("account-notify") ||
-                           availableCapPair.at(0).startsWith("extended-join") ||
-                           availableCapPair.at(0).startsWith("userhost-in-names") ||
-                           availableCapPair.at(0).startsWith("multi-prefix")) {
-                    // Always request these capabilities if available
-                    queueCurrentCap = true;
-                }
-                if (queueCurrentCap) {
-                    if(availableCapPair.count() >= 2)
-                        coreNet->queuePendingCap(availableCapPair.at(0).trimmed(), availableCapPair.at(1).trimmed());
-                    else
-                        coreNet->queuePendingCap(availableCapPair.at(0).trimmed());
+                if(availableCapPair.count() >= 2) {
+                    coreNet->addCap(availableCapPair.at(0).trimmed().toLower(), availableCapPair.at(1).trimmed());
+                } else {
+                    coreNet->addCap(availableCapPair.at(0).trimmed().toLower());
                 }
             }
+
             // Begin capability requests when capability listing complete
-            if (capListFinished) {
-                emit newEvent(new MessageEvent(Message::Server, e->network(), tr("Negotiating capabilities..."), QString(), QString(), Message::None, e->timestamp()));
-                sendNextCap(coreNet);
-            }
-        } else if (e->params().at(1).compare("ACK", Qt::CaseInsensitive) == 0) {
+            if (capListFinished)
+                coreNet->beginCapNegotiation();
+        } else if (capCommand == "ACK") {
             // Server: CAP * ACK :multi-prefix sasl
-            // Got the capability we want, enable, handle as needed.
+            // Got the capability we want, handle as needed.
             // As only one capability is requested at a time, no need to split
-            // Lower-case the list to make later comparisons easier
-            // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
-            QStringList acceptedCap = e->params().at(2).trimmed().split('=');
+            QString acceptedCap = e->params().at(2).trimmed().toLower();
 
             // Mark this cap as accepted
-            if(acceptedCap.count() >= 2)
-                coreNet->addCap(acceptedCap.at(0), acceptedCap.at(1));
-            else
-                coreNet->addCap(acceptedCap.at(0));
+            coreNet->acknowledgeCap(acceptedCap);
 
-            // Handle special cases
-            if (acceptedCap.at(0).startsWith("sasl")) {
-                // Freenode (at least) sends "sasl " with a trailing space for some reason!
-                // if the current identity has a cert set, use SASL EXTERNAL
-                // FIXME use event
-                // TODO If value of sasl capability is not empty, limit to accepted
-#ifdef HAVE_SSL
-                if (!coreNet->identityPtr()->sslCert().isNull()) {
-                    coreNet->putRawLine(coreNet->serverEncode("AUTHENTICATE EXTERNAL"));
-                } else {
-#endif
-                    // Only working with PLAIN atm, blowfish later
-                    coreNet->putRawLine(coreNet->serverEncode("AUTHENTICATE PLAIN"));
-#ifdef HAVE_SSL
-                }
-#endif
-            } else {
-                // Special handling not needed, move on to next cap
-                sendNextCap(coreNet);
+            if (!coreNet->capsRequiringConfiguration.contains(acceptedCap)) {
+                // Some capabilities (e.g. SASL) require further messages to finish.  If so, do NOT
+                // send the next capability; it will be handled elsewhere in CoreNetwork.
+                // Otherwise, move on to the next capability
+                coreNet->sendNextCap();
             }
-        } else if (e->params().at(1).compare("NAK", Qt::CaseInsensitive) == 0) {
-            // Something went wrong with this capability, disable, go to next cap
-            // As only one capability is requested at a time, no need to split
-            // Lower-case the list to make later comparisons easier
-            QString deniedCap = e->params().at(2).trimmed();
-            coreNet->removeCap(deniedCap);
-            sendNextCap(coreNet);
+        } else if (capCommand == "NAK" || capCommand == "DEL") {
+            // Either something went wrong with this capability, or it is no longer supported
+            // > For CAP NAK
+            // Server: CAP * NAK :multi-prefix sasl
+            // > For CAP DEL
+            // Server: :irc.example.com CAP modernclient DEL :multi-prefix sasl
+            // CAP NAK and CAP DEL replies are always single-line
+
+            QStringList removedCaps;
+            removedCaps = e->params().at(2).split(' ');
+
+            // Store what capability was denied or removed
+            QString removedCap;
+            for (int i = 0; i < removedCaps.count(); ++i) {
+                removedCap = removedCaps[i].trimmed().toLower();
+                // Mark this cap as removed
+                coreNet->removeCap(removedCap);
+            }
+
+            if (capCommand == "NAK") {
+                // Continue negotiation when capability listing complete only if this is the result
+                // of a denied cap, not a removed cap
+                coreNet->sendNextCap();
+            }
         }
     }
 }
@@ -321,7 +297,7 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
     QString channel = e->params()[0];
     IrcUser *ircuser = net->updateNickFromMask(e->prefix());
 
-    if (net->useCapExtendedJoin()) {
+    if (net->capEnabled(IrcCap::EXTENDED_JOIN)) {
         if (!checkParamCount(e, 3))
             return;
         // If logged in, :nick!user@host JOIN #channelname accountname :Real Name
@@ -341,8 +317,8 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
 
     // If using away-notify, check new users.  Works around buggy IRC servers
     // forgetting to send :away messages for users who join channels when away.
-    if (coreNetwork(e)->useCapAwayNotify()) {
-        coreNetwork(e)->queueAutoWhoOneshot(ircuser->nick());
+    if (net->capEnabled(IrcCap::AWAY_NOTIFY)) {
+        net->queueAutoWhoOneshot(ircuser->nick());
     }
 
     if (!handledByNetsplit)
@@ -924,7 +900,7 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
         ircuser->setServer(e->params()[3]);
         ircuser->setRealName(e->params().last().section(" ", 1));
 
-        if (coreNetwork(e)->useCapMultiPrefix()) {
+        if (coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX)) {
             // If multi-prefix is enabled, all modes will be sent in WHO replies.
             // :kenny.chatspike.net 352 guest #test grawity broken.symlink *.chatspike.net grawity H@%+ :0 Mantas M.
             // See: http://ircv3.net/specs/extensions/multi-prefix-3.1.html
@@ -990,7 +966,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     QStringList modes;
 
     // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
-    bool _useCapMultiPrefix = coreNetwork(e)->useCapMultiPrefix();
+    bool _useCapMultiPrefix = coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX);
 
     foreach(QString nick, e->params()[2].split(' ', QString::SkipEmptyParts)) {
         QString mode;

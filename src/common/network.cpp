@@ -705,6 +705,73 @@ QVariantMap Network::initSupports() const
     return supports;
 }
 
+void Network::addCap(const QString &capability, const QString &value)
+{
+    // IRCv3 specs all use lowercase capability names
+    QString _capLowercase = capability.toLower();
+    if (!_caps.contains(_capLowercase)) {
+        _caps[_capLowercase] = value;
+        SYNC(ARG(capability), ARG(value))
+        emit capAdded(_capLowercase);
+    }
+}
+
+void Network::acknowledgeCap(const QString &capability)
+{
+    // IRCv3 specs all use lowercase capability names
+    QString _capLowercase = capability.toLower();
+    if (!_capsEnabled.contains(_capLowercase)) {
+        _capsEnabled.append(_capLowercase);
+        SYNC(ARG(capability))
+        emit capAcknowledged(_capLowercase);
+    }
+}
+
+void Network::removeCap(const QString &capability)
+{
+    // IRCv3 specs all use lowercase capability names
+    QString _capLowercase = capability.toLower();
+    if (_caps.contains(_capLowercase)) {
+        // Remove from the list of available capabilities.
+        _caps.remove(_capLowercase);
+        // Remove it from the acknowledged list if it was previously acknowledged.  The SYNC call
+        // ensures this propogates to the other side.
+        // Use removeOne() for speed; no more than one due to contains() check in acknowledgeCap().
+        _capsEnabled.removeOne(_capLowercase);
+        SYNC(ARG(capability))
+        emit capRemoved(_capLowercase);
+    }
+}
+
+void Network::clearCaps()
+{
+    // IRCv3 specs all use lowercase capability names
+    // To ease core-side configuration, loop through the list and emit capRemoved for each entry.
+    // If performance issues arise, this can be converted to a more-efficient setup without breaking
+    // protocol (in theory).
+    QString _capLowercase;
+    foreach (const QString &capability, _caps) {
+        _capLowercase = capability.toLower();
+        emit capRemoved(_capLowercase);
+    }
+    // Clear capabilities from the stored list
+    _caps.clear();
+    _capsEnabled.clear();
+
+    SYNC(NO_ARG)
+}
+
+QVariantMap Network::initCaps() const
+{
+    QVariantMap caps;
+    QHashIterator<QString, QString> iter(_caps);
+    while (iter.hasNext()) {
+        iter.next();
+        caps[iter.key()] = iter.value();
+    }
+    return caps;
+}
+
 
 // There's potentially a lot of users and channels, so it makes sense to optimize the format of this.
 // Rather than sending a thousand maps with identical keys, we convert this into one map containing lists
@@ -816,6 +883,16 @@ void Network::initSetSupports(const QVariantMap &supports)
     while (iter.hasNext()) {
         iter.next();
         addSupport(iter.key(), iter.value().toString());
+    }
+}
+
+
+void Network::initSetCaps(const QVariantMap &caps)
+{
+    QMapIterator<QString, QVariant> iter(caps);
+    while (iter.hasNext()) {
+        iter.next();
+        addCap(iter.key(), iter.value().toString());
     }
 }
 
