@@ -116,12 +116,12 @@ build_script:
     NsisDeployImage $env:APPVEYOR_BUILD_FOLDER\scripts\build\NullsoftInstaller.nsi
 
 environment:
-    QT_VER: 5.5
+    QT_VER: 5.6
 
     matrix:
     #msvc
-    - COMPILER: msvc2013_64
-    - COMPILER: msvc2013
+    - COMPILER: msvc2015_64
+    - COMPILER: msvc2015
     #mingw
     - COMPILER: mingw492_32
 
