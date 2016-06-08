@@ -30,8 +30,8 @@ endif()
 
 # Enable various flags on gcc
 if (CMAKE_COMPILER_IS_GNUCXX)
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.7")
-        message(WARNING "Your compiler is too old; we expect at least GCC 4.7. Your build will likely fail.")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.8")
+        message(FATAL_ERROR "Your compiler is too old; you need GCC 4.8+, Clang 3.3+, MSVC 19.0+, or any other compiler with full C++11 support.")
     endif()
 
     # Let's just hope that all gccs support these options and skip the tests...
@@ -53,8 +53,8 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 
 # ... and for Clang
 elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.1")
-        message(WARNING "Your compiler is too old; we expect at least Clang 3.1. Your build will likely fail.")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.3")
+        message(FATAL_ERROR "Your compiler is too old; you need Clang 3.3+, GCC 4.8+, MSVC 19.0+, or any other compiler with full C++11 support.")
     endif()
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wnon-virtual-dtor -Wno-long-long -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wextra -Wpointer-arith -Wformat-security -Woverloaded-virtual -fno-common -Wno-deprecated-register")
@@ -68,8 +68,8 @@ elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 
 # For MSVC, at least do a version sanity check
 elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "18.0")
-        message(WARNING "Your compiler is too old; we expect at least Visual Studio Nov 2013 CTP (MSVC 18). Your build will likely fail.")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19.0")
+        message(FATAL_ERROR "Your compiler is too old; you need at least Visual Studio 2015 (MSVC 19.0+), GCC 4.8+, Clang 3.3+, or any other compiler with full C++11 support.")
     endif()
 
 # Unknown/unsupported compiler
