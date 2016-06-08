@@ -53,7 +53,7 @@ void TransferManager::addTransfer(Transfer *transfer)
 }
 
 
-void TransferManager::removeTransfer(const QUuid& uuid)
+void TransferManager::removeTransfer(const QUuid &uuid)
 {
     if (!_transfers.contains(uuid)) {
         qWarning() << "Can not find transfer" << uuid << "to remove!";

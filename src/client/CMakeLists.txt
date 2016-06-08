@@ -31,6 +31,7 @@ set(SOURCES
     messagemodel.cpp
     networkmodel.cpp
     selectionmodelsynchronizer.cpp
+    transfermodel.cpp
     treemodel.cpp
 
     # needed for automoc

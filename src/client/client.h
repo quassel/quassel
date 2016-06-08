@@ -57,6 +57,7 @@ class IrcUser;
 class IrcChannel;
 class NetworkConfig;
 class SignalProxy;
+class TransferModel;
 
 struct NetworkInfo;
 
@@ -120,6 +121,7 @@ public:
     static inline NetworkConfig *networkConfig() { return instance()->_networkConfig; }
     static inline ClientIgnoreListManager *ignoreListManager() { return instance()->_ignoreListManager; }
     static inline ClientTransferManager *transferManager() { return instance()->_transferManager; }
+    static inline TransferModel *transferModel() { return instance()->_transferModel; }
 
     static inline CoreAccountModel *coreAccountModel() { return instance()->_coreAccountModel; }
     static inline CoreConnection *coreConnection() { return instance()->_coreConnection; }
@@ -250,6 +252,7 @@ private:
     NetworkConfig *_networkConfig;
     ClientIgnoreListManager *_ignoreListManager;
     ClientTransferManager *_transferManager;
+    TransferModel *_transferModel;
 
     MessageModel *_messageModel;
     AbstractMessageProcessor *_messageProcessor;

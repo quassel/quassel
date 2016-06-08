@@ -47,6 +47,7 @@
 #include "networkmodel.h"
 #include "quassel.h"
 #include "signalproxy.h"
+#include "transfermodel.h"
 #include "util.h"
 #include "clientauthhandler.h"
 
@@ -105,6 +106,7 @@ Client::Client(QObject *parent)
     _networkConfig(0),
     _ignoreListManager(0),
     _transferManager(0),
+    _transferModel(new TransferModel(this)),
     _messageModel(0),
     _messageProcessor(0),
     _coreAccountModel(new CoreAccountModel(this)),
@@ -414,6 +416,7 @@ void Client::setSyncedToCore()
 
     Q_ASSERT(!_transferManager);
     _transferManager = new ClientTransferManager(this);
+    _transferModel->setManager(_transferManager);
     p->synchronize(transferManager());
 
     // trigger backlog request once all active bufferviews are initialized
@@ -487,8 +490,9 @@ void Client::setDisconnectedFromCore()
     }
 
     if (_transferManager) {
+        _transferModel->setManager(nullptr);
         _transferManager->deleteLater();
-        _transferManager = 0;
+        _transferManager = nullptr;
     }
 
     // we probably don't want to save pending input for reconnect
