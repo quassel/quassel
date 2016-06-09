@@ -207,7 +207,8 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 }
 
 
-void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool withReconnect)
+void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool withReconnect,
+                                    bool forceImmediate)
 {
     _quitRequested = requested; // see socketDisconnected();
     if (!withReconnect) {
@@ -235,7 +236,7 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
         socketDisconnected();
     } else {
         if (socket.state() == QAbstractSocket::ConnectedState) {
-            userInputHandler()->issueQuit(_quitReason);
+            userInputHandler()->issueQuit(_quitReason, forceImmediate);
         } else {
             socket.close();
         }

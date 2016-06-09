@@ -114,7 +114,18 @@ public slots:
     void setPingInterval(int interval);
 
     void connectToIrc(bool reconnecting = false);
-    void disconnectFromIrc(bool requested = true, const QString &reason = QString(), bool withReconnect = false);
+    /**
+     * Disconnect from the IRC server.
+     *
+     * Begin disconnecting from the IRC server, including optionally reconnecting.
+     *
+     * @param requested       If true, user requested this disconnect; don't try to reconnect
+     * @param reason          Reason for quitting, defaulting to the user-configured quit reason
+     * @param withReconnect   Reconnect to the network after disconnecting (e.g. ping timeout)
+     * @param forceImmediate  Immediately disconnect from network, skipping queue of other commands
+     */
+    void disconnectFromIrc(bool requested = true, const QString &reason = QString(),
+                           bool withReconnect = false, bool forceImmediate = false);
 
     void userInput(BufferInfo bufferInfo, QString msg);
 
