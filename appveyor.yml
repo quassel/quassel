@@ -1,14 +1,9 @@
 version: '{build}'
 build_script:
 - ps: |
-    if ( !(Test-Path "$env:APPVEYOR_BUILD_FOLDER\work\appveyorHelp.psm1"))
-    {
-        mkdir $env:APPVEYOR_BUILD_FOLDER\work\
-        Start-FileDownload https://raw.githubusercontent.com/TheOneRing/appVeyorHelp/master/appveyorHelp.psm1 -FileName $env:APPVEYOR_BUILD_FOLDER\work\appveyorHelp.psm1
-    }
     $ErrorActionPreference="Stop"
 
-    Import-Module $env:APPVEYOR_BUILD_FOLDER\work\appveyorHelp.psm1
+    Import-Module $env:APPVEYOR_BUILD_FOLDER\scripts\build\appveyorHelp.psm1
 
     Init @("ninja", "png2ico", "nsis", "7zip.commandline") ([ordered]@{"git://anongit.kde.org/extra-cmake-modules.git" = @{"branch" = "master"};
                                  "https://github.com/Snorenotify/SnoreGrowl.git" = @{"branch" = "v0.4.0"; "buildType" = "Release"};
@@ -17,7 +12,12 @@ build_script:
 
     mkdir -Force $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
     cd $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
-    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON -DWITH_WEBKIT=ON
+    if($env:QT_VER -eq 5.5) {
+        $webkitOption = "-DWITH_WEBKIT=ON"
+    } else {
+        $webkitOption = "-DWITH_WEBKIT=OFF"
+    }
+    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON $webkitOption
     CmakeImageInstall
 
     $imageDir = CreateDeployImage @(
@@ -116,14 +116,20 @@ build_script:
     NsisDeployImage $env:APPVEYOR_BUILD_FOLDER\scripts\build\NullsoftInstaller.nsi
 
 environment:
-    QT_VER: 5.5
+    QT_VER: 5.6
 
     matrix:
     #msvc
-    - COMPILER: msvc2013_64
-    - COMPILER: msvc2013
+    - COMPILER: msvc2015_64
+      QT_VER: 5.6
+    - COMPILER: msvc2015
+      QT_VER: 5.6
+
     #mingw
+    - COMPILER: mingw49_32
+      QT_VER: 5.6
     - COMPILER: mingw492_32
+      QT_VER: 5.5
 
 test: off
 
@@ -131,4 +137,3 @@ cache:
     - work\install -> appveyor.yml
     - C:\ProgramData\chocolatey\bin -> appveyor.yml
     - C:\ProgramData\chocolatey\lib -> appveyor.yml
-    - work\appveyorHelp.psm1 -> appveyor.yml
