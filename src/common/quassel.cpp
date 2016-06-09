@@ -161,6 +161,20 @@ bool Quassel::init()
 }
 
 
+void Quassel::beginQuittingApp()
+{
+    Q_ASSERT(!_instance);
+
+    // This should only ever be called when no instance exists
+    if (!_instance) {
+        return;
+    }
+
+    // By default, no extra processing is needed, just shut down immediately
+    _instance->quit();
+}
+
+
 void Quassel::quit()
 {
     QCoreApplication::quit();
@@ -317,11 +331,14 @@ void Quassel::handleSignal(int sig)
     switch (sig) {
     case SIGTERM:
     case SIGINT:
+        // Signal to quit received, begin cleanly shutting down application
         qWarning("%s", qPrintable(QString("Caught signal %1 - exiting.").arg(sig)));
-        if (_instance)
-            _instance->quit();
-        else
+        if (_instance) {
+            _instance->beginQuittingApp();
+        } else {
+            // No instance exists, quit without special cleanup
             QCoreApplication::quit();
+        }
         break;
     case SIGABRT:
     case SIGSEGV:

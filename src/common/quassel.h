@@ -137,9 +137,23 @@ public:
 
     static void logFatalMessage(const char *msg);
 
+    static const int quitSessionsTimeout = 10; /// Max time (secs) to wait for session quit
+    // Maximum time in seconds that the core (RunMode is Monolithic or Core) will wait for networks
+    // to quit after sending a 'QUIT' command to all connected networks on every active session.
+    // In testing, 10 seconds seems like a reasonable balance - gives slow connections a chance to
+    // flush the QUIT from the socket, while shutdown won't be unduly delayed if things go wrong.
+
 protected:
     Quassel();
     virtual bool init();
+
+    /**
+     * Requests an orderly shutdown of the application, cleaning up active sessions as needed.
+     *
+     * Other classes should override as needed to implement further cleanup.
+     */
+    virtual void beginQuittingApp();
+
     virtual void quit();
 
     inline void setRunMode(RunMode mode);

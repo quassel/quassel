@@ -60,6 +60,14 @@ public:
     void saveState(QSessionManager &manager);
 #endif
 
+signals:
+    /**
+     * Signifies the main application is closing and intends to shutdown the internal core.
+     *
+     * This signal is not raised if QtUiApplication::runMode() != RunMode::Monolithic
+     */
+    void quitRequested();
+
 protected:
     virtual void quit();
 

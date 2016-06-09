@@ -364,6 +364,10 @@ private:
     bool _quitRequested;
     QString _quitReason;
 
+    bool _disconnectExpected;  /// If true, connection is quitting, expect a socket close
+    // This avoids logging a spurious RemoteHostClosedError whenever disconnect is called without
+    // specifying a permanent (saved to core session) disconnect.
+
     bool _previousConnectionAttemptFailed;
     int _lastUsedServerIndex;
 
