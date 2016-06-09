@@ -79,7 +79,13 @@ public slots:
 
     void defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &text);
 
-    void issueQuit(const QString &reason);
+    /**
+     * Send a QUIT to the IRC server, optionally skipping the command queue.
+     *
+     * @param reason          Reason for quitting, often displayed to other IRC clients
+     * @param forceImmediate  Immediately quit, skipping queue of other commands
+     */
+    void issueQuit(const QString &reason, bool forceImmediate = false);
     void issueAway(const QString &msg, bool autoCheck = true);
 
 protected:

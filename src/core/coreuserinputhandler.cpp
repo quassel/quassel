@@ -581,9 +581,10 @@ void CoreUserInputHandler::handleQuit(const BufferInfo &bufferInfo, const QStrin
 }
 
 
-void CoreUserInputHandler::issueQuit(const QString &reason)
+void CoreUserInputHandler::issueQuit(const QString &reason, bool forceImmediate)
 {
-    emit putCmd("QUIT", serverEncode(reason));
+    // If needing an immediate QUIT (e.g. core shutdown), prepend this to the queue
+    emit putCmd("QUIT", serverEncode(reason), QByteArray(), forceImmediate);
 }
 
 
