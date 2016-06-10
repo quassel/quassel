@@ -25,6 +25,8 @@
 #include <QScrollBar>
 #include <QDebug>
 #include <QMenu>
+#include <QTouchEvent>
+#include <QScrollBar>
 
 #include "buffermodel.h"
 #include "client.h"
@@ -72,6 +74,7 @@ void NickView::init()
 
     connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), SIGNAL(selectionUpdated()));
     connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SIGNAL(selectionUpdated()));
+	setAttribute(Qt::WA_AcceptTouchEvents);
 }
 
 
@@ -149,4 +152,40 @@ void NickView::startQuery(const QModelIndex &index)
         return;
 
     Client::bufferModel()->switchToOrStartQuery(networkId, ircUser->nick());
+}
+
+bool NickView::event(QEvent *event) {
+	if (event->type() == QEvent::TouchBegin && _lastTouchStart < QDateTime::currentMSecsSinceEpoch() - 1000) { //(slow) double tab = normal behaviour = select multiple. 1000 ok?
+		_touchScrollInProgress = true;
+		_lastTouchStart = QDateTime::currentMSecsSinceEpoch();
+		setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+		return true;
+	}
+
+	if (event->type() == QEvent::TouchUpdate && _touchScrollInProgress) {
+		QTouchEvent::TouchPoint p = ((QTouchEvent*)event)->touchPoints().at(0);
+		verticalScrollBar()->setValue(verticalScrollBar()->value() - (p.pos().y() - p.lastPos().y()));
+		return true;
+	}
+
+#if QT_VERSION >= 0x050000
+	if (event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
+#else
+    if (event->type() == QEvent::TouchEnd) {
+#endif
+		_touchScrollInProgress = false;
+		return true;
+	}
+
+	return QTreeView::event(event);
+}
+
+void NickView::mousePressEvent(QMouseEvent * event) {
+	if (!_touchScrollInProgress)
+		QTreeView::mousePressEvent(event);
+}
+
+void NickView::mouseMoveEvent(QMouseEvent * event) {
+	if (!_touchScrollInProgress)
+		QTreeView::mouseMoveEvent(event);
 }

@@ -37,6 +37,9 @@ protected:
 
     //! This reimplementation ensures that the current index is first in list
     virtual QModelIndexList selectedIndexes() const;
+	virtual bool event(QEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
 
     void unanimatedExpandAll();
 
@@ -52,6 +55,8 @@ signals:
 
 private:
     friend class NickListWidget; // needs selectedIndexes()
+	qint64 _lastTouchStart = 0;
+	bool _touchScrollInProgress = false;
 };
 
 
