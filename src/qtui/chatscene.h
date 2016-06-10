@@ -149,7 +149,7 @@ public slots:
 
     void requestBacklog();
 
-#ifdef HAVE_WEBKIT
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     void loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect);
     void clearWebPreview(ChatItem *parentItem = 0);
 #endif
@@ -175,7 +175,7 @@ protected slots:
 private slots:
     void firstHandlePositionChanged(qreal xpos);
     void secondHandlePositionChanged(qreal xpos);
-#ifdef HAVE_WEBKIT
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     void webPreviewNextStep();
 #endif
     void showWebPreviewChanged();
@@ -228,7 +228,7 @@ private:
 
     static const int _webSearchSelectionTextMaxVisible = 24;
 
-#ifdef HAVE_WEBKIT
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     struct WebPreview {
         enum PreviewState {
             NoPreview,
@@ -246,7 +246,7 @@ private:
         WebPreview() : parentItem(0), previewItem(0), previewState(NoPreview) {}
     };
     WebPreview webPreview;
-#endif // HAVE_WEBKIT
+#endif // HAVE_WEBKIT || HAVE_WEBENGINE
 };
 
 

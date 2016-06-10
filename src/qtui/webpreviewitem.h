@@ -21,7 +21,7 @@
 #ifndef WEBPREVIEWITEM_H
 #define WEBPREVIEWITEM_H
 
-#ifdef HAVE_WEBKIT
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
 
 #include <QGraphicsItem>
 
@@ -37,6 +37,6 @@ private:
 };
 
 
-#endif //#ifdef HAVE_WEBKIT
+#endif //#ifdef HAVE_WEBKIT || HAVE_WEBENGINE
 
 #endif //WEBPREVIEWITEM_H
