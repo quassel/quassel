@@ -24,6 +24,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QStatusBar>
+#include <QTableView>
 #include <QToolBar>
 #include <QInputDialog>
 
@@ -98,6 +99,7 @@
 #include "statusnotifieritem.h"
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
+#include "transfermodel.h"
 #include "verticaldock.h"
 
 #ifndef HAVE_KDE
@@ -221,16 +223,20 @@ void MainWin::init()
     setupActions();
     setupBufferWidget();
     setupMenus();
-    setupTopicWidget();
-    setupNickWidget();
-    setupInputWidget();
+    setupTransferWidget();
     setupChatMonitor();
+    setupTopicWidget();
+    setupInputWidget();
+    setupNickWidget();
     setupViewMenuTail();
     setupStatusBar();
     setupToolBars();
     setupSystray();
     setupTitleSetter();
     setupHotList();
+
+    _bufferWidget->setFocusProxy(_inputWidget);
+    _chatMonitorView->setFocusProxy(_inputWidget);
 
 #ifndef HAVE_KDE
 #  ifdef HAVE_QTMULTIMEDIA
@@ -915,7 +921,6 @@ void MainWin::setupChatMonitor()
 
     ChatMonitorFilter *filter = new ChatMonitorFilter(Client::messageModel(), this);
     _chatMonitorView = new ChatMonitorView(filter, this);
-    _chatMonitorView->setFocusProxy(_inputWidget);
     _chatMonitorView->show();
     dock->setWidget(_chatMonitorView);
     dock->hide();
@@ -942,8 +947,6 @@ void MainWin::setupInputWidget()
     _inputWidget->setModel(Client::bufferModel());
     _inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
-    _bufferWidget->setFocusProxy(_inputWidget);
-
     _inputWidget->inputLine()->installEventFilter(_bufferWidget);
 
     connect(_topicWidget, SIGNAL(switchedPlain()), _bufferWidget, SLOT(setFocus()));
@@ -965,6 +968,27 @@ void MainWin::setupTopicWidget()
 
     _viewMenu->addAction(dock->toggleViewAction());
     dock->toggleViewAction()->setText(tr("Show Topic Line"));
+}
+
+
+void MainWin::setupTransferWidget()
+{
+    auto dock = new QDockWidget(tr("Transfers"), this);
+    dock->setObjectName("TransferDock");
+    dock->setAllowedAreas(Qt::TopDockWidgetArea|Qt::BottomDockWidgetArea);
+
+    auto view = new QTableView(dock); // to be replaced by the real thing
+    view->setModel(Client::transferModel());
+    dock->setWidget(view);
+    dock->hide(); // hidden by default
+    addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
+
+    auto action = dock->toggleViewAction();
+    action->setText(tr("Show File Transfers"));
+    action->setIcon(QIcon::fromTheme("download"));
+    action->setShortcut(QKeySequence(Qt::Key_F6));
+    QtUi::actionCollection("General")->addAction("ShowTransferWidget", action);
+    _viewMenu->addAction(action);
 }
 
 
