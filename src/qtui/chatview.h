@@ -117,7 +117,7 @@ private:
     int _scrollOffset;
     bool _invalidateFilter;
     QSet<ChatLine *> _linesWithCache;
-	bool _firstTouchUpdateHappened = false;
+    bool _firstTouchUpdateHappened = false;
 };
 
 

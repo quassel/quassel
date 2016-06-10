@@ -22,22 +22,48 @@
 #define TREEVIEWTOUCH_H_
 
 #include <QTreeView>
+/**
+* This class handles Touch Events for TreeViews
+*/
 class TreeViewTouch :
-	public QTreeView
+    public QTreeView
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit TreeViewTouch(QWidget *parent = 0);
+    explicit TreeViewTouch(QWidget *parent = 0);
 
 protected:
-	virtual bool event(QEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
-	virtual void mousePressEvent(QMouseEvent *event);
+
+    /**
+    * Handles Events
+    *
+    * @param[in,out] an event
+    * @returns true if event got handled, false if event got ignored
+    */
+    virtual bool event(QEvent *event);
+
+    /**
+    * Handles Mouse Move Events
+    *
+    * Suppresses Events during Touch-Scroll
+    *
+    * @param[in,out] An Event
+    */
+    virtual void mouseMoveEvent(QMouseEvent *event);
+
+    /**
+    * Handles Mouse Press Events
+    *
+    * Suppresses Events during Touch-Scroll
+    *
+    * @param[in,out] An Event
+    */
+    virtual void mousePressEvent(QMouseEvent *event);
 
 private:
-	bool _touchScrollInProgress = false;
-	bool _firstTouchUpdateHappened = false;
+    bool _touchScrollInProgress = false;
+    bool _firstTouchUpdateHappened = false;
 };
 
 #endif

@@ -210,13 +210,14 @@ void BufferView::joinChannel(const QModelIndex &index)
     Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
 }
 
+
 void BufferView::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
         event->accept();
         removeSelectedBuffers();
     }
-	TreeViewTouch::keyPressEvent(event);
+    TreeViewTouch::keyPressEvent(event);
 }
 
 
@@ -287,7 +288,7 @@ void BufferView::removeSelectedBuffers(bool permanently)
 
 void BufferView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
-	TreeViewTouch::rowsInserted(parent, start, end);
+    TreeViewTouch::rowsInserted(parent, start, end);
 
     // ensure that newly inserted network nodes are expanded per default
     if (parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
@@ -375,11 +376,11 @@ void BufferView::setExpandedState(const QModelIndex &networkIdx)
 #if QT_VERSION < 0x050000
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	TreeViewTouch::dataChanged(topLeft, bottomRight);
+    TreeViewTouch::dataChanged(topLeft, bottomRight);
 #else
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
-	TreeViewTouch::dataChanged(topLeft, bottomRight, roles);
+    TreeViewTouch::dataChanged(topLeft, bottomRight, roles);
 #endif
 
     // determine how many items have been changed and if any of them is a networkitem
