@@ -79,6 +79,9 @@ protected:
     virtual QSize sizeHint() const;
     virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
     virtual void contextMenuEvent(QContextMenuEvent *event);
+	virtual bool event(QEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
 
 #if QT_VERSION < 0x050000
     virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
@@ -100,6 +103,8 @@ private slots:
 
 private:
     QPointer<BufferViewConfig> _config;
+	qint64 _lastTouchStart = 0;
+	bool _touchScrollInProgress = false;
 
     enum ExpandedState {
         WasExpanded = 0x01,
