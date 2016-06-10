@@ -28,9 +28,6 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSet>
-#include <QTouchEvent>
-#include <QScrollBar>
-
 
 #include "action.h"
 #include "buffermodel.h"
@@ -48,9 +45,9 @@
 * The TreeView showing the Buffers
 *****************************************/
 // Please be carefull when reimplementing methods which are used to inform the view about changes to the data
-// to be on the safe side: call QTreeView's method aswell
+// to be on the safe side: call QTreeView's method aswell (or TreeViewTouch's)
 BufferView::BufferView(QWidget *parent)
-    : QTreeView(parent)
+    : TreeViewTouch(parent)
 {
     connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(storeExpandedState(const QModelIndex &)));
     connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(storeExpandedState(const QModelIndex &)));
@@ -87,7 +84,6 @@ void BufferView::init()
     setAcceptDrops(true);
     setDropIndicatorShown(true);
 #endif
-	setAttribute(Qt::WA_AcceptTouchEvents);
 
     setSortingEnabled(true);
     sortByColumn(0, Qt::AscendingOrder);
@@ -108,7 +104,7 @@ void BufferView::setModel(QAbstractItemModel *model)
 {
     delete selectionModel();
 
-    QTreeView::setModel(model);
+    TreeViewTouch::setModel(model);
     init();
     // remove old Actions
     QList<QAction *> oldactions = header()->actions();
@@ -214,48 +210,13 @@ void BufferView::joinChannel(const QModelIndex &index)
     Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
 }
 
-bool BufferView::event(QEvent *event) {
-	if (event->type() == QEvent::TouchBegin && _lastTouchStart < QDateTime::currentMSecsSinceEpoch() - 1000) { //(slow) double tab = normal behaviour = select multiple. 1000 ok?
-		_touchScrollInProgress = true;
-		_lastTouchStart = QDateTime::currentMSecsSinceEpoch();
-		setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-		return true;
-	}
-
-	if (event->type() == QEvent::TouchUpdate && _touchScrollInProgress) {
-		QTouchEvent::TouchPoint p = ((QTouchEvent*)event)->touchPoints().at(0);
-		verticalScrollBar()->setValue(verticalScrollBar()->value() - (p.pos().y() - p.lastPos().y()));
-		return true;
-	}
-#if QT_VERSION >= 0x050000
-	if (event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
-#else
-    if (event->type() == QEvent::TouchEnd) {
-#endif
-		_touchScrollInProgress = false;
-		return true;
-	}
-
-	return QTreeView::event(event);
-}
-
-void BufferView::mousePressEvent(QMouseEvent * event) {
-	if (!_touchScrollInProgress)
-		QTreeView::mousePressEvent(event);
-}
-
-void BufferView::mouseMoveEvent(QMouseEvent * event) {
-	if (!_touchScrollInProgress)
-		QTreeView::mouseMoveEvent(event);
-}
-
 void BufferView::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
         event->accept();
         removeSelectedBuffers();
     }
-    QTreeView::keyPressEvent(event);
+	TreeViewTouch::keyPressEvent(event);
 }
 
 
@@ -270,23 +231,23 @@ void BufferView::dropEvent(QDropEvent *event)
     const int margin = 2;
     if (cursorPos.y() - indexRect.top() < margin
         || indexRect.bottom() - cursorPos.y() < margin)
-        return QTreeView::dropEvent(event);
+        return TreeViewTouch::dropEvent(event);
 
     QList<QPair<NetworkId, BufferId> > bufferList = Client::networkModel()->mimeDataToBufferList(event->mimeData());
     if (bufferList.count() != 1)
-        return QTreeView::dropEvent(event);
+        return TreeViewTouch::dropEvent(event);
 
     BufferId bufferId2 = bufferList[0].second;
 
     if (index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
-        return QTreeView::dropEvent(event);
+        return TreeViewTouch::dropEvent(event);
 
     if (index.data(NetworkModel::BufferTypeRole) != BufferInfo::QueryBuffer)
-        return QTreeView::dropEvent(event);
+        return TreeViewTouch::dropEvent(event);
 
     BufferId bufferId1 = index.data(NetworkModel::BufferIdRole).value<BufferId>();
     if (bufferId1 == bufferId2)
-        return QTreeView::dropEvent(event);
+        return TreeViewTouch::dropEvent(event);
 
     int res = QMessageBox::question(0, tr("Merge buffers permanently?"),
         tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
@@ -326,7 +287,7 @@ void BufferView::removeSelectedBuffers(bool permanently)
 
 void BufferView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
-    QTreeView::rowsInserted(parent, start, end);
+	TreeViewTouch::rowsInserted(parent, start, end);
 
     // ensure that newly inserted network nodes are expanded per default
     if (parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
@@ -414,11 +375,11 @@ void BufferView::setExpandedState(const QModelIndex &networkIdx)
 #if QT_VERSION < 0x050000
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-    QTreeView::dataChanged(topLeft, bottomRight);
+	TreeViewTouch::dataChanged(topLeft, bottomRight);
 #else
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
-    QTreeView::dataChanged(topLeft, bottomRight, roles);
+	TreeViewTouch::dataChanged(topLeft, bottomRight, roles);
 #endif
 
     // determine how many items have been changed and if any of them is a networkitem
@@ -558,7 +519,7 @@ void BufferView::changeBuffer(Direction direction)
 void BufferView::wheelEvent(QWheelEvent *event)
 {
     if (ItemViewSettings().mouseWheelChangesBuffer() == (bool)(event->modifiers() & Qt::AltModifier))
-        return QTreeView::wheelEvent(event);
+        return TreeViewTouch::wheelEvent(event);
 
     int rowDelta = (event->delta() > 0) ? -1 : 1;
     changeBuffer((Direction)rowDelta);
@@ -589,10 +550,10 @@ void BufferView::hideCurrentBuffer()
 
 QSize BufferView::sizeHint() const
 {
-    return QTreeView::sizeHint();
+    return TreeViewTouch::sizeHint();
 
     if (!model())
-        return QTreeView::sizeHint();
+        return TreeViewTouch::sizeHint();
 
     if (model()->rowCount() == 0)
         return QSize(120, 50);

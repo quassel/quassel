@@ -28,6 +28,7 @@ set(SOURCES
     styledlabel.cpp
     tabcompleter.cpp
     toolbaractionprovider.cpp
+    treeviewtouch.cpp
     uisettings.cpp
     uistyle.cpp
 
