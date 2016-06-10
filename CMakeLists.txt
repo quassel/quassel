@@ -76,7 +76,10 @@ if (NOT WITH_KDE)
 endif()
 
 # For this, the feature info is added after we know if QtWebkit is installed
-option(WITH_WEBKIT "WebKit support (for link previews)" ON)
+option(WITH_WEBKIT "WebKit support (for link previews) (legacy)" ON)
+
+# For this, the feature info is added after we know if QtWebEngine is installed
+option(WITH_WEBENGINE "WebEngine support (for link previews)" ON)
 
 if (APPLE)
     # Notification Center is only available in > 10.8, which is Darwin v12
@@ -267,7 +270,29 @@ if (USE_QT5)
         if (WITH_WEBKIT AND Qt5WebKitWidgets_FOUND)
             set(HAVE_WEBKIT true)
         endif()
-        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat")
+        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat (legacy)")
+
+        if (WITH_WEBENGINE)
+            find_package(Qt5WebEngine QUIET)
+            set_package_properties(Qt5WebEngine PROPERTIES TYPE RECOMMENDED
+                URL "http://qt.digia.com"
+                DESCRIPTION "a WebEngine implementation for Qt"
+                PURPOSE     "Needed for displaying previews for URLs in chat"
+            )
+            if (Qt5WebEngine_FOUND)
+                find_package(Qt5WebEngineWidgets QUIET)
+                set_package_properties(Qt5WebEngineWidgets PROPERTIES TYPE RECOMMENDED
+                    URL "http://qt.digia.com"
+                    DESCRIPTION "widgets for Qt's WebEngine implementation"
+                    PURPOSE     "Needed for displaying previews for URLs in chat"
+                )
+            endif()
+        endif()
+
+        if (WITH_WEBENGINE AND Qt5WebEngineWidgets_FOUND)
+            set(HAVE_WEBENGINE true)
+        endif()
+        add_feature_info("WITH_WEBENGINE, QtWebEngine and QtWebEngineWidgets modules" HAVE_WEBENGINE "Support showing previews for URLs in chat")
 
         # KDE Frameworks
         ################
