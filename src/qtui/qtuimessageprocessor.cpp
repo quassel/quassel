@@ -130,7 +130,7 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
         }
         foreach(QString nickname, nickList) {
             QRegExp nickRegExp("(^|\\W)" + QRegExp::escape(nickname) + "(\\W|$)", _nicksCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-            if (nickRegExp.indexIn(msg.contents()) >= 0) {
+            if (nickRegExp.indexIn(stripFormatCodes(msg.contents())) >= 0) {
                 msg.setFlags(msg.flags() | Message::Highlight);
                 return;
             }
@@ -161,7 +161,7 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
             else {
                 rx = QRegExp("(^|\\W)" + QRegExp::escape(rule.name) + "(\\W|$)", rule.caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
             }
-            bool match = (rx.indexIn(msg.contents()) >= 0);
+            bool match = (rx.indexIn(stripFormatCodes(msg.contents())) >= 0);
             if (match) {
                 msg.setFlags(msg.flags() | Message::Highlight);
                 return;
