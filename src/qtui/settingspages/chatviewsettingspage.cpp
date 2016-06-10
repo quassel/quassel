@@ -29,7 +29,7 @@ ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
 {
     ui.setupUi(this);
 
-#ifndef HAVE_WEBKIT
+#if !defined HAVE_WEBKIT && !defined HAVE_WEBENGINE
     ui.showWebPreview->hide();
     ui.showWebPreview->setEnabled(false);
 #endif

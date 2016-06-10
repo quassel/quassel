@@ -20,12 +20,18 @@
 
 #include "webpreviewitem.h"
 
-#ifdef HAVE_WEBKIT
+#ifdef HAVE_WEBENGINE
+#include <QWebEngineView>
+#include <QWebEngineSettings>
+#elif defined HAVE_WEBKIT
+#include <QWebView>
+#include <QWebSettings>
+#endif
+
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
 
 #include <QGraphicsProxyWidget>
 #include <QPainter>
-#include <QWebView>
-#include <QWebSettings>
 
 WebPreviewItem::WebPreviewItem(const QUrl &url)
     : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
@@ -33,8 +39,13 @@ WebPreviewItem::WebPreviewItem(const QUrl &url)
 {
     qreal frameWidth = 5;
 
+#ifdef HAVE_WEBENGINE
+    QWebEngineView *webView = new QWebEngineView;
+    webView->settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, false);
+#elif defined HAVE_WEBKIT
     QWebView *webView = new QWebView;
     webView->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
+#endif
     webView->load(url);
     webView->setDisabled(true);
     webView->resize(1000, 750);
@@ -62,4 +73,4 @@ void WebPreviewItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 }
 
 
-#endif //#ifdef HAVE_WEBKIT
+#endif //#ifdef HAVE_WEBKIT || HAVE_WEBENGINE

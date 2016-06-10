@@ -836,7 +836,7 @@ void ContentsChatItem::copyLinkToClipboard()
 
 void ContentsChatItem::showWebPreview(const Clickable &click)
 {
-#ifndef HAVE_WEBKIT
+#if !defined HAVE_WEBKIT && !defined HAVE_WEBENGINE
     Q_UNUSED(click);
 #else
     QTextLine line = layout()->lineForTextPosition(click.start());
@@ -859,7 +859,7 @@ void ContentsChatItem::showWebPreview(const Clickable &click)
 
 void ContentsChatItem::clearWebPreview()
 {
-#ifdef HAVE_WEBKIT
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     chatScene()->clearWebPreview(this);
 #endif
 }

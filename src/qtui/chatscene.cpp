@@ -36,7 +36,9 @@
 #  include <QMenuBar>
 #endif
 
-#ifdef HAVE_WEBKIT
+#ifdef HAVE_WEBENGINE
+#  include <QWebEngineView>
+#elif defined HAVE_WEBKIT
 #  include <QWebView>
 #endif
 
@@ -122,7 +124,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
         this, SLOT(rowsRemoved()));
     connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
 
-#ifdef HAVE_WEBKIT
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     webPreview.timer.setSingleShot(true);
     connect(&webPreview.timer, SIGNAL(timeout()), this, SLOT(webPreviewNextStep()));
 #endif
@@ -1171,9 +1173,9 @@ void ChatScene::updateSceneRect(const QRectF &rect)
 
 
 // ========================================
-//  Webkit Only stuff
+//  Webkit/WebEngine Only stuff
 // ========================================
-#ifdef HAVE_WEBKIT
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
 void ChatScene::loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect)
 {
     if (!_showWebPreview)
