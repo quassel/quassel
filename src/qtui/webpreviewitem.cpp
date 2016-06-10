@@ -33,14 +33,39 @@
 #include <QGraphicsProxyWidget>
 #include <QPainter>
 
+
+#ifdef HAVE_WEBENGINE
+// QGraphicsProxyWidget does not stay synced with QWebEngineView, therefore we modify QWebEngineView
+// and manually trigger an update of the proxyItem on UpdateRequest Event. See: http://stackoverflow.com/a/30920209
+// and http://lists.qt-project.org/pipermail/development/2016-March/025280.html (At least in Qt5.6)
+class CustomWebView : public QWebEngineView {
+
+private:
+    QGraphicsProxyWidget *proxyItem;
+public:
+    CustomWebView(QGraphicsProxyWidget *pItem) {
+        proxyItem = pItem;
+    }
+    bool event(QEvent *event) {
+        if (event->type() == QEvent::UpdateRequest)
+        {
+            proxyItem->update();
+        }
+
+        return QWebEngineView::event(event);
+    }
+};
+#endif
+
 WebPreviewItem::WebPreviewItem(const QUrl &url)
     : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
     _boundingRect(0, 0, 400, 300)
 {
     qreal frameWidth = 5;
 
+    QGraphicsProxyWidget *proxyItem = new QGraphicsProxyWidget(this);
 #ifdef HAVE_WEBENGINE
-    QWebEngineView *webView = new QWebEngineView;
+    QWebEngineView *webView = new CustomWebView(proxyItem);
     webView->settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, false);
 #elif defined HAVE_WEBKIT
     QWebView *webView = new QWebView;
@@ -49,7 +74,6 @@ WebPreviewItem::WebPreviewItem(const QUrl &url)
     webView->load(url);
     webView->setDisabled(true);
     webView->resize(1000, 750);
-    QGraphicsProxyWidget *proxyItem = new QGraphicsProxyWidget(this);
     proxyItem->setWidget(webView);
     proxyItem->setAcceptHoverEvents(false);
 
