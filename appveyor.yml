@@ -33,7 +33,7 @@ build_script:
         $webPrevFiles = @()
     }
     
-    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON $webPrevOption
+    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON $webPrevOption
     CmakeImageInstall
 
     $whitelist = @(

@@ -203,19 +203,21 @@ if (USE_QT5)
             DESCRIPTION "the widgets module for Qt5"
         )
 
-        find_package(Qt5DBus QUIET)
-        set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
-            URL "http://qt.digia.com"
-            DESCRIPTION "D-Bus support for Qt5"
-            PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
-        )
-        if (Qt5DBus_FOUND)
-            find_package(dbusmenu-qt5 QUIET CONFIG)
-            set_package_properties(dbusmenu-qt5 PROPERTIES TYPE RECOMMENDED
-                URL "https://launchpad.net/libdbusmenu-qt"
-                DESCRIPTION "a library implementing the DBusMenu specification"
-                PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
+        if (NOT WIN32)
+            find_package(Qt5DBus QUIET)
+            set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
+                URL "http://qt.digia.com"
+                DESCRIPTION "D-Bus support for Qt5"
+                PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
             )
+            if (Qt5DBus_FOUND)
+                find_package(dbusmenu-qt5 QUIET CONFIG)
+                set_package_properties(dbusmenu-qt5 PROPERTIES TYPE RECOMMENDED
+                    URL "https://launchpad.net/libdbusmenu-qt"
+                    DESCRIPTION "a library implementing the DBusMenu specification"
+                    PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
+                )
+            endif()
         endif()
 
         find_package(Phonon4Qt5 QUIET)
