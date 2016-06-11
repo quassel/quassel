@@ -28,12 +28,15 @@
 
 #include "signalproxy.h"
 
-#define SYNCABLE_OBJECT static const int _classNameOffset__;
-#define INIT_SYNCABLE_OBJECT(x) const int x ::_classNameOffset__ = QByteArray(staticMetaObject.className()).length() + 2;
+#define SYNCABLE_OBJECT static int _classNameOffset__();
+#define INIT_SYNCABLE_OBJECT(x) int x ::_classNameOffset__() {\
+    static int offset = QByteArray(x ::staticMetaObject.className()).length() + 2;\
+    return offset;\
+}\
 
 #ifdef Q_CC_MSVC
-#    define SYNC(...) sync_call__(SignalProxy::Server, (__FUNCTION__ + _classNameOffset__), __VA_ARGS__);
-#    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__), __VA_ARGS__);
+#    define SYNC(...) sync_call__(SignalProxy::Server, (__FUNCTION__ + _classNameOffset__()), __VA_ARGS__);
+#    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__()), __VA_ARGS__);
 #else
 #    define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
 #    define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
@@ -48,7 +51,7 @@
 class SyncableObject : public QObject
 {
     SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     SyncableObject(QObject *parent = 0);
