@@ -569,12 +569,33 @@ QString QueryBufferItem::toolTip(int column) const
                    NetworkItem::escapeHTML(_ircUser->suserHost()),
                    !_ircUser->suserHost().isEmpty());
         }
+
+        // Keep track of whether or not the account information's been added.  Don't show it twice.
+        bool accountAdded = false;
+        if(!_ircUser->account().isEmpty()) {
+            // IRCv3 account-notify is supported by the core and IRC server.
+            // Assume logged out (seems to be more common)
+            QString accountHTML = QString("<p class='italic'>%1</p>").arg(tr("Not logged in"));
+
+            // If account is logged in, replace with the escaped account name.
+            if (_ircUser->account() != "*") {
+                accountHTML = NetworkItem::escapeHTML(_ircUser->account());
+            }
+            addRow(NetworkItem::escapeHTML(tr("Account"), true),
+                   accountHTML,
+                   true);
+            // Mark the row as added
+            accountAdded = true;
+        }
         // whoisServiceReply may return "<nick> is identified for this nick", which should be translated.
         // See https://www.alien.net.au/irc/irc2numerics.html
         if(_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
             addRow(NetworkItem::escapeHTML(tr("Account"), true),
                    NetworkItem::escapeHTML(tr("Identified for this nick")),
-                   true);
+                   !accountAdded);
+            // Don't add the account row again if information's already added via account-notify
+            // Mark the row as added
+            accountAdded = true;
         } else {
             addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
                    NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
@@ -1100,12 +1121,33 @@ QString IrcUserItem::toolTip(int column) const
                NetworkItem::escapeHTML(_ircUser->suserHost()),
                !_ircUser->suserHost().isEmpty());
     }
+
+    // Keep track of whether or not the account information's been added.  Don't show it twice.
+    bool accountAdded = false;
+    if(!_ircUser->account().isEmpty()) {
+        // IRCv3 account-notify is supported by the core and IRC server.
+        // Assume logged out (seems to be more common)
+        QString accountHTML = QString("<p class='italic'>%1</p>").arg(tr("Not logged in"));
+
+        // If account is logged in, replace with the escaped account name.
+        if (_ircUser->account() != "*") {
+            accountHTML = NetworkItem::escapeHTML(_ircUser->account());
+        }
+        addRow(NetworkItem::escapeHTML(tr("Account"), true),
+               accountHTML,
+               true);
+        // Mark the row as added
+        accountAdded = true;
+    }
     // whoisServiceReply may return "<nick> is identified for this nick", which should be translated.
     // See https://www.alien.net.au/irc/irc2numerics.html
     if(_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
         addRow(NetworkItem::escapeHTML(tr("Account"), true),
                NetworkItem::escapeHTML(tr("Identified for this nick")),
-               true);
+               !accountAdded);
+        // Don't add the account row again if information's already added via account-notify
+        // Mark the row as added
+        accountAdded = true;
     } else {
         addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
                NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
