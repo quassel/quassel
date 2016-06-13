@@ -36,7 +36,7 @@
 #include "types.h"
 
 NickView::NickView(QWidget *parent)
-    : QTreeView(parent)
+    : TreeViewTouch(parent)
 {
     setIndentation(10);
     header()->hide();
@@ -80,14 +80,14 @@ void NickView::setModel(QAbstractItemModel *model_)
     if (model())
         disconnect(model(), 0, this, 0);
 
-    QTreeView::setModel(model_);
+    TreeViewTouch::setModel(model_);
     init();
 }
 
 
 void NickView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
-    QTreeView::rowsInserted(parent, start, end);
+    TreeViewTouch::rowsInserted(parent, start, end);
     if (model()->data(parent, NetworkModel::ItemTypeRole) == NetworkModel::UserCategoryItemType && !isExpanded(parent)) {
         unanimatedExpandAll();
     }
@@ -104,7 +104,7 @@ void NickView::setRootIndex(const QModelIndex &index)
 
 QModelIndexList NickView::selectedIndexes() const
 {
-    QModelIndexList indexList = QTreeView::selectedIndexes();
+    QModelIndexList indexList = TreeViewTouch::selectedIndexes();
 
     // make sure the item we clicked on is first
     if (indexList.contains(currentIndex())) {

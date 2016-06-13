@@ -59,6 +59,7 @@ void ChatView::init(MessageFilter *filter)
     _currentScaleFactor = 1;
     _invalidateFilter = false;
 
+    setAttribute(Qt::WA_AcceptTouchEvents);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setAlignment(Qt::AlignLeft|Qt::AlignBottom);
@@ -108,7 +109,44 @@ bool ChatView::event(QEvent *event)
         }
     }
 
-    if (event->type() == QEvent::Wheel) {
+    if (event->type() == QEvent::TouchBegin) {
+        // Enable scrolling by draging, disable selecting/clicking content
+        setDragMode(QGraphicsView::ScrollHandDrag);
+        setInteractive(false);
+        // if scrollbar is not visible we need to request backlog below else we need to accept 
+        // the event now (return true) so that we will receive TouchUpdate and TouchEnd/TouchCancel
+        if (verticalScrollBar()->isVisible()) return true;
+    }
+
+#if QT_VERSION >= 0x050000
+    if (event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
+#else
+    if (event->type() == QEvent::TouchEnd) {
+#endif
+        // End scroll and reset settings to default
+        setDragMode(QGraphicsView::NoDrag);
+        setInteractive(true);
+        _firstTouchUpdateHappened = false;
+        return true;
+    }
+
+    if (event->type() == QEvent::TouchUpdate) {
+        if (!_firstTouchUpdateHappened) {
+            // After the first movement of a Touch-Point, calculate the distance in both axis
+            // and if the point moved more horizontally abort scroll.
+            QTouchEvent::TouchPoint p = ((QTouchEvent*)event)->touchPoints().at(0);
+            double dx = abs (p.lastPos().x() - p.pos().x());
+            double dy = abs (p.lastPos().y() - p.pos().y());
+            if (dx > dy) {
+                setDragMode(QGraphicsView::NoDrag);
+                setInteractive(true);
+            }
+            _firstTouchUpdateHappened = true;
+        }
+        // Applying the movement happens automatically by the drag-mode
+    }
+
+    if (event->type() == QEvent::Wheel || event->type() == QEvent::TouchBegin || event->type() == QEvent::TouchUpdate) {
         if (!verticalScrollBar()->isVisible()) {
             scene()->requestBacklog();
             return true;

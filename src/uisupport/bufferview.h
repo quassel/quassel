@@ -33,11 +33,12 @@
 #include "bufferviewconfig.h"
 #include "networkmodel.h"
 #include "types.h"
+#include "treeviewtouch.h"
 
 /*****************************************
  * The TreeView showing the Buffers
  *****************************************/
-class BufferView : public QTreeView
+class BufferView : public TreeViewTouch
 {
     Q_OBJECT
 

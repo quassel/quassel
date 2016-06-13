@@ -24,8 +24,9 @@
 #include <QTreeView>
 
 #include "bufferinfo.h"
+#include "treeviewtouch.h"
 
-class NickView : public QTreeView
+class NickView : public TreeViewTouch
 {
     Q_OBJECT
 
