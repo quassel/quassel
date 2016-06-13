@@ -29,8 +29,7 @@
 #include "qtui.h"
 
 QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject *parent)
-    : AbstractNotificationBackend(parent),
-    _media(0)
+    : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
     notificationSettings.notify("QtMultimedia/Enabled", this, SLOT(enabledChanged(const QVariant &)));
@@ -39,13 +38,6 @@ QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject *parent
     createMediaObject(notificationSettings.value("QtMultimedia/AudioFile", QString()).toString());
 
     _enabled = notificationSettings.value("QtMultimedia/Enabled", true).toBool();
-}
-
-
-QtMultimediaNotificationBackend::~QtMultimediaNotificationBackend()
-{
-    if (_media)
-        delete _media;
 }
 
 
@@ -88,15 +80,12 @@ SettingsPage *QtMultimediaNotificationBackend::createConfigWidget() const
 
 void QtMultimediaNotificationBackend::createMediaObject(const QString &file)
 {
-    if (_media)
-        delete _media;
-
     if (file.isEmpty()) {
-        _media = 0;
+        _media.reset();
         return;
     }
 
-    _media = new QMediaPlayer;
+    _media.reset(new QMediaPlayer);
     _media->setMedia(QUrl::fromLocalFile(file));
 }
 
@@ -104,27 +93,17 @@ void QtMultimediaNotificationBackend::createMediaObject(const QString &file)
 /***************************************************************************/
 
 QtMultimediaNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
-    : SettingsPage("Internal", "QtMultimediaNotification", parent),
-    audioPreview(0)
+    : SettingsPage("Internal", "QtMultimediaNotification", parent)
 {
     ui.setupUi(this);
     ui.enabled->setIcon(QIcon::fromTheme("media-playback-start"));
     ui.play->setIcon(QIcon::fromTheme("media-playback-start"));
     ui.open->setIcon(QIcon::fromTheme("document-open"));
 
-    QMediaPlayer *player = new QMediaPlayer;
-    _audioAvailable = player->availability() == QMultimedia::Available;
-    delete player;
+    _audioAvailable = (QMediaPlayer().availability() == QMultimedia::Available);
 
     connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
     connect(ui.filename, SIGNAL(textChanged(const QString &)), SLOT(widgetChanged()));
-}
-
-
-QtMultimediaNotificationBackend::ConfigWidget::~ConfigWidget()
-{
-    if (audioPreview)
-        delete audioPreview;
 }
 
 
@@ -134,12 +113,12 @@ void QtMultimediaNotificationBackend::ConfigWidget::widgetChanged()
         ui.play->setEnabled(ui.enabled->isChecked());
         ui.open->setEnabled(false);
         ui.filename->setEnabled(false);
-        ui.filename->setText(QString());
+        ui.filename->setText({});
     }
     else {
         ui.play->setEnabled(ui.enabled->isChecked() && !ui.filename->text().isEmpty());
 
-        bool changed = (enabled != ui.enabled->isChecked() || filename != ui.filename->text());
+        bool changed = (_enabled != ui.enabled->isChecked() || _filename != ui.filename->text());
 
         if (changed != hasChanged())
             setChangedState(changed);
@@ -156,7 +135,7 @@ bool QtMultimediaNotificationBackend::ConfigWidget::hasDefaults() const
 void QtMultimediaNotificationBackend::ConfigWidget::defaults()
 {
     ui.enabled->setChecked(false);
-    ui.filename->setText(QString());
+    ui.filename->setText({});
     widgetChanged();
 }
 
@@ -164,11 +143,11 @@ void QtMultimediaNotificationBackend::ConfigWidget::defaults()
 void QtMultimediaNotificationBackend::ConfigWidget::load()
 {
     NotificationSettings s;
-    enabled = s.value("QtMultimedia/Enabled", false).toBool();
-    filename = s.value("QtMultimedia/AudioFile", QString()).toString();
+    _enabled = s.value("QtMultimedia/Enabled", false).toBool();
+    _filename = s.value("QtMultimedia/AudioFile", QString()).toString();
 
-    ui.enabled->setChecked(enabled);
-    ui.filename->setText(filename);
+    ui.enabled->setChecked(_enabled);
+    ui.filename->setText(_filename);
 
     setChangedState(false);
 }
@@ -198,12 +177,9 @@ void QtMultimediaNotificationBackend::ConfigWidget::on_play_clicked()
 {
     if (_audioAvailable) {
         if (!ui.filename->text().isEmpty()) {
-            if (audioPreview)
-                delete audioPreview;
-
-            audioPreview = new QMediaPlayer;
-            audioPreview->setMedia(QUrl::fromLocalFile(ui.filename->text()));
-            audioPreview->play();
+            _audioPreview.reset(new QMediaPlayer);
+            _audioPreview->setMedia(QUrl::fromLocalFile(ui.filename->text()));
+            _audioPreview->play();
         }
     }
     else

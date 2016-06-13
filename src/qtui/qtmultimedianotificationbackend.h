@@ -21,6 +21,8 @@
 #ifndef PHONONNOTIFICATIONBACKEND_H_
 #define PHONONNOTIFICATIONBACKEND_H_
 
+#include <memory>
+
 #include <QMediaPlayer>
 
 #include "abstractnotificationbackend.h"
@@ -34,11 +36,10 @@ class QtMultimediaNotificationBackend : public AbstractNotificationBackend
 
 public:
     QtMultimediaNotificationBackend(QObject *parent = 0);
-    ~QtMultimediaNotificationBackend();
 
-    void notify(const Notification &);
-    void close(uint notificationId);
-    virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &) override;
+    void close(uint notificationId) override;
+    virtual SettingsPage *createConfigWidget() const override;
 
 private slots:
     void enabledChanged(const QVariant &);
@@ -49,7 +50,7 @@ private:
     class ConfigWidget;
 
     bool _enabled;
-    QMediaPlayer *_media;
+    std::unique_ptr<QMediaPlayer> _media;
 };
 
 
@@ -59,12 +60,11 @@ class QtMultimediaNotificationBackend::ConfigWidget : public SettingsPage
 
 public:
     ConfigWidget(QWidget *parent = 0);
-    ~ConfigWidget();
 
-    void save();
-    void load();
-    bool hasDefaults() const;
-    void defaults();
+    void save() override;
+    void load() override;
+    bool hasDefaults() const override;
+    void defaults() override;
 
 private slots:
     void widgetChanged();
@@ -74,10 +74,10 @@ private slots:
 private:
     Ui::QtMultimediaNotificationConfigWidget ui;
 
-    bool enabled;
+    bool _enabled;
     bool _audioAvailable;
-    QString filename;
-    QMediaPlayer *audioPreview;
+    QString _filename;
+    std::unique_ptr<QMediaPlayer> _audioPreview;
 };
 
 
