@@ -76,7 +76,7 @@ QVariant NetworkItem::data(int column, int role) const
 
 QString NetworkItem::escapeHTML(const QString &string, bool useNonbreakingSpaces)
 {
-    // QString.replace() doesn't guarentee the source string will remain constant.
+    // QString.replace() doesn't guarantee the source string will remain constant.
     // Use a local variable to avoid compiler errors.
 #if QT_VERSION < 0x050000
     QString formattedString = Qt::escape(string);
@@ -522,8 +522,7 @@ QString QueryBufferItem::toolTip(int column) const
     Q_UNUSED(column);
     QString strTooltip;
     QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
-    tooltip << "<qt><style>.bold { font-weight: bold; }</style>"
-            << "<style>.italic { font-style: italic; }</style>";
+    tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Keep track of whether or not information has been added
     bool infoAdded = false;
@@ -552,11 +551,13 @@ QString QueryBufferItem::toolTip(int column) const
 
         tooltip << "<table cellspacing='5' cellpadding='0'>";
         if (_ircUser->isAway()) {
-            QString awayMessage(tr("(unknown)"));
-            if(!_ircUser->awayMessage().isEmpty()) {
-                awayMessage = _ircUser->awayMessage();
+            QString awayMessageHTML = QString("<p class='italic'>%1</p>").arg(tr("Unknown"));
+
+            // If away message is known, replace with the escaped message.
+            if (!_ircUser->awayMessage().isEmpty()) {
+                awayMessageHTML = NetworkItem::escapeHTML(_ircUser->awayMessage());
             }
-            addRow(NetworkItem::escapeHTML(tr("Away message"), true), NetworkItem::escapeHTML(awayMessage), true);
+            addRow(NetworkItem::escapeHTML(tr("Away message"), true), awayMessageHTML, true);
         }
         addRow(tr("Realname"),
                NetworkItem::escapeHTML(_ircUser->realName()),
@@ -608,7 +609,7 @@ QString QueryBufferItem::toolTip(int column) const
 
     // If no further information found, offer an explanatory message
     if (!infoAdded)
-        tooltip << "<p class='italic'>" << tr("No information available") << "</p>";
+        tooltip << "<p class='italic' align='center'>" << tr("No information available") << "</p>";
 
     tooltip << "</qt>";
     return strTooltip;
@@ -669,8 +670,7 @@ QString ChannelBufferItem::toolTip(int column) const
     Q_UNUSED(column);
     QString strTooltip;
     QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
-    tooltip << "<qt><style>.bold { font-weight: bold; }</style>"
-            << "<qt><style>.italic { font-style: italic; }</style>";
+    tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Function to add a row to the tooltip table
     auto addRow = [&](const QString& key, const QString& value, bool condition) {
@@ -705,7 +705,7 @@ QString ChannelBufferItem::toolTip(int column) const
 
         tooltip << "</table>";
     } else {
-        tooltip << "<p class='italic'>" << tr("Not active, double-click to join") << "</p>";
+        tooltip << "<p class='italic' align='center'>" << tr("Not active, double-click to join") << "</p>";
     }
 
     tooltip << "</qt>";
@@ -1055,8 +1055,7 @@ QString IrcUserItem::toolTip(int column) const
     Q_UNUSED(column);
     QString strTooltip;
     QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
-    tooltip << "<qt><style>.bold { font-weight: bold; }</style>"
-            << "<style>.italic { font-style: italic; }</style>";
+    tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Keep track of whether or not information has been added
     bool infoAdded = false;
@@ -1082,11 +1081,13 @@ QString IrcUserItem::toolTip(int column) const
            NetworkItem::escapeHTML(channelModes()),
            !channelModes().isEmpty());
     if (_ircUser->isAway()) {
-        QString awayMessage(tr("(unknown)"));
-        if(!_ircUser->awayMessage().isEmpty()) {
-            awayMessage = _ircUser->awayMessage();
+        QString awayMessageHTML = QString("<p class='italic'>%1</p>").arg(tr("Unknown"));
+
+        // If away message is known, replace with the escaped message.
+        if (!_ircUser->awayMessage().isEmpty()) {
+            awayMessageHTML = NetworkItem::escapeHTML(_ircUser->awayMessage());
         }
-        addRow(NetworkItem::escapeHTML(tr("Away message"), true), NetworkItem::escapeHTML(awayMessage), true);
+        addRow(NetworkItem::escapeHTML(tr("Away message"), true), awayMessageHTML, true);
     }
     addRow(tr("Realname"),
            NetworkItem::escapeHTML(_ircUser->realName()),
@@ -1138,7 +1139,7 @@ QString IrcUserItem::toolTip(int column) const
 
     // If no further information found, offer an explanatory message
     if (!infoAdded)
-        tooltip << "<p class='italic'>" << tr("No information available") << "</p>";
+        tooltip << "<p class='italic' align='center'>" << tr("No information available") << "</p>";
 
     tooltip << "</qt>";
     return strTooltip;
