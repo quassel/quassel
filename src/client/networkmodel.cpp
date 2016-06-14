@@ -224,7 +224,7 @@ QString NetworkItem::toolTip(int column) const
     Q_UNUSED(column);
     QString strTooltip;
     QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
-    tooltip << "<qt><style>.bold { font-weight: bold; }</style>";
+    tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Function to add a row to the tooltip table
     auto addRow = [&](const QString& key, const QString& value, bool condition) {
@@ -234,15 +234,18 @@ QString NetworkItem::toolTip(int column) const
     };
 
     tooltip << "<p class='bold' align='center'>" << NetworkItem::escapeHTML(networkName(), true) << "</p>";
-    tooltip << "<table cellspacing='5' cellpadding='0'>";
-    addRow(tr("Server"), NetworkItem::escapeHTML(currentServer(), true), true);
+    if (isActive()) {
+        tooltip << "<table cellspacing='5' cellpadding='0'>";
+        addRow(tr("Server"), NetworkItem::escapeHTML(currentServer(), true), !currentServer().isEmpty());
+        addRow(tr("Users"), QString::number(nickCount()), true);
+        if (_network)
+            addRow(tr("Lag"), NetworkItem::escapeHTML(tr("%1 msecs").arg(_network->latency()), true), true);
 
-    addRow(tr("Users"), QString::number(nickCount()), true);
-
-    if (_network)
-        addRow(tr("Lag"), NetworkItem::escapeHTML(tr("%1 msecs").arg(_network->latency()), true), true);
-
-    tooltip << "</table></qt>";
+        tooltip << "</table>";
+    } else {
+        tooltip << "<p class='italic' align='center'>" << tr("Not connected") << "</p>";
+    }
+    tooltip << "</qt>";
     return strTooltip;
 }
 
