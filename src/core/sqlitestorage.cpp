@@ -193,7 +193,7 @@ UserId SqliteStorage::validateUser(const QString &user, const QString &password)
 {
     UserId userId;
     QString hashedPassword;
-    Storage::HashVersion hashVersion;
+    Storage::HashVersion hashVersion = Storage::HashVersion::Latest;
 
     {
         QSqlQuery query(logDb());
