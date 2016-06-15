@@ -26,14 +26,13 @@
 #include <QDockWidget>
 #include <QModelIndex>
 #include <QStyledItemDelegate>
-#include <QTreeView>
 #include <QPointer>
 
 #include "actioncollection.h"
 #include "bufferviewconfig.h"
 #include "networkmodel.h"
-#include "types.h"
 #include "treeviewtouch.h"
+#include "types.h"
 
 /*****************************************
  * The TreeView showing the Buffers

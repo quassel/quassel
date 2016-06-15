@@ -1,33 +1,36 @@
 /***************************************************************************
-*   Copyright (C) 2005-2015 by the Quassel Project                        *
-*   devel@quassel-irc.org                                                 *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) version 3.                                           *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
-***************************************************************************/
+ *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
 #include "treeviewtouch.h"
 
-#include <QtCore>
-#include <QTouchEvent>
+#include <QEvent>
 #include <QScrollBar>
+#include <QTouchEvent>
+
 
 TreeViewTouch::TreeViewTouch(QWidget *parent)
     : QTreeView(parent)
 {
     setAttribute(Qt::WA_AcceptTouchEvents);
 }
+
 
 bool TreeViewTouch::event(QEvent *event) {
     if (event->type() == QEvent::TouchBegin) {
@@ -43,8 +46,8 @@ bool TreeViewTouch::event(QEvent *event) {
         if (!_firstTouchUpdateHappened) {
             // After the first movement of a Touch-Point, calculate the distance in both axis
             // and if the point moved more horizontally abort scroll.
-            double dx = abs(p.lastPos().x() - p.pos().x());
-            double dy = abs(p.lastPos().y() - p.pos().y());
+            double dx = qAbs(p.lastPos().x() - p.pos().x());
+            double dy = qAbs(p.lastPos().y() - p.pos().y());
             if (dx > dy) {
                 _touchScrollInProgress = false;
             }
@@ -69,12 +72,14 @@ bool TreeViewTouch::event(QEvent *event) {
     return QTreeView::event(event);
 }
 
-void TreeViewTouch::mousePressEvent(QMouseEvent * event) {
+
+void TreeViewTouch::mousePressEvent(QMouseEvent *event) {
     if (!_touchScrollInProgress)
         QTreeView::mousePressEvent(event);
 }
 
-void TreeViewTouch::mouseMoveEvent(QMouseEvent * event) {
+
+void TreeViewTouch::mouseMoveEvent(QMouseEvent *event) {
     if (!_touchScrollInProgress)
         QTreeView::mouseMoveEvent(event);
 };
