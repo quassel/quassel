@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2016 Quassel Project <devel@quassel-irc.org> -->
+<component type="desktop">
+	<id>quasselclient.desktop</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-2.0 or GPL-3.0</project_license>
+	<name>Quassel Client</name>
+	<summary>Modern distributed IRC client</summary>
+	<description>
+		<p>
+Quassel IRC is a modern, cross-platform, distributed IRC client, meaning that
+one (or multiple) client(s) can attach to and detach from a central core: much
+like the popular combination of screen and a text-based IRC client such as
+WeeChat, but graphical. In addition to this unique feature, we aim to bring a
+pleasurable, comfortable chatting experience to all major platforms, making
+communication with your peers not only convenient, but also available everywhere.
+		</p>
+		<p>
+And the best of all: It's free - as in beer and as in speech.
+		</p>
+		<p>
+This application is the client-only version of Quassel. You must first set up
+(or have been given an account on) the quassel core before using this.
+		</p>
+	</description>
+	<screenshots>
+		<screenshot type="default">
+			<image>http://quassel-irc.org/files/images/20080914-011743-quasselkde4.preview.png</image>
+			<caption>Quassel, with a dark theme enabled</caption>
+		</screenshot>
+		<screenshot type="default">
+			<image>http://quassel-irc.org/files/images/quassel_win7.preview.png</image>
+			<caption>
+The default quassel white theme. Quassel runs on all major desktop platforms,
+and many smartphones as well.
+			</caption>
+		</screenshot>
+	</screenshots>
+
+</component>
+
