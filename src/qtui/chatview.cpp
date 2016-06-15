@@ -113,7 +113,7 @@ bool ChatView::event(QEvent *event)
         // Enable scrolling by draging, disable selecting/clicking content
         setDragMode(QGraphicsView::ScrollHandDrag);
         setInteractive(false);
-        // if scrollbar is not visible we need to request backlog below else we need to accept 
+        // if scrollbar is not visible we need to request backlog below else we need to accept
         // the event now (return true) so that we will receive TouchUpdate and TouchEnd/TouchCancel
         if (verticalScrollBar()->isVisible()) return true;
     }
@@ -135,8 +135,8 @@ bool ChatView::event(QEvent *event)
             // After the first movement of a Touch-Point, calculate the distance in both axis
             // and if the point moved more horizontally abort scroll.
             QTouchEvent::TouchPoint p = ((QTouchEvent*)event)->touchPoints().at(0);
-            double dx = abs (p.lastPos().x() - p.pos().x());
-            double dy = abs (p.lastPos().y() - p.pos().y());
+            double dx = qAbs(p.lastPos().x() - p.pos().x());
+            double dy = qAbs(p.lastPos().y() - p.pos().y());
             if (dx > dy) {
                 setDragMode(QGraphicsView::NoDrag);
                 setInteractive(true);
