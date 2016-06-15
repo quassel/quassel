@@ -280,10 +280,13 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
 
     case EventManager::IrcEventAway:
         {
+            // Update hostmask info first.  This will create the nick if it doesn't exist, e.g.
+            // away-notify data being sent before JOIN messages.
+            net->updateNickFromMask(prefix);
+            // Separate nick in order to separate server and user decoding
             QString nick = nickFromMask(prefix);
             decParams << nick;
             decParams << (params.count() >= 1 ? net->userDecode(nick, params.at(0)) : QString());
-            net->updateNickFromMask(prefix);
         }
         break;
 

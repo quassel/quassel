@@ -205,15 +205,29 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e)
     case 376:
         break;
 
-    // CAP stuff
-    case 900:
-    case 903:
-    case 904:
-    case 905:
-    case 906:
-    case 907:
+    // SASL authentication stuff
+    // See: http://ircv3.net/specs/extensions/sasl-3.1.html
+    case 900:  // RPL_LOGGEDIN
+    case 901:  // RPL_LOGGEDOUT
     {
-        displayMsg(e, Message::Info, "CAP: " + e->params().join(""));
+        // :server 900 <nick> <nick>!<ident>@<host> <account> :You are now logged in as <user>
+        // :server 901 <nick> <nick>!<ident>@<host> :You are now logged out
+        if (!checkParamCount(e, 3))
+            return;
+        displayMsg(e, Message::Server, "SASL: " + e->params().at(2));
+        break;
+    }
+    // Ignore SASL success, partially redundant with RPL_LOGGEDIN and RPL_LOGGEDOUT
+    case 903:  // RPL_SASLSUCCESS  :server 903 <nick> :SASL authentication successful
+        break;
+    case 902:  // ERR_NICKLOCKED   :server 902 <nick> :You must use a nick assigned to you
+    case 904:  // ERR_SASLFAIL     :server 904 <nick> :SASL authentication failed
+    case 905:  // ERR_SASLTOOLONG  :server 905 <nick> :SASL message too long
+    case 906:  // ERR_SASLABORTED  :server 906 <nick> :SASL authentication aborted
+    case 907:  // ERR_SASLALREADY  :server 907 <nick> :You have already authenticated using SASL
+    case 908:  // RPL_SASLMECHS    :server 908 <nick> <mechanisms> :are available SASL mechanisms
+    {
+        displayMsg(e, Message::Server, "SASL: " + e->params().join(""));
         break;
     }
 
@@ -640,6 +654,16 @@ void EventStringifier::processIrcEvent341(IrcEvent *e)
 void EventStringifier::processIrcEvent352(IrcEvent *e)
 {
     displayMsg(e, Message::Server, tr("[Who] %1").arg(e->params().join(" ")));
+}
+
+
+/*  RPL_WHOSPCRPL: "<yournick> <num> #<channel> ~<ident> <host> <servname> <nick>
+                    ("H"/ "G") <account> :<realname>"
+Could be anything else, though.  User-specified fields.
+See http://faerion.sourceforge.net/doc/irc/whox.var */
+void EventStringifier::processIrcEvent354(IrcEvent *e)
+{
+    displayMsg(e, Message::Server, tr("[WhoX] %1").arg(e->params().join(" ")));
 }
 
 

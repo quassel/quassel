@@ -88,6 +88,7 @@ public:
     Q_INVOKABLE void processIrcEvent333(IrcEvent *event);    // RPL_??? (topic set by)
     Q_INVOKABLE void processIrcEvent341(IrcEvent *event);    // RPL_INVITING
     Q_INVOKABLE void processIrcEvent352(IrcEvent *event);    // RPL_WHOREPLY
+    Q_INVOKABLE void processIrcEvent354(IrcEvent *event);    // RPL_WHOSPCRPL
     Q_INVOKABLE void processIrcEvent369(IrcEvent *event);    // RPL_ENDOFWHOWAS
     Q_INVOKABLE void processIrcEvent432(IrcEvent *event);    // ERR_ERRONEUSNICKNAME
     Q_INVOKABLE void processIrcEvent433(IrcEvent *event);    // ERR_NICKNAMEINUSE

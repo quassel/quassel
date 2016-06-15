@@ -50,6 +50,7 @@ public:
     Q_INVOKABLE void processIrcEventCap(IrcEvent *event);          /// CAP framework negotiation
     Q_INVOKABLE void processIrcEventAccount(IrcEvent *event);      /// account-notify received
     Q_INVOKABLE void processIrcEventAway(IrcEvent *event);         /// away-notify received
+    Q_INVOKABLE void processIrcEventChghost(IrcEvent *event);      /// chghost received
     Q_INVOKABLE void processIrcEventInvite(IrcEvent *event);
     Q_INVOKABLE void processIrcEventJoin(IrcEvent *event);
     Q_INVOKABLE void lateProcessIrcEventKick(IrcEvent *event);
@@ -84,10 +85,13 @@ public:
     Q_INVOKABLE void processIrcEvent322(IrcEvent *event);          // RPL_LIST
     Q_INVOKABLE void processIrcEvent323(IrcEvent *event);          // RPL_LISTEND
     Q_INVOKABLE void processIrcEvent324(IrcEvent *event);          // RPL_CHANNELMODEIS
+    Q_INVOKABLE void processIrcEvent330(IrcEvent *event);          // RPL_WHOISACCOUNT (quakenet/snircd/undernet)
     Q_INVOKABLE void processIrcEvent331(IrcEvent *event);          // RPL_NOTOPIC
     Q_INVOKABLE void processIrcEvent332(IrcEvent *event);          // RPL_TOPIC
     Q_INVOKABLE void processIrcEvent352(IrcEvent *event);          // RPL_WHOREPLY
     Q_INVOKABLE void processIrcEvent353(IrcEvent *event);          // RPL_NAMREPLY
+    Q_INVOKABLE void processIrcEvent354(IrcEvent *event);          // RPL_WHOSPCRPL
+    Q_INVOKABLE void processIrcEvent403(IrcEventNumeric *event);   // ERR_NOSUCHCHANNEL
     Q_INVOKABLE void processIrcEvent432(IrcEventNumeric *event);   // ERR_ERRONEUSNICKNAME
     Q_INVOKABLE void processIrcEvent433(IrcEventNumeric *event);   // ERR_NICKNAMEINUSE
     Q_INVOKABLE void processIrcEvent437(IrcEventNumeric *event);   // ERR_UNAVAILRESOURCE
@@ -155,16 +159,24 @@ private:
     // value: the corresponding netsplit object
     QHash<Network *, QHash<QString, Netsplit *> > _netsplits;
 
-    // IRCv3 capability negotiation
     /**
-     * Sends the next capability from the queue.
+     * Process given WHO reply information, updating user data, channel modes, etc as needed
      *
-     * During nick registration if any capabilities remain queued, this will take the next and
-     * request it.  When no capabilities remain, capability negotiation is ended.
+     * This takes information from WHO and WHOX replies, processing information that's common
+     * between them.
      *
-     * @param[in,out] A network currently undergoing capability negotiation
+     * @param[in] net                 Network object for the IRC server
+     * @param[in] targetChannel       Target channel, or * if unspecified
+     * @param[in] ircUser             IrcUser representing the desired nick
+     * @param[in] server              Nick server name
+     * @param[in] user                Nick username
+     * @param[in] host                Nick hostname
+     * @param[in] awayStateAndModes   Nick away-state and modes (e.g. G@)
+     * @param[in] realname            Nick realname
      */
-    void sendNextCap(Network *net);
+    void processWhoInformation (Network *net, const QString &targetChannel, IrcUser *ircUser,
+                                const QString &server, const QString &user, const QString &host,
+                                const QString &awayStateAndModes, const QString &realname);
 };
 
 

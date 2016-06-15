@@ -43,6 +43,7 @@ class IrcUser : public SyncableObject
     Q_PROPERTY(QString host READ host WRITE setHost)
     Q_PROPERTY(QString nick READ nick WRITE setNick)
     Q_PROPERTY(QString realName READ realName WRITE setRealName)
+    Q_PROPERTY(QString account READ account WRITE setAccount)
     Q_PROPERTY(bool away READ isAway WRITE setAway)
     Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage)
     Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime)
@@ -65,6 +66,12 @@ public :
     inline QString host() const { return _host; }
     inline QString nick() const { return _nick; }
     inline QString realName() const { return _realName; }
+    /**
+     * Account name, e.g. NickServ/SASL account
+     *
+     * @return Account name if logged in, * if logged out, or empty string if unknown
+     */
+    inline QString account() const { return _account; }
     QString hostmask() const;
     inline bool isAway() const { return _away; }
     inline QString awayMessage() const { return _awayMessage; }
@@ -104,6 +111,12 @@ public slots:
     void setHost(const QString &host);
     void setNick(const QString &nick);
     void setRealName(const QString &realName);
+    /**
+     * Set account name, e.g. NickServ/SASL account
+     *
+     * @param[in] account Account name if logged in, * if logged out, or empty string if unknown
+     */
+    void setAccount(const QString &account);
     void setAway(const bool &away);
     void setAwayMessage(const QString &awayMessage);
     void setIdleTime(const QDateTime &idleTime);
@@ -182,6 +195,7 @@ private:
     QString _user;
     QString _host;
     QString _realName;
+    QString _account;      /// Account name, e.g. NickServ/SASL account
     QString _awayMessage;
     bool _away;
     QString _server;

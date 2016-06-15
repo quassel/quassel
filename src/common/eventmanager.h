@@ -91,6 +91,7 @@ public :
         IrcEventAccount,
         IrcEventAway,
         IrcEventCap,
+        IrcEventChghost,
         IrcEventInvite,
         IrcEventJoin,
         IrcEventKick,

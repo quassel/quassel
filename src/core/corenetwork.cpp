@@ -29,6 +29,9 @@
 #include "coreuserinputhandler.h"
 #include "networkevent.h"
 
+// IRCv3 capabilities
+#include "irccap.h"
+
 INIT_SYNCABLE_OBJECT(CoreNetwork)
 CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     : Network(networkid, session),
@@ -79,6 +82,12 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
     connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
+
+    // IRCv3 capability handling
+    // These react to CAP messages from the server
+    connect(this, SIGNAL(capAdded(QString)), this, SLOT(serverCapAdded(QString)));
+    connect(this, SIGNAL(capAcknowledged(QString)), this, SLOT(serverCapAcknowledged(QString)));
+    connect(this, SIGNAL(capRemoved(QString)), this, SLOT(serverCapRemoved(QString)));
 
     if (Quassel::isOptionSet("oidentd")) {
         connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Qt::BlockingQueuedConnection);
@@ -158,10 +167,11 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     // cleaning up old quit reason
     _quitReason.clear();
 
-    // reset capability negotiation in case server changes during a reconnect
+    // Reset capability negotiation tracking, also handling server changes during reconnect
     _capsQueued.clear();
-    _capsPending.clear();
-    _capsSupported.clear();
+    clearCaps();
+    _capNegotiationActive = false;
+    _capInitialNegotiationEnded = false;
 
     // use a random server?
     if (useRandomServer()) {
@@ -867,68 +877,80 @@ void CoreNetwork::setPingInterval(int interval)
 
 /******** IRCv3 Capability Negotiation ********/
 
-void CoreNetwork::addCap(const QString &capability, const QString &value)
+void CoreNetwork::serverCapAdded(const QString &capability)
 {
-    // Clear from pending list, add to supported list
-    if (!_capsSupported.contains(capability)) {
-        if (value != "") {
-            // Value defined, just use it
-            _capsSupported[capability] = value;
-        } else if (_capsPending.contains(capability)) {
-            // Value not defined, but a pending capability had a value.
-            // E.g. CAP * LS :sasl=PLAIN multi-prefix
-            // Preserve the capability value for later use.
-            _capsSupported[capability] = _capsPending[capability];
-        } else {
-            // No value ever given, assign to blank
-            _capsSupported[capability] = QString();
-        }
-    }
-    if (_capsPending.contains(capability))
-        _capsPending.remove(capability);
-
-    // Handle special cases here
-    // TODO Use events if it makes sense
-    if (capability == "away-notify") {
-        // away-notify enabled, stop the automatic timers, handle manually
-        setAutoWhoEnabled(false);
+    // Check if it's a known capability; if so, add it to the list
+    // Handle special cases first
+    if (capability == IrcCap::SASL) {
+        // Only request SASL if it's enabled
+        if (networkInfo().useSasl)
+            queueCap(capability);
+    } else if (IrcCap::knownCaps.contains(capability)) {
+        // Handling for general known capabilities
+        queueCap(capability);
     }
 }
 
-void CoreNetwork::removeCap(const QString &capability)
+void CoreNetwork::serverCapAcknowledged(const QString &capability)
 {
-    // Clear from pending list, remove from supported list
-    if (_capsPending.contains(capability))
-        _capsPending.remove(capability);
-    if (_capsSupported.contains(capability))
-        _capsSupported.remove(capability);
+    // This may be called multiple times in certain situations.
+
+    // Handle core-side configuration
+    if (capability == IrcCap::AWAY_NOTIFY) {
+        // away-notify enabled, stop the autoWho timers, handle manually
+        setAutoWhoEnabled(false);
+    }
+
+    // Handle capabilities that require further messages sent to the IRC server
+    // If you change this list, ALSO change the list in CoreNetwork::capsRequiringServerMessages
+    if (capability == IrcCap::SASL) {
+        // If SASL mechanisms specified, limit to what's accepted for authentication
+        // if the current identity has a cert set, use SASL EXTERNAL
+        // FIXME use event
+#ifdef HAVE_SSL
+        if (!identityPtr()->sslCert().isNull()) {
+            if (IrcCap::SaslMech::maybeSupported(capValue(IrcCap::SASL), IrcCap::SaslMech::EXTERNAL)) {
+                // EXTERNAL authentication supported, send request
+                putRawLine(serverEncode("AUTHENTICATE EXTERNAL"));
+            } else {
+                displayMsg(Message::Error, BufferInfo::StatusBuffer, "",
+                           tr("SASL EXTERNAL authentication not supported"));
+                sendNextCap();
+            }
+        } else {
+#endif
+            if (IrcCap::SaslMech::maybeSupported(capValue(IrcCap::SASL), IrcCap::SaslMech::PLAIN)) {
+                // PLAIN authentication supported, send request
+                // Only working with PLAIN atm, blowfish later
+                putRawLine(serverEncode("AUTHENTICATE PLAIN"));
+            } else {
+                displayMsg(Message::Error, BufferInfo::StatusBuffer, "",
+                           tr("SASL PLAIN authentication not supported"));
+                sendNextCap();
+            }
+#ifdef HAVE_SSL
+        }
+#endif
+    }
+}
+
+void CoreNetwork::serverCapRemoved(const QString &capability)
+{
+    // This may be called multiple times in certain situations.
 
     // Handle special cases here
-    // TODO Use events if it makes sense
-    if (capability == "away-notify") {
-        // away-notify disabled, enable autowho according to configuration
+    if (capability == IrcCap::AWAY_NOTIFY) {
+        // away-notify disabled, enable autoWho according to configuration
         setAutoWhoEnabled(networkConfig()->autoWhoEnabled());
     }
 }
 
-QString CoreNetwork::capValue(const QString &capability) const
+void CoreNetwork::queueCap(const QString &capability)
 {
-    // If a supported capability exists, good; if not, return pending value.
-    // If capability isn't supported after all, the pending entry will be removed.
-    if (_capsSupported.contains(capability))
-        return _capsSupported[capability];
-    else if (_capsPending.contains(capability))
-        return _capsPending[capability];
-    else
-        return QString();
-}
-
-void CoreNetwork::queuePendingCap(const QString &capability, const QString &value)
-{
-    if (!_capsQueued.contains(capability)) {
-        _capsQueued.append(capability);
-        // Some capabilities may have values attached, preserve them as pending
-        _capsPending[capability] = value;
+    // IRCv3 specs all use lowercase capability names
+    QString _capLowercase = capability.toLower();
+    if (!_capsQueued.contains(_capLowercase)) {
+        _capsQueued.append(_capLowercase);
     }
 }
 
@@ -938,6 +960,47 @@ QString CoreNetwork::takeQueuedCap()
         return _capsQueued.takeFirst();
     } else {
         return QString();
+    }
+}
+
+void CoreNetwork::beginCapNegotiation()
+{
+    // Don't begin negotiation if no capabilities are queued to request
+    if (!capNegotiationInProgress())
+        return;
+
+    _capNegotiationActive = true;
+    displayMsg(Message::Server, BufferInfo::StatusBuffer, "",
+               tr("Ready to negotiate (found: %1)").arg(caps().join(", ")));
+    displayMsg(Message::Server, BufferInfo::StatusBuffer, "",
+               tr("Negotiating capabilities (requesting: %1)...").arg(_capsQueued.join(", ")));
+    sendNextCap();
+}
+
+void CoreNetwork::sendNextCap()
+{
+    if (capNegotiationInProgress()) {
+        // Request the next capability and remove it from the list
+        // Handle one at a time so one capability failing won't NAK all of 'em
+        putRawLine(serverEncode(QString("CAP REQ :%1").arg(takeQueuedCap())));
+    } else {
+        // No pending desired capabilities, capability negotiation finished
+        // If SASL requested but not available, print a warning
+        if (networkInfo().useSasl && !capEnabled(IrcCap::SASL))
+            displayMsg(Message::Error, BufferInfo::StatusBuffer, "",
+                       tr("SASL authentication currently not supported by server"));
+
+        if (_capNegotiationActive) {
+            displayMsg(Message::Server, BufferInfo::StatusBuffer, "",
+                   tr("Capability negotiation finished (enabled: %1)").arg(capsEnabled().join(", ")));
+            _capNegotiationActive = false;
+        }
+
+        // If nick registration is already complete, CAP END is not required
+        if (!_capInitialNegotiationEnded) {
+            putRawLine(serverEncode(QString("CAP END")));
+            _capInitialNegotiationEnded = true;
+        }
     }
 }
 
@@ -959,7 +1022,7 @@ void CoreNetwork::queueAutoWhoOneshot(const QString &channelOrNick)
     if (!_autoWhoQueue.contains(channelOrNick.toLower())) {
         _autoWhoQueue.prepend(channelOrNick.toLower());
     }
-    if (useCapAwayNotify()) {
+    if (capEnabled(IrcCap::AWAY_NOTIFY)) {
         // When away-notify is active, the timer's stopped.  Start a new cycle to who this channel.
         setAutoWhoEnabled(true);
     }
@@ -1006,7 +1069,7 @@ void CoreNetwork::sendAutoWho()
             // state of everyone.  Auto-who won't run on a timer so network impact is minimal.
             if (networkConfig()->autoWhoNickLimit() > 0
                 && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
-                && !useCapAwayNotify())
+                && !capEnabled(IrcCap::AWAY_NOTIFY))
                 continue;
             _autoWhoPending[chanOrNick.toLower()]++;
         } else if (ircuser) {
@@ -1017,20 +1080,25 @@ void CoreNetwork::sendAutoWho()
             qDebug() << "Skipping who polling of unknown channel or nick" << chanOrNick;
             continue;
         }
-        // TODO Use WHO extended to poll away users and/or user accounts
-        // If a server supports it, supports("WHOX") will be true
-        // See: http://faerion.sourceforge.net/doc/irc/whox.var and HexChat
-        putRawLine("WHO " + serverEncode(chanOrNick));
+        if (supports("WHOX")) {
+            // Use WHO extended to poll away users and/or user accounts
+            // See http://faerion.sourceforge.net/doc/irc/whox.var
+            // And https://github.com/hexchat/hexchat/blob/c874a9525c9b66f1d5ddcf6c4107d046eba7e2c5/src/common/proto-irc.c#L750
+            putRawLine(serverEncode(QString("WHO %1 %%chtsunfra,%2")
+                                    .arg(serverEncode(chanOrNick), QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))));
+        } else {
+            putRawLine(serverEncode(QString("WHO %1").arg(chanOrNick)));
+        }
         break;
     }
 
     if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()
-        && !useCapAwayNotify()) {
+        && !capEnabled(IrcCap::AWAY_NOTIFY)) {
         // Timer was stopped, means a new cycle is due immediately
         // Don't run a new cycle if using away-notify; server will notify as appropriate
         _autoWhoCycleTimer.start();
         startAutoWhoCycle();
-    } else if (useCapAwayNotify() && _autoWhoCycleTimer.isActive()) {
+    } else if (capEnabled(IrcCap::AWAY_NOTIFY) && _autoWhoCycleTimer.isActive()) {
         // Don't run another who cycle if away-notify is enabled
         _autoWhoCycleTimer.stop();
     }

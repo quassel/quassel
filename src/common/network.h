@@ -164,6 +164,18 @@ public :
     inline IdentityId identity() const { return _identity; }
     QStringList nicks() const;
     inline QStringList channels() const { return _ircChannels.keys(); }
+    /**
+     * Gets the list of available capabilities.
+     *
+     * @returns QStringList of available capabilities
+     */
+    inline const QStringList caps() const { return QStringList(_caps.keys()); }
+    /**
+     * Gets the list of enabled (acknowledged) capabilities.
+     *
+     * @returns QStringList of enabled (acknowledged) capabilities
+     */
+    inline const QStringList capsEnabled() const { return _capsEnabled; }
     inline const ServerList &serverList() const { return _serverList; }
     inline bool useRandomServer() const { return _useRandomServer; }
     inline const QStringList &perform() const { return _perform; }
@@ -188,6 +200,26 @@ public :
 
     bool supports(const QString &param) const { return _supports.contains(param); }
     QString support(const QString &param) const;
+
+    /**
+     * Checks if a given capability is acknowledged and active.
+     *
+     * @param[in] capability Name of capability
+     * @returns True if acknowledged (active), otherwise false
+     */
+    inline bool capEnabled(const QString &capability) const { return _capsEnabled.contains(capability.toLower()); }
+    // IRCv3 specs all use lowercase capability names
+
+    /**
+     * Gets the value of an available capability, e.g. for SASL, "EXTERNAL,PLAIN".
+     *
+     * @param[in] capability Name of capability
+     * @returns Value of capability if one was specified, otherwise empty string
+     */
+    QString capValue(const QString &capability) const { return _caps.value(capability.toLower()); }
+    // IRCv3 specs all use lowercase capability names
+    // QHash returns the default constructed value if not found, in this case, empty string
+    // See:  https://doc.qt.io/qt-4.8/qhash.html#value
 
     IrcUser *newIrcUser(const QString &hostmask, const QVariantMap &initData = QVariantMap());
     inline IrcUser *newIrcUser(const QByteArray &hostmask) { return newIrcUser(decodeServerString(hostmask)); }
@@ -256,19 +288,90 @@ public slots:
     void addSupport(const QString &param, const QString &value = QString());
     void removeSupport(const QString &param);
 
+    // IRCv3 capability negotiation (can be connected to signals)
+
+    /**
+     * Add an available capability, optionally providing a value.
+     *
+     * This may happen during first connect, or at any time later if a new capability becomes
+     * available (e.g. SASL service starting).
+     *
+     * @param[in] capability Name of the capability
+     * @param[in] value
+     * @parblock
+     * Optional value of the capability, e.g. sasl=plain.
+     * @endparblock
+     */
+    void addCap(const QString &capability, const QString &value = QString());
+
+    /**
+     * Marks a capability as acknowledged (enabled by the IRC server).
+     *
+     * @param[in] capability Name of the capability
+     */
+    void acknowledgeCap(const QString &capability);
+
+    /**
+     * Removes a capability from the list of available capabilities.
+     *
+     * This may happen during first connect, or at any time later if an existing capability becomes
+     * unavailable (e.g. SASL service stopping).  This also removes the capability from the list
+     * of acknowledged capabilities.
+     *
+     * @param[in] capability Name of the capability
+     */
+    void removeCap(const QString &capability);
+
+    /**
+     * Clears all capabilities from the list of available capabilities.
+     *
+     * This also removes the capability from the list of acknowledged capabilities.
+     */
+    void clearCaps();
+
     inline void addIrcUser(const QString &hostmask) { newIrcUser(hostmask); }
     inline void addIrcChannel(const QString &channel) { newIrcChannel(channel); }
 
     //init geters
     QVariantMap initSupports() const;
+    /**
+     * Get the initial list of available capabilities.
+     *
+     * @return QVariantMap of <QString, QString> indicating available capabilities and values
+     */
+    QVariantMap initCaps() const;
+    /**
+     * Get the initial list of enabled (acknowledged) capabilities.
+     *
+     * @return QVariantList of QString indicating enabled (acknowledged) capabilities and values
+     */
+    QVariantList initCapsEnabled() const { return toVariantList(capsEnabled()); }
     inline QVariantList initServerList() const { return toVariantList(serverList()); }
     virtual QVariantMap initIrcUsersAndChannels() const;
 
     //init seters
     void initSetSupports(const QVariantMap &supports);
+    /**
+     * Initialize the list of available capabilities.
+     *
+     * @param[in] caps QVariantMap of <QString, QString> indicating available capabilities and values
+     */
+    void initSetCaps(const QVariantMap &caps);
+    /**
+     * Initialize the list of enabled (acknowledged) capabilities.
+     *
+     * @param[in] caps QVariantList of QString indicating enabled (acknowledged) capabilities and values
+     */
+    inline void initSetCapsEnabled(const QVariantList &capsEnabled) { _capsEnabled = fromVariantList<QString>(capsEnabled); }
     inline void initSetServerList(const QVariantList &serverList) { _serverList = fromVariantList<Server>(serverList); }
     virtual void initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels);
 
+    /**
+     * Update IrcUser hostmask and username from mask, creating an IrcUser if one does not exist.
+     *
+     * @param[in] mask   Full nick!user@hostmask string
+     * @return IrcUser of the matching nick if exists, otherwise a new IrcUser
+     */
     IrcUser *updateNickFromMask(const QString &mask);
 
     // these slots are to keep the hashlists of all users and the
@@ -319,6 +422,34 @@ signals:
 //   void supportAdded(const QString &param, const QString &value);
 //   void supportRemoved(const QString &param);
 
+    // IRCv3 capability negotiation (can drive other slots)
+    /**
+     * Indicates a capability is now available, with optional value in Network::capValue().
+     *
+     * @see Network::addCap()
+     *
+     * @param[in] capability Name of the capability
+     */
+    void capAdded (const QString &capability);
+
+    /**
+     * Indicates a capability was acknowledged (enabled by the IRC server).
+     *
+     * @see Network::acknowledgeCap()
+     *
+     * @param[in] capability Name of the capability
+     */
+    void capAcknowledged(const QString &capability);
+
+    /**
+     * Indicates a capability was removed from the list of available capabilities.
+     *
+     * @see Network::removeCap()
+     *
+     * @param[in] capability Name of the capability
+     */
+    void capRemoved(const QString &capability);
+
 //   void ircUserAdded(const QString &hostmask);
     void ircUserAdded(IrcUser *);
 //   void ircChannelAdded(const QString &channelname);
@@ -351,6 +482,13 @@ private:
     QHash<QString, IrcUser *> _ircUsers; // stores all known nicks for the server
     QHash<QString, IrcChannel *> _ircChannels; // stores all known channels
     QHash<QString, QString> _supports; // stores results from RPL_ISUPPORT
+
+    QHash<QString, QString> _caps;  /// Capabilities supported by the IRC server
+    // By synchronizing the supported capabilities, the client could suggest certain behaviors, e.g.
+    // in the Network settings dialog, recommending SASL instead of using NickServ, or warning if
+    // SASL EXTERNAL isn't available.
+    QStringList _capsEnabled;       /// Enabled capabilities that received 'CAP ACK'
+    // _capsEnabled uses the same values from the <name>=<value> pairs stored in _caps
 
     ServerList _serverList;
     bool _useRandomServer;
