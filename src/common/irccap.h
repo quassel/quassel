@@ -102,6 +102,24 @@ namespace IrcCap {
     const QString USERHOST_IN_NAMES = "userhost-in-names";
 
     /**
+     * Vendor-specific capabilities
+     */
+    namespace Vendor {
+
+        /**
+         * Self message support, as recognized by ZNC.
+         *
+         * Some servers (e.g. Bitlbee) assume self-message support; ZNC requires a capability
+         * instead.  As self-message is already implemented, there's little reason to not do this.
+         *
+         * More information in the IRCv3 commit that removed the 'self-message' capability.
+         *
+         * https://github.com/ircv3/ircv3-specifications/commit/1bfba47843c2526707c902034b3395af934713c8
+         */
+        const QString ZNC_SELF_MESSAGE = "znc.in/self-message";
+    }
+
+    /**
      * List of capabilities currently implemented and requested during capability negotiation.
      */
     const QStringList knownCaps = QStringList {
@@ -112,7 +130,8 @@ namespace IrcCap {
             EXTENDED_JOIN,
             MULTI_PREFIX,
             SASL,
-            USERHOST_IN_NAMES
+            USERHOST_IN_NAMES,
+            Vendor::ZNC_SELF_MESSAGE
     };
     // NOTE: If you modify the knownCaps list, update the constants above as needed.
 
