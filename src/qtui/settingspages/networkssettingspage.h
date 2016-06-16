@@ -119,6 +119,16 @@ public:
 private slots:
     void setButtonStates();
 
+    /**
+     * Update the default server port according to isChecked
+     *
+     * Connect with useSSL->toggled() in order to keep the port number in sync.  This only modifies
+     * the port if it's not been changed from defaults.
+     *
+     * @param isChecked If true and port unchanged, set port to 6697, else set port to 6667.
+     */
+    void updateSslPort(bool isChecked);
+
 private:
     Ui::NetworkAddDlg ui;
 
@@ -156,6 +166,16 @@ public:
 
 private slots:
     void on_host_textChanged();
+
+    /**
+     * Update the default server port according to isChecked
+     *
+     * Connect with useSSL->toggled() in order to keep the port number in sync.  This only modifies
+     * the port if it's not been changed from defaults.
+     *
+     * @param isChecked If true and port unchanged, set port to 6697, else set port to 6667.
+     */
+    void updateSslPort(bool isChecked);
 
 private:
     Ui::ServerEditDlg ui;
