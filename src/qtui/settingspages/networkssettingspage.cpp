@@ -786,6 +786,11 @@ NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialo
     ui.setupUi(this);
     ui.useSSL->setIcon(QIcon::fromTheme("document-encrypt"));
 
+    // Whenever useSSL is toggled, update the port number if not changed from the default
+    connect(ui.useSSL, SIGNAL(toggled(bool)), SLOT(updateSslPort(bool)));
+    // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
+    // If useSSL is later changed to be checked by default, change port's default value, too.
+
     if (Client::coreFeatures() & Quassel::VerifyServerSSL) {
         // Synchronize requiring SSL with the use SSL checkbox
         ui.sslVerify->setEnabled(ui.useSSL->isChecked());
@@ -846,6 +851,19 @@ void NetworkAddDlg::setButtonStates()
              && !ui.serverAddress->text().isEmpty();
     }
     ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ok);
+}
+
+
+void NetworkAddDlg::updateSslPort(bool isChecked)
+{
+    // "Use encrypted connection" was toggled, check the state...
+    if (isChecked && ui.port->value() == Network::PORT_PLAINTEXT) {
+        // Had been using the plain-text port, use the SSL default
+        ui.port->setValue(Network::PORT_SSL);
+    } else if (!isChecked && ui.port->value() == Network::PORT_SSL) {
+        // Had been using the SSL port, use the plain-text default
+        ui.port->setValue(Network::PORT_PLAINTEXT);
+    }
 }
 
 
@@ -915,6 +933,11 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
         ui.sslVersion->hide();
     }
 
+    // Whenever useSSL is toggled, update the port number if not changed from the default
+    connect(ui.useSSL, SIGNAL(toggled(bool)), SLOT(updateSslPort(bool)));
+    // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
+    // If useSSL is later changed to be checked by default, change port's default value, too.
+
     if (Client::coreFeatures() & Quassel::VerifyServerSSL) {
         // Synchronize requiring SSL with the use SSL checkbox
         ui.sslVerify->setEnabled(ui.useSSL->isChecked());
@@ -956,6 +979,19 @@ Network::Server ServerEditDlg::serverData() const
 void ServerEditDlg::on_host_textChanged()
 {
     ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(ui.host->text().trimmed().isEmpty());
+}
+
+
+void ServerEditDlg::updateSslPort(bool isChecked)
+{
+    // "Use encrypted connection" was toggled, check the state...
+    if (isChecked && ui.port->value() == Network::PORT_PLAINTEXT) {
+        // Had been using the plain-text port, use the SSL default
+        ui.port->setValue(Network::PORT_SSL);
+    } else if (!isChecked && ui.port->value() == Network::PORT_SSL) {
+        // Had been using the SSL port, use the plain-text default
+        ui.port->setValue(Network::PORT_PLAINTEXT);
+    }
 }
 
 
