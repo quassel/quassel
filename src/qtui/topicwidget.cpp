@@ -281,6 +281,9 @@ QString TopicWidget::sanitizeTopic(const QString& topic)
     // some unicode characters with a new line, which then triggers
     // a stack overflow later
     QString result(topic);
+#if QT_VERSION >= 0x050000
+    result.replace(QChar::CarriageReturn, " ");
+#endif
     result.replace(QChar::ParagraphSeparator, " ");
     result.replace(QChar::LineSeparator, " ");
 
