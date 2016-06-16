@@ -1108,9 +1108,15 @@ void CoreNetwork::sendAutoWho()
 #ifdef HAVE_SSL
 void CoreNetwork::sslErrors(const QList<QSslError> &sslErrors)
 {
-    Q_UNUSED(sslErrors)
+    displayMsg(Message::Error, BufferInfo::StatusBuffer, "",
+               tr("WARNING: Encrypted connection is insecure and might not be trustworthy"));
+    if (!sslErrors.empty()) {
+        displayMsg(Message::Error, BufferInfo::StatusBuffer, "",
+                   tr("Reason: %1").arg(sslErrors.first().errorString()));
+    }
     socket.ignoreSslErrors();
-    // TODO errorhandling
+    // TODO Implement an off-by-default "Allow insecure connections" setting for networks.
+    // Don't ignore SSL errors unless that setting is enabled.
 }
 
 
