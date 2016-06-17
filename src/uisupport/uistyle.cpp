@@ -667,10 +667,11 @@ QString UiStyle::mircToInternal(const QString &mirc_)
 UiStyle::StyledMessage::StyledMessage(const Message &msg)
     : Message(msg)
 {
-    if (type() == Message::Plain)
+    if (type() == Message::Plain || type() == Message::Action)
         _senderHash = 0xff;
     else
-        _senderHash = 0x00;  // this means we never compute the hash for msgs that aren't plain
+        _senderHash = 0x00;
+    // This means we never compute the hash for msgs that aren't Plain or Action
 }
 
 
