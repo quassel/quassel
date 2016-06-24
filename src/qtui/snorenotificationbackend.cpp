@@ -124,9 +124,13 @@ void SnoreNotificationBackend::setTraybackend(const QVariant &b)
     }
 #endif
     if (b.toBool()) {
-        Snore::SnoreCore::instance().registerApplication(m_application);
+        if (!Snore::SnoreCore::instance().aplications().contains(m_application.name())) {
+            Snore::SnoreCore::instance().registerApplication(m_application);
+        }
     } else {
-        Snore::SnoreCore::instance().deregisterApplication(m_application);
+        if (Snore::SnoreCore::instance().aplications().contains(m_application.name())) {
+            Snore::SnoreCore::instance().deregisterApplication(m_application);
+        }
     }
 }
 
