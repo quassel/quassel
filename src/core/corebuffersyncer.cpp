@@ -129,12 +129,12 @@ void CoreBufferSyncer::mergeBuffersPermanently(BufferId bufferId1, BufferId buff
     BufferInfo bufferInfo1 = Core::getBufferInfo(_coreSession->user(), bufferId1);
     BufferInfo bufferInfo2 = Core::getBufferInfo(_coreSession->user(), bufferId2);
     if (!bufferInfo1.isValid() || !bufferInfo2.isValid()) {
-        qWarning() << "CoreBufferSyncer::mergeBufferPermanently(): invalid BufferIds:" << bufferId1 << bufferId2 << "for User:" << _coreSession->user();
+        qWarning() << "CoreBufferSyncer::mergeBuffersPermanently(): invalid BufferIds:" << bufferId1 << bufferId2 << "for User:" << _coreSession->user();
         return;
     }
 
-    if (bufferInfo1.type() != BufferInfo::QueryBuffer || bufferInfo2.type() != BufferInfo::QueryBuffer) {
-        qWarning() << "CoreBufferSyncer::mergeBufferPermanently(): only QueryBuffers can be merged!" << bufferId1 << bufferId2;
+    if((bufferInfo1.type() != BufferInfo::QueryBuffer && bufferInfo1.type() != BufferInfo::ChannelBuffer) || (bufferInfo2.type() != BufferInfo::QueryBuffer && bufferInfo2.type() != BufferInfo::ChannelBuffer)) {
+        qWarning() << "CoreBufferSyncer::mergeBuffersPermanently(): only QueryBuffers and/or ChannelBuffers can be merged!" << bufferId1 << bufferId2;
         return;
     }
 
