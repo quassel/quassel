@@ -43,9 +43,6 @@ public:
 
     virtual SettingsPage *createConfigWidget() const;
 
-signals:
-    void activated(uint notificationId = 0);
-
 public slots:
     void actionInvoked(Snore::Notification);
 
