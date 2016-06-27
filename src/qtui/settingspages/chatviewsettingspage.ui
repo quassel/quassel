@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>582</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -824,6 +824,22 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="QCheckBox" name="useSenderActionColors">
+        <property name="toolTip">
+         <string>Color sender nicknames in action messages, e.g.&lt;br/&gt;-*- &lt;span style=&quot; font-style:italic;&quot;&gt;Nick&lt;/span&gt; does an action</string>
+        </property>
+        <property name="text">
+         <string>Color senders in action messages</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string notr="true">/QtUiStyle/Colors/UseSenderActionColors</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -891,6 +907,7 @@
   <tabstop>senderColor14</tabstop>
   <tabstop>senderColor15</tabstop>
   <tabstop>senderColorSelf</tabstop>
+  <tabstop>useSenderActionColors</tabstop>
  </tabstops>
  <resources/>
  <connections>

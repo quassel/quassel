@@ -50,7 +50,18 @@ private:
     QString color(const QString &key, UiSettings &settings) const;
 
     QString msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const;
-    QString senderQss(int i, UiSettings &settings) const;
+
+    /**
+     * Generate a snippet of Qss stylesheet for a given sender-hash index
+     *
+     * @param[in] i            Sender hash index from 0 - 15
+     * @param[in] settings     Reference to current UI settings, used for loading color values
+     * @param[in] messageType  Type of message to filter, e.g. 'plain' or 'action'
+     * @param[in] includeNick  Also apply foreground color to Nick
+     * @return Snippet of Quassel-theme-compatible Qss stylesheet
+     */
+    QString senderQss(int i, UiSettings &settings, const QString &messageType,
+                      bool includeNick = false) const;
     QString chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const;
 };
 
