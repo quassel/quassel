@@ -498,13 +498,13 @@
       <bool>true</bool>
      </property>
      <property name="checked">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="settingsKey" stdset="0">
       <string notr="true">/QtUiStyle/Colors/UseSenderColors</string>
      </property>
      <property name="defaultValue" stdset="0">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -833,10 +833,13 @@
          <string>Color senders in action messages</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="settingsKey" stdset="0">
          <string notr="true">/QtUiStyle/Colors/UseSenderActionColors</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
