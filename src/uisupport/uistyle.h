@@ -134,6 +134,47 @@ public:
 
     class StyledMessage;
 
+    /**
+     * List of default sender colors
+     *
+     * In order from 1 - 16, matching the Sender## format in the settings file.
+     * Don't change the length or values of the colors without updating the UI, too.
+     *
+     * @see ../qtui/settingspages/chatviewsettingspage.ui
+     */
+    const QList<QColor> defaultSenderColors = QList<QColor> {
+        QColor(233, 13, 127),  /// Sender00
+        QColor(142, 85, 233),  /// Sender01
+        QColor(179, 14, 14),   /// Sender02
+        QColor(23, 179, 57),   /// Sender03
+        QColor(88, 175, 179),  /// Sender04
+        QColor(157, 84, 179),  /// Sender05
+        QColor(179, 151, 117), /// Sender06
+        QColor(49, 118, 179),  /// Sender07
+        QColor(233, 13, 127),  /// Sender08
+        QColor(142, 85, 233),  /// Sender09
+        QColor(179, 14, 14),   /// Sender10
+        QColor(23, 179, 57),   /// Sender11
+        QColor(88, 175, 179),  /// Sender12
+        QColor(157, 84, 179),  /// Sender13
+        QColor(179, 151, 117), /// Sender14
+        QColor(49, 118, 179),  /// Sender15
+    };
+    // Explicitly declare QList<QColor> type for defaultSenderColors, otherwise error C2797
+    // "list initialization inside member initializer list" will occur in Windows builds with Visual
+    // Studio's compiler.
+    //
+    // See https://blogs.msdn.microsoft.com/vcblog/2014/08/19/the-future-of-non-static-data-member-initialization/
+    // Note: Qt Creator flags this as invalid unless you set Clang in
+    // Settings -> C++ -> Code Model -> Code Completion and Semantic Highlighting -> C
+    //
+    // See https://bugreports.qt.io/browse/QTCREATORBUG-1902
+
+    /**
+     * Default sender color for sent messages
+     */
+    const QColor defaultSenderColorSelf = QColor(0, 0, 0);
+
     static FormatType formatType(Message::Type msgType);
     static StyledString styleString(const QString &string, quint32 baseFormat = Base);
     static QString mircToInternal(const QString &);

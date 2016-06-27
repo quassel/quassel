@@ -65,7 +65,7 @@ public:
      *
      * @returns True if sender brackets enabled, otherwise false
      */
-    inline bool showSenderBrackets() { return localValue("ShowSenderBrackets", true).toBool(); }
+    inline bool showSenderBrackets() { return localValue("ShowSenderBrackets", false).toBool(); }
     /**
      * Sets whether brackets are shown around around sender names.
      *
