@@ -139,11 +139,9 @@ bool QtUiApplication::init()
 
         // MIGRATION end
 
-        // check settings version
-        // so far, we only have 1
-        QtUiSettings s;
-        if (s.version() != 1) {
-            qCritical() << "Invalid client settings version, terminating!";
+        // Settings upgrade/downgrade handling
+        if (!migrateSettings()) {
+            qCritical() << "Could not load or upgrade client settings, terminating!";
             return false;
         }
 
@@ -176,6 +174,133 @@ QtUiApplication::~QtUiApplication()
 void QtUiApplication::quit()
 {
     QtUi::mainWindow()->quit();
+}
+
+
+bool QtUiApplication::migrateSettings()
+{
+    // --------
+    // Check major settings version.  This represents incompatible changes between settings
+    // versions.  So far, we only have 1.
+    QtUiSettings s;
+    uint versionMajor = s.version();
+    if (versionMajor != 1) {
+        qCritical() << qPrintable(QString("Invalid client settings version '%1'")
+                                  .arg(versionMajor));
+        return false;
+    }
+
+    // --------
+    // Check minor settings version, handling upgrades/downgrades as needed
+    // Current minor version
+    const uint VERSION_MINOR_CURRENT = 2;
+    // Stored minor version
+    uint versionMinor = s.versionMinor();
+
+    if (versionMinor == VERSION_MINOR_CURRENT) {
+        // At latest version, no need to migrate defaults or other settings
+        return true;
+    } else if (versionMinor == 0) {
+        // New configuration, store as current version
+        qDebug() << qPrintable(QString("Set up new client settings v%1.%2")
+                               .arg(versionMajor).arg(VERSION_MINOR_CURRENT));
+        s.setVersionMinor(VERSION_MINOR_CURRENT);
+
+        // Update the settings stylesheet for first setup.  We don't know if older content exists,
+        // if the configuration got erased separately, etc.
+        QtUiStyle qtUiStyle;
+        qtUiStyle.generateSettingsQss();
+        return true;
+    } else if (versionMinor < VERSION_MINOR_CURRENT) {
+        // We're upgrading - apply the neccessary upgrades from each interim version
+        // curVersion will never equal VERSION_MINOR_CURRENT, as it represents the version before
+        // the most recent applySettingsMigration() call.
+        for (uint curVersion = versionMinor; curVersion < VERSION_MINOR_CURRENT; curVersion++) {
+            if (!applySettingsMigration(s, curVersion + 1)) {
+                // Something went wrong, time to bail out
+                qCritical() << qPrintable(QString("Could not migrate client settings from v%1.%2 "
+                                                  "to v%1.%3")
+                                          .arg(versionMajor).arg(curVersion).arg(curVersion + 1));
+                // Keep track of the last successful upgrade to avoid repeating it on next start
+                s.setVersionMinor(curVersion);
+                return false;
+            }
+        }
+        // Migration successful!
+        qDebug() << qPrintable(QString("Successfully migrated client settings from v%1.%2 to "
+                                       "v%1.%3")
+                               .arg(versionMajor).arg(versionMinor).arg(VERSION_MINOR_CURRENT));
+        // Store the new minor version
+        s.setVersionMinor(VERSION_MINOR_CURRENT);
+        return true;
+    } else {
+        // versionMinor > VERSION_MINOR_CURRENT
+        // The user downgraded to an older version of Quassel.  Let's hope for the best.
+        // Don't change the minorVersion as the newer version's upgrade logic has already run.
+        qWarning() << qPrintable(QString("Client settings v%1.%2 is newer than latest known v%1.%3,"
+                                         " things might not work!")
+                                 .arg(versionMajor).arg(versionMinor).arg(VERSION_MINOR_CURRENT));
+        return true;
+    }
+}
+
+
+bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint newVersion)
+{
+    switch (newVersion) {
+    // Version 0 and 1 aren't valid upgrade paths - one represents no version, the other is the
+    // oldest version.  Ignore those, start from 2 and higher.
+    // Each missed version will be called in sequence.  E.g. to upgrade from '1' to '3', this
+    // function will be called with '2', then '3'.
+    case 2:
+    {
+        // Use explicit scope via { ... } to avoid cross-initialization
+
+        // New default changes: sender <nick> brackets disabled, sender colors and sender CTCP
+        // colors enabled.  Preserve the older default values for keys that haven't been saved.
+
+        // --------
+        // ChatView settings
+        const QString timestampFormatId = "ChatView/__default__/TimestampFormat";
+        if (!settings.valueExists(timestampFormatId)) {
+            // New default value is " hh:mm:ss", preserve old default of "[hh:mm:ss]"
+            settings.setValue(timestampFormatId, "[hh:mm:ss]");
+        }
+
+        const QString showSenderBracketsId = "ChatView/__default__/ShowSenderBrackets";
+        if (!settings.valueExists(showSenderBracketsId)) {
+            // New default is false, preserve previous behavior by setting to true
+            settings.setValue(showSenderBracketsId, true);
+        }
+        // --------
+
+        // --------
+        // QtUiStyle settings
+        QtUiStyleSettings settingsUiStyleColors("Colors");
+        const QString useSenderColorsId = "UseSenderColors";
+        if (!settingsUiStyleColors.valueExists(useSenderColorsId)) {
+            // New default is true, preserve previous behavior by setting to false
+            settingsUiStyleColors.setValue(useSenderColorsId, false);
+        }
+
+        const QString useSenderActionColorsId = "UseSenderActionColors";
+        if (!settingsUiStyleColors.valueExists(useSenderActionColorsId)) {
+            // New default is true, preserve previous behavior by setting to false
+            settingsUiStyleColors.setValue(useSenderActionColorsId, false);
+        }
+
+        // Update the settings stylesheet with old defaults
+        QtUiStyle qtUiStyle;
+        qtUiStyle.generateSettingsQss();
+        // --------
+
+        // Migration complete!
+        return true;
+    }
+    default:
+        // Something unexpected happened
+        return false;
+    }
 }
 
 

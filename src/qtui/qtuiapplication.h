@@ -31,6 +31,7 @@
 
 #include "quassel.h"
 #include "uisettings.h"
+#include "qtuisettings.h"
 
 class QtUi;
 
@@ -64,6 +65,28 @@ protected:
     virtual void quit();
 
 private:
+    /**
+     * Migrate settings if neccessary and possible
+     *
+     * If unsuccessful (major version changed, minor version upgrade failed), returning false, the
+     * settings are in an unknown state and the client should quit.
+     *
+     * @return True if settings successfully migrated, otherwise false
+     */
+    bool migrateSettings();
+
+    /**
+     * Migrate from one minor settings version to the next
+     *
+     * Settings can only be migrated one version at a time.  Start from the current version, calling
+     * this function for each intermediate version up until the latest version.
+     *
+     * @param[in] settings    Current settings instance
+     * @param[in] newVersion  Next target version for migration, at most 1 from the current version
+     * @return True if minor revision of settings successfully migrated, otherwise false
+     */
+    bool applySettingsMigration(QtUiSettings settings, const uint newVersion);
+
     bool _aboutToQuit;
 };
 

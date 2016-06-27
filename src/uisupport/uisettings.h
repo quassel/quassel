@@ -32,6 +32,14 @@ public:
     virtual inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
     virtual inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
 
+    /**
+     * Gets if a value exists in settings
+     *
+     * @param[in] key ID of local settings key
+     * @returns True if key exists in settings, otherwise false
+     */
+    virtual inline bool valueExists(const QString &key) { return localKeyExists(key); }
+
     inline void remove(const QString &key) { removeLocalKey(key); }
 };
 

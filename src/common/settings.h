@@ -53,7 +53,35 @@ public:
     //! Sets up notification and calls the given slot to set the initial value
     void initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue = QVariant());
 
+    /**
+     * Get the major configuration version
+     *
+     * This indicates the backwards/forwards incompatible version of configuration.
+     *
+     * @return Major configuration version (the X in XX.YY)
+     */
     virtual uint version();
+
+    /**
+     * Get the minor configuration version
+     *
+     * This indicates the backwards/forwards compatible version of configuration.
+     *
+     * @see Settings::setVersionMinor()
+     * @return Minor configuration version (the Y in XX.YY)
+     */
+    virtual uint versionMinor();
+
+    /**
+     * Set the minor configuration version
+     *
+     * When making backwards/forwards compatible changes, call this with the new version number.
+     * This does not implement any upgrade logic; implement that when checking Settings::version(),
+     * e.g. in Core::Core() and QtUiApplication::init().
+     *
+     * @param[in] versionMinor New minor version number
+     */
+    virtual void setVersionMinor(const uint versionMinor);
 
 protected:
     inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}
@@ -67,6 +95,14 @@ protected:
 
     virtual void setLocalValue(const QString &key, const QVariant &data);
     virtual const QVariant &localValue(const QString &key, const QVariant &def = QVariant());
+
+    /**
+     * Gets if a key exists in settings
+     *
+     * @param[in] key ID of local settings key
+     * @returns True if key exists in settings, otherwise false
+     */
+    virtual bool localKeyExists(const QString &key);
 
     virtual void removeLocalKey(const QString &key);
 
