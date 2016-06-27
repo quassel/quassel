@@ -22,7 +22,12 @@
 
 #include "settings.h"
 
-const int VERSION = 1;
+const int VERSION = 1;              /// Settings version for backwords/forwards incompatible changes
+
+// This is used if no VersionMinor key exists, e.g. upgrading from a Quassel version before this
+// change.  This shouldn't be increased from 1; instead, change the logic in Core::Core() and
+// QtUiApplication::init() to handle upgrading and downgrading.
+const int VERSION_MINOR_INITIAL = 1; /// Initial settings version for compatible changes
 
 QHash<QString, QVariant> Settings::settingsCache;
 QHash<QString, SettingsChangeNotifier *> Settings::settingsChangeNotifier;
@@ -83,6 +88,36 @@ uint Settings::version()
         return VERSION;
     }
     return ver;
+}
+
+
+uint Settings::versionMinor()
+{
+    // Don't cache this value; ignore the group
+    create_qsettings;
+    // '0' means new configuration, anything else indicates an existing configuration.  Application
+    // initialization should check this value and manage upgrades/downgrades, e.g. in Core::Core()
+    // and QtUiApplication::init().
+    uint verMinor = s.value("Config/VersionMinor", 0).toUInt();
+
+    // As previous Quassel versions didn't implement this, we need to check if any settings other
+    // than Config/Version exist.  If so, assume it's version 1.
+    if (verMinor == 0 && s.allKeys().count() > 1) {
+        // More than 1 key exists, but version's never been set.  Assume and set version 1.
+        setVersionMinor(VERSION_MINOR_INITIAL);
+        return VERSION_MINOR_INITIAL;
+    } else {
+        return verMinor;
+    }
+}
+
+
+void Settings::setVersionMinor(const uint versionMinor)
+{
+    // Don't cache this value; ignore the group
+    create_qsettings;
+    // Set the value directly.
+    s.setValue("Config/VersionMinor", versionMinor);
 }
 
 
@@ -148,6 +183,16 @@ const QVariant &Settings::localValue(const QString &key, const QVariant &def)
         setCacheValue(normKey, s.value(normKey, def));
     }
     return cacheValue(normKey);
+}
+
+bool Settings::localKeyExists(const QString &key)
+{
+    QString normKey = normalizedKey(group, key);
+    if (isCached(normKey))
+        return true;
+
+    create_qsettings;
+    return s.contains(normKey);
 }
 
 
