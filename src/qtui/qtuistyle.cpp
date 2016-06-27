@@ -106,8 +106,21 @@ void QtUiStyle::generateSettingsQss() const
         out << "\n// Sender Colors\n"
             << "ChatLine::sender#plain[sender=\"self\"] { foreground: " << color("SenderSelf", s) << "; }\n\n";
 
+        // Matches qssparser.cpp for UiStyle::PlainMsg
         for (int i = 0; i < 16; i++)
-            out << senderQss(i, s);
+            out << senderQss(i, s, "plain");
+
+        // Only color the nicks in CTCP ACTIONs if sender colors are enabled
+        if (s.value("UseSenderActionColors").toBool()) {
+            // For action messages, color the 'sender' column -and- the nick itself
+            out << "\n// Sender Nickname Colors for action messages\n"
+                << "ChatLine::sender#action[sender=\"self\"] { foreground: " << color("SenderSelf", s) << "; }\n"
+                << "ChatLine::nick#action[sender=\"self\"] { foreground: " << color("SenderSelf", s) << "; }\n\n";
+
+            // Matches qssparser.cpp for UiStyle::ActionMsg
+            for (int i = 0; i < 16; i++)
+                out << senderQss(i, s, "action", true);
+        }
     }
 
     // ItemViews
@@ -168,12 +181,20 @@ QString QtUiStyle::msgTypeQss(const QString &msgType, const QString &key, UiSett
 }
 
 
-QString QtUiStyle::senderQss(int i, UiSettings &settings) const
+QString QtUiStyle::senderQss(int i, UiSettings &settings, const QString &messageType, bool includeNick) const
 {
     QString dez = QString::number(i);
     if (dez.length() == 1) dez.prepend('0');
 
-    return QString("ChatLine::sender#plain[sender=\"0%1\"] { foreground: %2; }\n").arg(QString::number(i, 16), color("Sender"+dez, settings));
+    if (includeNick) {
+        // Include the nickname in the color rules
+        return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: %3; }\n"
+                       "ChatLine::nick#%1[sender=\"0%2\"]   { foreground: %3; }\n")
+                .arg(messageType, QString::number(i, 16), color("Sender"+dez, settings));
+    } else {
+        return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: %3; }\n")
+                .arg(messageType, QString::number(i, 16), color("Sender"+dez, settings));
+    }
 }
 
 
