@@ -123,7 +123,7 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const
         QString sender = MessageFilter::data(index, ChatLineModel::EditRole).toString();
         fields << sender;
     }
-    return QString("<%1>").arg(fields.join(":"));
+    return QString("%1").arg(fields.join(" "));
 }
 
 
