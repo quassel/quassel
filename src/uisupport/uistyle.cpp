@@ -29,7 +29,8 @@
 #include "util.h"
 
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
-QString UiStyle::_timestampFormatString;
+QString UiStyle::_timestampFormatString; /// Timestamp format
+bool UiStyle::_showSenderBrackets;       /// If true, show brackets around sender names
 
 UiStyle::UiStyle(QObject *parent)
     : QObject(parent),
@@ -66,7 +67,11 @@ UiStyle::UiStyle(QObject *parent)
     _formatCodes["%DM"] = ModeFlags;
     _formatCodes["%DU"] = Url;
 
-    setTimestampFormatString("[hh:mm:ss]");
+    // Initialize fallback defaults
+    // NOTE: If you change this, update qtui/chatviewsettings.h, too.  More explanations available
+    // in there.
+    setTimestampFormatString(" hh:mm:ss");
+    enableSenderBrackets(true);
 
     // BufferView / NickView settings
     UiStyleSettings s;
@@ -163,12 +168,18 @@ QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist)
     return ss;
 }
 
-
+// FIXME The following should trigger a reload/refresh of the chat view.
 void UiStyle::setTimestampFormatString(const QString &format)
 {
     if (_timestampFormatString != format) {
         _timestampFormatString = format;
-        // FIXME reload
+    }
+}
+
+void UiStyle::enableSenderBrackets(bool enabled)
+{
+    if (_showSenderBrackets != enabled) {
+        _showSenderBrackets = enabled;
     }
 }
 
@@ -813,7 +824,11 @@ QString UiStyle::StyledMessage::decoratedSender() const
 {
     switch (type()) {
     case Message::Plain:
-        return QString("%1").arg(plainSender()); break;
+        if (_showSenderBrackets)
+            return QString("<%1>").arg(plainSender());
+        else
+            return QString("%1").arg(plainSender());
+        break;
     case Message::Notice:
         return QString("[%1]").arg(plainSender()); break;
     case Message::Action:

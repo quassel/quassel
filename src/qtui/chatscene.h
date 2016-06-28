@@ -180,6 +180,11 @@ private slots:
 #endif
     void showWebPreviewChanged();
 
+    /**
+     * Updates the local setting cache of whether or not to show sender brackets
+     */
+    void showSenderBracketsChanged();
+
     void rowsRemoved();
 
     void clickTimeout();
@@ -225,6 +230,8 @@ private:
     bool _leftButtonPressed;
 
     bool _showWebPreview;
+
+    bool _showSenderBrackets;  /// If true, show brackets around sender names
 
     static const int _webSearchSelectionTextMaxVisible = 24;
 

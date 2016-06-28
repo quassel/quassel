@@ -169,6 +169,12 @@ protected:
     static FormatType formatType(const QString &code);
     static QString formatCode(FormatType);
     static void setTimestampFormatString(const QString &format);
+    /**
+     * Updates the local setting cache of whether or not to show sender brackets
+     *
+     * @param[in] enabled  If true, sender brackets are enabled, otherwise false.
+     */
+    static void enableSenderBrackets(bool enabled);
 
     QVariant itemData(int role, const QTextCharFormat &format) const;
 
@@ -185,6 +191,7 @@ private:
     QHash<quint32, QTextCharFormat> _listItemFormats;
     static QHash<QString, FormatType> _formatCodes;
     static QString _timestampFormatString;
+    static bool _showSenderBrackets;  /// If true, show brackets around sender names
 
     QIcon _channelJoinedIcon;
     QIcon _channelPartedIcon;

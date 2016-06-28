@@ -40,6 +40,10 @@ public slots:
 
 private slots:
     void updateTimestampFormatString();
+    /**
+     * Updates knowledge of whether or not to show sender brackets
+     */
+    void updateShowSenderBrackets();
 
 private:
     QString fontDescription(const QFont &font) const;

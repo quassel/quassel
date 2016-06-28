@@ -29,6 +29,8 @@ QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent)
     ChatViewSettings s;
     s.notify("TimestampFormat", this, SLOT(updateTimestampFormatString()));
     updateTimestampFormatString();
+    s.notify("ShowSenderBrackets", this, SLOT(updateShowSenderBrackets()));
+    updateShowSenderBrackets();
 }
 
 
@@ -38,6 +40,12 @@ void QtUiStyle::updateTimestampFormatString()
 {
     ChatViewSettings s;
     setTimestampFormatString(s.timestampFormatString());
+}
+
+void QtUiStyle::updateShowSenderBrackets()
+{
+    ChatViewSettings s;
+    enableSenderBrackets(s.showSenderBrackets());
 }
 
 
