@@ -813,7 +813,7 @@ QString UiStyle::StyledMessage::decoratedSender() const
 {
     switch (type()) {
     case Message::Plain:
-        return QString("<%1>").arg(plainSender()); break;
+        return QString("%1").arg(plainSender()); break;
     case Message::Notice:
         return QString("[%1]").arg(plainSender()); break;
     case Message::Action:
