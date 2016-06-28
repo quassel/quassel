@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>492</height>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,7 +39,7 @@
         <string/>
        </property>
        <property name="defaultValue" stdset="0">
-        <string>[hh:mm:ss]</string>
+        <string> hh:mm:ss</string>
        </property>
        <property name="settingsKey" stdset="0">
         <string notr="true">TimestampFormat</string>
@@ -60,6 +60,25 @@
       </spacer>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showSenderBrackets">
+     <property name="toolTip">
+      <string>Shows &lt;brackets&gt; around the names of senders</string>
+     </property>
+     <property name="text">
+      <string>Show brackets around sender names</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">ShowSenderBrackets</string>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -838,6 +857,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>timestampFormat</tabstop>
+  <tabstop>showSenderBrackets</tabstop>
   <tabstop>customChatViewFont</tabstop>
   <tabstop>allowMircColors</tabstop>
   <tabstop>showWebPreview</tabstop>

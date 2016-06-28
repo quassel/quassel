@@ -29,6 +29,12 @@
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     : MessageFilter(model, parent)
 {
+    // Global configuration
+    ChatViewSettings defaultSettings;
+    _showSenderBrackets = defaultSettings.showSenderBrackets();
+    defaultSettings.notify("ShowSenderBrackets", this, SLOT(showSenderBracketsSettingChanged(const QVariant &)));
+
+    // Chat Monitor specific configuration
     ChatViewSettings viewSettings(idString());
     _showFields = viewSettings.value("ShowFields", AllFields).toInt();
     _showOwnMessages = viewSettings.value("ShowOwnMsgs", true).toBool();
@@ -123,7 +129,10 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const
         QString sender = MessageFilter::data(index, ChatLineModel::EditRole).toString();
         fields << sender;
     }
-    return QString("%1").arg(fields.join(" "));
+    if (_showSenderBrackets)
+        return QString("<%1>").arg(fields.join(":"));
+    else
+        return QString("%1").arg(fields.join(":"));
 }
 
 
@@ -203,4 +212,9 @@ void ChatMonitorFilter::showBacklogSettingChanged(const QVariant &newValue) {
 
 void ChatMonitorFilter::includeReadSettingChanged(const QVariant &newValue) {
     _includeRead = newValue.toBool();
+}
+
+void ChatMonitorFilter::showSenderBracketsSettingChanged(const QVariant &newValue)
+{
+    _showSenderBrackets = newValue.toBool();
 }

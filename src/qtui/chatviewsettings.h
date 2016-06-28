@@ -45,13 +45,38 @@ public:
     inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
     inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 
+    /**
+     * Gets the format string for chat log timestamps
+     *
+     * @returns String representing timestamp format, e.g. "[hh:mm:ss]" or " hh:mm:ss"
+     */
     inline QString timestampFormatString() { return localValue("TimestampFormat", " hh:mm:ss").toString(); }
+    // Include a space in the default TimestampFormat to give the timestamp a small bit of padding
+    // between the border of the chat buffer window and the numbers.  Helps with readability.
+    /**
+     * Sets the format string for chat log timestamps
+     *
+     * @param[in] format String representing timestamp format, e.g. "[hh:mm:ss]" or " hh:mm:ss"
+     */
     inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
+
+    /**
+     * Gets if brackets are shown around sender names
+     *
+     * @returns True if sender brackets enabled, otherwise false
+     */
+    inline bool showSenderBrackets() { return localValue("ShowSenderBrackets", true).toBool(); }
+    /**
+     * Sets whether brackets are shown around around sender names.
+     *
+     * @param[in] enabled True if enabling sender brackets, otherwise false
+     */
+    inline void enableSenderBrackets(bool enabled) { setLocalValue("ShowSenderBrackets", enabled); }
 
     inline QString webSearchUrlFormatString() { return localValue("WebSearchUrlFormat", "https://www.google.com/search?q=%s").toString(); }
     inline void setWebSearchUrlFormatString(const QString &format) { setLocalValue("WebSearchUrlFormat", format); }
 };
 
 
-Q_DECLARE_METATYPE(ChatViewSettings::OperationMode);
+Q_DECLARE_METATYPE(ChatViewSettings::OperationMode)
 #endif //CHATVIEWSETTINGS_H

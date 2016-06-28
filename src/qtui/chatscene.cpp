@@ -131,6 +131,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _showWebPreview = defaultSettings.showWebPreview();
     defaultSettings.notify("ShowWebPreview", this, SLOT(showWebPreviewChanged()));
 
+    _showSenderBrackets = defaultSettings.showSenderBrackets();
+    defaultSettings.notify("ShowSenderBrackets", this, SLOT(showSenderBracketsChanged()));
+
     _clickTimer.setInterval(QApplication::doubleClickInterval());
     _clickTimer.setSingleShot(true);
     connect(&_clickTimer, SIGNAL(timeout()), SLOT(clickTimeout()));
@@ -1028,8 +1031,9 @@ QString ChatScene::selection() const
                 result += _lines[l]->item(ChatLineModel::TimestampColumn)->data(MessageModel::DisplayRole).toString() + " ";
             if (_selectionMinCol <= ChatLineModel::SenderColumn) {
                 ChatItem *item = _lines[l]->item(ChatLineModel::SenderColumn);
-                if (item->chatLine()->msgType() == Message::Plain) {
-                    // Copying to plain-text, re-add the sender brackets
+                if (!_showSenderBrackets && item->chatLine()->msgType() == Message::Plain) {
+                    // Copying to plain-text.  Only re-add the sender brackets if they're normally
+                    // hidden.
                     result += QString("<%1> ").arg(item->data(MessageModel::DisplayRole)
                                                    .toString());
                 } else {
@@ -1313,8 +1317,15 @@ void ChatScene::clearWebPreview(ChatItem *parentItem)
 //  end of webkit only
 // ========================================
 
+// Local configuration caching
 void ChatScene::showWebPreviewChanged()
 {
     ChatViewSettings settings;
     _showWebPreview = settings.showWebPreview();
+}
+
+void ChatScene::showSenderBracketsChanged()
+{
+    ChatViewSettings settings;
+    _showSenderBrackets = settings.showSenderBrackets();
 }

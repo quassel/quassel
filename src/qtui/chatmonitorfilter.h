@@ -60,6 +60,12 @@ private slots:
     void buffersSettingChanged(const QVariant &newValue);
     void showBacklogSettingChanged(const QVariant &newValue);
     void includeReadSettingChanged(const QVariant &newValue);
+    /**
+     * Updates the local setting cache of whether or not to show sender brackets
+     *
+     * @param[in] newValue  If true, sender brackets are enabled, otherwise false.
+     */
+    void showSenderBracketsSettingChanged(const QVariant &newValue);
 
 private:
     int _showFields;
@@ -69,6 +75,7 @@ private:
     int _operationMode;
     bool _showBacklog;
     bool _includeRead;
+    bool _showSenderBrackets;   /// If true, show brackets around sender names
 };
 
 
