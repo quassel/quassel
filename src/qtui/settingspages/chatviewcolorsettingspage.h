@@ -18,37 +18,45 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "chatviewsettingspage.h"
-#include "client.h"
-#include "qtui.h"
-#include "qtuistyle.h"
+#pragma once
 
-ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Chat View"), parent)
+#include "settingspage.h"
+#include "ui_chatviewcolorsettingspage.h"
+
+class ColorButton;
+
+class ChatViewColorSettingsPage : public SettingsPage
 {
-    ui.setupUi(this);
+    Q_OBJECT
 
-#if !defined HAVE_WEBKIT && !defined HAVE_WEBENGINE
-    ui.showWebPreview->hide();
-    ui.showWebPreview->setEnabled(false);
-#endif
+public:
+    /**
+     * Construct and initialize the ChatViewColorSettingsPage
+     *
+     * @param parent Parent QWidget object, such as the settings dialog
+     */
+    explicit ChatViewColorSettingsPage(QWidget *parent = 0);
 
-    // FIXME remove with protocol v11
-    if (!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
-        ui.autoMarkerLine->setEnabled(false);
-        ui.autoMarkerLine->setChecked(true);
-        ui.autoMarkerLine->setToolTip(tr("You need at least version 0.6 of quasselcore to use this feature"));
-    }
+    /**
+     * Gets whether or not this settings page has defaults
+     *
+     * @return True if defaults available, otherwise false
+     */
+    inline bool hasDefaults() const { return true; }
 
-    initAutoWidgets();
-}
+public slots:
+    /**
+     * Save and apply current settings
+     */
+    void save();
 
+private:
+    Ui::ChatViewColorSettingsPage ui;  /// Reference to the Qt settings page UI
 
-void ChatViewSettingsPage::save()
-{
-    // Save the general settings
-    SettingsPage::save();
-    // Update the stylesheet in case fonts are changed
-    QtUi::style()->generateSettingsQss();
-    QtUi::style()->reload();
-}
+    /**
+     * Gets the settings path for configuration values
+     *
+     * @return QString pointing to settings group and key for configuration values
+     */
+    inline QString settingsKey() const { return QString("QtUi/ChatView/__default__"); }
+};
