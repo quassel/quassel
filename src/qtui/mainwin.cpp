@@ -140,6 +140,7 @@
 #include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/chatmonitorsettingspage.h"
 #include "settingspages/chatviewsettingspage.h"
+#include "settingspages/chatviewcolorsettingspage.h"
 #include "settingspages/connectionsettingspage.h"
 #include "settingspages/coreaccountsettingspage.h"
 #include "settingspages/coreconnectionsettingspage.h"
@@ -1384,6 +1385,7 @@ void MainWin::showSettingsDlg()
     //Category: Interface
     dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
     dlg->registerSettingsPage(new ChatViewSettingsPage(dlg));
+    dlg->registerSettingsPage(new ChatViewColorSettingsPage(dlg));
     dlg->registerSettingsPage(new ChatMonitorSettingsPage(dlg));
     dlg->registerSettingsPage(new ItemViewSettingsPage(dlg));
     dlg->registerSettingsPage(new BufferViewSettingsPage(dlg));

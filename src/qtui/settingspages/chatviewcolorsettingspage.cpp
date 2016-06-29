@@ -18,37 +18,27 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "chatviewsettingspage.h"
+#include "chatviewcolorsettingspage.h"
+
 #include "client.h"
+#include "colorbutton.h"
 #include "qtui.h"
 #include "qtuistyle.h"
 
-ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Chat View"), parent)
+ChatViewColorSettingsPage::ChatViewColorSettingsPage(QWidget *parent) :
+    SettingsPage(tr("Interface"), tr("Chat View Colors"), parent)
 {
     ui.setupUi(this);
-
-#if !defined HAVE_WEBKIT && !defined HAVE_WEBENGINE
-    ui.showWebPreview->hide();
-    ui.showWebPreview->setEnabled(false);
-#endif
-
-    // FIXME remove with protocol v11
-    if (!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
-        ui.autoMarkerLine->setEnabled(false);
-        ui.autoMarkerLine->setChecked(true);
-        ui.autoMarkerLine->setToolTip(tr("You need at least version 0.6 of quasselcore to use this feature"));
-    }
 
     initAutoWidgets();
 }
 
 
-void ChatViewSettingsPage::save()
+void ChatViewColorSettingsPage::save()
 {
     // Save the general settings
     SettingsPage::save();
-    // Update the stylesheet in case fonts are changed
+    // Update the stylesheet in case colors are changed
     QtUi::style()->generateSettingsQss();
     QtUi::style()->reload();
 }

@@ -8,6 +8,7 @@ set(SETTINGSPAGES
     bufferview
     chatmonitor
     chatview
+    chatviewcolor
     connection
     coreconnection
     coreaccount
