@@ -174,6 +174,10 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                 capListFinished = true;
                 availableCaps = e->params().at(2).split(' ');
             }
+            // Sort capabilities before requesting for consistency among networks.  This may avoid
+            // unexpected cases when some networks offer capabilities in a different order than
+            // others.  It also looks nicer in logs.  Not required.
+            availableCaps.sort();
             // Store what capabilities are available
             QString availableCapName, availableCapValue;
             for (int i = 0; i < availableCaps.count(); ++i) {
