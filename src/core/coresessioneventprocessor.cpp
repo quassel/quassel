@@ -253,13 +253,17 @@ void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent *e)
 /* IRCv3 away-notify - ":nick!user@host AWAY [:message]" */
 void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
 {
-    if (!checkParamCount(e, 2))
+    if (!checkParamCount(e, 1))
         return;
+    // Don't use checkParamCount(e, 2) since the message is optional.  Some servers respond in a way
+    // that it counts as two parameters, but we shouldn't rely on that.
 
     // Nick is sent as part of parameters in order to split user/server decoding
     IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser) {
-        if (!e->params().at(1).isEmpty()) {
+        // If two parameters are sent -and- the second parameter isn't empty, then user is away.
+        // Otherwise, mark them as not away.
+        if (e->params().count() >= 2 && !e->params().at(1).isEmpty()) {
             ircuser->setAway(true);
             ircuser->setAwayMessage(e->params().at(1));
         } else {
@@ -881,7 +885,9 @@ void CoreSessionEventProcessor::processIrcEvent324(IrcEvent *e)
 /*  RPL_WHOISACCOUNT - "<nick> <account> :is authed as" */
 void CoreSessionEventProcessor::processIrcEvent330(IrcEvent *e)
 {
-    if (!checkParamCount(e, 3))
+    // Though the ":is authed as" remark should always be there, we should handle cases when it's
+    // not included, too.
+    if (!checkParamCount(e, 2))
         return;
 
     IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
@@ -1100,7 +1106,9 @@ void CoreSessionEventProcessor::processWhoInformation (Network *net, const QStri
 void CoreSessionEventProcessor::processIrcEvent403(IrcEventNumeric *e)
 {
     // If this is the result of an AutoWho, hide it.  It's confusing to show to the user.
-    if (!checkParamCount(e, 2))
+    // Though the ":No such channel" remark should always be there, we should handle cases when it's
+    // not included, too.
+    if (!checkParamCount(e, 1))
         return;
 
     QString channelOrNick = e->params()[0];
