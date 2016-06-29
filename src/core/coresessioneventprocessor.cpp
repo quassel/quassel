@@ -242,15 +242,9 @@ void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent *e)
 
     IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
     if (ircuser) {
-        QString newAccount = e->params().at(0);
-        // WHOX uses '0' to indicate logged-out, account-notify uses '*'
-        if (newAccount != "*") {
-            // Account logged in, set account name
-            ircuser->setAccount(newAccount);
-        } else {
-            // Account logged out, set account name to logged-out
-            ircuser->setAccount("*");
-        }
+        // WHOX uses '0' to indicate logged-out, account-notify and extended-join uses '*'.
+        // As '*' is used internally to represent logged-out, no need to handle that differently.
+        ircuser->setAccount(e->params().at(0));
     } else {
         qDebug() << "Received account-notify data for unknown user" << e->prefix();
     }
@@ -324,7 +318,9 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
             // If logged in, :nick!user@host JOIN #channelname accountname :Real Name
             // If logged out, :nick!user@host JOIN #channelname * :Real Name
             // See:  http://ircv3.net/specs/extensions/extended-join-3.1.html
-            // FIXME Keep track of authed user account, requires adding support to ircuser.h/cpp
+            // WHOX uses '0' to indicate logged-out, account-notify and extended-join uses '*'.
+            // As '*' is used internally to represent logged-out, no need to handle that differently.
+            ircuser->setAccount(e->params()[1]);
             // Update the user's real name, too
             ircuser->setRealName(e->params()[2]);
         }
@@ -882,7 +878,7 @@ void CoreSessionEventProcessor::processIrcEvent324(IrcEvent *e)
 }
 
 
-/*  RPL_WHOISACCOUNT: "<nick> <account> :is authed as */
+/*  RPL_WHOISACCOUNT - "<nick> <account> :is authed as" */
 void CoreSessionEventProcessor::processIrcEvent330(IrcEvent *e)
 {
     if (!checkParamCount(e, 3))
@@ -1030,7 +1026,7 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
         // Don't use .section(" ", 1) with WHOX replies, for there's no hopcount to trim out
 
         // As part of IRCv3 account-notify, check account name
-        // WHOX uses '0' to indicate logged-out, account-notify uses '*'
+        // WHOX uses '0' to indicate logged-out, account-notify and extended-join uses '*'.
         QString newAccount = e->params()[7];
         if (newAccount != "0") {
             // Account logged in, set account name
