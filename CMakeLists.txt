@@ -83,7 +83,7 @@ option(WITH_WEBENGINE "WebEngine support (for link previews)" ON)
 
 if (APPLE)
     # Notification Center is only available in > 10.8, which is Darwin v12
-    if (CMAKE_SYSTEM_VERSION VERSION_GREATER "11.9.9")
+    if (NOT CMAKE_SYSTEM_VERSION VERSION_LESS 12)
         option(WITH_NOTIFICATION_CENTER "OS X Notification Center support" ON)
         add_feature_info(WITH_NOTIFICATION_CENTER WITH_NOTIFICATION_CENTER "Use the OS X Notification Center")
     endif()
@@ -154,22 +154,6 @@ endif()
 # Set up Qt
 #####################################################################
 
-if (USE_QT5)
-    message(STATUS "Building for Qt5...")
-    set(QT_MIN_VERSION "5.2.0")
-    add_definitions(-DHAVE_QT5)
-else()
-    message(STATUS "Building for Qt4...")
-    set(QT_MIN_VERSION "4.8.0")
-
-    # Select a Qt installation here, if you don't want to use system Qt
-    if(QT_PATH)
-        # FindQt4 will look for the qmake binary in $PATH, so we just prepend QT_PATH
-        set(ENV{PATH} ${QT_PATH}/bin:$ENV{PATH})
-    endif()
-endif()
-
-
 # Find package dependencies
 #
 # Note that you can forcefully disable optional packages
@@ -177,6 +161,10 @@ endif()
 #####################################################################
 
 if (USE_QT5)
+    message(STATUS "Building for Qt5...")
+    set(QT_MIN_VERSION "5.2.0")
+    add_definitions(-DHAVE_QT5)
+
     find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
     set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED
         URL "http://qt.digia.com"
@@ -366,6 +354,15 @@ if (USE_QT5)
     endif()
 
 else(USE_QT5)
+    message(STATUS "Building for Qt4...")
+    set(QT_MIN_VERSION "4.8.0")
+
+    # Select a Qt installation here, if you don't want to use system Qt
+    if(QT_PATH)
+        # FindQt4 will look for the qmake binary in $PATH, so we just prepend QT_PATH
+        set(ENV{PATH} ${QT_PATH}/bin:$ENV{PATH})
+    endif()
+
     find_package(Qt4 ${QT_MIN_VERSION} QUIET REQUIRED)
 
     if (BUILD_GUI)
