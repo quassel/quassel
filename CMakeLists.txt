@@ -103,9 +103,6 @@ endif()
 # The following options are not for end-user consumption, so don't list them in the feature summary
 cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF "APPLE" OFF)
 
-# Handle with care
-set(QT_PATH "" CACHE PATH "Path to a Qt4 installation to use instead of the system Qt (e.g. for static builds)")
-
 # Static builds are not supported and require some manual setup! Don't enable unless you know what you're doing (we don't know either)
 cmake_dependent_option(STATIC      "Enable static building (not supported)" OFF "NOT WITH_KDE" OFF)
 
@@ -370,12 +367,6 @@ if (USE_QT5)
 else()
     message(STATUS "Building for Qt4...")
     set(QT_MIN_VERSION "4.8.0")
-
-    # Select a Qt installation here, if you don't want to use system Qt
-    if(QT_PATH)
-        # FindQt4 will look for the qmake binary in $PATH, so we just prepend QT_PATH
-        set(ENV{PATH} ${QT_PATH}/bin:$ENV{PATH})
-    endif()
 
     find_package(Qt4 ${QT_MIN_VERSION} QUIET REQUIRED)
 
