@@ -45,7 +45,7 @@ set(LIBS )
 if(HAVE_SSL)
   set(SOURCES ${SOURCES} sslserver.cpp)
   include_directories(${OPENSSL_INCLUDE_DIR})
-endif(HAVE_SSL)
+endif()
 
 if (QCA2_FOUND)
     add_definitions(-DHAVE_QCA2)

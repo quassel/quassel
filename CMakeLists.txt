@@ -284,17 +284,17 @@ if (USE_QT5)
                     DESCRIPTION "KDE Frameworks"
                     PURPOSE     "Required for integration into the Plasma desktop"
                 )
-            else(WITH_KDE)
+            else()
                 find_package(KF5Sonnet QUIET)
                 set_package_properties(KF5Sonnet PROPERTIES TYPE RECOMMENDED
                     URL "http://api.kde.org/frameworks-api/frameworks5-apidocs/sonnet/html"
                     DESCRIPTION "framework for providing spell-checking capabilities"
                     PURPOSE "Enables spell-checking support in input widgets"
                 )
-            endif(WITH_KDE)
-        endif(ECM_FOUND)
+            endif()
+        endif()
 
-    endif(BUILD_GUI)
+    endif()
 
     if (BUILD_CORE)
         find_package(Qt5Script QUIET)
@@ -313,7 +313,7 @@ if (USE_QT5)
             PURPOSE "Required for encryption support"
         )
 
-    endif(BUILD_CORE)
+    endif()
 
     find_package(Qt5LinguistTools QUIET)
     set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
@@ -340,7 +340,7 @@ if (USE_QT5)
         endif()
     endif()
 
-else(USE_QT5)
+else()
     message(STATUS "Building for Qt4...")
     set(QT_MIN_VERSION "4.8.0")
 
@@ -379,14 +379,14 @@ else(USE_QT5)
             )
             set(CMAKE_C_FLAGS ${_cflags})
 
-        else(WITH_KDE)
+        else()
             find_package(Phonon QUIET)
             set_package_properties(Phonon PROPERTIES TYPE RECOMMENDED
                 URL "https://projects.kde.org/projects/kdesupport/phonon"
                 DESCRIPTION "a multimedia abstraction library"
                 PURPOSE     "Required for audio notifications"
             )
-        endif(WITH_KDE)
+        endif()
 
         find_package(IndicateQt QUIET)
         set_package_properties(IndicateQt PROPERTIES TYPE OPTIONAL
@@ -395,7 +395,7 @@ else(USE_QT5)
             PURPOSE     "Provides integration into the Ayatana notification system used by e.g. Ubuntu"
         )
 
-    endif(BUILD_GUI)
+    endif()
 
     if (BUILD_CORE)
 
@@ -547,7 +547,7 @@ if (NOT WIN32)
     check_function_exists(umask HAVE_UMASK)
     if(HAVE_UMASK)
         add_definitions(-DHAVE_UMASK)
-    endif(HAVE_UMASK)
+    endif()
 endif()
 
 
@@ -608,7 +608,7 @@ endif()
 if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
   if (DEFINED ENV{GIT_HEAD})
       set(GIT_HEAD $ENV{GIT_HEAD})
-  endif ()
+  endif()
   if (DEFINED ENV{GIT_DESCRIBE})
      set(GIT_DESCRIBE $ENV{GIT_DESCRIBE})
   endif()

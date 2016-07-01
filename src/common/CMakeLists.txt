@@ -74,7 +74,7 @@ endif()
 
 if (APPLE)
     set(SOURCES ${SOURCES} mac_utils.cpp)
-endif(APPLE)
+endif()
 
 if (WIN32)
     set(SOURCES ${SOURCES} logbacktrace_win.cpp)
@@ -93,7 +93,7 @@ qt_use_modules(mod_common Core Network)
 
 if (APPLE)
     target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
-endif(APPLE)
+endif()
 
 target_link_libraries(mod_common ${CMAKE_DL_LIBS} ${EXECINFO_LIBRARIES})
 

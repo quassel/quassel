@@ -147,7 +147,7 @@ endif()
 if(HAVE_SSL)
   set(SOURCES ${SOURCES} sslinfodlg.cpp)
   set(FORMS ${FORMS} sslinfodlg.ui)
-endif(HAVE_SSL)
+endif()
 
 if (INDICATEQT_FOUND)
     add_definitions(-DHAVE_INDICATEQT)
