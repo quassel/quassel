@@ -34,14 +34,14 @@ if (QCA2-QT5_INCLUDE_DIR AND QCA2-QT5_LIBRARIES)
   # in cache already
   set(QCA2-QT5_FOUND TRUE)
 
-else (QCA2-QT5_INCLUDE_DIR AND QCA2-QT5_LIBRARIES)
+else()
 
 
   if (NOT WIN32)
     find_package(PkgConfig)
     pkg_check_modules(PC_QCA2-QT5 QUIET qca2-qt5)
     set(QCA2-QT5_DEFINITIONS ${PC_QCA2-QT5_CFLAGS_OTHER})
-  endif (NOT WIN32)
+  endif()
 
   find_library_with_debug(QCA2-QT5_LIBRARIES
                   WIN32_DEBUG_POSTFIX d
@@ -57,5 +57,5 @@ else (QCA2-QT5_INCLUDE_DIR AND QCA2-QT5_LIBRARIES)
 
   mark_as_advanced(QCA2-QT5_INCLUDE_DIR QCA2-QT5_LIBRARIES)
 
-endif (QCA2-QT5_INCLUDE_DIR AND QCA2-QT5_LIBRARIES)
+endif()
 endif()
