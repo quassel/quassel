@@ -136,8 +136,8 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
         if (!item.isActive || item.type == CtcpIgnore)
             continue;
         if (item.scope == GlobalScope
-            || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network))
-            || (item.scope == ChannelScope && scopeMatch(item.scopeRule, bufferName))) {
+            || (item.scope == NetworkScope && scopeMatch(item.scopeRegex, network))
+            || (item.scope == ChannelScope && scopeMatch(item.scopeRegex, bufferName))) {
             QString str;
             if (item.type == MessageIgnore)
                 str = msgContents;
@@ -149,9 +149,9 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
 //      qDebug() << "pattern: " << ruleRx.pattern();
 //      qDebug() << "scopeRule: " << item.scopeRule;
 //      qDebug() << "now testing";
-            if ((!item.isRegEx && item.regEx.exactMatch(str)) ||
-                (item.isRegEx && item.regEx.indexIn(str) != -1)) {
-//        qDebug() << "MATCHED!";
+
+            QRegularExpressionMatch match = item.regEx.match(str);
+            if (match.hasMatch()) {
                 return item.strictness;
             }
         }
@@ -160,17 +160,9 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
 }
 
 
-bool IgnoreListManager::scopeMatch(const QString &scopeRule, const QString &string) const
+bool IgnoreListManager::scopeMatch(const QRegularExpression &scopeRegex, const QString &string) const
 {
-    foreach(QString rule, scopeRule.split(";")) {
-        QRegExp ruleRx = QRegExp(rule.trimmed());
-        ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
-        ruleRx.setPatternSyntax(QRegExp::Wildcard);
-        if (ruleRx.exactMatch(string)) {
-            return true;
-        }
-    }
-    return false;
+    return scopeRegex.match(string).hasMatch();
 }
 
 
@@ -193,23 +185,19 @@ void IgnoreListManager::toggleIgnoreRule(const QString &ignoreRule)
 
 bool IgnoreListManager::ctcpMatch(const QString sender, const QString &network, const QString &type)
 {
+    qDebug() << "Checking ctcp match" << sender << network << type;
     foreach(IgnoreListItem item, _ignoreList) {
         if (!item.isActive)
             continue;
-        if (item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network))) {
-            QString sender_;
-            QStringList types = item.ignoreRule.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        if (item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(item.scopeRegex, network))) {
+            QRegularExpressionMatch match(item.regEx.match(sender));
 
-            sender_ = types.takeAt(0);
+            if (!match.hasMatch()) {
+                continue;
+            }
 
-            QRegExp ruleRx = QRegExp(sender_);
-            ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
-            if (!item.isRegEx)
-                ruleRx.setPatternSyntax(QRegExp::Wildcard);
-            if ((!item.isRegEx && ruleRx.exactMatch(sender)) ||
-                (item.isRegEx && ruleRx.indexIn(sender) != -1)) {
-                if (types.isEmpty() || types.contains(type, Qt::CaseInsensitive))
-                    return true;
+            if (item.ctcpTypes.isEmpty() || item.ctcpTypes.contains(type, Qt::CaseInsensitive)) {
+                return true;
             }
         }
     }

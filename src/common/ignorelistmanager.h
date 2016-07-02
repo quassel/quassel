@@ -22,7 +22,7 @@
 #define IGNORELISTMANAGER_H
 
 #include <QString>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "message.h"
 #include "syncableobject.h"
@@ -53,6 +53,14 @@ public:
         ChannelScope,
     };
 
+    static QString convertFromWildcard(const QString originalRule) {
+        QString pattern(QRegularExpression::escape(originalRule));
+        pattern.replace("\\?", ".");
+        pattern.replace("\\*", ".*");
+        pattern = '^' + pattern + '$';
+        return pattern;
+    }
+
     struct IgnoreListItem {
         IgnoreType type;
         QString ignoreRule;
@@ -60,15 +68,51 @@ public:
         StrictnessType strictness;
         ScopeType scope;
         QString scopeRule;
+        QRegularExpression scopeRegex;
         bool isActive;
-        QRegExp regEx;
+        QRegularExpression regEx;
+        QStringList ctcpTypes;
         IgnoreListItem() {}
         IgnoreListItem(IgnoreType type_, const QString &ignoreRule_, bool isRegEx_, StrictnessType strictness_,
             ScopeType scope_, const QString &scopeRule_, bool isActive_)
-            : type(type_), ignoreRule(ignoreRule_), isRegEx(isRegEx_), strictness(strictness_), scope(scope_), scopeRule(scopeRule_), isActive(isActive_), regEx(ignoreRule_) {
-            regEx.setCaseSensitivity(Qt::CaseInsensitive);
-            if (!isRegEx_) {
-                regEx.setPatternSyntax(QRegExp::Wildcard);
+            : type(type_), ignoreRule(ignoreRule_), isRegEx(isRegEx_), strictness(strictness_), scope(scope_), isActive(isActive_) {
+
+            if (ignoreRule.isEmpty()) {
+                qWarning() << "Handed an empty ignore rule";
+                return;
+            }
+
+
+            QString pattern(ignoreRule);
+
+            if (type == CtcpIgnore) {
+                QStringList split(pattern.split(QRegularExpression("\\s+"), QString::SkipEmptyParts));
+                pattern = split.takeFirst();
+                ctcpTypes = split;
+            }
+
+            if (!isRegEx) {
+                pattern = convertFromWildcard(pattern);
+            }
+
+            regEx.setPattern(pattern);
+            regEx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
+
+            if (!regEx.isValid()) {
+                qWarning() << "Ignore rule" << ignoreRule << "is invalid!";
+            } else {
+                regEx.optimize();
+            }
+
+            // Set up scope regex
+            pattern = convertFromWildcard(scopeRule);
+            pattern.replace(';', '|');
+            scopeRegex = QRegularExpression(scopeRule_);
+            scopeRegex.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
+            if (!scopeRegex.isValid()) {
+                qWarning() << "Scope rule" << scopeRule_ << "is invalid!";
+            } else {
+                scopeRegex.optimize();
             }
         }
         bool operator!=(const IgnoreListItem &other)
@@ -147,7 +191,7 @@ public slots:
 
 protected:
     void setIgnoreList(const QList<IgnoreListItem> &ignoreList) { _ignoreList = ignoreList; }
-    bool scopeMatch(const QString &scopeRule, const QString &string) const; // scopeRule is a ';'-separated list, string is a network/channel-name
+    bool scopeMatch(const QRegularExpression &scopeRegex, const QString &string) const;
 
     StrictnessType _match(const QString &msgContents, const QString &msgSender, Message::Type msgType, const QString &network, const QString &bufferName);
 
