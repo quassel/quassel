@@ -76,7 +76,7 @@ if (NOT WITH_KDE)
 endif()
 
 # For this, the feature info is added after we know if QtWebkit is installed
-option(WITH_WEBKIT "WebKit support (for link previews) (legacy)" ON)
+option(WITH_WEBKIT "WebKit support (for link previews) (legacy)" OFF)
 
 # For this, the feature info is added after we know if QtWebEngine is installed
 option(WITH_WEBENGINE "WebEngine support (for link previews)" ON)
