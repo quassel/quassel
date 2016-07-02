@@ -172,15 +172,20 @@ QString secondsToString(int timeInSeconds)
     timeUnit.append(qMakePair(60, QCoreApplication::translate("Quassel::secondsToString()", "min")));
     timeUnit.append(qMakePair(1, QCoreApplication::translate("Quassel::secondsToString()", "sec")));
 
-    QStringList returnString;
-    for (int i = 0; i < timeUnit.size(); i++) {
-        int n = timeInSeconds / timeUnit[i].first;
-        if (n > 0) {
-            returnString += QString("%1 %2").arg(QString::number(n), timeUnit[i].second);
+    if (timeInSeconds != 0) {
+        QStringList returnString;
+        for (int i = 0; i < timeUnit.size(); i++) {
+            int n = timeInSeconds / timeUnit[i].first;
+            if (n > 0) {
+                returnString += QString("%1 %2").arg(QString::number(n), timeUnit[i].second);
+            }
+            timeInSeconds = timeInSeconds % timeUnit[i].first;
         }
-        timeInSeconds = timeInSeconds % timeUnit[i].first;
+        return returnString.join(", ");
     }
-    return returnString.join(", ");
+    else {
+        return QString("%1 %2").arg(QString::number(timeInSeconds), timeUnit.last().second);
+    }
 }
 
 
