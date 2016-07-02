@@ -76,7 +76,7 @@ if (NOT WITH_KDE)
 endif()
 
 # For this, the feature info is added after we know if QtWebkit is installed
-option(WITH_WEBKIT "WebKit support (for link previews)" ON)
+option(WITH_WEBKIT "WebKit support (for link previews)" OFF)
 
 if (APPLE)
     # Notification Center is only available in > 10.8, which is Darwin v12
