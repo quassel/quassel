@@ -47,6 +47,15 @@ script: |-
     make
   fi
 
+before_deploy: |-
+  if [ "$TRAVIS_OS_NAME" == "osx" ]
+  then
+    mkdir releases
+    zip -r Quassel.zip Quassel.app
+    zip -r QuasselClient.zip Quassel\ Client.app
+    zip -r quasselcore.zip quasselcore
+  fi
+
 matrix:
   exclude:
     - compiler: clang
@@ -55,3 +64,15 @@ matrix:
       compiler: clang
     - os: osx
       env: QT_VERSION=qt4
+
+deploy:
+  provider: releases
+  api_key: "${GH_TOKEN}"
+  file:
+    - "Quassel.zip"
+    - "QuasselClient.zip"
+    - "quasselcore"
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: "$TRAVIS_OS_NAME == 'osx' && $GH_TOKEN != ''"
