@@ -1,13 +1,25 @@
+os:
+  - osx
+  - linux
+
 sudo: required
 dist: trusty
 
-install:
-  - sudo apt-get -qy install libqt5webkit5-dev qttools5-dev qtscript5-dev 
-  - sudo apt-get -qy install libdbusmenu-qt-dev libdbusmenu-qt5-dev
-  - sudo apt-get -qy install libphonon-dev libphonon4qt5-dev
-  - sudo apt-get -qy install libqca2-dev
-  - sudo apt-get -qy install qt4-dev-tools qttools5-dev-tools
-  - sudo apt-get -qy install libphonon4qt5experimental4 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805096
+install: |-
+  if [ "$TRAVIS_OS_NAME" == "osx" ]
+  then
+    brew update
+    brew install ninja qt5
+  fi
+  if [ "$TRAVIS_OS_NAME" == "linux" ]
+  then
+    sudo apt-get -qy install libqt5webkit5-dev qttools5-dev qtscript5-dev
+    sudo apt-get -qy install libdbusmenu-qt-dev libdbusmenu-qt5-dev
+    sudo apt-get -qy install libphonon-dev libphonon4qt5-dev
+    sudo apt-get -qy install libqca2-dev
+    sudo apt-get -qy install qt4-dev-tools qttools5-dev-tools
+    sudo apt-get -qy install libphonon4qt5experimental4 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805096
+  fi
 
 language: cpp
 cache: ccache
@@ -20,14 +32,25 @@ env:
   - QT_VERSION=qt4
   - QT_VERSION=qt5
 
-script:
-  - mkdir build
-  - cd build
-  - if [ "$QT_VERSION" = "qt4" ]; then cmake ..; fi
-  - if [ "$QT_VERSION" = "qt5" ]; then cmake -DUSE_QT5=ON ..; fi
-  - make
+script: |-
+  mkdir build
+  cd build
+  if [ "$TRAVIS_OS_NAME" == "osx" ]
+  then
+    cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DUSE_QT5=ON -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
+    ninja install
+  elif [ "$TRAVIS_OS_NAME" == "linux" ]
+  then
+    if [ "$QT_VERSION" = "qt4" ]; then cmake ..; fi
+    if [ "$QT_VERSION" = "qt5" ]; then cmake -DUSE_QT5=ON ..; fi
+    make
+  fi
 
 matrix:
   exclude:
     - compiler: clang
+      env: QT_VERSION=qt4
+    - os: osx
+      compiler: clang
+    - os: osx
       env: QT_VERSION=qt4
