@@ -101,7 +101,9 @@ public:
             if (!regEx.isValid()) {
                 qWarning() << "Ignore rule" << ignoreRule << "is invalid!";
             } else {
+#if QT_VERSION >= 0x050400
                 regEx.optimize();
+#endif
             }
 
             // Set up scope regex
@@ -112,7 +114,9 @@ public:
             if (!scopeRegex.isValid()) {
                 qWarning() << "Scope rule" << scopeRule_ << "is invalid!";
             } else {
+#if QT_VERSION >= 0x050400
                 scopeRegex.optimize();
+#endif
             }
         }
         bool operator!=(const IgnoreListItem &other)
