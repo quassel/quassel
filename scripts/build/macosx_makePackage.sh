@@ -41,7 +41,7 @@ if [ ! -f "$mypath" ]; then
 fi
 
 SCRIPTDIR=$(dirname $mypath)
-QUASSEL_VERSION=$(git-describe)
+QUASSEL_VERSION=$(git describe)
 BUILDTYPE=$1
 
 # check the working dir
