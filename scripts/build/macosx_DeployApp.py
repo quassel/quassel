@@ -189,6 +189,7 @@ class InstallQt(object):
             else:
                 newlibname = "@executable_path/%s%s" % (frameworkname, libpath)
             # print 'install_name_tool -id "%s" "%s"' % (newlibname, lib)
+            os.system('chmod +w "%s"' % (lib))
             os.system('install_name_tool -id "%s" "%s"' % (newlibname, lib))
 
             self.resolveDependancies(lib)
@@ -210,6 +211,8 @@ class InstallQt(object):
             newlibname = "@executable_path/Frameworks/%s" % newlibname
 
         # print 'install_name_tool -change "%s" "%s" "%s"' % (lib, newlibname, obj)
+        os.system('chmod +w "%s"' % (lib))
+        os.system('chmod +w "%s"' % (obj))
         os.system('install_name_tool -change "%s" "%s" "%s"' % (lib, newlibname, obj))
 
 if __name__ == "__main__":
