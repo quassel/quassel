@@ -33,7 +33,7 @@ QT_CONFIG_NOBUNDLE = """[Paths]
 
 
 class InstallQt(object):
-    def __init__(self, appdir, bundle=True, requestedPlugins=[]):
+    def __init__(self, appdir, bundle=True, requestedPlugins=[], skipInstallQtConf=False):
         self.appDir = appdir
         self.bundle = bundle
         self.frameworkDir = self.appDir + "/Frameworks"
@@ -52,7 +52,8 @@ class InstallQt(object):
 
         self.findPluginsPath()
         self.installPlugins(requestedPlugins)
-        self.installQtConf()
+        if not skipInstallQtConf:
+            self.installQtConf()
 
     def qtProperty(self, qtProperty):
         """
@@ -153,6 +154,12 @@ class InstallQt(object):
 
         self.installedFrameworks.add(framework)
 
+        # if the Framework-Folder is a Symlink we are in a Helper-Process ".app" (e.g. in QtWebEngine),
+        # in this case skip copying/installing on existing folders
+        skipExisting = False;
+        if os.path.islink(self.frameworkDir):
+            skipExisting = True;
+
         # ensure that the framework directory exists
         try:
             os.mkdir(self.frameworkDir)
@@ -162,11 +169,15 @@ class InstallQt(object):
         if not framework.startswith('/'):
             framework = "%s/%s" % (self.sourceFrameworkPath, framework)
 
-        # Copy Framework
-        os.system('cp -R "%s" "%s"' % (framework, self.frameworkDir))
-
         frameworkname = framework.split('/')[-1]
         localframework = self.frameworkDir + "/" + frameworkname
+
+        # Framework already installed in previous run ... see above
+        if skipExisting and os.path.isdir(localframework):
+            return
+
+        # Copy Framework
+        os.system('cp -R "%s" "%s"' % (framework, self.frameworkDir))
 
         # De-Myllify
         os.system('find "%s" -name *debug* -exec rm -f {} \;' % localframework)
@@ -235,3 +246,10 @@ if __name__ == "__main__":
             targetDir += "/Contents"
 
         InstallQt(targetDir, bundle, plugins)
+
+        if bundle:
+            webenginetarget = targetDir + '/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app/Contents'
+
+            if os.path.isdir(webenginetarget):
+                os.system('ln -s ../../../../../../ "%s"/Frameworks' % webenginetarget)
+                InstallQt(webenginetarget, bundle, [], True)
