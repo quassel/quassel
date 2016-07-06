@@ -12,15 +12,31 @@ build_script:
 
     mkdir -Force $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
     cd $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
-    if($env:QT_VER -eq 5.5) {
-        $webkitOption = "-DWITH_WEBKIT=ON"
-    } else {
-        $webkitOption = "-DWITH_WEBKIT=OFF"
+
+    $webPrevOption = "-DWITH_WEBKIT=OFF -DWITH_WEBENGINE=ON"
+    $webPrevFiles = @(
+                      "bin\\Qt5Positioning\.dll",
+                      "bin\\Qt5PrintSupport\.dll",
+                      "bin\\Qt5Sensors\.dll",
+                      "bin\\Qt5WebChannel\.dll",
+                      "bin\\QtWebEngineProcess\.exe",
+                      "bin\\Qt5WebEngine\.dll",
+                      "bin\\Qt5WebEngineCore\.dll",
+                      "bin\\Qt5WebEngineWidgets\.dll",
+                      "resources\\icudtl\.dat",
+                      "resources\\qtwebengine_resources.pak",
+                      "resources\\qtwebengine_resources_100p.pak",
+                      "resources\\qtwebengine_resources_200p.pak")
+
+    if($env:COMPILER -eq "mingw49_32") {
+        $webPrevOption = "-DWITH_WEBKIT=OFF -DWITH_WEBENGINE=OFF"
+        $webPrevFiles = @()
     }
-    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON $webkitOption
+    
+    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON $webPrevOption
     CmakeImageInstall
 
-    $imageDir = CreateDeployImage @(
+    $whitelist = @(
                             # whitelist
                             #quassel
                             "quassel.*",
@@ -57,16 +73,11 @@ build_script:
                             "bin\\Qt5Opengl\.dll",
                             "bin\\Qt5Multimedia\.dll",
                             "bin\\Qt5MultimediaWidgets\.dll",
-                            "bin\\Qt5Positioning\.dll",
-                            "bin\\Qt5PrintSupport\.dll",
                             "bin\\Qt5Qml\.dll",
                             "bin\\Qt5Quick\.dll",
                             "bin\\Qt5Script\.dll",
-                            "bin\\Qt5Sensors\.dll",
                             "bin\\Qt5Sql\.dll",
                             "bin\\Qt5WebChannel\.dll",
-                            "bin\\Qt5WebKit\.dll",
-                            "bin\\Qt5WebKitWidgets\.dll",
                             "bin\\Qt5Widgets\.dll",
                             "bin\\Qt5XmlPatterns\.dll",
                             "bin\\.*libglesv2\.dll",
@@ -94,7 +105,11 @@ build_script:
                             "bin\\libphononexperimental.*\.dll",
                             "bin\\phonon_backend\\.*",
                             "plugins\\phonon_backend\\.*",
-                            "plugins\\phonon4qt5_backend\\.*") @(
+                            "plugins\\phonon4qt5_backend\\.*")
+
+    $whitelist += $webPrevFiles
+
+    $imageDir = CreateDeployImage $whitelist @(
                             #blacklist
                             "include",
                             ".*\.h",
@@ -111,6 +126,10 @@ build_script:
     {
         mv "$imageDir\lib\plugins\*" "$imageDir"
     }
+    if(Test-Path "$imageDir\resources")
+    {
+        mv "$imageDir\resources\*" "$imageDir"
+    }
     DeleteEmptyFodlers $imageDir
     7ZipDeployImage
     NsisDeployImage $env:APPVEYOR_BUILD_FOLDER\scripts\build\NullsoftInstaller.nsi
@@ -121,15 +140,10 @@ environment:
     matrix:
     #msvc
     - COMPILER: msvc2015_64
-      QT_VER: 5.6
     - COMPILER: msvc2015
-      QT_VER: 5.6
 
     #mingw
     - COMPILER: mingw49_32
-      QT_VER: 5.6
-    - COMPILER: mingw492_32
-      QT_VER: 5.5
 
 test: off
 
