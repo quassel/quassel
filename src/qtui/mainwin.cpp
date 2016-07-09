@@ -164,7 +164,8 @@ MainWin::MainWin(QWidget *parent)
     _titleSetter(this),
     _awayLog(0),
     _layoutLoaded(false),
-    _activeBufferViewIndex(-1)
+    _activeBufferViewIndex(-1),
+    _aboutToQuit(false)
 {
     setAttribute(Qt::WA_DeleteOnClose, false); // we delete the mainwin manually
 
@@ -1482,13 +1483,20 @@ void MainWin::closeEvent(QCloseEvent *event)
     QtUiSettings s;
     QtUiApplication *app = qobject_cast<QtUiApplication *> qApp;
     Q_ASSERT(app);
-    if (!app->isAboutToQuit() && QtUi::haveSystemTray() && s.value("MinimizeOnClose").toBool()) {
+    // On OSX it can happen that the closeEvent occurs twice. (Especially if packaged with Frameworks)
+    // This messes up MainWinState/MainWinHidden save/restore.
+    // It's a bug in Qt: https://bugreports.qt.io/browse/QTBUG-43344
+    if (!_aboutToQuit && !app->isAboutToQuit() && QtUi::haveSystemTray() && s.value("MinimizeOnClose").toBool()) {
         QtUi::hideMainWidget();
         event->ignore();
     }
-    else {
+    else if(!_aboutToQuit) {
+        _aboutToQuit = true;
         event->accept();
         quit();
+    }
+    else {
+        event->ignore();
     }
 }
 
