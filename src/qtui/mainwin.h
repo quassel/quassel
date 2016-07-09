@@ -225,5 +225,7 @@ private:
     QHash<int, BufferId> _jumpKeyMap;
     int _activeBufferViewIndex;
 
+    bool _aboutToQuit; //closeEvent can occur multiple times on OSX
+
     friend class QtUi;
 };
