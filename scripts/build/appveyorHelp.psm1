@@ -69,14 +69,25 @@ function SETUP-QT()
     $script:QT_BINARY_DIRS = @($qtDir)
 
     BAT-CALL  "$qtDir\bin\qtenv2.bat"
-    if ($compiler.StartsWith("mingw49"))
+
+    if ($compiler.StartsWith("mingw"))
     {
+        # supported values are
+        #mingw49_32
+        #mingw53_32
         #remove sh.exe from path
         $env:PATH=$env:PATH -replace "C:\\Program Files \(x86\)\\Git\\bin", ""
         $script:MAKE="mingw32-make"
         $script:CMAKE_GENERATOR="MinGW Makefiles"
         $script:STRIP=@("strip", "-s")
-        $script:QT_BINARY_DIRS += (Resolve-Path "$qtDir\..\..\Tools\mingw492_32\opt\")
+        if ($compiler -eq "mingw49_32")
+        {
+            $script:QT_BINARY_DIRS += (Resolve-Path "$qtDir\..\..\Tools\mingw492_32\opt\")
+        }
+        elseif ($compiler -eq "mingw53_32")
+        {
+            $script:QT_BINARY_DIRS += (Resolve-Path "$qtDir\..\..\Tools\mingw530_32\opt\")
+        }
     }
     elseif ($compiler.StartsWith("msvc"))
     {
