@@ -212,8 +212,11 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                 coreNet->beginCapNegotiation();
         } else if (capCommand == "ACK") {
             // CAP ACK requires at least 3 parameters (no empty response allowed)
-            if (!checkParamCount(e, 3))
+            if (!checkParamCount(e, 3)) {
+                // If an invalid reply is sent, try to continue rather than getting stuck.
+                coreNet->sendNextCap();
                 return;
+            }
 
             // Server: CAP * ACK :multi-prefix sasl
             // Got the capability we want, handle as needed.
@@ -231,8 +234,14 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             }
         } else if (capCommand == "NAK" || capCommand == "DEL") {
             // CAP NAK/DEL require at least 3 parameters (no empty response allowed)
-            if (!checkParamCount(e, 3))
+            if (!checkParamCount(e, 3)) {
+                if (capCommand == "NAK") {
+                    // If an invalid reply is sent, try to continue rather than getting stuck.  This
+                    // only matters for denied caps, not removed caps.
+                    coreNet->sendNextCap();
+                }
                 return;
+            }
 
             // Either something went wrong with this capability, or it is no longer supported
             // > For CAP NAK
@@ -253,8 +262,8 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             }
 
             if (capCommand == "NAK") {
-                // Continue negotiation when capability listing complete only if this is the result
-                // of a denied cap, not a removed cap
+                // Continue negotiation only if this is the result of a denied cap, not a removed
+                // cap
                 coreNet->sendNextCap();
             }
         }
