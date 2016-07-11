@@ -155,7 +155,12 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     // Handle capability negotiation
     // See: http://ircv3.net/specs/core/capability-negotiation-3.2.html
     // And: http://ircv3.net/specs/core/capability-negotiation-3.1.html
-    if (e->params().count() >= 3) {
+
+    // All commands require at least 2 parameters
+    if (!checkParamCount(e, 2))
+        return;
+
+    if (e->params().count() >= 2) {
         CoreNetwork *coreNet = coreNetwork(e);
         QString capCommand = e->params().at(1).trimmed().toUpper();
         if (capCommand == "LS" || capCommand == "NEW") {
@@ -172,7 +177,13 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             } else {
                 // Single line reply
                 capListFinished = true;
-                availableCaps = e->params().at(2).split(' ');
+                if (e->params().count() >= 3) {
+                    // Some capabilities are specified, add them
+                    availableCaps = e->params().at(2).split(' ');
+                } else {
+                    // No capabilities available, add an empty list
+                    availableCaps = QStringList();
+                }
             }
             // Sort capabilities before requesting for consistency among networks.  This may avoid
             // unexpected cases when some networks offer capabilities in a different order than
@@ -200,6 +211,10 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             if (capListFinished)
                 coreNet->beginCapNegotiation();
         } else if (capCommand == "ACK") {
+            // CAP ACK requires at least 3 parameters (no empty response allowed)
+            if (!checkParamCount(e, 3))
+                return;
+
             // Server: CAP * ACK :multi-prefix sasl
             // Got the capability we want, handle as needed.
             // As only one capability is requested at a time, no need to split
@@ -215,6 +230,10 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                 coreNet->sendNextCap();
             }
         } else if (capCommand == "NAK" || capCommand == "DEL") {
+            // CAP NAK/DEL require at least 3 parameters (no empty response allowed)
+            if (!checkParamCount(e, 3))
+                return;
+
             // Either something went wrong with this capability, or it is no longer supported
             // > For CAP NAK
             // Server: CAP * NAK :multi-prefix sasl
