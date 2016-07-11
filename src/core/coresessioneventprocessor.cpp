@@ -175,14 +175,20 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
                 availableCaps = e->params().at(2).split(' ');
             }
             // Store what capabilities are available
-            QStringList availableCapPair;
+            QString availableCapName, availableCapValue;
             for (int i = 0; i < availableCaps.count(); ++i) {
                 // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
-                availableCapPair = availableCaps[i].trimmed().split('=');
-                if(availableCapPair.count() >= 2) {
-                    coreNet->addCap(availableCapPair.at(0).trimmed().toLower(), availableCapPair.at(1).trimmed());
-                } else {
-                    coreNet->addCap(availableCapPair.at(0).trimmed().toLower());
+                // Capability name comes before the first '='.  If no '=' exists, this gets the
+                // whole string instead.
+                availableCapName = availableCaps[i].section('=', 0, 0).trimmed();
+                // Some capabilities include multiple key=value pairs in the listing,
+                // e.g. "sts=duration=31536000,port=6697"
+                // Include everything after the first equal sign as part of the value.  If no '='
+                // exists, this gets an empty string.
+                availableCapValue = availableCaps[i].section('=', 1).trimmed();
+                // Only add the capability if it's non-empty
+                if (!availableCapName.isEmpty()) {
+                    coreNet->addCap(availableCapName, availableCapValue);
                 }
             }
 
