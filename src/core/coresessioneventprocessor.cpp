@@ -160,112 +160,110 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     if (!checkParamCount(e, 2))
         return;
 
-    if (e->params().count() >= 2) {
-        CoreNetwork *coreNet = coreNetwork(e);
-        QString capCommand = e->params().at(1).trimmed().toUpper();
-        if (capCommand == "LS" || capCommand == "NEW") {
-            // Either we've gotten a list of capabilities, or new capabilities we may want
-            // Server: CAP * LS * :multi-prefix extended-join account-notify batch invite-notify tls
-            // Server: CAP * LS * :cap-notify server-time example.org/dummy-cap=dummyvalue example.org/second-dummy-cap
-            // Server: CAP * LS :userhost-in-names sasl=EXTERNAL,DH-AES,DH-BLOWFISH,ECDSA-NIST256P-CHALLENGE,PLAIN
-            bool capListFinished;
-            QStringList availableCaps;
-            if (e->params().count() == 4) {
-                // Middle of multi-line reply, ignore the asterisk
-                capListFinished = false;
-                availableCaps = e->params().at(3).split(' ');
+    CoreNetwork *coreNet = coreNetwork(e);
+    QString capCommand = e->params().at(1).trimmed().toUpper();
+    if (capCommand == "LS" || capCommand == "NEW") {
+        // Either we've gotten a list of capabilities, or new capabilities we may want
+        // Server: CAP * LS * :multi-prefix extended-join account-notify batch invite-notify tls
+        // Server: CAP * LS * :cap-notify server-time example.org/dummy-cap=dummyvalue example.org/second-dummy-cap
+        // Server: CAP * LS :userhost-in-names sasl=EXTERNAL,DH-AES,DH-BLOWFISH,ECDSA-NIST256P-CHALLENGE,PLAIN
+        bool capListFinished;
+        QStringList availableCaps;
+        if (e->params().count() == 4) {
+            // Middle of multi-line reply, ignore the asterisk
+            capListFinished = false;
+            availableCaps = e->params().at(3).split(' ');
+        } else {
+            // Single line reply
+            capListFinished = true;
+            if (e->params().count() >= 3) {
+                // Some capabilities are specified, add them
+                availableCaps = e->params().at(2).split(' ');
             } else {
-                // Single line reply
-                capListFinished = true;
-                if (e->params().count() >= 3) {
-                    // Some capabilities are specified, add them
-                    availableCaps = e->params().at(2).split(' ');
-                } else {
-                    // No capabilities available, add an empty list
-                    availableCaps = QStringList();
-                }
+                // No capabilities available, add an empty list
+                availableCaps = QStringList();
             }
-            // Sort capabilities before requesting for consistency among networks.  This may avoid
-            // unexpected cases when some networks offer capabilities in a different order than
-            // others.  It also looks nicer in logs.  Not required.
-            availableCaps.sort();
-            // Store what capabilities are available
-            QString availableCapName, availableCapValue;
-            for (int i = 0; i < availableCaps.count(); ++i) {
-                // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
-                // Capability name comes before the first '='.  If no '=' exists, this gets the
-                // whole string instead.
-                availableCapName = availableCaps[i].section('=', 0, 0).trimmed();
-                // Some capabilities include multiple key=value pairs in the listing,
-                // e.g. "sts=duration=31536000,port=6697"
-                // Include everything after the first equal sign as part of the value.  If no '='
-                // exists, this gets an empty string.
-                availableCapValue = availableCaps[i].section('=', 1).trimmed();
-                // Only add the capability if it's non-empty
-                if (!availableCapName.isEmpty()) {
-                    coreNet->addCap(availableCapName, availableCapValue);
-                }
+        }
+        // Sort capabilities before requesting for consistency among networks.  This may avoid
+        // unexpected cases when some networks offer capabilities in a different order than
+        // others.  It also looks nicer in logs.  Not required.
+        availableCaps.sort();
+        // Store what capabilities are available
+        QString availableCapName, availableCapValue;
+        for (int i = 0; i < availableCaps.count(); ++i) {
+            // Capability may include values, e.g. CAP * LS :multi-prefix sasl=EXTERNAL
+            // Capability name comes before the first '='.  If no '=' exists, this gets the
+            // whole string instead.
+            availableCapName = availableCaps[i].section('=', 0, 0).trimmed();
+            // Some capabilities include multiple key=value pairs in the listing,
+            // e.g. "sts=duration=31536000,port=6697"
+            // Include everything after the first equal sign as part of the value.  If no '='
+            // exists, this gets an empty string.
+            availableCapValue = availableCaps[i].section('=', 1).trimmed();
+            // Only add the capability if it's non-empty
+            if (!availableCapName.isEmpty()) {
+                coreNet->addCap(availableCapName, availableCapValue);
             }
+        }
 
-            // Begin capability requests when capability listing complete
-            if (capListFinished)
-                coreNet->beginCapNegotiation();
-        } else if (capCommand == "ACK") {
-            // CAP ACK requires at least 3 parameters (no empty response allowed)
-            if (!checkParamCount(e, 3)) {
-                // If an invalid reply is sent, try to continue rather than getting stuck.
-                coreNet->sendNextCap();
-                return;
-            }
+        // Begin capability requests when capability listing complete
+        if (capListFinished)
+            coreNet->beginCapNegotiation();
+    } else if (capCommand == "ACK") {
+        // CAP ACK requires at least 3 parameters (no empty response allowed)
+        if (!checkParamCount(e, 3)) {
+            // If an invalid reply is sent, try to continue rather than getting stuck.
+            coreNet->sendNextCap();
+            return;
+        }
 
-            // Server: CAP * ACK :multi-prefix sasl
-            // Got the capability we want, handle as needed.
-            // As only one capability is requested at a time, no need to split
-            QString acceptedCap = e->params().at(2).trimmed().toLower();
+        // Server: CAP * ACK :multi-prefix sasl
+        // Got the capability we want, handle as needed.
+        // As only one capability is requested at a time, no need to split
+        QString acceptedCap = e->params().at(2).trimmed().toLower();
 
-            // Mark this cap as accepted
-            coreNet->acknowledgeCap(acceptedCap);
+        // Mark this cap as accepted
+        coreNet->acknowledgeCap(acceptedCap);
 
-            if (!coreNet->capsRequiringConfiguration.contains(acceptedCap)) {
-                // Some capabilities (e.g. SASL) require further messages to finish.  If so, do NOT
-                // send the next capability; it will be handled elsewhere in CoreNetwork.
-                // Otherwise, move on to the next capability
-                coreNet->sendNextCap();
-            }
-        } else if (capCommand == "NAK" || capCommand == "DEL") {
-            // CAP NAK/DEL require at least 3 parameters (no empty response allowed)
-            if (!checkParamCount(e, 3)) {
-                if (capCommand == "NAK") {
-                    // If an invalid reply is sent, try to continue rather than getting stuck.  This
-                    // only matters for denied caps, not removed caps.
-                    coreNet->sendNextCap();
-                }
-                return;
-            }
-
-            // Either something went wrong with this capability, or it is no longer supported
-            // > For CAP NAK
-            // Server: CAP * NAK :multi-prefix sasl
-            // > For CAP DEL
-            // Server: :irc.example.com CAP modernclient DEL :multi-prefix sasl
-            // CAP NAK and CAP DEL replies are always single-line
-
-            QStringList removedCaps;
-            removedCaps = e->params().at(2).split(' ');
-
-            // Store what capability was denied or removed
-            QString removedCap;
-            for (int i = 0; i < removedCaps.count(); ++i) {
-                removedCap = removedCaps[i].trimmed().toLower();
-                // Mark this cap as removed
-                coreNet->removeCap(removedCap);
-            }
-
+        if (!coreNet->capsRequiringConfiguration.contains(acceptedCap)) {
+            // Some capabilities (e.g. SASL) require further messages to finish.  If so, do NOT
+            // send the next capability; it will be handled elsewhere in CoreNetwork.
+            // Otherwise, move on to the next capability
+            coreNet->sendNextCap();
+        }
+    } else if (capCommand == "NAK" || capCommand == "DEL") {
+        // CAP NAK/DEL require at least 3 parameters (no empty response allowed)
+        if (!checkParamCount(e, 3)) {
             if (capCommand == "NAK") {
-                // Continue negotiation only if this is the result of a denied cap, not a removed
-                // cap
+                // If an invalid reply is sent, try to continue rather than getting stuck.  This
+                // only matters for denied caps, not removed caps.
                 coreNet->sendNextCap();
             }
+            return;
+        }
+
+        // Either something went wrong with this capability, or it is no longer supported
+        // > For CAP NAK
+        // Server: CAP * NAK :multi-prefix sasl
+        // > For CAP DEL
+        // Server: :irc.example.com CAP modernclient DEL :multi-prefix sasl
+        // CAP NAK and CAP DEL replies are always single-line
+
+        QStringList removedCaps;
+        removedCaps = e->params().at(2).split(' ');
+
+        // Store what capability was denied or removed
+        QString removedCap;
+        for (int i = 0; i < removedCaps.count(); ++i) {
+            removedCap = removedCaps[i].trimmed().toLower();
+            // Mark this cap as removed
+            coreNet->removeCap(removedCap);
+        }
+
+        if (capCommand == "NAK") {
+            // Continue negotiation only if this is the result of a denied cap, not a removed
+            // cap
+            coreNet->sendNextCap();
         }
     }
 }
