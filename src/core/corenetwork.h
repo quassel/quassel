@@ -131,6 +131,14 @@ public:
     void beginCapNegotiation();
 
     /**
+     * Ends capability negotiation.
+     *
+     * This won't have effect if other CAP commands are in the command queue before calling this
+     * command.  It should only be called when capability negotiation is complete.
+     */
+    void endCapNegotiation();
+
+    /**
      * List of capabilities requiring further core<->server messages to configure.
      *
      * For example, SASL requires the back-and-forth of AUTHENTICATE, so the next capability cannot
