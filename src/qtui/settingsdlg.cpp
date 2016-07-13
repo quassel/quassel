@@ -45,6 +45,22 @@ SettingsDlg::SettingsDlg(QWidget *parent)
     connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), SLOT(coreConnectionStateChanged()));
 
     setButtonStates();
+
+    // Some settings panes can take a good bit of space.  To avoid squashing the settings tree, try
+    // to resize the dialog.  If needed, it can always be resized by the user to take less space.
+    //
+    // Only try to resize if the sizes are valid.  This shouldn't happen.. but better to be safe.
+    // See http://www.qtcentre.org/threads/3427-invalid-sizeHint()
+    if (ui.settingsTree->sizeHint().isValid() && ui.settingsTree->size().isValid()) {
+        // Find out how much width would make the settings tree happy
+        int wantedExtraWidth = ui.settingsTree->sizeHint().width()
+                - ui.settingsTree->size().width();
+        // If more space is needed, try to resize to allow for it.  Qt should keep the dialog within
+        // the bounds of the screen.
+        if (wantedExtraWidth > 0) {
+            this->resize(this->width() + wantedExtraWidth, this->height());
+        }
+    }
 }
 
 
