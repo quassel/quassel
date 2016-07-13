@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Edit Server</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -90,12 +90,31 @@
          <property name="enabled">
           <bool>true</bool>
          </property>
+         <property name="toolTip">
+          <string>Try to use an encrypted connection (e.g. SSL/TLS)</string>
+         </property>
          <property name="text">
-          <string>Use SSL</string>
+          <string>Use encrypted connection</string>
          </property>
          <property name="icon">
           <iconset>
            <normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="sslVerify">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>&lt;p&gt;Verify the encrypted connection provides a valid certificate, increasing security.&lt;br/&gt;Uncheck if the IRC server uses a self-signed or invalid certificate.&lt;/p&gt;</string>
+         </property>
+         <property name="text">
+          <string>Verify connection security</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -309,6 +328,7 @@
   <tabstop>port</tabstop>
   <tabstop>password</tabstop>
   <tabstop>useSSL</tabstop>
+  <tabstop>sslVerify</tabstop>
   <tabstop>sslVersion</tabstop>
   <tabstop>useProxy</tabstop>
   <tabstop>proxyType</tabstop>

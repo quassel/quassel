@@ -12,5 +12,6 @@ CREATE TABLE ircserver (
     proxyhost varchar(128) NOT NULL DEFAULT 'localhost',
     proxyport integer NOT NULL DEFAULT 8080,
     proxyuser varchar(64),
-    proxypass varchar(64)
+    proxypass varchar(64),
+    sslverify boolean NOT NULL DEFAULT FALSE -- bool, validate SSL cert
 )

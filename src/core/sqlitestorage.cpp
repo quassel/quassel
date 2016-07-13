@@ -676,6 +676,7 @@ void SqliteStorage::bindServerInfo(QSqlQuery &query, const Network::Server &serv
     query.bindValue(":proxyport", server.proxyPort);
     query.bindValue(":proxyuser", server.proxyUser);
     query.bindValue(":proxypass", server.proxyPass);
+    query.bindValue(":sslverify", server.sslVerify ? 1 : 0);
 }
 
 
@@ -875,6 +876,7 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user)
                         server.proxyPort = serversQuery.value(8).toUInt();
                         server.proxyUser = serversQuery.value(9).toString();
                         server.proxyPass = serversQuery.value(10).toString();
+                        server.sslVerify = serversQuery.value(11).toInt() == 1 ? true : false;
                         servers << server;
                     }
                     net.serverList = servers;
@@ -1977,6 +1979,7 @@ bool SqliteMigrationReader::readMo(IrcServerMO &ircserver)
     ircserver.proxyport = value(11).toInt();
     ircserver.proxyuser = value(12).toString();
     ircserver.proxypass = value(13).toString();
+    ircserver.sslverify = value(14).toInt() == 1 ? true : false;
     return true;
 }
 

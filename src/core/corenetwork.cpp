@@ -1114,9 +1114,33 @@ void CoreNetwork::sendAutoWho()
 #ifdef HAVE_SSL
 void CoreNetwork::sslErrors(const QList<QSslError> &sslErrors)
 {
-    Q_UNUSED(sslErrors)
-    socket.ignoreSslErrors();
-    // TODO errorhandling
+    Server server = usedServer();
+    if (server.sslVerify) {
+        // Treat the SSL error as a hard error
+        QString sslErrorMessage = tr("Encrypted connection couldn't be verified, disconnecting "
+                                     "since verification is required");
+        if (!sslErrors.empty()) {
+            // Add the error reason if known
+            sslErrorMessage.append(tr(" (Reason: %1)").arg(sslErrors.first().errorString()));
+        }
+        displayMsg(Message::Error, BufferInfo::StatusBuffer, "", sslErrorMessage);
+
+        // Disconnect, triggering a reconnect in case it's a temporary issue with certificate
+        // validity, network trouble, etc.
+        disconnectFromIrc(false, QString("Encrypted connection not verified"), true /* withReconnect */);
+    } else {
+        // Treat the SSL error as a warning, continue to connect anyways
+        QString sslErrorMessage = tr("Encrypted connection couldn't be verified, continuing "
+                                     "since verification is not required");
+        if (!sslErrors.empty()) {
+            // Add the error reason if known
+            sslErrorMessage.append(tr(" (Reason: %1)").arg(sslErrors.first().errorString()));
+        }
+        displayMsg(Message::Info, BufferInfo::StatusBuffer, "", sslErrorMessage);
+
+        // Proceed with the connection
+        socket.ignoreSslErrors();
+    }
 }
 
 
