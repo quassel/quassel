@@ -72,8 +72,9 @@ public:
         HideInactiveNetworks = 0x0008,
         PasswordChange = 0x0010,
         CapNegotiation = 0x0020,           /// IRCv3 capability negotiation, account tracking
+        VerifyServerSSL = 0x0040,          /// IRC server SSL validation
 
-        NumFeatures = 0x0020
+        NumFeatures = 0x0040
     };
     Q_DECLARE_FLAGS(Features, Feature)
 

@@ -230,6 +230,7 @@ public:
         int port;
         QString password;
         bool ssl;
+        bool sslverify;     /// If true, validate SSL certificates
         int sslversion;
         bool useproxy;
         int proxytype;

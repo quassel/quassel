@@ -1,0 +1,2 @@
+ALTER TABLE ircserver
+ADD COLUMN sslverify boolean NOT NULL DEFAULT FALSE

@@ -1111,6 +1111,7 @@ QDataStream &operator<<(QDataStream &out, const Network::Server &server)
     serverMap["Port"] = server.port;
     serverMap["Password"] = server.password;
     serverMap["UseSSL"] = server.useSsl;
+    serverMap["sslVerify"] = server.sslVerify;
     serverMap["sslVersion"] = server.sslVersion;
     serverMap["UseProxy"] = server.useProxy;
     serverMap["ProxyType"] = server.proxyType;
@@ -1131,6 +1132,7 @@ QDataStream &operator>>(QDataStream &in, Network::Server &server)
     server.port = serverMap["Port"].toUInt();
     server.password = serverMap["Password"].toString();
     server.useSsl = serverMap["UseSSL"].toBool();
+    server.sslVerify = serverMap["sslVerify"].toBool();
     server.sslVersion = serverMap["sslVersion"].toInt();
     server.useProxy = serverMap["UseProxy"].toBool();
     server.proxyType = serverMap["ProxyType"].toInt();
@@ -1148,6 +1150,7 @@ bool Network::Server::operator==(const Server &other) const
     if (port != other.port) return false;
     if (password != other.password) return false;
     if (useSsl != other.useSsl) return false;
+    if (sslVerify != other.sslVerify) return false;
     if (sslVersion != other.sslVersion) return false;
     if (useProxy != other.useProxy) return false;
     if (proxyType != other.proxyType) return false;
@@ -1167,6 +1170,7 @@ bool Network::Server::operator!=(const Server &other) const
 
 QDebug operator<<(QDebug dbg, const Network::Server &server)
 {
-    dbg.nospace() << "Server(host = " << server.host << ":" << server.port << ", useSsl = " << server.useSsl << ")";
+    dbg.nospace() << "Server(host = " << server.host << ":" << server.port << ", useSsl = " <<
+                     server.useSsl << ", sslVerify = " << server.sslVerify << ")";
     return dbg.space();
 }

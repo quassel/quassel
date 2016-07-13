@@ -786,6 +786,25 @@ NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialo
     ui.setupUi(this);
     ui.useSSL->setIcon(QIcon::fromTheme("document-encrypt"));
 
+    if (Client::coreFeatures() & Quassel::VerifyServerSSL) {
+        // Synchronize requiring SSL with the use SSL checkbox
+        ui.sslVerify->setEnabled(ui.useSSL->isChecked());
+        connect(ui.useSSL, SIGNAL(toggled(bool)), ui.sslVerify, SLOT(setEnabled(bool)));
+    } else {
+        // Core isn't new enough to allow requiring SSL; disable checkbox and uncheck
+        ui.sslVerify->setEnabled(false);
+        ui.sslVerify->setChecked(false);
+        // Split up the message to allow re-using translations:
+        // [Original tool-tip]
+        // [Bold 'does not support feature' message]
+        // [Specific version needed and feature details]
+        ui.sslVerify->setToolTip(QString("%1<br/><b>%2</b><br/>%3").arg(
+                                       ui.sslVerify->toolTip(),
+                                       tr("Your Quassel core does not support this feature"),
+                                       tr("You need a Quassel core v0.13.0 or newer in order to "
+                                          "verify connection security.")));
+    }
+
     // read preset networks
     QStringList networks = PresetNetworks::names();
     foreach(QString s, existing)
@@ -807,7 +826,9 @@ NetworkInfo NetworkAddDlg::networkInfo() const
     if (ui.useManual->isChecked()) {
         NetworkInfo info;
         info.networkName = ui.networkName->text().trimmed();
-        info.serverList << Network::Server(ui.serverAddress->text().trimmed(), ui.port->value(), ui.serverPassword->text(), ui.useSSL->isChecked());
+        info.serverList << Network::Server(ui.serverAddress->text().trimmed(), ui.port->value(),
+                                           ui.serverPassword->text(), ui.useSSL->isChecked(),
+                                           ui.sslVerify->isChecked());
         return info;
     }
     else
@@ -869,6 +890,7 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
     ui.port->setValue(server.port);
     ui.password->setText(server.password);
     ui.useSSL->setChecked(server.useSsl);
+    ui.sslVerify->setChecked(server.sslVerify);
     ui.sslVersion->setCurrentIndex(server.sslVersion);
     ui.useProxy->setChecked(server.useProxy);
     ui.proxyType->setCurrentIndex(server.proxyType == QNetworkProxy::Socks5Proxy ? 0 : 1);
@@ -893,13 +915,33 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
         ui.sslVersion->hide();
     }
 
+    if (Client::coreFeatures() & Quassel::VerifyServerSSL) {
+        // Synchronize requiring SSL with the use SSL checkbox
+        ui.sslVerify->setEnabled(ui.useSSL->isChecked());
+        connect(ui.useSSL, SIGNAL(toggled(bool)), ui.sslVerify, SLOT(setEnabled(bool)));
+    } else {
+        // Core isn't new enough to allow requiring SSL; disable checkbox and uncheck
+        ui.sslVerify->setEnabled(false);
+        ui.sslVerify->setChecked(false);
+        // Split up the message to allow re-using translations:
+        // [Original tool-tip]
+        // [Bold 'does not support feature' message]
+        // [Specific version needed and feature details]
+        ui.sslVerify->setToolTip(QString("%1<br/><b>%2</b><br/>%3").arg(
+                                       ui.sslVerify->toolTip(),
+                                       tr("Your Quassel core does not support this feature"),
+                                       tr("You need a Quassel core v0.13.0 or newer in order to "
+                                          "verify connection security.")));
+    }
+
     on_host_textChanged();
 }
 
 
 Network::Server ServerEditDlg::serverData() const
 {
-    Network::Server server(ui.host->text().trimmed(), ui.port->value(), ui.password->text(), ui.useSSL->isChecked());
+    Network::Server server(ui.host->text().trimmed(), ui.port->value(), ui.password->text(),
+                           ui.useSSL->isChecked(), ui.sslVerify->isChecked());
     server.sslVersion = ui.sslVersion->currentIndex();
     server.useProxy = ui.useProxy->isChecked();
     server.proxyType = ui.proxyType->currentIndex() == 0 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;

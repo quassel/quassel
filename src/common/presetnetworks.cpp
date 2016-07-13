@@ -86,7 +86,8 @@ NetworkInfo PresetNetworks::networkInfo(const QString &networkName)
                 qWarning() << "Invalid port entry in networks.conf:" << server;
                 continue;
             }
-            info.serverList << Network::Server(splitserver[0].trimmed(), port, QString(), ssl);
+            // TODO Should networks.conf be modified to allow requiring SSL?
+            info.serverList << Network::Server(splitserver[0].trimmed(), port, QString(), ssl, false);
         }
     }
     return info;

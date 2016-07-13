@@ -715,6 +715,7 @@ void PostgreSqlStorage::bindServerInfo(QSqlQuery &query, const Network::Server &
     query.bindValue(":proxyport", server.proxyPort);
     query.bindValue(":proxyuser", server.proxyUser);
     query.bindValue(":proxypass", server.proxyPass);
+    query.bindValue(":sslverify", server.sslVerify);
 }
 
 
@@ -864,6 +865,7 @@ QList<NetworkInfo> PostgreSqlStorage::networks(UserId user)
             server.proxyPort = serversQuery.value(8).toUInt();
             server.proxyUser = serversQuery.value(9).toString();
             server.proxyPass = serversQuery.value(10).toString();
+            server.sslVerify = serversQuery.value(11).toBool();
             servers << server;
         }
         net.serverList = servers;
@@ -1978,6 +1980,7 @@ bool PostgreSqlMigrationWriter::writeMo(const IrcServerMO &ircserver)
     bindValue(11, ircserver.proxyport);
     bindValue(12, ircserver.proxyuser);
     bindValue(13, ircserver.proxypass);
+    bindValue(14, ircserver.sslverify);
     return exec();
 }
 
