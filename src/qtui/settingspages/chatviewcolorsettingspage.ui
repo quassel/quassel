@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>398</height>
+    <height>428</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,6 +51,9 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
@@ -128,9 +131,12 @@
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Preferred</enum>
+        </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>134</width>
+          <width>124</width>
           <height>20</height>
          </size>
         </property>
@@ -304,6 +310,19 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="5">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>1</width>
+          <height>1</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
@@ -330,6 +349,12 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
+        <property name="horizontalSpacing">
+         <number>30</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>12</number>
+        </property>
         <item row="0" column="0">
          <widget class="ColorButton" name="senderColor00">
           <property name="text">
@@ -601,6 +626,19 @@
            </color>
           </property>
          </widget>
+        </item>
+        <item row="0" column="8">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
