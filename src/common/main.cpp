@@ -177,13 +177,19 @@ int main(int argc, char **argv)
     }
 #endif
 
-#  if defined BUILD_CORE
+#if defined BUILD_CORE
     CoreApplication app(argc, argv);
-#  elif defined BUILD_QTUI
+#elif defined BUILD_QTUI
+# if QT_VERSION >= 0x050600
+    QtUiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+# endif
     QtUiApplication app(argc, argv);
-#  elif defined BUILD_MONO
+#elif defined BUILD_MONO
+# if QT_VERSION >= 0x050600
+    MonolithicApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+# endif
     MonolithicApplication app(argc, argv);
-#  endif
+#endif
 
 #ifndef HAVE_KDE4
     // the non-KDE version parses after app has been instantiated
