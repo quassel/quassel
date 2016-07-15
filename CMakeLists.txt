@@ -71,8 +71,22 @@ else()
 endif()
 
 cmake_dependent_option(WITH_OXYGEN "Install Oxygen icon set (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
+cmake_dependent_option(WITH_BREEZE "Install Breeze icon set (usually shipped with KDE)" OFF "NOT WITH_KDE" OFF)
+cmake_dependent_option(WITH_BREEZE_DARK "Install Dark Breeze icon set (usually shipped with KDE)" OFF "NOT WITH_KDE" OFF)
 if (NOT WITH_KDE)
     add_feature_info(WITH_OXYGEN WITH_OXYGEN "Install Oxygen icon set")
+    add_feature_info(WITH_BREEZE WITH_BREEZE "Install Breeze icon set. Alternative to Oxygen.")
+    add_feature_info(WITH_BREEZE_DARK WITH_BREEZE_DARK "Install Dark Breeze icon set. Alternative to Oxygen.")
+endif()
+
+if (WITH_OXYGEN)
+    add_definitions(-DWITH_OXYGEN)
+endif()
+if (WITH_BREEZE)
+    add_definitions(-DWITH_BREEZE)
+endif()
+if (WITH_BREEZE_DARK)
+    add_definitions(-DWITH_BREEZE_DARK)
 endif()
 
 # For this, the feature info is added after we know if QtWebkit is installed
