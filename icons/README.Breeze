@@ -1,0 +1,18 @@
+The icons found in the breeze directory are a stripped version of the Breeze
+icon theme, part of KDE4, as found in KDE's git. We have removed the parts of
+the theme we don't use in order to conserve space in our own repository and to
+make downloads smaller.
+
+The icons found here have been imported from:
+https://github.com/KDE/breeze-icons
+Commmit: 21ffd9be1986c2d202a654c36676277a21832ec0
+
+We, the authors of Quassel IRC, do solely distribute this icon set (or parts
+thereof), we are not involved in creating/editing/maintaining it. Please see
+the appropriate files, in particular AUTHORS and COPYING, in the breeze directory.
+All icon files in this directory were copied verbatim and not modified by us.
+
+We would like to thank the Breeze team for creating such terrific artwork,
+and we do hope that they see our use of their icon theme as a compliment :)
+
+The Quassel IRC Team
