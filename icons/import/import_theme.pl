@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # This script scans the Quassel source for requested icons and imports the needed
-# icons (and only them) from KDE's Oxygen theme.
+# icons (and only them) from a KDE theme (by default Oxygen).
 # This relies on all icons being requested using one of the convenience constructors in
 # (K)IconLoader, like this:
 #   widget->setIcon(SmallIcon("fubar"));
@@ -10,18 +10,19 @@
 # NOTE: Unless you are a Quassel developer and need to bump the icons we ship, you shouldn'y
 #       need to use this script!
 
-# USAGE: ./import/import_oxygen.pl $systhemefolder
+# USAGE: ./import/import_theme.pl $systhemefolder $themename
 # Run from the icon/ directory.
 
 use strict;
 use Data::Dumper;
 use File::Find;
 
-my $oxygen = shift;
+my $themefolder = shift;
 
 my $source = "../src";
-my $output = "oxygen";
-my $qrcfile_kde = "oxygen.qrc";
+my $themename = shift;
+$themename = $themename ? $themename : "oxygen";
+my $qrcfile_kde = $themename . ".qrc";
 
 my $extrafile = "import/extra-icons";
 my $blacklistfile = "import/blacklisted-icons";
@@ -39,6 +40,19 @@ while(<BLACKLIST>) {
   $blacklist{$name} = 1;
 }
 close BLACKLIST;
+
+my $hasthemeblacklist = 1;
+open BLACKLIST, "<$blacklistfile.$themename" or $hasthemeblacklist = 0;
+if ($hasthemeblacklist) {
+  while(<BLACKLIST>) {
+    s/#.*//;
+    next unless my ($name) = /([-\w]+)\s*/;
+    $blacklist{$name} = 1;
+  }
+  close BLACKLIST;
+} else {
+  print "Info: No theme specific blacklist found...\n";
+}
 
 # We now grep the source for things like SmallIcon("fubar") and generate size and name from that
 print "Grepping $source for requested icons...\n";
@@ -59,29 +73,36 @@ while(<EXTRA>) {
 close EXTRA;
 
 # Clean old output dir
-print "Removing old $output...\n";
-system("rm -rf $output");
+print "Removing old $themename...\n";
+system("rm -rf $themename");
 
 # Now copy the icons
 my %scalables;
 
-print "Copying icons from $oxygen...\n";
-opendir (BASEDIR, "$oxygen") or die "Could not open oxygen basedir\n";
-foreach my $sizestr (readdir BASEDIR) {
-  next unless $sizestr =~ /\d+x\d+/;
-  opendir (SIZEDIR, "$oxygen/$sizestr") or die "Could not open dir $sizestr\n";
-  foreach my $cat (readdir SIZEDIR) {
-    next if $cat eq '.' or $cat eq '..';
-    opendir (CATDIR, "$oxygen/$sizestr/$cat") or die "Could not open category dir\n";
+print "Copying icons from $themefolder...\n";
+opendir (BASEDIR, "$themefolder") or die "Could not open theme basedir\n";
+my $scalableFound = 0;
+foreach my $parent (readdir BASEDIR) {
+  next unless (-d "$themefolder/$parent");
+  $scalableFound = $scalableFound ? 1 : $parent eq 'scalable';
+  next if $parent eq '.' or $parent eq '..' or $parent eq 'scalable' or $parent =~ /\..*/;
+  my $ischildcat = $parent =~ /\d+x\d+/ ? 1 : 0;
+  opendir (SIZEDIR, "$themefolder/$parent") or die "Could not open dir $parent\n";
+  foreach my $child (readdir SIZEDIR) {
+    next if $child eq '.' or $child eq '..';
+    my $cat = $ischildcat ? $child : $parent;
+    opendir (CATDIR, "$themefolder/$parent/$child") or die "Could not open category dir\n";
     foreach my $icon (readdir CATDIR) {
-      $icon =~ s/\.png$//;
-      next unless exists $req_icons{$icon};
-      $scalables{$cat}{$icon} = 1;
-      system "mkdir -p $output/$sizestr/$cat" and die "Could not create category dir\n";
-      system "cp -a $oxygen/$sizestr/$cat/$icon.png $output/$sizestr/$cat"
-        and die "Error while copying file $sizestr/$cat/$icon.png\n";
-      #print "Copy: $oxygen/$sizestr/$cat/$icon.png\n";
-      $found_icons{$icon} = 1;
+      my $iconname = $icon;
+      $iconname =~ s/\.png$//;
+      $iconname =~ s/\.svg$//;
+      next unless exists $req_icons{$iconname};
+      $scalables{$cat}{$iconname} = 1;
+      system "mkdir -p $themename/$parent/$child" and die "Could not create category dir\n";
+      system "cp -aL $themefolder/$parent/$child/$icon $themename/$parent/$child"
+        and die "Error while copying file $parent/$child/$icon\n";
+      #print "Copy: $themefolder/$parent/$child/$icon\n";
+      $found_icons{$iconname} = 1;
     }
     closedir CATDIR;
   }
@@ -90,10 +111,12 @@ foreach my $sizestr (readdir BASEDIR) {
 closedir BASEDIR;
 
 # Copy scalables
-foreach my $cat (keys %scalables) {
-  system "mkdir -p $output/scalable/$cat" and die "Could not create category dir\n";
-  foreach my $scalable (keys %scalables{$cat}) {
-    system "cp -a $oxygen/scalable/$cat/$scalable.svgz $output/scalable/$cat/$scalable.svgz";
+if ($scalableFound) {
+  foreach my $cat (keys %scalables) {
+    system "mkdir -p $themename/scalable/$cat" and die "Could not create category dir\n";
+    foreach my $scalable (keys $scalables{$cat}) {
+      system "cp -aL $themefolder/scalable/$cat/$scalable.svgz $themename/scalable/$cat/$scalable.svgz";
+    }
   }
 }
 
@@ -104,11 +127,11 @@ foreach my $icon (keys %req_icons) {
 }
 
 # Copy license etc.
-system "cp $oxygen/AUTHORS $oxygen/CONTRIBUTING $oxygen/COPYING $oxygen/index.theme $output/";
+system "cp $themefolder/AUTHORS $themefolder/CONTRIBUTING $themefolder/COPYING $themefolder/index.theme $themename/";
 
 # Generate .qrc
 my @file_list;
-generate_qrc($output, $qrcfile_kde);
+generate_qrc($themename, $qrcfile_kde);
 
 print "Done.\n";
 
@@ -133,7 +156,7 @@ sub generate_qrc {
 }
 
 sub push_icon_path {
-  return unless /\.png$/ or /^index.theme$/;
+  return unless /\.png$/ or /\.svg$/ or /^index.theme$/;
 
   push @file_list, "    <file>$File::Find::name</file>";
 }
