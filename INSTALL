@@ -89,6 +89,14 @@ options here:
     sure that you have the icon set already installed on your system regardless,
     use this option to disable installing the bundled icons.
 
+-DWITH_BREEZE=(ON|OFF)
+    Alternative icon set to Oxygen.
+    By default, WITH_BREEZE is OFF.
+
+-DWITH_BREEZE_DARK=(ON|OFF)
+    Alternative icon set to Oxygen.
+    By default, WITH_BREEZE_DARK is OFF.
+
 -DWITH_WEBKIT=OFF
     Use Webkit for showing previews of webpages linked in the chat. Requires
     the QtWebkit module to be available, and increases the client's RAM usage
