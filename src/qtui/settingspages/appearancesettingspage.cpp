@@ -46,6 +46,7 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
     initAutoWidgets();
     initStyleComboBox();
     initLanguageComboBox();
+    initIconThemeComboBox();
 
     foreach(QComboBox *comboBox, findChildren<QComboBox *>()) {
         connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
@@ -98,6 +99,23 @@ void AppearanceSettingsPage::initLanguageComboBox()
     }
 }
 
+void AppearanceSettingsPage::initIconThemeComboBox()
+{
+#if defined WITH_OXYGEN || defined WITH_BREEZE || defined WITH_BREEZE_DARK
+# if defined WITH_OXYGEN
+    ui.iconthemeComboBox->addItem(tr("Oxygen"), QVariant("oxygen"));
+# endif
+# if defined WITH_BREEZE
+    ui.iconthemeComboBox->addItem(tr("Breeze Light"), QVariant("breeze"));
+# endif
+# if defined WITH_BREEZE_DARK
+    ui.iconthemeComboBox->addItem(tr("Breeze Dark"), QVariant("breezedark"));
+# endif
+#else
+    ui.iconthemeComboBox->hide();
+#endif
+}
+
 
 void AppearanceSettingsPage::defaults()
 {
@@ -133,6 +151,14 @@ void AppearanceSettingsPage::load()
         ui.languageComboBox->setCurrentIndex(ui.languageComboBox->findText(QLocale::languageToString(locale.language()), Qt::MatchExactly));
     ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
     Quassel::loadTranslation(selectedLocale());
+
+    // IconTheme
+    QString icontheme = uiSettings.value("IconTheme", QVariant("")).toString();
+    if (icontheme == "")
+        ui.iconthemeComboBox->setCurrentIndex(0);
+    else
+        ui.iconthemeComboBox->setCurrentIndex(ui.iconthemeComboBox->findData(icontheme));
+    ui.iconthemeComboBox->setProperty("storedValue", ui.iconthemeComboBox->currentIndex());
 
     // bufferSettings:
     BufferSettings bufferSettings;
@@ -176,6 +202,15 @@ void AppearanceSettingsPage::save()
         uiSettings.setValue("Locale", selectedLocale());
     }
     ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
+
+    if (selectedIconTheme()=="") {
+        uiSettings.remove("IconTheme");
+    }
+    else {
+        uiSettings.setValue("IconTheme", selectedIconTheme());
+        QIcon::setThemeName(selectedIconTheme());
+    }
+    ui.iconthemeComboBox->setProperty("storedValue", ui.iconthemeComboBox->currentIndex());
 
     bool needsStyleReload =
         ui.useCustomStyleSheet->isChecked() != ui.useCustomStyleSheet->property("storedValue").toBool()
@@ -230,6 +265,10 @@ QLocale AppearanceSettingsPage::selectedLocale() const
     return locale;
 }
 
+QString AppearanceSettingsPage::selectedIconTheme() const
+{
+    return ui.iconthemeComboBox->itemData(ui.iconthemeComboBox->currentIndex()).toString();
+}
 
 void AppearanceSettingsPage::chooseStyleSheet()
 {
@@ -255,6 +294,7 @@ bool AppearanceSettingsPage::testHasChanged()
 {
     if (ui.styleComboBox->currentIndex() != ui.styleComboBox->property("storedValue").toInt()) return true;
     if (ui.languageComboBox->currentIndex() != ui.languageComboBox->property("storedValue").toInt()) return true;
+    if (ui.iconthemeComboBox->currentIndex() != ui.iconthemeComboBox->property("storedValue").toInt()) return true;
 
     if (SettingsPage::hasChanged(ui.userNoticesInStatusBuffer)) return true;
     if (SettingsPage::hasChanged(ui.userNoticesInDefaultBuffer)) return true;
