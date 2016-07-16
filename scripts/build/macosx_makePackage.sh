@@ -53,19 +53,26 @@ WORKINGDIR="${WORKINGDIR}/"
 PACKAGETMPDIR="${WORKINGDIR}PACKAGE_TMP_DIR_${BUILDTYPE}"
 QUASSEL_DMG="Quassel${BUILDTYPE}_MacOSX-x86_64_${QUASSEL_VERSION}.dmg"
 
+ADDITIONAL_PLUGINS=",$3"
+if [[ ! -n $3 ]]; then
+	ADDITIONAL_PLUGINS=""
+fi
+
+echo "ADDITIONAL_PLUGINS: ${ADDITIONAL_PLUGINS}"
+
 mkdir $PACKAGETMPDIR
 case $BUILDTYPE in
 "Client")
 	cp -r ${WORKINGDIR}Quassel\ Client.app ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qcocoa "${PACKAGETMPDIR}/Quassel Client.app"
+	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qcocoa${ADDITIONAL_PLUGINS} "${PACKAGETMPDIR}/Quassel Client.app"
 	;;
 "Core")
 	cp ${WORKINGDIR}quasselcore ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py --nobundle --plugins=qsqlite,qsqlpsql ${PACKAGETMPDIR}
+	${SCRIPTDIR}/macosx_DeployApp.py --nobundle --plugins=qsqlite,qsqlpsql${ADDITIONAL_PLUGINS} ${PACKAGETMPDIR}
 	;;
 "Mono")
 	cp -r ${WORKINGDIR}Quassel.app ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qsqlite,qsqlpsql,qcocoa "${PACKAGETMPDIR}/Quassel.app"
+	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qsqlite,qsqlpsql,qcocoa${ADDITIONAL_PLUGINS} "${PACKAGETMPDIR}/Quassel.app"
 	;;
 *)
 	echo >&2 "Valid parameters are \"Client\", \"Core\", or \"Mono\"."
