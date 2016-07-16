@@ -87,10 +87,10 @@ if(APPLE)
                              ${CMAKE_SOURCE_DIR} "Quassel" ../quassel)
   if(DEPLOY)
     add_custom_command(TARGET quasselclient POST_BUILD
-                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client ..)
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client .. qsvgicon)
     add_custom_command(TARGET quasselcore POST_BUILD
                        COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core ..)
     add_custom_command(TARGET quassel POST_BUILD
-                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Mono ..)
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Mono .. qsvgicon)
   endif(DEPLOY)
 endif(APPLE)
