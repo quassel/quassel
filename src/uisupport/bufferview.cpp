@@ -69,7 +69,7 @@ void BufferView::init()
     hideColumn(2);
     setIndentation(10);
 
-    expandAll();
+    // New entries will be expanded automatically when added; no need to call expandAll()
 
     header()->hide(); // nobody seems to use this anyway
 
