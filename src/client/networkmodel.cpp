@@ -660,8 +660,22 @@ void QueryBufferItem::setIrcUser(IrcUser *ircUser)
 
 void QueryBufferItem::removeIrcUser()
 {
-    _ircUser = 0;
-    emit dataChanged();
+    if (_ircUser) {
+        // Disconnect the active IrcUser before removing it, otherwise it will fire removeIrcUser()
+        // a second time when the object's destroyed due to QueryBufferItem::setIrcUser() connecting
+        // SIGNAL destroyed(QObject*) to SLOT removeIrcUser().
+        // This fixes removing an active IrcUser if the user had quit then rejoined in a nonstandard
+        // manner (e.g. updateNickFromHost calling newIrcUser, triggered by an away-notify message).
+        disconnect(_ircUser, 0, this, 0);
+
+        // Clear IrcUser (only set to 0 if not already 0)
+        _ircUser = 0;
+
+        // Only emit dataChanged() if data actually changed.  This might serve as a small
+        // optimization, but it can be moved outside the if statement if other behavior depends on
+        // it always being called.
+        emit dataChanged();
+    }
 }
 
 
