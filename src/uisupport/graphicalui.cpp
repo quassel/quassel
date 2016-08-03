@@ -35,6 +35,9 @@
 #  include <KWindowInfo>
 #  include <KWindowSystem>
 #endif
+#ifdef Q_OS_MAC
+#include <Carbon/Carbon.h>
+#endif
 
 GraphicalUi *GraphicalUi::_instance = 0;
 QWidget *GraphicalUi::_mainWidget = 0;
@@ -313,9 +316,18 @@ void GraphicalUi::hideMainWidget()
     KWindowInfo info = KWindowSystem::windowInfo(mainWidget()->winId(), NET::WMDesktop | NET::WMFrameExtents);
     _onAllDesktops = info.onAllDesktops();
 #endif
+#ifdef Q_OS_MAC
+    ProcessSerialNumber pn;
+#endif
 
-    if (instance()->isHidingMainWidgetAllowed())
+    if (instance()->isHidingMainWidgetAllowed()) {
+#ifdef Q_OS_MAC
+        GetFrontProcess(&pn);
+        ShowHideProcess(&pn, false);
+#else
         mainWidget()->hide();
+#endif
+    }
 }
 
 

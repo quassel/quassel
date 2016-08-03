@@ -87,6 +87,9 @@ if (APPLE)
         option(WITH_NOTIFICATION_CENTER "OS X Notification Center support" ON)
         add_feature_info(WITH_NOTIFICATION_CENTER WITH_NOTIFICATION_CENTER "Use the OS X Notification Center")
     endif()
+    find_library(CARBON_LIBRARY Carbon)
+    mark_as_advanced(CARBON_LIBRARY)
+    link_libraries(${CARBON_LIBRARY})
 endif()
 
 # Always embed on Windows, OSX or for a static build; never embed when enabling KDE integration
