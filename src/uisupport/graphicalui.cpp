@@ -35,9 +35,6 @@
 #  include <KWindowInfo>
 #  include <KWindowSystem>
 #endif
-#ifdef Q_OS_MAC
-#include <Carbon/Carbon.h>
-#endif
 
 GraphicalUi *GraphicalUi::_instance = 0;
 QWidget *GraphicalUi::_mainWidget = 0;
@@ -54,6 +51,9 @@ GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent)
 
 #ifdef Q_OS_WIN
     _dwTickCount = 0;
+#endif
+#ifdef Q_OS_MAC
+    GetFrontProcess(&_procNum);
 #endif
 }
 
@@ -302,9 +302,13 @@ void GraphicalUi::activateMainWidget()
 
     // this does not actually work on all platforms... and causes more evil than good
     // mainWidget()->move(mainWidget()->frameGeometry().topLeft()); // avoid placement policies
+#ifdef Q_OS_MAC
+    SetFrontProcess(&instance()->_procNum);
+#else
     mainWidget()->show();
     mainWidget()->raise();
     mainWidget()->activateWindow();
+#endif
 
 #endif /* HAVE_KDE4 */
 }
@@ -316,18 +320,13 @@ void GraphicalUi::hideMainWidget()
     KWindowInfo info = KWindowSystem::windowInfo(mainWidget()->winId(), NET::WMDesktop | NET::WMFrameExtents);
     _onAllDesktops = info.onAllDesktops();
 #endif
-#ifdef Q_OS_MAC
-    ProcessSerialNumber pn;
-#endif
 
-    if (instance()->isHidingMainWidgetAllowed()) {
+    if (instance()->isHidingMainWidgetAllowed())
 #ifdef Q_OS_MAC
-        GetFrontProcess(&pn);
-        ShowHideProcess(&pn, false);
+        ShowHideProcess(&instance()->_procNum, false);
 #else
         mainWidget()->hide();
 #endif
-    }
 }
 
 
