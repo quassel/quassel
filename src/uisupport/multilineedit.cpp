@@ -83,6 +83,14 @@ MultiLineEdit::~MultiLineEdit()
 {
 }
 
+#if defined HAVE_KF5 || defined HAVE_KDE4
+void MultiLineEdit::createHighlighter()
+{
+    KTextEdit::createHighlighter();
+    if (highlighter())
+        highlighter()->setAutomatic(false);
+}
+#endif
 
 void MultiLineEdit::setCustomFont(const QFont &font)
 {
