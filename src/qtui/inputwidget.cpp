@@ -101,7 +101,7 @@ InputWidget::InputWidget(QWidget *parent)
 
     UiSettings s("InputWidget");
 
-#ifdef HAVE_KDE
+#ifdef HAVE_KDE4
     s.notify("EnableSpellCheck", this, SLOT(setEnableSpellCheck(QVariant)));
     setEnableSpellCheck(s.value("EnableSpellCheck", false));
 #endif
