@@ -74,6 +74,9 @@ public:
     inline bool emacsMode() const { return _emacsMode; }
 
     void addCompletionSpace();
+#if defined HAVE_KF5 || defined HAVE_KDE4
+    virtual void createHighlighter() override;
+#endif
 
 public slots:
     void setMode(Mode mode);
