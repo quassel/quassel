@@ -181,16 +181,29 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
         if (checkParamCount(cmd, params, 1)) {
             QString senderNick = nickFromMask(prefix);
             net->updateNickFromMask(prefix);
+            // Check if the sender is our own nick.  If so, treat message as if sent by ourself.
+            // See http://ircv3.net/specs/extensions/echo-message-3.2.html
+            // Cache the result to avoid multiple redundant comparisons
+            bool isSelfMessage = net->isMyNick(senderNick);
+
             QByteArray msg = params.count() < 2 ? QByteArray() : params.at(1);
 
             QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
-                QString target = net->isChannelName(*targetIter) || net->isStatusMsg(*targetIter) ? *targetIter : senderNick;
+                // For self-messages, keep the target, don't set it to the senderNick
+                QString target = net->isChannelName(*targetIter) || net->isStatusMsg(*targetIter) || isSelfMessage ? *targetIter : senderNick;
 
+                // Note: self-messages could be encrypted with a different key.  If issues arise,
+                // consider including this within an if (!isSelfMessage) block
                 msg = decrypt(net, target, msg);
 
-                events << new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg, net, msg, prefix, target, e->timestamp());
+                IrcEventRawMessage *rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg, net, msg, prefix, target, e->timestamp());
+                if (isSelfMessage) {
+                    // Self-messages need processed differently, tag as such via flag.
+                    rawMessage->setFlag(EventManager::Self);
+                }
+                events << rawMessage;
             }
         }
         break;
@@ -199,6 +212,11 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
         defaultHandling = false;
 
         if (checkParamCount(cmd, params, 2)) {
+            // Check if the sender is our own nick.  If so, treat message as if sent by ourself.
+            // See http://ircv3.net/specs/extensions/echo-message-3.2.html
+            // Cache the result to avoid multiple redundant comparisons
+            bool isSelfMessage = net->isMyNick(nickFromMask(prefix));
+
             QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
@@ -227,21 +245,34 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
                 else {
                     if (!target.isEmpty() && net->prefixes().contains(target.at(0)))
                         target = target.mid(1);
+
                     if (!net->isChannelName(target)) {
-                        target = nickFromMask(prefix);
+                        // For self-messages, keep the target, don't set it to the sender prefix
+                        if (!isSelfMessage) {
+                            target = nickFromMask(prefix);
+                        }
                         net->updateNickFromMask(prefix);
                     }
                 }
 
 #ifdef HAVE_QCA2
                 // Handle DH1080 key exchange
-                if (params[1].startsWith("DH1080_INIT") && !net->isChannelName(target)) {
+                // Don't allow key exchange in channels, and don't allow it for self-messages.
+                bool keyExchangeAllowed = (!net->isChannelName(target) && !isSelfMessage);
+                if (params[1].startsWith("DH1080_INIT") && keyExchangeAllowed) {
                     events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Init, params[1].mid(12));
-                } else if (params[1].startsWith("DH1080_FINISH") && !net->isChannelName(target)) {
+                } else if (params[1].startsWith("DH1080_FINISH") && keyExchangeAllowed) {
                     events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Finish, params[1].mid(14));
                 } else
 #endif
-                    events << new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, params[1], prefix, target, e->timestamp());
+                {
+                    IrcEventRawMessage *rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawNotice, net, params[1], prefix, target, e->timestamp());
+                    if (isSelfMessage) {
+                        // Self-messages need processed differently, tag as such via flag.
+                        rawMessage->setFlag(EventManager::Self);
+                    }
+                    events << rawMessage;
+                }
             }
         }
         break;

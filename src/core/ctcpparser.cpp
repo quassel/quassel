@@ -192,6 +192,11 @@ void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype)
         flags |= Message::StatusMsg;
     }
 
+    // For self-messages, pass the flag on to the message, too
+    if (e->testFlag(EventManager::Self)) {
+        flags |= Message::Self;
+    }
+
     if (coreSession()->networkConfig()->standardCtcp())
         parseStandard(e, messagetype, dequotedMessage, ctcptype, flags);
     else
