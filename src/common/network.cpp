@@ -746,6 +746,10 @@ void Network::removeCap(const QString &capability)
 void Network::clearCaps()
 {
     // IRCv3 specs all use lowercase capability names
+    if (_caps.empty() && _capsEnabled.empty()) {
+        // Avoid the sync call if there's nothing to clear (e.g. failed reconnects)
+        return;
+    }
     // To ease core-side configuration, loop through the list and emit capRemoved for each entry.
     // If performance issues arise, this can be converted to a more-efficient setup without breaking
     // protocol (in theory).
