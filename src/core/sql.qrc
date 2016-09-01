@@ -11,13 +11,14 @@
     <file>./SQL/SQLite/18/migrate_read_identity.sql</file>
     <file>./SQL/SQLite/18/update_identity.sql</file>
     <file>./SQL/SQLite/18/delete_buffer_for_bufferid.sql</file>
-    <file>./SQL/SQLite/18/setup_120_user_setting.sql</file>
+    <file>./SQL/SQLite/18/setup_130_user_setting.sql</file>
     <file>./SQL/SQLite/18/select_networks_for_user.sql</file>
     <file>./SQL/SQLite/18/select_networkExists.sql</file>
     <file>./SQL/SQLite/18/migrate_read_network.sql</file>
-    <file>./SQL/SQLite/18/setup_130_identity.sql</file>
+    <file>./SQL/SQLite/18/setup_140_identity.sql</file>
     <file>./SQL/SQLite/18/select_messagesNewestK.sql</file>
     <file>./SQL/SQLite/18/setup_100_backlog_idx2.sql</file>
+    <file>./SQL/SQLite/18/setup_110_backlog_idx3.sql</file>
     <file>./SQL/SQLite/18/select_messagesAllNew.sql</file>
     <file>./SQL/SQLite/18/select_buffers_for_merge.sql</file>
     <file>./SQL/SQLite/18/delete_ircservers_for_network.sql</file>
@@ -65,7 +66,7 @@
     <file>./SQL/SQLite/18/update_user_setting.sql</file>
     <file>./SQL/SQLite/18/update_buffer_name.sql</file>
     <file>./SQL/SQLite/18/select_bufferExists.sql</file>
-    <file>./SQL/SQLite/18/setup_110_buffer_user_idx.sql</file>
+    <file>./SQL/SQLite/18/setup_120_buffer_user_idx.sql</file>
     <file>./SQL/SQLite/18/select_buffers_for_network.sql</file>
     <file>./SQL/SQLite/18/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/18/select_internaluser.sql</file>
@@ -88,7 +89,7 @@
     <file>./SQL/SQLite/18/insert_server.sql</file>
     <file>./SQL/SQLite/18/setup_020_network.sql</file>
     <file>./SQL/SQLite/18/migrate_read_backlog.sql</file>
-    <file>./SQL/SQLite/18/setup_140_identity_nick.sql</file>
+    <file>./SQL/SQLite/18/setup_150_identity_nick.sql</file>
     <file>./SQL/SQLite/18/delete_networks_by_uid.sql</file>
     <file>./SQL/SQLite/18/delete_buffers_by_uid.sql</file>
     <file>./SQL/SQLite/15/upgrade_000_fix_ircservers.sql</file>
