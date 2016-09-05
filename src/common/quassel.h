@@ -143,6 +143,16 @@ protected:
     virtual bool init();
     virtual void quit();
 
+    /**
+     * Requests a reload of relevant runtime configuration.
+     *
+     * Does not reload all configuration, but could catch things such as SSL certificates.  Unless
+     * overridden, simply does nothing.
+     *
+     * @return True if configuration reload successful, otherwise false
+     */
+    virtual bool reloadConfig() { return true; }
+
     inline void setRunMode(RunMode mode);
     inline void setDataDirPaths(const QStringList &paths);
     QStringList findDataDirPaths() const;
