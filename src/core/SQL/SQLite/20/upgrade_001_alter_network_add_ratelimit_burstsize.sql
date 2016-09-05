@@ -1,0 +1,1 @@
+ALTER TABLE network ADD COLUMN messagerateburstsize INTEGER NOT NULL DEFAULT 5

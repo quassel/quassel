@@ -188,6 +188,12 @@ public:
         int autoreconnectretries;
         bool unlimitedconnectretries;
         bool rejoinchannels;
+        // Custom rate limiting
+        bool usecustommessagerate;
+        int messagerateburstsize;
+        int messageratedelay;
+        bool unlimitedmessagerate;
+        // ...
         bool connected;
         QString usermode;
         QString awaymessage;

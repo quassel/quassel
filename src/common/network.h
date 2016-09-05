@@ -74,6 +74,11 @@ class Network : public SyncableObject
     Q_PROPERTY(quint16 autoReconnectRetries READ autoReconnectRetries WRITE setAutoReconnectRetries)
     Q_PROPERTY(bool unlimitedReconnectRetries READ unlimitedReconnectRetries WRITE setUnlimitedReconnectRetries)
     Q_PROPERTY(bool rejoinChannels READ rejoinChannels WRITE setRejoinChannels)
+    // Custom rate limiting
+    Q_PROPERTY(bool useCustomMessageRate READ useCustomMessageRate WRITE setUseCustomMessageRate)
+    Q_PROPERTY(quint32 msgRateBurstSize READ messageRateBurstSize WRITE setMessageRateBurstSize)
+    Q_PROPERTY(quint32 msgRateMessageDelay READ messageRateDelay WRITE setMessageRateDelay)
+    Q_PROPERTY(bool unlimitedMessageRate READ unlimitedMessageRate WRITE setUnlimitedMessageRate)
 
 public :
         enum ConnectionState {
@@ -207,6 +212,44 @@ public :
     inline bool unlimitedReconnectRetries() const { return _unlimitedReconnectRetries; }
     inline bool rejoinChannels() const { return _rejoinChannels; }
 
+    // Custom rate limiting
+
+    /**
+     * Gets whether or not custom rate limiting is used
+     *
+     * @return True if custom rate limiting is enabled, otherwise false.
+     */
+    inline bool useCustomMessageRate() const { return _useCustomMessageRate; }
+
+    /**
+     * Gets maximum number of messages to send without any delays
+     *
+     * @return
+     * @parblock
+     * Maximum number of messages to send without any delays.  A value of 1 disables message
+     * bursting.
+     * @endparblock
+     */
+    inline quint32 messageRateBurstSize() const { return _messageRateBurstSize; }
+
+    /**
+     * Gets the delay between messages after the maximum number of undelayed messages have been sent
+     *
+     * @return
+     * @parblock
+     * Delay in milliseconds between messages after the maximum number of undelayed messages have
+     * been sent.
+     * @endparblock
+     */
+    inline quint32 messageRateDelay() const { return _messageRateDelay; }
+
+    /**
+     * Gets whether or not all rate limiting is disabled, e.g. for IRC bridges
+     *
+     * @return If true, disable rate limiting, otherwise apply configured limits.
+     */
+    inline bool unlimitedMessageRate() const { return _unlimitedMessageRate; }
+
     NetworkInfo networkInfo() const;
     void setNetworkInfo(const NetworkInfo &);
 
@@ -296,6 +339,48 @@ public slots:
     virtual void setAutoReconnectRetries(quint16);
     void setUnlimitedReconnectRetries(bool);
     void setRejoinChannels(bool);
+
+    // Custom rate limiting
+
+    /**
+     * Sets whether or not custom rate limiting is used.
+     *
+     * Setting limits too low may get you disconnected from the server!
+     *
+     * @param[in] useCustomRate If true, use custom rate limits, otherwise use Quassel defaults.
+     */
+    void setUseCustomMessageRate(bool useCustomRate);
+
+    /**
+     * Sets maximum number of messages to send without any delays
+     *
+     * @param[in] burstSize
+     * @parblock
+     * Maximum number of messages to send without any delays.  A value of 1 disables message
+     * bursting.  Cannot be less than 1 as sending 0 messages at a time accomplishes nothing.
+     * @endparblock
+     */
+    void setMessageRateBurstSize(quint32 burstSize);
+
+    /**
+     * Sets the delay between messages after the maximum number of undelayed messages have been sent
+     *
+     * @param[in] messageDelay
+     * @parblock
+     * Delay in milliseconds between messages after the maximum number of undelayed messages have
+     * been sent.
+     * @endparblock
+     */
+    void setMessageRateDelay(quint32 messageDelay);
+
+    /**
+     * Sets whether or not all rate limiting is disabled, e.g. for IRC bridges
+     *
+     * Don't use with most normal networks.
+     *
+     * @param[in] unlimitedRate If true, disable rate limiting, otherwise apply configured limits.
+     */
+    void setUnlimitedMessageRate(bool unlimitedRate);
 
     void setCodecForServer(const QByteArray &codecName);
     void setCodecForEncoding(const QByteArray &codecName);
@@ -431,6 +516,44 @@ signals:
 //   void unlimitedReconnectRetriesSet(bool);
 //   void rejoinChannelsSet(bool);
 
+    // Custom rate limiting (can drive other slots)
+
+    /**
+     * Signals enabling or disabling custom rate limiting
+     *
+     * @see Network::useCustomMessageRate()
+     *
+     * @param[out] useCustomRate
+     */
+    void useCustomMessageRateSet(const bool useCustomRate);
+
+    /**
+     * Signals a change in maximum number of messages to send without any delays
+     *
+     * @see Network::messageRateBurstSize()
+     *
+     * @param[out] burstSize
+     */
+    void messageRateBurstSizeSet(const quint32 burstSize);
+
+    /**
+     * Signals a change in delay between messages after the max. undelayed messages have been sent
+     *
+     * @see Network::messageRateDelay()
+     *
+     * @param[out] messageDelay
+     */
+    void messageRateDelaySet(const quint32 messageDelay);
+
+    /**
+     * Signals enabling or disabling all rate limiting
+     *
+     * @see Network::unlimitedMessageRate()
+     *
+     * @param[out] unlimitedRate
+     */
+    void unlimitedMessageRateSet(const bool unlimitedRate);
+
 //   void codecForServerSet(const QByteArray &codecName);
 //   void codecForEncodingSet(const QByteArray &codecName);
 //   void codecForDecodingSet(const QByteArray &codecName);
@@ -524,6 +647,12 @@ private:
     bool _unlimitedReconnectRetries;
     bool _rejoinChannels;
 
+    // Custom rate limiting
+    bool _useCustomMessageRate;         /// If true, use custom rate limits, otherwise use defaults
+    quint32 _messageRateBurstSize;      /// Maximum number of messages to send without any delays
+    quint32 _messageRateDelay;          /// Delay in ms. for messages when max. burst messages sent
+    bool _unlimitedMessageRate;         /// If true, disable rate limiting, otherwise apply limits
+
     QTextCodec *_codecForServer;
     QTextCodec *_codecForEncoding;
     QTextCodec *_codecForDecoding;
@@ -571,6 +700,12 @@ struct NetworkInfo {
     quint16 autoReconnectRetries;
     bool unlimitedReconnectRetries;
     bool rejoinChannels;
+
+    // Custom rate limiting
+    bool useCustomMessageRate;         /// If true, use custom rate limits, otherwise use defaults
+    quint32 messageRateBurstSize;      /// Maximum number of messages to send without any delays
+    quint32 messageRateDelay;          /// Delay in ms. for messages when max. burst messages sent
+    bool unlimitedMessageRate;         /// If true, disable rate limiting, otherwise apply limits
 
     bool operator==(const NetworkInfo &other) const;
     bool operator!=(const NetworkInfo &other) const;

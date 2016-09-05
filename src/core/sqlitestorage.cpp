@@ -658,6 +658,11 @@ void SqliteStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info)
     query.bindValue(":autoreconnectretries", info.autoReconnectRetries);
     query.bindValue(":unlimitedconnectretries", info.unlimitedReconnectRetries ? 1 : 0);
     query.bindValue(":rejoinchannels", info.rejoinChannels ? 1 : 0);
+    // Custom rate limiting
+    query.bindValue(":usecustomessagerate", info.useCustomMessageRate ? 1 : 0);
+    query.bindValue(":messagerateburstsize", info.messageRateBurstSize);
+    query.bindValue(":messageratedelay", info.messageRateDelay);
+    query.bindValue(":unlimitedmessagerate", info.unlimitedMessageRate ? 1 : 0);
     if (info.networkId.isValid())
         query.bindValue(":networkid", info.networkId.toInt());
 }
@@ -854,6 +859,11 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user)
                 net.useSasl = networksQuery.value(16).toInt() == 1 ? true : false;
                 net.saslAccount = networksQuery.value(17).toString();
                 net.saslPassword = networksQuery.value(18).toString();
+                // Custom rate limiting
+                net.useCustomMessageRate = networksQuery.value(19).toInt() == 1 ? true : false;
+                net.messageRateBurstSize = networksQuery.value(20).toUInt();
+                net.messageRateDelay = networksQuery.value(21).toUInt();
+                net.unlimitedMessageRate = networksQuery.value(22).toInt() == 1 ? true : false;
 
                 serversQuery.bindValue(":networkid", net.networkId.toInt());
                 safeExec(serversQuery);
@@ -1887,6 +1897,11 @@ bool SqliteMigrationReader::readMo(NetworkMO &network)
     network.usesasl = value(22).toInt() == 1 ? true : false;
     network.saslaccount = value(23).toString();
     network.saslpassword = value(24).toString();
+    // Custom rate limiting
+    network.usecustommessagerate = value(25).toInt() == 1 ? true : false;
+    network.messagerateburstsize = value(26).toInt();
+    network.messageratedelay = value(27).toUInt();
+    network.unlimitedmessagerate = value(28).toInt() == 1 ? true : false;
     return true;
 }
 

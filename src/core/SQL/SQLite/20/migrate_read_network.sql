@@ -2,5 +2,6 @@ SELECT networkid, userid, networkname, identityid, encodingcodec, decodingcodec,
        userandomserver, perform, useautoidentify, autoidentifyservice, autoidentifypassword,
        useautoreconnect, autoreconnectinterval, autoreconnectretries, unlimitedconnectretries,
        rejoinchannels, connected, usermode, awaymessage, attachperform, detachperform,
-       usesasl, saslaccount, saslpassword
+       usesasl, saslaccount, saslpassword, usecustomessagerate, messagerateburstsize,
+       messageratedelay, unlimitedmessagerate
 FROM network
