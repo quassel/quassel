@@ -428,6 +428,18 @@ bool Core::sslSupported()
 }
 
 
+bool Core::reloadCerts()
+{
+#ifdef HAVE_SSL
+    SslServer *sslServer = qobject_cast<SslServer *>(&instance()->_server);
+    return sslServer->reloadCerts();
+#else
+    // SSL not supported, don't mark configuration reload as failed
+    return true;
+#endif
+}
+
+
 bool Core::startListening()
 {
     // in mono mode we only start a local port if a port is specified in the cli call

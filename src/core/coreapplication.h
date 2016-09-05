@@ -38,6 +38,15 @@ public:
 
     bool init();
 
+    /**
+     * Requests a reload of relevant runtime configuration.
+     *
+     * In particular, signals to the Core to reload SSL certificates.
+     *
+     * @return True if configuration reload successful, otherwise false
+     */
+    bool reloadConfig();
+
 private:
     bool _coreCreated;
 };
@@ -51,6 +60,15 @@ public:
     ~CoreApplication();
 
     bool init();
+
+    /**
+     * Requests a reload of relevant runtime configuration.
+     *
+     * @see Quassel::reloadConfig()
+     *
+     * @return True if configuration reload successful, otherwise false
+     */
+    bool reloadConfig();
 
 private:
     CoreApplicationInternal *_internal;

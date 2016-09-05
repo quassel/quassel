@@ -72,6 +72,11 @@ Quassel::Quassel()
     // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
     signal(SIGTERM, handleSignal);
     signal(SIGINT, handleSignal);
+#ifndef Q_OS_WIN
+    // SIGHUP is used to reload configuration (i.e. SSL certificates)
+    // Windows does not support SIGHUP
+    signal(SIGHUP, handleSignal);
+#endif
 }
 
 
@@ -321,6 +326,20 @@ void Quassel::handleSignal(int sig)
         else
             QCoreApplication::quit();
         break;
+#ifndef Q_OS_WIN
+// Windows does not support SIGHUP
+    case SIGHUP:
+        // Most applications use this as the 'configuration reload' command, e.g. nginx uses it for
+        // graceful reloading of processes.
+        if (_instance) {
+            // If the instance exists, reload the configuration
+            quInfo() << "Caught signal" << SIGHUP <<"- reloading configuration";
+            if (_instance->reloadConfig()) {
+                quInfo() << "Successfully reloaded configuration";
+            }
+        }
+        break;
+#endif
     case SIGABRT:
     case SIGSEGV:
 #ifndef Q_OS_WIN

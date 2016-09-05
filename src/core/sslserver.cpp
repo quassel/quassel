@@ -36,24 +36,23 @@ SslServer::SslServer(QObject *parent)
     : QTcpServer(parent),
     _isCertValid(false)
 {
+    // Keep track if the SSL warning has been mentioned at least once before
     static bool sslWarningShown = false;
 
-    QString ssl_cert;
-    QString ssl_key;
-
     if(Quassel::isOptionSet("ssl-cert")) {
-        ssl_cert = Quassel::optionValue("ssl-cert");
+        _sslCertPath = Quassel::optionValue("ssl-cert");
     } else {
-        ssl_cert = Quassel::configDirPath() + "quasselCert.pem";
+        _sslCertPath = Quassel::configDirPath() + "quasselCert.pem";
     }
 
     if(Quassel::isOptionSet("ssl-key")) {
-        ssl_key = Quassel::optionValue("ssl-key");
+        _sslKeyPath = Quassel::optionValue("ssl-key");
     } else {
-        ssl_key = ssl_cert;
+        _sslKeyPath = _sslCertPath;
     }
 
-    if (!setCertificate(ssl_cert, ssl_key)) {
+    // Initialize the certificates for first-time usage
+    if (!loadCerts()) {
         if (!sslWarningShown) {
             quWarning()
             << "SslServer: Unable to set certificate file\n"
@@ -95,9 +94,44 @@ void SslServer::incomingConnection(int socketDescriptor)
 }
 
 
+bool SslServer::loadCerts()
+{
+    // Load the certificates specified in the path.  If needed, other prep work can be done here.
+    return setCertificate(_sslCertPath, _sslKeyPath);
+}
+
+
+bool SslServer::reloadCerts()
+{
+    if (loadCerts()) {
+        return true;
+    } else {
+        // Reloading certificates currently only occur in response to a request.  Always print an
+        // error if something goes wrong, in order to simplify checking if it's working.
+        if (isCertValid()) {
+            quWarning()
+            << "SslServer: Unable to reload certificate file, reverting\n"
+            << "          Quassel Core will use the previous key to provide SSL for client connections.\n"
+            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+        } else {
+            quWarning()
+            << "SslServer: Unable to reload certificate file\n"
+            << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+        }
+        return false;
+    }
+}
+
+
 bool SslServer::setCertificate(const QString &path, const QString &keyPath)
 {
-    _isCertValid = false;
+    // Don't reset _isCertValid here, in case an older but valid certificate is still loaded.
+    // Use temporary variables in order to avoid overwriting the existing certificates until
+    // everything is confirmed good.
+    QSslCertificate untestedCert;
+    QList<QSslCertificate> untestedCA;
+    QSslKey untestedKey;
 
     if (path.isEmpty())
         return false;
@@ -122,11 +156,11 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
         return false;
     }
 
-    _cert = certList[0];
+    untestedCert = certList[0];
     certList.removeFirst(); // remove server cert
 
     // store CA and intermediates certs
-    _ca = certList;
+    untestedCA = certList;
 
     if (!certFile.reset()) {
         quWarning() << "SslServer: IO error reading certificate file";
@@ -148,41 +182,46 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
             return false;
         }
 
-        _key = QSslKey(&keyFile, QSsl::Rsa);
+        untestedKey = QSslKey(&keyFile, QSsl::Rsa);
         keyFile.close();
     } else {
-        _key = QSslKey(&certFile, QSsl::Rsa);
+        untestedKey = QSslKey(&certFile, QSsl::Rsa);
     }
 
     certFile.close();
 
-    if (_cert.isNull()) {
+    if (untestedCert.isNull()) {
         quWarning() << "SslServer:" << qPrintable(path) << "contains no certificate data";
         return false;
     }
 
     // We allow the core to offer SSL anyway, so no "return false" here. Client will warn about the cert being invalid.
     const QDateTime now = QDateTime::currentDateTime();
-    if (now < _cert.effectiveDate())
-        quWarning() << "SslServer: Certificate won't be valid before" << _cert.effectiveDate().toString();
+    if (now < untestedCert.effectiveDate())
+        quWarning() << "SslServer: Certificate won't be valid before" << untestedCert.effectiveDate().toString();
 
-    else if (now > _cert.expiryDate())
-        quWarning() << "SslServer: Certificate expired on" << _cert.expiryDate().toString();
+    else if (now > untestedCert.expiryDate())
+        quWarning() << "SslServer: Certificate expired on" << untestedCert.expiryDate().toString();
 
     else { // Qt4's isValid() checks for time range and blacklist; avoid a double warning, hence the else block
 #if QT_VERSION < 0x050000
-        if (!_cert.isValid())
+        if (!untestedCert.isValid())
 #else
-        if (_cert.isBlacklisted())
+        if (untestedCert.isBlacklisted())
 #endif
             quWarning() << "SslServer: Certificate blacklisted";
     }
-    if (_key.isNull()) {
+    if (untestedKey.isNull()) {
         quWarning() << "SslServer:" << qPrintable(keyPath) << "contains no key data";
         return false;
     }
 
     _isCertValid = true;
+
+    // All keys are valid, update the externally visible copy used for new connections.
+    _cert = untestedCert;
+    _ca = untestedCA;
+    _key = untestedKey;
 
     return _isCertValid;
 }

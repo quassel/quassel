@@ -73,3 +73,13 @@ void MonolithicApplication::startInternalCore()
     connect(connection, SIGNAL(connectToInternalCore(InternalPeer*)), core, SLOT(setupInternalClientSession(InternalPeer*)));
     connect(core, SIGNAL(sessionState(Protocol::SessionState)), connection, SLOT(internalSessionStateReceived(Protocol::SessionState)));
 }
+
+
+bool MonolithicApplication::reloadConfig()
+{
+    if (_internal) {
+        return _internal->reloadConfig();
+    } else {
+        return false;
+    }
+}

@@ -62,6 +62,17 @@ bool CoreApplicationInternal::init()
 }
 
 
+bool CoreApplicationInternal::reloadConfig()
+{
+    if (_coreCreated) {
+        // Currently, only reloading SSL certificates is supported
+        return Core::reloadCerts();
+    } else {
+        return false;
+    }
+}
+
+
 /*****************************************************************************/
 
 CoreApplication::CoreApplication(int &argc, char **argv)
@@ -93,4 +104,14 @@ bool CoreApplication::init()
         return true;
     }
     return false;
+}
+
+
+bool CoreApplication::reloadConfig()
+{
+    if (_internal) {
+        return _internal->reloadConfig();
+    } else {
+        return false;
+    }
 }
