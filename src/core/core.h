@@ -494,6 +494,14 @@ public:
     static inline QDateTime startTime() { return instance()->_startTime; }
     static inline bool isConfigured() { return instance()->_configured; }
     static bool sslSupported();
+
+    /**
+     * Reloads SSL certificates used for connection with clients
+     *
+     * @return True if certificates reloaded successfully, otherwise false.
+     */
+    static bool reloadCerts();
+
     static QVariantList backendInfo();
 
     static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData);
