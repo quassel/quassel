@@ -67,6 +67,25 @@
        </property>
       </spacer>
      </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Icon Theme:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="iconthemeComboBox">
+       <property name="toolTip">
+        <string>Choose from the bundled Icon-Themes! May need restart...</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>&lt;System Default&gt;</string>
+        </property>
+       </item>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

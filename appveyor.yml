@@ -17,7 +17,7 @@ build_script:
     } else {
         $webkitOption = "-DWITH_WEBKIT=OFF"
     }
-    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON $webkitOption
+    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DCMAKE_DISABLE_FIND_PACKAGE_Qt5DBus=ON -DWITH_BREEZE=ON -DWITH_BREEZE_DARK=ON $webkitOption
     CmakeImageInstall
 
     $imageDir = CreateDeployImage @(
@@ -64,10 +64,12 @@ build_script:
                             "bin\\Qt5Script\.dll",
                             "bin\\Qt5Sensors\.dll",
                             "bin\\Qt5Sql\.dll",
+                            "bin\\Qt5Svg\.dll",
                             "bin\\Qt5WebChannel\.dll",
                             "bin\\Qt5WebKit\.dll",
                             "bin\\Qt5WebKitWidgets\.dll",
                             "bin\\Qt5Widgets\.dll",
+                            "bin\\Qt5Xml\.dll",
                             "bin\\Qt5XmlPatterns\.dll",
                             "bin\\.*libglesv2\.dll",
                             "bin\\.*libEGL\.dll",
@@ -78,6 +80,7 @@ build_script:
                             "plugins\\sqldrivers\\qsqlite(?!.*d\.dll).*\.dll$",
                             "plugins\\codecs\\(?!.*d\.dll).*\.dll$",
                             "plugins\\platforms\\qwindows(?!.*d\.dll).*\.dll$",
+                            "plugins\\iconengines\\(?!.*d\.dll).*\.dll$",
                             #
                             #
                             #zlib

@@ -53,7 +53,9 @@ private:
     bool testHasChanged();
     void initStyleComboBox();
     void initLanguageComboBox();
+    void initIconThemeComboBox();
     QLocale selectedLocale() const;
+    QString selectedIconTheme() const;
 
     Ui::AppearanceSettingsPage ui;
     QHash<QString, QVariant> settings;

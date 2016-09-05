@@ -26,9 +26,6 @@ include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
 if (EMBED_DATA)
     add_definitions(-DEMBED_DATA)
 endif()
-if (WITH_OXYGEN)
-    add_definitions(-DWITH_OXYGEN)
-endif()
 
 # For KAboutData
 if (WITH_KF5)
@@ -86,11 +83,20 @@ if(APPLE)
                      COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
                              ${CMAKE_SOURCE_DIR} "Quassel" ../quassel)
   if(DEPLOY)
-    add_custom_command(TARGET quasselclient POST_BUILD
-                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client ..)
-    add_custom_command(TARGET quasselcore POST_BUILD
+    if(WITH_BREEZE OR WITH_BREEZE_DARK)
+      add_custom_command(TARGET quasselclient POST_BUILD
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client .. qsvgicon)
+      add_custom_command(TARGET quasselcore POST_BUILD
                        COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core ..)
-    add_custom_command(TARGET quasselcore POST_BUILD
+      add_custom_command(TARGET quassel POST_BUILD
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Mono .. qsvgicon)
+    else()
+      add_custom_command(TARGET quasselclient POST_BUILD
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client ..)
+      add_custom_command(TARGET quasselcore POST_BUILD
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core ..)
+      add_custom_command(TARGET quassel POST_BUILD
                        COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Mono ..)
+    endif()
   endif(DEPLOY)
 endif(APPLE)

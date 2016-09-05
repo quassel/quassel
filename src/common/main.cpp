@@ -100,6 +100,12 @@ int main(int argc, char **argv)
 #   ifdef WITH_OXYGEN
     Q_INIT_RESOURCE(oxygen);
 #   endif
+#   ifdef WITH_BREEZE
+    Q_INIT_RESOURCE(breeze);
+#   endif
+#   ifdef WITH_BREEZE_DARK
+    Q_INIT_RESOURCE(breezedark);
+#   endif
 # endif
 #endif
 
