@@ -104,6 +104,15 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     connect(ui.reconnectRetries, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.unlimitedRetries, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
     connect(ui.rejoinOnReconnect, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+    // Core features can change during a reconnect.  Always connect these here, delaying testing for
+    // the core feature flag in load().
+    connect(ui.useCustomMessageRate, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.messageRateBurstSize, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.messageRateDelay, SIGNAL(valueChanged(double)), this, SLOT(widgetHasChanged()));
+    connect(ui.unlimitedMessageRate, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+    // Add additional widgets here
     //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
     //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
 
@@ -158,10 +167,38 @@ void NetworksSettingsPage::save()
 void NetworksSettingsPage::load()
 {
     reset();
+
+    // Handle UI dependent on core feature flags here
+    if (Client::coreFeatures() & Quassel::CustomRateLimits) {
+        // Custom rate limiting supported, allow toggling
+        ui.useCustomMessageRate->setEnabled(true);
+        // Reset tooltip to default.
+        ui.useCustomMessageRate->setToolTip(QString("%1").arg(
+                                          tr("<p>Override default message rate limiting.</p>"
+                                             "<p><b>Setting limits too low may get you disconnected"
+                                             " from the server!</b></p>")));
+        // If changed, update the message below!
+    } else {
+        // Custom rate limiting not supported, disallow toggling
+        ui.useCustomMessageRate->setEnabled(false);
+        // Split up the message to allow re-using translations:
+        // [Original tool-tip]
+        // [Bold 'does not support feature' message]
+        // [Specific version needed and feature details]
+        ui.useCustomMessageRate->setToolTip(QString("%1<br/><b>%2</b><br/>%3").arg(
+                                          tr("<p>Override default message rate limiting.</p>"
+                                             "<p><b>Setting limits too low may get you disconnected"
+                                             " from the server!</b></p>"),
+                                          tr("Your Quassel core does not support this feature"),
+                                          tr("You need a Quassel core v0.13.0 or newer in order to "
+                                          "modify message rate limits.")));
+    }
+
     foreach(NetworkId netid, Client::networkIds()) {
         clientNetworkAdded(netid);
     }
     ui.networkList->setCurrentRow(0);
+
     setChangedState(false);
 }
 
@@ -526,6 +563,14 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         ui.reconnectRetries->setValue(info.autoReconnectRetries);
         ui.unlimitedRetries->setChecked(info.unlimitedReconnectRetries);
         ui.rejoinOnReconnect->setChecked(info.rejoinChannels);
+        // Custom rate limiting
+        ui.unlimitedMessageRate->setChecked(info.unlimitedMessageRate);
+        // Set 'ui.useCustomMessageRate' after 'ui.unlimitedMessageRate' so if the latter is
+        // disabled, 'ui.messageRateDelayFrame' will remain disabled.
+        ui.useCustomMessageRate->setChecked(info.useCustomMessageRate);
+        ui.messageRateBurstSize->setValue(info.messageRateBurstSize);
+        // Convert milliseconds (integer) into seconds (double)
+        ui.messageRateDelay->setValue(info.messageRateDelay / 1000.0f);
     }
     else {
         // just clear widgets
@@ -575,6 +620,12 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info)
     info.autoReconnectRetries = ui.reconnectRetries->value();
     info.unlimitedReconnectRetries = ui.unlimitedRetries->isChecked();
     info.rejoinChannels = ui.rejoinOnReconnect->isChecked();
+    // Custom rate limiting
+    info.useCustomMessageRate = ui.useCustomMessageRate->isChecked();
+    info.messageRateBurstSize = ui.messageRateBurstSize->value();
+    // Convert seconds (double) into milliseconds (integer)
+    info.messageRateDelay = static_cast<quint32>((ui.messageRateDelay->value() * 1000));
+    info.unlimitedMessageRate = ui.unlimitedMessageRate->isChecked();
 }
 
 

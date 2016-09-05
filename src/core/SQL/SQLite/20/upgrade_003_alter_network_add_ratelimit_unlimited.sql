@@ -1,0 +1,1 @@
+ALTER TABLE network ADD COLUMN unlimitedmessagerate INTEGER NOT NULL DEFAULT 0

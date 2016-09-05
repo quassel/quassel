@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>510</width>
-    <height>505</height>
+    <height>553</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -218,8 +218,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff/>
-               </iconset>
+                <normaloff>.</normaloff>.</iconset>
               </property>
              </widget>
             </item>
@@ -373,7 +372,7 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
          <attribute name="title">
           <string>Connection</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
+         <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
            <widget class="QGroupBox" name="autoReconnect">
             <property name="enabled">
@@ -497,6 +496,154 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
            </widget>
           </item>
           <item>
+           <widget class="QGroupBox" name="useCustomMessageRate">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string notr="true">Tooltip not yet loaded - to modify tooltip, edit NetworksSettingsPage::load()</string>
+            </property>
+            <property name="title">
+             <string>Use Custom Rate Limits</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string>Max. messages at once:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="messageRateBurstSize">
+                 <property name="toolTip">
+                  <string>Maximum number of messages to send without any delays</string>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>999</number>
+                 </property>
+                 <property name="value">
+                  <number>5</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="unlimitedMessageRate">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable all rate limiting, e.g. for IRC bridges.&lt;/p&gt;&lt;p&gt;Don't use with most normal networks.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Unlimited</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QFrame" name="messageRateDelayFrame">
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
+               <property name="lineWidth">
+                <number>1</number>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_5">
+                  <item>
+                   <widget class="QLabel" name="label_10">
+                    <property name="text">
+                     <string>Wait</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="messageRateDelay">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delay between messages after the maximum number of undelayed messages have been sent.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
+                    <property name="suffix">
+                     <string> s</string>
+                    </property>
+                    <property name="minimum">
+                     <double>0.010000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>2.200000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_13">
+                    <property name="text">
+                     <string>between future messages</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer_3">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -504,7 +651,7 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>79</height>
+              <height>1</height>
              </size>
             </property>
            </spacer>
@@ -810,8 +957,16 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
   <tabstop>reconnectRetries</tabstop>
   <tabstop>unlimitedRetries</tabstop>
   <tabstop>rejoinOnReconnect</tabstop>
+  <tabstop>useCustomMessageRate</tabstop>
+  <tabstop>messageRateBurstSize</tabstop>
+  <tabstop>unlimitedMessageRate</tabstop>
+  <tabstop>messageRateDelay</tabstop>
+  <tabstop>autoIdentify</tabstop>
   <tabstop>autoIdentifyService</tabstop>
   <tabstop>autoIdentifyPassword</tabstop>
+  <tabstop>sasl</tabstop>
+  <tabstop>saslAccount</tabstop>
+  <tabstop>saslPassword</tabstop>
   <tabstop>useCustomEncodings</tabstop>
   <tabstop>sendEncoding</tabstop>
   <tabstop>recvEncoding</tabstop>
@@ -832,6 +987,38 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
     <hint type="destinationlabel">
      <x>209</x>
      <y>334</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>unlimitedMessageRate</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>messageRateBurstSize</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>392</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>393</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>unlimitedMessageRate</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>messageRateDelayFrame</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>392</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>262</x>
+     <y>428</y>
     </hint>
    </hints>
   </connection>

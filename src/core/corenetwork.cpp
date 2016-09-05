@@ -72,7 +72,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     connect(&_autoReconnectTimer, SIGNAL(timeout()), this, SLOT(doAutoReconnect()));
     connect(&_autoWhoTimer, SIGNAL(timeout()), this, SLOT(sendAutoWho()));
     connect(&_autoWhoCycleTimer, SIGNAL(timeout()), this, SLOT(startAutoWhoCycle()));
-    connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(fillBucketAndProcessQueue()));
+    connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(checkTokenBucket()));
 
     connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
     connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
@@ -83,6 +83,13 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
     connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
+
+    // Custom rate limiting
+    // These react to the user changing settings in the client
+    connect(this, SIGNAL(useCustomMessageRateSet(bool)), SLOT(updateRateLimiting()));
+    connect(this, SIGNAL(messageRateBurstSizeSet(quint32)), SLOT(updateRateLimiting()));
+    connect(this, SIGNAL(messageRateDelaySet(quint32)), SLOT(updateRateLimiting()));
+    connect(this, SIGNAL(unlimitedMessageRateSet(bool)), SLOT(updateRateLimiting()));
 
     // IRCv3 capability handling
     // These react to CAP messages from the server
@@ -301,12 +308,18 @@ void CoreNetwork::userInput(BufferInfo buf, QString msg)
 
 void CoreNetwork::putRawLine(const QByteArray s, const bool prepend)
 {
-    if (_tokenBucket > 0) {
+    if (_tokenBucket > 0 || (_skipMessageRates && _msgQueue.size() == 0)) {
+        // If there's tokens remaining, ...
+        // Or rate limits don't apply AND no messages are in queue (to prevent out-of-order), ...
+        // Send the message now.
         writeToSocket(s);
     } else {
+        // Otherwise, queue the message for later
         if (prepend) {
+            // Jump to the start, skipping other messages
             _msgQueue.prepend(s);
         } else {
+            // Add to back, waiting in order
             _msgQueue.append(s);
         }
     }
@@ -529,11 +542,10 @@ void CoreNetwork::socketInitialized()
 
     socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
 
-    // TokenBucket to avoid sending too much at once
-    _messageDelay = 2200;  // this seems to be a safe value (2.2 seconds delay)
-    _burstSize = 5;
-    _tokenBucket = _burstSize; // init with a full bucket
-    _tokenBucketTimer.start(_messageDelay);
+    // Update the TokenBucket with specified rate-limiting settings
+    updateRateLimiting();
+    // Fill up the token bucket as we're connecting from scratch
+    resetTokenBucket();
 
     // Request capabilities as per IRCv3.2 specifications
     // Older servers should ignore this; newer servers won't downgrade to RFC1459
@@ -916,6 +928,85 @@ void CoreNetwork::setPingInterval(int interval)
     _pingTimer.setInterval(interval * 1000);
 }
 
+
+/******** Custom Rate Limiting ********/
+
+void CoreNetwork::updateRateLimiting()
+{
+    // Always reset the delay and token bucket (safe-guard against accidentally starting the timer)
+
+    if (useCustomMessageRate()) {
+        // Custom message rates enabled.  Let's go for it!
+
+        _messageDelay = messageRateDelay();
+
+        _burstSize = messageRateBurstSize();
+        if (_burstSize < 1) {
+            qWarning() << "Invalid messageRateBurstSize data, cannot have zero message burst size!"
+                       << _burstSize;
+            // Can't go slower than one message at a time
+            _burstSize = 1;
+        }
+
+        if (_tokenBucket > _burstSize) {
+            // Don't let the token bucket exceed the maximum
+            _tokenBucket = _burstSize;
+            // To fill up the token bucket, use resetRateLimiting().  Don't do that here, otherwise
+            // changing the rate-limit settings while connected to a server will incorrectly reset
+            // the token bucket.
+        }
+
+        // Toggle the timer according to whether or not rate limiting is enabled
+        // If we're here, useCustomMessageRate is true.  Thus, the logic becomes
+        // _skipMessageRates = (useCustomMessageRate && unlimitedMessageRate)
+        _skipMessageRates = unlimitedMessageRate();
+        if (_skipMessageRates) {
+            // If the message queue already contains messages, they need sent before disabling the
+            // timer.  Set the timer to a rapid pace and let it disable itself.
+            if (_msgQueue.size() > 0) {
+                qDebug() << "Outgoing message queue contains messages while disabling rate "
+                            "limiting.  Sending remaining queued messages...";
+                // Promptly run the timer again to clear the messages.  Rate limiting is disabled,
+                // so nothing should cause this to block.. in theory.  However, don't directly call
+                // fillBucketAndProcessQueue() in order to keep it on a separate thread.
+                //
+                // TODO If testing shows this isn't needed, it can be simplified to a direct call.
+                // Hesitant to change it without a wide variety of situations to verify behavior.
+                _tokenBucketTimer.start(100);
+            } else {
+                // No rate limiting, disable the timer
+                _tokenBucketTimer.stop();
+            }
+        } else {
+            // Rate limiting enabled, enable the timer
+            _tokenBucketTimer.start(_messageDelay);
+        }
+    } else {
+        // Custom message rates disabled.  Go for the default.
+
+        _skipMessageRates = false;   // Enable rate-limiting by default
+        // TokenBucket to avoid sending too much at once
+        _messageDelay = 2200;      // This seems to be a safe value (2.2 seconds delay)
+        _burstSize = 5;            // 5 messages at once
+        if (_tokenBucket > _burstSize) {
+            // Don't let the token bucket exceed the maximum
+            _tokenBucket = _burstSize;
+            // To fill up the token bucket, use resetRateLimiting().  Don't do that here, otherwise
+            // changing the rate-limit settings while connected to a server will incorrectly reset
+            // the token bucket.
+        }
+        // Rate limiting enabled, enable the timer
+        _tokenBucketTimer.start(_messageDelay);
+    }
+}
+
+void CoreNetwork::resetTokenBucket()
+{
+    // Fill up the token bucket to the maximum
+    _tokenBucket = _burstSize;
+}
+
+
 /******** IRCv3 Capability Negotiation ********/
 
 void CoreNetwork::serverCapAdded(const QString &capability)
@@ -1274,12 +1365,30 @@ void CoreNetwork::sslErrors(const QList<QSslError> &sslErrors)
 
 #endif  // HAVE_SSL
 
+void CoreNetwork::checkTokenBucket()
+{
+    if (_skipMessageRates) {
+        if (_msgQueue.size() == 0) {
+            // Message queue emptied; stop the timer and bail out
+            _tokenBucketTimer.stop();
+            return;
+        }
+        // Otherwise, we're emptying the queue, continue on as normal
+    }
+
+    // Process whatever messages are pending
+    fillBucketAndProcessQueue();
+}
+
+
 void CoreNetwork::fillBucketAndProcessQueue()
 {
+    // If there's less tokens than burst size, refill the token bucket by 1
     if (_tokenBucket < _burstSize) {
         _tokenBucket++;
     }
 
+    // As long as there's tokens available and messages remaining, sending messages from the queue
     while (_msgQueue.size() > 0 && _tokenBucket > 0) {
         writeToSocket(_msgQueue.takeFirst());
     }
@@ -1290,7 +1399,10 @@ void CoreNetwork::writeToSocket(const QByteArray &data)
 {
     socket.write(data);
     socket.write("\r\n");
-    _tokenBucket--;
+    if (!_skipMessageRates) {
+        // Only subtract from the token bucket if message rate limiting is enabled
+        _tokenBucket--;
+    }
 }
 
 

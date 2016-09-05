@@ -24,5 +24,9 @@ CREATE TABLE network (
        awaymessage varchar(256), -- away message to restore (empty if not away)
        attachperform text, -- perform list for on attach
        detachperform text, -- perform list for on detach
+       usecustomessagerate boolean NOT NULL DEFAULT FALSE,  -- Custom rate limiting
+       messagerateburstsize INTEGER NOT NULL DEFAULT 5,     -- Maximum messages at once
+       messageratedelay INTEGER NOT NULL DEFAULT 2200,      -- Delay between future messages (milliseconds)
+       unlimitedmessagerate boolean NOT NULL DEFAULT FALSE, -- Disable rate limits
        UNIQUE (userid, networkname)
 )

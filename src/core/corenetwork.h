@@ -268,6 +268,34 @@ public slots:
     bool cipherUsesCBC(const QString &target);
 #endif
 
+    // Custom rate limiting (can be connected to signals)
+
+    /**
+     * Update rate limiting according to Network configuration
+     *
+     * Updates the token bucket and message queue timer according to the network configuration, such
+     * as on first load, or after changing settings.
+     *
+     * Calling this will reset any ongoing queue delays.  If messages exist in the queue when rate
+     * limiting is disabled, messages will be quickly sent (100 ms) with new messages queued to send
+     * until the queue is cleared.
+     *
+     * @see Network::useCustomMessageRate()
+     * @see Network::messageRateBurstSize()
+     * @see Network::messageRateDelay()
+     * @see Network::unlimitedMessageRate()
+     */
+    void updateRateLimiting();
+
+    /**
+     * Resets the token bucket up to the maximum
+     *
+     * Call this if the connection's been reset after calling updateRateLimiting() if needed.
+     *
+     * @see CoreNetwork::updateRateLimiting()
+     */
+    void resetTokenBucket();
+
     // IRCv3 capability negotiation (can be connected to signals)
 
     /**
@@ -381,6 +409,23 @@ private slots:
     void sslErrors(const QList<QSslError> &errors);
 #endif
 
+    /**
+     * Check the message token bucket
+     *
+     * If rate limiting is disabled and the message queue is empty, this disables the token bucket
+     * timer.  Otherwise, a queued message will be sent.
+     *
+     * @see CoreNetwork::fillBucketAndProcessQueue()
+     */
+    void checkTokenBucket();
+
+    /**
+     * Top up token bucket and send as many queued messages as possible
+     *
+     * If there's any room for more tokens, add to the token bucket.  Separately, if there's any
+     * messages to send, send until there's no more tokens or the queue is empty, whichever comes
+     * first.
+     */
     void fillBucketAndProcessQueue();
 
     void writeToSocket(const QByteArray &data);
@@ -463,10 +508,12 @@ private:
     const int maxCapRequestLength = 100;
 
     QTimer _tokenBucketTimer;
-    int _messageDelay;      // token refill speed in ms
-    int _burstSize;         // size of the token bucket
-    int _tokenBucket;       // the virtual bucket that holds the tokens
-    QList<QByteArray> _msgQueue;
+    // No need for int type as one cannot travel into the past (at least not yet, Doc)
+    quint32 _messageDelay;       /// Token refill speed in ms
+    quint32 _burstSize;          /// Size of the token bucket
+    quint32 _tokenBucket;        /// The virtual bucket that holds the tokens
+    QList<QByteArray> _msgQueue; /// Queue of messages waiting to be sent
+    bool _skipMessageRates;      /// If true, skip all message rate limits
 
     QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
 

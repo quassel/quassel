@@ -50,6 +50,10 @@ Network::Network(const NetworkId &networkid, QObject *parent)
     _autoReconnectInterval(60),
     _autoReconnectRetries(10),
     _unlimitedReconnectRetries(false),
+    _useCustomMessageRate(false),
+    _messageRateBurstSize(5),
+    _messageRateDelay(2200),
+    _unlimitedMessageRate(false),
     _codecForServer(0),
     _codecForEncoding(0),
     _codecForDecoding(0),
@@ -112,6 +116,10 @@ NetworkInfo Network::networkInfo() const
     info.autoReconnectRetries = autoReconnectRetries();
     info.unlimitedReconnectRetries = unlimitedReconnectRetries();
     info.rejoinChannels = rejoinChannels();
+    info.useCustomMessageRate = useCustomMessageRate();
+    info.messageRateBurstSize = messageRateBurstSize();
+    info.messageRateDelay = messageRateDelay();
+    info.unlimitedMessageRate = unlimitedMessageRate();
     return info;
 }
 
@@ -138,6 +146,15 @@ void Network::setNetworkInfo(const NetworkInfo &info)
     if (info.autoReconnectRetries != autoReconnectRetries()) setAutoReconnectRetries(info.autoReconnectRetries);
     if (info.unlimitedReconnectRetries != unlimitedReconnectRetries()) setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
     if (info.rejoinChannels != rejoinChannels()) setRejoinChannels(info.rejoinChannels);
+    // Custom rate limiting
+    if (info.useCustomMessageRate != useCustomMessageRate())
+        setUseCustomMessageRate(info.useCustomMessageRate);
+    if (info.messageRateBurstSize != messageRateBurstSize())
+        setMessageRateBurstSize(info.messageRateBurstSize);
+    if (info.messageRateDelay != messageRateDelay())
+        setMessageRateDelay(info.messageRateDelay);
+    if (info.unlimitedMessageRate != unlimitedMessageRate())
+        setUnlimitedMessageRate(info.unlimitedMessageRate);
 }
 
 
@@ -676,6 +693,56 @@ void Network::setRejoinChannels(bool rejoin)
 }
 
 
+void Network::setUseCustomMessageRate(bool useCustomRate)
+{
+    if (_useCustomMessageRate != useCustomRate) {
+        _useCustomMessageRate = useCustomRate;
+        SYNC(ARG(useCustomRate))
+        emit configChanged();
+        emit useCustomMessageRateSet(_useCustomMessageRate);
+    }
+}
+
+
+void Network::setMessageRateBurstSize(quint32 burstSize)
+{
+    if (burstSize < 1) {
+        // Can't go slower than one message at a time
+        qWarning() << "Received invalid setMessageRateBurstSize data, cannot have zero message "
+                      "burst size!" << burstSize;
+        return;
+    }
+    if (_messageRateBurstSize != burstSize) {
+        _messageRateBurstSize = burstSize;
+        SYNC(ARG(burstSize))
+        emit configChanged();
+        emit messageRateBurstSizeSet(_messageRateBurstSize);
+    }
+}
+
+
+void Network::setMessageRateDelay(quint32 messageDelay)
+{
+    if (_messageRateDelay != messageDelay) {
+        _messageRateDelay = messageDelay;
+        SYNC(ARG(messageDelay))
+        emit configChanged();
+        emit messageRateDelaySet(_messageRateDelay);
+    }
+}
+
+
+void Network::setUnlimitedMessageRate(bool unlimitedRate)
+{
+    if (_unlimitedMessageRate != unlimitedRate) {
+        _unlimitedMessageRate = unlimitedRate;
+        SYNC(ARG(unlimitedRate))
+        emit configChanged();
+        emit unlimitedMessageRateSet(_unlimitedMessageRate);
+    }
+}
+
+
 void Network::addSupport(const QString &param, const QString &value)
 {
     if (!_supports.contains(param)) {
@@ -1001,7 +1068,11 @@ NetworkInfo::NetworkInfo()
     autoReconnectInterval(60),
     autoReconnectRetries(20),
     unlimitedReconnectRetries(false),
-    rejoinChannels(true)
+    rejoinChannels(true),
+    useCustomMessageRate(false),
+    messageRateBurstSize(5),
+    messageRateDelay(2200),
+    unlimitedMessageRate(false)
 {
 }
 
@@ -1028,6 +1099,11 @@ bool NetworkInfo::operator==(const NetworkInfo &other) const
     if (autoReconnectRetries != other.autoReconnectRetries) return false;
     if (unlimitedReconnectRetries != other.unlimitedReconnectRetries) return false;
     if (rejoinChannels != other.rejoinChannels) return false;
+    // Custom rate limiting
+    if (useCustomMessageRate != other.useCustomMessageRate) return false;
+    if (messageRateBurstSize != other.messageRateBurstSize) return false;
+    if (messageRateDelay != other.messageRateDelay) return false;
+    if (unlimitedMessageRate != other.unlimitedMessageRate) return false;
     return true;
 }
 
@@ -1061,6 +1137,11 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info)
     i["AutoReconnectRetries"] = info.autoReconnectRetries;
     i["UnlimitedReconnectRetries"] = info.unlimitedReconnectRetries;
     i["RejoinChannels"] = info.rejoinChannels;
+    // Custom rate limiting
+    i["UseCustomMessageRate"] = info.useCustomMessageRate;
+    i["MessageRateBurstSize"] = info.messageRateBurstSize;
+    i["MessageRateDelay"] = info.messageRateDelay;
+    i["UnlimitedMessageRate"] = info.unlimitedMessageRate;
     out << i;
     return out;
 }
@@ -1090,6 +1171,11 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info)
     info.autoReconnectRetries = i["AutoReconnectRetries"].toInt();
     info.unlimitedReconnectRetries = i["UnlimitedReconnectRetries"].toBool();
     info.rejoinChannels = i["RejoinChannels"].toBool();
+    // Custom rate limiting
+    info.useCustomMessageRate = i["UseCustomMessageRate"].toBool();
+    info.messageRateBurstSize = i["MessageRateBurstSize"].toUInt();
+    info.messageRateDelay = i["MessageRateDelay"].toUInt();
+    info.unlimitedMessageRate = i["UnlimitedMessageRate"].toBool();
     return in;
 }
 
@@ -1103,7 +1189,12 @@ QDebug operator<<(QDebug dbg, const NetworkInfo &i)
     << " useSasl = " << i.useSasl << " saslAccount = " << i.saslAccount << " saslPassword = " << i.saslPassword
     << " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
     << " autoReconnectRetries = " << i.autoReconnectRetries << " unlimitedReconnectRetries = " << i.unlimitedReconnectRetries
-    << " rejoinChannels = " << i.rejoinChannels << ")";
+    << " rejoinChannels = " << i.rejoinChannels
+    << " useCustomMessageRate = " << i.useCustomMessageRate
+    << " messageRateBurstSize = " << i.messageRateBurstSize
+    << " messageRateDelay = " << i.messageRateDelay
+    << " unlimitedMessageRate = " << i.unlimitedMessageRate
+    << ")";
     return dbg.space();
 }
 

@@ -697,6 +697,11 @@ void PostgreSqlStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &inf
     query.bindValue(":autoreconnectretries", info.autoReconnectRetries);
     query.bindValue(":unlimitedconnectretries", info.unlimitedReconnectRetries);
     query.bindValue(":rejoinchannels", info.rejoinChannels);
+    // Custom rate limiting
+    query.bindValue(":usecustomessagerate", info.useCustomMessageRate);
+    query.bindValue(":messagerateburstsize", info.messageRateBurstSize);
+    query.bindValue(":messageratedelay", info.messageRateDelay);
+    query.bindValue(":unlimitedmessagerate", info.unlimitedMessageRate);
     if (info.networkId.isValid())
         query.bindValue(":networkid", info.networkId.toInt());
 }
@@ -843,6 +848,11 @@ QList<NetworkInfo> PostgreSqlStorage::networks(UserId user)
         net.useSasl = networksQuery.value(16).toBool();
         net.saslAccount = networksQuery.value(17).toString();
         net.saslPassword = networksQuery.value(18).toString();
+        // Custom rate limiting
+        net.useCustomMessageRate = networksQuery.value(19).toBool();
+        net.messageRateBurstSize = networksQuery.value(20).toUInt();
+        net.messageRateDelay = networksQuery.value(21).toUInt();
+        net.unlimitedMessageRate = networksQuery.value(22).toBool();
 
         serversQuery.bindValue(":networkid", net.networkId.toInt());
         safeExec(serversQuery);
@@ -1927,6 +1937,11 @@ bool PostgreSqlMigrationWriter::writeMo(const NetworkMO &network)
     bindValue(22, network.usesasl);
     bindValue(23, network.saslaccount);
     bindValue(24, network.saslpassword);
+    // Custom rate limiting
+    bindValue(25, network.usecustommessagerate);
+    bindValue(26, network.messagerateburstsize);
+    bindValue(27, network.messageratedelay);
+    bindValue(28, network.unlimitedmessagerate);
     return exec();
 }
 
