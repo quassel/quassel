@@ -218,17 +218,33 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
         }
 
         // Server: CAP * ACK :multi-prefix sasl
-        // Got the capability we want, handle as needed.
-        // As only one capability is requested at a time, no need to split
-        QString acceptedCap = e->params().at(2).trimmed().toLower();
+        // Got the capabilities we want, handle as needed.
+        QStringList acceptedCaps;
+        acceptedCaps = e->params().at(2).split(' ');
 
-        // Mark this cap as accepted
-        coreNet->acknowledgeCap(acceptedCap);
+        // Store what capability was acknowledged
+        QString acceptedCap;
 
-        if (!coreNet->capsRequiringConfiguration.contains(acceptedCap)) {
-            // Some capabilities (e.g. SASL) require further messages to finish.  If so, do NOT
-            // send the next capability; it will be handled elsewhere in CoreNetwork.
-            // Otherwise, move on to the next capability
+        // Keep track of whether or not a capability requires further configuration.  Due to queuing
+        // logic in CoreNetwork::queueCap(), this shouldn't ever happen when more than one
+        // capability is requested, but it's better to handle edge cases or faulty servers.
+        bool capsRequireConfiguration = false;
+
+        for (int i = 0; i < acceptedCaps.count(); ++i) {
+            acceptedCap = acceptedCaps[i].trimmed().toLower();
+            // Mark this cap as accepted
+            coreNet->acknowledgeCap(acceptedCap);
+            if (!capsRequireConfiguration &&
+                    coreNet->capsRequiringConfiguration.contains(acceptedCap)) {
+                capsRequireConfiguration = true;
+                // Some capabilities (e.g. SASL) require further messages to finish.  If so, do NOT
+                // send the next capability; it will be handled elsewhere in CoreNetwork.
+                // Otherwise, allow moving on to the next capability.
+            }
+        }
+
+        if (!capsRequireConfiguration) {
+            // No additional configuration required, move on to the next capability
             coreNet->sendNextCap();
         }
     } else if (capCommand == "NAK" || capCommand == "DEL") {
@@ -242,7 +258,7 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             return;
         }
 
-        // Either something went wrong with this capability, or it is no longer supported
+        // Either something went wrong with the capabilities, or they are no longer supported
         // > For CAP NAK
         // Server: CAP * NAK :multi-prefix sasl
         // > For CAP DEL
@@ -252,17 +268,29 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
         QStringList removedCaps;
         removedCaps = e->params().at(2).split(' ');
 
-        // Store what capability was denied or removed
+        // Store the capabilities that were denied or removed
         QString removedCap;
         for (int i = 0; i < removedCaps.count(); ++i) {
             removedCap = removedCaps[i].trimmed().toLower();
-            // Mark this cap as removed
+            // Mark this cap as removed.
+            // For CAP DEL, removes it from use.
+            // For CAP NAK when received before negotiation enabled these capabilities, removeCap()
+            // should do nothing.  This merely guards against non-spec servers sending an
+            // unsolicited CAP ACK then later removing that capability.
             coreNet->removeCap(removedCap);
         }
 
         if (capCommand == "NAK") {
-            // Continue negotiation only if this is the result of a denied cap, not a removed
-            // cap
+            // Continue negotiation only if this is the result of denied caps, not removed caps
+            if (removedCaps.count() > 1) {
+                // We've received a CAP NAK reply to multiple capabilities at once.  Unfortunately,
+                // we don't know which capability failed and which ones are valid to re-request, so
+                // individually retry each capability from the failed bundle.
+                // See CoreNetwork::retryCapsIndividually() for more details.
+                coreNet->retryCapsIndividually();
+                // Still need to call sendNextCap() to carry on.
+            }
+            // Carry on with negotiation
             coreNet->sendNextCap();
         }
     }

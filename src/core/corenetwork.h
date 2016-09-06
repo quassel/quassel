@@ -110,7 +110,8 @@ public:
      *
      * @returns True if in progress, otherwise false
      */
-    inline bool capNegotiationInProgress() const { return !_capsQueued.empty(); }
+    inline bool capNegotiationInProgress() const { return (!_capsQueuedIndividual.empty() ||
+                                                           !_capsQueuedBundled.empty()); }
 
     /**
      * Queues a capability to be requested.
@@ -139,10 +140,27 @@ public:
     void endCapNegotiation();
 
     /**
+     * Queues the most recent capability set for retrying individually.
+     *
+     * Retries the most recent bundle of capabilities one at a time instead of as a group, working
+     * around the issue that IRC servers can deny a group of requested capabilities without
+     * indicating which capabilities failed.
+     *
+     * See: http://ircv3.net/specs/core/capability-negotiation-3.1.html
+     *
+     * This does NOT call CoreNetwork::sendNextCap().  Call that when ready afterwards.  Does
+     * nothing if the last capability tried was individual instead of a set.
+     */
+    void retryCapsIndividually();
+
+    /**
      * List of capabilities requiring further core<->server messages to configure.
      *
      * For example, SASL requires the back-and-forth of AUTHENTICATE, so the next capability cannot
      * be immediately sent.
+     *
+     * Any capabilities in this list must call CoreNetwork::sendNextCap() on their own and they will
+     * not be batched together with other capabilities.
      *
      * See: http://ircv3.net/specs/extensions/sasl-3.2.html
      */
@@ -394,18 +412,40 @@ private:
 
     // Maintain a list of CAPs that are being checked; if empty, negotiation finished
     // See http://ircv3.net/specs/core/capability-negotiation-3.2.html
-    QStringList _capsQueued;           /// Capabilities to be checked
-    bool _capNegotiationActive;        /// Whether or not full capability negotiation was started
+    QStringList _capsQueuedIndividual;  /// Capabilities to check that require one at a time requests
+    QStringList _capsQueuedBundled;     /// Capabilities to check that can be grouped together
+    QStringList _capsQueuedLastBundle;  /// Most recent capability bundle requested (no individuals)
+    // Some capabilities, such as SASL, require follow-up messages to be fully enabled.  These
+    // capabilities should not be grouped with others to avoid requesting new capabilities while the
+    // previous capability is still being set up.
+    // Additionally, IRC servers can choose to send a 'NAK' to any set of requested capabilities.
+    // If this happens, we need a way to retry each capability individually in order to avoid having
+    // one failing capability (e.g. SASL) block all other capabilities.
+
+    bool _capNegotiationActive;         /// Whether or not full capability negotiation was started
     // Avoid displaying repeat "negotiation finished" messages
-    bool _capInitialNegotiationEnded;  /// Whether or not initial capability negotiation finished
+    bool _capInitialNegotiationEnded;   /// Whether or not initial capability negotiation finished
     // Avoid sending repeat "CAP END" replies when registration is already ended
 
     /**
-     * Gets the next capability to request, removing it from the queue.
+     * Gets the next set of capabilities to request, removing them from the queue.
      *
-     * @returns Name of capability to request
+     * May return one or multiple space-separated capabilities, depending on queue.
+     *
+     * @returns Space-separated names of capabilities to request, or empty string if none remain
      */
-    QString takeQueuedCap();
+    QString takeQueuedCaps();
+
+    /**
+     * Maximum length of a single 'CAP REQ' command.
+     *
+     * To be safe, 100 chars.  Higher numbers should be possible; this is following the conservative
+     * minimum number of characters that IRC servers must return in CAP NAK replies.  This also
+     * means CAP NAK replies will contain the full list of denied capabilities.
+     *
+     * See: http://ircv3.net/specs/core/capability-negotiation-3.1.html
+     */
+    const int maxCapRequestLength = 100;
 
     QTimer _tokenBucketTimer;
     int _messageDelay;      // token refill speed in ms

@@ -168,7 +168,8 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     _quitReason.clear();
 
     // Reset capability negotiation tracking, also handling server changes during reconnect
-    _capsQueued.clear();
+    _capsQueuedIndividual.clear();
+    _capsQueuedBundled.clear();
     clearCaps();
     _capNegotiationActive = false;
     _capInitialNegotiationEnded = false;
@@ -955,18 +956,95 @@ void CoreNetwork::queueCap(const QString &capability)
 {
     // IRCv3 specs all use lowercase capability names
     QString _capLowercase = capability.toLower();
-    if (!_capsQueued.contains(_capLowercase)) {
-        _capsQueued.append(_capLowercase);
+
+    if(capsRequiringConfiguration.contains(_capLowercase)) {
+        // The capability requires additional configuration before being acknowledged (e.g. SASL),
+        // so we should negotiate it separately from all other capabilities.  Otherwise new
+        // capabilities will be requested while still configuring the previous one.
+        if (!_capsQueuedIndividual.contains(_capLowercase)) {
+            _capsQueuedIndividual.append(_capLowercase);
+        }
+    } else {
+        // The capability doesn't need any special configuration, so it should be safe to try
+        // bundling together with others.  "Should" being the imperative word, as IRC servers can do
+        // anything.
+        if (!_capsQueuedBundled.contains(_capLowercase)) {
+            _capsQueuedBundled.append(_capLowercase);
+        }
     }
 }
 
-QString CoreNetwork::takeQueuedCap()
+QString CoreNetwork::takeQueuedCaps()
 {
-    if (!_capsQueued.empty()) {
-        return _capsQueued.takeFirst();
+    // Clear the record of the most recently negotiated capability bundle.  Does nothing if the list
+    // is empty.
+    _capsQueuedLastBundle.clear();
+
+    // First, negotiate all the standalone capabilities that require additional configuration.
+    if (!_capsQueuedIndividual.empty()) {
+        // We have an individual capability available.  Take the first and pass it back.
+        return _capsQueuedIndividual.takeFirst();
+    } else if (!_capsQueuedBundled.empty()) {
+        // We have capabilities available that can be grouped.  Try to fit in as many as within the
+        // maximum length.
+        // See CoreNetwork::maxCapRequestLength
+
+        // Response must have at least one capability regardless of max length for anything to
+        // happen.
+        QString capBundle = _capsQueuedBundled.takeFirst();
+        QString nextCap("");
+        while (!_capsQueuedBundled.empty()) {
+            // As long as capabilities remain, get the next...
+            nextCap = _capsQueuedBundled.first();
+            if ((capBundle.length() + 1 + nextCap.length()) <= maxCapRequestLength) {
+                // [capability + 1 for a space + this new capability] fit within length limits
+                // Add it to formatted list
+                capBundle.append(" " + nextCap);
+                // Add it to most recent bundle of requested capabilities (simplifies retry logic)
+                _capsQueuedLastBundle.append(nextCap);
+                // Then remove it from the queue
+                _capsQueuedBundled.removeFirst();
+            } else {
+                // We've reached the length limit for a single capability request, stop adding more
+                break;
+            }
+        }
+        // Return this space-separated set of capabilities, removing any extra spaces
+        return capBundle.trimmed();
     } else {
+        // No capabilities left to negotiate, return an empty string.
         return QString();
     }
+}
+
+void CoreNetwork::retryCapsIndividually()
+{
+    // The most recent set of capabilities got denied by the IRC server.  As we don't know what got
+    // denied, try each capability individually.
+    if (_capsQueuedLastBundle.empty()) {
+        // No most recently tried capability set, just return.
+        return;
+        // Note: there's little point in retrying individually requested caps during negotiation.
+        // We know the individual capability was the one that failed, and it's not likely it'll
+        // suddenly start working within a few seconds.  'cap-notify' provides a better system for
+        // handling capability removal and addition.
+    }
+
+    // This should be fairly rare, e.g. services restarting during negotiation, so simplicity wins
+    // over efficiency.  If this becomes an issue, implement a binary splicing system instead,
+    // keeping track of which halves of the group fail, dividing the set each time.
+
+    // Add most recently tried capability set to individual list, re-requesting them one at a time
+    _capsQueuedIndividual.append(_capsQueuedLastBundle);
+    // Warn of this issue to explain the slower login.  Servers usually shouldn't trigger this.
+    displayMsg(Message::Server, BufferInfo::StatusBuffer, "",
+               tr("Could not negotiate some capabilities, retrying individually (%1)...")
+               .arg(_capsQueuedLastBundle.join(", ")));
+    // Capabilities are already removed from the capability bundle queue via takeQueuedCaps(), no
+    // need to remove them here.
+    // Clear the most recently tried set to reduce risk that mistakes elsewhere causes retrying
+    // indefinitely.
+    _capsQueuedLastBundle.clear();
 }
 
 void CoreNetwork::beginCapNegotiation()
@@ -983,17 +1061,23 @@ void CoreNetwork::beginCapNegotiation()
     _capNegotiationActive = true;
     displayMsg(Message::Server, BufferInfo::StatusBuffer, "",
                tr("Ready to negotiate (found: %1)").arg(caps().join(", ")));
+
+    // Build a list of queued capabilities, starting with individual, then bundled, only adding the
+    // comma separator between the two if needed.
+    QString queuedCapsDisplay =
+            (!_capsQueuedIndividual.empty() ? _capsQueuedIndividual.join(", ") + ", " : "")
+            + _capsQueuedBundled.join(", ");
     displayMsg(Message::Server, BufferInfo::StatusBuffer, "",
-               tr("Negotiating capabilities (requesting: %1)...").arg(_capsQueued.join(", ")));
+               tr("Negotiating capabilities (requesting: %1)...").arg(queuedCapsDisplay));
+
     sendNextCap();
 }
 
 void CoreNetwork::sendNextCap()
 {
     if (capNegotiationInProgress()) {
-        // Request the next capability and remove it from the list
-        // Handle one at a time so one capability failing won't NAK all of 'em
-        putRawLine(serverEncode(QString("CAP REQ :%1").arg(takeQueuedCap())));
+        // Request the next set of capabilities and remove them from the list
+        putRawLine(serverEncode(QString("CAP REQ :%1").arg(takeQueuedCaps())));
     } else {
         // No pending desired capabilities, capability negotiation finished
         // If SASL requested but not available, print a warning
