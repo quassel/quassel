@@ -449,6 +449,21 @@ void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent *e)
     }
 }
 
+/* ERROR - "ERROR :reason"
+Example:  ERROR :Closing Link: nickname[xxx.xxx.xxx.xxx] (Large base64 image paste.)
+See https://tools.ietf.org/html/rfc2812#section-3.7.4 */
+void CoreSessionEventProcessor::processIrcEventError(IrcEvent *e)
+{
+    if (!checkParamCount(e, 1))
+        return;
+
+    if (coreNetwork(e)->disconnectExpected()) {
+        // During QUIT, the server should send an error (often, but not always, "Closing Link"). As
+        // we're expecting it, don't show this to the user.
+        e->setFlag(EventManager::Silent);
+    }
+}
+
 
 #ifdef HAVE_QCA2
 void CoreSessionEventProcessor::processKeyEvent(KeyEvent *e)

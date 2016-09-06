@@ -98,6 +98,15 @@ public:
     inline quint16 localPort() const { return socket.localPort(); }
     inline quint16 peerPort() const { return socket.peerPort(); }
 
+    /**
+     * Gets whether or not a disconnect was expected.
+     *
+     * Distinguishes desired quits from unexpected disconnections such as socket errors or timeouts.
+     *
+     * @return True if disconnect was requested, otherwise false.
+     */
+    inline bool disconnectExpected() const { return _disconnectExpected; }
+
     QList<QList<QByteArray>> splitMessage(const QString &cmd, const QString &message, std::function<QList<QByteArray>(QString &)> cmdGenerator);
 
 public slots:
