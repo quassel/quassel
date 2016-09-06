@@ -64,6 +64,7 @@ public:
     Q_INVOKABLE void processIrcEventPong(IrcEvent *event);
     Q_INVOKABLE void processIrcEventQuit(IrcEvent *event);
     Q_INVOKABLE void processIrcEventTopic(IrcEvent *event);
+    Q_INVOKABLE void processIrcEventError(IrcEvent *event);    /// ERROR message from server
     Q_INVOKABLE void processIrcEventWallops(IrcEvent *event);
 
     Q_INVOKABLE void processIrcEvent005(IrcEvent *event);    // RPL_ISUPPORT
