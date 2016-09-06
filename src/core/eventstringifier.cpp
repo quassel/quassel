@@ -356,6 +356,15 @@ void EventStringifier::processIrcEventTopic(IrcEvent *e)
         .arg(e->nick(), e->params().at(0), e->params().at(1)), QString(), e->params().at(0));
 }
 
+void EventStringifier::processIrcEventError(IrcEvent *e)
+{
+    // Need an error reason
+    if (!checkParamCount(e, 1))
+        return;
+
+    displayMsg(e, Message::Server, tr("Error from server: ") + e->params().join(""));
+}
+
 void EventStringifier::processIrcEventWallops(IrcEvent *e)
 {
     displayMsg(e, Message::Server, tr("[Operwall] %1: %2").arg(e->nick(), e->params().join(" ")));
