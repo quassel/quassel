@@ -357,7 +357,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     if (!_filterString.isEmpty()) {
         const BufferInfo info = qvariant_cast<BufferInfo>(Client::bufferModel()->data(source_bufferIndex, NetworkModel::BufferInfoRole));
         QString name = info.bufferName();
-        if (name.contains(_filterString)) {
+        if (name.contains(_filterString, Qt::CaseInsensitive)) {
             return true;
         } else {
             return false;
