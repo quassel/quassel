@@ -45,17 +45,17 @@ script: |-
   cd build
   if [ "$TRAVIS_OS_NAME" == "linux" ]
   then
-    if [ "$QT_VERSION" = "qt4" ]; then cmake ..; fi
-    if [ "$QT_VERSION" = "qt5" ]; then cmake -DUSE_QT5=ON ..; fi
+    if [ "$QT_VERSION" = "qt4" ]; then cmake -DUSE_QT4=ON ..; fi
+    if [ "$QT_VERSION" = "qt5" ]; then cmake ..; fi
     make
   elif [ "$TRAVIS_OS_NAME" == "osx" ]
   then
     if [[ "$TRAVIS_TAG" != "" && "$GH_TOKEN" != "" ]]
     then
       PATH=$PATH:/usr/local/opt/qt5/bin
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DUSE_QT5=ON -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DDEPLOY=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
+      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DDEPLOY=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
     else
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DUSE_QT5=ON -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
+      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
     fi
     ninja install
   fi
