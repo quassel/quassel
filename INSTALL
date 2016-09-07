@@ -89,11 +89,25 @@ options here:
     sure that you have the icon set already installed on your system regardless,
     use this option to disable installing the bundled icons.
 
+-DWITH_BREEZE=(ON|OFF)
+    Alternative icon set to Oxygen.
+    By default, WITH_BREEZE is OFF.
+
+-DWITH_BREEZE_DARK=(ON|OFF)
+    Alternative icon set to Oxygen.
+    By default, WITH_BREEZE_DARK is OFF.
+
+-DWITH_WEBENGINE=(ON|OFF)
+    Use WebEngine for showing previews of webpages linked in the chat. Requires
+    the QtWebEngine module to be available, and increases the client's RAM usage
+    by *a lot* if enabled at runtime. Only available for Qt5. The default is ON.
+
 -DWITH_WEBKIT=OFF
-    Use Webkit for showing previews of webpages linked in the chat. Requires
-    the QtWebkit module to be available, and increases the client's RAM usage
-    by *a lot* if enabled at runtime. Note also that Webkit frequently crashes
-    especially on Windows.
+    Use WebKit for showing previews of webpages linked in the chat. Requires
+    the QtWebKit module to be available, and increases the client's RAM usage
+    by *a lot* if enabled at runtime.
+    Note that WebKit support is deprecated and mostly unmaintained in Qt, and
+    should no longer be used for security reasons. The default is OFF.
 
 -DEMBED_DATA=(ON|OFF)
     Specifies whether Quassel's data files (icons, translations and so on)
