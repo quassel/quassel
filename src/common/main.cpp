@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 
 #ifndef BUILD_CORE
     // put client-only arguments here
-    cliParser->addOption("icontheme", 0, "Override the system icon theme ('oxygen' is recommended)", "theme");
+    cliParser->addOption("icontheme", 0, "Override the system icon theme ('breeze' is recommended)", "theme");
     cliParser->addOption("qss", 0, "Load a custom application stylesheet", "file.qss");
     cliParser->addSwitch("debugbufferswitches", 0, "Enables debugging for bufferswitches");
     cliParser->addSwitch("debugmodel", 0, "Enables debugging for models");

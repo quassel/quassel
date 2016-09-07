@@ -82,20 +82,21 @@ options here:
 -DWITH_KDE=ON
     Enable integration into KDE4 (with Qt4) or KDE Frameworks (with Qt5).
 
--DWITH_OXYGEN=(ON|OFF)
-    Install the parts of the Oxygen icon set Quassel uses. Oxygen is the default
-    icon set for KDE4, and thus already available on systems where KDE4 is
-    installed. By default, WITH_OXYGEN is ON iff WITH_KDE is OFF. If you are
+-DWITH_BREEZE=(ON|OFF)
+    Install the parts of the Breeze icon theme Quassel uses. Breeze is the default
+    icon theme for Plasma 5, and thus already available on systems where Plasma is
+    installed. By default, WITH_BREEZE is ON iff WITH_KDE is OFF. If you are
     sure that you have the icon set already installed on your system regardless,
     use this option to disable installing the bundled icons.
 
--DWITH_BREEZE=(ON|OFF)
-    Alternative icon set to Oxygen.
-    By default, WITH_BREEZE is OFF.
-
 -DWITH_BREEZE_DARK=(ON|OFF)
-    Alternative icon set to Oxygen.
+    Alternative icon theme to Breeze, optimized for dark desktop themes.
     By default, WITH_BREEZE_DARK is OFF.
+
+-DWITH_OXYGEN=(ON|OFF)
+    Alternative icon theme to Breeze. Oxygen was the default theme in KDE 4, and
+    also the bundled icon theme in Quassel before version 0.13.
+    By default, WITH_OXYGEN is OFF.
 
 -DWITH_WEBKIT=OFF
     Use Webkit for showing previews of webpages linked in the chat. Requires

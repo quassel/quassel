@@ -166,8 +166,8 @@ bool QtUiApplication::init()
         else if (QtUiSettings().value("IconTheme", QVariant("")).toString() != "")
             QIcon::setThemeName(QtUiSettings().value("IconTheme").toString());
         else if (QIcon::themeName().isEmpty())
-            // Some platforms don't set a default icon theme; chances are we can find our bundled Oxygen theme though
-            QIcon::setThemeName("oxygen");
+            // Some platforms don't set a default icon theme; chances are we can find our bundled theme though
+            QIcon::setThemeName("breeze");
 
         // session resume
         QtUi *gui = new QtUi();

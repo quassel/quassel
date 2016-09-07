@@ -101,17 +101,19 @@ void AppearanceSettingsPage::initLanguageComboBox()
 
 void AppearanceSettingsPage::initIconThemeComboBox()
 {
+    // TODO Replace by runtime detection
 #if defined WITH_OXYGEN || defined WITH_BREEZE || defined WITH_BREEZE_DARK
-# if defined WITH_OXYGEN
-    ui.iconthemeComboBox->addItem(tr("Oxygen"), QVariant("oxygen"));
-# endif
 # if defined WITH_BREEZE
     ui.iconthemeComboBox->addItem(tr("Breeze Light"), QVariant("breeze"));
 # endif
 # if defined WITH_BREEZE_DARK
     ui.iconthemeComboBox->addItem(tr("Breeze Dark"), QVariant("breezedark"));
 # endif
+# if defined WITH_OXYGEN
+    ui.iconthemeComboBox->addItem(tr("Oxygen"), QVariant("oxygen"));
+# endif
 #else
+    ui.iconthemeLabel->hide();
     ui.iconthemeComboBox->hide();
 #endif
 }

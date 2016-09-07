@@ -68,16 +68,16 @@
       </spacer>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_10">
+      <widget class="QLabel" name="iconthemeLabel">
        <property name="text">
-        <string>Icon Theme:</string>
+        <string>Icon theme:</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="QComboBox" name="iconthemeComboBox">
        <property name="toolTip">
-        <string>Choose from the bundled Icon-Themes! May need restart...</string>
+        <string>Choose from the bundled icon themes! May need restart...</string>
        </property>
        <item>
         <property name="text">
