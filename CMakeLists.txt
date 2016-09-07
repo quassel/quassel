@@ -40,13 +40,13 @@ include(QuasselMacros)
 # Options and variables that can be set on the command line
 #####################################################################
 
-# First, choose a Qt version. We support USE_QT4 and USE_QT5; if neither is set, prefer Qt4 for now
-option(USE_QT5 "Enable support for Qt5 (disables KDE integration)" OFF)
-if (USE_QT4) # takes precedence
-    set(USE_QT5 OFF)
+# First, choose a Qt version. We support USE_QT5 and USE_QT4; if neither is set, Qt5 will be used
+option(USE_QT5 "Enable support for Qt5" OFF)
+if (USE_QT5) # takes precedence
+    set(USE_QT4 OFF)
 else()
-    if (NOT USE_QT5)
-        set(USE_QT4 ON)
+    if (NOT USE_QT4)
+        set(USE_QT5 ON)
     endif()
 endif()
 
