@@ -230,27 +230,44 @@ void BufferView::dropEvent(QDropEvent *event)
     QPoint cursorPos = event->pos();
 
     // check if we're really _on_ the item and not indicating a move to just above or below the item
+    // Magic margin number for this is from QAbstractItemViewPrivate::position()
     const int margin = 2;
     if (cursorPos.y() - indexRect.top() < margin
         || indexRect.bottom() - cursorPos.y() < margin)
         return TreeViewTouch::dropEvent(event);
 
+    // If more than one buffer was being dragged, treat this as a rearrangement instead of a merge request
     QList<QPair<NetworkId, BufferId> > bufferList = Client::networkModel()->mimeDataToBufferList(event->mimeData());
     if (bufferList.count() != 1)
         return TreeViewTouch::dropEvent(event);
 
+    // Get the Buffer ID of the buffer that was being dragged
     BufferId bufferId2 = bufferList[0].second;
 
-    if (index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
-        return TreeViewTouch::dropEvent(event);
-
-    if (index.data(NetworkModel::BufferTypeRole) != BufferInfo::QueryBuffer)
-        return TreeViewTouch::dropEvent(event);
-
+    // Get the Buffer ID of the target buffer
     BufferId bufferId1 = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+
+    // If the source and target are the same buffer, this was an aborted rearrangement
     if (bufferId1 == bufferId2)
         return TreeViewTouch::dropEvent(event);
 
+    // Get index of buffer that was being dragged
+    QModelIndex index2 = Client::networkModel()->bufferIndex(bufferId2);
+
+    // If the buffer being dragged is a channel and we're still joined to it, treat this as a rearrangement
+    // This prevents us from being joined to a channel with no associated UI elements
+    if(index2.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer && index2.data(NetworkModel::ItemActiveRole) == true)
+        return TreeViewTouch::dropEvent(event);
+
+    //If the source buffer is not mergeable(AKA not a Channel and not a Query), try rearranging instead
+    if(index2.data(NetworkModel::BufferTypeRole) != BufferInfo::ChannelBuffer && index2.data(NetworkModel::BufferTypeRole) != BufferInfo::QueryBuffer)
+        return TreeViewTouch::dropEvent(event);
+
+    // If the target buffer is not mergeable(AKA not a Channel and not a Query), try rearranging instead
+    if(index.data(NetworkModel::BufferTypeRole) != BufferInfo::ChannelBuffer && index.data(NetworkModel::BufferTypeRole) != BufferInfo::QueryBuffer)
+        return TreeViewTouch::dropEvent(event);
+
+    // Confirm that the user really wants to merge the buffers before doing so
     int res = QMessageBox::question(0, tr("Merge buffers permanently?"),
         tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
         QMessageBox::Yes|QMessageBox::No, QMessageBox::No);

@@ -183,22 +183,22 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const
     QModelIndex source_index = mapToSource(index);
     Qt::ItemFlags flags = sourceModel()->flags(source_index);
     if (config()) {
-        NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt();
         BufferInfo::Type bufferType = (BufferInfo::Type)sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt();
-        if (source_index == QModelIndex() || itemType == NetworkModel::NetworkItemType) {
-            flags |= Qt::ItemIsDropEnabled;
-        }
-        else if (_editMode) {
-            flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
+
+        // We need Status Buffers to be a drop target, to allow for rearranging buffers.
+        // The Status Buffer "owns" the space between Channel/Query buffers in the tree.
+        // This DOES mean that it looks like you can merge a buffer into the Status buffer, but that is restricted in BufferView::dropEvent().
+        if(bufferType == BufferInfo::StatusBuffer) {
+            // But only if the layout isn't locked!
+            ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+            if(clientConf && !clientConf->isLocked()) {
+                flags |= Qt::ItemIsDropEnabled;
+            }
         }
 
-        // prohibit dragging of most items. and most drop places
-        // only query to query is allowed for merging
-        if (bufferType != BufferInfo::QueryBuffer) {
-            ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
-            if (clientConf && clientConf->isLocked()) {
-                flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
-            }
+        // If we're in Edit Mode, everything except Status Buffers should be hideable.
+        if(_editMode && bufferType != BufferInfo::StatusBuffer) {
+            flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
         }
     }
     return flags;

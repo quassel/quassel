@@ -672,6 +672,7 @@ ChannelBufferItem::ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeI
     : BufferItem(bufferInfo, parent),
     _ircChannel(0)
 {
+    setFlags(flags() | Qt::ItemIsDropEnabled);
 }
 
 
