@@ -542,8 +542,13 @@ void CoreNetwork::socketInitialized()
 
     socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
 
-    // Update the TokenBucket with specified rate-limiting settings
-    updateRateLimiting();
+    // Update the TokenBucket, force-enabling unlimited message rates for initial registration and
+    // capability negotiation.  networkInitialized() will call updateRateLimiting() without the
+    // force flag to apply user preferences.  When making changes, ensure that this still happens!
+    // As Quassel waits for CAP ACK/NAK and AUTHENTICATE replies, this shouldn't ever fill the IRC
+    // server receive queue and cause a kill.  "Shouldn't" being the operative word; the real world
+    // is a scary place.
+    updateRateLimiting(true);
     // Fill up the token bucket as we're connecting from scratch
     resetTokenBucket();
 
@@ -639,6 +644,10 @@ void CoreNetwork::networkInitialized()
     setConnected(true);
     _disconnectExpected = false;
     _quitRequested = false;
+
+    // Update the TokenBucket with specified rate-limiting settings, removing the force-unlimited
+    // flag used for initial registration and capability negotiation.
+    updateRateLimiting();
 
     if (useAutoReconnect()) {
         // reset counter
@@ -931,12 +940,12 @@ void CoreNetwork::setPingInterval(int interval)
 
 /******** Custom Rate Limiting ********/
 
-void CoreNetwork::updateRateLimiting()
+void CoreNetwork::updateRateLimiting(const bool forceUnlimited)
 {
     // Always reset the delay and token bucket (safe-guard against accidentally starting the timer)
 
-    if (useCustomMessageRate()) {
-        // Custom message rates enabled.  Let's go for it!
+    if (useCustomMessageRate() || forceUnlimited) {
+        // Custom message rates enabled, or chosen by means of forcing unlimited.  Let's go for it!
 
         _messageDelay = messageRateDelay();
 
@@ -958,8 +967,9 @@ void CoreNetwork::updateRateLimiting()
 
         // Toggle the timer according to whether or not rate limiting is enabled
         // If we're here, useCustomMessageRate is true.  Thus, the logic becomes
-        // _skipMessageRates = (useCustomMessageRate && unlimitedMessageRate)
-        _skipMessageRates = unlimitedMessageRate();
+        // _skipMessageRates = (useCustomMessageRate && (unlimitedMessageRate || forceUnlimited))
+        // Override user preferences if called with force unlimited
+        _skipMessageRates = (unlimitedMessageRate() || forceUnlimited);
         if (_skipMessageRates) {
             // If the message queue already contains messages, they need sent before disabling the
             // timer.  Set the timer to a rapid pace and let it disable itself.

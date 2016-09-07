@@ -284,8 +284,14 @@ public slots:
      * @see Network::messageRateBurstSize()
      * @see Network::messageRateDelay()
      * @see Network::unlimitedMessageRate()
+     *
+     * @param[in] forceUnlimited
+     * @parmblock
+     * If true, override user settings to disable message rate limiting, otherwise apply rate limits
+     * set by the user.  Use with caution and remember to re-enable configured limits when done.
+     * @endparmblock
      */
-    void updateRateLimiting();
+    void updateRateLimiting(const bool forceUnlimited = false);
 
     /**
      * Resets the token bucket up to the maximum
