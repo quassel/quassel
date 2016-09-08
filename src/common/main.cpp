@@ -188,11 +188,17 @@ int main(int argc, char **argv)
 #elif defined BUILD_QTUI
 # if QT_VERSION >= 0x050600
     QtUiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+# if QT_VERSION >= 0x050700
+    QtUiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 # endif
     QtUiApplication app(argc, argv);
 #elif defined BUILD_MONO
 # if QT_VERSION >= 0x050600
     MonolithicApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+# if QT_VERSION >= 0x050700
+    MonolithicApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 # endif
     MonolithicApplication app(argc, argv);
 #endif
