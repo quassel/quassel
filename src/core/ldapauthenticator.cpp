@@ -59,11 +59,11 @@ LdapAuthenticator::~LdapAuthenticator()
 
 bool LdapAuthenticator::isAvailable() const
 {
-    // XXX: probably this should test if we can speak to the LDAP server.
+    // FIXME: probably this should test if we can speak to the LDAP server.
     return true;
 }
 
-QString LdapAuthenticator::displayName() const
+QString LdapAuthenticator::backendId() const
 {
     // We identify the backend to use for the monolithic core by its displayname.
     // so only change this string if you _really_ have to and make sure the core
@@ -110,7 +110,7 @@ void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
     _uidAttribute = properties["UID Attribute"].toString();
 }
 
-// XXX: this code is sufficiently general that in the future, perhaps an abstract
+// TODO: this code is sufficiently general that in the future, perhaps an abstract
 // class should be created implementing it.
 // i.e. a provider that does its own thing and then pokes at the current storage
 // through the default core method.
@@ -130,9 +130,9 @@ UserId LdapAuthenticator::validateUser(const QString &username, const QString &p
     UserId quasselID = Core::validateUser(username, QString());
     if (!quasselID.isValid())
     {
-        return Core::addUser(username, QString(), displayName());
+        return Core::addUser(username, QString(), backendId());
     }
-    else if (!(Core::checkAuthProvider(quasselID, displayName())))
+    else if (!(Core::checkAuthProvider(quasselID, backendId())))
     {
         return 0;
     }
@@ -153,11 +153,11 @@ Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
     bool status = ldapConnect();
     if (!status)
     {
-        quInfo() << qPrintable(displayName()) << "Authenticator cannot connect.";
+        quInfo() << qPrintable(backendId()) << "Authenticator cannot connect.";
         return NotAvailable;
     }
 
-    quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
+    quInfo() << qPrintable(backendId()) << "Authenticator is ready.";
     return IsReady;
 }
 

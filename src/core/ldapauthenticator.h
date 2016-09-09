@@ -57,7 +57,7 @@ public:
 public slots:
     /* General */
     bool isAvailable() const;
-    QString displayName() const;
+    QString backendId() const;
     QString description() const;
     virtual QStringList setupKeys() const;
     virtual QVariantMap setupDefaults() const;

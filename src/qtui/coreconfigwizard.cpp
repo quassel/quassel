@@ -94,7 +94,7 @@ QHash<QString, QVariant> CoreConfigWizard::authenticators() const
     return _authenticators;
 }
 
-void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authBackend, const QVariantMap &authProperties)
+void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authenticator, const QVariantMap &authProperties)
 {
     // Prevent the user from changing any settings he already specified...
     foreach(int idx, visitedPages())
@@ -102,11 +102,11 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
 
     // FIXME? We need to be able to set up older cores that don't have auth backend support.
     // So if the core doesn't support that feature, don't pass those parameters.
-    if (!(Client::coreFeatures() & Quassel::AuthBackends))
+    if (!(Client::coreFeatures() & Quassel::Authenticators))
     {
         coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
     } else {
-        coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties, authBackend, authProperties));
+        coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties, authenticator, authProperties));
     }
 }
 
@@ -194,7 +194,7 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
 int AdminUserPage::nextId() const
 {
     // If the core doesn't support auth backends, skip that page!
-    if (!(Client::coreFeatures() & Quassel::AuthBackends))
+    if (!(Client::coreFeatures() & Quassel::Authenticators))
     {
         return CoreConfigWizard::StorageSelectionPage;
     } else {
@@ -534,14 +534,14 @@ void SyncPage::initializePage()
 
     // Fill in sync info about the authentication layer.
     AuthenticationSelectionPage *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
-    QString authBackend = authPage->selectedBackend();
+    QString authenticator = authPage->selectedBackend();
     QVariantMap authProperties = authPage->connectionProperties();
-    Q_ASSERT(!authBackend.isEmpty());
-    ui.authBackend->setText(authBackend);
+    Q_ASSERT(!authenticator.isEmpty());
+    ui.authenticator->setText(authenticator);
 
     ui.user->setText(wizard()->field("adminUser.user").toString());
 
-    emit setupCore(backend, properties, authBackend, authProperties);
+    emit setupCore(backend, properties, authenticator, authProperties);
 }
 
 

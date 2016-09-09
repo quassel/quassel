@@ -38,11 +38,11 @@ SqlAuthenticator::~SqlAuthenticator()
 
 bool SqlAuthenticator::isAvailable() const
 {
-    // XXX: probably this should query the current storage (see the ::init routine too).
+    // FIXME: probably this should query the current storage (see the ::init routine too).
     return true;
 }
 
-QString SqlAuthenticator::displayName() const
+QString SqlAuthenticator::backendId() const
 {
     // We identify the backend to use for the monolithic core by its displayname.
     // so only change this string if you _really_ have to and make sure the core
@@ -71,6 +71,6 @@ Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
     // TODO: FIXME: this should check if the storage provider is ready, but I don't
     // know if there's an exposed way to do that at the moment.
 
-    quInfo() << qPrintable(displayName()) << "Authenticator is ready.";
+    quInfo() << qPrintable(backendId()) << "Authenticator is ready.";
     return IsReady;
 }

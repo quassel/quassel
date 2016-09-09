@@ -196,16 +196,16 @@ void CoreAuthHandler::handle(const SetupData &msg)
     if (!checkClientRegistered())
         return;
 
-    // The default parameter to authBackend is Database.
+    // The default parameter to authenticator is Database.
     // Maybe this should be hardcoded elsewhere, i.e. as a define.
-    QString authBackend = msg.authenticator;
-    quInfo() << "[" << authBackend << "]";
-    if (authBackend.trimmed().isEmpty() || authBackend == 0)
+    QString authenticator = msg.authenticator;
+    quInfo() << "[" << authenticator << "]";
+    if (authenticator.trimmed().isEmpty() || authenticator == 0)
     {
-        authBackend = QString("Database");
+        authenticator = QString("Database");
     }
 
-    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, authBackend, msg.authSetupData);
+    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, authenticator, msg.authSetupData);
     if (!result.isEmpty())
         _peer->dispatch(SetupFailed(result));
     else

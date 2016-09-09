@@ -163,7 +163,7 @@ int main(int argc, char **argv)
 #endif
     cliParser->addOption("logfile", 'l', "Log to a file", "path");
     cliParser->addOption("select-backend", 0, "Switch storage backend (migrating data if possible)", "backendidentifier");
-	cliParser->addOption("select-authenticator", 0, "Switch auth backend", "authidentifier");
+    cliParser->addOption("select-authenticator", 0, "Select authentication backend", "authidentifier");
     cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
     cliParser->addOption("change-userpass", 0, "Starts an interactive session to change the password of the user identified by <username>", "username");
     cliParser->addSwitch("oidentd", 0, "Enable oidentd integration");

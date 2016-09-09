@@ -1366,9 +1366,9 @@ void MainWin::showCoreConnectionDlg()
 }
 
 
-void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantList &authBackends)
+void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantList &authenticators)
 {
-    CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, authBackends, this);
+    CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, authenticators, this);
 
     wizard->show();
 }

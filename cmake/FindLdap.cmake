@@ -13,16 +13,17 @@ if(LDAP_INCLUDE_DIR AND LDAP_LIBRARIES)
     set(Ldap_FIND_QUIETLY TRUE)
 endif(LDAP_INCLUDE_DIR AND LDAP_LIBRARIES)
 
-#if(UNIX)
 # Attempt to link against ldap.h regardless of platform!
 FIND_PATH(LDAP_INCLUDE_DIR ldap.h)
 FIND_LIBRARY(LDAP_LIBRARIES NAMES ldap)
 FIND_LIBRARY(LBER_LIBRARIES NAMES lber)
 
-#else(UNIX)
+# It'd be nice to link against winldap on Windows, unfortunately
+# the interfaces are different. In theory a compatibility shim
+# could be written; if someone ever gets around to doing that these
+# lines should be uncommented and used on Windows.
 #   FIND_PATH(LDAP_INCLUDE_DIR winldap.h)
 #   FIND_LIBRARY(LDAP_LIBRARIES NAMES wldap32)
-#endif(UNIX)
 
 if(LDAP_INCLUDE_DIR AND LDAP_LIBRARIES)
    set(LDAP_FOUND TRUE)

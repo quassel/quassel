@@ -97,7 +97,7 @@ signals:
     void progressValueChanged(int value);
     void progressTextChanged(const QString &);
 
-    void startCoreSetup(const QVariantList &backendInfo, const QVariantList &authBackendInfo);
+    void startCoreSetup(const QVariantList &backendInfo, const QVariantList &authenticatorInfo);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &error);
 

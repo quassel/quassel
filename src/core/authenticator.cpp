@@ -24,3 +24,4 @@ Authenticator::Authenticator(QObject *parent)
     : QObject(parent)
 {
 }
+

@@ -133,7 +133,8 @@ if (LINK_EXTRA)
 endif()
 
 
-# LDAP Authentication (and other authentication backends).
+# List of authenticators and the cmake flags to build them
+# (currently that's just LDAP, but more can be added here).
 ####################################################################
 option(WITH_LDAP     "Enable LDAP authentication support if present on system"  ON)
 

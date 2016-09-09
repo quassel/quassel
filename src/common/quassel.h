@@ -77,7 +77,7 @@ public:
         DccFileTransfer = 0x0100,
         AwayFormatTimestamp = 0x0200,      /// Timestamp formatting in away (e.g. %%hh:mm%%)
         // Whether or not the core supports auth backends.
-        AuthBackends = 0x0400,
+        Authenticators = 0x0400,
 
         NumFeatures = 0x0400
     };

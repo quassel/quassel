@@ -556,7 +556,7 @@ public:
         return (backend->displayName() == "SQLite") ? true : false;
     }
 
-    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupMap);
+    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
     static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
@@ -570,7 +570,7 @@ public slots:
      */
     void syncStorage();
     void setupInternalClientSession(InternalPeer *clientConnection);
-    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authBackend, const QVariantMap &authSetupMap);
+    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
 signals:
     //! Sent when a BufferInfo is updated in storage.
@@ -612,16 +612,17 @@ private:
     void unregisterStorageBackends();
     void unregisterStorageBackend(Storage *);
 
-    void registerAuthenticatorBackends();
-    bool registerAuthenticatorBackend(Authenticator *);
-    void unregisterAuthenticatorBackends();
-    void unregisterAuthenticatorBackend(Authenticator *);
+    void registerAuthenticators();
+    bool registerAuthenticator(Authenticator *);
+    void unregisterAuthenticators();
+    void unregisterAuthenticator(Authenticator *);
 
     bool selectBackend(const QString &backend);
     bool selectAuthenticator(const QString &backend);
     bool createUser();
+
     bool saveBackendSettings(const QString &backend, const QVariantMap &settings);
-    void saveAuthBackendSettings(const QString &backend, const QVariantMap &settings);
+    void saveAuthenticatorSettings(const QString &backend, const QVariantMap &settings);
 
     QVariantMap promptForSettings(const Storage *storage);
     QVariantMap promptForSettings(const Authenticator *authenticator);
@@ -645,7 +646,7 @@ private:
     OidentdConfigGenerator *_oidentdConfigGenerator;
 
     QHash<QString, Storage *> _storageBackends;
-    QHash<QString, Authenticator *> _authenticatorBackends;
+    QHash<QString, Authenticator *> _authenticators;
 
     QDateTime _startTime;
 

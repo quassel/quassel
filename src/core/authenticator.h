@@ -52,7 +52,7 @@ public slots:
 
     //! Returns the display name of the authenticator backend
     /** \return A string that can be used by the client to name the authenticator backend */
-    virtual QString displayName() const = 0;
+    virtual QString backendId() const = 0;
 
     //! Returns a description of this authenticator backend
     /** \return A string that can be displayed by the client to describe the authenticator */
