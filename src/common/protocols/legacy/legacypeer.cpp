@@ -170,7 +170,7 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
             socket()->setProperty("UseCompression", true);
 #endif
 
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool(), QString()));
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), m["SupportSsl"].toBool()));
     }
 
     else if (msgType == "CoreSetupData") {
@@ -248,8 +248,8 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     m["SupportSsl"] = msg.sslSupported;
     m["SupportsCompression"] = socket()->property("UseCompression").toBool(); // this property gets already set in the ClientInit handler
 
-    // This is only used for old v10 clients (pre-0.5)
-    m["CoreInfo"] = msg.coreInfo;
+    // This is only used for display by really old v10 clients (pre-0.5), and we no longer set this
+    m["CoreInfo"] = QString();
 
     m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
 
