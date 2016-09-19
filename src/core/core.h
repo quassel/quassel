@@ -504,6 +504,19 @@ public:
 
     static QVariantList backendInfo();
 
+    /**
+     * Checks if a storage backend is the default storage backend. This
+     * hardcodes this information into the core (not the client).
+     *
+     * \param backend    The backend to check.
+     *
+     * @return True if storage backend is default, false otherwise.
+     */
+    static inline bool isStorageBackendDefault(const Storage *backend)
+    {
+        return (backend->displayName() == "SQLite") ? true : false;
+    }
+
     static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData);
 
     static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }

@@ -669,6 +669,7 @@ QVariantList Core::backendInfo()
         v["Description"] = backend->description();
         v["SetupKeys"] = backend->setupKeys();
         v["SetupDefaults"] = backend->setupDefaults();
+        v["IsDefault"] = isStorageBackendDefault(backend);
         backends.append(v);
     }
     return backends;
