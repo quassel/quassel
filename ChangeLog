@@ -23,6 +23,48 @@ Version 0.12.4 (2016-04-24)
 * Fix connection issues with non-compliant ircds
 * Translation updates
 
+Version 0.13.0 (TBR)
+====================
+
+NOTE: Database schema and settings format change, no downgrade possible!
+
+* Use Qt 5 by default
+* Add Breeze/Breeze Dark icon themes, allow selection of icon theme
+* Use Breeze icon theme by default
+* Make IRC rate limits configurable
+* Snapcraft packaging support
+* Sender colors by default (and optionally for ACTION messages)
+* Optionally hide brackets around sender/timestamp
+* Improved SSL certificate handling
+* Automated OSX builds (via Travis)
+* Improved automated Windows builds (via Appveyor)
+* Chat list filter/search
+* WebEngine support for URL previews (deprecates WebKit support with Qt 5)
+* QtMultimedia notification backend (deprecates Phonon support with Qt 5)
+* Various UI improvements (tooltips, tool bars, menus...)
+* Spell checking via Sonnet if KDE Frameworks integration is enabled
+* Support for many IRCv3 features, improved capability negotiation
+* Many smaller fixes and improvements
+
+Version 0.12.5 (TBR)
+====================
+
+* Better HIDPI support with recent Qt 5 versions
+* Inxi version bump
+* Prioritization of PING/PONG messages to prevent timeouts
+* Improved touch screen support (scrolling etc.)
+* Support Qt 5.6 and 5.7
+
+Version 0.12.4 (2016-04-24)
+===========================
+
+* Handle STATUSMSG messages (recently abused for query spam)
+* Link previews are enabled again in Windows builds
+* Fix core crash caused by clients sending invalid handshake data
+* Fix session management with Qt 5
+* Fix connection issues with non-compliant ircds
+* Translation updates
+
 Version 0.12.3 (2016-02-09)
 ===========================
 
@@ -61,7 +103,7 @@ Version 0.12.0 (2015-04-15)
 * Core connection improvements
 * Build system improvements
 * PostgreSQL connection improvements
-* Improve Qt5 support
+* Improve Qt 5 support
 * Qt 4.8+ or Qt 5.2+ now required
 * Several tweaks and fixes
 * Translation updates
@@ -205,7 +247,7 @@ Version 0.7.0 (2010-09-14)
 * Bump Qt dependency: we need Qt 4.6 for client and monolithic now
 * Fullscreen mode (F11)
 * CTCP CLIENTINFO support
-* Shortcuts for navigation between chats (Alt+Left/Right/Up/Down) 
+* Shortcuts for navigation between chats (Alt+Left/Right/Up/Down)
 * Add blowfish encryption (/setkey and /delkey; needs QCA2)
 * Shortcut editing for all platforms (!KDE)
 * Improved handling of invites
@@ -352,7 +394,7 @@ Version 0.4.0 (2009-02-17)
   - KDE icon and color theme support
   - Editable shortcuts
 * Core now supports a proxy for connections to IRC
-* Core supports SSL certs and keys for IRC connections 
+* Core supports SSL certs and keys for IRC connections
 * Chat Monitor configuration dialog
 * Audio notifications
 * Clickable channel names in ChatView
