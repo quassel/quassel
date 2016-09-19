@@ -94,7 +94,7 @@ QList<AboutPerson> AboutData::authors() const
 }
 
 
-QList< AboutPerson > AboutData::credits() const
+QList<AboutPerson> AboutData::credits() const
 {
     return _credits;
 }
@@ -174,12 +174,14 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Manuel Nickschas", "Sputnick", tr("Project Founder, Lead Developer"), "sputnick@quassel-irc.org" },
         { "Marcus Eggenberger", "EgS", tr("Project Motivator, Lead Developer"), "egs@quassel-irc.org" },
         { "Alexander von Renteln", "phon", tr("Former Lead Developer"), "phon@quassel-irc.org" },
-        { "Daniel Albers", "al", tr("Master of Translation, many fixes and enhancements") },
+        { "Daniel Albers", "al", tr("Master of Translation, many fixes and enhancements, Travis support") },
         { "Sebastian Goth", "seezer", tr("Many features, fixes and improvements") },
         { "Bas Pape", "Tucos", tr("Many fixes and improvements, bug and patch triaging, community support") },
+        { "Shane Synan", "digitalcircuit", tr("IRCv3 support, documentation, many other improvements, outstanding PRs") },
     });
 
     aboutData->addCredits({
+        { "A. V. Lukyanov", "", tr("OSX UI improvements") },
         { "Adam Harwood", "2kah", tr("Chatview improvements") },
         { "Adam Tulinius", "adamt", tr("Early beta tester and bughunter, Danish translation"), "", QLocale::Danish },
         { "Adolfo Jayme Barrientos", "", tr("Spanish translation"), "", QLocale::Spanish },
@@ -194,7 +196,8 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Armin K", "", tr("Build system fix") },
         { "", "Ayonix", tr("Build system fix") },
         { "Benjamin Zeller", "zbenjamin", tr("Windows build system fixes") },
-        { "Bernhard Scheirle", "", tr("Nicer tooltips") },
+        { "Ben Rosser", "", tr("AppData metadata") },
+        { "Bernhard Scheirle", "", tr("Nicer tooltips, spell check and other improvements") },
         { "Bruno Brigras", "", tr("Crash fixes") },
         { "Bruno Patri", "", tr("French translation"), "", QLocale::French },
         { "Celeste Paul", "seele", tr("Usability review") },
@@ -227,15 +230,15 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Gábor Németh", "ELITE_x", tr("Hungarian translation"), "", QLocale::Hungarian },
         { "Gryllida A", "gry", tr("IRC parser improvements") },
         { "H. İbrahim Güngör", "igungor", tr("Turkish translation"), "", QLocale::Turkish },
-        { "Hannah von Reth", "TheOneRing", tr("MinGW support, SNORE backend, Windows packaging") },
+        { "Hannah von Reth", "TheOneRing", tr("Windows build support and Appveyor maintenance, snorenotify backend") },
         { "Harald Fernengel", "harryF", tr("Initial Qt5 support") },
         { "Harald Sitter", "apachelogger", tr("{Ku|U}buntu packager, motivator, promoter") },
-        { "Hendrik Leppkes", "nevcairiel", tr("Various features") },
+        { "Hendrik Leppkes", "nevcairiel", tr("Various features and improvements") },
         { "Henning Rohlfs", "honk", tr("Various fixes") },
         { "J-P Nurmi", "", tr("Various fixes") },
         { "Jaak Ristioja", "", tr("Bugfixes") },
         { "Jan Alexander Steffens", "heftig", tr("Fixes") },
-        { "Janne Koschinski", "justJanne", tr("QuasselDroid and Java wizardess, documentation, bugfixes") },
+        { "Janne Koschinski", "justJanne", tr("QuasselDroid and Java wizardess, documentation, bugfixes, many valuable technical discussions") },
         { "Jason Joyce", "", tr("Python improvements") },
         { "Jason Lynch", "", tr("Bugfixes") },
         { "Jens Arnold", "amiconn", tr("Postgres migration fixes") },
@@ -262,12 +265,12 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Marco Genise", "kaffeedoktor", tr("Ideas, hacking, initial motivation") },
         { "Marco Paolone", "Quizzlo", tr("Italian translation"), "", QLocale::Italian },
         { "Martin Mayer", "m4yer", tr("German translation"), "", QLocale::German },
-        { "Martin Sandsmark", "sandsmark", tr("Core and other fixes, QuasselDroid") },
+        { "Martin Sandsmark", "sandsmark", tr("Many fixes and improvements, Sonnet support, QuasselDroid") },
         { "Matthias Coy", "pennywise", tr("German translation"), "", QLocale::German },
         { "Mattia Basaglia", "", tr("Fixes") },
         { "Michael Groh", "brot", tr("German translation, fixes"), "", QLocale::German },
         { "Michael Kedzierski", "ycros", tr("Mac fixes") },
-        { "Michael Marley", "mamarley", tr("Many fixes and improvements; Ubuntu live packages") },
+        { "Michael Marley", "mamarley", tr("Many fixes and improvements; Debian/Ubuntu nightly PPA") },
         { "Miguel Revilla", "", tr("Spanish translation"), "", QLocale::Spanish },
         { "Nuno Pinheiro", "", tr("Tons of Oxygen icons including the Quassel logo") },
         { "Patrick Lauer", "bonsaikitten", tr("Gentoo maintainer") },
@@ -288,6 +291,7 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Scott Kitterman", "ScottK", tr("Kubuntu packager, (packaging/build system) bughunter") },
         { "Sebastian Meyer", "", tr("Bugfixes") },
         { "Sebastien Fricker", "", tr("Audio backend improvements") },
+        { "Ryan Bales", "selabnayr", tr("Improvements") },
         { "", "sfionov", tr("Russian translation"), "", QLocale::Russian },
         { "Simon Philips", "", tr("Dutch translation"), "", QLocale::Dutch },
         { "Sjors Gielen", "dazjorz", tr("Bugfixes") },
@@ -295,7 +299,8 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Stella Rouzi", "differentreality", tr("Greek translation"), "", QLocale::Greek },
         { "Rafael Belmonte", "EagleScreen", tr("Spanish translation"), "", QLocale::Spanish },
         { "Raul Salinas-Monteagudo", "", tr("Fixes") },
-        { "Rolf Michael Bislin", "romibi", tr("Fixing and hosting Windows builds") },
+        { "Rolf Eike Beer", "DerDakon", tr("Build system improvements") },
+        { "Rolf Michael Bislin", "romibi", tr("Windows build support, automated OSX builds in Travis, various improvements") },
         { "Sergiu Bivol", "", tr("Romanian translation"), "", QLocale::Romanian },
         { "Tae-Hoon Kwon", "", tr("Korean translation"), "", QLocale::Korean },
         { "Terje Andersen", "tan", tr("Norwegian translation, documentation") },
