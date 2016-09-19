@@ -201,9 +201,15 @@ StorageSelectionPage::StorageSelectionPage(const QHash<QString, QVariant> &backe
 
     registerField("storage.backend", ui.backendList);
 
+    int defaultIndex = 0;
     foreach(QString key, _backends.keys()) {
         ui.backendList->addItem(_backends[key].toMap()["DisplayName"].toString(), key);
+        if (_backends[key].toMap()["IsDefault"].toBool()) {
+            defaultIndex = ui.backendList->count() - 1;
+        }
     }
+
+    ui.backendList->setCurrentIndex(defaultIndex);
 
     on_backendList_currentIndexChanged();
 }
