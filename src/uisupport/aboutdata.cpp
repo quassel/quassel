@@ -270,7 +270,7 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Mattia Basaglia", "", tr("Fixes") },
         { "Michael Groh", "brot", tr("German translation, fixes"), "", QLocale::German },
         { "Michael Kedzierski", "ycros", tr("Mac fixes") },
-        { "Michael Marley", "mamarley", tr("Many fixes and improvements; Debian/Ubuntu nightly PPA") },
+        { "Michael Marley", "mamarley", tr("Many fixes and improvements; Ubuntu PPAs") },
         { "Miguel Revilla", "", tr("Spanish translation"), "", QLocale::Spanish },
         { "Nuno Pinheiro", "", tr("Tons of Oxygen icons including the Quassel logo") },
         { "Patrick Lauer", "bonsaikitten", tr("Gentoo maintainer") },
