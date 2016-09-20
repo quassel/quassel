@@ -20,7 +20,9 @@
 
 #pragma once
 
+#include <QList>
 #include <QLocale>
+#include <QString>
 
 #ifdef HAVE_KF5
 #  include <KCoreAddons/KAboutData>

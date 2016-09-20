@@ -1,7 +1,6 @@
 <RCC>
-  <qresource prefix="/pics" >
-    <file>nokia.png</file>
-    <file>oxygen.png</file>
+  <qresource prefix="/pics">
+    <file>kde-vdg.png</file>
     <file>quassel-eye.png</file>
     <file>quassel-logo.png</file>
     <file>qt-logo.png</file>
