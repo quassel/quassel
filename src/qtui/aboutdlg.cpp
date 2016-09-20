@@ -50,17 +50,19 @@ AboutDlg::AboutDlg(QWidget *parent)
 
 QString AboutDlg::about() const
 {
-    QString res;
-    res = tr("<b>A modern, distributed IRC Client</b><br><br>"
+    QString res {tr("<b>A modern, distributed IRC Client</b><br><br>"
              "&copy;%1 by the Quassel Project<br>"
              "<a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br>"
              "<a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>"
              "Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and "
-             "<a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
-             "Most icons are &copy; by the <a href=\"https://api.kde.org/frameworks/oxygen-icons5/html/index.html\">Oxygen Team</a> and used under the "
-             "<a href=\"http://www.gnu.org/licenses/lgpl.html\">LGPL</a>.<br><br>"
+                 "<a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
+             "<a href=\"https://api.kde.org/frameworks/breeze-icons/html\">Breeze icon theme</a> &copy; Uri Herrera and others, licensed under the "
+                 "<a href=\"https://github.com/KDE/breeze-icons/blob/21ffd9b/COPYING-ICONS\">LGPLv3</a>.<br>"
+             "<a href=\"https://api.kde.org/frameworks/oxygen-icons5/html\">Oxygen icon theme</a> &copy; Nuno Pinheiro and others, licensed under the "
+                 "<a href=\"https://github.com/KDE/oxygen-icons/blob/master/COPYING\">LGPLv3</a>.<br><br>"
              "Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
-        ).arg("2005-2015");
+        ).arg("2005-2016")
+    };
 
     return res;
 }
@@ -68,9 +70,8 @@ QString AboutDlg::about() const
 
 QString AboutDlg::authors() const
 {
-    QString res;
-    res = tr("Quassel IRC is mainly developed by:") + "<dl>";
-    for (const auto &person : _aboutData->authors()) {
+    QString res {tr("Quassel IRC is mainly developed by:") + "<dl>"};
+    for (auto &&person : _aboutData->authors()) {
         res.append("<dt><b>" + person.prettyName() + "</b></dt><dd>");
         if (!person.emailAddress().isEmpty())
             res.append("<a href=\"mailto:" + person.emailAddress() + "\">" + person.emailAddress() + "</a><br>");
@@ -83,31 +84,36 @@ QString AboutDlg::authors() const
 
 QString AboutDlg::contributors() const
 {
-    QString res;
-    res = tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:") + "<br><dl>";
-    for (const auto &person : _aboutData->credits()) {
+    QString res {tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:") + "<br><dl>"};
+    for (auto &&person : _aboutData->credits()) {
         res.append("<dt><b>" + person.prettyName() + "</b></dt><dd><i>" + person.task() + "</i><br></dd>");
     }
     res.append("</dl>" + tr("...and anybody else finding and reporting bugs, giving feedback, helping others and being part of the community!"));
-
     return res;
 }
 
 
 QString AboutDlg::thanksTo() const
 {
-    QString res;
-    res = tr("Special thanks goes to:<br>"
-             "<dl>"
-             "<dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt>"
-             "<dd><i>for the original Quassel icon - The All-Seeing Eye</i><br></dt>"
-             "<dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"https://api.kde.org/frameworks/oxygen-icons5/html/index.html\">The Oxygen Team</a></b></dt>"
-             "<dd><i>for creating all the artwork you see throughout Quassel</i><br></dd>"
-             "<dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"https://www.qt.io/\">Qt Software formerly known as Trolltech</a></b></dt>"
-             "<dd><i>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</i><br></dd>"
-             "<dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt>"
-             "<dd><i>for sponsoring development of Quassel Mobile with N810s</i></dd>"
-        );
+    QString res {tr("Special thanks goes to:") + "<br>"
+          "<table>"
+              "<tr><td rowspan='2' valign='middle'><img src=':/pics/quassel-eye.png'>&nbsp;</td>"
+                                 "<td><b>John \"nox\" Hand</b></td></tr>"
+              "<tr><td><i>" + tr("for the original Quassel logo - The All-Seeing Eye") + "</i></td></tr>"
+              "<tr/>"
+              "<tr><td rowspan='2' valign='middle'><img src=':/icons/quassel-32.png'></td>"
+                                 "<td><b>Nuno Pinheiro</b></td></tr>"
+              "<tr><td><i>" + tr("for the current Quassel logo") + "</i></td></tr>"
+              "<tr/>"
+              "<tr><td rowspan='2' valign='middle'><img src=':/pics/kde-vdg.png'></td>"
+                                 "<td><b><a href='https://vdesign.kde.org'>The KDE Visual Design Group</a></b></td></tr>"
+              "<tr><td><i>" + tr("for the amazing Breeze and Oxygen icon themes") + "</i></td></tr>"
+              "<tr/>"
+              "<tr><td rowspan='2' valign='middle'><img src=':/pics/qt-logo-32.png'></td>"
+                                 "<td><b><a href='https://www.qt.io/'>The Qt Company</a></b> (formerly known as Qt Software, Nokia, Trolltech)</td></tr>"
+              "<tr><td><i>" + tr("for creating an awesome framework, and for sponsoring development with Greenphones, N810s, N950s and more") + "</i></td></tr>"
+          "</table>"
+    };
 
     return res;
 }
