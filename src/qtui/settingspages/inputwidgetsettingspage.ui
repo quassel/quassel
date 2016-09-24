@@ -69,7 +69,7 @@
       <string notr="true">EnablePerChatHistory</string>
      </property>
      <property name="defaultValue" stdset="0">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -133,7 +133,7 @@
       <string notr="true">EnableLineWrap</string>
      </property>
      <property name="defaultValue" stdset="0">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
    </item>
