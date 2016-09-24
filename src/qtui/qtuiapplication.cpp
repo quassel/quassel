@@ -210,7 +210,7 @@ bool QtUiApplication::migrateSettings()
     // --------
     // Check minor settings version, handling upgrades/downgrades as needed
     // Current minor version
-    const uint VERSION_MINOR_CURRENT = 2;
+    const uint VERSION_MINOR_CURRENT = 3;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -269,10 +269,33 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // oldest version.  Ignore those, start from 2 and higher.
     // Each missed version will be called in sequence.  E.g. to upgrade from '1' to '3', this
     // function will be called with '2', then '3'.
+    // Use explicit scope via { ... } to avoid cross-initialization
+    case 3:
+    {
+        // New default changes: per-chat history and line wrapping enabled by default.  Preserve
+        // the older default values for keys that haven't been saved.
+
+        // --------
+        // InputWidget settings
+        UiSettings settingsInputWidget("InputWidget");
+        const QString enableInputPerChatId = "EnablePerChatHistory";
+        if (!settingsInputWidget.valueExists(enableInputPerChatId)) {
+            // New default value is true, preserve previous behavior by setting to false
+            settingsInputWidget.setValue(enableInputPerChatId, false);
+        }
+
+        const QString enableInputLinewrap = "EnableLineWrap";
+        if (!settingsInputWidget.valueExists(enableInputLinewrap)) {
+            // New default value is true, preserve previous behavior by setting to false
+            settingsInputWidget.setValue(enableInputLinewrap, false);
+        }
+        // --------
+
+        // Migration complete!
+        return true;
+    }
     case 2:
     {
-        // Use explicit scope via { ... } to avoid cross-initialization
-
         // New default changes: sender <nick> brackets disabled, sender colors and sender CTCP
         // colors enabled.  Preserve the older default values for keys that haven't been saved.
 
