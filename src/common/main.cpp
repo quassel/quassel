@@ -186,7 +186,7 @@ int main(int argc, char **argv)
 #if defined BUILD_CORE
     CoreApplication app(argc, argv);
 #elif defined BUILD_QTUI
-# if QT_VERSION >= 0x050600
+# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
     QtUiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 # if QT_VERSION >= 0x050700
@@ -194,7 +194,7 @@ int main(int argc, char **argv)
 # endif
     QtUiApplication app(argc, argv);
 #elif defined BUILD_MONO
-# if QT_VERSION >= 0x050600
+# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
     MonolithicApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 # if QT_VERSION >= 0x050700
