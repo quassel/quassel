@@ -185,7 +185,11 @@ void MultiLineEdit::updateSizeHint()
 
     // use the style to determine a decent size
     int h = qMin(qMax((int)document()->size().height() + scrollBarHeight, minPixelHeight), maxPixelHeight) + 2 * frameWidth();
+#if QT_VERSION < 0x050000
     QStyleOptionFrameV2 opt;
+#else
+    QStyleOptionFrame opt;
+#endif
     opt.initFrom(this);
     opt.rect = QRect(0, 0, 100, h);
     opt.lineWidth = lineWidth();
