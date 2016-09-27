@@ -622,7 +622,11 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
     if (!value.isValid())
         return QStyledItemDelegate::editorEvent(event, model, option, index);
 
+#if QT_VERSION < 0x050000
     QStyleOptionViewItemV4 viewOpt(option);
+#else
+    QStyleOptionViewItem viewOpt(option);
+#endif
     initStyleOption(&viewOpt, index);
 
     QRect checkRect = viewOpt.widget->style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &viewOpt, viewOpt.widget);
