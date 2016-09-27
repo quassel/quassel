@@ -61,8 +61,8 @@ public:
     inline bool isSingleLine() const { return _singleLine; }
     inline bool pasteProtectionEnabled() const { return _pasteProtectionEnabled; }
 
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
     inline QString mircColorFromRGB(QString rgbColor) const { return _mircColorMap.key(rgbColor); }
     inline QString rgbColorFromMirc(QString mircColor) const { return _mircColorMap[mircColor]; }
@@ -75,7 +75,7 @@ public:
 
     void addCompletionSpace();
 #if defined HAVE_KF5 || defined HAVE_KDE4
-    virtual void createHighlighter() override;
+    void createHighlighter() override;
 #endif
 
 public slots:
@@ -97,9 +97,9 @@ signals:
     void noTextEntered();
 
 protected:
-    virtual bool event(QEvent *e);
-    virtual void keyPressEvent(QKeyEvent *event);
-    virtual void resizeEvent(QResizeEvent *event);
+    bool event(QEvent *e) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
     void on_returnPressed();
