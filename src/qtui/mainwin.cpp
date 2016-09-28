@@ -1485,8 +1485,10 @@ void MainWin::showNewTransferDlg(const QUuid &transferId)
 {
     auto transfer = Client::transferManager()->transfer(transferId);
     if (transfer) {
-        ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
-        dlg->show();
+        if (transfer->status() == Transfer::Status::New) {
+            ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
+            dlg->show();
+        }
     }
     else {
         qWarning() << "Unknown transfer ID" << transferId;
