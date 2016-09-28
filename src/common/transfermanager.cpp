@@ -25,13 +25,24 @@
 
 INIT_SYNCABLE_OBJECT(TransferManager)
 
+TransferManager::TransferManager(QObject *parent)
+    : SyncableObject(parent)
+{
+    static auto regTypes = []() -> bool {
+        qRegisterMetaType<TransferIdList>("TransferManager::TransferIdList");
+        qRegisterMetaTypeStreamOperators<TransferIdList>("TransferManager::TransferIdList");
+        return true;
+    }();
+    Q_UNUSED(regTypes);
+}
+
 Transfer *TransferManager::transfer(const QUuid &uuid) const
 {
     return _transfers.value(uuid, nullptr);
 }
 
 
-QList<QUuid> TransferManager::transferIds() const
+TransferManager::TransferIdList TransferManager::transferIds() const
 {
     return _transfers.keys();
 }
@@ -62,4 +73,29 @@ void TransferManager::removeTransfer(const QUuid &uuid)
     emit transferRemoved(uuid);
     auto transfer = _transfers.take(uuid);
     transfer->deleteLater();
+}
+
+
+QDataStream &operator<<(QDataStream &out, const TransferManager::TransferIdList &transferIds)
+{
+    out << static_cast<quint32>(transferIds.size());
+    for (auto &&id : transferIds) {
+        out << id;
+    }
+    return out;
+}
+
+
+QDataStream &operator>>(QDataStream &in, TransferManager::TransferIdList &transferIds)
+{
+    quint32 count;
+    in >> count;
+    transferIds.clear();
+    transferIds.reserve(count);
+    for (quint32 i = 0; i < count; ++i) {
+        QUuid id;
+        in >> id;
+        transferIds << id;
+    }
+    return in;
 }

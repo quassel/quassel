@@ -25,6 +25,14 @@
 
 INIT_SYNCABLE_OBJECT(ClientTransferManager)
 
+void ClientTransferManager::setTransferIds(const QList<QUuid> &transferIds)
+{
+    for(auto &&id : transferIds) {
+        onCoreTransferAdded(id);
+    }
+}
+
+
 void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
 {
     if (uuid.isNull()) {
