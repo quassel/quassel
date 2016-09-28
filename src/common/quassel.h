@@ -74,8 +74,9 @@ public:
         CapNegotiation = 0x0020,           /// IRCv3 capability negotiation, account tracking
         VerifyServerSSL = 0x0040,          /// IRC server SSL validation
         CustomRateLimits = 0x0080,         /// IRC server custom message rate limits
+        DccFileTransfer = 0x0100,
 
-        NumFeatures = 0x0080
+        NumFeatures = 0x0100
     };
     Q_DECLARE_FLAGS(Features, Feature)
 

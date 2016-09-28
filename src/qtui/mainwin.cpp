@@ -1134,7 +1134,9 @@ void MainWin::connectedToCore()
     connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
     connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
 
-    connect(Client::transferManager(), SIGNAL(transferAdded(QUuid)), SLOT(showNewTransferDlg(QUuid)));
+    if (Client::transferManager()) {
+        connect(Client::transferManager(), SIGNAL(transferAdded(QUuid)), SLOT(showNewTransferDlg(QUuid)));
+    }
 
     setConnectedState();
 }

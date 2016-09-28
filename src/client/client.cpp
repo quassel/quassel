@@ -414,10 +414,13 @@ void Client::setSyncedToCore()
     _ignoreListManager = new ClientIgnoreListManager(this);
     p->synchronize(ignoreListManager());
 
+    // create TransferManager if core supports it
     Q_ASSERT(!_transferManager);
-    _transferManager = new ClientTransferManager(this);
-    _transferModel->setManager(_transferManager);
-    p->synchronize(transferManager());
+    if (coreFeatures() & Quassel::DccFileTransfer) {
+        _transferManager = new ClientTransferManager(this);
+        _transferModel->setManager(_transferManager);
+        p->synchronize(transferManager());
+    }
 
     // trigger backlog request once all active bufferviews are initialized
     connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));

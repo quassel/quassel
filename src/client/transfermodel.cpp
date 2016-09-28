@@ -113,8 +113,10 @@ void TransferModel::setManager(const TransferManager *manager)
     }
 
     _manager = manager;
-    connect(manager, SIGNAL(transferAdded(QUuid)), SLOT(onTransferAdded(QUuid)));
-    connect(manager, SIGNAL(transferRemoved(QUuid)), SLOT(onTransferRemoved(QUuid)));
+    if (_manager) {
+        connect(manager, SIGNAL(transferAdded(QUuid)), SLOT(onTransferAdded(QUuid)));
+        connect(manager, SIGNAL(transferRemoved(QUuid)), SLOT(onTransferRemoved(QUuid)));
+    }
 }
 
 
