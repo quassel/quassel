@@ -1008,16 +1008,24 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
         return;
 
     QString channel = e->params()[0];
-    IrcUser *ircuser = e->network()->ircUser(e->params()[4]);
+    // Store the nick separate from ircuser for AutoWho check below
+    QString nick = e->params()[4];
+    IrcUser *ircuser = e->network()->ircUser(nick);
     if (ircuser) {
+        // Only process the WHO information if an IRC user exists.  Don't create an IRC user here;
+        // there's no way to track when the user quits, which would leave a phantom IrcUser lying
+        // around.
+        // NOTE:  Whenever MONITOR support is introduced, the IrcUser will be created by an
+        // RPL_MONONLINE numeric before any WHO commands are run.
         processWhoInformation(e->network(), channel, ircuser, e->params()[3], e->params()[1],
                 e->params()[2], e->params()[5], e->params().last().section(" ", 1));
     }
 
     // Check if channel name has a who in progress.
-    // If not, then check if user nick exists and has a who in progress.
+    // If not, then check if user nickname has a who in progress.  Use nick directly; don't use
+    // ircuser as that may be deleted (e.g. nick joins channel, leaves before WHO reply received).
     if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
-        (ircuser && coreNetwork(e)->isAutoWhoInProgress(ircuser->nick()))) {
+        (coreNetwork(e)->isAutoWhoInProgress(nick))) {
         e->setFlag(EventManager::Silent);
     }
 }
@@ -1104,8 +1112,14 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
         return;
 
     QString channel = e->params()[1];
-    IrcUser *ircuser = e->network()->ircUser(e->params()[5]);
+    QString nick = e->params()[5];
+    IrcUser *ircuser = e->network()->ircUser(nick);
     if (ircuser) {
+        // Only process the WHO information if an IRC user exists.  Don't create an IRC user here;
+        // there's no way to track when the user quits, which would leave a phantom IrcUser lying
+        // around.
+        // NOTE:  Whenever MONITOR support is introduced, the IrcUser will be created by an
+        // RPL_MONONLINE numeric before any WHO commands are run.
         processWhoInformation(e->network(), channel, ircuser, e->params()[4], e->params()[2],
                 e->params()[3], e->params()[6], e->params().last());
         // Don't use .section(" ", 1) with WHOX replies, for there's no hopcount to trim out
@@ -1123,9 +1137,10 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
     }
 
     // Check if channel name has a who in progress.
-    // If not, then check if user nick exists and has a who in progress.
+    // If not, then check if user nickname has a who in progress.  Use nick directly; don't use
+    // ircuser as that may be deleted (e.g. nick joins channel, leaves before WHO reply received).
     if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
-        (ircuser && coreNetwork(e)->isAutoWhoInProgress(ircuser->nick()))) {
+        (coreNetwork(e)->isAutoWhoInProgress(nick))) {
         e->setFlag(EventManager::Silent);
     }
 }
