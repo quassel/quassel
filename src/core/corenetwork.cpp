@@ -942,7 +942,9 @@ void CoreNetwork::setPingInterval(int interval)
 
 void CoreNetwork::updateRateLimiting(const bool forceUnlimited)
 {
-    // Always reset the delay and token bucket (safe-guard against accidentally starting the timer)
+    // Verify and apply custom rate limiting options, always resetting the delay and burst size
+    // (safe-guarding against accidentally starting the timer), but don't reset the token bucket as
+    // this may be called while connected to a server.
 
     if (useCustomMessageRate() || forceUnlimited) {
         // Custom message rates enabled, or chosen by means of forcing unlimited.  Let's go for it!
@@ -966,9 +968,9 @@ void CoreNetwork::updateRateLimiting(const bool forceUnlimited)
         }
 
         // Toggle the timer according to whether or not rate limiting is enabled
-        // If we're here, useCustomMessageRate is true.  Thus, the logic becomes
-        // _skipMessageRates = (useCustomMessageRate && (unlimitedMessageRate || forceUnlimited))
-        // Override user preferences if called with force unlimited
+        // If we're here, either useCustomMessageRate or forceUnlimited is true.  Thus, the logic is
+        // _skipMessageRates = ((useCustomMessageRate && unlimitedMessageRate) || forceUnlimited)
+        // Override user preferences if called with force unlimited, only used during connect.
         _skipMessageRates = (unlimitedMessageRate() || forceUnlimited);
         if (_skipMessageRates) {
             // If the message queue already contains messages, they need sent before disabling the
@@ -994,12 +996,12 @@ void CoreNetwork::updateRateLimiting(const bool forceUnlimited)
     } else {
         // Custom message rates disabled.  Go for the default.
 
-        _skipMessageRates = false;   // Enable rate-limiting by default
-        // TokenBucket to avoid sending too much at once
-        _messageDelay = 2200;      // This seems to be a safe value (2.2 seconds delay)
-        _burstSize = 5;            // 5 messages at once
+        _skipMessageRates = false;  // Enable rate-limiting by default
+        _messageDelay = 2200;       // This seems to be a safe value (2.2 seconds delay)
+        _burstSize = 5;             // 5 messages at once
         if (_tokenBucket > _burstSize) {
-            // Don't let the token bucket exceed the maximum
+            // TokenBucket to avoid sending too much at once.  Don't let the token bucket exceed the
+            // maximum.
             _tokenBucket = _burstSize;
             // To fill up the token bucket, use resetRateLimiting().  Don't do that here, otherwise
             // changing the rate-limit settings while connected to a server will incorrectly reset
