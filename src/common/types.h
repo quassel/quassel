@@ -125,7 +125,7 @@ QDataStream &operator<<(QDataStream &out, T value) {
  * Catch-all stream serialization operator for enum types.
  *
  * @param[in,out] in    Stream to deserialize from
- * @param[in]     value Value to deserialize into
+ * @param[out]    value Value to deserialize into
  * @returns A reference to the stream
  */
 template<typename T,
@@ -136,13 +136,3 @@ QDataStream &operator>>(QDataStream &in, T &value) {
     value = static_cast<T>(v);
     return in;
 }
-
-//! Base class for exceptions.
-struct Exception {
-    Exception(QString msg = "Unknown Exception") : _msg(msg) {}
-    virtual ~Exception() {} // make gcc happy
-    virtual inline QString msg() { return _msg; }
-
-protected:
-    QString _msg;
-};
