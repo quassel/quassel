@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef TYPES_H_
-#define TYPES_H_
+#pragma once
+
+#include <type_traits>
 
 #include <QDebug>
 #include <QString>
@@ -106,6 +107,36 @@ Q_DECLARE_METATYPE(QHostAddress)
 typedef QList<MsgId> MsgIdList;
 typedef QList<BufferId> BufferIdList;
 
+/**
+ * Catch-all stream serialization operator for enum types.
+ *
+ * @param[in,out] out   Stream to serialize to
+ * @param[in]     value Value to serialize
+ * @returns A reference to the stream
+ */
+template<typename T,
+         typename std::enable_if<std::is_enum<T>{}, int>::type = 0>
+QDataStream &operator<<(QDataStream &out, T value) {
+    out << static_cast<typename std::underlying_type<T>::type>(value);
+    return out;
+}
+
+/**
+ * Catch-all stream serialization operator for enum types.
+ *
+ * @param[in,out] in    Stream to deserialize from
+ * @param[in]     value Value to deserialize into
+ * @returns A reference to the stream
+ */
+template<typename T,
+         typename std::enable_if<std::is_enum<T>{}, int>::type = 0>
+QDataStream &operator>>(QDataStream &in, T &value) {
+    typename std::underlying_type<T>::type v;
+    in >> v;
+    value = static_cast<T>(v);
+    return in;
+}
+
 //! Base class for exceptions.
 struct Exception {
     Exception(QString msg = "Unknown Exception") : _msg(msg) {}
@@ -115,5 +146,3 @@ struct Exception {
 protected:
     QString _msg;
 };
-
-#endif
