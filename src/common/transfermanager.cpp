@@ -34,6 +34,8 @@ TransferManager::TransferManager(QObject *parent)
         return true;
     }();
     Q_UNUSED(regTypes);
+
+    renameObject("TransferManager");
 }
 
 Transfer *TransferManager::transfer(const QUuid &uuid) const
