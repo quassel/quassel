@@ -115,7 +115,7 @@ typedef QList<BufferId> BufferIdList;
  * @returns A reference to the stream
  */
 template<typename T,
-         typename std::enable_if<std::is_enum<T>{}, int>::type = 0>
+         typename = typename std::enable_if<std::is_enum<T>::value>::type>
 QDataStream &operator<<(QDataStream &out, T value) {
     out << static_cast<typename std::underlying_type<T>::type>(value);
     return out;
@@ -129,7 +129,7 @@ QDataStream &operator<<(QDataStream &out, T value) {
  * @returns A reference to the stream
  */
 template<typename T,
-         typename std::enable_if<std::is_enum<T>{}, int>::type = 0>
+         typename = typename std::enable_if<std::is_enum<T>::value>::type>
 QDataStream &operator>>(QDataStream &in, T &value) {
     typename std::underlying_type<T>::type v;
     in >> v;
