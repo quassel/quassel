@@ -53,6 +53,7 @@ class ClientTransferManager;
 class ClientUserInputHandler;
 class CoreAccountModel;
 class CoreConnection;
+class DccConfig;
 class IrcUser;
 class IrcChannel;
 class NetworkConfig;
@@ -114,6 +115,7 @@ public:
 
     static inline ClientAliasManager *aliasManager() { return instance()->_aliasManager; }
     static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
+    static inline DccConfig *dccConfig() { return instance()->_dccConfig; }
     static inline ClientIrcListHelper *ircListHelper() { return instance()->_ircListHelper; }
     static inline ClientBufferViewManager *bufferViewManager() { return instance()->_bufferViewManager; }
     static inline BufferViewOverlay *bufferViewOverlay() { return instance()->_bufferViewOverlay; }
@@ -247,6 +249,7 @@ private:
     ClientBacklogManager *_backlogManager;
     ClientBufferViewManager *_bufferViewManager;
     BufferViewOverlay *_bufferViewOverlay;
+    DccConfig *_dccConfig;
     ClientIrcListHelper *_ircListHelper;
     ClientUserInputHandler *_inputHandler;
     NetworkConfig *_networkConfig;

@@ -11,6 +11,7 @@ set(SOURCES
     bufferviewmanager.cpp
     compressor.cpp
     ctcpevent.cpp
+    dccconfig.cpp
     event.cpp
     eventmanager.cpp
     identity.cpp

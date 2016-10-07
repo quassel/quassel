@@ -35,6 +35,7 @@
 class CoreBacklogManager;
 class CoreBufferSyncer;
 class CoreBufferViewManager;
+class CoreDccConfig;
 class CoreIdentity;
 class CoreIrcListHelper;
 class CoreNetwork;
@@ -87,6 +88,7 @@ public:
 
     inline CoreIgnoreListManager *ignoreListManager() { return &_ignoreListManager; }
     inline CoreTransferManager *transferManager() const { return _transferManager; }
+    inline CoreDccConfig *dccConfig() const { return _dccConfig; }
 
 //   void attachNetworkConnection(NetworkConnection *conn);
 
@@ -203,6 +205,7 @@ private:
     CoreBufferSyncer *_bufferSyncer;
     CoreBacklogManager *_backlogManager;
     CoreBufferViewManager *_bufferViewManager;
+    CoreDccConfig *_dccConfig;
     CoreIrcListHelper *_ircListHelper;
     CoreNetworkConfig *_networkConfig;
     CoreCoreInfo _coreInfo;

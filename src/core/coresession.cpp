@@ -27,6 +27,7 @@
 #include "corebuffersyncer.h"
 #include "corebacklogmanager.h"
 #include "corebufferviewmanager.h"
+#include "coredccconfig.h"
 #include "coreeventmanager.h"
 #include "coreidentity.h"
 #include "coreignorelistmanager.h"
@@ -64,6 +65,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _bufferSyncer(new CoreBufferSyncer(this)),
     _backlogManager(new CoreBacklogManager(this)),
     _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
+    _dccConfig(new CoreDccConfig(this)),
     _ircListHelper(new CoreIrcListHelper(this)),
     _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
     _coreInfo(this),
@@ -121,6 +123,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->synchronize(_bufferSyncer);
     p->synchronize(&aliasManager());
     p->synchronize(_backlogManager);
+    p->synchronize(dccConfig());
     p->synchronize(ircListHelper());
     p->synchronize(networkConfig());
     p->synchronize(&_coreInfo);

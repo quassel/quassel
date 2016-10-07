@@ -38,6 +38,7 @@
 #include "clientuserinputhandler.h"
 #include "coreaccountmodel.h"
 #include "coreconnection.h"
+#include "dccconfig.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
@@ -101,6 +102,7 @@ Client::Client(QObject *parent)
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
     _bufferViewOverlay(new BufferViewOverlay(this)),
+    _dccConfig(0),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(0),
     _networkConfig(0),
@@ -414,9 +416,12 @@ void Client::setSyncedToCore()
     _ignoreListManager = new ClientIgnoreListManager(this);
     p->synchronize(ignoreListManager());
 
-    // create TransferManager if core supports it
+    // create TransferManager and DccConfig if core supports them
+    Q_ASSERT(!_dccConfig);
     Q_ASSERT(!_transferManager);
     if (coreFeatures() & Quassel::DccFileTransfer) {
+        _dccConfig = new DccConfig(this);
+        p->synchronize(dccConfig());
         _transferManager = new ClientTransferManager(this);
         _transferModel->setManager(_transferManager);
         p->synchronize(transferManager());
@@ -496,6 +501,11 @@ void Client::setDisconnectedFromCore()
         _transferModel->setManager(nullptr);
         _transferManager->deleteLater();
         _transferManager = nullptr;
+    }
+
+    if (_dccConfig) {
+        _dccConfig->deleteLater();
+        _dccConfig = nullptr;
     }
 
     // we probably don't want to save pending input for reconnect

@@ -12,6 +12,7 @@ set(SOURCES
     corebufferviewconfig.cpp
     corebufferviewmanager.cpp
     corecoreinfo.cpp
+    coredccconfig.cpp
     coreidentity.cpp
     coreignorelistmanager.cpp
     coreircchannel.cpp
