@@ -22,14 +22,12 @@
 
 #include "transfer.h"
 
-
 INIT_SYNCABLE_OBJECT(TransferManager)
 
 TransferManager::TransferManager(QObject *parent)
     : SyncableObject(parent)
 {
     static auto regTypes = []() -> bool {
-        qRegisterMetaType<TransferIdList>("TransferManager::TransferIdList");
         qRegisterMetaTypeStreamOperators<TransferIdList>("TransferManager::TransferIdList");
         return true;
     }();
@@ -37,6 +35,7 @@ TransferManager::TransferManager(QObject *parent)
 
     renameObject("TransferManager");
 }
+
 
 Transfer *TransferManager::transfer(const QUuid &uuid) const
 {
