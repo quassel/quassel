@@ -146,6 +146,7 @@
 #include "settingspages/connectionsettingspage.h"
 #include "settingspages/coreaccountsettingspage.h"
 #include "settingspages/coreconnectionsettingspage.h"
+#include "settingspages/dccsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
 #include "settingspages/ignorelistsettingspage.h"
@@ -1450,6 +1451,7 @@ void MainWin::showSettingsDlg()
     dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
     dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
     dlg->registerSettingsPage(new IgnoreListSettingsPage(dlg));
+    dlg->registerSettingsPage(new DccSettingsPage(dlg));
 
     // Category: Remote Cores
     if (Quassel::runMode() != Quassel::Monolithic) {

@@ -12,6 +12,7 @@ set(SETTINGSPAGES
     connection
     coreconnection
     coreaccount
+    dcc
     highlight
     identities
     ignorelist
