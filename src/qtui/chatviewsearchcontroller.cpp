@@ -166,6 +166,30 @@ void ChatViewSearchController::updateHighlights(bool reuse)
                         _currentHighlight = start;
                         break;
                     }
+                    if (end == 0 && start == 0) {
+                        // Sometimes we can run into an issue where the start and end are both set
+                        // to zero.  Rather than endlessly spin this loop, bail out.  Search seems
+                        // to work fine.
+                        // [Test case]
+                        // Unfortunately, this seems specific to the contents of a buffer.  First,
+                        // find a buffer that you've encountered freezing, and keep track of what
+                        // was loaded, where it was, and the two most recent search terms.
+                        // For example...
+                        // 1.  Load some backlog to a buffer
+                        // 2.  Search for term with any number of matches
+                        // 3.  Making sure to -type over existing words without first backspacing-,
+                        //     search for another term with only one match
+                        // Expected: Search results found, no freezing
+                        // Actual:   Quassel hangs.  startPos and endPos = same place, start = 0,
+                        //           end = 0, _currentHighlight appears to retain values from the
+                        //           previous search.
+
+                        // Reset _currentHighlight to start, otherwise it'll retain the value from
+                        // previous search, resulting in an index-out-of-bounds error.
+                        _currentHighlight = start;
+                        // Escape from the loop!
+                        break;
+                    }
                     int pivot = (end + start) / 2;
                     QPointF pivotPos = _highlightItems[pivot]->scenePos();
                     if (startPos.y() == endPos.y()) {
