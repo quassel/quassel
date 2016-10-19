@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SQLAUTHENTICATOR_H
-#define SQLAUTHENTICATOR_H
+#pragma once
 
 #include "authenticator.h"
 
@@ -49,6 +48,3 @@ public slots:
     //virtual UserId getUserId(const QString &username);
 
 };
-
-
-#endif

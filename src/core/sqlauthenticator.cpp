@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2015 by the Quassel Project                        *
+ *   Copyright (C) 2005-2016 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,11 +36,13 @@ SqlAuthenticator::~SqlAuthenticator()
 {
 }
 
+
 bool SqlAuthenticator::isAvailable() const
 {
     // FIXME: probably this should query the current storage (see the ::init routine too).
     return true;
 }
+
 
 QString SqlAuthenticator::backendId() const
 {
@@ -50,22 +52,26 @@ QString SqlAuthenticator::backendId() const
     return QString("Database");
 }
 
+
 QString SqlAuthenticator::description() const
 {
     return tr("Do not auth against any remote authentication service, but instead save a hashed and salted password "
               "in the selected database.");
 }
 
+
 UserId SqlAuthenticator::validateUser(const QString &user, const QString &password)
 {
     return Core::validateUser(user, password);
 }
+
 
 bool SqlAuthenticator::setup(const QVariantMap &settings)
 {
     Q_UNUSED(settings)
     return true;
 }
+
 
 Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
 {

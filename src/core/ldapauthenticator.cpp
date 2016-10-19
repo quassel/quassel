@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2015 by the Quassel Project                        *
+ *   Copyright (C) 2005-2016 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -50,8 +50,7 @@ LdapAuthenticator::LdapAuthenticator(QObject *parent)
 
 LdapAuthenticator::~LdapAuthenticator()
 {
-    if (_connection != 0)
-    {
+    if (_connection != 0) {
         ldap_unbind_ext(_connection, 0, 0);
     }
 }
@@ -63,6 +62,7 @@ bool LdapAuthenticator::isAvailable() const
     return true;
 }
 
+
 QString LdapAuthenticator::backendId() const
 {
     // We identify the backend to use for the monolithic core by its displayname.
@@ -70,6 +70,7 @@ QString LdapAuthenticator::backendId() const
     // setup for the mono client still works ;)
     return QString("LDAP");
 }
+
 
 QString LdapAuthenticator::description() const
 {
@@ -90,6 +91,7 @@ QStringList LdapAuthenticator::setupKeys() const
     return keys;
 }
 
+
 QVariantMap LdapAuthenticator::setupDefaults() const
 {
     QVariantMap map;
@@ -98,6 +100,7 @@ QVariantMap LdapAuthenticator::setupDefaults() const
     map["UID Attribute"] = QVariant(QString("uid"));
     return map;
 }
+
 
 void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
 {
@@ -117,8 +120,7 @@ void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
 UserId LdapAuthenticator::validateUser(const QString &username, const QString &password)
 {
     bool result = ldapAuth(username, password);
-    if (!result)
-    {
+    if (!result) {
         return UserId();
     }
 
@@ -127,17 +129,16 @@ UserId LdapAuthenticator::validateUser(const QString &username, const QString &p
     // Users created via LDAP have empty passwords, but authenticator column = LDAP.
     // On the other hand, if auth succeeds and the user already exists, do a final
     // cross-check to confirm we're using the right auth provider.
-    UserId quasselID = Core::validateUser(username, QString());
-    if (!quasselID.isValid())
-    {
+    UserId quasselId = Core::validateUser(username, QString());
+    if (!quasselId.isValid()) {
         return Core::addUser(username, QString(), backendId());
     }
-    else if (!(Core::checkAuthProvider(quasselID, backendId())))
-    {
+    else if (!(Core::checkAuthProvider(quasselId, backendId()))) {
         return 0;
     }
-    return quasselID;
+    return quasselId;
 }
+
 
 bool LdapAuthenticator::setup(const QVariantMap &settings)
 {
@@ -146,13 +147,13 @@ bool LdapAuthenticator::setup(const QVariantMap &settings)
     return status;
 }
 
+
 Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
 {
     setConnectionProperties(settings);
 
     bool status = ldapConnect();
-    if (!status)
-    {
+    if (!status) {
         quInfo() << qPrintable(backendId()) << "Authenticator cannot connect.";
         return NotAvailable;
     }
@@ -195,6 +196,7 @@ bool LdapAuthenticator::ldapConnect()
     return true;
 }
 
+
 void LdapAuthenticator::ldapDisconnect()
 {
     if (_connection == 0) {
@@ -204,6 +206,7 @@ void LdapAuthenticator::ldapDisconnect()
     ldap_unbind_ext(_connection, 0, 0);
     _connection = 0;
 }
+
 
 bool LdapAuthenticator::ldapAuth(const QString &username, const QString &password)
 {
@@ -215,7 +218,7 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
 
     // Attempt to establish a connection.
     if (_connection == 0) {
-        if (not ldapConnect()) {
+        if (!ldapConnect()) {
             return false;
         }
     }
@@ -228,7 +231,7 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
     QByteArray baseDN = _baseDN.toLocal8Bit();
     QByteArray uidAttribute = _uidAttribute.toLocal8Bit();
 
-    cred.bv_val = const_cast<char*>(bindPassword.size() > 0 ? bindPassword.constData() : NULL);
+    cred.bv_val = (bindPassword.size() > 0 ? bindPassword.data() : NULL);
     cred.bv_len = bindPassword.size();
 
     res = ldap_sasl_bind_s(_connection, bindDN.size() > 0 ? bindDN.constData() : 0, LDAP_SASL_SIMPLE, &cred, 0, 0, 0);
@@ -264,8 +267,8 @@ bool LdapAuthenticator::ldapAuth(const QString &username, const QString &passwor
         return false;
     }
 
-    const QByteArray passwordArray = password.toLocal8Bit();
-    cred.bv_val = const_cast<char*>(passwordArray.constData());
+    QByteArray passwordArray = password.toLocal8Bit();
+    cred.bv_val = passwordArray.data();
     cred.bv_len = password.size();
 
     char *userDN = ldap_get_dn(_connection, entry);

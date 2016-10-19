@@ -43,10 +43,12 @@ QVariant CoreSettings::storageSettings(const QVariant &def)
     return localValue("StorageSettings", def);
 }
 
+
 QVariant CoreSettings::authSettings(const QVariant &def)
 {
     return localValue("AuthSettings", def);
 }
+
 
 void CoreSettings::setAuthSettings(const QVariant &data)
 {

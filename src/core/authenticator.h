@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2015 by the Quassel Project                        *
+ *   Copyright (C) 2005-2016 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,10 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef AUTHENTICATOR_H
-#define AUTHENTICATOR_H
+#pragma once
 
-#include <QtCore>
+#include <QObject>
+#include <QString>
+#include <QStringList>
+#include <QVariant>
 
 #include "types.h"
 
@@ -34,9 +36,9 @@ public:
     virtual ~Authenticator() {};
 
     enum State {
-        IsReady,        // ready to go
-        NeedsSetup,        // need basic setup (ask the user for input)
-        NotAvailable     // remove the authenticator backend from the list of avaliable authenticators.
+        IsReady,      // ready to go
+        NeedsSetup,   // need basic setup (ask the user for input)
+        NotAvailable  // remove the authenticator backend from the list of avaliable authenticators.
     };
 
 
@@ -91,5 +93,3 @@ public slots:
 private:
 
 };
-
-#endif

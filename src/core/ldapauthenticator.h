@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2015 by the Quassel Project                        *
+ *   Copyright (C) 2005-2016 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,8 +26,7 @@
  *
  */
 
-#ifndef LDAPAUTHENTICATOR_H
-#define LDAPAUTHENTICATOR_H
+#pragma once
 
 #include "authenticator.h"
 
@@ -93,6 +92,3 @@ private:
     LDAP *_connection;
 
 };
-
-
-#endif

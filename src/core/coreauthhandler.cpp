@@ -174,8 +174,7 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     QVariantList backends;
     QVariantList authenticators;
     bool configured = Core::isConfigured();
-    if (!configured)
-    {
+    if (!configured) {
         backends = Core::backendInfo();
         authenticators = Core::authenticatorInfo();
     }
@@ -200,8 +199,7 @@ void CoreAuthHandler::handle(const SetupData &msg)
     // Maybe this should be hardcoded elsewhere, i.e. as a define.
     QString authenticator = msg.authenticator;
     quInfo() << "[" << authenticator << "]";
-    if (authenticator.trimmed().isEmpty() || authenticator == 0)
-    {
+    if (authenticator.trimmed().isEmpty()) {
         authenticator = QString("Database");
     }
 
@@ -221,8 +219,7 @@ void CoreAuthHandler::handle(const Login &msg)
     // First attempt local auth using the real username and password.
     // If that fails, move onto the auth provider.
     UserId uid = Core::validateUser(msg.user, msg.password);
-    if (uid == 0)
-    {
+    if (uid == 0) {
         uid = Core::authenticateUser(msg.user, msg.password);
     }
 

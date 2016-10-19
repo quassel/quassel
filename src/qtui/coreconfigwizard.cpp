@@ -37,10 +37,10 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
     setAttribute(Qt::WA_DeleteOnClose);
 
     foreach(const QVariant &v, backends)
-    _backends[v.toMap()["DisplayName"].toString()] = v;
+        _backends[v.toMap()["DisplayName"].toString()] = v;
 
     foreach(const QVariant &v, authenticators)
-    _authenticators[v.toMap()["DisplayName"].toString()] = v;
+        _authenticators[v.toMap()["DisplayName"].toString()] = v;
 
     setPage(IntroPage, new CoreConfigWizardPages::IntroPage(this));
     setPage(AdminUserPage, new CoreConfigWizardPages::AdminUserPage(this));
@@ -89,10 +89,12 @@ QHash<QString, QVariant> CoreConfigWizard::backends() const
     return _backends;
 }
 
+
 QHash<QString, QVariant> CoreConfigWizard::authenticators() const
 {
     return _authenticators;
 }
+
 
 void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authenticator, const QVariantMap &authProperties)
 {
@@ -102,10 +104,10 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
 
     // FIXME? We need to be able to set up older cores that don't have auth backend support.
     // So if the core doesn't support that feature, don't pass those parameters.
-    if (!(Client::coreFeatures() & Quassel::Authenticators))
-    {
+    if (!(Client::coreFeatures() & Quassel::Authenticators)) {
         coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
-    } else {
+    }
+    else {
         coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties, authenticator, authProperties));
     }
 }
@@ -194,10 +196,10 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
 int AdminUserPage::nextId() const
 {
     // If the core doesn't support auth backends, skip that page!
-    if (!(Client::coreFeatures() & Quassel::Authenticators))
-    {
+    if (!(Client::coreFeatures() & Quassel::Authenticators)) {
         return CoreConfigWizard::StorageSelectionPage;
-    } else {
+    }
+    else {
         return CoreConfigWizard::AuthenticationSelectionPage;
     }
 }
@@ -276,31 +278,6 @@ QVariantMap AuthenticationSelectionPage::connectionProperties() const
             properties[key] = def;
         }
     }
-    qDebug() << properties;
-
-//   QVariantMap properties = _backends[backend].toMap()["ConnectionProperties"].toMap();
-//   if(!properties.isEmpty() && _connectionBox) {
-//     QVariantMap::iterator propertyIter = properties.begin();
-//     while(propertyIter != properties.constEnd()) {
-//       QWidget *widget = _connectionBox->findChild<QWidget *>(propertyIter.key());
-//       switch(propertyIter.value().type()) {
-//       case QVariant::Int:
-//      {
-//        QSpinBox *spinbox = qobject_cast<QSpinBox *>(widget);
-//        Q_ASSERT(spinbox);
-//        propertyIter.value() = QVariant(spinbox->value());
-//      }
-//      break;
-//       default:
-//      {
-//        QLineEdit *lineEdit = qobject_cast<QLineEdit *>(widget);
-//        Q_ASSERT(lineEdit);
-//        propertyIter.value() = QVariant(lineEdit->text());
-//      }
-//       }
-//       propertyIter++;
-//     }
-//   }
     return properties;
 }
 

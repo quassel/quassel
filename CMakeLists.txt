@@ -136,7 +136,7 @@ endif()
 # List of authenticators and the cmake flags to build them
 # (currently that's just LDAP, but more can be added here).
 ####################################################################
-option(WITH_LDAP     "Enable LDAP authentication support if present on system"  ON)
+option(WITH_LDAP "Enable LDAP authentication support if present on system" ON)
 
 # Setup CMake
 #####################################################################
@@ -521,20 +521,18 @@ endif()
 
 # Setup LDAP Authentication support.
 #####################################################################
-if(WITH_LDAP)
+if (WITH_LDAP)
     find_package(Ldap)
-    if(LDAP_FOUND)
+    if (LDAP_FOUND)
         message(STATUS "Enabling LDAP authentication support")
         set(HAVE_LDAP true)
-        if(HAVE_LDAP)
-            add_definitions(-DHAVE_LDAP)
-        endif(HAVE_LDAP)
-    else(LDAP_FOUND)
+        add_definitions(-DHAVE_LDAP)
+    else()
         message(STATUS "Disabling LDAP authentication support")
-    endif(LDAP_FOUND)
-else(WITH_LDAP)
+    endif()
+else()
     message(STATUS "Not enabling LDAP authentication support")
-endif(WITH_LDAP)
+endif()
 
 # Setup KDE / KDE Frameworks
 #####################################################################
