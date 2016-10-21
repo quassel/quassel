@@ -65,7 +65,7 @@ Comment[sv]=Ett markerat meddelande har anlänt
 Comment[tr]=Vurgulanmış bir ileti geldi
 Comment[uk]=Надійшло підсвічене повідомлення
 Comment[zh_CN]=收到一条高亮显示的信息
-Sound=KDE-Im-Highlight-Msg.ogg
+Sound=Oxygen-Im-Highlight-Msg.ogg
 Action=Sound|Popup|Taskbar
 
 [Event/HighlightFocused]
@@ -99,7 +99,7 @@ Comment[pt_BR]=Mensagem realçada quando chegar enquando o Quassel estiver focad
 Comment[sq]=një mesazh i përzgjedhur ka mbërritur kur Quassel ishte në fokus
 Comment[uk]=Під час перебування Quassel у фокусі надійшло підсвічене повідомлення
 Comment[zh_CN]=当Quassel被聚焦时，收到一条高亮显示的信息
-Sound=KDE-Im-Highlight-Msg.ogg
+Sound=Oxygen-Im-Highlight-Msg.ogg
 Action=Taskbar
 
 [Event/PrivMsg]
@@ -142,7 +142,7 @@ Comment[sq]=një mesazh privat (kërkesë) ka mbërritur
 Comment[tr]=Bir özel mesaj (sorgusu) ulaştı
 Comment[uk]=Надійшло особисте повідомлення (повідомлення діалогу)
 Comment[zh_CN]=收到一条私人短信息（询问）
-Sound=KDE-Im-Message-In.ogg
+Sound=Oxygen-Im-Message-In.ogg
 Action=Sound|Popup|Taskbar
 
 [Event/PrivMsgFocused]
@@ -173,5 +173,5 @@ Comment[pt_BR]=Uma mensagem privada (consulta) chegou enquanto o Quassel está f
 Comment[sq]=Një masazh privat (kërkesë) ka mbërritur kur Quassel ishte i fokusuar
 Comment[uk]=Під час перебування Quassel у фокусі надійшло особисте повідомлення (повідомлення з діалогу)
 Comment[zh_CN]=当Quassel被聚焦时，收到一条私人短信息（询问）
-Sound=KDE-Im-Message-In.ogg
+Sound=Oxygen-Im-Message-In.ogg
 Action=Taskbar
