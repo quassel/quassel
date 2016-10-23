@@ -347,7 +347,7 @@ QString Core::setupCoreForInternalUsage()
     }
 
     // mono client currently needs sqlite
-    return setupCore("AdminUser", QString::number(pass), "SQLite", QVariantMap(), "StorageAuth", QVariantMap());
+    return setupCore("AdminUser", QString::number(pass), "SQLite", QVariantMap(), "Database", QVariantMap());
 }
 
 
