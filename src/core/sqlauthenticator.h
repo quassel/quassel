@@ -34,6 +34,7 @@ public slots:
     /* General */
     bool isAvailable() const;
     QString backendId() const;
+    QString displayName() const;
     QString description() const;
     virtual inline QStringList setupKeys() const { return QStringList(); }
     virtual inline QVariantMap setupDefaults() const { return QVariantMap(); }

@@ -65,10 +65,16 @@ bool LdapAuthenticator::isAvailable() const
 
 QString LdapAuthenticator::backendId() const
 {
-    // We identify the backend to use for the monolithic core by its displayname.
+    // We identify the backend to use for the monolithic core by this identifier.
     // so only change this string if you _really_ have to and make sure the core
     // setup for the mono client still works ;)
     return QString("LDAP");
+}
+
+
+QString LdapAuthenticator::displayName() const
+{
+    return tr("LDAP");
 }
 
 

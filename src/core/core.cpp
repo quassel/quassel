@@ -799,7 +799,8 @@ QVariantList Core::authenticatorInfo()
     QVariantList backends;
     foreach(const Authenticator *backend, instance()->_authenticators.values()) {
         QVariantMap v;
-        v["DisplayName"] = backend->backendId();
+        v["BackendId"] = backend->backendId();
+        v["DisplayName"] = backend->displayName();
         v["Description"] = backend->description();
         v["SetupKeys"] = backend->setupKeys();
         v["SetupDefaults"] = backend->setupDefaults();

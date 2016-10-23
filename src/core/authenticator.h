@@ -52,9 +52,13 @@ public slots:
      */
     virtual bool isAvailable() const = 0;
 
+    //! Returns the identifier of the authenticator backend
+    /** \return A string that can be used by the client to identify the authenticator backend */
+    virtual QString backendId() const = 0;
+
     //! Returns the display name of the authenticator backend
     /** \return A string that can be used by the client to name the authenticator backend */
-    virtual QString backendId() const = 0;
+    virtual QString displayName() const = 0;
 
     //! Returns a description of this authenticator backend
     /** \return A string that can be displayed by the client to describe the authenticator */

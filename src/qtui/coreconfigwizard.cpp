@@ -40,7 +40,7 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
         _backends[v.toMap()["DisplayName"].toString()] = v;
 
     foreach(const QVariant &v, authenticators)
-        _authenticators[v.toMap()["DisplayName"].toString()] = v;
+        _authenticators[v.toMap()["BackendId"].toString()] = v;
 
     setPage(IntroPage, new CoreConfigWizardPages::IntroPage(this));
     setPage(AdminUserPage, new CoreConfigWizardPages::AdminUserPage(this));
@@ -222,7 +222,6 @@ AuthenticationSelectionPage::AuthenticationSelectionPage(const QHash<QString, QV
 
     setTitle(tr("Select Authentication Backend"));
     setSubTitle(tr("Please select a backend for Quassel Core to use for authenticating users."));
-    setCommitPage(true);
 
     registerField("authentication.backend", ui.backendList);
 

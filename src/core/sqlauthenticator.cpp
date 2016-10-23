@@ -46,10 +46,16 @@ bool SqlAuthenticator::isAvailable() const
 
 QString SqlAuthenticator::backendId() const
 {
-    // We identify the backend to use for the monolithic core by its displayname.
+    // We identify the backend to use for the monolithic core by this identifier.
     // so only change this string if you _really_ have to and make sure the core
     // setup for the mono client still works ;)
     return QString("Database");
+}
+
+
+QString SqlAuthenticator::displayName() const
+{
+    return tr("Database");
 }
 
 
