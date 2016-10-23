@@ -191,7 +191,7 @@ void Core::init()
 
     // Not entirely sure what is 'legacy' about the above, but it seems to be the way things work!
     QVariantMap authSettings = cs.authSettings().toMap();
-    initAuthenticator(authSettings.value("Authenticator").toString(), authSettings.value("ConnectionProperties").toMap());
+    initAuthenticator(authSettings.value("Authenticator").toString(), authSettings.value("AuthProperties").toMap());
 
     if (Quassel::isOptionSet("select-backend") || Quassel::isOptionSet("select-authenticator")) {
         if (Quassel::isOptionSet("select-backend")) {
@@ -1098,7 +1098,7 @@ void Core::saveAuthenticatorSettings(const QString &backend, const QVariantMap &
 {
     QVariantMap dbsettings;
     dbsettings["Authenticator"] = backend;
-    dbsettings["ConnectionProperties"] = settings;
+    dbsettings["AuthProperties"] = settings;
     CoreSettings().setAuthSettings(dbsettings);
 }
 

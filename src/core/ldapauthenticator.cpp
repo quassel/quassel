@@ -102,7 +102,7 @@ QVariantMap LdapAuthenticator::setupDefaults() const
 }
 
 
-void LdapAuthenticator::setConnectionProperties(const QVariantMap &properties)
+void LdapAuthenticator::setAuthProperties(const QVariantMap &properties)
 {
     _hostName = properties["Hostname"].toString();
     _port = properties["Port"].toInt();
@@ -142,7 +142,7 @@ UserId LdapAuthenticator::validateUser(const QString &username, const QString &p
 
 bool LdapAuthenticator::setup(const QVariantMap &settings)
 {
-    setConnectionProperties(settings);
+    setAuthProperties(settings);
     bool status = ldapConnect();
     return status;
 }
@@ -150,7 +150,7 @@ bool LdapAuthenticator::setup(const QVariantMap &settings)
 
 Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
 {
-    setConnectionProperties(settings);
+    setAuthProperties(settings);
 
     bool status = ldapConnect();
     if (!status) {

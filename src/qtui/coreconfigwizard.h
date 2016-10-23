@@ -119,7 +119,7 @@ public:
     AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
     int nextId() const;
     QString selectedBackend() const;
-    QVariantMap connectionProperties() const;
+    QVariantMap authProperties() const;
 
 private slots:
     void on_backendList_currentIndexChanged();

@@ -68,7 +68,7 @@ public slots:
     UserId validateUser(const QString &user, const QString &password);
 
 protected:
-    virtual void setConnectionProperties(const QVariantMap &properties);
+    virtual void setAuthProperties(const QVariantMap &properties);
     bool ldapConnect();
     void ldapDisconnect();
     bool ldapAuth(const QString &username, const QString &password);

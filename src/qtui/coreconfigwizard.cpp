@@ -246,7 +246,7 @@ QString AuthenticationSelectionPage::selectedBackend() const
 }
 
 
-QVariantMap AuthenticationSelectionPage::connectionProperties() const
+QVariantMap AuthenticationSelectionPage::authProperties() const
 {
     QString backend = ui.backendList->itemData(ui.backendList->currentIndex()).toString();
 
@@ -512,7 +512,7 @@ void SyncPage::initializePage()
     // Fill in sync info about the authentication layer.
     AuthenticationSelectionPage *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
     QString authenticator = authPage->selectedBackend();
-    QVariantMap authProperties = authPage->connectionProperties();
+    QVariantMap authProperties = authPage->authProperties();
     Q_ASSERT(!authenticator.isEmpty());
     ui.authenticator->setText(authenticator);
 
