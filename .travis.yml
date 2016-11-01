@@ -53,9 +53,10 @@ script: |-
     if [[ "$TRAVIS_TAG" != "" && "$GH_TOKEN" != "" ]]
     then
       PATH=$PATH:/usr/local/opt/qt5/bin
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DDEPLOY=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
+      # The LDAP headers found in OSX Frameworks seem to be broken
+      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DDEPLOY=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DLDAP_INCLUDE_DIR=/usr/include/
     else
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
+      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DLDAP_INCLUDE_DIR=/usr/include/
     fi
     ninja install
   fi
