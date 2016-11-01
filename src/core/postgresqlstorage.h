@@ -34,15 +34,15 @@ public:
     PostgreSqlStorage(QObject *parent = 0);
     virtual ~PostgreSqlStorage();
 
-    virtual AbstractSqlMigrationWriter *createMigrationWriter();
+    virtual std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter();
 
 public slots:
     /* General */
     virtual bool isAvailable() const;
+    virtual QString backendId() const;
     virtual QString displayName() const;
     virtual QString description() const;
-    virtual QStringList setupKeys() const;
-    virtual QVariantMap setupDefaults() const;
+    virtual QVariantList setupData() const;
 
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 

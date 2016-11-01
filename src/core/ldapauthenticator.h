@@ -43,7 +43,7 @@
 //#endif
 
 // Default LDAP server port.
-#define DEFAULT_LDAP_PORT 389
+constexpr int DEFAULT_LDAP_PORT = 389;
 
 class LdapAuthenticator : public Authenticator
 {
@@ -51,34 +51,33 @@ class LdapAuthenticator : public Authenticator
 
 public:
     LdapAuthenticator(QObject *parent = 0);
-    virtual ~LdapAuthenticator();
+    ~LdapAuthenticator() override;
 
 public slots:
     /* General */
-    bool isAvailable() const;
-    QString backendId() const;
-    QString displayName() const;
-    QString description() const;
-    virtual QStringList setupKeys() const;
-    virtual QVariantMap setupDefaults() const;
+    bool isAvailable() const override;
+    QString backendId() const override;
+    QString displayName() const override;
+    QString description() const override;
+    QVariantList setupData() const override;
 
-    virtual inline bool canChangePassword() const { return false; }
+    bool canChangePassword() const override { return false; }
 
-    bool setup(const QVariantMap &settings = QVariantMap());
-    State init(const QVariantMap &settings = QVariantMap());
-    UserId validateUser(const QString &user, const QString &password);
+    bool setup(const QVariantMap &settings = {}) override;
+    State init(const QVariantMap &settings = {}) override;
+    UserId validateUser(const QString &user, const QString &password) override;
 
 protected:
-    virtual void setAuthProperties(const QVariantMap &properties);
+    void setAuthProperties(const QVariantMap &properties);
     bool ldapConnect();
     void ldapDisconnect();
     bool ldapAuth(const QString &username, const QString &password);
 
     // Protected methods for retrieving info about the LDAP connection.
-    inline virtual QString hostName() { return _hostName; }
-    inline virtual int port() { return _port; }
-    inline virtual QString bindDN() { return _bindDN; }
-    inline virtual QString baseDN() { return _baseDN; }
+    QString hostName() const { return _hostName; }
+    int port() const { return _port; }
+    QString bindDN() const { return _bindDN; }
+    QString baseDN() const { return _baseDN; }
 
 private:
     QString _hostName;
@@ -90,6 +89,5 @@ private:
     QString _uidAttribute;
 
     // The actual connection object.
-    LDAP *_connection;
-
+    LDAP *_connection {nullptr};
 };

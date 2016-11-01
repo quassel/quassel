@@ -61,8 +61,8 @@ QString SqlAuthenticator::displayName() const
 
 QString SqlAuthenticator::description() const
 {
-    return tr("Do not auth against any remote authentication service, but instead save a hashed and salted password "
-              "in the selected database.");
+    return tr("Do not authenticate against any remote service, but instead save a hashed and salted password "
+              "in the database selected in the next step.");
 }
 
 
@@ -86,6 +86,6 @@ Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
     // TODO: FIXME: this should check if the storage provider is ready, but I don't
     // know if there's an exposed way to do that at the moment.
 
-    quInfo() << qPrintable(backendId()) << "Authenticator is ready.";
+    quInfo() << qPrintable(backendId()) << "authenticator is ready.";
     return IsReady;
 }

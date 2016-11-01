@@ -18,10 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+// Make moc happy
 #include "authenticator.h"
-
-Authenticator::Authenticator(QObject *parent)
-    : QObject(parent)
-{
-}
-
+#include "moc_authenticator.cpp"

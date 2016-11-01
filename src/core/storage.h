@@ -46,7 +46,7 @@ public:
         Sha1,
         Sha2_512,
         Latest=Sha2_512
-        
+
     };
 
 public slots:
@@ -59,6 +59,10 @@ public slots:
      */
     virtual bool isAvailable() const = 0;
 
+    //! Returns the identifier of the authenticator backend
+    /** \return A string that can be used by the client to identify the authenticator backend */
+    virtual QString backendId() const = 0;
+
     //! Returns the display name of the storage backend
     /** \return A string that can be used by the client to name the storage backend */
     virtual QString displayName() const = 0;
@@ -67,12 +71,14 @@ public slots:
     /** \return A string that can be displayed by the client to describe the storage backend */
     virtual QString description() const = 0;
 
-    //! Returns a list of properties required to use the storage backend
-    virtual QStringList setupKeys() const = 0;
-
-    //! Returns a map where the keys are are properties to use the storage backend
-    /*  the values are QVariants with default values */
-    virtual QVariantMap setupDefaults() const = 0;
+    //! Returns data required to configure the authenticator backend
+    /**
+     * A list of flattened triples for each field: {key, translated field name, default value}
+     * The default value's type determines the kind of input widget to be shown
+     * (int -> QSpinBox; QString -> QLineEdit)
+     * \return A list of triples defining the data to be shown in the configuration dialog
+     */
+    virtual QVariantList setupData() const = 0;
 
     //! Setup the storage provider.
     /** This prepares the storage provider (e.g. create tables, etc.) for use within Quassel.
