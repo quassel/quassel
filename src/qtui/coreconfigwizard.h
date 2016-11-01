@@ -18,10 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef _CORECONFIGWIZARD_H_
-#define _CORECONFIGWIZARD_H_
+#pragma once
 
-#include <QHash>
+#include <tuple>
+#include <vector>
+
 #include <QWizard>
 #include <QVariantMap>
 
@@ -54,9 +55,7 @@ public:
         ConclusionPage
     };
 
-    CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, const QList<QVariant> &authenticators, QWidget *parent = 0);
-    QHash<QString, QVariant> backends() const;
-    QHash<QString, QVariant> authenticators() const;
+    CoreConfigWizard(CoreConnection *connection, const QVariantList &backendInfos, const QVariantList &authInfos, QWidget *parent = 0);
 
     inline CoreConnection *coreConnection() const { return _connection; }
 
@@ -75,9 +74,6 @@ private slots:
     void startOver();
 
 private:
-    QHash<QString, QVariant> _backends;
-    QHash<QString, QVariant> _authenticators;
-
     CoreConfigWizardPages::SyncPage *syncPage;
     CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
 
@@ -114,37 +110,45 @@ private:
 class AuthenticationSelectionPage : public QWizardPage
 {
     Q_OBJECT
+    using FieldInfo = std::tuple<QString, QString, QVariant>;
 
 public:
-    AuthenticationSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
+    AuthenticationSelectionPage(const QVariantList &authInfos, QWidget *parent = 0);
     int nextId() const;
-    QString selectedBackend() const;
+    QString displayName() const;
+    QString authenticator() const;
     QVariantMap authProperties() const;
 
 private slots:
-    void on_backendList_currentIndexChanged();
+    void on_backendList_currentIndexChanged(int index);
+
 private:
     Ui::CoreConfigWizardAuthenticationSelectionPage ui;
-    QGroupBox *_connectionBox;
-    QHash<QString, QVariant> _backends;
+    QGroupBox *_fieldBox {nullptr};
+    std::vector<QVariantMap> _authProperties;
+    std::vector<std::vector<FieldInfo>> _authFields;
 };
 
 class StorageSelectionPage : public QWizardPage
 {
     Q_OBJECT
+    using FieldInfo = std::tuple<QString, QString, QVariant>;
 
 public:
-    StorageSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
+    StorageSelectionPage(const QVariantList &backendInfos, QWidget *parent = 0);
     int nextId() const;
-    QString selectedBackend() const;
-    QVariantMap connectionProperties() const;
+    QString displayName() const;
+    QString backend() const;
+    QVariantMap backendProperties() const;
 
 private slots:
-    void on_backendList_currentIndexChanged();
+    void on_backendList_currentIndexChanged(int index);
+
 private:
     Ui::CoreConfigWizardStorageSelectionPage ui;
-    QGroupBox *_connectionBox;
-    QHash<QString, QVariant> _backends;
+    QGroupBox *_fieldBox {nullptr};
+    std::vector<QVariantMap> _backendProperties;
+    std::vector<std::vector<FieldInfo>> _backendFields;
 };
 
 class SyncPage : public QWizardPage
@@ -167,8 +171,8 @@ signals:
 
 private:
     Ui::CoreConfigWizardSyncPage ui;
-    bool complete;
-    bool hasError;
+    bool _complete {false};
+    bool _hasError {false};
 };
 
 
@@ -191,5 +195,3 @@ private:
     Mode mode;
 };
 }
-
-#endif

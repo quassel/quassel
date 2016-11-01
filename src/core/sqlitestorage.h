@@ -35,15 +35,15 @@ public:
     SqliteStorage(QObject *parent = 0);
     virtual ~SqliteStorage();
 
-    virtual AbstractSqlMigrationReader *createMigrationReader();
+    virtual std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader();
 
 public slots:
     /* General */
 
     bool isAvailable() const;
+    QString backendId() const;
     QString displayName() const;
-    virtual inline QStringList setupKeys() const { return QStringList(); }
-    virtual inline QVariantMap setupDefaults() const { return QVariantMap(); }
+    virtual inline QVariantList setupData() const { return {}; }
     QString description() const;
 
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
@@ -161,9 +161,9 @@ private:
 };
 
 
-inline AbstractSqlMigrationReader *SqliteStorage::createMigrationReader()
+inline std::unique_ptr<AbstractSqlMigrationReader> SqliteStorage::createMigrationReader()
 {
-    return new SqliteMigrationReader();
+    return std::unique_ptr<AbstractSqlMigrationReader>{new SqliteMigrationReader()};
 }
 
 

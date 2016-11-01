@@ -46,12 +46,19 @@ bool SqliteStorage::isAvailable() const
 }
 
 
+QString SqliteStorage::backendId() const
+{
+    return QString("SQLite");
+}
+
+
 QString SqliteStorage::displayName() const
 {
+    // Note: Pre-0.13 clients use the displayName property for backend idenfication
     // We identify the backend to use for the monolithic core by its displayname.
     // so only change this string if you _really_ have to and make sure the core
     // setup for the mono client still works ;)
-    return QString("SQLite");
+    return backendId();
 }
 
 

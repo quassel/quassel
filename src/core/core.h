@@ -18,8 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORE_H
-#define CORE_H
+#pragma once
+
+#include <memory>
+#include <vector>
 
 #include <QDateTime>
 #include <QString>
@@ -36,6 +38,7 @@
 
 #include "authenticator.h"
 #include "bufferinfo.h"
+#include "deferredptr.h"
 #include "message.h"
 #include "oidentdconfiggenerator.h"
 #include "sessionthread.h"
@@ -543,19 +546,6 @@ public:
     static QVariantList backendInfo();
     static QVariantList authenticatorInfo();
 
-    /**
-     * Checks if a storage backend is the default storage backend. This
-     * hardcodes this information into the core (not the client).
-     *
-     * \param backend    The backend to check.
-     *
-     * @return True if storage backend is default, false otherwise.
-     */
-    static inline bool isStorageBackendDefault(const Storage *backend)
-    {
-        return (backend->displayName() == "SQLite") ? true : false;
-    }
-
     static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
     static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
@@ -607,34 +597,34 @@ private:
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
     QString setupCoreForInternalUsage();
 
-    void registerStorageBackends();
-    bool registerStorageBackend(Storage *);
-    void unregisterStorageBackends();
-    void unregisterStorageBackend(Storage *);
+    bool createUser();
 
+    template<typename Storage>
+    void registerStorageBackend();
+
+    template<typename Authenticator>
+    void registerAuthenticator();
+
+    void registerStorageBackends();
     void registerAuthenticators();
-    bool registerAuthenticator(Authenticator *);
-    void unregisterAuthenticators();
-    void unregisterAuthenticator(Authenticator *);
+
+    DeferredSharedPtr<Storage>       storageBackend(const QString& backendId) const;
+    DeferredSharedPtr<Authenticator> authenticator(const QString& authenticatorId) const;
 
     bool selectBackend(const QString &backend);
     bool selectAuthenticator(const QString &backend);
-    bool createUser();
 
     bool saveBackendSettings(const QString &backend, const QVariantMap &settings);
     void saveAuthenticatorSettings(const QString &backend, const QVariantMap &settings);
 
-    QVariantMap promptForSettings(const Storage *storage);
-    QVariantMap promptForSettings(const Authenticator *authenticator);
-    QVariantMap promptForSettings(QStringList keys, QVariantMap defaults);
+    template<typename Backend>
+    QVariantMap promptForSettings(const Backend *backend);
 
 private:
     QSet<CoreAuthHandler *> _connectingClients;
     QHash<UserId, SessionThread *> _sessions;
-
-    // Have both a storage backend and an authenticator backend.
-    Storage *_storage;
-    Authenticator *_authenticator;
+    DeferredSharedPtr<Storage>       _storage;        ///< Active storage backend
+    DeferredSharedPtr<Authenticator> _authenticator;  ///< Active authenticator
     QTimer _storageSyncTimer;
 
 #ifdef HAVE_SSL
@@ -643,21 +633,18 @@ private:
     QTcpServer _server, _v6server;
 #endif
 
-    OidentdConfigGenerator *_oidentdConfigGenerator;
+    OidentdConfigGenerator *_oidentdConfigGenerator {nullptr};
 
-    QHash<QString, Storage *> _storageBackends;
-    QHash<QString, Authenticator *> _authenticators;
+    std::vector<DeferredSharedPtr<Storage>>       _registeredStorageBackends;
+    std::vector<DeferredSharedPtr<Authenticator>> _registeredAuthenticators;
 
     QDateTime _startTime;
 
     bool _configured;
 
-    static AbstractSqlMigrationReader *getMigrationReader(Storage *storage);
-    static AbstractSqlMigrationWriter *getMigrationWriter(Storage *storage);
+    static std::unique_ptr<AbstractSqlMigrationReader> getMigrationReader(Storage *storage);
+    static std::unique_ptr<AbstractSqlMigrationWriter> getMigrationWriter(Storage *storage);
     static void stdInEcho(bool on);
     static inline void enableStdInEcho() { stdInEcho(true); }
     static inline void disableStdInEcho() { stdInEcho(false); }
 };
-
-
-#endif

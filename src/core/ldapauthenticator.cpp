@@ -83,28 +83,20 @@ QString LdapAuthenticator::description() const
     return tr("Authenticate users using an LDAP server.");
 }
 
-QStringList LdapAuthenticator::setupKeys() const
+
+QVariantList LdapAuthenticator::setupData() const
 {
     // The parameters needed for LDAP.
-    QStringList keys;
-    keys << "Hostname"
-         << "Port"
-         << "Bind DN"
-         << "Bind Password"
-         << "Base DN"
-         << "Filter"
-         << "UID Attribute";
-    return keys;
-}
-
-
-QVariantMap LdapAuthenticator::setupDefaults() const
-{
-    QVariantMap map;
-    map["Hostname"] = QVariant(QString("ldap://localhost"));
-    map["Port"] = QVariant(DEFAULT_LDAP_PORT);
-    map["UID Attribute"] = QVariant(QString("uid"));
-    return map;
+    QVariantList data;
+    data << "Hostname"     << tr("Hostname")      << QString{"ldap://localhost"}
+         << "Port"         << tr("Port")          << DEFAULT_LDAP_PORT
+         << "BindDN"       << tr("Bind DN")       << QString{}
+         << "BindPassword" << tr("Bind Password") << QString{}
+         << "BaseDN"       << tr("Base DN")       << QString{}
+         << "Filter"       << tr("Filter")        << QString{}
+         << "UidAttribute" << tr("UID Attribute") << QString{"uid"}
+         ;
+    return data;
 }
 
 
@@ -112,11 +104,11 @@ void LdapAuthenticator::setAuthProperties(const QVariantMap &properties)
 {
     _hostName = properties["Hostname"].toString();
     _port = properties["Port"].toInt();
-    _baseDN = properties["Base DN"].toString();
+    _bindDN = properties["BindDN"].toString();
+    _bindPassword = properties["BindPassword"].toString();
+    _baseDN = properties["BaseDN"].toString();
     _filter = properties["Filter"].toString();
-    _bindDN = properties["Bind DN"].toString();
-    _bindPassword = properties["Bind Password"].toString();
-    _uidAttribute = properties["UID Attribute"].toString();
+    _uidAttribute = properties["UidAttribute"].toString();
 }
 
 // TODO: this code is sufficiently general that in the future, perhaps an abstract
@@ -160,11 +152,11 @@ Authenticator::State LdapAuthenticator::init(const QVariantMap &settings)
 
     bool status = ldapConnect();
     if (!status) {
-        quInfo() << qPrintable(backendId()) << "Authenticator cannot connect.";
+        quInfo() << qPrintable(backendId()) << "authenticator cannot connect.";
         return NotAvailable;
     }
 
-    quInfo() << qPrintable(backendId()) << "Authenticator is ready.";
+    quInfo() << qPrintable(backendId()) << "authenticator is ready.";
     return IsReady;
 }
 

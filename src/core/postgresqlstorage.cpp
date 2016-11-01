@@ -38,9 +38,9 @@ PostgreSqlStorage::~PostgreSqlStorage()
 }
 
 
-AbstractSqlMigrationWriter *PostgreSqlStorage::createMigrationWriter()
+std::unique_ptr<AbstractSqlMigrationWriter> PostgreSqlStorage::createMigrationWriter()
 {
-    PostgreSqlMigrationWriter *writer = new PostgreSqlMigrationWriter();
+    auto writer = new PostgreSqlMigrationWriter();
     QVariantMap properties;
     properties["Username"] = _userName;
     properties["Password"] = _password;
@@ -48,21 +48,30 @@ AbstractSqlMigrationWriter *PostgreSqlStorage::createMigrationWriter()
     properties["Port"] = _port;
     properties["Database"] = _databaseName;
     writer->setConnectionProperties(properties);
-    return writer;
+    return std::unique_ptr<AbstractSqlMigrationWriter>{writer};
 }
 
 
 bool PostgreSqlStorage::isAvailable() const
 {
-    qDebug() << QSqlDatabase::drivers();
-    if (!QSqlDatabase::isDriverAvailable("QPSQL")) return false;
+    if (!QSqlDatabase::isDriverAvailable("QPSQL")) {
+        quWarning() << qPrintable(tr("PostgreSQL driver plugin not available for Qt. Installed drivers:"))
+                    << qPrintable(QSqlDatabase::drivers().join(", "));
+        return false;
+    }
     return true;
+}
+
+
+QString PostgreSqlStorage::backendId() const
+{
+    return QString("PostgreSQL");
 }
 
 
 QString PostgreSqlStorage::displayName() const
 {
-    return QString("PostgreSQL");
+    return backendId(); // Note: Pre-0.13 clients use the displayName property for backend idenfication
 }
 
 
@@ -73,26 +82,16 @@ QString PostgreSqlStorage::description() const
 }
 
 
-QStringList PostgreSqlStorage::setupKeys() const
+QVariantList PostgreSqlStorage::setupData() const
 {
-    QStringList keys;
-    keys << "Username"
-         << "Password"
-         << "Hostname"
-         << "Port"
-         << "Database";
-    return keys;
-}
-
-
-QVariantMap PostgreSqlStorage::setupDefaults() const
-{
-    QVariantMap map;
-    map["Username"] = QVariant(QString("quassel"));
-    map["Hostname"] = QVariant(QString("localhost"));
-    map["Port"] = QVariant(5432);
-    map["Database"] = QVariant(QString("quassel"));
-    return map;
+    QVariantList data;
+    data << "Username" << tr("Username") << QString("quassel")
+         << "Password" << tr("Password") << QString()
+         << "Hostname" << tr("Hostname") << QString("localhost")
+         << "Port"     << tr("Port")     << 5432
+         << "Database" << tr("Database") << QString("quassel")
+         ;
+    return data;
 }
 
 

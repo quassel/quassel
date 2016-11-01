@@ -36,8 +36,7 @@ public slots:
     QString backendId() const;
     QString displayName() const;
     QString description() const;
-    virtual inline QStringList setupKeys() const { return QStringList(); }
-    virtual inline QVariantMap setupDefaults() const { return QVariantMap(); }
+    virtual inline QVariantList setupData() const { return {}; }
 
     virtual inline bool canChangePassword() const { return true; }
 
@@ -47,5 +46,4 @@ public slots:
 
     /* User handling */
     //virtual UserId getUserId(const QString &username);
-
 };
