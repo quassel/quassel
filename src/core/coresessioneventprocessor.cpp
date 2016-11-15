@@ -144,19 +144,25 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     // additional CAP messages (ls, multi-prefix, et cetera).
 
     if (e->params().count() == 3) {
-        if (e->params().at(2).startsWith("sasl")) { // Freenode (at least) sends "sasl " with a trailing space for some reason!
-            // FIXME use event
-            // if the current identity has a cert set, use SASL EXTERNAL
+        if (e->params().at(1) == "NAK") {
+            // CAP REQ sasl was denied
+            coreNetwork(e)->putRawLine("CAP END");
+        }
+        else if (e->params().at(1) == "ACK") {
+            if (e->params().at(2).startsWith("sasl")) { // Freenode (at least) sends "sasl " with a trailing space for some reason!
+                // FIXME use event
+                // if the current identity has a cert set, use SASL EXTERNAL
 #ifdef HAVE_SSL
-            if (!coreNetwork(e)->identityPtr()->sslCert().isNull()) {
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE EXTERNAL"));
-            } else {
+                if (!coreNetwork(e)->identityPtr()->sslCert().isNull()) {
+                    coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE EXTERNAL"));
+                } else {
 #endif
-                // Only working with PLAIN atm, blowfish later
-                coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN"));
+                    // Only working with PLAIN atm, blowfish later
+                    coreNetwork(e)->putRawLine(coreNetwork(e)->serverEncode("AUTHENTICATE PLAIN"));
 #ifdef HAVE_SSL
+                }
+#endif
             }
-#endif
         }
     }
 }
