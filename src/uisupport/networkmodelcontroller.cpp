@@ -414,6 +414,10 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
         if (networkId.isValid())
             emit showChannelList(networkId);
         break;
+    case ShowNetworkConfig:
+        if (networkId.isValid())
+            emit showNetworkConfig(networkId);
+        break;
     case ShowIgnoreList:
         if (networkId.isValid())
             emit showIgnoreList(QString());

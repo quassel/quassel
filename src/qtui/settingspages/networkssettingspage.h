@@ -47,6 +47,7 @@ public:
 public slots:
     void save();
     void load();
+    void bufferList_Open(NetworkId);
 
 private slots:
     void widgetHasChanged();
