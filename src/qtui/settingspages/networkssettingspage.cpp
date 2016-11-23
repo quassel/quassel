@@ -567,6 +567,14 @@ QListWidgetItem *NetworksSettingsPage::insertNetwork(const NetworkInfo &info)
 }
 
 
+// Called when selecting 'Configure' from the buffer list
+void NetworksSettingsPage::bufferList_Open(NetworkId netId)
+{
+    QListWidgetItem *item = networkItem(netId);
+    ui.networkList->setCurrentItem(item, QItemSelectionModel::SelectCurrent);
+}
+
+
 void NetworksSettingsPage::displayNetwork(NetworkId id)
 {
     _ignoreWidgetChanges = true;

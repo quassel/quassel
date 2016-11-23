@@ -90,6 +90,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     registerAction(HideBufferTemporarily, tr("Hide Chat(s) Temporarily"));
     registerAction(HideBufferPermanently, tr("Hide Chat(s) Permanently"));
     registerAction(ShowChannelList, tr("Show Channel List"));
+    registerAction(ShowNetworkConfig, tr("Configure"));
     registerAction(ShowIgnoreList, tr("Show Ignore List"));
 
     QMenu *hideEventsMenu = new QMenu();
@@ -285,6 +286,8 @@ void ContextMenuActionProvider::addNetworkItemActions(QMenu *menu, const QModelI
     if (!network)
         return;
 
+    addAction(ShowNetworkConfig, menu, index);
+    menu->addSeparator();
     addAction(NetworkConnect, menu, network->connectionState() == Network::Disconnected);
     addAction(NetworkDisconnect, menu, network->connectionState() != Network::Disconnected);
     menu->addSeparator();

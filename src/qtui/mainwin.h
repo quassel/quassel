@@ -119,6 +119,7 @@ private slots:
     void messagesInserted(const QModelIndex &parent, int start, int end);
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
+    void showNetworkConfig(NetworkId netId = NetworkId());
     void showCoreConnectionDlg();
     void showCoreConfigWizard(const QVariantList &, const QVariantList &);
     void showCoreInfoDlg();

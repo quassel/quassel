@@ -75,6 +75,7 @@ public:
         JoinChannel = 0x1000,
         ShowChannelList = 0x2000,
         ShowIgnoreList = 0x3000,
+        ShowNetworkConfig = 0x4000,
 
         // Nick actions
         NickMask = 0xff0000,
@@ -154,6 +155,7 @@ protected slots:
 
 signals:
     void showChannelList(NetworkId);
+    void showNetworkConfig(NetworkId);
     void showIgnoreList(QString);
 
 protected:

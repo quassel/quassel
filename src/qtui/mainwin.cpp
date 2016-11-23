@@ -204,6 +204,7 @@ void MainWin::init()
         SLOT(messagesInserted(const QModelIndex &, int, int)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
     connect(Client::instance(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
+    connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showNetworkConfig(NetworkId)), SLOT(showNetworkConfig(NetworkId)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
     connect(Client::instance(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
 
@@ -1411,6 +1412,15 @@ void MainWin::showChannelList(NetworkId netId)
     channelListDlg->setAttribute(Qt::WA_DeleteOnClose);
     channelListDlg->setNetwork(netId);
     channelListDlg->show();
+}
+
+
+void MainWin::showNetworkConfig(NetworkId netId)
+{
+    SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
+    if (netId.isValid())
+        qobject_cast<NetworksSettingsPage *>(dlg.currentPage())->bufferList_Open(netId);
+    dlg.exec();
 }
 
 
