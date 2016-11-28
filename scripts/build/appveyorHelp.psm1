@@ -122,7 +122,10 @@ function SETUP-QT()
 function Install-ChocolatelyModule([string] $module, [string[]] $myargs)
 {
     Write-Host "Install chocolately package $module"
-    LogExec cinst $module @myargs -y
+    LogExec appveyor-retry cinst $module @myargs -y
+    # Retry installation in case it fails; remove 'appveyor-retry' to run in a generic manner
+    # See http://help.appveyor.com/discussions/suggestions/816-generic-wrapper-for-retry#comment_40579488
+    # And https://github.com/appveyor/ci/issues/418
 }
 
 function Install-CmakeGitModule([string] $url, [hashtable] $arguments)
