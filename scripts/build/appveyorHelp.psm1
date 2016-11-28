@@ -119,9 +119,9 @@ function SETUP-QT()
     }
 }
 
-function Install-ChocolatelyModule([string] $module, [string[]] $myargs)
+function Install-ChocolateyModule([string] $module, [string[]] $myargs)
 {
-    Write-Host "Install chocolately package $module"
+    Write-Host "Install chocolatey package $module"
     LogExec appveyor-retry cinst $module @myargs -y
     # Retry installation in case it fails; remove 'appveyor-retry' to run in a generic manner
     # See http://help.appveyor.com/discussions/suggestions/816-generic-wrapper-for-retry#comment_40579488
@@ -174,10 +174,10 @@ function Init([string[]] $chocoDeps, [System.Collections.Specialized.OrderedDict
         foreach($module in $chocoDeps) {
             if($module -eq "nsis")
             {
-                Install-ChocolatelyModule "nsis.portable" @("-pre")
+                Install-ChocolateyModule "nsis.portable" @("-pre")
                 continue
             }
-            Install-ChocolatelyModule $module
+            Install-ChocolateyModule $module
         }
 
         foreach($key in $cmakeModules.Keys) {
