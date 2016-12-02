@@ -168,22 +168,22 @@ public:
      * @see UiStyle::ColorRole
      */
     const QList<QColor> defaultSenderColors = QList<QColor> {
-        QColor(233, 13, 127),  /// Sender00
-        QColor(142, 85, 233),  /// Sender01
-        QColor(179, 14, 14),   /// Sender02
-        QColor(23, 179, 57),   /// Sender03
-        QColor(88, 175, 179),  /// Sender04
-        QColor(157, 84, 179),  /// Sender05
-        QColor(179, 151, 117), /// Sender06
-        QColor(49, 118, 179),  /// Sender07
-        QColor(233, 13, 127),  /// Sender08
-        QColor(142, 85, 233),  /// Sender09
-        QColor(179, 14, 14),   /// Sender10
-        QColor(23, 179, 57),   /// Sender11
-        QColor(88, 175, 179),  /// Sender12
-        QColor(157, 84, 179),  /// Sender13
-        QColor(179, 151, 117), /// Sender14
-        QColor(49, 118, 179),  /// Sender15
+        QColor(204,   0,   0),  /// Sender00
+        QColor(  0, 108, 173),  /// Sender01
+        QColor( 77, 153,   0),  /// Sender02
+        QColor(102,   0, 204),  /// Sender03
+        QColor(166, 125,   0),  /// Sender04
+        QColor(  0, 153,  39),  /// Sender05
+        QColor(  0,  48, 192),  /// Sender06
+        QColor(204,   0, 154),  /// Sender07
+        QColor(185,  70,   0),  /// Sender08
+        QColor(134, 153,   0),  /// Sender09
+        QColor( 20, 153,   0),  /// Sender10
+        QColor(  0, 153,  96),  /// Sender11
+        QColor(  0, 108, 173),  /// Sender12
+        QColor(  0, 153, 204),  /// Sender13
+        QColor(179,   0, 204),  /// Sender14
+        QColor(204,   0,  77),  /// Sender15
     };
     // Explicitly declare QList<QColor> type for defaultSenderColors, otherwise error C2797
     // "list initialization inside member initializer list" will occur in Windows builds with Visual
