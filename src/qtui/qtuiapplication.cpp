@@ -210,7 +210,7 @@ bool QtUiApplication::migrateSettings()
     // --------
     // Check minor settings version, handling upgrades/downgrades as needed
     // Current minor version
-    const uint VERSION_MINOR_CURRENT = 5;
+    const uint VERSION_MINOR_CURRENT = 6;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -273,6 +273,57 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     //
     // In most cases, the goal is to preserve the older default values for keys that haven't been
     // saved.  Exceptions will be noted below.
+    case 6:
+    {
+        // New default changes: sender colors switched around to Tango-ish theme
+
+        // --------
+        // QtUiStyle settings
+        QtUiStyleSettings settingsUiStyleColors("Colors");
+        // Preserve the old default values for all variants
+        const QColor oldDefaultSenderColorSelf = QColor(0, 0, 0);
+        const QList<QColor> oldDefaultSenderColors = QList<QColor> {
+            QColor(204,  13, 127),  /// Sender00
+            QColor(142,  85, 233),  /// Sender01
+            QColor(179,  14,  14),  /// Sender02
+            QColor( 23, 179,  57),  /// Sender03
+            QColor( 88, 175, 179),  /// Sender04
+            QColor(157,  84, 179),  /// Sender05
+            QColor(179, 151, 117),  /// Sender06
+            QColor( 49, 118, 179),  /// Sender07
+            QColor(233,  13, 127),  /// Sender08
+            QColor(142,  85, 233),  /// Sender09
+            QColor(179,  14,  14),  /// Sender10
+            QColor( 23, 179,  57),  /// Sender11
+            QColor( 88, 175, 179),  /// Sender12
+            QColor(157,  84, 179),  /// Sender13
+            QColor(179, 151, 117),  /// Sender14
+            QColor( 49, 118, 179),  /// Sender15
+        };
+        if (!settingsUiStyleColors.valueExists("SenderSelf")) {
+            // Preserve the old default sender color if none set
+            settingsUiStyleColors.setValue("SenderSelf", oldDefaultSenderColorSelf);
+        }
+        QString senderColorId;
+        for (int i = 0; i < oldDefaultSenderColors.count(); i++) {
+            // Get the sender color ID for each available color
+            QString dez = QString::number(i);
+            if (dez.length() == 1) dez.prepend('0');
+            senderColorId = QString("Sender" + dez);
+            if (!settingsUiStyleColors.valueExists(senderColorId)) {
+                // Preserve the old default sender color if none set
+                settingsUiStyleColors.setValue(senderColorId, oldDefaultSenderColors[i]);
+            }
+        }
+
+        // Update the settings stylesheet with old defaults
+        QtUiStyle qtUiStyle;
+        qtUiStyle.generateSettingsQss();
+        // --------
+
+        // Migration complete!
+        return true;
+    }
     case 5:
     {
         // New default changes: sender colors apply to nearly all messages with nicks
