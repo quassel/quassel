@@ -52,6 +52,24 @@ QssParser::QssParser()
     _uiStylePalette = QVector<QBrush>(UiStyle::NumRoles, QBrush());
 
     _uiStyleColorRoles["marker-line"] = UiStyle::MarkerLine;
+    // Sender colors
+    _uiStyleColorRoles["sender-color-self"] = UiStyle::SenderColorSelf;
+    _uiStyleColorRoles["sender-color-00"] = UiStyle::SenderColor00;
+    _uiStyleColorRoles["sender-color-01"] = UiStyle::SenderColor01;
+    _uiStyleColorRoles["sender-color-02"] = UiStyle::SenderColor02;
+    _uiStyleColorRoles["sender-color-03"] = UiStyle::SenderColor03;
+    _uiStyleColorRoles["sender-color-04"] = UiStyle::SenderColor04;
+    _uiStyleColorRoles["sender-color-05"] = UiStyle::SenderColor05;
+    _uiStyleColorRoles["sender-color-06"] = UiStyle::SenderColor06;
+    _uiStyleColorRoles["sender-color-07"] = UiStyle::SenderColor07;
+    _uiStyleColorRoles["sender-color-08"] = UiStyle::SenderColor08;
+    _uiStyleColorRoles["sender-color-09"] = UiStyle::SenderColor09;
+    _uiStyleColorRoles["sender-color-0a"] = UiStyle::SenderColor0a;
+    _uiStyleColorRoles["sender-color-0b"] = UiStyle::SenderColor0b;
+    _uiStyleColorRoles["sender-color-0c"] = UiStyle::SenderColor0c;
+    _uiStyleColorRoles["sender-color-0d"] = UiStyle::SenderColor0d;
+    _uiStyleColorRoles["sender-color-0e"] = UiStyle::SenderColor0e;
+    _uiStyleColorRoles["sender-color-0f"] = UiStyle::SenderColor0f;
 }
 
 
