@@ -124,6 +124,30 @@ public:
 
     enum ColorRole {
         MarkerLine,
+        // Sender colors (16 + self)
+        // These aren't used directly to avoid having storing all of the sender color options in the
+        // rendering routine of each item.  Also, I couldn't figure out how to do that.
+        // It would be nice to have the UseSenderColors preference also toggle sender colors set by
+        // themes, so hopefully this can be extended in the future.
+        // Furthermore, using this palette directly would mean separate sets of colors couldn't be
+        // used for different message types.
+        SenderColorSelf,
+        SenderColor00,
+        SenderColor01,
+        SenderColor02,
+        SenderColor03,
+        SenderColor04,
+        SenderColor05,
+        SenderColor06,
+        SenderColor07,
+        SenderColor08,
+        SenderColor09,
+        SenderColor0a,
+        SenderColor0b,
+        SenderColor0c,
+        SenderColor0d,
+        SenderColor0e,
+        SenderColor0f,
         NumRoles // must be last!
     };
 
@@ -138,9 +162,10 @@ public:
      * List of default sender colors
      *
      * In order from 1 - 16, matching the Sender## format in the settings file.
-     * Don't change the length or values of the colors without updating the UI, too.
+     * Don't change the length or values of the colors without updating the UI and color roles, too.
      *
      * @see ../qtui/settingspages/chatviewsettingspage.ui
+     * @see UiStyle::ColorRole
      */
     const QList<QColor> defaultSenderColors = QList<QColor> {
         QColor(233, 13, 127),  /// Sender00

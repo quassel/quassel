@@ -127,23 +127,30 @@ void QtUiStyle::generateSettingsQss() const
     }
 
     if (s.value("UseSenderColors", true).toBool()) {
-        out << "\n// Sender Colors\n"
-            << "ChatLine::sender#plain[sender=\"self\"] { foreground: " << color("SenderSelf", s, defaultSenderColorSelf) << "; }\n\n";
+        out << "\n// Sender Colors\n";
+        // Generate a color palette for easy reuse elsewhere
+        // NOTE: A color palette is not a complete replacement for specifying the colors below, as
+        // specifying the colors one-by-one instead of with QtUi::style()->brush(...) makes it easy
+        // to toggle the specific coloring of sender/nick at the cost of regenerating this file.
+        // See UiStyle::ColorRole
+        out << senderPaletteQss(s);
+
+        out << "ChatLine::sender#plain[sender=\"self\"] { foreground: palette(sender-color-self); }\n\n";
 
         // Matches qssparser.cpp for UiStyle::PlainMsg
         for (int i = 0; i < defaultSenderColors.count(); i++)
-            out << senderQss(i, s, "plain");
+            out << senderQss(i, "plain");
 
         // Only color the nicks in CTCP ACTIONs if sender colors are enabled
         if (s.value("UseSenderActionColors", true).toBool()) {
             // For action messages, color the 'sender' column -and- the nick itself
             out << "\n// Sender Nickname Colors for action messages\n"
-                << "ChatLine::sender#action[sender=\"self\"] { foreground: " << color("SenderSelf", s, defaultSenderColorSelf) << "; }\n"
-                << "ChatLine::nick#action[sender=\"self\"] { foreground: " << color("SenderSelf", s, defaultSenderColorSelf) << "; }\n\n";
+                << "ChatLine::sender#action[sender=\"self\"] { foreground: palette(sender-color-self); }\n"
+                << "ChatLine::nick#action[sender=\"self\"] { foreground: palette(sender-color-self); }\n\n";
 
             // Matches qssparser.cpp for UiStyle::ActionMsg
             for (int i = 0; i < defaultSenderColors.count(); i++)
-                out << senderQss(i, s, "action", true);
+                out << senderQss(i, "action", true);
         }
 
     }
@@ -206,19 +213,40 @@ QString QtUiStyle::msgTypeQss(const QString &msgType, const QString &key, UiSett
 }
 
 
-QString QtUiStyle::senderQss(int i, UiSettings &settings, const QString &messageType, bool includeNick) const
+QString QtUiStyle::senderPaletteQss(UiSettings &settings) const
+{
+    QString result;
+    result += "Palette {\n";
+
+    // Generate entries for sender-color-self
+    result += QString("    sender-color-self: %1;\n")
+              .arg(color("SenderSelf", settings, defaultSenderColorSelf));
+
+    // Generate entries for sender-color-HASH
+    for (int i = 0; i < defaultSenderColors.count(); i++) {
+        QString dez = QString::number(i);
+        if (dez.length() == 1) dez.prepend('0');
+        result += QString("    sender-color-0%1: %2;\n")
+                .arg(QString::number(i, 16), color("Sender"+dez, settings, defaultSenderColors[i]));
+    }
+    result += "}\n\n";
+    return result;
+}
+
+
+QString QtUiStyle::senderQss(int i, const QString &messageType, bool includeNick) const
 {
     QString dez = QString::number(i);
     if (dez.length() == 1) dez.prepend('0');
 
     if (includeNick) {
         // Include the nickname in the color rules
-        return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: %3; }\n"
-                       "ChatLine::nick#%1[sender=\"0%2\"]   { foreground: %3; }\n")
-                .arg(messageType, QString::number(i, 16), color("Sender"+dez, settings, defaultSenderColors[i]));
+        return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: palette(sender-color-0%2); }\n"
+                       "ChatLine::nick#%1[sender=\"0%2\"]   { foreground: palette(sender-color-0%2); }\n")
+                .arg(messageType, QString::number(i, 16));
     } else {
-        return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: %3; }\n")
-                .arg(messageType, QString::number(i, 16), color("Sender"+dez, settings, defaultSenderColors[i]));
+        return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: palette(sender-color-0%2); }\n")
+                .arg(messageType, QString::number(i, 16));
     }
 }
 
