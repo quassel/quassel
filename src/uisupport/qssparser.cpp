@@ -463,7 +463,21 @@ QBrush QssParser::parseBrush(const QString &str, bool *ok)
     }
 
     if (str.startsWith("palette")) { // Palette color role
-        QRegExp rx("palette\\s*\\(\\s*([a-z-]+)\\s*\\)");
+        // Does the palette follow the expected format?  For example:
+        // palette(marker-line)
+        // palette    ( system-color-0f  )
+        //
+        // Match the palette marker, grabbing the name inside in  case-sensitive manner
+        //   palette\s*\(\s*([a-z-0-9]+)\s*\)
+        //   palette   Match the string 'palette'
+        //   \s*       Match any amount of whitespace
+        //   \(, \)    Match literal '(' or ')' marks
+        //   (...+)    Match contents between 1 and unlimited number of times
+        //   [a-z-]    Match any character from a-z, case sensitive
+        //   [0-9]     Match any digit from 0-9
+        // Note that '\' must be escaped as '\\'
+        // Helpful interactive website for debugging and explaining:  https://regex101.com/
+        QRegExp rx("palette\\s*\\(\\s*([a-z-0-9]+)\\s*\\)");
         if (!rx.exactMatch(str)) {
             qWarning() << Q_FUNC_INFO << tr("Invalid palette color role specification: %1").arg(str);
             return QBrush();
