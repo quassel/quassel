@@ -735,11 +735,28 @@ QString UiStyle::timestampFormatString()
 UiStyle::StyledMessage::StyledMessage(const Message &msg)
     : Message(msg)
 {
-    if (type() == Message::Plain || type() == Message::Action)
-        _senderHash = 0xff;
-    else
-        _senderHash = 0x00;
-    // This means we never compute the hash for msgs that aren't Plain or Action
+    switch (type()) {
+        // Don't compute the sender hash for message types without a nickname embedded
+        case Message::Server:
+        case Message::Info:
+        case Message::Error:
+        case Message::DayChange:
+        case Message::Topic:
+        case Message::Invite:
+        // Don't compute the sender hash for messages with multiple nicks
+        // Fixing this without breaking themes would be.. complex.
+        case Message::NetsplitJoin:
+        case Message::NetsplitQuit:
+        case Message::Kick:
+        // Don't compute the sender hash for message types that are not yet completed elsewhere
+        case Message::Kill:
+            _senderHash = 0x00;
+            break;
+        default:
+            // Compute the sender hash for all other message types
+            _senderHash = 0xff;
+            break;
+    }
 }
 
 

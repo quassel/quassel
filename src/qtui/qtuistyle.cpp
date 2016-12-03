@@ -153,6 +153,17 @@ void QtUiStyle::generateSettingsQss() const
                 out << senderQss(i, "action", true);
         }
 
+        // Only color the nicks in CTCP ACTIONs if sender colors are enabled
+        if (s.value("UseNickGeneralColors", true).toBool()) {
+            // For action messages, color the 'sender' column -and- the nick itself
+            out << "\n// Nickname colors for all messages\n"
+                << "ChatLine::nick[sender=\"self\"] { foreground: palette(sender-color-self); }\n\n";
+
+            // Matches qssparser.cpp for any style of message (UiStyle::...)
+            for (int i = 0; i < defaultSenderColors.count(); i++)
+                out << nickQss(i);
+        }
+
     }
 
     // ItemViews
@@ -248,6 +259,16 @@ QString QtUiStyle::senderQss(int i, const QString &messageType, bool includeNick
         return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: palette(sender-color-0%2); }\n")
                 .arg(messageType, QString::number(i, 16));
     }
+}
+
+
+QString QtUiStyle::nickQss(int i) const
+{
+    QString dez = QString::number(i);
+    if (dez.length() == 1) dez.prepend('0');
+
+    return QString("ChatLine::nick[sender=\"0%1\"]   { foreground: palette(sender-color-0%1); }\n")
+            .arg(QString::number(i, 16));
 }
 
 
