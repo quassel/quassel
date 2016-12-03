@@ -210,7 +210,7 @@ bool QtUiApplication::migrateSettings()
     // --------
     // Check minor settings version, handling upgrades/downgrades as needed
     // Current minor version
-    const uint VERSION_MINOR_CURRENT = 4;
+    const uint VERSION_MINOR_CURRENT = 5;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -273,6 +273,27 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     //
     // In most cases, the goal is to preserve the older default values for keys that haven't been
     // saved.  Exceptions will be noted below.
+    case 5:
+    {
+        // New default changes: sender colors apply to nearly all messages with nicks
+
+        // --------
+        // QtUiStyle settings
+        QtUiStyleSettings settingsUiStyleColors("Colors");
+        const QString useNickGeneralColorsId = "UseNickGeneralColors";
+        if (!settingsUiStyleColors.valueExists(useNickGeneralColorsId)) {
+            // New default is true, preserve previous behavior by setting to false
+            settingsUiStyleColors.setValue(useNickGeneralColorsId, false);
+        }
+
+        // Update the settings stylesheet with old defaults
+        QtUiStyle qtUiStyle;
+        qtUiStyle.generateSettingsQss();
+        // --------
+
+        // Migration complete!
+        return true;
+    }
     case 4:
     {
         // New default changes: system locale used to generate a timestamp format string, deciding
