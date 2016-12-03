@@ -181,7 +181,8 @@ void CoreUserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QStrin
 
     // FIXME make this a proper event
     coreNetwork()->coreSession()->ctcpParser()->query(coreNetwork(), nick, ctcpTag, message);
-    emit displayMsg(Message::Action, BufferInfo::StatusBuffer, "", verboseMessage, network()->myNick());
+    emit displayMsg(Message::Action, BufferInfo::StatusBuffer, "", verboseMessage,
+                    network()->myNick(), Message::Flag::Self);
 }
 
 

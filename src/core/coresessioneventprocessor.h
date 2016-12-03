@@ -55,7 +55,9 @@ public:
     Q_INVOKABLE void processIrcEventJoin(IrcEvent *event);
     Q_INVOKABLE void lateProcessIrcEventKick(IrcEvent *event);
     Q_INVOKABLE void processIrcEventMode(IrcEvent *event);
+    Q_INVOKABLE void processIrcEventNick(IrcEvent *event);         /// Nickname changes
     Q_INVOKABLE void lateProcessIrcEventNick(IrcEvent *event);
+    Q_INVOKABLE void processIrcEventPart(IrcEvent *event);         /// Leaving a channel
     Q_INVOKABLE void lateProcessIrcEventPart(IrcEvent *event);
     Q_INVOKABLE void processIrcEventPing(IrcEvent *event);
     Q_INVOKABLE void processIrcEventPong(IrcEvent *event);

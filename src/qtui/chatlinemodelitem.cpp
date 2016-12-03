@@ -49,6 +49,15 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg)
 {
     if (!msg.sender().contains('!'))
         _styledMsg.setFlags(msg.flags() |= Message::ServerMsg);
+
+    if (_styledMsg.type() == Message::Nick) {
+        // HACK: Work around nick changes on Quassel core not properly being set as Self
+        // While this is fixed in the core, old cores and past history will still show incorrectly.
+        if (nickFromMask(_styledMsg.sender()) == stripFormatCodes(_styledMsg.contents()).toLower()) {
+            _styledMsg.setFlags(msg.flags() |= Message::Self);
+        }
+    }
+    // Unfortunately, the missing Self flag for other message types can't easily be worked around.
 }
 
 
