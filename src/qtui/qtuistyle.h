@@ -50,7 +50,16 @@ public slots:
     void generateSettingsQss() const;
 
 private slots:
+    /**
+     * Updates knowledge of whether or not to use the custom timestamp format
+     */
+    void updateUseCustomTimestampFormat();
+
+    /**
+     * Updates knowledge of the current timestamp format
+     */
     void updateTimestampFormatString();
+
     /**
      * Updates knowledge of whether or not to show sender brackets
      */

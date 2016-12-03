@@ -46,7 +46,20 @@ public:
     inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 
     /**
-     * Gets the format string for chat log timestamps
+     * Gets if a custom timestamp format is used.
+     *
+     * @returns True if custom timestamp format used, otherwise false
+     */
+    inline bool useCustomTimestampFormat() { return localValue("UseCustomTimestampFormat", false).toBool(); }
+    /**
+     * Sets whether a custom timestamp format is used.
+     *
+     * @param[in] enabled True if custom timestamp format used, otherwise false
+     */
+    inline void setUseCustomTimestampFormat(bool enabled) { setLocalValue("UseCustomTimestampFormat", enabled); }
+
+    /**
+     * Gets the format string for chat log timestamps.
      *
      * @returns String representing timestamp format, e.g. "[hh:mm:ss]" or " hh:mm:ss"
      */

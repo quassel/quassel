@@ -178,7 +178,33 @@ public:
     static FormatType formatType(Message::Type msgType);
     static StyledString styleString(const QString &string, quint32 baseFormat = Base);
     static QString mircToInternal(const QString &);
-    static inline QString timestampFormatString() { return _timestampFormatString; }
+
+    /**
+     * Gets if a custom timestamp format is used.
+     *
+     * @return True if custom timestamp format used, otherwise false
+     */
+    static inline bool useCustomTimestampFormat() { return _useCustomTimestampFormat; }
+
+    /**
+     * Gets the format string for chat log timestamps according to the system locale.
+     *
+     * This will return " hh:mm:ss" for system locales with 24-hour time or " h:mm:ss AP" for
+     * systems with 12-hour time.
+     *
+     * @return String representing timestamp format according to system locale, e.g. " hh:mm:ss"
+     */
+    static QString systemTimestampFormatString();
+
+    /**
+     * Gets the format string for chat log timestamps, either system locale or custom.
+     *
+     * Depending on useCustomTimestampFormat(), this will return either the system locale based
+     * time format, or the custom user-specified string.
+     *
+     * @return String representing timestamp format, e.g. "[hh:mm:ss]" or " hh:mm:ss"
+     */
+    static QString timestampFormatString();
 
     QTextCharFormat format(quint32 formatType, quint32 messageLabel) const;
     QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel) const;
@@ -209,7 +235,31 @@ protected:
 
     static FormatType formatType(const QString &code);
     static QString formatCode(FormatType);
+
+    /**
+     * Cache the system locale timestamp format string
+     *
+     * Based on whether or not AM/PM designators are used in the QLocale::system().timeFormat(),
+     * this extends the system locale timestamp format string to include seconds.
+     *
+     * @see UiStyle::systemTimestampFormatString()
+     */
+    static void updateSystemTimestampFormat();
+
+    /**
+     * Updates the local setting cache of whether or not to use the custom timestamp format
+     *
+     * @param[in] enabled  If true, custom timestamp format used, otherwise false
+     */
+    static void setUseCustomTimestampFormat(bool enabled);
+
+    /**
+     * Updates the local setting cache of the timestamp format string
+     *
+     * @param[in] format   Timestamp format string
+     */
     static void setTimestampFormatString(const QString &format);
+
     /**
      * Updates the local setting cache of whether or not to show sender brackets
      *
@@ -231,8 +281,10 @@ private:
     mutable QHash<quint64, QFontMetricsF *> _metricsCache;
     QHash<quint32, QTextCharFormat> _listItemFormats;
     static QHash<QString, FormatType> _formatCodes;
-    static QString _timestampFormatString;
-    static bool _showSenderBrackets;  /// If true, show brackets around sender names
+    static bool _useCustomTimestampFormat;        /// If true, use the custom timestamp format
+    static QString _systemTimestampFormatString;  /// Cached copy of system locale timestamp format
+    static QString _timestampFormatString;        /// Timestamp format string
+    static bool _showSenderBrackets;              /// If true, show brackets around sender names
 
     QIcon _channelJoinedIcon;
     QIcon _channelPartedIcon;
