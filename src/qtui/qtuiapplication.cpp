@@ -210,7 +210,7 @@ bool QtUiApplication::migrateSettings()
     // --------
     // Check minor settings version, handling upgrades/downgrades as needed
     // Current minor version
-    const uint VERSION_MINOR_CURRENT = 3;
+    const uint VERSION_MINOR_CURRENT = 4;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -270,10 +270,29 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // Each missed version will be called in sequence.  E.g. to upgrade from '1' to '3', this
     // function will be called with '2', then '3'.
     // Use explicit scope via { ... } to avoid cross-initialization
+    //
+    // In most cases, the goal is to preserve the older default values for keys that haven't been
+    // saved.  Exceptions will be noted below.
+    case 4:
+    {
+        // New default changes: system locale used to generate a timestamp format string, deciding
+        // 24-hour or 12-hour timestamp.
+
+        // --------
+        // ChatView settings
+        const QString useCustomTimestampFormatId = "ChatView/__default__/UseCustomTimestampFormat";
+        if (!settings.valueExists(useCustomTimestampFormatId)) {
+            // New default value is false, preserve previous behavior by setting to true
+            settings.setValue(useCustomTimestampFormatId, true);
+        }
+        // --------
+
+        // Migration complete!
+        return true;
+    }
     case 3:
     {
-        // New default changes: per-chat history and line wrapping enabled by default.  Preserve
-        // the older default values for keys that haven't been saved.
+        // New default changes: per-chat history and line wrapping enabled by default.
 
         // --------
         // InputWidget settings
@@ -297,7 +316,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     case 2:
     {
         // New default changes: sender <nick> brackets disabled, sender colors and sender CTCP
-        // colors enabled.  Preserve the older default values for keys that haven't been saved.
+        // colors enabled.
 
         // --------
         // ChatView settings

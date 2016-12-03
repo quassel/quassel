@@ -17,14 +17,26 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_13">
+      <widget class="QCheckBox" name="customTimestampFormat">
+       <property name="toolTip">
+        <string>Use a custom format for the timestamp</string>
+       </property>
        <property name="text">
-        <string>Timestamp format:</string>
+        <string>Custom timestamp format:</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string notr="true">UseCustomTimestampFormat</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLineEdit" name="timestampFormat">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Usage examples:&lt;/p&gt;
 &lt;table cellpadding=&quot;2&quot;&gt;
@@ -220,6 +232,7 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>customTimestampFormat</tabstop>
   <tabstop>timestampFormat</tabstop>
   <tabstop>showSenderBrackets</tabstop>
   <tabstop>customChatViewFont</tabstop>
@@ -243,6 +256,22 @@
     <hint type="destinationlabel">
      <x>304</x>
      <y>50</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>customTimestampFormat</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>timestampFormat</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>116</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>301</x>
+     <y>23</y>
     </hint>
    </hints>
   </connection>
