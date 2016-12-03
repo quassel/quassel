@@ -961,7 +961,19 @@ quint8 UiStyle::StyledMessage::senderHash() const
     if (_senderHash != 0xff)
         return _senderHash;
 
-    QString nick = nickFromMask(sender()).toLower();
+    QString nick;
+
+    // HACK: Until multiple nicknames with different colors can be solved in the theming engine,
+    // for /nick change notifications, use the color of the new nickname (if possible), not the old
+    // nickname.
+    if (type() == Message::Nick) {
+        // New nickname is given as contents.  Change to that.
+        nick = stripFormatCodes(contents()).toLower();
+    } else {
+        // Just use the sender directly
+        nick = nickFromMask(sender()).toLower();
+    }
+
     if (!nick.isEmpty()) {
         int chopCount = 0;
         while (chopCount < nick.size() && nick.at(nick.count() - 1 - chopCount) == '_')
