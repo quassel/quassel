@@ -86,7 +86,7 @@ ChatLine#kick { foreground: #707070; }
 ChatLine#kill { foreground: #707070; }
 ChatLine#server { foreground: #916409; }
 ChatLine#info { foreground: #916409; }
-ChatLine#error { foreground: #916409; }
+ChatLine#error { foreground: #b30e0e; }
 ChatLine#daychange { foreground: #916409; }
 ChatLine#topic { foreground: #707070; }
 ChatLine#netsplit-join { foreground: #707070; }
