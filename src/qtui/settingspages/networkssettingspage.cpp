@@ -194,6 +194,12 @@ void NetworksSettingsPage::load()
                                           "modify message rate limits.")));
     }
 
+#ifdef HAVE_SSL
+    // Hide the SASL EXTERNAL notice until a network's shown.  Stops it from showing while loading
+    // backlog from the core.
+    sslUpdated();
+#endif
+
     foreach(NetworkId netid, Client::networkIds()) {
         clientNetworkAdded(netid);
     }
