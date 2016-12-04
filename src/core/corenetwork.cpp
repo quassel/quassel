@@ -1053,7 +1053,7 @@ void CoreNetwork::serverCapAcknowledged(const QString &capability)
         // FIXME use event
 #ifdef HAVE_SSL
         if (!identityPtr()->sslCert().isNull()) {
-            if (IrcCap::SaslMech::maybeSupported(capValue(IrcCap::SASL), IrcCap::SaslMech::EXTERNAL)) {
+            if (saslMaybeSupports(IrcCap::SaslMech::EXTERNAL)) {
                 // EXTERNAL authentication supported, send request
                 putRawLine(serverEncode("AUTHENTICATE EXTERNAL"));
             } else {
@@ -1063,7 +1063,7 @@ void CoreNetwork::serverCapAcknowledged(const QString &capability)
             }
         } else {
 #endif
-            if (IrcCap::SaslMech::maybeSupported(capValue(IrcCap::SASL), IrcCap::SaslMech::PLAIN)) {
+            if (saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
                 // PLAIN authentication supported, send request
                 // Only working with PLAIN atm, blowfish later
                 putRawLine(serverEncode("AUTHENTICATE PLAIN"));

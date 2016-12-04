@@ -39,6 +39,9 @@
 #include "ircuser.h"
 #include "ircchannel.h"
 
+// IRCv3 capabilities
+#include "irccap.h"
+
 // defined below!
 struct NetworkInfo;
 
@@ -279,6 +282,17 @@ public :
     // IRCv3 specs all use lowercase capability names
     // QHash returns the default constructed value if not found, in this case, empty string
     // See:  https://doc.qt.io/qt-4.8/qhash.html#value
+
+    /**
+     * Check if the given authentication mechanism is likely to be supported.
+     *
+     * This depends on the server advertising SASL support and either declaring available mechanisms
+     * (SASL 3.2), or just indicating something is supported (SASL 3.1).
+     *
+     * @param[in] saslMechanism  Desired SASL mechanism
+     * @return True if mechanism supported or unknown, otherwise false
+     */
+    bool saslMaybeSupports(const QString &saslMechanism) const;
 
     IrcUser *newIrcUser(const QString &hostmask, const QVariantMap &initData = QVariantMap());
     inline IrcUser *newIrcUser(const QByteArray &hostmask) { return newIrcUser(decodeServerString(hostmask)); }

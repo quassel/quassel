@@ -141,22 +141,6 @@ namespace IrcCap {
      * http://ircv3.net/specs/extensions/sasl-3.1.html
      */
     namespace SaslMech {
-
-        /**
-         * Check if the given authentication mechanism is likely to be supported.
-         *
-         * @param[in] saslCapValue   QString of SASL capability value, e.g. capValue(IrcCap::SASL)
-         * @param[in] saslMechanism  Desired SASL mechanism
-         * @return True if mechanism supported or unknown, otherwise false
-         */
-        inline bool maybeSupported(const QString &saslCapValue, const QString &saslMechanism) { return
-                    ((saslCapValue.length() == 0) || (saslCapValue.contains(saslMechanism, Qt::CaseInsensitive))); }
-        // SASL mechanisms are only specified in capability values as part of SASL 3.2.  In
-        // SASL 3.1, it's handled differently.  If we don't know via capability value, assume it's
-        // supported to reduce the risk of breaking existing setups.
-        // See: http://ircv3.net/specs/extensions/sasl-3.1.html
-        // And: http://ircv3.net/specs/extensions/sasl-3.2.html
-
         /**
          * PLAIN authentication, e.g. hashed password
          */
