@@ -264,6 +264,19 @@ public :
     QString support(const QString &param) const;
 
     /**
+     * Checks if a given capability is advertised by the server.
+     *
+     * These results aren't valid if the network is disconnected or capability negotiation hasn't
+     * happened, and some servers might not correctly advertise capabilities.  Don't treat this as
+     * a guarentee.
+     *
+     * @param[in] capability Name of capability
+     * @returns True if connected and advertised by the server, otherwise false
+     */
+    inline bool capAvailable(const QString &capability) const { return _caps.contains(capability.toLower()); }
+    // IRCv3 specs all use lowercase capability names
+
+    /**
      * Checks if a given capability is acknowledged and active.
      *
      * @param[in] capability Name of capability

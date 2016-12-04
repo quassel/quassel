@@ -243,6 +243,14 @@ QString Network::support(const QString &param) const
 
 bool Network::saslMaybeSupports(const QString &saslMechanism) const
 {
+    if (!capAvailable(IrcCap::SASL)) {
+        // If SASL's not advertised at all, it's likely the mechanism isn't supported, as per specs.
+        // Unfortunately, we don't know for sure, but Quassel won't request SASL without it being
+        // advertised, anyways.
+        // This may also occur if the network's disconnected or negotiation hasn't yet happened.
+        return false;
+    }
+
     // Get the SASL capability value
     QString saslCapValue = capValue(IrcCap::SASL);
     // SASL mechanisms are only specified in capability values as part of SASL 3.2.  In SASL 3.1,
