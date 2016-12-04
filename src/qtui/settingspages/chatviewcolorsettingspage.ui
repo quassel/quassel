@@ -262,9 +262,9 @@
         </property>
         <property name="defaultValue" stdset="0">
          <color>
-          <red>145</red>
-          <green>100</green>
-          <blue>9</blue>
+          <red>179</red>
+          <green>14</green>
+          <blue>14</blue>
          </color>
         </property>
        </widget>
