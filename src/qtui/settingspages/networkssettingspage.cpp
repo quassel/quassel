@@ -32,6 +32,9 @@
 #include "settingspagedlg.h"
 #include "util.h"
 
+// IRCv3 capabilities
+#include "irccap.h"
+
 #include "settingspages/identitiessettingspage.h"
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
@@ -89,12 +92,12 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     connect(ui.identityList, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     //connect(ui.randomServer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
     connect(ui.performEdit, SIGNAL(textChanged()), this, SLOT(widgetHasChanged()));
-    connect(ui.autoIdentify, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.autoIdentifyService, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
-    connect(ui.autoIdentifyPassword, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
     connect(ui.sasl, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
     connect(ui.saslAccount, SIGNAL(textEdited(QString)), this, SLOT(widgetHasChanged()));
     connect(ui.saslPassword, SIGNAL(textEdited(QString)), this, SLOT(widgetHasChanged()));
+    connect(ui.autoIdentify, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.autoIdentifyService, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
+    connect(ui.autoIdentifyPassword, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
     connect(ui.useCustomEncodings, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
     connect(ui.sendEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.recvEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
@@ -348,6 +351,43 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item)
 }
 
 
+void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
+{
+    const Network *net = Client::network(id);
+    if ((Client::coreFeatures() & Quassel::CapNegotiation)
+            && net && net->connectionState() != Network::Disconnected) {
+        // If Capability Negotiation isn't supported by the core, no capabilities are active.
+        // If we're here, the network exists and is connected, check available capabilities...
+        // Don't use net->isConnected() as that won't be true during capability negotiation when
+        // capabilities are added and removed.
+
+        // [SASL]
+        if (net->saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
+            // The network advertises support for SASL PLAIN.  Encourage using it!  Unfortunately we
+            // don't know for sure if it's desired or functional.
+            ui.sasl->setTitle(QString("%1 (%2)").arg(tr("Use SASL Authentication"),
+                                                     tr("preferred")));
+        } else {
+            // The network doesn't advertise support for SASL PLAIN.  Here be dragons.
+            ui.sasl->setTitle(QString("%1 (%2)").arg(tr("Use SASL Authentication"),
+                                                     tr("might not work")));
+        }
+        // Split up the messages to ease translation and re-use existing "Use SASL Authentication"
+        // translations.  If some languages rearrange phrases such that this would not make sense,
+        // these strings can be merged into one.
+
+        // Add additional capability-dependent interface updates here
+    } else {
+        // We're not connected or the network doesn't yet exist.  Don't assume anything and reset
+        // all capability-dependent interface elements to neutral.
+        // [SASL]
+        ui.sasl->setTitle(tr("Use SASL Authentication"));
+
+        // Add additional capability-dependent interface updates here
+    }
+}
+
+
 void NetworksSettingsPage::coreConnectionStateChanged(bool state)
 {
     this->setEnabled(state);
@@ -434,6 +474,10 @@ void NetworksSettingsPage::clientNetworkAdded(NetworkId id)
 
     connect(Client::network(id), SIGNAL(connectionStateSet(Network::ConnectionState)), this, SLOT(networkConnectionStateChanged(Network::ConnectionState)));
     connect(Client::network(id), SIGNAL(connectionError(const QString &)), this, SLOT(networkConnectionError(const QString &)));
+
+    // Handle capability changes in case a server dis/connects with the settings window open.
+    connect(Client::network(id), SIGNAL(capAdded(const QString &)), this, SLOT(clientNetworkCapsUpdated()));
+    connect(Client::network(id), SIGNAL(capRemoved(const QString &)), this, SLOT(clientNetworkCapsUpdated()));
 }
 
 
@@ -478,6 +522,11 @@ void NetworksSettingsPage::networkConnectionStateChanged(Network::ConnectionStat
     }
     */
     setItemState(net->networkId());
+    if (net->networkId() == currentId) {
+        // Network is currently shown.  Update the capability-dependent UI in case capabilities have
+        // changed.
+        setNetworkCapStates(currentId);
+    }
     setWidgetStates();
 }
 
@@ -545,6 +594,8 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         }
         //setItemState(id);
         //ui.randomServer->setChecked(info.useRandomServer);
+        // Update the capability-dependent UI in case capabilities have changed.
+        setNetworkCapStates(id);
         ui.performEdit->setPlainText(info.perform.join("\n"));
         ui.autoIdentify->setChecked(info.useAutoIdentify);
         ui.autoIdentifyService->setText(info.autoIdentifyService);
@@ -632,6 +683,22 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info)
     // Convert seconds (double) into milliseconds (integer)
     info.messageRateDelay = static_cast<quint32>((ui.messageRateDelay->value() * 1000));
     info.unlimitedMessageRate = ui.unlimitedMessageRate->isChecked();
+}
+
+
+void NetworksSettingsPage::clientNetworkCapsUpdated()
+{
+    // Grab the updated network
+    const Network *net = qobject_cast<const Network *>(sender());
+    if (!net) {
+        qWarning() << "Update request for unknown network received!";
+        return;
+    }
+    if (net->networkId() == currentId) {
+        // Network is currently shown.  Update the capability-dependent UI in case capabilities have
+        // changed.
+        setNetworkCapStates(currentId);
+    }
 }
 
 

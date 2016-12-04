@@ -58,6 +58,16 @@ private slots:
     void displayNetwork(NetworkId);
     void setItemState(NetworkId, QListWidgetItem *item = 0);
 
+    /**
+     * Update the capability-dependent settings according to what the server supports
+     *
+     * For example, this updates the SASL text for when the server advertises support.  This should
+     * only be called on the currently displayed network.
+     *
+     * @param[in] id  NetworkId referencing network used to update settings user interface.
+     */
+    void setNetworkCapStates(NetworkId id);
+
     void clientNetworkAdded(NetworkId);
     void clientNetworkRemoved(NetworkId);
     void clientNetworkUpdated();
@@ -65,6 +75,11 @@ private slots:
     void clientIdentityAdded(IdentityId);
     void clientIdentityRemoved(IdentityId);
     void clientIdentityUpdated();
+
+    /**
+     * Update the settings user interface according to capabilities advertised by the IRC server
+     */
+    void clientNetworkCapsUpdated();
 
 #ifdef HAVE_SSL
     void sslUpdated();
