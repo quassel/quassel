@@ -33,9 +33,12 @@
 # > Modify 'SQLite/##/migrate_read_ircserver.sql' to select from new column
 # > Modify 'PostgreSQL/##/migrate_write_ircserver.sql' to insert to new column
 #
-# 5.  Add the new SQL queries to 'src/core/sql.qrc', update all existing files
+# 5.  Update the SQL resource file; re-run CMake if needed
 #
-# You may need to re-run CMake to detect these changes.
+# The easy way: run "updateSQLResource.sh" in this directory.
+#
+# The manual way:
+# Add the new SQL queries to 'src/core/sql.qrc', update all existing files.
 #
 # [Example] Modifying the 'ircserver' table to add column 'test'
 # > Add the new upgrade script...
