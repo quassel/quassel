@@ -71,6 +71,10 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     connectingIcon = QIcon::fromTheme("network-wired"); // FIXME network-connecting
     disconnectedIcon = QIcon::fromTheme("network-disconnect");
 
+    // Status icons
+    infoIcon = QIcon::fromTheme("dialog-information");
+    warningIcon = QIcon::fromTheme("dialog-warning");
+
     foreach(int mib, QTextCodec::availableMibs()) {
         QByteArray codec = QTextCodec::codecForMib(mib)->name();
         ui.sendEncoding->addItem(codec);
@@ -354,34 +358,32 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item)
 void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
 {
     const Network *net = Client::network(id);
-    if ((Client::coreFeatures() & Quassel::CapNegotiation)
-            && net && net->connectionState() != Network::Disconnected) {
-        // If Capability Negotiation isn't supported by the core, no capabilities are active.
-        // If we're here, the network exists and is connected, check available capabilities...
-        // Don't use net->isConnected() as that won't be true during capability negotiation when
-        // capabilities are added and removed.
+    if ((Client::coreFeatures() & Quassel::CapNegotiation) && net) {
+        // Capability negotiation is supported, network exists.
+        // Check if the network is connected.  Don't use net->isConnected() as that won't be true
+        // during capability negotiation when capabilities are added and removed.
+        if (net->connectionState() != Network::Disconnected) {
+            // Network exists and is connected, check available capabilities...
+            // [SASL]
+            if (net->saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
+                setSASLStatus(CapSupportStatus::MaybeSupported);
+            } else {
+                setSASLStatus(CapSupportStatus::MaybeUnsupported);
+            }
 
-        // [SASL]
-        if (net->saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
-            // The network advertises support for SASL PLAIN.  Encourage using it!  Unfortunately we
-            // don't know for sure if it's desired or functional.
-            ui.sasl->setTitle(QString("%1 (%2)").arg(tr("Use SASL Authentication"),
-                                                     tr("preferred")));
+            // Add additional capability-dependent interface updates here
         } else {
-            // The network doesn't advertise support for SASL PLAIN.  Here be dragons.
-            ui.sasl->setTitle(QString("%1 (%2)").arg(tr("Use SASL Authentication"),
-                                                     tr("might not work")));
-        }
-        // Split up the messages to ease translation and re-use existing "Use SASL Authentication"
-        // translations.  If some languages rearrange phrases such that this would not make sense,
-        // these strings can be merged into one.
+            // Network is disconnected
+            // [SASL]
+            setSASLStatus(CapSupportStatus::Disconnected);
 
-        // Add additional capability-dependent interface updates here
+            // Add additional capability-dependent interface updates here
+        }
     } else {
-        // We're not connected or the network doesn't yet exist.  Don't assume anything and reset
-        // all capability-dependent interface elements to neutral.
+        // Capability negotiation is not supported and/or network doesn't exist.
+        // Don't assume anything and reset all capability-dependent interface elements to neutral.
         // [SASL]
-        ui.sasl->setTitle(tr("Use SASL Authentication"));
+        setSASLStatus(CapSupportStatus::Unknown);
 
         // Add additional capability-dependent interface updates here
     }
@@ -702,6 +704,44 @@ void NetworksSettingsPage::clientNetworkCapsUpdated()
 }
 
 
+void NetworksSettingsPage::setSASLStatus(const CapSupportStatus saslStatus)
+{
+    if (_saslStatusSelected != saslStatus) {
+        // Update the cached copy of SASL status used with the Details dialog
+        _saslStatusSelected = saslStatus;
+
+        // Update the user interface
+        switch (saslStatus) {
+            case CapSupportStatus::Unknown:
+                // There's no capability negotiation or network doesn't exist.  Don't assume
+                // anything.
+                ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(
+                                            tr("Could not check if supported by network")));
+                ui.saslStatusIcon->setPixmap(infoIcon.pixmap(16));
+                break;
+            case CapSupportStatus::Disconnected:
+                // Disconnected from network, no way to check.
+                ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(
+                                                tr("Cannot check if supported when disconnected")));
+                ui.saslStatusIcon->setPixmap(infoIcon.pixmap(16));
+                break;
+            case CapSupportStatus::MaybeUnsupported:
+                // The network doesn't advertise support for SASL PLAIN.  Here be dragons.
+                ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(
+                                                tr("Not currently supported by network")));
+                ui.saslStatusIcon->setPixmap(warningIcon.pixmap(16));
+                break;
+            case CapSupportStatus::MaybeSupported:
+                // The network advertises support for SASL PLAIN.  Encourage using it!
+                // Unfortunately we don't know for sure if it's desired or functional.
+                ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Supported by network")));
+                ui.saslStatusIcon->setPixmap(infoIcon.pixmap(16));
+                break;
+        }
+    }
+}
+
+
 #ifdef HAVE_SSL
 void NetworksSettingsPage::sslUpdated()
 {
@@ -886,6 +926,67 @@ void NetworksSettingsPage::on_editIdentities_clicked()
 {
     SettingsPageDlg dlg(new IdentitiesSettingsPage(this), this);
     dlg.exec();
+}
+
+
+void NetworksSettingsPage::on_saslStatusDetails_clicked()
+{
+    if (ui.networkList->selectedItems().count()) {
+        NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+        QString &netName = networkInfos[netid].networkName;
+
+        // If these strings are visible, one of the status messages wasn't detected below.
+        QString saslStatusHeader = "[header unintentionally left blank]";
+        QString saslStatusExplanation = "[explanation unintentionally left blank]";
+
+        // If true, show a warning icon instead of an information icon
+        bool useWarningIcon = false;
+
+        // Determine which explanation to show
+        switch (_saslStatusSelected) {
+        case CapSupportStatus::Unknown:
+            saslStatusHeader = tr("Could not check if SASL supported by network");
+            saslStatusExplanation = tr("Quassel could not check if \"%1\" supports SASL.  This may "
+                                       "be due to unsaved changes or an older Quassel core.  You "
+                                       "can still try using SASL.").arg(netName);
+            break;
+        case CapSupportStatus::Disconnected:
+            saslStatusHeader = tr("Cannot check if SASL supported when disconnected");
+            saslStatusExplanation = tr("Quassel cannot check if \"%1\" supports SASL when "
+                                       "disconnected.  Connect to the network, or try using SASL "
+                                       "anyways.").arg(netName);
+            break;
+        case CapSupportStatus::MaybeUnsupported:
+            saslStatusHeader = tr("SASL not currently supported by network");
+            saslStatusExplanation = tr("The network \"%1\" does not currently support SASL.  "
+                                       "However, support might be added later on.").arg(netName);
+            useWarningIcon = true;
+            break;
+        case CapSupportStatus::MaybeSupported:
+            saslStatusHeader = tr("SASL supported by network");
+            saslStatusExplanation = tr("The network \"%1\" supports SASL.  In most cases, you "
+                                       "should use SASL instead of NickServ identification."
+                                       ).arg(netName);
+            break;
+        }
+
+        // Process this in advance for reusability below
+        const QString saslStatusMsgTitle = tr("SASL support for \"%1\"").arg(netName);
+        const QString saslStatusMsgText =
+                QString("<p><b>%1</b></p></br><p>%2</p></br><p><i>%3</i></p>"
+                        ).arg(saslStatusHeader,
+                              saslStatusExplanation,
+                              tr("SASL is a standardized way to log in and identify yourself to "
+                                 "IRC servers."));
+
+        if (useWarningIcon) {
+            // Show as a warning dialog box
+            QMessageBox::warning(this, saslStatusMsgTitle, saslStatusMsgText);
+        } else {
+            // Show as an information dialog box
+            QMessageBox::information(this, saslStatusMsgTitle, saslStatusMsgText);
+        }
+    }
 }
 
 
