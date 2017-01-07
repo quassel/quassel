@@ -210,7 +210,11 @@ bool QtUiApplication::migrateSettings()
     // --------
     // Check minor settings version, handling upgrades/downgrades as needed
     // Current minor version
+    //
+    // NOTE:  If you increase the minor version, you MUST ALSO add new version upgrade logic in
+    // applySettingsMigration()!  Otherwise, settings upgrades will fail.
     const uint VERSION_MINOR_CURRENT = 3;
+
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -270,6 +274,10 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // Each missed version will be called in sequence.  E.g. to upgrade from '1' to '3', this
     // function will be called with '2', then '3'.
     // Use explicit scope via { ... } to avoid cross-initialization
+    //
+    // NOTE:  If you add new upgrade logic here, you MUST ALSO increase VERSION_MINOR_CURRENT in
+    // migrateSettings()!  Otherwise, your upgrade logic won't ever be called.
+
     case 3:
     {
         // New default changes: per-chat history and line wrapping enabled by default.  Preserve
