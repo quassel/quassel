@@ -214,7 +214,7 @@ bool QtUiApplication::migrateSettings()
     //
     // NOTE:  If you increase the minor version, you MUST ALSO add new version upgrade logic in
     // applySettingsMigration()!  Otherwise, settings upgrades will fail.
-    const uint VERSION_MINOR_CURRENT = 6;
+    const uint VERSION_MINOR_CURRENT = 7;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
