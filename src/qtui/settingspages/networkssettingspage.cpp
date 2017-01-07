@@ -746,16 +746,21 @@ void NetworksSettingsPage::setSASLStatus(const CapSupportStatus saslStatus)
 void NetworksSettingsPage::sslUpdated()
 {
     if (_cid && !_cid->sslKey().isNull()) {
-        ui.saslAccount->setDisabled(true);
-        ui.saslAccountLabel->setDisabled(true);
-        ui.saslPassword->setDisabled(true);
-        ui.saslPasswordLabel->setDisabled(true);
+        ui.saslContents->setDisabled(true);
         ui.saslExtInfo->setHidden(false);
     } else {
-        ui.saslAccount->setDisabled(false);
-        ui.saslAccountLabel->setDisabled(false);
-        ui.saslPassword->setDisabled(false);
-        ui.saslPasswordLabel->setDisabled(false);
+        ui.saslContents->setDisabled(false);
+        // Directly re-enabling causes the widgets to ignore the parent "Use SASL Authentication"
+        // state to indicate whether or not it's disabled.  To workaround this, keep track of
+        // whether or not "Use SASL Authentication" is enabled, then quickly uncheck/recheck the
+        // group box.
+        if (!ui.sasl->isChecked()) {
+            // SASL is not enabled, uncheck/recheck the group box to re-disable saslContents.
+            // Leaving saslContents disabled doesn't work as that prevents it from re-enabling if
+            // sasl is later checked.
+            ui.sasl->setChecked(true);
+            ui.sasl->setChecked(false);
+        }
         ui.saslExtInfo->setHidden(true);
     }
 }
