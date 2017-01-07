@@ -210,6 +210,9 @@ bool QtUiApplication::migrateSettings()
     // --------
     // Check minor settings version, handling upgrades/downgrades as needed
     // Current minor version
+    //
+    // NOTE:  If you increase the minor version, you MUST ALSO add new version upgrade logic in
+    // applySettingsMigration()!  Otherwise, settings upgrades will fail.
     const uint VERSION_MINOR_CURRENT = 6;
     // Stored minor version
     uint versionMinor = s.versionMinor();
@@ -273,6 +276,8 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     //
     // In most cases, the goal is to preserve the older default values for keys that haven't been
     // saved.  Exceptions will be noted below.
+    // NOTE:  If you add new upgrade logic here, you MUST ALSO increase VERSION_MINOR_CURRENT in
+    // migrateSettings()!  Otherwise, your upgrade logic won't ever be called.
     case 6:
     {
         // New default changes: sender colors switched around to Tango-ish theme
