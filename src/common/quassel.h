@@ -75,8 +75,9 @@ public:
         VerifyServerSSL = 0x0040,          /// IRC server SSL validation
         CustomRateLimits = 0x0080,         /// IRC server custom message rate limits
         DccFileTransfer = 0x0100,
+        AwayFormatTimestamp = 0x0200,      /// Timestamp formatting in away (e.g. %%hh:mm%%)
 
-        NumFeatures = 0x0100
+        NumFeatures = 0x0200
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
