@@ -670,7 +670,7 @@ void CoreSession::clientsDisconnected()
 }
 
 
-void CoreSession::globalAway(const QString &msg)
+void CoreSession::globalAway(const QString &msg, const bool skipFormatting)
 {
     QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
     CoreNetwork *net = 0;
@@ -681,7 +681,7 @@ void CoreSession::globalAway(const QString &msg)
         if (!net->isConnected())
             continue;
 
-        net->userInputHandler()->issueAway(msg, false /* no force away */);
+        net->userInputHandler()->issueAway(msg, false /* no force away */, skipFormatting);
     }
 }
 

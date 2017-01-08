@@ -39,7 +39,17 @@ public:
     int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
 
 public slots:
-    void handleAway(const BufferInfo &bufferInfo, const QString &text);
+    /**
+     * Handle the away command, marking as away or unaway
+     *
+     * Applies to the current network unless text begins with "-all".
+     *
+     * @param[in] bufferInfo      Currently active buffer
+     * @param[in] text            Away message, or blank to set unaway
+     * @param[in] skipFormatting  If true, skip timestamp formatting codes (e.g. if already done)
+     */
+    void handleAway(const BufferInfo &bufferInfo, const QString &text,
+                    const bool skipFormatting = true);
     void handleBan(const BufferInfo &bufferInfo, const QString &text);
     void handleUnban(const BufferInfo &bufferInfo, const QString &text);
     void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
@@ -86,7 +96,15 @@ public slots:
      * @param forceImmediate  Immediately quit, skipping queue of other commands
      */
     void issueQuit(const QString &reason, bool forceImmediate = false);
-    void issueAway(const QString &msg, bool autoCheck = true);
+
+    /**
+     * Issues the away command, marking as away or unaway on the current network
+     *
+     * @param[in] msg             Away message, or blank to set unaway
+     * @param[in] autoCheck       If true, always set away, defaulting to the identity away message
+     * @param[in] skipFormatting  If true, skip timestamp formatting codes (e.g. if already done)
+     */
+    void issueAway(const QString &msg, bool autoCheck = true, const bool skipFormatting = false);
 
 protected:
     void timerEvent(QTimerEvent *event);
