@@ -656,8 +656,11 @@ void CoreNetwork::networkInitialized()
 
     // restore away state
     QString awayMsg = Core::awayMessage(userId(), networkId());
-    if (!awayMsg.isEmpty())
-        userInputHandler()->handleAway(BufferInfo(), Core::awayMessage(userId(), networkId()));
+    if (!awayMsg.isEmpty()) {
+        // Don't re-apply any timestamp formatting in order to preserve escaped percent signs, e.g.
+        // '%%%%%%%%' -> '%%%%'  If processed again, it'd result in '%%'.
+        userInputHandler()->handleAway(BufferInfo(), awayMsg, true);
+    }
 
     sendPerform();
 

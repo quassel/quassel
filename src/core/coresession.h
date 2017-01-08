@@ -133,8 +133,13 @@ public slots:
 
     QHash<QString, QString> persistentChannels(NetworkId) const;
 
-    //! Marks us away (or unaway) on all networks
-    void globalAway(const QString &msg = QString());
+    /**
+     * Marks us away (or unaway) on all networks
+     *
+     * @param[in] msg             Away message, or blank to set unaway
+     * @param[in] skipFormatting  If true, skip timestamp formatting codes (e.g. if already done)
+     */
+    void globalAway(const QString &msg = QString(), const bool skipFormatting = false);
 
 signals:
     void initialized();

@@ -61,28 +61,37 @@ void CoreUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const Q
 // ====================
 //  Public Slots
 // ====================
-void CoreUserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &msg)
+void CoreUserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &msg,
+                                      const bool skipFormatting)
 {
     Q_UNUSED(bufferInfo)
     if (msg.startsWith("-all")) {
         if (msg.length() == 4) {
-            coreSession()->globalAway();
+            coreSession()->globalAway(QString(), skipFormatting);
             return;
         }
         Q_ASSERT(msg.length() > 4);
         if (msg[4] == ' ') {
-            coreSession()->globalAway(msg.mid(5));
+            coreSession()->globalAway(msg.mid(5), skipFormatting);
             return;
         }
     }
-    issueAway(msg);
+    issueAway(msg, true /* force away */, skipFormatting);
 }
 
 
-void CoreUserInputHandler::issueAway(const QString &msg, bool autoCheck)
+void CoreUserInputHandler::issueAway(const QString &msg, bool autoCheck, const bool skipFormatting)
 {
     QString awayMsg = msg;
     IrcUser *me = network()->me();
+
+    // Only apply timestamp formatting when requested
+    // This avoids re-processing any existing away message when the core restarts, so chained escape
+    // percent signs won't get down-processed.
+    if (!skipFormatting) {
+        // Apply the timestamp formatting to the away message (if empty, nothing will happen)
+        awayMsg = formatCurrentDateTimeInString(awayMsg);
+    }
 
     // if there is no message supplied we have to check if we are already away or not
     if (autoCheck && msg.isEmpty()) {
