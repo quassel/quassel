@@ -76,6 +76,12 @@ QList<T> fromVariantList(const QVariantList &variants)
 
 QByteArray prettyDigest(const QByteArray &digest);
 
-QString formatCurrentDateTimeInString(QString str);
+/**
+ * Format a string with %%<text>%% to current date/timestamp via QDateTime.
+ *
+ * @param[in] formatStr String with format codes
+ * @return String with current date/time substituted in via formatting codes
+ */
+QString formatCurrentDateTimeInString(const QString &formatStr);
 
 #endif

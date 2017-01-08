@@ -201,17 +201,77 @@ QByteArray prettyDigest(const QByteArray &digest)
     return prettyDigest;
 }
 
-QString formatCurrentDateTimeInString(QString str)
-{
-    /*
-     * Find %%<text>%% in string. Repleace inside text which is format to QDateTime
-     * with current timestamp.
-     */
-    QRegExp rx("\\%%(.*)\\%%");
-    rx.setMinimal(true);
-    int s = rx.indexIn(str);
-    if (s >= 0)
-        str.replace(s, rx.cap(0).length(), QDateTime::currentDateTime().toString(rx.cap(1)));
 
-    return str;
+QString formatCurrentDateTimeInString(const QString &formatStr)
+{
+    // Work on a copy of the string to avoid modifying the input string
+    QString formattedStr = QString(formatStr);
+
+    // Exit early if there's nothing to format
+    if (formattedStr.isEmpty())
+        return formattedStr;
+
+    // Find %%<text>%% in string. Replace inside text formatted to QDateTime with the current
+    // timestamp, using %%%% as an escape for multiple %% signs.
+    // For example:
+    // Simple:   "All Quassel clients vanished from the face of the earth... %%hh:mm:ss%%"
+    // > Result:  "All Quassel clients vanished from the face of the earth... 23:20:34"
+    // Complex:  "Away since %%hh:mm%% on %%dd.MM%% - %%%% not here %%%%"
+    // > Result:  "Away since 23:20 on 21.05 - %% not here %%"
+    //
+    // Match groups of double % signs - Some text %%inside here%%, and even %%%%:
+    //   %%(.*)%%
+    //   (...)    marks a capturing group
+    //   .*       matches zero or more characters, not including newlines
+    // Note that '\' must be escaped as '\\'
+    // Helpful interactive website for debugging and explaining:  https://regex101.com/
+    QRegExp regExpMatchTime("%%(.*)%%");
+
+    // Preserve the smallest groups possible to allow for multiple %%blocks%%
+    regExpMatchTime.setMinimal(true);
+
+    // NOTE: Move regExpMatchTime to a static regular expression if used anywhere that performance
+    // matters.
+
+    // Don't allow a runaway regular expression to loop for too long.  This might not happen.. but
+    // when dealing with user input, better to be safe..?
+    int numIterations = 0;
+
+    // Find each group of %%text here%% starting from the beginning
+    int index = regExpMatchTime.indexIn(formattedStr);
+    int matchLength;
+    QString matchedFormat;
+    while (index >= 0 && numIterations < 512) {
+        // Get the total length of the matched expression
+        matchLength = regExpMatchTime.cap(0).length();
+        // Get the format string, e.g. "this text here" from "%%this text here%%"
+        matchedFormat = regExpMatchTime.cap(1);
+        // Check that there's actual characters inside.  A quadruple % (%%%%) represents two %%
+        // signs.
+        if (matchedFormat.length() > 0) {
+            // Format the string according to the current date and time.  Invalid time format
+            // strings are ignored.
+            formattedStr.replace(index, matchLength,
+                                 QDateTime::currentDateTime().toString(matchedFormat));
+            // Subtract the length of the removed % signs
+            // E.g. "%%h:mm ap%%" turns into "h:mm ap", removing four % signs, thus -4.  This is
+            // used below to determine how far to advance when looking for the next formatting code.
+            matchLength -= 4;
+        } else if (matchLength == 4) {
+            // Remove two of the four percent signs, so '%%%%' escapes to '%%'
+            formattedStr.remove(index, 2);
+            // Subtract the length of the removed % signs, this time removing two % signs, thus -2.
+            matchLength -= 2;
+        } else {
+            // If neither of these match, something went wrong.  Don't modify it to be safe.
+            qDebug() << "Unexpected time format when parsing string, no matchedFormat, matchLength "
+                        "should be 4, actually is" << matchLength;
+        }
+
+        // Find the next group of %%text here%% starting from where the last group ended
+        index = regExpMatchTime.indexIn(formattedStr, index + matchLength);
+        numIterations++;
+    }
+
+    return formattedStr;
 }
