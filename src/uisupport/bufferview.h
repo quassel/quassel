@@ -90,7 +90,31 @@ private slots:
     void joinChannel(const QModelIndex &index);
     void toggleHeader(bool checked);
 
+    /**
+     * Expand all active networks and collapse inactive ones unless manually changed
+     *
+     * Applies to all networks.  Shouldn't need called except during initialization.
+     */
+    void setExpandedState();
+
+    /**
+     * Save the current display state of the given network
+     *
+     * Tracks expanded or collapsed and active or inactive.
+     *
+     * @see setExpandedState()
+     * @param[in] networkIdx QModelIndex of the root network to store
+     */
     void storeExpandedState(const QModelIndex &networkIdx);
+
+    /**
+     * Set the display state of the given network according to network status and manual changes
+     *
+     * Expands if active or previously expanded, collapses if inactive or previously collapsed.
+     *
+     * @see storeExpandedState()
+     * @param[in] networkIdx QModelIndex of the root network to update
+     */
     void setExpandedState(const QModelIndex &networkIdx);
 
     void on_configChanged();

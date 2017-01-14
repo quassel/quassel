@@ -129,6 +129,11 @@ void BufferView::setModel(QAbstractItemModel *model)
     }
 
     connect(model, SIGNAL(layoutChanged()), this, SLOT(on_layoutChanged()));
+
+    // Make sure collapsation is correct after setting a model
+    // This might not be needed here, only in BufferView::setFilteredModel().  If issues arise, just
+    // move down to setFilteredModel (which calls this function).
+    setExpandedState();
 }
 
 
@@ -329,7 +334,19 @@ void BufferView::on_configChanged()
 {
     Q_ASSERT(model());
 
-    // expand all active networks... collapse inactive ones... unless manually changed
+    // Expand/collapse as needed
+    setExpandedState();
+
+    if (config()) {
+        // update selection to current one
+        Client::bufferModel()->synchronizeView(this);
+    }
+}
+
+
+void BufferView::setExpandedState()
+{
+    // Expand all active networks, collapse inactive ones... unless manually changed
     QModelIndex networkIdx;
     NetworkId networkId;
     for (int row = 0; row < model()->rowCount(); row++) {
@@ -342,11 +359,6 @@ void BufferView::on_configChanged()
             continue;
 
         setExpandedState(networkIdx);
-    }
-
-    if (config()) {
-        // update selection to current one
-        Client::bufferModel()->synchronizeView(this);
     }
 }
 
