@@ -122,14 +122,18 @@ UserId LdapAuthenticator::validateUser(const QString &username, const QString &p
         return UserId();
     }
 
+    // LDAP is case-insensitive, thus we will lowercase the username, in spite of
+    // a better solution :(
+    const QString lUsername = username.toLower();
+
     // If auth succeeds, but the user has not logged into quassel previously, make
     // a new user for them and return that ID.
     // Users created via LDAP have empty passwords, but authenticator column = LDAP.
     // On the other hand, if auth succeeds and the user already exists, do a final
     // cross-check to confirm we're using the right auth provider.
-    UserId quasselId = Core::validateUser(username, QString());
+    UserId quasselId = Core::validateUser(lUsername, QString());
     if (!quasselId.isValid()) {
-        return Core::addUser(username, QString(), backendId());
+        return Core::addUser(lUsername, QString(), backendId());
     }
     else if (!(Core::checkAuthProvider(quasselId, backendId()))) {
         return 0;
