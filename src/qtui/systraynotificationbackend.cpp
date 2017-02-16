@@ -92,15 +92,16 @@ void SystrayNotificationBackend::close(uint notificationId)
 void SystrayNotificationBackend::notificationActivated(uint notificationId)
 {
     if (!_blockActivation) {
-        if (_notifications.count()) {
-            if (QtUi::mainWindow()->systemTray()->mode() == SystemTray::Legacy)
-                _blockActivation = true;  // prevent double activation because both tray icon and bubble might send a signal
-            if (!notificationId)
-                notificationId = _notifications.count() ? _notifications.last().notificationId : 0;
-            emit activated(notificationId);
+        QList<Notification>::iterator i = _notifications.begin();
+        while (i != _notifications.end()) {
+            if (i->notificationId == notificationId) {
+                if (QtUi::mainWindow()->systemTray()->mode() == SystemTray::Legacy)
+                    _blockActivation = true;  // prevent double activation because both tray icon and bubble might send a signal
+                emit activated(notificationId);
+                break;
+            }
+        ++i;
         }
-        else
-            GraphicalUi::toggleMainWidget();
     }
 }
 
@@ -108,7 +109,10 @@ void SystrayNotificationBackend::notificationActivated(uint notificationId)
 void SystrayNotificationBackend::notificationActivated(SystemTray::ActivationReason reason)
 {
     if (reason == SystemTray::Trigger) {
-        notificationActivated(0);
+        if (_notifications.count())
+            notificationActivated(_notifications.last().notificationId);
+        else
+            GraphicalUi::toggleMainWidget();
     }
 }
 
