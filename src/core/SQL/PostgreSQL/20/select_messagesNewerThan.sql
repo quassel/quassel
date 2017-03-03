@@ -1,8 +1,9 @@
 SELECT messageid, time,  type, flags, sender, message
 FROM backlog
-LEFT JOIN sender ON backlog.senderid = sender.senderid
+JOIN sender ON backlog.senderid = sender.senderid
 WHERE backlog.messageid >= $1
 AND backlog.messageid <= (SELECT buffer.lastmsgid FROM buffer WHERE buffer.bufferid = $1)
+AND backlog.messageid <= buffer.lastmsgid
 AND bufferid = $2
 ORDER BY messageid DESC
 LIMIT $3

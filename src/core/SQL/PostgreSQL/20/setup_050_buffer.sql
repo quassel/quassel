@@ -11,5 +11,6 @@ create TABLE buffer (
 	markerlinemsgid integer NOT NULL DEFAULT 0,
 	key varchar(128),
 	joined boolean NOT NULL DEFAULT FALSE, -- BOOL
-	UNIQUE(userid, networkid, buffercname)
+	UNIQUE(userid, networkid, buffercname),
+	CHECK (buffer.lastseenmsgid <= buffer.lastmsgid)
 )

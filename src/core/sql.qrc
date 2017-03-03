@@ -78,7 +78,9 @@
     <file>./SQL/PostgreSQL/20/setup_100_user_setting.sql</file>
     <file>./SQL/PostgreSQL/20/setup_110_alter_sender_seq.sql</file>
     <file>./SQL/PostgreSQL/20/setup_120_alter_messageid_seq.sql</file>
+    <file>./SQL/PostgreSQL/20/setup_130_function_lastmsgid.sql</file>
     <file>./SQL/PostgreSQL/20/update_backlog_bufferid.sql</file>
+    <file>./SQL/PostgreSQL/20/update_buffer_lastmsgid.sql</file>
     <file>./SQL/PostgreSQL/20/update_buffer_lastseen.sql</file>
     <file>./SQL/PostgreSQL/20/update_buffer_markerlinemsgid.sql</file>
     <file>./SQL/PostgreSQL/20/update_buffer_name.sql</file>
@@ -93,10 +95,10 @@
     <file>./SQL/PostgreSQL/20/update_username.sql</file>
     <file>./SQL/PostgreSQL/20/update_userpassword.sql</file>
     <file>./SQL/PostgreSQL/20/upgrade_000_alter_buffer_add_lastmsgid.sql</file>
-    <file>./SQL/PostgreSQL/20/update_buffer_lastmsgid.sql</file>
     <file>./SQL/PostgreSQL/20/upgrade_001_add_function_populate_lastmsgid.sql</file>
     <file>./SQL/PostgreSQL/20/upgrade_002_run_function_populate_lastmsgid.sql</file>
-    <file>./SQL/PostgreSQL/20/setup_130_function_lastmsgid.sql</file>
+    <file>./SQL/PostgreSQL/20/upgrade_003_correct_bad_lastseenmsgid.sql</file>
+    <file>./SQL/PostgreSQL/20/upgrade_004_add_lastseenmsgid_constraint.sql</file>
     <file>./SQL/SQLite/1/upgrade_000_drop_coreinfo.sql</file>
     <file>./SQL/SQLite/1/upgrade_010_create_coreinfo.sql</file>
     <file>./SQL/SQLite/1/upgrade_020_update_schemaversion.sql</file>
