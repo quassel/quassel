@@ -1,0 +1,1 @@
+SELECT populate_lastmsgid()

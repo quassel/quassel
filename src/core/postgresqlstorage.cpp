@@ -1370,6 +1370,16 @@ QHash<BufferId, MsgId> PostgreSqlStorage::bufferMarkerLineMsgIds(UserId user)
     return markerLineHash;
 }
 
+void PostgreSqlStorage::setBufferLastMsg(const BufferId &bufferId, const MsgId &msgId)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("update_buffer_lastmsgid"));
+
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":lastmsgid", msgId.toInt());
+    safeExec(query);
+    watchQuery(query);
+}
 
 bool PostgreSqlStorage::logMessage(Message &msg)
 {
@@ -1424,6 +1434,9 @@ bool PostgreSqlStorage::logMessage(Message &msg)
     db.commit();
     if (msgId.isValid()) {
         msg.setMsgId(msgId);
+
+        setBufferLastMsg(msg.bufferInfo().bufferId(), msgId);
+
         return true;
     }
     else {
@@ -2029,5 +2042,9 @@ bool PostgreSqlMigrationWriter::postProcess()
         if (!exec())
             return false;
     }
+
+    newQuery(QString("SELECT populate_lastmsgid()"), db);
+    if (!exec())
+        return false;
     return true;
 }
