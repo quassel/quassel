@@ -11,5 +11,5 @@ CREATE TABLE buffer (
 	markerlinemsgid INTEGER NOT NULL DEFAULT 0,
 	key TEXT,
 	joined INTEGER NOT NULL DEFAULT 0, -- BOOL
-	ALTER TABLE buffer_new RENAME TO buffer;
+	CHECK (lastseenmsgid <= lastmsgid)
 )
