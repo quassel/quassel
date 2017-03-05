@@ -1547,7 +1547,7 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
     QString queryName;
     QVariantList params;
     if (last == -1 && first == -1) {
-        queryName = "select_messages";
+        queryName = "select_messagesNewestK";
     }
     else if (last == -1) {
         queryName = "select_messagesNewerThan";
@@ -1969,10 +1969,11 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer)
     bindValue(4, buffer.buffername);
     bindValue(5, buffer.buffercname);
     bindValue(6, (int)buffer.buffertype);
-    bindValue(7, buffer.lastseenmsgid);
-    bindValue(8, buffer.markerlinemsgid);
-    bindValue(9, buffer.key);
-    bindValue(10, buffer.joined);
+    bindValue(7, buffer.lastmsgid);
+    bindValue(8, buffer.lastseenmsgid);
+    bindValue(9, buffer.markerlinemsgid);
+    bindValue(10, buffer.key);
+    bindValue(11, buffer.joined);
     return exec();
 }
 
@@ -2043,6 +2044,8 @@ bool PostgreSqlMigrationWriter::postProcess()
             return false;
     }
 
+    // Update the lastmsgid for all existing buffers.
+    resetQuery();
     newQuery(QString("SELECT populate_lastmsgid()"), db);
     if (!exec())
         return false;

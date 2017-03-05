@@ -212,6 +212,7 @@ public:
         QString buffername;
         QString buffercname;
         int buffertype;
+        int lastmsgid;
         int lastseenmsgid;
         int markerlinemsgid;
         QString key;

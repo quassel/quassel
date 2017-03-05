@@ -1648,7 +1648,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
             query.bindValue(":firstmsg", first.toInt());
         }
         else {
-            query.prepare(queryString("select_messages"));
+            query.prepare(queryString("select_messagesRange"));
             query.bindValue(":lastmsg", last.toInt());
             query.bindValue(":firstmsg", first.toInt());
         }
@@ -1930,10 +1930,11 @@ bool SqliteMigrationReader::readMo(BufferMO &buffer)
     buffer.buffername = value(4).toString();
     buffer.buffercname = value(5).toString();
     buffer.buffertype = value(6).toInt();
-    buffer.lastseenmsgid = value(7).toInt();
-    buffer.markerlinemsgid = value(8).toInt();
-    buffer.key = value(9).toString();
-    buffer.joined = value(10).toInt() == 1 ? true : false;
+    buffer.lastmsgid = value(7).toInt();
+    buffer.lastseenmsgid = value(8).toInt();
+    buffer.markerlinemsgid = value(9).toInt();
+    buffer.key = value(10).toString();
+    buffer.joined = value(11).toInt() == 1 ? true : false;
     return true;
 }
 
