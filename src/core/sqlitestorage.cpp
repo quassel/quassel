@@ -1648,7 +1648,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
             query.bindValue(":firstmsg", first.toInt());
         }
         else {
-            query.prepare(queryString("select_messages"));
+            query.prepare(queryString("select_messagesRange"));
             query.bindValue(":lastmsg", last.toInt());
             query.bindValue(":firstmsg", first.toInt());
         }

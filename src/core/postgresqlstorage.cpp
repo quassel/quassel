@@ -1547,7 +1547,7 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
     QString queryName;
     QVariantList params;
     if (last == -1 && first == -1) {
-        queryName = "select_messages";
+        queryName = "select_messagesNewestK";
     }
     else if (last == -1) {
         queryName = "select_messagesNewerThan";
