@@ -120,6 +120,17 @@ void Settings::setVersionMinor(const uint versionMinor)
     s.setValue("Config/VersionMinor", versionMinor);
 }
 
+bool Settings::sync() {
+    create_qsettings;
+    s.sync();
+    switch (s.status()) {
+        case QSettings::NoError:
+            return true;
+        default:
+            return false;
+    }
+}
+
 bool Settings::isWritable() {
     create_qsettings;
     return s.isWritable();
