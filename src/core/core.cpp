@@ -194,7 +194,14 @@ void Core::init()
                                         "to work."));
             exit(1); // TODO make this less brutal (especially for mono client -> popup)
         }
+
         qWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
+
+        if (!cs.isWritable()) {
+            qWarning() << "Cannot write quasselcore configuration; probably a permission problem.";
+            exit(EXIT_FAILURE);
+        }
+
     }
 
     if (Quassel::isOptionSet("add-user")) {
