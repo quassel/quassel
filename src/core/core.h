@@ -573,7 +573,7 @@ private:
     void unregisterStorageBackend(Storage *);
     bool selectBackend(const QString &backend);
     bool createUser();
-    void saveBackendSettings(const QString &backend, const QVariantMap &settings);
+    bool saveBackendSettings(const QString &backend, const QVariantMap &settings);
     QVariantMap promptForSettings(const Storage *storage);
 
 private:
