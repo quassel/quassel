@@ -120,6 +120,10 @@ void Settings::setVersionMinor(const uint versionMinor)
     s.setValue("Config/VersionMinor", versionMinor);
 }
 
+bool Settings::isWritable() {
+    create_qsettings;
+    return s.isWritable();
+}
 
 QStringList Settings::allLocalKeys()
 {

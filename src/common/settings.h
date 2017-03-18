@@ -83,6 +83,13 @@ public:
      */
     virtual void setVersionMinor(const uint versionMinor);
 
+    /**
+     * Check if the configuration storage is writable.
+     *
+     * @return true if writable, false otherwise
+     */
+    bool isWritable();
+
 protected:
     inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}
     inline virtual ~Settings() {}
