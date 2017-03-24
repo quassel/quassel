@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>393</width>
-    <height>422</height>
+    <width>391</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -251,7 +251,7 @@
                <bool>true</bool>
               </property>
               <property name="toolTip">
-               <string>Default away reason</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default away reason. You can add date/time to this message using syntax: %% &amp;lt;format&amp;gt; %%. Where &amp;lt;format&amp;gt; is: &lt;br/&gt;hh - the hour&lt;br/&gt;mm - the minutes&lt;br/&gt;ss - second&lt;br/&gt;AP - AM/PM&lt;&lt;br/&gt;dd - day&lt;br/&gt;MM - month&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -277,7 +277,7 @@
        <item>
         <widget class="QGroupBox" name="detachAwayEnabled">
          <property name="toolTip">
-          <string>Set away when all clients have detached from the core</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set away when all clients have detached from the core. You can add date/time to this message using syntax: %% &amp;lt;format&amp;gt; %%. Where &amp;lt;format&amp;gt; is:&lt;br/&gt;hh - the hour&lt;br/&gt;mm - the minutes&lt;br/&gt;ss - second&lt;br/&gt;AP - AM/PM&lt;br/&gt;dd - day&lt;br/&gt;MM - month&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Away On Detach</string>
