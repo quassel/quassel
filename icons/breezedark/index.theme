@@ -1,15 +1,18 @@
 [Icon Theme]
 Name=Breeze Dark
 Name[ar]=نسيم داكن
-Name[ast]=Breeze escuro
+Name[ast]=Breeze Dark
 Name[ca]=Brisa fosca
 Name[ca@valencia]=Brisa fosca
 Name[cs]=Breeze Tmavé
 Name[da]=Breeze Dark
-Name[de]=Breeze-Dunkel
+Name[de]=Breeze Dunkel
+Name[el]=Σκοτεινό Breeze
 Name[en_GB]=Breeze Dark
 Name[es]=Brisa oscura
+Name[et]=Breeze Dark
 Name[fi]=Breeze Dark
+Name[fr]=Brise Foncée
 Name[gd]=Oiteag dhorcha
 Name[gl]=Breeze escuro
 Name[ia]=Breeze Dark
@@ -31,18 +34,22 @@ Name[sv]=Breeze mörk
 Name[uk]=Темна Breeze
 Name[x-test]=xxBreeze Darkxx
 Name[zh_CN]=暗色微风
+Name[zh_TW]=Breeze Dark
 
 Comment=Default Plasma 5 Theme for Dark themes
-Comment[ar]=سمة بلازما 5 الافتراضيّة للسّمات الدّاكنة
+Comment[ar]=سمة «بلازما ٥» الافتراضيّة للسّمات الدّاكنة
 Comment[ast]=El tema por defeutu de Plasma 5 pa temes escuros
 Comment[ca]=Tema del Plasma 5 per defecte per temes foscos
 Comment[ca@valencia]=Tema del Plasma 5 per defecte per temes foscos
 Comment[cs]=Výchozí motiv KDE Plasma 5 pro tmavé motivy vzhledu
 Comment[da]=Standard Plasma5-tema til mørke temaer
 Comment[de]=Dunkles Standard-Arbeitsflächendesign für Plasma 5
+Comment[el]=Προκαθορισμένο θέμα Plasma 5 για σκοτεινά θέματα
 Comment[en_GB]=Default Plasma 5 Theme for Dark themes
 Comment[es]=Tema por omisión de Plasma 5 para temas oscuros
+Comment[et]=Vaikimisi Plasma 5 tume teema
 Comment[fi]=Plasma 5:n oletusteema tummille teemoille
+Comment[fr]=Thème par défaut de Plasma 5 pour les thèmes foncés
 Comment[gd]=Ùrlar Plasma 5 bunaiteach airson ùrlaran dorcha
 Comment[gl]=Tema predeterminado de Plasma 5 para temas escuros
 Comment[he]=ערכת הנושא החשוכה הברירת־מחדל של Plama
@@ -65,12 +72,15 @@ Comment[sv]=Plasma 5 standardtema för mörka teman
 Comment[uk]=Тема піктограм для Плазми 5 для темних тем
 Comment[x-test]=xxDefault Plasma 5 Theme for Dark themesxx
 Comment[zh_CN]=为暗色主题设计的 默认 Plasma 5 主题
+Comment[zh_TW]=預設的 Plasma 5 暗色主題
 
 DisplayDepth=32
 
 Inherits=hicolor
 
 Example=folder
+
+FollowsColorScheme=true
 
 DesktopDefault=48
 DesktopSizes=16,22,32,48,64,128,256
@@ -90,7 +100,7 @@ KDE-Extensions=.svg
 ########## Directories
 ########## ordered by category and alphabetically
 
-Directories=actions/12,actions/16,actions/22,actions/24,actions/32,apps/16,apps/22,apps/32,apps/48,applets/48,applets/128,applets/256,categories/32,devices/16,devices/22,devices/64,emblems/8,emblems/16,emblems/22,emotes/22,mimetypes/16,mimetypes/22,mimetypes/32,mimetypes/64,places/16,places/22,places/32,places/64,status/16,status/22,status/24,status/64
+Directories=actions/12,actions/16,actions/22,actions/24,actions/32,apps/16,apps/22,apps/32,apps/48,preferences/32,applets/48,applets/64,applets/128,applets/256,categories/32,devices/16,devices/22,devices/64,emblems/8,emblems/16,emblems/22,emotes/22,mimetypes/16,mimetypes/22,mimetypes/32,mimetypes/64,places/16,places/22,places/32,places/64,status/16,status/22,status/24,status/64,actions/symbolic,devices/symbolic,emblems/symbolic,places/symbolic,status/symbolic
 
 ########## Actions
 ########## ordered by size
@@ -151,13 +161,29 @@ Type=Fixed
 Size=48
 Context=Applications
 Type=Scalable
-MinSize=48
+MinSize=64
+MaxSize=256
+
+#32x32 - Fixed size - For System Settings icons >!!!ONLY!!!< - Scalable to the following sizes: 32x32 (default), 64x64, 128x128, 256x256 - DO_NOT_USE_ANYWHERE_ELSE - Color
+[preferences/32]
+Size=32
+Context=Applications
+Type=Scalable
+MinSize=32
 MaxSize=256
 
 #256x256 - Color for applets
 [applets/48]
 Size=48
-Context=Applications
+Context=Status
+Type=Scalable
+MinSize=32
+MaxSize=256
+
+#256x256 - Animation icons for kwin desktop effects
+[applets/64]
+Size=64
+Context=Status
 Type=Scalable
 MinSize=32
 MaxSize=256
@@ -185,7 +211,9 @@ MaxSize=256
 [categories/32]
 Size=32
 Context=Categories
-Type=Fixed
+Type=Scalable
+MinSize=32
+MaxSize=256
 
 ########## Devices
 ########## ordered by size
@@ -334,5 +362,42 @@ Type=Fixed
 Size=64
 Context=Status
 Type=Fixed
+
+# Gnome symbolic icons
+
+[actions/symbolic]
+Context=Actions
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[devices/symbolic]
+Context=Devices
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[emblems/symbolic]
+Context=Emblems
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[places/symbolic]
+Context=Places
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[status/symbolic]
+Context=Status
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
 
 ########## EOF
