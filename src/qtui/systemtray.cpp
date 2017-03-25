@@ -39,9 +39,9 @@ SystemTray::SystemTray(QWidget *parent)
     _mode(Invalid),
     _state(Passive),
     _shouldBeVisible(true),
-    _passiveIcon(QIcon::fromTheme("quassel-inactive", QIcon(":/icons/quassel-inactive.png"))),
+    _passiveIcon(QIcon::fromTheme("inactive-quassel", QIcon(":/icons/inactive-quassel.png"))),
     _activeIcon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png"))),
-    _needsAttentionIcon(QIcon::fromTheme("quassel-message", QIcon(":/icons/quassel-message.png"))),
+    _needsAttentionIcon(QIcon::fromTheme("message-quassel", QIcon(":/icons/message-quassel.png"))),
     _trayMenu(0),
     _associatedWidget(parent)
 {
