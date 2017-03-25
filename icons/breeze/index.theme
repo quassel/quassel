@@ -7,9 +7,12 @@ Name[ca@valencia]=Brisa
 Name[cs]=Breeze
 Name[da]=Breeze
 Name[de]=Breeze
+Name[el]=Breeze
 Name[en_GB]=Breeze
 Name[es]=Brisa
+Name[et]=Breeze
 Name[fi]=Breeze
+Name[fr]=Brise
 Name[gd]=Oiteag
 Name[gl]=Breeze
 Name[ia]=Breeze
@@ -31,18 +34,22 @@ Name[sv]=Breeze
 Name[uk]=Breeze
 Name[x-test]=xxBreezexx
 Name[zh_CN]=微风
+Name[zh_TW]=Breeze
 
 Comment=Default Plasma 5 Theme
-Comment[ar]=سمة بلازما 5 الافتراضيّة
-Comment[ast]=Tema de Plasma 5 por defeutu
+Comment[ar]=سمة «بلازما ٥» الافتراضيّة
+Comment[ast]=El tema por defeutu de Plasma 5
 Comment[ca]=Tema del Plasma 5 per defecte
 Comment[ca@valencia]=Tema del Plasma 5 per defecte
 Comment[cs]=Výchozí motiv Plasma 5
 Comment[da]=Standard Plasma 5-tema
 Comment[de]=Standard-Arbeitsflächendesign für Plasma 5
+Comment[el]=Προκαθορισμένο θέμα Plasma 5
 Comment[en_GB]=Default Plasma 5 Theme
 Comment[es]=Tema por omisión de Plasma 5
+Comment[et]=Vaikimisi Plasma 5 teema
 Comment[fi]=Plasma 5:n oletusteema
+Comment[fr]=Thème par défaut de Plasma 5
 Comment[gd]=Ùrlar Plasma 5 bunaiteach
 Comment[gl]=Tema predeterminado de Plasma 5
 Comment[he]=ערכת הנושא הברירת־מחדל של Plama
@@ -65,6 +72,7 @@ Comment[sv]=Plasma 5 standardtema
 Comment[uk]=Типова тема Плазми 5
 Comment[x-test]=xxDefault Plasma 5 Themexx
 Comment[zh_CN]=默认 Plasma 5 主题
+Comment[zh_TW]=預設的 Plasma 5 主題
 
 DisplayDepth=32
 
@@ -92,7 +100,7 @@ KDE-Extensions=.svg
 ########## Directories
 ########## ordered by category and alphabetically
 
-Directories=actions/12,actions/16,actions/22,actions/24,actions/32,apps/16,apps/22,apps/32,apps/48,applets/48,applets/128,applets/256,categories/32,devices/16,devices/22,devices/64,emblems/8,emblems/16,emblems/22,emotes/22,mimetypes/16,mimetypes/22,mimetypes/32,mimetypes/64,places/16,places/22,places/32,places/64,status/16,status/22,status/24,status/64
+Directories=actions/12,actions/16,actions/22,actions/24,actions/32,apps/16,apps/22,apps/32,apps/48,preferences/32,applets/48,applets/64,applets/128,applets/256,categories/32,devices/16,devices/22,devices/64,emblems/8,emblems/16,emblems/22,emotes/22,mimetypes/16,mimetypes/22,mimetypes/32,mimetypes/64,places/16,places/22,places/32,places/64,status/16,status/22,status/24,status/64,actions/symbolic,devices/symbolic,emblems/symbolic,places/symbolic,status/symbolic
 
 ########## Actions
 ########## ordered by size
@@ -156,10 +164,26 @@ Type=Scalable
 MinSize=48
 MaxSize=256
 
+#32x32 - Fixed size - For System Settings icons >!!!ONLY!!!< - Scalable to the following sizes: 32x32 (default), 64x64, 128x128, 256x256 - DO_NOT_USE_ANYWHERE_ELSE - Color
+[preferences/32]
+Size=32
+Context=Applications
+Type=Scalable
+MinSize=32
+MaxSize=256
+
 #256x256 - Color for applets
 [applets/48]
 Size=48
-Context=Applications
+Context=Status
+Type=Scalable
+MinSize=32
+MaxSize=256
+
+#256x256 - Animation icons for kwin desktop effects
+[applets/64]
+Size=64
+Context=Status
 Type=Scalable
 MinSize=32
 MaxSize=256
@@ -187,7 +211,9 @@ MaxSize=256
 [categories/32]
 Size=32
 Context=Categories
-Type=Fixed
+Type=Scalable
+MinSize=32
+MaxSize=256
 
 ########## Devices
 ########## ordered by size
@@ -336,5 +362,42 @@ Type=Fixed
 Size=64
 Context=Status
 Type=Fixed
+
+# Gnome symbolic icons
+
+[actions/symbolic]
+Context=Actions
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[devices/symbolic]
+Context=Devices
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[emblems/symbolic]
+Context=Emblems
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[places/symbolic]
+Context=Places
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
+
+[status/symbolic]
+Context=Status
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable
 
 ########## EOF
