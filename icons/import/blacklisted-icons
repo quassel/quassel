@@ -1,2 +1,4 @@
-quassel-inactive
-quassel-message
+inactive-quassel
+message-quassel
+connect-quassel
+disconnect-quassel
