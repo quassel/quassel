@@ -285,7 +285,7 @@ void Quassel::setupBuildInfo()
             _buildInfo.plainVersionString = QString("v%1 (dist-%2)")
                                             .arg(_buildInfo.baseVersion)
                                             .arg(_buildInfo.commitHash.left(7));
-            _buildInfo.fancyVersionString = QString("v%1 (dist-<a href=\"http://git.quassel-irc.org/?p=quassel.git;a=commit;h=%3\">%2</a>)")
+            _buildInfo.fancyVersionString = QString("v%1 (dist-<a href=\"https://github.com/quassel/quassel/commit/%3\">%2</a>)")
                                             .arg(_buildInfo.baseVersion)
                                             .arg(_buildInfo.commitHash.left(7))
                                             .arg(_buildInfo.commitHash);
@@ -303,7 +303,7 @@ void Quassel::setupBuildInfo()
             _buildInfo.plainVersionString = QString("v%1 (%2git-%3%4)")
                                             .arg(_buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));
             if (!_buildInfo.commitHash.isEmpty()) {
-                _buildInfo.fancyVersionString = QString("v%1 (%2git-<a href=\"http://git.quassel-irc.org/?p=quassel.git;a=commit;h=%5\">%3</a>%4)")
+                _buildInfo.fancyVersionString = QString("v%1 (%2git-<a href=\"https://github.com/quassel/quassel/commit/%5\">%3</a>%4)")
                                                 .arg(_buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4), _buildInfo.commitHash);
             }
         }
