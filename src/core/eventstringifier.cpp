@@ -235,7 +235,7 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric *e)
     default:
         if (_whois) {
             // many nets define their own WHOIS fields. we fetch those not in need of special attention here:
-            displayMsg(e, Message::Server, tr("[Whois] ") + e->params().join(" "), e->prefix());
+            displayMsg(e, Message::Notice, e->params().join(" "), tr("Whois"));
         }
         else {
             // FIXME figure out how/where to do this in the future
@@ -385,12 +385,14 @@ void EventStringifier::processIrcEvent301(IrcEvent *e)
 {
     QString nick = e->params().at(0);
     QString awayMsg = e->params().at(1);
-    QString msg, target;
+    QString msg, target, sender;
     bool send = true;
+    Message::Type type = Message::Server;
 
     // FIXME: proper redirection needed
     if (_whois) {
-        msg = tr("[Whois] ");
+        sender = tr("Whois");
+        type = Message::Notice;
     }
     else {
         target = nick;
@@ -403,8 +405,9 @@ void EventStringifier::processIrcEvent301(IrcEvent *e)
             ircuser->setLastAwayMessage(now);
         }
     }
-    if (send)
-        displayMsg(e, Message::Server, msg + tr("%1 is away: \"%2\"").arg(nick, awayMsg), QString(), target);
+    if (send) {
+        displayMsg(e, type, tr("%1 is away: \"%2\"").arg(nick, awayMsg), sender, target);
+    }
 }
 
 
@@ -441,14 +444,14 @@ void EventStringifier::processIrcEvent311(IrcEvent *e)
 {
     _whois = true;
 
-    const QString whoisUserString = tr("[Whois] %1 is %2 (%3)");
+    const QString whoisUserString = tr("%1 is %2 (%3)");
 
     IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser)
-        displayMsg(e, Message::Server, whoisUserString.arg(ircuser->nick(), ircuser->hostmask(), ircuser->realName()));
+        displayMsg(e, Message::Notice, whoisUserString.arg(ircuser->nick(), ircuser->hostmask(), ircuser->realName()), tr("Whois"));
     else {
         QString host = QString("%1!%2@%3").arg(e->params().at(0), e->params().at(1), e->params().at(2));
-        displayMsg(e, Message::Server, whoisUserString.arg(e->params().at(0), host, e->params().last()));
+        displayMsg(e, Message::Notice, whoisUserString.arg(e->params().at(0), host, e->params().last()), tr("Whois"));
     }
 }
 
@@ -457,9 +460,9 @@ void EventStringifier::processIrcEvent311(IrcEvent *e)
 void EventStringifier::processIrcEvent312(IrcEvent *e)
 {
     if (_whois)
-        displayMsg(e, Message::Server, tr("[Whois] %1 is online via %2 (%3)").arg(e->params().at(0), e->params().at(1), e->params().last()));
+        displayMsg(e, Message::Notice, tr("%1 is online via %2 (%3)").arg(e->params().at(0), e->params().at(1), e->params().last()), tr("Whois"));
     else
-        displayMsg(e, Message::Server, tr("[Whowas] %1 was online via %2 (%3)").arg(e->params().at(0), e->params().at(1), e->params().last()));
+        displayMsg(e, Message::Notice, tr("%1 was online via %2 (%3)").arg(e->params().at(0), e->params().at(1), e->params().last()), tr("Whowas"));
 }
 
 
@@ -469,7 +472,7 @@ void EventStringifier::processIrcEvent314(IrcEvent *e)
     if (!checkParamCount(e, 3))
         return;
 
-    displayMsg(e, Message::Server, tr("[Whowas] %1 was %2@%3 (%4)").arg(e->params()[0], e->params()[1], e->params()[2], e->params().last()));
+    displayMsg(e, Message::Notice, tr("%1 was %2@%3 (%4)").arg(e->params()[0], e->params()[1], e->params()[2], e->params().last()), tr("Whowas"));
 }
 
 
@@ -478,7 +481,7 @@ void EventStringifier::processIrcEvent315(IrcEvent *e)
 {
     QStringList p = e->params();
     p.takeLast(); // should be "End of WHO list"
-    displayMsg(e, Message::Server, tr("[Who] End of /WHO list for %1").arg(p.join(" ")));
+    displayMsg(e, Message::Notice, tr("[Who] End of /WHO list for %1").arg(p.join(" ")));
 }
 
 
@@ -490,13 +493,13 @@ void EventStringifier::processIrcEvent317(IrcEvent *e)
 
     if (e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
         QDateTime loginTime = QDateTime::fromTime_t(e->params()[2].toInt()).toUTC();
-        displayMsg(e, Message::Server, tr("[Whois] %1 is logged in since %2")
-	    .arg(e->params()[0], loginTime.toString("yyyy-MM-dd hh:mm:ss UTC")));
+        displayMsg(e, Message::Notice, tr("%1 is logged in since %2")
+	    .arg(e->params()[0], loginTime.toString("yyyy-MM-dd hh:mm:ss UTC")), tr("Whois"));
     }
     QDateTime idlingSince = e->timestamp().toLocalTime().addSecs(-idleSecs).toUTC();
-    displayMsg(e, Message::Server, tr("[Whois] %1 is idling for %2 (since %3)")
+    displayMsg(e, Message::Notice, tr("%1 is idling for %2 (since %3)")
         .arg(e->params()[0], secondsToString(idleSecs),
-	     idlingSince.toString("yyyy-MM-dd hh:mm:ss UTC")));
+	     idlingSince.toString("yyyy-MM-dd hh:mm:ss UTC")), tr("Whois"));
 }
 
 
@@ -504,7 +507,7 @@ void EventStringifier::processIrcEvent317(IrcEvent *e)
 void EventStringifier::processIrcEvent318(IrcEvent *e)
 {
     _whois = false;
-    displayMsg(e, Message::Server, tr("[Whois] End of /WHOIS list"));
+    displayMsg(e, Message::Notice, tr("End of /WHOIS list"), tr("Whois"));
 }
 
 
@@ -527,11 +530,11 @@ void EventStringifier::processIrcEvent319(IrcEvent *e)
             user.append(channel);
     }
     if (!user.isEmpty())
-        displayMsg(e, Message::Server, tr("[Whois] %1 is a user on channels: %2").arg(nick, user.join(" ")));
+        displayMsg(e, Message::Notice, tr("%1 is a user on channels: %2").arg(nick, user.join(" ")), tr("Whois"));
     if (!voice.isEmpty())
-        displayMsg(e, Message::Server, tr("[Whois] %1 has voice on channels: %2").arg(nick, voice.join(" ")));
+        displayMsg(e, Message::Notice, tr("%1 has voice on channels: %2").arg(nick, voice.join(" ")), tr("Whois"));
     if (!op.isEmpty())
-        displayMsg(e, Message::Server, tr("[Whois] %1 is an operator on channels: %2").arg(nick, op.join(" ")));
+        displayMsg(e, Message::Notice, tr("%1 is an operator on channels: %2").arg(nick, op.join(" ")), tr("Whois"));
 }
 
 
@@ -609,10 +612,10 @@ void EventStringifier::processIrcEvent330(IrcEvent *e)
 
     // check for whois or whowas
     if (_whois) {
-        displayMsg(e, Message::Server, tr("[Whois] %1 is authed as %2").arg(e->params()[0], e->params()[1]));
+        displayMsg(e, Message::Notice, tr("%1 is authed as %2").arg(e->params()[0], e->params()[1]), tr("Whois"));
     }
     else {
-        displayMsg(e, Message::Server, tr("[Whowas] %1 was authed as %2").arg(e->params()[0], e->params()[1]));
+        displayMsg(e, Message::Notice, tr("%1 was authed as %2").arg(e->params()[0], e->params()[1]), tr("Whowas"));
     }
 }
 
@@ -662,7 +665,7 @@ void EventStringifier::processIrcEvent341(IrcEvent *e)
               ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
 void EventStringifier::processIrcEvent352(IrcEvent *e)
 {
-    displayMsg(e, Message::Server, tr("[Who] %1").arg(e->params().join(" ")));
+    displayMsg(e, Message::Notice, tr("[Who] %1").arg(e->params().join(" ")));
 }
 
 
@@ -672,7 +675,7 @@ Could be anything else, though.  User-specified fields.
 See http://faerion.sourceforge.net/doc/irc/whox.var */
 void EventStringifier::processIrcEvent354(IrcEvent *e)
 {
-    displayMsg(e, Message::Server, tr("[WhoX] %1").arg(e->params().join(" ")));
+    displayMsg(e, Message::Notice, tr("[WhoX] %1").arg(e->params().join(" ")));
 }
 
 
