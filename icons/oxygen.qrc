@@ -21,6 +21,7 @@
     <file>oxygen/128x128/devices/network-wired.png</file>
     <file>oxygen/128x128/status/dialog-information.png</file>
     <file>oxygen/128x128/status/dialog-password.png</file>
+    <file>oxygen/128x128/status/dialog-warning.png</file>
     <file>oxygen/128x128/status/security-high.png</file>
     <file>oxygen/128x128/status/security-low.png</file>
     <file>oxygen/16x16/actions/application-exit.png</file>
@@ -82,6 +83,7 @@
     <file>oxygen/16x16/devices/network-wired.png</file>
     <file>oxygen/16x16/status/dialog-information.png</file>
     <file>oxygen/16x16/status/dialog-password.png</file>
+    <file>oxygen/16x16/status/dialog-warning.png</file>
     <file>oxygen/16x16/status/security-high.png</file>
     <file>oxygen/16x16/status/security-low.png</file>
     <file>oxygen/16x16/status/user-away.png</file>
@@ -144,6 +146,7 @@
     <file>oxygen/22x22/devices/network-wired.png</file>
     <file>oxygen/22x22/status/dialog-information.png</file>
     <file>oxygen/22x22/status/dialog-password.png</file>
+    <file>oxygen/22x22/status/dialog-warning.png</file>
     <file>oxygen/22x22/status/security-high.png</file>
     <file>oxygen/22x22/status/security-low.png</file>
     <file>oxygen/22x22/status/user-away.png</file>
@@ -208,6 +211,7 @@
     <file>oxygen/32x32/devices/network-wired.png</file>
     <file>oxygen/32x32/status/dialog-information.png</file>
     <file>oxygen/32x32/status/dialog-password.png</file>
+    <file>oxygen/32x32/status/dialog-warning.png</file>
     <file>oxygen/32x32/status/security-high.png</file>
     <file>oxygen/32x32/status/security-low.png</file>
     <file>oxygen/32x32/status/user-away.png</file>
@@ -270,6 +274,7 @@
     <file>oxygen/48x48/devices/network-wired.png</file>
     <file>oxygen/48x48/status/dialog-information.png</file>
     <file>oxygen/48x48/status/dialog-password.png</file>
+    <file>oxygen/48x48/status/dialog-warning.png</file>
     <file>oxygen/48x48/status/security-high.png</file>
     <file>oxygen/48x48/status/security-low.png</file>
     <file>oxygen/48x48/status/user-away.png</file>
@@ -293,6 +298,7 @@
     <file>oxygen/64x64/devices/network-wired.png</file>
     <file>oxygen/64x64/status/dialog-information.png</file>
     <file>oxygen/64x64/status/dialog-password.png</file>
+    <file>oxygen/64x64/status/dialog-warning.png</file>
     <file>oxygen/64x64/status/security-high.png</file>
     <file>oxygen/64x64/status/security-low.png</file>
     <file>oxygen/64x64/status/user-away.png</file>

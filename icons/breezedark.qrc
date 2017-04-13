@@ -195,6 +195,7 @@
     <file>breezedark/status/24/dialog-information.svg</file>
     <file>breezedark/status/64/dialog-information.svg</file>
     <file>breezedark/status/64/dialog-password.svg</file>
+    <file>breezedark/status/64/dialog-warning.svg</file>
     <file>breezedark/status/64/security-high.svg</file>
     <file>breezedark/status/64/security-low.svg</file>
     <file alias="breezedark/actions/24/connect-quassel.svg">extra-icons/breezedark/actions/24/connect-quassel.svg</file>

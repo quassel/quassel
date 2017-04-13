@@ -195,6 +195,7 @@
     <file>breeze/status/24/dialog-information.svg</file>
     <file>breeze/status/64/dialog-information.svg</file>
     <file>breeze/status/64/dialog-password.svg</file>
+    <file>breeze/status/64/dialog-warning.svg</file>
     <file>breeze/status/64/security-high.svg</file>
     <file>breeze/status/64/security-low.svg</file>
     <file alias="breeze/actions/24/connect-quassel.svg">extra-icons/breeze/actions/24/connect-quassel.svg</file>
