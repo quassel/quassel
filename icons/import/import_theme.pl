@@ -14,6 +14,7 @@
 # Run from the icon/ directory.
 
 use strict;
+use warnings;
 use Data::Dumper;
 use File::Find;
 
@@ -131,7 +132,7 @@ closedir BASEDIR;
 if ($scalableFound) {
   foreach my $cat (keys %scalables) {
     system "mkdir -p $themename/scalable/$cat" and die "Could not create category dir\n";
-    foreach my $scalable (keys $scalables{$cat}) {
+    foreach my $scalable (keys %{$scalables{$cat}}) {
       system "cp -aL $themefolder/scalable/$cat/$scalable.svgz $themename/scalable/$cat/$scalable.svgz";
     }
   }
@@ -144,7 +145,7 @@ foreach my $icon (keys %req_icons) {
 }
 
 # Copy license etc.
-system "cp $themefolder/AUTHORS $themefolder/CONTRIBUTING $themefolder/COPYING $themefolder/index.theme $themename/";
+system "cp $themefolder/AUTHORS $themefolder/CONTRIBUTING $themefolder/COPYING* $themefolder/index.theme $themename/";
 
 # Generate .qrc
 my @file_list;
