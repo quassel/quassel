@@ -207,7 +207,7 @@ int main(int argc, char **argv)
     // the non-KDE version parses after app has been instantiated
     if (!cliParser->init(app.arguments())) {
         cliParser->usage();
-        return false;
+        return EXIT_FAILURE;
     }
 #endif
 
