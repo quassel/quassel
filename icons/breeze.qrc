@@ -184,10 +184,14 @@
     <file>breeze/index.theme</file>
     <file>breeze/preferences/32/help-about.svg</file>
     <file>breeze/status/16/dialog-information.svg</file>
+    <file>breeze/status/16/irc-channel-joined.svg</file>
+    <file>breeze/status/16/irc-channel-parted.svg</file>
     <file>breeze/status/16/security-high.svg</file>
     <file>breeze/status/16/security-low.svg</file>
     <file>breeze/status/16/user-away.svg</file>
     <file>breeze/status/22/dialog-information.svg</file>
+    <file>breeze/status/22/irc-channel-joined.svg</file>
+    <file>breeze/status/22/irc-channel-parted.svg</file>
     <file>breeze/status/22/network-wired.svg</file>
     <file>breeze/status/22/security-high.svg</file>
     <file>breeze/status/22/security-low.svg</file>

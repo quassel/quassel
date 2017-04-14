@@ -10,8 +10,13 @@
 # NOTE: Unless you are a Quassel developer and need to bump the icons we ship, you shouldn't
 #       need to use this script!
 
-# USAGE: ./import/import_theme.pl $systhemefolder $themename
+# USAGE: ./import/import_theme.pl $systhemefolder $themename $parentFolderFileSuffix
 # Run from the icon/ directory.
+#
+# Examples: (being inside the icons folder)
+# ./import/import_theme.pl ~/oxygen-icons oxygen
+# ./import/import_theme.pl ~/breeze-icons/icons breeze ICONS
+# ./import/import_theme.pl ~/breeze-icons/icons-dark breezedark ICONS
 
 use strict;
 use warnings;
@@ -24,6 +29,7 @@ my $source = "../src";
 my $themename = shift;
 $themename = $themename ? $themename : "oxygen";
 my $qrcfile_kde = $themename . ".qrc";
+my $parentFolderFileSuffix = shift;
 
 my $whitelistfile = "import/whitelist-icons";
 my $blacklistfile = "import/blacklisted-icons";
@@ -146,6 +152,10 @@ foreach my $icon (keys %req_icons) {
 
 # Copy license etc.
 system "cp $themefolder/AUTHORS $themefolder/CONTRIBUTING $themefolder/COPYING* $themefolder/index.theme $themename/";
+
+if($parentFolderFileSuffix) {
+	system "cp $themefolder/../AUTHORS*$parentFolderFileSuffix $themefolder/../CONTRIBUTING*$parentFolderFileSuffix $themefolder/../COPYING*$parentFolderFileSuffix $themename/";
+}
 
 # Generate .qrc
 my @file_list;
