@@ -214,12 +214,16 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     }
     else if (_previousConnectionAttemptFailed) {
         // cycle to next server if previous connection attempt failed
+        _previousConnectionAttemptFailed = false;
         displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Connection failed. Cycling to next Server"));
         if (++_lastUsedServerIndex >= serverList().size()) {
             _lastUsedServerIndex = 0;
         }
     }
-    _previousConnectionAttemptFailed = false;
+    else {
+        // Start out with the top server in the list
+        _lastUsedServerIndex = 0;
+    }
 
     Server server = usedServer();
     displayStatusMsg(tr("Connecting to %1:%2...").arg(server.host).arg(server.port));
