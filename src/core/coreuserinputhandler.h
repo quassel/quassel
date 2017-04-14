@@ -49,7 +49,7 @@ public slots:
      * @param[in] skipFormatting  If true, skip timestamp formatting codes (e.g. if already done)
      */
     void handleAway(const BufferInfo &bufferInfo, const QString &text,
-                    const bool skipFormatting = true);
+                    const bool skipFormatting = false);
     void handleBan(const BufferInfo &bufferInfo, const QString &text);
     void handleUnban(const BufferInfo &bufferInfo, const QString &text);
     void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
