@@ -662,8 +662,9 @@ void CoreSession::clientsDisconnected()
 
         if (identity->detachAwayEnabled() && !me->isAway()) {
             if (!identity->detachAwayReason().isEmpty())
-                awayReason = formatCurrentDateTimeInString(identity->detachAwayReason());
+                awayReason = identity->detachAwayReason();
             net->setAutoAwayActive(true);
+            // Allow handleAway() to format the current date/time in the string.
             net->userInputHandler()->handleAway(BufferInfo(), awayReason);
         }
     }
