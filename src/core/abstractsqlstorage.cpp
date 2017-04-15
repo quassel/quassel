@@ -57,7 +57,19 @@ QSqlDatabase AbstractSqlStorage::logDb()
 
     if (!db.isOpen()) {
         qWarning() << "Database connection" << displayName() << "for thread" << QThread::currentThread() << "was lost, attempting to reconnect...";
-        dbConnect(db);
+
+        // We can't assume that the DB is immediately available,
+        // so we try waiting up to a minute
+        for (int i=0; i<10; i++) {
+            dbConnect(db);
+
+            if (db.isOpen()) {
+                break;
+            }
+
+            qWarning() << "Database still down, trying again in 6 seconds...";
+            QThread::sleep(6);
+        }
     }
 
     return db;
