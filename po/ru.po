@@ -4615,7 +4615,7 @@ msgstr "Показать журнал отсутствия"
 #: ../src/qtui/mainwin.cpp:386
 msgctxt "MainWin|"
 msgid "Show &Menubar"
-msgstr "Показать строку &поиска"
+msgstr "Показать строку &меню"
 
 #: ../src/qtui/mainwin.cpp:389
 msgctxt "MainWin|"
