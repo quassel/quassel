@@ -158,6 +158,7 @@ int main(int argc, char **argv)
     cliParser->addOption("port", 'p', "The port quasselcore will listen at", "port", "4242");
     cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
     cliParser->addOption("loglevel", 'L', "Loglevel Debug|Info|Warning|Error", "level", "Info");
+    cliParser->addSwitch("no-ctcp", 0 , "Don't handle CTCP" ) ;
 #ifdef HAVE_SYSLOG
     cliParser->addSwitch("syslog", 0, "Log to syslog");
 #endif
