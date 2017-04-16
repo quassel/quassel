@@ -48,7 +48,8 @@
 #include "remotepeer.h"
 #include "storage.h"
 #include "util.h"
-
+#include "quassel.h"
+#include "syslog.h"
 
 class ProcessMessagesEvent : public QEvent
 {
@@ -306,6 +307,14 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
     // KDE's notifications), hence we remove those just to be safe.
     QString text = text_;
     text.remove(QChar(0xfdd0)).remove(QChar(0xfdd1));
+    
+ 
+     if(Quassel::isOptionSet("syslog-irc")){
+       // log to the local syslog facility, wanted to do remote here but it's simpler to simply have
+       //local logs sent to the log collector instead of adding network code for remote logging here
+       QString slog=QString("QUASSEL_MSG_LOG  |"+target+"| <"+sender+"> "+text);
+       syslog(LOG_INFO,"%s",slog.toStdString().c_str());	
+}
     RawMessage rawMsg(networkId, type, bufferType, target, text, sender, flags);
 
     // check for HardStrictness ignore
