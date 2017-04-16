@@ -597,6 +597,16 @@ void CoreUserInputHandler::handlePrint(const BufferInfo &bufferInfo, const QStri
 }
 
 
+void CoreUserInputHandler::handlePrint(const BufferInfo &bufferInfo, const QString &msg)
+{
+    if (bufferInfo.bufferName().isEmpty() || !bufferInfo.acceptsRegularMessages())
+        return;  // server buffer
+
+    QByteArray encMsg = channelEncode(bufferInfo.bufferName(), msg);
+    emit displayMsg(Message::Info, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
+}
+
+
 // TODO: implement queries
 void CoreUserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QString &msg)
 {
