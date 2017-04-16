@@ -151,10 +151,20 @@ Storage::State AbstractSqlStorage::init(const QVariantMap &settings)
 
 QString AbstractSqlStorage::queryString(const QString &queryName, int version)
 {
-    if (version == 0)
-        version = schemaVersion();
+    QFileInfo queryInfo;
 
-    QFileInfo queryInfo(QString(":/SQL/%1/%2/%3.sql").arg(displayName()).arg(version).arg(queryName));
+    // The current schema is stored in the root folder, while upgrade queries are stored in the
+    // 'versions/##' subfolders.
+    if (version == 0) {
+        // Use the current SQL schema, not a versioned request
+        queryInfo = QFileInfo(QString(":/SQL/%1/%2.sql").arg(displayName()).arg(queryName));
+        // If version is needed later, get it via version = schemaVersion();
+    } else {
+        // Use the specified schema version, not the general folder
+        queryInfo = QFileInfo(QString(":/SQL/%1/version/%2/%3.sql")
+                              .arg(displayName()).arg(version).arg(queryName));
+    }
+
     if (!queryInfo.exists() || !queryInfo.isFile() || !queryInfo.isReadable()) {
         qCritical() << "Unable to read SQL-Query" << queryName << "for engine" << displayName();
         return QString();
@@ -173,7 +183,8 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version)
 QStringList AbstractSqlStorage::setupQueries()
 {
     QStringList queries;
-    QDir dir = QDir(QString(":/SQL/%1/%2/").arg(displayName()).arg(schemaVersion()));
+    // The current schema is stored in the root folder, including setup scripts.
+    QDir dir = QDir(QString(":/SQL/%1/").arg(displayName()));
     foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
         queries << queryString(fileInfo.baseName());
     }
@@ -211,7 +222,8 @@ bool AbstractSqlStorage::setup(const QVariantMap &settings)
 QStringList AbstractSqlStorage::upgradeQueries(int version)
 {
     QStringList queries;
-    QDir dir = QDir(QString(":/SQL/%1/%2/").arg(displayName()).arg(version));
+    // Upgrade queries are stored in the 'version/##' subfolders.
+    QDir dir = QDir(QString(":/SQL/%1/version/%2/").arg(displayName()).arg(version));
     foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
         queries << queryString(fileInfo.baseName(), version);
     }
@@ -248,7 +260,8 @@ int AbstractSqlStorage::schemaVersion()
 
     int version;
     bool ok;
-    QDir dir = QDir(":/SQL/" + displayName());
+    // Schema versions are stored in the 'version/##' subfolders.
+    QDir dir = QDir(QString(":/SQL/%1/version/").arg(displayName()));
     foreach(QFileInfo fileInfo, dir.entryInfoList()) {
         if (!fileInfo.isDir())
             continue;

@@ -6,7 +6,8 @@
 # "One does not simply 'upgrade the schema'..."
 #
 # When changing Quassel's database schema, you need to follow several steps to
-# handle all cases (upgrade, Postgres migration, etc).
+# handle all cases (upgrade, Postgres migration, etc).  Some of these steps may
+# not apply to all schema upgrades.
 #
 # 1.  Run this script on -both- the PostgreSQL and SQLite directory
 #
@@ -20,33 +21,38 @@
 # Modify all query/setup .sql files that touch the 'ircserver' table for
 # -both- PostgreSQL and SQLite.
 #
-# 3.  Create an upgrade script for -both- PostgreSQL and SQLite
+# 3.  Create upgrade scripts for -both- PostgreSQL and SQLite
+#
+# They should go in the newest "[...]/version/##" folders that were created by
+# running this script.  Don't modify the files in lower-numbered version
+# folders.
 #
 # [Example] Modifying the 'ircserver' table to add column 'test'
 # Add the file 'upgrade_000_alter_ircserver_add_test.sql' with contents:
 # > ALTER TABLE ircserver
 # > ADD COLUMN test [additional column-specific details]
 #
-# 4.  Create a pair of migration scripts for moving from SQLite to PostgreSQL
+# 4.  Update the pair of migration scripts for moving from SQLite to PostgreSQL
 #
 # [Example] Modifying the 'ircserver' table to add column 'test'
-# > Modify 'SQLite/##/migrate_read_ircserver.sql' to select from new column
-# > Modify 'PostgreSQL/##/migrate_write_ircserver.sql' to insert to new column
+# > Modify 'SQLite/migrate_read_ircserver.sql' to select from new column
+# > Modify 'PostgreSQL/migrate_write_ircserver.sql' to insert to new column
 #
 # 5.  Update the SQL resource file; re-run CMake if needed
 #
 # The easy way: run "updateSQLResource.sh" in this directory.
 #
 # The manual way:
-# Add the new SQL queries to 'src/core/sql.qrc', update all existing files.
+# Add the new SQL queries to 'src/core/sql.qrc', update all changed existing
+# files.
 #
 # [Example] Modifying the 'ircserver' table to add column 'test'
-# > Add the new upgrade script...
-#   <file>./SQL/SQLite/19/upgrade_000_alter_ircserver_add_test.sql</file>
-#   <file>./SQL/PostgreSQL/18/upgrade_000_alter_ircserver_add_test.sql</file>
-# > Find/replace all non-upgrade scripts from the old schema number to new one
-#   <file>./SQL/SQLite/[18->19]/update_buffer_persistent_channel.sql</file>
-#   <file>./SQL/PostgreSQL/[17->18]/update_buffer_persistent_channel.sql</file>
+# > Add the new upgrade scripts...
+#   <file>./SQL/SQLite/version/19/upgrade_000_alter_ircserver_add_test.sql</file>
+#   <file>./SQL/PostgreSQL/version/18/upgrade_000_alter_ircserver_add_test.sql</file>
+# > Add/update non-upgrade scripts, if any...
+#   <file>./SQL/SQLite/update_buffer_persistent_channel.sql</file>
+#   <file>./SQL/PostgreSQL/update_buffer_persistent_channel.sql</file>
 #   (etc)
 #
 # 6.  Update the migration logic in 'src/core/abstractsqlstorage.h', and the
@@ -87,6 +93,51 @@
 #
 # 9.  Test everything!  Upgrade, migrate, new setups, new client/old core,
 # old client/new core, etc.
+#
+# More specifically, you likely should try the following combinations,
+# especially if you change the protocol.  Check if any data or settings get
+# lost or corrupted, or if anything unusual shows up in the log.
+#
+# [Mac/Linux]
+# Fresh configuration (reset the database and settings)
+# > SQLite
+#   > New core, new client
+#   > New core, old client
+#   > Old core, new client
+#   > New monolithic (combined core/client build)
+# > Postgres
+#   > New core, new client
+#   > New core, old client
+#   > Old core, new client
+# Migration (set up SQLite, then --select-backend PostgreSQL)
+# > SQLite -> Postgres, new core, new client
+# Upgrading existing (set up a copy from 'master', then build your branch)
+# > SQLite
+#   > Old -> new core
+#   > Old monolithic -> new monolithic
+# > Postgres
+#   > Old -> new core
+#
+# [Windows]
+# Fresh configuration (reset the database and settings)
+# > SQLite
+#   > New core, new client
+#   > New core, old client
+#   > Old core, new client
+#   > New monolithic (combined core/client build)
+# Upgrading existing (set up a copy from 'master', then build your branch)
+# > SQLite
+#   > Old -> new core
+#   > Old monolithic -> new monolithic
+# (If someone figures out how Postgres runs on Windows with Quassel, please
+#  update this comment)
+#
+# Yes, this looks excessive, and maybe it is.  But it's easy to overlook
+# some minor typo that breaks the client/core for a certain configuration.
+# People may get unhappy and rioting might happen in the streets.  And we don't
+# want that, do we?
+#
+# Thank you for reading this guide and good luck with your changes!
 
 TARGET_DIR="$1"
 # If not specified, assume current directory
@@ -95,25 +146,40 @@ if [ ! "$TARGET_DIR" ]; then
 fi
 
 if [[ ! -d "$TARGET_DIR" ]]; then
-    echo "No such directory '$TARGET_DIR'"
+    echo "No such directory '$TARGET_DIR'" >&2
     exit 1
 fi
 
-cd "$TARGET_DIR"
+# Find out the name of the target directory to offer some guidance later.
+TARGET_DB_NAME=$(basename "$TARGET_DIR")
+
+# Upgrade scripts are stored in the 'version' subdirectory, e.g.
+# 'SQL/[database]/version/##'.
+cd "$TARGET_DIR/version"
 
 # Grab the current schema version
 CURRENT_VERSION=$(ls | sort -n | tail -n1)
 
 if [ ! $CURRENT_VERSION ]; then
-    echo "No previous schema found to upgrade from"
+    echo "No previous schema found to upgrade from" >&2
     exit 2
 fi
 
 # Increment by one
 ((NEW_VERSION=$CURRENT_VERSION + 1))
 
-# Create the new schema directory, add the directory, and move all files over...
+# Create the new schema directory.
 mkdir "$NEW_VERSION"
-git add "$NEW_VERSION"
-# ...except for 'upgrade_' scripts.
-find "$CURRENT_VERSION" -maxdepth 1 -type f \! -name "upgrade_*" \! -name ".*" -exec git mv {} "$NEW_VERSION" \;
+# Git doesn't track empty folders, no need for 'git add "$NEW_VERSION"'.
+
+echo "New schema version '$TARGET_DB_NAME/version/$NEW_VERSION' created." >&2
+echo "Create any needed 'upgrade_[...].sql' scripts in this folder." >&2
+
+# Don't move any files over.  Schema version upgrade scripts are now stored
+# independently of the main SQL files in order to make the repository history
+# more useful and easier to work with.
+
+# Granted, this script doesn't do anything one couldn't easily manually do.
+# I'd argue that's a good thing.  Though as this script offers documentation
+# and guidance for contributors new to the database schema system as well as
+# helping migrate those used to the older method, it seems worthwhile keeping.
