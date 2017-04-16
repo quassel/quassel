@@ -1475,17 +1475,6 @@ QHash<BufferId, MsgId> SqliteStorage::bufferMarkerLineMsgIds(UserId user)
     return markerLineHash;
 }
 
-void SqliteStorage::setBufferLastMsg(const BufferId &bufferId, const MsgId &msgId)
-{
-    QSqlQuery query(logDb());
-    query.prepare(queryString("update_buffer_lastmsgid"));
-
-    query.bindValue(":bufferid", bufferId.toInt());
-    query.bindValue(":lastmsgid", msgId.toInt());
-    safeExec(query);
-    watchQuery(query);
-}
-
 bool SqliteStorage::logMessage(Message &msg)
 {
     QSqlDatabase db = logDb();
@@ -1524,8 +1513,6 @@ bool SqliteStorage::logMessage(Message &msg)
             MsgId msgId = logMessageQuery.lastInsertId().toInt();
             if (msgId.isValid()) {
                 msg.setMsgId(msgId);
-
-                setBufferLastMsg(msg.bufferInfo().bufferId(), msgId);
             }
             else {
                 error = true;

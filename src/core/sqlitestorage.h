@@ -96,18 +96,6 @@ public slots:
     virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
     virtual void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
     virtual QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user);
-    /**
-     * Sets the last known valid message ID for the given buffer.
-     *
-     * This limits LastSeenMsgIds from being set to message IDs in the future, improving performance
-     * when searching for messages in the backlog.
-     *
-     * @see SqliteStorage::setBufferLastSeenMsg()
-     *
-     * @param bufferId[in] ID of the Buffer
-     * @param msgId[in]    ID of latest message for this buffer
-     */
-    virtual void setBufferLastMsg(const BufferId &bufferId, const MsgId &msgId);
 
     /* Message handling */
     virtual bool logMessage(Message &msg);
