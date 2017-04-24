@@ -1574,6 +1574,8 @@ bool SqliteStorage::logMessages(MessageList &msgs)
             }
             else {
                 msg.setMsgId(logMessageQuery.lastInsertId().toInt());
+                // Also update the lastseenmsgid for this new message
+                setBufferLastMsg(msg.bufferInfo().bufferId(), msg.msgId());
             }
         }
     }

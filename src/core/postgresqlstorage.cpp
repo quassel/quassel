@@ -1497,6 +1497,8 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
         else {
             logMessageQuery.first();
             msg.setMsgId(logMessageQuery.value(0).toInt());
+            // Also update the lastseenmsgid for this new message
+            setBufferLastMsg(msg.bufferInfo().bufferId(), msg.msgId());
         }
     }
 
