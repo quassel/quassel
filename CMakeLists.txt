@@ -181,7 +181,7 @@ if (USE_QT5)
 
     find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
     set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED
-        URL "http://qt.digia.com"
+        URL "https://www.qt.io/"
         DESCRIPTION "contains core functionality for Qt"
     )
     # find_package without REQUIRED won't check for the version properly; also, older Qt5 versions
@@ -208,7 +208,7 @@ if (USE_QT5)
         if (NOT WIN32)
             find_package(Qt5DBus QUIET)
             set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
-                URL "http://qt.digia.com"
+                URL "https://www.qt.io/"
                 DESCRIPTION "D-Bus support for Qt5"
                 PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
             )
@@ -224,7 +224,7 @@ if (USE_QT5)
 
         find_package(Qt5Multimedia QUIET)
         set_package_properties(Qt5Multimedia PROPERTIES TYPE RECOMMENDED
-            URL "http://qt.digia.com"
+            URL "https://www.qt.io/"
             DESCRIPTION "Multimedia support for Qt5"
             PURPOSE     "Required for audio notifications"
         )
@@ -257,14 +257,14 @@ if (USE_QT5)
         if (WITH_WEBKIT)
             find_package(Qt5WebKit QUIET)
             set_package_properties(Qt5WebKit PROPERTIES TYPE RECOMMENDED
-                URL "http://qt.digia.com"
+                URL "https://www.qt.io/"
                 DESCRIPTION "a WebKit implementation for Qt"
                 PURPOSE     "Needed for displaying previews for URLs in chat"
             )
             if (Qt5WebKit_FOUND)
                 find_package(Qt5WebKitWidgets QUIET)
                 set_package_properties(Qt5WebKitWidgets PROPERTIES TYPE RECOMMENDED
-                    URL "http://qt.digia.com"
+                    URL "https://www.qt.io/"
                     DESCRIPTION "widgets for Qt's WebKit implementation"
                     PURPOSE     "Needed for displaying previews for URLs in chat"
                 )
@@ -279,14 +279,14 @@ if (USE_QT5)
         if (WITH_WEBENGINE)
             find_package(Qt5WebEngine QUIET)
             set_package_properties(Qt5WebEngine PROPERTIES TYPE RECOMMENDED
-                URL "http://qt.digia.com"
+                URL "https://www.qt.io/"
                 DESCRIPTION "a WebEngine implementation for Qt"
                 PURPOSE     "Needed for displaying previews for URLs in chat"
             )
             if (Qt5WebEngine_FOUND)
                 find_package(Qt5WebEngineWidgets QUIET)
                 set_package_properties(Qt5WebEngineWidgets PROPERTIES TYPE RECOMMENDED
-                    URL "http://qt.digia.com"
+                    URL "https://www.qt.io/"
                     DESCRIPTION "widgets for Qt's WebEngine implementation"
                     PURPOSE     "Needed for displaying previews for URLs in chat"
                 )
