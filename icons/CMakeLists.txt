@@ -54,13 +54,12 @@ if (WANT_MONO OR WANT_QTCLIENT)
     endif()
 
     set(CLIENT_RCS ${CLIENT_RCS} ${ICON_RCS} PARENT_SCOPE)
-endif()
 
-# Application icon
-
-if (HAVE_KDE OR (UNIX AND NOT APPLE))
-    install(FILES hicolor/48x48/apps/quassel.png DESTINATION ${CMAKE_INSTALL_ICONDIR}/hicolor/48x48/apps)
-    if (CMAKE_INSTALL_PREFIX STREQUAL "/usr")
-        install(FILES hicolor/48x48/apps/quassel.png DESTINATION /usr/share/pixmaps)
+    # Application icon
+    if (HAVE_KDE OR (UNIX AND NOT APPLE))
+        install(FILES hicolor/48x48/apps/quassel.png DESTINATION ${CMAKE_INSTALL_ICONDIR}/hicolor/48x48/apps)
+        if (CMAKE_INSTALL_PREFIX STREQUAL "/usr")
+            install(FILES hicolor/48x48/apps/quassel.png DESTINATION /usr/share/pixmaps)
+        endif()
     endif()
 endif()
