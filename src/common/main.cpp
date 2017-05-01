@@ -26,6 +26,7 @@
 #  include <sys/stat.h>
 #endif /* HAVE_UMASK */
 
+#include <QCoreApplication>
 #include <QTextCodec>
 
 #ifdef BUILD_CORE
@@ -93,7 +94,14 @@ int main(int argc, char **argv)
 #if QT_VERSION < 0x050000 && defined Q_OS_MAC && !defined BUILD_CORE
     QApplication::setGraphicsSystem("raster");
 #endif
-
+//Setup the High-DPI settings
+# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); //Added in Qt 5.6
+#endif
+# if QT_VERSION >= 0x050400
+   //Added in the early Qt5 versions (5.0?)- use 5.4 as the cutoff since lots of high-DPI work was added then
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+# endif
     // We need to explicitly initialize the required resources when linking statically
 #ifndef BUILD_QTUI
     Q_INIT_RESOURCE(sql);
@@ -202,20 +210,8 @@ int main(int argc, char **argv)
 #if defined BUILD_CORE
     CoreApplication app(argc, argv);
 #elif defined BUILD_QTUI
-# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    QtUiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-# if QT_VERSION >= 0x050700
-    QtUiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-# endif
     QtUiApplication app(argc, argv);
 #elif defined BUILD_MONO
-# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    MonolithicApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-# if QT_VERSION >= 0x050700
-    MonolithicApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-# endif
     MonolithicApplication app(argc, argv);
 #endif
 
@@ -240,7 +236,6 @@ int main(int argc, char **argv)
     AboutData::setQuasselPersons(&aboutData);
     KAboutData::setApplicationData(aboutData.kAboutData());
 #endif
-
     if (!app.init())
         return EXIT_FAILURE;
 
