@@ -21,6 +21,7 @@
 #include <cstdlib>
 
 #include <QTextCodec>
+#include <QCoreApplication>
 
 #ifdef BUILD_CORE
 #  include "coreapplication.h"
@@ -186,20 +187,8 @@ int main(int argc, char **argv)
 #if defined BUILD_CORE
     CoreApplication app(argc, argv);
 #elif defined BUILD_QTUI
-# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    QtUiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-# if QT_VERSION >= 0x050700
-    QtUiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-# endif
     QtUiApplication app(argc, argv);
 #elif defined BUILD_MONO
-# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    MonolithicApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-# if QT_VERSION >= 0x050700
-    MonolithicApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-# endif
     MonolithicApplication app(argc, argv);
 #endif
 
@@ -224,7 +213,13 @@ int main(int argc, char **argv)
     AboutData::setQuasselPersons(&aboutData);
     KAboutData::setApplicationData(aboutData.kAboutData());
 #endif
-
+//Setup the High-DPI settings
+# if QT_VERSION >= 0x050700
+    QCoreApplication::instance()->setAttribute(Qt::AA_UseHighDpiPixmaps);
+# endif
+# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
+    QCoreApplication::instance()->setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     if (!app.init())
         return EXIT_FAILURE;
 
