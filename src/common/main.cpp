@@ -84,7 +84,14 @@ int main(int argc, char **argv)
 #if QT_VERSION < 0x050000 && defined Q_OS_MAC && !defined BUILD_CORE
     QApplication::setGraphicsSystem("raster");
 #endif
-
+//Setup the High-DPI settings
+# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); //Added in Qt 5.6
+#endif
+# if QT_VERSION >= 0x050400
+   //Added in the early Qt5 versions (5.0?)- use 5.4 as the cutoff since lots of high-DPI work was added then
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); 
+# endif
     // We need to explicitly initialize the required resources when linking statically
 #ifndef BUILD_QTUI
     Q_INIT_RESOURCE(sql);
@@ -212,13 +219,6 @@ int main(int argc, char **argv)
     AboutData aboutData;
     AboutData::setQuasselPersons(&aboutData);
     KAboutData::setApplicationData(aboutData.kAboutData());
-#endif
-//Setup the High-DPI settings
-# if QT_VERSION >= 0x050700
-    QCoreApplication::instance()->setAttribute(Qt::AA_UseHighDpiPixmaps);
-# endif
-# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    QCoreApplication::instance()->setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     if (!app.init())
         return EXIT_FAILURE;
