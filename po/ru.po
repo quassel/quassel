@@ -4281,7 +4281,7 @@ msgstr "Интерфейс"
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:24
 msgctxt "InputWidgetSettingsPage|"
 msgid "Input Widget"
-msgstr "Строкаввода"
+msgstr "Строка ввода"
 
 #: ../src/common/internalpeer.cpp:58
 msgctxt "InternalPeer|"
@@ -4508,7 +4508,7 @@ msgstr ""
 msgctxt ""
 "KeySequenceWidget|What the user inputs now will be taken as the new shortcut"
 msgid "Input"
-msgstr "Строкаввода"
+msgstr "Строка ввода"
 
 #: ../src/qtui/settingspages/keysequencewidget.cpp:288
 msgctxt "KeySequenceWidget|No shortcut defined"
@@ -4892,7 +4892,7 @@ msgstr "Показать монитор чата"
 #: ../src/qtui/mainwin.cpp:903
 msgctxt "MainWin|"
 msgid "Inputline"
-msgstr "Строкаввода"
+msgstr "Строка ввода"
 
 #: ../src/qtui/mainwin.cpp:912
 msgctxt "MainWin|"
