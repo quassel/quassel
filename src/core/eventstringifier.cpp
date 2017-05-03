@@ -418,6 +418,15 @@ void EventStringifier::processIrcEventError(IrcEvent *e)
     displayMsg(e, Message::Server, tr("Error from server: ") + e->params().join(""));
 }
 
+void EventStringifier::processIrcEventError(IrcEvent *e)
+{
+    // Need an error reason
+    if (!checkParamCount(e, 1))
+        return;
+
+    displayMsg(e, Message::Server, tr("Error from server: ") + e->params().join(""));
+}
+
 void EventStringifier::processIrcEventWallops(IrcEvent *e)
 {
     displayMsg(e, Message::Server, tr("[Operwall] %1: %2").arg(e->nick(), e->params().join(" ")));
