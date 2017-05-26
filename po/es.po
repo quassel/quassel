@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Adolfo Jayme Barrientos, 2013
 # Daniel Albers <daniel@lbe.rs>, 2012
@@ -6595,7 +6595,7 @@ msgstr "%DN%1%DN %DH(%2@%3)%DH ha salido"
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr "%DN%1%DN ha sido expulsado %DN%2%DN de %DC%3%DC"
+msgstr "%DN%1%DN ha expulsado a %DN%2%DN de %DC%3%DC"
 
 #. Day Change Message
 #: ../src/uisupport/uistyle.cpp:731
