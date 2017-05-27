@@ -862,7 +862,7 @@ bool Core::selectBackend(const QString &backend)
         qDebug() << qPrintable(tr("Migrating storage backend %1 to %2...").arg(_storage->displayName(), storage->displayName()));
         _storage.reset();
         storage.reset();
-        if (reader->migrateTo(writer)) {
+        if (reader->migrateTo(writer.get())) {
             qDebug() << "Migration finished!";
             qDebug() << qPrintable(tr("Migration finished!"));
             if (!saveBackendSettings(backend, settings)) {
