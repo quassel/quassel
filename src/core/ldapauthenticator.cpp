@@ -181,6 +181,8 @@ bool LdapAuthenticator::ldapConnect()
     serverURIArray = serverURI.toLocal8Bit();
     res = ldap_initialize(&_connection, serverURIArray);
 
+    quInfo() << "LDAP: Connecting to" << serverURI;
+
     if (res != LDAP_SUCCESS) {
         qWarning() << "Could not connect to LDAP server:" << ldap_err2string(res);
         return false;
