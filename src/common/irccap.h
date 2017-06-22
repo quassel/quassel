@@ -107,6 +107,18 @@ namespace IrcCap {
     namespace Vendor {
 
         /**
+         * Twitch.tv membership message support
+         *
+         * User list in a channel can be quite large and often non required for bot users and is then optional.
+         *
+         * From Twitch.tv documentation:
+         * "Adds membership state event data. By default, we do not send this data to clients without this capability."
+         *
+         * https://dev.twitch.tv/docs/v5/guides/irc/#twitch-irc-capability-membership
+         */
+        const QString TWITCH_MEMBERSHIP = "twitch.tv/membership";
+
+        /**
          * Self message support, as recognized by ZNC.
          *
          * Some servers (e.g. Bitlbee) assume self-message support; ZNC requires a capability
@@ -131,6 +143,7 @@ namespace IrcCap {
             MULTI_PREFIX,
             SASL,
             USERHOST_IN_NAMES,
+            Vendor::TWITCH_MEMBERSHIP,
             Vendor::ZNC_SELF_MESSAGE
     };
     // NOTE: If you modify the knownCaps list, update the constants above as needed.
