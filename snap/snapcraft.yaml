@@ -1,0 +1,45 @@
+name: quassel
+version: "0.13-pre"
+summary: Modern, cross-platform IRC client
+description: |
+ This is a modern, cross-platform, distributed IRC client. One
+ (or multiple) client(s) can attach to and detach from a central core. It's
+ much like the popular combination of screen and a text-based IRC client such
+ as WeeChat, but graphical.
+grade: stable
+confinement: strict
+
+icon: icons/hicolor/128x128/apps/quassel.png
+apps:
+    core:
+        command: wrap quasselcore --syslog
+        plugs: [network-bind]
+        daemon: simple
+    quassel-kalikiana:
+        command: desktop-launch quasselclient
+        plugs: [home, unity7, pulseaudio, network]
+
+parts:
+    quassel:
+        source: .
+        plugin: cmake
+        configflags:
+            - -DUSE_QT5=1
+            - -DWANT_MONO=0
+            - -DWANT_CORE=1
+            - -DWANT_QTCLIENT=1
+            - -DEMBED_DATA=1
+            - -DWITH_OXYGEN=0
+            - -DCMAKE_BUILD_TYPE=Release
+            - -DCMAKE_DISABLE_FIND_PACKAGE_Phonon4Qt5=ON
+            - -DCMAKE_DISABLE_FIND_PACKAGE_dbusmenu-qt5=ON
+            - -DHAVE_SSL=ON
+        after: [environment]
+    environment:
+        plugin: dump
+        source: snap
+        organize:
+            wrap: bin/wrap
+        prime:
+            - bin
+        after: [desktop-qt5]

@@ -1,0 +1,6 @@
+#!/bin/sh
+export XDG_CONFIG_HOME=$HOME/.config
+CERT=$XDG_CONFIG_HOME/quassel-irc.org/quasselCert.pem
+test ! -f $CERT && openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout $CERT -out $CERT -batch
+
+exec desktop-launch $@
