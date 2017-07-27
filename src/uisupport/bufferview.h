@@ -75,7 +75,6 @@ signals:
     void removeBufferPermanently(const QModelIndex &);
 
 protected:
-    virtual void keyPressEvent(QKeyEvent *);
     virtual void dropEvent(QDropEvent *event);
     virtual void rowsInserted(const QModelIndex &parent, int start, int end);
     virtual void wheelEvent(QWheelEvent *);
