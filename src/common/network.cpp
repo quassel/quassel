@@ -731,8 +731,8 @@ void Network::setMessageRateBurstSize(quint32 burstSize)
     if (burstSize < 1) {
         // Can't go slower than one message at a time.  Also blocks old clients from trying to set
         // this to 0.
-        qWarning() << "Received invalid setMessageRateBurstSize data - message burst size must be "
-                      "non-zero positive, given" << burstSize;
+        qDebug() << "Received invalid setMessageRateBurstSize data - message burst size must be "
+                    "non-zero positive, given" << burstSize;
         return;
     }
     if (_messageRateBurstSize != burstSize) {
@@ -749,8 +749,8 @@ void Network::setMessageRateDelay(quint32 messageDelay)
     if (messageDelay == 0) {
         // Nonsensical to have no delay - just check the Unlimited box instead.  Also blocks old
         // clients from trying to set this to 0.
-        qWarning() << "Received invalid setMessageRateDelay data - message delay must be non-zero "
-                      "positive, given" << messageDelay;
+        qDebug() << "Received invalid setMessageRateDelay data - message delay must be non-zero "
+                    "positive, given" << messageDelay;
         return;
     }
     if (_messageRateDelay != messageDelay) {
