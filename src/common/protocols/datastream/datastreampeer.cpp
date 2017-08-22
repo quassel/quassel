@@ -124,12 +124,12 @@ void DataStreamPeer::handleHandshakeMessage(const QVariantList &mapData)
     }
 
     else if (msgType == "ClientInitAck") {
-        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), false)); // SupportsSsl is obsolete
+        handle(ClientRegistered(m["CoreFeatures"].toUInt(), m["Configured"].toBool(), m["StorageBackends"].toList(), false, m["Authenticators"].toList())); // SupportsSsl obsolete
     }
 
     else if (msgType == "CoreSetupData") {
         QVariantMap map = m["SetupData"].toMap();
-        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["ConnectionProperties"].toMap()));
+        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["ConnectionProperties"].toMap(), map["Authenticator"].toString(), map["AuthProperties"].toMap()));
     }
 
     else if (msgType == "CoreSetupReject") {
@@ -187,6 +187,7 @@ void DataStreamPeer::dispatch(const ClientRegistered &msg) {
     m["MsgType"] = "ClientInitAck";
     m["CoreFeatures"] = msg.coreFeatures;
     m["StorageBackends"] = msg.backendInfo;
+    m["Authenticators"] = msg.authenticatorInfo;
     m["LoginEnabled"] = m["Configured"] = msg.coreConfigured;
 
     writeMessage(m);
@@ -200,6 +201,10 @@ void DataStreamPeer::dispatch(const SetupData &msg)
     map["AdminPasswd"] = msg.adminPassword;
     map["Backend"] = msg.backend;
     map["ConnectionProperties"] = msg.setupData;
+
+    // Auth backend properties.
+    map["Authenticator"] = msg.authenticator;
+    map["AuthProperties"] = msg.authSetupData;
 
     QVariantMap m;
     m["MsgType"] = "CoreSetupData";

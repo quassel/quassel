@@ -18,10 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ABSTRACTSQLSTORAGE_H
-#define ABSTRACTSQLSTORAGE_H
+#pragma once
 
 #include "storage.h"
+
+#include <memory>
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -38,8 +39,8 @@ public:
     AbstractSqlStorage(QObject *parent = 0);
     virtual ~AbstractSqlStorage();
 
-    virtual inline AbstractSqlMigrationReader *createMigrationReader() { return 0; }
-    virtual inline AbstractSqlMigrationWriter *createMigrationWriter() { return 0; }
+    virtual std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() { return {}; }
+    virtual std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter() { return {}; }
 
 public slots:
     virtual State init(const QVariantMap &settings = QVariantMap());
@@ -148,6 +149,7 @@ public:
         QString username;
         QString password;
         int hashversion;
+        QString authenticator;
     };
 
     struct SenderMO {
@@ -356,6 +358,3 @@ public:
     virtual inline bool postProcess() { return true; }
     friend class AbstractSqlMigrationReader;
 };
-
-
-#endif

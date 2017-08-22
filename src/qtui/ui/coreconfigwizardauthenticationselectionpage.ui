@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CoreConfigWizardStorageSelectionPage</class>
- <widget class="QWidget" name="CoreConfigWizardStorageSelectionPage">
+ <class>CoreConfigWizardAuthenticationSelectionPage</class>
+ <widget class="QWidget" name="CoreConfigWizardAuthenticationSelectionPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Storage Backend:</string>
+        <string>Authentication Backend:</string>
        </property>
       </widget>
      </item>

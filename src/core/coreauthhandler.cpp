@@ -172,12 +172,16 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     }
 
     QVariantList backends;
+    QVariantList authenticators;
     bool configured = Core::isConfigured();
-    if (!configured)
+    if (!configured) {
         backends = Core::backendInfo();
+        authenticators = Core::authenticatorInfo();
+    }
 
     // useSsl is only used for the legacy protocol
-    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl));
+    // XXX: FIXME: use client features here: we cannot pass authenticators if the client is too old!
+    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, authenticators));
 
     if (_legacy && useSsl)
         startSsl();
@@ -191,7 +195,15 @@ void CoreAuthHandler::handle(const SetupData &msg)
     if (!checkClientRegistered())
         return;
 
-    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData);
+    // The default parameter to authenticator is Database.
+    // Maybe this should be hardcoded elsewhere, i.e. as a define.
+    QString authenticator = msg.authenticator;
+    quInfo() << "[" << authenticator << "]";
+    if (authenticator.trimmed().isEmpty()) {
+        authenticator = QString("Database");
+    }
+
+    QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, authenticator, msg.authSetupData);
     if (!result.isEmpty())
         _peer->dispatch(SetupFailed(result));
     else
@@ -204,7 +216,13 @@ void CoreAuthHandler::handle(const Login &msg)
     if (!checkClientRegistered())
         return;
 
+    // First attempt local auth using the real username and password.
+    // If that fails, move onto the auth provider.
     UserId uid = Core::validateUser(msg.user, msg.password);
+    if (uid == 0) {
+        uid = Core::authenticateUser(msg.user, msg.password);
+    }
+
     if (uid == 0) {
         quInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
         _peer->dispatch(LoginFailed(tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.")));

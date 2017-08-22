@@ -1,2 +1,2 @@
-INSERT INTO quasseluser (userid, username, password, hashversion)
-VALUES (?, ?, ?, ?)
+INSERT INTO quasseluser (userid, username, password, hashversion, authenticator)
+VALUES (?, ?, ?, ?, ?)

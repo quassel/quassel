@@ -144,7 +144,7 @@ Storage::State AbstractSqlStorage::init(const QVariantMap &settings)
         }
     }
 
-    quInfo() << qPrintable(displayName()) << "Storage Backend is ready. Quassel Schema Version:" << installedSchemaVersion();
+    quInfo() << qPrintable(displayName()) << "storage backend is ready. Schema version:" << installedSchemaVersion();
     return IsReady;
 }
 

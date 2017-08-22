@@ -18,57 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coresettings.h"
-
-#include "quassel.h"
-
-CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName)
-{
-}
-
-
-CoreSettings::~CoreSettings()
-{
-}
-
-
-void CoreSettings::setStorageSettings(const QVariant &data)
-{
-    setLocalValue("StorageSettings", data);
-}
-
-
-QVariant CoreSettings::storageSettings(const QVariant &def)
-{
-    return localValue("StorageSettings", def);
-}
-
-
-QVariant CoreSettings::authSettings(const QVariant &def)
-{
-    return localValue("AuthSettings", def);
-}
-
-
-void CoreSettings::setAuthSettings(const QVariant &data)
-{
-    setLocalValue("AuthSettings", data);
-}
-
-// FIXME remove
-QVariant CoreSettings::oldDbSettings()
-{
-    return localValue("DatabaseSettings");
-}
-
-
-void CoreSettings::setCoreState(const QVariant &data)
-{
-    setLocalValue("CoreState", data);
-}
-
-
-QVariant CoreSettings::coreState(const QVariant &def)
-{
-    return localValue("CoreState", def);
-}
+// Make moc happy
+#include "authenticator.h"
+#include "moc_authenticator.cpp"

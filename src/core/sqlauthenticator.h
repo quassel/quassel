@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2015 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,57 +18,32 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coresettings.h"
+#pragma once
 
-#include "quassel.h"
+#include "authenticator.h"
 
-CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName)
+class SqlAuthenticator : public Authenticator
 {
-}
+    Q_OBJECT
 
+public:
+    SqlAuthenticator(QObject *parent = 0);
+    virtual ~SqlAuthenticator();
 
-CoreSettings::~CoreSettings()
-{
-}
+public slots:
+    /* General */
+    bool isAvailable() const;
+    QString backendId() const;
+    QString displayName() const;
+    QString description() const;
+    virtual inline QVariantList setupData() const { return {}; }
 
+    virtual inline bool canChangePassword() const { return true; }
 
-void CoreSettings::setStorageSettings(const QVariant &data)
-{
-    setLocalValue("StorageSettings", data);
-}
+    bool setup(const QVariantMap &settings = QVariantMap());
+    State init(const QVariantMap &settings = QVariantMap());
+    UserId validateUser(const QString &user, const QString &password);
 
-
-QVariant CoreSettings::storageSettings(const QVariant &def)
-{
-    return localValue("StorageSettings", def);
-}
-
-
-QVariant CoreSettings::authSettings(const QVariant &def)
-{
-    return localValue("AuthSettings", def);
-}
-
-
-void CoreSettings::setAuthSettings(const QVariant &data)
-{
-    setLocalValue("AuthSettings", data);
-}
-
-// FIXME remove
-QVariant CoreSettings::oldDbSettings()
-{
-    return localValue("DatabaseSettings");
-}
-
-
-void CoreSettings::setCoreState(const QVariant &data)
-{
-    setLocalValue("CoreState", data);
-}
-
-
-QVariant CoreSettings::coreState(const QVariant &def)
-{
-    return localValue("CoreState", def);
-}
+    /* User handling */
+    //virtual UserId getUserId(const QString &username);
+};

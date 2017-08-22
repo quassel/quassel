@@ -46,12 +46,19 @@ bool SqliteStorage::isAvailable() const
 }
 
 
+QString SqliteStorage::backendId() const
+{
+    return QString("SQLite");
+}
+
+
 QString SqliteStorage::displayName() const
 {
+    // Note: Pre-0.13 clients use the displayName property for backend idenfication
     // We identify the backend to use for the monolithic core by its displayname.
     // so only change this string if you _really_ have to and make sure the core
     // setup for the mono client still works ;)
-    return QString("SQLite");
+    return backendId();
 }
 
 
@@ -116,7 +123,7 @@ bool SqliteStorage::setupSchemaVersion(int version)
 }
 
 
-UserId SqliteStorage::addUser(const QString &user, const QString &password)
+UserId SqliteStorage::addUser(const QString &user, const QString &password, const QString &authenticator)
 {
     QSqlDatabase db = logDb();
     UserId uid;
@@ -131,6 +138,7 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password)
         query.bindValue(":username", user);
         query.bindValue(":password", hashPassword(password));
         query.bindValue(":hashversion", Storage::HashVersion::Latest);
+        query.bindValue(":authenticator", authenticator);
         lockForWrite();
         safeExec(query);
         if (query.lastError().isValid() && query.lastError().number() == 19) { // user already exists - sadly 19 seems to be the general constraint violation error...
@@ -240,6 +248,26 @@ UserId SqliteStorage::getUserId(const QString &username)
     return userId;
 }
 
+QString SqliteStorage::getUserAuthenticator(const UserId userid)
+{
+    QString authenticator = QString("");
+
+    {
+        QSqlQuery query(logDb());
+        query.prepare(queryString("select_authenticator"));
+        query.bindValue(":userid", userid.toInt());
+
+        lockForRead();
+        safeExec(query);
+
+        if (query.first()) {
+            authenticator = query.value(0).toString();
+        }
+    }
+    unlock();
+
+    return authenticator;
+}
 
 UserId SqliteStorage::internalUser()
 {
@@ -1820,6 +1848,7 @@ bool SqliteMigrationReader::readMo(QuasselUserMO &user)
     user.username = value(1).toString();
     user.password = value(2).toString();
     user.hashversion = value(3).toInt();
+    user.authenticator = value(4).toString();
     return true;
 }
 

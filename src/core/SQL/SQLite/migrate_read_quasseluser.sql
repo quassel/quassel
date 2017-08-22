@@ -1,2 +1,2 @@
-SELECT userid, username, password, hashversion
+SELECT userid, username, password, hashversion, authenticator
 FROM quasseluser
