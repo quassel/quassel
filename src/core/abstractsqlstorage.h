@@ -233,6 +233,7 @@ public:
         int lastmsgid;
         int lastseenmsgid;
         int markerlinemsgid;
+        int bufferactivity;
         QString key;
         bool joined;
     };

@@ -96,6 +96,9 @@ public slots:
     virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
     virtual void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
     virtual QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user);
+    virtual void setBufferActivity(UserId id, const BufferId &bufferId, const int &type);
+    virtual QHash<BufferId, int> bufferActivities(UserId id);
+    virtual int bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId);
 
     /* Message handling */
     virtual bool logMessage(Message &msg);

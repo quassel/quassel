@@ -9,6 +9,7 @@ CREATE TABLE buffer (
 	lastmsgid INTEGER NOT NULL DEFAULT 0,
 	lastseenmsgid INTEGER NOT NULL DEFAULT 0,
 	markerlinemsgid INTEGER NOT NULL DEFAULT 0,
+	bufferactivity INTEGER NOT NULL DEFAULT 0,
 	key TEXT,
 	joined INTEGER NOT NULL DEFAULT 0, -- BOOL
 	CHECK (lastseenmsgid <= lastmsgid)
