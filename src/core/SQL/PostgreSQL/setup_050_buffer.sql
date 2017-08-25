@@ -9,6 +9,7 @@ create TABLE buffer (
 	lastmsgid integer NOT NULL DEFAULT 0,
 	lastseenmsgid integer NOT NULL DEFAULT 0,
 	markerlinemsgid integer NOT NULL DEFAULT 0,
+	bufferactivity integer NOT NULL DEFAULT 0,
 	key varchar(128),
 	joined boolean NOT NULL DEFAULT FALSE, -- BOOL
 	UNIQUE(userid, networkid, buffercname),
