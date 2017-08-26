@@ -40,6 +40,15 @@ public slots:
     virtual inline void requestRemoveBuffer(BufferId buffer) { removeBuffer(buffer); }
     virtual void removeBuffer(BufferId bufferId);
 
+    void addBufferActivity(Message message) {
+        auto oldActivity = activity(message.bufferId());
+        if (!oldActivity.testFlag(message.type())) {
+            setBufferActivity(message.bufferId(), (int) (oldActivity | message.type()));
+        }
+    }
+
+    void setBufferActivity(BufferId buffer, const int &activity) override;
+
     virtual inline void requestRenameBuffer(BufferId buffer, QString newName) { renameBuffer(buffer, newName); }
     virtual void renameBuffer(BufferId buffer, QString newName);
 
@@ -48,7 +57,10 @@ public slots:
 
     virtual void requestPurgeBufferIds();
 
-    virtual inline void requestMarkBufferAsRead(BufferId buffer) { markBufferAsRead(buffer); }
+    virtual inline void requestMarkBufferAsRead(BufferId buffer) {
+        setLastSeenMsg(buffer, (int) Message::Types());
+        markBufferAsRead(buffer);
+    }
 
     void storeDirtyIds();
 
@@ -61,6 +73,7 @@ private:
 
     QSet<BufferId> dirtyLastSeenBuffers;
     QSet<BufferId> dirtyMarkerLineBuffers;
+    QSet<BufferId> dirtyActivities;
 
     void purgeBufferIds();
 };

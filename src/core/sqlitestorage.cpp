@@ -1553,7 +1553,7 @@ QHash<BufferId, Message::Types> SqliteStorage::bufferActivities(UserId user)
 }
 
 
-Message::Types SqliteStorage::bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId)
+Message::Types SqliteStorage::bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId)
 {
     QSqlDatabase db = logDb();
     db.transaction();

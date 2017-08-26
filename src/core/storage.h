@@ -409,7 +409,7 @@ public slots:
      * \param bufferId The buffer
      * \param lastSeenMsgId     The last seen message
      */
-    virtual Message::Types bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId) = 0;
+    virtual Message::Types bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId) = 0;
 
     /* Message handling */
 
