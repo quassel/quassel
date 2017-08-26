@@ -143,6 +143,7 @@
     <file>./SQL/SQLite/select_authuser.sql</file>
     <file>./SQL/SQLite/select_bufferByName.sql</file>
     <file>./SQL/SQLite/select_bufferExists.sql</file>
+    <file>./SQL/SQLite/select_buffer_bufferactivities.sql</file>
     <file>./SQL/SQLite/select_buffer_bufferactivity.sql</file>
     <file>./SQL/SQLite/select_buffer_by_id.sql</file>
     <file>./SQL/SQLite/select_buffer_lastseen_messages.sql</file>
@@ -186,6 +187,7 @@
     <file>./SQL/SQLite/setup_130_identity.sql</file>
     <file>./SQL/SQLite/setup_140_identity_nick.sql</file>
     <file>./SQL/SQLite/update_backlog_bufferid.sql</file>
+    <file>./SQL/SQLite/update_buffer_bufferactivity.sql</file>
     <file>./SQL/SQLite/update_buffer_lastseen.sql</file>
     <file>./SQL/SQLite/update_buffer_markerlinemsgid.sql</file>
     <file>./SQL/SQLite/update_buffer_name.sql</file>

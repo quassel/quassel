@@ -99,7 +99,7 @@ public slots:
     virtual QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user);
     virtual void setBufferActivity(UserId id, const BufferId &bufferId, const Message::Types &type);
     virtual QHash<BufferId, Message::Types> bufferActivities(UserId id);
-    virtual Message::Types bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId);
+    virtual Message::Types bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId);
 
     /* Message handling */
     virtual bool logMessage(Message &msg);

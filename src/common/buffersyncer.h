@@ -23,6 +23,7 @@
 
 #include "syncableobject.h"
 #include "types.h"
+#include "message.h"
 
 class BufferSyncer : public SyncableObject
 {
@@ -31,12 +32,13 @@ class BufferSyncer : public SyncableObject
 
 public:
     explicit BufferSyncer(QObject *parent);
-    explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, QObject *parent);
+    explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, QObject *parent);
 
     inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     MsgId lastSeenMsg(BufferId buffer) const;
     MsgId markerLine(BufferId buffer) const;
+    Message::Types activity(BufferId buffer) const;
 
 public slots:
     QVariantList initLastSeenMsg() const;
@@ -45,8 +47,16 @@ public slots:
     QVariantList initMarkerLines() const;
     void initSetMarkerLines(const QVariantList &);
 
+    QVariantList initActivities() const;
+    void initSetActivities(const QVariantList &);
+
     virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
     virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) setMarkerLine(buffer, msgId); }
+
+    virtual inline void setBufferActivity(BufferId buffer, const int &activity) {
+        SYNC(ARG(buffer), ARG(activity));
+        _bufferActivities[buffer] = Message::Types(activity);
+    }
 
     virtual inline void requestRemoveBuffer(BufferId buffer) { REQUEST(ARG(buffer)) }
     virtual void removeBuffer(BufferId buffer);
@@ -82,6 +92,7 @@ protected:
 private:
     QHash<BufferId, MsgId> _lastSeenMsg;
     QHash<BufferId, MsgId> _markerLines;
+    QHash<BufferId, Message::Types> _bufferActivities;
 };
 
 

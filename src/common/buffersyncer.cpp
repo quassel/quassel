@@ -27,10 +27,11 @@ BufferSyncer::BufferSyncer(QObject *parent)
 }
 
 
-BufferSyncer::BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, QObject *parent)
+BufferSyncer::BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, QObject *parent)
     : SyncableObject(parent),
     _lastSeenMsg(lastSeenMsg),
-    _markerLines(markerLines)
+    _markerLines(markerLines),
+    _bufferActivities(activities)
 {
 }
 
@@ -121,6 +122,35 @@ void BufferSyncer::initSetMarkerLines(const QVariantList &list)
     for (int i = 0; i < list.count(); i += 2) {
         setMarkerLine(list.at(i).value<BufferId>(), list.at(i+1).value<MsgId>());
     }
+}
+
+
+QVariantList BufferSyncer::initActivities() const
+{
+    QVariantList list;
+    QHash<BufferId, Message::Types>::const_iterator iter = _bufferActivities.constBegin();
+    while (iter != _bufferActivities.constEnd()) {
+        list << QVariant::fromValue<BufferId>(iter.key())
+             << QVariant::fromValue<int>((int) iter.value());
+        ++iter;
+    }
+    return list;
+}
+
+
+void BufferSyncer::initSetActivities(const QVariantList &list)
+{
+    _bufferActivities.clear();
+    Q_ASSERT(list.count() % 2 == 0);
+    for (int i = 0; i < list.count(); i += 2) {
+        setBufferActivity(list.at(i).value<BufferId>(), list.at(i+1).value<int>());
+    }
+}
+
+
+Message::Types BufferSyncer::activity(BufferId buffer) const
+{
+    return _bufferActivities.value(buffer, Message::Types());
 }
 
 
