@@ -53,6 +53,7 @@ public:
         NetsplitQuit = 0x10000,
         Invite = 0x20000,
     };
+    Q_DECLARE_FLAGS(Types, Type)
 
     // DO NOT CHANGE without knowing what you do, some of these flags are stored in the database
     enum Flag {
@@ -112,6 +113,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg);
 QDebug operator<<(QDebug dbg, const Message &msg);
 
 Q_DECLARE_METATYPE(Message)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Types)
 Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Flags)
 
 #endif
