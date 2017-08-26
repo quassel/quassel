@@ -128,7 +128,7 @@ void BufferSyncer::initSetMarkerLines(const QVariantList &list)
 QVariantList BufferSyncer::initActivities() const
 {
     QVariantList list;
-    QHash<BufferId, Message::Types>::const_iterator iter = _bufferActivities.constBegin();
+    auto iter = _bufferActivities.constBegin();
     while (iter != _bufferActivities.constEnd()) {
         list << QVariant::fromValue<BufferId>(iter.key())
              << QVariant::fromValue<int>((int) iter.value());
