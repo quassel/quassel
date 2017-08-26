@@ -1503,7 +1503,7 @@ QHash<BufferId, MsgId> SqliteStorage::bufferMarkerLineMsgIds(UserId user)
     return markerLineHash;
 }
 
-void SqliteStorage::setBufferActivity(UserId user, const BufferId &bufferId, const int &bufferActivity)
+void SqliteStorage::setBufferActivity(UserId user, const BufferId &bufferId, const Message::Types &bufferActivity)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1513,7 +1513,7 @@ void SqliteStorage::setBufferActivity(UserId user, const BufferId &bufferId, con
         query.prepare(queryString("update_buffer_bufferactivity"));
         query.bindValue(":userid", user.toInt());
         query.bindValue(":bufferid", bufferId.toInt());
-        query.bindValue(":bufferactivity", bufferActivity);
+        query.bindValue(":bufferactivity", (int) bufferActivity);
 
         lockForWrite();
         safeExec(query);
@@ -1524,9 +1524,9 @@ void SqliteStorage::setBufferActivity(UserId user, const BufferId &bufferId, con
 }
 
 
-QHash<BufferId, int> SqliteStorage::bufferActivities(UserId user)
+QHash<BufferId, Message::Types> SqliteStorage::bufferActivities(UserId user)
 {
-    QHash<BufferId, int> bufferActivityHash;
+    QHash<BufferId, Message::Types> bufferActivityHash;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1542,7 +1542,7 @@ QHash<BufferId, int> SqliteStorage::bufferActivities(UserId user)
         error = !watchQuery(query);
         if (!error) {
             while (query.next()) {
-                bufferActivityHash[query.value(0).toInt()] = (Message::Type) query.value(1).toInt();
+                bufferActivityHash[query.value(0).toInt()] = Message::Types(query.value(1).toInt());
             }
         }
     }
@@ -1553,12 +1553,12 @@ QHash<BufferId, int> SqliteStorage::bufferActivities(UserId user)
 }
 
 
-int SqliteStorage::bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId)
+Message::Types SqliteStorage::bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId)
 {
     QSqlDatabase db = logDb();
     db.transaction();
 
-    int result = 0;
+    Message::Types result = Message::Types(0);
     {
         QSqlQuery query(db);
         query.prepare(queryString("select_buffer_bufferactivity"));
@@ -1568,7 +1568,7 @@ int SqliteStorage::bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId)
         lockForRead();
         safeExec(query);
         if (query.first())
-            result = query.value(0).toInt();
+            result = Message::Types(query.value(0).toInt());
     }
 
     db.commit();

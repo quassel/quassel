@@ -1386,21 +1386,21 @@ QHash<BufferId, MsgId> PostgreSqlStorage::bufferMarkerLineMsgIds(UserId user)
 }
 
 
-void PostgreSqlStorage::setBufferActivity(UserId user, const BufferId &bufferId, const int &bufferActivity)
+void PostgreSqlStorage::setBufferActivity(UserId user, const BufferId &bufferId, const Message::Types &bufferActivity)
 {
     QSqlQuery query(logDb());
     query.prepare(queryString("update_buffer_bufferactivity"));
 
     query.bindValue(":userid", user.toInt());
     query.bindValue(":bufferid", bufferId.toInt());
-    query.bindValue(":bufferactivity", bufferActivity);
+    query.bindValue(":bufferactivity", (int) bufferActivity);
     safeExec(query);
     watchQuery(query);
 }
 
-QHash<BufferId, int> PostgreSqlStorage::bufferActivities(UserId user)
+QHash<BufferId, Message::Types> PostgreSqlStorage::bufferActivities(UserId user)
 {
-    QHash<BufferId, int> bufferActivityHash;
+    QHash<BufferId, Message::Types> bufferActivityHash;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -1419,14 +1419,14 @@ QHash<BufferId, int> PostgreSqlStorage::bufferActivities(UserId user)
     }
 
     while (query.next()) {
-        bufferActivityHash[query.value(0).toInt()] = (Message::Type) query.value(1).toInt();
+        bufferActivityHash[query.value(0).toInt()] = Message::Types(query.value(1).toInt());
     }
 
     db.commit();
     return bufferActivityHash;
 }
 
-int PostgreSqlStorage::bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId)
+Message::Types PostgreSqlStorage::bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId)
 {
     QSqlQuery query(logDb());
     query.prepare(queryString("select_buffer_bufferactivity"));
@@ -1434,9 +1434,9 @@ int PostgreSqlStorage::bufferActivity(BufferId &bufferId, MsgId &lastSeenMsgId)
     query.bindValue(":lastseenmsgid", lastSeenMsgId.toInt());
     safeExec(query);
     watchQuery(query);
-    int result = 0;
+    Message::Types result = Message::Types(0);
     if (query.first())
-        result = query.value(0).toInt();
+        result = Message::Types(query.value(0).toInt());
     return result;
 }
 
