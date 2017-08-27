@@ -226,7 +226,7 @@ private slots:
 
     void corePasswordChanged(PeerPtr, bool success);
 
-    void requestInitialBacklog();
+    void finishConnectionInitialization();
 
     void sendBufferedUserInput();
 
@@ -234,6 +234,8 @@ private:
     Client(QObject *parent = 0);
     virtual ~Client();
     void init();
+
+    void requestInitialBacklog();
 
     static void addNetwork(Network *);
     static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }

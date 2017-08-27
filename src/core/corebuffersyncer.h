@@ -58,7 +58,7 @@ public slots:
     virtual void requestPurgeBufferIds();
 
     virtual inline void requestMarkBufferAsRead(BufferId buffer) {
-        setLastSeenMsg(buffer, (int) Message::Types());
+        setBufferActivity(buffer, (int) Message::Types());
         markBufferAsRead(buffer);
     }
 

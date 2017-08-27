@@ -131,6 +131,8 @@ public :
     void setActivityLevel(BufferInfo::ActivityLevel level);
     void clearActivityLevel();
     void updateActivityLevel(const Message &msg);
+    void setActivity(Message::Types msg, bool highlight);
+    bool addActivity(Message::Types msg, bool highlight);
 
     inline const MsgId &firstUnreadMsgId() const { return _firstUnreadMsgId; }
 
@@ -383,6 +385,7 @@ public slots:
     void clearBufferActivity(const BufferId &bufferId);
     void updateBufferActivity(Message &msg);
     void networkRemoved(const NetworkId &networkId);
+    void bufferActivityChanged(BufferId, Message::Types);
 
 signals:
     void requestSetLastSeenMsg(BufferId buffer, MsgId msg);
