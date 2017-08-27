@@ -50,8 +50,12 @@ public:
 
     virtual int lag() const = 0;
 
+    virtual QString address() const = 0;
+    virtual quint16 port() const = 0;
+
     int _id = -1;
 
+    QDateTime _connectedSince;
     QString _buildDate;
     QString _clientVersion;
 

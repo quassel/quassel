@@ -91,6 +91,22 @@ QString RemotePeer::description() const
     return QString();
 }
 
+QString RemotePeer::address() const
+{
+    if (socket())
+        return socket()->peerAddress().toString();
+
+    return QString();
+}
+
+quint16 RemotePeer::port() const
+{
+    if (socket())
+        return socket()->peerPort();
+
+    return 0;
+}
+
 
 ::SignalProxy *RemotePeer::signalProxy() const
 {

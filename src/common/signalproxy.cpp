@@ -290,6 +290,7 @@ bool SignalProxy::addPeer(Peer *peer)
 
     if (peer->_id < 0) {
         peer->_id = nextPeerId();
+        peer->_connectedSince = QDateTime::currentDateTimeUtc();
     }
 
     _peers.insert(peer);
@@ -821,9 +822,10 @@ QVariantList SignalProxy::peerData() {
     for (auto peer : _peers) {
         QVariantMap data;
         data["id"] = peer->_id;
-        data["buildData"] = peer->_buildDate;
         data["clientVersion"] = peer->_clientVersion;
-        data["description"] = peer->description();
+        data["clientVersionDate"] = peer->_buildDate;
+        data["remoteAddress"] = peer->address();
+        data["connectedSince"] = peer->_connectedSince;
         data["secure"] = peer->isSecure();
         result << data;
     }
