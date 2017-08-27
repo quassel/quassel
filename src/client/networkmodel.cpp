@@ -1742,7 +1742,6 @@ void NetworkModel::messageRedirectionSettingsChanged()
 }
 
 void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types activity) {
-    qWarning() << "bufferActivityChanged(" << bufferId << ", " << activity << ")";
     auto _bufferItem = findBufferItem(bufferId);
     if (!_bufferItem) {
         qDebug() << "NetworkModel::bufferActivityChanged(): buffer is unknown:" << bufferId;
