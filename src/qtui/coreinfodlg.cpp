@@ -24,6 +24,8 @@
 
 #include "client.h"
 #include "signalproxy.h"
+#include "bufferwidget.h"
+#include "coresessionwidget.h"
 
 CoreInfoDlg::CoreInfoDlg(QWidget *parent)
     : QDialog(parent),
@@ -41,21 +43,15 @@ void CoreInfoDlg::coreInfoAvailable()
     ui.labelCoreVersionDate->setText(_coreInfo["quasselBuildDate"].toString()); // "BuildDate" for compatibility
     ui.labelClientCount->setNum(_coreInfo["sessionConnectedClients"].toInt());
 
-    /*
     qWarning() << _coreInfo["sessionConnectedClientData"];
 
-    int lastPeerId = -1;
-    QMap<QString, QVariant> lastPeerData;
     for (const auto &peerData : _coreInfo["sessionConnectedClientData"].toList()) {
-        lastPeerData = peerData.toMap();
-        lastPeerId = lastPeerData["id"].toInt();
+        auto coreSessionWidget = new CoreSessionWidget(ui.coreSessionScrollContainer);
+        coreSessionWidget->setData(peerData.toMap());
+        ui.coreSessionContainer->addWidget(coreSessionWidget);
     }
 
-    if (lastPeerId != -1) {
-        qWarning() << "Kicking client " << lastPeerId;
-        Client::kickClient(lastPeerId);
-    }
-    */
+    ui.coreSessionContainer->addStretch(1);
 
     updateUptime();
     startTimer(1000);
