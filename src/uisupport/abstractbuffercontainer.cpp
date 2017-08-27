@@ -126,9 +126,7 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId)
 
     _currentBuffer = bufferId;
     showChatView(bufferId);
-    if (!Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
-        Client::networkModel()->clearBufferActivity(bufferId);
-    }
+    Client::networkModel()->clearBufferActivity(bufferId);
     Client::setBufferLastSeenMsg(bufferId, _chatViews[bufferId]->lastMsgId());
     Client::backlogManager()->checkForBacklog(bufferId);
     setFocus();
