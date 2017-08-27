@@ -308,6 +308,11 @@ void BufferItem::clearActivityLevel()
 void BufferItem::updateActivityLevel(const Message &msg)
 {
     if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
+        if (msg.flags().testFlag(Message::Highlight)) {
+            if (addActivity(Message::Types(msg.type()), msg.flags().testFlag(Message::Highlight))) {
+                emit dataChanged();
+            }
+        }
         return;
     }
 
@@ -339,7 +344,7 @@ void BufferItem::updateActivityLevel(const Message &msg)
 void BufferItem::setActivity(Message::Types type, bool highlight) {
     BufferInfo::ActivityLevel oldLevel = activityLevel();
 
-    _activity = BufferInfo::Activity();
+    _activity &= BufferInfo::Highlight;
     addActivity(type, highlight);
 
     if (_activity != oldLevel) {
