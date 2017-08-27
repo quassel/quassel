@@ -1,93 +1,145 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CoreInfoDlg</class>
- <widget class="QDialog" name="CoreInfoDlg" >
-  <property name="geometry" >
+    <widget class="QDialog" name="CoreInfoDlg">
+        <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>282</width>
-    <height>126</height>
+       <width>566</width>
+       <height>349</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+        <property name="windowTitle">
    <string>Core Information</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" >
+        <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout" >
-     <item row="0" column="0" >
-      <widget class="QLabel" name="label_2" >
-       <property name="text" >
+       <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+               <widget class="QLabel" name="label_2">
+                   <property name="text">
         <string>Version:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1" >
-      <widget class="QLabel" name="labelCoreVersion" >
-       <property name="text" >
-        <string>&lt;core version></string>
+           <item row="0" column="1">
+               <widget class="QLabel" name="labelCoreVersion">
+                   <property name="text">
+                       <string>&lt;core version&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0" >
-      <widget class="QLabel" name="label_4" >
-       <property name="text" >
+           <item row="2" column="0">
+               <widget class="QLabel" name="label_4">
+                   <property name="text">
         <string>Uptime:</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="0" >
-      <widget class="QLabel" name="label_3" >
-       <property name="text" >
+           <item row="3" column="0">
+               <widget class="QLabel" name="label_3">
+                   <property name="text">
         <string>Connected Clients:</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1" >
-      <widget class="QLabel" name="labelClientCount" >
-       <property name="text" >
-        <string>&lt;connected clients></string>
+           <item row="3" column="1">
+               <widget class="QLabel" name="labelClientCount">
+                   <property name="text">
+                       <string>&lt;connected clients&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1" >
-      <widget class="QLabel" name="labelUptime" >
-       <property name="text" >
-        <string>&lt;core uptime></string>
+           <item row="2" column="1">
+               <widget class="QLabel" name="labelUptime">
+                   <property name="text">
+                       <string>&lt;core uptime&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0" >
-      <widget class="QLabel" name="label" >
-       <property name="text" >
+           <item row="1" column="0">
+               <widget class="QLabel" name="label">
+                   <property name="text">
         <string>Version date:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1" >
-      <widget class="QLabel" name="labelCoreVersionDate" >
-       <property name="text" >
-        <string>&lt;version date></string>
+           <item row="1" column="1">
+               <widget class="QLabel" name="labelCoreVersionDate">
+                   <property name="text">
+                       <string>&lt;version date&gt;</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2" >
-     <item row="0" column="1" >
-      <widget class="QPushButton" name="closeButton" >
-       <property name="text" >
+       <widget class="QScrollArea" name="coreSessionScrollArea">
+           <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+               </sizepolicy>
+           </property>
+           <property name="widgetResizable">
+               <bool>true</bool>
+           </property>
+           <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+           </property>
+           <widget class="QWidget" name="coreSessionScrollContainer">
+               <property name="geometry">
+                   <rect>
+                       <x>0</x>
+                       <y>0</y>
+                       <width>550</width>
+                       <height>193</height>
+                   </rect>
+               </property>
+               <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                   </sizepolicy>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                   <item>
+                       <layout class="QVBoxLayout" name="coreSessionContainer">
+                           <item>
+                               <spacer name="verticalSpacer">
+                                   <property name="orientation">
+                                       <enum>Qt::Vertical</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                       <size>
+                                           <width>20</width>
+                                           <height>40</height>
+                                       </size>
+                                   </property>
+                               </spacer>
+                           </item>
+                       </layout>
+                   </item>
+               </layout>
+           </widget>
+       </widget>
+   </item>
+            <item>
+                <layout class="QGridLayout" name="gridLayout_2">
+                    <item row="1" column="1">
+                        <widget class="QPushButton" name="closeButton">
+                            <property name="text">
         <string>Close</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0" >
-      <spacer name="horizontalSpacer" >
-       <property name="orientation" >
+                    <item row="1" column="0">
+                        <spacer name="horizontalSpacer">
+                            <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+                            <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -95,12 +147,12 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2" >
-      <spacer name="horizontalSpacer_2" >
-       <property name="orientation" >
+                    <item row="1" column="2">
+                        <spacer name="horizontalSpacer_2">
+                            <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+                            <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -109,19 +161,6 @@
       </spacer>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0" >
-      <size>
-       <width>20</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

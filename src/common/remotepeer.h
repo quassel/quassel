@@ -49,6 +49,9 @@ public:
     virtual QString description() const;
     virtual quint16 enabledFeatures() const { return 0; }
 
+    virtual QString address() const;
+    virtual quint16 port() const;
+
     bool isOpen() const;
     bool isSecure() const;
     bool isLocal() const;
