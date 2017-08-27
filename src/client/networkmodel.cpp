@@ -307,12 +307,8 @@ void BufferItem::clearActivityLevel()
 
 void BufferItem::updateActivityLevel(const Message &msg)
 {
-    if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
-        if (msg.flags().testFlag(Message::Highlight)) {
-            if (addActivity(Message::Types(msg.type()), msg.flags().testFlag(Message::Highlight))) {
-                emit dataChanged();
-            }
-        }
+    // If the core handles activity, and this message is not a highlight, ignore this
+    if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync) && !msg.flags().testFlag(Message::Highlight)) {
         return;
     }
 
@@ -355,11 +351,14 @@ void BufferItem::setActivity(Message::Types type, bool highlight) {
 bool BufferItem::addActivity(Message::Types type, bool highlight) {
     auto oldActivity = activityLevel();
 
-    if (type != 0)
-        _activity |= BufferInfo::OtherActivity;
+    // If the core handles activities, only handle highlights
+    if (!Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
+        if (type != 0)
+            _activity |= BufferInfo::OtherActivity;
 
-    if (type.testFlag(Message::Plain) || type.testFlag(Message::Notice) || type.testFlag(Message::Action))
-        _activity |= BufferInfo::NewMessage;
+        if (type.testFlag(Message::Plain) || type.testFlag(Message::Notice) || type.testFlag(Message::Action))
+            _activity |= BufferInfo::NewMessage;
+    }
 
     if (highlight)
         _activity |= BufferInfo::Highlight;
@@ -1735,7 +1734,7 @@ void NetworkModel::messageRedirectionSettingsChanged()
 void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types activity) {
     auto bufferItem = findBufferItem(bufferId);
     if (!bufferItem) {
-        qDebug() << "NetworkModel::clearBufferActivity(): buffer is unknown:" << bufferId;
+        qDebug() << "NetworkModel::bufferActivityChanged(): buffer is unknown:" << bufferId;
         return;
     }
     auto hiddenTypes = BufferSettings(bufferId).messageFilter();
