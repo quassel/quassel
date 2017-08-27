@@ -293,7 +293,12 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level)
 
 void BufferItem::clearActivityLevel()
 {
-    _activity = BufferInfo::NoActivity;
+    if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
+        // If the core handles activity sync, clear only the highlight flag
+        _activity &= ~BufferInfo::Highlight;
+    } else {
+        _activity = BufferInfo::NoActivity;
+    }
     _firstUnreadMsgId = MsgId();
 
     // FIXME remove with core proto v11
