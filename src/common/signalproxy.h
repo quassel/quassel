@@ -78,6 +78,9 @@ public:
     void dumpProxyStats();
     void dumpSyncMap(SyncableObject *object);
     inline int peerCount() const { return _peers.size(); }
+    QVariantList peerData();
+
+    Peer *peerById(int peerId);
 
 public slots:
     void detachObject(QObject *obj);
@@ -117,6 +120,10 @@ private:
     void removePeer(Peer *peer);
     void removeAllPeers();
 
+    int nextPeerId() {
+        return _lastPeerId++;
+    }
+
     template<class T>
     void dispatch(const T &protoMessage);
     template<class T>
@@ -140,6 +147,7 @@ private:
     static void disconnectDevice(QIODevice *dev, const QString &reason = QString());
 
     QSet<Peer *> _peers;
+    QHash<int, Peer*> _peerMap;
 
     // containg a list of argtypes for fast access
     QHash<const QMetaObject *, ExtendedMetaObject *> _extendedMetaObjects;
@@ -161,6 +169,8 @@ private:
     int _maxHeartBeatCount;
 
     bool _secure; // determines if all connections are in a secured state (using ssl or internal connections)
+
+    int _lastPeerId = 0;
 
     friend class SignalRelay;
     friend class SyncableObject;

@@ -50,6 +50,11 @@ public:
 
     virtual int lag() const = 0;
 
+    int _id = -1;
+
+    QString _buildDate;
+    QString _clientVersion;
+
 public slots:
     /* Handshake messages */
     virtual void dispatch(const Protocol::RegisterClient &) = 0;
