@@ -337,7 +337,15 @@ void BufferItem::updateActivityLevel(const Message &msg)
         _firstUnreadMsgId = msg.msgId();
     }
 
-    if (addActivity(Message::Types(msg.type()), msg.flags().testFlag(Message::Highlight)) || stateChanged) {
+    Message::Types type;
+    // If the core handles activities, ignore types
+    if (!Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
+        type = Message::Types();
+    } else {
+        type = msg.type();
+    }
+
+    if (addActivity(type, msg.flags().testFlag(Message::Highlight)) || stateChanged) {
         emit dataChanged();
     }
 }
@@ -356,14 +364,11 @@ void BufferItem::setActivity(Message::Types type, bool highlight) {
 bool BufferItem::addActivity(Message::Types type, bool highlight) {
     auto oldActivity = activityLevel();
 
-    // If the core handles activities, only handle highlights
-    if (!Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
-        if (type != 0)
-            _activity |= BufferInfo::OtherActivity;
+    if (type != 0)
+        _activity |= BufferInfo::OtherActivity;
 
-        if (type.testFlag(Message::Plain) || type.testFlag(Message::Notice) || type.testFlag(Message::Action))
-            _activity |= BufferInfo::NewMessage;
-    }
+    if (type.testFlag(Message::Plain) || type.testFlag(Message::Notice) || type.testFlag(Message::Action))
+        _activity |= BufferInfo::NewMessage;
 
     if (highlight)
         _activity |= BufferInfo::Highlight;
@@ -1737,13 +1742,14 @@ void NetworkModel::messageRedirectionSettingsChanged()
 }
 
 void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types activity) {
-    auto bufferItem = findBufferItem(bufferId);
-    if (!bufferItem) {
+    qWarning() << "bufferActivityChanged(" << bufferId << ", " << activity << ")";
+    auto _bufferItem = findBufferItem(bufferId);
+    if (!_bufferItem) {
         qDebug() << "NetworkModel::bufferActivityChanged(): buffer is unknown:" << bufferId;
         return;
     }
     auto hiddenTypes = BufferSettings(bufferId).messageFilter();
     auto visibleTypes = ~hiddenTypes;
     auto activityVisibleTypesIntersection = activity & visibleTypes;
-    bufferItem->setActivity(activityVisibleTypesIntersection, false);
+    _bufferItem->setActivity(activityVisibleTypesIntersection, false);
 }
