@@ -179,6 +179,9 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
     // useSsl is only used for the legacy protocol
     _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl));
 
+    _peer->_buildDate = msg.buildDate;
+    _peer->_clientVersion = msg.clientVersion;
+
     if (_legacy && useSsl)
         startSsl();
 
