@@ -149,6 +149,7 @@ public:
     static void purgeKnownBufferIds();
 
     static void changePassword(const QString &oldPassword, const QString &newPassword);
+    static void kickClient(int peerId);
 
 #if QT_VERSION < 0x050000
     static void logMessage(QtMsgType type, const char *msg);
@@ -201,6 +202,8 @@ signals:
 
     //! Requests a password change (user name must match the currently logged in user)
     void requestPasswordChange(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword);
+
+    void requestKickClient(int peerId);
     void passwordChanged(bool success);
 
 public slots:

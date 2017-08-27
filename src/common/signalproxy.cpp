@@ -288,7 +288,12 @@ bool SignalProxy::addPeer(Peer *peer)
     if (!peer->parent())
         peer->setParent(this);
 
+    if (peer->_id < 0) {
+        peer->_id = nextPeerId();
+    }
+
     _peers.insert(peer);
+    _peerMap[peer->_id] = peer;
 
     peer->setSignalProxy(this);
 
@@ -331,6 +336,7 @@ void SignalProxy::removePeer(Peer *peer)
     disconnect(peer, 0, this, 0);
     peer->setSignalProxy(0);
 
+    _peerMap.remove(peer->_id);
     _peers.remove(peer);
     emit peerRemoved(peer);
 
@@ -808,6 +814,24 @@ void SignalProxy::updateSecureState()
 
     if (wasSecure != _secure)
         emit secureStateChanged(_secure);
+}
+
+QVariantList SignalProxy::peerData() {
+    QVariantList result;
+    for (auto peer : _peers) {
+        QVariantMap data;
+        data["id"] = peer->_id;
+        data["buildData"] = peer->_buildDate;
+        data["clientVersion"] = peer->_clientVersion;
+        data["description"] = peer->description();
+        data["secure"] = peer->isSecure();
+        result << data;
+    }
+    return result;
+}
+
+Peer *SignalProxy::peerById(int peerId) {
+    return _peerMap[peerId];
 }
 
 
