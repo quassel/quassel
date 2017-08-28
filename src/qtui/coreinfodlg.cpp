@@ -43,12 +43,17 @@ void CoreInfoDlg::coreInfoAvailable()
     ui.labelCoreVersionDate->setText(_coreInfo["quasselBuildDate"].toString()); // "BuildDate" for compatibility
     ui.labelClientCount->setNum(_coreInfo["sessionConnectedClients"].toInt());
 
+    auto coreSessionSupported = false;
     for (const auto &peerData : _coreInfo["sessionConnectedClientData"].toList()) {
+        coreSessionSupported = true;
+
         auto coreSessionWidget = new CoreSessionWidget(ui.coreSessionScrollContainer);
         coreSessionWidget->setData(peerData.toMap());
         ui.coreSessionContainer->addWidget(coreSessionWidget);
         connect(coreSessionWidget, SIGNAL(disconnectClicked(int)), this, SLOT(disconnectClicked(int)));
     }
+
+    ui.coreSessionScrollArea->setVisible(coreSessionSupported);
 
     ui.coreSessionContainer->addStretch(1);
 
