@@ -825,6 +825,8 @@ QVariantList SignalProxy::peerData() {
         QVariantMap data;
         data["id"] = peer->_id;
         data["clientVersion"] = peer->_clientVersion;
+        // We explicitly rename this, as, due to the Debian reproducability changes, buildDate isn’t actually the build
+        // date anymore, but on newer clients the date of the last git commit
         data["clientVersionDate"] = peer->_buildDate;
         data["remoteAddress"] = peer->address();
         data["connectedSince"] = peer->_connectedSince;

@@ -22,7 +22,7 @@ set(SOURCES
     coreconnectdlg.cpp
     coreconnectionstatuswidget.cpp
     coreinfodlg.cpp
-        coresessionwidget.cpp
+    coresessionwidget.cpp
     debugbufferviewoverlay.cpp
     debugconsole.cpp
     debuglogwidget.cpp
