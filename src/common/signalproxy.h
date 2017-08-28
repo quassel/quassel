@@ -77,6 +77,9 @@ public:
     bool isSecure() const { return _secure; }
     void dumpProxyStats();
     void dumpSyncMap(SyncableObject *object);
+
+    void restrictTargetPeers(std::initializer_list<Peer *> peerIds, std::function<void()> closure);
+
     inline int peerCount() const { return _peers.size(); }
     QVariantList peerData();
 
@@ -171,6 +174,9 @@ private:
     bool _secure; // determines if all connections are in a secured state (using ssl or internal connections)
 
     int _lastPeerId = 0;
+
+    QSet<Peer *> _restrictedTargets;
+    bool _restrictMessageTarget = false;
 
     friend class SignalRelay;
     friend class SyncableObject;
