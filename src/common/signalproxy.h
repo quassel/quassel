@@ -24,6 +24,8 @@
 #include <QEvent>
 #include <QSet>
 
+#include <functional>
+
 #include "protocol.h"
 
 struct QMetaObject;
