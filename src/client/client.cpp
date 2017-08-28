@@ -161,6 +161,7 @@ void Client::init()
     p->attachSlot(SIGNAL(passwordChanged(PeerPtr,bool)), this, SLOT(corePasswordChanged(PeerPtr,bool)));
 
     p->attachSignal(this, SIGNAL(requestKickClient(int)), SIGNAL(kickClient(int)));
+    p->attachSlot(SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
 
     //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
     connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
@@ -687,7 +688,8 @@ void Client::changePassword(const QString &oldPassword, const QString &newPasswo
 }
 
 
-void Client::kickClient(int peerId) {
+void Client::kickClient(int peerId)
+{
     emit instance()->requestKickClient(peerId);
 }
 
