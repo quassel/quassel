@@ -78,6 +78,7 @@ public:
     void dumpProxyStats();
     void dumpSyncMap(SyncableObject *object);
 
+    /**@{*/
     /**
      * This method allows to send a signal only to a limited set of peers
      * @param peerIds A list of peers that should receive it
@@ -94,10 +95,11 @@ public:
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #ifdef Q_COMPILER_INITIALIZER_LISTS
     void restrictTargetPeers(std::initializer_list<Peer*> peers, std::function<void()> closure) {
-        restrictTargetPeers(QSet(peers), std::move(closure));
+        restrictTargetPeers(QSet<Peer*>(peers), std::move(closure));
     }
 #endif
 #endif
+    /**}@*/
 
     inline int peerCount() const { return _peers.size(); }
     QVariantList peerData();
