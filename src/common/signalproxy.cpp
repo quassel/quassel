@@ -156,10 +156,7 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
                 params << QVariant(argTypes[i], _a[i+1]);
             }
 
-            if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxy()->proxyMode() == SignalProxy::Server) {
-                Peer *peer = params[0].value<PeerPtr>();
-                proxy()->dispatch(peer, RpcCall(signal.signature, params));
-            } else if (proxy()->_restrictMessageTarget) {
+            if (proxy()->_restrictMessageTarget) {
                 for (auto peer : proxy()->_restrictedTargets) {
                     if (peer != nullptr)
                         proxy()->dispatch(peer, RpcCall(signal.signature, params));
@@ -673,12 +670,8 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
             qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << eMeta->methodName(methodId);
             return false;
         }
-        // if first arg is a PeerPtr, replace it by the address of the peer originally receiving the RpcCall
-        if (peer && i == 0 && args[0] == qMetaTypeId<PeerPtr>()) {
-            QVariant v = QVariant::fromValue<PeerPtr>(peer);
-            _a[1] = const_cast<void*>(v.constData());
-        } else
-            _a[i+1] = const_cast<void *>(params[i].constData());
+
+        _a[i+1] = const_cast<void *>(params[i].constData());
     }
 
     if (returnValue.type() != QVariant::Invalid)
@@ -689,9 +682,11 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
                               : Qt::QueuedConnection;
 
     if (type == Qt::DirectConnection) {
-        return receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
-    }
-    else {
+        _sourcePeer = peer;
+        auto result = receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
+        _sourcePeer = nullptr;
+        return result;
+    } else {
         qWarning() << "Queued Connections are not implemented yet";
         // note to self: qmetaobject.cpp:990 ff
         return false;
@@ -770,9 +765,11 @@ void SignalProxy::sync_call__(const SyncableObject *obj, SignalProxy::ProxyMode 
         params << QVariant(argTypes[i], va_arg(ap, void *));
     }
 
-    if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxyMode() == SignalProxy::Server) {
-        Peer *peer = params[0].value<PeerPtr>();
-        dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+    if (_restrictMessageTarget) {
+        for (auto peer : _restrictedTargets) {
+            if (peer != nullptr)
+                dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+        }
     } else
         dispatch(SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
 }
@@ -841,11 +838,6 @@ Peer *SignalProxy::peerById(int peerId) {
     return _peerMap[peerId];
 }
 
-/**
- * This method allows to send a signal only to a limited set of peers
- * @param peerIds A list of peers that should receive it
- * @param closure Code you want to execute within of that restricted environment
- */
 void SignalProxy::restrictTargetPeers(std::initializer_list<Peer *> peers, std::function<void()> closure)
 {
     auto previousRestrictMessageTarget = _restrictMessageTarget;
