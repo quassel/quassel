@@ -171,6 +171,8 @@ signals:
 
     void passwordChanged(PeerPtr peer, bool success);
 
+    void disconnectFromCore();
+
 protected:
     virtual void customEvent(QEvent *event);
 

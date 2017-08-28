@@ -159,6 +159,11 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
             if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxy()->proxyMode() == SignalProxy::Server) {
                 Peer *peer = params[0].value<PeerPtr>();
                 proxy()->dispatch(peer, RpcCall(signal.signature, params));
+            } else if (proxy()->_restrictMessageTarget) {
+                for (auto peer : proxy()->_restrictedTargets) {
+                    if (peer != nullptr)
+                        proxy()->dispatch(peer, RpcCall(signal.signature, params));
+                }
             } else
                 proxy()->dispatch(RpcCall(signal.signature, params));
         }
@@ -836,6 +841,23 @@ Peer *SignalProxy::peerById(int peerId) {
     return _peerMap[peerId];
 }
 
+/**
+ * This method allows to send a signal only to a limited set of peers
+ * @param peerIds A list of peers that should receive it
+ * @param closure Code you want to execute within of that restricted environment
+ */
+void SignalProxy::restrictTargetPeers(std::initializer_list<Peer *> peers, std::function<void()> closure)
+{
+    auto previousRestrictMessageTarget = _restrictMessageTarget;
+    auto previousRestrictedTargets = _restrictedTargets;
+    _restrictMessageTarget = true;
+    _restrictedTargets = QSet<Peer*>(peers);
+
+    closure();
+
+    _restrictMessageTarget = previousRestrictMessageTarget;
+    _restrictedTargets = previousRestrictedTargets;
+}
 
 // ==================================================
 //  ExtendedMetaObject
