@@ -1,10 +1,6 @@
 #include "coresessionwidget.h"
-#include <QLayout>
-#include <QVariant>
-#include <QtCore/QMap>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
 #include <QtCore/QDateTime>
+#include <client.h>
 
 
 CoreSessionWidget::CoreSessionWidget(QWidget *parent)
@@ -13,12 +9,12 @@ CoreSessionWidget::CoreSessionWidget(QWidget *parent)
     ui.setupUi(this);
     layout()->setContentsMargins(0, 0, 0, 0);
     layout()->setSpacing(0);
+    connect(ui.disconnectButton, SIGNAL(released()), this, SLOT(disconnectClicked()));
 }
 
 void CoreSessionWidget::setData(QMap<QString, QVariant> map)
 {
     QLabel *iconSecure = ui.iconSecure;
-    QPushButton *disconnectButton = ui.disconnectButton;
 
     ui.labelRemoteAddress->setText(map["remoteAddress"].toString());
     ui.labelLocation->setText(map["location"].toString());
@@ -30,4 +26,13 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.labelLocation->hide();
         ui.labelLocationTitle->hide();
     }
+
+    bool success = false;
+    _peerId = map["id"].toInt(&success);
+    if (!success) _peerId = -1;
+}
+
+void CoreSessionWidget::disconnectClicked()
+{
+    emit disconnectClicked(_peerId);
 }
