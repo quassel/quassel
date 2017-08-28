@@ -18,8 +18,15 @@ public:
 
     void setData(QMap<QString, QVariant>);
 
+signals:
+    void disconnectClicked(int);
+
+private slots:
+    void disconnectClicked();
+
 private:
     Ui::CoreSessionWidget ui;
+    int _peerId;
 };
 
 #endif //CORESESSIONWIDGET_H

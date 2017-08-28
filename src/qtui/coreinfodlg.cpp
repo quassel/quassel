@@ -49,6 +49,7 @@ void CoreInfoDlg::coreInfoAvailable()
         auto coreSessionWidget = new CoreSessionWidget(ui.coreSessionScrollContainer);
         coreSessionWidget->setData(peerData.toMap());
         ui.coreSessionContainer->addWidget(coreSessionWidget);
+        connect(coreSessionWidget, SIGNAL(disconnectClicked(int)), this, SLOT(disconnectClicked(int)));
     }
 
     ui.coreSessionContainer->addStretch(1);
@@ -70,4 +71,8 @@ void CoreInfoDlg::updateUptime()
     QString uptimeText = tr("%n Day(s)", "", updays)
                          + tr(" %1:%2:%3 (since %4)").arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(uptime, 2, 10, QChar('0')).arg(startTime.toLocalTime().toString(Qt::TextDate));
     ui.labelUptime->setText(uptimeText);
+}
+void CoreInfoDlg::disconnectClicked(int peerId)
+{
+    Client::kickClient(peerId);
 }

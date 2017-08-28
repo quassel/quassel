@@ -42,6 +42,7 @@ protected:
 private slots:
     void on_closeButton_clicked() { reject(); }
     void updateUptime();
+    void disconnectClicked(int peerId);
 
 private:
     Ui::CoreInfoDlg ui;
