@@ -78,12 +78,22 @@ public:
     void dumpProxyStats();
     void dumpSyncMap(SyncableObject *object);
 
+    /**
+     * This method allows to send a signal only to a limited set of peers
+     * @param peerIds A list of peers that should receive it
+     * @param closure Code you want to execute within of that restricted environment
+     */
     void restrictTargetPeers(std::initializer_list<Peer *> peerIds, std::function<void()> closure);
 
     inline int peerCount() const { return _peers.size(); }
     QVariantList peerData();
 
     Peer *peerById(int peerId);
+
+    /**
+     * @return If handling a signal, the Peer from which the current signal originates
+     */
+    Peer *sourcePeer() { return _sourcePeer; }
 
 public slots:
     void detachObject(QObject *obj);
@@ -177,6 +187,8 @@ private:
 
     QSet<Peer *> _restrictedTargets;
     bool _restrictMessageTarget = false;
+
+    Peer *_sourcePeer;
 
     friend class SignalRelay;
     friend class SyncableObject;
