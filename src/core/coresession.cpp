@@ -718,7 +718,7 @@ void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QS
     if (uid.isValid() && uid == user())
         success = Core::changeUserPassword(uid, newPassword);
 
-    signalProxy()->restrictTargetPeers({signalProxy()->sourcePeer()}, [&]{
+    signalProxy()->restrictTargetPeers(signalProxy()->sourcePeer(), [&]{
         emit passwordChanged(nullptr, success);
     });
 }
@@ -729,7 +729,7 @@ void CoreSession::kickClient(int peerId) {
         qWarning() << "Invalid peer Id: " << peerId;
         return;
     }
-    signalProxy()->restrictTargetPeers({peer}, [&]{
+    signalProxy()->restrictTargetPeers(peer, [&]{
         emit disconnectFromCore();
     });
 }

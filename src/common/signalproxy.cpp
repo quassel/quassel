@@ -838,12 +838,12 @@ Peer *SignalProxy::peerById(int peerId) {
     return _peerMap[peerId];
 }
 
-void SignalProxy::restrictTargetPeers(std::initializer_list<Peer *> peers, std::function<void()> closure)
+void SignalProxy::restrictTargetPeers(QSet<Peer*> peers, std::function<void()> closure)
 {
     auto previousRestrictMessageTarget = _restrictMessageTarget;
     auto previousRestrictedTargets = _restrictedTargets;
     _restrictMessageTarget = true;
-    _restrictedTargets = QSet<Peer*>(peers);
+    _restrictedTargets = peers;
 
     closure();
 

@@ -83,7 +83,21 @@ public:
      * @param peerIds A list of peers that should receive it
      * @param closure Code you want to execute within of that restricted environment
      */
-    void restrictTargetPeers(std::initializer_list<Peer *> peerIds, std::function<void()> closure);
+    void restrictTargetPeers(QSet<Peer*> peers, std::function<void()> closure);
+    void restrictTargetPeers(Peer *peer, std::function<void()> closure) {
+        QSet<Peer*> set;
+        set.insert(peer);
+        restrictTargetPeers(set, std::move(closure));
+    }
+
+    //A better version, but only implemented on Qt5 if Initializer Lists exist
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#ifdef Q_COMPILER_INITIALIZER_LISTS
+    void restrictTargetPeers(std::initializer_list<Peer*> peers, std::function<void()> closure) {
+        restrictTargetPeers(QSet(peers), std::move(closure));
+    }
+#endif
+#endif
 
     inline int peerCount() const { return _peers.size(); }
     QVariantList peerData();
