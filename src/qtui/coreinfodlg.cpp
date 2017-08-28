@@ -43,8 +43,6 @@ void CoreInfoDlg::coreInfoAvailable()
     ui.labelCoreVersionDate->setText(_coreInfo["quasselBuildDate"].toString()); // "BuildDate" for compatibility
     ui.labelClientCount->setNum(_coreInfo["sessionConnectedClients"].toInt());
 
-    qWarning() << _coreInfo["sessionConnectedClientData"];
-
     for (const auto &peerData : _coreInfo["sessionConnectedClientData"].toList()) {
         auto coreSessionWidget = new CoreSessionWidget(ui.coreSessionScrollContainer);
         coreSessionWidget->setData(peerData.toMap());
