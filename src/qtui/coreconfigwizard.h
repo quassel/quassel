@@ -35,8 +35,10 @@
 class CoreConnection;
 
 namespace CoreConfigWizardPages {
+
 class SyncPage;
 class SyncRelayPage;
+
 };
 
 class CoreConfigWizard : public QWizard
@@ -64,7 +66,6 @@ signals:
     void loginToCore(const QString &user, const QString &password, bool rememberPassword);
 
 public slots:
-    void loginSuccess();
     void syncFinished();
 
 private slots:
@@ -82,6 +83,7 @@ private:
 
 
 namespace CoreConfigWizardPages {
+
 class IntroPage : public QWizardPage
 {
     Q_OBJECT
@@ -106,7 +108,7 @@ private:
     Ui::CoreConfigWizardAdminUserPage ui;
 };
 
-// Authentication selection before storage selection.
+
 class AuthenticationSelectionPage : public QWizardPage
 {
     Q_OBJECT
@@ -124,10 +126,10 @@ private slots:
 
 private:
     Ui::CoreConfigWizardAuthenticationSelectionPage ui;
-    QGroupBox *_fieldBox {nullptr};
     std::vector<QVariantMap> _authProperties;
     std::vector<std::vector<FieldInfo>> _authFields;
 };
+
 
 class StorageSelectionPage : public QWizardPage
 {
@@ -146,10 +148,10 @@ private slots:
 
 private:
     Ui::CoreConfigWizardStorageSelectionPage ui;
-    QGroupBox *_fieldBox {nullptr};
     std::vector<QVariantMap> _backendProperties;
     std::vector<std::vector<FieldInfo>> _backendFields;
 };
+
 
 class SyncPage : public QWizardPage
 {
@@ -194,4 +196,5 @@ signals:
 private:
     Mode mode;
 };
+
 }
