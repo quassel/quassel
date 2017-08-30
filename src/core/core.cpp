@@ -403,10 +403,15 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings, bool
             return false;  // trigger setup process
         if (storage->setup(settings))
             return initStorage(backend, settings, false);
+        return false;
+
     // if initialization wasn't successful, we quit to keep from coming up unconfigured
     case Storage::NotAvailable:
         qCritical() << "FATAL: Selected storage backend is not available:" << backend;
-        exit(EXIT_FAILURE);
+        if (!setup)
+            exit(EXIT_FAILURE);
+        return false;
+
     case Storage::IsReady:
         // delete all other backends
         _registeredStorageBackends.clear();
@@ -495,10 +500,15 @@ bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings
             return false;  // trigger setup process
         if (auth->setup(settings))
             return initAuthenticator(backend, settings, false);
+        return false;
+
     // if initialization wasn't successful, we quit to keep from coming up unconfigured
     case Authenticator::NotAvailable:
         qCritical() << "FATAL: Selected auth backend is not available:" << backend;
-        exit(EXIT_FAILURE);
+        if (!setup)
+            exit(EXIT_FAILURE);
+        return false;
+
     case Authenticator::IsReady:
         // delete all other backends
         _registeredAuthenticators.clear();
