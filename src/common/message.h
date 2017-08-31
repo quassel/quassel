@@ -66,9 +66,9 @@ public:
     };
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    Message(const BufferInfo &bufferInfo = BufferInfo(), Type type = Plain, const QString &contents = "", const QString &sender = "", Flags flags = None);
+    Message(const BufferInfo &bufferInfo = BufferInfo(), Type type = Plain, const QString &contents = "", const QString &sender = "", const QString &senderPrefixes = "", Flags flags = None);
     Message(const QDateTime &ts, const BufferInfo &buffer = BufferInfo(), Type type = Plain,
-        const QString &contents = "", const QString &sender = "", Flags flags = None);
+        const QString &contents = "", const QString &sender = "", const QString &senderPrefixes = "", Flags flags = None);
 
     inline static Message ChangeOfDay(const QDateTime &day) { return Message(day, BufferInfo(), DayChange); }
     inline const MsgId &msgId() const { return _msgId; }
@@ -79,6 +79,7 @@ public:
     inline void setBufferId(BufferId id) { _bufferInfo.setBufferId(id); }
     inline const QString &contents() const { return _contents; }
     inline const QString &sender() const { return _sender; }
+    inline const QString &senderPrefixes() const { return _senderPrefixes; }
     inline Type type() const { return _type; }
     inline Flags flags() const { return _flags; }
     inline void setFlags(Flags flags) { _flags = flags; }
@@ -94,6 +95,7 @@ private:
     BufferInfo _bufferInfo;
     QString _contents;
     QString _sender;
+    QString _senderPrefixes;
     Type _type;
     Flags _flags;
 

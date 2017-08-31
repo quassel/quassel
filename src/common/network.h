@@ -172,10 +172,37 @@ public :
     //Network::ConnectionState connectionState() const;
     inline int connectionState() const { return _connectionState; }
 
+    /**@{*/
+    /**
+     * Translates a user’s prefix to the channelmode associated with it.
+     * @param prefix Prefix to be translated.
+     */
     QString prefixToMode(const QString &prefix) const;
     inline QString prefixToMode(const QCharRef &prefix) const { return prefixToMode(QString(prefix)); }
+    inline QString prefixesToModes(const QString &prefix) const {
+        QString mode = "";
+        for (QChar c : prefix) {
+            mode += prefixToMode(c);
+        }
+        return mode;
+    }
+    /**@}*/
+
+    /**@{*/
+    /**
+     * Translates a user’s prefix to the channelmode associated with it.
+     * @param prefix Prefix to be translated.
+     */
     QString modeToPrefix(const QString &mode) const;
     inline QString modeToPrefix(const QCharRef &mode) const { return modeToPrefix(QString(mode)); }
+    inline QString modesToPrefixes(const QString &mode) const {
+        QString prefix = "";
+        for (QChar c : mode) {
+            prefix += modeToPrefix(c);
+        }
+        return prefix;
+    }
+    /**@}*/
 
     ChannelModeType channelModeType(const QString &mode);
     inline ChannelModeType channelModeType(const QCharRef &mode) { return channelModeType(QString(mode)); }

@@ -1518,6 +1518,7 @@ bool SqliteStorage::logMessage(Message &msg)
         logMessageQuery.bindValue(":type", msg.type());
         logMessageQuery.bindValue(":flags", (int)msg.flags());
         logMessageQuery.bindValue(":sender", msg.sender());
+        logMessageQuery.bindValue(":senderprefixes", msg.senderPrefixes());
         logMessageQuery.bindValue(":message", msg.contents());
 
         lockForWrite();
@@ -1593,6 +1594,7 @@ bool SqliteStorage::logMessages(MessageList &msgs)
             logMessageQuery.bindValue(":type", msg.type());
             logMessageQuery.bindValue(":flags", (int)msg.flags());
             logMessageQuery.bindValue(":sender", msg.sender());
+            logMessageQuery.bindValue(":senderprefixes", msg.senderPrefixes());
             logMessageQuery.bindValue(":message", msg.contents());
 
             safeExec(logMessageQuery);
@@ -1677,8 +1679,9 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
             Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
                 bufferInfo,
                 (Message::Type)query.value(2).toUInt(),
-                query.value(5).toString(),
+                query.value(6).toString(),
                 query.value(4).toString(),
+                query.value(5).toString(),
                 (Message::Flags)query.value(3).toUInt());
             msg.setMsgId(query.value(0).toInt());
             messagelist << msg;
@@ -1731,8 +1734,9 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
             Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
                 bufferInfoHash[query.value(1).toInt()],
                 (Message::Type)query.value(3).toUInt(),
-                query.value(6).toString(),
+                query.value(7).toString(),
                 query.value(5).toString(),
+                query.value(6).toString(),
                 (Message::Flags)query.value(4).toUInt());
             msg.setMsgId(query.value(0).toInt());
             messagelist << msg;
@@ -1999,7 +2003,8 @@ bool SqliteMigrationReader::readMo(BacklogMO &backlog)
     backlog.type = value(3).toInt();
     backlog.flags = value(4).toInt();
     backlog.senderid = value(5).toInt();
-    backlog.message = value(6).toString();
+    backlog.senderprefixes = value(6).toString();
+    backlog.message = value(7).toString();
     return true;
 }
 

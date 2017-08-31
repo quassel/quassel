@@ -104,6 +104,7 @@
     <file>./SQL/PostgreSQL/version/21/upgrade_000_add_function_backlog_lastmsgid_update.sql</file>
     <file>./SQL/PostgreSQL/version/21/upgrade_001_add_trigger_backlog_lastmsgid_update.sql</file>
     <file>./SQL/PostgreSQL/version/22/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
+    <file>./SQL/PostgreSQL/version/23/upgrade_000_create_mode.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>
@@ -281,5 +282,6 @@
     <file>./SQL/SQLite/version/22/upgrade_000_add_trigger_backlog_lastmsgid_update_direct_insert.sql</file>
     <file>./SQL/SQLite/version/22/upgrade_001_add_trigger_backlog_lastmsgid_update_direct_update.sql</file>
     <file>./SQL/SQLite/version/23/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
+    <file>./SQL/SQLite/version/24/upgrade_000_create_mode.sql</file>
 </qresource>
 </RCC>

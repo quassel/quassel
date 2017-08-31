@@ -24,22 +24,24 @@
 
 #include <QDataStream>
 
-Message::Message(const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, Flags flags)
+Message::Message(const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, const QString &senderPrefixes, Flags flags)
     : _timestamp(QDateTime::currentDateTime().toUTC()),
     _bufferInfo(bufferInfo),
     _contents(contents),
     _sender(sender),
+    _senderPrefixes(senderPrefixes),
     _type(type),
     _flags(flags)
 {
 }
 
 
-Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, Flags flags)
+Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, const QString &senderPrefixes, Flags flags)
     : _timestamp(ts),
     _bufferInfo(bufferInfo),
     _contents(contents),
     _sender(sender),
+    _senderPrefixes(senderPrefixes),
     _type(type),
     _flags(flags)
 {
@@ -67,6 +69,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
     msg._bufferInfo = buf;
     msg._timestamp = QDateTime::fromTime_t(ts);
     msg._sender = QString::fromUtf8(s);
+    msg._senderPrefixes = QString("");
     msg._contents = QString::fromUtf8(m);
     return in;
 }

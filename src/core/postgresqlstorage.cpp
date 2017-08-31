@@ -1425,6 +1425,7 @@ bool PostgreSqlStorage::logMessage(Message &msg)
            << msg.type()
            << (int)msg.flags()
            << senderId
+           << msg.senderPrefixes()
            << msg.contents();
     QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
 
@@ -1502,6 +1503,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
                << msg.type()
                << (int)msg.flags()
                << senderIdList.at(i)
+               << msg.senderPrefixes()
                << msg.contents();
         QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
         if (!watchQuery(logMessageQuery)) {
@@ -1580,8 +1582,9 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
         Message msg(timestamp,
             bufferInfo,
             (Message::Type)query.value(2).toUInt(),
-            query.value(5).toString(),
+            query.value(6).toString(),
             query.value(4).toString(),
+            query.value(5).toString(),
             (Message::Flags)query.value(3).toUInt());
         msg.setMsgId(query.value(0).toInt());
         messagelist << msg;
@@ -1632,8 +1635,9 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
         Message msg(timestamp,
             bufferInfoHash[query.value(1).toInt()],
             (Message::Type)query.value(3).toUInt(),
-            query.value(6).toString(),
+            query.value(7).toString(),
             query.value(5).toString(),
+            query.value(6).toString(),
             (Message::Flags)query.value(4).toUInt());
         msg.setMsgId(query.value(0).toInt());
         messagelist << msg;
@@ -1989,7 +1993,8 @@ bool PostgreSqlMigrationWriter::writeMo(const BacklogMO &backlog)
     bindValue(3, backlog.type);
     bindValue(4, (int)backlog.flags);
     bindValue(5, backlog.senderid);
-    bindValue(6, backlog.message);
+    bindValue(6, backlog.senderprefixes);
+    bindValue(7, backlog.message);
     return exec();
 }
 

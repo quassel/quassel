@@ -244,6 +244,7 @@ public:
         int type;
         int flags;
         int senderid;
+        QString senderprefixes;
         QString message;
     };
 

@@ -224,6 +224,13 @@ private:
 
     QScriptEngine *scriptEngine;
 
+    /**
+     * This method obtains the prefixes of the message's sender within a channel, by looking up their channelmodes, and
+     * processing them to prefixes based on the network's settings.
+     * @param sender The hostmask of the sender
+     * @param bufferInfo The BufferInfo object of the buffer
+     */
+    QString senderPrefixes(const QString &sender, const BufferInfo &bufferInfo) const;
     QList<RawMessage> _messageQueue;
     bool _processMessages;
     CoreIgnoreListManager _ignoreListManager;

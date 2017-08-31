@@ -1,4 +1,4 @@
-SELECT messageid, time,  type, flags, sender, message
+SELECT messageid, time,  type, flags, sender, senderprefixes, message
 FROM backlog
 JOIN sender ON backlog.senderid = sender.senderid
 WHERE backlog.messageid >= :firstmsg

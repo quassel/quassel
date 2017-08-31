@@ -366,7 +366,8 @@ void CoreSession::processMessages()
             Q_ASSERT(!createBuffer);
             bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, BufferInfo::StatusBuffer, "");
         }
-        Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
+        Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender,
+                    senderPrefixes(rawMsg.sender, bufferInfo), rawMsg.flags);
         if(Core::storeMessage(msg))
             emit displayMsg(msg);
     }
@@ -390,7 +391,8 @@ void CoreSession::processMessages()
                 }
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
+            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender,
+                        senderPrefixes(rawMsg.sender, bufferInfo), rawMsg.flags);
             messages << msg;
         }
 
@@ -406,7 +408,8 @@ void CoreSession::processMessages()
                 // add the StatusBuffer to the Cache in case there are more Messages for the original target
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
+            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender,
+                        senderPrefixes(rawMsg.sender, bufferInfo), rawMsg.flags);
             messages << msg;
         }
 
@@ -421,6 +424,25 @@ void CoreSession::processMessages()
     _messageQueue.clear();
 }
 
+QString CoreSession::senderPrefixes(const QString &sender, const BufferInfo &bufferInfo) const
+{
+    CoreNetwork *currentNetwork = network(bufferInfo.networkId());
+    if (!currentNetwork) {
+        return "";
+    }
+
+    if (bufferInfo.type() != BufferInfo::ChannelBuffer) {
+        return "";
+    }
+
+    IrcChannel *currentChannel = currentNetwork->ircChannel(bufferInfo.bufferName());
+    if (!currentChannel) {
+        return "";
+    }
+
+    const QString modes = currentChannel->userModes(nickFromMask(sender).toLower());
+    return currentNetwork->modesToPrefixes(modes);
+}
 
 Protocol::SessionState CoreSession::sessionState() const
 {

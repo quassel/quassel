@@ -5,5 +5,6 @@ CREATE TABLE backlog (
 	type integer NOT NULL,
 	flags integer NOT NULL,
 	senderid integer NOT NULL REFERENCES sender (senderid) ON DELETE SET NULL,
+    senderprefixes TEXT,
 	message TEXT
 )
