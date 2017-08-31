@@ -98,7 +98,7 @@ public slots:
     virtual void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
     virtual QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user);
     virtual void setBufferActivity(UserId id, const BufferId &bufferId, const Message::Types &type);
-    virtual QHash<BufferId, Message::Types> bufferActivities(UserId id);
+    virtual QHash<BufferId, Message::Types> bufferActivities(UserId id) override;
     virtual Message::Types bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId);
 
     /* Message handling */
