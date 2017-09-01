@@ -120,6 +120,18 @@ public slots:
     virtual void addHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive,
                                   bool isEnabled, const QString &chanName);
 
+    virtual inline void requestSetHighlightNick(HighlightNickType highlightNick)
+    {
+        REQUEST(ARG(highlightNick))
+    }
+    inline void setHighlightNick(HighlightNickType highlightNick) { _highlightNick = highlightNick; }
+
+    virtual inline void requestSetNicksCaseSensitive(bool nicksCaseSensitive)
+    {
+        REQUEST(ARG(nicksCaseSensitive))
+    }
+    inline void setNicksCaseSensitive(bool nicksCaseSensitive) { _nicksCaseSensitive = nicksCaseSensitive; }
+
 protected:
     void setHighlightRuleList(const QList<HighlightRule> &HighlightRuleList) { _highlightRuleList = HighlightRuleList; }
 
