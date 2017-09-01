@@ -80,7 +80,7 @@ public:
     /** This method checks if a message matches the users highlight rules.
       * \param msg The Message that should be checked
       */
-    inline bool match(const Message &msg, const QString &currentNick, const QStringList &identityNicks) { return _match(msg.contents(), msg.sender(), msg.type(), msg.flags(), msg.bufferInfo().bufferName(), currentNick, identityNicks); }
+    bool match(const Message &msg, const QString &currentNick, const QStringList &identityNicks);
 
 public slots:
     virtual QVariantMap initHighlightRuleList() const;
