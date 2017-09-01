@@ -188,3 +188,8 @@ void HighlightRuleManager::toggleHighlightRule(const QString &highlightRule)
     _highlightRuleList[idx].isEnabled = !_highlightRuleList[idx].isEnabled;
     SYNC(ARG(highlightRule))
 }
+
+bool HighlightRuleManager::match(const Message &msg, const QString &currentNick, const QStringList &identityNicks)
+{
+    return _match(msg.contents(), msg.sender(), msg.type(), msg.flags(), msg.bufferInfo().bufferName(), currentNick, identityNicks);
+}
