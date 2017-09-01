@@ -14,6 +14,7 @@ set(SOURCES
     dccconfig.cpp
     event.cpp
     eventmanager.cpp
+    highlightrulemanager.cpp
     identity.cpp
     ignorelistmanager.cpp
     internalpeer.cpp
