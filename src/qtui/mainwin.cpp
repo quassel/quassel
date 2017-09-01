@@ -27,6 +27,7 @@
 #include <QTableView>
 #include <QToolBar>
 #include <QInputDialog>
+#include <settingspages/corehighlightsettingspage.h>
 
 #ifdef HAVE_KDE4
 #  include <KHelpMenu>
@@ -1442,6 +1443,7 @@ void MainWin::showSettingsDlg()
     dlg->registerSettingsPage(new SonnetSettingsPage(dlg));
 #endif
     dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
+    dlg->registerSettingsPage(new CoreHighlightSettingsPage(dlg));
     dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
     dlg->registerSettingsPage(new BacklogSettingsPage(dlg));
 

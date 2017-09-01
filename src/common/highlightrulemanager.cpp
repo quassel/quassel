@@ -33,6 +33,8 @@ HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager
 
     SyncableObject::operator=(other);
     _highlightRuleList = other._highlightRuleList;
+    _nicksCaseSensitive = other._nicksCaseSensitive;
+    _highlightNick = other._highlightNick;
     return *this;
 }
 
@@ -69,6 +71,8 @@ QVariantMap HighlightRuleManager::initHighlightRuleList() const
     highlightRuleListMap["isCaseSensitive"] = isCaseSensitive;
     highlightRuleListMap["isEnabled"] = isActive;
     highlightRuleListMap["channel"] = channel;
+    highlightRuleListMap["highlightNick"] = _highlightNick;
+    highlightRuleListMap["nicksCaseSensitive"] = _nicksCaseSensitive;
     return highlightRuleListMap;
 }
 
@@ -93,6 +97,8 @@ void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlight
         _highlightRuleList << HighlightRule(name[i], isRegEx[i].toBool(), isCaseSensitive[i].toBool(),
                                             isActive[i].toBool(), channel[i]);
     }
+    _highlightNick = HighlightNickType(highlightRuleList["highlightNick"].toInt());
+    _nicksCaseSensitive = highlightRuleList["nicksCaseSensitive"].toBool();
 }
 
 void HighlightRuleManager::addHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive, bool isActive,

@@ -420,6 +420,11 @@ void Client::setSyncedToCore()
     _ignoreListManager = new ClientIgnoreListManager(this);
     p->synchronize(ignoreListManager());
 
+    // create Core-Side HighlightRuleManager
+    Q_ASSERT(!_highlightRuleManager);
+    _highlightRuleManager = new HighlightRuleManager(this);
+    p->synchronize(highlightRuleManager());
+
     // create TransferManager and DccConfig if core supports them
     Q_ASSERT(!_dccConfig);
     Q_ASSERT(!_transferManager);
@@ -506,6 +511,11 @@ void Client::setDisconnectedFromCore()
     if (_ignoreListManager) {
         _ignoreListManager->deleteLater();
         _ignoreListManager = 0;
+    }
+
+    if (_highlightRuleManager) {
+        _highlightRuleManager->deleteLater();
+        _highlightRuleManager = nullptr;
     }
 
     if (_transferManager) {
