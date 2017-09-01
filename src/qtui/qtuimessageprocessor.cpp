@@ -57,7 +57,8 @@ void QtUiMessageProcessor::reset()
 
 void QtUiMessageProcessor::process(Message &msg)
 {
-    checkForHighlight(msg);
+    if (!Client::coreFeatures().testFlag(Quassel::Feature::CoreSideHighlights))
+        checkForHighlight(msg);
     preProcess(msg);
     Client::messageModel()->insertMessage(msg);
 }
@@ -68,7 +69,8 @@ void QtUiMessageProcessor::process(QList<Message> &msgs)
     QList<Message>::iterator msgIter = msgs.begin();
     QList<Message>::iterator msgIterEnd = msgs.end();
     while (msgIter != msgIterEnd) {
-        checkForHighlight(*msgIter);
+        if (!Client::coreFeatures().testFlag(Quassel::Feature::CoreSideHighlights))
+            checkForHighlight(*msgIter);
         preProcess(*msgIter);
         ++msgIter;
     }

@@ -77,7 +77,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _ircParser(new IrcParser(this)),
     scriptEngine(new QScriptEngine(this)),
     _processMessages(false),
-    _ignoreListManager(this)
+    _ignoreListManager(this),
+    _highlightRuleManager(this)
 {
     SignalProxy *p = signalProxy();
     p->setHeartBeatInterval(30);
@@ -131,6 +132,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->synchronize(networkConfig());
     p->synchronize(&_coreInfo);
     p->synchronize(&_ignoreListManager);
+    p->synchronize(&_highlightRuleManager);
     p->synchronize(transferManager());
     // Restore session state
     if (restoreState)
@@ -316,6 +318,9 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
     QString networkName = currentNetwork ? currentNetwork->networkName() : QString("");
     if (_ignoreListManager.match(rawMsg, networkName) == IgnoreListManager::HardStrictness)
         return;
+
+    if (_highlightRuleManager.match(rawMsg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
+        rawMsg.flags |= Message::Flag::Highlight;
 
     _messageQueue << rawMsg;
     if (!_processMessages) {

@@ -31,6 +31,7 @@
 #include "protocol.h"
 #include "message.h"
 #include "storage.h"
+#include "corehighlightrulemanager.h"
 
 class CoreBacklogManager;
 class CoreBufferSyncer;
@@ -87,6 +88,7 @@ public:
     inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
 
     inline CoreIgnoreListManager *ignoreListManager() { return &_ignoreListManager; }
+    inline HighlightRuleManager *highlightRuleManager() { return &_highlightRuleManager; }
     inline CoreTransferManager *transferManager() const { return _transferManager; }
     inline CoreDccConfig *dccConfig() const { return _dccConfig; }
 
@@ -238,6 +240,7 @@ private:
     QList<RawMessage> _messageQueue;
     bool _processMessages;
     CoreIgnoreListManager _ignoreListManager;
+    CoreHighlightRuleManager _highlightRuleManager;
 };
 
 
