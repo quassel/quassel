@@ -1,6 +1,5 @@
 os:
   - linux
-  - osx
 
 sudo: required
 dist: trusty
@@ -17,12 +16,12 @@ env:
   - QT_VERSION=qt5
 
 matrix:
+  include:
+    - os: osx
+      compiler: gcc
+      env: QT_VERSION=qt5
   exclude:
     - compiler: clang
-      env: QT_VERSION=qt4
-    - os: osx
-      compiler: clang
-    - os: osx
       env: QT_VERSION=qt4
 
 install: |-
@@ -50,12 +49,12 @@ script: |-
     make
   elif [ "$TRAVIS_OS_NAME" == "osx" ]
   then
+    PATH=$PATH:/usr/local/opt/qt5/bin
     if [[ "$TRAVIS_TAG" != "" && "$GH_TOKEN" != "" ]]
     then
-      PATH=$PATH:/usr/local/opt/qt5/bin
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DUSE_QT5=ON -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DDEPLOY=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
+      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DUSE_QT5=ON -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DDEPLOY=ON
     else
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DUSE_QT5=ON -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5
+      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DUSE_QT5=ON -DWANT_CORE=ON -DWANT_QTCLIENT=ON -DWANT_MONO=ON
     fi
     ninja install
   fi
