@@ -107,6 +107,7 @@ Client::Client(QObject *parent)
     _inputHandler(0),
     _networkConfig(0),
     _ignoreListManager(0),
+    _highlightRuleManager(0),
     _transferManager(0),
     _transferModel(new TransferModel(this)),
     _messageModel(0),
