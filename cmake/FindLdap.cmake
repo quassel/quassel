@@ -15,7 +15,22 @@ endif(LDAP_INCLUDE_DIR AND LDAP_LIBRARIES)
 
 # Attempt to link against ldap.h regardless of platform!
 FIND_PATH(LDAP_INCLUDE_DIR ldap.h)
+
+# If we detect path to invalid ldap.h on osx, try /usr/include/
+# This might also be achievable with additional parameters to FIND_PATH.
+string(TOLOWER ${LDAP_INCLUDE_DIR} ldapincludelower)
+if("${ldapincludelower}" MATCHES "\\/system\\/library\\/frameworks\\/ldap\\.framework\\/headers")
+  set(LDAP_INCLUDE_DIR "/usr/include/")
+endif()
+
 FIND_LIBRARY(LDAP_LIBRARIES NAMES ldap)
+
+# On osx remove invalid ldap.h
+string(TOLOWER ${LDAP_LIBRARIES} ldaplower)
+if("${ldaplower}" MATCHES "\\/system\\/library\\/frameworks\\/ldap\\.framework")
+  set(LDAP_LIBRARIES FALSE)
+endif()
+
 FIND_LIBRARY(LBER_LIBRARIES NAMES lber)
 
 # It'd be nice to link against winldap on Windows, unfortunately
