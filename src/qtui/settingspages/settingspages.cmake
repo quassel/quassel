@@ -12,6 +12,7 @@ set(SETTINGSPAGES
     connection
     coreconnection
     coreaccount
+    corehighlight
     dcc
     highlight
     identities

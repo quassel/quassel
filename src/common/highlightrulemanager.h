@@ -68,9 +68,13 @@ public:
     inline bool isEmpty() const { return _highlightRuleList.isEmpty(); }
     inline int count() const { return _highlightRuleList.count(); }
     inline void removeAt(int index) { _highlightRuleList.removeAt(index); }
+    inline void clear() { _highlightRuleList.clear(); }
     inline HighlightRule &operator[](int i) { return _highlightRuleList[i]; }
     inline const HighlightRule &operator[](int i) const { return _highlightRuleList.at(i); }
     inline const HighlightRuleList &highlightRuleList() const { return _highlightRuleList; }
+
+    inline HighlightNickType highlightNick() { return _highlightNick; }
+    inline bool  nicksCaseSensitive() { return _nicksCaseSensitive; }
 
     //! Check if a message matches the HighlightRule
     /** This method checks if a message matches the users highlight rules.
