@@ -46,7 +46,8 @@ ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject *parent)
     _account(account),
     _probing(false),
     _legacy(false),
-    _connectionFeatures(0)
+    _connectionFeatures(0),
+    _coreConfigured(false)
 {
 
 }

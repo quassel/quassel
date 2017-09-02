@@ -65,6 +65,7 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
     _statusNotifierWatcher(0),
     _notificationsClient(0),
     _notificationsClientSupportsMarkup(true),
+    _notificationsClientSupportsActions(false),
     _lastNotificationsDBusId(0)
 {
 }
