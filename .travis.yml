@@ -40,7 +40,7 @@ addons:
     - libphonon4qt5experimental4 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805096
 #    - libqca2-dev # Not supported at the moment
 
-install: |-
+before_install: |-
   if [ "$TRAVIS_OS_NAME" == "osx" ]
   then
     brew install ninja qt5
