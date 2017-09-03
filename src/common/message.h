@@ -66,9 +66,11 @@ public:
     };
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    Message(const BufferInfo &bufferInfo = BufferInfo(), Type type = Plain, const QString &contents = "", const QString &sender = "", const QString &senderPrefixes = "", Flags flags = None);
+    Message(const BufferInfo &bufferInfo = BufferInfo(), Type type = Plain, const QString &contents = {},
+            const QString &sender = {}, const QString &senderPrefixes = {}, Flags flags = None);
     Message(const QDateTime &ts, const BufferInfo &buffer = BufferInfo(), Type type = Plain,
-        const QString &contents = "", const QString &sender = "", const QString &senderPrefixes = "", Flags flags = None);
+            const QString &contents = {}, const QString &sender = {}, const QString &senderPrefixes = {},
+            Flags flags = None);
 
     inline static Message ChangeOfDay(const QDateTime &day) { return Message(day, BufferInfo(), DayChange); }
     inline const MsgId &msgId() const { return _msgId; }

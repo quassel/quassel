@@ -428,16 +428,16 @@ QString CoreSession::senderPrefixes(const QString &sender, const BufferInfo &buf
 {
     CoreNetwork *currentNetwork = network(bufferInfo.networkId());
     if (!currentNetwork) {
-        return "";
+        return {};
     }
 
     if (bufferInfo.type() != BufferInfo::ChannelBuffer) {
-        return "";
+        return {};
     }
 
     IrcChannel *currentChannel = currentNetwork->ircChannel(bufferInfo.bufferName());
     if (!currentChannel) {
-        return "";
+        return {};
     }
 
     const QString modes = currentChannel->userModes(nickFromMask(sender).toLower());

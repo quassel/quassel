@@ -5,5 +5,6 @@ CREATE TABLE backlog (
 	type INTEGER NOT NULL,
 	flags INTEGER NOT NULL,
 	senderid INTEGER NOT NULL,
-    senderprefixes TEXT,
-	message TEXT)
+	senderprefixes TEXT,
+	message TEXT
+)

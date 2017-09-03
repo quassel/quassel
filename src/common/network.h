@@ -180,11 +180,11 @@ public :
     QString prefixToMode(const QString &prefix) const;
     inline QString prefixToMode(const QCharRef &prefix) const { return prefixToMode(QString(prefix)); }
     inline QString prefixesToModes(const QString &prefix) const {
-        QString mode = "";
+        QString modes;
         for (QChar c : prefix) {
-            mode += prefixToMode(c);
+            modes += prefixToMode(c);
         }
-        return mode;
+        return modes;
     }
     /**@}*/
 
@@ -196,11 +196,11 @@ public :
     QString modeToPrefix(const QString &mode) const;
     inline QString modeToPrefix(const QCharRef &mode) const { return modeToPrefix(QString(mode)); }
     inline QString modesToPrefixes(const QString &mode) const {
-        QString prefix = "";
+        QString prefixes;
         for (QChar c : mode) {
-            prefix += modeToPrefix(c);
+            prefixes += modeToPrefix(c);
         }
-        return prefix;
+        return prefixes;
     }
     /**@}*/
 
