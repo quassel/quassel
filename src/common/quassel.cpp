@@ -30,6 +30,7 @@
 
 #include <QCoreApplication>
 #include <QDateTime>
+#include <QDir>
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QLibraryInfo>

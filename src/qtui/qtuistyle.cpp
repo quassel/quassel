@@ -22,6 +22,7 @@
 #include "qtuistyle.h"
 
 #include <QFile>
+#include <QFileInfo>
 #include <QTextStream>
 
 QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent)
