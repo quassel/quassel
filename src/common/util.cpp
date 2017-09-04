@@ -64,6 +64,8 @@ QString hostFromMask(const QString &mask)
 
 bool isChannelName(const QString &str)
 {
+    if (str.isEmpty())
+        return false;
     static constexpr std::array<quint8, 4> prefixes{{'#', '&', '!', '+'}};
     return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return c == str[0]; });
 }
