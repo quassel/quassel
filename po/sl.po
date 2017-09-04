@@ -1,13 +1,13 @@
 # 
 # Translators:
-# Andrej Mernik <andrejm@ubuntu.si>, 2014-2015
+# Andrej Mernik <andrejm@ubuntu.si>, 2014-2016
 # Daniel Albers <daniel@lbers.com>, 2011
 # Jure Repinc <jlp@holodeck1.com>, 2009-2010
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2015-08-15 19:33+0000\n"
+"PO-Revision-Date: 2016-04-02 19:45+0000\n"
 "Last-Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
 "Language-Team: Slovenian (http://www.transifex.com/ald/quassel/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -30,45 +30,45 @@ msgstr "Moderen, porazdeljen odjemalec za IRC"
 #: ../src/uisupport/aboutdata.cpp:174
 msgctxt "AboutData|"
 msgid "Project Founder, Lead Developer"
-msgstr ""
+msgstr "Ustanovitelj projekta, glavni razvijalec"
 
 #: ../src/uisupport/aboutdata.cpp:175
 msgctxt "AboutData|"
 msgid "Project Motivator, Lead Developer"
-msgstr ""
+msgstr "Motivator projekta, glavni razvijalec"
 
 #: ../src/uisupport/aboutdata.cpp:176
 msgctxt "AboutData|"
 msgid "Former Lead Developer"
-msgstr ""
+msgstr "Predhodni glavni razvijalec"
 
 #: ../src/uisupport/aboutdata.cpp:177
 msgctxt "AboutData|"
 msgid "Master of Translation, many fixes and enhancements"
-msgstr ""
+msgstr "Mojster prevodov, veliko popravkov in izboljšav"
 
 #: ../src/uisupport/aboutdata.cpp:178
 msgctxt "AboutData|"
 msgid "Many features, fixes and improvements"
-msgstr ""
+msgstr "Veliko zmožnosti, popravkov in izboljšav"
 
 #: ../src/uisupport/aboutdata.cpp:179
 msgctxt "AboutData|"
 msgid "Many fixes and improvements, bug and patch triaging, community support"
-msgstr ""
+msgstr "Veliko popravkov in izboljšav, obravnavanje hroščev in popravkov, podpora skupnosti"
 
-#: ../src/uisupport/aboutdata.cpp:183 ../src/uisupport/aboutdata.cpp:192
+#: ../src/uisupport/aboutdata.cpp:183 ../src/uisupport/aboutdata.cpp:193
 msgctxt "AboutData|"
 msgid "Chatview improvements"
-msgstr ""
+msgstr "Izboljšave prikaza klepeta"
 
 #: ../src/uisupport/aboutdata.cpp:184
 msgctxt "AboutData|"
 msgid "Early beta tester and bughunter, Danish translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:185 ../src/uisupport/aboutdata.cpp:261
-#: ../src/uisupport/aboutdata.cpp:284
+#: ../src/uisupport/aboutdata.cpp:185 ../src/uisupport/aboutdata.cpp:271
+#: ../src/uisupport/aboutdata.cpp:296
 msgctxt "AboutData|"
 msgid "Spanish translation"
 msgstr ""
@@ -88,404 +88,444 @@ msgctxt "AboutData|"
 msgid "Documentation improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:189 ../src/uisupport/aboutdata.cpp:285
-msgctxt "AboutData|"
-msgid "Romanian translation"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:190 ../src/uisupport/aboutdata.cpp:235
-#: ../src/uisupport/aboutdata.cpp:246 ../src/uisupport/aboutdata.cpp:247
-msgctxt "AboutData|"
-msgid "Finnish translation"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:191
-msgctxt "AboutData|"
-msgid "Message indicator support"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:193
-msgctxt "AboutData|"
-msgid "Windows build system fixes"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:194
-msgctxt "AboutData|"
-msgid "Crash fixes"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:195 ../src/uisupport/aboutdata.cpp:215
-#: ../src/uisupport/aboutdata.cpp:271
-msgctxt "AboutData|"
-msgid "French translation"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:196
-msgctxt "AboutData|"
-msgid "Usability review"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:197
-msgctxt "AboutData|"
-msgid "SASL support"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:198
-msgctxt "AboutData|"
-msgid "Various improvements"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:199 ../src/uisupport/aboutdata.cpp:200
-#: ../src/uisupport/aboutdata.cpp:204
-msgctxt "AboutData|"
-msgid "Various fixes and improvements"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:201
-msgctxt "AboutData|"
-msgid "Galician translation"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:202
-msgctxt "AboutData|"
-msgid "Esperanto translation"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:203
-msgctxt "AboutData|"
-msgid "Japanese translation"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:205 ../src/uisupport/aboutdata.cpp:263
-msgctxt "AboutData|"
-msgid "Gentoo maintainer"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:206
-msgctxt "AboutData|"
-msgid "Early beta tester and bughunter (on Vista™!)"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:207
-msgctxt "AboutData|"
-msgid "Translation system fixes"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:208
-msgctxt "AboutData|"
-msgid "OSX Notification Center support"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:209 ../src/uisupport/aboutdata.cpp:257
+#: ../src/uisupport/aboutdata.cpp:189 ../src/uisupport/aboutdata.cpp:214
+#: ../src/uisupport/aboutdata.cpp:237 ../src/uisupport/aboutdata.cpp:255
+#: ../src/uisupport/aboutdata.cpp:267 ../src/uisupport/aboutdata.cpp:297
 msgctxt "AboutData|"
 msgid "Fixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:210 ../src/uisupport/aboutdata.cpp:259
+#: ../src/uisupport/aboutdata.cpp:190 ../src/uisupport/aboutdata.cpp:299
 msgctxt "AboutData|"
-msgid "Mac fixes"
+msgid "Romanian translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:211
+#: ../src/uisupport/aboutdata.cpp:191 ../src/uisupport/aboutdata.cpp:244
+#: ../src/uisupport/aboutdata.cpp:256 ../src/uisupport/aboutdata.cpp:257
 msgctxt "AboutData|"
-msgid "D-Bus notifications"
+msgid "Finnish translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:212
+#: ../src/uisupport/aboutdata.cpp:192
 msgctxt "AboutData|"
-msgid "Polish translation"
+msgid "Message indicator support"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:213
+#: ../src/uisupport/aboutdata.cpp:194 ../src/uisupport/aboutdata.cpp:195
+#: ../src/uisupport/aboutdata.cpp:312
 msgctxt "AboutData|"
-msgid "Build system improvements"
+msgid "Build system fix"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:214
+#: ../src/uisupport/aboutdata.cpp:196
 msgctxt "AboutData|"
-msgid "Formatting support and other input line improvements, many other fixes"
+msgid "Windows build system fixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:216
+#: ../src/uisupport/aboutdata.cpp:197
 msgctxt "AboutData|"
-msgid "BluesTheme stylesheet"
+msgid "Nicer tooltips"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:217 ../src/uisupport/aboutdata.cpp:251
-#: ../src/uisupport/aboutdata.cpp:279
+#: ../src/uisupport/aboutdata.cpp:198
 msgctxt "AboutData|"
-msgid "Russian translation"
+msgid "Crash fixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:218 ../src/uisupport/aboutdata.cpp:253
+#: ../src/uisupport/aboutdata.cpp:199 ../src/uisupport/aboutdata.cpp:220
+#: ../src/uisupport/aboutdata.cpp:282
 msgctxt "AboutData|"
-msgid "Italian translation"
+msgid "French translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:219
+#: ../src/uisupport/aboutdata.cpp:200
+msgctxt "AboutData|"
+msgid "Usability review"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:201
+msgctxt "AboutData|"
+msgid "SASL support"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:202
+msgctxt "AboutData|"
+msgid "Various improvements"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:203 ../src/uisupport/aboutdata.cpp:204
+#: ../src/uisupport/aboutdata.cpp:208
+msgctxt "AboutData|"
+msgid "Various fixes and improvements"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:205
+msgctxt "AboutData|"
+msgid "Galician translation"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:206
+msgctxt "AboutData|"
+msgid "Esperanto translation"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:207
+msgctxt "AboutData|"
+msgid "Japanese translation"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:209 ../src/uisupport/aboutdata.cpp:273
+msgctxt "AboutData|"
+msgid "Gentoo maintainer"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:210 ../src/uisupport/aboutdata.cpp:224
+#: ../src/uisupport/aboutdata.cpp:309
 msgctxt "AboutData|"
 msgid "Certificate handling improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:220
+#: ../src/uisupport/aboutdata.cpp:211
 msgctxt "AboutData|"
-msgid "Sanitize topic handling"
+msgid "Early beta tester and bughunter (on Vistaâ¢!)"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:212
+msgctxt "AboutData|"
+msgid "Translation system fixes"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:213
+msgctxt "AboutData|"
+msgid "OSX Notification Center support"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:215 ../src/uisupport/aboutdata.cpp:269
+msgctxt "AboutData|"
+msgid "Mac fixes"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:216
+msgctxt "AboutData|"
+msgid "D-Bus notifications"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:217
+msgctxt "AboutData|"
+msgid "Polish translation"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:218
+msgctxt "AboutData|"
+msgid "Build system improvements"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:219
+msgctxt "AboutData|"
+msgid "Formatting support and other input line improvements, many other fixes"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:221
 msgctxt "AboutData|"
-msgid "Norwegian translation"
+msgid "BluesTheme stylesheet"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:222
+#: ../src/uisupport/aboutdata.cpp:222 ../src/uisupport/aboutdata.cpp:261
+#: ../src/uisupport/aboutdata.cpp:291
 msgctxt "AboutData|"
-msgid "Hungarian translation"
+msgid "Russian translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:223
+#: ../src/uisupport/aboutdata.cpp:223 ../src/uisupport/aboutdata.cpp:263
 msgctxt "AboutData|"
-msgid "IRC parser improvements"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:224 ../src/uisupport/aboutdata.cpp:296
-#: ../src/uisupport/aboutdata.cpp:300
-msgctxt "AboutData|"
-msgid "Turkish translation"
+msgid "Italian translation"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:225
 msgctxt "AboutData|"
-msgid "Initial Qt5 support"
+msgid "Sanitize topic handling"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:226
 msgctxt "AboutData|"
-msgid "{Ku|U}buntu packager, motivator, promoter"
+msgid "Norwegian translation"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:227
 msgctxt "AboutData|"
-msgid "Various features"
+msgid "Hungarian translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:228 ../src/uisupport/aboutdata.cpp:229
-#: ../src/uisupport/aboutdata.cpp:234 ../src/uisupport/aboutdata.cpp:239
+#: ../src/uisupport/aboutdata.cpp:228
 msgctxt "AboutData|"
-msgid "Various fixes"
+msgid "IRC parser improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:230 ../src/uisupport/aboutdata.cpp:231
-#: ../src/uisupport/aboutdata.cpp:270 ../src/uisupport/aboutdata.cpp:273
-#: ../src/uisupport/aboutdata.cpp:277 ../src/uisupport/aboutdata.cpp:281
+#: ../src/uisupport/aboutdata.cpp:229 ../src/uisupport/aboutdata.cpp:311
+#: ../src/uisupport/aboutdata.cpp:316
 msgctxt "AboutData|"
-msgid "Bugfixes"
+msgid "Turkish translation"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:230
+msgctxt "AboutData|"
+msgid "MinGW support, SNORE backend, Windows packaging"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:231
+msgctxt "AboutData|"
+msgid "Initial Qt5 support"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:232
 msgctxt "AboutData|"
-msgid "Postgres migration fixes"
+msgid "{Ku|U}buntu packager, motivator, promoter"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:233
 msgctxt "AboutData|"
-msgid "Context menu fixes"
+msgid "Various features"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:236
+#: ../src/uisupport/aboutdata.cpp:234 ../src/uisupport/aboutdata.cpp:235
+#: ../src/uisupport/aboutdata.cpp:243 ../src/uisupport/aboutdata.cpp:248
+#: ../src/uisupport/aboutdata.cpp:286
 msgctxt "AboutData|"
-msgid "Many fixes and improvements, bug triaging"
+msgid "Various fixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:237
+#: ../src/uisupport/aboutdata.cpp:236 ../src/uisupport/aboutdata.cpp:240
+#: ../src/uisupport/aboutdata.cpp:281 ../src/uisupport/aboutdata.cpp:284
+#: ../src/uisupport/aboutdata.cpp:289 ../src/uisupport/aboutdata.cpp:293
 msgctxt "AboutData|"
-msgid "Original \"All-Seeing Eye\" logo"
+msgid "Bugfixes"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:238
 msgctxt "AboutData|"
-msgid "Project founder, various improvements"
+msgid "QuasselDroid and Java wizardess, documentation, bugfixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:240
+#: ../src/uisupport/aboutdata.cpp:239
 msgctxt "AboutData|"
-msgid "Serbian translation"
+msgid "Python improvements"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:241
 msgctxt "AboutData|"
-msgid "Slovenian translation"
+msgid "Postgres migration fixes"
 msgstr ""
 
 #: ../src/uisupport/aboutdata.cpp:242
+msgctxt "AboutData|"
+msgid "Context menu fixes"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:245
+msgctxt "AboutData|"
+msgid "Many fixes and improvements, bug triaging"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:246
+msgctxt "AboutData|"
+msgid "Original \"All-Seeing Eye\" logo"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:247
+msgctxt "AboutData|"
+msgid "Project founder, various improvements"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:249
+msgctxt "AboutData|"
+msgid "Serbian translation"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:250
+msgctxt "AboutData|"
+msgid "Slovenian translation"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:251
 msgctxt "AboutData|"
 msgid ""
 "Tireless tester, {Ku|U}buntu tester and lobbyist, liters of delicious "
 "Finnish alcohol"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:243
+#: ../src/uisupport/aboutdata.cpp:252
 msgctxt "AboutData|"
 msgid "Qt5 porting help, Travis CI setup"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:244 ../src/uisupport/aboutdata.cpp:254
-#: ../src/uisupport/aboutdata.cpp:256 ../src/uisupport/aboutdata.cpp:293
+#: ../src/uisupport/aboutdata.cpp:253 ../src/uisupport/aboutdata.cpp:264
+#: ../src/uisupport/aboutdata.cpp:266 ../src/uisupport/aboutdata.cpp:307
 msgctxt "AboutData|"
 msgid "German translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:245
+#: ../src/uisupport/aboutdata.cpp:254
 msgctxt "AboutData|"
 msgid "Buffer merge improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:248
+#: ../src/uisupport/aboutdata.cpp:258
 msgctxt "AboutData|"
 msgid "OSX improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:249
+#: ../src/uisupport/aboutdata.cpp:259
 msgctxt "AboutData|"
 msgid "Lithuanian translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:250
+#: ../src/uisupport/aboutdata.cpp:260
 msgctxt "AboutData|"
 msgid "Documentation fixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:252
+#: ../src/uisupport/aboutdata.cpp:262
 msgctxt "AboutData|"
 msgid "Ideas, hacking, initial motivation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:255
+#: ../src/uisupport/aboutdata.cpp:265
 msgctxt "AboutData|"
 msgid "Core and other fixes, QuasselDroid"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:258
+#: ../src/uisupport/aboutdata.cpp:268
 msgctxt "AboutData|"
 msgid "German translation, fixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:260
+#: ../src/uisupport/aboutdata.cpp:270
 msgctxt "AboutData|"
 msgid "Many fixes and improvements; Ubuntu live packages"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:262
+#: ../src/uisupport/aboutdata.cpp:272
 msgctxt "AboutData|"
 msgid "Tons of Oxygen icons including the Quassel logo"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:264
-msgctxt "AboutData|"
-msgid "MinGW support, SNORE backend, Windows packaging"
-msgstr ""
-
-#: ../src/uisupport/aboutdata.cpp:265
+#: ../src/uisupport/aboutdata.cpp:274
 msgctxt "AboutData|"
 msgid "Initial design and main window layout"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:266
+#: ../src/uisupport/aboutdata.cpp:275
 msgctxt "AboutData|"
 msgid "Early beta tester and bughunter"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:267
+#: ../src/uisupport/aboutdata.cpp:276
 msgctxt "AboutData|"
 msgid "Danish translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:268
+#: ../src/uisupport/aboutdata.cpp:277
 msgctxt "AboutData|"
 msgid "Linewrap for input line"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:269
+#: ../src/uisupport/aboutdata.cpp:278
+msgctxt "AboutData|"
+msgid "Performance improvements and cleanups"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:279
 msgctxt "AboutData|"
 msgid "/print command"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:272
+#: ../src/uisupport/aboutdata.cpp:280
+msgctxt "AboutData|"
+msgid "Performance improvements"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:283
 msgctxt "AboutData|"
 msgid "Build system fixes"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:274
+#: ../src/uisupport/aboutdata.cpp:285
 msgctxt "AboutData|"
 msgid "Emacs keybindings"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:275
+#: ../src/uisupport/aboutdata.cpp:287
 msgctxt "AboutData|"
 msgid "Highlight configuration improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:276
+#: ../src/uisupport/aboutdata.cpp:288
 msgctxt "AboutData|"
 msgid "Kubuntu packager, (packaging/build system) bughunter"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:278
+#: ../src/uisupport/aboutdata.cpp:290
 msgctxt "AboutData|"
 msgid "Audio backend improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:280
+#: ../src/uisupport/aboutdata.cpp:292
 msgctxt "AboutData|"
 msgid "Dutch translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:282 ../src/uisupport/aboutdata.cpp:283
-#: ../src/uisupport/aboutdata.cpp:288 ../src/uisupport/aboutdata.cpp:289
+#: ../src/uisupport/aboutdata.cpp:294 ../src/uisupport/aboutdata.cpp:295
+#: ../src/uisupport/aboutdata.cpp:302 ../src/uisupport/aboutdata.cpp:303
 msgctxt "AboutData|"
 msgid "Greek translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:286
+#: ../src/uisupport/aboutdata.cpp:298
+msgctxt "AboutData|"
+msgid "Fixing and hosting Windows builds"
+msgstr ""
+
+#: ../src/uisupport/aboutdata.cpp:300
 msgctxt "AboutData|"
 msgid "Korean translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:287
+#: ../src/uisupport/aboutdata.cpp:301
 msgctxt "AboutData|"
 msgid "Norwegian translation, documentation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:290
+#: ../src/uisupport/aboutdata.cpp:304
 msgctxt "AboutData|"
 msgid "Former Windows builder"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:291
+#: ../src/uisupport/aboutdata.cpp:305
 msgctxt "AboutData|"
 msgid "Fixes, Debian packaging"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:292
+#: ../src/uisupport/aboutdata.cpp:306
 msgctxt "AboutData|"
 msgid "Fixes and feedback"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:294 ../src/uisupport/aboutdata.cpp:295
+#: ../src/uisupport/aboutdata.cpp:308 ../src/uisupport/aboutdata.cpp:310
 msgctxt "AboutData|"
 msgid "Czech translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:297
+#: ../src/uisupport/aboutdata.cpp:313
 msgctxt "AboutData|"
 msgid "Network detection improvements"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:298
+#: ../src/uisupport/aboutdata.cpp:314
 msgctxt "AboutData|"
 msgid "Ukrainian translation"
 msgstr ""
 
-#: ../src/uisupport/aboutdata.cpp:299
+#: ../src/uisupport/aboutdata.cpp:315
 msgctxt "AboutData|"
 msgid "Portuguese translation"
 msgstr ""
@@ -583,14 +623,14 @@ msgid ""
 "Quassel Mobile with N810s</i></dd>"
 msgstr ""
 
-#: ../src/core/abstractsqlstorage.cpp:127
+#: ../src/core/abstractsqlstorage.cpp:140
 #, qt-format
 msgctxt "AbstractSqlStorage|"
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Nameščena shema (različica %1) ni posodobljena. Nadgradnja na različico %2 ..."
 
-#: ../src/core/abstractsqlstorage.cpp:129
+#: ../src/core/abstractsqlstorage.cpp:142
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
 msgstr "Nadgradnja ni uspela ..."
@@ -910,12 +950,12 @@ msgctxt "BufferItem|"
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 - %2 </p>"
 
-#: ../src/uisupport/bufferview.cpp:268
+#: ../src/uisupport/bufferview.cpp:253
 msgctxt "BufferView|"
 msgid "Merge buffers permanently?"
 msgstr "Trajno združim prikaza?"
 
-#: ../src/uisupport/bufferview.cpp:269
+#: ../src/uisupport/bufferview.cpp:254
 #, qt-format
 msgctxt "BufferView|"
 msgid ""
@@ -938,7 +978,7 @@ msgctxt "BufferViewEditDlg|"
 msgid "Add Chat List"
 msgstr "Dodaj seznam klepetov"
 
-#: ../src/uisupport/bufferviewfilter.cpp:53
+#: ../src/uisupport/bufferviewfilter.cpp:46
 msgctxt "BufferViewFilter|"
 msgid "Show / Hide Chats"
 msgstr "Pokaži/skrij klepete"
@@ -1102,36 +1142,36 @@ msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
 msgstr "Pojdi do črte označevalnika"
 
-#: ../src/client/networkmodel.cpp:583 ../src/client/networkmodel.cpp:585
+#: ../src/client/networkmodel.cpp:589 ../src/client/networkmodel.cpp:591
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Channel %1</b>"
 msgstr "<b>Kanal %1</b>"
 
-#: ../src/client/networkmodel.cpp:589
+#: ../src/client/networkmodel.cpp:595
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
 msgstr "<b>Uporabniki:</b> %1"
 
-#: ../src/client/networkmodel.cpp:593
+#: ../src/client/networkmodel.cpp:599
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Način:</b> %1"
 
-#: ../src/client/networkmodel.cpp:608
+#: ../src/client/networkmodel.cpp:614
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Tema:</b> %1"
 
-#: ../src/client/networkmodel.cpp:613
+#: ../src/client/networkmodel.cpp:619
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
 msgstr "Ni dejaven <br /> Dvokliknite za pridružitev"
 
-#: ../src/client/networkmodel.cpp:616
+#: ../src/client/networkmodel.cpp:622
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
@@ -1571,61 +1611,61 @@ msgctxt "Client|"
 msgid "Identity already exists in client!"
 msgstr "Istovetnost že obstaja v odjemalcu!"
 
-#: ../src/client/clientauthhandler.cpp:65
-#: ../src/client/clientauthhandler.cpp:472
+#: ../src/client/clientauthhandler.cpp:69
+#: ../src/client/clientauthhandler.cpp:497
 msgctxt "ClientAuthHandler|"
 msgid "Unencrypted connection canceled"
 msgstr "Nešifrirana povezava preklicana"
 
-#: ../src/client/clientauthhandler.cpp:87
-#: ../src/client/clientauthhandler.cpp:103
+#: ../src/client/clientauthhandler.cpp:91
+#: ../src/client/clientauthhandler.cpp:107
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Connecting to %1..."
 msgstr "Povezovanje z %1 ..."
 
-#: ../src/client/clientauthhandler.cpp:99
+#: ../src/client/clientauthhandler.cpp:103
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Looking up %1..."
 msgstr "Iskanje %1 ..."
 
-#: ../src/client/clientauthhandler.cpp:106
-#: ../src/client/clientauthhandler.cpp:316
+#: ../src/client/clientauthhandler.cpp:110
+#: ../src/client/clientauthhandler.cpp:320
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Connected to %1"
 msgstr "Povezan z %1"
 
-#: ../src/client/clientauthhandler.cpp:110
+#: ../src/client/clientauthhandler.cpp:114
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Disconnecting from %1..."
 msgstr "Prekinjanje povezave z %1 ..."
 
-#: ../src/client/clientauthhandler.cpp:114
+#: ../src/client/clientauthhandler.cpp:118
 msgctxt "ClientAuthHandler|"
 msgid "Disconnected"
 msgstr "Povezava prekinjena"
 
-#: ../src/client/clientauthhandler.cpp:149
+#: ../src/client/clientauthhandler.cpp:153
 msgctxt "ClientAuthHandler|"
 msgid "Reconnecting in compatibility mode..."
 msgstr "Ponovno povezovanje v združljivostnem načinu ..."
 
-#: ../src/client/clientauthhandler.cpp:237
+#: ../src/client/clientauthhandler.cpp:241
 msgctxt "ClientAuthHandler|"
 msgid ""
 "<b>Incompatible Quassel Core!</b><br>None of the protocols this client "
 "speaks are supported by the core you are trying to connect to."
 msgstr "<b>Nezdružljivo jedro za Quassel!</b><br>Nobeden izmed protokolov, ki ga uporablja ta odjemalec, ni podprt s strani jedra, na katerega se poskušate povezati."
 
-#: ../src/client/clientauthhandler.cpp:240
+#: ../src/client/clientauthhandler.cpp:244
 msgctxt "ClientAuthHandler|"
 msgid "Core speaks none of the protocols we support"
 msgstr "Jedro ne podpira nobenega izmed protokolov, ki ga uporabljamo mi"
 
-#: ../src/client/clientauthhandler.cpp:255
+#: ../src/client/clientauthhandler.cpp:259
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid ""
@@ -1633,32 +1673,32 @@ msgid ""
 "at least protocol v%1, but the core speaks v%2 only."
 msgstr "<b>Jedro za Quassel, s katerim se želite povezati, je prestaro!</b><br>Zahtevan je protokol r%1, jedro pa podpira samo protokol r%2."
 
-#: ../src/client/clientauthhandler.cpp:257
+#: ../src/client/clientauthhandler.cpp:261
 msgctxt "ClientAuthHandler|"
 msgid "Incompatible protocol version, connection to core refused"
 msgstr "Nezdružljiva različica protokola, povezava z jedrom je bila zavrnjena"
 
-#: ../src/client/clientauthhandler.cpp:279
+#: ../src/client/clientauthhandler.cpp:283
 msgctxt "ClientAuthHandler|"
 msgid "Synchronizing to core..."
 msgstr "Usklajevanje z jedrom ..."
 
-#: ../src/client/clientauthhandler.cpp:294
+#: ../src/client/clientauthhandler.cpp:298
 msgctxt "ClientAuthHandler|"
 msgid "The core refused connection from this client"
 msgstr "Jedro je zavrnilo povezavo s tem odjemalcem"
 
-#: ../src/client/clientauthhandler.cpp:358
+#: ../src/client/clientauthhandler.cpp:362
 msgctxt "ClientAuthHandler|"
 msgid "Logging in..."
 msgstr "Prijavljanje ..."
 
-#: ../src/client/clientauthhandler.cpp:363
+#: ../src/client/clientauthhandler.cpp:367
 msgctxt "ClientAuthHandler|"
 msgid "Login canceled"
 msgstr "Prijava preklicana"
 
-#: ../src/client/clientauthhandler.cpp:421
+#: ../src/client/clientauthhandler.cpp:425
 msgctxt "ClientAuthHandler|"
 msgid "Unencrypted connection cancelled"
 msgstr "Nešifrirana povezava preklicana"
@@ -2245,33 +2285,45 @@ msgid ""
 msgstr "<b>Odjemalec ni začet!</b><br>Pred poskusom prijave morate poslati registracijsko sporočilo."
 
 #: ../src/core/coreauthhandler.cpp:162
+#, qt-format
+msgctxt "CoreAuthHandler|"
+msgid "SSL required but non-SSL connection attempt from %1"
+msgstr "Zahtevan je SSL, zaznan pa je bil poskus povezave brez SSL od %1"
+
+#: ../src/core/coreauthhandler.cpp:163
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>SSL is required!</b><br>You need to use SSL in order to connect to this "
 "core."
 msgstr "<b>Zahtevan je SSL!</b><br>Za povezavo s tem jedrom morate uporabiti SSL."
 
-#: ../src/core/coreauthhandler.cpp:176
+#: ../src/core/coreauthhandler.cpp:177
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr "<b>Jedro za Quassel različice %1</b><br>Izgrajeno: %2<br>Teče %3 d %4 u %5 m (od %6)"
 
-#: ../src/core/coreauthhandler.cpp:212
+#: ../src/core/coreauthhandler.cpp:213
+#, qt-format
+msgctxt "CoreAuthHandler|"
+msgid "Invalid login attempt from %1 as \"%2\""
+msgstr "Neveljaven poskus prijave od %1 kot »%2«"
+
+#: ../src/core/coreauthhandler.cpp:214
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr "<b>Neveljavno uporabniško ime ali geslo.</b><br>Podane kombinacije uporabniškega imena in gesla ni mogoče najti v podatkovni zbirki."
 
-#: ../src/core/coreauthhandler.cpp:217
+#: ../src/core/coreauthhandler.cpp:219
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid ""
 "Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3)."
 msgstr "Odjemalec %1 je bil uspešno začet in pooblaščen kot »%2« (ID uporabnika: %3)."
 
-#: ../src/core/coreauthhandler.cpp:236
+#: ../src/core/coreauthhandler.cpp:238
 msgctxt "CoreAuthHandler|"
 msgid "Starting encryption for Client:"
 msgstr "Začenjanje šifriranja za odjemalec:"
@@ -2485,33 +2537,33 @@ msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "Omrežje ni vzpostavljeno"
 
-#: ../src/client/coreconnection.cpp:263
+#: ../src/client/coreconnection.cpp:265
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "Povezava prekinjena"
 
-#: ../src/client/coreconnection.cpp:298
+#: ../src/client/coreconnection.cpp:300
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "Povezava z jedrom prekinjena."
 
-#: ../src/client/coreconnection.cpp:436
+#: ../src/client/coreconnection.cpp:438
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "Prejemanje stanja seje"
 
-#: ../src/client/coreconnection.cpp:438
+#: ../src/client/coreconnection.cpp:440
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "Usklajevanje z %1 ..."
 
-#: ../src/client/coreconnection.cpp:474
+#: ../src/client/coreconnection.cpp:476
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "Prejemanje stanj omrežij"
 
-#: ../src/client/coreconnection.cpp:525
+#: ../src/client/coreconnection.cpp:527
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2695,35 +2747,35 @@ msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (od %4)"
 
-#: ../src/core/corenetwork.cpp:168
+#: ../src/core/corenetwork.cpp:167
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
 msgstr "Povezava ni uspela. Prehajanje na naslednji strežnik"
 
-#: ../src/core/corenetwork.cpp:176 ../src/core/corenetwork.cpp:177
+#: ../src/core/corenetwork.cpp:175 ../src/core/corenetwork.cpp:176
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
 msgstr "Povezovanje z %1:%2 ..."
 
-#: ../src/core/corenetwork.cpp:234
+#: ../src/core/corenetwork.cpp:233
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr "Prekinjanje povezave ... (%1)"
 
-#: ../src/core/corenetwork.cpp:234
+#: ../src/core/corenetwork.cpp:233
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr "Izklop jedra"
 
-#: ../src/core/corenetwork.cpp:442
+#: ../src/core/corenetwork.cpp:441
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "Ni se bilo mogoče povezati z %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:444
+#: ../src/core/corenetwork.cpp:443
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
@@ -3268,6 +3320,7 @@ msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "pošiljanje zahteve CTCP-%1 na %2"
 
+#. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
 #: ../src/core/eventstringifier.cpp:717
 msgctxt "EventStringifier|"
 msgid "unknown"
@@ -4308,28 +4361,55 @@ msgctxt "IrcListModel|"
 msgid "Topic"
 msgstr "Tema"
 
-#: ../src/client/networkmodel.cpp:953
+#: ../src/client/networkmodel.cpp:976
 msgctxt "IrcUserItem|"
-msgid " is away"
-msgstr " je odsoten"
+msgid "(unknown)"
+msgstr "(neznano)"
 
-#: ../src/client/networkmodel.cpp:968
-#, qt-format
+#: ../src/client/networkmodel.cpp:980
 msgctxt "IrcUserItem|"
-msgid "idling since %1"
-msgstr "nedejaven od %1"
+msgid "Away&nbsp;Message"
+msgstr "Sporočilo&nbsp;odsotnosti"
 
-#: ../src/client/networkmodel.cpp:971
-#, qt-format
+#: ../src/client/networkmodel.cpp:982
 msgctxt "IrcUserItem|"
-msgid "login time: %1"
-msgstr "čas prijave: %1"
+msgid "Realname"
+msgstr "Pravo ime"
 
-#: ../src/client/networkmodel.cpp:974
-#, qt-format
+#: ../src/client/networkmodel.cpp:983 ../src/client/networkmodel.cpp:987
 msgctxt "IrcUserItem|"
-msgid "server: %1"
-msgstr "strežnik: %1"
+msgid "Operator"
+msgstr "Operater"
+
+#: ../src/client/networkmodel.cpp:984
+msgctxt "IrcUserItem|"
+msgid "Suser&nbsp;Host"
+msgstr ""
+
+#: ../src/client/networkmodel.cpp:985
+msgctxt "IrcUserItem|"
+msgid "Whois&nbsp;Service&nbsp;Reply"
+msgstr "Whois&nbsp;Storitev&nbsp;Odgovor"
+
+#: ../src/client/networkmodel.cpp:986
+msgctxt "IrcUserItem|"
+msgid "Hostmask"
+msgstr "Maska gostitelja"
+
+#: ../src/client/networkmodel.cpp:993
+msgctxt "IrcUserItem|"
+msgid "Idling&nbsp;since"
+msgstr "Nedejaven(-na)&nbsp;od"
+
+#: ../src/client/networkmodel.cpp:997
+msgctxt "IrcUserItem|"
+msgid "Login&nbsp;time"
+msgstr "Čas&nbsp;prijave"
+
+#: ../src/client/networkmodel.cpp:1000
+msgctxt "IrcUserItem|"
+msgid "Server"
+msgstr "Strežnik"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:14
 msgctxt "ItemViewSettingsPage|"
@@ -4557,401 +4637,406 @@ msgctxt "LegacyPeer|"
 msgid "Unknown protocol message of type %1"
 msgstr "Neznano sporočilo protokola vrste %1"
 
-#: ../src/qtui/mainwin.cpp:358
+#: ../src/qtui/mainpage.cpp:40
+msgctxt "MainPage|"
+msgid "Connect to Core..."
+msgstr "Poveži se z jedrom ..."
+
+#: ../src/qtui/mainwin.cpp:360
 msgctxt "MainWin|"
 msgid "General"
 msgstr "Splošno"
 
-#: ../src/qtui/mainwin.cpp:360
+#: ../src/qtui/mainwin.cpp:362
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
 msgstr "&Poveži se z jedrom ..."
 
-#: ../src/qtui/mainwin.cpp:362
+#: ../src/qtui/mainwin.cpp:364
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
 msgstr "P&rekini povezavo z jedrom"
 
-#: ../src/qtui/mainwin.cpp:364
+#: ../src/qtui/mainwin.cpp:366
 msgctxt "MainWin|"
 msgid "Change &Password..."
 msgstr "S&premeni geslo ..."
 
-#: ../src/qtui/mainwin.cpp:366
+#: ../src/qtui/mainwin.cpp:368
 msgctxt "MainWin|"
 msgid "Core &Info..."
 msgstr "Podatk&i o jedru ..."
 
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:370
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
 msgstr "&Nastavi omrežja ..."
 
-#: ../src/qtui/mainwin.cpp:371
+#: ../src/qtui/mainwin.cpp:373
 msgctxt "MainWin|"
 msgid "&Quit"
 msgstr "Konča&j"
 
-#: ../src/qtui/mainwin.cpp:375
+#: ../src/qtui/mainwin.cpp:377
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
 msgstr "&Nastavi sezname klepetov ..."
 
-#: ../src/qtui/mainwin.cpp:378
+#: ../src/qtui/mainwin.cpp:380
 msgctxt "MainWin|"
 msgid "&Lock Layout"
 msgstr "Zak&leni razpored"
 
-#: ../src/qtui/mainwin.cpp:382
+#: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
 msgstr "Pokaži i&skalno vrstico"
 
-#: ../src/qtui/mainwin.cpp:384
+#: ../src/qtui/mainwin.cpp:386
 msgctxt "MainWin|"
 msgid "Show Away Log"
 msgstr "Pokaži dnevnik odsotnosti"
 
-#: ../src/qtui/mainwin.cpp:386
+#: ../src/qtui/mainwin.cpp:388
 msgctxt "MainWin|"
 msgid "Show &Menubar"
 msgstr "Pokaži &menijsko vrstico"
 
-#: ../src/qtui/mainwin.cpp:389
+#: ../src/qtui/mainwin.cpp:391
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
 msgstr "Po&kaži vrstico stanja"
 
-#: ../src/qtui/mainwin.cpp:395
+#: ../src/qtui/mainwin.cpp:397
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
 msgstr "&Celozaslonski način"
 
-#: ../src/qtui/mainwin.cpp:402
+#: ../src/qtui/mainwin.cpp:404
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
 msgstr "Na&stavi bližnjice ..."
 
-#: ../src/qtui/mainwin.cpp:408 ../src/qtui/mainwin.cpp:412
+#: ../src/qtui/mainwin.cpp:410 ../src/qtui/mainwin.cpp:414
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
 msgstr "&Nastavi Quassel ..."
 
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:420
 msgctxt "MainWin|"
 msgid "&About Quassel"
 msgstr "&O programu Quassel"
 
-#: ../src/qtui/mainwin.cpp:423
+#: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "About &Qt"
 msgstr "O &Qt"
 
-#: ../src/qtui/mainwin.cpp:427
+#: ../src/qtui/mainwin.cpp:429
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
 msgstr "Razhroščevanje &modela omrežja"
 
-#: ../src/qtui/mainwin.cpp:429
+#: ../src/qtui/mainwin.cpp:431
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
 msgstr "Razhroščevanje &BufferViewOverlay"
 
-#: ../src/qtui/mainwin.cpp:431
+#: ../src/qtui/mainwin.cpp:433
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
 msgstr "Ra&zhroščevanje modela sporočil"
 
-#: ../src/qtui/mainwin.cpp:433
+#: ../src/qtui/mainwin.cpp:435
 msgctxt "MainWin|"
 msgid "Debug &HotList"
 msgstr "Razhroščevanje &HotList"
 
-#: ../src/qtui/mainwin.cpp:435
+#: ../src/qtui/mainwin.cpp:437
 msgctxt "MainWin|"
 msgid "Debug &Log"
 msgstr "Razhroščevalni &dnevnik"
 
-#: ../src/qtui/mainwin.cpp:437
+#: ../src/qtui/mainwin.cpp:439
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "Znova naloži slogovno predlogo"
 
-#: ../src/qtui/mainwin.cpp:440
+#: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
 msgstr "Skrij trenuten prikaz"
 
-#: ../src/qtui/mainwin.cpp:444
+#: ../src/qtui/mainwin.cpp:446
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "Krmarjenje"
 
-#: ../src/qtui/mainwin.cpp:446
+#: ../src/qtui/mainwin.cpp:448
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr "Skoči na vroči klepet"
 
-#: ../src/qtui/mainwin.cpp:458
+#: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr "Nastavi hitri dostop #1"
 
-#: ../src/qtui/mainwin.cpp:460
+#: ../src/qtui/mainwin.cpp:462
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr "Nastavi hitri dostop #1"
 
-#: ../src/qtui/mainwin.cpp:462
+#: ../src/qtui/mainwin.cpp:464
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr "Nastavi hitri dostop #2"
 
-#: ../src/qtui/mainwin.cpp:464
+#: ../src/qtui/mainwin.cpp:466
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr "Nastavi hitri dostop #3"
 
-#: ../src/qtui/mainwin.cpp:466
+#: ../src/qtui/mainwin.cpp:468
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr "Nastavi hitri dostop #4"
 
-#: ../src/qtui/mainwin.cpp:468
+#: ../src/qtui/mainwin.cpp:470
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr "Nastavi hitri dostop #5"
 
-#: ../src/qtui/mainwin.cpp:470
+#: ../src/qtui/mainwin.cpp:472
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr "Nastavi hitri dostop #6"
 
-#: ../src/qtui/mainwin.cpp:472
+#: ../src/qtui/mainwin.cpp:474
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr "Nastavi hitri dostop #7"
 
-#: ../src/qtui/mainwin.cpp:474
+#: ../src/qtui/mainwin.cpp:476
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr "Nastavi hitri dostop #8"
 
-#: ../src/qtui/mainwin.cpp:476
+#: ../src/qtui/mainwin.cpp:478
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr "Nastavi hitri dostop #9"
 
-#: ../src/qtui/mainwin.cpp:479
+#: ../src/qtui/mainwin.cpp:481
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr "Hitri dostop #0"
 
-#: ../src/qtui/mainwin.cpp:481
+#: ../src/qtui/mainwin.cpp:483
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr "Hitri dostop #1"
 
-#: ../src/qtui/mainwin.cpp:483
+#: ../src/qtui/mainwin.cpp:485
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr "Hitri dostop #2"
 
-#: ../src/qtui/mainwin.cpp:485
+#: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr "Hitri dostop #3"
 
-#: ../src/qtui/mainwin.cpp:487
+#: ../src/qtui/mainwin.cpp:489
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr "Hitri dostop #4"
 
-#: ../src/qtui/mainwin.cpp:489
+#: ../src/qtui/mainwin.cpp:491
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr "Hitri dostop #5"
 
-#: ../src/qtui/mainwin.cpp:491
+#: ../src/qtui/mainwin.cpp:493
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr "Hitri dostop #6"
 
-#: ../src/qtui/mainwin.cpp:493
+#: ../src/qtui/mainwin.cpp:495
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr "Hitri dostop #7"
 
-#: ../src/qtui/mainwin.cpp:495
+#: ../src/qtui/mainwin.cpp:497
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr "Hitri dostop #8"
 
-#: ../src/qtui/mainwin.cpp:497
+#: ../src/qtui/mainwin.cpp:499
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr "Hitri dostop #9"
 
-#: ../src/qtui/mainwin.cpp:501
+#: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "Omogoči naslednji seznam klepetov"
 
-#: ../src/qtui/mainwin.cpp:503
+#: ../src/qtui/mainwin.cpp:505
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr "Omogoči predhodni seznam klepetov"
 
-#: ../src/qtui/mainwin.cpp:505
+#: ../src/qtui/mainwin.cpp:507
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr "Pojdi na naslednji klepet"
 
-#: ../src/qtui/mainwin.cpp:507
+#: ../src/qtui/mainwin.cpp:509
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr "Pojdi na predhodni klepet"
 
-#: ../src/qtui/mainwin.cpp:516
+#: ../src/qtui/mainwin.cpp:518
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "&Datoteka"
 
-#: ../src/qtui/mainwin.cpp:529
+#: ../src/qtui/mainwin.cpp:531
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "O&mrežja"
 
-#: ../src/qtui/mainwin.cpp:535
+#: ../src/qtui/mainwin.cpp:537
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "Po&gled"
 
-#: ../src/qtui/mainwin.cpp:536
+#: ../src/qtui/mainwin.cpp:538
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "Seznami &klepetov"
 
-#: ../src/qtui/mainwin.cpp:538
+#: ../src/qtui/mainwin.cpp:540
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "Orodne vrs&tice"
 
-#: ../src/qtui/mainwin.cpp:552
+#: ../src/qtui/mainwin.cpp:554
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "Na&stavitve"
 
-#: ../src/qtui/mainwin.cpp:562
+#: ../src/qtui/mainwin.cpp:564
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "&Pomoč"
 
-#: ../src/qtui/mainwin.cpp:571
+#: ../src/qtui/mainwin.cpp:573
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "Razhrošči"
 
-#: ../src/qtui/mainwin.cpp:747
+#: ../src/qtui/mainwin.cpp:749
 msgctxt "MainWin|"
 msgid "Feature Not Supported"
 msgstr "Zmožnost ni podprta"
 
-#: ../src/qtui/mainwin.cpp:748
+#: ../src/qtui/mainwin.cpp:750
 msgctxt "MainWin|"
 msgid "<b>Your Quassel Core does not support this feature</b>"
 msgstr "<b>Vaše jedro ne podpira te zmožnosti</b>"
 
-#: ../src/qtui/mainwin.cpp:750
+#: ../src/qtui/mainwin.cpp:752
 msgctxt "MainWin|"
 msgid ""
 "You need a Quassel Core v0.12.0 or newer in order to be able to remotely "
 "change your password."
 msgstr "Da bi lahko oddaljeno spremenili vaše geslo, morate imeti jedro Quassel različice 0.12.0 ali novejše"
 
-#: ../src/qtui/mainwin.cpp:863
+#: ../src/qtui/mainwin.cpp:865
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "Vzdevki"
 
-#: ../src/qtui/mainwin.cpp:872
+#: ../src/qtui/mainwin.cpp:874
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "Pokaži seznam vzdevkov"
 
-#: ../src/qtui/mainwin.cpp:885
+#: ../src/qtui/mainwin.cpp:889
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "Nadzornik klepeta"
 
-#: ../src/qtui/mainwin.cpp:897
+#: ../src/qtui/mainwin.cpp:901
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "Pokaži nadzornik klepeta"
 
-#: ../src/qtui/mainwin.cpp:903
+#: ../src/qtui/mainwin.cpp:907
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "Vnosna vrstica"
 
-#: ../src/qtui/mainwin.cpp:912
+#: ../src/qtui/mainwin.cpp:916
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "Pokaži vnosno vrstico"
 
-#: ../src/qtui/mainwin.cpp:927
+#: ../src/qtui/mainwin.cpp:931
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "Tema"
 
-#: ../src/qtui/mainwin.cpp:939
+#: ../src/qtui/mainwin.cpp:943
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "Pokaži vrstico s temo"
 
-#: ../src/qtui/mainwin.cpp:1033
+#: ../src/qtui/mainwin.cpp:1037
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "Glavna orodna vrstica"
 
-#: ../src/qtui/mainwin.cpp:1097
+#: ../src/qtui/mainwin.cpp:1101
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "Povezan z jedrom."
 
-#: ../src/qtui/mainwin.cpp:1197
+#: ../src/qtui/mainwin.cpp:1201
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Brez povezave z jedrom."
 
-#: ../src/qtui/mainwin.cpp:1215 ../src/qtui/mainwin.cpp:1225
+#: ../src/qtui/mainwin.cpp:1220 ../src/qtui/mainwin.cpp:1230
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Nešifrirana povezava"
 
-#: ../src/qtui/mainwin.cpp:1215
+#: ../src/qtui/mainwin.cpp:1220
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>Vaš odjemalec ne podpira šifriranja SSL.</b>"
 
-#: ../src/qtui/mainwin.cpp:1217 ../src/qtui/mainwin.cpp:1227
+#: ../src/qtui/mainwin.cpp:1222 ../src/qtui/mainwin.cpp:1232
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr "Zaupni podatki, kot so gesla, bodo do jedra za Quassel poslani nešifrirani."
 
-#: ../src/qtui/mainwin.cpp:1225
+#: ../src/qtui/mainwin.cpp:1230
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>Vaše jedro ne podpira šifriranja SSL.</b>"
 
-#: ../src/qtui/mainwin.cpp:1243 ../src/qtui/mainwin.cpp:1264
+#: ../src/qtui/mainwin.cpp:1248 ../src/qtui/mainwin.cpp:1269
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "Varnostno potrdilo, ki ni zaupanja vredno"
 
-#: ../src/qtui/mainwin.cpp:1244
+#: ../src/qtui/mainwin.cpp:1249
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4959,33 +5044,33 @@ msgid ""
 "following reasons:</b>"
 msgstr "<b>Potrdilo SSL, ki ga je ponudilo jedro na %1, ni zaupanja vredno zaradi naslednjih razlogov:</b>"
 
-#: ../src/qtui/mainwin.cpp:1247
+#: ../src/qtui/mainwin.cpp:1252
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Nadaljuj"
 
-#: ../src/qtui/mainwin.cpp:1248
+#: ../src/qtui/mainwin.cpp:1253
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Prikaži potrdilo"
 
-#: ../src/qtui/mainwin.cpp:1265
+#: ../src/qtui/mainwin.cpp:1270
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Ali bi radi trajno sprejeli to potrdilo brez nadaljnjih vprašanj?"
 
-#: ../src/qtui/mainwin.cpp:1267
+#: ../src/qtui/mainwin.cpp:1272
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Samo za trenutno sejo"
 
-#: ../src/qtui/mainwin.cpp:1268
+#: ../src/qtui/mainwin.cpp:1273
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "Trajno"
 
-#: ../src/qtui/mainwin.cpp:1279
+#: ../src/qtui/mainwin.cpp:1284
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Napaka povezave z jedrom"
@@ -5006,7 +5091,7 @@ msgctxt "MsgProcessorStatusWidget|"
 msgid "Receiving Backlog"
 msgstr "Prejemanje sporočil iz dnevnika"
 
-#: ../src/uisupport/multilineedit.cpp:701
+#: ../src/uisupport/multilineedit.cpp:711
 #, qt-format
 msgctxt "MultiLineEdit|"
 msgid "Do you really want to paste %n line(s)?"
@@ -5016,7 +5101,7 @@ msgstr[1] "Ali resnično želite prilepiti %n vrstici?"
 msgstr[2] "Ali resnično želite prilepiti %n vrstice?"
 msgstr[3] "Ali resnično želite prilepiti %n vrstic?"
 
-#: ../src/uisupport/multilineedit.cpp:714
+#: ../src/uisupport/multilineedit.cpp:724
 msgctxt "MultiLineEdit|"
 msgid "Paste Protection"
 msgstr "Zaščita pri lepljenju"
@@ -5099,17 +5184,17 @@ msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
 msgstr "Zakasnitev: %1 ms"
 
-#: ../src/client/networkmodel.cpp:1002
+#: ../src/client/networkmodel.cpp:1029
 msgctxt "NetworkModel|"
 msgid "Chat"
 msgstr "Klepet"
 
-#: ../src/client/networkmodel.cpp:1002
+#: ../src/client/networkmodel.cpp:1029
 msgctxt "NetworkModel|"
 msgid "Topic"
 msgstr "Tema"
 
-#: ../src/client/networkmodel.cpp:1002
+#: ../src/client/networkmodel.cpp:1029
 msgctxt "NetworkModel|"
 msgid "Nick Count"
 msgstr "Št. vzdevkov"
@@ -5774,25 +5859,25 @@ msgctxt "Quassel::secondsToString()|"
 msgid "sec"
 msgstr "sek"
 
-#: ../src/client/networkmodel.cpp:497
+#: ../src/client/networkmodel.cpp:503
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
 msgstr "<b>Poizvedba z %1</b>"
 
-#: ../src/client/networkmodel.cpp:515
+#: ../src/client/networkmodel.cpp:521
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "idling since %1"
 msgstr "nedejaven od %1"
 
-#: ../src/client/networkmodel.cpp:518
+#: ../src/client/networkmodel.cpp:524
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "login time: %1"
 msgstr "čas prijave: %1"
 
-#: ../src/client/networkmodel.cpp:521
+#: ../src/client/networkmodel.cpp:527
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "server: %1"
@@ -6150,7 +6235,7 @@ msgid ""
 "network"
 msgstr "Seznam kanalov IRC, katerim se boste po vzpostavljeni povezavi v omrežje pridružili samodejno"
 
-#: ../src/qtui/snorenotificationbackend.cpp:59
+#: ../src/qtui/snorenotificationbackend.cpp:56
 msgctxt "SnoreNotificationBackend|"
 msgid "Private Message"
 msgstr "Zasebno sporočilo"
@@ -6165,25 +6250,10 @@ msgctxt "SnoreNotificationConfigWidget|"
 msgid "Snore"
 msgstr "Snore"
 
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:41
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:40
 msgctxt "SnoreNotificationConfigWidget|"
-msgid "Backend:"
-msgstr "Zaledje:"
-
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:64
-msgctxt "SnoreNotificationConfigWidget|"
-msgid "Timeout:"
-msgstr "Časovna omejitev:"
-
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:80
-msgctxt "SnoreNotificationConfigWidget|"
-msgid " s"
-msgstr " s"
-
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:96
-msgctxt "SnoreNotificationConfigWidget|"
-msgid "0 means infinite"
-msgstr "0 pomeni neskončno"
+msgid "Enable Snore"
+msgstr "Omogoči smrčanje"
 
 #: ../src/core/sqlitestorage.cpp:60
 msgctxt "SqliteStorage|"
@@ -6280,7 +6350,12 @@ msgctxt "SslInfoDlg|"
 msgid "<b>SHA1 digest:</b>"
 msgstr "<b>Izvleček SHA1:</b>"
 
-#: ../src/qtui/ui/sslinfodlg.ui:431
+#: ../src/qtui/ui/sslinfodlg.ui:418
+msgctxt "SslInfoDlg|"
+msgid "<b>SHA256 digest:</b>"
+msgstr "<b>Izvleček SHA256:</b>"
+
+#: ../src/qtui/ui/sslinfodlg.ui:448
 msgctxt "SslInfoDlg|"
 msgid "<b>Trusted:</b>"
 msgstr "<b>Zaupano:</b>"
@@ -6627,7 +6702,7 @@ msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "Ločitev omrežij %DH%1%DH in %DH%2%DH. Uporabniki, ki so končali: "
 
-#: ../src/client/networkmodel.cpp:825
+#: ../src/client/networkmodel.cpp:831
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
@@ -6637,7 +6712,7 @@ msgstr[1] "%n lastnika"
 msgstr[2] "%n lastniki"
 msgstr[3] "%n lastnikov"
 
-#: ../src/client/networkmodel.cpp:827
+#: ../src/client/networkmodel.cpp:833
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
@@ -6647,7 +6722,7 @@ msgstr[1] "%n skrbnika"
 msgstr[2] "%n skrbniki"
 msgstr[3] "%n skrbnikov"
 
-#: ../src/client/networkmodel.cpp:829
+#: ../src/client/networkmodel.cpp:835
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
@@ -6657,7 +6732,7 @@ msgstr[1] "%n operaterja"
 msgstr[2] "%n operaterji"
 msgstr[3] "%n operaterjev"
 
-#: ../src/client/networkmodel.cpp:831
+#: ../src/client/networkmodel.cpp:837
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
@@ -6667,7 +6742,7 @@ msgstr[1] "%n pol-operaterja"
 msgstr[2] "%n pol-operaterji"
 msgstr[3] "%n pol-operaterjev"
 
-#: ../src/client/networkmodel.cpp:833
+#: ../src/client/networkmodel.cpp:839
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
@@ -6677,7 +6752,7 @@ msgstr[1] "%n z glasovno pravico"
 msgstr[2] "%n z glasovno pravico"
 msgstr[3] "%n z glasovno pravico"
 
-#: ../src/client/networkmodel.cpp:835
+#: ../src/client/networkmodel.cpp:841
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
