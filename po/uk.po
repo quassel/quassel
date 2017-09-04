@@ -2,13 +2,13 @@
 # Translators:
 # Daniel Albers <daniel@lbers.com>, 2011
 # Yuri Chornoivan <yurchor@gmail.com>, 2010
-# Yuri Chornoivan <yurchor@ukr.net>, 2011-2015
+# Yuri Chornoivan <yurchor@ukr.net>, 2011-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"
 "Report-Msgid-Bugs-To: http://bugs.quassel-irc.org/\n"
-"PO-Revision-Date: 2015-03-26 05:10+0000\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"PO-Revision-Date: 2016-02-12 10:43+0000\n"
+"Last-Translator: Daniel Albers <daniel@lbe.rs>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/ald/quassel/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +57,7 @@ msgctxt "AboutData|"
 msgid "Many fixes and improvements, bug and patch triaging, community support"
 msgstr "Автор багатьох виправлень та покращень, визначення причин вад та латок, супровідник спільноти"
 
-#: ../src/uisupport/aboutdata.cpp:183 ../src/uisupport/aboutdata.cpp:192
+#: ../src/uisupport/aboutdata.cpp:183 ../src/uisupport/aboutdata.cpp:193
 msgctxt "AboutData|"
 msgid "Chatview improvements"
 msgstr "Покращення панелі спілкування"
@@ -67,8 +67,8 @@ msgctxt "AboutData|"
 msgid "Early beta tester and bughunter, Danish translation"
 msgstr "Тестування та пошук вад, переклад данською"
 
-#: ../src/uisupport/aboutdata.cpp:185 ../src/uisupport/aboutdata.cpp:261
-#: ../src/uisupport/aboutdata.cpp:284
+#: ../src/uisupport/aboutdata.cpp:185 ../src/uisupport/aboutdata.cpp:271
+#: ../src/uisupport/aboutdata.cpp:296
 msgctxt "AboutData|"
 msgid "Spanish translation"
 msgstr "Переклад іспанською"
@@ -88,404 +88,444 @@ msgctxt "AboutData|"
 msgid "Documentation improvements"
 msgstr "Покращення документації"
 
-#: ../src/uisupport/aboutdata.cpp:189 ../src/uisupport/aboutdata.cpp:285
-msgctxt "AboutData|"
-msgid "Romanian translation"
-msgstr "Переклад румунською"
-
-#: ../src/uisupport/aboutdata.cpp:190 ../src/uisupport/aboutdata.cpp:235
-#: ../src/uisupport/aboutdata.cpp:246 ../src/uisupport/aboutdata.cpp:247
-msgctxt "AboutData|"
-msgid "Finnish translation"
-msgstr "Переклад фінською"
-
-#: ../src/uisupport/aboutdata.cpp:191
-msgctxt "AboutData|"
-msgid "Message indicator support"
-msgstr "Підтримка індикатора повідомлень"
-
-#: ../src/uisupport/aboutdata.cpp:193
-msgctxt "AboutData|"
-msgid "Windows build system fixes"
-msgstr "Виправлення системи збирання у Windows"
-
-#: ../src/uisupport/aboutdata.cpp:194
-msgctxt "AboutData|"
-msgid "Crash fixes"
-msgstr "Виправлення аварійних завершень роботи"
-
-#: ../src/uisupport/aboutdata.cpp:195 ../src/uisupport/aboutdata.cpp:215
-#: ../src/uisupport/aboutdata.cpp:271
-msgctxt "AboutData|"
-msgid "French translation"
-msgstr "Переклад французькою"
-
-#: ../src/uisupport/aboutdata.cpp:196
-msgctxt "AboutData|"
-msgid "Usability review"
-msgstr "Робота над удосконаленням зручності користування"
-
-#: ../src/uisupport/aboutdata.cpp:197
-msgctxt "AboutData|"
-msgid "SASL support"
-msgstr "Підтримка SASL"
-
-#: ../src/uisupport/aboutdata.cpp:198
-msgctxt "AboutData|"
-msgid "Various improvements"
-msgstr "Різноманітні покращення"
-
-#: ../src/uisupport/aboutdata.cpp:199 ../src/uisupport/aboutdata.cpp:200
-#: ../src/uisupport/aboutdata.cpp:204
-msgctxt "AboutData|"
-msgid "Various fixes and improvements"
-msgstr "Різноманітні виправлення та покращення"
-
-#: ../src/uisupport/aboutdata.cpp:201
-msgctxt "AboutData|"
-msgid "Galician translation"
-msgstr "Переклад галісійською"
-
-#: ../src/uisupport/aboutdata.cpp:202
-msgctxt "AboutData|"
-msgid "Esperanto translation"
-msgstr "Переклад есперанто"
-
-#: ../src/uisupport/aboutdata.cpp:203
-msgctxt "AboutData|"
-msgid "Japanese translation"
-msgstr "Переклад японською"
-
-#: ../src/uisupport/aboutdata.cpp:205 ../src/uisupport/aboutdata.cpp:263
-msgctxt "AboutData|"
-msgid "Gentoo maintainer"
-msgstr "Супровідник у Gentoo"
-
-#: ../src/uisupport/aboutdata.cpp:206
-msgctxt "AboutData|"
-msgid "Early beta tester and bughunter (on Vista™!)"
-msgstr "Тестування та пошук вад (у Vista™!)"
-
-#: ../src/uisupport/aboutdata.cpp:207
-msgctxt "AboutData|"
-msgid "Translation system fixes"
-msgstr "Виправлення системи перекладу"
-
-#: ../src/uisupport/aboutdata.cpp:208
-msgctxt "AboutData|"
-msgid "OSX Notification Center support"
-msgstr "Підтримка Центру сповіщень OSX"
-
-#: ../src/uisupport/aboutdata.cpp:209 ../src/uisupport/aboutdata.cpp:257
+#: ../src/uisupport/aboutdata.cpp:189 ../src/uisupport/aboutdata.cpp:214
+#: ../src/uisupport/aboutdata.cpp:237 ../src/uisupport/aboutdata.cpp:255
+#: ../src/uisupport/aboutdata.cpp:267 ../src/uisupport/aboutdata.cpp:297
 msgctxt "AboutData|"
 msgid "Fixes"
 msgstr "Виправлення"
 
-#: ../src/uisupport/aboutdata.cpp:210 ../src/uisupport/aboutdata.cpp:259
+#: ../src/uisupport/aboutdata.cpp:190 ../src/uisupport/aboutdata.cpp:299
 msgctxt "AboutData|"
-msgid "Mac fixes"
-msgstr "Виправлення у Mac"
+msgid "Romanian translation"
+msgstr "Переклад румунською"
 
-#: ../src/uisupport/aboutdata.cpp:211
+#: ../src/uisupport/aboutdata.cpp:191 ../src/uisupport/aboutdata.cpp:244
+#: ../src/uisupport/aboutdata.cpp:256 ../src/uisupport/aboutdata.cpp:257
 msgctxt "AboutData|"
-msgid "D-Bus notifications"
-msgstr "Сповіщення D-Bus"
+msgid "Finnish translation"
+msgstr "Переклад фінською"
 
-#: ../src/uisupport/aboutdata.cpp:212
+#: ../src/uisupport/aboutdata.cpp:192
 msgctxt "AboutData|"
-msgid "Polish translation"
-msgstr "Переклад польською"
+msgid "Message indicator support"
+msgstr "Підтримка індикатора повідомлень"
 
-#: ../src/uisupport/aboutdata.cpp:213
+#: ../src/uisupport/aboutdata.cpp:194 ../src/uisupport/aboutdata.cpp:195
+#: ../src/uisupport/aboutdata.cpp:312
 msgctxt "AboutData|"
-msgid "Build system improvements"
-msgstr "Покращення у системі збирання"
+msgid "Build system fix"
+msgstr "Виправлення системи збирання"
 
-#: ../src/uisupport/aboutdata.cpp:214
+#: ../src/uisupport/aboutdata.cpp:196
 msgctxt "AboutData|"
-msgid "Formatting support and other input line improvements, many other fixes"
-msgstr "Підтримка форматування та інші покращення у системі введення повідомлень, багато інших виправлень"
+msgid "Windows build system fixes"
+msgstr "Виправлення системи збирання у Windows"
 
-#: ../src/uisupport/aboutdata.cpp:216
+#: ../src/uisupport/aboutdata.cpp:197
 msgctxt "AboutData|"
-msgid "BluesTheme stylesheet"
-msgstr "Таблиця стилів теми Blues"
+msgid "Nicer tooltips"
+msgstr "Кращі підказки"
 
-#: ../src/uisupport/aboutdata.cpp:217 ../src/uisupport/aboutdata.cpp:251
-#: ../src/uisupport/aboutdata.cpp:279
+#: ../src/uisupport/aboutdata.cpp:198
 msgctxt "AboutData|"
-msgid "Russian translation"
-msgstr "Переклад російською"
+msgid "Crash fixes"
+msgstr "Виправлення аварійних завершень роботи"
 
-#: ../src/uisupport/aboutdata.cpp:218 ../src/uisupport/aboutdata.cpp:253
+#: ../src/uisupport/aboutdata.cpp:199 ../src/uisupport/aboutdata.cpp:220
+#: ../src/uisupport/aboutdata.cpp:282
 msgctxt "AboutData|"
-msgid "Italian translation"
-msgstr "Переклад італійською"
+msgid "French translation"
+msgstr "Переклад французькою"
 
-#: ../src/uisupport/aboutdata.cpp:219
+#: ../src/uisupport/aboutdata.cpp:200
+msgctxt "AboutData|"
+msgid "Usability review"
+msgstr "Робота над удосконаленням зручності користування"
+
+#: ../src/uisupport/aboutdata.cpp:201
+msgctxt "AboutData|"
+msgid "SASL support"
+msgstr "Підтримка SASL"
+
+#: ../src/uisupport/aboutdata.cpp:202
+msgctxt "AboutData|"
+msgid "Various improvements"
+msgstr "Різноманітні покращення"
+
+#: ../src/uisupport/aboutdata.cpp:203 ../src/uisupport/aboutdata.cpp:204
+#: ../src/uisupport/aboutdata.cpp:208
+msgctxt "AboutData|"
+msgid "Various fixes and improvements"
+msgstr "Різноманітні виправлення та покращення"
+
+#: ../src/uisupport/aboutdata.cpp:205
+msgctxt "AboutData|"
+msgid "Galician translation"
+msgstr "Переклад галісійською"
+
+#: ../src/uisupport/aboutdata.cpp:206
+msgctxt "AboutData|"
+msgid "Esperanto translation"
+msgstr "Переклад есперанто"
+
+#: ../src/uisupport/aboutdata.cpp:207
+msgctxt "AboutData|"
+msgid "Japanese translation"
+msgstr "Переклад японською"
+
+#: ../src/uisupport/aboutdata.cpp:209 ../src/uisupport/aboutdata.cpp:273
+msgctxt "AboutData|"
+msgid "Gentoo maintainer"
+msgstr "Супровідник у Gentoo"
+
+#: ../src/uisupport/aboutdata.cpp:210 ../src/uisupport/aboutdata.cpp:224
+#: ../src/uisupport/aboutdata.cpp:309
 msgctxt "AboutData|"
 msgid "Certificate handling improvements"
 msgstr "Покращення у системі обробки сертифікатів"
 
-#: ../src/uisupport/aboutdata.cpp:220
+#: ../src/uisupport/aboutdata.cpp:211
+msgctxt "AboutData|"
+msgid "Early beta tester and bughunter (on Vistaâ¢!)"
+msgstr "Раннє тестування та пошук вад (у Vista™!)"
+
+#: ../src/uisupport/aboutdata.cpp:212
+msgctxt "AboutData|"
+msgid "Translation system fixes"
+msgstr "Виправлення системи перекладу"
+
+#: ../src/uisupport/aboutdata.cpp:213
+msgctxt "AboutData|"
+msgid "OSX Notification Center support"
+msgstr "Підтримка Центру сповіщень OSX"
+
+#: ../src/uisupport/aboutdata.cpp:215 ../src/uisupport/aboutdata.cpp:269
+msgctxt "AboutData|"
+msgid "Mac fixes"
+msgstr "Виправлення у Mac"
+
+#: ../src/uisupport/aboutdata.cpp:216
+msgctxt "AboutData|"
+msgid "D-Bus notifications"
+msgstr "Сповіщення D-Bus"
+
+#: ../src/uisupport/aboutdata.cpp:217
+msgctxt "AboutData|"
+msgid "Polish translation"
+msgstr "Переклад польською"
+
+#: ../src/uisupport/aboutdata.cpp:218
+msgctxt "AboutData|"
+msgid "Build system improvements"
+msgstr "Покращення у системі збирання"
+
+#: ../src/uisupport/aboutdata.cpp:219
+msgctxt "AboutData|"
+msgid "Formatting support and other input line improvements, many other fixes"
+msgstr "Підтримка форматування та інші покращення у системі введення повідомлень, багато інших виправлень"
+
+#: ../src/uisupport/aboutdata.cpp:221
+msgctxt "AboutData|"
+msgid "BluesTheme stylesheet"
+msgstr "Таблиця стилів теми Blues"
+
+#: ../src/uisupport/aboutdata.cpp:222 ../src/uisupport/aboutdata.cpp:261
+#: ../src/uisupport/aboutdata.cpp:291
+msgctxt "AboutData|"
+msgid "Russian translation"
+msgstr "Переклад російською"
+
+#: ../src/uisupport/aboutdata.cpp:223 ../src/uisupport/aboutdata.cpp:263
+msgctxt "AboutData|"
+msgid "Italian translation"
+msgstr "Переклад італійською"
+
+#: ../src/uisupport/aboutdata.cpp:225
 msgctxt "AboutData|"
 msgid "Sanitize topic handling"
 msgstr "Робота над керуванням темами обговорення"
 
-#: ../src/uisupport/aboutdata.cpp:221
+#: ../src/uisupport/aboutdata.cpp:226
 msgctxt "AboutData|"
 msgid "Norwegian translation"
 msgstr "Переклад норвезькою"
 
-#: ../src/uisupport/aboutdata.cpp:222
+#: ../src/uisupport/aboutdata.cpp:227
 msgctxt "AboutData|"
 msgid "Hungarian translation"
 msgstr "Переклад угорською"
 
-#: ../src/uisupport/aboutdata.cpp:223
+#: ../src/uisupport/aboutdata.cpp:228
 msgctxt "AboutData|"
 msgid "IRC parser improvements"
 msgstr "Покращення у засобі обробки даних IRC"
 
-#: ../src/uisupport/aboutdata.cpp:224 ../src/uisupport/aboutdata.cpp:296
-#: ../src/uisupport/aboutdata.cpp:300
+#: ../src/uisupport/aboutdata.cpp:229 ../src/uisupport/aboutdata.cpp:311
+#: ../src/uisupport/aboutdata.cpp:316
 msgctxt "AboutData|"
 msgid "Turkish translation"
 msgstr "Переклад турецькою"
 
-#: ../src/uisupport/aboutdata.cpp:225
+#: ../src/uisupport/aboutdata.cpp:230
+msgctxt "AboutData|"
+msgid "MinGW support, SNORE backend, Windows packaging"
+msgstr "Підтримка MinGW, модуль SNORE, пакування для Windows"
+
+#: ../src/uisupport/aboutdata.cpp:231
 msgctxt "AboutData|"
 msgid "Initial Qt5 support"
 msgstr "Початкова підтримка Qt5"
 
-#: ../src/uisupport/aboutdata.cpp:226
+#: ../src/uisupport/aboutdata.cpp:232
 msgctxt "AboutData|"
 msgid "{Ku|U}buntu packager, motivator, promoter"
 msgstr "Покувальник для {Ku|U}buntu, мотиватор, пропагандист"
 
-#: ../src/uisupport/aboutdata.cpp:227
+#: ../src/uisupport/aboutdata.cpp:233
 msgctxt "AboutData|"
 msgid "Various features"
 msgstr "Різноманітні можливості"
 
-#: ../src/uisupport/aboutdata.cpp:228 ../src/uisupport/aboutdata.cpp:229
-#: ../src/uisupport/aboutdata.cpp:234 ../src/uisupport/aboutdata.cpp:239
+#: ../src/uisupport/aboutdata.cpp:234 ../src/uisupport/aboutdata.cpp:235
+#: ../src/uisupport/aboutdata.cpp:243 ../src/uisupport/aboutdata.cpp:248
+#: ../src/uisupport/aboutdata.cpp:286
 msgctxt "AboutData|"
 msgid "Various fixes"
 msgstr "Різноманітні виправлення"
 
-#: ../src/uisupport/aboutdata.cpp:230 ../src/uisupport/aboutdata.cpp:231
-#: ../src/uisupport/aboutdata.cpp:270 ../src/uisupport/aboutdata.cpp:273
-#: ../src/uisupport/aboutdata.cpp:277 ../src/uisupport/aboutdata.cpp:281
+#: ../src/uisupport/aboutdata.cpp:236 ../src/uisupport/aboutdata.cpp:240
+#: ../src/uisupport/aboutdata.cpp:281 ../src/uisupport/aboutdata.cpp:284
+#: ../src/uisupport/aboutdata.cpp:289 ../src/uisupport/aboutdata.cpp:293
 msgctxt "AboutData|"
 msgid "Bugfixes"
 msgstr "Виправлення вад"
 
-#: ../src/uisupport/aboutdata.cpp:232
+#: ../src/uisupport/aboutdata.cpp:238
+msgctxt "AboutData|"
+msgid "QuasselDroid and Java wizardess, documentation, bugfixes"
+msgstr "Чарівниця QuasselDroid і Java, документація, виправлення вад"
+
+#: ../src/uisupport/aboutdata.cpp:239
+msgctxt "AboutData|"
+msgid "Python improvements"
+msgstr "Покращення у Python"
+
+#: ../src/uisupport/aboutdata.cpp:241
 msgctxt "AboutData|"
 msgid "Postgres migration fixes"
 msgstr "Виправлення перенесення даних до Postgres"
 
-#: ../src/uisupport/aboutdata.cpp:233
+#: ../src/uisupport/aboutdata.cpp:242
 msgctxt "AboutData|"
 msgid "Context menu fixes"
 msgstr "Виправлення контекстного меню"
 
-#: ../src/uisupport/aboutdata.cpp:236
+#: ../src/uisupport/aboutdata.cpp:245
 msgctxt "AboutData|"
 msgid "Many fixes and improvements, bug triaging"
 msgstr "Багато виправлень та покращень, визначення причин вад"
 
-#: ../src/uisupport/aboutdata.cpp:237
+#: ../src/uisupport/aboutdata.cpp:246
 msgctxt "AboutData|"
 msgid "Original \"All-Seeing Eye\" logo"
 msgstr "Початкова версія логотипу «Всевидяче око»"
 
-#: ../src/uisupport/aboutdata.cpp:238
+#: ../src/uisupport/aboutdata.cpp:247
 msgctxt "AboutData|"
 msgid "Project founder, various improvements"
 msgstr "Засновник проекту, різноманітні покращення"
 
-#: ../src/uisupport/aboutdata.cpp:240
+#: ../src/uisupport/aboutdata.cpp:249
 msgctxt "AboutData|"
 msgid "Serbian translation"
 msgstr "Переклад сербською"
 
-#: ../src/uisupport/aboutdata.cpp:241
+#: ../src/uisupport/aboutdata.cpp:250
 msgctxt "AboutData|"
 msgid "Slovenian translation"
 msgstr "Переклад словенською"
 
-#: ../src/uisupport/aboutdata.cpp:242
+#: ../src/uisupport/aboutdata.cpp:251
 msgctxt "AboutData|"
 msgid ""
 "Tireless tester, {Ku|U}buntu tester and lobbyist, liters of delicious "
 "Finnish alcohol"
 msgstr "Невтомний тестувальник, тестування та підтримка у {Ku|U}buntu, літри смачного фінського алкоголю"
 
-#: ../src/uisupport/aboutdata.cpp:243
+#: ../src/uisupport/aboutdata.cpp:252
 msgctxt "AboutData|"
 msgid "Qt5 porting help, Travis CI setup"
 msgstr "Допомога у портуванні на Qt5, налаштування Travis CI"
 
-#: ../src/uisupport/aboutdata.cpp:244 ../src/uisupport/aboutdata.cpp:254
-#: ../src/uisupport/aboutdata.cpp:256 ../src/uisupport/aboutdata.cpp:293
+#: ../src/uisupport/aboutdata.cpp:253 ../src/uisupport/aboutdata.cpp:264
+#: ../src/uisupport/aboutdata.cpp:266 ../src/uisupport/aboutdata.cpp:307
 msgctxt "AboutData|"
 msgid "German translation"
 msgstr "Переклад німецькою"
 
-#: ../src/uisupport/aboutdata.cpp:245
+#: ../src/uisupport/aboutdata.cpp:254
 msgctxt "AboutData|"
 msgid "Buffer merge improvements"
 msgstr "Покращення у об’єднанні у буфері"
 
-#: ../src/uisupport/aboutdata.cpp:248
+#: ../src/uisupport/aboutdata.cpp:258
 msgctxt "AboutData|"
 msgid "OSX improvements"
 msgstr "Покращення у OSX"
 
-#: ../src/uisupport/aboutdata.cpp:249
+#: ../src/uisupport/aboutdata.cpp:259
 msgctxt "AboutData|"
 msgid "Lithuanian translation"
 msgstr "Переклад литовською"
 
-#: ../src/uisupport/aboutdata.cpp:250
+#: ../src/uisupport/aboutdata.cpp:260
 msgctxt "AboutData|"
 msgid "Documentation fixes"
 msgstr "Виправлення у документації"
 
-#: ../src/uisupport/aboutdata.cpp:252
+#: ../src/uisupport/aboutdata.cpp:262
 msgctxt "AboutData|"
 msgid "Ideas, hacking, initial motivation"
 msgstr "Ідеї, участь у розробці, початкова мотивація"
 
-#: ../src/uisupport/aboutdata.cpp:255
+#: ../src/uisupport/aboutdata.cpp:265
 msgctxt "AboutData|"
 msgid "Core and other fixes, QuasselDroid"
 msgstr "Виправлення у ядрі та інших компонентах, QuasselDroid"
 
-#: ../src/uisupport/aboutdata.cpp:258
+#: ../src/uisupport/aboutdata.cpp:268
 msgctxt "AboutData|"
 msgid "German translation, fixes"
 msgstr "Переклад німецькою, виправлення"
 
-#: ../src/uisupport/aboutdata.cpp:260
+#: ../src/uisupport/aboutdata.cpp:270
 msgctxt "AboutData|"
 msgid "Many fixes and improvements; Ubuntu live packages"
 msgstr "Багато виправлень та покращень, портативні пакунки для Ubutnu"
 
-#: ../src/uisupport/aboutdata.cpp:262
+#: ../src/uisupport/aboutdata.cpp:272
 msgctxt "AboutData|"
 msgid "Tons of Oxygen icons including the Quassel logo"
 msgstr "Безліч піктограм Oxygen, зокрема логотип Quassel"
 
-#: ../src/uisupport/aboutdata.cpp:264
-msgctxt "AboutData|"
-msgid "MinGW support, SNORE backend, Windows packaging"
-msgstr "Підтримка MinGW, модуль SNORE, пакування для Windows"
-
-#: ../src/uisupport/aboutdata.cpp:265
+#: ../src/uisupport/aboutdata.cpp:274
 msgctxt "AboutData|"
 msgid "Initial design and main window layout"
 msgstr "Початковий дизайн та компонування головного вікна"
 
-#: ../src/uisupport/aboutdata.cpp:266
+#: ../src/uisupport/aboutdata.cpp:275
 msgctxt "AboutData|"
 msgid "Early beta tester and bughunter"
 msgstr "Тестування та пошук вад"
 
-#: ../src/uisupport/aboutdata.cpp:267
+#: ../src/uisupport/aboutdata.cpp:276
 msgctxt "AboutData|"
 msgid "Danish translation"
 msgstr "Переклад данською"
 
-#: ../src/uisupport/aboutdata.cpp:268
+#: ../src/uisupport/aboutdata.cpp:277
 msgctxt "AboutData|"
 msgid "Linewrap for input line"
 msgstr "Перенесення рядків у рядку введення повідомлення"
 
-#: ../src/uisupport/aboutdata.cpp:269
+#: ../src/uisupport/aboutdata.cpp:278
+msgctxt "AboutData|"
+msgid "Performance improvements and cleanups"
+msgstr "Покращення швидкодії та чищення коду"
+
+#: ../src/uisupport/aboutdata.cpp:279
 msgctxt "AboutData|"
 msgid "/print command"
 msgstr "Команда /print"
 
-#: ../src/uisupport/aboutdata.cpp:272
+#: ../src/uisupport/aboutdata.cpp:280
+msgctxt "AboutData|"
+msgid "Performance improvements"
+msgstr "Покращення швидкодії"
+
+#: ../src/uisupport/aboutdata.cpp:283
 msgctxt "AboutData|"
 msgid "Build system fixes"
 msgstr "Виправлення у системі збирання"
 
-#: ../src/uisupport/aboutdata.cpp:274
+#: ../src/uisupport/aboutdata.cpp:285
 msgctxt "AboutData|"
 msgid "Emacs keybindings"
 msgstr "Клавіатурні скорочення Emacs"
 
-#: ../src/uisupport/aboutdata.cpp:275
+#: ../src/uisupport/aboutdata.cpp:287
 msgctxt "AboutData|"
 msgid "Highlight configuration improvements"
 msgstr "Покращення у налаштуваннях підсвічування"
 
-#: ../src/uisupport/aboutdata.cpp:276
+#: ../src/uisupport/aboutdata.cpp:288
 msgctxt "AboutData|"
 msgid "Kubuntu packager, (packaging/build system) bughunter"
 msgstr "Пакувальник для Kubuntu, пошук вад у системі пакування і збирання"
 
-#: ../src/uisupport/aboutdata.cpp:278
+#: ../src/uisupport/aboutdata.cpp:290
 msgctxt "AboutData|"
 msgid "Audio backend improvements"
 msgstr "Покращення у модулі роботи зі звуком"
 
-#: ../src/uisupport/aboutdata.cpp:280
+#: ../src/uisupport/aboutdata.cpp:292
 msgctxt "AboutData|"
 msgid "Dutch translation"
 msgstr "Переклад голландською"
 
-#: ../src/uisupport/aboutdata.cpp:282 ../src/uisupport/aboutdata.cpp:283
-#: ../src/uisupport/aboutdata.cpp:288 ../src/uisupport/aboutdata.cpp:289
+#: ../src/uisupport/aboutdata.cpp:294 ../src/uisupport/aboutdata.cpp:295
+#: ../src/uisupport/aboutdata.cpp:302 ../src/uisupport/aboutdata.cpp:303
 msgctxt "AboutData|"
 msgid "Greek translation"
 msgstr "Переклад грецькою"
 
-#: ../src/uisupport/aboutdata.cpp:286
+#: ../src/uisupport/aboutdata.cpp:298
+msgctxt "AboutData|"
+msgid "Fixing and hosting Windows builds"
+msgstr "Виправлення збірок для Windows та надання майданчика для їхнього зберігання"
+
+#: ../src/uisupport/aboutdata.cpp:300
 msgctxt "AboutData|"
 msgid "Korean translation"
 msgstr "Переклад корейською"
 
-#: ../src/uisupport/aboutdata.cpp:287
+#: ../src/uisupport/aboutdata.cpp:301
 msgctxt "AboutData|"
 msgid "Norwegian translation, documentation"
 msgstr "Переклад норвезькою, документація"
 
-#: ../src/uisupport/aboutdata.cpp:290
+#: ../src/uisupport/aboutdata.cpp:304
 msgctxt "AboutData|"
 msgid "Former Windows builder"
 msgstr "Колишній збиральник пакунків для Windows"
 
-#: ../src/uisupport/aboutdata.cpp:291
+#: ../src/uisupport/aboutdata.cpp:305
 msgctxt "AboutData|"
 msgid "Fixes, Debian packaging"
 msgstr "Виправлення, пакування для Debian"
 
-#: ../src/uisupport/aboutdata.cpp:292
+#: ../src/uisupport/aboutdata.cpp:306
 msgctxt "AboutData|"
 msgid "Fixes and feedback"
 msgstr "Виправлення і відгуки"
 
-#: ../src/uisupport/aboutdata.cpp:294 ../src/uisupport/aboutdata.cpp:295
+#: ../src/uisupport/aboutdata.cpp:308 ../src/uisupport/aboutdata.cpp:310
 msgctxt "AboutData|"
 msgid "Czech translation"
 msgstr "Переклад чеською"
 
-#: ../src/uisupport/aboutdata.cpp:297
+#: ../src/uisupport/aboutdata.cpp:313
 msgctxt "AboutData|"
 msgid "Network detection improvements"
 msgstr "Покращення у засобі виявлення мережі"
 
-#: ../src/uisupport/aboutdata.cpp:298
+#: ../src/uisupport/aboutdata.cpp:314
 msgctxt "AboutData|"
 msgid "Ukrainian translation"
 msgstr "Переклад українською"
 
-#: ../src/uisupport/aboutdata.cpp:299
+#: ../src/uisupport/aboutdata.cpp:315
 msgctxt "AboutData|"
 msgid "Portuguese translation"
 msgstr "Переклад португальською"
@@ -583,14 +623,14 @@ msgid ""
 "Quassel Mobile with N810s</i></dd>"
 msgstr "Особливо вдячні:<br><dl><dt><img src=\":/pics/quassel-eye.png\">&nbsp;<b>John \"nox\" Hand</b></dt><dd><i>за першу піктограму Quassel — всевидюче око</i></dt><dt><img src=\":/pics/oxygen.png\">&nbsp;<b><a href=\"http://www.oxygen-icons.org\">Команді Oxygen</a></b></dt><dd><i>за створення всіх художніх елементів, які ви бачите у інтерфейсі Quassel</i></dd><dt><img src=\":/pics/qt-logo-32.png\">&nbsp;<b><a href=\"http://www.trolltech.com\">Qt Software, раніше відомій як Trolltech</a></b></dt><dd><i>за створення Qt і Qtopia, а також за спонсорування розробки QuasselTopia наданням Greenphones та іншою підтримкою</i></dd><dt><a href=\"http://www.nokia.com\"><img src=\":/pics/nokia.png\"></a></b></dt><dd><i>за спонсорування розробки Quassel Mobile наданням декількох N810</i></dd>"
 
-#: ../src/core/abstractsqlstorage.cpp:127
+#: ../src/core/abstractsqlstorage.cpp:140
 #, qt-format
 msgctxt "AbstractSqlStorage|"
 msgid ""
 "Installed Schema (version %1) is not up to date. Upgrading to version %2..."
 msgstr "Встановлена схема (версія %1) є застарілою. Оновлення до версії %2…"
 
-#: ../src/core/abstractsqlstorage.cpp:129
+#: ../src/core/abstractsqlstorage.cpp:142
 msgctxt "AbstractSqlStorage|"
 msgid "Upgrade failed..."
 msgstr "Спроба оновлення зазнала невдачі…"
@@ -910,12 +950,12 @@ msgctxt "BufferItem|"
 msgid "<p> %1 - %2 </p>"
 msgstr "<p> %1 — %2 </p>"
 
-#: ../src/uisupport/bufferview.cpp:268
+#: ../src/uisupport/bufferview.cpp:253
 msgctxt "BufferView|"
 msgid "Merge buffers permanently?"
 msgstr "Об’єднати буфери назавжди?"
 
-#: ../src/uisupport/bufferview.cpp:269
+#: ../src/uisupport/bufferview.cpp:254
 #, qt-format
 msgctxt "BufferView|"
 msgid ""
@@ -938,7 +978,7 @@ msgctxt "BufferViewEditDlg|"
 msgid "Add Chat List"
 msgstr "Додати список балачки"
 
-#: ../src/uisupport/bufferviewfilter.cpp:53
+#: ../src/uisupport/bufferviewfilter.cpp:46
 msgctxt "BufferViewFilter|"
 msgid "Show / Hide Chats"
 msgstr "Показати/Приховати балачки"
@@ -1102,36 +1142,36 @@ msgctxt "BufferWidget|"
 msgid "Go to Marker Line"
 msgstr "Перейти до лінії позначки"
 
-#: ../src/client/networkmodel.cpp:583 ../src/client/networkmodel.cpp:585
+#: ../src/client/networkmodel.cpp:589 ../src/client/networkmodel.cpp:591
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Channel %1</b>"
 msgstr "<b>Канал %1</b>"
 
-#: ../src/client/networkmodel.cpp:589
+#: ../src/client/networkmodel.cpp:595
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Users:</b> %1"
 msgstr "<b>Користувачі:</b> %1"
 
-#: ../src/client/networkmodel.cpp:593
+#: ../src/client/networkmodel.cpp:599
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Mode:</b> %1"
 msgstr "<b>Режим:</b> %1"
 
-#: ../src/client/networkmodel.cpp:608
+#: ../src/client/networkmodel.cpp:614
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<b>Topic:</b> %1"
 msgstr "<b>Тема:</b> %1"
 
-#: ../src/client/networkmodel.cpp:613
+#: ../src/client/networkmodel.cpp:619
 msgctxt "ChannelBufferItem|"
 msgid "Not active <br /> Double-click to join"
 msgstr "Не активовано <br /> Двічі клацніть, щоб приєднатися"
 
-#: ../src/client/networkmodel.cpp:616
+#: ../src/client/networkmodel.cpp:622
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "<p> %1 </p>"
@@ -1571,61 +1611,61 @@ msgctxt "Client|"
 msgid "Identity already exists in client!"
 msgstr "Такий профіль вже існує!"
 
-#: ../src/client/clientauthhandler.cpp:65
-#: ../src/client/clientauthhandler.cpp:472
+#: ../src/client/clientauthhandler.cpp:69
+#: ../src/client/clientauthhandler.cpp:497
 msgctxt "ClientAuthHandler|"
 msgid "Unencrypted connection canceled"
 msgstr "Скасовано нешифроване з’єднання"
 
-#: ../src/client/clientauthhandler.cpp:87
-#: ../src/client/clientauthhandler.cpp:103
+#: ../src/client/clientauthhandler.cpp:91
+#: ../src/client/clientauthhandler.cpp:107
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Connecting to %1..."
 msgstr "З'єднання з %1…"
 
-#: ../src/client/clientauthhandler.cpp:99
+#: ../src/client/clientauthhandler.cpp:103
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Looking up %1..."
 msgstr "Пошук %1…"
 
-#: ../src/client/clientauthhandler.cpp:106
-#: ../src/client/clientauthhandler.cpp:316
+#: ../src/client/clientauthhandler.cpp:110
+#: ../src/client/clientauthhandler.cpp:320
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Connected to %1"
 msgstr "З'єднано з %1"
 
-#: ../src/client/clientauthhandler.cpp:110
+#: ../src/client/clientauthhandler.cpp:114
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid "Disconnecting from %1..."
 msgstr "Розірвання з’єднання з %1…"
 
-#: ../src/client/clientauthhandler.cpp:114
+#: ../src/client/clientauthhandler.cpp:118
 msgctxt "ClientAuthHandler|"
 msgid "Disconnected"
 msgstr "Роз'єднано"
 
-#: ../src/client/clientauthhandler.cpp:149
+#: ../src/client/clientauthhandler.cpp:153
 msgctxt "ClientAuthHandler|"
 msgid "Reconnecting in compatibility mode..."
 msgstr "Виконуємо повторну спробу з’єднання у режимі сумісності…"
 
-#: ../src/client/clientauthhandler.cpp:237
+#: ../src/client/clientauthhandler.cpp:241
 msgctxt "ClientAuthHandler|"
 msgid ""
 "<b>Incompatible Quassel Core!</b><br>None of the protocols this client "
 "speaks are supported by the core you are trying to connect to."
 msgstr "<b>Несумісне ядро Quassel!</b><br>У ядрі, з яким виконується спроба встановлення з’єднання, не передбачено підтримки жодного з протоколів, якими може обмінюватися даними клієнтська частина."
 
-#: ../src/client/clientauthhandler.cpp:240
+#: ../src/client/clientauthhandler.cpp:244
 msgctxt "ClientAuthHandler|"
 msgid "Core speaks none of the protocols we support"
 msgstr "Ядро не може обмінюватися даними жодним з підтримуваних протоколів"
 
-#: ../src/client/clientauthhandler.cpp:255
+#: ../src/client/clientauthhandler.cpp:259
 #, qt-format
 msgctxt "ClientAuthHandler|"
 msgid ""
@@ -1633,32 +1673,32 @@ msgid ""
 "at least protocol v%1, but the core speaks v%2 only."
 msgstr "<b>Ядро Quassel, з яким ви намагаєтеся встановити з’єднання, є занадто старим!</b><br>Для встановлення з’єднання потрібна принаймні версія протоколу %1, але ядро може працювати лише з версією %2."
 
-#: ../src/client/clientauthhandler.cpp:257
+#: ../src/client/clientauthhandler.cpp:261
 msgctxt "ClientAuthHandler|"
 msgid "Incompatible protocol version, connection to core refused"
 msgstr "Несумісна версія протоколу, у з’єднанні з ядром відмовлено"
 
-#: ../src/client/clientauthhandler.cpp:279
+#: ../src/client/clientauthhandler.cpp:283
 msgctxt "ClientAuthHandler|"
 msgid "Synchronizing to core..."
 msgstr "Синхронізація з ядром…"
 
-#: ../src/client/clientauthhandler.cpp:294
+#: ../src/client/clientauthhandler.cpp:298
 msgctxt "ClientAuthHandler|"
 msgid "The core refused connection from this client"
 msgstr "Ядром відмовлено у з’єднанні цьому клієнту"
 
-#: ../src/client/clientauthhandler.cpp:358
+#: ../src/client/clientauthhandler.cpp:362
 msgctxt "ClientAuthHandler|"
 msgid "Logging in..."
 msgstr "Вхід до системи…"
 
-#: ../src/client/clientauthhandler.cpp:363
+#: ../src/client/clientauthhandler.cpp:367
 msgctxt "ClientAuthHandler|"
 msgid "Login canceled"
 msgstr "Вхід скасовано"
 
-#: ../src/client/clientauthhandler.cpp:421
+#: ../src/client/clientauthhandler.cpp:425
 msgctxt "ClientAuthHandler|"
 msgid "Unencrypted connection cancelled"
 msgstr "Скасовано нешифроване з’єднання"
@@ -2245,33 +2285,45 @@ msgid ""
 msgstr "<b>Клієнт не ініціалізовано!</b><br>До спроби увійти має бути надіслано повідомлення щодо реєстрації."
 
 #: ../src/core/coreauthhandler.cpp:162
+#, qt-format
+msgctxt "CoreAuthHandler|"
+msgid "SSL required but non-SSL connection attempt from %1"
+msgstr "Потрібен SSL, але спробу з’єднання з %1 виконано без SSL"
+
+#: ../src/core/coreauthhandler.cpp:163
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>SSL is required!</b><br>You need to use SSL in order to connect to this "
 "core."
 msgstr "<b>Потрібне шифрування SSL!</b><br>Для встановлення з’єднання з цим ядром вам потрібно скористатися SSL."
 
-#: ../src/core/coreauthhandler.cpp:176
+#: ../src/core/coreauthhandler.cpp:177
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid "<b>Quassel Core Version %1</b><br>Built: %2<br>Up %3d%4h%5m (since %6)"
 msgstr "<b>Версія ядра Quassel %1</b><br>Зібрано: %2<br>Працює %3д%4г%5хв (з %6)"
 
-#: ../src/core/coreauthhandler.cpp:212
+#: ../src/core/coreauthhandler.cpp:213
+#, qt-format
+msgctxt "CoreAuthHandler|"
+msgid "Invalid login attempt from %1 as \"%2\""
+msgstr "Спроба некоректного входу з %1 від імені «%2»"
+
+#: ../src/core/coreauthhandler.cpp:214
 msgctxt "CoreAuthHandler|"
 msgid ""
 "<b>Invalid username or password!</b><br>The username/password combination "
 "you supplied could not be found in the database."
 msgstr "<b>Некоректні ім’я користувача і пароль!</b><br>Вказаної вами комбінації імені користувача і пароля у базі даних не виявлено."
 
-#: ../src/core/coreauthhandler.cpp:217
+#: ../src/core/coreauthhandler.cpp:219
 #, qt-format
 msgctxt "CoreAuthHandler|"
 msgid ""
 "Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3)."
 msgstr "Клієнтську частину %1 ініціалізовано і успішно розпізнано як «%2» (Користувач: %3)."
 
-#: ../src/core/coreauthhandler.cpp:236
+#: ../src/core/coreauthhandler.cpp:238
 msgctxt "CoreAuthHandler|"
 msgid "Starting encryption for Client:"
 msgstr "Розпочинаємо шифрування для клієнта:"
@@ -2485,33 +2537,33 @@ msgctxt "CoreConnection|"
 msgid "Network is down"
 msgstr "Мережу вимкнено"
 
-#: ../src/client/coreconnection.cpp:263
+#: ../src/client/coreconnection.cpp:265
 msgctxt "CoreConnection|"
 msgid "Disconnected"
 msgstr "Роз'єднано"
 
-#: ../src/client/coreconnection.cpp:298
+#: ../src/client/coreconnection.cpp:300
 msgctxt "CoreConnection|"
 msgid "Disconnected from core."
 msgstr "Від’єднано від ядра."
 
-#: ../src/client/coreconnection.cpp:436
+#: ../src/client/coreconnection.cpp:438
 msgctxt "CoreConnection|"
 msgid "Receiving session state"
 msgstr "Отримання стану сеансу"
 
-#: ../src/client/coreconnection.cpp:438
+#: ../src/client/coreconnection.cpp:440
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronizing to %1..."
 msgstr "Синхронізація з %1…"
 
-#: ../src/client/coreconnection.cpp:474
+#: ../src/client/coreconnection.cpp:476
 msgctxt "CoreConnection|"
 msgid "Receiving network states"
 msgstr "Отримання мережевих станів"
 
-#: ../src/client/coreconnection.cpp:525
+#: ../src/client/coreconnection.cpp:527
 #, qt-format
 msgctxt "CoreConnection|"
 msgid "Synchronized to %1"
@@ -2694,35 +2746,35 @@ msgctxt "CoreInfoDlg|"
 msgid " %1:%2:%3 (since %4)"
 msgstr " %1:%2:%3 (з %4)"
 
-#: ../src/core/corenetwork.cpp:168
+#: ../src/core/corenetwork.cpp:167
 msgctxt "CoreNetwork|"
 msgid "Connection failed. Cycling to next Server"
 msgstr "Спроба встановлення з’єднання зазнала невдачі. Циклічний перехід до іншого сервера"
 
-#: ../src/core/corenetwork.cpp:176 ../src/core/corenetwork.cpp:177
+#: ../src/core/corenetwork.cpp:175 ../src/core/corenetwork.cpp:176
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connecting to %1:%2..."
 msgstr "З’єднання з %1:%2…"
 
-#: ../src/core/corenetwork.cpp:234
+#: ../src/core/corenetwork.cpp:233
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Disconnecting. (%1)"
 msgstr "Роз'єднання. (%1)"
 
-#: ../src/core/corenetwork.cpp:234
+#: ../src/core/corenetwork.cpp:233
 msgctxt "CoreNetwork|"
 msgid "Core Shutdown"
 msgstr "Завершення роботи ядра"
 
-#: ../src/core/corenetwork.cpp:442
+#: ../src/core/corenetwork.cpp:441
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Could not connect to %1 (%2)"
 msgstr "Не вдалося встановити з’єднання з %1 (%2)"
 
-#: ../src/core/corenetwork.cpp:444
+#: ../src/core/corenetwork.cpp:443
 #, qt-format
 msgctxt "CoreNetwork|"
 msgid "Connection failure: %1"
@@ -3267,6 +3319,7 @@ msgctxt "EventStringifier|"
 msgid "sending CTCP-%1 request to %2"
 msgstr "надсилання запиту CTCP-%1 до %2"
 
+#. Optional "unknown" in "Received unknown CTCP-FOO request by bar"
 #: ../src/core/eventstringifier.cpp:717
 msgctxt "EventStringifier|"
 msgid "unknown"
@@ -4307,28 +4360,55 @@ msgctxt "IrcListModel|"
 msgid "Topic"
 msgstr "Тема"
 
-#: ../src/client/networkmodel.cpp:953
+#: ../src/client/networkmodel.cpp:976
 msgctxt "IrcUserItem|"
-msgid " is away"
-msgstr " немає на місці"
+msgid "(unknown)"
+msgstr "(невідомо)"
 
-#: ../src/client/networkmodel.cpp:968
-#, qt-format
+#: ../src/client/networkmodel.cpp:980
 msgctxt "IrcUserItem|"
-msgid "idling since %1"
-msgstr "бездіяльність з %1"
+msgid "Away&nbsp;Message"
+msgstr "Повідомлення&nbsp;щодо&nbsp;відсутності"
 
-#: ../src/client/networkmodel.cpp:971
-#, qt-format
+#: ../src/client/networkmodel.cpp:982
 msgctxt "IrcUserItem|"
-msgid "login time: %1"
-msgstr "час входу до системи: %1"
+msgid "Realname"
+msgstr "Справжнє ім’я"
 
-#: ../src/client/networkmodel.cpp:974
-#, qt-format
+#: ../src/client/networkmodel.cpp:983 ../src/client/networkmodel.cpp:987
 msgctxt "IrcUserItem|"
-msgid "server: %1"
-msgstr "сервер: %1"
+msgid "Operator"
+msgstr "Оператор"
+
+#: ../src/client/networkmodel.cpp:984
+msgctxt "IrcUserItem|"
+msgid "Suser&nbsp;Host"
+msgstr "Вузол&nbsp;suser"
+
+#: ../src/client/networkmodel.cpp:985
+msgctxt "IrcUserItem|"
+msgid "Whois&nbsp;Service&nbsp;Reply"
+msgstr "Відповідь&nbsp;служби&nbsp;whois"
+
+#: ../src/client/networkmodel.cpp:986
+msgctxt "IrcUserItem|"
+msgid "Hostmask"
+msgstr "Маска вузла"
+
+#: ../src/client/networkmodel.cpp:993
+msgctxt "IrcUserItem|"
+msgid "Idling&nbsp;since"
+msgstr "Бездіяльність&nbsp;з"
+
+#: ../src/client/networkmodel.cpp:997
+msgctxt "IrcUserItem|"
+msgid "Login&nbsp;time"
+msgstr "Момент&nbsp;входу"
+
+#: ../src/client/networkmodel.cpp:1000
+msgctxt "IrcUserItem|"
+msgid "Server"
+msgstr "Сервер"
 
 #: ../src/qtui/settingspages/itemviewsettingspage.ui:14
 msgctxt "ItemViewSettingsPage|"
@@ -4555,401 +4635,406 @@ msgctxt "LegacyPeer|"
 msgid "Unknown protocol message of type %1"
 msgstr "Невідоме повідомлення протоколу типу %1"
 
-#: ../src/qtui/mainwin.cpp:358
+#: ../src/qtui/mainpage.cpp:40
+msgctxt "MainPage|"
+msgid "Connect to Core..."
+msgstr "З’єднатися із ядром…"
+
+#: ../src/qtui/mainwin.cpp:360
 msgctxt "MainWin|"
 msgid "General"
 msgstr "Загальне"
 
-#: ../src/qtui/mainwin.cpp:360
+#: ../src/qtui/mainwin.cpp:362
 msgctxt "MainWin|"
 msgid "&Connect to Core..."
 msgstr "&З’єднатися з ядром…"
 
-#: ../src/qtui/mainwin.cpp:362
+#: ../src/qtui/mainwin.cpp:364
 msgctxt "MainWin|"
 msgid "&Disconnect from Core"
 msgstr "&Від’єднатися від ядра"
 
-#: ../src/qtui/mainwin.cpp:364
+#: ../src/qtui/mainwin.cpp:366
 msgctxt "MainWin|"
 msgid "Change &Password..."
 msgstr "Змінити &пароль…"
 
-#: ../src/qtui/mainwin.cpp:366
+#: ../src/qtui/mainwin.cpp:368
 msgctxt "MainWin|"
 msgid "Core &Info..."
 msgstr "Ві&домості щодо ядра…"
 
-#: ../src/qtui/mainwin.cpp:368
+#: ../src/qtui/mainwin.cpp:370
 msgctxt "MainWin|"
 msgid "Configure &Networks..."
 msgstr "Налаштувати &мережі…"
 
-#: ../src/qtui/mainwin.cpp:371
+#: ../src/qtui/mainwin.cpp:373
 msgctxt "MainWin|"
 msgid "&Quit"
 msgstr "Ви&йти"
 
-#: ../src/qtui/mainwin.cpp:375
+#: ../src/qtui/mainwin.cpp:377
 msgctxt "MainWin|"
 msgid "&Configure Chat Lists..."
 msgstr "&Налаштувати списки балачки…"
 
-#: ../src/qtui/mainwin.cpp:378
+#: ../src/qtui/mainwin.cpp:380
 msgctxt "MainWin|"
 msgid "&Lock Layout"
 msgstr "За&блокувати компонування"
 
-#: ../src/qtui/mainwin.cpp:382
+#: ../src/qtui/mainwin.cpp:384
 msgctxt "MainWin|"
 msgid "Show &Search Bar"
 msgstr "Показувати &смужку пошуку"
 
-#: ../src/qtui/mainwin.cpp:384
+#: ../src/qtui/mainwin.cpp:386
 msgctxt "MainWin|"
 msgid "Show Away Log"
 msgstr "Показувати журнал відсутності"
 
-#: ../src/qtui/mainwin.cpp:386
+#: ../src/qtui/mainwin.cpp:388
 msgctxt "MainWin|"
 msgid "Show &Menubar"
 msgstr "Показувати смужку &меню"
 
-#: ../src/qtui/mainwin.cpp:389
+#: ../src/qtui/mainwin.cpp:391
 msgctxt "MainWin|"
 msgid "Show Status &Bar"
 msgstr "Показувати п&анель стану"
 
-#: ../src/qtui/mainwin.cpp:395
+#: ../src/qtui/mainwin.cpp:397
 msgctxt "MainWin|"
 msgid "&Full Screen Mode"
 msgstr "П&овноекранний режим"
 
-#: ../src/qtui/mainwin.cpp:402
+#: ../src/qtui/mainwin.cpp:404
 msgctxt "MainWin|"
 msgid "Configure &Shortcuts..."
 msgstr "Налаштувати &скорочення..."
 
-#: ../src/qtui/mainwin.cpp:408 ../src/qtui/mainwin.cpp:412
+#: ../src/qtui/mainwin.cpp:410 ../src/qtui/mainwin.cpp:414
 msgctxt "MainWin|"
 msgid "&Configure Quassel..."
 msgstr "&Налаштувати Quassel…"
 
-#: ../src/qtui/mainwin.cpp:418
+#: ../src/qtui/mainwin.cpp:420
 msgctxt "MainWin|"
 msgid "&About Quassel"
 msgstr "&Про Quassel"
 
-#: ../src/qtui/mainwin.cpp:423
+#: ../src/qtui/mainwin.cpp:425
 msgctxt "MainWin|"
 msgid "About &Qt"
 msgstr "Про &бібліотеку Qt"
 
-#: ../src/qtui/mainwin.cpp:427
+#: ../src/qtui/mainwin.cpp:429
 msgctxt "MainWin|"
 msgid "Debug &NetworkModel"
 msgstr "Діа&гностика NetworkModel"
 
-#: ../src/qtui/mainwin.cpp:429
+#: ../src/qtui/mainwin.cpp:431
 msgctxt "MainWin|"
 msgid "Debug &BufferViewOverlay"
 msgstr "Ді&агностика BufferViewOverlay"
 
-#: ../src/qtui/mainwin.cpp:431
+#: ../src/qtui/mainwin.cpp:433
 msgctxt "MainWin|"
 msgid "Debug &MessageModel"
 msgstr "&Діагностика MessageModel"
 
-#: ../src/qtui/mainwin.cpp:433
+#: ../src/qtui/mainwin.cpp:435
 msgctxt "MainWin|"
 msgid "Debug &HotList"
 msgstr "Діаг&ностика HotList"
 
-#: ../src/qtui/mainwin.cpp:435
+#: ../src/qtui/mainwin.cpp:437
 msgctxt "MainWin|"
 msgid "Debug &Log"
 msgstr "Діагностика &журналу"
 
-#: ../src/qtui/mainwin.cpp:437
+#: ../src/qtui/mainwin.cpp:439
 msgctxt "MainWin|"
 msgid "Reload Stylesheet"
 msgstr "Перезавантажити таблицю стилів"
 
-#: ../src/qtui/mainwin.cpp:440
+#: ../src/qtui/mainwin.cpp:442
 msgctxt "MainWin|"
 msgid "Hide Current Buffer"
 msgstr "Приховати поточний буфер"
 
-#: ../src/qtui/mainwin.cpp:444
+#: ../src/qtui/mainwin.cpp:446
 msgctxt "MainWin|"
 msgid "Navigation"
 msgstr "Навігація"
 
-#: ../src/qtui/mainwin.cpp:446
+#: ../src/qtui/mainwin.cpp:448
 msgctxt "MainWin|"
 msgid "Jump to hot chat"
 msgstr "перехід до активної балачки"
 
-#: ../src/qtui/mainwin.cpp:458
+#: ../src/qtui/mainwin.cpp:460
 msgctxt "MainWin|"
 msgid "Set Quick Access #0"
 msgstr "Встановити пришвидшений доступ №0"
 
-#: ../src/qtui/mainwin.cpp:460
+#: ../src/qtui/mainwin.cpp:462
 msgctxt "MainWin|"
 msgid "Set Quick Access #1"
 msgstr "Встановити пришвидшений доступ №1"
 
-#: ../src/qtui/mainwin.cpp:462
+#: ../src/qtui/mainwin.cpp:464
 msgctxt "MainWin|"
 msgid "Set Quick Access #2"
 msgstr "Встановити пришвидшений доступ №2"
 
-#: ../src/qtui/mainwin.cpp:464
+#: ../src/qtui/mainwin.cpp:466
 msgctxt "MainWin|"
 msgid "Set Quick Access #3"
 msgstr "Встановити пришвидшений доступ №3"
 
-#: ../src/qtui/mainwin.cpp:466
+#: ../src/qtui/mainwin.cpp:468
 msgctxt "MainWin|"
 msgid "Set Quick Access #4"
 msgstr "Встановити пришвидшений доступ №4"
 
-#: ../src/qtui/mainwin.cpp:468
+#: ../src/qtui/mainwin.cpp:470
 msgctxt "MainWin|"
 msgid "Set Quick Access #5"
 msgstr "Встановити пришвидшений доступ №5"
 
-#: ../src/qtui/mainwin.cpp:470
+#: ../src/qtui/mainwin.cpp:472
 msgctxt "MainWin|"
 msgid "Set Quick Access #6"
 msgstr "Встановити пришвидшений доступ №6"
 
-#: ../src/qtui/mainwin.cpp:472
+#: ../src/qtui/mainwin.cpp:474
 msgctxt "MainWin|"
 msgid "Set Quick Access #7"
 msgstr "Встановити пришвидшений доступ №7"
 
-#: ../src/qtui/mainwin.cpp:474
+#: ../src/qtui/mainwin.cpp:476
 msgctxt "MainWin|"
 msgid "Set Quick Access #8"
 msgstr "Встановити пришвидшений доступ №8"
 
-#: ../src/qtui/mainwin.cpp:476
+#: ../src/qtui/mainwin.cpp:478
 msgctxt "MainWin|"
 msgid "Set Quick Access #9"
 msgstr "Встановити пришвидшений доступ №9"
 
-#: ../src/qtui/mainwin.cpp:479
+#: ../src/qtui/mainwin.cpp:481
 msgctxt "MainWin|"
 msgid "Quick Access #0"
 msgstr "Пришвидшений доступ №0"
 
-#: ../src/qtui/mainwin.cpp:481
+#: ../src/qtui/mainwin.cpp:483
 msgctxt "MainWin|"
 msgid "Quick Access #1"
 msgstr "Пришвидшений доступ №1"
 
-#: ../src/qtui/mainwin.cpp:483
+#: ../src/qtui/mainwin.cpp:485
 msgctxt "MainWin|"
 msgid "Quick Access #2"
 msgstr "Пришвидшений доступ №2"
 
-#: ../src/qtui/mainwin.cpp:485
+#: ../src/qtui/mainwin.cpp:487
 msgctxt "MainWin|"
 msgid "Quick Access #3"
 msgstr "Пришвидшений доступ №3"
 
-#: ../src/qtui/mainwin.cpp:487
+#: ../src/qtui/mainwin.cpp:489
 msgctxt "MainWin|"
 msgid "Quick Access #4"
 msgstr "Пришвидшений доступ №4"
 
-#: ../src/qtui/mainwin.cpp:489
+#: ../src/qtui/mainwin.cpp:491
 msgctxt "MainWin|"
 msgid "Quick Access #5"
 msgstr "Пришвидшений доступ №5"
 
-#: ../src/qtui/mainwin.cpp:491
+#: ../src/qtui/mainwin.cpp:493
 msgctxt "MainWin|"
 msgid "Quick Access #6"
 msgstr "Пришвидшений доступ №6"
 
-#: ../src/qtui/mainwin.cpp:493
+#: ../src/qtui/mainwin.cpp:495
 msgctxt "MainWin|"
 msgid "Quick Access #7"
 msgstr "Пришвидшений доступ №7"
 
-#: ../src/qtui/mainwin.cpp:495
+#: ../src/qtui/mainwin.cpp:497
 msgctxt "MainWin|"
 msgid "Quick Access #8"
 msgstr "Пришвидшений доступ №8"
 
-#: ../src/qtui/mainwin.cpp:497
+#: ../src/qtui/mainwin.cpp:499
 msgctxt "MainWin|"
 msgid "Quick Access #9"
 msgstr "Пришвидшений доступ №9"
 
-#: ../src/qtui/mainwin.cpp:501
+#: ../src/qtui/mainwin.cpp:503
 msgctxt "MainWin|"
 msgid "Activate Next Chat List"
 msgstr "Активувати наступний список балачки"
 
-#: ../src/qtui/mainwin.cpp:503
+#: ../src/qtui/mainwin.cpp:505
 msgctxt "MainWin|"
 msgid "Activate Previous Chat List"
 msgstr "Активувати попередній список балачки"
 
-#: ../src/qtui/mainwin.cpp:505
+#: ../src/qtui/mainwin.cpp:507
 msgctxt "MainWin|"
 msgid "Go to Next Chat"
 msgstr "Перейти до наступної балачки"
 
-#: ../src/qtui/mainwin.cpp:507
+#: ../src/qtui/mainwin.cpp:509
 msgctxt "MainWin|"
 msgid "Go to Previous Chat"
 msgstr "Перейти до попередньої балачки"
 
-#: ../src/qtui/mainwin.cpp:516
+#: ../src/qtui/mainwin.cpp:518
 msgctxt "MainWin|"
 msgid "&File"
 msgstr "&Файл"
 
-#: ../src/qtui/mainwin.cpp:529
+#: ../src/qtui/mainwin.cpp:531
 msgctxt "MainWin|"
 msgid "&Networks"
 msgstr "&Мережі"
 
-#: ../src/qtui/mainwin.cpp:535
+#: ../src/qtui/mainwin.cpp:537
 msgctxt "MainWin|"
 msgid "&View"
 msgstr "П&ерегляд"
 
-#: ../src/qtui/mainwin.cpp:536
+#: ../src/qtui/mainwin.cpp:538
 msgctxt "MainWin|"
 msgid "&Chat Lists"
 msgstr "&Списки балачки"
 
-#: ../src/qtui/mainwin.cpp:538
+#: ../src/qtui/mainwin.cpp:540
 msgctxt "MainWin|"
 msgid "&Toolbars"
 msgstr "&Панелі"
 
-#: ../src/qtui/mainwin.cpp:552
+#: ../src/qtui/mainwin.cpp:554
 msgctxt "MainWin|"
 msgid "&Settings"
 msgstr "П&араметри"
 
-#: ../src/qtui/mainwin.cpp:562
+#: ../src/qtui/mainwin.cpp:564
 msgctxt "MainWin|"
 msgid "&Help"
 msgstr "&Довідка"
 
-#: ../src/qtui/mainwin.cpp:571
+#: ../src/qtui/mainwin.cpp:573
 msgctxt "MainWin|"
 msgid "Debug"
 msgstr "Зневадження"
 
-#: ../src/qtui/mainwin.cpp:747
+#: ../src/qtui/mainwin.cpp:749
 msgctxt "MainWin|"
 msgid "Feature Not Supported"
 msgstr "Підтримки можливості не передбачено"
 
-#: ../src/qtui/mainwin.cpp:748
+#: ../src/qtui/mainwin.cpp:750
 msgctxt "MainWin|"
 msgid "<b>Your Quassel Core does not support this feature</b>"
 msgstr "<b>У ядрі вашого Quassel не передбачено підтримки цієї можливості</b>"
 
-#: ../src/qtui/mainwin.cpp:750
+#: ../src/qtui/mainwin.cpp:752
 msgctxt "MainWin|"
 msgid ""
 "You need a Quassel Core v0.12.0 or newer in order to be able to remotely "
 "change your password."
 msgstr "Щоб мати змогу віддалено змінювати ваш пароль, вам слід встановити ядро Quassel версії 0.12.0 або новіше."
 
-#: ../src/qtui/mainwin.cpp:863
+#: ../src/qtui/mainwin.cpp:865
 msgctxt "MainWin|"
 msgid "Nicks"
 msgstr "Псевдоніми"
 
-#: ../src/qtui/mainwin.cpp:872
+#: ../src/qtui/mainwin.cpp:874
 msgctxt "MainWin|"
 msgid "Show Nick List"
 msgstr "Показувати список псевдонімів"
 
-#: ../src/qtui/mainwin.cpp:885
+#: ../src/qtui/mainwin.cpp:889
 msgctxt "MainWin|"
 msgid "Chat Monitor"
 msgstr "Спостереження за балачкою"
 
-#: ../src/qtui/mainwin.cpp:897
+#: ../src/qtui/mainwin.cpp:901
 msgctxt "MainWin|"
 msgid "Show Chat Monitor"
 msgstr "Показувати панель спостереження за балачкою"
 
-#: ../src/qtui/mainwin.cpp:903
+#: ../src/qtui/mainwin.cpp:907
 msgctxt "MainWin|"
 msgid "Inputline"
 msgstr "Рядок введення"
 
-#: ../src/qtui/mainwin.cpp:912
+#: ../src/qtui/mainwin.cpp:916
 msgctxt "MainWin|"
 msgid "Show Input Line"
 msgstr "Показувати рядок введення"
 
-#: ../src/qtui/mainwin.cpp:927
+#: ../src/qtui/mainwin.cpp:931
 msgctxt "MainWin|"
 msgid "Topic"
 msgstr "Тема"
 
-#: ../src/qtui/mainwin.cpp:939
+#: ../src/qtui/mainwin.cpp:943
 msgctxt "MainWin|"
 msgid "Show Topic Line"
 msgstr "Показувати рядок теми"
 
-#: ../src/qtui/mainwin.cpp:1033
+#: ../src/qtui/mainwin.cpp:1037
 msgctxt "MainWin|"
 msgid "Main Toolbar"
 msgstr "Головна панель"
 
-#: ../src/qtui/mainwin.cpp:1097
+#: ../src/qtui/mainwin.cpp:1101
 msgctxt "MainWin|"
 msgid "Connected to core."
 msgstr "З’єднано з ядром."
 
-#: ../src/qtui/mainwin.cpp:1197
+#: ../src/qtui/mainwin.cpp:1201
 msgctxt "MainWin|"
 msgid "Not connected to core."
 msgstr "Не з’єднано з ядром."
 
-#: ../src/qtui/mainwin.cpp:1215 ../src/qtui/mainwin.cpp:1225
+#: ../src/qtui/mainwin.cpp:1220 ../src/qtui/mainwin.cpp:1230
 msgctxt "MainWin|"
 msgid "Unencrypted Connection"
 msgstr "Нешифроване з’єднання"
 
-#: ../src/qtui/mainwin.cpp:1215
+#: ../src/qtui/mainwin.cpp:1220
 msgctxt "MainWin|"
 msgid "<b>Your client does not support SSL encryption</b>"
 msgstr "<b>У вашій клієнтській програмі не передбачено підтримки шифрування SSL</b>"
 
-#: ../src/qtui/mainwin.cpp:1217 ../src/qtui/mainwin.cpp:1227
+#: ../src/qtui/mainwin.cpp:1222 ../src/qtui/mainwin.cpp:1232
 msgctxt "MainWin|"
 msgid ""
 "Sensitive data, like passwords, will be transmitted unencrypted to your "
 "Quassel core."
 msgstr "Конфіденційні дані, зокрема паролі, буде передано незашифрованими вашому ядру Quassel."
 
-#: ../src/qtui/mainwin.cpp:1225
+#: ../src/qtui/mainwin.cpp:1230
 msgctxt "MainWin|"
 msgid "<b>Your core does not support SSL encryption</b>"
 msgstr "<b>У вашому ядрі не передбачено підтримки шифрування SSL</b>"
 
-#: ../src/qtui/mainwin.cpp:1243 ../src/qtui/mainwin.cpp:1264
+#: ../src/qtui/mainwin.cpp:1248 ../src/qtui/mainwin.cpp:1269
 msgctxt "MainWin|"
 msgid "Untrusted Security Certificate"
 msgstr "Ненадійний сертифікат безпеки"
 
-#: ../src/qtui/mainwin.cpp:1244
+#: ../src/qtui/mainwin.cpp:1249
 #, qt-format
 msgctxt "MainWin|"
 msgid ""
@@ -4957,33 +5042,33 @@ msgid ""
 "following reasons:</b>"
 msgstr "<b>Сертифікат SSL наданий ядром %1 є ненадійним з таких причин:</b>"
 
-#: ../src/qtui/mainwin.cpp:1247
+#: ../src/qtui/mainwin.cpp:1252
 msgctxt "MainWin|"
 msgid "Continue"
 msgstr "Продовжити"
 
-#: ../src/qtui/mainwin.cpp:1248
+#: ../src/qtui/mainwin.cpp:1253
 msgctxt "MainWin|"
 msgid "Show Certificate"
 msgstr "Показати сертифікат"
 
-#: ../src/qtui/mainwin.cpp:1265
+#: ../src/qtui/mainwin.cpp:1270
 msgctxt "MainWin|"
 msgid ""
 "Would you like to accept this certificate forever without being prompted?"
 msgstr "Хочете прийняти сертифікат назавжди без попереджень?"
 
-#: ../src/qtui/mainwin.cpp:1267
+#: ../src/qtui/mainwin.cpp:1272
 msgctxt "MainWin|"
 msgid "Current Session Only"
 msgstr "Тільки на поточний сеанс"
 
-#: ../src/qtui/mainwin.cpp:1268
+#: ../src/qtui/mainwin.cpp:1273
 msgctxt "MainWin|"
 msgid "Forever"
 msgstr "Завжди"
 
-#: ../src/qtui/mainwin.cpp:1279
+#: ../src/qtui/mainwin.cpp:1284
 msgctxt "MainWin|"
 msgid "Core Connection Error"
 msgstr "Помилка з’єднання з ядром"
@@ -5004,7 +5089,7 @@ msgctxt "MsgProcessorStatusWidget|"
 msgid "Receiving Backlog"
 msgstr "Отримання журналу"
 
-#: ../src/uisupport/multilineedit.cpp:701
+#: ../src/uisupport/multilineedit.cpp:711
 #, qt-format
 msgctxt "MultiLineEdit|"
 msgid "Do you really want to paste %n line(s)?"
@@ -5013,7 +5098,7 @@ msgstr[0] "Справді бажаєте вставити %n рядок?"
 msgstr[1] "Справді бажаєте вставити %n рядки?"
 msgstr[2] "Справді бажаєте вставити %n рядків?"
 
-#: ../src/uisupport/multilineedit.cpp:714
+#: ../src/uisupport/multilineedit.cpp:724
 msgctxt "MultiLineEdit|"
 msgid "Paste Protection"
 msgstr "Захист від вставки"
@@ -5096,17 +5181,17 @@ msgctxt "NetworkItem|"
 msgid "Lag: %1 msecs"
 msgstr "Затримка: %1 мс"
 
-#: ../src/client/networkmodel.cpp:1002
+#: ../src/client/networkmodel.cpp:1029
 msgctxt "NetworkModel|"
 msgid "Chat"
 msgstr "Балачка"
 
-#: ../src/client/networkmodel.cpp:1002
+#: ../src/client/networkmodel.cpp:1029
 msgctxt "NetworkModel|"
 msgid "Topic"
 msgstr "Тема"
 
-#: ../src/client/networkmodel.cpp:1002
+#: ../src/client/networkmodel.cpp:1029
 msgctxt "NetworkModel|"
 msgid "Nick Count"
 msgstr "Кількість псевдонімів"
@@ -5770,25 +5855,25 @@ msgctxt "Quassel::secondsToString()|"
 msgid "sec"
 msgstr "с"
 
-#: ../src/client/networkmodel.cpp:497
+#: ../src/client/networkmodel.cpp:503
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "<b>Query with %1</b>"
 msgstr "<b>Діалог з %1</b>"
 
-#: ../src/client/networkmodel.cpp:515
+#: ../src/client/networkmodel.cpp:521
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "idling since %1"
 msgstr "бездіяльність з %1"
 
-#: ../src/client/networkmodel.cpp:518
+#: ../src/client/networkmodel.cpp:524
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "login time: %1"
 msgstr "час входу до системи: %1"
 
-#: ../src/client/networkmodel.cpp:521
+#: ../src/client/networkmodel.cpp:527
 #, qt-format
 msgctxt "QueryBufferItem|"
 msgid "server: %1"
@@ -6146,7 +6231,7 @@ msgid ""
 "network"
 msgstr "Список каналів IRC, до яких ви автоматично приєднуєтеся після встановлення з’єднання з мережею"
 
-#: ../src/qtui/snorenotificationbackend.cpp:59
+#: ../src/qtui/snorenotificationbackend.cpp:56
 msgctxt "SnoreNotificationBackend|"
 msgid "Private Message"
 msgstr "Конфіденційне повідомлення"
@@ -6161,25 +6246,10 @@ msgctxt "SnoreNotificationConfigWidget|"
 msgid "Snore"
 msgstr "Snore"
 
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:41
+#: ../src/qtui/ui/snorentificationconfigwidget.ui:40
 msgctxt "SnoreNotificationConfigWidget|"
-msgid "Backend:"
-msgstr "Модуль:"
-
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:64
-msgctxt "SnoreNotificationConfigWidget|"
-msgid "Timeout:"
-msgstr "Час очікування:"
-
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:80
-msgctxt "SnoreNotificationConfigWidget|"
-msgid " s"
-msgstr " с"
-
-#: ../src/qtui/ui/snorentificationconfigwidget.ui:96
-msgctxt "SnoreNotificationConfigWidget|"
-msgid "0 means infinite"
-msgstr "0 — без обмежень"
+msgid "Enable Snore"
+msgstr "Увімкнути Snore"
 
 #: ../src/core/sqlitestorage.cpp:60
 msgctxt "SqliteStorage|"
@@ -6276,7 +6346,12 @@ msgctxt "SslInfoDlg|"
 msgid "<b>SHA1 digest:</b>"
 msgstr "<b>Сума SHA1:</b>"
 
-#: ../src/qtui/ui/sslinfodlg.ui:431
+#: ../src/qtui/ui/sslinfodlg.ui:418
+msgctxt "SslInfoDlg|"
+msgid "<b>SHA256 digest:</b>"
+msgstr "<b>Сума SHA256:</b>"
+
+#: ../src/qtui/ui/sslinfodlg.ui:448
 msgctxt "SslInfoDlg|"
 msgid "<b>Trusted:</b>"
 msgstr "<b>Надійність:</b>"
@@ -6622,7 +6697,7 @@ msgctxt "UiStyle::StyledMessage|"
 msgid "Netsplit between %DH%1%DH and %DH%2%DH. Users quit: "
 msgstr "Розділення між %DH%1%DH і %DH%2%DH. Вийшло користувачів: "
 
-#: ../src/client/networkmodel.cpp:825
+#: ../src/client/networkmodel.cpp:831
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Owner(s)"
@@ -6631,7 +6706,7 @@ msgstr[0] "%n власник"
 msgstr[1] "%n власники"
 msgstr[2] "%n власників"
 
-#: ../src/client/networkmodel.cpp:827
+#: ../src/client/networkmodel.cpp:833
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Admin(s)"
@@ -6640,7 +6715,7 @@ msgstr[0] "%n адміністратор"
 msgstr[1] "%n адміністратора"
 msgstr[2] "%n адміністраторів"
 
-#: ../src/client/networkmodel.cpp:829
+#: ../src/client/networkmodel.cpp:835
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Operator(s)"
@@ -6649,7 +6724,7 @@ msgstr[0] "%n оператор"
 msgstr[1] "%n оператора"
 msgstr[2] "%n операторів"
 
-#: ../src/client/networkmodel.cpp:831
+#: ../src/client/networkmodel.cpp:837
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Half-Op(s)"
@@ -6658,7 +6733,7 @@ msgstr[0] "%n напівоператор"
 msgstr[1] "%n напівоператора"
 msgstr[2] "%n напівоператорів"
 
-#: ../src/client/networkmodel.cpp:833
+#: ../src/client/networkmodel.cpp:839
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n Voiced"
@@ -6667,7 +6742,7 @@ msgstr[0] "%n з правом допису"
 msgstr[1] "%n з правом допису"
 msgstr[2] "%n з правом допису"
 
-#: ../src/client/networkmodel.cpp:835
+#: ../src/client/networkmodel.cpp:841
 #, qt-format
 msgctxt "UserCategoryItem|"
 msgid "%n User(s)"
