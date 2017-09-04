@@ -489,7 +489,6 @@ void MainWin::setupActions()
             this, SLOT(on_jumpHotBuffer_triggered()), QKeySequence(Qt::META + Qt::Key_A)));
     coll->addAction("SetBufferShortcut", new Action(tr("Set Current Buffer's Shortcut"), coll,
                     this, SLOT(setBufferShortcut()), QKeySequence(Qt::CTRL + Qt::Key_J)));
-
     coll->addAction("ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll,
             this, SLOT(on_bufferSearch_triggered()), QKeySequence(Qt::CTRL + Qt::Key_S)));
 
