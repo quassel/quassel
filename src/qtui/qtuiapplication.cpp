@@ -21,6 +21,7 @@
 #include "qtuiapplication.h"
 
 #include <QIcon>
+#include <QDir>
 #include <QStringList>
 
 #ifdef HAVE_KDE4
