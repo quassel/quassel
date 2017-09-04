@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>428</height>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -119,9 +119,9 @@
         </property>
         <property name="defaultValue" stdset="0">
          <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>0</blue>
+          <red>60</red>
+          <green>60</green>
+          <blue>60</blue>
          </color>
         </property>
        </widget>
@@ -183,9 +183,9 @@
         </property>
         <property name="defaultValue" stdset="0">
          <color>
-          <red>150</red>
-          <green>0</green>
-          <blue>150</blue>
+          <red>112</red>
+          <green>112</green>
+          <blue>112</blue>
          </color>
         </property>
        </widget>
@@ -262,9 +262,9 @@
         </property>
         <property name="defaultValue" stdset="0">
          <color>
-          <red>145</red>
-          <green>100</green>
-          <blue>9</blue>
+          <red>179</red>
+          <green>14</green>
+          <blue>14</blue>
          </color>
         </property>
        </widget>
@@ -365,9 +365,26 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>233</red>
-            <green>13</green>
-            <blue>127</blue>
+            <red>204</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="ColorButton" name="senderColor01">
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string notr="true">/QtUiStyle/Colors/Sender01</string>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <color>
+            <red>0</red>
+            <green>108</green>
+            <blue>173</blue>
            </color>
           </property>
          </widget>
@@ -382,9 +399,26 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>179</red>
-            <green>14</green>
-            <blue>14</blue>
+            <red>77</red>
+            <green>153</green>
+            <blue>0</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="ColorButton" name="senderColor03">
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string notr="true">/QtUiStyle/Colors/Sender03</string>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <color>
+            <red>102</red>
+            <green>0</green>
+            <blue>204</blue>
            </color>
           </property>
          </widget>
@@ -399,9 +433,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>88</red>
-            <green>175</green>
-            <blue>179</blue>
+            <red>166</red>
+            <green>125</green>
+            <blue>0</blue>
            </color>
           </property>
          </widget>
@@ -416,9 +450,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>157</red>
-            <green>84</green>
-            <blue>179</blue>
+            <red>0</red>
+            <green>153</green>
+            <blue>39</blue>
            </color>
           </property>
          </widget>
@@ -433,9 +467,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>179</red>
-            <green>151</green>
-            <blue>117</blue>
+            <red>0</red>
+            <green>48</green>
+            <blue>192</blue>
            </color>
           </property>
          </widget>
@@ -450,9 +484,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>49</red>
-            <green>118</green>
-            <blue>179</blue>
+            <red>204</red>
+            <green>0</green>
+            <blue>154</blue>
            </color>
           </property>
          </widget>
@@ -467,9 +501,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>233</red>
-            <green>13</green>
-            <blue>127</blue>
+            <red>185</red>
+            <green>70</green>
+            <blue>0</blue>
            </color>
           </property>
          </widget>
@@ -484,9 +518,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>142</red>
-            <green>85</green>
-            <blue>233</blue>
+            <red>134</red>
+            <green>153</green>
+            <blue>0</blue>
            </color>
           </property>
          </widget>
@@ -501,9 +535,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>179</red>
-            <green>14</green>
-            <blue>14</blue>
+            <red>20</red>
+            <green>153</green>
+            <blue>0</blue>
            </color>
           </property>
          </widget>
@@ -518,9 +552,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>23</red>
-            <green>179</green>
-            <blue>57</blue>
+            <red>0</red>
+            <green>153</green>
+            <blue>96</blue>
            </color>
           </property>
          </widget>
@@ -535,9 +569,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>88</red>
-            <green>175</green>
-            <blue>179</blue>
+            <red>0</red>
+            <green>108</green>
+            <blue>173</blue>
            </color>
           </property>
          </widget>
@@ -552,9 +586,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>157</red>
-            <green>84</green>
-            <blue>179</blue>
+            <red>0</red>
+            <green>153</green>
+            <blue>204</blue>
            </color>
           </property>
          </widget>
@@ -570,8 +604,8 @@
           <property name="defaultValue" stdset="0">
            <color>
             <red>179</red>
-            <green>151</green>
-            <blue>117</blue>
+            <green>0</green>
+            <blue>204</blue>
            </color>
           </property>
          </widget>
@@ -586,43 +620,9 @@
           </property>
           <property name="defaultValue" stdset="0">
            <color>
-            <red>49</red>
-            <green>118</green>
-            <blue>179</blue>
-           </color>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="ColorButton" name="senderColor01">
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="settingsKey" stdset="0">
-           <string notr="true">/QtUiStyle/Colors/Sender01</string>
-          </property>
-          <property name="defaultValue" stdset="0">
-           <color>
-            <red>142</red>
-            <green>85</green>
-            <blue>233</blue>
-           </color>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="ColorButton" name="senderColor03">
-          <property name="text">
-           <string>...</string>
-          </property>
-          <property name="settingsKey" stdset="0">
-           <string notr="true">/QtUiStyle/Colors/Sender03</string>
-          </property>
-          <property name="defaultValue" stdset="0">
-           <color>
-            <red>23</red>
-            <green>179</green>
-            <blue>57</blue>
+            <red>204</red>
+            <green>0</green>
+            <blue>77</blue>
            </color>
           </property>
          </widget>
@@ -696,6 +696,25 @@
         </property>
         <property name="settingsKey" stdset="0">
          <string notr="true">/QtUiStyle/Colors/UseSenderActionColors</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="useNicknameGeneralColors">
+        <property name="toolTip">
+         <string>Color nicknames in joins, parts, quits, and other messages, e.g.&lt;br/&gt;--&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;Nick&lt;/span&gt; joined #quassel</string>
+        </property>
+        <property name="text">
+         <string>Color nicknames in other messages</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string notr="true">/QtUiStyle/Colors/UseNickGeneralColors</string>
         </property>
         <property name="defaultValue" stdset="0">
          <bool>true</bool>

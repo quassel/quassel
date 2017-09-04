@@ -4,8 +4,8 @@ the theme we don't use in order to conserve space in our own repository and to
 make downloads smaller.
 
 The icons found here have been imported from:
-svn://anonsvn.kde.org/home/kde/trunk/kdesupport/oxygen-icons
-Revision: 1394510
+https://github.com/KDE/oxygen-icons
+Commit: bff159d338fe08be09146a5ee17b9b6efa8a2c8d
 
 We, the authors of Quassel IRC, do solely distribute this icon set (or parts
 thereof), we are not involved in creating/editing/maintaining it. Please see

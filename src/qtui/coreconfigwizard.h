@@ -18,23 +18,27 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef _CORECONFIGWIZARD_H_
-#define _CORECONFIGWIZARD_H_
+#pragma once
 
-#include <QHash>
+#include <tuple>
+#include <vector>
+
 #include <QWizard>
 #include <QVariantMap>
 
 #include "ui_coreconfigwizardintropage.h"
 #include "ui_coreconfigwizardadminuserpage.h"
+#include "ui_coreconfigwizardauthenticationselectionpage.h"
 #include "ui_coreconfigwizardstorageselectionpage.h"
 #include "ui_coreconfigwizardsyncpage.h"
 
 class CoreConnection;
 
 namespace CoreConfigWizardPages {
+
 class SyncPage;
 class SyncRelayPage;
+
 };
 
 class CoreConfigWizard : public QWizard
@@ -45,6 +49,7 @@ public:
     enum {
         IntroPage,
         AdminUserPage,
+        AuthenticationSelectionPage,
         StorageSelectionPage,
         SyncPage,
         SyncRelayPage,
@@ -52,8 +57,7 @@ public:
         ConclusionPage
     };
 
-    CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent = 0);
-    QHash<QString, QVariant> backends() const;
+    CoreConfigWizard(CoreConnection *connection, const QVariantList &backendInfos, const QVariantList &authInfos, QWidget *parent = 0);
 
     inline CoreConnection *coreConnection() const { return _connection; }
 
@@ -62,17 +66,15 @@ signals:
     void loginToCore(const QString &user, const QString &password, bool rememberPassword);
 
 public slots:
-    void loginSuccess();
     void syncFinished();
 
 private slots:
-    void prepareCoreSetup(const QString &backend, const QVariantMap &connectionProperties);
+    void prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authenticator, const QVariantMap &authProperties);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &);
     void startOver();
 
 private:
-    QHash<QString, QVariant> _backends;
     CoreConfigWizardPages::SyncPage *syncPage;
     CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
 
@@ -81,6 +83,7 @@ private:
 
 
 namespace CoreConfigWizardPages {
+
 class IntroPage : public QWizardPage
 {
     Q_OBJECT
@@ -106,22 +109,47 @@ private:
 };
 
 
+class AuthenticationSelectionPage : public QWizardPage
+{
+    Q_OBJECT
+    using FieldInfo = std::tuple<QString, QString, QVariant>;
+
+public:
+    AuthenticationSelectionPage(const QVariantList &authInfos, QWidget *parent = 0);
+    int nextId() const;
+    QString displayName() const;
+    QString authenticator() const;
+    QVariantMap authProperties() const;
+
+private slots:
+    void on_backendList_currentIndexChanged(int index);
+
+private:
+    Ui::CoreConfigWizardAuthenticationSelectionPage ui;
+    std::vector<QVariantMap> _authProperties;
+    std::vector<std::vector<FieldInfo>> _authFields;
+};
+
+
 class StorageSelectionPage : public QWizardPage
 {
     Q_OBJECT
+    using FieldInfo = std::tuple<QString, QString, QVariant>;
 
 public:
-    StorageSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
+    StorageSelectionPage(const QVariantList &backendInfos, QWidget *parent = 0);
     int nextId() const;
-    QString selectedBackend() const;
-    QVariantMap connectionProperties() const;
+    QString displayName() const;
+    QString backend() const;
+    QVariantMap backendProperties() const;
 
 private slots:
-    void on_backendList_currentIndexChanged();
+    void on_backendList_currentIndexChanged(int index);
+
 private:
     Ui::CoreConfigWizardStorageSelectionPage ui;
-    QGroupBox *_connectionBox;
-    QHash<QString, QVariant> _backends;
+    std::vector<QVariantMap> _backendProperties;
+    std::vector<std::vector<FieldInfo>> _backendFields;
 };
 
 
@@ -141,12 +169,12 @@ public slots:
     void setComplete(bool);
 
 signals:
-    void setupCore(const QString &backend, const QVariantMap &);
+    void setupCore(const QString &backend, const QVariantMap &, const QString &authenticator, const QVariantMap &);
 
 private:
     Ui::CoreConfigWizardSyncPage ui;
-    bool complete;
-    bool hasError;
+    bool _complete {false};
+    bool _hasError {false};
 };
 
 
@@ -168,6 +196,5 @@ signals:
 private:
     Mode mode;
 };
-}
 
-#endif
+}

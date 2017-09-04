@@ -18,19 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef UTIL_H
-#define UTIL_H
+#pragma once
 
-#include <QDir>
-#include <QVariant>
+#include <QList>
 #include <QString>
-#include <QMetaMethod>
+#include <QVariant>
 
-// TODO Use versions from Network instead
-QString nickFromMask(QString mask);
-QString userFromMask(QString mask);
-QString hostFromMask(QString mask);
-bool isChannelName(QString str);
+QString nickFromMask(const QString &mask);
+QString userFromMask(const QString &mask);
+QString hostFromMask(const QString &mask);
+bool isChannelName(const QString &str);
 
 //! Strip mIRC format codes
 QString stripFormatCodes(QString);
@@ -75,4 +72,10 @@ QList<T> fromVariantList(const QVariantList &variants)
 
 QByteArray prettyDigest(const QByteArray &digest);
 
-#endif
+/**
+ * Format a string with %%<text>%% to current date/timestamp via QDateTime.
+ *
+ * @param[in] formatStr String with format codes
+ * @return String with current date/time substituted in via formatting codes
+ */
+QString formatCurrentDateTimeInString(const QString &formatStr);

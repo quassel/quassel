@@ -23,6 +23,9 @@
 #include "qtui.h"
 #include "backlogsettings.h"
 
+// For backlog requester types
+#include "backlogrequester.h"
+
 BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Backlog Fetching"), parent)
 {
@@ -45,7 +48,7 @@ bool BacklogSettingsPage::hasDefaults() const
 
 void BacklogSettingsPage::defaults()
 {
-    ui.requesterType->setCurrentIndex(0);
+    ui.requesterType->setCurrentIndex(BacklogRequester::PerBufferUnread - 1);
 
     SettingsPage::defaults();
 }

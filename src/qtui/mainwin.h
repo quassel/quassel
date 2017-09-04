@@ -121,7 +121,7 @@ private slots:
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
     void showCoreConnectionDlg();
-    void showCoreConfigWizard(const QVariantList &);
+    void showCoreConfigWizard(const QVariantList &, const QVariantList &);
     void showCoreInfoDlg();
     void showAwayLog();
     void showSettingsDlg();

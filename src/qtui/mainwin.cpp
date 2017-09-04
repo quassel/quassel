@@ -208,7 +208,7 @@ void MainWin::init()
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(bufferShortcutsChanged(BufferId)), SLOT(updateQuickAccessor(BufferId)));
 
-    connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList)), SLOT(showCoreConfigWizard(QVariantList)));
+    connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList, QVariantList)), SLOT(showCoreConfigWizard(QVariantList, QVariantList)));
     connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
     connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount *, bool *, QString)), SLOT(userAuthenticationRequired(CoreAccount *, bool *, QString)));
     connect(Client::coreConnection(), SIGNAL(handleNoSslInClient(bool *)), SLOT(handleNoSslInClient(bool *)));
@@ -382,7 +382,7 @@ void MainWin::updateIcon()
     if (Client::isConnected())
         icon = QIcon::fromTheme("quassel", QIcon(":/icons/quassel-128.png"));
     else
-        icon = QIcon::fromTheme("quassel-inactive", QIcon(":/icons/quassel-128.png"));
+        icon = QIcon::fromTheme("inactive-quassel", QIcon(":/icons/inactive-quassel.png"));
     setWindowIcon(icon);
     qApp->setWindowIcon(icon);
 }
@@ -392,9 +392,9 @@ void MainWin::setupActions()
 {
     ActionCollection *coll = QtUi::actionCollection("General", tr("General"));
     // File
-    coll->addAction("ConnectCore", new Action(QIcon(":/icons/quassel-128.png"), tr("&Connect to Core..."), coll,
+    coll->addAction("ConnectCore", new Action(QIcon::fromTheme("connect-quassel", QIcon(":/icons/connect-quassel.png")), tr("&Connect to Core..."), coll,
             this, SLOT(showCoreConnectionDlg())));
-    coll->addAction("DisconnectCore", new Action(QIcon(":/icons/quassel-disconnect.png"), tr("&Disconnect from Core"), coll,
+    coll->addAction("DisconnectCore", new Action(QIcon::fromTheme("disconnect-quassel", QIcon(":/icons/disconnect-quassel.png")), tr("&Disconnect from Core"), coll,
             Client::instance(), SLOT(disconnectFromCore())));
     coll->addAction("ChangePassword", new Action(QIcon::fromTheme("dialog-password"), tr("Change &Password..."), coll,
             this, SLOT(showPasswordChangeDlg())));
@@ -1358,9 +1358,9 @@ void MainWin::showCoreConnectionDlg()
 }
 
 
-void MainWin::showCoreConfigWizard(const QVariantList &backends)
+void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantList &authenticators)
 {
-    CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, this);
+    CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, authenticators, this);
 
     wizard->show();
 }

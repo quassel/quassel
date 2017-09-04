@@ -52,6 +52,24 @@ QssParser::QssParser()
     _uiStylePalette = QVector<QBrush>(UiStyle::NumRoles, QBrush());
 
     _uiStyleColorRoles["marker-line"] = UiStyle::MarkerLine;
+    // Sender colors
+    _uiStyleColorRoles["sender-color-self"] = UiStyle::SenderColorSelf;
+    _uiStyleColorRoles["sender-color-00"] = UiStyle::SenderColor00;
+    _uiStyleColorRoles["sender-color-01"] = UiStyle::SenderColor01;
+    _uiStyleColorRoles["sender-color-02"] = UiStyle::SenderColor02;
+    _uiStyleColorRoles["sender-color-03"] = UiStyle::SenderColor03;
+    _uiStyleColorRoles["sender-color-04"] = UiStyle::SenderColor04;
+    _uiStyleColorRoles["sender-color-05"] = UiStyle::SenderColor05;
+    _uiStyleColorRoles["sender-color-06"] = UiStyle::SenderColor06;
+    _uiStyleColorRoles["sender-color-07"] = UiStyle::SenderColor07;
+    _uiStyleColorRoles["sender-color-08"] = UiStyle::SenderColor08;
+    _uiStyleColorRoles["sender-color-09"] = UiStyle::SenderColor09;
+    _uiStyleColorRoles["sender-color-0a"] = UiStyle::SenderColor0a;
+    _uiStyleColorRoles["sender-color-0b"] = UiStyle::SenderColor0b;
+    _uiStyleColorRoles["sender-color-0c"] = UiStyle::SenderColor0c;
+    _uiStyleColorRoles["sender-color-0d"] = UiStyle::SenderColor0d;
+    _uiStyleColorRoles["sender-color-0e"] = UiStyle::SenderColor0e;
+    _uiStyleColorRoles["sender-color-0f"] = UiStyle::SenderColor0f;
 }
 
 
@@ -463,7 +481,21 @@ QBrush QssParser::parseBrush(const QString &str, bool *ok)
     }
 
     if (str.startsWith("palette")) { // Palette color role
-        QRegExp rx("palette\\s*\\(\\s*([a-z-]+)\\s*\\)");
+        // Does the palette follow the expected format?  For example:
+        // palette(marker-line)
+        // palette    ( system-color-0f  )
+        //
+        // Match the palette marker, grabbing the name inside in  case-sensitive manner
+        //   palette\s*\(\s*([a-z-0-9]+)\s*\)
+        //   palette   Match the string 'palette'
+        //   \s*       Match any amount of whitespace
+        //   \(, \)    Match literal '(' or ')' marks
+        //   (...+)    Match contents between 1 and unlimited number of times
+        //   [a-z-]    Match any character from a-z, case sensitive
+        //   [0-9]     Match any digit from 0-9
+        // Note that '\' must be escaped as '\\'
+        // Helpful interactive website for debugging and explaining:  https://regex101.com/
+        QRegExp rx("palette\\s*\\(\\s*([a-z-0-9]+)\\s*\\)");
         if (!rx.exactMatch(str)) {
             qWarning() << Q_FUNC_INFO << tr("Invalid palette color role specification: %1").arg(str);
             return QBrush();

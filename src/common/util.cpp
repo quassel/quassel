@@ -20,57 +20,61 @@
 
 #include "util.h"
 
+#include <algorithm>
+#include <array>
+#include <utility>
+
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDebug>
-#include <QFile>
 #include <QTextCodec>
+#include <QVector>
 
 #include "quassel.h"
-
-class QMetaMethod;
 
 // MIBenum values from http://www.iana.org/assignments/character-sets/character-sets.xml#table-character-sets-1
 static QList<int> utf8DetectionBlacklist = QList<int>()
     << 39 /* ISO-2022-JP */;
 
-QString nickFromMask(QString mask)
+QString nickFromMask(const QString &mask)
 {
-    return mask.section('!', 0, 0);
+    return mask.left(mask.indexOf('!'));
 }
 
 
-QString userFromMask(QString mask)
+QString userFromMask(const QString &mask)
 {
-    QString userhost = mask.section('!', 1);
-    if (userhost.isEmpty()) return QString();
-    return userhost.section('@', 0, 0);
+    const int offset = mask.indexOf('!') + 1;
+    if (offset <= 0)
+        return {};
+    const int length = mask.indexOf('@', offset) - offset;
+    return mask.mid(offset, length >= 0 ? length : -1);
 }
 
 
-QString hostFromMask(QString mask)
+QString hostFromMask(const QString &mask)
 {
-    QString userhost = mask.section('!', 1);
-    if (userhost.isEmpty()) return QString();
-    return userhost.section('@', 1);
+    const int excl = mask.indexOf('!');
+    if (excl < 0)
+        return {};
+    const int offset = mask.indexOf('@', excl + 1) + 1;
+    return offset > 0 && offset < mask.size() ? mask.mid(offset) : QString{};
 }
 
 
-bool isChannelName(QString str)
+bool isChannelName(const QString &str)
 {
-    return QString("#&!+").contains(str[0]);
+    if (str.isEmpty())
+        return false;
+    static constexpr std::array<quint8, 4> prefixes{{'#', '&', '!', '+'}};
+    return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return c == str[0]; });
 }
 
 
-QString stripFormatCodes(QString str)
+QString stripFormatCodes(QString message)
 {
-    str.remove(QRegExp("\x03(\\d\\d?(,\\d\\d?)?)?"));
-    str.remove('\x02');
-    str.remove('\x0f');
-    str.remove('\x12');
-    str.remove('\x16');
-    str.remove('\x1d');
-    str.remove('\x1f');
-    return str;
+    static QRegExp regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|[\x02\x0f\x12\x16\x1d\x1f]"};
+    return message.remove(regEx);
 }
 
 
@@ -165,12 +169,13 @@ uint editingDistance(const QString &s1, const QString &s2)
 
 QString secondsToString(int timeInSeconds)
 {
-    QList<QPair<int, QString> > timeUnit;
-    timeUnit.append(qMakePair(365*24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "year")));
-    timeUnit.append(qMakePair(24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "day")));
-    timeUnit.append(qMakePair(60*60, QCoreApplication::translate("Quassel::secondsToString()", "h")));
-    timeUnit.append(qMakePair(60, QCoreApplication::translate("Quassel::secondsToString()", "min")));
-    timeUnit.append(qMakePair(1, QCoreApplication::translate("Quassel::secondsToString()", "sec")));
+    static QVector<std::pair<int, QString>> timeUnit {
+        std::make_pair(365*24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "year")),
+        std::make_pair(24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "day")),
+        std::make_pair(60*60, QCoreApplication::translate("Quassel::secondsToString()", "h")),
+        std::make_pair(60, QCoreApplication::translate("Quassel::secondsToString()", "min")),
+        std::make_pair(1, QCoreApplication::translate("Quassel::secondsToString()", "sec"))
+    };
 
     if (timeInSeconds != 0) {
         QStringList returnString;
@@ -199,4 +204,79 @@ QByteArray prettyDigest(const QByteArray &digest)
         prettyDigest.replace(i * 3, 2, hexDigest.mid(i * 2, 2));
     }
     return prettyDigest;
+}
+
+
+QString formatCurrentDateTimeInString(const QString &formatStr)
+{
+    // Work on a copy of the string to avoid modifying the input string
+    QString formattedStr = QString(formatStr);
+
+    // Exit early if there's nothing to format
+    if (formattedStr.isEmpty())
+        return formattedStr;
+
+    // Find %%<text>%% in string. Replace inside text formatted to QDateTime with the current
+    // timestamp, using %%%% as an escape for multiple %% signs.
+    // For example:
+    // Simple:   "All Quassel clients vanished from the face of the earth... %%hh:mm:ss%%"
+    // > Result:  "All Quassel clients vanished from the face of the earth... 23:20:34"
+    // Complex:  "Away since %%hh:mm%% on %%dd.MM%% - %%%% not here %%%%"
+    // > Result:  "Away since 23:20 on 21.05 - %% not here %%"
+    //
+    // Match groups of double % signs - Some text %%inside here%%, and even %%%%:
+    //   %%(.*)%%
+    //   (...)    marks a capturing group
+    //   .*       matches zero or more characters, not including newlines
+    // Note that '\' must be escaped as '\\'
+    // Helpful interactive website for debugging and explaining:  https://regex101.com/
+    QRegExp regExpMatchTime("%%(.*)%%");
+
+    // Preserve the smallest groups possible to allow for multiple %%blocks%%
+    regExpMatchTime.setMinimal(true);
+
+    // NOTE: Move regExpMatchTime to a static regular expression if used anywhere that performance
+    // matters.
+
+    // Don't allow a runaway regular expression to loop for too long.  This might not happen.. but
+    // when dealing with user input, better to be safe..?
+    int numIterations = 0;
+
+    // Find each group of %%text here%% starting from the beginning
+    int index = regExpMatchTime.indexIn(formattedStr);
+    int matchLength;
+    QString matchedFormat;
+    while (index >= 0 && numIterations < 512) {
+        // Get the total length of the matched expression
+        matchLength = regExpMatchTime.cap(0).length();
+        // Get the format string, e.g. "this text here" from "%%this text here%%"
+        matchedFormat = regExpMatchTime.cap(1);
+        // Check that there's actual characters inside.  A quadruple % (%%%%) represents two %%
+        // signs.
+        if (matchedFormat.length() > 0) {
+            // Format the string according to the current date and time.  Invalid time format
+            // strings are ignored.
+            formattedStr.replace(index, matchLength,
+                                 QDateTime::currentDateTime().toString(matchedFormat));
+            // Subtract the length of the removed % signs
+            // E.g. "%%h:mm ap%%" turns into "h:mm ap", removing four % signs, thus -4.  This is
+            // used below to determine how far to advance when looking for the next formatting code.
+            matchLength -= 4;
+        } else if (matchLength == 4) {
+            // Remove two of the four percent signs, so '%%%%' escapes to '%%'
+            formattedStr.remove(index, 2);
+            // Subtract the length of the removed % signs, this time removing two % signs, thus -2.
+            matchLength -= 2;
+        } else {
+            // If neither of these match, something went wrong.  Don't modify it to be safe.
+            qDebug() << "Unexpected time format when parsing string, no matchedFormat, matchLength "
+                        "should be 4, actually is" << matchLength;
+        }
+
+        // Find the next group of %%text here%% starting from where the last group ended
+        index = regExpMatchTime.indexIn(formattedStr, index + matchLength);
+        numIterations++;
+    }
+
+    return formattedStr;
 }

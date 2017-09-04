@@ -33,7 +33,6 @@ Var StartMenuFolder
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "${regkey}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 
-InstType "Minimal"
 InstType "Full"
 ;--------------------------------
 
@@ -139,7 +138,7 @@ SectionEnd
 
 
 Section "Quassel"  QUASSEL_ALL_IN_ONE
-    SectionIn 1 2
+    SectionIn 1
     SetOutPath $INSTDIR
     StrCpy $ToBeRunned "$INSTDIR\quassel.exe"
     StrCpy $nameOfToBeRunend "Run Quassel"
@@ -149,8 +148,8 @@ Section "Quassel"  QUASSEL_ALL_IN_ONE
     !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
-Section /o "QuasselClient"  QUASSEL_CLIENT
-    SectionIn 2
+Section "QuasselClient"  QUASSEL_CLIENT
+    SectionIn 1
     SetOutPath $INSTDIR
     ${If} $ToBeRunned == ""
         StrCpy $ToBeRunned "$INSTDIR\quasselclient.exe"
@@ -162,8 +161,8 @@ Section /o "QuasselClient"  QUASSEL_CLIENT
     !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
-Section /o "QuasselCore"  QUASSEL_CORE
-    SectionIn 2
+Section "QuasselCore"  QUASSEL_CORE
+    SectionIn 1
     SetOutPath $INSTDIR
     ${If} $ToBeRunned == ""
         StrCpy $ToBeRunned "$INSTDIR\quasselcore.exe"

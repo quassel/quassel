@@ -664,13 +664,14 @@ void CoreSession::clientsDisconnected()
             if (!identity->detachAwayReason().isEmpty())
                 awayReason = identity->detachAwayReason();
             net->setAutoAwayActive(true);
+            // Allow handleAway() to format the current date/time in the string.
             net->userInputHandler()->handleAway(BufferInfo(), awayReason);
         }
     }
 }
 
 
-void CoreSession::globalAway(const QString &msg)
+void CoreSession::globalAway(const QString &msg, const bool skipFormatting)
 {
     QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
     CoreNetwork *net = 0;
@@ -681,7 +682,7 @@ void CoreSession::globalAway(const QString &msg)
         if (!net->isConnected())
             continue;
 
-        net->userInputHandler()->issueAway(msg, false /* no force away */);
+        net->userInputHandler()->issueAway(msg, false /* no force away */, skipFormatting);
     }
 }
 

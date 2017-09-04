@@ -60,6 +60,7 @@ set(FORMS
     channellistdlg.ui
     chatviewsearchbar.ui
     coreconfigwizardintropage.ui
+    coreconfigwizardauthenticationselectionpage.ui
     coreconfigwizardadminuserpage.ui
     coreconfigwizardstorageselectionpage.ui
     coreconfigwizardsyncpage.ui

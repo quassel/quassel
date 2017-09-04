@@ -23,11 +23,16 @@
 
 #include "clientsettings.h"
 
+// For backlog requester types
+#include "backlogrequester.h"
+
 class BacklogSettings : public ClientSettings
 {
 public:
     BacklogSettings() : ClientSettings("Backlog") {}
-    inline int requesterType() { return localValue("RequesterType", 1).toInt(); }
+    inline int requesterType() { return localValue("RequesterType", BacklogRequester::PerBufferUnread).toInt(); }
+    // Default to PerBufferUnread to help work around performance problems on connect when there's
+    // many buffers that don't have much activity.
     inline void setRequesterType(int requesterType) { setLocalValue("RequesterType", requesterType); }
 
     inline int dynamicBacklogAmount() { return localValue("DynamicBacklogAmount", 200).toInt(); }

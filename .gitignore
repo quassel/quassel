@@ -1,6 +1,8 @@
-build*
+/build*
 *.pyc
 tags
+/.idea
+/cmake-build-*
 
 # Qt Creator configuration
 CMakeLists.txt.user

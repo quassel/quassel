@@ -70,7 +70,7 @@ signals:
 #endif
 
     void encrypted(bool isEncrypted = true);
-    void startCoreSetup(const QVariantList &backendInfo);
+    void startCoreSetup(const QVariantList &backendInfo, const QVariantList &authenticatorInfo);
     void coreSetupSuccessful();
     void coreSetupFailed(const QString &error);
 
@@ -113,6 +113,7 @@ private:
     RemotePeer *_peer;
     bool _coreConfigured;
     QVariantList _backendInfo;
+    QVariantList _authenticatorInfo;
     CoreAccount _account;
     bool _probing;
     bool _legacy;

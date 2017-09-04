@@ -29,8 +29,10 @@
 #include "util.h"
 
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
-QString UiStyle::_timestampFormatString; /// Timestamp format
-bool UiStyle::_showSenderBrackets;       /// If true, show brackets around sender names
+bool UiStyle::_useCustomTimestampFormat;       /// If true, use the custom timestamp format
+QString UiStyle::_timestampFormatString;       /// Timestamp format
+QString UiStyle::_systemTimestampFormatString; /// Cached copy of system locale timestamp format
+bool UiStyle::_showSenderBrackets;             /// If true, show brackets around sender names
 
 UiStyle::UiStyle(QObject *parent)
     : QObject(parent),
@@ -70,6 +72,7 @@ UiStyle::UiStyle(QObject *parent)
     // Initialize fallback defaults
     // NOTE: If you change this, update qtui/chatviewsettings.h, too.  More explanations available
     // in there.
+    setUseCustomTimestampFormat(false);
     setTimestampFormatString(" hh:mm:ss");
     enableSenderBrackets(true);
 
@@ -168,7 +171,52 @@ QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist)
     return ss;
 }
 
+
+void UiStyle::updateSystemTimestampFormat()
+{
+    // Does the system locale use AM/PM designators?  For example:
+    // AM/PM:    h:mm AP
+    // AM/PM:    hh:mm a
+    // 24-hour:  h:mm
+    // 24-hour:  hh:mm ADD things
+    // For timestamp format, see https://doc.qt.io/qt-5/qdatetime.html#toString
+    // This won't update if the system locale is changed while Quassel is running.  If need be,
+    // Quassel could hook into notifications of changing system locale to update this.
+    //
+    // Match any AP or A designation if on a word boundary, including underscores.
+    //   .*(\b|_)(A|AP)(\b|_).*
+    //   .*         Match any number of characters
+    //   \b         Match a word boundary, i.e. "AAA.BBB", "." is matched
+    //   _          Match the literal character '_' (not considered a word boundary)
+    //   (X|Y)  Match either X or Y, exactly
+    //
+    // Note that '\' must be escaped as '\\'
+    // QRegExp does not support (?> ...), so it's replaced with standard matching, (...)
+    // Helpful interactive website for debugging and explaining:  https://regex101.com/
+    const QRegExp regExpMatchAMPM(".*(\\b|_)(A|AP)(\\b|_).*", Qt::CaseInsensitive);
+
+    if (regExpMatchAMPM.exactMatch(QLocale::system().timeFormat(QLocale::ShortFormat))) {
+        // AM/PM style used
+        _systemTimestampFormatString = " h:mm:ss ap";
+    } else {
+        // 24-hour style used
+        _systemTimestampFormatString = " hh:mm:ss";
+    }
+    // Include a space to give the timestamp a small bit of padding between the border of the chat
+    // buffer window and the numbers.  Helps with readability.
+    // If you change this to include brackets, e.g. "[hh:mm:ss]", also update
+    // ChatScene::updateTimestampHasBrackets() to true or false as needed!
+}
+
+
 // FIXME The following should trigger a reload/refresh of the chat view.
+void UiStyle::setUseCustomTimestampFormat(bool enabled)
+{
+    if (_useCustomTimestampFormat != enabled) {
+        _useCustomTimestampFormat = enabled;
+    }
+}
+
 void UiStyle::setTimestampFormatString(const QString &format)
 {
     if (_timestampFormatString != format) {
@@ -663,15 +711,52 @@ QString UiStyle::mircToInternal(const QString &mirc_)
 }
 
 
+QString UiStyle::systemTimestampFormatString()
+{
+    if (_systemTimestampFormatString.isEmpty()) {
+        // Calculate and cache the system timestamp format string
+        updateSystemTimestampFormat();
+    }
+    return _systemTimestampFormatString;
+}
+
+
+QString UiStyle::timestampFormatString()
+{
+    if (useCustomTimestampFormat()) {
+        return _timestampFormatString;
+    } else {
+        return systemTimestampFormatString();
+    }
+}
+
+
 /***********************************************************************************/
 UiStyle::StyledMessage::StyledMessage(const Message &msg)
     : Message(msg)
 {
-    if (type() == Message::Plain || type() == Message::Action)
-        _senderHash = 0xff;
-    else
-        _senderHash = 0x00;
-    // This means we never compute the hash for msgs that aren't Plain or Action
+    switch (type()) {
+        // Don't compute the sender hash for message types without a nickname embedded
+        case Message::Server:
+        case Message::Info:
+        case Message::Error:
+        case Message::DayChange:
+        case Message::Topic:
+        case Message::Invite:
+        // Don't compute the sender hash for messages with multiple nicks
+        // Fixing this without breaking themes would be.. complex.
+        case Message::NetsplitJoin:
+        case Message::NetsplitQuit:
+        case Message::Kick:
+        // Don't compute the sender hash for message types that are not yet completed elsewhere
+        case Message::Kill:
+            _senderHash = 0x00;
+            break;
+        default:
+            // Compute the sender hash for all other message types
+            _senderHash = 0xff;
+            break;
+    }
 }
 
 
@@ -876,7 +961,19 @@ quint8 UiStyle::StyledMessage::senderHash() const
     if (_senderHash != 0xff)
         return _senderHash;
 
-    QString nick = nickFromMask(sender()).toLower();
+    QString nick;
+
+    // HACK: Until multiple nicknames with different colors can be solved in the theming engine,
+    // for /nick change notifications, use the color of the new nickname (if possible), not the old
+    // nickname.
+    if (type() == Message::Nick) {
+        // New nickname is given as contents.  Change to that.
+        nick = stripFormatCodes(contents()).toLower();
+    } else {
+        // Just use the sender directly
+        nick = nickFromMask(sender()).toLower();
+    }
+
     if (!nick.isEmpty()) {
         int chopCount = 0;
         while (chopCount < nick.size() && nick.at(nick.count() - 1 - chopCount) == '_')

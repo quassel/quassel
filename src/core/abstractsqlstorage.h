@@ -18,10 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ABSTRACTSQLSTORAGE_H
-#define ABSTRACTSQLSTORAGE_H
+#pragma once
 
 #include "storage.h"
+
+#include <memory>
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -38,8 +39,8 @@ public:
     AbstractSqlStorage(QObject *parent = 0);
     virtual ~AbstractSqlStorage();
 
-    virtual inline AbstractSqlMigrationReader *createMigrationReader() { return 0; }
-    virtual inline AbstractSqlMigrationWriter *createMigrationWriter() { return 0; }
+    virtual std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() { return {}; }
+    virtual std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter() { return {}; }
 
 public slots:
     virtual State init(const QVariantMap &settings = QVariantMap());
@@ -50,8 +51,24 @@ protected:
 
     QSqlDatabase logDb();
 
-    QString queryString(const QString &queryName, int version);
-    inline QString queryString(const QString &queryName) { return queryString(queryName, 0); }
+    /**
+     * Fetch an SQL query string by name and optional schema version
+     *
+     * Loads the named SQL query from the built-in SQL resource collection, returning it as a
+     * string.  If a version is specified, it'll be loaded from the schema version-specific folder
+     * instead.
+     *
+     * @see schemaVersion()
+     *
+     * @param[in] queryName  File name of the SQL query, minus the .sql extension
+     * @param[in] version
+     * @parblock
+     * SQL schema version; if 0, fetches from current version, otherwise loads from the specified
+     * schema version instead of the current schema files.
+     * @endparblock
+     * @return String with the requested SQL query, ready for parameter substitution
+     */
+    QString queryString(const QString &queryName, int version = 0);
 
     QStringList setupQueries();
 
@@ -132,6 +149,7 @@ public:
         QString username;
         QString password;
         int hashversion;
+        QString authenticator;
     };
 
     struct SenderMO {
@@ -212,6 +230,7 @@ public:
         QString buffername;
         QString buffercname;
         int buffertype;
+        int lastmsgid;
         int lastseenmsgid;
         int markerlinemsgid;
         QString key;
@@ -339,6 +358,3 @@ public:
     virtual inline bool postProcess() { return true; }
     friend class AbstractSqlMigrationReader;
 };
-
-
-#endif

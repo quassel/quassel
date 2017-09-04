@@ -58,6 +58,16 @@ private slots:
     void displayNetwork(NetworkId);
     void setItemState(NetworkId, QListWidgetItem *item = 0);
 
+    /**
+     * Update the capability-dependent settings according to what the server supports
+     *
+     * For example, this updates the SASL text for when the server advertises support.  This should
+     * only be called on the currently displayed network.
+     *
+     * @param[in] id  NetworkId referencing network used to update settings user interface.
+     */
+    void setNetworkCapStates(NetworkId id);
+
     void clientNetworkAdded(NetworkId);
     void clientNetworkRemoved(NetworkId);
     void clientNetworkUpdated();
@@ -65,6 +75,11 @@ private slots:
     void clientIdentityAdded(IdentityId);
     void clientIdentityRemoved(IdentityId);
     void clientIdentityUpdated();
+
+    /**
+     * Update the settings user interface according to capabilities advertised by the IRC server
+     */
+    void clientNetworkCapsUpdated();
 
 #ifdef HAVE_SSL
     void sslUpdated();
@@ -85,7 +100,23 @@ private slots:
     void on_upServer_clicked();
     void on_downServer_clicked();
 
+    /**
+     * Event handler for SASL status Details button
+     */
+    void on_saslStatusDetails_clicked();
+
 private:
+    /**
+     * Status of capability support
+     */
+    enum CapSupportStatus {
+        Unknown,           ///< Old core, or otherwise unknown, can't make assumptions
+        Disconnected,      ///< Disconnected from network, can't determine
+        MaybeUnsupported,  ///< Server does not advertise support at this moment
+        MaybeSupported     ///< Server advertises support at this moment
+    };
+    // Keep in mind networks can add, change, and remove capabilities at any time.
+
     Ui::NetworksSettingsPage ui;
 
     NetworkId currentId;
@@ -97,6 +128,11 @@ private:
 
     QIcon connectedIcon, connectingIcon, disconnectedIcon;
 
+    // Status icons
+    QIcon infoIcon, warningIcon;
+
+    CapSupportStatus _saslStatusSelected;  /// Status of SASL support for currently-selected network
+
     void reset();
     bool testHasChanged();
     QListWidgetItem *insertNetwork(NetworkId);
@@ -104,6 +140,13 @@ private:
     QListWidgetItem *networkItem(NetworkId) const;
     void saveToNetworkInfo(NetworkInfo &);
     IdentityId defaultIdentity() const;
+
+    /**
+     * Update the SASL settings interface according to the given SASL state
+     *
+     * @param[in] saslStatus Current status of SASL support.
+     */
+    void setSASLStatus(const CapSupportStatus saslStatus);
 };
 
 

@@ -77,20 +77,20 @@ ChatLine[format="underline"] { font-style: underline; }
 // ChatView message colors
 ChatLine#notice { foreground: #916409; }
 ChatLine#action { foreground: #0000ff; }
-ChatLine#nick { foreground: #960096; }
-ChatLine#mode { foreground: #960096; }
-ChatLine#join { foreground: #960096; }
-ChatLine#part { foreground: #960096; }
-ChatLine#quit { foreground: #960096; }
-ChatLine#kick { foreground: #960096; }
-ChatLine#kill { foreground: #960096; }
+ChatLine#nick { foreground: #707070; }
+ChatLine#mode { foreground: #707070; }
+ChatLine#join { foreground: #707070; }
+ChatLine#part { foreground: #707070; }
+ChatLine#quit { foreground: #707070; }
+ChatLine#kick { foreground: #707070; }
+ChatLine#kill { foreground: #707070; }
 ChatLine#server { foreground: #916409; }
 ChatLine#info { foreground: #916409; }
-ChatLine#error { foreground: #916409; }
+ChatLine#error { foreground: #b30e0e; }
 ChatLine#daychange { foreground: #916409; }
-ChatLine#topic { foreground: #960096; }
-ChatLine#netsplit-join { foreground: #960096; }
-ChatLine#netsplit-quit { foreground: #960096; }
+ChatLine#topic { foreground: #707070; }
+ChatLine#netsplit-join { foreground: #707070; }
+ChatLine#netsplit-quit { foreground: #707070; }
 ChatLine#invite { foreground: #916409; }
 
 // BufferView Colors

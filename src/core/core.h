@@ -18,8 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORE_H
-#define CORE_H
+#pragma once
+
+#include <memory>
+#include <vector>
 
 #include <QDateTime>
 #include <QString>
@@ -34,7 +36,9 @@
 #  include <QTcpServer>
 #endif
 
+#include "authenticator.h"
 #include "bufferinfo.h"
+#include "deferredptr.h"
 #include "message.h"
 #include "oidentdconfiggenerator.h"
 #include "sessionthread.h"
@@ -74,6 +78,36 @@ public:
         return instance()->_storage->validateUser(userName, password);
     }
 
+    //! Authenticate user against auth backend
+    /**
+     * \param userName The user's login name
+     * \param password The user's uncrypted password
+     * \return The user's ID if valid; 0 otherwise
+     */
+    static inline UserId authenticateUser(const QString &userName, const QString &password) {
+        return instance()->_authenticator->validateUser(userName, password);
+    }
+
+    //! Add a new user, exposed so auth providers can call this without being the storage.
+    /**
+     * \param userName The user's login name
+     * \param password The user's uncrypted password
+     * \param authenticator The name of the auth provider service used to log the user in, defaults to "Database".
+     * \return The user's ID if valid; 0 otherwise
+     */
+    static inline UserId addUser(const QString &userName, const QString &password, const QString &authenticator = "Database") {
+        return instance()->_storage->addUser(userName, password, authenticator);
+    }
+
+    //! Does a comparison test against the authenticator in the database and the authenticator currently in use for a UserID.
+    /**
+     * \param userid The user's ID (note: not login name).
+     * \param authenticator The name of the auth provider service used to log the user in, defaults to "Database".
+     * \return True if the userid was configured with the passed authenticator, false otherwise.
+     */
+    static inline bool checkAuthProvider(const UserId userid, const QString &authenticator) {
+        return instance()->_storage->getUserAuthenticator(userid) == authenticator;
+    }
 
     //! Change a user's password
     /**
@@ -82,6 +116,13 @@ public:
      * \return true, if the password change was successful
      */
     static bool changeUserPassword(UserId userId, const QString &password);
+
+    //! Check if we can change a user password.
+    /**
+     * \param userID     The user's ID
+     * \return true, if we can change their password, false otherwise
+     */
+    static bool canChangeUserPassword(UserId userId);
 
     //! Store a user setting persistently
     /**
@@ -503,21 +544,9 @@ public:
     static bool reloadCerts();
 
     static QVariantList backendInfo();
+    static QVariantList authenticatorInfo();
 
-    /**
-     * Checks if a storage backend is the default storage backend. This
-     * hardcodes this information into the core (not the client).
-     *
-     * \param backend    The backend to check.
-     *
-     * @return True if storage backend is default, false otherwise.
-     */
-    static inline bool isStorageBackendDefault(const Storage *backend)
-    {
-        return (backend->displayName() == "SQLite") ? true : false;
-    }
-
-    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData);
+    static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
     static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
@@ -531,7 +560,7 @@ public slots:
      */
     void syncStorage();
     void setupInternalClientSession(InternalPeer *clientConnection);
-    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData);
+    QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
 signals:
     //! Sent when a BufferInfo is updated in storage.
@@ -550,6 +579,7 @@ private slots:
     void clientDisconnected();
 
     bool initStorage(const QString &backend, const QVariantMap &settings, bool setup = false);
+    bool initAuthenticator(const QString &backend, const QVariantMap &settings, bool setup = false);
 
     void socketError(QAbstractSocket::SocketError err, const QString &errorString);
     void setupClientSession(RemotePeer *, UserId);
@@ -567,19 +597,34 @@ private:
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
     QString setupCoreForInternalUsage();
 
-    void registerStorageBackends();
-    bool registerStorageBackend(Storage *);
-    void unregisterStorageBackends();
-    void unregisterStorageBackend(Storage *);
-    bool selectBackend(const QString &backend);
     bool createUser();
-    void saveBackendSettings(const QString &backend, const QVariantMap &settings);
-    QVariantMap promptForSettings(const Storage *storage);
+
+    template<typename Storage>
+    void registerStorageBackend();
+
+    template<typename Authenticator>
+    void registerAuthenticator();
+
+    void registerStorageBackends();
+    void registerAuthenticators();
+
+    DeferredSharedPtr<Storage>       storageBackend(const QString& backendId) const;
+    DeferredSharedPtr<Authenticator> authenticator(const QString& authenticatorId) const;
+
+    bool selectBackend(const QString &backend);
+    bool selectAuthenticator(const QString &backend);
+
+    bool saveBackendSettings(const QString &backend, const QVariantMap &settings);
+    void saveAuthenticatorSettings(const QString &backend, const QVariantMap &settings);
+
+    template<typename Backend>
+    QVariantMap promptForSettings(const Backend *backend);
 
 private:
     QSet<CoreAuthHandler *> _connectingClients;
     QHash<UserId, SessionThread *> _sessions;
-    Storage *_storage;
+    DeferredSharedPtr<Storage>       _storage;        ///< Active storage backend
+    DeferredSharedPtr<Authenticator> _authenticator;  ///< Active authenticator
     QTimer _storageSyncTimer;
 
 #ifdef HAVE_SSL
@@ -588,20 +633,18 @@ private:
     QTcpServer _server, _v6server;
 #endif
 
-    OidentdConfigGenerator *_oidentdConfigGenerator;
+    OidentdConfigGenerator *_oidentdConfigGenerator {nullptr};
 
-    QHash<QString, Storage *> _storageBackends;
+    std::vector<DeferredSharedPtr<Storage>>       _registeredStorageBackends;
+    std::vector<DeferredSharedPtr<Authenticator>> _registeredAuthenticators;
 
     QDateTime _startTime;
 
     bool _configured;
 
-    static AbstractSqlMigrationReader *getMigrationReader(Storage *storage);
-    static AbstractSqlMigrationWriter *getMigrationWriter(Storage *storage);
+    static std::unique_ptr<AbstractSqlMigrationReader> getMigrationReader(Storage *storage);
+    static std::unique_ptr<AbstractSqlMigrationWriter> getMigrationWriter(Storage *storage);
     static void stdInEcho(bool on);
     static inline void enableStdInEcho() { stdInEcho(true); }
     static inline void disableStdInEcho() { stdInEcho(false); }
 };
-
-
-#endif

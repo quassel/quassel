@@ -186,6 +186,11 @@ private slots:
     void showSenderBracketsChanged();
 
     /**
+     * Updates the local setting cache of whether or not to use the custom timestamp format
+     */
+    void useCustomTimestampFormatChanged();
+
+    /**
      * Updates the local setting cache of the timestamp format string
      */
     void timestampFormatStringChanged();
@@ -247,6 +252,7 @@ private:
 
     bool _showSenderBrackets;  /// If true, show brackets around sender names
 
+    bool _useCustomTimestampFormat; /// If true, use the custom timestamp format
     QString _timestampFormatString; /// Format of the timestamp string
     bool _timestampHasBrackets;     /// If true, timestamp format has [brackets] of some sort
 

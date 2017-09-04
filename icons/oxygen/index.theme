@@ -1,5 +1,6 @@
 [Icon Theme]
 Name=Oxygen
+Name[ast]=Oxíxenu
 Name[bs]=Oxygen
 Name[ca]=Oxygen
 Name[ca@valencia]=Oxygen
@@ -23,6 +24,7 @@ Name[mr]=ऑक्सीजन
 Name[nb]=Oxygen
 Name[nds]=Oxygen
 Name[nl]=Oxygen
+Name[nn]=Oxygen
 Name[pl]=Tlen
 Name[pt]=Oxygen
 Name[pt_BR]=Oxygen
@@ -43,6 +45,7 @@ Name[zh_CN]=Oxygen(氧气)
 Name[zh_TW]=Oxygen
 
 Comment=Oxygen Team
+Comment[ast]=L'equipu d'Oxíxenu
 Comment[bs]=Oxygen tim
 Comment[ca]=Equip de l'Oxygen
 Comment[ca@valencia]=Equip de l'Oxygen
@@ -66,6 +69,7 @@ Comment[mr]=ऑक्सीजन टीम
 Comment[nb]=Oxygen-laget
 Comment[nds]=Oxygen-Koppel
 Comment[nl]=Oxygen-team
+Comment[nn]=Oxygen-laget
 Comment[pl]=Zespół Oxygen
 Comment[pt]=Equipa do Oxygen
 Comment[pt_BR]=Equipe do Oxygen

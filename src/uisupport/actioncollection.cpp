@@ -24,6 +24,7 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QMetaMethod>
 
 #include "actioncollection.h"
 

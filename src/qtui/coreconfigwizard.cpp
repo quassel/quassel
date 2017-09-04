@@ -20,6 +20,7 @@
 
 #include <QDebug>
 #include <QAbstractButton>
+#include <QCoreApplication>
 #include <QFormLayout>
 #include <QIcon>
 #include <QSpinBox>
@@ -27,30 +28,122 @@
 #include "coreconfigwizard.h"
 #include "coreconnection.h"
 
-CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVariant> &backends, QWidget *parent)
+#include "client.h"
+
+namespace {
+
+QGroupBox *createDescriptionBox(const QString &description)
+{
+    auto box = new QGroupBox;
+    auto layout = new QVBoxLayout(box);
+    auto label = new QLabel(description, box);
+    label->setWordWrap(true);
+    layout->addWidget(label);
+    layout->setAlignment(label, Qt::AlignTop);
+    box->setTitle(QCoreApplication::translate("CoreConfigWizard", "Description"));
+    return box;
+}
+
+
+template<typename FieldInfo>
+QGroupBox *createFieldBox(const QString &title, const std::vector<FieldInfo> &fieldInfos)
+{
+    // Create a config UI based on the field types sent from the backend
+    // We make some assumptions here (like integer range and password field names) that may not
+    // hold true for future authenticator types - but the only way around it for now would be to
+    // provide specialized config widgets for those (which may be a good idea anyway, e.g. if we
+    // think about client-side translations...)
+
+    QGroupBox *fieldBox = new QGroupBox;
+    fieldBox->setTitle(title);
+
+    QFormLayout *formLayout = new QFormLayout(fieldBox);
+    for (auto &&fieldInfo : fieldInfos) {
+        QWidget *widget {nullptr};
+        switch (std::get<2>(fieldInfo).type()) {
+            case QVariant::Int:
+                widget = new QSpinBox(fieldBox);
+                // Here we assume that int fields are always in 16 bit range, like ports
+                static_cast<QSpinBox *>(widget)->setMinimum(0);
+                static_cast<QSpinBox *>(widget)->setMaximum(65535);
+                static_cast<QSpinBox *>(widget)->setValue(std::get<2>(fieldInfo).toInt());
+                break;
+            case QVariant::String:
+                widget = new QLineEdit(std::get<2>(fieldInfo).toString(), fieldBox);
+                // Here we assume that fields named something with "password" are actual password inputs
+                if (std::get<0>(fieldInfo).toLower().contains("password"))
+                    static_cast<QLineEdit *>(widget)->setEchoMode(QLineEdit::Password);
+                break;
+            default:
+                qWarning() << "Unsupported type for backend property" << std::get<0>(fieldInfo);
+        }
+        if (widget) {
+            widget->setObjectName(std::get<0>(fieldInfo));
+            formLayout->addRow(std::get<1>(fieldInfo) + ":", widget);
+        }
+    }
+    return fieldBox;
+}
+
+
+template<typename FieldInfo>
+QVariantMap propertiesFromFieldWidgets(QGroupBox *fieldBox, const std::vector<FieldInfo> &fieldInfos)
+{
+    QVariantMap properties;
+    if (!fieldBox)
+        return properties;
+
+    for (auto &&fieldInfo : fieldInfos) {
+        QString key = std::get<0>(fieldInfo);
+        QVariant value;
+        switch (std::get<2>(fieldInfo).type()) {
+            case QVariant::Int: {
+                QSpinBox *spinBox = fieldBox->findChild<QSpinBox *>(key);
+                if (spinBox)
+                    value = spinBox->value();
+                else
+                    qWarning() << "Could not find child widget for field" << key;
+                break;
+            }
+            case QVariant::String: {
+                QLineEdit *lineEdit = fieldBox->findChild<QLineEdit *>(key);
+                if (lineEdit)
+                    value = lineEdit->text();
+                else
+                    qWarning() << "Could not find child widget for field" << key;
+                break;
+            }
+            default:
+                qWarning() << "Unsupported type for backend property" << key;
+        }
+        properties[key] = std::move(value);
+    }
+    return properties;
+}
+
+} // anon
+
+
+CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QVariantList &backendInfos, const QVariantList &authInfos, QWidget *parent)
     : QWizard(parent),
-    _connection(connection)
+    _connection{connection}
 {
     setModal(true);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    foreach(const QVariant &v, backends)
-    _backends[v.toMap()["DisplayName"].toString()] = v;
-
     setPage(IntroPage, new CoreConfigWizardPages::IntroPage(this));
     setPage(AdminUserPage, new CoreConfigWizardPages::AdminUserPage(this));
-    setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(_backends, this));
+    setPage(AuthenticationSelectionPage, new CoreConfigWizardPages::AuthenticationSelectionPage(authInfos, this));
+    setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(backendInfos, this));
     syncPage = new CoreConfigWizardPages::SyncPage(this);
-    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &)), SLOT(prepareCoreSetup(const QString &, const QVariantMap &)));
+    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap &)),
+            SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap &)));
     setPage(SyncPage, syncPage);
     syncRelayPage = new CoreConfigWizardPages::SyncRelayPage(this);
     connect(syncRelayPage, SIGNAL(startOver()), this, SLOT(startOver()));
     setPage(SyncRelayPage, syncRelayPage);
-    //setPage(Page_StorageDetails, new StorageDetailsPage());
-    //setPage(Page_Conclusion, new ConclusionPage(storageProviders));
 
     setStartId(IntroPage);
-    //setStartId(StorageSelectionPage);
 
 #ifndef Q_OS_MAC
     setWizardStyle(ModernStyle);
@@ -62,7 +155,6 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
     setOption(HaveFinishButtonOnEarlyPages, false);
     setOption(NoCancelButton, true);
     setOption(IndependentPages, true);
-    //setOption(ExtendedWatermarkPixmap, true);
 
     setModal(true);
 
@@ -71,25 +163,37 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QList<QVari
 
     connect(connection, SIGNAL(coreSetupSuccess()), SLOT(coreSetupSuccess()));
     connect(connection, SIGNAL(coreSetupFailed(QString)), SLOT(coreSetupFailed(QString)));
-    //connect(connection, SIGNAL(loginSuccess()), SLOT(loginSuccess()));
     connect(connection, SIGNAL(synchronized()), SLOT(syncFinished()));
     connect(this, SIGNAL(rejected()), connection, SLOT(disconnectFromCore()));
+
+
+    // Resize all pages to the size hint of the largest one, so the wizard is large enough
+    QSize maxSize;
+    for (int id : pageIds()) {
+        auto p = page(id);
+        p->adjustSize();
+        maxSize = maxSize.expandedTo(p->sizeHint());
+    }
+    for (int id : pageIds()) {
+        page(id)->setFixedSize(maxSize);
+    }
 }
 
 
-QHash<QString, QVariant> CoreConfigWizard::backends() const
-{
-    return _backends;
-}
-
-
-void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties)
+void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authenticator, const QVariantMap &authProperties)
 {
     // Prevent the user from changing any settings he already specified...
-    foreach(int idx, visitedPages())
-    page(idx)->setEnabled(false);
+    for (auto &&idx : visitedPages())
+        page(idx)->setEnabled(false);
 
-    coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
+    // FIXME? We need to be able to set up older cores that don't have auth backend support.
+    // So if the core doesn't support that feature, don't pass those parameters.
+    if (!(Client::coreFeatures() & Quassel::Authenticators)) {
+        coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
+    }
+    else {
+        coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties, authenticator, authProperties));
+    }
 }
 
 
@@ -97,7 +201,7 @@ void CoreConfigWizard::coreSetupSuccess()
 {
     syncPage->setStatus(tr("Your core has been successfully configured. Logging you in..."));
     syncPage->setError(false);
-    syncRelayPage->setMode(CoreConfigWizardPages::SyncRelayPage::Error);
+    syncRelayPage->setMode(CoreConfigWizardPages::SyncRelayPage::Success);
     coreConnection()->loginToCore(field("adminUser.user").toString(), field("adminUser.password").toString(), field("adminUser.rememberPasswd").toBool());
 }
 
@@ -118,15 +222,6 @@ void CoreConfigWizard::startOver()
     foreach(int idx, visitedPages()) page(idx)->setEnabled(true);
     setStartId(CoreConfigWizard::AdminUserPage);
     restart();
-}
-
-
-void CoreConfigWizard::loginSuccess()
-{
-    syncPage->setStatus(tr("Your are now logged into your freshly configured Quassel Core!<br>"
-                           "Please remember to configure your identities and networks now."));
-    syncPage->setComplete(true);
-    syncPage->setFinalPage(true);
 }
 
 
@@ -166,16 +261,18 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
     registerField("adminUser.password*", ui.password);
     registerField("adminUser.password2*", ui.password2);
     registerField("adminUser.rememberPasswd", ui.rememberPasswd);
-
-    //ui.user->setText("foo");
-    //ui.password->setText("foo");
-    //ui.password2->setText("foo");
 }
 
 
 int AdminUserPage::nextId() const
 {
-    return CoreConfigWizard::StorageSelectionPage;
+    // If the core doesn't support auth backends, skip that page!
+    if (!(Client::coreFeatures() & Quassel::Authenticators)) {
+        return CoreConfigWizard::StorageSelectionPage;
+    }
+    else {
+        return CoreConfigWizard::AuthenticationSelectionPage;
+    }
 }
 
 
@@ -185,33 +282,159 @@ bool AdminUserPage::isComplete() const
     return ok;
 }
 
+/*** Authentication Selection Page ***/
+
+AuthenticationSelectionPage::AuthenticationSelectionPage(const QVariantList &authInfos, QWidget *parent)
+    : QWizardPage(parent)
+{
+    ui.setupUi(this);
+
+    setTitle(tr("Select Authentication Backend"));
+    setSubTitle(tr("Please select a backend for Quassel Core to use for authenticating users."));
+
+    registerField("authentication.backend", ui.backendList);
+
+    for (auto &&authInfo : authInfos) {
+        auto props = authInfo.toMap();
+        // Extract field infos to avoid having to reparse the list
+        std::vector<FieldInfo> fields;
+        const auto &list = props["SetupData"].toList();
+        for (int i = 0; i + 2 < list.size(); i += 3) {
+            fields.emplace_back(std::make_tuple(list[i].toString(), list[i+1].toString(), list[i+2]));
+        }
+        props.remove("SetupData");
+
+        _authProperties.emplace_back(std::move(props));
+        _authFields.emplace_back(std::move(fields));
+
+        // Create widgets
+        ui.backendList->addItem(_authProperties.back()["DisplayName"].toString(), _authProperties.back()["BackendId"].toString());
+        ui.descriptionStack->addWidget(createDescriptionBox(_authProperties.back()["Description"].toString()));
+        ui.authSettingsStack->addWidget(createFieldBox(tr("Authentication Settings"), _authFields.back()));
+    }
+
+    // Do some trickery to make the page large enough
+    setSizePolicy({QSizePolicy::Fixed, QSizePolicy::Fixed});
+
+    QSizePolicy sp{QSizePolicy::MinimumExpanding, QSizePolicy::Fixed};
+#if QT_VERSION >= 0x050200
+    sp.setRetainSizeWhenHidden(true);
+#else
+    ui.authSettingsStack->setVisible(true);  // ugly hack that will show an empty box, but we'll deprecate Qt4 soon anyway
+#endif
+    ui.descriptionStack->setSizePolicy(sp);
+    ui.authSettingsStack->setSizePolicy(sp);
+
+    ui.descriptionStack->adjustSize();
+    ui.authSettingsStack->adjustSize();
+
+    ui.backendList->setCurrentIndex(0);
+}
+
+
+int AuthenticationSelectionPage::nextId() const
+{
+    return CoreConfigWizard::StorageSelectionPage;
+}
+
+
+QString AuthenticationSelectionPage::displayName() const
+{
+    return ui.backendList->currentText();
+}
+
+
+QString AuthenticationSelectionPage::authenticator() const
+{
+#if QT_VERSION >= 0x050200
+    return ui.backendList->currentData().toString();
+#else
+    return ui.backendList->itemData(ui.backendList->currentIndex()).toString();
+#endif
+}
+
+
+QVariantMap AuthenticationSelectionPage::authProperties() const
+{
+    return propertiesFromFieldWidgets(qobject_cast<QGroupBox *>(ui.authSettingsStack->currentWidget()),
+                                      _authFields[ui.backendList->currentIndex()]);
+}
+
+
+void AuthenticationSelectionPage::on_backendList_currentIndexChanged(int index)
+{
+    ui.descriptionStack->setCurrentIndex(index);
+    ui.authSettingsStack->setCurrentIndex(index);
+    ui.authSettingsStack->setVisible(!_authFields[index].empty());
+}
 
 /*** Storage Selection Page ***/
 
-StorageSelectionPage::StorageSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent)
-    : QWizardPage(parent),
-    _connectionBox(0),
-    _backends(backends)
+StorageSelectionPage::StorageSelectionPage(const QVariantList &backendInfos, QWidget *parent)
+    : QWizardPage(parent)
 {
     ui.setupUi(this);
 
     setTitle(tr("Select Storage Backend"));
-    setSubTitle(tr("Please select a database backend for the Quassel Core storage to store the backlog and other data in."));
+    setSubTitle(tr("Please select a storage backend for Quassel Core."));
     setCommitPage(true);
 
     registerField("storage.backend", ui.backendList);
 
-    int defaultIndex = 0;
-    foreach(QString key, _backends.keys()) {
-        ui.backendList->addItem(_backends[key].toMap()["DisplayName"].toString(), key);
-        if (_backends[key].toMap()["IsDefault"].toBool()) {
-            defaultIndex = ui.backendList->count() - 1;
+    int defaultIndex {0};  // Legacy cores send backend infos in arbitrary order
+
+    for (auto &&backendInfo : backendInfos) {
+        auto props = backendInfo.toMap();
+        // Extract field infos to avoid having to reparse the list
+        std::vector<FieldInfo> fields;
+
+        // Legacy cores (prior to 0.13) didn't send SetupData for storage backends; deal with this
+        if (!props.contains("SetupData")) {
+            const auto &defaultValues = props["SetupDefaults"].toMap();
+            for (auto &&key : props["SetupKeys"].toStringList()) {
+                fields.emplace_back(std::make_tuple(key, key, defaultValues.value(key, QString{})));
+            }
+            if (props.value("IsDefault", false).toBool()) {
+                defaultIndex = ui.backendList->count();
+            }
         }
+        else {
+            const auto &list = props["SetupData"].toList();
+            for (int i = 0; i + 2 < list.size(); i += 3) {
+                fields.emplace_back(std::make_tuple(list[i].toString(), list[i+1].toString(), list[i+2]));
+            }
+            props.remove("SetupData");
+        }
+        props.remove("SetupKeys");
+        props.remove("SetupDefaults");
+        // Legacy cores (prior to 0.13) don't send the BackendId property
+        if (!props.contains("BackendId"))
+            props["BackendId"] = props["DisplayName"];
+        _backendProperties.emplace_back(std::move(props));
+        _backendFields.emplace_back(std::move(fields));
+
+        // Create widgets
+        ui.backendList->addItem(_backendProperties.back()["DisplayName"].toString(), _backendProperties.back()["BackendId"].toString());
+        ui.descriptionStack->addWidget(createDescriptionBox(_backendProperties.back()["Description"].toString()));
+        ui.storageSettingsStack->addWidget(createFieldBox(tr("Storage Settings"), _backendFields.back()));
     }
 
-    ui.backendList->setCurrentIndex(defaultIndex);
+    // Do some trickery to make the page large enough
+    setSizePolicy({QSizePolicy::Fixed, QSizePolicy::Fixed});
 
-    on_backendList_currentIndexChanged();
+    QSizePolicy sp{QSizePolicy::MinimumExpanding, QSizePolicy::Fixed};
+#if QT_VERSION >= 0x050200
+    sp.setRetainSizeWhenHidden(true);
+#else
+    ui.storageSettingsStack->setVisible(true);  // ugly hack that will show an empty box, but we'll deprecate Qt4 soon anyway
+#endif
+    ui.descriptionStack->setSizePolicy(sp);
+    ui.storageSettingsStack->setSizePolicy(sp);
+
+    ui.descriptionStack->adjustSize();
+    ui.storageSettingsStack->adjustSize();
+
+    ui.backendList->setCurrentIndex(defaultIndex);
 }
 
 
@@ -221,122 +444,34 @@ int StorageSelectionPage::nextId() const
 }
 
 
-QString StorageSelectionPage::selectedBackend() const
+QString StorageSelectionPage::displayName() const
 {
     return ui.backendList->currentText();
 }
 
 
-QVariantMap StorageSelectionPage::connectionProperties() const
+QString StorageSelectionPage::backend() const
 {
-    QString backend = ui.backendList->itemData(ui.backendList->currentIndex()).toString();
-
-    QVariantMap properties;
-    QStringList setupKeys = _backends[backend].toMap()["SetupKeys"].toStringList();
-    if (!setupKeys.isEmpty()) {
-        QVariantMap defaults = _backends[backend].toMap()["SetupDefaults"].toMap();
-        foreach(QString key, setupKeys) {
-            QWidget *widget = _connectionBox->findChild<QWidget *>(key);
-            QVariant def;
-            if (defaults.contains(key)) {
-                def = defaults[key];
-            }
-            switch (def.type()) {
-            case QVariant::Int:
-            {
-                QSpinBox *spinbox = qobject_cast<QSpinBox *>(widget);
-                Q_ASSERT(spinbox);
-                def = QVariant(spinbox->value());
-            }
-            break;
-            default:
-            {
-                QLineEdit *lineEdit = qobject_cast<QLineEdit *>(widget);
-                Q_ASSERT(lineEdit);
-                def = QVariant(lineEdit->text());
-            }
-            }
-            properties[key] = def;
-        }
-    }
-    qDebug() << properties;
-
-//   QVariantMap properties = _backends[backend].toMap()["ConnectionProperties"].toMap();
-//   if(!properties.isEmpty() && _connectionBox) {
-//     QVariantMap::iterator propertyIter = properties.begin();
-//     while(propertyIter != properties.constEnd()) {
-//       QWidget *widget = _connectionBox->findChild<QWidget *>(propertyIter.key());
-//       switch(propertyIter.value().type()) {
-//       case QVariant::Int:
-//      {
-//        QSpinBox *spinbox = qobject_cast<QSpinBox *>(widget);
-//        Q_ASSERT(spinbox);
-//        propertyIter.value() = QVariant(spinbox->value());
-//      }
-//      break;
-//       default:
-//      {
-//        QLineEdit *lineEdit = qobject_cast<QLineEdit *>(widget);
-//        Q_ASSERT(lineEdit);
-//        propertyIter.value() = QVariant(lineEdit->text());
-//      }
-//       }
-//       propertyIter++;
-//     }
-//   }
-    return properties;
+#if QT_VERSION >= 0x050200
+    return ui.backendList->currentData().toString();
+#else
+    return ui.backendList->itemData(ui.backendList->currentIndex()).toString();
+#endif
 }
 
 
-void StorageSelectionPage::on_backendList_currentIndexChanged()
+QVariantMap StorageSelectionPage::backendProperties() const
 {
-    QString backend = ui.backendList->itemData(ui.backendList->currentIndex()).toString();
-    ui.description->setText(_backends[backend].toMap()["Description"].toString());
+    return propertiesFromFieldWidgets(qobject_cast<QGroupBox *>(ui.storageSettingsStack->currentWidget()),
+                                      _backendFields[ui.backendList->currentIndex()]);
+}
 
-    if (_connectionBox) {
-        layout()->removeWidget(_connectionBox);
-        _connectionBox->deleteLater();
-        _connectionBox = 0;
-    }
 
-    QStringList setupKeys = _backends[backend].toMap()["SetupKeys"].toStringList();
-    if (!setupKeys.isEmpty()) {
-        QVariantMap defaults = _backends[backend].toMap()["SetupDefaults"].toMap();
-        QGroupBox *propertyBox = new QGroupBox(this);
-        propertyBox->setTitle(tr("Connection Properties"));
-        QFormLayout *formlayout = new QFormLayout;
-
-        foreach(QString key, setupKeys) {
-            QWidget *widget = 0;
-            QVariant def;
-            if (defaults.contains(key)) {
-                def = defaults[key];
-            }
-            switch (def.type()) {
-            case QVariant::Int:
-            {
-                QSpinBox *spinbox = new QSpinBox(propertyBox);
-                spinbox->setMaximum(64000);
-                spinbox->setValue(def.toInt());
-                widget = spinbox;
-            }
-            break;
-            default:
-            {
-                QLineEdit *lineEdit = new QLineEdit(def.toString(), propertyBox);
-                if (key.toLower().contains("password")) {
-                    lineEdit->setEchoMode(QLineEdit::Password);
-                }
-                widget = lineEdit;
-            }
-            }
-            widget->setObjectName(key);
-            formlayout->addRow(key + ":", widget);
-        }
-        propertyBox->setLayout(formlayout);
-        static_cast<QVBoxLayout *>(layout())->insertWidget(layout()->indexOf(ui.descriptionBox) + 1, propertyBox);
-        _connectionBox = propertyBox;
-    }
+void StorageSelectionPage::on_backendList_currentIndexChanged(int index)
+{
+    ui.descriptionStack->setCurrentIndex(index);
+    ui.storageSettingsStack->setCurrentIndex(index);
+    ui.storageSettingsStack->setVisible(!_backendFields[index].empty());
 }
 
 
@@ -346,35 +481,45 @@ SyncPage::SyncPage(QWidget *parent) : QWizardPage(parent)
 {
     ui.setupUi(this);
     setTitle(tr("Storing Your Settings"));
-    setSubTitle(tr("Your settings are now stored in the core, and you will be logged in automatically."));
+    setSubTitle(tr("Your settings are now being stored in the core, and you will be logged in automatically."));
 }
 
 
 void SyncPage::initializePage()
 {
-    complete = false;
-    hasError = false;
+    _complete = false;
+    _hasError = false;
+    emit completeChanged();
 
+    // Fill in sync info about the storage layer.
     StorageSelectionPage *storagePage = qobject_cast<StorageSelectionPage *>(wizard()->page(CoreConfigWizard::StorageSelectionPage));
-    QString backend = storagePage->selectedBackend();
-    QVariantMap properties = storagePage->connectionProperties();
-    Q_ASSERT(!backend.isEmpty());
+    QString backend = storagePage->backend();
+    QVariantMap backendProperties = storagePage->backendProperties();
+    ui.backend->setText(storagePage->displayName());
+
+    // Fill in sync info about the authentication layer.
+    AuthenticationSelectionPage *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
+    QString authenticator = authPage->authenticator();
+    QVariantMap authProperties = authPage->authProperties();
+    ui.authenticator->setText(authPage->displayName());
+
     ui.user->setText(wizard()->field("adminUser.user").toString());
-    ui.backend->setText(backend);
-    emit setupCore(backend, properties);
+
+    emit setupCore(backend, backendProperties, authenticator, authProperties);
 }
 
 
 int SyncPage::nextId() const
 {
-    if (!hasError) return -1;
+    if (!_hasError)
+        return -1;
     return CoreConfigWizard::SyncRelayPage;
 }
 
 
 bool SyncPage::isComplete() const
 {
-    return complete;
+    return _complete || _hasError;
 }
 
 
@@ -386,13 +531,15 @@ void SyncPage::setStatus(const QString &status)
 
 void SyncPage::setError(bool e)
 {
-    hasError = e;
+    _hasError = e;
+    setFinalPage(!e);
+    emit completeChanged();
 }
 
 
 void SyncPage::setComplete(bool c)
 {
-    complete = c;
+    _complete = c;
     completeChanged();
 }
 
@@ -409,18 +556,6 @@ void SyncRelayPage::setMode(Mode m)
 {
     mode = m;
 }
-
-
-/*
-void SyncRelayPage::initializePage() {
-  return;
-  if(mode == Success) {
-    wizard()->accept();
-  } else {
-    emit startOver();
-  }
-}
-*/
 
 int SyncRelayPage::nextId() const
 {

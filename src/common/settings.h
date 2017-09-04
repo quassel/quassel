@@ -83,6 +83,20 @@ public:
      */
     virtual void setVersionMinor(const uint versionMinor);
 
+    /**
+     * Persist unsaved changes to permanent storage
+     *
+     * @return true if succeeded, false otherwise
+     */
+    bool sync();
+
+    /**
+     * Check if the configuration storage is writable.
+     *
+     * @return true if writable, false otherwise
+     */
+    bool isWritable();
+
 protected:
     inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}
     inline virtual ~Settings() {}

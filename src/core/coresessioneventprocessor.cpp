@@ -415,6 +415,8 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
 
     if (net->isMe(ircuser)) {
         net->setChannelJoined(channel);
+        // Mark the message as Self
+        e->setFlag(EventManager::Self);
         // FIXME use event
         net->putRawLine(net->serverEncode("MODE " + channel)); // we want to know the modes of the channel we just joined, so we ask politely
     }
@@ -540,8 +542,29 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
             ircUser->removeUserModes(removeModes);
 
         if (e->network()->isMe(ircUser)) {
+            // Mark the message as Self
+            e->setFlag(EventManager::Self);
             coreNetwork(e)->updatePersistentModes(addModes, removeModes);
         }
+    }
+}
+
+
+void CoreSessionEventProcessor::processIrcEventNick(IrcEvent *e)
+{
+    if (checkParamCount(e, 1)) {
+        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+        if (!ircuser) {
+            qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
+            return;
+        }
+
+        if (e->network()->isMe(ircuser)) {
+            // Mark the message as Self
+            e->setFlag(EventManager::Self);
+        }
+
+        // Actual processing is handled in lateProcessIrcEventNick(), this just sets the event flag
     }
 }
 
@@ -566,6 +589,25 @@ void CoreSessionEventProcessor::lateProcessIrcEventNick(IrcEvent *e)
 }
 
 
+void CoreSessionEventProcessor::processIrcEventPart(IrcEvent *e)
+{
+    if (checkParamCount(e, 1)) {
+        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+        if (!ircuser) {
+            qWarning() << Q_FUNC_INFO<< "Unknown IrcUser!";
+            return;
+        }
+
+        if (e->network()->isMe(ircuser)) {
+            // Mark the message as Self
+            e->setFlag(EventManager::Self);
+        }
+
+        // Actual processing is handled in lateProcessIrcEventNick(), this just sets the event flag
+    }
+}
+
+
 void CoreSessionEventProcessor::lateProcessIrcEventPart(IrcEvent *e)
 {
     if (checkParamCount(e, 1)) {
@@ -576,8 +618,9 @@ void CoreSessionEventProcessor::lateProcessIrcEventPart(IrcEvent *e)
         }
         QString channel = e->params().at(0);
         ircuser->partChannel(channel);
-        if (e->network()->isMe(ircuser))
+        if (e->network()->isMe(ircuser)) {
             qobject_cast<CoreNetwork *>(e->network())->setChannelParted(channel);
+        }
     }
 }
 
@@ -609,6 +652,11 @@ void CoreSessionEventProcessor::processIrcEventQuit(IrcEvent *e)
     IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
     if (!ircuser)
         return;
+
+    if (e->network()->isMe(ircuser)) {
+        // Mark the message as Self
+        e->setFlag(EventManager::Self);
+    }
 
     QString msg;
     if (e->params().count() > 0)
@@ -655,7 +703,13 @@ void CoreSessionEventProcessor::lateProcessIrcEventQuit(IrcEvent *e)
 void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent *e)
 {
     if (checkParamCount(e, 2)) {
-        e->network()->updateNickFromMask(e->prefix());
+        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+
+        if (e->network()->isMe(ircuser)) {
+            // Mark the message as Self
+            e->setFlag(EventManager::Self);
+        }
+
         IrcChannel *channel = e->network()->ircChannel(e->params().at(0));
         if (channel)
             channel->setTopic(e->params().at(1));

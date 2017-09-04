@@ -5,15 +5,21 @@
 # This relies on all icons being requested using one of the convenience constructors in
 # (K)IconLoader, like this:
 #   widget->setIcon(SmallIcon("fubar"));
-# Additional icons can be specified in extra-icons; you can also blacklist icons.
+# Additional icons can be specified in whitelist-icons; you can also blacklist icons.
 #
-# NOTE: Unless you are a Quassel developer and need to bump the icons we ship, you shouldn'y
+# NOTE: Unless you are a Quassel developer and need to bump the icons we ship, you shouldn't
 #       need to use this script!
 
-# USAGE: ./import/import_theme.pl $systhemefolder $themename
+# USAGE: ./import/import_theme.pl $systhemefolder $themename $parentFolderFileSuffix
 # Run from the icon/ directory.
+#
+# Examples: (being inside the icons folder)
+# ./import/import_theme.pl ~/oxygen-icons oxygen
+# ./import/import_theme.pl ~/breeze-icons/icons breeze ICONS
+# ./import/import_theme.pl ~/breeze-icons/icons-dark breezedark ICONS
 
 use strict;
+use warnings;
 use Data::Dumper;
 use File::Find;
 
@@ -23,14 +29,18 @@ my $source = "../src";
 my $themename = shift;
 $themename = $themename ? $themename : "oxygen";
 my $qrcfile_kde = $themename . ".qrc";
+my $parentFolderFileSuffix = shift;
 
-my $extrafile = "import/extra-icons";
+my $whitelistfile = "import/whitelist-icons";
 my $blacklistfile = "import/blacklisted-icons";
+my $extrafile = "import/extra-icons.qrc." . $themename;
 
 my %req_icons;
 my %found_icons;
 my %blacklist;
-my %extra;
+my %themeblacklist;
+my %whitelist;
+my $extrafilecontent;
 
 # First, load the icon blacklist
 open BLACKLIST, "<$blacklistfile" or die "Could not open $blacklistfile\n";
@@ -48,6 +58,7 @@ if ($hasthemeblacklist) {
     s/#.*//;
     next unless my ($name) = /([-\w]+)\s*/;
     $blacklist{$name} = 1;
+    $themeblacklist{$name} = 1;
   }
   close BLACKLIST;
 } else {
@@ -63,14 +74,27 @@ foreach(@results) {
     unless exists $blacklist{$name};
 }
 
-# Add extra icons
-open EXTRA, "<$extrafile" or die "Could not open $extrafile\n";
-while(<EXTRA>) {
+# Add whitelist icons
+open WHITELIST, "<$whitelistfile" or die "Could not open $whitelistfile\n";
+while(<WHITELIST>) {
   s/#.*//;
   next unless my ($name) = /([-\w]+)\s*/;
-  $req_icons{$name} = 1;
+  $req_icons{$name} = 1
+    unless exists $themeblacklist{$name};
 }
-close EXTRA;
+close WHITELIST;
+
+# Read in extra-icons
+my $hasthemeextrafile = 1;
+local $/;
+open EXTRAFILE, "<$extrafile" or $hasthemeextrafile = 0;
+if($hasthemeextrafile) {
+  binmode EXTRAFILE;
+  $extrafilecontent = <EXTRAFILE>;
+  close EXTRAFILE;
+} else {
+  $extrafilecontent = "";
+}
 
 # Clean old output dir
 print "Removing old $themename...\n";
@@ -114,7 +138,7 @@ closedir BASEDIR;
 if ($scalableFound) {
   foreach my $cat (keys %scalables) {
     system "mkdir -p $themename/scalable/$cat" and die "Could not create category dir\n";
-    foreach my $scalable (keys $scalables{$cat}) {
+    foreach my $scalable (keys %{$scalables{$cat}}) {
       system "cp -aL $themefolder/scalable/$cat/$scalable.svgz $themename/scalable/$cat/$scalable.svgz";
     }
   }
@@ -127,11 +151,15 @@ foreach my $icon (keys %req_icons) {
 }
 
 # Copy license etc.
-system "cp $themefolder/AUTHORS $themefolder/CONTRIBUTING $themefolder/COPYING $themefolder/index.theme $themename/";
+system "cp $themefolder/AUTHORS $themefolder/CONTRIBUTING $themefolder/COPYING* $themefolder/index.theme $themename/";
+
+if($parentFolderFileSuffix) {
+	system "cp $themefolder/../AUTHORS*$parentFolderFileSuffix $themefolder/../CONTRIBUTING*$parentFolderFileSuffix $themefolder/../COPYING*$parentFolderFileSuffix $themename/";
+}
 
 # Generate .qrc
 my @file_list;
-generate_qrc($themename, $qrcfile_kde);
+generate_qrc($themename, $qrcfile_kde, $extrafilecontent);
 
 print "Done.\n";
 
@@ -142,11 +170,13 @@ sub generate_qrc {
 
   @file_list = ();
   find(\&push_icon_path, $dir);
+  @file_list = sort(@file_list );
   my $files = join "\n", @file_list;
 
   my $qrc = "<RCC>\n"
            ."  <qresource prefix=\"/icons\">\n"
            ."$files\n"
+           ."$extrafilecontent\n"
            ."  </qresource>\n"
            ."</RCC>\n";
 

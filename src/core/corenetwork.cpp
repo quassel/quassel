@@ -214,12 +214,16 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     }
     else if (_previousConnectionAttemptFailed) {
         // cycle to next server if previous connection attempt failed
+        _previousConnectionAttemptFailed = false;
         displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Connection failed. Cycling to next Server"));
         if (++_lastUsedServerIndex >= serverList().size()) {
             _lastUsedServerIndex = 0;
         }
     }
-    _previousConnectionAttemptFailed = false;
+    else {
+        // Start out with the top server in the list
+        _lastUsedServerIndex = 0;
+    }
 
     Server server = usedServer();
     displayStatusMsg(tr("Connecting to %1:%2...").arg(server.host).arg(server.port));
@@ -656,8 +660,11 @@ void CoreNetwork::networkInitialized()
 
     // restore away state
     QString awayMsg = Core::awayMessage(userId(), networkId());
-    if (!awayMsg.isEmpty())
-        userInputHandler()->handleAway(BufferInfo(), Core::awayMessage(userId(), networkId()));
+    if (!awayMsg.isEmpty()) {
+        // Don't re-apply any timestamp formatting in order to preserve escaped percent signs, e.g.
+        // '%%%%%%%%' -> '%%%%'  If processed again, it'd result in '%%'.
+        userInputHandler()->handleAway(BufferInfo(), awayMsg, true);
+    }
 
     sendPerform();
 
@@ -1053,7 +1060,7 @@ void CoreNetwork::serverCapAcknowledged(const QString &capability)
         // FIXME use event
 #ifdef HAVE_SSL
         if (!identityPtr()->sslCert().isNull()) {
-            if (IrcCap::SaslMech::maybeSupported(capValue(IrcCap::SASL), IrcCap::SaslMech::EXTERNAL)) {
+            if (saslMaybeSupports(IrcCap::SaslMech::EXTERNAL)) {
                 // EXTERNAL authentication supported, send request
                 putRawLine(serverEncode("AUTHENTICATE EXTERNAL"));
             } else {
@@ -1063,7 +1070,7 @@ void CoreNetwork::serverCapAcknowledged(const QString &capability)
             }
         } else {
 #endif
-            if (IrcCap::SaslMech::maybeSupported(capValue(IrcCap::SASL), IrcCap::SaslMech::PLAIN)) {
+            if (saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
                 // PLAIN authentication supported, send request
                 // Only working with PLAIN atm, blowfish later
                 putRawLine(serverEncode("AUTHENTICATE PLAIN"));

@@ -85,6 +85,52 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     ui.sslCertGroupBox->setAcceptDrops(true);
     ui.sslCertGroupBox->installEventFilter(this);
 #endif
+
+    if (Client::coreFeatures() & Quassel::AwayFormatTimestamp) {
+        // Core allows formatting %%timestamp%% messages in away strings.  Update tooltips.
+        QString strFormatTooltip;
+        QTextStream formatTooltip( &strFormatTooltip, QIODevice::WriteOnly );
+        formatTooltip << "<qt><style>.bold { font-weight: bold; } "
+                         ".italic { font-style: italic; }</style>";
+
+        // Function to add a row to the tooltip table
+        auto addRow = [&](const QString& key, const QString& value, bool condition) {
+            if (condition) {
+                formatTooltip << "<tr><td class='bold' align='right'>"
+                        << key << "</td><td>" << value << "</td></tr>";
+            }
+        };
+
+        // Original tooltip goes here
+        formatTooltip << "<p>%1</p>";
+        // New timestamp formatting guide here
+        formatTooltip << "<p>" << tr("You can add date/time to this message "
+                               "using the syntax: "
+                               "<br/>%%<span class='italic'>&lt;format&gt;</span>%%, where "
+                               "<span class='italic'>&lt;format&gt;</span> is:") << "</p>";
+        formatTooltip << "<table cellspacing='5' cellpadding='0'>";
+        addRow("hh", tr("the hour"), true);
+        addRow("mm", tr("the minutes"), true);
+        addRow("ss", tr("seconds"), true);
+        addRow("AP", tr("AM/PM"), true);
+        addRow("dd", tr("day"), true);
+        addRow("MM", tr("month"), true);
+#if QT_VERSION > 0x050000
+        // Alas, this was only added in Qt 5.  We don't know what version the core has, just hope
+        // for the best (Qt 4 will soon be dropped).
+        addRow("t", tr("current timezone"), true);
+#endif
+        formatTooltip << "</table>";
+        formatTooltip << "<p>" << tr("Example: Away since %%hh:mm%% on %%dd.MM%%.") << "</p>";
+        formatTooltip << "<p>" << tr("%%%% without anything inside represents %%.  Other format "
+                                     "codes are available.") << "</p>";
+        formatTooltip << "</qt>";
+
+        // Split up the message to allow re-using translations:
+        // [Original tool-tip]  [Timestamp format message]
+        ui.awayReason->setToolTip(strFormatTooltip.arg(ui.awayReason->toolTip()));
+        ui.detachAwayEnabled->setToolTip(strFormatTooltip.arg(ui.detachAwayEnabled->toolTip()));
+    } // else: Do nothing, leave the original translated string
 }
 
 
