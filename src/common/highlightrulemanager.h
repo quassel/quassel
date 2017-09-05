@@ -23,6 +23,7 @@
 
 #include <QString>
 #include <QRegExp>
+#include <utility>
 
 #include "message.h"
 #include "syncableobject.h"
@@ -47,12 +48,13 @@ public:
         bool isCaseSensitive = false;
         bool isEnabled = true;
         bool isInverse = false;
+        QString sender;
         QString chanName;
         HighlightRule() {}
-        HighlightRule(const QString &name_, bool isRegEx_, bool isCaseSensitive_,
-                       bool isEnabled_, bool isInverse_, const QString &chanName_)
-            : name(name_), isRegEx(isRegEx_), isCaseSensitive(isCaseSensitive_), isEnabled(isEnabled_),
-              isInverse(isInverse_), chanName(chanName_) {
+        HighlightRule(QString name_, bool isRegEx_, bool isCaseSensitive_, bool isEnabled_, bool isInverse_,
+                      QString sender_, QString chanName_)
+            : name(std::move(name_)), isRegEx(isRegEx_), isCaseSensitive(isCaseSensitive_), isEnabled(isEnabled_),
+              isInverse(isInverse_), sender(std::move(sender_)), chanName(std::move(chanName_)) {
         }
         bool operator!=(const HighlightRule &other)
         {
@@ -61,6 +63,7 @@ public:
                     isCaseSensitive != other.isCaseSensitive ||
                     isEnabled != other.isEnabled ||
                     isInverse != other.isInverse ||
+                    sender != other.sender ||
                     chanName != other.chanName);
         }
     };
@@ -114,14 +117,14 @@ public slots:
       * @param chanName The channel in which the rule should apply
       */
     virtual inline void requestAddHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive, bool isEnabled,
-                                                bool isInverse, const QString &chanName)
+                                                bool isInverse, const QString &sender, const QString &chanName)
     {
-        REQUEST(ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isEnabled), ARG(isInverse), ARG(chanName))
+        REQUEST(ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isEnabled), ARG(isInverse), ARG(sender), ARG(chanName))
     }
 
 
-    virtual void addHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive,
-                                  bool isEnabled, bool isInverse, const QString &chanName);
+    virtual void addHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive, bool isEnabled,
+                                  bool isInverse, const QString &sender, const QString &chanName);
 
     virtual inline void requestSetHighlightNick(HighlightNickType highlightNick)
     {
@@ -141,7 +144,7 @@ protected:
     bool _match(const QString &msgContents, const QString &msgSender, Message::Type msgType, Message::Flags msgFlags, const QString &bufferName, const QString &currentNick, const QStringList identityNicks);
 
 signals:
-    void ruleAdded(QString name, bool isRegEx, bool isCaseSensitive, bool isEnabled, bool isInverse, QString chanName);
+    void ruleAdded(QString name, bool isRegEx, bool isCaseSensitive, bool isEnabled, bool isInverse, QString sender, QString chanName);
 
 private:
     HighlightRuleList _highlightRuleList;

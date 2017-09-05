@@ -107,7 +107,8 @@ void CoreHighlightSettingsPage::defaults()
 }
 
 
-void CoreHighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool enable, bool inverse, QString chanName, bool self)
+void CoreHighlightSettingsPage::addNewRow(const QString &name, bool regex, bool cs, bool enable, bool inverse, const QString &sender,
+                                          const QString &chanName, bool self)
 {
     ui.highlightTable->setRowCount(ui.highlightTable->rowCount()+1);
 
@@ -143,18 +144,21 @@ void CoreHighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, boo
 
     auto *chanNameItem = new QTableWidgetItem(chanName);
 
+    auto *senderItem = new QTableWidgetItem(sender);
+
     int lastRow = ui.highlightTable->rowCount()-1;
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::NameColumn, nameItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::RegExColumn, regexItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::CsColumn, csItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::EnableColumn, enableItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::InverseColumn, inverseItem);
+    ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::SenderColumn, senderItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::ChanColumn, chanNameItem);
 
     if (!self)
         ui.highlightTable->setCurrentItem(nameItem);
 
-    highlightList << HighlightRuleManager::HighlightRule(name, regex, cs, enable, inverse, chanName);
+    highlightList << HighlightRuleManager::HighlightRule(name, regex, cs, enable, inverse, sender, chanName);
 }
 
 
@@ -227,6 +231,11 @@ void CoreHighlightSettingsPage::tableChanged(QTableWidgetItem *item)
     case CoreHighlightSettingsPage::InverseColumn:
         highlightRule.isInverse = (item->checkState() == Qt::Checked);
         break;
+        case CoreHighlightSettingsPage::SenderColumn:
+            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+                item->setText("");
+            highlightRule.sender = item->text();
+            break;
     case CoreHighlightSettingsPage::ChanColumn:
         if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
             item->setText("");
@@ -244,7 +253,7 @@ void CoreHighlightSettingsPage::load()
 
     auto ruleManager = Client::highlightRuleManager();
     for (HighlightRuleManager::HighlightRule rule : ruleManager->highlightRuleList()) {
-        addNewRow(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, rule.isInverse, rule.chanName);
+        addNewRow(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, rule.isInverse, rule.sender, rule.chanName);
     }
 
     switch (ruleManager->highlightNick())
@@ -282,7 +291,8 @@ void CoreHighlightSettingsPage::save()
     clonedManager.clear();
 
     for (const HighlightRuleManager::HighlightRule &rule : highlightList) {
-        clonedManager.addHighlightRule(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, rule.isInverse, rule.chanName);
+        clonedManager.addHighlightRule(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, rule.isInverse,
+                                       rule.sender, rule.chanName);
     }
 
     HighlightRuleManager::HighlightNickType highlightNickType = HighlightRuleManager::NoNick;
