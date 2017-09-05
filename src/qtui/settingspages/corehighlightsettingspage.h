@@ -47,7 +47,8 @@ public slots:
 
 private slots:
     void widgetHasChanged();
-    void addNewRow(QString name = tr("highlight rule"), bool regex = false, bool cs = false, bool enable = true, bool inverse = false, QString chanName = "", bool self = false);
+    void addNewRow(const QString &name = tr("highlight rule"), bool regex = false, bool cs = false, bool enable = true,
+                   bool inverse = false, const QString &sender = "", const QString &chanName = "", bool self = false);
     void removeSelectedRows();
     void selectRow(QTableWidgetItem *item);
     void tableChanged(QTableWidgetItem *item);
@@ -61,8 +62,9 @@ private:
         CsColumn = 2,
         EnableColumn = 3,
         InverseColumn = 4,
-        ChanColumn = 5,
-        ColumnCount = 6
+        SenderColumn = 5,
+        ChanColumn = 6,
+        ColumnCount = 7
     };
 
     void emptyTable();
