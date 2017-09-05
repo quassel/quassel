@@ -21,6 +21,7 @@
 #include <QDesktopServices>
 #include <QModelIndex>
 #include <QUrl>
+#include <regex>
 
 #include "buffermodel.h"
 #include "clickable.h"
@@ -57,6 +58,7 @@ ClickableList ClickableList::fromString(const QString &str)
     static QString authority("(?:(?:[,.;@:]?[-\\w]+)+\\.?|\\[[0-9a-f:.]+\\])(?::\\d+)?");
     static QString urlChars("(?:[,.;:]*[\\w~@/?&=+$()!%#*-])");
     static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");
+    static QString regex_replace(QString, regex("'"), "%27"); // single quote "'" to %27
 
     static QRegExp regExp[] = {
         // URL
