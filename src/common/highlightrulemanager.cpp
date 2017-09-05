@@ -56,6 +56,7 @@ QVariantMap HighlightRuleManager::initHighlightRuleList() const
     QVariantList isRegEx;
     QVariantList isCaseSensitive;
     QVariantList isActive;
+    QVariantList isInverse;
     QStringList channel;
 
     for (int i = 0; i < _highlightRuleList.count(); i++) {
@@ -63,6 +64,7 @@ QVariantMap HighlightRuleManager::initHighlightRuleList() const
         isRegEx << _highlightRuleList[i].isRegEx;
         isCaseSensitive << _highlightRuleList[i].isCaseSensitive;
         isActive << _highlightRuleList[i].isEnabled;
+        isInverse << _highlightRuleList[i].isInverse;
         channel << _highlightRuleList[i].chanName;
     }
 
@@ -70,6 +72,7 @@ QVariantMap HighlightRuleManager::initHighlightRuleList() const
     highlightRuleListMap["isRegEx"] = isRegEx;
     highlightRuleListMap["isCaseSensitive"] = isCaseSensitive;
     highlightRuleListMap["isEnabled"] = isActive;
+    highlightRuleListMap["isInverse"] = isInverse;
     highlightRuleListMap["channel"] = channel;
     highlightRuleListMap["highlightNick"] = _highlightNick;
     highlightRuleListMap["nicksCaseSensitive"] = _nicksCaseSensitive;
@@ -83,6 +86,7 @@ void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlight
     QVariantList isRegEx = highlightRuleList["isRegEx"].toList();
     QVariantList isCaseSensitive = highlightRuleList["isCaseSensitive"].toList();
     QVariantList isActive = highlightRuleList["isEnabled"].toList();
+    QVariantList isInverse = highlightRuleList["isInverse"].toList();
     QStringList channel = highlightRuleList["channel"].toStringList();
 
     int count = name.count();
@@ -95,23 +99,23 @@ void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlight
     _highlightRuleList.clear();
     for (int i = 0; i < name.count(); i++) {
         _highlightRuleList << HighlightRule(name[i], isRegEx[i].toBool(), isCaseSensitive[i].toBool(),
-                                            isActive[i].toBool(), channel[i]);
+                                            isActive[i].toBool(), isInverse[i].toBool(), channel[i]);
     }
     _highlightNick = HighlightNickType(highlightRuleList["highlightNick"].toInt());
     _nicksCaseSensitive = highlightRuleList["nicksCaseSensitive"].toBool();
 }
 
 void HighlightRuleManager::addHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive, bool isActive,
-                                            const QString &channel)
+                                            bool isInverse, const QString &channel)
 {
     if (contains(name)) {
         return;
     }
 
-    HighlightRule newItem = HighlightRule(name, isRegEx, isCaseSensitive, isActive, channel);
+    HighlightRule newItem = HighlightRule(name, isRegEx, isCaseSensitive, isActive, isInverse, channel);
     _highlightRuleList << newItem;
 
-    SYNC(ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isActive), ARG(channel))
+    SYNC(ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isActive), ARG(isInverse), ARG(channel))
 }
 
 
@@ -120,6 +124,47 @@ bool HighlightRuleManager::_match(const QString &msgContents, const QString &msg
     if (!((msgType & (Message::Plain | Message::Notice | Message::Action)) && !(msgFlags & Message::Self))) {
        return false;
     }
+
+    bool matches = false;
+
+    for (int i = 0; i < _highlightRuleList.count(); i++) {
+        const HighlightRule &rule = _highlightRuleList.at(i);
+        if (!rule.isEnabled)
+            continue;
+
+        if (rule.chanName.size() > 0 && rule.chanName.compare(".*") != 0) {
+            if (rule.chanName.startsWith("!")) {
+                QRegExp rx(rule.chanName.mid(1), Qt::CaseInsensitive);
+                if (rx.exactMatch(bufferName))
+                    continue;
+            }
+            else {
+                QRegExp rx(rule.chanName, Qt::CaseInsensitive);
+                if (!rx.exactMatch(bufferName))
+                    continue;
+            }
+        }
+
+        QRegExp rx;
+        if (rule.isRegEx) {
+            rx = QRegExp(rule.name, rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+        }
+        else {
+            rx = QRegExp("(^|\\W)" + QRegExp::escape(rule.name) + "(\\W|$)", rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+        }
+        bool match = (rx.indexIn(stripFormatCodes(msgContents)) >= 0);
+        if (match) {
+            // If an inverse rule matches, then we know that we never want to return a highlight.
+            if (rule.isInverse) {
+                return false;
+            } else {
+                matches = true;
+            }
+        }
+    }
+
+    if (matches)
+        return true;
 
     if (!currentNick.isEmpty()) {
         QStringList nickList;
@@ -131,40 +176,10 @@ bool HighlightRuleManager::_match(const QString &msgContents, const QString &msg
             if (!nickList.contains(currentNick))
                 nickList.prepend(currentNick);
         }
-            foreach(QString nickname, nickList) {
-                QRegExp nickRegExp("(^|\\W)" + QRegExp::escape(nickname) + "(\\W|$)", _nicksCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-                if (nickRegExp.indexIn(stripFormatCodes(msgContents)) >= 0) {
-                    return true;
-                }
-            }
 
-        for (int i = 0; i < _highlightRuleList.count(); i++) {
-            const HighlightRule &rule = _highlightRuleList.at(i);
-            if (!rule.isEnabled)
-                continue;
-
-            if (rule.chanName.size() > 0 && rule.chanName.compare(".*") != 0) {
-                if (rule.chanName.startsWith("!")) {
-                    QRegExp rx(rule.chanName.mid(1), Qt::CaseInsensitive);
-                    if (rx.exactMatch(bufferName))
-                        continue;
-                }
-                else {
-                    QRegExp rx(rule.chanName, Qt::CaseInsensitive);
-                    if (!rx.exactMatch(bufferName))
-                        continue;
-                }
-            }
-
-            QRegExp rx;
-            if (rule.isRegEx) {
-                rx = QRegExp(rule.name, rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-            }
-            else {
-                rx = QRegExp("(^|\\W)" + QRegExp::escape(rule.name) + "(\\W|$)", rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-            }
-            bool match = (rx.indexIn(stripFormatCodes(msgContents)) >= 0);
-            if (match) {
+        for(const QString &nickname : nickList) {
+            QRegExp nickRegExp("(^|\\W)" + QRegExp::escape(nickname) + "(\\W|$)", _nicksCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+            if (nickRegExp.indexIn(stripFormatCodes(msgContents)) >= 0) {
                 return true;
             }
         }

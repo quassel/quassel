@@ -41,9 +41,9 @@ public slots:
     virtual inline void requestToggleHighlightRule(const QString &highlightRule) { toggleHighlightRule(highlightRule); }
     virtual inline void requestRemoveHighlightRule(const QString &highlightRule) { removeHighlightRule(highlightRule); }
     virtual inline void requestAddHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive,
-                                                 bool isEnabled, const QString &chanName)
+                                                 bool isEnabled, bool isInverse, const QString &chanName)
     {
-        addHighlightRule(name, isRegEx, isCaseSensitive, isEnabled, chanName);
+        addHighlightRule(name, isRegEx, isCaseSensitive, isEnabled, isInverse, chanName);
     }
 
 
