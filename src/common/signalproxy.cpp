@@ -844,6 +844,7 @@ QVariantList SignalProxy::peerData() {
         data["remoteAddress"] = peer->address();
         data["connectedSince"] = peer->_connectedSince;
         data["secure"] = peer->isSecure();
+        data["features"] = (int32_t) peer->_features;
         result << data;
     }
     return result;
