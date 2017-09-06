@@ -23,8 +23,10 @@
 
 #include <QEvent>
 #include <QSet>
+#include <QtCore/QThreadStorage>
 
 #include <functional>
+#include <memory>
 
 #include "protocol.h"
 
@@ -80,6 +82,10 @@ public:
     void dumpProxyStats();
     void dumpSyncMap(SyncableObject *object);
 
+    static SignalProxy *current() {
+        return _current;
+    }
+
     /**@{*/
     /**
      * This method allows to send a signal only to a limited set of peers
@@ -111,7 +117,8 @@ public:
     /**
      * @return If handling a signal, the Peer from which the current signal originates
      */
-    Peer *sourcePeer() { return _sourcePeer; }
+    Peer *_sourcePeer;
+    Peer *_targetPeer;
 
 public slots:
     void detachObject(QObject *obj);
@@ -206,7 +213,7 @@ private:
     QSet<Peer *> _restrictedTargets;
     bool _restrictMessageTarget = false;
 
-    Peer *_sourcePeer;
+    thread_local static SignalProxy *_current;
 
     friend class SignalRelay;
     friend class SyncableObject;

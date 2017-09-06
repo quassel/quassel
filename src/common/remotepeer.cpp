@@ -208,8 +208,15 @@ void RemotePeer::close(const QString &reason)
 void RemotePeer::onReadyRead()
 {
     QByteArray msg;
-    while (readMessage(msg))
+    while (readMessage(msg)) {
+        if (SignalProxy::current())
+            SignalProxy::current()->_sourcePeer = this;
+
         processMessage(msg);
+
+        if (SignalProxy::current())
+            SignalProxy::current()->_sourcePeer = nullptr;
+    }
 }
 
 

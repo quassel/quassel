@@ -718,7 +718,7 @@ void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QS
     if (uid.isValid() && uid == user())
         success = Core::changeUserPassword(uid, newPassword);
 
-    signalProxy()->restrictTargetPeers(signalProxy()->sourcePeer(), [&]{
+    signalProxy()->restrictTargetPeers(signalProxy()->_sourcePeer, [&]{
         emit passwordChanged(nullptr, success);
     });
 }

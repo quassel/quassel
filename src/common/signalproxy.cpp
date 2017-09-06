@@ -221,6 +221,7 @@ void SignalProxy::setProxyMode(ProxyMode mode)
         initClient();
 }
 
+thread_local SignalProxy *SignalProxy::_current = nullptr;
 
 void SignalProxy::init()
 {
@@ -230,6 +231,7 @@ void SignalProxy::init()
     setHeartBeatInterval(30);
     setMaxHeartBeatCount(2);
     _secure = false;
+    _current = this;
     updateSecureState();
 }
 
@@ -515,22 +517,29 @@ void SignalProxy::stopSynchronize(SyncableObject *obj)
 template<class T>
 void SignalProxy::dispatch(const T &protoMessage)
 {
-    foreach (Peer *peer, _peers) {
+    for (Peer *peer : _peers) {
+        _targetPeer = peer;
+
         if (peer->isOpen())
             peer->dispatch(protoMessage);
         else
             QCoreApplication::postEvent(this, new ::RemovePeerEvent(peer));
     }
+    _targetPeer = nullptr;
 }
 
 
 template<class T>
 void SignalProxy::dispatch(Peer *peer, const T &protoMessage)
 {
+    _targetPeer = peer;
+
     if (peer && peer->isOpen())
         peer->dispatch(protoMessage);
     else
         QCoreApplication::postEvent(this, new ::RemovePeerEvent(peer));
+
+    _targetPeer = nullptr;
 }
 
 
@@ -573,7 +582,9 @@ void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
         if (eMeta->argTypes(receiverId).count() > 1)
             returnParams << syncMessage.params;
         returnParams << returnValue;
+        _targetPeer = peer;
         peer->dispatch(SyncMessage(syncMessage.className, syncMessage.objectName, eMeta->methodName(receiverId), returnParams));
+        _targetPeer = nullptr;
     }
 
     // send emit update signal
@@ -596,7 +607,9 @@ void SignalProxy::handle(Peer *peer, const InitRequest &initRequest)
     }
 
     SyncableObject *obj = _syncSlave[initRequest.className][initRequest.objectName];
+    _targetPeer = peer;
     peer->dispatch(InitData(initRequest.className, initRequest.objectName, initData(obj)));
+    _targetPeer = nullptr;
 }
 
 

@@ -28,6 +28,7 @@
 #include "authhandler.h"
 #include "protocol.h"
 #include "signalproxy.h"
+#include "quassel.h"
 
 class Peer : public QObject
 {
@@ -58,6 +59,7 @@ public:
     QDateTime _connectedSince;
     QString _buildDate;
     QString _clientVersion;
+    Quassel::Features _features;
 
 public slots:
     /* Handshake messages */
@@ -106,7 +108,7 @@ template<typename T> inline
 void Peer::handle(const T &protoMessage)
 {
     switch(protoMessage.handler()) {
-        case Protocol::SignalProxy:
+        case Protocol::Handler::SignalProxy:
             if (!signalProxy()) {
                 qWarning() << Q_FUNC_INFO << "Cannot handle message without a SignalProxy!";
                 return;
@@ -114,7 +116,7 @@ void Peer::handle(const T &protoMessage)
             signalProxy()->handle(this, protoMessage);
             break;
 
-        case Protocol::AuthHandler:
+        case Protocol::Handler::AuthHandler:
             if (!authHandler()) {
                 qWarning() << Q_FUNC_INFO << "Cannot handle auth messages without an active AuthHandler!";
                 return;

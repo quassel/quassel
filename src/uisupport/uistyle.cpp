@@ -911,12 +911,12 @@ QString UiStyle::StyledMessage::decoratedSender() const
     switch (type()) {
     case Message::Plain:
         if (_showSenderBrackets)
-            return QString("<%1>").arg(plainSender());
+            return QString("<%1%2>").arg(senderPrefixes(), plainSender());
         else
-            return QString("%1").arg(plainSender());
+            return QString("%1%2").arg(senderPrefixes(), plainSender());
         break;
     case Message::Notice:
-        return QString("[%1]").arg(plainSender()); break;
+        return QString("[%1%2]").arg(senderPrefixes(), plainSender()); break;
     case Message::Action:
         return "-*-"; break;
     case Message::Nick:
@@ -950,7 +950,7 @@ QString UiStyle::StyledMessage::decoratedSender() const
     case Message::Invite:
         return "->"; break;
     default:
-        return QString("%1").arg(plainSender());
+        return QString("%1%2").arg(senderPrefixes(), plainSender());
     }
 }
 

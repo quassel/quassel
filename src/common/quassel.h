@@ -58,8 +58,8 @@ public:
         QString organizationDomain;
     };
 
-    //! A list of features that are optional in core and/or client, but need runtime checking
-    /** Some features require an uptodate counterpart, but don't justify a protocol break.
+    //! A list of features that are optional in core, but need runtime checking
+    /** Some features require an up-to-date counterpart, but don't justify a protocol break.
      *  This is what we use this enum for. Add such features to it and check at runtime on the other
      *  side for their existence.
      *
@@ -79,7 +79,9 @@ public:
         // Whether or not the core supports auth backends.
         Authenticators = 0x0400,
 
-        NumFeatures = 0x0400
+        SenderPrefixes = 0x1000,
+
+        NumFeatures = 0x1000
     };
     Q_DECLARE_FLAGS(Features, Feature)
 

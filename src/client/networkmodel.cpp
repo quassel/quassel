@@ -395,7 +395,7 @@ void BufferItem::setLastSeenMsgId(MsgId msgId)
     _lastSeenMsgId = msgId;
 
     // FIXME remove with core protocol v11
-    if (!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
+    if (!(Client::coreFeatures() & Quassel::Feature::SynchronizedMarkerLine)) {
         if (!isCurrentBuffer())
             _markerLineMsgId = msgId;
     }

@@ -18,11 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <iostream>
 #include "message.h"
 
-#include "util.h"
-
-#include <QDataStream>
+#include "signalproxy.h"
+#include "peer.h"
 
 Message::Message(const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, const QString &senderPrefixes, Flags flags)
     : _timestamp(QDateTime::currentDateTime().toUTC()),
@@ -51,8 +51,17 @@ Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, c
 QDataStream &operator<<(QDataStream &out, const Message &msg)
 {
     // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
-    out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
-    << msg.bufferInfo() << msg.sender().toUtf8() << msg.contents().toUtf8();
+    out << msg.msgId();
+    out << (quint32)msg.timestamp().toTime_t();
+    out << (quint32)msg.type();
+    out << (quint8)msg.flags();
+    out << msg.bufferInfo();
+    out << msg.sender().toUtf8();
+
+    if (SignalProxy::current()->_targetPeer->_features.testFlag(Quassel::Feature::SenderPrefixes))
+        out << msg.senderPrefixes().toUtf8();
+
+    out << msg.contents().toUtf8();
     return out;
 }
 
@@ -62,16 +71,26 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
     quint8 f;
     quint32 t;
     quint32 ts;
-    QByteArray s, m;
+    QByteArray s, p, m;
     BufferInfo buf;
-    in >> msg._msgId >> ts >> t >> f >> buf >> s >> m;
+    in >> msg._msgId;
+    in >> ts;
+    in >> t;
+    in >> f;
+    in >> buf;
+    in >> s;
+
+    // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
+    if (SignalProxy::current()->_sourcePeer->_features.testFlag(Quassel::Feature::SenderPrefixes))
+        in >> p;
+
+    in >> m;
     msg._type = (Message::Type)t;
     msg._flags = (Message::Flags)f;
     msg._bufferInfo = buf;
     msg._timestamp = QDateTime::fromTime_t(ts);
     msg._sender = QString::fromUtf8(s);
-    // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
-    msg._senderPrefixes = QString("");
+    msg._senderPrefixes = QString::fromUtf8(p);
     msg._contents = QString::fromUtf8(m);
     return in;
 }

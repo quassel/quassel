@@ -185,6 +185,7 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
 
     _peer->_buildDate = msg.buildDate;
     _peer->_clientVersion = msg.clientVersion;
+    _peer->_features = Quassel::Features(msg.clientFeatures);
 
     if (_legacy && useSsl)
         startSsl();
