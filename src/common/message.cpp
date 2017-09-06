@@ -58,7 +58,7 @@ QDataStream &operator<<(QDataStream &out, const Message &msg)
     out << msg.bufferInfo();
     out << msg.sender().toUtf8();
 
-    if (SignalProxy::current()->_targetPeer->_features.testFlag(Quassel::Feature::SenderPrefixes))
+    if (SignalProxy::current()->_targetPeer->_features.testFlag(Quassel::Feature::ClientFeatures))
         out << msg.senderPrefixes().toUtf8();
 
     out << msg.contents().toUtf8();
@@ -81,7 +81,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
     in >> s;
 
     // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
-    if (SignalProxy::current()->_sourcePeer->_features.testFlag(Quassel::Feature::SenderPrefixes))
+    if (SignalProxy::current()->_sourcePeer->_features.testFlag(Quassel::Feature::ClientFeatures))
         in >> p;
 
     in >> m;
