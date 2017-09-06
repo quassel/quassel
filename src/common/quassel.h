@@ -79,7 +79,8 @@ public:
         // Whether or not the core supports auth backends.
         Authenticators = 0x0400,
 
-        SenderPrefixes = 0x1000,
+        SenderPrefixes = 0x1000,           /// Indicates that this peer supports sender-prefixes, client-dependent
+                                           /// serialization, and being disconnected remotely (to save flags)
 
         NumFeatures = 0x1000
     };
