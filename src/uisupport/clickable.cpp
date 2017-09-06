@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2015 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,7 @@
 #include <QDesktopServices>
 #include <QModelIndex>
 #include <QUrl>
+#include <QRegExp>
 
 #include "buffermodel.h"
 #include "clickable.h"
@@ -57,6 +58,8 @@ ClickableList ClickableList::fromString(const QString &str)
     static QString authority("(?:(?:[,.;@:]?[-\\w]+)+\\.?|\\[[0-9a-f:.]+\\])(?::\\d+)?");
     static QString urlChars("(?:[,.;:]*[\\w~@/?&=+$()!%#*-])");
     static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");
+    QRegExp rx("'");
+    str.replace(rx, "%27");
 
     static QRegExp regExp[] = {
         // URL
