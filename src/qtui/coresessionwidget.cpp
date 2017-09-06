@@ -46,6 +46,9 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.labelLocation->hide();
         ui.labelLocationTitle->hide();
     }
+    if (!Quassel::Features(map["features"].toInt()).testFlag(Quassel::Feature::ClientFeatures)) {
+        ui.disconnectButton->hide();
+    }
 
     bool success = false;
     _peerId = map["id"].toInt(&success);
