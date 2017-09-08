@@ -364,7 +364,7 @@ void BufferItem::setActivity(Message::Types type, bool highlight) {
 bool BufferItem::addActivity(Message::Types type, bool highlight) {
     auto oldActivity = activityLevel();
 
-    if (type != 0)
+    if (type != Message::Types())
         _activity |= BufferInfo::OtherActivity;
 
     if (type.testFlag(Message::Plain) || type.testFlag(Message::Notice) || type.testFlag(Message::Action))
