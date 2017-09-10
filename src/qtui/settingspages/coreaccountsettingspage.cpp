@@ -294,6 +294,13 @@ CoreAccountEditDlg::CoreAccountEditDlg(const CoreAccount &acct, QWidget *parent)
 
 CoreAccount CoreAccountEditDlg::account()
 {
+    _account.setAccountName(ui.accountName->text().trimmed());
+    _account.setHostName(ui.hostName->text().trimmed());
+    _account.setPort(ui.port->value());
+    _account.setUser(ui.user->text().trimmed());
+    _account.setPassword(ui.password->text());
+    _account.setStorePassword(ui.rememberPassword->isChecked());
+
     QNetworkProxy::ProxyType proxyType = QNetworkProxy::NoProxy;
     int checkedId = ui.buttonGroupProxyType->checkedId();
 
@@ -310,12 +317,6 @@ CoreAccount CoreAccountEditDlg::account()
         proxyType = ui.proxyType->currentIndex() == 0 ?
                     QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
         QNetworkProxyFactory::setUseSystemConfiguration(false);
-        _account.setAccountName(ui.accountName->text().trimmed());
-        _account.setHostName(ui.hostName->text().trimmed());
-        _account.setPort(ui.port->value());
-        _account.setUser(ui.user->text().trimmed());
-        _account.setPassword(ui.password->text());
-        _account.setStorePassword(ui.rememberPassword->isChecked());
         _account.setProxyHostName(ui.proxyHostName->text().trimmed());
         _account.setProxyPort(ui.proxyPort->value());
         _account.setProxyType(proxyType);
