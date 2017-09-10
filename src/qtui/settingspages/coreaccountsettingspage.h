@@ -21,8 +21,8 @@
 #ifndef COREACCOUNTSETTINGSPAGE_H_
 #define COREACCOUNTSETTINGSPAGE_H_
 
-#include <QSortFilterProxyModel>
 #include <QNetworkProxy>
+#include <QSortFilterProxyModel>
 
 #include "settingspage.h"
 
