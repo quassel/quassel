@@ -160,6 +160,8 @@ void BufferSyncer::removeBuffer(BufferId buffer)
         _lastSeenMsg.remove(buffer);
     if (_markerLines.contains(buffer))
         _markerLines.remove(buffer);
+    if (_bufferActivities.contains(buffer))
+        _bufferActivities.remove(buffer);
     SYNC(ARG(buffer))
     emit bufferRemoved(buffer);
 }
@@ -171,6 +173,8 @@ void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2)
         _lastSeenMsg.remove(buffer2);
     if (_markerLines.contains(buffer2))
         _markerLines.remove(buffer2);
+    if (_bufferActivities.contains(buffer2))
+        _bufferActivities.remove(buffer2);
     SYNC(ARG(buffer1), ARG(buffer2))
     emit buffersPermanentlyMerged(buffer1, buffer2);
 }
