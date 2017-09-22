@@ -116,6 +116,23 @@ public:
     inline CutoffMode senderCutoffMode() const { return _cutoffMode; }
     inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
 
+    /**
+     * Gets whether to re-add hidden brackets around sender for all message types
+     *
+     * Used within the Chat Monitor as the normal message prefixes are overridden.
+     *
+     * @return Whether to re-add hidden brackets around sender for all message types
+     */
+    inline bool alwaysBracketSender() const { return _alwaysBracketSender; }
+    /**
+     * Sets whether to re-add hidden brackets around sender for all message types
+     *
+     * @see ChatScene::alwaysBracketSender()
+     *
+     * @param brackets Sets whether to re-add hidden brackets around sender for all message types
+     */
+    inline void setAlwaysBracketSender(bool alwaysBracket) { _alwaysBracketSender = alwaysBracket; }
+
     QString selection() const;
     bool hasSelection() const;
     bool hasGlobalSelection() const;
@@ -234,6 +251,8 @@ private:
     qreal _firstColHandlePos, _secondColHandlePos;
     int _defaultFirstColHandlePos, _defaultSecondColHandlePos;
     CutoffMode _cutoffMode;
+    /// Whether to re-add hidden brackets around sender for all message types
+    bool _alwaysBracketSender;
 
     ChatItem *_selectingItem;
     int _selectionStartCol, _selectionMinCol;
