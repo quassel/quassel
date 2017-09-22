@@ -182,6 +182,7 @@
     <file>./SQL/SQLite/setup_080_ircservers.sql</file>
     <file>./SQL/SQLite/setup_090_backlog_idx.sql</file>
     <file>./SQL/SQLite/setup_100_backlog_idx2.sql</file>
+    <file>./SQL/SQLite/setup_110_backlog_idx3.sql</file>
     <file>./SQL/SQLite/setup_110_buffer_user_idx.sql</file>
     <file>./SQL/SQLite/setup_120_user_setting.sql</file>
     <file>./SQL/SQLite/setup_130_identity.sql</file>
@@ -291,5 +292,6 @@
     <file>./SQL/SQLite/version/23/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
     <file>./SQL/SQLite/version/24/upgrade_000_create_senderprefixes.sql</file>
     <file>./SQL/SQLite/version/25/upgrade_000_alter_buffer_add_bufferactivity.sql</file>
+    <file>./SQL/SQLite/version/26/upgrade_000_create_buffer_idx.sql</file>
 </qresource>
 </RCC>
