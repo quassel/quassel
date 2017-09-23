@@ -450,7 +450,8 @@ void Client::finishConnectionInitialization()
     disconnect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));
 
     requestInitialBacklog();
-    bufferSyncer()->markActivitiesChanged();
+    if (coreFeatures().testFlag(Quassel::BufferActivitySync))
+        bufferSyncer()->markActivitiesChanged();
 }
 
 
