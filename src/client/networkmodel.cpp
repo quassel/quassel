@@ -339,7 +339,7 @@ void BufferItem::updateActivityLevel(const Message &msg)
 
     Message::Types type;
     // If the core handles activities, ignore types
-    if (!Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
+    if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
         type = Message::Types();
     } else {
         type = msg.type();
