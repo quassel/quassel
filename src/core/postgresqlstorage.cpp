@@ -1410,7 +1410,7 @@ QHash<BufferId, Message::Types> PostgreSqlStorage::bufferActivities(UserId user)
     }
 
     QSqlQuery query(db);
-    query.prepare(queryString("select_buffer_bufferactivity"));
+    query.prepare(queryString("select_buffer_bufferactivities"));
     query.bindValue(":userid", user.toInt());
     safeExec(query);
     if (!watchQuery(query)) {
