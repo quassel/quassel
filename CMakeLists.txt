@@ -14,8 +14,9 @@ set(QUASSEL_MINOR 12)
 set(QUASSEL_PATCH  4)
 set(QUASSEL_VERSION_STRING "0.12.4")
 
-# We want to know CMake's version for debug reasons
+# Output CMake version and build type for debug reasons
 message(STATUS "Using CMake ${CMAKE_VERSION}")
+message(STATUS "CMake build type: ${CMAKE_BUILD_TYPE}")
 
 # Tell CMake about or own modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -140,6 +141,11 @@ endif()
 # Honor visibility settings for all target types
 if (POLICY CMP0063)
     cmake_policy(SET CMP0063 NEW)
+endif()
+
+# Don't automoc generated files
+if (POLICY CMP0071)
+    cmake_policy(SET CMP0071 OLD)
 endif()
 
 
