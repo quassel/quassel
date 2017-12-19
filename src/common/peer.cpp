@@ -33,7 +33,7 @@ AuthHandler *Peer::authHandler() const
     return _authHandler;
 }
 
-const QDateTime &Peer::connectedSince() const {
+QDateTime Peer::connectedSince() const {
     return _connectedSince;
 }
 
@@ -41,7 +41,7 @@ void Peer::setConnectedSince(const QDateTime &connectedSince) {
     _connectedSince = connectedSince;
 }
 
-const QString &Peer::buildDate() const {
+QString Peer::buildDate() const {
     return _buildDate;
 }
 
@@ -49,7 +49,7 @@ void Peer::setBuildDate(const QString &buildDate) {
     _buildDate = buildDate;
 }
 
-const QString &Peer::clientVersion() const {
+QString Peer::clientVersion() const {
     return _clientVersion;
 }
 

@@ -42,13 +42,13 @@ public:
     virtual SignalProxy *signalProxy() const = 0;
     virtual void setSignalProxy(SignalProxy *proxy) = 0;
 
-    const QDateTime &connectedSince() const;
+    QDateTime connectedSince() const;
     void setConnectedSince(const QDateTime &connectedSince);
 
-    const QString &buildDate() const;
+    QString buildDate() const;
     void setBuildDate(const QString &buildDate);
 
-    const QString &clientVersion() const;
+    QString clientVersion() const;
     void setClientVersion(const QString &clientVersion);
 
     int id() const;
