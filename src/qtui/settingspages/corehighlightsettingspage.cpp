@@ -18,59 +18,96 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QTableWidget>
+#include <QtWidgets/QHeaderView>
+
 #include "corehighlightsettingspage.h"
-
 #include "qtui.h"
-#include "uisettings.h"
-
-#include <QHeaderView>
-#include <client.h>
+#include "client.h"
 
 CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Core-Side Highlights"), parent)
 {
     ui.setupUi(this);
-    ui.highlightTable->verticalHeader()->hide();
-    ui.highlightTable->setShowGrid(false);
 
-    ui.highlightTable->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setToolTip("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword.");
-    ui.highlightTable->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setWhatsThis("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword.");
+    setupRuleTable(ui.highlightTable);
+    setupRuleTable(ui.ignoredTable);
 
-    ui.highlightTable->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setToolTip("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
-    ui.highlightTable->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setWhatsThis("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
+    ui.highlightNicksComboBox->addItem(tr("All Nicks from Identity"), HighlightRuleManager::AllNicks);
+    ui.highlightNicksComboBox->addItem(tr("Current Nick"), HighlightRuleManager::CurrentNick);
+    ui.highlightNicksComboBox->addItem(tr("None"), HighlightRuleManager::NoNick);
 
-    ui.highlightTable->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setToolTip("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
-    ui.highlightTable->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setWhatsThis("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
+    connect(ui.highlightAdd, SIGNAL(clicked(bool)), this, SLOT(addNewHighlightRow()));
+    connect(ui.highlightRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedHighlightRows()));
 
-#if QT_VERSION < 0x050000
-    ui.highlightTable->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::NameColumn, QHeaderView::Stretch);
-    ui.highlightTable->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
-#else
-    ui.highlightTable->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::NameColumn, QHeaderView::Stretch);
-    ui.highlightTable->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::InverseColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
-#endif
+    connect(ui.ignoredAdd, SIGNAL(clicked(bool)), this, SLOT(addNewIgnoredRow()));
+    connect(ui.ignoredRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedIgnoredRows()));
 
-    connect(ui.add, SIGNAL(clicked(bool)), this, SLOT(addNewRow()));
-    connect(ui.remove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedRows()));
-    //TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
-    connect(ui.highlightTable, SIGNAL(itemClicked(QTableWidgetItem *)), this, SLOT(selectRow(QTableWidgetItem *)));
+    // TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
+    connect(ui.highlightTable,
+            SIGNAL(itemClicked(QTableWidgetItem * )),
+            this,
+            SLOT(selectHighlightRow(QTableWidgetItem * )));
+    connect(ui.ignoredTable,
+            SIGNAL(itemClicked(QTableWidgetItem * )),
+            this,
+            SLOT(selectIgnoredRow(QTableWidgetItem * )));
 
-    connect(ui.highlightAllNicks, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.highlightCurrentNick, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.highlightNoNick, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+    connect(ui.highlightNicksComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.nicksCaseSensitive, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.add, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-    connect(ui.remove, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-    connect(ui.highlightTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(tableChanged(QTableWidgetItem *)));
+
+    connect(ui.highlightAdd, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+    connect(ui.highlightRemove, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+
+    connect(ui.ignoredAdd, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+    connect(ui.ignoredRemove, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+
+    connect(ui.highlightTable,
+            SIGNAL(itemChanged(QTableWidgetItem * )),
+            this,
+            SLOT(highlightTableChanged(QTableWidgetItem * )));
+
+    connect(ui.ignoredTable,
+            SIGNAL(itemChanged(QTableWidgetItem * )),
+            this,
+            SLOT(ignoredTableChanged(QTableWidgetItem * )));
 
     connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
+}
+void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
+{
+    table->verticalHeader()->hide();
+    table->setShowGrid(false);
+
+    table->horizontalHeaderItem(RegExColumn)->setToolTip(
+        tr("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword."));
+    table->horizontalHeaderItem(RegExColumn)->setWhatsThis(
+        tr("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword."));
+
+    table->horizontalHeaderItem(CsColumn)->setToolTip(
+        tr("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>."));
+    table->horizontalHeaderItem(CsColumn)->setWhatsThis(
+        tr("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>."));
+
+    table->horizontalHeaderItem(ChanColumn)->setToolTip(
+        tr("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive."));
+    table->horizontalHeaderItem(ChanColumn)->setWhatsThis(
+        tr("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive."));
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::NameColumn, QHeaderView::Stretch);
+    table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
+#else
+    table->horizontalHeader()->setSectionResizeMode(EnableColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(NameColumn, QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(RegExColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(CsColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(ChanColumn, QHeaderView::ResizeToContents);
+#endif
 }
 
 void CoreHighlightSettingsPage::clientConnected()
@@ -78,11 +115,8 @@ void CoreHighlightSettingsPage::clientConnected()
     connect(Client::highlightRuleManager(), SIGNAL(updated()), SLOT(revert()));
 }
 
-
 void CoreHighlightSettingsPage::revert()
 {
-    qWarning() << "revert()";
-
     if (!hasChanged())
         return;
 
@@ -90,27 +124,26 @@ void CoreHighlightSettingsPage::revert()
     load();
 }
 
-
 bool CoreHighlightSettingsPage::hasDefaults() const
 {
     return true;
 }
 
-
 void CoreHighlightSettingsPage::defaults()
 {
-    ui.highlightCurrentNick->setChecked(true);
+    ui.highlightNicksComboBox->setCurrentIndex(ui.highlightNicksComboBox
+                                                   ->findData(QVariant(HighlightRuleManager::HighlightNickType::CurrentNick)));
     ui.nicksCaseSensitive->setChecked(false);
-    emptyTable();
+    emptyHighlightTable();
+    emptyIgnoredTable();
 
     widgetHasChanged();
 }
 
-
-void CoreHighlightSettingsPage::addNewRow(const QString &name, bool regex, bool cs, bool enable, bool inverse, const QString &sender,
-                                          const QString &chanName, bool self)
+void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, const QString &name, bool regex, bool cs,
+                                                   const QString &sender, const QString &chanName, bool self)
 {
-    ui.highlightTable->setRowCount(ui.highlightTable->rowCount()+1);
+    ui.highlightTable->setRowCount(ui.highlightTable->rowCount() + 1);
 
     auto *nameItem = new QTableWidgetItem(name);
 
@@ -119,59 +152,96 @@ void CoreHighlightSettingsPage::addNewRow(const QString &name, bool regex, bool 
         regexItem->setCheckState(Qt::Checked);
     else
         regexItem->setCheckState(Qt::Unchecked);
-    regexItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+    regexItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
     auto *csItem = new QTableWidgetItem("");
     if (cs)
         csItem->setCheckState(Qt::Checked);
     else
         csItem->setCheckState(Qt::Unchecked);
-    csItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+    csItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
     auto *enableItem = new QTableWidgetItem("");
     if (enable)
         enableItem->setCheckState(Qt::Checked);
     else
         enableItem->setCheckState(Qt::Unchecked);
-    enableItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
-
-    auto *inverseItem = new QTableWidgetItem("");
-    if (inverse)
-        inverseItem->setCheckState(Qt::Checked);
-    else
-        inverseItem->setCheckState(Qt::Unchecked);
-    inverseItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+    enableItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
     auto *chanNameItem = new QTableWidgetItem(chanName);
 
     auto *senderItem = new QTableWidgetItem(sender);
 
-    int lastRow = ui.highlightTable->rowCount()-1;
+    int lastRow = ui.highlightTable->rowCount() - 1;
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::NameColumn, nameItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::RegExColumn, regexItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::CsColumn, csItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::EnableColumn, enableItem);
-    ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::InverseColumn, inverseItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::SenderColumn, senderItem);
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::ChanColumn, chanNameItem);
 
     if (!self)
         ui.highlightTable->setCurrentItem(nameItem);
 
-    highlightList << HighlightRuleManager::HighlightRule(name, regex, cs, enable, inverse, sender, chanName);
+    highlightList << HighlightRuleManager::HighlightRule(name, regex, cs, enable, false, sender, chanName);
 }
 
+void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, const QString &name, bool regex, bool cs,
+                                                 const QString &sender, const QString &chanName, bool self)
+{
+    ui.ignoredTable->setRowCount(ui.ignoredTable->rowCount() + 1);
 
-void CoreHighlightSettingsPage::removeSelectedRows()
+    auto *nameItem = new QTableWidgetItem(name);
+
+    auto *regexItem = new QTableWidgetItem("");
+    if (regex)
+        regexItem->setCheckState(Qt::Checked);
+    else
+        regexItem->setCheckState(Qt::Unchecked);
+    regexItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+
+    auto *csItem = new QTableWidgetItem("");
+    if (cs)
+        csItem->setCheckState(Qt::Checked);
+    else
+        csItem->setCheckState(Qt::Unchecked);
+    csItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+
+    auto *enableItem = new QTableWidgetItem("");
+    if (enable)
+        enableItem->setCheckState(Qt::Checked);
+    else
+        enableItem->setCheckState(Qt::Unchecked);
+    enableItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+
+    auto *chanNameItem = new QTableWidgetItem(chanName);
+
+    auto *senderItem = new QTableWidgetItem(sender);
+
+    int lastRow = ui.ignoredTable->rowCount() - 1;
+    ui.ignoredTable->setItem(lastRow, CoreHighlightSettingsPage::NameColumn, nameItem);
+    ui.ignoredTable->setItem(lastRow, CoreHighlightSettingsPage::RegExColumn, regexItem);
+    ui.ignoredTable->setItem(lastRow, CoreHighlightSettingsPage::CsColumn, csItem);
+    ui.ignoredTable->setItem(lastRow, CoreHighlightSettingsPage::EnableColumn, enableItem);
+    ui.ignoredTable->setItem(lastRow, CoreHighlightSettingsPage::SenderColumn, senderItem);
+    ui.ignoredTable->setItem(lastRow, CoreHighlightSettingsPage::ChanColumn, chanNameItem);
+
+    if (!self)
+        ui.ignoredTable->setCurrentItem(nameItem);
+
+    ignoredList << HighlightRuleManager::HighlightRule(name, regex, cs, enable, true, sender, chanName);
+}
+
+void CoreHighlightSettingsPage::removeSelectedHighlightRows()
 {
     QList<int> selectedRows;
     QList<QTableWidgetItem *> selectedItemList = ui.highlightTable->selectedItems();
-    foreach(QTableWidgetItem *selectedItem, selectedItemList) {
+    for (auto selectedItem : selectedItemList) {
         selectedRows.append(selectedItem->row());
     }
     qSort(selectedRows.begin(), selectedRows.end(), qGreater<int>());
     int lastRow = -1;
-    foreach(int row, selectedRows) {
+    for (auto row : selectedRows) {
         if (row != lastRow) {
             ui.highlightTable->removeRow(row);
             highlightList.removeAt(row);
@@ -180,98 +250,165 @@ void CoreHighlightSettingsPage::removeSelectedRows()
     }
 }
 
+void CoreHighlightSettingsPage::removeSelectedIgnoredRows()
+{
+    QList<int> selectedRows;
+    QList<QTableWidgetItem *> selectedItemList = ui.ignoredTable->selectedItems();
+    for (auto selectedItem : selectedItemList) {
+        selectedRows.append(selectedItem->row());
+    }
+    qSort(selectedRows.begin(), selectedRows.end(), qGreater<int>());
+    int lastRow = -1;
+    for (auto row : selectedRows) {
+        if (row != lastRow) {
+            ui.ignoredTable->removeRow(row);
+            ignoredList.removeAt(row);
+        }
+        lastRow = row;
+    }
+}
 
-void CoreHighlightSettingsPage::selectRow(QTableWidgetItem *item)
+void CoreHighlightSettingsPage::selectHighlightRow(QTableWidgetItem *item)
 {
     int row = item->row();
     bool selected = item->isSelected();
-    ui.highlightTable->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, CoreHighlightSettingsPage::ColumnCount-1), selected);
+    ui.highlightTable
+        ->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, CoreHighlightSettingsPage::ColumnCount - 1),
+                           selected);
 }
 
+void CoreHighlightSettingsPage::selectIgnoredRow(QTableWidgetItem *item)
+{
+    int row = item->row();
+    bool selected = item->isSelected();
+    ui.ignoredTable
+        ->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, CoreHighlightSettingsPage::ColumnCount - 1),
+                           selected);
+}
 
-void CoreHighlightSettingsPage::emptyTable()
+void CoreHighlightSettingsPage::emptyHighlightTable()
 {
     // ui.highlight and highlightList should have the same size, but just to make sure.
     if (ui.highlightTable->rowCount() != highlightList.size()) {
         qDebug() << "something is wrong: ui.highlight and highlightList don't have the same size!";
     }
-    while (ui.highlightTable->rowCount()) {
-        ui.highlightTable->removeRow(0);
-    }
-    while (highlightList.size()) {
-        highlightList.removeLast();
-    }
+    ui.highlightTable->clear();
+    highlightList.clear();
 }
 
-
-void CoreHighlightSettingsPage::tableChanged(QTableWidgetItem *item)
+void CoreHighlightSettingsPage::emptyIgnoredTable()
 {
-    if (item->row()+1 > highlightList.size())
+    // ui.highlight and highlightList should have the same size, but just to make sure.
+    if (ui.ignoredTable->rowCount() != ignoredList.size()) {
+        qDebug() << "something is wrong: ui.highlight and highlightList don't have the same size!";
+    }
+    ui.ignoredTable->clear();
+    ignoredList.clear();
+}
+
+void CoreHighlightSettingsPage::highlightTableChanged(QTableWidgetItem *item)
+{
+    if (item->row() + 1 > highlightList.size())
         return;
 
     auto highlightRule = highlightList.value(item->row());
 
 
-    switch (item->column())
-    {
-    case CoreHighlightSettingsPage::NameColumn:
-        if (item->text() == "")
-            item->setText(tr("this shouldn't be empty"));
-        highlightRule.name = item->text();
-        break;
-    case CoreHighlightSettingsPage::RegExColumn:
-        highlightRule.isRegEx = (item->checkState() == Qt::Checked);
-        break;
-    case CoreHighlightSettingsPage::CsColumn:
-        highlightRule.isCaseSensitive = (item->checkState() == Qt::Checked);
-        break;
-    case CoreHighlightSettingsPage::EnableColumn:
-        highlightRule.isEnabled = (item->checkState() == Qt::Checked);
-        break;
-    case CoreHighlightSettingsPage::InverseColumn:
-        highlightRule.isInverse = (item->checkState() == Qt::Checked);
-        break;
+    switch (item->column()) {
+        case CoreHighlightSettingsPage::EnableColumn:
+            highlightRule.isEnabled = (item->checkState() == Qt::Checked);
+        case CoreHighlightSettingsPage::NameColumn:
+            if (item->text() == "")
+                item->setText(tr("this shouldn't be empty"));
+            highlightRule.name = item->text();
+            break;
+        case CoreHighlightSettingsPage::RegExColumn:
+            highlightRule.isRegEx = (item->checkState() == Qt::Checked);
+            break;
+        case CoreHighlightSettingsPage::CsColumn:
+            highlightRule.isCaseSensitive = (item->checkState() == Qt::Checked);
+            break;
         case CoreHighlightSettingsPage::SenderColumn:
             if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
                 item->setText("");
             highlightRule.sender = item->text();
             break;
-    case CoreHighlightSettingsPage::ChanColumn:
-        if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
-            item->setText("");
-        highlightRule.chanName = item->text();
-        break;
+        case CoreHighlightSettingsPage::ChanColumn:
+            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+                item->setText("");
+            highlightRule.chanName = item->text();
+            break;
     }
     highlightList[item->row()] = highlightRule;
     emit widgetHasChanged();
 }
 
+void CoreHighlightSettingsPage::ignoredTableChanged(QTableWidgetItem *item)
+{
+    if (item->row() + 1 > ignoredList.size())
+        return;
+
+    auto ignoredRule = ignoredList.value(item->row());
+
+
+    switch (item->column()) {
+        case CoreHighlightSettingsPage::EnableColumn:
+            ignoredRule.isEnabled = (item->checkState() == Qt::Checked);
+        case CoreHighlightSettingsPage::NameColumn:
+            if (item->text() == "")
+                item->setText(tr("this shouldn't be empty"));
+            ignoredRule.name = item->text();
+            break;
+        case CoreHighlightSettingsPage::RegExColumn:
+            ignoredRule.isRegEx = (item->checkState() == Qt::Checked);
+            break;
+        case CoreHighlightSettingsPage::CsColumn:
+            ignoredRule.isCaseSensitive = (item->checkState() == Qt::Checked);
+            break;
+        case CoreHighlightSettingsPage::SenderColumn:
+            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+                item->setText("");
+            ignoredRule.sender = item->text();
+            break;
+        case CoreHighlightSettingsPage::ChanColumn:
+            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+                item->setText("");
+            ignoredRule.chanName = item->text();
+            break;
+    }
+    ignoredList[item->row()] = ignoredRule;
+    emit widgetHasChanged();
+}
 
 void CoreHighlightSettingsPage::load()
 {
-    emptyTable();
+    emptyHighlightTable();
+    emptyIgnoredTable();
 
     auto ruleManager = Client::highlightRuleManager();
-    for (HighlightRuleManager::HighlightRule rule : ruleManager->highlightRuleList()) {
-        addNewRow(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, rule.isInverse, rule.sender, rule.chanName);
-    }
+    if (ruleManager) {
+        for (auto &rule : ruleManager->highlightRuleList()) {
+            if (rule.isInverse) {
+                addNewIgnoredRow(rule.isEnabled,
+                                 rule.name,
+                                 rule.isRegEx,
+                                 rule.isCaseSensitive,
+                                 rule.sender,
+                                 rule.chanName);
+            }
+            else {
+                addNewHighlightRow(rule.isEnabled, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.sender,
+                                   rule.chanName);
+            }
+        }
 
-    switch (ruleManager->highlightNick())
-    {
-    case HighlightRuleManager::NoNick:
-        ui.highlightNoNick->setChecked(true);
-        break;
-    case HighlightRuleManager::CurrentNick:
-        ui.highlightCurrentNick->setChecked(true);
-        break;
-    case HighlightRuleManager::AllNicks:
-        ui.highlightAllNicks->setChecked(true);
-        break;
-    }
-    ui.nicksCaseSensitive->setChecked(ruleManager->nicksCaseSensitive());
+        ui.highlightNicksComboBox
+            ->setCurrentIndex(ui.highlightNicksComboBox->findData(QVariant(ruleManager->highlightNick())));
+        ui.nicksCaseSensitive->setChecked(ruleManager->nicksCaseSensitive());
 
-    setChangedState(false);
-    _initialized = true;
+        setChangedState(false);
+        _initialized = true;
+    }
 }
 
 void CoreHighlightSettingsPage::save()
@@ -290,17 +427,17 @@ void CoreHighlightSettingsPage::save()
     clonedManager.fromVariantMap(ruleManager->toVariantMap());
     clonedManager.clear();
 
-    for (const HighlightRuleManager::HighlightRule &rule : highlightList) {
-        clonedManager.addHighlightRule(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, rule.isInverse,
+    for (auto &rule : highlightList) {
+        clonedManager.addHighlightRule(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, false,
                                        rule.sender, rule.chanName);
     }
 
-    HighlightRuleManager::HighlightNickType highlightNickType = HighlightRuleManager::NoNick;
-    if (ui.highlightCurrentNick->isChecked())
-        highlightNickType = HighlightRuleManager::CurrentNick;
-    if (ui.highlightAllNicks->isChecked())
-        highlightNickType = HighlightRuleManager::AllNicks;
+    for (auto &rule : ignoredList) {
+        clonedManager.addHighlightRule(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, true,
+                                       rule.sender, rule.chanName);
+    }
 
+    auto highlightNickType = ui.highlightNicksComboBox->currentData().value<HighlightRuleManager::HighlightNickType>();
 
     clonedManager.setHighlightNick(highlightNickType);
     clonedManager.setNicksCaseSensitive(ui.nicksCaseSensitive->isChecked());
@@ -309,7 +446,6 @@ void CoreHighlightSettingsPage::save()
     setChangedState(false);
     load();
 }
-
 
 void CoreHighlightSettingsPage::widgetHasChanged()
 {
