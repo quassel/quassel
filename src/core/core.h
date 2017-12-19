@@ -531,6 +531,39 @@ public:
         return instance()->_storage->bufferMarkerLineMsgIds(user);
     }
 
+    //! Update the BufferActivity for a Buffer
+    /** This Method is used to make the activity state of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of that Buffer
+     * \param bufferId  The buffer id
+     * \param MsgId     The Message id where the marker line should be placed
+     */
+    static inline void setBufferActivity(UserId user, BufferId bufferId, Message::Types activity) {
+        return instance()->_storage->setBufferActivity(user, bufferId, activity);
+    }
+
+
+    //! Get a Hash of all buffer activity states
+    /** This Method is called when the Quassel Core is started to restore the BufferActivity
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    static inline QHash<BufferId, Message::Types> bufferActivities(UserId user) {
+        return instance()->_storage->bufferActivities(user);
+    }
+
+    //! Get the bitset of buffer activity states for a buffer
+    /** This method is used to load the activity state of a buffer when its last seen message changes.
+     *  \note This method is threadsafe.
+     *
+     * \param bufferId The buffer
+     * \param lastSeenMsgId     The last seen message
+     */
+    static inline Message::Types bufferActivity(BufferId bufferId, MsgId lastSeenMsgId) {
+        return instance()->_storage->bufferActivity(bufferId, lastSeenMsgId);
+    }
 
     static inline QDateTime startTime() { return instance()->_startTime; }
     static inline bool isConfigured() { return instance()->_configured; }

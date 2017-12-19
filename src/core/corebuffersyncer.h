@@ -31,29 +31,42 @@ class CoreBufferSyncer : public BufferSyncer
         Q_OBJECT
 
 public:
-    CoreBufferSyncer(CoreSession *parent);
+    explicit CoreBufferSyncer(CoreSession *parent);
 
 public slots:
-    virtual void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId);
-    virtual void requestSetMarkerLine(BufferId buffer, const MsgId &msgId);
+    void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) override;
+    void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) override;
 
-    virtual inline void requestRemoveBuffer(BufferId buffer) { removeBuffer(buffer); }
-    virtual void removeBuffer(BufferId bufferId);
+    inline void requestRemoveBuffer(BufferId buffer) override { removeBuffer(buffer); }
+    void removeBuffer(BufferId bufferId) override;
 
-    virtual inline void requestRenameBuffer(BufferId buffer, QString newName) { renameBuffer(buffer, newName); }
-    virtual void renameBuffer(BufferId buffer, QString newName);
+    void addBufferActivity(const Message &message) {
+        auto oldActivity = activity(message.bufferId());
+        if (!oldActivity.testFlag(message.type())) {
+            setBufferActivity(message.bufferId(), (int) (oldActivity | message.type()));
+        }
+    }
 
-    virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { mergeBuffersPermanently(buffer1, buffer2); }
-    virtual void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2);
+    void setBufferActivity(BufferId buffer, int activity) override;
 
-    virtual void requestPurgeBufferIds();
+    inline void requestRenameBuffer(BufferId buffer, QString newName) override { renameBuffer(buffer, newName); }
+    void renameBuffer(BufferId buffer, QString newName) override;
 
-    virtual inline void requestMarkBufferAsRead(BufferId buffer) { markBufferAsRead(buffer); }
+    inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) override { mergeBuffersPermanently(buffer1, buffer2); }
+    void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2) override;
+
+    void requestPurgeBufferIds() override;
+
+    inline void requestMarkBufferAsRead(BufferId buffer) override {
+        int activity = Message::Types();
+        setBufferActivity(buffer, activity);
+        markBufferAsRead(buffer);
+    }
 
     void storeDirtyIds();
 
 protected:
-    virtual void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
 
 private:
     CoreSession *_coreSession;
@@ -61,6 +74,7 @@ private:
 
     QSet<BufferId> dirtyLastSeenBuffers;
     QSet<BufferId> dirtyMarkerLineBuffers;
+    QSet<BufferId> dirtyActivities;
 
     void purgeBufferIds();
 };

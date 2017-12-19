@@ -34,6 +34,8 @@
     <file>./SQL/PostgreSQL/select_authuser.sql</file>
     <file>./SQL/PostgreSQL/select_bufferByName.sql</file>
     <file>./SQL/PostgreSQL/select_bufferExists.sql</file>
+    <file>./SQL/PostgreSQL/select_buffer_bufferactivities.sql</file>
+    <file>./SQL/PostgreSQL/select_buffer_bufferactivity.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_by_id.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_lastseen_messages.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_markerlinemsgids.sql</file>
@@ -75,6 +77,7 @@
     <file>./SQL/PostgreSQL/setup_120_alter_messageid_seq.sql</file>
     <file>./SQL/PostgreSQL/setup_130_function_lastmsgid.sql</file>
     <file>./SQL/PostgreSQL/update_backlog_bufferid.sql</file>
+    <file>./SQL/PostgreSQL/update_buffer_bufferactivity.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_lastseen.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_markerlinemsgid.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_name.sql</file>
@@ -105,6 +108,7 @@
     <file>./SQL/PostgreSQL/version/21/upgrade_001_add_trigger_backlog_lastmsgid_update.sql</file>
     <file>./SQL/PostgreSQL/version/22/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
     <file>./SQL/PostgreSQL/version/23/upgrade_000_create_senderprefixes.sql</file>
+    <file>./SQL/PostgreSQL/version/24/upgrade_000_alter_buffer_add_bufferactivity.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>
@@ -139,6 +143,8 @@
     <file>./SQL/SQLite/select_authuser.sql</file>
     <file>./SQL/SQLite/select_bufferByName.sql</file>
     <file>./SQL/SQLite/select_bufferExists.sql</file>
+    <file>./SQL/SQLite/select_buffer_bufferactivities.sql</file>
+    <file>./SQL/SQLite/select_buffer_bufferactivity.sql</file>
     <file>./SQL/SQLite/select_buffer_by_id.sql</file>
     <file>./SQL/SQLite/select_buffer_lastseen_messages.sql</file>
     <file>./SQL/SQLite/select_buffer_markerlinemsgids.sql</file>
@@ -181,6 +187,7 @@
     <file>./SQL/SQLite/setup_130_identity.sql</file>
     <file>./SQL/SQLite/setup_140_identity_nick.sql</file>
     <file>./SQL/SQLite/update_backlog_bufferid.sql</file>
+    <file>./SQL/SQLite/update_buffer_bufferactivity.sql</file>
     <file>./SQL/SQLite/update_buffer_lastseen.sql</file>
     <file>./SQL/SQLite/update_buffer_markerlinemsgid.sql</file>
     <file>./SQL/SQLite/update_buffer_name.sql</file>
@@ -283,5 +290,6 @@
     <file>./SQL/SQLite/version/22/upgrade_001_add_trigger_backlog_lastmsgid_update_direct_update.sql</file>
     <file>./SQL/SQLite/version/23/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
     <file>./SQL/SQLite/version/24/upgrade_000_create_senderprefixes.sql</file>
+    <file>./SQL/SQLite/version/25/upgrade_000_alter_buffer_add_bufferactivity.sql</file>
 </qresource>
 </RCC>

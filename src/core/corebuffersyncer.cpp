@@ -34,17 +34,21 @@ public:
 
 INIT_SYNCABLE_OBJECT(CoreBufferSyncer)
 CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
-    : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), Core::bufferMarkerLineMsgIds(parent->user()), parent),
+    : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), Core::bufferMarkerLineMsgIds(parent->user()), Core::bufferActivities(parent->user()), parent),
     _coreSession(parent),
     _purgeBuffers(false)
 {
+    connect(parent, SIGNAL(displayMsg(Message)), SLOT(addBufferActivity(Message)));
 }
 
 
 void CoreBufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId)
 {
-    if (setLastSeenMsg(buffer, msgId))
+    if (setLastSeenMsg(buffer, msgId)) {
+        int activity = Core::bufferActivity(buffer, msgId);
+        setBufferActivity(buffer, activity);
         dirtyLastSeenBuffers << buffer;
+    }
 }
 
 
@@ -71,8 +75,13 @@ void CoreBufferSyncer::storeDirtyIds()
             Core::setBufferMarkerLineMsg(userId, bufferId, msgId);
     }
 
+    foreach(BufferId bufferId, dirtyActivities) {
+        Core::setBufferActivity(userId, bufferId, activity(bufferId));
+    }
+
     dirtyLastSeenBuffers.clear();
     dirtyMarkerLineBuffers.clear();
+    dirtyActivities.clear();
 }
 
 
@@ -180,4 +189,9 @@ void CoreBufferSyncer::purgeBufferIds()
             BufferSyncer::removeBuffer(bufferId);
         }
     }
+}
+
+void CoreBufferSyncer::setBufferActivity(BufferId buffer, int activity) {
+    BufferSyncer::setBufferActivity(buffer, activity);
+    dirtyActivities << buffer;
 }

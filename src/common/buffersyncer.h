@@ -23,6 +23,7 @@
 
 #include "syncableobject.h"
 #include "types.h"
+#include "message.h"
 
 class BufferSyncer : public SyncableObject
 {
@@ -31,12 +32,19 @@ class BufferSyncer : public SyncableObject
 
 public:
     explicit BufferSyncer(QObject *parent);
-    explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, QObject *parent);
+    explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, QObject *parent);
 
     inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     MsgId lastSeenMsg(BufferId buffer) const;
     MsgId markerLine(BufferId buffer) const;
+    Message::Types activity(BufferId buffer) const;
+
+    void markActivitiesChanged() {
+        for (auto buffer : _bufferActivities.keys()) {
+            emit bufferActivityChanged(buffer, activity(buffer));
+        }
+    }
 
 public slots:
     QVariantList initLastSeenMsg() const;
@@ -45,8 +53,18 @@ public slots:
     QVariantList initMarkerLines() const;
     void initSetMarkerLines(const QVariantList &);
 
+    QVariantList initActivities() const;
+    void initSetActivities(const QVariantList &);
+
     virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
     virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) setMarkerLine(buffer, msgId); }
+
+    virtual inline void setBufferActivity(BufferId buffer, int activity) {
+        auto flags = Message::Types(activity);
+        SYNC(ARG(buffer), ARG(activity));
+        _bufferActivities[buffer] = flags;
+        emit bufferActivityChanged(buffer, flags);
+    }
 
     virtual inline void requestRemoveBuffer(BufferId buffer) { REQUEST(ARG(buffer)) }
     virtual void removeBuffer(BufferId buffer);
@@ -69,6 +87,7 @@ signals:
     void bufferRenamed(BufferId buffer, QString newName);
     void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
     void bufferMarkedAsRead(BufferId buffer);
+    void bufferActivityChanged(BufferId, Message::Types);
 
 protected slots:
     bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);
@@ -82,6 +101,7 @@ protected:
 private:
     QHash<BufferId, MsgId> _lastSeenMsg;
     QHash<BufferId, MsgId> _markerLines;
+    QHash<BufferId, Message::Types> _bufferActivities;
 };
 
 

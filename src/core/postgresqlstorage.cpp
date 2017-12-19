@@ -1385,6 +1385,61 @@ QHash<BufferId, MsgId> PostgreSqlStorage::bufferMarkerLineMsgIds(UserId user)
     return markerLineHash;
 }
 
+
+void PostgreSqlStorage::setBufferActivity(UserId user, BufferId bufferId, Message::Types bufferActivity)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("update_buffer_bufferactivity"));
+
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":bufferactivity", (int) bufferActivity);
+    safeExec(query);
+    watchQuery(query);
+}
+
+QHash<BufferId, Message::Types> PostgreSqlStorage::bufferActivities(UserId user)
+{
+    QHash<BufferId, Message::Types> bufferActivityHash;
+
+    QSqlDatabase db = logDb();
+    if (!beginReadOnlyTransaction(db)) {
+        qWarning() << "PostgreSqlStorage::bufferActivities(): cannot start read only transaction!";
+        qWarning() << " -" << qPrintable(db.lastError().text());
+        return bufferActivityHash;
+    }
+
+    QSqlQuery query(db);
+    query.prepare(queryString("select_buffer_bufferactivities"));
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    if (!watchQuery(query)) {
+        db.rollback();
+        return bufferActivityHash;
+    }
+
+    while (query.next()) {
+        bufferActivityHash[query.value(0).toInt()] = Message::Types(query.value(1).toInt());
+    }
+
+    db.commit();
+    return bufferActivityHash;
+}
+
+Message::Types PostgreSqlStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMsgId)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_buffer_bufferactivity"));
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":lastseenmsgid", lastSeenMsgId.toInt());
+    safeExec(query);
+    watchQuery(query);
+    Message::Types result = Message::Types(0);
+    if (query.first())
+        result = Message::Types(query.value(0).toInt());
+    return result;
+}
+
 bool PostgreSqlStorage::logMessage(Message &msg)
 {
     QSqlDatabase db = logDb();
@@ -1978,8 +2033,9 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer)
     bindValue(7, buffer.lastmsgid);
     bindValue(8, buffer.lastseenmsgid);
     bindValue(9, buffer.markerlinemsgid);
-    bindValue(10, buffer.key);
-    bindValue(11, buffer.joined);
+    bindValue(10, buffer.bufferactivity);
+    bindValue(11, buffer.key);
+    bindValue(12, buffer.joined);
     return exec();
 }
 
