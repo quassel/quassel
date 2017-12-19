@@ -67,8 +67,8 @@ set(FORMS
     coreconfigwizardsyncpage.ui
     coreconnectauthdlg.ui
     coreconnectionstatuswidget.ui
-        coresessionwidget.ui
     coreinfodlg.ui
+    coresessionwidget.ui
     debugbufferviewoverlay.ui
     debugconsole.ui
     debuglogwidget.ui

@@ -83,7 +83,7 @@ public:
     /**@{*/
     /**
      * This method allows to send a signal only to a limited set of peers
-     * @param peerIds A list of peers that should receive it
+     * @param peers A list of peers that should receive it
      * @param closure Code you want to execute within of that restricted environment
      */
     void restrictTargetPeers(QSet<Peer*> peers, std::function<void()> closure);
@@ -103,7 +103,7 @@ public:
 #endif
     /**}@*/
 
-    inline int peerCount() const { return _peers.size(); }
+    inline int peerCount() const { return _peerMap.size(); }
     QVariantList peerData();
 
     Peer *peerById(int peerId);
@@ -177,7 +177,6 @@ private:
 
     static void disconnectDevice(QIODevice *dev, const QString &reason = QString());
 
-    QSet<Peer *> _peers;
     QHash<int, Peer*> _peerMap;
 
     // containg a list of argtypes for fast access
@@ -206,7 +205,7 @@ private:
     QSet<Peer *> _restrictedTargets;
     bool _restrictMessageTarget = false;
 
-    Peer *_sourcePeer;
+    Peer *_sourcePeer = nullptr;
 
     friend class SignalRelay;
     friend class SyncableObject;

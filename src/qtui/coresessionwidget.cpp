@@ -18,9 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QDateTime>
+
+#include "client.h"
 #include "coresessionwidget.h"
-#include <QtCore/QDateTime>
-#include <client.h>
 
 
 CoreSessionWidget::CoreSessionWidget(QWidget *parent)
@@ -35,6 +36,8 @@ CoreSessionWidget::CoreSessionWidget(QWidget *parent)
 void CoreSessionWidget::setData(QMap<QString, QVariant> map)
 {
     QLabel *iconSecure = ui.iconSecure;
+    // TODO: Implement "secure" icon
+    Q_UNUSED(iconSecure);
 
     ui.labelRemoteAddress->setText(map["remoteAddress"].toString());
     ui.labelLocation->setText(map["location"].toString());

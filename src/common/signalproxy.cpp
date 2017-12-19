@@ -209,7 +209,7 @@ SignalProxy::~SignalProxy()
 
 void SignalProxy::setProxyMode(ProxyMode mode)
 {
-    if (_peers.count()) {
+    if (!_peerMap.empty()) {
         qWarning() << Q_FUNC_INFO << "Cannot change proxy mode while connected";
         return;
     }
@@ -268,7 +268,7 @@ bool SignalProxy::addPeer(Peer *peer)
     if (!peer)
         return false;
 
-    if (_peers.contains(peer))
+    if (_peerMap.values().contains(peer))
         return true;
 
     if (!peer->isOpen()) {
@@ -277,7 +277,7 @@ bool SignalProxy::addPeer(Peer *peer)
     }
 
     if (proxyMode() == Client) {
-        if (!_peers.isEmpty()) {
+        if (!_peerMap.isEmpty()) {
             qWarning("SignalProxy: only one peer allowed in client mode!");
             return false;
         }
@@ -290,17 +290,16 @@ bool SignalProxy::addPeer(Peer *peer)
     if (!peer->parent())
         peer->setParent(this);
 
-    if (peer->_id < 0) {
-        peer->_id = nextPeerId();
-        peer->_connectedSince = QDateTime::currentDateTimeUtc();
+    if (peer->id() < 0) {
+        peer->setId(nextPeerId());
+        peer->setConnectedSince(QDateTime::currentDateTimeUtc());
     }
 
-    _peers.insert(peer);
-    _peerMap[peer->_id] = peer;
+    _peerMap[peer->id()] = peer;
 
     peer->setSignalProxy(this);
 
-    if (_peers.count() == 1)
+    if (peerCount() == 1)
         emit connected();
 
     updateSecureState();
@@ -310,10 +309,10 @@ bool SignalProxy::addPeer(Peer *peer)
 
 void SignalProxy::removeAllPeers()
 {
-    Q_ASSERT(proxyMode() == Server || _peers.count() <= 1);
+    Q_ASSERT(proxyMode() == Server || peerCount() <= 1);
     // wee need to copy that list since we modify it in the loop
-    QSet<Peer *> peers = _peers;
-    foreach(Peer *peer, peers) {
+    QList<Peer *> peers = _peerMap.values();
+    for (auto peer : peers) {
         removePeer(peer);
     }
 }
@@ -326,12 +325,12 @@ void SignalProxy::removePeer(Peer *peer)
         return;
     }
 
-    if (_peers.isEmpty()) {
+    if (_peerMap.isEmpty()) {
         qWarning() << "SignalProxy::removePeer(): No peers in use!";
         return;
     }
 
-    if (!_peers.contains(peer)) {
+    if (!_peerMap.values().contains(peer)) {
         qWarning() << "SignalProxy: unknown Peer" << peer;
         return;
     }
@@ -339,8 +338,7 @@ void SignalProxy::removePeer(Peer *peer)
     disconnect(peer, 0, this, 0);
     peer->setSignalProxy(0);
 
-    _peerMap.remove(peer->_id);
-    _peers.remove(peer);
+    _peerMap.remove(peer->id());
     emit peerRemoved(peer);
 
     if (peer->parent() == this)
@@ -348,7 +346,7 @@ void SignalProxy::removePeer(Peer *peer)
 
     updateSecureState();
 
-    if (_peers.isEmpty())
+    if (_peerMap.isEmpty())
         emit disconnected();
 }
 
@@ -515,7 +513,7 @@ void SignalProxy::stopSynchronize(SyncableObject *obj)
 template<class T>
 void SignalProxy::dispatch(const T &protoMessage)
 {
-    foreach (Peer *peer, _peers) {
+    for (auto peer : _peerMap.values()) {
         if (peer->isOpen())
             peer->dispatch(protoMessage);
         else
@@ -810,8 +808,8 @@ void SignalProxy::updateSecureState()
 {
     bool wasSecure = _secure;
 
-    _secure = !_peers.isEmpty();
-    foreach (const Peer *peer,  _peers) {
+    _secure = !_peerMap.isEmpty();
+    for (auto peer :  _peerMap.values()) {
         _secure &= peer->isSecure();
     }
 
@@ -821,15 +819,15 @@ void SignalProxy::updateSecureState()
 
 QVariantList SignalProxy::peerData() {
     QVariantList result;
-    for (auto peer : _peers) {
+    for (auto peer : _peerMap.values()) {
         QVariantMap data;
-        data["id"] = peer->_id;
-        data["clientVersion"] = peer->_clientVersion;
+        data["id"] = peer->id();
+        data["clientVersion"] = peer->clientVersion();
         // We explicitly rename this, as, due to the Debian reproducability changes, buildDate isn’t actually the build
         // date anymore, but on newer clients the date of the last git commit
-        data["clientVersionDate"] = peer->_buildDate;
+        data["clientVersionDate"] = peer->buildDate();
         data["remoteAddress"] = peer->address();
-        data["connectedSince"] = peer->_connectedSince;
+        data["connectedSince"] = peer->connectedSince();
         data["secure"] = peer->isSecure();
         result << data;
     }
