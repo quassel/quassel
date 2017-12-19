@@ -109,6 +109,7 @@ void TabCompleter::buildCompletionList()
         case BufferInfo::QueryBuffer:
             if (regex.indexIn(_currentBufferName) > -1)
                 _completionMap[_currentBufferName.toLower()] = _currentBufferName;
+            [[fallthrough]];
         case BufferInfo::StatusBuffer:
             if (!_currentNetwork->myNick().isEmpty() && regex.indexIn(_currentNetwork->myNick()) > -1)
                 _completionMap[_currentNetwork->myNick().toLower()] = _currentNetwork->myNick();

@@ -362,6 +362,7 @@ void NetworkModelController::handleHideAction(ActionType type, QAction *action)
         return;
     case HideApplyToAll:
         BufferSettings().setMessageFilter(filter);
+        [[fallthrough]];
     case HideUseDefaults:
         if (_messageFilter)
             BufferSettings(_messageFilter->idString()).removeFilter();
