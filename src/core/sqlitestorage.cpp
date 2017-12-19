@@ -1720,12 +1720,15 @@ bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount)
 
     switch (query.lastError().number()) {
     case 5: // SQLITE_BUSY         5   /* The database file is locked */
+        [[fallthrough]];
     case 6: // SQLITE_LOCKED       6   /* A table in the database is locked */
         if (retryCount < _maxRetryCount)
             return safeExec(query, retryCount + 1);
+        break;
     default:
-        return false;
+        ;
     }
+    return false;
 }
 
 
