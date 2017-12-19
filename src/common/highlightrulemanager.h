@@ -38,6 +38,7 @@ public:
         CurrentNick = 0x01,
         AllNicks = 0x02
     };
+    Q_ENUM(HighlightNickType);
 
     inline HighlightRuleManager(QObject *parent = nullptr) : SyncableObject(parent) { setAllowClientUpdates(true); }
     HighlightRuleManager &operator=(const HighlightRuleManager &other);

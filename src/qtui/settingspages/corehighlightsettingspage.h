@@ -34,40 +34,49 @@ class CoreHighlightSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    CoreHighlightSettingsPage(QWidget *parent = 0);
+    explicit CoreHighlightSettingsPage(QWidget *parent = nullptr);
 
-    bool hasDefaults() const;
+    bool hasDefaults() const override;
 
 public slots:
-    void save();
-    void load();
-    void defaults();
+    void save() override;
+    void load() override;
+    void defaults() override;
     void revert();
     void clientConnected();
 
 private slots:
     void widgetHasChanged();
-    void addNewRow(const QString &name = tr("highlight rule"), bool regex = false, bool cs = false, bool enable = true,
-                   bool inverse = false, const QString &sender = "", const QString &chanName = "", bool self = false);
-    void removeSelectedRows();
-    void selectRow(QTableWidgetItem *item);
-    void tableChanged(QTableWidgetItem *item);
+    void addNewHighlightRow(bool enable = true, const QString &name = tr("highlight rule"), bool regex = false,
+                            bool cs = false, const QString &sender = "", const QString &chanName = "",
+                            bool self = false);
+    void addNewIgnoredRow(bool enable = true, const QString &name = tr("highlight rule"), bool regex = false,
+                          bool cs = false, const QString &sender = "", const QString &chanName = "", bool self = false);
+    void removeSelectedHighlightRows();
+    void removeSelectedIgnoredRows();
+    void selectHighlightRow(QTableWidgetItem *item);
+    void selectIgnoredRow(QTableWidgetItem *item);
+    void highlightTableChanged(QTableWidgetItem *item);
+    void ignoredTableChanged(QTableWidgetItem *item);
 
 private:
     Ui::CoreHighlightSettingsPage ui;
     HighlightRuleManager::HighlightRuleList highlightList;
+    HighlightRuleManager::HighlightRuleList ignoredList;
     enum column {
-        NameColumn = 0,
-        RegExColumn = 1,
-        CsColumn = 2,
-        EnableColumn = 3,
-        InverseColumn = 4,
-        SenderColumn = 5,
-        ChanColumn = 6,
-        ColumnCount = 7
+        EnableColumn = 0,
+        NameColumn = 1,
+        RegExColumn = 2,
+        CsColumn = 3,
+        SenderColumn = 4,
+        ChanColumn = 5,
+        ColumnCount = 6
     };
 
-    void emptyTable();
+    void emptyHighlightTable();
+    void emptyIgnoredTable();
+
+    void setupRuleTable(QTableWidget *highlightTable) const;
 
     bool _initialized;
 };
