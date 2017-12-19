@@ -160,6 +160,9 @@ void Client::init()
     p->attachSignal(this, SIGNAL(requestPasswordChange(PeerPtr,QString,QString,QString)), SIGNAL(changePassword(PeerPtr,QString,QString,QString)));
     p->attachSlot(SIGNAL(passwordChanged(PeerPtr,bool)), this, SLOT(corePasswordChanged(PeerPtr,bool)));
 
+    p->attachSignal(this, SIGNAL(requestKickClient(int)), SIGNAL(kickClient(int)));
+    p->attachSlot(SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
+
     //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
     connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
     connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
@@ -674,6 +677,12 @@ void Client::changePassword(const QString &oldPassword, const QString &newPasswo
     account.setPassword(newPassword);
     coreAccountModel()->createOrUpdateAccount(account);
     emit instance()->requestPasswordChange(nullptr, account.user(), oldPassword, newPassword);
+}
+
+
+void Client::kickClient(int peerId)
+{
+    emit instance()->requestKickClient(peerId);
 }
 
 

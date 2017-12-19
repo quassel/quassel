@@ -151,7 +151,7 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
             socket()->setProperty("UseCompression", true);
         }
 #endif
-        handle(RegisterClient(m["ClientVersion"].toString(), m["ClientDate"].toString(), m["UseSsl"].toBool()));
+        handle(RegisterClient(m["ClientVersion"].toString(), m["ClientDate"].toString(), m["UseSsl"].toBool(), m["Features"].toInt()));
     }
 
     else if (msgType == "ClientInitReject") {
@@ -218,6 +218,7 @@ void LegacyPeer::dispatch(const RegisterClient &msg) {
     // FIXME only in compat mode
     m["ProtocolVersion"] = protocolVersion;
     m["UseSsl"] = msg.sslSupported;
+    m["Features"] = msg.clientFeatures;
 #ifndef QT_NO_COMPRESS
     m["UseCompression"] = true;
 #else

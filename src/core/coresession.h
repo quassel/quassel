@@ -131,6 +131,8 @@ public slots:
 
     void changePassword(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword);
 
+    void kickClient(int peerId);
+
     QHash<QString, QString> persistentChannels(NetworkId) const;
 
     /**
@@ -168,6 +170,8 @@ signals:
     void networkDisconnected(NetworkId);
 
     void passwordChanged(PeerPtr peer, bool success);
+
+    void disconnectFromCore();
 
 protected:
     virtual void customEvent(QEvent *event);

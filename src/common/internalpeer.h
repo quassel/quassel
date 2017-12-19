@@ -45,6 +45,9 @@ public:
     Protocol::Type protocol() const { return Protocol::InternalProtocol; }
     QString description() const;
 
+    virtual QString address() const;
+    virtual quint16 port() const;
+
     SignalProxy *signalProxy() const;
     void setSignalProxy(SignalProxy *proxy);
 

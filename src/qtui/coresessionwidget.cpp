@@ -18,36 +18,44 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREINFODLG_H
-#define COREINFODLG_H
+#include "coresessionwidget.h"
+#include <QtCore/QDateTime>
+#include <client.h>
 
-#include "ui_coreinfodlg.h"
-#include <QDialog>
 
-#include "clientcoreinfo.h"
-
-class CoreInfoDlg : public QDialog
+CoreSessionWidget::CoreSessionWidget(QWidget *parent)
+    : QWidget(parent)
 {
-    Q_OBJECT
+    ui.setupUi(this);
+    layout()->setContentsMargins(0, 0, 0, 0);
+    layout()->setSpacing(0);
+    connect(ui.disconnectButton, SIGNAL(released()), this, SLOT(disconnectClicked()));
+}
 
-public:
-    CoreInfoDlg(QWidget *parent = 0);
+void CoreSessionWidget::setData(QMap<QString, QVariant> map)
+{
+    QLabel *iconSecure = ui.iconSecure;
 
-public slots:
-    void coreInfoAvailable();
+    ui.labelRemoteAddress->setText(map["remoteAddress"].toString());
+    ui.labelLocation->setText(map["location"].toString());
+    ui.labelClient->setText(map["clientVersion"].toString());
+    ui.labelVersionDate->setText(map["clientVersionDate"].toString());
+    ui.labelUptime
+        ->setText(map["connectedSince"].toDateTime().toLocalTime().toString(Qt::DateFormat::SystemLocaleShortDate));
+    if (map["location"].toString().isEmpty()) {
+        ui.labelLocation->hide();
+        ui.labelLocationTitle->hide();
+    }
+    if (!Quassel::Features(map["features"].toInt()).testFlag(Quassel::Feature::ClientFeatures)) {
+        ui.disconnectButton->hide();
+    }
 
-protected:
-    virtual void timerEvent(QTimerEvent *) { updateUptime(); }
+    bool success = false;
+    _peerId = map["id"].toInt(&success);
+    if (!success) _peerId = -1;
+}
 
-private slots:
-    void on_closeButton_clicked() { reject(); }
-    void updateUptime();
-    void disconnectClicked(int peerId);
-
-private:
-    Ui::CoreInfoDlg ui;
-    ClientCoreInfo _coreInfo;
-};
-
-
-#endif //COREINFODLG_H
+void CoreSessionWidget::disconnectClicked()
+{
+    emit disconnectClicked(_peerId);
+}

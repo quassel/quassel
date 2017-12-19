@@ -91,6 +91,22 @@ QString RemotePeer::description() const
     return QString();
 }
 
+QString RemotePeer::address() const
+{
+    if (socket())
+        return socket()->peerAddress().toString();
+
+    return QString();
+}
+
+quint16 RemotePeer::port() const
+{
+    if (socket())
+        return socket()->peerPort();
+
+    return 0;
+}
+
 
 ::SignalProxy *RemotePeer::signalProxy() const
 {
@@ -192,8 +208,15 @@ void RemotePeer::close(const QString &reason)
 void RemotePeer::onReadyRead()
 {
     QByteArray msg;
-    while (readMessage(msg))
+    while (readMessage(msg)) {
+        if (SignalProxy::current())
+            SignalProxy::current()->_sourcePeer = this;
+
         processMessage(msg);
+
+        if (SignalProxy::current())
+            SignalProxy::current()->_sourcePeer = nullptr;
+    }
 }
 
 

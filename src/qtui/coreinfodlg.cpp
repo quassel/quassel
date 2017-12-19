@@ -24,6 +24,8 @@
 
 #include "client.h"
 #include "signalproxy.h"
+#include "bufferwidget.h"
+#include "coresessionwidget.h"
 
 CoreInfoDlg::CoreInfoDlg(QWidget *parent)
     : QDialog(parent),
@@ -40,6 +42,21 @@ void CoreInfoDlg::coreInfoAvailable()
     ui.labelCoreVersion->setText(_coreInfo["quasselVersion"].toString());
     ui.labelCoreVersionDate->setText(_coreInfo["quasselBuildDate"].toString()); // "BuildDate" for compatibility
     ui.labelClientCount->setNum(_coreInfo["sessionConnectedClients"].toInt());
+
+    auto coreSessionSupported = false;
+    for (const auto &peerData : _coreInfo["sessionConnectedClientData"].toList()) {
+        coreSessionSupported = true;
+
+        auto coreSessionWidget = new CoreSessionWidget(ui.coreSessionScrollContainer);
+        coreSessionWidget->setData(peerData.toMap());
+        ui.coreSessionContainer->addWidget(coreSessionWidget);
+        connect(coreSessionWidget, SIGNAL(disconnectClicked(int)), this, SLOT(disconnectClicked(int)));
+    }
+
+    ui.coreSessionScrollArea->setVisible(coreSessionSupported);
+
+    ui.coreSessionContainer->addStretch(1);
+
     updateUptime();
     startTimer(1000);
 }
@@ -57,4 +74,8 @@ void CoreInfoDlg::updateUptime()
     QString uptimeText = tr("%n Day(s)", "", updays)
                          + tr(" %1:%2:%3 (since %4)").arg(uphours, 2, 10, QChar('0')).arg(upmins, 2, 10, QChar('0')).arg(uptime, 2, 10, QChar('0')).arg(startTime.toLocalTime().toString(Qt::TextDate));
     ui.labelUptime->setText(uptimeText);
+}
+void CoreInfoDlg::disconnectClicked(int peerId)
+{
+    Client::kickClient(peerId);
 }

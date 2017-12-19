@@ -156,9 +156,11 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
                 params << QVariant(argTypes[i], _a[i+1]);
             }
 
-            if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxy()->proxyMode() == SignalProxy::Server) {
-                Peer *peer = params[0].value<PeerPtr>();
-                proxy()->dispatch(peer, RpcCall(signal.signature, params));
+            if (proxy()->_restrictMessageTarget) {
+                for (auto peer : proxy()->_restrictedTargets) {
+                    if (peer != nullptr)
+                        proxy()->dispatch(peer, RpcCall(signal.signature, params));
+                }
             } else
                 proxy()->dispatch(RpcCall(signal.signature, params));
         }
@@ -219,6 +221,7 @@ void SignalProxy::setProxyMode(ProxyMode mode)
         initClient();
 }
 
+thread_local SignalProxy *SignalProxy::_current = nullptr;
 
 void SignalProxy::init()
 {
@@ -228,6 +231,7 @@ void SignalProxy::init()
     setHeartBeatInterval(30);
     setMaxHeartBeatCount(2);
     _secure = false;
+    _current = this;
     updateSecureState();
 }
 
@@ -288,7 +292,13 @@ bool SignalProxy::addPeer(Peer *peer)
     if (!peer->parent())
         peer->setParent(this);
 
+    if (peer->_id < 0) {
+        peer->_id = nextPeerId();
+        peer->_connectedSince = QDateTime::currentDateTimeUtc();
+    }
+
     _peers.insert(peer);
+    _peerMap[peer->_id] = peer;
 
     peer->setSignalProxy(this);
 
@@ -331,6 +341,7 @@ void SignalProxy::removePeer(Peer *peer)
     disconnect(peer, 0, this, 0);
     peer->setSignalProxy(0);
 
+    _peerMap.remove(peer->_id);
     _peers.remove(peer);
     emit peerRemoved(peer);
 
@@ -506,22 +517,29 @@ void SignalProxy::stopSynchronize(SyncableObject *obj)
 template<class T>
 void SignalProxy::dispatch(const T &protoMessage)
 {
-    foreach (Peer *peer, _peers) {
+    for (Peer *peer : _peers) {
+        _targetPeer = peer;
+
         if (peer->isOpen())
             peer->dispatch(protoMessage);
         else
             QCoreApplication::postEvent(this, new ::RemovePeerEvent(peer));
     }
+    _targetPeer = nullptr;
 }
 
 
 template<class T>
 void SignalProxy::dispatch(Peer *peer, const T &protoMessage)
 {
+    _targetPeer = peer;
+
     if (peer && peer->isOpen())
         peer->dispatch(protoMessage);
     else
         QCoreApplication::postEvent(this, new ::RemovePeerEvent(peer));
+
+    _targetPeer = nullptr;
 }
 
 
@@ -564,7 +582,9 @@ void SignalProxy::handle(Peer *peer, const SyncMessage &syncMessage)
         if (eMeta->argTypes(receiverId).count() > 1)
             returnParams << syncMessage.params;
         returnParams << returnValue;
+        _targetPeer = peer;
         peer->dispatch(SyncMessage(syncMessage.className, syncMessage.objectName, eMeta->methodName(receiverId), returnParams));
+        _targetPeer = nullptr;
     }
 
     // send emit update signal
@@ -587,7 +607,9 @@ void SignalProxy::handle(Peer *peer, const InitRequest &initRequest)
     }
 
     SyncableObject *obj = _syncSlave[initRequest.className][initRequest.objectName];
+    _targetPeer = peer;
     peer->dispatch(InitData(initRequest.className, initRequest.objectName, initData(obj)));
+    _targetPeer = nullptr;
 }
 
 
@@ -661,12 +683,8 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
             qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << eMeta->methodName(methodId);
             return false;
         }
-        // if first arg is a PeerPtr, replace it by the address of the peer originally receiving the RpcCall
-        if (peer && i == 0 && args[0] == qMetaTypeId<PeerPtr>()) {
-            QVariant v = QVariant::fromValue<PeerPtr>(peer);
-            _a[1] = const_cast<void*>(v.constData());
-        } else
-            _a[i+1] = const_cast<void *>(params[i].constData());
+
+        _a[i+1] = const_cast<void *>(params[i].constData());
     }
 
     if (returnValue.type() != QVariant::Invalid)
@@ -677,9 +695,11 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
                               : Qt::QueuedConnection;
 
     if (type == Qt::DirectConnection) {
-        return receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
-    }
-    else {
+        _sourcePeer = peer;
+        auto result = receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
+        _sourcePeer = nullptr;
+        return result;
+    } else {
         qWarning() << "Queued Connections are not implemented yet";
         // note to self: qmetaobject.cpp:990 ff
         return false;
@@ -758,9 +778,11 @@ void SignalProxy::sync_call__(const SyncableObject *obj, SignalProxy::ProxyMode 
         params << QVariant(argTypes[i], va_arg(ap, void *));
     }
 
-    if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxyMode() == SignalProxy::Server) {
-        Peer *peer = params[0].value<PeerPtr>();
-        dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+    if (_restrictMessageTarget) {
+        for (auto peer : _restrictedTargets) {
+            if (peer != nullptr)
+                dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+        }
     } else
         dispatch(SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
 }
@@ -810,6 +832,40 @@ void SignalProxy::updateSecureState()
         emit secureStateChanged(_secure);
 }
 
+QVariantList SignalProxy::peerData() {
+    QVariantList result;
+    for (auto peer : _peers) {
+        QVariantMap data;
+        data["id"] = peer->_id;
+        data["clientVersion"] = peer->_clientVersion;
+        // We explicitly rename this, as, due to the Debian reproducability changes, buildDate isn’t actually the build
+        // date anymore, but on newer clients the date of the last git commit
+        data["clientVersionDate"] = peer->_buildDate;
+        data["remoteAddress"] = peer->address();
+        data["connectedSince"] = peer->_connectedSince;
+        data["secure"] = peer->isSecure();
+        data["features"] = (int32_t) peer->_features;
+        result << data;
+    }
+    return result;
+}
+
+Peer *SignalProxy::peerById(int peerId) {
+    return _peerMap[peerId];
+}
+
+void SignalProxy::restrictTargetPeers(QSet<Peer*> peers, std::function<void()> closure)
+{
+    auto previousRestrictMessageTarget = _restrictMessageTarget;
+    auto previousRestrictedTargets = _restrictedTargets;
+    _restrictMessageTarget = true;
+    _restrictedTargets = peers;
+
+    closure();
+
+    _restrictMessageTarget = previousRestrictMessageTarget;
+    _restrictedTargets = previousRestrictedTargets;
+}
 
 // ==================================================
 //  ExtendedMetaObject

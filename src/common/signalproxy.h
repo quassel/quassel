@@ -23,6 +23,10 @@
 
 #include <QEvent>
 #include <QSet>
+#include <QtCore/QThreadStorage>
+
+#include <functional>
+#include <memory>
 
 #include "protocol.h"
 
@@ -77,7 +81,44 @@ public:
     bool isSecure() const { return _secure; }
     void dumpProxyStats();
     void dumpSyncMap(SyncableObject *object);
+
+    static SignalProxy *current() {
+        return _current;
+    }
+
+    /**@{*/
+    /**
+     * This method allows to send a signal only to a limited set of peers
+     * @param peerIds A list of peers that should receive it
+     * @param closure Code you want to execute within of that restricted environment
+     */
+    void restrictTargetPeers(QSet<Peer*> peers, std::function<void()> closure);
+    void restrictTargetPeers(Peer *peer, std::function<void()> closure) {
+        QSet<Peer*> set;
+        set.insert(peer);
+        restrictTargetPeers(set, std::move(closure));
+    }
+
+    //A better version, but only implemented on Qt5 if Initializer Lists exist
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#ifdef Q_COMPILER_INITIALIZER_LISTS
+    void restrictTargetPeers(std::initializer_list<Peer*> peers, std::function<void()> closure) {
+        restrictTargetPeers(QSet<Peer*>(peers), std::move(closure));
+    }
+#endif
+#endif
+    /**}@*/
+
     inline int peerCount() const { return _peers.size(); }
+    QVariantList peerData();
+
+    Peer *peerById(int peerId);
+
+    /**
+     * @return If handling a signal, the Peer from which the current signal originates
+     */
+    Peer *_sourcePeer;
+    Peer *_targetPeer;
 
 public slots:
     void detachObject(QObject *obj);
@@ -117,6 +158,10 @@ private:
     void removePeer(Peer *peer);
     void removeAllPeers();
 
+    int nextPeerId() {
+        return _lastPeerId++;
+    }
+
     template<class T>
     void dispatch(const T &protoMessage);
     template<class T>
@@ -140,6 +185,7 @@ private:
     static void disconnectDevice(QIODevice *dev, const QString &reason = QString());
 
     QSet<Peer *> _peers;
+    QHash<int, Peer*> _peerMap;
 
     // containg a list of argtypes for fast access
     QHash<const QMetaObject *, ExtendedMetaObject *> _extendedMetaObjects;
@@ -161,6 +207,13 @@ private:
     int _maxHeartBeatCount;
 
     bool _secure; // determines if all connections are in a secured state (using ssl or internal connections)
+
+    int _lastPeerId = 0;
+
+    QSet<Peer *> _restrictedTargets;
+    bool _restrictMessageTarget = false;
+
+    thread_local static SignalProxy *_current;
 
     friend class SignalRelay;
     friend class SyncableObject;

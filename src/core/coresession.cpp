@@ -105,6 +105,9 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->attachSlot(SIGNAL(changePassword(PeerPtr,QString,QString,QString)), this, SLOT(changePassword(PeerPtr,QString,QString,QString)));
     p->attachSignal(this, SIGNAL(passwordChanged(PeerPtr,bool)));
 
+    p->attachSlot(SIGNAL(kickClient(int)), this, SLOT(kickClient(int)));
+    p->attachSignal(this, SIGNAL(disconnectFromCore()));
+
     loadSettings();
     initScriptEngine();
 
@@ -715,5 +718,18 @@ void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QS
     if (uid.isValid() && uid == user())
         success = Core::changeUserPassword(uid, newPassword);
 
-    emit passwordChanged(peer, success);
+    signalProxy()->restrictTargetPeers(signalProxy()->_sourcePeer, [&]{
+        emit passwordChanged(nullptr, success);
+    });
+}
+
+void CoreSession::kickClient(int peerId) {
+    auto peer = signalProxy()->peerById(peerId);
+    if (peer == nullptr) {
+        qWarning() << "Invalid peer Id: " << peerId;
+        return;
+    }
+    signalProxy()->restrictTargetPeers(peer, [&]{
+        emit disconnectFromCore();
+    });
 }
