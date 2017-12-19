@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SQLITESTORAGE_H
-#define SQLITESTORAGE_H
+#pragma once
 
 #include "abstractsqlstorage.h"
 
@@ -33,87 +32,87 @@ class SqliteStorage : public AbstractSqlStorage
 
 public:
     SqliteStorage(QObject *parent = 0);
-    virtual ~SqliteStorage();
+    ~SqliteStorage() override;
 
-    virtual std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader();
+    std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() override;
 
 public slots:
     /* General */
 
-    bool isAvailable() const;
-    QString backendId() const;
-    QString displayName() const;
-    virtual inline QVariantList setupData() const { return {}; }
-    QString description() const;
+    bool isAvailable()  const  override;
+    QString backendId() const override;
+    QString displayName() const override;
+    QVariantList setupData() const  override { return {}; }
+    QString description() const override;
 
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
     /* User handling */
-    virtual UserId addUser(const QString &user, const QString &password, const QString &authenticator = "Database");
-    virtual bool updateUser(UserId user, const QString &password);
-    virtual void renameUser(UserId user, const QString &newName);
-    virtual UserId validateUser(const QString &user, const QString &password);
-    virtual UserId getUserId(const QString &username);
-    virtual QString getUserAuthenticator(const UserId userid);
-    virtual UserId internalUser();
-    virtual void delUser(UserId user);
-    virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data);
-    virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData = QVariant());
+    UserId addUser(const QString &user, const QString &password, const QString &authenticator = "Database") override;
+    bool updateUser(UserId user, const QString &password) override;
+    void renameUser(UserId user, const QString &newName) override;
+    UserId validateUser(const QString &user, const QString &password) override;
+    UserId getUserId(const QString &username) override;
+    QString getUserAuthenticator(const UserId userid) override;
+    UserId internalUser() override;
+    void delUser(UserId user) override;
+    void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) override;
+    QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData = QVariant()) override;
 
     /* Identity handling */
-    virtual IdentityId createIdentity(UserId user, CoreIdentity &identity);
-    virtual bool updateIdentity(UserId user, const CoreIdentity &identity);
-    virtual void removeIdentity(UserId user, IdentityId identityId);
-    virtual QList<CoreIdentity> identities(UserId user);
+    IdentityId createIdentity(UserId user, CoreIdentity &identity) override;
+    bool updateIdentity(UserId user, const CoreIdentity &identity) override;
+    void removeIdentity(UserId user, IdentityId identityId) override;
+    QList<CoreIdentity> identities(UserId user) override;
 
     /* Network handling */
-    virtual NetworkId createNetwork(UserId user, const NetworkInfo &info);
-    virtual bool updateNetwork(UserId user, const NetworkInfo &info);
-    virtual bool removeNetwork(UserId user, const NetworkId &networkId);
-    virtual QList<NetworkInfo> networks(UserId user);
-    virtual QList<NetworkId> connectedNetworks(UserId user);
-    virtual void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected);
+    NetworkId createNetwork(UserId user, const NetworkInfo &info) override;
+    bool updateNetwork(UserId user, const NetworkInfo &info) override;
+    bool removeNetwork(UserId user, const NetworkId &networkId) override;
+    QList<NetworkInfo> networks(UserId user) override;
+    QList<NetworkId> connectedNetworks(UserId user) override;
+    void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) override;
 
     /* persistent channels */
-    virtual QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId);
-    virtual void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined);
-    virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key);
+    QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId) override;
+    void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) override;
+    void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) override;
 
     /* persistent user states */
-    virtual QString awayMessage(UserId user, NetworkId networkId);
-    virtual void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg);
-    virtual QString userModes(UserId user, NetworkId networkId);
-    virtual void setUserModes(UserId user, NetworkId networkId, const QString &userModes);
+    QString awayMessage(UserId user, NetworkId networkId) override;
+    void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg) override;
+    QString userModes(UserId user, NetworkId networkId) override;
+    void setUserModes(UserId user, NetworkId networkId, const QString &userModes) override;
 
     /* Buffer handling */
-    virtual BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true);
-    virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
-    virtual QList<BufferInfo> requestBuffers(UserId user);
-    virtual QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId);
-    virtual bool removeBuffer(const UserId &user, const BufferId &bufferId);
-    virtual bool renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName);
-    virtual bool mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2);
-    virtual void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
-    virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
-    virtual void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
-    virtual QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user);
-    virtual void setBufferActivity(UserId id, BufferId bufferId, Message::Types type);
+    BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true) override;
+    BufferInfo getBufferInfo(UserId user, const BufferId &bufferId) override;
+    QList<BufferInfo> requestBuffers(UserId user) override;
+    QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId) override;
+    bool removeBuffer(const UserId &user, const BufferId &bufferId) override;
+    bool renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName) override;
+    bool mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2) override;
+    void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) override;
+    QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user) override;
+    void setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) override;
+    QHash<BufferId, MsgId> bufferMarkerLineMsgIds(UserId user) override;
+    void setBufferActivity(UserId id, BufferId bufferId, Message::Types type) override;
     QHash<BufferId, Message::Types> bufferActivities(UserId id) override;
     Message::Types bufferActivity(BufferId bufferId, MsgId lastSeenMsgId) override;
 
     /* Message handling */
-    virtual bool logMessage(Message &msg);
-    virtual bool logMessages(MessageList &msgs);
-    virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
-    virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1);
+    bool logMessage(Message &msg) override;
+    bool logMessages(MessageList &msgs) override;
+    QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1) override;
+    QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) override;
 
 protected:
-    inline virtual void setConnectionProperties(const QVariantMap & /* properties */) {}
-    inline virtual QString driverName() { return "QSQLITE"; }
-    inline virtual QString databaseName() { return backlogFile(); }
-    virtual int installedSchemaVersion();
-    virtual bool updateSchemaVersion(int newVersion);
-    virtual bool setupSchemaVersion(int version);
+    void setConnectionProperties(const QVariantMap & /* properties */)  override {}
+    QString driverName()  override { return "QSQLITE"; }
+    QString databaseName()  override { return backlogFile(); }
+    int installedSchemaVersion() override;
+    bool updateSchemaVersion(int newVersion) override;
+    bool setupSchemaVersion(int version) override;
     bool safeExec(QSqlQuery &query, int retryCount = 0);
 
 private:
@@ -139,24 +138,24 @@ class SqliteMigrationReader : public SqliteStorage, public AbstractSqlMigrationR
 public:
     SqliteMigrationReader();
 
-    virtual bool readMo(QuasselUserMO &user);
-    virtual bool readMo(SenderMO &sender);
-    virtual bool readMo(IdentityMO &identity);
-    virtual bool readMo(IdentityNickMO &identityNick);
-    virtual bool readMo(NetworkMO &network);
-    virtual bool readMo(BufferMO &buffer);
-    virtual bool readMo(BacklogMO &backlog);
-    virtual bool readMo(IrcServerMO &ircserver);
-    virtual bool readMo(UserSettingMO &userSetting);
+    bool readMo(QuasselUserMO &user) override;
+    bool readMo(SenderMO &sender) override;
+    bool readMo(IdentityMO &identity) override;
+    bool readMo(IdentityNickMO &identityNick) override;
+    bool readMo(NetworkMO &network) override;
+    bool readMo(BufferMO &buffer) override;
+    bool readMo(BacklogMO &backlog) override;
+    bool readMo(IrcServerMO &ircserver) override;
+    bool readMo(UserSettingMO &userSetting) override;
 
-    virtual bool prepareQuery(MigrationObject mo);
+    bool prepareQuery(MigrationObject mo) override;
 
-    inline int stepSize() { return 50000; }
+    int stepSize() { return 50000; }
 
 protected:
-    virtual inline bool transaction() { return logDb().transaction(); }
-    virtual inline void rollback() { logDb().rollback(); }
-    virtual inline bool commit() { return logDb().commit(); }
+    bool transaction()  override { return logDb().transaction(); }
+    void rollback()  override { logDb().rollback(); }
+    bool commit()  override { return logDb().commit(); }
 
 private:
     void setMaxId(MigrationObject mo);
@@ -168,6 +167,3 @@ inline std::unique_ptr<AbstractSqlMigrationReader> SqliteStorage::createMigratio
 {
     return std::unique_ptr<AbstractSqlMigrationReader>{new SqliteMigrationReader()};
 }
-
-
-#endif
