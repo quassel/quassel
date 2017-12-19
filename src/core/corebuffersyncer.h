@@ -58,7 +58,8 @@ public slots:
     void requestPurgeBufferIds() override;
 
     inline void requestMarkBufferAsRead(BufferId buffer) override {
-        setBufferActivity(buffer, (int) Message::Types());
+        int activity = Message::Types();
+        setBufferActivity(buffer, activity);
         markBufferAsRead(buffer);
     }
 
