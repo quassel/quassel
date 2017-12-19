@@ -125,6 +125,8 @@ public:
     static inline ClientTransferManager *transferManager() { return instance()->_transferManager; }
     static inline TransferModel *transferModel() { return instance()->_transferModel; }
 
+    static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
+
     static inline CoreAccountModel *coreAccountModel() { return instance()->_coreAccountModel; }
     static inline CoreConnection *coreConnection() { return instance()->_coreConnection; }
     static inline CoreAccount currentCoreAccount() { return coreConnection()->currentAccount(); }
@@ -238,7 +240,6 @@ private:
     void requestInitialBacklog();
 
     static void addNetwork(Network *);
-    static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
     static QPointer<Client> instanceptr;
 

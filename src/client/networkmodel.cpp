@@ -34,6 +34,7 @@
 #include "ircchannel.h"
 #include "network.h"
 #include "signalproxy.h"
+#include "buffersyncer.h"
 
 /*****************************************
 *  Network Items
@@ -144,6 +145,10 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo)
     default:
         break;
     }
+
+    BufferSyncer *bufferSyncer = Client::bufferSyncer();
+    if (bufferSyncer)
+        bufferItem->addActivity(bufferSyncer->activity(bufferItem->bufferId()), false);
 
     return bufferItem;
 }
