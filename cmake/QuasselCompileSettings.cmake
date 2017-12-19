@@ -52,7 +52,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
 
 # ... and for Clang
-elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.3")
         message(FATAL_ERROR "Your compiler is too old; you need Clang 3.3+, GCC 4.8+, MSVC 19.0+, or any other compiler with full C++11 support.")
     endif()
@@ -67,7 +67,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
 
 # For MSVC, at least do a version sanity check
-elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19.0")
         message(FATAL_ERROR "Your compiler is too old; you need at least Visual Studio 2015 (MSVC 19.0+), GCC 4.8+, Clang 3.3+, or any other compiler with full C++11 support.")
     endif()
