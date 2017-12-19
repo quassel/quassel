@@ -1386,7 +1386,7 @@ QHash<BufferId, MsgId> PostgreSqlStorage::bufferMarkerLineMsgIds(UserId user)
 }
 
 
-void PostgreSqlStorage::setBufferActivity(UserId user, const BufferId &bufferId, const Message::Types &bufferActivity)
+void PostgreSqlStorage::setBufferActivity(UserId user, BufferId bufferId, Message::Types bufferActivity)
 {
     QSqlQuery query(logDb());
     query.prepare(queryString("update_buffer_bufferactivity"));
@@ -1426,7 +1426,7 @@ QHash<BufferId, Message::Types> PostgreSqlStorage::bufferActivities(UserId user)
     return bufferActivityHash;
 }
 
-Message::Types PostgreSqlStorage::bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId)
+Message::Types PostgreSqlStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMsgId)
 {
     QSqlQuery query(logDb());
     query.prepare(queryString("select_buffer_bufferactivity"));

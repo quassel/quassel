@@ -392,7 +392,7 @@ public slots:
      * \param bufferId  The buffer id
      * \param MsgId     The Message id where the marker line should be placed
      */
-    virtual void setBufferActivity(UserId id, const BufferId &bufferId, const Message::Types &type) = 0;
+    virtual void setBufferActivity(UserId id, BufferId bufferId, Message::Types type) = 0;
 
     //! Get a Hash of all buffer activity states
     /** This Method is called when the Quassel Core is started to restore the BufferActivities
@@ -409,7 +409,7 @@ public slots:
      * \param bufferId The buffer
      * \param lastSeenMsgId     The last seen message
      */
-    virtual Message::Types bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId) = 0;
+    virtual Message::Types bufferActivity(BufferId bufferId, MsgId lastSeenMsgId) = 0;
 
     /* Message handling */
 
