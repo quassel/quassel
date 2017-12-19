@@ -689,8 +689,9 @@ void CoreSession::globalAway(const QString &msg, const bool skipFormatting)
     }
 }
 
-void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword)
-{
+void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword) {
+    Q_UNUSED(peer);
+
     bool success = false;
     UserId uid = Core::validateUser(userName, oldPassword);
     if (uid.isValid() && uid == user())

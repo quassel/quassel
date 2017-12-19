@@ -17,13 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
+#pragma once
 
-#ifndef CORESESSIONWIDGET_H
-#define CORESESSIONWIDGET_H
-
-#include <QWidget>
-#include <ui_coresessionwidget.h>
 #include <QMap>
+#include <QWidget>
+
+#include "ui_coresessionwidget.h"
 
 class CoreSessionWidget: public QWidget
 {
@@ -44,5 +43,3 @@ private:
     Ui::CoreSessionWidget ui;
     int _peerId;
 };
-
-#endif //CORESESSIONWIDGET_H

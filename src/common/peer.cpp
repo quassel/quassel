@@ -33,6 +33,37 @@ AuthHandler *Peer::authHandler() const
     return _authHandler;
 }
 
+const QDateTime &Peer::connectedSince() const {
+    return _connectedSince;
+}
+
+void Peer::setConnectedSince(const QDateTime &connectedSince) {
+    _connectedSince = connectedSince;
+}
+
+const QString &Peer::buildDate() const {
+    return _buildDate;
+}
+
+void Peer::setBuildDate(const QString &buildDate) {
+    _buildDate = buildDate;
+}
+
+const QString &Peer::clientVersion() const {
+    return _clientVersion;
+}
+
+void Peer::setClientVersion(const QString &clientVersion) {
+    _clientVersion = clientVersion;
+}
+
+int Peer::id() const {
+    return _id;
+}
+
+void Peer::setId(int id) {
+    _id = id;
+}
 
 // PeerPtr is used in RPC signatures for enabling receivers to send replies
 // to a particular peer rather than broadcast to all connected ones.
