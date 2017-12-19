@@ -539,7 +539,7 @@ public:
      * \param bufferId  The buffer id
      * \param MsgId     The Message id where the marker line should be placed
      */
-    static inline void setBufferActivity(UserId user, const BufferId &bufferId, const Message::Types &activity) {
+    static inline void setBufferActivity(UserId user, BufferId bufferId, Message::Types activity) {
         return instance()->_storage->setBufferActivity(user, bufferId, activity);
     }
 
@@ -561,7 +561,7 @@ public:
      * \param bufferId The buffer
      * \param lastSeenMsgId     The last seen message
      */
-    static inline Message::Types bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId) {
+    static inline Message::Types bufferActivity(BufferId bufferId, MsgId lastSeenMsgId) {
         return instance()->_storage->bufferActivity(bufferId, lastSeenMsgId);
     }
 

@@ -42,7 +42,7 @@ public:
 
     void markActivitiesChanged() {
         for (auto buffer : _bufferActivities.keys()) {
-            emit bufferActivityChange(buffer, activity(buffer));
+            emit bufferActivityChanged(buffer, activity(buffer));
         }
     }
 
@@ -59,11 +59,11 @@ public slots:
     virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
     virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) setMarkerLine(buffer, msgId); }
 
-    virtual inline void setBufferActivity(BufferId buffer, const int &activity) {
+    virtual inline void setBufferActivity(BufferId buffer, int activity) {
         auto flags = Message::Types(activity);
         SYNC(ARG(buffer), ARG(activity));
         _bufferActivities[buffer] = flags;
-        emit bufferActivityChange(buffer, flags);
+        emit bufferActivityChanged(buffer, flags);
     }
 
     virtual inline void requestRemoveBuffer(BufferId buffer) { REQUEST(ARG(buffer)) }
@@ -87,7 +87,7 @@ signals:
     void bufferRenamed(BufferId buffer, QString newName);
     void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
     void bufferMarkedAsRead(BufferId buffer);
-    void bufferActivityChange(BufferId, Message::Types);
+    void bufferActivityChanged(BufferId, Message::Types);
 
 protected slots:
     bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);

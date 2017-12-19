@@ -390,7 +390,7 @@ void Client::setSyncedToCore()
     connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), this, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
     connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), _messageModel, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
     connect(bufferSyncer(), SIGNAL(bufferMarkedAsRead(BufferId)), SIGNAL(bufferMarkedAsRead(BufferId)));
-    connect(bufferSyncer(), SIGNAL(bufferActivityChange(BufferId, const Message::Types)), _networkModel, SLOT(bufferActivityChanged(BufferId, const Message::Types)));
+    connect(bufferSyncer(), SIGNAL(bufferActivityChanged(BufferId, const Message::Types)), _networkModel, SLOT(bufferActivityChanged(BufferId, const Message::Types)));
     connect(networkModel(), SIGNAL(requestSetLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
 
     SignalProxy *p = signalProxy();

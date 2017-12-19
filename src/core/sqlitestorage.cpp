@@ -1503,7 +1503,7 @@ QHash<BufferId, MsgId> SqliteStorage::bufferMarkerLineMsgIds(UserId user)
     return markerLineHash;
 }
 
-void SqliteStorage::setBufferActivity(UserId user, const BufferId &bufferId, const Message::Types &bufferActivity)
+void SqliteStorage::setBufferActivity(UserId user, BufferId bufferId, Message::Types bufferActivity)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1553,7 +1553,7 @@ QHash<BufferId, Message::Types> SqliteStorage::bufferActivities(UserId user)
 }
 
 
-Message::Types SqliteStorage::bufferActivity(BufferId &bufferId, const MsgId &lastSeenMsgId)
+Message::Types SqliteStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMsgId)
 {
     QSqlDatabase db = logDb();
     db.transaction();

@@ -45,7 +45,8 @@ CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
 void CoreBufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId)
 {
     if (setLastSeenMsg(buffer, msgId)) {
-        setBufferActivity(buffer, (int) Core::bufferActivity(buffer, msgId));
+        int activity = Core::bufferActivity(buffer, msgId);
+        setBufferActivity(buffer, activity);
         dirtyLastSeenBuffers << buffer;
     }
 }
@@ -190,7 +191,7 @@ void CoreBufferSyncer::purgeBufferIds()
     }
 }
 
-void CoreBufferSyncer::setBufferActivity(BufferId buffer, const int &activity) {
+void CoreBufferSyncer::setBufferActivity(BufferId buffer, int activity) {
     BufferSyncer::setBufferActivity(buffer, activity);
     dirtyActivities << buffer;
 }
