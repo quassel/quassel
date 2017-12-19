@@ -156,9 +156,11 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
                 params << QVariant(argTypes[i], _a[i+1]);
             }
 
-            if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxy()->proxyMode() == SignalProxy::Server) {
-                Peer *peer = params[0].value<PeerPtr>();
-                proxy()->dispatch(peer, RpcCall(signal.signature, params));
+            if (proxy()->_restrictMessageTarget) {
+                for (auto peer : proxy()->_restrictedTargets) {
+                    if (peer != nullptr)
+                        proxy()->dispatch(peer, RpcCall(signal.signature, params));
+                }
             } else
                 proxy()->dispatch(RpcCall(signal.signature, params));
         }
@@ -207,7 +209,7 @@ SignalProxy::~SignalProxy()
 
 void SignalProxy::setProxyMode(ProxyMode mode)
 {
-    if (_peers.count()) {
+    if (!_peerMap.empty()) {
         qWarning() << Q_FUNC_INFO << "Cannot change proxy mode while connected";
         return;
     }
@@ -266,7 +268,7 @@ bool SignalProxy::addPeer(Peer *peer)
     if (!peer)
         return false;
 
-    if (_peers.contains(peer))
+    if (_peerMap.values().contains(peer))
         return true;
 
     if (!peer->isOpen()) {
@@ -275,7 +277,7 @@ bool SignalProxy::addPeer(Peer *peer)
     }
 
     if (proxyMode() == Client) {
-        if (!_peers.isEmpty()) {
+        if (!_peerMap.isEmpty()) {
             qWarning("SignalProxy: only one peer allowed in client mode!");
             return false;
         }
@@ -288,11 +290,16 @@ bool SignalProxy::addPeer(Peer *peer)
     if (!peer->parent())
         peer->setParent(this);
 
-    _peers.insert(peer);
+    if (peer->id() < 0) {
+        peer->setId(nextPeerId());
+        peer->setConnectedSince(QDateTime::currentDateTimeUtc());
+    }
+
+    _peerMap[peer->id()] = peer;
 
     peer->setSignalProxy(this);
 
-    if (_peers.count() == 1)
+    if (peerCount() == 1)
         emit connected();
 
     updateSecureState();
@@ -302,10 +309,10 @@ bool SignalProxy::addPeer(Peer *peer)
 
 void SignalProxy::removeAllPeers()
 {
-    Q_ASSERT(proxyMode() == Server || _peers.count() <= 1);
+    Q_ASSERT(proxyMode() == Server || peerCount() <= 1);
     // wee need to copy that list since we modify it in the loop
-    QSet<Peer *> peers = _peers;
-    foreach(Peer *peer, peers) {
+    QList<Peer *> peers = _peerMap.values();
+    for (auto peer : peers) {
         removePeer(peer);
     }
 }
@@ -318,12 +325,12 @@ void SignalProxy::removePeer(Peer *peer)
         return;
     }
 
-    if (_peers.isEmpty()) {
+    if (_peerMap.isEmpty()) {
         qWarning() << "SignalProxy::removePeer(): No peers in use!";
         return;
     }
 
-    if (!_peers.contains(peer)) {
+    if (!_peerMap.values().contains(peer)) {
         qWarning() << "SignalProxy: unknown Peer" << peer;
         return;
     }
@@ -331,7 +338,7 @@ void SignalProxy::removePeer(Peer *peer)
     disconnect(peer, 0, this, 0);
     peer->setSignalProxy(0);
 
-    _peers.remove(peer);
+    _peerMap.remove(peer->id());
     emit peerRemoved(peer);
 
     if (peer->parent() == this)
@@ -339,7 +346,7 @@ void SignalProxy::removePeer(Peer *peer)
 
     updateSecureState();
 
-    if (_peers.isEmpty())
+    if (_peerMap.isEmpty())
         emit disconnected();
 }
 
@@ -506,7 +513,7 @@ void SignalProxy::stopSynchronize(SyncableObject *obj)
 template<class T>
 void SignalProxy::dispatch(const T &protoMessage)
 {
-    foreach (Peer *peer, _peers) {
+    for (auto peer : _peerMap.values()) {
         if (peer->isOpen())
             peer->dispatch(protoMessage);
         else
@@ -661,12 +668,8 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
             qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << eMeta->methodName(methodId);
             return false;
         }
-        // if first arg is a PeerPtr, replace it by the address of the peer originally receiving the RpcCall
-        if (peer && i == 0 && args[0] == qMetaTypeId<PeerPtr>()) {
-            QVariant v = QVariant::fromValue<PeerPtr>(peer);
-            _a[1] = const_cast<void*>(v.constData());
-        } else
-            _a[i+1] = const_cast<void *>(params[i].constData());
+
+        _a[i+1] = const_cast<void *>(params[i].constData());
     }
 
     if (returnValue.type() != QVariant::Invalid)
@@ -677,9 +680,11 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
                               : Qt::QueuedConnection;
 
     if (type == Qt::DirectConnection) {
-        return receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
-    }
-    else {
+        _sourcePeer = peer;
+        auto result = receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
+        _sourcePeer = nullptr;
+        return result;
+    } else {
         qWarning() << "Queued Connections are not implemented yet";
         // note to self: qmetaobject.cpp:990 ff
         return false;
@@ -758,9 +763,11 @@ void SignalProxy::sync_call__(const SyncableObject *obj, SignalProxy::ProxyMode 
         params << QVariant(argTypes[i], va_arg(ap, void *));
     }
 
-    if (argTypes.size() >= 1 && argTypes[0] == qMetaTypeId<PeerPtr>() && proxyMode() == SignalProxy::Server) {
-        Peer *peer = params[0].value<PeerPtr>();
-        dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+    if (_restrictMessageTarget) {
+        for (auto peer : _restrictedTargets) {
+            if (peer != nullptr)
+                dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+        }
     } else
         dispatch(SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
 }
@@ -801,8 +808,8 @@ void SignalProxy::updateSecureState()
 {
     bool wasSecure = _secure;
 
-    _secure = !_peers.isEmpty();
-    foreach (const Peer *peer,  _peers) {
+    _secure = !_peerMap.isEmpty();
+    for (auto peer :  _peerMap.values()) {
         _secure &= peer->isSecure();
     }
 
@@ -810,6 +817,39 @@ void SignalProxy::updateSecureState()
         emit secureStateChanged(_secure);
 }
 
+QVariantList SignalProxy::peerData() {
+    QVariantList result;
+    for (auto peer : _peerMap.values()) {
+        QVariantMap data;
+        data["id"] = peer->id();
+        data["clientVersion"] = peer->clientVersion();
+        // We explicitly rename this, as, due to the Debian reproducability changes, buildDate isn’t actually the build
+        // date anymore, but on newer clients the date of the last git commit
+        data["clientVersionDate"] = peer->buildDate();
+        data["remoteAddress"] = peer->address();
+        data["connectedSince"] = peer->connectedSince();
+        data["secure"] = peer->isSecure();
+        result << data;
+    }
+    return result;
+}
+
+Peer *SignalProxy::peerById(int peerId) {
+    return _peerMap[peerId];
+}
+
+void SignalProxy::restrictTargetPeers(QSet<Peer*> peers, std::function<void()> closure)
+{
+    auto previousRestrictMessageTarget = _restrictMessageTarget;
+    auto previousRestrictedTargets = _restrictedTargets;
+    _restrictMessageTarget = true;
+    _restrictedTargets = peers;
+
+    closure();
+
+    _restrictMessageTarget = previousRestrictMessageTarget;
+    _restrictedTargets = previousRestrictedTargets;
+}
 
 // ==================================================
 //  ExtendedMetaObject

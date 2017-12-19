@@ -22,6 +22,7 @@ set(SOURCES
     coreconnectdlg.cpp
     coreconnectionstatuswidget.cpp
     coreinfodlg.cpp
+    coresessionwidget.cpp
     debugbufferviewoverlay.cpp
     debugconsole.cpp
     debuglogwidget.cpp
@@ -67,6 +68,7 @@ set(FORMS
     coreconnectauthdlg.ui
     coreconnectionstatuswidget.ui
     coreinfodlg.ui
+    coresessionwidget.ui
     debugbufferviewoverlay.ui
     debugconsole.ui
     debuglogwidget.ui

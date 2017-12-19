@@ -58,6 +58,15 @@ QString InternalPeer::description() const
     return tr("internal connection");
 }
 
+QString InternalPeer::address() const
+{
+    return tr("internal connection");
+}
+
+quint16 InternalPeer::port() const
+{
+    return 0;
+}
 
 bool InternalPeer::isOpen() const
 {

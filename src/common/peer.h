@@ -34,13 +34,25 @@ class Peer : public QObject
     Q_OBJECT
 
 public:
-    Peer(AuthHandler *authHandler, QObject *parent = 0);
+    explicit Peer(AuthHandler *authHandler, QObject *parent = 0);
 
     virtual Protocol::Type protocol() const = 0;
     virtual QString description() const = 0;
 
     virtual SignalProxy *signalProxy() const = 0;
     virtual void setSignalProxy(SignalProxy *proxy) = 0;
+
+    const QDateTime &connectedSince() const;
+    void setConnectedSince(const QDateTime &connectedSince);
+
+    const QString &buildDate() const;
+    void setBuildDate(const QString &buildDate);
+
+    const QString &clientVersion() const;
+    void setClientVersion(const QString &clientVersion);
+
+    int id() const;
+    void setId(int id);
 
     AuthHandler *authHandler() const;
 
@@ -49,6 +61,9 @@ public:
     virtual bool isLocal() const = 0;
 
     virtual int lag() const = 0;
+
+    virtual QString address() const = 0;
+    virtual quint16 port() const = 0;
 
 public slots:
     /* Handshake messages */
@@ -82,6 +97,13 @@ protected:
 
 private:
     QPointer<AuthHandler> _authHandler;
+
+    QDateTime _connectedSince;
+
+    QString _buildDate;
+    QString _clientVersion;
+
+    int _id = -1;
 };
 
 // We need to special-case Peer* in attached signals/slots, so typedef it for the meta type system
