@@ -24,10 +24,9 @@
 #include <QVariantList>
 #include <QTableWidgetItem>
 #include <highlightrulemanager.h>
-#include <ui_corehighlightsettingspage.h>
 
 #include "settingspage.h"
-#include "ui_highlightsettingspage.h"
+#include "ui_corehighlightsettingspage.h"
 
 class CoreHighlightSettingsPage : public SettingsPage
 {

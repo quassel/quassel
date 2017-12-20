@@ -33,9 +33,9 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     setupRuleTable(ui.highlightTable);
     setupRuleTable(ui.ignoredTable);
 
-    ui.highlightNicksComboBox->addItem(tr("All Nicks from Identity"), HighlightRuleManager::AllNicks);
-    ui.highlightNicksComboBox->addItem(tr("Current Nick"), HighlightRuleManager::CurrentNick);
-    ui.highlightNicksComboBox->addItem(tr("None"), HighlightRuleManager::NoNick);
+    ui.highlightNicksComboBox->addItem(tr("All Nicks from Identity"), QVariant(HighlightRuleManager::AllNicks));
+    ui.highlightNicksComboBox->addItem(tr("Current Nick"), QVariant(HighlightRuleManager::CurrentNick));
+    ui.highlightNicksComboBox->addItem(tr("None"), QVariant(HighlightRuleManager::NoNick));
 
     connect(ui.highlightAdd, SIGNAL(clicked(bool)), this, SLOT(addNewHighlightRow()));
     connect(ui.highlightRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedHighlightRows()));
@@ -80,19 +80,19 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->verticalHeader()->hide();
     table->setShowGrid(false);
 
-    table->horizontalHeaderItem(RegExColumn)->setToolTip(
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setToolTip(
         tr("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword."));
-    table->horizontalHeaderItem(RegExColumn)->setWhatsThis(
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setWhatsThis(
         tr("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword."));
 
-    table->horizontalHeaderItem(CsColumn)->setToolTip(
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setToolTip(
         tr("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>."));
-    table->horizontalHeaderItem(CsColumn)->setWhatsThis(
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setWhatsThis(
         tr("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>."));
 
-    table->horizontalHeaderItem(ChanColumn)->setToolTip(
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setToolTip(
         tr("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive."));
-    table->horizontalHeaderItem(ChanColumn)->setWhatsThis(
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setWhatsThis(
         tr("<b>Channel</b>: This regular expression determines for which <b>channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive."));
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -102,11 +102,11 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 #else
-    table->horizontalHeader()->setSectionResizeMode(EnableColumn, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(NameColumn, QHeaderView::Stretch);
-    table->horizontalHeader()->setSectionResizeMode(RegExColumn, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(CsColumn, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(ChanColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::NameColumn, QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 #endif
 }
 
@@ -131,8 +131,8 @@ bool CoreHighlightSettingsPage::hasDefaults() const
 
 void CoreHighlightSettingsPage::defaults()
 {
-    ui.highlightNicksComboBox->setCurrentIndex(ui.highlightNicksComboBox
-                                                   ->findData(QVariant(HighlightRuleManager::HighlightNickType::CurrentNick)));
+    int defaultIndex = ui.highlightNicksComboBox->findData(QVariant(HighlightRuleManager::HighlightNickType::CurrentNick));
+    ui.highlightNicksComboBox->setCurrentIndex(defaultIndex);
     ui.nicksCaseSensitive->setChecked(false);
     emptyHighlightTable();
     emptyIgnoredTable();
@@ -292,7 +292,7 @@ void CoreHighlightSettingsPage::emptyHighlightTable()
     if (ui.highlightTable->rowCount() != highlightList.size()) {
         qDebug() << "something is wrong: ui.highlight and highlightList don't have the same size!";
     }
-    ui.highlightTable->clear();
+    ui.highlightTable->clearContents();
     highlightList.clear();
 }
 
@@ -302,7 +302,7 @@ void CoreHighlightSettingsPage::emptyIgnoredTable()
     if (ui.ignoredTable->rowCount() != ignoredList.size()) {
         qDebug() << "something is wrong: ui.highlight and highlightList don't have the same size!";
     }
-    ui.ignoredTable->clear();
+    ui.ignoredTable->clearContents();
     ignoredList.clear();
 }
 
@@ -408,6 +408,8 @@ void CoreHighlightSettingsPage::load()
 
         setChangedState(false);
         _initialized = true;
+    } else {
+        defaults();
     }
 }
 
