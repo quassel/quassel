@@ -131,7 +131,8 @@ bool CoreHighlightSettingsPage::hasDefaults() const
 
 void CoreHighlightSettingsPage::defaults()
 {
-    int defaultIndex = ui.highlightNicksComboBox->findData(QVariant(HighlightRuleManager::HighlightNickType::CurrentNick));
+    int highlightNickType = HighlightRuleManager::HighlightNickType::CurrentNick;
+    int defaultIndex = ui.highlightNicksComboBox->findData(QVariant(highlightNickType));
     ui.highlightNicksComboBox->setCurrentIndex(defaultIndex);
     ui.nicksCaseSensitive->setChecked(false);
     emptyHighlightTable();
@@ -402,8 +403,8 @@ void CoreHighlightSettingsPage::load()
             }
         }
 
-        ui.highlightNicksComboBox
-            ->setCurrentIndex(ui.highlightNicksComboBox->findData(QVariant(ruleManager->highlightNick())));
+        int highlightNickType = ruleManager->highlightNick();
+        ui.highlightNicksComboBox->setCurrentIndex(ui.highlightNicksComboBox->findData(QVariant(highlightNickType)));
         ui.nicksCaseSensitive->setChecked(ruleManager->nicksCaseSensitive());
 
         setChangedState(false);
@@ -439,9 +440,9 @@ void CoreHighlightSettingsPage::save()
                                        rule.sender, rule.chanName);
     }
 
-    auto highlightNickType = ui.highlightNicksComboBox->currentData().value<HighlightRuleManager::HighlightNickType>();
+    auto highlightNickType = ui.highlightNicksComboBox->currentData().value<int>();
 
-    clonedManager.setHighlightNick(highlightNickType);
+    clonedManager.setHighlightNick(HighlightRuleManager::HighlightNickType(highlightNickType));
     clonedManager.setNicksCaseSensitive(ui.nicksCaseSensitive->isChecked());
 
     ruleManager->requestUpdate(clonedManager.toVariantMap());
