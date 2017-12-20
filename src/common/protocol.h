@@ -42,7 +42,7 @@ enum Feature {
 };
 
 
-enum Handler {
+enum class Handler {
     SignalProxy,
     AuthHandler
 };
@@ -51,7 +51,7 @@ enum Handler {
 /*** Handshake, handled by AuthHandler ***/
 
 struct HandshakeMessage {
-    inline Handler handler() const { return AuthHandler; }
+    inline Handler handler() const { return Handler::AuthHandler; }
 };
 
 
@@ -179,7 +179,7 @@ struct SessionState : public HandshakeMessage
 
 struct SignalProxyMessage
 {
-    inline Handler handler() const { return SignalProxy; }
+    inline Handler handler() const { return Handler::SignalProxy; }
 };
 
 
