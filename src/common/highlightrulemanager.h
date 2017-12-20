@@ -18,12 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef HIGHLIGHTRULELISTMANAGER_H
-#define HIGHLIGHTRULELISTMANAGER_H
+#pragma once
 
-#include <QString>
-#include <QRegExp>
 #include <utility>
+
+#include <QRegExp>
+#include <QString>
+#include <QStringList>
+#include <QVariantList>
+#include <QVariantMap>
 
 #include "message.h"
 #include "syncableobject.h"
@@ -80,7 +83,7 @@ public:
     inline const HighlightRuleList &highlightRuleList() const { return _highlightRuleList; }
 
     inline HighlightNickType highlightNick() { return _highlightNick; }
-    inline bool  nicksCaseSensitive() { return _nicksCaseSensitive; }
+    inline bool nicksCaseSensitive() { return _nicksCaseSensitive; }
 
     //! Check if a message matches the HighlightRule
     /** This method checks if a message matches the users highlight rules.
@@ -141,7 +144,13 @@ public slots:
 protected:
     void setHighlightRuleList(const QList<HighlightRule> &HighlightRuleList) { _highlightRuleList = HighlightRuleList; }
 
-    bool _match(const QString &msgContents, const QString &msgSender, Message::Type msgType, Message::Flags msgFlags, const QString &bufferName, const QString &currentNick, const QStringList identityNicks);
+    bool match(const QString &msgContents,
+               const QString &msgSender,
+               Message::Type msgType,
+               Message::Flags msgFlags,
+               const QString &bufferName,
+               const QString &currentNick,
+               const QStringList identityNicks);
 
 signals:
     void ruleAdded(QString name, bool isRegEx, bool isCaseSensitive, bool isEnabled, bool isInverse, QString sender, QString chanName);
@@ -151,6 +160,3 @@ private:
     HighlightNickType _highlightNick = HighlightNickType::CurrentNick;
     bool _nicksCaseSensitive = false;
 };
-
-
-#endif // HIGHLIGHTRULELISTMANAGER_H

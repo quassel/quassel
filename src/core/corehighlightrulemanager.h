@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREHIGHLIGHTRULEMANAHER_H
-#define COREHIGHLIGHTRULEMANAHER_H
+#pragma once
 
 #include "highlightrulemanager.h"
 
@@ -28,8 +27,10 @@ struct RawMessage;
 
 class CoreHighlightRuleManager : public HighlightRuleManager
 {
+    Q_OBJECT
     SYNCABLE_OBJECT
-        Q_OBJECT
+
+    using HighlightRuleManager::match;
 
 public:
     explicit CoreHighlightRuleManager(CoreSession *parent);
@@ -37,6 +38,7 @@ public:
     inline virtual const QMetaObject *syncMetaObject() const { return &HighlightRuleManager::staticMetaObject; }
 
     bool match(const RawMessage &msg, const QString &currentNick, const QStringList &identityNicks);
+
 public slots:
     virtual inline void requestToggleHighlightRule(const QString &highlightRule) { toggleHighlightRule(highlightRule); }
     virtual inline void requestRemoveHighlightRule(const QString &highlightRule) { removeHighlightRule(highlightRule); }
@@ -50,6 +52,3 @@ public slots:
 private slots:
     void save() const;
 };
-
-
-#endif //COREHIGHLIGHTRULEMANAHER_H

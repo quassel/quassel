@@ -27,7 +27,6 @@
 #include <QTableView>
 #include <QToolBar>
 #include <QInputDialog>
-#include <settingspages/corehighlightsettingspage.h>
 
 #ifdef HAVE_KDE4
 #  include <KHelpMenu>
@@ -147,6 +146,7 @@
 #include "settingspages/connectionsettingspage.h"
 #include "settingspages/coreaccountsettingspage.h"
 #include "settingspages/coreconnectionsettingspage.h"
+#include <settingspages/corehighlightsettingspage.h>
 #include "settingspages/dccsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"

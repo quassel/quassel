@@ -26,12 +26,12 @@
 
 #include "corecoreinfo.h"
 #include "corealiasmanager.h"
+#include "corehighlightrulemanager.h"
 #include "coreignorelistmanager.h"
 #include "peer.h"
 #include "protocol.h"
 #include "message.h"
 #include "storage.h"
-#include "corehighlightrulemanager.h"
 
 class CoreBacklogManager;
 class CoreBufferSyncer;

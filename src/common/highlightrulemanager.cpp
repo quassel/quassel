@@ -19,11 +19,10 @@
  ***************************************************************************/
 
 #include "highlightrulemanager.h"
+
 #include "util.h"
 
-#include <QtCore>
 #include <QDebug>
-#include <QStringList>
 
 INIT_SYNCABLE_OBJECT(HighlightRuleManager)
 HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager &other)
@@ -123,7 +122,13 @@ void HighlightRuleManager::addHighlightRule(const QString &name, bool isRegEx, b
 }
 
 
-bool HighlightRuleManager::_match(const QString &msgContents, const QString &msgSender, Message::Type msgType, Message::Flags msgFlags, const QString &bufferName, const QString &currentNick, const QStringList identityNicks)
+bool HighlightRuleManager::match(const QString &msgContents,
+                                 const QString &msgSender,
+                                 Message::Type msgType,
+                                 Message::Flags msgFlags,
+                                 const QString &bufferName,
+                                 const QString &currentNick,
+                                 const QStringList identityNicks)
 {
     if (!((msgType & (Message::Plain | Message::Notice | Message::Action)) && !(msgFlags & Message::Self))) {
        return false;
@@ -222,5 +227,5 @@ void HighlightRuleManager::toggleHighlightRule(const QString &highlightRule)
 
 bool HighlightRuleManager::match(const Message &msg, const QString &currentNick, const QStringList &identityNicks)
 {
-    return _match(msg.contents(), msg.sender(), msg.type(), msg.flags(), msg.bufferInfo().bufferName(), currentNick, identityNicks);
+    return match(msg.contents(), msg.sender(), msg.type(), msg.flags(), msg.bufferInfo().bufferName(), currentNick, identityNicks);
 }

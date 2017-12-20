@@ -18,12 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QHeaderView>
 #include <QTableWidget>
-#include <QtWidgets/QHeaderView>
 
+#include "client.h"
 #include "corehighlightsettingspage.h"
 #include "qtui.h"
-#include "client.h"
 
 CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Core-Side Highlights"), parent)
@@ -75,6 +75,7 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
 
     connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
 }
+
 void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
 {
     table->verticalHeader()->hide();
@@ -318,6 +319,7 @@ void CoreHighlightSettingsPage::highlightTableChanged(QTableWidgetItem *item)
     switch (item->column()) {
         case CoreHighlightSettingsPage::EnableColumn:
             highlightRule.isEnabled = (item->checkState() == Qt::Checked);
+            break;
         case CoreHighlightSettingsPage::NameColumn:
             if (item->text() == "")
                 item->setText(tr("this shouldn't be empty"));
@@ -355,6 +357,7 @@ void CoreHighlightSettingsPage::ignoredTableChanged(QTableWidgetItem *item)
     switch (item->column()) {
         case CoreHighlightSettingsPage::EnableColumn:
             ignoredRule.isEnabled = (item->checkState() == Qt::Checked);
+            break;
         case CoreHighlightSettingsPage::NameColumn:
             if (item->text() == "")
                 item->setText(tr("this shouldn't be empty"));
@@ -440,7 +443,7 @@ void CoreHighlightSettingsPage::save()
                                        rule.sender, rule.chanName);
     }
 
-    auto highlightNickType = ui.highlightNicksComboBox->currentData().value<int>();
+    auto highlightNickType = ui.highlightNicksComboBox->itemData(ui.highlightNicksComboBox->currentIndex()).value<int>();
 
     clonedManager.setHighlightNick(HighlightRuleManager::HighlightNickType(highlightNickType));
     clonedManager.setNicksCaseSensitive(ui.nicksCaseSensitive->isChecked());

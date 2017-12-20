@@ -18,14 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef _COREHIGHLIGHTSETTINGSPAGE_H_
-#define _COREHIGHLIGHTSETTINGSPAGE_H_
+#pragma once
 
 #include <QVariantList>
 #include <QTableWidgetItem>
-#include <highlightrulemanager.h>
 
+#include "highlightrulemanager.h"
 #include "settingspage.h"
+
 #include "ui_corehighlightsettingspage.h"
 
 class CoreHighlightSettingsPage : public SettingsPage
@@ -60,8 +60,10 @@ private slots:
 
 private:
     Ui::CoreHighlightSettingsPage ui;
+
     HighlightRuleManager::HighlightRuleList highlightList;
     HighlightRuleManager::HighlightRuleList ignoredList;
+
     enum column {
         EnableColumn = 0,
         NameColumn = 1,
@@ -79,6 +81,3 @@ private:
 
     bool _initialized;
 };
-
-
-#endif

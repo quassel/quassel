@@ -18,16 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#pragma once
 
 #include <QList>
 #include <QPointer>
-#include <highlightrulemanager.h>
 
 #include "bufferinfo.h"
 #include "coreaccount.h"
 #include "coreconnection.h"
+#include "highlightrulemanager.h"
 #include "quassel.h"
 #include "types.h"
 
@@ -287,6 +286,3 @@ private:
 
     friend class CoreConnection;
 };
-
-
-#endif
