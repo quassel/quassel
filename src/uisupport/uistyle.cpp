@@ -32,6 +32,7 @@ QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
 bool UiStyle::_useCustomTimestampFormat;       /// If true, use the custom timestamp format
 QString UiStyle::_timestampFormatString;       /// Timestamp format
 QString UiStyle::_systemTimestampFormatString; /// Cached copy of system locale timestamp format
+bool UiStyle::_showSenderPrefixes;             /// If true, show prefixmodes before sender names
 bool UiStyle::_showSenderBrackets;             /// If true, show brackets around sender names
 
 UiStyle::UiStyle(QObject *parent)
@@ -74,6 +75,7 @@ UiStyle::UiStyle(QObject *parent)
     // in there.
     setUseCustomTimestampFormat(false);
     setTimestampFormatString(" hh:mm:ss");
+    enableSenderPrefixes(false);
     enableSenderBrackets(true);
 
     // BufferView / NickView settings
@@ -221,6 +223,13 @@ void UiStyle::setTimestampFormatString(const QString &format)
 {
     if (_timestampFormatString != format) {
         _timestampFormatString = format;
+    }
+}
+
+void UiStyle::enableSenderPrefixes(bool enabled)
+{
+    if (_showSenderPrefixes != enabled) {
+        _showSenderPrefixes = enabled;
     }
 }
 
@@ -908,15 +917,20 @@ QString UiStyle::StyledMessage::plainSender() const
 
 QString UiStyle::StyledMessage::decoratedSender() const
 {
+    QString _senderPrefixes;
+    if (_showSenderPrefixes) {
+        _senderPrefixes = senderPrefixes();
+    }
+
     switch (type()) {
     case Message::Plain:
         if (_showSenderBrackets)
-            return QString("<%1>").arg(plainSender());
+            return QString("<%1%2>").arg(_senderPrefixes, plainSender());
         else
-            return QString("%1").arg(plainSender());
+            return QString("%1%2").arg(_senderPrefixes, plainSender());
         break;
     case Message::Notice:
-        return QString("[%1]").arg(plainSender()); break;
+        return QString("[%1%2]").arg(_senderPrefixes, plainSender()); break;
     case Message::Action:
         return "-*-"; break;
     case Message::Nick:
@@ -950,7 +964,7 @@ QString UiStyle::StyledMessage::decoratedSender() const
     case Message::Invite:
         return "->"; break;
     default:
-        return QString("%1").arg(plainSender());
+        return QString("%1%2").arg(_senderPrefixes, plainSender());
     }
 }
 

@@ -93,6 +93,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="showSenderPrefixes">
+     <property name="toolTip">
+      <string>Shows the modes of senders before their name (e.g. @, +)</string>
+     </property>
+     <property name="text">
+      <string>Show sendermodes in front of nicknames:</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">ShowSenderPrefixes</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QCheckBox" name="customChatViewFont">

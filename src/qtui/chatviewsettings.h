@@ -74,6 +74,13 @@ public:
     inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
 
     /**
+     * Gets if prefixmodes are shown before sender names
+     *
+     * @returns True if sender prefixmodes enabled, otherwise false
+     */
+    inline bool showSenderPrefixes() { return localValue("ShowSenderPrefixes", false).toBool(); }
+
+    /**
      * Gets if brackets are shown around sender names
      *
      * @returns True if sender brackets enabled, otherwise false

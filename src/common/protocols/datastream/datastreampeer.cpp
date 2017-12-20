@@ -116,7 +116,7 @@ void DataStreamPeer::handleHandshakeMessage(const QVariantList &mapData)
     }
 
     if (msgType == "ClientInit") {
-        handle(RegisterClient(m["ClientVersion"].toString(), m["ClientDate"].toString(), false)); // UseSsl obsolete
+        handle(RegisterClient(m["ClientVersion"].toString(), m["ClientDate"].toString(), false, m["Features"].toInt())); // UseSsl obsolete
     }
 
     else if (msgType == "ClientInitReject") {
@@ -168,6 +168,7 @@ void DataStreamPeer::dispatch(const RegisterClient &msg) {
     m["MsgType"] = "ClientInit";
     m["ClientVersion"] = msg.clientVersion;
     m["ClientDate"] = msg.buildDate;
+    m["Features"] = msg.clientFeatures;
 
     writeMessage(m);
 }

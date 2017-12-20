@@ -78,8 +78,9 @@ public:
         AwayFormatTimestamp = 0x0200,      /// Timestamp formatting in away (e.g. %%hh:mm%%)
         Authenticators = 0x0400,           /// Whether or not the core supports auth backends.
         BufferActivitySync = 0x0800,       /// Sync buffer activity status
+        SenderPrefixes = 0x2000,           /// Show prefixes for senders in backlog
 
-        NumFeatures = 0x0800
+        NumFeatures = 0x2000
     };
     Q_DECLARE_FLAGS(Features, Feature)
 

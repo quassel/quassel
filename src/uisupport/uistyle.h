@@ -284,6 +284,12 @@ protected:
      * @param[in] format   Timestamp format string
      */
     static void setTimestampFormatString(const QString &format);
+    /**
+     * Updates the local setting cache of whether or not to show sender prefixmodes
+     *
+     * @param[in] enabled  If true, sender prefixmodes are enabled, otherwise false.
+     */
+    static void enableSenderPrefixes(bool enabled);
 
     /**
      * Updates the local setting cache of whether or not to show sender brackets
@@ -309,6 +315,7 @@ private:
     static bool _useCustomTimestampFormat;        /// If true, use the custom timestamp format
     static QString _systemTimestampFormatString;  /// Cached copy of system locale timestamp format
     static QString _timestampFormatString;        /// Timestamp format string
+    static bool _showSenderPrefixes;              /// If true, show prefixmodes before sender names
     static bool _showSenderBrackets;              /// If true, show brackets around sender names
 
     QIcon _channelJoinedIcon;
