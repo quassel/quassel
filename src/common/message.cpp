@@ -21,6 +21,8 @@
 #include "message.h"
 
 #include "util.h"
+#include "signalproxy.h"
+#include "peer.h"
 
 #include <QDataStream>
 
@@ -51,28 +53,52 @@ Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, c
 QDataStream &operator<<(QDataStream &out, const Message &msg)
 {
     // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
-    out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
-    << msg.bufferInfo() << msg.sender().toUtf8() << msg.contents().toUtf8();
+    out << msg.msgId()
+        << (quint32) msg.timestamp().toTime_t()
+        << (quint32) msg.type()
+        << (quint8) msg.flags()
+        << msg.bufferInfo()
+        << msg.sender().toUtf8();
+
+    if (SignalProxy::current()->targetPeer()->features().testFlag(Quassel::Feature::SenderPrefixes))
+        out << msg.senderPrefixes().toUtf8();
+
+    out << msg.contents().toUtf8();
     return out;
 }
 
 
 QDataStream &operator>>(QDataStream &in, Message &msg)
 {
-    quint8 f;
-    quint32 t;
-    quint32 ts;
-    QByteArray s, m;
-    BufferInfo buf;
-    in >> msg._msgId >> ts >> t >> f >> buf >> s >> m;
-    msg._type = (Message::Type)t;
-    msg._flags = (Message::Flags)f;
-    msg._bufferInfo = buf;
-    msg._timestamp = QDateTime::fromTime_t(ts);
-    msg._sender = QString::fromUtf8(s);
-    // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
-    msg._senderPrefixes = QString("");
-    msg._contents = QString::fromUtf8(m);
+    in >> msg._msgId;
+
+    quint32 timeStamp;
+    in >> timeStamp;
+    msg._timestamp = QDateTime::fromTime_t(timeStamp);
+
+    quint32 type;
+    in >> type;
+    msg._type = Message::Type(type);
+
+    quint8 flags;
+    in >> flags;
+    msg._flags = Message::Flags(flags);
+
+    in >> msg._bufferInfo;
+
+    QByteArray sender;
+    in >> sender;
+    msg._sender = QString::fromUtf8(sender);
+
+    QByteArray senderPrefixes;
+    if (SignalProxy::current()->sourcePeer()->features().testFlag(Quassel::Feature::SenderPrefixes))
+        in >> senderPrefixes;
+    msg._senderPrefixes = QString::fromUtf8(senderPrefixes);
+
+    QByteArray contents;
+    in >> contents;
+    msg._contents = QString::fromUtf8(contents);
+
     return in;
 }
 

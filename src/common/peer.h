@@ -28,6 +28,7 @@
 #include "authhandler.h"
 #include "protocol.h"
 #include "signalproxy.h"
+#include "quassel.h"
 
 class Peer : public QObject
 {
@@ -50,6 +51,9 @@ public:
 
     QString clientVersion() const;
     void setClientVersion(const QString &clientVersion);
+
+    Quassel::Features features() const;
+    void setFeatures(Quassel::Features features);
 
     int id() const;
     void setId(int id);
@@ -102,6 +106,7 @@ private:
 
     QString _buildDate;
     QString _clientVersion;
+    Quassel::Features _features;
 
     int _id = -1;
 };

@@ -79,8 +79,9 @@ public:
         Authenticators = 0x0400,           /// Whether or not the core supports auth backends.
         BufferActivitySync = 0x0800,       /// Sync buffer activity status
         CoreSideHighlights = 0x1000,       /// Core-Side highlight configuration and matching
+        SenderPrefixes = 0x2000,           /// Show prefixes for senders in backlog
 
-        NumFeatures = 0x1000
+        NumFeatures = 0x2000
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
