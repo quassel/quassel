@@ -20,13 +20,14 @@
 
 #include "highlightsettingspage.h"
 
+#include "client.h"
 #include "qtui.h"
 #include "uisettings.h"
 
 #include <QHeaderView>
 
 HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Highlight"), parent)
+    : SettingsPage(tr("Interface"), tr("Local Highlights"), parent)
 {
     ui.setupUi(this);
     ui.highlightTable->verticalHeader()->hide();
@@ -291,4 +292,8 @@ bool HighlightSettingsPage::testHasChanged()
         return true;
 
     return false;
+}
+
+bool HighlightSettingsPage::isSelectable() const {
+    return !Client::isConnected() || !Client::coreFeatures().testFlag(Quassel::Feature::CoreSideHighlights);
 }

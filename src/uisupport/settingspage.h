@@ -74,6 +74,13 @@ public:
      */
     inline virtual bool needsCoreConnection() const { return false; }
 
+    /**
+     * Whether the settingspage should be selectable or not, in a given situation
+     * Used for pages that should only be visible if certain features are available (or not).
+     * @return
+     */
+    inline virtual bool isSelectable() const { return true; }
+
     //! The key this settings page stores its values under
     /** This needs to be overriden to enable automatic loading/saving/hasChanged checking of widgets.
      *  The child widgets' values will be stored in client settings under this key. Every widget that
