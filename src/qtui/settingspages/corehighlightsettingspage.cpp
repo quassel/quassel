@@ -26,7 +26,7 @@
 #include "qtui.h"
 
 CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Core-Side Highlights"), parent)
+    : SettingsPage(tr("Interface"), tr("Remote Highlights"), parent)
 {
     ui.setupUi(this);
 
@@ -495,4 +495,8 @@ void CoreHighlightSettingsPage::importRules() {
     Client::highlightRuleManager()->requestUpdate(clonedManager.toVariantMap());
     setChangedState(false);
     load();
+}
+
+bool CoreHighlightSettingsPage::isSelectable() const {
+    return Client::isConnected() && Client::isCoreFeatureEnabled(Quassel::Feature::CoreSideHighlights);
 }

@@ -36,6 +36,8 @@ public:
 
     bool hasDefaults() const;
 
+    bool isSelectable() const override;
+
 public slots:
     void save();
     void load();
