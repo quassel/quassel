@@ -37,6 +37,9 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     ui.highlightNicksComboBox->addItem(tr("Current Nick"), QVariant(HighlightRuleManager::CurrentNick));
     ui.highlightNicksComboBox->addItem(tr("None"), QVariant(HighlightRuleManager::NoNick));
 
+    coreConnectionStateChanged(Client::isConnected()); // need a core connection!
+    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
+
     connect(ui.highlightAdd, SIGNAL(clicked(bool)), this, SLOT(addNewHighlightRow()));
     connect(ui.highlightRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedHighlightRows()));
 
@@ -74,6 +77,16 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
             SLOT(ignoredTableChanged(QTableWidgetItem * )));
 
     connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
+}
+
+void CoreHighlightSettingsPage::coreConnectionStateChanged(bool state)
+{
+    setEnabled(state);
+    if (state) {
+        load();
+    } else {
+        revert();
+    }
 }
 
 void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const

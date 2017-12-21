@@ -45,6 +45,7 @@ public slots:
     void clientConnected();
 
 private slots:
+    void coreConnectionStateChanged(bool state);
     void widgetHasChanged();
     void addNewHighlightRow(bool enable = true, const QString &name = tr("highlight rule"), bool regex = false,
                             bool cs = false, const QString &sender = "", const QString &chanName = "",
