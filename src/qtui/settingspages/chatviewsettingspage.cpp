@@ -34,10 +34,14 @@ ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
 #endif
 
     // FIXME remove with protocol v11
-    if (!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
+    if (!Client::coreFeatures().testFlag(Quassel::SynchronizedMarkerLine)) {
         ui.autoMarkerLine->setEnabled(false);
         ui.autoMarkerLine->setChecked(true);
-        ui.autoMarkerLine->setToolTip(tr("You need at least version 0.6 of quasselcore to use this feature"));
+        ui.autoMarkerLine->setToolTip(tr("You need at least version 0.6 of Quassel Core to use this feature"));
+    }
+    if (!Client::coreFeatures().testFlag(Quassel::Feature::CoreSideHighlights)) {
+        ui.showSenderPrefixes->setEnabled(false);
+        ui.showSenderPrefixes->setToolTip(tr("You need at least version 0.13 of Quassel Core to use this feature"));
     }
 
     initAutoWidgets();

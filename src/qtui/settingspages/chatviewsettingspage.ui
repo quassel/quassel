@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>486</width>
-    <height>230</height>
+    <width>514</width>
+    <height>294</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,7 +98,7 @@
       <string>Shows the modes of senders before their name (e.g. @, +)</string>
      </property>
      <property name="text">
-      <string>Show sendermodes in front of nicknames:</string>
+      <string>Show sendermodes in front of nicknames</string>
      </property>
      <property name="checked">
       <bool>true</bool>
