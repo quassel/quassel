@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef PEER_H
-#define PEER_H
+#pragma once
 
 #include <QAbstractSocket>
 #include <QDataStream>
@@ -27,8 +26,8 @@
 
 #include "authhandler.h"
 #include "protocol.h"
-#include "signalproxy.h"
 #include "quassel.h"
+#include "signalproxy.h"
 
 class Peer : public QObject
 {
@@ -145,5 +144,3 @@ void Peer::handle(const T &protoMessage)
             return;
     }
 }
-
-#endif

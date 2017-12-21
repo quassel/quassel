@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef PROTOCOL_H_
-#define PROTOCOL_H_
+#pragma once
 
 #include <QByteArray>
 #include <QDateTime>
@@ -57,7 +56,7 @@ struct HandshakeMessage {
 
 struct RegisterClient : public HandshakeMessage
 {
-    inline RegisterClient(const QString &clientVersion, const QString &buildDate, bool sslSupported = false, int32_t features = 0)
+    inline RegisterClient(const QString &clientVersion, const QString &buildDate, bool sslSupported = false, quint32 features = 0)
     : clientVersion(clientVersion)
     , buildDate(buildDate)
     , sslSupported(sslSupported)
@@ -68,7 +67,7 @@ struct RegisterClient : public HandshakeMessage
 
     // this is only used by the LegacyProtocol in compat mode
     bool sslSupported;
-    int32_t clientFeatures;
+    quint32 clientFeatures;
 };
 
 
@@ -247,5 +246,3 @@ struct HeartBeatReply
 
 
 };
-
-#endif

@@ -214,7 +214,6 @@ void RemotePeer::onReadyRead()
 
         processMessage(msg);
 
-
         if (SignalProxy::current())
             SignalProxy::current()->setSourcePeer(nullptr);
     }

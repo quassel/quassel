@@ -21,8 +21,8 @@
 #include "message.h"
 
 #include "util.h"
-#include "signalproxy.h"
 #include "peer.h"
+#include "signalproxy.h"
 
 #include <QDataStream>
 

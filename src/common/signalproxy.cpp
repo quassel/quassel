@@ -173,6 +173,9 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
 // ==================================================
 //  SignalProxy
 // ==================================================
+
+thread_local SignalProxy *SignalProxy::_current{nullptr};
+
 SignalProxy::SignalProxy(QObject *parent)
     : QObject(parent)
 {
@@ -204,6 +207,8 @@ SignalProxy::~SignalProxy()
     _syncSlave.clear();
 
     removeAllPeers();
+
+    _current = nullptr;
 }
 
 
@@ -220,9 +225,6 @@ void SignalProxy::setProxyMode(ProxyMode mode)
     else
         initClient();
 }
-
-thread_local SignalProxy *SignalProxy::_current;
-
 
 void SignalProxy::init()
 {
@@ -516,15 +518,9 @@ void SignalProxy::stopSynchronize(SyncableObject *obj)
 template<class T>
 void SignalProxy::dispatch(const T &protoMessage)
 {
-    for (auto peer : _peerMap.values()) {
-        _targetPeer = peer;
-
-        if (peer->isOpen())
-            peer->dispatch(protoMessage);
-        else
-            QCoreApplication::postEvent(this, new ::RemovePeerEvent(peer));
+    for (auto&& peer : _peerMap.values()) {
+        dispatch(peer, protoMessage);
     }
-    _targetPeer = nullptr;
 }
 
 

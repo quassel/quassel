@@ -18,15 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SIGNALPROXY_H
-#define SIGNALPROXY_H
+#pragma once
 
 #include <QEvent>
 #include <QSet>
-#include <QThreadStorage>
 
 #include <functional>
-#include <memory>
+#include <initializer_list>
 
 #include "protocol.h"
 
@@ -286,5 +284,3 @@ private:
     QHash<QByteArray, int> _methodIds;
     QHash<int, int> _receiveMap; // if slot x is called then hand over the result to slot y
 };
-
-#endif
