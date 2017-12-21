@@ -293,7 +293,3 @@ bool HighlightSettingsPage::testHasChanged()
 
     return false;
 }
-
-bool HighlightSettingsPage::isSelectable() const {
-    return !Client::isConnected() || !Client::coreFeatures().testFlag(Quassel::Feature::CoreSideHighlights);
-}
