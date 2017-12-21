@@ -308,7 +308,9 @@ void CoreHighlightSettingsPage::emptyHighlightTable()
     if (ui.highlightTable->rowCount() != highlightList.size()) {
         qDebug() << "something is wrong: ui.highlight and highlightList don't have the same size!";
     }
-    ui.highlightTable->clearContents();
+    while (ui.highlightTable->rowCount()) {
+        ui.highlightTable->removeRow(0);
+    }
     highlightList.clear();
 }
 
@@ -318,7 +320,9 @@ void CoreHighlightSettingsPage::emptyIgnoredTable()
     if (ui.ignoredTable->rowCount() != ignoredList.size()) {
         qDebug() << "something is wrong: ui.highlight and highlightList don't have the same size!";
     }
-    ui.ignoredTable->clearContents();
+    while (ui.ignoredTable->rowCount()) {
+        ui.ignoredTable->removeRow(0);
+    }
     ignoredList.clear();
 }
 
