@@ -80,8 +80,9 @@ public:
         BufferActivitySync = 0x0800,       /// Sync buffer activity status
         CoreSideHighlights = 0x1000,       /// Core-Side highlight configuration and matching
         SenderPrefixes = 0x2000,           /// Show prefixes for senders in backlog
+        RemoteDisconnect = 0x4000,         /// Allow this peer to be remotely disconnected
 
-        NumFeatures = 0x2000
+        NumFeatures = 0x4000
     };
     Q_DECLARE_FLAGS(Features, Feature)
 
