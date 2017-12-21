@@ -163,6 +163,7 @@ signals:
     void requestNetworkStates();
 
     void showConfigWizard(const QVariantMap &coredata);
+    void showIgnoreList(QString ignoreRule);
 
     void connected();
     void disconnected();
