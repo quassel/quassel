@@ -42,6 +42,7 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
 
     connect(ui.highlightAdd, SIGNAL(clicked(bool)), this, SLOT(addNewHighlightRow()));
     connect(ui.highlightRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedHighlightRows()));
+    connect(ui.highlightImport, SIGNAL(clicked(bool)), this, SLOT(importRules()));
 
     connect(ui.ignoredAdd, SIGNAL(clicked(bool)), this, SLOT(addNewIgnoredRow()));
     connect(ui.ignoredRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedIgnoredRows()));
@@ -469,4 +470,29 @@ void CoreHighlightSettingsPage::save()
 void CoreHighlightSettingsPage::widgetHasChanged()
 {
     setChangedState(true);
+}
+
+void CoreHighlightSettingsPage::importRules() {
+    NotificationSettings notificationSettings;
+
+    auto clonedManager = HighlightRuleManager();
+    clonedManager.fromVariantMap(Client::highlightRuleManager()->toVariantMap());
+
+    for (const auto &variant : notificationSettings.highlightList()) {
+        auto highlightRule = variant.toMap();
+
+        clonedManager.addHighlightRule(
+                highlightRule["Name"].toString(),
+                highlightRule["RegEx"].toBool(),
+                highlightRule["CS"].toBool(),
+                highlightRule["Enable"].toBool(),
+                false,
+                "",
+                highlightRule["Channel"].toString()
+        );
+    }
+
+    Client::highlightRuleManager()->requestUpdate(clonedManager.toVariantMap());
+    setChangedState(false);
+    load();
 }

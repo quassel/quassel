@@ -80,5 +80,7 @@ private:
 
     void setupRuleTable(QTableWidget *highlightTable) const;
 
+    void importRules();
+
     bool _initialized;
 };
