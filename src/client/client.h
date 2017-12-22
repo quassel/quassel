@@ -161,6 +161,10 @@ public:
 #endif
     static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
 
+    void displayChannelList(NetworkId networkId) {
+        emit showChannelList(networkId);
+    }
+
 signals:
     void requestNetworkStates();
 
