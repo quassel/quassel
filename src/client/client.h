@@ -152,6 +152,10 @@ public:
     static void changePassword(const QString &oldPassword, const QString &newPassword);
     static void kickClient(int peerId);
 
+    void displayIgnoreList(QString ignoreRule) {
+        emit showIgnoreList(ignoreRule);
+    }
+
 #if QT_VERSION < 0x050000
     static void logMessage(QtMsgType type, const char *msg);
 #else
