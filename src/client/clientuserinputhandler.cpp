@@ -121,7 +121,7 @@ void ClientUserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QSt
 void ClientUserInputHandler::handleIgnore(const BufferInfo &bufferInfo, const QString &text)
 {
     if (text.isEmpty()) {
-        emit Client::instance()->showIgnoreList("");
+        emit Client::instance()->displayIgnoreList("");
         return;
     }
     // If rule contains no ! or @, we assume it is just a nickname, and turn it into an ignore rule for that nick
