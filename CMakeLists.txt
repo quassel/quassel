@@ -656,7 +656,7 @@ git_describe(GIT_DESCRIBE --long)
 # If in a Git repo we can get the commit-date from a git command
 if (GIT_HEAD)
     execute_process(
-        COMMAND git show -s --format=%ct
+        COMMAND git -c log.showsignature=false show -s --format=%ct
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         OUTPUT_VARIABLE GIT_COMMIT_DATE
         OUTPUT_STRIP_TRAILING_WHITESPACE
