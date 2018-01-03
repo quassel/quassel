@@ -241,8 +241,11 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 
     // Qt caches DNS entries for a minute, resulting in round-robin (e.g. for chat.freenode.net) not working if several users
     // connect at a similar time. QHostInfo::fromName(), however, always performs a fresh lookup, overwriting the cache entry.
-    QHostInfo::fromName(server.host);
-
+    if (! server.useProxy) {
+        //Avoid hostname lookups when a proxy is specified. The lookups won't use the proxy and may therefore leak the DNS
+        //hostname of the server. Qt's DNS cache also isn't used by the proxy so we don't need to refresh the entry.
+        QHostInfo::fromName(server.host);
+    }
 #ifdef HAVE_SSL
     if (server.useSsl) {
         CoreIdentity *identity = identityPtr();
