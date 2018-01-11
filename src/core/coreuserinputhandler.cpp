@@ -476,15 +476,16 @@ void CoreUserInputHandler::handleMode(const BufferInfo &bufferInfo, const QStrin
     QStringList params = msg.split(' ', QString::SkipEmptyParts);
     // if the first argument is neither a channel nor us (user modes are only to oneself) the current buffer is assumed to be the target
     if (!params.isEmpty()) {
+        if (params[0] == "-reset" && params.count() == 1) {
+            network()->resetPersistentModes();
+            emit displayMsg(Message::Info, BufferInfo::StatusBuffer, "",
+                            tr("Your persistent modes have been reset."));
+            return;
+        }
         if (!network()->isChannelName(params[0]) && !network()->isMyNick(params[0]))
             params.prepend(bufferInfo.bufferName());
         if (network()->isMyNick(params[0]) && params.count() == 2)
             network()->updateIssuedModes(params[1]);
-        if (params[0] == "-reset" && params.count() == 1) {
-            // FIXME: give feedback to the user (I don't want to add new strings right now)
-            network()->resetPersistentModes();
-            return;
-        }
     }
 
     // TODO handle correct encoding for buffer modes (channelEncode())
