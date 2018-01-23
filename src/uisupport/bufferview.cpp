@@ -510,6 +510,8 @@ void BufferView::changeBuffer(Direction direction)
     QModelIndex currentIndex = selectionModel()->currentIndex();
     QModelIndex resultingIndex;
 
+    QModelIndex lastNetIndex = model()->index(model()->rowCount() - 1, 0, QModelIndex());
+
     if (currentIndex.parent().isValid()) {
         //If we are a child node just switch among siblings unless it's the first/last child
         resultingIndex = currentIndex.sibling(currentIndex.row() + direction, 0);
@@ -526,6 +528,8 @@ void BufferView::changeBuffer(Direction direction)
         //If we have a toplevel node, try and get an adjacent child
         if (direction == Backward) {
             QModelIndex newParent = currentIndex.sibling(currentIndex.row() - 1, 0);
+            if (currentIndex.row() == 0)
+                newParent = lastNetIndex;
             if (model()->hasChildren(newParent))
                 resultingIndex = newParent.child(model()->rowCount(newParent) - 1, 0);
             else
@@ -539,8 +543,12 @@ void BufferView::changeBuffer(Direction direction)
         }
     }
 
-    if (!resultingIndex.isValid())
-        return;
+    if (!resultingIndex.isValid()) {
+        if (direction == Forward)
+            resultingIndex = model()->index(0, 0, QModelIndex());
+        else
+            resultingIndex = lastNetIndex.child(model()->rowCount(lastNetIndex) - 1, 0);
+    }
 
     selectionModel()->setCurrentIndex(resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     selectionModel()->select(resultingIndex, QItemSelectionModel::ClearAndSelect);
