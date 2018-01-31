@@ -38,7 +38,8 @@ bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     Q_UNUSED(sourceParent)
 
     QModelIndex source_index = sourceModel()->index(sourceRow, 0);
-    BufferId bufferId = source_index.data(MessageModel::BufferIdRole).value<BufferId>();
+    //BufferId bufferId = source_index.data(MessageModel::BufferIdRole).value<BufferId>();
+    BufferId bufferId = sourceModel()->data(source_index, MessageModel::BufferIdRole).value<BufferId>();
 
     Message::Flags flags = (Message::Flags)sourceModel()->data(source_index, MessageModel::FlagsRole).toInt();
     
@@ -53,7 +54,7 @@ bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
 return false;
 
     // do not use invalid buffers
-    BufferId bufferId = sourceModel()->data(source_index, MessageModel::BufferIdRole).value<BufferId>();
+    
     if (!bufferId.isValid()) {
         return false;
     }
