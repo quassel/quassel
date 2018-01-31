@@ -20,6 +20,13 @@
 
 #include "awaylogfilter.h"
 
+//#include "buffersettings.h"
+//#include "client.h"
+//#include "buffermodel.h"
+//#include "messagemodel.h"
+//#include "networkmodel.h"
+#include "clientignorelistmanager.h"
+
 AwayLogFilter::AwayLogFilter(MessageModel *model, QObject *parent)
     : ChatMonitorFilter(model, parent)
 {
