@@ -655,6 +655,8 @@ void MainWin::addBufferView(ClientBufferViewConfig *config)
 
     Client::bufferModel()->synchronizeView(view);
 
+    dock->setLocked(QtUiSettings().value("LockLayout", false).toBool());
+
     dock->setWidget(view);
     dock->setVisible(_layoutLoaded); // don't show before state has been restored
 
@@ -882,6 +884,17 @@ void MainWin::on_actionLockLayout_toggled(bool lock)
     foreach(VerticalDock *dock, docks) {
         dock->showTitle(!lock);
     }
+
+    QList<NickListDock *> nickdocks = findChildren<NickListDock *>();
+    foreach(NickListDock *nickdock, nickdocks) {
+        nickdock->setLocked(lock);
+    }
+
+    QList<BufferViewDock *> bufferdocks = findChildren<BufferViewDock *>();
+    foreach(BufferViewDock *bufferdock, bufferdocks) {
+        bufferdock->setLocked(lock);
+    }
+
     if (Client::bufferViewManager()) {
         foreach(ClientBufferViewConfig *config, Client::bufferViewManager()->clientBufferViewConfigs()) {
             config->setLocked(lock);
@@ -897,6 +910,7 @@ void MainWin::setupNickWidget()
     NickListDock *nickDock = new NickListDock(tr("Nicks"), this);
     nickDock->setObjectName("NickDock");
     nickDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    nickDock->setLocked(QtUiSettings().value("LockLayout", false).toBool());
 
     _nickListWidget = new NickListWidget(nickDock);
     nickDock->setWidget(_nickListWidget);

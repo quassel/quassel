@@ -727,6 +727,14 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     QDockWidget::setWidget(_widget);
 }
 
+void BufferViewDock::setLocked(bool locked) {
+    if (locked) {
+        setFeatures(0);
+    }
+    else {
+        setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    }
+}
 
 void BufferViewDock::updateTitle()
 {

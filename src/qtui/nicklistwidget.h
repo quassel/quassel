@@ -80,6 +80,8 @@ public:
     NickListDock(const QString &title, QWidget *parent = 0);
     // ~NickListDock();
 
+    void setLocked(bool locked);
+
     // virtual bool event(QEvent *event);
 };
 
