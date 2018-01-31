@@ -168,6 +168,7 @@ public :
     inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
     inline bool isActive() const { return _active; }
     void setWidget(QWidget *newWidget);
+    void setLocked(bool locked);
     QWidget *widget() const { return _childWidget; }
 
     void activateFilter();
