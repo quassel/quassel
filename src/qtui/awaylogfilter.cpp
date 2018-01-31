@@ -48,7 +48,7 @@ bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     // ignorelist handling
     // only match if message is not flagged as server msg
     if (!(flags & Message::ServerMsg) && Client::ignoreListManager()
-        && Client::ignoreListManager()->match(sourceIdx.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
+        && Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
 return false;
 
     // do not use invalid buffers
