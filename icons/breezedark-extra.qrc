@@ -1,0 +1,27 @@
+<RCC>
+  <qresource prefix="/icons/extra">
+    <file alias="breezedark/actions/24/connect-quassel.svg">extra-icons/breezedark/actions/24/connect-quassel.svg</file>
+    <file alias="breezedark/actions/32/connect-quassel.svg">extra-icons/breezedark/actions/32/connect-quassel.svg</file>
+    <file alias="breezedark/actions/24/disconnect-quassel.svg">extra-icons/breezedark/actions/24/disconnect-quassel.svg</file>
+    <file alias="breezedark/actions/32/disconnect-quassel.svg">extra-icons/breezedark/actions/32/disconnect-quassel.svg</file>
+    <file alias="breezedark/apps/32/quassel.svg">extra-icons/breezedark/apps/32/quassel.svg</file>
+    <file alias="breezedark/apps/48/quassel.svg">extra-icons/breezedark/apps/48/quassel.svg</file>
+    <file alias="breezedark/apps/64/quassel.svg">extra-icons/breezedark/apps/64/quassel.svg</file>
+    <file alias="breezedark/status/24/active-quassel-tray.svg">extra-icons/breezedark/status/24/active-quassel-tray.svg</file>
+    <file alias="breezedark/status/64/active-quassel-tray.svg">extra-icons/breezedark/status/64/active-quassel-tray.svg</file>
+    <file alias="breezedark/status/24/active-quassel-tray-inverted.svg">extra-icons/breezedark/status/24/active-quassel-tray-inverted.svg</file>
+    <file alias="breezedark/status/64/active-quassel-tray-inverted.svg">extra-icons/breezedark/status/64/active-quassel-tray-inverted.svg</file>
+    <file alias="breezedark/status/24/inactive-quassel.svg">extra-icons/breezedark/status/24/inactive-quassel.svg</file>
+    <file alias="breezedark/status/64/inactive-quassel.svg">extra-icons/breezedark/status/64/inactive-quassel.svg</file>
+    <file alias="breezedark/status/24/inactive-quassel-tray.svg">extra-icons/breezedark/status/24/inactive-quassel-tray.svg</file>
+    <file alias="breezedark/status/64/inactive-quassel-tray.svg">extra-icons/breezedark/status/64/inactive-quassel-tray.svg</file>
+    <file alias="breezedark/status/24/inactive-quassel-tray-inverted.svg">extra-icons/breezedark/status/24/inactive-quassel-tray-inverted.svg</file>
+    <file alias="breezedark/status/64/inactive-quassel-tray-inverted.svg">extra-icons/breezedark/status/64/inactive-quassel-tray-inverted.svg</file>
+    <file alias="breezedark/status/24/message-quassel.svg">extra-icons/breezedark/status/24/message-quassel.svg</file>
+    <file alias="breezedark/status/64/message-quassel.svg">extra-icons/breezedark/status/64/message-quassel.svg</file>
+    <file alias="breezedark/status/24/message-quassel-tray.svg">extra-icons/breezedark/status/24/message-quassel-tray.svg</file>
+    <file alias="breezedark/status/64/message-quassel-tray.svg">extra-icons/breezedark/status/64/message-quassel-tray.svg</file>
+    <file alias="breezedark/status/24/message-quassel-tray-inverted.svg">extra-icons/breezedark/status/24/message-quassel-tray-inverted.svg</file>
+    <file alias="breezedark/status/64/message-quassel-tray-inverted.svg">extra-icons/breezedark/status/64/message-quassel-tray-inverted.svg</file>
+  </qresource>
+</RCC>
