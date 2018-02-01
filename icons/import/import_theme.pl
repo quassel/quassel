@@ -33,14 +33,12 @@ my $parentFolderFileSuffix = shift;
 
 my $whitelistfile = "import/whitelist-icons";
 my $blacklistfile = "import/blacklisted-icons";
-my $extrafile = "import/extra-icons.qrc." . $themename;
 
 my %req_icons;
 my %found_icons;
 my %blacklist;
 my %themeblacklist;
 my %whitelist;
-my $extrafilecontent;
 
 # First, load the icon blacklist
 open BLACKLIST, "<$blacklistfile" or die "Could not open $blacklistfile\n";
@@ -83,18 +81,6 @@ while(<WHITELIST>) {
     unless exists $themeblacklist{$name};
 }
 close WHITELIST;
-
-# Read in extra-icons
-my $hasthemeextrafile = 1;
-local $/;
-open EXTRAFILE, "<$extrafile" or $hasthemeextrafile = 0;
-if($hasthemeextrafile) {
-  binmode EXTRAFILE;
-  $extrafilecontent = <EXTRAFILE>;
-  close EXTRAFILE;
-} else {
-  $extrafilecontent = "";
-}
 
 # Clean old output dir
 print "Removing old $themename...\n";
@@ -176,7 +162,6 @@ sub generate_qrc {
   my $qrc = "<RCC>\n"
            ."  <qresource prefix=\"/icons\">\n"
            ."$files\n"
-           ."$extrafilecontent\n"
            ."  </qresource>\n"
            ."</RCC>\n";
 

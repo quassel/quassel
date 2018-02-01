@@ -202,16 +202,5 @@
     <file>breeze/status/64/dialog-warning.svg</file>
     <file>breeze/status/64/security-high.svg</file>
     <file>breeze/status/64/security-low.svg</file>
-    <file alias="breeze/actions/24/connect-quassel.svg">extra-icons/breeze/actions/24/connect-quassel.svg</file>
-    <file alias="breeze/actions/32/connect-quassel.svg">extra-icons/breeze/actions/32/connect-quassel.svg</file>
-    <file alias="breeze/actions/24/disconnect-quassel.svg">extra-icons/breeze/actions/24/disconnect-quassel.svg</file>
-    <file alias="breeze/actions/32/disconnect-quassel.svg">extra-icons/breeze/actions/32/disconnect-quassel.svg</file>
-    <file alias="breeze/apps/32/quassel.svg">extra-icons/breeze/apps/32/quassel.svg</file>
-    <file alias="breeze/apps/48/quassel.svg">extra-icons/breeze/apps/48/quassel.svg</file>
-    <file alias="breeze/apps/64/quassel.svg">extra-icons/breeze/apps/64/quassel.svg</file>
-    <file alias="breeze/status/24/inactive-quassel.svg">extra-icons/breeze/status/24/inactive-quassel.svg</file>
-    <file alias="breeze/status/64/inactive-quassel.svg">extra-icons/breeze/status/64/inactive-quassel.svg</file>
-    <file alias="breeze/status/24/message-quassel.svg">extra-icons/breeze/status/24/message-quassel.svg</file>
-    <file alias="breeze/status/64/message-quassel.svg">extra-icons/breeze/status/64/message-quassel.svg</file>
   </qresource>
 </RCC>
