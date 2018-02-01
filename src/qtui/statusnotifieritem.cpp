@@ -242,24 +242,24 @@ QString StatusNotifierItem::title() const
 QString StatusNotifierItem::iconName() const
 {
     if (state() == Passive)
-        return QString("inactive-quassel");
+        return QString("inactive-quassel-tray");
     else
-        return QString("quassel");
+        return QString("active-quassel-tray");
 }
 
 
 QString StatusNotifierItem::attentionIconName() const
 {
     if (animationEnabled())
-        return QString("message-quassel");
+        return QString("message-quassel-tray");
     else
-        return QString("quassel");
+        return QString("active-quassel-tray");
 }
 
 
 QString StatusNotifierItem::toolTipIconName() const
 {
-    return QString("quassel");
+    return QString("active-quassel-tray");
 }
 
 
