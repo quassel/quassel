@@ -64,7 +64,7 @@ mkdir $PACKAGETMPDIR
 case $BUILDTYPE in
 "Client")
 	cp -r ${WORKINGDIR}Quassel\ Client.app ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qcocoa${ADDITIONAL_PLUGINS} "${PACKAGETMPDIR}/Quassel Client.app"
+	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qcocoa,qgenericbearer,qcorewlanbearer${ADDITIONAL_PLUGINS} "${PACKAGETMPDIR}/Quassel Client.app"
 	;;
 "Core")
 	cp ${WORKINGDIR}quasselcore ${PACKAGETMPDIR}/
@@ -72,7 +72,7 @@ case $BUILDTYPE in
 	;;
 "Mono")
 	cp -r ${WORKINGDIR}Quassel.app ${PACKAGETMPDIR}/
-	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qsqlite,qsqlpsql,qcocoa${ADDITIONAL_PLUGINS} "${PACKAGETMPDIR}/Quassel.app"
+	${SCRIPTDIR}/macosx_DeployApp.py --plugins=qsqlite,qsqlpsql,qcocoa,qgenericbearer,qcorewlanbearer${ADDITIONAL_PLUGINS} "${PACKAGETMPDIR}/Quassel.app"
 	;;
 *)
 	echo >&2 "Valid parameters are \"Client\", \"Core\", or \"Mono\"."
