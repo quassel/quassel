@@ -75,6 +75,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _markerLineValid(false),
     _markerLineJumpPending(false),
     _cutoffMode(CutoffRight),
+    _alwaysBracketSender(false),
     _selectingItem(0),
     _selectionStart(-1),
     _isSelecting(false),
@@ -1050,9 +1051,14 @@ QString ChatScene::selection() const
             }
             if (_selectionMinCol <= ChatLineModel::SenderColumn) {
                 ChatItem *item = _lines[l]->item(ChatLineModel::SenderColumn);
-                if (!_showSenderBrackets && item->chatLine()->msgType() == Message::Plain) {
-                    // Copying to plain-text.  Only re-add the sender brackets if they're normally
-                    // hidden.
+                if (!_showSenderBrackets && (_alwaysBracketSender
+                                             || item->chatLine()->msgType() == Message::Plain)) {
+                    // Copying to plain-text.  Re-add the sender brackets if they're normally hidden
+                    // for...
+                    // * Plain messages
+                    // * All messages in the Chat Monitor
+                    //
+                    // The Chat Monitor sets alwaysBracketSender() to true.
                     result += QString("<%1> ").arg(item->data(MessageModel::DisplayRole)
                                                    .toString());
                 } else {

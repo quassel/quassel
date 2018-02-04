@@ -43,6 +43,9 @@ ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
     _filter(filter)
 {
     scene()->setSenderCutoffMode(ChatScene::CutoffLeft);
+    // The normal message prefixes get replaced by the network and buffer name.  Re-add brackets for
+    // all message types.
+    scene()->setAlwaysBracketSender(true);
     connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
 }
 
