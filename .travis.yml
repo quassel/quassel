@@ -2,7 +2,7 @@ os:
   - linux
   - osx
 
-sudo: required
+sudo: false
 dist: trusty
 
 language: cpp
@@ -24,19 +24,25 @@ matrix:
       compiler: clang
     - os: osx
       env: QT_VERSION=qt4
+      
+addons:
+  apt:
+    packages:
+    - libqt5webkit5-dev
+    - qttools5-dev
+    - qtscript5-dev
+    - libdbusmenu-qt-dev
+    - libdbusmenu-qt5-dev
+    - libphonon-dev
+    - libphonon4qt5-dev
+    - qt4-dev-tools
+    - qttools5-dev-tools
+    - libphonon4qt5experimental4 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805096
+#    - libqca2-dev # Not supported at the moment
 
-install: |-
-  if [ "$TRAVIS_OS_NAME" == "linux" ]
+before_install: |-
+  if [ "$TRAVIS_OS_NAME" == "osx" ]
   then
-    sudo apt-get -qy install libqt5webkit5-dev qttools5-dev qtscript5-dev
-    sudo apt-get -qy install libdbusmenu-qt-dev libdbusmenu-qt5-dev
-    sudo apt-get -qy install libphonon-dev libphonon4qt5-dev
-    sudo apt-get -qy install libqca2-dev
-    sudo apt-get -qy install qt4-dev-tools qttools5-dev-tools
-    sudo apt-get -qy install libphonon4qt5experimental4 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805096
-  elif [ "$TRAVIS_OS_NAME" == "osx" ]
-  then
-    brew update
     brew install ninja qt5
   fi
 
