@@ -217,16 +217,6 @@ void BufferView::joinChannel(const QModelIndex &index)
 }
 
 
-void BufferView::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
-        event->accept();
-        removeSelectedBuffers();
-    }
-    TreeViewTouch::keyPressEvent(event);
-}
-
-
 void BufferView::dropEvent(QDropEvent *event)
 {
     QModelIndex index = indexAt(event->pos());
@@ -592,13 +582,6 @@ void BufferView::hideCurrentBuffer()
     //The check above means we won't be looking at a network, which should always be the first row, so we can just go backwards.
     changeBuffer(Backward);
 
-    /*if(removedRows.contains(bufferId))
-      continue;
-
-    removedRows << bufferId;*/
-    /*if(permanently)
-      config()->requestRemoveBufferPermanently(bufferId);
-    else*/
     config()->requestRemoveBuffer(bufferId);
 }
 
