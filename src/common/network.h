@@ -295,7 +295,7 @@ public :
      *
      * These results aren't valid if the network is disconnected or capability negotiation hasn't
      * happened, and some servers might not correctly advertise capabilities.  Don't treat this as
-     * a guarentee.
+     * a guarantee.
      *
      * @param[in] capability Name of capability
      * @returns True if connected and advertised by the server, otherwise false
