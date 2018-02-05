@@ -46,6 +46,7 @@ set(SOURCES
     settingspagedlg.cpp
     simplenetworkeditor.cpp
     systemtray.cpp
+    systrayanimationnotificationbackend.cpp
     systraynotificationbackend.cpp
     taskbarnotificationbackend.cpp
     titlesetter.cpp

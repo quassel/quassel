@@ -114,6 +114,7 @@
 #else /* HAVE_KDE */
 #  include "knotificationbackend.h"
 #endif /* HAVE_KDE */
+#include "systrayanimationnotificationbackend.h"
 
 
 #ifdef HAVE_LIBSNORE
@@ -253,6 +254,9 @@ void MainWin::init()
 #endif /* HAVE_KDE */
 
 
+#ifndef QT_NO_SYSTEMTRAYICON
+    QtUi::registerNotificationBackend(new SystrayAnimationNotificationBackend(this));
+#endif
 #ifdef HAVE_LIBSNORE
     QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
 #elif !defined(QT_NO_SYSTEMTRAYICON) && !defined(HAVE_KDE)
