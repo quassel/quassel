@@ -92,6 +92,7 @@ build_script:
                             "plugins\\codecs\\(?!.*d\.dll).*\.dll$",
                             "plugins\\platforms\\qwindows(?!.*d\.dll).*\.dll$",
                             "plugins\\iconengines\\(?!.*d\.dll).*\.dll$",
+                            "plugins\\bearer\\(?!.*d\.dll).*\.dll$",
                             #
                             #
                             #zlib
