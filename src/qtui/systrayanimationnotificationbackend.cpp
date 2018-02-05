@@ -65,5 +65,55 @@ void SystrayAnimationNotificationBackend::animateChanged(const QVariant &v)
 
 SettingsPage *SystrayAnimationNotificationBackend::createConfigWidget() const
 {
-    return nullptr;
+    return new ConfigWidget();
+}
+
+
+/***************************************************************************/
+
+SystrayAnimationNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayNotification", parent)
+{
+    _animateBox = new QCheckBox(tr("Animate system tray icon"));
+    _animateBox->setIcon(QIcon::fromTheme("dialog-information"));
+    connect(_animateBox, SIGNAL(toggled(bool)), this, SLOT(widgetChanged()));
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(_animateBox);
+}
+
+
+void SystrayAnimationNotificationBackend::ConfigWidget::widgetChanged()
+{
+    bool changed = (_animate != _animateBox->isChecked());
+    if (changed != hasChanged())
+        setChangedState(changed);
+}
+
+
+bool SystrayAnimationNotificationBackend::ConfigWidget::hasDefaults() const
+{
+    return true;
+}
+
+
+void SystrayAnimationNotificationBackend::ConfigWidget::defaults()
+{
+    _animateBox->setChecked(false);
+    widgetChanged();
+}
+
+
+void SystrayAnimationNotificationBackend::ConfigWidget::load()
+{
+    NotificationSettings s;
+    _animate = s.value("Systray/Animate", true).toBool();
+    _animateBox->setChecked(_animate);
+    setChangedState(false);
+}
+
+
+void SystrayAnimationNotificationBackend::ConfigWidget::save()
+{
+    NotificationSettings s;
+    s.setValue("Systray/Animate", _animateBox->isChecked());
+    load();
 }

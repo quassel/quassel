@@ -41,5 +41,26 @@ private slots:
     void animateChanged(const QVariant &);
 
 private:
+    class ConfigWidget;
+    bool _animate;
+};
+
+
+class SystrayAnimationNotificationBackend::ConfigWidget : public SettingsPage
+{
+    Q_OBJECT
+
+public:
+    ConfigWidget(QWidget *parent = 0);
+    void save();
+    void load();
+    bool hasDefaults() const;
+    void defaults();
+
+private slots:
+    void widgetChanged();
+
+private:
+    QCheckBox *_animateBox;
     bool _animate;
 };
