@@ -39,7 +39,6 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
 {
     NotificationSettings notificationSettings;
     notificationSettings.initAndNotify("Systray/ShowBubble", this, SLOT(showBubbleChanged(QVariant)), true);
-    notificationSettings.initAndNotify("Systray/Animate", this, SLOT(animateChanged(QVariant)), true);
 
     connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked(uint)), SLOT(notificationActivated(uint)));
     connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
@@ -63,9 +62,6 @@ void SystrayNotificationBackend::notify(const Notification &n)
         QtUi::mainWindow()->systemTray()->showMessage(title, message, SystemTray::Information, 10000, n.notificationId);
     }
 
-    if (_animate)
-        QtUi::mainWindow()->systemTray()->setAlert(true);
-
     updateToolTip();
 }
 
@@ -81,9 +77,6 @@ void SystrayNotificationBackend::close(uint notificationId)
     }
 
     QtUi::mainWindow()->systemTray()->closeMessage(notificationId);
-
-    //if(!_notifications.count()) //FIXME make configurable
-    QtUi::mainWindow()->systemTray()->setAlert(false);
 
     updateToolTip();
 }
@@ -130,12 +123,6 @@ bool SystrayNotificationBackend::eventFilter(QObject *obj, QEvent *event)
 void SystrayNotificationBackend::showBubbleChanged(const QVariant &v)
 {
     _showBubble = v.toBool();
-}
-
-
-void SystrayNotificationBackend::animateChanged(const QVariant &v)
-{
-    _animate = v.toBool();
 }
 
 

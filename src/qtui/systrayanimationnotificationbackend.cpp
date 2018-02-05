@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2018 by the Quassel Project                        *
+ *   Copyright (C) 2005-2016 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,59 +18,52 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#pragma once
+#include <QApplication>
+#include <QCheckBox>
+#include <QGroupBox>
+#include <QIcon>
+#include <QHBoxLayout>
 
-#include "abstractnotificationbackend.h"
-#include "settingspage.h"
+#include "systrayanimationnotificationbackend.h"
+
+#include "client.h"
+#include "clientsettings.h"
+#include "mainwin.h"
+#include "networkmodel.h"
+#include "qtui.h"
 #include "systemtray.h"
 
-class QCheckBox;
-
-class SystrayNotificationBackend : public AbstractNotificationBackend
+SystrayAnimationNotificationBackend::SystrayAnimationNotificationBackend(QObject *parent)
+    : AbstractNotificationBackend(parent)
 {
-    Q_OBJECT
-
-public:
-    SystrayNotificationBackend(QObject *parent = 0);
-
-    void notify(const Notification &);
-    void close(uint notificationId);
-    virtual SettingsPage *createConfigWidget() const;
-
-protected:
-    virtual bool eventFilter(QObject *obj, QEvent *event);
-
-private slots:
-    void notificationActivated(uint notificationId);
-    void notificationActivated(SystemTray::ActivationReason);
-
-    void showBubbleChanged(const QVariant &);
-    void updateToolTip();
-
-private:
-    class ConfigWidget;
-
-    bool _showBubble;
-    QList<Notification> _notifications;
-    bool _blockActivation;
-};
+    NotificationSettings notificationSettings;
+    notificationSettings.initAndNotify("Systray/Animate", this, SLOT(animateChanged(QVariant)), true);
+}
 
 
-class SystrayNotificationBackend::ConfigWidget : public SettingsPage
+void SystrayAnimationNotificationBackend::notify(const Notification &n)
 {
-    Q_OBJECT
+    if (n.type != Highlight && n.type != PrivMsg)
+        return;
 
-public:
-    ConfigWidget(QWidget *parent = 0);
-    void save();
-    void load();
-    bool hasDefaults() const;
-    void defaults();
+    if (_animate)
+        QtUi::mainWindow()->systemTray()->setAlert(true);
+}
 
-private slots:
-    void widgetChanged();
 
-private:
-    QCheckBox *_showBubbleBox;
-    bool _showBubble;
-};
+void SystrayAnimationNotificationBackend::close(uint notificationId)
+{
+    QtUi::mainWindow()->systemTray()->setAlert(false);
+}
+
+
+void SystrayAnimationNotificationBackend::animateChanged(const QVariant &v)
+{
+    _animate = v.toBool();
+}
+
+
+SettingsPage *SystrayAnimationNotificationBackend::createConfigWidget() const
+{
+    return nullptr;
+}
