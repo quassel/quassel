@@ -460,8 +460,7 @@ void CoreUserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString 
     QStringList messages = msg.split(QCharLF);
 
     foreach (auto message, messages) {
-        // Handle each separated message independently, ignoring any carriage returns
-        message = message.trimmed();
+        // Handle each separated message independently
         coreNetwork()->coreSession()->ctcpParser()->query(coreNetwork(), bufferInfo.bufferName(),
                                                           "ACTION", message);
         emit displayMsg(Message::Action, bufferInfo.type(), bufferInfo.bufferName(), message,
@@ -532,8 +531,7 @@ void CoreUserInputHandler::handleNotice(const BufferInfo &bufferInfo, const QStr
     QStringList messages = msg.section(' ', 1).split(QCharLF);
 
     foreach (auto message, messages) {
-        // Handle each separated message independently, ignoring any carriage returns
-        message = message.trimmed();
+        // Handle each separated message independently
         params.clear();
         params << serverEncode(bufferName) << channelEncode(bufferInfo.bufferName(), message);
         emit putCmd("NOTICE", params);
@@ -607,8 +605,7 @@ void CoreUserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QStri
     QStringList messages = msg.section(' ', 1).split(QCharLF);
 
     foreach (auto message, messages) {
-        // Handle each separated message independently, ignoring any carriage returns
-        message = message.trimmed();
+        // Handle each separated message independently
         if (message.isEmpty()) {
             emit displayMsg(Message::Server, BufferInfo::QueryBuffer, target,
                             tr("Starting query with %1").arg(target), network()->myNick(),
@@ -656,11 +653,10 @@ void CoreUserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString
 
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
-    QStringList messages = msg.split(QCharLF);
+    QStringList messages = msg.split(QCharLF, QString::SkipEmptyParts);
 
     foreach (auto message, messages) {
-        // Handle each separated message independently, ignoring any carriage returns
-        message = message.trimmed();
+        // Handle each separated message independently
 #ifdef HAVE_QCA2
         putPrivmsg(bufferInfo.bufferName(), message, encodeFunc,
                    network()->cipher(bufferInfo.bufferName()));
