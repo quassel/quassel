@@ -288,6 +288,17 @@ QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const
 }
 
 
+QHash<QString, QByteArray> CoreSession::bufferCiphers(NetworkId id) const
+{
+    return Core::bufferCiphers(user(), id);
+}
+
+void CoreSession::setBufferCipher(NetworkId id, const QString &bufferName, const QByteArray &cipher) const
+{
+    Core::setBufferCipher(user(), id, bufferName, cipher);
+}
+
+
 // FIXME switch to BufferId
 void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg)
 {

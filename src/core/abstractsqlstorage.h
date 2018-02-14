@@ -236,6 +236,7 @@ public:
         int bufferactivity;
         QString key;
         bool joined;
+        QString cipher;
     };
 
     struct BacklogMO {

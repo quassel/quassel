@@ -273,6 +273,33 @@ public:
     }
 
 
+    //! Get a hash of buffers with their ciphers for a given network
+    /** The keys are channel names and values are ciphers (possibly empty)
+     *  \note This method is threadsafe
+     *
+     *  \param user       The id of the networks owner
+     *  \param networkId  The Id of the network
+     */
+    static inline QHash<QString, QByteArray> bufferCiphers(UserId user, const NetworkId &networkId)
+    {
+        return instance()->_storage->bufferCiphers(user, networkId);
+    }
+
+
+    //! Update the cipher of a buffer
+    /** \note This method is threadsafe
+     *
+     *  \param user        The Id of the networks owner
+     *  \param networkId   The Id of the network
+     *  \param bufferName The Cname of the buffer
+     *  \param cipher      The cipher for the buffer
+     */
+    static inline void setBufferCipher(UserId user, const NetworkId &networkId, const QString &bufferName, const QByteArray &cipher)
+    {
+        return instance()->_storage->setBufferCipher(user, networkId, bufferName, cipher);
+    }
+
+
     //! Update the key of a channel
     /** \note This method is threadsafe
      *
