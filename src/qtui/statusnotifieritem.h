@@ -93,6 +93,7 @@ private:
 
     QString _iconThemePath;
     QString _menuObjectPath;
+    bool _trayIconInverted;
 
     friend class StatusNotifierItemDBus;
 };

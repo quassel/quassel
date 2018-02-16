@@ -40,12 +40,20 @@ SystemTray::SystemTray(QWidget *parent)
     _mode(Invalid),
     _state(Passive),
     _shouldBeVisible(true),
-    _passiveIcon(ExtraIcon::load("inactive-quassel-tray")),
-    _activeIcon(ExtraIcon::load("active-quassel-tray")),
-    _needsAttentionIcon(ExtraIcon::load("message-quassel-tray")),
     _trayMenu(0),
     _associatedWidget(parent)
 {
+    UiStyleSettings s;
+    if (s.value("IconThemeTrayInvert").toBool()) {
+        _passiveIcon = ExtraIcon::load("inactive-quassel-tray-inverted");
+        _activeIcon = ExtraIcon::load("active-quassel-tray-inverted");
+        _needsAttentionIcon = ExtraIcon::load("message-quassel-tray-inverted");
+    }
+    else {
+        _passiveIcon = ExtraIcon::load("inactive-quassel-tray");
+        _activeIcon = ExtraIcon::load("active-quassel-tray");
+        _needsAttentionIcon = ExtraIcon::load("message-quassel-tray");
+    }
     Q_ASSERT(parent);
 }
 

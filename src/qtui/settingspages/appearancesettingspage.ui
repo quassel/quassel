@@ -242,6 +242,22 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="1">
+       <widget class="QCheckBox" name="iconthemeTrayInvertBox">
+         <property name="text">
+           <string>Use tray icon with brightness inverted</string>
+         </property>
+         <property name="toolTip">
+           <string>If available. May need restart...</string>
+         </property>
+         <property name="settingsKey" stdset="0">
+           <string notr="true">/UiStyle/IconThemeTrayInvert</string>
+         </property>
+         <property name="defaultValue" stdset="0">
+           <bool>false</bool>
+         </property>
+       </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -413,11 +429,13 @@
  <tabstops>
   <tabstop>styleComboBox</tabstop>
   <tabstop>languageComboBox</tabstop>
+  <tabstop>iconthemeComboBox</tabstop>
   <tabstop>useCustomStyleSheet</tabstop>
   <tabstop>customStyleSheetPath</tabstop>
   <tabstop>chooseStyleSheet</tabstop>
   <tabstop>useSystemTrayIcon</tabstop>
   <tabstop>minimizeOnClose</tabstop>
+  <tabstop>iconthemeTrayInvertBox</tabstop>
   <tabstop>userNoticesInDefaultBuffer</tabstop>
   <tabstop>userNoticesInStatusBuffer</tabstop>
   <tabstop>userNoticesInCurrentBuffer</tabstop>
