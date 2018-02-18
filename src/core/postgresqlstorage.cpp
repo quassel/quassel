@@ -2089,8 +2089,9 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer)
     bindValue(8, buffer.lastseenmsgid);
     bindValue(9, buffer.markerlinemsgid);
     bindValue(10, buffer.bufferactivity);
-    bindValue(11, buffer.key);
-    bindValue(12, buffer.joined);
+    bindValue(11, buffer.highlightcount);
+    bindValue(12, buffer.key);
+    bindValue(13, buffer.joined);
     return exec();
 }
 

@@ -2103,8 +2103,9 @@ bool SqliteMigrationReader::readMo(BufferMO &buffer)
     buffer.lastseenmsgid = value(8).toInt();
     buffer.markerlinemsgid = value(9).toInt();
     buffer.bufferactivity = value(10).toInt();
-    buffer.key = value(11).toString();
-    buffer.joined = value(12).toInt() == 1 ? true : false;
+    buffer.highlightcount = value(11).toInt();
+    buffer.key = value(12).toString();
+    buffer.joined = value(13).toInt() == 1 ? true : false;
     return true;
 }
 
