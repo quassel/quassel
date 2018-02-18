@@ -49,7 +49,7 @@ public slots:
 
     void addCoreHighlight(const Message &message) {
         auto oldHighlightCount = highlightCount(message.bufferId());
-        if (message.flags().testFlag(Message::Flag::Highlight)) {
+        if (message.flags().testFlag(Message::Flag::Highlight) && !message.flags().testFlag(Message::Flag::Self)) {
             setHighlightCount(message.bufferId(), oldHighlightCount + 1);
         }
     }
