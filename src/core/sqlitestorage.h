@@ -99,6 +99,9 @@ public slots:
     void setBufferActivity(UserId id, BufferId bufferId, Message::Types type) override;
     QHash<BufferId, Message::Types> bufferActivities(UserId id) override;
     Message::Types bufferActivity(BufferId bufferId, MsgId lastSeenMsgId) override;
+    void setHighlightCount(UserId id, BufferId bufferId, int count) override;
+    QHash<BufferId, int> highlightCounts(UserId id) override;
+    int highlightCount(BufferId bufferId, MsgId lastSeenMsgId) override;
 
     /* Message handling */
     bool logMessage(Message &msg) override;

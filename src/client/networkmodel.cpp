@@ -1757,3 +1757,12 @@ void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types
     auto activityVisibleTypesIntersection = activity & visibleTypes;
     _bufferItem->setActivity(activityVisibleTypesIntersection, false);
 }
+
+void NetworkModel::highlightCountChanged(BufferId bufferId, int count) {
+    auto _bufferItem = findBufferItem(bufferId);
+    if (!_bufferItem) {
+        qDebug() << "NetworkModel::bufferActivityChanged(): buffer is unknown:" << bufferId;
+        return;
+    }
+    _bufferItem->addActivity(Message::Types{}, count > 0);
+}

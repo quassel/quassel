@@ -1576,6 +1576,79 @@ Message::Types SqliteStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMs
     return result;
 }
 
+void SqliteStorage::setHighlightCount(UserId user, BufferId bufferId, int count)
+{
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("update_buffer_highlightcount"));
+        query.bindValue(":userid", user.toInt());
+        query.bindValue(":bufferid", bufferId.toInt());
+        query.bindValue(":highlightcount", count);
+
+        lockForWrite();
+        safeExec(query);
+        watchQuery(query);
+    }
+    db.commit();
+    unlock();
+}
+
+
+QHash<BufferId, int> SqliteStorage::highlightCounts(UserId user)
+{
+    QHash<BufferId, int> highlightCountHash;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    bool error = false;
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_buffer_highlightcounts"));
+        query.bindValue(":userid", user.toInt());
+
+        lockForRead();
+        safeExec(query);
+        error = !watchQuery(query);
+        if (!error) {
+            while (query.next()) {
+                highlightCountHash[query.value(0).toInt()] = query.value(1).toInt();
+            }
+        }
+    }
+
+    db.commit();
+    unlock();
+    return highlightCountHash;
+}
+
+
+int SqliteStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
+{
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    int result = 0;
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_buffer_highlightcount"));
+        query.bindValue(":bufferid", bufferId.toInt());
+        query.bindValue(":lastseenmsgid", lastSeenMsgId.toInt());
+
+        lockForRead();
+        safeExec(query);
+        if (query.first())
+            result = query.value(0).toInt();
+    }
+
+    db.commit();
+    unlock();
+    return result;
+}
+
 bool SqliteStorage::logMessage(Message &msg)
 {
     QSqlDatabase db = logDb();

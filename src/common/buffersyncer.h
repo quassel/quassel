@@ -32,17 +32,24 @@ class BufferSyncer : public SyncableObject
 
 public:
     explicit BufferSyncer(QObject *parent);
-    explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, QObject *parent);
+    explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, const QHash<BufferId, int> &highlightCounts, QObject *parent);
 
     inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     MsgId lastSeenMsg(BufferId buffer) const;
     MsgId markerLine(BufferId buffer) const;
     Message::Types activity(BufferId buffer) const;
+    int highlightCount(BufferId buffer) const;
 
     void markActivitiesChanged() {
         for (auto buffer : _bufferActivities.keys()) {
             emit bufferActivityChanged(buffer, activity(buffer));
+        }
+    }
+
+    void markHighlightCountsChanged() {
+        for (auto buffer : _highlightCounts.keys()) {
+            emit highlightCountChanged(buffer, highlightCount(buffer));
         }
     }
 
@@ -56,6 +63,9 @@ public slots:
     QVariantList initActivities() const;
     void initSetActivities(const QVariantList &);
 
+    QVariantList initHighlightCounts() const;
+    void initSetHighlightCounts(const QVariantList &);
+
     virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
     virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) setMarkerLine(buffer, msgId); }
 
@@ -64,6 +74,12 @@ public slots:
         SYNC(ARG(buffer), ARG(activity));
         _bufferActivities[buffer] = flags;
         emit bufferActivityChanged(buffer, flags);
+    }
+
+    virtual inline void setHighlightCount(BufferId buffer, int count) {
+        SYNC(ARG(buffer), ARG(count));
+        _highlightCounts[buffer] = count;
+        emit highlightCountChanged(buffer, count);
     }
 
     virtual inline void requestRemoveBuffer(BufferId buffer) { REQUEST(ARG(buffer)) }
@@ -88,6 +104,7 @@ signals:
     void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
     void bufferMarkedAsRead(BufferId buffer);
     void bufferActivityChanged(BufferId, Message::Types);
+    void highlightCountChanged(BufferId, int);
 
 protected slots:
     bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);
@@ -102,6 +119,7 @@ private:
     QHash<BufferId, MsgId> _lastSeenMsg;
     QHash<BufferId, MsgId> _markerLines;
     QHash<BufferId, Message::Types> _bufferActivities;
+    QHash<BufferId, int> _highlightCounts;
 };
 
 
