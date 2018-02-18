@@ -147,8 +147,12 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo)
     }
 
     BufferSyncer *bufferSyncer = Client::bufferSyncer();
-    if (bufferSyncer)
-        bufferItem->addActivity(bufferSyncer->activity(bufferItem->bufferId()), false);
+    if (bufferSyncer) {
+        bufferItem->addActivity(
+                bufferSyncer->activity(bufferItem->bufferId()),
+                bufferSyncer->highlightCount(bufferItem->bufferId()) > 0
+        );
+    }
 
     return bufferItem;
 }
