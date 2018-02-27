@@ -1257,8 +1257,8 @@ void ChatScene::webPreviewNextStep()
         qWarning() << "removing preview";
         if (webPreview.previewItem && webPreview.previewItem->scene())
             removeItem(webPreview.previewItem);
-    // Fall through to deletion!
-    [[fallthrough]];
+        // Fall through to deletion!
+        [[clang::fallthrough]];
     case WebPreview::HidePreview:
         if (webPreview.previewItem) {
             delete webPreview.previewItem;
@@ -1285,8 +1285,8 @@ void ChatScene::clearWebPreview(ChatItem *parentItem)
             if (webPreview.previewItem && webPreview.previewItem->scene())
                 removeItem(webPreview.previewItem);
         }
-    // fall through into to set hidden state
-    [[fallthrough]];
+        // fall through into to set hidden state
+        [[clang::fallthrough]];
     case WebPreview::DelayPreview:
         // we're just loading, so haven't shown the preview yet.
         webPreview.previewState = WebPreview::HidePreview;
