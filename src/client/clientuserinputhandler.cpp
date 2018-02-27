@@ -20,18 +20,20 @@
 
 #include "clientuserinputhandler.h"
 
+#include "bufferinfo.h"
 #include "buffermodel.h"
 #include "client.h"
 #include "clientaliasmanager.h"
-#include "clientsettings.h"
-#include "execwrapper.h"
-#include "ircuser.h"
-#include "network.h"
-#include "types.h"
-#include "bufferinfo.h"
 #include "clientbufferviewconfig.h"
 #include "clientbufferviewmanager.h"
+#include "clientignorelistmanager.h"
+#include "clientsettings.h"
+#include "execwrapper.h"
+#include "ignorelistmanager.h"
+#include "ircuser.h"
 #include "messagemodel.h"
+#include "network.h"
+#include "types.h"
 
 #include <QDateTime>
 
@@ -113,6 +115,29 @@ void ClientUserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QSt
     switchBuffer(bufferInfo.networkId(), text.section(' ', 0, 0));
     // send to core
     defaultHandler("QUERY", bufferInfo, text);
+}
+
+
+void ClientUserInputHandler::handleIgnore(const BufferInfo &bufferInfo, const QString &text)
+{
+    if (text.isEmpty()) {
+        emit Client::instance()->displayIgnoreList("");
+        return;
+    }
+    // If rule contains no ! or @, we assume it is just a nickname, and turn it into an ignore rule for that nick
+    QString rule = (text.contains('!') || text.contains('@')) ? text : text + "!*@*";
+
+    Client::ignoreListManager()->requestAddIgnoreListItem(
+            IgnoreListManager::IgnoreType::SenderIgnore,
+            rule,
+            false,
+            // Use a dynamic ignore rule, for reversibility
+            IgnoreListManager::StrictnessType::SoftStrictness,
+            // Use current network as scope
+            IgnoreListManager::ScopeType::NetworkScope,
+            Client::network(bufferInfo.networkId())->networkName(),
+            true
+    );
 }
 
 
