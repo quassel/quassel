@@ -1,156 +1,38 @@
 version: '{build}'
+
+image: Visual Studio 2017
+
+init:
+- ps: |
+    function craft() {
+        & C:\python36\python.exe "C:\CraftMaster\$env:TARGET\craft\bin\craft.py" $args
+        if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+    }
+
+install:
+- ps: |
+    mkdir C:\CraftMaster | Out-Null
+    #use cmd to silence powershell behaviour for stderr
+    & cmd /C "git clone -q --depth=1 git://anongit.kde.org/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
+    & C:\python36\python.exe C:\CraftMaster\CraftMaster\CraftMaster.py --config $env:APPVEYOR_BUILD_FOLDER\appveyor.ini --target $env:TARGET
+    craft -p quassel
+    craft nsis
+    craft --install-deps quassel
+
 build_script:
 - ps: |
-    $ErrorActionPreference="Stop"
+    craft --no-cache --src-dir $env:APPVEYOR_BUILD_FOLDER quassel
 
-    Import-Module $env:APPVEYOR_BUILD_FOLDER\scripts\build\appveyorHelp.psm1
+test_script:
+- ps: |
+    craft --src-dir $env:APPVEYOR_BUILD_FOLDER --test quassel
 
-    Init @("ninja", "png2ico", "nsis", "7zip.commandline") ([ordered]@{"git://anongit.kde.org/extra-cmake-modules.git" = @{"branch" = "master"};
-                                 "https://github.com/Snorenotify/SnoreGrowl.git" = @{"branch" = "v0.4.0"; "buildType" = "Release"};
-                                 "git://anongit.kde.org/snorenotify.git" = @{"branch" = "v0.7.0"; "buildType" = "Release"}})
-
-
-    mkdir -Force $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
-    cd $env:APPVEYOR_BUILD_FOLDER\work\build\$env:APPVEYOR_PROJECT_NAME
-
-    $webPrevOption = "-DWITH_WEBKIT=OFF -DWITH_WEBENGINE=ON"
-    $webPrevFiles = @(
-                      "bin\\Qt5Positioning\.dll",
-                      "bin\\Qt5PrintSupport\.dll",
-                      "bin\\Qt5Sensors\.dll",
-                      "bin\\Qt5WebChannel\.dll",
-                      "bin\\QtWebEngineProcess\.exe",
-                      "bin\\Qt5WebEngine\.dll",
-                      "bin\\Qt5WebEngineCore\.dll",
-                      "bin\\Qt5WebEngineWidgets\.dll",
-                      "resources\\icudtl\.dat",
-                      "resources\\qtwebengine_resources.pak",
-                      "resources\\qtwebengine_resources_100p.pak",
-                      "resources\\qtwebengine_resources_200p.pak")
-
-    if($env:COMPILER -eq "mingw49_32") {
-        $webPrevOption = "-DWITH_WEBKIT=OFF -DWITH_WEBENGINE=OFF"
-        $webPrevFiles = @()
-    }
-    
-    LogExec cmake -G"Ninja" $env:APPVEYOR_BUILD_FOLDER -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$CMAKE_INSTALL_ROOT" -DUSE_QT5=ON -DWITH_BREEZE=ON -DWITH_BREEZE_DARK=ON -DWITH_OXYGEN=ON $webPrevOption
-    CmakeImageInstall
-
-    $whitelist = @(
-                            # whitelist
-                            #quassel
-                            "quassel.*",
-                            #
-                            #gccruntime",
-                            "bin\\libgomp.*\.dll",
-                            "bin\\libgcc_s_.*\.dll",
-                            "bin\\libwinpthread.*\.dll",
-                            "bin\\libstdc.*\.dll",
-                            #
-                            #snore
-                            "bin\\.*snore.*\.dll",
-                            "lib\\plugins\\libsnore.*\\libsnore_backend.*\.dll",
-                            "lib\\plugins\\libsnore.*\\libsnore_settings_backend.*\.dll",
-                            "lib\\plugins\\libsnore.*\\libsnore_secondarybackend.*\.dll", "lib\\plugins\\libsnore.*\\libsnore_settings_secondarybackend.*\.dll", "bin\\SnoreToast\.exe",
-                            #
-                            #Growl
-                            "bin\\.*snoregrowl.*\.dll",
-                            #
-                            #ssl
-                            ".*\\libeay32\.dll",
-                            ".*\\ssleay32\.dll",
-                            #
-                            #icu
-                            "bin\\icuin\d+\.dll",
-                            "bin\\icuuc\d+\.dll",
-                            "bin\\icudt\d+\.dll",
-                            #
-                            #qt
-                            "bin\\Qt5Core\.dll",
-                            "bin\\Qt5Declarative\.dll",
-                            "bin\\Qt5Gui\.dll",
-                            "bin\\Qt5Network\.dll",
-                            "bin\\Qt5Opengl\.dll",
-                            "bin\\Qt5Multimedia\.dll",
-                            "bin\\Qt5MultimediaWidgets\.dll",
-                            "bin\\Qt5Qml\.dll",
-                            "bin\\Qt5Quick\.dll",
-                            "bin\\Qt5Script\.dll",
-                            "bin\\Qt5Sql\.dll",
-                            "bin\\Qt5Svg\.dll",
-                            "bin\\Qt5WebChannel\.dll",
-                            "bin\\Qt5Widgets\.dll",
-                            "bin\\Qt5Xml\.dll",
-                            "bin\\Qt5XmlPatterns\.dll",
-                            "bin\\.*libglesv2\.dll",
-                            "bin\\.*libEGL\.dll",
-                            "qml\\.*",
-                            #bin\\QtXml\.dll
-                            #
-                            "plugins\\imageformats\\(?!.*d\.dll).*\.dll$",
-                            "plugins\\sqldrivers\\qsqlite(?!.*d\.dll).*\.dll$",
-                            "plugins\\codecs\\(?!.*d\.dll).*\.dll$",
-                            "plugins\\platforms\\qwindows(?!.*d\.dll).*\.dll$",
-                            "plugins\\iconengines\\(?!.*d\.dll).*\.dll$",
-                            #
-                            #
-                            #zlib
-                            "bin\\libz.dll",
-                            #
-                            #qca
-                            "bin\\libqca.*\.dll",
-                            "lib\\qca-qt5\\crypto\\.*",
-                            "certs\\.*",
-                            #
-                            #phonon
-                            "bin\\libphonon.*\.dll",
-                            "bin\\phonon.*\.dll",
-                            "bin\\libphononexperimental.*\.dll",
-                            "bin\\phonon_backend\\.*",
-                            "plugins\\phonon_backend\\.*",
-                            "plugins\\phonon4qt5_backend\\.*")
-
-    $whitelist += $webPrevFiles
-
-    $imageDir = CreateDeployImage $whitelist @(
-                            #blacklist
-                            "include",
-                            ".*\.h",
-                            "lib\\plugins\\libsnore.*\\libsnore_backend_freedesktop\.dll",
-                            ".*\.pdb",
-                            ".*plugind\.dll"
-                            )
-
-    mv "$imageDir\bin\*" "$imageDir\"
-    #mv "$imageDir\lib\qca-qt5\crypto" "$imageDir\crypto"
-    mv "$imageDir\qml\*" "$imageDir"
-    mv "$imageDir\plugins\*" "$imageDir"
-    if(Test-Path "$imageDir\lib\plugins")
-    {
-        mv "$imageDir\lib\plugins\*" "$imageDir"
-    }
-    if(Test-Path "$imageDir\resources")
-    {
-        mv "$imageDir\resources\*" "$imageDir"
-    }
-    DeleteEmptyFodlers $imageDir
-    7ZipDeployImage
-    NsisDeployImage $env:APPVEYOR_BUILD_FOLDER\scripts\build\NullsoftInstaller.nsi
+on_success:
+- ps: |
+    craft --src-dir $env:APPVEYOR_BUILD_FOLDER --package quassel
+    Get-ChildItem C:\CraftMaster\$env:TARGET\tmp\* | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
 environment:
-    QT_VER: 5.7
-
     matrix:
-    #msvc
-    - COMPILER: msvc2015_64
-    - COMPILER: msvc2015
-
-    #mingw
-    - COMPILER: mingw53_32
-
-test: off
-
-cache:
-    - work\install -> appveyor.yml
-    - C:\ProgramData\chocolatey\bin -> appveyor.yml
-    - C:\ProgramData\chocolatey\lib -> appveyor.yml
+    - TARGET: windows-msvc2017_64-cl
+    - TARGET: windows-msvc2017_32-cl
