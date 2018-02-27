@@ -24,7 +24,7 @@ var nameOfToBeRunend
 
 Var StartMenuFolder
 
-!define PRODUCT_WEB_SITE http://quassel-irc.org/
+!define PRODUCT_WEB_SITE https://quassel-irc.org/
 !define MyApp_AppUserModelId  QuasselProject.QuasselIRC
 !define SnoreToastExe "$INSTDIR\SnoreToast.exe"
 

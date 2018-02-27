@@ -52,15 +52,15 @@ QString AboutDlg::about() const
 {
     QString res {tr("<b>A modern, distributed IRC Client</b><br><br>"
              "&copy;%1 by the Quassel Project<br>"
-             "<a href=\"http://quassel-irc.org\">http://quassel-irc.org</a><br>"
-             "<a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>"
-             "Quassel IRC is dual-licensed under <a href=\"http://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and "
-                 "<a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
+             "<a href=\"https://quassel-irc.org\">https://quassel-irc.org</a><br>"
+             "<a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"https://www.freenode.net\">Freenode</a><br><br>"
+             "Quassel IRC is dual-licensed under <a href=\"https://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and "
+                 "<a href=\"https://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
              "<a href=\"https://api.kde.org/frameworks/breeze-icons/html\">Breeze icon theme</a> &copy; Uri Herrera and others, licensed under the "
                  "<a href=\"https://github.com/KDE/breeze-icons/blob/21ffd9b/COPYING-ICONS\">LGPLv3</a>.<br>"
              "<a href=\"https://api.kde.org/frameworks/oxygen-icons5/html\">Oxygen icon theme</a> &copy; Nuno Pinheiro and others, licensed under the "
                  "<a href=\"https://github.com/KDE/oxygen-icons/blob/master/COPYING\">LGPLv3</a>.<br><br>"
-             "Please use <a href=\"http://bugs.quassel-irc.org\">http://bugs.quassel-irc.org</a> to report bugs."
+             "Please use <a href=\"https://bugs.quassel-irc.org\">https://bugs.quassel-irc.org</a> to report bugs."
         ).arg("2005-2016")
     };
 
