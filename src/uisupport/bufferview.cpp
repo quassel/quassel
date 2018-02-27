@@ -89,14 +89,13 @@ void BufferView::init()
     setSortingEnabled(true);
     sortByColumn(0, Qt::AscendingOrder);
 
-    // activated() fails on X11 and Qtopia at least
-#if defined Q_WS_QWS || defined Q_WS_X11
-    disconnect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
-    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(joinChannel(QModelIndex)));
-#else
+#if defined Q_OS_MACOS || defined Q_OS_WIN
     // afaik this is better on Mac and Windows
     disconnect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(joinChannel(QModelIndex)));
+#else
+    disconnect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(joinChannel(QModelIndex)));
 #endif
 }
 
