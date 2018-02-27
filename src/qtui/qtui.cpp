@@ -33,10 +33,6 @@
 #include "types.h"
 #include "util.h"
 
-#ifdef Q_WS_X11
-#  include <QX11Info>
-#endif
-
 QtUi *QtUi::_instance = 0;
 MainWin *QtUi::_mainWin = 0;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
