@@ -52,10 +52,10 @@ Thanks for reading,
 
 ~ *The Quassel IRC Team*
 
-[web-home]: http://quassel-irc.org
-[dev-bugs]: http://bugs.quassel-irc.org
+[web-home]: https://quassel-irc.org
+[dev-bugs]: https://bugs.quassel-irc.org
 [dev-email]: mailto:devel@quassel-irc.org
 [dev-pr-new]: https://github.com/quassel/quassel/pull/new/master
-[docs-wiki]: http://bugs.quassel-irc.org/projects/quassel-irc/wiki
+[docs-wiki]: https://bugs.quassel-irc.org/projects/quassel-irc/wiki
 [help-freenode]: https://webchat.freenode.net?channels=%23quassel
 [repo-changelog]: ChangeLog

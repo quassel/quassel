@@ -6,10 +6,10 @@ contains end-user visible, mostly major new features. It does not contain (most)
 bugfixes, nor is it guaranteed to be complete or up-to-date at all. Also, it does
 start at 0.3.0 only, since this was the first version widely available.
 
-Please have a look at <http://bugs.quassel-irc.org/projects/quassel-irc/roadmap> for a
+Please have a look at <https://bugs.quassel-irc.org/projects/quassel-irc/roadmap> for a
 list of closed bug/feature reports (which still does not cover bugs we have
 fixed but which were never reported, of course), and for a full list of
-changes, the git history at <http://git.quassel-irc.org> is your friend.
+changes, the git history at <https://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 

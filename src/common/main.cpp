@@ -111,7 +111,7 @@ int main(int argc, char **argv)
         ki18n("A modern, distributed IRC client"));
     aboutData.addLicense(KAboutData::License_GPL_V2);
     aboutData.addLicense(KAboutData::License_GPL_V3);
-    aboutData.setBugAddress("http://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
+    aboutData.setBugAddress("https://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
     aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
     KCmdLineArgs::init(argc, argv, &aboutData);
 
