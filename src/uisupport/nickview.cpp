@@ -53,11 +53,11 @@ NickView::NickView(QWidget *parent)
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showContextMenu(const QPoint &)));
 
-#if defined Q_WS_QWS || defined Q_WS_X11
-    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(startQuery(QModelIndex)));
-#else
+#if defined Q_OS_MACOS || defined Q_OS_WIN
     // afaik this is better on Mac and Windows
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(startQuery(QModelIndex)));
+#else
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(startQuery(QModelIndex)));
 #endif
 }
 
