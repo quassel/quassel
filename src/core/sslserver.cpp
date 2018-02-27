@@ -57,7 +57,7 @@ SslServer::SslServer(QObject *parent)
             quWarning()
             << "SslServer: Unable to set certificate file\n"
             << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
             sslWarningShown = true;
         }
     }
@@ -112,12 +112,12 @@ bool SslServer::reloadCerts()
             quWarning()
             << "SslServer: Unable to reload certificate file, reverting\n"
             << "          Quassel Core will use the previous key to provide SSL for client connections.\n"
-            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
         } else {
             quWarning()
             << "SslServer: Unable to reload certificate file\n"
             << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
         }
         return false;
     }
