@@ -118,6 +118,7 @@ QAction *ActionCollection::addAction(const QString &name, QAction *action)
     }
 
     connect(action, SIGNAL(destroyed(QObject *)), SLOT(actionDestroyed(QObject *)));
+    connect(action, SIGNAL(changed()), SLOT(receiveActionChanged()));
     if (_connectHovered)
         connect(action, SIGNAL(hovered()), SLOT(slotActionHovered()));
     if (_connectTriggered)
@@ -125,6 +126,14 @@ QAction *ActionCollection::addAction(const QString &name, QAction *action)
 
     emit inserted(action);
     return action;
+}
+
+
+void ActionCollection::receiveActionChanged()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    Q_ASSERT(action);
+    emit(changed(action));
 }
 
 

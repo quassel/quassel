@@ -195,7 +195,7 @@ KeySequenceWidget::KeySequenceWidget(QWidget *parent)
 
 void KeySequenceWidget::setModel(ShortcutsModel *model)
 {
-    Q_ASSERT(!_shortcutsModel);
+    //Q_ASSERT(!_shortcutsModel);
     _shortcutsModel = model;
 }
 
@@ -368,6 +368,9 @@ void KeySequenceWidget::clear()
 bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence &seq)
 {
     if (seq.isEmpty())
+        return true;
+
+    if(!_shortcutsModel)
         return true;
 
     // We need to access the root model, not the filtered one

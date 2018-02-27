@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QComboBox>
+#include <QCursor>
 #include <QDialogButtonBox>
 #include <QGridLayout>
 #include <QIcon>
@@ -26,7 +27,6 @@
 #include <QLineEdit>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include "networkmodelcontroller.h"
 
@@ -37,6 +37,7 @@
 #include "util.h"
 #include "clientignorelistmanager.h"
 #include "client.h"
+#include "buffershortcutpopup.h"
 
 NetworkModelController::NetworkModelController(QObject *parent)
     : QObject(parent),
@@ -299,6 +300,12 @@ void NetworkModelController::handleBufferAction(ActionType type, QAction *)
             case BufferSwitchTo:
                 Client::bufferModel()->switchToBuffer(bufferInfo.bufferId());
                 break;
+            case BufferSetShortcut:
+            {
+                BufferShortcutPopup *dlg = new BufferShortcutPopup(bufferInfo);
+                connect(dlg, SIGNAL(keySequenceChanged(BufferId)), this, SIGNAL(bufferShortcutsChanged(BufferId)));
+                break;
+            }
             default:
                 break;
             }
@@ -608,3 +615,6 @@ void NetworkModelController::JoinDlg::on_channel_textChanged(const QString &text
 {
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }
+
+/*** BUFFER SHORTCUT DIALOG ***/
+

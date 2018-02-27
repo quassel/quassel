@@ -31,6 +31,9 @@ set(SOURCES
     treeviewtouch.cpp
     uisettings.cpp
     uistyle.cpp
+    keysequencewidget.cpp
+    shortcutsmodel.cpp
+    buffershortcutpopup.cpp
 
     # needed for automoc
     abstractnotificationbackend.h

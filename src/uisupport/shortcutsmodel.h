@@ -26,6 +26,7 @@
 
 class Action;
 class ActionCollection;
+class QAction;
 
 //! Model that exposes the actions from one or more ActionCollections
 /** This model takes one or more ActionCollections and exposes their actions as model items.
@@ -78,7 +79,7 @@ signals:
     //! Reflects the difference between model contents and the ActionCollections we loaded this from
     void hasChanged(bool changed);
 
-private:
+protected:
     struct Item {
         inline Item() { parentItem = 0; collection = 0; action = 0; }
         inline ~Item() { qDeleteAll(actionItems); }
@@ -91,7 +92,12 @@ private:
     };
 
     QList<Item *> _categoryItems;
+
+private:
     int _changedCount;
+
+protected slots:
+    void collectionChanged(QAction *action);
 };
 
 

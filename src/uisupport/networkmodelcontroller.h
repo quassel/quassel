@@ -56,6 +56,7 @@ public:
         BufferPart = 0x20,
         BufferSwitchTo = 0x30,
         BufferRemove = 0x40,
+        BufferSetShortcut = 0x50,
 
         // Hide actions
         HideMask = 0x0f00,
@@ -155,6 +156,7 @@ protected slots:
 signals:
     void showChannelList(NetworkId);
     void showIgnoreList(QString);
+    void bufferShortcutsChanged(BufferId);
 
 protected:
     virtual void handleNetworkAction(ActionType, QAction *);

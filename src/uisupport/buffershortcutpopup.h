@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2013 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,61 +18,30 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SHORTCUTSSETTINGSPAGE_H
-#define SHORTCUTSSETTINGSPAGE_H
+#ifndef BUFFERSHORTCUTPOPUP_H
+#define BUFFERSHORTCUTPOPUP_H
 
-#include <QSortFilterProxyModel>
+#include <QWidget>
 
-#include "settingspage.h"
+#include "buffermodel.h"
+#include "keysequencewidget.h"
 
-#include "ui_shortcutssettingspage.h"
-
-class ActionCollection;
-class ShortcutsModel;
-
-class ShortcutsFilter : public QSortFilterProxyModel
-{
+class BufferShortcutPopup : public QWidget {
     Q_OBJECT
+
 public:
-    ShortcutsFilter(QList<QString> exclude = QList<QString>(), QObject *parent = 0);
-
-public slots:
-    void setFilterString(const QString &filterString);
-
-protected:
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-    QList<QString> _includeCategories;
-
-private:
-    QString _filterString;
-};
-
-
-class ShortcutsSettingsPage : public SettingsPage
-{
-    Q_OBJECT
-public:
-    ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QList<QString> includeCategories, QWidget *parent, const QString &category=tr("Interface"), const QString &name=tr("Shortcuts"));
-    inline bool hasDefaults() const { return true; }
-
-public slots:
-    void save();
-    void load();
-    void defaults();
+    BufferShortcutPopup(BufferInfo, QWidget *parent = 0);
 
 private slots:
-    void on_searchEdit_textChanged(const QString &text);
-    void keySequenceChanged(const QKeySequence &seq, const QModelIndex &conflicting);
-    void setWidgetStates();
-    void toggledCustomOrDefault();
+    void onSequenceWidgetChanged(QKeySequence, QModelIndex conflicting);
 
-protected:
-    void initui();
+signals:
+    void keySequenceChanged(BufferId);
 
-    Ui::ShortcutsSettingsPage ui;
+private:
+    KeySequenceWidget *_keySeq;
+    BufferInfo _bufferInfo;
     ShortcutsModel *_shortcutsModel;
-    ShortcutsFilter *_shortcutsFilter;
 };
 
-
-#endif // SHORTCUTSSETTINGSPAGE_H
+#endif // BUFFERSHORTCUTPOPUP_H
