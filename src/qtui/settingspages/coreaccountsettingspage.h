@@ -21,6 +21,7 @@
 #ifndef COREACCOUNTSETTINGSPAGE_H_
 #define COREACCOUNTSETTINGSPAGE_H_
 
+#include <QNetworkProxy>
 #include <QSortFilterProxyModel>
 
 #include "settingspage.h"
@@ -102,12 +103,14 @@ private slots:
     void on_hostName_textChanged(const QString &);
     void on_accountName_textChanged(const QString &);
     void on_user_textChanged(const QString &);
+    void on_radioButtonManualProxy_toggled(bool checked);
 
     void setWidgetStates();
 
 private:
     Ui::CoreAccountEditDlg ui;
     CoreAccount _account;
+    enum ProxyType { NoProxy, SystemProxy, ManualProxy };
 };
 
 

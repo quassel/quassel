@@ -214,7 +214,7 @@ bool QtUiApplication::migrateSettings()
     //
     // NOTE:  If you increase the minor version, you MUST ALSO add new version upgrade logic in
     // applySettingsMigration()!  Otherwise, settings upgrades will fail.
-    const uint VERSION_MINOR_CURRENT = 6;
+    const uint VERSION_MINOR_CURRENT = 7;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -279,6 +279,17 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // saved.  Exceptions will be noted below.
     // NOTE:  If you add new upgrade logic here, you MUST ALSO increase VERSION_MINOR_CURRENT in
     // migrateSettings()!  Otherwise, your upgrade logic won't ever be called.
+    case 7:
+    {
+        // New default changes: ProxyType=3 (no proxy) now means QNetworkProxy::HttpProxy
+        // So we have to change it to ProxyType=2 (QNetworkProxy::NoProxy)
+        const QString proxyType = "ProxyType";
+        if (settings.valueExists(proxyType) && settings.value(proxyType)=="3") {
+            settings.setValue(proxyType, 2);
+        }
+        // Migration complete!
+        return true;
+    }
     case 6:
     {
         // New default changes: sender colors switched around to Tango-ish theme
