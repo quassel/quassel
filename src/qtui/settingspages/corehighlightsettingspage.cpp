@@ -57,6 +57,11 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
             this,
             SLOT(selectIgnoredRow(QTableWidgetItem * )));
 
+    // Update the "Case sensitive" checkbox
+    connect(ui.highlightNicksComboBox,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(highlightNicksChanged(int)));
 
     connect(ui.highlightNicksComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.nicksCaseSensitive, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
@@ -284,6 +289,12 @@ void CoreHighlightSettingsPage::removeSelectedIgnoredRows()
     }
 }
 
+void CoreHighlightSettingsPage::highlightNicksChanged(const int index) {
+    // Only allow toggling "Case sensitive" when a nickname will be highlighted
+    auto highlightNickType = ui.highlightNicksComboBox->itemData(index).value<int>();
+    ui.nicksCaseSensitive->setEnabled(highlightNickType != HighlightRuleManager::NoNick);
+}
+
 void CoreHighlightSettingsPage::selectHighlightRow(QTableWidgetItem *item)
 {
     int row = item->row();
@@ -426,6 +437,8 @@ void CoreHighlightSettingsPage::load()
 
         int highlightNickType = ruleManager->highlightNick();
         ui.highlightNicksComboBox->setCurrentIndex(ui.highlightNicksComboBox->findData(QVariant(highlightNickType)));
+        // Trigger the initial update of nicksCaseSensitive being enabled or not
+        highlightNicksChanged(ui.highlightNicksComboBox->currentIndex());
         ui.nicksCaseSensitive->setChecked(ruleManager->nicksCaseSensitive());
 
         setChangedState(false);
