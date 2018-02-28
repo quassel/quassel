@@ -56,6 +56,7 @@ private slots:
                           bool cs = false, const QString &sender = "", const QString &chanName = "", bool self = false);
     void removeSelectedHighlightRows();
     void removeSelectedIgnoredRows();
+    void highlightNicksChanged(const int index);
     void selectHighlightRow(QTableWidgetItem *item);
     void selectIgnoredRow(QTableWidgetItem *item);
     void highlightTableChanged(QTableWidgetItem *item);
