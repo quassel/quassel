@@ -160,62 +160,6 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
 }
 
 
-bool IgnoreListManager::scopeMatch(const QString &scopeRule, const QString &string) const
-{
-    // A match happens when the string does NOT match ANY inverted rules and matches AT LEAST one
-    // normal rule, unless no normal rules exist (implicit wildcard match).  This gives inverted
-    // rules higher priority regardless of ordering.
-    //
-    // TODO: After switching to Qt 5, use of this should be split into two parts, one part that
-    // would generate compiled QRegularExpressions for match/inverted match, regenerating it on any
-    // rule changes, and another part that would check each message against these compiled rules.
-
-    // Keep track if any matches are found
-    bool matches = false;
-    // Keep track if normal rules and inverted rules are found, allowing for implicit wildcard
-    bool normalRuleFound = false, invertedRuleFound = false;
-
-    // Split each scope rule by separator, ignoring empty parts
-    foreach(QString rule, scopeRule.split(";", QString::SkipEmptyParts)) {
-        // Trim whitespace from the start/end of the rule
-        rule = rule.trimmed();
-        // Ignore empty rules
-        if (rule.isEmpty())
-            continue;
-
-        // Check if this is an inverted rule (starts with '!')
-        if (rule.startsWith("!")) {
-            // Inverted rule found
-            invertedRuleFound = true;
-
-            // Take the reminder of the string
-            QRegExp ruleRx(rule.mid(1), Qt::CaseInsensitive);
-            ruleRx.setPatternSyntax(QRegExp::Wildcard);
-            if (ruleRx.exactMatch(string)) {
-                // Matches an inverted rule, full rule cannot match
-                return false;
-            }
-        } else {
-            // Normal rule found
-            normalRuleFound = true;
-
-            QRegExp ruleRx(rule, Qt::CaseInsensitive);
-            ruleRx.setPatternSyntax(QRegExp::Wildcard);
-            if (ruleRx.exactMatch(string)) {
-                // Matches a normal rule, full rule might match
-                matches = true;
-                // Continue checking in case other inverted rules negate this
-            }
-        }
-    }
-    // No inverted rules matched, okay to match normally
-    // Return true if...
-    // ...we found a normal match
-    // ...implicit wildcard: we had inverted rules (that didn't match) and no normal rules
-    return matches || (invertedRuleFound && !normalRuleFound);
-}
-
-
 void IgnoreListManager::removeIgnoreListItem(const QString &ignoreRule)
 {
     removeAt(indexOf(ignoreRule));
