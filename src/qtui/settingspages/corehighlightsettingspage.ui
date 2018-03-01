@@ -161,8 +161,11 @@
             </item>
             <item>
              <widget class="QPushButton" name="highlightImport">
+              <property name="toolTip">
+               <string>Import highlight rules configured in &lt;i&gt;Local Highlights&lt;/i&gt;</string>
+              </property>
               <property name="text">
-               <string>Import</string>
+               <string>Import Local</string>
               </property>
              </widget>
             </item>
@@ -177,83 +180,92 @@
       <attribute name="title">
        <string>Highlight Ignore Rules</string>
       </attribute>
-      <layout class="QVBoxLayout" name="ignoredLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QTableWidget" name="ignoredTable">
-         <property name="toolTip">
-          <string/>
+        <widget class="QGroupBox" name="ignoresBox">
+         <property name="title">
+          <string>Never Highlight For</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <column>
-          <property name="text">
-           <string>Enabled</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Rule</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>RegEx</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>CS</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Sender</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Channel</string>
-          </property>
-         </column>
+         <layout class="QVBoxLayout" name="ignoredLayout">
+          <item>
+           <widget class="QTableWidget" name="ignoredTable">
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <column>
+             <property name="text">
+              <string>Enabled</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Rule</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>RegEx</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>CS</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Sender</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Channel</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="ignoredButtonBarLayout">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="ignoredAdd">
+              <property name="text">
+               <string>Add</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="ignoredRemove">
+              <property name="text">
+               <string>Remove</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="ignoredButtonBarSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="ignoredButtonBarLayout">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="ignoredAdd">
-           <property name="text">
-            <string>Add</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ignoredRemove">
-           <property name="text">
-            <string>Remove</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="ignoredButtonBarSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
