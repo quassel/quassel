@@ -184,9 +184,16 @@ Whenever you disable/delete the ignore rule, the messages are shown again.&lt;/p
 &lt;p&gt;A scope rule is a semicolon separated list of either &lt;i&gt;network&lt;/i&gt; or &lt;i&gt;channel&lt;/i&gt; names.&lt;/p&gt;
 &lt;p&gt;&lt;i&gt;Example:&lt;/i&gt;
 &lt;br /&gt;
-&lt;i&gt;#quassel*; #foobar&lt;/i&gt;
+&lt;i&gt;#quassel*; #foobar; !#quasseldroid&lt;/i&gt;
 &lt;br /&gt;
-would match on #foobar and on any channel starting with &lt;i&gt;#quassel&lt;/i&gt;&lt;/p&gt;</string>
+would match on #foobar and on any channel starting with &lt;i&gt;#quassel&lt;/i&gt; except for &lt;i&gt;#quasseldroid&lt;/i&gt;
+&lt;br /&gt;
+&lt;p&gt;If only inverted names are specified, it will match anything except for what's specified (implicit wildcard).&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Example:&lt;/i&gt;
+&lt;br /&gt;
+&lt;i&gt;!#quassel*; !#foobar&lt;/i&gt;
+&lt;br /&gt;
+would match anything except for #foobar or any channel starting with &lt;i&gt;#quassel&lt;/i&gt;&lt;/p&gt;</string>
         </property>
        </widget>
       </item>
