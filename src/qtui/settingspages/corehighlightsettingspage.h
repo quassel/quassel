@@ -62,6 +62,12 @@ private slots:
     void highlightTableChanged(QTableWidgetItem *item);
     void ignoredTableChanged(QTableWidgetItem *item);
 
+    /** Import local Highlight rules into the Core Highlight rules
+     *
+     * Iterates through all local highlight rules, converting each into core-side highlight rules.
+     */
+    void importRules();
+
 private:
     Ui::CoreHighlightSettingsPage ui;
 
@@ -82,8 +88,6 @@ private:
     void emptyIgnoredTable();
 
     void setupRuleTable(QTableWidget *highlightTable) const;
-
-    void importRules();
 
     bool _initialized;
 };
