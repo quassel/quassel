@@ -56,10 +56,10 @@ private:
     //    name:   QString
     //    enable: bool
     enum column {
-        NameColumn = 0,
-        RegExColumn = 1,
-        CsColumn = 2,
-        EnableColumn = 3,
+        EnableColumn = 0,
+        NameColumn = 1,
+        RegExColumn = 2,
+        CsColumn = 3,
         ChanColumn = 4,
         ColumnCount = 5
     };
