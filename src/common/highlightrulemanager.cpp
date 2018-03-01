@@ -104,7 +104,11 @@ void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlight
         _highlightRuleList << HighlightRule(name[i], isRegEx[i].toBool(), isCaseSensitive[i].toBool(),
                                             isActive[i].toBool(), isInverse[i].toBool(), sender[i], channel[i]);
     }
-    _highlightNick = HighlightNickType(highlightRuleList["highlightNick"].toInt());
+
+    // Make sure the default for _highlightNick is "CurrentNick" if not set
+    _highlightNick = HighlightNickType(
+                highlightRuleList.value("highlightNick", HighlightNickType::CurrentNick).toInt());
+
     _nicksCaseSensitive = highlightRuleList["nicksCaseSensitive"].toBool();
 }
 

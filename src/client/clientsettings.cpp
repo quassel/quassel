@@ -320,7 +320,7 @@ void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickT
 
 NotificationSettings::HighlightNickType NotificationSettings::highlightNick()
 {
-    return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick", CurrentNick).toInt();
+    return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick", NoNick).toInt();
 }
 
 
