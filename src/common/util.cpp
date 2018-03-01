@@ -73,7 +73,7 @@ bool isChannelName(const QString &str)
 
 QString stripFormatCodes(QString message)
 {
-    static QRegExp regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|[\x02\x0f\x12\x16\x1d\x1f]"};
+    static QRegExp regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
     return message.remove(regEx);
 }
 
