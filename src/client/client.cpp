@@ -426,6 +426,7 @@ void Client::setSyncedToCore()
     _highlightRuleManager = new HighlightRuleManager(this);
     p->synchronize(highlightRuleManager());
 
+/*  not ready yet
     // create TransferManager and DccConfig if core supports them
     Q_ASSERT(!_dccConfig);
     Q_ASSERT(!_transferManager);
@@ -436,6 +437,7 @@ void Client::setSyncedToCore()
         _transferModel->setManager(_transferManager);
         p->synchronize(transferManager());
     }
+*/
 
     // trigger backlog request once all active bufferviews are initialized
     connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));

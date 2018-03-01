@@ -226,7 +226,7 @@ void MainWin::init()
     setupActions();
     setupBufferWidget();
     setupMenus();
-    setupTransferWidget();
+    // setupTransferWidget(); not ready yet
     setupChatMonitor();
     setupTopicWidget();
     setupInputWidget();
@@ -1454,7 +1454,7 @@ void MainWin::showSettingsDlg()
     dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
     dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
     dlg->registerSettingsPage(new IgnoreListSettingsPage(dlg));
-    dlg->registerSettingsPage(new DccSettingsPage(dlg));
+    // dlg->registerSettingsPage(new DccSettingsPage(dlg)); not ready yet
 
     // Category: Remote Cores
     if (Quassel::runMode() != Quassel::Monolithic) {

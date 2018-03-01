@@ -379,6 +379,9 @@ Quassel::Features Quassel::features()
     for (int i = 1; i <= NumFeatures; i <<= 1)
         feats |= (Feature)i;
 
+    // Disable DCC until it is ready
+    feats &= ~Feature::DccFileTransfer;
+
     return feats;
 }
 
