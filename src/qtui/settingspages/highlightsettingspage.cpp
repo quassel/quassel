@@ -91,6 +91,13 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
 {
     ui.highlightTable->setRowCount(ui.highlightTable->rowCount()+1);
 
+    QTableWidgetItem *enableItem = new QTableWidgetItem("");
+    if (enable)
+        enableItem->setCheckState(Qt::Checked);
+    else
+        enableItem->setCheckState(Qt::Unchecked);
+    enableItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+
     QTableWidgetItem *nameItem = new QTableWidgetItem(name);
 
     QTableWidgetItem *regexItem = new QTableWidgetItem("");
@@ -107,20 +114,13 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
         csItem->setCheckState(Qt::Unchecked);
     csItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
 
-    QTableWidgetItem *enableItem = new QTableWidgetItem("");
-    if (enable)
-        enableItem->setCheckState(Qt::Checked);
-    else
-        enableItem->setCheckState(Qt::Unchecked);
-    enableItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
-
     QTableWidgetItem *chanNameItem = new QTableWidgetItem(chanName);
 
     int lastRow = ui.highlightTable->rowCount()-1;
+    ui.highlightTable->setItem(lastRow, HighlightSettingsPage::EnableColumn, enableItem);
     ui.highlightTable->setItem(lastRow, HighlightSettingsPage::NameColumn, nameItem);
     ui.highlightTable->setItem(lastRow, HighlightSettingsPage::RegExColumn, regexItem);
     ui.highlightTable->setItem(lastRow, HighlightSettingsPage::CsColumn, csItem);
-    ui.highlightTable->setItem(lastRow, HighlightSettingsPage::EnableColumn, enableItem);
     ui.highlightTable->setItem(lastRow, HighlightSettingsPage::ChanColumn, chanNameItem);
 
     if (!self)
@@ -188,6 +188,9 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item)
 
     switch (item->column())
     {
+    case HighlightSettingsPage::EnableColumn:
+        highlightRule["Enable"] = (item->checkState() == Qt::Checked);
+        break;
     case HighlightSettingsPage::NameColumn:
         if (item->text() == "")
             item->setText(tr("this shouldn't be empty"));
@@ -198,9 +201,6 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item)
         break;
     case HighlightSettingsPage::CsColumn:
         highlightRule["CS"] = (item->checkState() == Qt::Checked);
-        break;
-    case HighlightSettingsPage::EnableColumn:
-        highlightRule["Enable"] = (item->checkState() == Qt::Checked);
         break;
     case HighlightSettingsPage::ChanColumn:
         if (!item->text().isEmpty() && item->text().trimmed().isEmpty())

@@ -30,6 +30,11 @@
         </property>
         <column>
          <property name="text">
+          <string>Enabled</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
           <string>Highlight</string>
          </property>
         </column>
@@ -41,11 +46,6 @@
         <column>
          <property name="text">
           <string>CS</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Enable</string>
          </property>
         </column>
         <column>
