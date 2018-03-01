@@ -141,17 +141,11 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
             if (!rule.isEnabled)
                 continue;
 
-            if (rule.chanName.size() > 0 && rule.chanName.compare(".*") != 0) {
-                if (rule.chanName.startsWith("!")) {
-                    QRegExp rx(rule.chanName.mid(1), Qt::CaseInsensitive);
-                    if (rx.exactMatch(msg.bufferInfo().bufferName()))
-                        continue;
-                }
-                else {
-                    QRegExp rx(rule.chanName, Qt::CaseInsensitive);
-                    if (!rx.exactMatch(msg.bufferInfo().bufferName()))
-                        continue;
-                }
+            if (!rule.chanName.isEmpty()
+                    && !scopeMatch(rule.chanName, msg.bufferInfo().bufferName())) {
+                // A channel name rule is specified and does NOT match the current buffer name, skip
+                // this rule
+                continue;
             }
 
             QRegExp rx;

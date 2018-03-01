@@ -26,6 +26,8 @@
 
 #include "message.h"
 #include "syncableobject.h"
+// Scope matching
+#include "util.h"
 
 class IgnoreListManager : public SyncableObject
 {
@@ -147,19 +149,6 @@ public slots:
 
 protected:
     void setIgnoreList(const QList<IgnoreListItem> &ignoreList) { _ignoreList = ignoreList; }
-
-    //! Check if a scope rule matches a string
-    /** Checks that the string does NOT match ANY inverted rules (prefixed by '!'), then checks that
-     * it matches AT LEAST one normal (non-inverted) rule.
-     *
-     * If only inverted rules are specified, it'll match so long as the string does not match any
-     * inverted rules (implicit wildcard).
-     *
-     * \param scopeRule  A ';'-separated list of wildcard expressions, prefix of '!' inverts subrule
-     * \param string     String to test, e.g. network/channel name
-     * \return True if matches, otherwise false
-     */
-    bool scopeMatch(const QString &scopeRule, const QString &string) const;
 
     StrictnessType _match(const QString &msgContents, const QString &msgSender, Message::Type msgType, const QString &network, const QString &bufferName);
 
