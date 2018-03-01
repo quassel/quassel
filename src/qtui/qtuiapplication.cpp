@@ -281,12 +281,17 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // migrateSettings()!  Otherwise, your upgrade logic won't ever be called.
     case 7:
     {
-        // New default changes: ProxyType=3 (no proxy) now means QNetworkProxy::HttpProxy
-        // So we have to change it to ProxyType=2 (QNetworkProxy::NoProxy)
-        const QString proxyType = "ProxyType";
-        if (settings.valueExists(proxyType) && settings.value(proxyType)=="3") {
-            settings.setValue(proxyType, 2);
+        // New default changes: UseProxy is no longer used in CoreAccountSettings
+        CoreAccountSettings s;
+        for (auto &&accountId : s.knownAccounts()) {
+            auto map = s.retrieveAccountData(accountId);
+            if (!map.value("UseProxy", false).toBool()) {
+                map["ProxyType"] = static_cast<int>(QNetworkProxy::ProxyType::NoProxy);
+            }
+            map.remove("UseProxy");
+            s.storeAccountData(accountId, map);
         }
+
         // Migration complete!
         return true;
     }
