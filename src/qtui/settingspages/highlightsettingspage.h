@@ -48,6 +48,11 @@ private slots:
     void selectRow(QTableWidgetItem *item);
     void tableChanged(QTableWidgetItem *item);
 
+    /**
+     * Event handler for Local Highlights Details button
+     */
+    void on_localHighlightsDetails_clicked();
+
 private:
     Ui::HighlightSettingsPage ui;
     QVariantList highlightList;
