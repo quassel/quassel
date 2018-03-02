@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QHeaderView>
+#include <QMessageBox>
 #include <QTableWidget>
 
 #include "client.h"
@@ -83,10 +84,14 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
             SLOT(ignoredTableChanged(QTableWidgetItem * )));
 
     connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
+
+    // Warning icon
+    ui.coreUnsupportedIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(16));
 }
 
 void CoreHighlightSettingsPage::coreConnectionStateChanged(bool state)
 {
+    updateCoreSupportStatus(state);
     setEnabled(state);
     if (state) {
         load();
@@ -140,6 +145,21 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 #endif
+}
+
+void CoreHighlightSettingsPage::updateCoreSupportStatus(bool state)
+{
+    // Assume connected state as enforced by the settings page UI
+    if (!state || Client::isCoreFeatureEnabled(Quassel::Feature::CoreSideHighlights)) {
+        // Either disconnected or core supports highlights, enable highlight configuration and hide
+        // warning.  Don't show the warning needlessly when disconnected.
+        ui.highlightsConfigWidget->setEnabled(true);
+        ui.coreUnsupportedWidget->setVisible(false);
+    } else {
+        // Core does not support highlights, show warning and disable highlight configuration
+        ui.highlightsConfigWidget->setEnabled(false);
+        ui.coreUnsupportedWidget->setVisible(true);
+    }
 }
 
 void CoreHighlightSettingsPage::clientConnected()
@@ -549,6 +569,25 @@ void CoreHighlightSettingsPage::widgetHasChanged()
     setChangedState(true);
 }
 
+void CoreHighlightSettingsPage::on_coreUnsupportedDetails_clicked()
+{
+    // Re-use translations of "Local Highlights" as this is a word-for-word reference, forcing all
+    // spaces to non-breaking
+    const QString localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
+
+    const QString remoteHighlightsMsgText =
+            QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>"
+                    ).arg(tr("Your Quassel core is too old to support remote highlights"),
+                          tr("You need a Quassel core v0.13.0 or newer to configure remote "
+                             "highlights."),
+                          tr("You can still configure highlights for this device only in "
+                             "<i>%1</i>.").arg(localHighlightsName));
+
+    QMessageBox::warning(this,
+                         tr("Remote Highlights unsupported"),
+                         remoteHighlightsMsgText);
+}
+
 void CoreHighlightSettingsPage::importRules() {
     NotificationSettings notificationSettings;
 
@@ -575,5 +614,7 @@ void CoreHighlightSettingsPage::importRules() {
 }
 
 bool CoreHighlightSettingsPage::isSelectable() const {
-    return Client::isConnected() && Client::isCoreFeatureEnabled(Quassel::Feature::CoreSideHighlights);
+    return Client::isConnected();
+    // We check for Quassel::Feature::CoreSideHighlights when loading this page, allowing us to show
+    // a friendly error message.
 }
