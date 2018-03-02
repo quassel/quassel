@@ -111,7 +111,7 @@ void StatusNotifierItem::init()
     trayMenu()->installEventFilter(this);
 
     // use the appdata icon folder for now
-    _iconThemePath = Quassel::findDataFilePath("icons");
+    _iconThemePath = Quassel::findDataFilePath("icons/extra");
 
 #ifdef HAVE_DBUSMENU
     _menuObjectPath = "/MenuBar";
