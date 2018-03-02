@@ -31,6 +31,7 @@
 #include "coreeventmanager.h"
 #include "coreidentity.h"
 #include "coreignorelistmanager.h"
+#include "coreinfo.h"
 #include "coreirclisthelper.h"
 #include "corenetwork.h"
 #include "corenetworkconfig.h"
@@ -68,7 +69,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _dccConfig(new CoreDccConfig(this)),
     _ircListHelper(new CoreIrcListHelper(this)),
     _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
-    _coreInfo(this),
+    _coreInfo(new CoreInfo(this)),
     _transferManager(new CoreTransferManager(this)),
     _eventManager(new CoreEventManager(this)),
     _eventStringifier(new EventStringifier(this)),
@@ -109,6 +110,13 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->attachSlot(SIGNAL(kickClient(int)), this, SLOT(kickClient(int)));
     p->attachSignal(this, SIGNAL(disconnectFromCore()));
 
+    QVariantMap data;
+    data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
+    data["quasselBuildDate"] = Quassel::buildInfo().commitDate; // "BuildDate" for compatibility
+    data["startTime"] = Core::instance()->startTime();
+    data["sessionConnectedClients"] = 0;
+    _coreInfo->setCoreData(data);
+
     loadSettings();
     initScriptEngine();
 
@@ -130,7 +138,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     p->synchronize(dccConfig());
     p->synchronize(ircListHelper());
     p->synchronize(networkConfig());
-    p->synchronize(&_coreInfo);
+    p->synchronize(_coreInfo);
     p->synchronize(&_ignoreListManager);
     p->synchronize(&_highlightRuleManager);
     p->synchronize(transferManager());
@@ -266,6 +274,7 @@ void CoreSession::addClient(RemotePeer *peer)
 
     peer->dispatch(sessionState());
     signalProxy()->addPeer(peer);
+    _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
 
     signalProxy()->setTargetPeer(nullptr);
 }
@@ -283,6 +292,7 @@ void CoreSession::removeClient(Peer *peer)
     RemotePeer *p = qobject_cast<RemotePeer *>(peer);
     if (p)
         quInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
+    _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
 }
 
 

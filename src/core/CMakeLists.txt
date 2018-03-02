@@ -12,7 +12,6 @@ set(SOURCES
     corebuffersyncer.cpp
     corebufferviewconfig.cpp
     corebufferviewmanager.cpp
-    corecoreinfo.cpp
     coredccconfig.cpp
     corehighlightrulemanager.cpp
     coreidentity.cpp

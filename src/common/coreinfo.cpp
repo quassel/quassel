@@ -18,33 +18,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTCOREINFO_H
-#define CLIENTCOREINFO_H
-
 #include "coreinfo.h"
 
-/*
- * Yes this name is somewhat stupid... but it fits the general naming scheme
- * which is prefixing client specific sync objects with "Client"... ;)
- */
-class ClientCoreInfo : public CoreInfo
+INIT_SYNCABLE_OBJECT(CoreInfo)
+CoreInfo::CoreInfo(QObject *parent) : SyncableObject(parent) {}
+
+QVariantMap CoreInfo::coreData() const
 {
-    Q_OBJECT
-        SYNCABLE_OBJECT
+    return _coreData;
+}
 
-public:
-    ClientCoreInfo(QObject *parent = 0) : CoreInfo(parent) {}
+void CoreInfo::setCoreData(const QVariantMap &coreData)
+{
+    _coreData = coreData;
+    SYNC(ARG(coreData));
+    emit coreDataChanged(coreData);
+}
 
-    inline virtual const QMetaObject *syncMetaObject() const { return &CoreInfo::staticMetaObject; }
-
-    inline QVariant &operator[](const QString &key) { return _coreData[key]; }
-
-public slots:
-    inline virtual void setCoreData(const QVariantMap &data) { _coreData = data; }
-
-private:
-    QVariantMap _coreData;
-};
-
-
-#endif //CLIENTCOREINFO_H
+void CoreInfo::setConnectedClientData(const int peerCount, const QVariantList peerData)
+{
+    _coreData["sessionConnectedClients"] = peerCount;
+    _coreData["sessionConnectedClientData"] = peerData;
+    setCoreData(_coreData);
+}

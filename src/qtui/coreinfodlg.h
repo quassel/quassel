@@ -18,26 +18,25 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREINFODLG_H
-#define COREINFODLG_H
+#pragma once
 
-#include "ui_coreinfodlg.h"
 #include <QDialog>
 
-#include "clientcoreinfo.h"
+#include "ui_coreinfodlg.h"
+#include "coreinfo.h"
+#include "coresessionwidget.h"
 
-class CoreInfoDlg : public QDialog
-{
-    Q_OBJECT
+class CoreInfoDlg : public QDialog {
+Q_OBJECT
 
 public:
-    CoreInfoDlg(QWidget *parent = 0);
+    explicit CoreInfoDlg(QWidget *parent = nullptr);
 
 public slots:
-    void coreInfoAvailable();
+    void coreInfoChanged(const QVariantMap &);
 
 protected:
-    virtual void timerEvent(QTimerEvent *) { updateUptime(); }
+    void timerEvent(QTimerEvent *) override { updateUptime(); }
 
 private slots:
     void on_closeButton_clicked() { reject(); }
@@ -46,8 +45,5 @@ private slots:
 
 private:
     Ui::CoreInfoDlg ui;
-    ClientCoreInfo _coreInfo;
+    QMap<int, CoreSessionWidget *> _widgets;
 };
-
-
-#endif //COREINFODLG_H
