@@ -1,5 +1,10 @@
 # Builds the three main targets
 
+# We need to initialize the appropriate resources, so let's give our main.cpp some hints
+if (EMBED_DATA)
+    add_definitions(-DEMBED_DATA)
+endif()
+
 add_subdirectory(common)
 include_directories(BEFORE common)
 if(BUILD_CORE)
@@ -21,11 +26,6 @@ if(BUILD_GUI)
 endif()
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
-
-# We need to initialize the appropriate resources, so let's give our main.cpp some hints
-if (EMBED_DATA)
-    add_definitions(-DEMBED_DATA)
-endif()
 
 # For KAboutData
 if (WITH_KF5)

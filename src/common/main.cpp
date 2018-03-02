@@ -106,6 +106,9 @@ int main(int argc, char **argv)
 #   ifdef WITH_BREEZE_DARK
     Q_INIT_RESOURCE(breezedark);
 #   endif
+    Q_INIT_RESOURCE(oxygen_extra);
+    Q_INIT_RESOURCE(breeze_extra);
+    Q_INIT_RESOURCE(breezedark_extra);
 # endif
 #endif
 
