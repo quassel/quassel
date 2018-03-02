@@ -24,7 +24,7 @@
 #include <QString>
 #include <QVariant>
 
-#include "corecoreinfo.h"
+#include "coreinfo.h"
 #include "corealiasmanager.h"
 #include "corehighlightrulemanager.h"
 #include "coreignorelistmanager.h"
@@ -223,7 +223,7 @@ private:
     CoreDccConfig *_dccConfig;
     CoreIrcListHelper *_ircListHelper;
     CoreNetworkConfig *_networkConfig;
-    CoreCoreInfo _coreInfo;
+    CoreInfo *_coreInfo;
     CoreTransferManager *_transferManager;
 
     EventManager *_eventManager;

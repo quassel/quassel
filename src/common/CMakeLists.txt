@@ -10,6 +10,7 @@ set(SOURCES
     bufferviewconfig.cpp
     bufferviewmanager.cpp
     compressor.cpp
+    coreinfo.cpp
     ctcpevent.cpp
     dccconfig.cpp
     event.cpp
@@ -47,7 +48,6 @@ set(SOURCES
     protocols/legacy/legacypeer.cpp
 
     # needed for automoc
-    coreinfo.h
     irccap.h
     protocol.h
 )

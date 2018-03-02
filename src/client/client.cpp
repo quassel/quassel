@@ -101,6 +101,7 @@ Client::Client(QObject *parent)
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
     _bufferViewOverlay(new BufferViewOverlay(this)),
+    _coreInfo(nullptr),
     _dccConfig(0),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(0),
@@ -400,6 +401,11 @@ void Client::setSyncedToCore()
     SignalProxy *p = signalProxy();
     p->synchronize(bufferSyncer());
 
+    // create CoreInfo
+    Q_ASSERT(!_coreInfo);
+    _coreInfo = new CoreInfo(this);
+    p->synchronize(coreInfo());
+
     // create a new BufferViewManager
     Q_ASSERT(!_bufferViewManager);
     _bufferViewManager = new ClientBufferViewManager(p, this);
@@ -498,6 +504,11 @@ void Client::setDisconnectedFromCore()
     if (_bufferSyncer) {
         _bufferSyncer->deleteLater();
         _bufferSyncer = 0;
+    }
+
+    if (_coreInfo) {
+        _coreInfo->deleteLater();
+        _coreInfo = nullptr;
     }
 
     if (_bufferViewManager) {

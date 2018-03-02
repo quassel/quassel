@@ -36,7 +36,6 @@ set(SOURCES
 
     # needed for automoc
     abstractui.h
-    clientcoreinfo.h
 )
 
 if (USE_QT5)
