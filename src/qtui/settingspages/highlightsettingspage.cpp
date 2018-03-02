@@ -25,6 +25,7 @@
 #include "uisettings.h"
 
 #include <QHeaderView>
+#include <QMessageBox>
 
 HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Local Highlights"), parent)
@@ -73,6 +74,20 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 #endif
+
+    // Information icon
+    ui.localHighlightsIcon->setPixmap(QIcon::fromTheme("dialog-information").pixmap(16));
+
+    // Set up client/monolithic local highlights information
+    if (Quassel::runMode() == Quassel::Monolithic) {
+        // We're running in Monolithic mode, core/client version in total sync.  Discourage the use
+        // of local highlights as it's identical to setting remote highlights.
+        ui.localHighlightsLabel->setText(
+                    tr("Local Highlights are replaced by Remote Highlights"));
+    } else {
+        // We're running in client/split mode, allow for splitting the details.
+        ui.localHighlightsLabel->setText(tr("Local Highlights apply to this device only"));
+    }
 
     connect(ui.add, SIGNAL(clicked(bool)), this, SLOT(addNewRow()));
     connect(ui.remove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedRows()));
@@ -249,6 +264,41 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item)
     }
     highlightList[item->row()] = highlightRule;
     emit widgetHasChanged();
+}
+
+
+void HighlightSettingsPage::on_localHighlightsDetails_clicked()
+{
+    // Re-use translations of "Remote Highlights" as this is a word-for-word reference, forcing all
+    // spaces to non-breaking
+    const QString remoteHighlightsName = tr("Remote Highlights").replace(" ", "&nbsp;");
+    QString localHighlightsMsgText;
+
+    // Set up client/monolithic local highlights information
+    if (Quassel::runMode() == Quassel::Monolithic) {
+        // We're running in Monolithic mode, core/client version in total sync.  Discourage the use
+        // of local highlights as it's identical to setting remote highlights.
+        localHighlightsMsgText =
+                QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>"
+                        ).arg(tr("Local Highlights are replaced by Remote Highlights"),
+                              tr("These highlights will keep working for now, but you should move "
+                                 "to the improved highlight rules when you can."),
+                              tr("Configure the new style of highlights in "
+                                 "<i>%1</i>.").arg(remoteHighlightsName));
+    } else {
+        // We're running in client/split mode, allow for splitting the details.
+        localHighlightsMsgText =
+                QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>"
+                        ).arg(tr("Local Highlights apply to this device only"),
+                              tr("Highlights configured on this page only apply to your current "
+                                 "device."),
+                              tr("Configure highlights for all of your devices in "
+                                 "<i>%1</i>.").arg(remoteHighlightsName));
+    }
+
+    QMessageBox::information(this,
+                             tr("Local Highlights vs. Remote Highlights"),
+                             localHighlightsMsgText);
 }
 
 
