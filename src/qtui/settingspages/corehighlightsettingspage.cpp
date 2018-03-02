@@ -591,6 +591,33 @@ void CoreHighlightSettingsPage::on_coreUnsupportedDetails_clicked()
 void CoreHighlightSettingsPage::importRules() {
     NotificationSettings notificationSettings;
 
+    const auto localHighlightList = notificationSettings.highlightList();
+
+    // Re-use translations of "Local Highlights" as this is a word-for-word reference, forcing all
+    // spaces to non-breaking
+    const QString localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
+
+    if (localHighlightList.count() == 0) {
+        // No highlight rules exist to import, do nothing
+        QMessageBox::information(this,
+                                 tr("No local highlights"),
+                                 tr("No highlight rules in <i>%1</i>."
+                                    ).arg(localHighlightsName));
+        return;
+    }
+
+    int ret = QMessageBox::question(this,
+                                    tr("Import local highlights?"),
+                                    tr("Import all highlight rules from <i>%1</i>?"
+                                       ).arg(localHighlightsName),
+                                    QMessageBox::Yes|QMessageBox::No,
+                                    QMessageBox::No);
+
+    if (ret == QMessageBox::No) {
+        // Only two options, Yes or No, just return if No
+        return;
+    }
+
     auto clonedManager = HighlightRuleManager();
     clonedManager.fromVariantMap(Client::highlightRuleManager()->toVariantMap());
 
@@ -611,6 +638,12 @@ void CoreHighlightSettingsPage::importRules() {
     Client::highlightRuleManager()->requestUpdate(clonedManager.toVariantMap());
     setChangedState(false);
     load();
+
+    // Give a heads-up that all succeeded
+    QMessageBox::information(this,
+                             tr("Imported local highlights"),
+                             tr("%1 highlight rules successfully imported."
+                                ).arg(QString::number(localHighlightList.count())));
 }
 
 bool CoreHighlightSettingsPage::isSelectable() const {
