@@ -25,6 +25,7 @@
 
 #include "aboutdata.h"
 #include "quassel.h"
+#include "extraicon.h"
 
 AboutDlg::AboutDlg(QWidget *parent)
     : QDialog(parent)
@@ -44,7 +45,7 @@ AboutDlg::AboutDlg(QWidget *parent)
     ui.contributorTextBrowser->setHtml(contributors());
     ui.thanksToTextBrowser->setHtml(thanksTo());
 
-    setWindowIcon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")));
+    setWindowIcon(ExtraIcon::load("quassel"));
 }
 
 

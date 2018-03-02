@@ -81,6 +81,7 @@
 #include "debugbufferviewoverlay.h"
 #include "debuglogwidget.h"
 #include "debugmessagemodelfilter.h"
+#include "extraicon.h"
 #include "flatproxymodel.h"
 #include "inputwidget.h"
 #include "irclistmodel.h"
@@ -378,9 +379,9 @@ void MainWin::updateIcon()
 {
     QIcon icon;
     if (Client::isConnected())
-        icon = QIcon::fromTheme("quassel", QIcon(":/icons/quassel-128.png"));
+        icon = ExtraIcon::load("quassel");
     else
-        icon = QIcon::fromTheme("inactive-quassel", QIcon(":/icons/inactive-quassel.png"));
+        icon = ExtraIcon::load("inactive-quassel");
     setWindowIcon(icon);
     qApp->setWindowIcon(icon);
 }
@@ -390,9 +391,10 @@ void MainWin::setupActions()
 {
     ActionCollection *coll = QtUi::actionCollection("General", tr("General"));
     // File
-    coll->addAction("ConnectCore", new Action(QIcon::fromTheme("connect-quassel", QIcon(":/icons/connect-quassel.png")), tr("&Connect to Core..."), coll,
+    
+    coll->addAction("ConnectCore", new Action(ExtraIcon::load("connect-quassel"), tr("&Connect to Core..."), coll,
             this, SLOT(showCoreConnectionDlg())));
-    coll->addAction("DisconnectCore", new Action(QIcon::fromTheme("disconnect-quassel", QIcon(":/icons/disconnect-quassel.png")), tr("&Disconnect from Core"), coll,
+    coll->addAction("DisconnectCore", new Action(ExtraIcon::load("disconnect-quassel"), tr("&Disconnect from Core"), coll,
             Client::instance(), SLOT(disconnectFromCore())));
     coll->addAction("ChangePassword", new Action(QIcon::fromTheme("dialog-password"), tr("Change &Password..."), coll,
             this, SLOT(showPasswordChangeDlg())));
