@@ -15,260 +15,332 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
-     <property name="currentIndex">
+    <widget class="QFrame" name="coreUnsupportedWidget">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="highlightTab">
-      <attribute name="title">
-       <string>Highlight Rules</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QGroupBox" name="nickBox">
-         <property name="title">
-          <string>Highlight Nicks</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="coreUnsupportedIcon">
+        <property name="text">
+         <string notr="true">[icon]</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="coreUnsupportedLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Your Quassel core is too old to support remote highlights</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="coreUnsupportedDetails">
+        <property name="text">
+         <string>Details...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="highlightsConfigWidget" native="true">
+     <layout class="QVBoxLayout" name="highlightConfigLayout">
+     <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="highlightTab">
+         <attribute name="title">
+          <string>Highlight Rules</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QComboBox" name="highlightNicksComboBox">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QGroupBox" name="nickBox">
+            <property name="title">
+             <string>Highlight Nicks</string>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="currentIndex">
-             <number>-1</number>
-            </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QComboBox::AdjustToContents</enum>
-            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QComboBox" name="highlightNicksComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="currentIndex">
+                <number>-1</number>
+               </property>
+               <property name="sizeAdjustPolicy">
+                <enum>QComboBox::AdjustToContents</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="nicksCaseSensitive">
+               <property name="text">
+                <string>Case sensitive</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="nicksCaseSensitive">
-            <property name="text">
-             <string>Case sensitive</string>
+           <widget class="QGroupBox" name="rulesBox">
+            <property name="title">
+             <string>Custom Highlights</string>
             </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
+            <layout class="QVBoxLayout" name="highlightLayout">
+             <item>
+              <widget class="QTableWidget" name="highlightTable">
+               <property name="toolTip">
+                <string/>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <column>
+                <property name="text">
+                 <string>Enabled</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Rule</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>RegEx</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>CS</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Sender</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Channel</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="highlightButtonBarLayout">
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="highlightAdd">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="highlightRemove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="highlightButtonBarSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="highlightImport">
+                 <property name="toolTip">
+                  <string>Import highlight rules configured in &lt;i&gt;Local Highlights&lt;/i&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Import Local</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="rulesBox">
-         <property name="title">
-          <string>Custom Highlights</string>
-         </property>
-         <layout class="QVBoxLayout" name="highlightLayout">
+        <widget class="QWidget" name="ignoredTab">
+         <attribute name="title">
+          <string>Highlight Ignore Rules</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QTableWidget" name="highlightTable">
-            <property name="toolTip">
-             <string/>
+           <widget class="QGroupBox" name="ignoresBox">
+            <property name="title">
+             <string>Never Highlight For</string>
             </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <column>
-             <property name="text">
-              <string>Enabled</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Rule</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>RegEx</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>CS</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Sender</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Channel</string>
-             </property>
-            </column>
+            <layout class="QVBoxLayout" name="ignoredLayout">
+             <item>
+              <widget class="QTableWidget" name="ignoredTable">
+               <property name="toolTip">
+                <string/>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <column>
+                <property name="text">
+                 <string>Enabled</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Rule</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>RegEx</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>CS</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Sender</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Channel</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="ignoredButtonBarLayout">
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="ignoredAdd">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="ignoredRemove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="ignoredButtonBarSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="highlightButtonBarLayout">
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="highlightAdd">
-              <property name="text">
-               <string>Add</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="highlightRemove">
-              <property name="text">
-               <string>Remove</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="highlightButtonBarSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QPushButton" name="highlightImport">
-              <property name="toolTip">
-               <string>Import highlight rules configured in &lt;i&gt;Local Highlights&lt;/i&gt;</string>
-              </property>
-              <property name="text">
-               <string>Import Local</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="ignoredTab">
-      <attribute name="title">
-       <string>Highlight Ignore Rules</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QGroupBox" name="ignoresBox">
-         <property name="title">
-          <string>Never Highlight For</string>
-         </property>
-         <layout class="QVBoxLayout" name="ignoredLayout">
-          <item>
-           <widget class="QTableWidget" name="ignoredTable">
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <column>
-             <property name="text">
-              <string>Enabled</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Rule</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>RegEx</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>CS</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Sender</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Channel</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="ignoredButtonBarLayout">
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="ignoredAdd">
-              <property name="text">
-               <string>Add</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="ignoredRemove">
-              <property name="text">
-               <string>Remove</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="ignoredButtonBarSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

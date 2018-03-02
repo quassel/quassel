@@ -68,6 +68,11 @@ private slots:
      */
     void importRules();
 
+    /**
+     * Event handler for core unspported Details button
+     */
+    void on_coreUnsupportedDetails_clicked();
+
 private:
     Ui::CoreHighlightSettingsPage ui;
 
@@ -88,6 +93,15 @@ private:
     void emptyIgnoredTable();
 
     void setupRuleTable(QTableWidget *highlightTable) const;
+
+    /** Update the UI to show core support for highlights
+     *
+     * Shows or hides the UI warnings around core-side highlights according to core connection and
+     * core feature support.
+     *
+     * @param state  True if connected to core, otherwise false
+     */
+    void updateCoreSupportStatus(bool state);
 
     bool _initialized;
 };
