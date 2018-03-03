@@ -116,9 +116,9 @@ void AbstractSqlStorage::dbConnect(QSqlDatabase &db)
 }
 
 
-Storage::State AbstractSqlStorage::init(const QVariantMap &settings)
+Storage::State AbstractSqlStorage::init(const QVariantMap &settings, const QProcessEnvironment &environment)
 {
-    setConnectionProperties(settings);
+    setConnectionProperties(settings, environment);
 
     _debug = Quassel::isOptionSet("debug");
 
@@ -192,7 +192,7 @@ QStringList AbstractSqlStorage::setupQueries()
 }
 
 
-bool AbstractSqlStorage::setup(const QVariantMap &settings)
+bool AbstractSqlStorage::setup(const QVariantMap &settings, const QProcessEnvironment &environment)
 {
     setConnectionProperties(settings);
     QSqlDatabase db = logDb();

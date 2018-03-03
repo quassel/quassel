@@ -147,13 +147,21 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase &db)
 }
 
 
-void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties)
+void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment)
 {
-    _userName = properties["Username"].toString();
-    _password = properties["Password"].toString();
-    _hostName = properties["Hostname"].toString();
-    _port = properties["Port"].toInt();
-    _databaseName = properties["Database"].toString();
+    if (environment.value("CONFIGURE_FROM_ENVIRONMENT", "false").compare("true", Qt::CaseInsensitive) == 0) {
+        _userName = environment.value("DB_USERNAME");
+        _password = environment.value("DB_PASSWORD");
+        _hostName = environment.value("DB_HOSTNAME");
+        _port = environment.value("DB_PORT").toInt();
+        _databaseName = environment.value("DB_DATABASE");
+    } else {
+        _userName = properties["Username"].toString();
+        _password = properties["Password"].toString();
+        _hostName = properties["Hostname"].toString();
+        _port = properties["Port"].toInt();
+        _databaseName = properties["Database"].toString();
+    }
 }
 
 

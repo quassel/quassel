@@ -109,7 +109,7 @@ public slots:
 
 protected:
     bool initDbSession(QSqlDatabase &db) override;
-    void setConnectionProperties(const QVariantMap &properties) override;
+    void setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment = {}) override;
     QString driverName()  override { return "QPSQL"; }
     QString hostName()  override { return _hostName; }
     int port()  override { return _port; }

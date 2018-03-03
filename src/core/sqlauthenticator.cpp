@@ -72,14 +72,14 @@ UserId SqlAuthenticator::validateUser(const QString &user, const QString &passwo
 }
 
 
-bool SqlAuthenticator::setup(const QVariantMap &settings)
+bool SqlAuthenticator::setup(const QVariantMap &settings, const QProcessEnvironment &environment)
 {
     Q_UNUSED(settings)
     return true;
 }
 
 
-Authenticator::State SqlAuthenticator::init(const QVariantMap &settings)
+Authenticator::State SqlAuthenticator::init(const QVariantMap &settings, const QProcessEnvironment &environment)
 {
     Q_UNUSED(settings)
 
