@@ -171,6 +171,19 @@ public slots:
      */
     virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) = 0;
 
+    //! Store core state
+    /**
+     * \param data         Active Sessions
+     */
+    virtual void setCoreState(const QVariantList &data) = 0;
+
+    //! Retrieve core state
+    /**
+     * \param default      Value to return in case it's unset.
+     * \return Active Sessions
+     */
+    virtual QVariantList getCoreState(const QVariantList &data = QVariantList()) = 0;
+
     /* Identity handling */
     virtual IdentityId createIdentity(UserId user, CoreIdentity &identity) = 0;
     virtual bool updateIdentity(UserId user, const CoreIdentity &identity) = 0;

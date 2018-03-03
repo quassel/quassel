@@ -397,6 +397,58 @@ QVariant PostgreSqlStorage::getUserSetting(UserId userId, const QString &setting
 }
 
 
+void PostgreSqlStorage::setCoreState(const QVariantList &data)
+{
+    QByteArray rawData;
+    QDataStream out(&rawData, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_2);
+    out << data;
+
+    QSqlDatabase db = logDb();
+    QSqlQuery selectQuery(db);
+    selectQuery.prepare(queryString("select_core_state"));
+    selectQuery.bindValue(":key", "active_sessions");
+    safeExec(selectQuery);
+    watchQuery(selectQuery);
+
+    QString setQueryString;
+    if (!selectQuery.first()) {
+        setQueryString = queryString("insert_core_state");
+    }
+    else {
+        setQueryString = queryString("update_core_state");
+    }
+
+    QSqlQuery setQuery(db);
+    setQuery.prepare(setQueryString);
+    setQuery.bindValue(":key", "active_sessions");
+    setQuery.bindValue(":value", rawData);
+    safeExec(setQuery);
+    watchQuery(setQuery);
+}
+
+
+QVariantList PostgreSqlStorage::getCoreState(const QVariantList &defaultData)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_core_state"));
+    query.bindValue(":key", "active_sessions");
+    safeExec(query);
+    watchQuery(query);
+
+    if (query.first()) {
+        QVariantList data;
+        QByteArray rawData = query.value(0).toByteArray();
+        QDataStream in(&rawData, QIODevice::ReadOnly);
+        in.setVersion(QDataStream::Qt_4_2);
+        in >> data;
+        return data;
+    } else {
+        return defaultData;
+    }
+}
+
+
 IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity &identity)
 {
     IdentityId identityId;
@@ -2176,6 +2228,9 @@ bool PostgreSqlMigrationWriter::prepareQuery(MigrationObject mo)
     case UserSetting:
         query = queryString("migrate_write_usersetting");
         break;
+    case CoreState:
+        query = queryString("migrate_write_corestate");
+        break;
     }
     newQuery(query, logDb());
     return true;
@@ -2349,6 +2404,13 @@ bool PostgreSqlMigrationWriter::writeMo(const UserSettingMO &userSetting)
     bindValue(0, userSetting.userid.toInt());
     bindValue(1, userSetting.settingname);
     bindValue(2, userSetting.settingvalue);
+    return exec();
+}
+
+bool PostgreSqlMigrationWriter::writeMo(const CoreStateMO &coreState)
+{
+    bindValue(0, coreState.key);
+    bindValue(1, coreState.value);
     return exec();
 }
 

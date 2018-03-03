@@ -259,14 +259,10 @@ Core::~Core()
 
 void Core::saveState()
 {
-    CoreSettings s;
-    QVariantMap state;
     QVariantList activeSessions;
     foreach(UserId user, instance()->_sessions.keys())
         activeSessions << QVariant::fromValue<UserId>(user);
-    state["CoreStateVersion"] = 1;
-    state["ActiveSessions"] = activeSessions;
-    s.setCoreState(state);
+    instance()->_storage->setCoreState(activeSessions);
 }
 
 
@@ -289,7 +285,9 @@ void Core::restoreState()
     }
     */
 
-    QVariantList activeSessions = s.coreState().toMap()["ActiveSessions"].toList();
+    const QList<QVariant> &activeSessionsFallback = s.coreState().toMap()["ActiveSessions"].toList();
+    QVariantList activeSessions = instance()->_storage->getCoreState(activeSessionsFallback);
+
     if (activeSessions.count() > 0) {
         quInfo() << "Restoring previous core state...";
         foreach(QVariant v, activeSessions) {
