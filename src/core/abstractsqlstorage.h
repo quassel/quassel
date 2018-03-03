@@ -285,6 +285,11 @@ public:
         QByteArray settingvalue;
     };
 
+    struct CoreStateMO {
+        QString key;
+        QByteArray value;
+    };
+
     enum MigrationObject {
         QuasselUser,
         Sender,
@@ -294,7 +299,8 @@ public:
         Buffer,
         Backlog,
         IrcServer,
-        UserSetting
+        UserSetting,
+        CoreState
     };
 
     AbstractSqlMigrator();
@@ -340,6 +346,7 @@ public:
     virtual bool readMo(BacklogMO &backlog) = 0;
     virtual bool readMo(IrcServerMO &ircserver) = 0;
     virtual bool readMo(UserSettingMO &userSetting) = 0;
+    virtual bool readMo(CoreStateMO &coreState) = 0;
 
     bool migrateTo(AbstractSqlMigrationWriter *writer);
 
@@ -365,6 +372,7 @@ public:
     virtual bool writeMo(const BacklogMO &backlog) = 0;
     virtual bool writeMo(const IrcServerMO &ircserver) = 0;
     virtual bool writeMo(const UserSettingMO &userSetting) = 0;
+    virtual bool writeMo(const CoreStateMO &coreState) = 0;
 
     inline bool migrateFrom(AbstractSqlMigrationReader *reader) { return reader->migrateTo(this); }
 

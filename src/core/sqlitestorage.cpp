@@ -376,6 +376,60 @@ QVariant SqliteStorage::getUserSetting(UserId userId, const QString &settingName
 }
 
 
+void SqliteStorage::setCoreState(const QVariantList &data)
+{
+    QByteArray rawData;
+    QDataStream out(&rawData, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_2);
+    out << data;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("insert_core_state"));
+        query.bindValue(":key", "active_sessions");
+        query.bindValue(":value", rawData);
+        lockForWrite();
+        safeExec(query);
+
+        if (query.lastError().isValid()) {
+            QSqlQuery updateQuery(db);
+            updateQuery.prepare(queryString("update_core_state"));
+            updateQuery.bindValue(":key", "active_sessions");
+            updateQuery.bindValue(":value", rawData);
+            safeExec(updateQuery);
+        }
+        db.commit();
+    }
+    unlock();
+}
+
+
+QVariantList SqliteStorage::getCoreState(const QVariantList &defaultData)
+{
+    QVariantList data;
+    {
+        QSqlQuery query(logDb());
+        query.prepare(queryString("select_core_state"));
+        query.bindValue(":key", "active_sessions");
+        lockForRead();
+        safeExec(query);
+
+        if (query.first()) {
+            QByteArray rawData = query.value(0).toByteArray();
+            QDataStream in(&rawData, QIODevice::ReadOnly);
+            in.setVersion(QDataStream::Qt_4_2);
+            in >> data;
+        } else {
+            data = defaultData;
+        }
+    }
+    unlock();
+    return data;
+}
+
+
 IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity &identity)
 {
     IdentityId identityId;
@@ -2220,6 +2274,9 @@ bool SqliteMigrationReader::prepareQuery(MigrationObject mo)
     case UserSetting:
         newQuery(queryString("migrate_read_usersetting"), logDb());
         break;
+    case CoreState:
+        newQuery(queryString("migrate_read_corestate"), logDb());
+        break;
     }
     return exec();
 }
@@ -2428,6 +2485,18 @@ bool SqliteMigrationReader::readMo(UserSettingMO &userSetting)
     userSetting.userid = value(0).toInt();
     userSetting.settingname = value(1).toString();
     userSetting.settingvalue = value(2).toByteArray();
+
+    return true;
+}
+
+
+bool SqliteMigrationReader::readMo(CoreStateMO &coreState)
+{
+    if (!next())
+        return false;
+
+    coreState.key = value(0).toString();
+    coreState.value = value(1).toByteArray();
 
     return true;
 }

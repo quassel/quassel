@@ -58,6 +58,8 @@ public slots:
     void delUser(UserId user) override;
     void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) override;
     QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData = QVariant()) override;
+    void setCoreState(const QVariantList &data) override;
+    QVariantList getCoreState(const QVariantList &data) override;
 
     /* Identity handling */
     IdentityId createIdentity(UserId user, CoreIdentity &identity) override;
@@ -162,6 +164,7 @@ public:
     bool readMo(BacklogMO &backlog) override;
     bool readMo(IrcServerMO &ircserver) override;
     bool readMo(UserSettingMO &userSetting) override;
+    bool readMo(CoreStateMO &coreState) override;
 
     bool prepareQuery(MigrationObject mo) override;
 

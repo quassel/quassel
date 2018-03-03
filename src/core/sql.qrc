@@ -13,6 +13,7 @@
     <file>./SQL/PostgreSQL/delete_nicks.sql</file>
     <file>./SQL/PostgreSQL/delete_quasseluser.sql</file>
     <file>./SQL/PostgreSQL/insert_buffer.sql</file>
+    <file>./SQL/PostgreSQL/insert_core_state.sql</file>
     <file>./SQL/PostgreSQL/insert_identity.sql</file>
     <file>./SQL/PostgreSQL/insert_message.sql</file>
     <file>./SQL/PostgreSQL/insert_network.sql</file>
@@ -23,6 +24,7 @@
     <file>./SQL/PostgreSQL/insert_user_setting.sql</file>
     <file>./SQL/PostgreSQL/migrate_write_backlog.sql</file>
     <file>./SQL/PostgreSQL/migrate_write_buffer.sql</file>
+    <file>./SQL/PostgreSQL/migrate_write_corestate.sql</file>
     <file>./SQL/PostgreSQL/migrate_write_identity.sql</file>
     <file>./SQL/PostgreSQL/migrate_write_identity_nick.sql</file>
     <file>./SQL/PostgreSQL/migrate_write_ircserver.sql</file>
@@ -48,6 +50,7 @@
     <file>./SQL/PostgreSQL/select_buffers_for_network.sql</file>
     <file>./SQL/PostgreSQL/select_checkidentity.sql</file>
     <file>./SQL/PostgreSQL/select_connected_networks.sql</file>
+    <file>./SQL/PostgreSQL/select_core_state.sql</file>
     <file>./SQL/PostgreSQL/select_identities.sql</file>
     <file>./SQL/PostgreSQL/select_internaluser.sql</file>
     <file>./SQL/PostgreSQL/select_messagesAll.sql</file>
@@ -87,6 +90,7 @@
     <file>./SQL/PostgreSQL/setup_120_alter_messageid_seq.sql</file>
     <file>./SQL/PostgreSQL/setup_130_function_lastmsgid.sql</file>
     <file>./SQL/PostgreSQL/setup_140_sender_idx.sql</file>
+    <file>./SQL/PostgreSQL/setup_150_corestate.sql</file>
     <file>./SQL/PostgreSQL/update_backlog_bufferid.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_bufferactivity.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_cipher.sql</file>
@@ -96,6 +100,7 @@
     <file>./SQL/PostgreSQL/update_buffer_name.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_persistent_channel.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_set_channel_key.sql</file>
+    <file>./SQL/PostgreSQL/update_core_state.sql</file>
     <file>./SQL/PostgreSQL/update_identity.sql</file>
     <file>./SQL/PostgreSQL/update_network.sql</file>
     <file>./SQL/PostgreSQL/update_network_connected.sql</file>
@@ -128,6 +133,7 @@
     <file>./SQL/PostgreSQL/version/27/upgrade_010_update_sender_add_avatarurl.sql</file>
     <file>./SQL/PostgreSQL/version/27/upgrade_020_update_sender_add_new_constraint.sql</file>
     <file>./SQL/PostgreSQL/version/27/upgrade_030_upgrade_sender_drop_old_constraint.sql</file>
+    <file>./SQL/PostgreSQL/version/28/upgrade_000_create_corestate.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>
@@ -141,6 +147,7 @@
     <file>./SQL/SQLite/delete_nicks.sql</file>
     <file>./SQL/SQLite/delete_quasseluser.sql</file>
     <file>./SQL/SQLite/insert_buffer.sql</file>
+    <file>./SQL/SQLite/insert_core_state.sql</file>
     <file>./SQL/SQLite/insert_identity.sql</file>
     <file>./SQL/SQLite/insert_message.sql</file>
     <file>./SQL/SQLite/insert_network.sql</file>
@@ -151,6 +158,7 @@
     <file>./SQL/SQLite/insert_user_setting.sql</file>
     <file>./SQL/SQLite/migrate_read_backlog.sql</file>
     <file>./SQL/SQLite/migrate_read_buffer.sql</file>
+    <file>./SQL/SQLite/migrate_read_corestate.sql</file>
     <file>./SQL/SQLite/migrate_read_identity.sql</file>
     <file>./SQL/SQLite/migrate_read_identity_nick.sql</file>
     <file>./SQL/SQLite/migrate_read_ircserver.sql</file>
@@ -177,6 +185,7 @@
     <file>./SQL/SQLite/select_buffers_for_network.sql</file>
     <file>./SQL/SQLite/select_checkidentity.sql</file>
     <file>./SQL/SQLite/select_connected_networks.sql</file>
+    <file>./SQL/SQLite/select_core_state.sql</file>
     <file>./SQL/SQLite/select_identities.sql</file>
     <file>./SQL/SQLite/select_internaluser.sql</file>
     <file>./SQL/SQLite/select_messagesAll.sql</file>
@@ -217,6 +226,7 @@
     <file>./SQL/SQLite/setup_130_identity.sql</file>
     <file>./SQL/SQLite/setup_140_identity_nick.sql</file>
     <file>./SQL/SQLite/setup_150_sender_idx.sql</file>
+    <file>./SQL/SQLite/setup_160_corestate.sql</file>
     <file>./SQL/SQLite/update_backlog_bufferid.sql</file>
     <file>./SQL/SQLite/update_buffer_bufferactivity.sql</file>
     <file>./SQL/SQLite/update_buffer_cipher.sql</file>
@@ -226,6 +236,7 @@
     <file>./SQL/SQLite/update_buffer_name.sql</file>
     <file>./SQL/SQLite/update_buffer_persistent_channel.sql</file>
     <file>./SQL/SQLite/update_buffer_set_channel_key.sql</file>
+    <file>./SQL/SQLite/update_core_state.sql</file>
     <file>./SQL/SQLite/update_identity.sql</file>
     <file>./SQL/SQLite/update_network.sql</file>
     <file>./SQL/SQLite/update_network_connected.sql</file>
@@ -332,5 +343,6 @@
     <file>./SQL/SQLite/version/29/upgrade_020_drop_sender.sql</file>
     <file>./SQL/SQLite/version/29/upgrade_030_rename_sender_tmp_sender.sql</file>
     <file>./SQL/SQLite/version/29/upgrade_040_update_sender_add_realname_avatarurl.sql</file>
+    <file>./SQL/SQLite/version/30/upgrade_000_create_corestate.sql</file>
 </qresource>
 </RCC>

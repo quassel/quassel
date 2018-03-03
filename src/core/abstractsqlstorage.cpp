@@ -409,6 +409,8 @@ QString AbstractSqlMigrator::migrationObject(MigrationObject moType)
         return "IrcServer";
     case UserSetting:
         return "UserSetting";
+    case CoreState:
+        return "CoreState";
     };
     return QString();
 }
@@ -500,6 +502,10 @@ bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer)
 
     UserSettingMO userSettingMo;
     if (!transferMo(UserSetting, userSettingMo))
+        return false;
+
+    CoreStateMO coreStateMO;
+    if (!transferMo(CoreState, coreStateMO))
         return false;
 
     if (!_writer->postProcess())
