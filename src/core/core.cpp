@@ -185,6 +185,7 @@ Core::Core()
 void Core::init()
 {
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    bool config_from_environment = Quassel::isOptionSet("config-from-environment");
 
     QString db_backend;
     QVariantMap db_connectionProperties;
@@ -194,7 +195,7 @@ void Core::init()
 
     bool writeError = false;
 
-    if (environment.value("CONFIGURE_FROM_ENVIRONMENT", "false").compare("true", Qt::CaseInsensitive) == 0) {
+    if (config_from_environment) {
         db_backend = environment.value("DB_BACKEND");
         auth_authenticator = environment.value("AUTH_AUTHENTICATOR");
     } else {
@@ -212,11 +213,11 @@ void Core::init()
     }
 
     // legacy
-    _configured = initStorage(db_backend, db_connectionProperties, environment);
+    _configured = initStorage(db_backend, db_connectionProperties, environment, config_from_environment);
 
     // Not entirely sure what is 'legacy' about the above, but it seems to be the way things work!
     if (_configured) {
-        initAuthenticator(auth_authenticator, auth_properties, environment);
+        initAuthenticator(auth_authenticator, auth_properties, environment, config_from_environment);
     }
 
     if (Quassel::isOptionSet("select-backend") || Quassel::isOptionSet("select-authenticator")) {
@@ -230,9 +231,9 @@ void Core::init()
     }
 
     if (!_configured) {
-        if (environment.value("CONFIGURE_FROM_ENVIRONMENT", "false").compare("true", Qt::CaseInsensitive) == 0) {
-            _configured = initStorage(db_backend, db_connectionProperties, environment, true);
-            initAuthenticator(auth_authenticator, auth_properties, environment, true);
+        if (config_from_environment) {
+            _configured = initStorage(db_backend, db_connectionProperties, environment, config_from_environment, true);
+            initAuthenticator(auth_authenticator, auth_properties, environment, config_from_environment, true);
 
             if (!_configured) {
                 qWarning() << "Cannot configure from environment";
@@ -344,12 +345,12 @@ QString Core::setupCore(const QString &adminUser, const QString &adminPassword, 
     if (adminUser.isEmpty() || adminPassword.isEmpty()) {
         return tr("Admin user or password not set.");
     }
-    if (!(_configured = initStorage(backend, setupData, {}, true))) {
+    if (!(_configured = initStorage(backend, setupData, {}, false, true))) {
         return tr("Could not setup storage!");
     }
 
     quInfo() << "Selected authenticator:" << authenticator;
-    if (!(_configured = initAuthenticator(authenticator, authSetupData, {}, true)))
+    if (!(_configured = initAuthenticator(authenticator, authSetupData, {}, false, true)))
     {
         return tr("Could not setup authenticator!");
     }
@@ -415,7 +416,7 @@ DeferredSharedPtr<Storage> Core::storageBackend(const QString &backendId) const
 
 // old db settings:
 // "Type" => "sqlite"
-bool Core::initStorage(const QString &backend, const QVariantMap &settings, const QProcessEnvironment &environment, bool setup)
+bool Core::initStorage(const QString &backend, const QVariantMap &settings, const QProcessEnvironment &environment, bool loadFromEnvironment, bool setup)
 {
     if (backend.isEmpty()) {
         quWarning() << "No storage backend selected!";
@@ -428,13 +429,13 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings, cons
         return false;
     }
 
-    Storage::State storageState = storage->init(settings, environment);
+    Storage::State storageState = storage->init(settings, environment, loadFromEnvironment);
     switch (storageState) {
     case Storage::NeedsSetup:
         if (!setup)
             return false;  // trigger setup process
-        if (storage->setup(settings))
-            return initStorage(backend, settings, environment, false);
+        if (storage->setup(settings, environment, loadFromEnvironment))
+            return initStorage(backend, settings, environment, loadFromEnvironment, false);
         return false;
 
     // if initialization wasn't successful, we quit to keep from coming up unconfigured
@@ -512,7 +513,7 @@ DeferredSharedPtr<Authenticator> Core::authenticator(const QString &backendId) c
 
 // FIXME: Apparently, this is the legacy way of initting storage backends?
 // If there's a not-legacy way, it should be used here
-bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings, const QProcessEnvironment &environment, bool setup)
+bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings, const QProcessEnvironment &environment, bool loadFromEnvironment, bool setup)
 {
     if (backend.isEmpty()) {
         quWarning() << "No authenticator selected!";
@@ -525,13 +526,13 @@ bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings
         return false;
     }
 
-    Authenticator::State authState = auth->init(settings, environment);
+    Authenticator::State authState = auth->init(settings, environment, loadFromEnvironment);
     switch (authState) {
     case Authenticator::NeedsSetup:
         if (!setup)
             return false;  // trigger setup process
-        if (auth->setup(settings, environment))
-            return initAuthenticator(backend, settings, environment, false);
+        if (auth->setup(settings, environment, loadFromEnvironment))
+            return initAuthenticator(backend, settings, environment, loadFromEnvironment, false);
         return false;
 
     // if initialization wasn't successful, we quit to keep from coming up unconfigured

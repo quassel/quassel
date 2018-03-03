@@ -109,7 +109,7 @@ public slots:
     QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) override;
 
 protected:
-    void setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment = {})  override {}
+    void setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment, bool loadFromEnvironment) override {}
     QString driverName()  override { return "QSQLITE"; }
     QString databaseName()  override { return backlogFile(); }
     int installedSchemaVersion() override;

@@ -82,13 +82,13 @@ public slots:
      *  \param settings   Hostname, port, username, password, ...
      *  \return True if and only if the authenticator provider was initialized successfully.
      */
-    virtual bool setup(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}) = 0;
+    virtual bool setup(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}, bool loadFromEnvironment = false) = 0;
 
     //! Initialize the authenticator provider
     /** \param settings   Hostname, port, username, password, ...
      *  \return the State the authenticator backend is now in (see authenticator::State)
      */
-    virtual State init(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}) = 0;
+    virtual State init(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}, bool loadFromEnvironment = false) = 0;
 
     //! Validate a username with a given password.
     /** \param user     The username to validate

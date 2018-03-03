@@ -116,9 +116,9 @@ void AbstractSqlStorage::dbConnect(QSqlDatabase &db)
 }
 
 
-Storage::State AbstractSqlStorage::init(const QVariantMap &settings, const QProcessEnvironment &environment)
+Storage::State AbstractSqlStorage::init(const QVariantMap &settings, const QProcessEnvironment &environment, bool loadFromEnvironment)
 {
-    setConnectionProperties(settings, environment);
+    setConnectionProperties(settings, environment, loadFromEnvironment);
 
     _debug = Quassel::isOptionSet("debug");
 
@@ -192,9 +192,9 @@ QStringList AbstractSqlStorage::setupQueries()
 }
 
 
-bool AbstractSqlStorage::setup(const QVariantMap &settings, const QProcessEnvironment &environment)
+bool AbstractSqlStorage::setup(const QVariantMap &settings, const QProcessEnvironment &environment, bool loadFromEnvironment)
 {
-    setConnectionProperties(settings);
+    setConnectionProperties(settings, environment, loadFromEnvironment);
     QSqlDatabase db = logDb();
     if (!db.isOpen()) {
         qCritical() << "Unable to setup Logging Backend!";

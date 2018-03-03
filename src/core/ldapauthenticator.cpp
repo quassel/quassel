@@ -100,16 +100,16 @@ QVariantList LdapAuthenticator::setupData() const
 }
 
 
-void LdapAuthenticator::setAuthProperties(const QVariantMap &properties, const QProcessEnvironment &environment)
+void LdapAuthenticator::setAuthProperties(const QVariantMap &properties, const QProcessEnvironment &environment, bool loadFromEnvironment)
 {
-    if (environment.value("CONFIGURE_FROM_ENVIRONMENT", "false").compare("true", Qt::CaseInsensitive) == 0) {
-        _hostName = environment.value("AUTH_HOSTNAME");
-        _port = environment.value("AUTH_PORT").toInt();
-        _bindDN = environment.value("AUTH_BIND_DN");
-        _bindPassword = environment.value("AUTH_BIND_PASSWORD");
-        _baseDN = environment.value("AUTH_BASE_DN");
-        _filter = environment.value("AUTH_FILTER");
-        _uidAttribute = environment.value("AUTH_UID_ATTRIBUTE");
+    if (loadFromEnvironment) {
+        _hostName = environment.value("AUTH_LDAP_HOSTNAME");
+        _port = environment.value("AUTH_LDAP_PORT").toInt();
+        _bindDN = environment.value("AUTH_LDAP_BIND_DN");
+        _bindPassword = environment.value("AUTH_LDAP_BIND_PASSWORD");
+        _baseDN = environment.value("AUTH_LDAP_BASE_DN");
+        _filter = environment.value("AUTH_LDAP_FILTER");
+        _uidAttribute = environment.value("AUTH_LDAP_UID_ATTRIBUTE");
     } else {
         _hostName = properties["Hostname"].toString();
         _port = properties["Port"].toInt();
@@ -152,17 +152,17 @@ UserId LdapAuthenticator::validateUser(const QString &username, const QString &p
 }
 
 
-bool LdapAuthenticator::setup(const QVariantMap &settings, const QProcessEnvironment &environment)
+bool LdapAuthenticator::setup(const QVariantMap &settings, const QProcessEnvironment &environment, bool loadFromEnvironment)
 {
-    setAuthProperties(settings, environment);
+    setAuthProperties(settings, environment, loadFromEnvironment);
     bool status = ldapConnect();
     return status;
 }
 
 
-Authenticator::State LdapAuthenticator::init(const QVariantMap &settings, const QProcessEnvironment &environment)
+Authenticator::State LdapAuthenticator::init(const QVariantMap &settings, const QProcessEnvironment &environment, bool loadFromEnvironment)
 {
-    setAuthProperties(settings, environment);
+    setAuthProperties(settings, environment, loadFromEnvironment);
 
     bool status = ldapConnect();
     if (!status) {
