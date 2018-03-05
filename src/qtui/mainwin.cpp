@@ -902,6 +902,10 @@ void MainWin::on_actionLockLayout_toggled(bool lock)
             config->setLocked(lock);
         }
     }
+
+    _mainToolBar->setMovable(!lock);
+    _nickToolBar->setMovable(!lock);
+
     QtUiSettings().setValue("LockLayout", lock);
 }
 
@@ -1109,6 +1113,8 @@ void MainWin::setupToolBars()
         _mainToolBar->addAction(coll->action("DisconnectCore"));
     }
 
+    _mainToolBar->setMovable(!QtUiSettings().value("LockLayout", false).toBool());
+
     QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
     _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
@@ -1121,6 +1127,7 @@ void MainWin::setupToolBars()
     _nickToolBar->setWindowTitle(tr("Nick Toolbar"));
     _nickToolBar->setVisible(false); //default: not visible
     addToolBar(_nickToolBar);
+    _nickToolBar->setMovable(!QtUiSettings().value("LockLayout", false).toBool());
 
     QtUi::toolBarActionProvider()->addActions(_nickToolBar, ToolBarActionProvider::NickToolBar);
     _toolbarMenu->addAction(_nickToolBar->toggleViewAction());
