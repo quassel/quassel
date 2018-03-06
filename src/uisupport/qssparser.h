@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef QSSPARSER_H_
-#define QSSPARSER_H_
+#pragma once
+
+#include <utility>
 
 #include "uistyle.h"
 
@@ -35,7 +36,7 @@ public:
     inline QPalette palette() const { return _palette; }
     inline QVector<QBrush> uiStylePalette() const { return _uiStylePalette; }
     inline const QHash<quint64, QTextCharFormat> &formats() const { return _formats; }
-    inline const QHash<quint32, QTextCharFormat> &listItemFormats() const { return _listItemFormats; }
+    inline const QHash<UiStyle::ItemFormatType, QTextCharFormat> &listItemFormats() const { return _listItemFormats; }
 
 protected:
     typedef QList<qreal> ColorTuple;
@@ -44,8 +45,8 @@ protected:
     void parsePaletteBlock(const QString &decl, const QString &contents);
     void parseListItemBlock(const QString &decl, const QString &contents);
 
-    quint64 parseFormatType(const QString &decl);
-    quint32 parseItemFormatType(const QString &decl);
+    std::pair<UiStyle::FormatType, UiStyle::MessageLabel> parseFormatType(const QString &decl);
+    UiStyle::ItemFormatType parseItemFormatType(const QString &decl);
 
     QTextCharFormat parseFormat(const QString &qss);
 
@@ -69,8 +70,5 @@ private:
     QPalette _palette;
     QVector<QBrush> _uiStylePalette;
     QHash<quint64, QTextCharFormat> _formats;
-    QHash<quint32, QTextCharFormat> _listItemFormats;
+    QHash<UiStyle::ItemFormatType, QTextCharFormat> _listItemFormats;
 };
-
-
-#endif

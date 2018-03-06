@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <vector>
+
 #include <QApplication>
 #include <QIcon>
 
@@ -55,20 +57,20 @@ UiStyle::UiStyle(QObject *parent)
         Q_ASSERT(QVariant::nameToType("UiStyle::FormatList") != QVariant::Invalid);
     }
 
-    _uiStylePalette = QVector<QBrush>(NumRoles, QBrush());
+    _uiStylePalette = QVector<QBrush>(static_cast<int>(ColorRole::NumRoles), QBrush());
 
     // Now initialize the mapping between FormatCodes and FormatTypes...
-    _formatCodes["%O"] = Base;
-    _formatCodes["%B"] = Bold;
-    _formatCodes["%S"] = Italic;
-    _formatCodes["%U"] = Underline;
-    _formatCodes["%R"] = Reverse;
+    _formatCodes["%O"] = FormatType::Base;
+    _formatCodes["%B"] = FormatType::Bold;
+    _formatCodes["%S"] = FormatType::Italic;
+    _formatCodes["%U"] = FormatType::Underline;
+    _formatCodes["%R"] = FormatType::Reverse;
 
-    _formatCodes["%DN"] = Nick;
-    _formatCodes["%DH"] = Hostmask;
-    _formatCodes["%DC"] = ChannelName;
-    _formatCodes["%DM"] = ModeFlags;
-    _formatCodes["%DU"] = Url;
+    _formatCodes["%DN"] = FormatType::Nick;
+    _formatCodes["%DH"] = FormatType::Hostmask;
+    _formatCodes["%DC"] = FormatType::ChannelName;
+    _formatCodes["%DM"] = FormatType::ModeFlags;
+    _formatCodes["%DU"] = FormatType::Url;
 
     // Initialize fallback defaults
     // NOTE: If you change this, update qtui/chatviewsettings.h, too.  More explanations available
@@ -283,44 +285,44 @@ QVariant UiStyle::bufferViewItemData(const QModelIndex &index, int role) const
         }
     }
 
-    quint32 fmtType = BufferViewItem;
+    ItemFormatType fmtType = ItemFormatType::BufferViewItem;
     switch (type) {
     case BufferInfo::StatusBuffer:
-        fmtType |= NetworkItem;
+        fmtType |= ItemFormatType::NetworkItem;
         break;
     case BufferInfo::ChannelBuffer:
-        fmtType |= ChannelBufferItem;
+        fmtType |= ItemFormatType::ChannelBufferItem;
         break;
     case BufferInfo::QueryBuffer:
-        fmtType |= QueryBufferItem;
+        fmtType |= ItemFormatType::QueryBufferItem;
         break;
     default:
         return QVariant();
     }
 
-    QTextCharFormat fmt = _listItemFormats.value(BufferViewItem);
+    QTextCharFormat fmt = _listItemFormats.value(ItemFormatType::BufferViewItem);
     fmt.merge(_listItemFormats.value(fmtType));
 
     BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
     if (activity & BufferInfo::Highlight) {
-        fmt.merge(_listItemFormats.value(BufferViewItem | HighlightedBuffer));
-        fmt.merge(_listItemFormats.value(fmtType | HighlightedBuffer));
+        fmt.merge(_listItemFormats.value(ItemFormatType::BufferViewItem | ItemFormatType::HighlightedBuffer));
+        fmt.merge(_listItemFormats.value(fmtType | ItemFormatType::HighlightedBuffer));
     }
     else if (activity & BufferInfo::NewMessage) {
-        fmt.merge(_listItemFormats.value(BufferViewItem | UnreadBuffer));
-        fmt.merge(_listItemFormats.value(fmtType | UnreadBuffer));
+        fmt.merge(_listItemFormats.value(ItemFormatType::BufferViewItem | ItemFormatType::UnreadBuffer));
+        fmt.merge(_listItemFormats.value(fmtType | ItemFormatType::UnreadBuffer));
     }
     else if (activity & BufferInfo::OtherActivity) {
-        fmt.merge(_listItemFormats.value(BufferViewItem | ActiveBuffer));
-        fmt.merge(_listItemFormats.value(fmtType | ActiveBuffer));
+        fmt.merge(_listItemFormats.value(ItemFormatType::BufferViewItem | ItemFormatType::ActiveBuffer));
+        fmt.merge(_listItemFormats.value(fmtType | ItemFormatType::ActiveBuffer));
     }
     else if (!isActive) {
-        fmt.merge(_listItemFormats.value(BufferViewItem | InactiveBuffer));
-        fmt.merge(_listItemFormats.value(fmtType | InactiveBuffer));
+        fmt.merge(_listItemFormats.value(ItemFormatType::BufferViewItem | ItemFormatType::InactiveBuffer));
+        fmt.merge(_listItemFormats.value(fmtType | ItemFormatType::InactiveBuffer));
     }
     else if (index.data(NetworkModel::UserAwayRole).toBool()) {
-        fmt.merge(_listItemFormats.value(BufferViewItem | UserAway));
-        fmt.merge(_listItemFormats.value(fmtType | UserAway));
+        fmt.merge(_listItemFormats.value(ItemFormatType::BufferViewItem | ItemFormatType::UserAway));
+        fmt.merge(_listItemFormats.value(fmtType | ItemFormatType::UserAway));
     }
 
     return itemData(role, fmt);
@@ -355,18 +357,18 @@ QVariant UiStyle::nickViewItemData(const QModelIndex &index, int role) const
         }
     }
 
-    QTextCharFormat fmt = _listItemFormats.value(NickViewItem);
+    QTextCharFormat fmt = _listItemFormats.value(ItemFormatType::NickViewItem);
 
     switch (type) {
     case NetworkModel::IrcUserItemType:
-        fmt.merge(_listItemFormats.value(NickViewItem | IrcUserItem));
+        fmt.merge(_listItemFormats.value(ItemFormatType::NickViewItem | ItemFormatType::IrcUserItem));
         if (!index.data(NetworkModel::ItemActiveRole).toBool()) {
-            fmt.merge(_listItemFormats.value(NickViewItem | UserAway));
-            fmt.merge(_listItemFormats.value(NickViewItem | IrcUserItem | UserAway));
+            fmt.merge(_listItemFormats.value(ItemFormatType::NickViewItem | ItemFormatType::UserAway));
+            fmt.merge(_listItemFormats.value(ItemFormatType::NickViewItem | ItemFormatType::IrcUserItem | ItemFormatType::UserAway));
         }
         break;
     case NetworkModel::UserCategoryItemType:
-        fmt.merge(_listItemFormats.value(NickViewItem | UserCategoryItem));
+        fmt.merge(_listItemFormats.value(ItemFormatType::NickViewItem | ItemFormatType::UserCategoryItem));
         break;
     default:
         return QVariant();
@@ -399,22 +401,22 @@ QTextCharFormat UiStyle::format(quint64 key) const
 }
 
 
-QTextCharFormat UiStyle::cachedFormat(quint32 formatType, quint32 messageLabel) const
+QTextCharFormat UiStyle::cachedFormat(FormatType formatType, MessageLabel messageLabel) const
 {
-    return _formatCache.value(formatType | ((quint64)messageLabel << 32), QTextCharFormat());
+    return _formatCache.value(formatType | messageLabel, QTextCharFormat());
 }
 
 
-void UiStyle::setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel) const
+void UiStyle::setCachedFormat(const QTextCharFormat &format, FormatType formatType, MessageLabel messageLabel) const
 {
-    _formatCache[formatType | ((quint64)messageLabel << 32)] = format;
+    _formatCache[formatType | messageLabel] = format;
 }
 
 
-QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) const
+QFontMetricsF *UiStyle::fontMetrics(FormatType ftype, MessageLabel label) const
 {
     // QFontMetricsF is not assignable, so we need to store pointers :/
-    quint64 key = ftype | ((quint64)label << 32);
+    quint64 key = ftype | label;
 
     if (_metricsCache.contains(key))
         return _metricsCache.value(key);
@@ -427,39 +429,37 @@ QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) const
 
 // NOTE: This and the following functions are intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
-QTextCharFormat UiStyle::format(quint32 ftype, quint32 label_) const
+QTextCharFormat UiStyle::format(FormatType ftype, MessageLabel label) const
 {
-    if (ftype == Invalid)
-        return QTextCharFormat();
-
-    quint64 label = (quint64)label_ << 32;
+    if (ftype == FormatType::Invalid)
+        return {};
 
     // check if we have exactly this format readily cached already
-    QTextCharFormat fmt = cachedFormat(ftype, label_);
+    QTextCharFormat fmt = cachedFormat(ftype, label);
     if (fmt.properties().count())
         return fmt;
 
-    mergeFormat(fmt, ftype, label & Q_UINT64_C(0xffff000000000000));
+    mergeFormat(fmt, ftype, label & 0xffff0000);  // keep nickhash in label
 
-    for (quint64 mask = Q_UINT64_C(0x0000000100000000); mask <= (quint64)Selected << 32; mask <<= 1) {
-        if (label & mask)
-            mergeFormat(fmt, ftype, mask | Q_UINT64_C(0xffff000000000000));
+    for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Selected); mask <<= 1) {
+        if (static_cast<quint32>(label) & mask)
+            mergeFormat(fmt, ftype, label & (mask | 0xffff0000));
     }
 
-    setCachedFormat(fmt, ftype, label_);
+    setCachedFormat(fmt, ftype, label);
     return fmt;
 }
 
 
-void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) const
+void UiStyle::mergeFormat(QTextCharFormat &fmt, FormatType ftype, MessageLabel label) const
 {
     mergeSubElementFormat(fmt, ftype & 0x00ff, label);
 
     // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
     //       or "foreground 01 and background 03"
-    if ((ftype & 0xfff00)) { // element format
+    if ((ftype & 0xfff00) != FormatType::Base) { // element format
         for (quint32 mask = 0x00100; mask <= 0x40000; mask <<= 1) {
-            if (ftype & mask) {
+            if ((ftype & mask) != FormatType::Base) {
                 mergeSubElementFormat(fmt, ftype & (mask | 0xff), label);
             }
         }
@@ -468,28 +468,28 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) co
     // Now we handle color codes
     // We assume that those can't be combined with subelement and message types.
     if (_allowMircColors) {
-        if (ftype & 0x00400000)
+        if ((ftype & 0x00400000) != FormatType::Base)
             mergeSubElementFormat(fmt, ftype & 0x0f400000, label);  // foreground
-        if (ftype & 0x00800000)
+        if ((ftype & 0x00800000) != FormatType::Base)
             mergeSubElementFormat(fmt, ftype & 0xf0800000, label);  // background
-        if ((ftype & 0x00c00000) == 0x00c00000)
+        if ((ftype & 0x00c00000) == static_cast<FormatType>(0x00c00000))
             mergeSubElementFormat(fmt, ftype & 0xffc00000, label);  // combination
     }
 
     // URL
-    if (ftype & Url)
-        mergeSubElementFormat(fmt, ftype & (Url | 0x000000ff), label);
+    if ((ftype & FormatType::Url) != FormatType::Base)
+        mergeSubElementFormat(fmt, ftype & (FormatType::Url | static_cast<FormatType>(0x000000ff)), label);
 }
 
 
 // Merge a subelement format into an existing message format
-void UiStyle::mergeSubElementFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) const
+void UiStyle::mergeSubElementFormat(QTextCharFormat &fmt, FormatType ftype, MessageLabel label) const
 {
     quint64 key = ftype | label;
-    fmt.merge(format(key & Q_UINT64_C(0x0000ffffffffff00))); // label + subelement
-    fmt.merge(format(key & Q_UINT64_C(0x0000ffffffffffff))); // label + subelement + msgtype
-    fmt.merge(format(key & Q_UINT64_C(0xffffffffffffff00))); // label + subelement + nickhash
-    fmt.merge(format(key & Q_UINT64_C(0xffffffffffffffff))); // label + subelement + nickhash + msgtype
+    fmt.merge(format(key & 0x0000ffffffffff00ull)); // label + subelement
+    fmt.merge(format(key & 0x0000ffffffffffffull)); // label + subelement + msgtype
+    fmt.merge(format(key & 0xffffffffffffff00ull)); // label + subelement + nickhash
+    fmt.merge(format(key & 0xffffffffffffffffull)); // label + subelement + nickhash + msgtype
 }
 
 
@@ -497,52 +497,53 @@ UiStyle::FormatType UiStyle::formatType(Message::Type msgType)
 {
     switch (msgType) {
     case Message::Plain:
-        return PlainMsg;
+        return FormatType::PlainMsg;
     case Message::Notice:
-        return NoticeMsg;
+        return FormatType::NoticeMsg;
     case Message::Action:
-        return ActionMsg;
+        return FormatType::ActionMsg;
     case Message::Nick:
-        return NickMsg;
+        return FormatType::NickMsg;
     case Message::Mode:
-        return ModeMsg;
+        return FormatType::ModeMsg;
     case Message::Join:
-        return JoinMsg;
+        return FormatType::JoinMsg;
     case Message::Part:
-        return PartMsg;
+        return FormatType::PartMsg;
     case Message::Quit:
-        return QuitMsg;
+        return FormatType::QuitMsg;
     case Message::Kick:
-        return KickMsg;
+        return FormatType::KickMsg;
     case Message::Kill:
-        return KillMsg;
+        return FormatType::KillMsg;
     case Message::Server:
-        return ServerMsg;
+        return FormatType::ServerMsg;
     case Message::Info:
-        return InfoMsg;
+        return FormatType::InfoMsg;
     case Message::Error:
-        return ErrorMsg;
+        return FormatType::ErrorMsg;
     case Message::DayChange:
-        return DayChangeMsg;
+        return FormatType::DayChangeMsg;
     case Message::Topic:
-        return TopicMsg;
+        return FormatType::TopicMsg;
     case Message::NetsplitJoin:
-        return NetsplitJoinMsg;
+        return FormatType::NetsplitJoinMsg;
     case Message::NetsplitQuit:
-        return NetsplitQuitMsg;
+        return FormatType::NetsplitQuitMsg;
     case Message::Invite:
-        return InviteMsg;
+        return FormatType::InviteMsg;
     }
     //Q_ASSERT(false); // we need to handle all message types
     qWarning() << Q_FUNC_INFO << "Unknown message type:" << msgType;
-    return ErrorMsg;
+    return FormatType::ErrorMsg;
 }
 
 
 UiStyle::FormatType UiStyle::formatType(const QString &code)
 {
-    if (_formatCodes.contains(code)) return _formatCodes.value(code);
-    return Invalid;
+    if (_formatCodes.contains(code))
+        return _formatCodes.value(code);
+    return FormatType::Invalid;
 }
 
 
@@ -552,29 +553,31 @@ QString UiStyle::formatCode(FormatType ftype)
 }
 
 
-QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength, quint32 messageLabel) const
+QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength, MessageLabel messageLabel) const
 {
     QList<QTextLayout::FormatRange> formatRanges;
     QTextLayout::FormatRange range;
-    int i = 0;
-    for (i = 0; i < formatList.count(); i++) {
-        range.format = format(formatList.at(i).second, messageLabel);
+    size_t i = 0;
+    for (i = 0; i < formatList.size(); i++) {
+        range.format = format(formatList.at(i).second.type, messageLabel);
         range.start = formatList.at(i).first;
-        if (i > 0) formatRanges.last().length = range.start - formatRanges.last().start;
+        if (i > 0)
+            formatRanges.last().length = range.start - formatRanges.last().start;
         formatRanges.append(range);
     }
-    if (i > 0) formatRanges.last().length = textLength - formatRanges.last().start;
+    if (i > 0)
+        formatRanges.last().length = textLength - formatRanges.last().start;
     return formatRanges;
 }
 
 
 // This method expects a well-formatted string, there is no error checking!
 // Since we create those ourselves, we should be pretty safe that nobody does something crappy here.
-UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat)
+UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFormat)
 {
     QString s = s_;
     StyledString result;
-    result.formatList.append(qMakePair((quint16)0, baseFormat));
+    result.formatList.emplace_back(std::make_pair(quint16{0}, Format{baseFormat}));
 
     if (s.length() > 65535) {
         // We use quint16 for indexes
@@ -583,7 +586,8 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
         return result;
     }
 
-    quint32 curfmt = baseFormat;
+    FormatType curfmt = baseFormat;
+
     int pos = 0; quint16 length = 0;
     for (;;) {
         pos = s.indexOf('%', pos);
@@ -626,7 +630,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
             QString code = QString("%") + s[pos+1];
             if (s[pos+1] == 'D') code += s[pos+2];
             FormatType ftype = formatType(code);
-            if (ftype == Invalid) {
+            if (ftype == FormatType::Invalid) {
                 pos++;
                 qWarning() << (QString("Invalid format code in string: %1").arg(s));
                 continue;
@@ -635,10 +639,10 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
             length = code.length();
         }
         s.remove(pos, length);
-        if (pos == result.formatList.last().first)
-            result.formatList.last().second = curfmt;
+        if (pos == result.formatList.back().first)
+            result.formatList.back().second.type = curfmt;
         else
-            result.formatList.append(qMakePair((quint16)pos, curfmt));
+            result.formatList.emplace_back(std::make_pair(pos, Format{curfmt}));
     }
     result.plainText = s;
     return result;
@@ -928,44 +932,43 @@ QString UiStyle::StyledMessage::decoratedSender() const
             return QString("<%1%2>").arg(_senderPrefixes, plainSender());
         else
             return QString("%1%2").arg(_senderPrefixes, plainSender());
-        break;
     case Message::Notice:
-        return QString("[%1%2]").arg(_senderPrefixes, plainSender()); break;
+        return QString("[%1%2]").arg(_senderPrefixes, plainSender());
     case Message::Action:
-        return "-*-"; break;
+        return "-*-";
     case Message::Nick:
-        return "<->"; break;
+        return "<->";
     case Message::Mode:
-        return "***"; break;
+        return "***";
     case Message::Join:
-        return "-->"; break;
+        return "-->";
     case Message::Part:
-        return "<--"; break;
+        return "<--";
     case Message::Quit:
-        return "<--"; break;
+        return "<--";
     case Message::Kick:
-        return "<-*"; break;
+        return "<-*";
     case Message::Kill:
-        return "<-x"; break;
+        return "<-x";
     case Message::Server:
-        return "*"; break;
+        return "*";
     case Message::Info:
-        return "*"; break;
+        return "*";
     case Message::Error:
-        return "*"; break;
+        return "*";
     case Message::DayChange:
-        return "-"; break;
+        return "-";
     case Message::Topic:
-        return "*"; break;
+        return "*";
     case Message::NetsplitJoin:
-        return "=>"; break;
+        return "=>";
     case Message::NetsplitQuit:
-        return "<="; break;
+        return "<=";
     case Message::Invite:
-        return "->"; break;
-    default:
-        return QString("%1%2").arg(_senderPrefixes, plainSender());
+        return "->";
     }
+
+    return QString("%1%2").arg(_senderPrefixes, plainSender());
 }
 
 
@@ -999,15 +1002,132 @@ quint8 UiStyle::StyledMessage::senderHash() const
     return (_senderHash = (hash & 0xf) + 1);
 }
 
+/***********************************************************************************/
+
+#if QT_VERSION < 0x050000
+uint qHash(UiStyle::ItemFormatType key)
+{
+    return qHash(static_cast<quint32>(key));
+}
+
+#else
+
+uint qHash(UiStyle::ItemFormatType key, uint seed)
+{
+    return qHash(static_cast<quint32>(key), seed);
+}
+#endif
+
+UiStyle::FormatType operator|(UiStyle::FormatType lhs, UiStyle::FormatType rhs)
+{
+    return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
+}
+
+UiStyle::FormatType& operator|=(UiStyle::FormatType& lhs, UiStyle::FormatType rhs)
+{
+    lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
+    return lhs;
+}
+
+
+UiStyle::FormatType operator|(UiStyle::FormatType lhs, quint32 rhs)
+{
+    return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | rhs);
+}
+
+
+UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, quint32 rhs)
+{
+    lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | rhs);
+    return lhs;
+}
+
+
+UiStyle::FormatType operator&(UiStyle::FormatType lhs, UiStyle::FormatType rhs)
+{
+    return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & static_cast<quint32>(rhs));
+}
+
+
+UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs)
+{
+    lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & static_cast<quint32>(rhs));
+    return lhs;
+}
+
+
+UiStyle::FormatType operator&(UiStyle::FormatType lhs, quint32 rhs)
+{
+    return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & rhs);
+}
+
+
+UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, quint32 rhs)
+{
+    lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & rhs);
+    return lhs;
+}
+
+
+UiStyle::FormatType& operator^=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs)
+{
+    lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) ^ static_cast<quint32>(rhs));
+    return lhs;
+}
+
+
+UiStyle::MessageLabel operator|(UiStyle::MessageLabel lhs, UiStyle::MessageLabel rhs)
+{
+    return static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
+}
+
+
+UiStyle::MessageLabel& operator|=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs)
+{
+    lhs = static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
+    return lhs;
+}
+
+
+UiStyle::MessageLabel operator&(UiStyle::MessageLabel lhs, quint32 rhs)
+{
+    return static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) & rhs);
+}
+
+
+UiStyle::MessageLabel& operator&=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs)
+{
+    lhs = static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) & static_cast<quint32>(rhs));
+    return lhs;
+}
+
+
+quint64 operator|(UiStyle::FormatType lhs, UiStyle::MessageLabel rhs)
+{
+    return static_cast<quint64>(lhs) | (static_cast<quint64>(rhs) << 32ull);
+}
+
+
+UiStyle::ItemFormatType operator|(UiStyle::ItemFormatType lhs, UiStyle::ItemFormatType rhs)
+{
+    return static_cast<UiStyle::ItemFormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
+}
+
+
+UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType &lhs, UiStyle::ItemFormatType rhs)
+{
+    lhs = static_cast<UiStyle::ItemFormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
+    return lhs;
+}
 
 /***********************************************************************************/
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList)
 {
-    out << formatList.count();
+    out << static_cast<quint16>(formatList.size());
     UiStyle::FormatList::const_iterator it = formatList.begin();
     while (it != formatList.end()) {
-        out << (*it).first << (*it).second;
+        out << it->first << static_cast<quint32>(it->second.type);
         ++it;
     }
     return out;
@@ -1021,7 +1141,7 @@ QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList)
     for (quint16 i = 0; i < cnt; i++) {
         quint16 pos; quint32 ftype;
         in >> pos >> ftype;
-        formatList.append(qMakePair((quint16)pos, ftype));
+        formatList.emplace_back(std::make_pair(quint16{pos}, UiStyle::Format{static_cast<UiStyle::FormatType>(ftype)}));
     }
     return in;
 }

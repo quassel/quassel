@@ -76,7 +76,7 @@ bool ChatLineModelItem::setData(int column, const QVariant &value, int role)
 QVariant ChatLineModelItem::data(int column, int role) const
 {
     if (role == ChatLineModel::MsgLabelRole)
-        return messageLabel();
+        return QVariant::fromValue<UiStyle::MessageLabel>(messageLabel());
 
     QVariant variant;
     MessageModel::ColumnType col = (MessageModel::ColumnType)column;
@@ -107,12 +107,11 @@ QVariant ChatLineModelItem::timestampData(int role) const
     case ChatLineModel::EditRole:
         return _styledMsg.timestamp();
     case ChatLineModel::BackgroundRole:
-        return backgroundBrush(UiStyle::Timestamp);
+        return backgroundBrush(UiStyle::FormatType::Timestamp);
     case ChatLineModel::SelectedBackgroundRole:
-        return backgroundBrush(UiStyle::Timestamp, true);
+        return backgroundBrush(UiStyle::FormatType::Timestamp, true);
     case ChatLineModel::FormatRole:
-        return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList()
-                                                        << qMakePair((quint16)0, (quint32) UiStyle::formatType(_styledMsg.type()) | UiStyle::Timestamp));
+        return QVariant::fromValue<UiStyle::FormatList>({std::make_pair(quint16{0}, UiStyle::Format{UiStyle::formatType(_styledMsg.type()) | UiStyle::FormatType::Timestamp})});
     }
     return QVariant();
 }
@@ -126,12 +125,11 @@ QVariant ChatLineModelItem::senderData(int role) const
     case ChatLineModel::EditRole:
         return _styledMsg.plainSender();
     case ChatLineModel::BackgroundRole:
-        return backgroundBrush(UiStyle::Sender);
+        return backgroundBrush(UiStyle::FormatType::Sender);
     case ChatLineModel::SelectedBackgroundRole:
-        return backgroundBrush(UiStyle::Sender, true);
+        return backgroundBrush(UiStyle::FormatType::Sender, true);
     case ChatLineModel::FormatRole:
-        return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList()
-                                                        << qMakePair((quint16)0, (quint32) UiStyle::formatType(_styledMsg.type()) | UiStyle::Sender));
+        return QVariant::fromValue<UiStyle::FormatList>({std::make_pair(quint16{0}, UiStyle::Format{UiStyle::formatType(_styledMsg.type()) | UiStyle::FormatType::Sender})});
     }
     return QVariant();
 }
@@ -144,9 +142,9 @@ QVariant ChatLineModelItem::contentsData(int role) const
     case ChatLineModel::EditRole:
         return _styledMsg.plainContents();
     case ChatLineModel::BackgroundRole:
-        return backgroundBrush(UiStyle::Contents);
+        return backgroundBrush(UiStyle::FormatType::Contents);
     case ChatLineModel::SelectedBackgroundRole:
-        return backgroundBrush(UiStyle::Contents, true);
+        return backgroundBrush(UiStyle::FormatType::Contents, true);
     case ChatLineModel::FormatRole:
         return QVariant::fromValue<UiStyle::FormatList>(_styledMsg.contentsFormatList());
     case ChatLineModel::WrapListRole:
@@ -158,20 +156,23 @@ QVariant ChatLineModelItem::contentsData(int role) const
 }
 
 
-quint32 ChatLineModelItem::messageLabel() const
+UiStyle::MessageLabel ChatLineModelItem::messageLabel() const
 {
-    quint32 label = _styledMsg.senderHash() << 16;
+    using MessageLabel = UiStyle::MessageLabel;
+
+    MessageLabel label = static_cast<MessageLabel>(_styledMsg.senderHash() << 16);
     if (_styledMsg.flags() & Message::Self)
-        label |= UiStyle::OwnMsg;
+        label |= MessageLabel::OwnMsg;
     if (_styledMsg.flags() & Message::Highlight)
-        label |= UiStyle::Highlight;
+        label |= MessageLabel::Highlight;
     return label;
 }
 
 
 QVariant ChatLineModelItem::backgroundBrush(UiStyle::FormatType subelement, bool selected) const
 {
-    QTextCharFormat fmt = QtUi::style()->format(UiStyle::formatType(_styledMsg.type()) | subelement, messageLabel() | (selected ? UiStyle::Selected : 0));
+    QTextCharFormat fmt = QtUi::style()->format(UiStyle::formatType(_styledMsg.type()) | subelement,
+                                                messageLabel() | (selected ? UiStyle::MessageLabel::Selected : UiStyle::MessageLabel::None));
     if (fmt.hasProperty(QTextFormat::BackgroundBrush))
         return QVariant::fromValue<QBrush>(fmt.background());
     return QVariant();

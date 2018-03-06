@@ -215,7 +215,7 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     const QAbstractItemModel *model_ = model();
     QModelIndex myIdx = model_->index(row(), 0);
     Message::Type type = (Message::Type)myIdx.data(MessageModel::TypeRole).toInt();
-    UiStyle::MessageLabel label = (UiStyle::MessageLabel)myIdx.data(ChatLineModel::MsgLabelRole).toInt();
+    UiStyle::MessageLabel label = myIdx.data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>();
 
     QTextCharFormat msgFmt = QtUi::style()->format(UiStyle::formatType(type), label);
     if (msgFmt.hasProperty(QTextFormat::BackgroundBrush)) {
@@ -223,7 +223,7 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     }
 
     if (_selection & Selected) {
-        QTextCharFormat selFmt = QtUi::style()->format(UiStyle::formatType(type), label | UiStyle::Selected);
+        QTextCharFormat selFmt = QtUi::style()->format(UiStyle::formatType(type), label | UiStyle::MessageLabel::Selected);
         if (selFmt.hasProperty(QTextFormat::BackgroundBrush)) {
             qreal left = item((ChatLineModel::ColumnType)(_selection & ItemMask))->pos().x();
             QRectF selectRect(left, 0, width() - left, height());

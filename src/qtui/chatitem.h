@@ -114,7 +114,7 @@ protected:
     void paintBackground(QPainter *);
     QVector<QTextLayout::FormatRange> selectionFormats() const;
     virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
-    void overlayFormat(UiStyle::FormatList &fmtList, int start, int end, quint32 overlayFmt) const;
+    void overlayFormat(UiStyle::FormatList &fmtList, quint16 start, quint16 end, UiStyle::FormatType overlayFmt) const;
 
     inline qint16 selectionStart() const { return _selectionStart; }
     inline void setSelectionStart(qint16 start) { _selectionStart = start; }
