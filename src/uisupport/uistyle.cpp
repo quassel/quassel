@@ -757,6 +757,9 @@ QString UiStyle::mircToInternal(const QString &mirc_)
                 case '\x09':
                     mirc += "        ";
                     break;
+                case '\x11':
+                    // Monospace not supported yet
+                    break;
                 case '\x12':
                 case '\x16':
                     mirc += "%R";
