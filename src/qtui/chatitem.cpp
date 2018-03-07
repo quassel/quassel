@@ -294,7 +294,7 @@ QVector<QTextLayout::FormatRange> ChatItem::selectionFormats() const
     if (!hasSelection())
         return QVector<QTextLayout::FormatRange>();
 
-    int start, end;
+    quint16 start, end;
     if (_selectionMode == FullSelection) {
         start = 0;
         end = data(MessageModel::DisplayRole).toString().length();

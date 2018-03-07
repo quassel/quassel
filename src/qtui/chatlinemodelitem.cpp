@@ -111,7 +111,7 @@ QVariant ChatLineModelItem::timestampData(int role) const
     case ChatLineModel::SelectedBackgroundRole:
         return backgroundBrush(UiStyle::FormatType::Timestamp, true);
     case ChatLineModel::FormatRole:
-        return QVariant::fromValue<UiStyle::FormatList>({std::make_pair(quint16{0}, UiStyle::Format{UiStyle::formatType(_styledMsg.type()) | UiStyle::FormatType::Timestamp})});
+        return QVariant::fromValue<UiStyle::FormatList>({std::make_pair(quint16{0}, UiStyle::Format{UiStyle::formatType(_styledMsg.type()) | UiStyle::FormatType::Timestamp, {}, {}})});
     }
     return QVariant();
 }
@@ -129,7 +129,7 @@ QVariant ChatLineModelItem::senderData(int role) const
     case ChatLineModel::SelectedBackgroundRole:
         return backgroundBrush(UiStyle::FormatType::Sender, true);
     case ChatLineModel::FormatRole:
-        return QVariant::fromValue<UiStyle::FormatList>({std::make_pair(quint16{0}, UiStyle::Format{UiStyle::formatType(_styledMsg.type()) | UiStyle::FormatType::Sender})});
+        return QVariant::fromValue<UiStyle::FormatList>({std::make_pair(quint16{0}, UiStyle::Format{UiStyle::formatType(_styledMsg.type()) | UiStyle::FormatType::Sender, {}, {}})});
     }
     return QVariant();
 }
@@ -171,7 +171,7 @@ UiStyle::MessageLabel ChatLineModelItem::messageLabel() const
 
 QVariant ChatLineModelItem::backgroundBrush(UiStyle::FormatType subelement, bool selected) const
 {
-    QTextCharFormat fmt = QtUi::style()->format(UiStyle::formatType(_styledMsg.type()) | subelement,
+    QTextCharFormat fmt = QtUi::style()->format({UiStyle::formatType(_styledMsg.type()) | subelement, {}, {}},
                                                 messageLabel() | (selected ? UiStyle::MessageLabel::Selected : UiStyle::MessageLabel::None));
     if (fmt.hasProperty(QTextFormat::BackgroundBrush))
         return QVariant::fromValue<QBrush>(fmt.background());

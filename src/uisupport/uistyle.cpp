@@ -21,6 +21,7 @@
 #include <vector>
 
 #include <QApplication>
+#include <QColor>
 #include <QIcon>
 
 #include "buffersettings.h"
@@ -36,6 +37,28 @@ QString UiStyle::_timestampFormatString;       /// Timestamp format
 QString UiStyle::_systemTimestampFormatString; /// Cached copy of system locale timestamp format
 bool UiStyle::_showSenderPrefixes;             /// If true, show prefixmodes before sender names
 bool UiStyle::_showSenderBrackets;             /// If true, show brackets around sender names
+
+namespace {
+
+// Extended mIRC colors as defined in https://modern.ircdocs.horse/formatting.html#colors-16-98
+QColor extendedMircColor(int number)
+{
+    static const std::vector<QColor> colorMap = {
+        "#470000", "#472100", "#474700", "#324700", "#004700", "#00472c", "#004747", "#002747", "#000047", "#2e0047", "#470047", "#47002a",
+        "#740000", "#743a00", "#747400", "#517400", "#007400", "#007449", "#007474", "#004074", "#000074", "#4b0074", "#740074", "#740045",
+        "#b50000", "#b56300", "#b5b500", "#7db500", "#00b500", "#00b571", "#00b5b5", "#0063b5", "#0000b5", "#7500b5", "#b500b5", "#b5006b",
+        "#ff0000", "#ff8c00", "#ffff00", "#b2ff00", "#00ff00", "#00ffa0", "#00ffff", "#008cff", "#0000ff", "#a500ff", "#ff00ff", "#ff0098",
+        "#ff5959", "#ffb459", "#ffff71", "#cfff60", "#6fff6f", "#65ffc9", "#6dffff", "#59b4ff", "#5959ff", "#c459ff", "#ff66ff", "#ff59bc",
+        "#ff9c9c", "#ffd39c", "#ffff9c", "#e2ff9c", "#9cff9c", "#9cffdb", "#9cffff", "#9cd3ff", "#9c9cff", "#dc9cff", "#ff9cff", "#ff94d3",
+        "#000000", "#131313", "#282828", "#363636", "#4d4d4d", "#656565", "#818181", "#9f9f9f", "#bcbcbc", "#e2e2e2", "#ffffff"
+    };
+    if (number < 16)
+        return {};
+    size_t index = number - 16;
+    return (index < colorMap.size() ? colorMap[index] : QColor{});
+}
+
+}
 
 UiStyle::UiStyle(QObject *parent)
     : QObject(parent),
@@ -400,16 +423,27 @@ QTextCharFormat UiStyle::format(quint64 key) const
     return _formats.value(key, QTextCharFormat());
 }
 
+namespace {
 
-QTextCharFormat UiStyle::cachedFormat(FormatType formatType, MessageLabel messageLabel) const
+// Create unique key for given Format object and message label
+QString formatKey(const UiStyle::Format &format, UiStyle::MessageLabel label)
 {
-    return _formatCache.value(formatType | messageLabel, QTextCharFormat());
+    return QString::number(format.type | label, 16)
+            + (format.foreground.isValid() ? format.foreground.name() : "#------")
+            + (format.background.isValid() ? format.background.name() : "#------");
+}
+
+}
+
+QTextCharFormat UiStyle::cachedFormat(const Format &format, MessageLabel messageLabel) const
+{
+    return _formatCache.value(formatKey(format, messageLabel), QTextCharFormat());
 }
 
 
-void UiStyle::setCachedFormat(const QTextCharFormat &format, FormatType formatType, MessageLabel messageLabel) const
+void UiStyle::setCachedFormat(const QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const
 {
-    _formatCache[formatType | messageLabel] = format;
+    _formatCache[formatKey(format, messageLabel)] = charFormat;
 }
 
 
@@ -421,7 +455,7 @@ QFontMetricsF *UiStyle::fontMetrics(FormatType ftype, MessageLabel label) const
     if (_metricsCache.contains(key))
         return _metricsCache.value(key);
 
-    return (_metricsCache[key] = new QFontMetricsF(format(ftype, label).font()));
+    return (_metricsCache[key] = new QFontMetricsF(format({ftype, {}, {}}, label).font()));
 }
 
 
@@ -429,38 +463,39 @@ QFontMetricsF *UiStyle::fontMetrics(FormatType ftype, MessageLabel label) const
 
 // NOTE: This and the following functions are intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
-QTextCharFormat UiStyle::format(FormatType ftype, MessageLabel label) const
+QTextCharFormat UiStyle::format(const Format &format, MessageLabel label) const
 {
-    if (ftype == FormatType::Invalid)
+    if (format.type == FormatType::Invalid)
         return {};
 
-    // check if we have exactly this format readily cached already
-    QTextCharFormat fmt = cachedFormat(ftype, label);
-    if (fmt.properties().count())
-        return fmt;
+    // Check if we have exactly this format readily cached already
+    QTextCharFormat charFormat = cachedFormat(format, label);
+    if (charFormat.properties().count())
+        return charFormat;
 
-    mergeFormat(fmt, ftype, label & 0xffff0000);  // keep nickhash in label
+    mergeFormat(charFormat, format, label & 0xffff0000);  // keep nickhash in label
 
     for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Selected); mask <<= 1) {
-        if (static_cast<quint32>(label) & mask)
-            mergeFormat(fmt, ftype, label & (mask | 0xffff0000));
+        if (static_cast<quint32>(label) & mask) {
+            mergeFormat(charFormat, {format.type, {}, {}}, label & (mask | 0xffff0000));  // Don't re-apply extended colors
+        }
     }
 
-    setCachedFormat(fmt, ftype, label);
-    return fmt;
+    setCachedFormat(charFormat, format, label);
+    return charFormat;
 }
 
 
-void UiStyle::mergeFormat(QTextCharFormat &fmt, FormatType ftype, MessageLabel label) const
+void UiStyle::mergeFormat(QTextCharFormat &charFormat, const Format &format, MessageLabel label) const
 {
-    mergeSubElementFormat(fmt, ftype & 0x00ff, label);
+    mergeSubElementFormat(charFormat, format.type & 0x00ff, label);
 
     // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
     //       or "foreground 01 and background 03"
-    if ((ftype & 0xfff00) != FormatType::Base) { // element format
+    if ((format.type & 0xfff00) != FormatType::Base) { // element format
         for (quint32 mask = 0x00100; mask <= 0x40000; mask <<= 1) {
-            if ((ftype & mask) != FormatType::Base) {
-                mergeSubElementFormat(fmt, ftype & (mask | 0xff), label);
+            if ((format.type & mask) != FormatType::Base) {
+                mergeSubElementFormat(charFormat, format.type & (mask | 0xff), label);
             }
         }
     }
@@ -468,17 +503,24 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, FormatType ftype, MessageLabel l
     // Now we handle color codes
     // We assume that those can't be combined with subelement and message types.
     if (_allowMircColors) {
-        if ((ftype & 0x00400000) != FormatType::Base)
-            mergeSubElementFormat(fmt, ftype & 0x0f400000, label);  // foreground
-        if ((ftype & 0x00800000) != FormatType::Base)
-            mergeSubElementFormat(fmt, ftype & 0xf0800000, label);  // background
-        if ((ftype & 0x00c00000) == static_cast<FormatType>(0x00c00000))
-            mergeSubElementFormat(fmt, ftype & 0xffc00000, label);  // combination
+        // Classic mIRC colors (styleable)
+        if ((format.type & 0x00400000) != FormatType::Base)
+            mergeSubElementFormat(charFormat, format.type & 0x0f400000, label);  // foreground
+        if ((format.type & 0x00800000) != FormatType::Base)
+            mergeSubElementFormat(charFormat, format.type & 0xf0800000, label);  // background
+        if ((format.type & 0x00c00000) == static_cast<FormatType>(0x00c00000))
+            mergeSubElementFormat(charFormat, format.type & 0xffc00000, label);  // combination
+
+        // Extended mIRC colors (hardcoded)
+        if (format.foreground.isValid())
+            charFormat.setForeground(format.foreground);
+        if (format.background.isValid())
+            charFormat.setBackground(format.background);
     }
 
     // URL
-    if ((ftype & FormatType::Url) != FormatType::Base)
-        mergeSubElementFormat(fmt, ftype & (FormatType::Url | static_cast<FormatType>(0x000000ff)), label);
+    if ((format.type & FormatType::Url) != FormatType::Base)
+        mergeSubElementFormat(charFormat, format.type & (FormatType::Url | static_cast<FormatType>(0x000000ff)), label);
 }
 
 
@@ -559,7 +601,7 @@ QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &form
     QTextLayout::FormatRange range;
     size_t i = 0;
     for (i = 0; i < formatList.size(); i++) {
-        range.format = format(formatList.at(i).second.type, messageLabel);
+        range.format = format(formatList.at(i).second, messageLabel);
         range.start = formatList.at(i).first;
         if (i > 0)
             formatRanges.last().length = range.start - formatRanges.last().start;
@@ -577,7 +619,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
 {
     QString s = s_;
     StyledString result;
-    result.formatList.emplace_back(std::make_pair(quint16{0}, Format{baseFormat}));
+    result.formatList.emplace_back(std::make_pair(quint16{0}, Format{baseFormat, {}, {}}));
 
     if (s.length() > 65535) {
         // We use quint16 for indexes
@@ -586,7 +628,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
         return result;
     }
 
-    FormatType curfmt = baseFormat;
+    Format curfmt{baseFormat, {}, {}};
 
     int pos = 0; quint16 length = 0;
     for (;;) {
@@ -599,26 +641,45 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
         }
         if (s[pos+1] == 'D' && s[pos+2] == 'c') { // color code
             if (s[pos+3] == '-') { // color off
-                curfmt &= 0x003fffff;
+                curfmt.type &= 0x003fffff;
+                curfmt.foreground = QColor{};
+                curfmt.background = QColor{};
                 length = 4;
             }
             else {
-                int color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
-                //TODO: use 99 as transparent color (re mirc color "standard")
-                color &= 0x0f;
+                quint32 color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
+                // Color values 0-15 are traditional mIRC colors, defined in the stylesheet and thus going through the format engine
+                // Larger color values are hardcoded and applied separately (cf. https://modern.ircdocs.horse/formatting.html#colors-16-98)
                 if (s[pos+3] == 'f') {
-                    curfmt &= 0xf0ffffff;
-                    curfmt |= (quint32)(color << 24) | 0x00400000;
+                    if (color < 16) {
+                        // Traditional mIRC color, defined in the stylesheet
+                        curfmt.type &= 0xf0ffffff;
+                        curfmt.type |= color << 24 | 0x00400000;
+                        curfmt.foreground = QColor{};
+                    }
+                    else {
+                        curfmt.type &= 0xf0bfffff;  // mask out traditional foreground color
+                        curfmt.foreground = extendedMircColor(color);
+                    }
                 }
                 else {
-                    curfmt &= 0x0fffffff;
-                    curfmt |= (quint32)(color << 28) | 0x00800000;
+                    if (color < 16) {
+                        curfmt.type &= 0x0fffffff;
+                        curfmt.type |= color << 28 | 0x00800000;
+                        curfmt.background = QColor{};
+                    }
+                    else {
+                        curfmt.type &= 0x0f7fffff;  // mask out traditional background color
+                        curfmt.background = extendedMircColor(color);
+                    }
                 }
                 length = 6;
             }
         }
         else if (s[pos+1] == 'O') { // reset formatting
-            curfmt &= 0x000000ff; // we keep message type-specific formatting
+            curfmt.type &= 0x000000ff; // we keep message type-specific formatting
+            curfmt.foreground = QColor{};
+            curfmt.background = QColor{};
             length = 2;
         }
         else if (s[pos+1] == 'R') { // reverse
@@ -635,14 +696,14 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
                 qWarning() << (QString("Invalid format code in string: %1").arg(s));
                 continue;
             }
-            curfmt ^= ftype;
+            curfmt.type ^= ftype;
             length = code.length();
         }
         s.remove(pos, length);
         if (pos == result.formatList.back().first)
-            result.formatList.back().second.type = curfmt;
+            result.formatList.back().second = curfmt;
         else
-            result.formatList.emplace_back(std::make_pair(pos, Format{curfmt}));
+            result.formatList.emplace_back(std::make_pair(pos, curfmt));
     }
     result.plainText = s;
     return result;
@@ -694,24 +755,29 @@ QString UiStyle::mircToInternal(const QString &mirc_)
     // Note: We use the "mirc standard" as described in <http://www.mirc.co.uk/help/color.txt>.
     //       This means that we don't accept something like \x03,5 (even though others, like WeeChat, do).
     int pos = 0;
-    for (;;) {
+    while (true) {
         pos = mirc.indexOf('\x03', pos);
-        if (pos < 0) break;  // no more mirc color codes
+        if (pos < 0)
+            break;  // no more mirc color codes
         QString ins, num;
         int l = mirc.length();
         int i = pos + 1;
         // check for fg color
         if (i < l && mirc[i].isDigit()) {
             num = mirc[i++];
-            if (i < l && mirc[i].isDigit()) num.append(mirc[i++]);
-            else num.prepend('0');
+            if (i < l && mirc[i].isDigit())
+                num.append(mirc[i++]);
+            else
+                num.prepend('0');
             ins = QString("%Dcf%1").arg(num);
 
             if (i+1 < l && mirc[i] == ',' && mirc[i+1].isDigit()) {
                 i++;
                 num = mirc[i++];
-                if (i < l && mirc[i].isDigit()) num.append(mirc[i++]);
-                else num.prepend('0');
+                if (i < l && mirc[i].isDigit())
+                    num.append(mirc[i++]);
+                else
+                    num.prepend('0');
                 ins += QString("%Dcb%1").arg(num);
             }
         }
@@ -1127,7 +1193,10 @@ QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList)
     out << static_cast<quint16>(formatList.size());
     UiStyle::FormatList::const_iterator it = formatList.begin();
     while (it != formatList.end()) {
-        out << it->first << static_cast<quint32>(it->second.type);
+        out << it->first
+            << static_cast<quint32>(it->second.type)
+            << it->second.foreground
+            << it->second.background;
         ++it;
     }
     return out;
@@ -1139,9 +1208,12 @@ QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList)
     quint16 cnt;
     in >> cnt;
     for (quint16 i = 0; i < cnt; i++) {
-        quint16 pos; quint32 ftype;
-        in >> pos >> ftype;
-        formatList.emplace_back(std::make_pair(quint16{pos}, UiStyle::Format{static_cast<UiStyle::FormatType>(ftype)}));
+        quint16 pos;
+        quint32 ftype;
+        QColor foreground;
+        QColor background;
+        in >> pos >> ftype >> foreground >> background;
+        formatList.emplace_back(std::make_pair(quint16{pos}, UiStyle::Format{static_cast<UiStyle::FormatType>(ftype), foreground, background}));
     }
     return in;
 }
