@@ -322,6 +322,8 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
                     fmtType |= FormatType::Italic;
                 else if (condValue == "underline")
                     fmtType |= FormatType::Underline;
+                else if (condValue == "strikethrough")
+                    fmtType |= FormatType::Strikethrough;
                 else {
                     qWarning() << Q_FUNC_INFO << tr("Invalid format name: %1").arg(condValue);
                     return invalid;
@@ -713,7 +715,7 @@ QGradientStops QssParser::parseGradientStops(const QString &str_)
 
 void QssParser::parseFont(const QString &value, QTextCharFormat *format)
 {
-    static const QRegExp rx("((?:(?:normal|italic|oblique|underline|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
+    static const QRegExp rx("((?:(?:normal|italic|oblique|underline|strikethrough|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
     if (!rx.exactMatch(value)) {
         qWarning() << Q_FUNC_INFO << tr("Invalid font specification: %1").arg(value);
         return;
@@ -726,6 +728,7 @@ void QssParser::parseFont(const QString &value, QTextCharFormat *format)
             format->setFontItalic(true);
         else if (prop == "underline")
             format->setFontUnderline(true);
+        // Oblique is not a property supported by QTextCharFormat
         //else if(prop == "oblique")
         //  format->setStyle(QFont::StyleOblique);
         else if (prop == "bold")
@@ -753,6 +756,9 @@ void QssParser::parseFontStyle(const QString &value, QTextCharFormat *format)
         format->setFontItalic(true);
     else if (value == "underline")
         format->setFontUnderline(true);
+    else if (value == "strikethrough")
+        format->setFontStrikeOut(true);
+    // Oblique is not a property supported by QTextCharFormat
     //else if(value == "oblique")
     //  format->setStyle(QFont::StyleOblique);
     else {

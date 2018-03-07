@@ -77,9 +77,10 @@ ChatLine[fg-color="0f"] { foreground: #c0c0c0; }
 ChatLine[bg-color="0f"] { background: #c0c0c0; }
 
 // mIRC formats
-ChatLine[format="bold"]      { font-weight: bold; }
-ChatLine[format="italic"]    { font-style: italic; }
-ChatLine[format="underline"] { font-style: underline; }
+ChatLine[format="bold"]          { font-weight: bold; }
+ChatLine[format="italic"]        { font-style: italic; }
+ChatLine[format="underline"]     { font-style: underline; }
+ChatLine[format="strikethrough"] { font-style: strikethrough; }
 
 // ChatView message colors
 ChatLine#notice { foreground: #916409; }

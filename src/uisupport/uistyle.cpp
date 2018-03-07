@@ -85,8 +85,9 @@ UiStyle::UiStyle(QObject *parent)
     // Now initialize the mapping between FormatCodes and FormatTypes...
     _formatCodes["%O"] = FormatType::Base;
     _formatCodes["%B"] = FormatType::Bold;
-    _formatCodes["%S"] = FormatType::Italic;
+    _formatCodes["%I"] = FormatType::Italic;
     _formatCodes["%U"] = FormatType::Underline;
+    _formatCodes["%S"] = FormatType::Strikethrough;
 
     _formatCodes["%DN"] = FormatType::Nick;
     _formatCodes["%DH"] = FormatType::Hostmask;
@@ -761,6 +762,9 @@ QString UiStyle::mircToInternal(const QString &mirc_)
                     mirc += "%R";
                     break;
                 case '\x1d':
+                    mirc += "%I";
+                    break;
+                case '\x1e':
                     mirc += "%S";
                     break;
                 case '\x1f':

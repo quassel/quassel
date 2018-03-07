@@ -81,6 +81,7 @@ public:
         Bold            = 0x00000100,
         Italic          = 0x00000200,
         Underline       = 0x00000400,
+        Strikethrough   = 0x00000800,
 
         // Individual parts of a message
         Timestamp       = 0x00001000,
