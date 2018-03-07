@@ -72,13 +72,12 @@ UiStyle::UiStyle(QObject *parent)
     _opIconLimit(UserCategoryItem::categoryFromModes("o")),
     _voiceIconLimit(UserCategoryItem::categoryFromModes("v"))
 {
-    // register FormatList if that hasn't happened yet
-    // FIXME I don't think this actually avoids double registration... then again... does it hurt?
-    if (QVariant::nameToType("UiStyle::FormatList") == QVariant::Invalid) {
-        qRegisterMetaType<FormatList>("UiStyle::FormatList");
-        qRegisterMetaTypeStreamOperators<FormatList>("UiStyle::FormatList");
-        Q_ASSERT(QVariant::nameToType("UiStyle::FormatList") != QVariant::Invalid);
-    }
+    static bool registered = []() {
+        qRegisterMetaType<FormatList>();
+        qRegisterMetaTypeStreamOperators<FormatList>();
+        return true;
+    }();
+    Q_UNUSED(registered)
 
     _uiStylePalette = QVector<QBrush>(static_cast<int>(ColorRole::NumRoles), QBrush());
 
