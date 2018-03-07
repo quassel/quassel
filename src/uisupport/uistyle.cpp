@@ -417,7 +417,7 @@ QVariant UiStyle::itemData(int role, const QTextCharFormat &format) const
 
 /******** Caching *******/
 
-QTextCharFormat UiStyle::format(quint64 key) const
+QTextCharFormat UiStyle::parsedFormat(quint64 key) const
 {
     return _formats.value(key, QTextCharFormat());
 }
@@ -472,11 +472,22 @@ QTextCharFormat UiStyle::format(const Format &format, MessageLabel label) const
     if (charFormat.properties().count())
         return charFormat;
 
+    // Merge all formats except mIRC and extended colors
     mergeFormat(charFormat, format, label & 0xffff0000);  // keep nickhash in label
-
     for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Selected); mask <<= 1) {
         if (static_cast<quint32>(label) & mask) {
-            mergeFormat(charFormat, {format.type, {}, {}}, label & (mask | 0xffff0000));  // Don't re-apply extended colors
+            mergeFormat(charFormat, format, label & (mask | 0xffff0000));
+        }
+    }
+
+    // Merge mIRC and extended colors, if appropriate. These override any color set previously in the format,
+    // unless the AllowForegroundOverride or AllowBackgroundOverride properties are set (via stylesheet).
+    if (_allowMircColors) {
+        mergeColors(charFormat, format, MessageLabel::None);
+        for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Selected); mask <<= 1) {
+            if (static_cast<quint32>(label) & mask) {
+                mergeColors(charFormat, format, label & mask);
+            }
         }
     }
 
@@ -492,34 +503,12 @@ void UiStyle::mergeFormat(QTextCharFormat &charFormat, const Format &format, Mes
     // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
     //       or "foreground 01 and background 03"
     if ((format.type & 0xfff00) != FormatType::Base) { // element format
-        for (quint32 mask = 0x00100; mask <= 0x40000; mask <<= 1) {
+        for (quint32 mask = 0x00100; mask <= 0x80000; mask <<= 1) {
             if ((format.type & mask) != FormatType::Base) {
                 mergeSubElementFormat(charFormat, format.type & (mask | 0xff), label);
             }
         }
     }
-
-    // Now we handle color codes
-    // We assume that those can't be combined with subelement and message types.
-    if (_allowMircColors) {
-        // Classic mIRC colors (styleable)
-        if ((format.type & 0x00400000) != FormatType::Base)
-            mergeSubElementFormat(charFormat, format.type & 0x0f400000, label);  // foreground
-        if ((format.type & 0x00800000) != FormatType::Base)
-            mergeSubElementFormat(charFormat, format.type & 0xf0800000, label);  // background
-        if ((format.type & 0x00c00000) == static_cast<FormatType>(0x00c00000))
-            mergeSubElementFormat(charFormat, format.type & 0xffc00000, label);  // combination
-
-        // Extended mIRC colors (hardcoded)
-        if (format.foreground.isValid())
-            charFormat.setForeground(format.foreground);
-        if (format.background.isValid())
-            charFormat.setBackground(format.background);
-    }
-
-    // URL
-    if ((format.type & FormatType::Url) != FormatType::Base)
-        mergeSubElementFormat(charFormat, format.type & (FormatType::Url | static_cast<FormatType>(0x000000ff)), label);
 }
 
 
@@ -527,10 +516,32 @@ void UiStyle::mergeFormat(QTextCharFormat &charFormat, const Format &format, Mes
 void UiStyle::mergeSubElementFormat(QTextCharFormat &fmt, FormatType ftype, MessageLabel label) const
 {
     quint64 key = ftype | label;
-    fmt.merge(format(key & 0x0000ffffffffff00ull)); // label + subelement
-    fmt.merge(format(key & 0x0000ffffffffffffull)); // label + subelement + msgtype
-    fmt.merge(format(key & 0xffffffffffffff00ull)); // label + subelement + nickhash
-    fmt.merge(format(key & 0xffffffffffffffffull)); // label + subelement + nickhash + msgtype
+    fmt.merge(parsedFormat(key & 0x0000ffffffffff00ull)); // label + subelement
+    fmt.merge(parsedFormat(key & 0x0000ffffffffffffull)); // label + subelement + msgtype
+    fmt.merge(parsedFormat(key & 0xffffffffffffff00ull)); // label + subelement + nickhash
+    fmt.merge(parsedFormat(key & 0xffffffffffffffffull)); // label + subelement + nickhash + msgtype
+}
+
+
+void UiStyle::mergeColors(QTextCharFormat &charFormat, const Format &format, MessageLabel label) const
+{
+    bool allowFg = charFormat.property(static_cast<int>(FormatProperty::AllowForegroundOverride)).toBool();
+    bool allowBg = charFormat.property(static_cast<int>(FormatProperty::AllowBackgroundOverride)).toBool();
+
+    // Classic mIRC colors (styleable)
+    // We assume that those can't be combined with subelement and message types.
+    if (allowFg && (format.type & 0x00400000) != FormatType::Base)
+        charFormat.merge(parsedFormat((format.type & 0x0f400000) | label));  // foreground
+    if (allowBg && (format.type & 0x00800000) != FormatType::Base)
+        charFormat.merge(parsedFormat((format.type & 0xf0800000) | label));  // background
+    if (allowFg && allowBg && (format.type & 0x00c00000) == static_cast<FormatType>(0x00c00000))
+        charFormat.merge(parsedFormat((format.type & 0xffc00000) | label));  // combination
+
+    // Extended mIRC colors (hardcoded)
+    if (allowFg && format.foreground.isValid())
+        charFormat.setForeground(format.foreground);
+    if (allowBg && format.background.isValid())
+        charFormat.setBackground(format.background);
 }
 
 

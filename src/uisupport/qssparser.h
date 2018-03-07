@@ -50,8 +50,11 @@ protected:
 
     QTextCharFormat parseFormat(const QString &qss);
 
+    // Parse boolean properties
+    bool parseBoolean(const QString &str, bool *ok = nullptr) const;
+
     // Parse color/brush-related properties
-    QBrush parseBrush(const QString &str, bool *ok = 0);
+    QBrush parseBrush(const QString &str, bool *ok = nullptr);
     QColor parseColor(const QString &str);
     ColorTuple parseColorTuple(const QString &str);
     QGradientStops parseGradientStops(const QString &str);

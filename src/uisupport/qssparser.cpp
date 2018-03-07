@@ -451,6 +451,20 @@ QTextCharFormat QssParser::parseFormat(const QString &qss)
         else if (property == "foreground" || property == "color")
             format.setForeground(parseBrush(value));
 
+        // Color code overrides
+        else if (property == "allow-foreground-override") {
+            bool ok;
+            bool v = parseBoolean(value, &ok);
+            if (ok)
+                format.setProperty(static_cast<int>(UiStyle::FormatProperty::AllowForegroundOverride), v);
+        }
+        else if (property == "allow-background-override") {
+            bool ok;
+            bool v = parseBoolean(value, &ok);
+            if (ok)
+                format.setProperty(static_cast<int>(UiStyle::FormatProperty::AllowBackgroundOverride), v);
+        }
+
         // font-related properties
         else if (property.startsWith("font")) {
             if (property == "font")
@@ -477,6 +491,23 @@ QTextCharFormat QssParser::parseFormat(const QString &qss)
     return format;
 }
 
+/******** Boolean value ********/
+
+bool QssParser::parseBoolean(const QString &str, bool *ok) const
+{
+    if (ok)
+        *ok = true;
+
+    if (str == "true")
+        return true;
+    if (str == "false")
+        return false;
+
+    qWarning() << Q_FUNC_INFO << tr("Invalid boolean value: %1").arg(str);
+    if (ok)
+        *ok = false;
+    return false;
+}
 
 /******** Brush ********/
 

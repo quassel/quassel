@@ -128,6 +128,11 @@ public:
         Invalid           = 0xffffffff
     };
 
+    enum class FormatProperty {
+        AllowForegroundOverride = QTextFormat::UserProperty,
+        AllowBackgroundOverride
+    };
+
     enum class ColorRole {
         MarkerLine,
         // Sender colors (16 + self)
@@ -266,11 +271,12 @@ protected:
     void loadStyleSheet();
     QString loadStyleSheet(const QString &name, bool shouldExist = false);
 
-    QTextCharFormat format(quint64 key) const;
+    QTextCharFormat parsedFormat(quint64 key) const;
     QTextCharFormat cachedFormat(const Format &format, MessageLabel messageLabel) const;
     void setCachedFormat(const QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const;
     void mergeFormat(QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const;
     void mergeSubElementFormat(QTextCharFormat &charFormat, FormatType formatType, MessageLabel messageLabel) const;
+    void mergeColors(QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const;
 
     static FormatType formatType(const QString &code);
     static QString formatCode(FormatType);
