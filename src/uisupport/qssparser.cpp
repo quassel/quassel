@@ -322,8 +322,6 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
                     fmtType |= FormatType::Italic;
                 else if (condValue == "underline")
                     fmtType |= FormatType::Underline;
-                else if (condValue == "reverse")
-                    fmtType |= FormatType::Reverse;
                 else {
                     qWarning() << Q_FUNC_INFO << tr("Invalid format name: %1").arg(condValue);
                     return invalid;

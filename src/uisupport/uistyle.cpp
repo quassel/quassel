@@ -18,6 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <utility>
 #include <vector>
 
 #include <QApplication>
@@ -86,7 +87,6 @@ UiStyle::UiStyle(QObject *parent)
     _formatCodes["%B"] = FormatType::Bold;
     _formatCodes["%S"] = FormatType::Italic;
     _formatCodes["%U"] = FormatType::Underline;
-    _formatCodes["%R"] = FormatType::Reverse;
 
     _formatCodes["%DN"] = FormatType::Nick;
     _formatCodes["%DH"] = FormatType::Hostmask;
@@ -639,6 +639,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
     }
 
     Format curfmt{baseFormat, {}, {}};
+    QChar fgChar{'f'}; // character to indicate foreground color, changed when reversing
 
     int pos = 0; quint16 length = 0;
     for (;;) {
@@ -660,7 +661,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
                 quint32 color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
                 // Color values 0-15 are traditional mIRC colors, defined in the stylesheet and thus going through the format engine
                 // Larger color values are hardcoded and applied separately (cf. https://modern.ircdocs.horse/formatting.html#colors-16-98)
-                if (s[pos+3] == 'f') {
+                if (s[pos+3] == fgChar) {
                     if (color < 16) {
                         // Traditional mIRC color, defined in the stylesheet
                         curfmt.type &= 0xf0ffffff;
@@ -688,7 +689,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
         }
         else if (s[pos+1] == 'D' && s[pos+2] == 'h') { // Hex color
             QColor color{s.mid(pos+4, 7)};
-            if (s[pos+3] == 'f') {
+            if (s[pos+3] == fgChar) {
                 curfmt.type &= 0xf0bfffff;  // mask out mIRC foreground color
                 curfmt.foreground = std::move(color);
             }
@@ -702,11 +703,18 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
             curfmt.type &= 0x000000ff; // we keep message type-specific formatting
             curfmt.foreground = QColor{};
             curfmt.background = QColor{};
+            fgChar = 'f';
             length = 2;
         }
-        else if (s[pos+1] == 'R') { // reverse
-            // TODO: implement reverse formatting
-
+        else if (s[pos+1] == 'R') { // Reverse colors
+            fgChar = (fgChar == 'f' ? 'b' : 'f');
+            quint32 orig = static_cast<quint32>(curfmt.type & 0xffc00000);
+            curfmt.type &= 0x003fffff;
+            curfmt.type |= (orig & 0x00400000) <<1;
+            curfmt.type |= (orig & 0x0f000000) <<4;
+            curfmt.type |= (orig & 0x00800000) >>1;
+            curfmt.type |= (orig & 0xf0000000) >>4;
+            std::swap(curfmt.foreground, curfmt.background);
             length = 2;
         }
         else { // all others are toggles
