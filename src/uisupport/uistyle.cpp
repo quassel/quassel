@@ -638,7 +638,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
             pos++;
             continue;
         }
-        if (s[pos+1] == 'D' && s[pos+2] == 'c') { // color code
+        if (s[pos+1] == 'D' && s[pos+2] == 'c') { // mIRC color code
             if (s[pos+3] == '-') { // color off
                 curfmt.type &= 0x003fffff;
                 curfmt.foreground = QColor{};
@@ -674,6 +674,18 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
                 }
                 length = 6;
             }
+        }
+        else if (s[pos+1] == 'D' && s[pos+2] == 'h') { // Hex color
+            QColor color{s.mid(pos+4, 7)};
+            if (s[pos+3] == 'f') {
+                curfmt.type &= 0xf0bfffff;  // mask out mIRC foreground color
+                curfmt.foreground = std::move(color);
+            }
+            else {
+                curfmt.type &= 0x0f7fffff;  // mask out mIRC background color
+                curfmt.background = std::move(color);
+            }
+            length = 11;
         }
         else if (s[pos+1] == 'O') { // reset formatting
             curfmt.type &= 0x000000ff; // we keep message type-specific formatting
@@ -714,7 +726,7 @@ QString UiStyle::mircToInternal(const QString &mirc_)
     QString mirc;
     mirc.reserve(mirc_.size());
     foreach (const QChar &c, mirc_) {
-        if ((c < '\x20' || c == '\x7f') && c != '\x03') {
+        if ((c < '\x20' || c == '\x7f') && c != '\x03' && c != '\x04') {
             switch (c.unicode()) {
                 case '\x02':
                     mirc += "%B";
@@ -753,38 +765,71 @@ QString UiStyle::mircToInternal(const QString &mirc_)
     // %Dc- turns color off.
     // Note: We use the "mirc standard" as described in <http://www.mirc.co.uk/help/color.txt>.
     //       This means that we don't accept something like \x03,5 (even though others, like WeeChat, do).
-    int pos = 0;
-    while (true) {
-        pos = mirc.indexOf('\x03', pos);
-        if (pos < 0)
-            break;  // no more mirc color codes
-        QString ins, num;
-        int l = mirc.length();
-        int i = pos + 1;
-        // check for fg color
-        if (i < l && mirc[i].isDigit()) {
-            num = mirc[i++];
-            if (i < l && mirc[i].isDigit())
-                num.append(mirc[i++]);
-            else
-                num.prepend('0');
-            ins = QString("%Dcf%1").arg(num);
-
-            if (i+1 < l && mirc[i] == ',' && mirc[i+1].isDigit()) {
-                i++;
+    {
+        int pos = 0;
+        while (true) {
+            pos = mirc.indexOf('\x03', pos);
+            if (pos < 0)
+                break;  // no more mirc color codes
+            QString ins, num;
+            int l = mirc.length();
+            int i = pos + 1;
+            // check for fg color
+            if (i < l && mirc[i].isDigit()) {
                 num = mirc[i++];
                 if (i < l && mirc[i].isDigit())
                     num.append(mirc[i++]);
                 else
                     num.prepend('0');
-                ins += QString("%Dcb%1").arg(num);
+                ins = QString("%Dcf%1").arg(num);
+
+                if (i+1 < l && mirc[i] == ',' && mirc[i+1].isDigit()) {
+                    i++;
+                    num = mirc[i++];
+                    if (i < l && mirc[i].isDigit())
+                        num.append(mirc[i++]);
+                    else
+                        num.prepend('0');
+                    ins += QString("%Dcb%1").arg(num);
+                }
             }
+            else {
+                ins = "%Dc-";
+            }
+            mirc.replace(pos, i-pos, ins);
         }
-        else {
-            ins = "%Dc-";
-        }
-        mirc.replace(pos, i-pos, ins);
     }
+
+    // Hex colors, as specified in https://modern.ircdocs.horse/formatting.html#hex-color
+    // %Dhf#rrggbb is foreground, %Dhb#rrggbb is background
+    {
+        static const QRegExp rx{"[\\da-fA-F]{6}"};
+        int pos = 0;
+        while (true) {
+            if (pos >= mirc.length())
+                break;
+            pos = mirc.indexOf('\x04', pos);
+            if (pos < 0)
+                break;
+            int i = pos + 1;
+            QString ins;
+            auto num = mirc.mid(i, 6);
+            if (!num.isEmpty() && rx.exactMatch(num)) {
+                ins = "%Dhf#" + num.toLower();
+                i += 6;
+                if (i < mirc.length() && mirc[i] == ',' && !(num = mirc.mid(i + 1, 6)).isEmpty() && rx.exactMatch(num)) {
+                    ins += "%Dhb#" + num.toLower();
+                    i += 7;
+                }
+            }
+            else {
+                ins = "%Dc-";
+            }
+            mirc.replace(pos, i - pos, ins);
+            pos += ins.length();
+        }
+    }
+
     return mirc;
 }
 
