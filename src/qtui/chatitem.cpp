@@ -153,7 +153,7 @@ void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapM
     layout->setTextOption(option);
 
     QList<QTextLayout::FormatRange> formatRanges
-        = QtUi::style()->toTextLayoutList(formatList(), layout->text().length(), data(ChatLineModel::MsgLabelRole).toUInt());
+        = QtUi::style()->toTextLayoutList(formatList(), layout->text().length(), data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>());
     layout->setAdditionalFormats(formatRanges);
 }
 
@@ -257,11 +257,11 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 }
 
 
-void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, int start, int end, quint32 overlayFmt) const
+void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, quint16 start, quint16 end, UiStyle::FormatType overlayFmt) const
 {
-    for (int i = 0; i < fmtList.count(); i++) {
+    for (size_t i = 0; i < fmtList.size(); i++) {
         int fmtStart = fmtList.at(i).first;
-        int fmtEnd = (i < fmtList.count()-1 ? fmtList.at(i+1).first : data(MessageModel::DisplayRole).toString().length());
+        int fmtEnd = (i < fmtList.size()-1 ? fmtList.at(i+1).first : data(MessageModel::DisplayRole).toString().length());
 
         if (fmtEnd <= start)
             continue;
@@ -270,15 +270,15 @@ void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, int start, int end, q
 
         // split the format if necessary
         if (fmtStart < start) {
-            fmtList.insert(i, fmtList.at(i));
+            fmtList.insert(fmtList.begin() + i, fmtList.at(i));
             fmtList[++i].first = start;
         }
         if (end < fmtEnd) {
-            fmtList.insert(i, fmtList.at(i));
+            fmtList.insert(fmtList.begin() + i, fmtList.at(i));
             fmtList[i+1].first = end;
         }
 
-        fmtList[i].second |= overlayFmt;
+        fmtList[i].second.type |= overlayFmt;
     }
 }
 
@@ -294,7 +294,7 @@ QVector<QTextLayout::FormatRange> ChatItem::selectionFormats() const
     if (!hasSelection())
         return QVector<QTextLayout::FormatRange>();
 
-    int start, end;
+    quint16 start, end;
     if (_selectionMode == FullSelection) {
         start = 0;
         end = data(MessageModel::DisplayRole).toString().length();
@@ -306,15 +306,15 @@ QVector<QTextLayout::FormatRange> ChatItem::selectionFormats() const
 
     UiStyle::FormatList fmtList = formatList();
 
-    while (fmtList.count() > 1 && fmtList.at(1).first <= start)
-        fmtList.removeFirst();
+    while (fmtList.size() > 1 && fmtList.at(1).first <= start)
+        fmtList.erase(fmtList.begin());
 
-    fmtList.first().first = start;
+    fmtList.front().first = start;
 
-    while (fmtList.count() > 1 && fmtList.last().first >= end)
-        fmtList.removeLast();
+    while (fmtList.size() > 1 && fmtList.back().first >= end)
+        fmtList.pop_back();
 
-    return QtUi::style()->toTextLayoutList(fmtList, end, UiStyle::Selected|data(ChatLineModel::MsgLabelRole).toUInt()).toVector();
+    return QtUi::style()->toTextLayoutList(fmtList, end, data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>()|UiStyle::MessageLabel::Selected).toVector();
 }
 
 
@@ -567,7 +567,7 @@ ContentsChatItem::ContentsChatItem(const QPointF &pos, const qreal &width, ChatL
 
 QFontMetricsF *ContentsChatItem::fontMetrics() const
 {
-    return QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second, 0);
+    return QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second.type, UiStyle::MessageLabel::None);
 }
 
 
@@ -674,7 +674,7 @@ UiStyle::FormatList ContentsChatItem::formatList() const
     for (int i = 0; i < privateData()->clickables.count(); i++) {
         Clickable click = privateData()->clickables.at(i);
         if (click.type() == Clickable::Url) {
-            overlayFormat(fmtList, click.start(), click.start() + click.length(), UiStyle::Url);
+            overlayFormat(fmtList, click.start(), click.start() + click.length(), UiStyle::FormatType::Url);
         }
     }
     return fmtList;

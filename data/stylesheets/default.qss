@@ -6,16 +6,22 @@
 // Basics
 ChatLine {
   foreground: palette(text);
+  // By default, allow color codes everywhere
+  allow-foreground-override: true;
+  allow-background-override: true;
 }
 
 ChatLine[label="highlight"] {
   foreground: black;
   background: #ff8000;
+  allow-background-override: false;
 }
 
 ChatLine[label="selected"] {
   foreground: palette(highlighted-text);
   background: palette(highlight);
+  allow-foreground-override: false;
+  allow-background-override: false;
 }
 
 // ChatLine::sender[sender="self"] {
@@ -28,6 +34,7 @@ ChatLine::timestamp {
 
 ChatLine::url {
   foreground: palette(link);
+  allow-foreground-override: false;
 }
 
 // Markerline gets a nice (and hardly visible) gradient
@@ -70,9 +77,10 @@ ChatLine[fg-color="0f"] { foreground: #c0c0c0; }
 ChatLine[bg-color="0f"] { background: #c0c0c0; }
 
 // mIRC formats
-ChatLine[format="bold"]      { font-weight: bold; }
-ChatLine[format="italic"]    { font-style: italic; }
-ChatLine[format="underline"] { font-style: underline; }
+ChatLine[format="bold"]          { font-weight: bold; }
+ChatLine[format="italic"]        { font-style: italic; }
+ChatLine[format="underline"]     { font-style: underline; }
+ChatLine[format="strikethrough"] { font-style: strikethrough; }
 
 // ChatView message colors
 ChatLine#notice { foreground: #916409; }

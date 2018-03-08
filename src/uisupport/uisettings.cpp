@@ -39,19 +39,19 @@ UiStyleSettings::UiStyleSettings(const QString &subGroup) : UiSettings(QString("
 
 void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, QTextCharFormat format)
 {
-    setLocalValue(QString("Format/%1").arg(ftype), format);
+    setLocalValue(QString("Format/%1").arg(static_cast<quint32>(ftype)), format);
 }
 
 
 QTextCharFormat UiStyleSettings::customFormat(UiStyle::FormatType ftype)
 {
-    return localValue(QString("Format/%1").arg(ftype), QTextFormat()).value<QTextFormat>().toCharFormat();
+    return localValue(QString("Format/%1").arg(static_cast<quint32>(ftype)), QTextFormat()).value<QTextFormat>().toCharFormat();
 }
 
 
 void UiStyleSettings::removeCustomFormat(UiStyle::FormatType ftype)
 {
-    removeLocalKey(QString("Format/%1").arg(ftype));
+    removeLocalKey(QString("Format/%1").arg(static_cast<quint32>(ftype)));
 }
 
 

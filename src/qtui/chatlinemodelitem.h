@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CHATLINEMODELITEM_H_
-#define CHATLINEMODELITEM_H_
+#pragma once
 
 #include "messagemodel.h"
 
@@ -58,7 +57,7 @@ private:
     QVariant contentsData(int role) const;
 
     QVariant backgroundBrush(UiStyle::FormatType subelement, bool selected = false) const;
-    quint32 messageLabel() const;
+    UiStyle::MessageLabel messageLabel() const;
 
     void computeWrapList() const;
 
@@ -68,6 +67,3 @@ private:
     static unsigned char *TextBoundaryFinderBuffer;
     static int TextBoundaryFinderBufferSize;
 };
-
-
-#endif
