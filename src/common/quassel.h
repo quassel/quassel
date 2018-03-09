@@ -137,6 +137,7 @@ public:
 #if QT_VERSION >= 0x050500
         EcdsaCertfpKeys,          ///< ECDSA keys for CertFP in identities
 #endif
+        LongMessageId,            ///< 64-bit IDs for messages
     };
     Q_ENUMS(Feature)
 

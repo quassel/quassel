@@ -18,42 +18,31 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "debugmessagemodelfilter.h"
+#include "peer.h"
+#include "types.h"
 
-#include "messagemodel.h"
+QDataStream &operator<<(QDataStream &out, const SignedId64 &signedId) {
+    Q_ASSERT(SignalProxy::current());
+    Q_ASSERT(SignalProxy::current()->targetPeer());
 
-DebugMessageModelFilter::DebugMessageModelFilter(QObject *parent)
-    : QSortFilterProxyModel(parent)
-{
-}
-
-
-QVariant DebugMessageModelFilter::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (orientation != Qt::Horizontal || role != Qt::DisplayRole)
-        return QVariant();
-
-    switch (section) {
-    case 0:
-        return "MessageId";
-    case 1:
-        return "Sender";
-    case 2:
-        return "Message";
-    default:
-        return QVariant();
+    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongMessageId)) {
+        out << signedId.toQint64();
+    } else {
+        out << (qint32) signedId.toQint64();
     }
+    return out;
 }
 
+QDataStream &operator>>(QDataStream &in, SignedId64 &signedId) {
+    Q_ASSERT(SignalProxy::current());
+    Q_ASSERT(SignalProxy::current()->sourcePeer());
 
-QVariant DebugMessageModelFilter::data(const QModelIndex &index, int role) const
-{
-    if (index.column() != 0 || role != Qt::DisplayRole)
-        return QSortFilterProxyModel::data(index, role);
-
-    if (!sourceModel())
-        return QVariant();
-
-    QModelIndex source_index = mapToSource(index);
-    return sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>().toQint64();
+    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongMessageId)) {
+        in >> signedId.id;
+    } else {
+        qint32 id;
+        in >> id;
+        signedId.id = id;
+    }
+    return in;
 }
