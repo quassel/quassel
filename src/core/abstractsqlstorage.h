@@ -153,7 +153,7 @@ public:
     };
 
     struct SenderMO {
-        int senderId;
+        qint64 senderId;
         QString sender;
         SenderMO() : senderId(0) {}
     };
@@ -173,7 +173,7 @@ public:
         bool autoAwayReasonEnabled;
         bool detachAwayEnabled;
         QString detachAwayReason;
-        bool detchAwayReasonEnabled;
+        bool detachAwayReasonEnabled;
         QString ident;
         QString kickReason;
         QString partReason;
@@ -230,9 +230,9 @@ public:
         QString buffername;
         QString buffercname;
         int buffertype;
-        int lastmsgid;
-        int lastseenmsgid;
-        int markerlinemsgid;
+        qint64 lastmsgid;
+        qint64 lastseenmsgid;
+        qint64 markerlinemsgid;
         int bufferactivity;
         QString key;
         bool joined;
@@ -244,7 +244,7 @@ public:
         BufferId bufferid;
         int type;
         int flags;
-        int senderid;
+        qint64 senderid;
         QString senderprefixes;
         QString message;
     };

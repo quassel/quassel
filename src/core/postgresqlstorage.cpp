@@ -1309,7 +1309,7 @@ void PostgreSqlStorage::setBufferLastSeenMsg(UserId user, const BufferId &buffer
 
     query.bindValue(":userid", user.toInt());
     query.bindValue(":bufferid", bufferId.toInt());
-    query.bindValue(":lastseenmsgid", msgId.toInt());
+    query.bindValue(":lastseenmsgid", msgId.toQint64());
     safeExec(query);
     watchQuery(query);
 }
@@ -1336,7 +1336,7 @@ QHash<BufferId, MsgId> PostgreSqlStorage::bufferLastSeenMsgIds(UserId user)
     }
 
     while (query.next()) {
-        lastSeenHash[query.value(0).toInt()] = query.value(1).toInt();
+        lastSeenHash[query.value(0).toInt()] = query.value(1).toLongLong();
     }
 
     db.commit();
@@ -1351,7 +1351,7 @@ void PostgreSqlStorage::setBufferMarkerLineMsg(UserId user, const BufferId &buff
 
     query.bindValue(":userid", user.toInt());
     query.bindValue(":bufferid", bufferId.toInt());
-    query.bindValue(":markerlinemsgid", msgId.toInt());
+    query.bindValue(":markerlinemsgid", msgId.toQint64());
     safeExec(query);
     watchQuery(query);
 }
@@ -1378,7 +1378,7 @@ QHash<BufferId, MsgId> PostgreSqlStorage::bufferMarkerLineMsgIds(UserId user)
     }
 
     while (query.next()) {
-        markerLineHash[query.value(0).toInt()] = query.value(1).toInt();
+        markerLineHash[query.value(0).toInt()] = query.value(1).toLongLong();
     }
 
     db.commit();
@@ -1431,7 +1431,7 @@ Message::Types PostgreSqlStorage::bufferActivity(BufferId bufferId, MsgId lastSe
     QSqlQuery query(logDb());
     query.prepare(queryString("select_buffer_bufferactivity"));
     query.bindValue(":bufferid", bufferId.toInt());
-    query.bindValue(":lastseenmsgid", lastSeenMsgId.toInt());
+    query.bindValue(":lastseenmsgid", lastSeenMsgId.toQint64());
     safeExec(query);
     watchQuery(query);
     Message::Types result = Message::Types(0);
@@ -1450,9 +1450,9 @@ bool PostgreSqlStorage::logMessage(Message &msg)
     }
 
     QSqlQuery getSenderIdQuery = executePreparedQuery("select_senderid", msg.sender(), db);
-    int senderId;
+    qint64 senderId;
     if (getSenderIdQuery.first()) {
-        senderId = getSenderIdQuery.value(0).toInt();
+        senderId = getSenderIdQuery.value(0).toLongLong();
     }
     else {
         // it's possible that the sender was already added by another thread
@@ -1465,12 +1465,12 @@ bool PostgreSqlStorage::logMessage(Message &msg)
             getSenderIdQuery = executePreparedQuery("select_senderid", msg.sender(), db);
             watchQuery(getSenderIdQuery);
             getSenderIdQuery.first();
-            senderId = getSenderIdQuery.value(0).toInt();
+            senderId = getSenderIdQuery.value(0).toLongLong();
         }
         else {
             releaseSavePoint("sender_sp1", db);
             addSenderQuery.first();
-            senderId = addSenderQuery.value(0).toInt();
+            senderId = addSenderQuery.value(0).toLongLong();
         }
     }
 
@@ -1490,7 +1490,7 @@ bool PostgreSqlStorage::logMessage(Message &msg)
     }
 
     logMessageQuery.first();
-    MsgId msgId = logMessageQuery.value(0).toInt();
+    MsgId msgId = logMessageQuery.value(0).toLongLong();
     db.commit();
     if (msgId.isValid()) {
         msg.setMsgId(msgId);
@@ -1512,7 +1512,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
     }
 
     QList<int> senderIdList;
-    QHash<QString, int> senderIds;
+    QHash<QString, qint64> senderIds;
     QSqlQuery addSenderQuery;
     QSqlQuery selectSenderQuery;;
     for (int i = 0; i < msgs.count(); i++) {
@@ -1525,7 +1525,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
         selectSenderQuery = executePreparedQuery("select_senderid", sender, db);
         if (selectSenderQuery.first()) {
             senderIdList << selectSenderQuery.value(0).toInt();
-            senderIds[sender] = selectSenderQuery.value(0).toInt();
+            senderIds[sender] = selectSenderQuery.value(0).toLongLong();
         }
         else {
             savePoint("sender_sp", db);
@@ -1537,13 +1537,13 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
                 watchQuery(selectSenderQuery);
                 selectSenderQuery.first();
                 senderIdList << selectSenderQuery.value(0).toInt();
-                senderIds[sender] = selectSenderQuery.value(0).toInt();
+                senderIds[sender] = selectSenderQuery.value(0).toLongLong();
             }
             else {
                 releaseSavePoint("sender_sp", db);
                 addSenderQuery.first();
                 senderIdList << addSenderQuery.value(0).toInt();
-                senderIds[sender] = addSenderQuery.value(0).toInt();
+                senderIds[sender] = addSenderQuery.value(0).toLongLong();
             }
         }
     }
@@ -1568,7 +1568,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
         }
         else {
             logMessageQuery.first();
-            msg.setMsgId(logMessageQuery.value(0).toInt());
+            msg.setMsgId(logMessageQuery.value(0).toLongLong());
         }
     }
 
@@ -1609,12 +1609,12 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
     }
     else if (last == -1) {
         queryName = "select_messagesNewerThan";
-        params << first.toInt();
+        params << first.toQint64();
     }
     else {
         queryName = "select_messagesRange";
-        params << first.toInt();
-        params << last.toInt();
+        params << first.toQint64();
+        params << last.toQint64();
     }
     params << bufferId.toInt();
     if (limit != -1)
@@ -1641,7 +1641,7 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
             query.value(4).toString(),
             query.value(5).toString(),
             (Message::Flags)query.value(3).toUInt());
-        msg.setMsgId(query.value(0).toInt());
+        msg.setMsgId(query.value(0).toLongLong());
         messagelist << msg;
     }
 
@@ -1673,10 +1673,10 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
     }
     else {
         query.prepare(queryString("select_messagesAll"));
-        query.bindValue(":lastmsg", last.toInt());
+        query.bindValue(":lastmsg", last.toQint64());
     }
     query.bindValue(":userid", user.toInt());
-    query.bindValue(":firstmsg", first.toInt());
+    query.bindValue(":firstmsg", first.toQint64());
     safeExec(query);
     if (!watchQuery(query)) {
         db.rollback();
@@ -1694,7 +1694,7 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
             query.value(5).toString(),
             query.value(6).toString(),
             (Message::Flags)query.value(4).toUInt());
-        msg.setMsgId(query.value(0).toInt());
+        msg.setMsgId(query.value(0).toLongLong());
         messagelist << msg;
     }
 
@@ -1959,7 +1959,7 @@ bool PostgreSqlMigrationWriter::writeMo(const IdentityMO &identity)
     bindValue(11, identity.autoAwayReasonEnabled);
     bindValue(12, identity.detachAwayEnabled);
     bindValue(13, identity.detachAwayReason);
-    bindValue(14, identity.detchAwayReasonEnabled);
+    bindValue(14, identity.detachAwayReasonEnabled);
     bindValue(15, identity.ident);
     bindValue(16, identity.kickReason);
     bindValue(17, identity.partReason);
@@ -2043,7 +2043,7 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer)
 //bool PostgreSqlMigrationWriter::writeBacklog(const BacklogMO &backlog) {
 bool PostgreSqlMigrationWriter::writeMo(const BacklogMO &backlog)
 {
-    bindValue(0, backlog.messageid.toInt());
+    bindValue(0, backlog.messageid.toQint64());
     bindValue(1, backlog.time);
     bindValue(2, backlog.bufferid.toInt());
     bindValue(3, backlog.type);

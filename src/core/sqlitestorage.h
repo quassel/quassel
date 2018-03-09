@@ -159,7 +159,7 @@ protected:
 
 private:
     void setMaxId(MigrationObject mo);
-    int _maxId;
+    qint64 _maxId;
 };
 
 

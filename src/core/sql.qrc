@@ -109,6 +109,8 @@
     <file>./SQL/PostgreSQL/version/22/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
     <file>./SQL/PostgreSQL/version/23/upgrade_000_create_senderprefixes.sql</file>
     <file>./SQL/PostgreSQL/version/24/upgrade_000_alter_buffer_add_bufferactivity.sql</file>
+    <file>./SQL/PostgreSQL/version/25/upgrade_010_alter_sender_64bit_ids.sql</file>
+    <file>./SQL/PostgreSQL/version/25/upgrade_060_alter_backlog_64bit_ids.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>

@@ -38,6 +38,7 @@ set(SOURCES
     syncableobject.cpp
     transfer.cpp
     transfermanager.cpp
+    types.cpp
     util.cpp
 
     serializers/serializers.cpp
