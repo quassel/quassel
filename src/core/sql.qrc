@@ -134,6 +134,9 @@
     <file>./SQL/PostgreSQL/version/27/upgrade_020_update_sender_add_new_constraint.sql</file>
     <file>./SQL/PostgreSQL/version/27/upgrade_030_upgrade_sender_drop_old_constraint.sql</file>
     <file>./SQL/PostgreSQL/version/28/upgrade_000_create_corestate.sql</file>
+    <file>./SQL/PostgreSQL/version/29/upgrade_010_alter_sender_64bit_ids.sql</file>
+    <file>./SQL/PostgreSQL/version/29/upgrade_050_alter_buffer_64bit_ids.sql</file>
+    <file>./SQL/PostgreSQL/version/29/upgrade_060_alter_backlog_64bit_ids.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>

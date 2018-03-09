@@ -6,9 +6,9 @@ create TABLE buffer (
 	buffername varchar(128) NOT NULL,
 	buffercname varchar(128) NOT NULL, -- CANONICAL BUFFER NAME (lowercase version)
 	buffertype integer NOT NULL DEFAULT 0,
-	lastmsgid integer NOT NULL DEFAULT 0,
-	lastseenmsgid integer NOT NULL DEFAULT 0,
-	markerlinemsgid integer NOT NULL DEFAULT 0,
+	lastmsgid bigint NOT NULL DEFAULT 0,
+	lastseenmsgid bigint NOT NULL DEFAULT 0,
+	markerlinemsgid bigint NOT NULL DEFAULT 0,
 	bufferactivity integer NOT NULL DEFAULT 0,
 	highlightcount integer NOT NULL DEFAULT 0,
 	key varchar(128),
