@@ -34,6 +34,10 @@
 #include "qtui.h"
 #include "qtuisettings.h"
 
+#ifdef Q_OS_MAC
+#include "cocoahelper.h"
+#endif
+
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE4
     : KApplication(),  // KApplication is deprecated in KF5
@@ -176,6 +180,11 @@ bool QtUiApplication::init()
         // init gui only after the event loop has started
         // QTimer::singleShot(0, gui, SLOT(init()));
         gui->init();
+
+#ifdef Q_OS_MAC
+        CocoaHelper::configure();
+#endif
+
         resumeSessionIfPossible();
         return true;
     }

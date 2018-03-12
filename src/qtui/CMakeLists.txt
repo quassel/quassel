@@ -168,10 +168,15 @@ if (INDICATEQT_FOUND)
     list(APPEND LIBS ${INDICATEQT_LIBRARIES})
 endif()
 
+if (APPLE)
+    list(APPEND SOURCES cocoahelper.mm)
+    list(APPEND LIBS "/System/Library/Frameworks/Cocoa.framework"
+                     "/System/Library/Frameworks/Foundation.framework")
+endif()
+
 if (WITH_NOTIFICATION_CENTER)
     add_definitions(-DHAVE_NOTIFICATION_CENTER)
     list(APPEND SOURCES osxnotificationbackend.mm)
-    list(APPEND LIBS "/System/Library/Frameworks/Foundation.framework")
 endif()
 
 if (KF5Sonnet_FOUND)

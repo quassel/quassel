@@ -212,6 +212,10 @@ private:
 
     QAction *_fullScreenAction;
     QMenu *_fileMenu, *_networksMenu, *_viewMenu, *_bufferViewsMenu, *_settingsMenu, *_helpMenu, *_helpDebugMenu;
+#ifdef Q_OS_MAC
+    QMenu *_editMenu;
+#endif
+
     QMenu *_toolbarMenu;
     QToolBar *_mainToolBar, *_chatViewToolBar, *_nickToolBar;
 

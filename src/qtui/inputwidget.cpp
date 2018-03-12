@@ -31,6 +31,7 @@
 #include "qtui.h"
 #include "qtuisettings.h"
 #include "tabcompleter.h"
+#include "uistyle.h"
 #include <QPainter>
 
 const int leftMargin = 3;
@@ -492,7 +493,8 @@ void InputWidget::changeNick(const QString &newNick) const
 
 void InputWidget::onTextEntered(const QString &text)
 {
-    Client::userInput(currentBufferInfo(), text);
+    QString output = UiStyle::makeIrcReadable(text);
+    Client::userInput(currentBufferInfo(), output);
     ui.boldButton->setChecked(false);
     ui.underlineButton->setChecked(false);
     ui.italicButton->setChecked(false);
