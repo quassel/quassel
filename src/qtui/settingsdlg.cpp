@@ -81,7 +81,9 @@ void SettingsDlg::setItemState(QTreeWidgetItem *item)
 {
     SettingsPage *sp = qobject_cast<SettingsPage *>(item->data(0, SettingsPageRole).value<QObject *>());
     Q_ASSERT(sp);
-    item->setDisabled(!Client::isConnected() && sp->needsCoreConnection());
+    bool disabledDueToConnection = !Client::isConnected() && sp->needsCoreConnection();
+    bool disabledDueToOwnChoice = !sp->isSelectable();
+    item->setDisabled(disabledDueToConnection || disabledDueToOwnChoice);
 }
 
 

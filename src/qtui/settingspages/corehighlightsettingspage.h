@@ -37,6 +37,8 @@ public:
 
     bool hasDefaults() const override;
 
+    bool isSelectable() const override;
+
 public slots:
     void save() override;
     void load() override;
@@ -45,6 +47,7 @@ public slots:
     void clientConnected();
 
 private slots:
+    void coreConnectionStateChanged(bool state);
     void widgetHasChanged();
     void addNewHighlightRow(bool enable = true, const QString &name = tr("highlight rule"), bool regex = false,
                             bool cs = false, const QString &sender = "", const QString &chanName = "",
@@ -78,6 +81,8 @@ private:
     void emptyIgnoredTable();
 
     void setupRuleTable(QTableWidget *highlightTable) const;
+
+    void importRules();
 
     bool _initialized;
 };
