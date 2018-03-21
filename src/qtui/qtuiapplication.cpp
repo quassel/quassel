@@ -36,12 +36,10 @@
 
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE4
-    : KApplication(),  // KApplication is deprecated in KF5
+    : KApplication()  // KApplication is deprecated in KF5
 #else
-    : QApplication(argc, argv),
+    : QApplication(argc, argv)
 #endif
-    Quassel(),
-    _aboutToQuit(false)
 {
 #ifdef HAVE_KDE4
     Q_UNUSED(argc); Q_UNUSED(argv);
@@ -74,18 +72,19 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
     }
 
     dataDirs.removeDuplicates();
-    setDataDirPaths(dataDirs);
+    Quassel::setDataDirPaths(dataDirs);
 
 #else /* HAVE_KDE4 */
 
-    setDataDirPaths(findDataDirPaths());
+    Quassel::setDataDirPaths(Quassel::findDataDirPaths());
 
 #endif /* HAVE_KDE4 */
 
 #if defined(HAVE_KDE4) || defined(Q_OS_MAC)
-    disableCrashhandler();
+    Quassel::disableCrashHandler();
 #endif /* HAVE_KDE4 || Q_OS_MAC */
-    setRunMode(Quassel::ClientOnly);
+
+    Quassel::setRunMode(Quassel::ClientOnly);
 
 #if QT_VERSION < 0x050000
     qInstallMsgHandler(Client::logMessage);
@@ -170,13 +169,17 @@ bool QtUiApplication::init()
             // Some platforms don't set a default icon theme; chances are we can find our bundled theme though
             QIcon::setThemeName("breeze");
 
-        // session resume
-        QtUi *gui = new QtUi();
-        Client::init(gui);
-        // init gui only after the event loop has started
-        // QTimer::singleShot(0, gui, SLOT(init()));
-        gui->init();
-        resumeSessionIfPossible();
+        Client::init(new QtUi());
+
+        // Init UI only after the event loop has started
+        // TODO Qt5: Make this a lambda
+        QTimer::singleShot(0, this, SLOT(initUi()));
+
+        Quassel::registerQuitHandler([]() {
+            QtUi::mainWindow()->quit();
+        });
+
+
         return true;
     }
     return false;
@@ -189,9 +192,10 @@ QtUiApplication::~QtUiApplication()
 }
 
 
-void QtUiApplication::quit()
+void QtUiApplication::initUi()
 {
-    QtUi::mainWindow()->quit();
+    QtUi::instance()->init();
+    resumeSessionIfPossible();
 }
 
 

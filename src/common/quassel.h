@@ -18,8 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef QUASSEL_H_
-#define QUASSEL_H_
+#pragma once
+
+#include <functional>
+#include <memory>
+#include <vector>
 
 #include <QCoreApplication>
 #include <QLocale>
@@ -91,11 +94,11 @@ public:
      */
     static Features features();
 
-    virtual ~Quassel();
+    static Quassel *instance();
 
     static void setupBuildInfo();
-    static inline const BuildInfo &buildInfo();
-    static inline RunMode runMode();
+    static const BuildInfo &buildInfo();
+    static RunMode runMode();
 
     static QString configDirPath();
 
@@ -125,14 +128,9 @@ public:
 
     static void loadTranslation(const QLocale &locale);
 
-    static inline void setCliParser(AbstractCliParser *cliParser);
-    static inline AbstractCliParser *cliParser();
-    static inline QString optionValue(const QString &option);
-    static inline bool isOptionSet(const QString &option);
-
-    static const QString &coreDumpFileName();
-
-    static bool DEBUG;
+    static void setCliParser(std::shared_ptr<AbstractCliParser> cliParser);
+    static QString optionValue(const QString &option);
+    static bool isOptionSet(const QString &option);
 
     enum LogLevel {
         DebugLevel,
@@ -141,72 +139,83 @@ public:
         ErrorLevel
     };
 
-    static inline LogLevel logLevel();
-    static inline QFile *logFile();
-    static inline bool logToSyslog();
+    static LogLevel logLevel();
+    static void setLogLevel(LogLevel logLevel);
+    static QFile *logFile();
+    static bool logToSyslog();
 
     static void logFatalMessage(const char *msg);
 
+    using ReloadHandler = std::function<bool()>;
+
+    static void registerReloadHandler(ReloadHandler handler);
+
+    using QuitHandler = std::function<void()>;
+
+    static void registerQuitHandler(QuitHandler quitHandler);
+
 protected:
+    static bool init();
+    static void destroy();
+
+    static void setRunMode(Quassel::RunMode runMode);
+
+    static void setDataDirPaths(const QStringList &paths);
+    static QStringList findDataDirPaths();
+    static void disableCrashHandler();
+
+    friend class CoreApplication;
+    friend class QtUiApplication;
+    friend class MonolithicApplication;
+
+private:
     Quassel();
-    virtual bool init();
-    virtual void quit();
+    void setupEnvironment();
+    void registerMetaTypes();
+
+    const QString &coreDumpFileName();
 
     /**
      * Requests a reload of relevant runtime configuration.
      *
-     * Does not reload all configuration, but could catch things such as SSL certificates.  Unless
-     * overridden, simply does nothing.
+     * Calls any registered reload handlers, and returns the cumulative result. If no handlers are registered,
+     * does nothing and returns true.
      *
-     * @return True if configuration reload successful, otherwise false
+     * @returns True if configuration reload successful, otherwise false
      */
-    virtual bool reloadConfig() { return true; }
+    bool reloadConfig();
 
-    inline void setRunMode(RunMode mode);
-    inline void setDataDirPaths(const QStringList &paths);
-    QStringList findDataDirPaths() const;
-    inline void disableCrashhandler();
+    /**
+     * Requests to quit the application.
+     *
+     * Calls any registered quit handlers. If no handlers are registered, calls QCoreApplication::quit().
+     */
+    void quit();
 
-private:
-    void setupEnvironment();
-    void registerMetaTypes();
+    void logBacktrace(const QString &filename);
 
     static void handleSignal(int signal);
-    static void logBacktrace(const QString &filename);
 
-    static Quassel *_instance;
-    static BuildInfo _buildInfo;
-    static AbstractCliParser *_cliParser;
-    static RunMode _runMode;
-    static bool _initialized;
-    static bool _handleCrashes;
+private:
+    BuildInfo _buildInfo;
+    RunMode _runMode;
+    bool _initialized{false};
+    bool _handleCrashes{true};
 
-    static QString _coreDumpFileName;
-    static QString _configDirPath;
-    static QStringList _dataDirPaths;
-    static QString _translationDirPath;
+    QString _coreDumpFileName;
+    QString _configDirPath;
+    QStringList _dataDirPaths;
+    QString _translationDirPath;
 
-    static LogLevel _logLevel;
-    static QFile *_logFile;
-    static bool _logToSyslog;
+    LogLevel _logLevel{InfoLevel};
+    bool _logToSyslog{false};
+    std::unique_ptr<QFile> _logFile;
+
+    std::shared_ptr<AbstractCliParser> _cliParser;
+
+    std::vector<ReloadHandler> _reloadHandlers;
+    std::vector<QuitHandler> _quitHandlers;
 };
 
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Quassel::Features);
-
-const Quassel::BuildInfo &Quassel::buildInfo() { return _buildInfo; }
-Quassel::RunMode Quassel::runMode() { return _runMode; }
-void Quassel::setRunMode(Quassel::RunMode mode) { _runMode = mode; }
-void Quassel::setDataDirPaths(const QStringList &paths) { _dataDirPaths = paths; }
-void Quassel::disableCrashhandler() { _handleCrashes = false; }
-
-void Quassel::setCliParser(AbstractCliParser *parser) { _cliParser = parser; }
-AbstractCliParser *Quassel::cliParser() { return _cliParser; }
-QString Quassel::optionValue(const QString &key) { return cliParser()->value(key); }
-bool Quassel::isOptionSet(const QString &key) { return cliParser()->isSet(key); }
-
-Quassel::LogLevel Quassel::logLevel() { return _logLevel; }
-QFile *Quassel::logFile() { return _logFile; }
-bool Quassel::logToSyslog() { return _logToSyslog; }
-
-#endif

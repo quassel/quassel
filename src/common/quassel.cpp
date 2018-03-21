@@ -50,26 +50,15 @@
 
 #include "../../version.h"
 
-Quassel::BuildInfo Quassel::_buildInfo;
-AbstractCliParser *Quassel::_cliParser = 0;
-Quassel::RunMode Quassel::_runMode;
-QString Quassel::_configDirPath;
-QString Quassel::_translationDirPath;
-QStringList Quassel::_dataDirPaths;
-bool Quassel::_initialized = false;
-bool Quassel::DEBUG = false;
-QString Quassel::_coreDumpFileName;
-Quassel *Quassel::_instance = 0;
-bool Quassel::_handleCrashes = true;
-Quassel::LogLevel Quassel::_logLevel = InfoLevel;
-QFile *Quassel::_logFile = 0;
-bool Quassel::_logToSyslog = false;
+Quassel *Quassel::instance()
+{
+    static Quassel instance;
+    return &instance;
+}
+
 
 Quassel::Quassel()
 {
-    Q_ASSERT(!_instance);
-    _instance = this;
-
     // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
     signal(SIGTERM, handleSignal);
     signal(SIGINT, handleSignal);
@@ -81,22 +70,12 @@ Quassel::Quassel()
 }
 
 
-Quassel::~Quassel()
-{
-    if (logFile()) {
-        logFile()->close();
-        logFile()->deleteLater();
-    }
-    delete _cliParser;
-}
-
-
 bool Quassel::init()
 {
-    if (_initialized)
+    if (instance()->_initialized)
         return true;  // allow multiple invocations because of MonolithicApplication
 
-    if (_handleCrashes) {
+    if (instance()->_handleCrashes) {
         // we have crashhandler for win32 and unix (based on execinfo).
 #if defined(Q_OS_WIN) || defined(HAVE_EXECINFO)
 # ifndef Q_OS_WIN
@@ -116,18 +95,18 @@ bool Quassel::init()
 #endif /* Q_OS_WIN || HAVE_EXECINFO */
     }
 
-    _initialized = true;
+    instance()->_initialized = true;
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
-    setupEnvironment();
-    registerMetaTypes();
+    instance()->setupEnvironment();
+    instance()->registerMetaTypes();
 
     Network::setDefaultCodecForServer("ISO-8859-1");
     Network::setDefaultCodecForEncoding("UTF-8");
     Network::setDefaultCodecForDecoding("ISO-8859-15");
 
     if (isOptionSet("help")) {
-        cliParser()->usage();
+        instance()->_cliParser->usage();
         return false;
     }
 
@@ -136,30 +115,35 @@ bool Quassel::init()
         return false;
     }
 
-    DEBUG = isOptionSet("debug");
-
     // set up logging
     if (Quassel::runMode() != Quassel::ClientOnly) {
         if (isOptionSet("loglevel")) {
             QString level = optionValue("loglevel");
 
-            if (level == "Debug") _logLevel = DebugLevel;
-            else if (level == "Info") _logLevel = InfoLevel;
-            else if (level == "Warning") _logLevel = WarningLevel;
-            else if (level == "Error") _logLevel = ErrorLevel;
+            if (level == "Debug")
+                setLogLevel(DebugLevel);
+            else if (level == "Info")
+                setLogLevel(InfoLevel);
+            else if (level == "Warning")
+                setLogLevel(WarningLevel);
+            else if (level == "Error")
+                setLogLevel(ErrorLevel);
+            else {
+                qWarning() << qPrintable(tr("Invalid log level %1; supported are Debug|Info|Warning|Error").arg(level));
+                return false;
+            }
         }
 
         QString logfilename = optionValue("logfile");
         if (!logfilename.isEmpty()) {
-            _logFile = new QFile(logfilename);
-            if (!_logFile->open(QIODevice::Append | QIODevice::Text)) {
-                qWarning() << "Could not open log file" << logfilename << ":" << _logFile->errorString();
-                _logFile->deleteLater();
-                _logFile = 0;
+            instance()->_logFile.reset(new QFile{logfilename});
+            if (!logFile()->open(QIODevice::Append | QIODevice::Text)) {
+                qWarning() << "Could not open log file" << logfilename << ":" << logFile()->errorString();
+                instance()->_logFile.reset();
             }
         }
 #ifdef HAVE_SYSLOG
-        _logToSyslog = isOptionSet("syslog");
+        instance()->_logToSyslog = isOptionSet("syslog");
 #endif
     }
 
@@ -167,9 +151,46 @@ bool Quassel::init()
 }
 
 
+void Quassel::destroy()
+{
+    if (logFile()) {
+        logFile()->close();
+        instance()->_logFile.reset();
+    }
+}
+
+
+void Quassel::registerQuitHandler(QuitHandler handler)
+{
+    instance()->_quitHandlers.emplace_back(std::move(handler));
+}
+
 void Quassel::quit()
 {
-    QCoreApplication::quit();
+    if (_quitHandlers.empty()) {
+        QCoreApplication::quit();
+    }
+    else {
+        for (auto &&handler : _quitHandlers) {
+            handler();
+        }
+    }
+}
+
+
+void Quassel::registerReloadHandler(ReloadHandler handler)
+{
+    instance()->_reloadHandlers.emplace_back(std::move(handler));
+}
+
+
+bool Quassel::reloadConfig()
+{
+    bool result{true};
+    for (auto &&handler : _reloadHandlers) {
+        result = result && handler();
+    }
+    return result;
 }
 
 
@@ -256,64 +277,73 @@ void Quassel::setupEnvironment()
 
 void Quassel::setupBuildInfo()
 {
-    _buildInfo.applicationName = "quassel";
-    _buildInfo.coreApplicationName = "quasselcore";
-    _buildInfo.clientApplicationName = "quasselclient";
-    _buildInfo.organizationName = "Quassel Project";
-    _buildInfo.organizationDomain = "quassel-irc.org";
+    BuildInfo buildInfo;
+    buildInfo.applicationName = "quassel";
+    buildInfo.coreApplicationName = "quasselcore";
+    buildInfo.clientApplicationName = "quasselclient";
+    buildInfo.organizationName = "Quassel Project";
+    buildInfo.organizationDomain = "quassel-irc.org";
 
-    _buildInfo.protocolVersion = 10; // FIXME: deprecated, will be removed
+    buildInfo.protocolVersion = 10; // FIXME: deprecated, will be removed
 
-    _buildInfo.baseVersion = QUASSEL_VERSION_STRING;
-    _buildInfo.generatedVersion = GIT_DESCRIBE;
+    buildInfo.baseVersion = QUASSEL_VERSION_STRING;
+    buildInfo.generatedVersion = GIT_DESCRIBE;
 
     // Check if we got a commit hash
     if (!QString(GIT_HEAD).isEmpty()) {
-        _buildInfo.commitHash = GIT_HEAD;
+        buildInfo.commitHash = GIT_HEAD;
         QDateTime date;
         date.setTime_t(GIT_COMMIT_DATE);
-        _buildInfo.commitDate = date.toString();
+        buildInfo.commitDate = date.toString();
     }
     else if (!QString(DIST_HASH).contains("Format")) {
-        _buildInfo.commitHash = DIST_HASH;
-        _buildInfo.commitDate = QString(DIST_DATE);
+        buildInfo.commitHash = DIST_HASH;
+        buildInfo.commitDate = QString(DIST_DATE);
     }
 
     // create a nice version string
-    if (_buildInfo.generatedVersion.isEmpty()) {
-        if (!_buildInfo.commitHash.isEmpty()) {
+    if (buildInfo.generatedVersion.isEmpty()) {
+        if (!buildInfo.commitHash.isEmpty()) {
             // dist version
-            _buildInfo.plainVersionString = QString("v%1 (dist-%2)")
-                                            .arg(_buildInfo.baseVersion)
-                                            .arg(_buildInfo.commitHash.left(7));
-            _buildInfo.fancyVersionString = QString("v%1 (dist-<a href=\"https://github.com/quassel/quassel/commit/%3\">%2</a>)")
-                                            .arg(_buildInfo.baseVersion)
-                                            .arg(_buildInfo.commitHash.left(7))
-                                            .arg(_buildInfo.commitHash);
+            buildInfo.plainVersionString = QString{"v%1 (dist-%2)"}
+                                               .arg(buildInfo.baseVersion)
+                                               .arg(buildInfo.commitHash.left(7));
+            buildInfo.fancyVersionString = QString{"v%1 (dist-<a href=\"https://github.com/quassel/quassel/commit/%3\">%2</a>)"}
+                                               .arg(buildInfo.baseVersion)
+                                               .arg(buildInfo.commitHash.left(7))
+                                               .arg(buildInfo.commitHash);
         }
         else {
             // we only have a base version :(
-            _buildInfo.plainVersionString = QString("v%1 (unknown revision)").arg(_buildInfo.baseVersion);
+            buildInfo.plainVersionString = QString{"v%1 (unknown revision)"}.arg(buildInfo.baseVersion);
         }
     }
     else {
         // analyze what we got from git-describe
-        QRegExp rx("(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$");
-        if (rx.exactMatch(_buildInfo.generatedVersion)) {
-            QString distance = rx.cap(2) == "0" ? QString() : QString("%1+%2 ").arg(rx.cap(1), rx.cap(2));
-            _buildInfo.plainVersionString = QString("v%1 (%2git-%3%4)")
-                                            .arg(_buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));
-            if (!_buildInfo.commitHash.isEmpty()) {
-                _buildInfo.fancyVersionString = QString("v%1 (%2git-<a href=\"https://github.com/quassel/quassel/commit/%5\">%3</a>%4)")
-                                                .arg(_buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4), _buildInfo.commitHash);
+        static const QRegExp rx{"(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$"};
+        if (rx.exactMatch(buildInfo.generatedVersion)) {
+            QString distance = rx.cap(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(rx.cap(1), rx.cap(2));
+            buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}.arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));
+            if (!buildInfo.commitHash.isEmpty()) {
+                buildInfo.fancyVersionString = QString{"v%1 (%2git-<a href=\"https://github.com/quassel/quassel/commit/%5\">%3</a>%4)"}
+                                                   .arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4), buildInfo.commitHash);
             }
         }
         else {
-            _buildInfo.plainVersionString = QString("v%1 (invalid revision)").arg(_buildInfo.baseVersion);
+            buildInfo.plainVersionString = QString{"v%1 (invalid revision)"}.arg(buildInfo.baseVersion);
         }
     }
-    if (_buildInfo.fancyVersionString.isEmpty())
-        _buildInfo.fancyVersionString = _buildInfo.plainVersionString;
+    if (buildInfo.fancyVersionString.isEmpty()) {
+        buildInfo.fancyVersionString = buildInfo.plainVersionString;
+    }
+
+    instance()->_buildInfo = std::move(buildInfo);
+}
+
+
+const Quassel::BuildInfo &Quassel::buildInfo()
+{
+    return instance()->_buildInfo;
 }
 
 
@@ -324,22 +354,16 @@ void Quassel::handleSignal(int sig)
     case SIGTERM:
     case SIGINT:
         qWarning("%s", qPrintable(QString("Caught signal %1 - exiting.").arg(sig)));
-        if (_instance)
-            _instance->quit();
-        else
-            QCoreApplication::quit();
+        instance()->quit();
         break;
 #ifndef Q_OS_WIN
 // Windows does not support SIGHUP
     case SIGHUP:
         // Most applications use this as the 'configuration reload' command, e.g. nginx uses it for
         // graceful reloading of processes.
-        if (_instance) {
-            // If the instance exists, reload the configuration
-            quInfo() << "Caught signal" << SIGHUP <<"- reloading configuration";
-            if (_instance->reloadConfig()) {
-                quInfo() << "Successfully reloaded configuration";
-            }
+        quInfo() << "Caught signal" << SIGHUP << "- reloading configuration";
+        if (instance()->reloadConfig()) {
+            quInfo() << "Successfully reloaded configuration";
         }
         break;
 #endif
@@ -348,12 +372,69 @@ void Quassel::handleSignal(int sig)
 #ifndef Q_OS_WIN
     case SIGBUS:
 #endif
-        logBacktrace(coreDumpFileName());
+        instance()->logBacktrace(instance()->coreDumpFileName());
         exit(EXIT_FAILURE);
-        break;
     default:
-        break;
+        ;
     }
+}
+
+
+void Quassel::disableCrashHandler()
+{
+    instance()->_handleCrashes = false;
+}
+
+
+Quassel::RunMode Quassel::runMode() {
+    return instance()->_runMode;
+}
+
+
+void Quassel::setRunMode(RunMode runMode)
+{
+    instance()->_runMode = runMode;
+}
+
+
+void Quassel::setCliParser(std::shared_ptr<AbstractCliParser> parser)
+{
+    instance()->_cliParser = std::move(parser);
+}
+
+
+QString Quassel::optionValue(const QString &key)
+{
+    return instance()->_cliParser ? instance()->_cliParser->value(key) : QString{};
+}
+
+
+bool Quassel::isOptionSet(const QString &key)
+{
+    return instance()->_cliParser ? instance()->_cliParser->isSet(key) : false;
+}
+
+
+Quassel::LogLevel Quassel::logLevel()
+{
+    return instance()->_logLevel;
+}
+
+
+void Quassel::setLogLevel(LogLevel logLevel)
+{
+    instance()->_logLevel = logLevel;
+}
+
+
+QFile *Quassel::logFile() {
+    return instance()->_logFile.get();
+}
+
+
+bool Quassel::logToSyslog()
+{
+    return instance()->_logToSyslog;
 }
 
 
@@ -362,7 +443,7 @@ void Quassel::logFatalMessage(const char *msg)
 #ifdef Q_OS_MAC
     Q_UNUSED(msg)
 #else
-    QFile dumpFile(coreDumpFileName());
+    QFile dumpFile(instance()->coreDumpFileName());
     dumpFile.open(QIODevice::Append);
     QTextStream dumpStream(&dumpFile);
 
@@ -405,20 +486,21 @@ const QString &Quassel::coreDumpFileName()
 
 QString Quassel::configDirPath()
 {
-    if (!_configDirPath.isEmpty())
-        return _configDirPath;
+    if (!instance()->_configDirPath.isEmpty())
+        return instance()->_configDirPath;
 
-    if (Quassel::isOptionSet("datadir")) {
+    QString path;
+    if (isOptionSet("datadir")) {
         qWarning() << "Obsolete option --datadir used!";
-        _configDirPath = Quassel::optionValue("datadir");
+        path = Quassel::optionValue("datadir");
     }
-    else if (Quassel::isOptionSet("configdir")) {
-        _configDirPath = Quassel::optionValue("configdir");
+    else if (isOptionSet("configdir")) {
+        path = Quassel::optionValue("configdir");
     }
     else {
 #ifdef Q_OS_MAC
         // On Mac, the path is always the same
-        _configDirPath = QDir::homePath() + "/Library/Application Support/Quassel/";
+        path = QDir::homePath() + "/Library/Application Support/Quassel/";
 #else
         // We abuse QSettings to find us a sensible path on the other platforms
 #  ifdef Q_OS_WIN
@@ -429,33 +511,41 @@ QString Quassel::configDirPath()
 #  endif
         QSettings s(format, QSettings::UserScope, QCoreApplication::organizationDomain(), buildInfo().applicationName);
         QFileInfo fileInfo(s.fileName());
-        _configDirPath = fileInfo.dir().absolutePath();
+        path = fileInfo.dir().absolutePath();
 #endif /* Q_OS_MAC */
     }
 
-    if (!_configDirPath.endsWith(QDir::separator()) && !_configDirPath.endsWith('/'))
-        _configDirPath += QDir::separator();
+    if (!path.endsWith(QDir::separator()) && !path.endsWith('/'))
+        path += QDir::separator();
 
-    QDir qDir(_configDirPath);
-    if (!qDir.exists(_configDirPath)) {
-        if (!qDir.mkpath(_configDirPath)) {
+    QDir qDir{path};
+    if (!qDir.exists(path)) {
+        if (!qDir.mkpath(path)) {
             qCritical() << "Unable to create Quassel config directory:" << qPrintable(qDir.absolutePath());
-            return QString();
+            return {};
         }
     }
 
-    return _configDirPath;
+    instance()->_configDirPath = path;
+
+    return path;
+}
+
+
+void Quassel::setDataDirPaths(const QStringList &paths) {
+    instance()->_dataDirPaths = paths;
 }
 
 
 QStringList Quassel::dataDirPaths()
 {
-    return _dataDirPaths;
+    return instance()->_dataDirPaths;
 }
 
 
-QStringList Quassel::findDataDirPaths() const
+QStringList Quassel::findDataDirPaths()
 {
+    // TODO Qt5
     // We don't use QStandardPaths for now, as we still need to provide fallbacks for Qt4 and
     // want to stay consistent.
 
@@ -538,19 +628,19 @@ QStringList Quassel::scriptDirPaths()
 
 QString Quassel::translationDirPath()
 {
-    if (_translationDirPath.isEmpty()) {
+    if (instance()->_translationDirPath.isEmpty()) {
         // We support only one translation dir; fallback mechanisms wouldn't work else.
         // This means that if we have a $data/translations dir, the internal :/i18n resource won't be considered.
         foreach(const QString &dir, dataDirPaths()) {
             if (QFile::exists(dir + "translations/")) {
-                _translationDirPath = dir + "translations/";
+                instance()->_translationDirPath = dir + "translations/";
                 break;
             }
         }
-        if (_translationDirPath.isEmpty())
-            _translationDirPath = ":/i18n/";
+        if (instance()->_translationDirPath.isEmpty())
+            instance()->_translationDirPath = ":/i18n/";
     }
-    return _translationDirPath;
+    return instance()->_translationDirPath;
 }
 
 

@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef QTUIAPPLICATION_H_
-#define QTUIAPPLICATION_H_
+#pragma once
 
 #ifdef HAVE_KDE4
 #  include <KApplication>
@@ -36,10 +35,10 @@
 class QtUi;
 
 #ifdef HAVE_KDE4
-class QtUiApplication : public KApplication, public Quassel
+class QtUiApplication : public KApplication
 {
 #else
-class QtUiApplication : public QApplication, public Quassel
+class QtUiApplication : public QApplication
 {
 #endif
 
@@ -60,9 +59,6 @@ public:
     void commitData(QSessionManager &manager);
     void saveState(QSessionManager &manager);
 #endif
-
-protected:
-    virtual void quit();
 
 private:
     /**
@@ -87,8 +83,11 @@ private:
      */
     bool applySettingsMigration(QtUiSettings settings, const uint newVersion);
 
-    bool _aboutToQuit;
+private slots:
+    void initUi();
+
+private:
+    bool _aboutToQuit{false};
+
+    Quassel _quasselInstance;
 };
-
-
-#endif
