@@ -60,7 +60,7 @@ QDataStream &operator<<(QDataStream &out, const Message &msg)
         << msg.bufferInfo()
         << msg.sender().toUtf8();
 
-    if (SignalProxy::current()->targetPeer()->features().testFlag(Quassel::Feature::SenderPrefixes))
+    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::SenderPrefixes))
         out << msg.senderPrefixes().toUtf8();
 
     out << msg.contents().toUtf8();
@@ -91,7 +91,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
     msg._sender = QString::fromUtf8(sender);
 
     QByteArray senderPrefixes;
-    if (SignalProxy::current()->sourcePeer()->features().testFlag(Quassel::Feature::SenderPrefixes))
+    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::SenderPrefixes))
         in >> senderPrefixes;
     msg._senderPrefixes = QString::fromUtf8(senderPrefixes);
 

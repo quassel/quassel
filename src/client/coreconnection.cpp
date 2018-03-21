@@ -184,6 +184,15 @@ void CoreConnection::onlineStateChanged(bool isOnline)
 }
 
 
+QPointer<Peer> CoreConnection::peer() const
+{
+    if (_peer) {
+        return _peer;
+    }
+    return _authHandler ? _authHandler->peer() : nullptr;
+}
+
+
 bool CoreConnection::isEncrypted() const
 {
     return _peer && _peer->isSecure();
@@ -463,9 +472,6 @@ void CoreConnection::onHandshakeComplete(RemotePeer *peer, const Protocol::Sessi
 void CoreConnection::internalSessionStateReceived(const Protocol::SessionState &sessionState)
 {
     updateProgress(100, 100);
-
-    Client::setCoreFeatures(Quassel::features()); // mono connection...
-
     setState(Synchronizing);
     syncToCore(sessionState);
 }

@@ -89,7 +89,7 @@
 #
 # Newer clients need to detect when they're on an older core to disable the
 # feature.  Use 'enum Feature' in 'quassel.h'.  In client-side code, test with
-# 'if (Client::coreFeatures() & Quassel::FeatureName) { ... }'
+# 'if (Client::isCoreFeatureEnabled(Quassel::Feature::FeatureName)) { ... }'
 #
 # 9.  Test everything!  Upgrade, migrate, new setups, new client/old core,
 # old client/new core, etc.

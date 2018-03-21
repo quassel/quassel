@@ -84,6 +84,7 @@ CoreApplication::CoreApplication(int &argc, char **argv)
 CoreApplication::~CoreApplication()
 {
     delete _internal;
+    Quassel::destroy();
 }
 
 

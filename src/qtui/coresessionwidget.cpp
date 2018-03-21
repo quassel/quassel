@@ -44,8 +44,8 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
     }
     ui.labelSecure->setText(map["secure"].toBool() ? tr("Yes") : tr("No"));
 
-    auto features = Quassel::Features(map["features"].toInt());
-    ui.disconnectButton->setVisible(features.testFlag(Quassel::Feature::RemoteDisconnect));
+    auto features = Quassel::Features{map["featureList"].toStringList(), static_cast<Quassel::LegacyFeatures>(map["features"].toUInt())};
+    ui.disconnectButton->setVisible(features.isEnabled(Quassel::Feature::RemoteDisconnect));
 
     bool success = false;
     _peerId = map["id"].toInt(&success);

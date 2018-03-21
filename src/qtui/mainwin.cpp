@@ -774,7 +774,7 @@ void MainWin::changeActiveBufferView(int bufferViewId)
 
 void MainWin::showPasswordChangeDlg()
 {
-    if((Client::coreFeatures() & Quassel::PasswordChange)) {
+    if(Client::isCoreFeatureEnabled(Quassel::Feature::PasswordChange)) {
         PasswordChangeDlg dlg(this);
         dlg.exec();
     }

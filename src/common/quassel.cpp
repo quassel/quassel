@@ -34,6 +34,7 @@
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QLibraryInfo>
+#include <QMetaEnum>
 #include <QSettings>
 #include <QTranslator>
 #include <QUuid>
@@ -454,19 +455,6 @@ void Quassel::logFatalMessage(const char *msg)
 }
 
 
-Quassel::Features Quassel::features()
-{
-    Features feats = 0;
-    for (int i = 1; i <= NumFeatures; i <<= 1)
-        feats |= (Feature)i;
-
-    // Disable DCC until it is ready
-    feats &= ~Feature::DccFileTransfer;
-
-    return feats;
-}
-
-
 const QString &Quassel::coreDumpFileName()
 {
     if (_coreDumpFileName.isEmpty()) {
@@ -677,4 +665,94 @@ void Quassel::loadTranslation(const QLocale &locale)
         qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     quasselTranslator->load(QString("%1").arg(locale.name()), translationDirPath());
 #endif
+}
+
+
+// ---- Quassel::Features ---------------------------------------------------------------------------------------------
+
+Quassel::Features::Features()
+{
+    QStringList features;
+
+    // TODO Qt5: Use QMetaEnum::fromType()
+    auto featureEnum = Quassel::staticMetaObject.enumerator(Quassel::staticMetaObject.indexOfEnumerator("Feature"));
+    _features.resize(featureEnum.keyCount(), true);  // enable all known features to true
+}
+
+
+Quassel::Features::Features(const QStringList &features, LegacyFeatures legacyFeatures)
+{
+    // TODO Qt5: Use QMetaEnum::fromType()
+    auto featureEnum = Quassel::staticMetaObject.enumerator(Quassel::staticMetaObject.indexOfEnumerator("Feature"));
+    _features.resize(featureEnum.keyCount(), false);
+
+    for (auto &&feature : features) {
+        int i = featureEnum.keyToValue(qPrintable(feature));
+        if (i >= 0) {
+            _features[i] = true;
+        }
+        else {
+            _unknownFeatures << feature;
+        }
+    }
+
+    if (legacyFeatures) {
+        // TODO Qt5: Use QMetaEnum::fromType()
+        auto legacyFeatureEnum = Quassel::staticMetaObject.enumerator(Quassel::staticMetaObject.indexOfEnumerator("LegacyFeature"));
+        for (quint32 mask = 0x0001; mask <= 0x8000; mask <<=1) {
+            if (static_cast<quint32>(legacyFeatures) & mask) {
+                int i = featureEnum.keyToValue(legacyFeatureEnum.valueToKey(mask));
+                if (i >= 0) {
+                    _features[i] = true;
+                }
+            }
+        }
+    }
+}
+
+
+bool Quassel::Features::isEnabled(Feature feature) const
+{
+    size_t i = static_cast<size_t>(feature);
+    return i < _features.size() ? _features[i] : false;
+}
+
+
+QStringList Quassel::Features::toStringList(bool enabled) const
+{
+    QStringList result;
+    // TODO Qt5: Use QMetaEnum::fromType()
+    auto featureEnum = Quassel::staticMetaObject.enumerator(Quassel::staticMetaObject.indexOfEnumerator("Feature"));
+    for (quint32 i = 0; i < _features.size(); ++i) {
+        if (_features[i] == enabled) {
+            result << featureEnum.key(i);
+        }
+    }
+    return result;
+}
+
+
+Quassel::LegacyFeatures Quassel::Features::toLegacyFeatures() const
+{
+    // TODO Qt5: Use LegacyFeatures (flag operators for enum classes not supported in Qt4)
+    quint32 result{0};
+    // TODO Qt5: Use QMetaEnum::fromType()
+    auto featureEnum = Quassel::staticMetaObject.enumerator(Quassel::staticMetaObject.indexOfEnumerator("Feature"));
+    auto legacyFeatureEnum = Quassel::staticMetaObject.enumerator(Quassel::staticMetaObject.indexOfEnumerator("LegacyFeature"));
+
+    for (quint32 i = 0; i < _features.size(); ++i) {
+        if (_features[i]) {
+            int v = legacyFeatureEnum.keyToValue(featureEnum.key(i));
+            if (v >= 0) {
+                result |= v;
+            }
+        }
+    }
+    return static_cast<LegacyFeatures>(result);
+}
+
+
+QStringList Quassel::Features::unknownFeatures() const
+{
+    return _unknownFeatures;
 }

@@ -42,7 +42,7 @@ InternalPeer::InternalPeer(QObject *parent)
     _peer(0),
     _isOpen(true)
 {
-
+    setFeatures(Quassel::Features{});
 }
 
 

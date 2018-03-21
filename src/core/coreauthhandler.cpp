@@ -171,22 +171,23 @@ void CoreAuthHandler::handle(const RegisterClient &msg)
         return;
     }
 
+    _peer->setFeatures(std::move(msg.features));
+    _peer->setBuildDate(msg.buildDate);
+    _peer->setClientVersion(msg.clientVersion);
+
     QVariantList backends;
     QVariantList authenticators;
     bool configured = Core::isConfigured();
     if (!configured) {
         backends = Core::backendInfo();
-        authenticators = Core::authenticatorInfo();
+        if (_peer->hasFeature(Quassel::Feature::Authenticators)) {
+            authenticators = Core::authenticatorInfo();
+        }
     }
 
+    _peer->dispatch(ClientRegistered(Quassel::Features{}, configured, backends, authenticators, useSsl));
+
     // useSsl is only used for the legacy protocol
-    // XXX: FIXME: use client features here: we cannot pass authenticators if the client is too old!
-    _peer->dispatch(ClientRegistered(Quassel::features(), configured, backends, useSsl, authenticators));
-
-    _peer->setBuildDate(msg.buildDate);
-    _peer->setClientVersion(msg.clientVersion);
-    _peer->setFeatures(Quassel::Features(msg.clientFeatures));
-
     if (_legacy && useSsl)
         startSsl();
 
@@ -235,6 +236,15 @@ void CoreAuthHandler::handle(const Login &msg)
     _peer->dispatch(LoginSuccess());
 
     quInfo() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).").arg(socket()->peerAddress().toString(), msg.user, QString::number(uid.toInt())));
+
+    const auto &clientFeatures = _peer->features();
+    auto unsupported = clientFeatures.toStringList(false);
+    if (!unsupported.isEmpty()) {
+        quInfo() << qPrintable(tr("Client does not support the following features: %1").arg(unsupported.join(", ")));
+    }
+    if (!clientFeatures.unknownFeatures().isEmpty()) {
+        quInfo() << qPrintable(tr("Client supports unknown features: %1").arg(clientFeatures.unknownFeatures().join(", ")));
+    }
 
     disconnect(socket(), 0, this, 0);
     disconnect(_peer, 0, this, 0);

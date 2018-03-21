@@ -51,6 +51,7 @@ public:
     QString clientVersion() const;
     void setClientVersion(const QString &clientVersion);
 
+    bool hasFeature(Quassel::Feature feature) const;
     Quassel::Features features() const;
     void setFeatures(Quassel::Features features);
 

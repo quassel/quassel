@@ -188,7 +188,7 @@ void CoreConfigWizard::prepareCoreSetup(const QString &backend, const QVariantMa
 
     // FIXME? We need to be able to set up older cores that don't have auth backend support.
     // So if the core doesn't support that feature, don't pass those parameters.
-    if (!(Client::coreFeatures() & Quassel::Authenticators)) {
+    if (!Client::isCoreFeatureEnabled(Quassel::Feature::Authenticators)) {
         coreConnection()->setupCore(Protocol::SetupData(field("adminUser.user").toString(), field("adminUser.password").toString(), backend, properties));
     }
     else {
@@ -267,7 +267,7 @@ AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent)
 int AdminUserPage::nextId() const
 {
     // If the core doesn't support auth backends, skip that page!
-    if (!(Client::coreFeatures() & Quassel::Authenticators)) {
+    if (!Client::isCoreFeatureEnabled(Quassel::Feature::Authenticators)) {
         return CoreConfigWizard::StorageSelectionPage;
     }
     else {

@@ -829,7 +829,7 @@ void SignalProxy::updateSecureState()
 
 QVariantList SignalProxy::peerData() {
     QVariantList result;
-    for (auto peer : _peerMap.values()) {
+    for (auto &&peer : _peerMap.values()) {
         QVariantMap data;
         data["id"] = peer->id();
         data["clientVersion"] = peer->clientVersion();
@@ -839,8 +839,8 @@ QVariantList SignalProxy::peerData() {
         data["remoteAddress"] = peer->address();
         data["connectedSince"] = peer->connectedSince();
         data["secure"] = peer->isSecure();
-        int features = peer->features();
-        data["features"] = features;
+        data["features"] = static_cast<quint32>(peer->features().toLegacyFeatures());
+        data["featureList"] = peer->features().toStringList();
         result << data;
     }
     return result;

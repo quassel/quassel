@@ -131,9 +131,7 @@ public:
     static inline CoreAccountModel *coreAccountModel() { return instance()->_coreAccountModel; }
     static inline CoreConnection *coreConnection() { return instance()->_coreConnection; }
     static inline CoreAccount currentCoreAccount() { return coreConnection()->currentAccount(); }
-    static inline Quassel::Features coreFeatures() { return _coreFeatures; }
-
-    static void setCoreFeatures(Quassel::Features features);
+    static bool isCoreFeatureEnabled(Quassel::Feature feature);
 
     static bool isConnected();
     static bool internalCore();
@@ -282,7 +280,6 @@ private:
     QHash<IdentityId, Identity *> _identities;
 
     bool _connected;
-    static Quassel::Features _coreFeatures;
 
     QString _debugLogBuffer;
     QTextStream _debugLog;
