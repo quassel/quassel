@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef MONOAPPLICATION_H_
-#define MONOAPPLICATION_H_
+#pragma once
 
 #include "qtuiapplication.h"
 
@@ -32,16 +31,7 @@ public:
     MonolithicApplication(int &, char **);
     ~MonolithicApplication();
 
-    bool init();
-
-    /**
-     * Requests a reload of relevant runtime configuration.
-     *
-     * @see Quassel::reloadConfig()
-     *
-     * @return True if configuration reload successful, otherwise false
-     */
-    bool reloadConfig();
+    bool init() override;
 
 private slots:
     void startInternalCore();
@@ -50,6 +40,3 @@ private:
     CoreApplicationInternal *_internal;
     bool _internalInitDone;
 };
-
-
-#endif

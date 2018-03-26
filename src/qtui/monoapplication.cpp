@@ -32,25 +32,26 @@ MonolithicApplication::MonolithicApplication(int &argc, char **argv)
 {
     _internal = new CoreApplicationInternal(); // needed for parser options
 #if defined(HAVE_KDE4) || defined(Q_OS_MAC)
-    disableCrashhandler();
+    Quassel::disableCrashHandler();
 #endif /* HAVE_KDE4 || Q_OS_MAC */
-    setRunMode(Quassel::Monolithic);
+
+    Quassel::setRunMode(Quassel::Monolithic);
 }
 
 
 bool MonolithicApplication::init()
 {
-    if (!Quassel::init()) // parse args
+    if (!QtUiApplication::init())
         return false;
 
     connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
 
-    // FIXME what's this for?
-    if (isOptionSet("port")) {
+    // If port is given, start core so it can listen to incoming connections
+    if (Quassel::isOptionSet("port")) {
         startInternalCore();
     }
 
-    return QtUiApplication::init();
+    return true;
 }
 
 
@@ -72,14 +73,4 @@ void MonolithicApplication::startInternalCore()
     CoreConnection *connection = Client::coreConnection();
     connect(connection, SIGNAL(connectToInternalCore(InternalPeer*)), core, SLOT(setupInternalClientSession(InternalPeer*)));
     connect(core, SIGNAL(sessionState(Protocol::SessionState)), connection, SLOT(internalSessionStateReceived(Protocol::SessionState)));
-}
-
-
-bool MonolithicApplication::reloadConfig()
-{
-    if (_internal) {
-        return _internal->reloadConfig();
-    } else {
-        return false;
-    }
 }

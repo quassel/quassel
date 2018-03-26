@@ -40,7 +40,7 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
 {
     ui.setupUi(this);
     //Hide the hide inactive networks feature on older cores (which won't save the setting)
-    if (!(Client::coreFeatures() & Quassel::HideInactiveNetworks))
+    if (!Client::isCoreFeatureEnabled(Quassel::Feature::HideInactiveNetworks))
         ui.hideInactiveNetworks->hide();
 
     ui.renameBufferView->setIcon(QIcon::fromTheme("edit-rename"));

@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTAUTHHANDLER_H
-#define CLIENTAUTHHANDLER_H
+#pragma once
 
 #include "compressor.h"
 #include "authhandler.h"
@@ -34,13 +33,15 @@ class ClientAuthHandler : public AuthHandler
     Q_OBJECT
 
 public:
-    ClientAuthHandler(CoreAccount account, QObject *parent = 0);
-
     enum DigestVersion {
         Md5,
         Sha2_512,
         Latest=Sha2_512
     };
+
+    ClientAuthHandler(CoreAccount account, QObject *parent = 0);
+
+    Peer *peer() const;
 
 public slots:
     void connectToCore();
@@ -119,5 +120,3 @@ private:
     bool _legacy;
     quint8 _connectionFeatures;
 };
-
-#endif

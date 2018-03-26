@@ -46,9 +46,9 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     ui.setupUi(this);
 
     // hide SASL options for older cores
-    if (!(Client::coreFeatures() & Quassel::SaslAuthentication))
+    if (!Client::isCoreFeatureEnabled(Quassel::Feature::SaslAuthentication))
         ui.sasl->hide();
-    if (!(Client::coreFeatures() & Quassel::SaslExternal))
+    if (!Client::isCoreFeatureEnabled(Quassel::Feature::SaslExternal))
         ui.saslExtInfo->hide();
 #ifndef HAVE_SSL
     ui.saslExtInfo->hide();
@@ -176,7 +176,7 @@ void NetworksSettingsPage::load()
     reset();
 
     // Handle UI dependent on core feature flags here
-    if (Client::coreFeatures() & Quassel::CustomRateLimits) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::CustomRateLimits)) {
         // Custom rate limiting supported, allow toggling
         ui.useCustomMessageRate->setEnabled(true);
         // Reset tooltip to default.
@@ -358,7 +358,7 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item)
 void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
 {
     const Network *net = Client::network(id);
-    if ((Client::coreFeatures() & Quassel::CapNegotiation) && net) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation) && net) {
         // Capability negotiation is supported, network exists.
         // Check if the network is connected.  Don't use net->isConnected() as that won't be true
         // during capability negotiation when capabilities are added and removed.
@@ -575,7 +575,7 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
 
 #ifdef HAVE_SSL
         // this is only needed when the core supports SASL EXTERNAL
-        if (Client::coreFeatures() & Quassel::SaslExternal) {
+        if (Client::isCoreFeatureEnabled(Quassel::Feature::SaslExternal)) {
             if (_cid) {
                 disconnect(_cid, SIGNAL(sslSettingsUpdated()), this, SLOT(sslUpdated()));
                 delete _cid;
@@ -1021,7 +1021,7 @@ NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialo
     // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
     // If useSSL is later changed to be checked by default, change port's default value, too.
 
-    if (Client::coreFeatures() & Quassel::VerifyServerSSL) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::VerifyServerSSL)) {
         // Synchronize requiring SSL with the use SSL checkbox
         ui.sslVerify->setEnabled(ui.useSSL->isChecked());
         connect(ui.useSSL, SIGNAL(toggled(bool)), ui.sslVerify, SLOT(setEnabled(bool)));
@@ -1168,7 +1168,7 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
     // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
     // If useSSL is later changed to be checked by default, change port's default value, too.
 
-    if (Client::coreFeatures() & Quassel::VerifyServerSSL) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::VerifyServerSSL)) {
         // Synchronize requiring SSL with the use SSL checkbox
         ui.sslVerify->setEnabled(ui.useSSL->isChecked());
         connect(ui.useSSL, SIGNAL(toggled(bool)), ui.sslVerify, SLOT(setEnabled(bool)));

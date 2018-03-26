@@ -73,7 +73,7 @@ public:
     //! Check if we consider the last connect as reconnect
     bool wasReconnect() const { return _wasReconnect; }
 
-    QPointer<Peer> peer() { return _peer; }
+    QPointer<Peer> peer() const;
 
 public slots:
     bool connectToCore(AccountId = 0);

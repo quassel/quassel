@@ -18,20 +18,27 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef QUASSEL_H_
-#define QUASSEL_H_
+#pragma once
+
+#include <functional>
+#include <memory>
+#include <vector>
 
 #include <QCoreApplication>
+#include <QFile>
+#include <QObject>
 #include <QLocale>
 #include <QString>
+#include <QStringList>
 
 #include "abstractcliparser.h"
 
 class QFile;
 
-class Quassel
+class Quassel : public QObject
 {
-    Q_DECLARE_TR_FUNCTIONS(Quassel)
+    // TODO Qt5: Use Q_GADGET
+    Q_OBJECT
 
 public:
     enum RunMode {
@@ -58,44 +65,78 @@ public:
         QString organizationDomain;
     };
 
-    //! A list of features that are optional in core and/or client, but need runtime checking
-    /** Some features require an uptodate counterpart, but don't justify a protocol break.
-     *  This is what we use this enum for. Add such features to it and check at runtime on the other
-     *  side for their existence.
+    /**
+     * This enum defines the optional features supported by cores/clients prior to version 0.13.
      *
-     *  This list should be cleaned up after every protocol break, as we can assume them to be present then.
+     * Since the number of features declared this way is limited to 16 (due to the enum not having a defined
+     * width in cores/clients prior to 0.13), and for more robustness when negotiating features on connect,
+     * the bitfield-based representation was replaced by a string-based representation in 0.13, support for
+     * which is indicated by having the ExtendedFeatures flag set. Extended features are defined in the Feature
+     * enum.
+     *
+     * @warning Do not alter this enum; new features must be added (only) to the @a Feature enum.
+     *
+     * @sa Feature
      */
-    enum Feature {
+    enum class LegacyFeature : quint32 {
         SynchronizedMarkerLine = 0x0001,
-        SaslAuthentication = 0x0002,
-        SaslExternal = 0x0004,
-        HideInactiveNetworks = 0x0008,
-        PasswordChange = 0x0010,
-        CapNegotiation = 0x0020,           /// IRCv3 capability negotiation, account tracking
-        VerifyServerSSL = 0x0040,          /// IRC server SSL validation
-        CustomRateLimits = 0x0080,         /// IRC server custom message rate limits
-        DccFileTransfer = 0x0100,          /// DCC file transfer support (forcefully disabled for now)
-        AwayFormatTimestamp = 0x0200,      /// Timestamp formatting in away (e.g. %%hh:mm%%)
-        Authenticators = 0x0400,           /// Whether or not the core supports auth backends.
-        BufferActivitySync = 0x0800,       /// Sync buffer activity status
-        CoreSideHighlights = 0x1000,       /// Core-Side highlight configuration and matching
-        SenderPrefixes = 0x2000,           /// Show prefixes for senders in backlog
-        RemoteDisconnect = 0x4000,         /// Allow this peer to be remotely disconnected
-
-        NumFeatures = 0x4000
+        SaslAuthentication     = 0x0002,
+        SaslExternal           = 0x0004,
+        HideInactiveNetworks   = 0x0008,
+        PasswordChange         = 0x0010,
+        CapNegotiation         = 0x0020,
+        VerifyServerSSL        = 0x0040,
+        CustomRateLimits       = 0x0080,
+        // DccFileTransfer     = 0x0100,  // never in use
+        AwayFormatTimestamp    = 0x0200,
+        Authenticators         = 0x0400,
+        BufferActivitySync     = 0x0800,
+        CoreSideHighlights     = 0x1000,
+        SenderPrefixes         = 0x2000,
+        RemoteDisconnect       = 0x4000,
+        ExtendedFeatures       = 0x8000,
     };
-    Q_DECLARE_FLAGS(Features, Feature)
+    Q_FLAGS(LegacyFeature)
+    Q_DECLARE_FLAGS(LegacyFeatures, LegacyFeature)
 
-    //! The features the current version of Quassel supports (\sa Feature)
-    /** \return An ORed list of all enum values in Feature
+    /**
+     * A list of features that are optional in core and/or client, but need runtime checking.
+     *
+     * Some features require an uptodate counterpart, but don't justify a protocol break.
+     * This is what we use this enum for. Add such features to it and check at runtime on the other
+     * side for their existence.
+     *
+     * For feature negotiation, these enum values are serialized as strings, so order does not matter. However,
+     * do not rename existing enum values to avoid breaking compatibility.
+     *
+     * This list should be cleaned up after every protocol break, as we can assume them to be present then.
      */
-    static Features features();
+    enum class Feature : quint32 {
+        SynchronizedMarkerLine,
+        SaslAuthentication,
+        SaslExternal,
+        HideInactiveNetworks,
+        PasswordChange,           ///< Remote password change
+        CapNegotiation,           ///< IRCv3 capability negotiation, account tracking
+        VerifyServerSSL,          ///< IRC server SSL validation
+        CustomRateLimits,         ///< IRC server custom message rate limits
+        AwayFormatTimestamp,      ///< Timestamp formatting in away (e.g. %%hh:mm%%)
+        Authenticators,           ///< Whether or not the core supports auth backends
+        BufferActivitySync,       ///< Sync buffer activity status
+        CoreSideHighlights,       ///< Core-Side highlight configuration and matching
+        SenderPrefixes,           ///< Show prefixes for senders in backlog
+        RemoteDisconnect,         ///< Allow this peer to be remotely disconnected
+        ExtendedFeatures,         ///< Extended features
+    };
+    Q_ENUMS(Feature)
 
-    virtual ~Quassel();
+    class Features;
+
+    static Quassel *instance();
 
     static void setupBuildInfo();
-    static inline const BuildInfo &buildInfo();
-    static inline RunMode runMode();
+    static const BuildInfo &buildInfo();
+    static RunMode runMode();
 
     static QString configDirPath();
 
@@ -125,14 +166,9 @@ public:
 
     static void loadTranslation(const QLocale &locale);
 
-    static inline void setCliParser(AbstractCliParser *cliParser);
-    static inline AbstractCliParser *cliParser();
-    static inline QString optionValue(const QString &option);
-    static inline bool isOptionSet(const QString &option);
-
-    static const QString &coreDumpFileName();
-
-    static bool DEBUG;
+    static void setCliParser(std::shared_ptr<AbstractCliParser> cliParser);
+    static QString optionValue(const QString &option);
+    static bool isOptionSet(const QString &option);
 
     enum LogLevel {
         DebugLevel,
@@ -141,72 +177,150 @@ public:
         ErrorLevel
     };
 
-    static inline LogLevel logLevel();
-    static inline QFile *logFile();
-    static inline bool logToSyslog();
+    static LogLevel logLevel();
+    static void setLogLevel(LogLevel logLevel);
+    static QFile *logFile();
+    static bool logToSyslog();
 
     static void logFatalMessage(const char *msg);
 
+    using ReloadHandler = std::function<bool()>;
+
+    static void registerReloadHandler(ReloadHandler handler);
+
+    using QuitHandler = std::function<void()>;
+
+    static void registerQuitHandler(QuitHandler quitHandler);
+
 protected:
+    static bool init();
+    static void destroy();
+
+    static void setRunMode(Quassel::RunMode runMode);
+
+    static void setDataDirPaths(const QStringList &paths);
+    static QStringList findDataDirPaths();
+    static void disableCrashHandler();
+
+    friend class CoreApplication;
+    friend class QtUiApplication;
+    friend class MonolithicApplication;
+
+private:
     Quassel();
-    virtual bool init();
-    virtual void quit();
+    void setupEnvironment();
+    void registerMetaTypes();
+
+    const QString &coreDumpFileName();
 
     /**
      * Requests a reload of relevant runtime configuration.
      *
-     * Does not reload all configuration, but could catch things such as SSL certificates.  Unless
-     * overridden, simply does nothing.
+     * Calls any registered reload handlers, and returns the cumulative result. If no handlers are registered,
+     * does nothing and returns true.
      *
-     * @return True if configuration reload successful, otherwise false
+     * @returns True if configuration reload successful, otherwise false
      */
-    virtual bool reloadConfig() { return true; }
+    bool reloadConfig();
 
-    inline void setRunMode(RunMode mode);
-    inline void setDataDirPaths(const QStringList &paths);
-    QStringList findDataDirPaths() const;
-    inline void disableCrashhandler();
+    /**
+     * Requests to quit the application.
+     *
+     * Calls any registered quit handlers. If no handlers are registered, calls QCoreApplication::quit().
+     */
+    void quit();
 
-private:
-    void setupEnvironment();
-    void registerMetaTypes();
+    void logBacktrace(const QString &filename);
 
     static void handleSignal(int signal);
-    static void logBacktrace(const QString &filename);
 
-    static Quassel *_instance;
-    static BuildInfo _buildInfo;
-    static AbstractCliParser *_cliParser;
-    static RunMode _runMode;
-    static bool _initialized;
-    static bool _handleCrashes;
+private:
+    BuildInfo _buildInfo;
+    RunMode _runMode;
+    bool _initialized{false};
+    bool _handleCrashes{true};
 
-    static QString _coreDumpFileName;
-    static QString _configDirPath;
-    static QStringList _dataDirPaths;
-    static QString _translationDirPath;
+    QString _coreDumpFileName;
+    QString _configDirPath;
+    QStringList _dataDirPaths;
+    QString _translationDirPath;
 
-    static LogLevel _logLevel;
-    static QFile *_logFile;
-    static bool _logToSyslog;
+    LogLevel _logLevel{InfoLevel};
+    bool _logToSyslog{false};
+    std::unique_ptr<QFile> _logFile;
+
+    std::shared_ptr<AbstractCliParser> _cliParser;
+
+    std::vector<ReloadHandler> _reloadHandlers;
+    std::vector<QuitHandler> _quitHandlers;
 };
 
+// --------------------------------------------------------------------------------------------------------------------
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Quassel::Features);
+/**
+ * Class representing a set of supported core/client features.
+ *
+ * @sa Quassel::Feature
+ */
+class Quassel::Features
+{
+public:
+    /**
+     * Default constructor.
+     *
+     * Creates a Feature instance with all known features (i.e., all values declared in the Quassel::Feature enum) set.
+     * This is useful for easily creating a Feature instance that represent the current version's capabilities.
+     */
+    Features();
 
-const Quassel::BuildInfo &Quassel::buildInfo() { return _buildInfo; }
-Quassel::RunMode Quassel::runMode() { return _runMode; }
-void Quassel::setRunMode(Quassel::RunMode mode) { _runMode = mode; }
-void Quassel::setDataDirPaths(const QStringList &paths) { _dataDirPaths = paths; }
-void Quassel::disableCrashhandler() { _handleCrashes = false; }
+    /**
+     * Constructs a Feature instance holding the given list of features.
+     *
+     * Both the @a features and the @a legacyFeatures arguments are considered (additively).
+     * This is useful when receiving a list of features from another peer.
+     *
+     * @param features       A list of strings matching values in the Quassel::Feature enum. Strings that don't match are
+     *                       can be accessed after construction via unknownFeatures(), but are otherwise ignored.
+     * @param legacyFeatures Holds a bit-wise combination of LegacyFeature flag values, which are each added to the list of
+     *                       features represented by this Features instance.
+     */
+    Features(const QStringList &features, LegacyFeatures legacyFeatures);
 
-void Quassel::setCliParser(AbstractCliParser *parser) { _cliParser = parser; }
-AbstractCliParser *Quassel::cliParser() { return _cliParser; }
-QString Quassel::optionValue(const QString &key) { return cliParser()->value(key); }
-bool Quassel::isOptionSet(const QString &key) { return cliParser()->isSet(key); }
+    /**
+     * Check if a given feature is marked as enabled in this Features instance.
+     *
+     * @param feature The feature to be queried
+     * @returns Whether the given feature is marked as enabled
+     */
+    bool isEnabled(Feature feature) const;
 
-Quassel::LogLevel Quassel::logLevel() { return _logLevel; }
-QFile *Quassel::logFile() { return _logFile; }
-bool Quassel::logToSyslog() { return _logToSyslog; }
+    /**
+     * Provides a list of all features marked as either enabled or disabled (as indicated by the @a enabled argument) as strings.
+     *
+     * @param enabled Whether to return the enabled or the disabled features
+     * @return A string list containing all enabled or disabled features
+     */
+    QStringList toStringList(bool enabled = true) const;
 
-#endif
+    /**
+     * Provides a list of all enabled legacy features (i.e. features defined prior to v0.13) as bit-wise combination in a
+     * LegacyFeatures type.
+     *
+     * @note Extended features cannot be represented this way, and are thus ignored even if set.
+     * @return A LegacyFeatures type holding the bit-wise combination of all legacy features enabled in this Features instance
+     */
+    LegacyFeatures toLegacyFeatures() const;
+
+    /**
+     * Provides the list of strings that could not be mapped to Quassel::Feature enum values on construction.
+     *
+     * Useful for debugging/logging purposes.
+     *
+     * @returns A list of strings that could not be mapped to the Feature enum on construction of this Features instance, if any
+     */
+    QStringList unknownFeatures() const;
+
+private:
+    std::vector<bool> _features;
+    QStringList _unknownFeatures;
+};
