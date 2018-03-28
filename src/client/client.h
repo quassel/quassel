@@ -161,10 +161,15 @@ public:
 #endif
     static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
 
+    void displayChannelList(NetworkId networkId) {
+        emit showChannelList(networkId);
+    }
+
 signals:
     void requestNetworkStates();
 
     void showConfigWizard(const QVariantMap &coredata);
+    void showChannelList(NetworkId networkId);
     void showIgnoreList(QString ignoreRule);
 
     void connected();
