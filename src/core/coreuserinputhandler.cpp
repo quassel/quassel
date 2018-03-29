@@ -474,7 +474,6 @@ void CoreUserInputHandler::handleMode(const BufferInfo &bufferInfo, const QStrin
     Q_UNUSED(bufferInfo)
 
     QStringList params = msg.split(' ', QString::SkipEmptyParts);
-    // if the first argument is neither a channel nor us (user modes are only to oneself) the current buffer is assumed to be the target
     if (!params.isEmpty()) {
         if (params[0] == "-reset" && params.count() == 1) {
             network()->resetPersistentModes();
@@ -483,7 +482,11 @@ void CoreUserInputHandler::handleMode(const BufferInfo &bufferInfo, const QStrin
             return;
         }
         if (!network()->isChannelName(params[0]) && !network()->isMyNick(params[0]))
-            params.prepend(bufferInfo.bufferName());
+            // If the first argument is neither a channel nor us (user modes are only to oneself)
+            // the current buffer is assumed to be the target.
+            // If the current buffer returns no name (e.g. status buffer), assume target is us.
+            params.prepend(!bufferInfo.bufferName().isEmpty() ?
+                                bufferInfo.bufferName() : network()->myNick());
         if (network()->isMyNick(params[0]) && params.count() == 2)
             network()->updateIssuedModes(params[1]);
     }
