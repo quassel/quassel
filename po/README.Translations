@@ -39,5 +39,5 @@ scripts/tx-sync.sh which pushes an updated quassel.pot to a location
 that is fetched by Transifex on regular intervals. This location is
 currently configured as
 <https://github.com/quassel/quassel-i18n/raw/tx-sync/po/quassel.pot> and
-can be updated at https://www.transifex.com/ald/quassel/content/ → "Auto
-update resources".
+can be updated at https://www.transifex.com/quassel/quassel/content/ →
+"Auto update resources".
