@@ -131,9 +131,7 @@ public:
     static inline CoreAccountModel *coreAccountModel() { return instance()->_coreAccountModel; }
     static inline CoreConnection *coreConnection() { return instance()->_coreConnection; }
     static inline CoreAccount currentCoreAccount() { return coreConnection()->currentAccount(); }
-    static inline Quassel::Features coreFeatures() { return _coreFeatures; }
-
-    static void setCoreFeatures(Quassel::Features features);
+    static bool isCoreFeatureEnabled(Quassel::Feature feature);
 
     static bool isConnected();
     static bool internalCore();
@@ -163,10 +161,15 @@ public:
 #endif
     static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
 
+    void displayChannelList(NetworkId networkId) {
+        emit showChannelList(networkId);
+    }
+
 signals:
     void requestNetworkStates();
 
     void showConfigWizard(const QVariantMap &coredata);
+    void showChannelList(NetworkId networkId);
     void showIgnoreList(QString ignoreRule);
 
     void connected();
@@ -282,7 +285,6 @@ private:
     QHash<IdentityId, Identity *> _identities;
 
     bool _connected;
-    static Quassel::Features _coreFeatures;
 
     QString _debugLogBuffer;
     QTextStream _debugLog;

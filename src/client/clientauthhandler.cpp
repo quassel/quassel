@@ -32,6 +32,7 @@
 
 #include "client.h"
 #include "clientsettings.h"
+#include "logger.h"
 #include "peerfactory.h"
 
 #if QT_VERSION < 0x050000
@@ -42,13 +43,19 @@ using namespace Protocol;
 
 ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject *parent)
     : AuthHandler(parent),
-    _peer(0),
+    _peer(nullptr),
     _account(account),
     _probing(false),
     _legacy(false),
     _connectionFeatures(0)
 {
 
+}
+
+
+Peer *ClientAuthHandler::peer() const
+{
+    return _peer;
 }
 
 
@@ -299,7 +306,7 @@ void ClientAuthHandler::startRegistration()
     useSsl = _account.useSsl();
 #endif
 
-    _peer->dispatch(RegisterClient(Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate, useSsl, Quassel::features()));
+    _peer->dispatch(RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate, useSsl));
 }
 
 
@@ -316,8 +323,7 @@ void ClientAuthHandler::handle(const ClientRegistered &msg)
     _backendInfo = msg.backendInfo;
     _authenticatorInfo = msg.authenticatorInfo;
 
-    Client::setCoreFeatures(Quassel::Features(msg.coreFeatures));
-    SignalProxy::current()->sourcePeer()->setFeatures(Quassel::Features(msg.coreFeatures));
+    _peer->setFeatures(std::move(msg.features));
 
     // The legacy protocol enables SSL at this point
     if(_legacy && _account.useSsl())
@@ -329,6 +335,15 @@ void ClientAuthHandler::handle(const ClientRegistered &msg)
 
 void ClientAuthHandler::onConnectionReady()
 {
+    const auto &coreFeatures = _peer->features();
+    auto unsupported = coreFeatures.toStringList(false);
+    if (!unsupported.isEmpty()) {
+        quInfo() << qPrintable(tr("Core does not support the following features: %1").arg(unsupported.join(", ")));
+    }
+    if (!coreFeatures.unknownFeatures().isEmpty()) {
+        quInfo() << qPrintable(tr("Core supports unknown features: %1").arg(coreFeatures.unknownFeatures().join(", ")));
+    }
+
     emit connectionReady();
     emit statusMessage(tr("Connected to %1").arg(_account.accountName()));
 

@@ -20,13 +20,14 @@
 
 #include "highlightsettingspage.h"
 
+#include "client.h"
 #include "qtui.h"
 #include "uisettings.h"
 
 #include <QHeaderView>
 
 HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Highlight"), parent)
+    : SettingsPage(tr("Interface"), tr("Local Highlights"), parent)
 {
     ui.setupUi(this);
     ui.highlightTable->verticalHeader()->hide();
@@ -78,7 +79,7 @@ bool HighlightSettingsPage::hasDefaults() const
 
 void HighlightSettingsPage::defaults()
 {
-    ui.highlightCurrentNick->setChecked(true);
+    ui.highlightNoNick->setChecked(true);
     ui.nicksCaseSensitive->setChecked(false);
     emptyTable();
 

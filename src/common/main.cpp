@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <cstdlib>
+#include <memory>
 
 #include <QTextCodec>
 
@@ -109,7 +110,7 @@ int main(int argc, char **argv)
 # endif
 #endif
 
-    AbstractCliParser *cliParser;
+    std::shared_ptr<AbstractCliParser> cliParser;
 
 #ifdef HAVE_KDE4
     // We need to init KCmdLineArgs first
@@ -121,11 +122,11 @@ int main(int argc, char **argv)
     aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
     KCmdLineArgs::init(argc, argv, &aboutData);
 
-    cliParser = new KCmdLineWrapper();
+    cliParser = std::make_shared<KCmdLineWrapper>();
 #elif defined HAVE_QT5
-    cliParser = new Qt5CliParser();
+    cliParser = std::make_shared<Qt5CliParser>();
 #else
-    cliParser = new CliParser();
+    cliParser = std::make_shared<CliParser>();
 #endif
     Quassel::setCliParser(cliParser);
 

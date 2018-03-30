@@ -24,6 +24,8 @@
 #include <QDateTime>
 #include <QVariantList>
 
+#include "quassel.h"
+
 namespace Protocol {
 
 const quint32 magic = 0x42b33f00;
@@ -56,18 +58,19 @@ struct HandshakeMessage {
 
 struct RegisterClient : public HandshakeMessage
 {
-    inline RegisterClient(const QString &clientVersion, const QString &buildDate, bool sslSupported = false, quint32 features = 0)
-    : clientVersion(clientVersion)
-    , buildDate(buildDate)
-    , sslSupported(sslSupported)
-    , clientFeatures(features) {}
+    inline RegisterClient(Quassel::Features clientFeatures, const QString &clientVersion, const QString &buildDate, bool sslSupported = false)
+        : features(std::move(clientFeatures))
+        , clientVersion(clientVersion)
+        , buildDate(buildDate)
+        , sslSupported(sslSupported)
+    {}
 
+    Quassel::Features features;
     QString clientVersion;
     QString buildDate;
 
     // this is only used by the LegacyProtocol in compat mode
     bool sslSupported;
-    quint32 clientFeatures;
 };
 
 
@@ -82,19 +85,19 @@ struct ClientDenied : public HandshakeMessage
 
 struct ClientRegistered : public HandshakeMessage
 {
-    inline ClientRegistered(quint32 coreFeatures, bool coreConfigured, const QVariantList &backendInfo, bool sslSupported, const QVariantList &authenticatorInfo)
-    : coreFeatures(coreFeatures)
-    , coreConfigured(coreConfigured)
-    , backendInfo(backendInfo)
-    , authenticatorInfo(authenticatorInfo)
-    , sslSupported(sslSupported)
+    inline ClientRegistered(Quassel::Features coreFeatures, bool coreConfigured, const QVariantList &backendInfo, const QVariantList &authenticatorInfo, bool sslSupported)
+        : features(std::move(coreFeatures))
+        , coreConfigured(coreConfigured)
+        , backendInfo(backendInfo)
+        , authenticatorInfo(authenticatorInfo)
+        , sslSupported(sslSupported)
     {}
 
-    quint32 coreFeatures;
+    Quassel::Features features;
     bool coreConfigured;
+    QVariantList backendInfo; // TODO: abstract this better
 
     // The authenticatorInfo should be optional!
-    QVariantList backendInfo; // TODO: abstract this better
     QVariantList authenticatorInfo;
 
     // this is only used by the LegacyProtocol in compat mode

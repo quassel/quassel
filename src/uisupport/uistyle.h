@@ -18,9 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef UISTYLE_H_
-#define UISTYLE_H_
+#pragma once
 
+#include <utility>
+#include <vector>
+
+#include <QColor>
 #include <QDataStream>
 #include <QFontMetricsF>
 #include <QHash>
@@ -43,8 +46,6 @@ public:
     UiStyle(QObject *parent = 0);
     virtual ~UiStyle();
 
-    typedef QList<QPair<quint16, quint32> > FormatList;
-
     //! This enumerates the possible formats a text element may have. */
     /** These formats are ordered on increasing importance, in cases where a given property is specified
      *  by multiple active formats.
@@ -52,7 +53,7 @@ public:
      *         methods in this class (in particular mergedFormat())!
      *         Also, we _do_ rely on certain properties of these values in styleString() and friends!
      */
-    enum FormatType {
+    enum class FormatType : quint32 {
         Base            = 0x00000000,
         Invalid         = 0xffffffff,
 
@@ -80,7 +81,7 @@ public:
         Bold            = 0x00000100,
         Italic          = 0x00000200,
         Underline       = 0x00000400,
-        Reverse         = 0x00000800,
+        Strikethrough   = 0x00000800,
 
         // Individual parts of a message
         Timestamp       = 0x00001000,
@@ -99,13 +100,16 @@ public:
                           // background: 0x.0800000
     };
 
-    enum MessageLabel {
+    enum class MessageLabel : quint32 {
+        None            = 0x00000000,
         OwnMsg          = 0x00000001,
         Highlight       = 0x00000002,
         Selected        = 0x00000004 // must be last!
     };
 
-    enum ItemFormatType {
+    enum class ItemFormatType : quint32 {
+        None              = 0x00000000,
+
         BufferViewItem    = 0x00000001,
         NickViewItem      = 0x00000002,
 
@@ -119,10 +123,17 @@ public:
         ActiveBuffer      = 0x00002000,
         UnreadBuffer      = 0x00004000,
         HighlightedBuffer = 0x00008000,
-        UserAway          = 0x00010000
+        UserAway          = 0x00010000,
+
+        Invalid           = 0xffffffff
     };
 
-    enum ColorRole {
+    enum class FormatProperty {
+        AllowForegroundOverride = QTextFormat::UserProperty,
+        AllowBackgroundOverride
+    };
+
+    enum class ColorRole {
         MarkerLine,
         // Sender colors (16 + self)
         // These aren't used directly to avoid having storing all of the sender color options in the
@@ -150,6 +161,14 @@ public:
         SenderColor0f,
         NumRoles // must be last!
     };
+
+    struct Format {
+        FormatType type;
+        QColor foreground;
+        QColor background;
+    };
+
+    using FormatList = std::vector<std::pair<quint16, Format>>;
 
     struct StyledString {
         QString plainText;
@@ -201,7 +220,7 @@ public:
     const QColor defaultSenderColorSelf = QColor(0, 0, 0);
 
     static FormatType formatType(Message::Type msgType);
-    static StyledString styleString(const QString &string, quint32 baseFormat = Base);
+    static StyledString styleString(const QString &string, FormatType baseFormat = FormatType::Base);
     static QString mircToInternal(const QString &);
 
     /**
@@ -231,10 +250,10 @@ public:
      */
     static QString timestampFormatString();
 
-    QTextCharFormat format(quint32 formatType, quint32 messageLabel) const;
-    QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel) const;
+    QTextCharFormat format(const Format &format, MessageLabel messageLabel) const;
+    QFontMetricsF *fontMetrics(FormatType formatType, MessageLabel messageLabel) const;
 
-    QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel) const;
+    QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, MessageLabel messageLabel) const;
 
     inline const QBrush &brush(ColorRole role) const { return _uiStylePalette.at((int)role); }
     inline void setBrush(ColorRole role, const QBrush &brush) { _uiStylePalette[(int)role] = brush; }
@@ -255,11 +274,12 @@ protected:
     void loadStyleSheet();
     QString loadStyleSheet(const QString &name, bool shouldExist = false);
 
-    QTextCharFormat format(quint64 key) const;
-    QTextCharFormat cachedFormat(quint32 formatType, quint32 messageLabel) const;
-    void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel) const;
-    void mergeFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel) const;
-    void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel) const;
+    QTextCharFormat parsedFormat(quint64 key) const;
+    QTextCharFormat cachedFormat(const Format &format, MessageLabel messageLabel) const;
+    void setCachedFormat(const QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const;
+    void mergeFormat(QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const;
+    void mergeSubElementFormat(QTextCharFormat &charFormat, FormatType formatType, MessageLabel messageLabel) const;
+    void mergeColors(QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const;
 
     static FormatType formatType(const QString &code);
     static QString formatCode(FormatType);
@@ -311,9 +331,9 @@ private:
     QVector<QBrush> _uiStylePalette;
     QBrush _markerLineBrush;
     QHash<quint64, QTextCharFormat> _formats;
-    mutable QHash<quint64, QTextCharFormat> _formatCache;
+    mutable QHash<QString, QTextCharFormat> _formatCache;
     mutable QHash<quint64, QFontMetricsF *> _metricsCache;
-    QHash<quint32, QTextCharFormat> _listItemFormats;
+    QHash<UiStyle::ItemFormatType, QTextCharFormat> _listItemFormats;
     static QHash<QString, FormatType> _formatCodes;
     static bool _useCustomTimestampFormat;        /// If true, use the custom timestamp format
     static QString _systemTimestampFormatString;  /// Cached copy of system locale timestamp format
@@ -360,10 +380,39 @@ private:
     mutable quint8 _senderHash;
 };
 
+#if QT_VERSION < 0x050000
+uint qHash(UiStyle::ItemFormatType key);
+#else
+uint qHash(UiStyle::ItemFormatType key, uint seed);
+#endif
+
+// ---- Operators for dealing with enums ----------------------------------------------------------
+
+UiStyle::FormatType operator|(UiStyle::FormatType lhs, UiStyle::FormatType rhs);
+UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
+UiStyle::FormatType operator|(UiStyle::FormatType lhs, quint32 rhs);
+UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, quint32 rhs);
+UiStyle::FormatType operator&(UiStyle::FormatType lhs, UiStyle::FormatType rhs);
+UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
+UiStyle::FormatType operator&(UiStyle::FormatType lhs, quint32 rhs);
+UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, quint32 rhs);
+UiStyle::FormatType& operator^=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
+
+UiStyle::MessageLabel operator|(UiStyle::MessageLabel lhs, UiStyle::MessageLabel rhs);
+UiStyle::MessageLabel& operator|=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs);
+UiStyle::MessageLabel operator&(UiStyle::MessageLabel lhs, quint32 rhs);
+UiStyle::MessageLabel& operator&=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs);
+
+// Shifts the label into the upper half of the return value
+quint64 operator|(UiStyle::FormatType lhs, UiStyle::MessageLabel rhs);
+
+UiStyle::ItemFormatType operator|(UiStyle::ItemFormatType lhs, UiStyle::ItemFormatType rhs);
+UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType &lhs, UiStyle::ItemFormatType rhs);
+
+// ---- Allow for FormatList in QVariant ----------------------------------------------------------
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);
 QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList);
 
 Q_DECLARE_METATYPE(UiStyle::FormatList)
-
-#endif
+Q_DECLARE_METATYPE(UiStyle::MessageLabel)

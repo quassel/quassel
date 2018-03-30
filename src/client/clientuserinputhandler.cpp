@@ -140,6 +140,12 @@ void ClientUserInputHandler::handleIgnore(const BufferInfo &bufferInfo, const QS
     );
 }
 
+void ClientUserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &text)
+{
+    Q_UNUSED(text)
+    Client::instance()->displayChannelList(bufferInfo.networkId());
+}
+
 
 void ClientUserInputHandler::switchBuffer(const NetworkId &networkId, const QString &bufferName)
 {

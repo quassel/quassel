@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREAPPLICATION_H_
-#define COREAPPLICATION_H_
+#pragma once
 
 #include <QCoreApplication>
 
@@ -38,21 +37,12 @@ public:
 
     bool init();
 
-    /**
-     * Requests a reload of relevant runtime configuration.
-     *
-     * In particular, signals to the Core to reload SSL certificates.
-     *
-     * @return True if configuration reload successful, otherwise false
-     */
-    bool reloadConfig();
-
 private:
     bool _coreCreated;
 };
 
 
-class CoreApplication : public QCoreApplication, public Quassel
+class CoreApplication : public QCoreApplication
 {
     Q_OBJECT
 public:
@@ -61,18 +51,6 @@ public:
 
     bool init();
 
-    /**
-     * Requests a reload of relevant runtime configuration.
-     *
-     * @see Quassel::reloadConfig()
-     *
-     * @return True if configuration reload successful, otherwise false
-     */
-    bool reloadConfig();
-
 private:
     CoreApplicationInternal *_internal;
 };
-
-
-#endif

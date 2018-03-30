@@ -298,7 +298,7 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level)
 
 void BufferItem::clearActivityLevel()
 {
-    if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync)) {
         // If the core handles activity sync, clear only the highlight flag
         _activity &= ~BufferInfo::Highlight;
     } else {
@@ -307,7 +307,7 @@ void BufferItem::clearActivityLevel()
     _firstUnreadMsgId = MsgId();
 
     // FIXME remove with core proto v11
-    if (!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
+    if (!Client::isCoreFeatureEnabled(Quassel::Feature::SynchronizedMarkerLine)) {
         _markerLineMsgId = _lastSeenMsgId;
     }
 
@@ -318,7 +318,7 @@ void BufferItem::clearActivityLevel()
 void BufferItem::updateActivityLevel(const Message &msg)
 {
     // If the core handles activity, and this message is not a highlight, ignore this
-    if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync) && !msg.flags().testFlag(Message::Highlight)) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync) && !msg.flags().testFlag(Message::Highlight)) {
         return;
     }
 
@@ -344,7 +344,7 @@ void BufferItem::updateActivityLevel(const Message &msg)
 
     Message::Types type;
     // If the core handles activities, ignore types
-    if (Client::coreFeatures().testFlag(Quassel::Feature::BufferActivitySync)) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync)) {
         type = Message::Types();
     } else {
         type = msg.type();
@@ -434,7 +434,7 @@ void BufferItem::setLastSeenMsgId(MsgId msgId)
     _lastSeenMsgId = msgId;
 
     // FIXME remove with core protocol v11
-    if (!(Client::coreFeatures() & Quassel::SynchronizedMarkerLine)) {
+    if (!Client::isCoreFeatureEnabled(Quassel::Feature::SynchronizedMarkerLine)) {
         if (!isCurrentBuffer())
             _markerLineMsgId = msgId;
     }

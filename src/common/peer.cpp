@@ -57,12 +57,17 @@ void Peer::setClientVersion(const QString &clientVersion) {
     _clientVersion = clientVersion;
 }
 
-Quassel::Features Peer::features() const {
+bool Peer::hasFeature(Quassel::Feature feature) const {
+    return _features.isEnabled(feature);
+}
+
+Quassel::Features Peer::features() const
+{
     return _features;
 }
 
 void Peer::setFeatures(Quassel::Features features) {
-    _features = features;
+    _features = std::move(features);
 }
 
 int Peer::id() const {

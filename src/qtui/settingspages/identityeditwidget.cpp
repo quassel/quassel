@@ -86,7 +86,7 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     ui.sslCertGroupBox->installEventFilter(this);
 #endif
 
-    if (Client::coreFeatures() & Quassel::AwayFormatTimestamp) {
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::AwayFormatTimestamp)) {
         // Core allows formatting %%timestamp%% messages in away strings.  Update tooltips.
         QString strFormatTooltip;
         QTextStream formatTooltip( &strFormatTooltip, QIODevice::WriteOnly );

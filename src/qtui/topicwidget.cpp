@@ -202,7 +202,7 @@ void TopicWidget::updateResizeMode()
 void TopicWidget::clickableActivated(const Clickable &click)
 {
     NetworkId networkId = selectionModel()->currentIndex().data(NetworkModel::NetworkIdRole).value<NetworkId>();
-    UiStyle::StyledString sstr = GraphicalUi::uiStyle()->styleString(GraphicalUi::uiStyle()->mircToInternal(_topic), UiStyle::PlainMsg);
+    UiStyle::StyledString sstr = GraphicalUi::uiStyle()->styleString(GraphicalUi::uiStyle()->mircToInternal(_topic), UiStyle::FormatType::PlainMsg);
     click.activate(networkId, sstr.plainText);
 }
 

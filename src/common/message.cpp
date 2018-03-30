@@ -60,7 +60,7 @@ QDataStream &operator<<(QDataStream &out, const Message &msg)
         << msg.bufferInfo()
         << msg.sender().toUtf8();
 
-    if (SignalProxy::current()->targetPeer()->features().testFlag(Quassel::Feature::SenderPrefixes))
+    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::SenderPrefixes))
         out << msg.senderPrefixes().toUtf8();
 
     out << msg.contents().toUtf8();

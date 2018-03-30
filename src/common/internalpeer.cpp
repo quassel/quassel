@@ -30,7 +30,9 @@ class PeerMessageEvent : public QEvent
 {
 public:
     PeerMessageEvent(InternalPeer *sender, InternalPeer::EventType eventType, const T &message)
-    : QEvent(QEvent::Type(eventType)), sender(sender), message(message) {}
+        : QEvent(QEvent::Type(eventType)), sender(sender), message(message)
+    {}
+
     InternalPeer *sender;
     T message;
 };
@@ -42,7 +44,7 @@ InternalPeer::InternalPeer(QObject *parent)
     _peer(0),
     _isOpen(true)
 {
-
+    setFeatures(Quassel::Features{});
 }
 
 
@@ -172,6 +174,18 @@ void InternalPeer::dispatch(const InitData &msg)
 }
 
 
+namespace {
+
+void setSourcePeer(Peer* peer)
+{
+    auto p = SignalProxy::current();
+    if (p)
+        p->setSourcePeer(peer);
+}
+
+}  // anon
+
+
 template<class T>
 void InternalPeer::dispatch(EventType eventType, const T &msg)
 {
@@ -180,41 +194,39 @@ void InternalPeer::dispatch(EventType eventType, const T &msg)
         return;
     }
 
-    if(QThread::currentThread() == _peer->thread())
-        _peer->handle(msg);
-    else
-        QCoreApplication::postEvent(_peer, new PeerMessageEvent<T>(this, eventType, msg));
+    // The peers always live in different threads, so use an event for thread-safety
+    QCoreApplication::postEvent(_peer, new PeerMessageEvent<T>(this, eventType, msg));
 }
 
 
 void InternalPeer::customEvent(QEvent *event)
 {
+    setSourcePeer(this);
+
     switch ((int)event->type()) {
         case SyncMessageEvent: {
-            PeerMessageEvent<SyncMessage> *e = static_cast<PeerMessageEvent<SyncMessage> *>(event);
-            handle(e->message);
+            handle(static_cast<PeerMessageEvent<SyncMessage> *>(event)->message);
             break;
         }
         case RpcCallEvent: {
-            PeerMessageEvent<RpcCall> *e = static_cast<PeerMessageEvent<RpcCall> *>(event);
-            handle(e->message);
+            handle(static_cast<PeerMessageEvent<RpcCall> *>(event)->message);
             break;
         }
         case InitRequestEvent: {
-            PeerMessageEvent<InitRequest> *e = static_cast<PeerMessageEvent<InitRequest> *>(event);
-            handle(e->message);
+            handle(static_cast<PeerMessageEvent<InitRequest> *>(event)->message);
             break;
         }
         case InitDataEvent: {
-            PeerMessageEvent<InitData> *e = static_cast<PeerMessageEvent<InitData> *>(event);
-            handle(e->message);
+            handle(static_cast<PeerMessageEvent<InitData> *>(event)->message);
             break;
         }
 
         default:
             qWarning() << Q_FUNC_INFO << "Received unknown custom event:" << event->type();
+            setSourcePeer(nullptr);
             return;
     }
 
+    setSourcePeer(nullptr);
     event->accept();
 }

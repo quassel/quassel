@@ -159,6 +159,13 @@
               </property>
              </spacer>
             </item>
+            <item>
+             <widget class="QPushButton" name="highlightImport">
+              <property name="text">
+               <string>Import</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
