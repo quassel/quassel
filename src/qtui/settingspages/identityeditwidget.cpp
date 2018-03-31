@@ -392,7 +392,16 @@ QSslKey IdentityEditWidget::keyByFilename(const QString &filename)
     keyFile.close();
 
     for (int i = 0; i < 2; i++) {
+#if QT_VERSION >= 0x050500
+        // On Qt5.5+, support QSsl::KeyAlgorithm::Rsa (1), QSsl::KeyAlgorithm::Dsa (2), and QSsl::KeyAlgorithm::Ec (3)
+        for (int j = 1; j < 4; j++) {
+#elif QT_VERSION >= 0x050000
+        // On Qt5.0-Qt5.4, support QSsl::KeyAlgorithm::Rsa (1) and QSsl::KeyAlgorithm::Dsa (2) (Ec wasn't added until 5.5)
+        for (int j = 1; j < 3; j++) {
+#else
+        // On Qt4, support QSsl::KeyAlgorithm::Rsa (0) and QSsl::KeyAlgorithm::Dsa (1) (Qt4 uses different indices for the values)
         for (int j = 0; j < 2; j++) {
+#endif
             key = QSslKey(keyRaw, (QSsl::KeyAlgorithm)j, (QSsl::EncodingFormat)i);
             if (!key.isNull())
                 goto returnKey;
@@ -400,6 +409,12 @@ QSslKey IdentityEditWidget::keyByFilename(const QString &filename)
     }
     QMessageBox::information(this, tr("Failed to read key"), tr("Failed to read the key file. It is either incompatible or invalid. Note that the key file must not have a passphrase."));
 returnKey:
+#if QT_VERSION >= 0x050500
+    if(!key.isNull() && key.algorithm() == QSsl::KeyAlgorithm::Ec && !Client::isCoreFeatureEnabled(Quassel::Feature::EcdsaCertfpKeys)) {
+        QMessageBox::information(this, tr("Core does not support ECDSA keys"), tr("You loaded an ECDSA key, but the core does not support ECDSA keys. Please contact the core administrator."));
+        key.clear();
+    }
+#endif
     return key;
 }
 
@@ -415,11 +430,16 @@ void IdentityEditWidget::showKeyState(const QSslKey &key)
         case QSsl::Rsa:
             ui.keyTypeLabel->setText(tr("RSA"));
             break;
+#if QT_VERSION >= 0x050500
+        case QSsl::Ec:
+            ui.keyTypeLabel->setText(tr("ECDSA"));
+            break;
+#endif
         case QSsl::Dsa:
             ui.keyTypeLabel->setText(tr("DSA"));
             break;
         default:
-            ui.keyTypeLabel->setText(tr("No Key loaded"));
+            ui.keyTypeLabel->setText(tr("Invalid key or no key loaded"));
         }
         ui.clearOrLoadKeyButton->setText(tr("Clear"));
     }
