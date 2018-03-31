@@ -77,6 +77,10 @@ void CoreIdentity::synchronize(SignalProxy *proxy)
 void CoreIdentity::setSslKey(const QByteArray &encoded)
 {
     QSslKey key(encoded, QSsl::Rsa);
+#if QT_VERSION >= 0x050500
+    if (key.isNull())
+        key = QSslKey(encoded, QSsl::Ec);
+#endif
     if (key.isNull())
         key = QSslKey(encoded, QSsl::Dsa);
     setSslKey(key);
