@@ -171,8 +171,14 @@ UiStyle::MessageLabel ChatLineModelItem::messageLabel() const
 
 QVariant ChatLineModelItem::backgroundBrush(UiStyle::FormatType subelement, bool selected) const
 {
-    QTextCharFormat fmt = QtUi::style()->format({UiStyle::formatType(_styledMsg.type()) | subelement, {}, {}},
-                                                messageLabel() | (selected ? UiStyle::MessageLabel::Selected : UiStyle::MessageLabel::None));
+    QTextCharFormat fmt = QtUi::style()->format(
+        {UiStyle::formatType(_styledMsg.type()) | subelement, {}, {}},
+        messageLabel() |
+        (selected ?
+            UiStyle::MessageLabel::Selected :
+            UiStyle::MessageLabel::None)
+    );
+
     if (fmt.hasProperty(QTextFormat::BackgroundBrush))
         return QVariant::fromValue<QBrush>(fmt.background());
     return QVariant();

@@ -91,7 +91,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
     msg._sender = QString::fromUtf8(sender);
 
     QByteArray receivedPrefixes;
-    if (SignalProxy::current()->sourcePeer()->features().testFlag(Quassel::Feature::SenderPrefixes))
+    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::SenderPrefixes))
         in >> receivedPrefixes;
 
     QByteArray prefixes = "!~@%+";

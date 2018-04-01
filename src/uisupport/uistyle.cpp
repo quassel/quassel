@@ -515,7 +515,8 @@ QTextCharFormat UiStyle::format(const Format &format, MessageLabel label) const
         return charFormat;
 
     // Merge all formats except mIRC and extended colors
-    mergeFormat(charFormat, format, label & 0xffff0000);  // keep nickhash in label
+    // keep nickhash in label
+    mergeFormat(charFormat, format, label & 0xffff0000); 
     for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Selected); mask <<= 1) {
         if (static_cast<quint32>(label) & mask) {
             mergeFormat(charFormat, format, label & (mask | 0xffff0000));
@@ -542,12 +543,11 @@ void UiStyle::mergeFormat(QTextCharFormat &charFormat, const Format &format, Mes
 {
     mergeSubElementFormat(charFormat, format.type & 0x00ff, label);
 
-    // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
-    //       or "foreground 01 and background 03"
-    if ((format.type & 0xfff00) != FormatType::Base) { // element format
-        for (quint32 mask = 0x00100; mask <= 0x80000; mask <<= 1) {
+    if ((format.type & 0xffff00) != FormatType::Base) { // element format
+        for (quint32 mask = 0x00100; mask <= 0xf00000; mask <<= 1) {
             if ((format.type & mask) != FormatType::Base) {
-                mergeSubElementFormat(charFormat, format.type & (mask | 0xff), label);
+                mergeSubElementFormat(charFormat,
+                    format.type & (mask | 0xff), label);
             }
         }
     }

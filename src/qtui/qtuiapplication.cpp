@@ -173,10 +173,6 @@ bool QtUiApplication::init()
             // Some platforms don't set a default icon theme; chances are we can find our bundled theme though
             QIcon::setThemeName("breeze");
 
-#ifdef Q_OS_MAC
-        CocoaHelper::configure();
-#endif
-
         resumeSessionIfPossible();
         Client::init(new QtUi());
 
@@ -187,6 +183,7 @@ bool QtUiApplication::init()
         Quassel::registerQuitHandler([]() {
             QtUi::mainWindow()->quit();
         });
+
         return true;
     }
     return false;
@@ -203,6 +200,9 @@ QtUiApplication::~QtUiApplication()
 void QtUiApplication::initUi()
 {
     QtUi::instance()->init();
+#ifdef Q_OS_MAC
+        CocoaHelper::configure();
+#endif
     resumeSessionIfPossible();
 }
 
