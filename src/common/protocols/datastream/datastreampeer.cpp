@@ -24,6 +24,7 @@
 #include <QTcpSocket>
 
 #include "datastreampeer.h"
+#include "serializers/serializers.h"
 
 using namespace Protocol;
 
@@ -58,7 +59,8 @@ void DataStreamPeer::processMessage(const QByteArray &msg)
     QDataStream stream(msg);
     stream.setVersion(QDataStream::Qt_4_2);
     QVariantList list;
-    stream >> list;
+    if (!Serializers::deserialize(stream, list))
+        close("Peer sent corrupt data, closing down!");
     if (stream.status() != QDataStream::Ok) {
         close("Peer sent corrupt data, closing down!");
         return;
