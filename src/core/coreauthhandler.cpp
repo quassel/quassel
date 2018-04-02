@@ -221,6 +221,12 @@ void CoreAuthHandler::handle(const Login &msg)
     if (!checkClientRegistered())
         return;
 
+    if (!Core::isConfigured()) {
+        qWarning() << qPrintable(tr("Client")) << qPrintable(socket()->peerAddress().toString()) << qPrintable(tr("attempted to login before the core was configured, rejecting."));
+        _peer->dispatch(ClientDenied(tr("<b>Attempted to login before core was configured!</b><br>The core must be configured before attempting to login.")));
+        return;
+    }
+
     // First attempt local auth using the real username and password.
     // If that fails, move onto the auth provider.
     UserId uid = Core::validateUser(msg.user, msg.password);
