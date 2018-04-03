@@ -32,6 +32,7 @@
     <file>./SQL/PostgreSQL/migrate_write_usersetting.sql</file>
     <file>./SQL/PostgreSQL/select_authenticator.sql</file>
     <file>./SQL/PostgreSQL/select_authuser.sql</file>
+    <file>./SQL/PostgreSQL/select_authusername.sql</file>
     <file>./SQL/PostgreSQL/select_bufferByName.sql</file>
     <file>./SQL/PostgreSQL/select_bufferExists.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_bufferactivities.sql</file>
@@ -141,6 +142,7 @@
     <file>./SQL/SQLite/migrate_read_usersetting.sql</file>
     <file>./SQL/SQLite/select_authenticator.sql</file>
     <file>./SQL/SQLite/select_authuser.sql</file>
+    <file>./SQL/SQLite/select_authusername.sql</file>
     <file>./SQL/SQLite/select_bufferByName.sql</file>
     <file>./SQL/SQLite/select_bufferExists.sql</file>
     <file>./SQL/SQLite/select_buffer_bufferactivities.sql</file>

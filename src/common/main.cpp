@@ -169,6 +169,7 @@ int main(int argc, char **argv)
     cliParser->addOption("change-userpass", 0, "Starts an interactive session to change the password of the user identified by <username>", "username");
     cliParser->addSwitch("oidentd", 0, "Enable oidentd integration");
     cliParser->addOption("oidentd-conffile", 0, "Set path to oidentd configuration file", "file");
+    cliParser->addSwitch("oidentd-strict", 0, "Use users' quasselcore username as ident reply. Ignores each user's configured ident setting. Only meaningful with --oidentd.");
 #ifdef HAVE_SSL
     cliParser->addSwitch("require-ssl", 0, "Require SSL for remote (non-loopback) client connections");
     cliParser->addOption("ssl-cert", 0, "Specify the path to the SSL Certificate", "path", "configdir/quasselCert.pem");

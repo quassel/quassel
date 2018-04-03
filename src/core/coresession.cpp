@@ -508,6 +508,10 @@ void CoreSession::createIdentity(const Identity &identity, const QVariantMap &ad
         createIdentity(coreIdentity);
 }
 
+const QString CoreSession::strictSysident() {
+    const QString authusername = Core::getAuthusername(_user);
+    return authusername;
+}
 
 void CoreSession::createIdentity(const CoreIdentity &identity)
 {
