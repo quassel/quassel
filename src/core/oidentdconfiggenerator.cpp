@@ -19,10 +19,14 @@
  ***************************************************************************/
 
 #include "oidentdconfiggenerator.h"
+#include "corenetwork.h"
 
-OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
+#include <QString>
+
+OidentdConfigGenerator::OidentdConfigGenerator(bool strict, QObject *parent) :
     QObject(parent),
-    _initialized(false)
+    _initialized(false),
+    _strict(strict)
 {
     if (!_initialized)
         init();
@@ -65,11 +69,18 @@ bool OidentdConfigGenerator::init()
     return _initialized;
 }
 
+const QString OidentdConfigGenerator::sysidentForIdentity(const CoreIdentity *identity) {
+    if (!_strict) {
+        return identity->ident();
+    }
+    const CoreNetwork *network = qobject_cast<CoreNetwork *>(sender());
+    return network->coreSession()->strictSysident();
+}
 
 bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
 {
     Q_UNUSED(localAddress) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
-    QString ident = identity->ident();
+    const QString ident = sysidentForIdentity(identity);
 
     _quasselConfig.append(_quasselStanzaTemplate.arg(localPort).arg(ident).arg(_configTag).toLatin1());
 

@@ -1820,6 +1820,23 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
     return messagelist;
 }
 
+const QString SqliteStorage::getAuthusername(UserId user) {
+    QString authusername;
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authusername"));
+    query.bindValue(":userid", user.toInt());
+
+    lockForRead();
+    safeExec(query);
+    watchQuery(query);
+    unlock();
+
+    if (query.first()) {
+        authusername = query.value(0).toString();
+    }
+
+    return authusername;
+}
 
 QString SqliteStorage::backlogFile()
 {

@@ -106,6 +106,9 @@ public slots:
     QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1) override;
     QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) override;
 
+    /* Sysident handling */
+    virtual const QString getAuthusername(UserId user);
+
 protected:
     void setConnectionProperties(const QVariantMap & /* properties */)  override {}
     QString driverName()  override { return "QSQLITE"; }

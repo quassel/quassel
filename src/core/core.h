@@ -493,6 +493,14 @@ public:
         return instance()->_storage->setBufferLastSeenMsg(user, bufferId, msgId);
     }
 
+    //! Get the auth username associated with a userId
+    /** \param user  The user to retrieve the username for
+     *  \return      The username for the user
+     */
+    static inline const QString getAuthusername(UserId user) {
+        return instance()->_storage->getAuthusername(user);
+    }
+
 
     //! Get a Hash of all last seen message ids
     /** This Method is called when the Quassel Core is started to restore the lastSeenMsgIds

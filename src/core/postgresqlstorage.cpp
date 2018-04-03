@@ -1702,6 +1702,19 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
     return messagelist;
 }
 
+const QString PostgreSqlStorage::getAuthusername(UserId user) {
+    QString authusername;
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authusername"));
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    watchQuery(query);
+
+    if (query.first()) {
+         authusername = query.value(0).toString();
+    }
+    return authusername;
+}
 
 // void PostgreSqlStorage::safeExec(QSqlQuery &query) {
 //   qDebug() << "PostgreSqlStorage::safeExec";
