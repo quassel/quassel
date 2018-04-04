@@ -501,6 +501,12 @@ public:
         return instance()->_storage->getAuthusername(user);
     }
 
+    //! Get a usable sysident for the given user in oidentd-strict mode
+    /** \param user    The user to retrieve the sysident for
+     *  \return The authusername
+     */
+    QString strictSysident(UserId user);
+
 
     //! Get a Hash of all last seen message ids
     /** This Method is called when the Quassel Core is started to restore the lastSeenMsgIds
@@ -583,6 +589,8 @@ public:
      * @return True if certificates reloaded successfully, otherwise false.
      */
     static bool reloadCerts();
+
+    static void cacheSysident();
 
     static QVariantList backendInfo();
     static QVariantList authenticatorInfo();
@@ -667,6 +675,7 @@ private:
     DeferredSharedPtr<Storage>       _storage;        ///< Active storage backend
     DeferredSharedPtr<Authenticator> _authenticator;  ///< Active authenticator
     QTimer _storageSyncTimer;
+    QMap<UserId, QString> _authusernames;
 
 #ifdef HAVE_SSL
     SslServer _server, _v6server;

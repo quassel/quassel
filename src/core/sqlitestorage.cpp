@@ -1820,6 +1820,28 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
     return messagelist;
 }
 
+QMap<UserId, QString> SqliteStorage::getAllAuthusernames()
+{
+    QMap<UserId, QString> authusernames;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_all_authusernames"));
+
+        lockForRead();
+        safeExec(query);
+        watchQuery(query);
+        while (query.next()) {
+            authusernames[query.value(0).toInt()] = query.value(1).toString();
+        }
+    }
+    db.commit();
+    unlock();
+    return authusernames;
+}
+
 const QString SqliteStorage::getAuthusername(UserId user) {
     QString authusername;
     QSqlQuery query(logDb());

@@ -442,6 +442,11 @@ public slots:
      */
     virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) = 0;
 
+    //! Fetch all authusernames
+    /** \return      Map of all current UserIds to permitted idents
+     */
+    virtual QMap<UserId, QString> getAllAuthusernames() = 0;
+
     //! Get the auth username associated with a userId
     /** \param user  The user to retrieve the username for
      *  \return      The username for the user
