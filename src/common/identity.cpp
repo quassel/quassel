@@ -191,8 +191,8 @@ void Identity::setToDefaults()
     setDetachAwayReasonEnabled(false);
     setIdent("quassel");
     setKickReason(tr("Kindergarten is elsewhere!"));
-    setPartReason(tr("http://quassel-irc.org - Chat comfortably. Anywhere."));
-    setQuitReason(tr("http://quassel-irc.org - Chat comfortably. Anywhere."));
+    setPartReason(tr("https://quassel-irc.org - Chat comfortably. Anywhere."));
+    setQuitReason(tr("https://quassel-irc.org - Chat comfortably. Anywhere."));
 }
 
 
