@@ -657,6 +657,8 @@ void MainWin::addBufferView(ClientBufferViewConfig *config)
 
     Client::bufferModel()->synchronizeView(view);
 
+    dock->setLocked(QtUiSettings().value("LockLayout", false).toBool());
+
     dock->setWidget(view);
     dock->setVisible(_layoutLoaded); // don't show before state has been restored
 
@@ -884,11 +886,26 @@ void MainWin::on_actionLockLayout_toggled(bool lock)
     foreach(VerticalDock *dock, docks) {
         dock->showTitle(!lock);
     }
+
+    QList<NickListDock *> nickdocks = findChildren<NickListDock *>();
+    foreach(NickListDock *nickdock, nickdocks) {
+        nickdock->setLocked(lock);
+    }
+
+    QList<BufferViewDock *> bufferdocks = findChildren<BufferViewDock *>();
+    foreach(BufferViewDock *bufferdock, bufferdocks) {
+        bufferdock->setLocked(lock);
+    }
+
     if (Client::bufferViewManager()) {
         foreach(ClientBufferViewConfig *config, Client::bufferViewManager()->clientBufferViewConfigs()) {
             config->setLocked(lock);
         }
     }
+
+    _mainToolBar->setMovable(!lock);
+    _nickToolBar->setMovable(!lock);
+
     QtUiSettings().setValue("LockLayout", lock);
 }
 
@@ -899,6 +916,7 @@ void MainWin::setupNickWidget()
     NickListDock *nickDock = new NickListDock(tr("Nicks"), this);
     nickDock->setObjectName("NickDock");
     nickDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    nickDock->setLocked(QtUiSettings().value("LockLayout", false).toBool());
 
     _nickListWidget = new NickListWidget(nickDock);
     nickDock->setWidget(_nickListWidget);
@@ -1095,6 +1113,8 @@ void MainWin::setupToolBars()
         _mainToolBar->addAction(coll->action("DisconnectCore"));
     }
 
+    _mainToolBar->setMovable(!QtUiSettings().value("LockLayout", false).toBool());
+
     QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
     _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
@@ -1107,6 +1127,7 @@ void MainWin::setupToolBars()
     _nickToolBar->setWindowTitle(tr("Nick Toolbar"));
     _nickToolBar->setVisible(false); //default: not visible
     addToolBar(_nickToolBar);
+    _nickToolBar->setMovable(!QtUiSettings().value("LockLayout", false).toBool());
 
     QtUi::toolBarActionProvider()->addActions(_nickToolBar, ToolBarActionProvider::NickToolBar);
     _toolbarMenu->addAction(_nickToolBar->toggleViewAction());
