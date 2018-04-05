@@ -1685,7 +1685,7 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
 
     QDateTime timestamp;
     for (int i = 0; i < limit && query.next(); i++) {
-        timestamp = query.value(1).toDateTime();
+        timestamp = query.value(2).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
         Message msg(timestamp,
             bufferInfoHash[query.value(1).toInt()],
