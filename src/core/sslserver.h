@@ -27,6 +27,7 @@
 #include <QSslKey>
 #include <QTcpServer>
 #include <QLinkedList>
+#include <QFile>
 
 class SslServer : public QTcpServer
 {
@@ -71,6 +72,7 @@ private:
      * @return True if certificates loaded successfully, otherwise false.
      */
     bool loadCerts();
+    QSslKey loadKey(QFile *keyFile);
 
     QLinkedList<QTcpSocket *> _pendingConnections;
     QSslCertificate _cert;

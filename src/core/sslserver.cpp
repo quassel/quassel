@@ -25,7 +25,6 @@
 #endif
 
 #include <QDateTime>
-#include <QFile>
 
 #include "logger.h"
 #include "quassel.h"
@@ -182,10 +181,10 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
             return false;
         }
 
-        untestedKey = QSslKey(&keyFile, QSsl::Rsa);
+        untestedKey = loadKey(&keyFile);
         keyFile.close();
     } else {
-        untestedKey = QSslKey(&certFile, QSsl::Rsa);
+        untestedKey = loadKey(&certFile);
     }
 
     certFile.close();
@@ -224,6 +223,23 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
     _key = untestedKey;
 
     return _isCertValid;
+}
+
+
+QSslKey SslServer::loadKey(QFile *keyFile)
+{
+    QSslKey key;
+    key = QSslKey(keyFile, QSsl::Rsa);
+#if QT_VERSION >= 0x050500
+    if (key.isNull()) {
+        if (!keyFile->reset()) {
+            quWarning() << "SslServer: IO error reading key file";
+            return key;
+        }
+        key = QSslKey(keyFile, QSsl::Ec);
+    }
+#endif
+    return key;
 }
 
 
