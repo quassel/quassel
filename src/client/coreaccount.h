@@ -86,7 +86,7 @@ private:
     bool _internal;
     QString _user, _password, _hostName;
     uint _port;
-    bool _storePassword, _useSsl, _useProxy;
+    bool _storePassword, _useSsl;
     QNetworkProxy::ProxyType _proxyType;
     QString _proxyUser, _proxyPassword, _proxyHostName;
     uint _proxyPort;
