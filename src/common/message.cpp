@@ -98,7 +98,8 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
     QByteArray senderPrefixes;
     for (char c : prefixes) {
        if (receivedPrefixes.indexOf(c) != -1) {
-           senderPrefixes = &c;
+           senderPrefixes[0] = c;
+           senderPrefixes[1] = '\0';
            break;
        }
     }
