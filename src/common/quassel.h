@@ -127,6 +127,7 @@ public:
         SenderPrefixes,           ///< Show prefixes for senders in backlog
         RemoteDisconnect,         ///< Allow this peer to be remotely disconnected
         ExtendedFeatures,         ///< Extended features
+        LongMessageTime,          ///< Serialize message time as 64-bit
     };
     Q_ENUMS(Feature)
 
