@@ -68,10 +68,11 @@ public:
     Q_DECLARE_FLAGS(Flags, Flag)
 
     Message(const BufferInfo &bufferInfo = BufferInfo(), Type type = Plain, const QString &contents = {},
-            const QString &sender = {}, const QString &senderPrefixes = {}, Flags flags = None);
+            const QString &sender = {}, const QString &senderPrefixes = {}, const QString &realName = {},
+            const QString &avatarUrl = {}, Flags flags = None);
     Message(const QDateTime &ts, const BufferInfo &buffer = BufferInfo(), Type type = Plain,
             const QString &contents = {}, const QString &sender = {}, const QString &senderPrefixes = {},
-            Flags flags = None);
+            const QString &realName = {}, const QString &avatarUrl = {}, Flags flags = None);
 
     inline static Message ChangeOfDay(const QDateTime &day) { return Message(day, BufferInfo(), DayChange); }
     inline const MsgId &msgId() const { return _msgId; }
@@ -83,6 +84,8 @@ public:
     inline const QString &contents() const { return _contents; }
     inline const QString &sender() const { return _sender; }
     inline const QString &senderPrefixes() const { return _senderPrefixes; }
+    inline const QString &realName() const { return _realName; }
+    inline const QString &avatarUrl() const { return _avatarUrl; }
     inline Type type() const { return _type; }
     inline Flags flags() const { return _flags; }
     inline void setFlags(Flags flags) { _flags = flags; }
@@ -99,6 +102,8 @@ private:
     QString _contents;
     QString _sender;
     QString _senderPrefixes;
+    QString _realName;
+    QString _avatarUrl;
     Type _type;
     Flags _flags;
 

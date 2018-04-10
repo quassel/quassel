@@ -1603,6 +1603,8 @@ bool SqliteStorage::logMessage(Message &msg)
                 QSqlQuery addSenderQuery(db);
                 addSenderQuery.prepare(queryString("insert_sender"));
                 addSenderQuery.bindValue(":sender", msg.sender());
+                addSenderQuery.bindValue(":realname", msg.realName());
+                addSenderQuery.bindValue(":avatarurl", msg.avatarUrl());
                 safeExec(addSenderQuery);
                 safeExec(logMessageQuery);
                 error = !watchQuery(logMessageQuery);
@@ -1640,17 +1642,20 @@ bool SqliteStorage::logMessages(MessageList &msgs)
     db.transaction();
 
     {
-        QSet<QString> senders;
+        QSet<SenderData> senders;
         QSqlQuery addSenderQuery(db);
         addSenderQuery.prepare(queryString("insert_sender"));
         lockForWrite();
         for (int i = 0; i < msgs.count(); i++) {
-            const QString &sender = msgs.at(i).sender();
+            auto &msg = msgs.at(i);
+            SenderData sender = { msg.sender(), msg.realName(), msg.avatarUrl() };
             if (senders.contains(sender))
                 continue;
             senders << sender;
 
-            addSenderQuery.bindValue(":sender", sender);
+            addSenderQuery.bindValue(":sender", sender.sender);
+            addSenderQuery.bindValue(":realname", sender.realname);
+            addSenderQuery.bindValue(":avatarurl", sender.avatarurl);
             safeExec(addSenderQuery);
         }
     }
@@ -1752,9 +1757,11 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
             Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
                 bufferInfo,
                 (Message::Type)query.value(2).toUInt(),
-                query.value(6).toString(),
+                query.value(8).toString(),
                 query.value(4).toString(),
                 query.value(5).toString(),
+                query.value(6).toString(),
+                query.value(7).toString(),
                 (Message::Flags)query.value(3).toUInt());
             msg.setMsgId(query.value(0).toInt());
             messagelist << msg;
@@ -1807,9 +1814,11 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
             Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
                 bufferInfoHash[query.value(1).toInt()],
                 (Message::Type)query.value(3).toUInt(),
-                query.value(7).toString(),
+                query.value(9).toString(),
                 query.value(5).toString(),
                 query.value(6).toString(),
+                query.value(7).toString(),
+                query.value(8).toString(),
                 (Message::Flags)query.value(4).toUInt());
             msg.setMsgId(query.value(0).toInt());
             messagelist << msg;
