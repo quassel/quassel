@@ -66,11 +66,14 @@ elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
 
-# For MSVC, at least do a version sanity check
+# For MSVC, at least do a version sanity check...
 elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "18.0")
         message(WARNING "Your compiler is too old; we expect at least Visual Studio Nov 2013 CTP (MSVC 18). Your build will likely fail.")
     endif()
+
+    # ... and enable exception handling (required for STL types)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
 # Unknown/unsupported compiler
 else()
