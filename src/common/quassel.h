@@ -111,7 +111,11 @@ public:
      *
      * This list should be cleaned up after every protocol break, as we can assume them to be present then.
      */
-    enum class Feature : quint32 {
+    #if QT_VERSION >= 0x050000
+    enum class Feature : uint32_t {
+    #else
+    enum Feature {
+    #endif
         SynchronizedMarkerLine,
         SaslAuthentication,
         SaslExternal,
