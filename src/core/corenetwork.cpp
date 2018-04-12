@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -1210,9 +1210,10 @@ void CoreNetwork::beginCapNegotiation()
                tr("Ready to negotiate (found: %1)").arg(caps().join(", ")));
 
     // Build a list of queued capabilities, starting with individual, then bundled, only adding the
-    // comma separator between the two if needed.
+    // comma separator between the two if needed (both individual and bundled caps exist).
     QString queuedCapsDisplay =
-            (!_capsQueuedIndividual.empty() ? _capsQueuedIndividual.join(", ") + ", " : "")
+            _capsQueuedIndividual.join(", ")
+            + ((!_capsQueuedIndividual.empty() && !_capsQueuedBundled.empty()) ? ", " : "")
             + _capsQueuedBundled.join(", ");
     displayMsg(Message::Server, BufferInfo::StatusBuffer, "",
                tr("Negotiating capabilities (requesting: %1)...").arg(queuedCapsDisplay));

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +25,6 @@
 #endif
 
 #include <QDateTime>
-#include <QFile>
 
 #include "logger.h"
 #include "quassel.h"
@@ -57,7 +56,7 @@ SslServer::SslServer(QObject *parent)
             quWarning()
             << "SslServer: Unable to set certificate file\n"
             << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
             sslWarningShown = true;
         }
     }
@@ -112,12 +111,12 @@ bool SslServer::reloadCerts()
             quWarning()
             << "SslServer: Unable to reload certificate file, reverting\n"
             << "          Quassel Core will use the previous key to provide SSL for client connections.\n"
-            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
         } else {
             quWarning()
             << "SslServer: Unable to reload certificate file\n"
             << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-            << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
         }
         return false;
     }
@@ -182,10 +181,10 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
             return false;
         }
 
-        untestedKey = QSslKey(&keyFile, QSsl::Rsa);
+        untestedKey = loadKey(&keyFile);
         keyFile.close();
     } else {
-        untestedKey = QSslKey(&certFile, QSsl::Rsa);
+        untestedKey = loadKey(&certFile);
     }
 
     certFile.close();
@@ -224,6 +223,23 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
     _key = untestedKey;
 
     return _isCertValid;
+}
+
+
+QSslKey SslServer::loadKey(QFile *keyFile)
+{
+    QSslKey key;
+    key = QSslKey(keyFile, QSsl::Rsa);
+#if QT_VERSION >= 0x050500
+    if (key.isNull()) {
+        if (!keyFile->reset()) {
+            quWarning() << "SslServer: IO error reading key file";
+            return key;
+        }
+        key = QSslKey(keyFile, QSsl::Ec);
+    }
+#endif
+    return key;
 }
 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -1685,7 +1685,7 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
 
     QDateTime timestamp;
     for (int i = 0; i < limit && query.next(); i++) {
-        timestamp = query.value(1).toDateTime();
+        timestamp = query.value(2).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
         Message msg(timestamp,
             bufferInfoHash[query.value(1).toInt()],

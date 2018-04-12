@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -241,6 +241,14 @@ NickListDock::NickListDock(const QString &title, QWidget *parent)
 //   }
 }
 
+void NickListDock::setLocked(bool locked) {
+    if (locked) {
+        setFeatures(0);
+    }
+    else {
+        setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    }
+}
 
 // NickListDock::~NickListDock() {
 //   QtUiSettings().setValue("ShowNickList", toggleViewAction()->isChecked());

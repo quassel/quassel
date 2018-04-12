@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2005-2016 by the Quassel Project - devel@quassel-irc.org
+# Copyright (C) 2005-2018 by the Quassel Project - devel@quassel-irc.org
 # Licensed under GNU General Public License version 2, or (at your option)
 # version 3.
 #

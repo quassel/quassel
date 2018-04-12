@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -168,6 +168,7 @@ public :
     inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
     inline bool isActive() const { return _active; }
     void setWidget(QWidget *newWidget);
+    void setLocked(bool locked);
     QWidget *widget() const { return _childWidget; }
 
     void activateFilter();

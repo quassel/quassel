@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -362,7 +362,7 @@ void NetworkModelController::handleHideAction(ActionType type, QAction *action)
         return;
     case HideApplyToAll:
         BufferSettings().setMessageFilter(filter);
-        [[fallthrough]];
+        [[clang::fallthrough]];
     case HideUseDefaults:
         if (_messageFilter)
             BufferSettings(_messageFilter->idString()).removeFilter();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -86,7 +86,7 @@ private:
     bool _internal;
     QString _user, _password, _hostName;
     uint _port;
-    bool _storePassword, _useSsl, _useProxy;
+    bool _storePassword, _useSsl;
     QNetworkProxy::ProxyType _proxyType;
     QString _proxyUser, _proxyPassword, _proxyHostName;
     uint _proxyPort;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -79,6 +79,8 @@ class NickListDock : public QDockWidget
 public:
     NickListDock(const QString &title, QWidget *parent = 0);
     // ~NickListDock();
+
+    void setLocked(bool locked);
 
     // virtual bool event(QEvent *event);
 };

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -140,7 +140,7 @@ KAboutData AboutData::kAboutData() const
     aboutData.addLicense(KAboutLicense::GPL_V3);
     aboutData.setShortDescription(tr("A modern, distributed IRC client"));
     aboutData.setProgramLogo(QVariant::fromValue(QImage(":/pics/quassel-logo.png")));
-    aboutData.setBugAddress("http://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
+    aboutData.setBugAddress("https://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
     aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
 
     for (const auto &person : authors()) {

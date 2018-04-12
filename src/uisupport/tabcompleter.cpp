@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -109,7 +109,7 @@ void TabCompleter::buildCompletionList()
         case BufferInfo::QueryBuffer:
             if (regex.indexIn(_currentBufferName) > -1)
                 _completionMap[_currentBufferName.toLower()] = _currentBufferName;
-            [[fallthrough]];
+            [[clang::fallthrough]];
         case BufferInfo::StatusBuffer:
             if (!_currentNetwork->myNick().isEmpty() && regex.indexIn(_currentNetwork->myNick()) > -1)
                 _completionMap[_currentNetwork->myNick().toLower()] = _currentNetwork->myNick();

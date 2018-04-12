@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +27,7 @@
 #include <QSslKey>
 #include <QTcpServer>
 #include <QLinkedList>
+#include <QFile>
 
 class SslServer : public QTcpServer
 {
@@ -71,6 +72,7 @@ private:
      * @return True if certificates loaded successfully, otherwise false.
      */
     bool loadCerts();
+    QSslKey loadKey(QFile *keyFile);
 
     QLinkedList<QTcpSocket *> _pendingConnections;
     QSslCertificate _cert;

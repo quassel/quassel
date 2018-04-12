@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -985,13 +985,13 @@ void CoreSessionEventProcessor::processIrcEvent322(IrcEvent *e)
     switch (e->params().count()) {
     case 3:
         topic = e->params()[2];
-        [[fallthrough]];
+        [[clang::fallthrough]];
     case 2:
         userCount = e->params()[1].toUInt();
-        [[fallthrough]];
+        [[clang::fallthrough]];
     case 1:
         channelName = e->params()[0];
-        [[fallthrough]];
+        [[clang::fallthrough]];
     default:
         break;
     }
@@ -1550,6 +1550,6 @@ void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent *e)
 
 void CoreSessionEventProcessor::handleCtcpVersion(CtcpEvent *e)
 {
-    e->setReply(QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
+    e->setReply(QString("Quassel IRC %1 (built on %2) -- https://www.quassel-irc.org")
         .arg(Quassel::buildInfo().plainVersionString).arg(Quassel::buildInfo().commitDate));
 }

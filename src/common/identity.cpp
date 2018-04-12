@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -191,8 +191,8 @@ void Identity::setToDefaults()
     setDetachAwayReasonEnabled(false);
     setIdent("quassel");
     setKickReason(tr("Kindergarten is elsewhere!"));
-    setPartReason(tr("http://quassel-irc.org - Chat comfortably. Anywhere."));
-    setQuitReason(tr("http://quassel-irc.org - Chat comfortably. Anywhere."));
+    setPartReason(tr("https://quassel-irc.org - Chat comfortably. Anywhere."));
+    setQuitReason(tr("https://quassel-irc.org - Chat comfortably. Anywhere."));
 }
 
 

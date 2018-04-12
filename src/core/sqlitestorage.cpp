@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -1836,7 +1836,7 @@ bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount)
 
     switch (query.lastError().number()) {
     case 5: // SQLITE_BUSY         5   /* The database file is locked */
-        [[fallthrough]];
+        [[clang::fallthrough]];
     case 6: // SQLITE_LOCKED       6   /* A table in the database is locked */
         if (retryCount < _maxRetryCount)
             return safeExec(query, retryCount + 1);

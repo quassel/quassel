@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2016 by the Quassel Project                        *
+ *   Copyright (C) 2005-2018 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -232,7 +232,7 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event)
     case Qt::Key_Down:
         if (!(keyEvent->modifiers() & Qt::ShiftModifier))
             return false;
-        [[fallthrough]];
+        [[clang::fallthrough]];
     case Qt::Key_PageUp:
     case Qt::Key_PageDown:
         // static cast to access public qobject::event
