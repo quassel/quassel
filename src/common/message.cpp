@@ -76,11 +76,10 @@ QDataStream &operator<<(QDataStream &out, const Message &msg)
     if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::SenderPrefixes))
         out << msg.senderPrefixes().toUtf8();
 
-    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::RichMessages))
+    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::RichMessages)) {
         out << msg.realName().toUtf8();
-
-    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::RichMessages))
         out << msg.avatarUrl().toUtf8();
+    }
 
     out << msg.contents().toUtf8();
     return out;
@@ -121,13 +120,12 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
     msg._senderPrefixes = QString::fromUtf8(senderPrefixes);
 
     QByteArray realName;
-    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::RichMessages))
-        in >> realName;
-    msg._realName = QString::fromUtf8(realName);
-
     QByteArray avatarUrl;
-    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::RichMessages))
+    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::RichMessages)) {
+        in >> realName;
         in >> avatarUrl;
+    }
+    msg._realName = QString::fromUtf8(realName);
     msg._avatarUrl = QString::fromUtf8(avatarUrl);
 
     QByteArray contents;
