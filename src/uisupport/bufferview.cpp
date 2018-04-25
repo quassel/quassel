@@ -73,6 +73,8 @@ void BufferView::init()
 
     header()->hide(); // nobody seems to use this anyway
 
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     // breaks with Qt 4.8
     if (QString("4.8.0") > qVersion()) // FIXME breaks with Qt versions >= 4.10!
         setAnimated(true);

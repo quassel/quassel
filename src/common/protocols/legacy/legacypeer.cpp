@@ -24,6 +24,7 @@
 
 #include "legacypeer.h"
 #include "quassel.h"
+#include "serializers/serializers.h"
 
 /* version.inc is no longer used for this */
 const uint protocolVersion = 10;
@@ -63,7 +64,10 @@ void LegacyPeer::processMessage(const QByteArray &msg)
     QVariant item;
     if (_useCompression) {
         QByteArray rawItem;
-        stream >> rawItem;
+        if (!Serializers::deserialize(stream, features(), rawItem)) {
+            close("Peer sent corrupt data: unable to load QVariant!");
+            return;
+        }
 
         int nbytes = rawItem.size();
         if (nbytes <= 4) {
@@ -78,10 +82,15 @@ void LegacyPeer::processMessage(const QByteArray &msg)
 
         QDataStream itemStream(&rawItem, QIODevice::ReadOnly);
         itemStream.setVersion(QDataStream::Qt_4_2);
-        itemStream >> item;
-    }
-    else {
-        stream >> item;
+        if (!Serializers::deserialize(itemStream, features(), item)) {
+            close("Peer sent corrupt data: unable to load QVariant!");
+            return;
+        }
+    } else {
+        if (!Serializers::deserialize(stream, features(), item)) {
+            close("Peer sent corrupt data: unable to load QVariant!");
+            return;
+        }
     }
 
     if (stream.status() != QDataStream::Ok || !item.isValid()) {
