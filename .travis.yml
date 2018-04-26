@@ -36,7 +36,7 @@ install: |-
   elif [ "$TRAVIS_OS_NAME" == "osx" ]
   then
     brew update
-    brew install ninja qt5
+    brew install ninja qt@5.9.4 # Qt 5.10.1 broke QHeaderView
   fi
 
 script: |-
