@@ -408,7 +408,7 @@ void SqliteStorage::setCoreState(const QVariantList &data)
 
 QVariantList SqliteStorage::getCoreState(const QVariantList &defaultData)
 {
-    QVariantList data = defaultData;
+    QVariantList data;
     {
         QSqlQuery query(logDb());
         query.prepare(queryString("select_core_state"));
@@ -421,6 +421,8 @@ QVariantList SqliteStorage::getCoreState(const QVariantList &defaultData)
             QDataStream in(&rawData, QIODevice::ReadOnly);
             in.setVersion(QDataStream::Qt_4_2);
             in >> data;
+        } else {
+            data = defaultData;
         }
     }
     unlock();

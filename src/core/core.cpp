@@ -317,7 +317,8 @@ void Core::restoreState()
     }
     */
 
-    QVariantList activeSessions = instance()->_storage->getCoreState(s.coreState().toMap()["ActiveSessions"].toList());
+    const QList<QVariant> &activeSessionsFallback = s.coreState().toMap()["ActiveSessions"].toList();
+    QVariantList activeSessions = instance()->_storage->getCoreState(activeSessionsFallback);
 
     if (activeSessions.count() > 0) {
         quInfo() << "Restoring previous core state...";

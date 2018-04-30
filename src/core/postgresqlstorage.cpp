@@ -451,8 +451,7 @@ QVariantList PostgreSqlStorage::getCoreState(const QVariantList &defaultData)
         in.setVersion(QDataStream::Qt_4_2);
         in >> data;
         return data;
-    }
-    else {
+    } else {
         return defaultData;
     }
 }
