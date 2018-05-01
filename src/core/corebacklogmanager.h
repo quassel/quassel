@@ -37,7 +37,11 @@ public:
 
 public slots:
     virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    QVariantList requestBacklogFiltered(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1,
+                                        int additional = 0, int type = -1, int flags = -1) override;
     virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+    QVariantList requestBacklogAllFiltered(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0,
+                                           int type = -1, int flags = -1) override;
 
 private:
     CoreSession *_coreSession;
