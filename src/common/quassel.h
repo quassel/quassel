@@ -131,6 +131,7 @@ public:
         SenderPrefixes,           ///< Show prefixes for senders in backlog
         RemoteDisconnect,         ///< Allow this peer to be remotely disconnected
         ExtendedFeatures,         ///< Extended features
+        RichMessages,             ///< Real Name and Avatar URL in backlog
     };
     Q_ENUMS(Feature)
 

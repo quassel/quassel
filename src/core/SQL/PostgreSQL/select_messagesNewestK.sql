@@ -1,4 +1,4 @@
-SELECT messageid, time,  type, flags, sender, senderprefixes, message
+SELECT messageid, time,  type, flags, sender, senderprefixes, realname, avatarurl, message
 FROM backlog
 JOIN sender ON backlog.senderid = sender.senderid
 WHERE bufferid = $1
