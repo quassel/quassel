@@ -53,9 +53,15 @@ Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, c
 QDataStream &operator<<(QDataStream &out, const Message &msg)
 {
     // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
-    out << msg.msgId()
-        << (quint32) msg.timestamp().toTime_t()
-        << (quint32) msg.type()
+    out << msg.msgId();
+
+    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongMessageTime)) {
+        out << (quint64) msg.timestamp().toMSecsSinceEpoch();
+    } else {
+        out << (quint32) msg.timestamp().toTime_t();
+    }
+
+    out << (quint32) msg.type()
         << (quint8) msg.flags()
         << msg.bufferInfo()
         << msg.sender().toUtf8();
@@ -72,9 +78,15 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
 {
     in >> msg._msgId;
 
-    quint32 timeStamp;
-    in >> timeStamp;
-    msg._timestamp = QDateTime::fromTime_t(timeStamp);
+    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongMessageTime)) {
+        quint64 timeStamp;
+        in >> timeStamp;
+        msg._timestamp = QDateTime::fromMSecsSinceEpoch(timeStamp);
+    } else {
+        quint32 timeStamp;
+        in >> timeStamp;
+        msg._timestamp = QDateTime::fromTime_t(timeStamp);
+    }
 
     quint32 type;
     in >> type;
