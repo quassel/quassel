@@ -108,8 +108,8 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     }
 
     if (Quassel::isOptionSet("ident-daemon")) {
-        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->identServer(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Qt::BlockingQueuedConnection);
-        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->identServer(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)));
+        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Core::instance()->identServer(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Qt::BlockingQueuedConnection);
+        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Core::instance()->identServer(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)));
     }
 }
 
@@ -191,6 +191,10 @@ QByteArray CoreNetwork::userEncode(const QString &userNick, const QString &strin
 
 void CoreNetwork::connectToIrc(bool reconnecting)
 {
+    if (Core::instance()->identServer()) {
+        _socketId = Core::instance()->identServer()->addWaitingSocket();
+    }
+
     if (!reconnecting && useAutoReconnect() && _autoReconnectCount == 0) {
         _autoReconnectTimer.setInterval(autoReconnectInterval() * 1000);
         if (unlimitedReconnectRetries())
@@ -548,7 +552,7 @@ void CoreNetwork::socketInitialized()
     // Non-SSL connections enter here only once, always emit socketInitialized(...) in these cases
     // SSL connections call socketInitialized() twice, only emit socketInitialized(...) on the first (not yet encrypted) run
     if (!server.useSsl || !socket.isEncrypted()) {
-        emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
+        emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort(), _socketId);
     }
 
     if (server.useSsl && !socket.isEncrypted()) {
@@ -617,7 +621,7 @@ void CoreNetwork::socketDisconnected()
 
     setConnected(false);
     emit disconnected(networkId());
-    emit socketDisconnected(identityPtr(), localAddress(), localPort(), peerAddress(), peerPort());
+    emit socketDisconnected(identityPtr(), localAddress(), localPort(), peerAddress(), peerPort(), _socketId);
     // Reset disconnect expectations
     _disconnectExpected = false;
     if (_quitRequested) {
