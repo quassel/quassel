@@ -1820,7 +1820,8 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
     return messagelist;
 }
 
-QMap<UserId, QString> SqliteStorage::getAllAuthusernames()
+
+QMap<UserId, QString> SqliteStorage::getAllAuthUserNames()
 {
     QMap<UserId, QString> authusernames;
 
@@ -1842,7 +1843,8 @@ QMap<UserId, QString> SqliteStorage::getAllAuthusernames()
     return authusernames;
 }
 
-const QString SqliteStorage::getAuthusername(UserId user) {
+
+QString SqliteStorage::getAuthUserName(UserId user) {
     QString authusername;
     QSqlQuery query(logDb());
     query.prepare(queryString("select_authusername"));
@@ -1859,6 +1861,7 @@ const QString SqliteStorage::getAuthusername(UserId user) {
 
     return authusername;
 }
+
 
 QString SqliteStorage::backlogFile()
 {

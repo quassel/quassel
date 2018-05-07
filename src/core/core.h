@@ -497,15 +497,15 @@ public:
     /** \param user  The user to retrieve the username for
      *  \return      The username for the user
      */
-    static inline const QString getAuthusername(UserId user) {
-        return instance()->_storage->getAuthusername(user);
+    static inline QString getAuthUserName(UserId user) {
+        return instance()->_storage->getAuthUserName(user);
     }
 
     //! Get a usable sysident for the given user in oidentd-strict mode
     /** \param user    The user to retrieve the sysident for
      *  \return The authusername
      */
-    QString strictSysident(UserId user);
+    QString strictSysIdent(UserId user) const;
 
 
     //! Get a Hash of all last seen message ids
@@ -590,7 +590,7 @@ public:
      */
     static bool reloadCerts();
 
-    static void cacheSysident();
+    static void cacheSysIdent();
 
     static QVariantList backendInfo();
     static QVariantList authenticatorInfo();
@@ -675,7 +675,7 @@ private:
     DeferredSharedPtr<Storage>       _storage;        ///< Active storage backend
     DeferredSharedPtr<Authenticator> _authenticator;  ///< Active authenticator
     QTimer _storageSyncTimer;
-    QMap<UserId, QString> _authusernames;
+    QMap<UserId, QString> _authUserNames;
 
 #ifdef HAVE_SSL
     SslServer _server, _v6server;

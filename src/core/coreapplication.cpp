@@ -57,7 +57,7 @@ bool CoreApplicationInternal::init()
 
     Quassel::registerReloadHandler([]() {
         // Currently, only reloading SSL certificates and the sysident cache is supported
-        Core::cacheSysident();
+        Core::cacheSysIdent();
         return Core::reloadCerts();
     });
 
