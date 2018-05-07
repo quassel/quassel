@@ -191,6 +191,8 @@ int main(int argc, char **argv)
     cliParser->addSwitch("oidentd", 0, "Enable oidentd integration.  In most cases you should also enable --strict-ident");
     cliParser->addOption("oidentd-conffile", 0, "Set path to oidentd configuration file", "file");
     cliParser->addSwitch("strict-ident", 0, "Use users' quasselcore username as ident reply. Ignores each user's configured ident setting.");
+    cliParser->addSwitch("ident-daemon", 0, "Enable internal ident daemon");
+    cliParser->addOption("ident-port", 'p', "The port quasselcore will listen at for ident requests. Only meaningful with --ident-daemon", "port", "10113");
 #ifdef HAVE_SSL
     cliParser->addSwitch("require-ssl", 0, "Require SSL for remote (non-loopback) client connections");
     cliParser->addOption("ssl-cert", 0, "Specify the path to the SSL Certificate", "path", "configdir/quasselCert.pem");
