@@ -18,10 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "oidentdconfiggenerator.h"
-#include "corenetwork.h"
-
 #include <QString>
+
+#include "corenetwork.h"
+#include "oidentdconfiggenerator.h"
 
 OidentdConfigGenerator::OidentdConfigGenerator(bool strict, QObject *parent) :
     QObject(parent),
@@ -69,7 +69,8 @@ bool OidentdConfigGenerator::init()
     return _initialized;
 }
 
-const QString OidentdConfigGenerator::sysidentForIdentity(const CoreIdentity *identity) {
+
+QString OidentdConfigGenerator::sysIdentForIdentity(const CoreIdentity *identity) const {
     if (!_strict) {
         return identity->ident();
     }
@@ -77,10 +78,11 @@ const QString OidentdConfigGenerator::sysidentForIdentity(const CoreIdentity *id
     return network->coreSession()->strictSysident();
 }
 
+
 bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
 {
     Q_UNUSED(localAddress) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
-    const QString ident = sysidentForIdentity(identity);
+    const QString ident = sysIdentForIdentity(identity);
 
     _quasselConfig.append(_quasselStanzaTemplate.arg(localPort).arg(ident).arg(_configTag).toLatin1());
 

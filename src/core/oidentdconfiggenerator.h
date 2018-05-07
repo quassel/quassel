@@ -71,7 +71,7 @@ public slots:
     bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
 
 private:
-    const QString sysidentForIdentity(const CoreIdentity *identity);
+    QString sysIdentForIdentity(const CoreIdentity *identity) const;
     bool init();
     bool writeConfig();
     bool parseConfig(bool readQuasselStanzas = false);

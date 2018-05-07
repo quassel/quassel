@@ -1702,7 +1702,9 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
     return messagelist;
 }
 
-QMap<UserId, QString> PostgreSqlStorage::getAllAuthusernames() {
+
+QMap<UserId, QString> PostgreSqlStorage::getAllAuthUserNames()
+{
     QMap<UserId, QString> authusernames;
     QSqlQuery query(logDb());
     query.prepare(queryString("select_all_authusernames"));
@@ -1715,7 +1717,9 @@ QMap<UserId, QString> PostgreSqlStorage::getAllAuthusernames() {
     return authusernames;
 }
 
-const QString PostgreSqlStorage::getAuthusername(UserId user) {
+
+QString PostgreSqlStorage::getAuthUserName(UserId user)
+{
     QString authusername;
     QSqlQuery query(logDb());
     query.prepare(queryString("select_authusername"));
