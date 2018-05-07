@@ -221,6 +221,11 @@ bool Core::init()
         if (Quassel::isOptionSet("oidentd")) {
             _oidentdConfigGenerator = new OidentdConfigGenerator(this);
         }
+        
+
+        if (Quassel::isOptionSet("ident-daemon")) {
+            _identServer = new IdentServer(_strictIdentEnabled, this);
+        }
 
         Quassel::registerReloadHandler([]() {
             // Currently, only reloading SSL certificates and the sysident cache is supported
@@ -665,12 +670,16 @@ bool Core::startListening()
     if (!success)
         quError() << qPrintable(tr("Could not open any network interfaces to listen on!"));
 
+    if (_identServer != nullptr) _identServer->startListening();
+
     return success;
 }
 
 
 void Core::stopListening(const QString &reason)
 {
+    if (_identServer != nullptr) _identServer->stopListening(reason);
+
     bool wasListening = false;
     if (_server.isListening()) {
         wasListening = true;
