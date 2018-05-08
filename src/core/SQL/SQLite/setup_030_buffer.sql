@@ -12,5 +12,6 @@ CREATE TABLE buffer (
 	bufferactivity INTEGER NOT NULL DEFAULT 0,
 	key TEXT,
 	joined INTEGER NOT NULL DEFAULT 0, -- BOOL
+	cipher TEXT,
 	CHECK (lastseenmsgid <= lastmsgid)
 )

@@ -39,6 +39,7 @@
     <file>./SQL/PostgreSQL/select_buffer_bufferactivities.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_bufferactivity.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_by_id.sql</file>
+    <file>./SQL/PostgreSQL/select_buffer_ciphers.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_lastseen_messages.sql</file>
     <file>./SQL/PostgreSQL/select_buffer_markerlinemsgids.sql</file>
     <file>./SQL/PostgreSQL/select_buffers.sql</file>
@@ -80,6 +81,7 @@
     <file>./SQL/PostgreSQL/setup_130_function_lastmsgid.sql</file>
     <file>./SQL/PostgreSQL/update_backlog_bufferid.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_bufferactivity.sql</file>
+    <file>./SQL/PostgreSQL/update_buffer_cipher.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_lastseen.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_markerlinemsgid.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_name.sql</file>
@@ -111,6 +113,7 @@
     <file>./SQL/PostgreSQL/version/22/upgrade_000_alter_quasseluser_add_authenticator.sql</file>
     <file>./SQL/PostgreSQL/version/23/upgrade_000_create_senderprefixes.sql</file>
     <file>./SQL/PostgreSQL/version/24/upgrade_000_alter_buffer_add_bufferactivity.sql</file>
+    <file>./SQL/PostgreSQL/version/25/upgrade_000_alter_buffer_add_cipher.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>
@@ -150,6 +153,7 @@
     <file>./SQL/SQLite/select_buffer_bufferactivities.sql</file>
     <file>./SQL/SQLite/select_buffer_bufferactivity.sql</file>
     <file>./SQL/SQLite/select_buffer_by_id.sql</file>
+    <file>./SQL/SQLite/select_buffer_ciphers.sql</file>
     <file>./SQL/SQLite/select_buffer_lastseen_messages.sql</file>
     <file>./SQL/SQLite/select_buffer_markerlinemsgids.sql</file>
     <file>./SQL/SQLite/select_buffers.sql</file>
@@ -193,6 +197,7 @@
     <file>./SQL/SQLite/setup_140_identity_nick.sql</file>
     <file>./SQL/SQLite/update_backlog_bufferid.sql</file>
     <file>./SQL/SQLite/update_buffer_bufferactivity.sql</file>
+    <file>./SQL/SQLite/update_buffer_cipher.sql</file>
     <file>./SQL/SQLite/update_buffer_lastseen.sql</file>
     <file>./SQL/SQLite/update_buffer_markerlinemsgid.sql</file>
     <file>./SQL/SQLite/update_buffer_name.sql</file>
@@ -297,5 +302,6 @@
     <file>./SQL/SQLite/version/24/upgrade_000_create_senderprefixes.sql</file>
     <file>./SQL/SQLite/version/25/upgrade_000_alter_buffer_add_bufferactivity.sql</file>
     <file>./SQL/SQLite/version/26/upgrade_000_create_buffer_idx.sql</file>
+    <file>./SQL/SQLite/version/27/upgrade_000_alter_buffer_add_cipher.sql</file>
 </qresource>
 </RCC>

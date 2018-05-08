@@ -12,6 +12,7 @@ create TABLE buffer (
 	bufferactivity integer NOT NULL DEFAULT 0,
 	key varchar(128),
 	joined boolean NOT NULL DEFAULT FALSE, -- BOOL
+	cipher TEXT,
 	UNIQUE(userid, networkid, buffercname),
 	CHECK (buffer.lastseenmsgid <= buffer.lastmsgid)
 )
