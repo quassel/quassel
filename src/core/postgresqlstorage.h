@@ -108,7 +108,13 @@ public slots:
     bool logMessage(Message &msg) override;
     bool logMessages(MessageList &msgs) override;
     QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1) override;
+    QList<Message> requestMsgsFiltered(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1,
+                                       int limit = -1, Message::Types type = Message::Types{-1},
+                                       Message::Flags flags = Message::Flags{-1}) override;
     QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) override;
+    QList<Message> requestAllMsgsFiltered(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1,
+                                          Message::Types type = Message::Types{-1},
+                                          Message::Flags flags = Message::Flags{-1}) override;
 
     /* Sysident handling */
     QMap<UserId, QString> getAllAuthUserNames() override;

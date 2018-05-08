@@ -52,9 +52,14 @@
     <file>./SQL/PostgreSQL/select_internaluser.sql</file>
     <file>./SQL/PostgreSQL/select_messagesAll.sql</file>
     <file>./SQL/PostgreSQL/select_messagesAllNew.sql</file>
+    <file>./SQL/PostgreSQL/select_messagesAllNew_filtered.sql</file>
+    <file>./SQL/PostgreSQL/select_messagesAll_filtered.sql</file>
     <file>./SQL/PostgreSQL/select_messagesNewerThan.sql</file>
+    <file>./SQL/PostgreSQL/select_messagesNewerThan_filtered.sql</file>
     <file>./SQL/PostgreSQL/select_messagesNewestK.sql</file>
+    <file>./SQL/PostgreSQL/select_messagesNewestK_filtered.sql</file>
     <file>./SQL/PostgreSQL/select_messagesRange.sql</file>
+    <file>./SQL/PostgreSQL/select_messagesRange_filtered.sql</file>
     <file>./SQL/PostgreSQL/select_networkExists.sql</file>
     <file>./SQL/PostgreSQL/select_network_awaymsg.sql</file>
     <file>./SQL/PostgreSQL/select_network_usermode.sql</file>
@@ -176,9 +181,14 @@
     <file>./SQL/SQLite/select_internaluser.sql</file>
     <file>./SQL/SQLite/select_messagesAll.sql</file>
     <file>./SQL/SQLite/select_messagesAllNew.sql</file>
+    <file>./SQL/SQLite/select_messagesAllNew_filtered.sql</file>
+    <file>./SQL/SQLite/select_messagesAll_filtered.sql</file>
     <file>./SQL/SQLite/select_messagesNewerThan.sql</file>
+    <file>./SQL/SQLite/select_messagesNewerThan_filtered.sql</file>
     <file>./SQL/SQLite/select_messagesNewestK.sql</file>
+    <file>./SQL/SQLite/select_messagesNewestK_filtered.sql</file>
     <file>./SQL/SQLite/select_messagesRange.sql</file>
+    <file>./SQL/SQLite/select_messagesRange_filtered.sql</file>
     <file>./SQL/SQLite/select_networkExists.sql</file>
     <file>./SQL/SQLite/select_network_awaymsg.sql</file>
     <file>./SQL/SQLite/select_network_usermode.sql</file>
