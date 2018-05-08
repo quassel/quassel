@@ -1755,6 +1755,70 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
 }
 
 
+QList<Message> PostgreSqlStorage::requestMsgsFiltered(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+{
+    QList<Message> messagelist;
+
+    QSqlDatabase db = logDb();
+    if (!beginReadOnlyTransaction(db)) {
+        qWarning() << "PostgreSqlStorage::requestMsgs(): cannot start read only transaction!";
+        qWarning() << " -" << qPrintable(db.lastError().text());
+        return messagelist;
+    }
+
+    BufferInfo bufferInfo = getBufferInfo(user, bufferId);
+    if (!bufferInfo.isValid()) {
+        db.rollback();
+        return messagelist;
+    }
+
+    QSqlQuery query(db);
+    if (last == -1 && first == -1) {
+        query.prepare(queryString("select_messagesNewestK_filtered"));
+    } else if (last == -1) {
+        query.prepare(queryString("select_messagesNewerThan_filtered"));
+        query.bindValue(":first", first.toInt());
+    } else {
+        query.prepare(queryString("select_messagesRange_filtered"));
+        query.bindValue(":last", last.toInt());
+        query.bindValue(":first", first.toInt());
+    }
+    query.bindValue(":buffer", bufferId.toInt());
+    query.bindValue(":limit", limit);
+    int typeRaw = type;
+    query.bindValue(":type", typeRaw);
+    int flagsRaw = flags;
+    query.bindValue(":flags", flagsRaw);
+
+    safeExec(query);
+    if (!watchQuery(query)) {
+        qDebug() << "select_messages failed";
+        db.rollback();
+        return messagelist;
+    }
+
+    QDateTime timestamp;
+    while (query.next()) {
+        timestamp = query.value(1).toDateTime();
+        timestamp.setTimeSpec(Qt::UTC);
+        Message msg(timestamp,
+                    bufferInfo,
+                    (Message::Type)query.value(2).toUInt(),
+                    query.value(8).toString(),
+                    query.value(4).toString(),
+                    query.value(5).toString(),
+                    query.value(6).toString(),
+                    query.value(7).toString(),
+                    Message::Flags{query.value(3).toInt()});
+        msg.setMsgId(query.value(0).toInt());
+        messagelist << msg;
+    }
+
+    db.commit();
+    return messagelist;
+}
+
+
 QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit)
 {
     QList<Message> messagelist;
@@ -1809,6 +1873,67 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
     return messagelist;
 }
 
+
+QList<Message> PostgreSqlStorage::requestAllMsgsFiltered(UserId user, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+{
+    QList<Message> messagelist;
+
+    // requestBuffers uses it's own transaction.
+    QHash<BufferId, BufferInfo> bufferInfoHash;
+            foreach(BufferInfo bufferInfo, requestBuffers(user)) {
+            bufferInfoHash[bufferInfo.bufferId()] = bufferInfo;
+        }
+
+    QSqlDatabase db = logDb();
+    if (!beginReadOnlyTransaction(db)) {
+        qWarning() << "PostgreSqlStorage::requestAllMsgs(): cannot start read only transaction!";
+        qWarning() << " -" << qPrintable(db.lastError().text());
+        return messagelist;
+    }
+
+    QSqlQuery query(db);
+    if (last == -1) {
+        query.prepare(queryString("select_messagesAllNew_filtered"));
+    }
+    else {
+        query.prepare(queryString("select_messagesAll_filtered"));
+        query.bindValue(":lastmsg", last.toInt());
+    }
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":firstmsg", first.toInt());
+
+    int typeRaw = type;
+    query.bindValue(":type", typeRaw);
+
+    int flagsRaw = flags;
+    query.bindValue(":flags", flagsRaw);
+
+    safeExec(query);
+    if (!watchQuery(query)) {
+        db.rollback();
+        return messagelist;
+    }
+
+    QDateTime timestamp;
+    for (int i = 0; i < limit && query.next(); i++) {
+        timestamp = query.value(2).toDateTime();
+        timestamp.setTimeSpec(Qt::UTC);
+        Message msg(timestamp,
+                    bufferInfoHash[query.value(1).toInt()],
+                    (Message::Type)query.value(3).toUInt(),
+                    query.value(9).toString(),
+                    query.value(5).toString(),
+                    query.value(6).toString(),
+                    query.value(7).toString(),
+                    query.value(8).toString(),
+                    Message::Flags{query.value(4).toInt()});
+        msg.setMsgId(query.value(0).toInt());
+        messagelist << msg;
+    }
+
+    db.commit();
+    return messagelist;
+}
 
 QMap<UserId, QString> PostgreSqlStorage::getAllAuthUserNames()
 {

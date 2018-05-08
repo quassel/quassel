@@ -429,6 +429,22 @@ public:
     }
 
 
+    //! Request a certain number messages stored in a given buffer, matching certain filters
+    /** \param buffer   The buffer we request messages from
+     *  \param first    if != -1 return only messages with a MsgId >= first
+     *  \param last     if != -1 return only messages with a MsgId < last
+     *  \param limit    if != -1 limit the returned list to a max of \limit entries
+     *  \param type     The Message::Types that should be returned
+     *  \return The requested list of messages
+     */
+    static inline QList<Message> requestMsgsFiltered(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1,
+                                                     int limit = -1, Message::Types type = Message::Types{-1},
+                                                     Message::Flags flags = Message::Flags{-1})
+    {
+        return instance()->_storage->requestMsgsFiltered(user, bufferId, first, last, limit, type, flags);
+    }
+
+
     //! Request a certain number of messages across all buffers
     /** \param first    if != -1 return only messages with a MsgId >= first
      *  \param last     if != -1 return only messages with a MsgId < last
@@ -438,6 +454,21 @@ public:
     static inline QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1)
     {
         return instance()->_storage->requestAllMsgs(user, first, last, limit);
+    }
+
+
+    //! Request a certain number of messages across all buffers, matching certain filters
+    /** \param first    if != -1 return only messages with a MsgId >= first
+     *  \param last     if != -1 return only messages with a MsgId < last
+     *  \param limit    Max amount of messages
+     *  \param type     The Message::Types that should be returned
+     *  \return The requested list of messages
+     */
+    static inline QList<Message> requestAllMsgsFiltered(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1,
+                                                        Message::Types type = Message::Types{-1},
+                                                        Message::Flags flags = Message::Flags{-1})
+    {
+        return instance()->_storage->requestAllMsgsFiltered(user, first, last, limit, type, flags);
     }
 
 
