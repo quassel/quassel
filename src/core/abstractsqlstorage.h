@@ -234,6 +234,7 @@ public:
         int lastseenmsgid;
         int markerlinemsgid;
         int bufferactivity;
+        int highlightcount;
         QString key;
         bool joined;
         QString cipher;

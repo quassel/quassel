@@ -47,7 +47,16 @@ public slots:
         }
     }
 
+    void addCoreHighlight(const Message &message) {
+        auto oldHighlightCount = highlightCount(message.bufferId());
+        if (message.flags().testFlag(Message::Flag::Highlight) && !message.flags().testFlag(Message::Flag::Self)) {
+            setHighlightCount(message.bufferId(), oldHighlightCount + 1);
+        }
+    }
+
     void setBufferActivity(BufferId buffer, int activity) override;
+
+    void setHighlightCount(BufferId buffer, int highlightCount) override;
 
     inline void requestRenameBuffer(BufferId buffer, QString newName) override { renameBuffer(buffer, newName); }
     void renameBuffer(BufferId buffer, QString newName) override;
@@ -60,6 +69,7 @@ public slots:
     inline void requestMarkBufferAsRead(BufferId buffer) override {
         int activity = Message::Types();
         setBufferActivity(buffer, activity);
+        setHighlightCount(buffer, 0);
         markBufferAsRead(buffer);
     }
 
@@ -75,6 +85,7 @@ private:
     QSet<BufferId> dirtyLastSeenBuffers;
     QSet<BufferId> dirtyMarkerLineBuffers;
     QSet<BufferId> dirtyActivities;
+    QSet<BufferId> dirtyHighlights;
 
     void purgeBufferIds();
 };
