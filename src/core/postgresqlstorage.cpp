@@ -47,7 +47,7 @@ std::unique_ptr<AbstractSqlMigrationWriter> PostgreSqlStorage::createMigrationWr
     properties["Hostname"] = _hostName;
     properties["Port"] = _port;
     properties["Database"] = _databaseName;
-    writer->setConnectionProperties(properties);
+    writer->setConnectionProperties(properties, {}, false);
     return std::unique_ptr<AbstractSqlMigrationWriter>{writer};
 }
 
@@ -147,13 +147,23 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase &db)
 }
 
 
-void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties)
+void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties,
+                                                const QProcessEnvironment &environment,
+                                                bool loadFromEnvironment)
 {
-    _userName = properties["Username"].toString();
-    _password = properties["Password"].toString();
-    _hostName = properties["Hostname"].toString();
-    _port = properties["Port"].toInt();
-    _databaseName = properties["Database"].toString();
+    if (loadFromEnvironment) {
+        _userName = environment.value("DB_PGSQL_USERNAME");
+        _password = environment.value("DB_PGSQL_PASSWORD");
+        _hostName = environment.value("DB_PGSQL_HOSTNAME");
+        _port = environment.value("DB_PGSQL_PORT").toInt();
+        _databaseName = environment.value("DB_PGSQL_DATABASE");
+    } else {
+        _userName = properties["Username"].toString();
+        _password = properties["Password"].toString();
+        _hostName = properties["Hostname"].toString();
+        _port = properties["Port"].toInt();
+        _databaseName = properties["Database"].toString();
+    }
 }
 
 

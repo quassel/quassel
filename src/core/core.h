@@ -718,8 +718,12 @@ private slots:
     void incomingConnection();
     void clientDisconnected();
 
-    bool initStorage(const QString &backend, const QVariantMap &settings, bool setup = false);
-    bool initAuthenticator(const QString &backend, const QVariantMap &settings, bool setup = false);
+    bool initStorage(const QString &backend, const QVariantMap &settings,
+                     const QProcessEnvironment &environment, bool loadFromEnvironment,
+                     bool setup = false);
+    bool initAuthenticator(const QString &backend, const QVariantMap &settings,
+                           const QProcessEnvironment &environment, bool loadFromEnvironment,
+                           bool setup = false);
 
     void socketError(QAbstractSocket::SocketError err, const QString &errorString);
     void setupClientSession(RemotePeer *, UserId);

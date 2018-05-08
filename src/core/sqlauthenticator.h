@@ -40,8 +40,10 @@ public slots:
 
     virtual inline bool canChangePassword() const { return true; }
 
-    bool setup(const QVariantMap &settings = QVariantMap());
-    State init(const QVariantMap &settings = QVariantMap());
+    bool setup(const QVariantMap &settings, const QProcessEnvironment &environment,
+               bool loadFromEnvironment);
+    State init(const QVariantMap &settings, const QProcessEnvironment &environment,
+               bool loadFromEnvironment);
     UserId validateUser(const QString &user, const QString &password);
 
     /* User handling */

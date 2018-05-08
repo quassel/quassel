@@ -163,6 +163,7 @@ int main(int argc, char **argv)
     cliParser->addSwitch("syslog", 0, "Log to syslog");
 #endif
     cliParser->addOption("logfile", 'l', "Log to a file", "path");
+    cliParser->addSwitch("config-from-environment", 0, "Load configuration from environment variables");
     cliParser->addOption("select-backend", 0, "Switch storage backend (migrating data if possible)", "backendidentifier");
     cliParser->addOption("select-authenticator", 0, "Select authentication backend", "authidentifier");
     cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
