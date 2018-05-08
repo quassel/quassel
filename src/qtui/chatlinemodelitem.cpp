@@ -65,7 +65,7 @@ bool ChatLineModelItem::setData(int column, const QVariant &value, int role)
 {
     switch (role) {
     case MessageModel::FlagsRole:
-        _styledMsg.setFlags((Message::Flags)value.toUInt());
+        _styledMsg.setFlags((Message::Flags)value.toInt());
         return true;
     default:
         return MessageModelItem::setData(column, value, role);

@@ -1931,13 +1931,13 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
         while (query.next()) {
             Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
                 bufferInfo,
-                (Message::Type)query.value(2).toUInt(),
+                (Message::Type)query.value(2).toInt(),
                 query.value(8).toString(),
                 query.value(4).toString(),
                 query.value(5).toString(),
                 query.value(6).toString(),
                 query.value(7).toString(),
-                (Message::Flags)query.value(3).toUInt());
+                (Message::Flags)query.value(3).toInt());
             msg.setMsgId(query.value(0).toLongLong());
             messagelist << msg;
         }
@@ -2007,7 +2007,7 @@ QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId
         while (query.next()) {
             Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
                         bufferInfo,
-                        (Message::Type)query.value(2).toUInt(),
+                        (Message::Type)query.value(2).toInt(),
                         query.value(8).toString(),
                         query.value(4).toString(),
                         query.value(5).toString(),
@@ -2064,13 +2064,13 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
         while (query.next()) {
             Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
                 bufferInfoHash[query.value(1).toInt()],
-                (Message::Type)query.value(3).toUInt(),
+                (Message::Type)query.value(3).toInt(),
                 query.value(9).toString(),
                 query.value(5).toString(),
                 query.value(6).toString(),
                 query.value(7).toString(),
                 query.value(8).toString(),
-                (Message::Flags)query.value(4).toUInt());
+                (Message::Flags)query.value(4).toInt());
             msg.setMsgId(query.value(0).toLongLong());
             messagelist << msg;
         }
@@ -2123,7 +2123,7 @@ QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, M
         while (query.next()) {
             Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
                         bufferInfoHash[query.value(1).toInt()],
-                        (Message::Type)query.value(3).toUInt(),
+                        (Message::Type)query.value(3).toInt(),
                         query.value(9).toString(),
                         query.value(5).toString(),
                         query.value(6).toString(),
