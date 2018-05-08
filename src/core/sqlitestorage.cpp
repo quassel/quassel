@@ -1576,6 +1576,50 @@ Message::Types SqliteStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMs
     return result;
 }
 
+QHash<QString, QByteArray> SqliteStorage::bufferCiphers(UserId user, const NetworkId &networkId)
+{
+    QHash<QString, QByteArray> bufferCiphers;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_buffer_ciphers"));
+        query.bindValue(":userid", user.toInt());
+        query.bindValue(":networkid", networkId.toInt());
+
+        lockForRead();
+        safeExec(query);
+        watchQuery(query);
+        while (query.next()) {
+            bufferCiphers[query.value(0).toString()] = QByteArray::fromHex(query.value(1).toString().toUtf8());
+        }
+    }
+    unlock();
+    return bufferCiphers;
+}
+
+void SqliteStorage::setBufferCipher(UserId user, const NetworkId &networkId, const QString &bufferName, const QByteArray &cipher)
+{
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("update_buffer_cipher"));
+        query.bindValue(":userid", user.toInt());
+        query.bindValue(":networkid", networkId.toInt());
+        query.bindValue(":buffercname", bufferName.toLower());
+        query.bindValue(":cipher", QString(cipher.toHex()));
+
+        lockForWrite();
+        safeExec(query);
+        watchQuery(query);
+        db.commit();
+    }
+    unlock();
+}
+
 bool SqliteStorage::logMessage(Message &msg)
 {
     QSqlDatabase db = logDb();
@@ -2074,6 +2118,7 @@ bool SqliteMigrationReader::readMo(BufferMO &buffer)
     buffer.bufferactivity = value(10).toInt();
     buffer.key = value(11).toString();
     buffer.joined = value(12).toInt() == 1 ? true : false;
+    buffer.cipher = value(13).toString();
     return true;
 }
 

@@ -1440,6 +1440,44 @@ Message::Types PostgreSqlStorage::bufferActivity(BufferId bufferId, MsgId lastSe
     return result;
 }
 
+QHash<QString, QByteArray> PostgreSqlStorage::bufferCiphers(UserId user, const NetworkId &networkId)
+{
+    QHash<QString, QByteArray> bufferCiphers;
+
+    QSqlDatabase db = logDb();
+    if (!beginReadOnlyTransaction(db)) {
+        qWarning() << "PostgreSqlStorage::persistentChannels(): cannot start read only transaction!";
+        qWarning() << " -" << qPrintable(db.lastError().text());
+        return bufferCiphers;
+    }
+
+    QSqlQuery query(db);
+    query.prepare(queryString("select_buffer_ciphers"));
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":networkid", networkId.toInt());
+    safeExec(query);
+    watchQuery(query);
+
+    while (query.next()) {
+        bufferCiphers[query.value(0).toString()] = QByteArray::fromHex(query.value(1).toString().toUtf8());
+    }
+
+    db.commit();
+    return bufferCiphers;
+}
+
+void PostgreSqlStorage::setBufferCipher(UserId user, const NetworkId &networkId, const QString &bufferName, const QByteArray &cipher)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("update_buffer_cipher"));
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":networkid", networkId.toInt());
+    query.bindValue(":buffercname", bufferName.toLower());
+    query.bindValue(":cipher", QString(cipher.toHex()));
+    safeExec(query);
+    watchQuery(query);
+}
+
 bool PostgreSqlStorage::logMessage(Message &msg)
 {
     QSqlDatabase db = logDb();
@@ -2066,6 +2104,7 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer)
     bindValue(10, buffer.bufferactivity);
     bindValue(11, buffer.key);
     bindValue(12, buffer.joined);
+    bindValue(13, buffer.cipher);
     return exec();
 }
 

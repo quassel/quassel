@@ -411,6 +411,25 @@ public slots:
      */
     virtual Message::Types bufferActivity(BufferId bufferId, MsgId lastSeenMsgId) = 0;
 
+    //! Get a hash of buffers with their ciphers for a given network
+    /** The keys are channel names and values are ciphers (possibly empty)
+     *  \note This method is threadsafe
+     *
+     *  \param user       The id of the networks owner
+     *  \param networkId  The Id of the network
+     */
+    virtual QHash<QString, QByteArray> bufferCiphers(UserId user, const NetworkId &networkId) = 0;
+
+    //! Update the cipher of a buffer
+    /** \note This method is threadsafe
+     *
+     *  \param user        The Id of the networks owner
+     *  \param networkId   The Id of the network
+     *  \param bufferName The Cname of the buffer
+     *  \param cipher      The cipher for the buffer
+     */
+    virtual void setBufferCipher(UserId user, const NetworkId &networkId, const QString &bufferName, const QByteArray &cipher) = 0;
+
     /* Message handling */
 
     //! Store a Message in the storage backend and set its unique Id.
