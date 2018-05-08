@@ -32,7 +32,7 @@ IdentServer::IdentServer(bool strict, QObject *parent) : QObject(parent), _stric
 IdentServer::~IdentServer() = default;
 
 bool IdentServer::startListening() {
-    uint16_t port = 10113;
+    uint16_t port = Quassel::optionValue("ident-port").toUShort();
 
     bool success = false;
     if (_v6server.listen(QHostAddress("::1"), port)) {
