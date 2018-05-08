@@ -63,12 +63,15 @@ public slots:
 
     bool canChangePassword() const override { return false; }
 
-    bool setup(const QVariantMap &settings = {}) override;
-    State init(const QVariantMap &settings = {}) override;
+    bool setup(const QVariantMap &settings, const QProcessEnvironment &environment,
+               bool loadFromEnvironment) override;
+    State init(const QVariantMap &settings, const QProcessEnvironment &environment,
+               bool loadFromEnvironment) override;
     UserId validateUser(const QString &user, const QString &password) override;
 
 protected:
-    void setAuthProperties(const QVariantMap &properties);
+    void setAuthProperties(const QVariantMap &properties, const QProcessEnvironment &environment,
+                           bool loadFromEnvironment);
     bool ldapConnect();
     void ldapDisconnect();
     bool ldapAuth(const QString &username, const QString &password);

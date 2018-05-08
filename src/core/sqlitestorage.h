@@ -124,7 +124,14 @@ public slots:
     QString getAuthUserName(UserId user) override;
 
 protected:
-    void setConnectionProperties(const QVariantMap & /* properties */)  override {}
+    void setConnectionProperties(const QVariantMap &properties,
+                                 const QProcessEnvironment &environment,
+                                 bool loadFromEnvironment) override {
+        Q_UNUSED(properties);
+        Q_UNUSED(environment);
+        Q_UNUSED(loadFromEnvironment);
+    }
+    // SQLite does not have any connection properties to set
     QString driverName()  override { return "QSQLITE"; }
     QString databaseName()  override { return backlogFile(); }
     int installedSchemaVersion() override;
