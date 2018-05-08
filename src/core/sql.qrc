@@ -81,6 +81,7 @@
     <file>./SQL/PostgreSQL/setup_110_alter_sender_seq.sql</file>
     <file>./SQL/PostgreSQL/setup_120_alter_messageid_seq.sql</file>
     <file>./SQL/PostgreSQL/setup_130_function_lastmsgid.sql</file>
+    <file>./SQL/PostgreSQL/setup_140_sender_idx.sql</file>
     <file>./SQL/PostgreSQL/update_backlog_bufferid.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_bufferactivity.sql</file>
     <file>./SQL/PostgreSQL/update_buffer_cipher.sql</file>
@@ -118,6 +119,10 @@
     <file>./SQL/PostgreSQL/version/24/upgrade_000_alter_buffer_add_bufferactivity.sql</file>
     <file>./SQL/PostgreSQL/version/25/upgrade_000_alter_buffer_add_cipher.sql</file>
     <file>./SQL/PostgreSQL/version/26/upgrade_000_alter_buffer_add_highlightcount.sql</file>
+    <file>./SQL/PostgreSQL/version/27/upgrade_000_update_sender_add_realname.sql</file>
+    <file>./SQL/PostgreSQL/version/27/upgrade_010_update_sender_add_avatarurl.sql</file>
+    <file>./SQL/PostgreSQL/version/27/upgrade_020_update_sender_add_new_constraint.sql</file>
+    <file>./SQL/PostgreSQL/version/27/upgrade_030_upgrade_sender_drop_old_constraint.sql</file>
     <file>./SQL/SQLite/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/delete_backlog_for_network.sql</file>
@@ -201,6 +206,7 @@
     <file>./SQL/SQLite/setup_120_user_setting.sql</file>
     <file>./SQL/SQLite/setup_130_identity.sql</file>
     <file>./SQL/SQLite/setup_140_identity_nick.sql</file>
+    <file>./SQL/SQLite/setup_150_sender_idx.sql</file>
     <file>./SQL/SQLite/update_backlog_bufferid.sql</file>
     <file>./SQL/SQLite/update_buffer_bufferactivity.sql</file>
     <file>./SQL/SQLite/update_buffer_cipher.sql</file>
@@ -311,5 +317,10 @@
     <file>./SQL/SQLite/version/26/upgrade_000_create_buffer_idx.sql</file>
     <file>./SQL/SQLite/version/27/upgrade_000_alter_buffer_add_cipher.sql</file>
     <file>./SQL/SQLite/version/28/upgrade_000_alter_buffer_add_highlightcount.sql</file>
+    <file>./SQL/SQLite/version/29/upgrade_000_create_sender_tmp.sql</file>
+    <file>./SQL/SQLite/version/29/upgrade_010_copy_sender_sender_tmp.sql</file>
+    <file>./SQL/SQLite/version/29/upgrade_020_drop_sender.sql</file>
+    <file>./SQL/SQLite/version/29/upgrade_030_rename_sender_tmp_sender.sql</file>
+    <file>./SQL/SQLite/version/29/upgrade_040_update_sender_add_realname_avatarurl.sql</file>
 </qresource>
 </RCC>
