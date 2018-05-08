@@ -394,6 +394,7 @@ void Client::setSyncedToCore()
     connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), _messageModel, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
     connect(bufferSyncer(), SIGNAL(bufferMarkedAsRead(BufferId)), SIGNAL(bufferMarkedAsRead(BufferId)));
     connect(bufferSyncer(), SIGNAL(bufferActivityChanged(BufferId, const Message::Types)), _networkModel, SLOT(bufferActivityChanged(BufferId, const Message::Types)));
+    connect(bufferSyncer(), SIGNAL(highlightCountChanged(BufferId, int)), _networkModel, SLOT(highlightCountChanged(BufferId, int)));
     connect(networkModel(), SIGNAL(requestSetLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
 
     SignalProxy *p = signalProxy();
@@ -460,8 +461,10 @@ void Client::finishConnectionInitialization()
     disconnect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));
 
     requestInitialBacklog();
-    if (isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync))
+    if (isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync)) {
         bufferSyncer()->markActivitiesChanged();
+        bufferSyncer()->markHighlightCountsChanged();
+    }
 }
 
 

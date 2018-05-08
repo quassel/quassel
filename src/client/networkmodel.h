@@ -386,6 +386,7 @@ public slots:
     void updateBufferActivity(Message &msg);
     void networkRemoved(const NetworkId &networkId);
     void bufferActivityChanged(BufferId, Message::Types);
+    void highlightCountChanged(BufferId, int);
 
 signals:
     void requestSetLastSeenMsg(BufferId buffer, MsgId msg);

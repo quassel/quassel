@@ -10,6 +10,7 @@ create TABLE buffer (
 	lastseenmsgid integer NOT NULL DEFAULT 0,
 	markerlinemsgid integer NOT NULL DEFAULT 0,
 	bufferactivity integer NOT NULL DEFAULT 0,
+	highlightcount integer NOT NULL DEFAULT 0,
 	key varchar(128),
 	joined boolean NOT NULL DEFAULT FALSE, -- BOOL
 	cipher TEXT,

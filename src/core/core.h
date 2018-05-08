@@ -606,6 +606,39 @@ public:
         return instance()->_storage->bufferActivity(bufferId, lastSeenMsgId);
     }
 
+    //! Update the highlight count for a Buffer
+    /** This Method is used to make the highlight count state of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of that Buffer
+     * \param bufferId  The buffer id
+     * \param MsgId     The Message id where the marker line should be placed
+     */
+    static inline void setHighlightCount(UserId user, BufferId bufferId, int highlightCount) {
+        return instance()->_storage->setHighlightCount(user, bufferId, highlightCount);
+    }
+
+
+    //! Get a Hash of all highlight count states
+    /** This Method is called when the Quassel Core is started to restore the highlight count
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    static inline QHash<BufferId, int> highlightCounts(UserId user) {
+        return instance()->_storage->highlightCounts(user);
+    }
+    //! Get the highlight count states for a buffer
+    /** This method is used to load the highlight count of a buffer when its last seen message changes.
+     *  \note This method is threadsafe.
+     *
+     * \param bufferId The buffer
+     * \param lastSeenMsgId     The last seen message
+     */
+    static inline int highlightCount(BufferId bufferId, MsgId lastSeenMsgId) {
+        return instance()->_storage->highlightCount(bufferId, lastSeenMsgId);
+    }
+
     static inline QDateTime startTime() { return instance()->_startTime; }
     static inline bool isConfigured() { return instance()->_configured; }
     static bool sslSupported();

@@ -34,11 +34,12 @@ public:
 
 INIT_SYNCABLE_OBJECT(CoreBufferSyncer)
 CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
-    : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), Core::bufferMarkerLineMsgIds(parent->user()), Core::bufferActivities(parent->user()), parent),
+    : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), Core::bufferMarkerLineMsgIds(parent->user()), Core::bufferActivities(parent->user()), Core::highlightCounts(parent->user()), parent),
     _coreSession(parent),
     _purgeBuffers(false)
 {
     connect(parent, SIGNAL(displayMsg(Message)), SLOT(addBufferActivity(Message)));
+    connect(parent, SIGNAL(displayMsg(Message)), SLOT(addCoreHighlight(Message)));
 }
 
 
@@ -46,7 +47,11 @@ void CoreBufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId
 {
     if (setLastSeenMsg(buffer, msgId)) {
         int activity = Core::bufferActivity(buffer, msgId);
+        int highlightCount = Core::highlightCount(buffer, msgId);
+
         setBufferActivity(buffer, activity);
+        setHighlightCount(buffer, highlightCount);
+
         dirtyLastSeenBuffers << buffer;
     }
 }
@@ -79,9 +84,14 @@ void CoreBufferSyncer::storeDirtyIds()
         Core::setBufferActivity(userId, bufferId, activity(bufferId));
     }
 
+    foreach(BufferId bufferId, dirtyHighlights) {
+        Core::setHighlightCount(userId, bufferId, highlightCount(bufferId));
+    }
+
     dirtyLastSeenBuffers.clear();
     dirtyMarkerLineBuffers.clear();
     dirtyActivities.clear();
+    dirtyHighlights.clear();
 }
 
 
@@ -194,4 +204,9 @@ void CoreBufferSyncer::purgeBufferIds()
 void CoreBufferSyncer::setBufferActivity(BufferId buffer, int activity) {
     BufferSyncer::setBufferActivity(buffer, activity);
     dirtyActivities << buffer;
+}
+
+void CoreBufferSyncer::setHighlightCount(BufferId buffer, int highlightCount) {
+    BufferSyncer::setHighlightCount(buffer, highlightCount);
+    dirtyHighlights << buffer;
 }

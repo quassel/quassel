@@ -430,6 +430,33 @@ public slots:
      */
     virtual void setBufferCipher(UserId user, const NetworkId &networkId, const QString &bufferName, const QByteArray &cipher) = 0;
 
+    //! Update the highlight count for a Buffer
+    /** This Method is used to make the activity state of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of that Buffer
+     * \param bufferId  The buffer id
+     * \param MsgId     The Message id where the marker line should be placed
+     */
+    virtual void setHighlightCount(UserId id, BufferId bufferId, int count) = 0;
+
+    //! Get a Hash of all highlight count states
+    /** This Method is called when the Quassel Core is started to restore the HighlightCounts
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    virtual QHash<BufferId, int> highlightCounts(UserId id) = 0;
+
+    //! Get the highlight count states for a buffer
+    /** This method is used to load the activity state of a buffer when its last seen message changes.
+     *  \note This method is threadsafe.
+     *
+     * \param bufferId The buffer
+     * \param lastSeenMsgId     The last seen message
+     */
+    virtual int highlightCount(BufferId bufferId, MsgId lastSeenMsgId) = 0;
+
     /* Message handling */
 
     //! Store a Message in the storage backend and set its unique Id.

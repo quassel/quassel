@@ -147,8 +147,12 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo)
     }
 
     BufferSyncer *bufferSyncer = Client::bufferSyncer();
-    if (bufferSyncer)
-        bufferItem->addActivity(bufferSyncer->activity(bufferItem->bufferId()), false);
+    if (bufferSyncer) {
+        bufferItem->addActivity(
+                bufferSyncer->activity(bufferItem->bufferId()),
+                bufferSyncer->highlightCount(bufferItem->bufferId()) > 0
+        );
+    }
 
     return bufferItem;
 }
@@ -1756,4 +1760,13 @@ void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types
     auto visibleTypes = ~hiddenTypes;
     auto activityVisibleTypesIntersection = activity & visibleTypes;
     _bufferItem->setActivity(activityVisibleTypesIntersection, false);
+}
+
+void NetworkModel::highlightCountChanged(BufferId bufferId, int count) {
+    auto _bufferItem = findBufferItem(bufferId);
+    if (!_bufferItem) {
+        qDebug() << "NetworkModel::highlightCountChanged(): buffer is unknown:" << bufferId;
+        return;
+    }
+    _bufferItem->addActivity(Message::Types{}, count > 0);
 }
