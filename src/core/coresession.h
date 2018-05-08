@@ -241,6 +241,20 @@ private:
      * @param bufferInfo The BufferInfo object of the buffer
      */
     QString senderPrefixes(const QString &sender, const BufferInfo &bufferInfo) const;
+
+    /**
+     * This method obtains the realname of the message's sender.
+     * @param sender The hostmask of the sender
+     * @param networkId The network the user is on
+     */
+    QString realName(const QString &sender, NetworkId networkId) const;
+
+    /**
+     * This method obtains the avatar of the message's sender.
+     * @param sender The hostmask of the sender
+     * @param networkId The network the user is on
+     */
+    QString avatarUrl(const QString &sender, NetworkId networkId) const;
     QList<RawMessage> _messageQueue;
     bool _processMessages;
     CoreIgnoreListManager _ignoreListManager;

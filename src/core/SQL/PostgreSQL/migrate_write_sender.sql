@@ -1,2 +1,2 @@
-INSERT INTO sender (senderid, sender)
-VALUES (?, ?)
+INSERT INTO sender (senderid, sender, realname, avatarurl)
+VALUES (?, ?, ?, ?)

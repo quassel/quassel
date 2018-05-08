@@ -584,3 +584,13 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo)
     qDebug() << "Done.";
     return true;
 }
+
+uint qHash(const SenderData &key) {
+    return qHash(QString(key.sender + "\n" + key.realname + "\n" + key.avatarurl));
+}
+
+bool operator==(const SenderData &a, const SenderData &b) {
+    return a.sender == b.sender &&
+        a.realname == b.realname &&
+        a.avatarurl == b.avatarurl;
+}

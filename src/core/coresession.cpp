@@ -385,8 +385,9 @@ void CoreSession::processMessages()
             Q_ASSERT(!createBuffer);
             bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, BufferInfo::StatusBuffer, "");
         }
-        Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender,
-                    senderPrefixes(rawMsg.sender, bufferInfo), rawMsg.flags);
+        Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, senderPrefixes(rawMsg.sender, bufferInfo),
+                    realName(rawMsg.sender, rawMsg.networkId),  avatarUrl(rawMsg.sender, rawMsg.networkId),
+                    rawMsg.flags);
         if(Core::storeMessage(msg))
             emit displayMsg(msg);
     }
@@ -410,8 +411,9 @@ void CoreSession::processMessages()
                 }
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender,
-                        senderPrefixes(rawMsg.sender, bufferInfo), rawMsg.flags);
+            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, senderPrefixes(rawMsg.sender, bufferInfo),
+                        realName(rawMsg.sender, rawMsg.networkId),  avatarUrl(rawMsg.sender, rawMsg.networkId),
+                        rawMsg.flags);
             messages << msg;
         }
 
@@ -427,8 +429,9 @@ void CoreSession::processMessages()
                 // add the StatusBuffer to the Cache in case there are more Messages for the original target
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender,
-                        senderPrefixes(rawMsg.sender, bufferInfo), rawMsg.flags);
+            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, senderPrefixes(rawMsg.sender, bufferInfo),
+                        realName(rawMsg.sender, rawMsg.networkId),  avatarUrl(rawMsg.sender, rawMsg.networkId),
+                        rawMsg.flags);
             messages << msg;
         }
 
@@ -461,6 +464,33 @@ QString CoreSession::senderPrefixes(const QString &sender, const BufferInfo &buf
 
     const QString modes = currentChannel->userModes(nickFromMask(sender).toLower());
     return currentNetwork->modesToPrefixes(modes);
+}
+
+QString CoreSession::realName(const QString &sender, NetworkId networkId) const
+{
+    CoreNetwork *currentNetwork = network(networkId);
+    if (!currentNetwork) {
+        return {};
+    }
+
+    IrcUser *currentUser = currentNetwork->ircUser(nickFromMask(sender));
+    if (!currentUser) {
+        return {};
+    }
+
+    return currentUser->realName();
+}
+
+QString CoreSession::avatarUrl(const QString &sender, NetworkId networkId) const
+{
+    Q_UNUSED(sender);
+    Q_UNUSED(networkId);
+    // Currently we do not have a way to retrieve this value yet.
+    //
+    // This likely will require implementing IRCv3's METADATA spec.
+    // See https://ircv3.net/irc/
+    // And https://blog.irccloud.com/avatars/
+    return "";
 }
 
 Protocol::SessionState CoreSession::sessionState() const

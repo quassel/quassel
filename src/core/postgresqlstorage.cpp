@@ -1542,7 +1542,11 @@ bool PostgreSqlStorage::logMessage(Message &msg)
         return false;
     }
 
-    QSqlQuery getSenderIdQuery = executePreparedQuery("select_senderid", msg.sender(), db);
+    QVariantList senderParams;
+    senderParams << msg.sender()
+                 << msg.realName()
+                 << msg.avatarUrl();
+    QSqlQuery getSenderIdQuery = executePreparedQuery("select_senderid", senderParams, db);
     int senderId;
     if (getSenderIdQuery.first()) {
         senderId = getSenderIdQuery.value(0).toInt();
@@ -1551,11 +1555,11 @@ bool PostgreSqlStorage::logMessage(Message &msg)
         // it's possible that the sender was already added by another thread
         // since the insert might fail we're setting a savepoint
         savePoint("sender_sp1", db);
-        QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", msg.sender(), db);
+        QSqlQuery addSenderQuery = executePreparedQuery("insert_sender", senderParams, db);
 
         if (addSenderQuery.lastError().isValid()) {
             rollbackSavePoint("sender_sp1", db);
-            getSenderIdQuery = executePreparedQuery("select_senderid", msg.sender(), db);
+            getSenderIdQuery = executePreparedQuery("select_senderid", senderParams, db);
             watchQuery(getSenderIdQuery);
             getSenderIdQuery.first();
             senderId = getSenderIdQuery.value(0).toInt();
@@ -1605,28 +1609,34 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
     }
 
     QList<int> senderIdList;
-    QHash<QString, int> senderIds;
+    QHash<SenderData, int> senderIds;
     QSqlQuery addSenderQuery;
     QSqlQuery selectSenderQuery;;
     for (int i = 0; i < msgs.count(); i++) {
-        const QString &sender = msgs.at(i).sender();
+        auto &msg = msgs.at(i);
+        SenderData sender = { msg.sender(), msg.realName(), msg.avatarUrl() };
         if (senderIds.contains(sender)) {
             senderIdList << senderIds[sender];
             continue;
         }
 
-        selectSenderQuery = executePreparedQuery("select_senderid", sender, db);
+        QVariantList senderParams;
+        senderParams << sender.sender
+                     << sender.realname
+                     << sender.avatarurl;
+
+        selectSenderQuery = executePreparedQuery("select_senderid", senderParams, db);
         if (selectSenderQuery.first()) {
             senderIdList << selectSenderQuery.value(0).toInt();
             senderIds[sender] = selectSenderQuery.value(0).toInt();
         }
         else {
             savePoint("sender_sp", db);
-            addSenderQuery = executePreparedQuery("insert_sender", sender, db);
+            addSenderQuery = executePreparedQuery("insert_sender", senderParams, db);
             if (addSenderQuery.lastError().isValid()) {
                 // seems it was inserted meanwhile... by a different thread
                 rollbackSavePoint("sender_sp", db);
-                selectSenderQuery = executePreparedQuery("select_senderid", sender, db);
+                selectSenderQuery = executePreparedQuery("select_senderid", senderParams, db);
                 watchQuery(selectSenderQuery);
                 selectSenderQuery.first();
                 senderIdList << selectSenderQuery.value(0).toInt();
@@ -1730,9 +1740,11 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
         Message msg(timestamp,
             bufferInfo,
             (Message::Type)query.value(2).toUInt(),
-            query.value(6).toString(),
+            query.value(8).toString(),
             query.value(4).toString(),
             query.value(5).toString(),
+            query.value(6).toString(),
+            query.value(7).toString(),
             (Message::Flags)query.value(3).toUInt());
         msg.setMsgId(query.value(0).toInt());
         messagelist << msg;
@@ -1783,9 +1795,11 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
         Message msg(timestamp,
             bufferInfoHash[query.value(1).toInt()],
             (Message::Type)query.value(3).toUInt(),
-            query.value(7).toString(),
+            query.value(9).toString(),
             query.value(5).toString(),
             query.value(6).toString(),
+            query.value(7).toString(),
+            query.value(8).toString(),
             (Message::Flags)query.value(4).toUInt());
         msg.setMsgId(query.value(0).toInt());
         messagelist << msg;
@@ -2060,6 +2074,8 @@ bool PostgreSqlMigrationWriter::writeMo(const SenderMO &sender)
 {
     bindValue(0, sender.senderId);
     bindValue(1, sender.sender);
+    bindValue(2, sender.realname);
+    bindValue(3, sender.avatarurl);
     return exec();
 }
 
