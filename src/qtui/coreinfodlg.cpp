@@ -59,7 +59,10 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
         coreSessionWidget->setData(peerMap);
         if (isNew) {
             _widgets[peerId] = coreSessionWidget;
-            ui.coreSessionContainer->addWidget(coreSessionWidget);
+            // Add this to the end of the session list, but before the default layout stretch item.
+            // The layout stretch item should never be removed, so count should always be >= 1.
+            ui.coreSessionContainer->insertWidget(ui.coreSessionContainer->count() - 1,
+                                                  coreSessionWidget, 0, Qt::AlignTop);
             connect(coreSessionWidget, SIGNAL(disconnectClicked(int)), this, SLOT(disconnectClicked(int)));
         }
     }
@@ -70,7 +73,6 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
     }
 
     ui.coreSessionScrollArea->setVisible(coreSessionSupported);
-    ui.coreSessionContainer->addStretch(1);
 }
 
 
