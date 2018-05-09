@@ -847,7 +847,10 @@ QVariantList SignalProxy::peerData() {
 }
 
 Peer *SignalProxy::peerById(int peerId) {
-    return _peerMap[peerId];
+    // We use ::value() here instead of the [] operator because the latter has the side-effect
+    // of automatically inserting a null value with the passed key into the map.  See
+    // https://doc.qt.io/qt-5/qhash.html#operator-5b-5d and https://doc.qt.io/qt-5/qhash.html#value.
+    return _peerMap.value(peerId);
 }
 
 void SignalProxy::restrictTargetPeers(QSet<Peer*> peers, std::function<void()> closure)
