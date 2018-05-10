@@ -449,13 +449,11 @@ void EventStringifier::processIrcEvent301(IrcEvent *e)
         target = nick;
         IrcUser *ircuser = e->network()->ircUser(nick);
         if (ircuser) {
-            // FIXME: This needs converted to 64-bit time.
-            // For legacy protocol, keep the 32-bit signed int time.  For modern protocol, just send
-            // the actual QDateTime() instead, don't bother converting it.
-            int now = QDateTime::currentDateTime().toTime_t();
-            // FIXME: Convert to millisecond comparison, comment the constant value as needed
+            QDateTime now = QDateTime::currentDateTime();
+            now.setTimeSpec(Qt::UTC);
+            // Don't print "user is away" messages more often than this
             const int silenceTime = 60;
-            if (ircuser->lastAwayMessage() + silenceTime >= now)
+            if (ircuser->lastAwayMessage().addSecs(silenceTime) >= now)
                 send = false;
             ircuser->setLastAwayMessage(now);
         }
