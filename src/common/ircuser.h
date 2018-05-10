@@ -50,7 +50,7 @@ class IrcUser : public SyncableObject
     Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime)
     Q_PROPERTY(QString server READ server WRITE setServer)
     Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator)
-    Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage)
+    Q_PROPERTY(QDateTime lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage)
     Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply)
     Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost)
     Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
@@ -79,7 +79,7 @@ public :
     inline QDateTime loginTime() const { return _loginTime; }
     inline QString server() const { return _server; }
     inline QString ircOperator() const { return _ircOperator; }
-    inline int lastAwayMessage() const { return _lastAwayMessage; }
+    inline QDateTime lastAwayMessage() const { return _lastAwayMessage; }
     inline QString whoisServiceReply() const { return _whoisServiceReply; }
     inline QString suserHost() const { return _suserHost; }
     inline bool encrypted() const { return _encrypted; }
@@ -123,7 +123,7 @@ public slots:
     void setLoginTime(const QDateTime &loginTime);
     void setServer(const QString &server);
     void setIrcOperator(const QString &ircOperator);
-    void setLastAwayMessage(const int &lastAwayMessage);
+    void setLastAwayMessage(const QDateTime &lastAwayMessage);
     void setWhoisServiceReply(const QString &whoisServiceReply);
     void setSuserHost(const QString &suserHost);
     void setEncrypted(bool encrypted);
@@ -156,7 +156,7 @@ signals:
 //   void loginTimeSet(QDateTime loginTime);
 //   void serverSet(QString server);
 //   void ircOperatorSet(QString ircOperator);
-//   void lastAwayMessageSet(int lastAwayMessage);
+//   void lastAwayMessageSet(QDateTime lastAwayMessage);
 //   void whoisServiceReplySet(QString whoisServiceReply);
 //   void suserHostSet(QString suserHost);
     void encryptedSet(bool encrypted);
@@ -203,7 +203,7 @@ private:
     QDateTime _idleTimeSet;
     QDateTime _loginTime;
     QString _ircOperator;
-    int _lastAwayMessage;
+    QDateTime _lastAwayMessage;
     QString _whoisServiceReply;
     QString _suserHost;
     bool _encrypted;

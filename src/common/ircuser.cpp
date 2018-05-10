@@ -40,7 +40,7 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     _server(),
     // _idleTime(QDateTime::currentDateTime()),
     _ircOperator(),
-    _lastAwayMessage(0),
+    _lastAwayMessage(),
     _whoisServiceReply(),
     _encrypted(false),
     _network(network),
@@ -48,6 +48,8 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     _codecForDecoding(0)
 {
     updateObjectName();
+    _lastAwayMessage.setTimeSpec(Qt::UTC);
+    _lastAwayMessage.setMSecsSinceEpoch(0);
 }
 
 
@@ -215,7 +217,7 @@ void IrcUser::setIrcOperator(const QString &ircOperator)
 }
 
 
-void IrcUser::setLastAwayMessage(const int &lastAwayMessage)
+void IrcUser::setLastAwayMessage(const QDateTime &lastAwayMessage)
 {
     if (lastAwayMessage > _lastAwayMessage) {
         _lastAwayMessage = lastAwayMessage;

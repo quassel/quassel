@@ -21,6 +21,7 @@
 #include <QTextCodec>
 
 #include "network.h"
+#include "peer.h"
 
 QTextCodec *Network::_defaultCodecForServer = 0;
 QTextCodec *Network::_defaultCodecForEncoding = 0;
@@ -881,6 +882,8 @@ QVariantMap Network::initCaps() const
 // (without compression) with a decent amount of IrcUsers.
 QVariantMap Network::initIrcUsersAndChannels() const
 {
+    Q_ASSERT(proxy());
+    Q_ASSERT(proxy()->targetPeer());
     QVariantMap usersAndChannels;
 
     if (_ircUsers.count()) {
@@ -888,7 +891,20 @@ QVariantMap Network::initIrcUsersAndChannels() const
         QHash<QString, IrcUser *>::const_iterator it = _ircUsers.begin();
         QHash<QString, IrcUser *>::const_iterator end = _ircUsers.end();
         while (it != end) {
-            const QVariantMap &map = it.value()->toVariantMap();
+            QVariantMap map = it.value()->toVariantMap();
+            // If the peer doesn't support LongTime, replace the lastAwayMessage field
+            // with the 32-bit numerical seconds value used in older versions
+            if (!proxy()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
+#if QT_VERSION >= 0x050800
+                int lastAwayMessage = it.value()->lastAwayMessage().toSecsSinceEpoch();
+#else
+                // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+                // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
+                int lastAwayMessage = it.value()->lastAwayMessage().toMSecsSinceEpoch() / 1000;
+#endif
+                map["lastAwayMessage"] = lastAwayMessage;
+            }
+
             QVariantMap::const_iterator mapiter = map.begin();
             while (mapiter != map.end()) {
                 users[mapiter.key()] << mapiter.value();
@@ -930,6 +946,7 @@ QVariantMap Network::initIrcUsersAndChannels() const
 void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels)
 {
     Q_ASSERT(proxy());
+    Q_ASSERT(proxy()->sourcePeer());
     if (isInitialized()) {
         qWarning() << "Network" << networkId() << "received init data for users and channels although there already are known users or channels!";
         return;
@@ -954,6 +971,22 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels)
         QVariantMap map;
         foreach(const QString &key, users.keys())
             map[key] = users[key].toList().at(i);
+
+        // If the peer doesn't support LongTime, upconvert the lastAwayMessage field
+        // from the 32-bit numerical seconds value used in older versions to QDateTime
+        if (!proxy()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
+            QDateTime lastAwayMessage = QDateTime();
+            lastAwayMessage.setTimeSpec(Qt::UTC);
+#if QT_VERSION >= 0x050800
+            lastAwayMessage.fromSecsSinceEpoch(map["lastAwayMessage"].toInt());
+#else
+            // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+            // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
+            lastAwayMessage.fromMSecsSinceEpoch(map["lastAwayMessage"].toInt() * 1000);
+#endif
+            map["lastAwayMessage"] = lastAwayMessage;
+        }
+
         newIrcUser(map["nick"].toString(), map); // newIrcUser() properly handles the hostmask being just the nick
     }
 
