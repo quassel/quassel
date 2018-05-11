@@ -376,7 +376,7 @@ QString Core::setupCoreForInternalUsage()
 {
     Q_ASSERT(!_registeredStorageBackends.empty());
 
-    qsrand(QDateTime::currentDateTime().toTime_t());
+    qsrand(QDateTime::currentDateTime().toMSecsSinceEpoch());
     int pass = 0;
     for (int i = 0; i < 10; i++) {
         pass *= 10;

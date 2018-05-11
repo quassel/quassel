@@ -114,6 +114,10 @@ private:
     QTimer _dayChangeTimer;
     QDateTime _nextDayChange;
     QHash<BufferId, int> _messagesWaiting;
+
+    /// Period of time for one day in milliseconds
+    /// 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+    const qint64 DAY_IN_MSECS = 24 * 60 * 60 * 1000;
 };
 
 

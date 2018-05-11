@@ -22,6 +22,8 @@
 #include "ircevent.h"
 #include "networkevent.h"
 #include "messageevent.h"
+#include "peer.h"
+#include "signalproxy.h"
 
 Event::Event(EventManager::EventType type)
     : _type(type)
@@ -40,16 +42,33 @@ Event::Event(EventManager::EventType type, QVariantMap &map)
         return;
     }
 
+    Q_ASSERT(SignalProxy::current());
+    Q_ASSERT(SignalProxy::current()->sourcePeer());
+
     setFlags(static_cast<EventManager::EventFlags>(map.take("flags").toInt())); // TODO sanity check?
-    setTimestamp(QDateTime::fromTime_t(map.take("timestamp").toUInt()));
+
+    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
+        // timestamp is a qint64, signed rather than unsigned
+        setTimestamp(QDateTime::fromMSecsSinceEpoch(map.take("timestamp").toLongLong()));
+    } else {
+        setTimestamp(QDateTime::fromTime_t(map.take("timestamp").toUInt()));
+    }
 }
 
 
 void Event::toVariantMap(QVariantMap &map) const
 {
+    Q_ASSERT(SignalProxy::current());
+    Q_ASSERT(SignalProxy::current()->targetPeer());
+
     map["type"] = static_cast<int>(type());
     map["flags"] = static_cast<int>(flags());
-    map["timestamp"] = timestamp().toTime_t();
+    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
+        // toMSecs returns a qint64, signed rather than unsigned
+        map["timestamp"] = timestamp().toMSecsSinceEpoch();
+    } else {
+        map["timestamp"] = timestamp().toTime_t();
+    }
 }
 
 

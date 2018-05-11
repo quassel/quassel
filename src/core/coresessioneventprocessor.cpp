@@ -959,8 +959,18 @@ void CoreSessionEventProcessor::processIrcEvent317(IrcEvent *e)
 
     int idleSecs = e->params()[1].toInt();
     if (e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
-        int logintime = e->params()[2].toInt();
-        loginTime = QDateTime::fromTime_t(logintime);
+        // Allow for 64-bit time
+        qint64 logintime = e->params()[2].toLongLong();
+        // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
+        // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
+#if QT_VERSION >= 0x050800
+        loginTime = QDateTime::fromSecsSinceEpoch(logintime);
+#else
+        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for
+        // now.
+        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+        loginTime = QDateTime::fromMSecsSinceEpoch((qint64)(logintime * 1000));
+#endif
     }
 
     IrcUser *ircuser = e->network()->ircUser(e->params()[0]);

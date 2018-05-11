@@ -68,8 +68,12 @@ QString IrcUser::hostmask() const
 
 QDateTime IrcUser::idleTime()
 {
-    if (QDateTime::currentDateTime().toTime_t() - _idleTimeSet.toTime_t() > 1200)
+    if ((QDateTime::currentDateTime().toMSecsSinceEpoch() - _idleTimeSet.toMSecsSinceEpoch())
+            > 1200000) {
+        // 20 * 60 * 1000 = 1200000
+        // 20 minutes have elapsed, clear the known idle time as it's likely inaccurate by now
         _idleTime = QDateTime();
+    }
     return _idleTime;
 }
 

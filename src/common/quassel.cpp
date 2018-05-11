@@ -296,7 +296,14 @@ void Quassel::setupBuildInfo()
     if (!QString(GIT_HEAD).isEmpty()) {
         buildInfo.commitHash = GIT_HEAD;
         QDateTime date;
-        date.setTime_t(GIT_COMMIT_DATE);
+#if QT_VERSION >= 0x050800
+        date.setSecsSinceEpoch(GIT_COMMIT_DATE);
+#else
+        // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+        // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
+        // Warning generated if not converting the 1000 to a qint64 first.
+        date.setMSecsSinceEpoch(GIT_COMMIT_DATE * (qint64)1000);
+#endif
         buildInfo.commitDate = date.toString();
     }
     else if (!QString(DIST_HASH).contains("Format")) {

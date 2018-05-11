@@ -41,7 +41,8 @@ MessageModel::MessageModel(QObject *parent)
     QDateTime now = QDateTime::currentDateTime();
     now.setTimeSpec(Qt::UTC);
     _nextDayChange.setTimeSpec(Qt::UTC);
-    _nextDayChange.setTime_t(((now.toTime_t() / 86400) + 1) * 86400);
+    _nextDayChange.setMSecsSinceEpoch(
+                ((now.toMSecsSinceEpoch() / DAY_IN_MSECS) + 1) * DAY_IN_MSECS);
     _nextDayChange.setTimeSpec(Qt::LocalTime);
     _dayChangeTimer.setInterval(QDateTime::currentDateTime().secsTo(_nextDayChange) * 1000);
     _dayChangeTimer.start();
@@ -158,10 +159,10 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist)
         QDateTime prevTs = msglist.last().timestamp();
         nextTs.setTimeSpec(Qt::UTC);
         prevTs.setTimeSpec(Qt::UTC);
-        uint nextDay = nextTs.toTime_t() / 86400;
-        uint prevDay = prevTs.toTime_t() / 86400;
+        qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
+        qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
         if (nextDay != prevDay) {
-            nextTs.setTime_t(nextDay * 86400);
+            nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
             nextTs.setTimeSpec(Qt::LocalTime);
             dayChangeMsg = Message::ChangeOfDay(nextTs);
             dayChangeMsg.setMsgId(msglist.last().msgId());
@@ -250,10 +251,10 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist)
                     QDateTime prevTs = (*iter).timestamp();
                     nextTs.setTimeSpec(Qt::UTC);
                     prevTs.setTimeSpec(Qt::UTC);
-                    uint nextDay = nextTs.toTime_t() / 86400;
-                    uint prevDay = prevTs.toTime_t() / 86400;
+                    qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
+                    qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     if (nextDay != prevDay) {
-                        nextTs.setTime_t(nextDay * 86400);
+                        nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
                         nextTs.setTimeSpec(Qt::LocalTime);
                         Message dayChangeMsg = Message::ChangeOfDay(nextTs);
                         dayChangeMsg.setMsgId((*iter).msgId());
@@ -282,10 +283,10 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist)
                     QDateTime prevTs = (*iter).timestamp();
                     nextTs.setTimeSpec(Qt::UTC);
                     prevTs.setTimeSpec(Qt::UTC);
-                    uint nextDay = nextTs.toTime_t() / 86400;
-                    uint prevDay = prevTs.toTime_t() / 86400;
+                    qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
+                    qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     if (nextDay != prevDay) {
-                        nextTs.setTime_t(nextDay * 86400);
+                        nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
                         nextTs.setTimeSpec(Qt::LocalTime);
                         Message dayChangeMsg = Message::ChangeOfDay(nextTs);
                         dayChangeMsg.setMsgId((*iter).msgId());
@@ -360,7 +361,7 @@ int MessageModel::indexForId(MsgId id)
 
 void MessageModel::changeOfDay()
 {
-    _dayChangeTimer.setInterval(86400000);
+    _dayChangeTimer.setInterval(DAY_IN_MSECS);
     if (!messagesIsEmpty()) {
         int idx = messageCount();
         while (idx > 0 && messageItemAt(idx - 1)->timestamp() > _nextDayChange) {
@@ -372,7 +373,7 @@ void MessageModel::changeOfDay()
         insertMessage__(idx, dayChangeMsg);
         endInsertRows();
     }
-    _nextDayChange = _nextDayChange.addSecs(86400);
+    _nextDayChange = _nextDayChange.addMSecs(DAY_IN_MSECS);
 }
 
 

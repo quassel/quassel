@@ -908,12 +908,17 @@ void CoreNetwork::doAutoReconnect()
 
 void CoreNetwork::sendPing()
 {
-    uint now = QDateTime::currentDateTime().toTime_t();
+    qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
     if (_pingCount != 0) {
         qDebug() << "UserId:" << userId() << "Network:" << networkName() << "missed" << _pingCount << "pings."
                  << "BA:" << socket.bytesAvailable() << "BTW:" << socket.bytesToWrite();
     }
-    if ((int)_pingCount >= networkConfig()->maxPingCount() && now - _lastPingTime <= (uint)(_pingTimer.interval() / 1000) + 1) {
+    if ((int)_pingCount >= networkConfig()->maxPingCount()
+            && (now - _lastPingTime) <= (_pingTimer.interval() + (1 * 1000))) {
+        // In transitioning to 64-bit time, the interval no longer needs converted down to seconds.
+        // However, to reduce the risk of breaking things by changing past behavior, we still allow
+        // up to 1 second missed instead of enforcing a stricter 1 millisecond allowance.
+        //
         // the second check compares the actual elapsed time since the last ping and the pingTimer interval
         // if the interval is shorter then the actual elapsed time it means that this thread was somehow blocked
         // and unable to even handle a ping answer. So we ignore those misses.
