@@ -1708,6 +1708,8 @@ bool SqliteStorage::logMessage(Message &msg)
         logMessageQuery.bindValue(":type", msg.type());
         logMessageQuery.bindValue(":flags", (int)msg.flags());
         logMessageQuery.bindValue(":sender", msg.sender());
+        logMessageQuery.bindValue(":realname", msg.realName());
+        logMessageQuery.bindValue(":avatarurl", msg.avatarUrl());
         logMessageQuery.bindValue(":senderprefixes", msg.senderPrefixes());
         logMessageQuery.bindValue(":message", msg.contents());
 
@@ -1789,6 +1791,8 @@ bool SqliteStorage::logMessages(MessageList &msgs)
             logMessageQuery.bindValue(":type", msg.type());
             logMessageQuery.bindValue(":flags", (int)msg.flags());
             logMessageQuery.bindValue(":sender", msg.sender());
+            logMessageQuery.bindValue(":realname", msg.realName());
+            logMessageQuery.bindValue(":avatarurl", msg.avatarUrl());
             logMessageQuery.bindValue(":senderprefixes", msg.senderPrefixes());
             logMessageQuery.bindValue(":message", msg.contents());
 
