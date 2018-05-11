@@ -1756,8 +1756,18 @@ bool SqliteStorage::logMessage(Message &msg)
     {
         QSqlQuery logMessageQuery(db);
         logMessageQuery.prepare(queryString("insert_message"));
-
-        logMessageQuery.bindValue(":time", msg.timestamp().toTime_t());
+        // Store timestamp in seconds as 64-bit integer
+        //
+        // NOTE:  This is a loss of precision.  The database time column would need to store a
+        // fractional number to support toMSecsSinceEpoch(), or an upgrade step would need to
+        // convert all past times to milliseconds, multiplying by 1000.
+#if QT_VERSION >= 0x050800
+        logMessageQuery.bindValue(":time", msg.timestamp().toSecsSinceEpoch());
+#else
+        // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+        // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
+        logMessageQuery.bindValue(":time", (qint64)(msg.timestamp().toMSecsSinceEpoch() / 1000));
+#endif
         logMessageQuery.bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
         logMessageQuery.bindValue(":type", msg.type());
         logMessageQuery.bindValue(":flags", (int)msg.flags());
@@ -1839,8 +1849,19 @@ bool SqliteStorage::logMessages(MessageList &msgs)
         logMessageQuery.prepare(queryString("insert_message"));
         for (int i = 0; i < msgs.count(); i++) {
             Message &msg = msgs[i];
-
-            logMessageQuery.bindValue(":time", msg.timestamp().toTime_t());
+            // Store timestamp in seconds as 64-bit integer
+            //
+            // NOTE:  This is a loss of precision.  The database time column would need to store a
+            // fractional number to support toMSecsSinceEpoch(), or an upgrade step would need to
+            // convert all past times to milliseconds, multiplying by 1000.
+#if QT_VERSION >= 0x050800
+            logMessageQuery.bindValue(":time", msg.timestamp().toSecsSinceEpoch());
+#else
+            // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+            // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
+            logMessageQuery.bindValue(":time",
+                                      (qint64)(msg.timestamp().toMSecsSinceEpoch() / 1000));
+#endif
             logMessageQuery.bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
             logMessageQuery.bindValue(":type", msg.type());
             logMessageQuery.bindValue(":flags", (int)msg.flags());
@@ -1929,7 +1950,20 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
         watchQuery(query);
 
         while (query.next()) {
-            Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
+            Message msg(
+                // Read timestamp in seconds as 64-bit integer
+                //
+                // NOTE:  This is a loss of precision.  The database time column would need to store
+                // a fractional number to support fromMSecsSinceEpoch(), or an upgrade step would
+                // need to convert all past times to milliseconds, multiplying by 1000.
+#if QT_VERSION >= 0x050800
+                QDateTime::fromSecsSinceEpoch(query.value(1).toLongLong()),
+#else
+                // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for
+                // now.
+                // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+                QDateTime::fromMSecsSinceEpoch((qint64)(query.value(1).toLongLong() * 1000)),
+#endif
                 bufferInfo,
                 (Message::Type)query.value(2).toInt(),
                 query.value(8).toString(),
@@ -2005,7 +2039,22 @@ QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId
         watchQuery(query);
 
         while (query.next()) {
-            Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
+            Message msg(
+                        // Read timestamp in seconds as 64-bit integer
+                        //
+                        // NOTE:  This is a loss of precision.  The database time column would need
+                        // to store a fractional number to support fromMSecsSinceEpoch(), or an
+                        // upgrade step would need to convert all past times to milliseconds,
+                        // multiplying by 1000.
+#if QT_VERSION >= 0x050800
+                        QDateTime::fromSecsSinceEpoch(query.value(1).toLongLong()),
+#else
+                        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to
+                        // seconds for now.
+                        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+                        QDateTime::fromMSecsSinceEpoch(
+                            (qint64)(query.value(1).toLongLong() * 1000)),
+#endif
                         bufferInfo,
                         (Message::Type)query.value(2).toInt(),
                         query.value(8).toString(),
@@ -2062,7 +2111,20 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
         watchQuery(query);
 
         while (query.next()) {
-            Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
+            Message msg(
+                // Read timestamp in seconds as 64-bit integer
+                //
+                // NOTE:  This is a loss of precision.  The database time column would need to store
+                // a fractional number to support fromMSecsSinceEpoch(), or an upgrade step would
+                // need to convert all past times to milliseconds, multiplying by 1000.
+#if QT_VERSION >= 0x050800
+                QDateTime::fromSecsSinceEpoch(query.value(2).toLongLong()),
+#else
+                // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for
+                // now.
+                // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+                QDateTime::fromMSecsSinceEpoch((qint64)(query.value(2).toLongLong() * 1000)),
+#endif
                 bufferInfoHash[query.value(1).toInt()],
                 (Message::Type)query.value(3).toInt(),
                 query.value(9).toString(),
@@ -2121,7 +2183,22 @@ QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, M
         watchQuery(query);
 
         while (query.next()) {
-            Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
+            Message msg(
+                        // Read timestamp in seconds as 64-bit integer
+                        //
+                        // NOTE:  This is a loss of precision.  The database time column would need
+                        // to store a fractional number to support fromMSecsSinceEpoch(), or an
+                        // upgrade step would need to convert all past times to milliseconds,
+                        // multiplying by 1000.
+#if QT_VERSION >= 0x050800
+                        QDateTime::fromSecsSinceEpoch(query.value(2).toLongLong()),
+#else
+                        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to
+                        // seconds for now.
+                        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+                        QDateTime::fromMSecsSinceEpoch(
+                            (qint64)(query.value(2).toLongLong() * 1000)),
+#endif
                         bufferInfoHash[query.value(1).toInt()],
                         (Message::Type)query.value(3).toInt(),
                         query.value(9).toString(),
@@ -2442,7 +2519,20 @@ bool SqliteMigrationReader::readMo(BacklogMO &backlog)
     }
 
     backlog.messageid = value(0).toLongLong();
-    backlog.time = QDateTime::fromTime_t(value(1).toInt()).toUTC();
+    // Read timestamp in seconds as 64-bit integer
+    //
+    // NOTE:  This is a loss of precision.  The database time column would need to store a
+    // fractional number to support fromMSecsSinceEpoch(), or an upgrade step would need to convert
+    // all past times to milliseconds, multiplying by 1000.
+#if QT_VERSION >= 0x050800
+    backlog.time = QDateTime::fromSecsSinceEpoch(value(1).toLongLong()).toUTC();
+#else
+    // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for
+    // now.
+    // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+    backlog.time = QDateTime::fromMSecsSinceEpoch((qint64)(value(1).toLongLong() * 1000)
+                                                  ).toUTC();
+#endif
     backlog.bufferid = value(2).toInt();
     backlog.type = value(3).toInt();
     backlog.flags = value(4).toInt();

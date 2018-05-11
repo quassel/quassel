@@ -62,7 +62,7 @@ private:
     void init();
 
     QSet<BufferId> _validBuffers;
-    QMultiHash<QString, uint> _filteredQuitMsgs;
+    QMultiHash<QString, qint64> _filteredQuitMsgs;
     int _messageTypeFilter;
 
     int _userNoticesTarget;

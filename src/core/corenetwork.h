@@ -477,7 +477,7 @@ private:
     int _lastUsedServerIndex;
 
     QTimer _pingTimer;
-    uint _lastPingTime;
+    qint64 _lastPingTime;
     uint _pingCount;
     bool _sendPings;
 

@@ -65,8 +65,9 @@ QDataStream &operator<<(QDataStream &out, const Message &msg)
     // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
     out << msg.msgId();
 
-    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongMessageTime)) {
-        out << (quint64) msg.timestamp().toMSecsSinceEpoch();
+    if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
+        // toMSecs returns a qint64, signed rather than unsigned
+        out << (qint64) msg.timestamp().toMSecsSinceEpoch();
     } else {
         out << (quint32) msg.timestamp().toTime_t();
     }
@@ -96,8 +97,9 @@ QDataStream &operator>>(QDataStream &in, Message &msg)
 
     in >> msg._msgId;
 
-    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongMessageTime)) {
-        quint64 timeStamp;
+    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
+        // timestamp is a qint64, signed rather than unsigned
+        qint64 timeStamp;
         in >> timeStamp;
         msg._timestamp = QDateTime::fromMSecsSinceEpoch(timeStamp);
     } else {

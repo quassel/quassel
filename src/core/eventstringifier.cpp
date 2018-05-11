@@ -449,7 +449,11 @@ void EventStringifier::processIrcEvent301(IrcEvent *e)
         target = nick;
         IrcUser *ircuser = e->network()->ircUser(nick);
         if (ircuser) {
+            // FIXME: This needs converted to 64-bit time.
+            // For legacy protocol, keep the 32-bit signed int time.  For modern protocol, just send
+            // the actual QDateTime() instead, don't bother converting it.
             int now = QDateTime::currentDateTime().toTime_t();
+            // FIXME: Convert to millisecond comparison, comment the constant value as needed
             const int silenceTime = 60;
             if (ircuser->lastAwayMessage() + silenceTime >= now)
                 send = false;
@@ -542,7 +546,16 @@ void EventStringifier::processIrcEvent317(IrcEvent *e)
     int idleSecs = e->params()[1].toInt();
 
     if (e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
-        QDateTime loginTime = QDateTime::fromTime_t(e->params()[2].toInt()).toUTC();
+        // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
+        // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
+#if QT_VERSION >= 0x050800
+        QDateTime loginTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
+#else
+        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+        QDateTime loginTime = QDateTime::fromMSecsSinceEpoch(
+                    (qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
+#endif
         displayMsg(e, Message::Server, tr("[Whois] %1 is logged in since %2")
 	    .arg(e->params()[0], loginTime.toString("yyyy-MM-dd hh:mm:ss UTC")));
     }
@@ -645,12 +658,21 @@ void EventStringifier::processIrcEvent329(IrcEvent *e)
         return;
 
     QString channel = e->params()[0];
-    uint unixtime = e->params()[1].toUInt();
+    // Allow for 64-bit time
+    qint64 unixtime = e->params()[1].toLongLong();
     if (!unixtime) {
         qWarning() << Q_FUNC_INFO << "received invalid timestamp:" << e->params()[1];
         return;
     }
-    QDateTime time = QDateTime::fromTime_t(unixtime).toUTC();
+    // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
+    // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
+#if QT_VERSION >= 0x050800
+    QDateTime time = QDateTime::fromSecsSinceEpoch(unixtime).toUTC();
+#else
+    // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+    // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+    QDateTime time = QDateTime::fromMSecsSinceEpoch((qint64)(unixtime * 1000)).toUTC();
+#endif
     displayMsg(e, Message::Topic, tr("Channel %1 created on %2")
         .arg(channel, time.toString("yyyy-MM-dd hh:mm:ss UTC")),
 	QString(), channel);
@@ -696,7 +718,16 @@ void EventStringifier::processIrcEvent333(IrcEvent *e)
         return;
 
     QString channel = e->params().first();
-    QDateTime topicSetTime = QDateTime::fromTime_t(e->params()[2].toInt()).toUTC();
+    // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
+    // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
+#if QT_VERSION >= 0x050800
+    QDateTime topicSetTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
+#else
+    // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+    // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
+    QDateTime topicSetTime = QDateTime::fromMSecsSinceEpoch(
+                (qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
+#endif
     displayMsg(e, Message::Topic, tr("Topic set by %1 on %2")
         .arg(e->params()[1],
 	     topicSetTime.toString("yyyy-MM-dd hh:mm:ss UTC")), QString(), channel);

@@ -221,7 +221,8 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
         if (myNetworkId != msgNetworkId)
             return false;
 
-        uint messageTimestamp = sourceModel()->data(sourceIdx, MessageModel::TimestampRole).value<QDateTime>().toTime_t();
+        qint64 messageTimestamp = sourceModel()->data(sourceIdx, MessageModel::TimestampRole)
+                .value<QDateTime>().toMSecsSinceEpoch();
         QString quiter = sourceModel()->data(sourceIdx, Qt::DisplayRole).toString().section(' ', 0, 0, QString::SectionSkipEmpty).toLower();
         if (quiter != bufferName().toLower())
             return false;

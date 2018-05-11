@@ -1634,6 +1634,8 @@ bool PostgreSqlStorage::logMessage(Message &msg)
     }
 
     QVariantList params;
+    // PostgreSQL handles QDateTime()'s serialized format by default, and QDateTime() serializes
+    // to a 64-bit time compatible format by default.
     params << msg.timestamp()
            << msg.bufferInfo().bufferId().toInt()
            << msg.type()
@@ -1718,6 +1720,8 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs)
     for (int i = 0; i < msgs.count(); i++) {
         Message &msg = msgs[i];
         QVariantList params;
+        // PostgreSQL handles QDateTime()'s serialized format by default, and QDateTime() serializes
+        // to a 64-bit time compatible format by default.
         params << msg.timestamp()
                << msg.bufferInfo().bufferId().toInt()
                << msg.type()
@@ -1797,6 +1801,8 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
 
     QDateTime timestamp;
     while (query.next()) {
+        // PostgreSQL returns date/time in ISO 8601 format, no 64-bit handling needed
+        // See https://www.postgresql.org/docs/current/static/datatype-datetime.html#DATATYPE-DATETIME-OUTPUT
         timestamp = query.value(1).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
         Message msg(timestamp,
@@ -1861,6 +1867,8 @@ QList<Message> PostgreSqlStorage::requestMsgsFiltered(UserId user, BufferId buff
 
     QDateTime timestamp;
     while (query.next()) {
+        // PostgreSQL returns date/time in ISO 8601 format, no 64-bit handling needed
+        // See https://www.postgresql.org/docs/current/static/datatype-datetime.html#DATATYPE-DATETIME-OUTPUT
         timestamp = query.value(1).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
         Message msg(timestamp,
@@ -1916,6 +1924,8 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
 
     QDateTime timestamp;
     for (int i = 0; i < limit && query.next(); i++) {
+        // PostgreSQL returns date/time in ISO 8601 format, no 64-bit handling needed
+        // See https://www.postgresql.org/docs/current/static/datatype-datetime.html#DATATYPE-DATETIME-OUTPUT
         timestamp = query.value(2).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
         Message msg(timestamp,
@@ -1978,6 +1988,8 @@ QList<Message> PostgreSqlStorage::requestAllMsgsFiltered(UserId user, MsgId firs
 
     QDateTime timestamp;
     for (int i = 0; i < limit && query.next(); i++) {
+        // PostgreSQL returns date/time in ISO 8601 format, no 64-bit handling needed
+        // See https://www.postgresql.org/docs/current/static/datatype-datetime.html#DATATYPE-DATETIME-OUTPUT
         timestamp = query.value(2).toDateTime();
         timestamp.setTimeSpec(Qt::UTC);
         Message msg(timestamp,
