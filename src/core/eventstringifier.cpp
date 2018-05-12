@@ -453,9 +453,9 @@ void EventStringifier::processIrcEvent301(IrcEvent *e)
             now.setTimeSpec(Qt::UTC);
             // Don't print "user is away" messages more often than this
             const int silenceTime = 60;
-            if (ircuser->lastAwayMessage().addSecs(silenceTime) >= now)
+            if (ircuser->lastAwayMessageTime().addSecs(silenceTime) >= now)
                 send = false;
-            ircuser->setLastAwayMessage(now);
+            ircuser->setLastAwayMessageTime(now);
         }
     }
     if (send)

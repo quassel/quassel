@@ -892,16 +892,17 @@ QVariantMap Network::initIrcUsersAndChannels() const
         QHash<QString, IrcUser *>::const_iterator end = _ircUsers.end();
         while (it != end) {
             QVariantMap map = it.value()->toVariantMap();
-            // If the peer doesn't support LongTime, replace the lastAwayMessage field
-            // with the 32-bit numerical seconds value used in older versions
+            // If the peer doesn't support LongTime, replace the lastAwayMessageTime field
+            // with the 32-bit numerical seconds value (lastAwayMessage) used in older versions
             if (!proxy()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
 #if QT_VERSION >= 0x050800
-                int lastAwayMessage = it.value()->lastAwayMessage().toSecsSinceEpoch();
+                int lastAwayMessage = it.value()->lastAwayMessageTime().toSecsSinceEpoch();
 #else
                 // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
                 // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-                int lastAwayMessage = it.value()->lastAwayMessage().toMSecsSinceEpoch() / 1000;
+                int lastAwayMessage = it.value()->lastAwayMessageTime().toMSecsSinceEpoch() / 1000;
 #endif
+                map.remove("lastAwayMessageTime");
                 map["lastAwayMessage"] = lastAwayMessage;
             }
 
@@ -972,19 +973,19 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels)
         foreach(const QString &key, users.keys())
             map[key] = users[key].toList().at(i);
 
-        // If the peer doesn't support LongTime, upconvert the lastAwayMessage field
+        // If the peer doesn't support LongTime, upconvert the lastAwayMessageTime field
         // from the 32-bit numerical seconds value used in older versions to QDateTime
         if (!proxy()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
-            QDateTime lastAwayMessage = QDateTime();
-            lastAwayMessage.setTimeSpec(Qt::UTC);
+            QDateTime lastAwayMessageTime = QDateTime();
+            lastAwayMessageTime.setTimeSpec(Qt::UTC);
 #if QT_VERSION >= 0x050800
-            lastAwayMessage.fromSecsSinceEpoch(map["lastAwayMessage"].toInt());
+            lastAwayMessageTime.fromSecsSinceEpoch(map.take("lastAwayMessage").toInt());
 #else
             // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
             // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-            lastAwayMessage.fromMSecsSinceEpoch(map["lastAwayMessage"].toInt() * 1000);
+            lastAwayMessageTime.fromMSecsSinceEpoch(map.take("lastAwayMessage").toInt() * 1000);
 #endif
-            map["lastAwayMessage"] = lastAwayMessage;
+            map["lastAwayMessageTime"] = lastAwayMessageTime;
         }
 
         newIrcUser(map["nick"].toString(), map); // newIrcUser() properly handles the hostmask being just the nick
