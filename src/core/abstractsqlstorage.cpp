@@ -139,11 +139,20 @@ Storage::State AbstractSqlStorage::init(const QVariantMap &settings,
     }
 
     if (installedSchemaVersion() < schemaVersion()) {
-        qWarning() << qPrintable(tr("Installed Schema (version %1) is not up to date. Upgrading to version %2...").arg(installedSchemaVersion()).arg(schemaVersion()));
+        qWarning() << qPrintable(tr("Installed Schema (version %1) is not up to date. Upgrading to "
+                                    "version %2...  This may take a while for major upgrades."
+                                    ).arg(installedSchemaVersion()).arg(schemaVersion()));
+        // TODO: The monolithic client won't show this message unless one looks into the debug log.
+        // This should be made more friendly, e.g. a popup message in the GUI.
         if (!upgradeDb()) {
             qWarning() << qPrintable(tr("Upgrade failed..."));
             return NotAvailable;
         }
+        // Warning messages are also sent to the console, while Info messages aren't.  Add a message
+        // when migration succeeds to avoid confusing folks by implying the schema upgrade failed if
+        // later functionality does not work.
+        qWarning() << qPrintable(tr("Installed Schema successfully upgraded to version %1."
+                                    ).arg(schemaVersion()));
     }
 
     quInfo() << qPrintable(displayName()) << "storage backend is ready. Schema version:" << installedSchemaVersion();

@@ -347,5 +347,6 @@
     <file>./SQL/SQLite/version/29/upgrade_030_rename_sender_tmp_sender.sql</file>
     <file>./SQL/SQLite/version/29/upgrade_040_update_sender_add_realname_avatarurl.sql</file>
     <file>./SQL/SQLite/version/30/upgrade_000_create_corestate.sql</file>
+    <file>./SQL/SQLite/version/31/upgrade_000_update_buffer_set_time_extended.sql</file>
 </qresource>
 </RCC>
