@@ -111,6 +111,10 @@ void CertIdentity::markClean()
 void ClientCertManager::setSslKey(const QByteArray &encoded)
 {
     QSslKey key(encoded, QSsl::Rsa);
+#if QT_VERSION >= 0x050500
+    if (key.isNull() && Client::isCoreFeatureEnabled(Quassel::Feature::EcdsaCertfpKeys))
+        key = QSslKey(encoded, QSsl::Ec);
+#endif
     if (key.isNull())
         key = QSslKey(encoded, QSsl::Dsa);
     _certIdentity->setSslKey(key);

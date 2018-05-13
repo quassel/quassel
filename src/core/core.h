@@ -493,6 +493,20 @@ public:
         return instance()->_storage->setBufferLastSeenMsg(user, bufferId, msgId);
     }
 
+    //! Get the auth username associated with a userId
+    /** \param user  The user to retrieve the username for
+     *  \return      The username for the user
+     */
+    static inline QString getAuthUserName(UserId user) {
+        return instance()->_storage->getAuthUserName(user);
+    }
+
+    //! Get a usable sysident for the given user in oidentd-strict mode
+    /** \param user    The user to retrieve the sysident for
+     *  \return The authusername
+     */
+    QString strictSysIdent(UserId user) const;
+
 
     //! Get a Hash of all last seen message ids
     /** This Method is called when the Quassel Core is started to restore the lastSeenMsgIds
@@ -575,6 +589,8 @@ public:
      * @return True if certificates reloaded successfully, otherwise false.
      */
     static bool reloadCerts();
+
+    static void cacheSysIdent();
 
     static QVariantList backendInfo();
     static QVariantList authenticatorInfo();
@@ -659,6 +675,7 @@ private:
     DeferredSharedPtr<Storage>       _storage;        ///< Active storage backend
     DeferredSharedPtr<Authenticator> _authenticator;  ///< Active authenticator
     QTimer _storageSyncTimer;
+    QMap<UserId, QString> _authUserNames;
 
 #ifdef HAVE_SSL
     SslServer _server, _v6server;

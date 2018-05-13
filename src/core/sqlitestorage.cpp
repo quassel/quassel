@@ -1821,6 +1821,48 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
 }
 
 
+QMap<UserId, QString> SqliteStorage::getAllAuthUserNames()
+{
+    QMap<UserId, QString> authusernames;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_all_authusernames"));
+
+        lockForRead();
+        safeExec(query);
+        watchQuery(query);
+        while (query.next()) {
+            authusernames[query.value(0).toInt()] = query.value(1).toString();
+        }
+    }
+    db.commit();
+    unlock();
+    return authusernames;
+}
+
+
+QString SqliteStorage::getAuthUserName(UserId user) {
+    QString authusername;
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authusername"));
+    query.bindValue(":userid", user.toInt());
+
+    lockForRead();
+    safeExec(query);
+    watchQuery(query);
+    unlock();
+
+    if (query.first()) {
+        authusername = query.value(0).toString();
+    }
+
+    return authusername;
+}
+
+
 QString SqliteStorage::backlogFile()
 {
     return Quassel::configDirPath() + "quassel-storage.sqlite";

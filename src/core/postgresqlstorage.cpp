@@ -1703,6 +1703,36 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
 }
 
 
+QMap<UserId, QString> PostgreSqlStorage::getAllAuthUserNames()
+{
+    QMap<UserId, QString> authusernames;
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_all_authusernames"));
+    safeExec(query);
+    watchQuery(query);
+
+    while (query.next()) {
+        authusernames[query.value(0).toInt()] = query.value(1).toString();
+    }
+    return authusernames;
+}
+
+
+QString PostgreSqlStorage::getAuthUserName(UserId user)
+{
+    QString authusername;
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authusername"));
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    watchQuery(query);
+
+    if (query.first()) {
+         authusername = query.value(0).toString();
+    }
+    return authusername;
+}
+
 // void PostgreSqlStorage::safeExec(QSqlQuery &query) {
 //   qDebug() << "PostgreSqlStorage::safeExec";
 //   qDebug() << "   executing:\n" << query.executedQuery();

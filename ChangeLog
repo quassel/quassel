@@ -13,7 +13,6 @@ changes, the git history at <https://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-
 Version 0.13.0 (TBR)
 ====================
 
@@ -22,29 +21,71 @@ NOTE: Database schema and settings format change, no downgrade possible!
 * Use Qt 5 by default
 * Add Breeze/Breeze Dark icon themes, allow selection of icon theme
 * Use Breeze icon theme by default
+* Introduce new quassel-specific icons
+* Use Plasma notification sounds by default (rather than KDE4's)
 * Make IRC rate limits configurable
-* Snapcraft packaging support
 * Sender colors by default (and optionally for ACTION messages)
+* Improve ChatView color settings
+* Improve default sender colors, and make configurable by palette in QSS
 * Optionally hide brackets around sender/timestamp
 * Improved SSL certificate handling
-* Automated OSX builds (via Travis)
-* Improved automated Windows builds (via Appveyor)
+* Add cmdline options for SSL certificate/key paths
+* Use SHA-512 to store the core certificate digest
 * Chat list filter/search
-* WebEngine support for URL previews (deprecates WebKit support with Qt 5)
 * QtMultimedia notification backend (deprecates Phonon support with Qt 5)
 * Various UI improvements (tooltips, tool bars, menus...)
 * Spell checking via Sonnet if KDE Frameworks integration is enabled
 * Support for many IRCv3 features, improved capability negotiation
+* Improve handling of user modes
+* Store sender prefixes (@+v...) in database, and optionally show in UI
+* Buffer filter/search
+* Add context menu option in ChatView for enabling the menubar
+* Add support for ZNC self-messages
+* Support twitch.tv's membership capability
+* Settings versioning (allows upgrading from older versions, too)
+* LDAP authentication backend for core users (--select-authenticator)
+* Handle buffer activity core-side
+* Core-side (synced) highlight rules (in addition to local highlight rules)
+* Allow disconnecting other clients via "Core Info" dialog (if supported by client)
+* System proxy support for the client
+* Support rendering of extended mIRC colors, hex colors, reverse and strikethrough
+* Make /list open the channel list dialog
+* Support $i:ident and $i:account in aliases
+* Extended core/client feature negotiation, including diagnostic output
+* Improve database performance
+* Build system improvements
 * Many smaller fixes and improvements
+* Translation updates
 
-Version 0.12.5 (TBR)
-====================
+Version 0.12.5 (2018-04-24)
+===========================
 
+* Make "/ " use the rest of the message as a literal
+* Use commit date instead of build date to support reproducible builds
+* Support Qt 5.6 through Qt 5.10
+* Automated OSX builds (via Travis)
+* Update deployment and CI settings for OSX and Windows
 * Better HIDPI support with recent Qt 5 versions
+* Snapcraft packaging support
 * Inxi version bump
 * Prioritization of PING/PONG messages to prevent timeouts
 * Improved touch screen support (scrolling etc.)
-* Support Qt 5.6 and 5.7
+* WebEngine support for URL previews (deprecates WebKit support with Qt 5)
+* Disable WebKit by default due to it being unmaintained and a security risk
+* Strip format codes when checking for highlights
+* Properly disconnect from networks when shutting down
+* Reload SSL certificates on signal SIGHUP
+* Add AppData metadata for quassel and quasselclient
+* Allow channel buffer merges
+* Improve dock and tray handling on OSX
+* Split user messages on newlines, as per the RFC
+* Join channels on double-click in platforms other than OSX and Windows
+* Support Elliptic Curve keys for client<->core connections on Qt 5.5+
+* Add sanity checks for QDataStream deserialization (e.g. for size)
+* Prevent clients from trying to login to an unconfigured core, avoiding a crash
+* Various bugfixes
+* Some code cleanups
+* Translation updates
 
 Version 0.12.4 (2016-04-24)
 ===========================

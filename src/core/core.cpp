@@ -236,8 +236,12 @@ void Core::init()
     connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
     if (!startListening()) exit(1);  // TODO make this less brutal
 
-    if (Quassel::isOptionSet("oidentd"))
-        _oidentdConfigGenerator = new OidentdConfigGenerator(this);
+    if (Quassel::isOptionSet("oidentd")) {
+        _oidentdConfigGenerator = new OidentdConfigGenerator(Quassel::isOptionSet("oidentd-strict"), this);
+        if (Quassel::isOptionSet("oidentd-strict")) {
+            cacheSysIdent();
+        }
+    }
 }
 
 
@@ -329,6 +333,7 @@ QString Core::setupCore(const QString &adminUser, const QString &adminPassword, 
 
     quInfo() << qPrintable(tr("Creating admin user..."));
     _storage->addUser(adminUser, adminPassword);
+    cacheSysIdent();
     startListening(); // TODO check when we need this
     return QString();
 }
@@ -546,6 +551,34 @@ bool Core::reloadCerts()
     // SSL not supported, don't mark configuration reload as failed
     return true;
 #endif
+}
+
+
+void Core::cacheSysIdent()
+{
+    if (isConfigured()) {
+        instance()->_authUserNames = instance()->_storage->getAllAuthUserNames();
+    }
+}
+
+
+QString Core::strictSysIdent(UserId user) const
+{
+    if (_authUserNames.contains(user)) {
+        return _authUserNames[user];
+    }
+
+    // A new user got added since we last pulled our cache from the database.
+    // There's no way to avoid a database hit - we don't even know the authname!
+    cacheSysIdent();
+
+    if (_authUserNames.contains(user)) {
+        return _authUserNames[user];
+    }
+
+    // ...something very weird is going on if we ended up here (an active CoreSession without a corresponding database entry?)
+    qWarning().nospace() << "Unable to find authusername for UserId " << user << ", this should never happen!";
+    return "unknown"; // Should we just terminate the program instead?
 }
 
 

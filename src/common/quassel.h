@@ -111,7 +111,11 @@ public:
      *
      * This list should be cleaned up after every protocol break, as we can assume them to be present then.
      */
-    enum class Feature : quint32 {
+    #if QT_VERSION >= 0x050000
+    enum class Feature : uint32_t {
+    #else
+    enum Feature {
+    #endif
         SynchronizedMarkerLine,
         SaslAuthentication,
         SaslExternal,
@@ -127,6 +131,9 @@ public:
         SenderPrefixes,           ///< Show prefixes for senders in backlog
         RemoteDisconnect,         ///< Allow this peer to be remotely disconnected
         ExtendedFeatures,         ///< Extended features
+#if QT_VERSION >= 0x050500
+        EcdsaCertfpKeys,          ///< ECDSA keys for CertFP in identities
+#endif
     };
     Q_ENUMS(Feature)
 

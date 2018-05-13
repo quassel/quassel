@@ -22,6 +22,7 @@
 #define OIDENTDCONFIGGENERATOR_H
 
 #include <QObject>
+#include <QString>
 #include <QDir>
 #include <QFile>
 #include <QDateTime>
@@ -58,7 +59,11 @@ class OidentdConfigGenerator : public QObject
 {
     Q_OBJECT
 public:
-    explicit OidentdConfigGenerator(QObject *parent = 0);
+    /**
+     * @param strict If false, any identity a user chooses is reported to servers as authoritative.
+     *               If true, the user's quassel username is always reported.
+     */
+    explicit OidentdConfigGenerator(bool strict = false, QObject *parent = 0);
     ~OidentdConfigGenerator();
 
 public slots:
@@ -66,12 +71,14 @@ public slots:
     bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
 
 private:
+    QString sysIdentForIdentity(const CoreIdentity *identity) const;
     bool init();
     bool writeConfig();
     bool parseConfig(bool readQuasselStanzas = false);
     bool lineByUs(const QByteArray &line);
 
     bool _initialized;
+    bool _strict;
     QDateTime _lastSync;
     QFile *_configFile;
     QByteArray _parsedConfig;
