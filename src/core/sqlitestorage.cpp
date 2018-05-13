@@ -2427,7 +2427,7 @@ bool SqliteMigrationReader::readMo(SenderMO &sender)
 
 bool SqliteMigrationReader::readMo(BacklogMO &backlog)
 {
-    int skipSteps = 0;
+    qint64 skipSteps = 0;
     while (!next()) {
         if (backlog.messageid < _maxId) {
             bindValue(0, backlog.messageid.toQint64() + (skipSteps * stepSize()));

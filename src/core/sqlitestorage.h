@@ -175,7 +175,7 @@ public:
 
     bool prepareQuery(MigrationObject mo) override;
 
-    int stepSize() { return 50000; }
+    qint64 stepSize() { return 50000; }
 
 protected:
     bool transaction()  override { return logDb().transaction(); }
