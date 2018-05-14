@@ -43,6 +43,11 @@ private slots:
     void updateUptime();
     void disconnectClicked(int peerId);
 
+    /**
+      * Event handler for core unspported Details button
+      */
+    void on_coreUnsupportedDetails_clicked();
+
 private:
     Ui::CoreInfoDlg ui;
     QMap<int, CoreSessionWidget *> _widgets;
