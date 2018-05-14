@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QMessageBox>
+
 #include "coreinfodlg.h"
 
 #include "client.h"
@@ -29,6 +31,9 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
     connect(coreInfo, SIGNAL(coreDataChanged(const QVariantMap &)), this, SLOT(coreInfoChanged(const QVariantMap &)));
 
     coreInfoChanged(coreInfo->coreData());
+
+    // Warning icon
+    ui.coreUnsupportedIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(16));
 
     updateUptime();
     startTimer(1000);
@@ -73,6 +78,9 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
     }
 
     ui.coreSessionScrollArea->setVisible(coreSessionSupported);
+
+    // Hide the information bar when core sessions are supported
+    ui.coreUnsupportedWidget->setVisible(!coreSessionSupported);
 }
 
 
@@ -101,4 +109,14 @@ void CoreInfoDlg::updateUptime() {
 
 void CoreInfoDlg::disconnectClicked(int peerId) {
     Client::kickClient(peerId);
+}
+
+void CoreInfoDlg::on_coreUnsupportedDetails_clicked()
+{
+    QMessageBox::warning(this,
+                         tr("Active sessions unsupported"),
+                         QString("<p><b>%1</b></p></br><p>%2</p>"
+                                 ).arg(tr("Your Quassel core is too old to show active sessions"),
+                                       tr("You need a Quassel core v0.13.0 or newer to view and "
+                                          "disconnect other connected clients.")));
 }
