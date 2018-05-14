@@ -219,7 +219,7 @@ bool QtUiApplication::migrateSettings()
     //
     // NOTE:  If you increase the minor version, you MUST ALSO add new version upgrade logic in
     // applySettingsMigration()!  Otherwise, settings upgrades will fail.
-    const uint VERSION_MINOR_CURRENT = 7;
+    const uint VERSION_MINOR_CURRENT = 8;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -284,6 +284,54 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // saved.  Exceptions will be noted below.
     // NOTE:  If you add new upgrade logic here, you MUST ALSO increase VERSION_MINOR_CURRENT in
     // migrateSettings()!  Otherwise, your upgrade logic won't ever be called.
+    case 8:
+    {
+        // New default changes: RegEx checkbox now toggles Channel regular expressions, too
+        //
+        // This only affects local highlights.  Core-side highlights weren't released in stable when
+        // this change was made, so no need to migrate those.
+
+        // --------
+        // NotificationSettings
+        NotificationSettings notificationSettings;
+
+        // Check each highlight rule for a "Channel" field.  If one exists, convert to RegEx mode.
+        // This might be more efficient with std::transform() or such.  It /is/ only run once...
+        auto highlightList = notificationSettings.highlightList();
+        bool changesMade = false;
+        for (int index = 0; index < highlightList.count(); ++index)
+        {
+            // Load the highlight rule...
+            auto highlightRule = highlightList[index].toMap();
+
+            // Check if "Channel" has anything set and RegEx is disabled
+            if (!highlightRule["Channel"].toString().isEmpty()
+                    && highlightRule["RegEx"].toBool() == false) {
+                // We have a rule to convert
+
+                // Mark as a regular expression, allowing the Channel filtering to work the same as
+                // before the upgrade
+                highlightRule["RegEx"] = true;
+
+                // Convert the main rule to regular expression, mirroring the conversion to wildcard
+                // format from QtUiMessageProcessor::checkForHighlight()
+                highlightRule["Name"] =
+                        "(^|\\W)" + QRegExp::escape(highlightRule["Name"].toString()) + "(\\W|$)";
+
+                // Save the rule back
+                highlightList[index] = highlightRule;
+                changesMade = true;
+            }
+        }
+
+        // Save the modified rules if any changes were made
+        if (changesMade) {
+            notificationSettings.setHighlightList(highlightList);
+        }
+        // --------
+
+        // Migration complete!
+    }
     case 7:
     {
         // New default changes: UseProxy is no longer used in CoreAccountSettings
