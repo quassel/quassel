@@ -1,82 +1,56 @@
 # Install icons
-#
-# We put the bundled oxygen icon theme in DATADIR rather than ICONDIR,
-# in order to avoid conflicts. As we add this directory to XDG_DATA_DIRS at runtime,
-# the bundled theme will be found by Qt only if there is no oxygen theme installed
-# in system directories.
-#
-# The hicolor folder contains icons vital for the Quassel UI (such as in the channel and nick
-# lists). It is installed into the system icon directory (in order to allow overriding) and
-# additionally always embedded as a fallback resource.
 
 if (WANT_MONO OR WANT_QTCLIENT)
-    set(ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/hicolor.qrc) # always embed those
-
-    if (NOT WITH_OXYGEN)
-        message(STATUS "Not installing bundled Oxygen icons")
-    endif()
-
-    if (NOT WITH_BREEZE)
-        message(STATUS "Not installing bundled Breeze icons")
-    endif()
-
-    if (NOT WITH_BREEZE_DARK)
-        message(STATUS "Not installing bundled Breeze Dark icons")
-    endif()
+    set(BUNDLED_ICON_THEME_DIR ${CMAKE_SOURCE_DIR}/3rdparty/icons)
 
     if (EMBED_DATA)
-        if (WITH_OXYGEN)
-            message(STATUS "Embedding bundled Oxygen icons")
-            set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/oxygen.qrc)
-        endif()
+        # Always embed quassel-specific icons
+        message(STATUS "Embedding Quassel-specific icons")
+        list(APPEND ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/breeze_icons.qrc)
+        list(APPEND ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/breeze_dark_icons.qrc)
+        list(APPEND ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/oxygen_icons.qrc)
+
         if (WITH_BREEZE)
-            message(STATUS "Embedding bundled Breeze icons")
-            set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/breeze.qrc)
+            message(STATUS "Embedding bundled Breeze icon theme")
+            list(APPEND ICON_RCS ${BUNDLED_ICON_THEME_DIR}/breeze_icon_theme.qrc)
         endif()
         if (WITH_BREEZE_DARK)
-            message(STATUS "Embedding bundled Breeze Dark icons")
-            set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/breezedark.qrc)
+            message(STATUS "Embedding bundled Breeze Dark icon theme")
+            list(APPEND ICON_RCS ${BUNDLED_ICON_THEME_DIR}/breeze_dark_icon_theme.qrc)
         endif()
-
-        message(STATUS "Embedding some extra Oxygen styled icons")
-        set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/oxygen-extra.qrc)
-
-        message(STATUS "Embedding some extra Breeze styled icons")
-        set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/breeze-extra.qrc)
-
-        message(STATUS "Embedding some extra Breeze Dark styled icons")
-        set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/breezedark-extra.qrc)
+        if (WITH_OXYGEN)
+            message(STATUS "Embedding bundled Oxygen icon theme")
+            list(APPEND ICON_RCS ${BUNDLED_ICON_THEME_DIR}/oxygen_icon_theme.qrc)
+        endif()
 
     else()
-        install(DIRECTORY hicolor DESTINATION ${CMAKE_INSTALL_ICONDIR})
-        if (WITH_OXYGEN)
-            message(STATUS "Installing bundled Oxygen icons")
-            install(DIRECTORY oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
-        endif()
+        # Always install quassel-specific icons
+        install(DIRECTORY breeze breeze-dark oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+
+        # Install bundled icon themes into our data dir (instead of CMAKE_INSTALL_ICONDIR) to avoid conflicts
+        # with themes provided by the system
         if (WITH_BREEZE)
-            message(STATUS "Installing bundled Breeze icons")
-            install(DIRECTORY breeze DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+            message(STATUS "Installing bundled Breeze icon theme")
+            install(DIRECTORY ${BUNDLED_ICON_THEME_DIR}/breeze DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
         endif()
         if (WITH_BREEZE_DARK)
-            message(STATUS "Installing bundled Breeze Dark icons")
-            install(DIRECTORY breezedark DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+            message(STATUS "Installing bundled Breeze Dark icon theme")
+            install(DIRECTORY ${BUNDLED_ICON_THEME_DIR}/breeze-dark DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
         endif()
-
-        message(STATUS "Installing some extra bundled Oxygen styled icons")
-        install(DIRECTORY extra-icons/oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons/extra)
-
-        message(STATUS "Installing some extra bundled Breeze styled icons")
-        install(DIRECTORY extra-icons/breeze DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons/extra)
-
-        message(STATUS "Installing some extra bundled Breeze Dark styled icons")
-        install(DIRECTORY extra-icons/breezedark DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons/extra)
+        if (WITH_OXYGEN)
+            message(STATUS "Installing bundled Oxygen icon theme")
+            install(DIRECTORY ${BUNDLED_ICON_THEME_DIR}/oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+        endif()
     endif()
 
     set(CLIENT_RCS ${CLIENT_RCS} ${ICON_RCS} PARENT_SCOPE)
 
     # Application icon
     if (HAVE_KDE OR (UNIX AND NOT APPLE))
-        install(FILES hicolor/48x48/apps/quassel.png DESTINATION ${CMAKE_INSTALL_ICONDIR}/hicolor/48x48/apps)
+        # hicolor contains the application icon in all relevant sizes
+        install(DIRECTORY hicolor DESTINATION ${CMAKE_INSTALL_ICONDIR})
+
+        # For a system install, also copy to pixmaps
         if (CMAKE_INSTALL_PREFIX STREQUAL "/usr")
             install(FILES hicolor/48x48/apps/quassel.png DESTINATION /usr/share/pixmaps)
         endif()
