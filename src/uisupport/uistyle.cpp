@@ -1175,8 +1175,12 @@ quint8 UiStyle::StyledMessage::senderHash() const
         if (chopCount < nick.size())
             nick.chop(chopCount);
     }
-    quint16 hash = qChecksum(nick.toLatin1().data(), nick.toLatin1().size());
-    return (_senderHash = (hash & 0xf) + 1);
+
+
+    // quint16 hash = qChecksum(nick.toLatin1().data(), nick.toLatin1().size());
+    QByteArray nb = nick.toLocal8Bit();
+    quint16 col = (qChecksum(nb, nb.size()) >> ((nb.length() + nb[0]) % 12)) & 0x0f;
+    return (_senderHash = col + 1);
 }
 
 /***********************************************************************************/
