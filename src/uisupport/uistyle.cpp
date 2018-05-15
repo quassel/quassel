@@ -63,8 +63,8 @@ QColor extendedMircColor(int number)
 
 UiStyle::UiStyle(QObject *parent)
     : QObject(parent),
-    _channelJoinedIcon(QIcon::fromTheme("irc-channel-joined", QIcon(":/icons/irc-channel-joined.png"))),
-    _channelPartedIcon(QIcon::fromTheme("irc-channel-parted", QIcon(":/icons/irc-channel-parted.png"))),
+    _channelJoinedIcon(QIcon::fromTheme("irc-channel-active", QIcon(":/icons/irc-channel-active.png"))),
+    _channelPartedIcon(QIcon::fromTheme("irc-channel-inactive", QIcon(":/icons/irc-channel-inactive.png"))),
     _userOfflineIcon(QIcon::fromTheme("im-user-offline", QIcon::fromTheme("user-offline", QIcon(":/icons/im-user-offline.png")))),
     _userOnlineIcon(QIcon::fromTheme("im-user", QIcon::fromTheme("user-available", QIcon(":/icons/im-user.png")))), // im-user-* are non-standard oxygen extensions
     _userAwayIcon(QIcon::fromTheme("im-user-away", QIcon::fromTheme("user-away", QIcon(":/icons/im-user-away.png")))),
