@@ -1,4 +1,16 @@
-inactive-quassel
-message-quassel
+# Specify icon names that are found in the source, but should not be added
+
+# We want to provide the application icon ourselves
+quassel
+
+# Quassel-specific icons
 connect-quassel
 disconnect-quassel
+message-quassel
+message-quassel-tray
+message-quassel-tray-inverted
+inactive-quassel
+inactive-quassel-tray
+inactive-quassel-tray-inverted
+active-quassel-tray
+active-quassel-tray-inverted
