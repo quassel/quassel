@@ -11,11 +11,13 @@ Name[el]=Σκοτεινό Breeze
 Name[en_GB]=Breeze Dark
 Name[es]=Brisa oscura
 Name[et]=Breeze Dark
+Name[eu]=Breeze iluna
 Name[fi]=Breeze Dark
 Name[fr]=Brise Foncée
 Name[gd]=Oiteag dhorcha
 Name[gl]=Breeze escuro
 Name[ia]=Breeze Dark
+Name[id]=Breeze Dark
 Name[it]=Brezza scuro
 Name[ko]=어두운 Breeze
 Name[nl]=Breeze Dark
@@ -48,12 +50,14 @@ Comment[el]=Προκαθορισμένο θέμα Plasma 5 για σκοτειν
 Comment[en_GB]=Default Plasma 5 Theme for Dark themes
 Comment[es]=Tema por omisión de Plasma 5 para temas oscuros
 Comment[et]=Vaikimisi Plasma 5 tume teema
+Comment[eu]=Plasma 5eko gai ilun lehenetsia
 Comment[fi]=Plasma 5:n oletusteema tummille teemoille
 Comment[fr]=Thème par défaut de Plasma 5 pour les thèmes foncés
 Comment[gd]=Ùrlar Plasma 5 bunaiteach airson ùrlaran dorcha
 Comment[gl]=Tema predeterminado de Plasma 5 para temas escuros
 Comment[he]=ערכת הנושא החשוכה הברירת־מחדל של Plama
 Comment[ia]=Thema predefinite de Plasma 5 pro themas Dark, i.e. obscur
+Comment[id]=Tema Baku Plasma 5 untuk tema-tema Dark
 Comment[it]=Tema predefinito di Plasma 5 per temi scuri
 Comment[ko]=기본 Plasma 5 어두운 테마
 Comment[nl]=Standaard Plasma 5 thema voor donkere thema's
@@ -69,6 +73,7 @@ Comment[sr@ijekavian]=Подразумевана тамна тема Плазм�
 Comment[sr@ijekavianlatin]=Podrazumevana tamna tema Plasme 5
 Comment[sr@latin]=Podrazumevana tamna tema Plasme 5
 Comment[sv]=Plasma 5 standardtema för mörka teman
+Comment[tr]=Karanlık temalar için Varsayılan Plasma 5 Teması
 Comment[uk]=Тема піктограм для Плазми 5 для темних тем
 Comment[x-test]=xxDefault Plasma 5 Theme for Dark themesxx
 Comment[zh_CN]=为暗色主题设计的 默认 Plasma 5 主题
@@ -90,7 +95,7 @@ MainToolbarDefault=22
 MainToolbarSizes=16,22,32,48
 SmallDefault=16
 SmallSizes=16,22,32,48
-PanelDefault=32
+PanelDefault=48
 PanelSizes=16,22,32,48,64,128,256
 DialogDefault=32
 DialogSizes=16,22,32,48,64,128,256
@@ -100,7 +105,7 @@ KDE-Extensions=.svg
 ########## Directories
 ########## ordered by category and alphabetically
 
-Directories=actions/12,actions/16,actions/22,actions/24,actions/32,apps/16,apps/22,apps/32,apps/48,preferences/32,applets/48,applets/64,applets/128,applets/256,categories/32,devices/16,devices/22,devices/64,emblems/8,emblems/16,emblems/22,emotes/22,mimetypes/16,mimetypes/22,mimetypes/32,mimetypes/64,places/16,places/22,places/32,places/64,status/16,status/22,status/24,status/64,actions/symbolic,devices/symbolic,emblems/symbolic,places/symbolic,status/symbolic
+Directories=actions/12,actions/16,actions/22,actions/24,actions/32,actions/64,animations/16,animations/22,apps/16,apps/22,apps/32,apps/48,preferences/32,applets/48,applets/64,applets/128,applets/256,categories/32,devices/16,devices/22,devices/64,emblems/8,emblems/16,emblems/22,emotes/22,mimetypes/16,mimetypes/22,mimetypes/32,mimetypes/64,places/16,places/22,places/32,places/64,status/16,status/22,status/24,status/64,actions/symbolic,devices/symbolic,emblems/symbolic,places/symbolic,status/symbolic
 
 ########## Actions
 ########## ordered by size
@@ -133,7 +138,34 @@ Type=Fixed
 [actions/32]
 Size=32
 Context=Actions
+Type=Scalable
+MinSize=32
+MaxSize=256
+
+#64x64 - Fixed size - For toolbar icons >!!!ONLY!!!< - DO_NOT_USE_ANYWHERE_ELSE - Monochrome
+[actions/64]
+Size=64
+Context=Actions
+Type=Scalable
+MinSize=32
+MaxSize=256
+
+########## Animations
+########## ordered by size
+
+#16x16 - Fixed size - Application icon(s) for Dolphin sidebar - OPTIONAL + DO_NOT_USE_ANYWHERE_ELSE - Monochrome
+[animations/16]
+Size=16
+Context=Animations
 Type=Fixed
+
+#22x22 - Scalable
+[animations/22]
+Size=22
+Context=Animations
+Type=Scalable
+MinSize=22
+MaxSize=256
 
 ########## Apps
 ########## ordered by size
@@ -161,7 +193,7 @@ Type=Fixed
 Size=48
 Context=Applications
 Type=Scalable
-MinSize=64
+MinSize=48
 MaxSize=256
 
 #32x32 - Fixed size - For System Settings icons >!!!ONLY!!!< - Scalable to the following sizes: 32x32 (default), 64x64, 128x128, 256x256 - DO_NOT_USE_ANYWHERE_ELSE - Color
@@ -235,7 +267,7 @@ Type=Fixed
 Size=64
 Context=Devices
 Type=Scalable
-MinSize=64
+MinSize=24
 MaxSize=256
 
 ########## Emblems
@@ -323,7 +355,7 @@ Type=Fixed
 Size=32
 Context=Places
 Type=Scalable
-MinSize=32
+MinSize=24
 MaxSize=48
 
 #64x64 - Scalable - For folder icons >!!!ONLY!!!< - Scalable to the following sizes: 64x64 (default), 32x32, 128x128, 256x256 - DO_NOT_USE_ANYWHERE_ELSE - Color
@@ -331,7 +363,7 @@ MaxSize=48
 Size=64
 Context=Places
 Type=Scalable
-MinSize=64
+MinSize=32
 MaxSize=256
 
 ########## Status
@@ -361,7 +393,9 @@ Type=Fixed
 [status/64]
 Size=64
 Context=Status
-Type=Fixed
+Type=Scalable
+MinSize=22
+MaxSize=256
 
 # Gnome symbolic icons
 
