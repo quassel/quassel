@@ -42,8 +42,8 @@ public:
     QtUi();
     ~QtUi();
 
-    MessageModel *createMessageModel(QObject *parent);
-    AbstractMessageProcessor *createMessageProcessor(QObject *parent);
+    MessageModel *createMessageModel(QObject *parent) override;
+    AbstractMessageProcessor *createMessageProcessor(QObject *parent) override;
 
     inline static QtUi *instance();
     inline static QtUiStyle *style();
@@ -60,21 +60,21 @@ public:
     static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
 
 public slots:
-    virtual void init();
+    void init() override;
 
     uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text);
     void closeNotification(uint notificationId);
     void closeNotifications(BufferId bufferId = BufferId());
 
 protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
+    void connectedToCore() override;
+    void disconnectedFromCore() override;
     void notificationActivated(uint notificationId);
     void bufferMarkedAsRead(BufferId);
 
 protected:
-    virtual void minimizeRestore(bool show);
-    virtual bool isHidingMainWidgetAllowed() const;
+    void minimizeRestore(bool show) override;
+    bool isHidingMainWidgetAllowed() const override;
 
 private slots:
     void useSystemTrayChanged(const QVariant &);
