@@ -1,14 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
   <defs id="defs3051">
     <style type="text/css" id="current-color-scheme">
-      .ColorScheme-NegativeText {
-        color:#da4453;
+      .ColorScheme-Text {
+        color:#4d4d4d;
       }
       </style>
   </defs>
-  <path
-     style="fill:currentColor;fill-opacity:1;stroke:none" 
-     d="M 13 5 C 10.972402 5 9.12868 5.756694 7.71875 7 C 7.592511 7.11132 7.46272 7.22478 7.34375 7.34375 L 7 7.71875 C 5.756694 9.12868 5 10.972402 5 13 C 5 17.41828 8.58172 21 13 21 C 15.027598 21 16.87132 20.243306 18.28125 19 L 18.65625 18.65625 C 18.77522 18.53728 18.88868 18.407489 19 18.28125 C 20.243306 16.87132 21 15.027598 21 13 C 21 8.58172 17.41828 5 13 5 z M 13 6 C 16.86599 6 20 9.13401 20 13 C 20 14.75366 19.346785 16.334268 18.28125 17.5625 L 8.4375 7.71875 C 9.665731 6.653215 11.24634 6 13 6 z M 7.71875 8.4375 L 17.5625 18.28125 C 16.334268 19.346785 14.75366 20 13 20 C 9.13401 20 6 16.86599 6 13 C 6 11.24634 6.653215 9.665731 7.71875 8.4375 z "
-     class="ColorScheme-NegativeText"
-     />
+ <path style="fill:currentColor" class="ColorScheme-Text" d="M 3 7 L 3 9 L 13 9 L 13 7 L 3 7 z" transform="translate(4 4)"/>
 </svg>
