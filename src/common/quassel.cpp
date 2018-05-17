@@ -20,7 +20,9 @@
 
 #include "quassel.h"
 
+#include <algorithm>
 #include <iostream>
+
 #include <signal.h>
 #if !defined Q_OS_WIN && !defined Q_OS_MAC
 #  include <sys/types.h>
@@ -720,7 +722,13 @@ bool Quassel::Features::isEnabled(Feature feature) const
 
 QStringList Quassel::Features::toStringList(bool enabled) const
 {
+    // Check if any feature is enabled
+    if (!enabled && std::all_of(_features.cbegin(), _features.cend(), [](bool feature) { return !feature; })) {
+        return QStringList{} << "NoFeatures";
+    }
+
     QStringList result;
+
     // TODO Qt5: Use QMetaEnum::fromType()
     auto featureEnum = Quassel::staticMetaObject.enumerator(Quassel::staticMetaObject.indexOfEnumerator("Feature"));
     for (quint32 i = 0; i < _features.size(); ++i) {

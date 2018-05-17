@@ -246,8 +246,12 @@ void CoreAuthHandler::handle(const Login &msg)
     const auto &clientFeatures = _peer->features();
     auto unsupported = clientFeatures.toStringList(false);
     if (!unsupported.isEmpty()) {
-        quInfo() << qPrintable(tr("Client does not support the following features: %1").arg(unsupported.join(", ")));
+        if (unsupported.contains("NoFeatures"))
+            quInfo() << qPrintable(tr("Client does not support extended features."));
+        else
+            quInfo() << qPrintable(tr("Client does not support the following features: %1").arg(unsupported.join(", ")));
     }
+
     if (!clientFeatures.unknownFeatures().isEmpty()) {
         quInfo() << qPrintable(tr("Client supports unknown features: %1").arg(clientFeatures.unknownFeatures().join(", ")));
     }
