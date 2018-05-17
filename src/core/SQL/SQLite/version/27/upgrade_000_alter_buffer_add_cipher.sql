@@ -1,0 +1,2 @@
+ALTER TABLE buffer
+ADD COLUMN cipher TEXT

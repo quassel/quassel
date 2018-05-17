@@ -63,6 +63,11 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
         _channelKeys[chan.toLower()] = channels[chan];
     }
 
+    QHash<QString, QByteArray> bufferCiphers = coreSession()->bufferCiphers(networkId());
+    foreach(QString buffer, bufferCiphers.keys()) {
+        storeChannelCipherKey(buffer.toLower(), bufferCiphers[buffer]);
+    }
+
     connect(networkConfig(), SIGNAL(pingTimeoutEnabledSet(bool)), SLOT(enablePingTimeout(bool)));
     connect(networkConfig(), SIGNAL(pingIntervalSet(int)), SLOT(setPingInterval(int)));
     connect(networkConfig(), SIGNAL(autoWhoEnabledSet(bool)), SLOT(setAutoWhoEnabled(bool)));
@@ -442,6 +447,7 @@ void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
     CoreIrcChannel *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (c) {
         c->setEncrypted(c->cipher()->setKey(key));
+        coreSession()->setBufferCipher(networkId(), target, key);
         return;
     }
 
@@ -451,6 +457,7 @@ void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
 
     if (u) {
         u->setEncrypted(u->cipher()->setKey(key));
+        coreSession()->setBufferCipher(networkId(), target, key);
         return;
     }
 }

@@ -138,6 +138,9 @@ public slots:
 
     QHash<QString, QString> persistentChannels(NetworkId) const;
 
+    QHash<QString, QByteArray> bufferCiphers(NetworkId id) const;
+    void setBufferCipher(NetworkId id, const QString &bufferName, const QByteArray &cipher) const;
+
     /**
      * Marks us away (or unaway) on all networks
      *
