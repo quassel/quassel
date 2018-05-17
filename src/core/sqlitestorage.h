@@ -58,6 +58,8 @@ public slots:
     void delUser(UserId user) override;
     void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) override;
     QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData = QVariant()) override;
+    void setCoreState(const QVariantList &data) override;
+    QVariantList getCoreState(const QVariantList &data) override;
 
     /* Identity handling */
     IdentityId createIdentity(UserId user, CoreIdentity &identity) override;
@@ -111,7 +113,7 @@ public slots:
     QString getAuthUserName(UserId user) override;
 
 protected:
-    void setConnectionProperties(const QVariantMap & /* properties */)  override {}
+    void setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment, bool loadFromEnvironment) override {}
     QString driverName()  override { return "QSQLITE"; }
     QString databaseName()  override { return backlogFile(); }
     int installedSchemaVersion() override;
@@ -151,6 +153,7 @@ public:
     bool readMo(BacklogMO &backlog) override;
     bool readMo(IrcServerMO &ircserver) override;
     bool readMo(UserSettingMO &userSetting) override;
+    bool readMo(CoreStateMO &coreState) override;
 
     bool prepareQuery(MigrationObject mo) override;
 

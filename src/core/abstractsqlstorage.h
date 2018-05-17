@@ -43,8 +43,8 @@ public:
     virtual std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter() { return {}; }
 
 public slots:
-    virtual State init(const QVariantMap &settings = QVariantMap());
-    virtual bool setup(const QVariantMap &settings = QVariantMap());
+    virtual State init(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}, bool loadFromEnvironment = false);
+    virtual bool setup(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}, bool loadFromEnvironment = false);
 
 protected:
     inline virtual void sync() {};
@@ -82,7 +82,7 @@ protected:
     virtual bool updateSchemaVersion(int newVersion) = 0;
     virtual bool setupSchemaVersion(int version) = 0;
 
-    virtual void setConnectionProperties(const QVariantMap &properties) = 0;
+    virtual void setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment, bool loadFromEnvironment) = 0;
     virtual QString driverName() = 0;
     inline virtual QString hostName() { return QString(); }
     inline virtual int port() { return -1; }
@@ -273,6 +273,11 @@ public:
         QByteArray settingvalue;
     };
 
+    struct CoreStateMO {
+        QString key;
+        QByteArray value;
+    };
+
     enum MigrationObject {
         QuasselUser,
         Sender,
@@ -282,7 +287,8 @@ public:
         Buffer,
         Backlog,
         IrcServer,
-        UserSetting
+        UserSetting,
+        CoreState
     };
 
     AbstractSqlMigrator();
@@ -328,6 +334,7 @@ public:
     virtual bool readMo(BacklogMO &backlog) = 0;
     virtual bool readMo(IrcServerMO &ircserver) = 0;
     virtual bool readMo(UserSettingMO &userSetting) = 0;
+    virtual bool readMo(CoreStateMO &coreState) = 0;
 
     bool migrateTo(AbstractSqlMigrationWriter *writer);
 
@@ -353,6 +360,7 @@ public:
     virtual bool writeMo(const BacklogMO &backlog) = 0;
     virtual bool writeMo(const IrcServerMO &ircserver) = 0;
     virtual bool writeMo(const UserSettingMO &userSetting) = 0;
+    virtual bool writeMo(const CoreStateMO &coreState) = 0;
 
     inline bool migrateFrom(AbstractSqlMigrationReader *reader) { return reader->migrateTo(this); }
 

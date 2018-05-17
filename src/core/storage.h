@@ -85,13 +85,13 @@ public slots:
      *  \param settings   Hostname, port, username, password, ...
      *  \return True if and only if the storage provider was initialized successfully.
      */
-    virtual bool setup(const QVariantMap &settings = QVariantMap()) = 0;
+    virtual bool setup(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}, bool loadFromEnvironment = false) = 0;
 
     //! Initialize the storage provider
     /** \param settings   Hostname, port, username, password, ...
      *  \return the State the storage backend is now in (see Storage::State)
      */
-    virtual State init(const QVariantMap &settings = QVariantMap()) = 0;
+    virtual State init(const QVariantMap &settings = QVariantMap(), const QProcessEnvironment &environment = {}, bool loadFromEnvironment = false) = 0;
 
     //! Makes temp data persistent
     /** This Method is periodically called by the Quassel Core to make temporary
@@ -170,6 +170,19 @@ public slots:
      * \return the Value of the Setting or the default value if it is unset.
      */
     virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) = 0;
+
+    //! Store core state
+    /**
+     * \param data         Active Sessions
+     */
+    virtual void setCoreState(const QVariantList &data) = 0;
+
+    //! Retrieve core state
+    /**
+     * \param default      Value to return in case it's unset.
+     * \return Active Sessions
+     */
+    virtual QVariantList getCoreState(const QVariantList &data = QVariantList()) = 0;
 
     /* Identity handling */
     virtual IdentityId createIdentity(UserId user, CoreIdentity &identity) = 0;

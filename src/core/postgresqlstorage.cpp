@@ -47,7 +47,7 @@ std::unique_ptr<AbstractSqlMigrationWriter> PostgreSqlStorage::createMigrationWr
     properties["Hostname"] = _hostName;
     properties["Port"] = _port;
     properties["Database"] = _databaseName;
-    writer->setConnectionProperties(properties);
+    writer->setConnectionProperties(properties, {}, false);
     return std::unique_ptr<AbstractSqlMigrationWriter>{writer};
 }
 
@@ -147,13 +147,21 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase &db)
 }
 
 
-void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties)
+void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment, bool loadFromEnvironment)
 {
-    _userName = properties["Username"].toString();
-    _password = properties["Password"].toString();
-    _hostName = properties["Hostname"].toString();
-    _port = properties["Port"].toInt();
-    _databaseName = properties["Database"].toString();
+    if (loadFromEnvironment) {
+        _userName = environment.value("DB_PGSQL_USERNAME");
+        _password = environment.value("DB_PGSQL_PASSWORD");
+        _hostName = environment.value("DB_PGSQL_HOSTNAME");
+        _port = environment.value("DB_PGSQL_PORT").toInt();
+        _databaseName = environment.value("DB_PGSQL_DATABASE");
+    } else {
+        _userName = properties["Username"].toString();
+        _password = properties["Password"].toString();
+        _hostName = properties["Hostname"].toString();
+        _port = properties["Port"].toInt();
+        _databaseName = properties["Database"].toString();
+    }
 }
 
 
@@ -392,6 +400,58 @@ QVariant PostgreSqlStorage::getUserSetting(UserId userId, const QString &setting
         return data;
     }
     else {
+        return defaultData;
+    }
+}
+
+
+void PostgreSqlStorage::setCoreState(const QVariantList &data)
+{
+    QByteArray rawData;
+    QDataStream out(&rawData, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_2);
+    out << data;
+
+    QSqlDatabase db = logDb();
+    QSqlQuery selectQuery(db);
+    selectQuery.prepare(queryString("select_core_state"));
+    selectQuery.bindValue(":key", "active_sessions");
+    safeExec(selectQuery);
+    watchQuery(selectQuery);
+
+    QString setQueryString;
+    if (!selectQuery.first()) {
+        setQueryString = queryString("insert_core_state");
+    }
+    else {
+        setQueryString = queryString("update_core_state");
+    }
+
+    QSqlQuery setQuery(db);
+    setQuery.prepare(setQueryString);
+    setQuery.bindValue(":key", "active_sessions");
+    setQuery.bindValue(":value", rawData);
+    safeExec(setQuery);
+    watchQuery(setQuery);
+}
+
+
+QVariantList PostgreSqlStorage::getCoreState(const QVariantList &defaultData)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_core_state"));
+    query.bindValue(":key", "active_sessions");
+    safeExec(query);
+    watchQuery(query);
+
+    if (query.first()) {
+        QVariantList data;
+        QByteArray rawData = query.value(0).toByteArray();
+        QDataStream in(&rawData, QIODevice::ReadOnly);
+        in.setVersion(QDataStream::Qt_4_2);
+        in >> data;
+        return data;
+    } else {
         return defaultData;
     }
 }
@@ -1944,6 +2004,9 @@ bool PostgreSqlMigrationWriter::prepareQuery(MigrationObject mo)
     case UserSetting:
         query = queryString("migrate_write_usersetting");
         break;
+    case CoreState:
+        query = queryString("migrate_write_corestate");
+        break;
     }
     newQuery(query, logDb());
     return true;
@@ -2113,6 +2176,13 @@ bool PostgreSqlMigrationWriter::writeMo(const UserSettingMO &userSetting)
     bindValue(0, userSetting.userid.toInt());
     bindValue(1, userSetting.settingname);
     bindValue(2, userSetting.settingvalue);
+    return exec();
+}
+
+bool PostgreSqlMigrationWriter::writeMo(const CoreStateMO &coreState)
+{
+    bindValue(0, coreState.key);
+    bindValue(1, coreState.value);
     return exec();
 }
 

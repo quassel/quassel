@@ -57,6 +57,8 @@ public slots:
     void delUser(UserId user) override;
     void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) override;
     QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData = QVariant()) override;
+    void setCoreState(const QVariantList &data) override;
+    QVariantList getCoreState(const QVariantList &data) override;
 
     /* Identity handling */
     IdentityId createIdentity(UserId user, CoreIdentity &identity) override;
@@ -111,7 +113,7 @@ public slots:
 
 protected:
     bool initDbSession(QSqlDatabase &db) override;
-    void setConnectionProperties(const QVariantMap &properties) override;
+    void setConnectionProperties(const QVariantMap &properties, const QProcessEnvironment &environment, bool loadFromEnvironment) override;
     QString driverName()  override { return "QPSQL"; }
     QString hostName()  override { return _hostName; }
     int port()  override { return _port; }
@@ -167,6 +169,7 @@ public:
     bool writeMo(const BacklogMO &backlog) override;
     bool writeMo(const IrcServerMO &ircserver) override;
     bool writeMo(const UserSettingMO &userSetting) override;
+    bool writeMo(const CoreStateMO &coreState) override;
 
     bool prepareQuery(MigrationObject mo) override;
 
