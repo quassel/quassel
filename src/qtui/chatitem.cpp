@@ -245,7 +245,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 //   }
 // 2) draw MsgId over the time column
 //   if(column() == 0) {
-//     QString msgIdString = QString::number(data(MessageModel::MsgIdRole).value<MsgId>().toInt());
+//     QString msgIdString = QString::number(data(MessageModel::MsgIdRole).value<MsgId>().toLongLong());
 //     QPointF bottomPoint = boundingRect().bottomLeft();
 //     bottomPoint.ry() -= 2;
 //     painter->drawText(bottomPoint, msgIdString);

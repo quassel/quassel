@@ -1414,7 +1414,7 @@ void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, 
         query.prepare(queryString("update_buffer_lastseen"));
         query.bindValue(":userid", user.toInt());
         query.bindValue(":bufferid", bufferId.toInt());
-        query.bindValue(":lastseenmsgid", msgId.toInt());
+        query.bindValue(":lastseenmsgid", msgId.toQint64());
 
         lockForWrite();
         safeExec(query);
@@ -1443,7 +1443,7 @@ QHash<BufferId, MsgId> SqliteStorage::bufferLastSeenMsgIds(UserId user)
         error = !watchQuery(query);
         if (!error) {
             while (query.next()) {
-                lastSeenHash[query.value(0).toInt()] = query.value(1).toInt();
+                lastSeenHash[query.value(0).toInt()] = query.value(1).toLongLong();
             }
         }
     }
@@ -1464,7 +1464,7 @@ void SqliteStorage::setBufferMarkerLineMsg(UserId user, const BufferId &bufferId
         query.prepare(queryString("update_buffer_markerlinemsgid"));
         query.bindValue(":userid", user.toInt());
         query.bindValue(":bufferid", bufferId.toInt());
-        query.bindValue(":markerlinemsgid", msgId.toInt());
+        query.bindValue(":markerlinemsgid", msgId.toQint64());
 
         lockForWrite();
         safeExec(query);
@@ -1493,7 +1493,7 @@ QHash<BufferId, MsgId> SqliteStorage::bufferMarkerLineMsgIds(UserId user)
         error = !watchQuery(query);
         if (!error) {
             while (query.next()) {
-                markerLineHash[query.value(0).toInt()] = query.value(1).toInt();
+                markerLineHash[query.value(0).toInt()] = query.value(1).toLongLong();
             }
         }
     }
@@ -1563,7 +1563,7 @@ Message::Types SqliteStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMs
         QSqlQuery query(db);
         query.prepare(queryString("select_buffer_bufferactivity"));
         query.bindValue(":bufferid", bufferId.toInt());
-        query.bindValue(":lastseenmsgid", lastSeenMsgId.toInt());
+        query.bindValue(":lastseenmsgid", lastSeenMsgId.toQint64());
 
         lockForRead();
         safeExec(query);
@@ -1612,7 +1612,7 @@ bool SqliteStorage::logMessage(Message &msg)
             }
         }
         if (!error) {
-            MsgId msgId = logMessageQuery.lastInsertId().toInt();
+            MsgId msgId = logMessageQuery.lastInsertId().toLongLong();
             if (msgId.isValid()) {
                 msg.setMsgId(msgId);
             }
@@ -1676,7 +1676,7 @@ bool SqliteStorage::logMessages(MessageList &msgs)
                 break;
             }
             else {
-                msg.setMsgId(logMessageQuery.lastInsertId().toInt());
+                msg.setMsgId(logMessageQuery.lastInsertId().toLongLong());
             }
         }
     }
@@ -1707,7 +1707,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
     bool error = false;
     BufferInfo bufferInfo;
     {
-        // code dupication from getBufferInfo:
+        // code duplication from getBufferInfo:
         // this is due to the impossibility of nesting transactions and recursive locking
         QSqlQuery bufferInfoQuery(db);
         bufferInfoQuery.prepare(queryString("select_buffer_by_id"));
@@ -1735,12 +1735,12 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
         }
         else if (last == -1) {
             query.prepare(queryString("select_messagesNewerThan"));
-            query.bindValue(":firstmsg", first.toInt());
+            query.bindValue(":firstmsg", first.toQint64());
         }
         else {
             query.prepare(queryString("select_messagesRange"));
-            query.bindValue(":lastmsg", last.toInt());
-            query.bindValue(":firstmsg", first.toInt());
+            query.bindValue(":lastmsg", last.toQint64());
+            query.bindValue(":firstmsg", first.toQint64());
         }
         query.bindValue(":bufferid", bufferId.toInt());
         query.bindValue(":limit", limit);
@@ -1756,7 +1756,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
                 query.value(4).toString(),
                 query.value(5).toString(),
                 (Message::Flags)query.value(3).toUInt());
-            msg.setMsgId(query.value(0).toInt());
+            msg.setMsgId(query.value(0).toLongLong());
             messagelist << msg;
         }
     }
@@ -1794,10 +1794,10 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
         }
         else {
             query.prepare(queryString("select_messagesAll"));
-            query.bindValue(":lastmsg", last.toInt());
+            query.bindValue(":lastmsg", last.toQint64());
         }
         query.bindValue(":userid", user.toInt());
-        query.bindValue(":firstmsg", first.toInt());
+        query.bindValue(":firstmsg", first.toQint64());
         query.bindValue(":limit", limit);
         safeExec(query);
 
@@ -1811,7 +1811,7 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
                 query.value(5).toString(),
                 query.value(6).toString(),
                 (Message::Flags)query.value(4).toUInt());
-            msg.setMsgId(query.value(0).toInt());
+            msg.setMsgId(query.value(0).toLongLong());
             messagelist << msg;
         }
     }
@@ -1916,7 +1916,7 @@ void SqliteMigrationReader::setMaxId(MigrationObject mo)
     }
     QSqlQuery query = logDb().exec(queryString);
     query.first();
-    _maxId = query.value(0).toInt();
+    _maxId = query.value(0).toLongLong();
 }
 
 
@@ -1994,7 +1994,7 @@ bool SqliteMigrationReader::readMo(IdentityMO &identity)
     identity.autoAwayReasonEnabled = value(11).toInt() == 1 ? true : false;
     identity.detachAwayEnabled = value(12).toInt() == 1 ? true : false;
     identity.detachAwayReason = value(13).toString();
-    identity.detchAwayReasonEnabled = value(14).toInt() == 1 ? true : false;
+    identity.detachAwayReasonEnabled = value(14).toInt() == 1 ? true : false;
     identity.ident = value(15).toString();
     identity.kickReason = value(16).toString();
     identity.partReason = value(17).toString();
@@ -2068,9 +2068,9 @@ bool SqliteMigrationReader::readMo(BufferMO &buffer)
     buffer.buffername = value(4).toString();
     buffer.buffercname = value(5).toString();
     buffer.buffertype = value(6).toInt();
-    buffer.lastmsgid = value(7).toInt();
-    buffer.lastseenmsgid = value(8).toInt();
-    buffer.markerlinemsgid = value(9).toInt();
+    buffer.lastmsgid = value(7).toLongLong();
+    buffer.lastseenmsgid = value(8).toLongLong();
+    buffer.markerlinemsgid = value(9).toLongLong();
     buffer.bufferactivity = value(10).toInt();
     buffer.key = value(11).toString();
     buffer.joined = value(12).toInt() == 1 ? true : false;
@@ -2094,7 +2094,7 @@ bool SqliteMigrationReader::readMo(SenderMO &sender)
         }
     }
 
-    sender.senderId = value(0).toInt();
+    sender.senderId = value(0).toLongLong();
     sender.sender = value(1).toString();
     return true;
 }
@@ -2105,8 +2105,8 @@ bool SqliteMigrationReader::readMo(BacklogMO &backlog)
     int skipSteps = 0;
     while (!next()) {
         if (backlog.messageid < _maxId) {
-            bindValue(0, backlog.messageid.toInt() + (skipSteps * stepSize()));
-            bindValue(1, backlog.messageid.toInt() + ((skipSteps + 1) * stepSize()));
+            bindValue(0, backlog.messageid.toQint64() + (skipSteps * stepSize()));
+            bindValue(1, backlog.messageid.toQint64() + ((skipSteps + 1) * stepSize()));
             skipSteps++;
             if (!exec())
                 return false;
@@ -2121,7 +2121,7 @@ bool SqliteMigrationReader::readMo(BacklogMO &backlog)
     backlog.bufferid = value(2).toInt();
     backlog.type = value(3).toInt();
     backlog.flags = value(4).toInt();
-    backlog.senderid = value(5).toInt();
+    backlog.senderid = value(5).toLongLong();
     backlog.senderprefixes = value(6).toString();
     backlog.message = value(7).toString();
     return true;

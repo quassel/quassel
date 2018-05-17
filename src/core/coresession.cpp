@@ -262,8 +262,12 @@ void CoreSession::restoreSessionState()
 
 void CoreSession::addClient(RemotePeer *peer)
 {
+    signalProxy()->setTargetPeer(peer);
+
     peer->dispatch(sessionState());
     signalProxy()->addPeer(peer);
+
+    signalProxy()->setTargetPeer(nullptr);
 }
 
 
