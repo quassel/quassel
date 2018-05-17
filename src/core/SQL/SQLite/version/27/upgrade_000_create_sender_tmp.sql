@@ -1,0 +1,1 @@
+CREATE TABLE sender_tmp (senderid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, sender TEXT NOT NULL, realname TEXT, avatarurl TEXT);

@@ -118,6 +118,14 @@ private:
     QHash<QThread *, Connection *> _connectionPool;
 };
 
+struct SenderData {
+    QString sender;
+    QString realname;
+    QString avatarurl;
+
+    friend uint qHash(const SenderData &key);
+    friend bool operator==(const SenderData &a, const SenderData &b);
+};
 
 // ========================================
 //  AbstractSqlStorage::Connection
@@ -155,6 +163,8 @@ public:
     struct SenderMO {
         int senderId;
         QString sender;
+        QString realname;
+        QString avatarurl;
         SenderMO() : senderId(0) {}
     };
 

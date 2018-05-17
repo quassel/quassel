@@ -131,6 +131,9 @@ public:
         SenderPrefixes,           ///< Show prefixes for senders in backlog
         RemoteDisconnect,         ///< Allow this peer to be remotely disconnected
         ExtendedFeatures,         ///< Extended features
+        LongMessageTime,          ///< Serialize message time as 64-bit
+        RichMessages,             ///< Real Name and Avatar URL in backlog
+        BacklogFilterType,        ///< Backlogmanager supports filtering backlog by messagetype
 #if QT_VERSION >= 0x050500
         EcdsaCertfpKeys,          ///< ECDSA keys for CertFP in identities
 #endif

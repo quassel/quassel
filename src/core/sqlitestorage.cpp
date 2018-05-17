@@ -1603,6 +1603,8 @@ bool SqliteStorage::logMessage(Message &msg)
                 QSqlQuery addSenderQuery(db);
                 addSenderQuery.prepare(queryString("insert_sender"));
                 addSenderQuery.bindValue(":sender", msg.sender());
+                addSenderQuery.bindValue(":realname", msg.realName());
+                addSenderQuery.bindValue(":avatarurl", msg.avatarUrl());
                 safeExec(addSenderQuery);
                 safeExec(logMessageQuery);
                 error = !watchQuery(logMessageQuery);
@@ -1640,17 +1642,20 @@ bool SqliteStorage::logMessages(MessageList &msgs)
     db.transaction();
 
     {
-        QSet<QString> senders;
+        QSet<SenderData> senders;
         QSqlQuery addSenderQuery(db);
         addSenderQuery.prepare(queryString("insert_sender"));
         lockForWrite();
         for (int i = 0; i < msgs.count(); i++) {
-            const QString &sender = msgs.at(i).sender();
+            auto &msg = msgs.at(i);
+            SenderData sender = { msg.sender(), msg.realName(), msg.avatarUrl() };
             if (senders.contains(sender))
                 continue;
             senders << sender;
 
-            addSenderQuery.bindValue(":sender", sender);
+            addSenderQuery.bindValue(":sender", sender.sender);
+            addSenderQuery.bindValue(":realname", sender.realname);
+            addSenderQuery.bindValue(":avatarurl", sender.avatarurl);
             safeExec(addSenderQuery);
         }
     }
@@ -1752,10 +1757,88 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
             Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
                 bufferInfo,
                 (Message::Type)query.value(2).toUInt(),
-                query.value(6).toString(),
+                query.value(8).toString(),
                 query.value(4).toString(),
                 query.value(5).toString(),
+                query.value(6).toString(),
+                query.value(7).toString(),
                 (Message::Flags)query.value(3).toUInt());
+            msg.setMsgId(query.value(0).toInt());
+            messagelist << msg;
+        }
+    }
+    db.commit();
+    unlock();
+
+    return messagelist;
+}
+
+
+QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+{
+    QList<Message> messagelist;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    bool error = false;
+    BufferInfo bufferInfo;
+    {
+        // code dupication from getBufferInfo:
+        // this is due to the impossibility of nesting transactions and recursive locking
+        QSqlQuery bufferInfoQuery(db);
+        bufferInfoQuery.prepare(queryString("select_buffer_by_id"));
+        bufferInfoQuery.bindValue(":userid", user.toInt());
+        bufferInfoQuery.bindValue(":bufferid", bufferId.toInt());
+
+        lockForRead();
+        safeExec(bufferInfoQuery);
+        error = !watchQuery(bufferInfoQuery) || !bufferInfoQuery.first();
+        if (!error) {
+            bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(), bufferInfoQuery.value(1).toInt(), (BufferInfo::Type)bufferInfoQuery.value(2).toInt(), 0, bufferInfoQuery.value(4).toString());
+            error = !bufferInfo.isValid();
+        }
+    }
+    if (error) {
+        db.rollback();
+        unlock();
+        return messagelist;
+    }
+
+    {
+        QSqlQuery query(db);
+        if (last == -1 && first == -1) {
+            query.prepare(queryString("select_messagesNewestK_filtered"));
+        }
+        else if (last == -1) {
+            query.prepare(queryString("select_messagesNewerThan_filtered"));
+            query.bindValue(":firstmsg", first.toInt());
+        }
+        else {
+            query.prepare(queryString("select_messagesRange_filtered"));
+            query.bindValue(":lastmsg", last.toInt());
+            query.bindValue(":firstmsg", first.toInt());
+        }
+        query.bindValue(":bufferid", bufferId.toInt());
+        query.bindValue(":limit", limit);
+        int typeRaw = type;
+        query.bindValue(":type", typeRaw);
+        int flagsRaw = flags;
+        query.bindValue(":flags", flagsRaw);
+
+        safeExec(query);
+        watchQuery(query);
+
+        while (query.next()) {
+            Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
+                        bufferInfo,
+                        (Message::Type)query.value(2).toUInt(),
+                        query.value(8).toString(),
+                        query.value(4).toString(),
+                        query.value(5).toString(),
+                        query.value(6).toString(),
+                        query.value(7).toString(),
+                        Message::Flags{query.value(3).toInt()});
             msg.setMsgId(query.value(0).toInt());
             messagelist << msg;
         }
@@ -1807,9 +1890,11 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
             Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
                 bufferInfoHash[query.value(1).toInt()],
                 (Message::Type)query.value(3).toUInt(),
-                query.value(7).toString(),
+                query.value(9).toString(),
                 query.value(5).toString(),
                 query.value(6).toString(),
+                query.value(7).toString(),
+                query.value(8).toString(),
                 (Message::Flags)query.value(4).toUInt());
             msg.setMsgId(query.value(0).toInt());
             messagelist << msg;
@@ -1820,6 +1905,64 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
     return messagelist;
 }
 
+QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+{
+    QList<Message> messagelist;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    QHash<BufferId, BufferInfo> bufferInfoHash;
+    {
+        QSqlQuery bufferInfoQuery(db);
+        bufferInfoQuery.prepare(queryString("select_buffers"));
+        bufferInfoQuery.bindValue(":userid", user.toInt());
+
+        lockForRead();
+        safeExec(bufferInfoQuery);
+        watchQuery(bufferInfoQuery);
+        while (bufferInfoQuery.next()) {
+            BufferInfo bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(), bufferInfoQuery.value(1).toInt(), (BufferInfo::Type)bufferInfoQuery.value(2).toInt(), bufferInfoQuery.value(3).toInt(), bufferInfoQuery.value(4).toString());
+            bufferInfoHash[bufferInfo.bufferId()] = bufferInfo;
+        }
+
+        QSqlQuery query(db);
+        if (last == -1) {
+            query.prepare(queryString("select_messagesAllNew_filtered"));
+        }
+        else {
+            query.prepare(queryString("select_messagesAll_filtered"));
+            query.bindValue(":lastmsg", last.toInt());
+        }
+        query.bindValue(":userid", user.toInt());
+        query.bindValue(":firstmsg", first.toInt());
+        query.bindValue(":limit", limit);
+        int typeRaw = type;
+        query.bindValue(":type", typeRaw);
+        int flagsRaw = flags;
+        query.bindValue(":flags", flagsRaw);
+        safeExec(query);
+
+        watchQuery(query);
+
+        while (query.next()) {
+            Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
+                        bufferInfoHash[query.value(1).toInt()],
+                        (Message::Type)query.value(3).toUInt(),
+                        query.value(9).toString(),
+                        query.value(5).toString(),
+                        query.value(6).toString(),
+                        query.value(7).toString(),
+                        query.value(8).toString(),
+                        Message::Flags{query.value(4).toInt()});
+            msg.setMsgId(query.value(0).toInt());
+            messagelist << msg;
+        }
+    }
+    db.commit();
+    unlock();
+    return messagelist;
+}
 
 QMap<UserId, QString> SqliteStorage::getAllAuthUserNames()
 {
