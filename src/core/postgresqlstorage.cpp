@@ -1440,6 +1440,61 @@ Message::Types PostgreSqlStorage::bufferActivity(BufferId bufferId, MsgId lastSe
     return result;
 }
 
+
+void PostgreSqlStorage::setHighlightCount(UserId user, BufferId bufferId, int highlightcount)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("update_buffer_highlightcount"));
+
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":highlightcount", highlightcount);
+    safeExec(query);
+    watchQuery(query);
+}
+
+QHash<BufferId, int> PostgreSqlStorage::highlightCounts(UserId user)
+{
+    QHash<BufferId, int> highlightCountHash;
+
+    QSqlDatabase db = logDb();
+    if (!beginReadOnlyTransaction(db)) {
+        qWarning() << "PostgreSqlStorage::highlightCounts(): cannot start read only transaction!";
+        qWarning() << " -" << qPrintable(db.lastError().text());
+        return highlightCountHash;
+    }
+
+    QSqlQuery query(db);
+    query.prepare(queryString("select_buffer_highlightcounts"));
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    if (!watchQuery(query)) {
+        db.rollback();
+        return highlightCountHash;
+    }
+
+    while (query.next()) {
+        highlightCountHash[query.value(0).toInt()] = query.value(1).toInt();
+    }
+
+    db.commit();
+    return highlightCountHash;
+}
+
+int PostgreSqlStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_buffer_highlightcount"));
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":lastseenmsgid", lastSeenMsgId.toInt());
+    safeExec(query);
+    watchQuery(query);
+    int result = int(0);
+    if (query.first())
+        result = query.value(0).toInt();
+    return result;
+}
+
 bool PostgreSqlStorage::logMessage(Message &msg)
 {
     QSqlDatabase db = logDb();
@@ -2064,8 +2119,9 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer)
     bindValue(8, buffer.lastseenmsgid);
     bindValue(9, buffer.markerlinemsgid);
     bindValue(10, buffer.bufferactivity);
-    bindValue(11, buffer.key);
-    bindValue(12, buffer.joined);
+    bindValue(11, buffer.highlightcount);
+    bindValue(12, buffer.key);
+    bindValue(13, buffer.joined);
     return exec();
 }
 

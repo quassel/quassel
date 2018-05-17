@@ -27,11 +27,17 @@ BufferSyncer::BufferSyncer(QObject *parent)
 }
 
 
-BufferSyncer::BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, QObject *parent)
-    : SyncableObject(parent),
+BufferSyncer::BufferSyncer(
+        const QHash<BufferId, MsgId> &lastSeenMsg,
+        const QHash<BufferId, MsgId> &markerLines,
+        const QHash<BufferId, Message::Types> &activities,
+        const QHash<BufferId, int> &highlightCounts,
+        QObject *parent
+) : SyncableObject(parent),
     _lastSeenMsg(lastSeenMsg),
     _markerLines(markerLines),
-    _bufferActivities(activities)
+    _bufferActivities(activities),
+    _highlightCounts(highlightCounts)
 {
 }
 
@@ -162,6 +168,8 @@ void BufferSyncer::removeBuffer(BufferId buffer)
         _markerLines.remove(buffer);
     if (_bufferActivities.contains(buffer))
         _bufferActivities.remove(buffer);
+    if (_highlightCounts.contains(buffer))
+        _highlightCounts.remove(buffer);
     SYNC(ARG(buffer))
     emit bufferRemoved(buffer);
 }
@@ -175,6 +183,31 @@ void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2)
         _markerLines.remove(buffer2);
     if (_bufferActivities.contains(buffer2))
         _bufferActivities.remove(buffer2);
+    if (_highlightCounts.contains(buffer2))
+        _highlightCounts.remove(buffer2);
     SYNC(ARG(buffer1), ARG(buffer2))
     emit buffersPermanentlyMerged(buffer1, buffer2);
+}
+
+int BufferSyncer::highlightCount(BufferId buffer) const {
+    return _highlightCounts.value(buffer, 0);
+}
+
+QVariantList BufferSyncer::initHighlightCounts() const {
+    QVariantList list;
+    auto iter = _highlightCounts.constBegin();
+    while (iter != _highlightCounts.constEnd()) {
+        list << QVariant::fromValue<BufferId>(iter.key())
+             << QVariant::fromValue<int>((int) iter.value());
+        ++iter;
+    }
+    return list;
+}
+
+void BufferSyncer::initSetHighlightCounts(const QVariantList &list) {
+    _highlightCounts.clear();
+    Q_ASSERT(list.count() % 2 == 0);
+    for (int i = 0; i < list.count(); i += 2) {
+        setHighlightCount(list.at(i).value<BufferId>(), list.at(i+1).value<int>());
+    }
 }
