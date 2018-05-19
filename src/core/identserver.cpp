@@ -117,7 +117,7 @@ void IdentServer::respond() {
 
     Request request{socket, localPort, query, transactionId, _requestId++};
     if (!success) {
-        request.respondError("NO-USER");
+        request.respondError("INVALID-PORT");
     } else if (responseAvailable(request)) {
         // success
     } else if (lowestSocketId() < transactionId) {
