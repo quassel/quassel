@@ -128,23 +128,18 @@ void IdentServer::respond() {
 }
 
 bool IdentServer::responseAvailable(Request request) {
-    QString user;
-    bool success = true;
-    if (_connections.contains(request.localPort)) {
-        user = _connections[request.localPort];
-    } else {
-        success = false;
+    if (!_connections.contains(request.localPort)) {
+        return false;
     }
 
-    QString data;
-    if (success) {
-        data += request.query + " : USERID : Quassel : " + user + "\r\n";
+    QString user = _connections[request.localPort];
+    QString data = request.query + " : USERID : Quassel : " + user + "\r\n";
 
-        request.socket->write(data.toUtf8());
-        request.socket->flush();
-        request.socket->close();
-    }
-    return success;
+    request.socket->write(data.toUtf8());
+    request.socket->flush();
+    request.socket->close();
+
+    return true;
 }
 
 void IdentServer::responseUnavailable(Request request) {
