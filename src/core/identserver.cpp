@@ -118,12 +118,12 @@ void IdentServer::respond() {
     Request request{socket, localPort, query, transactionId, _requestId++};
     if (!success) {
         responseUnavailable(request);
-    } else if (!responseAvailable(request)) {
-        if (hasSocketsBelowId(transactionId)) {
-            _requestQueue.emplace_back(request);
-        } else {
-            responseUnavailable(request);
-        }
+    } else if (responseAvailable(request)) {
+        // success
+    } else if (hasSocketsBelowId(transactionId)) {
+        _requestQueue.emplace_back(request);
+    } else {
+        responseUnavailable(request);
     }
 }
 
