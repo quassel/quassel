@@ -120,7 +120,7 @@ void IdentServer::respond() {
         responseUnavailable(request);
     } else if (responseAvailable(request)) {
         // success
-    } else if (hasSocketsBelowId(transactionId)) {
+    } else if (lowestSocketId() < transactionId) {
         _requestQueue.emplace_back(request);
     } else {
         responseUnavailable(request);
@@ -182,10 +182,12 @@ qint64 IdentServer::addWaitingSocket() {
     return newSocketId;
 }
 
-bool IdentServer::hasSocketsBelowId(qint64 id) {
-    return std::any_of(_waiting.begin(), _waiting.end(), [=](qint64 socketId) {
-        return socketId <= id;
-    });
+qint64 IdentServer::lowestSocketId() {
+    if (_waiting.empty()) {
+        return std::numeric_limits<qint64>::max();
+    }
+
+    return _waiting.front();
 }
 
 void IdentServer::removeWaitingSocket(qint64 socketId) {
@@ -193,21 +195,15 @@ void IdentServer::removeWaitingSocket(qint64 socketId) {
 }
 
 void IdentServer::processWaiting(qint64 socketId) {
-    qint64 lowestSocketId = std::numeric_limits<qint64 >::max();
-    for (qint64 id : _waiting) {
-        if (id < lowestSocketId) {
-            lowestSocketId = id;
-        }
-    }
     removeWaitingSocket(socketId);
     _requestQueue.remove_if([=](Request request) {
-        if (request.transactionId < lowestSocketId) {
+        if (socketId < request.transactionId && responseAvailable(request)) {
+            return true;
+        } else if (lowestSocketId() < request.transactionId) {
+            return false;
+        } else {
             responseUnavailable(request);
             return true;
-        } else if (request.transactionId > socketId) {
-            return responseAvailable(request);
-        } else {
-            return false;
         }
     });
 }
