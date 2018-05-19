@@ -96,31 +96,33 @@ void IdentServer::respond() {
 
     qint64 transactionId = _socketId;
 
-    if (socket->canReadLine()) {
-        QByteArray query = socket->readLine();
-        if (query.endsWith("\r\n"))
-            query.chop(2);
-        else if (query.endsWith("\n"))
-            query.chop(1);
+    if (!socket->canReadLine()) {
+        return;
+    }
 
-        QList<QByteArray> split = query.split(',');
+    QByteArray query = socket->readLine();
+    if (query.endsWith("\r\n"))
+        query.chop(2);
+    else if (query.endsWith("\n"))
+        query.chop(1);
 
-        bool success = false;
+    QList<QByteArray> split = query.split(',');
 
-        quint16 localPort;
-        if (!split.empty()) {
-            localPort = split[0].trimmed().toUShort(&success, 10);
-        }
+    bool success = false;
 
-        Request request{socket, localPort, query, transactionId, _requestId++};
-        if (!success) {
+    quint16 localPort;
+    if (!split.empty()) {
+        localPort = split[0].trimmed().toUShort(&success, 10);
+    }
+
+    Request request{socket, localPort, query, transactionId, _requestId++};
+    if (!success) {
+        responseUnavailable(request);
+    } else if (!responseAvailable(request)) {
+        if (hasSocketsBelowId(transactionId)) {
+            _requestQueue.emplace_back(request);
+        } else {
             responseUnavailable(request);
-        } else if (!responseAvailable(request)) {
-            if (hasSocketsBelowId(transactionId)) {
-                _requestQueue.emplace_back(request);
-            } else {
-                responseUnavailable(request);
-            }
         }
     }
 }
