@@ -58,7 +58,7 @@ private:
 
     QString sysIdentForIdentity(const CoreIdentity *identity) const;
 
-    bool hasSocketsBelowId(qint64 socketId);
+    qint64 lowestSocketId();
 
     void processWaiting(qint64 socketId);
 
