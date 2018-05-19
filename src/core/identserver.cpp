@@ -110,7 +110,7 @@ void IdentServer::respond() {
 
     bool success = false;
 
-    quint16 localPort;
+    quint16 localPort = 0;
     if (!split.empty()) {
         localPort = split[0].trimmed().toUShort(&success, 10);
     }
