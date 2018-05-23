@@ -50,9 +50,6 @@ class IrcUser : public SyncableObject
     Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime)
     Q_PROPERTY(QString server READ server WRITE setServer)
     Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator)
-    // lastAwayMessage is only set by legacy (pre-0.13) cores, which automatically gets converted to
-    // the appropriate lastAwayMessageTime.  Do not use this in new code.
-    Q_PROPERTY(int lastAwayMessage WRITE setLastAwayMessage)
     Q_PROPERTY(QDateTime lastAwayMessageTime READ lastAwayMessageTime WRITE setLastAwayMessageTime)
     Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply)
     Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost)
