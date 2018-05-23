@@ -18,10 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coreapplication.h"
-
 #include "core.h"
-#include "logger.h"
+#include "coreapplication.h"
 
 CoreApplicationInternal::CoreApplicationInternal()
     : _coreCreated(false)
@@ -40,18 +38,6 @@ CoreApplicationInternal::~CoreApplicationInternal()
 
 bool CoreApplicationInternal::init()
 {
-    /* FIXME
-    This is an initial check if logfile is writable since the warning would spam stdout if done
-    in current Logger implementation. Can be dropped whenever the logfile is only opened once.
-    */
-    QFile logFile;
-    if (!Quassel::optionValue("logfile").isEmpty()) {
-        logFile.setFileName(Quassel::optionValue("logfile"));
-        if (!logFile.open(QIODevice::Append | QIODevice::Text))
-            qWarning("Warning: Couldn't open logfile '%s' - will log to stdout instead", qPrintable(logFile.fileName()));
-        else logFile.close();
-    }
-
     Core::instance(); // create and init the core
     _coreCreated = true;
 
@@ -91,13 +77,5 @@ CoreApplication::~CoreApplication()
 
 bool CoreApplication::init()
 {
-    if (Quassel::init() && _internal->init()) {
-#if QT_VERSION < 0x050000
-        qInstallMsgHandler(Logger::logMessage);
-#else
-        qInstallMessageHandler(Logger::logMessage);
-#endif
-        return true;
-    }
-    return false;
+    return Quassel::init() && _internal->init();
 }
