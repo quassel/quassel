@@ -118,37 +118,41 @@ bool Quassel::init()
         return false;
     }
 
-    // set up logging
-    if (Quassel::runMode() != Quassel::ClientOnly) {
-        if (isOptionSet("loglevel")) {
-            QString level = optionValue("loglevel");
+    // Set up logging
+    if (isOptionSet("loglevel")) {
+        QString level = optionValue("loglevel").toLower();
 
-            if (level == "Debug")
-                setLogLevel(DebugLevel);
-            else if (level == "Info")
-                setLogLevel(InfoLevel);
-            else if (level == "Warning")
-                setLogLevel(WarningLevel);
-            else if (level == "Error")
-                setLogLevel(ErrorLevel);
-            else {
-                qWarning() << qPrintable(tr("Invalid log level %1; supported are Debug|Info|Warning|Error").arg(level));
-                return false;
-            }
+        if (level == "debug")
+            setLogLevel(DebugLevel);
+        else if (level == "info")
+            setLogLevel(InfoLevel);
+        else if (level == "warning")
+            setLogLevel(WarningLevel);
+        else if (level == "error")
+            setLogLevel(ErrorLevel);
+        else {
+            qWarning() << qPrintable(tr("Invalid log level %1; supported are Debug|Info|Warning|Error").arg(level));
+            return false;
         }
-
-        QString logfilename = optionValue("logfile");
-        if (!logfilename.isEmpty()) {
-            instance()->_logFile.reset(new QFile{logfilename});
-            if (!logFile()->open(QIODevice::Append | QIODevice::Text)) {
-                qWarning() << "Could not open log file" << logfilename << ":" << logFile()->errorString();
-                instance()->_logFile.reset();
-            }
-        }
-#ifdef HAVE_SYSLOG
-        instance()->_logToSyslog = isOptionSet("syslog");
-#endif
     }
+
+    QString logfilename = optionValue("logfile");
+    if (!logfilename.isEmpty()) {
+        instance()->_logFile.reset(new QFile{logfilename});
+        if (!logFile()->open(QIODevice::Append | QIODevice::Text)) {
+            qWarning() << qPrintable(tr("Could not open log file \"%1\": %2").arg(logfilename, logFile()->errorString()));
+            instance()->_logFile.reset();
+        }
+    }
+#ifdef HAVE_SYSLOG
+    instance()->_logToSyslog = isOptionSet("syslog");
+#endif
+
+#if QT_VERSION < 0x050000
+    qInstallMsgHandler(Logger::logMessage);
+#else
+    qInstallMessageHandler(Logger::logMessage);
+#endif
 
     return true;
 }

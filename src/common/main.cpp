@@ -144,6 +144,11 @@ int main(int argc, char **argv)
     cliParser->addOption("configdir", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL certificate", "path");
 #endif
     cliParser->addOption("datadir", 0, "DEPRECATED - Use --configdir instead", "path");
+    cliParser->addOption("loglevel", 'L', "Loglevel Debug|Info|Warning|Error", "level", "Info");
+#ifdef HAVE_SYSLOG
+    cliParser->addSwitch("syslog", 0, "Log to syslog");
+#endif
+    cliParser->addOption("logfile", 'l', "Log to a file", "path");
 
 #ifndef BUILD_CORE
     // put client-only arguments here
@@ -158,11 +163,6 @@ int main(int argc, char **argv)
     cliParser->addOption("listen", 0, "The address(es) quasselcore will listen on", "<address>[,<address>[,...]]", "::,0.0.0.0");
     cliParser->addOption("port", 'p', "The port quasselcore will listen at", "port", "4242");
     cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
-    cliParser->addOption("loglevel", 'L', "Loglevel Debug|Info|Warning|Error", "level", "Info");
-#ifdef HAVE_SYSLOG
-    cliParser->addSwitch("syslog", 0, "Log to syslog");
-#endif
-    cliParser->addOption("logfile", 'l', "Log to a file", "path");
     cliParser->addSwitch("config-from-environment", 0, "Load configuration from environment variables");
     cliParser->addOption("select-backend", 0, "Switch storage backend (migrating data if possible)", "backendidentifier");
     cliParser->addOption("select-authenticator", 0, "Select authentication backend", "authidentifier");
