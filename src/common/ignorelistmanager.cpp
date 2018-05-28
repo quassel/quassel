@@ -136,8 +136,8 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
         if (!item.isActive || item.type == CtcpIgnore)
             continue;
         if (item.scope == GlobalScope
-            || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network))
-            || (item.scope == ChannelScope && scopeMatch(item.scopeRule, bufferName))) {
+            || (item.scope == NetworkScope && scopeMatch(network, item.scopeRule))
+            || (item.scope == ChannelScope && scopeMatch(bufferName, item.scopeRule))) {
             QString str;
             if (item.type == MessageIgnore)
                 str = msgContents;
@@ -182,7 +182,7 @@ bool IgnoreListManager::ctcpMatch(const QString sender, const QString &network, 
     foreach(IgnoreListItem item, _ignoreList) {
         if (!item.isActive)
             continue;
-        if (item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network))) {
+        if (item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(network, item.scopeRule))) {
             QString sender_;
             QStringList types = item.ignoreRule.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
