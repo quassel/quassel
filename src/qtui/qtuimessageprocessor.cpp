@@ -142,7 +142,8 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
                 continue;
 
             if (!rule.chanName.isEmpty()
-                    && !scopeMatch(rule.chanName, msg.bufferInfo().bufferName())) {
+                    && !scopeMatch(msg.bufferInfo().bufferName(), rule.chanName,
+                                   rule.isRegExp, rule.caseSensitive)) {
                 // A channel name rule is specified and does NOT match the current buffer name, skip
                 // this rule
                 continue;

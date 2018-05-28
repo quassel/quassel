@@ -105,29 +105,57 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->verticalHeader()->hide();
     table->setShowGrid(false);
 
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::EnableColumn)->setToolTip(
+                tr("Enable/disable this rule"));
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::EnableColumn)->setWhatsThis(
+                table->horizontalHeaderItem(CoreHighlightSettingsPage::EnableColumn)->toolTip());
+
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::NameColumn)->setToolTip(
+                tr("Phrase to match"));
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::NameColumn)->setWhatsThis(
+                table->horizontalHeaderItem(CoreHighlightSettingsPage::NameColumn)->toolTip());
+
     table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setToolTip(
-                tr("<b>RegEx</b>: This option determines if the highlight rule should be "
-                   "interpreted as a <b>regular expression</b> or just as a keyword."));
+                tr("<b>RegEx</b>: This option determines if the highlight rule, <i>Sender</i>, and "
+                   "<i>Channel</i> should be interpreted as <b>regular expressions</b> or just as "
+                   "keywords."));
     table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setWhatsThis(
                 table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->toolTip());
 
     table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setToolTip(
-                tr("<b>CS</b>: This option determines if the highlight rule should be interpreted "
-                   "<b>case sensitive</b>."));
+                tr("<b>CS</b>: This option determines if the highlight rule, <i>Sender</i>, and "
+                   "<i>Channel</i> should be interpreted <b>case sensitive</b>."));
     table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setWhatsThis(
                 table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->toolTip());
 
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::SenderColumn)->setToolTip(
+                tr("<p><b>Sender</b>: Semicolon separated list of <i>nick!ident@host</i> names, "
+                   "leave blank to match any nickname.</p>"
+                   "<p><i>Example:</i><br />"
+                   "<i>Alice!*; Bob!*@example.com; Carol*!*; !Caroline!*</i><br />"
+                   "would match on <i>Alice</i>, <i>Bob</i> with hostmask <i>example.com</i>, and "
+                   "any nickname starting with <i>Carol</i> except for <i>Caroline</i><br />"
+                   "<p>If only inverted names are specified, it will match anything except for "
+                   "what's specified (implicit wildcard).</p>"
+                   "<p><i>Example:</i><br />"
+                   "<i>!Announce*!*; !Wheatley!aperture@*</i><br />"
+                   "would match anything except for <i>Wheatley</i> with ident <i>aperture</i> or "
+                   "any nickname starting with <i>Announce</i></p>"));
+    table->horizontalHeaderItem(CoreHighlightSettingsPage::SenderColumn)->setWhatsThis(
+                table->horizontalHeaderItem(CoreHighlightSettingsPage::SenderColumn)->toolTip());
+
     table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names.</p>"
+                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
+                   "match any name.</p>"
                    "<p><i>Example:</i><br />"
                    "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on #foobar and on any channel starting with <i>#quassel</i> except "
-                   "for <i>#quasseldroid</i><br />"
+                   "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
+                   "except for <i>#quasseldroid</i><br />"
                    "<p>If only inverted names are specified, it will match anything except for "
                    "what's specified (implicit wildcard).</p>"
                    "<p><i>Example:</i><br />"
                    "<i>!#quassel*; !#foobar</i><br />"
-                   "would match anything except for #foobar or any channel starting with "
+                   "would match anything except for <i>#foobar</i> or any channel starting with "
                    "<i>#quassel</i></p>"));
     table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setWhatsThis(
                 table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->toolTip());
@@ -221,32 +249,44 @@ void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, const QString &n
         enableItem->setCheckState(Qt::Unchecked);
     enableItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-    auto *chanNameItem = new QTableWidgetItem(chanName);
-
     auto *senderItem = new QTableWidgetItem(sender);
+
+    auto *chanNameItem = new QTableWidgetItem(chanName);
 
     enableItem->setToolTip(tr("Enable/disable this rule"));
     nameItem->setToolTip(tr("Phrase to match"));
     regexItem->setToolTip(
-                tr("<b>RegEx</b>: This option determines if the highlight rule should be "
-                   "interpreted as a <b>regular expression</b> or just as a keyword."));
+                tr("<b>RegEx</b>: This option determines if the highlight rule, <i>Sender</i>, and "
+                   "<i>Channel</i> should be interpreted as <b>regular expressions</b> or just as "
+                   "keywords."));
     csItem->setToolTip(
-                tr("<b>CS</b>: This option determines if the highlight rule should be interpreted "
-                   "<b>case sensitive</b>."));
+                tr("<b>CS</b>: This option determines if the highlight rule, <i>Sender</i>, and "
+                   "<i>Channel</i> should be interpreted <b>case sensitive</b>."));
     senderItem->setToolTip(
-                tr("<b>Sender</b>: This option specifies which sender to match.  Leave blank to "
-                   "match any nickname."));
+                tr("<p><b>Sender</b>: Semicolon separated list of <i>nick!ident@host</i> names, "
+                   "leave blank to match any nickname.</p>"
+                   "<p><i>Example:</i><br />"
+                   "<i>Alice!*; Bob!*@example.com; Carol*!*; !Caroline!*</i><br />"
+                   "would match on <i>Alice</i>, <i>Bob</i> with hostmask <i>example.com</i>, and "
+                   "any nickname starting with <i>Carol</i> except for <i>Caroline</i><br />"
+                   "<p>If only inverted names are specified, it will match anything except for "
+                   "what's specified (implicit wildcard).</p>"
+                   "<p><i>Example:</i><br />"
+                   "<i>!Announce*!*; !Wheatley!aperture@*</i><br />"
+                   "would match anything except for <i>Wheatley</i> with ident <i>aperture</i> or "
+                   "any nickname starting with <i>Announce</i></p>"));
     chanNameItem->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names.</p>"
+                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
+                   "match any name.</p>"
                    "<p><i>Example:</i><br />"
                    "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on #foobar and on any channel starting with <i>#quassel</i> except "
-                   "for <i>#quasseldroid</i><br />"
+                   "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
+                   "except for <i>#quasseldroid</i><br />"
                    "<p>If only inverted names are specified, it will match anything except for "
                    "what's specified (implicit wildcard).</p>"
                    "<p><i>Example:</i><br />"
                    "<i>!#quassel*; !#foobar</i><br />"
-                   "would match anything except for #foobar or any channel starting with "
+                   "would match anything except for <i>#foobar</i> or any channel starting with "
                    "<i>#quassel</i></p>"));
 
     int lastRow = ui.highlightTable->rowCount() - 1;
@@ -310,7 +350,7 @@ void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, const QString &nam
                 tr("<p><b>Channel</b>: Semicolon separated list of channel names.</p>"
                    "<p><i>Example:</i><br />"
                    "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on #foobar and on any channel starting with <i>#quassel</i> except "
+                   "would match on #foobar and any channel starting with <i>#quassel</i> except "
                    "for <i>#quasseldroid</i><br />"
                    "<p>If only inverted names are specified, it will match anything except for "
                    "what's specified (implicit wildcard).</p>"

@@ -34,29 +34,41 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
     ui.highlightTable->verticalHeader()->hide();
     ui.highlightTable->setShowGrid(false);
 
+
+    ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::EnableColumn)->setToolTip(
+                tr("Enable/disable this rule"));
+    ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::EnableColumn)->setWhatsThis(
+                ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::EnableColumn)->toolTip());
+
+    ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::NameColumn)->setToolTip(
+                tr("Phrase to match"));
+    ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::NameColumn)->setWhatsThis(
+                ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::NameColumn)->toolTip());
+
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::RegExColumn)->setToolTip(
-                tr("<b>RegEx</b>: This option determines if the highlight rule should be "
-                   "interpreted as a <b>regular expression</b> or just as a keyword."));
+                tr("<b>RegEx</b>: This option determines if the highlight rule and <i>Channel</i> "
+                   "should be interpreted as <b>regular expressions</b> or just as keywords."));
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::RegExColumn)->setWhatsThis(
                 ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::RegExColumn)->toolTip());
 
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setToolTip(
-                tr("<b>CS</b>: This option determines if the highlight rule should be interpreted "
-                   "<b>case sensitive</b>."));
+                tr("<b>CS</b>: This option determines if the highlight rule and <i>Channel</i> "
+                   "should be interpreted <b>case sensitive</b>."));
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setWhatsThis(
                 ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->toolTip());
 
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names.</p>"
+                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
+                   "match any name.</p>"
                    "<p><i>Example:</i><br />"
                    "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on #foobar and on any channel starting with <i>#quassel</i> except "
-                   "for <i>#quasseldroid</i><br />"
+                   "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
+                   "except for <i>#quasseldroid</i><br />"
                    "<p>If only inverted names are specified, it will match anything except for "
                    "what's specified (implicit wildcard).</p>"
                    "<p><i>Example:</i><br />"
                    "<i>!#quassel*; !#foobar</i><br />"
-                   "would match anything except for #foobar or any channel starting with "
+                   "would match anything except for <i>#foobar</i> or any channel starting with "
                    "<i>#quassel</i></p>"));
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setWhatsThis(
                 ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->toolTip());
@@ -152,22 +164,23 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
     enableItem->setToolTip(tr("Enable/disable this rule"));
     nameItem->setToolTip(tr("Phrase to match"));
     regexItem->setToolTip(
-                tr("<b>RegEx</b>: This option determines if the highlight rule should be "
-                   "interpreted as a <b>regular expression</b> or just as a keyword."));
+                tr("<b>RegEx</b>: This option determines if the highlight rule and <i>Channel</i> "
+                   "should be interpreted as <b>regular expressions</b> or just as keywords."));
     csItem->setToolTip(
-                tr("<b>CS</b>: This option determines if the highlight rule should be interpreted "
-                   "<b>case sensitive</b>."));
+                tr("<b>CS</b>: This option determines if the highlight rule and <i>Channel</i> "
+                   "should be interpreted <b>case sensitive</b>."));
     chanNameItem->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names.</p>"
+                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
+                   "match any name.</p>"
                    "<p><i>Example:</i><br />"
                    "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on #foobar and on any channel starting with <i>#quassel</i> except "
-                   "for <i>#quasseldroid</i><br />"
+                   "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
+                   "except for <i>#quasseldroid</i><br />"
                    "<p>If only inverted names are specified, it will match anything except for "
                    "what's specified (implicit wildcard).</p>"
                    "<p><i>Example:</i><br />"
                    "<i>!#quassel*; !#foobar</i><br />"
-                   "would match anything except for #foobar or any channel starting with "
+                   "would match anything except for <i>#foobar</i> or any channel starting with "
                    "<i>#quassel</i></p>"));
 
     int lastRow = ui.highlightTable->rowCount()-1;

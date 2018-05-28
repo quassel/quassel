@@ -145,7 +145,8 @@ bool HighlightRuleManager::match(const QString &msgContents,
         if (!rule.isEnabled)
             continue;
 
-        if (!rule.chanName.isEmpty() && !scopeMatch(rule.chanName, bufferName)) {
+        if (!rule.chanName.isEmpty()
+                && !scopeMatch(bufferName, rule.chanName, rule.isRegEx, rule.isCaseSensitive)) {
             // A channel name rule is specified and does NOT match the current buffer name, skip
             // this rule
             continue;
@@ -163,12 +164,8 @@ bool HighlightRuleManager::match(const QString &msgContents,
         if (rule.sender.isEmpty()) {
             senderMatch = true;
         } else {
-            if (rule.isRegEx) {
-                rx = QRegExp(rule.sender, rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-            } else {
-                rx = QRegExp(rule.sender, Qt::CaseInsensitive, QRegExp::Wildcard);
-            }
-            senderMatch = rx.exactMatch(msgSender);
+            // A sender name rule is specified, match according to scope rules.
+            senderMatch = scopeMatch(msgSender, rule.sender, rule.isRegEx, rule.isCaseSensitive);
         }
 
         if (nameMatch && senderMatch) {
