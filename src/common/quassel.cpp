@@ -516,6 +516,8 @@ QString Quassel::configDirPath()
 #endif /* Q_OS_MAC */
     }
 
+    path = QFileInfo{path}.absoluteFilePath();
+
     if (!path.endsWith(QDir::separator()) && !path.endsWith('/'))
         path += QDir::separator();
 
@@ -528,7 +530,6 @@ QString Quassel::configDirPath()
     }
 
     instance()->_configDirPath = path;
-
     return path;
 }
 
