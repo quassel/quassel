@@ -49,11 +49,6 @@
 #  include <termios.h>
 #endif /* Q_OS_WIN */
 
-#ifdef HAVE_UMASK
-#  include <sys/types.h>
-#  include <sys/stat.h>
-#endif /* HAVE_UMASK */
-
 // ==============================
 //  Custom Events
 // ==============================
@@ -91,9 +86,6 @@ void Core::destroy()
 
 Core::Core()
 {
-#ifdef HAVE_UMASK
-    umask(S_IRWXG | S_IRWXO);
-#endif
     _startTime = QDateTime::currentDateTime().toUTC(); // for uptime :)
 
     Quassel::loadTranslation(QLocale::system());
