@@ -672,6 +672,14 @@ public:
 
     static inline QDateTime startTime() { return instance()->_startTime; }
     static inline bool isConfigured() { return instance()->_configured; }
+
+    /**
+     * Whether or not strict ident mode is enabled, locking users' idents to Quassel username
+     *
+     * @return True if strict mode enabled, otherwise false
+     */
+    static inline bool strictIdentEnabled() { return instance()->_strictIdentEnabled; }
+
     static bool sslSupported();
 
     /**
@@ -786,6 +794,9 @@ private:
     QDateTime _startTime;
 
     bool _configured;
+
+    /// Whether or not strict ident mode is enabled, locking users' idents to Quassel username
+    bool _strictIdentEnabled;
 
     static std::unique_ptr<AbstractSqlMigrationReader> getMigrationReader(Storage *storage);
     static std::unique_ptr<AbstractSqlMigrationWriter> getMigrationWriter(Storage *storage);

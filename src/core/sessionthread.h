@@ -36,7 +36,7 @@ class SessionThread : public QThread
     Q_OBJECT
 
 public:
-    SessionThread(UserId user, bool restoreState, QObject *parent = 0);
+    SessionThread(UserId user, bool restoreState, bool strictIdentEnabled, QObject *parent = 0);
     ~SessionThread();
 
     void run();
@@ -63,6 +63,9 @@ private:
     QList<QObject *> clientQueue;
     bool _sessionInitialized;
     bool _restoreState;
+
+    /// Whether or not strict ident mode is enabled, locking users' idents to Quassel username
+    bool _strictIdentEnabled;
 
     bool isSessionInitialized();
     void addClientToSession(QObject *peer);

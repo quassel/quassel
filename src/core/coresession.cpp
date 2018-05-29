@@ -58,9 +58,10 @@ public:
 };
 
 
-CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
+CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled, QObject *parent)
     : QObject(parent),
     _user(uid),
+    _strictIdentEnabled(strictIdentEnabled),
     _signalProxy(new SignalProxy(SignalProxy::Server, this)),
     _aliasManager(this),
     _bufferSyncer(new CoreBufferSyncer(this)),
@@ -563,8 +564,14 @@ void CoreSession::createIdentity(const Identity &identity, const QVariantMap &ad
         createIdentity(coreIdentity);
 }
 
-const QString CoreSession::strictSysident() {
-    return Core::instance()->strictSysIdent(_user);
+const QString CoreSession::strictCompliantIdent(const CoreIdentity *identity) {
+    if (_strictIdentEnabled) {
+        // Strict mode enabled: only allow the user's Quassel username as an ident
+        return Core::instance()->strictSysIdent(_user);
+    } else {
+        // Strict mode disabled: allow any identity specified
+        return identity->ident();
+    }
 }
 
 void CoreSession::createIdentity(const CoreIdentity &identity)

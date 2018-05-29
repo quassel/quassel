@@ -25,12 +25,13 @@
 #include "sessionthread.h"
 #include "signalproxy.h"
 
-SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent)
+SessionThread::SessionThread(UserId uid, bool restoreState, bool strictIdentEnabled, QObject *parent)
     : QThread(parent),
     _session(0),
     _user(uid),
     _sessionInitialized(false),
-    _restoreState(restoreState)
+    _restoreState(restoreState),
+    _strictIdentEnabled(strictIdentEnabled)
 {
     connect(this, SIGNAL(initialized()), this, SLOT(setSessionInitialized()));
 }
@@ -120,7 +121,7 @@ void SessionThread::addInternalClientToSession(InternalPeer *internalPeer)
 
 void SessionThread::run()
 {
-    _session = new CoreSession(user(), _restoreState);
+    _session = new CoreSession(user(), _restoreState, _strictIdentEnabled);
     connect(this, SIGNAL(addRemoteClient(RemotePeer*)), _session, SLOT(addClient(RemotePeer*)));
     connect(this, SIGNAL(addInternalClient(InternalPeer*)), _session, SLOT(addClient(InternalPeer*)));
     connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));

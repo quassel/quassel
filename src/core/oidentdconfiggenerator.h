@@ -59,11 +59,7 @@ class OidentdConfigGenerator : public QObject
 {
     Q_OBJECT
 public:
-    /**
-     * @param strict If false, any identity a user chooses is reported to servers as authoritative.
-     *               If true, the user's quassel username is always reported.
-     */
-    explicit OidentdConfigGenerator(bool strict = false, QObject *parent = 0);
+    explicit OidentdConfigGenerator(QObject *parent = 0);
     ~OidentdConfigGenerator();
 
 public slots:
