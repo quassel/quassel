@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include <QTextCodec>
 
 #include "network.h"
@@ -174,6 +176,42 @@ QString Network::modeToPrefix(const QString &mode) const
         return QString(prefixes()[prefixModes().indexOf(mode)]);
     else
         return QString();
+}
+
+
+QString Network::sortPrefixModes(const QString &modes) const
+{
+    // If modes is empty or we don't have any modes, nothing can be sorted, bail out early
+    if (modes.isEmpty() || prefixModes().isEmpty()) {
+        return modes;
+    }
+
+    // Store a copy of the modes for modification
+    // QString should be efficient and not copy memory if nothing changes, but if mistaken,
+    // std::is_sorted could be called first.
+    QString sortedModes = QString(modes);
+
+    // Sort modes as if a QChar array
+    // See https://en.cppreference.com/w/cpp/algorithm/sort
+    // Defining lambda with [&] implicitly captures variables by reference
+    std::sort(sortedModes.begin(), sortedModes.end(), [&](const QChar &lmode, const QChar &rmode) {
+        // Compare characters according to prefix modes
+        // Return true if lmode comes before rmode (is "less than")
+
+        // Check for unknown modes...
+        if (!prefixModes().contains(lmode)) {
+            // Left mode not in prefix list, send to end
+            return false;
+        } else if (!prefixModes().contains(rmode)) {
+            // Right mode not in prefix list, send to end
+            return true;
+        } else {
+            // Both characters known, sort according to index in prefixModes()
+            return (prefixModes().indexOf(lmode) < prefixModes().indexOf(rmode));
+        }
+    });
+
+    return sortedModes;
 }
 
 

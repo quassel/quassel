@@ -204,6 +204,41 @@ public :
     }
     /**@}*/
 
+    /**
+     * Sorts the user channelmodes according to priority set by PREFIX
+     *
+     * Given a list of channel modes, sorts according to the order of PREFIX, putting the highest
+     * modes first.  Any unknown modes are moved to the end in no given order.
+     *
+     * If prefix modes cannot be determined from the network, no changes will be made.
+     *
+     * @param modes User channelmodes
+     * @return Priority-sorted user channelmodes
+     */
+    QString sortPrefixModes(const QString &modes) const;
+
+    /**@{*/
+    /**
+     * Sorts the list of users' channelmodes according to priority set by PREFIX
+     *
+     * Maintains order of the modes list.
+     *
+     * @seealso Network::sortPrefixModes()
+     *
+     * @param modesList List of users' channel modes
+     * @return Priority-sorted list of users' channel modes
+     */
+    inline QStringList sortPrefixModes(const QStringList &modesList) const {
+        QStringList sortedModesList;
+        // Sort each individual mode string, appending back
+        // Must maintain the order received!
+        for (QString modes : modesList) {
+            sortedModesList << sortPrefixModes(modes);
+        }
+        return sortedModesList;
+    }
+    /**@}*/
+
     ChannelModeType channelModeType(const QString &mode);
     inline ChannelModeType channelModeType(const QCharRef &mode) { return channelModeType(QString(mode)); }
 
