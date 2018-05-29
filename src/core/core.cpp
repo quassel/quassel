@@ -105,7 +105,8 @@ bool Core::init()
     CoreSettings s;
     if (s.version() != 1) {
         qCritical() << "Invalid core settings version, terminating!";
-        exit(EXIT_FAILURE);
+        QCoreApplication::exit(EXIT_FAILURE);
+        return false;
     }
 
     // Set up storage and authentication backends
@@ -149,13 +150,15 @@ bool Core::init()
     }
 
     if (Quassel::isOptionSet("select-backend") || Quassel::isOptionSet("select-authenticator")) {
+        bool success{true};
         if (Quassel::isOptionSet("select-backend")) {
-            selectBackend(Quassel::optionValue("select-backend"));
+            success &= selectBackend(Quassel::optionValue("select-backend"));
         }
         if (Quassel::isOptionSet("select-authenticator")) {
-            selectAuthenticator(Quassel::optionValue("select-authenticator"));
+            success &= selectAuthenticator(Quassel::optionValue("select-authenticator"));
         }
-        exit(EXIT_SUCCESS);
+        QCoreApplication::exit(success ? EXIT_SUCCESS : EXIT_FAILURE);
+        return success;
     }
 
     if (!_configured) {
@@ -165,7 +168,8 @@ bool Core::init()
 
             if (!_configured) {
                 qWarning() << "Cannot configure from environment";
-                exit(EXIT_FAILURE);
+                QCoreApplication::exit(EXIT_FAILURE);
+                return false;
             }
         }
         else {
@@ -175,12 +179,14 @@ bool Core::init()
                         << qPrintable(tr("Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
                                          "Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
                                          "to work."));
-                exit(EXIT_FAILURE); // TODO make this less brutal (especially for mono client -> popup)
+                QCoreApplication::exit(EXIT_FAILURE); // TODO make this less brutal (especially for mono client -> popup)
+                return false;
             }
 
             if (writeError) {
                 qWarning() << "Cannot write quasselcore configuration; probably a permission problem.";
-                exit(EXIT_FAILURE);
+                QCoreApplication::exit(EXIT_FAILURE);
+                return false;
             }
 
             quInfo() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
@@ -188,11 +194,15 @@ bool Core::init()
     }
     else {
         if (Quassel::isOptionSet("add-user")) {
-            exit(createUser() ? EXIT_SUCCESS : EXIT_FAILURE);
+            bool success = createUser();
+            QCoreApplication::exit(success ? EXIT_SUCCESS : EXIT_FAILURE);
+            return success;
         }
 
         if (Quassel::isOptionSet("change-userpass")) {
-            exit(changeUserPass(Quassel::optionValue("change-userpass")) ? EXIT_SUCCESS : EXIT_FAILURE);
+            bool success = changeUserPass(Quassel::optionValue("change-userpass"));
+            QCoreApplication::exit(success ? EXIT_SUCCESS : EXIT_FAILURE);
+            return success;
         }
 
         _strictIdentEnabled = Quassel::isOptionSet("strict-ident");
@@ -222,7 +232,8 @@ bool Core::init()
     connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
 
     if (!startListening()) {
-        exit(EXIT_FAILURE);  // TODO make this less brutal
+        QCoreApplication::exit(EXIT_FAILURE);  // TODO make this less brutal
+        return false;
     }
 
     if (_configured && !Quassel::isOptionSet("norestore")) {
@@ -392,8 +403,9 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings,
     // if initialization wasn't successful, we quit to keep from coming up unconfigured
     case Storage::NotAvailable:
         qCritical() << "FATAL: Selected storage backend is not available:" << backend;
-        if (!setup)
-            exit(EXIT_FAILURE);
+        if (!setup) {
+            QCoreApplication::exit(EXIT_FAILURE);
+        }
         return false;
 
     case Storage::IsReady:
@@ -491,8 +503,9 @@ bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings
     // if initialization wasn't successful, we quit to keep from coming up unconfigured
     case Authenticator::NotAvailable:
         qCritical() << "FATAL: Selected auth backend is not available:" << backend;
-        if (!setup)
-            exit(EXIT_FAILURE);
+        if (!setup) {
+            QCoreApplication::exit(EXIT_FAILURE);
+        }
         return false;
 
     case Authenticator::IsReady:
