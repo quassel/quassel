@@ -21,6 +21,11 @@
 #include <cstdlib>
 #include <memory>
 
+#ifdef HAVE_UMASK
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#endif /* HAVE_UMASK */
+
 #include <QTextCodec>
 
 #ifdef BUILD_CORE
@@ -68,6 +73,10 @@ Q_IMPORT_PLUGIN(qgif)
 
 int main(int argc, char **argv)
 {
+#ifdef HAVE_UMASK
+    umask(S_IRWXG | S_IRWXO);
+#endif
+
 #if QT_VERSION < 0x050000
     // All our source files are in UTF-8, and Qt5 even requires that
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
