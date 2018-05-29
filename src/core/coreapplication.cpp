@@ -21,40 +21,6 @@
 #include "core.h"
 #include "coreapplication.h"
 
-CoreApplicationInternal::CoreApplicationInternal()
-    : _coreCreated(false)
-{
-}
-
-
-CoreApplicationInternal::~CoreApplicationInternal()
-{
-    if (_coreCreated) {
-        Core::saveState();
-        Core::destroy();
-    }
-}
-
-
-bool CoreApplicationInternal::init()
-{
-    Core::instance(); // create and init the core
-    _coreCreated = true;
-
-    Quassel::registerReloadHandler([]() {
-        // Currently, only reloading SSL certificates and the sysident cache is supported
-        Core::cacheSysIdent();
-        return Core::reloadCerts();
-    });
-
-    if (!Quassel::isOptionSet("norestore"))
-        Core::restoreState();
-
-    return true;
-}
-
-
-/*****************************************************************************/
 
 CoreApplication::CoreApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv)
@@ -64,18 +30,21 @@ CoreApplication::CoreApplication(int &argc, char **argv)
 #endif /* Q_OS_MAC */
 
     Quassel::setRunMode(Quassel::CoreOnly);
-    _internal = new CoreApplicationInternal();
 }
 
 
 CoreApplication::~CoreApplication()
 {
-    delete _internal;
+    _core.reset();
     Quassel::destroy();
 }
 
 
 bool CoreApplication::init()
 {
-    return Quassel::init() && _internal->init();
+    if (Quassel::init()) {
+        _core.reset(new Core{}); // FIXME C++14: std::make_unique
+        return _core->init();
+    }
+    return false;
 }

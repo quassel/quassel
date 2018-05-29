@@ -60,10 +60,9 @@ class Core : public QObject
 
 public:
     static Core *instance();
-    static void destroy();
 
-    static void saveState();
-    static void restoreState();
+    Core();
+    ~Core() override;
 
     /*** Storage access ***/
     // These methods are threadsafe.
@@ -682,15 +681,6 @@ public:
 
     static bool sslSupported();
 
-    /**
-     * Reloads SSL certificates used for connection with clients
-     *
-     * @return True if certificates reloaded successfully, otherwise false.
-     */
-    static bool reloadCerts();
-
-    static void cacheSysIdent();
-
     static QVariantList backendInfo();
     static QVariantList authenticatorInfo();
 
@@ -703,10 +693,23 @@ public:
     static const int AddClientEventId;
 
 public slots:
-    //! Make storage data persistent
-    /** \note This method is threadsafe.
+    bool init();
+
+    /** Persist storage.
+     *
+     * @note This method is threadsafe.
      */
     void syncStorage();
+
+    /**
+     * Reload SSL certificates used for connection with clients.
+     *
+     * @return True if certificates reloaded successfully, otherwise false.
+     */
+    bool reloadCerts();
+
+    void cacheSysIdent();
+
     void setupInternalClientSession(InternalPeer *clientConnection);
     QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
@@ -718,7 +721,7 @@ signals:
     void sessionState(const Protocol::SessionState &sessionState);
 
 protected:
-    virtual void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
 
 private slots:
     bool startListening();
@@ -739,11 +742,6 @@ private slots:
     bool changeUserPass(const QString &username);
 
 private:
-    Core();
-    ~Core();
-    void init();
-    static Core *instanceptr;
-
     SessionThread *sessionForUser(UserId userId, bool restoreState = false);
     void addClientHelper(RemotePeer *peer, UserId uid);
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
@@ -769,10 +767,14 @@ private:
     bool saveBackendSettings(const QString &backend, const QVariantMap &settings);
     void saveAuthenticatorSettings(const QString &backend, const QVariantMap &settings);
 
+    void saveState();
+    void restoreState();
+
     template<typename Backend>
     QVariantMap promptForSettings(const Backend *backend);
 
 private:
+    static Core *_instance;
     QSet<CoreAuthHandler *> _connectingClients;
     QHash<UserId, SessionThread *> _sessions;
     DeferredSharedPtr<Storage>       _storage;        ///< Active storage backend

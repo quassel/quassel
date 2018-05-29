@@ -20,16 +20,18 @@
 
 #pragma once
 
+#include <memory>
+
 #include "qtuiapplication.h"
 
-class CoreApplicationInternal;
+class Core;
 
 class MonolithicApplication : public QtUiApplication
 {
     Q_OBJECT
 public:
     MonolithicApplication(int &, char **);
-    ~MonolithicApplication();
+    ~MonolithicApplication() override;
 
     bool init() override;
 
@@ -37,6 +39,5 @@ private slots:
     void startInternalCore();
 
 private:
-    CoreApplicationInternal *_internal;
-    bool _internalInitDone;
+    std::unique_ptr<Core> _core;
 };

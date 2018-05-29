@@ -66,25 +66,35 @@ public:
 // ==============================
 //  Core
 // ==============================
-Core *Core::instanceptr = 0;
+Core *Core::_instance{nullptr};
 
 Core *Core::instance()
 {
-    if (instanceptr) return instanceptr;
-    instanceptr = new Core();
-    instanceptr->init();
-    return instanceptr;
-}
-
-
-void Core::destroy()
-{
-    delete instanceptr;
-    instanceptr = 0;
+    return _instance;
 }
 
 
 Core::Core()
+{
+    if (_instance) {
+        qWarning() << "Recreating core instance!";
+        delete _instance;
+    }
+    _instance = this;
+}
+
+
+Core::~Core()
+{
+    saveState();
+    qDeleteAll(_connectingClients);
+    qDeleteAll(_sessions);
+    syncStorage();
+    _instance = nullptr;
+}
+
+
+bool Core::init()
 {
     _startTime = QDateTime::currentDateTime().toUTC(); // for uptime :)
 
@@ -102,13 +112,6 @@ Core::Core()
     registerStorageBackends();
     registerAuthenticators();
 
-    connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
-    _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
-}
-
-
-void Core::init()
-{
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
     bool config_from_environment = Quassel::isOptionSet("config-from-environment");
 
@@ -164,7 +167,8 @@ void Core::init()
                 qWarning() << "Cannot configure from environment";
                 exit(EXIT_FAILURE);
             }
-        } else {
+        }
+        else {
             if (_registeredStorageBackends.empty()) {
                 quWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
                 quWarning()
@@ -173,71 +177,85 @@ void Core::init()
                                          "to work."));
                 exit(EXIT_FAILURE); // TODO make this less brutal (especially for mono client -> popup)
             }
-            quWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
 
             if (writeError) {
                 qWarning() << "Cannot write quasselcore configuration; probably a permission problem.";
                 exit(EXIT_FAILURE);
             }
+
+            quInfo() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
         }
     }
+    else {
+        if (Quassel::isOptionSet("add-user")) {
+            exit(createUser() ? EXIT_SUCCESS : EXIT_FAILURE);
+        }
 
-    if (Quassel::isOptionSet("add-user")) {
-        exit(createUser() ? EXIT_SUCCESS : EXIT_FAILURE);
+        if (Quassel::isOptionSet("change-userpass")) {
+            exit(changeUserPass(Quassel::optionValue("change-userpass")) ? EXIT_SUCCESS : EXIT_FAILURE);
+        }
 
-    }
+        _strictIdentEnabled = Quassel::isOptionSet("strict-ident");
+        if (_strictIdentEnabled) {
+            cacheSysIdent();
+        }
 
-    if (Quassel::isOptionSet("change-userpass")) {
-        exit(changeUserPass(Quassel::optionValue("change-userpass")) ?
-                       EXIT_SUCCESS : EXIT_FAILURE);
+        if (Quassel::isOptionSet("oidentd")) {
+            _oidentdConfigGenerator = new OidentdConfigGenerator(this);
+        }
+
+        Quassel::registerReloadHandler([]() {
+            // Currently, only reloading SSL certificates and the sysident cache is supported
+            if (Core::instance()) {
+                Core::instance()->cacheSysIdent();
+                Core::instance()->reloadCerts();
+                return true;
+            }
+            return false;
+        });
+
+        connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
+        _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
     }
 
     connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
     connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-    if (!startListening()) exit(1);  // TODO make this less brutal
 
-    _strictIdentEnabled = Quassel::isOptionSet("strict-ident");
-    if (_strictIdentEnabled) {
-        cacheSysIdent();
+    if (!startListening()) {
+        exit(EXIT_FAILURE);  // TODO make this less brutal
     }
 
-    if (Quassel::isOptionSet("oidentd")) {
-        _oidentdConfigGenerator = new OidentdConfigGenerator(this);
+    if (_configured && !Quassel::isOptionSet("norestore")) {
+        Core::restoreState();
     }
+
+    return true;
 }
-
-
-Core::~Core()
-{
-    // FIXME do we need more cleanup for handlers?
-    foreach(CoreAuthHandler *handler, _connectingClients) {
-        handler->deleteLater(); // disconnect non authed clients
-    }
-    qDeleteAll(_sessions);
-}
-
 
 /*** Session Restore ***/
 
 void Core::saveState()
 {
-    QVariantList activeSessions;
-    foreach(UserId user, instance()->_sessions.keys())
-        activeSessions << QVariant::fromValue<UserId>(user);
-    instance()->_storage->setCoreState(activeSessions);
+    if (_storage) {
+        QVariantList activeSessions;
+        for (auto &&user : instance()->_sessions.keys())
+            activeSessions << QVariant::fromValue<UserId>(user);
+        _storage->setCoreState(activeSessions);
+    }
 }
 
 
 void Core::restoreState()
 {
-    if (!instance()->_configured) {
-        // quWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
+    if (!_configured) {
+        quWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
         return;
     }
-    if (instance()->_sessions.count()) {
+    if (_sessions.count()) {
         quWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
         return;
     }
+
     CoreSettings s;
     /* We don't check, since we are at the first version since switching to Git
     uint statever = s.coreState().toMap()["CoreStateVersion"].toUInt();
@@ -252,9 +270,9 @@ void Core::restoreState()
 
     if (activeSessions.count() > 0) {
         quInfo() << "Restoring previous core state...";
-        foreach(QVariant v, activeSessions) {
+        for(auto &&v : activeSessions) {
             UserId user = v.value<UserId>();
-            instance()->sessionForUser(user, true);
+            sessionForUser(user, true);
         }
     }
 }
@@ -503,10 +521,10 @@ bool Core::sslSupported()
 bool Core::reloadCerts()
 {
 #ifdef HAVE_SSL
-    SslServer *sslServerv4 = qobject_cast<SslServer *>(&instance()->_server);
+    SslServer *sslServerv4 = qobject_cast<SslServer *>(&_server);
     bool retv4 = sslServerv4->reloadCerts();
 
-    SslServer *sslServerv6 = qobject_cast<SslServer *>(&instance()->_v6server);
+    SslServer *sslServerv6 = qobject_cast<SslServer *>(&_v6server);
     bool retv6 = sslServerv6->reloadCerts();
 
     return retv4 && retv6;
@@ -520,7 +538,7 @@ bool Core::reloadCerts()
 void Core::cacheSysIdent()
 {
     if (isConfigured()) {
-        instance()->_authUserNames = instance()->_storage->getAllAuthUserNames();
+        _authUserNames = _storage->getAllAuthUserNames();
     }
 }
 
@@ -533,7 +551,7 @@ QString Core::strictSysIdent(UserId user) const
 
     // A new user got added since we last pulled our cache from the database.
     // There's no way to avoid a database hit - we don't even know the authname!
-    cacheSysIdent();
+    instance()->cacheSysIdent();
 
     if (_authUserNames.contains(user)) {
         return _authUserNames[user];
