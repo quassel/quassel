@@ -1556,7 +1556,22 @@ void CoreSessionEventProcessor::handleCtcpPing(CtcpEvent *e)
 
 void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent *e)
 {
-    e->setReply(QDateTime::currentDateTime().toString());
+    // Explicitly specify the Qt default DateTime format string to allow for modification
+    // Qt::TextDate default roughly corresponds to...
+    // > ddd MMM d yyyy HH:mm:ss
+    //
+    // See https://doc.qt.io/qt-5/qdatetime.html#toString
+    // And https://doc.qt.io/qt-5/qt.html#DateFormat-enum
+#if QT_VERSION > 0x050000
+    // Append the timezone identifier "t", so other other IRC users have a frame of reference for
+    // the current timezone.  This could be figured out before by manually comparing to UTC, so this
+    // is just convenience.
+
+    // Alas, "t" was only added in Qt 5
+    e->setReply(QDateTime::currentDateTime().toString("ddd MMM d yyyy HH:mm:ss t"));
+#else
+    e->setReply(QDateTime::currentDateTime().toString("ddd MMM d yyyy HH:mm:ss"));
+#endif
 }
 
 
