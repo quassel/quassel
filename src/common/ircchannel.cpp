@@ -170,6 +170,9 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
         return;
     }
 
+    // Sort user modes first
+    const QStringList sortedModes = network()->sortPrefixModes(modes);
+
     QStringList newNicks;
     QStringList newModes;
     QList<IrcUser *> newUsers;
@@ -178,19 +181,19 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
     for (int i = 0; i < users.count(); i++) {
         ircuser = users[i];
         if (!ircuser || _userModes.contains(ircuser)) {
-            if (modes[i].count() > 1) {
+            if (sortedModes[i].count() > 1) {
                 // Multiple modes received, do it one at a time
                 // TODO Better way of syncing this without breaking protocol?
-                for (int i_m = 0; i_m < modes[i].count(); ++i_m) {
-                    addUserMode(ircuser, modes[i][i_m]);
+                for (int i_m = 0; i_m < sortedModes[i].count(); ++i_m) {
+                    addUserMode(ircuser, sortedModes[i][i_m]);
                 }
             } else {
-                addUserMode(ircuser, modes[i]);
+                addUserMode(ircuser, sortedModes[i]);
             }
             continue;
         }
 
-        _userModes[ircuser] = modes[i];
+        _userModes[ircuser] = sortedModes[i];
         ircuser->joinChannel(this, true);
         connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
 
@@ -199,7 +202,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
         // the joins are propagated by the ircuser. The signal ircUserJoined is only for convenience
 
         newNicks << ircuser->nick();
-        newModes << modes[i];
+        newModes << sortedModes[i];
         newUsers << ircuser;
     }
 
@@ -266,7 +269,8 @@ void IrcChannel::part(const QString &nick)
 void IrcChannel::setUserModes(IrcUser *ircuser, const QString &modes)
 {
     if (isKnownUser(ircuser)) {
-        _userModes[ircuser] = modes;
+        // Keep user modes sorted
+        _userModes[ircuser] = network()->sortPrefixModes(modes);
         QString nick = ircuser->nick();
         SYNC_OTHER(setUserModes, ARG(nick), ARG(modes))
         emit ircUserModesSet(ircuser, modes);
@@ -287,7 +291,8 @@ void IrcChannel::addUserMode(IrcUser *ircuser, const QString &mode)
         return;
 
     if (!_userModes[ircuser].contains(mode)) {
-        _userModes[ircuser] += mode;
+        // Keep user modes sorted
+        _userModes[ircuser] = network()->sortPrefixModes(_userModes[ircuser] + mode);
         QString nick = ircuser->nick();
         SYNC_OTHER(addUserMode, ARG(nick), ARG(mode))
         emit ircUserModeAdded(ircuser, mode);
@@ -308,6 +313,7 @@ void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode)
         return;
 
     if (_userModes[ircuser].contains(mode)) {
+        // Removing modes shouldn't mess up ordering
         _userModes[ircuser].remove(mode);
         QString nick = ircuser->nick();
         SYNC_OTHER(removeUserMode, ARG(nick), ARG(mode));
@@ -345,6 +351,7 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes)
         modes << iter.value().toString();
         ++iter;
     }
+    // joinIrcUsers handles sorting modes
     joinIrcUsers(users, modes);
 }
 
