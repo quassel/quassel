@@ -271,11 +271,13 @@ void Core::init()
     connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
     if (!startListening()) exit(1);  // TODO make this less brutal
 
+    _strictIdentEnabled = Quassel::isOptionSet("strict-ident");
+    if (_strictIdentEnabled) {
+        cacheSysIdent();
+    }
+
     if (Quassel::isOptionSet("oidentd")) {
-        _oidentdConfigGenerator = new OidentdConfigGenerator(Quassel::isOptionSet("oidentd-strict"), this);
-        if (Quassel::isOptionSet("oidentd-strict")) {
-            cacheSysIdent();
-        }
+        _oidentdConfigGenerator = new OidentdConfigGenerator(this);
     }
 }
 
@@ -825,7 +827,7 @@ SessionThread *Core::sessionForUser(UserId uid, bool restore)
     if (_sessions.contains(uid))
         return _sessions[uid];
 
-    SessionThread *session = new SessionThread(uid, restore, this);
+    SessionThread *session = new SessionThread(uid, restore, strictIdentEnabled(), this);
     _sessions[uid] = session;
     session->start();
     return session;

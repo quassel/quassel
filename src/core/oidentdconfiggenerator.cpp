@@ -23,10 +23,9 @@
 #include "corenetwork.h"
 #include "oidentdconfiggenerator.h"
 
-OidentdConfigGenerator::OidentdConfigGenerator(bool strict, QObject *parent) :
+OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
     QObject(parent),
-    _initialized(false),
-    _strict(strict)
+    _initialized(false)
 {
     if (!_initialized)
         init();
@@ -71,11 +70,9 @@ bool OidentdConfigGenerator::init()
 
 
 QString OidentdConfigGenerator::sysIdentForIdentity(const CoreIdentity *identity) const {
-    if (!_strict) {
-        return identity->ident();
-    }
+    // Make sure the identity's ident complies with strict mode if enabled
     const CoreNetwork *network = qobject_cast<CoreNetwork *>(sender());
-    return network->coreSession()->strictSysident();
+    return network->coreSession()->strictCompliantIdent(identity);
 }
 
 
