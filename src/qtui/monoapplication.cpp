@@ -27,10 +27,8 @@
 class InternalPeer;
 
 MonolithicApplication::MonolithicApplication(int &argc, char **argv)
-    : QtUiApplication(argc, argv),
-    _internalInitDone(false)
+    : QtUiApplication(argc, argv)
 {
-    _internal = new CoreApplicationInternal(); // needed for parser options
 #if defined(HAVE_KDE4) || defined(Q_OS_MAC)
     Quassel::disableCrashHandler();
 #endif /* HAVE_KDE4 || Q_OS_MAC */
@@ -46,11 +44,6 @@ bool MonolithicApplication::init()
 
     connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
 
-    // If port is given, start core so it can listen to incoming connections
-    if (Quassel::isOptionSet("port")) {
-        startInternalCore();
-    }
-
     return true;
 }
 
@@ -59,18 +52,17 @@ MonolithicApplication::~MonolithicApplication()
 {
     // Client needs to be destroyed first
     Client::destroy();
-    delete _internal;
+    _core.reset();
+    Quassel::destroy();
 }
 
 
 void MonolithicApplication::startInternalCore()
 {
-    if (!_internalInitDone) {
-        _internal->init();
-        _internalInitDone = true;
+    if (!_core) {
+        _core.reset(new Core{});  // FIXME C++14: std::make_unique
+        Core::instance()->init();
     }
-    Core *core = Core::instance();
-    CoreConnection *connection = Client::coreConnection();
-    connect(connection, SIGNAL(connectToInternalCore(InternalPeer*)), core, SLOT(setupInternalClientSession(InternalPeer*)));
-    connect(core, SIGNAL(sessionState(Protocol::SessionState)), connection, SLOT(internalSessionStateReceived(Protocol::SessionState)));
+    connect(Client::coreConnection(), SIGNAL(connectToInternalCore(InternalPeer*)), Core::instance(), SLOT(setupInternalClientSession(InternalPeer*)));
+    connect(Core::instance(), SIGNAL(sessionState(Protocol::SessionState)), Client::coreConnection(), SLOT(internalSessionStateReceived(Protocol::SessionState)));
 }
