@@ -217,6 +217,9 @@ signals:
     void requestKickClient(int peerId);
     void passwordChanged(bool success);
 
+    //! Emitted when database schema upgrade starts or ends (only mono client)
+    void dbUpgradeInProgress(bool inProgress);
+
 public slots:
     void disconnectFromCore();
 
@@ -225,6 +228,8 @@ public slots:
     void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
 
     void markBufferAsRead(BufferId id);
+
+    void onDbUpgradeInProgress(bool inProgress);
 
 private slots:
     void setSyncedToCore();

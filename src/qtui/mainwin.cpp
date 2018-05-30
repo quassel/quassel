@@ -207,6 +207,7 @@ void MainWin::init()
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showNetworkConfig(NetworkId)), SLOT(showNetworkConfig(NetworkId)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
     connect(Client::instance(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
+    connect(Client::instance(), SIGNAL(dbUpgradeInProgress(bool)), SLOT(showMigrationWarning(bool)));
 
     connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList, QVariantList)), SLOT(showCoreConfigWizard(QVariantList, QVariantList)));
     connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
@@ -824,6 +825,29 @@ void MainWin::showPasswordChangeDlg()
                         QMessageBox::Ok, this);
         box.setInformativeText(tr("You need a Quassel Core v0.12.0 or newer in order to be able to remotely change your password."));
         box.exec();
+    }
+}
+
+
+void MainWin::showMigrationWarning(bool show)
+{
+    if (show && !_migrationWarning) {
+        _migrationWarning = new QMessageBox(QMessageBox::Information,
+                                            tr("Upgrading..."),
+                                            "<b>" + tr("Your database is being upgraded") + "</b>",
+                                            QMessageBox::NoButton, this);
+        _migrationWarning->setInformativeText("<p>"
+                                              + tr("In order to support new features, we need to make changes to your backlog database. This may take a long while.")
+                                              + "</p><p>"
+                                              + tr("Do not exit Quassel until the upgrade is complete!")
+                                              + "</p>");
+        _migrationWarning->setStandardButtons(QMessageBox::NoButton);
+        _migrationWarning->show();
+    }
+    else if (!show && _migrationWarning) {
+        _migrationWarning->close();
+        _migrationWarning->deleteLater();
+        _migrationWarning = nullptr;
     }
 }
 

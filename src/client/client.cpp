@@ -206,6 +206,12 @@ bool Client::internalCore()
 }
 
 
+void Client::onDbUpgradeInProgress(bool inProgress)
+{
+    emit dbUpgradeInProgress(inProgress);
+}
+
+
 /*** Network handling ***/
 
 QList<NetworkId> Client::networkIds()

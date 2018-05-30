@@ -406,6 +406,8 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings,
         return false;
     }
 
+    connect(storage.get(), SIGNAL(dbUpgradeInProgress(bool)), this, SIGNAL(dbUpgradeInProgress(bool)));
+
     Storage::State storageState = storage->init(settings, environment, loadFromEnvironment);
     switch (storageState) {
     case Storage::NeedsSetup:
