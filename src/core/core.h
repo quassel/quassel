@@ -24,6 +24,7 @@
 #include <vector>
 
 #include <QDateTime>
+#include <QPointer>
 #include <QString>
 #include <QVariant>
 #include <QTimer>
@@ -47,9 +48,11 @@
 
 class CoreAuthHandler;
 class CoreSession;
-struct NetworkInfo;
+class InternalPeer;
 class SessionThread;
 class SignalProxy;
+
+struct NetworkInfo;
 
 class AbstractSqlMigrationReader;
 class AbstractSqlMigrationWriter;
@@ -692,6 +695,13 @@ public:
 
     static const int AddClientEventId;
 
+signals:
+    //! Sent when a BufferInfo is updated in storage.
+    void bufferInfoUpdated(UserId user, const BufferInfo &info);
+
+    //! Relay from CoreSession::sessionState(). Used for internal connection only
+    void sessionState(const Protocol::SessionState &sessionState);
+
 public slots:
     bool init();
 
@@ -710,15 +720,9 @@ public slots:
 
     void cacheSysIdent();
 
-    void setupInternalClientSession(InternalPeer *clientConnection);
     QString setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
-signals:
-    //! Sent when a BufferInfo is updated in storage.
-    void bufferInfoUpdated(UserId user, const BufferInfo &info);
-
-    //! Relay from CoreSession::sessionState(). Used for internal connection only
-    void sessionState(const Protocol::SessionState &sessionState);
+    void connectInternalPeer(QPointer<InternalPeer> peer);
 
 protected:
     void customEvent(QEvent *event) override;
@@ -746,6 +750,7 @@ private:
     void addClientHelper(RemotePeer *peer, UserId uid);
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
     QString setupCoreForInternalUsage();
+    void setupInternalClientSession(QPointer<InternalPeer> peer);
 
     bool createUser();
 
@@ -796,7 +801,10 @@ private:
 
     QDateTime _startTime;
 
-    bool _configured;
+    bool _initialized{false};
+    bool _configured{false};
+
+    QPointer<InternalPeer> _pendingInternalConnection;
 
     /// Whether or not strict ident mode is enabled, locking users' idents to Quassel username
     bool _strictIdentEnabled;

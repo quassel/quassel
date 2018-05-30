@@ -26,6 +26,7 @@ InternalPeer::InternalPeer(QObject *parent)
     : Peer(nullptr, parent)
 {
     static bool registered = []() {
+        qRegisterMetaType<QPointer<InternalPeer>>();
         qRegisterMetaType<Protocol::SyncMessage>();
         qRegisterMetaType<Protocol::RpcCall>();
         qRegisterMetaType<Protocol::InitRequest>();

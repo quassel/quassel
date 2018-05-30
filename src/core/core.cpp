@@ -248,6 +248,13 @@ bool Core::init()
         Core::restoreState();
     }
 
+    _initialized = true;
+
+    if (_pendingInternalConnection) {
+        connectInternalPeer(_pendingInternalConnection);
+        _pendingInternalConnection = {};
+    }
+
     return true;
 }
 
@@ -760,7 +767,18 @@ void Core::addClientHelper(RemotePeer *peer, UserId uid)
 }
 
 
-void Core::setupInternalClientSession(InternalPeer *clientPeer)
+void Core::connectInternalPeer(QPointer<InternalPeer> peer)
+{
+    if (_initialized && peer) {
+        setupInternalClientSession(peer);
+    }
+    else {
+        _pendingInternalConnection = peer;
+    }
+}
+
+
+void Core::setupInternalClientSession(QPointer<InternalPeer> clientPeer)
 {
     if (!_configured) {
         stopListening();
@@ -773,6 +791,12 @@ void Core::setupInternalClientSession(InternalPeer *clientPeer)
     }
     else {
         quWarning() << "Core::setupInternalClientSession(): You're trying to run monolithic Quassel with an unusable Backend! Go fix it!";
+        QCoreApplication::exit(EXIT_FAILURE);
+        return;
+    }
+
+    if (!clientPeer) {
+        quWarning() << "Client peer went away, not starting a session";
         return;
     }
 
