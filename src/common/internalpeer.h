@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QPointer>
 #include <QString>
 
 #include "peer.h"
@@ -94,3 +95,5 @@ private:
     SignalProxy *_proxy{nullptr};
     bool _isOpen{false};
 };
+
+Q_DECLARE_METATYPE(QPointer<InternalPeer>)

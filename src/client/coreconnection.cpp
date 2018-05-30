@@ -381,14 +381,12 @@ void CoreConnection::connectToCurrentAccount()
             qWarning() << "Cannot connect to internal core in client-only mode!";
             return;
         }
-        emit startInternalCore();
 
         InternalPeer *peer = new InternalPeer();
         _peer = peer;
         Client::instance()->signalProxy()->addPeer(peer); // sigproxy will take ownership
         emit connectToInternalCore(peer);
         setState(Connected);
-
         return;
     }
 

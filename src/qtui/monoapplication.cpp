@@ -22,6 +22,7 @@
 #include "coreapplication.h"
 #include "client.h"
 #include "core.h"
+#include "internalpeer.h"
 #include "qtui.h"
 
 class InternalPeer;
@@ -42,7 +43,14 @@ bool MonolithicApplication::init()
     if (!QtUiApplication::init())
         return false;
 
-    connect(Client::coreConnection(), SIGNAL(startInternalCore()), SLOT(startInternalCore()));
+    connect(Client::coreConnection(), SIGNAL(connectToInternalCore(QPointer<InternalPeer>)), this, SLOT(onConnectionRequest(QPointer<InternalPeer>)));
+
+    // If port is set, start internal core directly so external clients can connect
+    // This is useful in case the mono client re-gains remote connection capability,
+    // in which case the internal core would not have to be started by default.
+    if (Quassel::isOptionSet("port")) {
+        startInternalCore();
+    }
 
     return true;
 }
@@ -52,17 +60,40 @@ MonolithicApplication::~MonolithicApplication()
 {
     // Client needs to be destroyed first
     Client::destroy();
-    _core.reset();
+    _coreThread.quit();
+    _coreThread.wait();
     Quassel::destroy();
 }
 
 
 void MonolithicApplication::startInternalCore()
 {
-    if (!_core) {
-        _core.reset(new Core{});  // FIXME C++14: std::make_unique
-        Core::instance()->init();
+    if (_core) {
+        // Already started
+        return;
     }
-    connect(Client::coreConnection(), SIGNAL(connectToInternalCore(InternalPeer*)), Core::instance(), SLOT(setupInternalClientSession(InternalPeer*)));
-    connect(Core::instance(), SIGNAL(sessionState(Protocol::SessionState)), Client::coreConnection(), SLOT(internalSessionStateReceived(Protocol::SessionState)));
+
+    // Start internal core in a separate thread, so it doesn't block the UI
+    _core = new Core{};
+    _core->moveToThread(&_coreThread);
+    connect(&_coreThread, SIGNAL(started()), _core, SLOT(init()));
+    connect(&_coreThread, SIGNAL(finished()), _core, SLOT(deleteLater()));
+
+    connect(this, SIGNAL(connectInternalPeer(QPointer<InternalPeer>)), _core, SLOT(connectInternalPeer(QPointer<InternalPeer>)));
+    connect(_core, SIGNAL(sessionState(Protocol::SessionState)), Client::coreConnection(), SLOT(internalSessionStateReceived(Protocol::SessionState)));
+
+    _coreThread.start();
+}
+
+
+void MonolithicApplication::onConnectionRequest(QPointer<InternalPeer> peer)
+{
+    if (!_core) {
+        startInternalCore();
+    }
+
+    // While starting the core may take a while, the object itself is instantiated synchronously and the connections
+    // established, so it's safe to emit this immediately. The core will take care of queueing the request until
+    // initialization is complete.
+    emit connectInternalPeer(peer);
 }

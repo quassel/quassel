@@ -101,8 +101,7 @@ signals:
     void coreSetupSuccess();
     void coreSetupFailed(const QString &error);
 
-    void startInternalCore();
-    void connectToInternalCore(InternalPeer *connection);
+    void connectToInternalCore(QPointer<InternalPeer> connection);
 
     // These signals MUST be handled synchronously!
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage = QString());
