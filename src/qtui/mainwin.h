@@ -50,8 +50,9 @@ class NickListWidget;
 class SystemTray;
 class TopicWidget;
 
-class QMenu;
 class QLabel;
+class QMenu;
+class QMessageBox;
 class QToolBar;
 
 class KHelpMenu;
@@ -96,6 +97,8 @@ public slots:
     void previousBufferView(); //!< Activate the previous bufferview
     void nextBuffer();
     void previousBuffer();
+
+    void showMigrationWarning(bool show);
 
     //! Quit application
     void quit();
@@ -260,6 +263,8 @@ private:
     QToolBar *_mainToolBar, *_chatViewToolBar, *_nickToolBar;
 
     QWidget *_awayLog;
+
+    QMessageBox* _migrationWarning{nullptr};
 
     bool _layoutLoaded;
 

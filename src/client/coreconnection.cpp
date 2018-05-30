@@ -385,6 +385,7 @@ void CoreConnection::connectToCurrentAccount()
         InternalPeer *peer = new InternalPeer();
         _peer = peer;
         Client::instance()->signalProxy()->addPeer(peer); // sigproxy will take ownership
+        emit connectionMsg(tr("Initializing..."));
         emit connectToInternalCore(peer);
         setState(Connected);
         return;

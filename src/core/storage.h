@@ -551,6 +551,9 @@ signals:
     //! Sent when a user has been removed
     void userRemoved(UserId);
 
+    //! Emitted when database schema upgrade starts or ends
+    void dbUpgradeInProgress(bool inProgress);
+
 protected:
     QString hashPassword(const QString &password);
     bool checkHashedPassword(const UserId user, const QString &password, const QString &hashedPassword, const Storage::HashVersion version);

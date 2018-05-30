@@ -702,6 +702,9 @@ signals:
     //! Relay from CoreSession::sessionState(). Used for internal connection only
     void sessionState(const Protocol::SessionState &sessionState);
 
+    //! Emitted when database schema upgrade starts or ends
+    void dbUpgradeInProgress(bool inProgress);
+
 public slots:
     bool init();
 

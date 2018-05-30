@@ -82,6 +82,8 @@ void MonolithicApplication::startInternalCore()
     connect(this, SIGNAL(connectInternalPeer(QPointer<InternalPeer>)), _core, SLOT(connectInternalPeer(QPointer<InternalPeer>)));
     connect(_core, SIGNAL(sessionState(Protocol::SessionState)), Client::coreConnection(), SLOT(internalSessionStateReceived(Protocol::SessionState)));
 
+    connect(_core, SIGNAL(dbUpgradeInProgress(bool)), Client::instance(), SLOT(onDbUpgradeInProgress(bool)));
+
     _coreThread.start();
 }
 
