@@ -81,6 +81,12 @@ Core::Core()
         delete _instance;
     }
     _instance = this;
+
+    // Parent all QObject-derived attributes, so when the Core instance gets moved into another
+    // thread, they get moved with it
+    _server.setParent(this);
+    _v6server.setParent(this);
+    _storageSyncTimer.setParent(this);
 }
 
 
