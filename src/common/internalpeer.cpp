@@ -18,40 +18,31 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QCoreApplication>
-#include <QThread>
-
 #include "internalpeer.h"
 
 using namespace Protocol;
 
-template<class T>
-class PeerMessageEvent : public QEvent
-{
-public:
-    PeerMessageEvent(InternalPeer *sender, InternalPeer::EventType eventType, const T &message)
-        : QEvent(QEvent::Type(eventType)), sender(sender), message(message)
-    {}
-
-    InternalPeer *sender;
-    T message;
-};
-
-
 InternalPeer::InternalPeer(QObject *parent)
-    : Peer(0, parent),
-    _proxy(0),
-    _peer(0),
-    _isOpen(true)
+    : Peer(nullptr, parent)
 {
+    static bool registered = []() {
+        qRegisterMetaType<Protocol::SyncMessage>();
+        qRegisterMetaType<Protocol::RpcCall>();
+        qRegisterMetaType<Protocol::InitRequest>();
+        qRegisterMetaType<Protocol::InitData>();
+        return true;
+    }();
+    Q_UNUSED(registered)
+
     setFeatures(Quassel::Features{});
 }
 
 
 InternalPeer::~InternalPeer()
 {
-    if (_isOpen)
+    if (_isOpen) {
         emit disconnected();
+    }
 }
 
 
@@ -60,15 +51,18 @@ QString InternalPeer::description() const
     return tr("internal connection");
 }
 
+
 QString InternalPeer::address() const
 {
     return tr("internal connection");
 }
 
+
 quint16 InternalPeer::port() const
 {
     return 0;
 }
+
 
 bool InternalPeer::isOpen() const
 {
@@ -111,7 +105,7 @@ int InternalPeer::lag() const
 void InternalPeer::setSignalProxy(::SignalProxy *proxy)
 {
     if (!proxy && _proxy) {
-        _proxy = 0;
+        _proxy = nullptr;
         if (_isOpen) {
             _isOpen = false;
             emit disconnected();
@@ -130,19 +124,20 @@ void InternalPeer::setSignalProxy(::SignalProxy *proxy)
 
 void InternalPeer::setPeer(InternalPeer *peer)
 {
-    if (_peer) {
-        qWarning() << Q_FUNC_INFO << "Peer already set, ignoring!";
-        return;
-    }
-    _peer = peer;
+    connect(peer, SIGNAL(dispatchMessage(Protocol::SyncMessage)), SLOT(handleMessage(Protocol::SyncMessage)));
+    connect(peer, SIGNAL(dispatchMessage(Protocol::RpcCall))    , SLOT(handleMessage(Protocol::RpcCall)));
+    connect(peer, SIGNAL(dispatchMessage(Protocol::InitRequest)), SLOT(handleMessage(Protocol::InitRequest)));
+    connect(peer, SIGNAL(dispatchMessage(Protocol::InitData))   , SLOT(handleMessage(Protocol::InitData)));
+
     connect(peer, SIGNAL(disconnected()), SLOT(peerDisconnected()));
+
+    _isOpen = true;
 }
 
 
 void InternalPeer::peerDisconnected()
 {
-    disconnect(_peer, 0, this, 0);
-    _peer = 0;
+    disconnect(sender(), nullptr, this, nullptr);
     if (_isOpen) {
         _isOpen = false;
         emit disconnected();
@@ -152,81 +147,63 @@ void InternalPeer::peerDisconnected()
 
 void InternalPeer::dispatch(const SyncMessage &msg)
 {
-    dispatch(SyncMessageEvent, msg);
+    emit dispatchMessage(msg);
 }
 
 
 void InternalPeer::dispatch(const RpcCall &msg)
 {
-    dispatch(RpcCallEvent, msg);
+    emit dispatchMessage(msg);
 }
 
 
 void InternalPeer::dispatch(const InitRequest &msg)
 {
-    dispatch(InitRequestEvent, msg);
+    emit dispatchMessage(msg);
 }
 
 
 void InternalPeer::dispatch(const InitData &msg)
 {
-    dispatch(InitDataEvent, msg);
+    emit dispatchMessage(msg);
 }
 
 
-namespace {
-
-void setSourcePeer(Peer* peer)
+void InternalPeer::handleMessage(const Protocol::SyncMessage &msg)
 {
-    auto p = SignalProxy::current();
-    if (p)
-        p->setSourcePeer(peer);
+    handle(msg);
 }
 
-}  // anon
+
+void InternalPeer::handleMessage(const Protocol::RpcCall &msg)
+{
+    handle(msg);
+}
+
+
+void InternalPeer::handleMessage(const Protocol::InitRequest &msg)
+{
+    handle(msg);
+}
+
+
+void InternalPeer::handleMessage(const Protocol::InitData &msg)
+{
+    handle(msg);
+}
 
 
 template<class T>
-void InternalPeer::dispatch(EventType eventType, const T &msg)
+void InternalPeer::handle(const T &msg)
 {
-    if (!_peer) {
-        qWarning() << Q_FUNC_INFO << "Cannot dispatch a message without a peer!";
-        return;
-    }
+    static auto setSourcePeer = [](Peer *peer) {
+        auto p = SignalProxy::current();
+        if (p) {
+            p->setSourcePeer(peer);
+        }
+    };
 
-    // The peers always live in different threads, so use an event for thread-safety
-    QCoreApplication::postEvent(_peer, new PeerMessageEvent<T>(this, eventType, msg));
-}
-
-
-void InternalPeer::customEvent(QEvent *event)
-{
     setSourcePeer(this);
-
-    switch ((int)event->type()) {
-        case SyncMessageEvent: {
-            handle(static_cast<PeerMessageEvent<SyncMessage> *>(event)->message);
-            break;
-        }
-        case RpcCallEvent: {
-            handle(static_cast<PeerMessageEvent<RpcCall> *>(event)->message);
-            break;
-        }
-        case InitRequestEvent: {
-            handle(static_cast<PeerMessageEvent<InitRequest> *>(event)->message);
-            break;
-        }
-        case InitDataEvent: {
-            handle(static_cast<PeerMessageEvent<InitData> *>(event)->message);
-            break;
-        }
-
-        default:
-            qWarning() << Q_FUNC_INFO << "Received unknown custom event:" << event->type();
-            setSourcePeer(nullptr);
-            return;
-    }
-
+    Peer::handle(msg);
     setSourcePeer(nullptr);
-    event->accept();
 }

@@ -18,83 +18,79 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef INTERNALPEER_H
-#define INTERNALPEER_H
+#pragma once
+
+#include <QString>
 
 #include "peer.h"
 #include "protocol.h"
 #include "signalproxy.h"
-
-class QEvent;
 
 class InternalPeer : public Peer
 {
     Q_OBJECT
 
 public:
-    enum EventType {
-        SyncMessageEvent = QEvent::User,
-        RpcCallEvent,
-        InitRequestEvent,
-        InitDataEvent
-    };
+    InternalPeer(QObject *parent = nullptr);
+    ~InternalPeer() override;
 
-    InternalPeer(QObject *parent = 0);
-    virtual ~InternalPeer();
+    Protocol::Type protocol() const override { return Protocol::InternalProtocol; }
+    QString description() const override;
 
-    Protocol::Type protocol() const { return Protocol::InternalProtocol; }
-    QString description() const;
+    QString address() const override;
+    quint16 port() const override;
 
-    virtual QString address() const;
-    virtual quint16 port() const;
-
-    SignalProxy *signalProxy() const;
-    void setSignalProxy(SignalProxy *proxy);
+    SignalProxy *signalProxy() const override;
+    void setSignalProxy(SignalProxy *proxy) override;
 
     InternalPeer *peer() const;
     void setPeer(InternalPeer *peer);
 
-    bool isOpen() const;
-    bool isSecure() const;
-    bool isLocal() const;
+    bool isOpen() const override;
+    bool isSecure() const override;
+    bool isLocal() const override;
 
-    int lag() const;
+    int lag() const override;
 
-    void dispatch(const Protocol::SyncMessage &msg);
-    void dispatch(const Protocol::RpcCall &msg);
-    void dispatch(const Protocol::InitRequest &msg);
-    void dispatch(const Protocol::InitData &msg);
+    void dispatch(const Protocol::SyncMessage &msg) override;
+    void dispatch(const Protocol::RpcCall &msg) override;
+    void dispatch(const Protocol::InitRequest &msg) override;
+    void dispatch(const Protocol::InitData &msg) override;
 
     /* These are not needed for InternalPeer */
-    void dispatch(const Protocol::RegisterClient &) {}
-    void dispatch(const Protocol::ClientDenied &) {}
-    void dispatch(const Protocol::ClientRegistered &) {}
-    void dispatch(const Protocol::SetupData &) {}
-    void dispatch(const Protocol::SetupFailed &) {}
-    void dispatch(const Protocol::SetupDone &) {}
-    void dispatch(const Protocol::Login &) {}
-    void dispatch(const Protocol::LoginFailed &) {}
-    void dispatch(const Protocol::LoginSuccess &) {}
-    void dispatch(const Protocol::SessionState &) {}
+    void dispatch(const Protocol::RegisterClient &) override {}
+    void dispatch(const Protocol::ClientDenied &) override {}
+    void dispatch(const Protocol::ClientRegistered &) override {}
+    void dispatch(const Protocol::SetupData &) override {}
+    void dispatch(const Protocol::SetupFailed &) override {}
+    void dispatch(const Protocol::SetupDone &) override {}
+    void dispatch(const Protocol::Login &) override {}
+    void dispatch(const Protocol::LoginFailed &) override {}
+    void dispatch(const Protocol::LoginSuccess &) override {}
+    void dispatch(const Protocol::SessionState &) override {}
 
 public slots:
-    void close(const QString &reason = QString());
+    void close(const QString &reason = QString()) override;
 
-protected:
-    void customEvent(QEvent *event);
+signals:
+    void dispatchMessage(const Protocol::SyncMessage &msg);
+    void dispatchMessage(const Protocol::RpcCall &msg);
+    void dispatchMessage(const Protocol::InitRequest &msg);
+    void dispatchMessage(const Protocol::InitData &msg);
 
 private slots:
     void peerDisconnected();
 
-private:
-    template<class T>
-    void dispatch(EventType eventType, const T &msg);
+    void handleMessage(const Protocol::SyncMessage &msg);
+    void handleMessage(const Protocol::RpcCall &msg);
+    void handleMessage(const Protocol::InitRequest &msg);
+    void handleMessage(const Protocol::InitData &msg);
 
 private:
-    SignalProxy *_proxy;
-    InternalPeer *_peer;
-    bool _isOpen;
+    template<typename T>
+    void handle(const T &msg);
+
+private:
+    SignalProxy *_proxy{nullptr};
+    bool _isOpen{false};
 };
-
-
-#endif

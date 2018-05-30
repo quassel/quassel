@@ -189,8 +189,9 @@ struct SignalProxyMessage
 
 struct SyncMessage : public SignalProxyMessage
 {
-    inline SyncMessage(const QByteArray &className, const QString &objectName, const QByteArray &slotName, const QVariantList &params)
-    : className(className), objectName(objectName), slotName(slotName), params(params) {}
+    SyncMessage() = default;
+    SyncMessage(const QByteArray &className, const QString &objectName, const QByteArray &slotName, const QVariantList &params)
+        : className(className), objectName(objectName), slotName(slotName), params(params) {}
 
     QByteArray className;
     QString objectName;
@@ -201,8 +202,9 @@ struct SyncMessage : public SignalProxyMessage
 
 struct RpcCall : public SignalProxyMessage
 {
-    inline RpcCall(const QByteArray &slotName, const QVariantList &params)
-    : slotName(slotName), params(params) {}
+    RpcCall() = default;
+    RpcCall(const QByteArray &slotName, const QVariantList &params)
+        : slotName(slotName), params(params) {}
 
     QByteArray slotName;
     QVariantList params;
@@ -211,8 +213,9 @@ struct RpcCall : public SignalProxyMessage
 
 struct InitRequest : public SignalProxyMessage
 {
-    inline InitRequest(const QByteArray &className, const QString &objectName)
-    : className(className), objectName(objectName) {}
+    InitRequest() = default;
+    InitRequest(const QByteArray &className, const QString &objectName)
+        : className(className), objectName(objectName) {}
 
     QByteArray className;
     QString objectName;
@@ -221,8 +224,9 @@ struct InitRequest : public SignalProxyMessage
 
 struct InitData : public SignalProxyMessage
 {
-    inline InitData(const QByteArray &className, const QString &objectName, const QVariantMap &initData)
-    : className(className), objectName(objectName), initData(initData) {}
+    InitData() = default;
+    InitData(const QByteArray &className, const QString &objectName, const QVariantMap &initData)
+        : className(className), objectName(objectName), initData(initData) {}
 
     QByteArray className;
     QString objectName;
@@ -249,3 +253,9 @@ struct HeartBeatReply
 
 
 };
+
+// Required for InternalPeer
+Q_DECLARE_METATYPE(Protocol::SyncMessage)
+Q_DECLARE_METATYPE(Protocol::RpcCall)
+Q_DECLARE_METATYPE(Protocol::InitRequest)
+Q_DECLARE_METATYPE(Protocol::InitData)
