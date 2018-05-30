@@ -131,7 +131,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     eventManager()->registerObject(ctcpParser(), EventManager::LowPriority, "send");
 
     // periodically save our session state
-    connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), this, SLOT(saveSessionState()));
+    connect(Core::instance()->syncTimer(), SIGNAL(timeout()), this, SLOT(saveSessionState()));
 
     p->synchronize(_bufferSyncer);
     p->synchronize(&aliasManager());
