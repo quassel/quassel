@@ -187,10 +187,43 @@ void AliasManager::expand(const QString &alias, const BufferInfo &bufferInfo, co
         }
 
         for (int j = params.count(); j > 0; j--) {
+            // Find the referenced IRC user...
             IrcUser *ircUser = net->ircUser(params[j - 1]);
-            command = command.replace(QString("$%1:hostname").arg(j), ircUser ? ircUser->host() : QString("*"));
-            command = command.replace(QString("$%1:ident").arg(j), ircUser ? ircUser->user() : QString("*"));
-            command = command.replace(QString("$%1:account").arg(j), ircUser ? ircUser->account() : QString("*"));
+            // ...and replace components, using short-circuit evaluation as ircUser might be null
+
+            // Account, or "*" if blank/nonexistent/logged out
+            command = command.replace(
+                        QString("$%1:account").arg(j),
+                        (ircUser && !ircUser->account().isEmpty()) ? ircUser->account()
+                                                                   : QString("*"));
+
+            // Hostname, or "*" if blank/nonexistent
+            command = command.replace(
+                        QString("$%1:hostname").arg(j),
+                        (ircUser && !ircUser->host().isEmpty()) ? ircUser->host() : QString("*"));
+
+            // Identd
+            // Ident if verified, or "*" if blank/unknown/unverified (prefixed with "~")
+            //
+            // Most IRC daemons have the option to prefix an ident with "~" if it could not be
+            // verified via an identity daemon such as oidentd.  In these cases, it can be handy to
+            // have a way to ban via ident if verified, or all idents if not verified.  If the
+            // server does not verify idents, it usually won't add "~".
+            //
+            // Identd must be replaced before ident to avoid being treated as "$i:ident" + "d"
+            command = command.replace(
+                        QString("$%1:identd").arg(j),
+                        (ircUser && !ircUser->user().isEmpty()
+                         && !ircUser->user().startsWith("~"))
+                        ? ircUser->user() : QString("*"));
+
+            // Ident, or "*" if blank/nonexistent
+            command = command.replace(
+                        QString("$%1:ident").arg(j),
+                        (ircUser && !ircUser->user().isEmpty()) ? ircUser->user() : QString("*"));
+
+            // Nickname
+            // Must be replaced last to avoid interferring with more specific aliases
             command = command.replace(QString("$%1").arg(j), params[j - 1]);
         }
         command = command.replace("$0", msg);

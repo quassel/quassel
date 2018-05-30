@@ -58,19 +58,78 @@ QVariant AliasesModel::data(const QModelIndex &index, int role) const
                       "It can be used as a regular slash command.<br /><br />"
                       "<b>Example:</b> \"foo\" can be used per /foo");
         case 1:
-            return tr("<b>The string the shortcut will be expanded to</b><br />"
-                      "<b>special variables:</b><br />"
-                      " - <b>$i</b> represents the i'th parameter.<br />"
-                      " - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br />"
-                      " - <b>$i..</b> represents all parameters from i on separated by spaces.<br />"
-                      " - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br />"
-                      " - <b>$i:ident</b> represents the ident of the user identified by the i'th parameter or a * if unknown.<br />"
-                      " - <b>$i:account</b> represents the account of the user identified by the i'th parameter or a * if logged out or unknown.<br />"
-                      " - <b>$0</b> the whole string.<br />"
-                      " - <b>$nick</b> your current nickname<br />"
-                      " - <b>$channel</b> the name of the selected channel<br /><br />"
-                      "Multiple commands can be separated with semicolons<br /><br />"
-                      "<b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3");
+        {
+            // To avoid overwhelming the user, organize things into a table
+            QString strTooltip;
+            QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+            tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
+
+            // Function to add a row to the tooltip table
+            auto addRow = [&](
+                    const QString& key, const QString& value = QString(), bool condition = true) {
+                if (condition) {
+                    if (value.isEmpty()) {
+                        tooltip << "<tr><td class='italic' align='left' colspan='2'>"
+                                      << key << "</td></tr>";
+                    } else {
+                        tooltip << "<tr><td class='bold' align='left'>"
+                                      << key << "</td><td>" << value << "</td></tr>";
+                    }
+                }
+            };
+
+            tooltip << "<p class='bold'>"
+                    << tr("The string the shortcut will be expanded to") << "</p>";
+
+            tooltip << "<p class='bold' align='center'>"
+                    << tr("Special variables") << "</p>";
+
+            // Variable option table
+            tooltip << "<table cellspacing='5' cellpadding='0'>";
+
+            // Parameter variables
+            addRow(tr("Parameter variables"));
+            addRow("$i", tr("i'th parameter"));
+            addRow("$i..j", tr("i'th to j'th parameter separated by spaces"));
+            addRow("$i..", tr("all parameters from i on separated by spaces"));
+
+            // IrcUser handling
+            addRow(tr("Nickname parameter variables"));
+            addRow("$i:account",
+                   tr("account of user identified by i'th parameter, or a '*' if logged out or "
+                      "unknown"));
+            addRow("$i:hostname",
+                   tr("hostname of user identified by i'th parameter, or a '*' if unknown"));
+            addRow("$i:ident",
+                   tr("ident of user identified by i'th parameter, or a '*' if unknown"));
+            addRow("$i:identd",
+                   tr("ident of user identified by i'th parameter if verified, or a '*' if unknown "
+                      "or unverified (prefixed with '~')"));
+
+            // General variables
+            addRow(tr("General variables"));
+            addRow("$0", tr("the whole string"));
+            addRow("$nick", tr("your current nickname"));
+            addRow("$channel", tr("the name of the selected channel"));
+
+            // End table
+            tooltip << "</table>";
+
+            // Example header
+            tooltip << "<p>"
+                    << tr("Multiple commands can be separated with semicolons") << "</p>";
+            // Example
+            tooltip << "<p>";
+            tooltip << QString("<p><span class='bold'>%1</span> %2<br />").arg(
+                           tr("Example:"), tr("\"Test $1; Test $2; Test All $0\""));
+            tooltip << tr("...will be expanded to three separate messages \"Test 1\", \"Test 2\" "
+                          "and \"Test All 1 2 3\" when called like <i>/test 1 2 3</i>")
+                    << "</p>";
+
+            // End tooltip
+            tooltip << "</qt>";
+            return strTooltip;
+        }
         default:
             return QVariant();
         }
