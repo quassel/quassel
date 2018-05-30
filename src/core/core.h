@@ -686,7 +686,7 @@ public:
 
     static QString setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupMap);
 
-    static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
+    static inline QTimer *syncTimer() { return &instance()->_storageSyncTimer; }
 
     inline OidentdConfigGenerator *oidentdConfigGenerator() const { return _oidentdConfigGenerator; }
 
@@ -779,8 +779,9 @@ private:
     QHash<UserId, SessionThread *> _sessions;
     DeferredSharedPtr<Storage>       _storage;        ///< Active storage backend
     DeferredSharedPtr<Authenticator> _authenticator;  ///< Active authenticator
-    QTimer _storageSyncTimer;
     QMap<UserId, QString> _authUserNames;
+
+    QTimer _storageSyncTimer;
 
 #ifdef HAVE_SSL
     SslServer _server, _v6server;
