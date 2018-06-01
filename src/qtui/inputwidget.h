@@ -44,6 +44,49 @@ public:
 
     inline MultiLineEdit *inputLine() const { return ui.inputEdit; }
 
+public slots:
+    /**
+     * Apply the active color to the selected or typed text
+     *
+     * Active color is chosen using the UI menu.
+     */
+    void applyFormatActiveColor();
+
+    /**
+     * Apply the active fill color to the selected or typed text background
+     *
+     * Fill color is chosen using the UI menu.
+     */
+    void applyFormatActiveColorFill();
+
+    /**
+     * Toggle the boldness of the selected or typed text
+     *
+     * Bold becomes normal, and normal becomes bold.
+     */
+    void toggleFormatBold();
+
+    /**
+     * Toggle the italicness of the selected or typed text
+     *
+     * Italicized becomes normal, and normal becomes italicized.
+     */
+    void toggleFormatItalic();
+
+    /**
+     * Toggle the underlining of the selected or typed text
+     *
+     * Underlined becomes normal, and normal becomes underlined.
+     */
+    void toggleFormatUnderline();
+
+    /**
+     * Clear the formatting of the selected or typed text
+     *
+     * Clears the font weight (bold, italic, underline) and foreground/background coloring.
+     */
+    void clearFormat();
+
 protected:
     virtual bool eventFilter(QObject *watched, QEvent *event);
 
@@ -75,6 +118,13 @@ private slots:
 
     BufferInfo currentBufferInfo() const;
 
+    /**
+     * Set whether or not the style options frame is expanded
+     *
+     * @param visible If true, expand the style options frame, otherwise collapse it
+     */
+    void setStyleOptionsExpanded(const bool visible);
+
     void currentCharFormatChanged(const QTextCharFormat &format);
     void on_showStyleButton_toggled(bool checked);
     void on_boldButton_clicked(bool checked);
@@ -84,6 +134,36 @@ private slots:
     void colorHighlightChosen(QAction *action);
 
 private:
+    /**
+     * Clear the formatting of the text, globally or selected text only
+     *
+     * Clears the font weight (bold, italic, underline) and foreground/background coloring.
+     *
+     * @param global If true, clear all text formatting, otherwise only clear selected text
+     */
+    void setFormatClear(const bool global = false);
+
+    /**
+     * Sets the boldness of the selected or typed text
+     *
+     * @param bold If true, set text bold, otherwise set text normal
+     */
+    void setFormatBold(const bool bold);
+
+    /**
+     * Sets the italicness of the selected or typed text
+     *
+     * @param bold If true, set text italic, otherwise set text normal
+     */
+    void setFormatItalic(const bool italic);
+
+    /**
+     * Sets the underline of the selected or typed text
+     *
+     * @param bold If true, set text underlined, otherwise set text normal
+     */
+    void setFormatUnderline(const bool underline);
+
     Ui::InputWidget ui;
 
     NetworkId _networkId;
