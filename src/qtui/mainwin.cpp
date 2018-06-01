@@ -478,6 +478,38 @@ void MainWin::setupActions()
     coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll,
             this, SLOT(hideCurrentBuffer()), QKeySequence::Close));
 
+    // Text formatting
+    coll = QtUi::actionCollection("TextFormat", tr("Text formatting"));
+
+    coll->addAction("FormatApplyColor", new Action(
+                        QIcon::fromTheme("format-text-color"), tr("Apply foreground color"), coll,
+                        this, SLOT(on_inputFormatApplyColor_triggered()),
+                        QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G)));
+
+    coll->addAction("FormatApplyColorFill", new Action(
+                        QIcon::fromTheme("format-fill-color"), tr("Apply background color"), coll,
+                        this, SLOT(on_inputFormatApplyColorFill_triggered()),
+                        QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B)));
+
+    coll->addAction("FormatClear", new Action(
+                        QIcon::fromTheme("edit-clear"), tr("Clear formatting"), coll,
+                        this, SLOT(on_inputFormatClear_triggered()),
+                        QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C)));
+
+    coll->addAction("FormatBold", new Action(
+                        QIcon::fromTheme("format-text-bold"), tr("Toggle bold"), coll,
+                        this, SLOT(on_inputFormatBold_triggered()),
+                        QKeySequence::Bold));
+
+    coll->addAction("FormatItalic", new Action(
+                        QIcon::fromTheme("format-text-italic"), tr("Toggle italics"), coll,
+                        this, SLOT(on_inputFormatItalic_triggered()),
+                        QKeySequence::Italic));
+
+    coll->addAction("FormatUnderline", new Action(
+                        QIcon::fromTheme("format-text-underline"), tr("Toggle underline"), coll,
+                        this, SLOT(on_inputFormatUnderline_triggered()), QKeySequence::Underline));
+
     // Navigation
     coll = QtUi::actionCollection("Navigation", tr("Navigation"));
 
@@ -1742,6 +1774,60 @@ void MainWin::connectOrDisconnectFromNet()
     if (!net) return;
     if (net->connectionState() == Network::Disconnected) net->requestConnect();
     else net->requestDisconnect();
+}
+
+
+void MainWin::on_inputFormatApplyColor_triggered()
+{
+    if (!_inputWidget)
+        return;
+
+    _inputWidget->applyFormatActiveColor();
+}
+
+
+void MainWin::on_inputFormatApplyColorFill_triggered()
+{
+    if (!_inputWidget)
+        return;
+
+    _inputWidget->applyFormatActiveColorFill();
+}
+
+
+void MainWin::on_inputFormatClear_triggered()
+{
+    if (!_inputWidget)
+        return;
+
+    _inputWidget->clearFormat();
+}
+
+
+void MainWin::on_inputFormatBold_triggered()
+{
+    if (!_inputWidget)
+        return;
+
+    _inputWidget->toggleFormatBold();
+}
+
+
+void MainWin::on_inputFormatItalic_triggered()
+{
+    if (!_inputWidget)
+        return;
+
+    _inputWidget->toggleFormatItalic();
+}
+
+
+void MainWin::on_inputFormatUnderline_triggered()
+{
+    if (!_inputWidget)
+        return;
+
+    _inputWidget->toggleFormatUnderline();
 }
 
 
