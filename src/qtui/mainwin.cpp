@@ -402,7 +402,11 @@ void MainWin::setupActions()
             this, SLOT(showCoreInfoDlg())));
     coll->addAction("ConfigureNetworks", new Action(QIcon::fromTheme("configure"), tr("Configure &Networks..."), coll,
             this, SLOT(on_actionConfigureNetworks_triggered())));
-    // FIXME: use QKeySequence::Quit once we depend on Qt 4.6
+    // QKeySequence::Quit was added in Qt 4.6, and could be used instead.  However, that key
+    // sequence is empty by default on Windows, which would remove Ctrl-Q to quit.  It may be best
+    // to just keep it this way.
+    //
+    // See https://doc.qt.io/qt-5/qkeysequence.html
     coll->addAction("Quit", new Action(QIcon::fromTheme("application-exit"), tr("&Quit"), coll,
             this, SLOT(quit()), Qt::CTRL + Qt::Key_Q));
 
