@@ -193,6 +193,8 @@ MainWin::MainWin(QWidget *parent)
 
     setWindowTitle("Quassel IRC");
     setWindowIconText("Quassel IRC");
+    // Set the default icon for all windows
+    QApplication::setWindowIcon(QIcon::fromTheme("quassel"));
     updateIcon();
 }
 
@@ -389,7 +391,6 @@ void MainWin::updateIcon()
     else
         icon = QIcon::fromTheme("inactive-quassel", QIcon(":/icons/inactive-quassel.png"));
     setWindowIcon(icon);
-    qApp->setWindowIcon(icon);
 }
 
 
