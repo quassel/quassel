@@ -460,7 +460,7 @@ void MainWin::setupActions()
     coll->addAction("ConfigureQuassel", configureQuasselAct);
 
     // Help
-    QAction *aboutQuasselAct = new Action(QIcon(":/icons/quassel.png"), tr("&About Quassel"), coll,
+    QAction *aboutQuasselAct = new Action(QIcon::fromTheme("quassel"), tr("&About Quassel"), coll,
         this, SLOT(showAboutDlg()));
     aboutQuasselAct->setMenuRole(QAction::AboutRole);
     coll->addAction("AboutQuassel", aboutQuasselAct);
