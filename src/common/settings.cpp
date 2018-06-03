@@ -120,6 +120,7 @@ void Settings::setVersionMinor(const uint versionMinor)
     s.setValue("Config/VersionMinor", versionMinor);
 }
 
+
 bool Settings::sync() {
     create_qsettings;
     s.sync();
@@ -131,10 +132,12 @@ bool Settings::sync() {
     }
 }
 
+
 bool Settings::isWritable() {
     create_qsettings;
     return s.isWritable();
 }
+
 
 QStringList Settings::allLocalKeys()
 {
@@ -200,6 +203,7 @@ const QVariant &Settings::localValue(const QString &key, const QVariant &def)
     return cacheValue(normKey);
 }
 
+
 bool Settings::localKeyExists(const QString &key)
 {
     QString normKey = normalizedKey(group, key);
@@ -218,6 +222,10 @@ void Settings::removeLocalKey(const QString &key)
     s.remove(key);
     s.endGroup();
     QString normKey = normalizedKey(group, key);
-    if (isCached(normKey))
+    if (isCached(normKey)) {
         settingsCache.remove(normKey);
+    }
+    if (hasNotifier(normKey)) {
+        emit notifier(normKey)->valueChanged({});
+    }
 }
