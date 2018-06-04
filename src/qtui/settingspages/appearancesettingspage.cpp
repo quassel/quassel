@@ -20,16 +20,17 @@
 
 #include "appearancesettingspage.h"
 
+#include <QCheckBox>
+#include <QDir>
+#include <QFile>
+#include <QFileDialog>
+#include <QStyleFactory>
+
 #include "buffersettings.h"
 #include "qtui.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
 
-#include <QCheckBox>
-#include <QFileDialog>
-#include <QStyleFactory>
-#include <QFile>
-#include <QDir>
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), QString(), parent)
@@ -38,6 +39,10 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
 
 #ifdef QT_NO_SYSTEMTRAYICON
     ui.useSystemTrayIcon->hide();
+#endif
+#if QT_VERSION < 0x050000
+    // We don't support overriding the system icon theme with Qt4
+    ui.overrideSystemIconTheme->hide();
 #endif
 
     initAutoWidgets();
@@ -98,21 +103,12 @@ void AppearanceSettingsPage::initLanguageComboBox()
 
 void AppearanceSettingsPage::initIconThemeComboBox()
 {
-    // TODO Replace by runtime detection
-#if defined WITH_OXYGEN || defined WITH_BREEZE || defined WITH_BREEZE_DARK
-# if defined WITH_BREEZE
-    ui.iconthemeComboBox->addItem(tr("Breeze Light"), QVariant("breeze"));
-# endif
-# if defined WITH_BREEZE_DARK
-    ui.iconthemeComboBox->addItem(tr("Breeze Dark"), QVariant("breezedark"));
-# endif
-# if defined WITH_OXYGEN
-    ui.iconthemeComboBox->addItem(tr("Oxygen"), QVariant("oxygen"));
-# endif
-#else
-    ui.iconthemeLabel->hide();
-    ui.iconthemeComboBox->hide();
-#endif
+    auto availableThemes = QtUi::instance()->availableIconThemes();
+
+    ui.iconThemeComboBox->addItem(tr("Automatic"), QString{});
+    for (auto &&p : QtUi::instance()->availableIconThemes()) {
+        ui.iconThemeComboBox->addItem(p.second, p.first);
+    }
 }
 
 
@@ -152,12 +148,15 @@ void AppearanceSettingsPage::load()
     Quassel::loadTranslation(selectedLocale());
 
     // IconTheme
-    QString icontheme = uiSettings.value("IconTheme", QVariant("")).toString();
-    if (icontheme == "")
-        ui.iconthemeComboBox->setCurrentIndex(0);
-    else
-        ui.iconthemeComboBox->setCurrentIndex(ui.iconthemeComboBox->findData(icontheme));
-    ui.iconthemeComboBox->setProperty("storedValue", ui.iconthemeComboBox->currentIndex());
+    QString icontheme = UiStyleSettings{}.value("Icons/FallbackTheme", QString{}).toString();
+    if (icontheme.isEmpty()) {
+        ui.iconThemeComboBox->setCurrentIndex(0);
+    }
+    else {
+        auto idx = ui.iconThemeComboBox->findData(icontheme);
+        ui.iconThemeComboBox->setCurrentIndex(idx > 0 ? idx : 0);
+    }
+    ui.iconThemeComboBox->setProperty("storedValue", ui.iconThemeComboBox->currentIndex());
 
     // bufferSettings:
     BufferSettings bufferSettings;
@@ -184,6 +183,7 @@ void AppearanceSettingsPage::load()
 void AppearanceSettingsPage::save()
 {
     QtUiSettings uiSettings;
+    UiStyleSettings styleSettings;
 
     if (ui.styleComboBox->currentIndex() < 1) {
         uiSettings.setValue("Style", QString(""));
@@ -202,14 +202,17 @@ void AppearanceSettingsPage::save()
     }
     ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
 
-    if (selectedIconTheme()=="") {
-        uiSettings.remove("IconTheme");
+    bool needsIconThemeRefresh = ui.iconThemeComboBox->currentIndex() != ui.iconThemeComboBox->property("storedValue").toInt()
+                              || ui.overrideSystemIconTheme->isChecked() != ui.overrideSystemIconTheme->property("storedValue").toBool();
+
+    auto iconTheme = selectedIconTheme();
+    if (iconTheme.isEmpty()) {
+        styleSettings.remove("Icons/FallbackTheme");
     }
     else {
-        uiSettings.setValue("IconTheme", selectedIconTheme());
-        QIcon::setThemeName(selectedIconTheme());
+        styleSettings.setValue("Icons/FallbackTheme", iconTheme);
     }
-    ui.iconthemeComboBox->setProperty("storedValue", ui.iconthemeComboBox->currentIndex());
+    ui.iconThemeComboBox->setProperty("storedValue", ui.iconThemeComboBox->currentIndex());
 
     bool needsStyleReload =
         ui.useCustomStyleSheet->isChecked() != ui.useCustomStyleSheet->property("storedValue").toBool()
@@ -247,6 +250,8 @@ void AppearanceSettingsPage::save()
     setChangedState(false);
     if (needsStyleReload)
         QtUi::style()->reload();
+    if (needsIconThemeRefresh)
+        QtUi::instance()->refreshIconTheme();
 }
 
 
@@ -264,10 +269,12 @@ QLocale AppearanceSettingsPage::selectedLocale() const
     return locale;
 }
 
+
 QString AppearanceSettingsPage::selectedIconTheme() const
 {
-    return ui.iconthemeComboBox->itemData(ui.iconthemeComboBox->currentIndex()).toString();
+    return ui.iconThemeComboBox->itemData(ui.iconThemeComboBox->currentIndex()).toString();
 }
+
 
 void AppearanceSettingsPage::chooseStyleSheet()
 {
@@ -293,7 +300,7 @@ bool AppearanceSettingsPage::testHasChanged()
 {
     if (ui.styleComboBox->currentIndex() != ui.styleComboBox->property("storedValue").toInt()) return true;
     if (ui.languageComboBox->currentIndex() != ui.languageComboBox->property("storedValue").toInt()) return true;
-    if (ui.iconthemeComboBox->currentIndex() != ui.iconthemeComboBox->property("storedValue").toInt()) return true;
+    if (ui.iconThemeComboBox->currentIndex() != ui.iconThemeComboBox->property("storedValue").toInt()) return true;
 
     if (SettingsPage::hasChanged(ui.userNoticesInStatusBuffer)) return true;
     if (SettingsPage::hasChanged(ui.userNoticesInDefaultBuffer)) return true;
