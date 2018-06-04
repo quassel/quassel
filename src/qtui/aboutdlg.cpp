@@ -33,7 +33,7 @@ AboutDlg::AboutDlg(QWidget *parent)
     AboutData::setQuasselPersons(_aboutData);
 
     ui.setupUi(this);
-    ui.quasselLogo->setPixmap(QIcon(":/icons/quassel-64.png").pixmap(64)); // don't let the icon theme affect our logo here
+    ui.quasselLogo->setPixmap(QPixmap{":/pics/quassel-64.svg"});  // don't let the icon theme affect our logo here
 
     ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br><b>Version date:</b> %2<br><b>Protocol version:</b> %3"))
         .arg(Quassel::buildInfo().fancyVersionString)
@@ -101,9 +101,9 @@ QString AboutDlg::thanksTo() const
                                  "<td><b>John \"nox\" Hand</b></td></tr>"
               "<tr><td><i>" + tr("for the original Quassel logo - The All-Seeing Eye") + "</i></td></tr>"
               "<tr/>"
-              "<tr><td rowspan='2' valign='middle'><img src=':/icons/quassel-32.png'></td>"
+              "<tr><td rowspan='2' valign='middle'><img src=':/pics/quassel-oxygen-32.png'></td>"
                                  "<td><b>Nuno Pinheiro</b></td></tr>"
-              "<tr><td><i>" + tr("for the current Quassel logo") + "</i></td></tr>"
+              "<tr><td><i>" + tr("for the Oxygen Quassel logo") + "</i></td></tr>"
               "<tr/>"
               "<tr><td rowspan='2' valign='middle'><img src=':/pics/kde-vdg.png'></td>"
                                  "<td><b><a href='https://vdesign.kde.org'>The KDE Visual Design Group</a></b></td></tr>"

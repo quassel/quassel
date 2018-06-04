@@ -1,8 +1,10 @@
 <RCC>
   <qresource prefix="/pics">
     <file>kde-vdg.png</file>
+    <file>quassel-64.svg</file>
     <file>quassel-eye.png</file>
     <file>quassel-logo.png</file>
+    <file>quassel-oxygen-32.png</file>
     <file>qt-logo.png</file>
     <file>qt-logo-32.png</file>
   </qresource>
