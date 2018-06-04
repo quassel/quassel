@@ -24,6 +24,12 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <widget class="QTreeWidget" name="settingsTree">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="maximumSize">
        <size>
         <width>200</width>
