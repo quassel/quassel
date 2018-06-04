@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" version="1.1" width="64px" height="64px">
+  <defs>
+    <linearGradient id="gradientBackground" x2="5" gradientUnits="userSpaceOnUse" y2="103">
+      <stop id="gradientBackgroundStart" stop-color="#2883f2" offset="0"/>
+      <stop id="gradientBackgroundEnd" stop-color="#0c56b2" offset="1"/>
+    </linearGradient>
+    <linearGradient id="gradientLongShadow" y2="5" gradientUnits="userSpaceOnUse" y1="5" x2="103" x1="5">
+      <stop stop-color="#1a237e" stop-opacity=".25" offset="0"/>
+      <stop stop-opacity="0" offset="1"/>
+    </linearGradient>
+    <radialGradient id="gradientFinish" gradientUnits="userSpaceOnUse" cy="0" cx="0" r="108">
+      <stop stop-color="#fff" stop-opacity=".1" offset="0"/>
+      <stop stop-color="#fff" stop-opacity="0" offset="1"/>
+    </radialGradient>
+    <filter id="blurShadow" color-interpolation-filters="linearRGB">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+  </defs>
+  <path fill="url(#gradientBackground)" d="M5,5 103,5 103,79.5 81,79.5 81,103 54,79.5 5,79.5 Z"/>
+  <path fill="#ffffff" fill-opacity=".2" d="M5,5 103,5 103,6 5,6 Z" />
+  <path fill="#212121" fill-opacity=".2" d="M5,78.5 54,78.5 81,102 81,78.5 103,78.5 103,79.5 81,79.5 81,103 54,79.5 5,79.5 Z"/>
+  <path fill="url(#gradientLongShadow)" d="M34.91 61.09 a 27,27 0 0,1 38.18,-38.18 L 103,52.82 103,79.5 81,79.5 81,103 54,79.5 53.32,79.5" />
+  <path filter="url(#blurShadow)" fill-opacity=".25" fill="#000000" d="M27 42a 27,27 0 1,0 54,0 h-7 a20,20 0 0,1 -40,0 a20,20 0 0,1 40,0 h7 a 27,27 0 1,0 -54,0 M57.34 50.84 a 5.5,5.5 0 1,0 11,0 a 5.5,5.5 0 1,0 -11,0" />
+  <path fill="#ffffff" d="M27 42a 27,27 0 1,0 54,0 h-7 a20,20 0 0,1 -40,0 a20,20 0 0,1 40,0 h7 a 27,27 0 1,0 -54,0 M57.34 50.84 a 5.5,5.5 0 1,0 11,0 a 5.5,5.5 0 1,0 -11,0" />
+  <path fill="#e5e5e5" d="M34 41.5 v0.5 a 20,20 0 0,1 40,0 v-0.5 a 20,20 0 1,0 -40,0 h-7 v0.5 a 27,27 0 1,0 54,0 v-0.5 a 27,27 0 0,1 -54,0 M57.34 50.34 v0.5 a 5.5,5.5 0 1,0 11,0 v-0.5 a 5.5,5.5 0 0,1 -11,0" />
+  <path fill="url(#gradientFinish)" d="M5,5 103,5 103,79.5 81,79.5 81,103 54,79.5 5,79.5 Z"/>
+</svg>
