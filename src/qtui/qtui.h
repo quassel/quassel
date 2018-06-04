@@ -18,12 +18,20 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef QTUI_H
-#define QTUI_H
+#pragma once
 
-#include "graphicalui.h"
+#include <memory>
+#include <tuple>
+#include <vector>
+
+#include <QStringList>
+
+#if QT_VERSION >= 0x050000
+#  include <QTemporaryDir>
+#endif
 
 #include "abstractnotificationbackend.h"
+#include "graphicalui.h"
 #include "qtuistyle.h"
 
 class MainWin;
@@ -59,12 +67,27 @@ public:
     static const QList<AbstractNotificationBackend *> &notificationBackends();
     static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
 
+    /**
+     * Determine available fallback icon themes.
+     *
+     * @returns The list of supported fallback themes (Breeze (Dark), Oxygen) that are available on the system
+     */
+    std::vector<std::pair<QString, QString>> availableIconThemes() const;
+
 public slots:
     void init() override;
 
     uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text);
     void closeNotification(uint notificationId);
     void closeNotifications(BufferId bufferId = BufferId());
+
+    /**
+     * Refresh the current icon theme.
+     *
+     * @note This will not detect changes in the system icon theme, so if that changes, a client restart
+     *       is required for icons to work correctly.
+     */
+    void refreshIconTheme();
 
 protected slots:
     void connectedToCore() override;
@@ -80,10 +103,22 @@ private slots:
     void useSystemTrayChanged(const QVariant &);
 
 private:
+    /**
+     * Sets up icon theme handling.
+     */
+    void setupIconTheme();
+
+private:
     static QtUi *_instance;
     static MainWin *_mainWin;
     static QList<AbstractNotificationBackend *> _notificationBackends;
     static QList<AbstractNotificationBackend::Notification> _notifications;
+
+    QString _systemIconTheme;
+
+#if QT_VERSION >= 0x050000
+    std::unique_ptr<QTemporaryDir> _dummyThemeDir;
+#endif
 
     bool _useSystemTray;
 };
@@ -92,5 +127,3 @@ private:
 QtUi *QtUi::instance() { return _instance ? _instance : new QtUi(); }
 QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle *>(uiStyle()); }
 MainWin *QtUi::mainWindow() { return _mainWin; }
-
-#endif
