@@ -72,33 +72,33 @@ summary of all that after its run, so we'll just mention the most important
 options here:
 
 -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
-    Allow to choose which Quassel binaries to build.
+    Choose which Quassel binaries to build.
 
--DUSE_QT5=ON
-    Build against Qt5 instead of the default Qt4. Note that you should empty
-    your build directory when switching between Qt versions, otherwise weird
-    things may happen.
+-DUSE_QT4=ON
+    Build against the deprecated Qt4 instead of the default Qt5. Note that you
+    should empty your build directory when switching between Qt versions,
+    otherwise weird things may happen.
 
 -DWITH_KDE=ON
     Enable integration into KDE4 (with Qt4) or KDE Frameworks (with Qt5).
 
--DWITH_BREEZE=(ON|OFF)
-    Install the parts of the Breeze icon theme Quassel uses. Breeze is the default
-    icon theme for Plasma 5, and thus already available on systems where Plasma is
-    installed. By default, WITH_BREEZE is ON iff WITH_KDE is OFF. If you are
-    sure that you have the icon set already installed on your system regardless,
-    use this option to disable installing the bundled icons.
+-DWITH_BUNDLED_ICONS=ON
+    Quassel requires a number of icons that are part of the KDE/Plasma icon themes
+    Breeze and Oxygen, but are generally not supported by other themes. In order
+    to avoid missing icons, Quassel bundles the subset of icons it uses from the
+    afforementioned themes, and uses that as a fallback if the system theme does
+    not provide a required icon.
+    If it is ensured that Breeze and/or Oxygen are installed on your system (e.g.
+    through package dependencies), this option can be turned off to save less
+    than 2 MB of disk space.
 
--DWITH_BREEZE_DARK=(ON|OFF)
-    Alternative icon theme to Breeze, optimized for dark desktop themes.
-    By default, WITH_BREEZE_DARK is OFF.
+-DWITH_OXYGEN_ICONS=(ON|OFF)
+    Support the Oxygen icon theme. Oxygen was the default theme in KDE 4, and
+    also the bundled icon theme in Quassel before version 0.13. Since the move
+    to Qt5, the more modern Breeze icon theme is preferred, and thus Oxygen
+    is disabled by default when building against Qt5.
 
--DWITH_OXYGEN=(ON|OFF)
-    Alternative icon theme to Breeze. Oxygen was the default theme in KDE 4, and
-    also the bundled icon theme in Quassel before version 0.13.
-    By default, WITH_OXYGEN is OFF.
-
--DWITH_WEBENGINE=(ON|OFF)
+-DWITH_WEBENGINE=ON
     Use WebEngine for showing previews of webpages linked in the chat. Requires
     the QtWebEngine module to be available, and increases the client's RAM usage
     by *a lot* if enabled at runtime. Only available for Qt5. The default is ON.

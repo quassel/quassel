@@ -108,16 +108,16 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(data);
     Q_INIT_RESOURCE(breeze_icons);
     Q_INIT_RESOURCE(breeze_dark_icons);
+#  ifdef WITH_OXYGEN_ICONS
     Q_INIT_RESOURCE(oxygen_icons);
-#   ifdef WITH_BREEZE
+#  endif
+#  ifdef WITH_BUNDLED_ICONS
       Q_INIT_RESOURCE(breeze_icon_theme);
-#   endif
-#   ifdef WITH_BREEZE_DARK
       Q_INIT_RESOURCE(breeze_dark_icon_theme);
-#   endif
-#   ifdef WITH_OXYGEN
+#   ifdef WITH_OXYGEN_ICONS
       Q_INIT_RESOURCE(oxygen_icon_theme);
 #   endif
+#  endif
 # endif
 #endif
 

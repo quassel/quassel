@@ -1,6 +1,10 @@
 # Install icons
 
 if (WANT_MONO OR WANT_QTCLIENT)
+    if (NOT WITH_BUNDLED_ICONS AND NOT WITH_OXYGEN_ICONS)
+        message(WARNING "Not including bundled icon themes. Ensure that the Breeze or Oxygen icon theme is installed!")
+    endif()
+
     set(BUNDLED_ICON_THEME_DIR ${CMAKE_SOURCE_DIR}/3rdparty/icons)
 
     if (EMBED_DATA)
@@ -8,38 +12,39 @@ if (WANT_MONO OR WANT_QTCLIENT)
         message(STATUS "Embedding Quassel-specific icons")
         list(APPEND ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/breeze_icons.qrc)
         list(APPEND ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/breeze_dark_icons.qrc)
-        list(APPEND ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/oxygen_icons.qrc)
+        if (WITH_OXYGEN_ICONS)
+            list(APPEND ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/oxygen_icons.qrc)
+        endif()
 
-        if (WITH_BREEZE)
+        if (WITH_BUNDLED_ICONS)
             message(STATUS "Embedding bundled Breeze icon theme")
             list(APPEND ICON_RCS ${BUNDLED_ICON_THEME_DIR}/breeze_icon_theme.qrc)
-        endif()
-        if (WITH_BREEZE_DARK)
-            message(STATUS "Embedding bundled Breeze Dark icon theme")
             list(APPEND ICON_RCS ${BUNDLED_ICON_THEME_DIR}/breeze_dark_icon_theme.qrc)
-        endif()
-        if (WITH_OXYGEN)
-            message(STATUS "Embedding bundled Oxygen icon theme")
-            list(APPEND ICON_RCS ${BUNDLED_ICON_THEME_DIR}/oxygen_icon_theme.qrc)
+            if (WITH_OXYGEN_ICONS)
+                message(STATUS "Embedding bundled Oxygen icon theme")
+                list(APPEND ICON_RCS ${BUNDLED_ICON_THEME_DIR}/oxygen_icon_theme.qrc)
+            endif()
         endif()
 
     else()
         # Always install quassel-specific icons
-        install(DIRECTORY breeze breeze-dark oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+        install(DIRECTORY breeze breeze-dark DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+        if (WITH_OXYGEN_ICONS)
+            install(DIRECTORY oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+        endif()
 
         # Install bundled icon themes into our data dir (instead of CMAKE_INSTALL_ICONDIR) to avoid conflicts
         # with themes provided by the system
-        if (WITH_BREEZE)
+        if (WITH_BUNDLED_ICONS)
             message(STATUS "Installing bundled Breeze icon theme")
-            install(DIRECTORY ${BUNDLED_ICON_THEME_DIR}/breeze DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
-        endif()
-        if (WITH_BREEZE_DARK)
-            message(STATUS "Installing bundled Breeze Dark icon theme")
-            install(DIRECTORY ${BUNDLED_ICON_THEME_DIR}/breeze-dark DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
-        endif()
-        if (WITH_OXYGEN)
-            message(STATUS "Installing bundled Oxygen icon theme")
-            install(DIRECTORY ${BUNDLED_ICON_THEME_DIR}/oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+            install(DIRECTORY   ${BUNDLED_ICON_THEME_DIR}/breeze
+                                ${BUNDLED_ICON_THEME_DIR}/breeze-dark
+                    DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons
+            )
+            if (WITH_OXYGEN_ICONS)
+                message(STATUS "Installing bundled Oxygen icon theme")
+                install(DIRECTORY ${BUNDLED_ICON_THEME_DIR}/oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
+            endif()
         endif()
     endif()
 
