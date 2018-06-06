@@ -31,6 +31,7 @@
 #include "quassel.h"
 #include "statusnotifieritem.h"
 #include "statusnotifieritemdbus.h"
+#include "uisettings.h"
 
 const int StatusNotifierItem::_protocolVersion = 0;
 const QString StatusNotifierItem::_statusNotifierWatcherServiceName("org.kde.StatusNotifierWatcher");
@@ -67,6 +68,8 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
     _notificationsClientSupportsMarkup(true),
     _lastNotificationsDBusId(0)
 {
+    UiStyleSettings s;
+    _trayIconInverted = s.value("IconThemeTrayInvert").toBool();
 }
 
 
@@ -111,7 +114,7 @@ void StatusNotifierItem::init()
     trayMenu()->installEventFilter(this);
 
     // use the appdata icon folder for now
-    _iconThemePath = Quassel::findDataFilePath("icons");
+    _iconThemePath = Quassel::findDataFilePath("icons/extra");
 
 #ifdef HAVE_DBUSMENU
     _menuObjectPath = "/MenuBar";
@@ -241,25 +244,44 @@ QString StatusNotifierItem::title() const
 
 QString StatusNotifierItem::iconName() const
 {
-    if (state() == Passive)
-        return QString("inactive-quassel");
-    else
-        return QString("quassel");
+    if (_trayIconInverted) {
+        if (state() == Passive)
+            return QString("inactive-quassel-tray-inverted");
+        else
+            return QString("active-quassel-tray-inverted");
+    }
+    else {
+        if (state() == Passive)
+            return QString("inactive-quassel-tray");
+        else
+            return QString("active-quassel-tray");
+    }
 }
 
 
 QString StatusNotifierItem::attentionIconName() const
 {
-    if (animationEnabled())
-        return QString("message-quassel");
-    else
-        return QString("quassel");
+    if (_trayIconInverted) {
+        if (animationEnabled())
+            return QString("message-quassel-tray-inverted");
+        else
+            return QString("active-quassel-tray-inverted");
+    }
+    else {
+        if (animationEnabled())
+            return QString("message-quassel-tray");
+        else
+            return QString("active-quassel-tray");
+    }
 }
 
 
 QString StatusNotifierItem::toolTipIconName() const
 {
-    return QString("quassel");
+    if (_trayIconInverted)
+        return QString("active-quassel-tray-inverted");
+    else
+        return QString("active-quassel-tray");
 }
 
 

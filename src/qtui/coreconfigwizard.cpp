@@ -29,6 +29,7 @@
 #include "coreconnection.h"
 
 #include "client.h"
+#include "extraicon.h"
 
 namespace {
 
@@ -159,7 +160,7 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QVariantLis
     setModal(true);
 
     setWindowTitle(CoreConfigWizard::tr("Core Configuration Wizard"));
-    setPixmap(QWizard::LogoPixmap, QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")).pixmap(48));
+    setPixmap(QWizard::LogoPixmap, ExtraIcon::load("quassel").pixmap(48));
 
     connect(connection, SIGNAL(coreSetupSuccess()), SLOT(coreSetupSuccess()));
     connect(connection, SIGNAL(coreSetupFailed(QString)), SLOT(coreSetupFailed(QString)));

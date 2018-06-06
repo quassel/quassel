@@ -303,29 +303,5 @@
     <file>oxygen/64x64/status/security-low.png</file>
     <file>oxygen/64x64/status/user-away.png</file>
     <file>oxygen/index.theme</file>
-    <file alias="oxygen/16x16/status/inactive-quassel.png">hicolor/16x16/status/inactive-quassel.png</file>
-    <file alias="oxygen/22x22/status/inactive-quassel.png">hicolor/22x22/status/inactive-quassel.png</file>
-    <file alias="oxygen/32x32/status/inactive-quassel.png">hicolor/32x32/status/inactive-quassel.png</file>
-    <file alias="oxygen/48x48/status/inactive-quassel.png">hicolor/48x48/status/inactive-quassel.png</file>
-    <file alias="oxygen/64x64/status/inactive-quassel.png">hicolor/64x64/status/inactive-quassel.png</file>
-    <file alias="oxygen/128x128/status/inactive-quassel.png">hicolor/128x128/status/inactive-quassel.png</file>
-    <file alias="oxygen/16x16/status/message-quassel.png">hicolor/16x16/status/message-quassel.png</file>
-    <file alias="oxygen/22x22/status/message-quassel.png">hicolor/22x22/status/message-quassel.png</file>
-    <file alias="oxygen/32x32/status/message-quassel.png">hicolor/32x32/status/message-quassel.png</file>
-    <file alias="oxygen/48x48/status/message-quassel.png">hicolor/48x48/status/message-quassel.png</file>
-    <file alias="oxygen/64x64/status/message-quassel.png">hicolor/64x64/status/message-quassel.png</file>
-    <file alias="oxygen/128x128/status/message-quassel.png">hicolor/128x128/status/message-quassel.png</file>
-    <file alias="oxygen/16x16/actions/connect-quassel.png">hicolor/16x16/actions/connect-quassel.png</file>
-    <file alias="oxygen/22x22/actions/connect-quassel.png">hicolor/22x22/actions/connect-quassel.png</file>
-    <file alias="oxygen/32x32/actions/connect-quassel.png">hicolor/32x32/actions/connect-quassel.png</file>
-    <file alias="oxygen/48x48/actions/connect-quassel.png">hicolor/48x48/actions/connect-quassel.png</file>
-    <file alias="oxygen/64x64/actions/connect-quassel.png">hicolor/64x64/actions/connect-quassel.png</file>
-    <file alias="oxygen/128x128/actions/connect-quassel.png">hicolor/128x128/actions/connect-quassel.png</file>
-    <file alias="oxygen/16x16/actions/disconnect-quassel.png">hicolor/16x16/actions/disconnect-quassel.png</file>
-    <file alias="oxygen/22x22/actions/disconnect-quassel.png">hicolor/22x22/actions/disconnect-quassel.png</file>
-    <file alias="oxygen/32x32/actions/disconnect-quassel.png">hicolor/32x32/actions/disconnect-quassel.png</file>
-    <file alias="oxygen/48x48/actions/disconnect-quassel.png">hicolor/48x48/actions/disconnect-quassel.png</file>
-    <file alias="oxygen/64x64/actions/disconnect-quassel.png">hicolor/64x64/actions/disconnect-quassel.png</file>
-    <file alias="oxygen/128x128/actions/disconnect-quassel.png">hicolor/128x128/actions/disconnect-quassel.png</file>
   </qresource>
 </RCC>

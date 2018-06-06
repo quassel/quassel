@@ -72,7 +72,7 @@ else()
 endif()
 
 cmake_dependent_option(WITH_BREEZE "Install Breeze icon theme (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
-cmake_dependent_option(WITH_BREEZE_DARK "Install Dark Breeze icon theme (usually shipped with KDE)" OFF "NOT WITH_KDE" OFF)
+cmake_dependent_option(WITH_BREEZE_DARK "Install Dark Breeze icon theme (usually shipped with KDE)" ON "NOT WITH_KDE" OFF)
 cmake_dependent_option(WITH_OXYGEN "Install Oxygen icon theme (usually shipped with KDE)" OFF "NOT WITH_KDE" OFF)
 if (NOT WITH_KDE)
     add_feature_info(WITH_BREEZE WITH_BREEZE "Install Breeze icon theme")

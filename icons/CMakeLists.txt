@@ -12,6 +12,18 @@
 if (WANT_MONO OR WANT_QTCLIENT)
     set(ICON_RCS ${CMAKE_CURRENT_SOURCE_DIR}/hicolor.qrc) # always embed those
 
+    if (NOT WITH_OXYGEN) 
+        message(STATUS "Not installing bundled Oxygen icons") 
+    endif() 
+ 
+    if (NOT WITH_BREEZE) 
+        message(STATUS "Not installing bundled Breeze icons") 
+    endif() 
+    
+    if (NOT WITH_BREEZE_DARK) 
+        message(STATUS "Not installing bundled Breeze Dark icons") 
+    endif() 
+
     if (EMBED_DATA)
         if (WITH_OXYGEN)
             message(STATUS "Embedding bundled Oxygen icons")
@@ -25,6 +37,16 @@ if (WANT_MONO OR WANT_QTCLIENT)
             message(STATUS "Embedding bundled Breeze Dark icons")
             set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/breezedark.qrc)
         endif()
+
+        message(STATUS "Embedding some extra Oxygen styled icons")
+        set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/oxygen-extra.qrc)
+
+        message(STATUS "Embedding some extra Breeze styled icons")
+        set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/breeze-extra.qrc)
+
+        message(STATUS "Embedding some extra Breeze Dark styled icons")
+        set(ICON_RCS ${ICON_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/breezedark-extra.qrc)
+
     else()
         install(DIRECTORY hicolor DESTINATION ${CMAKE_INSTALL_ICONDIR})
         if (WITH_OXYGEN)
@@ -39,18 +61,15 @@ if (WANT_MONO OR WANT_QTCLIENT)
             message(STATUS "Installing bundled Breeze Dark icons")
             install(DIRECTORY breezedark DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons)
         endif()
-    endif()
 
-    if (NOT WITH_OXYGEN)
-        message(STATUS "Not installing bundled Oxygen icons")
-    endif()
+        message(STATUS "Installing some extra bundled Oxygen styled icons")
+        install(DIRECTORY extra-icons/oxygen DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons/extra)
 
-    if (NOT WITH_BREEZE)
-        message(STATUS "Not installing bundled Breeze icons")
-    endif()
+        message(STATUS "Installing some extra bundled Breeze styled icons")
+        install(DIRECTORY extra-icons/breeze DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons/extra)
 
-    if (NOT WITH_BREEZE_DARK)
-        message(STATUS "Not installing bundled Breeze Dark icons")
+        message(STATUS "Installing some extra bundled Breeze Dark styled icons")
+        install(DIRECTORY extra-icons/breezedark DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/icons/extra)
     endif()
 
     set(CLIENT_RCS ${CLIENT_RCS} ${ICON_RCS} PARENT_SCOPE)
