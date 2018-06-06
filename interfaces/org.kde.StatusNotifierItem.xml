@@ -18,16 +18,14 @@
     <property name="IconName" type="s" access="read"/>
 
     <!--struct containing width, height and image data-->
-    <property name="IconPixmap" type="(iiay)" access="read">
+    <property name="IconPixmap" type="a(iiay)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="DBusImageVector"/>
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="DBusImageVector"/>
     </property>
 
     <property name="OverlayIconName" type="s" access="read"/>
 
-    <property name="OverlayIconPixmap" type="(iiay)" access="read">
+    <property name="OverlayIconPixmap" type="a(iiay)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="DBusImageVector"/>
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="DBusImageVector"/>
     </property>
 
 
@@ -35,9 +33,8 @@
     <property name="AttentionIconName" type="s" access="read"/>
 
     <!--same definition as image-->
-    <property name="AttentionIconPixmap" type="(iiay)" access="read">
+    <property name="AttentionIconPixmap" type="a(iiay)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="DBusImageVector"/>
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="DBusImageVector"/>
     </property>
 
     <property name="AttentionMovieName" type="s" access="read"/>
@@ -47,9 +44,8 @@
     <!-- tooltip data -->
 
     <!--(iiay) is an image-->
-    <property name="ToolTip" type="(s(iiay)ss)" access="read">
+    <property name="ToolTip" type="(sa(iiay)ss)" access="read">
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="DBusToolTipStruct"/>
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="DBusToolTipStruct"/>
     </property>
 
 
