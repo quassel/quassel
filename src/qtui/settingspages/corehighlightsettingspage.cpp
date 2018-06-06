@@ -27,7 +27,11 @@
 #include "qtui.h"
 
 CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Remote Highlights"), parent)
+    : SettingsPage(tr("Interface"),
+                   // In Monolithic mode, local highlights are replaced by remote highlights
+                   Quassel::runMode() == Quassel::Monolithic ?
+                       tr("Highlights") : tr("Remote Highlights"),
+                   parent)
 {
     ui.setupUi(this);
 
