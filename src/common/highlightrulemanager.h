@@ -34,7 +34,10 @@
 class HighlightRuleManager : public SyncableObject
 {
     SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
+
+    Q_PROPERTY(int highlightNick READ highlightNick WRITE setHighlightNick)
+    Q_PROPERTY(bool nicksCaseSensitive READ nicksCaseSensitive WRITE setNicksCaseSensitive)
 public:
     enum HighlightNickType {
         NoNick = 0x00,
@@ -46,6 +49,7 @@ public:
     HighlightRuleManager &operator=(const HighlightRuleManager &other);
 
     struct HighlightRule {
+        int id;
         QString name;
         bool isRegEx = false;
         bool isCaseSensitive = false;
@@ -54,14 +58,15 @@ public:
         QString sender;
         QString chanName;
         HighlightRule() {}
-        HighlightRule(QString name_, bool isRegEx_, bool isCaseSensitive_, bool isEnabled_, bool isInverse_,
+        HighlightRule(int id_, QString name_, bool isRegEx_, bool isCaseSensitive_, bool isEnabled_, bool isInverse_,
                       QString sender_, QString chanName_)
-            : name(std::move(name_)), isRegEx(isRegEx_), isCaseSensitive(isCaseSensitive_), isEnabled(isEnabled_),
-              isInverse(isInverse_), sender(std::move(sender_)), chanName(std::move(chanName_)) {
+            : id(id_), name(std::move(name_)), isRegEx(isRegEx_), isCaseSensitive(isCaseSensitive_),
+              isEnabled(isEnabled_), isInverse(isInverse_), sender(std::move(sender_)), chanName(std::move(chanName_)) {
         }
-        bool operator!=(const HighlightRule &other)
-        {
-            return (name != other.name ||
+
+        bool operator!=(const HighlightRule &other) {
+            return (id != other.id ||
+                    name != other.name ||
                     isRegEx != other.isRegEx ||
                     isCaseSensitive != other.isCaseSensitive ||
                     isEnabled != other.isEnabled ||
@@ -72,8 +77,8 @@ public:
     };
     typedef QList<HighlightRule> HighlightRuleList;
 
-    int indexOf(const QString &rule) const;
-    inline bool contains(const QString &rule) const { return indexOf(rule) != -1; }
+    int indexOf(int rule) const;
+    inline bool contains(int rule) const { return indexOf(rule) != -1; }
     inline bool isEmpty() const { return _highlightRuleList.isEmpty(); }
     inline int count() const { return _highlightRuleList.count(); }
     inline void removeAt(int index) { _highlightRuleList.removeAt(index); }
@@ -82,7 +87,9 @@ public:
     inline const HighlightRule &operator[](int i) const { return _highlightRuleList.at(i); }
     inline const HighlightRuleList &highlightRuleList() const { return _highlightRuleList; }
 
-    inline HighlightNickType highlightNick() { return _highlightNick; }
+    int nextId();
+
+    inline int highlightNick() { return _highlightNick; }
     inline bool nicksCaseSensitive() { return _nicksCaseSensitive; }
 
     //! Check if a message matches the HighlightRule
@@ -100,16 +107,16 @@ public slots:
       * and get that synced with the core immediately.
       * \param highlightRule A valid ignore rule
       */
-    virtual inline void requestRemoveHighlightRule(const QString &highlightRule) { REQUEST(ARG(highlightRule)) }
-    virtual void removeHighlightRule(const QString &highlightRule);
+    virtual inline void requestRemoveHighlightRule(int highlightRule) { REQUEST(ARG(highlightRule)) }
+    virtual void removeHighlightRule(int highlightRule);
 
     //! Request toggling of "isEnabled" flag of a given ignore rule.
     /** Use this method if you want to toggle the "isEnabled" flag of a single ignore rule
       * and get that synced with the core immediately.
       * \param highlightRule A valid ignore rule
       */
-    virtual inline void requestToggleHighlightRule(const QString &highlightRule) { REQUEST(ARG(highlightRule)) }
-    virtual void toggleHighlightRule(const QString &highlightRule);
+    virtual inline void requestToggleHighlightRule(int highlightRule) { REQUEST(ARG(highlightRule)) }
+    virtual void toggleHighlightRule(int highlightRule);
 
     //! Request an HighlightRule to be added to the ignore list
     /** Items added to the list with this method, get immediately synced with the core
@@ -119,14 +126,15 @@ public slots:
       * \param isEnabled If the rule is active
       * @param chanName The channel in which the rule should apply
       */
-    virtual inline void requestAddHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive, bool isEnabled,
+    virtual inline void requestAddHighlightRule(int id, const QString &name, bool isRegEx, bool isCaseSensitive, bool isEnabled,
                                                 bool isInverse, const QString &sender, const QString &chanName)
     {
-        REQUEST(ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isEnabled), ARG(isInverse), ARG(sender), ARG(chanName))
+        REQUEST(ARG(id), ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isEnabled), ARG(isInverse), ARG(sender),
+                ARG(chanName))
     }
 
 
-    virtual void addHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive, bool isEnabled,
+    virtual void addHighlightRule(int id, const QString &name, bool isRegEx, bool isCaseSensitive, bool isEnabled,
                                   bool isInverse, const QString &sender, const QString &chanName);
 
     virtual inline void requestSetHighlightNick(int highlightNick)

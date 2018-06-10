@@ -49,14 +49,14 @@ public slots:
 private slots:
     void coreConnectionStateChanged(bool state);
     void widgetHasChanged();
-    void addNewHighlightRow(bool enable = true, const QString &name = tr("highlight rule"), bool regex = false,
+    void addNewHighlightRow(bool enable = true, int id = -1, const QString &name = tr("highlight rule"), bool regex = false,
                             bool cs = false, const QString &sender = "", const QString &chanName = "",
                             bool self = false);
-    void addNewIgnoredRow(bool enable = true, const QString &name = tr("highlight rule"), bool regex = false,
+    void addNewIgnoredRow(bool enable = true, int id = -1, const QString &name = tr("highlight rule"), bool regex = false,
                           bool cs = false, const QString &sender = "", const QString &chanName = "", bool self = false);
     void removeSelectedHighlightRows();
     void removeSelectedIgnoredRows();
-    void highlightNicksChanged(const int index);
+    void highlightNicksChanged(int index);
     void selectHighlightRow(QTableWidgetItem *item);
     void selectIgnoredRow(QTableWidgetItem *item);
     void highlightTableChanged(QTableWidgetItem *item);
@@ -102,6 +102,8 @@ private:
      * @param state  True if connected to core, otherwise false
      */
     void updateCoreSupportStatus(bool state);
+
+    int nextId();
 
     bool _initialized;
 };

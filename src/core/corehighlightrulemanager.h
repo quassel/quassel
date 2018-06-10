@@ -40,12 +40,12 @@ public:
     bool match(const RawMessage &msg, const QString &currentNick, const QStringList &identityNicks);
 
 public slots:
-    virtual inline void requestToggleHighlightRule(const QString &highlightRule) { toggleHighlightRule(highlightRule); }
-    virtual inline void requestRemoveHighlightRule(const QString &highlightRule) { removeHighlightRule(highlightRule); }
-    virtual inline void requestAddHighlightRule(const QString &name, bool isRegEx, bool isCaseSensitive, bool isEnabled,
-                                                bool isInverse, const QString &sender, const QString &chanName)
-    {
-        addHighlightRule(name, isRegEx, isCaseSensitive, isEnabled, isInverse, sender, chanName);
+    virtual inline void requestToggleHighlightRule(int highlightRule) { toggleHighlightRule(highlightRule); }
+    virtual inline void requestRemoveHighlightRule(int highlightRule) { removeHighlightRule(highlightRule); }
+    virtual inline void requestAddHighlightRule(int id, const QString &name, bool isRegEx, bool isCaseSensitive,
+                                                bool isEnabled, bool isInverse, const QString &sender,
+                                                const QString &chanName) {
+        addHighlightRule(id, name, isRegEx, isCaseSensitive, isEnabled, isInverse, sender, chanName);
     }
 
 

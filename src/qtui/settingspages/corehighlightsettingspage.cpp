@@ -243,10 +243,14 @@ void CoreHighlightSettingsPage::defaults()
     widgetHasChanged();
 }
 
-void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, const QString &name, bool regex, bool cs,
+void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, int id, const QString &name, bool regex, bool cs,
                                                    const QString &sender, const QString &chanName, bool self)
 {
     ui.highlightTable->setRowCount(ui.highlightTable->rowCount() + 1);
+
+    if (id < 0) {
+        id = nextId();
+    }
 
     auto *nameItem = new QTableWidgetItem(name);
 
@@ -322,13 +326,17 @@ void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, const QString &n
     if (!self)
         ui.highlightTable->setCurrentItem(nameItem);
 
-    highlightList << HighlightRuleManager::HighlightRule(name, regex, cs, enable, false, sender, chanName);
+    highlightList << HighlightRuleManager::HighlightRule(id, name, regex, cs, enable, false, sender, chanName);
 }
 
-void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, const QString &name, bool regex, bool cs,
+void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, int id, const QString &name, bool regex, bool cs,
                                                  const QString &sender, const QString &chanName, bool self)
 {
     ui.ignoredTable->setRowCount(ui.ignoredTable->rowCount() + 1);
+
+    if (id < 0) {
+        id = nextId();
+    }
 
     auto *nameItem = new QTableWidgetItem(name);
 
@@ -392,7 +400,7 @@ void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, const QString &nam
     if (!self)
         ui.ignoredTable->setCurrentItem(nameItem);
 
-    ignoredList << HighlightRuleManager::HighlightRule(name, regex, cs, enable, true, sender, chanName);
+    ignoredList << HighlightRuleManager::HighlightRule(id, name, regex, cs, enable, true, sender, chanName);
 }
 
 void CoreHighlightSettingsPage::removeSelectedHighlightRows()
@@ -565,6 +573,7 @@ void CoreHighlightSettingsPage::load()
         for (auto &rule : ruleManager->highlightRuleList()) {
             if (rule.isInverse) {
                 addNewIgnoredRow(rule.isEnabled,
+                                 rule.id,
                                  rule.name,
                                  rule.isRegEx,
                                  rule.isCaseSensitive,
@@ -572,7 +581,7 @@ void CoreHighlightSettingsPage::load()
                                  rule.chanName);
             }
             else {
-                addNewHighlightRow(rule.isEnabled, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.sender,
+                addNewHighlightRow(rule.isEnabled, rule.id, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.sender,
                                    rule.chanName);
             }
         }
@@ -607,12 +616,12 @@ void CoreHighlightSettingsPage::save()
     clonedManager.clear();
 
     for (auto &rule : highlightList) {
-        clonedManager.addHighlightRule(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, false,
+        clonedManager.addHighlightRule(rule.id, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, false,
                                        rule.sender, rule.chanName);
     }
 
     for (auto &rule : ignoredList) {
-        clonedManager.addHighlightRule(rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, true,
+        clonedManager.addHighlightRule(rule.id, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, true,
                                        rule.sender, rule.chanName);
     }
 
@@ -624,6 +633,23 @@ void CoreHighlightSettingsPage::save()
     ruleManager->requestUpdate(clonedManager.toVariantMap());
     setChangedState(false);
     load();
+}
+
+int CoreHighlightSettingsPage::nextId() {
+    int max = 0;
+    for (int i = 0; i < highlightList.count(); i++) {
+        int id = highlightList[i].id;
+        if (id > max) {
+            max = id;
+        }
+    }
+    for (int i = 0; i < ignoredList.count(); i++) {
+        int id = ignoredList[i].id;
+        if (id > max) {
+            max = id;
+        }
+    }
+    return max+1;
 }
 
 void CoreHighlightSettingsPage::widgetHasChanged()
@@ -692,6 +718,7 @@ void CoreHighlightSettingsPage::importRules() {
         auto highlightRule = variant.toMap();
 
         clonedManager.addHighlightRule(
+                clonedManager.nextId(),
                 highlightRule["Name"].toString(),
                 highlightRule["RegEx"].toBool(),
                 highlightRule["CS"].toBool(),
