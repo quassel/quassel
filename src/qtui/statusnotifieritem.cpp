@@ -24,10 +24,12 @@
 #ifdef HAVE_DBUS
 
 #include <QApplication>
+#include <QDir>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QTextDocument>
 
+#include "qtui.h"
 #include "quassel.h"
 #include "statusnotifieritem.h"
 #include "statusnotifieritemdbus.h"
@@ -56,17 +58,26 @@ protected:
     }
 };
 
-
 #endif /* HAVE_DBUSMENU */
 
 StatusNotifierItem::StatusNotifierItem(QWidget *parent)
-    : StatusNotifierItemParent(parent),
-    _statusNotifierItemDBus(0),
-    _statusNotifierWatcher(0),
-    _notificationsClient(0),
-    _notificationsClientSupportsMarkup(true),
-    _lastNotificationsDBusId(0)
+    : StatusNotifierItemParent(parent)
+#if QT_VERSION >= 0x050000
+    , _iconThemeDir{QDir::tempPath() + QLatin1String{"/quassel-sni-XXXXXX"}}
+#endif
 {
+    // Create a temporary directory that holds copies of the tray icons. That way, visualizers can find our icons.
+    // For Qt4 the relevant icons are installed in hicolor already, so nothing to be done.
+#if QT_VERSION >= 0x050000
+    if (_iconThemeDir.isValid()) {
+        _iconThemePath = _iconThemeDir.path();
+    }
+    else {
+        qWarning() << StatusNotifierItem::tr("Could not create temporary directory for themed tray icons: %1").arg(_iconThemeDir.errorString());
+    }
+#endif
+
+    connect(QtUi::instance(), SIGNAL(iconThemeRefreshed()), this, SLOT(refreshIcons()));
 }
 
 
@@ -81,6 +92,8 @@ void StatusNotifierItem::init()
     qDBusRegisterMetaType<DBusImageStruct>();
     qDBusRegisterMetaType<DBusImageVector>();
     qDBusRegisterMetaType<DBusToolTipStruct>();
+
+    refreshIcons();
 
     _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
 
@@ -109,9 +122,6 @@ void StatusNotifierItem::init()
 
     StatusNotifierItemParent::init();
     trayMenu()->installEventFilter(this);
-
-    // use the appdata icon folder for now
-    _iconThemePath = Quassel::findDataFilePath("icons");
 
 #ifdef HAVE_DBUSMENU
     _menuObjectPath = "/MenuBar";
@@ -148,7 +158,7 @@ void StatusNotifierItem::serviceChange(const QString &name, const QString &oldOw
         //unregistered
         //qDebug() << "Connection to the StatusNotifierWatcher lost";
         delete _statusNotifierWatcher;
-        _statusNotifierWatcher = 0;
+        _statusNotifierWatcher = nullptr;
         setMode(Legacy);
     }
     else if (oldOwner.isEmpty()) {
@@ -164,6 +174,33 @@ void StatusNotifierItem::checkForRegisteredHosts()
         setMode(Legacy);
     else
         setMode(StatusNotifier);
+}
+
+
+void StatusNotifierItem::refreshIcons()
+{
+#if QT_VERSION >= 0x050000
+    if (!_iconThemePath.isEmpty()) {
+        QDir baseDir{_iconThemePath + "/hicolor"};
+        baseDir.removeRecursively();
+        for (auto &&trayState : { State::Active, State::Passive, State::NeedsAttention }) {
+            const QIcon &icon = SystemTray::stateIcon(trayState);
+            if (!icon.name().isEmpty()) {
+                for (auto &&size : icon.availableSizes()) {
+                    auto pixDir = QString{"%1/%2x%3/status"}.arg(baseDir.absolutePath()).arg(size.width()).arg(size.height());
+                    QDir{}.mkpath(pixDir);
+                    if (!icon.pixmap(size).save(pixDir + "/" + icon.name() + ".png")) {
+                        qWarning() << "Could not save tray icon" << icon.name() << "for size" << size;
+                    }
+                }
+            }
+        }
+    }
+#endif
+    if (_statusNotifierItemDBus) {
+        emit _statusNotifierItemDBus->NewIcon();
+        emit _statusNotifierItemDBus->NewAttentionIcon();
+    }
 }
 
 
