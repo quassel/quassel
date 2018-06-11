@@ -36,13 +36,9 @@
 
 SystemTray::SystemTray(QWidget *parent)
     : QObject(parent),
-    _mode(Invalid),
-    _state(Passive),
-    _shouldBeVisible(true),
     _passiveIcon(QIcon::fromTheme("inactive-quassel", QIcon(":/icons/inactive-quassel.png"))),
     _activeIcon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png"))),
     _needsAttentionIcon(QIcon::fromTheme("message-quassel", QIcon(":/icons/message-quassel.png"))),
-    _trayMenu(0),
     _associatedWidget(parent)
 {
     Q_ASSERT(parent);
@@ -52,12 +48,6 @@ SystemTray::SystemTray(QWidget *parent)
 SystemTray::~SystemTray()
 {
     _trayMenu->deleteLater();
-}
-
-
-QWidget *SystemTray::associatedWidget() const
-{
-    return _associatedWidget;
 }
 
 
@@ -94,12 +84,39 @@ void SystemTray::init()
 }
 
 
-void SystemTray::trayMenuAboutToShow()
+QWidget *SystemTray::associatedWidget() const
 {
-    if (GraphicalUi::isMainWidgetVisible())
-        _minimizeRestoreAction->setText(tr("&Minimize"));
-    else
-        _minimizeRestoreAction->setText(tr("&Restore"));
+    return _associatedWidget;
+}
+
+
+bool SystemTray::isSystemTrayAvailable() const
+{
+    return false;
+}
+
+
+bool SystemTray::isVisible() const
+{
+    return false;
+}
+
+
+bool SystemTray::shouldBeVisible() const
+{
+    return _shouldBeVisible;
+}
+
+
+void SystemTray::setVisible(bool visible)
+{
+    _shouldBeVisible = visible;
+}
+
+
+SystemTray::Mode SystemTray::mode() const
+{
+    return _mode;
 }
 
 
@@ -117,6 +134,20 @@ void SystemTray::setMode(Mode mode_)
             }
         }
 #endif
+    }
+}
+
+
+SystemTray::State SystemTray::state() const
+{
+    return _state;
+}
+
+
+void SystemTray::setState(State state)
+{
+    if (_state != state) {
+        _state = state;
     }
 }
 
@@ -141,11 +172,9 @@ QIcon SystemTray::stateIcon(State state) const
 }
 
 
-void SystemTray::setState(State state)
+bool SystemTray::isAlerted() const
 {
-    if (_state != state) {
-        _state = state;
-    }
+    return state() == State::NeedsAttention;
 }
 
 
@@ -158,9 +187,43 @@ void SystemTray::setAlert(bool alerted)
 }
 
 
-void SystemTray::setVisible(bool visible)
+QMenu *SystemTray::trayMenu() const
 {
-    _shouldBeVisible = visible;
+    return _trayMenu;
+}
+
+
+void SystemTray::trayMenuAboutToShow()
+{
+    if (GraphicalUi::isMainWidgetVisible())
+        _minimizeRestoreAction->setText(tr("&Minimize"));
+    else
+        _minimizeRestoreAction->setText(tr("&Restore"));
+}
+
+
+bool SystemTray::animationEnabled() const
+{
+    return _animationEnabled;
+}
+
+
+void SystemTray::enableAnimationChanged(const QVariant &v)
+{
+    _animationEnabled = v.toBool();
+    emit animationEnabledChanged(v.toBool());
+}
+
+
+QString SystemTray::toolTipTitle() const
+{
+    return _toolTipTitle;
+}
+
+
+QString SystemTray::toolTipSubTitle() const
+{
+    return _toolTipSubTitle;
 }
 
 
@@ -182,6 +245,12 @@ void SystemTray::showMessage(const QString &title, const QString &message, Messa
 }
 
 
+void SystemTray::closeMessage(uint notificationId)
+{
+    Q_UNUSED(notificationId)
+}
+
+
 void SystemTray::activate(SystemTray::ActivationReason reason)
 {
     emit activated(reason);
@@ -191,11 +260,4 @@ void SystemTray::activate(SystemTray::ActivationReason reason)
 void SystemTray::minimizeRestore()
 {
     GraphicalUi::toggleMainWidget();
-}
-
-
-void SystemTray::enableAnimationChanged(const QVariant &v)
-{
-    _animationEnabled = v.toBool();
-    emit animationEnabledChanged(v.toBool());
 }

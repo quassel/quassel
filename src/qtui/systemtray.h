@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SYSTEMTRAY_H_
-#define SYSTEMTRAY_H_
+#pragma once
 
 #include <QIcon>
 
@@ -31,8 +30,8 @@ class SystemTray : public QObject
     Q_OBJECT
     Q_ENUMS(State Mode MessageIcon ActivationReason)
 
-public :
-        enum State {
+public:
+    enum State {
         Passive,
         Active,
         NeedsAttention
@@ -62,16 +61,16 @@ public :
     };
 
     explicit SystemTray(QWidget *parent);
-    virtual ~SystemTray();
+    ~SystemTray() override;
     virtual void init();
 
-    inline Mode mode() const;
-    inline State state() const;
-    inline bool isAlerted() const;
-    virtual inline bool isSystemTrayAvailable() const;
-
+    Mode mode() const;
+    State state() const;
+    bool isAlerted() const;
     void setAlert(bool alerted);
-    virtual inline bool isVisible() const { return false; }
+
+    virtual bool isVisible() const;
+    virtual bool isSystemTrayAvailable() const;
 
     QWidget *associatedWidget() const;
 
@@ -80,7 +79,7 @@ public slots:
     virtual void setVisible(bool visible = true);
     virtual void setToolTip(const QString &title, const QString &subtitle);
     virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
-    virtual void closeMessage(uint notificationId) { Q_UNUSED(notificationId) }
+    virtual void closeMessage(uint notificationId);
 
 signals:
     void activated(SystemTray::ActivationReason);
@@ -95,15 +94,15 @@ protected slots:
 
 protected:
     virtual void setMode(Mode mode);
-    inline bool shouldBeVisible() const;
+    bool shouldBeVisible() const;
 
     virtual QIcon stateIcon() const;
     QIcon stateIcon(State state) const;
-    inline QString toolTipTitle() const;
-    inline QString toolTipSubTitle() const;
-    inline QMenu *trayMenu() const;
+    QString toolTipTitle() const;
+    QString toolTipSubTitle() const;
+    QMenu *trayMenu() const;
 
-    inline bool animationEnabled() const;
+    bool animationEnabled() const;
 
 private slots:
     void minimizeRestore();
@@ -111,30 +110,15 @@ private slots:
     void enableAnimationChanged(const QVariant &);
 
 private:
-    Mode _mode;
-    State _state;
-    bool _shouldBeVisible;
+    Mode _mode{Mode::Invalid};
+    State _state{State::Passive};
+    bool _shouldBeVisible{true};
+    bool _animationEnabled{true};
 
     QString _toolTipTitle, _toolTipSubTitle;
     QIcon _passiveIcon, _activeIcon, _needsAttentionIcon;
-    bool _animationEnabled;
 
-    QMenu *_trayMenu;
-    QWidget *_associatedWidget;
-    Action *_minimizeRestoreAction;
+    QMenu *_trayMenu{nullptr};
+    QWidget *_associatedWidget{nullptr};
+    Action *_minimizeRestoreAction{nullptr};
 };
-
-
-// inlines
-
-bool SystemTray::isSystemTrayAvailable() const { return false; }
-bool SystemTray::isAlerted() const { return state() == NeedsAttention; }
-SystemTray::Mode SystemTray::mode() const { return _mode; }
-SystemTray::State SystemTray::state() const { return _state; }
-bool SystemTray::shouldBeVisible() const { return _shouldBeVisible; }
-QMenu *SystemTray::trayMenu() const { return _trayMenu; }
-QString SystemTray::toolTipTitle() const { return _toolTipTitle; }
-QString SystemTray::toolTipSubTitle() const { return _toolTipSubTitle; }
-bool SystemTray::animationEnabled() const { return _animationEnabled; }
-
-#endif
