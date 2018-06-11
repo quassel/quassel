@@ -21,10 +21,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef STATUSNOTIFIERITEM_H_
-#define STATUSNOTIFIERITEM_H_
+#pragma once
 
 #ifdef HAVE_DBUS
+
+#include <QtGlobal>
+
+#if QT_VERSION >= 0x050000
+#  include <QTemporaryDir>
+#endif
 
 #include "notificationsclient.h"
 #include "systemtray.h"
@@ -45,20 +50,20 @@ class StatusNotifierItem : public StatusNotifierItemParent
 
 public:
     explicit StatusNotifierItem(QWidget *parent);
-    virtual ~StatusNotifierItem();
+    ~StatusNotifierItem() override;
 
-    virtual bool isSystemTrayAvailable() const;
-    virtual bool isVisible() const;
+    bool isSystemTrayAvailable() const override;
+    bool isVisible() const override;
 
 public slots:
-    virtual void setState(State state);
-    virtual void setVisible(bool visible);
-    virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
-    virtual void closeMessage(uint notificationId);
+    void setState(State state) override;
+    void setVisible(bool visible) override;
+    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0) override;
+    void closeMessage(uint notificationId) override;
 
 protected:
-    virtual void init();
-    virtual void setMode(Mode mode);
+    void init() override;
+    void setMode(Mode mode) override;
 
     QString title() const;
     QString iconName() const;
@@ -67,7 +72,7 @@ protected:
     QString iconThemePath() const;
     QString menuObjectPath() const;
 
-    virtual bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private slots:
     void activated(const QPoint &pos);
@@ -77,26 +82,30 @@ private slots:
     void notificationClosed(uint id, uint reason);
     void notificationInvoked(uint id, const QString &action);
 
+    void refreshIcons();
+
 private:
     void registerToDaemon();
 
     static const int _protocolVersion;
     static const QString _statusNotifierWatcherServiceName;
-    StatusNotifierItemDBus *_statusNotifierItemDBus;
+    StatusNotifierItemDBus *_statusNotifierItemDBus{nullptr};
 
-    org::kde::StatusNotifierWatcher *_statusNotifierWatcher;
-    org::freedesktop::Notifications *_notificationsClient;
-    bool _notificationsClientSupportsMarkup;
-    bool _notificationsClientSupportsActions;
-    quint32 _lastNotificationsDBusId;
+    org::kde::StatusNotifierWatcher *_statusNotifierWatcher{nullptr};
+    org::freedesktop::Notifications *_notificationsClient{nullptr};
+    bool _notificationsClientSupportsMarkup{false};
+    bool _notificationsClientSupportsActions{false};
+    quint32 _lastNotificationsDBusId{0};
     QHash<uint, uint> _notificationsIdMap; ///< Maps our own notification ID to the D-Bus one
 
     QString _iconThemePath;
     QString _menuObjectPath;
 
+#if QT_VERSION >= 0x050000
+    QTemporaryDir _iconThemeDir;
+#endif
+
     friend class StatusNotifierItemDBus;
 };
 
-
 #endif /* HAVE_DBUS */
-#endif /* STATUSNOTIFIERITEM_H_ */

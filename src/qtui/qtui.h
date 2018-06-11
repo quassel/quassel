@@ -89,6 +89,9 @@ public slots:
      */
     void refreshIconTheme();
 
+signals:
+    void iconThemeRefreshed();
+
 protected slots:
     void connectedToCore() override;
     void disconnectedFromCore() override;

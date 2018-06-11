@@ -339,6 +339,7 @@ void QtUi::refreshIconTheme()
     if (_systemIconTheme.isEmpty() || _systemIconTheme == fallbackTheme || s.value("Icons/OverrideSystemTheme", false).toBool()) {
         // We have a valid fallback theme and want to override the system theme (if it's even defined), so we're basically done
         QIcon::setThemeName(fallbackTheme);
+        emit iconThemeRefreshed();
         return;
     }
 
@@ -355,6 +356,7 @@ void QtUi::refreshIconTheme()
         if (!_dummyThemeDir->isValid() || !QDir{_dummyThemeDir->path()}.mkpath("icons/quassel-icon-proxy/apps/32")) {
             qWarning() << "Could not create temporary directory for proxying the system icon theme, using fallback";
             QIcon::setThemeName(fallbackTheme);
+            emit iconThemeRefreshed();
             return;
         }
         // Add this to XDG_DATA_DIRS, otherwise KIconLoader complains
@@ -371,6 +373,7 @@ void QtUi::refreshIconTheme()
     if (!indexFile.open(QFile::WriteOnly|QFile::Truncate)) {
         qWarning() << "Could not create index file for proxying the system icon theme, using fallback";
         QIcon::setThemeName(fallbackTheme);
+        emit iconThemeRefreshed();
         return;
     }
 
@@ -385,6 +388,7 @@ void QtUi::refreshIconTheme()
     if (indexFile.write(indexContents.toLatin1()) < 0) {
         qWarning() << "Could not write index file for proxying the system icon theme, using fallback";
         QIcon::setThemeName(fallbackTheme);
+        emit iconThemeRefreshed();
         return;
     }
     indexFile.close();
@@ -393,5 +397,6 @@ void QtUi::refreshIconTheme()
     // Qt4 doesn't support QTemporaryDir. Since it's deprecated and slated to be removed soon anyway, we don't bother
     // writing a replacement and simply don't support not overriding the system theme.
     QIcon::setThemeName(fallbackTheme);
+    emit iconThemeRefreshed();
 #endif
 }
