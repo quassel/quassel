@@ -184,7 +184,7 @@ void StatusNotifierItem::refreshIcons()
         QDir baseDir{_iconThemePath + "/hicolor"};
         baseDir.removeRecursively();
         for (auto &&trayState : { State::Active, State::Passive, State::NeedsAttention }) {
-            const QIcon &icon = SystemTray::stateIcon(trayState);
+            QIcon icon = QIcon::fromTheme(SystemTray::iconName(trayState));
             if (!icon.name().isEmpty()) {
                 for (auto &&size : icon.availableSizes()) {
                     auto pixDir = QString{"%1/%2x%3/status"}.arg(baseDir.absolutePath()).arg(size.width()).arg(size.height());
@@ -278,25 +278,29 @@ QString StatusNotifierItem::title() const
 
 QString StatusNotifierItem::iconName() const
 {
-    if (state() == Passive)
-        return QString("inactive-quassel");
-    else
-        return QString("quassel");
+    if (state() == Passive) {
+        return SystemTray::iconName(State::Passive);
+    }
+    else {
+        return SystemTray::iconName(State::Active);
+    }
 }
 
 
 QString StatusNotifierItem::attentionIconName() const
 {
-    if (animationEnabled())
-        return QString("message-quassel");
-    else
-        return QString("quassel");
+    if (animationEnabled()) {
+        return SystemTray::iconName(State::NeedsAttention);
+    }
+    else {
+        return SystemTray::iconName(State::Active);
+    }
 }
 
 
 QString StatusNotifierItem::toolTipIconName() const
 {
-    return QString("quassel");
+    return "quassel";
 }
 
 

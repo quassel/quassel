@@ -20,7 +20,8 @@
 
 #pragma once
 
-#include <QIcon>
+#include <QObject>
+#include <QString>
 
 class Action;
 class QMenu;
@@ -95,14 +96,13 @@ protected slots:
 protected:
     virtual void setMode(Mode mode);
     bool shouldBeVisible() const;
+    bool animationEnabled() const;
 
-    virtual QIcon stateIcon() const;
-    QIcon stateIcon(State state) const;
     QString toolTipTitle() const;
     QString toolTipSubTitle() const;
     QMenu *trayMenu() const;
 
-    bool animationEnabled() const;
+    QString iconName(State state) const;
 
 private slots:
     void minimizeRestore();
@@ -116,7 +116,6 @@ private:
     bool _animationEnabled{true};
 
     QString _toolTipTitle, _toolTipSubTitle;
-    QIcon _passiveIcon, _activeIcon, _needsAttentionIcon;
 
     QMenu *_trayMenu{nullptr};
     QWidget *_associatedWidget{nullptr};
