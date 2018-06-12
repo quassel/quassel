@@ -39,6 +39,9 @@ SystemTray::SystemTray(QWidget *parent)
     _associatedWidget(parent)
 {
     Q_ASSERT(parent);
+
+    NotificationSettings{}.initAndNotify("Systray/Animate", this, SLOT(enableAnimationChanged(QVariant)), true);
+    UiStyleSettings{}.initAndNotify("Icons/InvertTray", this, SLOT(invertTrayIconChanged(QVariant)), false);
 }
 
 
@@ -75,9 +78,6 @@ void SystemTray::init()
     _trayMenu->addAction(coll->action("Quit"));
 
     connect(_trayMenu, SIGNAL(aboutToShow()), SLOT(trayMenuAboutToShow()));
-
-    NotificationSettings notificationSettings;
-    notificationSettings.initAndNotify("Systray/Animate", this, SLOT(enableAnimationChanged(QVariant)), true);
 }
 
 
@@ -151,15 +151,24 @@ void SystemTray::setState(State state)
 
 QString SystemTray::iconName(State state) const
 {
+    QString name;
     switch (state) {
     case State::Passive:
-        return "inactive-quassel";
+        name = "inactive-quassel-tray";
+        break;
     case State::Active:
-        return "quassel";
+        name = "active-quassel-tray";
+        break;
     case State::NeedsAttention:
-        return "message-quassel";
+        name = "message-quassel-tray";
+        break;
     }
-    return {};
+
+    if (_trayIconInverted) {
+        name += "-inverted";
+    }
+
+    return name;
 }
 
 
@@ -203,6 +212,12 @@ void SystemTray::enableAnimationChanged(const QVariant &v)
 {
     _animationEnabled = v.toBool();
     emit animationEnabledChanged(v.toBool());
+}
+
+
+void SystemTray::invertTrayIconChanged(const QVariant &v)
+{
+    _trayIconInverted = v.toBool();
 }
 
 

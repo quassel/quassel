@@ -108,12 +108,14 @@ private slots:
     void minimizeRestore();
     void trayMenuAboutToShow();
     void enableAnimationChanged(const QVariant &);
+    void invertTrayIconChanged(const QVariant &);
 
 private:
     Mode _mode{Mode::Invalid};
     State _state{State::Passive};
     bool _shouldBeVisible{true};
     bool _animationEnabled{true};
+    bool _trayIconInverted{false};
 
     QString _toolTipTitle, _toolTipSubTitle;
 
