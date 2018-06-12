@@ -65,7 +65,7 @@ void LegacySystemTray::init()
 
 void LegacySystemTray::syncLegacyIcon()
 {
-    _trayIcon->setIcon(stateIcon());
+    updateIcon();
 
 #if defined Q_OS_MAC || defined Q_OS_WIN
     QString tooltip = QString("%1").arg(toolTipTitle());
@@ -137,23 +137,25 @@ void LegacySystemTray::setState(State state_)
             _blinkState = false;
         }
     }
-    if (mode() == Legacy)
-        _trayIcon->setIcon(stateIcon());
+    updateIcon();
 }
 
 
-QIcon LegacySystemTray::stateIcon() const
+void LegacySystemTray::updateIcon()
 {
-    if (mode() == Legacy && state() == NeedsAttention && !_blinkState)
-        return SystemTray::stateIcon(Active);
-    return SystemTray::stateIcon();
+    if (state() == State::NeedsAttention && !_blinkState) {
+        _trayIcon->setIcon(QIcon::fromTheme(iconName(State::Active)));
+    }
+    else {
+        _trayIcon->setIcon(QIcon::fromTheme(iconName(state())));
+    }
 }
 
 
 void LegacySystemTray::on_blinkTimeout()
 {
     _blinkState = !_blinkState;
-    _trayIcon->setIcon(stateIcon());
+    updateIcon();
 }
 
 

@@ -36,9 +36,6 @@
 
 SystemTray::SystemTray(QWidget *parent)
     : QObject(parent),
-    _passiveIcon(QIcon::fromTheme("inactive-quassel", QIcon(":/icons/inactive-quassel.png"))),
-    _activeIcon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png"))),
-    _needsAttentionIcon(QIcon::fromTheme("message-quassel", QIcon(":/icons/message-quassel.png"))),
     _associatedWidget(parent)
 {
     Q_ASSERT(parent);
@@ -152,23 +149,17 @@ void SystemTray::setState(State state)
 }
 
 
-QIcon SystemTray::stateIcon() const
-{
-    return stateIcon(state());
-}
-
-
-QIcon SystemTray::stateIcon(State state) const
+QString SystemTray::iconName(State state) const
 {
     switch (state) {
-    case Passive:
-        return _passiveIcon;
-    case Active:
-        return _activeIcon;
-    case NeedsAttention:
-        return _needsAttentionIcon;
+    case State::Passive:
+        return "inactive-quassel";
+    case State::Active:
+        return "quassel";
+    case State::NeedsAttention:
+        return "message-quassel";
     }
-    return QIcon();
+    return {};
 }
 
 
