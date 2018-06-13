@@ -42,17 +42,7 @@ SystemTray::SystemTray(QWidget *parent)
 
     NotificationSettings{}.initAndNotify("Systray/Animate", this, SLOT(enableAnimationChanged(QVariant)), true);
     UiStyleSettings{}.initAndNotify("Icons/InvertTray", this, SLOT(invertTrayIconChanged(QVariant)), false);
-}
 
-
-SystemTray::~SystemTray()
-{
-    _trayMenu->deleteLater();
-}
-
-
-void SystemTray::init()
-{
     ActionCollection *coll = QtUi::actionCollection("General");
     _minimizeRestoreAction = new Action(tr("&Minimize"), this, this, SLOT(minimizeRestore()));
 
@@ -81,6 +71,12 @@ void SystemTray::init()
 }
 
 
+SystemTray::~SystemTray()
+{
+    _trayMenu->deleteLater();
+}
+
+
 QWidget *SystemTray::associatedWidget() const
 {
     return _associatedWidget;
@@ -95,19 +91,16 @@ bool SystemTray::isSystemTrayAvailable() const
 
 bool SystemTray::isVisible() const
 {
-    return false;
-}
-
-
-bool SystemTray::shouldBeVisible() const
-{
-    return _shouldBeVisible;
+    return _isVisible;
 }
 
 
 void SystemTray::setVisible(bool visible)
 {
-    _shouldBeVisible = visible;
+    if (visible != _isVisible) {
+        _isVisible = visible;
+        emit visibilityChanged(visible);
+    }
 }
 
 
@@ -117,13 +110,13 @@ SystemTray::Mode SystemTray::mode() const
 }
 
 
-void SystemTray::setMode(Mode mode_)
+void SystemTray::setMode(Mode mode)
 {
-    if (mode_ != _mode) {
-        _mode = mode_;
+    if (mode != _mode) {
+        _mode = mode;
 #ifdef HAVE_KDE4
         if (_trayMenu) {
-            if (_mode == Legacy) {
+            if (mode == Mode::Legacy) {
                 _trayMenu->setWindowFlags(Qt::Popup);
             }
             else {
@@ -131,6 +124,7 @@ void SystemTray::setMode(Mode mode_)
             }
         }
 #endif
+        emit modeChanged(mode);
     }
 }
 
@@ -145,6 +139,7 @@ void SystemTray::setState(State state)
 {
     if (_state != state) {
         _state = state;
+        emit stateChanged(state);
     }
 }
 

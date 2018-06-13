@@ -20,6 +20,8 @@
 
 #ifndef QT_NO_SYSTEMTRAYICON
 
+#include <QIcon>
+
 #include "legacysystemtray.h"
 #include "mainwin.h"
 #include "qtui.h"
@@ -39,103 +41,64 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
 #endif
 #ifndef Q_OS_MAC
     connect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-        SLOT(on_activated(QSystemTrayIcon::ActivationReason)));
+        SLOT(onActivated(QSystemTrayIcon::ActivationReason)));
 #endif
     connect(_trayIcon, SIGNAL(messageClicked()),
-        SLOT(on_messageClicked()));
-
-    _blinkTimer.setInterval(500);
-    _blinkTimer.setSingleShot(false);
-    connect(&_blinkTimer, SIGNAL(timeout()), SLOT(on_blinkTimeout()));
-
-    connect(this, SIGNAL(toolTipChanged(QString, QString)), SLOT(syncLegacyIcon()));
-}
-
-
-void LegacySystemTray::init()
-{
-    if (mode() == Invalid) // derived class hasn't set a mode itself
-        setMode(Legacy);
-
-    SystemTray::init();
+        SLOT(onMessageClicked()));
 
     _trayIcon->setContextMenu(trayMenu());
-}
+    _trayIcon->setVisible(false);
 
+    setMode(Mode::Legacy);
 
-void LegacySystemTray::syncLegacyIcon()
-{
+    connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));
+    connect(this, SIGNAL(modeChanged(Mode)), this, SLOT(onModeChanged(Mode)));
+    connect(this, SIGNAL(stateChanged(State)), this, SLOT(onStateChanged(State)));
+    connect(this, SIGNAL(toolTipChanged(QString, QString)), SLOT(updateToolTip()));
+
+    _blinkTimer.setInterval(750);
+    _blinkTimer.setSingleShot(false);
+    connect(&_blinkTimer, SIGNAL(timeout()), SLOT(onBlinkTimeout()));
+
     updateIcon();
-
-#if defined Q_OS_MAC || defined Q_OS_WIN
-    QString tooltip = QString("%1").arg(toolTipTitle());
-    if (!toolTipSubTitle().isEmpty())
-        tooltip += QString("\n%1").arg(toolTipSubTitle());
-#else
-    QString tooltip = QString("<b>%1</b>").arg(toolTipTitle());
-    if (!toolTipSubTitle().isEmpty())
-        tooltip += QString("<br>%1").arg(toolTipSubTitle());
-#endif
-
-    _trayIcon->setToolTip(tooltip);
+    updateToolTip();
 }
 
 
-void LegacySystemTray::setVisible(bool visible)
+bool LegacySystemTray::isSystemTrayAvailable() const
 {
-    SystemTray::setVisible(visible);
+    return mode() == Mode::Legacy
+            ? QSystemTrayIcon::isSystemTrayAvailable()
+            : SystemTray::isSystemTrayAvailable();
+}
+
+
+void LegacySystemTray::onVisibilityChanged(bool isVisible)
+{
     if (mode() == Legacy) {
-        if (shouldBeVisible())
-            _trayIcon->show();
-        else
-            _trayIcon->hide();
+        _trayIcon->setVisible(isVisible);
     }
 }
 
 
-bool LegacySystemTray::isVisible() const
+void LegacySystemTray::onModeChanged(Mode mode)
 {
-    if (mode() == Legacy) {
-        return _trayIcon->isVisible();
-    }
-    return SystemTray::isVisible();
-}
-
-
-void LegacySystemTray::setMode(Mode mode_)
-{
-    if (mode_ == mode())
-        return;
-
-    SystemTray::setMode(mode_);
-
-    if (mode() == Legacy) {
-        syncLegacyIcon();
-        if (shouldBeVisible())
-            _trayIcon->show();
-        else
-            _trayIcon->hide();
-        if (state() == NeedsAttention)
-            _blinkTimer.start();
+    if (mode == Mode::Legacy) {
+        _trayIcon->setVisible(isVisible());
     }
     else {
         _trayIcon->hide();
-        _blinkTimer.stop();
     }
 }
 
 
-void LegacySystemTray::setState(State state_)
+void LegacySystemTray::onStateChanged(State state)
 {
-    State oldstate = state();
-    SystemTray::setState(state_);
-    if (oldstate != state()) {
-        if (state() == NeedsAttention && mode() == Legacy && animationEnabled())
-            _blinkTimer.start();
-        else {
-            _blinkTimer.stop();
-            _blinkState = false;
-        }
+    if (state == NeedsAttention && animationEnabled())
+        _blinkTimer.start();
+    else {
+        _blinkTimer.stop();
+        _blinkState = false;
     }
     updateIcon();
 }
@@ -154,20 +117,36 @@ void LegacySystemTray::updateIcon()
 }
 
 
-void LegacySystemTray::on_blinkTimeout()
+void LegacySystemTray::updateToolTip()
+{
+#if defined Q_OS_MAC || defined Q_OS_WIN
+    QString tooltip = QString("%1").arg(toolTipTitle());
+    if (!toolTipSubTitle().isEmpty())
+        tooltip += QString("\n%1").arg(toolTipSubTitle());
+#else
+    QString tooltip = QString("<b>%1</b>").arg(toolTipTitle());
+    if (!toolTipSubTitle().isEmpty())
+        tooltip += QString("<br>%1").arg(toolTipSubTitle());
+#endif
+
+    _trayIcon->setToolTip(tooltip);
+}
+
+
+void LegacySystemTray::onBlinkTimeout()
 {
     _blinkState = !_blinkState;
     updateIcon();
 }
 
 
-void LegacySystemTray::on_activated(QSystemTrayIcon::ActivationReason reason)
+void LegacySystemTray::onActivated(QSystemTrayIcon::ActivationReason reason)
 {
     activate((SystemTray::ActivationReason)reason);
 }
 
 
-void LegacySystemTray::on_messageClicked()
+void LegacySystemTray::onMessageClicked()
 {
     emit messageClicked(_lastMessageId);
 }
