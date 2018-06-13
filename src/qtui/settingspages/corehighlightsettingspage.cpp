@@ -91,6 +91,23 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
 
     // Warning icon
     ui.coreUnsupportedIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(16));
+
+    // Set up client/monolithic remote highlights information
+    if (Quassel::runMode() == Quassel::Monolithic) {
+        // We're running in Monolithic mode, local highlights are considered legacy
+        ui.highlightImport->setText(tr("Import Legacy"));
+        ui.highlightImport->setToolTip(tr("Import highlight rules configured in <i>%1</i>.")
+                                       .arg(tr("Legacy Highlights").replace(" ", "&nbsp;")));
+        // Re-use translations of "Legacy Highlights" as this is a word-for-word reference, forcing
+        // all spaces to be non-breaking
+    } else {
+        // We're running in client/split mode, local highlights are distinguished from remote
+        ui.highlightImport->setText(tr("Import Local"));
+        ui.highlightImport->setToolTip(tr("Import highlight rules configured in <i>%1</i>.")
+                                       .arg(tr("Local Highlights").replace(" ", "&nbsp;")));
+        // Re-use translations of "Local Highlights" as this is a word-for-word reference, forcing
+        // all spaces to be non-breaking
+    }
 }
 
 void CoreHighlightSettingsPage::coreConnectionStateChanged(bool state)
@@ -637,28 +654,33 @@ void CoreHighlightSettingsPage::importRules() {
 
     const auto localHighlightList = notificationSettings.highlightList();
 
-    // Re-use translations of "Local Highlights" as this is a word-for-word reference, forcing all
-    // spaces to non-breaking
-    const QString localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
+    // Re-use translations of "Legacy/Local Highlights" as this is a word-for-word reference,
+    // forcing all spaces to non-breaking
+    QString localHighlightsName;
+    if (Quassel::runMode() == Quassel::Monolithic) {
+        localHighlightsName = tr("Legacy Highlights").replace(" ", "&nbsp;");
+    } else {
+        localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
+    }
 
     if (localHighlightList.count() == 0) {
         // No highlight rules exist to import, do nothing
         QMessageBox::information(this,
-                                 tr("No local highlights"),
+                                 tr("No highlights to import"),
                                  tr("No highlight rules in <i>%1</i>."
                                     ).arg(localHighlightsName));
         return;
     }
 
     int ret = QMessageBox::question(this,
-                                    tr("Import local highlights?"),
+                                    tr("Import highlights?"),
                                     tr("Import all highlight rules from <i>%1</i>?"
                                        ).arg(localHighlightsName),
                                     QMessageBox::Yes|QMessageBox::No,
                                     QMessageBox::No);
 
-    if (ret == QMessageBox::No) {
-        // Only two options, Yes or No, just return if No
+    if (ret != QMessageBox::Yes) {
+        // Only two options, Yes or No, return if not Yes
         return;
     }
 
@@ -685,7 +707,7 @@ void CoreHighlightSettingsPage::importRules() {
 
     // Give a heads-up that all succeeded
     QMessageBox::information(this,
-                             tr("Imported local highlights"),
+                             tr("Imported highlights"),
                              tr("%1 highlight rules successfully imported."
                                 ).arg(QString::number(localHighlightList.count())));
 }
