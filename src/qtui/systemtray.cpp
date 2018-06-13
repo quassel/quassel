@@ -66,8 +66,9 @@ SystemTray::SystemTray(QWidget *parent)
     _trayMenu->addSeparator();
     _trayMenu->addAction(_minimizeRestoreAction);
     _trayMenu->addAction(coll->action("Quit"));
-
     connect(_trayMenu, SIGNAL(aboutToShow()), SLOT(trayMenuAboutToShow()));
+
+    connect(QtUi::instance(), SIGNAL(iconThemeRefreshed()), this, SIGNAL(iconsChanged()));
 }
 
 
@@ -213,6 +214,7 @@ void SystemTray::enableAnimationChanged(const QVariant &v)
 void SystemTray::invertTrayIconChanged(const QVariant &v)
 {
     _trayIconInverted = v.toBool();
+    emit iconsChanged();
 }
 
 

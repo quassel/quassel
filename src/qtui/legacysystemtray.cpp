@@ -55,6 +55,7 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
     connect(this, SIGNAL(modeChanged(Mode)), this, SLOT(onModeChanged(Mode)));
     connect(this, SIGNAL(stateChanged(State)), this, SLOT(onStateChanged(State)));
     connect(this, SIGNAL(toolTipChanged(QString, QString)), SLOT(updateToolTip()));
+    connect(this, SIGNAL(iconsChanged()), this, SLOT(updateIcon()));
 
     _blinkTimer.setInterval(750);
     _blinkTimer.setSingleShot(false);

@@ -100,7 +100,7 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
     }
 #endif
 
-    connect(QtUi::instance(), SIGNAL(iconThemeRefreshed()), this, SLOT(refreshIcons()));
+    connect(this, SIGNAL(iconsChanged()), this, SLOT(refreshIcons()));
     refreshIcons();
 
     // Our own SNI service
@@ -187,6 +187,7 @@ void StatusNotifierItem::onDBusError(const QDBusError &error)
     qWarning() << "StatusNotifierItem encountered a D-Bus error:" << error;
     setMode(Mode::Legacy);
 }
+
 
 void StatusNotifierItem::refreshIcons()
 {
