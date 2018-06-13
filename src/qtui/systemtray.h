@@ -63,26 +63,30 @@ public:
 
     explicit SystemTray(QWidget *parent);
     ~SystemTray() override;
-    virtual void init();
 
     Mode mode() const;
     State state() const;
+    bool isVisible() const;
     bool isAlerted() const;
-    void setAlert(bool alerted);
 
-    virtual bool isVisible() const;
     virtual bool isSystemTrayAvailable() const;
 
     QWidget *associatedWidget() const;
 
 public slots:
-    virtual void setState(State);
-    virtual void setVisible(bool visible = true);
-    virtual void setToolTip(const QString &title, const QString &subtitle);
+    void setVisible(bool visible = true);
+    void setState(State);
+    void setAlert(bool alerted);
+
+    void setToolTip(const QString &title, const QString &subtitle);
     virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
     virtual void closeMessage(uint notificationId);
 
 signals:
+    void modeChanged(Mode mode);
+    void stateChanged(State state);
+    void visibilityChanged(bool isVisible);
+
     void activated(SystemTray::ActivationReason);
     void iconChanged(const QIcon &icon);
     void animationEnabledChanged(bool);
@@ -94,8 +98,7 @@ protected slots:
     virtual void activate(SystemTray::ActivationReason = Trigger);
 
 protected:
-    virtual void setMode(Mode mode);
-    bool shouldBeVisible() const;
+    void setMode(Mode mode);
     bool animationEnabled() const;
 
     QString toolTipTitle() const;
@@ -111,9 +114,9 @@ private slots:
     void invertTrayIconChanged(const QVariant &);
 
 private:
+    bool _isVisible{false};
     Mode _mode{Mode::Invalid};
     State _state{State::Passive};
-    bool _shouldBeVisible{true};
     bool _animationEnabled{true};
     bool _trayIconInverted{false};
 

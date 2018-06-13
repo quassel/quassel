@@ -1149,7 +1149,6 @@ void MainWin::setupSystray()
 #else
     _systemTray = new SystemTray(this); // dummy
 #endif
-    _systemTray->init();
 }
 
 

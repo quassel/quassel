@@ -25,7 +25,9 @@
 
 #ifdef HAVE_DBUS
 
-#include <QtGlobal>
+#include <QDBusError>
+#include <QHash>
+#include <QString>
 
 #if QT_VERSION >= 0x050000
 #  include <QTemporaryDir>
@@ -50,21 +52,14 @@ class StatusNotifierItem : public StatusNotifierItemParent
 
 public:
     explicit StatusNotifierItem(QWidget *parent);
-    ~StatusNotifierItem() override;
 
     bool isSystemTrayAvailable() const override;
-    bool isVisible() const override;
 
 public slots:
-    void setState(State state) override;
-    void setVisible(bool visible) override;
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0) override;
     void closeMessage(uint notificationId) override;
 
 protected:
-    void init() override;
-    void setMode(Mode mode) override;
-
     QString title() const;
     QString iconName() const;
     QString attentionIconName() const;
@@ -78,19 +73,21 @@ private slots:
     void activated(const QPoint &pos);
     void serviceChange(const QString &name, const QString &oldOwner, const QString &newOwner);
     void checkForRegisteredHosts();
+    void onDBusError(const QDBusError &error);
 
     void notificationClosed(uint id, uint reason);
     void notificationInvoked(uint id, const QString &action);
 
     void refreshIcons();
 
+    void onModeChanged(Mode mode);
+    void onStateChanged(State state);
+    void onVisibilityChanged(bool isVisible);
+
 private:
-    void registerToDaemon();
+    void registerToWatcher();
 
-    static const int _protocolVersion;
-    static const QString _statusNotifierWatcherServiceName;
     StatusNotifierItemDBus *_statusNotifierItemDBus{nullptr};
-
     org::kde::StatusNotifierWatcher *_statusNotifierWatcher{nullptr};
     org::freedesktop::Notifications *_notificationsClient{nullptr};
     bool _notificationsClientSupportsMarkup{false};
