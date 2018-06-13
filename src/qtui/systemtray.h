@@ -86,11 +86,11 @@ signals:
     void modeChanged(Mode mode);
     void stateChanged(State state);
     void visibilityChanged(bool isVisible);
-
-    void activated(SystemTray::ActivationReason);
-    void iconChanged(const QIcon &icon);
+    void iconsChanged();
     void animationEnabledChanged(bool);
     void toolTipChanged(const QString &title, const QString &subtitle);
+
+    void activated(SystemTray::ActivationReason);
     void messageClicked(uint notificationId);
     void messageClosed(uint notificationId);
 
