@@ -100,6 +100,7 @@ int main(int argc, char **argv)
 #endif
 #ifndef BUILD_CORE
     Q_INIT_RESOURCE(pics);
+    Q_INIT_RESOURCE(hicolor_icons);
 #endif
 
 #ifdef EMBED_DATA

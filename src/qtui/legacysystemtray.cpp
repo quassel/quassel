@@ -143,12 +143,14 @@ void LegacySystemTray::setState(State state_)
 
 void LegacySystemTray::updateIcon()
 {
+    QString icon;
     if (state() == State::NeedsAttention && !_blinkState) {
-        _trayIcon->setIcon(QIcon::fromTheme(iconName(State::Active)));
+        icon = iconName(State::Active);
     }
     else {
-        _trayIcon->setIcon(QIcon::fromTheme(iconName(state())));
+        icon = iconName(state());
     }
+    _trayIcon->setIcon(QIcon::fromTheme(icon, QIcon{QString{":/icons/hicolor/24x24/status/%1.svg"}.arg(icon)}));
 }
 
 

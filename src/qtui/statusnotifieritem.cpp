@@ -25,6 +25,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QFile>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QTextDocument>
@@ -184,14 +185,25 @@ void StatusNotifierItem::refreshIcons()
         QDir baseDir{_iconThemePath + "/hicolor"};
         baseDir.removeRecursively();
         for (auto &&trayState : { State::Active, State::Passive, State::NeedsAttention }) {
-            QIcon icon = QIcon::fromTheme(SystemTray::iconName(trayState));
-            if (!icon.name().isEmpty()) {
+            auto iconName = SystemTray::iconName(trayState);
+            QIcon icon = QIcon::fromTheme(iconName);
+            if (!icon.isNull()) {
                 for (auto &&size : icon.availableSizes()) {
                     auto pixDir = QString{"%1/%2x%3/status"}.arg(baseDir.absolutePath()).arg(size.width()).arg(size.height());
                     QDir{}.mkpath(pixDir);
-                    if (!icon.pixmap(size).save(pixDir + "/" + icon.name() + ".png")) {
-                        qWarning() << "Could not save tray icon" << icon.name() << "for size" << size;
+                    if (!icon.pixmap(size).save(pixDir + "/" + iconName + ".png")) {
+                        qWarning() << "Could not save tray icon" << iconName << "for size" << size;
                     }
+                }
+            }
+            else {
+                // No theme icon found; use fallback from resources
+                auto iconDir = QString{"%1/24x24/status"}.arg(baseDir.absolutePath());
+                QDir{}.mkpath(iconDir);
+                if (!QFile::copy(QString{":/icons/hicolor/24x24/status/%1.svg"}.arg(iconName),
+                                 QString{"%1/%2.svg"}.arg(iconDir, iconName))) {
+                    qWarning() << "Could not access fallback tray icon" << iconName;
+                    continue;
                 }
             }
         }
