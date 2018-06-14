@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>755</width>
-    <height>536</height>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,7 +77,7 @@
      <item row="2" column="1">
       <widget class="QComboBox" name="iconThemeComboBox">
        <property name="toolTip">
-        <string>Icon theme to use for icons that are not found in the current system theme. Requires the selected theme to be installed either system-wide, or as part of the Quassel installation. Supported themes are Breeze, Breeze Dark and Oxygen, all of KDE fame.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Icon theme to use for icons that are not found in the current system theme. Requires the selected theme to be installed either system-wide, or as part of the Quassel installation.&lt;/p&gt;&lt;p&gt;Supported themes are Breeze, Breeze Dark and Oxygen, all of KDE fame.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -153,10 +153,39 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
+     <item row="1" column="2">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QCheckBox" name="useSystemTrayIcon">
+       <property name="text">
+        <string>Show system tray icon</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string notr="true">UseSystemTrayIcon</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="1">
       <widget class="QCheckBox" name="invertSystrayColors">
        <property name="text">
-        <string>Invert colors</string>
+        <string>Invert brightness</string>
        </property>
        <property name="settingsKey" stdset="0">
         <string notr="true">/UiStyle/Icons/InvertTray</string>
@@ -166,14 +195,17 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <spacer name="horizontalSpacer">
+     <item row="1" column="0">
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>40</width>
+         <width>20</width>
          <height>20</height>
         </size>
        </property>
@@ -205,38 +237,6 @@
        </property>
        <property name="defaultValue" stdset="0">
         <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0" colspan="2">
-      <widget class="QCheckBox" name="useSystemTrayIcon">
-       <property name="text">
-        <string>Show system tray icon</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-       <property name="settingsKey" stdset="0">
-        <string notr="true">UseSystemTrayIcon</string>
-       </property>
-       <property name="defaultValue" stdset="0">
-        <bool>true</bool>
        </property>
       </widget>
      </item>
