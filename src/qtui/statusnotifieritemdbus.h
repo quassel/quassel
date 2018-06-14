@@ -77,14 +77,14 @@ public:
     QDBusConnection dbusConnection() const;
 
     /**
-     * Register the service to DBus
+     * Register the StatusNotifierItem to DBus
      */
-    void registerService();
+    void registerTrayIcon();
 
     /**
-     * Unregister the service from DBus
+     * Unregister the StatusNotifierItem from DBus
      */
-    void unregisterService();
+    void unregisterTrayIcon();
 
     /**
      * @return the service this object is registered on the bus under
@@ -227,7 +227,6 @@ Q_SIGNALS:
 
 private:
     StatusNotifierItem *m_statusNotifierItem;
-    QString m_service;
     QDBusConnection m_dbus;
     static int s_serviceCount;
 };

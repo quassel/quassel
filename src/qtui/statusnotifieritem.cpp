@@ -240,11 +240,11 @@ bool StatusNotifierItem::isSystemTrayAvailable() const
 void StatusNotifierItem::onModeChanged(Mode mode)
 {
     if (mode == Mode::StatusNotifier) {
-        _statusNotifierItemDBus->registerService();
+        _statusNotifierItemDBus->registerTrayIcon();
         registerToWatcher();
     }
     else {
-        _statusNotifierItemDBus->unregisterService();
+        _statusNotifierItemDBus->unregisterTrayIcon();
     }
 }
 
@@ -262,11 +262,11 @@ void StatusNotifierItem::onVisibilityChanged(bool isVisible)
 {
     if (mode() == Mode::StatusNotifier) {
         if (isVisible) {
-            _statusNotifierItemDBus->registerService();
+            _statusNotifierItemDBus->registerTrayIcon();
             registerToWatcher();
         }
         else {
-            _statusNotifierItemDBus->unregisterService();
+            _statusNotifierItemDBus->unregisterTrayIcon();
         }
     }
 }

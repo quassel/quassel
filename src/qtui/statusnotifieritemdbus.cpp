@@ -160,20 +160,16 @@ int StatusNotifierItemDBus::s_serviceCount = 0;
 StatusNotifierItemDBus::StatusNotifierItemDBus(StatusNotifierItem *parent)
     : QObject(parent),
     m_statusNotifierItem(parent),
-    m_service(QString("org.kde.StatusNotifierItem-%1-%2")
-        .arg(QCoreApplication::applicationPid())
-        .arg(++s_serviceCount)),
-    m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
+    m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus,
+                                         QString("org.kde.StatusNotifierItem-%1-%2").arg(QCoreApplication::applicationPid()).arg(++s_serviceCount)))
 {
     new StatusNotifierItemAdaptor(this);
-    //qDebug() << "service is" << m_service;
-    registerService();
 }
 
 
 StatusNotifierItemDBus::~StatusNotifierItemDBus()
 {
-    unregisterService();
+    unregisterTrayIcon();
 }
 
 
@@ -185,28 +181,24 @@ QDBusConnection StatusNotifierItemDBus::dbusConnection() const
 
 // FIXME: prevent double registrations, also test this on platforms != KDE
 //
-void StatusNotifierItemDBus::registerService()
+void StatusNotifierItemDBus::registerTrayIcon()
 {
-    //qDebug() << "registering to" << m_service;
-    m_dbus.registerService(m_service);
     m_dbus.registerObject("/StatusNotifierItem", this);
 }
 
 
 // FIXME: see above
-void StatusNotifierItemDBus::unregisterService()
+void StatusNotifierItemDBus::unregisterTrayIcon()
 {
-    //qDebug() << "unregistering from" << m_service;
     if (m_dbus.isConnected()) {
         m_dbus.unregisterObject("/StatusNotifierItem");
-        m_dbus.unregisterService(m_service);
     }
 }
 
 
 QString StatusNotifierItemDBus::service() const
 {
-    return m_service;
+    return m_dbus.baseService();
 }
 
 
