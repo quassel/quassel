@@ -50,40 +50,41 @@ void SettingsPage::setChangedState(bool hasChanged_)
 
 void SettingsPage::load(QCheckBox *box, bool checked)
 {
-    box->setProperty("StoredValue", checked);
+    box->setProperty("storedValue", checked);
     box->setChecked(checked);
 }
 
 
 bool SettingsPage::hasChanged(QCheckBox *box)
 {
-    return box->property("StoredValue").toBool() != box->isChecked();
+    return box->property("storedValue").toBool() != box->isChecked();
 }
 
 
 void SettingsPage::load(QComboBox *box, int index)
 {
-    box->setProperty("StoredValue", index);
+    box->setProperty("storedValue", index);
     box->setCurrentIndex(index);
 }
 
 
 bool SettingsPage::hasChanged(QComboBox *box)
 {
-    return box->property("StoredValue").toInt() != box->currentIndex();
+    return box->property("storedValue").toInt() != box->currentIndex();
 }
 
 
 void SettingsPage::load(QSpinBox *box, int value)
 {
-    box->setProperty("StoredValue", value);
+    box->setProperty("storedValue", value);
     box->setValue(value);
 }
 
 
 bool SettingsPage::hasChanged(QSpinBox *box)
 {
-    return box->property("StoredValue").toInt() != box->value();
+    return box->property("storedValue").toInt() != box->value();
+}
 }
 
 
