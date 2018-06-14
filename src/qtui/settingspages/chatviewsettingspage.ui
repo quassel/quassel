@@ -93,23 +93,49 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="showSenderPrefixes">
-     <property name="toolTip">
-      <string>Shows the modes of senders before their name (e.g. @, +)</string>
-     </property>
-     <property name="text">
-      <string>Show sendermodes in front of nicknames</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="defaultValue" stdset="0">
-      <bool>true</bool>
-     </property>
-     <property name="settingsKey" stdset="0">
-      <string notr="true">ShowSenderPrefixes</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Show sender modes before nicknames:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="senderPrefixComboBox">
+       <property name="toolTip">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-weight:400; font-style:normal;&quot;&gt;
+&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt;Sender modes:&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;No modes:&lt;/span&gt; Don't show any modes&lt;br/&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;Example:&lt;/span&gt; &amp;lt;nickname&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;Highest mode:&lt;/span&gt; Show only the highest active mode&lt;br/&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;Example:&lt;/span&gt; &amp;lt;@nickname&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;All modes:&lt;/span&gt; Show all active modes&lt;br/&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;Example:&lt;/span&gt; &amp;lt;@+nickname&amp;gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>1</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string notr="true">SenderPrefixMode</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -254,6 +280,7 @@
   <tabstop>customTimestampFormat</tabstop>
   <tabstop>timestampFormat</tabstop>
   <tabstop>showSenderBrackets</tabstop>
+  <tabstop>senderPrefixComboBox</tabstop>
   <tabstop>customChatViewFont</tabstop>
   <tabstop>showWebPreview</tabstop>
   <tabstop>autoMarkerLine</tabstop>
