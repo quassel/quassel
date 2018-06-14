@@ -270,6 +270,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // --------
 
         // Migration complete!
+        return true;
     }
     case 7:
     {
