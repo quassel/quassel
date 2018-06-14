@@ -64,8 +64,6 @@ InputWidget::InputWidget(QWidget *parent)
     ui.boldButton->setIcon(QIcon::fromTheme("format-text-bold"));
     ui.italicButton->setIcon(QIcon::fromTheme("format-text-italic"));
     ui.underlineButton->setIcon(QIcon::fromTheme("format-text-underline"));
-    ui.textcolorButton->setIcon(QIcon::fromTheme("format-text-color"));
-    ui.highlightcolorButton->setIcon(QIcon::fromTheme("format-fill-color"));
     ui.clearButton->setIcon(QIcon::fromTheme("edit-clear"));
     ui.encryptionIconLabel->hide();
 
@@ -96,6 +94,10 @@ InputWidget::InputWidget(QWidget *parent)
     // Set the default action to clear fill color (last added action)
     ui.highlightcolorButton->setDefaultAction(_colorFillMenu->actions().last());
     connect(_colorFillMenu, SIGNAL(triggered(QAction *)), this, SLOT(colorHighlightChosen(QAction *)));
+
+    // Needs to be done after adding the menu, otherwise the icon mysteriously vanishes until clicked
+    ui.textcolorButton->setIcon(QIcon::fromTheme("format-text-color"));
+    ui.highlightcolorButton->setIcon(QIcon::fromTheme("format-fill-color"));
 
     // Show/hide style button
     connect(ui.showStyleButton, SIGNAL(toggled(bool)), this, SLOT(setStyleOptionsExpanded(bool)));
