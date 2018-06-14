@@ -36,7 +36,7 @@ QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
 bool UiStyle::_useCustomTimestampFormat;       /// If true, use the custom timestamp format
 QString UiStyle::_timestampFormatString;       /// Timestamp format
 QString UiStyle::_systemTimestampFormatString; /// Cached copy of system locale timestamp format
-bool UiStyle::_showSenderPrefixes;             /// If true, show prefixmodes before sender names
+UiStyle::SenderPrefixMode UiStyle::_senderPrefixDisplay; /// Display of prefix modes before sender
 bool UiStyle::_showSenderBrackets;             /// If true, show brackets around sender names
 
 namespace {
@@ -100,8 +100,8 @@ UiStyle::UiStyle(QObject *parent)
     // in there.
     setUseCustomTimestampFormat(false);
     setTimestampFormatString(" hh:mm:ss");
-    enableSenderPrefixes(false);
-    enableSenderBrackets(true);
+    setSenderPrefixDisplay(UiStyle::SenderPrefixMode::HighestMode);
+    enableSenderBrackets(false);
 
     // BufferView / NickView settings
     UiStyleSettings s;
@@ -251,10 +251,10 @@ void UiStyle::setTimestampFormatString(const QString &format)
     }
 }
 
-void UiStyle::enableSenderPrefixes(bool enabled)
+void UiStyle::setSenderPrefixDisplay(UiStyle::SenderPrefixMode mode)
 {
-    if (_showSenderPrefixes != enabled) {
-        _showSenderPrefixes = enabled;
+    if (_senderPrefixDisplay != mode) {
+        _senderPrefixDisplay = mode;
     }
 }
 
@@ -1058,8 +1058,18 @@ QString UiStyle::StyledMessage::plainSender() const
 QString UiStyle::StyledMessage::decoratedSender() const
 {
     QString _senderPrefixes;
-    if (_showSenderPrefixes) {
+    switch (_senderPrefixDisplay) {
+    case UiStyle::SenderPrefixMode::AllModes:
+        // Show every available mode
         _senderPrefixes = senderPrefixes();
+        break;
+    case UiStyle::SenderPrefixMode::HighestMode:
+        // Show the highest available mode (left-most)
+        _senderPrefixes = senderPrefixes().left(1);
+        break;
+    case UiStyle::SenderPrefixMode::NoModes:
+        // Don't show any mode (already empty by default)
+        break;
     }
 
     switch (type()) {

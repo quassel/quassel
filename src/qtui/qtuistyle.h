@@ -61,9 +61,9 @@ private slots:
     void updateTimestampFormatString();
     
     /**
-     * Updates knowledge of whether or not to show sender prefixmodes
+     * Updates knowledge of how to display sender prefix modes
      */
-    void updateShowSenderPrefixes();
+    void updateSenderPrefixDisplay();
 
     /**
      * Updates knowledge of whether or not to show sender brackets

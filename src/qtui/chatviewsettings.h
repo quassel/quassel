@@ -22,6 +22,7 @@
 #define CHATVIEWSETTINGS_H
 
 #include "qtuisettings.h"
+#include "uistyle.h"
 
 class ChatScene;
 class ChatView;
@@ -74,11 +75,21 @@ public:
     inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
 
     /**
-     * Gets if prefixmodes are shown before sender names
+     * Gets how prefix modes are shown before sender names
      *
-     * @returns True if sender prefixmodes enabled, otherwise false
+     * @returns SenderPrefixMode of what format to use for showing sender prefix modes
      */
-    inline bool showSenderPrefixes() { return localValue("ShowSenderPrefixes", false).toBool(); }
+    inline UiStyle::SenderPrefixMode SenderPrefixDisplay() {
+        return static_cast<UiStyle::SenderPrefixMode>(
+                    localValue("SenderPrefixMode",
+                               QVariant::fromValue<UiStyle::SenderPrefixMode>(
+                                   UiStyle::SenderPrefixMode::HighestMode)).toInt());
+        // Cast the QVariant to an integer, then cast that to the enum class.
+        // .canConvert<UiStyle::SenderPrefixMode>() returned true, but
+        // .value<UiStyle::SenderPrefixMode>(); always gave the default value 0.
+        //
+        // There's probably a cleaner way of doing this.  I couldn't find it within 4 hours, so...
+    }
 
     /**
      * Gets if brackets are shown around sender names

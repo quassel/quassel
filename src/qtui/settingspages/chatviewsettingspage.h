@@ -41,6 +41,11 @@ public slots:
 private:
     Ui::ChatViewSettingsPage ui;
 
+    /**
+     * Initialize the available options for sender prefixes
+     */
+    void initSenderPrefixComboBox();
+
     inline QString settingsKey() const { return QString("QtUi/ChatView/__default__"); }
 };
 

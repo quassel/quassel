@@ -28,6 +28,7 @@
 #  include <KStandardDirs>
 #endif
 
+#include "chatviewsettings.h"
 #include "client.h"
 #include "cliparser.h"
 #include "mainwin.h"
@@ -158,7 +159,7 @@ bool QtUiApplication::migrateSettings()
     //
     // NOTE:  If you increase the minor version, you MUST ALSO add new version upgrade logic in
     // applySettingsMigration()!  Otherwise, settings upgrades will fail.
-    const uint VERSION_MINOR_CURRENT = 8;
+    const uint VERSION_MINOR_CURRENT = 9;
     // Stored minor version
     uint versionMinor = s.versionMinor();
 
@@ -223,6 +224,25 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // saved.  Exceptions will be noted below.
     // NOTE:  If you add new upgrade logic here, you MUST ALSO increase VERSION_MINOR_CURRENT in
     // migrateSettings()!  Otherwise, your upgrade logic won't ever be called.
+    case 9:
+    {
+        // New default changes: show highest sender prefix mode, if available
+
+        // --------
+        // ChatView settings
+        ChatViewSettings chatViewSettings;
+        const QString senderPrefixModeId = "SenderPrefixMode";
+        if (!chatViewSettings.valueExists(senderPrefixModeId)) {
+            // New default is HighestMode, preserve previous behavior by setting to NoModes
+            chatViewSettings.setValue(senderPrefixModeId,
+                                      static_cast<int>(UiStyle::SenderPrefixMode::NoModes));
+        }
+        // --------
+
+        // Migration complete!
+        return true;
+    }
+
     case 8:
     {
         // New default changes: RegEx checkbox now toggles Channel regular expressions, too

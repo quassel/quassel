@@ -41,6 +41,7 @@
 class UiStyle : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(SenderPrefixModes)
 
 public:
     UiStyle(QObject *parent = 0);
@@ -161,6 +162,15 @@ public:
         SenderColor0f,
         NumRoles // must be last!
     };
+
+    /// Display of sender prefix modes
+    enum class SenderPrefixMode {
+        NoModes = 0,      ///< Hide sender modes
+        HighestMode = 1,  ///< Show the highest active sender mode
+        AllModes = 2      ///< Show all active sender modes
+    };
+    // Do not change SenderPrefixMode numbering without also adjusting
+    // ChatViewSettingsPage::initSenderPrefixComboBox() and chatviewsettingspage.ui "defaultValue"
 
     struct Format {
         FormatType type;
@@ -305,11 +315,11 @@ protected:
      */
     static void setTimestampFormatString(const QString &format);
     /**
-     * Updates the local setting cache of whether or not to show sender prefixmodes
+     * Updates the local setting cache of how to display sender prefix modes
      *
-     * @param[in] enabled  If true, sender prefixmodes are enabled, otherwise false.
+     * @param[in] mode  Display format for sender prefix modes
      */
-    static void enableSenderPrefixes(bool enabled);
+    static void setSenderPrefixDisplay(UiStyle::SenderPrefixMode mode);
 
     /**
      * Updates the local setting cache of whether or not to show sender brackets
@@ -335,7 +345,7 @@ private:
     static bool _useCustomTimestampFormat;        /// If true, use the custom timestamp format
     static QString _systemTimestampFormatString;  /// Cached copy of system locale timestamp format
     static QString _timestampFormatString;        /// Timestamp format string
-    static bool _showSenderPrefixes;              /// If true, show prefixmodes before sender names
+    static UiStyle::SenderPrefixMode _senderPrefixDisplay; /// Display of prefix modes before sender
     static bool _showSenderBrackets;              /// If true, show brackets around sender names
 
     QIcon _channelJoinedIcon;
@@ -413,3 +423,4 @@ QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList);
 
 Q_DECLARE_METATYPE(UiStyle::FormatList)
 Q_DECLARE_METATYPE(UiStyle::MessageLabel)
+Q_DECLARE_METATYPE(UiStyle::SenderPrefixMode)
