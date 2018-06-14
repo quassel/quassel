@@ -74,6 +74,19 @@ public:
      */
     std::vector<std::pair<QString, QString>> availableIconThemes() const;
 
+    /**
+     * Determine the system icon theme set when Quassel was started.
+     *
+     * This property stores the icon theme initially configured in Qt when starting up (may be empty on platforms
+     * not supporting system icon themes). If the --icontheme option is given, uses that.
+     *
+     * Since Qt does not support notifications on theme changes, this property will not be updated when the theme
+     * changes at runtime.
+     *
+     * @returns The system icon theme at startup time
+     */
+    QString systemIconTheme() const;
+
 public slots:
     void init() override;
 

@@ -290,6 +290,12 @@ std::vector<std::pair<QString, QString>> QtUi::availableIconThemes() const
 }
 
 
+QString QtUi::systemIconTheme() const
+{
+    return _systemIconTheme;
+}
+
+
 void QtUi::setupIconTheme()
 {
     // Add paths to our own icon sets to the theme search paths
