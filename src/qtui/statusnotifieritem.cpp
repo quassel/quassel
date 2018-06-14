@@ -105,8 +105,9 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
 
     // Our own SNI service
     _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
+    connect(this, SIGNAL(currentIconNameChanged()), _statusNotifierItemDBus, SIGNAL(NewIcon()));
+    connect(this, SIGNAL(currentIconNameChanged()), _statusNotifierItemDBus, SIGNAL(NewAttentionIcon()));
     connect(this, SIGNAL(toolTipChanged(QString, QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
-    connect(this, SIGNAL(animationEnabledChanged(bool)), _statusNotifierItemDBus, SIGNAL(NewAttentionIcon()));
 
     // Service watcher to keep track of the StatusNotifierWatcher service
     QDBusServiceWatcher *watcher = new QDBusServiceWatcher(kSniWatcherService,
@@ -252,7 +253,6 @@ void StatusNotifierItem::onModeChanged(Mode mode)
 void StatusNotifierItem::onStateChanged(State state)
 {
     if (mode() == Mode::StatusNotifier) {
-        emit _statusNotifierItemDBus->NewIcon();
         emit _statusNotifierItemDBus->NewStatus(metaObject()->enumerator(metaObject()->indexOfEnumerator("State")).valueToKey(state));
     }
 }
@@ -280,23 +280,13 @@ QString StatusNotifierItem::title() const
 
 QString StatusNotifierItem::iconName() const
 {
-    if (state() == Passive) {
-        return SystemTray::iconName(State::Passive);
-    }
-    else {
-        return SystemTray::iconName(State::Active);
-    }
+    return currentIconName();
 }
 
 
 QString StatusNotifierItem::attentionIconName() const
 {
-    if (animationEnabled()) {
-        return SystemTray::iconName(State::NeedsAttention);
-    }
-    else {
-        return SystemTray::iconName(State::NeedsAttention);
-    }
+    return currentAttentionIconName();
 }
 
 

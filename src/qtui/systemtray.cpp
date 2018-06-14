@@ -40,7 +40,8 @@ SystemTray::SystemTray(QWidget *parent)
 {
     Q_ASSERT(parent);
 
-    NotificationSettings{}.initAndNotify("Systray/Animate", this, SLOT(enableAnimationChanged(QVariant)), true);
+    NotificationSettings{}.initAndNotify("Systray/ChangeColor", this, SLOT(enableChangeColorChanged(QVariant)), true);
+    NotificationSettings{}.initAndNotify("Systray/Animate", this, SLOT(enableBlinkChanged(QVariant)), false);
     UiStyleSettings{}.initAndNotify("Icons/InvertTray", this, SLOT(invertTrayIconChanged(QVariant)), false);
 
     ActionCollection *coll = QtUi::actionCollection("General");
@@ -69,6 +70,10 @@ SystemTray::SystemTray(QWidget *parent)
     connect(_trayMenu, SIGNAL(aboutToShow()), SLOT(trayMenuAboutToShow()));
 
     connect(QtUi::instance(), SIGNAL(iconThemeRefreshed()), this, SIGNAL(iconsChanged()));
+
+    _blinkTimer.setInterval(1000);
+    _blinkTimer.setSingleShot(false);
+    connect(&_blinkTimer, SIGNAL(timeout()), SLOT(onBlinkTimeout()));
 }
 
 
@@ -141,6 +146,16 @@ void SystemTray::setState(State state)
     if (_state != state) {
         _state = state;
         emit stateChanged(state);
+
+        if (state == NeedsAttention && _attentionBehavior == AttentionBehavior::Blink) {
+            _blinkTimer.start();
+            _blinkState = true;
+        }
+        else {
+            _blinkTimer.stop();
+            _blinkState = false;
+        }
+        emit currentIconNameChanged();
     }
 }
 
@@ -168,6 +183,32 @@ QString SystemTray::iconName(State state) const
 }
 
 
+QString SystemTray::currentIconName() const
+{
+    if (state() == State::NeedsAttention) {
+        if (_attentionBehavior == AttentionBehavior::ChangeColor) {
+            return iconName(State::NeedsAttention);
+        }
+        if (_attentionBehavior == AttentionBehavior::Blink && _blinkState) {
+            return iconName(State::NeedsAttention);
+        }
+        return iconName(State::Active);
+    }
+    else {
+        return iconName(state());
+    }
+}
+
+
+QString SystemTray::currentAttentionIconName() const
+{
+    if (state() == State::NeedsAttention && _attentionBehavior == AttentionBehavior::Blink && !_blinkState) {
+        return iconName(State::Active);
+    }
+    return iconName(State::NeedsAttention);
+}
+
+
 bool SystemTray::isAlerted() const
 {
     return state() == State::NeedsAttention;
@@ -176,10 +217,19 @@ bool SystemTray::isAlerted() const
 
 void SystemTray::setAlert(bool alerted)
 {
-    if (alerted)
+    if (alerted) {
         setState(NeedsAttention);
-    else
+    }
+    else {
         setState(Client::isConnected() ? Active : Passive);
+    }
+}
+
+
+void SystemTray::onBlinkTimeout()
+{
+    _blinkState = !_blinkState;
+    emit currentIconNameChanged();
 }
 
 
@@ -198,16 +248,31 @@ void SystemTray::trayMenuAboutToShow()
 }
 
 
-bool SystemTray::animationEnabled() const
+void SystemTray::enableChangeColorChanged(const QVariant &v)
 {
-    return _animationEnabled;
+    if (v.toBool()) {
+        _attentionBehavior = AttentionBehavior::ChangeColor;
+    }
+    else {
+        if (_attentionBehavior == AttentionBehavior::ChangeColor) {
+            _attentionBehavior = AttentionBehavior::DoNothing;
+        }
+    }
+    emit currentIconNameChanged();
 }
 
 
-void SystemTray::enableAnimationChanged(const QVariant &v)
+void SystemTray::enableBlinkChanged(const QVariant &v)
 {
-    _animationEnabled = v.toBool();
-    emit animationEnabledChanged(v.toBool());
+    if (v.toBool()) {
+        _attentionBehavior = AttentionBehavior::Blink;
+    }
+    else {
+        if (_attentionBehavior == AttentionBehavior::Blink) {
+            _attentionBehavior = AttentionBehavior::DoNothing;
+        }
+    }
+    emit currentIconNameChanged();
 }
 
 

@@ -30,8 +30,6 @@
 #  include <QSystemTrayIcon>
 #endif
 
-#include <QTimer>
-
 #include "systemtray.h"
 
 class LegacySystemTray : public SystemTray
@@ -49,10 +47,8 @@ public slots:
 
 private slots:
     void onModeChanged(Mode mode);
-    void onStateChanged(State state);
     void onVisibilityChanged(bool isVisible);
 
-    void onBlinkTimeout();
     void onActivated(QSystemTrayIcon::ActivationReason);
     void onMessageClicked();
 
@@ -60,9 +56,7 @@ private slots:
     void updateToolTip();
 
 private:
-    QTimer _blinkTimer;
-    bool _blinkState;
-    uint _lastMessageId;
+    uint _lastMessageId {0};
 
 #ifdef HAVE_KDE4
     KSystemTrayIcon *_trayIcon;
@@ -70,11 +64,5 @@ private:
     QSystemTrayIcon *_trayIcon;
 #endif
 };
-
-
-// inlines
-
-
-
 
 #endif /* QT_NO_SYSTEMTRAYICON */

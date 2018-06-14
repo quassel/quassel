@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QTimer>
 
 class Action;
 class QMenu;
@@ -61,6 +62,12 @@ public:
         MiddleClick
     };
 
+    enum class AttentionBehavior {
+        DoNothing,
+        ChangeColor,
+        Blink
+    };
+
     explicit SystemTray(QWidget *parent);
     ~SystemTray() override;
 
@@ -87,7 +94,7 @@ signals:
     void stateChanged(State state);
     void visibilityChanged(bool isVisible);
     void iconsChanged();
-    void animationEnabledChanged(bool);
+    void currentIconNameChanged();
     void toolTipChanged(const QString &title, const QString &subtitle);
 
     void activated(SystemTray::ActivationReason);
@@ -99,28 +106,36 @@ protected slots:
 
 protected:
     void setMode(Mode mode);
-    bool animationEnabled() const;
 
     QString toolTipTitle() const;
     QString toolTipSubTitle() const;
     QMenu *trayMenu() const;
 
     QString iconName(State state) const;
+    QString currentIconName() const;
+    QString currentAttentionIconName() const;
 
 private slots:
     void minimizeRestore();
     void trayMenuAboutToShow();
-    void enableAnimationChanged(const QVariant &);
     void invertTrayIconChanged(const QVariant &);
+    void enableChangeColorChanged(const QVariant &);
+    void enableBlinkChanged(const QVariant &);
+
+    void onBlinkTimeout();
 
 private:
     bool _isVisible{false};
     Mode _mode{Mode::Invalid};
     State _state{State::Passive};
-    bool _animationEnabled{true};
     bool _trayIconInverted{false};
+    AttentionBehavior _attentionBehavior{AttentionBehavior::ChangeColor};
 
-    QString _toolTipTitle, _toolTipSubTitle;
+    QTimer _blinkTimer;
+    bool _blinkState{false};
+
+    QString _toolTipTitle;
+    QString _toolTipSubTitle;
 
     QMenu *_trayMenu{nullptr};
     QWidget *_associatedWidget{nullptr};
