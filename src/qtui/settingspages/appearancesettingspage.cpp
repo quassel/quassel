@@ -45,6 +45,13 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
     ui.overrideSystemIconTheme->hide();
 #endif
 
+    // If no system icon theme is given, showing the override option makes no sense.
+    // Also don't mention a "fallback".
+    if (QtUi::instance()->systemIconTheme().isEmpty()) {
+        ui.iconThemeLabel->setText(tr("Icon theme:"));
+        ui.overrideSystemIconTheme->hide();
+    }
+
     initAutoWidgets();
     initStyleComboBox();
     initLanguageComboBox();
