@@ -43,7 +43,8 @@ CoreConnection::CoreConnection(QObject *parent)
     _progressMinimum(0),
     _progressMaximum(-1),
     _progressValue(-1),
-    _resetting(false)
+    _resetting(false),
+    _numNetsToSync(0)
 {
     qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
 }

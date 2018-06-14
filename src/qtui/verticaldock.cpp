@@ -27,7 +27,8 @@
 #include <QDebug>
 
 VerticalDockTitle::VerticalDockTitle(QDockWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+    _show(false)
 {
 }
 

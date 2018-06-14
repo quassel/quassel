@@ -43,7 +43,8 @@
 
 LdapAuthenticator::LdapAuthenticator(QObject *parent)
     : Authenticator(parent),
-    _connection(0)
+    _connection(0),
+    _port(0)
 {
 }
 

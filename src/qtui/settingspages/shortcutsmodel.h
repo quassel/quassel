@@ -80,7 +80,7 @@ signals:
 
 private:
     struct Item {
-        inline Item() { parentItem = 0; collection = 0; action = 0; }
+        inline Item() { row = 0; parentItem = 0; collection = 0; action = 0; }
         inline ~Item() { qDeleteAll(actionItems); }
         int row;
         Item *parentItem;

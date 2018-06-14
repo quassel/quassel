@@ -32,7 +32,8 @@
 int AbstractSqlStorage::_nextConnectionId = 0;
 AbstractSqlStorage::AbstractSqlStorage(QObject *parent)
     : Storage(parent),
-    _schemaVersion(0)
+    _schemaVersion(0),
+    _debug(false)
 {
 }
 

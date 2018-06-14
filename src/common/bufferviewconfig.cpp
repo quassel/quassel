@@ -41,7 +41,15 @@ BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
 
 BufferViewConfig::BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent)
     : SyncableObject(parent),
-    _bufferViewId(bufferViewId)
+    _bufferViewId(bufferViewId),
+    _addNewBuffersAutomatically(true),
+    _sortAlphabetically(true),
+    _hideInactiveBuffers(false),
+    _hideInactiveNetworks(false),
+    _disableDecoration(false),
+    _allowedBufferTypes(BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer),
+    _minimumActivity(0),
+    _showSearch(false)
 {
     fromVariantMap(properties);
     setObjectName(QString::number(bufferViewId));

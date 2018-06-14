@@ -43,7 +43,9 @@ SystemTray::SystemTray(QWidget *parent)
     _activeIcon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png"))),
     _needsAttentionIcon(QIcon::fromTheme("message-quassel", QIcon(":/icons/message-quassel.png"))),
     _trayMenu(0),
-    _associatedWidget(parent)
+    _associatedWidget(parent),
+    _animationEnabled(false),
+    _minimizeRestoreAction(0)
 {
     Q_ASSERT(parent);
 }
