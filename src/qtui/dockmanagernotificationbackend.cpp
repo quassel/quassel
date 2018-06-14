@@ -182,7 +182,7 @@ DockManagerNotificationBackend::ConfigWidget::ConfigWidget(bool enabled, QWidget
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(enabledBox = new QCheckBox(tr("Mark dockmanager entry"), this));
-    enabledBox->setEnabled(enabled);
+    enabledBox->setVisible(enabled);
 
     connect(enabledBox, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
 }
