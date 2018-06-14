@@ -76,9 +76,15 @@ void ChatViewSettingsPage::initSenderPrefixComboBox()
 
 void ChatViewSettingsPage::save()
 {
+    bool needsStyleReload = SettingsPage::hasChanged(ui.customChatViewFont)
+            || SettingsPage::hasChanged(ui.chatViewFont);
+
     // Save the general settings
     SettingsPage::save();
-    // Update the stylesheet in case fonts are changed
-    QtUi::style()->generateSettingsQss();
-    QtUi::style()->reload();
+
+    // Update the stylesheet if fonts are changed
+    if (needsStyleReload) {
+        QtUi::style()->generateSettingsQss();
+        QtUi::style()->reload();
+    }
 }
