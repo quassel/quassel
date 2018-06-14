@@ -26,6 +26,7 @@
 class QCheckBox;
 class QComboBox;
 class QSpinBox;
+class FontSelector;
 
 //! A SettingsPage is a page in the settings dialog.
 /** The SettingsDlg provides suitable standard buttons, such as Ok, Apply, Cancel, Restore Defaults and Reset.
@@ -115,6 +116,8 @@ public:
     static bool hasChanged(QComboBox *box);
     static void load(QSpinBox *box, int value);
     static bool hasChanged(QSpinBox *box);
+    static void load(FontSelector *box, QFont value);
+    static bool hasChanged(FontSelector *box);
 
 public slots:
     //! Save settings to permanent storage.
