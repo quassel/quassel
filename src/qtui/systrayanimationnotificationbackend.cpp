@@ -18,18 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCheckBox>
-#include <QGroupBox>
 #include <QIcon>
-#include <QHBoxLayout>
 
 #include "systrayanimationnotificationbackend.h"
 
-#include "client.h"
 #include "clientsettings.h"
 #include "mainwin.h"
-#include "networkmodel.h"
 #include "qtui.h"
 #include "systemtray.h"
 
@@ -37,7 +31,7 @@ SystrayAnimationNotificationBackend::SystrayAnimationNotificationBackend(QObject
     : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
-    notificationSettings.initAndNotify("Systray/Animate", this, SLOT(animateChanged(QVariant)), true);
+    notificationSettings.initAndNotify("Systray/Alert", this, SLOT(alertChanged(QVariant)), true);
 }
 
 
@@ -46,20 +40,21 @@ void SystrayAnimationNotificationBackend::notify(const Notification &n)
     if (n.type != Highlight && n.type != PrivMsg)
         return;
 
-    if (_animate)
+    if (_alert)
         QtUi::mainWindow()->systemTray()->setAlert(true);
 }
 
 
 void SystrayAnimationNotificationBackend::close(uint notificationId)
 {
+    Q_UNUSED(notificationId)
     QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
 
-void SystrayAnimationNotificationBackend::animateChanged(const QVariant &v)
+void SystrayAnimationNotificationBackend::alertChanged(const QVariant &v)
 {
-    _animate = v.toBool();
+    _alert = v.toBool();
 }
 
 
@@ -71,49 +66,57 @@ SettingsPage *SystrayAnimationNotificationBackend::createConfigWidget() const
 
 /***************************************************************************/
 
-SystrayAnimationNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayNotification", parent)
+SystrayAnimationNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayAnimation", parent)
 {
-    _animateBox = new QCheckBox(tr("Animate system tray icon"));
-    _animateBox->setIcon(QIcon::fromTheme("dialog-information"));
-    connect(_animateBox, SIGNAL(toggled(bool)), this, SLOT(widgetChanged()));
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->addWidget(_animateBox);
+    ui.setupUi(this);
+    ui.enableAlert->setIcon(QIcon::fromTheme("dialog-information"));
+
+    ui.attentionBehavior->setEnabled(ui.enableAlert->isChecked());
+
+    initAutoWidgets();
 }
 
 
-void SystrayAnimationNotificationBackend::ConfigWidget::widgetChanged()
+QString SystrayAnimationNotificationBackend::ConfigWidget::settingsKey() const
 {
-    bool changed = (_animate != _animateBox->isChecked());
-    if (changed != hasChanged())
-        setChangedState(changed);
+    return "Notification";
 }
 
 
-bool SystrayAnimationNotificationBackend::ConfigWidget::hasDefaults() const
+QVariant SystrayAnimationNotificationBackend::ConfigWidget::loadAutoWidgetValue(const QString &widgetName)
 {
-    return true;
+    if (widgetName == "attentionBehavior") {
+        NotificationSettings s;
+        if (s.value("Systray/Animate", false).toBool()) {
+            return 2;
+        }
+        if (s.value("Systray/ChangeColor", true).toBool()) {
+            return 1;
+        }
+        return 0;
+    }
+
+    return SettingsPage::loadAutoWidgetValue(widgetName);
 }
 
 
-void SystrayAnimationNotificationBackend::ConfigWidget::defaults()
+void SystrayAnimationNotificationBackend::ConfigWidget::saveAutoWidgetValue(const QString &widgetName, const QVariant &value)
 {
-    _animateBox->setChecked(false);
-    widgetChanged();
-}
+    if (widgetName == "attentionBehavior") {
+        NotificationSettings s;
+        s.setValue("Systray/ChangeColor", false);
+        s.setValue("Systray/Animate", false);
+        switch (value.toInt()) {
+        case 1:
+            s.setValue("Systray/ChangeColor", true);
+            return;
+        case 2:
+            s.setValue("Systray/Animate", true);
+            return;
+        default:
+            return;
+        }
+    }
 
-
-void SystrayAnimationNotificationBackend::ConfigWidget::load()
-{
-    NotificationSettings s;
-    _animate = s.value("Systray/Animate", true).toBool();
-    _animateBox->setChecked(_animate);
-    setChangedState(false);
-}
-
-
-void SystrayAnimationNotificationBackend::ConfigWidget::save()
-{
-    NotificationSettings s;
-    s.setValue("Systray/Animate", _animateBox->isChecked());
-    load();
+    SettingsPage::saveAutoWidgetValue(widgetName, value);
 }

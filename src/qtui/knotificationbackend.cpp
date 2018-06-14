@@ -77,7 +77,6 @@ void KNotificationBackend::notify(const Notification &n)
     _notifications.append(qMakePair(n.notificationId, QPointer<KNotification>(notification)));
 
     updateToolTip();
-    QtUi::mainWindow()->systemTray()->setAlert(true);
 }
 
 
@@ -101,7 +100,6 @@ void KNotificationBackend::close(uint notificationId)
 {
     removeNotificationById(notificationId);
     //if(!_notifications.count()) // FIXME make configurable
-    QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
 

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SystrayAnimationConfigWidget</class>
+ <widget class="QWidget" name="SystrayAnimationConfigWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>438</width>
+    <height>50</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="enableAlert">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, alert the system tray or dock in case of a notification.&lt;/p&gt;&lt;p&gt;It depends on your desktop environment how an alert is visualized. For example, Plasma will pulsate the tray icon, while Windows will change the icon's color. You may choose to forcefully change color or even letting the icon blink, if desired.&lt;/p&gt;&lt;p&gt;Note that not all icon themes support changing the color of the tray icon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Alert tray icon and</string>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string notr="true">Systray/Alert</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="attentionBehavior">
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <number>1</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>do nothing</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>change color</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>blink</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>enableAlert</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>attentionBehavior</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>121</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>257</x>
+     <y>28</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

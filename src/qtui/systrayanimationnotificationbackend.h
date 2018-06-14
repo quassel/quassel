@@ -22,7 +22,8 @@
 
 #include "abstractnotificationbackend.h"
 #include "settingspage.h"
-#include "systemtray.h"
+
+#include "ui_systrayanimationconfigwidget.h"
 
 class QCheckBox;
 
@@ -31,18 +32,18 @@ class SystrayAnimationNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    SystrayAnimationNotificationBackend(QObject *parent = 0);
+    SystrayAnimationNotificationBackend(QObject *parent = nullptr);
 
-    void notify(const Notification &);
-    void close(uint notificationId);
-    virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &) override;
+    void close(uint notificationId) override;
+    virtual SettingsPage *createConfigWidget() const override;
 
 private slots:
-    void animateChanged(const QVariant &);
+    void alertChanged(const QVariant &);
 
 private:
+    bool _alert{false};
     class ConfigWidget;
-    bool _animate;
 };
 
 
@@ -51,16 +52,13 @@ class SystrayAnimationNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
-    void save();
-    void load();
-    bool hasDefaults() const;
-    void defaults();
-
-private slots:
-    void widgetChanged();
+    ConfigWidget(QWidget *parent = nullptr);
+    QString settingsKey() const override;
 
 private:
-    QCheckBox *_animateBox;
-    bool _animate;
+    QVariant loadAutoWidgetValue(const QString &widgetName) override;
+    void saveAutoWidgetValue(const QString &widgetName, const QVariant &value) override;
+
+private:
+    Ui::SystrayAnimationConfigWidget ui;
 };

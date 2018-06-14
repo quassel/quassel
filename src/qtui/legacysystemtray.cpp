@@ -27,9 +27,7 @@
 #include "qtui.h"
 
 LegacySystemTray::LegacySystemTray(QWidget *parent)
-    : SystemTray(parent),
-    _blinkState(false),
-    _lastMessageId(0)
+    : SystemTray(parent)
 {
 #ifndef HAVE_KDE4
     _trayIcon = new QSystemTrayIcon(associatedWidget());
@@ -53,13 +51,9 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
 
     connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));
     connect(this, SIGNAL(modeChanged(Mode)), this, SLOT(onModeChanged(Mode)));
-    connect(this, SIGNAL(stateChanged(State)), this, SLOT(onStateChanged(State)));
     connect(this, SIGNAL(toolTipChanged(QString, QString)), SLOT(updateToolTip()));
     connect(this, SIGNAL(iconsChanged()), this, SLOT(updateIcon()));
-
-    _blinkTimer.setInterval(750);
-    _blinkTimer.setSingleShot(false);
-    connect(&_blinkTimer, SIGNAL(timeout()), SLOT(onBlinkTimeout()));
+    connect(this, SIGNAL(currentIconNameChanged()), this, SLOT(updateIcon()));
 
     updateIcon();
     updateToolTip();
@@ -93,28 +87,10 @@ void LegacySystemTray::onModeChanged(Mode mode)
 }
 
 
-void LegacySystemTray::onStateChanged(State state)
-{
-    if (state == NeedsAttention && animationEnabled())
-        _blinkTimer.start();
-    else {
-        _blinkTimer.stop();
-        _blinkState = false;
-    }
-    updateIcon();
-}
-
-
 void LegacySystemTray::updateIcon()
 {
-    QString icon;
-    if (state() == State::NeedsAttention && !_blinkState) {
-        icon = iconName(State::Active);
-    }
-    else {
-        icon = iconName(state());
-    }
-    _trayIcon->setIcon(QIcon::fromTheme(icon, QIcon{QString{":/icons/hicolor/24x24/status/%1.svg"}.arg(icon)}));
+    QString iconName = (state() == NeedsAttention) ? currentAttentionIconName() : currentIconName();
+    _trayIcon->setIcon(QIcon::fromTheme(iconName, QIcon{QString{":/icons/hicolor/24x24/status/%1.svg"}.arg(iconName)}));
 }
 
 
@@ -131,13 +107,6 @@ void LegacySystemTray::updateToolTip()
 #endif
 
     _trayIcon->setToolTip(tooltip);
-}
-
-
-void LegacySystemTray::onBlinkTimeout()
-{
-    _blinkState = !_blinkState;
-    updateIcon();
 }
 
 

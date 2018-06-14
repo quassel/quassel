@@ -77,10 +77,11 @@ set(FORMS
     msgprocessorstatuswidget.ui
     nicklistwidget.ui
     passwordchangedlg.ui
+    receivefiledlg.ui
     settingsdlg.ui
     settingspagedlg.ui
     simplenetworkeditor.ui
-    receivefiledlg.ui
+    systrayanimationconfigwidget.ui
     topicwidget.ui
 )
 
