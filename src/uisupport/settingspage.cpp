@@ -25,6 +25,8 @@
 #include <QSpinBox>
 #include <QVariant>
 
+#include "fontselector.h"
+
 #include "uisettings.h"
 
 SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent)
@@ -85,6 +87,18 @@ bool SettingsPage::hasChanged(QSpinBox *box)
 {
     return box->property("storedValue").toInt() != box->value();
 }
+
+
+void SettingsPage::load(FontSelector *box, QFont value)
+{
+    box->setProperty("storedValue", value);
+    box->setSelectedFont(value);
+}
+
+
+bool SettingsPage::hasChanged(FontSelector *box)
+{
+    return box->property("storedValue").value<QFont>() != box->selectedFont();
 }
 
 
