@@ -135,6 +135,8 @@ private slots:
     void showNewTransferDlg(const QUuid &transferId);
     void onFullScreenToggled();
 
+    void doAutoConnect();
+
     void handleCoreConnectionError(const QString &errorMsg);
     void userAuthenticationRequired(CoreAccount *, bool *valid, const QString &errorMessage);
     void handleNoSslInClient(bool *accepted);

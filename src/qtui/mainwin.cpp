@@ -299,11 +299,7 @@ void MainWin::init()
     // restore locked state of docks
     QtUi::actionCollection("General")->action("LockLayout")->setChecked(s.value("LockLayout", false).toBool());
 
-    CoreConnection *conn = Client::coreConnection();
-    if (!conn->connectToCore()) {
-        // No autoconnect selected (or no accounts)
-        showCoreConnectionDlg();
-    }
+    QTimer::singleShot(0, this, SLOT(doAutoConnect()));
 }
 
 
@@ -1214,6 +1210,15 @@ void MainWin::saveMainToolBarStatus(bool enabled)
 #else
     Q_UNUSED(enabled);
 #endif
+}
+
+
+void MainWin::doAutoConnect()
+{
+    if (!Client::coreConnection()->connectToCore()) {
+        // No autoconnect selected (or no accounts)
+        showCoreConnectionDlg();
+    }
 }
 
 
