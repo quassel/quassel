@@ -39,7 +39,7 @@ if(os.path.dirname(EXE_NAME)):
 CONTENTS_DIR += BUNDLE_NAME + ".app/Contents/"
 
 BUNDLE_VERSION = commands.getoutput("git --git-dir=" + SOURCE_DIR + "/.git/ describe")
-ICON_FILE = "pics/quassel.icns"
+ICONSET_FOLDER = "pics/iconset/"
 
 
 def createBundle():
@@ -50,23 +50,28 @@ def createBundle():
         pass
 
 
-def copyFiles(exeFile, iconFile):
+def copyFiles(exeFile, iconset):
     os.system("cp %s %sMacOs/%s" % (exeFile, CONTENTS_DIR.replace(' ', '\ '), BUNDLE_NAME.replace(' ', '\ ')))
-    os.system("cp %s/%s %s/Resources" % (SOURCE_DIR, iconFile, CONTENTS_DIR.replace(' ', '\ ')))
+    os.system("cp -r %s/%s %s/Resources/quassel.iconset/" % (SOURCE_DIR, iconset, CONTENTS_DIR.replace(' ', '\ ')))
 
 
-def createPlist(bundleName, iconFile, bundleVersion):
+def createPlist(bundleName, bundleVersion):
     templateFile = file(SOURCE_DIR + "/scripts/build/Info.plist", 'r')
     template = templateFile.read()
     templateFile.close()
 
     plistFile = file(CONTENTS_DIR + "Info.plist", 'w')
     plistFile.write(template % {"BUNDLE_NAME": bundleName,
-                                "ICON_FILE": iconFile[iconFile.rfind("/") + 1:],
+                                "ICON_FILE": "quassel.icns",
                                 "BUNDLE_VERSION": bundleVersion})
     plistFile.close()
 
+def convertIconset():
+    os.system("iconutil -c icns %s/Resources/quassel.iconset" % CONTENTS_DIR.replace(' ', '\ '))
+    os.system("rm -R %s/Resources/quassel.iconset" % CONTENTS_DIR.replace(' ', '\ '))
+
 if __name__ == "__main__":
     createBundle()
-    createPlist(BUNDLE_NAME, ICON_FILE, BUNDLE_VERSION)
-    copyFiles(EXE_NAME, ICON_FILE)
+    createPlist(BUNDLE_NAME, BUNDLE_VERSION)
+    copyFiles(EXE_NAME, ICONSET_FOLDER)
+    convertIconset()
