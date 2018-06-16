@@ -104,18 +104,15 @@
      <item>
       <widget class="QComboBox" name="senderPrefixComboBox">
        <property name="toolTip">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot;font-weight:400; font-style:normal;&quot;&gt;
-&lt;p&gt;&lt;span style=&quot;font-weight:600;&quot;&gt;Sender modes:&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;No modes:&lt;/span&gt; Don't show any modes&lt;br/&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;Example:&lt;/span&gt; &amp;lt;nickname&amp;gt;&lt;/p&gt;
-&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;Highest mode:&lt;/span&gt; Show only the highest active mode&lt;br/&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;Example:&lt;/span&gt; &amp;lt;@nickname&amp;gt;&lt;/p&gt;
-&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;All modes:&lt;/span&gt; Show all active modes&lt;br/&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;Example:&lt;/span&gt; &amp;lt;@+nickname&amp;gt;&lt;/p&gt;
-&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;qt&gt;&lt;style&gt;.bold { font-weight: bold; } .italic { font-style: italic; } .underline { text-decoration: underline; }&lt;/style&gt;
+&lt;p&gt;&lt;span class=&quot;bold&quot;&gt;Sender modes:&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;underline&quot;&gt;No modes:&lt;/span&gt; Don't show any modes&lt;br/&gt;&lt;span class=&quot;italic&quot;&gt;Example:&lt;/span&gt; &amp;lt;nickname&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;underline&quot;&gt;Highest mode:&lt;/span&gt; Show only the highest active mode&lt;br/&gt;&lt;span class=&quot;italic&quot;&gt;Example:&lt;/span&gt; &amp;lt;@nickname&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;underline&quot;&gt;All modes:&lt;/span&gt; Show all active modes&lt;br/&gt;&lt;span class=&quot;italic&quot;&gt;Example:&lt;/span&gt; &amp;lt;@+nickname&amp;gt;&lt;/p&gt;
+&lt;/qt&gt;</string>
        </property>
        <property name="defaultValue" stdset="0">
-        <bool>1</bool>
+        <number>1</number>
        </property>
        <property name="settingsKey" stdset="0">
         <string notr="true">SenderPrefixMode</string>
