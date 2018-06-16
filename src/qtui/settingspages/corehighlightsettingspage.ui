@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
+    <width>541</width>
     <height>404</height>
    </rect>
   </property>
@@ -71,7 +71,7 @@
    <item>
     <widget class="QWidget" name="highlightsConfigWidget" native="true">
      <layout class="QVBoxLayout" name="highlightConfigLayout">
-     <property name="leftMargin">
+      <property name="leftMargin">
        <number>0</number>
       </property>
       <property name="topMargin">
@@ -231,10 +231,10 @@
                <item>
                 <widget class="QPushButton" name="highlightImport">
                  <property name="toolTip">
-                  <string>Import highlight rules configured in &lt;i&gt;Local Highlights&lt;/i&gt;</string>
+                  <string notr="true">Import highlight rules configured in ${source}</string>
                  </property>
                  <property name="text">
-                  <string>Import Local</string>
+                  <string notr="true">Import ${source}</string>
                  </property>
                 </widget>
                </item>
