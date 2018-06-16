@@ -6,26 +6,49 @@
 # General setup
 #####################################################################
 
-project(QuasselIRC)
-
 # Versions
 set(QUASSEL_MAJOR  0)
 set(QUASSEL_MINOR 13)
 set(QUASSEL_PATCH  0)
 set(QUASSEL_VERSION_STRING "0.13-pre")
 
-# Output CMake version and build type for debug reasons
+# Build type
+if (CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_CONFIGURATION_TYPES Release RelWithDebInfo Debug Debugfull Profile)
+    set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING "These are the configuration types we support" FORCE)
+endif()
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build, options are: Release RelWithDebInfo Debug Debugfull Profile None" FORCE)
+endif()
+
+# Output CMake and Quassel versions as well as build type for debug reasons
+message(STATUS "Building Quassel ${QUASSEL_VERSION_STRING}...")
 message(STATUS "Using CMake ${CMAKE_VERSION}")
 message(STATUS "CMake build type: ${CMAKE_BUILD_TYPE}")
 
-# Tell CMake about or own modules
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+# Support ccache if found
+# This should happen before calling project(), so compiler settings are validated.
+option(USE_CCACHE "Enable support for ccache if available" ON)
+if (USE_CCACHE)
+    message(STATUS "Checking for ccache")
+    find_program(CCACHE_PROGRAM ccache)
+    if (CCACHE_PROGRAM)
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+        message(STATUS "Checking for ccache - enabled")
+    else()
+        message(STATUS "Checking for ccache - not found")
+    endif()
+endif()
+
+# Set up project
+project(Quassel C CXX)
 
 # General conveniences
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Include various CMake modules...
+# Include various CMake modules
 include(CMakePushCheckState)
 include(CheckFunctionExists)
 include(CheckIncludeFile)
@@ -33,7 +56,8 @@ include(CheckCXXSourceCompiles)
 include(CMakeDependentOption)
 include(FeatureSummary)
 
-# ... and our own stuff
+# Tell CMake about or own modules
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(QuasselCompileSettings)
 include(QuasselMacros)
 
@@ -41,7 +65,7 @@ include(QuasselMacros)
 # Options and variables that can be set on the command line
 #####################################################################
 
-# First, choose a Qt version. We support USE_QT5 and USE_QT4; if neither is set, Qt5 will be used
+# Choose a Qt version. We support USE_QT5 and USE_QT4; if neither is set, Qt5 will be used
 option(USE_QT5 "Enable support for Qt5" OFF)
 if (USE_QT5) # takes precedence
     set(USE_QT4 OFF)

@@ -74,6 +74,12 @@ options here:
 -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
     Choose which Quassel binaries to build.
 
+-DUSE_CCACHE=ON
+    Enable ccache if the ccache binary is available. This avoids the need for
+    hacks using PATH or the CXX variable to make ccache work.
+    Distributors may want to disable automatic detection if they have their
+    own caching mechanism set up.
+
 -DUSE_QT4=ON
     Build against the deprecated Qt4 instead of the default Qt5. Note that you
     should empty your build directory when switching between Qt versions,

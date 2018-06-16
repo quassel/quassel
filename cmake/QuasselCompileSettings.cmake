@@ -7,15 +7,6 @@
 
 include(CheckCXXCompilerFlag)
 
-if (CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_CONFIGURATION_TYPES Release RelWithDebInfo Debug Debugfull Profile)
-    set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING "These are the configuration types we support" FORCE)
-endif()
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo Debug Debugfull Profile" FORCE)
-endif()
-
 # Qt debug flags
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_DEBUG QT_DEBUG)
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS_DEBUGFULL QT_DEBUG)
