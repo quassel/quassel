@@ -50,7 +50,7 @@ SystemTray::SystemTray(QWidget *parent)
 #ifdef HAVE_KDE4
     KMenu *kmenu;
     _trayMenu = kmenu = new KMenu();
-    kmenu->addTitle(_activeIcon, "Quassel IRC");
+    kmenu->addTitle(QIcon::fromTheme(iconName(State::Active)), "Quassel IRC");
 #else
     _trayMenu = new QMenu(associatedWidget());
 #endif
