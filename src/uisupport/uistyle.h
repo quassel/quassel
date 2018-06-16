@@ -164,13 +164,14 @@ public:
     };
 
     /// Display of sender prefix modes
-    enum class SenderPrefixMode {
+    enum SenderPrefixMode {
         NoModes = 0,      ///< Hide sender modes
         HighestMode = 1,  ///< Show the highest active sender mode
         AllModes = 2      ///< Show all active sender modes
     };
     // Do not change SenderPrefixMode numbering without also adjusting
     // ChatViewSettingsPage::initSenderPrefixComboBox() and chatviewsettingspage.ui "defaultValue"
+    // TODO Qt5: Switch to "enum class"
 
     struct Format {
         FormatType type;
@@ -197,22 +198,22 @@ public:
      * @see UiStyle::ColorRole
      */
     const QList<QColor> defaultSenderColors = QList<QColor> {
-        QColor(204,   0,   0),  /// Sender00
-        QColor(  0, 108, 173),  /// Sender01
-        QColor( 77, 153,   0),  /// Sender02
-        QColor(102,   0, 204),  /// Sender03
-        QColor(166, 125,   0),  /// Sender04
-        QColor(  0, 153,  39),  /// Sender05
-        QColor(  0,  48, 192),  /// Sender06
-        QColor(204,   0, 154),  /// Sender07
-        QColor(185,  70,   0),  /// Sender08
-        QColor(134, 153,   0),  /// Sender09
-        QColor( 20, 153,   0),  /// Sender10
-        QColor(  0, 153,  96),  /// Sender11
-        QColor(  0, 108, 173),  /// Sender12
-        QColor(  0, 153, 204),  /// Sender13
-        QColor(179,   0, 204),  /// Sender14
-        QColor(204,   0,  77),  /// Sender15
+        QColor(204,   0,   0),  ///< Sender00
+        QColor(  0, 108, 173),  ///< Sender01
+        QColor( 77, 153,   0),  ///< Sender02
+        QColor(102,   0, 204),  ///< Sender03
+        QColor(166, 125,   0),  ///< Sender04
+        QColor(  0, 153,  39),  ///< Sender05
+        QColor(  0,  48, 192),  ///< Sender06
+        QColor(204,   0, 154),  ///< Sender07
+        QColor(185,  70,   0),  ///< Sender08
+        QColor(134, 153,   0),  ///< Sender09
+        QColor( 20, 153,   0),  ///< Sender10
+        QColor(  0, 153,  96),  ///< Sender11
+        QColor(  0, 108, 173),  ///< Sender12
+        QColor(  0, 153, 204),  ///< Sender13
+        QColor(179,   0, 204),  ///< Sender14
+        QColor(204,   0,  77),  ///< Sender15
     };
     // Explicitly declare QList<QColor> type for defaultSenderColors, otherwise error C2797
     // "list initialization inside member initializer list" will occur in Windows builds with Visual
@@ -342,11 +343,11 @@ private:
     mutable QHash<quint64, QFontMetricsF *> _metricsCache;
     QHash<UiStyle::ItemFormatType, QTextCharFormat> _listItemFormats;
     static QHash<QString, FormatType> _formatCodes;
-    static bool _useCustomTimestampFormat;        /// If true, use the custom timestamp format
-    static QString _systemTimestampFormatString;  /// Cached copy of system locale timestamp format
-    static QString _timestampFormatString;        /// Timestamp format string
-    static UiStyle::SenderPrefixMode _senderPrefixDisplay; /// Display of prefix modes before sender
-    static bool _showSenderBrackets;              /// If true, show brackets around sender names
+    static bool _useCustomTimestampFormat;        ///< If true, use the custom timestamp format
+    static QString _systemTimestampFormatString;  ///< Cached copy of system locale timestamp format
+    static QString _timestampFormatString;        ///< Timestamp format string
+    static UiStyle::SenderPrefixMode _senderPrefixDisplay; ///< Prefix mode display before sender
+    static bool _showSenderBrackets;              ///< If true, show brackets around sender names
 
     QIcon _channelJoinedIcon;
     QIcon _channelPartedIcon;
