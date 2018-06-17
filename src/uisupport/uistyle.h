@@ -164,14 +164,17 @@ public:
     };
 
     /// Display of sender prefix modes
+#if QT_VERSION >= 0x050000
+    enum class SenderPrefixMode {
+#else
     enum SenderPrefixMode {
+#endif
         NoModes = 0,      ///< Hide sender modes
         HighestMode = 1,  ///< Show the highest active sender mode
         AllModes = 2      ///< Show all active sender modes
     };
     // Do not change SenderPrefixMode numbering without also adjusting
     // ChatViewSettingsPage::initSenderPrefixComboBox() and chatviewsettingspage.ui "defaultValue"
-    // TODO Qt5: Switch to "enum class"
 
     struct Format {
         FormatType type;
