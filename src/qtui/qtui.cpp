@@ -274,7 +274,7 @@ std::vector<std::pair<QString, QString>> QtUi::availableIconThemes() const
     static const std::vector<std::pair<QString, QString>> supported {
         { "breeze", tr("Breeze") },
         { "breeze-dark", tr("Breeze Dark") },
-#ifdef WITH_OYGEN_ICONS
+#ifdef WITH_OXYGEN_ICONS
         { "oxygen", tr("Oxygen") }
 #endif
     };
