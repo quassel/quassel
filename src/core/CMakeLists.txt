@@ -41,7 +41,8 @@ set(SOURCES
     storage.cpp
 
     # needed for automoc
-    coreeventmanager.h)
+    coreeventmanager.h
+)
 
 set(LIBS )
 

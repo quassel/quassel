@@ -18,20 +18,23 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <logger.h>
-#include <set>
+#include <limits>
 
 #include "corenetwork.h"
 #include "identserver.h"
+#include "logger.h"
 
-IdentServer::IdentServer(bool strict, QObject *parent) : QObject(parent), _strict(strict), _socketId(0), _requestId(0) {
+IdentServer::IdentServer(bool strict, QObject *parent)
+    : QObject(parent)
+    , _strict(strict)
+{
     connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
     connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
 }
 
-IdentServer::~IdentServer() = default;
 
-bool IdentServer::startListening() {
+bool IdentServer::startListening()
+{
     uint16_t port = Quassel::optionValue("ident-port").toUShort();
 
     bool success = false;
@@ -46,25 +49,27 @@ bool IdentServer::startListening() {
     }
 
     if (_server.listen(QHostAddress("127.0.0.1"), port)) {
-        success = true;
-
         quInfo() << qPrintable(
                 tr("Listening for identd clients on IPv4 %1 port %2")
                         .arg("127.0.0.1")
                         .arg(_server.serverPort())
         );
+
+        success = true;
     }
 
     if (!success) {
-        quError() << qPrintable(
-                tr("Identd could not open any network interfaces to listen on! No identd functionality will be available"));
+        quError() << qPrintable(tr("Identd could not open any network interfaces to listen on! No identd functionality will be available"));
     }
 
     return success;
 }
 
-void IdentServer::stopListening(const QString &msg) {
+
+void IdentServer::stopListening(const QString &msg)
+{
     bool wasListening = false;
+
     if (_server.isListening()) {
         wasListening = true;
         _server.close();
@@ -73,6 +78,7 @@ void IdentServer::stopListening(const QString &msg) {
         wasListening = true;
         _v6server.close();
     }
+
     if (wasListening) {
         if (msg.isEmpty())
             quInfo() << "No longer listening for identd clients.";
@@ -81,8 +87,10 @@ void IdentServer::stopListening(const QString &msg) {
     }
 }
 
-void IdentServer::incomingConnection() {
-    auto *server = qobject_cast<QTcpServer *>(sender());
+
+void IdentServer::incomingConnection()
+{
+    auto server = qobject_cast<QTcpServer *>(sender());
     Q_ASSERT(server);
     while (server->hasPendingConnections()) {
         QTcpSocket *socket = server->nextPendingConnection();
@@ -90,7 +98,9 @@ void IdentServer::incomingConnection() {
     }
 }
 
-void IdentServer::respond() {
+
+void IdentServer::respond()
+{
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
     Q_ASSERT(socket);
 
@@ -118,16 +128,21 @@ void IdentServer::respond() {
     Request request{socket, localPort, query, transactionId, _requestId++};
     if (!success) {
         request.respondError("INVALID-PORT");
-    } else if (responseAvailable(request)) {
+    }
+    else if (responseAvailable(request)) {
         // success
-    } else if (lowestSocketId() < transactionId) {
+    }
+    else if (lowestSocketId() < transactionId) {
         _requestQueue.emplace_back(request);
-    } else {
+    }
+    else {
         request.respondError("NO-USER");
     }
 }
 
-void Request::respondSuccess(const QString &user) {
+
+void Request::respondSuccess(const QString &user)
+{
     QString data = query + " : USERID : Quassel : " + user + "\r\n";
 
     socket->write(data.toUtf8());
@@ -135,7 +150,9 @@ void Request::respondSuccess(const QString &user) {
     socket->close();
 }
 
-void Request::respondError(const QString &error) {
+
+void Request::respondError(const QString &error)
+{
     QString data = query + " : ERROR : " + error + "\r\n";
 
     socket->write(data.toUtf8());
@@ -143,18 +160,21 @@ void Request::respondError(const QString &error) {
     socket->close();
 }
 
-bool IdentServer::responseAvailable(Request request) {
+
+bool IdentServer::responseAvailable(Request request) const
+{
     if (!_connections.contains(request.localPort)) {
         return false;
     }
 
-    QString user = _connections[request.localPort];
-    request.respondSuccess(user);
+    request.respondSuccess(_connections[request.localPort]);
     return true;
 }
 
-bool IdentServer::addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort,
-                            const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId) {
+
+void IdentServer::addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort,
+                            const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId)
+{
     Q_UNUSED(localAddress)
     Q_UNUSED(peerAddress)
     Q_UNUSED(peerPort)
@@ -162,12 +182,12 @@ bool IdentServer::addSocket(const CoreIdentity *identity, const QHostAddress &lo
     const CoreNetwork *network = qobject_cast<CoreNetwork *>(sender());
     _connections[localPort] = network->coreSession()->strictCompliantIdent(identity);;
     processWaiting(socketId);
-    return true;
 }
 
 
-bool IdentServer::removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort,
-                               const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId) {
+void IdentServer::removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort,
+                               const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId)
+{
     Q_UNUSED(identity)
     Q_UNUSED(localAddress)
     Q_UNUSED(peerAddress)
@@ -175,16 +195,19 @@ bool IdentServer::removeSocket(const CoreIdentity *identity, const QHostAddress 
 
     _connections.remove(localPort);
     processWaiting(socketId);
-    return true;
 }
 
-qint64 IdentServer::addWaitingSocket() {
+
+qint64 IdentServer::addWaitingSocket()
+{
     qint64 newSocketId = _socketId++;
     _waiting.push_back(newSocketId);
     return newSocketId;
 }
 
-qint64 IdentServer::lowestSocketId() {
+
+qint64 IdentServer::lowestSocketId() const
+{
     if (_waiting.empty()) {
         return std::numeric_limits<qint64>::max();
     }
@@ -192,24 +215,33 @@ qint64 IdentServer::lowestSocketId() {
     return _waiting.front();
 }
 
-void IdentServer::removeWaitingSocket(qint64 socketId) {
+
+void IdentServer::removeWaitingSocket(qint64 socketId)
+{
     _waiting.remove(socketId);
 }
 
-void IdentServer::processWaiting(qint64 socketId) {
+
+void IdentServer::processWaiting(qint64 socketId)
+{
     removeWaitingSocket(socketId);
-    _requestQueue.remove_if([=](Request request) {
+
+    _requestQueue.remove_if([this, socketId](Request request) {
         if (socketId < request.transactionId && responseAvailable(request)) {
             return true;
-        } else if (lowestSocketId() < request.transactionId) {
+        }
+        else if (lowestSocketId() < request.transactionId) {
             return false;
-        } else {
+        }
+        else {
             request.respondError("NO-USER");
             return true;
         }
     });
 }
 
-bool operator==(const Request &a, const Request &b) {
+
+bool operator==(const Request &a, const Request &b)
+{
     return a.requestId == b.requestId;
 }

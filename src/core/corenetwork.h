@@ -453,7 +453,7 @@ private:
 #else
     QTcpSocket socket;
 #endif
-    qint64 _socketId;
+    qint64 _socketId{0};
 
     CoreUserInputHandler *_userInputHandler;
 
