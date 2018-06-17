@@ -23,9 +23,9 @@
 
 #include <QApplication>
 #include <QColor>
-#include <QIcon>
 
 #include "buffersettings.h"
+#include "icon.h"
 #include "qssparser.h"
 #include "quassel.h"
 #include "uistyle.h"
@@ -62,16 +62,16 @@ QColor extendedMircColor(int number)
 }
 
 UiStyle::UiStyle(QObject *parent)
-    : QObject(parent),
-    _channelJoinedIcon(QIcon::fromTheme("irc-channel-active", QIcon(":/icons/irc-channel-active.png"))),
-    _channelPartedIcon(QIcon::fromTheme("irc-channel-inactive", QIcon(":/icons/irc-channel-inactive.png"))),
-    _userOfflineIcon(QIcon::fromTheme("im-user-offline", QIcon::fromTheme("user-offline", QIcon(":/icons/im-user-offline.png")))),
-    _userOnlineIcon(QIcon::fromTheme("im-user", QIcon::fromTheme("user-available", QIcon(":/icons/im-user.png")))), // im-user-* are non-standard oxygen extensions
-    _userAwayIcon(QIcon::fromTheme("im-user-away", QIcon::fromTheme("user-away", QIcon(":/icons/im-user-away.png")))),
-    _categoryOpIcon(QIcon::fromTheme("irc-operator")),
-    _categoryVoiceIcon(QIcon::fromTheme("irc-voice")),
-    _opIconLimit(UserCategoryItem::categoryFromModes("o")),
-    _voiceIconLimit(UserCategoryItem::categoryFromModes("v"))
+    : QObject(parent)
+    , _channelJoinedIcon{icon::get("irc-channel-active")}
+    , _channelPartedIcon{icon::get("irc-channel-inactive")}
+    , _userOfflineIcon{icon::get({"im-user-offline", "user-offline"})}
+    , _userOnlineIcon{icon::get({"im-user-online", "im-user", "user-available"})}
+    , _userAwayIcon{icon::get({"im-user-away", "user-away"})}
+    , _categoryOpIcon{icon::get("irc-operator")}
+    , _categoryVoiceIcon{icon::get("irc-voice")}
+    , _opIconLimit{UserCategoryItem::categoryFromModes("o")}
+    , _voiceIconLimit{UserCategoryItem::categoryFromModes("v")}
 {
     static bool registered = []() {
         qRegisterMetaType<FormatList>();

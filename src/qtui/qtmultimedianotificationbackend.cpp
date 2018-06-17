@@ -18,13 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QFileDialog>
-#include <QIcon>
-#include <QUrl>
-
 #include "qtmultimedianotificationbackend.h"
 
+#include <QFileDialog>
+#include <QUrl>
+
 #include "clientsettings.h"
+#include "icon.h"
 #include "mainwin.h"
 #include "qtui.h"
 
@@ -96,9 +96,9 @@ QtMultimediaNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
     : SettingsPage("Internal", "QtMultimediaNotification", parent)
 {
     ui.setupUi(this);
-    ui.enabled->setIcon(QIcon::fromTheme("media-playback-start"));
-    ui.play->setIcon(QIcon::fromTheme("media-playback-start"));
-    ui.open->setIcon(QIcon::fromTheme("document-open"));
+    ui.enabled->setIcon(icon::get("media-playback-start"));
+    ui.play->setIcon(icon::get("media-playback-start"));
+    ui.open->setIcon(icon::get("document-open"));
 
     _audioAvailable = (QMediaPlayer().availability() == QMultimedia::Available);
 

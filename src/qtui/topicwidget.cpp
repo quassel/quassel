@@ -20,9 +20,8 @@
 
 #include "topicwidget.h"
 
-#include <QIcon>
-
 #include "client.h"
+#include "icon.h"
 #include "networkmodel.h"
 #include "uisettings.h"
 #include "graphicalui.h"
@@ -32,7 +31,7 @@ TopicWidget::TopicWidget(QWidget *parent)
     : AbstractItemView(parent)
 {
     ui.setupUi(this);
-    ui.topicEditButton->setIcon(QIcon::fromTheme("edit-rename"));
+    ui.topicEditButton->setIcon(icon::get("edit-rename"));
     ui.topicLineEdit->setLineWrapEnabled(true);
     ui.topicLineEdit->installEventFilter(this);
 

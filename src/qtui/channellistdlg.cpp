@@ -22,11 +22,11 @@
 
 #include <QHeaderView>
 #include <QHBoxLayout>
-#include <QIcon>
 #include <QSpacerItem>
 
 #include "client.h"
 #include "clientirclisthelper.h"
+#include "icon.h"
 
 ChannelListDlg::ChannelListDlg(QWidget *parent)
     : QDialog(parent),
@@ -41,7 +41,7 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
     _sortFilter.setFilterKeyColumn(-1);
 
     ui.setupUi(this);
-    ui.advancedModeLabel->setPixmap(QIcon::fromTheme("edit-rename").pixmap(22));
+    ui.advancedModeLabel->setPixmap(icon::get("edit-rename").pixmap(22));
 
     ui.channelListView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.channelListView->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -54,7 +54,7 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
 
     ui.searchChannelsButton->setAutoDefault(false);
 
-    setWindowIcon(QIcon::fromTheme("format-list-unordered"));
+    setWindowIcon(icon::get("format-list-unordered"));
 
     connect(ui.advancedModeLabel, SIGNAL(clicked()), this, SLOT(toggleMode()));
     connect(ui.searchChannelsButton, SIGNAL(clicked()), this, SLOT(requestSearch()));
@@ -132,14 +132,14 @@ void ChannelListDlg::setAdvancedMode(bool advanced)
             delete _simpleModeSpacer;
             _simpleModeSpacer = 0;
         }
-        ui.advancedModeLabel->setPixmap(QIcon::fromTheme("edit-clear-locationbar-rtl", QIcon::fromTheme("edit-clear")).pixmap(16));
+        ui.advancedModeLabel->setPixmap(icon::get("edit-clear-locationbar-rtl").pixmap(16));
     }
     else {
         if (!_simpleModeSpacer) {
             _simpleModeSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
             ui.searchLayout->insertSpacerItem(0, _simpleModeSpacer);
         }
-        ui.advancedModeLabel->setPixmap(QIcon::fromTheme("edit-rename").pixmap(16));
+        ui.advancedModeLabel->setPixmap(icon::get("edit-rename").pixmap(16));
     }
 
     ui.channelNameLineEdit->clear();

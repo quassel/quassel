@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QMessageBox>
-
 #include "coreinfodlg.h"
 
-#include "client.h"
+#include <QMessageBox>
+
 #include "bufferwidget.h"
+#include "client.h"
+#include "icon.h"
 
 CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
     ui.setupUi(this);
@@ -33,7 +34,7 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
     coreInfoChanged(coreInfo->coreData());
 
     // Warning icon
-    ui.coreUnsupportedIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(16));
+    ui.coreUnsupportedIcon->setPixmap(icon::get("dialog-warning").pixmap(16));
 
     updateUptime();
     startTimer(1000);

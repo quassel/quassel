@@ -20,15 +20,15 @@
 
 #include "bufferviewsettingspage.h"
 
-#include <QIcon>
 #include <QMessageBox>
 
-#include "client.h"
-#include "network.h"
+#include "buffermodel.h"
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
-#include "buffermodel.h"
+#include "client.h"
 #include "clientbufferviewmanager.h"
+#include "icon.h"
+#include "network.h"
 #include "networkmodel.h"
 #include "util.h"
 
@@ -43,9 +43,9 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
     if (!Client::isCoreFeatureEnabled(Quassel::Feature::HideInactiveNetworks))
         ui.hideInactiveNetworks->hide();
 
-    ui.renameBufferView->setIcon(QIcon::fromTheme("edit-rename"));
-    ui.addBufferView->setIcon(QIcon::fromTheme("list-add"));
-    ui.deleteBufferView->setIcon(QIcon::fromTheme("edit-delete"));
+    ui.renameBufferView->setIcon(icon::get("edit-rename"));
+    ui.addBufferView->setIcon(icon::get("list-add"));
+    ui.deleteBufferView->setIcon(icon::get("edit-delete"));
 
     reset();
 

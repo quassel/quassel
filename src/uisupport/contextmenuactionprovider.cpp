@@ -18,29 +18,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QIcon>
+#include "contextmenuactionprovider.h"
+
 #include <QInputDialog>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMap>
 
-#include "contextmenuactionprovider.h"
-
 #include "buffermodel.h"
 #include "buffersettings.h"
-#include "clientidentity.h"
-#include "network.h"
-#include "util.h"
 #include "client.h"
 #include "clientignorelistmanager.h"
+#include "icon.h"
+#include "network.h"
+#include "util.h"
 
 ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkModelController(parent)
 {
-    registerAction(NetworkConnect, QIcon::fromTheme("network-connect"), tr("Connect"));
-    registerAction(NetworkDisconnect, QIcon::fromTheme("network-disconnect"), tr("Disconnect"));
+    registerAction(NetworkConnect, icon::get("network-connect"), tr("Connect"));
+    registerAction(NetworkDisconnect, icon::get("network-disconnect"), tr("Disconnect"));
 
-    registerAction(BufferJoin, QIcon::fromTheme("irc-join-channel"), tr("Join"));
-    registerAction(BufferPart, QIcon::fromTheme("irc-close-channel"), tr("Part"));
+    registerAction(BufferJoin, icon::get("irc-join-channel"), tr("Join"));
+    registerAction(BufferPart, icon::get("irc-close-channel"), tr("Part"));
     registerAction(BufferRemove, tr("Delete Chat(s)..."));
     registerAction(BufferSwitchTo, tr("Go to Chat"));
 
@@ -55,7 +54,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     registerAction(HideApplyToAll, tr("Set as Default..."));
     registerAction(HideUseDefaults, tr("Use Defaults..."));
 
-    registerAction(JoinChannel, QIcon::fromTheme("irc-join-channel"), tr("Join Channel..."));
+    registerAction(JoinChannel, icon::get("irc-join-channel"), tr("Join Channel..."));
 
     registerAction(NickQuery, tr("Start Query"));
     registerAction(NickSwitchTo, tr("Show Query"));
@@ -77,15 +76,15 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     registerAction(NickIgnoreToggleEnabled3, "Enable", true);
     registerAction(NickIgnoreToggleEnabled4, "Enable", true);
 
-    registerAction(NickOp, QIcon::fromTheme("irc-operator"), tr("Give Operator Status"));
-    registerAction(NickDeop, QIcon::fromTheme("irc-remove-operator"), tr("Take Operator Status"));
-    registerAction(NickHalfop, QIcon::fromTheme("irc-voice"), tr("Give Half-Operator Status"));
-    registerAction(NickDehalfop, QIcon::fromTheme("irc-unvoice"), tr("Take Half-Operator Status"));
-    registerAction(NickVoice, QIcon::fromTheme("irc-voice"), tr("Give Voice"));
-    registerAction(NickDevoice, QIcon::fromTheme("irc-unvoice"), tr("Take Voice"));
-    registerAction(NickKick, QIcon::fromTheme("im-kick-user"), tr("Kick From Channel"));
-    registerAction(NickBan, QIcon::fromTheme("im-ban-user"), tr("Ban From Channel"));
-    registerAction(NickKickBan, QIcon::fromTheme("im-ban-kick-user"), tr("Kick && Ban"));
+    registerAction(NickOp, icon::get("irc-operator"), tr("Give Operator Status"));
+    registerAction(NickDeop, icon::get("irc-remove-operator"), tr("Take Operator Status"));
+    registerAction(NickHalfop, icon::get("irc-voice"), tr("Give Half-Operator Status"));
+    registerAction(NickDehalfop, icon::get("irc-unvoice"), tr("Take Half-Operator Status"));
+    registerAction(NickVoice, icon::get("irc-voice"), tr("Give Voice"));
+    registerAction(NickDevoice, icon::get("irc-unvoice"), tr("Take Voice"));
+    registerAction(NickKick, icon::get("im-kick-user"), tr("Kick From Channel"));
+    registerAction(NickBan, icon::get("im-ban-user"), tr("Ban From Channel"));
+    registerAction(NickKickBan, icon::get("im-ban-kick-user"), tr("Kick && Ban"));
 
     registerAction(HideBufferTemporarily, tr("Hide Chat(s) Temporarily"));
     registerAction(HideBufferPermanently, tr("Hide Chat(s) Permanently"));

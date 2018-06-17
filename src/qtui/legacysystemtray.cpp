@@ -20,9 +20,9 @@
 
 #ifndef QT_NO_SYSTEMTRAYICON
 
-#include <QIcon>
-
 #include "legacysystemtray.h"
+
+#include "icon.h"
 #include "mainwin.h"
 #include "qtui.h"
 
@@ -90,7 +90,7 @@ void LegacySystemTray::onModeChanged(Mode mode)
 void LegacySystemTray::updateIcon()
 {
     QString iconName = (state() == NeedsAttention) ? currentAttentionIconName() : currentIconName();
-    _trayIcon->setIcon(QIcon::fromTheme(iconName, QIcon{QString{":/icons/hicolor/24x24/status/%1.svg"}.arg(iconName)}));
+    _trayIcon->setIcon(icon::get(iconName, QString{":/icons/hicolor/24x24/status/%1.svg"}.arg(iconName)));
 }
 
 

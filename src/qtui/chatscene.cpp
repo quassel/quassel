@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "chatscene.h"
+
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QDrag>
 #include <QGraphicsSceneMouseEvent>
-#include <QIcon>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMimeData>
@@ -45,18 +46,18 @@
 #include "chatitem.h"
 #include "chatline.h"
 #include "chatlinemodelitem.h"
-#include "chatscene.h"
 #include "chatview.h"
+#include "chatviewsettings.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "columnhandleitem.h"
 #include "contextmenuactionprovider.h"
+#include "icon.h"
 #include "mainwin.h"
 #include "markerlineitem.h"
 #include "messagefilter.h"
 #include "qtui.h"
 #include "qtuistyle.h"
-#include "chatviewsettings.h"
 #include "webpreviewitem.h"
 
 const qreal minContentsWidth = 200;
@@ -836,7 +837,7 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     // If we have text selected, insert the Copy Selection as first item
     if (isPosOverSelection(pos)) {
         QAction *sep = menu.insertSeparator(menu.actions().first());
-        QAction *act = new Action(QIcon::fromTheme("edit-copy"), tr("Copy Selection"), &menu, this,
+        QAction *act = new Action(icon::get("edit-copy"), tr("Copy Selection"), &menu, this,
             SLOT(selectionToClipboard()), QKeySequence::Copy);
         menu.insertAction(sep, act);
 
@@ -845,7 +846,7 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
             searchSelectionText = searchSelectionText.left(_webSearchSelectionTextMaxVisible).append(QString::fromUtf8("…"));
         searchSelectionText = tr("Search '%1'").arg(searchSelectionText);
 
-        QAction *webSearchAction = new Action(QIcon::fromTheme("edit-find"), searchSelectionText, &menu, this, SLOT(webSearchOnSelection()));
+        QAction *webSearchAction = new Action(icon::get("edit-find"), searchSelectionText, &menu, this, SLOT(webSearchOnSelection()));
         menu.insertAction(sep, webSearchAction);
     }
 

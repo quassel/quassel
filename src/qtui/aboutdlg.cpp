@@ -21,9 +21,10 @@
 #include "aboutdlg.h"
 
 #include <QDateTime>
-#include <QIcon>
+#include <QPixmap>
 
 #include "aboutdata.h"
+#include "icon.h"
 #include "quassel.h"
 
 AboutDlg::AboutDlg(QWidget *parent)
@@ -44,7 +45,7 @@ AboutDlg::AboutDlg(QWidget *parent)
     ui.contributorTextBrowser->setHtml(contributors());
     ui.thanksToTextBrowser->setHtml(thanksTo());
 
-    setWindowIcon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")));
+    setWindowIcon(icon::get("quassel"));
 }
 
 

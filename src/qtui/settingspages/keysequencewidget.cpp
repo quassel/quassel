@@ -29,7 +29,6 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QHBoxLayout>
-#include <QIcon>
 #include <QMessageBox>
 #include <QToolButton>
 
@@ -40,6 +39,7 @@
 
 #include "action.h"
 #include "actioncollection.h"
+#include "icon.h"
 #include "keysequencewidget.h"
 
 KeySequenceButton::KeySequenceButton(KeySequenceWidget *d_, QWidget *parent)
@@ -172,7 +172,7 @@ KeySequenceWidget::KeySequenceWidget(QWidget *parent)
 
     _keyButton = new KeySequenceButton(this, this);
     _keyButton->setFocusPolicy(Qt::StrongFocus);
-    _keyButton->setIcon(QIcon::fromTheme("configure"));
+    _keyButton->setIcon(icon::get("configure"));
     _keyButton->setToolTip(tr("Click on the button, then enter the shortcut like you would in the program.\nExample for Ctrl+a: hold the Ctrl key and press a."));
     layout->addWidget(_keyButton);
 
@@ -180,9 +180,9 @@ KeySequenceWidget::KeySequenceWidget(QWidget *parent)
     layout->addWidget(_clearButton);
 
     if (qApp->isLeftToRight())
-        _clearButton->setIcon(QIcon::fromTheme("edit-clear-locationbar-rtl", QIcon::fromTheme("edit-clear")));
+        _clearButton->setIcon(icon::get("edit-clear-locationbar-rtl"));
     else
-        _clearButton->setIcon(QIcon::fromTheme("edit-clear-locationbar-ltr", QIcon::fromTheme("edit-clear")));
+        _clearButton->setIcon(icon::get("edit-clear-locationbar-ltr"));
 
     setLayout(layout);
 

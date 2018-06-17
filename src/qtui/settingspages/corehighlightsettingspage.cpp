@@ -24,6 +24,7 @@
 
 #include "client.h"
 #include "corehighlightsettingspage.h"
+#include "icon.h"
 #include "qtui.h"
 
 CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
@@ -90,7 +91,7 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
 
     // Warning icon
-    ui.coreUnsupportedIcon->setPixmap(QIcon::fromTheme("dialog-warning").pixmap(16));
+    ui.coreUnsupportedIcon->setPixmap(icon::get("dialog-warning").pixmap(16));
 
     // Set up client/monolithic remote highlights information
     if (Quassel::runMode() == Quassel::Monolithic) {

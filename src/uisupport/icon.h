@@ -18,43 +18,41 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "clearablelineedit.h"
+#pragma once
 
-#include <QToolButton>
-#include <QStyle>
+#include <vector>
 
-#include "icon.h"
+#include <QIcon>
+#include <QString>
 
-ClearableLineEdit::ClearableLineEdit(QWidget *parent)
-    : QLineEdit(parent)
-{
-    clearButton = new QToolButton(this);
-    clearButton->setIcon(icon::get("edit-clear-locationbar-rtl"));
-    clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
-    clearButton->hide();
+namespace icon {
 
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
-    connect(this, SIGNAL(textChanged(const QString &)), this, SLOT(updateClearButton(const QString &)));
+/**
+ * Gets an icon from the current icon theme.
+ *
+ * If the theme does not provide the icon, tries to load the icon from the
+ * fallback path, if given.
+ *
+ * If no icon can be found, a warning is displayed and a null icon returned.
+ *
+ * @param iconName     Icon name
+ * @param fallbackPath Full path to a fallback icon
+ * @returns The requested icon, if available
+ */
+QIcon get(const QString &iconName, const QString &fallbackPath = {});
 
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QString("QLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() + frameWidth + 1));
-    QSize msz = minimumSizeHint();
-    setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
-        qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
-}
+/**
+ * Gets an icon from the current icon theme.
+ *
+ * If the theme does not provide any of the given icon names, tries to load the
+ * icon from the fallback path, if given.
+ *
+ * If no icon can be found, a warning is displayed and a null icon returned.
+ *
+ * @param iconNames    List of icon names (first match wins)
+ * @param fallbackPath Full path to a fallback icon
+ * @returns The requested icon, if available
+ */
+QIcon get(const std::vector<QString> &iconNames, const QString &fallbackPath = {});
 
-
-void ClearableLineEdit::resizeEvent(QResizeEvent *)
-{
-    QSize size = clearButton->sizeHint();
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    clearButton->move(rect().right() - frameWidth - size.width(),
-        (rect().bottom() + 1 - size.height())/2);
-}
-
-
-void ClearableLineEdit::updateClearButton(const QString &text)
-{
-    clearButton->setVisible(!text.isEmpty());
 }

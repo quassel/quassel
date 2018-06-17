@@ -18,15 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "mainpage.h"
+
 #include <QPushButton>
 #include <QImage>
 #include <QLabel>
 #include <QLayout>
 #include <QPainter>
 
-#include "mainpage.h"
-#include "coreconnectdlg.h"
 #include "client.h"
+#include "coreconnectdlg.h"
+#include "icon.h"
 
 MainPage::MainPage(QWidget *parent) : QWidget(parent)
 {
@@ -37,7 +39,7 @@ MainPage::MainPage(QWidget *parent) : QWidget(parent)
     layout->addWidget(label);
 
     if (Quassel::runMode() != Quassel::Monolithic) {
-        _connectButton = new QPushButton(QIcon::fromTheme("network-connect"), tr("Connect to Core..."));
+        _connectButton = new QPushButton(icon::get("network-connect"), tr("Connect to Core..."));
         _connectButton->setEnabled(Client::coreConnection()->state() == CoreConnection::Disconnected);
 
         connect(Client::coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), this, SLOT(coreConnectionStateChanged()));

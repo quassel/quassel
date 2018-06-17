@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "chatitem.h"
+
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
-#include <QIcon>
 #include <QPainter>
 #include <QPalette>
 #include <QTextLayout>
@@ -31,11 +32,11 @@
 
 #include "buffermodel.h"
 #include "bufferview.h"
-#include "chatitem.h"
 #include "chatline.h"
 #include "chatlinemodel.h"
 #include "chatview.h"
 #include "contextmenuactionprovider.h"
+#include "icon.h"
 #include "mainwin.h"
 #include "qtui.h"
 #include "qtuistyle.h"
@@ -798,7 +799,7 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos)
         switch (click.type()) {
         case Clickable::Url:
             privateData()->activeClickable = click;
-            menu->addAction(QIcon::fromTheme("edit-copy"), tr("Copy Link Address"),
+            menu->addAction(icon::get("edit-copy"), tr("Copy Link Address"),
                 &_actionProxy, SLOT(copyLinkToClipboard()))->setData(QVariant::fromValue<void *>(this));
             break;
         case Clickable::Channel:

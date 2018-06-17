@@ -20,9 +20,8 @@
 
 #include "chatmonitorsettingspage.h"
 
-#include <QIcon>
-
 #include "client.h"
+#include "icon.h"
 #include "networkmodel.h"
 #include "bufferviewconfig.h"
 #include "buffermodel.h"
@@ -37,8 +36,8 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
 {
     ui.setupUi(this);
 
-    ui.activateBuffer->setIcon(QIcon::fromTheme("go-next"));
-    ui.deactivateBuffer->setIcon(QIcon::fromTheme("go-previous"));
+    ui.activateBuffer->setIcon(icon::get("go-next"));
+    ui.deactivateBuffer->setIcon(icon::get("go-previous"));
 
     // setup available buffers config (for the bufferview on the left)
     _configAvailable = new BufferViewConfig(-667, this);

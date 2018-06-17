@@ -30,6 +30,7 @@
 #include "buffermodel.h"
 #include "chatlinemodel.h"
 #include "contextmenuactionprovider.h"
+#include "icon.h"
 #include "mainwin.h"
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
@@ -64,7 +65,7 @@ QtUi::QtUi()
 
     setupIconTheme();
 
-    QApplication::setWindowIcon(QIcon::fromTheme("quassel"));
+    QApplication::setWindowIcon(icon::get("quassel"));
 
     setContextMenuActionProvider(new ContextMenuActionProvider(this));
     setToolBarActionProvider(new ToolBarActionProvider(this));
