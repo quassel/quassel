@@ -5,7 +5,7 @@ Quassel IRC
 
 [Quassel IRC][web-home] is a modern, cross-platform, distributed IRC client,
 meaning that one (or multiple) client(s) can attach to and detach from a
-central core – much like the popular combination of screen and a text-based
+central core -- much like the popular combination of screen and a text-based
 IRC client such as WeeChat, but graphical.
 
 Not only do we aim to bring a pleasurable, comfortable chatting experience to
