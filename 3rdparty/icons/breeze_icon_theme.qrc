@@ -11,6 +11,7 @@
     <file>breeze/actions/16/download.svg</file>
     <file>breeze/actions/16/edit-clear-locationbar-ltr.svg</file>
     <file>breeze/actions/16/edit-clear-locationbar-rtl.svg</file>
+    <file>breeze/actions/16/edit-clear.svg</file>
     <file>breeze/actions/16/edit-copy.svg</file>
     <file>breeze/actions/16/edit-delete.svg</file>
     <file>breeze/actions/16/edit-find.svg</file>
@@ -34,6 +35,7 @@
     <file>breeze/actions/16/im-kick-user.svg</file>
     <file>breeze/actions/16/im-user-away.svg</file>
     <file>breeze/actions/16/im-user-offline.svg</file>
+    <file>breeze/actions/16/im-user-online.svg</file>
     <file>breeze/actions/16/im-user.svg</file>
     <file>breeze/actions/16/irc-channel-active.svg</file>
     <file>breeze/actions/16/irc-channel-inactive.svg</file>
@@ -64,6 +66,7 @@
     <file>breeze/actions/22/download.svg</file>
     <file>breeze/actions/22/edit-clear-locationbar-ltr.svg</file>
     <file>breeze/actions/22/edit-clear-locationbar-rtl.svg</file>
+    <file>breeze/actions/22/edit-clear.svg</file>
     <file>breeze/actions/22/edit-copy.svg</file>
     <file>breeze/actions/22/edit-delete.svg</file>
     <file>breeze/actions/22/edit-find.svg</file>
@@ -87,6 +90,7 @@
     <file>breeze/actions/22/im-kick-user.svg</file>
     <file>breeze/actions/22/im-user-away.svg</file>
     <file>breeze/actions/22/im-user-offline.svg</file>
+    <file>breeze/actions/22/im-user-online.svg</file>
     <file>breeze/actions/22/im-user.svg</file>
     <file>breeze/actions/22/irc-channel-active.svg</file>
     <file>breeze/actions/22/irc-channel-inactive.svg</file>
@@ -121,6 +125,7 @@
     <file>breeze/actions/24/download.svg</file>
     <file>breeze/actions/24/edit-clear-locationbar-ltr.svg</file>
     <file>breeze/actions/24/edit-clear-locationbar-rtl.svg</file>
+    <file>breeze/actions/24/edit-clear.svg</file>
     <file>breeze/actions/24/edit-copy.svg</file>
     <file>breeze/actions/24/edit-delete.svg</file>
     <file>breeze/actions/24/edit-find.svg</file>
@@ -144,6 +149,7 @@
     <file>breeze/actions/24/im-kick-user.svg</file>
     <file>breeze/actions/24/im-user-away.svg</file>
     <file>breeze/actions/24/im-user-offline.svg</file>
+    <file>breeze/actions/24/im-user-online.svg</file>
     <file>breeze/actions/24/im-user.svg</file>
     <file>breeze/actions/24/irc-channel-active.svg</file>
     <file>breeze/actions/24/irc-channel-inactive.svg</file>
@@ -192,13 +198,17 @@
     <file>breeze/status/16/dialog-information.svg</file>
     <file>breeze/status/16/security-high.svg</file>
     <file>breeze/status/16/security-low.svg</file>
+    <file>breeze/status/16/user-available.svg</file>
     <file>breeze/status/16/user-away.svg</file>
+    <file>breeze/status/16/user-offline.svg</file>
     <file>breeze/status/22/dialog-information.svg</file>
     <file>breeze/status/22/dialog-password.svg</file>
     <file>breeze/status/22/network-wired.svg</file>
     <file>breeze/status/22/security-high.svg</file>
     <file>breeze/status/22/security-low.svg</file>
+    <file>breeze/status/22/user-available.svg</file>
     <file>breeze/status/22/user-away.svg</file>
+    <file>breeze/status/22/user-offline.svg</file>
     <file>breeze/status/64/dialog-information.svg</file>
     <file>breeze/status/64/dialog-password.svg</file>
     <file>breeze/status/64/dialog-warning.svg</file>
