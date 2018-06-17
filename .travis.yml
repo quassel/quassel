@@ -1,73 +1,77 @@
-os:
-  - linux
-
 sudo: required
-dist: trusty
 
-language: cpp
-cache: ccache
+services:
+  - docker
 
-compiler:
-  - gcc
-  - clang
+# Define build matrix for Linux
+os: linux
+language: generic  # No host compilation
 
 env:
-  - QT_VERSION=qt4
-  - QT_VERSION=qt5
+  - DIST=xenial CXX=g++
+  - DIST=xenial CXX=clang++
 
-matrix:
+# Set up cache
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/ccache
+
+# Prepare
+before_install:
+  - docker pull quassel/quassel-build-env:$DIST
+  - docker images
+  - mkdir build
+
+# Build inside the docker image
+# Source, build and ccache directories are bind-mounted into the container
+script:
+  - |
+    docker run -t -w /build --rm \
+               -v "$(readlink -f .):/src" \
+               -v "$(readlink -f build):/build" \
+               -v "$(readlink -f ccache):/ccache" \
+               -e CCACHE_DIR=/ccache \
+               -e CXX=$CXX \
+               quassel/quassel-build-env:$DIST \
+               sh -c "cmake -GNinja /src \
+                            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                      && ninja \
+                      && ccache -s \
+                     "
+
+# Define a separate job for OSX
+jobs:
   include:
     - os: osx
-      compiler: gcc
-      env: QT_VERSION=qt5
-  exclude:
-    - compiler: clang
-      env: QT_VERSION=qt4
-
-install: |-
-  if [ "$TRAVIS_OS_NAME" == "linux" ]
-  then
-    sudo apt-get -qy install libqt5webkit5-dev qttools5-dev qtscript5-dev
-    sudo apt-get -qy install libdbusmenu-qt-dev libdbusmenu-qt5-dev
-    sudo apt-get -qy install libphonon-dev libphonon4qt5-dev
-    sudo apt-get -qy install libqca2-dev
-    sudo apt-get -qy install qt4-dev-tools qttools5-dev-tools
-    sudo apt-get -qy install libphonon4qt5experimental4 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=805096
-  elif [ "$TRAVIS_OS_NAME" == "osx" ]
-  then
-    brew update
-    brew install ninja qt5
-  fi
-
-script: |-
-  mkdir build
-  cd build
-  if [ "$TRAVIS_OS_NAME" == "linux" ]
-  then
-    if [ "$QT_VERSION" = "qt4" ]; then cmake -DUSE_QT4=ON ..; fi
-    if [ "$QT_VERSION" = "qt5" ]; then cmake ..; fi
-    make
-  elif [ "$TRAVIS_OS_NAME" == "osx" ]
-  then
-    PATH=$PATH:/usr/local/opt/qt5/bin
-    if [[ "$TRAVIS_TAG" != "" && "$GH_TOKEN" != "" ]]
-    then
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DDEPLOY=ON
-    else
-      cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release
-    fi
-    ninja install
-  fi
-
-deploy:
-  provider: releases
-  api_key: "${GH_TOKEN}"
-  file_glob: true
-  file:
-    - "QuasselClient_MacOSX-x86_64_*.dmg"
-    - "QuasselCore_MacOSX-x86_64_*.dmg"
-    - "QuasselMono_MacOSX-x86_64_*.dmg"
-  skip_cleanup: true
-  on:
-    tags: true
-    condition: "$TRAVIS_OS_NAME == 'osx' && $GH_TOKEN != ''"
+      language: cpp
+      compiler: clang
+      env:
+      cache:
+        directories:
+          - $HOME/.ccache
+          - $HOME/Library/Caches/Homebrew
+      before_install:
+        - brew update && brew install ccache ninja qca qt5
+      script:
+        - mkdir build && cd build
+        - |
+          PATH=$PATH:/usr/local/opt/qt5/bin
+          DEPLOY=OFF
+          if [[ "$TRAVIS_TAG" != "" && "$GH_TOKEN" != "" ]]; then
+            DEPLOY=ON
+          fi
+          cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE=Release -DDEPLOY=$DEPLOY
+          ninja install
+        - ccache -s
+      deploy:
+        provider: releases
+        api_key: "${GH_TOKEN}"
+        file_glob: true
+        file:
+          - "QuasselClient_MacOSX-x86_64_*.dmg"
+          - "QuasselCore_MacOSX-x86_64_*.dmg"
+          - "QuasselMono_MacOSX-x86_64_*.dmg"
+        skip_cleanup: true
+        on:
+          tags: true
+          condition: "$GH_TOKEN != ''"
