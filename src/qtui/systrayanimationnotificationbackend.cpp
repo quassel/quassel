@@ -18,11 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QIcon>
-
 #include "systrayanimationnotificationbackend.h"
 
 #include "clientsettings.h"
+#include "icon.h"
 #include "mainwin.h"
 #include "qtui.h"
 #include "systemtray.h"
@@ -69,7 +68,7 @@ SettingsPage *SystrayAnimationNotificationBackend::createConfigWidget() const
 SystrayAnimationNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayAnimation", parent)
 {
     ui.setupUi(this);
-    ui.enableAlert->setIcon(QIcon::fromTheme("dialog-information"));
+    ui.enableAlert->setIcon(icon::get("dialog-information"));
 
     ui.attentionBehavior->setEnabled(ui.enableAlert->isChecked());
 

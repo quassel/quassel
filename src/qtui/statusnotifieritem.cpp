@@ -23,16 +23,19 @@
 
 #ifdef HAVE_DBUS
 
+#include "statusnotifieritem.h"
+
 #include <QApplication>
 #include <QDir>
 #include <QFile>
+#include <QIcon>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QTextDocument>
 
+#include "icon.h"
 #include "qtui.h"
 #include "quassel.h"
-#include "statusnotifieritem.h"
 #include "statusnotifieritemdbus.h"
 
 constexpr int kProtocolVersion {0};
@@ -198,7 +201,7 @@ void StatusNotifierItem::refreshIcons()
         baseDir.removeRecursively();
         for (auto &&trayState : { State::Active, State::Passive, State::NeedsAttention }) {
             auto iconName = SystemTray::iconName(trayState);
-            QIcon icon = QIcon::fromTheme(iconName);
+            QIcon icon = icon::get(iconName);
             if (!icon.isNull()) {
                 for (auto &&size : icon.availableSizes()) {
                     auto pixDir = QString{"%1/%2x%3/status"}.arg(baseDir.absolutePath()).arg(size.width()).arg(size.height());

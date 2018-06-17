@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "networkmodelcontroller.h"
+
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QGridLayout>
@@ -28,15 +30,14 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "networkmodelcontroller.h"
-
 #include "buffermodel.h"
 #include "buffersettings.h"
+#include "client.h"
 #include "clientidentity.h"
+#include "clientignorelistmanager.h"
+#include "icon.h"
 #include "network.h"
 #include "util.h"
-#include "clientignorelistmanager.h"
-#include "client.h"
 
 NetworkModelController::NetworkModelController(QObject *parent)
     : QObject(parent),
@@ -549,7 +550,7 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action)
 
 NetworkModelController::JoinDlg::JoinDlg(const QModelIndex &index, QWidget *parent) : QDialog(parent)
 {
-    setWindowIcon(QIcon::fromTheme("irc-join-channel"));
+    setWindowIcon(icon::get("irc-join-channel"));
     setWindowTitle(tr("Join Channel"));
 
     QGridLayout *layout = new QGridLayout(this);

@@ -18,21 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QMenu>
-
 #include "systemtray.h"
 
-#include "action.h"
-#include "actioncollection.h"
-#include "client.h"
-#include "qtui.h"
+#include <QApplication>
+#include <QMenu>
 
 #ifdef HAVE_KDE4
 #  include <KMenu>
 #  include <KWindowInfo>
 #  include <KWindowSystem>
 #endif
+
+#include "action.h"
+#include "actioncollection.h"
+#include "client.h"
+#include "icon.h"
+#include "qtui.h"
 
 SystemTray::SystemTray(QWidget *parent)
     : QObject(parent),
@@ -50,7 +51,7 @@ SystemTray::SystemTray(QWidget *parent)
 #ifdef HAVE_KDE4
     KMenu *kmenu;
     _trayMenu = kmenu = new KMenu();
-    kmenu->addTitle(QIcon::fromTheme(iconName(State::Active)), "Quassel IRC");
+    kmenu->addTitle(icon::get(iconName(State::Active)), "Quassel IRC");
 #else
     _trayMenu = new QMenu(associatedWidget());
 #endif

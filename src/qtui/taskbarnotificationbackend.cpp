@@ -18,15 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "taskbarnotificationbackend.h"
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QHBoxLayout>
-#include <QIcon>
 #include <QSpinBox>
 
-#include "taskbarnotificationbackend.h"
-
 #include "clientsettings.h"
+#include "icon.h"
 #include "mainwin.h"
 #include "qtui.h"
 
@@ -84,7 +84,7 @@ TaskbarNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : Settin
 #else
     layout->addWidget(enabledBox = new QCheckBox(tr("Mark taskbar entry, timeout:"), this));
 #endif
-    enabledBox->setIcon(QIcon::fromTheme("flag-blue"));
+    enabledBox->setIcon(icon::get("flag-blue"));
     enabledBox->setEnabled(true);
 
     timeoutBox = new QSpinBox(this);

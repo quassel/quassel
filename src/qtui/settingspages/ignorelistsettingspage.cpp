@@ -21,7 +21,6 @@
 #include "ignorelistsettingspage.h"
 
 #include <QHeaderView>
-#include <QIcon>
 #include <QItemSelectionModel>
 #include <QModelIndex>
 #include <QPainter>
@@ -30,14 +29,16 @@
 #include <QEvent>
 #include <QDebug>
 
+#include "icon.h"
+
 IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("Ignore List"), parent)
 {
     ui.setupUi(this);
     _delegate = new IgnoreListDelegate(ui.ignoreListView);
-    ui.newIgnoreRuleButton->setIcon(QIcon::fromTheme("list-add"));
-    ui.deleteIgnoreRuleButton->setIcon(QIcon::fromTheme("edit-delete"));
-    ui.editIgnoreRuleButton->setIcon(QIcon::fromTheme("configure"));
+    ui.newIgnoreRuleButton->setIcon(icon::get("list-add"));
+    ui.deleteIgnoreRuleButton->setIcon(icon::get("edit-delete"));
+    ui.editIgnoreRuleButton->setIcon(icon::get("configure"));
 
     ui.ignoreListView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui.ignoreListView->setSelectionMode(QAbstractItemView::SingleSelection);

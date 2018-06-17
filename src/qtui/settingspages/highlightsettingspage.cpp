@@ -20,12 +20,14 @@
 
 #include "highlightsettingspage.h"
 
+#include <QHeaderView>
+#include <QMessageBox>
+
 #include "client.h"
+#include "icon.h"
 #include "qtui.h"
 #include "uisettings.h"
 
-#include <QHeaderView>
-#include <QMessageBox>
 
 HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"),
@@ -92,7 +94,7 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
 #endif
 
     // Information icon
-    ui.localHighlightsIcon->setPixmap(QIcon::fromTheme("dialog-information").pixmap(16));
+    ui.localHighlightsIcon->setPixmap(icon::get("dialog-information").pixmap(16));
 
     // Set up client/monolithic local highlights information
     if (Quassel::runMode() == Quassel::Monolithic) {

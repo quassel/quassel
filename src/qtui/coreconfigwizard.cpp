@@ -18,17 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "coreconfigwizard.h"
+
 #include <QDebug>
 #include <QAbstractButton>
 #include <QCoreApplication>
 #include <QFormLayout>
-#include <QIcon>
 #include <QSpinBox>
 
-#include "coreconfigwizard.h"
-#include "coreconnection.h"
-
 #include "client.h"
+#include "coreconnection.h"
+#include "icon.h"
 
 namespace {
 
@@ -159,7 +159,7 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QVariantLis
     setModal(true);
 
     setWindowTitle(CoreConfigWizard::tr("Core Configuration Wizard"));
-    setPixmap(QWizard::LogoPixmap, QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")).pixmap(48));
+    setPixmap(QWizard::LogoPixmap, icon::get("quassel").pixmap(48));
 
     connect(connection, SIGNAL(coreSetupSuccess()), SLOT(coreSetupSuccess()));
     connect(connection, SIGNAL(coreSetupFailed(QString)), SLOT(coreSetupFailed(QString)));

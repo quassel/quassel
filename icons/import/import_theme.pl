@@ -62,13 +62,14 @@ while(<BLACKLIST>) {
 }
 close BLACKLIST;
 
-# We now grep the source for QIcon::fromTheme("fubar") to find required icons
+# We now grep the source for icon::get() to find required icons
 print "Grepping $srcdir for required icons...\n";
-my @results = `grep -r QIcon::fromTheme\\(\\" $srcdir`;
+my @results = `grep -r icon::get $srcdir`;
 foreach(@results) {
-  next unless my ($name) = /\W+QIcon::fromTheme\(\"([-\w]+)/;
-  $req_icons{$name} = 1
-    unless exists $blacklist{$name};
+  next unless my (@names) = /\W+icon::get\((?:\"([-\w]+)\")|(?:\{\s*\"([-\w]+)\"(?:,\s*\"([-\w]+)\")*\s*\})/;
+  foreach(@names) {
+    $req_icons{$_} = 1 unless not defined or exists $blacklist{$_};
+  }
 }
 
 # Clean old output dir

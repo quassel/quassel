@@ -18,17 +18,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef INPUTWIDGET_H
-#define INPUTWIDGET_H
+#pragma once
 
-#include "ui_inputwidget.h"
+#include <QHash>
+#include <QIcon>
+#include <QMap>
+#include <QTextCharFormat>
 
 #include "abstractitemview.h"
+#include "action.h"
 #include "buffermodel.h"
 #include "bufferinfo.h"
 #include "identity.h"
 #include "network.h"
-#include <action.h>
+
+#include "ui_inputwidget.h"
 
 class MultiLineEdit;
 
@@ -197,6 +201,3 @@ public:
     MouseWheelFilter(QObject *parent = 0);
     virtual bool eventFilter(QObject *obj, QEvent *event);
 };
-
-
-#endif // INPUTWIDGET_H

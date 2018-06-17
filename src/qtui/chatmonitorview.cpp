@@ -21,22 +21,22 @@
 #include "chatmonitorview.h"
 
 #include <QAction>
-#include <QIcon>
 #include <QMenu>
 #include <QContextMenuEvent>
 
+#include "buffermodel.h"
 #include "chatmonitorfilter.h"
 #include "chatlinemodel.h"
 #include "chatitem.h"
 #include "chatscene.h"
 #include "client.h"
+#include "clientignorelistmanager.h"
+#include "icon.h"
 #include "networkmodel.h"
-#include "buffermodel.h"
 #include "messagemodel.h"
 #include "qtuisettings.h"
 #include "settingspagedlg.h"
 #include "settingspages/chatmonitorsettingspage.h"
-#include "clientignorelistmanager.h"
 
 ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
     : ChatView(filter, parent),
@@ -73,7 +73,7 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     }
 
     menu->addSeparator();
-    menu->addAction(QIcon::fromTheme("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
+    menu->addAction(icon::get("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
 }
 
 

@@ -21,17 +21,20 @@
 #include "inputwidget.h"
 
 #include <QIcon>
+#include <QPainter>
+#include <QPixmap>
+#include <QRect>
 
 #include "action.h"
 #include "actioncollection.h"
 #include "bufferview.h"
 #include "client.h"
+#include "icon.h"
 #include "ircuser.h"
 #include "networkmodel.h"
 #include "qtui.h"
 #include "qtuisettings.h"
 #include "tabcompleter.h"
-#include <QPainter>
 
 const int leftMargin = 3;
 
@@ -61,10 +64,10 @@ InputWidget::InputWidget(QWidget *parent)
     ui.inputEdit->setMode(MultiLineEdit::MultiLine);
     ui.inputEdit->setPasteProtectionEnabled(true);
 
-    ui.boldButton->setIcon(QIcon::fromTheme("format-text-bold"));
-    ui.italicButton->setIcon(QIcon::fromTheme("format-text-italic"));
-    ui.underlineButton->setIcon(QIcon::fromTheme("format-text-underline"));
-    ui.clearButton->setIcon(QIcon::fromTheme("edit-clear"));
+    ui.boldButton->setIcon(icon::get("format-text-bold"));
+    ui.italicButton->setIcon(icon::get("format-text-italic"));
+    ui.underlineButton->setIcon(icon::get("format-text-underline"));
+    ui.clearButton->setIcon(icon::get("edit-clear"));
     ui.encryptionIconLabel->hide();
 
     _colorMenu = new QMenu();
@@ -96,8 +99,8 @@ InputWidget::InputWidget(QWidget *parent)
     connect(_colorFillMenu, SIGNAL(triggered(QAction *)), this, SLOT(colorHighlightChosen(QAction *)));
 
     // Needs to be done after adding the menu, otherwise the icon mysteriously vanishes until clicked
-    ui.textcolorButton->setIcon(QIcon::fromTheme("format-text-color"));
-    ui.highlightcolorButton->setIcon(QIcon::fromTheme("format-fill-color"));
+    ui.textcolorButton->setIcon(icon::get("format-text-color"));
+    ui.highlightcolorButton->setIcon(icon::get("format-fill-color"));
 
     // Show/hide style button
     connect(ui.showStyleButton, SIGNAL(toggled(bool)), this, SLOT(setStyleOptionsExpanded(bool)));
@@ -529,7 +532,7 @@ void InputWidget::updateNickSelector() const
     ui.ownNick->addItems(nicks);
 
     if (me && me->isAway())
-        ui.ownNick->setItemData(nickIdx, QIcon::fromTheme("user-away"), Qt::DecorationRole);
+        ui.ownNick->setItemData(nickIdx, icon::get({"im-user-away", "user-away"}), Qt::DecorationRole);
 
     ui.ownNick->setCurrentIndex(nickIdx);
 }
@@ -683,7 +686,7 @@ void InputWidget::colorChosen(QAction *action)
         mergeFormatOnSelection(fmt);
     }
     ui.textcolorButton->setDefaultAction(action);
-    ui.textcolorButton->setIcon(createColorToolButtonIcon(QIcon::fromTheme("format-text-color"), color));
+    ui.textcolorButton->setIcon(createColorToolButtonIcon(icon::get("format-text-color"), color));
 }
 
 
@@ -703,7 +706,7 @@ void InputWidget::colorHighlightChosen(QAction *action)
         mergeFormatOnSelection(fmt);
     }
     ui.highlightcolorButton->setDefaultAction(action);
-    ui.highlightcolorButton->setIcon(createColorToolButtonIcon(QIcon::fromTheme("format-fill-color"), color));
+    ui.highlightcolorButton->setIcon(createColorToolButtonIcon(icon::get("format-fill-color"), color));
 }
 
 

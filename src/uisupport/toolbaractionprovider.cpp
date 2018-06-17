@@ -18,33 +18,34 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QIcon>
+#include "toolbaractionprovider.h"
+
 #include <QMenu>
 #include <QToolBar>
 
-#include "toolbaractionprovider.h"
+#include "icon.h"
 
 ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
     : NetworkModelController(parent)
 {
-    registerAction(NetworkConnectAllWithDropdown, QIcon::fromTheme("network-connect"), tr("Connect"))->setToolTip(tr("Connect to IRC"));
-    registerAction(NetworkDisconnectAllWithDropdown, QIcon::fromTheme("network-disconnect"), tr("Disconnect"))->setToolTip(tr("Disconnect from IRC"));
+    registerAction(NetworkConnectAllWithDropdown, icon::get("network-connect"), tr("Connect"))->setToolTip(tr("Connect to IRC"));
+    registerAction(NetworkDisconnectAllWithDropdown, icon::get("network-disconnect"), tr("Disconnect"))->setToolTip(tr("Disconnect from IRC"));
     registerAction(NetworkConnectAll, tr("Connect to all"));
     registerAction(NetworkDisconnectAll, tr("Disconnect from all"));
 
-    registerAction(BufferPart, QIcon::fromTheme("irc-close-channel"), tr("Part"))->setToolTip(tr("Leave currently selected channel"));
-    registerAction(JoinChannel, QIcon::fromTheme("irc-join-channel"), tr("Join"))->setToolTip(tr("Join a channel"));
+    registerAction(BufferPart, icon::get("irc-close-channel"), tr("Part"))->setToolTip(tr("Leave currently selected channel"));
+    registerAction(JoinChannel, icon::get("irc-join-channel"), tr("Join"))->setToolTip(tr("Join a channel"));
 
-    registerAction(NickQuery, QIcon::fromTheme("mail-message-new"), tr("Query"))->setToolTip(tr("Start a private conversation")); // fix icon
-    registerAction(NickWhois, QIcon::fromTheme("im-user"), tr("Whois"))->setToolTip(tr("Request user information")); // fix icon
+    registerAction(NickQuery, icon::get("mail-message-new"), tr("Query"))->setToolTip(tr("Start a private conversation")); // fix icon
+    registerAction(NickWhois, icon::get("im-user"), tr("Whois"))->setToolTip(tr("Request user information")); // fix icon
 
-    registerAction(NickOp, QIcon::fromTheme("irc-operator"), tr("Op"))->setToolTip(tr("Give operator privileges to user"));
-    registerAction(NickDeop, QIcon::fromTheme("irc-remove-operator"), tr("Deop"))->setToolTip(tr("Take operator privileges from user"));
-    registerAction(NickVoice, QIcon::fromTheme("irc-voice"), tr("Voice"))->setToolTip(tr("Give voice to user"));
-    registerAction(NickDevoice, QIcon::fromTheme("irc-unvoice"), tr("Devoice"))->setToolTip(tr("Take voice from user"));
-    registerAction(NickKick, QIcon::fromTheme("im-kick-user"), tr("Kick"))->setToolTip(tr("Remove user from channel"));
-    registerAction(NickBan, QIcon::fromTheme("im-ban-user"), tr("Ban"))->setToolTip(tr("Ban user from channel"));
-    registerAction(NickKickBan, QIcon::fromTheme("im-ban-kick-user"), tr("Kick/Ban"))->setToolTip(tr("Remove and ban user from channel"));
+    registerAction(NickOp, icon::get("irc-operator"), tr("Op"))->setToolTip(tr("Give operator privileges to user"));
+    registerAction(NickDeop, icon::get("irc-remove-operator"), tr("Deop"))->setToolTip(tr("Take operator privileges from user"));
+    registerAction(NickVoice, icon::get("irc-voice"), tr("Voice"))->setToolTip(tr("Give voice to user"));
+    registerAction(NickDevoice, icon::get("irc-unvoice"), tr("Devoice"))->setToolTip(tr("Take voice from user"));
+    registerAction(NickKick, icon::get("im-kick-user"), tr("Kick"))->setToolTip(tr("Remove user from channel"));
+    registerAction(NickBan, icon::get("im-ban-user"), tr("Ban"))->setToolTip(tr("Ban user from channel"));
+    registerAction(NickKickBan, icon::get("im-ban-kick-user"), tr("Kick/Ban"))->setToolTip(tr("Remove and ban user from channel"));
 
     _networksConnectMenu = new QMenu();
     _networksConnectMenu->setSeparatorsCollapsible(false);

@@ -20,25 +20,25 @@
 
 #include "snorenotificationbackend.h"
 
+#include <iostream>
+
 #include <QtGui>
 #include <QtGlobal>
 #include <QMetaObject>
 
+#include <libsnore/snore.h>
+#include <libsnore/notification/notification.h>
+
 #include "client.h"
+#include "icon.h"
 #include "networkmodel.h"
 #include "systraynotificationbackend.h"
 #include "qtui.h"
 
-#include <iostream>
-
-
-#include <libsnore/snore.h>
-#include <libsnore/notification/notification.h>
-
 
 SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
-    : AbstractNotificationBackend(parent),
-      m_icon(QIcon::fromTheme("quassel", QIcon(":/icons/quassel.png")))
+    : AbstractNotificationBackend(parent)
+    , m_icon(icon::get("quassel"))
 {
 
     Snore::SnoreCore::instance().loadPlugins(

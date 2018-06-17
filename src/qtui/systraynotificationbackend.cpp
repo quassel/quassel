@@ -18,16 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "systraynotificationbackend.h"
+
 #include <QApplication>
 #include <QCheckBox>
 #include <QGroupBox>
-#include <QIcon>
 #include <QHBoxLayout>
-
-#include "systraynotificationbackend.h"
 
 #include "client.h"
 #include "clientsettings.h"
+#include "icon.h"
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"
@@ -144,7 +144,7 @@ SettingsPage *SystrayNotificationBackend::createConfigWidget() const
 SystrayNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayNotification", parent)
 {
     _showBubbleBox = new QCheckBox(tr("Show a message in a popup"));
-    _showBubbleBox->setIcon(QIcon::fromTheme("dialog-information"));
+    _showBubbleBox->setIcon(icon::get("dialog-information"));
     connect(_showBubbleBox, SIGNAL(toggled(bool)), this, SLOT(widgetChanged()));
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(_showBubbleBox);

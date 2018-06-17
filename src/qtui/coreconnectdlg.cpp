@@ -18,14 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QDialogButtonBox>
-#include <QIcon>
-#include <QVBoxLayout>
-
 #include "coreconnectdlg.h"
+
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
 
 #include "clientsettings.h"
 #include "coreaccountsettingspage.h"
+#include "icon.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
 {
@@ -39,7 +39,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
         _settingsPage->setSelectedAccount(lastAccount);
 
     setWindowTitle(tr("Connect to Core"));
-    setWindowIcon(QIcon::fromTheme("network-disconnect"));
+    setWindowIcon(icon::get("network-disconnect"));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(_settingsPage);

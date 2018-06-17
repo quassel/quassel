@@ -20,9 +20,8 @@
 
 #include "coreconnectionstatuswidget.h"
 
-#include <QIcon>
-
 #include "client.h"
+#include "icon.h"
 #include "signalproxy.h"
 
 CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent)
@@ -80,11 +79,11 @@ void CoreConnectionStatusWidget::connectionStateChanged(CoreConnection::Connecti
 {
     if (state >= CoreConnection::Connected) {
         if (coreConnection()->isEncrypted()) {
-            ui.sslLabel->setPixmap(QIcon::fromTheme("security-high").pixmap(16));
+            ui.sslLabel->setPixmap(icon::get("security-high").pixmap(16));
             ui.sslLabel->setToolTip(tr("The connection to your core is encrypted with SSL."));
         }
         else {
-            ui.sslLabel->setPixmap(QIcon::fromTheme("security-low").pixmap(16));
+            ui.sslLabel->setPixmap(icon::get("security-low").pixmap(16));
             ui.sslLabel->setToolTip(tr("The connection to your core is not encrypted."));
         }
         ui.sslLabel->show();
