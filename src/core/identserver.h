@@ -24,6 +24,7 @@
 
 #include <QHash>
 #include <QObject>
+#include <QPointer>
 #include <QString>
 #include <QTcpServer>
 #include <QTcpSocket>
@@ -32,7 +33,7 @@
 
 struct Request
 {
-    QTcpSocket *socket;
+    QPointer<QTcpSocket> socket;
     uint16_t localPort;
     QString query;
     qint64 transactionId;

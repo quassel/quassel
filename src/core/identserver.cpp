@@ -95,6 +95,7 @@ void IdentServer::incomingConnection()
     while (server->hasPendingConnections()) {
         QTcpSocket *socket = server->nextPendingConnection();
         connect(socket, SIGNAL(readyRead()), this, SLOT(respond()));
+        connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
     }
 }
 
@@ -143,21 +144,23 @@ void IdentServer::respond()
 
 void Request::respondSuccess(const QString &user)
 {
-    QString data = query + " : USERID : Quassel : " + user + "\r\n";
-
-    socket->write(data.toUtf8());
-    socket->flush();
-    socket->close();
+    if (socket) {
+        QString data = query + " : USERID : Quassel : " + user + "\r\n";
+        socket->write(data.toUtf8());
+        socket->flush();
+        socket->close();
+    }
 }
 
 
 void Request::respondError(const QString &error)
 {
-    QString data = query + " : ERROR : " + error + "\r\n";
-
-    socket->write(data.toUtf8());
-    socket->flush();
-    socket->close();
+    if (socket) {
+        QString data = query + " : ERROR : " + error + "\r\n";
+        socket->write(data.toUtf8());
+        socket->flush();
+        socket->close();
+    }
 }
 
 
