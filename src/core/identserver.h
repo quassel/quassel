@@ -20,12 +20,18 @@
 
 #pragma once
 
+#include <list>
+
+#include <QHash>
+#include <QObject>
+#include <QString>
 #include <QTcpServer>
 #include <QTcpSocket>
 
 #include "coreidentity.h"
 
-struct Request {
+struct Request
+{
     QTcpSocket *socket;
     uint16_t localPort;
     QString query;
@@ -38,29 +44,30 @@ struct Request {
     void respondError(const QString &error);
 };
 
-class IdentServer : public QObject {
-Q_OBJECT
+
+class IdentServer : public QObject
+{
+    Q_OBJECT
+
 public:
-    IdentServer(bool strict, QObject *parent);
-    ~IdentServer() override;
+    IdentServer(bool strict, QObject *parent = nullptr);
 
     bool startListening();
     void stopListening(const QString &msg);
     qint64 addWaitingSocket();
+
 public slots:
-    bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId);
-    bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId);
+    void addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId);
+    void removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId);
 
 private slots:
     void incomingConnection();
     void respond();
 
 private:
-    bool responseAvailable(Request request);
+    bool responseAvailable(Request request) const;
 
-    QString sysIdentForIdentity(const CoreIdentity *identity) const;
-
-    qint64 lowestSocketId();
+    qint64 lowestSocketId() const;
 
     void processWaiting(qint64 socketId);
 
@@ -73,6 +80,6 @@ private:
     QHash<uint16_t, QString> _connections;
     std::list<Request> _requestQueue;
     std::list<qint64> _waiting;
-    qint64 _socketId;
-    qint64 _requestId;
+    qint64 _socketId{0};
+    qint64 _requestId{0};
 };

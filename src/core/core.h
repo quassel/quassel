@@ -40,12 +40,12 @@
 #include "authenticator.h"
 #include "bufferinfo.h"
 #include "deferredptr.h"
+#include "identserver.h"
 #include "message.h"
 #include "oidentdconfiggenerator.h"
 #include "sessionthread.h"
 #include "storage.h"
 #include "types.h"
-#include "identserver.h"
 
 class CoreAuthHandler;
 class CoreSession;
@@ -807,7 +807,7 @@ private:
     QDateTime _startTime;
 
     IdentServer *_identServer {nullptr};
-    
+
     bool _initialized{false};
     bool _configured{false};
 

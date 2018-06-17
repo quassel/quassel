@@ -221,7 +221,7 @@ bool Core::init()
         if (Quassel::isOptionSet("oidentd")) {
             _oidentdConfigGenerator = new OidentdConfigGenerator(this);
         }
-        
+
 
         if (Quassel::isOptionSet("ident-daemon")) {
             _identServer = new IdentServer(_strictIdentEnabled, this);
@@ -670,7 +670,9 @@ bool Core::startListening()
     if (!success)
         quError() << qPrintable(tr("Could not open any network interfaces to listen on!"));
 
-    if (_identServer != nullptr) _identServer->startListening();
+    if (_identServer) {
+        _identServer->startListening();
+    }
 
     return success;
 }
@@ -678,7 +680,9 @@ bool Core::startListening()
 
 void Core::stopListening(const QString &reason)
 {
-    if (_identServer != nullptr) _identServer->stopListening(reason);
+    if (_identServer) {
+        _identServer->stopListening(reason);
+    }
 
     bool wasListening = false;
     if (_server.isListening()) {
