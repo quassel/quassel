@@ -7,9 +7,9 @@
 # folder.  It'll regenerate 'sql.qrc' for you.  If it fails, you can manually
 # edit the file, too; just follow the pattern already in there.
 #
-# NOTE: In most cases you must upgrade the database schema version to make a
+# NOTE: In many cases you must upgrade the database schema version to make a
 # change, which includes adding upgrade scripts and modifying existing setup
-# queries.  See 'upgradeSchema.sh' for details.
+# queries.  See 'README.md' for details.
 
 set -u # Bash - fail on undefined variable
 
