@@ -110,6 +110,25 @@ public:
      */
     inline bool disconnectExpected() const { return _disconnectExpected; }
 
+    /**
+     * Gets whether or not the server replies to automated PINGs with a valid timestamp
+     *
+     * Distinguishes between servers that reply by quoting the text sent, and those that respond
+     * with whatever they want.
+     *
+     * @return True if a valid timestamp has been received as a PONG, otherwise false.
+     */
+    inline bool isPongTimestampValid() const { return _pongTimestampValid; }
+
+    /**
+     * Gets whether or not an automated PING has been sent without any PONG received
+     *
+     * Reset whenever any PONG is received, not just the automated one sent.
+     *
+     * @return True if a PING has been sent without a PONG received, otherwise false.
+     */
+    inline bool isPongReplyPending() const { return _pongReplyPending; }
+
     QList<QList<QByteArray>> splitMessage(const QString &cmd, const QString &message, std::function<QList<QByteArray>(QString &)> cmdGenerator);
 
     // IRCv3 capability negotiation
@@ -189,6 +208,17 @@ public slots:
     virtual void setAutoReconnectRetries(quint16);
 
     void setPingInterval(int interval);
+
+    /**
+     * Sets whether or not the IRC server has replied to PING with a valid timestamp
+     *
+     * This allows determining whether or not an IRC server responds to PING with a PONG that quotes
+     * what was sent, or if it does something else (and therefore PONGs should be more aggressively
+     * hidden).
+     *
+     * @param timestampValid If true, a valid timestamp has been received via PONG reply
+     */
+    void setPongTimestampValid(bool validTimestamp);
 
     void connectToIrc(bool reconnecting = false);
     /**
@@ -372,6 +402,11 @@ public slots:
 
     inline void resetPingTimeout() { _pingCount = 0; }
 
+    /**
+     * Marks the network as no longer having a pending reply to an automated PING
+     */
+    inline void resetPongReplyPending() { _pongReplyPending = false; }
+
     inline void displayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None)
     {
         emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
@@ -477,9 +512,13 @@ private:
     int _lastUsedServerIndex;
 
     QTimer _pingTimer;
-    qint64 _lastPingTime;
-    uint _pingCount;
-    bool _sendPings;
+    qint64 _lastPingTime = 0;          ///< Unix time of most recently sent automatic ping
+    uint _pingCount = 0;               ///< Unacknowledged automatic pings
+    bool _sendPings = false;           ///< If true, pings should be periodically sent to server
+    bool _pongTimestampValid = false;  ///< If true, IRC server responds to PING by quoting in PONG
+    // This tracks whether or not a server responds to PING with a PONG of what was sent, or if it
+    // does something else.  If false, PING reply hiding should be more aggressive.
+    bool _pongReplyPending = false;    ///< If true, at least one PING sent without a PONG reply
 
     QStringList _autoWhoQueue;
     QHash<QString, int> _autoWhoPending;

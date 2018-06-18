@@ -44,9 +44,6 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _previousConnectionAttemptFailed(false),
     _lastUsedServerIndex(0),
 
-    _lastPingTime(0),
-    _pingCount(0),
-    _sendPings(false),
     _requestedUserModes('-')
 {
     _autoReconnectTimer.setSingleShot(true);
@@ -243,6 +240,9 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     }
 
     enablePingTimeout();
+
+    // Reset tracking for valid timestamps in PONG replies
+    setPongTimestampValid(false);
 
     // Qt caches DNS entries for a minute, resulting in round-robin (e.g. for chat.freenode.net) not working if several users
     // connect at a similar time. QHostInfo::fromName(), however, always performs a fresh lookup, overwriting the cache entry.
@@ -931,8 +931,12 @@ void CoreNetwork::sendPing()
         _lastPingTime = now;
         _pingCount++;
         // Don't send pings until the network is initialized
-        if(_sendPings)
+        if(_sendPings) {
+            // Mark as waiting for a reply
+            _pongReplyPending = true;
+            // Send default timestamp ping
             userInputHandler()->handlePing(BufferInfo(), QString());
+        }
     }
 }
 
@@ -943,6 +947,7 @@ void CoreNetwork::enablePingTimeout(bool enable)
         disablePingTimeout();
     else {
         resetPingTimeout();
+        resetPongReplyPending();
         if (networkConfig()->pingTimeoutEnabled())
             _pingTimer.start();
     }
@@ -954,12 +959,19 @@ void CoreNetwork::disablePingTimeout()
     _pingTimer.stop();
     _sendPings = false;
     resetPingTimeout();
+    resetPongReplyPending();
 }
 
 
 void CoreNetwork::setPingInterval(int interval)
 {
     _pingTimer.setInterval(interval * 1000);
+}
+
+
+void CoreNetwork::setPongTimestampValid(bool validTimestamp)
+{
+    _pongTimestampValid = validTimestamp;
 }
 
 
