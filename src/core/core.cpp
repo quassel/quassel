@@ -224,7 +224,7 @@ bool Core::init()
 
 
         if (Quassel::isOptionSet("ident-daemon")) {
-            _identServer = new IdentServer(_strictIdentEnabled, this);
+            _identServer = new IdentServer(this);
         }
 
         Quassel::registerReloadHandler([]() {

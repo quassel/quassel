@@ -51,7 +51,7 @@ class IdentServer : public QObject
     Q_OBJECT
 
 public:
-    IdentServer(bool strict, QObject *parent = nullptr);
+    IdentServer(QObject *parent = nullptr);
 
     bool startListening();
     void stopListening(const QString &msg);
@@ -75,8 +75,6 @@ private:
     void removeWaitingSocket(qint64 socketId);
 
     QTcpServer _server, _v6server;
-
-    bool _strict;
 
     QHash<uint16_t, QString> _connections;
     std::list<Request> _requestQueue;
