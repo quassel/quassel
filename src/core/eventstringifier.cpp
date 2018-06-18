@@ -365,10 +365,29 @@ void EventStringifier::processIrcEventPart(IrcEvent *e)
 
 void EventStringifier::processIrcEventPong(IrcEvent *e)
 {
-    QString timestamp = e->params().at(1);
+    // Some IRC servers respond with only one parameter, others respond with two, with the latter
+    // being the text sent.  Handle both situations.
+    QString timestamp;
+    if (e->params().count() < 2) {
+        // Only one parameter received
+        // :localhost PONG 02:43:49.565
+        timestamp = e->params().at(0);
+    } else {
+        // Two parameters received, pick the second
+        // :localhost PONG localhost :02:43:49.565
+        timestamp = e->params().at(1);
+    }
+
+    // Attempt to parse the timestamp
     QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
-    if (!sendTime.isValid())
+    if (!sendTime.isValid()) {
+        // No valid timestamp found, this is most likely a user-specified PING message.
+        //
+        // Or the IRC server is returning whatever it feels like to PING messages, in which case..
+        // sorry.  Increase the ping timeout delay in Quassel to as high as possible, and go
+        // encourage your IRC server developer to fix their stuff.
         displayMsg(e, Message::Server, "PONG " + e->params().join(" "), e->prefix());
+    }
 }
 
 
