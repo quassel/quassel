@@ -38,6 +38,7 @@ class HighlightRuleManager : public SyncableObject
 
     Q_PROPERTY(int highlightNick READ highlightNick WRITE setHighlightNick)
     Q_PROPERTY(bool nicksCaseSensitive READ nicksCaseSensitive WRITE setNicksCaseSensitive)
+
 public:
     enum HighlightNickType {
         NoNick = 0x00,
@@ -48,7 +49,8 @@ public:
     inline HighlightRuleManager(QObject *parent = nullptr) : SyncableObject(parent) { setAllowClientUpdates(true); }
     HighlightRuleManager &operator=(const HighlightRuleManager &other);
 
-    struct HighlightRule {
+    struct HighlightRule
+    {
         int id;
         QString name;
         bool isRegEx = false;
@@ -61,10 +63,11 @@ public:
         HighlightRule(int id_, QString name_, bool isRegEx_, bool isCaseSensitive_, bool isEnabled_, bool isInverse_,
                       QString sender_, QString chanName_)
             : id(id_), name(std::move(name_)), isRegEx(isRegEx_), isCaseSensitive(isCaseSensitive_),
-              isEnabled(isEnabled_), isInverse(isInverse_), sender(std::move(sender_)), chanName(std::move(chanName_)) {
-        }
+              isEnabled(isEnabled_), isInverse(isInverse_), sender(std::move(sender_)), chanName(std::move(chanName_))
+        {}
 
-        bool operator!=(const HighlightRule &other) {
+        bool operator!=(const HighlightRule &other) const
+        {
             return (id != other.id ||
                     name != other.name ||
                     isRegEx != other.isRegEx ||
@@ -75,7 +78,8 @@ public:
                     chanName != other.chanName);
         }
     };
-    typedef QList<HighlightRule> HighlightRuleList;
+
+    using HighlightRuleList = QList<HighlightRule>;
 
     int indexOf(int rule) const;
     inline bool contains(int rule) const { return indexOf(rule) != -1; }
@@ -141,12 +145,14 @@ public slots:
     {
         REQUEST(ARG(highlightNick))
     }
+
     inline void setHighlightNick(int highlightNick) { _highlightNick = static_cast<HighlightNickType>(highlightNick); }
 
     virtual inline void requestSetNicksCaseSensitive(bool nicksCaseSensitive)
     {
         REQUEST(ARG(nicksCaseSensitive))
     }
+
     inline void setNicksCaseSensitive(bool nicksCaseSensitive) { _nicksCaseSensitive = nicksCaseSensitive; }
 
 protected:
