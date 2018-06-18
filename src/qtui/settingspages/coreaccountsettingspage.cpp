@@ -81,6 +81,8 @@ void CoreAccountSettingsPage::load()
     ui.autoConnectAccount->setCurrentIndex(idx.isValid() ? idx.row() : 0);
     ui.autoConnectAccount->setProperty("storedValue", ui.autoConnectAccount->currentIndex());
     setWidgetStates();
+    // Mark as no changes made, we just loaded settings
+    setChangedState(false);
 }
 
 
@@ -224,8 +226,10 @@ void CoreAccountSettingsPage::widgetHasChanged()
 
 bool CoreAccountSettingsPage::testHasChanged()
 {
-    if (ui.autoConnectAccount->currentIndex() != ui.autoConnectAccount->property("storedValue").toInt())
+    if (ui.autoConnectAccount->currentIndex() !=
+            ui.autoConnectAccount->property("storedValue").toInt()) {
         return true;
+    }
     if (*model() != *Client::coreAccountModel()) {
         return true;
     }
