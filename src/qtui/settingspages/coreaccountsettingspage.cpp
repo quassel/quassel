@@ -226,8 +226,9 @@ bool CoreAccountSettingsPage::testHasChanged()
 {
     if (ui.autoConnectAccount->currentIndex() != ui.autoConnectAccount->property("storedValue").toInt())
         return true;
-    if (!(*model() == *Client::coreAccountModel()))
+    if (*model() != *Client::coreAccountModel()) {
         return true;
+    }
 
     return false;
 }

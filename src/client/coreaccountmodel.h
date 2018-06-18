@@ -57,6 +57,7 @@ public:
     void update(const CoreAccountModel *other);
 
     bool operator==(const CoreAccountModel &other) const;
+    bool operator!=(const CoreAccountModel &other) const;
 
 public slots:
     void save();

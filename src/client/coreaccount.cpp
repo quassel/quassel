@@ -169,7 +169,34 @@ void CoreAccount::fromVariantMap(const QVariantMap &v)
 }
 
 
-bool CoreAccount::operator==(const CoreAccount &o) const
+bool CoreAccount::operator==(const CoreAccount &other) const
 {
-    return toVariantMap(true) == o.toVariantMap(true);
+    return toVariantMap(true) == other.toVariantMap(true);
+}
+
+
+bool CoreAccount::operator!=(const CoreAccount &other) const
+{
+    return !(*this == other);
+}
+
+
+QDebug operator<<(QDebug dbg, const CoreAccount &acc)
+{
+    dbg.nospace() << qPrintable(QString("CoreAccount(AccountId:")) << acc.accountId()
+    << qPrintable(QString(", AccountName:")) << acc.accountName()
+    << qPrintable(QString(", Uuid:")) << acc.uuid()
+    << qPrintable(QString(", Internal:")) << acc.isInternal()
+    << qPrintable(QString(", User:")) << acc.user()
+    << qPrintable(QString(", Password:")) << acc.password()
+    << qPrintable(QString(", StorePassword:")) << acc.storePassword()
+    << qPrintable(QString(", HostName:")) << acc.hostName()
+    << qPrintable(QString(", Port:")) << acc.port()
+    << qPrintable(QString(", UseSSL:")) << acc.useSsl()
+    << qPrintable(QString(", ProxyType:")) << acc.proxyType()
+    << qPrintable(QString(", ProxyUser:")) << acc.proxyUser()
+    << qPrintable(QString(", ProxyPassword:")) << acc.proxyPassword()
+    << qPrintable(QString(", ProxyHostName:")) << acc.proxyHostName()
+    << qPrintable(QString(", ProxyPort:")) << acc.proxyPort();
+    return dbg.space();
 }
