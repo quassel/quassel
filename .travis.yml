@@ -8,8 +8,10 @@ os: linux
 language: generic  # No host compilation
 
 env:
-  - DIST=xenial CXX=g++
-  - DIST=xenial CXX=clang++
+  - DIST=xenial CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBKIT=ON"
+  - DIST=xenial CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
+  - DIST=xenial CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBKIT=ON"
+  - DIST=xenial CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
 
 # Set up cache
 cache:
@@ -33,7 +35,7 @@ script:
                -e CCACHE_DIR=/ccache \
                -e CXX=$CXX \
                quassel/quassel-build-env:$DIST \
-               sh -c "cmake -GNinja /src \
+               sh -c "cmake -GNinja /src $CMAKE_OPTIONS \
                             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
                       && ninja \
                       && ccache -s \
