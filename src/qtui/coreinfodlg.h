@@ -40,6 +40,14 @@ protected:
 
 private slots:
     /**
+     * Requests resynchronization of CoreInfo object for legacy (pre-0.13) cores
+     *
+     * This provides compatibility with updating core information for legacy cores, and can be
+     * removed after protocol break.
+     */
+    void refreshLegacyCoreInfo();
+
+    /**
      * Handler for recreation of CoreInfo object, including first-time setup
      *
      * Applies existing CoreInfo information to the dialog, too.
