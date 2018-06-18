@@ -155,6 +155,12 @@ bool CoreAccountModel::operator==(const CoreAccountModel &other) const
 }
 
 
+bool CoreAccountModel::operator!=(const CoreAccountModel &other) const
+{
+    return !(*this == other);
+}
+
+
 // TODO with Qt 4.6, use QAbstractItemModel move semantics to properly do this
 AccountId CoreAccountModel::createOrUpdateAccount(const CoreAccount &newAcc)
 {

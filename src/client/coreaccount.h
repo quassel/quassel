@@ -22,6 +22,7 @@
 #define COREACCOUNT_H_
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QNetworkProxy>
 #include <QUuid>
 #include <QVariantMap>
@@ -78,6 +79,7 @@ public:
     virtual void fromVariantMap(const QVariantMap &);
 
     bool operator==(const CoreAccount &other) const;
+    bool operator!=(const CoreAccount &other) const;
 
 private:
     AccountId _accountId;
@@ -92,5 +94,6 @@ private:
     uint _proxyPort;
 };
 
+QDebug operator<<(QDebug dbg, const CoreAccount &msg);
 
 #endif
