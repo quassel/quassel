@@ -345,7 +345,7 @@ void QtUi::refreshIconTheme()
         }
     }
 
-    if (_systemIconTheme.isEmpty() || _systemIconTheme == fallbackTheme || s.value("Icons/OverrideSystemTheme", false).toBool()) {
+    if (_systemIconTheme.isEmpty() || _systemIconTheme == fallbackTheme || s.value("Icons/OverrideSystemTheme", true).toBool()) {
         // We have a valid fallback theme and want to override the system theme (if it's even defined), so we're basically done
         QIcon::setThemeName(fallbackTheme);
         emit iconThemeRefreshed();

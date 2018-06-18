@@ -90,13 +90,13 @@
         <string>Override system theme</string>
        </property>
        <property name="checked">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="settingsKey" stdset="0">
         <string notr="true">/UiStyle/Icons/OverrideSystemTheme</string>
        </property>
        <property name="defaultValue" stdset="0">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
