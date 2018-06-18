@@ -28,7 +28,7 @@
 
 #include "client.h"
 #include "clientsettings.h"
-#include "icon"
+#include "icon.h"
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"
