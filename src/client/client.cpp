@@ -101,7 +101,7 @@ Client::Client(QObject *parent)
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
     _bufferViewOverlay(new BufferViewOverlay(this)),
-    _coreInfo(nullptr),
+    _coreInfo(new CoreInfo(this)),
     _dccConfig(0),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(0),
@@ -174,6 +174,9 @@ void Client::init()
     connect(backlogManager(), SIGNAL(messagesReceived(BufferId, int)), _messageModel, SLOT(messagesReceived(BufferId, int)));
 
     coreAccountModel()->load();
+
+    // Attach CoreInfo
+    p->synchronize(coreInfo());
 
     connect(coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), SLOT(connectionStateChanged(CoreConnection::ConnectionState)));
     coreConnection()->init();
@@ -407,11 +410,6 @@ void Client::setSyncedToCore()
     SignalProxy *p = signalProxy();
     p->synchronize(bufferSyncer());
 
-    // create CoreInfo
-    Q_ASSERT(!_coreInfo);
-    _coreInfo = new CoreInfo(this);
-    p->synchronize(coreInfo());
-
     // create a new BufferViewManager
     Q_ASSERT(!_bufferViewManager);
     _bufferViewManager = new ClientBufferViewManager(p, this);
@@ -486,6 +484,27 @@ void Client::requestInitialBacklog()
 }
 
 
+void Client::requestLegacyCoreInfo()
+{
+    // On older cores, the CoreInfo object was only synchronized on demand.  Synchronize now if
+    // needed.
+    if (isConnected() && !isCoreFeatureEnabled(Quassel::Feature::SyncedCoreInfo)) {
+        // Delete the existing core info object (it will always exist as client is single-threaded)
+        _coreInfo->deleteLater();
+        // No need to set to null when creating new one immediately after
+
+        // Create a fresh, unsynchronized CoreInfo object, emulating legacy behavior of CoreInfo not
+        // persisting
+        _coreInfo = new CoreInfo(this);
+        // Synchronize the new object
+        signalProxy()->synchronize(_coreInfo);
+
+        // Let others know signal handlers have been reset
+        emit coreInfoResynchronized();
+    }
+}
+
+
 void Client::disconnectFromCore()
 {
     if (!coreConnection()->isConnected())
@@ -512,10 +531,7 @@ void Client::setDisconnectedFromCore()
         _bufferSyncer = 0;
     }
 
-    if (_coreInfo) {
-        _coreInfo->deleteLater();
-        _coreInfo = nullptr;
-    }
+    _coreInfo->reset();
 
     if (_bufferViewManager) {
         _bufferViewManager->deleteLater();
@@ -708,6 +724,12 @@ void Client::markBufferAsRead(BufferId id)
 {
     if (bufferSyncer() && id.isValid())
         bufferSyncer()->requestMarkBufferAsRead(id);
+}
+
+
+void Client::refreshLegacyCoreInfo()
+{
+    instance()->requestLegacyCoreInfo();
 }
 
 

@@ -41,3 +41,11 @@ void CoreInfo::setConnectedClientData(const int peerCount, const QVariantList pe
     _coreData["sessionConnectedClientData"] = peerData;
     setCoreData(_coreData);
 }
+
+void CoreInfo::reset()
+{
+    // Clear any stored data
+    _coreData.clear();
+    // Propagate changes to listeners
+    emit coreDataChanged(_coreData);
+}

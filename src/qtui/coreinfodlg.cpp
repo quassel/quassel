@@ -28,10 +28,17 @@
 
 CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
     ui.setupUi(this);
-    CoreInfo *coreInfo = Client::coreInfo();
-    connect(coreInfo, SIGNAL(coreDataChanged(const QVariantMap &)), this, SLOT(coreInfoChanged(const QVariantMap &)));
 
-    coreInfoChanged(coreInfo->coreData());
+    // Listen for resynchronization events (pre-0.13 cores only)
+    connect(Client::instance(), SIGNAL(coreInfoResynchronized()),
+            this, SLOT(coreInfoResynchronized()));
+
+    // Update legacy core info for Quassel cores earlier than 0.13.  This does nothing on modern
+    // cores.
+    Client::refreshLegacyCoreInfo();
+
+    // Display existing core info, set up signal handlers
+    coreInfoResynchronized();
 
     // Warning icon
     ui.coreUnsupportedIcon->setPixmap(icon::get("dialog-warning").pixmap(16));
@@ -41,10 +48,40 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
 }
 
 
+void CoreInfoDlg::coreInfoResynchronized() {
+    // CoreInfo object has been recreated, or this is the first time the dialog's been shown
+
+    CoreInfo *coreInfo = Client::coreInfo();
+    // Listen for changes to core information
+    connect(coreInfo, SIGNAL(coreDataChanged(const QVariantMap &)),
+            this, SLOT(coreInfoChanged(const QVariantMap &)));
+
+    // Update with any known core information set before connecting the signal.  This is needed for
+    // both modern (0.13+) and legacy cores.
+    coreInfoChanged(coreInfo->coreData());
+}
+
+
 void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
-    ui.labelCoreVersion->setText(coreInfo["quasselVersion"].toString());
-    ui.labelCoreVersionDate->setText(coreInfo["quasselBuildDate"].toString()); // "BuildDate" for compatibility
-    ui.labelClientCount->setNum(coreInfo["sessionConnectedClients"].toInt());
+    if(coreInfo.isEmpty()) {
+        // We're missing data for some reason
+        if (Client::isConnected()) {
+            // Core info is entirely empty despite being connected.  Something's probably wrong.
+            ui.labelCoreVersion->setText(tr("Unknown"));
+            ui.labelCoreVersionDate->setText(tr("Unknown"));
+        } else {
+            // We're disconnected.  Mark as such.
+            ui.labelCoreVersion->setText(tr("Disconnected from core"));
+            ui.labelCoreVersionDate->setText(tr("Not available"));
+        }
+        ui.labelClientCount->setNum(0);
+        // Don't return, allow the code below to remove any existing session widgets
+    } else {
+        ui.labelCoreVersion->setText(coreInfo["quasselVersion"].toString());
+        // "BuildDate" for compatibility
+        ui.labelCoreVersionDate->setText(coreInfo["quasselBuildDate"].toString());
+        ui.labelClientCount->setNum(coreInfo["sessionConnectedClients"].toInt());
+    }
 
     auto coreSessionSupported = false;
     auto ids = _widgets.keys();
@@ -80,14 +117,26 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
 
     ui.coreSessionScrollArea->setVisible(coreSessionSupported);
 
-    // Hide the information bar when core sessions are supported
-    ui.coreUnsupportedWidget->setVisible(!coreSessionSupported);
+    // Hide the information bar when core sessions are supported or when disconnected
+    ui.coreUnsupportedWidget->setVisible(
+                !(coreSessionSupported || Client::isConnected() == false));
+
+    // Update uptime for immediate display, don't wait for the timer
+    updateUptime();
 }
 
 
 void CoreInfoDlg::updateUptime() {
     CoreInfo *coreInfo = Client::coreInfo();
-    if (coreInfo) {
+
+    if (!Client::isConnected()) {
+        // Not connected, don't bother trying to calculate the uptime
+        ui.labelUptime->setText(tr("Not available"));
+    } else if (coreInfo->coreData().isEmpty()) {
+        // Core info is entirely empty despite being connected.  Something's probably wrong.
+        ui.labelUptime->setText(tr("Unknown"));
+    } else {
+        // Connected, format the uptime for display
         QDateTime startTime = coreInfo->at("startTime").toDateTime();
 
         int64_t uptime = startTime.secsTo(QDateTime::currentDateTime().toUTC());

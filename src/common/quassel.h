@@ -138,6 +138,7 @@ public:
         EcdsaCertfpKeys,          ///< ECDSA keys for CertFP in identities
 #endif
         LongMessageId,            ///< 64-bit IDs for messages
+        SyncedCoreInfo,           ///< CoreInfo dynamically updated using signals
     };
     Q_ENUMS(Feature)
 

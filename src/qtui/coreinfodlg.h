@@ -39,6 +39,13 @@ protected:
     void timerEvent(QTimerEvent *) override { updateUptime(); }
 
 private slots:
+    /**
+     * Handler for recreation of CoreInfo object, including first-time setup
+     *
+     * Applies existing CoreInfo information to the dialog, too.
+     */
+    void coreInfoResynchronized();
+
     void on_closeButton_clicked() { reject(); }
     void updateUptime();
     void disconnectClicked(int peerId);
