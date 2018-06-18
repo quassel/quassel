@@ -35,19 +35,19 @@ class CoreHighlightRuleManager : public HighlightRuleManager
 public:
     explicit CoreHighlightRuleManager(CoreSession *parent);
 
-    inline virtual const QMetaObject *syncMetaObject() const { return &HighlightRuleManager::staticMetaObject; }
+    virtual const QMetaObject *syncMetaObject() const override { return &HighlightRuleManager::staticMetaObject; }
 
     bool match(const RawMessage &msg, const QString &currentNick, const QStringList &identityNicks);
 
 public slots:
-    virtual inline void requestToggleHighlightRule(int highlightRule) { toggleHighlightRule(highlightRule); }
-    virtual inline void requestRemoveHighlightRule(int highlightRule) { removeHighlightRule(highlightRule); }
-    virtual inline void requestAddHighlightRule(int id, const QString &name, bool isRegEx, bool isCaseSensitive,
+    inline void requestToggleHighlightRule(int highlightRule) override { toggleHighlightRule(highlightRule); }
+    inline void requestRemoveHighlightRule(int highlightRule) override { removeHighlightRule(highlightRule); }
+    inline void requestAddHighlightRule(int id, const QString &name, bool isRegEx, bool isCaseSensitive,
                                                 bool isEnabled, bool isInverse, const QString &sender,
-                                                const QString &chanName) {
+                                                const QString &chanName) override
+    {
         addHighlightRule(id, name, isRegEx, isCaseSensitive, isEnabled, isInverse, sender, chanName);
     }
-
 
 private slots:
     void save() const;

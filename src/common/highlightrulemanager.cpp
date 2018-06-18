@@ -20,12 +20,14 @@
 
 #include "highlightrulemanager.h"
 
-#include "util.h"
-
 #include <QDebug>
 
+#include "util.h"
+
 INIT_SYNCABLE_OBJECT(HighlightRuleManager)
-HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager &other) {
+
+HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager &other)
+{
     if (this == &other)
         return *this;
 
@@ -37,7 +39,8 @@ HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager
 }
 
 
-int HighlightRuleManager::indexOf(int id) const {
+int HighlightRuleManager::indexOf(int id) const
+{
     for (int i = 0; i < _highlightRuleList.count(); i++) {
         if (_highlightRuleList[i].id == id)
             return i;
@@ -45,7 +48,9 @@ int HighlightRuleManager::indexOf(int id) const {
     return -1;
 }
 
-int HighlightRuleManager::nextId() {
+
+int HighlightRuleManager::nextId()
+{
     int max = 0;
     for (int i = 0; i < _highlightRuleList.count(); i++) {
         int id = _highlightRuleList[i].id;
@@ -53,11 +58,12 @@ int HighlightRuleManager::nextId() {
             max = id;
         }
     }
-    return max+1;
+    return max + 1;
 }
 
 
-QVariantMap HighlightRuleManager::initHighlightRuleList() const {
+QVariantMap HighlightRuleManager::initHighlightRuleList() const
+{
     QVariantList id;
     QVariantMap highlightRuleListMap;
     QStringList name;
@@ -91,7 +97,8 @@ QVariantMap HighlightRuleManager::initHighlightRuleList() const {
 }
 
 
-void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlightRuleList) {
+void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlightRuleList)
+{
     QVariantList id = highlightRuleList["id"].toList();
     QStringList name = highlightRuleList["name"].toStringList();
     QVariantList isRegEx = highlightRuleList["isRegEx"].toList();
@@ -116,9 +123,11 @@ void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlight
     }
 }
 
+
 void HighlightRuleManager::addHighlightRule(int id, const QString &name, bool isRegEx, bool isCaseSensitive,
                                             bool isActive, bool isInverse, const QString &sender,
-                                            const QString &channel) {
+                                            const QString &channel)
+{
     if (contains(id)) {
         return;
     }
@@ -137,7 +146,8 @@ bool HighlightRuleManager::match(const QString &msgContents,
                                  Message::Flags msgFlags,
                                  const QString &bufferName,
                                  const QString &currentNick,
-                                 const QStringList identityNicks) {
+                                 const QStringList identityNicks)
+{
     if (!((msgType & (Message::Plain | Message::Notice | Message::Action)) && !(msgFlags & Message::Self))) {
        return false;
     }
@@ -207,13 +217,16 @@ bool HighlightRuleManager::match(const QString &msgContents,
     return false;
 }
 
-void HighlightRuleManager::removeHighlightRule(int highlightRule) {
+
+void HighlightRuleManager::removeHighlightRule(int highlightRule)
+{
     removeAt(indexOf(highlightRule));
     SYNC(ARG(highlightRule))
 }
 
 
-void HighlightRuleManager::toggleHighlightRule(int highlightRule) {
+void HighlightRuleManager::toggleHighlightRule(int highlightRule)
+{
     int idx = indexOf(highlightRule);
     if (idx == -1)
         return;
@@ -221,6 +234,8 @@ void HighlightRuleManager::toggleHighlightRule(int highlightRule) {
     SYNC(ARG(highlightRule))
 }
 
-bool HighlightRuleManager::match(const Message &msg, const QString &currentNick, const QStringList &identityNicks) {
+
+bool HighlightRuleManager::match(const Message &msg, const QString &currentNick, const QStringList &identityNicks)
+{
     return match(msg.contents(), msg.sender(), msg.type(), msg.flags(), msg.bufferInfo().bufferName(), currentNick, identityNicks);
 }
