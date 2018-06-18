@@ -636,13 +636,36 @@ void CoreSessionEventProcessor::processIrcEventPing(IrcEvent *e)
 
 void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e)
 {
-    // the server is supposed to send back what we passed as param. and we send a timestamp
-    // but using quote and whatnought one can send arbitrary pings, so we have to do some sanity checks
-    if (checkParamCount(e, 2)) {
-        QString timestamp = e->params().at(1);
-        QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
-        if (sendTime.isValid())
-            e->network()->setLatency(sendTime.msecsTo(QTime::currentTime()) / 2);
+    // Ensure we get at least one parameter
+    if (!checkParamCount(e, 1))
+        return;
+
+    // Some IRC servers respond with only one parameter, others respond with two, with the latter
+    // being the text sent.  Handle both situations.
+    QString timestamp;
+    if (e->params().count() < 2) {
+        // Only one parameter received
+        // :localhost PONG 02:43:49.565
+        timestamp = e->params().at(0);
+    } else {
+        // Two parameters received, pick the second
+        // :localhost PONG localhost :02:43:49.565
+        timestamp = e->params().at(1);
+    }
+
+    // The server is supposed to send back what we passed as parameter, and we send a timestamp.
+    // However, using quote and whatnot, one can send arbitrary pings, and IRC servers may decide to
+    // ignore our requests entirely and send whatever they want, so we have to do some sanity
+    // checks.
+    //
+    // Attempt to parse the timestamp
+    QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
+    if (sendTime.isValid()) {
+        // Calculate latency from time difference, divided by 2 to account for round-trip time
+        e->network()->setLatency(sendTime.msecsTo(QTime::currentTime()) / 2);
+    } else {
+        // Just in case it's a wonky server, log a debug message to make this easier to track down
+        qDebug() << "Received valid PONG with invalid timestamp, parameters are" << e->params();
     }
 }
 
