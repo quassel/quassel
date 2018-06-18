@@ -35,7 +35,7 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
 
     // Update legacy core info for Quassel cores earlier than 0.13.  This does nothing on modern
     // cores.
-    Client::refreshLegacyCoreInfo();
+    refreshLegacyCoreInfo();
 
     // Display existing core info, set up signal handlers
     coreInfoResynchronized();
@@ -45,6 +45,21 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
 
     updateUptime();
     startTimer(1000);
+}
+
+
+void CoreInfoDlg::refreshLegacyCoreInfo() {
+    if (!Client::isConnected() || Client::isCoreFeatureEnabled(Quassel::Feature::SyncedCoreInfo)) {
+        // If we're not connected, or the core supports SyncedCoreInfo (0.13+), bail out
+        return;
+    }
+
+    // Request legacy (pre-0.13) CoreInfo object to be resynchronized (does nothing on modern cores)
+    Client::refreshLegacyCoreInfo();
+
+    // On legacy cores, CoreInfo data does not send signals.  Periodically poll for information.
+    // 15 seconds seems like a reasonable trade-off as this only happens while the dialog is open.
+    QTimer::singleShot(15 * 1000, this, SLOT(refreshLegacyCoreInfo()));
 }
 
 
