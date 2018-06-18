@@ -24,9 +24,8 @@
 #include "identserver.h"
 #include "logger.h"
 
-IdentServer::IdentServer(bool strict, QObject *parent)
+IdentServer::IdentServer(QObject *parent)
     : QObject(parent)
-    , _strict(strict)
 {
     connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
     connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
