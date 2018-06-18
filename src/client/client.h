@@ -149,6 +149,17 @@ public:
     static void mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2);
     static void purgeKnownBufferIds();
 
+    /**
+     * Requests client to resynchronize the CoreInfo object for legacy (pre-0.13) cores
+     *
+     * This provides compatibility with updating core information for legacy cores, and can be
+     * removed after protocol break.
+     *
+     * NOTE: On legacy (pre-0.13) cores, any existing connected signals will be destroyed and must
+     * be re-added after calling this, in addition to checking for existing data in coreInfo().
+     */
+    static void refreshLegacyCoreInfo();
+
     static void changePassword(const QString &oldPassword, const QString &newPassword);
     static void kickClient(int peerId);
 
@@ -177,6 +188,17 @@ signals:
     void connected();
     void disconnected();
     void coreConnectionStateChanged(bool);
+
+    /**
+     * Signals that core information has been resynchronized, removing existing signal handlers
+     *
+     * Whenever this is emitted, one should re-add any handlers for CoreInfo::coreDataChanged() and
+     * apply any existing information in the coreInfo() object.
+     *
+     * Only emitted on legacy (pre-0.13) cores.  Generally, one should use the
+     * CoreInfo::coreDataChanged() signal too.
+     */
+    void coreInfoResynchronized();
 
     //! The identity with the given ID has been newly created in core and client.
     /** \param id The ID of the newly created identity.
@@ -257,6 +279,17 @@ private:
     void init();
 
     void requestInitialBacklog();
+
+    /**
+     * Deletes and resynchronizes the CoreInfo object for legacy (pre-0.13) cores
+     *
+     * This provides compatibility with updating core information for legacy cores, and can be
+     * removed after protocol break.
+     *
+     * NOTE: On legacy (pre-0.13) cores, any existing connected signals will be destroyed and must
+     * be re-added after calling this, in addition to checking for existing data in coreInfo().
+     */
+    void requestLegacyCoreInfo();
 
     static void addNetwork(Network *);
 

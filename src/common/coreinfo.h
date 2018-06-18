@@ -39,7 +39,15 @@ public:
 
     void setConnectedClientData(int, QVariantList);
 
+    /**
+     * Reset the core info state, clearing anything saved
+     */
+    void reset();
+
 signals:
+    /**
+     * Signals that core information has changed
+     */
     void coreDataChanged(QVariantMap);
 
 public slots:
