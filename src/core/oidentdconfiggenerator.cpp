@@ -76,9 +76,16 @@ QString OidentdConfigGenerator::sysIdentForIdentity(const CoreIdentity *identity
 }
 
 
-bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
+bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity,
+                                       const QHostAddress &localAddress, quint16 localPort,
+                                       const QHostAddress &peerAddress, quint16 peerPort,
+                                       qint64 socketId)
 {
-    Q_UNUSED(localAddress) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
+    Q_UNUSED(localAddress)
+    Q_UNUSED(peerAddress)
+    Q_UNUSED(peerPort)
+    Q_UNUSED(socketId)
+
     const QString ident = sysIdentForIdentity(identity);
 
     _quasselConfig.append(_quasselStanzaTemplate.arg(localPort).arg(ident).arg(_configTag).toLatin1());
@@ -90,9 +97,18 @@ bool OidentdConfigGenerator::addSocket(const CoreIdentity *identity, const QHost
 
 
 //! not yet implemented
-bool OidentdConfigGenerator::removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort)
+bool OidentdConfigGenerator::removeSocket(const CoreIdentity *identity,
+                                          const QHostAddress &localAddress, quint16 localPort,
+                                          const QHostAddress &peerAddress, quint16 peerPort,
+                                          qint64 socketId)
 {
-    Q_UNUSED(identity) Q_UNUSED(localAddress) Q_UNUSED(localPort) Q_UNUSED(peerAddress) Q_UNUSED(peerPort)
+    Q_UNUSED(identity)
+    Q_UNUSED(localAddress)
+    Q_UNUSED(localPort)
+    Q_UNUSED(peerAddress)
+    Q_UNUSED(peerPort)
+    Q_UNUSED(socketId)
+
     return true;
 }
 
