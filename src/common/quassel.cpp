@@ -104,7 +104,7 @@ bool Quassel::init()
     instance()->setupEnvironment();
     instance()->registerMetaTypes();
 
-    Network::setDefaultCodecForServer("ISO-8859-1");
+    Network::setDefaultCodecForServer("UTF-8");
     Network::setDefaultCodecForEncoding("UTF-8");
     Network::setDefaultCodecForDecoding("ISO-8859-15");
 

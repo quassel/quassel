@@ -971,8 +971,7 @@ This setting defines the encoding for messages that are not UTF-8.</string>
                <item row="2" column="0">
                 <widget class="QLabel" name="label_9">
                  <property name="toolTip">
-                  <string>This specifies how control messages, nicks and servernames are encoded.
-Unless you *really* know what you do, leave this as ISO-8859-1!</string>
+                  <string>&lt;qt&gt;&lt;p&gt;This specifies how control messages, nicks and servernames are encoded.&lt;/p&gt;&lt;p&gt;&lt;b&gt;UTF-8&lt;/b&gt; should be fine for modern networks.  On other networks, you may need to use &lt;b&gt;ISO-8859-1&lt;/b&gt; to avoid errors with illegal characters and invalid encoding.&lt;/p&gt;&lt;/qt&gt;</string>
                  </property>
                  <property name="text">
                   <string>Server encoding:</string>
@@ -985,8 +984,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                   <bool>true</bool>
                  </property>
                  <property name="toolTip">
-                  <string>This specifies how control messages, nicks and servernames are encoded.
-Unless you *really* know what you do, leave this as ISO-8859-1!</string>
+                  <string>&lt;qt&gt;&lt;p&gt;This specifies how control messages, nicks and servernames are encoded.&lt;/p&gt;&lt;p&gt;&lt;b&gt;UTF-8&lt;/b&gt; should be fine for modern networks.  On other networks, you may need to use &lt;b&gt;ISO-8859-1&lt;/b&gt; to avoid errors with illegal characters and invalid encoding.&lt;/p&gt;&lt;/qt&gt;</string>
                  </property>
                 </widget>
                </item>
