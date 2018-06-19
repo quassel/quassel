@@ -554,16 +554,16 @@ void InputWidget::changeNick(const QString &newNick) const
 void InputWidget::onTextEntered(const QString &text)
 {
     Client::userInput(currentBufferInfo(), text);
-    ui.boldButton->setChecked(false);
-    ui.underlineButton->setChecked(false);
-    ui.italicButton->setChecked(false);
 
+    // Remove formatting from entered text
+    // TODO: Offer a way to convert pasted text to mIRC formatting codes
     setFormatClear(true);
 }
 
 
 void InputWidget::setFormatClear(const bool global)
 {
+    // Apply formatting
     QTextCharFormat fmt;
     fmt.setFontWeight(QFont::Normal);
     fmt.setFontUnderline(false);
@@ -575,30 +575,44 @@ void InputWidget::setFormatClear(const bool global)
     } else {
         setFormatOnSelection(fmt);
     }
+
+    // Make sure UI state follows
+    ui.boldButton->setChecked(false);
+    ui.italicButton->setChecked(false);
+    ui.underlineButton->setChecked(false);
 }
 
 
 void InputWidget::setFormatBold(const bool bold)
 {
+    // Apply formatting
     QTextCharFormat fmt;
     fmt.setFontWeight(bold ? QFont::Bold : QFont::Normal);
     mergeFormatOnSelection(fmt);
+    // Make sure UI state follows
+    ui.boldButton->setChecked(bold);
 }
 
 
 void InputWidget::setFormatItalic(const bool italic)
 {
+    // Apply formatting
     QTextCharFormat fmt;
     fmt.setFontItalic(italic);
     mergeFormatOnSelection(fmt);
+    // Make sure UI state follows
+    ui.italicButton->setChecked(italic);
 }
 
 
 void InputWidget::setFormatUnderline(const bool underline)
 {
+    // Apply formatting
     QTextCharFormat fmt;
     fmt.setFontUnderline(underline);
     mergeFormatOnSelection(fmt);
+    // Make sure UI state follows
+    ui.underlineButton->setChecked(underline);
 }
 
 
