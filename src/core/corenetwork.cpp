@@ -100,13 +100,17 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     connect(this, SIGNAL(capRemoved(QString)), this, SLOT(serverCapRemoved(QString)));
 
     if (Quassel::isOptionSet("oidentd")) {
-        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Qt::BlockingQueuedConnection);
-        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)), Core::instance()->oidentdConfigGenerator(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16)));
+        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)),
+                Core::instance()->oidentdConfigGenerator(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Qt::BlockingQueuedConnection);
+        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)),
+                Core::instance()->oidentdConfigGenerator(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)));
     }
 
     if (Quassel::isOptionSet("ident-daemon")) {
-        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Core::instance()->identServer(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Qt::BlockingQueuedConnection);
-        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Core::instance()->identServer(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)));
+        connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)),
+                Core::instance()->identServer(), SLOT(addSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)), Qt::BlockingQueuedConnection);
+        connect(this, SIGNAL(socketDisconnected(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)),
+                Core::instance()->identServer(), SLOT(removeSocket(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)));
     }
 }
 

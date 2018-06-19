@@ -63,8 +63,12 @@ public:
     ~OidentdConfigGenerator();
 
 public slots:
-    bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
-    bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort);
+    bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress,
+                   quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort,
+                   qint64 socketId);
+    bool removeSocket(const CoreIdentity *identity, const QHostAddress &localAddress,
+                      quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort,
+                      qint64 socketId);
 
 private:
     QString sysIdentForIdentity(const CoreIdentity *identity) const;
