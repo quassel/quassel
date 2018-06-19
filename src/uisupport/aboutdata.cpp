@@ -178,7 +178,7 @@ void AboutData::setQuasselPersons(AboutData *aboutData)
         { "Sebastian Goth", "seezer", tr("Many features, fixes and improvements") },
         { "Bas Pape", "Tucos", tr("Many fixes and improvements, bug and patch triaging, community support") },
         { "Shane Synan", "digitalcircuit", tr("IRCv3 support, documentation, many other improvements, testing, outstanding PRs") },
-        { "Janne Koschinski", "justJanne", tr("QuasselDroid, architecture, (mobile) performance, many other improvements and fixes, testing") },
+        { "Janne Koschinski", "justJanne", tr("Quasseldroid, architecture, (mobile) performance, many other improvements and fixes, testing") },
     });
 
     aboutData->addCredits({
