@@ -22,6 +22,7 @@
 
 #include "client.h"
 #include "coresessionwidget.h"
+#include "util.h"
 
 
 CoreSessionWidget::CoreSessionWidget(QWidget *parent)
@@ -36,7 +37,12 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
     ui.sessionGroup->setTitle(map["remoteAddress"].toString());
     ui.labelLocation->setText(map["location"].toString());
     ui.labelClient->setText(map["clientVersion"].toString());
-    ui.labelVersionDate->setText(map["clientVersionDate"].toString());
+    if (map["clientVersionDate"].toString().isEmpty()) {
+        ui.labelVersionDate->setText(QString("<i>%1</i>").arg(tr("Unknown date")));
+    }
+    else {
+        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString()));
+    }
     ui.labelUptime->setText(map["connectedSince"].toDateTime().toLocalTime().toString(Qt::DateFormat::SystemLocaleShortDate));
     if (map["location"].toString().isEmpty()) {
         ui.labelLocation->hide();

@@ -1634,6 +1634,9 @@ void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent *e)
 
 void CoreSessionEventProcessor::handleCtcpVersion(CtcpEvent *e)
 {
-    e->setReply(QString("Quassel IRC %1 (built on %2) -- https://www.quassel-irc.org")
-        .arg(Quassel::buildInfo().plainVersionString).arg(Quassel::buildInfo().commitDate));
+    // Deliberately do not translate project name
+    e->setReply(QString("Quassel IRC %1 (version date %2) -- https://www.quassel-irc.org")
+                .arg(Quassel::buildInfo().plainVersionString)
+                .arg(Quassel::buildInfo().commitDate.isEmpty() ?
+                      "unknown" : tryFormatUnixEpoch(Quassel::buildInfo().commitDate)));
 }
