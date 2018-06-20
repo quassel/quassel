@@ -101,3 +101,14 @@ QString formatCurrentDateTimeInString(const QString &formatStr);
  */
 bool scopeMatch(const QString &string, const QString &scopeRule,
                 const bool &isRegEx = false, const bool &isCaseSensitive = false);
+
+/**
+ * Try to localize a given date/time in seconds from Unix epoch, pass through string if invalid
+ *
+ * Allows compatibility with date/time fields that may or may not be in Unix epoch format,
+ * localizing if possible, leaving alone if not.
+ *
+ * @param possibleEpochDate Date/time that might be in seconds since Unix epoch format
+ * @return Localized date/time if parse succeeded, otherwise the source string
+ */
+QString tryFormatUnixEpoch(const QString &possibleEpochDate);

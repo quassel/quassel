@@ -363,3 +363,29 @@ bool scopeMatch(const QString &string, const QString &scopeRule, const bool &isR
         return matches || (invertedRuleFound && !normalRuleFound);
     }
 }
+
+
+QString tryFormatUnixEpoch(const QString &possibleEpochDate)
+{
+    // Does the string resemble a Unix epoch?  Parse as 64-bit time
+    qint64 secsSinceEpoch = possibleEpochDate.toLongLong();
+    if (secsSinceEpoch == 0) {
+        // Parsing either failed, or '0' was sent.  No need to distinguish; either way, it's not
+        // useful as epoch.
+        // See https://doc.qt.io/qt-5/qstring.html#toLongLong
+        return possibleEpochDate;
+    }
+
+    // Time checks out, parse it
+    QDateTime date;
+#if QT_VERSION >= 0x050800
+    date.setSecsSinceEpoch(secsSinceEpoch);
+#else
+    // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
+    // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
+    date.setMSecsSinceEpoch(secsSinceEpoch * 1000);
+#endif
+
+    // Return the localized date/time
+    return date.toString();
+}

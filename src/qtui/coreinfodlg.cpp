@@ -25,6 +25,7 @@
 #include "bufferwidget.h"
 #include "client.h"
 #include "icon.h"
+#include "util.h"
 
 CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
     ui.setupUi(this);
@@ -94,7 +95,13 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
     } else {
         ui.labelCoreVersion->setText(coreInfo["quasselVersion"].toString());
         // "BuildDate" for compatibility
-        ui.labelCoreVersionDate->setText(coreInfo["quasselBuildDate"].toString());
+        if (coreInfo["quasselBuildDate"].toString().isEmpty()) {
+            ui.labelCoreVersionDate->setText(QString("<i>%1</i>").arg(tr("Unknown date")));
+        }
+        else {
+            ui.labelCoreVersionDate->setText(
+                        tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString()));
+        }
         ui.labelClientCount->setNum(coreInfo["sessionConnectedClients"].toInt());
     }
 

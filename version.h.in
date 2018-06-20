@@ -7,8 +7,10 @@
 // Determined from Git
 #define GIT_HEAD "@GIT_HEAD@"
 #define GIT_DESCRIBE "@GIT_DESCRIBE@"
+// Unix epoch in seconds
 #define GIT_COMMIT_DATE @GIT_COMMIT_DATE@
 
 // Will be substituted in official tarballs
 #define DIST_HASH "$Format:%H$"
+// Unix epoch in seconds
 #define DIST_DATE "$Format:%at$"

@@ -26,6 +26,7 @@
 #include "aboutdata.h"
 #include "icon.h"
 #include "quassel.h"
+#include "util.h"
 
 AboutDlg::AboutDlg(QWidget *parent)
     : QDialog(parent)
@@ -36,10 +37,21 @@ AboutDlg::AboutDlg(QWidget *parent)
     ui.setupUi(this);
     ui.quasselLogo->setPixmap(QPixmap{":/pics/quassel-64.svg"});  // don't let the icon theme affect our logo here
 
-    ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br><b>Version date:</b> %2<br><b>Protocol version:</b> %3"))
-        .arg(Quassel::buildInfo().fancyVersionString)
-        .arg(Quassel::buildInfo().commitDate)
-        .arg(Quassel::buildInfo().protocolVersion));
+    QString versionDate;
+    if (Quassel::buildInfo().commitDate.isEmpty()) {
+        // This shouldn't happen, but sometimes the packaging environment cannot set a proper
+        // date/time.  Add a fallback just in case.
+        versionDate = QString("<i>%1</i>").arg(tr("Unknown date"));
+    }
+    else {
+        versionDate = tryFormatUnixEpoch(Quassel::buildInfo().commitDate);
+    }
+    ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br>"
+                                        "<b>Version date:</b> %2<br>"
+                                        "<b>Protocol version:</b> %3"))
+                             .arg(Quassel::buildInfo().fancyVersionString)
+                             .arg(versionDate)
+                             .arg(Quassel::buildInfo().protocolVersion));
     ui.aboutTextBrowser->setHtml(about());
     ui.authorTextBrowser->setHtml(authors());
     ui.contributorTextBrowser->setHtml(contributors());
