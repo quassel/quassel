@@ -48,7 +48,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="labelVersionDateTitle">
           <property name="text">
-           <string>Version Date:</string>
+           <string>Version date:</string>
           </property>
          </widget>
         </item>
@@ -76,7 +76,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="labelUptimeTitle">
           <property name="text">
-           <string>Connected Since:</string>
+           <string>Connected since:</string>
           </property>
          </widget>
         </item>
