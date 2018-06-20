@@ -32,7 +32,7 @@
 
 #include "client.h"
 #include "clientsettings.h"
-#include "logger.h"
+#include "logmessage.h"
 #include "peerfactory.h"
 
 #if QT_VERSION < 0x050000

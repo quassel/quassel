@@ -24,7 +24,9 @@
 #include <tuple>
 #include <vector>
 
-#include <QStringList>
+#include <QList>
+#include <QObject>
+#include <QString>
 
 #if QT_VERSION >= 0x050000
 #  include <QTemporaryDir>
@@ -56,6 +58,8 @@ public:
     inline static QtUi *instance();
     inline static QtUiStyle *style();
     inline static MainWin *mainWindow();
+
+    QString debugLog() const;
 
     static bool haveSystemTray();
 

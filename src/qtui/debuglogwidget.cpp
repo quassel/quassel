@@ -20,22 +20,36 @@
 
 #include "debuglogwidget.h"
 
-#include "client.h"
+#include "quassel.h"
 
 DebugLogWidget::DebugLogWidget(QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose, true);
-    ui.textEdit->setPlainText(Client::debugLog());
-    connect(Client::instance(), SIGNAL(logUpdated(const QString &)), this, SLOT(logUpdated(const QString &)));
+
     ui.textEdit->setReadOnly(true);
+
+    connect(Quassel::instance()->logger(), SIGNAL(messageLogged(Logger::LogEntry)), SLOT(logUpdated(Logger::LogEntry)));
+
+    QString content;
+    for (auto &&message : Quassel::instance()->logger()->messages()) {
+        content += toString(message);
+    }
+    ui.textEdit->setPlainText(content);
+
 }
 
 
-void DebugLogWidget::logUpdated(const QString &msg)
+QString DebugLogWidget::toString(const Logger::LogEntry &msg)
+{
+    return msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + msg.message + "\n";
+}
+
+
+void DebugLogWidget::logUpdated(const Logger::LogEntry &msg)
 {
     ui.textEdit->moveCursor(QTextCursor::End);
-    ui.textEdit->insertPlainText(msg);
+    ui.textEdit->insertPlainText(toString(msg));
     ui.textEdit->moveCursor(QTextCursor::End);
 }

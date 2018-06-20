@@ -20,26 +20,74 @@
 
 #pragma once
 
-#include <QString>
-#include <QWidget>
+#include <QStringList>
+#include <QTextStream>
 
 #include "logger.h"
+#include "types.h"
 
-#include "ui_debuglogwidget.h"
-
-class DebugLogWidget : public QWidget
+/**
+ * Class encapsulating a single log message.
+ *
+ * Very similar in concept to qDebug() and friends.
+ */
+class LogMessage
 {
-    Q_OBJECT
-
 public:
-    DebugLogWidget(QWidget *parent = 0);
+    LogMessage(Logger::LogLevel level);
+    ~LogMessage();
 
-private slots:
-    void logUpdated(const Logger::LogEntry &msg);
+    template<typename T>
+    LogMessage &operator<<(const T &value) {
+        _stream << value << " ";
+        return *this;
+    }
+
+    LogMessage &operator<<(const QStringList &t);
+    LogMessage &operator<<(bool t);
 
 private:
-    QString toString(const Logger::LogEntry &msg);
+    QTextStream _stream;
+    QString _buffer;
+    Logger::LogLevel _logLevel;
+};
 
-private:
-    Ui::DebugLogWidget ui;
+
+// The only reason for LogMessage and the helpers below to exist is the fact that Qt versions
+// prior to 5.5 did not support the Info level.
+// Once we can rely on Qt 5.5, they will be removed and replaced by the native Qt functions.
+
+/**
+ * Creates an info-level log message.
+ *
+ * @sa qInfo
+ */
+class quInfo : public LogMessage
+{
+public:
+    quInfo() : LogMessage(Logger::LogLevel::Info) {}
+};
+
+
+/**
+ * Creates a warning-level log message.
+ *
+ * @sa qWarning
+ */
+class quWarning : public LogMessage
+{
+public:
+    quWarning() : LogMessage(Logger::LogLevel::Warning) {}
+};
+
+
+/**
+ * Creates an error-level log message.
+ *
+ * @sa qCritical
+ */
+class quError : public LogMessage
+{
+public:
+    quError() : LogMessage(Logger::LogLevel::Error) {}
 };

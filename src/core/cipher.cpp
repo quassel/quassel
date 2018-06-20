@@ -13,7 +13,7 @@
 */
 
 #include "cipher.h"
-#include "logger.h"
+#include "logmessage.h"
 
 Cipher::Cipher()
 {

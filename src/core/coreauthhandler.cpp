@@ -25,7 +25,7 @@
 #endif
 
 #include "core.h"
-#include "logger.h"
+#include "logmessage.h"
 
 using namespace Protocol;
 

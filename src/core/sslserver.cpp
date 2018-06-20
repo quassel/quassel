@@ -26,8 +26,8 @@
 
 #include <QDateTime>
 
-#include "logger.h"
 #include "quassel.h"
+#include "logmessage.h"
 
 #ifdef HAVE_SSL
 

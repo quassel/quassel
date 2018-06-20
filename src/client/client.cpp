@@ -114,8 +114,7 @@ Client::Client(QObject *parent)
     _messageProcessor(0),
     _coreAccountModel(new CoreAccountModel(this)),
     _coreConnection(new CoreConnection(this)),
-    _connected(false),
-    _debugLog(&_debugLogBuffer)
+    _connected(false)
 {
     _signalProxy->synchronize(_ircListHelper);
 }
@@ -753,48 +752,3 @@ void Client::corePasswordChanged(PeerPtr, bool success)
         coreAccountModel()->save();
     emit passwordChanged(success);
 }
-
-
-#if QT_VERSION < 0x050000
-void Client::logMessage(QtMsgType type, const char *msg)
-{
-    fprintf(stderr, "%s\n", msg);
-    fflush(stderr);
-    if (type == QtFatalMsg) {
-        Quassel::logFatalMessage(msg);
-    }
-    else {
-        QString msgString = QString("%1\n").arg(msg);
-
-        //Check to see if there is an instance around, else we risk recursions
-        //when calling instance() and creating new ones.
-        if (!instanceExists())
-            return;
-
-        instance()->_debugLog << msgString;
-        emit instance()->logUpdated(msgString);
-    }
-}
-#else
-void Client::logMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    Q_UNUSED(context);
-
-    fprintf(stderr, "%s\n", msg.toLocal8Bit().constData());
-    fflush(stderr);
-    if (type == QtFatalMsg) {
-        Quassel::logFatalMessage(msg.toLocal8Bit().constData());
-    }
-    else {
-        QString msgString = QString("%1\n").arg(msg);
-
-        //Check to see if there is an instance around, else we risk recursions
-        //when calling instance() and creating new ones.
-        if (!instanceExists())
-            return;
-
-        instance()->_debugLog << msgString;
-        emit instance()->logUpdated(msgString);
-    }
-}
-#endif

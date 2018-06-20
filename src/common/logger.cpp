@@ -18,128 +18,234 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QFile>
-#include <QTextStream>
-#include <QDateTime>
+#include <iostream>
 
 #ifdef HAVE_SYSLOG
 #  include <syslog.h>
 #endif
 
+#include <QByteArray>
+#include <QDateTime>
+#include <QDebug>
+#include <QFile>
+
 #include "logger.h"
 #include "quassel.h"
 
-Logger::~Logger()
+namespace {
+
+QByteArray msgWithTime(const Logger::LogEntry &msg)
 {
-    log();
+    return (msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + msg.message + "\n").toUtf8();
+};
+
 }
 
 
-void Logger::log()
+Logger::Logger(QObject *parent)
+    : QObject(parent)
 {
-    if (_logLevel < Quassel::logLevel())
-        return;
+    static bool registered = []() {
+        qRegisterMetaType<LogEntry>();
+        return true;
+    }();
+    Q_UNUSED(registered)
 
-    switch (_logLevel) {
-    case Quassel::DebugLevel:
-        _buffer.prepend("Debug: ");
-        break;
-    case Quassel::InfoLevel:
-        _buffer.prepend("Info: ");
-        break;
-    case Quassel::WarningLevel:
-        _buffer.prepend("Warning: ");
-        break;
-    case Quassel::ErrorLevel:
-        _buffer.prepend("Error: ");
-        break;
-    default:
-        break;
+    connect(this, SIGNAL(messageLogged(Logger::LogEntry)), this, SLOT(onMessageLogged(Logger::LogEntry)));
+
+#if QT_VERSION < 0x050000
+    qInstallMsgHandler(Logger::messageHandler);
+#else
+    qInstallMessageHandler(Logger::messageHandler);
+#endif
+}
+
+
+Logger::~Logger()
+{
+    // If we're not initialized yet, output pending messages so they don't get lost
+    if (!_initialized) {
+        for (auto &&message : _messages) {
+            std::cerr << msgWithTime(message).constData();
+        }
+    }
+}
+
+
+std::vector<Logger::LogEntry> Logger::messages() const
+{
+    return _messages;
+}
+
+
+bool Logger::setup(bool keepMessages)
+{
+    _keepMessages = keepMessages;
+
+    // Set maximum level for output (we still store/announce all messages for client-side filtering)
+    if (Quassel::isOptionSet("loglevel")) {
+        QString level = Quassel::optionValue("loglevel").toLower();
+        if (level == "debug")
+            _outputLevel = LogLevel::Debug;
+        else if (level == "info")
+            _outputLevel = LogLevel::Info;
+        else if (level == "warning")
+            _outputLevel = LogLevel::Warning;
+        else if (level == "error")
+            _outputLevel = LogLevel::Error;
+        else {
+            qCritical() << qPrintable(tr("Invalid log level %1; supported are Debug|Info|Warning|Error").arg(level));
+            return false;
+        }
+    }
+
+    QString logfilename = Quassel::optionValue("logfile");
+    if (!logfilename.isEmpty()) {
+        _logFile.setFileName(logfilename);
+        if (!_logFile.open(QFile::Append|QFile::Unbuffered|QFile::Text)) {
+            qCritical() << qPrintable(tr("Could not open log file \"%1\": %2").arg(logfilename, _logFile.errorString()));
+        }
+    }
+    if (!_logFile.isOpen()) {
+        if (!_logFile.open(stderr, QFile::WriteOnly|QFile::Unbuffered|QFile::Text)) {
+            qCritical() << qPrintable(tr("Cannot write to stderr: %1").arg(_logFile.errorString()));
+        }
     }
 
 #ifdef HAVE_SYSLOG
-    if (Quassel::logToSyslog()) {
-        int prio;
-        switch (_logLevel) {
-        case Quassel::DebugLevel:
-            prio = LOG_DEBUG;
-            break;
-        case Quassel::InfoLevel:
-            prio = LOG_INFO;
-            break;
-        case Quassel::WarningLevel:
-            prio = LOG_WARNING;
-            break;
-        case Quassel::ErrorLevel:
-            prio = LOG_ERR;
-            break;
-        default:
-            prio = LOG_INFO;
-            break;
-        }
-        syslog(prio|LOG_USER, "%s", qPrintable(_buffer));
-    }
+    _syslogEnabled = Quassel::isOptionSet("syslog");
 #endif
 
-    // if we neither use syslog nor have a logfile we log to stdout
+    _initialized = true;
 
-    if (Quassel::logFile() || !Quassel::logToSyslog()) {
-        _buffer.prepend(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss "));
-
-        QTextStream out(stdout);
-        if (Quassel::logFile() && Quassel::logFile()->isOpen()) {
-            _buffer.remove(QChar('\n'));
-            out.setDevice(Quassel::logFile());
-        }
-
-        out << _buffer << endl;
+    // Now that we've setup our logging backends, output pending messages
+    for (auto &&message : _messages) {
+        outputMessage(message);
     }
+    if (!_keepMessages) {
+        _messages.clear();
+    }
+
+    return true;
 }
 
 
 #if QT_VERSION < 0x050000
-void Logger::logMessage(QtMsgType type, const char *msg)
-{
-    switch (type) {
-    case QtDebugMsg:
-        Logger(Quassel::DebugLevel) << msg;
-        break;
-    case QtWarningMsg:
-        Logger(Quassel::WarningLevel) << msg;
-        break;
-    case QtCriticalMsg:
-        Logger(Quassel::ErrorLevel) << msg;
-        break;
-    case QtFatalMsg:
-        Logger(Quassel::ErrorLevel) << msg;
-        Quassel::logFatalMessage(msg);
-        return;
-    }
-}
+void Logger::messageHandler(QtMsgType type, const char *message)
 #else
-void Logger::logMessage(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void Logger::messageHandler(QtMsgType type, const QMessageLogContext &, const QString &message)
+#endif
 {
-    Q_UNUSED(context)
+    Quassel::instance()->logger()->handleMessage(type, message);
+}
 
+
+void Logger::handleMessage(QtMsgType type, const QString &msg)
+{
     switch (type) {
     case QtDebugMsg:
-        Logger(Quassel::DebugLevel) << msg.toLocal8Bit().constData();
+        handleMessage(LogLevel::Debug, msg);
         break;
 #if QT_VERSION >= 0x050500
     case QtInfoMsg:
-        Logger(Quassel::InfoLevel) << msg.toLocal8Bit().constData();
+        handleMessage(LogLevel::Info, msg);
         break;
 #endif
     case QtWarningMsg:
-        Logger(Quassel::WarningLevel) << msg.toLocal8Bit().constData();
+        handleMessage(LogLevel::Warning, msg);
         break;
     case QtCriticalMsg:
-        Logger(Quassel::ErrorLevel) << msg.toLocal8Bit().constData();
+        handleMessage(LogLevel::Error, msg);
         break;
     case QtFatalMsg:
-        Logger(Quassel::ErrorLevel) << msg.toLocal8Bit().constData();
-        Quassel::logFatalMessage(msg.toLocal8Bit().constData());
-        return;
+        handleMessage(LogLevel::Fatal, msg);
+        break;
     }
 }
+
+
+void Logger::handleMessage(LogLevel level, const QString &msg)
+{
+    QString logString;
+
+    switch (level) {
+    case LogLevel::Debug:
+        logString = "[Debug] ";
+        break;
+    case LogLevel::Info:
+        logString = "[Info ] ";
+        break;
+    case LogLevel::Warning:
+        logString = "[Warn ] ";
+        break;
+    case LogLevel::Error:
+        logString = "[Error] ";
+        break;
+    case LogLevel::Fatal:
+        logString = "[FATAL] ";
+        break;
+    }
+
+    // Use signal connection to make this method thread-safe
+    emit messageLogged({QDateTime::currentDateTime(), level, logString += msg});
+}
+
+
+void Logger::onMessageLogged(const LogEntry &message)
+{
+    if (_keepMessages) {
+        _messages.push_back(message);
+    }
+
+    // If setup() wasn't called yet, just store the message - will be output later
+    if (_initialized) {
+        outputMessage(message);
+    }
+}
+
+
+void Logger::outputMessage(const LogEntry &message)
+{
+    if (message.logLevel < _outputLevel) {
+        return;
+    }
+
+#ifdef HAVE_SYSLOG
+    if (_syslogEnabled) {
+        int prio{LOG_INFO};
+        switch (message.logLevel) {
+        case LogLevel::Debug:
+            prio = LOG_DEBUG;
+            break;
+        case LogLevel::Info:
+            prio = LOG_INFO;
+            break;
+        case LogLevel::Warning:
+            prio = LOG_WARNING;
+            break;
+        case LogLevel::Error:
+            prio = LOG_ERR;
+            break;
+        case LogLevel::Fatal:
+            prio = LOG_CRIT;
+        }
+        syslog(prio|LOG_USER, "%s", qPrintable(message.message));
+    }
 #endif
+
+    if (!_logFile.fileName().isEmpty() || !_syslogEnabled) {
+        _logFile.write(msgWithTime(message));
+    }
+
+#ifndef Q_OS_MAC
+    // For fatal messages, write log to dump file
+    if (message.logLevel == LogLevel::Fatal) {
+        QFile dumpFile{Quassel::instance()->coreDumpFileName()};
+        if (dumpFile.open(QIODevice::Append)) {
+            dumpFile.write(msgWithTime(message));
+            dumpFile.close();
+        }
+    }
+#endif
+
+}

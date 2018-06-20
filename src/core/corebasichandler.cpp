@@ -21,7 +21,7 @@
 #include "corebasichandler.h"
 
 #include "util.h"
-#include "logger.h"
+#include "logmessage.h"
 
 CoreBasicHandler::CoreBasicHandler(CoreNetwork *parent)
     : BasicHandler(parent),

@@ -28,7 +28,7 @@
 #include "ctcpevent.h"
 #include "ircevent.h"
 #include "ircuser.h"
-#include "logger.h"
+#include "logmessage.h"
 #include "messageevent.h"
 #include "netsplit.h"
 #include "quassel.h"
