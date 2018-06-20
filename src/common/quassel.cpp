@@ -44,6 +44,7 @@
 #include "bufferinfo.h"
 #include "identity.h"
 #include "logger.h"
+#include "logmessage.h"
 #include "message.h"
 #include "network.h"
 #include "peer.h"
@@ -61,6 +62,7 @@ Quassel *Quassel::instance()
 
 
 Quassel::Quassel()
+    : _logger{new Logger{this}}
 {
 }
 
@@ -122,52 +124,19 @@ bool Quassel::init()
         return false;
     }
 
-    // Set up logging
-    if (isOptionSet("loglevel")) {
-        QString level = optionValue("loglevel").toLower();
-
-        if (level == "debug")
-            setLogLevel(DebugLevel);
-        else if (level == "info")
-            setLogLevel(InfoLevel);
-        else if (level == "warning")
-            setLogLevel(WarningLevel);
-        else if (level == "error")
-            setLogLevel(ErrorLevel);
-        else {
-            qWarning() << qPrintable(tr("Invalid log level %1; supported are Debug|Info|Warning|Error").arg(level));
-            return false;
-        }
-    }
-
-    QString logfilename = optionValue("logfile");
-    if (!logfilename.isEmpty()) {
-        instance()->_logFile.reset(new QFile{logfilename});
-        if (!logFile()->open(QIODevice::Append | QIODevice::Text)) {
-            qWarning() << qPrintable(tr("Could not open log file \"%1\": %2").arg(logfilename, logFile()->errorString()));
-            instance()->_logFile.reset();
-        }
-    }
-#ifdef HAVE_SYSLOG
-    instance()->_logToSyslog = isOptionSet("syslog");
-#endif
-
-#if QT_VERSION < 0x050000
-    qInstallMsgHandler(Logger::logMessage);
-#else
-    qInstallMessageHandler(Logger::logMessage);
-#endif
-
-    return true;
+    // Don't keep a debug log on the core
+    return instance()->logger()->setup(runMode() != RunMode::CoreOnly);
 }
 
 
 void Quassel::destroy()
 {
-    if (logFile()) {
-        logFile()->close();
-        instance()->_logFile.reset();
-    }
+}
+
+
+Logger *Quassel::logger() const
+{
+    return _logger;
 }
 
 
@@ -426,45 +395,6 @@ QString Quassel::optionValue(const QString &key)
 bool Quassel::isOptionSet(const QString &key)
 {
     return instance()->_cliParser ? instance()->_cliParser->isSet(key) : false;
-}
-
-
-Quassel::LogLevel Quassel::logLevel()
-{
-    return instance()->_logLevel;
-}
-
-
-void Quassel::setLogLevel(LogLevel logLevel)
-{
-    instance()->_logLevel = logLevel;
-}
-
-
-QFile *Quassel::logFile() {
-    return instance()->_logFile.get();
-}
-
-
-bool Quassel::logToSyslog()
-{
-    return instance()->_logToSyslog;
-}
-
-
-void Quassel::logFatalMessage(const char *msg)
-{
-#ifdef Q_OS_MAC
-    Q_UNUSED(msg)
-#else
-    QFile dumpFile(instance()->coreDumpFileName());
-    dumpFile.open(QIODevice::Append);
-    QTextStream dumpStream(&dumpFile);
-
-    dumpStream << "Fatal: " << msg << '\n';
-    dumpStream.flush();
-    dumpFile.close();
-#endif
 }
 
 

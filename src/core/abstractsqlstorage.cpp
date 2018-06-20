@@ -19,15 +19,15 @@
  ***************************************************************************/
 
 #include "abstractsqlstorage.h"
-#include "quassel.h"
-
-#include "logger.h"
 
 #include <QMutexLocker>
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlField>
 #include <QSqlQuery>
+
+#include "logmessage.h"
+#include "quassel.h"
 
 int AbstractSqlStorage::_nextConnectionId = 0;
 AbstractSqlStorage::AbstractSqlStorage(QObject *parent)

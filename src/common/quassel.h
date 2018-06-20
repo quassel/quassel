@@ -35,6 +35,8 @@
 
 class QFile;
 
+class Logger;
+
 class Quassel : public QObject
 {
     // TODO Qt5: Use Q_GADGET
@@ -146,6 +148,13 @@ public:
 
     static Quassel *instance();
 
+    /**
+     * Provides access to the Logger instance.
+     *
+     * @returns The Logger instance
+     */
+    Logger *logger() const;
+
     static void setupBuildInfo();
     static const BuildInfo &buildInfo();
     static RunMode runMode();
@@ -182,20 +191,6 @@ public:
     static QString optionValue(const QString &option);
     static bool isOptionSet(const QString &option);
 
-    enum LogLevel {
-        DebugLevel,
-        InfoLevel,
-        WarningLevel,
-        ErrorLevel
-    };
-
-    static LogLevel logLevel();
-    static void setLogLevel(LogLevel logLevel);
-    static QFile *logFile();
-    static bool logToSyslog();
-
-    static void logFatalMessage(const char *msg);
-
     using ReloadHandler = std::function<bool()>;
 
     static void registerReloadHandler(ReloadHandler handler);
@@ -203,6 +198,11 @@ public:
     using QuitHandler = std::function<void()>;
 
     static void registerQuitHandler(QuitHandler quitHandler);
+
+    const QString &coreDumpFileName();
+
+signals:
+    void messageLogged(const QDateTime &timeStamp, const QString &msg);
 
 protected:
     static bool init();
@@ -222,8 +222,6 @@ private:
     Quassel();
     void setupEnvironment();
     void registerMetaTypes();
-
-    const QString &coreDumpFileName();
 
     /**
      * Requests a reload of relevant runtime configuration.
@@ -257,11 +255,9 @@ private:
     QStringList _dataDirPaths;
     QString _translationDirPath;
 
-    LogLevel _logLevel{InfoLevel};
-    bool _logToSyslog{false};
-    std::unique_ptr<QFile> _logFile;
-
     std::shared_ptr<AbstractCliParser> _cliParser;
+
+    Logger *_logger;
 
     std::vector<ReloadHandler> _reloadHandlers;
     std::vector<QuitHandler> _quitHandlers;

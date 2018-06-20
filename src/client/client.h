@@ -167,13 +167,6 @@ public:
         emit showIgnoreList(ignoreRule);
     }
 
-#if QT_VERSION < 0x050000
-    static void logMessage(QtMsgType type, const char *msg);
-#else
-    static void logMessage(QtMsgType, const QMessageLogContext&, const QString&);
-#endif
-    static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
-
     void displayChannelList(NetworkId networkId) {
         emit showChannelList(networkId);
     }
@@ -223,8 +216,6 @@ signals:
 
     void requestCreateNetwork(const NetworkInfo &info, const QStringList &persistentChannels = QStringList());
     void requestRemoveNetwork(NetworkId);
-
-    void logUpdated(const QString &msg);
 
     //! Emitted when a buffer has been marked as read
     /** This is currently triggered by setting lastSeenMsg, either local or remote,
@@ -326,9 +317,6 @@ private:
     QHash<IdentityId, Identity *> _identities;
 
     bool _connected;
-
-    QString _debugLogBuffer;
-    QTextStream _debugLog;
 
     QList<QPair<BufferInfo, QString> > _userInputBuffer;
 

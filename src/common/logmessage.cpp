@@ -18,28 +18,35 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#pragma once
+#include "logmessage.h"
 
-#include <QString>
-#include <QWidget>
+#include <QFile>
+#include <QTextStream>
+#include <QDateTime>
 
-#include "logger.h"
+#include "quassel.h"
 
-#include "ui_debuglogwidget.h"
-
-class DebugLogWidget : public QWidget
+LogMessage::LogMessage(Logger::LogLevel level)
+    : _stream(&_buffer, QIODevice::WriteOnly)
+    , _logLevel(level)
 {
-    Q_OBJECT
+}
 
-public:
-    DebugLogWidget(QWidget *parent = 0);
 
-private slots:
-    void logUpdated(const Logger::LogEntry &msg);
+LogMessage::~LogMessage()
+{
+    Quassel::instance()->logger()->handleMessage(_logLevel, _buffer);
+}
 
-private:
-    QString toString(const Logger::LogEntry &msg);
 
-private:
-    Ui::DebugLogWidget ui;
-};
+LogMessage &LogMessage::operator<<(const QStringList &t)
+{
+    _stream << t.join(" ") << " ";
+    return *this;
+}
+
+
+LogMessage &LogMessage::operator<<(bool t) {
+    _stream << (t ? "true" : "false") << " ";
+    return *this;
+}

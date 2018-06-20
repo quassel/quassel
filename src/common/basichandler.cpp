@@ -20,9 +20,8 @@
 
 #include "basichandler.h"
 
+#include <QDebug>
 #include <QMetaMethod>
-
-#include "logger.h"
 
 BasicHandler::BasicHandler(QObject *parent)
     : QObject(parent),

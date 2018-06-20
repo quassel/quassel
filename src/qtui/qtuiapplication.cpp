@@ -87,10 +87,7 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 
     Quassel::setRunMode(Quassel::ClientOnly);
 
-#if QT_VERSION < 0x050000
-    qInstallMsgHandler(Client::logMessage);
-#else
-    qInstallMessageHandler(Client::logMessage);
+#if QT_VERSION >= 0x050000
     connect(this, &QGuiApplication::commitDataRequest, this, &QtUiApplication::commitData, Qt::DirectConnection);
     connect(this, &QGuiApplication::saveStateRequest, this, &QtUiApplication::saveState, Qt::DirectConnection);
 #endif

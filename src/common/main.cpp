@@ -78,6 +78,9 @@ int main(int argc, char **argv)
     umask(S_IRWXG | S_IRWXO);
 #endif
 
+    // Instantiate early, so log messages are handled
+    Quassel::instance();
+
 #if QT_VERSION < 0x050000
     // All our source files are in UTF-8, and Qt5 even requires that
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));

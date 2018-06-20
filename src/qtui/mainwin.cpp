@@ -1974,7 +1974,7 @@ void MainWin::on_actionDebugMessageModel_triggered()
 
 void MainWin::on_actionDebugLog_triggered()
 {
-    DebugLogWidget *logWidget = new DebugLogWidget(0);
+    DebugLogWidget *logWidget = new DebugLogWidget(nullptr);  // will be deleted on close
     logWidget->show();
 }
 

@@ -22,7 +22,7 @@
 
 #include "corenetwork.h"
 #include "identserver.h"
-#include "logger.h"
+#include "logmessage.h"
 
 IdentServer::IdentServer(QObject *parent)
     : QObject(parent)
