@@ -16,45 +16,80 @@ Without further ado, let's start:
 Version 0.13.0 (TBR)
 ====================
 
-NOTE: Database schema and settings format change, no downgrade possible!
+NOTE:  Database schema and settings format change, no downgrade possible!
+NOTE²: Database migration may take a long time (hours for big databases),
+       and temporarily require double the disk space until migration is
+       complete!
 
-* Use Qt 5 by default
-* Add Breeze/Breeze Dark icon themes, allow selection of icon theme
-* Use Breeze icon theme by default
-* Introduce new quassel-specific icons
-* Use Plasma notification sounds by default (rather than KDE4's)
-* Make IRC rate limits configurable
-* Sender colors by default (and optionally for ACTION messages)
-* Improve ChatView color settings
-* Improve default sender colors, and make configurable by palette in QSS
-* Optionally hide brackets around sender/timestamp
-* Improved SSL certificate handling
-* Add cmdline options for SSL certificate/key paths
-* Use SHA-512 to store the core certificate digest
-* Chat list filter/search
-* QtMultimedia notification backend (deprecates Phonon support with Qt 5)
-* Various UI improvements (tooltips, tool bars, menus...)
-* Spell checking via Sonnet if KDE Frameworks integration is enabled
-* Support for many IRCv3 features, improved capability negotiation
-* Improve handling of user modes
-* Store sender prefixes (@+v...) in database, and optionally show in UI
-* Buffer filter/search
-* Add context menu option in ChatView for enabling the menubar
-* Add support for ZNC self-messages
-* Support twitch.tv's membership capability
+* Use Qt 5 by default (this will be the last release still supporting Qt4)
+* New branding (application icon)
+* UI improvements
+  - Improve ChatView color settings
+  - Improve default sender colors, and make configurable by palette in QSS
+  - Settings dialog improvements (tree width, changed state for several pages)
+  - Chat list filter/search
+  - Shortcuts for formatting options
+  - Sender colors by default (and optionally for ACTION messages)
+  - Add context menu option in ChatView for enabling the menubar
+  - Optionally hide brackets around sender/timestamp
+  - Make /list open the channel list dialog, including advanced search for channels
+  - Spell checking via Sonnet if KDE Frameworks integration is enabled
+  - Support $i:ident, $i:identd, and $i:account in aliases
+  - Many other UI improvements and polish (tooltips, tool bars, menus...)
+* Completely revamp icon theme support
+  - Fix icon loading on many platforms (requires newer Qt)
+  - Fix tray icons with StatusNotifier
+  - Allow selecting a fallback for incomplete system icon themes
+  - Ship Quassel-specific icons
+  - Add Breeze and Breeze Dark icon themes, use Breeze by default
+* Notification improvements
+  - New configuration options for tray icon notification
+  - Use Plasma notification sounds by default (rather than KDE4's)
+  - QtMultimedia notification backend (deprecates Phonon support with Qt 5)
+* IRC-related improvements
+  - Support for many IRCv3 features, improved capability negotiation
+  - Improve handling of user modes
+  - Store sender prefixes (@+v...) in database, and optionally show in UI
+  - Add support for ZNC self-messages
+  - Support twitch.tv's membership capability
+  - Support rendering of extended mIRC colors, hex colors, reverse and strikethrough
+  - Make IRC rate limits configurable
+  - Use UTF-8 server encoding by default (instead of ISO-8859-1, changeable via network settings)
+  - Internal identd (may require port forwarding rules)
+  - Strict ident mode (always sends user name)
+* Security improvements
+  - Improved SSL certificate handling
+  - Add command line options for SSL certificate/key paths
+  - Use SHA-512 to store the core certificate digest
+  - Persist blowfish keys for encrypted channels
+* Move functionality core side (useful for mobile clients)
+  - Handle buffer activity, highlights, ignore rules core-side
+  - Improved ignore rule support
+  - Core-side (synced) highlight rules (in addition to local highlight rules)
+* Core/client connection
+  - Extended core/client feature negotiation, including diagnostic output
+  - System proxy support for the client
+  - Allow disconnecting other clients via "Core Info" dialog (if supported by client)
+  - LDAP authentication backend for core users (--select-authenticator)
+* Database changes
+  - Use 64 bit timestamps to avoid the Y2038 problem, use millisecond precision
+  - Use 64 bit message IDs to support giant backlogs (requires 0.13+ core and client)
+  - Store real names and avatar URLs in database (for now, only used by Quasseldroid)
+  - Improve database performance
+  - Make database upgrades more robust
+* Containerization improvements
+  - Store core settings in database
+  - Allow configuring the core via environment variables
+* Logging improvements
+  - Allow to configure the log level also for (monolithic or not) client
+  - Make debug log window more useful
+  - Catch early log messages
+  - Slightly reformat console output so it's better readable
 * Settings versioning (allows upgrading from older versions, too)
-* LDAP authentication backend for core users (--select-authenticator)
-* Handle buffer activity core-side
-* Core-side (synced) highlight rules (in addition to local highlight rules)
-* Allow disconnecting other clients via "Core Info" dialog (if supported by client)
-* System proxy support for the client
-* Support rendering of extended mIRC colors, hex colors, reverse and strikethrough
-* Make /list open the channel list dialog
-* Support $i:ident and $i:account in aliases
-* Extended core/client feature negotiation, including diagnostic output
-* Improve database performance
+* Multithread the monolithic client, to keep UI responsive even under load
 * Build system improvements
-* Many smaller fixes and improvements
+* Many smaller fixes and quality-of-life improvements
+* Update inxi script to 3.0.18 (now requires Perl to be installed)
 * Translation updates
 
 Version 0.12.5 (2018-04-24)
