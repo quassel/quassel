@@ -50,8 +50,13 @@ public:
      */
     void setChannelFilters(const QString &channelFilters);
 
-protected slots:
+public slots:
+    /**
+     * Request a channel listing using any parameters set in the UI
+     */
     void requestSearch();
+
+protected slots:
     void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
     void reportFinishedList();
     void joinChannel(const QModelIndex &);

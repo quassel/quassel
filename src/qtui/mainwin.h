@@ -125,10 +125,13 @@ private slots:
     /**
      * Show the channel list dialog for the network, optionally searching by channel name
      *
-     * @param networkId       Network ID for associated network
-     * @param channelFilters  Partial channel name to search for, or empty to show all
+     * @param networkId        Network ID for associated network
+     * @param channelFilters   Partial channel name to search for, or empty to show all
+     * @param listImmediately  If true, immediately list channels, otherwise just show dialog
      */
-    void showChannelList(NetworkId netId = {}, const QString &channelFilters = {});
+    void showChannelList(NetworkId netId = {}, const QString &channelFilters = {},
+                         bool listImmediately = false);
+
     void showNetworkConfig(NetworkId netId = NetworkId());
     void showCoreConnectionDlg();
     void showCoreConfigWizard(const QVariantList &, const QVariantList &);
