@@ -412,8 +412,10 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
         break;
     }
     case ShowChannelList:
-        if (networkId.isValid())
-            emit showChannelList(networkId, {});
+        if (networkId.isValid()) {
+            // Don't immediately list channels, allowing customization of filter first
+            emit showChannelList(networkId, {}, false);
+        }
         break;
     case ShowNetworkConfig:
         if (networkId.isValid())

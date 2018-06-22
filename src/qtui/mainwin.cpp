@@ -207,11 +207,11 @@ void MainWin::init()
     connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
         SLOT(messagesInserted(const QModelIndex &, int, int)));
     connect(GraphicalUi::contextMenuActionProvider(),
-            SIGNAL(showChannelList(NetworkId, const QString &)),
-            SLOT(showChannelList(NetworkId, const QString &)));
+            SIGNAL(showChannelList(NetworkId,QString,bool)),
+            SLOT(showChannelList(NetworkId,QString,bool)));
     connect(Client::instance(),
-            SIGNAL(showChannelList(NetworkId, const QString &)),
-            SLOT(showChannelList(NetworkId, const QString &)));
+            SIGNAL(showChannelList(NetworkId,QString,bool)),
+            SLOT(showChannelList(NetworkId,QString,bool)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showNetworkConfig(NetworkId)), SLOT(showNetworkConfig(NetworkId)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
     connect(Client::instance(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
@@ -1473,7 +1473,7 @@ void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantL
 }
 
 
-void MainWin::showChannelList(NetworkId netId, const QString &channelFilters)
+void MainWin::showChannelList(NetworkId netId, const QString &channelFilters, bool listImmediately)
 {
     ChannelListDlg *channelListDlg = new ChannelListDlg();
 
@@ -1498,6 +1498,9 @@ void MainWin::showChannelList(NetworkId netId, const QString &channelFilters)
     channelListDlg->setNetwork(netId);
     if (!channelFilters.isEmpty()) {
         channelListDlg->setChannelFilters(channelFilters);
+    }
+    if (listImmediately) {
+        channelListDlg->requestSearch();
     }
     channelListDlg->show();
 }

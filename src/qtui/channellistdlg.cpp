@@ -100,6 +100,11 @@ void ChannelListDlg::setChannelFilters(const QString &channelFilters)
 
 void ChannelListDlg::requestSearch()
 {
+    if (!_netId.isValid()) {
+        // No valid network set yet
+        return;
+    }
+
     _listFinished = false;
     enableQuery(false);
     showErrors(false);

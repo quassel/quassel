@@ -172,12 +172,14 @@ public:
      *
      * @see Client::showChannelList()
      *
-     * @param networkId       Network ID for associated network
-     * @param channelFilters  Partial channel name to search for, or empty to show all
+     * @param networkId        Network ID for associated network
+     * @param channelFilters   Partial channel name to search for, or empty to show all
+     * @param listImmediately  If true, immediately list channels, otherwise just show dialog
      */
-    void displayChannelList(NetworkId networkId, const QString &channelFilters = {})
+    void displayChannelList(NetworkId networkId, const QString &channelFilters = {},
+                            bool listImmediately = false)
     {
-        emit showChannelList(networkId, channelFilters);
+        emit showChannelList(networkId, channelFilters, listImmediately);
     }
 
 signals:
@@ -190,10 +192,13 @@ signals:
      *
      * @see MainWin::showChannelList()
      *
-     * @param networkId       Network ID for associated network
-     * @param channelFilters  Partial channel name to search for, or empty to show all
+     * @param networkId        Network ID for associated network
+     * @param channelFilters   Partial channel name to search for, or empty to show all
+     * @param listImmediately  If true, immediately list channels, otherwise just show dialog
      */
-    void showChannelList(NetworkId networkId, const QString &channelFilters = {});
+    void showChannelList(NetworkId networkId, const QString &channelFilters = {},
+                         bool listImmediately = false);
+
     void showIgnoreList(QString ignoreRule);
 
     void connected();
