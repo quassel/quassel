@@ -206,8 +206,12 @@ void MainWin::init()
     connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(clientNetworkRemoved(NetworkId)));
     connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
         SLOT(messagesInserted(const QModelIndex &, int, int)));
-    connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
-    connect(Client::instance(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
+    connect(GraphicalUi::contextMenuActionProvider(),
+            SIGNAL(showChannelList(NetworkId, const QString &)),
+            SLOT(showChannelList(NetworkId, const QString &)));
+    connect(Client::instance(),
+            SIGNAL(showChannelList(NetworkId, const QString &)),
+            SLOT(showChannelList(NetworkId, const QString &)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showNetworkConfig(NetworkId)), SLOT(showNetworkConfig(NetworkId)));
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
     connect(Client::instance(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
@@ -1469,7 +1473,7 @@ void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantL
 }
 
 
-void MainWin::showChannelList(NetworkId netId)
+void MainWin::showChannelList(NetworkId netId, const QString &channelFilters)
 {
     ChannelListDlg *channelListDlg = new ChannelListDlg();
 
@@ -1477,10 +1481,24 @@ void MainWin::showChannelList(NetworkId netId)
         QAction *action = qobject_cast<QAction *>(sender());
         if (action)
             netId = action->data().value<NetworkId>();
+        if (!netId.isValid()) {
+            // We still haven't found a valid network, probably no network selected, e.g. "/list"
+            // on the client homescreen when no networks are connected.
+            QMessageBox box(QMessageBox::Information, tr("No network selected"),
+                            QString("<b>%1</b>").arg(tr("No network selected")),
+                            QMessageBox::Ok, this);
+            box.setInformativeText(tr("Select a network before trying to view the channel list."));
+            box.exec();
+            return;
+        }
     }
+
 
     channelListDlg->setAttribute(Qt::WA_DeleteOnClose);
     channelListDlg->setNetwork(netId);
+    if (!channelFilters.isEmpty()) {
+        channelListDlg->setChannelFilters(channelFilters);
+    }
     channelListDlg->show();
 }
 

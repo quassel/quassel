@@ -154,7 +154,15 @@ protected slots:
     virtual void actionTriggered(QAction *);
 
 signals:
-    void showChannelList(NetworkId);
+    /**
+     * Request to show the channel list dialog for the network, optionally searching by channel name
+     *
+     * @see MainWin::showChannelList()
+     *
+     * @param networkId       Network ID for associated network
+     * @param channelFilters  Partial channel name to search for, or empty to show all
+     */
+    void showChannelList(NetworkId, const QString &);
     void showNetworkConfig(NetworkId);
     void showIgnoreList(QString);
 
