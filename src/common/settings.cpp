@@ -207,9 +207,8 @@ const QVariant &Settings::localValue(const QString &key, const QVariant &def)
 bool Settings::localKeyExists(const QString &key)
 {
     QString normKey = normalizedKey(group, key);
-    if (isCached(normKey))
-        return true;
-
+    // Do NOT check the cache as default values get cached, too.  Otherwise loading a setting once
+    // will mark it as existing in settings, even when it only exists in cache (and not on disk).
     create_qsettings;
     return s.contains(normKey);
 }
