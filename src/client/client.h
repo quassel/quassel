@@ -167,15 +167,33 @@ public:
         emit showIgnoreList(ignoreRule);
     }
 
-    void displayChannelList(NetworkId networkId) {
-        emit showChannelList(networkId);
+    /**
+     * Request to show the channel list dialog for the network, optionally searching by channel name
+     *
+     * @see Client::showChannelList()
+     *
+     * @param networkId       Network ID for associated network
+     * @param channelFilters  Partial channel name to search for, or empty to show all
+     */
+    void displayChannelList(NetworkId networkId, const QString &channelFilters = {})
+    {
+        emit showChannelList(networkId, channelFilters);
     }
 
 signals:
     void requestNetworkStates();
 
     void showConfigWizard(const QVariantMap &coredata);
-    void showChannelList(NetworkId networkId);
+
+    /**
+     * Request to show the channel list dialog for the network, optionally searching by channel name
+     *
+     * @see MainWin::showChannelList()
+     *
+     * @param networkId       Network ID for associated network
+     * @param channelFilters  Partial channel name to search for, or empty to show all
+     */
+    void showChannelList(NetworkId networkId, const QString &channelFilters = {});
     void showIgnoreList(QString ignoreRule);
 
     void connected();

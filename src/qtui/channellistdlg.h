@@ -40,6 +40,16 @@ public:
 
     void setNetwork(NetworkId netId);
 
+    /**
+     * Set the channel search string, enabling advanced mode if needed
+     *
+     * Sets the channel name search text to the specified string, enabling advanced mode.  If search
+     * string is empty, advanced mode will be automatically hidden.
+     *
+     * @param channelFilters Partial channel name to search for, or empty to not filter by name
+     */
+    void setChannelFilters(const QString &channelFilters);
+
 protected slots:
     void requestSearch();
     void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);

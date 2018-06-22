@@ -413,7 +413,7 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
     }
     case ShowChannelList:
         if (networkId.isValid())
-            emit showChannelList(networkId);
+            emit showChannelList(networkId, {});
         break;
     case ShowNetworkConfig:
         if (networkId.isValid())

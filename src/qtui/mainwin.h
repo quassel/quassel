@@ -121,7 +121,14 @@ private slots:
     void currentBufferChanged(BufferId);
     void messagesInserted(const QModelIndex &parent, int start, int end);
     void showAboutDlg();
-    void showChannelList(NetworkId netId = NetworkId());
+
+    /**
+     * Show the channel list dialog for the network, optionally searching by channel name
+     *
+     * @param networkId       Network ID for associated network
+     * @param channelFilters  Partial channel name to search for, or empty to show all
+     */
+    void showChannelList(NetworkId netId = {}, const QString &channelFilters = {});
     void showNetworkConfig(NetworkId netId = NetworkId());
     void showCoreConnectionDlg();
     void showCoreConfigWizard(const QVariantList &, const QVariantList &);

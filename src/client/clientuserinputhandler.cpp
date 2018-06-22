@@ -142,8 +142,8 @@ void ClientUserInputHandler::handleIgnore(const BufferInfo &bufferInfo, const QS
 
 void ClientUserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &text)
 {
-    Q_UNUSED(text)
-    Client::instance()->displayChannelList(bufferInfo.networkId());
+    // Pass along any potential search parameters
+    Client::instance()->displayChannelList(bufferInfo.networkId(), text);
 }
 
 

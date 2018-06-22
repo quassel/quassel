@@ -84,6 +84,15 @@ void ChannelListDlg::setNetwork(NetworkId netId)
 }
 
 
+void ChannelListDlg::setChannelFilters(const QString &channelFilters)
+{
+    // Enable advanced mode if searching
+    setAdvancedMode(!channelFilters.isEmpty());
+    // Set channel search text after setting advanced mode so it's not cleared
+    ui.channelNameLineEdit->setText(channelFilters.trimmed());
+}
+
+
 void ChannelListDlg::requestSearch()
 {
     _listFinished = false;
