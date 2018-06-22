@@ -66,6 +66,11 @@ private:
     void enableQuery(bool enable);
     void setAdvancedMode(bool advanced);
 
+    /**
+     * Update the focus of input widgets according to dialog state
+     */
+    void updateInputFocus();
+
     Ui::ChannelListDlg ui;
 
     bool _listFinished;

@@ -49,6 +49,8 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
     ui.channelListView->setTabKeyNavigation(false);
     ui.channelListView->setModel(&_sortFilter);
     ui.channelListView->setSortingEnabled(true);
+    // Sort A-Z by default
+    ui.channelListView->sortByColumn(0, Qt::AscendingOrder);
     ui.channelListView->verticalHeader()->hide();
     ui.channelListView->horizontalHeader()->setStretchLastSection(true);
 
@@ -70,6 +72,9 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
     enableQuery(true);
     showFilterLine(false);
     showErrors(false);
+
+    // Set initial input focus
+    updateInputFocus();
 }
 
 
@@ -113,6 +118,8 @@ void ChannelListDlg::receiveChannelList(const NetworkId &netId, const QStringLis
     showFilterLine(!channelList.isEmpty());
     _ircListModel.setChannelList(channelList);
     enableQuery(_listFinished);
+    // Reset input focus since UI changed
+    updateInputFocus();
 }
 
 
@@ -154,6 +161,18 @@ void ChannelListDlg::setAdvancedMode(bool advanced)
     ui.channelNameLineEdit->clear();
     ui.channelNameLineEdit->setVisible(advanced);
     ui.searchPatternLabel->setVisible(advanced);
+}
+
+
+void ChannelListDlg::updateInputFocus()
+{
+    // Update keyboard focus to match what options are available.  Prioritize the channel name
+    // editor as one likely won't need to filter when already limiting the list.
+    if (ui.channelNameLineEdit->isVisible()) {
+        ui.channelNameLineEdit->setFocus();
+    } else if (ui.filterLineEdit->isVisible()) {
+        ui.filterLineEdit->setFocus();
+    }
 }
 
 
