@@ -21,10 +21,13 @@
 #ifndef COREIRCLISTHELPER_H
 #define COREIRCLISTHELPER_H
 
+#include <memory>
+
 #include "irclisthelper.h"
 
 #include "coresession.h"
 
+class QBasicTimer;
 class QTimerEvent;
 
 class CoreIrcListHelper : public IrcListHelper
@@ -58,7 +61,8 @@ private:
     QHash<NetworkId, QString> _queuedQuery;
     QHash<NetworkId, QList<ChannelDescription> > _channelLists;
     QHash<NetworkId, QVariantList> _finishedChannelLists;
-    QHash<int, NetworkId> _queryTimeout;
+    QHash<int, NetworkId> _queryTimeoutByTimerId;
+    QHash<NetworkId, std::shared_ptr<QBasicTimer>> _queryTimeoutByNetId;
 };
 
 
