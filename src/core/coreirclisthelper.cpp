@@ -23,6 +23,8 @@
 #include "corenetwork.h"
 #include "coreuserinputhandler.h"
 
+constexpr auto kTimeoutMs = 5000;
+
 INIT_SYNCABLE_OBJECT(CoreIrcListHelper)
 QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters)
 {
@@ -45,6 +47,9 @@ bool CoreIrcListHelper::addChannel(const NetworkId &netId, const QString &channe
         return false;
 
     _channelLists[netId] << ChannelDescription(channelName, userCount, topic);
+    if (_queryTimeoutByNetId.contains(netId))
+        _queryTimeoutByNetId[netId]->start(kTimeoutMs, this);
+
     return true;
 }
 
@@ -55,7 +60,12 @@ bool CoreIrcListHelper::dispatchQuery(const NetworkId &netId, const QString &que
     if (network) {
         _channelLists[netId] = QList<ChannelDescription>();
         network->userInputHandler()->handleList(BufferInfo(), query);
-        _queryTimeout[startTimer(10000)] = netId;
+
+        auto timer = std::make_shared<QBasicTimer>();
+        timer->start(kTimeoutMs, this);
+        _queryTimeoutByNetId[netId] = timer;
+        _queryTimeoutByTimerId[timer->timerId()] = netId;
+
         return true;
     }
     else {
@@ -66,6 +76,12 @@ bool CoreIrcListHelper::dispatchQuery(const NetworkId &netId, const QString &que
 
 bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId)
 {
+    if (_queryTimeoutByNetId.contains(netId)) {
+        // If we recieved an actual RPL_LISTEND, remove the timer
+        int timerId = _queryTimeoutByNetId.take(netId)->timerId();
+        _queryTimeoutByTimerId.remove(timerId);
+    }
+
     if (_queuedQuery.contains(netId)) {
         // we're no longer interessted in the current data. drop it and issue a new request.
         return dispatchQuery(netId, _queuedQuery.take(netId));
@@ -92,8 +108,14 @@ bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId)
 
 void CoreIrcListHelper::timerEvent(QTimerEvent *event)
 {
-    int timerId = event->timerId();
-    killTimer(timerId);
-    NetworkId netId = _queryTimeout.take(timerId);
+    if (!_queryTimeoutByTimerId.contains(event->timerId())) {
+        IrcListHelper::timerEvent(event);
+        return;
+    }
+
+    NetworkId netId = _queryTimeoutByTimerId.take(event->timerId());
+    _queryTimeoutByNetId.remove(netId);
+
+    event->accept();
     endOfChannelList(netId);
 }
