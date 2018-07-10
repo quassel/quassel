@@ -88,6 +88,4 @@ private slots:
 
 private:
     bool _aboutToQuit{false};
-
-    Quassel _quasselInstance;
 };
