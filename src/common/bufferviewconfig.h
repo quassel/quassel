@@ -23,6 +23,7 @@
 
 #include "syncableobject.h"
 
+#include "bufferinfo.h"
 #include "types.h"
 
 class BufferViewConfig : public SyncableObject
@@ -129,17 +130,21 @@ signals:
 //   void setBufferViewNameRequested(const QString &bufferViewName);
 
 private:
-    int _bufferViewId;
-    QString _bufferViewName;
-    NetworkId _networkId;
-    bool _addNewBuffersAutomatically;
-    bool _sortAlphabetically;
-    bool _hideInactiveBuffers;
-    bool _hideInactiveNetworks;
-    bool _disableDecoration;
-    int _allowedBufferTypes;
-    int _minimumActivity;
-    bool _showSearch;
+    int _bufferViewId = 0;                   ///< ID of the associated BufferView
+    QString _bufferViewName = {};            ///< Display name of the associated BufferView
+    NetworkId _networkId = {};               ///< Network ID this buffer belongs to
+
+    bool _addNewBuffersAutomatically = true; ///< Automatically add new buffers when created
+    bool _sortAlphabetically = true;         ///< Sort buffers alphabetically
+    bool _hideInactiveBuffers = false;       ///< Hide buffers without activity
+    bool _hideInactiveNetworks = false;      ///< Hide networks without activity
+    bool _disableDecoration = false;         ///< Disable buffer decoration (not fully implemented)
+    /// Buffer types allowed within this view
+    int _allowedBufferTypes = (BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer
+                               | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer);
+    int _minimumActivity = 0;                ///< Minimum activity for a buffer to show
+    bool _showSearch = false;                ///< Persistently show the buffer search UI
+
     QList<BufferId> _buffers;
     QSet<BufferId> _removedBuffers;
     QSet<BufferId> _temporarilyRemovedBuffers;
