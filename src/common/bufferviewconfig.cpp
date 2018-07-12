@@ -20,20 +20,10 @@
 
 #include "bufferviewconfig.h"
 
-#include "bufferinfo.h"
-
 INIT_SYNCABLE_OBJECT(BufferViewConfig)
 BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
     : SyncableObject(parent),
-    _bufferViewId(bufferViewId),
-    _addNewBuffersAutomatically(true),
-    _sortAlphabetically(true),
-    _hideInactiveBuffers(false),
-    _hideInactiveNetworks(false),
-    _disableDecoration(false),
-    _allowedBufferTypes(BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer),
-    _minimumActivity(0),
-    _showSearch(false)
+    _bufferViewId(bufferViewId)
 {
     setObjectName(QString::number(bufferViewId));
 }
