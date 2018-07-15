@@ -38,10 +38,9 @@ MonolithicApplication::MonolithicApplication(int &argc, char **argv)
 }
 
 
-bool MonolithicApplication::init()
+void MonolithicApplication::init()
 {
-    if (!QtUiApplication::init())
-        return false;
+    QtUiApplication::init();
 
     connect(Client::coreConnection(), SIGNAL(connectToInternalCore(QPointer<InternalPeer>)), this, SLOT(onConnectionRequest(QPointer<InternalPeer>)));
 
@@ -51,8 +50,6 @@ bool MonolithicApplication::init()
     if (Quassel::isOptionSet("port")) {
         startInternalCore();
     }
-
-    return true;
 }
 
 
@@ -76,13 +73,14 @@ void MonolithicApplication::startInternalCore()
     // Start internal core in a separate thread, so it doesn't block the UI
     _core = new Core{};
     _core->moveToThread(&_coreThread);
-    connect(&_coreThread, SIGNAL(started()), _core, SLOT(init()));
+    connect(&_coreThread, SIGNAL(started()), _core, SLOT(initAsync()));
     connect(&_coreThread, SIGNAL(finished()), _core, SLOT(deleteLater()));
 
     connect(this, SIGNAL(connectInternalPeer(QPointer<InternalPeer>)), _core, SLOT(connectInternalPeer(QPointer<InternalPeer>)));
     connect(_core, SIGNAL(sessionState(Protocol::SessionState)), Client::coreConnection(), SLOT(internalSessionStateReceived(Protocol::SessionState)));
 
     connect(_core, SIGNAL(dbUpgradeInProgress(bool)), Client::instance(), SLOT(onDbUpgradeInProgress(bool)));
+    connect(_core, SIGNAL(exitRequested(int,QString)), Client::instance(), SLOT(onExitRequested(int,QString)));
 
     _coreThread.start();
 }

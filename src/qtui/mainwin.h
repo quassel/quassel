@@ -100,6 +100,8 @@ public slots:
 
     void showMigrationWarning(bool show);
 
+    void onExitRequested(const QString &reason);
+
     //! Quit application
     void quit();
 

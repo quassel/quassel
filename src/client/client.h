@@ -256,6 +256,9 @@ signals:
     //! Emitted when database schema upgrade starts or ends (only mono client)
     void dbUpgradeInProgress(bool inProgress);
 
+    //! Emitted before an exit request is handled
+    void exitRequested(const QString &reason);
+
 public slots:
     void disconnectFromCore();
 
@@ -266,6 +269,7 @@ public slots:
     void markBufferAsRead(BufferId id);
 
     void onDbUpgradeInProgress(bool inProgress);
+    void onExitRequested(int exitCode, const QString &reason);
 
 private slots:
     void setSyncedToCore();

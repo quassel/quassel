@@ -36,7 +36,7 @@ public:
     MonolithicApplication(int &, char **);
     ~MonolithicApplication() override;
 
-    bool init() override;
+    void init() override;
 
 signals:
     void connectInternalPeer(QPointer<InternalPeer> peer);

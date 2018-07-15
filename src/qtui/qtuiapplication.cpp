@@ -34,6 +34,7 @@
 #include "mainwin.h"
 #include "qtui.h"
 #include "qtuisettings.h"
+#include "types.h"
 
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE4
@@ -98,28 +99,26 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 }
 
 
-bool QtUiApplication::init()
+void QtUiApplication::init()
 {
-    if (Quassel::init()) {
-        // Settings upgrade/downgrade handling
-        if (!migrateSettings()) {
-            qCritical() << "Could not load or upgrade client settings, terminating!";
-            return false;
-        }
-
-        Client::init(new QtUi());
-
-        // Init UI only after the event loop has started
-        // TODO Qt5: Make this a lambda
-        QTimer::singleShot(0, this, SLOT(initUi()));
-
-        Quassel::registerQuitHandler([]() {
-            QtUi::mainWindow()->quit();
-        });
-
-        return true;
+    if (!Quassel::init()) {
+        throw ExitException{EXIT_FAILURE, tr("Could not initialize Quassel!")};
     }
-    return false;
+
+    // Settings upgrade/downgrade handling
+    if (!migrateSettings()) {
+        throw ExitException{EXIT_FAILURE, tr("Could not load or upgrade client settings!")};
+    }
+
+    Client::init(new QtUi());
+
+    // Init UI only after the event loop has started
+    // TODO Qt5: Make this a lambda
+    QTimer::singleShot(0, this, SLOT(initUi()));
+
+    Quassel::registerQuitHandler([]() {
+        QtUi::mainWindow()->quit();
+    });
 }
 
 

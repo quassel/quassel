@@ -216,6 +216,7 @@ void MainWin::init()
     connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
     connect(Client::instance(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
     connect(Client::instance(), SIGNAL(dbUpgradeInProgress(bool)), SLOT(showMigrationWarning(bool)));
+    connect(Client::instance(), SIGNAL(exitRequested(QString)), SLOT(onExitRequested(QString)));
 
     connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList, QVariantList)), SLOT(showCoreConfigWizard(QVariantList, QVariantList)));
     connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
@@ -854,6 +855,19 @@ void MainWin::showMigrationWarning(bool show)
         _migrationWarning->close();
         _migrationWarning->deleteLater();
         _migrationWarning = nullptr;
+    }
+}
+
+
+void MainWin::onExitRequested(const QString &reason)
+{
+    if (!reason.isEmpty()) {
+        QMessageBox box(QMessageBox::Critical,
+                        tr("Fatal error"),
+                        "<b>" + tr("Quassel encountered a fatal error and is terminated.") + "</b>",
+                        QMessageBox::Ok, this);
+        box.setInformativeText("<p>" + tr("Reason:<em>") + " " + reason + "</em>");
+        box.exec();
     }
 }
 
