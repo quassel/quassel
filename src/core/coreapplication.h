@@ -35,7 +35,7 @@ public:
     CoreApplication(int &argc, char **argv);
     ~CoreApplication() override;
 
-    bool init();
+    void init();
 
 private:
     std::unique_ptr<Core> _core;

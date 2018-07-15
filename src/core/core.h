@@ -68,6 +68,8 @@ public:
     Core();
     ~Core() override;
 
+    void init();
+
     /*** Storage access ***/
     // These methods are threadsafe.
 
@@ -707,8 +709,11 @@ signals:
     //! Emitted when database schema upgrade starts or ends
     void dbUpgradeInProgress(bool inProgress);
 
+    //! Emitted when a fatal error was encountered during async initialization
+    void exitRequested(int exitCode, const QString &reason);
+
 public slots:
-    bool init();
+    void initAsync();
 
     /** Persist storage.
      *

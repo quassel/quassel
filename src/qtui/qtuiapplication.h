@@ -47,7 +47,7 @@ class QtUiApplication : public QApplication
 public:
     QtUiApplication(int &, char **);
     ~QtUiApplication();
-    virtual bool init();
+    virtual void init();
 
     void resumeSessionIfPossible();
     inline bool isAboutToQuit() const { return _aboutToQuit; }

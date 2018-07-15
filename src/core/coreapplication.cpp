@@ -40,11 +40,12 @@ CoreApplication::~CoreApplication()
 }
 
 
-bool CoreApplication::init()
+void CoreApplication::init()
 {
-    if (Quassel::init()) {
-        _core.reset(new Core{}); // FIXME C++14: std::make_unique
-        return _core->init();
+    if (!Quassel::init()) {
+        throw ExitException{EXIT_FAILURE, tr("Could not initialize Quassel!")};
     }
-    return false;
+
+    _core.reset(new Core{}); // FIXME C++14: std::make_unique
+    _core->init();
 }

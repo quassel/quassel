@@ -214,6 +214,16 @@ void Client::onDbUpgradeInProgress(bool inProgress)
 }
 
 
+void Client::onExitRequested(int exitCode, const QString &reason)
+{
+    if (!reason.isEmpty()) {
+        qCritical() << reason;
+        emit exitRequested(reason);
+    }
+    QCoreApplication::exit(exitCode);
+}
+
+
 /*** Network handling ***/
 
 QList<NetworkId> Client::networkIds()

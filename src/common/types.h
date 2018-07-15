@@ -169,3 +169,17 @@ QDataStream &operator>>(QDataStream &in, T &value) {
     value = static_cast<T>(v);
     return in;
 }
+
+// Exceptions
+
+/**
+ * Thrown during initialization to enforce exiting the application before the event loop is started
+ */
+struct ExitException
+{
+    int exitCode;
+    QString errorString;
+
+    ExitException(int code = EXIT_FAILURE, QString error = {})
+        : exitCode(code), errorString(std::move(error)) {}
+};

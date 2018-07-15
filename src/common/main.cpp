@@ -71,6 +71,7 @@ Q_IMPORT_PLUGIN(qgif)
 #endif
 
 #include "quassel.h"
+#include "types.h"
 
 int main(int argc, char **argv)
 {
@@ -241,8 +242,15 @@ int main(int argc, char **argv)
     AboutData::setQuasselPersons(&aboutData);
     KAboutData::setApplicationData(aboutData.kAboutData());
 #endif
-    if (!app.init())
-        return EXIT_FAILURE;
+    try {
+        app.init();
+    }
+    catch (ExitException e) {
+        if (!e.errorString.isEmpty()) {
+            qCritical() << e.errorString;
+        }
+        return e.exitCode;
+    }
 
     return app.exec();
 }
