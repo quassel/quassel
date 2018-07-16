@@ -23,35 +23,30 @@
 #include "core.h"
 #include "coresession.h"
 
+constexpr auto settingsKey = "HighlightRuleList";
+
 INIT_SYNCABLE_OBJECT(CoreHighlightRuleManager)
-CoreHighlightRuleManager::CoreHighlightRuleManager(CoreSession *parent)
-    : HighlightRuleManager(parent)
+CoreHighlightRuleManager::CoreHighlightRuleManager(CoreSession *session)
+    : HighlightRuleManager(session)
+    , _coreSession{session}
 {
-    CoreSession *session = qobject_cast<CoreSession*>(parent);
-    if (!session) {
-        qWarning() << "CoreHighlightRuleManager: unable to load HighlightRuleList. Parent is not a Coresession!";
-        //loadDefaults();
-        return;
-    }
+    // Load config from database if it exists
+    auto configMap = Core::getUserSetting(session->user(), settingsKey).toMap();
+    if (!configMap.isEmpty())
+        update(configMap);
+    // Otherwise, we just use the defaults initialized in the base class
 
-    initSetHighlightRuleList(Core::getUserSetting(session->user(), "HighlightRuleList").toMap());
-
-    // we store our settings whenever they change
+    // We store our settings whenever they change
     connect(this, SIGNAL(updatedRemotely()), SLOT(save()));
 }
 
-void CoreHighlightRuleManager::save() const
+void CoreHighlightRuleManager::save()
 {
-    CoreSession *session = qobject_cast<CoreSession *>(parent());
-    if (!session) {
-        qWarning() << "CoreHighlightRuleManager: unable to save HighlightRuleList. Parent is not a Coresession!";
-        return;
-    }
-
-    Core::setUserSetting(session->user(), "HighlightRuleList", initHighlightRuleList());
+    Core::setUserSetting(_coreSession->user(), settingsKey, toVariantMap());
 }
 
-bool CoreHighlightRuleManager::match(const RawMessage &msg, const QString &currentNick, const QStringList &identityNicks)
+bool CoreHighlightRuleManager::match(const RawMessage &msg, const QString &currentNick,
+                                     const QStringList &identityNicks)
 {
     return match(msg.text, msg.sender, msg.type, msg.flags, msg.target, currentNick, identityNicks);
 }
