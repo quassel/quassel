@@ -25,6 +25,11 @@
 class CoreSession;
 struct RawMessage;
 
+/**
+ * Core-side specialization for HighlightRuleManager.
+ *
+ * Adds the ability to load/save the settings from/to the database.
+ */
 class CoreHighlightRuleManager : public HighlightRuleManager
 {
     Q_OBJECT
@@ -33,7 +38,12 @@ class CoreHighlightRuleManager : public HighlightRuleManager
     using HighlightRuleManager::match;
 
 public:
-    explicit CoreHighlightRuleManager(CoreSession *parent);
+    /**
+     * Constructor.
+     *
+     * @param[in] session Pointer to the parent CoreSession (takes ownership)
+     */
+    explicit CoreHighlightRuleManager(CoreSession *session);
 
     virtual const QMetaObject *syncMetaObject() const override { return &HighlightRuleManager::staticMetaObject; }
 
@@ -50,5 +60,11 @@ public slots:
     }
 
 private slots:
-    void save() const;
+    /**
+     * Saves the config to the database.
+     */
+    void save();
+
+private:
+    CoreSession *_coreSession {nullptr};  ///< Pointer to the parent CoreSession
 };
