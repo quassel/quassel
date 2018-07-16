@@ -47,6 +47,7 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     QString buffersSettingsId = "Buffers";
     QString showBacklogSettingsId = "ShowBacklog";
     QString includeReadSettingsId = "IncludeRead";
+    QString alwaysOwnSettingsId = "AlwaysOwn";
 
     _showHighlights = viewSettings.value(showHighlightsSettingsId, false).toBool();
     _operationMode = viewSettings.value(operationModeSettingsId, 0).toInt();
@@ -55,12 +56,14 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     _bufferIds << v.value<BufferId>();
     _showBacklog = viewSettings.value(showBacklogSettingsId, true).toBool();
     _includeRead = viewSettings.value(includeReadSettingsId, true).toBool();
+    _alwaysOwn = viewSettings.value(alwaysOwnSettingsId, false).toBool();
 
     viewSettings.notify(showHighlightsSettingsId, this, SLOT(showHighlightsSettingChanged(const QVariant &)));
     viewSettings.notify(operationModeSettingsId, this, SLOT(operationModeSettingChanged(const QVariant &)));
     viewSettings.notify(buffersSettingsId, this, SLOT(buffersSettingChanged(const QVariant &)));
     viewSettings.notify(showBacklogSettingsId, this, SLOT(showBacklogSettingChanged(const QVariant &)));
     viewSettings.notify(includeReadSettingsId, this, SLOT(includeReadSettingChanged(const QVariant &)));
+    viewSettings.notify(alwaysOwnSettingsId, this, SLOT(alwaysOwnSettingChanged(const QVariant &)));
 }
 
 
@@ -89,6 +92,8 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
     // ChatMonitorSettingsPage
     if (_showHighlights && flags & Message::Highlight)
+        ; // pass
+    else if (_alwaysOwn && flags & Message::Self)
         ; // pass
     else if (_operationMode == ChatViewSettings::OptOut && _bufferIds.contains(bufferId))
         return false;
@@ -187,6 +192,9 @@ void ChatMonitorFilter::showOwnMessagesSettingChanged(const QVariant &newValue)
     _showOwnMessages = newValue.toBool();
 }
 
+void ChatMonitorFilter::alwaysOwnSettingChanged(const QVariant &newValue) {
+    _alwaysOwn = newValue.toBool();
+}
 
 void ChatMonitorFilter::showHighlightsSettingChanged(const QVariant &newValue)
 {

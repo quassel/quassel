@@ -55,6 +55,7 @@ public slots:
 private slots:
     void showFieldsSettingChanged(const QVariant &newValue);
     void showOwnMessagesSettingChanged(const QVariant &newValue);
+    void alwaysOwnSettingChanged(const QVariant &newValue);
     void showHighlightsSettingChanged(const QVariant &newValue);
     void operationModeSettingChanged(const QVariant &newValue);
     void buffersSettingChanged(const QVariant &newValue);
@@ -70,6 +71,7 @@ private slots:
 private:
     int _showFields;
     bool _showOwnMessages;
+    bool _alwaysOwn;
     QList<BufferId> _bufferIds;
     bool _showHighlights;
     int _operationMode;
