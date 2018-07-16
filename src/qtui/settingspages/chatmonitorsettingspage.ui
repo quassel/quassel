@@ -182,7 +182,7 @@ p, li { white-space: pre-wrap; }
         <string>Show own messages in chatmonitor even if the originating buffer is ignored</string>
        </property>
        <property name="text">
-        <string>Always</string>
+        <string>Include ignored buffers</string>
        </property>
       </widget>
      </item>
