@@ -65,16 +65,6 @@ include(QuasselMacros)
 # Options and variables that can be set on the command line
 #####################################################################
 
-# Choose a Qt version. We support USE_QT5 and USE_QT4; if neither is set, Qt5 will be used
-option(USE_QT5 "Enable support for Qt5" OFF)
-if (USE_QT5) # takes precedence
-    set(USE_QT4 OFF)
-else()
-    if (NOT USE_QT4)
-        set(USE_QT5 ON)
-    endif()
-endif()
-
 # Select the binaries to build
 option(WANT_CORE     "Build the core (server) binary"           ON)
 option(WANT_QTCLIENT "Build the client-only binary"             ON)
@@ -83,25 +73,17 @@ add_feature_info(WANT_CORE WANT_CORE "Build the core (server) binary")
 add_feature_info(WANT_QTCLIENT WANT_QTCLIENT "Build the client-only binary (requires a core to connect to)")
 add_feature_info(WANT_MONO WANT_MONO "Build the monolithic (all-in-one) binary")
 
-# Whether to enable KDE integration (work in progress for Qt5 / KDE Frameworks)
-# Note that when building with Qt5, WITH_KDE enables integration with higher-tier KDE frameworks that
-# require runtime support. We still optionally make use of certain Tier 1 frameworks even if WITH_KDE
-# is disabled.
-if (USE_QT4)
-    option(WITH_KDE "KDE4 integration" OFF)
-    add_feature_info(WITH_KDE WITH_KDE "Enable KDE4 integration")
-else()
-    option(WITH_KDE "Integration with the KDE Frameworks runtime environment")
-    add_feature_info(WITH_KDE WITH_KDE "Integrate with the KDE Frameworks runtime environment")
-endif()
+# Whether to enable integration with higher-tier KDE frameworks that require runtime support.
+# We still optionally make use of certain Tier 1 frameworks even if WITH_KDE is disabled.
+option(WITH_KDE "Integration with the KDE Frameworks runtime environment")
+add_feature_info(WITH_KDE WITH_KDE "Integrate with the KDE Frameworks runtime environment")
 
 # Icon theme support. By default, install the Breeze icon theme (may be disabled if a system installation is present)
 option(WITH_BUNDLED_ICONS "Install required icons from the Breeze icon theme" ON)
 add_feature_info(WITH_BUNDLED_ICONS WITH_BUNDLED_ICONS "Install required icons from the Breeze icon theme")
 
-# For Qt4, always support Oxygen
-cmake_dependent_option(WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)" OFF "USE_QT5" ON)
-add_feature_info(WITH_OXYGEN_ICONS WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)" OFF)
+option(WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)" OFF)
+add_feature_info(WITH_OXYGEN_ICONS WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)")
 
 if (WITH_BUNDLED_ICONS)
     add_definitions(-DWITH_BUNDLED_ICONS)
@@ -162,7 +144,7 @@ option(WITH_LDAP "Enable LDAP authentication support if present on system" ON)
 # Setup CMake
 #####################################################################
 
-if (USE_QT5 AND WITH_KDE)
+if (WITH_KDE)
     cmake_minimum_required(VERSION 2.8.12)
 else()
     cmake_minimum_required(VERSION 2.8.9)
@@ -205,284 +187,211 @@ endif()
 # using -DCMAKE_DISABLE_FIND_PACKAGE_<PkgName>=TRUE
 #####################################################################
 
-if (USE_QT5)
-    message(STATUS "Building for Qt5...")
-    set(QT_MIN_VERSION "5.2.0")
-    add_definitions(-DHAVE_QT5)
+set(QT_MIN_VERSION "5.2.0")
+add_definitions(-DHAVE_QT5)
 
-    find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
-    set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED
-        URL "https://www.qt.io/"
-        DESCRIPTION "contains core functionality for Qt"
+find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
+set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED
+    URL "https://www.qt.io/"
+    DESCRIPTION "contains core functionality for Qt"
+)
+
+# find_package without REQUIRED won't check for the version properly; also, older Qt5 versions
+# used Qt5Core_VERSION_STRING... let's just make sure here that we bail out here if our Qt5 is not new enough.
+if (NOT Qt5Core_VERSION OR Qt5Core_VERSION VERSION_LESS ${QT_MIN_VERSION})
+    message(FATAL_ERROR "Could NOT find Qt5 >= version ${QT_MIN_VERSION}!")
+endif()
+
+find_package(Qt5Network QUIET)
+set_package_properties(Qt5Network PROPERTIES TYPE REQUIRED
+    DESCRIPTION "the network module for Qt5"
+)
+
+if (BUILD_GUI)
+    find_package(Qt5Gui QUIET)
+    set_package_properties(Qt5Gui PROPERTIES TYPE REQUIRED
+        DESCRIPTION "the GUI module for Qt5"
     )
-    # find_package without REQUIRED won't check for the version properly; also, older Qt5 versions
-    # used Qt5Core_VERSION_STRING... let's just make sure here that we bail out here if our Qt5 is not new enough.
-    if (NOT Qt5Core_VERSION OR Qt5Core_VERSION VERSION_LESS ${QT_MIN_VERSION})
-        message(FATAL_ERROR "Could NOT find Qt5 >= version ${QT_MIN_VERSION}!")
-    endif()
-
-    find_package(Qt5Network QUIET)
-    set_package_properties(Qt5Network PROPERTIES TYPE REQUIRED
-        DESCRIPTION "the network module for Qt5"
+    find_package(Qt5Widgets QUIET)
+    set_package_properties(Qt5Widgets PROPERTIES TYPE REQUIRED
+        DESCRIPTION "the widgets module for Qt5"
     )
 
-    if (BUILD_GUI)
-        find_package(Qt5Gui QUIET)
-        set_package_properties(Qt5Gui PROPERTIES TYPE REQUIRED
-            DESCRIPTION "the GUI module for Qt5"
-        )
-        find_package(Qt5Widgets QUIET)
-        set_package_properties(Qt5Widgets PROPERTIES TYPE REQUIRED
-            DESCRIPTION "the widgets module for Qt5"
-        )
-
-        if (NOT WIN32)
-            find_package(Qt5DBus QUIET)
-            set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
-                URL "https://www.qt.io/"
-                DESCRIPTION "D-Bus support for Qt5"
-                PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
-            )
-            if (Qt5DBus_FOUND)
-                find_package(dbusmenu-qt5 QUIET CONFIG)
-                set_package_properties(dbusmenu-qt5 PROPERTIES TYPE RECOMMENDED
-                    URL "https://launchpad.net/libdbusmenu-qt"
-                    DESCRIPTION "a library implementing the DBusMenu specification"
-                    PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
-                )
-            endif()
-        endif()
-
-        find_package(Qt5Multimedia QUIET)
-        set_package_properties(Qt5Multimedia PROPERTIES TYPE RECOMMENDED
+    if (NOT WIN32)
+        find_package(Qt5DBus QUIET)
+        set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
             URL "https://www.qt.io/"
-            DESCRIPTION "Multimedia support for Qt5"
-            PURPOSE     "Required for audio notifications"
+            DESCRIPTION "D-Bus support for Qt5"
+            PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
         )
-
-        if (NOT Qt5Multimedia_FOUND)
-            find_package(Phonon4Qt5 QUIET)
-            set_package_properties(Phonon4Qt5 PROPERTIES TYPE RECOMMENDED
-                URL "https://projects.kde.org/projects/kdesupport/phonon"
-                DESCRIPTION "a multimedia abstraction library"
-                PURPOSE     "Required for audio notifications"
-            )
-        endif()
-
-        find_package(LibsnoreQt5 0.7.0 QUIET)
-        set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
-            URL "https://projects.kde.org/projects/playground/libs/snorenotify"
-            DESCRIPTION "a cross-platform notification framework"
-            PURPOSE     "Enable support for the snorenotify framework"
-        )
-        if(LibsnoreQt5_FOUND)
-            find_package(LibsnoreSettingsQt5)
-            set_package_properties(LibsnoreSettingsQt5 PROPERTIES TYPE REQUIRED
-                URL "https://projects.kde.org/projects/playground/libs/snorenotify"
-                DESCRIPTION "a cross-platform notification framework"
-                PURPOSE     "Enable support for the snorenotify framework"
-            )
-        endif()
-
-
-        if (WITH_WEBKIT)
-            find_package(Qt5WebKit QUIET)
-            set_package_properties(Qt5WebKit PROPERTIES TYPE RECOMMENDED
-                URL "https://www.qt.io/"
-                DESCRIPTION "a WebKit implementation for Qt"
-                PURPOSE     "Needed for displaying previews for URLs in chat"
-            )
-            if (Qt5WebKit_FOUND)
-                find_package(Qt5WebKitWidgets QUIET)
-                set_package_properties(Qt5WebKitWidgets PROPERTIES TYPE RECOMMENDED
-                    URL "https://www.qt.io/"
-                    DESCRIPTION "widgets for Qt's WebKit implementation"
-                    PURPOSE     "Needed for displaying previews for URLs in chat"
-                )
-            endif()
-        endif()
-
-        if (WITH_WEBKIT AND Qt5WebKitWidgets_FOUND)
-            set(HAVE_WEBKIT true)
-        endif()
-        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat (legacy)")
-
-        if (WITH_WEBENGINE)
-            find_package(Qt5WebEngine QUIET)
-            set_package_properties(Qt5WebEngine PROPERTIES TYPE RECOMMENDED
-                URL "https://www.qt.io/"
-                DESCRIPTION "a WebEngine implementation for Qt"
-                PURPOSE     "Needed for displaying previews for URLs in chat"
-            )
-            if (Qt5WebEngine_FOUND)
-                find_package(Qt5WebEngineWidgets QUIET)
-                set_package_properties(Qt5WebEngineWidgets PROPERTIES TYPE RECOMMENDED
-                    URL "https://www.qt.io/"
-                    DESCRIPTION "widgets for Qt's WebEngine implementation"
-                    PURPOSE     "Needed for displaying previews for URLs in chat"
-                )
-            endif()
-        endif()
-
-        if (WITH_WEBENGINE AND Qt5WebEngineWidgets_FOUND)
-            set(HAVE_WEBENGINE true)
-        endif()
-        add_feature_info("WITH_WEBENGINE, QtWebEngine and QtWebEngineWidgets modules" HAVE_WEBENGINE "Support showing previews for URLs in chat")
-
-        # KDE Frameworks
-        ################
-
-        if (WITH_KDE)
-            set(ecm_find_type "REQUIRED")
-        else()
-            # Even with KDE integration disabled, we optionally use tier1 frameworks if we find them
-            set(ecm_find_type "RECOMMENDED")
-        endif()
-
-        # extra-cmake-modules
-        find_package(ECM NO_MODULE QUIET)
-        set_package_properties(ECM PROPERTIES TYPE ${ecm_find_type}
-            URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules"
-            DESCRIPTION "extra modules for CMake, maintained by the KDE project"
-            PURPOSE     "Required to find KDE Frameworks components"
-        )
-
-        if (ECM_FOUND)
-            list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-            if (WITH_KDE)
-                find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui QUIET REQUIRED)
-                set_package_properties(KF5 PROPERTIES TYPE REQUIRED
-                    URL "http://www.kde.org"
-                    DESCRIPTION "KDE Frameworks"
-                    PURPOSE     "Required for integration into the Plasma desktop"
-                )
-            else()
-                find_package(KF5Sonnet QUIET)
-                set_package_properties(KF5Sonnet PROPERTIES TYPE RECOMMENDED
-                    URL "http://api.kde.org/frameworks-api/frameworks5-apidocs/sonnet/html"
-                    DESCRIPTION "framework for providing spell-checking capabilities"
-                    PURPOSE "Enables spell-checking support in input widgets"
-                )
-            endif()
-        endif()
-
-    endif()
-
-    if (BUILD_CORE)
-        find_package(Qt5Script QUIET)
-        set_package_properties(Qt5Script PROPERTIES TYPE REQUIRED
-            DESCRIPTION "provides scripting support for Qt5"
-        )
-        find_package(Qt5Sql QUIET)
-        set_package_properties(Qt5Sql PROPERTIES TYPE REQUIRED
-            DESCRIPTION "the database support module for Qt5"
-        )
-
-        find_package(QCA2-QT5)
-        set_package_properties(QCA2-QT5 PROPERTIES TYPE RECOMMENDED
-            URL "https://projects.kde.org/projects/kdesupport/qca"
-            DESCRIPTION "Qt Cryptographic Architecture"
-            PURPOSE "Required for encryption support"
-        )
-
-    endif()
-
-    find_package(Qt5LinguistTools QUIET)
-    set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
-                           DESCRIPTION "contains tools for handling translation files"
-                           PURPOSE "Required for having translations"
-    )
-
-    # Some Qt5 versions do not define a target for lconvert, so we need to find it ourselves
-    if (Qt5LinguistTools_FOUND)
-        if (NOT TARGET Qt5::lconvert AND TARGET Qt5::lrelease)
-            get_target_property(_lrelease_location Qt5::lrelease LOCATION)
-            get_filename_component(_lrelease_path ${_lrelease_location} PATH)
-            find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-        elseif(TARGET Qt5::lconvert AND NOT Qt5_LCONVERT_EXECUTABLE)
-            # Newer Qt5 versions define the target, but not the Qt5_LCONVERT_EXECUTABLE variable for some reason
-            get_target_property(QT_LCONVERT_EXECUTABLE Qt5::lconvert LOCATION)
-        endif()
-
-        # Compatibility with the Qt4 variables
-        set(QT_LRELEASE_EXECUTABLE ${Qt5_LRELEASE_EXECUTABLE})
-        set(QT_LUPDATE_EXECUTABLE ${Qt5_LUPDATE_EXECUTABLE})
-        if (Qt5_LCONVERT_EXECUTABLE)
-            set(QT_LCONVERT_EXECUTABLE ${Qt5_LCONVERT_EXECUTABLE})
-        endif()
-    endif()
-
-else()
-    message(STATUS "Building for Qt4...")
-    set(QT_MIN_VERSION "4.8.0")
-
-    find_package(Qt4 ${QT_MIN_VERSION} QUIET REQUIRED)
-
-    if (BUILD_GUI)
-        add_feature_info("QtDBus module" QT_QTDBUS_FOUND "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments")
-        if (QT_QTDBUS_FOUND)
-            find_package(dbusmenu-qt QUIET CONFIG)
-            set_package_properties(dbusmenu-qt PROPERTIES TYPE RECOMMENDED
+        if (Qt5DBus_FOUND)
+            find_package(dbusmenu-qt5 QUIET CONFIG)
+            set_package_properties(dbusmenu-qt5 PROPERTIES TYPE RECOMMENDED
                 URL "https://launchpad.net/libdbusmenu-qt"
                 DESCRIPTION "a library implementing the DBusMenu specification"
                 PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
             )
         endif()
+    endif()
 
-        if (WITH_WEBKIT AND QT_QTWEBKIT_FOUND)
-            set(HAVE_WEBKIT true)
+    find_package(Qt5Multimedia QUIET)
+    set_package_properties(Qt5Multimedia PROPERTIES TYPE RECOMMENDED
+        URL "https://www.qt.io/"
+        DESCRIPTION "Multimedia support for Qt5"
+        PURPOSE     "Required for audio notifications"
+    )
+
+    if (NOT Qt5Multimedia_FOUND)
+        find_package(Phonon4Qt5 QUIET)
+        set_package_properties(Phonon4Qt5 PROPERTIES TYPE RECOMMENDED
+            URL "https://projects.kde.org/projects/kdesupport/phonon"
+            DESCRIPTION "a multimedia abstraction library"
+            PURPOSE     "Required for audio notifications"
+        )
+    endif()
+
+    find_package(LibsnoreQt5 0.7.0 QUIET)
+    set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
+        URL "https://projects.kde.org/projects/playground/libs/snorenotify"
+        DESCRIPTION "a cross-platform notification framework"
+        PURPOSE     "Enable support for the snorenotify framework"
+    )
+    if(LibsnoreQt5_FOUND)
+        find_package(LibsnoreSettingsQt5)
+        set_package_properties(LibsnoreSettingsQt5 PROPERTIES TYPE REQUIRED
+            URL "https://projects.kde.org/projects/playground/libs/snorenotify"
+            DESCRIPTION "a cross-platform notification framework"
+            PURPOSE     "Enable support for the snorenotify framework"
+        )
+    endif()
+
+
+    if (WITH_WEBKIT)
+        find_package(Qt5WebKit QUIET)
+        set_package_properties(Qt5WebKit PROPERTIES TYPE RECOMMENDED
+            URL "https://www.qt.io/"
+            DESCRIPTION "a WebKit implementation for Qt"
+            PURPOSE     "Needed for displaying previews for URLs in chat"
+        )
+        if (Qt5WebKit_FOUND)
+            find_package(Qt5WebKitWidgets QUIET)
+            set_package_properties(Qt5WebKitWidgets PROPERTIES TYPE RECOMMENDED
+                URL "https://www.qt.io/"
+                DESCRIPTION "widgets for Qt's WebKit implementation"
+                PURPOSE     "Needed for displaying previews for URLs in chat"
+            )
         endif()
-        add_feature_info("WITH_WEBKIT and QtWebKit module" HAVE_WEBKIT "Support showing previews for URLs in chat")
+    endif()
 
+    if (WITH_WEBKIT AND Qt5WebKitWidgets_FOUND)
+        set(HAVE_WEBKIT true)
+    endif()
+    add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat (legacy)")
+
+    if (WITH_WEBENGINE)
+        find_package(Qt5WebEngine QUIET)
+        set_package_properties(Qt5WebEngine PROPERTIES TYPE RECOMMENDED
+            URL "https://www.qt.io/"
+            DESCRIPTION "a WebEngine implementation for Qt"
+            PURPOSE     "Needed for displaying previews for URLs in chat"
+        )
+        if (Qt5WebEngine_FOUND)
+            find_package(Qt5WebEngineWidgets QUIET)
+            set_package_properties(Qt5WebEngineWidgets PROPERTIES TYPE RECOMMENDED
+                URL "https://www.qt.io/"
+                DESCRIPTION "widgets for Qt's WebEngine implementation"
+                PURPOSE     "Needed for displaying previews for URLs in chat"
+            )
+        endif()
+    endif()
+
+    if (WITH_WEBENGINE AND Qt5WebEngineWidgets_FOUND)
+        set(HAVE_WEBENGINE true)
+    endif()
+    add_feature_info("WITH_WEBENGINE, QtWebEngine and QtWebEngineWidgets modules" HAVE_WEBENGINE "Support showing previews for URLs in chat")
+
+    # KDE Frameworks
+    ################
+
+    if (WITH_KDE)
+        set(ecm_find_type "REQUIRED")
+    else()
+        # Even with KDE integration disabled, we optionally use tier1 frameworks if we find them
+        set(ecm_find_type "RECOMMENDED")
+    endif()
+
+    # extra-cmake-modules
+    find_package(ECM NO_MODULE QUIET)
+    set_package_properties(ECM PROPERTIES TYPE ${ecm_find_type}
+        URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules"
+        DESCRIPTION "extra modules for CMake, maintained by the KDE project"
+        PURPOSE     "Required to find KDE Frameworks components"
+    )
+
+    if (ECM_FOUND)
+        list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
         if (WITH_KDE)
-            # KDE has overzealous CFLAGS making miniz not compile, so save our old flags
-            set(_cflags ${CMAKE_C_FLAGS})
-            find_package(KDE4 4.4 QUIET)
-            set_package_properties(KDE4 PROPERTIES TYPE REQUIRED
+            find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui QUIET)
+            set_package_properties(KF5 PROPERTIES TYPE REQUIRED
                 URL "http://www.kde.org"
-                DESCRIPTION "a world-class desktop environment"
-                PURPOSE "Enables various bits for improving integration with KDE"
+                DESCRIPTION "KDE Frameworks"
+                PURPOSE     "Required for integration into the Plasma desktop"
             )
-            set(CMAKE_C_FLAGS ${_cflags})
-
         else()
-            find_package(Phonon QUIET)
-            set_package_properties(Phonon PROPERTIES TYPE RECOMMENDED
-                URL "https://projects.kde.org/projects/kdesupport/phonon"
-                DESCRIPTION "a multimedia abstraction library"
-                PURPOSE     "Required for audio notifications"
+            find_package(KF5Sonnet QUIET)
+            set_package_properties(KF5Sonnet PROPERTIES TYPE RECOMMENDED
+                URL "http://api.kde.org/frameworks-api/frameworks5-apidocs/sonnet/html"
+                DESCRIPTION "framework for providing spell-checking capabilities"
+                PURPOSE "Enables spell-checking support in input widgets"
             )
         endif()
-
-        find_package(IndicateQt QUIET)
-        set_package_properties(IndicateQt PROPERTIES TYPE OPTIONAL
-            URL "https://launchpad.net/libindicate-qt/"
-            DESCRIPTION "a library to raise flags on DBus for other components of the desktop to pick up and visualize"
-            PURPOSE     "Provides integration into the Ayatana notification system used by e.g. Ubuntu"
-        )
-
     endif()
 
-    if (BUILD_CORE)
-
-        find_package(QCA2 QUIET)
-        set_package_properties(QCA2 PROPERTIES TYPE RECOMMENDED
-            URL "https://projects.kde.org/projects/kdesupport/qca"
-            DESCRIPTION "Qt Cryptographic Architecture"
-            PURPOSE     "Required for encryption support"
-        )
-
-
-    endif()
-
-    # Qt4 does not consider lconvert relevant, so they don't support finding it...
-    # Rather than shipping hacked buildsys files, let's just infer the path from lrelease
-    if (QT_LRELEASE_EXECUTABLE)
-        get_filename_component(_lrelease_path ${QT_LRELEASE_EXECUTABLE} PATH)
-        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt4 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-    endif()
 endif()
 
+if (BUILD_CORE)
+    find_package(Qt5Script QUIET)
+    set_package_properties(Qt5Script PROPERTIES TYPE REQUIRED
+        DESCRIPTION "provides scripting support for Qt5"
+    )
+    find_package(Qt5Sql QUIET)
+    set_package_properties(Qt5Sql PROPERTIES TYPE REQUIRED
+        DESCRIPTION "the database support module for Qt5"
+    )
+
+    find_package(QCA2-QT5)
+    set_package_properties(QCA2-QT5 PROPERTIES TYPE RECOMMENDED
+        URL "https://projects.kde.org/projects/kdesupport/qca"
+        DESCRIPTION "Qt Cryptographic Architecture"
+        PURPOSE "Required for encryption support"
+    )
+
+endif()
+
+find_package(Qt5LinguistTools QUIET)
+set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
+    DESCRIPTION "contains tools for handling translation files"
+    PURPOSE "Required for having translations"
+)
+
+# Some Qt5 versions do not define a target for lconvert, so we need to find it ourselves
+if (Qt5LinguistTools_FOUND)
+    if (NOT TARGET Qt5::lconvert AND TARGET Qt5::lrelease)
+        get_target_property(_lrelease_location Qt5::lrelease LOCATION)
+        get_filename_component(_lrelease_path ${_lrelease_location} PATH)
+        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+    elseif(TARGET Qt5::lconvert AND NOT Qt5_LCONVERT_EXECUTABLE)
+        # Newer Qt5 versions define the target, but not the Qt5_LCONVERT_EXECUTABLE variable for some reason
+        get_target_property(QT_LCONVERT_EXECUTABLE Qt5::lconvert LOCATION)
+    endif()
+
+    # Compatibility with the Qt4 variables
+    set(QT_LRELEASE_EXECUTABLE ${Qt5_LRELEASE_EXECUTABLE})
+    set(QT_LUPDATE_EXECUTABLE ${Qt5_LUPDATE_EXECUTABLE})
+    if (Qt5_LCONVERT_EXECUTABLE)
+        set(QT_LCONVERT_EXECUTABLE ${Qt5_LCONVERT_EXECUTABLE})
+    endif()
+endif()
 
 # Non-Qt-based packages
 
@@ -511,7 +420,7 @@ cmake_push_check_state(RESET)
 set(CMAKE_REQUIRED_INCLUDES ${QT_INCLUDES} ${Qt5Core_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
 
-if (USE_QT5 AND Qt5_POSITION_INDEPENDENT_CODE)
+if (Qt5_POSITION_INDEPENDENT_CODE)
     set(CMAKE_REQUIRED_FLAGS "-fPIC -DQT_NO_VERSION_TAGGING")
 endif()
 
@@ -528,12 +437,13 @@ cmake_pop_check_state()
 #####################################################################
 
 # This sets -fPIC and friends if required by the installed Qt5 library
-if (USE_QT5 AND Qt5_POSITION_INDEPENDENT_CODE)
+if (Qt5_POSITION_INDEPENDENT_CODE)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    set(CMAKE_REQUIRED_FLAGS "-DQT_NO_VERSION_TAGGING")
 endif()
 
 # Needed to compile with mingw without kde
-if (MINGW AND NOT KDE4_FOUND)
+if (MINGW AND NOT WITH_KDE)
     add_definitions(-D_WIN32_WINNT=0x0500)
     message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
     # workaround for bug in mingw gcc 4.0
@@ -560,22 +470,13 @@ else()
     message(STATUS "Not enabling LDAP authentication support")
 endif()
 
-# Setup KDE / KDE Frameworks
+# Setup support for KDE Frameworks
 #####################################################################
 
 # We want to do this up here, so we have the necessary variables and defines set before
 # compiling anything
 
-if (KDE4_FOUND)
-    # We always use external icons for KDE4 support, since we use its iconloader rather than Qt's
-    set(EMBED_DATA OFF)
-
-    # Better have the compile flags global, even for the core, to avoid problems with linking the mono client
-    add_definitions(-DHAVE_KDE -DHAVE_KDE4 ${KDE4_DEFINITIONS} ${KDE4_ENABLE_EXCEPTIONS})
-    set(WITH_KDE4 TRUE)
-endif()
-
-if (USE_QT5 AND WITH_KDE)
+if (WITH_KDE)
     # If KDE Frameworks are present, they're most probably providing Qt5 integration including icon loading
     set(EMBED_DATA OFF)
 
@@ -620,10 +521,6 @@ else()
     message(STATUS "Installing data files separately")
 endif()
 
-if (INDICATEQT_FOUND)
-    add_definitions(-DXDG_APPS_INSTALL_DIR=${CMAKE_INSTALL_APPDIR})
-endif()
-
 if (NOT WIN32)
     check_function_exists(umask HAVE_UMASK)
     if(HAVE_UMASK)
@@ -643,9 +540,7 @@ if (WIN32)
         set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt")
         set(CMAKE_EXE_LINKER_FLAGS_DEBUGFULL "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
         link_libraries(Version dwmapi shlwapi)
-        if (USE_QT5)
-            set(QT_QTMAIN_LIBRARY Qt5::WinMain)
-        endif()
+        set(QT_QTMAIN_LIBRARY Qt5::WinMain)
     endif()
     if(HAVE_SSL AND STATIC)
         find_package(OpenSSL REQUIRED)

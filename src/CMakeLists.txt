@@ -39,7 +39,7 @@ endif()
 
 if(WANT_CORE)
   add_executable(quasselcore common/main.cpp ${CORE_DEPS} ${COMMON_DEPS})
-  qt_use_modules(quasselcore Core Network ${CORE_QT_MODULES})
+  qt5_use_modules(quasselcore Core Network ${CORE_QT_MODULES})
   add_dependencies(quasselcore po)
   set_target_properties(quasselcore PROPERTIES
                                     COMPILE_FLAGS "-DBUILD_CORE"
@@ -48,13 +48,9 @@ if(WANT_CORE)
   install(TARGETS quasselcore RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
-if (KDE4_FOUND)
-    include_directories(${KDE4_INCLUDES})
-endif()
-
 if(WANT_QTCLIENT)
   add_executable(quasselclient WIN32 common/main.cpp ${CLIENT_DEPS} ${COMMON_DEPS})
-  qt_use_modules(quasselclient Core Gui Network ${CLIENT_QT_MODULES})
+  qt5_use_modules(quasselclient Core Gui Network ${CLIENT_QT_MODULES})
   add_dependencies(quasselclient po)
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DBUILD_QTUI"
@@ -65,7 +61,7 @@ endif()
 
 if(WANT_MONO)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${CLIENT_DEPS} ${CORE_DEPS} ${COMMON_DEPS})
-  qt_use_modules(quassel Core Gui Network ${CLIENT_QT_MODULES} ${CORE_QT_MODULES})
+  qt5_use_modules(quassel Core Gui Network ${CLIENT_QT_MODULES} ${CORE_QT_MODULES})
   add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DBUILD_MONO"

@@ -1,15 +1,11 @@
 if (BUILD_GUI)
-    if (KDE4_FOUND OR (UNIX AND NOT APPLE))
+    if (UNIX AND NOT APPLE)
         if (WANT_QTCLIENT)
             install(FILES quasselclient.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
         endif()
 
         if (WANT_MONO)
             install(FILES quassel.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
-        endif()
-
-        if (WITH_KDE4)
-            install(FILES quassel.notifyrc DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel)
         endif()
 
         if (WITH_KF5)

@@ -51,13 +51,6 @@ if(HAVE_SSL)
   include_directories(${OPENSSL_INCLUDE_DIR})
 endif()
 
-if (QCA2_FOUND)
-    add_definitions(-DHAVE_QCA2)
-    include_directories(${QCA2_INCLUDE_DIR})
-    list(APPEND SOURCES cipher.cpp)
-    list(APPEND LIBS ${QCA2_LIBRARIES})
-endif()
-
 if (QCA2-QT5_FOUND)
     add_definitions(-DHAVE_QCA2)
     include_directories(${QCA2-QT5_INCLUDE_DIR})
@@ -75,10 +68,10 @@ endif(HAVE_LDAP)
 include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
 set(CORE_RCS ${CORE_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/sql.qrc)
-qt_add_resources(SOURCES ${CORE_RCS})
+qt5_add_resources(SOURCES ${CORE_RCS})
 
 add_library(mod_core STATIC ${SOURCES})
-qt_use_modules(mod_core Core Network Script Sql)
+qt5_use_modules(mod_core Core Network Script Sql)
 
 target_link_libraries(mod_core mod_common ${LIBS})
 

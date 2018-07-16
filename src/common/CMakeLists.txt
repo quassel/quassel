@@ -37,6 +37,7 @@ set(SOURCES
     peer.cpp
     peerfactory.cpp
     presetnetworks.cpp
+    qt5cliparser.cpp
     quassel.cpp
     remotepeer.cpp
     settings.cpp
@@ -58,13 +59,7 @@ set(SOURCES
     protocol.h
 )
 
-if (USE_QT5)
-    list(APPEND SOURCES qt5cliparser.cpp)
-else()
-    list(APPEND SOURCES cliparser.cpp)
-endif()
-
-if (QCA2_FOUND OR QCA2-QT5_FOUND)
+if (QCA2-QT5_FOUND)
     set(SOURCES ${SOURCES} keyevent.cpp)
 endif()
 
@@ -73,10 +68,6 @@ if (ZLIB_FOUND)
     include_directories(${ZLIB_INCLUDE_DIRS})
 else()
     set(SOURCES ${SOURCES} ../../3rdparty/miniz/miniz.c)
-endif()
-
-if (USE_QT4)
-    set(SOURCES ${SOURCES} ../../3rdparty/sha512/sha512.c)
 endif()
 
 if (HAVE_SYSLOG)
@@ -97,10 +88,10 @@ else()
     set(SOURCES ${SOURCES} logbacktrace_unix.cpp posixsignalwatcher.cpp)
 endif()
 
-qt_add_resources(SOURCES ${COMMON_RCS})
+qt5_add_resources(SOURCES ${COMMON_RCS})
 
 add_library(mod_common STATIC ${SOURCES})
-qt_use_modules(mod_common Core Network)
+qt5_use_modules(mod_common Core Network)
 
 if (APPLE)
     target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")

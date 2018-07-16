@@ -34,7 +34,7 @@ fairly recent compiler:
 
 Furthermore, CMake 2.8.9 or later is required (2.8.12 for KDE Frameworks).
 
-As Quassel is a Qt application, you need the Qt SDK, either Qt 4.8+ or Qt 5.2+.
+As Quassel is a Qt application, you need the Qt SDK, version 5.2 or higher.
 
 There are several optional dependencies; we will talk about that later.
 
@@ -80,13 +80,8 @@ options here:
     Distributors may want to disable automatic detection if they have their
     own caching mechanism set up.
 
--DUSE_QT4=ON
-    Build against the deprecated Qt4 instead of the default Qt5. Note that you
-    should empty your build directory when switching between Qt versions,
-    otherwise weird things may happen.
-
 -DWITH_KDE=ON
-    Enable integration into KDE4 (with Qt4) or KDE Frameworks (with Qt5).
+    Enable integration with the KDE Frameworks runtime environment
 
 -DWITH_BUNDLED_ICONS=ON
     Quassel requires a number of icons that are part of the KDE/Plasma icon themes
@@ -102,12 +97,12 @@ options here:
     Support the Oxygen icon theme. Oxygen was the default theme in KDE 4, and
     also the bundled icon theme in Quassel before version 0.13. Since the move
     to Qt5, the more modern Breeze icon theme is preferred, and thus Oxygen
-    is disabled by default when building against Qt5.
+    is disabled by default.
 
 -DWITH_WEBENGINE=ON
     Use WebEngine for showing previews of webpages linked in the chat. Requires
     the QtWebEngine module to be available, and increases the client's RAM usage
-    by *a lot* if enabled at runtime. Only available for Qt5. The default is ON.
+    by *a lot* if enabled at runtime. The default is ON.
 
 -DWITH_WEBKIT=OFF
     Use WebKit for showing previews of webpages linked in the chat. Requires
