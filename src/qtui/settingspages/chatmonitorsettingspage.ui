@@ -159,6 +159,36 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>16</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="alwaysOwn">
+       <property name="toolTip">
+        <string>Show own messages in chatmonitor even if the originating buffer is ignored</string>
+       </property>
+       <property name="text">
+        <string>Always</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QCheckBox" name="showBacklog">
      <property name="toolTip">
       <string>Display messages from backlog on reconnect</string>
@@ -215,11 +245,18 @@ p, li { white-space: pre-wrap; }
   <tabstop>activeBuffers</tabstop>
   <tabstop>showHighlights</tabstop>
   <tabstop>showOwnMessages</tabstop>
+  <tabstop>alwaysOwn</tabstop>
   <tabstop>showBacklog</tabstop>
   <tabstop>includeRead</tabstop>
  </tabstops>
  <resources/>
  <connections>
+  <connection>
+   <sender>showOwnMessages</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>alwaysOwn</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
   <connection>
    <sender>showBacklog</sender>
    <signal>toggled(bool)</signal>
