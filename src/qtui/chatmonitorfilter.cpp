@@ -70,11 +70,15 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
     QModelIndex source_index = sourceModel()->index(sourceRow, 0);
     BufferId bufferId = source_index.data(MessageModel::BufferIdRole).value<BufferId>();
-
     Message::Flags flags = (Message::Flags)source_index.data(MessageModel::FlagsRole).toInt();
-    if ((flags & Message::Backlog) && (!_showBacklog || (!_includeRead &&
-        (Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>()))))
-        return false;
+
+    if (flags & Message::Backlog) {
+        if (!_showBacklog)
+            return false;
+
+        if (!_includeRead && Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>())
+            return false;
+    }
 
     if (!_showOwnMessages && flags & Message::Self)
         return false;
@@ -84,13 +88,11 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
         return false;
 
     // ChatMonitorSettingsPage
-    if (_operationMode == ChatViewSettings::OptOut
-        && !(_showHighlights && flags & Message::Highlight)
-        &&  _bufferIds.contains(bufferId))
+    if (_showHighlights && flags & Message::Highlight)
+        ; // pass
+    else if (_operationMode == ChatViewSettings::OptOut && _bufferIds.contains(bufferId))
         return false;
-    if (_operationMode == ChatViewSettings::OptIn
-        && !(_showHighlights && flags & Message::Highlight)
-        && !_bufferIds.contains(bufferId))
+    else if (_operationMode == ChatViewSettings::OptIn && !_bufferIds.contains(bufferId))
         return false;
 
     // ignorelist handling
@@ -98,6 +100,7 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     if (!(flags & Message::ServerMsg) && Client::ignoreListManager()
         && Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
         return false;
+
     return true;
 }
 
