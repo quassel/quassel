@@ -58,8 +58,8 @@ if (WANT_MONO OR WANT_QTCLIENT)
         # hicolor contains the application icon in all relevant sizes
         install(DIRECTORY hicolor DESTINATION ${CMAKE_INSTALL_ICONDIR})
 
-        if (USE_QT4 OR (USE_QT5 AND Qt5Core_VERSION VERSION_LESS 5.5.0))
-            # Qt 4 doesn't seem to correctly load icons from injected themes
+        if (Qt5Core_VERSION VERSION_LESS 5.5.0)
+            # Qt < 5.5 doesn't seem to correctly load icons from injected themes
             # Install Quassel-specific ones from Oxygen into hicolor as fallback
             install(DIRECTORY oxygen/ DESTINATION ${CMAKE_INSTALL_ICONDIR}/hicolor)
         endif()

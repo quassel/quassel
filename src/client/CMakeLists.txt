@@ -1,7 +1,6 @@
 # Builds the client module
 
-# In Qt4, we still have some minor deps to QtGui: QItemSelectionModel, QSortFilterProxyModel
-# Still in Qt5: QAbstractItemView in BufferModel
+# We still have a minor dep to QtWidgets: QAbstractItemView in BufferModel
 
 set(SOURCES
     abstractmessageprocessor.cpp
@@ -38,13 +37,9 @@ set(SOURCES
     abstractui.h
 )
 
-if (USE_QT5)
-    list(APPEND qt_modules Widgets)
-endif()
-
-qt_add_resources(SOURCES ${CLIENT_RCS})
+qt5_add_resources(SOURCES ${CLIENT_RCS})
 
 add_library(mod_client STATIC ${SOURCES})
-qt_use_modules(mod_client Network Core Gui ${qt_modules})
+qt5_use_modules(mod_client Network Core Gui Widgets)
 
 target_link_libraries(mod_client mod_common)

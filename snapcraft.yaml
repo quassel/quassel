@@ -18,7 +18,7 @@ parts:
     quasselcore:
         source: .
         plugin: cmake
-        configflags: [-DUSE_QT5=1, -DWANT_MONO=0, -DWANT_QTCLIENT=0, -DCMAKE_BUILD_TYPE=Release]
+        configflags: [-DWANT_MONO=0, -DWANT_QTCLIENT=0, -DCMAKE_BUILD_TYPE=Release]
         build-packages:
             - cmake
             - g++

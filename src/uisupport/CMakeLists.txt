@@ -37,28 +37,14 @@ set(SOURCES
     abstractnotificationbackend.h
 )
 
-if (WITH_KDE4)
-    include_directories(${KDE4_INCLUDES})
-    add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
-    set(SOURCES ${SOURCES} kcmdlinewrapper.cpp)
-endif()
-
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client
 )
 
-if (USE_QT5)
-    list(APPEND qt_modules Widgets)
-endif()
-
 add_library(mod_uisupport STATIC ${SOURCES})
-qt_use_modules(mod_uisupport Core Gui Network ${qt_modules})
+qt5_use_modules(mod_uisupport Core Gui Network Widgets)
 
 target_link_libraries(mod_uisupport mod_client mod_common)
-
-if (WITH_KDE4)
-    target_link_libraries(mod_uisupport ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY})
-endif()
 
 if (WITH_KF5)
     target_link_libraries(mod_uisupport KF5::CoreAddons KF5::TextWidgets KF5::XmlGui)
