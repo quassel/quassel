@@ -738,6 +738,11 @@ void CoreHighlightSettingsPage::importRules()
         return;
     }
 
+    if (hasChanged()) {
+        // Save existing changes first to avoid overwriting them
+        save();
+    }
+
     auto clonedManager = HighlightRuleManager();
     clonedManager.fromVariantMap(Client::highlightRuleManager()->toVariantMap());
 
