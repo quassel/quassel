@@ -187,8 +187,8 @@ QString CoreHighlightSettingsPage::getTableTooltip(column tableColumn) const
                   "any nickname starting with <i>Announce</i></p>");
 
     case CoreHighlightSettingsPage::ChanColumn:
-        return tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
-                  "match any name.</p>"
+        return tr("<p><b>Channel</b>: Semicolon separated list of channel/query names, leave blank "
+                  "to match any name.</p>"
                   "<p><i>Example:</i><br />"
                   "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
                   "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
