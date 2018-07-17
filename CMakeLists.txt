@@ -571,7 +571,7 @@ if (KDE4_FOUND)
     set(EMBED_DATA OFF)
 
     # Better have the compile flags global, even for the core, to avoid problems with linking the mono client
-    add_definitions(-DHAVE_KDE -DHAVE_KDE4 ${KDE4_DEFINITIONS})
+    add_definitions(-DHAVE_KDE -DHAVE_KDE4 ${KDE4_DEFINITIONS} ${KDE4_ENABLE_EXCEPTIONS})
     set(WITH_KDE4 TRUE)
 endif()
 
@@ -583,6 +583,7 @@ if (USE_QT5 AND WITH_KDE)
     include(KDECompilerSettings)
     include(KDECMakeSettings)
 
+    kde_enable_exceptions()
     add_definitions(-DHAVE_KDE -DHAVE_KF5)
     set(WITH_KF5 TRUE)
 endif()
