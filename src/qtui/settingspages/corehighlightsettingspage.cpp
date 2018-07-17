@@ -129,60 +129,12 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->verticalHeader()->hide();
     table->setShowGrid(false);
 
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::EnableColumn)->setToolTip(
-                tr("Enable/disable this rule"));
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::EnableColumn)->setWhatsThis(
-                table->horizontalHeaderItem(CoreHighlightSettingsPage::EnableColumn)->toolTip());
-
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::NameColumn)->setToolTip(
-                tr("Phrase to match"));
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::NameColumn)->setWhatsThis(
-                table->horizontalHeaderItem(CoreHighlightSettingsPage::NameColumn)->toolTip());
-
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setToolTip(
-                tr("<b>RegEx</b>: This option determines if the highlight rule, <i>Sender</i>, and "
-                   "<i>Channel</i> should be interpreted as <b>regular expressions</b> or just as "
-                   "keywords."));
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->setWhatsThis(
-                table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn)->toolTip());
-
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setToolTip(
-                tr("<b>CS</b>: This option determines if the highlight rule, <i>Sender</i>, and "
-                   "<i>Channel</i> should be interpreted <b>case sensitive</b>."));
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->setWhatsThis(
-                table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn)->toolTip());
-
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::SenderColumn)->setToolTip(
-                tr("<p><b>Sender</b>: Semicolon separated list of <i>nick!ident@host</i> names, "
-                   "leave blank to match any nickname.</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>Alice!*; Bob!*@example.com; Carol*!*; !Caroline!*</i><br />"
-                   "would match on <i>Alice</i>, <i>Bob</i> with hostmask <i>example.com</i>, and "
-                   "any nickname starting with <i>Carol</i> except for <i>Caroline</i><br />"
-                   "<p>If only inverted names are specified, it will match anything except for "
-                   "what's specified (implicit wildcard).</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>!Announce*!*; !Wheatley!aperture@*</i><br />"
-                   "would match anything except for <i>Wheatley</i> with ident <i>aperture</i> or "
-                   "any nickname starting with <i>Announce</i></p>"));
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::SenderColumn)->setWhatsThis(
-                table->horizontalHeaderItem(CoreHighlightSettingsPage::SenderColumn)->toolTip());
-
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
-                   "match any name.</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
-                   "except for <i>#quasseldroid</i><br />"
-                   "<p>If only inverted names are specified, it will match anything except for "
-                   "what's specified (implicit wildcard).</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>!#quassel*; !#foobar</i><br />"
-                   "would match anything except for <i>#foobar</i> or any channel starting with "
-                   "<i>#quassel</i></p>"));
-    table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->setWhatsThis(
-                table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn)->toolTip());
+    setupTableTooltips(table->horizontalHeaderItem(CoreHighlightSettingsPage::EnableColumn),
+                       table->horizontalHeaderItem(CoreHighlightSettingsPage::NameColumn),
+                       table->horizontalHeaderItem(CoreHighlightSettingsPage::RegExColumn),
+                       table->horizontalHeaderItem(CoreHighlightSettingsPage::CsColumn),
+                       table->horizontalHeaderItem(CoreHighlightSettingsPage::SenderColumn),
+                       table->horizontalHeaderItem(CoreHighlightSettingsPage::ChanColumn));
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
@@ -197,6 +149,140 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 #endif
+}
+
+
+QString CoreHighlightSettingsPage::getTableTooltip(column tableColumn) const
+{
+    switch (tableColumn) {
+    case CoreHighlightSettingsPage::EnableColumn:
+        return tr("Enable/disable this rule");
+
+    case CoreHighlightSettingsPage::NameColumn:
+        return tr("Phrase to match");
+
+    case CoreHighlightSettingsPage::RegExColumn:
+        return tr("<b>RegEx</b>: This option determines if the highlight rule, <i>Sender</i>, and "
+                  "<i>Channel</i> should be interpreted as <b>regular expressions</b> or just as "
+                  "keywords.");
+
+    case CoreHighlightSettingsPage::CsColumn:
+        return tr("<b>CS</b>: This option determines if the highlight rule, <i>Sender</i>, and "
+                  "<i>Channel</i> should be interpreted <b>case sensitive</b>.");
+
+    case CoreHighlightSettingsPage::SenderColumn:
+        return tr("<p><b>Sender</b>: Semicolon separated list of <i>nick!ident@host</i> names, "
+                  "leave blank to match any nickname.</p>"
+                  "<p><i>Example:</i><br />"
+                  "<i>Alice!*; Bob!*@example.com; Carol*!*; !Caroline!*</i><br />"
+                  "would match on <i>Alice</i>, <i>Bob</i> with hostmask <i>example.com</i>, and "
+                  "any nickname starting with <i>Carol</i> except for <i>Caroline</i><br />"
+                  "<p>If only inverted names are specified, it will match anything except for "
+                  "what's specified (implicit wildcard).</p>"
+                  "<p><i>Example:</i><br />"
+                  "<i>!Announce*!*; !Wheatley!aperture@*</i><br />"
+                  "would match anything except for <i>Wheatley</i> with ident <i>aperture</i> or "
+                  "any nickname starting with <i>Announce</i></p>");
+
+    case CoreHighlightSettingsPage::ChanColumn:
+        return tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
+                  "match any name.</p>"
+                  "<p><i>Example:</i><br />"
+                  "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
+                  "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
+                  "except for <i>#quasseldroid</i><br />"
+                  "<p>If only inverted names are specified, it will match anything except for "
+                  "what's specified (implicit wildcard).</p>"
+                  "<p><i>Example:</i><br />"
+                  "<i>!#quassel*; !#foobar</i><br />"
+                  "would match anything except for <i>#foobar</i> or any channel starting with "
+                  "<i>#quassel</i></p>");
+
+    default:
+        // This shouldn't happen
+        return "Invalid column type in CoreHighlightSettingsPage::getTableTooltip()";
+    }
+}
+
+
+void CoreHighlightSettingsPage::setupTableTooltips(QWidget *enableWidget, QWidget *nameWidget,
+                                                   QWidget *regExWidget, QWidget *csWidget,
+                                                   QWidget *senderWidget, QWidget *chanWidget) const
+{
+    // Make sure everything's valid
+    Q_ASSERT(enableWidget);
+    Q_ASSERT(nameWidget);
+    Q_ASSERT(regExWidget);
+    Q_ASSERT(csWidget);
+    Q_ASSERT(senderWidget);
+    Q_ASSERT(chanWidget);
+
+    // Set tooltips and "What's this?" prompts
+    // Enabled
+    enableWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::EnableColumn));
+    enableWidget->setWhatsThis(enableWidget->toolTip());
+
+    // Name
+    nameWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::NameColumn));
+    nameWidget->setWhatsThis(nameWidget->toolTip());
+
+    // RegEx enabled
+    regExWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::RegExColumn));
+    regExWidget->setWhatsThis(regExWidget->toolTip());
+
+    // Case-sensitivity
+    csWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::CsColumn));
+    csWidget->setWhatsThis(csWidget->toolTip());
+
+    // Sender
+    senderWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::SenderColumn));
+    senderWidget->setWhatsThis(senderWidget->toolTip());
+
+    // Channel/buffer name
+    chanWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::ChanColumn));
+    chanWidget->setWhatsThis(chanWidget->toolTip());
+}
+
+
+void CoreHighlightSettingsPage::setupTableTooltips(QTableWidgetItem *enableWidget,
+                                                   QTableWidgetItem *nameWidget,
+                                                   QTableWidgetItem *regExWidget,
+                                                   QTableWidgetItem *csWidget,
+                                                   QTableWidgetItem *senderWidget,
+                                                   QTableWidgetItem *chanWidget) const
+{
+    // Make sure everything's valid
+    Q_ASSERT(enableWidget);
+    Q_ASSERT(nameWidget);
+    Q_ASSERT(regExWidget);
+    Q_ASSERT(csWidget);
+    Q_ASSERT(senderWidget);
+    Q_ASSERT(chanWidget);
+
+    // Set tooltips and "What's this?" prompts
+    // Enabled
+    enableWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::EnableColumn));
+    enableWidget->setWhatsThis(enableWidget->toolTip());
+
+    // Name
+    nameWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::NameColumn));
+    nameWidget->setWhatsThis(nameWidget->toolTip());
+
+    // RegEx enabled
+    regExWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::RegExColumn));
+    regExWidget->setWhatsThis(regExWidget->toolTip());
+
+    // Case-sensitivity
+    csWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::CsColumn));
+    csWidget->setWhatsThis(csWidget->toolTip());
+
+    // Sender
+    senderWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::SenderColumn));
+    senderWidget->setWhatsThis(senderWidget->toolTip());
+
+    // Channel/buffer name
+    chanWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::ChanColumn));
+    chanWidget->setWhatsThis(chanWidget->toolTip());
 }
 
 
@@ -287,41 +373,7 @@ void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, int id, const QS
 
     auto *chanNameItem = new QTableWidgetItem(chanName);
 
-    enableItem->setToolTip(tr("Enable/disable this rule"));
-    nameItem->setToolTip(tr("Phrase to match"));
-    regexItem->setToolTip(
-                tr("<b>RegEx</b>: This option determines if the highlight rule, <i>Sender</i>, and "
-                   "<i>Channel</i> should be interpreted as <b>regular expressions</b> or just as "
-                   "keywords."));
-    csItem->setToolTip(
-                tr("<b>CS</b>: This option determines if the highlight rule, <i>Sender</i>, and "
-                   "<i>Channel</i> should be interpreted <b>case sensitive</b>."));
-    senderItem->setToolTip(
-                tr("<p><b>Sender</b>: Semicolon separated list of <i>nick!ident@host</i> names, "
-                   "leave blank to match any nickname.</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>Alice!*; Bob!*@example.com; Carol*!*; !Caroline!*</i><br />"
-                   "would match on <i>Alice</i>, <i>Bob</i> with hostmask <i>example.com</i>, and "
-                   "any nickname starting with <i>Carol</i> except for <i>Caroline</i><br />"
-                   "<p>If only inverted names are specified, it will match anything except for "
-                   "what's specified (implicit wildcard).</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>!Announce*!*; !Wheatley!aperture@*</i><br />"
-                   "would match anything except for <i>Wheatley</i> with ident <i>aperture</i> or "
-                   "any nickname starting with <i>Announce</i></p>"));
-    chanNameItem->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
-                   "match any name.</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
-                   "except for <i>#quasseldroid</i><br />"
-                   "<p>If only inverted names are specified, it will match anything except for "
-                   "what's specified (implicit wildcard).</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>!#quassel*; !#foobar</i><br />"
-                   "would match anything except for <i>#foobar</i> or any channel starting with "
-                   "<i>#quassel</i></p>"));
+    setupTableTooltips(enableItem, nameItem, regexItem, csItem, senderItem, chanNameItem);
 
     int lastRow = ui.highlightTable->rowCount() - 1;
     ui.highlightTable->setItem(lastRow, CoreHighlightSettingsPage::NameColumn, nameItem);
@@ -374,29 +426,7 @@ void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, int id, const QStr
 
     auto *senderItem = new QTableWidgetItem(sender);
 
-    enableItem->setToolTip(tr("Enable/disable this rule"));
-    nameItem->setToolTip(tr("Phrase to match"));
-    regexItem->setToolTip(
-                tr("<b>RegEx</b>: This option determines if the highlight rule should be "
-                   "interpreted as a <b>regular expression</b> or just as a keyword."));
-    csItem->setToolTip(
-                tr("<b>CS</b>: This option determines if the highlight rule should be interpreted "
-                   "<b>case sensitive</b>."));
-    senderItem->setToolTip(
-                tr("<b>Sender</b>: This option specifies which sender nicknames match.  Leave "
-                   "blank to match any nickname."));
-    chanNameItem->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names.</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
-                   "would match on #foobar and any channel starting with <i>#quassel</i> except "
-                   "for <i>#quasseldroid</i><br />"
-                   "<p>If only inverted names are specified, it will match anything except for "
-                   "what's specified (implicit wildcard).</p>"
-                   "<p><i>Example:</i><br />"
-                   "<i>!#quassel*; !#foobar</i><br />"
-                   "would match anything except for #foobar or any channel starting with "
-                   "<i>#quassel</i></p>"));
+    setupTableTooltips(enableItem, nameItem, regexItem, csItem, senderItem, chanNameItem);
 
     int lastRow = ui.ignoredTable->rowCount() - 1;
     ui.ignoredTable->setItem(lastRow, CoreHighlightSettingsPage::NameColumn, nameItem);
