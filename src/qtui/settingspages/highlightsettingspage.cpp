@@ -64,8 +64,8 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
                 ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->toolTip());
 
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
-                   "match any name.</p>"
+                tr("<p><b>Channel</b>: Semicolon separated list of channel/query names, leave "
+                   "blank to match any name.</p>"
                    "<p><i>Example:</i><br />"
                    "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
                    "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
@@ -176,8 +176,8 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
                 tr("<b>CS</b>: This option determines if the highlight rule and <i>Channel</i> "
                    "should be interpreted <b>case sensitive</b>."));
     chanNameItem->setToolTip(
-                tr("<p><b>Channel</b>: Semicolon separated list of channel names, leave blank to "
-                   "match any name.</p>"
+                tr("<p><b>Channel</b>: Semicolon separated list of channel/query names, leave "
+                   "blank to match any name.</p>"
                    "<p><i>Example:</i><br />"
                    "<i>#quassel*; #foobar; !#quasseldroid</i><br />"
                    "would match on <i>#foobar</i> and any channel starting with <i>#quassel</i> "
