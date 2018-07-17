@@ -141,12 +141,14 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::NameColumn, QHeaderView::Stretch);
     table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::SenderColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 #else
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::NameColumn, QHeaderView::Stretch);
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::SenderColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 #endif
 }
