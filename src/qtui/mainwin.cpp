@@ -126,10 +126,6 @@
 #  include "sslinfodlg.h"
 #endif
 
-#ifdef HAVE_INDICATEQT
-  #include "indicatornotificationbackend.h"
-#endif
-
 #ifdef HAVE_NOTIFICATION_CENTER
   #include "osxnotificationbackend.h"
 #endif
@@ -273,10 +269,6 @@ void MainWin::init()
     QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
 #elif !defined(QT_NO_SYSTEMTRAYICON) && !defined(HAVE_KDE)
     QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
-#endif
-
-#ifdef HAVE_INDICATEQT
-    QtUi::registerNotificationBackend(new IndicatorNotificationBackend(this));
 #endif
 
 #ifdef HAVE_NOTIFICATION_CENTER
