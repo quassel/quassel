@@ -22,9 +22,6 @@
 
 #include <QAbstractItemView>
 #include <QMimeData>
-#if QT_VERSION < 0x050000
-#include <QTextDocument>        // for Qt::escape()
-#endif
 
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -86,11 +83,7 @@ QString NetworkItem::escapeHTML(const QString &string, bool useNonbreakingSpaces
 {
     // QString.replace() doesn't guarantee the source string will remain constant.
     // Use a local variable to avoid compiler errors.
-#if QT_VERSION < 0x050000
-    QString formattedString = Qt::escape(string);
-#else
     QString formattedString = string.toHtmlEscaped();
-#endif
     return (useNonbreakingSpaces ? formattedString.replace(" ", "&nbsp;") : formattedString);
 }
 

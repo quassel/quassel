@@ -31,12 +31,6 @@
 #include <QPersistentModelIndex>
 #include <QUrl>
 
-#ifdef HAVE_KDE4
-#  include <KMenuBar>
-#else
-#  include <QMenuBar>
-#endif
-
 #ifdef HAVE_WEBENGINE
 #  include <QWebEngineView>
 #elif defined HAVE_WEBKIT

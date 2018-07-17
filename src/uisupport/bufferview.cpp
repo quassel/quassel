@@ -75,9 +75,7 @@ void BufferView::init()
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    // breaks with Qt 4.8
-    if (QString("4.8.0") > qVersion()) // FIXME breaks with Qt versions >= 4.10!
-        setAnimated(true);
+    setAnimated(true);
 
     // FIXME This is to workaround bug #663
     setUniformRowHeights(true);
@@ -394,15 +392,9 @@ void BufferView::setExpandedState(const QModelIndex &networkIdx)
     storeExpandedState(networkIdx); // this call is needed to keep track of the isActive state
 }
 
-#if QT_VERSION < 0x050000
-void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
-{
-    TreeViewTouch::dataChanged(topLeft, bottomRight);
-#else
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
     TreeViewTouch::dataChanged(topLeft, bottomRight, roles);
-#endif
 
     // determine how many items have been changed and if any of them is a networkitem
     // which just swichted from active to inactive or vice versa
@@ -716,11 +708,7 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
     if (!value.isValid())
         return QStyledItemDelegate::editorEvent(event, model, option, index);
 
-#if QT_VERSION < 0x050000
-    QStyleOptionViewItemV4 viewOpt(option);
-#else
     QStyleOptionViewItem viewOpt(option);
-#endif
     initStyleOption(&viewOpt, index);
 
     QRect checkRect = viewOpt.widget->style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &viewOpt, viewOpt.widget);

@@ -28,10 +28,7 @@
 #include <QDBusError>
 #include <QHash>
 #include <QString>
-
-#if QT_VERSION >= 0x050000
-#  include <QTemporaryDir>
-#endif
+#include <QTemporaryDir>
 
 #include "notificationsclient.h"
 #include "systemtray.h"
@@ -101,9 +98,7 @@ private:
     QString _iconThemePath;
     QString _menuObjectPath;
 
-#if QT_VERSION >= 0x050000
     QTemporaryDir _iconThemeDir;
-#endif
 
     friend class StatusNotifierItemDBus;
 };

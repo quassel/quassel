@@ -53,11 +53,7 @@ public:
     bool reloadCerts();
 
 protected:
-#if QT_VERSION >= 0x050000
     void incomingConnection(qintptr socketDescriptor) override;
-#else
-    void incomingConnection(int socketDescriptor) override;
-#endif
 
     bool setCertificate(const QString &path, const QString &keyPath);
 

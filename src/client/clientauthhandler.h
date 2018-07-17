@@ -90,10 +90,6 @@ private:
     void checkAndEnableSsl(bool coreSupportsSsl);
     void startRegistration();
 
-#if QT_VERSION < 0x050000
-    QByteArray sha2_512(const QByteArray &input);
-#endif
-
 private slots:
     void onSocketConnected();
     void onSocketStateChanged(QAbstractSocket::SocketState state);

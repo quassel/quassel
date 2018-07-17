@@ -72,11 +72,7 @@ public:
      */
     std::vector<Logger::LogEntry> messages() const;
 
-#if QT_VERSION < 0x050000
-    static void messageHandler(QtMsgType type, const char *message);
-#else
     static void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &message);
-#endif
 
     /**
      * Takes the given message with the given log level, formats it and emits the @a messageLogged() signal.

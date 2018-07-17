@@ -40,10 +40,6 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
 #ifdef QT_NO_SYSTEMTRAYICON
     ui.useSystemTrayIcon->hide();
 #endif
-#if QT_VERSION < 0x050000
-    // We don't support overriding the system icon theme with Qt4
-    ui.overrideSystemIconTheme->hide();
-#endif
 
     // If no system icon theme is given, showing the override option makes no sense.
     // Also don't mention a "fallback".

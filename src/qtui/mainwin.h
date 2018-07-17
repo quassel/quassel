@@ -22,9 +22,7 @@
 
 #include <QUuid>
 
-#ifdef HAVE_KDE4
-#  include <KMainWindow>
-#elif defined HAVE_KF5
+#ifdef HAVE_KF5
 #  include <KXmlGui/KMainWindow>
 #else
 #  include <QMainWindow>

@@ -115,11 +115,7 @@ public:
      *
      * This list should be cleaned up after every protocol break, as we can assume them to be present then.
      */
-    #if QT_VERSION >= 0x050000
     enum class Feature : uint32_t {
-    #else
-    enum Feature {
-    #endif
         SynchronizedMarkerLine,
         SaslAuthentication,
         SaslExternal,
@@ -138,9 +134,7 @@ public:
         LongTime,                 ///< Serialize time as 64-bit values
         RichMessages,             ///< Real Name and Avatar URL in backlog
         BacklogFilterType,        ///< BacklogManager supports filtering backlog by MessageType
-#if QT_VERSION >= 0x050500
         EcdsaCertfpKeys,          ///< ECDSA keys for CertFP in identities
-#endif
         LongMessageId,            ///< 64-bit IDs for messages
         SyncedCoreInfo,           ///< CoreInfo dynamically updated using signals
     };

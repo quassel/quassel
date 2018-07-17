@@ -115,7 +115,6 @@ private:
     static ContextMenuActionProvider *_contextMenuActionProvider;
     static ToolBarActionProvider *_toolBarActionProvider;
     static UiStyle *_uiStyle;
-    static bool _onAllDesktops;
 
 #ifdef Q_OS_WIN
     DWORD _dwTickCount;

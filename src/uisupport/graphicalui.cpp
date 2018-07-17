@@ -31,17 +31,12 @@
 #ifdef Q_WS_X11
 #  include <QX11Info>
 #endif
-#ifdef HAVE_KDE4
-#  include <KWindowInfo>
-#  include <KWindowSystem>
-#endif
 
 QWidget *GraphicalUi::_mainWidget = 0;
 QHash<QString, ActionCollection *> GraphicalUi::_actionCollections;
 ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = 0;
 ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
 UiStyle *GraphicalUi::_uiStyle = 0;
-bool GraphicalUi::_onAllDesktops = false;
 
 
 GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent), Singleton<GraphicalUi>(this)
@@ -169,65 +164,6 @@ bool GraphicalUi::checkMainWidgetVisibility(bool perform)
         return true;
     }
 
-#elif defined(HAVE_KDE4) && defined(Q_WS_X11)
-    KWindowInfo info1 = KWindowSystem::windowInfo(mainWidget()->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
-    // mapped = visible (but possibly obscured)
-    bool mapped = (info1.mappingState() == NET::Visible) && !info1.isMinimized();
-
-    //    - not mapped -> show, raise, focus
-    //    - mapped
-    //        - obscured -> raise, focus
-    //        - not obscured -> hide
-    //info1.mappingState() != NET::Visible -> window on another desktop?
-    if (!mapped) {
-        if (perform)
-            minimizeRestore(true);
-        return true;
-    }
-    else {
-        QListIterator<WId> it(KWindowSystem::stackingOrder());
-        it.toBack();
-        while (it.hasPrevious()) {
-            WId id = it.previous();
-            if (id == mainWidget()->winId())
-                break;
-
-            KWindowInfo info2 = KWindowSystem::windowInfo(id, NET::WMDesktop | NET::WMGeometry | NET::XAWMState | NET::WMState | NET::WMWindowType);
-
-            if (info2.mappingState() != NET::Visible)
-                continue;  // not visible on current desktop -> ignore
-
-            if (!info2.geometry().intersects(mainWidget()->geometry()))
-                continue;  // not obscuring the window -> ignore
-
-            if (!info1.hasState(NET::KeepAbove) && info2.hasState(NET::KeepAbove))
-                continue;  // obscured by window kept above -> ignore
-
-            NET::WindowType type = info2.windowType(NET::NormalMask | NET::DesktopMask
-                | NET::DockMask | NET::ToolbarMask | NET::MenuMask | NET::DialogMask
-                | NET::OverrideMask | NET::TopMenuMask | NET::UtilityMask | NET::SplashMask);
-
-            if (type == NET::Dock || type == NET::TopMenu)
-                continue;  // obscured by dock or topmenu -> ignore
-
-            if (perform) {
-                KWindowSystem::raiseWindow(mainWidget()->winId());
-                KWindowSystem::activateWindow(mainWidget()->winId());
-            }
-            return true;
-        }
-
-        //not on current desktop?
-        if (!info1.isOnCurrentDesktop()) {
-            if (perform)
-                KWindowSystem::activateWindow(mainWidget()->winId());
-            return true;
-        }
-
-        if (perform)
-            minimizeRestore(false);  // hide
-        return false;
-    }
 #else
 
     if (!mainWidget()->isVisible() || mainWidget()->isMinimized() || !mainWidget()->isActiveWindow()) {
@@ -264,29 +200,6 @@ void GraphicalUi::minimizeRestore(bool show)
 
 void GraphicalUi::activateMainWidget()
 {
-#ifdef HAVE_KDE4
-#  ifdef Q_WS_X11
-    KWindowInfo info = KWindowSystem::windowInfo(mainWidget()->winId(), NET::WMDesktop | NET::WMFrameExtents);
-    if (_onAllDesktops) {
-        KWindowSystem::setOnAllDesktops(mainWidget()->winId(), true);
-    }
-    else {
-        KWindowSystem::setCurrentDesktop(info.desktop());
-    }
-
-    mainWidget()->move(info.frameGeometry().topLeft()); // avoid placement policies
-    mainWidget()->show();
-    mainWidget()->raise();
-    KWindowSystem::raiseWindow(mainWidget()->winId());
-    KWindowSystem::activateWindow(mainWidget()->winId());
-#  else
-    mainWidget()->show();
-    KWindowSystem::raiseWindow(mainWidget()->winId());
-    KWindowSystem::forceActiveWindow(mainWidget()->winId());
-#  endif
-
-#else /* HAVE_KDE4 */
-
 #ifdef Q_WS_X11
     // Bypass focus stealing prevention
     QX11Info::setAppUserTime(QX11Info::appTime());
@@ -306,18 +219,11 @@ void GraphicalUi::activateMainWidget()
     mainWidget()->raise();
     mainWidget()->activateWindow();
 #endif
-
-#endif /* HAVE_KDE4 */
 }
 
 
 void GraphicalUi::hideMainWidget()
 {
-#if defined(HAVE_KDE4) && defined(Q_WS_X11)
-    KWindowInfo info = KWindowSystem::windowInfo(mainWidget()->winId(), NET::WMDesktop | NET::WMFrameExtents);
-    _onAllDesktops = info.onAllDesktops();
-#endif
-
     if (instance()->isHidingMainWidgetAllowed())
 #ifdef Q_OS_MAC
         ShowHideProcess(&instance()->_procNum, false);

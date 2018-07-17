@@ -33,11 +33,7 @@ TreeViewTouch::TreeViewTouch(QWidget *parent)
 
 
 bool TreeViewTouch::event(QEvent *event) {
-#if QT_VERSION >= 0x050000
     if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type()==QTouchDevice::TouchScreen) {
-#else
-    if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->deviceType()==QTouchEvent::TouchScreen) {
-#endif
         // Register that we may be scrolling, set the scroll mode to scroll-per-pixel
         // and accept the event (return true) so that we will receive TouchUpdate and TouchEnd/TouchCancel
         _touchScrollInProgress = true;
@@ -62,11 +58,7 @@ bool TreeViewTouch::event(QEvent *event) {
         return true;
     }
 
-#if QT_VERSION >= 0x050000
     if (event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
-#else
-    if (event->type() == QEvent::TouchEnd) {
-#endif
         // End scroll and reset variables
         _touchScrollInProgress = false;
         _firstTouchUpdateHappened = false;

@@ -87,7 +87,6 @@ MultiLineEdit::~MultiLineEdit()
 {
 }
 
-
 #if defined HAVE_SONNET && !defined HAVE_KDE
 Sonnet::Highlighter *MultiLineEdit::highlighter() const
 {
@@ -206,11 +205,8 @@ void MultiLineEdit::updateSizeHint()
 
     // use the style to determine a decent size
     int h = qMin(qMax((int)document()->size().height() + scrollBarHeight, minPixelHeight), maxPixelHeight) + 2 * frameWidth();
-#if QT_VERSION < 0x050000
-    QStyleOptionFrameV2 opt;
-#else
+
     QStyleOptionFrame opt;
-#endif
     opt.initFrom(this);
     opt.rect = QRect(0, 0, 100, h);
     opt.lineWidth = lineWidth();
@@ -745,11 +741,7 @@ void MultiLineEdit::on_textChanged()
                 QString msg = tr("Do you really want to paste %n line(s)?", "", lines.count());
                 msg += "<p>";
                 for (int i = 0; i < 4; i++) {
-#if QT_VERSION < 0x050000
-                    msg += Qt::escape(lines[i].left(40));
-#else
                     msg += lines[i].left(40).toHtmlEscaped();
-#endif
                     if (lines[i].count() > 40)
                         msg += "...";
                     msg += "<br />";

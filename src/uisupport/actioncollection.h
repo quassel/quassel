@@ -95,11 +95,7 @@ signals:
     void actionTriggered(QAction *action);
 
 protected slots:
-#if QT_VERSION >= 0x050000
     virtual void connectNotify(const QMetaMethod &signal);
-#else
-    virtual void connectNotify(const char *signal);
-#endif
     virtual void slotActionTriggered();
 
 private slots:
@@ -123,11 +119,7 @@ int ActionCollection::count() const { return actions().count(); }
 bool ActionCollection::isEmpty() const { return actions().count(); }
 
 #else /* HAVE_KDE */
-#  ifdef HAVE_KDE4
-#    include <KActionCollection>
-#  else
-#    include <KXmlGui/KActionCollection>
-#  endif
+#  include <KXmlGui/KActionCollection>
 
 class ActionCollection : public KActionCollection
 {

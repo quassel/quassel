@@ -1150,24 +1150,17 @@ quint8 UiStyle::StyledMessage::senderHash() const
 
 /***********************************************************************************/
 
-#if QT_VERSION < 0x050000
-uint qHash(UiStyle::ItemFormatType key)
-{
-    return qHash(static_cast<quint32>(key));
-}
-
-#else
-
 uint qHash(UiStyle::ItemFormatType key, uint seed)
 {
     return qHash(static_cast<quint32>(key), seed);
 }
-#endif
+
 
 UiStyle::FormatType operator|(UiStyle::FormatType lhs, UiStyle::FormatType rhs)
 {
     return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
 }
+
 
 UiStyle::FormatType& operator|=(UiStyle::FormatType& lhs, UiStyle::FormatType rhs)
 {

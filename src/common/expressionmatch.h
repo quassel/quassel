@@ -20,14 +20,9 @@
 
 #pragma once
 
+#include <QRegularExpression>
 #include <QString>
 #include <QStringList>
-
-#if QT_VERSION >= 0x050000
-#include <QRegularExpression>
-#else
-#include <QRegExp>
-#endif
 
 /**
  * Expression matcher with multiple modes of operation and automatic caching for performance
@@ -37,11 +32,7 @@ class ExpressionMatch
 
 public:
     /// Expression matching mode
-#if QT_VERSION >= 0x050000
     enum class MatchMode {
-#else
-    enum MatchMode {
-#endif
         MatchPhrase,        ///< Match phrase as specified, no special handling
         MatchMultiPhrase,   ///< Match phrase as specified, split on \n only
         MatchWildcard,      ///< Match wildcards, "!" at start inverts, "\" escapes
@@ -189,13 +180,9 @@ private:
      *
      * @param regExString    Regular expression string
      * @param caseSensitive  If true, match case-sensitively, otherwise ignore case when matching
-     * @return Configured QRegExp class on Qt 4, QRegularExpression on Qt 5
+     * @return Configured QRegularExpression
      */
-#if QT_VERSION >= 0x050000
     static QRegularExpression regExFactory(const QString &regExString, bool caseSensitive);
-#else
-    static QRegExp regExFactory(const QString &regExString, bool caseSensitive);
-#endif
 
     /**
      * Escapes any regular expression characters in a string so they have no special meaning
@@ -244,18 +231,10 @@ private:
     bool _sourceExpressionEmpty = false;             ///< Cached expression match string is empty
 
     /// Underlying regular expression matching instance for normal (noninverted) rules
-#if QT_VERSION >= 0x050000
     QRegularExpression _matchRegEx = {};
-#else
-    QRegExp _matchRegEx = {};
-#endif
     bool _matchRegExActive = false;                  ///< If true, use normal expression in matching
 
     /// Underlying regular expression matching instance for inverted rules
-#if QT_VERSION >= 0x050000
     QRegularExpression _matchInvertRegEx = {};
-#else
-    QRegExp _matchInvertRegEx = {};
-#endif
     bool _matchInvertRegExActive = false;            ///< If true, use invert expression in matching
 };

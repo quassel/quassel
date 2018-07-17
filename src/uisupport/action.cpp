@@ -25,22 +25,14 @@
 #include <QApplication>
 
 Action::Action(QObject *parent)
-#ifdef HAVE_KDE4
-    : KAction(parent)
-#else
     : QWidgetAction(parent)
-#endif
 {
     init();
 }
 
 
 Action::Action(const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-#ifdef HAVE_KDE4
-    : KAction(parent)
-#else
     : QWidgetAction(parent)
-#endif
 {
     init();
     setText(text);
@@ -51,11 +43,7 @@ Action::Action(const QString &text, QObject *parent, const QObject *receiver, co
 
 
 Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-#ifdef HAVE_KDE4
-    : KAction(parent)
-#else
     : QWidgetAction(parent)
-#endif
 {
     init();
     setIcon(icon);
@@ -66,9 +54,6 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
 }
 
 
-#ifdef HAVE_KDE4
-void Action::init() {}
-#else
 void Action::init()
 {
     connect(this, SIGNAL(triggered(bool)), this, SLOT(slotTriggered()));
@@ -99,12 +84,8 @@ QKeySequence Action::shortcut(ShortcutTypes type) const
 {
     Q_ASSERT(type);
     if (type == DefaultShortcut) {
-#if QT_VERSION < 0x050000
-        return property("defaultShortcut").value<QKeySequence>();
-#else
         auto sequence = property("defaultShortcuts").value<QList<QKeySequence>>();
         return sequence.isEmpty() ? QKeySequence() : sequence.first();
-#endif
     }
 
     return shortcuts().isEmpty() ? QKeySequence() : shortcuts().first();
@@ -122,15 +103,8 @@ void Action::setShortcut(const QKeySequence &key, ShortcutTypes type)
     Q_ASSERT(type);
 
     if (type & DefaultShortcut) {
-#if QT_VERSION < 0x050000
-        setProperty("defaultShortcut", key);
-#else
         setProperty("defaultShortcuts", QVariant::fromValue(QList<QKeySequence>() << key));
-#endif
     }
     if (type & ActiveShortcut)
         QAction::setShortcut(key);
 }
-
-
-#endif /* HAVE_KDE4 */

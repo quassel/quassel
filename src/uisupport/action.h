@@ -20,10 +20,7 @@
  * Parts of this API have been shamelessly stolen from KDE's kaction.h     *
  ***************************************************************************/
 
-#ifndef ACTION_H_
-#define ACTION_H_
-
-#ifndef HAVE_KDE4
+#pragma once
 
 #include <QShortcut>
 #include <QWidgetAction>
@@ -70,24 +67,3 @@ private slots:
 
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Action::ShortcutTypes)
-
-#else /* HAVE_KDE4 */
-#include <KAction>
-
-class Action : public KAction
-{
-    Q_OBJECT
-
-public:
-    explicit Action(QObject *parent);
-    Action(const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
-    Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver = 0, const char *slot = 0, const QKeySequence &shortcut = 0);
-
-private:
-    void init();
-};
-
-
-#endif
-
-#endif

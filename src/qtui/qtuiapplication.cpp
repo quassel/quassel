@@ -24,10 +24,6 @@
 #include <QFile>
 #include <QStringList>
 
-#ifdef HAVE_KDE4
-#  include <KStandardDirs>
-#endif
-
 #include "chatviewsettings.h"
 #include "cliparser.h"
 #include "logmessage.h"
@@ -37,59 +33,15 @@
 #include "types.h"
 
 QtUiApplication::QtUiApplication(int &argc, char **argv)
-#ifdef HAVE_KDE4
-    : KApplication()  // KApplication is deprecated in KF5
-#else
     : QApplication(argc, argv)
-#endif
 {
-#ifdef HAVE_KDE4
-    Q_UNUSED(argc); Q_UNUSED(argv);
-
-    // Setup KDE's data dirs
-    // Because we can't use KDE stuff in (the class) Quassel directly, we need to do this here...
-    QStringList dataDirs = KGlobal::dirs()->findDirs("data", "");
-
-    // Just in case, also check our install prefix
-    dataDirs << QCoreApplication::applicationDirPath() + "/../share/apps/";
-
-    // Normalize and append our application name
-    for (int i = 0; i < dataDirs.count(); i++)
-        dataDirs[i] = QDir::cleanPath(dataDirs.at(i)) + "/quassel/";
-
-    // Add resource path and just in case.
-    // Workdir should have precedence
-    dataDirs.prepend(QCoreApplication::applicationDirPath() + "/data/");
-    dataDirs.append(":/data/");
-
-    // Append trailing '/' and check for existence
-    auto iter = dataDirs.begin();
-    while (iter != dataDirs.end()) {
-        if (!iter->endsWith(QDir::separator()) && !iter->endsWith('/'))
-            iter->append(QDir::separator());
-        if (!QFile::exists(*iter))
-            iter = dataDirs.erase(iter);
-        else
-            ++iter;
-    }
-
-    dataDirs.removeDuplicates();
-    Quassel::setDataDirPaths(dataDirs);
-
-#else /* HAVE_KDE4 */
-
     Quassel::setDataDirPaths(Quassel::findDataDirPaths());
-
-#endif /* HAVE_KDE4 */
-
     Quassel::setRunMode(Quassel::ClientOnly);
 
-#if QT_VERSION >= 0x050000
     connect(this, &QGuiApplication::commitDataRequest, this, &QtUiApplication::commitData, Qt::DirectConnection);
     connect(this, &QGuiApplication::saveStateRequest, this, &QtUiApplication::saveState, Qt::DirectConnection);
-#endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+#if QT_VERSION >= 0x050600
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 #endif
 }

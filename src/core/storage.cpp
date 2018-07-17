@@ -20,12 +20,9 @@
 
 #include "storage.h"
 
-#include <QCryptographicHash>
 #include <random>
 
-#if QT_VERSION < 0x050000
-#    include "../../3rdparty/sha512/sha512.h"
-#endif
+#include <QCryptographicHash>
 
 Storage::Storage(QObject *parent)
     : QObject(parent)
@@ -40,7 +37,7 @@ QString Storage::hashPassword(const QString &password)
 bool Storage::checkHashedPassword(const UserId user, const QString &password, const QString &hashedPassword, const Storage::HashVersion version)
 {
     bool passwordCorrect = false;
-    
+
     switch (version) {
     case Storage::HashVersion::Sha1:
         passwordCorrect = checkHashedPasswordSha1(password, hashedPassword);
@@ -53,11 +50,11 @@ bool Storage::checkHashedPassword(const UserId user, const QString &password, co
     default:
         qWarning() << "Password hash version" << QString(version) << "is not supported, please reset password";
     }
-    
+
     if (passwordCorrect && version < Storage::HashVersion::Latest) {
         updateUser(user, password);
     }
-    
+
     return passwordCorrect;
 }
 
@@ -104,12 +101,5 @@ bool Storage::checkHashedPasswordSha2_512(const QString &password, const QString
 
 QString Storage::sha2_512(const QString &input)
 {
-#if QT_VERSION >= 0x050000
     return QString(QCryptographicHash::hash(input.toUtf8(), QCryptographicHash::Sha512).toHex());
-#else
-    QByteArray inputBytes = input.toUtf8();
-    unsigned char output[64];
-    sha512((unsigned char*) inputBytes.constData(), inputBytes.size(), output, false);
-    return QString(QByteArray::fromRawData((char*) output, 64).toHex());
-#endif
 }

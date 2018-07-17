@@ -22,12 +22,7 @@
 
 #include <memory>
 
-#ifdef HAVE_KDE4
-#  include <KApplication>
-#else
-#  include <QApplication>
-#endif
-
+#include <QApplication>
 #include <QSessionManager>
 
 #include "client.h"
@@ -37,14 +32,8 @@
 
 class QtUi;
 
-#ifdef HAVE_KDE4
-class QtUiApplication : public KApplication
-{
-#else
 class QtUiApplication : public QApplication
 {
-#endif
-
     Q_OBJECT
 
 public:
@@ -55,13 +44,8 @@ public:
     void resumeSessionIfPossible();
     inline bool isAboutToQuit() const { return _aboutToQuit; }
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-    void commitData(QSessionManager &manager) override;
-    void saveState(QSessionManager &manager) override;
-#else
     void commitData(QSessionManager &manager);
     void saveState(QSessionManager &manager);
-#endif
 
 protected:
     virtual Quassel::QuitHandler quitHandler();

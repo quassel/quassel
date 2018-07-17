@@ -51,11 +51,7 @@ const QHash<QString, int> &BasicHandler::handlerHash()
 {
     if (!_initDone) {
         for (int i = metaObject()->methodOffset(); i < metaObject()->methodCount(); i++) {
-#if QT_VERSION >= 0x050000
             QString methodSignature = metaObject()->method(i).methodSignature();
-#else
-            QString methodSignature = metaObject()->method(i).signature();
-#endif
             if (methodSignature.startsWith("defaultHandler")) {
                 _defaultHandler = i;
                 continue;

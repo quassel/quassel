@@ -71,11 +71,8 @@ QTcpSocket *SslServer::nextPendingConnection()
         return _pendingConnections.takeFirst();
 }
 
-#if QT_VERSION >= 0x050000
+
 void SslServer::incomingConnection(qintptr socketDescriptor)
-#else
-void SslServer::incomingConnection(int socketDescriptor)
-#endif
 {
     QSslSocket *serverSocket = new QSslSocket(this);
     if (serverSocket->setSocketDescriptor(socketDescriptor)) {
@@ -196,20 +193,16 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
 
     // We allow the core to offer SSL anyway, so no "return false" here. Client will warn about the cert being invalid.
     const QDateTime now = QDateTime::currentDateTime();
-    if (now < untestedCert.effectiveDate())
+    if (now < untestedCert.effectiveDate()) {
         quWarning() << "SslServer: Certificate won't be valid before" << untestedCert.effectiveDate().toString();
-
-    else if (now > untestedCert.expiryDate())
-        quWarning() << "SslServer: Certificate expired on" << untestedCert.expiryDate().toString();
-
-    else { // Qt4's isValid() checks for time range and blacklist; avoid a double warning, hence the else block
-#if QT_VERSION < 0x050000
-        if (!untestedCert.isValid())
-#else
-        if (untestedCert.isBlacklisted())
-#endif
-            quWarning() << "SslServer: Certificate blacklisted";
     }
+    else if (now > untestedCert.expiryDate()) {
+        quWarning() << "SslServer: Certificate expired on" << untestedCert.expiryDate().toString();
+    }
+    else if (untestedCert.isBlacklisted()) {
+        quWarning() << "SslServer: Certificate blacklisted";
+    }
+
     if (untestedKey.isNull()) {
         quWarning() << "SslServer:" << qPrintable(keyPath) << "contains no key data";
         return false;
@@ -230,7 +223,6 @@ QSslKey SslServer::loadKey(QFile *keyFile)
 {
     QSslKey key;
     key = QSslKey(keyFile, QSsl::Rsa);
-#if QT_VERSION >= 0x050500
     if (key.isNull()) {
         if (!keyFile->reset()) {
             quWarning() << "SslServer: IO error reading key file";
@@ -238,7 +230,6 @@ QSslKey SslServer::loadKey(QFile *keyFile)
         }
         key = QSslKey(keyFile, QSsl::Ec);
     }
-#endif
     return key;
 }
 

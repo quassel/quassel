@@ -53,11 +53,7 @@ Logger::Logger(QObject *parent)
 
     connect(this, SIGNAL(messageLogged(Logger::LogEntry)), this, SLOT(onMessageLogged(Logger::LogEntry)));
 
-#if QT_VERSION < 0x050000
-    qInstallMsgHandler(Logger::messageHandler);
-#else
     qInstallMessageHandler(Logger::messageHandler);
-#endif
 }
 
 
@@ -130,11 +126,7 @@ bool Logger::setup(bool keepMessages)
 }
 
 
-#if QT_VERSION < 0x050000
-void Logger::messageHandler(QtMsgType type, const char *message)
-#else
 void Logger::messageHandler(QtMsgType type, const QMessageLogContext &, const QString &message)
-#endif
 {
     Quassel::instance()->logger()->handleMessage(type, message);
 }
@@ -146,11 +138,9 @@ void Logger::handleMessage(QtMsgType type, const QString &msg)
     case QtDebugMsg:
         handleMessage(LogLevel::Debug, msg);
         break;
-#if QT_VERSION >= 0x050500
     case QtInfoMsg:
         handleMessage(LogLevel::Info, msg);
         break;
-#endif
     case QtWarningMsg:
         handleMessage(LogLevel::Warning, msg);
         break;

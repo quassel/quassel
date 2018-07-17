@@ -23,15 +23,10 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QMimeData>
 #include <QUrl>
-#include <QMessageBox>
-
-#if QT_VERSION < 0x050000
-#  include <QDesktopServices>
-#else
-#  include <QStandardPaths>
-#endif
+#include <QStandardPaths>
 
 #include "client.h"
 #include "icon.h"
@@ -115,11 +110,7 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
         addRow("AP", tr("AM/PM"), true);
         addRow("dd", tr("day"), true);
         addRow("MM", tr("month"), true);
-#if QT_VERSION > 0x050000
-        // Alas, this was only added in Qt 5.  We don't know what version the core has, just hope
-        // for the best (Qt 4 will soon be dropped).
         addRow("t", tr("current timezone"), true);
-#endif
         formatTooltip << "</table>";
         formatTooltip << "<p>" << tr("Example: Away since %%hh:mm%% on %%dd.MM%%.") << "</p>";
         formatTooltip << "<p>" << tr("%%%% without anything inside represents %%.  Other format "
@@ -370,12 +361,7 @@ void IdentityEditWidget::on_clearOrLoadKeyButton_clicked()
     QSslKey key;
 
     if (ui.keyTypeLabel->property("sslKey").toByteArray().isEmpty())
-        key = keyByFilename(QFileDialog::getOpenFileName(this, tr("Load a Key"),
-#if QT_VERSION < 0x050000
-                                                         QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
-#else
-                                                         QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
-#endif
+        key = keyByFilename(QFileDialog::getOpenFileName(this, tr("Load a Key"), QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
 
     showKeyState(key);
     emit widgetHasChanged();
@@ -392,16 +378,8 @@ QSslKey IdentityEditWidget::keyByFilename(const QString &filename)
     keyFile.close();
 
     for (int i = 0; i < 2; i++) {
-#if QT_VERSION >= 0x050500
         // On Qt5.5+, support QSsl::KeyAlgorithm::Rsa (1), QSsl::KeyAlgorithm::Dsa (2), and QSsl::KeyAlgorithm::Ec (3)
         for (int j = 1; j < 4; j++) {
-#elif QT_VERSION >= 0x050000
-        // On Qt5.0-Qt5.4, support QSsl::KeyAlgorithm::Rsa (1) and QSsl::KeyAlgorithm::Dsa (2) (Ec wasn't added until 5.5)
-        for (int j = 1; j < 3; j++) {
-#else
-        // On Qt4, support QSsl::KeyAlgorithm::Rsa (0) and QSsl::KeyAlgorithm::Dsa (1) (Qt4 uses different indices for the values)
-        for (int j = 0; j < 2; j++) {
-#endif
             key = QSslKey(keyRaw, (QSsl::KeyAlgorithm)j, (QSsl::EncodingFormat)i);
             if (!key.isNull())
                 goto returnKey;
@@ -409,12 +387,10 @@ QSslKey IdentityEditWidget::keyByFilename(const QString &filename)
     }
     QMessageBox::information(this, tr("Failed to read key"), tr("Failed to read the key file. It is either incompatible or invalid. Note that the key file must not have a passphrase."));
 returnKey:
-#if QT_VERSION >= 0x050500
     if(!key.isNull() && key.algorithm() == QSsl::KeyAlgorithm::Ec && !Client::isCoreFeatureEnabled(Quassel::Feature::EcdsaCertfpKeys)) {
         QMessageBox::information(this, tr("Core does not support ECDSA keys"), tr("You loaded an ECDSA key, but the core does not support ECDSA keys. Please contact the core administrator."));
         key.clear();
     }
-#endif
     return key;
 }
 
@@ -430,11 +406,9 @@ void IdentityEditWidget::showKeyState(const QSslKey &key)
         case QSsl::Rsa:
             ui.keyTypeLabel->setText(tr("RSA"));
             break;
-#if QT_VERSION >= 0x050500
         case QSsl::Ec:
             ui.keyTypeLabel->setText(tr("ECDSA"));
             break;
-#endif
         case QSsl::Dsa:
             ui.keyTypeLabel->setText(tr("DSA"));
             break;
@@ -453,12 +427,7 @@ void IdentityEditWidget::on_clearOrLoadCertButton_clicked()
     QSslCertificate cert;
 
     if (ui.certOrgLabel->property("sslCert").toByteArray().isEmpty())
-        cert = certByFilename(QFileDialog::getOpenFileName(this, tr("Load a Certificate"),
-#if QT_VERSION < 0x050000
-                                                           QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
-#else
-                                                           QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
-#endif
+        cert = certByFilename(QFileDialog::getOpenFileName(this, tr("Load a Certificate"), QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
     showCertState(cert);
     emit widgetHasChanged();
 }
@@ -489,13 +458,8 @@ void IdentityEditWidget::showCertState(const QSslCertificate &cert)
         ui.clearOrLoadCertButton->setText(tr("Load"));
     }
     else {
-#if QT_VERSION < 0x050000
-        ui.certOrgLabel->setText(cert.subjectInfo(QSslCertificate::Organization));
-        ui.certCNameLabel->setText(cert.subjectInfo(QSslCertificate::CommonName));
-#else
         ui.certOrgLabel->setText(cert.subjectInfo(QSslCertificate::Organization).join(", "));
         ui.certCNameLabel->setText(cert.subjectInfo(QSslCertificate::CommonName).join(", "));
-#endif
         ui.clearOrLoadCertButton->setText(tr("Clear"));
     }
     ui.certOrgLabel->setProperty("sslCert", cert.toPem());

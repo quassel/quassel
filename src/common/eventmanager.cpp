@@ -148,12 +148,7 @@ int EventManager::findEventType(const QString &methodSignature_, const QString &
 void EventManager::registerObject(QObject *object, Priority priority, const QString &methodPrefix, const QString &filterPrefix)
 {
     for (int i = object->metaObject()->methodOffset(); i < object->metaObject()->methodCount(); i++) {
-#if QT_VERSION >= 0x050000
         QString methodSignature = object->metaObject()->method(i).methodSignature();
-#else
-        QString methodSignature = object->metaObject()->method(i).signature();
-#endif
-
         int eventType = findEventType(methodSignature, methodPrefix);
         if (eventType > 0) {
             Handler handler(object, i, priority);

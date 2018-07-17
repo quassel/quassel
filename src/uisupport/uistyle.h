@@ -166,11 +166,7 @@ public:
     };
 
     /// Display of sender prefix modes
-#if QT_VERSION >= 0x050000
     enum class SenderPrefixMode {
-#else
-    enum SenderPrefixMode {
-#endif
         NoModes = 0,      ///< Hide sender modes
         HighestMode = 1,  ///< Show the highest active sender mode
         AllModes = 2      ///< Show all active sender modes
@@ -393,11 +389,7 @@ private:
     mutable quint8 _senderHash;
 };
 
-#if QT_VERSION < 0x050000
-uint qHash(UiStyle::ItemFormatType key);
-#else
 uint qHash(UiStyle::ItemFormatType key, uint seed);
-#endif
 
 // ---- Operators for dealing with enums ----------------------------------------------------------
 

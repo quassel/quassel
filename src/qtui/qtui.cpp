@@ -347,7 +347,6 @@ void QtUi::refreshIconTheme()
         return;
     }
 
-#if QT_VERSION >= 0x050000
     // At this point, we have a system theme that we don't want to override, but that may not contain all
     // required icons.
     // We create a dummy theme that inherits first from the system theme, then from the supported fallback.
@@ -397,10 +396,4 @@ void QtUi::refreshIconTheme()
     }
     indexFile.close();
     QIcon::setThemeName("quassel-icon-proxy");
-#else
-    // Qt4 doesn't support QTemporaryDir. Since it's deprecated and slated to be removed soon anyway, we don't bother
-    // writing a replacement and simply don't support not overriding the system theme.
-    QIcon::setThemeName(fallbackTheme);
-    emit iconThemeRefreshed();
-#endif
 }
