@@ -187,7 +187,7 @@ endif()
 # using -DCMAKE_DISABLE_FIND_PACKAGE_<PkgName>=TRUE
 #####################################################################
 
-set(QT_MIN_VERSION "5.2.0")
+set(QT_MIN_VERSION "5.5.0")
 add_definitions(-DHAVE_QT5)
 
 find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
