@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef PHONONNOTIFICATIONBACKEND_H_
-#define PHONONNOTIFICATIONBACKEND_H_
+#pragma once
 
 #include <memory>
 
@@ -79,6 +78,3 @@ private:
     QString _filename;
     std::unique_ptr<QMediaPlayer> _audioPreview;
 };
-
-
-#endif

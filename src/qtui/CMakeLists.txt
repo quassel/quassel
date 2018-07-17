@@ -107,14 +107,6 @@ if (Qt5Multimedia_FOUND)
     set(FORMS ${FORMS}     qtmultimedianotificationconfigwidget.ui)
 endif()
 
-if (Phonon4Qt5_FOUND)
-    add_definitions(-DHAVE_PHONON)
-    include_directories(${PHONON_INCLUDES})
-    set(SOURCES ${SOURCES} phononnotificationbackend.cpp)
-    set(FORMS ${FORMS}     phononnotificationconfigwidget.ui)
-    list(APPEND LIBS ${PHONON_LIBS})  # PHONON_LIBRARIES only exists in config mode, it's not set by the legacy FindPhonon.cmake
-endif()
-
 if (Qt5DBus_FOUND)
     add_definitions(-DHAVE_DBUS)
     list(APPEND QT_MODULES DBus)
