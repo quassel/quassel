@@ -161,7 +161,7 @@ QString CoreHighlightSettingsPage::getTableTooltip(column tableColumn) const
         return tr("Enable/disable this rule");
 
     case CoreHighlightSettingsPage::NameColumn:
-        return tr("Phrase to match");
+        return tr("Phrase to match, leave blank to match any message");
 
     case CoreHighlightSettingsPage::RegExColumn:
         return tr("<b>RegEx</b>: This option determines if the highlight rule, <i>Sender</i>, and "
@@ -550,8 +550,6 @@ void CoreHighlightSettingsPage::highlightTableChanged(QTableWidgetItem *item)
             highlightRule.isEnabled = (item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::NameColumn:
-            if (item->text() == "")
-                item->setText(tr("this shouldn't be empty"));
             highlightRule.name = item->text();
             break;
         case CoreHighlightSettingsPage::RegExColumn:
@@ -589,8 +587,6 @@ void CoreHighlightSettingsPage::ignoredTableChanged(QTableWidgetItem *item)
             ignoredRule.isEnabled = (item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::NameColumn:
-            if (item->text() == "")
-                item->setText(tr("this shouldn't be empty"));
             ignoredRule.name = item->text();
             break;
         case CoreHighlightSettingsPage::RegExColumn:
