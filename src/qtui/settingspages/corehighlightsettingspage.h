@@ -94,6 +94,41 @@ private:
 
     void setupRuleTable(QTableWidget *highlightTable) const;
 
+    /**
+     * Get tooltip for the specified rule table column
+     *
+     * @param tableColumn Column to retrieve tooltip
+     * @return Translated tooltip for the specified column
+     */
+    QString getTableTooltip(column tableColumn) const;
+
+    /**
+     * Setup tooltips and "What's this?" prompts for table entries
+     *
+     * @param enableWidget  Enabled checkbox
+     * @param nameWidget    Rule name
+     * @param regExWidget   RegEx enabled
+     * @param csWidget      Case-sensitive
+     * @param senderWidget  Sender name
+     * @param chanWidget    Channel name
+     */
+    void setupTableTooltips(QWidget *enableWidget, QWidget *nameWidget, QWidget *regExWidget,
+                            QWidget *csWidget, QWidget *senderWidget, QWidget *chanWidget) const;
+
+    /**
+     * Setup tooltips and "What's this?" prompts for table entries
+     *
+     * @param enableWidget  Enabled checkbox
+     * @param nameWidget    Rule name
+     * @param regExWidget   RegEx enabled
+     * @param csWidget      Case-sensitive
+     * @param senderWidget  Sender name
+     * @param chanWidget    Channel name
+     */
+    void setupTableTooltips(QTableWidgetItem *enableWidget, QTableWidgetItem *nameWidget,
+                            QTableWidgetItem *regExWidget, QTableWidgetItem *csWidget,
+                            QTableWidgetItem *senderWidget, QTableWidgetItem *chanWidget) const;
+
     /** Update the UI to show core support for highlights
      *
      * Shows or hides the UI warnings around core-side highlights according to core connection and
