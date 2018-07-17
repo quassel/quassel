@@ -23,13 +23,8 @@
 #include <QTextDocument>
 #include <QVBoxLayout>
 
-#ifdef HAVE_KDE4
-#  include <KNotification>
-#  include <KNotifyConfigWidget>
-#else
-#  include <KNotifications/KNotification>
-#  include <KNotifyConfig/KNotifyConfigWidget>
-#endif
+#include <KNotifications/KNotification>
+#include <KNotifyConfig/KNotifyConfigWidget>
 
 #include "client.h"
 #include "icon.h"
@@ -61,11 +56,7 @@ void KNotificationBackend::notify(const Notification &n)
         type = "PrivMsgFocused"; break;
     }
 
-#if QT_VERSION < 0x050000
-    QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, Qt::escape(n.message));
-#else
     QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, n.message.toHtmlEscaped());
-#endif
     KNotification *notification = KNotification::event(type, message, icon::get("dialog-information").pixmap(48), QtUi::mainWindow(),
         KNotification::RaiseWidgetOnActivation
         |KNotification::CloseWhenWidgetActivated

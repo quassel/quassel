@@ -34,11 +34,7 @@ class NickHighlightMatcher
 {
 public:
     /// Nickname highlighting mode
-#if QT_VERSION >= 0x050000
     enum class HighlightNickType {
-#else
-    enum HighlightNickType {
-#endif
         NoNick = 0x00,      ///< Don't match any nickname
         CurrentNick = 0x01, ///< Match the current nickname
         AllNicks = 0x02     ///< Match all configured nicknames in the chosen identity

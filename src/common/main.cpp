@@ -43,25 +43,13 @@
 #endif
 
 // We don't want quasselcore to depend on KDE
-#if defined HAVE_KDE4 && defined BUILD_CORE
-#  undef HAVE_KDE4
-#endif
-// We don't want quasselcore to depend on KDE
 #if defined HAVE_KF5 && defined BUILD_CORE
 #  undef HAVE_KF5
 #endif
 
-#ifdef HAVE_KDE4
-#  include <KAboutData>
-#  include "kcmdlinewrapper.h"
-#elif defined HAVE_KF5
+#if defined HAVE_KF5
 #  include <KCoreAddons/KAboutData>
 #  include <KCoreAddons/Kdelibs4ConfigMigrator>
-#  include "qt5cliparser.h"
-#elif defined HAVE_QT5
-#  include "qt5cliparser.h"
-#else
-#  include "cliparser.h"
 #endif
 
 #if !defined(BUILD_CORE) && defined(STATIC)
@@ -70,6 +58,7 @@ Q_IMPORT_PLUGIN(qjpeg)
 Q_IMPORT_PLUGIN(qgif)
 #endif
 
+#include "qt5cliparser.h"
 #include "quassel.h"
 #include "types.h"
 
@@ -82,30 +71,18 @@ int main(int argc, char **argv)
     // Instantiate early, so log messages are handled
     Quassel quassel;
 
-#if QT_VERSION < 0x050000
-    // All our source files are in UTF-8, and Qt5 even requires that
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-#endif
-
     Quassel::setupBuildInfo();
     QCoreApplication::setApplicationName(Quassel::buildInfo().applicationName);
     QCoreApplication::setApplicationVersion(Quassel::buildInfo().plainVersionString);
     QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
     QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
 
-    // on OSX with Qt4, raster seems to fix performance issues
-#if QT_VERSION < 0x050000 && defined Q_OS_MAC && !defined BUILD_CORE
-    QApplication::setGraphicsSystem("raster");
-#endif
-//Setup the High-DPI settings
+    //Setup the High-DPI settings
 # if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); //Added in Qt 5.6
 #endif
-# if QT_VERSION >= 0x050400
-   //Added in the early Qt5 versions (5.0?)- use 5.4 as the cutoff since lots of high-DPI work was added then
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-# endif
+
     // We need to explicitly initialize the required resources when linking statically
 #ifndef BUILD_QTUI
     Q_INIT_RESOURCE(sql);
@@ -134,24 +111,7 @@ int main(int argc, char **argv)
 # endif
 #endif
 
-    std::shared_ptr<AbstractCliParser> cliParser;
-
-#ifdef HAVE_KDE4
-    // We need to init KCmdLineArgs first
-    KAboutData aboutData("quassel", "kdelibs4", ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8(),
-        ki18n("A modern, distributed IRC client"));
-    aboutData.addLicense(KAboutData::License_GPL_V2);
-    aboutData.addLicense(KAboutData::License_GPL_V3);
-    aboutData.setBugAddress("https://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
-    aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
-    KCmdLineArgs::init(argc, argv, &aboutData);
-
-    cliParser = std::make_shared<KCmdLineWrapper>();
-#elif defined HAVE_QT5
-    cliParser = std::make_shared<Qt5CliParser>();
-#else
-    cliParser = std::make_shared<CliParser>();
-#endif
+    std::shared_ptr<AbstractCliParser> cliParser = std::make_shared<Qt5CliParser>();
     Quassel::setCliParser(cliParser);
 
     // Initialize CLI arguments
@@ -211,14 +171,6 @@ int main(int argc, char **argv)
     cliParser->addSwitch("enable-experimental-dcc", 0, "Enable highly experimental and unfinished support for CTCP DCC (DANGEROUS)");
 #endif
 
-#ifdef HAVE_KDE4
-    // the KDE version needs this extra call to parse argc/argv before app is instantiated
-    if (!cliParser->init()) {
-        cliParser->usage();
-        return EXIT_FAILURE;
-    }
-#endif
-
 #if defined BUILD_CORE
     CoreApplication app(argc, argv);
 #elif defined BUILD_QTUI
@@ -227,13 +179,10 @@ int main(int argc, char **argv)
     MonolithicApplication app(argc, argv);
 #endif
 
-#ifndef HAVE_KDE4
-    // the non-KDE version parses after app has been instantiated
     if (!cliParser->init(app.arguments())) {
         cliParser->usage();
         return EXIT_FAILURE;
     }
-#endif
 
 // Migrate settings from KDE4 to KF5 if appropriate
 #ifdef HAVE_KF5

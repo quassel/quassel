@@ -85,11 +85,7 @@ protected:
     virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
     virtual void contextMenuEvent(QContextMenuEvent *event);
 
-#if QT_VERSION < 0x050000
-    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-#else
     virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
-#endif
 
 private slots:
     void joinChannel(const QModelIndex &index);

@@ -72,9 +72,7 @@ protected:
 
 StatusNotifierItem::StatusNotifierItem(QWidget *parent)
     : StatusNotifierItemParent(parent)
-#if QT_VERSION >= 0x050000
     , _iconThemeDir{QDir::tempPath() + QLatin1String{"/quassel-sni-XXXXXX"}}
-#endif
 {
     static bool registered = []() -> bool {
         qDBusRegisterMetaType<DBusImageStruct>();
@@ -93,15 +91,12 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
     trayMenu()->installEventFilter(this);
 
     // Create a temporary directory that holds copies of the tray icons. That way, visualizers can find our icons.
-    // For Qt4 the relevant icons are installed in hicolor already, so nothing to be done.
-#if QT_VERSION >= 0x050000
     if (_iconThemeDir.isValid()) {
         _iconThemePath = _iconThemeDir.path();
     }
     else {
         qWarning() << "Could not create temporary directory for themed tray icons!";
     }
-#endif
 
     connect(this, SIGNAL(iconsChanged()), this, SLOT(refreshIcons()));
     refreshIcons();
@@ -195,7 +190,6 @@ void StatusNotifierItem::onDBusError(const QDBusError &error)
 
 void StatusNotifierItem::refreshIcons()
 {
-#if QT_VERSION >= 0x050000
     if (!_iconThemePath.isEmpty()) {
         QDir baseDir{_iconThemePath + "/hicolor"};
         baseDir.removeRecursively();
@@ -223,7 +217,7 @@ void StatusNotifierItem::refreshIcons()
             }
         }
     }
-#endif
+
     if (_statusNotifierItemDBus) {
         emit _statusNotifierItemDBus->NewIcon();
         emit _statusNotifierItemDBus->NewAttentionIcon();
@@ -321,18 +315,9 @@ void StatusNotifierItem::activated(const QPoint &pos)
 bool StatusNotifierItem::eventFilter(QObject *watched, QEvent *event)
 {
     if (mode() == StatusNotifier) {
-        //FIXME: ugly ugly workaround to weird QMenu's focus problems
-#ifdef HAVE_KDE4
-        if (watched == trayMenu() &&
-            (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton))) {
-            // put at the back of event queue to let the action activate anyways
-            QTimer::singleShot(0, trayMenu(), SLOT(hide()));
-        }
-#else
         if (watched == trayMenu() && event->type() == QEvent::HoverLeave) {
             trayMenu()->hide();
         }
-#endif
     }
     return StatusNotifierItemParent::eventFilter(watched, event);
 }
@@ -342,12 +327,9 @@ void StatusNotifierItem::showMessage(const QString &title, const QString &messag
 {
     QString message = message_;
     if (_notificationsClient->isValid()) {
-        if (_notificationsClientSupportsMarkup)
-#if QT_VERSION < 0x050000
-            message = Qt::escape(message);
-#else
+        if (_notificationsClientSupportsMarkup) {
             message = message.toHtmlEscaped();
-#endif
+        }
 
         QStringList actions;
         if (_notificationsClientSupportsActions)

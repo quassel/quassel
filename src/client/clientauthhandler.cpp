@@ -20,8 +20,6 @@
 
 #include "clientauthhandler.h"
 
-// TODO: support system application proxy (new in Qt 4.6)
-
 #include <QtEndian>
 
 #ifdef HAVE_SSL
@@ -34,10 +32,6 @@
 #include "clientsettings.h"
 #include "logmessage.h"
 #include "peerfactory.h"
-
-#if QT_VERSION < 0x050000
-#    include "../../3rdparty/sha512/sha512.h"
-#endif
 
 using namespace Protocol;
 
@@ -505,11 +499,7 @@ void ClientAuthHandler::onSslErrors()
         break;
 
     case ClientAuthHandler::DigestVersion::Sha2_512:
-#if QT_VERSION >= 0x050000
         calculatedDigest = socket->peerCertificate().digest(QCryptographicHash::Sha512);
-#else
-        calculatedDigest = sha2_512(socket->peerCertificate().toDer());
-#endif
         break;
 
     default:
@@ -527,11 +517,7 @@ void ClientAuthHandler::onSslErrors()
         }
 
         if (permanently) {
-#if QT_VERSION >= 0x050000
             s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
-#else
-            s.setAccountValue("SslCert", sha2_512(socket->peerCertificate().toDer()));
-#endif
             s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
         }
         else {
@@ -540,28 +526,11 @@ void ClientAuthHandler::onSslErrors()
         }
     }
     else if (knownDigestVersion != ClientAuthHandler::DigestVersion::Latest) {
-#if QT_VERSION >= 0x050000
         s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
-#else
-        s.setAccountValue("SslCert", sha2_512(socket->peerCertificate().toDer()));
-#endif
         s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
     }
 
     socket->ignoreSslErrors();
 }
-
-#if QT_VERSION < 0x050000
-QByteArray ClientAuthHandler::sha2_512(const QByteArray &input) {
-    unsigned char output[64];
-    sha512((unsigned char*) input.constData(), input.size(), output, false);
-    // QByteArray::fromRawData() cannot be used here because that constructor
-    // does not copy "output" and the data is clobbered when the variable goes
-    // out of scope.
-    QByteArray result;
-    result.append((char*) output, 64);
-    return result;
-}
-#endif
 
 #endif /* HAVE_SSL */

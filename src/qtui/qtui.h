@@ -27,10 +27,7 @@
 #include <QList>
 #include <QObject>
 #include <QString>
-
-#if QT_VERSION >= 0x050000
-#  include <QTemporaryDir>
-#endif
+#include <QTemporaryDir>
 
 #include "abstractnotificationbackend.h"
 #include "graphicalui.h"
@@ -136,9 +133,7 @@ private:
 
     QString _systemIconTheme;
 
-#if QT_VERSION >= 0x050000
     std::unique_ptr<QTemporaryDir> _dummyThemeDir;
-#endif
 
     bool _useSystemTray;
 };

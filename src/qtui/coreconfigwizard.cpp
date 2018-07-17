@@ -318,11 +318,7 @@ AuthenticationSelectionPage::AuthenticationSelectionPage(const QVariantList &aut
     setSizePolicy({QSizePolicy::Fixed, QSizePolicy::Fixed});
 
     QSizePolicy sp{QSizePolicy::MinimumExpanding, QSizePolicy::Fixed};
-#if QT_VERSION >= 0x050200
     sp.setRetainSizeWhenHidden(true);
-#else
-    ui.authSettingsStack->setVisible(true);  // ugly hack that will show an empty box, but we'll deprecate Qt4 soon anyway
-#endif
     ui.descriptionStack->setSizePolicy(sp);
     ui.authSettingsStack->setSizePolicy(sp);
 
@@ -347,11 +343,7 @@ QString AuthenticationSelectionPage::displayName() const
 
 QString AuthenticationSelectionPage::authenticator() const
 {
-#if QT_VERSION >= 0x050200
     return ui.backendList->currentData().toString();
-#else
-    return ui.backendList->itemData(ui.backendList->currentIndex()).toString();
-#endif
 }
 
 
@@ -424,11 +416,7 @@ StorageSelectionPage::StorageSelectionPage(const QVariantList &backendInfos, QWi
     setSizePolicy({QSizePolicy::Fixed, QSizePolicy::Fixed});
 
     QSizePolicy sp{QSizePolicy::MinimumExpanding, QSizePolicy::Fixed};
-#if QT_VERSION >= 0x050200
     sp.setRetainSizeWhenHidden(true);
-#else
-    ui.storageSettingsStack->setVisible(true);  // ugly hack that will show an empty box, but we'll deprecate Qt4 soon anyway
-#endif
     ui.descriptionStack->setSizePolicy(sp);
     ui.storageSettingsStack->setSizePolicy(sp);
 
@@ -453,11 +441,7 @@ QString StorageSelectionPage::displayName() const
 
 QString StorageSelectionPage::backend() const
 {
-#if QT_VERSION >= 0x050200
     return ui.backendList->currentData().toString();
-#else
-    return ui.backendList->itemData(ui.backendList->currentIndex()).toString();
-#endif
 }
 
 

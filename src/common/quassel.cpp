@@ -559,7 +559,7 @@ void Quassel::loadTranslation(const QLocale &locale)
     quasselTranslator->setObjectName("QuasselTr");
     qApp->installTranslator(quasselTranslator);
 
-#if QT_VERSION >= 0x040800 && !defined Q_OS_MAC
+#ifndef Q_OS_MAC
     bool success = qtTranslator->load(locale, QString("qt_"), translationDirPath());
     if (!success)
         qtTranslator->load(locale, QString("qt_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath));

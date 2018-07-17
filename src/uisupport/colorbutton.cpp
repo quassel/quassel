@@ -20,15 +20,11 @@
 
 #include "colorbutton.h"
 
+#include <QColorDialog>
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOptionFrame>
 
-#ifdef HAVE_KDE4
-#  include <KColorDialog>
-#else
-#  include <QColorDialog>
-#endif
 
 ColorButton::ColorButton(QWidget *parent) : QToolButton(parent)
 {
@@ -56,13 +52,7 @@ QColor ColorButton::color() const
 
 void ColorButton::chooseColor()
 {
-#ifdef HAVE_KDE4
-    QColor c = color();
-    KColorDialog::getColor(c, this);
-#else
     QColor c = QColorDialog::getColor(color(), this);
-#endif
-
     if (c.isValid()) {
         setColor(c);
     }

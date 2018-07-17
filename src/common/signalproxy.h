@@ -98,12 +98,10 @@ public:
     }
 
     //A better version, but only implemented on Qt5 if Initializer Lists exist
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #ifdef Q_COMPILER_INITIALIZER_LISTS
     void restrictTargetPeers(std::initializer_list<Peer*> peers, std::function<void()> closure) {
         restrictTargetPeers(QSet<Peer*>(peers), std::move(closure));
     }
-#endif
 #endif
     /**}@*/
 

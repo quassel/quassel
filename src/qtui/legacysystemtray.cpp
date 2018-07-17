@@ -28,15 +28,9 @@
 
 LegacySystemTray::LegacySystemTray(QWidget *parent)
     : SystemTray(parent)
+    , _trayIcon{new QSystemTrayIcon(associatedWidget())}
 {
-#ifndef HAVE_KDE4
-    _trayIcon = new QSystemTrayIcon(associatedWidget());
-#else
-    _trayIcon = new KSystemTrayIcon(associatedWidget());
-    // We don't want to trigger a minimize if a highlight is pending, so we brutally remove the internal connection for that
-    disconnect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-        _trayIcon, SLOT(activateOrHide(QSystemTrayIcon::ActivationReason)));
-#endif
+
 #ifndef Q_OS_MAC
     connect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
         SLOT(onActivated(QSystemTrayIcon::ActivationReason)));

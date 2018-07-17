@@ -109,11 +109,7 @@ bool ChatView::event(QEvent *event)
         }
     }
 
-#if QT_VERSION >= 0x050000
-    if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type()==QTouchDevice::TouchScreen) {
-#else
-    if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->deviceType()==QTouchEvent::TouchScreen) {
-#endif
+    if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen) {
         // Enable scrolling by draging, disable selecting/clicking content
         setDragMode(QGraphicsView::ScrollHandDrag);
         setInteractive(false);
@@ -122,11 +118,7 @@ bool ChatView::event(QEvent *event)
         if (verticalScrollBar()->isVisible()) return true;
     }
 
-#if QT_VERSION >= 0x050000
     if (event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
-#else
-    if (event->type() == QEvent::TouchEnd) {
-#endif
         // End scroll and reset settings to default
         setDragMode(QGraphicsView::NoDrag);
         setInteractive(true);
@@ -149,11 +141,7 @@ bool ChatView::event(QEvent *event)
         }
         // Applying the movement happens automatically by the drag-mode
     }
-#if QT_VERSION >= 0x050000
-    if (event->type() == QEvent::Wheel || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type()==QTouchDevice::TouchScreen) || event->type() == QEvent::TouchUpdate) {
-#else
-    if (event->type() == QEvent::Wheel || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->deviceType()==QTouchEvent::TouchScreen) || event->type() == QEvent::TouchUpdate) {
-#endif
+    if (event->type() == QEvent::Wheel || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen) || event->type() == QEvent::TouchUpdate) {
         if (!verticalScrollBar()->isVisible()) {
             scene()->requestBacklog();
             return true;

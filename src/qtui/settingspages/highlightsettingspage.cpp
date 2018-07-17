@@ -79,19 +79,11 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
     ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setWhatsThis(
                 ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->toolTip());
 
-#if QT_VERSION < 0x050000
-    ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::NameColumn, QHeaderView::Stretch);
-    ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
-    ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
-#else
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::NameColumn, QHeaderView::Stretch);
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
-#endif
 
     // Information icon
     ui.localHighlightsIcon->setPixmap(icon::get("dialog-information").pixmap(16));

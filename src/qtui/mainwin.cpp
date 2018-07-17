@@ -28,15 +28,6 @@
 #include <QToolBar>
 #include <QInputDialog>
 
-#ifdef HAVE_KDE4
-#  include <KHelpMenu>
-#  include <KMenuBar>
-#  include <KShortcutsDialog>
-#  include <KStatusBar>
-#  include <KToggleFullScreenAction>
-#  include <KToolBar>
-#endif
-
 #ifdef HAVE_KF5
 #  include <KConfigWidgets/KStandardAction>
 #  include <KXmlGui/KHelpMenu>

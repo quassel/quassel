@@ -23,12 +23,7 @@
 #ifndef QT_NO_SYSTEMTRAYICON
 
 #include <QString>
-
-#ifdef HAVE_KDE4
-#  include <KSystemTrayIcon>
-#else
-#  include <QSystemTrayIcon>
-#endif
+#include <QSystemTrayIcon>
 
 #include "systemtray.h"
 
@@ -58,11 +53,7 @@ private slots:
 private:
     uint _lastMessageId {0};
 
-#ifdef HAVE_KDE4
-    KSystemTrayIcon *_trayIcon;
-#else
     QSystemTrayIcon *_trayIcon;
-#endif
 };
 
 #endif /* QT_NO_SYSTEMTRAYICON */

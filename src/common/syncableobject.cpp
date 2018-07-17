@@ -114,11 +114,7 @@ QVariantMap SyncableObject::toVariantMap()
 
         QVariant::Type variantType = QVariant::nameToType(method.typeName());
         if (variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
-#if QT_VERSION >= 0x050000
             qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.methodSignature() << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
-#else
-            qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.signature() << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
-#endif
             continue;
         }
 

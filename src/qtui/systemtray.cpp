@@ -23,12 +23,6 @@
 #include <QApplication>
 #include <QMenu>
 
-#ifdef HAVE_KDE4
-#  include <KMenu>
-#  include <KWindowInfo>
-#  include <KWindowSystem>
-#endif
-
 #include "action.h"
 #include "actioncollection.h"
 #include "client.h"
@@ -48,19 +42,9 @@ SystemTray::SystemTray(QWidget *parent)
     ActionCollection *coll = QtUi::actionCollection("General");
     _minimizeRestoreAction = new Action(tr("&Minimize"), this, this, SLOT(minimizeRestore()));
 
-#ifdef HAVE_KDE4
-    KMenu *kmenu;
-    _trayMenu = kmenu = new KMenu();
-    kmenu->addTitle(icon::get(iconName(State::Active)), "Quassel IRC");
-#else
     _trayMenu = new QMenu(associatedWidget());
-#endif
-
     _trayMenu->setTitle("Quassel IRC");
-
-#ifndef HAVE_KDE4
     _trayMenu->setAttribute(Qt::WA_Hover);
-#endif
 
     _trayMenu->addAction(coll->action("ConnectCore"));
     _trayMenu->addAction(coll->action("DisconnectCore"));
@@ -121,16 +105,6 @@ void SystemTray::setMode(Mode mode)
 {
     if (mode != _mode) {
         _mode = mode;
-#ifdef HAVE_KDE4
-        if (_trayMenu) {
-            if (mode == Mode::Legacy) {
-                _trayMenu->setWindowFlags(Qt::Popup);
-            }
-            else {
-                _trayMenu->setWindowFlags(Qt::Window);
-            }
-        }
-#endif
         emit modeChanged(mode);
     }
 }

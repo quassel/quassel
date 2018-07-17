@@ -30,13 +30,6 @@
 #  include "cipher.h"
 #endif
 
-#if QT_VERSION < 0x050000
-// QChar::LineFeed is Qt 5
-static const QChar QCharLF = QChar('\n');
-#else
-static const QChar QCharLF = QChar::LineFeed;
-#endif
-
 CoreUserInputHandler::CoreUserInputHandler(CoreNetwork *parent)
     : CoreBasicHandler(parent)
 {
@@ -457,7 +450,7 @@ void CoreUserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString 
 
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
-    QStringList messages = msg.split(QCharLF);
+    QStringList messages = msg.split(QChar::LineFeed);
 
     foreach (auto message, messages) {
         // Handle each separated message independently
@@ -532,7 +525,7 @@ void CoreUserInputHandler::handleNotice(const BufferInfo &bufferInfo, const QStr
     QList<QByteArray> params;
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
-    QStringList messages = msg.section(' ', 1).split(QCharLF);
+    QStringList messages = msg.section(' ', 1).split(QChar::LineFeed);
 
     foreach (auto message, messages) {
         // Handle each separated message independently
@@ -606,7 +599,7 @@ void CoreUserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QStri
     QString target = msg.section(' ', 0, 0);
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
-    QStringList messages = msg.section(' ', 1).split(QCharLF);
+    QStringList messages = msg.section(' ', 1).split(QChar::LineFeed);
 
     foreach (auto message, messages) {
         // Handle each separated message independently
@@ -657,7 +650,7 @@ void CoreUserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString
 
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
-    QStringList messages = msg.split(QCharLF, QString::SkipEmptyParts);
+    QStringList messages = msg.split(QChar::LineFeed, QString::SkipEmptyParts);
 
     foreach (auto message, messages) {
         // Handle each separated message independently

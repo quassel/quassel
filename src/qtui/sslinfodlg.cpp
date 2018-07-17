@@ -80,32 +80,18 @@ void SslInfoDlg::setCurrentCert(int index)
     ui.validity->setText(tr("%1 to %2").arg(cert.effectiveDate().date().toString(Qt::ISODate), cert.expiryDate().date().toString(Qt::ISODate)));
     ui.md5Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Md5)));
     ui.sha1Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Sha1)));
-#if QT_VERSION < 0x050000
-    // Qt 4 doesn't include SHA-2 hashes, so hide the row
-    ui.sha256Label->hide();
-    ui.sha256Digest->hide();
-#else
     ui.sha256Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Sha256)));
-#endif
 }
 
 // in Qt5, subjectInfo returns a QStringList(); turn this into a comma-separated string instead
 QString SslInfoDlg::subjectInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const
 {
-#if QT_VERSION < 0x050000
-    return cert.subjectInfo(subjectInfo);
-#else
     return cert.subjectInfo(subjectInfo).join(", ");
-#endif
 }
 
 
 // same here
 QString SslInfoDlg::issuerInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const
 {
-#if QT_VERSION < 0x050000
-    return cert.issuerInfo(subjectInfo);
-#else
     return cert.issuerInfo(subjectInfo).join(", ");
-#endif
 }

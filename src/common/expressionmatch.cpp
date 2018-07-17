@@ -25,12 +25,6 @@
 #include <QString>
 #include <QStringList>
 
-#if QT_VERSION >= 0x050000
-#include <QRegularExpression>
-#else
-#include <QRegExp>
-#endif
-
 #include "logmessage.h"
 
 ExpressionMatch::ExpressionMatch(const QString &expression, MatchMode mode, bool caseSensitive)
@@ -66,15 +60,7 @@ bool ExpressionMatch::match(const QString &string, bool matchEmpty) const
     // If specified, first check inverted rules
     if (_matchInvertRegExActive && _matchInvertRegEx.isValid()) {
         // Check inverted match rule
-
-        // See _matchRegEx section below for explanations of QRegExp vs. QRegularExpression
-        if (
-#if QT_VERSION >= 0x050000
-                _matchInvertRegEx.match(string).hasMatch()
-#else
-                _matchInvertRegEx.indexIn(string) != -1
-#endif
-                ) {
+        if (_matchInvertRegEx.match(string).hasMatch()) {
             // Inverted rule matched, the rest of the rule cannot match
             return false;
         }
@@ -82,17 +68,9 @@ bool ExpressionMatch::match(const QString &string, bool matchEmpty) const
 
     if (_matchRegExActive && _matchRegEx.isValid()) {
         // Check regular match rule
-    #if QT_VERSION >= 0x050000
-        // QRegularExpression does partial matching by default (exact matching requires anchoring
-        // expressions to be added)
-        // See https://doc.qt.io/qt-5/qregularexpression.html#porting-from-qregexp-exactmatch
         return _matchRegEx.match(string).hasMatch();
-    #else
-        // QRegExp partial matching is done via indexIn
-        // See https://doc.qt.io/qt-5/qregexp.html#indexIn
-        return (_matchRegEx.indexIn(string) != -1);
-    #endif
-    } else {
+    }
+    else {
         // If no valid regular rules exist, due to the isValid() check there must be valid inverted
         // rules that did not match.  Count this as properly matching (implicit wildcard).
         return true;
@@ -422,24 +400,13 @@ void ExpressionMatch::cacheRegEx()
 }
 
 
-#if QT_VERSION >= 0x050000
 QRegularExpression ExpressionMatch::regExFactory(const QString &regExString,
                                                  bool caseSensitive)
-#else
-QRegExp ExpressionMatch::regExFactory(const QString &regExString, bool caseSensitive)
-#endif
 {
     // Construct the regular expression object, setting case sensitivity as appropriate
-#if QT_VERSION >= 0x050000
-    QRegularExpression newRegEx =
-            QRegularExpression(regExString, caseSensitive ?
-                                   QRegularExpression::PatternOption::NoPatternOption
-                                 : QRegularExpression::PatternOption::CaseInsensitiveOption );
-#else
-    QRegExp newRegEx = QRegExp(regExString, caseSensitive ?
-                                   Qt::CaseSensitivity::CaseSensitive
-                                 : Qt::CaseSensitivity::CaseInsensitive);
-#endif
+    QRegularExpression newRegEx = QRegularExpression(regExString, caseSensitive ?
+                                                         QRegularExpression::PatternOption::NoPatternOption
+                                                       : QRegularExpression::PatternOption::CaseInsensitiveOption);
 
     // Check if rule is valid
     if (!newRegEx.isValid()) {
@@ -449,8 +416,8 @@ QRegExp ExpressionMatch::regExFactory(const QString &regExString, bool caseSensi
         qDebug() << "Internal regular expression component" << regExString
                  << "is invalid and will be ignored";
     }
-    // Qt 5.4 (QT_VERSION >= 0x050400) offers explicit control over when QRegularExpression objects
-    // get optimized.  By default, patterns are only optimized after some number of uses as defined
+    // Qt offers explicit control over when QRegularExpression objects get optimized.
+    // By default, patterns are only optimized after some number of uses as defined
     // within Qt internals.
     //
     // In the context of ExpressionMatch, some regular expressions might go unused, e.g. a highlight
@@ -465,10 +432,7 @@ QRegExp ExpressionMatch::regExFactory(const QString &regExString, bool caseSensi
     //
     // else {
     //     // Optimize regex now
-    // #if QT_VERSION >= 0x050400
     //     newRegEx.optimize();
-    // #endif
-    //
     // }
     //
     // NOTE: This should only be called if the expression is valid!  Apply within an "else" of the
@@ -483,11 +447,7 @@ QRegExp ExpressionMatch::regExFactory(const QString &regExString, bool caseSensi
 QString ExpressionMatch::regExEscape(const QString &phrase)
 {
     // Escape the given phrase of any special regular expression characters
-#if QT_VERSION >= 0x050000
     return QRegularExpression::escape(phrase);
-#else
-    return QRegExp::escape(phrase);
-#endif
 }
 
 
