@@ -241,15 +241,6 @@ if (BUILD_GUI)
         PURPOSE     "Required for audio notifications"
     )
 
-    if (NOT Qt5Multimedia_FOUND)
-        find_package(Phonon4Qt5 QUIET)
-        set_package_properties(Phonon4Qt5 PROPERTIES TYPE RECOMMENDED
-            URL "https://projects.kde.org/projects/kdesupport/phonon"
-            DESCRIPTION "a multimedia abstraction library"
-            PURPOSE     "Required for audio notifications"
-        )
-    endif()
-
     find_package(LibsnoreQt5 0.7.0 QUIET)
     set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
         URL "https://projects.kde.org/projects/playground/libs/snorenotify"
@@ -264,7 +255,6 @@ if (BUILD_GUI)
             PURPOSE     "Enable support for the snorenotify framework"
         )
     endif()
-
 
     if (WITH_WEBKIT)
         find_package(Qt5WebKit QUIET)

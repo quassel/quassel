@@ -107,9 +107,6 @@
 #  ifdef HAVE_QTMULTIMEDIA
 #    include "qtmultimedianotificationbackend.h"
 #  endif
-#  ifdef HAVE_PHONON
-#    include "phononnotificationbackend.h"
-#  endif
 #  include "systraynotificationbackend.h"
 #  include "taskbarnotificationbackend.h"
 #else /* HAVE_KDE */
@@ -252,9 +249,6 @@ void MainWin::init()
 #ifndef HAVE_KDE
 #  ifdef HAVE_QTMULTIMEDIA
     QtUi::registerNotificationBackend(new QtMultimediaNotificationBackend(this));
-#  endif
-#  ifdef HAVE_PHONON
-    QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
 #  endif
     QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
 #else /* HAVE_KDE */
