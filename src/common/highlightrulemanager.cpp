@@ -166,13 +166,22 @@ bool HighlightRuleManager::match(const QString &msgContents,
             continue;
         }
 
-        QRegExp rx;
-        if (rule.isRegEx) {
-            rx = QRegExp(rule.name, rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+        bool nameMatch = false;
+        if (rule.name.isEmpty()) {
+            // Empty rule, matches any message
+            nameMatch = true;
         } else {
-            rx = QRegExp("(^|\\W)" + QRegExp::escape(rule.name) + "(\\W|$)", rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+            // Check according to specified rule
+            QRegExp rx;
+            if (rule.isRegEx) {
+                rx = QRegExp(rule.name,
+                             rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+            } else {
+                rx = QRegExp("(^|\\W)" + QRegExp::escape(rule.name) + "(\\W|$)",
+                             rule.isCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+            }
+            nameMatch = (rx.indexIn(stripFormatCodes(msgContents)) >= 0);
         }
-        bool nameMatch = (rx.indexIn(stripFormatCodes(msgContents)) >= 0);
 
         bool senderMatch;
         if (rule.sender.isEmpty()) {
