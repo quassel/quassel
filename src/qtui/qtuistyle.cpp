@@ -215,15 +215,16 @@ QString QtUiStyle::color(const QString &key, UiSettings &settings, const QColor 
 
 QString QtUiStyle::fontDescription(const QFont &font) const
 {
-    QString desc = "font: ";
-    if (font.italic())
-        desc += "italic ";
-    if (font.bold())
-        desc += "bold ";
-    if (!font.italic() && !font.bold())
-        desc += "normal ";
-    desc += QString("%1pt \"%2\"").arg(font.pointSize()).arg(font.family());
-    return desc;
+    QFont::Style style = font.style();
+    int weight = font.weight();
+
+    return QString("font: %1 %2 %3pt \"%4\"")
+        .arg(style == QFont::StyleItalic  ? "italic"  :
+             style == QFont::StyleOblique ? "oblique" :
+                                            "normal")
+        .arg(100 * qBound(1, (weight * 8 + 50) / 100, 9))
+        .arg(font.pointSize())
+        .arg(font.family());
 }
 
 
