@@ -721,13 +721,19 @@ void QssParser::parseFont(const QString &value, QTextCharFormat *format)
         return;
     }
     format->setFontItalic(false);
+    format->setFontUnderline(false);
+    format->setFontStrikeOut(false);
     format->setFontWeight(QFont::Normal);
     QStringList proplist = rx.cap(1).split(' ', QString::SkipEmptyParts);
     foreach(QString prop, proplist) {
-        if (prop == "italic")
+        if (prop == "normal")
+            ; // pass
+        else if (prop == "italic")
             format->setFontItalic(true);
         else if (prop == "underline")
             format->setFontUnderline(true);
+        else if (prop == "strikethrough")
+            format->setFontStrikeOut(true);
         else if(prop == "oblique")
             // Oblique is not a property supported by QTextCharFormat
             format->setFontItalic(true);
