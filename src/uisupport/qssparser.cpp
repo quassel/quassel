@@ -293,6 +293,8 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
                     label |= MessageLabel::Highlight;
                 else if (condValue == "selected")
                     label |= MessageLabel::Selected;
+                else if (condValue == "hovered")
+                    label |= MessageLabel::Hovered;
                 else {
                     qWarning() << Q_FUNC_INFO << tr("Invalid message label: %1").arg(condValue);
                     return invalid;

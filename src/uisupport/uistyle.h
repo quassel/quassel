@@ -105,7 +105,9 @@ public:
         None            = 0x00000000,
         OwnMsg          = 0x00000001,
         Highlight       = 0x00000002,
-        Selected        = 0x00000004 // must be last!
+        Selected        = 0x00000004,
+        Hovered         = 0x00000008,
+        Last            = Hovered
     };
 
     enum class ItemFormatType : quint32 {
