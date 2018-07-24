@@ -25,6 +25,10 @@ ChatLine[label="selected"] {
   allow-background-override: false;
 }
 
+ChatLine[label="hovered"] {
+  font-style: underline;
+}
+
 // ChatLine::sender[sender="self"] {
 //   font-style: italic;
 // }

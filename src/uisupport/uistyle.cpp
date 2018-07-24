@@ -475,7 +475,7 @@ QTextCharFormat UiStyle::format(const Format &format, MessageLabel label) const
 
     // Merge all formats except mIRC and extended colors
     mergeFormat(charFormat, format, label & 0xffff0000);  // keep nickhash in label
-    for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Selected); mask <<= 1) {
+    for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Last); mask <<= 1) {
         if (static_cast<quint32>(label) & mask) {
             mergeFormat(charFormat, format, label & (mask | 0xffff0000));
         }
@@ -485,7 +485,7 @@ QTextCharFormat UiStyle::format(const Format &format, MessageLabel label) const
     // unless the AllowForegroundOverride or AllowBackgroundOverride properties are set (via stylesheet).
     if (_allowMircColors) {
         mergeColors(charFormat, format, MessageLabel::None);
-        for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Selected); mask <<= 1) {
+        for (quint32 mask = 0x00000001; mask <= static_cast<quint32>(MessageLabel::Last); mask <<= 1) {
             if (static_cast<quint32>(label) & mask) {
                 mergeColors(charFormat, format, label & mask);
             }
