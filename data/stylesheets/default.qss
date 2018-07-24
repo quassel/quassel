@@ -14,6 +14,7 @@ ChatLine {
 ChatLine[label="highlight"] {
   foreground: black;
   background: #ff8000;
+  allow-foreground-override: false;
   allow-background-override: false;
 }
 
