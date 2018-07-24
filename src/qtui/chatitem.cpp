@@ -20,6 +20,9 @@
 
 #include "chatitem.h"
 
+#include <algorithm>
+#include <iterator>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
@@ -286,36 +289,92 @@ void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, quint16 start, quint1
 
 QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
 {
-    return selectionFormats();
-}
-
-
-QVector<QTextLayout::FormatRange> ChatItem::selectionFormats() const
-{
-    if (!hasSelection())
-        return QVector<QTextLayout::FormatRange>();
-
-    quint16 start, end;
-    if (_selectionMode == FullSelection) {
-        start = 0;
-        end = data(MessageModel::DisplayRole).toString().length();
-    }
-    else {
-        start = qMin(_selectionStart, _selectionEnd);
-        end = qMax(_selectionStart, _selectionEnd);
+    // Calculate formats to overlay (only) if there's a selection, and/or a hovered clickable
+    if (!hasSelection() && !hasActiveClickable()) {
+        return {};
     }
 
-    UiStyle::FormatList fmtList = formatList();
+    using Label = UiStyle::MessageLabel;
+    using Format = UiStyle::Format;
 
-    while (fmtList.size() > 1 && fmtList.at(1).first <= start)
-        fmtList.erase(fmtList.begin());
+    Label itemLabel = data(ChatLineModel::MsgLabelRole).value<Label>();
+    const auto &fmtList = formatList();
 
-    fmtList.front().first = start;
+    struct LabelFormat {
+        quint16 offset;
+        Format format;
+        Label label;
+    };
 
-    while (fmtList.size() > 1 && fmtList.back().first >= end)
-        fmtList.pop_back();
+    // Transform formatList() into an extended list of LabelFormats
+    std::vector<LabelFormat> labelFmtList;
+    std::transform(fmtList.cbegin(), fmtList.cend(), std::back_inserter(labelFmtList), [itemLabel](const std::pair<quint16, Format> &f) {
+        return LabelFormat{f.first, f.second, itemLabel};
+    });
+    // Append dummy element to avoid special-casing handling the last real format
+    labelFmtList.push_back(LabelFormat{quint16(data(MessageModel::DisplayRole).toString().length()), {}, itemLabel});
 
-    return QtUi::style()->toTextLayoutList(fmtList, end, data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>()|UiStyle::MessageLabel::Selected).toVector();
+    // Apply the given label to the given range in the format list, splitting formats as necessary
+    auto applyLabel = [&labelFmtList](quint16 start, quint16 end, Label label) {
+        size_t i = 0;
+
+        // Skip unaffected formats
+        for (; i < labelFmtList.size() - 1; ++i) {
+            if (labelFmtList[i+1].offset > start)
+                break;
+        }
+        // Range start doesn't align; split affected format and let the index point to the newly inserted copy
+        if (labelFmtList[i].offset < start) {
+            labelFmtList.insert(labelFmtList.begin() + i, labelFmtList[i]);
+            labelFmtList[++i].offset = start;
+        }
+
+        // Apply label to formats fully affected
+        for (; i < labelFmtList.size() - 1; ++i) {
+            if (labelFmtList[i+1].offset <= end) {
+                labelFmtList[i].label |= label;
+                continue;
+            }
+            // Last affected format, split if end of range doesn't align
+            if (labelFmtList[i+1].offset > end) {
+                labelFmtList.insert(labelFmtList.begin() + i, labelFmtList[i]);
+                labelFmtList[i].label |= label;
+                labelFmtList[i+1].offset = end;
+            }
+            break;
+        }
+    };
+
+    // Apply selection label
+    if (hasSelection()) {
+        quint16 start, end;
+        if (_selectionMode == FullSelection) {
+            start = 0;
+            end = data(MessageModel::DisplayRole).toString().length();
+        }
+        else {
+            start = qMin(_selectionStart, _selectionEnd);
+            end = qMax(_selectionStart, _selectionEnd);
+        }
+        applyLabel(start, end, Label::Selected);
+    }
+
+    // Apply hovered label
+    if (hasActiveClickable()) {
+        applyLabel(activeClickableRange().first, activeClickableRange().second, Label::Hovered);
+    }
+
+    // Add all formats that have an extra label to the additionalFormats list
+    QList<QTextLayout::FormatRange> additionalFormats;
+    for (size_t i = 0; i < labelFmtList.size() - 1; ++i) {
+        if (labelFmtList[i].label != itemLabel) {
+            additionalFormats << QtUi::style()->toTextLayoutList({std::make_pair(labelFmtList[i].offset, labelFmtList[i].format)},
+                                                                 labelFmtList[i+1].offset,
+                                                                 labelFmtList[i].label);
+        }
+    }
+
+    return additionalFormats.toVector();
 }
 
 
@@ -384,6 +443,18 @@ bool ChatItem::isPosOverSelection(const QPointF &pos) const
         return cursor >= qMin(_selectionStart, _selectionEnd) && cursor <= qMax(_selectionStart, _selectionEnd);
     }
     return false;
+}
+
+
+bool ChatItem::hasActiveClickable() const
+{
+    return false;
+}
+
+
+std::pair<quint16, quint16> ChatItem::activeClickableRange() const
+{
+    return {};
 }
 
 
@@ -663,6 +734,22 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const
 }
 
 
+bool ContentsChatItem::hasActiveClickable() const
+{
+    return privateData()->currentClickable.isValid();
+}
+
+
+std::pair<quint16, quint16> ContentsChatItem::activeClickableRange() const
+{
+    const auto &clickable = privateData()->currentClickable;
+    if (clickable.isValid()) {
+        return {clickable.start(), clickable.start() + clickable.length()};
+    }
+    return {};
+}
+
+
 Clickable ContentsChatItem::clickableAt(const QPointF &pos) const
 {
     return privateData()->clickables.atCursorPos(posToCursor(pos));
@@ -679,22 +766,6 @@ UiStyle::FormatList ContentsChatItem::formatList() const
         }
     }
     return fmtList;
-}
-
-
-QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const
-{
-    QVector<QTextLayout::FormatRange> fmt = ChatItem::additionalFormats();
-    // mark a clickable if hovered upon
-    if (privateData()->currentClickable.isValid()) {
-        Clickable click = privateData()->currentClickable;
-        QTextLayout::FormatRange f;
-        f.start = click.start();
-        f.length = click.length();
-        f.format.setFontUnderline(true);
-        fmt.append(f);
-    }
-    return fmt;
 }
 
 
