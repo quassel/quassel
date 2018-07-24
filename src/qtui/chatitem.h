@@ -112,7 +112,6 @@ protected:
     virtual UiStyle::FormatList formatList() const;
 
     void paintBackground(QPainter *);
-    QVector<QTextLayout::FormatRange> selectionFormats() const;
     virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
     void overlayFormat(UiStyle::FormatList &fmtList, quint16 start, quint16 end, UiStyle::FormatType overlayFmt) const;
 
@@ -123,6 +122,9 @@ protected:
     inline SelectionMode selectionMode() const { return _selectionMode; }
     inline void setSelectionMode(SelectionMode mode) { _selectionMode = mode; }
     void setSelection(SelectionMode mode, qint16 selectionStart, qint16 selectionEnd);
+
+    virtual bool hasActiveClickable() const;
+    virtual std::pair<quint16, quint16> activeClickableRange() const;
 
     qint16 posToCursor(const QPointF &pos) const;
 
@@ -206,10 +208,11 @@ protected:
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
     virtual void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode);
 
+    virtual bool hasActiveClickable() const;
+    virtual std::pair<quint16, quint16> activeClickableRange() const;
+
     virtual void addActionsToMenu(QMenu *menu, const QPointF &itemPos);
     virtual void copyLinkToClipboard();
-
-    virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
     virtual void initLayout(QTextLayout *layout) const;
     virtual void doLayout(QTextLayout *layout) const;
