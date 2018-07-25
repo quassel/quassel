@@ -23,13 +23,6 @@
 #include <QTcpSocket>
 #include <QTimer>
 
-#ifdef HAVE_ZLIB
-#    include <zlib.h>
-#else
-#    define MINIZ_HEADER_FILE_ONLY
-#    include "../../3rdparty/miniz/miniz.c"
-#endif
-
 const int maxBufferSize = 64 * 1024 * 1024; // protect us from zip bombs
 const int ioBufferSize = 64 * 1024;         // chunk size for inflate/deflate; should not be too large as we preallocate that space!
 

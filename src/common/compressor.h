@@ -18,18 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COMPRESSOR_H
-#define COMPRESSOR_H
+#pragma once
+
+#include <zlib.h>
 
 #include <QObject>
 
 class QTcpSocket;
-
-#ifdef HAVE_ZLIB
-    typedef struct z_stream_s *z_streamp;
-#else
-    typedef struct mz_stream_s *z_streamp;
-#endif
 
 class Compressor : public QObject
 {
@@ -90,5 +85,3 @@ private:
     z_streamp _inflater;
     z_streamp _deflater;
 };
-
-#endif
