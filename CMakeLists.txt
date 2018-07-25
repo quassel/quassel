@@ -42,7 +42,7 @@ if (USE_CCACHE)
 endif()
 
 # Set up project
-project(Quassel C CXX)
+project(Quassel CXX)
 
 # General conveniences
 set(CMAKE_AUTOMOC ON)
@@ -51,7 +51,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Include various CMake modules
 include(CMakePushCheckState)
 include(CheckFunctionExists)
-include(CheckIncludeFile)
+include(CheckIncludeFileCXX)
 include(CheckCXXSourceCompiles)
 include(CMakeDependentOption)
 include(FeatureSummary)
@@ -490,7 +490,7 @@ add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
 
 # Check for syslog support
 if (NOT WIN32)
-    check_include_file(syslog.h HAVE_SYSLOG)
+    check_include_file_cxx(syslog.h HAVE_SYSLOG)
     add_feature_info("syslog.h" HAVE_SYSLOG "Provide support for logging to the syslog")
 endif()
 
