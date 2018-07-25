@@ -385,14 +385,12 @@ endif()
 
 # Non-Qt-based packages
 
-# zlib for compression, however we can always fall back to miniz
-find_package(ZLIB QUIET)
-set_package_properties(ZLIB PROPERTIES TYPE RECOMMENDED
+find_package(ZLIB REQUIRED)
+set_package_properties(ZLIB PROPERTIES TYPE REQUIRED
     URL "http://www.zlib.net"
     DESCRIPTION "a popular compression library"
-    PURPOSE     "Use the most common library for protocol compression, instead of the bundled miniz implementation"
+    PURPOSE     "Used for protocol compression"
 )
-
 
 if (NOT WIN32)
     # Execinfo is needed for generating backtraces
@@ -484,13 +482,6 @@ include(QuasselInstallDirs)
 
 # Various config-dependent checks and settings
 #####################################################################
-
-if (NOT ZLIB_FOUND)
-    message(STATUS "zlib NOT found, using bundled miniz for compression")
-    if (${CMAKE_SIZEOF_VOID_P} EQUAL 4)
-        message(STATUS "WARNING: This may be slow on 32 bit systems!")
-    endif()
-endif()
 
 if (HAVE_SSL)
     add_definitions(-DHAVE_SSL)

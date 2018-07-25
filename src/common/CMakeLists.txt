@@ -62,13 +62,6 @@ if (QCA2-QT5_FOUND)
     set(SOURCES ${SOURCES} keyevent.cpp)
 endif()
 
-if (ZLIB_FOUND)
-    add_definitions(-DHAVE_ZLIB)
-    include_directories(${ZLIB_INCLUDE_DIRS})
-else()
-    set(SOURCES ${SOURCES} ../../3rdparty/miniz/miniz.c)
-endif()
-
 if (HAVE_SYSLOG)
     add_definitions(-DHAVE_SYSLOG)
 endif()
@@ -96,11 +89,7 @@ if (APPLE)
     target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
 endif()
 
-target_link_libraries(mod_common ${CMAKE_DL_LIBS} ${EXECINFO_LIBRARIES})
-
-if(ZLIB_FOUND)
-    target_link_libraries(mod_common ${ZLIB_LIBRARIES})
-endif()
+target_link_libraries(mod_common ${CMAKE_DL_LIBS} ${EXECINFO_LIBRARIES} ZLIB::ZLIB)
 
 # This is needed so translations are generated before trying to build the qrc.
 # Should probably find a nicer solution with proper dependencies between the involved files, though...
