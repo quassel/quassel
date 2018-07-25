@@ -22,10 +22,6 @@
 #include <QMessageBox>
 #include <QScrollBar>
 
-#ifdef HAVE_SONNET
-#  include <Sonnet/SpellCheckDecorator>
-#endif
-
 #include "actioncollection.h"
 #include "bufferview.h"
 #include "graphicalui.h"
@@ -54,8 +50,9 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
     enableFindReplace(false);
 #endif
 
-#ifdef HAVE_SONNET
-    new Sonnet::SpellCheckDecorator(this);
+#if defined HAVE_SONNET && !defined HAVE_KDE
+    _spellCheckDecorator = new Sonnet::SpellCheckDecorator(this);
+    highlighter()->setActive(highlighter()->checkerEnabledByDefault());
 #endif
 
     setMode(SingleLine);
@@ -90,14 +87,38 @@ MultiLineEdit::~MultiLineEdit()
 {
 }
 
-#if defined HAVE_KF5 || defined HAVE_KDE4
-void MultiLineEdit::createHighlighter()
+
+#if defined HAVE_SONNET && !defined HAVE_KDE
+Sonnet::Highlighter *MultiLineEdit::highlighter() const
 {
-    KTextEdit::createHighlighter();
-    if (highlighter())
-        highlighter()->setAutomatic(false);
+    return _spellCheckDecorator->highlighter();
 }
+
+
+void MultiLineEdit::setSpellCheckEnabled(bool enabled)
+{
+    highlighter()->setActive(enabled);
+    if (enabled) {
+        highlighter()->slotRehighlight();
+    }
+}
+
+void MultiLineEdit::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu *menu = createStandardContextMenu();
+    menu->addSeparator();
+
+    auto action = menu->addAction(tr("Auto Spell Check"));
+    action->setCheckable(true);
+    action->setChecked(highlighter()->isActive());
+    connect(action, SIGNAL(toggled(bool)), this, SLOT(setSpellCheckEnabled(bool)));
+
+    menu->exec(event->globalPos());
+    delete menu;
+}
+
 #endif
+
 
 void MultiLineEdit::setCustomFont(const QFont &font)
 {
@@ -226,16 +247,6 @@ QSize MultiLineEdit::minimumSizeHint() const
 void MultiLineEdit::setEmacsMode(bool enable)
 {
     _emacsMode = enable;
-}
-
-
-void MultiLineEdit::setSpellCheckEnabled(bool enable)
-{
-#ifdef HAVE_KDE
-    setCheckSpellingEnabled(enable);
-#else
-    Q_UNUSED(enable)
-#endif
 }
 
 

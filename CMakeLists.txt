@@ -350,7 +350,7 @@ if (USE_QT5)
         if (ECM_FOUND)
             list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
             if (WITH_KDE)
-                find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig TextWidgets WidgetsAddons XmlGui QUIET)
+                find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui QUIET REQUIRED)
                 set_package_properties(KF5 PROPERTIES TYPE REQUIRED
                     URL "http://www.kde.org"
                     DESCRIPTION "KDE Frameworks"

@@ -118,11 +118,6 @@ InputWidget::InputWidget(QWidget *parent)
 
     UiSettings s("InputWidget");
 
-#ifdef HAVE_KDE4
-    s.notify("EnableSpellCheck", this, SLOT(setEnableSpellCheck(QVariant)));
-    setEnableSpellCheck(s.value("EnableSpellCheck", false));
-#endif
-
     s.notify("EnableEmacsMode", this, SLOT(setEnableEmacsMode(QVariant)));
     setEnableEmacsMode(s.value("EnableEmacsMode", false));
 
@@ -186,12 +181,6 @@ void InputWidget::setCustomFont(const QVariant &v)
     font.setUnderline(false);
     font.setStrikeOut(false);
     ui.inputEdit->setCustomFont(font);
-}
-
-
-void InputWidget::setEnableSpellCheck(const QVariant &v)
-{
-    ui.inputEdit->setSpellCheckEnabled(v.toBool());
 }
 
 

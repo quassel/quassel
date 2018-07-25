@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
+    <width>512</width>
     <height>514</height>
    </rect>
   </property>
@@ -43,19 +43,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="enableSpellCheck">
-     <property name="text">
-      <string>Enable spell check</string>
-     </property>
-     <property name="settingsKey" stdset="0">
-      <string notr="true">EnableSpellCheck</string>
-     </property>
-     <property name="defaultValue" stdset="0">
-      <bool>false</bool>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="enablePerBufferHistory">
@@ -140,7 +127,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Multi-Line Editing</string>
+      <string>&amp;Multi-Line Editing</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -281,10 +268,10 @@
            <bool>false</bool>
           </property>
           <property name="settingsKey" stdset="0">
-            <string notr="true">/TabCompletion/AddSpaceMidSentence</string>
+           <string notr="true">/TabCompletion/AddSpaceMidSentence</string>
           </property>
           <property name="defaultValue" stdset="0">
-            <bool>false</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -331,7 +318,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>customFont</tabstop>
-  <tabstop>enableSpellCheck</tabstop>
   <tabstop>showNickSelector</tabstop>
   <tabstop>groupBox</tabstop>
   <tabstop>maxNumLines</tabstop>

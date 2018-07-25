@@ -35,6 +35,12 @@
 #  define MultiLineEditParent QTextEdit
 #endif
 
+#if defined HAVE_SONNET && !defined HAVE_KDE
+#  include <QContextMenuEvent>
+#  include <Sonnet/Highlighter>
+#  include <Sonnet/SpellCheckDecorator>
+#endif
+
 class MultiLineEdit : public MultiLineEditParent
 {
     Q_OBJECT
@@ -74,9 +80,6 @@ public:
     inline bool emacsMode() const { return _emacsMode; }
 
     void addCompletionSpace();
-#if defined HAVE_KF5 || defined HAVE_KDE4
-    void createHighlighter() override;
-#endif
 
 public slots:
     void setMode(Mode mode);
@@ -84,7 +87,6 @@ public slots:
     void setMaxHeight(int numLines);
     void setEmacsMode(bool enable = true);
     void setScrollBarsEnabled(bool enable = true);
-    void setSpellCheckEnabled(bool enable = true);
     void setPasteProtectionEnabled(bool enable = true, QWidget *msgBoxParent = 0);
     void setLineWrapEnabled(bool enable = false);
 
@@ -101,6 +103,10 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
+#if defined HAVE_SONNET && !defined HAVE_KDE
+    void contextMenuEvent(QContextMenuEvent *event) override;
+#endif
+
 private slots:
     void on_returnPressed();
     void on_returnPressed(QString text);
@@ -114,6 +120,12 @@ private slots:
     QString convertRichtextToMircCodes();
     QString convertMircCodesToHtml(const QString &text);
     bool mircCodesChanged(QTextCursor &cursor, QTextCursor &peekcursor);
+
+private:
+    void reset();
+    void showHistoryEntry();
+    void updateScrollBars();
+    void updateSizeHint();
 
 private:
     QStringList _history;
@@ -133,10 +145,16 @@ private:
 
     QMap<QString, QString> _mircColorMap;
 
-    void reset();
-    void showHistoryEntry();
-    void updateScrollBars();
-    void updateSizeHint();
+#if defined HAVE_SONNET && !defined HAVE_KDE
+    // This member function is provided by KTextEdit
+    Sonnet::Highlighter *highlighter() const;
+
+private slots:
+    void setSpellCheckEnabled(bool enabled);
+
+private:
+    Sonnet::SpellCheckDecorator *_spellCheckDecorator{nullptr};
+#endif
 };
 
 
