@@ -32,7 +32,7 @@ fairly recent compiler:
 - Visual C++ 2015 (available for Windows™), or
 - any other compiler with decent C++11 support
 
-Furthermore, CMake 2.8.9 or later is required (2.8.12 for KDE Frameworks).
+Furthermore, CMake 3.5 or later is required.
 
 As Quassel is a Qt application, you need the Qt SDK, version 5.5 or higher.
 

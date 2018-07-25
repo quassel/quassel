@@ -6,6 +6,8 @@
 # General setup
 #####################################################################
 
+cmake_minimum_required(VERSION 3.5)
+
 # Versions
 set(QUASSEL_MAJOR  0)
 set(QUASSEL_MINOR 13)
@@ -143,12 +145,6 @@ option(WITH_LDAP "Enable LDAP authentication support if present on system" ON)
 
 # Setup CMake
 #####################################################################
-
-if (WITH_KDE)
-    cmake_minimum_required(VERSION 2.8.12)
-else()
-    cmake_minimum_required(VERSION 2.8.9)
-endif()
 
 # Setting COMPILE_DEFINITIONS_<CONFIG> is deprecated since CMake 3.0 in favor of generator expressions.
 # These have existed since CMake 2.8.10; until we depend on that, we have to explicitly enable the old policy.
