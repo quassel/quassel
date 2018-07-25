@@ -24,10 +24,5 @@ InputWidgetSettingsPage::InputWidgetSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Input Widget"), parent)
 {
     ui.setupUi(this);
-
-#ifndef HAVE_KDE4
-    ui.enableSpellCheck->hide();
-#endif
-
     initAutoWidgets();
 }

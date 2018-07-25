@@ -62,7 +62,9 @@ endif()
 
 if (WITH_KF5)
     target_link_libraries(mod_uisupport KF5::CoreAddons KF5::TextWidgets KF5::XmlGui)
-elseif (KF5Sonnet_FOUND)
+endif()
+
+if (KF5Sonnet_FOUND)
     add_definitions(-DHAVE_SONNET)
     target_link_libraries(mod_uisupport KF5::SonnetUi)
 endif()
