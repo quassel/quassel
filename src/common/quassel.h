@@ -218,14 +218,6 @@ public slots:
 signals:
     void messageLogged(const QDateTime &timeStamp, const QString &msg);
 
-protected:
-    static void setDataDirPaths(const QStringList &paths);
-    static QStringList findDataDirPaths();
-
-    friend class CoreApplication;
-    friend class QtUiApplication;
-    friend class MonolithicApplication;
-
 private:
     void setupEnvironment();
     void registerMetaTypes();

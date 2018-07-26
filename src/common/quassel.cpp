@@ -416,22 +416,13 @@ QString Quassel::configDirPath()
 }
 
 
-void Quassel::setDataDirPaths(const QStringList &paths) {
-    instance()->_dataDirPaths = paths;
-}
-
-
 QStringList Quassel::dataDirPaths()
 {
-    return instance()->_dataDirPaths;
-}
+    if (!instance()->_dataDirPaths.isEmpty())
+        return instance()->_dataDirPaths;
 
-
-QStringList Quassel::findDataDirPaths()
-{
-    // TODO Qt5
-    // We don't use QStandardPaths for now, as we still need to provide fallbacks for Qt4 and
-    // want to stay consistent.
+    // TODO: Migrate to QStandardPaths (will require moving of the sqlite database,
+    //       or a fallback for it being in the config dir)
 
     QStringList dataDirNames;
 #ifdef Q_OS_WIN
@@ -485,6 +476,7 @@ QStringList Quassel::findDataDirPaths()
 
     dataDirNames.removeDuplicates();
 
+    instance()->_dataDirPaths = dataDirNames;
     return dataDirNames;
 }
 

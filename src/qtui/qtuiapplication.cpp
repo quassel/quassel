@@ -35,8 +35,6 @@
 QtUiApplication::QtUiApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 {
-    Quassel::setDataDirPaths(Quassel::findDataDirPaths());
-
     connect(this, &QGuiApplication::commitDataRequest, this, &QtUiApplication::commitData, Qt::DirectConnection);
     connect(this, &QGuiApplication::saveStateRequest, this, &QtUiApplication::saveState, Qt::DirectConnection);
 
