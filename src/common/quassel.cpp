@@ -70,6 +70,9 @@ void Quassel::init(RunMode runMode)
     setupEnvironment();
     registerMetaTypes();
 
+    // Initial translation (may be overridden in UI settings)
+    loadTranslation(QLocale::system());
+
     Network::setDefaultCodecForServer("UTF-8");
     Network::setDefaultCodecForEncoding("UTF-8");
     Network::setDefaultCodecForDecoding("ISO-8859-15");
@@ -536,11 +539,9 @@ void Quassel::loadTranslation(const QLocale &locale)
 
     qtTranslator = new QTranslator(qApp);
     qtTranslator->setObjectName("QtTr");
-    qApp->installTranslator(qtTranslator);
 
     quasselTranslator = new QTranslator(qApp);
     quasselTranslator->setObjectName("QuasselTr");
-    qApp->installTranslator(quasselTranslator);
 
 #ifndef Q_OS_MAC
     bool success = qtTranslator->load(locale, QString("qt_"), translationDirPath());
@@ -553,6 +554,9 @@ void Quassel::loadTranslation(const QLocale &locale)
         qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     quasselTranslator->load(QString("%1").arg(locale.name()), translationDirPath());
 #endif
+
+    qApp->installTranslator(quasselTranslator);
+    qApp->installTranslator(qtTranslator);
 }
 
 

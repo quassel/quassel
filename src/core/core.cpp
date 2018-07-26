@@ -91,10 +91,6 @@ void Core::init()
 {
     _startTime = QDateTime::currentDateTime().toUTC(); // for uptime :)
 
-    if (Quassel::runMode() == Quassel::RunMode::CoreOnly) {
-        Quassel::loadTranslation(QLocale::system());
-    }
-
     // check settings version
     // so far, we only have 1
     CoreSettings s;
