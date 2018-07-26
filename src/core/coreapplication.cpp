@@ -23,7 +23,6 @@
 CoreApplication::CoreApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv)
 {
-    Quassel::setRunMode(Quassel::CoreOnly);
     Quassel::registerQuitHandler([this]() {
         connect(_core.get(), SIGNAL(shutdownComplete()), this, SLOT(onShutdownComplete()));
         _core->shutdown();
@@ -33,10 +32,6 @@ CoreApplication::CoreApplication(int &argc, char **argv)
 
 void CoreApplication::init()
 {
-    if (!Quassel::init()) {
-        throw ExitException{EXIT_FAILURE, tr("Could not initialize Quassel!")};
-    }
-
     _core.reset(new Core{}); // FIXME C++14: std::make_unique
     _core->init();
 }

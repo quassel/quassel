@@ -36,7 +36,6 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 {
     Quassel::setDataDirPaths(Quassel::findDataDirPaths());
-    Quassel::setRunMode(Quassel::ClientOnly);
 
     connect(this, &QGuiApplication::commitDataRequest, this, &QtUiApplication::commitData, Qt::DirectConnection);
     connect(this, &QGuiApplication::saveStateRequest, this, &QtUiApplication::saveState, Qt::DirectConnection);
@@ -49,10 +48,6 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 
 void QtUiApplication::init()
 {
-    if (!Quassel::init()) {
-        throw ExitException{EXIT_FAILURE, tr("Could not initialize Quassel!")};
-    }
-
     // Settings upgrade/downgrade handling
     if (!migrateSettings()) {
         throw ExitException{EXIT_FAILURE, tr("Could not load or upgrade client settings!")};

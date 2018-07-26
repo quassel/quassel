@@ -60,18 +60,15 @@ Quassel::Quassel()
 }
 
 
-bool Quassel::init()
+void Quassel::init(RunMode runMode)
 {
-    if (instance()->_initialized)
-        return true;  // allow multiple invocations because of MonolithicApplication
+    _runMode = runMode;
 
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
-    instance()->setupSignalHandling();
-    instance()->setupEnvironment();
-    instance()->registerMetaTypes();
-
-    instance()->_initialized = true;
+    setupSignalHandling();
+    setupEnvironment();
+    registerMetaTypes();
 
     Network::setDefaultCodecForServer("UTF-8");
     Network::setDefaultCodecForEncoding("UTF-8");
@@ -79,16 +76,16 @@ bool Quassel::init()
 
     if (isOptionSet("help")) {
         instance()->_cliParser->usage();
-        return false;
+        return;
     }
 
     if (isOptionSet("version")) {
         std::cout << qPrintable("Quassel IRC: " + Quassel::buildInfo().plainVersionString) << std::endl;
-        return false;
+        return;
     }
 
     // Don't keep a debug log on the core
-    return instance()->logger()->setup(runMode() != RunMode::CoreOnly);
+    logger()->setup(runMode != RunMode::CoreOnly);
 }
 
 
@@ -332,12 +329,6 @@ void Quassel::handleSignal(AbstractSignalWatcher::Action action)
 
 Quassel::RunMode Quassel::runMode() {
     return instance()->_runMode;
-}
-
-
-void Quassel::setRunMode(RunMode runMode)
-{
-    instance()->_runMode = runMode;
 }
 
 

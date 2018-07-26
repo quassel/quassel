@@ -31,6 +31,7 @@
 
 #include "logger.h"
 #include "quassel.h"
+#include "types.h"
 
 namespace {
 
@@ -74,7 +75,7 @@ std::vector<Logger::LogEntry> Logger::messages() const
 }
 
 
-bool Logger::setup(bool keepMessages)
+void Logger::setup(bool keepMessages)
 {
     _keepMessages = keepMessages;
 
@@ -90,8 +91,7 @@ bool Logger::setup(bool keepMessages)
         else if (level == "error")
             _outputLevel = LogLevel::Error;
         else {
-            qCritical() << qPrintable(tr("Invalid log level %1; supported are Debug|Info|Warning|Error").arg(level));
-            return false;
+            throw ExitException{EXIT_FAILURE, qPrintable(tr("Invalid log level %1; supported are Debug|Info|Warning|Error").arg(level))};
         }
     }
 
@@ -121,8 +121,6 @@ bool Logger::setup(bool keepMessages)
     if (!_keepMessages) {
         _messages.clear();
     }
-
-    return true;
 }
 
 

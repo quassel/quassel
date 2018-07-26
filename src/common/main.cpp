@@ -64,25 +64,6 @@ Q_IMPORT_PLUGIN(qgif)
 
 int main(int argc, char **argv)
 {
-#ifdef HAVE_UMASK
-    umask(S_IRWXG | S_IRWXO);
-#endif
-
-    // Instantiate early, so log messages are handled
-    Quassel quassel;
-
-    Quassel::setupBuildInfo();
-    QCoreApplication::setApplicationName(Quassel::buildInfo().applicationName);
-    QCoreApplication::setApplicationVersion(Quassel::buildInfo().plainVersionString);
-    QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
-    QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
-
-    //Setup the High-DPI settings
-# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); //Added in Qt 5.6
-#endif
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
     // We need to explicitly initialize the required resources when linking statically
 #ifndef BUILD_QTUI
     Q_INIT_RESOURCE(sql);
@@ -99,7 +80,7 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(breeze_icons);
     Q_INIT_RESOURCE(breeze_dark_icons);
 #  ifdef WITH_OXYGEN_ICONS
-    Q_INIT_RESOURCE(oxygen_icons);
+      Q_INIT_RESOURCE(oxygen_icons);
 #  endif
 #  ifdef WITH_BUNDLED_ICONS
       Q_INIT_RESOURCE(breeze_icon_theme);
@@ -111,12 +92,50 @@ int main(int argc, char **argv)
 # endif
 #endif
 
-    std::shared_ptr<AbstractCliParser> cliParser = std::make_shared<Qt5CliParser>();
-    Quassel::setCliParser(cliParser);
+    // Set umask so files are created with restricted permissions
+#ifdef HAVE_UMASK
+    umask(S_IRWXG | S_IRWXO);
+#endif
+
+    // Instantiate early, so log messages are handled
+    Quassel quassel;
+
+    Quassel::setupBuildInfo();
+    QCoreApplication::setApplicationName(Quassel::buildInfo().applicationName);
+    QCoreApplication::setApplicationVersion(Quassel::buildInfo().plainVersionString);
+    QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
+    QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
+
+    // Migrate settings from KDE4 to KF5 if appropriate
+#ifdef HAVE_KF5
+    Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
+    migrator.setConfigFiles(QStringList() << "quasselrc" << "quassel.notifyrc");
+    migrator.migrate();
+#endif
+
+    //Setup the High-DPI settings
+# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); //Added in Qt 5.6
+#endif
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+    // Instantiate application
+#if defined BUILD_CORE
+    CoreApplication app(argc, argv);
+    const auto runMode = Quassel::RunMode::CoreOnly;
+#elif defined BUILD_QTUI
+    QtUiApplication app(argc, argv);
+    const auto runMode = Quassel::RunMode::ClientOnly;
+#elif defined BUILD_MONO
+    MonolithicApplication app(argc, argv);
+    const auto runMode = Quassel::RunMode::Monolithic;
+#endif
 
     // Initialize CLI arguments
-    // NOTE: We can't use tr() at this point, since app is not yet created
-    // TODO: Change this once we get rid of KDE4 and can initialize the parser after creating the app
+    // TODO: Move CLI option handling into Quassel::init(), after initializing the translation catalogue
+
+    std::shared_ptr<AbstractCliParser> cliParser = std::make_shared<Qt5CliParser>();
+    Quassel::setCliParser(cliParser);
 
     // put shared client&core arguments here
     cliParser->addSwitch("debug", 'd', "Enable debug output");
@@ -171,33 +190,22 @@ int main(int argc, char **argv)
     cliParser->addSwitch("enable-experimental-dcc", 0, "Enable highly experimental and unfinished support for CTCP DCC (DANGEROUS)");
 #endif
 
-#if defined BUILD_CORE
-    CoreApplication app(argc, argv);
-#elif defined BUILD_QTUI
-    QtUiApplication app(argc, argv);
-#elif defined BUILD_MONO
-    MonolithicApplication app(argc, argv);
-#endif
-
     if (!cliParser->init(app.arguments())) {
         cliParser->usage();
         return EXIT_FAILURE;
     }
 
-// Migrate settings from KDE4 to KF5 if appropriate
-#ifdef HAVE_KF5
-    Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
-    migrator.setConfigFiles(QStringList() << "quasselrc" << "quassel.notifyrc");
-    migrator.migrate();
-#endif
+    try {
+        // Note: This method requires CLI options to be available
+        Quassel::instance()->init(runMode);
 
 #ifdef HAVE_KF5
-    // FIXME: This should be done after loading the translation catalogue, but still in main()
-    AboutData aboutData;
-    AboutData::setQuasselPersons(&aboutData);
-    KAboutData::setApplicationData(aboutData.kAboutData());
+        AboutData aboutData;
+        AboutData::setQuasselPersons(&aboutData);
+        KAboutData::setApplicationData(aboutData.kAboutData());
 #endif
-    try {
+
+        // Initialize the application
         app.init();
     }
     catch (ExitException e) {

@@ -31,7 +31,6 @@ class InternalPeer;
 MonolithicApplication::MonolithicApplication(int &argc, char **argv)
     : QtUiApplication(argc, argv)
 {
-    Quassel::setRunMode(Quassel::Monolithic);
 }
 
 
