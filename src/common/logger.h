@@ -61,9 +61,9 @@ public:
      * and won't store further ones.
      *
      * @param keepMessages Whether messages should be kept
-     * @returns true, if initialization was successful
+     * @throws ExitException, if command line options are invalid
      */
-    bool setup(bool keepMessages);
+    void setup(bool keepMessages);
 
     /**
      * Accesses the stores log messages, e.g. for consumption by DebugLogWidget.

@@ -144,6 +144,8 @@ public:
 
     Quassel();
 
+    void init(RunMode runMode);
+
     /**
      * Provides access to the Logger instance.
      *
@@ -217,10 +219,6 @@ signals:
     void messageLogged(const QDateTime &timeStamp, const QString &msg);
 
 protected:
-    static bool init();
-
-    static void setRunMode(Quassel::RunMode runMode);
-
     static void setDataDirPaths(const QStringList &paths);
     static QStringList findDataDirPaths();
 
@@ -251,7 +249,6 @@ private slots:
 private:
     BuildInfo _buildInfo;
     RunMode _runMode;
-    bool _initialized{false};
     bool _quitting{false};
 
     QString _coreDumpFileName;
