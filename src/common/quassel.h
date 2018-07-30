@@ -21,17 +21,16 @@
 #pragma once
 
 #include <functional>
-#include <memory>
 #include <vector>
 
+#include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QFile>
-#include <QObject>
 #include <QLocale>
+#include <QObject>
 #include <QString>
 #include <QStringList>
 
-#include "abstractcliparser.h"
 #include "abstractsignalwatcher.h"
 #include "singleton.h"
 
@@ -185,7 +184,6 @@ public:
 
     static void loadTranslation(const QLocale &locale);
 
-    static void setCliParser(std::shared_ptr<AbstractCliParser> cliParser);
     static QString optionValue(const QString &option);
     static bool isOptionSet(const QString &option);
 
@@ -219,9 +217,10 @@ signals:
     void messageLogged(const QDateTime &timeStamp, const QString &msg);
 
 private:
-    void setupEnvironment();
     void registerMetaTypes();
     void setupSignalHandling();
+    void setupEnvironment();
+    void setupCliParser();
 
     /**
      * Requests a reload of relevant runtime configuration.
@@ -248,7 +247,7 @@ private:
     QStringList _dataDirPaths;
     QString _translationDirPath;
 
-    std::shared_ptr<AbstractCliParser> _cliParser;
+    QCommandLineParser _cliParser;
 
     Logger *_logger;
     AbstractSignalWatcher *_signalWatcher{nullptr};
