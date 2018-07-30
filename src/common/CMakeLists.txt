@@ -37,7 +37,6 @@ set(SOURCES
     peer.cpp
     peerfactory.cpp
     presetnetworks.cpp
-    qt5cliparser.cpp
     quassel.cpp
     remotepeer.cpp
     settings.cpp

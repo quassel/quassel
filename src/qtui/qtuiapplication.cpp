@@ -25,7 +25,6 @@
 #include <QStringList>
 
 #include "chatviewsettings.h"
-#include "cliparser.h"
 #include "logmessage.h"
 #include "mainwin.h"
 #include "qtui.h"

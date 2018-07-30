@@ -58,7 +58,6 @@ Q_IMPORT_PLUGIN(qjpeg)
 Q_IMPORT_PLUGIN(qgif)
 #endif
 
-#include "qt5cliparser.h"
 #include "quassel.h"
 #include "types.h"
 
@@ -131,72 +130,7 @@ int main(int argc, char **argv)
     const auto runMode = Quassel::RunMode::Monolithic;
 #endif
 
-    // Initialize CLI arguments
-    // TODO: Move CLI option handling into Quassel::init(), after initializing the translation catalogue
-
-    std::shared_ptr<AbstractCliParser> cliParser = std::make_shared<Qt5CliParser>();
-    Quassel::setCliParser(cliParser);
-
-    // put shared client&core arguments here
-    cliParser->addSwitch("debug", 'd', "Enable debug output");
-    cliParser->addSwitch("help", 'h', "Display this help and exit");
-    cliParser->addSwitch("version", 'v', "Display version information");
-#ifdef BUILD_QTUI
-    cliParser->addOption("configdir", 'c', "Specify the directory holding the client configuration", "path");
-#else
-    cliParser->addOption("configdir", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL certificate", "path");
-#endif
-    cliParser->addOption("datadir", 0, "DEPRECATED - Use --configdir instead", "path");
-    cliParser->addOption("loglevel", 'L', "Loglevel Debug|Info|Warning|Error", "level", "Info");
-#ifdef HAVE_SYSLOG
-    cliParser->addSwitch("syslog", 0, "Log to syslog");
-#endif
-    cliParser->addOption("logfile", 'l', "Log to a file", "path");
-
-#ifndef BUILD_CORE
-    // put client-only arguments here
-    cliParser->addOption("icontheme", 0, "Override the system icon theme ('breeze' is recommended)", "theme");
-    cliParser->addOption("qss", 0, "Load a custom application stylesheet", "file.qss");
-    cliParser->addSwitch("debugbufferswitches", 0, "Enables debugging for bufferswitches");
-    cliParser->addSwitch("debugmodel", 0, "Enables debugging for models");
-    cliParser->addSwitch("hidewindow", 0, "Start the client minimized to the system tray");
-#endif
-#ifndef BUILD_QTUI
-    // put core-only arguments here
-    cliParser->addOption("listen", 0, "The address(es) quasselcore will listen on", "<address>[,<address>[,...]]", "::,0.0.0.0");
-    cliParser->addOption("port", 'p', "The port quasselcore will listen at", "port", "4242");
-    cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
-    cliParser->addSwitch("config-from-environment", 0, "Load configuration from environment variables");
-    cliParser->addOption("select-backend", 0, "Switch storage backend (migrating data if possible)", "backendidentifier");
-    cliParser->addOption("select-authenticator", 0, "Select authentication backend", "authidentifier");
-    cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
-    cliParser->addOption("change-userpass", 0, "Starts an interactive session to change the password of the user identified by <username>", "username");
-    cliParser->addSwitch("oidentd", 0, "Enable oidentd integration.  In most cases you should also enable --strict-ident");
-    cliParser->addOption("oidentd-conffile", 0, "Set path to oidentd configuration file", "file");
-    cliParser->addSwitch("strict-ident", 0, "Use users' quasselcore username as ident reply. Ignores each user's configured ident setting.");
-    cliParser->addSwitch("ident-daemon", 0, "Enable internal ident daemon");
-    cliParser->addOption("ident-port", 0, "The port quasselcore will listen at for ident requests. Only meaningful with --ident-daemon", "port", "10113");
-#ifdef HAVE_SSL
-    cliParser->addSwitch("require-ssl", 0, "Require SSL for remote (non-loopback) client connections");
-    cliParser->addOption("ssl-cert", 0, "Specify the path to the SSL Certificate", "path", "configdir/quasselCert.pem");
-    cliParser->addOption("ssl-key", 0, "Specify the path to the SSL key", "path", "ssl-cert-path");
-#endif
-    cliParser->addSwitch("debug-irc", 0,
-                         "Enable logging of all raw IRC messages to debug log, including "
-                         "passwords!  In most cases you should also set --loglevel Debug");
-    cliParser->addOption("debug-irc-id", 0,
-                         "Limit raw IRC logging to this network ID.  Implies --debug-irc",
-                         "database network ID", "-1");
-    cliParser->addSwitch("enable-experimental-dcc", 0, "Enable highly experimental and unfinished support for CTCP DCC (DANGEROUS)");
-#endif
-
-    if (!cliParser->init(app.arguments())) {
-        cliParser->usage();
-        return EXIT_FAILURE;
-    }
-
     try {
-        // Note: This method requires CLI options to be available
         Quassel::instance()->init(runMode);
 
 #ifdef HAVE_KF5
