@@ -20,14 +20,14 @@
 
 #include "quassel.h"
 
-#if defined(HAVE_EXECINFO) && !defined(Q_OS_MAC)
+#if defined(HAVE_BACKTRACE) && !defined(Q_OS_MAC)
 #  define BUILD_CRASHHANDLER
-#  include <execinfo.h>
 #  include <dlfcn.h>
 #  include <cxxabi.h>
 #  include <QFile>
 #  include <QTextStream>
 #  include <QDebug>
+#  include "backtrace_config.h"
 #endif
 
 void Quassel::logBacktrace(const QString &filename)

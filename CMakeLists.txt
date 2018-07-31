@@ -389,10 +389,10 @@ set_package_properties(ZLIB PROPERTIES TYPE REQUIRED
 )
 
 if (NOT WIN32)
-    # Execinfo is needed for generating backtraces
-    find_package(ExecInfo QUIET)
-    set_package_properties(ExecInfo PROPERTIES TYPE OPTIONAL
-        DESCRIPTION "a library for inspecting backtraces"
+    # Needed for generating backtraces
+    find_package(Backtrace QUIET)
+    set_package_properties(Backtrace PROPERTIES TYPE RECOMMENDED
+        DESCRIPTION "a header (and possibly library) for inspecting backtraces"
         PURPOSE "Used for generating backtraces in case of a crash"
     )
 endif()

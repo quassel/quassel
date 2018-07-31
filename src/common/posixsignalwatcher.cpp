@@ -52,7 +52,7 @@ PosixSignalWatcher::PosixSignalWatcher(QObject *parent)
     registerSignal(SIGTERM);
     registerSignal(SIGHUP);
 
-#ifdef HAVE_EXECINFO
+#ifdef HAVE_BACKTRACE
     // we only handle crashes ourselves if coredumps are disabled
     struct rlimit *limit = (rlimit *)malloc(sizeof(struct rlimit));
     int rc = getrlimit(RLIMIT_CORE, limit);
