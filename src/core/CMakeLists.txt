@@ -51,13 +51,6 @@ if(HAVE_SSL)
   include_directories(${OPENSSL_INCLUDE_DIR})
 endif()
 
-if (QCA2-QT5_FOUND)
-    add_definitions(-DHAVE_QCA2)
-    include_directories(${QCA2-QT5_INCLUDE_DIR})
-    list(APPEND SOURCES cipher.cpp)
-    list(APPEND LIBS ${QCA2-QT5_LIBRARIES})
-endif()
-
 # Build with LDAP if told to do so.
 if(HAVE_LDAP)
     include_directories(${LDAP_INCLUDE_DIR})
@@ -74,6 +67,12 @@ add_library(mod_core STATIC ${SOURCES})
 qt5_use_modules(mod_core Core Network Script Sql)
 
 target_link_libraries(mod_core mod_common ${LIBS})
+
+if (Qca-qt5_FOUND)
+    target_sources(mod_core PRIVATE cipher.cpp keyevent.cpp)
+    target_link_libraries(mod_core qca-qt5)
+    target_compile_definitions(mod_core PUBLIC -DHAVE_QCA2)
+endif()
 
 if(HAVE_LDAP)
     target_link_libraries(mod_core ${LDAP_LIBRARIES})
