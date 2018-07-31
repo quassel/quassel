@@ -52,12 +52,6 @@
 #  include <KCoreAddons/Kdelibs4ConfigMigrator>
 #endif
 
-#if !defined(BUILD_CORE) && defined(STATIC)
-#include <QtPlugin>
-Q_IMPORT_PLUGIN(qjpeg)
-Q_IMPORT_PLUGIN(qgif)
-#endif
-
 #include "quassel.h"
 #include "types.h"
 

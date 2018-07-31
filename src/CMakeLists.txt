@@ -13,11 +13,6 @@ if(BUILD_GUI)
   include_directories(BEFORE client)
   include_directories(BEFORE uisupport)
   include_directories(BEFORE qtui)
-
-  if(STATIC)
-    link_directories(${QT_PLUGINS_DIR}/imageformats)
-    set(CLIENT_LIBRARIES ${CLIENT_LIBRARIES} qjpeg qgif)
-  endif()
 endif()
 
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen

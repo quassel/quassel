@@ -33,9 +33,9 @@ else()
   message(STATUS "WARNING: lconvert not found, you won't have translations!")
 endif()
 
-# For a static or win32 build, we need to include Qt translations if available
+# For a Win32 build, we need to include Qt translations if available
 if(QT_TRANSLATIONS_DIR)
-  if(STATIC OR WIN32)
+  if(WIN32)
     foreach(LANG ${gen_linguas})
       file(GLOB lang_files ${QT_TRANSLATIONS_DIR}/qt_${LANG}*.qm)
       foreach(absfile ${lang_files})
