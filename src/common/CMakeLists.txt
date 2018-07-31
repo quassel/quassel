@@ -70,26 +70,28 @@ if (APPLE)
     set(SOURCES ${SOURCES} mac_utils.cpp)
 endif()
 
-if (WIN32)
-    set(SOURCES ${SOURCES} logbacktrace_win.cpp windowssignalwatcher.cpp)
-else()
-    if (EXECINFO_FOUND)
-        add_definitions(-DHAVE_EXECINFO)
-        include_directories(${EXECINFO_INCLUDES})
-    endif()
-    set(SOURCES ${SOURCES} logbacktrace_unix.cpp posixsignalwatcher.cpp)
-endif()
-
 qt5_add_resources(SOURCES ${COMMON_RCS})
 
 add_library(mod_common STATIC ${SOURCES})
 qt5_use_modules(mod_common Core Network)
 
+if (WIN32)
+    target_sources(mod_common PRIVATE logbacktrace_win.cpp windowssignalwatcher.cpp)
+else()
+    if (Backtrace_FOUND)
+        configure_file(backtrace_config.h.in backtrace_config.h)
+        target_compile_definitions(mod_common PRIVATE -DHAVE_BACKTRACE)
+        target_include_directories(mod_common PRIVATE ${Backtrace_INCLUDE_DIRS})
+        target_link_libraries(mod_common PRIVATE ${Backtrace_LIBRARIES})
+    endif()
+    target_sources(mod_common PRIVATE logbacktrace_unix.cpp posixsignalwatcher.cpp)
+endif()
+
 if (APPLE)
     target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
 endif()
 
-target_link_libraries(mod_common ${CMAKE_DL_LIBS} ${EXECINFO_LIBRARIES} ZLIB::ZLIB)
+target_link_libraries(mod_common ${CMAKE_DL_LIBS} ZLIB::ZLIB)
 
 # This is needed so translations are generated before trying to build the qrc.
 # Should probably find a nicer solution with proper dependencies between the involved files, though...
