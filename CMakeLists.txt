@@ -111,31 +111,19 @@ if (APPLE)
     link_libraries(${CARBON_LIBRARY})
 endif()
 
-# Always embed on Windows, OSX or for a static build; never embed when enabling KDE integration
+# Always embed on Windows or OSX; never embed when enabling KDE integration
 set(EMBED_DEFAULT OFF)
-if (STATIC OR WIN32 OR APPLE)
+if (WIN32 OR APPLE)
     set(EMBED_DEFAULT ON)
 endif()
 cmake_dependent_option(EMBED_DATA "Embed icons and translations into the binaries instead of installing them" ${EMBED_DEFAULT}
-                                   "NOT STATIC;NOT WIN32;NOT WITH_KDE" ${EMBED_DEFAULT})
+                                   "NOT WIN32;NOT WITH_KDE" ${EMBED_DEFAULT})
 if (NOT EMBED_DEFAULT)
     add_feature_info(EMBED_DATA EMBED_DATA "Embed icons and translations in the binaries instead of installing them")
 endif()
 
 # The following options are not for end-user consumption, so don't list them in the feature summary
 cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF "APPLE" OFF)
-
-# Static builds are not supported and require some manual setup! Don't enable unless you know what you're doing (we don't know either)
-cmake_dependent_option(STATIC      "Enable static building (not supported)" OFF "NOT WITH_KDE" OFF)
-
-# For static builds, arbitrary extra libs might need to be linked
-# Define a comma-separated list here
-# e.g. for pgsql, we need -DLINK_EXTRA=pq;crypt
-set(LINK_EXTRA "" CACHE STRING "Semicolon-separated list of libraries to be linked")
-if (LINK_EXTRA)
-    string(REPLACE "," ";" LINK_EXTRA ${LINK_EXTRA})
-    link_libraries(${LINK_EXTRA})
-endif()
 
 
 # List of authenticators and the cmake flags to build them
@@ -518,23 +506,6 @@ if (WIN32)
         set(CMAKE_EXE_LINKER_FLAGS_DEBUGFULL "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
         link_libraries(Version dwmapi shlwapi)
         set(QT_QTMAIN_LIBRARY Qt5::WinMain)
-    endif()
-    if(HAVE_SSL AND STATIC)
-        find_package(OpenSSL REQUIRED)
-        link_libraries(${OPENSSL_LIBRARIES} ${OPENSSL_EAY_LIBRARIES})
-    endif()
-endif()
-
-
-# Static builds (very much non-portable, so don't use -DSTATIC
-# unless you know what you do!)
-#####################################################################
-
-if(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-static-libgcc ${CMAKE_CXX_FLAGS}")
-    link_directories(${CMAKE_BINARY_DIR}/staticlibs) # override dynamic libs
-    if (HAVE_SSL)
-        set(QUASSEL_SSL_LIBRARIES ssl crypto)  # these miss in static builds
     endif()
 endif()
 
