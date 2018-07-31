@@ -345,8 +345,8 @@ if (BUILD_CORE)
         DESCRIPTION "the database support module for Qt5"
     )
 
-    find_package(QCA2-QT5)
-    set_package_properties(QCA2-QT5 PROPERTIES TYPE RECOMMENDED
+    find_package(Qca-qt5 2.0)
+    set_package_properties(Qca-qt5 PROPERTIES TYPE RECOMMENDED
         URL "https://projects.kde.org/projects/kdesupport/qca"
         DESCRIPTION "Qt Cryptographic Architecture"
         PURPOSE "Required for encryption support"

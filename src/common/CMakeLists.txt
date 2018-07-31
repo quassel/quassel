@@ -58,10 +58,6 @@ set(SOURCES
     protocol.h
 )
 
-if (QCA2-QT5_FOUND)
-    set(SOURCES ${SOURCES} keyevent.cpp)
-endif()
-
 if (HAVE_SYSLOG)
     add_definitions(-DHAVE_SYSLOG)
 endif()
