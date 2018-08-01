@@ -8,26 +8,21 @@
 
 cmake_minimum_required(VERSION 3.5)
 
+# Tell CMake about or own modules
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
 # Versions
 set(QUASSEL_MAJOR  0)
 set(QUASSEL_MINOR 13)
 set(QUASSEL_PATCH 50)
 set(QUASSEL_VERSION_STRING "0.14-pre")
 
-# Build type
-if (CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_CONFIGURATION_TYPES Release RelWithDebInfo Debug Debugfull Profile)
-    set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING "These are the configuration types we support" FORCE)
-endif()
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build, options are: Release RelWithDebInfo Debug Debugfull Profile None" FORCE)
-endif()
-
 # Output CMake and Quassel versions as well as build type for debug reasons
 message(STATUS "Building Quassel ${QUASSEL_VERSION_STRING}...")
 message(STATUS "Using CMake ${CMAKE_VERSION}")
-message(STATUS "CMake build type: ${CMAKE_BUILD_TYPE}")
+
+# Set up build type rather early
+include(BuildType)
 
 # Support ccache if found
 # This should happen before calling project(), so compiler settings are validated.
@@ -50,7 +45,7 @@ project(Quassel CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Include various CMake modules
+# Include various CMake modules...
 include(CMakePushCheckState)
 include(CheckFunctionExists)
 include(CheckIncludeFileCXX)
@@ -58,11 +53,9 @@ include(CheckCXXSourceCompiles)
 include(CMakeDependentOption)
 include(FeatureSummary)
 
-# Tell CMake about or own modules
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+# ... and our own
 include(QuasselCompileSettings)
 include(QuasselMacros)
-
 
 # Options and variables that can be set on the command line
 #####################################################################
