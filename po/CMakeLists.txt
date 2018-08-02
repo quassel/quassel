@@ -1,7 +1,7 @@
 # Generate and add translations
 # The LINGUAS variable can be used to limit that set
 
-if(QT_LCONVERT_EXECUTABLE)
+if (TARGET Qt5::lconvert)
   # get environment variable for translations
   set(LINGUAS "$ENV{LINGUAS}")
   string(REGEX REPLACE "[ \t]+" \; output "${LINGUAS}")
