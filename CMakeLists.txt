@@ -352,16 +352,8 @@ if (NOT WIN32)
 endif()
 
 # Check for SSL support in Qt
-# As there's no easy way to get Qt's configuration in particular for Qt5, let's just compile
-# a small test program checking the defines. This works for both Qt4 and Qt5.
 cmake_push_check_state(RESET)
-set(CMAKE_REQUIRED_INCLUDES ${QT_INCLUDES} ${Qt5Core_INCLUDE_DIRS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
-
-if (Qt5_POSITION_INDEPENDENT_CODE)
-    set(CMAKE_REQUIRED_FLAGS "-fPIC -DQT_NO_VERSION_TAGGING")
-endif()
-
+set(CMAKE_REQUIRED_LIBRARIES Qt5::Core)
 check_cxx_source_compiles("
     #include \"qglobal.h\"
     #if defined QT_NO_SSL
@@ -370,6 +362,11 @@ check_cxx_source_compiles("
     int main() {}"
     HAVE_SSL)
 cmake_pop_check_state()
+
+if (HAVE_SSL)
+    add_definitions(-DHAVE_SSL)
+endif()
+add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
 
 # Additional compile settings
 #####################################################################
@@ -430,11 +427,6 @@ include(QuasselInstallDirs)
 
 # Various config-dependent checks and settings
 #####################################################################
-
-if (HAVE_SSL)
-    add_definitions(-DHAVE_SSL)
-endif()
-add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
 
 # Check for syslog support
 if (NOT WIN32)
