@@ -1,8 +1,6 @@
-# Builds the client module
+quassel_add_module(Client)
 
-# We still have a minor dep to QtWidgets: QAbstractItemView in BufferModel
-
-set(SOURCES
+target_sources(${TARGET} PRIVATE
     abstractmessageprocessor.cpp
     backlogrequester.cpp
     buffermodel.cpp
@@ -35,11 +33,15 @@ set(SOURCES
 
     # needed for automoc
     abstractui.h
+
+    ${CLIENT_RCS}
 )
 
-qt5_add_resources(SOURCES ${CLIENT_RCS})
-
-add_library(mod_client STATIC ${SOURCES})
-qt5_use_modules(mod_client Network Core Gui Widgets)
-
-target_link_libraries(mod_client mod_common)
+target_link_libraries(${TARGET}
+    PUBLIC
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Network
+        Qt5::Widgets  # QAbstractItemView in BufferModel
+        Quassel::Common
+)

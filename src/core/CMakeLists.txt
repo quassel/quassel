@@ -1,6 +1,6 @@
-# Builds the core module
+quassel_add_module(Core)
 
-set(SOURCES
+target_sources(${TARGET} PRIVATE
     abstractsqlstorage.cpp
     authenticator.cpp
     core.cpp
@@ -42,38 +42,33 @@ set(SOURCES
 
     # needed for automoc
     coreeventmanager.h
+
+    # Resources
+    sql.qrc
 )
 
-set(LIBS )
-
-if(HAVE_SSL)
-  set(SOURCES ${SOURCES} sslserver.cpp)
-  include_directories(${OPENSSL_INCLUDE_DIR})
+if (HAVE_SSL)
+    target_sources(${TARGET} PRIVATE sslserver.cpp)
 endif()
 
-# Build with LDAP if told to do so.
-if(HAVE_LDAP)
-    include_directories(${LDAP_INCLUDE_DIR})
-    set(SOURCES ${SOURCES} ldapauthenticator.cpp)
-    set(MOC_HDRS ${MOC_HDRS} ldapauthenticator.h)
-endif(HAVE_LDAP)
-
-include_directories(${CMAKE_SOURCE_DIR}/src/common)
-
-set(CORE_RCS ${CORE_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/sql.qrc)
-qt5_add_resources(SOURCES ${CORE_RCS})
-
-add_library(mod_core STATIC ${SOURCES})
-qt5_use_modules(mod_core Core Network Script Sql)
-
-target_link_libraries(mod_core mod_common ${LIBS})
+if (LDAP_FOUND)
+    target_sources(${TARGET} PRIVATE ldapauthenticator.cpp)
+    target_link_libraries(${TARGET} PRIVATE ${LDAP_LIBRARIES})
+    target_include_directories(${TARGET} PRIVATE ${LDAP_INCLUDE_DIR})
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_LDAP)
+endif()
 
 if (Qca-qt5_FOUND)
-    target_sources(mod_core PRIVATE cipher.cpp keyevent.cpp)
-    target_link_libraries(mod_core qca-qt5)
-    target_compile_definitions(mod_core PUBLIC -DHAVE_QCA2)
+    target_sources(${TARGET} PRIVATE cipher.cpp keyevent.cpp)
+    target_link_libraries(${TARGET} PUBLIC qca-qt5)
+    target_compile_definitions(${TARGET} PUBLIC -DHAVE_QCA2)
 endif()
 
-if(HAVE_LDAP)
-    target_link_libraries(mod_core ${LDAP_LIBRARIES})
-endif(HAVE_LDAP)
+target_link_libraries(${TARGET}
+    PUBLIC
+        Qt5::Core
+        Qt5::Network
+        Qt5::Script
+        Qt5::Sql
+        Quassel::Common
+)
