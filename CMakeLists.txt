@@ -333,25 +333,6 @@ set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
     PURPOSE "Required for having translations"
 )
 
-# Some Qt5 versions do not define a target for lconvert, so we need to find it ourselves
-if (Qt5LinguistTools_FOUND)
-    if (NOT TARGET Qt5::lconvert AND TARGET Qt5::lrelease)
-        get_target_property(_lrelease_location Qt5::lrelease LOCATION)
-        get_filename_component(_lrelease_path ${_lrelease_location} PATH)
-        find_program(QT_LCONVERT_EXECUTABLE NAMES lconvert-qt5 lconvert PATHS ${_lrelease_path} NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
-    elseif(TARGET Qt5::lconvert AND NOT Qt5_LCONVERT_EXECUTABLE)
-        # Newer Qt5 versions define the target, but not the Qt5_LCONVERT_EXECUTABLE variable for some reason
-        get_target_property(QT_LCONVERT_EXECUTABLE Qt5::lconvert LOCATION)
-    endif()
-
-    # Compatibility with the Qt4 variables
-    set(QT_LRELEASE_EXECUTABLE ${Qt5_LRELEASE_EXECUTABLE})
-    set(QT_LUPDATE_EXECUTABLE ${Qt5_LUPDATE_EXECUTABLE})
-    if (Qt5_LCONVERT_EXECUTABLE)
-        set(QT_LCONVERT_EXECUTABLE ${Qt5_LCONVERT_EXECUTABLE})
-    endif()
-endif()
-
 # Non-Qt-based packages
 
 find_package(ZLIB REQUIRED)
@@ -460,8 +441,6 @@ if (NOT WIN32)
     check_include_file_cxx(syslog.h HAVE_SYSLOG)
     add_feature_info("syslog.h" HAVE_SYSLOG "Provide support for logging to the syslog")
 endif()
-
-add_feature_info("Qt Linguist Tools" QT_LCONVERT_EXECUTABLE "Translation support for Quassel")
 
 if (EMBED_DATA)
     message(STATUS "Embedding data files into the binary")
