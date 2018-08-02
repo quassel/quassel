@@ -1,6 +1,6 @@
-# Builds the qtui module
+quassel_add_module(QtUi)
 
-set(SOURCES
+target_sources(${TARGET} PRIVATE
     aboutdlg.cpp
     awaylogfilter.cpp
     awaylogview.cpp
@@ -53,9 +53,8 @@ set(SOURCES
     topicwidget.cpp
     verticaldock.cpp
     webpreviewitem.cpp
-)
 
-set(FORMS
+    # UI files
     aboutdlg.ui
     bufferviewwidget.ui
     bufferwidget.ui
@@ -85,97 +84,112 @@ set(FORMS
     topicwidget.ui
 )
 
-set(LIBS )
-set(QT_MODULES )
+# Handle settingspages
+target_include_directories(${TARGET} PRIVATE settingspages)
+include(settingspages/settingspages.cmake)
+foreach(page ${SETTINGSPAGES})
+    target_sources(${TARGET} PRIVATE
+        settingspages/${page}settingspage.cpp
+        settingspages/${page}settingspage.ui
+    )
+endforeach()
+foreach(src ${SP_SOURCES})
+    target_sources(${TARGET} PRIVATE settingspages/${src})
+endforeach()
+foreach(form ${SP_FORMS})
+    target_sources(${TARGET} PRIVATE settingspages/${form})
+endforeach()
 
-if (WITH_KF5)
-    list(APPEND SOURCES knotificationbackend.cpp)
-    list(APPEND LIBS KF5::ConfigWidgets KF5::Notifications KF5::NotifyConfig KF5::WidgetsAddons KF5::XmlGui)
-endif()
+target_link_libraries(${TARGET}
+    PUBLIC
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Network
+        Qt5::Widgets
+        Quassel::UiSupport
+        Quassel::Client
+        Quassel::Common
+)
 
-if (LibsnoreQt5_FOUND)
-    add_definitions(-DHAVE_LIBSNORE)
-    list(APPEND SOURCES snorenotificationbackend.cpp)
-    list(APPEND FORMS   snorentificationconfigwidget.ui)
-    list(APPEND LIBS    Snore::Libsnore Snore::LibsnoreSettings)
-endif()
-
-if (Qt5Multimedia_FOUND)
-    add_definitions(-DHAVE_QTMULTIMEDIA)
-    list(APPEND QT_MODULES Multimedia)
-    set(SOURCES ${SOURCES} qtmultimedianotificationbackend.cpp)
-    set(FORMS ${FORMS}     qtmultimedianotificationconfigwidget.ui)
-endif()
-
-if (Qt5DBus_FOUND)
-    add_definitions(-DHAVE_DBUS)
-    list(APPEND QT_MODULES DBus)
-    if (dbusmenu-qt5_FOUND)
-        add_definitions(-DHAVE_DBUSMENU)
-        include_directories(${dbusmenu-qt5_INCLUDE_DIRS})
-        list(APPEND LIBS dbusmenu-qt5)
-    endif()
-
-    list(APPEND SOURCES statusnotifieritem.cpp statusnotifieritemdbus.cpp dockmanagernotificationbackend.cpp)
-    qt5_add_dbus_interface(SOURCES ../../interfaces/org.kde.StatusNotifierWatcher.xml statusnotifierwatcher)
-    qt5_add_dbus_interface(SOURCES ../../interfaces/org.freedesktop.Notifications.xml notificationsclient)
-    qt5_add_dbus_adaptor  (SOURCES ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
-endif()
-
-if (HAVE_WEBKIT)
-    add_definitions(-DHAVE_WEBKIT)
-    list(APPEND QT_MODULES WebKit WebKitWidgets)
-endif()
-
-if (HAVE_WEBENGINE)
-    add_definitions(-DHAVE_WEBENGINE)
-    list(APPEND QT_MODULES WebEngine WebEngineWidgets)
-endif()
-
-if(HAVE_SSL)
-  set(SOURCES ${SOURCES} sslinfodlg.cpp)
-  set(FORMS ${FORMS} sslinfodlg.ui)
-endif()
-
-if (WITH_NOTIFICATION_CENTER)
-    add_definitions(-DHAVE_NOTIFICATION_CENTER)
-    list(APPEND SOURCES osxnotificationbackend.mm)
-    list(APPEND LIBS "/System/Library/Frameworks/Foundation.framework")
+if (WITH_KDE)
+    target_sources(${TARGET} PRIVATE knotificationbackend.cpp)
+    target_link_libraries(${TARGET} PUBLIC
+        KF5::ConfigWidgets
+        KF5::Notifications
+        KF5::NotifyConfig
+        KF5::WidgetsAddons
+        KF5::XmlGui
+    )
 endif()
 
 if (KF5Sonnet_FOUND)
-    add_definitions(-DHAVE_SONNET)
-    list(APPEND SOURCES settingspages/sonnetsettingspage.cpp)
-    list(APPEND LIBS KF5::SonnetUi)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_SONNET)
+    target_sources(${TARGET} PRIVATE settingspages/sonnetsettingspage.cpp)
+    target_link_libraries(${TARGET} PRIVATE KF5::SonnetUi)
 endif()
 
-foreach(FORM ${FORMS})
-  set(FORMPATH ${FORMPATH} ui/${FORM})
-endforeach(FORM ${FORMS})
+if (Qt5Multimedia_FOUND)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_QTMULTIMEDIA)
+    target_sources(${TARGET} PRIVATE
+        qtmultimedianotificationbackend.cpp
+        qtmultimedianotificationconfigwidget.ui
+    )
+    target_link_libraries(${TARGET} PRIVATE Qt5::Multimedia)
+endif()
 
-# handle settingspages
-include(settingspages/settingspages.cmake)
-foreach(SP ${SETTINGSPAGES})
-  set(SPSRC ${SPSRC} settingspages/${SP}settingspage.cpp)
-  set(SPFRM ${SPFRM} settingspages/${SP}settingspage.ui)
-endforeach(SP ${SETTINGSPAGES})
-foreach(SRC ${SP_SOURCES})
-  set(SPSRC ${SPSRC} settingspages/${SRC})
-endforeach(SRC ${SP_SOURCES})
-foreach(FRM ${SP_FORMS})
-  set(SPFRM ${SPFRM} settingspages/${FRM})
-endforeach(FRM ${SP_FORMS})
+if (Qt5DBus_FOUND)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_DBUS)
+    target_link_libraries(${TARGET} PRIVATE Qt5::DBus)
+    if (dbusmenu-qt5_FOUND)
+        target_compile_definitions(${TARGET} PRIVATE -DHAVE_DBUSMENU)
+        target_link_libraries(${TARGET} PRIVATE dbusmenu-qt5)
+    endif()
 
-include_directories(${CMAKE_SOURCE_DIR}/src/common
-                    ${CMAKE_SOURCE_DIR}/src/client
-                    ${CMAKE_SOURCE_DIR}/src/qtui
-                    ${CMAKE_SOURCE_DIR}/src/qtui/settingspages
-                    ${CMAKE_SOURCE_DIR}/src/uisupport
-)
+    qt5_add_dbus_interface(DBUS_SOURCES ../../interfaces/org.kde.StatusNotifierWatcher.xml statusnotifierwatcher)
+    qt5_add_dbus_interface(DBUS_SOURCES ../../interfaces/org.freedesktop.Notifications.xml notificationsclient)
+    qt5_add_dbus_adaptor  (DBUS_SOURCES ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
 
-qt5_wrap_ui(UI ${FORMPATH} ${SPFRM})
+    target_sources(${TARGET} PRIVATE
+        dockmanagernotificationbackend.cpp
+        statusnotifieritem.cpp
+        statusnotifieritemdbus.cpp
+        ${DBUS_SOURCES}
+    )
+endif()
 
-add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${UI})
-qt5_use_modules(mod_qtui Core Gui Network Widgets ${QT_MODULES})
+if (HAVE_WEBKIT)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_WEBKIT)
+    target_link_libraries(${TARGET} PRIVATE
+        Qt5::WebKit
+        Qt5::WebKitWidgets
+    )
+endif()
 
-target_link_libraries(mod_qtui mod_client mod_common mod_uisupport ${LIBS})
+if (HAVE_WEBENGINE)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_WEBENGINE)
+    target_link_libraries(${TARGET} PRIVATE
+        Qt5::WebEngine
+        Qt5::WebEngineWidgets)
+endif()
+
+if (HAVE_SSL)
+    target_sources(${TARGET} PRIVATE
+        sslinfodlg.cpp
+        sslinfodlg.ui
+    )
+endif()
+
+if (LibsnoreQt5_FOUND)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_LIBSNORE)
+    target_sources(${TARGET} PRIVATE
+        snorenotificationbackend.cpp
+        snorentificationconfigwidget.ui
+    )
+    target_link_libraries(${TARGET} PRIVATE Snore::Libsnore Snore::LibsnoreSettings)
+endif()
+
+if (WITH_NOTIFICATION_CENTER)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_NOTIFICATION_CENTER)
+    target_sources(${TARGET} PRIVATE osxnotificationbackend.mm)
+    target_link_libraries(${TARGET} PRIVATE "/System/Library/Frameworks/Foundation.framework")
+endif()

@@ -44,14 +44,13 @@
 #include "protocol.h"
 #include "syncableobject.h"
 #include "types.h"
+#include "version.h"
 
 #ifndef Q_OS_WIN
 #    include "posixsignalwatcher.h"
 #else
 #    include "windowssignalwatcher.h"
 #endif
-
-#include "../../version.h"
 
 Quassel::Quassel()
     : Singleton<Quassel>{this}

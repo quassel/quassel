@@ -41,8 +41,12 @@ endif()
 # Set up project
 project(Quassel CXX)
 
-# General conveniences
+# Let CMake handle file generation for Qt
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+# Needed, otherwise some .moc files won't be found with older CMake versions
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Include various CMake modules...
@@ -127,22 +131,10 @@ option(WITH_LDAP "Enable LDAP authentication support if present on system" ON)
 # Setup CMake
 #####################################################################
 
-# Setting COMPILE_DEFINITIONS_<CONFIG> is deprecated since CMake 3.0 in favor of generator expressions.
-# These have existed since CMake 2.8.10; until we depend on that, we have to explicitly enable the old policy.
-if (POLICY CMP0043)
-    cmake_policy(SET CMP0043 OLD)
-endif()
-
-# Honor visibility settings for all target types
-if (POLICY CMP0063)
-    cmake_policy(SET CMP0063 NEW)
-endif()
-
-# Don't automoc generated files
+# Let automoc/autouic process generated files
 if (POLICY CMP0071)
-    cmake_policy(SET CMP0071 OLD)
+    cmake_policy(SET CMP0071 NEW)
 endif()
-
 
 # Simplify later checks
 #####################################################################
@@ -426,8 +418,6 @@ if (WITH_LDAP)
     find_package(Ldap)
     if (LDAP_FOUND)
         message(STATUS "Enabling LDAP authentication support")
-        set(HAVE_LDAP true)
-        add_definitions(-DHAVE_LDAP)
     else()
         message(STATUS "Disabling LDAP authentication support")
     endif()
@@ -542,11 +532,6 @@ configure_file(version.h.in ${CMAKE_BINARY_DIR}/version.h @ONLY)
 
 # Prepare the build
 #####################################################################
-
-# These variables will be added to the main targets (CORE, QTCLIENT, MONO)
-set(COMMON_DEPS ${RC_WIN32})
-set(CORE_DEPS )
-set(CLIENT_DEPS )
 
 # Add needed subdirs - the order is important, since src needs some vars set by other dirs
 add_subdirectory(data)

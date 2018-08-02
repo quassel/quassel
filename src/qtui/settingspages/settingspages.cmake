@@ -47,7 +47,7 @@ set(SP_FORMS
     servereditdlg.ui
 )
 
-if (NOT KDE4_FOUND)
+if (NOT WITH_KDE)
     list(APPEND SETTINGSPAGES shortcuts)
     list(APPEND SP_SOURCES keysequencewidget.cpp shortcutsmodel.cpp)
 endif()

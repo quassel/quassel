@@ -1,6 +1,6 @@
-# Builds the uisupport module
+quassel_add_module(UiSupport)
 
-set(SOURCES
+target_sources(${TARGET} PRIVATE
     aboutdata.cpp
     abstractbuffercontainer.cpp
     abstractitemview.cpp
@@ -37,20 +37,26 @@ set(SOURCES
     abstractnotificationbackend.h
 )
 
-include_directories(${CMAKE_SOURCE_DIR}/src/common
-                    ${CMAKE_SOURCE_DIR}/src/client
+target_link_libraries(${TARGET}
+    PUBLIC
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Network
+        Qt5::Widgets
+        Quassel::Client
+        Quassel::Common
 )
 
-add_library(mod_uisupport STATIC ${SOURCES})
-qt5_use_modules(mod_uisupport Core Gui Network Widgets)
-
-target_link_libraries(mod_uisupport mod_client mod_common)
-
 if (WITH_KF5)
-    target_link_libraries(mod_uisupport KF5::CoreAddons KF5::TextWidgets KF5::XmlGui)
+    target_link_libraries(${TARGET}
+        PUBLIC
+            KF5::CoreAddons
+            KF5::TextWidgets
+            KF5::XmlGui
+    )
 endif()
 
 if (KF5Sonnet_FOUND)
-    add_definitions(-DHAVE_SONNET)
-    target_link_libraries(mod_uisupport KF5::SonnetUi)
+    target_link_libraries(${TARGET} PRIVATE KF5::SonnetUi)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_SONNET)
 endif()
