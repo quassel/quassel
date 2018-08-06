@@ -130,9 +130,6 @@
         <property name="text">
          <string>Case sensitive</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
        </widget>
       </item>
      </layout>
