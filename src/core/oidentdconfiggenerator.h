@@ -30,11 +30,6 @@
 #include <QMutex>
 #include <QByteArray>
 
-#ifdef HAVE_UMASK
-#  include <sys/types.h>
-#  include <sys/stat.h>
-#endif /* HAVE_UMASK */
-
 #include "quassel.h"
 #include "coreidentity.h"
 

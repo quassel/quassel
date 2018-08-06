@@ -84,13 +84,6 @@ add_feature_info(WITH_BUNDLED_ICONS WITH_BUNDLED_ICONS "Install required icons f
 option(WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)" OFF)
 add_feature_info(WITH_OXYGEN_ICONS WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)")
 
-if (WITH_BUNDLED_ICONS)
-    add_definitions(-DWITH_BUNDLED_ICONS)
-endif()
-if (WITH_OXYGEN_ICONS)
-    add_definitions(-DWITH_OXYGEN_ICONS)
-endif()
-
 # For this, the feature info is added after we know if QtWebkit is installed
 option(WITH_WEBKIT "WebKit support (for link previews) (legacy)" OFF)
 
@@ -434,19 +427,15 @@ if (NOT WIN32)
     add_feature_info("syslog.h" HAVE_SYSLOG "Provide support for logging to the syslog")
 endif()
 
+if (NOT WIN32)
+    check_function_exists(umask HAVE_UMASK)
+endif()
+
 if (EMBED_DATA)
     message(STATUS "Embedding data files into the binary")
 else()
     message(STATUS "Installing data files separately")
 endif()
-
-if (NOT WIN32)
-    check_function_exists(umask HAVE_UMASK)
-    if(HAVE_UMASK)
-        add_definitions(-DHAVE_UMASK)
-    endif()
-endif()
-
 
 # Windows-specific stuff
 #####################################################################

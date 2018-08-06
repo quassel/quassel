@@ -18,6 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#ifdef HAVE_UMASK
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#endif /* HAVE_UMASK */
+
 #include <QString>
 
 #include "corenetwork.h"
