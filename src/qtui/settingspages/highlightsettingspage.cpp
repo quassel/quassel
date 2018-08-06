@@ -130,7 +130,7 @@ bool HighlightSettingsPage::hasDefaults() const
 
 void HighlightSettingsPage::defaults()
 {
-    ui.highlightNoNick->setChecked(true);
+    ui.highlightCurrentNick->setChecked(true);
     ui.nicksCaseSensitive->setChecked(false);
     emptyTable();
 
