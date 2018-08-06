@@ -51,6 +51,10 @@ if (HAVE_SSL)
     target_sources(${TARGET} PRIVATE sslserver.cpp)
 endif()
 
+if (HAVE_UMASK)
+    set_source_files_properties(oidentdconfiggenerator.cpp PROPERTIES COMPILE_DEFINITIONS HAVE_UMASK)
+endif()
+
 if (LDAP_FOUND)
     target_sources(${TARGET} PRIVATE ldapauthenticator.cpp)
     target_link_libraries(${TARGET} PRIVATE ${LDAP_LIBRARIES})

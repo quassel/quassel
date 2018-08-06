@@ -193,3 +193,7 @@ if (WITH_NOTIFICATION_CENTER)
     target_sources(${TARGET} PRIVATE osxnotificationbackend.mm)
     target_link_libraries(${TARGET} PRIVATE "/System/Library/Frameworks/Foundation.framework")
 endif()
+
+if (WITH_OXYGEN_ICONS)
+    set_property(SOURCE qtui.cpp APPEND PROPERTY COMPILE_DEFINITIONS WITH_OXYGEN_ICONS)
+endif()

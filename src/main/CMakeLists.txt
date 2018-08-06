@@ -13,6 +13,14 @@ if (EMBED_DATA)
     set_source_files_properties(main.cpp PROPERTIES COMPILE_DEFINITIONS EMBED_DATA)
 endif()
 
+if (HAVE_UMASK)
+    set_source_files_properties(main.cpp PROPERTIES COMPILE_DEFINITIONS HAVE_UMASK)
+endif()
+
+if (WITH_BUNDLED_ICONS)
+    set_property(SOURCE main.cpp APPEND PROPERTY COMPILE_DEFINITIONS WITH_BUNDLED_ICONS)
+endif()
+
 # Build the executables
 if (WANT_CORE)
     add_executable(quasselcore main.cpp)
