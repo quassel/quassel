@@ -364,23 +364,12 @@ add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
 # Additional compile settings
 #####################################################################
 
-# This sets -fPIC and friends if required by the installed Qt5 library
-if (Qt5_POSITION_INDEPENDENT_CODE)
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-    set(CMAKE_REQUIRED_FLAGS "-DQT_NO_VERSION_TAGGING")
-endif()
-
 # Needed to compile with mingw without kde
 if (MINGW AND NOT WITH_KDE)
     add_definitions(-D_WIN32_WINNT=0x0500)
     message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
     # workaround for bug in mingw gcc 4.0
     add_definitions(-U__STRICT_ANSI__)
-endif()
-
-# Sanitize compiler flags - old versions of KDE set -ansi, which breaks -std=c++11
-if (CMAKE_COMPILER_IS_GNUCXX)
-    string(REPLACE "-ansi" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif()
 
 # Setup LDAP Authentication support.
@@ -448,7 +437,6 @@ if (WIN32)
         set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt")
         set(CMAKE_EXE_LINKER_FLAGS_DEBUGFULL "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
         link_libraries(Version dwmapi shlwapi)
-        set(QT_QTMAIN_LIBRARY Qt5::WinMain)
     endif()
 endif()
 
