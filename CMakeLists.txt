@@ -150,35 +150,32 @@ endif()
 #####################################################################
 
 set(QT_MIN_VERSION "5.5.0")
-add_definitions(-DHAVE_QT5)
 
-find_package(Qt5Core ${QT_MIN_VERSION} QUIET)
-set_package_properties(Qt5Core PROPERTIES TYPE REQUIRED
-    URL "https://www.qt.io/"
-    DESCRIPTION "contains core functionality for Qt"
-)
-
-# find_package without REQUIRED won't check for the version properly; also, older Qt5 versions
-# used Qt5Core_VERSION_STRING... let's just make sure here that we bail out here if our Qt5 is not new enough.
-if (NOT Qt5Core_VERSION OR Qt5Core_VERSION VERSION_LESS ${QT_MIN_VERSION})
-    message(FATAL_ERROR "Could NOT find Qt5 >= version ${QT_MIN_VERSION}!")
+# Required Qt components
+set(qt_components Core Network)
+if (BUILD_GUI)
+    list(APPEND qt_components Gui Widgets)
+endif()
+if (BUILD_CORE)
+    list(APPEND qt_components Script Sql)
 endif()
 
-find_package(Qt5Network QUIET)
-set_package_properties(Qt5Network PROPERTIES TYPE REQUIRED
-    DESCRIPTION "the network module for Qt5"
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS ${qt_components})
+set_package_properties(Qt5 PROPERTIES TYPE REQUIRED
+    URL "https://www.qt.io/"
+    DESCRIPTION "the Qt libraries"
+)
+message(STATUS "Found Qt ${Qt5Core_VERSION}")
+
+# Optional Qt components
+
+find_package(Qt5LinguistTools QUIET)
+set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
+    DESCRIPTION "contains tools for handling translation files"
+    PURPOSE "Required for having translations"
 )
 
 if (BUILD_GUI)
-    find_package(Qt5Gui QUIET)
-    set_package_properties(Qt5Gui PROPERTIES TYPE REQUIRED
-        DESCRIPTION "the GUI module for Qt5"
-    )
-    find_package(Qt5Widgets QUIET)
-    set_package_properties(Qt5Widgets PROPERTIES TYPE REQUIRED
-        DESCRIPTION "the widgets module for Qt5"
-    )
-
     if (NOT WIN32)
         find_package(Qt5DBus QUIET)
         set_package_properties(Qt5DBus PROPERTIES TYPE RECOMMENDED
@@ -209,36 +206,14 @@ if (BUILD_GUI)
         DESCRIPTION "a cross-platform notification framework"
         PURPOSE     "Enable support for the snorenotify framework"
     )
-    if(LibsnoreQt5_FOUND)
-        find_package(LibsnoreSettingsQt5)
-        set_package_properties(LibsnoreSettingsQt5 PROPERTIES TYPE REQUIRED
+    if (LibsnoreQt5_FOUND)
+        find_package(LibsnoreSettingsQt5 QUIET)
+        set_package_properties(LibsnoreSettingsQt5 PROPERTIES TYPE OPTIONAL
             URL "https://projects.kde.org/projects/playground/libs/snorenotify"
             DESCRIPTION "a cross-platform notification framework"
             PURPOSE     "Enable support for the snorenotify framework"
         )
     endif()
-
-    if (WITH_WEBKIT)
-        find_package(Qt5WebKit QUIET)
-        set_package_properties(Qt5WebKit PROPERTIES TYPE RECOMMENDED
-            URL "https://www.qt.io/"
-            DESCRIPTION "a WebKit implementation for Qt"
-            PURPOSE     "Needed for displaying previews for URLs in chat"
-        )
-        if (Qt5WebKit_FOUND)
-            find_package(Qt5WebKitWidgets QUIET)
-            set_package_properties(Qt5WebKitWidgets PROPERTIES TYPE RECOMMENDED
-                URL "https://www.qt.io/"
-                DESCRIPTION "widgets for Qt's WebKit implementation"
-                PURPOSE     "Needed for displaying previews for URLs in chat"
-            )
-        endif()
-    endif()
-
-    if (WITH_WEBKIT AND Qt5WebKitWidgets_FOUND)
-        set(HAVE_WEBKIT true)
-    endif()
-    add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat (legacy)")
 
     if (WITH_WEBENGINE)
         find_package(Qt5WebEngine QUIET)
@@ -262,18 +237,43 @@ if (BUILD_GUI)
     endif()
     add_feature_info("WITH_WEBENGINE, QtWebEngine and QtWebEngineWidgets modules" HAVE_WEBENGINE "Support showing previews for URLs in chat")
 
+    if (NOT HAVE_WEBENGINE)
+        if (WITH_WEBKIT)
+            find_package(Qt5WebKit QUIET)
+            set_package_properties(Qt5WebKit PROPERTIES TYPE OPTIONAL
+                URL "https://www.qt.io/"
+                DESCRIPTION "a WebKit implementation for Qt"
+                PURPOSE     "Needed for displaying previews for URLs in chat"
+                )
+            if (Qt5WebKit_FOUND)
+                find_package(Qt5WebKitWidgets QUIET)
+                set_package_properties(Qt5WebKitWidgets PROPERTIES TYPE OPTIONAL
+                    URL "https://www.qt.io/"
+                    DESCRIPTION "widgets for Qt's WebKit implementation"
+                    PURPOSE     "Needed for displaying previews for URLs in chat"
+                    )
+            endif()
+        endif()
+
+        if (WITH_WEBKIT AND Qt5WebKitWidgets_FOUND)
+            set(HAVE_WEBKIT true)
+        endif()
+        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat (legacy)")
+    endif()
+
     # KDE Frameworks
     ################
 
+    # extra-cmake-modules
     if (WITH_KDE)
         set(ecm_find_type "REQUIRED")
+        find_package(ECM NO_MODULE REQUIRED)
     else()
         # Even with KDE integration disabled, we optionally use tier1 frameworks if we find them
         set(ecm_find_type "RECOMMENDED")
+        find_package(ECM NO_MODULE QUIET)
     endif()
 
-    # extra-cmake-modules
-    find_package(ECM NO_MODULE QUIET)
     set_package_properties(ECM PROPERTIES TYPE ${ecm_find_type}
         URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules"
         DESCRIPTION "extra modules for CMake, maintained by the KDE project"
@@ -283,48 +283,44 @@ if (BUILD_GUI)
     if (ECM_FOUND)
         list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
         if (WITH_KDE)
-            find_package(KF5 COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui QUIET)
+            find_package(KF5 REQUIRED COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui)
             set_package_properties(KF5 PROPERTIES TYPE REQUIRED
                 URL "http://www.kde.org"
                 DESCRIPTION "KDE Frameworks"
                 PURPOSE     "Required for integration into the Plasma desktop"
             )
-        else()
-            find_package(KF5Sonnet QUIET)
-            set_package_properties(KF5Sonnet PROPERTIES TYPE RECOMMENDED
-                URL "http://api.kde.org/frameworks-api/frameworks5-apidocs/sonnet/html"
-                DESCRIPTION "framework for providing spell-checking capabilities"
-                PURPOSE "Enables spell-checking support in input widgets"
-            )
+            message(STATUS "Found KDE Frameworks ${KF5_VERSION}")
         endif()
-    endif()
 
+        # Optional KF5 tier1 components
+        find_package(KF5Sonnet QUIET)
+        set_package_properties(KF5Sonnet PROPERTIES TYPE RECOMMENDED
+            URL "http://api.kde.org/frameworks-api/frameworks5-apidocs/sonnet/html"
+            DESCRIPTION "framework for providing spell-checking capabilities"
+            PURPOSE "Enables spell-checking support in input widgets"
+        )
+    endif()
 endif()
 
 if (BUILD_CORE)
-    find_package(Qt5Script QUIET)
-    set_package_properties(Qt5Script PROPERTIES TYPE REQUIRED
-        DESCRIPTION "provides scripting support for Qt5"
-    )
-    find_package(Qt5Sql QUIET)
-    set_package_properties(Qt5Sql PROPERTIES TYPE REQUIRED
-        DESCRIPTION "the database support module for Qt5"
-    )
-
-    find_package(Qca-qt5 2.0)
+    find_package(Qca-qt5 2.0 QUIET)
     set_package_properties(Qca-qt5 PROPERTIES TYPE RECOMMENDED
         URL "https://projects.kde.org/projects/kdesupport/qca"
         DESCRIPTION "Qt Cryptographic Architecture"
         PURPOSE "Required for encryption support"
     )
 
+    if (WITH_LDAP)
+        find_package(Ldap QUIET)
+        if (LDAP_FOUND)
+            message(STATUS "Enabling LDAP authentication support")
+        else()
+            message(STATUS "Disabling LDAP authentication support")
+        endif()
+    else()
+        message(STATUS "Not enabling LDAP authentication support")
+    endif()
 endif()
-
-find_package(Qt5LinguistTools QUIET)
-set_package_properties(Qt5LinguistTools PROPERTIES TYPE RECOMMENDED
-    DESCRIPTION "contains tools for handling translation files"
-    PURPOSE "Required for having translations"
-)
 
 # Non-Qt-based packages
 
@@ -370,19 +366,6 @@ if (MINGW AND NOT WITH_KDE)
     message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
     # workaround for bug in mingw gcc 4.0
     add_definitions(-U__STRICT_ANSI__)
-endif()
-
-# Setup LDAP Authentication support.
-#####################################################################
-if (WITH_LDAP)
-    find_package(Ldap)
-    if (LDAP_FOUND)
-        message(STATUS "Enabling LDAP authentication support")
-    else()
-        message(STATUS "Disabling LDAP authentication support")
-    endif()
-else()
-    message(STATUS "Not enabling LDAP authentication support")
 endif()
 
 # Setup support for KDE Frameworks
