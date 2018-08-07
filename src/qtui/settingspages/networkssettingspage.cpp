@@ -207,6 +207,9 @@ void NetworksSettingsPage::load()
     sslUpdated();
 #endif
 
+    // Reset network capability status in case no valid networks get selected (a rare situation)
+    resetNetworkCapStates();
+
     foreach(NetworkId netid, Client::networkIds()) {
         clientNetworkAdded(netid);
     }
@@ -355,10 +358,17 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item)
 }
 
 
+void NetworksSettingsPage::resetNetworkCapStates()
+{
+    // Set the status to a blank (invalid) network ID, reseting all UI
+    setNetworkCapStates(NetworkId());
+}
+
+
 void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
 {
     const Network *net = Client::network(id);
-    if (Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation) && net) {
+    if (net && Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation)) {
         // Capability negotiation is supported, network exists.
         // Check if the network is connected.  Don't use net->isConnected() as that won't be true
         // during capability negotiation when capabilities are added and removed.
