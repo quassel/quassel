@@ -20,6 +20,8 @@
 
 #include "messagefilter.h"
 
+#include <algorithm>
+
 #include "buffersettings.h"
 #include "client.h"
 #include "buffermodel.h"
@@ -81,7 +83,7 @@ void MessageFilter::messageTypeFilterChanged()
 
     if (_messageTypeFilter != newFilter) {
         _messageTypeFilter = newFilter;
-        _filteredQuitMsgs.clear();
+        _filteredQuitMsgTime.clear();
         invalidateFilter();
     }
 }
@@ -221,17 +223,30 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
         if (myNetworkId != msgNetworkId)
             return false;
 
+        // Extract timestamp and nickname from the new quit message
         qint64 messageTimestamp = sourceModel()->data(sourceIdx, MessageModel::TimestampRole)
                 .value<QDateTime>().toMSecsSinceEpoch();
-        QString quiter = sourceModel()->data(sourceIdx, Qt::DisplayRole).toString().section(' ', 0, 0, QString::SectionSkipEmpty).toLower();
+        QString quiter = nickFromMask(sourceModel()->data(sourceIdx, MessageModel::MessageRole)
+                                      .value<Message>().sender()).toLower();
+
+        // Check that nickname matches query name
         if (quiter != bufferName().toLower())
             return false;
 
-        if (_filteredQuitMsgs.contains(quiter, messageTimestamp))
+        // Check if a quit message was already forwarded within +/- 1000 ms
+        static constexpr qint64 MAX_QUIT_DELTA_MS = 1 * 1000;
+        // No need to check if it's the appropriate buffer, each query has a unique message filter
+        if (std::binary_search(_filteredQuitMsgTime.begin(), _filteredQuitMsgTime.end(),
+                               messageTimestamp,
+                               [](qint64 a, qint64 b) { return ((a + MAX_QUIT_DELTA_MS) < b); } )) {
+            // New element is less than if at least 1000 ms older/newer
+            // Match found, no need to forward another quit message
             return false;
+        }
 
+        // Mark query as having a quit message inserted
         MessageFilter *that = const_cast<MessageFilter *>(this);
-        that->_filteredQuitMsgs.insert(quiter,  messageTimestamp);
+        that->_filteredQuitMsgTime.insert(messageTimestamp);
         return true;
     }
 }
