@@ -22,6 +22,7 @@
 #define MESSAGEFILTER_H_
 
 #include <QSortFilterProxyModel>
+#include <set>
 
 #include "bufferinfo.h"
 #include "client.h"
@@ -62,7 +63,7 @@ private:
     void init();
 
     QSet<BufferId> _validBuffers;
-    QMultiHash<QString, qint64> _filteredQuitMsgs;
+    std::set<qint64> _filteredQuitMsgTime; ///< Timestamps (ms) of already forwarded quit messages
     int _messageTypeFilter;
 
     int _userNoticesTarget;
