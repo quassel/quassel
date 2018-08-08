@@ -36,9 +36,8 @@
 #include "types.h"
 #include "util.h"
 
-// Currently building with LDAP bindings is optional.
 #ifdef HAVE_LDAP
-#include "ldapauthenticator.h"
+#  include "ldapauthenticator.h"
 #endif
 
 // migration related

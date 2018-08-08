@@ -312,13 +312,11 @@ if (BUILD_CORE)
 
     if (WITH_LDAP)
         find_package(Ldap QUIET)
-        if (LDAP_FOUND)
-            message(STATUS "Enabling LDAP authentication support")
-        else()
-            message(STATUS "Disabling LDAP authentication support")
-        endif()
-    else()
-        message(STATUS "Not enabling LDAP authentication support")
+        set_package_properties(Ldap PROPERTIES TYPE OPTIONAL
+            URL "http://www.openldap.org/"
+            DESCRIPTION "LDAP (Lightweight Directory Access Protocol) libraries"
+            PURPOSE "Enables core user authentication via LDAP"
+        )
     endif()
 endif()
 
