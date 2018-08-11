@@ -43,7 +43,7 @@ if(WANT_CORE)
   add_dependencies(quasselcore po)
   set_target_properties(quasselcore PROPERTIES
                                     COMPILE_FLAGS "-DBUILD_CORE"
-                                    OUTPUT_NAME ../quasselcore)
+                                    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
   target_link_libraries(quasselcore mod_core mod_common ${COMMON_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
   install(TARGETS quasselcore RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
@@ -58,7 +58,7 @@ if(WANT_QTCLIENT)
   add_dependencies(quasselclient po)
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DBUILD_QTUI"
-                                      OUTPUT_NAME ../quasselclient)
+                                      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
   install(TARGETS quasselclient RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
@@ -69,7 +69,7 @@ if(WANT_MONO)
   add_dependencies(quassel po)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DBUILD_MONO"
-                                OUTPUT_NAME ../quassel)
+                                RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${COMMON_LIBRARIES} ${CLIENT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${QT_QTMAIN_LIBRARY})
   install(TARGETS quassel RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
