@@ -52,13 +52,13 @@ if (HAVE_SSL)
 endif()
 
 if (HAVE_UMASK)
-    set_source_files_properties(oidentdconfiggenerator.cpp PROPERTIES COMPILE_DEFINITIONS HAVE_UMASK)
+    set_property(SOURCE oidentdconfiggenerator.cpp APPEND PROPERTY COMPILE_DEFINITIONS HAVE_UMASK)
 endif()
 
 if (Ldap_FOUND)
     target_sources(${TARGET} PRIVATE ldapauthenticator.cpp)
     target_link_libraries(${TARGET} PRIVATE Ldap::Ldap)
-    set_source_files_properties(core.cpp PROPERTIES COMPILE_DEFINITIONS HAVE_LDAP)
+    set_property(SOURCE core.cpp APPEND PROPERTY COMPILE_DEFINITIONS HAVE_LDAP)
 endif()
 
 if (Qca-qt5_FOUND)
