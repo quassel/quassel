@@ -33,8 +33,6 @@ target_sources(${TARGET} PRIVATE
 
     # needed for automoc
     abstractui.h
-
-    ${CLIENT_RCS}
 )
 
 target_link_libraries(${TARGET}
@@ -45,3 +43,5 @@ target_link_libraries(${TARGET}
         Qt5::Widgets  # QAbstractItemView in BufferModel
         Quassel::Common
 )
+
+target_link_if_exists(${TARGET} PUBLIC Quassel::Resource::Data)

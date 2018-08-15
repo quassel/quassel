@@ -42,9 +42,6 @@ target_sources(${TARGET} PRIVATE
 
     # needed for automoc
     coreeventmanager.h
-
-    # Resources
-    sql.qrc
 )
 
 if (HAVE_SSL)
@@ -75,3 +72,6 @@ target_link_libraries(${TARGET}
         Qt5::Sql
         Quassel::Common
 )
+
+quassel_add_resource(Sql PATTERNS SQL/*.sql)
+target_link_libraries(${TARGET} PUBLIC Quassel::Resource::Sql)
