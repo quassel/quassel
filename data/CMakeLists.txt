@@ -14,7 +14,10 @@ if (BUILD_GUI)
     endif()
 
     if (EMBED_DATA)
-        set(CLIENT_RCS ${CLIENT_RCS} ${CMAKE_CURRENT_SOURCE_DIR}/data.qrc PARENT_SCOPE)
+        quassel_add_resource(Data PREFIX data PATTERNS
+            networks.ini
+            stylesheets/default.qss
+        )
     else()
         install(FILES networks.ini DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel)
         install(DIRECTORY stylesheets DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel)

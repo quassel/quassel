@@ -60,3 +60,11 @@ if (KF5Sonnet_FOUND)
     target_link_libraries(${TARGET} PRIVATE KF5::SonnetUi)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_SONNET)
 endif()
+
+target_link_if_exists(${TARGET}
+    PUBLIC
+        Quassel::Resource::HicolorIcons
+        Quassel::Resource::Icons
+        Quassel::Resource::IconThemes
+        Quassel::Resource::Pics
+)

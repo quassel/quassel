@@ -56,8 +56,6 @@ target_sources(${TARGET} PRIVATE
     # needed for automoc
     irccap.h
     protocol.h
-
-    ${COMMON_RCS}
 )
 
 # Needed for finding the generated version.h
@@ -91,6 +89,4 @@ if (APPLE)
     target_link_libraries(${TARGET} PUBLIC "-framework CoreServices" "-framework CoreFoundation")
 endif()
 
-# This is needed so translations are generated before trying to build the qrc.
-# Should probably find a nicer solution with proper dependencies between the involved files, though...
-add_dependencies(${TARGET} po)
+target_link_if_exists(${TARGET} PUBLIC Quassel::Resource::I18n)
