@@ -1,71 +1,84 @@
-# Generate and add translations
-# The LINGUAS variable can be used to limit that set
+# Generate translations
+# The LINGUAS environment variable can be used to limit the set of supported languages
+
+# Generate a .ts file from a .po file
+function(generate_ts basename)
+    set(pofile ${CMAKE_CURRENT_SOURCE_DIR}/${basename}.po)
+    set(tsfile ${CMAKE_CURRENT_BINARY_DIR}/${basename}.ts)
+
+    add_custom_command(VERBATIM
+        COMMENT "Preparing translation for language '${basename}'"
+        COMMAND $<TARGET_FILE:Qt5::lconvert> -i ${pofile} -target-language ${basename} -of ts -o ${tsfile}
+        DEPENDS ${pofile}
+        OUTPUT  ${tsfile}
+    )
+endfunction()
+
+# Clear variables just in case
+set(tsfiles )
+set(qmfiles )
+set(linguas )
 
 if (TARGET Qt5::lconvert)
-  # get environment variable for translations
-  set(LINGUAS "$ENV{LINGUAS}")
-  string(REGEX REPLACE "[ \t]+" \; output "${LINGUAS}")
-  # Find more languages
-  # We support xx.po and xx_YY.po, and additionally translations for qt using qt_xx.po or qt_xx_YY.po
-  file(GLOB avail_pofiles *.po)
-  foreach(PO_FILE ${avail_pofiles})
-    get_filename_component(basename ${PO_FILE} NAME_WE)
-    # CMake can't use MATCH to get the second catch...
-    string(REGEX REPLACE "(qt_)?([a-zA-Z]+)(_.+)?$" "\\2" lang ${basename})
+    # LINGUAS can be used to limit the included languages
+    set(LINGUAS "$ENV{LINGUAS}")
+    # Normalize and convert into list
+    string(REGEX REPLACE "[ \t,;]+" ";" LINGUAS "${LINGUAS}")
 
-    # test if we want this language
-    set(flg 1)
-    if(LINGUAS)
-      string(REGEX MATCH "${lang}" flg ${LINGUAS})
+    # We support xx.po and xx_YY.po, and additionally translations for qt using qt_xx.po or qt_xx_YY.po
+    file(GLOB pofiles *.po)
+    foreach(pofile ${pofiles})
+        get_filename_component(basename ${pofile} NAME_WE)
+        # CMake can't use MATCH to get the second catch...
+        string(REGEX REPLACE "(qt_)?([a-zA-Z]+)(_.+)?$" "\\2" lang ${basename})
+        # Test if we want this language
+        set(idx 0)
+        if(LINGUAS)
+            list(FIND LINGUAS ${lang} idx)  # idx will be -1 if ${lang} is not found in LINGUAS
+        endif()
+        if(idx GREATER -1)
+            generate_ts(${basename})
+            list(APPEND tsfiles ${CMAKE_CURRENT_BINARY_DIR}/${basename}.ts)
+            list(APPEND qmfiles ${CMAKE_CURRENT_BINARY_DIR}/${basename}.qm)
+            list(APPEND linguas ${lang})
+        endif()
+    endforeach()
+
+    if (tsfiles)
+        # Synchronize the (possibly outdated) .ts files with the current source tree
+        add_custom_command(VERBATIM
+            COMMENT "Syncing translations"
+            COMMAND $<TARGET_FILE:Qt5::lupdate> -silent ${CMAKE_SOURCE_DIR}/src -ts ${tsfiles}
+            COMMAND ${CMAKE_COMMAND} -E touch tsfiles.done
+            DEPENDS ${tsfiles}
+            OUTPUT tsfiles.depends
+        )
+
+        # Generate the final translation files (.qm) for use by Qt
+        add_custom_command(VERBATIM
+            COMMENT "Compressing translations"
+            COMMAND $<TARGET_FILE:Qt5::lrelease> -silent ${tsfiles}
+            DEPENDS tsfiles.depends
+            OUTPUT ${qmfiles}
+        )
+
+        # Curate the language list and give diagnostic output
+        list(REMOVE_DUPLICATES linguas)
+        list(SORT linguas)
+        string(REPLACE ";" ", " linguas_string "${linguas}")
+        message(STATUS "Enabling translations for: ${linguas_string}")
+    else()
+        message(STATUS "No translations enabled")
     endif()
-    if(flg)
-      generate_ts(QM ${basename})
-      generate_qm(QM ${basename})
-      list(APPEND qm_files ${QM})
-      list(APPEND gen_linguas ${lang})
-    endif()
-  endforeach(PO_FILE ${avail_pofiles})
-  if(gen_linguas)
-    list(REMOVE_DUPLICATES gen_linguas)
-  endif()
-  message(STATUS "Including languages: ${gen_linguas}")
 else()
-  message(STATUS "WARNING: lconvert not found, you won't have translations!")
+    message(WARNING "Qt Linguist Tools not found, you won't have translations!")
 endif()
 
-# For a Win32 build, we need to include Qt translations if available
-if(QT_TRANSLATIONS_DIR)
-  if(WIN32)
-    foreach(LANG ${gen_linguas})
-      file(GLOB lang_files ${QT_TRANSLATIONS_DIR}/qt_${LANG}*.qm)
-      foreach(absfile ${lang_files})
-        get_filename_component(filename ${absfile} NAME)
-        message(STATUS "Importing ${filename}")
-        configure_file(${absfile} ${CMAKE_CURRENT_BINARY_DIR}/${filename} COPYONLY)
-        list(APPEND qm_files ${CMAKE_CURRENT_BINARY_DIR}/${filename})
-      endforeach(absfile ${lang_files})
-    endforeach(LANG ${gen_linguas})
-  endif()
-endif()
+# Always generate translations
+add_custom_target(translations ALL DEPENDS ${qmfiles})
 
-# Write resource file
-set(resfile ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc)
-file(WRITE ${resfile} "<!DOCTYPE RCC><RCC version=\"1.0\">\n"
-                      "<qresource prefix=\"/i18n\">\n")
-foreach(file ${qm_files})
-  get_filename_component(file ${file} NAME)
-  file(APPEND ${resfile} "    <file>${file}</file>\n")
-endforeach(file ${qm_files})
-file(APPEND ${resfile} "</qresource>\n</RCC>\n")
-
-#add_custom_command(OUTPUT ${resfile} DEPENDS ${qm_files})
-set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${qm_files};i18n.qrc")
-
-if(EMBED_DATA)
-    quassel_add_module(Resource::I18n)
-    target_sources(${TARGET} PRIVATE ${resfile})
-    add_custom_target(po DEPENDS ${qm_files})
-    add_dependencies(${TARGET} po)
+if (EMBED_DATA)
+    quassel_add_resource(I18n PREFIX i18n BASEDIR ${CMAKE_CURRENT_BINARY_DIR} PATTERNS ${qmfiles} DEPENDS translations)
 else()
-    install(FILES ${qm_files} DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/translations)
+    install(FILES ${qmfiles} DESTINATION ${CMAKE_INSTALL_DATADIR}/quassel/translations)
 endif()

@@ -158,38 +158,3 @@ function(target_link_if_exists _target)
         endforeach()
     endif()
 endfunction()
-
-######################################
-# Macros for dealing with translations
-######################################
-
-# This generates a .ts from a .po file
-macro(generate_ts outvar basename)
-  set(input ${basename}.po)
-  set(output ${CMAKE_BINARY_DIR}/po/${basename}.ts)
-  add_custom_command(OUTPUT ${output}
-          COMMAND $<TARGET_PROPERTY:Qt5::lconvert,LOCATION>
-          ARGS -i ${input}
-               -of ts
-               -o ${output}
-          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/po
-# This is a workaround to add (duplicate) strings that lconvert missed to the .ts
-          COMMAND $<TARGET_PROPERTY:Qt5::lupdate,LOCATION>
-          ARGS -silent
-               ${CMAKE_SOURCE_DIR}/src/
-               -ts ${output}
-          DEPENDS ${basename}.po)
-  set(${outvar} ${output})
-endmacro(generate_ts outvar basename)
-
-# This generates a .qm from a .ts file
-macro(generate_qm outvar basename)
-  set(input ${CMAKE_BINARY_DIR}/po/${basename}.ts)
-  set(output ${CMAKE_BINARY_DIR}/po/${basename}.qm)
-  add_custom_command(OUTPUT ${output}
-          COMMAND $<TARGET_PROPERTY:Qt5::lrelease,LOCATION>
-          ARGS -silent
-               ${input}
-          DEPENDS ${basename}.ts)
-  set(${outvar} ${output})
-endmacro(generate_qm outvar basename)
