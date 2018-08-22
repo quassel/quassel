@@ -388,6 +388,31 @@ endif()
 # This needs to come after setting up KDE integration, so we can use KDE-specific paths
 include(QuasselInstallDirs)
 
+# RPATH and output settings
+#####################################################################
+
+# Build artifacts in a well-known location; especially important for Windows DLLs
+# (which go into RUNTIME_OUTPUT_DIRECTORY and can thus be found by executables)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+
+# These RPATH settings allow for running directly from the build dir
+set(CMAKE_SKIP_BUILD_RPATH            FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE )
+
+# Set install RPATH only if libdir isn't a system directory
+if (IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}")
+    set(libdir "${CMAKE_INSTALL_LIBDIR}")
+else()
+    set(libdir "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+endif()
+list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${libdir}" is_systemdir)
+if ("${is_systemdir}" STREQUAL "-1")
+   set(CMAKE_INSTALL_RPATH "${libdir}")
+endif()
+
 # Various config-dependent checks and settings
 #####################################################################
 
@@ -467,7 +492,6 @@ add_subdirectory(data)
 add_subdirectory(icons)
 add_subdirectory(pics)
 add_subdirectory(po)
-
 
 # Set up and display feature summary
 #####################################################################

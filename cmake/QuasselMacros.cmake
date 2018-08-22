@@ -30,19 +30,32 @@ function(quassel_add_module _module)
     string(REPLACE "::" "_" target ${target})
     string(REPLACE "_" "-" output_name ${target})
 
-    add_library(${target} STATIC "")
+    # On Windows, building shared libraries requires export headers.
+    # Let's bother with that later.
+    if (WIN32)
+        set(buildmode STATIC)
+    else()
+        set(buildmode SHARED)
+    endif()
+
+    add_library(${target} ${buildmode} "")
     add_library(${alias} ALIAS ${target})
 
-    set_target_properties(${target} PROPERTIES
-        OUTPUT_NAME ${output_name}
-    )
-
+    target_link_libraries(${target} PRIVATE Qt5::Core)
     target_include_directories(${target}
         PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR} # for generated files
     )
-
     target_compile_features(${target} PUBLIC ${QUASSEL_COMPILE_FEATURES})
+
+    set_target_properties(${target} PROPERTIES
+        OUTPUT_NAME ${output_name}
+        VERSION ${QUASSEL_MAJOR}.${QUASSEL_MINOR}.${QUASSEL_PATCH}
+    )
+
+    if (buildmode STREQUAL "SHARED")
+        install(TARGETS ${target} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    endif()
 
     # Export the target name for further use
     set(TARGET ${target} PARENT_SCOPE)
