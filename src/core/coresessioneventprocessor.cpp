@@ -1054,13 +1054,13 @@ void CoreSessionEventProcessor::processIrcEvent322(IrcEvent *e)
     switch (e->params().count()) {
     case 3:
         topic = e->params()[2];
-        [[clang::fallthrough]];
+        // fallthrough
     case 2:
         userCount = e->params()[1].toUInt();
-        [[clang::fallthrough]];
+        // fallthrough
     case 1:
         channelName = e->params()[0];
-        [[clang::fallthrough]];
+        // fallthrough
     default:
         break;
     }
