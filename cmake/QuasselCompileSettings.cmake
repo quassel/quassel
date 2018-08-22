@@ -1,62 +1,63 @@
 # This file contains compile flags and general build configuration for Quassel
 #
-# (C) 2014 by the Quassel Project <devel@quassel-irc.org>
+# (C) 2014-2018 by the Quassel Project <devel@quassel-irc.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
+# Helper function to check for linker flag support
 include(CheckCXXCompilerFlag)
-
-# Enable various flags on gcc
-if (CMAKE_COMPILER_IS_GNUCXX)
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.8")
-        message(FATAL_ERROR "Your compiler is too old; you need GCC 4.8+, Clang 3.3+, MSVC 19.0+, or any other compiler with full C++11 support.")
+function(check_and_set_linker_flag flag name outvar)
+    cmake_push_check_state(RESET)
+    set(CMAKE_REQUIRED_FLAGS "${flag}")
+    check_cxx_compiler_flag("" LINKER_SUPPORTS_${name})
+    if (LINKER_SUPPORTS_${name})
+        set(${outvar} "${${outvar}} ${flag}" PARENT_SCOPE)
     endif()
+    cmake_pop_check_state()
+endfunction()
 
-    # Let's just hope that all gccs support these options and skip the tests...
-    # -fno-strict-aliasing is needed apparently for Qt < 4.6
-    set(CMAKE_CXX_FLAGS                  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing -Wundef -Wcast-align -Wpointer-arith -Wformat-security -fno-check-new -fno-common")
-    #  set(CMAKE_CXX_FLAGS_RELEASE          "-O2")   # use CMake default
-    #  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -O2")  # use CMake default
-    set(CMAKE_CXX_FLAGS_DEBUG             "-g -ggdb -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
+# General compile settings
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED OFF)    # Rely on compile features if standard is not supported
+set(CMAKE_CXX_EXTENSIONS OFF)           # We like to be standard conform
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-    check_cxx_compiler_flag(-Woverloaded-virtual CXX_W_OVERLOADED_VIRTUAL)
-    if(CXX_W_OVERLOADED_VIRTUAL)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Woverloaded-virtual")
-    endif()
+# For GCC and Clang, enable a whole bunch of warnings
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(
+        -Wall
+        -Wcast-align
+        -Wextra
+        -Wformat-security
+        -Wno-unknown-pragmas
+        -Wnon-virtual-dtor
+        -Wpedantic
+        -Wundef
+        -fno-common
+        -fstack-protector-strong
+        -fvisibility=default
+        -fvisibility-inlines-hidden
+        "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
+    )
 
-    # Just for miniz
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
+    # Check for and set linker flags
+    check_and_set_linker_flag("-Wl,-z,relro"    RELRO     LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,-z,now"      NOW       LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,--as-needed" AS_NEEDED LINKER_FLAGS)
 
-# ... and for Clang
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.3")
-        message(FATAL_ERROR "Your compiler is too old; you need Clang 3.3+, GCC 4.8+, MSVC 19.0+, or any other compiler with full C++11 support.")
-    endif()
-
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wnon-virtual-dtor -Wno-long-long -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wextra -Wpointer-arith -Wformat-security -Woverloaded-virtual -fno-common -Wno-deprecated-register")
-    #  set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -DNDEBUG -DQT_NO_DEBUG")     # Use CMake default
-    #  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG -DQT_NO_DEBUG")  # Use CMake default
-    set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -fno-inline")
-
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-function -Wno-undef -fno-strict-aliasing")
-
-# For MSVC, at least do a version sanity check...
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19.0")
-        message(FATAL_ERROR "Your compiler is too old; you need at least Visual Studio 2015 (MSVC 19.0+), GCC 4.8+, Clang 3.3+, or any other compiler with full C++11 support.")
-    endif()
-
-    # ... and enable exception handling (required for STL types)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
-
-# Unknown/unsupported compiler
+    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS}")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LINKER_FLAGS}")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
 else()
-    message(WARNING "Unknown or unsupported compiler. Make sure to enable C++11 support. Good luck.")
+    # For other compilers, we rely on default settings (unless someone provides a good set of options; patches welcome!)
 endif()
 
 # Mac build stuff
 if (APPLE AND DEPLOY)
     set(CMAKE_OSX_ARCHITECTURES "x86_64")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.9 -stdlib=libc++")
+    add_compile_options(
+        -mmacosx-version-min=10.9
+        -stdlib=libc++
+    )
 endif()
