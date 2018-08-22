@@ -117,7 +117,6 @@ QByteArray Cipher::decrypt(QByteArray cipherText)
     // (if cbc and no error we parse cbc) || (if ecb and error we parse cbc)
     if ((m_cbc && !error) || (!m_cbc && error))
     {
-        cipherText = cipherText;
         temp = blowfishCBC(cipherText, false);
 
         if (temp == cipherText)
