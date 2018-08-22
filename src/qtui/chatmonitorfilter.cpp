@@ -34,6 +34,9 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     _showSenderBrackets = defaultSettings.showSenderBrackets();
     defaultSettings.notify("ShowSenderBrackets", this, SLOT(showSenderBracketsSettingChanged(const QVariant &)));
 
+    // NOTE: Whenever changing defaults here, also update ChatMonitorSettingsPage::loadSettings()
+    // and ChatMonitorSettingsPage::defaults() to match
+
     // Chat Monitor specific configuration
     ChatViewSettings viewSettings(idString());
     _showFields = viewSettings.value("ShowFields", AllFields).toInt();
@@ -50,12 +53,13 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     QString alwaysOwnSettingsId = "AlwaysOwn";
 
     _showHighlights = viewSettings.value(showHighlightsSettingsId, false).toBool();
-    _operationMode = viewSettings.value(operationModeSettingsId, 0).toInt();
+    _operationMode =
+            viewSettings.value(operationModeSettingsId, ChatViewSettings::InvalidMode).toInt();
     // read configured list of buffers to monitor/ignore
     foreach(QVariant v, viewSettings.value(buffersSettingsId, QVariant()).toList())
     _bufferIds << v.value<BufferId>();
     _showBacklog = viewSettings.value(showBacklogSettingsId, true).toBool();
-    _includeRead = viewSettings.value(includeReadSettingsId, true).toBool();
+    _includeRead = viewSettings.value(includeReadSettingsId, false).toBool();
     _alwaysOwn = viewSettings.value(alwaysOwnSettingsId, false).toBool();
 
     viewSettings.notify(showHighlightsSettingsId, this, SLOT(showHighlightsSettingChanged(const QVariant &)));
