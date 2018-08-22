@@ -2024,21 +2024,6 @@ QMap<UserId, QString> PostgreSqlStorage::getAllAuthUserNames()
 }
 
 
-QString PostgreSqlStorage::getAuthUserName(UserId user)
-{
-    QString authusername;
-    QSqlQuery query(logDb());
-    query.prepare(queryString("select_authusername"));
-    query.bindValue(":userid", user.toInt());
-    safeExec(query);
-    watchQuery(query);
-
-    if (query.first()) {
-         authusername = query.value(0).toString();
-    }
-    return authusername;
-}
-
 // void PostgreSqlStorage::safeExec(QSqlQuery &query) {
 //   qDebug() << "PostgreSqlStorage::safeExec";
 //   qDebug() << "   executing:\n" << query.executedQuery();

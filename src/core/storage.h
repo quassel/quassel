@@ -533,12 +533,6 @@ public slots:
      */
     virtual QMap<UserId, QString> getAllAuthUserNames() = 0;
 
-    //! Get the auth username associated with a userId
-    /** \param user  The user to retrieve the username for
-     *  \return      The username for the user
-     */
-    virtual QString getAuthUserName(UserId user) = 0;
-
 signals:
     //! Sent when a new BufferInfo is created, or an existing one changed somehow.
     void bufferInfoUpdated(UserId user, const BufferInfo &);

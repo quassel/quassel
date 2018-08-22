@@ -2178,25 +2178,6 @@ QMap<UserId, QString> SqliteStorage::getAllAuthUserNames()
 }
 
 
-QString SqliteStorage::getAuthUserName(UserId user) {
-    QString authusername;
-    QSqlQuery query(logDb());
-    query.prepare(queryString("select_authusername"));
-    query.bindValue(":userid", user.toInt());
-
-    lockForRead();
-    safeExec(query);
-    watchQuery(query);
-    unlock();
-
-    if (query.first()) {
-        authusername = query.value(0).toString();
-    }
-
-    return authusername;
-}
-
-
 QString SqliteStorage::backlogFile()
 {
     return Quassel::configDirPath() + "quassel-storage.sqlite";

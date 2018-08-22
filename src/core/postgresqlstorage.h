@@ -120,7 +120,6 @@ public slots:
 
     /* Sysident handling */
     QMap<UserId, QString> getAllAuthUserNames() override;
-    QString getAuthUserName(UserId user) override;
 
 protected:
     bool initDbSession(QSqlDatabase &db) override;

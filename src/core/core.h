@@ -556,13 +556,6 @@ public:
         return instance()->_storage->setBufferLastSeenMsg(user, bufferId, msgId);
     }
 
-    //! Get the auth username associated with a userId
-    /** \param user  The user to retrieve the username for
-     *  \return      The username for the user
-     */
-    static inline QString getAuthUserName(UserId user) {
-        return instance()->_storage->getAuthUserName(user);
-    }
 
     //! Get a usable sysident for the given user in oidentd-strict mode
     /** \param user    The user to retrieve the sysident for

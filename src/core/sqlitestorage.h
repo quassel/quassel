@@ -121,7 +121,6 @@ public slots:
 
     /* Sysident handling */
     QMap<UserId, QString> getAllAuthUserNames() override;
-    QString getAuthUserName(UserId user) override;
 
 protected:
     void setConnectionProperties(const QVariantMap &properties,
