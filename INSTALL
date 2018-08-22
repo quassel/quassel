@@ -23,14 +23,15 @@ Prerequisites
 -------------
 
 Of course, for building Quassel you need the usual set of build tools, for
-example a compiler. As we use a subset of the C++11 standard, we require a
-fairly recent compiler:
+example a compiler. The codebase uses the C++14 standard, so a reasonably recent
+compiler is needed:
 
-- gcc 4.8+ (available for most platforms), or
-- Clang 3.3+ (available for most platforms), or
-- XCode 5.0+ (available for Max OS X and based on Clang), or
-- Visual C++ 2015 (available for Windows™), or
-- any other compiler with decent C++11 support
+- GCC 5.0+ (available for most platforms), or
+- Clang 3.4+ (available for most platforms), or
+- XCode 6.0+ (available for Max OS X and based on Clang), or
+- MSVC 19+ (part of Visual Studio 2017 on Windows™)
+
+Other compilers may work, but are not officially supported.
 
 Furthermore, CMake 3.5 or later is required.
 

@@ -7,6 +7,7 @@
 ###################################################################################################
 
 include(CMakeParseArguments)
+include(QuasselCompileFeatures)
 
 ###################################################################################################
 # Adds a library target for a Quassel module.
@@ -40,6 +41,8 @@ function(quassel_add_module _module)
         PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR} # for generated files
     )
+
+    target_compile_features(${target} PUBLIC ${QUASSEL_COMPILE_FEATURES})
 
     # Export the target name for further use
     set(TARGET ${target} PARENT_SCOPE)
