@@ -77,9 +77,12 @@ bool ChatMonitorSettingsPage::hasDefaults() const
 
 void ChatMonitorSettingsPage::defaults()
 {
+    // NOTE: Whenever changing defaults here, also update ChatMonitorFilter::ChatMonitorFilter()
+    // and ChatMonitorSettingsPage::loadSettings() to match
+
     settings["OperationMode"] = ChatViewSettings::OptOut;
     settings["ShowHighlights"] = false;
-    settings["ShowOwnMsgs"] = false;
+    settings["ShowOwnMsgs"] = true;
     settings["AlwaysOwn"] = false;
     settings["Buffers"] = QVariant();
     settings["Default"] = true;
@@ -130,15 +133,18 @@ void ChatMonitorSettingsPage::load()
 
 void ChatMonitorSettingsPage::loadSettings()
 {
+    // NOTE: Whenever changing defaults here, also update ChatMonitorFilter::ChatMonitorFilter()
+    // and ChatMonitorSettingsPage::defaults() to match
     ChatViewSettings chatViewSettings("ChatMonitor");
-    settings["OperationMode"] = (ChatViewSettings::OperationMode)chatViewSettings.value("OperationMode", ChatViewSettings::OptOut).toInt();
 
+    settings["OperationMode"] = (ChatViewSettings::OperationMode)
+            chatViewSettings.value("OperationMode", ChatViewSettings::OptOut).toInt();
     settings["ShowHighlights"] = chatViewSettings.value("ShowHighlights", false);
-    settings["ShowOwnMsgs"] = chatViewSettings.value("ShowOwnMsgs", false);
+    settings["ShowOwnMsgs"] = chatViewSettings.value("ShowOwnMsgs", true);
     settings["AlwaysOwn"] = chatViewSettings.value("AlwaysOwn", false);
     settings["Buffers"] = chatViewSettings.value("Buffers", QVariantList());
     settings["ShowBacklog"] = chatViewSettings.value("ShowBacklog", true);
-    settings["IncludeRead"] = chatViewSettings.value("IncludeRead", true);
+    settings["IncludeRead"] = chatViewSettings.value("IncludeRead", false);
 }
 
 
