@@ -67,7 +67,7 @@ void TopicWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
     QModelIndex currentTopicIndex = selectionModel()->currentIndex().sibling(selectionModel()->currentIndex().row(), 1);
     if (changedArea.contains(currentTopicIndex))
         setTopic(selectionModel()->currentIndex());
-};
+}
 
 void TopicWidget::setUseCustomFont(const QVariant &v)
 {

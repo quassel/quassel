@@ -38,7 +38,7 @@ namespace {
 QByteArray msgWithTime(const Logger::LogEntry &msg)
 {
     return (msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + msg.message + "\n").toUtf8();
-};
+}
 
 }
 

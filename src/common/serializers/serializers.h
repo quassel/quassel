@@ -114,4 +114,4 @@ namespace Serializers {
     bool deserialize(QDataStream &stream, const Quassel::Features &features, NetworkInfo &data);
     bool deserialize(QDataStream &stream, const Quassel::Features &features, Identity &data);
     bool deserialize(QDataStream &stream, const Quassel::Features &features, Network::Server &data);
-};
+}

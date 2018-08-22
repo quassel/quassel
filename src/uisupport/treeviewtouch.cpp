@@ -78,4 +78,4 @@ void TreeViewTouch::mousePressEvent(QMouseEvent *event) {
 void TreeViewTouch::mouseMoveEvent(QMouseEvent *event) {
     if (!_touchScrollInProgress)
         QTreeView::mouseMoveEvent(event);
-};
+}

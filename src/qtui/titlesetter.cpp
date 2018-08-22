@@ -44,7 +44,8 @@ void TitleSetter::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
     QModelIndex currentTopicIndex = selectionModel()->currentIndex().sibling(selectionModel()->currentIndex().row(), 0);
     if (changedArea.contains(currentTopicIndex))
         changeWindowTitle(currentTopicIndex);
-};
+}
+
 
 void TitleSetter::changeWindowTitle(const QModelIndex &index)
 {

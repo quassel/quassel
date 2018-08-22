@@ -374,7 +374,7 @@ const Network *InputWidget::currentNetwork() const
 BufferInfo InputWidget::currentBufferInfo() const
 {
     return selectionModel()->currentIndex().data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-};
+}
 
 
 void InputWidget::applyFormatActiveColor()

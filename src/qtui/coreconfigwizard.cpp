@@ -547,4 +547,4 @@ int SyncRelayPage::nextId() const
     emit startOver();
     return 0;
 }
-};  /* namespace CoreConfigWizardPages */
+}  /* namespace CoreConfigWizardPages */

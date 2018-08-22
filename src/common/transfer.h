@@ -32,14 +32,14 @@ class Transfer : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
-    Q_PROPERTY(QUuid uuid READ uuid);
-    Q_PROPERTY(Transfer::Status status READ status WRITE setStatus NOTIFY statusChanged);
-    Q_PROPERTY(Transfer::Direction direction READ direction WRITE setDirection NOTIFY directionChanged);
-    Q_PROPERTY(QHostAddress address READ address WRITE setAddress NOTIFY addressChanged);
-    Q_PROPERTY(quint16 port READ port WRITE setPort NOTIFY portChanged);
-    Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged);
-    Q_PROPERTY(quint64 fileSize READ fileSize WRITE setFileSize NOTIFY fileSizeChanged);
-    Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickChanged);
+    Q_PROPERTY(QUuid uuid READ uuid)
+    Q_PROPERTY(Transfer::Status status READ status WRITE setStatus NOTIFY statusChanged)
+    Q_PROPERTY(Transfer::Direction direction READ direction WRITE setDirection NOTIFY directionChanged)
+    Q_PROPERTY(QHostAddress address READ address WRITE setAddress NOTIFY addressChanged)
+    Q_PROPERTY(quint16 port READ port WRITE setPort NOTIFY portChanged)
+    Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged)
+    Q_PROPERTY(quint64 fileSize READ fileSize WRITE setFileSize NOTIFY fileSizeChanged)
+    Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickChanged)
 
 public:
     enum class Status {
