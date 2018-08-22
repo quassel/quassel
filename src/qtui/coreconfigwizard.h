@@ -39,7 +39,7 @@ namespace CoreConfigWizardPages {
 class SyncPage;
 class SyncRelayPage;
 
-};
+}
 
 class CoreConfigWizard : public QWizard
 {

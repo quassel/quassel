@@ -37,7 +37,7 @@ public:
         OptIn = 1,
         OptOut = 2
     };
-    Q_DECLARE_FLAGS(operationModes, OperationMode);
+    Q_DECLARE_FLAGS(operationModes, OperationMode)
 
     ChatViewSettings(const QString &id = "__default__");
     ChatViewSettings(ChatScene *scene);

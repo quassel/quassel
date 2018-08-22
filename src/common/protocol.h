@@ -252,7 +252,7 @@ struct HeartBeatReply
 };
 
 
-};
+}
 
 // Required for InternalPeer
 Q_DECLARE_METATYPE(Protocol::SyncMessage)

@@ -195,6 +195,6 @@ private:
 };
 
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(EventManager::EventFlags);
+Q_DECLARE_OPERATORS_FOR_FLAGS(EventManager::EventFlags)
 
 #endif
