@@ -141,7 +141,8 @@ private:
     }
 
 
-    static QHash<QString, QVariant> settingsCache;
+    static QHash<QString, QVariant> settingsCache;         ///< Cached settings values
+    static QHash<QString, bool> settingsKeyPersistedCache; ///< Cached settings key exists on disk
     static QHash<QString, SettingsChangeNotifier *> settingsChangeNotifier;
 
     inline QString normalizedKey(const QString &group, const QString &key)
@@ -149,6 +150,44 @@ private:
         if (group.isEmpty())
             return key;
         return group + '/' + key;
+    }
+
+
+    /**
+     * Update the cache of whether or not a given settings key persists on disk
+     *
+     * @param normKey Normalized settings key ID
+     * @param exists  True if key exists, otherwise false
+     */
+    inline void setCacheKeyPersisted(const QString &normKey, bool exists)
+    {
+        settingsKeyPersistedCache[normKey] = exists;
+    }
+
+
+    /**
+     * Check if the given settings key ID persists on disk (rather than being a default value)
+     *
+     * @see Settings::localKeyExists()
+     *
+     * @param normKey Normalized settings key ID
+     * @return True if key exists and persistence has been cached, otherwise false
+     */
+    inline const bool &cacheKeyPersisted(const QString &normKey)
+    {
+        return settingsKeyPersistedCache[normKey];
+    }
+
+
+    /**
+     * Check if the persistence of the given settings key ID has been cached
+     *
+     * @param normKey Normalized settings key ID
+     * @return True if key persistence has been cached, otherwise false
+     */
+    inline bool isKeyPersistedCached(const QString &normKey)
+    {
+        return settingsKeyPersistedCache.contains(normKey);
     }
 
 

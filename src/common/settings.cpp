@@ -30,6 +30,7 @@ const int VERSION = 1;              /// Settings version for backwords/forwards 
 const int VERSION_MINOR_INITIAL = 1; /// Initial settings version for compatible changes
 
 QHash<QString, QVariant> Settings::settingsCache;
+QHash<QString, bool> Settings::settingsKeyPersistedCache;
 QHash<QString, SettingsChangeNotifier *> Settings::settingsChangeNotifier;
 
 #ifdef Q_OS_MAC
@@ -186,6 +187,7 @@ void Settings::setLocalValue(const QString &key, const QVariant &data)
     QString normKey = normalizedKey(group, key);
     create_qsettings;
     s.setValue(normKey, data);
+    setCacheKeyPersisted(normKey, true);
     setCacheValue(normKey, data);
     if (hasNotifier(normKey)) {
         emit notifier(normKey)->valueChanged(data);
@@ -198,19 +200,32 @@ const QVariant &Settings::localValue(const QString &key, const QVariant &def)
     QString normKey = normalizedKey(group, key);
     if (!isCached(normKey)) {
         create_qsettings;
+        // Since we're loading from settings anyways, cache whether or not the key exists on disk
+        setCacheKeyPersisted(normKey, s.contains(normKey));
+        // Cache key value
         setCacheValue(normKey, s.value(normKey, def));
     }
-    return cacheValue(normKey);
+    if (cacheKeyPersisted(normKey)) {
+        return cacheValue(normKey);
+    } else {
+        // Don't return possibly wrong cached values
+        // A key gets cached with the first default value requested and never changes afterwards
+        return def;
+    }
 }
 
 
 bool Settings::localKeyExists(const QString &key)
 {
     QString normKey = normalizedKey(group, key);
-    // Do NOT check the cache as default values get cached, too.  Otherwise loading a setting once
-    // will mark it as existing in settings, even when it only exists in cache (and not on disk).
-    create_qsettings;
-    return s.contains(normKey);
+    if (!isKeyPersistedCached(normKey)) {
+        create_qsettings;
+        // Cache whether or not key exists on disk
+        // We can't cache key value as we don't know the default
+        setCacheKeyPersisted(normKey, s.contains(normKey));
+    }
+
+    return cacheKeyPersisted(normKey);
 }
 
 
@@ -223,6 +238,9 @@ void Settings::removeLocalKey(const QString &key)
     QString normKey = normalizedKey(group, key);
     if (isCached(normKey)) {
         settingsCache.remove(normKey);
+    }
+    if (isKeyPersistedCached(normKey)) {
+        settingsKeyPersistedCache.remove(normKey);
     }
     if (hasNotifier(normKey)) {
         emit notifier(normKey)->valueChanged({});
