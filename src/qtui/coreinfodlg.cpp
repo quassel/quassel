@@ -100,7 +100,8 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
         }
         else {
             ui.labelCoreVersionDate->setText(
-                        tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString()));
+                        tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString(),
+                        Qt::DateFormat::DefaultLocaleShortDate));
         }
         ui.labelClientCount->setNum(coreInfo["sessionConnectedClients"].toInt());
     }
@@ -174,7 +175,8 @@ void CoreInfoDlg::updateUptime() {
                                      .arg(uphours, 2, 10, QChar('0'))
                                      .arg(upmins, 2, 10, QChar('0'))
                                      .arg(uptime, 2, 10, QChar('0'))
-                                     .arg(startTime.toLocalTime().toString(Qt::TextDate));
+                                     .arg(startTime.toLocalTime()
+                                          .toString(Qt::DefaultLocaleShortDate));
         ui.labelUptime->setText(uptimeText);
     }
 }

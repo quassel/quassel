@@ -109,6 +109,19 @@ bool scopeMatch(const QString &string, const QString &scopeRule,
  * localizing if possible, leaving alone if not.
  *
  * @param possibleEpochDate Date/time that might be in seconds since Unix epoch format
+ * @param dateFormat        Desired format of the date/time string
+ * @param useUTC            If true, use UTC timezone, otherwise use local time
  * @return Localized date/time if parse succeeded, otherwise the source string
  */
-QString tryFormatUnixEpoch(const QString &possibleEpochDate);
+QString tryFormatUnixEpoch(const QString &possibleEpochDate,
+                           Qt::DateFormat dateFormat = Qt::DateFormat::TextDate,
+                           bool useUTC = false);
+
+
+/**
+ * Format the given date/time in ISO 8601 format with timezone offset
+ *
+ * @param dateTime Date/time of interest
+ * @return Date/time in ISO 8601 format with timezone offset
+ */
+QString formatDateTimeToOffsetISO(const QDateTime &dateTime);
