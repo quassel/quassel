@@ -44,7 +44,8 @@ AboutDlg::AboutDlg(QWidget *parent)
         versionDate = QString("<i>%1</i>").arg(tr("Unknown date"));
     }
     else {
-        versionDate = tryFormatUnixEpoch(Quassel::buildInfo().commitDate);
+        versionDate = tryFormatUnixEpoch(Quassel::buildInfo().commitDate,
+                                         Qt::DateFormat::DefaultLocaleShortDate);
     }
     ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br>"
                                         "<b>Version date:</b> %2<br>"

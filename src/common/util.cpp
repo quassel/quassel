@@ -365,7 +365,7 @@ bool scopeMatch(const QString &string, const QString &scopeRule, const bool &isR
 }
 
 
-QString tryFormatUnixEpoch(const QString &possibleEpochDate)
+QString tryFormatUnixEpoch(const QString &possibleEpochDate, Qt::DateFormat dateFormat, bool useUTC)
 {
     // Does the string resemble a Unix epoch?  Parse as 64-bit time
     qint64 secsSinceEpoch = possibleEpochDate.toLongLong();
@@ -387,5 +387,50 @@ QString tryFormatUnixEpoch(const QString &possibleEpochDate)
 #endif
 
     // Return the localized date/time
-    return date.toString();
+    if (useUTC) {
+        // Return UTC time
+        return date.toUTC().toString(dateFormat);
+    } else if (dateFormat == Qt::DateFormat::ISODate) {
+        // Add in ISO local timezone information via special handling below
+        return formatDateTimeToOffsetISO(date);
+    } else {
+        // Return local time
+        return date.toString(dateFormat);
+    }
+}
+
+
+QString formatDateTimeToOffsetISO(const QDateTime &dateTime)
+{
+    if (!dateTime.isValid()) {
+        // Don't try to do anything with invalid date/time
+        return "formatDateTimeToISO() invalid date/time";
+    }
+
+#if 0
+    // The expected way to get a UTC offset on ISO8601 dates
+    return dateTime.toTimeSpec(Qt::OffsetFromUTC).toString(Qt::ISODate);
+#else
+    // Work around Qt bug that converts to UTC instead of including timezone information
+    // See https://bugreports.qt.io/browse/QTBUG-26161
+    //
+    // NOTE: Despite the bug report marking as fixed in Qt 5.2.0 (QT_VERSION >= 0x050200), this
+    // still appears broken in Qt 5.5.1.
+    //
+    // Credit to "user362638" for the solution below, modified to fit Quassel's needs
+    // https://stackoverflow.com/questions/18750569/qdatetime-isodate-with-timezone
+
+    // Get the local and UTC time
+    QDateTime local = QDateTime(dateTime);
+    QDateTime utc = local.toUTC();
+    utc.setTimeSpec(Qt::LocalTime);
+
+    // Find the UTC offset
+    int utcOffset = utc.secsTo(local);
+
+    // Force the local time to follow this offset
+    local.setUtcOffset(utcOffset);
+    // Now the output should be correct
+    return local.toString(Qt::ISODate);
+#endif
 }

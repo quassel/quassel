@@ -300,8 +300,8 @@ protected:
     /**
      * Cache the system locale timestamp format string
      *
-     * Based on whether or not AM/PM designators are used in the QLocale::system().timeFormat(),
-     * this extends the system locale timestamp format string to include seconds.
+     * Based on whether or not AM/PM designators are used in the QLocale.timeFormat(), this extends
+     * the application locale timestamp format string to include seconds.
      *
      * @see UiStyle::systemTimestampFormatString()
      */

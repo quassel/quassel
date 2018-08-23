@@ -1613,30 +1613,22 @@ void CoreSessionEventProcessor::handleCtcpPing(CtcpEvent *e)
 
 void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent *e)
 {
-    // Explicitly specify the Qt default DateTime format string to allow for modification
-    // Qt::TextDate default roughly corresponds to...
-    // > ddd MMM d yyyy HH:mm:ss
-    //
-    // See https://doc.qt.io/qt-5/qdatetime.html#toString
-    // And https://doc.qt.io/qt-5/qt.html#DateFormat-enum
-#if QT_VERSION > 0x050000
-    // Append the timezone identifier "t", so other other IRC users have a frame of reference for
-    // the current timezone.  This could be figured out before by manually comparing to UTC, so this
-    // is just convenience.
-
-    // Alas, "t" was only added in Qt 5
-    e->setReply(QDateTime::currentDateTime().toString("ddd MMM d yyyy HH:mm:ss t"));
-#else
-    e->setReply(QDateTime::currentDateTime().toString("ddd MMM d yyyy HH:mm:ss"));
-#endif
+    // Use the ISO standard to avoid locale-specific translated names
+    // Include timezone offset data to show which timezone a user's in, otherwise we're providing
+    // NTP-over-IRC with terrible accuracy.
+    e->setReply(formatDateTimeToOffsetISO(QDateTime::currentDateTime()));
 }
 
 
 void CoreSessionEventProcessor::handleCtcpVersion(CtcpEvent *e)
 {
     // Deliberately do not translate project name
+    // Use the ISO standard to avoid locale-specific translated names
+    // Use UTC time to provide a consistent string regardless of timezone
+    // (Statistics tracking tools usually only group client versions by exact string matching)
     e->setReply(QString("Quassel IRC %1 (version date %2) -- https://www.quassel-irc.org")
                 .arg(Quassel::buildInfo().plainVersionString)
                 .arg(Quassel::buildInfo().commitDate.isEmpty() ?
-                      "unknown" : tryFormatUnixEpoch(Quassel::buildInfo().commitDate)));
+                      "unknown" : tryFormatUnixEpoch(Quassel::buildInfo().commitDate,
+                                                     Qt::DateFormat::ISODate, true)));
 }

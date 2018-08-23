@@ -222,7 +222,7 @@ void UiStyle::updateSystemTimestampFormat()
     // Helpful interactive website for debugging and explaining:  https://regex101.com/
     const QRegExp regExpMatchAMPM(".*(\\b|_)(A|AP)(\\b|_).*", Qt::CaseInsensitive);
 
-    if (regExpMatchAMPM.exactMatch(QLocale::system().timeFormat(QLocale::ShortFormat))) {
+    if (regExpMatchAMPM.exactMatch(QLocale().timeFormat(QLocale::ShortFormat))) {
         // AM/PM style used
         _systemTimestampFormatString = " h:mm:ss ap";
     } else {
