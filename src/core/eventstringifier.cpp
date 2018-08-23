@@ -453,10 +453,18 @@ void EventStringifier::processIrcEvent301(IrcEvent *e)
             QDateTime now = QDateTime::currentDateTime();
             now.setTimeSpec(Qt::UTC);
             // Don't print "user is away" messages more often than this
-            const int silenceTime = 60;
-            if (ircuser->lastAwayMessageTime().addSecs(silenceTime) >= now)
+            // 1 hour = 60 min * 60 sec
+            const int silenceTime = 60 * 60;
+            // Check if away state has NOT changed and silence time hasn't yet elapsed
+            if (!ircuser->hasAwayChanged()
+                    && ircuser->lastAwayMessageTime().addSecs(silenceTime) >= now) {
+                // Away message hasn't changed and we're still within the period of silence; don't
+                // repeat the message
                 send = false;
+            }
             ircuser->setLastAwayMessageTime(now);
+            // Mark any changes in away as acknowledged
+            ircuser->acknowledgeAwayChanged();
         }
     }
     if (send)
