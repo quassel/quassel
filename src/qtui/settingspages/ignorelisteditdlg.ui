@@ -257,7 +257,7 @@ For dynamic rules, disabling actually shows the filtered messages again.&lt;/p&g
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../icons/oxygen.qrc"/>
+  <include location="../../../icons/oxygen_icons.qrc"/>
  </resources>
  <connections>
   <connection>
