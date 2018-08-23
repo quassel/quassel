@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IDENTITY_H
-#define IDENTITY_H
+#pragma once
 
 #include <QByteArray>
 #include <QDataStream>
@@ -32,8 +31,8 @@
 
 class Identity : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
 
     Q_PROPERTY(IdentityId identityId READ id WRITE setId)
     Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName)
@@ -56,9 +55,8 @@ class Identity : public SyncableObject
     Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason)
 
 public :
-        Identity(IdentityId id = 0, QObject *parent = 0);
+    Identity(IdentityId id = 0, QObject *parent = 0);
     Identity(const Identity &other, QObject *parent = 0);
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     void setToDefaults();
 
@@ -167,14 +165,14 @@ Q_DECLARE_METATYPE(Identity)
 
 class CertManager : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
+
     Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey)
     Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert)
 
 public :
-        CertManager(IdentityId id, QObject *parent = 0) : SyncableObject(QString::number(id.toInt()), parent) {}
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+    CertManager(IdentityId id, QObject *parent = 0) : SyncableObject(QString::number(id.toInt()), parent) {}
 
     virtual const QSslKey &sslKey() const = 0;
     inline QByteArray sslKeyPem() const { return sslKey().toPem(); }
@@ -186,7 +184,4 @@ public slots:
     inline virtual void setSslCert(const QByteArray &encoded) { SYNC(ARG(encoded)) }
 };
 
-
 #endif // HAVE_SSL
-
-#endif // IDENTITY_H

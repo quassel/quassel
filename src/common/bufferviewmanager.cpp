@@ -23,7 +23,6 @@
 #include "bufferviewconfig.h"
 #include "signalproxy.h"
 
-INIT_SYNCABLE_OBJECT(BufferViewManager)
 BufferViewManager::BufferViewManager(SignalProxy *proxy, QObject *parent)
     : SyncableObject(parent),
     _proxy(proxy)

@@ -27,7 +27,6 @@
 #include "signalproxy.h"
 #include "util.h"
 
-INIT_SYNCABLE_OBJECT(SyncableObject)
 SyncableObject::SyncableObject(QObject *parent)
     : QObject(parent),
     _initialized(false),

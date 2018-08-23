@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREIRCLISTHELPER_H
-#define COREIRCLISTHELPER_H
+#pragma once
 
 #include <memory>
 
@@ -32,13 +31,10 @@ class QTimerEvent;
 
 class CoreIrcListHelper : public IrcListHelper
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     inline CoreIrcListHelper(CoreSession *coreSession) : IrcListHelper(coreSession), _coreSession(coreSession) {};
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &IrcListHelper::staticMetaObject; }
 
     inline CoreSession *coreSession() const { return _coreSession; }
 
@@ -64,6 +60,3 @@ private:
     QHash<int, NetworkId> _queryTimeoutByTimerId;
     QHash<NetworkId, std::shared_ptr<QBasicTimer>> _queryTimeoutByNetId;
 };
-
-
-#endif //COREIRCLISTHELPER_H

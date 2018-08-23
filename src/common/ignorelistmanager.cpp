@@ -24,7 +24,6 @@
 #include <QDebug>
 #include <QStringList>
 
-INIT_SYNCABLE_OBJECT(IgnoreListManager)
 IgnoreListManager &IgnoreListManager::operator=(const IgnoreListManager &other)
 {
     if (this == &other)

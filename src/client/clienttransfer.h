@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTTRANSFER_H
-#define CLIENTTRANSFER_H
+#pragma once
 
 #include <QUuid>
 
@@ -30,7 +29,6 @@ class QFile;
 class ClientTransfer : public Transfer
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
 
 public:
     ClientTransfer(const QUuid &uuid, QObject *parent = 0);
@@ -55,5 +53,3 @@ private:
 
     QFile *_file;
 };
-
-#endif

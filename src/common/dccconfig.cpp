@@ -24,8 +24,6 @@
 
 #include "types.h"
 
-INIT_SYNCABLE_OBJECT(DccConfig)
-
 DccConfig::DccConfig(QObject *parent)
     : SyncableObject(parent)
 {

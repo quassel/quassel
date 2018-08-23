@@ -18,20 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTIGNORELISTMANAGER_H
-#define CLIENTIGNORELISTMANAGER_H
+#pragma once
 
 #include "ignorelistmanager.h"
 #include <QMap>
 
 class ClientIgnoreListManager : public IgnoreListManager
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit ClientIgnoreListManager(QObject *parent = 0);
-    inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
 
     //! Fetch all matching ignore rules for a given hostmask
     /** \param hostmask The hostmask of the user
@@ -48,6 +45,3 @@ private:
     // matches an ignore rule against a given string
     bool pureMatch(const IgnoreListItem &item, const QString &string) const;
 };
-
-
-#endif // CLIENTIGNORELISTMANAGER_H

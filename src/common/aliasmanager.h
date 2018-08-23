@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ALIASMANAGER_H
-#define ALIASMANAGER_H
+#pragma once
 
 #include <QVariantMap>
 
@@ -30,8 +29,8 @@ class Network;
 
 class AliasManager : public SyncableObject
 {
+    Q_OBJECT
     SYNCABLE_OBJECT
-        Q_OBJECT
 
 public:
     inline AliasManager(QObject *parent = 0) : SyncableObject(parent) { setAllowClientUpdates(true); }
@@ -75,6 +74,3 @@ private:
 
     AliasList _aliases;
 };
-
-
-#endif //ALIASMANAGER_H

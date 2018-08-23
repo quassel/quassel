@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREBUFFERVIEWMANAGER_H
-#define COREBUFFERVIEWMANAGER_H
+#pragma once
 
 #include "bufferviewmanager.h"
 
@@ -27,13 +26,10 @@ class CoreSession;
 
 class CoreBufferViewManager : public BufferViewManager
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewManager::staticMetaObject; }
 
 public slots:
     virtual void requestCreateBufferView(const QVariantMap &properties);
@@ -46,6 +42,3 @@ public slots:
 private:
     CoreSession *_coreSession;
 };
-
-
-#endif // COREBUFFERVIEWMANAGER_H

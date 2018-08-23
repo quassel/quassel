@@ -23,8 +23,6 @@
 #include "client.h"
 #include "clienttransfer.h"
 
-INIT_SYNCABLE_OBJECT(ClientTransferManager)
-
 void ClientTransferManager::setTransferIds(const QList<QUuid> &transferIds)
 {
     for(auto &&id : transferIds) {

@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IGNORELISTMANAGER_H
-#define IGNORELISTMANAGER_H
+#pragma once
 
 #include <QDebug>
 #include <QString>
@@ -32,8 +31,9 @@
 
 class IgnoreListManager : public SyncableObject
 {
+    Q_OBJECT
     SYNCABLE_OBJECT
-        Q_OBJECT
+
 public:
     inline IgnoreListManager(QObject *parent = 0) : SyncableObject(parent) { setAllowClientUpdates(true); }
     IgnoreListManager &operator=(const IgnoreListManager &other);
@@ -406,6 +406,3 @@ signals:
 private:
     IgnoreList _ignoreList;
 };
-
-
-#endif // IGNORELISTMANAGER_H

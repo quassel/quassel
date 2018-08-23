@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IRCLISTHELPER_H
-#define IRCLISTHELPER_H
+#pragma once
 
 #include "syncableobject.h"
 #include "types.h"
@@ -34,8 +33,8 @@
  */
 class IrcListHelper : public SyncableObject
 {
+    Q_OBJECT
     SYNCABLE_OBJECT
-        Q_OBJECT
 
 public:
     inline IrcListHelper(QObject *parent = 0) : SyncableObject(parent) { setInitialized(); };
@@ -53,6 +52,3 @@ public slots:
     inline virtual void reportFinishedList(const NetworkId &netId) { SYNC(ARG(netId)) }
     inline virtual void reportError(const QString &error) { SYNC(ARG(error)) }
 };
-
-
-#endif //IRCLISTHELPER_H

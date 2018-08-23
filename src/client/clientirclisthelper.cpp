@@ -25,7 +25,6 @@
 #include "client.h"
 #include "irclistmodel.h"
 
-INIT_SYNCABLE_OBJECT(ClientIrcListHelper)
 QVariantList ClientIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters)
 {
     _netId = netId;

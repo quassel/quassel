@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREALIASMANAGER_H
-#define COREALIASMANAGER_H
+#pragma once
 
 #include "aliasmanager.h"
 
@@ -27,13 +26,10 @@ class CoreSession;
 
 class CoreAliasManager : public AliasManager
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit CoreAliasManager(CoreSession *parent);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &AliasManager::staticMetaObject; }
 
 protected:
     const Network *network(NetworkId) const;
@@ -44,6 +40,3 @@ private slots:
 private:
     void loadDefaults();
 };
-
-
-#endif //COREALIASMANAGER_H

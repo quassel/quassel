@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTIDENTITY_H
-#define CLIENTIDENTITY_H
+#pragma once
 
 #include "identity.h"
 
@@ -27,8 +26,7 @@ class ClientCertManager;
 
 class CertIdentity : public Identity
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CertIdentity(IdentityId id = 0, QObject *parent = 0);
@@ -89,7 +87,4 @@ private:
     CertIdentity *_certIdentity;
 };
 
-
 #endif //HAVE_SSL
-
-#endif //CLIENTIDENTITY_H

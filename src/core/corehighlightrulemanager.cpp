@@ -25,7 +25,6 @@
 
 constexpr auto settingsKey = "HighlightRuleList";
 
-INIT_SYNCABLE_OBJECT(CoreHighlightRuleManager)
 CoreHighlightRuleManager::CoreHighlightRuleManager(CoreSession *session)
     : HighlightRuleManager(session)
     , _coreSession{session}

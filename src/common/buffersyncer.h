@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERSYNCER_H_
-#define BUFFERSYNCER_H_
+#pragma once
 
 #include "syncableobject.h"
 #include "types.h"
@@ -27,14 +26,12 @@
 
 class BufferSyncer : public SyncableObject
 {
+    Q_OBJECT
     SYNCABLE_OBJECT
-        Q_OBJECT
 
 public:
     explicit BufferSyncer(QObject *parent);
     explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, const QHash<BufferId, int> &highlightCounts, QObject *parent);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     MsgId lastSeenMsg(BufferId buffer) const;
     MsgId markerLine(BufferId buffer) const;
@@ -121,6 +118,3 @@ private:
     QHash<BufferId, Message::Types> _bufferActivities;
     QHash<BufferId, int> _highlightCounts;
 };
-
-
-#endif

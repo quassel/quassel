@@ -20,7 +20,6 @@
 
 #include "bufferviewconfig.h"
 
-INIT_SYNCABLE_OBJECT(BufferViewConfig)
 BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
     : SyncableObject(parent),
     _bufferViewId(bufferViewId)

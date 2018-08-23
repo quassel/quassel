@@ -20,7 +20,6 @@
 
 #include "networkconfig.h"
 
-INIT_SYNCABLE_OBJECT(NetworkConfig)
 NetworkConfig::NetworkConfig(const QString &objectName, QObject *parent)
     : SyncableObject(objectName, parent),
     _pingTimeoutEnabled(true),

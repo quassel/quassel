@@ -19,5 +19,3 @@
  ***************************************************************************/
 
 #include "irclisthelper.h"
-
-INIT_SYNCABLE_OBJECT(IrcListHelper)

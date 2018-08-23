@@ -84,9 +84,6 @@ public:
      */
     DccConfig(QObject *parent = nullptr);
 
-    // see base class
-    const QMetaObject *syncMetaObject() const override { return &staticMetaObject; }
-
     /**
      * Assignment operator.
      *

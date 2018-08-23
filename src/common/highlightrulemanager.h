@@ -34,8 +34,8 @@
 
 class HighlightRuleManager : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
 
     Q_PROPERTY(int highlightNick READ highlightNick WRITE setHighlightNick)
     Q_PROPERTY(bool nicksCaseSensitive READ nicksCaseSensitive WRITE setNicksCaseSensitive)

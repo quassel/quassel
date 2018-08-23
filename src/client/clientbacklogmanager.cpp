@@ -29,7 +29,6 @@
 
 #include <QDebug>
 
-INIT_SYNCABLE_OBJECT(ClientBacklogManager)
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
     : BacklogManager(parent),
     _requester(0),

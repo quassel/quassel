@@ -24,7 +24,6 @@
 #include "corenetwork.h"
 #include "coresession.h"
 
-INIT_SYNCABLE_OBJECT(CoreAliasManager)
 CoreAliasManager::CoreAliasManager(CoreSession *parent)
     : AliasManager(parent)
 {

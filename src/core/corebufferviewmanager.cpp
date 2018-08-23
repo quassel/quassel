@@ -25,7 +25,6 @@
 #include "core.h"
 #include "coresession.h"
 
-INIT_SYNCABLE_OBJECT(CoreBufferViewManager)
 CoreBufferViewManager::CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent)
     : BufferViewManager(proxy, parent),
     _coreSession(parent)

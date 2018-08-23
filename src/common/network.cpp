@@ -32,7 +32,7 @@ QTextCodec *Network::_defaultCodecForDecoding = 0;
 // ====================
 //  Public:
 // ====================
-INIT_SYNCABLE_OBJECT(Network)
+
 Network::Network(const NetworkId &networkid, QObject *parent)
     : SyncableObject(parent),
     _proxy(0),

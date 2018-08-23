@@ -23,7 +23,6 @@
 #include "client.h"
 #include "signalproxy.h"
 
-INIT_SYNCABLE_OBJECT(CertIdentity)
 CertIdentity::CertIdentity(IdentityId id, QObject *parent)
     : Identity(id, parent)
 #ifdef HAVE_SSL

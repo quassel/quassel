@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREIGNORELISTMANAGER_H
-#define COREIGNORELISTMANAGER_H
+#pragma once
 
 #include "ignorelistmanager.h"
 
@@ -28,13 +27,10 @@ struct RawMessage;
 
 class CoreIgnoreListManager : public IgnoreListManager
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit CoreIgnoreListManager(CoreSession *parent);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
 
     StrictnessType match(const RawMessage &rawMsg, const QString &networkName);
 
@@ -54,6 +50,3 @@ private slots:
 //private:
 //  void loadDefaults();
 };
-
-
-#endif //COREIGNORELISTMANAGER_H

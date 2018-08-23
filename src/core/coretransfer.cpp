@@ -27,8 +27,6 @@
 
 const qint64 chunkSize = 16 * 1024;
 
-INIT_SYNCABLE_OBJECT(CoreTransfer)
-
 CoreTransfer::CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
     : Transfer(direction, nick, fileName, address, port, fileSize, parent),
     _socket(0),

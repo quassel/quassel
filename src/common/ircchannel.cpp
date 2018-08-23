@@ -30,7 +30,6 @@
 
 #include <QDebug>
 
-INIT_SYNCABLE_OBJECT(IrcChannel)
 IrcChannel::IrcChannel(const QString &channelname, Network *network)
     : SyncableObject(network),
     _initialized(false),

@@ -18,21 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "bufferviewconfig.h"
+#pragma once
 
-#ifndef COREBUFFERVIEWCONFIG_H
-#define COREBUFFERVIEWCONFIG_H
+#include "bufferviewconfig.h"
 
 class CoreBufferViewConfig : public BufferViewConfig
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreBufferViewConfig(int bufferViewId, QObject *parent = 0);
     CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewConfig::staticMetaObject; }
 
 public slots:
     virtual inline void requestSetBufferViewName(const QString &bufferViewName) { setBufferViewName(bufferViewName); }
@@ -41,6 +37,3 @@ public slots:
     virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { addBuffer(bufferId, pos); }
     virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { moveBuffer(bufferId, pos); }
 };
-
-
-#endif // COREBUFFERVIEWCONFIG_H

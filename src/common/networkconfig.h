@@ -18,15 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NETWORKCONFIG_H_
-#define NETWORKCONFIG_H_
+#pragma once
 
 #include "syncableobject.h"
 
 class NetworkConfig : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
 
     Q_PROPERTY(bool pingTimeoutEnabled READ pingTimeoutEnabled WRITE setPingTimeoutEnabled)
     Q_PROPERTY(int pingInterval READ pingInterval WRITE setPingInterval)
@@ -38,9 +37,7 @@ class NetworkConfig : public SyncableObject
     Q_PROPERTY(bool standardCtcp READ standardCtcp WRITE setStandardCtcp)
 
 public :
-        NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = 0);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+    NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = 0);
 
 public slots:
     inline bool pingTimeoutEnabled() const { return _pingTimeoutEnabled; }
@@ -105,6 +102,3 @@ private:
 
     bool _standardCtcp;
 };
-
-
-#endif

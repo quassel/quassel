@@ -33,7 +33,6 @@ struct RawMessage;
 class CoreHighlightRuleManager : public HighlightRuleManager
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
 
     using HighlightRuleManager::match;
 
@@ -44,8 +43,6 @@ public:
      * @param[in] session Pointer to the parent CoreSession (takes ownership)
      */
     explicit CoreHighlightRuleManager(CoreSession *session);
-
-    virtual const QMetaObject *syncMetaObject() const override { return &HighlightRuleManager::staticMetaObject; }
 
     bool match(const RawMessage &msg, const QString &currentNick, const QStringList &identityNicks);
 
