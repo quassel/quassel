@@ -564,7 +564,7 @@ void CoreNetwork::socketInitialized()
         return;
     }
 #else
-    emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort());
+    emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort(), _socketId);
 #endif
 
     socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
